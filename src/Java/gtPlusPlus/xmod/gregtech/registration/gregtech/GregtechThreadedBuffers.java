@@ -1,14 +1,12 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
-import static gtPlusPlus.core.recipe.common.CI.bitsd;
-
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
-import gregtech.api.util.GT_ModHandler;
 
+import gregtech.api.util.GT_Recipe;
 import gregtech.common.tileentities.automation.GT_MetaTileEntity_SuperBuffer;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.storage.creative.GT_MetaTileEntity_InfiniteItemHolder;
+import net.minecraft.item.ItemStack;
 
 public class GregtechThreadedBuffers {
 
@@ -25,13 +23,13 @@ public class GregtechThreadedBuffers {
 		 * deprecated and replaced by the original GT super buffers.
 		 *
 		 * To avoid breaking existing bases, we've assigned the threaded super buffer metadata IDs to a copy of the GT
-		 * super buffers, with a deprecation notice attached. We've also provided pulverizer recipes that are the
+		 * super buffers, with a deprecation notice attached. We've also provided disassembler recipes that are the
 		 * reverse of the original crafting recipes, allowing players to reclaim their original materials as well as
 		 * convert the deprecated threaded super buffer metadata ID item back to the original GT super buffer metadata
 		 * ID item.
 		 */
 
-		final String deprecationNotice = "**DEPRECATED - Drop in 4-slot pulverizer!** ";
+		final String deprecationNotice = "**DEPRECATED - Drop in disassembler!** ";
 		GregtechItemList.Automation_Threaded_SuperBuffer_ULV.set((new GT_MetaTileEntity_SuperBuffer(31000, "automation.superbuffer.tier.00.deprecated", deprecationNotice + "Ultra Low Voltage Super Buffer", 0)).getStackForm(1L));
 		GregtechItemList.Automation_Threaded_SuperBuffer_LV.set((new GT_MetaTileEntity_SuperBuffer(31001, "automation.superbuffer.tier.01.deprecated", deprecationNotice + "Low Voltage Super Buffer", 1)).getStackForm(1L));
 		GregtechItemList.Automation_Threaded_SuperBuffer_MV.set((new GT_MetaTileEntity_SuperBuffer(31002, "automation.superbuffer.tier.02.deprecated", deprecationNotice + "Medium Voltage Super Buffer", 2)).getStackForm(1L));
@@ -43,55 +41,96 @@ public class GregtechThreadedBuffers {
 		GregtechItemList.Automation_Threaded_SuperBuffer_UV.set((new GT_MetaTileEntity_SuperBuffer(31008, "automation.superbuffer.tier.08.deprecated", deprecationNotice + "Ultimate Voltage Super Buffer", 8)).getStackForm(1L));
 		GregtechItemList.Automation_Threaded_SuperBuffer_MAX.set((new GT_MetaTileEntity_SuperBuffer(31009, "automation.superbuffer.tier.09.deprecated", deprecationNotice + "Highly Ultimate Voltage Super Buffer", 9)).getStackForm(1L));
 
-		GT_ModHandler.addPulverisationRecipe(
-				GregtechItemList.Automation_Threaded_SuperBuffer_ULV.get(1L, new Object[0]),
-				ItemList.Automation_SuperBuffer_ULV.get(1L, new Object[0]),
-				ItemList.Tool_DataOrb.get(1L, new Object[0]), 100,
-				ItemList.Conveyor_Module_LV.get(1L, new Object[0]), 100, false);
-		GT_ModHandler.addPulverisationRecipe(
-				GregtechItemList.Automation_Threaded_SuperBuffer_LV.get(1L, new Object[0]),
-				ItemList.Automation_SuperBuffer_LV.get(1L, new Object[0]),
-				ItemList.Tool_DataOrb.get(1L, new Object[0]), 100,
-				ItemList.Conveyor_Module_LV.get(1L, new Object[0]), 100, false);
-		GT_ModHandler.addPulverisationRecipe(
-				GregtechItemList.Automation_Threaded_SuperBuffer_MV.get(1L, new Object[0]),
-				ItemList.Automation_SuperBuffer_MV.get(1L, new Object[0]),
-				ItemList.Tool_DataOrb.get(1L, new Object[0]), 100,
-				ItemList.Conveyor_Module_MV.get(1L, new Object[0]), 100, false);
-		GT_ModHandler.addPulverisationRecipe(
-				GregtechItemList.Automation_Threaded_SuperBuffer_HV.get(1L, new Object[0]),
-				ItemList.Automation_SuperBuffer_HV.get(1L, new Object[0]),
-				ItemList.Tool_DataOrb.get(1L, new Object[0]), 100,
-				ItemList.Conveyor_Module_HV.get(1L, new Object[0]), 100, false);
-		GT_ModHandler.addPulverisationRecipe(
-				GregtechItemList.Automation_Threaded_SuperBuffer_EV.get(1L, new Object[0]),
-				ItemList.Automation_SuperBuffer_EV.get(1L, new Object[0]),
-				ItemList.Tool_DataOrb.get(1L, new Object[0]), 100,
-				ItemList.Conveyor_Module_EV.get(1L, new Object[0]), 100, false);
-		GT_ModHandler.addPulverisationRecipe(
-				GregtechItemList.Automation_Threaded_SuperBuffer_IV.get(1L, new Object[0]),
-				ItemList.Automation_SuperBuffer_IV.get(1L, new Object[0]),
-				ItemList.Tool_DataOrb.get(1L, new Object[0]), 100,
-				ItemList.Conveyor_Module_IV.get(1L, new Object[0]), 100, false);
-		GT_ModHandler.addPulverisationRecipe(
-				GregtechItemList.Automation_Threaded_SuperBuffer_LuV.get(1L, new Object[0]),
-				ItemList.Automation_SuperBuffer_LuV.get(1L, new Object[0]),
-				ItemList.Tool_DataOrb.get(1L, new Object[0]), 100,
-				ItemList.Conveyor_Module_LuV.get(1L, new Object[0]), 100, false);
-		GT_ModHandler.addPulverisationRecipe(
-				GregtechItemList.Automation_Threaded_SuperBuffer_ZPM.get(1L, new Object[0]),
-				ItemList.Automation_SuperBuffer_ZPM.get(1L, new Object[0]),
-				ItemList.Tool_DataOrb.get(1L, new Object[0]), 100,
-				ItemList.Conveyor_Module_ZPM.get(1L, new Object[0]), 100, false);
-		GT_ModHandler.addPulverisationRecipe(
-				GregtechItemList.Automation_Threaded_SuperBuffer_UV.get(1L, new Object[0]),
-				ItemList.Automation_SuperBuffer_UV.get(1L, new Object[0]),
-				ItemList.Tool_DataOrb.get(1L, new Object[0]), 100,
-				ItemList.Conveyor_Module_UV.get(1L, new Object[0]), 100, false);
-		GT_ModHandler.addPulverisationRecipe(
-				GregtechItemList.Automation_Threaded_SuperBuffer_MAX.get(1L, new Object[0]),
-				ItemList.Automation_SuperBuffer_MAX.get(1L, new Object[0]),
-				ItemList.Tool_DataOrb.get(1L, new Object[0]), 100,
-				GregtechItemList.Conveyor_Module_MAX.get(1L, new Object[0]), 100, false);
+		// These recipes are all 1 sec @ 32 EU/t
+		GT_Recipe.GT_Recipe_Map.sDisassemblerRecipes.addRecipe(
+				true,
+				new ItemStack[]{ GregtechItemList.Automation_Threaded_SuperBuffer_ULV.get(1L, new Object[0]) },
+				new ItemStack[]{
+						ItemList.Automation_SuperBuffer_ULV.get(1L, new Object[0]),
+						ItemList.Tool_DataOrb.get(1L, new Object[0]),
+						ItemList.Conveyor_Module_LV.get(1L, new Object[0]),
+				},
+				null, null, null, 20, 32, -100);
+		GT_Recipe.GT_Recipe_Map.sDisassemblerRecipes.addRecipe(
+				true,
+				new ItemStack[]{ GregtechItemList.Automation_Threaded_SuperBuffer_LV.get(1L, new Object[0]) },
+				new ItemStack[]{
+						ItemList.Automation_SuperBuffer_LV.get(1L, new Object[0]),
+						ItemList.Tool_DataOrb.get(1L, new Object[0]),
+						ItemList.Conveyor_Module_LV.get(1L, new Object[0]),
+				},
+				null, null, null, 20, 32, -100);
+		GT_Recipe.GT_Recipe_Map.sDisassemblerRecipes.addRecipe(
+				true,
+				new ItemStack[]{ GregtechItemList.Automation_Threaded_SuperBuffer_MV.get(1L, new Object[0]) },
+				new ItemStack[]{
+						ItemList.Automation_SuperBuffer_MV.get(1L, new Object[0]),
+						ItemList.Tool_DataOrb.get(1L, new Object[0]),
+						ItemList.Conveyor_Module_MV.get(1L, new Object[0]),
+				},
+				null, null, null, 20, 32, -100);
+		GT_Recipe.GT_Recipe_Map.sDisassemblerRecipes.addRecipe(
+				true,
+				new ItemStack[]{ GregtechItemList.Automation_Threaded_SuperBuffer_HV.get(1L, new Object[0]) },
+				new ItemStack[]{
+						ItemList.Automation_SuperBuffer_HV.get(1L, new Object[0]),
+						ItemList.Tool_DataOrb.get(1L, new Object[0]),
+						ItemList.Conveyor_Module_HV.get(1L, new Object[0]),
+				},
+				null, null, null, 20, 32, -100);
+		GT_Recipe.GT_Recipe_Map.sDisassemblerRecipes.addRecipe(
+				true,
+				new ItemStack[]{ GregtechItemList.Automation_Threaded_SuperBuffer_EV.get(1L, new Object[0]) },
+				new ItemStack[]{
+						ItemList.Automation_SuperBuffer_EV.get(1L, new Object[0]),
+						ItemList.Tool_DataOrb.get(1L, new Object[0]),
+						ItemList.Conveyor_Module_EV.get(1L, new Object[0]),
+				},
+				null, null, null, 20, 32, -100);
+		GT_Recipe.GT_Recipe_Map.sDisassemblerRecipes.addRecipe(
+				true,
+				new ItemStack[]{ GregtechItemList.Automation_Threaded_SuperBuffer_IV.get(1L, new Object[0]) },
+				new ItemStack[]{
+						ItemList.Automation_SuperBuffer_IV.get(1L, new Object[0]),
+						ItemList.Tool_DataOrb.get(1L, new Object[0]),
+						ItemList.Conveyor_Module_IV.get(1L, new Object[0]),
+				},
+				null, null, null, 20, 32, -100);
+		GT_Recipe.GT_Recipe_Map.sDisassemblerRecipes.addRecipe(
+				true,
+				new ItemStack[]{ GregtechItemList.Automation_Threaded_SuperBuffer_LuV.get(1L, new Object[0]) },
+				new ItemStack[]{
+						ItemList.Automation_SuperBuffer_LuV.get(1L, new Object[0]),
+						ItemList.Tool_DataOrb.get(1L, new Object[0]),
+						ItemList.Conveyor_Module_LuV.get(1L, new Object[0]),
+				},
+				null, null, null, 20, 32, -100);
+		GT_Recipe.GT_Recipe_Map.sDisassemblerRecipes.addRecipe(
+				true,
+				new ItemStack[]{ GregtechItemList.Automation_Threaded_SuperBuffer_ZPM.get(1L, new Object[0]) },
+				new ItemStack[]{
+						ItemList.Automation_SuperBuffer_ZPM.get(1L, new Object[0]),
+						ItemList.Tool_DataOrb.get(1L, new Object[0]),
+						ItemList.Conveyor_Module_ZPM.get(1L, new Object[0]),
+				},
+				null, null, null, 20, 32, -100);
+		GT_Recipe.GT_Recipe_Map.sDisassemblerRecipes.addRecipe(
+				true,
+				new ItemStack[]{ GregtechItemList.Automation_Threaded_SuperBuffer_UV.get(1L, new Object[0]) },
+				new ItemStack[]{
+						ItemList.Automation_SuperBuffer_UV.get(1L, new Object[0]),
+						ItemList.Tool_DataOrb.get(1L, new Object[0]),
+						ItemList.Conveyor_Module_UV.get(1L, new Object[0]),
+				},
+				null, null, null, 20, 32, -100);
+		GT_Recipe.GT_Recipe_Map.sDisassemblerRecipes.addRecipe(
+				true,
+				new ItemStack[]{ GregtechItemList.Automation_Threaded_SuperBuffer_MAX.get(1L, new Object[0]) },
+				new ItemStack[]{
+						ItemList.Automation_SuperBuffer_MAX.get(1L, new Object[0]),
+						ItemList.Tool_DataOrb.get(1L, new Object[0]),
+						GregtechItemList.Conveyor_Module_MAX.get(1L, new Object[0]),
+				},
+				null, null, null, 20, 32, -100);
 	}
 }
