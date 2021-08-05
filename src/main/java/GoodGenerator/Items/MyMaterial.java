@@ -584,6 +584,28 @@ public class MyMaterial implements Runnable {
             OffsetID + 50,
             TextureSet.SET_FLUID
     );
+
+    public static final Werkstoff zincChloride = new Werkstoff(
+            new short[]{0x73,0xa5,0xfc},
+            "Zinc Chloride",
+            subscriptNumbers("ZnCl2"),
+            new Werkstoff.Stats(),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            OffsetID + 51,
+            TextureSet.SET_SHINY
+    );
+
+    public static final Werkstoff zincThoriumAlloy = new Werkstoff(
+            new short[]{0x12,0x34,0x56},
+            "Zn-Th Alloy",
+            subscriptNumbers("ZnTh"),
+            new Werkstoff.Stats(),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().disable().onlyDust().addMolten().addMetalItems(),
+            OffsetID + 52,
+            TextureSet.SET_SHINY
+    );
     @Override
     public void run() { }
 }

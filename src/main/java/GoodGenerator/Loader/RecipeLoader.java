@@ -259,95 +259,90 @@ public class RecipeLoader {
                 1200
         );
 
-        GT_Values.RA.addChemicalRecipe(
-                WerkstoffLoader.Thorianit.get(OrePrefixes.dust,1),
-                null,
-                FluidRegistry.getFluidStack("nitricacid", 4000),
-                MyMaterial.thoriumNitrate.getFluidOrGas(1000),
-                null,
-                40,
-                30
-        );
-
         GT_Values.RA.addMultiblockChemicalRecipe(
                 new ItemStack[]{
-                        GT_Utility.getIntegratedCircuit(1)
+                        Materials.Thorium.getDust(1),
+                },
+                new FluidStack[]{
+                        Materials.HydrofluoricAcid.getFluid(100),
+                        FluidRegistry.getFluidStack("nitricacid", 4000)
                 },
                 new FluidStack[]{
                         MyMaterial.thoriumNitrate.getFluidOrGas(1000),
-                        MyMaterial.oxalate.getFluidOrGas(4000)
+                        Materials.NitrogenDioxide.getGas(4000)
                 },
-                new FluidStack[]{
-                        Materials.NitrogenDioxide.getGas(4000),
-                        Materials.CarbonDioxide.getGas(4000)
-                },
-                new ItemStack[]{
-                        MyMaterial.thoriumOxalate.get(OrePrefixes.dust,1)
-                },
-                100,
-                120
-        );
-
-        GT_Values.RA.addChemicalRecipe(
-                MyMaterial.thoriumOxalate.get(OrePrefixes.dust,1),
-                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.SodiumHydroxide,4),
                 null,
-                null,
-                MyMaterial.thoriumHydroxide.get(OrePrefixes.dust,1),
-                MyMaterial.sodiumOxalate.get(OrePrefixes.dust,2),
                 40,
                 120
         );
 
         GT_Values.RA.addChemicalRecipe(
-                MyMaterial.sodiumOxalate.get(OrePrefixes.dust,1),
                 GT_Utility.getIntegratedCircuit(1),
-                Materials.HydrochloricAcid.getFluid(2000),
-                MyMaterial.oxalate.getFluidOrGas(1000),
-                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Salt,2),
+                Materials.SodiumHydroxide.getDust(4),
+                MyMaterial.thoriumNitrate.getFluidOrGas(1000),
                 null,
-                20,
-                30
-        );
-
-        GT_Values.RA.addChemicalRecipe(
-                MyMaterial.thoriumHydroxide.get(OrePrefixes.dust,1),
-                GT_Utility.getIntegratedCircuit(1),
-                Materials.HydrochloricAcid.getFluid(4000),
-                MyMaterial.thoriumTetrachloride.getFluidOrGas(1000),
-                null,
-                null,
+                MyMaterial.thoriumHydroxide.get(OrePrefixes.dust, 1),
+                WerkstoffLoader.SodiumNitrate.get(OrePrefixes.dust, 4),
                 200,
                 120
         );
 
-        GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[]{
-                        GT_Utility.getIntegratedCircuit(1),
-                },
-                new FluidStack[]{
-                        MyMaterial.thoriumTetrachloride.getFluidOrGas(1000),
-                        Materials.HydrofluoricAcid.getFluid(4000)
-                },
-                new FluidStack[]{
-                        MyMaterial.thoriumTetrafluoride.getFluidOrGas(1000),
-                        Materials.HydrochloricAcid.getFluid(4000)
-                },
+        GT_Values.RA.addChemicalRecipe(
+                MyMaterial.thoriumHydroxide.get(OrePrefixes.dust,1),
+                GT_Utility.getIntegratedCircuit(1),
+                Materials.HydrofluoricAcid.getFluid(4000),
+                MyMaterial.thoriumTetrafluoride.getFluidOrGas(1000),
                 null,
-                240,
-                480
+                null,
+                400,
+                30
+        );
+
+        GT_Values.RA.addChemicalRecipe(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Zinc, 1),
+                GT_Utility.getIntegratedCircuit(1),
+                Materials.Chlorine.getGas(2000),
+                null,
+                MyMaterial.zincChloride.get(OrePrefixes.dust, 3),
+                null,
+                100,
+                30
+        );
+
+        GT_Values.RA.addElectrolyzerRecipe(
+                MyMaterial.zincChloride.get(OrePrefixes.dust, 3),
+                null,
+                null,
+                Materials.Chlorine.getGas(2000),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Zinc, 1),
+                null, null, null, null, null,
+                new int[]{10000},
+                150,
+                120
         );
 
         GT_Values.RA.addBlastRecipe(
-                GT_Utility.getIntegratedCircuit(1),
-                null,
+                MyMaterial.zincChloride.get(OrePrefixes.dust, 1),
+                Materials.Calcium.getDust(3),
                 MyMaterial.thorium232Tetrafluoride.getFluidOrGas(1000),
-                Materials.Fluorine.getGas(4000),
-                WerkstoffLoader.Thorium232.get(OrePrefixes.dust,1),
-                null,
-                100,
+                WerkstoffLoader.CalciumChloride.getFluidOrGas(1000),
+                MyMaterial.zincThoriumAlloy.get(OrePrefixes.ingot, 1),
+                WerkstoffLoader.Fluorspar.get(OrePrefixes.dust, 8),
+                300,
                 120,
-                1200
+                3000
+        );
+
+        GT_Values.RA.addBlastRecipe(
+                MyMaterial.zincThoriumAlloy.get(OrePrefixes.ingot, 1),
+                GT_Utility.getIntegratedCircuit(11),
+                Materials.Argon.getGas(250),
+                Materials.Zinc.getMolten(108),
+                WerkstoffLoader.Thorium232.get(OrePrefixes.dust, 1),
+                null,
+                150,
+                480,
+                1900
         );
 
         GT_Values.RA.addBlastRecipe(
@@ -1473,8 +1468,8 @@ public class RecipeLoader {
                 GT_Utility.getIntegratedCircuit(1),
                 null,
                 MyMaterial.thoriumTetrafluoride.getFluidOrGas(1000),
-                MyMaterial.thorium232Tetrafluoride.getFluidOrGas(250),
-                GT_OreDictUnificator.get(OrePrefixes.dustSmall,Materials.Thorium,3),
+                MyMaterial.thorium232Tetrafluoride.getFluidOrGas(750),
+                GT_OreDictUnificator.get(OrePrefixes.dustSmall,Materials.Thorium,1),
                 null,null,null,null,null,null,
                 100,
                 480
