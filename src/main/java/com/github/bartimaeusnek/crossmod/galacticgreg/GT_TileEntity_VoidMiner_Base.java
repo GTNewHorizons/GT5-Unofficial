@@ -309,16 +309,18 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
             multiplier = TIER_MULTIPLIER;
     }
 
-    private void getDropMapBartworks(ModDimensionDef finalDef, int aID) {
+    private void getDropMapRoss(int aID) {
         Consumer<BW_OreLayer> addToList = makeAddToList();
         if (aID == ConfigHandler.ross128BID)
             BW_WorldGenRoss128b.sList.forEach(addToList);
         else if (aID == ConfigHandler.ross128BAID)
             BW_WorldGenRoss128ba.sList.forEach(addToList);
-        else {
-            addOresVeinsBartworks(finalDef, addToList);
-            addSmallOresBartworks(finalDef);
-        }
+    }
+
+    private void getDropMapBartworks(ModDimensionDef finalDef) {
+        Consumer<BW_OreLayer> addToList = makeAddToList();
+        addOresVeinsBartworks(finalDef, addToList);
+        addSmallOresBartworks(finalDef);
     }
 
     private Consumer<BW_OreLayer> makeAddToList() {
@@ -373,18 +375,17 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
         dropmap.values().forEach(f -> totalWeight += f);
     }
 
-    private void handleDimBasedDrops(ModDimensionDef finalDef, int id) {
-        if (id != ConfigHandler.ross128BID && id != ConfigHandler.ross128BAID)
-            getDropMapSpace(finalDef);
-    }
-
     private void handleModDimDef(int id) {
-        if ((id <= 1 && id >= -1) || id == 7)
+        if ((id <= 1 && id >= -1) || id == 7) {
             getDropMapVanilla();
-        Optional.ofNullable(makeModDimDef()).ifPresent(def -> {
-            handleDimBasedDrops(def, id);
-            getDropMapBartworks(def, id);
-        });
+        } else if (id == ConfigHandler.ross128BID || id == ConfigHandler.ross128BAID) {
+            getDropMapRoss(id);
+        } else {
+            Optional.ofNullable(makeModDimDef()).ifPresent(def -> {
+                getDropMapSpace(def);
+                getDropMapBartworks(def);
+            });
+        }
     }
 
     private void calculateDropMap() {
