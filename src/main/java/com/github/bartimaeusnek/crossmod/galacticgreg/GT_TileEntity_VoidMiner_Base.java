@@ -22,6 +22,8 @@
 
 package com.github.bartimaeusnek.crossmod.galacticgreg;
 
+//import com.github.bartimaeusnek.bartworks.MainMod;
+
 import bloodasp.galacticgreg.GT_Worldgen_GT_Ore_Layer_Space;
 import bloodasp.galacticgreg.GT_Worldgen_GT_Ore_SmallPieces_Space;
 import bloodasp.galacticgreg.GalacticGreg;
@@ -268,12 +270,19 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
     }
 
     private Pair<Integer,Boolean> getOreDamage() {
-        int curentWeight = 0;
+		/*
+		dropmap.values().forEach(f -> {
+			if(f < 1.f)
+				MainMod.LOGGER.info(f);
+		});
+		*/
+		
+        float curentWeight = 0.f;
         while (true) {
-            int randomeint = (Math.abs(XSTR.XSTR_INSTANCE.nextInt((int) Math.ceil(totalWeight))));
+            float randomnumber = XSTR.XSTR_INSTANCE.nextFloat() * totalWeight;
             for (Map.Entry<Pair<Integer,Boolean>, Float> entry : dropmap.entrySet()) {
                 curentWeight += entry.getValue();
-                if (randomeint < curentWeight)
+                if (randomnumber < curentWeight)
                     return entry.getKey();
             }
         }
