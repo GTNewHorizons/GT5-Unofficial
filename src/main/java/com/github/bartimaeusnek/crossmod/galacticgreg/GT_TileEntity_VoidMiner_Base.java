@@ -215,19 +215,26 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
         }
     }
 
+    private void put(Pair<Integer,Boolean> key, float value){
+        if(!dropmap.containsKey(key))
+            dropmap.put(key, value);
+        else
+            dropmap.put(key, dropmap.get(key) + value);
+    }
+
     private void getDropsVanillaVeins(Predicate<GT_Worldgen_GT_Ore_Layer> oreLayerPredicate) {
         GT_Worldgen_GT_Ore_Layer.sList.stream().filter(gt_worldgen -> gt_worldgen.mEnabled && oreLayerPredicate.test(gt_worldgen)).forEach(element -> {
-                    dropmap.put(new Pair<>((int) element.mPrimaryMeta,false), (float) element.mWeight);
-                    dropmap.put(new Pair<>((int) element.mSecondaryMeta,false), (float) element.mWeight);
-                    dropmap.put(new Pair<>((int) element.mSporadicMeta,false), (element.mWeight / 8f));
-                    dropmap.put(new Pair<>((int) element.mBetweenMeta,false), (element.mWeight / 8f));
+                    put(new Pair<>((int) element.mPrimaryMeta,false), (float) element.mWeight);
+                    put(new Pair<>((int) element.mSecondaryMeta,false), (float) element.mWeight);
+                    put(new Pair<>((int) element.mSporadicMeta,false), (element.mWeight / 8f));
+                    put(new Pair<>((int) element.mBetweenMeta,false), (element.mWeight / 8f));
                 }
         );
     }
 
     private void getDropsVanillaSmallOres(Predicate<GT_Worldgen_GT_Ore_SmallPieces> smallOresPredicate) {
         GT_Worldgen_GT_Ore_SmallPieces.sList.stream().filter(gt_worldgen -> gt_worldgen.mEnabled && smallOresPredicate.test(gt_worldgen)).forEach(element ->
-                dropmap.put(new Pair<>((int) element.mMeta,false), (float) element.mAmount)
+                put(new Pair<>((int) element.mMeta,false), (float) element.mAmount)
         );
     }
 
@@ -248,10 +255,10 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
 
         space.forEach(
                 element -> {
-                    dropmap.put(new Pair<>((int) ((GT_Worldgen_GT_Ore_Layer_Space) element).mPrimaryMeta,false), (float) ((GT_Worldgen_GT_Ore_Layer_Space) element).mWeight);
-                    dropmap.put(new Pair<>((int) ((GT_Worldgen_GT_Ore_Layer_Space) element).mSecondaryMeta,false), (float) ((GT_Worldgen_GT_Ore_Layer_Space) element).mWeight);
-                    dropmap.put(new Pair<>((int) ((GT_Worldgen_GT_Ore_Layer_Space) element).mSporadicMeta,false), (((GT_Worldgen_GT_Ore_Layer_Space) element).mWeight / 8f));
-                    dropmap.put(new Pair<>((int) ((GT_Worldgen_GT_Ore_Layer_Space) element).mBetweenMeta,false), (((GT_Worldgen_GT_Ore_Layer_Space) element).mWeight / 8f));
+                    put(new Pair<>((int) ((GT_Worldgen_GT_Ore_Layer_Space) element).mPrimaryMeta,false), (float) ((GT_Worldgen_GT_Ore_Layer_Space) element).mWeight);
+                    put(new Pair<>((int) ((GT_Worldgen_GT_Ore_Layer_Space) element).mSecondaryMeta,false), (float) ((GT_Worldgen_GT_Ore_Layer_Space) element).mWeight);
+                    put(new Pair<>((int) ((GT_Worldgen_GT_Ore_Layer_Space) element).mSporadicMeta,false), (((GT_Worldgen_GT_Ore_Layer_Space) element).mWeight / 8f));
+                    put(new Pair<>((int) ((GT_Worldgen_GT_Ore_Layer_Space) element).mBetweenMeta,false), (((GT_Worldgen_GT_Ore_Layer_Space) element).mWeight / 8f));
                 }
         );
     }
@@ -263,7 +270,7 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
 
         space.forEach(
                 element ->
-                        dropmap.put(new Pair<>((int) ((GT_Worldgen_GT_Ore_SmallPieces_Space) element).mMeta,false), (float) ((GT_Worldgen_GT_Ore_SmallPieces_Space) element).mAmount)
+                        put(new Pair<>((int) ((GT_Worldgen_GT_Ore_SmallPieces_Space) element).mMeta,false), (float) ((GT_Worldgen_GT_Ore_SmallPieces_Space) element).mAmount)
         );
     }
 
@@ -311,10 +318,10 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
 
     private void getDropMapRoss(int aID) {
         Consumer<BW_OreLayer> addToList = makeAddToList();
-        if (aID == ConfigHandler.ross128BID)
-            BW_WorldGenRoss128b.sList.forEach(addToList);
-        else if (aID == ConfigHandler.ross128BAID)
-            BW_WorldGenRoss128ba.sList.forEach(addToList);
+        BW_OreLayer.sList.stream()
+                .filter(gt_worldgen -> gt_worldgen.mEnabled && gt_worldgen instanceof BW_OreLayer && gt_worldgen.isGenerationAllowed(null, aID, 0))
+                .collect(Collectors.toSet())
+                .forEach(addToList);
     }
 
     private void getDropMapBartworks(ModDimensionDef finalDef) {
@@ -327,10 +334,10 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
         return element -> {
             List<Pair<Integer,Boolean>> data = element.getStacksRawData();
             for (int i = 0; i < data.size(); i++) {
-                if (i < data.size()-1)
-                    dropmap.put(data.get(i), (float) element.mWeight);
+                if (i < data.size()-2)
+                    put(data.get(i), (float) element.mWeight);
                 else
-                    dropmap.put(data.get(i), (element.mWeight/8f));
+                    put(data.get(i), (element.mWeight/8f));
             }
         };
     }
@@ -361,13 +368,13 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
 
             space.forEach(
                     element ->
-                            dropmap.put(new Pair<>(((BW_Worldgen_Ore_SmallOre_Space) element).mPrimaryMeta, ((BW_Worldgen_Ore_SmallOre_Space) element).bwOres != 0), (float) ((BW_Worldgen_Ore_SmallOre_Space) element).mDensity)
+                            put(new Pair<>(((BW_Worldgen_Ore_SmallOre_Space) element).mPrimaryMeta, ((BW_Worldgen_Ore_SmallOre_Space) element).bwOres != 0), (float) ((BW_Worldgen_Ore_SmallOre_Space) element).mDensity)
             );
         } catch (NullPointerException ignored) {}
     }
 
     private void handleExtraDrops(int id) {
-        Optional.ofNullable(getExtraDropsDimMap().get(id)).ifPresent(e -> e.forEach(f -> dropmap.put(f.getKey(), f.getValue())));
+        Optional.ofNullable(getExtraDropsDimMap().get(id)).ifPresent(e -> e.forEach(f -> put(f.getKey(), f.getValue())));
     }
 
     private void calculateTotalWeight() {
