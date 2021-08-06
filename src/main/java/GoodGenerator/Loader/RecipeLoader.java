@@ -183,7 +183,7 @@ public class RecipeLoader {
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[]{
                         MyMaterial.plutoniumOxideUraniumMixture.get(OrePrefixes.dust,8),
-                        GT_OreDictUnificator.get(OrePrefixes.foil,Materials.HSSS,16),
+                        GT_OreDictUnificator.get(OrePrefixes.foil,Materials.HSSS,4),
                         GT_Utility.getIntegratedCircuit(1)
                 },
                 null,
@@ -265,7 +265,7 @@ public class RecipeLoader {
                 },
                 new FluidStack[]{
                         Materials.HydrofluoricAcid.getFluid(100),
-                        FluidRegistry.getFluidStack("nitricacid", 4000)
+                        FluidRegistry.getFluidStack("nitricacid", 8000)
                 },
                 new FluidStack[]{
                         MyMaterial.thoriumNitrate.getFluidOrGas(1000),
@@ -327,7 +327,7 @@ public class RecipeLoader {
                 MyMaterial.thorium232Tetrafluoride.getFluidOrGas(1000),
                 WerkstoffLoader.CalciumChloride.getFluidOrGas(1000),
                 MyMaterial.zincThoriumAlloy.get(OrePrefixes.ingot, 1),
-                WerkstoffLoader.Fluorspar.get(OrePrefixes.dust, 8),
+                WerkstoffLoader.Fluorspar.get(OrePrefixes.dust, 5),
                 300,
                 120,
                 3000
@@ -337,7 +337,7 @@ public class RecipeLoader {
                 MyMaterial.zincThoriumAlloy.get(OrePrefixes.ingot, 1),
                 GT_Utility.getIntegratedCircuit(11),
                 Materials.Argon.getGas(250),
-                Materials.Zinc.getMolten(108),
+                Materials.Zinc.getMolten(36),
                 WerkstoffLoader.Thorium232.get(OrePrefixes.dust, 1),
                 null,
                 150,
@@ -1443,10 +1443,10 @@ public class RecipeLoader {
                 GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Lutetium,64),
                 GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Lutetium,48),
                 GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Lutetium,32),
-                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Praseodymium,1),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Praseodymium,64),
                 GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Boron,2),
                 GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Indium,4),
-                new int[]{9000,7000,1500,800,3000,5000},
+                new int[]{9000,7000,1500,10000,3000,5000},
                 1500,
                 1040
         );
