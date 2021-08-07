@@ -140,7 +140,7 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
     @Override
     protected boolean workingAtBottom(ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe, int yHead, int oldYHead) {
         makeDropMap();
-        if(dropmap.size() > 0){
+        if(totalWeight != 0.f){
             handleFluidConsumption();
             handleOutputs();
             return true;
