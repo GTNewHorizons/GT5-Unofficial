@@ -206,6 +206,7 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_MultiblockBas
                 .addInfo("The structure is too complex!")
                 .addInfo("Follow the" + EnumChatFormatting.DARK_BLUE + " Tec" + EnumChatFormatting.BLUE + "Tech" + EnumChatFormatting.GRAY + " blueprint to build the main structure.")
                 .addSeparator()
+                .beginStructureBlock(5, 4, 9, false)
                 .addMaintenanceHatch("Hint block with dot 1")
                 .addMufflerHatch("Hint block with dot 2")
                 .addInputHatch("Hint block with dot 3")

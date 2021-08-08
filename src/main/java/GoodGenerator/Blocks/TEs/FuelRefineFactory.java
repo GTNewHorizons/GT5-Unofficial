@@ -175,6 +175,7 @@ public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM imple
                 .addInfo("The structure is too complex!")
                 .addInfo("Follow the" + EnumChatFormatting.DARK_BLUE + " Tec" + EnumChatFormatting.BLUE + "Tech" + EnumChatFormatting.GRAY + " blueprint to build the main structure.")
                 .addSeparator()
+                .beginStructureBlock(3, 15, 15, false)
                 .addInputHatch("The casings adjoin the field restriction glass.")
                 .addInputBus("The casings adjoin the field restriction glass.")
                 .addOutputHatch("The casings adjoin the field restriction glass.")
