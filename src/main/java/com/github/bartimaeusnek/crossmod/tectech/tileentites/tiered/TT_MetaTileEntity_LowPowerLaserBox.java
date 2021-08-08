@@ -28,6 +28,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.util.GT_Utility;
 
 public class TT_MetaTileEntity_LowPowerLaserBox extends TT_Abstract_LowPowerLaserThingy {
 
@@ -145,6 +146,9 @@ public class TT_MetaTileEntity_LowPowerLaserBox extends TT_Abstract_LowPowerLase
 
     @Override
     public String[] getDescription() {
-        return new String[]{"Like a Tranformer... but for LAZORZ", "Transferrate: " + ChatColorHelper.YELLOW + this.getTotalPower() + ChatColorHelper.WHITE + " EU/t", BW_Tooltip_Reference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get()};
+        return new String[]{
+                "Like a Tranformer... but for LAZORZ",
+                "Transfer rate: " + ChatColorHelper.YELLOW + GT_Utility.formatNumbers(this.getTotalPower()) + ChatColorHelper.WHITE + " EU/t",
+                BW_Tooltip_Reference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get()};
     }
 }
