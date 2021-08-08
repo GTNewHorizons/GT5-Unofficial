@@ -111,7 +111,8 @@ public class GT_MetaTileEntity_Hatch_DynamoTunnel extends GT_MetaTileEntity_Hatc
         return new String[]{
                 CommonValues.TEC_MARK_GENERAL,
                 mDescription,//TODO NOT PASS DESCRIPTION
-                translateToLocal("gt.blockmachines.hatch.dynamotunnel.desc.1") + ": " + EnumChatFormatting.YELLOW + (Amperes * maxEUOutput()) + EnumChatFormatting.RESET + " EU/t"//Throughput
+                translateToLocal("gt.blockmachines.hatch.dynamotunnel.desc.1") + ": "
+                        + EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(Amperes * maxEUOutput()) + EnumChatFormatting.RESET + " EU/t"//Throughput
         };
     }
 

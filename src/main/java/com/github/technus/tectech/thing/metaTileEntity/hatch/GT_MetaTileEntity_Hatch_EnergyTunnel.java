@@ -6,6 +6,7 @@ import com.github.technus.tectech.mechanics.pipe.IConnectsToEnergyTunnel;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -108,7 +109,8 @@ public class GT_MetaTileEntity_Hatch_EnergyTunnel extends GT_MetaTileEntity_Hatc
         return new String[]{
                 CommonValues.TEC_MARK_GENERAL,
                 mDescription,
-                translateToLocal("gt.blockmachines.hatch.energytunnel.desc.1") + ": " + EnumChatFormatting.YELLOW + (Amperes * maxEUInput()) + EnumChatFormatting.RESET + " EU/t"//Throughput
+                translateToLocal("gt.blockmachines.hatch.energytunnel.desc.1") + ": "
+                        + EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(Amperes * maxEUInput()) + EnumChatFormatting.RESET + " EU/t"//Throughput
         };
     }
 
