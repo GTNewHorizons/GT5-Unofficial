@@ -45,6 +45,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
 public class GT_TileEntity_MegaDistillTower extends GT_MetaTileEntity_DistillationTower {
@@ -219,7 +220,7 @@ public class GT_TileEntity_MegaDistillTower extends GT_MetaTileEntity_Distillati
         }
 
         long tVoltage = this.getMaxInputVoltage();
-        byte tTier = (byte) Math.max(0, GT_Utility.getTier(tVoltage));
+        byte tTier = (byte) Math.max(0, Math.min(GT_Utility.getTier(tVoltage), V.length - 1));
 
         long nominalV = BW_Util.getnominalVoltage(this);
         FluidStack[] tFluids = tFluidList.toArray(new FluidStack[0]);
