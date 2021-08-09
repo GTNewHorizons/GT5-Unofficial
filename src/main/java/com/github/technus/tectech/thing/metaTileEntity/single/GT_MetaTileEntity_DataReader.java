@@ -272,11 +272,11 @@ public class GT_MetaTileEntity_DataReader extends GT_MetaTileEntity_BasicMachine
                 int time=itemStack.stackTagCompound.getInteger("time");
                 int EUt=itemStack.stackTagCompound.getInteger("eu");
                 font.drawString("Assembly Line Recipe", 7, 8, 0x80a0ff);
-                font.drawString(GT_Utility.trans("152","Total: ") + ((long)time * EUt) + " EU",7,93, 0x80a0ff);
-                font.drawString(GT_Utility.trans("153","Usage: ") + EUt + " EU/t",7,103, 0x80a0ff);
-                font.drawString(GT_Utility.trans("154","Voltage: ") + EUt + " EU",7,113, 0x80a0ff);
+                font.drawString(GT_Utility.trans("152","Total: ") + GT_Utility.formatNumbers((long)time * EUt) + " EU",7,93, 0x80a0ff);
+                font.drawString(GT_Utility.trans("153","Usage: ") + GT_Utility.formatNumbers(EUt) + " EU/t",7,103, 0x80a0ff);
+                font.drawString(GT_Utility.trans("154","Voltage: ") + GT_Utility.formatNumbers(EUt) + " EU",7,113, 0x80a0ff);
                 font.drawString(GT_Utility.trans("155","Amperage: ") + 1 ,7,123, 0x80a0ff);
-                font.drawString( GT_Utility.trans("158","Time: ")+String.format("%.2f " + GT_Utility.trans("161"," secs"), 0.05F * time), 7,133, 0x80a0ff);
+                font.drawString( GT_Utility.trans("158","Time: ") + GT_Utility.formatNumbers(0.05d * time) + GT_Utility.trans("161"," secs"), 7,133, 0x80a0ff);
 
                 for(Map.Entry<GT_Slot_Holo,ItemStack> entry:slots.entrySet()){
                     gui.renderItemSimple(entry.getKey(),entry.getValue());
