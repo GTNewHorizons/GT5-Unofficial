@@ -911,6 +911,10 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addBrewingRecipe(GT_ModHandler.getModItem(GT_MachineRecipeLoader.aTextForestry, "mulch", 16L, 0), GT_ModHandler.getDistilledWater(750L).getFluid(), FluidRegistry.getFluid("biomass"), false);
         GT_Values.RA.addBrewingRecipeCustom(GT_ModHandler.getModItem(GT_MachineRecipeLoader.aTextForestry, "mulch", 8L, 0), FluidRegistry.getFluidStack("juice", 500), FluidRegistry.getFluidStack("biomass", 750), 128, 4, false);
 
+        GT_Values.RA.addBrewingRecipeCustom(GT_ModHandler.getModItem("miscutils", "blockRainforestOakSapling", 1L, 0), FluidRegistry.getFluidStack("water", 100), FluidRegistry.getFluidStack("biomass", 100), 1200, 3, false);
+        GT_Values.RA.addBrewingRecipeCustom(GT_ModHandler.getModItem("miscutils", "blockRainforestOakSapling", 1L, 0), FluidRegistry.getFluidStack("juice", 100), FluidRegistry.getFluidStack("biomass", 150), 1200, 3, false);
+        GT_Values.RA.addBrewingRecipeCustom(GT_ModHandler.getModItem("miscutils", "blockRainforestOakSapling", 1L, 0), FluidRegistry.getFluidStack("honey", 100), FluidRegistry.getFluidStack("biomass", 150), 1200, 3, false);
+
         GT_Values.RA.addBrewingRecipe(GT_ModHandler.getIC2Item("biochaff", 1), FluidRegistry.WATER, FluidRegistry.getFluid("ic2biomass"), false);
         GT_Values.RA.addBrewingRecipe(GT_ModHandler.getIC2Item("biochaff", 1), GT_ModHandler.getDistilledWater(750L).getFluid(), FluidRegistry.getFluid("ic2biomass"), false);
 
