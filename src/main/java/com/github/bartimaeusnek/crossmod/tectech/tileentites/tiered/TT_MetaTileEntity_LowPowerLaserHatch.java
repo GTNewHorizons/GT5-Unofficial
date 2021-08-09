@@ -27,6 +27,7 @@ import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_H
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.util.GT_Utility;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
@@ -45,7 +46,8 @@ public class TT_MetaTileEntity_LowPowerLaserHatch extends GT_MetaTileEntity_Hatc
     public String[] getDescription() {
         return new String[]{
                 this.mDescription,
-                StatCollector.translateToLocal("gt.blockmachines.hatch.energytunnel.desc.1") + ": " + EnumChatFormatting.YELLOW + this.getTotalPower() + EnumChatFormatting.RESET + " EU/t",
+                StatCollector.translateToLocal("gt.blockmachines.hatch.energytunnel.desc.1") + ": "
+                        + EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(this.getTotalPower()) + EnumChatFormatting.RESET + " EU/t",
                 BW_Tooltip_Reference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get()
         };
     }

@@ -106,7 +106,7 @@ public class GT_Industrial_Alchemic_Construct extends GT_MetaTileEntity_MultiBlo
         ItemStack outputItems = null;
 
         long tVoltage = this.getMaxInputVoltage();
-        byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
+        byte tTier = (byte) Math.max(1, Math.min(GT_Utility.getTier(tVoltage), V.length - 1));
         GT_Recipe tRecipe = TCRecipeHandler.alchemicalConstructHandler.findRecipe(this.getBaseMetaTileEntity(),null,false, false, V[tTier], null, stack, tInputs);
         ItemStack helper = (ItemStack) tRecipe.mSpecialItems;
         NBTTagCompound tagCompound = helper.getTagCompound();

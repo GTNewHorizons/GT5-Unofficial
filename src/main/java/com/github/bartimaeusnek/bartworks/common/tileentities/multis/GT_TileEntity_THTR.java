@@ -307,11 +307,11 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_MultiBlockBase {
     @Override
     public String[] getInfoData() {
         return new String[]{
-                "Progress:", this.mProgresstime / 20 + "secs", this.mMaxProgresstime / 20 + "secs",
-                "BISO-Pebbles:", this.BISOPeletSupply + "pcs.",
-                "TRISO-Pebbles:", this.TRISOPeletSupply + "pcs.",
-                "Helium-Level:", this.HeliumSupply+"L / "+ GT_TileEntity_THTR.HELIUM_NEEDED +"L",
-                "Coolant/t:", this.savedBISO+this.savedTRISO >= 100000 ? (long) ((0.00711111111111111111111111111111D * (double) this.savedTRISO + 0.00474074074074074074074074074074D * (double) this.savedBISO))+"L/t" : "0L/t",
+                "Progress:", GT_Utility.formatNumbers(this.mProgresstime / 20) + "secs", GT_Utility.formatNumbers(this.mMaxProgresstime / 20) + "secs",
+                "BISO-Pebbles:", GT_Utility.formatNumbers(this.BISOPeletSupply) + "pcs.",
+                "TRISO-Pebbles:", GT_Utility.formatNumbers(this.TRISOPeletSupply) + "pcs.",
+                "Helium-Level:", GT_Utility.formatNumbers(this.HeliumSupply) + "L / " + GT_Utility.formatNumbers(GT_TileEntity_THTR.HELIUM_NEEDED) + "L",
+                "Coolant/t:", GT_Utility.formatNumbers(this.savedBISO+this.savedTRISO >= 100000 ? (long) ((0.00711111111111111111111111111111D * (double) this.savedTRISO + 0.00474074074074074074074074074074D * (double) this.savedBISO)) : 0) + "L/t",
                 "Problems:", String.valueOf(this.getIdealStatus() - this.getRepairStatus())
         };
     }

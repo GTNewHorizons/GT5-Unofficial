@@ -250,9 +250,24 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch {
     @Override
     public String[] getInfoData() {
         if (GT_MetaTileEntity_RadioHatch.calcDecayTicks(this.sievert) != 0)
-            return new String[]{StatCollector.translateToLocal("tooltip.tile.radhatch.2.name") + " " + this.material, StatCollector.translateToLocal("tooltip.tile.radhatch.3.name") + " " + this.sievert, StatCollector.translateToLocal("tooltip.tile.radhatch.4.name") + " " + this.mass, StatCollector.translateToLocal("tooltip.tile.radhatch.5.name") + " " + +((GT_MetaTileEntity_RadioHatch.calcDecayTicks(this.sievert)) - this.timer % (GT_MetaTileEntity_RadioHatch.calcDecayTicks(this.sievert) * 60)) + StatCollector.translateToLocal("tooltip.tile.radhatch.6.name") + "/" + ((GT_MetaTileEntity_RadioHatch.calcDecayTicks(this.sievert)) - this.timer % (GT_MetaTileEntity_RadioHatch.calcDecayTicks(this.sievert))) / 20 + StatCollector.translateToLocal("tooltip.tile.radhatch.7.name") + "/" + ((GT_MetaTileEntity_RadioHatch.calcDecayTicks(this.sievert)) - this.timer % (GT_MetaTileEntity_RadioHatch.calcDecayTicks(this.sievert))) / 20 / 60 + StatCollector.translateToLocal("tooltip.tile.radhatch.8.name") + "/" + ((GT_MetaTileEntity_RadioHatch.calcDecayTicks(this.sievert)) - this.timer % (GT_MetaTileEntity_RadioHatch.calcDecayTicks(this.sievert))) / 20 / 60 / 60 + StatCollector.translateToLocal("tooltip.tile.radhatch.9.name")};
+            return new String[]{
+                    StatCollector.translateToLocal("tooltip.tile.radhatch.2.name") + " " + this.material,
+                    StatCollector.translateToLocal("tooltip.tile.radhatch.3.name") + " " + this.sievert,
+                    StatCollector.translateToLocal("tooltip.tile.radhatch.4.name") + " " + this.mass,
+                    StatCollector.translateToLocal("tooltip.tile.radhatch.5.name") + " " +
+                            ((GT_MetaTileEntity_RadioHatch.calcDecayTicks(this.sievert)) - this.timer % (GT_MetaTileEntity_RadioHatch.calcDecayTicks(this.sievert) * 60)) +
+                            StatCollector.translateToLocal("tooltip.tile.radhatch.6.name") + "/" +
+                            ((GT_MetaTileEntity_RadioHatch.calcDecayTicks(this.sievert)) - this.timer % (GT_MetaTileEntity_RadioHatch.calcDecayTicks(this.sievert))) / 20 +
+                            StatCollector.translateToLocal("tooltip.tile.radhatch.7.name") + "/" +
+                            ((GT_MetaTileEntity_RadioHatch.calcDecayTicks(this.sievert)) - this.timer % (GT_MetaTileEntity_RadioHatch.calcDecayTicks(this.sievert))) / 20 / 60 +
+                            StatCollector.translateToLocal("tooltip.tile.radhatch.8.name") + "/" +
+                            ((GT_MetaTileEntity_RadioHatch.calcDecayTicks(this.sievert)) - this.timer % (GT_MetaTileEntity_RadioHatch.calcDecayTicks(this.sievert))) / 20 / 60 / 60 +
+                            StatCollector.translateToLocal("tooltip.tile.radhatch.9.name")};
         else
-            return new String[]{StatCollector.translateToLocal("tooltip.tile.radhatch.2.name") + " " + StatCollector.translateToLocal("tooltip.bw.empty.name"), StatCollector.translateToLocal("tooltip.tile.radhatch.3.name") + " " + "0", StatCollector.translateToLocal("tooltip.tile.radhatch.4.name") + " " + "0"};
+            return new String[]{
+                    StatCollector.translateToLocal("tooltip.tile.radhatch.2.name") + " " + StatCollector.translateToLocal("tooltip.bw.empty.name"),
+                    StatCollector.translateToLocal("tooltip.tile.radhatch.3.name") + " " + "0",
+                    StatCollector.translateToLocal("tooltip.tile.radhatch.4.name") + " " + "0"};
     }
 
     public boolean isSimpleMachine() {

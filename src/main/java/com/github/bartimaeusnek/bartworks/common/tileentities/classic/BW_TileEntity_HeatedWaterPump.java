@@ -28,6 +28,7 @@ import com.github.bartimaeusnek.bartworks.API.ITileHasDifferentTextureSides;
 import com.github.bartimaeusnek.bartworks.API.ITileWithGUI;
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
+import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Pollution;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -328,7 +329,10 @@ public class BW_TileEntity_HeatedWaterPump extends TileEntity implements ITileDr
 
     @Override
     public String[] getInfoData() {
-        return new String[]{StatCollector.translateToLocal("tooltip.tile.waterpump.0.name") + " " + ConfigHandler.mbWaterperSec + StatCollector.translateToLocal("tooltip.tile.waterpump.1.name"), StatCollector.translateToLocal("tooltip.tile.waterpump.2.name")};
+        return new String[]{
+                StatCollector.translateToLocal("tooltip.tile.waterpump.0.name") + " " +
+                        GT_Utility.formatNumbers(ConfigHandler.mbWaterperSec) + StatCollector.translateToLocal("tooltip.tile.waterpump.1.name"),
+                StatCollector.translateToLocal("tooltip.tile.waterpump.2.name")};
     }
 
     @Override

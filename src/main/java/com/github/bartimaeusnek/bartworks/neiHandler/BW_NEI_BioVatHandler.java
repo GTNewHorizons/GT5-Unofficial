@@ -63,11 +63,11 @@ public class BW_NEI_BioVatHandler extends GT_NEI_DefaultHandler {
         int tSpecial;
         if (recipeDesc == null) {
             if (tEUt != 0) {
-                GT_NEI_DefaultHandler.drawText(10, lines[0], this.trans("152", "Total: ") + (long) tDuration * (long) tEUt + " EU", -16777216);
-                GT_NEI_DefaultHandler.drawText(10, lines[1], this.trans("153", "Usage: ") + tEUt + " EU/t", -16777216);
+                GT_NEI_DefaultHandler.drawText(10, lines[0], this.trans("152", "Total: ") + GT_Utility.formatNumbers((long) tDuration * (long) tEUt) + " EU", -16777216);
+                GT_NEI_DefaultHandler.drawText(10, lines[1], this.trans("153", "Usage: ") + GT_Utility.formatNumbers(tEUt) + " EU/t", -16777216);
                 if (this.mRecipeMap.mShowVoltageAmperageInNEI) {
-                    GT_NEI_DefaultHandler.drawText(10, lines[2], this.trans("154", "Voltage: ") + tEUt / this.mRecipeMap.mAmperage + " EU", -16777216);
-                    GT_NEI_DefaultHandler.drawText(10, lines[3], this.trans("155", "Amperage: ") + this.mRecipeMap.mAmperage, -16777216);
+                    GT_NEI_DefaultHandler.drawText(10, lines[2], this.trans("154", "Voltage: ") + GT_Utility.formatNumbers(tEUt / this.mRecipeMap.mAmperage) + " EU", -16777216);
+                    GT_NEI_DefaultHandler.drawText(10, lines[3], this.trans("155", "Amperage: ") + GT_Utility.formatNumbers(this.mRecipeMap.mAmperage), -16777216);
                 } else {
                     GT_NEI_DefaultHandler.drawText(10, lines[2], this.trans("156", "Voltage: unspecified"), -16777216);
                     GT_NEI_DefaultHandler.drawText(10, lines[3], this.trans("157", "Amperage: unspecified"), -16777216);
@@ -76,7 +76,7 @@ public class BW_NEI_BioVatHandler extends GT_NEI_DefaultHandler {
 
 
             if (tDuration > 0) {
-                GT_NEI_DefaultHandler.drawText(10, lines[4], this.trans("158", "Time: ") + String.format("%.2f " + this.trans("161", " secs"), 0.05F * (float) tDuration), -16777216);
+                GT_NEI_DefaultHandler.drawText(10, lines[4], this.trans("158", "Time: ") + GT_Utility.formatNumbers(0.05d * tDuration) + this.trans("161", " secs"), -16777216);
             }
 
             tSpecial = ((GT_NEI_DefaultHandler.CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mSpecialValue;
