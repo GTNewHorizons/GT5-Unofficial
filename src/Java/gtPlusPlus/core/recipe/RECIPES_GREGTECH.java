@@ -860,7 +860,10 @@ public class RECIPES_GREGTECH {
 
 	private static void breweryRecipes() {
 		CORE.RA.addBrewingRecipe(14, EnchantingUtils.getMobEssence(100), EnchantingUtils.getLiquidXP(1332), 100, 120, false);
-		CORE.RA.addBrewingRecipe(14, EnchantingUtils.getLiquidXP(1332), EnchantingUtils.getMobEssence(100), 100, 120, false);		
+		CORE.RA.addBrewingRecipe(14, EnchantingUtils.getLiquidXP(1332), EnchantingUtils.getMobEssence(100), 100, 120, false);
+		CORE.RA.addBrewingRecipe(ItemUtils.getSimpleStack(BOP_Block_Registrator.sapling_Rainforest), FluidUtils.getFluidStack("water", 100), FluidUtils.getFluidStack("biomass", 100), 1200, 3, false);
+		CORE.RA.addBrewingRecipe(ItemUtils.getSimpleStack(BOP_Block_Registrator.sapling_Rainforest), FluidUtils.getFluidStack("honey", 100), FluidUtils.getFluidStack("biomass", 150), 1200, 3, false);
+		CORE.RA.addBrewingRecipe(ItemUtils.getSimpleStack(BOP_Block_Registrator.sapling_Rainforest), FluidUtils.getFluidStack("juice", 100), FluidUtils.getFluidStack("biomass", 150), 1200, 3, false);
 	}
 
 	private static void cuttingSawRecipes() {
