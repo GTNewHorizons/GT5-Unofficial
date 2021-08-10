@@ -782,8 +782,8 @@ public class RecipeLoader {
                         MyMaterial.naquadahEmulsion.getFluidOrGas(1000),
                 },
                 new ItemStack[]{
-                        GT_OreDictUnificator.get(OrePrefixes.dust,Materials.AntimonyTrioxide,1),
-                        WerkstoffLoader.Fluorspar.get(OrePrefixes.dust,6)
+                        GT_OreDictUnificator.get(OrePrefixes.dustSmall,Materials.AntimonyTrioxide,1),
+                        WerkstoffLoader.Fluorspar.get(OrePrefixes.dust,4)
                 },
                 240,
                 30
