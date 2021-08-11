@@ -70,6 +70,9 @@ public class ConfigHandler {
 
     public static byte maxTierRoss;
 
+    public static boolean disableBoltedBlocksCasing = false;
+    public static boolean disableReboltedBlocksCasing = false;
+
     private static final int[][] METAFORTIERS_ENERGY = {
             {100, 101, 102, 105},
             {1110, 1115, 1120, 1127},
@@ -122,6 +125,8 @@ public class ConfigHandler {
         ConfigHandler.cutoffTier = ConfigHandler.c.get("System", "Tier to nerf circuits", 5, "This switch sets the lowest unnerfed Circuit Recipe Tier. -1 to disable it completely.",-1, VOLTAGE_NAMES.length).getInt(5);
         ConfigHandler.cutoffTier = (ConfigHandler.cutoffTier == -1 ? VOLTAGE_NAMES.length : ConfigHandler.cutoffTier);
         ConfigHandler.disableExtraGassesForEBF = ConfigHandler.c.get("System", "Disable Extra Gases for EBF", false, "This switch disables extra gas recipes for the EBF, i.e. Xenon instead of Nitrogen").getBoolean(false);
+        ConfigHandler.disableBoltedBlocksCasing = ConfigHandler.c.get("System", "Disable Bolted Casings", false, "This switch disable the generation of bolted casings").getBoolean(false);
+        ConfigHandler.disableReboltedBlocksCasing = ConfigHandler.c.get("System", "Disable Rebolted Casings", false, "This switch disable the generation of rebolted casings").getBoolean(false);
 
         ConfigHandler.mbWaterperSec = ConfigHandler.c.get("Singleblocks", "mL Water per Sec for the StirlingPump", 150).getInt(150);
 
