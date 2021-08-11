@@ -225,7 +225,7 @@ public class MyMaterial implements Runnable {
 
     public static final Werkstoff thoriumTetrachloride = new Werkstoff(
             new short[]{0x13,0x7c,0x16},
-            "thorium Tetrachloride",
+            "Thorium Tetrachloride",
             subscriptNumbers("ThCl4"),
             new Werkstoff.Stats(),
             Werkstoff.Types.COMPOUND,
@@ -257,10 +257,10 @@ public class MyMaterial implements Runnable {
             new Pair<> (Fluorine,4)
     );
 
-    //Atomic Separation Catalyst
+    //Naquadria Catalyst
     public static final Werkstoff atomicSeparationCatalyst = new Werkstoff(
             new short[]{0xe8,0x5e,0x0c},
-            "Atomic Separation Catalyst",
+            "Naquadria Catalyst",
             "the melting core...",
             new Werkstoff.Stats().setMeltingPoint(5000).setBlastFurnace(true),
             Werkstoff.Types.COMPOUND,
@@ -338,7 +338,7 @@ public class MyMaterial implements Runnable {
 
     public static final Werkstoff ether = new Werkstoff(
             new short[]{0xeb,0xbc,0x2f},
-            "Ether",
+            "Diethyl Ether",
             subscriptNumbers("CH3CH2OCH2CH3"),
             new Werkstoff.Stats(),
             Werkstoff.Types.COMPOUND,
