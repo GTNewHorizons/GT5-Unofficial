@@ -88,7 +88,7 @@ public class BW_MetaGeneratedBlocks_Casing extends BW_MetaGenerated_Blocks imple
     protected void doRegistrationStuff(Werkstoff tMaterial) {
         GregTech_API.registerMachineBlock(this, -1);
         if (tMaterial == null) return;
-        if (tMaterial.hasItemType(OrePrefixes.plate) && tMaterial.hasItemType(OrePrefixes.gearGtSmall)) {
+        if ((tMaterial.doesOreDictedItemExists(OrePrefixes.plate) && tMaterial.doesOreDictedItemExists(OrePrefixes.gearGtSmall)) || (tMaterial.hasItemType(OrePrefixes.plate) && tMaterial.hasItemType(OrePrefixes.gearGtSmall))) {
             Optional.of(tMaterial)
                     .ifPresent(pMaterial ->
                             GT_LanguageManager.addStringLocalization(
