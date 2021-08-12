@@ -427,6 +427,12 @@ public class Recipes {
 				'L', OrePrefixes.block.get(Materials.Lapis)
 		};
 		GT_ModHandler.addCraftingRecipe(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 0), lcBase_recipe);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[] {
+            GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Tantalum, 4),
+            GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 2),
+            GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.TungstenSteel, 2),
+            GT_OreDictUnificator.get(OrePrefixes.block, Materials.Lapis, 1)
+        }, null, new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 0), 100, 480);
 		
 		// Empty Capacitor
 		final Object[] lcEmpty_recipe = {
