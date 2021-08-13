@@ -141,7 +141,7 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_MetaTileEntity_ElectricBl
                 .addPollutionAmount(20 * getPollutionPerTick(null))
                 .addSeparator()
                 .beginStructureBlock(15, 20, 15, true)
-                .addController("Front bottom")
+                .addController("3rd layer center")
                 .addCasingInfo("Heat Proof Machine Casing", 0)
                 .addOtherStructurePart("Heating Coils", "Inner 13x18x13 (Hollow)")
                 .addOtherStructurePart("Borosilicate Glass", "Outer 15x18x15")
