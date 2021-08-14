@@ -101,8 +101,12 @@ repositories {
 		url = "http://maven.ic2.player.to/"
 	}
     ivy {
+        name = 'gtnh_download_source_stupid_underscore_typo'
+        artifactPattern("http://downloads.gtnewhorizons.com/Mods_for_Jenkins/[module]_[revision].[ext]")
+    }
+    ivy {
         name = 'gtnh_download_source'
-        artifactPattern("http://downloads.gtnewhorizons.com/Mods_for_Jenkins/[organisation]/[module]/[revision]/[module]-[revision].[ext]")
+        artifactPattern("http://downloads.gtnewhorizons.com/Mods_for_Jenkins/[module]-[revision].[ext]")
     }
     maven {
         url = "https://jitpack.io"
@@ -172,7 +176,11 @@ dependencies {
 	
 	compile "cofh:CoFHCore:1.7.10R3.0.4:dev"
 	compile "cofh:CoFHLib:1.7.10R3.0.3:dev"
-	compileOnly "net.sengir.forestry:forestry_1.7.10:4.2.16.64:dev"		
+
+    // Forestry .jar from repository is obfuscated and won't compile, so use local unobfuscated one.
+    //compileOnly "net.sengir.forestry:forestry_1.7.10:4.4.0.0:dev"
+    compileOnly files('libs/forestry_1.7.10-4.4.0.0-dev.jar')
+
 	compileOnly "mods.railcraft:Railcraft_1.7.10:9.12.3.0:dev"
     compileOnly files('libs/StevesCarts2.0.0.b18-deobf.jar')
     
