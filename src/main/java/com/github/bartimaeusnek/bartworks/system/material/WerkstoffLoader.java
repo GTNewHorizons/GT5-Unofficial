@@ -27,6 +27,7 @@ import com.github.bartimaeusnek.bartworks.API.SideReference;
 import com.github.bartimaeusnek.bartworks.API.WerkstoffAdderRegistry;
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.client.renderer.BW_Renderer_Block_Ores;
+import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.system.material.CircuitGeneration.BW_CircuitsLoader;
 import com.github.bartimaeusnek.bartworks.system.material.GT_Enhancement.GTMetaItemEnhancer;
 import com.github.bartimaeusnek.bartworks.system.material.processingLoaders.AdditionalRecipes;
@@ -1729,8 +1730,10 @@ public class WerkstoffLoader {
         GameRegistry.registerBlock(WerkstoffLoader.BWOres, BW_MetaGeneratedBlock_Item.class, "bw.blockores.01");
         GameRegistry.registerBlock(WerkstoffLoader.BWSmallOres, BW_MetaGeneratedBlock_Item.class, "bw.blockores.02");
         GameRegistry.registerBlock(WerkstoffLoader.BWBlocks, BW_MetaGeneratedBlock_Item.class, "bw.werkstoffblocks.01");
-        GameRegistry.registerBlock(WerkstoffLoader.BWBlockCasings, BW_MetaGeneratedBlock_Item.class, "bw.werkstoffblockscasing.01");
-        GameRegistry.registerBlock(WerkstoffLoader.BWBlockCasingsAdvanced, BW_MetaGeneratedBlock_Item.class, "bw.werkstoffblockscasingadvanced.01");
+        if (!ConfigHandler.disableBoltedBlocksCasing)
+            GameRegistry.registerBlock(WerkstoffLoader.BWBlockCasings, BW_MetaGeneratedBlock_Item.class, "bw.werkstoffblockscasing.01");
+        if (!ConfigHandler.disableReboltedBlocksCasing)
+            GameRegistry.registerBlock(WerkstoffLoader.BWBlockCasingsAdvanced, BW_MetaGeneratedBlock_Item.class, "bw.werkstoffblockscasingadvanced.01");
 
         GTMetaItemEnhancer.addAdditionalOreDictToForestry();
         GTMetaItemEnhancer.init();
