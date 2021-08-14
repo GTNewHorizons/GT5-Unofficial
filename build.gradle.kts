@@ -146,7 +146,7 @@ dependencies {
     compile("micdoodle8.mods:GalacticraftCore:$galacticraftVersion:Dev")
     compile("micdoodle8.mods:Galacticraft-Planets:$galacticraftVersion:Dev")
     compileOnly("li.cil.oc:OpenComputers:MC1.7.10-1.5.+:api")
-    compileOnly("net.sengir.forestry:forestry_1.7.10:4.2.16.64:dev")
+    compileOnly("net.sengir.forestry:forestry_1.7.10:4.4.0.0:dev")
     compileOnly("TGregworks:TGregworks:1.7.10-GTNH-1.0.19:deobf")
     //jitpack
     compileOnly("com.github.GTNewHorizons:GalacticGregGT5:master-SNAPSHOT") {
