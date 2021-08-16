@@ -94,7 +94,7 @@ public class BW_NEI_BioVatHandler extends GT_NEI_DefaultHandler {
             } else if (tSpecialA[1] == -400) {
                 GT_NEI_DefaultHandler.drawText(10, lines[7], this.trans("216", "Deprecated Recipe"), -16777216);
             } else if (GT_Utility.isStringValid(this.mRecipeMap.mNEISpecialValuePre) || GT_Utility.isStringValid(this.mRecipeMap.mNEISpecialValuePost)) {
-                GT_NEI_DefaultHandler.drawText(10, lines[6], (tSpecialA[2] == 1 ? StatCollector.translateToLocal("nei.biovat.1.name") : StatCollector.translateToLocal("nei.biovat.2.name")) + this.mRecipeMap.mNEISpecialValuePre + tSpecialA[3] * this.mRecipeMap.mNEISpecialValueMultiplier + this.mRecipeMap.mNEISpecialValuePost, -16777216);
+                GT_NEI_DefaultHandler.drawText(10, lines[6], (tSpecialA[2] == 1 ? StatCollector.translateToLocal("nei.biovat.1.name") : StatCollector.translateToLocal("nei.biovat.2.name")) + this.mRecipeMap.mNEISpecialValuePre + GT_Utility.formatNumbers(tSpecialA[3] * this.mRecipeMap.mNEISpecialValueMultiplier) + this.mRecipeMap.mNEISpecialValuePost, -16777216);
             }
         } else {
             tSpecial = 0;
