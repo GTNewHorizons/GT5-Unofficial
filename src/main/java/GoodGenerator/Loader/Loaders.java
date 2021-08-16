@@ -4,11 +4,14 @@ import GoodGenerator.Blocks.RegularBlock.Casing;
 import GoodGenerator.Blocks.RegularBlock.Frame;
 import GoodGenerator.Blocks.RegularBlock.TEBlock;
 import GoodGenerator.Blocks.TEs.*;
+import GoodGenerator.Blocks.TEs.MetaTE.NeutronAccelerator;
+import GoodGenerator.Blocks.TEs.MetaTE.NeutronSensor;
 import GoodGenerator.Items.MyItemBlocks;
 import GoodGenerator.Items.MyItems;
 import GoodGenerator.Main.GoodGenerator;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
@@ -57,6 +60,9 @@ public class Loaders {
     public static ItemStack FRF;
     public static ItemStack UCFE;
     public static ItemStack LEG;
+    public static ItemStack NS;
+
+    public static ItemStack[] NeutronAccelerators = new ItemStack[9];
 
     public static void Register(){
         GameRegistry.registerBlock(MAR_Casing, MyItemBlocks.class, "MAR_Casing");
@@ -93,6 +99,10 @@ public class Loaders {
             GameRegistry.registerTileEntity(EssentiaHatch.class, "EssentiaHatch");
             Loaders.LEG = new LargeEssentiaGenerator(IDOffset + 1, "LargeEssentiaGenerator", "Large Essentia Generator").getStackForm(1L);
         }
+        for (int i = 0; i < 9; i ++) {
+            Loaders.NeutronAccelerators[i] = new NeutronAccelerator(IDOffset + 2 + i, "Neutron Accelerator " + GT_Values.VN[i], "Neutron Accelerator " + GT_Values.VN[i], i).getStackForm(1L);
+        }
+       Loaders.NS = new NeutronSensor(IDOffset + 11, "Neutron Sensor", "Neutron Sensor", 5).getStackForm(1L);
     }
 
     public static void addOreDic(){

@@ -1,4 +1,6 @@
+#This is the lang file for GoodGenerator!
 
+#Blocks
 MAR_Casing.0.name=Field Restriction Casing
 radiationProtectionSteelFrame.0.name=Radiation Proof Steel Frame Box
 fieldRestrictingGlass.0.name=Field Restriction Glass
@@ -14,6 +16,7 @@ essentiaCell.1.name=Adept Essentia Diffusion Cell
 essentiaCell.2.name=Master Essentia Diffusion Cell
 essentiaHatch.0.name=Essentia Input Hatch
 
+#Items
 item.radiationProtectionPlate.name=Radiation Proof Plate
 item.wrappedUraniumIngot.name=Wrapped Uranium Ingot
 item.highDensityUraniumNugget.name=High Density Uranium Nugget
@@ -31,6 +34,7 @@ item.aluminumNitride.name=Aluminum Nitride Dust
 item.specialCeramics.name=Special Ceramics Dust
 item.specialCeramicsPlate.name=Special Ceramics Plate
 
+#Fluids
 fluid.lightlyCrackedNaquadahGas=Lightly Cracked Naquadah Gas
 fluid.moderatelyCrackedNaquadahGas=Moderately Cracked Naquadah Gas
 fluid.heavilyCrackedNaquadahGas=Severely Cracked Naquadah Gas
@@ -82,6 +86,7 @@ fluid.Thorium Based Liquid Fuel (Depleted)=Thorium Based Liquid Fuel (Depleted)
 fluid.thorium Tetrachloride=Thorium Tetrachloride
 fluid.Uranium Based Liquid Fuel (Excited State)=Uranium Based Liquid Fuel (Excited State)
 
+#Fluid Tiles
 tile.lightlyCrackedNaquadahGas.name=Lightly Cracked Naquadah Gas
 tile.moderatelyCrackedNaquadahGas.name=Moderately Cracked Naquadah Gas
 tile.heavilyCrackedNaquadahGas.name=Severely Cracked Naquadah Gas
@@ -96,16 +101,26 @@ tile.moderatelyCrackedNaquadahAsphalt.name=Moderately Cracked Naquadah Asphalt
 tile.heavilyCrackedNaquadahAsphalt.name=Severely Cracked Naquadah Asphalt
 tile.combustionPromotor.name=Combustion Promoter
 
+#Tab Name
 itemGroup.Good Generator=Good Generator
 
+#Scanner Info
 scanner.info.FRF=Coil Tier:
 
+#GUI Info
+gui.NeutronSensor.0=Input the value of Neutron Kinetic Energy.
+gui.NeutronSensor.1=e.g. >5000KeV, <=30MeV . . .
+gui.NeutronSensor.2=Valid
+gui.NeutronSensor.3=Invalid
+
+#NEI Info
 tile.recipe.naquadah_reactor=Large Naquadah Reactor
 tile.naquadah_fuel_refine_factory=Naquadah Fuel Refine Factory
 value.naquadah_reactor=Basic Output Voltage:
 value.naquadah_fuel_refine_factory.0=Need Tier
 value.naquadah_fuel_refine_factory.1= Coil
 
+#TecTech Structure Info
 FuelRefineFactory.hint.0=8x Field Restriction Glass
 FuelRefineFactory.hint.1=32x Field Restriction Coil of any tier
 FuelRefineFactory.hint.2=At least 104x Naquadah Fuel Refinery Casing
@@ -139,6 +154,7 @@ LargeEssentiaGenerator.hint.2=24x Arcane Stone Bricks
 LargeEssentiaGenerator.hint.3=At least 53x Magic Casings
 LargeEssentiaGenerator.hint.4=1 - Maintenance Hatch/Input Hatch/Dynamo Hatch/Essentia Input Hatch
 
+#Achievement
 achievement.gt.blockmachines.nag=Large Naquadah Reactor
 achievement.gt.blockmachines.nag.desc=Pickup this item to see the recipe in NEI
 achievement.gt.blockmachines.frf=Naquadah Fuel Refine Factory
@@ -152,6 +168,7 @@ achievement.FRF_Coil_2.0.desc=Pickup this item to see the recipe in NEI
 achievement.FRF_Coil_3.0=Ultimate Field Restriction Coil
 achievement.FRF_Coil_3.0.desc=Pickup this item to see the recipe in NEI
 
+#Thaumcraft Research Context
 research.ESSENTIA_GENERATOR.page.0=You have found that Essentia contains much more power than you thought. Is there a way to generate electricity from these Essentia?
 research.ESSENTIA_GENERATOR.page.1=Different Essentia contains different amount of energy.<BR><BR>Potentia: 4500EU<BR><BR>Ignis: 3000EU<BR><BR>Lucrum: 13000EU<BR><BR>Auram: 9000EU<BR><BR>Arbor: 2200EU<BR><BR>Aer: 1300EU<BR><BR>Praecantatio: 5200EU<BR><BR>Machina: 4000EU<BR><BR>Electrum: 32768EU<BR><BR>Radio: 131072EU
 research.ESSENTIA_GENERATOR.page.2=The unlisted Aspects contain 512EU per Essentia.

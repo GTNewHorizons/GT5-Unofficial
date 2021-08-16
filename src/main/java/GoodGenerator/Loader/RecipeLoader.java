@@ -1088,7 +1088,7 @@ public class RecipeLoader {
                 FluidRegistry.getFluidStack("refinedglue",1000),
                 null,
                 new ItemStack(Loaders.specialCeramics,9),
-                1000,
+                100,
                 1980
         );
 
@@ -1100,7 +1100,7 @@ public class RecipeLoader {
                 FluidRegistry.getFluidStack("refinedglue",1000),
                 null,
                 new ItemStack(Loaders.specialCeramics,9),
-                1000,
+                100,
                 1980
         );
 

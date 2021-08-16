@@ -135,9 +135,11 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
         return multiDefinition;
     }
 
-    public MultiNqGenerator(String name){super(name);}
+    public MultiNqGenerator(String name) {
+        super(name);
+    }
 
-    public MultiNqGenerator(int id, String name, String nameRegional){
+    public MultiNqGenerator(int id, String name, String nameRegional) {
         super(id,name,nameRegional);
     }
 
@@ -148,7 +150,6 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT){
-        super.loadNBTData(aNBT);
         this.ticker = aNBT.getInteger("mTicker");
         this.fluidLocker = aNBT.getBoolean("mIsLocked");
         this.times = aNBT.getInteger("mTimes");
@@ -156,11 +157,11 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
         if (FluidRegistry.getFluid(aNBT.getString("mLockedFluidName")) != null)
             this.lockedFluid = new FluidStack(FluidRegistry.getFluid(aNBT.getString("mLockedFluidName")), aNBT.getInteger("mLockedFluidAmount"));
         else this.lockedFluid = null;
+        super.loadNBTData(aNBT);
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT){
-        super.saveNBTData(aNBT);
         aNBT.setInteger("mTicker", this.ticker);
         aNBT.setBoolean("mIsLocked", this.fluidLocker);
         aNBT.setInteger("mTimes", this.times);
@@ -169,6 +170,7 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
             aNBT.setString("mLockedFluidName", this.lockedFluid.getFluid().getName());
             aNBT.setInteger("mLockedFluidAmount", this.lockedFluid.amount);
         }
+        super.saveNBTData(aNBT);
     }
 
     @Override

@@ -190,14 +190,14 @@ public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM imple
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT){
-        super.loadNBTData(aNBT);
         this.Tier = aNBT.getInteger("mTier");
+        super.loadNBTData(aNBT);
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT){
-        super.saveNBTData(aNBT);
         aNBT.setInteger("mTier", this.Tier);
+        super.saveNBTData(aNBT);
     }
 
     @Override
