@@ -3,6 +3,7 @@ package GoodGenerator.Blocks.TEs.MetaTE;
 import GoodGenerator.Client.GUI.NeutronSensorGUIClient;
 import GoodGenerator.Common.Container.NeutronSensorGUIContainer;
 import GoodGenerator.Main.GoodGenerator;
+import GoodGenerator.Network.MessageOpenNeutronSensorGUI;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -12,6 +13,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Log;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -56,7 +58,6 @@ public class NeutronSensor extends GT_MetaTileEntity_Hatch {
     @Override
     public void initDefaultModes(NBTTagCompound aNBT) {
         getBaseMetaTileEntity().setActive(true);
-        texts = aNBT.getString("mBoxContext");
     }
 
     @Override
@@ -81,7 +82,6 @@ public class NeutronSensor extends GT_MetaTileEntity_Hatch {
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        GT_Log.out.print(texts + "\n");
         return new NeutronSensorGUIClient(aPlayerInventory, aBaseMetaTileEntity, GoodGenerator.MOD_ID + ":textures/gui/NeutronSensorGUI.png", this.texts);
     }
 
@@ -93,12 +93,15 @@ public class NeutronSensor extends GT_MetaTileEntity_Hatch {
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, byte aSide, float aX, float aY, float aZ) {
         if (aBaseMetaTileEntity.isClientSide()) return true;
-        if (aSide == aBaseMetaTileEntity.getFrontFacing()) aBaseMetaTileEntity.openGUI(aPlayer);
-        return true;
+        if (aSide == aBaseMetaTileEntity.getFrontFacing() && aPlayer instanceof EntityPlayerMP) {
+            GoodGenerator.CHANNEL.sendTo(new MessageOpenNeutronSensorGUI(aBaseMetaTileEntity, texts), (EntityPlayerMP) aPlayer);
+            return true;
+        }
+        return false;
     }
 
     public void setText(String text) {
-        texts = text;
+        texts = text == null ? "" : text;
     }
 
     @Override

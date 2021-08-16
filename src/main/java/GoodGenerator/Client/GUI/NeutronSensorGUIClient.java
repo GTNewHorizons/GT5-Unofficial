@@ -1,7 +1,7 @@
 package GoodGenerator.Client.GUI;
 
-import GoodGenerator.Blocks.TEs.MetaTE.NeutronSensor;
 import GoodGenerator.Main.GoodGenerator;
+import GoodGenerator.Network.MessageSetNeutronSensorData;
 import GoodGenerator.util.CharExchanger;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -79,8 +79,10 @@ public class NeutronSensorGUIClient extends GT_GUIContainerMetaTile_Machine {
         this.TextBox.mouseClicked(x - this.getLeft(), y - this.getTop(), btn);
     }
 
+    @Override
     public void onGuiClosed() {
-        ((NeutronSensor) mTile).setText(context);
+        if (CharExchanger.isValidCompareExpress(rawProcessExp(TextBox.getText())))
+            GoodGenerator.CHANNEL.sendToServer(new MessageSetNeutronSensorData(mContainer.mTileEntity, TextBox.getText()));
         super.onGuiClosed();
     }
 
