@@ -11,7 +11,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Log;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -45,7 +44,6 @@ public class NeutronSensor extends GT_MetaTileEntity_Hatch {
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         texts = aNBT.getString("mBoxContext");
-        GT_Log.out.print(texts + "\n");
         super.loadNBTData(aNBT);
     }
 

@@ -20,12 +20,10 @@ public class NeutronSensorGUIClient extends GT_GUIContainerMetaTile_Machine {
 
     private GuiTextField TextBox;
     private String context;
-    private GT_MetaTileEntity_Hatch mTile;
 
     public NeutronSensorGUIClient(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aTexture, String text) {
         super(aInventoryPlayer, aTileEntity, aTexture);
         this.mName = "Neutron Sensor";
-        this.mTile = (GT_MetaTileEntity_Hatch) aTileEntity.getMetaTileEntity();
         this.mContainer.detectAndSendChanges();
         if (text == null) this.context = "";
             else this.context = text;

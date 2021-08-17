@@ -93,6 +93,7 @@ dependencies {
         setChanging(true)
     }*/
     compile files('libs/TecTech-1.7.10-4.10.4-d35bc08e.jar')
+    compile files('libs/bartworks[1.7.10]-[test]-0.5.19-dev.jar')
     compileOnly("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev")
     runtime("eu.usrv:YAMCore:${minecraftVersion}-${yamcoreVersion}:deobf");
 }
