@@ -4,21 +4,21 @@ detrav.scanner.mode.2=Set Mode: Underground Fluids
 detrav.scanner.mode.3=Set Mode: Pollution
 detrav.scanner.mode.error=Set Mode: ERROR
 
-detrav.scanner.distance.texts.0= next to you,
-detrav.scanner.distance.texts.1= close to you,
-detrav.scanner.distance.texts.2= at medium range,
-detrav.scanner.distance.texts.3= at long range,
-detrav.scanner.distance.texts.4= far away,
+detrav.scanner.distance.texts.0= §nnext to you,§r
+detrav.scanner.distance.texts.1= §nclose to you,§r
+detrav.scanner.distance.texts.2= §nat medium range,§r
+detrav.scanner.distance.texts.3= §nat long range,§r
+detrav.scanner.distance.texts.4= §nfar away,§r
 
 detrav.scanner.small_ore.keyword=Small
 
 detrav.scanner.found.texts.0=Found nothing of interest
-detrav.scanner.found.texts.1= traces.
-detrav.scanner.found.texts.2= small sample.
-detrav.scanner.found.texts.3= medium sample.
-detrav.scanner.found.texts.4= large sample.
-detrav.scanner.found.texts.5= very large sample.
-detrav.scanner.found.texts.6=Found
+detrav.scanner.found.texts.1= §8traces§r.
+detrav.scanner.found.texts.2= §7small sample§r.
+detrav.scanner.found.texts.3= §2medium sample§r.
+detrav.scanner.found.texts.4= §elarge sample§r.
+detrav.scanner.found.texts.5= §dvery large sample§r.
+detrav.scanner.found.texts.6=Found 
 
 # Don't translate "%badluck"
 detrav.scanner.success=All chunks scanned successfully!
