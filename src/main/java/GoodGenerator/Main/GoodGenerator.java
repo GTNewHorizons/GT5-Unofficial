@@ -6,6 +6,8 @@ import GoodGenerator.Items.MyMaterial;
 import GoodGenerator.Loader.FuelRecipeLoader;
 import GoodGenerator.Loader.Loaders;
 import GoodGenerator.Loader.RecipeLoader;
+import GoodGenerator.Network.MessageOpenNeutronSensorGUI;
+import GoodGenerator.Network.MessageSetNeutronSensorData;
 import GoodGenerator.Tabs.MyTabs;
 import GoodGenerator.Blocks.MyFluids.FluidsBuilder;
 import com.github.bartimaeusnek.bartworks.API.WerkstoffAdderRegistry;
@@ -13,6 +15,9 @@ import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import cpw.mods.fml.relauncher.Side;
 import net.minecraft.creativetab.CreativeTabs;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -34,6 +39,12 @@ public final class GoodGenerator {
 
     @SidedProxy(clientSide = "GoodGenerator.Client.ClientProxy",serverSide = "GoodGenerator.Common.CommonProxy")
     public static CommonProxy proxy;
+    public static SimpleNetworkWrapper CHANNEL = NetworkRegistry.INSTANCE.newSimpleChannel(MOD_ID);
+
+    static {
+        CHANNEL.registerMessage(MessageSetNeutronSensorData.ServerHandler.class, MessageSetNeutronSensorData.class, 0, Side.SERVER);
+        CHANNEL.registerMessage(MessageOpenNeutronSensorGUI.ClientHandler.class, MessageOpenNeutronSensorGUI.class, 1, Side.CLIENT);
+    }
 
     @Mod.Instance(GoodGenerator.MOD_ID)
     public static GoodGenerator instance;
