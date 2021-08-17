@@ -52,7 +52,7 @@ configurations {
 repositories {
     maven {
         name 'Forge'
-        url 'http://files.minecraftforge.net/maven'
+        url 'https://maven.minecraftforge.net/releases/'
     }
     maven {
         name = "chickenbones"
