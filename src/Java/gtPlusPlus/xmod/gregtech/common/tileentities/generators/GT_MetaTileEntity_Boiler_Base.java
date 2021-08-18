@@ -197,7 +197,7 @@ public class GT_MetaTileEntity_Boiler_Base extends GT_MetaTileEntity_Boiler {
 		if(fuelStack == null) return;
 
 		int burnTime = getBurnTime(fuelStack);
-		if (burnTime > 0 && this.mTemperature <= 100) {
+		if (burnTime > 0 && this.mTemperature <= 101) {
 			consumeFuel(tile, fuelStack, burnTime);
 		}
 	}
