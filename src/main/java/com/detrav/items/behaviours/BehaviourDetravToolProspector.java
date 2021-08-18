@@ -29,6 +29,9 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fluids.FluidStack;
 
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.SplittableRandom;
 
@@ -44,6 +47,8 @@ public class BehaviourDetravToolProspector extends Behaviour_None {
     int badluck;
 
     protected final int mCosts;
+
+    static final String CHAT_MSG_SEPARATOR = "--------------------";
 
     public BehaviourDetravToolProspector(int aCosts) {
         mCosts = aCosts;
@@ -114,15 +119,49 @@ public class BehaviourDetravToolProspector extends Behaviour_None {
             }
         }
         
+        // List to hold unsorted scanner messages
+        List<ChatComponentText> oreMessages = new ArrayList<ChatComponentText>();
+
         for (String key : ores.keySet()) {
             int value = ores.get(key);
-           addChatMassageByValue(aPlayer,value,key);
+            appendChatMessageByValue(oreMessages, aPlayer,value,key);
+        }
+
+        // Define sort order by distance
+        List<String> sortOrder = Arrays.asList(
+            StatCollector.translateToLocal("detrav.scanner.distance.texts.4"),
+            StatCollector.translateToLocal("detrav.scanner.distance.texts.3"),
+            StatCollector.translateToLocal("detrav.scanner.distance.texts.2"),
+            StatCollector.translateToLocal("detrav.scanner.distance.texts.1"),
+            StatCollector.translateToLocal("detrav.scanner.distance.texts.0")
+        );
+
+        List<ChatComponentText> oreMessagesSorted = new ArrayList<ChatComponentText>();
+        oreMessagesSorted.add(new ChatComponentText(CHAT_MSG_SEPARATOR));
+
+        // Sort ore messages by distance, separated by -----
+        for(String oreFrequency : sortOrder) {
+            for(ChatComponentText msg : oreMessages) {
+                if (msg.getChatComponentText_TextValue().contains(oreFrequency)) {
+                    oreMessagesSorted.add(msg);
+                }
+            }
+            
+            // Only append ----- separator if text has been added
+            if (!oreMessagesSorted.get(oreMessagesSorted.size() - 1).getChatComponentText_TextValue().contains(CHAT_MSG_SEPARATOR)) {
+                oreMessagesSorted.add(new ChatComponentText(CHAT_MSG_SEPARATOR));
+            }
         }
         
         if( badluck == 0) {
-            aPlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.WHITE + StatCollector.translateToLocal("detrav.scanner.success")));
+            oreMessages.add(new ChatComponentText(EnumChatFormatting.WHITE + StatCollector.translateToLocal("detrav.scanner.success")));
         } else {
-            aPlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.WHITE + StatCollector.translateToLocal("detrav.scanner.fail").replace("%badluck", Integer.toString(badluck))));
+            oreMessages.add(new ChatComponentText(EnumChatFormatting.WHITE + StatCollector.translateToLocal("detrav.scanner.fail").replace("%badluck", Integer.toString(badluck))));
+        }
+
+        // Print the sorted messages
+        for(ChatComponentText msg : oreMessagesSorted) {
+            aPlayer.addChatMessage(msg);
         }
     }
 
@@ -261,6 +300,24 @@ public class BehaviourDetravToolProspector extends Behaviour_None {
             aPlayer.addChatMessage(new ChatComponentText(name + StatCollector.translateToLocal("detrav.scanner.found.texts.4")));
         else
             aPlayer.addChatMessage(new ChatComponentText(name + StatCollector.translateToLocal("detrav.scanner.found.texts.5")));
+    }
+
+    // Same as addChatMassageByValue but appends to a list of chat messages and spelled correctly
+    void appendChatMessageByValue(List<ChatComponentText> chatMessageList, EntityPlayer aPlayer, int value, String name) {
+        if (value < 0) {
+            chatMessageList.add(new ChatComponentText(StatCollector.translateToLocal("detrav.scanner.found.texts.6") + name));
+        } else if (value < 1) {
+            chatMessageList.add(new ChatComponentText(StatCollector.translateToLocal("detrav.scanner.found.texts.0")));
+        } else if (value < 10)
+            chatMessageList.add(new ChatComponentText(name + StatCollector.translateToLocal("detrav.scanner.found.texts.1")));
+        else if (value < 30)
+            chatMessageList.add(new ChatComponentText(name + StatCollector.translateToLocal("detrav.scanner.found.texts.2")));
+        else if (value < 60)
+            chatMessageList.add(new ChatComponentText(name + StatCollector.translateToLocal("detrav.scanner.found.texts.3")));
+        else if (value < 100)
+            chatMessageList.add(new ChatComponentText(name + StatCollector.translateToLocal("detrav.scanner.found.texts.4")));
+        else
+            chatMessageList.add(new ChatComponentText(name + StatCollector.translateToLocal("detrav.scanner.found.texts.5")));
     }
 
     public static int getPolution(World aWorld, int aX, int aZ)
