@@ -5,6 +5,7 @@ import GoodGenerator.CrossMod.Thaumcraft.Research;
 import GoodGenerator.Items.MyMaterial;
 import GoodGenerator.Loader.FuelRecipeLoader;
 import GoodGenerator.Loader.Loaders;
+import GoodGenerator.Loader.NeutronActivatorLoader;
 import GoodGenerator.Loader.RecipeLoader;
 import GoodGenerator.Network.MessageOpenNeutronSensorGUI;
 import GoodGenerator.Network.MessageSetNeutronSensorData;
@@ -52,6 +53,7 @@ public final class GoodGenerator {
     @Mod.EventHandler
     public static void preInit(FMLPreInitializationEvent event){
         WerkstoffAdderRegistry.addWerkstoffAdder(new MyMaterial());
+        Loaders.compactMod();
         new FluidsBuilder();
         Loaders.Register();
         addOreDic();
@@ -69,6 +71,7 @@ public final class GoodGenerator {
         proxy.postInit(event);
         RecipeLoader.RecipeLoad();
         RecipeLoader.Fixer();
+        NeutronActivatorLoader.NARecipeLoad();
         if (Loader.isModLoaded("Thaumcraft")){
             Research.addResearch();
         }

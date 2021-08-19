@@ -40,6 +40,18 @@ public class MyRecipeAdder {
             true
     );
 
+    public final NeutronActivatorMapper NA = new NeutronActivatorMapper(
+            new HashSet<>(150),
+            "gg.recipe.neutron_activator",
+            StatCollector.translateToLocal("tile.neutron_activator"),
+            null,
+            "goodgenerator:textures/gui/neutron_activator",
+            6, 6, 0, 0, 0,
+            null, 0, null,
+            false,
+            false
+    );
+
     public static class liquidMentalFuelMapper extends GT_Recipe.GT_Recipe_Map_Fuel{
         int lasting = 0;
 
@@ -69,5 +81,23 @@ public class MyRecipeAdder {
 
     public void addNaquadahFuelRefineRecipe(FluidStack[] input1, ItemStack[] input2, FluidStack output, int EUt, int ticks, int tier){
         FRF.addNaqFuelRefineRecipe(input1, input2, output, EUt, ticks, tier);
+    }
+
+    public static class NeutronActivatorMapper extends GT_Recipe.GT_Recipe_Map{
+        public NeutronActivatorMapper(Collection<GT_Recipe> aRecipeList, String aUnlocalizedName, String aLocalName, String aNEIName, String aNEIGUIPath, int aUsualInputCount, int aUsualOutputCount, int aMinimalInputItems, int aMinimalInputFluids, int aAmperage, String aNEISpecialValuePre, int aNEISpecialValueMultiplier, String aNEISpecialValuePost, boolean aShowVoltageAmperageInNEI, boolean aNEIAllowed){
+            super(aRecipeList, aUnlocalizedName, aLocalName, aNEIName, aNEIGUIPath, aUsualInputCount, aUsualOutputCount, aMinimalInputItems, aMinimalInputFluids, aAmperage, aNEISpecialValuePre, aNEISpecialValueMultiplier, aNEISpecialValuePost, aShowVoltageAmperageInNEI, aNEIAllowed);
+        }
+
+        public void addNARecipe(FluidStack[] input1, ItemStack[] input2, FluidStack[] output1, ItemStack[] output2, int ticks, int special) {
+            super.addRecipe(false, input2, output2, null, input1, output1, ticks, 0, special);
+        }
+    }
+
+    public void addNeutronActivatorRecipe(FluidStack[] input1, ItemStack[] input2, FluidStack[] output1, ItemStack[] output2, int ticks, int maxNKE, int minNKE) {
+        if (maxNKE <= 0) maxNKE = 1;
+        if (maxNKE >= 280) maxNKE = 280;
+        if (minNKE < 0) minNKE = 0;
+        if (minNKE >= maxNKE) minNKE = maxNKE - 1;
+        NA.addNARecipe(input1, input2, output1, output2, ticks, maxNKE * 10000 + minNKE);
     }
 }

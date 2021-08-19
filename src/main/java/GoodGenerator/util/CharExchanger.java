@@ -66,10 +66,14 @@ public class CharExchanger {
     public static boolean compareExpression(String exp, int num) {
         int op = getOperator(exp);
         String NumExp = exp;
-        String[] opChar = new String[]{">", "<", "<=", ">=", "==", "!="};
+        String[] opChar = new String[]{">", "<", "=", "!"};
         if (op == -1) throw new IllegalArgumentException();
         for (String re: opChar) NumExp = NumExp.replace(re, "");
-        int num2 = Integer.getInteger(NumExp);
+        long num2 = 0;
+        for (char c: NumExp.toCharArray()) {
+            num2 *=10;
+            num2 += c - '0';
+        }
         switch (op) {
             case 1: return num > num2;
             case 2: return num < num2;

@@ -15,6 +15,7 @@ essentiaCell.0.name=Novice Essentia Diffusion Cell
 essentiaCell.1.name=Adept Essentia Diffusion Cell
 essentiaCell.2.name=Master Essentia Diffusion Cell
 essentiaHatch.0.name=Essentia Input Hatch
+speedingPipe.0.name=Speeding Pipe Casing
 
 #Items
 item.radiationProtectionPlate.name=Radiation Proof Plate
@@ -106,33 +107,40 @@ itemGroup.Good Generator=Good Generator
 
 #Scanner Info
 scanner.info.FRF=Coil Tier:
+scanner.info.NA=Current Neutron Kinetic Energy:
 
 #GUI Info
 gui.NeutronSensor.0=Input the value of Neutron Kinetic Energy.
 gui.NeutronSensor.1=e.g. >5000KeV, <=30MeV . . .
 gui.NeutronSensor.2=Valid
 gui.NeutronSensor.3=Invalid
+gui.NeutronActivator.0=Current Neutron Kinetic Energy:
+gui.NeutronActivator.1=Input:
 
 #NEI Info
 tile.recipe.naquadah_reactor=Large Naquadah Reactor
 tile.naquadah_fuel_refine_factory=Naquadah Fuel Refine Factory
+tile.neutron_activator=Neutron Activator
 value.naquadah_reactor=Basic Output Voltage:
 value.naquadah_fuel_refine_factory.0=Need Tier
 value.naquadah_fuel_refine_factory.1= Coil
+value.neutron_activator.0=Minimum Neutron Kinetic Energy:
+value.neutron_activator.1=Maximum Neutron Kinetic Energy:
+value.neutron_activator.2= MeV
 
 #TecTech Structure Info
-FuelRefineFactory.hint.0=8x Field Restriction Glass
-FuelRefineFactory.hint.1=32x Field Restriction Coil of any tier
-FuelRefineFactory.hint.2=At least 104x Naquadah Fuel Refinery Casing
+FuelRefineFactory.hint.0=8x Field Restriction Glasses
+FuelRefineFactory.hint.1=32x Field Restriction Coils of any tier
+FuelRefineFactory.hint.2=At least 104x Naquadah Fuel Refinery Casings
 FuelRefineFactory.hint.3=1~16x Input Hatch
 FuelRefineFactory.hint.4=1~16x Output Hatch
 FuelRefineFactory.hint.5=1~16x Input Bus
 FuelRefineFactory.hint.6=1~16x Energy Hatch
 FuelRefineFactory.hint.7=All the hatches should adjoin the field restriction glass
-MultiNqGenerator.hint.0=6x TungstenSteel Pipe Casing
-MultiNqGenerator.hint.1=48x Field Restriction Casing
-MultiNqGenerator.hint.2=36x Radiation Proof Steel Frame Box
-MultiNqGenerator.hint.3=At least 77x Radiation Proof Machine Casing
+MultiNqGenerator.hint.0=6x TungstenSteel Pipe Casings
+MultiNqGenerator.hint.1=48x Field Restriction Casings
+MultiNqGenerator.hint.2=36x Radiation Proof Steel Frame Boxes
+MultiNqGenerator.hint.3=At least 77x Radiation Proof Machine Casings
 MultiNqGenerator.hint.4=1~4x Input Hatch
 MultiNqGenerator.hint.5=0~1x Output Hatch
 MultiNqGenerator.hint.6=1x Maintenance Hatch
@@ -153,6 +161,13 @@ LargeEssentiaGenerator.hint.1=4x Amber Bricks
 LargeEssentiaGenerator.hint.2=24x Arcane Stone Bricks
 LargeEssentiaGenerator.hint.3=At least 53x Magic Casings
 LargeEssentiaGenerator.hint.4=1 - Maintenance Hatch/Input Hatch/Dynamo Hatch/Essentia Input Hatch
+NeutronActivator.hint.0=16x Steel Frame Boxes
+NeutronActivator.hint.1=18x Processor Machine Casings
+NeutronActivator.hint.2=32x Reinforced Glasses
+NeutronActivator.hint.3=4x Speeding Pipe Casing
+NeutronActivator.hint.4=At least 7x Clean Stainless Steel Machine Casings
+NeutronActivator.hint.5=1 - Input Hatch/Input Bus/Clean Stainless Steel Machine Casing
+NeutronActivator.hint.6=2 - Output Hatch/Output Bus/Maintenance Hatch/Neutron Accelerator/Neutron Sensor/Clean Stainless Steel Machine Casing
 
 #Achievement
 achievement.gt.blockmachines.nag=Large Naquadah Reactor

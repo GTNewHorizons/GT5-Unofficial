@@ -201,7 +201,7 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_MultiblockBas
                 .addInfo("The efficiency is determined by the proportion of Combustion Promoter to fuel.")
                 .addInfo("The proportion is bigger, and the efficiency will be higher.")
                 .addInfo("It creates sqrt(Current Output Power) pollution every second")
-                .addInfo("If you forge to supply Combustion Promoter, this engine will swallow all the fuel " + EnumChatFormatting.YELLOW + "without outputting energy" + EnumChatFormatting.GRAY + ".")
+                .addInfo("If you forget to supply Combustion Promoter, this engine will swallow all the fuel " + EnumChatFormatting.YELLOW + "without outputting energy" + EnumChatFormatting.GRAY + ".")
                 .addInfo("The efficiency is up to 150%.")
                 .addInfo("The structure is too complex!")
                 .addInfo("Follow the" + EnumChatFormatting.DARK_BLUE + " Tec" + EnumChatFormatting.BLUE + "Tech" + EnumChatFormatting.GRAY + " blueprint to build the main structure.")

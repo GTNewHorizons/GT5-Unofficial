@@ -23,6 +23,7 @@ public class NeutronSensor extends GT_MetaTileEntity_Hatch {
     private static final IIconContainer textureFont_Glow = new Textures.BlockIcons.CustomIcon("icons/NeutronSensorFont_GLOW");
 
     protected String texts = "";
+    boolean isOn = false;
 
     public NeutronSensor(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "Detect Neutron Kinetic Energy.");
@@ -102,6 +103,18 @@ public class NeutronSensor extends GT_MetaTileEntity_Hatch {
         texts = text == null ? "" : text;
     }
 
+    public String getText() {
+        return texts == null ? "" : texts;
+    }
+
+    public void outputRedstoneSignal(){
+        isOn = true;
+    }
+
+    public void stopOutputRedstoneSignal(){
+        isOn = false;
+    }
+
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
         return new ITexture[] {
@@ -120,6 +133,24 @@ public class NeutronSensor extends GT_MetaTileEntity_Hatch {
     }
 
     @Override
+    public boolean allowGeneralRedstoneOutput(){
+        return true;
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        if (isOn) {
+            for (byte i = 0; i < 6; i ++)
+                aBaseMetaTileEntity.setInternalOutputRedstoneSignal(i, (byte) 15);
+        }
+        else {
+            for (byte i = 0; i < 6; i ++)
+                aBaseMetaTileEntity.setInternalOutputRedstoneSignal(i, (byte) 0);
+        }
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+    }
+
+    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new NeutronSensor(mName, mTier, mDescriptionArray, mTextures);
     }
@@ -134,9 +165,4 @@ public class NeutronSensor extends GT_MetaTileEntity_Hatch {
         return false;
     }
 
-    @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        super.onPostTick(aBaseMetaTileEntity, aTick);
-        //if (aTick % 100 == 0) GT_Log.out.print(texts + "\n");
-    }
 }

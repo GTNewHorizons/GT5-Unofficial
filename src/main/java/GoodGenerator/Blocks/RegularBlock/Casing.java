@@ -25,12 +25,11 @@ public class Casing extends Block {
     String[] textureNames;
     protected String name;
 
-    public Casing(String name, String[] texture, CreativeTabs Tab){
+    public Casing(String name) {
         super(Material.iron);
         this.setHardness(9.0F);
         this.setResistance(5.0F);
         this.name = name;
-        this.textureNames = texture;
         this.setHarvestLevel("wrench",2);
         this.setCreativeTab(GoodGenerator.GG);
         GregTech_API.registerMachineBlock(this, -1);

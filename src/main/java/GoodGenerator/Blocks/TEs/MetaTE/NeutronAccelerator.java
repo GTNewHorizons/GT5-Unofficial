@@ -21,7 +21,7 @@ public class NeutronAccelerator extends GT_MetaTileEntity_Hatch_Energy {
     }
 
     public int getMaxEUConsume() {
-        return (int)(V[mTier] * 10 / 8);
+        return (int)(V[mTier] * 8 / 10);
     }
 
     @Override
@@ -47,7 +47,7 @@ public class NeutronAccelerator extends GT_MetaTileEntity_Hatch_Energy {
                 "Input EU to Accelerate the Neutron!",
                 "Max EU input: " + this.maxEUInput(),
                 "Max EU consumption: " + this.getMaxEUConsume(),
-                "Every EU can be transformed into 0.1~0.2 KeV Neutron Kinetic Energy."
+                "Every EU can be transformed into 10~20 eV Neutron Kinetic Energy."
         };
     }
 

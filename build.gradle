@@ -30,6 +30,9 @@ plugins {
 
 apply plugin: 'forge'
 apply plugin: 'idea'
+apply plugin: 'java'
+apply plugin: 'signing'
+apply plugin: 'java-library'
 
 idea {
     module {
@@ -56,6 +59,10 @@ minecraft {
 
 repositories {
     jcenter()
+    maven { // EnderIO & EnderCore
+        name = 'tterrag Repo'
+        url = "http://maven.tterrag.com"
+    }
     maven {
         name = "CodeChicken"
         url = "http://chickenbones.net/maven/"
@@ -86,6 +93,9 @@ repositories {
 }
 
 dependencies {
+
+    compile("com.enderio.core:EnderCore:1.7.10-0.1.0.25_beta:dev")
+    compile("appeng:appliedenergistics2:rv3-beta-22:dev")
     compile("com.github.GTNewHorizons:GT5-Unofficial:experimental-SNAPSHOT:dev") {
         setChanging(true)
     }
@@ -109,4 +119,14 @@ processResources
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
     }
+}
+
+task devJar(type: Jar) {
+    classifier = 'dev'
+    from sourceSets.main.output
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
 }
