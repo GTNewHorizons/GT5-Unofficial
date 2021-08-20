@@ -18,7 +18,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -40,6 +39,7 @@ public class LargeEssentiaGenerator extends GT_MetaTileEntity_MultiblockBase_EM 
     private IStructureDefinition<LargeEssentiaGenerator> multiDefinition = null;
     protected final int ENERGY_PER_ESSENTIA_DEFAULT = 512;
     protected int mStableValue = 0;
+    protected long mLeftEnergy;
     protected ArrayList<EssentiaHatch> mEssentiaHatch = new ArrayList<>();
 
     public LargeEssentiaGenerator(String name){
@@ -73,19 +73,21 @@ public class LargeEssentiaGenerator extends GT_MetaTileEntity_MultiblockBase_EM 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mStableValue = 0;
-        return structureCheck_EM(mName, 4, 0, 4);
+        return structureCheck_EM(mName, 4, 0, 4) && (mDynamoHatches.size() + eDynamoMulti.size()) == 1;
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         this.mStableValue = aNBT.getInteger("mStableValue");
+        this.mLeftEnergy = aNBT.getLong("mLeftEnergy");
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setInteger("mStableValue", this.mStableValue);
+        aNBT.setLong("mLeftEnergy", this.mLeftEnergy);
     }
 
     public void getEssentiaHatch() {
@@ -213,20 +215,32 @@ public class LargeEssentiaGenerator extends GT_MetaTileEntity_MultiblockBase_EM 
         this.mEfficiency = 10000;
         this.mMaxProgresstime = 1;
         getEssentiaHatch();
-        this.mEUt = (int)getEssentiaToEU(getPower());
+        setEssentiaToEUVoltageAndAmp(getVoltageLimit(), getAmpLimit());
         return true;
     }
 
-    public long getPower() {
-        long power = 0;
+    public int getVoltageLimit() {
+        long voltage = 0;
         for (GT_MetaTileEntity_Hatch tHatch : this.eDynamoMulti) {
-            power += tHatch.maxEUOutput() * tHatch.maxAmperesOut();
+            voltage += tHatch.maxEUOutput();
         }
         for (GT_MetaTileEntity_Hatch tHatch : this.mDynamoHatches) {
-            power += tHatch.maxEUOutput() * tHatch.maxAmperesOut();
+            voltage += tHatch.maxEUOutput();
         }
-        if (power > Integer.MAX_VALUE) power = Integer.MAX_VALUE;
-        return power;
+        if (voltage > Integer.MAX_VALUE) voltage = Integer.MAX_VALUE;
+        return (int)voltage;
+    }
+
+    public int getAmpLimit() {
+        long amp = 0;
+        for (GT_MetaTileEntity_Hatch tHatch : this.eDynamoMulti) {
+            amp += tHatch.maxAmperesOut();
+        }
+        for (GT_MetaTileEntity_Hatch tHatch : this.mDynamoHatches) {
+            amp += tHatch.maxAmperesOut();
+        }
+        if (amp > Integer.MAX_VALUE) amp = Integer.MAX_VALUE;
+        return (int)amp;
     }
 
     public long getPerAspectEnergy(Aspect aspect) {
@@ -244,13 +258,14 @@ public class LargeEssentiaGenerator extends GT_MetaTileEntity_MultiblockBase_EM 
         return ENERGY_PER_ESSENTIA_DEFAULT * mStableValue / 25;
     }
 
-    public long getEssentiaToEU(long EULimit) {
-        long EUt = 0;
+    public void setEssentiaToEUVoltageAndAmp(long voltageLimit, long ampLimit) {
+        long EUt = mLeftEnergy;
+        long EUVoltage = voltageLimit, EUAmp = 1;
 
         for (EssentiaHatch hatch: this.mEssentiaHatch){
             AspectList aspects = hatch.getAspects();
             for (Aspect aspect: aspects.aspects.keySet()) {
-                while (EUt + getPerAspectEnergy(aspect) <= EULimit && aspects.getAmount(aspect) > 0) {
+                while (EUt + getPerAspectEnergy(aspect) <= (voltageLimit * ampLimit) && aspects.getAmount(aspect) > 0) {
                     EUt += getPerAspectEnergy(aspect);
                     aspects.reduce(aspect, 1);
                     if (aspects.getAmount(aspect) == 0)
@@ -258,7 +273,21 @@ public class LargeEssentiaGenerator extends GT_MetaTileEntity_MultiblockBase_EM 
                 }
             }
         }
-        return EUt;
+
+        if (EUt <= voltageLimit) {
+            EUVoltage = EUt;
+            EUAmp = 1;
+            mLeftEnergy = 0;
+        }
+        else {
+            while (EUVoltage * (EUAmp + 1) <= EUt) {
+                EUAmp ++;
+            }
+            mLeftEnergy = EUt - (EUVoltage * EUAmp);
+        }
+
+        this.mEUt = (int)EUVoltage;
+        this.eAmpereFlow = (int)EUAmp;
     }
 
     @Override
@@ -268,7 +297,7 @@ public class LargeEssentiaGenerator extends GT_MetaTileEntity_MultiblockBase_EM 
 
     @Override
     public String[] getStructureDescription(ItemStack itemStack) {
-        return DescTextLocalization.addText("LargeEssentiaGenerator.hint", 5);
+        return DescTextLocalization.addText("LargeEssentiaGenerator.hint", 6);
     }
 
     @Override
