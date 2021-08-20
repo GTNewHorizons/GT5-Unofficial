@@ -37,7 +37,7 @@ import static com.github.technus.tectech.mechanics.structure.StructureUtility.*;
 public class LargeEssentiaGenerator extends GT_MetaTileEntity_MultiblockBase_EM implements TecTechEnabledMulti, IConstructable {
 
     private IStructureDefinition<LargeEssentiaGenerator> multiDefinition = null;
-    protected final int ENERGY_PER_ESSENTIA_DEFAULT = 512;
+    protected final int ENERGY_PER_ESSENTIA_DEFAULT = 8192;
     protected int mStableValue = 0;
     protected long mLeftEnergy;
     protected ArrayList<EssentiaHatch> mEssentiaHatch = new ArrayList<>();
@@ -244,16 +244,16 @@ public class LargeEssentiaGenerator extends GT_MetaTileEntity_MultiblockBase_EM 
     }
 
     public long getPerAspectEnergy(Aspect aspect) {
-        if (aspect.equals(Aspect.ENERGY)) return 4500 * mStableValue / 25;
-        if (aspect.equals(Aspect.FIRE)) return 3000 * mStableValue / 25;
-        if (aspect.equals(Aspect.GREED)) return 13000 * mStableValue / 25;
-        if (aspect.equals(Aspect.AURA)) return 9000 * mStableValue / 25;
-        if (aspect.equals(Aspect.TREE)) return 2200 * mStableValue / 25;
-        if (aspect.equals(Aspect.AIR)) return 1300 * mStableValue / 25;
-        if (aspect.equals(Aspect.MAGIC)) return 5200 * mStableValue / 25;
-        if (aspect.equals(Aspect.MECHANISM)) return 4000 * mStableValue / 25;
-        if (aspect.equals(TC_Aspects.ELECTRUM.mAspect)) return 32768 * mStableValue / 25;
-        if (aspect.equals(TC_Aspects.RADIO.mAspect)) return 131072 * mStableValue / 25;
+        if (aspect.equals(Aspect.ENERGY)) return 45000 * mStableValue / 25;
+        if (aspect.equals(Aspect.FIRE)) return 30000 * mStableValue / 25;
+        if (aspect.equals(Aspect.GREED)) return 130000 * mStableValue / 25;
+        if (aspect.equals(Aspect.AURA)) return 120000 * mStableValue / 25;
+        if (aspect.equals(Aspect.TREE)) return 25000 * mStableValue / 25;
+        if (aspect.equals(Aspect.AIR)) return 13000 * mStableValue / 25;
+        if (aspect.equals(Aspect.MAGIC)) return 92000 * mStableValue / 25;
+        if (aspect.equals(Aspect.MECHANISM)) return 40000 * mStableValue / 25;
+        if (aspect.equals(TC_Aspects.ELECTRUM.mAspect)) return 131072 * mStableValue / 25;
+        if (aspect.equals(TC_Aspects.RADIO.mAspect)) return 524288 * mStableValue / 25;
 
         return ENERGY_PER_ESSENTIA_DEFAULT * mStableValue / 25;
     }
@@ -272,6 +272,12 @@ public class LargeEssentiaGenerator extends GT_MetaTileEntity_MultiblockBase_EM 
                         aspects.remove(aspect);
                 }
             }
+            if (EUt == 0 && aspects.size() != 0) {
+                EUt += getPerAspectEnergy(aspects.getAspects()[0]);
+                aspects.reduce(aspects.getAspects()[0], 1);
+                if (aspects.getAmount(aspects.getAspects()[0]) == 0)
+                    aspects.remove(aspects.getAspects()[0]);
+            }
         }
 
         if (EUt <= voltageLimit) {
@@ -280,7 +286,7 @@ public class LargeEssentiaGenerator extends GT_MetaTileEntity_MultiblockBase_EM 
             mLeftEnergy = 0;
         }
         else {
-            while (EUVoltage * (EUAmp + 1) <= EUt) {
+            while (EUVoltage * (EUAmp + 1) <= EUt && EUAmp + 1 <= ampLimit) {
                 EUAmp ++;
             }
             mLeftEnergy = EUt - (EUVoltage * EUAmp);

@@ -187,6 +187,6 @@ achievement.FRF_Coil_3.0.desc=Pickup this item to see the recipe in NEI
 
 #Thaumcraft Research Context
 research.ESSENTIA_GENERATOR.page.0=You have found that Essentia contains much more power than you thought. Is there a way to generate electricity from these Essentia?
-research.ESSENTIA_GENERATOR.page.1=Different Essentia contains different amount of energy.<BR><BR>Potentia: 4500EU<BR><BR>Ignis: 3000EU<BR><BR>Lucrum: 13000EU<BR><BR>Auram: 9000EU<BR><BR>Arbor: 2200EU<BR><BR>Aer: 1300EU<BR><BR>Praecantatio: 5200EU<BR><BR>Machina: 4000EU<BR><BR>Electrum: 32768EU<BR><BR>Radio: 131072EU
-research.ESSENTIA_GENERATOR.page.2=The unlisted Aspects contain 512EU per Essentia.
+research.ESSENTIA_GENERATOR.page.1=Different Essentia contains different amount of energy.<BR><BR>Potentia: 45000EU<BR><BR>Ignis: 30000EU<BR><BR>Lucrum: 130000EU<BR><BR>Auram: 120000EU<BR><BR>Arbor: 25000EU<BR><BR>Aer: 13000EU<BR><BR>Praecantatio: 92000EU<BR><BR>Machina: 40000EU<BR><BR>Electrum: 131072EU<BR><BR>Radio: 524288EU
+research.ESSENTIA_GENERATOR.page.2=The unlisted Aspects contain 8192EU per Essentia.
 research.ESSENTIA_CELL.page.0=The Novice Cell has such low efficiency that you can't bear it. So you discovered a new way to make some better Cells<BR><BR>The Novice Cell only provides 1 StablePoint, the Adept one provides 2 StablePoint, and the Master one provides 5 StablePoint!<BR><BR>With higher StablePoint, the generator can create more electricity from pre Essential.
