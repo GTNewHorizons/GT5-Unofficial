@@ -9,6 +9,7 @@ import GoodGenerator.Blocks.TEs.MetaTE.NeutronAccelerator;
 import GoodGenerator.Blocks.TEs.MetaTE.NeutronSensor;
 import GoodGenerator.Items.MyItemBlocks;
 import GoodGenerator.Items.MyItems;
+import GoodGenerator.Items.RadioactiveItem;
 import GoodGenerator.Main.GoodGenerator;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -28,20 +29,22 @@ public class Loaders {
 
     public static final Item radiationProtectionPlate = new MyItems("radiationProtectionPlate", GoodGenerator.GG);
     public static final Item wrappedUraniumIngot = new MyItems("wrappedUraniumIngot", GoodGenerator.GG);
-    public static final Item highDensityUraniumNugget = new MyItems("highDensityUraniumNugget", GoodGenerator.GG);
-    public static final Item highDensityUranium = new MyItems("highDensityUranium", GoodGenerator.GG);
+    public static final Item highDensityUraniumNugget = new RadioactiveItem("highDensityUraniumNugget", GoodGenerator.GG, 200);
+    public static final Item highDensityUranium = new RadioactiveItem("highDensityUranium", GoodGenerator.GG, 1800);
     public static final Item wrappedThoriumIngot = new MyItems("wrappedThoriumIngot", GoodGenerator.GG);
-    public static final Item highDensityThoriumNugget = new MyItems("highDensityThoriumNugget", GoodGenerator.GG);
-    public static final Item highDensityThorium = new MyItems("highDensityThorium", GoodGenerator.GG);
+    public static final Item highDensityThoriumNugget = new RadioactiveItem("highDensityThoriumNugget", GoodGenerator.GG, 50);
+    public static final Item highDensityThorium = new RadioactiveItem("highDensityThorium", GoodGenerator.GG, 450);
     public static final Item wrappedPlutoniumIngot = new MyItems("wrappedPlutoniumIngot", GoodGenerator.GG);
-    public static final Item highDensityPlutoniumNugget = new MyItems("highDensityPlutoniumNugget", GoodGenerator.GG);
-    public static final Item highDensityPlutonium = new MyItems("highDensityPlutonium", GoodGenerator.GG);
+    public static final Item highDensityPlutoniumNugget = new RadioactiveItem("highDensityPlutoniumNugget", GoodGenerator.GG, 450);
+    public static final Item highDensityPlutonium = new RadioactiveItem("highDensityPlutonium", GoodGenerator.GG, 4050);
     public static final Item rawAtomicSeparationCatalyst = new MyItems("rawAtomicSeparationCatalyst", GoodGenerator.GG);
     public static final Item advancedRadiationProtectionPlate = new MyItems("advancedRadiationProtectionPlate", GoodGenerator.GG);
     public static final Item aluminumNitride = new MyItems("aluminumNitride", GoodGenerator.GG);
     public static final Item specialCeramics = new MyItems("specialCeramics", GoodGenerator.GG);
     public static final Item specialCeramicsPlate = new MyItems("specialCeramicsPlate", GoodGenerator.GG);
-    public static final Item radioactiveWaste = new MyItems("radioactiveWaste", GoodGenerator.GG);
+    public static final Item radioactiveWaste = new RadioactiveItem("radioactiveWaste", GoodGenerator.GG, 400);
+    //public static final Item plasticCase = new MyItems("plasticCase", GoodGenerator.GG);
+
 
     public static final Block MAR_Casing = new Casing("MAR_Casing", new String[]{GoodGenerator.MOD_ID+":MAR_Casing"});
     public static final Block FRF_Casings = new Casing("FRF_Casing", new String[]{"gregtech:iconsets/MACHINE_CASING_MINING_BLACKPLUTONIUM"});

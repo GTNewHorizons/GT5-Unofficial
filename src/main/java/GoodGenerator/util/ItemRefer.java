@@ -26,6 +26,7 @@ public final class ItemRefer {
     public static ItemRefer Special_Ceramics_Plate = getItemStack(specialCeramicsPlate);
     public static ItemRefer Radioactive_Waste = getItemStack(radioactiveWaste);
 
+
     public static ItemRefer Field_Restriction_Casing = getItemStack(MAR_Casing);
     public static ItemRefer Naquadah_Fuel_Refinery_Casing = getItemStack(FRF_Casings);
     public static ItemRefer Field_Restriction_Coil_T1 = getItemStack(FRF_Coil_1);

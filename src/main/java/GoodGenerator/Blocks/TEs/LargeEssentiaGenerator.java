@@ -18,6 +18,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -249,9 +250,11 @@ public class LargeEssentiaGenerator extends GT_MetaTileEntity_MultiblockBase_EM 
         for (EssentiaHatch hatch: this.mEssentiaHatch){
             AspectList aspects = hatch.getAspects();
             for (Aspect aspect: aspects.aspects.keySet()) {
-                while (EUt < EULimit && aspects.getAmount(aspect) > 0) {
+                while (EUt + getPerAspectEnergy(aspect) <= EULimit && aspects.getAmount(aspect) > 0) {
                     EUt += getPerAspectEnergy(aspect);
                     aspects.reduce(aspect, 1);
+                    if (aspects.getAmount(aspect) == 0)
+                        aspects.remove(aspect);
                 }
             }
         }
