@@ -54,7 +54,7 @@ public class NeutronAccelerator extends GT_MetaTileEntity_Hatch_Energy {
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (this.getBaseMetaTileEntity().isServerSide()) {
-            if (aBaseMetaTileEntity.getStoredEU() >= getMaxEUConsume()) {
+            if (aBaseMetaTileEntity.getStoredEU() >= getMaxEUConsume() && aBaseMetaTileEntity.isAllowedToWork()) {
                 setEUVar(aBaseMetaTileEntity.getStoredEU() - getMaxEUConsume());
                 isRunning = true;
             } else {

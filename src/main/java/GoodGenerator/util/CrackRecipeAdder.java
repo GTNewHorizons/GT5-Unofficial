@@ -1,6 +1,7 @@
 package GoodGenerator.util;
 
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -43,5 +44,17 @@ public class CrackRecipeAdder {
         }
 
         GT_Values.RA.addUniversalDistillationRecipe(FluidRegistry.getFluidStack("heavilycracked"+name,1000),actOutput,outputItem,Duration / 2,EUt / 3);
+    }
+
+    public static void addUniversalCircuitAssemblerRecipe(ItemStack[] inputs, ItemStack output, int solders, int duration, int EUt, boolean isClean) {
+        GT_Values.RA.addCircuitAssemblerRecipe(inputs, Materials.SolderingAlloy.getMolten(solders), output, duration, EUt, isClean);
+        GT_Values.RA.addCircuitAssemblerRecipe(inputs, Materials.Tin.getMolten(solders * 2), output, duration, EUt, isClean);
+        GT_Values.RA.addCircuitAssemblerRecipe(inputs, Materials.Lead.getMolten(solders * 4), output, duration, EUt, isClean);
+    }
+
+    public static void addUniversalAssemblerRecipe(ItemStack[] inputs, ItemStack output, int solders, int duration, int EUt, boolean isClean) {
+        GT_Values.RA.addAssemblerRecipe(inputs, Materials.SolderingAlloy.getMolten(solders), output, duration, EUt, isClean);
+        GT_Values.RA.addAssemblerRecipe(inputs, Materials.Tin.getMolten(solders * 2), output, duration, EUt, isClean);
+        GT_Values.RA.addAssemblerRecipe(inputs, Materials.Lead.getMolten(solders * 4), output, duration, EUt, isClean);
     }
 }

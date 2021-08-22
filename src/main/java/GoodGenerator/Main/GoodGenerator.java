@@ -3,10 +3,7 @@ package GoodGenerator.Main;
 import GoodGenerator.Common.CommonProxy;
 import GoodGenerator.CrossMod.Thaumcraft.Research;
 import GoodGenerator.Items.MyMaterial;
-import GoodGenerator.Loader.FuelRecipeLoader;
-import GoodGenerator.Loader.Loaders;
-import GoodGenerator.Loader.NeutronActivatorLoader;
-import GoodGenerator.Loader.RecipeLoader;
+import GoodGenerator.Loader.*;
 import GoodGenerator.Network.MessageOpenNeutronSensorGUI;
 import GoodGenerator.Network.MessageSetNeutronSensorData;
 import GoodGenerator.Tabs.MyTabs;
@@ -71,6 +68,7 @@ public final class GoodGenerator {
         proxy.postInit(event);
         RecipeLoader.RecipeLoad();
         RecipeLoader.Fixer();
+        RecipeLoader_02.RecipeLoad();
         NeutronActivatorLoader.NARecipeLoad();
         if (Loader.isModLoaded("Thaumcraft")){
             Research.addResearch();

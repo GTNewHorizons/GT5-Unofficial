@@ -2,6 +2,7 @@ package GoodGenerator.Loader;
 
 import GoodGenerator.Items.MyMaterial;
 import GoodGenerator.util.CrackRecipeAdder;
+import GoodGenerator.util.ItemRefer;
 import GoodGenerator.util.MaterialFix;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import cpw.mods.fml.common.Loader;
@@ -85,7 +86,7 @@ public class RecipeLoader {
         GT_Values.RA.addAssemblerRecipe(
                new ItemStack[]{
                         MyMaterial.graphiteUraniumMixture.get(OrePrefixes.dust,4),
-                        GT_OreDictUnificator.get(OrePrefixes.foil,Materials.TungstenCarbide,16),
+                        GT_OreDictUnificator.get(OrePrefixes.foil,Materials.TungstenCarbide,2),
                         GT_Utility.getIntegratedCircuit(1)
                },
                 null,
@@ -1114,6 +1115,7 @@ public class RecipeLoader {
 
         GT_ModHandler.addCraftingRecipe(
                 new ItemStack(Loaders.rawCylinder,1),
+                GT_ModHandler.RecipeBits.DISMANTLEABLE,
                 new Object[]{
                         "PPP","PFP","PPP",
                         'P', new ItemStack(Loaders.specialCeramicsPlate),
@@ -1294,6 +1296,7 @@ public class RecipeLoader {
 
         GT_ModHandler.addCraftingRecipe(
                 Loaders.UCFE.copy(),
+                GT_ModHandler.RecipeBits.DISMANTLEABLE,
                 new Object[]{
                         "TZT","ALB","WGW",
                         'T', GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Titanium,1),
@@ -1305,9 +1308,295 @@ public class RecipeLoader {
                         'G', GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.Osmium,1),
                 }
         );
+
+        //neutron activator
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[]{
+                        GT_OreDictUnificator.get(OrePrefixes.stick, Materials.PolyvinylChloride, 4),
+                        GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.Plastic, 4),
+                        GT_Utility.getIntegratedCircuit(8)
+                },
+                FluidRegistry.getFluidStack("dye.chemical.dyecyan", 144),
+                ItemRefer.Plastic_Case.get(1),
+                100,
+                28
+        );
+
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[]{
+                        GT_OreDictUnificator.get(OrePrefixes.stick, Materials.PolyvinylChloride, 4),
+                        GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.Plastic, 4),
+                        GT_Utility.getIntegratedCircuit(8)
+                },
+                FluidRegistry.getFluidStack("dye.watermixed.dyecyan", 144),
+                ItemRefer.Plastic_Case.get(1),
+                100,
+                28
+        );
+
+        GT_ModHandler.addCraftingRecipe(
+                ItemRefer.Plastic_Case.get(1),
+                new Object[]{
+                        "PCP","CDC","PCP",
+                        'P', GT_OreDictUnificator.get(OrePrefixes.stick, Materials.PolyvinylChloride,1),
+                        'C', GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.Plastic,1),
+                        'D', "dyeCyan"
+                }
+        );
+
+        GT_ModHandler.addCraftingRecipe(
+                ItemRefer.Micro_Heater.get(1),
+                GT_ModHandler.RecipeBits.DISMANTLEABLE,
+                new Object[]{
+                        "PIP","UBU","CTC",
+                        'P', "plateQuintuplePaper",
+                        'I', ItemList.Circuit_Chip_ULPIC,
+                        'U', "circuitPrimitive",
+                        'B', ItemList.Circuit_Board_Coated_Basic,
+                        'C', ItemList.ULV_Coil,
+                        'T', ItemList.Battery_RE_ULV_Tantalum
+                }
+        );
+
+        GT_Values.RA.addAutoclaveRecipe(
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Quartzite,1),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sodium,4),
+                Materials.Water.getFluid(1000),
+                ItemRefer.Quartz_Wafer.get(1),
+                3333,
+                6000,
+                30,
+                true
+        );
+
+        GT_Values.RA.addAutoclaveRecipe(
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Quartzite,1),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sodium,4),
+                FluidRegistry.getFluidStack("ic2distilledwater", 1000),
+                ItemRefer.Quartz_Wafer.get(1),
+                3333,
+                1500,
+                30,
+                true
+        );
+
+        CrackRecipeAdder.addUniversalCircuitAssemblerRecipe(
+                new ItemStack[]{
+                        ItemRefer.Quartz_Wafer.get(1),
+                        ItemRefer.Special_Ceramics_Plate.get(2),
+                        ItemRefer.Micro_Heater.get(1),
+                        GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.EnergeticAlloy,4),
+                        ItemList.Circuit_Chip_ILC.get(4),
+                        GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Silver,2),
+                },
+                ItemRefer.Quartz_Crystal_Resonator.get(1),
+                36,
+                100,
+                120,
+                true
+        );
+
+        CrackRecipeAdder.addUniversalAssemblerRecipe(
+                new ItemStack[]{
+                        ItemRefer.Quartz_Crystal_Resonator.get(2),
+                        ItemRefer.Plastic_Case.get(1),
+                        GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Good,1),
+                        ItemList.Cover_Screen.get(1),
+                        ItemList.Circuit_Parts_Diode.get(16),
+                        GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Aluminium,8),
+                },
+                ItemRefer.Inverter.get(1),
+                144,
+                240,
+                120,
+                false
+        );
+
+        CrackRecipeAdder.addUniversalAssemblerRecipe(
+                new ItemStack[]{
+                        ItemRefer.Quartz_Crystal_Resonator.get(2),
+                        ItemRefer.Plastic_Case.get(1),
+                        GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Good,1),
+                        ItemList.Cover_Screen.get(1),
+                        ItemList.Circuit_Parts_DiodeSMD.get(16),
+                        GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Aluminium,8),
+                },
+                ItemRefer.Inverter.get(1),
+                144,
+                240,
+                120,
+                false
+        );
+
+        CrackRecipeAdder.addUniversalAssemblerRecipe(
+                new ItemStack[]{
+                        ItemRefer.Quartz_Crystal_Resonator.get(2),
+                        ItemRefer.Plastic_Case.get(1),
+                        GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Good,1),
+                        ItemList.Cover_Screen.get(1),
+                        ItemList.Circuit_Parts_DiodeASMD.get(4),
+                        GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Aluminium,8),
+                },
+                ItemRefer.Inverter.get(1),
+                144,
+                240,
+                120,
+                false
+        );
+
+        GT_ModHandler.addCraftingRecipe(
+                Loaders.NeutronAccelerators[0].copy(),
+                GT_ModHandler.RecipeBits.DISMANTLEABLE,
+                new Object[]{
+                        "WPM","CHI","WPM",
+                        'W', GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Lead,1),
+                        'P', GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Lead,1),
+                        'M', GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Lead,1),
+                        'C', GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Wood,1),
+                        'H', ItemList.Hull_ULV,
+                        'I', ItemRefer.Inverter.get(1),
+                }
+        );
+
+        GT_ModHandler.addCraftingRecipe(
+                Loaders.NeutronAccelerators[1].copy(),
+                GT_ModHandler.RecipeBits.DISMANTLEABLE,
+                new Object[]{
+                        "WPM","CHI","WPM",
+                        'W', GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Tin,1),
+                        'P', GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Lead,1),
+                        'M', ItemList.Electric_Motor_LV,
+                        'C', "plateAnyRubber",
+                        'H', ItemList.Hull_LV,
+                        'I', ItemRefer.Inverter.get(1),
+                }
+        );
+
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[]{
+                        ItemRefer.Inverter.get(1),
+                        ItemList.Hull_MV.get(1L),
+                        GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.AnyCopper,2),
+                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Plastic,1),
+                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Beryllium,2),
+                        ItemList.Electric_Motor_MV.get(2),
+                },
+                null,
+                Loaders.NeutronAccelerators[2].copy(),
+                300,
+                120
+        );
+
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[]{
+                        ItemRefer.Inverter.get(1),
+                        ItemList.Hull_HV.get(1L),
+                        GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Gold,2),
+                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.PolyvinylChloride,1),
+                        GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Beryllium,2),
+                        ItemList.Electric_Motor_HV.get(2),
+                },
+                null,
+                Loaders.NeutronAccelerators[3].copy(),
+                300,
+                480
+        );
+
+        GT_Values.RA.addAssemblylineRecipe(
+                Loaders.NeutronAccelerators[5].copy(),
+                20000,
+                new Object[] {
+                        ItemRefer.Inverter.get(2),
+                        ItemList.Hull_LuV.get(1L),
+                        GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.YttriumBariumCuprate,2),
+                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.NetherStar,1),
+                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Polybenzimidazole,4),
+                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.NeodymiumMagnetic,4),
+                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.NeodymiumMagnetic,4),
+                        ItemList.Electric_Motor_LuV.get(2),
+                        GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorMV,4),
+                },
+                new FluidStack[]{
+                        Materials.Argon.getGas(3000)
+                },
+                Loaders.NeutronAccelerators[6].copy(),
+                300,
+                30720
+        );
+
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[]{
+                        ItemList.Casing_IV.get(1L),
+                        ItemList.Cover_ActivityDetector.get(1L),
+                        ItemList.Cover_Screen.get(1L),
+                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.VibrantAlloy,4),
+                        GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data,1),
+                        ItemList.Sensor_HV.get(2),
+                        GT_Utility.getIntegratedCircuit(1)
+                },
+                Materials.Helium.getGas(1000),
+                Loaders.NS.copy(),
+                200,
+                1920
+        );
+
+        GT_ModHandler.addCraftingRecipe(
+                ItemRefer.Neutron_Source.get(1),
+                GT_ModHandler.RecipeBits.DISMANTLEABLE,
+                new Object[]{
+                        " P ","PUP"," P ",
+                        'P', GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Steel,1),
+                        'U', ItemRefer.High_Density_Uranium.get(1)
+                }
+        );
+
+        GT_ModHandler.addCraftingRecipe(
+                Loaders.NA.copy(),
+                GT_ModHandler.RecipeBits.DISMANTLEABLE,
+                new Object[]{
+                        "PCP","ESE","PCP",
+                        'C', "circuitMaster",
+                        'P', GT_OreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel,1),
+                        'E', ItemList.Emitter_EV.get(1),
+                        'S', ItemRefer.Neutron_Source.get(1),
+                }
+        );
     }
 
     public static void InitLoadRecipe(){
+
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[]{
+                        ItemRefer.Inverter.get(1),
+                        ItemList.Hull_EV.get(1L),
+                        GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Aluminium,2),
+                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.AnySyntheticRubber,1),
+                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.IronMagnetic,4),
+                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.TungstenCarbide,2),
+                        ItemList.Electric_Motor_EV.get(2),
+                },
+                null,
+                Loaders.NeutronAccelerators[4].copy(),
+                300,
+                1920
+        );
+
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[]{
+                        ItemRefer.Inverter.get(1),
+                        ItemList.Hull_IV.get(1L),
+                        GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Tungsten,2),
+                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Silicone,1),
+                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.SteelMagnetic,4),
+                        GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.TungstenCarbide,2),
+                        ItemList.Electric_Motor_IV.get(2),
+                },
+                null,
+                Loaders.NeutronAccelerators[5].copy(),
+                300,
+                7680
+        );
+
         GT_Values.RA.addBlastRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Sapphire,1),
                 GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Carbon,3),

@@ -399,7 +399,7 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
                       .addSeparator()
                       .beginStructureBlock(7, 8, 7, true)
                       .addController("Front bottom")
-                      .addEnergyHatch("Any bottom layer casing, only accept ONE!")
+                      .addDynamoHatch("Any bottom layer casing, only accept ONE!")
                       .addInputHatch("Any bottom layer casing")
                       .addOutputHatch("Any bottom layer casing")
                       .addMaintenanceHatch("Any bottom layer casing")

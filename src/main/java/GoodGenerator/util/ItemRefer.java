@@ -25,7 +25,12 @@ public final class ItemRefer {
     public static ItemRefer Special_Ceramics_Dust = getItemStack(specialCeramics);
     public static ItemRefer Special_Ceramics_Plate = getItemStack(specialCeramicsPlate);
     public static ItemRefer Radioactive_Waste = getItemStack(radioactiveWaste);
-
+    public static ItemRefer Plastic_Case = getItemStack(plasticCase);
+    public static ItemRefer Quartz_Wafer = getItemStack(quartzWafer);
+    public static ItemRefer Micro_Heater = getItemStack(microHeater);
+    public static ItemRefer Quartz_Crystal_Resonator = getItemStack(quartzCrystalResonator);
+    public static ItemRefer Inverter = getItemStack(inverter);
+    public static ItemRefer Neutron_Source = getItemStack(neutronSource);
 
     public static ItemRefer Field_Restriction_Casing = getItemStack(MAR_Casing);
     public static ItemRefer Naquadah_Fuel_Refinery_Casing = getItemStack(FRF_Casings);
@@ -37,15 +42,16 @@ public final class ItemRefer {
     public static ItemRefer Raw_Cylinder = getItemStack(rawCylinder);
     public static ItemRefer Titanium_Plated_Cylinder = getItemStack(titaniumPlatedCylinder);
     public static ItemRefer Magic_Casing = getItemStack(magicCasing);
+    public static ItemRefer Speeding_Pipe = getItemStack(speedingPipe);
     public static ItemRefer Essentia_Cell_T1 = getItemStack(essentiaCell, 0);
     public static ItemRefer Essentia_Cell_T2 = getItemStack(essentiaCell, 1);
     public static ItemRefer Essentia_Cell_T3 = getItemStack(essentiaCell, 2);
     public static ItemRefer Essentia_Hatch = getItemStack(essentiaHatch);
 
-    public static ItemRefer Large_Naquadah_Reactor = getItemStack(MAR);
-    public static ItemRefer Naquadah_Fuel_Refinery = getItemStack(FRF);
-    public static ItemRefer Universal_Chemical_Fuel_Engine = getItemStack(UCFE);
-    public static ItemRefer Large_Essentia_Generator = getItemStack(LEG);
+    public static ItemRefer Large_Naquadah_Reactor = getItemStack(MAR.copy());
+    public static ItemRefer Naquadah_Fuel_Refinery = getItemStack(FRF.copy());
+    public static ItemRefer Universal_Chemical_Fuel_Engine = getItemStack(UCFE.copy());
+    public static ItemRefer Large_Essentia_Generator = getItemStack(LEG.copy());
 
     private Item mItem = null;
     private Block mBlock = null;

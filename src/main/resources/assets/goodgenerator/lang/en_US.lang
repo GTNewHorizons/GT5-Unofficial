@@ -35,6 +35,15 @@ item.aluminumNitride.name=Aluminum Nitride Dust
 item.specialCeramics.name=Special Ceramics Dust
 item.specialCeramicsPlate.name=Special Ceramics Plate
 item.radioactiveWaste.name=Radioactive Waste
+item.plasticCase.name=Plastic Case
+item.quartzWafer.name=Quartz Wafer
+item.microHeater.name=Micro-Heater
+item.quartzCrystalResonator.name=Quartz Crystal Resonator
+item.inverter.name=Inverter
+item.neutronSource.name=Neutron Source Case
+
+#Tooltip
+inverter.tooltip.0=Turn DC into AC
 
 #Fluids
 fluid.lightlyCrackedNaquadahGas=Lightly Cracked Naquadah Gas

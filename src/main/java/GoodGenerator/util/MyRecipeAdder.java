@@ -95,7 +95,7 @@ public class MyRecipeAdder {
 
     public void addNeutronActivatorRecipe(FluidStack[] input1, ItemStack[] input2, FluidStack[] output1, ItemStack[] output2, int ticks, int maxNKE, int minNKE) {
         if (maxNKE <= 0) maxNKE = 1;
-        if (maxNKE >= 280) maxNKE = 280;
+        if (maxNKE >= 1100) maxNKE = 1100;
         if (minNKE < 0) minNKE = 0;
         if (minNKE >= maxNKE) minNKE = maxNKE - 1;
         NA.addNARecipe(input1, input2, output1, output2, ticks, maxNKE * 10000 + minNKE);

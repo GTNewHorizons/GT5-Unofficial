@@ -48,7 +48,7 @@ public class NeutronActivator extends GT_MetaTileEntity_MultiblockBase_EM implem
     protected final ArrayList<NeutronAccelerator> mNeutronAccelerator = new ArrayList<>();
     protected final ArrayList<NeutronSensor> mNeutronSensor = new ArrayList<>();
     protected int casingAmount = 0;
-    protected int eV = 0;
+    protected int eV = 0, mCeil = 0, mFloor = 0;
 
     private static final IIconContainer textureFontOn = new Textures.BlockIcons.CustomIcon("icons/NeutronActivator_On");
     private static final IIconContainer textureFontOn_Glow = new Textures.BlockIcons.CustomIcon("icons/NeutronActivator_On_GLOW");
@@ -104,6 +104,8 @@ public class NeutronActivator extends GT_MetaTileEntity_MultiblockBase_EM implem
         for (GT_Recipe recipe : tRecipes) {
             minNKE = (recipe.mSpecialValue % 10000) * 1000000;
             maxNKE = (recipe.mSpecialValue / 10000) * 1000000;
+            mFloor = minNKE;
+            mCeil = maxNKE;
             if (recipe.isRecipeInputEqual(true, inFluids, inItems)) {
                 mMaxProgresstime = recipe.mDuration;
                 if (eV <= maxNKE && eV >= minNKE) {
@@ -143,12 +145,16 @@ public class NeutronActivator extends GT_MetaTileEntity_MultiblockBase_EM implem
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         eV = aNBT.getInteger("mKeV");
+        mCeil = aNBT.getInteger("mCeil");
+        mFloor = aNBT.getInteger("mFloor");
         super.loadNBTData(aNBT);
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setInteger("mKeV", eV);
+        aNBT.setInteger("mCeil", mCeil);
+        aNBT.setInteger("mFloor", mFloor);
         super.saveNBTData(aNBT);
     }
 
@@ -162,7 +168,7 @@ public class NeutronActivator extends GT_MetaTileEntity_MultiblockBase_EM implem
                 .addInfo("It will output correct products with Specific Neutron Kinetic Energy.")
                 .addInfo("Otherwise it will output trash.")
                 .addInfo("The Neutron Kinetic Energy will decrease 72KeV/s when no Neutron Accelerator is running.")
-                .addInfo("It will explode when the Neutron Kinetic Energy is over" + EnumChatFormatting.RED + " 300MeV" + EnumChatFormatting.GRAY + ".")
+                .addInfo("It will explode when the Neutron Kinetic Energy is over" + EnumChatFormatting.RED + " 1200MeV" + EnumChatFormatting.GRAY + ".")
                 .addInfo("The structure is too complex!")
                 .addInfo("Follow the" + EnumChatFormatting.DARK_BLUE + " Tec" + EnumChatFormatting.BLUE + "Tech" + EnumChatFormatting.GRAY + " blueprint to build the main structure.")
                 .addSeparator()
@@ -291,7 +297,7 @@ public class NeutronActivator extends GT_MetaTileEntity_MultiblockBase_EM implem
     }
 
     public int maxNeutronKineticEnergy() {
-        return 300000000;
+        return 1200000000;
     }
 
     public int getCurrentNeutronKineticEnergy() {
@@ -331,6 +337,11 @@ public class NeutronActivator extends GT_MetaTileEntity_MultiblockBase_EM implem
                         tHatch.outputRedstoneSignal();
                     } else tHatch.stopOutputRedstoneSignal();
                 }
+            }
+
+            if (mProgresstime < mMaxProgresstime && (eV > mCeil || eV < mFloor)) {
+                this.mOutputFluids = null;
+                this.mOutputItems = new ItemStack[]{ItemRefer.Radioactive_Waste.get(4)};
             }
         }
     }

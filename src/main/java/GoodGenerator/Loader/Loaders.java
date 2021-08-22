@@ -22,6 +22,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
+import static GoodGenerator.util.DescTextLocalization.addText;
+
 public class Loaders {
 
     public static final int IDOffset = 32001;
@@ -39,11 +41,16 @@ public class Loaders {
     public static final Item highDensityPlutonium = new RadioactiveItem("highDensityPlutonium", GoodGenerator.GG, 4050);
     public static final Item rawAtomicSeparationCatalyst = new MyItems("rawAtomicSeparationCatalyst", GoodGenerator.GG);
     public static final Item advancedRadiationProtectionPlate = new MyItems("advancedRadiationProtectionPlate", GoodGenerator.GG);
-    public static final Item aluminumNitride = new MyItems("aluminumNitride", GoodGenerator.GG);
+    public static final Item aluminumNitride = new MyItems("aluminumNitride", "AlN", GoodGenerator.GG);
     public static final Item specialCeramics = new MyItems("specialCeramics", GoodGenerator.GG);
     public static final Item specialCeramicsPlate = new MyItems("specialCeramicsPlate", GoodGenerator.GG);
     public static final Item radioactiveWaste = new RadioactiveItem("radioactiveWaste", GoodGenerator.GG, 400);
-    //public static final Item plasticCase = new MyItems("plasticCase", GoodGenerator.GG);
+    public static final Item plasticCase = new MyItems("plasticCase", GoodGenerator.GG);
+    public static final Item quartzWafer = new MyItems("quartzWafer", GoodGenerator.GG);
+    public static final Item microHeater = new MyItems("microHeater", GoodGenerator.GG);
+    public static final Item quartzCrystalResonator = new MyItems("quartzCrystalResonator", GoodGenerator.GG);
+    public static final Item inverter = new MyItems("inverter", addText("inverter.tooltip", 1), GoodGenerator.GG);
+    public static final Item neutronSource = new MyItems("neutronSource", GoodGenerator.GG);
 
 
     public static final Block MAR_Casing = new Casing("MAR_Casing", new String[]{GoodGenerator.MOD_ID+":MAR_Casing"});
@@ -98,6 +105,12 @@ public class Loaders {
         GameRegistry.registerItem(specialCeramics, "specialCeramics", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(specialCeramicsPlate, "specialCeramicsPlate", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(radioactiveWaste, "radioactiveWaste", GoodGenerator.MOD_ID);
+        GameRegistry.registerItem(plasticCase, "plasticCase", GoodGenerator.MOD_ID);
+        GameRegistry.registerItem(quartzWafer, "quartzWafer", GoodGenerator.MOD_ID);
+        GameRegistry.registerItem(microHeater, "microHeater", GoodGenerator.MOD_ID);
+        GameRegistry.registerItem(quartzCrystalResonator, "quartzCrystalResonator", GoodGenerator.MOD_ID);
+        GameRegistry.registerItem(inverter, "inverter", GoodGenerator.MOD_ID);
+        GameRegistry.registerItem(neutronSource, "neutronSource", GoodGenerator.MOD_ID);
         Loaders.MAR = new MultiNqGenerator(12732, "NaG", "Large Naquadah Reactor").getStackForm(1L);
         Loaders.FRF = new FuelRefineFactory(16999, "FRF", "Naquadah Fuel Refinery").getStackForm(1L);
         Loaders.UCFE = new UniversalChemicalFuelEngine(IDOffset, "UniversalChemicalFuelEngine", "Universal Chemical Fuel Engine").getStackForm(1L);
