@@ -44,6 +44,7 @@ public class MyItems extends Item {
         }
 
         @SideOnly(Side.CLIENT)
+        @SuppressWarnings({"unchecked"})
         public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List p_77624_3_, boolean p_77624_4_) {
                 if (tooltips.size() > 0) {
                         p_77624_3_.addAll(tooltips);

@@ -1570,7 +1570,7 @@ public class RecipeLoader {
                         ItemRefer.Inverter.get(1),
                         ItemList.Hull_EV.get(1L),
                         GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Aluminium,2),
-                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.AnySyntheticRubber,1),
+                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.StyreneButadieneRubber,1),
                         GT_OreDictUnificator.get(OrePrefixes.plate, Materials.IronMagnetic,4),
                         GT_OreDictUnificator.get(OrePrefixes.plate, Materials.TungstenCarbide,2),
                         ItemList.Electric_Motor_EV.get(2),

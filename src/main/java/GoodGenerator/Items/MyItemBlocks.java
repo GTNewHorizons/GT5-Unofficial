@@ -1,5 +1,7 @@
 package GoodGenerator.Items;
 
+import GoodGenerator.Blocks.RegularBlock.TEBlock;
+import GoodGenerator.util.DescTextLocalization;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.util.GT_LanguageManager;
@@ -9,6 +11,9 @@ import net.minecraft.item.ItemBlock;
 import GoodGenerator.Main.GoodGenerator;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class MyItemBlocks extends ItemBlock {
     private final String mNoMobsToolTip = GT_LanguageManager.addStringLocalization("gt.nomobspawnsonthisblock", "Mobs cannot Spawn on this Block");
@@ -48,5 +53,19 @@ public class MyItemBlocks extends ItemBlock {
     @SideOnly(Side.CLIENT)
     public IIcon getIconFromDamageForRenderPass(int p_77618_1_, int p_77618_2_) {
         return this.field_150939_a.getIcon(0, p_77618_2_);
+    }
+
+    @Override
+    @SuppressWarnings({"unchecked"})
+    @SideOnly(Side.CLIENT)
+    public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List p_77624_3_, boolean p_77624_4_) {
+        if (p_77624_1_ == null) return;
+        p_77624_3_.add(mNoMobsToolTip);
+        if (Block.getBlockFromItem(p_77624_1_.getItem()) instanceof TEBlock) {
+            TEBlock tile = (TEBlock) Block.getBlockFromItem(p_77624_1_.getItem());
+            if (tile.getIndex() == 1)
+                p_77624_3_.addAll(Arrays.asList(DescTextLocalization.addText("EssentiaHatch.tooltip", 2)));
+        }
+        else p_77624_3_.add(mNoTileEntityToolTip);
     }
 }

@@ -44,6 +44,8 @@ item.neutronSource.name=Neutron Source Case
 
 #Tooltip
 inverter.tooltip.0=Turn DC into AC
+EssentiaHatch.tooltip.0=You can right click it with an Essentia Jar to set Essentia Filter.
+EssentiaHatch.tooltip.1=Right click it with empty hands to clear the Filter.
 
 #Fluids
 fluid.lightlyCrackedNaquadahGas=Lightly Cracked Naquadah Gas

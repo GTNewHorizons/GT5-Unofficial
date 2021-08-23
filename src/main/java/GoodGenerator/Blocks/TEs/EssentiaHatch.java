@@ -17,17 +17,19 @@ import java.util.ArrayList;
 
 public class EssentiaHatch extends TileEntity implements IAspectContainer, IEssentiaTransport {
 
-    public int facing;
-    public boolean isOn;
+    private Aspect mLocked;
 
     private AspectList current = new AspectList();
+
+    public void setLockedAspect(Aspect aAspect) {
+        this.mLocked = aAspect;
+    }
 
     @Override
     public void readFromNBT(NBTTagCompound tagCompound) {
         super.readFromNBT(tagCompound);
 
-        this.facing = tagCompound.getInteger("facing");
-        this.isOn = tagCompound.getBoolean("isOn");
+        this.mLocked = Aspect.getAspect(tagCompound.getString("mLocked"));
 
         current = new AspectList();
         NBTTagList tlist = tagCompound.getTagList("Aspects", 10);
@@ -43,8 +45,7 @@ public class EssentiaHatch extends TileEntity implements IAspectContainer, IEsse
     public void writeToNBT(NBTTagCompound tagCompound) {
         super.writeToNBT(tagCompound);
 
-        tagCompound.setInteger("facing", this.facing);
-        tagCompound.setBoolean("isOn", this.isOn);
+        tagCompound.setString("mLocked", this.mLocked == null ? "" : this.mLocked.getTag());
 
         NBTTagList tlist = new NBTTagList();
         Aspect[] aspectA = current.getAspects();
@@ -92,8 +93,12 @@ public class EssentiaHatch extends TileEntity implements IAspectContainer, IEsse
                 if (!pipe.canOutputTo(ForgeDirection.VALID_DIRECTIONS[i])) {
                     return;
                 }
-                if ((pipe.getEssentiaType(ForgeDirection.VALID_DIRECTIONS[i]) != null) && (pipe.getSuctionAmount(ForgeDirection.VALID_DIRECTIONS[i]) < getSuctionAmount(ForgeDirection.VALID_DIRECTIONS[i]))) {
-                    addToContainer(pipe.getEssentiaType(ForgeDirection.VALID_DIRECTIONS[i]), pipe.takeEssentia(pipe.getEssentiaType(ForgeDirection.VALID_DIRECTIONS[i]), 1, ForgeDirection.VALID_DIRECTIONS[i]));
+                if ((pipe.getEssentiaType(ForgeDirection.VALID_DIRECTIONS[i].getOpposite()) != null) && (pipe.getSuctionAmount(ForgeDirection.VALID_DIRECTIONS[i]) < getSuctionAmount(ForgeDirection.VALID_DIRECTIONS[i]))) {
+                    if (mLocked != null && pipe.getEssentiaType(ForgeDirection.VALID_DIRECTIONS[i].getOpposite()) == mLocked) {
+                        addToContainer(mLocked, pipe.takeEssentia(mLocked, 1, ForgeDirection.VALID_DIRECTIONS[i]));
+                    }
+                    if (mLocked == null)
+                        addToContainer(pipe.getEssentiaType(ForgeDirection.VALID_DIRECTIONS[i]), pipe.takeEssentia(pipe.getEssentiaType(ForgeDirection.VALID_DIRECTIONS[i]), 1, ForgeDirection.VALID_DIRECTIONS[i]));
                 }
             }
         }
@@ -111,12 +116,13 @@ public class EssentiaHatch extends TileEntity implements IAspectContainer, IEsse
 
     @Override
     public boolean doesContainerAccept(Aspect aspect) {
-        return true;
+        return mLocked == null || mLocked.equals(aspect);
     }
 
     @Override
     public int addToContainer(Aspect aspect, int i) {
         current.add(aspect, i);
+        this.markDirty();
         return 0;
     }
 
@@ -168,7 +174,7 @@ public class EssentiaHatch extends TileEntity implements IAspectContainer, IEsse
 
     @Override
     public Aspect getSuctionType(ForgeDirection forgeDirection) {
-        return null;
+        return this.mLocked;
     }
 
     @Override

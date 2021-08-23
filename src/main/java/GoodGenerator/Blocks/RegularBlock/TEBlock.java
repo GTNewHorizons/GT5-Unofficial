@@ -12,12 +12,14 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import thaumcraft.api.aspects.IEssentiaContainerItem;
 
 import java.util.List;
 
@@ -27,7 +29,7 @@ public class TEBlock extends BlockContainer {
     protected IIcon[] texture;
     String[] textureNames;
     protected String name;
-    int index;
+    protected int index;
 
     public TEBlock(String name, String[] texture, CreativeTabs Tab){
         super(Material.iron);
@@ -61,6 +63,10 @@ public class TEBlock extends BlockContainer {
         this.setHarvestLevel("wrench",2);
         this.setCreativeTab(GoodGenerator.GG);
         GregTech_API.registerMachineBlock(this, -1);
+    }
+
+    public int getIndex() {
+        return this.index;
     }
 
     @Override
@@ -132,6 +138,30 @@ public class TEBlock extends BlockContainer {
         if (index == 1)
             return new EssentiaHatch();
         return null;
+    }
+
+    @Override
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9) {
+        if (world.isRemote) {
+            return false;
+        } else {
+            TileEntity tile = world.getTileEntity(x, y, z);
+            if (index == 1) {
+                if (tile instanceof EssentiaHatch) {
+                    ItemStack tItemStack = player.getHeldItem();
+                    if (tItemStack != null) {
+                        Item tItem = tItemStack.getItem();
+                        if (tItem instanceof IEssentiaContainerItem)
+                            ((EssentiaHatch) tile).setLockedAspect(((IEssentiaContainerItem) tItem).getAspects(player.getHeldItem()).getAspects()[0]);
+                    }
+                    else ((EssentiaHatch) tile).setLockedAspect(null);
+                    world.markBlockForUpdate(x, y, z);
+                    return true;
+                }
+                else return false;
+            }
+            else return false;
+        }
     }
 
     @Override

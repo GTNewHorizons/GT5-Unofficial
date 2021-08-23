@@ -606,6 +606,309 @@ public class MyMaterial implements Runnable {
             OffsetID + 52,
             TextureSet.SET_SHINY
     );
+
+    //Naquadah Rework Materials
+    public static final Werkstoff naquadahEarth = new Werkstoff(
+            new short[]{0x4c,0x4c,0x4c},
+            "Naquadah Earth",
+            subscriptNumbers("??NqTiGaAd??"),
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            OffsetID + 53,
+            TextureSet.SET_METALLIC
+    );
+
+    public static final Werkstoff titaniumTrifluoride = new Werkstoff(
+            new short[]{0xc0,0x92,0xa8},
+            "Titanium Trifluoride",
+            subscriptNumbers("TiF3"),
+            new Werkstoff.Stats().setElektrolysis(true),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            OffsetID + 54,
+            TextureSet.SET_METALLIC,
+            new Pair<> (Titanium, 1),
+            new Pair<> (Fluorine, 3)
+    );
+
+    public static final Werkstoff lowQualityNaquadahEmulsion = new Werkstoff(
+            new short[]{0x4c,0x4c,0x4c},
+            "Low Quality Naquadah Emulsion",
+            subscriptNumbers("??NqGaAd??"),
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            OffsetID + 55,
+            TextureSet.SET_FLUID
+    );
+
+    public static final Werkstoff galliumHydroxide = new Werkstoff(
+            new short[]{0xa6,0xa6,0xa6},
+            "Gallium Hydroxide",
+            subscriptNumbers("Ga(OH)3"),
+            new Werkstoff.Stats().setElektrolysis(true),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            OffsetID + 56,
+            TextureSet.SET_DULL,
+            new Pair<> (Gallium, 1),
+            new Pair<> (Oxygen, 3),
+            new Pair<> (Hydrogen, 3)
+    );
+
+    public static final Werkstoff lowQualityNaquadahSolution = new Werkstoff(
+            new short[]{0x71,0x62,0x62},
+            "Low Quality Naquadah Solution",
+            subscriptNumbers("~??NqAd??~"),
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            OffsetID + 57,
+            TextureSet.SET_FLUID
+    );
+
+    public static final Werkstoff towEthyl1Hexanol = new Werkstoff(
+            new short[]{0x80,0xb5,0x57},
+            "2-Ethyl-1-Hexanol",
+            subscriptNumbers("C8H18O"),
+            new Werkstoff.Stats().setElektrolysis(true),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            OffsetID + 58,
+            TextureSet.SET_FLUID,
+            new Pair<> (Carbon, 8),
+            new Pair<> (Oxygen, 1),
+            new Pair<> (Hydrogen, 18)
+    );
+
+    public static final Werkstoff P507 = new Werkstoff(
+            new short[]{0x29,0xc2,0x2a},
+            "P-507",
+            subscriptNumbers("(C8H17)2PO3H"),
+            new Werkstoff.Stats().setElektrolysis(true),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            OffsetID + 59,
+            TextureSet.SET_FLUID,
+            new Pair<> (Carbon, 16),
+            new Pair<> (Phosphorus, 1),
+            new Pair<> (Oxygen, 3),
+            new Pair<> (Hydrogen, 35)
+    );
+
+    public static final Werkstoff naquadahAdamantiumSolution = new Werkstoff(
+            new short[]{0x3d,0x38,0x38},
+            "Naquadah-Adamantium Solution",
+            subscriptNumbers("~NqAd~"),
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            OffsetID + 60,
+            TextureSet.SET_FLUID
+    );
+
+    public static final Werkstoff naquadahRichSolution = new Werkstoff(
+            new short[]{0x33,0x33,0x33},
+            "Naquadah-Rich Solution",
+            subscriptNumbers("~?Nq?~"),
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            OffsetID + 61,
+            TextureSet.SET_FLUID
+    );
+
+    public static final Werkstoff naquadahine = new Werkstoff(
+            new short[]{0x33,0x33,0x33},
+            "Naquadahine",
+            subscriptNumbers("NqO2"),
+            new Werkstoff.Stats().setElektrolysis(true),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            OffsetID + 62,
+            TextureSet.SET_METALLIC,
+            new Pair<> (Naquadah, 1),
+            new Pair<> (Oxygen, 2)
+    );
+
+    public static final Werkstoff fluorineRichWasteLiquid = new Werkstoff(
+            new short[]{0x13,0x68,0x62},
+            "Fluorine-Rich Waste Liquid",
+            new Werkstoff.Stats().setToxic(true),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            OffsetID + 63,
+            TextureSet.SET_FLUID
+    );
+
+    public static final Werkstoff wasteLiquid = new Werkstoff(
+            new short[]{0x14,0x1c,0x68},
+            "Waste Liquid",
+            new Werkstoff.Stats().setToxic(true),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            OffsetID + 64,
+            TextureSet.SET_FLUID
+    );
+
+    public static final Werkstoff adamantine = new Werkstoff(
+            new short[]{0xb7,0xb7,0xb7},
+            "Adamantine",
+            subscriptNumbers("Ad2O3"),
+            new Werkstoff.Stats().setElektrolysis(true),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            OffsetID + 65,
+            TextureSet.SET_DULL,
+            new Pair<> (Adamantium, 2),
+            new Pair<> (Oxygen, 3)
+    );
+
+    public static final Werkstoff enrichedNaquadahEarth = new Werkstoff(
+            new short[]{0x82,0x68,0x68},
+            "Enriched-Naquadah Earth",
+            subscriptNumbers("??KeNq") + CharExchanger.shifter(8314) + "??",
+            new Werkstoff.Stats().setRadioactive(true),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            OffsetID + 66,
+            TextureSet.SET_METALLIC
+    );
+
+    public static final Werkstoff triniumSulphate = new Werkstoff(
+            new short[]{0xda,0xda,0xda},
+            "Trinium Sulphate",
+            subscriptNumbers("KeSO4"),
+            new Werkstoff.Stats().setElektrolysis(true),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            OffsetID + 67,
+            TextureSet.SET_METALLIC,
+            new Pair<> (Trinium, 1),
+            new Pair<> (Sulfur, 1),
+            new Pair<> (Oxygen, 4)
+    );
+
+    public static final Werkstoff enrichedNaquadahRichSolution = new Werkstoff(
+            new short[]{0x52,0x39,0x39},
+            "Enriched-Naquadah-Rich Solution",
+            subscriptNumbers("~?Nq") + CharExchanger.shifter(8314) + "?~",
+            new Werkstoff.Stats().setRadioactive(true),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            OffsetID + 68,
+            TextureSet.SET_FLUID
+    );
+
+    public static final Werkstoff concentratedEnrichedNaquadahSludge = new Werkstoff(
+            new short[]{0x52,0x39,0x39},
+            "Concentrated Enriched-Naquadah Sludge",
+            subscriptNumbers("?Nq") + CharExchanger.shifter(8314) + "?",
+            new Werkstoff.Stats().setRadioactive(true),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            OffsetID + 69,
+            TextureSet.SET_METALLIC
+    );
+
+    public static final Werkstoff enrichedNaquadahSulphate = new Werkstoff(
+            new short[]{0x52,0x39,0x39},
+            "Enriched-Naquadah Sulphate",
+            "Nq" + CharExchanger.shifter(8314) + subscriptNumbers("(SO4)2"),
+            new Werkstoff.Stats().setRadioactive(true).setElektrolysis(true),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            OffsetID + 70,
+            TextureSet.SET_DULL,
+            new Pair<>(NaquadahEnriched, 1),
+            new Pair<>(Sulfur, 2),
+            new Pair<>(Oxygen, 8)
+    );
+
+    public static final Werkstoff naquadriaEarth = new Werkstoff(
+            new short[]{0x4d,0x4d,0x55},
+            "Naquadria Earth",
+            subscriptNumbers("??Nq*BaIn??"),
+            new Werkstoff.Stats().setRadioactive(true).setToxic(true),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            OffsetID + 71,
+            TextureSet.SET_METALLIC
+    );
+
+    public static final Werkstoff indiumPhosphate = new Werkstoff(
+            new short[]{0x2b,0x2e,0x70},
+            "Indium Phosphate",
+            subscriptNumbers("InPO4"),
+            new Werkstoff.Stats().setToxic(true).setElektrolysis(true),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            OffsetID + 72,
+            TextureSet.SET_DULL,
+            new Pair<>(Indium, 1),
+            new Pair<>(Phosphorus, 1),
+            new Pair<>(Oxygen, 4)
+    );
+
+    public static final Werkstoff lowQualityNaquadriaPhosphate = new Werkstoff(
+            new short[]{0x4d,0x4d,0x55},
+            "Low Quality Naquadria Phosphate",
+            subscriptNumbers("??Nq*3(PO4)4??"),
+            new Werkstoff.Stats().setRadioactive(true).setToxic(true),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            OffsetID + 73,
+            TextureSet.SET_DULL
+    );
+
+    public static final Werkstoff naquadriaRichSolution = new Werkstoff(
+            new short[]{0x1f,0x1e,0x33},
+            "Naquadria-Rich Solution",
+            subscriptNumbers("~?Nq*?~"),
+            new Werkstoff.Stats().setRadioactive(true).setToxic(true),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            OffsetID + 74,
+            TextureSet.SET_FLUID
+    );
+
+    public static final Werkstoff lowQualityNaquadriaSulphate = new Werkstoff(
+            new short[]{0x73,0x72,0x84},
+            "Low Quality Naquadria Sulphate",
+            subscriptNumbers("??Nq*(SO4)2??"),
+            new Werkstoff.Stats().setRadioactive(true).setToxic(true),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            OffsetID + 75,
+            TextureSet.SET_METALLIC
+    );
+
+    public static final Werkstoff lowQualityNaquadriaSolution = new Werkstoff(
+            new short[]{0x73,0x72,0x84},
+            "Low Quality Naquadria Sulphate",
+            subscriptNumbers("~??Nq*??~"),
+            new Werkstoff.Stats().setRadioactive(true).setToxic(true),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            OffsetID + 76,
+            TextureSet.SET_FLUID
+    );
+
+    public static final Werkstoff naquadriaSulphate = new Werkstoff(
+            new short[]{0x1f,0x1e,0x33},
+            "Naquadria Sulphate",
+            subscriptNumbers("Nq*(SO4)2"),
+            new Werkstoff.Stats().setRadioactive(true).setToxic(true).setElektrolysis(true),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            OffsetID + 77,
+            TextureSet.SET_METALLIC,
+            new Pair<>(Naquadria, 1),
+            new Pair<>(Sulfur, 2),
+            new Pair<>(Oxygen, 8)
+    );
+
     @Override
     public void run() { }
 }
