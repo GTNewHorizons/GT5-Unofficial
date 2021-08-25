@@ -214,10 +214,7 @@ public class GT_MetaTileEntity_Hatch_AirIntake extends GT_MetaTileEntity_Hatch_I
 		return true;
 	}
 
-	public boolean addAirToHatch(long aTick) {
-		if (this.mFluid != null)
-			if(this.mFluid.getFluid() != FluidUtils.getFluidStack("air", 1).getFluid())
-				return false;
+	public boolean addAirToHatch(long aTick) {		
 		if (!this.getBaseMetaTileEntity().getAirAtSide(this.getBaseMetaTileEntity().getFrontFacing())) {
 			return false;
 		}		
