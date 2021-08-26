@@ -10,7 +10,9 @@ buildscript {
         maven("https://jitpack.io")
     }
     dependencies {
-        classpath("com.github.GTNH2:ForgeGradle:FG_1.2-SNAPSHOT")
+        classpath("com.github.GTNH2:ForgeGradle:FG_1.2-SNAPSHOT"){
+            isChanging = true
+        }
     }
 }
 
@@ -170,6 +172,7 @@ dependencies {
     compile("net.industrial-craft:industrialcraft-2:$ic2Version:dev")
     compile("com.github.GTNewHorizons:GT5-Unofficial:$gt5uVersion:dev"){
         exclude("net.industrial-craft", "industrialcraft-2")
+        isChanging = true
     }
     compile("eu.usrv:YAMCore:$yamcoreVersion:deobf")
 
