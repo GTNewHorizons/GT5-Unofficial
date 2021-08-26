@@ -460,6 +460,18 @@ public class NaquadahReworkRecipeLoader {
                 10,
                 1920
         );
+
+        GT_Values.RA.addBlastRecipe(
+                naquadriaEarth.get(OrePrefixes.dust, 1),
+                GT_Utility.getIntegratedCircuit(2),
+                Materials.Nitrogen.getGas(1000),
+                null,
+                Materials.Naquadah.getNuggets(3),
+                null,
+                1200,
+                7680,
+                5000
+        );
     }
 
     public static void SmallRecipeChange() {
