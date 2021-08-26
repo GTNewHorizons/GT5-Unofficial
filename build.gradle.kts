@@ -199,7 +199,14 @@ dependencies {
     //    exclude("com.enderio.core", "EnderCore")
     //    exclude("mcp.mobius.waila", "Waila")
     //}
+
+    configurations.all {
+        resolutionStrategy.cacheDynamicVersionsFor(30, "seconds")
+    }
 }
+
+
+
 
 tasks.withType<Jar> {
     //Mark as outdated if versions change
