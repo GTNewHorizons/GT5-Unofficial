@@ -2,11 +2,9 @@ package GoodGenerator.Loader;
 
 import GoodGenerator.util.ItemRefer;
 import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
 
 public class RecipeLoader_02 {
@@ -26,6 +24,8 @@ public class RecipeLoader_02 {
                 300,
                 1920
         );
+    }
 
+    public static void InitLoadRecipe() {
     }
 }

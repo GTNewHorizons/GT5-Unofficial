@@ -11,6 +11,7 @@ import GoodGenerator.Blocks.MyFluids.FluidsBuilder;
 import com.github.bartimaeusnek.bartworks.API.WerkstoffAdderRegistry;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
@@ -61,7 +62,9 @@ public final class GoodGenerator {
     public static void init(FMLInitializationEvent event){
         proxy.init(event);
         RecipeLoader.InitLoadRecipe();
+        RecipeLoader_02.InitLoadRecipe();
         FuelRecipeLoader.RegisterFuel();
+        NaquadahReworkRecipeLoader.RecipeLoad();
     }
     @Mod.EventHandler
     public static void postInit(FMLPostInitializationEvent event){
@@ -73,5 +76,10 @@ public final class GoodGenerator {
         if (Loader.isModLoaded("Thaumcraft")){
             Research.addResearch();
         }
+    }
+    @Mod.EventHandler
+    public void onLoadComplete(FMLLoadCompleteEvent event) {
+        NaquadahReworkRecipeLoader.SmallRecipeChange();
+        NaquadahReworkRecipeLoader.Remover();
     }
 }

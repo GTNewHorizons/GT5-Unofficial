@@ -614,7 +614,7 @@ public class MyMaterial implements Runnable {
             subscriptNumbers("??NqTiGaAd??"),
             new Werkstoff.Stats(),
             Werkstoff.Types.MIXTURE,
-            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            new Werkstoff.GenerationFeatures(),
             OffsetID + 53,
             TextureSet.SET_METALLIC
     );
@@ -771,7 +771,7 @@ public class MyMaterial implements Runnable {
             subscriptNumbers("??KeNq") + CharExchanger.shifter(8314) + "??",
             new Werkstoff.Stats().setRadioactive(true),
             Werkstoff.Types.MIXTURE,
-            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            new Werkstoff.GenerationFeatures(),
             OffsetID + 66,
             TextureSet.SET_METALLIC
     );
@@ -832,7 +832,7 @@ public class MyMaterial implements Runnable {
             subscriptNumbers("??Nq*BaIn??"),
             new Werkstoff.Stats().setRadioactive(true).setToxic(true),
             Werkstoff.Types.MIXTURE,
-            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            new Werkstoff.GenerationFeatures(),
             OffsetID + 71,
             TextureSet.SET_METALLIC
     );
@@ -907,6 +907,39 @@ public class MyMaterial implements Runnable {
             new Pair<>(Naquadria, 1),
             new Pair<>(Sulfur, 2),
             new Pair<>(Oxygen, 8)
+    );
+
+    public static final Werkstoff naquadahGoo = new Werkstoff(
+            new short[]{0x4c,0x4c,0x4c},
+            "Naquadah Goo",
+            subscriptNumbers("??NqTiGaAd??"),
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            OffsetID + 78,
+            TextureSet.SET_FLUID
+    );
+
+    public static final Werkstoff enrichedNaquadahGoo = new Werkstoff(
+            new short[]{0x82,0x68,0x68},
+            "Enriched Naquadah Goo",
+            subscriptNumbers("??KeNq") + CharExchanger.shifter(8314) + "??",
+            new Werkstoff.Stats().setRadioactive(true),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            OffsetID + 79,
+            TextureSet.SET_FLUID
+    );
+
+    public static final Werkstoff naquadriaGoo = new Werkstoff(
+            new short[]{0x4d,0x4d,0x55},
+            "Naquadria Goo",
+            subscriptNumbers("??Nq*BaIn??"),
+            new Werkstoff.Stats().setRadioactive(true).setToxic(true),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            OffsetID + 80,
+            TextureSet.SET_FLUID
     );
 
     @Override

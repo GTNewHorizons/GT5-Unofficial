@@ -41,9 +41,15 @@ item.microHeater.name=Micro-Heater
 item.quartzCrystalResonator.name=Quartz Crystal Resonator
 item.inverter.name=Inverter
 item.neutronSource.name=Neutron Source Case
+item.naquadahMass.name=Naquadah Mass
+item.enrichedNaquadahMass.name=Enriched Naquadah Mass
+item.naquadriaMass.name=Naquadria Mass
 
 #Tooltip
-inverter.tooltip.0=Turn DC into AC
+inverter.tooltip.0=Turn DC into AC.
+naquadahMass.tooltip.0=FAR from PURE.
+enrichedNaquadahMass.tooltip.0=An intense to satisfaction in the world.
+naquadriaMass.tooltip.0=What?
 EssentiaHatch.tooltip.0=You can right click it with an Essentia Jar to set Essentia Filter.
 EssentiaHatch.tooltip.1=Right click it with empty hands to clear the Filter.
 
@@ -98,6 +104,19 @@ fluid.Naquadah Based Liquid Fuel MkIV (Depleted)=Naquadah Based Liquid Fuel MkIV
 fluid.Thorium Based Liquid Fuel (Depleted)=Thorium Based Liquid Fuel (Depleted)
 fluid.thorium Tetrachloride=Thorium Tetrachloride
 fluid.Uranium Based Liquid Fuel (Excited State)=Uranium Based Liquid Fuel (Excited State)
+fluid.Low Quality Naquadah Emulsion=Low Quality Naquadah Emulsion
+fluid.2-Ethyl-1-Hexanol=2-Ethyl-1-Hexanol
+fluid.P-507=P-507
+fluid.Naquadah-Adamantium Solution=Naquadah-Adamantium Solution
+fluid.Naquadah-Rich Solution=Naquadah-Rich Solution
+fluid.Fluorine-Rich Waste Liquid=Fluorine-Rich Waste Liquid
+fluid.Waste Liquid=Waste Liquid
+fluid.Enriched-Naquadah-Rich Solution=Enriched-Naquadah-Rich Solution
+fluid.Naquadria-Rich Solution=Naquadria-Rich Solution
+fluid.Low Quality Naquadria Sulphate=Low Quality Naquadria Sulphate
+fluid.Naquadah Goo=Naquadah Goo
+fluid.Enriched Naquadah Goo=Enriched Naquadah Goo
+fluid.Naquadria Goo=Naquadria Goo
 
 #Fluid Tiles
 tile.lightlyCrackedNaquadahGas.name=Lightly Cracked Naquadah Gas

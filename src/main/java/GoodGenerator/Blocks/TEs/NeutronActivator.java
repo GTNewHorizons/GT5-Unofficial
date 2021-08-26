@@ -104,9 +104,9 @@ public class NeutronActivator extends GT_MetaTileEntity_MultiblockBase_EM implem
         for (GT_Recipe recipe : tRecipes) {
             minNKE = (recipe.mSpecialValue % 10000) * 1000000;
             maxNKE = (recipe.mSpecialValue / 10000) * 1000000;
-            mFloor = minNKE;
-            mCeil = maxNKE;
             if (recipe.isRecipeInputEqual(true, inFluids, inItems)) {
+                mFloor = minNKE;
+                mCeil = maxNKE;
                 mMaxProgresstime = recipe.mDuration;
                 if (eV <= maxNKE && eV >= minNKE) {
                     this.mOutputFluids = recipe.mFluidOutputs;

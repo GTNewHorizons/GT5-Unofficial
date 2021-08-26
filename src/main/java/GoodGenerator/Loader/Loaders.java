@@ -51,7 +51,9 @@ public class Loaders {
     public static final Item quartzCrystalResonator = new MyItems("quartzCrystalResonator", GoodGenerator.GG);
     public static final Item inverter = new MyItems("inverter", addText("inverter.tooltip", 1), GoodGenerator.GG);
     public static final Item neutronSource = new MyItems("neutronSource", GoodGenerator.GG);
-
+    public static final Item naquadahMass = new MyItems("naquadahMass", addText("naquadahMass.tooltip", 1), GoodGenerator.GG);
+    public static final Item enrichedNaquadahMass = new MyItems("enrichedNaquadahMass", addText("enrichedNaquadahMass.tooltip", 1), GoodGenerator.GG);
+    public static final Item naquadriaMass = new MyItems("naquadriaMass", addText("naquadriaMass.tooltip", 1), GoodGenerator.GG);
 
     public static final Block MAR_Casing = new Casing("MAR_Casing", new String[]{GoodGenerator.MOD_ID+":MAR_Casing"});
     public static final Block FRF_Casings = new Casing("FRF_Casing", new String[]{"gregtech:iconsets/MACHINE_CASING_MINING_BLACKPLUTONIUM"});
@@ -111,6 +113,9 @@ public class Loaders {
         GameRegistry.registerItem(quartzCrystalResonator, "quartzCrystalResonator", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(inverter, "inverter", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(neutronSource, "neutronSource", GoodGenerator.MOD_ID);
+        GameRegistry.registerItem(naquadahMass, "naquadahMass", GoodGenerator.MOD_ID);
+        GameRegistry.registerItem(enrichedNaquadahMass, "enrichedNaquadahMass", GoodGenerator.MOD_ID);
+        GameRegistry.registerItem(naquadriaMass, "naquadriaMass", GoodGenerator.MOD_ID);
         Loaders.MAR = new MultiNqGenerator(12732, "NaG", "Large Naquadah Reactor").getStackForm(1L);
         Loaders.FRF = new FuelRefineFactory(16999, "FRF", "Naquadah Fuel Refinery").getStackForm(1L);
         Loaders.UCFE = new UniversalChemicalFuelEngine(IDOffset, "UniversalChemicalFuelEngine", "Universal Chemical Fuel Engine").getStackForm(1L);

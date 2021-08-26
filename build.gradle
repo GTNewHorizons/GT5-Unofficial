@@ -93,7 +93,6 @@ repositories {
 }
 
 dependencies {
-
     compile("com.enderio.core:EnderCore:1.7.10-0.1.0.25_beta:dev")
     compile("appeng:appliedenergistics2:rv3-beta-22:dev")
     compile("com.github.GTNewHorizons:GT5-Unofficial:experimental-SNAPSHOT:dev") {
@@ -102,6 +101,7 @@ dependencies {
 /*    compileOnly("com.github.GTNewHorizons:Avaritia:master-SNAPSHOT") {
         setChanging(true)
     }*/
+    compile files('GT-PlusPlus-1.7.09.GTNH.jar')
     compile files('libs/TecTech-1.7.10-4.10.6-5fc2d0d2-dev.jar')
     compile files('libs/bartworks[1.7.10]-[test]-0.5.19-dev.jar')
     compileOnly("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev")

@@ -31,6 +31,9 @@ public final class ItemRefer {
     public static ItemRefer Quartz_Crystal_Resonator = getItemStack(quartzCrystalResonator);
     public static ItemRefer Inverter = getItemStack(inverter);
     public static ItemRefer Neutron_Source = getItemStack(neutronSource);
+    public static ItemRefer Naquadah_Mass = getItemStack(naquadahMass);
+    public static ItemRefer Enriched_Naquadah_Mass = getItemStack(enrichedNaquadahMass);
+    public static ItemRefer Naquadria_Mass = getItemStack(naquadriaMass);
 
     public static ItemRefer Field_Restriction_Casing = getItemStack(MAR_Casing);
     public static ItemRefer Naquadah_Fuel_Refinery_Casing = getItemStack(FRF_Casings);
