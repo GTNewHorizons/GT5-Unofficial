@@ -1,6 +1,7 @@
 package GoodGenerator.Main;
 
 import GoodGenerator.Common.CommonProxy;
+import GoodGenerator.CrossMod.NEI.IMCForNEI;
 import GoodGenerator.CrossMod.Thaumcraft.Research;
 import GoodGenerator.Items.MyMaterial;
 import GoodGenerator.Loader.*;
@@ -11,15 +12,12 @@ import GoodGenerator.Blocks.MyFluids.FluidsBuilder;
 import com.github.bartimaeusnek.bartworks.API.WerkstoffAdderRegistry;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.relauncher.Side;
 import net.minecraft.creativetab.CreativeTabs;
 import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
 
 import static GoodGenerator.Loader.Loaders.addOreDic;
 import static GoodGenerator.Loader.Loaders.addTexturePage;
@@ -32,6 +30,7 @@ import static GoodGenerator.Loader.Loaders.addTexturePage;
         + "required-after:tectech; ")
 public final class GoodGenerator {
     public static final String MOD_ID = "GoodGenerator";
+    public static final String MOD_NAME = "Good Generator";
     public static final String VERSION = "GRADLETOKEN_VERSION";
 
     public static final CreativeTabs GG = new MyTabs("Good Generator");
@@ -54,6 +53,7 @@ public final class GoodGenerator {
         Loaders.compactMod();
         new FluidsBuilder();
         Loaders.Register();
+        IMCForNEI.IMCSender();
         addOreDic();
         addTexturePage();
         proxy.preInit(event);
@@ -82,4 +82,6 @@ public final class GoodGenerator {
         NaquadahReworkRecipeLoader.SmallRecipeChange();
         NaquadahReworkRecipeLoader.Remover();
     }
+
+
 }

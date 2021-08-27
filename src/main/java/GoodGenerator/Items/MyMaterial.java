@@ -610,7 +610,7 @@ public class MyMaterial implements Runnable {
     //Naquadah Rework Materials
     public static final Werkstoff naquadahEarth = new Werkstoff(
             new short[]{0x4c,0x4c,0x4c},
-            "Naquadah Earth",
+            "Naquadah Oxide Mixture",
             subscriptNumbers("??NqTiGaAd??"),
             new Werkstoff.Stats(),
             Werkstoff.Types.MIXTURE,
@@ -767,7 +767,7 @@ public class MyMaterial implements Runnable {
 
     public static final Werkstoff enrichedNaquadahEarth = new Werkstoff(
             new short[]{0x82,0x68,0x68},
-            "Enriched-Naquadah Earth",
+            "Enriched-Naquadah Oxide Mixture",
             subscriptNumbers("??KeNq") + CharExchanger.shifter(8314) + "??",
             new Werkstoff.Stats().setRadioactive(true),
             Werkstoff.Types.MIXTURE,
@@ -828,7 +828,7 @@ public class MyMaterial implements Runnable {
 
     public static final Werkstoff naquadriaEarth = new Werkstoff(
             new short[]{0x4d,0x4d,0x55},
-            "Naquadria Earth",
+            "Naquadria Oxide Mixture",
             subscriptNumbers("??Nq*BaIn??"),
             new Werkstoff.Stats().setRadioactive(true).setToxic(true),
             Werkstoff.Types.MIXTURE,
