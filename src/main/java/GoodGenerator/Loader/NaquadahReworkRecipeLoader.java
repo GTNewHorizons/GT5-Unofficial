@@ -163,7 +163,7 @@ public class NaquadahReworkRecipeLoader {
                 naquadahine.get(OrePrefixes.dust, 10),
                 10000,
                 1000,
-                1920,
+                120,
                 false
         );
 
@@ -345,7 +345,7 @@ public class NaquadahReworkRecipeLoader {
                 },
                 null,
                 500,
-                30720
+                1920
         );
 
         GT_Values.RA.addUniversalDistillationRecipe(
@@ -471,6 +471,33 @@ public class NaquadahReworkRecipeLoader {
                 2400,
                 7680,
                 5000
+        );
+
+        GT_Values.RA.addMultiblockChemicalRecipe(
+                new ItemStack[]{
+                        GT_Utility.getIntegratedCircuit(24)
+                },
+                new FluidStack[]{
+                        Materials.Ethylene.getGas(1000),
+                        FluidRegistry.getFluidStack("steam", 2000)
+                },
+                new FluidStack[]{
+                        Materials.Ethanol.getFluid(1000)
+                },
+                null,
+                400,
+                480
+        );
+
+        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
+                Materials.Ethylene.getCells(1),
+                GT_Utility.getIntegratedCircuit(24),
+                FluidRegistry.getFluidStack("steam", 2000),
+                Materials.Ethanol.getFluid(1000),
+                Materials.Empty.getCells(1),
+                null,
+                400,
+                480
         );
     }
 

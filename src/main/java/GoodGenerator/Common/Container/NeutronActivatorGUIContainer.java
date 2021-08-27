@@ -36,6 +36,7 @@ public class NeutronActivatorGUIContainer extends GT_Container_MultiMachineEM {
         }
         if(mTileEntity.isServerSide()) {
             NeutronActivator tile = (NeutronActivator) mTileEntity.getMetaTileEntity();
+            if (tile == null) return;
             int currentKineticE = tile.getCurrentNeutronKineticEnergy();
             boolean isUpdated = false;
             if (currentKineticE != KineticE) {
