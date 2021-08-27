@@ -167,7 +167,7 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_MultiBlockBase {
 
         this.mEfficiency = (int)(eff*10000D);
         this.mEUt=0;
-        this.mMaxProgresstime=72000/120;
+        this.mMaxProgresstime=72000;
         return true;
     }
     
@@ -224,13 +224,14 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_MultiBlockBase {
                 }
             }
         }
+        
+        if(drainedamount > 0)
+            addOutput(FluidRegistry.getFluidStack("ic2coolant", drainedamount));
 
         this.updateSlots();
 
         if(takecoolant > 0)
             this.stopMachine();
-        
-        addOutput(FluidRegistry.getFluidStack("ic2coolant", drainedamount));
         
         return true;
     }
@@ -241,51 +242,42 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_MultiBlockBase {
         int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * xz;
         int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * xz;
         for (int x = -xz; x <= xz; x++) {
-                for (int z = -xz; z <= xz; z++) {
-                    for (int y = 0; y < 12; y++) {
-                        if (y == 0 || y == 11) {
+            for (int z = -xz; z <= xz; z++) {
+                for (int y = 0; y < 12; y++) {
+                    if (x + xDir == 0 && y == 0 && z + zDir == 0)
+                        continue;
+                    int ax = Math.abs(x), az = Math.abs(z);
+                    if (
+                            (ax < 4 && az == 5) ||                         // X WALLS
+                            (az < 4 && ax == 5) ||                         // Z WALLS
+                            (ax == 4 && az == 4) ||                         // CORNER WALLS
+                            ((y == 0 || y == 11) && (!(ax >= 4 && az == 5) && !(az >= 4 && ax == 5)))  // FLOOR & CEILING
+                    ) {
+                        if (!(aBaseMetaTileEntity.getBlockOffset(xDir + x, y, zDir + z) == GregTech_API.sBlockCasings3 && aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z) == 12)) {
+                            IGregTechTileEntity tEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, y, zDir + z);
                             if (
-                                    !((Math.abs(z) == xz-1 && Math.abs(x) == xz)) &&
-                                    !((Math.abs(z) == xz && Math.abs(x) == xz-1)) &&
-                                    !((Math.abs(x) == Math.abs(z) && Math.abs(x) == xz))
+                                    !(y == 11 && this.addInputToMachineList(tEntity, GT_TileEntity_THTR.BASECASINGINDEX)) &&
+                                    !(y == 0 && this.addOutputToMachineList(tEntity, GT_TileEntity_THTR.BASECASINGINDEX)) &&
+                                    !this.addMaintenanceToMachineList(tEntity, GT_TileEntity_THTR.BASECASINGINDEX)
                             ) {
-                                if (x + xDir == 0 && y == 0 && z + zDir == 0)
-                                    continue;
-                                if (!(aBaseMetaTileEntity.getBlockOffset(xDir + x, y, zDir + z) == GregTech_API.sBlockCasings3 && aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z) == 12)) {
-                                    if (
-                                            (
-                                                    !(this.addInputToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, y, zDir + z), GT_TileEntity_THTR.BASECASINGINDEX) && y == 11) &&
-                                                    !(this.addOutputToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, y, zDir + z), GT_TileEntity_THTR.BASECASINGINDEX) && y == 0)) &&
-                                                    !this.addMaintenanceToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, y, zDir + z), GT_TileEntity_THTR.BASECASINGINDEX)
-                                    ) {
-                                        return false;
-                                    }
-                                }
-                            }
-                        }
-
-
-                        //else if (!((Math.abs(x) == 4 && Math.abs(z) == 4) || (Math.abs(x) == 3 && Math.abs(z) == 3)) && !(Math.abs(x) < 3 || Math.abs(z) < 3) && !((Math.abs(x) == Math.abs(z) && Math.abs(x) == 3) || Math.abs(x) == 4 || Math.abs(z) == 4)) {
-                        else if (!((Math.abs(z) == xz-1 && Math.abs(x) == xz)))
-                                        if (!((Math.abs(z) == xz && Math.abs(x) == xz-1)))
-                                            if (!((Math.abs(x) == Math.abs(z) && Math.abs(x) == xz)))
-                                                if (!(Math.abs(x) < xz && Math.abs(z) != xz))
-
-                        {
-                            if (!(aBaseMetaTileEntity.getBlockOffset(xDir + x, y, zDir + z) == GregTech_API.sBlockCasings3 && aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z) == 12)) {
-                            if (
-                                    !this.addMaintenanceToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, y, zDir + z), GT_TileEntity_THTR.BASECASINGINDEX))
-                            {
                                 return false;
                             }
                         }
                     }
+                    else if(!(ax >= 4 && az == 5) && !(az >= 4 && ax == 5)){ // inside
+                        if(!aBaseMetaTileEntity.getAirOffset(xDir + x, y, zDir + z))
+                            return false;
+                    }
                 }
             }
-
         }
-
-        return this.mMaintenanceHatches.size() == 1;
+        return (
+            this.mMaintenanceHatches.size() == 1 &&
+            this.mInputHatches.size() > 0 &&
+            this.mOutputHatches.size() > 0 &&
+            this.mInputBusses.size() > 0 &&
+            this.mOutputBusses.size() > 0
+        );
     }
 
     @Override
