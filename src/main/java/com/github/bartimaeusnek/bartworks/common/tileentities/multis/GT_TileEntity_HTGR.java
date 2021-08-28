@@ -148,7 +148,7 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_MultiBlockBase {
         if (!(this.HeliumSupply >= GT_TileEntity_HTGR.HELIUM_NEEDED && this.fuelsupply >= 72000))
             return false;
 
-        double eff = Math.min(Math.pow(((double)this.fuelsupply-72000D)/72000D, 2D)+19D, 100D)/100D - ((double)(getIdealStatus() - getRepairStatus()) / 10D);
+        double eff = Math.min(Math.pow((double)this.fuelsupply/72000D, 2D), 100D)/100D - ((double)(getIdealStatus() - getRepairStatus()) / 10D);
 
         if(eff <= 0)
             return false;
