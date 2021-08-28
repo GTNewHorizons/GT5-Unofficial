@@ -53,9 +53,11 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.ArrayList;
+import java.util.HashMap;
 
-public class GT_TileEntity_THTR extends GT_MetaTileEntity_MultiBlockBase {
+public class GT_TileEntity_HTGR extends GT_MetaTileEntity_MultiBlockBase {
 
     private static final int BASECASINGINDEX = 44;
     private static final int HELIUM_NEEDED = 730000;
@@ -65,11 +67,11 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_MultiBlockBase {
     private int emptyticksnodiff = 0;
     private int coolanttaking = 0;
 
-    public GT_TileEntity_THTR(int aID, String aName, String aNameRegional) {
+    public GT_TileEntity_HTGR(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    private GT_TileEntity_THTR(String aName) {
+    private GT_TileEntity_HTGR(String aName) {
         super(aName);
     }
 
@@ -85,6 +87,7 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_MultiBlockBase {
         this.fueltype = aNBT.getInteger("fueltype");
         this.fuelsupply = aNBT.getInteger("fuelsupply");
         this.empty = aNBT.getBoolean("EmptyMode");
+        this.coolanttaking = aNBT.getInteger("coolanttaking");
     }
 
     @Override
@@ -94,19 +97,20 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_MultiBlockBase {
         aNBT.setInteger("fueltype", this.fueltype);
         aNBT.setInteger("fuelsupply", this.fuelsupply);
         aNBT.setBoolean("EmptyMode", this.empty);
+        aNBT.setInteger("coolanttaking", this.coolanttaking);
     }
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide() && !this.empty){
-            if (this.HeliumSupply < GT_TileEntity_THTR.HELIUM_NEEDED){
+            if (this.HeliumSupply < GT_TileEntity_HTGR.HELIUM_NEEDED){
                 for (FluidStack fluidStack : this.getStoredFluids()){
                     if (fluidStack.isFluidEqual(Materials.Helium.getGas(1))) {
-                        int toget = Math.min(GT_TileEntity_THTR.HELIUM_NEEDED - this.HeliumSupply, fluidStack.amount);
+                        int toget = Math.min(GT_TileEntity_HTGR.HELIUM_NEEDED - this.HeliumSupply, fluidStack.amount);
                         fluidStack.amount -= toget;
                         this.HeliumSupply += toget;
-                        if(GT_TileEntity_THTR.HELIUM_NEEDED == this.HeliumSupply && fluidStack.amount == 0)
+                        if(GT_TileEntity_HTGR.HELIUM_NEEDED == this.HeliumSupply && fluidStack.amount == 0)
                             fluidStack = null;
                     }
                 }
@@ -115,10 +119,10 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_MultiBlockBase {
                 for (ItemStack itemStack : this.getStoredInputs()) {
                     int type = -1;
                     if(itemStack == null) continue;
-                    if(itemStack.getItem() != THTRMaterials.aTHTR_Materials) continue;
-                    int damage = THTRMaterials.aTHTR_Materials.getDamage(itemStack);
-                    if(!((damage + 1) % THTRMaterials.MATERIALS_PER_FUEL == THTRMaterials.USABLE_FUEL_INDEX + 1)) continue; // is fuel
-                    type = damage / THTRMaterials.MATERIALS_PER_FUEL;
+                    if(itemStack.getItem() != HTGRMaterials.aHTGR_Materials) continue;
+                    int damage = HTGRMaterials.aHTGR_Materials.getDamage(itemStack);
+                    if(!((damage + 1) % HTGRMaterials.MATERIALS_PER_FUEL == HTGRMaterials.USABLE_FUEL_INDEX + 1)) continue; // is fuel
+                    type = damage / HTGRMaterials.MATERIALS_PER_FUEL;
                     if(this.fueltype == -1)
                         this.fueltype = type;
                     if(this.fueltype != type)
@@ -141,7 +145,7 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_MultiBlockBase {
             this.mMaxProgresstime = 100;
             return true;
         }
-        if (!(this.HeliumSupply >= GT_TileEntity_THTR.HELIUM_NEEDED && this.fuelsupply >= 72000))
+        if (!(this.HeliumSupply >= GT_TileEntity_HTGR.HELIUM_NEEDED && this.fuelsupply >= 72000))
             return false;
 
         double eff = Math.min(Math.pow(((double)this.fuelsupply-72000D)/72000D, 2D)+19D, 100D)/100D - ((double)(getIdealStatus() - getRepairStatus()) / 10D);
@@ -156,16 +160,16 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_MultiBlockBase {
         if(burnedballs > 0)
             toReduce -= burnedballs*64;
 
-        int meta = (this.fueltype * THTRMaterials.MATERIALS_PER_FUEL) + THTRMaterials.BURNED_OUT_FUEL_INDEX;
+        int meta = (this.fueltype * HTGRMaterials.MATERIALS_PER_FUEL) + HTGRMaterials.BURNED_OUT_FUEL_INDEX;
 
         this.mOutputItems = new ItemStack[] {
-            new ItemStack(THTRMaterials.aTHTR_Materials, burnedballs, meta),
-            new ItemStack(THTRMaterials.aTHTR_Materials, toReduce, meta + 1)
+            new ItemStack(HTGRMaterials.aHTGR_Materials, burnedballs, meta),
+            new ItemStack(HTGRMaterials.aHTGR_Materials, toReduce, meta + 1)
         };
         
         this.updateSlots();
 
-        this.coolanttaking = (int)(4000D * ((this.fueltype * 0.5D) + 1) * ((double)this.mEfficiency / 10000D)) * 20; // 100 LHEs btw, why?
+        this.coolanttaking = (int)(4000D * ((this.fueltype * 0.5D) + 1) * ((double)this.mEfficiency / 10000D));
 
         this.mEfficiency = (int)(eff*10000D);
         this.mEUt=0;
@@ -173,7 +177,7 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_MultiBlockBase {
         return true;
     }
     
-    private static int runningtick = 0;
+    private int runningtick = 0;
 
     @Override
     public boolean onRunningTick(ItemStack aStack) {
@@ -190,7 +194,7 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_MultiBlockBase {
             }
             if(this.fuelsupply > 0)
             {
-                ItemStack iStack = new ItemStack(THTRMaterials.aTHTR_Materials, this.fuelsupply, (THTRMaterials.MATERIALS_PER_FUEL * this.fueltype) + THTRMaterials.USABLE_FUEL_INDEX);
+                ItemStack iStack = new ItemStack(HTGRMaterials.aHTGR_Materials, this.fuelsupply, (HTGRMaterials.MATERIALS_PER_FUEL * this.fueltype) + HTGRMaterials.USABLE_FUEL_INDEX);
                 boolean storedAll = false;
                 for (GT_MetaTileEntity_Hatch_OutputBus tHatch : this.mOutputBusses) {
                     if(!isValidMetaTileEntity(tHatch))
@@ -207,6 +211,7 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_MultiBlockBase {
                 else{
                     this.fuelsupply = 0;
                     this.fueltype = -1;
+                    this.coolanttaking = 0;
                 }
             }
             return true;
@@ -262,9 +267,9 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_MultiBlockBase {
                         if (!(aBaseMetaTileEntity.getBlockOffset(xDir + x, y, zDir + z) == GregTech_API.sBlockCasings3 && aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z) == 12)) {
                             IGregTechTileEntity tEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, y, zDir + z);
                             if (
-                                    !(y == 11 && this.addInputToMachineList(tEntity, GT_TileEntity_THTR.BASECASINGINDEX)) &&
-                                    !(y == 0 && this.addOutputToMachineList(tEntity, GT_TileEntity_THTR.BASECASINGINDEX)) &&
-                                    !this.addMaintenanceToMachineList(tEntity, GT_TileEntity_THTR.BASECASINGINDEX)
+                                    !(y == 11 && this.addInputToMachineList(tEntity, GT_TileEntity_HTGR.BASECASINGINDEX)) &&
+                                    !(y == 0 && this.addOutputToMachineList(tEntity, GT_TileEntity_HTGR.BASECASINGINDEX)) &&
+                                    !this.addMaintenanceToMachineList(tEntity, GT_TileEntity_HTGR.BASECASINGINDEX)
                             ) {
                                 return false;
                             }
@@ -308,7 +313,7 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_MultiBlockBase {
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
-        return new GT_TileEntity_THTR(this.mName);
+        return new GT_TileEntity_HTGR(this.mName);
     }
 
 
@@ -317,38 +322,55 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_MultiBlockBase {
         return new String[]{
                 "Mode:", this.empty ? "Emptying" : "Normal",
                 "Progress:", GT_Utility.formatNumbers(this.mProgresstime / 20) + "s / " + GT_Utility.formatNumbers(this.mMaxProgresstime / 20) + "s",
-                "Fuel type:", (this.fueltype == -1 ? "NONE" : ("TRISO (" + THTRMaterials.sTHTR_Fuel[this.fueltype].sEnglish) + ")"),
+                "Fuel type:", (this.fueltype == -1 ? "NONE" : ("TRISO (" + HTGRMaterials.sHTGR_Fuel[this.fueltype].sEnglish) + ")"),
                 "Fuel amount:", GT_Utility.formatNumbers(this.fuelsupply) + " pcs.",
-                "Helium-Level:", GT_Utility.formatNumbers(this.HeliumSupply) + "L / " + GT_Utility.formatNumbers(GT_TileEntity_THTR.HELIUM_NEEDED) + "L",
-                "Coolant/t:", GT_Utility.formatNumbers(coolanttaking) + "L/s",
+                "Helium-Level:", GT_Utility.formatNumbers(this.HeliumSupply) + "L / " + GT_Utility.formatNumbers(GT_TileEntity_HTGR.HELIUM_NEEDED) + "L",
+                "Coolant:", GT_Utility.formatNumbers(coolanttaking) + "L/s",
                 "Problems:", String.valueOf(this.getIdealStatus() - this.getRepairStatus())
         };
     }
 
     @Override
     public String[] getDescription() {
-        return BW_Tooltip_Reference.getTranslatedBrandedTooltip("tooltip.tile.htr.0.name");
+        return BW_Tooltip_Reference.getTranslatedBrandedTooltip("tooltip.tile.htgr.0.name");
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        return aSide == aFacing ? new ITexture[]{Textures.BlockIcons.getCasingTextureForId(GT_TileEntity_THTR.BASECASINGINDEX), TextureFactory.of(aActive ? TextureFactory.of(TextureFactory.of(Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE), TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE_GLOW).glow().build()) : TextureFactory.of(TextureFactory.of(Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER), TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_GLOW).glow().build()))} : new ITexture[]{Textures.BlockIcons.getCasingTextureForId(GT_TileEntity_THTR.BASECASINGINDEX)};
+        return aSide == aFacing ? new ITexture[]{Textures.BlockIcons.getCasingTextureForId(GT_TileEntity_HTGR.BASECASINGINDEX), TextureFactory.of(aActive ? TextureFactory.of(TextureFactory.of(Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE), TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE_GLOW).glow().build()) : TextureFactory.of(TextureFactory.of(Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER), TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_GLOW).glow().build()))} : new ITexture[]{Textures.BlockIcons.getCasingTextureForId(GT_TileEntity_HTGR.BASECASINGINDEX)};
     }
 
     @Override
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if(this.mMaxProgresstime > 0)
         {
-            GT_Utility.sendChatToPlayer(aPlayer, "THTR mode cant be changed when running.");
+            GT_Utility.sendChatToPlayer(aPlayer, "HTGR mode cannot be changed while the machine is running.");
             return;
         }
         this.empty = !this.empty;
-        GT_Utility.sendChatToPlayer(aPlayer, "THTR is now running in " + (this.empty ? "emptying mode." : "normal Operation"));
+        GT_Utility.sendChatToPlayer(aPlayer, "HTGR is now running in " + (this.empty ? "emptying mode." : "normal Operation"));
     }
 
     
+    
+    public static class HTGRMaterials{
 
-    public static class THTRMaterials{
+        private static class CustomHTGRSimpleSubItemClass extends SimpleSubItemClass{
+            HashMap<Integer, String> tooltip = null;
+            public CustomHTGRSimpleSubItemClass(HashMap<Integer, String> tooltip, String... tex){
+                super(tex);
+                this.tooltip = tooltip;
+            }
+            @Override
+            @SuppressWarnings("unchecked")
+            public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List aList, boolean p_77624_4_) {
+                if(tooltip.containsKey(getDamage(p_77624_1_)))
+                    aList.add(tooltip.get(getDamage(p_77624_1_)));
+                aList.add("Material for High Temperature Gas-cooled Reactor");
+                super.addInformation(p_77624_1_, p_77624_2_, aList, p_77624_4_);
+            }
+        }
+
         private static class Base_{
             public String sName;
             public String sEnglish;
@@ -372,7 +394,8 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_MultiBlockBase {
             public ItemStack[] recycledItems = { GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI };
             public FluidStack recycledFluid;
             public int[] recycleChances;
-            public Fuel_(String sName, String sEnglish, ItemStack mainItem, ItemStack secondaryItem, FluidStack recycledFluid, ItemStack[] recycledItems, int[] recycleChances){
+            public String tooltip;
+            public Fuel_(String sName, String sEnglish, ItemStack mainItem, ItemStack secondaryItem, FluidStack recycledFluid, ItemStack[] recycledItems, int[] recycleChances, String tooltip){
                 this.sName = sName;
                 this.sEnglish = sEnglish;
                 this.mainItem = mainItem;
@@ -381,6 +404,7 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_MultiBlockBase {
                 for(int i = 0; i < recycledItems.length; i++)
                     this.recycledItems[i] = recycledItems[i];
                 this.recycleChances = recycleChances;
+                this.tooltip = tooltip;
             }
         }
         private static class LangEntry_{
@@ -392,7 +416,7 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_MultiBlockBase {
             }
         }
         
-        static final Base_[] sTHTR_Bases = new Base_[]{ 
+        static final Base_[] sHTGR_Bases = new Base_[]{ 
             new Base_("HTGRFuelMixture", "HTGR fuel mixture"),
             new Base_("BISOPebbleCompound", "BISO pebble compound"),
             new Base_("TRISOPebbleCompound", "TRISO pebble compound"),
@@ -401,48 +425,51 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_MultiBlockBase {
             new Base_("BurnedOutTRISOBall", "Burned out TRISO Ball"),
             new Base_("BurnedOutTRISOPebble", "Burned out TRISO Pebble"),
         };
-        static final int MATERIALS_PER_FUEL = sTHTR_Bases.length;
+        static final int MATERIALS_PER_FUEL = sHTGR_Bases.length;
         static final int USABLE_FUEL_INDEX = 4;
         static final int BURNED_OUT_FUEL_INDEX = 5;
-        static final Fuel_[] sTHTR_Fuel = new Fuel_[]{
+        static final Fuel_[] sHTGR_Fuel = new Fuel_[]{
             new Fuel_("Thorium", "Thorium", WerkstoffLoader.Thorium232.get(OrePrefixes.dust, 64), Materials.Uranium235.getDust(4), 
                 GT_Values.NF, new ItemStack[]{ 
                     Materials.Silicon.getDustSmall(1), Materials.Graphite.getDustSmall(1), Materials.Carbon.getDustSmall(1),
                     Materials.Lutetium.getDustSmall(1), WerkstoffLoader.Thorium232.get(OrePrefixes.dustSmall,1)},
-                new int[]{9000, 9000, 9000, 9000, 1000}),
+                new int[]{9000, 9000, 9000, 9000, 1000}, "Multiplies coolant by 1"),
             new Fuel_("Uranium", "Uranium", Materials.Uranium.getDust(60), Materials.Uranium235.getDust(8), 
                 FluidRegistry.getFluidStack("krypton", 7), new ItemStack[]{ 
                     Materials.Silicon.getDustSmall(1), Materials.Graphite.getDustSmall(1), Materials.Carbon.getDustSmall(1),
                     Materials.Lead.getDustSmall(1),
                     Materials.Uranium.getDustSmall(1)},
-                new int[]{9000, 9000, 9000, 6562, 937}),
+                new int[]{9000, 9000, 9000, 6562, 937}, "Multiplies coolant by 1.5"),
             new Fuel_("Plutonium", "Plutonium", Materials.Plutonium.getDust(64), Materials.Plutonium241.getDust(4), 
                 FluidRegistry.getFluidStack("xenon", 8), new ItemStack[]{ 
                     Materials.Silicon.getDustSmall(1), Materials.Graphite.getDustSmall(1), Materials.Carbon.getDustSmall(1),
                     Materials.Lead.getDustSmall(1),
                     Materials.Plutonium.getDustSmall(1)},
-                new int[]{9000, 9000, 9000, 7000, 1000}),
+                new int[]{9000, 9000, 9000, 7000, 1000}, "Multiplies coolant by 2"),
         };
-        static final SimpleSubItemClass aTHTR_Materials;
-        static final ArrayList<LangEntry_> aTHTR_Localizations = new ArrayList<LangEntry_>();
+        static final CustomHTGRSimpleSubItemClass aHTGR_Materials;
+        static final ArrayList<LangEntry_> aHTGR_Localizations = new ArrayList<LangEntry_>();
         static{
-            String[] sTHTR_Materials = new String[sTHTR_Bases.length*sTHTR_Fuel.length];
+            String[] sHTGR_Materials = new String[sHTGR_Bases.length*sHTGR_Fuel.length];
+            HashMap<Integer, String> tooltip = new HashMap<Integer, String>();
             int i = 0;
-            for(Fuel_ fuel : sTHTR_Fuel)
-                for(Base_ base : sTHTR_Bases)
+            for(Fuel_ fuel : sHTGR_Fuel)
+                for(Base_ base : sHTGR_Bases)
                 {
-                    sTHTR_Materials[i] = "HTGR" + base.sName + fuel.sName;
-                    aTHTR_Localizations.add(new LangEntry_("item." + sTHTR_Materials[i] + ".name", base.sEnglish + " (" + fuel.sEnglish + ")"));
+                    sHTGR_Materials[i] = "HTGR" + base.sName + fuel.sName;
+                    aHTGR_Localizations.add(new LangEntry_("item." + sHTGR_Materials[i] + ".name", base.sEnglish + " (" + fuel.sEnglish + ")"));
+                    if(((i+1) % MATERIALS_PER_FUEL == (USABLE_FUEL_INDEX + 1)) && fuel.tooltip != null && fuel.tooltip != "")
+                        tooltip.put(i, fuel.tooltip);
                     i++;
                 }
-            aTHTR_Materials = new SimpleSubItemClass(sTHTR_Materials);
+            aHTGR_Materials = new CustomHTGRSimpleSubItemClass(tooltip, sHTGR_Materials);
         }
         
 
         public static void registeraTHR_Materials(){
-            for(LangEntry_ iName : aTHTR_Localizations)
+            for(LangEntry_ iName : aHTGR_Localizations)
                 GT_LanguageManager.addStringLocalization(iName.sName, iName.sEnglish);
-            GameRegistry.registerItem(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials,"bw.THTRMaterials");
+            GameRegistry.registerItem(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials,"bw.HTGRMaterials");
         }
 
         public static void registerTHR_Recipes(){
@@ -463,17 +490,17 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_MultiBlockBase {
                     BW_Util.getMachineVoltageFromTier(5)
             );
             int i = 0;
-            for(Fuel_ fuel : sTHTR_Fuel){
-                GT_Values.RA.addMixerRecipe(fuel.mainItem, fuel.secondaryItem ,GT_Utility.getIntegratedCircuit(1),null,null,null,new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, 1, i),400,30);
-                GT_Values.RA.addFormingPressRecipe(new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, 1, i), Materials.Carbon.getDust(64),new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, 1, i + 1),40,30);
-                GT_Values.RA.addFormingPressRecipe(new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, 1, i + 1), Materials.Silicon.getDust(64),new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, 1, i + 2),40,30);
-                GT_Values.RA.addFormingPressRecipe(new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, 1, i + 2), Materials.Graphite.getDust(64),new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, 1, i + 3),40,30);
+            for(Fuel_ fuel : sHTGR_Fuel){
+                GT_Values.RA.addMixerRecipe(fuel.mainItem, fuel.secondaryItem ,GT_Utility.getIntegratedCircuit(1),null,null,null,new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 1, i),400,30);
+                GT_Values.RA.addFormingPressRecipe(new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 1, i), Materials.Carbon.getDust(64),new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 1, i + 1),40,30);
+                GT_Values.RA.addFormingPressRecipe(new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 1, i + 1), Materials.Silicon.getDust(64),new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 1, i + 2),40,30);
+                GT_Values.RA.addFormingPressRecipe(new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 1, i + 2), Materials.Graphite.getDust(64),new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 1, i + 3),40,30);
                 ItemStack[] pellets = new ItemStack[4];
-                Arrays.fill(pellets,new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, 64, i + 4));
-                GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.addRecipe(false, new ItemStack[]{new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, 1, i + 3), GT_Utility.getIntegratedCircuit(17)}, pellets, null, null, null, null, 32000, 30, 0);
-                GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.addRecipe(false, new ItemStack[]{new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, 1, i + 5), GT_Utility.getIntegratedCircuit(17)}, new ItemStack[]{new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, 64, i + 6)}, null, null, null, null,48000,30,0);
+                Arrays.fill(pellets,new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 64, i + 4));
+                GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.addRecipe(false, new ItemStack[]{new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 1, i + 3), GT_Utility.getIntegratedCircuit(17)}, pellets, null, null, null, null, 32000, 30, 0);
+                GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.addRecipe(false, new ItemStack[]{new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 1, i + 5), GT_Utility.getIntegratedCircuit(17)}, new ItemStack[]{new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 64, i + 6)}, null, null, null, null,48000,30,0);
                 GT_Values.RA.addCentrifugeRecipe(
-                        new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, 1, i + 6), GT_Values.NI, GT_Values.NF,
+                        new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 1, i + 6), GT_Values.NI, GT_Values.NF,
                         fuel.recycledFluid,
                         fuel.recycledItems[0],
                         fuel.recycledItems[1],
@@ -483,7 +510,7 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_MultiBlockBase {
                         fuel.recycledItems[5],
                         fuel.recycleChances,
                         1200, 30);
-                i += sTHTR_Bases.length;
+                i += sHTGR_Bases.length;
             }
         }
 

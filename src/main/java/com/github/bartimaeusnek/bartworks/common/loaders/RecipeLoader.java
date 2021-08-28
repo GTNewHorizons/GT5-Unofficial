@@ -26,7 +26,7 @@ import com.github.bartimaeusnek.bartworks.API.LoaderReference;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_LESU;
 import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_ManualTrafo;
-import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_THTR;
+import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_HTGR;
 import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_Windmill;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
@@ -744,9 +744,9 @@ public class RecipeLoader {
                             'G', GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.Iron, 1L),
                     }
             );
-            GT_TileEntity_THTR.THTRMaterials.registerTHR_Recipes();
+            GT_TileEntity_HTGR.HTGRMaterials.registerTHR_Recipes();
             GT_ModHandler.addCraftingRecipe(
-                    ItemRegistry.thtr,
+                    ItemRegistry.HTGR,
                     RecipeLoader.BITSD,
                     new Object[]{
                             "BZB",
