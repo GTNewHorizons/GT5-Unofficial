@@ -40,7 +40,7 @@ public class ClearCraftingCache extends CommandBase {
 
     @Override
     public void processCommand(ICommandSender p_71515_1_, String[] p_71515_2_) {
-        BWCoreStaticReplacementMethodes.RECENTLYUSEDRECIPES.clear();
-        p_71515_1_.addChatMessage(new ChatComponentText("Recipe Cache cleared? "+(BWCoreStaticReplacementMethodes.RECENTLYUSEDRECIPES.size() == 0)));
+        BWCoreStaticReplacementMethodes.clearRecentlyUsedRecipes();
+        p_71515_1_.addChatMessage(new ChatComponentText("Recipe Cache cleared "));
     }
 }

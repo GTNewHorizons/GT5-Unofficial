@@ -219,7 +219,7 @@ public class CircuitImprintLoader {
 
     private static void removeOldRecipesFromRegistries() {
         recipeWorldCache.forEach(CraftingManager.getInstance().getRecipeList()::remove);
-        BWCoreStaticReplacementMethodes.RECENTLYUSEDRECIPES.clear();
+        BWCoreStaticReplacementMethodes.clearRecentlyUsedRecipes();
         gtrecipeWorldCache.forEach(GT_Recipe.GT_Recipe_Map.sSlicerRecipes.mRecipeList::remove);
         recipeWorldCache.forEach( r ->
                 {
