@@ -169,7 +169,7 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_MultiBlockBase {
         
         this.updateSlots();
 
-        this.coolanttaking = (int)(4000D * ((this.fueltype * 0.5D) + 1) * ((double)this.mEfficiency / 10000D));
+        this.coolanttaking = (int)(4000D * (((this.fueltype * 0.5D) + 1)) * eff);
 
         this.mEfficiency = (int)(eff*10000D);
         this.mEUt=0;
@@ -236,7 +236,7 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_MultiBlockBase {
             }
         
             if(drainedamount > 0)
-                addOutput(FluidRegistry.getFluidStack("ic2coolant", drainedamount));
+                addOutput(FluidRegistry.getFluidStack("ic2hotcoolant", drainedamount));
 
             this.updateSlots();
 
