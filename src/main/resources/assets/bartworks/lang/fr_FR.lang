@@ -144,12 +144,7 @@ tile.radiohatch.name=Trappe Radioactive
 tile.bw.windmill.name=Eolienne
 tile.manutrafo.name=Transformateur Manuel
 
-item.TRISOPellet.name=Galet TRISO
-item.TRISOPelletBall.name=Boule De Galets TRISO
-item.BISOPelletBall.name=Boule De Galets BISO
-item.BISOPellet.name=Galet TRISO
-item.TRISOPelletCompound.name=Composé De Galet TRISO
-item.BISOPelletCompound.name=Composé De Galet BISO
+
 itemGroup.bartworksMetaMaterials=Méta Matériaux De BartWorks
 
 tooltip.tile.eic.0.name=Bloc Contrôleur pour le Compresseur à Implosion Electrique;Taille (LxHxP): 3x9x3;Utilise de l'Electricité à la place d'Explosifs;Contrôleur: couche 3, devant, centré;Couches 1 et 9: carter de machine en acier solide, pour chaque couche: 1 Trappe d'Energie au milieu;Couche 2,3,7,8: Milieu: Bloc de Ferrite en Nickel-Zinc, Extérieur: Bloc de bobinage de Transformateur;Couche 4,5,6: Blocs de Neutronium;1+ Bus d'Entrée, 1+ Bus de Sortie, 1 trappe de maintenance n'importe où dans les Blocs Carter en Acier Solide;Ne PAS obstruer ou miner les Parties mobile pendant le fonctionnement, ou explosion garantie!

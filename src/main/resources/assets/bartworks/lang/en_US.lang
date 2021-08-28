@@ -145,16 +145,6 @@ tile.bw.windmill.name=Windmill
 tile.manutrafo.name=Manual Trafo
 
 tooltip.tile.htr.0.name=Controller Block for the Thorium High Temperature Reactor;Size(WxHxD): 11x12x11 (Hollow);Controller: Front Center, Lowest Layer;Corners and the 2 touching blocks are air (cylindric);Once built, Helium is inserted into the Fluid Input Hatch until it doesn't accept any more;1+ Output Hatch (Any Bottom casing);1+ Input Hatch (Any Top casing);1+ Input Bus (Any Top casing);1x Maintenance Hatch (Any casing);Radiation Proof Casings for the Rest;Needs a constant supply of coolant while running, will output after complete operation;Needs at least 100k Fuel pebbles to start operation (can hold up to 675k pebbles);Consumes up to 0.5% of total Fuel Pellets per Operation;TRISO pebbles provide 30% more Energy;Each pebble increases the amount of converted coolant;One Operation takes 27 Ingame Days
-item.TRISOPellet.name=TRISO pebble
-item.TRISOPelletBall.name=TRISO pebble ball
-item.BISOPelletBall.name=BISO pebble ball
-item.BISOPellet.name=BISO pebble
-item.TRISOPelletCompound.name=TRISO pebble compound
-item.BISOPelletCompound.name=BISO pebble compound
-item.BurnedOutBISOPelletBall.name=Burned Out BISO pebble ball
-item.BurnedOutBISOPellet.name=Burned Out BISO pebble
-item.BurnedOutTRISOPelletBall.name=Burned Out TRISO pebble ball
-item.BurnedOutTRISOPellet.name=Burned Out TRISO pebble
 
 itemGroup.bartworksMetaMaterials=BartWorks' Meta Materials
 
