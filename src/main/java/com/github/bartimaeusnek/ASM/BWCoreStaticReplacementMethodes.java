@@ -32,14 +32,18 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
 public class BWCoreStaticReplacementMethodes {
+    private static ThreadLocal<AccessPriorityList<IRecipe>> RECENTLYUSEDRECIPES = ThreadLocal.withInitial(AccessPriorityList::new);
 
-    public static final AccessPriorityList<IRecipe> RECENTLYUSEDRECIPES = new AccessPriorityList<>();
+    public static void clearRecentlyUsedRecipes() {
+        // the easiest way to ensure the cache is flushed without causing synchronization overhead
+        // is to just replace the whole ThreadLocal instance.
+        RECENTLYUSEDRECIPES = ThreadLocal.withInitial(AccessPriorityList::new);
+    }
 
     @SuppressWarnings("ALL")
     public static ItemStack findCachedMatchingRecipe(InventoryCrafting inventoryCrafting, World world) {
@@ -79,7 +83,8 @@ public class BWCoreStaticReplacementMethodes {
         } else {
 
             IRecipe iPossibleRecipe = null;
-            Iterator<AccessPriorityListNode<IRecipe>> it = RECENTLYUSEDRECIPES.nodeIterator();
+            AccessPriorityList<IRecipe> cache = RECENTLYUSEDRECIPES.get();
+            Iterator<AccessPriorityListNode<IRecipe>> it = cache.nodeIterator();
 
             while (it.hasNext()) {
                 AccessPriorityListNode<IRecipe> recipeNode = it.next();
@@ -88,7 +93,7 @@ public class BWCoreStaticReplacementMethodes {
                 if (!iPossibleRecipe.matches(inventoryCrafting, world))
                     continue;
 
-                RECENTLYUSEDRECIPES.addPrioToNode(recipeNode);
+                cache.addPrioToNode(recipeNode);
                 return iPossibleRecipe.getCraftingResult(inventoryCrafting);
             }
 
@@ -115,7 +120,7 @@ public class BWCoreStaticReplacementMethodes {
                 return stack;
 
             if (stack != null)
-                RECENTLYUSEDRECIPES.addLast(recipe);
+                cache.addLast(recipe);
 
             return stack;
         }
