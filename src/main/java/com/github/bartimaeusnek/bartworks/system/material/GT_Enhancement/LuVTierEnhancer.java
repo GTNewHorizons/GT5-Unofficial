@@ -178,6 +178,7 @@ public class LuVTierEnhancer implements Runnable {
         Consumer<GT_Recipe> replace = gt_recipe ->
                 gt_recipe.mInputs = replaceArrayWith(
                         gt_recipe.mInputs,
+                        gt_recipe.mOutputs,
                         Materials.Osmiridium,
                         WerkstoffLoader.Ruridit
                 );
@@ -187,6 +188,7 @@ public class LuVTierEnhancer implements Runnable {
                 .forEach(recipe_assemblyLine ->
                         recipe_assemblyLine.mInputs = replaceArrayWith(
                                 recipe_assemblyLine.mInputs,
+                                new ItemStack[]{recipe_assemblyLine.mOutput},
                                 Materials.Osmiridium,
                                 WerkstoffLoader.Ruridit
                         )
@@ -204,7 +206,11 @@ public class LuVTierEnhancer implements Runnable {
                 .forEach(replace);
     }
 
-    private static ItemStack[] replaceArrayWith(ItemStack[] stackArray, Materials source, Werkstoff target) {
+    private static ItemStack[] replaceArrayWith(ItemStack[] stackArray, ItemStack[] outputArray, Materials source, Werkstoff target) {
+        for (ItemStack output : outputArray) {
+            if (output.isItemEqual(ItemList.Casing_MiningOsmiridium.get(1)))
+                return stackArray;
+        }
         for (int i = 0; i < stackArray.length; i++) {
             ItemStack stack = stackArray[i];
             if (!BW_Util.checkStackAndPrefix(stack))
