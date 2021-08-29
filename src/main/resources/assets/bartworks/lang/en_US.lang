@@ -144,8 +144,6 @@ tile.radiohatch.name=Radio Hatch
 tile.bw.windmill.name=Windmill
 tile.manutrafo.name=Manual Trafo
 
-tooltip.tile.htgr.0.name=Controller Block for the High Temperature Gas-cooled Reactor;Size(WxHxD): 11x12x11 (Hollow);Controller: Front Center, Lowest Layer;Corners and the 2 touching blocks are air (cylindric);Once built, Helium is inserted into the Fluid Input Hatch until it doesn't accept any more (730000L);1+ Output Bus (Any Bottom casing);1+ Output Hatch (Any Bottom casing);1+ Input Bus (Any Top casing);1+ Input Hatch (Any Top casing);1x Maintenance Hatch (Any casing);Radiation Proof Casings for the Rest;Needs a constant supply of coolant while running;Needs at least 72k Fuel pebbles to start operation (can hold up to 720k pebbles);Consumes up to 0.5% of total Fuel Pellets per Operation depending on efficiency;Efficiency is calculated exponentially depending on the amount of pebbles in the internal buffer;Reactor will take 4 000L/s of coolant multiplied by efficiency and by fuel coolant value (check tooltips);One Operation takes 1 hour
-
 itemGroup.bartworksMetaMaterials=BartWorks' Meta Materials
 
 tooltip.tile.eic.0.name=Controller Block for the Electric Implosion Compressor;Size(WxHxD): 3x9x3;Uses Electricity instead of Explosives;Controller: Layer 3, front, center;Layer 1 and Layer 9: Solid Steel Machine Casings, each: 1 Energy Hatch in the middle;Layer 2,3,7,8: Middle: Nickel-Zinc-Ferrit Blocks, Outer: Transformer-Winding Blocks;Layer 4,5,6: Neutronium Blocks;1+ Input Bus, 1+ Output Bus, 1 Maintenance Hatch at any Solid Steel Machine Casing;Do NOT Obstruct or mine the Moving parts while in Operation, will explode if you do so!

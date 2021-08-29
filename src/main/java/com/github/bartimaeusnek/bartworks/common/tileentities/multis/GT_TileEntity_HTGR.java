@@ -22,6 +22,9 @@
 
 package com.github.bartimaeusnek.bartworks.common.tileentities.multis;
 
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.IStructureElement;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.github.bartimaeusnek.bartworks.common.items.SimpleSubItemClass;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
@@ -36,7 +39,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.objects.XSTR;
@@ -45,6 +48,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -52,14 +56,46 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class GT_TileEntity_HTGR extends GT_MetaTileEntity_MultiBlockBase {
+public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_TileEntity_HTGR> {
 
     private static final int BASECASINGINDEX = 44;
+
+    private static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final IStructureDefinition<GT_TileEntity_HTGR> STRUCTURE_DEFINITION = StructureDefinition.<GT_TileEntity_HTGR>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(new String[][]{
+                    {"  BBBBBBB  "," BBBBBBBBB ","BBBBBBBBBBB","BBBBBBBBBBB","BBBBBBBBBBB","BBBBBBBBBBB","BBBBBBBBBBB","BBBBBBBBBBB","BBBBBBBBBBB"," BBBBBBBBB ","  BBBBBBB  "},
+                    {"  ccccccc  "," c-------c ","c---------c","c---------c","c---------c","c---------c","c---------c","c---------c","c---------c"," c-------c ","  ccccccc  "},
+                    {"  ccccccc  "," c-------c ","c---------c","c---------c","c---------c","c---------c","c---------c","c---------c","c---------c"," c-------c ","  ccccccc  "},
+                    {"  ccccccc  "," c-------c ","c---------c","c---------c","c---------c","c---------c","c---------c","c---------c","c---------c"," c-------c ","  ccccccc  "},
+                    {"  ccccccc  "," c-------c ","c---------c","c---------c","c---------c","c---------c","c---------c","c---------c","c---------c"," c-------c ","  ccccccc  "},
+                    {"  ccccccc  "," c-------c ","c---------c","c---------c","c---------c","c---------c","c---------c","c---------c","c---------c"," c-------c ","  ccccccc  "},
+                    {"  ccccccc  "," c-------c ","c---------c","c---------c","c---------c","c---------c","c---------c","c---------c","c---------c"," c-------c ","  ccccccc  "},
+                    {"  ccccccc  "," c-------c ","c---------c","c---------c","c---------c","c---------c","c---------c","c---------c","c---------c"," c-------c ","  ccccccc  "},
+                    {"  ccccccc  "," c-------c ","c---------c","c---------c","c---------c","c---------c","c---------c","c---------c","c---------c"," c-------c ","  ccccccc  "},
+                    {"  ccccccc  "," c-------c ","c---------c","c---------c","c---------c","c---------c","c---------c","c---------c","c---------c"," c-------c ","  ccccccc  "},
+                    {"  ccccccc  "," c-------c ","c---------c","c---------c","c---------c","c---------c","c---------c","c---------c","c---------c"," c-------c ","  ccccccc  "},
+                    {"  bbb~bbb  "," bbbbbbbbb ","bbbbbbbbbbb","bbbbbbbbbbb","bbbbbbbbbbb","bbbbbbbbbbb","bbbbbbbbbbb","bbbbbbbbbbb","bbbbbbbbbbb"," bbbbbbbbb ","  bbbbbbb  "},
+            }))
+            .addElement('c', ofBlock(GregTech_API.sBlockCasings3, 12))
+            .addElement('b', ofChain(
+                    ofHatchAdder(GT_TileEntity_HTGR::addOutputToMachineList, BASECASINGINDEX, 1),
+                    ofHatchAdder(GT_TileEntity_HTGR::addMaintenanceToMachineList, BASECASINGINDEX, 1),
+                    ofBlock(GregTech_API.sBlockCasings3, 12)
+            ))
+            .addElement('B', ofHatchAdderOptional(GT_TileEntity_HTGR::addInputToMachineList, BASECASINGINDEX, 2, GregTech_API.sBlockCasings3, 12))
+            .build();
+
     private static final int HELIUM_NEEDED = 730000;
     private int HeliumSupply;
     private int fueltype = -1, fuelsupply = 0;
@@ -78,6 +114,53 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_MultiBlockBase {
     @Override
     public boolean isCorrectMachinePart(ItemStack itemStack) {
         return true;
+    }
+
+    @Override
+    public IStructureDefinition<GT_TileEntity_HTGR> getStructureDefinition() {
+        return STRUCTURE_DEFINITION;
+    }
+
+    @Override
+    protected GT_Multiblock_Tooltip_Builder createTooltip() {
+        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        tt.addMachineType("High Temperature Reactor")
+                .addInfo("Controller block for the High Temperature Gas-cooled Reactor (HTGR)")
+                .addInfo("Needs a constant supply of coolant while running")
+                .addInfo("Needs at least 72k Fuel pebbles to start operation (can hold up to 720k pebbles)")
+                .addInfo("Consumes up to 0.5% of total Fuel Pellets per Operation depending on efficiency")
+                .addInfo("Efficiency is calculated exponentially depending on the amount of pebbles in the internal buffer")
+                .addInfo("Reactor will take 4 000L/s of coolant multiplied by efficiency and by fuel coolant value (check tooltips)")
+                .addInfo("One Operation takes 1 hour")
+                .addSeparator()
+                .beginStructureBlock(11, 12, 11, true)
+                .addController("Front bottom center")
+                .addCasingInfo("Radiation Proof Casings", 0)
+                .addStructureInfo("Corners and the 2 touching blocks are air (cylindric)")
+                .addInputBus("Any top layer casing", 2)
+                .addInputHatch("Any top layer casing", 2)
+                .addOutputBus("Any bottom layer casing", 1)
+                .addOutputHatch("Any bottom layer casing", 1)
+                .addMaintenanceHatch("Any bottom layer casing", 1)
+                .toolTipFinisher("Bartworks");
+        return tt;
+    }
+
+    @Override
+    public void construct(ItemStack stackSize, boolean hintsOnly) {
+        buildPiece("main", stackSize, hintsOnly, 5, 11, 0);
+    }
+
+    @Override
+    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack) {
+        return (
+            checkPiece("main", 5, 11, 0) &&
+            this.mMaintenanceHatches.size() == 1 &&
+            this.mInputHatches.size() > 0 &&
+            this.mOutputHatches.size() > 0 &&
+            this.mInputBusses.size() > 0 &&
+            this.mOutputBusses.size() > 0
+        );
     }
 
     @Override
@@ -247,49 +330,7 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_MultiBlockBase {
         return true;
     }
 
-    @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack) {
-        byte xz = 5;
-        int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * xz;
-        int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * xz;
-        for (int x = -xz; x <= xz; x++) {
-            for (int z = -xz; z <= xz; z++) {
-                for (int y = 0; y < 12; y++) {
-                    if (x + xDir == 0 && y == 0 && z + zDir == 0)
-                        continue;
-                    int ax = Math.abs(x), az = Math.abs(z);
-                    if (
-                            (ax < 4 && az == 5) ||                         // X WALLS
-                            (az < 4 && ax == 5) ||                         // Z WALLS
-                            (ax == 4 && az == 4) ||                         // CORNER WALLS
-                            ((y == 0 || y == 11) && (!(ax >= 4 && az == 5) && !(az >= 4 && ax == 5)))  // FLOOR & CEILING
-                    ) {
-                        if (!(aBaseMetaTileEntity.getBlockOffset(xDir + x, y, zDir + z) == GregTech_API.sBlockCasings3 && aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z) == 12)) {
-                            IGregTechTileEntity tEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, y, zDir + z);
-                            if (
-                                    !(y == 11 && this.addInputToMachineList(tEntity, GT_TileEntity_HTGR.BASECASINGINDEX)) &&
-                                    !(y == 0 && this.addOutputToMachineList(tEntity, GT_TileEntity_HTGR.BASECASINGINDEX)) &&
-                                    !this.addMaintenanceToMachineList(tEntity, GT_TileEntity_HTGR.BASECASINGINDEX)
-                            ) {
-                                return false;
-                            }
-                        }
-                    }
-                    else if(!(ax >= 4 && az == 5) && !(az >= 4 && ax == 5)){ // inside
-                        if(!aBaseMetaTileEntity.getAirOffset(xDir + x, y, zDir + z))
-                            return false;
-                    }
-                }
-            }
-        }
-        return (
-            this.mMaintenanceHatches.size() == 1 &&
-            this.mInputHatches.size() > 0 &&
-            this.mOutputHatches.size() > 0 &&
-            this.mInputBusses.size() > 0 &&
-            this.mOutputBusses.size() > 0
-        );
-    }
+    
 
     @Override
     public int getMaxEfficiency(ItemStack itemStack) {
@@ -328,11 +369,6 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_MultiBlockBase {
                 "Coolant:", GT_Utility.formatNumbers(coolanttaking) + "L/s",
                 "Problems:", String.valueOf(this.getIdealStatus() - this.getRepairStatus())
         };
-    }
-
-    @Override
-    public String[] getDescription() {
-        return BW_Tooltip_Reference.getTranslatedBrandedTooltip("tooltip.tile.htgr.0.name");
     }
 
     @Override
