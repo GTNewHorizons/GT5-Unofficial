@@ -1,12 +1,12 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
-import com.github.technus.tectech.mechanics.constructable.IConstructable;
-import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
-import com.github.technus.tectech.mechanics.structure.StructureDefinition;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
 import com.github.technus.tectech.util.CommonValues;
+import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -17,14 +17,14 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
-import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofBlock;
-import static com.github.technus.tectech.mechanics.structure.StructureUtility.ofHatchAdderOptional;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_decay.URANIUM_INGOT_MASS_DIFF;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_decay.URANIUM_MASS_TO_EU_INSTANT;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.GT_Values.E;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
@@ -51,7 +51,7 @@ public class GT_MetaTileEntity_EM_bhg extends GT_MetaTileEntity_MultiblockBase_E
     //region structure actual
     private static final IStructureDefinition<GT_MetaTileEntity_EM_bhg> STRUCTURE_DEFINITION= StructureDefinition
             .<GT_MetaTileEntity_EM_bhg>builder()
-            .addShapeOldApi("t1",new String[][]{
+            .addShape("t1",new String[][]{
                     {"\u000B", "M0000000", "L00     00", "L0       0", "L0  !!!  0", "L0  !.!  0", "L0  !!!  0", "L0       0", "L00     00", "M0000000",},
                     {"\u0008", "O0A0", "O0A0", "O0A0", "O0A0", "N11111", "M1101011", "I000010010010000", "M1111111", "I000010010010000", "M1101011", "N11111", "O0A0", "O0A0", "O0A0", "O0A0",},
                     {"\u0006", "O0A0", "O0A0", "O0A0", "P1", "P1", "M1111111", "L11E11", "L1B222B1", "G000B1A23332A1B000", "J111A23332A111", "G000B1A23332A1B000", "L1B222B1", "L11E11", "M1111111", "P1", "P1", "O0A0", "O0A0", "O0A0",},
@@ -86,7 +86,7 @@ public class GT_MetaTileEntity_EM_bhg extends GT_MetaTileEntity_MultiblockBase_E
                     {"\u0008", "O0A0", "O0A0", "O0A0", "O0A0", "N11111", "M1101011", "I000010010010000", "M1111111", "I000010010010000", "M1101011", "N11111", "O0A0", "O0A0", "O0A0", "O0A0",},
                     {"\u000B", "O0A0", "O0A0", "O0A0", "L000000000", "O0A0", "L000000000", "O0A0", "O0A0", "O0A0",},
             })
-            .addShapeOldApi("t2",new String[][]{
+            .addShape("t2",new String[][]{
                     {"\u000B", "M0000000", "L00     00", "L0       0", "L0  !!!  0", "L0  !.!  0", "L0  !!!  0", "L0       0", "L00     00", "M0000000",},
                     {"\u0008", "O0A0", "M550A055", "L5550A0555", "K55550A05555", "J5555111115555", "J5551101011555", "I000010010010000", "M1111111", "I000010010010000", "J5551101011555", "J5555111115555", "K55550A05555", "L5550A0555", "M550A055", "O0A0",},
                     {"\u0006", "O0A0", "M550A055", "K55550A05555", "J555C1C555", "I555D1D555", "I55B1111111B55", "H55B11E11B55", "H55B1B222B1B55", "G000B1A23332A1B000", "J111A23332A111", "G000B1A23332A1B000", "H55B1B222B1B55", "H55B11E11B55", "I55B1111111B55", "I555D1D555", "J555C1C555", "K55550A05555", "M550A055", "O0A0",},
@@ -134,7 +134,7 @@ public class GT_MetaTileEntity_EM_bhg extends GT_MetaTileEntity_MultiblockBase_E
             .build();
 
     @Override
-    public IStructureDefinition<? extends GT_MetaTileEntity_MultiblockBase_EM> getStructure_EM() {
+    public IStructureDefinition<GT_MetaTileEntity_EM_bhg> getStructure_EM() {
         return STRUCTURE_DEFINITION;
     }
 
