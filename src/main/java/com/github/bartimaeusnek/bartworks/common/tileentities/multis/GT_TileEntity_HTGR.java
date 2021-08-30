@@ -518,7 +518,8 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
                     10000, BW_Util.getMachineVoltageFromTier(4));
             GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                     GT_OreDictUnificator.get(OrePrefixes.plateDense,Materials.Lead,6),
-                    GT_OreDictUnificator.get(OrePrefixes.frameGt,Materials.TungstenSteel,1)
+                    GT_OreDictUnificator.get(OrePrefixes.frameGt,Materials.TungstenSteel,1),
+                    GT_OreDictUnificator.get(OrePrefixes.screw,Materials.Europium,24)
                     },
                     Materials.Concrete.getMolten(1296),
                     new ItemStack(GregTech_API.sBlockCasings3,1,12),

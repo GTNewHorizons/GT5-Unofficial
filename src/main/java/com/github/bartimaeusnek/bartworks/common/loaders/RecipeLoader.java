@@ -754,7 +754,7 @@ public class RecipeLoader {
                             "BZB",
                             'B', new ItemStack(GregTech_API.sBlockCasings3, 1, 12),
                             'R', GT_ModHandler.getModItem("IC2", "blockGenerator", 1, 5),
-                            'Z', "circuitUltimate"
+                            'Z', "circuitSuperconductor"
                     }
             );
 
