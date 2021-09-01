@@ -124,7 +124,7 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("High Temperature Reactor")
+        tt.addMachineType("Breeder Reactor")
                 .addInfo("Controller block for the High Temperature Gas-cooled Reactor (HTGR)")
                 .addInfo("Needs a constant supply of coolant while running")
                 .addInfo("Needs at least 72k Fuel pebbles to start operation (can hold up to 720k pebbles)")
