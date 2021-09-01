@@ -467,20 +467,20 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
         static final Fuel_[] sHTGR_Fuel = new Fuel_[]{
             new Fuel_("Thorium", "Thorium", WerkstoffLoader.Thorium232.get(OrePrefixes.dust, 64), Materials.Uranium235.getDust(4), 
                 GT_Values.NF, new ItemStack[]{ 
-                    Materials.Silicon.getDustSmall(1), Materials.Graphite.getDustSmall(1), Materials.Carbon.getDustSmall(1),
-                    Materials.Lutetium.getDustSmall(1), WerkstoffLoader.Thorium232.get(OrePrefixes.dustSmall,1)},
+                    Materials.Silicon.getDust(1), Materials.Graphite.getDust(1), Materials.Carbon.getDust(1),
+                    Materials.Lutetium.getDust(1), WerkstoffLoader.Thorium232.get(OrePrefixes.dust,1)},
                 new int[]{9000, 9000, 9000, 9000, 1000}, "Multiplies coolant by 1"),
-            new Fuel_("Uranium", "Uranium", Materials.Uranium.getDust(60), Materials.Uranium235.getDust(8), 
-                FluidRegistry.getFluidStack("krypton", 7), new ItemStack[]{ 
-                    Materials.Silicon.getDustSmall(1), Materials.Graphite.getDustSmall(1), Materials.Carbon.getDustSmall(1),
-                    Materials.Lead.getDustSmall(1),
-                    Materials.Uranium.getDustSmall(1)},
-                new int[]{9000, 9000, 9000, 6562, 937}, "Multiplies coolant by 1.5"),
+            new Fuel_("Uranium", "Uranium", Materials.Uranium.getDust(64), Materials.Uranium235.getDust(8), 
+                FluidRegistry.getFluidStack("krypton", 8), new ItemStack[]{ 
+                    Materials.Silicon.getDust(1), Materials.Graphite.getDust(1), Materials.Carbon.getDust(1),
+                    Materials.Lead.getDust(1),
+                    Materials.Uranium.getDust(1)},
+                new int[]{9000, 9000, 9000, 7000, 1000}, "Multiplies coolant by 1.5"),
             new Fuel_("Plutonium", "Plutonium", Materials.Plutonium.getDust(64), Materials.Plutonium241.getDust(4), 
                 FluidRegistry.getFluidStack("xenon", 8), new ItemStack[]{ 
-                    Materials.Silicon.getDustSmall(1), Materials.Graphite.getDustSmall(1), Materials.Carbon.getDustSmall(1),
-                    Materials.Lead.getDustSmall(1),
-                    Materials.Plutonium.getDustSmall(1)},
+                    Materials.Silicon.getDust(1), Materials.Graphite.getDust(1), Materials.Carbon.getDust(1),
+                    Materials.Lead.getDust(1),
+                    Materials.Plutonium.getDust(1)},
                 new int[]{9000, 9000, 9000, 7000, 1000}, "Multiplies coolant by 2"),
         };
         static final CustomHTGRSimpleSubItemClass aHTGR_Materials;
@@ -532,9 +532,7 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
                 GT_Values.RA.addFormingPressRecipe(new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 1, i), Materials.Carbon.getDust(64),new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 1, i + 1),40,30);
                 GT_Values.RA.addFormingPressRecipe(new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 1, i + 1), Materials.Silicon.getDust(64),new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 1, i + 2),40,30);
                 GT_Values.RA.addFormingPressRecipe(new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 1, i + 2), Materials.Graphite.getDust(64),new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 1, i + 3),40,30);
-                ItemStack[] pellets = new ItemStack[4];
-                Arrays.fill(pellets,new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 64, i + 4));
-                GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.addRecipe(false, new ItemStack[]{new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 1, i + 3), GT_Utility.getIntegratedCircuit(17)}, pellets, null, null, null, null, 32000, 30, 0);
+                GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.addRecipe(false, new ItemStack[]{new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 1, i + 3), GT_Utility.getIntegratedCircuit(17)}, new ItemStack[]{new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 64, i + 4)}, null, null, null, null, 32000, 30, 0);
                 GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.addRecipe(false, new ItemStack[]{new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 1, i + 5), GT_Utility.getIntegratedCircuit(17)}, new ItemStack[]{new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 64, i + 6)}, null, null, null, null,48000,30,0);
                 GT_Values.RA.addCentrifugeRecipe(
                         new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 1, i + 6), GT_Values.NI, GT_Values.NF,
