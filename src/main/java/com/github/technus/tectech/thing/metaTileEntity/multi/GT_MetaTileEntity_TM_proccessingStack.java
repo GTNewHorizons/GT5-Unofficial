@@ -21,7 +21,27 @@ import static com.github.technus.tectech.mechanics.structure.Structure.adders;
 import static gregtech.api.GregTech_API.sBlockCasings4;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+@Deprecated
 public class GT_MetaTileEntity_TM_proccessingStack extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
+    protected GT_MetaTileEntity_TM_proccessingStack(int aID, String aName, String aNameRegional) {
+        super(aID, aName, aNameRegional);
+    }
+
+    @Override
+    public void construct(ItemStack stackSize, boolean hintsOnly) {
+
+    }
+
+    @Override
+    public String[] getStructureDescription(ItemStack stackSize) {
+        return new String[0];
+    }
+
+    @Override
+    public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+        return null;
+    }
+    /*
     //region variables
     private boolean hasBeenPausedThisCycle = false;
     //endregion
@@ -131,4 +151,5 @@ public class GT_MetaTileEntity_TM_proccessingStack extends GT_MetaTileEntity_Mul
     public String[] getStructureDescription(ItemStack stackSize) {
         return description;
     }
+ */
 }
