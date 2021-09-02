@@ -942,6 +942,38 @@ public class MyMaterial implements Runnable {
             TextureSet.SET_FLUID
     );
 
+    //material for reactor stuff
+    public static final Werkstoff zircaloy4 = new Werkstoff(
+            new short[]{0x8a,0x6e,0x68},
+            "Zircaloy-4",
+            subscriptNumbers("Zr34Sn5Fe2Cr"),
+            new Werkstoff.Stats().setCentrifuge(true).setBlastFurnace(true).setMeltingPoint(2800),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().onlyDust().addMolten().addMetalItems().addCraftingMetalWorkingItems().addSimpleMetalWorkingItems(),
+            OffsetID + 81,
+            TextureSet.SET_METALLIC,
+            new Pair<>(WerkstoffLoader.Zirconium, 34),
+            new Pair<>(Tin, 5),
+            new Pair<>(Iron, 2),
+            new Pair<>(Chrome, 1)
+    );
+
+    public static final Werkstoff zircaloy2 = new Werkstoff(
+            new short[]{0xa4,0x8f,0x8b},
+            "Zircaloy-2",
+            subscriptNumbers("Zr34Sn4FeCrNi"),
+            new Werkstoff.Stats().setCentrifuge(true).setBlastFurnace(true).setMeltingPoint(2800),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().onlyDust().addMolten().addMetalItems().addCraftingMetalWorkingItems().addSimpleMetalWorkingItems(),
+            OffsetID + 82,
+            TextureSet.SET_METALLIC,
+            new Pair<>(WerkstoffLoader.Zirconium, 34),
+            new Pair<>(Tin, 4),
+            new Pair<>(Iron, 1),
+            new Pair<>(Chrome, 1),
+            new Pair<>(Nickel, 1)
+    );
+
     @Override
     public void run() { }
 }

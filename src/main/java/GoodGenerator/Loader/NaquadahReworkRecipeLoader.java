@@ -493,8 +493,8 @@ public class NaquadahReworkRecipeLoader {
                 Materials.Ethylene.getCells(1),
                 GT_Utility.getIntegratedCircuit(24),
                 FluidRegistry.getFluidStack("steam", 2000),
-                Materials.Ethanol.getFluid(1000),
-                Materials.Empty.getCells(1),
+                null,
+                Materials.Ethanol.getCells(1),
                 null,
                 400,
                 480

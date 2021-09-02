@@ -1,14 +1,12 @@
 package GoodGenerator.Main;
 
 import GoodGenerator.Common.CommonProxy;
-import GoodGenerator.CrossMod.NEI.IMCForNEI;
 import GoodGenerator.CrossMod.Thaumcraft.Research;
 import GoodGenerator.Items.MyMaterial;
 import GoodGenerator.Loader.*;
 import GoodGenerator.Network.MessageOpenNeutronSensorGUI;
 import GoodGenerator.Network.MessageSetNeutronSensorData;
 import GoodGenerator.Tabs.MyTabs;
-import GoodGenerator.Blocks.MyFluids.FluidsBuilder;
 import com.github.bartimaeusnek.bartworks.API.WerkstoffAdderRegistry;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.SidedProxy;
@@ -18,9 +16,6 @@ import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.relauncher.Side;
 import net.minecraft.creativetab.CreativeTabs;
 import cpw.mods.fml.common.Mod;
-
-import static GoodGenerator.Loader.Loaders.addOreDic;
-import static GoodGenerator.Loader.Loaders.addTexturePage;
 
 @SuppressWarnings("ALL")
 @Mod(modid = GoodGenerator.MOD_ID, version = GoodGenerator.VERSION,
@@ -50,32 +45,19 @@ public final class GoodGenerator {
     @Mod.EventHandler
     public static void preInit(FMLPreInitializationEvent event){
         WerkstoffAdderRegistry.addWerkstoffAdder(new MyMaterial());
-        Loaders.compactMod();
-        new FluidsBuilder();
-        Loaders.Register();
-        IMCForNEI.IMCSender();
-        addOreDic();
-        addTexturePage();
+        Loaders.preInitLoad();
         proxy.preInit(event);
     }
     @Mod.EventHandler
     public static void init(FMLInitializationEvent event){
+        Loaders.initLoad();
         proxy.init(event);
-        RecipeLoader.InitLoadRecipe();
-        RecipeLoader_02.InitLoadRecipe();
-        FuelRecipeLoader.RegisterFuel();
-        NaquadahReworkRecipeLoader.RecipeLoad();
     }
     @Mod.EventHandler
     public static void postInit(FMLPostInitializationEvent event){
+        Loaders.postInitLoad();
+        crossMod();
         proxy.postInit(event);
-        RecipeLoader.RecipeLoad();
-        RecipeLoader.Fixer();
-        RecipeLoader_02.RecipeLoad();
-        NeutronActivatorLoader.NARecipeLoad();
-        if (Loader.isModLoaded("Thaumcraft")){
-            Research.addResearch();
-        }
     }
     @Mod.EventHandler
     public void onLoadComplete(FMLLoadCompleteEvent event) {
@@ -83,5 +65,9 @@ public final class GoodGenerator {
         NaquadahReworkRecipeLoader.Remover();
     }
 
-
+    public static void crossMod() {
+        if (Loader.isModLoaded("Thaumcraft")){
+            Research.addResearch();
+        }
+    }
 }

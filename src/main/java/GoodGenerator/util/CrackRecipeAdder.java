@@ -1,7 +1,10 @@
 package GoodGenerator.util;
 
+import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -56,5 +59,15 @@ public class CrackRecipeAdder {
         GT_Values.RA.addAssemblerRecipe(inputs, Materials.SolderingAlloy.getMolten(solders), output, duration, EUt, isClean);
         GT_Values.RA.addAssemblerRecipe(inputs, Materials.Tin.getMolten(solders * 2), output, duration, EUt, isClean);
         GT_Values.RA.addAssemblerRecipe(inputs, Materials.Lead.getMolten(solders * 4), output, duration, EUt, isClean);
+    }
+
+    public static void reAddBlastRecipe(Werkstoff material, int duration, int EUt, int level, boolean gas) {
+        ItemStack input = material.get(OrePrefixes.dust, 1);
+        ItemStack output = level > 1750 ? material.get(OrePrefixes.ingotHot, 1) : material.get(OrePrefixes.ingot, 1);
+        if (gas) {
+            GT_Values.RA.addBlastRecipe(input, GT_Utility.getIntegratedCircuit(11), Materials.Helium.getGas(1000), null, output, null, duration, EUt, level);
+        } else {
+            GT_Values.RA.addBlastRecipe(input, GT_Utility.getIntegratedCircuit(1), null, null, output, null, duration, EUt, level);
+        }
     }
 }

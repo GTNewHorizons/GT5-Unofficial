@@ -6,6 +6,9 @@ import net.minecraftforge.fluids.Fluid;
 
 public class FluidsBuilder {
     public FluidsBuilder(){
+    }
+
+    public static void Register() {
         crackedNaquadahGas_Lightly();
         crackedNaquadahGas_Moderately();
         crackedNaquadahGas_Heavily();

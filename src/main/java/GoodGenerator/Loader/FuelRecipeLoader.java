@@ -1,6 +1,7 @@
 package GoodGenerator.Loader;
 
 import GoodGenerator.Items.MyMaterial;
+import GoodGenerator.util.ItemRefer;
 import GoodGenerator.util.MyRecipeAdder;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.Materials;
@@ -46,8 +47,8 @@ public class FuelRecipeLoader {
                 new ItemStack[]{
                         MyMaterial.extremelyUnstableNaquadah.get(OrePrefixes.dust,27),
                         MyMaterial.orundum.get(OrePrefixes.dust,8),
-                        new ItemStack(Loaders.highDensityUranium,16),
-                        new ItemStack(Loaders.highDensityPlutonium,3)
+                        ItemRefer.High_Density_Uranium.get(16),
+                        ItemRefer.High_Density_Plutonium.get(3),
                 },
                 MyMaterial.naquadahBasedFuelMkIV.getFluidOrGas(250),
                 56000000,

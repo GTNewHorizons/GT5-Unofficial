@@ -1,5 +1,6 @@
 package GoodGenerator.Loader;
 
+import GoodGenerator.Blocks.MyFluids.FluidsBuilder;
 import GoodGenerator.Blocks.RegularBlock.Casing;
 import GoodGenerator.Blocks.RegularBlock.ComplexTextureCasing;
 import GoodGenerator.Blocks.RegularBlock.Frame;
@@ -7,6 +8,7 @@ import GoodGenerator.Blocks.RegularBlock.TEBlock;
 import GoodGenerator.Blocks.TEs.*;
 import GoodGenerator.Blocks.TEs.MetaTE.NeutronAccelerator;
 import GoodGenerator.Blocks.TEs.MetaTE.NeutronSensor;
+import GoodGenerator.CrossMod.NEI.IMCForNEI;
 import GoodGenerator.Items.MyItemBlocks;
 import GoodGenerator.Items.MyItems;
 import GoodGenerator.Items.RadioactiveItem;
@@ -54,6 +56,7 @@ public class Loaders {
     public static final Item naquadahMass = new MyItems("naquadahMass", addText("naquadahMass.tooltip", 1), GoodGenerator.GG);
     public static final Item enrichedNaquadahMass = new MyItems("enrichedNaquadahMass", addText("enrichedNaquadahMass.tooltip", 1), GoodGenerator.GG);
     public static final Item naquadriaMass = new MyItems("naquadriaMass", addText("naquadriaMass.tooltip", 1), GoodGenerator.GG);
+    public static final Item advancedFuelRod = new MyItems("advancedFuelRod", GoodGenerator.GG);
 
     public static final Block MAR_Casing = new Casing("MAR_Casing", new String[]{GoodGenerator.MOD_ID+":MAR_Casing"});
     public static final Block FRF_Casings = new Casing("FRF_Casing", new String[]{"gregtech:iconsets/MACHINE_CASING_MINING_BLACKPLUTONIUM"});
@@ -79,6 +82,17 @@ public class Loaders {
     public static ItemStack NA;
 
     public static ItemStack[] NeutronAccelerators = new ItemStack[9];
+
+    public static void GTMetaTileRegister(){
+        Loaders.MAR = new MultiNqGenerator(12732, "NaG", "Large Naquadah Reactor").getStackForm(1L);
+        Loaders.FRF = new FuelRefineFactory(16999, "FRF", "Naquadah Fuel Refinery").getStackForm(1L);
+        Loaders.UCFE = new UniversalChemicalFuelEngine(IDOffset, "UniversalChemicalFuelEngine", "Universal Chemical Fuel Engine").getStackForm(1L);
+        for (int i = 0; i < 9; i ++) {
+            Loaders.NeutronAccelerators[i] = new NeutronAccelerator(IDOffset + 2 + i, "Neutron Accelerator " + GT_Values.VN[i], "Neutron Accelerator " + GT_Values.VN[i], i).getStackForm(1L);
+        }
+        Loaders.NS = new NeutronSensor(IDOffset + 11, "Neutron Sensor", "Neutron Sensor", 5).getStackForm(1L);
+        Loaders.NA = new NeutronActivator(IDOffset + 12, "NeutronActivator", "Neutron Activator").getStackForm(1L);
+    }
 
     public static void Register(){
         GameRegistry.registerBlock(MAR_Casing, MyItemBlocks.class, "MAR_Casing");
@@ -116,26 +130,17 @@ public class Loaders {
         GameRegistry.registerItem(naquadahMass, "naquadahMass", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(enrichedNaquadahMass, "enrichedNaquadahMass", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(naquadriaMass, "naquadriaMass", GoodGenerator.MOD_ID);
-        Loaders.MAR = new MultiNqGenerator(12732, "NaG", "Large Naquadah Reactor").getStackForm(1L);
-        Loaders.FRF = new FuelRefineFactory(16999, "FRF", "Naquadah Fuel Refinery").getStackForm(1L);
-        Loaders.UCFE = new UniversalChemicalFuelEngine(IDOffset, "UniversalChemicalFuelEngine", "Universal Chemical Fuel Engine").getStackForm(1L);
-        if (Loader.isModLoaded("Thaumcraft")){
-            GameRegistry.registerBlock(magicCasing, MyItemBlocks.class, "magicCasing");
-            GameRegistry.registerBlock(essentiaCells[0], MyItemBlocks.class, "essentiaCell");
-            GameRegistry.registerBlock(essentiaHatch, MyItemBlocks.class, "essentiaHatch");
-            GameRegistry.registerTileEntity(EssentiaHatch.class, "EssentiaHatch");
-            Loaders.LEG = new LargeEssentiaGenerator(IDOffset + 1, "LargeEssentiaGenerator", "Large Essentia Generator").getStackForm(1L);
-        }
-        for (int i = 0; i < 9; i ++) {
-            Loaders.NeutronAccelerators[i] = new NeutronAccelerator(IDOffset + 2 + i, "Neutron Accelerator " + GT_Values.VN[i], "Neutron Accelerator " + GT_Values.VN[i], i).getStackForm(1L);
-        }
-        Loaders.NS = new NeutronSensor(IDOffset + 11, "Neutron Sensor", "Neutron Sensor", 5).getStackForm(1L);
-        Loaders.NA = new NeutronActivator(IDOffset + 12, "NeutronActivator", "Neutron Activator").getStackForm(1L);
+        GameRegistry.registerItem(advancedFuelRod, "advancedFuelRod", GoodGenerator.MOD_ID);
     }
 
     public static void compactMod() {
         if (Loader.isModLoaded("Thaumcraft")) {
+            GameRegistry.registerTileEntity(EssentiaHatch.class, "EssentiaHatch");
+            Loaders.LEG = new LargeEssentiaGenerator(IDOffset + 1, "LargeEssentiaGenerator", "Large Essentia Generator").getStackForm(1L);
             essentiaHatch = new TEBlock("essentiaHatch", new String[]{GoodGenerator.MOD_ID + ":essentiaHatch"}, 1);
+            GameRegistry.registerBlock(magicCasing, MyItemBlocks.class, "magicCasing");
+            GameRegistry.registerBlock(essentiaCells[0], MyItemBlocks.class, "essentiaCell");
+            GameRegistry.registerBlock(essentiaHatch, MyItemBlocks.class, "essentiaHatch");
         }
     }
 
@@ -150,5 +155,38 @@ public class Loaders {
             Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage] = new ITexture[128];
             Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage][0] = TextureFactory.of(magicCasing);
         }
+    }
+
+    public static void preInitLoad(){
+        Register();
+        GTMetaTileRegister();
+        addOreDic();
+        addTexturePage();
+        compactMod();
+        FluidsBuilder.Register();
+        FuelRodLoader.RegisterRod();
+    }
+
+    public static void initLoad(){
+        IMCForNEI.IMCSender();
+        initLoadRecipes();
+    }
+
+    public static void postInitLoad(){
+        postInitLoadRecipes();
+    }
+
+    public static void initLoadRecipes(){
+        RecipeLoader.InitLoadRecipe();
+        RecipeLoader_02.InitLoadRecipe();
+        FuelRecipeLoader.RegisterFuel();
+        NaquadahReworkRecipeLoader.RecipeLoad();
+    }
+
+    public static void postInitLoadRecipes(){
+        RecipeLoader.RecipeLoad();
+        RecipeLoader.Fixer();
+        RecipeLoader_02.RecipeLoad();
+        NeutronActivatorLoader.NARecipeLoad();
     }
 }

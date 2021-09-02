@@ -44,6 +44,13 @@ item.neutronSource.name=Neutron Source
 item.naquadahMass.name=Naquadah Mass
 item.enrichedNaquadahMass.name=Enriched Naquadah Mass
 item.naquadriaMass.name=Naquadria Mass
+item.rodCompressedUraniumDepleted.name=Fuel Rod (Depleted High Density Uranium)
+item.rodCompressedUraniumDepleted2.name=Dual Fuel Rod (Depleted High Density Uranium)
+item.rodCompressedUraniumDepleted4.name=Quad Fuel Rod (Depleted High Density Uranium)
+item.rodCompressedUranium.name=Fuel Rod (High Density Uranium)
+item.rodCompressedUranium2.name=Dual Fuel Rod (High Density Uranium)
+item.rodCompressedUranium4.name=Quad Fuel Rod (High Density Uranium)
+item.advancedFuelRod.name=Advanced Fuel Rod (Empty)
 
 #Tooltip
 inverter.tooltip.0=Turn DC into AC.
@@ -52,6 +59,8 @@ enrichedNaquadahMass.tooltip.0=An intense to satisfaction in the world.
 naquadriaMass.tooltip.0=What?
 EssentiaHatch.tooltip.0=You can right click it with an Essentia Jar to set Essentia Filter.
 EssentiaHatch.tooltip.1=Right click it with empty hands to clear the Filter.
+fuelrod.tooltip.0=Durability: %s/%s
+depletedfuelrod.tooltip.0=Depleted
 
 #Fluids
 fluid.lightlyCrackedNaquadahGas=Lightly Cracked Naquadah Gas

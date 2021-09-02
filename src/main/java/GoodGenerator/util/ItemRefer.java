@@ -1,10 +1,13 @@
 package GoodGenerator.util;
 
 import gregtech.api.util.GT_Utility;
+import ic2.api.reactor.IReactorComponent;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
+import static GoodGenerator.Loader.FuelRodLoader.*;
 import static GoodGenerator.Loader.Loaders.*;
 
 public final class ItemRefer {
@@ -34,6 +37,13 @@ public final class ItemRefer {
     public static ItemRefer Naquadah_Mass = getItemStack(naquadahMass);
     public static ItemRefer Enriched_Naquadah_Mass = getItemStack(enrichedNaquadahMass);
     public static ItemRefer Naquadria_Mass = getItemStack(naquadriaMass);
+    public static ItemRefer Advanced_Fuel_Rod = getItemStack(advancedFuelRod);
+    public static ItemRefer Fuel_Rod_U_Depleted_1 = getItemStack(rodCompressedUraniumDepleted);
+    public static ItemRefer Fuel_Rod_U_Depleted_2 = getItemStack(rodCompressedUraniumDepleted_2);
+    public static ItemRefer Fuel_Rod_U_Depleted_4 = getItemStack(rodCompressedUraniumDepleted_4);
+    public static ItemRefer Fuel_Rod_U_1 = getItemStack(rodCompressedUranium);
+    public static ItemRefer Fuel_Rod_U_2 = getItemStack(rodCompressedUranium_2);
+    public static ItemRefer Fuel_Rod_U_4 = getItemStack(rodCompressedUranium_4);
 
     public static ItemRefer Field_Restriction_Casing = getItemStack(MAR_Casing);
     public static ItemRefer Naquadah_Fuel_Refinery_Casing = getItemStack(FRF_Casings);

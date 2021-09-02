@@ -12,10 +12,20 @@ import net.minecraft.world.World;
 
 public class RadioactiveItem extends MyItems{
 
-    private final int mRadio;
+    protected final int mRadio;
 
     public RadioactiveItem(String name, CreativeTabs Tab, int Rad) {
         super(name, Tab);
+        this.mRadio = Rad;
+    }
+
+    public RadioactiveItem(String name, String[] tooltip, CreativeTabs Tab, int Rad) {
+        super(name, tooltip, Tab);
+        this.mRadio = Rad;
+    }
+
+    public RadioactiveItem(String name, String tooltip, CreativeTabs Tab, int Rad) {
+        super(name, tooltip, Tab);
         this.mRadio = Rad;
     }
 
