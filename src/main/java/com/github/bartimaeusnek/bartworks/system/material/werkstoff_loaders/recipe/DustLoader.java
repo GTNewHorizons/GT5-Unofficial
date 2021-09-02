@@ -148,6 +148,9 @@ public class DustLoader implements IWerkstoffRunnable {
                 if (werkstoff.getGenerationFeatures().hasMixerRecipes()) {
                     if (cells > 0)
                         stOutputs.add(Materials.Empty.getCells(cells));
+                    short circuitID = werkstoff.getMixCircuit();
+                    ItemStack circuit = circuitID == -1 ? null : GT_Utility.getIntegratedCircuit(circuitID);
+                    if (circuit != null) stOutputs.add(circuit);
                     GT_Recipe.GT_Recipe_Map.sMixerRecipes.add(new BWRecipes.DynamicGTRecipe(true, stOutputs.toArray(new ItemStack[0]), new ItemStack[]{input}, null, null, new FluidStack[]{flOutputs.size() > 0 ? flOutputs.get(0) : null}, null, (int) Math.max(1L, Math.abs(werkstoff.getStats().getMass() / werkstoff.getContents().getValue().size())), Math.min(4, werkstoff.getContents().getValue().size()) * 5, 0));
                 }
             }
