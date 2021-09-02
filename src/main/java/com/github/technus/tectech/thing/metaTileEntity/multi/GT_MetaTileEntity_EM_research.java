@@ -1,14 +1,14 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
-import com.github.technus.tectech.mechanics.constructable.IConstructable;
-import com.github.technus.tectech.mechanics.structure.adders.IHatchAdder;
-import com.github.technus.tectech.mechanics.structure.Structure;
 import com.github.technus.tectech.recipe.TT_recipe;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Holder;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
 import com.github.technus.tectech.util.CommonValues;
+import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
@@ -22,6 +22,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockB
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.IGT_HatchAdder;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -45,7 +46,11 @@ import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileE
 import static com.github.technus.tectech.thing.metaTileEntity.multi.em_machine.GT_MetaTileEntity_EM_machine.machine;
 import static com.github.technus.tectech.util.CommonValues.V;
 import static com.github.technus.tectech.util.CommonValues.VN;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static gregtech.api.enums.GT_Values.E;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
@@ -64,32 +69,55 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
 
     private static LinkedHashMap<String, String> lServerNames;
 
-    private String clientLocale = "en_US";
-    //endregion
-
-    //region structure
-    private static final String[][] shape = new String[][]{
-            {E, "000", E, E, E, "000"/*,E,*/},
-            {"A0", "010", "A1", "A!", "A1", "010", "A0",},
-            {"A0", "010", E, E, E, "010", "A0",},
-            {"000", "010", E, E, E, "010", "000",},
-            {"000", "212", "010", "0.0", "010", "212", "000",},
-            {"000", "212", "111", "111", "111", "212", "000",},
-            {"000", "222", "   ", "   ", "   ", "222", "000",},
-    };
-    private static final Block[] blockType = new Block[]{sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT};
-    private static final byte[] blockMeta = new byte[]{1, 3, 2};
-    private static final IHatchAdder<GT_MetaTileEntity_EM_research>[] addingMethods = adders(
-            GT_MetaTileEntity_EM_research::addClassicToMachineList,
-            GT_MetaTileEntity_EM_research::addHolderToMachineList);
-    private static final short[] casingTextures = new short[]{textureOffset + 1, textureOffset + 3};
-    private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, Blocks.air};
-    private static final byte[] blockMetaFallback = new byte[]{1, 0};
     private static final String[] description = new String[]{
             EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
             translateToLocal("gt.blockmachines.multimachine.em.research.hint.0"),//1 - Classic/Data Hatches or Computer casing
             translateToLocal("gt.blockmachines.multimachine.em.research.hint.1"),//2 - Holder Hatch
     };
+
+    private String clientLocale = "en_US";
+    //endregion
+
+    //region structure
+    private static final IStructureDefinition<GT_MetaTileEntity_EM_research> STRUCTURE_DEFINITION =
+            StructureDefinition.<GT_MetaTileEntity_EM_research>builder()
+                    .addShape("main", new String[][]{
+                            {"   ", " A ", " A ", "AAA", "AAA", "AAA", "AAA"},
+                            {"AAA", "ACA", "ACA", "ACA", "BCB", "BCB", "BBB"},
+                            {"   ", " C ", "   ", "   ", "ACA", "CCC", "DDD"},
+                            {"   ", " E ", "   ", "   ", "A~A", "CCC", "DDD"},
+                            {"   ", " C ", "   ", "   ", "ACA", "CCC", "DDD"},
+                            {"AAA", "ACA", "ACA", "ACA", "BCB", "BCB", "BBB"},
+                            {"   ", " A ", " A ", "AAA", "AAA", "AAA", "AAA"}
+                    })
+                    .addElement('A', ofBlock(sBlockCasingsTT, 1))
+                    .addElement('B', ofBlock(sBlockCasingsTT, 2))
+                    .addElement('C', ofBlock(sBlockCasingsTT, 3))
+                    .addElement('D', ofChain(
+                            ofHatchAdder(GT_MetaTileEntity_EM_research::addClassicToMachineList, textureOffset + 1, sBlockCasingsTT, 1),
+                            ofHatchAdder(GT_MetaTileEntity_EM_research::addDataConnectorToMachineList, textureOffset + 3, sBlockCasingsTT, 1)
+                    ))
+                    .addElement('E', ofHatchAdder(GT_MetaTileEntity_EM_research::addHolderToMachineList, 3, 1))
+                    .build();
+
+//    private static final String[][] shape = new String[][]{
+//            {E, "000", E, E, E, "000"/*,E,*/},
+//            {"A0", "010", "A1", "A!", "A1", "010", "A0",},
+//            {"A0", "010", E, E, E, "010", "A0",},
+//            {"000", "010", E, E, E, "010", "000",},
+//            {"000", "212", "010", "0.0", "010", "212", "000",},
+//            {"000", "212", "111", "111", "111", "212", "000",},
+//            {"000", "222", "   ", "   ", "   ", "222", "000",},
+//    };
+//    private static final Block[] blockType = new Block[]{sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT};
+//    private static final byte[] blockMeta = new byte[]{1, 3, 2};
+//    private static final IGT_HatchAdder<GT_MetaTileEntity_EM_research>[] addingMethods = adders(
+//            GT_MetaTileEntity_EM_research::addClassicToMachineList,
+//            GT_MetaTileEntity_EM_research::addHolderToMachineList);
+//    private static final short[] casingTextures = new short[]{textureOffset + 1, textureOffset + 3};
+//    private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, Blocks.air};
+//    private static final byte[] blockMetaFallback = new byte[]{1, 0};
+
     //endregion
 
     public GT_MetaTileEntity_EM_research(int aID, String aName, String aNameRegional) {
@@ -262,9 +290,15 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
         }
         eHolders.clear();
 
+        if (!structureCheck_EM("main", 1, 3, 4)) {
+            return false;
+        }
+
+        /*
         if (!structureCheck_EM(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 3, 4)) {
             return false;
         }
+        */
 
         for (GT_MetaTileEntity_Hatch_Holder rack : eHolders) {
             if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(rack)) {
@@ -559,7 +593,13 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        Structure.builder(shape, blockType, blockMeta, 1, 3, 4, getBaseMetaTileEntity(), getExtendedFacing(), hintsOnly);
+        //Structure.builder(shape, blockType, blockMeta, 1, 3, 4, getBaseMetaTileEntity(), getExtendedFacing(), hintsOnly);
+        structureBuild_EM("main", 1, 3, 4, hintsOnly, stackSize);
+    }
+
+    @Override
+    public IStructureDefinition<GT_MetaTileEntity_EM_research> getStructure_EM() {
+        return STRUCTURE_DEFINITION;
     }
 
     @Override
