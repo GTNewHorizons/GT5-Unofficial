@@ -50,6 +50,12 @@ item.rodCompressedUraniumDepleted4.name=Quad Fuel Rod (Depleted High Density Ura
 item.rodCompressedUranium.name=Fuel Rod (High Density Uranium)
 item.rodCompressedUranium2.name=Dual Fuel Rod (High Density Uranium)
 item.rodCompressedUranium4.name=Quad Fuel Rod (High Density Uranium)
+item.rodCompressedPlutoniumDepleted.name=Fuel Rod (Depleted High Density Plutonium)
+item.rodCompressedPlutoniumDepleted2.name=Dual Fuel Rod (Depleted High Density Plutonium)
+item.rodCompressedPlutoniumDepleted4.name=Quad Fuel Rod (Depleted High Density Plutonium)
+item.rodCompressedPlutonium.name=Fuel Rod (High Density Plutonium)
+item.rodCompressedPlutonium2.name=Dual Fuel Rod (High Density Plutonium)
+item.rodCompressedPlutonium4.name=Quad Fuel Rod (High Density Plutonium)
 item.advancedFuelRod.name=Advanced Fuel Rod (Empty)
 
 #Tooltip

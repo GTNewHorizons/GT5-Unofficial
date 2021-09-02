@@ -44,6 +44,12 @@ public final class ItemRefer {
     public static ItemRefer Fuel_Rod_U_1 = getItemStack(rodCompressedUranium);
     public static ItemRefer Fuel_Rod_U_2 = getItemStack(rodCompressedUranium_2);
     public static ItemRefer Fuel_Rod_U_4 = getItemStack(rodCompressedUranium_4);
+    public static ItemRefer Fuel_Rod_Pu_Depleted_1 = getItemStack(rodCompressedPlutoniumDepleted);
+    public static ItemRefer Fuel_Rod_Pu_Depleted_2 = getItemStack(rodCompressedPlutoniumDepleted_2);
+    public static ItemRefer Fuel_Rod_Pu_Depleted_4 = getItemStack(rodCompressedPlutoniumDepleted_4);
+    public static ItemRefer Fuel_Rod_Pu_1 = getItemStack(rodCompressedPlutonium);
+    public static ItemRefer Fuel_Rod_Pu_2 = getItemStack(rodCompressedPlutonium_2);
+    public static ItemRefer Fuel_Rod_Pu_4 = getItemStack(rodCompressedPlutonium_4);
 
     public static ItemRefer Field_Restriction_Casing = getItemStack(MAR_Casing);
     public static ItemRefer Naquadah_Fuel_Refinery_Casing = getItemStack(FRF_Casings);

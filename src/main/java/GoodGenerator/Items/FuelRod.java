@@ -23,6 +23,7 @@ public class FuelRod extends RadioactiveItem implements IReactorComponent, IBoxa
     private final int maxDmg;
     private final float Power;
     private final int Heat;
+    private float HeatBonus = 0;
     private final ItemStack result;
 
     public FuelRod(String aName, int aCells, int aEUt, int aHeat, int aRads, int aDuration, ItemStack aResult, CreativeTabs Tab) {
@@ -33,6 +34,17 @@ public class FuelRod extends RadioactiveItem implements IReactorComponent, IBoxa
         this.Power = (float)aEUt / 25.0F;
         this.result = aResult;
         this.Heat = aHeat;
+    }
+
+    public FuelRod(String aName, int aCells, int aEUt, int aHeat, int aRads, int aDuration, float aHeatBonus, ItemStack aResult, CreativeTabs Tab) {
+        super(aName, Tab, aRads);
+        this.setMaxStackSize(64);
+        this.numberOfCells = aCells;
+        this.maxDmg = aDuration;
+        this.Power = (float)aEUt / 25.0F;
+        this.result = aResult;
+        this.Heat = aHeat;
+        this.HeatBonus = aHeatBonus;
     }
 
     public void processChamber(IReactor reactor, ItemStack stack, int x, int y, boolean heatRun) {
@@ -93,7 +105,7 @@ public class FuelRod extends RadioactiveItem implements IReactorComponent, IBoxa
 
     public boolean acceptUraniumPulse(IReactor reactor, ItemStack yourStack, ItemStack pulsingStack, int youX, int youY, int pulseX, int pulseY, boolean heatrun) {
         if (!heatrun) {
-            reactor.addOutput(Power);
+            reactor.addOutput(Power * (1 + HeatBonus * ((float) reactor.getHeat() /(float) reactor.getMaxHeat())));
         }
         return true;
     }

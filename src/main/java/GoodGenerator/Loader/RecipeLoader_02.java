@@ -115,6 +115,51 @@ public class RecipeLoader_02 {
                 220,
                 1920
         );
+
+        GT_Values.RA.addCannerRecipe(
+                ItemRefer.Advanced_Fuel_Rod.get(1),
+                ItemRefer.High_Density_Plutonium.get(1),
+                ItemRefer.Fuel_Rod_Pu_1.get(1),
+                null,
+                400,
+                120
+        );
+
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] {
+                        ItemRefer.Fuel_Rod_Pu_1.get(2),
+                        MyMaterial.zircaloy2.get(OrePrefixes.stick, 4),
+                        GT_Utility.getIntegratedCircuit(2)
+                },
+                null,
+                ItemRefer.Fuel_Rod_Pu_2.get(1),
+                200,
+                1920
+        );
+
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] {
+                        ItemRefer.Fuel_Rod_Pu_2.get(2),
+                        MyMaterial.zircaloy2.get(OrePrefixes.stick, 4),
+                        GT_Utility.getIntegratedCircuit(5)
+                },
+                null,
+                ItemRefer.Fuel_Rod_Pu_4.get(1),
+                200,
+                1920
+        );
+
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] {
+                        ItemRefer.Fuel_Rod_Pu_1.get(4),
+                        MyMaterial.zircaloy2.get(OrePrefixes.stickLong, 6),
+                        GT_Utility.getIntegratedCircuit(4)
+                },
+                null,
+                ItemRefer.Fuel_Rod_Pu_4.get(1),
+                220,
+                1920
+        );
     }
 
     public static void InitLoadRecipe() {
@@ -161,6 +206,54 @@ public class RecipeLoader_02 {
                 Materials.Graphite.getDust(32),
                 Materials.Uranium235.getDust(4),
                 Materials.Plutonium241.getDust(4),
+                new int[]{10000, 10000, 10000, 9000, 5000, 3000},
+                200,
+                1920
+        );
+
+        GT_Values.RA.addCentrifugeRecipe(
+                ItemRefer.Fuel_Rod_Pu_Depleted_1.get(1),
+                null,
+                null,
+                WerkstoffLoader.Krypton.getFluidOrGas(32),
+                ItemRefer.Advanced_Fuel_Rod.get(1),
+                Materials.Plutonium.getDust(5),
+                Materials.Plutonium241.getDust(2),
+                Materials.Carbon.getDust(2),
+                Materials.Uranium.getDust(1),
+                Materials.Uranium235.getDust(1),
+                new int[]{10000, 10000, 10000, 9000, 5000, 3000},
+                200,
+                1920
+        );
+
+        GT_Values.RA.addCentrifugeRecipe(
+                ItemRefer.Fuel_Rod_Pu_Depleted_2.get(1),
+                null,
+                null,
+                WerkstoffLoader.Krypton.getFluidOrGas(64),
+                ItemRefer.Advanced_Fuel_Rod.get(2),
+                Materials.Plutonium.getDust(10),
+                Materials.Plutonium241.getDust(4),
+                Materials.Carbon.getDust(4),
+                Materials.Uranium.getDust(2),
+                Materials.Uranium235.getDust(2),
+                new int[]{10000, 10000, 10000, 9000, 5000, 3000},
+                200,
+                1920
+        );
+
+        GT_Values.RA.addCentrifugeRecipe(
+                ItemRefer.Fuel_Rod_Pu_Depleted_4.get(1),
+                null,
+                null,
+                WerkstoffLoader.Krypton.getFluidOrGas(128),
+                ItemRefer.Advanced_Fuel_Rod.get(4),
+                Materials.Plutonium.getDust(20),
+                Materials.Plutonium241.getDust(8),
+                Materials.Carbon.getDust(8),
+                Materials.Uranium.getDust(4),
+                Materials.Uranium235.getDust(4),
                 new int[]{10000, 10000, 10000, 9000, 5000, 3000},
                 200,
                 1920
