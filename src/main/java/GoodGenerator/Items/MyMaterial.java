@@ -258,6 +258,17 @@ public class MyMaterial implements Runnable {
     );
 
     //Atomic Separation Catalyst
+    public static final Werkstoff orundum = new Werkstoff(
+            new short[]{0xcd,0x26,0x26},
+            "Orundum",
+            "Or",
+            new Werkstoff.Stats().setProtons(120).setMass(300),
+            Werkstoff.Types.ELEMENT,
+            new Werkstoff.GenerationFeatures().addGems(),
+            OffsetID + 22,
+            TextureSet.SET_DIAMOND
+    );
+
     public static final Werkstoff atomicSeparationCatalyst = new Werkstoff(
             new short[]{0xe8,0x5e,0x0c},
             "Atomic Separation Catalyst",
@@ -266,18 +277,10 @@ public class MyMaterial implements Runnable {
             Werkstoff.Types.COMPOUND,
             new Werkstoff.GenerationFeatures().disable().onlyDust().addMolten().addMetalItems().addSimpleMetalWorkingItems().addCraftingMetalWorkingItems().addMultipleIngotMetalWorkingItems(),
             OffsetID + 21,
-            TextureSet.SET_SHINY
-    );
-
-    public static final Werkstoff orundum = new Werkstoff(
-            new short[]{0xcd,0x26,0x26},
-            "Orundum",
-            "Or",
-            new Werkstoff.Stats(),
-            Werkstoff.Types.ELEMENT,
-            new Werkstoff.GenerationFeatures().addGems(),
-            OffsetID + 22,
-            TextureSet.SET_DIAMOND
+            TextureSet.SET_SHINY,
+            new Pair<>(MyMaterial.orundum, 2),
+            new Pair<>(Plutonium, 1),
+            new Pair<>(Naquadah, 2)
     );
 
     //Naquadah Fuel Rework
@@ -285,7 +288,7 @@ public class MyMaterial implements Runnable {
             new short[]{0x06,0x26,0x05},
             "Extremely Unstable Naquadah",
             "Nq"+ CharExchanger.shifter(9734),
-            new Werkstoff.Stats().setMeltingPoint(7000).setBlastFurnace(true),
+            new Werkstoff.Stats().setMeltingPoint(7000).setBlastFurnace(true).setProtons(200).setMass(450),
             Werkstoff.Types.ELEMENT,
             new Werkstoff.GenerationFeatures().disable().onlyDust().addMolten().addMetalItems().addSimpleMetalWorkingItems().addCraftingMetalWorkingItems().addMultipleIngotMetalWorkingItems(),
             OffsetID + 23,
@@ -604,7 +607,9 @@ public class MyMaterial implements Runnable {
             Werkstoff.Types.COMPOUND,
             new Werkstoff.GenerationFeatures().disable().onlyDust().addMolten().addMetalItems(),
             OffsetID + 52,
-            TextureSet.SET_SHINY
+            TextureSet.SET_SHINY,
+            new Pair<>(Zinc, 1),
+            new Pair<>(Thorium, 1)
     );
 
     //Naquadah Rework Materials
@@ -972,6 +977,23 @@ public class MyMaterial implements Runnable {
             new Pair<>(Iron, 1),
             new Pair<>(Chrome, 1),
             new Pair<>(Nickel, 1)
+    );
+
+    public static final Werkstoff Incoloy903 = new Werkstoff(
+            new short[]{0xa4,0x8f,0x8b},
+            "Incoloy-903",
+            subscriptNumbers("Fe12Ni10Co8Ti4Mo2Al"),
+            new Werkstoff.Stats().setCentrifuge(true).setBlastFurnace(true).setMeltingPoint(3700),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().onlyDust().addMolten().addMetalItems().addCraftingMetalWorkingItems().addSimpleMetalWorkingItems(),
+            OffsetID + 83,
+            TextureSet.SET_METALLIC,
+            new Pair<>(Iron, 12),
+            new Pair<>(Nickel, 10),
+            new Pair<>(Cobalt, 8),
+            new Pair<>(Titanium, 4),
+            new Pair<>(Molybdenum, 2),
+            new Pair<>(Aluminium, 1)
     );
 
     @Override

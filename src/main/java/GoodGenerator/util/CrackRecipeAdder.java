@@ -70,4 +70,9 @@ public class CrackRecipeAdder {
             GT_Values.RA.addBlastRecipe(input, GT_Utility.getIntegratedCircuit(1), null, null, output, null, duration, EUt, level);
         }
     }
+
+    public static FluidStack copyFluidWithAmount(FluidStack fluid, int amount) {
+        if (fluid == null || amount <= 0) return null;
+        return new FluidStack(fluid.getFluid(), amount);
+    }
 }

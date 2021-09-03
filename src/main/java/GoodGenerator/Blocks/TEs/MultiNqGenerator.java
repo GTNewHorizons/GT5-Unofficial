@@ -1,9 +1,10 @@
 package GoodGenerator.Blocks.TEs;
 
-import GoodGenerator.Items.MyMaterial;
 import GoodGenerator.Loader.Loaders;
+import GoodGenerator.util.CrackRecipeAdder;
 import GoodGenerator.util.DescTextLocalization;
 import GoodGenerator.util.MyRecipeAdder;
+import com.github.bartimaeusnek.bartworks.util.Pair;
 import com.github.bartimaeusnek.crossmod.tectech.TecTechEnabledMulti;
 import com.github.technus.tectech.mechanics.constructable.IConstructable;
 import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
@@ -30,6 +31,7 @@ import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -38,11 +40,26 @@ import static com.github.technus.tectech.mechanics.structure.StructureUtility.*;
 public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implements TecTechEnabledMulti, IConstructable {
 
     protected IStructureDefinition<MultiNqGenerator> multiDefinition = null;
-    protected int ticker = 0;
     protected long leftEnergy = 0;
+    protected long trueOutput = 0;
+    protected int trueEff = 0;
     protected boolean fluidLocker = true;
     protected FluidStack lockedFluid = null;
     protected int times = 1;
+    protected int basicOutput;
+
+    private final List<Pair<FluidStack, Integer>> excitedLiquid = Arrays.asList(
+            new Pair<>(FluidRegistry.getFluidStack("molten.atomic separation catalyst", 1), 16),
+            new Pair<>(Materials.Naquadah.getMolten(1L), 4),
+            new Pair<>(Materials.Uranium235.getMolten(9L), 3),
+            new Pair<>(Materials.Caesium.getMolten(9L), 2)
+            );
+
+    private final List<Pair<FluidStack, Integer>> coolant = Arrays.asList(
+            new Pair<>(FluidRegistry.getFluidStack("cryotheum", 50), 275),
+            new Pair<>(Materials.SuperCoolant.getFluid(50L), 150),
+            new Pair<>(FluidRegistry.getFluidStack("ic2coolant",50), 105)
+    );
 
     @Override
     public void construct(ItemStack itemStack, boolean hintsOnly) {
@@ -150,10 +167,10 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT){
-        this.ticker = aNBT.getInteger("mTicker");
         this.fluidLocker = aNBT.getBoolean("mIsLocked");
         this.times = aNBT.getInteger("mTimes");
         this.leftEnergy = aNBT.getLong("mLeftEnergy");
+        this.basicOutput = aNBT.getInteger("mbasicOutput");
         if (FluidRegistry.getFluid(aNBT.getString("mLockedFluidName")) != null)
             this.lockedFluid = new FluidStack(FluidRegistry.getFluid(aNBT.getString("mLockedFluidName")), aNBT.getInteger("mLockedFluidAmount"));
         else this.lockedFluid = null;
@@ -162,10 +179,10 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT){
-        aNBT.setInteger("mTicker", this.ticker);
         aNBT.setBoolean("mIsLocked", this.fluidLocker);
         aNBT.setInteger("mTimes", this.times);
         aNBT.setLong("mLeftEnergy", this.leftEnergy);
+        aNBT.setInteger("mbasicOutput", this.basicOutput);
         if (lockedFluid != null){
             aNBT.setString("mLockedFluidName", this.lockedFluid.getFluid().getName());
             aNBT.setInteger("mLockedFluidAmount", this.lockedFluid.amount);
@@ -198,100 +215,86 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
 
         if (cnt > 1) doExplosion(4 * 4);
 
-        FluidStack f1=null;
-        float booster = 1.0f;
-        if(tFluids.size() > 0){
-            if(tFluids.contains(FluidRegistry.getFluidStack("cryotheum", 50)) && tFluids.get(tFluids.indexOf(FluidRegistry.getFluidStack("cryotheum", 50))).amount >= 50){
-                booster = 2.75f;
-                f1=FluidRegistry.getFluidStack("cryotheum", 50);
-            }
-            else if(tFluids.contains(Materials.SuperCoolant.getFluid(50L)) && tFluids.get(tFluids.indexOf(Materials.SuperCoolant.getFluid(50L))).amount >= 50){
-                booster = 1.5f;
-                f1=Materials.SuperCoolant.getFluid(50L);
-            }
-            else if(tFluids.contains(FluidRegistry.getFluidStack("ic2coolant",50)) && tFluids.get(tFluids.indexOf(FluidRegistry.getFluidStack("ic2coolant",50))).amount >= 50){
-                booster = 1.05f;
-                f1=FluidRegistry.getFluidStack("ic2coolant",50);
-            }
-        }
-
-        if (fluidLocker && lockedFluid != null){
-            if (!(tFluids.contains(lockedFluid) && tFluids.get(tFluids.indexOf(lockedFluid)).amount >= lockedFluid.amount)){
-                times = 1;
-            }
-            else {
-                if (lockedFluid.getFluid() == MyMaterial.atomicSeparationCatalyst.getMolten(1).getFluid())
-                    times = 16;
-                else if (lockedFluid.getFluid() == Materials.Naquadah.getMolten(1L).getFluid())
-                    times = 4;
-                else if (lockedFluid.getFluid() == Materials.Uranium235.getMolten(9L).getFluid())
-                    times = 3;
-                else if (lockedFluid.getFluid() == Materials.Caesium.getMolten(9L).getFluid())
-                    times = 2;
-            }
-        }
-
-        if (tFluids.size()>0){
-            for (GT_Recipe recipe : tRecipes){
-                FluidStack recipeFluid = recipe.mFluidInputs[0].copy();
-                FluidStack recipeFluidOut = recipe.mFluidOutputs[0].copy();
-                recipeFluid.amount = times;
-                recipeFluidOut.amount = times;
-                int lasting = recipe.mDuration;
-                int outputEU = recipe.mSpecialValue;
-                if (tFluids.contains(recipeFluid) && tFluids.get(tFluids.indexOf(recipeFluid)).amount >= times){
-                    if(f1 != null)
-                        depleteInput(f1);
-                    if(lockedFluid != null && times != 1)
-                        depleteInput(lockedFluid);
-                    if (ticker == 0 || ticker%lasting == 0){
-                        fluidLocker = false;
-                        if(tFluids.size() > 0){
-                            if (tFluids.contains((MyMaterial.atomicSeparationCatalyst.getMolten(1))) && tFluids.get(tFluids.indexOf(MyMaterial.atomicSeparationCatalyst.getMolten(1))).amount >= 1){
-                                times = 16;
-                                lockedFluid = MyMaterial.atomicSeparationCatalyst.getMolten(1);
-                            }
-                            else if(tFluids.contains(Materials.Naquadah.getMolten(1L)) && tFluids.get(tFluids.indexOf(Materials.Naquadah.getMolten(1L))).amount >= 1){
-                                times = 4;
-                                lockedFluid = Materials.Naquadah.getMolten(1L);
-                            }
-                            else if(tFluids.contains(Materials.Uranium235.getMolten(9L)) && tFluids.get(tFluids.indexOf(Materials.Uranium235.getMolten(9L))).amount >= 9){
-                                times = 3;
-                                lockedFluid = Materials.Uranium235.getMolten(9L);
-                            }
-                            else if (tFluids.contains(Materials.Caesium.getMolten(9L)) && tFluids.get(tFluids.indexOf(Materials.Caesium.getMolten(9L))).amount >= 9){
-                                times = 2;
-                                lockedFluid = Materials.Caesium.getMolten(9L);
-                            }
-                            else {
-                                times = 1;
-                                lockedFluid = null;
-                            }
-                            fluidLocker = true;
-                            recipeFluid.amount = times;
-                            recipeFluidOut.amount = times;
-                        }
-                        depleteInput(recipeFluid);
-                        this.mOutputFluids = new FluidStack[]{recipeFluidOut};
-                    }
-                    else this.mOutputFluids = null;
-                    if (tFluids.contains(Materials.LiquidAir.getFluid(120)) && tFluids.get(tFluids.indexOf(Materials.LiquidAir.getFluid(120))).amount >= 120){
-                        depleteInput(Materials.LiquidAir.getFluid(120));
-                        addAutoEnergy((((long)outputEU)*times)*(int)(booster*100)/100);
-                        this.mEUt = (int)(outputEU*times*booster);
-                    }
-                    else{
-                        addEnergyOutput_EM(0,0);
-                        this.mEUt = 0;
-                    }
-                    this.mProgresstime = 1;
-                    this.mMaxProgresstime = 1;
+        for (GT_Recipe tRecipe : MyRecipeAdder.instance.NqGFuels.mRecipeList) {
+            if (tFluids.contains(tRecipe.mFluidInputs[0])) {
+                Pair<FluidStack, Integer> excitedInfo = getExcited(tFluids.toArray(new FluidStack[0]), false);
+                int pall = excitedInfo == null ? 1 : excitedInfo.getValue();
+                if (consumeFuel(CrackRecipeAdder.copyFluidWithAmount(tRecipe.mFluidInputs[0], pall), tFluids.toArray(new FluidStack[0]))) {
+                    mOutputFluids = new FluidStack[]{CrackRecipeAdder.copyFluidWithAmount(tRecipe.mFluidOutputs[0], pall)};
+                    basicOutput = tRecipe.mSpecialValue;
+                    times = pall;
+                    lockedFluid = excitedInfo == null ? null : excitedInfo.getKey();
+                    mMaxProgresstime = tRecipe.mDuration;
                     return true;
                 }
             }
         }
-        this.mEUt = 0;
+
         return false;
+    }
+
+    @Override
+    public boolean onRunningTick(ItemStack stack) {
+        FluidStack[] input = getStoredFluids().toArray(new FluidStack[0]);
+        int eff = 100, time = 1;
+        if (!consumeFuel(Materials.LiquidAir.getFluid(120), input)) {
+            this.mEUt = 0;
+            this.trueEff = 0;
+            this.trueOutput = 0;
+            return true;
+        }
+        if (getCoolant(input, true) != null) eff = getCoolant(input, false).getValue();
+        if (consumeFuel(lockedFluid, input)) time = times;
+        this.mEUt = basicOutput * eff * time / 100;
+        this.trueEff = eff;
+        this.trueOutput = (long)basicOutput * (long)eff * (long)time / 100;
+        addAutoEnergy((long)basicOutput * (long)eff * (long)time / 100);
+        return true;
+    }
+
+    @Override
+    public String[] getInfoData() {
+        String[] info = super.getInfoData();
+        info[4] = "Probably makes: " + EnumChatFormatting.RED + Math.abs(this.trueOutput) + EnumChatFormatting.RESET + " EU/t";
+        info[6] = "Problems: " + EnumChatFormatting.RED + (this.getIdealStatus() - this.getRepairStatus()) + EnumChatFormatting.RESET + " Efficiency: " + EnumChatFormatting.YELLOW + trueEff + EnumChatFormatting.RESET + " %";
+        return info;
+    }
+
+    public boolean consumeFuel(FluidStack target, FluidStack[] input) {
+        if (target == null) return false;
+        for (FluidStack inFluid : input) {
+            if (inFluid != null && inFluid.isFluidEqual(target) && inFluid.amount >= target.amount){
+                inFluid.amount -= target.amount;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Pair<FluidStack, Integer> getExcited(FluidStack[] input, boolean isConsume) {
+        for (Pair<FluidStack, Integer> fluidPair : excitedLiquid) {
+            FluidStack tFluid = fluidPair.getKey();
+            for (FluidStack inFluid : input) {
+                if (inFluid != null && inFluid.isFluidEqual(tFluid) && inFluid.amount >= tFluid.amount) {
+                    if (isConsume) inFluid.amount -= tFluid.amount;
+                    return fluidPair;
+                }
+            }
+        }
+        return null;
+    }
+
+    public Pair<FluidStack, Integer> getCoolant(FluidStack[] input, boolean isConsume) {
+        for (Pair<FluidStack, Integer> fluidPair : coolant) {
+            FluidStack tFluid = fluidPair.getKey();
+            for (FluidStack inFluid : input) {
+                if (inFluid != null && inFluid.isFluidEqual(tFluid) && inFluid.amount >= tFluid.amount) {
+                    if (isConsume) inFluid.amount -= tFluid.amount;
+                    return fluidPair;
+                }
+            }
+        }
+        return null;
     }
 
     public void addAutoEnergy(long outputPower){
@@ -327,24 +330,6 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
                     addEnergyOutput_EM(outputPower, 1);
                 }
             }
-    }
-
-    @Override
-    public boolean onRunningTick(ItemStack stack) {
-        if (getBaseMetaTileEntity().isAllowedToWork()) {
-            mRuntime ++;
-            ticker ++;
-        }
-        if (!getBaseMetaTileEntity().isActive() || !getBaseMetaTileEntity().isAllowedToWork()) {
-            mRuntime = 0;
-            ticker = 0;
-            leftEnergy = 0;
-            fluidLocker = false;
-            lockedFluid = null;
-            times = 1;
-        }
-        if (ticker > 3 * 17 * 19 * 1000000) ticker = 0;
-        return true;
     }
 
     @Override

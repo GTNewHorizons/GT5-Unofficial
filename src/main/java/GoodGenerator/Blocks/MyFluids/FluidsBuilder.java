@@ -1,7 +1,9 @@
 package GoodGenerator.Blocks.MyFluids;
 
+import GoodGenerator.CrossMod.NEI.NEI_Config;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.material.Material;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 
 public class FluidsBuilder {
@@ -32,6 +34,7 @@ public class FluidsBuilder {
         tmp2.SetTexture("lightlyCrackedNaquadahGas");
         tmp2.setBlockName("lightlyCrackedNaquadahGas");
         GameRegistry.registerBlock(tmp2,"lightlyCrackedNaquadahGas");
+        NEI_Config.hide(tmp2);
     }
 
     public static void crackedNaquadahGas_Moderately(){
@@ -42,6 +45,7 @@ public class FluidsBuilder {
         tmp2.SetTexture("moderatelyCrackedNaquadahGas");
         tmp2.setBlockName("moderatelyCrackedNaquadahGas");
         GameRegistry.registerBlock(tmp2,"moderatelyCrackedNaquadahGas");
+        NEI_Config.hide(tmp2);
     }
 
     public static void crackedNaquadahGas_Heavily(){
@@ -52,6 +56,7 @@ public class FluidsBuilder {
         tmp2.SetTexture("heavilyCrackedNaquadahGas");
         tmp2.setBlockName("heavilyCrackedNaquadahGas");
         GameRegistry.registerBlock(tmp2,"heavilyCrackedNaquadahGas");
+        NEI_Config.hide(tmp2);
     }
 
     public static void crackedLightNaquadahFuel_Lightly(){
@@ -62,6 +67,7 @@ public class FluidsBuilder {
         tmp2.SetTexture("lightlyCrackedLightNaquadahFuel");
         tmp2.setBlockName("lightlyCrackedLightNaquadahFuel");
         GameRegistry.registerBlock(tmp2,"lightlyCrackedLightNaquadahFuel");
+        NEI_Config.hide(tmp2);
     }
 
     public static void crackedLightNaquadahFuel_Moderately(){
@@ -72,6 +78,7 @@ public class FluidsBuilder {
         tmp2.SetTexture("moderatelyCrackedLightNaquadahFuel");
         tmp2.setBlockName("moderatelyCrackedLightNaquadahFuel");
         GameRegistry.registerBlock(tmp2,"moderatelyCrackedLightNaquadahFuel");
+        NEI_Config.hide(tmp2);
     }
 
     public static void crackedLightNaquadahFuel_Heavily(){
@@ -82,6 +89,7 @@ public class FluidsBuilder {
         tmp2.SetTexture("heavilyCrackedLightNaquadahFuel");
         tmp2.setBlockName("heavilyCrackedLightNaquadahFuel");
         GameRegistry.registerBlock(tmp2,"heavilyCrackedLightNaquadahFuel");
+        NEI_Config.hide(tmp2);
     }
 
     public static void crackedHeavyNaquadahFuel_Lightly(){
@@ -92,6 +100,7 @@ public class FluidsBuilder {
         tmp2.SetTexture("lightlyCrackedHeavyNaquadahFuel");
         tmp2.setBlockName("lightlyCrackedHeavyNaquadahFuel");
         GameRegistry.registerBlock(tmp2,"lightlyCrackedHeavyNaquadahFuel");
+        NEI_Config.hide(tmp2);
     }
 
     public static void crackedHeavyNaquadahFuel_Moderately(){
@@ -102,6 +111,7 @@ public class FluidsBuilder {
         tmp2.SetTexture("moderatelyCrackedHeavyNaquadahFuel");
         tmp2.setBlockName("moderatelyCrackedHeavyNaquadahFuel");
         GameRegistry.registerBlock(tmp2,"moderatelyCrackedHeavyNaquadahFuel");
+        NEI_Config.hide(tmp2);
     }
 
     public static void crackedHeavyNaquadahFuel_Heavily(){
@@ -112,6 +122,7 @@ public class FluidsBuilder {
         tmp2.SetTexture("heavilyCrackedHeavyNaquadahFuel");
         tmp2.setBlockName("heavilyCrackedHeavyNaquadahFuel");
         GameRegistry.registerBlock(tmp2,"heavilyCrackedHeavyNaquadahFuel");
+        NEI_Config.hide(tmp2);
     }
 
     public static void crackedNaquadahAsphalt_Lightly(){
@@ -124,6 +135,7 @@ public class FluidsBuilder {
         tmp2.SetTexture("lightlyCrackedNaquadahAsphalt");
         tmp2.setBlockName("lightlyCrackedNaquadahAsphalt");
         GameRegistry.registerBlock(tmp2,"lightlyCrackedNaquadahAsphalt");
+        NEI_Config.hide(tmp2);
     }
 
     public static void crackedNaquadahAsphalt_Moderately(){
@@ -136,6 +148,7 @@ public class FluidsBuilder {
         tmp2.SetTexture("moderatelyCrackedNaquadahAsphalt");
         tmp2.setBlockName("moderatelyCrackedNaquadahAsphalt");
         GameRegistry.registerBlock(tmp2,"moderatelyCrackedNaquadahAsphalt");
+        NEI_Config.hide(tmp2);
     }
 
     public static void crackedNaquadahAsphalt_Heavily(){
@@ -148,6 +161,7 @@ public class FluidsBuilder {
         tmp2.SetTexture("heavilyCrackedNaquadahAsphalt");
         tmp2.setBlockName("heavilyCrackedNaquadahAsphalt");
         GameRegistry.registerBlock(tmp2,"heavilyCrackedNaquadahAsphalt");
+        NEI_Config.hide(tmp2);
     }
 
     public static void combustionPromotor(){
@@ -158,5 +172,6 @@ public class FluidsBuilder {
         tmp2.SetTexture("combustionPromotor");
         tmp2.setBlockName("combustionPromotor");
         GameRegistry.registerBlock(tmp2,"combustionPromotor");
+        NEI_Config.hide(tmp2);
     }
 }
