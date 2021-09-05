@@ -22,6 +22,7 @@
 
 package com.github.bartimaeusnek.bartworks.common.tileentities.multis;
 
+import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
@@ -69,7 +70,7 @@ import java.util.HashMap;
 
 public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_TileEntity_HTGR> {
 
-    private static final int BASECASINGINDEX = 44;
+    private static final int BASECASINGINDEX = 181;
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<GT_TileEntity_HTGR> STRUCTURE_DEFINITION = StructureDefinition.<GT_TileEntity_HTGR>builder()
@@ -87,16 +88,20 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
                     {"  ccccccc  "," c-------c ","c---------c","c---------c","c---------c","c---------c","c---------c","c---------c","c---------c"," c-------c ","  ccccccc  "},
                     {"  bbb~bbb  "," bbbbbbbbb ","bbbbbbbbbbb","bbbbbbbbbbb","bbbbbbbbbbb","bbbbbbbbbbb","bbbbbbbbbbb","bbbbbbbbbbb","bbbbbbbbbbb"," bbbbbbbbb ","  bbbbbbb  "},
             }))
-            .addElement('c', ofBlock(GregTech_API.sBlockCasings3, 12))
+            .addElement('c', ofBlock(GregTech_API.sBlockCasings8, 5))
             .addElement('b', ofChain(
                     ofHatchAdder(GT_TileEntity_HTGR::addOutputToMachineList, BASECASINGINDEX, 1),
                     ofHatchAdder(GT_TileEntity_HTGR::addMaintenanceToMachineList, BASECASINGINDEX, 1),
-                    ofBlock(GregTech_API.sBlockCasings3, 12)
+                    ofHatchAdder(GT_TileEntity_HTGR::addEnergyInputToMachineList, BASECASINGINDEX, 1),
+                    ofBlock(GregTech_API.sBlockCasings8, 5)
             ))
-            .addElement('B', ofHatchAdderOptional(GT_TileEntity_HTGR::addInputToMachineList, BASECASINGINDEX, 2, GregTech_API.sBlockCasings3, 12))
+            .addElement('B', ofHatchAdderOptional(GT_TileEntity_HTGR::addInputToMachineList, BASECASINGINDEX, 2, GregTech_API.sBlockCasings8, 5))
             .build();
 
     private static final int HELIUM_NEEDED = 730000;
+    private static final int powerUsage = BW_Util.getMachineVoltageFromTier(6);
+    private static final int maxcapacity = 720000;
+    private static final int mincapacity = maxcapacity/10;
     private int HeliumSupply;
     private int fueltype = -1, fuelsupply = 0;
     private boolean empty;
@@ -131,19 +136,26 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
                 .addInfo("Consumes up to 0.5% of total Fuel Pellets per Operation depending on efficiency")
                 .addInfo("Efficiency is calculated exponentially depending on the amount of pebbles in the internal buffer")
                 .addInfo("Reactor will take 4 000L/s of coolant multiplied by efficiency and by fuel coolant value (check tooltips)")
+                .addInfo("Uses " + GT_Utility.formatNumbers(powerUsage) + " EU/t")
                 .addInfo("One Operation takes 1 hour")
                 .addSeparator()
                 .beginStructureBlock(11, 12, 11, true)
                 .addController("Front bottom center")
-                .addCasingInfo("Radiation Proof Casings", 0)
+                .addCasingInfo("Europium Reinforced Radiation Proof Casings", 0)
                 .addStructureInfo("Corners and the 2 touching blocks are air (cylindric)")
                 .addInputBus("Any top layer casing", 2)
                 .addInputHatch("Any top layer casing", 2)
                 .addOutputBus("Any bottom layer casing", 1)
                 .addOutputHatch("Any bottom layer casing", 1)
+                .addEnergyHatch("Any bottom layer casing", 1)
                 .addMaintenanceHatch("Any bottom layer casing", 1)
                 .toolTipFinisher("Bartworks");
         return tt;
+    }
+
+    @Override
+    protected IAlignmentLimits getInitialAlignmentLimits() {
+        return (d, r, f) -> d.offsetY == 0 && r.isNotRotated() && f.isNotFlipped();
     }
 
     @Override
@@ -159,7 +171,8 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
             this.mInputHatches.size() > 0 &&
             this.mOutputHatches.size() > 0 &&
             this.mInputBusses.size() > 0 &&
-            this.mOutputBusses.size() > 0
+            this.mOutputBusses.size() > 0 &&
+            this.mEnergyHatches.size() > 0
         );
     }
 
@@ -198,7 +211,7 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
                     }
                 }
             }
-            if(this.fuelsupply < 720000){
+            if(this.fuelsupply < maxcapacity){
                 for (ItemStack itemStack : this.getStoredInputs()) {
                     int type = -1;
                     if(itemStack == null) continue;
@@ -210,7 +223,7 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
                         this.fueltype = type;
                     if(this.fueltype != type)
                         continue;
-                    int toget = Math.min(720000 - this.fuelsupply, itemStack.stackSize);
+                    int toget = Math.min(maxcapacity - this.fuelsupply, itemStack.stackSize);
                     this.fuelsupply += toget;
                     itemStack.stackSize -= toget;
                 }
@@ -224,14 +237,17 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
         
         if(this.empty)
         {
-            this.mEfficiency = 10000;
-            this.mMaxProgresstime = 100;
-            return true;
+            if(this.HeliumSupply > 0 || this.fuelsupply > 0){
+                this.mEfficiency = 10000;
+                this.mMaxProgresstime = 100;
+                return true;
+            }
+            return false;
         }
-        if (!(this.HeliumSupply >= GT_TileEntity_HTGR.HELIUM_NEEDED && this.fuelsupply >= 72000))
+        if (!(this.HeliumSupply >= GT_TileEntity_HTGR.HELIUM_NEEDED && this.fuelsupply >= mincapacity))
             return false;
 
-        double eff = Math.min(Math.pow((double)this.fuelsupply/72000D, 2D), 100D)/100D - ((double)(getIdealStatus() - getRepairStatus()) / 10D);
+        double eff = Math.min(Math.pow((double)this.fuelsupply/(double)mincapacity, 2D), 100D)/100D - ((double)(getIdealStatus() - getRepairStatus()) / 10D);
 
         if(eff <= 0)
             return false;
@@ -250,12 +266,12 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
             new ItemStack(HTGRMaterials.aHTGR_Materials, toReduce, meta + 1)
         };
         
-        this.updateSlots();
+        //this.updateSlots(); // not needed ?
 
         this.coolanttaking = (int)(4000D * (((this.fueltype * 0.5D) + 1)) * eff);
 
         this.mEfficiency = (int)(eff*10000D);
-        this.mEUt=0;
+        this.mEUt=-powerUsage;
         this.mMaxProgresstime=72000;
         return true;
     }
@@ -299,6 +315,9 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
             }
             return true;
         }
+
+        if(!super.onRunningTick(aStack)) // USE DA POWAH
+            return false;
 
         if(runningtick % 20 == 0)
         {
@@ -373,7 +392,18 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        return aSide == aFacing ? new ITexture[]{Textures.BlockIcons.getCasingTextureForId(GT_TileEntity_HTGR.BASECASINGINDEX), TextureFactory.of(aActive ? TextureFactory.of(TextureFactory.of(Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE), TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE_GLOW).glow().build()) : TextureFactory.of(TextureFactory.of(Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER), TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_GLOW).glow().build()))} : new ITexture[]{Textures.BlockIcons.getCasingTextureForId(GT_TileEntity_HTGR.BASECASINGINDEX)};
+        if (aSide == aFacing) {
+            if (aActive)
+                return new ITexture[]{
+                        Textures.BlockIcons.getCasingTextureForId(GT_TileEntity_HTGR.BASECASINGINDEX),
+                        TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE).extFacing().build(),
+                        TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE_GLOW).extFacing().glow().build()};
+            return new ITexture[]{
+                    Textures.BlockIcons.getCasingTextureForId(GT_TileEntity_HTGR.BASECASINGINDEX),
+                    TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER).extFacing().build(),
+                    TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_GLOW).extFacing().glow().build()};
+        }
+        return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(GT_TileEntity_HTGR.BASECASINGINDEX)};
     }
 
     @Override
@@ -509,22 +539,15 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
         }
 
         public static void registerTHR_Recipes(){
-            GT_Values.RA.addCentrifugeRecipe(
-                    Materials.Thorium.getDust(1),GT_Values.NI,GT_Values.NF,GT_Values.NF,
-                    Materials.Thorium.getDustSmall(2),Materials.Thorium.getDustSmall(1),
-                    WerkstoffLoader.Thorium232.get(OrePrefixes.dustTiny,1),WerkstoffLoader.Thorium232.get(OrePrefixes.dustTiny,1),
-                    WerkstoffLoader.Thorium232.get(OrePrefixes.dustTiny,1),Materials.Lutetium.getDustTiny(1),
-                    new int[]{1600,1500,200,200,50,50},
-                    10000, BW_Util.getMachineVoltageFromTier(4));
             GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
-                    GT_OreDictUnificator.get(OrePrefixes.plateDense,Materials.Lead,6),
-                    GT_OreDictUnificator.get(OrePrefixes.frameGt,Materials.TungstenSteel,1),
+                    new ItemStack(GregTech_API.sBlockCasings3,1,12),
+                    GT_OreDictUnificator.get(OrePrefixes.plate,Materials.Europium,6),
                     GT_OreDictUnificator.get(OrePrefixes.screw,Materials.Europium,24)
                     },
-                    Materials.Concrete.getMolten(1296),
-                    new ItemStack(GregTech_API.sBlockCasings3,1,12),
-                    40,
-                    BW_Util.getMachineVoltageFromTier(5)
+                    Materials.Lead.getMolten(1296),
+                    new ItemStack(GregTech_API.sBlockCasings8,1,5),
+                    200,
+                    BW_Util.getMachineVoltageFromTier(6)
             );
             int i = 0;
             for(Fuel_ fuel : sHTGR_Fuel){
