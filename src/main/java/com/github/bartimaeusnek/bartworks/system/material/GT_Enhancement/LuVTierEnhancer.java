@@ -178,7 +178,6 @@ public class LuVTierEnhancer implements Runnable {
         Consumer<GT_Recipe> replace = gt_recipe ->
                 gt_recipe.mInputs = replaceArrayWith(
                         gt_recipe.mInputs,
-                        gt_recipe.mOutputs,
                         Materials.Osmiridium,
                         WerkstoffLoader.Ruridit
                 );
@@ -188,7 +187,6 @@ public class LuVTierEnhancer implements Runnable {
                 .forEach(recipe_assemblyLine ->
                         recipe_assemblyLine.mInputs = replaceArrayWith(
                                 recipe_assemblyLine.mInputs,
-                                new ItemStack[]{recipe_assemblyLine.mOutput},
                                 Materials.Osmiridium,
                                 WerkstoffLoader.Ruridit
                         )
@@ -197,20 +195,24 @@ public class LuVTierEnhancer implements Runnable {
         GT_Recipe.GT_Recipe_Map.sAssemblerRecipes.mRecipeList.stream()
                 .filter(gt_recipe ->
                         gt_recipe.mEUt < BW_Util.getTierVoltage(6) &&
-                                !BW_Util.checkStackAndPrefix(gt_recipe.mOutputs[0])
+                                !BW_Util.checkStackAndPrefix(gt_recipe.mOutputs[0]) &&
+                                !isOutputBlackListed(gt_recipe.mOutputs[0])
                 )
                 .forEach(replace);
 
         GT_Recipe.GT_Recipe_Map.sAssemblylineVisualRecipes.mRecipeList.stream()
-                .filter(gt_recipe -> gt_recipe.mEUt <= 6000)
+                .filter(gt_recipe -> gt_recipe.mEUt <= 6000 &&
+                        !isOutputBlackListed(gt_recipe.mOutputs[0])
+                )
                 .forEach(replace);
     }
 
-    private static ItemStack[] replaceArrayWith(ItemStack[] stackArray, ItemStack[] outputArray, Materials source, Werkstoff target) {
-        for (ItemStack output : outputArray) {
-            if (output.isItemEqual(ItemList.Casing_MiningOsmiridium.get(1)))
-                return stackArray;
-        }
+    private static boolean isOutputBlackListed(ItemStack output) {
+        if (output.isItemEqual(ItemList.Casing_MiningOsmiridium.get(1))) return true;
+        return false;
+    }
+
+    private static ItemStack[] replaceArrayWith(ItemStack[] stackArray, Materials source, Werkstoff target) {
         for (int i = 0; i < stackArray.length; i++) {
             ItemStack stack = stackArray[i];
             if (!BW_Util.checkStackAndPrefix(stack))
