@@ -3,6 +3,7 @@ package com.github.technus.tectech.mechanics.structure;
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
 
+@Deprecated
 public interface ICustomBlockSetting {
     /**
      * Default block setting calls {@link World#setBlock(int x, int y, int z, Block block, int meta, int updateType)} like:
