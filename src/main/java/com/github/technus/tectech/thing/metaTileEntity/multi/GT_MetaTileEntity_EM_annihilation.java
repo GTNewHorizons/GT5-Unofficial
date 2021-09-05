@@ -62,9 +62,9 @@ public class GT_MetaTileEntity_EM_annihilation extends GT_MetaTileEntity_Multibl
                     .addElement('C', ofBlock(sBlockCasingsTT, 6))
                     .addElement('D', ofBlock(sBlockCasingsTT, 10))
                     .addElement('E', ofBlock(sBlockCasingsTT, 12))
-                    .addElement('F', ofHatchAdderOptional(GT_MetaTileEntity_EM_annihilation::addElementalToMachineList, textureOffset + 4, sHintCasingsTT, 0, sBlockCasingsTT, 4))
+                    .addElement('F', ofHatchAdderOptional(GT_MetaTileEntity_EM_annihilation::addElementalToMachineList, textureOffset + 4,2, sBlockCasingsTT, 4))
                     .addElement('G', ofBlock(QuantumGlassBlock.INSTANCE, 0))
-                    .addElement('H', ofHatchAdderOptional(GT_MetaTileEntity_EM_annihilation::addClassicToMachineList, textureOffset, sHintCasingsTT, 0, sBlockCasingsTT, 0))
+                    .addElement('H', ofHatchAdderOptional(GT_MetaTileEntity_EM_annihilation::addClassicToMachineList, textureOffset, 1, sBlockCasingsTT, 0))
                     .build();
 
     /*
