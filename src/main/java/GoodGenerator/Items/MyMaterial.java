@@ -983,7 +983,7 @@ public class MyMaterial implements Runnable {
             new short[]{0xa4,0x8f,0x8b},
             "Incoloy-903",
             subscriptNumbers("Fe12Ni10Co8Ti4Mo2Al"),
-            new Werkstoff.Stats().setCentrifuge(true).setBlastFurnace(true).setMeltingPoint(3700),
+            new Werkstoff.Stats().setCentrifuge(true).setBlastFurnace(true).setMeltingPoint(3700).setGas(true),
             Werkstoff.Types.MIXTURE,
             new Werkstoff.GenerationFeatures().onlyDust().addMolten().addMetalItems().addCraftingMetalWorkingItems().addSimpleMetalWorkingItems(),
             OffsetID + 83,

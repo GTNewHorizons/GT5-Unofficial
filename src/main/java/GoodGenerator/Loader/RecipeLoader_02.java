@@ -58,6 +58,8 @@ public class RecipeLoader_02 {
         CrackRecipeAdder.reAddBlastRecipe(MyMaterial.zircaloy2, 513, 480, 2800, false);
         CrackRecipeAdder.reAddBlastRecipe(MyMaterial.zircaloy4, 500, 480, 2800, true);
         CrackRecipeAdder.reAddBlastRecipe(MyMaterial.zircaloy4, 513, 480, 2800, false);
+        CrackRecipeAdder.reAddBlastRecipe(MyMaterial.Incoloy903, 2400, 1920, 3700, true);
+        CrackRecipeAdder.reAddBlastRecipe(MyMaterial.Incoloy903, 2400, 1920, 3700, true);
 
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {

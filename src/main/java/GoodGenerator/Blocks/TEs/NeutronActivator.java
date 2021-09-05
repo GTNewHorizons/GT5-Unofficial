@@ -111,13 +111,12 @@ public class NeutronActivator extends GT_MetaTileEntity_MultiblockBase_EM implem
                 if (eV <= maxNKE && eV >= minNKE) {
                     this.mOutputFluids = recipe.mFluidOutputs;
                     this.mOutputItems = recipe.mOutputs;
-                }
-                else {
+                } else {
                     this.mOutputFluids = null;
                     this.mOutputItems = new ItemStack[]{ItemRefer.Radioactive_Waste.get(4)};
                 }
+                return true;
             }
-            return true;
         }
         return false;
     }
