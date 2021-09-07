@@ -385,6 +385,11 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
     }
 
     @Override
+    public IStructureDefinition<? extends GT_MetaTileEntity_MultiblockBase_EM> getStructure_EM() {
+        return STRUCTURE_DEFINITION;
+    }
+
+    @Override
     public String[] getStructureDescription(ItemStack stackSize) {
         return description;
     }
