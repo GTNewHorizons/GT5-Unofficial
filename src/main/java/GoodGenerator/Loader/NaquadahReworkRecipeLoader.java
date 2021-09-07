@@ -514,7 +514,7 @@ public class NaquadahReworkRecipeLoader {
         if (tRecipe != null) {
             GT_Recipe.GT_Recipe_Map.sChemicalRecipes.mRecipeList.remove(tRecipe);
             GT_Recipe tRecipe2 = tRecipe.copy();
-            tRecipe2.mInputs = new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Naquadah, 16), ItemList.Empty_Board_Elite.get(2)};
+            tRecipe2.mInputs = new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Naquadah, 8), ItemList.Empty_Board_Elite.get(2)};
             GT_Recipe.GT_Recipe_Map.sChemicalRecipes.mRecipeList.add(tRecipe2);
             GT_Recipe.GT_Recipe_Map.sChemicalRecipes.reInit();
         }
@@ -528,7 +528,7 @@ public class NaquadahReworkRecipeLoader {
         if (tRecipe != null) {
             GT_Recipe.GT_Recipe_Map.sMultiblockChemicalRecipes.mRecipeList.remove(tRecipe);
             GT_Recipe tRecipe2 = tRecipe.copy();
-            tRecipe2.mInputs = new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Naquadah, 16), ItemList.Empty_Board_Elite.get(2)};
+            tRecipe2.mInputs = new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Naquadah, 8), ItemList.Empty_Board_Elite.get(2)};
             GT_Recipe.GT_Recipe_Map.sMultiblockChemicalRecipes.mRecipeList.add(tRecipe2);
             GT_Recipe.GT_Recipe_Map.sMultiblockChemicalRecipes.reInit();
         }

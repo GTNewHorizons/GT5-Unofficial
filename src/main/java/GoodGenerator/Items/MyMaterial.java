@@ -954,7 +954,7 @@ public class MyMaterial implements Runnable {
             subscriptNumbers("Zr34Sn5Fe2Cr"),
             new Werkstoff.Stats().setCentrifuge(true).setBlastFurnace(true).setMeltingPoint(2800),
             Werkstoff.Types.MIXTURE,
-            new Werkstoff.GenerationFeatures().onlyDust().addMolten().addMetalItems().addCraftingMetalWorkingItems().addSimpleMetalWorkingItems(),
+            new Werkstoff.GenerationFeatures().onlyDust().addMolten().addMetalItems().addCraftingMetalWorkingItems().addSimpleMetalWorkingItems().addMixerRecipes((short) 4),
             OffsetID + 81,
             TextureSet.SET_METALLIC,
             new Pair<>(WerkstoffLoader.Zirconium, 34),
@@ -969,7 +969,7 @@ public class MyMaterial implements Runnable {
             subscriptNumbers("Zr34Sn4FeCrNi"),
             new Werkstoff.Stats().setCentrifuge(true).setBlastFurnace(true).setMeltingPoint(2800),
             Werkstoff.Types.MIXTURE,
-            new Werkstoff.GenerationFeatures().onlyDust().addMolten().addMetalItems().addCraftingMetalWorkingItems().addSimpleMetalWorkingItems(),
+            new Werkstoff.GenerationFeatures().onlyDust().addMolten().addMetalItems().addCraftingMetalWorkingItems().addSimpleMetalWorkingItems().addMixerRecipes((short) 2),
             OffsetID + 82,
             TextureSet.SET_METALLIC,
             new Pair<>(WerkstoffLoader.Zirconium, 34),
@@ -979,13 +979,13 @@ public class MyMaterial implements Runnable {
             new Pair<>(Nickel, 1)
     );
 
-    public static final Werkstoff Incoloy903 = new Werkstoff(
+    public static final Werkstoff incoloy903 = new Werkstoff(
             new short[]{0xa4,0x8f,0x8b},
             "Incoloy-903",
             subscriptNumbers("Fe12Ni10Co8Ti4Mo2Al"),
             new Werkstoff.Stats().setCentrifuge(true).setBlastFurnace(true).setMeltingPoint(3700).setGas(true),
             Werkstoff.Types.MIXTURE,
-            new Werkstoff.GenerationFeatures().onlyDust().addMolten().addMetalItems().addCraftingMetalWorkingItems().addSimpleMetalWorkingItems(),
+            new Werkstoff.GenerationFeatures().onlyDust().addMolten().addMetalItems().addCraftingMetalWorkingItems().addSimpleMetalWorkingItems().addMixerRecipes((short) 6),
             OffsetID + 83,
             TextureSet.SET_METALLIC,
             new Pair<>(Iron, 12),
@@ -994,6 +994,20 @@ public class MyMaterial implements Runnable {
             new Pair<>(Titanium, 4),
             new Pair<>(Molybdenum, 2),
             new Pair<>(Aluminium, 1)
+    );
+
+    public static final Werkstoff adamantiumAlloy = new Werkstoff(
+            new short[]{0xa0,0xa0,0xa0},
+            "Adamantium Alloy",
+            subscriptNumbers("Ad5Nq2La3"),
+            new Werkstoff.Stats().setCentrifuge(true).setBlastFurnace(true).setMeltingPoint(5000).setGas(true),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().onlyDust().addMolten().addMetalItems().addCraftingMetalWorkingItems().addSimpleMetalWorkingItems().addMixerRecipes((short) 3),
+            OffsetID + 84,
+            TextureSet.SET_SHINY,
+            new Pair<>(Adamantium, 5),
+            new Pair<>(Naquadah, 2),
+            new Pair<>(Lanthanum, 3)
     );
 
     @Override

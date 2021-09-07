@@ -29,37 +29,12 @@ public class RecipeLoader_02 {
                 1920
         );
 
-        GT_Values.RA.addMixerRecipe(
-                WerkstoffLoader.Zirconium.get(OrePrefixes.dust, 34),
-                Materials.Tin.getDust(5),
-                Materials.Iron.getDust(2),
-                Materials.Chrome.getDust(1),
-                GT_Utility.getIntegratedCircuit(4),
-                null, null, null,
-                MyMaterial.zircaloy4.get(OrePrefixes.dust, 42),
-                200,
-                120
-        );
-
-        GT_Values.RA.addMixerRecipe(
-                WerkstoffLoader.Zirconium.get(OrePrefixes.dust, 34),
-                Materials.Tin.getDust(4),
-                Materials.Iron.getDust(1),
-                Materials.Chrome.getDust(1),
-                Materials.Nickel.getDust(1),
-                GT_Utility.getIntegratedCircuit(2),
-                 null, null,
-                MyMaterial.zircaloy2.get(OrePrefixes.dust, 41),
-                200,
-                120
-        );
-
         CrackRecipeAdder.reAddBlastRecipe(MyMaterial.zircaloy2, 500, 480, 2800, true);
         CrackRecipeAdder.reAddBlastRecipe(MyMaterial.zircaloy2, 513, 480, 2800, false);
         CrackRecipeAdder.reAddBlastRecipe(MyMaterial.zircaloy4, 500, 480, 2800, true);
         CrackRecipeAdder.reAddBlastRecipe(MyMaterial.zircaloy4, 513, 480, 2800, false);
-        CrackRecipeAdder.reAddBlastRecipe(MyMaterial.Incoloy903, 2400, 1920, 3700, true);
-        CrackRecipeAdder.reAddBlastRecipe(MyMaterial.Incoloy903, 2400, 1920, 3700, true);
+        CrackRecipeAdder.reAddBlastRecipe(MyMaterial.incoloy903, 2400, 1920, 3700, true);
+        CrackRecipeAdder.reAddBlastRecipe(MyMaterial.adamantiumAlloy, 2500, 1920, 5000, true);
 
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
