@@ -272,7 +272,7 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
     }
 
     @Override
-    public IStructureDefinition<? extends GT_MetaTileEntity_MultiblockBase_EM> getStructure_EM() {
+    public IStructureDefinition<GT_MetaTileEntity_TM_microwave> getStructure_EM() {
         return STRUCTURE_DEFINITION;
     }
 
