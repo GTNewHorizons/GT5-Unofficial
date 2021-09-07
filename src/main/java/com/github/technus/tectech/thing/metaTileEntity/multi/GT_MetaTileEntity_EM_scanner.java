@@ -1,13 +1,10 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.mechanics.constructable.IConstructable;
 import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalDefinitionStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.tElementalException;
-import com.github.technus.tectech.mechanics.structure.adders.IHatchAdder;
-import com.github.technus.tectech.mechanics.structure.Structure;
 import com.github.technus.tectech.recipe.TT_recipe;
 import com.github.technus.tectech.thing.CustomItemList;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
@@ -16,6 +13,9 @@ import com.github.technus.tectech.thing.item.ElementalDefinitionScanStorage_EM;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.*;
 import com.github.technus.tectech.util.CommonValues;
+import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -45,6 +45,9 @@ import static com.github.technus.tectech.thing.metaTileEntity.multi.em_machine.G
 import static com.github.technus.tectech.util.CommonValues.V;
 import static com.github.technus.tectech.util.CommonValues.VN;
 import static com.github.technus.tectech.util.Util.areBitsSet;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
@@ -69,26 +72,6 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
     //endregion
 
     //region structure
-    private static final String[][] shape = new String[][]{
-            {"     ", " 222 ", " 2.2 ", " 222 ", "     ",},
-            {"00000", "00000", "00000", "00000", "00000",},
-            {"00100", "01110", "11111", "01110", "00100",},
-            {"01110", "1---1", "1---1", "1---1", "01110",},
-            {"01110", "1---1", "1-A-1", "1---1", "01110",},
-            {"01110", "1---1", "1---1", "1---1", "01110",},
-            {"00100", "01110", "11\"11", "01110", "00100",},
-            {"#####", "#000#", "#0!0#", "#000#", "#####",},
-    };
-    private static final Block[] blockType = new Block[]{sBlockCasingsTT, QuantumGlassBlock.INSTANCE, sBlockCasingsTT};
-    private static final byte[] blockMeta = new byte[]{4, 0, 0};
-    private static final IHatchAdder<GT_MetaTileEntity_EM_scanner>[] addingMethods = adders(
-            GT_MetaTileEntity_EM_scanner::addClassicToMachineList,
-            GT_MetaTileEntity_EM_scanner::addElementalInputToMachineList,
-            GT_MetaTileEntity_EM_scanner::addElementalOutputToMachineList,
-            GT_MetaTileEntity_EM_scanner::addElementalMufflerToMachineList);
-    private static final short[] casingTextures = new short[]{textureOffset, textureOffset + 4, textureOffset + 4, textureOffset + 4};
-    private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT};
-    private static final byte[] blockMetaFallback = new byte[]{0, 4, 4, 4};
     private static final String[] description = new String[]{
             EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
             translateToLocal("gt.blockmachines.multimachine.em.scanner.hint.0"),//1 - Classic Hatches or High Power Casing
@@ -96,6 +79,46 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
             translateToLocal("gt.blockmachines.multimachine.em.scanner.hint.2"),//3 - Elemental Output Hatches or Molecular Casing
             translateToLocal("gt.blockmachines.multimachine.em.scanner.hint.3"),//4 - Elemental Overflow Hatches or Molecular Casing
     };
+
+    private static final IStructureDefinition<GT_MetaTileEntity_EM_scanner> STRUCTURE_DEFINITION =
+            StructureDefinition.<GT_MetaTileEntity_EM_scanner>builder()
+            .addShape("main", new String[][]{
+                    {"CCCCC","BBBBB","BBDBB","BDDDB","BDDDB","BDDDB","BBDBB","EEEEE"},
+                    {"CAAAC","BBBBB","BDDDB","D---D","D---D","D---D","BDDDB","EBBBE"},
+                    {"CA~AC","BBBBB","DDDDD","D---D","D---D","D---D","DDGDD","EBFBE"},
+                    {"CAAAC","BBBBB","BDDDB","D---D","D---D","D---D","BDDDB","EBBBE"},
+                    {"CCCCC","BBBBB","BBDBB","BDDDB","BDDDB","BDDDB","BBDBB","EEEEE"}
+            })
+            .addElement('A', ofBlock(sBlockCasingsTT, 0))
+            .addElement('B', ofBlock(sBlockCasingsTT, 4))
+            .addElement('C', ofHatchAdderOptional(GT_MetaTileEntity_EM_scanner::addClassicToMachineList, textureOffset, 1, sBlockCasingsTT, 0))
+            .addElement('D', ofBlock(QuantumGlassBlock.INSTANCE, 0))
+            .addElement('E', ofHatchAdderOptional(GT_MetaTileEntity_EM_scanner::addElementalMufflerToMachineList, textureOffset + 4, 4, sBlockCasingsTT, 4))
+            .addElement('F', ofHatchAdder(GT_MetaTileEntity_EM_scanner::addElementalInputToMachineList, textureOffset + 4, 2))
+            .addElement('G', ofHatchAdder(GT_MetaTileEntity_EM_scanner::addElementalOutputToMachineList, textureOffset + 4, 3))
+            .build();
+
+//    private static final String[][] shape = new String[][]{
+//            {"     ", " 222 ", " 2.2 ", " 222 ", "     ",},
+//            {"00000", "00000", "00000", "00000", "00000",},
+//            {"00100", "01110", "11111", "01110", "00100",},
+//            {"01110", "1---1", "1---1", "1---1", "01110",},
+//            {"01110", "1---1", "1-A-1", "1---1", "01110",},
+//            {"01110", "1---1", "1---1", "1---1", "01110",},
+//            {"00100", "01110", "11\"11", "01110", "00100",},
+//            {"#####", "#000#", "#0!0#", "#000#", "#####",},
+//    };
+//    private static final Block[] blockType = new Block[]{sBlockCasingsTT, QuantumGlassBlock.INSTANCE, sBlockCasingsTT};
+//    private static final byte[] blockMeta = new byte[]{4, 0, 0};
+//    private static final IHatchAdder<GT_MetaTileEntity_EM_scanner>[] addingMethods = adders(
+//            GT_MetaTileEntity_EM_scanner::addClassicToMachineList,
+//            GT_MetaTileEntity_EM_scanner::addElementalInputToMachineList,
+//            GT_MetaTileEntity_EM_scanner::addElementalOutputToMachineList,
+//            GT_MetaTileEntity_EM_scanner::addElementalMufflerToMachineList);
+//    private static final short[] casingTextures = new short[]{textureOffset, textureOffset + 4, textureOffset + 4, textureOffset + 4};
+//    private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT};
+//    private static final byte[] blockMetaFallback = new byte[]{0, 4, 4, 4};
+
     //endregion
 
     //region parameters
@@ -108,9 +131,12 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
                     return LedStatus.STATUS_WRONG;
                 }
                 v = (int) v;
-                if (v == 0) return LedStatus.STATUS_NEUTRAL;
-                if (v >= SCAN_GET_CLASS_TYPE) return LedStatus.STATUS_TOO_HIGH;
-                if (v < 0) return LedStatus.STATUS_TOO_LOW;
+                if (v == 0)
+                    return LedStatus.STATUS_NEUTRAL;
+                if (v >= SCAN_GET_CLASS_TYPE)
+                    return LedStatus.STATUS_TOO_HIGH;
+                if (v < 0)
+                    return LedStatus.STATUS_TOO_LOW;
                 return LedStatus.STATUS_OK;
             };
     protected Parameters.Group.ParameterIn[] scanConfiguration;
@@ -209,7 +235,8 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        if (!structureCheck_EM(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 2, 2, 0)) {
+//        if (!structureCheck_EM(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 2, 2, 0)) {
+        if (!structureCheck_EM("main", 2, 2, 0)) {
             return false;
         }
         return eInputHatches.size() == 1 && eOutputHatches.size() == 1 && eOutputHatches.get(0).getBaseMetaTileEntity().getFrontFacing() == iGregTechTileEntity.getFrontFacing();
@@ -516,7 +543,13 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        Structure.builder(shape, blockType, blockMeta, 2, 2, 0, getBaseMetaTileEntity(), getExtendedFacing(), hintsOnly);
+        //Structure.builder(shape, blockType, blockMeta, 2, 2, 0, getBaseMetaTileEntity(), getExtendedFacing(), hintsOnly);
+        structureBuild_EM("main", 2, 2, 0, hintsOnly, stackSize);
+    }
+
+    @Override
+    public IStructureDefinition<GT_MetaTileEntity_EM_scanner> getStructure_EM() {
+        return STRUCTURE_DEFINITION;
     }
 
     @Override
