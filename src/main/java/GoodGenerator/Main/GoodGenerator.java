@@ -43,18 +43,18 @@ public final class GoodGenerator {
     public static GoodGenerator instance;
 
     @Mod.EventHandler
-    public static void preInit(FMLPreInitializationEvent event){
+    public static void preInit(FMLPreInitializationEvent event) {
         WerkstoffAdderRegistry.addWerkstoffAdder(new MyMaterial());
         Loaders.preInitLoad();
         proxy.preInit(event);
     }
     @Mod.EventHandler
-    public static void init(FMLInitializationEvent event){
+    public static void init(FMLInitializationEvent event) {
         Loaders.initLoad();
         proxy.init(event);
     }
     @Mod.EventHandler
-    public static void postInit(FMLPostInitializationEvent event){
+    public static void postInit(FMLPostInitializationEvent event) {
         Loaders.postInitLoad();
         crossMod();
         proxy.postInit(event);
@@ -66,7 +66,7 @@ public final class GoodGenerator {
     }
 
     public static void crossMod() {
-        if (Loader.isModLoaded("Thaumcraft")){
+        if (Loader.isModLoaded("Thaumcraft")) {
             Research.addResearch();
         }
     }

@@ -379,7 +379,7 @@ public class NaquadahReworkRecipeLoader {
                 null,
                 null,
                 null,
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.IndiumGalliumPhosphide, 3),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.IndiumGalliumPhosphide, 2),
                 15,
                 7
         );
@@ -498,6 +498,13 @@ public class NaquadahReworkRecipeLoader {
                 null,
                 400,
                 480
+        );
+
+        GT_Values.RA.addVacuumFreezerRecipe(
+                GT_OreDictUnificator.get(OrePrefixes.ingotHot, Materials.Naquadah, 1),
+                GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Naquadah, 1),
+                330,
+                7680
         );
     }
 
