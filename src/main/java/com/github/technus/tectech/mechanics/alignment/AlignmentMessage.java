@@ -16,6 +16,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 
+@Deprecated
 public class AlignmentMessage implements IMessage {
     int mPosX;
     int mPosY;

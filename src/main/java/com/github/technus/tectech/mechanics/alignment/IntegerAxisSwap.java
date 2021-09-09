@@ -7,6 +7,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import static com.github.technus.tectech.mechanics.alignment.enumerable.Direction.getAxisVector;
 import static java.lang.Math.abs;
 
+@Deprecated
 public class IntegerAxisSwap {
     private final Vec3Impl forFirstAxis;
     private final Vec3Impl forSecondAxis;

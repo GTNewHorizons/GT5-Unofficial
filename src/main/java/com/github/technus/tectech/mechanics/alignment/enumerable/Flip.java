@@ -9,6 +9,7 @@ import static java.lang.Math.abs;
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.toMap;
 
+@Deprecated
 public enum Flip {
     NONE(3, "none"),
     HORIZONTAL(2, "horizontal"),

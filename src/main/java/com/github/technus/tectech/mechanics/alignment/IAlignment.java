@@ -8,6 +8,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.Arrays;
 
+@Deprecated
 public interface IAlignment extends IAlignmentLimits,IAlignmentProvider {
     int DIRECTIONS_COUNT= Direction.VALUES.length;
     int ROTATIONS_COUNT= Rotation.VALUES.length;
