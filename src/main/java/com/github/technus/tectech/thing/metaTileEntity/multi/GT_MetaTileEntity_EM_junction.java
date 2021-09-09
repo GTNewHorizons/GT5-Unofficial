@@ -47,8 +47,8 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
             .addShape("main", new String[][]{
                     {"CCC", "C~C", "CCC"},
                     {"AAA", "AAA", "AAA"},
-                    {"CCC", "CAC", "CCC"},
-                    {"CCC", "CCC", "CCC"}
+                    {"DDD", "DAD", "DDD"},
+                    {"DDD", "DDD", "DDD"}
             })
             .addShape("mainBig", new String[][]{
                     {"     ", " CCC ", " C~C ", " CCC ", "     "},
