@@ -177,6 +177,11 @@ public class GT_MetaTileEntity_EM_essentiaQuantizer extends GT_MetaTileEntity_Mu
     }
 
     @Override
+    public IStructureDefinition<GT_MetaTileEntity_EM_essentiaQuantizer> getStructure_EM() {
+        return STRUCTURE_DEFINITION;
+    }
+
+    @Override
     public String[] getStructureDescription(ItemStack stackSize) {
         return description;
     }
