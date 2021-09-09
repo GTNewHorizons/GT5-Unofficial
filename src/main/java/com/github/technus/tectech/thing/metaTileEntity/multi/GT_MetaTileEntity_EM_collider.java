@@ -314,11 +314,11 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
 
     private static final IStructureDefinition<GT_MetaTileEntity_EM_collider> STRUCTURE_DEFINITION =
             StructureDefinition.<GT_MetaTileEntity_EM_collider>builder()
-            .addShape("main", new String[][]{
+            .addShape("main", transpose(new String[][]{
                     {"         A A A         ","        AAAAAAA        ","      BBBBIIIBBBB      ","     BAAAAAAAAAAAB     ","    BAAAA     AAAAB    ","   BAAA         AAAB   ","  BAAA           AAAB  ","  BAA             AAB  "," ABAA             AABA ","AABA               ABAA"," AIA               AIA ","AAIA               AIAA"," AIA               AIA ","AABA               ABAA"," ABAA             AABA ","  BAA             AAB  ","  BAAA           AAAB  ","   BAAA         AAAB   ","    BAAAABJJJBAAAAB    ","     BAHHBBBBBHHAB     ","      BBBBGFGBBBB      "},
                     {"         AAAAA         ","       AADDDDDAA       ","      CDDEEEEEDDC      ","     CDEEDDDDDEEDC     ","    CDEDD     DDEDC    ","   CDED         DEDC   ","  CDED           DEDC  "," ADED             DEDA "," ADED             DEDA ","ADED               DEDA","ADED               DEDA","ADED               DEDA","ADED               DEDA","ADED               DEDA"," ADED             DEDA "," ADED             DEDA ","  CDED           DEDC  ","   CDED         DEDC   ","    CDEDDBJ~JBDDEDC    ","     CDEEDDDDDEEDC     ","      CDDEEEEEDDC      "},
                     {"         A A A         ","        AAAAAAA        ","      BBBBIIIBBBB      ","     BAAAAAAAAAAAB     ","    BAAAA     AAAAB    ","   BAAA         AAAB   ","  BAAA           AAAB  ","  BAA             AAB  "," ABAA             AABA ","AABA               ABAA"," AIA               AIA ","AAIA               AIAA"," AIA               AIA ","AABA               ABAA"," ABAA             AABA ","  BAA             AAB  ","  BAAA           AAAB  ","   BAAA         AAAB   ","    BAAAABJJJBAAAAB    ","     BAHHBBBBBHHAB     ","      BBBBGFGBBBB      "}
-            })
+            }))
             .addElement('A', ofBlock(sBlockCasingsTT, 4))
             .addElement('B', defer(t -> (int) t.eTier, (t, item) -> 2 - (item.stackSize & 1), error(), ofBlock(sBlockCasingsTT, 4), ofBlock(sBlockCasingsTT, 5)))
             .addElement('C', defer(t -> (int) t.eTier, (t, item) -> 2 - (item.stackSize & 1), error(), ofBlock(sBlockCasingsTT, 4), ofBlock(sBlockCasingsTT, 6)))
@@ -376,7 +376,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
 //            .build();
 
     @Override
-    public IStructureDefinition<? extends GT_MetaTileEntity_MultiblockBase_EM> getStructure_EM() {
+    public IStructureDefinition<GT_MetaTileEntity_EM_collider> getStructure_EM() {
         return STRUCTURE_DEFINITION;
     }
 
