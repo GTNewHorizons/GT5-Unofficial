@@ -29,6 +29,7 @@ import com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.IWer
 import com.github.bartimaeusnek.bartworks.util.BWRecipes;
 import gregtech.api.enchants.Enchantment_Radioactivity;
 import gregtech.api.enums.*;
+import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.common.items.behaviors.Behaviour_DataOrb;
@@ -101,6 +102,9 @@ public class BridgeMaterialsLoader implements IWerkstoffRunnable {
                 werkstoffBridgeMaterial.mName = werkstoff.getVarName();
                 werkstoffBridgeMaterial.mDefaultLocalName = werkstoff.getDefaultName();
                 werkstoffBridgeMaterial.mChemicalFormula = werkstoff.getToolTip();
+                if ("null".equals(werkstoffBridgeMaterial.mLocalizedName))
+                    // only reload from lang file if not localized already
+                    werkstoffBridgeMaterial.mLocalizedName = GT_LanguageManager.addStringLocalization("Material." + werkstoffBridgeMaterial.mName.toLowerCase(), werkstoffBridgeMaterial.mDefaultLocalName);
                 if (LoaderReference.Thaumcraft)
                     werkstoffBridgeMaterial.mAspects = werkstoff.getGTWrappedTCAspects();
                 werkstoffBridgeMaterial.mMaterialInto = werkstoffBridgeMaterial;
