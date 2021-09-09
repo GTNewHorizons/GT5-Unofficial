@@ -5,15 +5,18 @@ import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.loader.NetworkDispatcher;
 
 import com.github.technus.tectech.mechanics.structure.Structure;
+import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.AlignmentMessage;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
+import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import gregtech.api.util.GT_StructureUtility;
 
 import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
@@ -180,9 +183,12 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
             IGregTechTileEntity base = getBaseMetaTileEntity();
             mMachine = false;
             if (getBaseMetaTileEntity().isServerSide()) {
-                NetworkDispatcher.INSTANCE.sendToAllAround(new AlignmentMessage.AlignmentData(this),
-                        base.getWorld().provider.dimensionId,
-                        base.getXCoord(), base.getYCoord(), base.getZCoord(), 512);
+                //NetworkDispatcher.INSTANCE.sendToAllAround(new AlignmentMessage.AlignmentData(this),
+                //        base.getWorld().provider.dimensionId,
+                //        base.getXCoord(), base.getYCoord(), base.getZCoord(), 512);
+                StructureLibAPI.sendAlignment((IAlignmentProvider) base,
+                        new NetworkRegistry.TargetPoint(base.getWorld().provider.dimensionId,
+                                base.getXCoord(), base.getYCoord(), base.getZCoord(), 512));
             }else{
                 base.issueTextureUpdate();
             }
