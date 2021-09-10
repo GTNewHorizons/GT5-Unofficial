@@ -95,25 +95,6 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
                     .addElement('D', ofHatchAdderOptional(GT_MetaTileEntity_EM_research::addClassicToMachineList, textureOffset + 1,1, sBlockCasingsTT,1))
                     .addElement('E', ofHatchAdder(GT_MetaTileEntity_EM_research::addHolderToMachineList, 3, 2))
                     .build();
-
-//    private static final String[][] shape = new String[][]{
-//            {E, "000", E, E, E, "000"/*,E,*/},
-//            {"A0", "010", "A1", "A!", "A1", "010", "A0",},
-//            {"A0", "010", E, E, E, "010", "A0",},
-//            {"000", "010", E, E, E, "010", "000",},
-//            {"000", "212", "010", "0.0", "010", "212", "000",},
-//            {"000", "212", "111", "111", "111", "212", "000",},
-//            {"000", "222", "   ", "   ", "   ", "222", "000",},
-//    };
-//    private static final Block[] blockType = new Block[]{sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT};
-//    private static final byte[] blockMeta = new byte[]{1, 3, 2};
-//    private static final IGT_HatchAdder<GT_MetaTileEntity_EM_research>[] addingMethods = adders(
-//            GT_MetaTileEntity_EM_research::addClassicToMachineList,
-//            GT_MetaTileEntity_EM_research::addHolderToMachineList);
-//    private static final short[] casingTextures = new short[]{textureOffset + 1, textureOffset + 3};
-//    private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, Blocks.air};
-//    private static final byte[] blockMetaFallback = new byte[]{1, 0};
-
     //endregion
 
     public GT_MetaTileEntity_EM_research(int aID, String aName, String aNameRegional) {
@@ -289,12 +270,6 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
         if (!structureCheck_EM("main", 1, 3, 4)) {
             return false;
         }
-
-        /*
-        if (!structureCheck_EM(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 3, 4)) {
-            return false;
-        }
-        */
 
         for (GT_MetaTileEntity_Hatch_Holder rack : eHolders) {
             if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(rack)) {
@@ -589,7 +564,6 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        //Structure.builder(shape, blockType, blockMeta, 1, 3, 4, getBaseMetaTileEntity(), getExtendedFacing(), hintsOnly);
         structureBuild_EM("main", 1, 3, 4, hintsOnly, stackSize);
     }
 

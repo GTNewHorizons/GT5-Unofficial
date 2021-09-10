@@ -66,21 +66,6 @@ public class GT_MetaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockB
             .addElement('C', ofHatchAdderOptional(GT_MetaTileEntity_EM_dataBank::addClassicToMachineList, textureOffset, 1, sBlockCasingsTT, 0))
             .addElement('D', ofHatchAdderOptional(GT_MetaTileEntity_EM_dataBank::addDataBankHatchToMachineList, textureOffset + 1, 2, sBlockCasingsTT, 1))
             .build();
-
-//    private static final String[][] shape = new String[][]{
-//            {"0   0", "0 . 0", "0   0",},
-//            {"0!!!0", "01110", "0!!!0",},
-//            {"0!!!0", "0!!!0", "0!!!0",},
-//    };
-//    private static final Block[] blockType = new Block[]{sBlockCasingsTT, sBlockCasingsTT};
-//    private static final byte[] blockMeta = new byte[]{2, 1};
-//    private static final IGT_HatchAdder<GT_MetaTileEntity_EM_dataBank>[] addingMethods = adders(
-//            GT_MetaTileEntity_EM_dataBank::addClassicToMachineList,
-//            GT_MetaTileEntity_EM_dataBank::addDataBankHatchToMachineList);
-//    private static final short[] casingTextures = new short[]{textureOffset, textureOffset + 1};
-//    private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT};
-//    private static final byte[] blockMetaFallback = new byte[]{0, 1};
-
     //endregion
 
     public GT_MetaTileEntity_EM_dataBank(int aID, String aName, String aNameRegional) {
@@ -100,7 +85,6 @@ public class GT_MetaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockB
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
         eDataAccessHatches.clear();
         eStacksDataOutputs.clear();
-        //return structureCheck_EM(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 2, 1, 0);
         return structureCheck_EM("main", 2, 1, 0);
     }
 
@@ -195,7 +179,6 @@ public class GT_MetaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockB
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        //Structure.builder(shape, blockType, blockMeta, 2, 1, 0, getBaseMetaTileEntity(), getExtendedFacing(), hintsOnly);
         structureBuild_EM("main", 2, 1, 0, hintsOnly, stackSize);
     }
 

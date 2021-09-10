@@ -57,20 +57,6 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
             .addElement('B', ofBlock(sBlockCasingsTT, 7))
             .addElement('C', ofHatchAdderOptional(GT_MetaTileEntity_EM_infuser::addClassicToMachineList, textureOffset, 1, sBlockCasingsTT, 0))
             .build();
-
-//    private static final String[][] shape = new String[][]{
-//            {"   ", "000", "1.1", "000", "   ",},
-//            {"   ", "010", "111", "010", "   ",},
-//            {"   ", "000", "111", "000", "   ",},
-//    };
-//    private static final Block[] blockType = new Block[]{sBlockCasingsTT, sBlockCasingsTT};
-//    private static final byte[] blockMeta = new byte[]{7, 4};
-//    private static final IGT_HatchAdder<GT_MetaTileEntity_EM_infuser>[] addingMethods = adders(
-//            GT_MetaTileEntity_EM_infuser::addClassicToMachineList);
-//    private static final short[] casingTextures = new short[]{textureOffset};
-//    private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT};
-//    private static final byte[] blockMetaFallback = new byte[]{0};
-
     //endregion
 
     public GT_MetaTileEntity_EM_infuser(int aID, String aName, String aNameRegional) {
@@ -134,7 +120,6 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        //return structureCheck_EM(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 2, 0);
         return structureCheck_EM("main", 1, 2, 0);
     }
 
@@ -206,7 +191,6 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        //Structure.builder(shape, blockType, blockMeta, 1, 2, 0, getBaseMetaTileEntity(), getExtendedFacing(), hintsOnly);
         structureBuild_EM("main", 1, 2, 0, hintsOnly, stackSize);
     }
 

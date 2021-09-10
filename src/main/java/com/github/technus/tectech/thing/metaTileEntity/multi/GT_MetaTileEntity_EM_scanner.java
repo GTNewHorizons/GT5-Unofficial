@@ -98,28 +98,6 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
             .addElement('F', ofHatchAdder(GT_MetaTileEntity_EM_scanner::addElementalInputToMachineList, textureOffset + 4, 2))
             .addElement('G', ofHatchAdder(GT_MetaTileEntity_EM_scanner::addElementalOutputToMachineList, textureOffset + 4, 3))
             .build();
-
-//    private static final String[][] shape = new String[][]{
-//            {"     ", " 222 ", " 2.2 ", " 222 ", "     ",},
-//            {"00000", "00000", "00000", "00000", "00000",},
-//            {"00100", "01110", "11111", "01110", "00100",},
-//            {"01110", "1---1", "1---1", "1---1", "01110",},
-//            {"01110", "1---1", "1-A-1", "1---1", "01110",},
-//            {"01110", "1---1", "1---1", "1---1", "01110",},
-//            {"00100", "01110", "11\"11", "01110", "00100",},
-//            {"#####", "#000#", "#0!0#", "#000#", "#####",},
-//    };
-//    private static final Block[] blockType = new Block[]{sBlockCasingsTT, QuantumGlassBlock.INSTANCE, sBlockCasingsTT};
-//    private static final byte[] blockMeta = new byte[]{4, 0, 0};
-//    private static final IHatchAdder<GT_MetaTileEntity_EM_scanner>[] addingMethods = adders(
-//            GT_MetaTileEntity_EM_scanner::addClassicToMachineList,
-//            GT_MetaTileEntity_EM_scanner::addElementalInputToMachineList,
-//            GT_MetaTileEntity_EM_scanner::addElementalOutputToMachineList,
-//            GT_MetaTileEntity_EM_scanner::addElementalMufflerToMachineList);
-//    private static final short[] casingTextures = new short[]{textureOffset, textureOffset + 4, textureOffset + 4, textureOffset + 4};
-//    private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT};
-//    private static final byte[] blockMetaFallback = new byte[]{0, 4, 4, 4};
-
     //endregion
 
     //region parameters
@@ -236,7 +214,6 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-//        if (!structureCheck_EM(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 2, 2, 0)) {
         if (!structureCheck_EM("main", 2, 2, 0)) {
             return false;
         }
@@ -544,7 +521,6 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        //Structure.builder(shape, blockType, blockMeta, 2, 2, 0, getBaseMetaTileEntity(), getExtendedFacing(), hintsOnly);
         structureBuild_EM("main", 2, 2, 0, hintsOnly, stackSize);
     }
 

@@ -64,29 +64,6 @@ public class GT_MetaTileEntity_EM_crafting extends GT_MetaTileEntity_MultiblockB
             .addElement('G', ofBlock(QuantumGlassBlock.INSTANCE, 0))
             .addElement('H', ofHatchAdderOptional(GT_MetaTileEntity_EM_crafting::addClassicToMachineList, textureOffset, 1, sBlockCasingsTT, 0))
             .build();
-
-//    private static final String[][] shape = new String[][]{
-//            {"A000", "0   0", "0 . 0", "0   0", "A000",},
-//            {"00000", "00000", "00000", "00000", "00000",},
-//            {"0C0", "A!!!", "A!1!", "A!!!", "0C0",},
-//            {"22222", "22222", "22122", "22222", "22222",},
-//            {"23432", "33333", "43134", "33333", "23432",},
-//            {"23332", "33333", "33533", "33333", "23332",},
-//            {"23432", "33333", "43134", "33333", "23432",},
-//            {"22222", "22222", "22122", "22222", "22222",},
-//            {"0C0", "A!!!", "A!1!", "A!!!", "0C0",},
-//            {"00000", "00000", "00000", "00000", "00000",},
-//            {"A000", "0   0", "0   0", "0   0", "A000",},
-//    };
-//    private static final Block[] blockType = new Block[]{sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT, QuantumGlassBlock.INSTANCE, sBlockCasingsTT, sBlockCasingsTT};
-//    private static final byte[] blockMeta = new byte[]{4, 10, 5, 0, 6, 9};
-//    private static final IGT_HatchAdder<GT_MetaTileEntity_EM_crafting>[] addingMethods = adders(
-//            GT_MetaTileEntity_EM_crafting::addClassicToMachineList,
-//            GT_MetaTileEntity_EM_crafting::addElementalToMachineList);
-//    private static final short[] casingTextures = new short[]{textureOffset, textureOffset + 4};
-//    private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT};
-//    private static final byte[] blockMetaFallback = new byte[]{0, 4};
-
     //endregion
 
     public GT_MetaTileEntity_EM_crafting(int aID, String aName, String aNameRegional) {
@@ -104,7 +81,6 @@ public class GT_MetaTileEntity_EM_crafting extends GT_MetaTileEntity_MultiblockB
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        //return structureCheck_EM(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 2, 2, 0);
         return structureCheck_EM("main", 2, 2, 0);
     }
 
@@ -135,7 +111,6 @@ public class GT_MetaTileEntity_EM_crafting extends GT_MetaTileEntity_MultiblockB
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        //Structure.builder(shape, blockType, blockMeta, 2, 2, 0, getBaseMetaTileEntity(), getExtendedFacing(), hintsOnly);
         structureBuild_EM("main", 2, 2, 0, hintsOnly, stackSize);
     }
 

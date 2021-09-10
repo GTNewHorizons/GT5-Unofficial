@@ -85,26 +85,6 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
             .addElement('E', ofHatchAdderOptional(GT_MetaTileEntity_EM_decay::addElementalToMachineList, textureOffset + 4, 2, sBlockCasingsTT, 4))
             .addElement('F', ofHatchAdderOptional(GT_MetaTileEntity_EM_decay::addClassicToMachineList, textureOffset, 1, sBlockCasingsTT, 0))
             .build();
-//    private static final String[][] shape = new String[][]{
-//            {"0C0", "A   ", "A . ", "A   ", "0C0",},
-//            {"00000", "00000", "00000", "00000", "00000",},
-//            {"0C0", "A!!!", "A!0!", "A!!!", "0C0",},
-//            {"01110", "12221", "12221", "12221", "01110",},
-//            {"01310", "12221", "32223", "12221", "01310",},
-//            {"01110", "12221", "12221", "12221", "01110",},
-//            {"0C0", "A!!!", "A!0!", "A!!!", "0C0",},
-//            {"00000", "00000", "00000", "00000", "00000",},
-//            {"0C0", "A   ", "A   ", "A   ", "0C0",},
-//    };
-//    private static final Block[] blockType = new Block[]{sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT};
-//    private static final byte[] blockMeta = new byte[]{4, 5, 8, 6};
-//    private static final IGT_HatchAdder<GT_MetaTileEntity_EM_decay>[] addingMethods = adders(
-//            GT_MetaTileEntity_EM_decay::addClassicToMachineList,
-//            GT_MetaTileEntity_EM_decay::addElementalToMachineList);
-//    private static final short[] casingTextures = new short[]{textureOffset, textureOffset + 4};
-//    private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT};
-//    private static final byte[] blockMetaFallback = new byte[]{0, 4};
-
     //endregion
 
     //region parameters
@@ -133,7 +113,6 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        //return structureCheck_EM(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 2, 2, 0);
         return structureCheck_EM("main", 2, 2, 0);
     }
 
@@ -272,7 +251,6 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        //Structure.builder(shape, blockType, blockMeta, 2, 2, 0, getBaseMetaTileEntity(), getExtendedFacing(), hintsOnly);
         structureBuild_EM("main", 2, 2, 0, hintsOnly, stackSize);
     }
 

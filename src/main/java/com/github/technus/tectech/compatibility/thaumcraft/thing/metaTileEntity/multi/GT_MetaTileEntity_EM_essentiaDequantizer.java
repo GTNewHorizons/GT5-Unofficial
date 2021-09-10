@@ -71,23 +71,6 @@ public class GT_MetaTileEntity_EM_essentiaDequantizer extends GT_MetaTileEntity_
             .addElement('G', ofHatchAdder(GT_MetaTileEntity_EM_essentiaDequantizer::addElementalInputToMachineList, textureOffset + 4, 2))
             .build();
 
-//    private static final String[][] shape = new String[][]{
-//            {"   ", " . ", "   ",},
-//            {"0A0", E, "0A0",},
-//            {"121", "232", "121",},
-//            {"\"\"\"", "\"2\"", "\"\"\"",},
-//            {"202", "0!0", "202",},
-//    };
-//    private static final Block[] blockType = new Block[]{QuantumGlassBlock.INSTANCE, sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT};
-//    private static final byte[] blockMeta = new byte[]{0, 0, 4, 8};
-//    private static final IGT_HatchAdder<GT_MetaTileEntity_EM_essentiaDequantizer>[] addingMethods = adders(
-//            GT_MetaTileEntity_EM_essentiaDequantizer::addClassicToMachineList,
-//            GT_MetaTileEntity_EM_essentiaDequantizer::addElementalInputToMachineList,
-//            GT_MetaTileEntity_EM_essentiaDequantizer::addElementalMufflerToMachineList);
-//    private static final short[] casingTextures = new short[]{textureOffset, textureOffset + 4, textureOffset + 4};
-//    private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT};
-//    private static final byte[] blockMetaFallback = new byte[]{0, 4, 4};
-
     //endregion
 
     public GT_MetaTileEntity_EM_essentiaDequantizer(int aID, String aName, String aNameRegional) {
@@ -105,7 +88,6 @@ public class GT_MetaTileEntity_EM_essentiaDequantizer extends GT_MetaTileEntity_
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        //return essentiaContainerCompat.check(this) && structureCheck_EM(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 1, 0);
         return essentiaContainerCompat.check(this) && structureCheck_EM("main", 1, 1, 0);
     }
 
@@ -168,7 +150,6 @@ public class GT_MetaTileEntity_EM_essentiaDequantizer extends GT_MetaTileEntity_
                 iGregTechTileEntity.getWorld().setBlock(iGregTechTileEntity.getXCoord() + xDir, iGregTechTileEntity.getYCoord() + yDir, iGregTechTileEntity.getZCoord() + zDir, TT_Container_Casings.sHintCasingsTT, 12, 2);
             }
         }
-        //Structure.builder(shape, blockType, blockMeta, 1, 1, 0, iGregTechTileEntity, getExtendedFacing(), hintsOnly);
         structureBuild_EM("main", 1, 1, 0, hintsOnly, stackSize);
     }
 

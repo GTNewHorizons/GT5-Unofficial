@@ -75,23 +75,6 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
             translateToLocal("gt.blockmachines.multimachine.em.mattertoem.hint.1"),//2 - Elemental Output Hatch
             translateToLocal("gt.blockmachines.multimachine.em.mattertoem.hint.2"),//3 - Elemental Overflow Hatches or Molecular Casing
     };
-
-//    private static final String[][] shape = new String[][]{
-//            {"   ", " . ", "   ",},
-//            {"010", "101", "010",},
-//            {"\"\"\"", "\"0\"", "\"\"\"",},
-//            {"202", "0!0", "202",},
-//    };
-//    private static final Block[] blockType = new Block[]{sBlockCasingsTT, sBlockCasingsTT, QuantumGlassBlock.INSTANCE};
-//    private static final byte[] blockMeta = new byte[]{4, 0, 0};
-//    private static final IGT_HatchAdder<GT_MetaTileEntity_EM_quantizer>[] addingMethods = adders(
-//            GT_MetaTileEntity_EM_quantizer::addClassicToMachineList,
-//            GT_MetaTileEntity_EM_quantizer::addElementalOutputToMachineList,
-//            GT_MetaTileEntity_EM_quantizer::addElementalMufflerToMachineList);
-//    private static final short[] casingTextures = new short[]{textureOffset, textureOffset + 4, textureOffset + 4};
-//    private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT};
-//    private static final byte[] blockMetaFallback = new byte[]{0, 4, 4};
-
     //endregion
 
     public GT_MetaTileEntity_EM_quantizer(int aID, String aName, String aNameRegional) {
@@ -109,7 +92,6 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        //return structureCheck_EM(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 1, 0);
         return structureCheck_EM("main", 1, 1, 0);
     }
 
@@ -222,7 +204,6 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        //Structure.builder(shape, blockType, blockMeta, 1, 1, 0, getBaseMetaTileEntity(), getExtendedFacing(), hintsOnly);
         structureBuild_EM("main", 1, 1, 0, hintsOnly, stackSize);
     }
 

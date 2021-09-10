@@ -68,24 +68,6 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
             .addElement('E', ofBlock(QuantumGlassBlock.INSTANCE, 0))
             .addElement('F', ofHatchAdderOptional(GT_MetaTileEntity_EM_machine::addElementalToMachineList, textureOffset + 4, 2, sBlockCasingsTT, 4))
             .build();
-
-//    private static final String[][] shape = new String[][]{
-//            {"B0", "A   ", "0 - 0", "A   ", "B0",},
-//            {"A000", "00000", "00.00", "00000", "A000",},
-//            {"A121", "1---1", "2---2", "1---1", "A121",},
-//            {"A131", "1---1", "3-A-3", "1---1", "A131",},
-//            {"A121", "1---1", "2---2", "1---1", "A121",},
-//            {"A000", "00000", "00-00", "00000", "A000",},
-//            {"B0", "A!!!", "0!!!0", "A!!!", "B0",},};
-//    private static final Block[] blockType = new Block[]{sBlockCasingsTT, QuantumGlassBlock.INSTANCE, sBlockCasingsTT, sBlockCasingsTT};
-//    private static final byte[] blockMeta = new byte[]{4, 0, 5, 6};
-//    private static final IHatchAdder<GT_MetaTileEntity_EM_machine>[] addingMethods = adders(
-//            GT_MetaTileEntity_EM_machine::addClassicToMachineList,
-//            GT_MetaTileEntity_EM_machine::addElementalToMachineList);
-//    private static final short[] casingTextures = new short[]{textureOffset, textureOffset + 4};
-//    private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT};
-//    private static final byte[] blockMetaFallback = new byte[]{0, 4};
-
     //endregion
 
     //region parameters
@@ -215,7 +197,6 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        //return structureCheck_EM(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 2, 2, 1);
         return structureCheck_EM("main", 2, 2, 1);
     }
 
@@ -380,7 +361,6 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        //Structure.builder(shape, blockType, blockMeta, 2, 2, 1, getBaseMetaTileEntity(), getExtendedFacing(), hintsOnly);
         structureBuild_EM("main", 2, 2, 1, hintsOnly, stackSize);
     }
 

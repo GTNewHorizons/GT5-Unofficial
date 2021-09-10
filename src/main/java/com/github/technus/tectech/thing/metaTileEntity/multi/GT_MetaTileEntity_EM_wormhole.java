@@ -66,29 +66,6 @@ public class GT_MetaTileEntity_EM_wormhole extends GT_MetaTileEntity_MultiblockB
             .addElement('F', ofBlock(QuantumGlassBlock.INSTANCE, 0))
             .addElement('G', ofHatchAdderOptional(GT_MetaTileEntity_EM_wormhole::addElementalToMachineList, textureOffset + 4, 2, sBlockCasingsTT, 4))
             .build();
-
-//    private static final String[][] shape = new String[][]{
-//            {E, E, E, "C   ", "C . ", "C   "/*,E,E,E,*/},
-//            {E, E, "D0", "C000", "B00100", "C000", "D0"/*,E,E,*/},
-//            {E, E, "D0", "C2A2", "B0C0", "C2A2", "D0"/*,E,E,*/},
-//            {E, "D0", "D0", E, "A00C00", E, "D0", "D0"/*,E,*/},
-//            {E, "D0", E, E, "A0E0", E, E, "D0"/*,E,*/},
-//            {"D0", "D0", E, E, "00E00", E, E, "D0", "D0",},
-//            {"B00000", "A0033300", "003C300", "03E30", "03E30", "03E30", "003C300", "A0033300", "B00000",},
-//            {"B0!!!0", "A 31113 ", "031222130", "!12C21!", "!12C21!", "!12C21!", "031222130", "A 31113 ", "B0!!!0",},
-//            {"B0!!!0", "A 31113 ", "031444130", "!14C41!", "!14C41!", "!14C41!", "031444130", "A 31113 ", "B0!!!0",},
-//            {"B0!!!0", "A 31113 ", "031222130", "!12C21!", "!12C21!", "!12C21!", "031222130", "A 31113 ", "B0!!!0",},
-//            {"B00000", "A0033300", "003C300", "03E30", "03E30", "03E30", "003C300", "A0033300", "B00000",},
-//    };
-//    private static final Block[] blockType = new Block[]{sBlockCasingsTT, sBlockCasingsTT, QuantumGlassBlock.INSTANCE, sBlockCasingsTT, sBlockCasingsTT};
-//    private static final byte[] blockMeta = new byte[]{12, 10, 0, 5, 11};
-//    private static final IGT_HatchAdder<GT_MetaTileEntity_EM_wormhole>[] addingMethods = adders(
-//            GT_MetaTileEntity_EM_wormhole::addClassicToMachineList,
-//            GT_MetaTileEntity_EM_wormhole::addElementalToMachineList);
-//    private static final short[] casingTextures = new short[]{textureOffset, textureOffset + 4};
-//    private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT};
-//    private static final byte[] blockMetaFallback = new byte[]{0, 4};
-
     //endregion
 
     public GT_MetaTileEntity_EM_wormhole(int aID, String aName, String aNameRegional) {
@@ -106,7 +83,6 @@ public class GT_MetaTileEntity_EM_wormhole extends GT_MetaTileEntity_MultiblockB
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        //return structureCheck_EM(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 4, 4, 0);
         return structureCheck_EM("main", 4, 4, 0);
     }
 
@@ -137,7 +113,6 @@ public class GT_MetaTileEntity_EM_wormhole extends GT_MetaTileEntity_MultiblockB
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        //Structure.builder(shape, blockType, blockMeta, 4, 4, 0, getBaseMetaTileEntity(), getExtendedFacing(), hintsOnly);
         structureBuild_EM("main", 4, 4, 0, hintsOnly, stackSize);
     }
 

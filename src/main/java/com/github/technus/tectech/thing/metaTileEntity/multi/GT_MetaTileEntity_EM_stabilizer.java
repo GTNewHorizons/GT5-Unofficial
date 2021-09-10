@@ -50,23 +50,6 @@ public class GT_MetaTileEntity_EM_stabilizer extends GT_MetaTileEntity_Multibloc
             .addElement('F', ofBlock(QuantumGlassBlock.INSTANCE, 0))
             .addElement('G', ofHatchAdderOptional(GT_MetaTileEntity_EM_stabilizer::addElementalToMachineList, textureOffset + 4, 2, sBlockCasingsTT, 4))
             .build();
-
-//    private static final String[][] shape = new String[][]{
-//            {"A010", "0   0", "1 . 1", "0   0", "A010",},
-//            {"23232", "32223", "22222", "32223", "23232",},
-//            {"12!21", "22422", "!444!", "22422", "12!21",},
-//            {"23232", "32223", "22222", "32223", "23232",},
-//            {"A010", "0   0", "1   1", "0   0", "A010",},
-//    };
-//    private static final Block[] blockType = new Block[]{sBlockCasingsTT, QuantumGlassBlock.INSTANCE, sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT};
-//    private static final byte[] blockMeta = new byte[]{4, 0, 5, 6, 9};
-//    private static final IGT_HatchAdder<GT_MetaTileEntity_EM_stabilizer>[] addingMethods = adders(
-//            GT_MetaTileEntity_EM_stabilizer::addClassicToMachineList,
-//            GT_MetaTileEntity_EM_stabilizer::addElementalToMachineList);
-//    private static final short[] casingTextures = new short[]{textureOffset, textureOffset + 4};
-//    private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT};
-//    private static final byte[] blockMetaFallback = new byte[]{0, 4};
-
     //endregion
 
     public GT_MetaTileEntity_EM_stabilizer(int aID, String aName, String aNameRegional) {
@@ -84,7 +67,6 @@ public class GT_MetaTileEntity_EM_stabilizer extends GT_MetaTileEntity_Multibloc
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        //return structureCheck_EM(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 2, 2, 0);
         return structureCheck_EM("main", 2, 2, 0);
     }
 
@@ -99,7 +81,6 @@ public class GT_MetaTileEntity_EM_stabilizer extends GT_MetaTileEntity_Multibloc
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        //Structure.builder(shape, blockType, blockMeta, 2, 2, 0, getBaseMetaTileEntity(), getExtendedFacing(), hintsOnly);
         structureBuild_EM("main", 2, 2, 0, hintsOnly, stackSize);
     }
 

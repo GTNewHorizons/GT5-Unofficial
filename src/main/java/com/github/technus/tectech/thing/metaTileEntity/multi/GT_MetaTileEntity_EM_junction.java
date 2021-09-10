@@ -62,29 +62,6 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
             .addElement('C', ofHatchAdderOptional(GT_MetaTileEntity_EM_junction::addClassicToMachineList, textureOffset, 1, sBlockCasingsTT, 0))
             .addElement('D', ofHatchAdderOptional(GT_MetaTileEntity_EM_junction::addElementalToMachineList, textureOffset + 4, 2, sBlockCasingsTT, 4))
             .build();
-
-//    private static final String[][] shape = new String[][]{
-//            {"   ", " . ", "   ",},
-//            {"000", "000", "000",},
-//            {"!!!", "!0!", "!!!",},
-//            {"!!!", "!!!", "!!!",},
-//    };
-//    private static final String[][] shapeBig = new String[][]{
-//            {E, "A   ", "A . ", "A   ",},
-//            {"A!!!", "!000!", "!010!", "!000!", "A!!!",},
-//            {"!!!!!", "!000!", "!000!", "!000!", "!!!!!",},
-//            {"A!!!", "!000!", "!000!", "!000!", "A!!!",},
-//            {"A!!!", "!!!!!", "!!!!!", "!!!!!", "A!!!",},
-//    };
-//    private static final Block[] blockType = new Block[]{sBlockCasingsTT, sBlockCasingsTT};
-//    private static final byte[] blockMeta = new byte[]{4, 5};
-//    private static final IGT_HatchAdder<GT_MetaTileEntity_EM_junction>[] addingMethods = adders(
-//            GT_MetaTileEntity_EM_junction::addClassicToMachineList,
-//            GT_MetaTileEntity_EM_junction::addElementalToMachineList);
-//    private static final short[] casingTextures = new short[]{textureOffset, textureOffset + 4};
-//    private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT};
-//    private static final byte[] blockMetaFallback = new byte[]{0, 4};
-
     //endregion
 
     //region parameters
@@ -134,10 +111,8 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
         int meta = iGregTechTileEntity.getMetaIDAtSide(GT_Utility.getOppositeSide(iGregTechTileEntity.getFrontFacing()));
         if (meta == 4) {
-            //return structureCheck_EM(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 1, 0);
             return structureCheck_EM("main", 1, 1, 0);
         } else if (meta == 5) {
-            //return structureCheck_EM(shapeBig, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 2, 2, 0);
             return structureCheck_EM("mainBig", 2, 2, 0);
         }
         return false;
@@ -207,7 +182,6 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        //Structure.builder((stackSize.stackSize & 1) == 1 ? shape : shapeBig, blockType, blockMeta, 1, 1, 0, getBaseMetaTileEntity(), getExtendedFacing(), hintsOnly);
         if ((stackSize.stackSize & 1) == 1) {
             structureBuild_EM("main", 1, 1, 0, hintsOnly, stackSize);
         } else {

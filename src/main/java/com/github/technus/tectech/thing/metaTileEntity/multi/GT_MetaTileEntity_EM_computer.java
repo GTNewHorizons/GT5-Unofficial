@@ -94,20 +94,6 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
             .addElement('D', ofBlock(sBlockCasingsTT, 3))
             .addElement('E', ofHatchAdderOptional(GT_MetaTileEntity_EM_computer::addRackToMachineList, textureOffset + 3, 2, sBlockCasingsTT, 3))
             .build();
-
-//    private static final String[][] front = new String[][]{{"A  ", "A  ", "A. ", "A  ",},};
-//    private static final String[][] terminator = new String[][]{{"A  ", "A  ", "A  ", "A  ",},};
-//    private static final String[][] cap = new String[][]{{"-01", "A22", "A22", "-01",},};
-//    private static final String[][] slice = new String[][]{{"-01", "A!2", "A!2", "-01",},};
-//    private static final Block[] blockType = new Block[]{sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT};
-//    private static final byte[] blockMeta = new byte[]{2, 1, 3};
-//    private static final IGT_HatchAdder<GT_MetaTileEntity_EM_computer>[] addingMethods = adders(
-//            GT_MetaTileEntity_EM_computer::addToMachineList,
-//            GT_MetaTileEntity_EM_computer::addRackToMachineList);
-//    private static final short[] casingTextures = new short[]{textureOffset + 1, textureOffset + 3};
-//    private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT};
-//    private static final byte[] blockMetaFallback = new byte[]{1, 3};
-
     //endregion
 
     //region parameters
@@ -169,17 +155,14 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
             }
         }
         eRacks.clear();
-        //if (!structureCheck_EM(front, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 2, 0)) {
         if (!structureCheck_EM("front", 1, 2, 0)) {
             return false;
         }
-        //if (!structureCheck_EM(cap, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 2, -1)) {
         if (!structureCheck_EM("cap", 1, 2, -1)) {
             return false;
         }
         byte offset = -2, totalLen = 4;
         while (offset > -16) {
-            //if (!structureCheck_EM(slice, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 2, offset)) {
             if (!structureCheck_EM("slice", 1, 2, offset)) {
                 break;
             }
@@ -189,11 +172,9 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
         if (totalLen > 17) {
             return false;
         }
-        //if (!structureCheck_EM(cap, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 2, ++offset)) {
         if (!structureCheck_EM("cap", 1, 2, ++offset)) {
             return false;
         }
-        //if (!structureCheck_EM(terminator, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 2, --offset)) {
         if (!structureCheck_EM("back", 1, 2, --offset)) {
             return false;
         }
@@ -407,20 +388,15 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         IGregTechTileEntity igt = getBaseMetaTileEntity();
-        //Structure.builder(front, blockType, blockMeta, 1, 2, 0, igt, getExtendedFacing(), hintsOnly);
         structureBuild_EM("front", 1, 2, 0, hintsOnly, stackSize);
-        //Structure.builder(cap, blockType, blockMeta, 1, 2, -1, igt, getExtendedFacing(), hintsOnly);
         structureBuild_EM("cap", 1, 2, -1, hintsOnly, stackSize);
 
         byte offset = -2;
         for (int rackSlices = Math.min(stackSize.stackSize, 12); rackSlices > 0; rackSlices--) {
-            //Structure.builder(slice, blockType, blockMeta, 1, 2, offset--, igt, getExtendedFacing(), hintsOnly);
             structureBuild_EM("slice", 1 , 2, offset--, hintsOnly, stackSize);
         }
 
-        //Structure.builder(cap, blockType, blockMeta, 1, 2, offset--, igt, getExtendedFacing(), hintsOnly);
         structureBuild_EM("cap", 1, 2, offset--, hintsOnly, stackSize);
-        //Structure.builder(terminator, blockType, blockMeta, 1, 2, offset, igt, getExtendedFacing(), hintsOnly);
         structureBuild_EM("back", 1, 2, offset, hintsOnly, stackSize);
     }
 

@@ -57,20 +57,6 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
             .addElement('A', ofBlock(sBlockCasingsTT, 3))
             .addElement('B', ofHatchAdderOptional(GT_MetaTileEntity_EM_switch::addClassicToMachineList, textureOffset + 1, 1, sBlockCasingsTT, 1))
             .build();
-
-//    private static final String[][] shape = new String[][]{
-//            {"   ", " . ", "   ",},
-//            {"   ", " 0 ", "   ",},
-//            {"   ", "   ", "   ",},
-//    };
-//    private static final Block[] blockType = new Block[]{sBlockCasingsTT};
-//    private static final byte[] blockMeta = new byte[]{3};
-//    private static final IGT_HatchAdder<GT_MetaTileEntity_EM_switch>[] addingMethods = adders(
-//            GT_MetaTileEntity_EM_switch::addClassicToMachineList);
-//    private static final short[] casingTextures = new short[]{textureOffset + 1};
-//    private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT};
-//    private static final byte[] blockMetaFallback = new byte[]{1};
-
     //endregion
 
     //region parameters
@@ -116,7 +102,6 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        //return structureCheck_EM(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 1, 0);
         return structureCheck_EM("main", 1, 1, 0);
     }
 
@@ -244,7 +229,6 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        //StructureUtility.builder(shape, blockType, blockMeta, 1, 1, 0, getBaseMetaTileEntity(), getExtendedFacing(), hintsOnly);
         structureBuild_EM("main", 1, 1, 0, hintsOnly, stackSize);
     }
 

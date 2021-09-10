@@ -331,50 +331,6 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
             .addElement('J', ofHatchAdderOptional(GT_MetaTileEntity_EM_collider::addClassicToMachineList, textureOffset, 1, sBlockCasingsTT, 0))
             .build();
 
-//    private static final IStructureDefinition<GT_MetaTileEntity_EM_collider> STRUCTURE_DEFINITION = StructureDefinition
-//            .<GT_MetaTileEntity_EM_collider>builder()
-//            .addShape("main", new String[][]{
-//                    {"I0A0A0", "I00000", "I0A0A0",},
-//                    {"H0000000", "G001111100", "H0000000",},
-//                    {"F22223332222", "F41155555114", "F22223332222",},
-//                    {"E2000000000002", "E4155111115514", "E2000000000002",},
-//                    {"D20000E00002", "D41511E11514", "D20000E00002",},
-//                    {"C2000I0002", "C4151I1514", "C2000I0002",},
-//                    {"B2000K0002", "B4151K1514", "B2000K0002",},
-//                    {"B200M002", "A0151M1510", "B200M002",},
-//                    {"A0200M0020", "A0151M1510", "A0200M0020",},
-//                    {"0020O0200", "0151O1510", "0020O0200",},
-//                    {"A030O030", "0151O1510", "A030O030",},
-//                    {"0030O0300", "0151O1510", "0030O0300",},
-//                    {"A030O030", "0151O1510", "A030O030",},
-//                    {"0020O0200", "0151O1510", "0020O0200",},
-//                    {"A0200M0020", "A0151M1510", "A0200M0020",},
-//                    {"B200M002", "A0151M1510", "B200M002",},
-//                    {"B2000K0002", "B4151K1514", "B2000K0002",},
-//                    {"C2000I0002", "C4151I1514", "C2000I0002",},
-//                    {"D200002&&&200002", "D415112&.&211514", "D200002&&&200002",},
-//                    {"E20!!22222!!02", "E4155111115514", "E20!!22222!!02",},
-//                    {"F2222#$#2222", "F41155555114", "F2222#$#2222",},
-//            })
-//            .addElement('0', ofBlock(sBlockCasingsTT, 4))
-//            .addElement('1', ofBlock(sBlockCasingsTT, 7))
-//            .addElement('2', defer(t -> (int) t.eTier, (t, item) -> 2 - (item.stackSize & 1),
-//                    error(), ofBlock(sBlockCasingsTT, 4), ofBlock(sBlockCasingsTT, 5)))
-//            .addElement('3', ofBlock(QuantumGlassBlock.INSTANCE, 0))
-//            .addElement('4', defer(t -> (int) t.eTier, (t, item) -> 2 - (item.stackSize & 1),
-//                    error(), ofBlock(sBlockCasingsTT, 4), ofBlock(sBlockCasingsTT, 6)))
-//            .addElement('5', defer(t -> (int) t.eTier, (t, item) -> 2 - (item.stackSize & 1),
-//                    error(), ofBlock(sBlockCasingsTT, 8), ofBlock(sBlockCasingsTT, 9)))
-//            .addElement('&', ofHatchAdderOptional(GT_MetaTileEntity_EM_collider::addClassicToMachineList,
-//                    textureOffset, 1, sBlockCasingsTT, 0))
-//            .addElement('!', ofHatchAdderOptional(GT_MetaTileEntity_EM_collider::addElementalInputToMachineList,
-//                    textureOffset + 4, 2, sBlockCasingsTT, 4))
-//            .addElement('$', ofHatchAdderOptional(GT_MetaTileEntity_EM_collider::addElementalOutputToMachineList,
-//                    textureOffset + 4, 3, sBlockCasingsTT, 4))
-//            .addElement('#', ofHatchAdderOptional(GT_MetaTileEntity_EM_collider::addElementalMufflerToMachineList,
-//                    textureOffset + 4, 4, sBlockCasingsTT, 4))
-//            .build();
-
     @Override
     public IStructureDefinition<GT_MetaTileEntity_EM_collider> getStructure_EM() {
         return STRUCTURE_DEFINITION;

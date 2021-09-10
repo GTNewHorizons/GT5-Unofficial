@@ -65,23 +65,6 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
             .addElement('A', ofBlock(sBlockCasings4, 1))
             .addElement('B', ofHatchAdderOptional(GT_MetaTileEntity_TM_microwave::addClassicToMachineList, 49, 1, sBlockCasings4, 1))
             .build();
-
-//    private static final String[][] shape = new String[][]{
-//            {"00000", "00000", "00.00", "0   0",},
-//            {"0---0", "0---0", "0---0", " 000 ",},
-//            {"0---0", "0---0", "0---0", " 000 ",},
-//            {"0---0", "0---0", "0---0", " 000 ",},
-//            {"00000", "00000", "00000", "0   0",},
-//    };
-//    private static final Block[] blockType = new Block[]{sBlockCasings4};
-//    private static final byte[] blockMeta = new byte[]{1};
-//
-//    private static final IGT_HatchAdder<GT_MetaTileEntity_TM_microwave>[] addingMethods = adders(
-//            GT_MetaTileEntity_TM_microwave::addClassicToMachineList);
-//    private static final short[] casingTextures = new short[]{49};
-//    private static final Block[] blockTypeFallback = new Block[]{sBlockCasings4};
-//    private static final byte[] blockMetaFallback = new byte[]{1};
-
     //endregion
 
     //region parameters
@@ -119,7 +102,6 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        //return structureCheck_EM(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 2, 2, 0);
         return  structureCheck_EM("main", 2, 2, 0);
     }
 
@@ -268,7 +250,6 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        //Structure.builder(shape, blockType, blockMeta, 2, 2, 0, getBaseMetaTileEntity(), getExtendedFacing(), hintsOnly);
         structureBuild_EM("main", 2, 2, 0, hintsOnly, stackSize);
     }
 

@@ -145,32 +145,6 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         Vec3Impl xyzOffsets = getExtendedFacing().getWorldOffset(new Vec3Impl(0, -1, 1));
         return this.getBaseMetaTileEntity().getMetaIDOffset(xyzOffsets.get0(), xyzOffsets.get1(), xyzOffsets.get2());
     }
-
-//    private static final String[][] shape = new String[][]{//3 16 0
-//            {"\u000F", "A  .  ",},
-//            {E, "B000", "B000", "B000", "\u0001", "B000", E, "B000", E, "B000", E, "B000", "\u0001", "B111", " 22222 ",},
-//            {"B000", "A00000", "A00000", "A00000", "B000", E, "A0A!A0", E, "A0A!A0", E, "A0A!A0", E, "A0A!A0", "\u0001", "A1C1", " 21112 ",},
-//            {"B000", "A00000", "A00000", "A00000", "B030", "C3", "A0!3!0", "C3", "A0!3!0", "C3", "A0!3!0", "C3", "A0!3!0", "C3", "C3", "A1A3A1", " 21212 ",},
-//            {"B000", "A00000", "A00000", "A00000", "B000", E, "A0A!A0", E, "A0A!A0", E, "A0A!A0", E, "A0A!A0", "\u0001", "A1C1", " 21112 ",},
-//            {E, "B000", "B000", "B000", "\u0001", "B000", E, "B000", E, "B000", E, "B000", "\u0001", "B111", " 22222 ",},
-//            {"\u000F", "A     ",},
-//    };
-//    private static final Block[] blockType = new Block[]{sBlockCasingsBA0, sBlockCasingsBA0, sBlockCasingsBA0, sBlockCasingsBA0};
-//    private static final byte[] blockMetaT0 = new byte[]{7, 0, 6, 8};
-//    private static final byte[] blockMetaT1 = new byte[]{7, 1, 6, 8};
-//    private static final byte[] blockMetaT2 = new byte[]{7, 2, 6, 8};
-//    private static final byte[] blockMetaT3 = new byte[]{7, 3, 6, 8};
-//    private static final byte[] blockMetaT4 = new byte[]{7, 4, 6, 8};
-//    private static final byte[] blockMetaT5 = new byte[]{7, 5, 6, 8};
-//    private static final byte[] blockMetaT6 = new byte[]{7, 9, 6, 8};
-//    private static final byte[][] blockMetas = new byte[][]{blockMetaT0, blockMetaT1, blockMetaT2, blockMetaT3, blockMetaT4, blockMetaT5, blockMetaT6};
-//    private static final IGT_HatchAdder<GT_MetaTileEntity_TM_teslaCoil>[] addingMethods = adders(
-//            GT_MetaTileEntity_TM_teslaCoil::addCapacitorToMachineList,
-//            GT_MetaTileEntity_TM_teslaCoil::addFrameToMachineList);
-//    private static final short[] casingTextures = new short[]{(texturePage << 7) + 16 + 6, 0};
-//    private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsBA0, null};
-//    private static final byte[] blockMetaFallback = new byte[]{6, 0};
-
     //endregion
 
     //region parameters
@@ -390,7 +364,6 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
             mTier = 6;
         }//Hacky remap because the ZPM coils were added later
 
-        //if (structureCheck_EM(shape, blockType, blockMetas[mTier], addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 3, 16, 0) && eCapacitorHatches.size() > 0) {
         if (structureCheck_EM("main", 3, 16, 0)) {
             for (GT_MetaTileEntity_Hatch_Capacitor cap : eCapacitorHatches) {
                 if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(cap)) {
@@ -734,7 +707,6 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        //Structure.builder(shape, blockType, blockMetas[(stackSize.stackSize - 1) % 7], 3, 16, 0, getBaseMetaTileEntity(), getExtendedFacing(), hintsOnly);
         structureBuild_EM("main", 3, 16, 0, hintsOnly, stackSize);
     }
 
