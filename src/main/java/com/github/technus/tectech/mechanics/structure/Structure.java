@@ -22,7 +22,7 @@ public class Structure {
 
     @Deprecated
     @SafeVarargs
-    public static <T> IHatchAdder<T>[] adders(IHatchAdder<T>... iHatchAdder) {
+    public static <T> IGT_HatchAdder<T>[] adders(IGT_HatchAdder<T>... iHatchAdder) {
         return iHatchAdder;
     }
 
