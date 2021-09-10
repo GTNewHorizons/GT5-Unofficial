@@ -35,8 +35,7 @@ import static com.github.technus.tectech.mechanics.structure.Structure.adders;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.*;
 import static com.github.technus.tectech.util.CommonValues.V;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockHint;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 import static net.minecraft.util.StatCollector.translateToLocal;
@@ -50,11 +49,11 @@ public class GT_MetaTileEntity_EM_dequantizer extends GT_MetaTileEntity_Multiblo
 
     private static final IStructureDefinition<GT_MetaTileEntity_EM_dequantizer> STRUCTURE_DEFINITION =
             StructureDefinition.<GT_MetaTileEntity_EM_dequantizer>builder()
-            .addShape("main", new String[][]{
+            .addShape("main", transpose(new String[][]{
                     {"CCC","ABA","EEE","BDB"},
                     {"C~C","BBB","EBE","DFD"},
                     {"CCC","ABA","EEE","BDB"}
-            })
+            }))
             .addElement('A', ofBlock(sBlockCasingsTT, 0))
             .addElement('B', ofBlock(sBlockCasingsTT, 4))
             .addElement('C', ofHatchAdderOptional(GT_MetaTileEntity_EM_dequantizer::addClassicToMachineList, textureOffset, 1, sBlockCasingsTT, 0))

@@ -46,6 +46,7 @@ import static com.github.technus.tectech.util.CommonValues.V;
 import static com.github.technus.tectech.util.CommonValues.VN;
 import static com.github.technus.tectech.util.Util.areBitsSet;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 import static net.minecraft.util.StatCollector.translateToLocal;
@@ -82,13 +83,13 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
 
     private static final IStructureDefinition<GT_MetaTileEntity_EM_scanner> STRUCTURE_DEFINITION =
             StructureDefinition.<GT_MetaTileEntity_EM_scanner>builder()
-            .addShape("main", new String[][]{
+            .addShape("main", transpose(new String[][]{
                     {"CCCCC","BBBBB","BBDBB","BDDDB","BDDDB","BDDDB","BBDBB","EEEEE"},
                     {"CAAAC","BBBBB","BDDDB","D---D","D---D","D---D","BDDDB","EBBBE"},
                     {"CA~AC","BBBBB","DDDDD","D---D","D---D","D---D","DDGDD","EBFBE"},
                     {"CAAAC","BBBBB","BDDDB","D---D","D---D","D---D","BDDDB","EBBBE"},
                     {"CCCCC","BBBBB","BBDBB","BDDDB","BDDDB","BDDDB","BBDBB","EEEEE"}
-            })
+            }))
             .addElement('A', ofBlock(sBlockCasingsTT, 0))
             .addElement('B', ofBlock(sBlockCasingsTT, 4))
             .addElement('C', ofHatchAdderOptional(GT_MetaTileEntity_EM_scanner::addClassicToMachineList, textureOffset, 1, sBlockCasingsTT, 0))

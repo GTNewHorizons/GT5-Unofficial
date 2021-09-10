@@ -21,8 +21,7 @@ import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texture
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sHintCasingsTT;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 import static net.minecraft.util.StatCollector.translateToLocal;
@@ -44,7 +43,7 @@ public class GT_MetaTileEntity_EM_annihilation extends GT_MetaTileEntity_Multibl
     //region structure
     private static final IStructureDefinition<GT_MetaTileEntity_EM_annihilation> STRUCTURE_DEFINITION =
             StructureDefinition.<GT_MetaTileEntity_EM_annihilation>builder()
-                    .addShape("main", new String[][]{
+                    .addShape("main", transpose(new String[][]{
                             {"           ","   AB BA   ","   AB BA   ","    BBB    "," A   A   A ","AA   F   AA"," A   A   A ","    BBB    ","   AB BA   ","   AB BA   ","           "},
                             {"           ","   AB BA   "," EECEEECEE "," EGGEEEGGE ","ACGGGEGGGCA","AEGGGDGGGEA","ACGGGEGGGCA"," EGGEEEGGE "," EECEEECEE ","   AB BA   ","           "},
                             {"           ","    B B    "," EGGEGEGGE "," G       G "," G       G "," G       G "," G       G "," G       G "," EGGEGEGGE ","    B B    ","           "},
@@ -56,7 +55,7 @@ public class GT_MetaTileEntity_EM_annihilation extends GT_MetaTileEntity_Multibl
                             {"           ","    B B    "," EGGEGEGGE "," G       G "," G       G "," G       G "," G       G "," G       G "," EGGEGEGGE ","    B B    ","           "},
                             {"           ","   AB BA   "," EECEEECEE "," EGGEEEGGE ","ACGGGEGGGCA","AEGGGDGGGEA","ACGGGEGGGCA"," EGGEEEGGE "," EECEEECEE ","   AB BA   ","           "},
                             {"           ","   AB BA   ","   AB BA   ","    BBB    "," A   A   A ","AA   F   AA"," A   A   A ","    BBB    ","   AB BA   ","   AB BA   ","           "}
-                    })
+                    }))
                     .addElement('A', ofBlock(sBlockCasingsTT, 4))
                     .addElement('B', ofBlock(sBlockCasingsTT, 5))
                     .addElement('C', ofBlock(sBlockCasingsTT, 6))

@@ -24,6 +24,7 @@ import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texture
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GT_Values.E;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 import static net.minecraft.util.StatCollector.translateToLocal;
@@ -46,7 +47,7 @@ public class GT_MetaTileEntity_EM_wormhole extends GT_MetaTileEntity_MultiblockB
 
     private static final IStructureDefinition<GT_MetaTileEntity_EM_wormhole> STRUCTURE_DEFINITION =
             StructureDefinition.<GT_MetaTileEntity_EM_wormhole>builder()
-            .addShape("main", new String[][]{
+            .addShape("main", transpose(new String[][]{
                     {"         ","         ","         ","         ","         ","    D    ","  DDDDD  ","  DGGGD  ","  DGGGD  ","  DGGGD  ","  DDDDD  "},
                     {"         ","         ","         ","    D    ","    D    ","    D    "," DDAAADD "," EABBBAE "," EABBBAE "," EABBBAE "," DDAAADD "},
                     {"         ","    D    ","    D    ","    D    ","         ","         ","DDA   ADD","DABFFFBAD","DABCCCBAD","DABFFFBAD","DDA   ADD"},
@@ -56,7 +57,7 @@ public class GT_MetaTileEntity_EM_wormhole extends GT_MetaTileEntity_MultiblockB
                     {"         ","    D    ","    D    ","    D    ","         ","         ","DDA   ADD","DABFFFBAD","DABCCCBAD","DABFFFBAD","DDA   ADD"},
                     {"         ","         ","         ","    D    ","    D    ","    D    "," DDAAADD "," EABBBAE "," EABBBAE "," EABBBAE "," DDAAADD "},
                     {"         ","         ","         ","         ","         ","    D    ","  DDDDD  ","  DGGGD  ","  DGGGD  ","  DGGGD  ","  DDDDD  "}
-            })
+            }))
             .addElement('A', ofBlock(sBlockCasingsTT, 5))
             .addElement('B', ofBlock(sBlockCasingsTT, 10))
             .addElement('C', ofBlock(sBlockCasingsTT, 11))

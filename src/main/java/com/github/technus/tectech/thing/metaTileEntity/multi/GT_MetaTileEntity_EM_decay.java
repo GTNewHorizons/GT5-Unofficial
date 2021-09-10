@@ -42,6 +42,7 @@ import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStat
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.STATUS_TOO_LOW;
 import static com.github.technus.tectech.util.CommonValues.VN;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
@@ -70,13 +71,13 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
 
     private static final IStructureDefinition<GT_MetaTileEntity_EM_decay> STRUCTURE_DEFINITION =
             StructureDefinition.<GT_MetaTileEntity_EM_decay>builder()
-            .addShape("main", new String[][]{
+            .addShape("main",transpose(new String[][]{
                     {"A   A","AAAAA","A   A","ABBBA","ABCBA","ABBBA","A   A","AAAAA","A   A"},
                     {" FFF ","AAAAA"," EEE ","BDDDB","BDDDB","BDDDB"," EEE ","AAAAA"," FFF "},
                     {" F~F ","AAAAA"," EAE ","BDDDB","CDDDC","BDDDB"," EAE ","AAAAA"," FFF "},
                     {" FFF ","AAAAA"," EEE ","BDDDB","BDDDB","BDDDB"," EEE ","AAAAA"," FFF "},
                     {"A   A","AAAAA","A   A","ABBBA","ABCBA","ABBBA","A   A","AAAAA","A   A"}
-            })
+            }))
             .addElement('A', ofBlock(sBlockCasingsTT, 4))
             .addElement('B', ofBlock(sBlockCasingsTT, 5))
             .addElement('C', ofBlock(sBlockCasingsTT, 6))

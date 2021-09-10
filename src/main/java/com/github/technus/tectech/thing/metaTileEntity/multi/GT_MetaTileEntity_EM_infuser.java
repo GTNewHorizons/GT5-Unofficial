@@ -29,6 +29,7 @@ import static com.github.technus.tectech.mechanics.structure.Structure.adders;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.GregTech_API.mEUtoRF;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 import static net.minecraft.util.StatCollector.translateToLocal;
@@ -45,13 +46,13 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
 
     private static final IStructureDefinition<GT_MetaTileEntity_EM_infuser> STRUCTURE_DEFINITION =
             StructureDefinition.<GT_MetaTileEntity_EM_infuser>builder()
-            .addShape("main", new String[][]{
+            .addShape("main", transpose(new String[][]{
                     {"CCC","CCC","CCC"},
                     {"BBB","BAB","BBB"},
                     {"A~A","AAA","AAA"},
                     {"BBB","BAB","BBB"},
                     {"CCC","CCC","CCC"}
-            })
+            }))
             .addElement('A', ofBlock(sBlockCasingsTT, 4))
             .addElement('B', ofBlock(sBlockCasingsTT, 7))
             .addElement('C', ofHatchAdderOptional(GT_MetaTileEntity_EM_infuser::addClassicToMachineList, textureOffset, 1, sBlockCasingsTT, 0))

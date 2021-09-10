@@ -40,6 +40,7 @@ import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStat
 import static com.github.technus.tectech.util.CommonValues.MULTI_CHECK_AT;
 import static com.github.technus.tectech.util.CommonValues.V;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
@@ -63,30 +64,30 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
 
     private static final IStructureDefinition<GT_MetaTileEntity_EM_computer> STRUCTURE_DEFINITION =
             StructureDefinition.<GT_MetaTileEntity_EM_computer>builder()
-            .addShape("front", new String[][]{
+            .addShape("front", transpose(new String[][]{
                     {" AA"},
                     {" AA"},
                     {" ~A"},
                     {" AA"}
-            })
-            .addShape("cap", new String[][]{
+            }))
+            .addShape("cap", transpose(new String[][]{
                     {"-CB"},
                     {" DD"},
                     {" DD"},
                     {"-CB"}
-            })
-            .addShape("slice", new String[][]{
+            }))
+            .addShape("slice", transpose(new String[][]{
                     {"-CB"},
                     {" ED"},
                     {" ED"},
                     {"-CB"}
-            })
-            .addShape("back", new String[][]{
+            }))
+            .addShape("back", transpose(new String[][]{
                     {" AA"},
                     {" AA"},
                     {" AA"},
                     {" AA"}
-            })
+            }))
             .addElement('A', ofHatchAdderOptional(GT_MetaTileEntity_EM_computer::addToMachineList, textureOffset + 1, 1, sBlockCasingsTT, 1))
             .addElement('B', ofBlock(sBlockCasingsTT, 1))
             .addElement('C', ofBlock(sBlockCasingsTT, 2))

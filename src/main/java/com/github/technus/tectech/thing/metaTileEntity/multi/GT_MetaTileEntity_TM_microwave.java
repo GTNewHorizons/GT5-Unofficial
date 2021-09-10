@@ -32,6 +32,7 @@ import static com.github.technus.tectech.mechanics.structure.Structure.adders;
 import static com.github.technus.tectech.recipe.TT_recipeAdder.nullItem;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.*;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.GregTech_API.sBlockCasings4;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 import static net.minecraft.util.AxisAlignedBB.getBoundingBox;
@@ -55,12 +56,12 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
 
     private static final IStructureDefinition<GT_MetaTileEntity_TM_microwave> STRUCTURE_DEFINITION =
             StructureDefinition.<GT_MetaTileEntity_TM_microwave>builder()
-            .addShape("main", new String[][]{
+            .addShape("main", transpose(new String[][]{
                     {"AAAAA","A---A","A---A","A---A","AAAAA"},
                     {"AAAAA","A---A","A---A","A---A","AAAAA"},
                     {"AA~AA","A---A","A---A","A---A","AAAAA"},
                     {"ABBBA","BAAAB","BAAAB","BAAAB","ABBBA"}
-            })
+            }))
             .addElement('A', ofBlock(sBlockCasings4, 1))
             .addElement('B', ofHatchAdderOptional(GT_MetaTileEntity_TM_microwave::addClassicToMachineList, 49, 1, sBlockCasings4, 1))
             .build();

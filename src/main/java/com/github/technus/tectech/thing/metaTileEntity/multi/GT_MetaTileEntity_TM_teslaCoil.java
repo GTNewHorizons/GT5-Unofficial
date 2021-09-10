@@ -114,7 +114,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
 
     private static final IStructureDefinition<GT_MetaTileEntity_TM_teslaCoil> STRUCTURE_DEFINITION =
             StructureDefinition.<GT_MetaTileEntity_TM_teslaCoil>builder()
-            .addShape("main", new String[][]{
+            .addShape("main", transpose(new String[][]{
                     {"       ","       ","  BBB  ","  BBB  ","  BBB  ","       ","       "},
                     {"       ","  BBB  "," BBBBB "," BBBBB "," BBBBB ","  BBB  ","       "},
                     {"       ","  BBB  "," BBBBB "," BBBBB "," BBBBB ","  BBB  ","       "},
@@ -132,7 +132,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
                     {"       ","       ","       ","   C   ","       ","       ","       "},
                     {"       ","  DDD  "," D   D "," D C D "," D   D ","  DDD  ","       "},
                     {" EE~EE ","EAAAAAE","EADDDAE","EADADAE","EADDDAE"," AAAAAE"," EEEEE "}
-            })
+            }))
             .addElement('A', ofBlock(sBlockCasingsBA0, 6))
             .addElement('B', ofBlock(sBlockCasingsBA0, 7))
             .addElement('C', ofBlock(sBlockCasingsBA0, 8))

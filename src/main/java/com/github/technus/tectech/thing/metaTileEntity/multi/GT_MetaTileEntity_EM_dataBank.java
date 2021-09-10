@@ -36,6 +36,7 @@ import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texture
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
 import static com.github.technus.tectech.util.CommonValues.V;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 import static net.minecraft.util.StatCollector.translateToLocal;
@@ -55,11 +56,11 @@ public class GT_MetaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockB
 
     private static final IStructureDefinition<GT_MetaTileEntity_EM_dataBank> STRUCTURE_DEFINITION =
             StructureDefinition.<GT_MetaTileEntity_EM_dataBank>builder()
-            .addShape("main", new String[][]{
+            .addShape("main", transpose(new String[][]{
                     {"BCCCB","BDDDB","BDDDB"},
                     {"BC~CB","BAAAB","BDDDB"},
                     {"BCCCB","BDDDB","BDDDB"}
-            })
+            }))
             .addElement('A', ofBlock(sBlockCasingsTT, 1))
             .addElement('B', ofBlock(sBlockCasingsTT, 2))
             .addElement('C', ofHatchAdderOptional(GT_MetaTileEntity_EM_dataBank::addClassicToMachineList, textureOffset, 1, sBlockCasingsTT, 0))

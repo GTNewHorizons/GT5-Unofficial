@@ -18,6 +18,7 @@ import static com.github.technus.tectech.mechanics.structure.Structure.adders;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
@@ -34,13 +35,13 @@ public class GT_MetaTileEntity_EM_stabilizer extends GT_MetaTileEntity_Multibloc
 
     private static final IStructureDefinition<GT_MetaTileEntity_EM_stabilizer> STRUCTURE_DEFINITION =
             StructureDefinition.<GT_MetaTileEntity_EM_stabilizer>builder()
-            .addShape("main", new String[][]{
+            .addShape("main", transpose(new String[][]{
                     {" AFA ","BCBCB","FBGBF","BCBCB"," AFA "},
                     {"AEEEA","CBBBC","BBDBB","CBBBC","AEEEA"},
                     {"FE~EF","BBBBB","GDDDG","BBBBB","FEEEF"},
                     {"AEEEA","CBBBC","BBDBB","CBBBC","AEEEA"},
                     {" AFA ","BCBCB","FBGBF","BCBCB"," AFA "}
-            })
+            }))
             .addElement('A', ofBlock(sBlockCasingsTT, 4))
             .addElement('B', ofBlock(sBlockCasingsTT, 5))
             .addElement('C', ofBlock(sBlockCasingsTT, 6))

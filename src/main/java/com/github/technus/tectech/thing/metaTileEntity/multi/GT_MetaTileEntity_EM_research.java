@@ -46,8 +46,7 @@ import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileE
 import static com.github.technus.tectech.thing.metaTileEntity.multi.em_machine.GT_MetaTileEntity_EM_machine.machine;
 import static com.github.technus.tectech.util.CommonValues.V;
 import static com.github.technus.tectech.util.CommonValues.VN;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.GT_Values.E;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
@@ -81,7 +80,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     //region structure
     private static final IStructureDefinition<GT_MetaTileEntity_EM_research> STRUCTURE_DEFINITION =
             StructureDefinition.<GT_MetaTileEntity_EM_research>builder()
-                    .addShape("main", new String[][]{
+                    .addShape("main", transpose(new String[][]{
                             {"   ", " A ", " A ", "AAA", "AAA", "AAA", "AAA"},
                             {"AAA", "ACA", "ACA", "ACA", "BCB", "BCB", "BBB"},
                             {"   ", " C ", "   ", "   ", "ACA", "CCC", "DDD"},
@@ -89,7 +88,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
                             {"   ", " C ", "   ", "   ", "ACA", "CCC", "DDD"},
                             {"AAA", "ACA", "ACA", "ACA", "BCB", "BCB", "BBB"},
                             {"   ", " A ", " A ", "AAA", "AAA", "AAA", "AAA"}
-                    })
+                    }))
                     .addElement('A', ofBlock(sBlockCasingsTT, 1))
                     .addElement('B', ofBlock(sBlockCasingsTT, 2))
                     .addElement('C', ofBlock(sBlockCasingsTT, 3))

@@ -33,6 +33,7 @@ import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBloc
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.*;
 import static com.github.technus.tectech.util.CommonValues.V;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
@@ -48,11 +49,11 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
 
     private static final IStructureDefinition<GT_MetaTileEntity_EM_switch> STRUCTURE_DEFINITION =
             StructureDefinition.<GT_MetaTileEntity_EM_switch>builder()
-            .addShape("main", new String[][]{
+            .addShape("main", transpose(new String[][]{
                     {"BBB","BBB","BBB"},
                     {"B~B","BAB","BBB"},
                     {"BBB","BBB","BBB"}
-            })
+            }))
             .addElement('A', ofBlock(sBlockCasingsTT, 3))
             .addElement('B', ofHatchAdderOptional(GT_MetaTileEntity_EM_switch::addClassicToMachineList, textureOffset + 1, 1, sBlockCasingsTT, 1))
             .build();

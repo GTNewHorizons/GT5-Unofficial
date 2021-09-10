@@ -24,6 +24,7 @@ import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texture
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
@@ -47,13 +48,13 @@ public class GT_MetaTileEntity_EM_crafting extends GT_MetaTileEntity_MultiblockB
 
     private static final IStructureDefinition<GT_MetaTileEntity_EM_crafting> STRUCTURE_DEFINITION= StructureDefinition
             .<GT_MetaTileEntity_EM_crafting>builder()
-            .addShape("main", new String[][]{
+            .addShape("main", transpose(new String[][]{
                     {" AAA ","AAAAA","A   A","BBBBB","BGCGB","BGGGB","BGCGB","BBBBB","A   A","AAAAA"," AAA "},
                     {"AHHHA","AAAAA"," FFF ","BBBBB","GGGGG","GGGGG","GGGGG","BBBBB"," FFF ","AAAAA","AHHHA"},
                     {"AH~HA","AAAAA"," FEF ","BBEBB","CGEGC","GGDGG","CGEGC","BBEBB"," FEF ","AAAAA","AHHHA"},
                     {"AHHHA","AAAAA"," FFF ","BBBBB","GGGGG","GGGGG","GGGGG","BBBBB"," FFF ","AAAAA","AHHHA"},
                     {" AAA ","AAAAA","A   A","BBBBB","BGCGB","BGGGB","BGCGB","BBBBB","A   A","AAAAA"," AAA "}
-            })
+            }))
             .addElement('A', ofBlock(sBlockCasingsTT, 4))
             .addElement('B', ofBlock(sBlockCasingsTT, 5))
             .addElement('C', ofBlock(sBlockCasingsTT, 6))
