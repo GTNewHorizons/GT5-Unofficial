@@ -4,6 +4,7 @@ import com.github.technus.tectech.mechanics.alignment.enumerable.Flip;
 import com.github.technus.tectech.mechanics.alignment.enumerable.Rotation;
 import net.minecraftforge.common.util.ForgeDirection;
 
+@Deprecated
 public interface IAlignmentLimits {
 
     IAlignmentLimits UNLIMITED= (direction, rotation, flip) -> true;

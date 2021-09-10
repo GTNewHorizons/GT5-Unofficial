@@ -7,6 +7,7 @@ import java.util.*;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.mechanics.structure.StructureUtility.*;
 
+@Deprecated
 public class StructureDefinition<T> implements IStructureDefinition<T> {
     private final Map<Character, IStructureElement<T>> elements;
     private final Map<String, String> shapes;

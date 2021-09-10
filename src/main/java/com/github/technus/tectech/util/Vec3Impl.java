@@ -4,6 +4,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.dispenser.IPosition;
 import net.minecraftforge.common.util.ForgeDirection;
 
+@Deprecated
 public class Vec3Impl implements Comparable<Vec3Impl> {
     public static final Vec3Impl NULL_VECTOR = new Vec3Impl(0, 0, 0);
     private final int val0;

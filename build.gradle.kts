@@ -169,6 +169,7 @@ dependencies {
 
     //Hard Dependencies
     compile("net.industrial-craft:industrialcraft-2:$ic2Version:dev")
+    compile("com.github.GTNewHorizons:StructureLib:1.0.6:deobf")
     compile("com.github.GTNewHorizons:GT5-Unofficial:$gt5uVersion:dev"){
         exclude("net.industrial-craft", "industrialcraft-2")
     }

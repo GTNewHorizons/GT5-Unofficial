@@ -2,11 +2,8 @@ package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.loader.NetworkDispatcher;
-import com.github.technus.tectech.mechanics.constructable.IConstructable;
 import com.github.technus.tectech.mechanics.spark.RendererMessage;
 import com.github.technus.tectech.mechanics.spark.ThaumSpark;
-import com.github.technus.tectech.mechanics.structure.Structure;
-import com.github.technus.tectech.mechanics.structure.adders.IHatchAdder;
 import com.github.technus.tectech.mechanics.tesla.ITeslaConnectable;
 import com.github.technus.tectech.mechanics.tesla.ITeslaConnectableSimple;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Capacitor;
@@ -19,10 +16,12 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.base.IStatusFunctio
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
 import com.github.technus.tectech.util.CommonValues;
-import com.github.technus.tectech.util.Vec3Impl;
-import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.MultimapBuilder;
+import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
@@ -31,7 +30,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.*;
-import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -41,14 +39,15 @@ import net.minecraftforge.fluids.FluidStack;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import static com.github.technus.tectech.mechanics.structure.Structure.adders;
 import static com.github.technus.tectech.mechanics.tesla.ITeslaConnectable.TeslaUtil.*;
+import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsBA0;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.*;
 import static com.github.technus.tectech.util.CommonValues.V;
-import static gregtech.api.enums.GT_Values.E;
-import static java.lang.Math.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static gregtech.api.util.GT_StructureUtility.*;
+import static java.lang.Math.min;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable, ITeslaConnectable {
@@ -100,35 +99,44 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     //endregion
 
     //region structure
-    private static final String[][] shape = new String[][]{//3 16 0
-            {"\u000F", "A  .  ",},
-            {E, "B000", "B000", "B000", "\u0001", "B000", E, "B000", E, "B000", E, "B000", "\u0001", "B111", " 22222 ",},
-            {"B000", "A00000", "A00000", "A00000", "B000", E, "A0A!A0", E, "A0A!A0", E, "A0A!A0", E, "A0A!A0", "\u0001", "A1C1", " 21112 ",},
-            {"B000", "A00000", "A00000", "A00000", "B030", "C3", "A0!3!0", "C3", "A0!3!0", "C3", "A0!3!0", "C3", "A0!3!0", "C3", "C3", "A1A3A1", " 21212 ",},
-            {"B000", "A00000", "A00000", "A00000", "B000", E, "A0A!A0", E, "A0A!A0", E, "A0A!A0", E, "A0A!A0", "\u0001", "A1C1", " 21112 ",},
-            {E, "B000", "B000", "B000", "\u0001", "B000", E, "B000", E, "B000", E, "B000", "\u0001", "B111", " 22222 ",},
-            {"\u000F", "A     ",},
-    };
-    private static final Block[] blockType = new Block[]{sBlockCasingsBA0, sBlockCasingsBA0, sBlockCasingsBA0, sBlockCasingsBA0};
-    private static final byte[] blockMetaT0 = new byte[]{7, 0, 6, 8};
-    private static final byte[] blockMetaT1 = new byte[]{7, 1, 6, 8};
-    private static final byte[] blockMetaT2 = new byte[]{7, 2, 6, 8};
-    private static final byte[] blockMetaT3 = new byte[]{7, 3, 6, 8};
-    private static final byte[] blockMetaT4 = new byte[]{7, 4, 6, 8};
-    private static final byte[] blockMetaT5 = new byte[]{7, 5, 6, 8};
-    private static final byte[] blockMetaT6 = new byte[]{7, 9, 6, 8};
-    private static final byte[][] blockMetas = new byte[][]{blockMetaT0, blockMetaT1, blockMetaT2, blockMetaT3, blockMetaT4, blockMetaT5, blockMetaT6};
-    private static final IHatchAdder<GT_MetaTileEntity_TM_teslaCoil>[] addingMethods = adders(
-            GT_MetaTileEntity_TM_teslaCoil::addCapacitorToMachineList,
-            GT_MetaTileEntity_TM_teslaCoil::addFrameToMachineList);
-    private static final short[] casingTextures = new short[]{(texturePage << 7) + 16 + 6, 0};
-    private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsBA0, null};
-    private static final byte[] blockMetaFallback = new byte[]{6, 0};
     private static final String[] description = new String[]{
             EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
             translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.hint.0"),//1 - Classic Hatches, Capacitor Hatches or Tesla Base Casing
-            translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.hint.1"),//2 - Titanium Frames
     };
+
+    private static final IStructureDefinition<GT_MetaTileEntity_TM_teslaCoil> STRUCTURE_DEFINITION =
+            StructureDefinition.<GT_MetaTileEntity_TM_teslaCoil>builder()
+            .addShape("main", transpose(new String[][]{
+                    {"       ","       ","  BBB  ","  BBB  ","  BBB  ","       ","       "},
+                    {"       ","  BBB  "," BBBBB "," BBBBB "," BBBBB ","  BBB  ","       "},
+                    {"       ","  BBB  "," BBBBB "," BBBBB "," BBBBB ","  BBB  ","       "},
+                    {"       ","  BBB  "," BBBBB "," BBBBB "," BBBBB ","  BBB  ","       "},
+                    {"       ","       ","  BBB  ","  BCB  ","  BBB  ","       ","       "},
+                    {"       ","       ","       ","   C   ","       ","       ","       "},
+                    {"       ","  BBB  "," B F B "," BFCFB "," B F B ","  BBB  ","       "},
+                    {"       ","       ","       ","   C   ","       ","       ","       "},
+                    {"       ","  BBB  "," B F B "," BFCFB "," B F B ","  BBB  ","       "},
+                    {"       ","       ","       ","   C   ","       ","       ","       "},
+                    {"       ","  BBB  "," B F B "," BFCFB "," B F B ","  BBB  ","       "},
+                    {"       ","       ","       ","   C   ","       ","       ","       "},
+                    {"       ","  BBB  "," B F B "," BFCFB "," B F B ","  BBB  ","       "},
+                    {"       ","       ","       ","   C   ","       ","       ","       "},
+                    {"       ","       ","       ","   C   ","       ","       ","       "},
+                    {"       ","  DDD  "," D   D "," D C D "," D   D ","  DDD  ","       "},
+                    {" EE~EE ","EAAAAAE","EADDDAE","EADADAE","EADDDAE"," AAAAAE"," EEEEE "}
+            }))
+            .addElement('A', ofBlock(sBlockCasingsBA0, 6))
+            .addElement('B', ofBlock(sBlockCasingsBA0, 7))
+            .addElement('C', ofBlock(sBlockCasingsBA0, 8))
+            .addElement('D', defer(t -> ofBlock(sBlockCasingsBA0, t.getCoilWindingMeta())))
+            .addElement('E', ofHatchAdderOptional(GT_MetaTileEntity_TM_teslaCoil::addCapacitorToMachineList, textureOffset + 16 + 6, 1, sBlockCasingsBA0, 6))
+            .addElement('F', ofFrame(Materials.get("Titanium")))
+            .build();
+
+    public int getCoilWindingMeta() {
+        Vec3Impl xyzOffsets = getExtendedFacing().getWorldOffset(new Vec3Impl(0, -1, 1));
+        return this.getBaseMetaTileEntity().getMetaIDOffset(xyzOffsets.get0(), xyzOffsets.get1(), xyzOffsets.get2());
+    }
     //endregion
 
     //region parameters
@@ -348,7 +356,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
             mTier = 6;
         }//Hacky remap because the ZPM coils were added later
 
-        if (structureCheck_EM(shape, blockType, blockMetas[mTier], addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 3, 16, 0) && eCapacitorHatches.size() > 0) {
+        if (structureCheck_EM("main", 3, 16, 0)) {
             for (GT_MetaTileEntity_Hatch_Capacitor cap : eCapacitorHatches) {
                 if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(cap)) {
                     cap.getBaseMetaTileEntity().setActive(iGregTechTileEntity.isActive());
@@ -360,11 +368,15 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
                 oldRotation = (byte) getExtendedFacing().ordinal();
                 oldOrientation = iGregTechTileEntity.getFrontFacing();
 
+                Vec3Impl posBMTE = new Vec3Impl(getBaseMetaTileEntity().getXCoord(),
+                                                getBaseMetaTileEntity().getYCoord(),
+                                                getBaseMetaTileEntity().getZCoord());
+
                 //Calculate coordinates of the middle bottom
-                posTop = getExtendedFacing().getWorldOffset(new Vec3Impl(0, 0, 2)).add(getBaseMetaTileEntity());
+                posTop = getExtendedFacing().getWorldOffset(new Vec3Impl(0, 0, 2)).add(posBMTE);
 
                 //Calculate coordinates of the top sphere
-                posTop = getExtendedFacing().getWorldOffset(new Vec3Impl(0, -14, 2)).add(getBaseMetaTileEntity());
+                posTop = getExtendedFacing().getWorldOffset(new Vec3Impl(0, -14, 2)).add(posBMTE);
             }
             return true;
         }
@@ -681,8 +693,13 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     }
 
     @Override
+    public IStructureDefinition<GT_MetaTileEntity_TM_teslaCoil> getStructure_EM() {
+        return STRUCTURE_DEFINITION;
+    }
+
+    @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        Structure.builder(shape, blockType, blockMetas[(stackSize.stackSize - 1) % 7], 3, 16, 0, getBaseMetaTileEntity(), getExtendedFacing(), hintsOnly);
+        structureBuild_EM("main", 3, 16, 0, hintsOnly, stackSize);
     }
 
     @Override

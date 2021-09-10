@@ -13,6 +13,7 @@ import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
+@Deprecated
 public class BlockHint extends EntityFX {
     private IIcon[] icons = new IIcon[6];
     private short[] mRGBa = Dyes._NULL.mRGBa;

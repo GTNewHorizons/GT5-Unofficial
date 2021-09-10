@@ -9,6 +9,7 @@ import java.util.Arrays;
 
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 
+@Deprecated
 public interface IStructureDefinition<T> {
     /**
      * Used internally

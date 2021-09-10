@@ -9,6 +9,7 @@ import static java.lang.Math.abs;
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.toMap;
 
+@Deprecated
 public enum Rotation {
     NORMAL(2, "normal"),
     CLOCKWISE(3, "clockwise"),
