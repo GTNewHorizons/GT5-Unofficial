@@ -46,7 +46,8 @@ import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBloc
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.*;
 import static com.github.technus.tectech.util.CommonValues.V;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static gregtech.api.util.GT_StructureUtility.*;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 import static java.lang.Math.min;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
@@ -102,6 +103,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     private static final String[] description = new String[]{
             EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
             translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.hint.0"),//1 - Classic Hatches, Capacitor Hatches or Tesla Base Casing
+            translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.hint.1"),//2 - Titanium Frames
     };
 
     private static final IStructureDefinition<GT_MetaTileEntity_TM_teslaCoil> STRUCTURE_DEFINITION =
@@ -130,7 +132,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
             .addElement('C', ofBlock(sBlockCasingsBA0, 8))
             .addElement('D', defer(t -> ofBlock(sBlockCasingsBA0, t.getCoilWindingMeta())))
             .addElement('E', ofHatchAdderOptional(GT_MetaTileEntity_TM_teslaCoil::addCapacitorToMachineList, textureOffset + 16 + 6, 1, sBlockCasingsBA0, 6))
-            .addElement('F', ofFrame(Materials.get("Titanium")))
+            .addElement('F', ofHatchAdder(GT_MetaTileEntity_TM_teslaCoil::addFrameToMachineList, 0, 2))
             .build();
 
     public int getCoilWindingMeta() {
