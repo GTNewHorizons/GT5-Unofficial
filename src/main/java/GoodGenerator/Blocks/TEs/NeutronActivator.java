@@ -9,10 +9,10 @@ import GoodGenerator.util.CharExchanger;
 import GoodGenerator.util.DescTextLocalization;
 import GoodGenerator.util.ItemRefer;
 import GoodGenerator.util.MyRecipeAdder;
-import com.github.technus.tectech.mechanics.constructable.IConstructable;
-import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
-import com.github.technus.tectech.mechanics.structure.StructureDefinition;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
+import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
@@ -39,7 +39,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import static GoodGenerator.util.StructureHelper.addFrame;
-import static com.github.technus.tectech.mechanics.structure.StructureUtility.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 import static org.apache.commons.lang3.RandomUtils.nextInt;
 
 public class NeutronActivator extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {

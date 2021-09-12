@@ -968,7 +968,7 @@ public class RecipeLoader {
                         ItemList.Field_Generator_LuV.get(4),
                         GT_OreDictUnificator.get(OrePrefixes.cableGt04,Materials.NiobiumTitanium,16),
                         GT_OreDictUnificator.get(OrePrefixes.pipeTiny,Materials.Enderium,16),
-                        WerkstoffLoader.LuVTierMaterial.get(OrePrefixes.gearGt,64),
+                        WerkstoffLoader.LuVTierMaterial.get(OrePrefixes.gearGt,8),
                         ItemList.Circuit_Wafer_QPIC.get(16),
                         GT_OreDictUnificator.get(OrePrefixes.plate,Materials.CrystallineAlloy,64),
                         GT_OreDictUnificator.get(OrePrefixes.foil,Materials.Indium,64),

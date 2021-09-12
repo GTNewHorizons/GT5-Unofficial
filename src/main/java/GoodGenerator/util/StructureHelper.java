@@ -1,7 +1,7 @@
 package GoodGenerator.util;
 
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.mechanics.structure.IStructureElement;
+import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
@@ -18,7 +18,7 @@ import java.util.Arrays;
 
 public class StructureHelper {
 
-    public static <T>IStructureElement<T> addFrame(Materials aMaterials) {
+    public static <T> IStructureElement<T> addFrame(Materials aMaterials) {
         return new IStructureElement<T>() {
 
             private IIcon[] mIcons;
