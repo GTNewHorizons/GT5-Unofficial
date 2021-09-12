@@ -56,6 +56,10 @@ public class FuelRod extends RadioactiveItem implements IReactorComponent, IBoxa
                     for(heat = 0; heat < pulses; ++heat) {
                         this.acceptUraniumPulse(reactor, stack, stack, x, y, x, y, heatRun);
                     }
+                    checkPulseable(reactor, x - 1, y, stack, x, y, heatRun);
+                    checkPulseable(reactor, x + 1, y, stack, x, y, heatRun);
+                    checkPulseable(reactor, x, y - 1, stack, x, y, heatRun);
+                    checkPulseable(reactor, x, y + 1, stack, x, y, heatRun);
                 } else {
                     pulses += checkPulseable(reactor, x - 1, y, stack, x, y, heatRun) + checkPulseable(reactor, x + 1, y, stack, x, y, heatRun) + checkPulseable(reactor, x, y - 1, stack, x, y, heatRun) + checkPulseable(reactor, x, y + 1, stack, x, y, heatRun);
                     heat = sumUp(pulses) * this.Heat;
