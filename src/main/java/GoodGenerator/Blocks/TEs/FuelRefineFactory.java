@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import static GoodGenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.util.GT_StructureUtility.*;
 
@@ -174,7 +175,7 @@ public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM imple
                 .addInfo("Need field restriction coil to control the fatal radiation.")
                 .addInfo("Use higher tier coil to unlock more fuel and reduce the process time.")
                 .addInfo("The structure is too complex!")
-                .addInfo("Follow the" + EnumChatFormatting.DARK_BLUE + " Tec" + EnumChatFormatting.BLUE + "Tech" + EnumChatFormatting.GRAY + " blueprint to build the main structure.")
+                .addInfo(BLUE_PRINT_INFO)
                 .addSeparator()
                 .beginStructureBlock(3, 15, 15, false)
                 .addInputHatch("The casings adjoin the field restriction glass.")

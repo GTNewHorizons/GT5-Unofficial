@@ -32,6 +32,7 @@ import thaumcraft.common.config.ConfigBlocks;
 import java.util.ArrayList;
 import java.util.List;
 
+import static GoodGenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
@@ -321,7 +322,7 @@ public class LargeEssentiaGenerator extends GT_MetaTileEntity_MultiblockBase_EM 
                 .addInfo("Transform essentia into energy!")
                 .addInfo("You can find more information about this generator in Thaumonomicon.")
                 .addInfo("The structure is too complex!")
-                .addInfo("Follow the" + EnumChatFormatting.DARK_BLUE + " Tec" + EnumChatFormatting.BLUE + "Tech" + EnumChatFormatting.GRAY + " blueprint to build the main structure.")
+                .addInfo(BLUE_PRINT_INFO)
                 .addSeparator()
                 .addMaintenanceHatch("Hint block with dot 1")
                 .addInputHatch("Hint block with dot 1")

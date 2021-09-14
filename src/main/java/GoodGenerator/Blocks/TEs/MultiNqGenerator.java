@@ -35,6 +35,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import static GoodGenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
@@ -381,7 +382,7 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
                       .addInfo("molten naquadah | 4x power | 1mb/t")
                       .addInfo("molten Atomic Separation Catalyst | 16x power | 1mb/t")
                       .addInfo("The structure is too complex!")
-                      .addInfo("Follow the" + EnumChatFormatting.DARK_BLUE + " Tec" + EnumChatFormatting.BLUE + "Tech" + EnumChatFormatting.GRAY + " blueprint to build the main structure.")
+                      .addInfo(BLUE_PRINT_INFO)
                       .addSeparator()
                       .beginStructureBlock(7, 8, 7, true)
                       .addController("Front bottom")

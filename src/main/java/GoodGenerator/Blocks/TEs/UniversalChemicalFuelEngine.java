@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import static GoodGenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
@@ -205,7 +206,7 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_MultiblockBas
                 .addInfo("If you forget to supply Combustion Promoter, this engine will swallow all the fuel " + EnumChatFormatting.YELLOW + "without outputting energy" + EnumChatFormatting.GRAY + ".")
                 .addInfo("The efficiency is up to 150%.")
                 .addInfo("The structure is too complex!")
-                .addInfo("Follow the" + EnumChatFormatting.DARK_BLUE + " Tec" + EnumChatFormatting.BLUE + "Tech" + EnumChatFormatting.GRAY + " blueprint to build the main structure.")
+                .addInfo(BLUE_PRINT_INFO)
                 .addSeparator()
                 .beginStructureBlock(5, 4, 9, false)
                 .addMaintenanceHatch("Hint block with dot 1")
