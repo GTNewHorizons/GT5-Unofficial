@@ -211,14 +211,18 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         }
         if (this.stats.mass == 0) {
             long tmpmass = 0;
+            int count = 0;
             for (Pair<ISubTagContainer, Integer> p : contents) {
                 if (p.getKey() instanceof Materials) {
                     tmpmass += ((Materials) p.getKey()).getMass() * p.getValue();
+                    count += p.getValue();
                 } else if (p.getKey() instanceof Werkstoff) {
                     tmpmass += ((Werkstoff) p.getKey()).getStats().mass * p.getValue();
+                    count += p.getValue();
                 }
             }
-            this.stats = stats.setMass(tmpmass);
+            if(count > 0)
+                this.stats = stats.setMass(tmpmass/count);
         }
 
         if (this.stats.meltingPoint == 0)
