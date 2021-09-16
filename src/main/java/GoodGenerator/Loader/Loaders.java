@@ -168,7 +168,7 @@ public class Loaders {
     }
 
     public static void initLoad(){
-        //IMCForNEI.IMCSender();
+        IMCForNEI.IMCSender();
         initLoadRecipes();
     }
 
