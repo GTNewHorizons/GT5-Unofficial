@@ -3,24 +3,29 @@ package com.github.technus.tectech.thing.metaTileEntity.multi.base;
 import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.loader.NetworkDispatcher;
-import com.github.technus.tectech.mechanics.alignment.AlignmentLimits;
-import com.github.technus.tectech.mechanics.alignment.AlignmentMessage;
-import com.github.technus.tectech.mechanics.alignment.IAlignment;
-import com.github.technus.tectech.mechanics.alignment.IAlignmentLimits;
-import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
-import com.github.technus.tectech.mechanics.alignment.enumerable.Flip;
-import com.github.technus.tectech.mechanics.alignment.enumerable.Rotation;
+
+import com.github.technus.tectech.mechanics.structure.Structure;
+import com.gtnewhorizon.structurelib.StructureLibAPI;
+import com.gtnewhorizon.structurelib.alignment.AlignmentMessage;
+import com.gtnewhorizon.structurelib.alignment.IAlignment;
+import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
+import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
+import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
+import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
+import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
+import com.gtnewhorizon.structurelib.structure.StructureUtility;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.util.Vec3Impl;
+import cpw.mods.fml.common.network.NetworkRegistry;
+import gregtech.api.util.GT_StructureUtility;
+
 import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalDefinitionStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.tElementalException;
-import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
-import com.github.technus.tectech.mechanics.structure.Structure;
-import com.github.technus.tectech.mechanics.structure.adders.IHatchAdder;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.*;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
 import com.github.technus.tectech.util.Util;
-import com.github.technus.tectech.util.Vec3Impl;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -32,6 +37,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.IGT_HatchAdder;
 import gregtech.common.GT_Pollution;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -45,6 +51,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
+
+import static gregtech.api.util.GT_StructureUtility.*;
 
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
@@ -144,7 +152,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     private boolean explodedThisTick = false;
 
     //front rotation val
-    private IAlignmentLimits alignmentLimits = AlignmentLimits.UNLIMITED;
+    private IAlignmentLimits alignmentLimits = IAlignmentLimits.UNLIMITED;
     private ExtendedFacing extendedFacing = ExtendedFacing.DEFAULT;
     //endregion
 
@@ -175,9 +183,12 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
             IGregTechTileEntity base = getBaseMetaTileEntity();
             mMachine = false;
             if (getBaseMetaTileEntity().isServerSide()) {
-                NetworkDispatcher.INSTANCE.sendToAllAround(new AlignmentMessage.AlignmentData(this),
-                        base.getWorld().provider.dimensionId,
-                        base.getXCoord(), base.getYCoord(), base.getZCoord(), 512);
+                //NetworkDispatcher.INSTANCE.sendToAllAround(new AlignmentMessage.AlignmentData(this),
+                //        base.getWorld().provider.dimensionId,
+                //        base.getXCoord(), base.getYCoord(), base.getZCoord(), 512);
+                StructureLibAPI.sendAlignment((IAlignmentProvider) base,
+                        new NetworkRegistry.TargetPoint(base.getWorld().provider.dimensionId,
+                                base.getXCoord(), base.getYCoord(), base.getZCoord(), 512));
             }else{
                 base.issueTextureUpdate();
             }
@@ -187,11 +198,6 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     @Override
     public IAlignmentLimits getAlignmentLimits() {
         return alignmentLimits;
-    }
-
-    @Override
-    public void setAlignmentLimits(IAlignmentLimits limits) {
-        alignmentLimits=limits;
     }
 
     @Override
@@ -237,7 +243,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
             String[][] structure,//0-9 casing, +- air no air, a-z ignore
             Block[] blockType,//use numbers 0-9 for casing types
             byte[] blockMeta,//use numbers 0-9 for casing types
-            IHatchAdder<T>[] addingMethods,
+            IGT_HatchAdder<T>[] addingMethods,
             short[] casingTextures,
             Block[] blockTypeFallback,//use numbers 0-9 for casing types
             byte[] blockMetaFallback,//use numbers 0-9 for casing types
@@ -648,7 +654,9 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
      */
     protected long getAvailableData_EM() {
         long result = 0;
-        Vec3Impl pos = new Vec3Impl(getBaseMetaTileEntity());
+        Vec3Impl pos = new Vec3Impl(getBaseMetaTileEntity().getXCoord(),
+                                    getBaseMetaTileEntity().getYCoord(),
+                                    getBaseMetaTileEntity().getZCoord());
         for (GT_MetaTileEntity_Hatch_InputData in : eInputData) {
             if (in.q != null) {
                 Long value = in.q.contentIfNotInTrace(pos);

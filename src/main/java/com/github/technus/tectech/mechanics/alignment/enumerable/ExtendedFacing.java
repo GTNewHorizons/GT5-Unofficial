@@ -14,6 +14,7 @@ import static java.lang.Math.abs;
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.toMap;
 
+@Deprecated
 public enum ExtendedFacing {
     DOWN_NORMAL_NONE("down normal none"),
     DOWN_NORMAL_HORIZONTAL("down normal horizontal"),

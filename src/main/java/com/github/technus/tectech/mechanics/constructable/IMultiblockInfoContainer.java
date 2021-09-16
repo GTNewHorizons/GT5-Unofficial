@@ -12,6 +12,7 @@ import java.util.HashMap;
 /**
  * To implement IConstructable on not own TileEntities
  */
+@Deprecated
 public interface IMultiblockInfoContainer<T> {
     HashMap<String, IMultiblockInfoContainer<?>> MULTIBLOCK_MAP = new HashMap<>();
 

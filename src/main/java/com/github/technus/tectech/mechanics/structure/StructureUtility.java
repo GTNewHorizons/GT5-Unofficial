@@ -30,6 +30,7 @@ import static java.lang.Integer.MIN_VALUE;
  *
  * (Just import static this class to have a nice fluent syntax while defining structure definitions)
  */
+@Deprecated
 public class StructureUtility {
     private static final String NICE_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz=|!@#$%&()[]{};:<>/?_,.*^'`";
     @SuppressWarnings("rawtypes")

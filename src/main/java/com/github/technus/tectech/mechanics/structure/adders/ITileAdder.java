@@ -2,6 +2,7 @@ package com.github.technus.tectech.mechanics.structure.adders;
 
 import net.minecraft.tileentity.TileEntity;
 
+@Deprecated
 public interface ITileAdder<T> {
     /**
      * Callback to add hatch, needs to check if tile is valid (and add it)

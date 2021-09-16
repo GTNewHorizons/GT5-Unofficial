@@ -6,6 +6,7 @@ import net.minecraft.world.World;
 /**
  * Use StructureUtility to instantiate
  */
+@Deprecated
 public interface IStructureElement<T> {
     boolean check(T t,World world,int x,int y,int z);
 

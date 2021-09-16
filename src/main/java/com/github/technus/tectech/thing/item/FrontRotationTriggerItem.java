@@ -18,6 +18,7 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 /**
  * Created by Tec on 15.03.2017.
  */
+@Deprecated
 public final class FrontRotationTriggerItem extends Item {
     public static FrontRotationTriggerItem INSTANCE;
 

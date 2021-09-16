@@ -1,11 +1,12 @@
 package com.github.technus.tectech.mechanics.structure;
 
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
 import com.github.technus.tectech.mechanics.structure.adders.IHatchAdder;
 import com.github.technus.tectech.thing.casing.TT_Container_Casings;
+import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.util.IGT_HatchAdder;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
@@ -21,7 +22,7 @@ public class Structure {
 
     @Deprecated
     @SafeVarargs
-    public static <T> IHatchAdder<T>[] adders(IHatchAdder<T>... iHatchAdder) {
+    public static <T> IGT_HatchAdder<T>[] adders(IGT_HatchAdder<T>... iHatchAdder) {
         return iHatchAdder;
     }
 
@@ -32,7 +33,7 @@ public class Structure {
             String[][] structure,//0-9 casing, +- air no air, A... ignore 'A'-CHAR-1 blocks
             Block[] blockType,//use numbers 0-9 for casing types
             byte[] blockMeta,//use numbers 0-9 for casing types
-            IHatchAdder<T>[] addingMethods,
+            IGT_HatchAdder<T>[] addingMethods,
             short[] casingTextures,
             Block[] blockTypeFallback,//use numbers 0-9 for casing types
             byte[] blockMetaFallback,//use numbers 0-9 for casing types

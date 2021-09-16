@@ -1,8 +1,8 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi.base.render;
 
-import com.github.technus.tectech.mechanics.alignment.IAlignmentProvider;
-import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
 import com.github.technus.tectech.util.LightingHelper;
+import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
+import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.interfaces.IIconContainer;

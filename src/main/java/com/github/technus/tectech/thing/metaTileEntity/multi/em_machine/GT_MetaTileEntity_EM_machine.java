@@ -3,13 +3,13 @@ package com.github.technus.tectech.thing.metaTileEntity.multi.em_machine;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.mechanics.constructable.IConstructable;
 import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
-import com.github.technus.tectech.mechanics.structure.adders.IHatchAdder;
-import com.github.technus.tectech.mechanics.structure.Structure;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.block.QuantumStuffBlock;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.*;
 import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.util.Util;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.block.Block;
@@ -23,10 +23,11 @@ import net.minecraftforge.common.util.ForgeDirection;
 import java.util.HashMap;
 import java.util.function.Supplier;
 
-import static com.github.technus.tectech.mechanics.structure.Structure.adders;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
@@ -41,26 +42,28 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
     //endregion
 
     //region structure
-    private static final String[][] shape = new String[][]{
-            {"B0", "A   ", "0 - 0", "A   ", "B0",},
-            {"A000", "00000", "00.00", "00000", "A000",},
-            {"A121", "1---1", "2---2", "1---1", "A121",},
-            {"A131", "1---1", "3-A-3", "1---1", "A131",},
-            {"A121", "1---1", "2---2", "1---1", "A121",},
-            {"A000", "00000", "00-00", "00000", "A000",},
-            {"B0", "A!!!", "0!!!0", "A!!!", "B0",},};
-    private static final Block[] blockType = new Block[]{sBlockCasingsTT, QuantumGlassBlock.INSTANCE, sBlockCasingsTT, sBlockCasingsTT};
-    private static final byte[] blockMeta = new byte[]{4, 0, 5, 6};
-    private static final IHatchAdder<GT_MetaTileEntity_EM_machine>[] addingMethods = adders(
-            GT_MetaTileEntity_EM_machine::addClassicToMachineList,
-            GT_MetaTileEntity_EM_machine::addElementalToMachineList);
-    private static final short[] casingTextures = new short[]{textureOffset, textureOffset + 4};
-    private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT};
-    private static final byte[] blockMetaFallback = new byte[]{0, 4};
     private static final String[] description = new String[]{
             EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
             translateToLocal("gt.blockmachines.multimachine.em.processing.hint.0"),//1 - Classic Hatches or High Power Casing
-            translateToLocal("gt.blockmachines.multimachine.em.processing.hint.1"),};//2 - Elemental Hatches or Molecular Casing
+            translateToLocal("gt.blockmachines.multimachine.em.processing.hint.1"),//2 - Elemental Hatches or Molecular Casing
+    };
+
+    private static final IStructureDefinition<GT_MetaTileEntity_EM_machine> STRUCTURE_DEFINITION =
+            StructureDefinition.<GT_MetaTileEntity_EM_machine>builder()
+            .addShape("main", new String[][]{
+                    {"  A  "," AAA "," EBE "," ECE "," EBE "," AAA ","  A  "},
+                    {" DDD ","AAAAA","E---E","E---E","E---E","AAAAA"," FFF "},
+                    {"AD-DA","AA~AA","B---B","C---C","B---B","AA-AA","AFFFA"},
+                    {" DDD ","AAAAA","E---E","E---E","E---E","AAAAA"," FFF "},
+                    {"  A  "," AAA "," EBE "," ECE "," EBE "," AAA ","  A  "}
+            })
+            .addElement('A', ofBlock(sBlockCasingsTT, 4))
+            .addElement('B', ofBlock(sBlockCasingsTT, 5))
+            .addElement('C', ofBlock(sBlockCasingsTT, 6))
+            .addElement('D', ofHatchAdderOptional(GT_MetaTileEntity_EM_machine::addClassicToMachineList, textureOffset, 1, sBlockCasingsTT, 0))
+            .addElement('E', ofBlock(QuantumGlassBlock.INSTANCE, 0))
+            .addElement('F', ofHatchAdderOptional(GT_MetaTileEntity_EM_machine::addElementalToMachineList, textureOffset + 4, 2, sBlockCasingsTT, 4))
+            .build();
     //endregion
 
     //region parameters
@@ -190,7 +193,7 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        return structureCheck_EM(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 2, 2, 1);
+        return structureCheck_EM("main", 2, 2, 1);
     }
 
     @Override
@@ -354,7 +357,12 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        Structure.builder(shape, blockType, blockMeta, 2, 2, 1, getBaseMetaTileEntity(), getExtendedFacing(), hintsOnly);
+        structureBuild_EM("main", 2, 2, 1, hintsOnly, stackSize);
+    }
+
+    @Override
+    public IStructureDefinition<GT_MetaTileEntity_EM_machine> getStructure_EM() {
+        return STRUCTURE_DEFINITION;
     }
 
     @Override
