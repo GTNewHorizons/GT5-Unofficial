@@ -30,6 +30,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ImplosionCompressor;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -93,7 +94,16 @@ public class GT_TileEntity_ElectricImplosionCompressor extends GT_MetaTileEntity
 
         return false;
     }
-
+    
+    @Override
+    public boolean drainEnergyInput(long aEU) {
+        if (aEU <= 0) return true;
+        GT_MetaTileEntity_Hatch_Energy h1 = this.mEnergyHatches.get(0), h2 = this.mEnergyHatches.get(1);
+        if(!isValidMetaTileEntity(h1) || !isValidMetaTileEntity(h2)) return false;
+        if(!h1.getBaseMetaTileEntity().decreaseStoredEnergyUnits(aEU/2, false) || !h2.getBaseMetaTileEntity().decreaseStoredEnergyUnits(aEU/2, false)) return false;
+        return true;
+    }
+    
     @Override
     public boolean onRunningTick(ItemStack aStack) {
         if (this.mRuntime % 10 == 0)
