@@ -89,7 +89,8 @@ public class CircuitImprintLoader {
     private static void handleCircuitRecipeRebuilding(GT_Recipe circuitRecipe, HashSet<GT_Recipe> toRem, HashSet<GT_Recipe> toAdd) {
         ItemStack[] outputs = circuitRecipe.mOutputs;
         String name = getTypeFromOreDict(outputs);
-        if (name.contains("Circuit") || name.contains("circuit")) {
+        String unlocalizedName = outputs[0].getUnlocalizedName();
+        if (name.contains("Circuit") || name.contains("circuit") || unlocalizedName.contains("Circuit") || unlocalizedName.contains("circuit")) {
 
             CircuitImprintLoader.recipeTagMap.put(CircuitImprintLoader.getTagFromStack(outputs[0]), circuitRecipe.copy());
 
@@ -189,6 +190,9 @@ public class CircuitImprintLoader {
             //fine wires
             } else if (BW_Util.checkStackAndPrefix(original.mInputs[index]) && GT_OreDictUnificator.getAssociation(original.mInputs[index]).mPrefix == OrePrefixes.wireFine) {
                 in[index] = GT_OreDictUnificator.get(OrePrefixes.wireGt04, GT_OreDictUnificator.getAssociation(original.mInputs[index]).mMaterial.mMaterial, original.mInputs[index].stackSize);
+                if (in[index] == null) {
+                    in[index] = GT_OreDictUnificator.get(OrePrefixes.wireFine, GT_OreDictUnificator.getAssociation(original.mInputs[index]).mMaterial.mMaterial, original.mInputs[index].stackSize * 16);
+                }
             //other components
             } else {
                 in[index] = original.mInputs[index].copy();
@@ -242,7 +246,7 @@ public class CircuitImprintLoader {
             eut = Math.min(eut, recipe.mEUt);
         }
 
-        eut = Math.min(eut, BW_Util.getMachineVoltageFromTier(BW_Util.getCircuitTierFromOreDictName(OreDictionary.getOreName(OreDictionary.getOreIDs(stack)[0]))));
+        eut = Math.min(eut, BW_Util.getMachineVoltageFromTier(BW_Util.getCircuitTierFromOreDictName(OreDictionary.getOreName((OreDictionary.getOreIDs(stack) != null && OreDictionary.getOreIDs(stack).length > 0) ? OreDictionary.getOreIDs(stack)[0] : -1))));
         GT_Recipe slicingRecipe = new BWRecipes.DynamicGTRecipe(true,new ItemStack[]{stack,ItemList.Shape_Slicer_Flat.get(0)},new ItemStack[]{BW_Meta_Items.getNEWCIRCUITS().getStackWithNBT(tag,1,1)},null,null,null,null,300,eut, BW_Util.CLEANROOM);
         gtrecipeWorldCache.add(slicingRecipe);
         GT_Recipe.GT_Recipe_Map.sSlicerRecipes.add(slicingRecipe);
