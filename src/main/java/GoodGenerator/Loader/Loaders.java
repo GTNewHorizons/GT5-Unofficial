@@ -8,6 +8,7 @@ import GoodGenerator.Blocks.RegularBlock.TEBlock;
 import GoodGenerator.Blocks.TEs.*;
 import GoodGenerator.Blocks.TEs.MetaTE.NeutronAccelerator;
 import GoodGenerator.Blocks.TEs.MetaTE.NeutronSensor;
+import GoodGenerator.Blocks.TEs.MetaTE.YottaFluidTankOutputHatch;
 import GoodGenerator.CrossMod.NEI.IMCForNEI;
 import GoodGenerator.Items.MyItemBlocks;
 import GoodGenerator.Items.MyItems;
@@ -70,7 +71,9 @@ public class Loaders {
     public static final Block magicCasing = new Casing("magicCasing", new String[]{GoodGenerator.MOD_ID+":MagicCasing"});
     public static final Block essentiaCell = new Casing("essentiaCell", new String[]{GoodGenerator.MOD_ID+":essentiaCell/1",GoodGenerator.MOD_ID+":essentiaCell/2",GoodGenerator.MOD_ID+":essentiaCell/3"});
     public static final Block speedingPipe = new ComplexTextureCasing("speedingPipe", new String[]{GoodGenerator.MOD_ID+":speedingPipe_SIDE"}, new String[]{GoodGenerator.MOD_ID+":speedingPipe_TOP"});
-    public static final Block[] essentiaCells = new Block[]{essentiaCell};
+    public static final Block yottaFluidTankCell = new Casing("yottaFluidTankCell", new String[]{GoodGenerator.MOD_ID+":yottaFluidTankCell/1", GoodGenerator.MOD_ID+":yottaFluidTankCell/2", GoodGenerator.MOD_ID+":yottaFluidTankCell/3", GoodGenerator.MOD_ID+":yottaFluidTankCell/4", GoodGenerator.MOD_ID+":yottaFluidTankCell/5",
+            GoodGenerator.MOD_ID+":yottaFluidTankCell/6", GoodGenerator.MOD_ID+":yottaFluidTankCell/7", GoodGenerator.MOD_ID+":yottaFluidTankCell/8", GoodGenerator.MOD_ID+":yottaFluidTankCell/9", GoodGenerator.MOD_ID+":yottaFluidTankCell/10",});
+    public static final Block yottaFluidTankCasing = new ComplexTextureCasing("yottaFluidTankCasing", new String[]{GoodGenerator.MOD_ID+":yottaFluidTankCasing_SIDE"}, new String[]{GoodGenerator.MOD_ID+":yottaFluidTankCasing_TOP"});
 
     public static Block essentiaHatch;
 
@@ -80,6 +83,8 @@ public class Loaders {
     public static ItemStack LEG;
     public static ItemStack NS;
     public static ItemStack NA;
+    public static ItemStack YFT;
+    public static ItemStack YFTOutput;
 
     public static ItemStack[] NeutronAccelerators = new ItemStack[9];
 
@@ -92,6 +97,8 @@ public class Loaders {
         }
         Loaders.NS = new NeutronSensor(IDOffset + 11, "Neutron Sensor", "Neutron Sensor", 5).getStackForm(1L);
         Loaders.NA = new NeutronActivator(IDOffset + 12, "NeutronActivator", "Neutron Activator").getStackForm(1L);
+        Loaders.YFT = new YottaFluidTank(IDOffset + 13, "YottaFluidTank", "YOTTank").getStackForm(1L);
+        Loaders.YFTOutput = new YottaFluidTankOutputHatch(IDOffset + 14, "YottaFluidTankOutput", "YOTTank Output Hatch", 5).getStackForm(1L);
     }
 
     public static void Register(){
@@ -105,6 +112,8 @@ public class Loaders {
         GameRegistry.registerBlock(rawCylinder, MyItemBlocks.class, "rawCylinder");
         GameRegistry.registerBlock(titaniumPlatedCylinder, MyItemBlocks.class, "titaniumPlatedCylinder");
         GameRegistry.registerBlock(speedingPipe, MyItemBlocks.class, "speedingPipe");
+        GameRegistry.registerBlock(yottaFluidTankCell, MyItemBlocks.class, "yottaFluidTankCells");
+        GameRegistry.registerBlock(yottaFluidTankCasing, MyItemBlocks.class, "yottaFluidTankCasing");
         GameRegistry.registerItem(radiationProtectionPlate, "radiationProtectionPlate", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(wrappedUraniumIngot, "wrappedUraniumIngot", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(highDensityUraniumNugget, "highDensityUraniumNugget", GoodGenerator.MOD_ID);
@@ -139,7 +148,7 @@ public class Loaders {
             Loaders.LEG = new LargeEssentiaGenerator(IDOffset + 1, "LargeEssentiaGenerator", "Large Essentia Generator").getStackForm(1L);
             essentiaHatch = new TEBlock("essentiaHatch", new String[]{GoodGenerator.MOD_ID + ":essentiaHatch"}, 1);
             GameRegistry.registerBlock(magicCasing, MyItemBlocks.class, "magicCasing");
-            GameRegistry.registerBlock(essentiaCells[0], MyItemBlocks.class, "essentiaCell");
+            GameRegistry.registerBlock(essentiaCell, MyItemBlocks.class, "essentiaCell");
             GameRegistry.registerBlock(essentiaHatch, MyItemBlocks.class, "essentiaHatch");
         }
     }
@@ -154,6 +163,7 @@ public class Loaders {
         if (Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage] == null){
             Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage] = new ITexture[128];
             Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage][0] = TextureFactory.of(magicCasing);
+            Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage][1] = TextureFactory.of(yottaFluidTankCasing);
         }
     }
 
@@ -165,10 +175,10 @@ public class Loaders {
         compactMod();
         FluidsBuilder.Register();
         FuelRodLoader.RegisterRod();
+        IMCForNEI.IMCSender();
     }
 
     public static void initLoad(){
-        IMCForNEI.IMCSender();
         initLoadRecipes();
     }
 

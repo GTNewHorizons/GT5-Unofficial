@@ -16,6 +16,17 @@ essentiaCell.1.name=Adept Essentia Diffusion Cell
 essentiaCell.2.name=Master Essentia Diffusion Cell
 essentiaHatch.0.name=Essentia Input Hatch
 speedingPipe.0.name=Speeding Pipe Casing
+yottaFluidTankCasing.0.name=YOTTank Casing
+yottaFluidTankCell.0.name=Fluid Cell Block T1
+yottaFluidTankCell.1.name=Fluid Cell Block T2
+yottaFluidTankCell.2.name=Fluid Cell Block T3
+yottaFluidTankCell.3.name=Fluid Cell Block T4
+yottaFluidTankCell.4.name=Fluid Cell Block T5
+yottaFluidTankCell.5.name=Fluid Cell Block T6
+yottaFluidTankCell.6.name=Fluid Cell Block T7
+yottaFluidTankCell.7.name=Fluid Cell Block T8
+yottaFluidTankCell.8.name=Fluid Cell Block T9
+yottaFluidTankCell.9.name=Fluid Cell Block T10
 
 #Items
 item.radiationProtectionPlate.name=Radiation Proof Plate
@@ -67,6 +78,7 @@ EssentiaHatch.tooltip.0=You can right click it with an Essentia Jar to set Essen
 EssentiaHatch.tooltip.1=Right click it with empty hands to clear the Filter.
 fuelrod.tooltip.0=Durability: %s/%s
 depletedfuelrod.tooltip.0=Depleted
+YOTTankCell.tooltip.0=Capacity:
 
 #Fluids
 fluid.lightlyCrackedNaquadahGas=Lightly Cracked Naquadah Gas

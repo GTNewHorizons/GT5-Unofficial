@@ -13,7 +13,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+
+import static GoodGenerator.Loader.Loaders.yottaFluidTankCell;
 
 public class MyItemBlocks extends ItemBlock {
     private final String mNoMobsToolTip = GT_LanguageManager.addStringLocalization("gt.nomobspawnsonthisblock", "Mobs cannot Spawn on this Block");
@@ -67,5 +70,13 @@ public class MyItemBlocks extends ItemBlock {
                 p_77624_3_.addAll(Arrays.asList(DescTextLocalization.addText("EssentiaHatch.tooltip", 2)));
         }
         else p_77624_3_.add(mNoTileEntityToolTip);
+
+        if (Block.getBlockFromItem(p_77624_1_.getItem()).equals(yottaFluidTankCell)) {
+            StringBuilder cap = new StringBuilder();
+            cap.append(" 1000000");
+            for (int i = 0; i < p_77624_1_.getItemDamage(); i++) cap.append("00");
+            cap.append(" L");
+            p_77624_3_.add(DescTextLocalization.addText("YOTTankCell.tooltip", 1)[0] + cap.toString());
+        }
     }
 }

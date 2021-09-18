@@ -267,7 +267,7 @@ public class LargeEssentiaGenerator extends GT_MetaTileEntity_MultiblockBase_EM 
         for (EssentiaHatch hatch: this.mEssentiaHatch){
             AspectList aspects = hatch.getAspects();
             for (Aspect aspect: aspects.aspects.keySet()) {
-                while (EUt + getPerAspectEnergy(aspect) <= (voltageLimit * ampLimit) && aspects.getAmount(aspect) > 0) {
+                while (EUt <= (voltageLimit * ampLimit) && aspects.getAmount(aspect) > 0) {
                     EUt += getPerAspectEnergy(aspect);
                     aspects.reduce(aspect, 1);
                     if (aspects.getAmount(aspect) == 0)

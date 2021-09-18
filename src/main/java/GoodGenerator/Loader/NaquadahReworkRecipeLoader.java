@@ -544,7 +544,8 @@ public class NaquadahReworkRecipeLoader {
                 null, false, 1 << 30,
                 new FluidStack[]{Materials.Polybenzimidazole.getMolten(36)},
                 GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Polybenzimidazole, 2),
-                GT_OreDictUnificator.get(OrePrefixes.foil, Materials.HSSS, 1)
+                GT_OreDictUnificator.get(OrePrefixes.foil, Materials.HSSS, 1),
+                GT_Utility.getIntegratedCircuit(1)
         );
         if (tRecipe != null) {
             GT_Recipe.GT_Recipe_Map.sAssemblerRecipes.mRecipeList.remove(tRecipe);

@@ -130,3 +130,8 @@ task sourcesJar(type: Jar) {
     classifier = 'sources'
     from sourceSets.main.allSource
 }
+
+artifacts {
+    archives(devJar)
+    archives(sourcesJar)
+}

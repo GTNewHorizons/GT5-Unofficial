@@ -66,6 +66,20 @@ public final class ItemRefer {
     public static ItemRefer Essentia_Cell_T2 = getItemStack(essentiaCell, 1);
     public static ItemRefer Essentia_Cell_T3 = getItemStack(essentiaCell, 2);
     public static ItemRefer Essentia_Hatch = getItemStack(essentiaHatch);
+    public static ItemRefer YOTTank_Casing = getItemStack(yottaFluidTankCasing);
+    public static ItemRefer YOTTank_Cell_T1 = getItemStack(yottaFluidTankCell, 0);
+    public static ItemRefer YOTTank_Cell_T2 = getItemStack(yottaFluidTankCell, 1);
+    public static ItemRefer YOTTank_Cell_T3 = getItemStack(yottaFluidTankCell, 2);
+    public static ItemRefer YOTTank_Cell_T4 = getItemStack(yottaFluidTankCell, 3);
+    public static ItemRefer YOTTank_Cell_T5 = getItemStack(yottaFluidTankCell, 4);
+    public static ItemRefer YOTTank_Cell_T6 = getItemStack(yottaFluidTankCell, 5);
+    public static ItemRefer YOTTank_Cell_T7 = getItemStack(yottaFluidTankCell, 6);
+    public static ItemRefer YOTTank_Cell_T8 = getItemStack(yottaFluidTankCell, 7);
+    public static ItemRefer YOTTank_Cell_T9 = getItemStack(yottaFluidTankCell, 8);
+    public static ItemRefer YOTTank_Cell_T10 = getItemStack(yottaFluidTankCell, 9);
+    public static ItemRefer YOTTank = getItemStack(YFT);
+    public static ItemRefer YOTTank_Output_Hatch = getItemStack(YFTOutput);
+
 
     public static ItemRefer Large_Naquadah_Reactor = getItemStack(MAR.copy());
     public static ItemRefer Naquadah_Fuel_Refinery = getItemStack(FRF.copy());
