@@ -48,8 +48,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
 
-import static gregtech.api.util.GT_StructureUtility.*;
-
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.util.CommonValues.*;
@@ -1101,9 +1099,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     public final void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         isFacingValid(aBaseMetaTileEntity.getFrontFacing());
         if (getBaseMetaTileEntity().isClientSide()) {
-            StructureLibAPI.sendAlignment((IAlignmentProvider) aBaseMetaTileEntity,
-                    new NetworkRegistry.TargetPoint(aBaseMetaTileEntity.getWorld().provider.dimensionId,
-                            aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord(), 512));
+            StructureLibAPI.queryAlignment((IAlignmentProvider) aBaseMetaTileEntity);
         }
         onFirstTick_EM(aBaseMetaTileEntity);
     }
