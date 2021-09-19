@@ -44,8 +44,14 @@ public class GT_MetaTileEntity_Hatch_CustomFluidBase extends GT_MetaTileEntity_H
 
 	public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
 			final ItemStack aStack) {
-		return aSide == aBaseMetaTileEntity.getFrontFacing() && aIndex == 0
-				&& (this.mRecipeMap == null || GT_Utility.getFluidForFilledItem(aStack, true).getFluid() == this.mLockedFluid);
+		if (aSide == aBaseMetaTileEntity.getFrontFacing() && aIndex == 0) {
+            if (this.mRecipeMap == null)
+                return true;
+            FluidStack fs = GT_Utility.getFluidForFilledItem(aStack, true);
+            if (fs != null && fs.getFluid() == this.mLockedFluid)
+                return true;
+        }
+        return false;
 	}
 
 	public ITexture[] getTexturesActive(final ITexture aBaseTexture) {
