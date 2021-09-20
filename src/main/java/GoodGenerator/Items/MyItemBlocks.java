@@ -1,6 +1,7 @@
 package GoodGenerator.Items;
 
 import GoodGenerator.Blocks.RegularBlock.TEBlock;
+import GoodGenerator.util.CharExchanger;
 import GoodGenerator.util.DescTextLocalization;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -76,7 +77,7 @@ public class MyItemBlocks extends ItemBlock {
             cap.append(" 1000000");
             for (int i = 0; i < p_77624_1_.getItemDamage(); i++) cap.append("00");
             cap.append(" L");
-            p_77624_3_.add(DescTextLocalization.addText("YOTTankCell.tooltip", 1)[0] + cap.toString());
+            p_77624_3_.add(DescTextLocalization.addText("YOTTankCell.tooltip", 1)[0] + CharExchanger.formatNumber(cap.toString()));
         }
     }
 }

@@ -57,6 +57,7 @@ public class Loaders {
     public static final Item enrichedNaquadahMass = new MyItems("enrichedNaquadahMass", addText("enrichedNaquadahMass.tooltip", 1), GoodGenerator.GG);
     public static final Item naquadriaMass = new MyItems("naquadriaMass", addText("naquadriaMass.tooltip", 1), GoodGenerator.GG);
     public static final Item advancedFuelRod = new MyItems("advancedFuelRod", GoodGenerator.GG);
+    public static final Item fluidCore = new MyItems("fluidCore", GoodGenerator.GG, new String[]{GoodGenerator.MOD_ID+":fluidCore/1", GoodGenerator.MOD_ID+":fluidCore/2", GoodGenerator.MOD_ID+":fluidCore/3", GoodGenerator.MOD_ID+":fluidCore/4", GoodGenerator.MOD_ID+":fluidCore/5", GoodGenerator.MOD_ID+":fluidCore/6"});
 
     public static final Block MAR_Casing = new Casing("MAR_Casing", new String[]{GoodGenerator.MOD_ID+":MAR_Casing"});
     public static final Block FRF_Casings = new Casing("FRF_Casing", new String[]{"gregtech:iconsets/MACHINE_CASING_MINING_BLACKPLUTONIUM"});
@@ -137,6 +138,7 @@ public class Loaders {
         GameRegistry.registerItem(enrichedNaquadahMass, "enrichedNaquadahMass", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(naquadriaMass, "naquadriaMass", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(advancedFuelRod, "advancedFuelRod", GoodGenerator.MOD_ID);
+        GameRegistry.registerItem(fluidCore, "fluidCore", GoodGenerator.MOD_ID);
     }
 
     public static void compactMod() {

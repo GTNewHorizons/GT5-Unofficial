@@ -84,4 +84,25 @@ public class CharExchanger {
             default: return false;
         }
     }
+
+    public static String formatNumber(String exp) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < exp.length(); ++i) {
+            if (Character.isDigit(exp.charAt(i))) {
+                int cnt = 0, prt = i;
+                while (Character.isDigit(exp.charAt(i))) {
+                    i ++;
+                    cnt ++;
+                }
+                while (Character.isDigit(exp.charAt(prt))) {
+                    sb.append(exp.charAt(prt));
+                    prt ++;
+                    cnt --;
+                    if (cnt % 3 == 0 && cnt != 0) sb.append(" ");
+                }
+            }
+            sb.append(exp.charAt(i));
+        }
+        return sb.toString();
+    }
 }

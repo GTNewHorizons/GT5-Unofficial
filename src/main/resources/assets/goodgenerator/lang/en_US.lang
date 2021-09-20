@@ -68,6 +68,12 @@ item.rodCompressedPlutonium.name=Fuel Rod (High Density Plutonium)
 item.rodCompressedPlutonium2.name=Dual Fuel Rod (High Density Plutonium)
 item.rodCompressedPlutonium4.name=Quad Fuel Rod (High Density Plutonium)
 item.advancedFuelRod.name=Advanced Fuel Rod (Empty)
+item.fluidCore.0.name=Fluid Storage Core T1
+item.fluidCore.1.name=Fluid Storage Core T2
+item.fluidCore.2.name=Fluid Storage Core T3
+item.fluidCore.3.name=Fluid Storage Core T4
+item.fluidCore.4.name=Fluid Storage Core T5
+item.fluidCore.5.name=Fluid Storage Core T6
 
 #Tooltip
 inverter.tooltip.0=Turn DC into AC.
@@ -166,6 +172,9 @@ itemGroup.Good Generator=Good Generator
 #Scanner Info
 scanner.info.FRF=Coil Tier:
 scanner.info.NA=Current Neutron Kinetic Energy:
+scanner.info.YOTTank.0=Current Capacity:
+scanner.info.YOTTank.1=Fluid Name:
+scanner.info.YOTTank.2=Current Used:
 
 #GUI Info
 gui.NeutronSensor.0=Input the value of Neutron Kinetic Energy.
@@ -253,6 +262,24 @@ achievement.FRF_Coil_3.0=Ultimate Field Restriction Coil
 achievement.FRF_Coil_3.0.desc=Pickup this item to see the recipe in NEI
 achievement.gt.blockmachines.neutron_accelerator_luv=Neutron Accelerator Luv
 achievement.gt.blockmachines.neutron_accelerator_luv.desc=Do you really want it?
+achievement.item.fluidCore.1=Fluid Storage Core T2
+achievement.item.fluidCore.1.desc=Pickup this item to see the recipe in NEI
+achievement.item.fluidCore.2=Fluid Storage Core T3
+achievement.item.fluidCore.2.desc=Pickup this item to see the recipe in NEI
+achievement.item.fluidCore.3=Fluid Storage Core T4
+achievement.item.fluidCore.3.desc=Pickup this item to see the recipe in NEI
+achievement.item.fluidCore.4=Fluid Storage Core T5
+achievement.item.fluidCore.4.desc=Pickup this item to see the recipe in NEI
+achievement.item.fluidCore.5=Fluid Storage Core T6
+achievement.item.fluidCore.5.desc=Pickup this item to see the recipe in NEI
+achievement.yottaFluidTankCell.2=Fluid Cell Block T3
+achievement.yottaFluidTankCell.2.desc=Pickup this item to see the recipe in NEI
+achievement.yottaFluidTankCell.3=Fluid Cell Block T4
+achievement.yottaFluidTankCell.3.desc=Pickup this item to see the recipe in NEI
+achievement.yottaFluidTankCell.4=Fluid Cell Block T5
+achievement.yottaFluidTankCell.4.desc=Pickup this item to see the recipe in NEI
+achievement.yottaFluidTankCell.5=Fluid Cell Block T6
+achievement.yottaFluidTankCell.5.desc=Pickup this item to see the recipe in NEI
 
 #Thaumcraft Research Context
 research.ESSENTIA_GENERATOR.page.0=You have found that Essentia contains much more power than you thought. Is there a way to generate electricity from these Essentia?

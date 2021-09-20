@@ -3,6 +3,7 @@ package GoodGenerator.Blocks.TEs;
 import GoodGenerator.Client.GUI.YOTTankGUIClient;
 import GoodGenerator.Common.Container.YOTTankGUIContainer;
 import GoodGenerator.Loader.Loaders;
+import GoodGenerator.util.CharExchanger;
 import GoodGenerator.util.DescTextLocalization;
 import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
@@ -25,6 +26,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.input.Keyboard;
@@ -279,11 +281,20 @@ public class YottaFluidTank extends GT_MetaTileEntity_MultiblockBase_EM implemen
     }
 
     @Override
+    public String[] getInfoData() {
+        return new String[] {
+                StatCollector.translateToLocal("scanner.info.YOTTank.0") + " " + EnumChatFormatting.GREEN + CharExchanger.formatNumber(getCap()) + EnumChatFormatting.RESET + " L",
+                StatCollector.translateToLocal("scanner.info.YOTTank.1") + " " + EnumChatFormatting.YELLOW + CharExchanger.formatNumber(getFluidName()) + EnumChatFormatting.RESET,
+                StatCollector.translateToLocal("scanner.info.YOTTank.2") + " " + EnumChatFormatting.BLUE + CharExchanger.formatNumber(getStored()) + EnumChatFormatting.RESET + " L",
+        };
+    }
+
+    @Override
     public String[] getDescription() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Fluid Tank")
                 .addInfo("Controller block for the YOTTank.")
-                .addInfo("The max output speed is decided by the amount of stored liquid and the capacity of output hatch.")
+                .addInfo("The max output speed is decided by the amount of stored liquid and the output hatch's capacity.")
                 .addInfo("The max fluid cell tier is limited by the glass tier.")
                 .addInfo("HV glass for T1, EV glass for T2, IV glass for T3. . .")
                 .addInfo("The max height of the cell blocks is 15.")

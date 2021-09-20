@@ -50,6 +50,13 @@ public final class ItemRefer {
     public static ItemRefer Fuel_Rod_Pu_1 = getItemStack(rodCompressedPlutonium);
     public static ItemRefer Fuel_Rod_Pu_2 = getItemStack(rodCompressedPlutonium_2);
     public static ItemRefer Fuel_Rod_Pu_4 = getItemStack(rodCompressedPlutonium_4);
+    public static ItemRefer Fluid_Storage_Core_T1 = getItemStack(fluidCore, 0);
+    public static ItemRefer Fluid_Storage_Core_T2 = getItemStack(fluidCore, 1);
+    public static ItemRefer Fluid_Storage_Core_T3 = getItemStack(fluidCore, 2);
+    public static ItemRefer Fluid_Storage_Core_T4 = getItemStack(fluidCore, 3);
+    public static ItemRefer Fluid_Storage_Core_T5 = getItemStack(fluidCore, 4);
+    public static ItemRefer Fluid_Storage_Core_T6 = getItemStack(fluidCore, 5);
+
 
     public static ItemRefer Field_Restriction_Casing = getItemStack(MAR_Casing);
     public static ItemRefer Naquadah_Fuel_Refinery_Casing = getItemStack(FRF_Casings);
@@ -77,13 +84,12 @@ public final class ItemRefer {
     public static ItemRefer YOTTank_Cell_T8 = getItemStack(yottaFluidTankCell, 7);
     public static ItemRefer YOTTank_Cell_T9 = getItemStack(yottaFluidTankCell, 8);
     public static ItemRefer YOTTank_Cell_T10 = getItemStack(yottaFluidTankCell, 9);
-    public static ItemRefer YOTTank = getItemStack(YFT);
-
 
     public static ItemRefer Large_Naquadah_Reactor = getItemStack(MAR.copy());
     public static ItemRefer Naquadah_Fuel_Refinery = getItemStack(FRF.copy());
     public static ItemRefer Universal_Chemical_Fuel_Engine = getItemStack(UCFE.copy());
     public static ItemRefer Large_Essentia_Generator = getItemStack(LEG.copy());
+    public static ItemRefer YOTTank = getItemStack(YFT.copy());
 
     private Item mItem = null;
     private Block mBlock = null;
