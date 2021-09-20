@@ -174,6 +174,9 @@ gui.NeutronSensor.2=Valid
 gui.NeutronSensor.3=Invalid
 gui.NeutronActivator.0=Current Neutron Kinetic Energy:
 gui.NeutronActivator.1=Input:
+gui.YOTTank.0=Capacity:
+gui.YOTTank.1=Fluid:
+gui.YOTTank.2=Stored:
 
 #NEI Info
 tile.recipe.naquadah_reactor=Large Naquadah Reactor
@@ -227,6 +230,13 @@ NeutronActivator.hint.3=4x Speeding Pipe Casing
 NeutronActivator.hint.4=At least 7x Clean Stainless Steel Machine Casings
 NeutronActivator.hint.5=1 - Input Hatch/Input Bus/Clean Stainless Steel Machine Casing
 NeutronActivator.hint.6=2 - Output Hatch/Output Bus/Maintenance Hatch/Neutron Accelerator/Neutron Sensor/Clean Stainless Steel Machine Casing
+YOTTank.hint.0=At least 47x YOTTank Casing
+YOTTank.hint.1=16x Steel Frame Box
+YOTTank.hint.2=16x Borosilicate Glass Block of the same tier for every layer
+YOTTank.hint.3=9x Fluid Cell Block for every layer
+YOTTank.hint.4=1 - Input Hatch
+YOTTank.hint.5=2 - Maintenance Hatch
+YOTTank.hint.6=3 - Output Hatch
 
 #Achievement
 achievement.gt.blockmachines.nag=Large Naquadah Reactor
@@ -241,6 +251,8 @@ achievement.FRF_Coil_2.0=Advanced Field Restriction Coil
 achievement.FRF_Coil_2.0.desc=Pickup this item to see the recipe in NEI
 achievement.FRF_Coil_3.0=Ultimate Field Restriction Coil
 achievement.FRF_Coil_3.0.desc=Pickup this item to see the recipe in NEI
+achievement.gt.blockmachines.neutron_accelerator_luv=Neutron Accelerator Luv
+achievement.gt.blockmachines.neutron_accelerator_luv.desc=Do you really want it?
 
 #Thaumcraft Research Context
 research.ESSENTIA_GENERATOR.page.0=You have found that Essentia contains much more power than you thought. Is there a way to generate electricity from these Essentia?

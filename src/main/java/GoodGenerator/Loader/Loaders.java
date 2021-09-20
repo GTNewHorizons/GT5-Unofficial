@@ -8,7 +8,6 @@ import GoodGenerator.Blocks.RegularBlock.TEBlock;
 import GoodGenerator.Blocks.TEs.*;
 import GoodGenerator.Blocks.TEs.MetaTE.NeutronAccelerator;
 import GoodGenerator.Blocks.TEs.MetaTE.NeutronSensor;
-import GoodGenerator.Blocks.TEs.MetaTE.YottaFluidTankOutputHatch;
 import GoodGenerator.CrossMod.NEI.IMCForNEI;
 import GoodGenerator.Items.MyItemBlocks;
 import GoodGenerator.Items.MyItems;
@@ -84,7 +83,6 @@ public class Loaders {
     public static ItemStack NS;
     public static ItemStack NA;
     public static ItemStack YFT;
-    public static ItemStack YFTOutput;
 
     public static ItemStack[] NeutronAccelerators = new ItemStack[9];
 
@@ -98,7 +96,6 @@ public class Loaders {
         Loaders.NS = new NeutronSensor(IDOffset + 11, "Neutron Sensor", "Neutron Sensor", 5).getStackForm(1L);
         Loaders.NA = new NeutronActivator(IDOffset + 12, "NeutronActivator", "Neutron Activator").getStackForm(1L);
         Loaders.YFT = new YottaFluidTank(IDOffset + 13, "YottaFluidTank", "YOTTank").getStackForm(1L);
-        Loaders.YFTOutput = new YottaFluidTankOutputHatch(IDOffset + 14, "YottaFluidTankOutput", "YOTTank Output Hatch", 5).getStackForm(1L);
     }
 
     public static void Register(){

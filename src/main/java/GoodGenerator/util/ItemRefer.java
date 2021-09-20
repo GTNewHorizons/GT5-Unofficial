@@ -78,7 +78,6 @@ public final class ItemRefer {
     public static ItemRefer YOTTank_Cell_T9 = getItemStack(yottaFluidTankCell, 8);
     public static ItemRefer YOTTank_Cell_T10 = getItemStack(yottaFluidTankCell, 9);
     public static ItemRefer YOTTank = getItemStack(YFT);
-    public static ItemRefer YOTTank_Output_Hatch = getItemStack(YFTOutput);
 
 
     public static ItemRefer Large_Naquadah_Reactor = getItemStack(MAR.copy());

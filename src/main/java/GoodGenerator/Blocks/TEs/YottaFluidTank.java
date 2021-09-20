@@ -1,7 +1,9 @@
 package GoodGenerator.Blocks.TEs;
 
-import GoodGenerator.Blocks.TEs.MetaTE.YottaFluidTankOutputHatch;
+import GoodGenerator.Client.GUI.YOTTankGUIClient;
+import GoodGenerator.Common.Container.YOTTankGUIContainer;
 import GoodGenerator.Loader.Loaders;
+import GoodGenerator.util.DescTextLocalization;
 import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
@@ -16,16 +18,22 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import org.lwjgl.input.Keyboard;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
+import static GoodGenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static GoodGenerator.util.StructureHelper.addFrame;
 import static GoodGenerator.util.StructureHelper.addTieredBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
@@ -44,10 +52,10 @@ public class YottaFluidTank extends GT_MetaTileEntity_MultiblockBase_EM implemen
     protected BigInteger mStorageCurrent = new BigInteger("0", 10);
     protected String mFluidName = "";
     protected int glassMeta;
+    protected int maxCell;
     protected final String YOTTANK_BOTTOM = mName + "buttom";
     protected final String YOTTANK_MID = mName + "mid";
     protected final String YOTTANK_TOP = mName + "top";
-    protected List<YottaFluidTankOutputHatch> mYottaOutput = new ArrayList<>();
 
     public YottaFluidTank(int id, String name, String nameRegional) {
         super(id, name, nameRegional);
@@ -65,6 +73,19 @@ public class YottaFluidTank extends GT_MetaTileEntity_MultiblockBase_EM implemen
         glassMeta = meta;
     }
 
+    public String getCap() {
+        return mStorage.toString(10);
+    }
+
+    public String getStored() {
+        return mStorageCurrent.toString(10);
+    }
+
+    public String getFluidName() {
+        if (mFluidName == null || mFluidName.equals("") || FluidRegistry.getFluidStack(mFluidName, 1) == null) return "Empty";
+        return FluidRegistry.getFluidStack(mFluidName, 1).getLocalizedName();
+    }
+
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         String tAmount = aNBT.getString("mStorage");
@@ -75,6 +96,7 @@ public class YottaFluidTank extends GT_MetaTileEntity_MultiblockBase_EM implemen
         mStorageCurrent = new BigInteger(tAmountCurrent, 10);
         mFluidName = aNBT.getString("mFluidName");
         glassMeta = aNBT.getInteger("glassMeta");
+        maxCell = aNBT.getInteger("maxCell");
         super.loadNBTData(aNBT);
     }
 
@@ -84,11 +106,14 @@ public class YottaFluidTank extends GT_MetaTileEntity_MultiblockBase_EM implemen
         aNBT.setString("mStorageCurrent", mStorageCurrent.toString(10));
         aNBT.setString("mFluidName", mFluidName);
         aNBT.setInteger("glassMeta", glassMeta);
+        aNBT.setInteger("maxCell", maxCell);
         super.saveNBTData(aNBT);
     }
 
     @Override
     public boolean checkRecipe_EM(ItemStack aStack) {
+        this.mEUt = 0;
+        this.mMaxProgresstime = 20;
         return true;
     }
 
@@ -103,10 +128,16 @@ public class YottaFluidTank extends GT_MetaTileEntity_MultiblockBase_EM implemen
         }
     }
 
+    private int calGlassTier(int meta) {
+        if (meta >= 1 && meta <= 6) return meta;
+        if (meta >= 7 && meta <= 12) return 1;
+        return 3;
+    }
+
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        for (YottaFluidTankOutputHatch tHatch : mYottaOutput) tHatch.unBounded();
-        mYottaOutput.clear();
+        mStorage = BigInteger.ZERO;
+        glassMeta = 0;
         if (!structureCheck_EM(YOTTANK_BOTTOM, 2, 0, 0)) return false;
         int cnt = 0;
         while (structureCheck_EM(YOTTANK_MID, 2, cnt + 1, 0)) {
@@ -114,7 +145,15 @@ public class YottaFluidTank extends GT_MetaTileEntity_MultiblockBase_EM implemen
         }
         if (cnt > 15 || cnt < 1) return false;
         if (!structureCheck_EM(YOTTANK_TOP, 2, cnt + 2, 0)) return false;
-        return mMaintenanceHatches.size() == 1;
+        if (mMaintenanceHatches.size() == 1 && maxCell + 1 <= calGlassTier(glassMeta)) {
+            if (mStorage.compareTo(mStorageCurrent) < 0) mStorageCurrent = mStorage;
+            if (FluidRegistry.getFluidStack(mFluidName, 1) == null) {
+                mStorageCurrent = BigInteger.ZERO;
+                mFluidName = "";
+            }
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -194,7 +233,10 @@ public class YottaFluidTank extends GT_MetaTileEntity_MultiblockBase_EM implemen
             int finalI = i;
             out.add(
                     onElementPass(
-                            x -> x.mStorage = x.mStorage.add(calStorage(finalI)),
+                            x -> {
+                                x.mStorage = x.mStorage.add(calStorage(finalI));
+                                x.maxCell = Math.max(x.maxCell, finalI);
+                            },
                             ofBlock(Loaders.yottaFluidTankCell, i)
                     )
             );
@@ -227,26 +269,38 @@ public class YottaFluidTank extends GT_MetaTileEntity_MultiblockBase_EM implemen
             if (aMetaTileEntity == null) {
                 return false;
             } else {
-                if ((aMetaTileEntity instanceof YottaFluidTankOutputHatch) && boundOutput(aTileEntity)) {
-                    ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                    return true;
+                if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
+                    ((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+                    return this.mOutputHatches.add((GT_MetaTileEntity_Hatch_Output)aMetaTileEntity);
                 }
             }
         }
         return false;
     }
 
-    public boolean boundOutput(IGregTechTileEntity output) {
-        IMetaTileEntity tHatch = output.getMetaTileEntity();
-        if (tHatch instanceof YottaFluidTankOutputHatch) {
-            YottaFluidTankOutputHatch Hatch = (YottaFluidTankOutputHatch) tHatch;
-            if (!Hatch.isBounded()) {
-                Hatch.setControl(this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(), this.getBaseMetaTileEntity().getZCoord());
-                mYottaOutput.add(Hatch);
-                return true;
-            }
+    @Override
+    public String[] getDescription() {
+        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        tt.addMachineType("Fluid Tank")
+                .addInfo("Controller block for the YOTTank.")
+                .addInfo("The max output speed is decided by the amount of stored liquid and the capacity of output hatch.")
+                .addInfo("The max fluid cell tier is limited by the glass tier.")
+                .addInfo("HV glass for T1, EV glass for T2, IV glass for T3. . .")
+                .addInfo("The max height of the cell blocks is 15.")
+                .addInfo("The structure is too complex!")
+                .addInfo(BLUE_PRINT_INFO)
+                .addSeparator()
+                .beginVariableStructureBlock(5, 5, 1, 15, 5 ,5, false)
+                .addController("Front of the second layer")
+                .addInputHatch("Hint block with dot 1")
+                .addMaintenanceHatch("Hint block with dot 2")
+                .addOutputHatch("Hint block with dot 3")
+                .toolTipFinisher("Good Generator");
+        if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+            return tt.getInformation();
+        } else {
+            return tt.getStructureInformation();
         }
-        return false;
     }
 
     public BigInteger calStorage(int meta) {
@@ -258,38 +312,67 @@ public class YottaFluidTank extends GT_MetaTileEntity_MultiblockBase_EM implemen
     }
 
     @Override
+    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+        return new YOTTankGUIClient(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "EMDisplay.png");
+    }
+
+    @Override
+    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+        return new YOTTankGUIContainer(aPlayerInventory, aBaseMetaTileEntity);
+    }
+
+    @Override
     public boolean onRunningTick(ItemStack aStack) {
         super.onRunningTick(aStack);
-        List<FluidStack> tStore = getStoredFluids();
-        for (FluidStack tFluid : tStore) {
-            if (tFluid == null) continue;
-            if (mFluidName == null || mFluidName.equals("") || tFluid.getFluid().getName().equals(mFluidName)) {
-                if (mFluidName == null || mFluidName.equals("")) {
-                    mFluidName = tFluid.getFluid().getName();
+        if (this.getBaseMetaTileEntity().isServerSide()) {
+            List<FluidStack> tStore = getStoredFluids();
+            for (FluidStack tFluid : tStore) {
+                if (tFluid == null) continue;
+                if (mFluidName == null || mFluidName.equals("") || tFluid.getFluid().getName().equals(mFluidName)) {
+                    if (mFluidName == null || mFluidName.equals("")) {
+                        mFluidName = tFluid.getFluid().getName();
+                    }
+                    if (mStorageCurrent.add(new BigInteger(tFluid.amount + "")).compareTo(mStorage) < 0) {
+                        mStorageCurrent = mStorageCurrent.add(new BigInteger(tFluid.amount + ""));
+                        tFluid.amount = 0;
+                    } else {
+                        BigInteger delta = mStorage.subtract(mStorageCurrent);
+                        mStorageCurrent = mStorageCurrent.add(delta);
+                        tFluid.amount -= delta.intValue();
+                    }
                 }
-                if (mStorageCurrent.add(new BigInteger(tFluid.amount + "")).compareTo(mStorage) < 0) {
-                    mStorageCurrent = mStorageCurrent.add(new BigInteger(tFluid.amount + ""));
-                    tFluid.amount = 0;
-                } else {
-                    BigInteger delta = mStorage.subtract(mStorageCurrent);
-                    mStorageCurrent = mStorageCurrent.add(delta);
-                    tFluid.amount -= delta.intValue();
+            }
+            BigInteger outputAmount = mStorageCurrent.divide(new BigInteger("100", 10));
+            if (outputAmount.compareTo(new BigInteger(Integer.MAX_VALUE + "", 10)) > 0) outputAmount = new BigInteger(Integer.MAX_VALUE + "");
+            if (outputAmount.compareTo(BigInteger.ONE) <= 0) outputAmount = new BigInteger("1", 10);
+
+            if (mStorageCurrent.compareTo(BigInteger.ZERO) <= 0) mFluidName = "";
+
+            if (mFluidName != null && !mFluidName.equals("")) {
+                if (mOutputHatches.size() > 0) {
+                    FluidStack tHatchFluid = mOutputHatches.get(0).mFluid;
+                    FluidStack tOutput = FluidRegistry.getFluidStack(mFluidName, outputAmount.intValue());
+                    if (tHatchFluid != null && tHatchFluid.isFluidEqual(tOutput)) {
+                        int leftSpace = mOutputHatches.get(0).getCapacity() - tHatchFluid.amount;
+                        if (leftSpace < tOutput.amount) {
+                            if (reduceFluid(leftSpace)) tHatchFluid.amount += leftSpace;
+                        }
+                        else {
+                            if (reduceFluid(tOutput.amount)) tHatchFluid.amount += tOutput.amount;
+                        }
+                    }
+                    else if (tHatchFluid == null) {
+                        int leftSpace = mOutputHatches.get(0).getCapacity();
+                        if (leftSpace < tOutput.amount) {
+                            if (reduceFluid(leftSpace)) mOutputHatches.get(0).fill(FluidRegistry.getFluidStack(mFluidName, leftSpace), true);
+                        }
+                        else {
+                            if (reduceFluid(tOutput.amount)) mOutputHatches.get(0).fill(tOutput, true);
+                        }
+                    }
                 }
             }
         }
-        BigInteger outputAmount = mStorageCurrent.divide(new BigInteger("100", 10));
-        if (outputAmount.compareTo(new BigInteger(Integer.MAX_VALUE + "", 10)) > 0) outputAmount = new BigInteger(Integer.MAX_VALUE + "");
-        if (outputAmount.compareTo(BigInteger.ONE) <= 0) outputAmount = new BigInteger("1", 10);
-
-        if (mStorageCurrent.compareTo(BigInteger.ZERO) <= 0) mFluidName = "";
-
-        if (mFluidName != null && !mFluidName.equals("")) {
-            if (mYottaOutput.size() > 0) {
-                mYottaOutput.get(0).setFluid(FluidRegistry.getFluidStack(mFluidName, outputAmount.intValue()));
-                return true;
-            }
-        }
-        mYottaOutput.get(0).setFluid(null);
         return true;
     }
 
@@ -307,7 +390,7 @@ public class YottaFluidTank extends GT_MetaTileEntity_MultiblockBase_EM implemen
 
     @Override
     public String[] getStructureDescription(ItemStack stackSize) {
-        return new String[0];
+        return DescTextLocalization.addText("YOTTank.hint", 7);
     }
 
     @Override
