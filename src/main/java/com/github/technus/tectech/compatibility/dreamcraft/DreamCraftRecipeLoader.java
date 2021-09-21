@@ -711,7 +711,7 @@ public class DreamCraftRecipeLoader implements Runnable {
                         new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000),
                 }, CustomItemList.Machine_Multi_Infuser.get(1), 8000, 2000000);
 
-        //Motor UV-UHV
+        //Motor UHV-UEV
         TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Electric_Motor_UV.get(1L),
                 24000, 32, 100000, 4, new ItemStack[]{
                         GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.SamariumMagnetic, 4L),
@@ -750,7 +750,7 @@ public class DreamCraftRecipeLoader implements Runnable {
                         Materials.SolderingAlloy.getMolten(5184),
                         Materials.Lubricant.getFluid(8000)}, ItemList.Electric_Motor_UEV.get(1L), 2000, 800000);
 
-        //Pumps UV-UHV
+        //Pumps UHV-UEV
         TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Electric_Pump_UV.get(1L),
                 24000, 32, 100000, 4, new Object[]{
                         ItemList.Electric_Motor_UHV.get(1L),
@@ -777,7 +777,7 @@ public class DreamCraftRecipeLoader implements Runnable {
                         Materials.SolderingAlloy.getMolten(5184),
                         Materials.Lubricant.getFluid(8000)}, ItemList.Electric_Pump_UEV.get(1), 2000, 800000);
 
-        //Conveyor Belt UV-UHV
+        //Conveyor Belt UHV-UEV
         TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Conveyor_Module_UV.get(1L),
                 24000, 32, 100000, 4, new Object[]{
                         ItemList.Electric_Motor_UHV.get(2L),
@@ -801,10 +801,9 @@ public class DreamCraftRecipeLoader implements Runnable {
                         new Object[]{OrePrefixes.plate.get(Materials.AnySyntheticRubber), 16L}}, new FluidStack[]{
                         Materials.Quantium.getMolten(2592),
                         Materials.SolderingAlloy.getMolten(5184),
-                        Materials.Lubricant.getFluid(8000),
-                        Materials.Silicone.getMolten(11520)}, ItemList.Conveyor_Module_UEV.get(1), 2000, 800000);
+                        Materials.Lubricant.getFluid(8000)}, ItemList.Conveyor_Module_UEV.get(1), 2000, 800000);
 
-        //Piston UV-UHV
+        //Piston UHV-UEV
         TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Electric_Piston_UV.get(1L),
                 24000, 32, 100000, 4, new ItemStack[]{
                         ItemList.Electric_Motor_UHV.get(1L),
@@ -833,7 +832,7 @@ public class DreamCraftRecipeLoader implements Runnable {
                         Materials.SolderingAlloy.getMolten(5184),
                         Materials.Lubricant.getFluid(8000)}, ItemList.Electric_Piston_UEV.get(1), 2000, 800000);
 
-        //Robot Arm UV-UHV
+        //Robot Arm UHV-UEV
         TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Robot_Arm_UV.get(1L),
                 24000, 32, 100000, 4, new Object[]{
                         GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.CosmicNeutronium, 8L),
@@ -864,7 +863,7 @@ public class DreamCraftRecipeLoader implements Runnable {
                         Materials.SolderingAlloy.getMolten(9216),
                         Materials.Lubricant.getFluid(8000)}, ItemList.Robot_Arm_UEV.get(1L), 2000, 800000);
 
-        //Emitter UV-UHV
+        //Emitter UHV-UEV
         TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Emitter_UV.get(1L),
                 24000, 32, 100000, 4, new Object[]{
                         GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.CosmicNeutronium, 1L),
@@ -897,7 +896,7 @@ public class DreamCraftRecipeLoader implements Runnable {
                         Materials.SolderingAlloy.getMolten(9216)},
                 ItemList.Emitter_UEV.get(1L), 2000, 800000);
 
-        //Sensor UV-UHV
+        //Sensor UHV-UEV
         TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Sensor_UV.get(1L),
                 24000, 32, 100000, 4, new Object[]{
                         GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.CosmicNeutronium, 1L),
@@ -930,7 +929,7 @@ public class DreamCraftRecipeLoader implements Runnable {
                         Materials.SolderingAlloy.getMolten(9216)},
                 ItemList.Sensor_UEV.get(1L), 2000, 800000);
 
-        //Fieldgen UV and UHV
+        //Fieldgen UHV and UEV
         TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Field_Generator_UV.get(1),
                 48000, 64, 200000, 8, new Object[]{
                         GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.CosmicNeutronium, 1L),
@@ -973,7 +972,7 @@ public class DreamCraftRecipeLoader implements Runnable {
                         Materials.SolderingAlloy.getMolten(9216)},
                 ItemList.Field_Generator_UEV.get(1L), 4000, 800000);
 
-        //UHV Energy Hatch & Dynamo
+        //UHV-UMV Energy Hatch & Dynamo
         TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Hatch_Energy_UV.get(1L),
                 24000, 16, 50000, 2, new Object[]{
                         ItemList.Hull_MAX.get(1L),
@@ -995,7 +994,6 @@ public class DreamCraftRecipeLoader implements Runnable {
                         Materials.SolderingAlloy.getMolten(5760),
                 }, ItemList.Hatch_Energy_MAX.get(1L), 1000, 2000000);
         
-        //UHV Dynamo Hatch
         TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Hatch_Dynamo_UV.get(1L),
                 48000, 32, 100000, 4, new Object[]{
                         ItemList.Hull_MAX.get(1L),
@@ -1017,7 +1015,6 @@ public class DreamCraftRecipeLoader implements Runnable {
                         Materials.SolderingAlloy.getMolten(5760)},
                 ItemList.Hatch_Dynamo_MAX.get(1L), 1000, 2000000);
 
-        //UEV Energy Hatch
         TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Hatch_Energy_MAX.get(1L),
                 48000, 32, 100000, 4, new Object[]{
                 		getItemContainer("Hull_UEV").get(1L),
@@ -1035,7 +1032,6 @@ public class DreamCraftRecipeLoader implements Runnable {
                         Materials.UUMatter.getFluid(8000L)},
                 getItemContainer("Hatch_Energy_UEV").get(1L), 1000, 8000000);
         
-        //UEV Dynamo Hatch
         TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Hatch_Dynamo_MAX.get(1L),
                 96000, 64, 200000, 8, new Object[]{
                 		getItemContainer("Hull_UEV").get(1L),
@@ -1053,7 +1049,6 @@ public class DreamCraftRecipeLoader implements Runnable {
                         Materials.UUMatter.getFluid(8000L)},
                 getItemContainer("Hatch_Dynamo_UEV").get(1L), 1000, 8000000);
 
-        //UIV Energy Hatch
         TT_recipeAdder.addResearchableAssemblylineRecipe(getItemContainer("Hatch_Energy_UEV").get(1L),
                 96000, 64, 200000, 8, new Object[]{
                 		getItemContainer("Hull_UIV").get(1L),
@@ -1074,7 +1069,6 @@ public class DreamCraftRecipeLoader implements Runnable {
                         Materials.UUMatter.getFluid(16000L)},
                 getItemContainer("Hatch_Energy_UIV").get(1L), 1000, 16000000);
         
-        //UIV Dynamo Hatch
         TT_recipeAdder.addResearchableAssemblylineRecipe(getItemContainer("Hatch_Dynamo_UEV").get(1L),
                 192000, 128, 400000, 16, new Object[]{
                 		getItemContainer("Hull_UIV").get(1L),
@@ -1095,7 +1089,6 @@ public class DreamCraftRecipeLoader implements Runnable {
                         Materials.UUMatter.getFluid(16000L)},
                 getItemContainer("Hatch_Dynamo_UIV").get(1L), 1000, 16000000);
         
-        //UMV Energy Hatch
         TT_recipeAdder.addResearchableAssemblylineRecipe(getItemContainer("Hatch_Energy_UIV").get(1L),
         		192000, 128, 400000, 16, new Object[]{
         				getItemContainer("Hull_UMV").get(1L),
@@ -1119,7 +1112,6 @@ public class DreamCraftRecipeLoader implements Runnable {
                         Materials.UUMatter.getFluid(32000L)},
                 getItemContainer("Hatch_Energy_UMV").get(1L), 1000, 32000000);
         
-        //UMV Dynamo Hatch
         TT_recipeAdder.addResearchableAssemblylineRecipe(getItemContainer("Hatch_Dynamo_UIV").get(1L),
         		384000, 256, 800000, 32, new Object[]{
         				getItemContainer("Hull_UMV").get(1L),
