@@ -94,7 +94,7 @@ public class CharExchanger {
                     i ++;
                     cnt ++;
                 }
-                while (i < exp.length() && Character.isDigit(exp.charAt(prt))) {
+                while (prt < exp.length() && Character.isDigit(exp.charAt(prt))) {
                     sb.append(exp.charAt(prt));
                     prt ++;
                     cnt --;

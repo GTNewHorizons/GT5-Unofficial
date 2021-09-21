@@ -3,6 +3,7 @@ package GoodGenerator.Blocks.TEs;
 import GoodGenerator.Client.GUI.YOTTankGUIClient;
 import GoodGenerator.Common.Container.YOTTankGUIContainer;
 import GoodGenerator.Loader.Loaders;
+import GoodGenerator.util.CharExchanger;
 import GoodGenerator.util.DescTextLocalization;
 import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
@@ -282,9 +283,9 @@ public class YottaFluidTank extends GT_MetaTileEntity_MultiblockBase_EM implemen
     @Override
     public String[] getInfoData() {
         return new String[] {
-                StatCollector.translateToLocal("scanner.info.YOTTank.0") + " " + EnumChatFormatting.GREEN + getCap() + EnumChatFormatting.RESET + " L",
-                StatCollector.translateToLocal("scanner.info.YOTTank.1") + " " + EnumChatFormatting.YELLOW + getFluidName() + EnumChatFormatting.RESET,
-                StatCollector.translateToLocal("scanner.info.YOTTank.2") + " " + EnumChatFormatting.BLUE + getStored() + EnumChatFormatting.RESET + " L",
+                StatCollector.translateToLocal("scanner.info.YOTTank.0") + " " + EnumChatFormatting.GREEN + CharExchanger.formatNumber(getCap()) + EnumChatFormatting.RESET + " L",
+                StatCollector.translateToLocal("scanner.info.YOTTank.1") + " " + EnumChatFormatting.YELLOW + CharExchanger.formatNumber(getFluidName()) + EnumChatFormatting.RESET,
+                StatCollector.translateToLocal("scanner.info.YOTTank.2") + " " + EnumChatFormatting.BLUE + CharExchanger.formatNumber(getStored()) + EnumChatFormatting.RESET + " L",
         };
     }
 

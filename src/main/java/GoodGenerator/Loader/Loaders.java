@@ -174,11 +174,11 @@ public class Loaders {
         compactMod();
         FluidsBuilder.Register();
         FuelRodLoader.RegisterRod();
-        IMCForNEI.IMCSender();
     }
 
     public static void initLoad(){
         initLoadRecipes();
+        IMCForNEI.IMCSender();
     }
 
     public static void postInitLoad(){
