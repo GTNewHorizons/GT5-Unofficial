@@ -18,7 +18,7 @@ public class MyRecipeAdder {
             StatCollector.translateToLocal("tile.recipe.naquadah_reactor"),
             null,
             "goodgenerator:textures/gui/naquadah_reactor",
-            0,0,1,1,1,
+            0,0,0,1,1,
             StatCollector.translateToLocal("value.naquadah_reactor") + " ",
             1,
             " EU/t",
@@ -53,14 +53,11 @@ public class MyRecipeAdder {
     );
 
     public static class liquidMentalFuelMapper extends GT_Recipe.GT_Recipe_Map_Fuel{
-        int lasting = 0;
-
         public liquidMentalFuelMapper(Collection<GT_Recipe> aRecipeList, String aUnlocalizedName, String aLocalName, String aNEIName, String aNEIGUIPath, int aUsualInputCount, int aUsualOutputCount, int aMinimalInputItems, int aMinimalInputFluids, int aAmperage, String aNEISpecialValuePre, int aNEISpecialValueMultiplier, String aNEISpecialValuePost, boolean aShowVoltageAmperageInNEI, boolean aNEIAllowed){
             super(aRecipeList, aUnlocalizedName, aLocalName, aNEIName, aNEIGUIPath, aUsualInputCount, aUsualOutputCount, aMinimalInputItems, aMinimalInputFluids, aAmperage, aNEISpecialValuePre, aNEISpecialValueMultiplier, aNEISpecialValuePost, aShowVoltageAmperageInNEI, aNEIAllowed);
         }
 
         public void addFuel(FluidStack input, FluidStack output, int EUt, int ticks){
-            lasting = ticks;
             super.addRecipe(true, null, null, null, new FluidStack[]{input}, new FluidStack[]{output}, ticks, 0, EUt);
         }
     }

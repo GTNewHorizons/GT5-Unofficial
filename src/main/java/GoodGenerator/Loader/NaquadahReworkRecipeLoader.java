@@ -198,7 +198,7 @@ public class NaquadahReworkRecipeLoader {
                 },
                 new FluidStack[]{
                         P507.getFluidOrGas(1000),
-                        Materials.SulfuricAcid.getFluid(4000)
+                        Materials.SulfuricAcid.getFluid(32000)
                 },
                 new FluidStack[]{
                         enrichedNaquadahRichSolution.getFluidOrGas(4000),
@@ -305,7 +305,7 @@ public class NaquadahReworkRecipeLoader {
                         lowQualityNaquadriaPhosphate.get(OrePrefixes.dust, 10),
                 },
                 new FluidStack[]{
-                        Materials.SulfuricAcid.getFluid(10000)
+                        Materials.SulfuricAcid.getFluid(30000)
                 },
                 new FluidStack[]{
                         naquadriaRichSolution.getFluidOrGas(9000)

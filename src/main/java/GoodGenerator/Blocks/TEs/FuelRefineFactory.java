@@ -25,19 +25,18 @@ import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import static GoodGenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.util.GT_StructureUtility.*;
+import static gregtech.api.enums.GT_Values.V;
 
 public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM implements TecTechEnabledMulti, IConstructable {
 
@@ -242,7 +241,7 @@ public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM imple
 
         ArrayList<FluidStack> tFluids = getStoredFluids();
         ArrayList<ItemStack> tItems = getStoredInputs();
-        Collection<GT_Recipe> tRecipes = MyRecipeAdder.instance.FRF.mRecipeList;
+        MyRecipeAdder.NaqFuelRefineMapper tRecipes = MyRecipeAdder.instance.FRF;
 
         for (int i = 0; i < tFluids.size() - 1; i++) {
             for (int j = i + 1; j < tFluids.size(); j++) {
@@ -274,8 +273,11 @@ public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM imple
         ItemStack[] inItems = tItems.toArray(new ItemStack[0]);
         this.mEfficiency = 10000;
 
-        for (GT_Recipe recipe : tRecipes){
-            if (recipe.mSpecialValue > Tier) continue;
+        long tVoltage = getMaxInputVoltage();
+        byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
+        GT_Recipe recipe = tRecipes.findRecipe(this.getBaseMetaTileEntity(), false, V[tTier], inFluids, inItems);
+        if (recipe != null) {
+            if (recipe.mSpecialValue > Tier) return false;
             if (recipe.isRecipeInputEqual(true, inFluids, inItems)){
                 mEUt = recipe.mEUt;
                 mEUt = -Math.abs(mEUt);

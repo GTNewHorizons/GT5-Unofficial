@@ -32,7 +32,6 @@ import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 import static GoodGenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
@@ -45,19 +44,18 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
     protected long leftEnergy = 0;
     protected long trueOutput = 0;
     protected int trueEff = 0;
-    protected boolean fluidLocker = true;
     protected FluidStack lockedFluid = null;
     protected int times = 1;
     protected int basicOutput;
 
-    private final List<Pair<FluidStack, Integer>> excitedLiquid = Arrays.asList(
+    private static final List<Pair<FluidStack, Integer>> excitedLiquid = Arrays.asList(
             new Pair<>(FluidRegistry.getFluidStack("molten.atomic separation catalyst", 20), 16),
             new Pair<>(Materials.Naquadah.getMolten(20L), 4),
             new Pair<>(Materials.Uranium235.getMolten(180L), 3),
             new Pair<>(Materials.Caesium.getMolten(180L), 2)
             );
 
-    private final List<Pair<FluidStack, Integer>> coolant = Arrays.asList(
+    private static final List<Pair<FluidStack, Integer>> coolant = Arrays.asList(
             new Pair<>(FluidRegistry.getFluidStack("cryotheum", 1000), 275),
             new Pair<>(Materials.SuperCoolant.getFluid(1000L), 150),
             new Pair<>(FluidRegistry.getFluidStack("ic2coolant",1000), 105)
@@ -169,7 +167,6 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT){
-        this.fluidLocker = aNBT.getBoolean("mIsLocked");
         this.times = aNBT.getInteger("mTimes");
         this.leftEnergy = aNBT.getLong("mLeftEnergy");
         this.basicOutput = aNBT.getInteger("mbasicOutput");
@@ -181,7 +178,6 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT){
-        aNBT.setBoolean("mIsLocked", this.fluidLocker);
         aNBT.setInteger("mTimes", this.times);
         aNBT.setLong("mLeftEnergy", this.leftEnergy);
         aNBT.setInteger("mbasicOutput", this.basicOutput);
@@ -196,7 +192,6 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
     public boolean checkRecipe_EM(ItemStack aStack) {
 
         ArrayList<FluidStack> tFluids = getStoredFluids();
-        Collection<GT_Recipe> tRecipes = MyRecipeAdder.instance.NqGFuels.mRecipeList;
 
         for (int i = 0; i < tFluids.size() - 1; i++) {
             for (int j = i + 1; j < tFluids.size(); j++) {
@@ -211,24 +206,17 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
             }
         }
 
-        int cnt = 0;
-
-        for (GT_Recipe recipe : tRecipes)  if (tFluids.contains(recipe.mFluidInputs[0])) cnt ++;
-
-        if (cnt > 1) doExplosion(4 * 4);
-
-        for (GT_Recipe tRecipe : MyRecipeAdder.instance.NqGFuels.mRecipeList) {
-            if (tFluids.contains(tRecipe.mFluidInputs[0])) {
-                Pair<FluidStack, Integer> excitedInfo = getExcited(tFluids.toArray(new FluidStack[0]), false);
-                int pall = excitedInfo == null ? 1 : excitedInfo.getValue();
-                if (consumeFuel(CrackRecipeAdder.copyFluidWithAmount(tRecipe.mFluidInputs[0], pall), tFluids.toArray(new FluidStack[0]))) {
-                    mOutputFluids = new FluidStack[]{CrackRecipeAdder.copyFluidWithAmount(tRecipe.mFluidOutputs[0], pall)};
-                    basicOutput = tRecipe.mSpecialValue;
-                    times = pall;
-                    lockedFluid = excitedInfo == null ? null : excitedInfo.getKey();
-                    mMaxProgresstime = tRecipe.mDuration;
-                    return true;
-                }
+        GT_Recipe tRecipe = MyRecipeAdder.instance.NqGFuels.findRecipe(this.getBaseMetaTileEntity(), true, 1 << 30, tFluids.toArray(new FluidStack[0]));
+        if (tRecipe != null) {
+            Pair<FluidStack, Integer> excitedInfo = getExcited(tFluids.toArray(new FluidStack[0]), false);
+            int pall = excitedInfo == null ? 1 : excitedInfo.getValue();
+            if (consumeFuel(CrackRecipeAdder.copyFluidWithAmount(tRecipe.mFluidInputs[0], pall), tFluids.toArray(new FluidStack[0]))) {
+                mOutputFluids = new FluidStack[]{CrackRecipeAdder.copyFluidWithAmount(tRecipe.mFluidOutputs[0], pall)};
+                basicOutput = tRecipe.mSpecialValue;
+                times = pall;
+                lockedFluid = excitedInfo == null ? null : excitedInfo.getKey();
+                mMaxProgresstime = tRecipe.mDuration;
+                return true;
             }
         }
 
@@ -238,7 +226,7 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
     @Override
     public boolean onRunningTick(ItemStack stack) {
         if (this.getBaseMetaTileEntity().isServerSide()) {
-            if (mProgresstime % 20 == 0 && mMaxProgresstime != 0) {
+            if (mMaxProgresstime != 0 && mProgresstime % 20 == 0) {
                 FluidStack[] input = getStoredFluids().toArray(new FluidStack[0]);
                 int eff = 100, time = 1;
                 if (!consumeFuel(Materials.LiquidAir.getFluid(2400), input)) {
@@ -309,7 +297,7 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
               long voltage = tHatch.maxEUOutput();
               long power = voltage * tHatch.maxAmperesOut();
               long outputAmperes;
-              if (outputPower > power) doExplosion(4 * GT_Utility.getTier(power));
+              if (outputPower > power) doExplosion(8 * GT_Utility.getTier(power));
               if (outputPower >= voltage){
                   leftEnergy += outputPower;
                   outputAmperes = leftEnergy / voltage;
