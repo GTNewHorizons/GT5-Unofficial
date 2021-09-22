@@ -97,8 +97,6 @@ public class YottaFluidTank extends GT_MetaTileEntity_MultiblockBase_EM implemen
         mStorage = new BigInteger(tAmount, 10);
         mStorageCurrent = new BigInteger(tAmountCurrent, 10);
         mFluidName = aNBT.getString("mFluidName");
-        glassMeta = aNBT.getInteger("glassMeta");
-        maxCell = aNBT.getInteger("maxCell");
         super.loadNBTData(aNBT);
     }
 
@@ -107,8 +105,6 @@ public class YottaFluidTank extends GT_MetaTileEntity_MultiblockBase_EM implemen
         aNBT.setString("mStorage", mStorage.toString(10));
         aNBT.setString("mStorageCurrent", mStorageCurrent.toString(10));
         aNBT.setString("mFluidName", mFluidName);
-        aNBT.setInteger("glassMeta", glassMeta);
-        aNBT.setInteger("maxCell", maxCell);
         super.saveNBTData(aNBT);
     }
 

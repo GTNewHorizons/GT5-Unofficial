@@ -51,16 +51,16 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
     protected int basicOutput;
 
     private final List<Pair<FluidStack, Integer>> excitedLiquid = Arrays.asList(
-            new Pair<>(FluidRegistry.getFluidStack("molten.atomic separation catalyst", 1), 16),
-            new Pair<>(Materials.Naquadah.getMolten(1L), 4),
-            new Pair<>(Materials.Uranium235.getMolten(9L), 3),
-            new Pair<>(Materials.Caesium.getMolten(9L), 2)
+            new Pair<>(FluidRegistry.getFluidStack("molten.atomic separation catalyst", 20), 16),
+            new Pair<>(Materials.Naquadah.getMolten(20L), 4),
+            new Pair<>(Materials.Uranium235.getMolten(180L), 3),
+            new Pair<>(Materials.Caesium.getMolten(180L), 2)
             );
 
     private final List<Pair<FluidStack, Integer>> coolant = Arrays.asList(
-            new Pair<>(FluidRegistry.getFluidStack("cryotheum", 50), 275),
-            new Pair<>(Materials.SuperCoolant.getFluid(50L), 150),
-            new Pair<>(FluidRegistry.getFluidStack("ic2coolant",50), 105)
+            new Pair<>(FluidRegistry.getFluidStack("cryotheum", 1000), 275),
+            new Pair<>(Materials.SuperCoolant.getFluid(1000L), 150),
+            new Pair<>(FluidRegistry.getFluidStack("ic2coolant",1000), 105)
     );
 
     @Override
@@ -237,20 +237,24 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
 
     @Override
     public boolean onRunningTick(ItemStack stack) {
-        FluidStack[] input = getStoredFluids().toArray(new FluidStack[0]);
-        int eff = 100, time = 1;
-        if (!consumeFuel(Materials.LiquidAir.getFluid(120), input)) {
-            this.mEUt = 0;
-            this.trueEff = 0;
-            this.trueOutput = 0;
-            return true;
+        if (this.getBaseMetaTileEntity().isServerSide()) {
+            if (mProgresstime % 20 == 0 && mMaxProgresstime != 0) {
+                FluidStack[] input = getStoredFluids().toArray(new FluidStack[0]);
+                int eff = 100, time = 1;
+                if (!consumeFuel(Materials.LiquidAir.getFluid(2400), input)) {
+                    this.mEUt = 0;
+                    this.trueEff = 0;
+                    this.trueOutput = 0;
+                    return true;
+                }
+                if (getCoolant(input, true) != null) eff = getCoolant(input, false).getValue();
+                if (consumeFuel(lockedFluid, input)) time = times;
+                this.mEUt = basicOutput * eff * time / 100;
+                this.trueEff = eff;
+                this.trueOutput = (long) basicOutput * (long) eff * (long) time / 100;
+            }
+            addAutoEnergy(trueOutput);
         }
-        if (getCoolant(input, true) != null) eff = getCoolant(input, false).getValue();
-        if (consumeFuel(lockedFluid, input)) time = times;
-        this.mEUt = basicOutput * eff * time / 100;
-        this.trueEff = eff;
-        this.trueOutput = (long)basicOutput * (long)eff * (long)time / 100;
-        addAutoEnergy((long)basicOutput * (long)eff * (long)time / 100);
         return true;
     }
 
@@ -371,16 +375,16 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
                       .addInfo("Controller block for the Naquadah Reactor")
                       .addInfo("Environmental Friendly!")
                       .addInfo("Generate power with the High-energy liquid.")
-                      .addInfo("Consume liquid air 120mb/t to keep running, otherwise" + EnumChatFormatting.YELLOW + " it will void your fuel" + EnumChatFormatting.GRAY + ".")
+                      .addInfo("Consume liquid air 2400 L/s to keep running, otherwise" + EnumChatFormatting.YELLOW + " it will void your fuel" + EnumChatFormatting.GRAY + ".")
                       .addInfo("Input liquid nuclear fuel or liquid naquadah fuel.")
                       .addInfo("The reactor will explode when there are more than" + EnumChatFormatting.RED + " ONE" + EnumChatFormatting.GRAY + " types of fuel in the hatch!")
-                      .addInfo("Consume coolant 50mb/t to increase the efficiency:")
+                      .addInfo("Consume coolant 1000 L/s to increase the efficiency:")
                       .addInfo("IC2 Coolant 105%, Super Coolant 150%, Cryotheum 275%")
                       .addInfo("Consume excited liquid to increase the output power:")
-                      .addInfo("molten caesium | 2x power | 9mb/t ")
-                      .addInfo("molten uranium-235 | 3x power | 9mb/t")
-                      .addInfo("molten naquadah | 4x power | 1mb/t")
-                      .addInfo("molten Atomic Separation Catalyst | 16x power | 1mb/t")
+                      .addInfo("molten caesium | 2x power | 180 L/s ")
+                      .addInfo("molten uranium-235 | 3x power | 180 L/s")
+                      .addInfo("molten naquadah | 4x power | 20 L/s")
+                      .addInfo("molten Atomic Separation Catalyst | 16x power | 20 L/s")
                       .addInfo("The structure is too complex!")
                       .addInfo(BLUE_PRINT_INFO)
                       .addSeparator()
