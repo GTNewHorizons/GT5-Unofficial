@@ -85,11 +85,11 @@ public final class ItemRefer {
     public static ItemRefer YOTTank_Cell_T9 = getItemStack(yottaFluidTankCell, 8);
     public static ItemRefer YOTTank_Cell_T10 = getItemStack(yottaFluidTankCell, 9);
 
-    public static ItemRefer Large_Naquadah_Reactor = getItemStack(MAR.copy());
-    public static ItemRefer Naquadah_Fuel_Refinery = getItemStack(FRF.copy());
-    public static ItemRefer Universal_Chemical_Fuel_Engine = getItemStack(UCFE.copy());
-    public static ItemRefer Large_Essentia_Generator = getItemStack(LEG.copy());
-    public static ItemRefer YOTTank = getItemStack(YFT.copy());
+    public static ItemRefer Large_Naquadah_Reactor = getItemStack(MAR);
+    public static ItemRefer Naquadah_Fuel_Refinery = getItemStack(FRF);
+    public static ItemRefer Universal_Chemical_Fuel_Engine = getItemStack(UCFE);
+    public static ItemRefer Large_Essentia_Generator = getItemStack(LEG);
+    public static ItemRefer YOTTank = getItemStack(YFT);
 
     private Item mItem = null;
     private Block mBlock = null;
@@ -97,6 +97,7 @@ public final class ItemRefer {
     private int mMeta = 0;
 
     private static ItemRefer getItemStack(ItemStack itemStack) {
+        if (itemStack == null) return null;
         return new ItemRefer(itemStack);
     }
 
