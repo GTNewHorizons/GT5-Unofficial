@@ -106,6 +106,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         this.stats.setGas(materials.mHasGas);
         this.stats.setRadioactive(materials.isRadioactive());
         this.stats.setBlastFurnace(materials.mBlastFurnaceRequired);
+        this.stats.setMeltingVoltage(120);
         if (type == Types.COMPOUND){
             this.stats.setElektrolysis(true);
             this.generationFeatures.addChemicalRecipes();
@@ -227,6 +228,9 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
 
         if (this.stats.meltingPoint == 0)
             this.stats.meltingPoint = 1123;
+
+        if (this.stats.meltingVoltage == 0)
+            this.stats.meltingVoltage = 120;
 
         this.texSet = texSet;
 
@@ -845,6 +849,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         private int durOverride;
         private float speedOverride;
         private int meltingPoint;
+        private int meltingVoltage;
         private long protons;
         private long neutrons;
         private long electrons;
@@ -967,6 +972,15 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
             else
                 this.quality = (byte) (this.quality & 0b1110111);
             return this;
+        }
+
+        public Werkstoff.Stats setMeltingVoltage(int meltingVoltage) {
+            this.meltingVoltage = meltingVoltage;
+            return this;
+        }
+
+        public int getMeltingVoltage() {
+            return meltingVoltage;
         }
 
         public boolean isElektrolysis() {
