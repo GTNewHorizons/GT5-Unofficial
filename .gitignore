@@ -83,7 +83,6 @@ gradlew.bat
 
 
 *.bat
-libs/
 *.dat
 *.dat_old
 *.dat_mcr
@@ -91,7 +90,6 @@ libs/
 *.mca
 *.gz
 *.log
-*.jar
 *.errored
 /build/
 /run

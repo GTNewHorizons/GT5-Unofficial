@@ -57,10 +57,13 @@ repositories {
         name = "chickenbones"
         url = "https://nexus.covers1624.net/repository/maven-hosted/"
     }
+    // Commented out because IC2 maven is offline
+    /*
     maven {
         name = "ic2, forestry"
         url = "http://maven.ic2.player.to/"
     }
+    */
     maven { // EnderIO & EnderCore
         name = 'tterrag Repo'
         url = "http://maven.tterrag.com"
@@ -93,8 +96,10 @@ repositories {
 dependencies {
     //Hard dep to start (Without this, it wont compile nor start)
     compile 'com.google.code.findbugs:jsr305:1.3.9'
-    compile "net.industrial-craft:industrialcraft-2:${config.ic2.version}:dev"
+    // Commented out because IC2 maven is offline
+    //compile "net.industrial-craft:industrialcraft-2:${config.ic2.version}:dev"
     compile ("com.github.GTNewHorizons:StructureLib:${config.structurelib.version}:deobf")
+    compile (fileTree("libs") { include "*.jar" })
 
     //Hard dep to compile (Without this, it wont compile, not even as library)
     api "appeng:appliedenergistics2:${config.ae2.version}:dev"
