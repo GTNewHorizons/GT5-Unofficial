@@ -292,7 +292,7 @@ public class AdditionalRecipes {
                 400,
                 BW_Util.getMachineVoltageFromTier(5)
         );
-        GT_Values.RA.addChemicalRecipe(WerkstoffLoader.Thorianit.get(dust), Materials.Aluminium.getDust(1), Materials.Thorium.getDust(1), 1000);
+        GT_Values.RA.addChemicalRecipe(WerkstoffLoader.Thorianit.get(dust), Materials.Aluminiumoxide.getDust(1), Materials.Thorium.getDust(1), 1000);
         GT_Values.RA.addChemicalRecipe(WerkstoffLoader.Thorianit.get(dust), Materials.Magnesium.getDust(1), Materials.Thorium.getDust(1), 1000);
         GT_Values.RA.addChemicalRecipe(WerkstoffLoader.Thorianit.get(crushed), ItemList.Crop_Drop_Thorium.get(9), Materials.Water.getFluid(1000), Materials.Thorium.getMolten(144), WerkstoffLoader.Thorianit.get(crushedPurified, 4), 96, 24);
 
