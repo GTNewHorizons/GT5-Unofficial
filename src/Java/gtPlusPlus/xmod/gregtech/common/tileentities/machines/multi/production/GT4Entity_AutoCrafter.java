@@ -83,7 +83,7 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public String getMachineType() {
-		String sType = "Assembler, Disassembler, "+((CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK && !CORE.GTNH) ? "Circuit Assembler, " : "")+"Autocrafter";
+		String sType = "Assembler, Disassembler, "+((CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK && !CORE.GTNH) ? "Circuit Assembler" : "");
 		return sType;
 	}
 
@@ -422,6 +422,7 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase {
 	private boolean doCrafting(ItemStack aStack) {
 		this.mMaxProgresstime = 0;
 		return false; // do nothing
+		/*
 		try {
 			// Set Crafting input hatch
 			if (!doesCrafterHave9SlotInput()) {
@@ -544,6 +545,7 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase {
 
 		this.mMaxProgresstime = 0;
 		return false;
+		*/
 	}
 
 	@Override
