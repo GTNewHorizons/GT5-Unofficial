@@ -809,8 +809,8 @@ public class RecipeLoader {
         GT_Values.RA.addFuel(MyMaterial.naquadahGas.get(OrePrefixes.cell),null,1024,1);
 
         GT_Values.RA.addFusionReactorRecipe(
-                MyMaterial.lightNaquadahFuel.getFluidOrGas(200),
-                MyMaterial.heavyNaquadahFuel.getFluidOrGas(20),
+                MyMaterial.lightNaquadahFuel.getFluidOrGas(65),
+                MyMaterial.heavyNaquadahFuel.getFluidOrGas(30),
                 MyMaterial.naquadahBasedFuelMkI.getFluidOrGas(100),
                 5,
                 32768,

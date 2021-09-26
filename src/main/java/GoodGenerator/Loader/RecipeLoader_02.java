@@ -539,6 +539,35 @@ public class RecipeLoader_02 {
                 100,
                 480
         );
+
+        GT_Values.RA.addAutoclaveRecipe(
+                WerkstoffLoader.Tiberium.get(OrePrefixes.dust, 1),
+                MyMaterial.naquadahGas.getFluidOrGas(250),
+                WerkstoffLoader.Tiberium.get(OrePrefixes.gem, 1),
+                10000,
+                400,
+                480
+        );
+
+        GT_Values.RA.addChemicalBathRecipe(
+                Materials.Firestone.getGems(1),
+                MyMaterial.lightNaquadahFuel.getFluidOrGas(144),
+                WerkstoffLoader.Tiberium.get(OrePrefixes.gem, 1),
+                null, null,
+                new int[]{10000},
+                400,
+                1980
+        );
+
+        GT_Values.RA.addChemicalBathRecipe(
+                Materials.Diamond.getGems(1),
+                MyMaterial.heavyNaquadahFuel.getFluidOrGas(144),
+                WerkstoffLoader.Tiberium.get(OrePrefixes.gem, 1),
+                null, null,
+                new int[]{10000},
+                400,
+                1980
+        );
     }
 
     public static void InitLoadRecipe() {
