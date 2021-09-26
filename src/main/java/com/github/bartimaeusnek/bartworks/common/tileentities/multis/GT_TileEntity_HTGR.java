@@ -497,18 +497,18 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
         static final Fuel_[] sHTGR_Fuel = new Fuel_[]{
             new Fuel_("Thorium", "Thorium", WerkstoffLoader.Thorium232.get(OrePrefixes.dust, 64), Materials.Uranium235.getDust(4), 
                 GT_Values.NF, new ItemStack[]{ 
-                    Materials.Silicon.getDust(1), Materials.Graphite.getDust(1), Materials.Carbon.getDust(1),
+                    Materials.SiliconDioxide.getDust(1), Materials.Graphite.getDust(1), Materials.Carbon.getDust(1),
                     Materials.Lutetium.getDust(1), WerkstoffLoader.Thorium232.get(OrePrefixes.dust,1)},
                 new int[]{9000, 9000, 9000, 9000, 1000}, "Multiplies coolant by 1"),
             new Fuel_("Uranium", "Uranium", Materials.Uranium.getDust(64), Materials.Uranium235.getDust(8), 
                 FluidRegistry.getFluidStack("krypton", 8), new ItemStack[]{ 
-                    Materials.Silicon.getDust(1), Materials.Graphite.getDust(1), Materials.Carbon.getDust(1),
+                    Materials.SiliconDioxide.getDust(1), Materials.Graphite.getDust(1), Materials.Carbon.getDust(1),
                     Materials.Lead.getDust(1),
                     Materials.Uranium.getDust(1)},
                 new int[]{9000, 9000, 9000, 7000, 1000}, "Multiplies coolant by 1.5"),
             new Fuel_("Plutonium", "Plutonium", Materials.Plutonium.getDust(64), Materials.Plutonium241.getDust(4), 
                 FluidRegistry.getFluidStack("xenon", 8), new ItemStack[]{ 
-                    Materials.Silicon.getDust(1), Materials.Graphite.getDust(1), Materials.Carbon.getDust(1),
+                    Materials.SiliconDioxide.getDust(1), Materials.Graphite.getDust(1), Materials.Carbon.getDust(1),
                     Materials.Lead.getDust(1),
                     Materials.Plutonium.getDust(1)},
                 new int[]{9000, 9000, 9000, 7000, 1000}, "Multiplies coolant by 2"),

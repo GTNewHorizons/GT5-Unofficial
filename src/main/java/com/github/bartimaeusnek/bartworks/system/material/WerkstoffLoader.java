@@ -252,11 +252,11 @@ public class WerkstoffLoader {
             new Werkstoff.GenerationFeatures().addGems(),
             5,
             TextureSet.SET_RUBY,
-            Arrays.asList(Materials.Sodium, Materials.Boron, Materials.Silicon),
+            Arrays.asList(Materials.Sodium, Materials.Boron, Materials.SiliconDioxide),
             new Pair<>(Materials.Sodium, 1),
             new Pair<>(Materials.Iron, 3),
-            new Pair<>(Materials.Aluminiumoxide, 6),
-            new Pair<>(Materials.SiliconDioxide, 6),
+            new Pair<>(Materials.Aluminium, 6),
+            new Pair<>(Materials.Silicon, 6),
             new Pair<>(Materials.Boron, 3),
             new Pair<>(Materials.Oxygen, 30),
             new Pair<>(Materials.Fluorine, 1)
@@ -280,11 +280,11 @@ public class WerkstoffLoader {
             new Werkstoff.GenerationFeatures().addGems(),
             7,
             TextureSet.SET_RUBY,
-            Arrays.asList(Materials.Sodium, Materials.Boron, Materials.Silicon),
+            Arrays.asList(Materials.Sodium, Materials.Boron, Materials.SiliconDioxide),
             new Pair<>(Materials.Sodium, 1),
             new Pair<>(Materials.Chrome, 3),
             new Pair<>(Materials.Magnalium, 6),
-            new Pair<>(Materials.SiliconDioxide, 6),
+            new Pair<>(Materials.Silicon, 6),
             new Pair<>(Materials.Boron, 3),
             new Pair<>(Materials.Oxygen, 31),
             new Pair<>(Materials.Hydrogen, 3)
@@ -298,7 +298,7 @@ public class WerkstoffLoader {
             new Werkstoff.GenerationFeatures().addGems(),
             8,
             TextureSet.SET_RUBY,
-            Arrays.asList(Materials.Sodium, Materials.Boron, Materials.Silicon),
+            Arrays.asList(Materials.Sodium, Materials.Boron, Materials.SiliconDioxide),
             new Pair<>(Materials.Sodium, 1),
             new Pair<>(Materials.Vanadium, 3),
             new Pair<>(Materials.Magnalium, 6),
@@ -316,10 +316,10 @@ public class WerkstoffLoader {
             new Werkstoff.GenerationFeatures().addGems(),
             9,
             TextureSet.SET_RUBY,
-            Arrays.asList(Materials.Sodium, Materials.Boron, Materials.Silicon),
+            Arrays.asList(Materials.Sodium, Materials.Boron, Materials.SiliconDioxide),
             new Pair<>(Materials.Sodium, 1),
-            new Pair<>(Materials.Aluminiumoxide, 9),
-            new Pair<>(Materials.SiliconDioxide, 6),
+            new Pair<>(Materials.Aluminium, 9),
+            new Pair<>(Materials.Silicon, 6),
             new Pair<>(Materials.Boron, 3),
             new Pair<>(Materials.Oxygen, 31),
             new Pair<>(Materials.Hydrogen, 1)
@@ -438,9 +438,9 @@ public class WerkstoffLoader {
             new Werkstoff.GenerationFeatures().addGems(),
             19,
             TextureSet.SET_GEM_VERTICAL,
-            Arrays.asList(WerkstoffLoader.Zirconium, Materials.Silicon),
+            Arrays.asList(WerkstoffLoader.Zirconium, Materials.SiliconDioxide),
             new Pair<>(WerkstoffLoader.Zirconium, 1),
-            new Pair<>(Materials.SiliconDioxide, 1),
+            new Pair<>(Materials.Silicon, 1),
             new Pair<>(Materials.Oxygen, 4)
     );
 
@@ -488,9 +488,9 @@ public class WerkstoffLoader {
             new Werkstoff.GenerationFeatures().addGems(),
             23,
             TextureSet.SET_QUARTZ,
-            Arrays.asList(Materials.Iron, Materials.Silicon),
+            Arrays.asList(Materials.Iron, Materials.SiliconDioxide),
             new Pair<>(Materials.Iron, 2),
-            new Pair<>(Materials.SiliconDioxide, 1),
+            new Pair<>(Materials.Silicon, 1),
             new Pair<>(Materials.Oxygen, 4)
     );
     public static final Werkstoff Forsterit = new Werkstoff(
@@ -501,9 +501,9 @@ public class WerkstoffLoader {
             new Werkstoff.GenerationFeatures().addGems(),
             24,
             TextureSet.SET_QUARTZ,
-            Arrays.asList(Materials.Magnesium, Materials.Silicon),
+            Arrays.asList(Materials.Magnesium, Materials.SiliconDioxide),
             new Pair<>(Materials.Magnesium, 2),
-            new Pair<>(Materials.SiliconDioxide, 1),
+            new Pair<>(Materials.Silicon, 1),
             new Pair<>(Materials.Oxygen, 4)
     );
     public static final Werkstoff Hedenbergit = new Werkstoff(
@@ -514,10 +514,10 @@ public class WerkstoffLoader {
             new Werkstoff.GenerationFeatures().addGems(),
             25,
             TextureSet.SET_QUARTZ,
-            Arrays.asList(Materials.Iron, Materials.Calcium, Materials.Silicon),
+            Arrays.asList(Materials.Iron, Materials.Calcium, Materials.SiliconDioxide),
             new Pair<>(Materials.Calcium, 1),
             new Pair<>(Materials.Iron, 1),
-            new Pair<>(Materials.SiliconDioxide, 2),
+            new Pair<>(Materials.Silicon, 2),
             new Pair<>(Materials.Oxygen, 6)
     );
     public static final Werkstoff DescloiziteZNVO4 = new Werkstoff(
@@ -557,10 +557,10 @@ public class WerkstoffLoader {
             new Werkstoff.GenerationFeatures(),
             28,
             TextureSet.SET_METALLIC,
-            Arrays.asList(Materials.Potassium, Materials.Aluminiumoxide, Materials.Silicon),
+            Arrays.asList(Materials.Potassium, Materials.Aluminiumoxide, Materials.SiliconDioxide),
             new Pair<>(Materials.Potassium, 1),
-            new Pair<>(Materials.Aluminiumoxide, 3),
-            new Pair<>(Materials.SiliconDioxide, 3),
+            new Pair<>(Materials.Aluminium, 3),
+            new Pair<>(Materials.Silicon, 3),
             new Pair<>(Materials.Oxygen, 12),
             new Pair<>(Materials.Hydrogen, 2)
 
@@ -574,10 +574,10 @@ public class WerkstoffLoader {
             new Werkstoff.GenerationFeatures(),
             29,
             TextureSet.SET_METALLIC,
-            Arrays.asList(Materials.Potassium, Materials.Chrome, Materials.Silicon),
+            Arrays.asList(Materials.Potassium, Materials.Chrome, Materials.SiliconDioxide),
             new Pair<>(Materials.Potassium, 1),
             new Pair<>(Materials.Chrome, 3),
-            new Pair<>(Materials.SiliconDioxide, 3),
+            new Pair<>(Materials.Silicon, 3),
             new Pair<>(Materials.Oxygen, 12),
             new Pair<>(Materials.Hydrogen, 2)
 
@@ -652,7 +652,7 @@ public class WerkstoffLoader {
             35,
             TextureSet.SET_QUARTZ,
             //No Byproducts
-            new Pair<>(Materials.SiliconDioxide, 5),
+            new Pair<>(Materials.Silicon, 5),
             new Pair<>(Materials.Oxygen, 10),
             new Pair<>(Materials.Iron, 1)
     );
