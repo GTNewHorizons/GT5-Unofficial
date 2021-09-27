@@ -813,7 +813,7 @@ public class RecipeLoader {
                 MyMaterial.heavyNaquadahFuel.getFluidOrGas(30),
                 MyMaterial.naquadahBasedFuelMkI.getFluidOrGas(100),
                 5,
-                32768,
+                26000,
                 330000000
         );
 
@@ -832,8 +832,8 @@ public class RecipeLoader {
                         MyMaterial.naquadahBasedFuelMkII.getFluidOrGas(1000)
                 },
                 null,
-                18000,
-                120
+                200,
+                480000
         );
 
         GT_Values.RA.addBlastRecipe(
@@ -841,7 +841,7 @@ public class RecipeLoader {
                 GT_Utility.getIntegratedCircuit(16),
                 MyMaterial.fluoroantimonicAcid.getFluidOrGas(4000),
                 MyMaterial.acidNaquadahEmulsion.getFluidOrGas(8000),
-                MyMaterial.extremelyUnstableNaquadah.get(OrePrefixes.dust,1),
+                MyMaterial.extremelyUnstableNaquadah.get(OrePrefixes.dust,17),
                 null,
                 3600,
                 4080,
