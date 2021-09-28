@@ -83,7 +83,7 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public String getMachineType() {
-		String sType = "Assembler, Disassembler, "+((CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK && !CORE.GTNH) ? "Circuit Assembler, " : "")+"Autocrafter";
+		String sType = "Assembler, Disassembler, "+((CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK && !CORE.GTNH) ? "Circuit Assembler" : "");
 		return sType;
 	}
 
@@ -133,12 +133,7 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase {
 				"Highly Advanced Autocrafter", 
 				"Right Click with a Screwdriver to change mode",
 				"200% faster than using single block machines of the same voltage",
-				"Processes two items per voltage tier", 
-				"--------------------------------------",
-				"Insert a Memory stick into the GUI", 
-				"to automate a crafting table recipe",
-				"Requires recipe to be scanned in a project table", 
-				"--------------------------------------",
+				"Processes two items per voltage tier",
 				"Size: 3x3x3 (Hollow)",  
 				"Autocrafter Frame (10 at least!)",
 				"Controller (Front Center)",
@@ -255,7 +250,10 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase {
 		//5.08 support
 		else {			
 			if (mMachineMode.nextMode() == MODE.CIRCUIT) {
-				mMachineMode = MODE.CRAFTING;
+				mMachineMode = MODE.ASSEMBLY;
+			}
+			else if (mMachineMode.nextMode() == MODE.CRAFTING) {
+				mMachineMode = MODE.ASSEMBLY;
 			}
 			else {
 				mMachineMode = mMachineMode.nextMode();
@@ -422,6 +420,9 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase {
 	}
 
 	private boolean doCrafting(ItemStack aStack) {
+		this.mMaxProgresstime = 0;
+		return false; // do nothing
+		/*
 		try {
 			// Set Crafting input hatch
 			if (!doesCrafterHave9SlotInput()) {
@@ -544,6 +545,7 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase {
 
 		this.mMaxProgresstime = 0;
 		return false;
+		*/
 	}
 
 	@Override
