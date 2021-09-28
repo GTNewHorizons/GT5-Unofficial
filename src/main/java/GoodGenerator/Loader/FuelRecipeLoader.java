@@ -34,7 +34,7 @@ public class FuelRecipeLoader {
                         WerkstoffLoader.Tiberium.get(OrePrefixes.dust,27)
                 },
                 MyMaterial.naquadahBasedFuelMkIII.getFluidOrGas(100),
-                120000,
+                1900000,
                 850,
                 1
         );

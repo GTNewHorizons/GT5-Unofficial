@@ -273,8 +273,8 @@ public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM imple
         ItemStack[] inItems = tItems.toArray(new ItemStack[0]);
         this.mEfficiency = 10000;
 
-        long tVoltage = getMaxInputVoltage();
-        byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
+        long tPower = getMaxInputEnergy_EM();
+        byte tTier = (byte) Math.max(1, GT_Utility.getTier(tPower));
         GT_Recipe recipe = tRecipes.findRecipe(this.getBaseMetaTileEntity(), false, V[tTier], inFluids, inItems);
         if (recipe != null) {
             if (recipe.mSpecialValue > Tier) return false;
