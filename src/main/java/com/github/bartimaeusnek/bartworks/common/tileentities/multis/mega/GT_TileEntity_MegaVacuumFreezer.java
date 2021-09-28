@@ -40,6 +40,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_VacuumFreezer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -95,21 +96,30 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_MetaTileEntity_VacuumFre
     @Override
     public boolean checkRecipe(ItemStack itemStack) {
         ItemStack[] tInputs = this.getStoredInputs().toArray(new ItemStack[0]);
+        FluidStack[] tInputFluids = this.getStoredFluids().toArray(new FluidStack[0]);
         ArrayList<ItemStack> outputItems = new ArrayList<>();
+        ArrayList<FluidStack> outputFluids = new ArrayList<>();
 
         long nominalV = LoaderReference.tectech ? TecTechUtils.getnominalVoltageTT(this) : BW_Util.getnominalVoltage(this);
 
         byte tTier = (byte) Math.max(1, Math.min(GT_Utility.getTier(nominalV), V.length - 1));
 
-        GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sVacuumRecipes.findRecipe(this.getBaseMetaTileEntity(), false, V[tTier], null, tInputs);
+        GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sVacuumRecipes.findRecipe(this.getBaseMetaTileEntity(), false, V[tTier], tInputFluids, tInputs);
         boolean found_Recipe = false;
         int processed = 0;
 
-        while (this.getStoredInputs().size() > 0 && processed < ConfigHandler.megaMachinesMax) {
-            if (tRecipe != null && ((long) tRecipe.mEUt * (processed + 1)) < nominalV && tRecipe.isRecipeInputEqual(true, null, tInputs)) {
+        while ((this.getStoredInputs().size() > 0 || this.getStoredFluids().size() > 0) && processed < ConfigHandler.megaMachinesMax) {
+            if (tRecipe != null && ((long) tRecipe.mEUt * (processed + 1)) < nominalV && tRecipe.isRecipeInputEqual(true, tInputFluids, tInputs)) {
                 found_Recipe = true;
-                for (int i = 0; i < tRecipe.mOutputs.length; i++) {
-                    outputItems.add(tRecipe.getOutput(i));
+                if (tRecipe.mOutputs != null) {
+                    for (int i = 0; i < tRecipe.mOutputs.length; i++) {
+                        outputItems.add(tRecipe.getOutput(i));
+                    }
+                }
+                if (tRecipe.mFluidOutputs != null) {
+                    for (int i = 0; i < tRecipe.mFluidOutputs.length; i++) {
+                        outputFluids.add(tRecipe.getFluidOutput(i));
+                    }
                 }
                 ++processed;
             } else
@@ -138,6 +148,8 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_MetaTileEntity_VacuumFre
             this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
             this.mOutputItems = new ItemStack[outputItems.size()];
             this.mOutputItems = outputItems.toArray(this.mOutputItems);
+            this.mOutputFluids = new FluidStack[outputFluids.size()];
+            this.mOutputFluids = outputFluids.toArray(this.mOutputFluids);
             this.updateSlots();
             return true;
         }
@@ -168,8 +180,6 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_MetaTileEntity_VacuumFre
                         && BW_Util.check_layer(aBaseMetaTileEntity, 7, 1, 7, GregTech_API.sBlockCasings2, 1, 7, false, false, true, Blocks.air, -1, true, 17)
                         && BW_Util.check_layer(aBaseMetaTileEntity, 7, 7, 8, GregTech_API.sBlockCasings2, 1, 7, false, false, true, GregTech_API.sBlockCasings2, 1, true, 17)
         ) &&
-                !this.mInputBusses.isEmpty() &&
-                !this.mOutputBusses.isEmpty() &&
                 !this.mMaintenanceHatches.isEmpty() &&
                 LoaderReference.tectech ?
                 (!this.getTecTechEnergyMultis().isEmpty() || !this.getTecTechEnergyTunnels().isEmpty() || !this.mEnergyHatches.isEmpty()) :
