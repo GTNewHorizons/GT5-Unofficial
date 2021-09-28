@@ -98,12 +98,12 @@ public class RecipeGen_BlastSmelterGT_GTNH {
 				ItemStack validInput = null;
 				ItemStack validOutput = null;				
 				//If we the input is an ingot and it and the output are valid, map it to cache.
-				if (x.mInputs[0] != null) {
+				if (x.mInputs != null && x.mInputs.length > 0 && x.mInputs[0] != null) {
 					validInput = x.mInputs[0];					
 				}
-				if (x.mOutputs[0] != null) {
+				if (x.mOutputs != null && x.mOutputs.length > 0 && x.mOutputs[0] != null) {
 					validOutput = x.mOutputs[0];
-				}				
+				}
 				if (validInput != null && validOutput != null) {
 					ItemStackData R1 = new ItemStackData(validInput);
 					ItemStackData R2 = new ItemStackData(validOutput);
