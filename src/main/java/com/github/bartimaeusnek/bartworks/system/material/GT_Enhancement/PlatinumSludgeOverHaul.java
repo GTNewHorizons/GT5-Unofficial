@@ -252,11 +252,11 @@ public class PlatinumSludgeOverHaul {
                         else if (GT_Utility.areFluidsEqual(Rhodium.getMolten(1), recipe.mFluidOutputs[i]))
                             toDel.add(recipe);
                         else if (GT_Utility.areFluidsEqual(Materials.Iridium.getMolten(1), recipe.mFluidOutputs[i]))
-                            recipe.mFluidOutputs[i] = Materials.Water.getFluid(1000);
+                            recipe.mFluidOutputs[i] = AcidicIridiumSolution.getFluidOrGas(1000);
                         else if (GT_Utility.areFluidsEqual(Materials.Platinum.getMolten(1), recipe.mFluidOutputs[i]))
-                            recipe.mFluidOutputs[i] = Materials.Water.getFluid(1000);
+                            recipe.mFluidOutputs[i] = PTConcentrate.getFluidOrGas(1000);
                         else if (GT_Utility.areFluidsEqual(Materials.Osmium.getMolten(1), recipe.mFluidOutputs[i]))
-                            recipe.mFluidOutputs[i] = Materials.Water.getFluid(1000);
+                            recipe.mFluidOutputs[i] = AcidicOsmiumSolution.getFluidOrGas(1000);
                     } else {
                         if (GT_Utility.areFluidsEqual(Ruthenium.getMolten(1), recipe.mFluidOutputs[i]))
                             toDel.add(recipe);
