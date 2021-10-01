@@ -29,7 +29,7 @@ public final class ELEMENT {
 	public final Material ALUMINIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Aluminium);
 	public final Material ALUMINIUMOXIDE = MaterialUtils.generateMaterialFromGtENUM(Materials.Aluminiumoxide);
 	public final Material SILICON = MaterialUtils.generateMaterialFromGtENUM(Materials.Silicon);
-	public final Material SILICONDIOXIDE = MaterialUtils.generateMaterialFromGtENUM(Materials.Silicondioxide);
+	public final Material SILICONDIOXIDE = MaterialUtils.generateMaterialFromGtENUM(Materials.SiliconDioxide);
 	public final Material PHOSPHORUS = MaterialUtils.generateMaterialFromGtENUM(Materials.Phosphor);
 	public final Material SULFUR = MaterialUtils.generateMaterialFromGtENUM(Materials.Sulfur);
 	public final Material CHLORINE = MaterialUtils.generateMaterialFromGtENUM(Materials.Chlorine);
