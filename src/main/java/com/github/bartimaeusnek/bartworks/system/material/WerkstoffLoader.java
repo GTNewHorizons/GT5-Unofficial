@@ -1109,7 +1109,7 @@ public class WerkstoffLoader {
             new Werkstoff.GenerationFeatures().disable().onlyDust(),
             71,
             TextureSet.SET_DULL,
-            new Pair<>(Materials.Silicon, 3),
+            new Pair<>(Materials.SiliconDioxide, 3),
             new Pair<>(Materials.Gold, 2)
     );
     public static final Werkstoff AcidicOsmiumSolution = new Werkstoff(
