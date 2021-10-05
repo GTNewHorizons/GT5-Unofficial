@@ -353,7 +353,7 @@ public class NaquadahReworkRecipeLoader {
                 new FluidStack[]{
                         P507.getFluidOrGas(1000),
                         naquadriaRichSolution.getFluidOrGas(5400),
-                        Materials.DilutedSulfuricAcid.getFluid(10000)
+                        Materials.DilutedSulfuricAcid.getFluid(12000)
                 },
                 enrichedNaquadahEarth.get(OrePrefixes.dust, 2),
                 500,
