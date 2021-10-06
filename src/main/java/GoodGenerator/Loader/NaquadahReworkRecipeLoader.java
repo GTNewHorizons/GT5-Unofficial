@@ -247,7 +247,7 @@ public class NaquadahReworkRecipeLoader {
                 null,
                 GT_OreDictUnificator.get(OrePrefixes.ingotHot, Materials.NaquadahEnriched, 1),
                 WerkstoffLoader.ZincSulfate.get(OrePrefixes.dust, 2),
-                20,
+                100,
                 7680,
                 7500
         );
@@ -367,7 +367,7 @@ public class NaquadahReworkRecipeLoader {
                 Materials.HydricSulfide.getGas(1000),
                 GT_OreDictUnificator.get(OrePrefixes.ingotHot, Materials.Naquadria, 1),
                 null,
-                20,
+                100,
                 122880,
                 9100
         );
