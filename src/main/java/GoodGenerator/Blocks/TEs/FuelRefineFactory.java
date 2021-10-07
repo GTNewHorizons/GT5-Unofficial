@@ -279,7 +279,7 @@ public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM imple
         if (recipe != null) {
             if (recipe.mSpecialValue > Tier) return false;
             if (recipe.isRecipeInputEqual(true, inFluids, inItems)){
-                mEUt = recipe.mEUt;
+                mEUt = recipe.mEUt * (1 << (Tier - recipe.mSpecialValue));
                 mEUt = -Math.abs(mEUt);
                 mMaxProgresstime = recipe.mDuration / (1 << (Tier - recipe.mSpecialValue));
                 this.mOutputFluids = recipe.mFluidOutputs;
