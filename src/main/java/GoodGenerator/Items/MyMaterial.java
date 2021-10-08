@@ -288,7 +288,7 @@ public class MyMaterial implements Runnable {
             new short[]{0x06,0x26,0x05},
             "Extremely Unstable Naquadah",
             "Nq"+ CharExchanger.shifter(9734),
-            new Werkstoff.Stats().setMeltingPoint(7000).setBlastFurnace(true).setProtons(200).setMass(450),
+            new Werkstoff.Stats().setMeltingPoint(7000).setBlastFurnace(true).setProtons(200).setMass(450).setRadioactive(true),
             Werkstoff.Types.ELEMENT,
             new Werkstoff.GenerationFeatures().disable().onlyDust().addMolten().addMetalItems().addSimpleMetalWorkingItems().addCraftingMetalWorkingItems().addMultipleIngotMetalWorkingItems(),
             OffsetID + 23,

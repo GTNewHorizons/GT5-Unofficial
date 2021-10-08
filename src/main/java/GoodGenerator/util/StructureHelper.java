@@ -1,6 +1,5 @@
 package GoodGenerator.util;
 
-import com.github.technus.tectech.TecTech;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import gregtech.api.enums.Materials;
@@ -47,7 +46,7 @@ public class StructureHelper {
                     mIcons = new IIcon[6];
                     Arrays.fill(mIcons, aMaterials.mIconSet.mTextures[OrePrefixes.frameGt.mTextureIndex].getIcon());
                 }
-                TecTech.proxy.hint_particle_tinted(world, x, y, z, mIcons, aMaterials.mRGBa);
+                StructureLibAPI.hintParticleTinted(world, x, y, z, mIcons, aMaterials.mRGBa);
                 return true;
             }
 

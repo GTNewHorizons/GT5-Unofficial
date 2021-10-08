@@ -51,7 +51,7 @@ public class ComplexTextureCasing extends Casing{
     @SideOnly(Side.CLIENT)
     @SuppressWarnings("unchecked")
     public void getSubBlocks(Item item, CreativeTabs tab, List list) {
-        for (int i = 0; i < Math.max(this.textureTopAndDown.length, this.textureTopAndDown.length); i++) {
+        for (int i = 0; i < Math.max(this.textureSide.length, this.textureTopAndDown.length); i++) {
             list.add(new ItemStack(item, 1, i));
         }
     }
