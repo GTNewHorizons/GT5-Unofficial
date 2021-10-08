@@ -103,10 +103,11 @@ dependencies {
     }*/
     compile files('GT-PlusPlus-1.7.09.GTNH.jar')
     compile files('libs/TecTech-1.7.10-4.10.7-b1bcea5f-dev.jar')
-    compile("com.github.GTNewHorizons:GT5-bartworks:master-SNAPSHOT:dev") {
+    compile("com.github.GTNewHorizons:GT5-bartworks:master-SNAPSHOT:dev")
     compileOnly("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev")
     runtime("eu.usrv:YAMCore:${minecraftVersion}-${yamcoreVersion}:deobf");
 }
+
 
 processResources
 {
