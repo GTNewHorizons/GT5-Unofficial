@@ -72,7 +72,7 @@ repositories {
     }
     maven {
         name = "ic2"
-        url = "http://maven.ic2.player.to/"
+        url = "http://downloads.gtnewhorizons.com/Mods_for_Jenkins/"
     }
     maven {
         name = "appleCore"
