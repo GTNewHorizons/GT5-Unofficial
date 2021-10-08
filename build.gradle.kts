@@ -91,7 +91,7 @@ configure<UserExtension> {
 repositories {
     mavenLocal()
     maven("https://gregtech.overminddl1.com/") { this.name = "GT6Maven" }
-    maven("http://maven.ic2.player.to/") { this.name = "ic2" }
+    maven("http://downloads.gtnewhorizons.com/Mods_for_Jenkins/") { this.name = "ic2" }
     maven("http://jenkins.usrv.eu:8081/nexus/content/repositories/releases/") { this.name = "UsrvDE/GTNH" }
     ivy {
         this.name = "gtnh_download_source_stupid_underscore_typo"
