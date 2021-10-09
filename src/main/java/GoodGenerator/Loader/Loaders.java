@@ -168,7 +168,6 @@ public class Loaders {
 
     public static void preInitLoad(){
         Register();
-        GTMetaTileRegister();
         addOreDic();
         addTexturePage();
         compactMod();
@@ -177,6 +176,7 @@ public class Loaders {
     }
 
     public static void initLoad(){
+        GTMetaTileRegister();
         initLoadRecipes();
         IMCForNEI.IMCSender();
     }

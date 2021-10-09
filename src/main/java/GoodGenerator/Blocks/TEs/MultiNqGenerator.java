@@ -1,5 +1,6 @@
 package GoodGenerator.Blocks.TEs;
 
+import GoodGenerator.Items.MyMaterial;
 import GoodGenerator.Loader.Loaders;
 import GoodGenerator.util.CrackRecipeAdder;
 import GoodGenerator.util.DescTextLocalization;
@@ -48,18 +49,23 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
     protected int times = 1;
     protected int basicOutput;
 
-    private static final List<Pair<FluidStack, Integer>> excitedLiquid = Arrays.asList(
-            new Pair<>(FluidRegistry.getFluidStack("molten.atomic separation catalyst", 20), 16),
-            new Pair<>(Materials.Naquadah.getMolten(20L), 4),
-            new Pair<>(Materials.Uranium235.getMolten(180L), 3),
-            new Pair<>(Materials.Caesium.getMolten(180L), 2)
-            );
+    private static final List<Pair<FluidStack, Integer>> excitedLiquid;
 
-    private static final List<Pair<FluidStack, Integer>> coolant = Arrays.asList(
-            new Pair<>(FluidRegistry.getFluidStack("cryotheum", 1000), 275),
-            new Pair<>(Materials.SuperCoolant.getFluid(1000L), 150),
-            new Pair<>(FluidRegistry.getFluidStack("ic2coolant",1000), 105)
-    );
+    private static final List<Pair<FluidStack, Integer>> coolant;
+
+    static {
+        excitedLiquid = Arrays.asList(
+                new Pair<>(MyMaterial.atomicSeparationCatalyst.getMolten(20), 16),
+                new Pair<>(Materials.Naquadah.getMolten(20L), 4),
+                new Pair<>(Materials.Uranium235.getMolten(180L), 3),
+                new Pair<>(Materials.Caesium.getMolten(180L), 2)
+        );
+        coolant = Arrays.asList(
+                new Pair<>(FluidRegistry.getFluidStack("cryotheum", 1000), 275),
+                new Pair<>(Materials.SuperCoolant.getFluid(1000L), 150),
+                new Pair<>(FluidRegistry.getFluidStack("ic2coolant",1000), 105)
+        );
+    }
 
     @Override
     public void construct(ItemStack itemStack, boolean hintsOnly) {
