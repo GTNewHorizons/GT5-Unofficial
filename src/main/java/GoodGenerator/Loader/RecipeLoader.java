@@ -874,20 +874,24 @@ public class RecipeLoader {
                 1919810
         );
 
-        GT_Values.RA.addAssemblerRecipe(
-                new ItemStack[]{
-                        ItemRefer.Radiation_Protection_Plate.get(2),
-                        new ItemStack(Ic2Items.advancedAlloy.getItem(),8),
-                        GT_OreDictUnificator.get(OrePrefixes.plateDense,Materials.Palladium,2),
-                        GT_OreDictUnificator.get(OrePrefixes.plate,Materials.Osmiridium,4),
-                        GT_OreDictUnificator.get(OrePrefixes.plate,Materials.Tungsten,4),
-                        GT_OreDictUnificator.get(OrePrefixes.screw,Materials.Cobalt,4),
-                        GT_Utility.getIntegratedCircuit(2)
+        GT_Values.RA.addAssemblylineRecipe(
+                ItemRefer.Radiation_Protection_Plate.get(1),
+                80000,
+                new Object[]{
+                        ItemRefer.Radiation_Protection_Plate.get(4),
+                        GT_OreDictUnificator.get(OrePrefixes.plate,Materials.ElectrumFlux,32),
+                        GT_OreDictUnificator.get(OrePrefixes.plate,Materials.Trinium,32),
+                        GT_OreDictUnificator.get(OrePrefixes.plate,Materials.NaquadahAlloy,32),
+                        GT_OreDictUnificator.get(OrePrefixes.plate,Materials.Osmiridium,32),
+                        GT_OreDictUnificator.get(OrePrefixes.plate,Materials.VibrantAlloy,32),
+                        ItemRefer.Radiation_Protection_Plate.get(4),
                 },
-                Materials.NiobiumTitanium.getMolten(72),
+                new FluidStack[]{
+                        Materials.SolderingAlloy.getMolten(4608)
+                },
                 ItemRefer.Advanced_Radiation_Protection_Plate.get(1),
-                1000,
-                2040
+                2000,
+                65536
         );
 
         GT_Values.RA.addAssemblylineRecipe(
@@ -896,7 +900,7 @@ public class RecipeLoader {
                 new Object[]{
                         GT_OreDictUnificator.get(OrePrefixes.frameGt,Materials.Thulium,1),
                         ItemRefer.Advanced_Radiation_Protection_Plate.get(6),
-                        ItemList.Field_Generator_IV.get(2),
+                        ItemList.Field_Generator_UV.get(2),
                         GT_OreDictUnificator.get(OrePrefixes.pipeTiny,Materials.Naquadah,16),
                         GT_OreDictUnificator.get(OrePrefixes.wireFine,Materials.NaquadahAlloy,32),
                         GT_OreDictUnificator.get(OrePrefixes.wireFine,Materials.NaquadahAlloy,32),
@@ -913,137 +917,173 @@ public class RecipeLoader {
                 65536
         );
 
-        GT_Values.RA.addAssemblylineRecipe(
-                MyMaterial.extremelyUnstableNaquadah.get(OrePrefixes.ingot),
-                300000,
-                new Object[]{
-                        GT_OreDictUnificator.get(OrePrefixes.frameGt,Materials.VanadiumGallium,1),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt02,Materials.SuperconductorIV,64),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt02,Materials.SuperconductorLuV,32),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt02,Materials.SuperconductorZPM,16),
-                        ItemList.Neutron_Reflector.get(4),
-                        GT_OreDictUnificator.get(OrePrefixes.wireFine,Materials.Gallium,32),
-                        GT_OreDictUnificator.get(OrePrefixes.spring,Materials.Indium,16),
-                        GT_OreDictUnificator.get(OrePrefixes.gearGt,Materials.Osmiridium,16),
-                        new ItemStack(Ic2Items.iridiumPlate.getItem(),32),
-                        GT_OreDictUnificator.get(OrePrefixes.foil,Materials.CrystallineAlloy,64),
-                        GT_OreDictUnificator.get(OrePrefixes.foil,Materials.CrystallineAlloy,64),
-                        GT_OreDictUnificator.get(OrePrefixes.foil,Materials.CrystallineAlloy,64),
-                        GT_OreDictUnificator.get(OrePrefixes.foil,Materials.CrystallineAlloy,64),
-                        ItemList.Tool_DataStick.get(16),
-                        GT_OreDictUnificator.get(OrePrefixes.screw,Materials.Cobalt,32)
-                },
-                new FluidStack[]{
-                        Materials.Trinium.getMolten(2304),
-                        Materials.Platinum.getMolten(4608),
-                        Materials.SolderingAlloy.getMolten(9216),
-                        FluidRegistry.getFluidStack("ic2coolant",8000)
-                },
-                ItemRefer.Field_Restriction_Coil_T1.get(1),
-                900,
-                114514
-        );
+        if (Loader.isModLoaded("dreamcraft")) {
+            GT_Values.RA.addAssemblylineRecipe(
+                    MyMaterial.extremelyUnstableNaquadah.get(OrePrefixes.ingot),
+                    300000,
+                    new Object[]{
+                            GT_OreDictUnificator.get(OrePrefixes.frameGt,Materials.Osmium,1),
+                            ItemList.Field_Generator_UV.get(16),
+                            ItemList.Electric_Pump_UV.get(32),
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt01,Materials.SuperconductorZPM,64),
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt01,Materials.SuperconductorZPM,64),
+                            GT_OreDictUnificator.get(OrePrefixes.plateDense,Materials.Americium,8),
+                            GT_OreDictUnificator.get(OrePrefixes.pipeMedium,Materials.BlackPlutonium,16),
+                            ItemList.Circuit_Wafer_PPIC.get(32),
+                            new Object[]{"circuitNano", 16},
+                    },
+                    new FluidStack[]{
+                            WerkstoffLoader.Krypton.getFluidOrGas(32000),
+                            Materials.ElectrumFlux.getMolten(9216),
+                            Materials.Lubricant.getFluid(128000)
+                    },
+                    ItemRefer.Field_Restriction_Coil_T1.get(1),
+                    18000,
+                    114514
+            );
 
-        GT_Values.RA.addArcFurnaceRecipe(
-                ItemRefer.Field_Restriction_Coil_T1.get(1),
-                new ItemStack[]{
-                        GT_OreDictUnificator.get(OrePrefixes.ingot,Materials.Osmiridium,64),
-                        GT_OreDictUnificator.get(OrePrefixes.ingot,Materials.CrystallineAlloy,64),
-                        GT_OreDictUnificator.get(OrePrefixes.ingot,Materials.Platinum,32),
-                        GT_OreDictUnificator.get(OrePrefixes.ingot,Materials.Indium,16)
-                },
-                new int[] {10000,10000,10000,10000},
-                3600,
-                30
-        );
+            GT_Values.RA.addAssemblylineRecipe(
+                    ItemRefer.Field_Restriction_Coil_T1.get(1),
+                    350000,
+                    new Object[]{
+                            GT_OreDictUnificator.get(OrePrefixes.frameGt,Materials.CosmicNeutronium,1),
+                            ItemList.Field_Generator_UHV.get(16),
+                            ItemList.Electric_Pump_UHV.get(32),
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt02,Materials.SuperconductorUV,64),
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt02,Materials.SuperconductorUV,64),
+                            GT_OreDictUnificator.get(OrePrefixes.plateDense,Materials.Infinity,8),
+                            GT_OreDictUnificator.get(OrePrefixes.pipeMedium,Materials.Neutronium,16),
+                            ItemList.Circuit_Wafer_PPIC.get(48),
+                            new Object[]{"circuitPiko", 16},
+                    },
+                    new FluidStack[]{
+                            Materials.Radon.getPlasma(32000),
+                            Materials.DraconiumAwakened.getMolten(9216),
+                            Materials.Lubricant.getFluid(128000),
+                    },
+                    ItemRefer.Field_Restriction_Coil_T2.get(1),
+                    36000,
+                    114514
+            );
 
-        GT_Values.RA.addAssemblylineRecipe(
-                ItemRefer.Field_Restriction_Coil_T1.get(1),
-                350000,
-                new Object[]{
-                        GT_OreDictUnificator.get(OrePrefixes.frameGt,Materials.Molybdenum,1),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt02,Materials.SuperconductorLuV,64),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt02,Materials.SuperconductorZPM,32),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt02,Materials.SuperconductorUV,16),
-                        ItemList.Field_Generator_LuV.get(4),
-                        GT_OreDictUnificator.get(OrePrefixes.cableGt04,Materials.NiobiumTitanium,16),
-                        GT_OreDictUnificator.get(OrePrefixes.pipeTiny,Materials.Enderium,16),
-                        WerkstoffLoader.LuVTierMaterial.get(OrePrefixes.gearGt,8),
-                        ItemList.Circuit_Wafer_QPIC.get(16),
-                        GT_OreDictUnificator.get(OrePrefixes.plate,Materials.CrystallineAlloy,64),
-                        GT_OreDictUnificator.get(OrePrefixes.foil,Materials.Indium,64),
-                        GT_OreDictUnificator.get(OrePrefixes.foil,Materials.Indium,64),
-                        GT_OreDictUnificator.get(OrePrefixes.foil,Materials.Indium,64),
-                        ItemList.Energy_LapotronicOrb.get(4),
-                        GT_OreDictUnificator.get(OrePrefixes.screw,Materials.BlackPlutonium,32)
-                },
-                new FluidStack[]{
-                        Materials.Tritanium.getMolten(2304),
-                        Materials.Palladium.getMolten(4608),
-                        Materials.SolderingAlloy.getMolten(9216),
-                        FluidRegistry.getFluidStack("ic2coolant",8000)
-                },
-                ItemRefer.Field_Restriction_Coil_T2.get(1),
-                2700,
-                114514
-        );
+            GT_Values.RA.addAssemblylineRecipe(
+                    ItemRefer.Field_Restriction_Coil_T2.get(1),
+                    400000,
+                    new Object[]{
+                            GT_OreDictUnificator.get(OrePrefixes.frameGt,Materials.Infinity,1),
+                            ItemList.Field_Generator_UEV.get(16),
+                            ItemList.Electric_Pump_UEV.get(32),
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt04,Materials.SuperconductorUHV,64),
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt04,Materials.SuperconductorUHV,64),
+                            new Object[]{"plateDenseRadoxPoly", 8},
+                            GT_OreDictUnificator.get(OrePrefixes.pipeMedium,Materials.Infinity,16),
+                            ItemList.Circuit_Wafer_PPIC.get(64),
+                            new Object[]{"circuitQuantum", 16},
+                    },
+                    new FluidStack[]{
+                            WerkstoffLoader.Oganesson.getFluidOrGas(32000),
+                            Materials.Neutronium.getMolten(9216),
+                            Materials.Lubricant.getFluid(128000),
+                    },
+                    ItemRefer.Field_Restriction_Coil_T3.get(1),
+                    72000,
+                    114514
+            );
+        }
+        else {
+            GT_Values.RA.addAssemblylineRecipe(
+                    MyMaterial.extremelyUnstableNaquadah.get(OrePrefixes.ingot),
+                    300000,
+                    new Object[]{
+                            GT_OreDictUnificator.get(OrePrefixes.frameGt,Materials.VanadiumGallium,1),
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt02,Materials.SuperconductorIV,64),
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt02,Materials.SuperconductorLuV,32),
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt02,Materials.SuperconductorZPM,16),
+                            ItemList.Neutron_Reflector.get(4),
+                            GT_OreDictUnificator.get(OrePrefixes.wireFine,Materials.Gallium,32),
+                            GT_OreDictUnificator.get(OrePrefixes.spring,Materials.Indium,16),
+                            GT_OreDictUnificator.get(OrePrefixes.gearGt,Materials.Osmiridium,16),
+                            new ItemStack(Ic2Items.iridiumPlate.getItem(),32),
+                            GT_OreDictUnificator.get(OrePrefixes.foil,Materials.CrystallineAlloy,64),
+                            GT_OreDictUnificator.get(OrePrefixes.foil,Materials.CrystallineAlloy,64),
+                            GT_OreDictUnificator.get(OrePrefixes.foil,Materials.CrystallineAlloy,64),
+                            GT_OreDictUnificator.get(OrePrefixes.foil,Materials.CrystallineAlloy,64),
+                            ItemList.Tool_DataStick.get(16),
+                            GT_OreDictUnificator.get(OrePrefixes.screw,Materials.Cobalt,32)
+                    },
+                    new FluidStack[]{
+                            Materials.Trinium.getMolten(2304),
+                            Materials.Platinum.getMolten(4608),
+                            Materials.SolderingAlloy.getMolten(9216),
+                            FluidRegistry.getFluidStack("ic2coolant",8000)
+                    },
+                    ItemRefer.Field_Restriction_Coil_T1.get(1),
+                    900,
+                    114514
+            );
 
-        GT_Values.RA.addArcFurnaceRecipe(
-                ItemRefer.Field_Restriction_Coil_T2.get(1),
-                new ItemStack[]{
-                        GT_OreDictUnificator.get(OrePrefixes.ingot,Materials.CrystallineAlloy,64),
-                        WerkstoffLoader.LuVTierMaterial.get(OrePrefixes.block,56),
-                        GT_OreDictUnificator.get(OrePrefixes.ingot,Materials.Indium,48),
-                        GT_OreDictUnificator.get(OrePrefixes.ingot,Materials.NiobiumTitanium,32)
-                },
-                new int[] {10000,10000,10000,10000},
-                3600,
-                30
-        );
+            GT_Values.RA.addAssemblylineRecipe(
+                    ItemRefer.Field_Restriction_Coil_T1.get(1),
+                    350000,
+                    new Object[]{
+                            GT_OreDictUnificator.get(OrePrefixes.frameGt,Materials.Molybdenum,1),
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt02,Materials.SuperconductorLuV,64),
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt02,Materials.SuperconductorZPM,32),
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt02,Materials.SuperconductorUV,16),
+                            ItemList.Field_Generator_LuV.get(4),
+                            GT_OreDictUnificator.get(OrePrefixes.cableGt04,Materials.NiobiumTitanium,16),
+                            GT_OreDictUnificator.get(OrePrefixes.pipeTiny,Materials.Enderium,16),
+                            WerkstoffLoader.LuVTierMaterial.get(OrePrefixes.gearGt,8),
+                            ItemList.Circuit_Wafer_QPIC.get(16),
+                            GT_OreDictUnificator.get(OrePrefixes.plate,Materials.CrystallineAlloy,64),
+                            GT_OreDictUnificator.get(OrePrefixes.foil,Materials.Indium,64),
+                            GT_OreDictUnificator.get(OrePrefixes.foil,Materials.Indium,64),
+                            GT_OreDictUnificator.get(OrePrefixes.foil,Materials.Indium,64),
+                            ItemList.Energy_LapotronicOrb.get(4),
+                            GT_OreDictUnificator.get(OrePrefixes.screw,Materials.BlackPlutonium,32)
+                    },
+                    new FluidStack[]{
+                            Materials.Tritanium.getMolten(2304),
+                            Materials.Palladium.getMolten(4608),
+                            Materials.SolderingAlloy.getMolten(9216),
+                            FluidRegistry.getFluidStack("ic2coolant",8000)
+                    },
+                    ItemRefer.Field_Restriction_Coil_T2.get(1),
+                    2700,
+                    114514
+            );
 
-        GT_Values.RA.addAssemblylineRecipe(
-                ItemRefer.Field_Restriction_Coil_T2.get(1),
-                400000,
-                new Object[]{
-                        GT_OreDictUnificator.get(OrePrefixes.frameGt,Materials.CosmicNeutronium,1),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt02,Materials.SuperconductorZPM,64),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt02,Materials.SuperconductorUV,32),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt02,Materials.SuperconductorUHV,16),
-                        ItemList.Sensor_UV.get(4),
-                        GT_OreDictUnificator.get(OrePrefixes.cableGt04,Materials.NetherStar,16),
-                        GT_OreDictUnificator.get(OrePrefixes.plateDense,Materials.SamariumMagnetic,4),
-                        GT_OreDictUnificator.get(OrePrefixes.gearGt,Materials.BlackPlutonium,16),
-                        ItemList.Circuit_Chip_CrystalSoC2.get(32),
-                        GT_OreDictUnificator.get(OrePrefixes.plate,Materials.CrystallineAlloy,64),
-                        GT_OreDictUnificator.get(OrePrefixes.plate,Materials.Indium,32),
-                        GT_OreDictUnificator.get(OrePrefixes.foil,Materials.VibrantAlloy,64),
-                        GT_OreDictUnificator.get(OrePrefixes.foil,Materials.VibrantAlloy,64),
-                        ItemList.Energy_LapotronicOrb2.get(4),
-                        GT_OreDictUnificator.get(OrePrefixes.screw,Materials.Infinity,16)
-                },
-                new FluidStack[]{
-                        Materials.Americium.getMolten(2304),
-                        Materials.Osmium.getMolten(4608),
-                        Materials.SolderingAlloy.getMolten(9216),
-                        FluidRegistry.getFluidStack("ic2coolant",8000)
-                },
-                ItemRefer.Field_Restriction_Coil_T3.get(1),
-                8100,
-                114514
-        );
-
-        GT_Values.RA.addArcFurnaceRecipe(
-                ItemRefer.Field_Restriction_Coil_T3.get(1),
-                new ItemStack[]{
-                        GT_OreDictUnificator.get(OrePrefixes.ingot,Materials.CrystallineAlloy,64),
-                        GT_OreDictUnificator.get(OrePrefixes.ingot,Materials.BlackPlutonium,64),
-                        GT_OreDictUnificator.get(OrePrefixes.ingot,Materials.Indium,32),
-                        GT_OreDictUnificator.get(OrePrefixes.ingot,Materials.Osmium,32)
-                },
-                new int[] {10000,10000,10000,10000},
-                3600,
-                30
-        );
+            GT_Values.RA.addAssemblylineRecipe(
+                    ItemRefer.Field_Restriction_Coil_T2.get(1),
+                    400000,
+                    new Object[]{
+                            GT_OreDictUnificator.get(OrePrefixes.frameGt,Materials.CosmicNeutronium,1),
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt02,Materials.SuperconductorZPM,64),
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt02,Materials.SuperconductorUV,32),
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt02,Materials.SuperconductorUHV,16),
+                            ItemList.Sensor_UV.get(4),
+                            GT_OreDictUnificator.get(OrePrefixes.cableGt04,Materials.NetherStar,16),
+                            GT_OreDictUnificator.get(OrePrefixes.plateDense,Materials.SamariumMagnetic,4),
+                            GT_OreDictUnificator.get(OrePrefixes.gearGt,Materials.BlackPlutonium,16),
+                            ItemList.Circuit_Chip_CrystalSoC2.get(32),
+                            GT_OreDictUnificator.get(OrePrefixes.plate,Materials.CrystallineAlloy,64),
+                            GT_OreDictUnificator.get(OrePrefixes.plate,Materials.Indium,32),
+                            GT_OreDictUnificator.get(OrePrefixes.foil,Materials.VibrantAlloy,64),
+                            GT_OreDictUnificator.get(OrePrefixes.foil,Materials.VibrantAlloy,64),
+                            ItemList.Energy_LapotronicOrb2.get(4),
+                            GT_OreDictUnificator.get(OrePrefixes.screw,Materials.Infinity,16)
+                    },
+                    new FluidStack[]{
+                            Materials.Americium.getMolten(2304),
+                            Materials.Osmium.getMolten(4608),
+                            Materials.SolderingAlloy.getMolten(9216),
+                            FluidRegistry.getFluidStack("ic2coolant",8000)
+                    },
+                    ItemRefer.Field_Restriction_Coil_T3.get(1),
+                    8100,
+                    114514
+            );
+        }
 
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[]{

@@ -206,7 +206,7 @@ public class NaquadahReworkRecipeLoader {
                 },
                 new ItemStack[]{
                         naquadahEarth.get(OrePrefixes.dust, 1),
-                        triniumSulphate.get(OrePrefixes.dust, 4)
+                        triniumSulphate.get(OrePrefixes.dust, 1)
                 },
                 400,
                 1920
@@ -277,7 +277,7 @@ public class NaquadahReworkRecipeLoader {
                 indiumPhosphate.get(OrePrefixes.dust, 1),
                 lowQualityNaquadriaPhosphate.get(OrePrefixes.dust, 4),
                 null, null, null, null,
-                new int[]{10000, 10000},
+                new int[]{2000, 10000},
                 400,
                 7680
         );
