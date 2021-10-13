@@ -20,9 +20,9 @@ public class FuelRecipeLoader {
         MyRecipeAdder.instance.addLiquidMentalFuel(MyMaterial.plutoniumBasedLiquidFuelExcited.getFluidOrGas(1),MyMaterial.plutoniumBasedLiquidFuelDepleted.getFluidOrGas(1),32400,150);
         MyRecipeAdder.instance.addLiquidMentalFuel(MyMaterial.naquadahBasedFuelMkI.getFluidOrGas(1),MyMaterial.naquadahBasedFuelMkIDepleted.getFluidOrGas(1),220000,20);
         MyRecipeAdder.instance.addLiquidMentalFuel(MyMaterial.naquadahBasedFuelMkII.getFluidOrGas(1),MyMaterial.naquadahBasedFuelMkIIDepleted.getFluidOrGas(1),380000,20);
-        MyRecipeAdder.instance.addLiquidMentalFuel(MyMaterial.naquadahBasedFuelMkIII.getFluidOrGas(1),MyMaterial.naquadahBasedFuelMkIIIDepleted.getFluidOrGas(1),8511000,60);
-        MyRecipeAdder.instance.addLiquidMentalFuel(MyMaterial.naquadahBasedFuelMkIV.getFluidOrGas(1),MyMaterial.naquadahBasedFuelMkIVDepleted.getFluidOrGas(1),88540000,80);
-        MyRecipeAdder.instance.addLiquidMentalFuel(MyMaterial.naquadahBasedFuelMkV.getFluidOrGas(1),MyMaterial.naquadahBasedFuelMkVDepleted.getFluidOrGas(1),389576000,100);
+        MyRecipeAdder.instance.addLiquidMentalFuel(MyMaterial.naquadahBasedFuelMkIII.getFluidOrGas(1),MyMaterial.naquadahBasedFuelMkIIIDepleted.getFluidOrGas(1),9511000,80);
+        MyRecipeAdder.instance.addLiquidMentalFuel(MyMaterial.naquadahBasedFuelMkIV.getFluidOrGas(1),MyMaterial.naquadahBasedFuelMkIVDepleted.getFluidOrGas(1),88540000,100);
+        MyRecipeAdder.instance.addLiquidMentalFuel(MyMaterial.naquadahBasedFuelMkV.getFluidOrGas(1),MyMaterial.naquadahBasedFuelMkVDepleted.getFluidOrGas(1),399576000,160);
 
         MyRecipeAdder.instance.addNaquadahFuelRefineRecipe(
                 new FluidStack[]{
@@ -36,8 +36,8 @@ public class FuelRecipeLoader {
                         ItemRefer.High_Density_Plutonium.get(3),
                 },
                 MyMaterial.naquadahBasedFuelMkIII.getFluidOrGas(100),
-                1900000,
-                1800,
+                1100000,
+                100,
                 1
         );
 
@@ -53,23 +53,23 @@ public class FuelRecipeLoader {
                         MyMaterial.orundum.get(OrePrefixes.dust,32),
                 },
                 MyMaterial.naquadahBasedFuelMkIV.getFluidOrGas(250),
-                56000000,
-                700,
+                46000000,
+                160,
                 2
         );
 
         MyRecipeAdder.instance.addNaquadahFuelRefineRecipe(
                 new FluidStack[]{
                         MyMaterial.naquadahBasedFuelMkIV.getFluidOrGas(2000),
-                        FluidRegistry.getFluidStack("heavyradox",5000),
+                        FluidRegistry.getFluidStack("heavyradox",1000),
                 },
                 new ItemStack[]{
                         GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Infinity,64),
                         MyMaterial.atomicSeparationCatalyst.get(OrePrefixes.dust, 64),
                 },
                 MyMaterial.naquadahBasedFuelMkV.getFluidOrGas(500),
-                140000000,
-                800,
+                100000000,
+                200,
                 2
         );
     }
