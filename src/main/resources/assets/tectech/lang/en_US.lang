@@ -313,9 +313,9 @@ gt.blockmachines.hatch.dynamomulti64.tier.11.name=UIV 64A Dynamo Hatch
 gt.blockmachines.hatch.dynamomulti04.tier.12.name=UMV 4A Dynamo Hatch
 gt.blockmachines.hatch.dynamomulti16.tier.12.name=UMV 16A Dynamo Hatch
 gt.blockmachines.hatch.dynamomulti64.tier.12.name=UMV 64A Dynamo Hatch
-gt.blockmachines.hatch.dynamomulti04.tier.13.name=IV 4A Dynamo Hatch
-gt.blockmachines.hatch.dynamomulti16.tier.13.name=IV 16A Dynamo Hatch
-gt.blockmachines.hatch.dynamomulti64.tier.13.name=IV 64A Dynamo Hatch
+gt.blockmachines.hatch.dynamomulti04.tier.13.name=UXV 4A Dynamo Hatch
+gt.blockmachines.hatch.dynamomulti16.tier.13.name=UXV 16A Dynamo Hatch
+gt.blockmachines.hatch.dynamomulti64.tier.13.name=UXV 64A Dynamo Hatch
 gt.blockmachines.hatch.dynamomulti.desc.0=Multiple Ampere Energy Extractor for Multiblocks
 gt.blockmachines.hatch.dynamomulti.desc.1=Amperes Out
 
