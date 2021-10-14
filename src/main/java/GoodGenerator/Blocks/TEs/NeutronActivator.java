@@ -50,12 +50,17 @@ public class NeutronActivator extends GT_MetaTileEntity_MultiblockBase_EM implem
     protected final ArrayList<NeutronAccelerator> mNeutronAccelerator = new ArrayList<>();
     protected final ArrayList<NeutronSensor> mNeutronSensor = new ArrayList<>();
     protected int casingAmount = 0;
+    protected int height = 0;
     protected int eV = 0, mCeil = 0, mFloor = 0;
 
     private static final IIconContainer textureFontOn = new Textures.BlockIcons.CustomIcon("icons/NeutronActivator_On");
     private static final IIconContainer textureFontOn_Glow = new Textures.BlockIcons.CustomIcon("icons/NeutronActivator_On_GLOW");
     private static final IIconContainer textureFontOff = new Textures.BlockIcons.CustomIcon("icons/NeutronActivator_Off");
     private static final IIconContainer textureFontOff_Glow = new Textures.BlockIcons.CustomIcon("icons/NeutronActivator_Off_GLOW");
+
+    protected final String NA_BOTTOM = mName + "buttom";
+    protected final String NA_MID = mName + "mid";
+    protected final String NA_TOP = mName + "top";
 
     public NeutronActivator(String name) {
         super(name);
@@ -109,7 +114,7 @@ public class NeutronActivator extends GT_MetaTileEntity_MultiblockBase_EM implem
             if (recipe.isRecipeInputEqual(true, inFluids, inItems)) {
                 mFloor = minNKE;
                 mCeil = maxNKE;
-                mMaxProgresstime = recipe.mDuration;
+                mMaxProgresstime = Math.max((int)(recipe.mDuration * Math.pow(0.9, height - 4)), 1);
                 if (eV <= maxNKE && eV >= minNKE) {
                     this.mOutputFluids = recipe.mFluidOutputs;
                     this.mOutputItems = recipe.mOutputs;
@@ -148,6 +153,7 @@ public class NeutronActivator extends GT_MetaTileEntity_MultiblockBase_EM implem
         eV = aNBT.getInteger("mKeV");
         mCeil = aNBT.getInteger("mCeil");
         mFloor = aNBT.getInteger("mFloor");
+        height = aNBT.getInteger("height");
         super.loadNBTData(aNBT);
     }
 
@@ -156,6 +162,7 @@ public class NeutronActivator extends GT_MetaTileEntity_MultiblockBase_EM implem
         aNBT.setInteger("mKeV", eV);
         aNBT.setInteger("mCeil", mCeil);
         aNBT.setInteger("mFloor", mFloor);
+        aNBT.setInteger("height", height);
         super.saveNBTData(aNBT);
     }
 
@@ -165,6 +172,9 @@ public class NeutronActivator extends GT_MetaTileEntity_MultiblockBase_EM implem
         tt.addMachineType("Neutron Activator")
                 .addInfo("Controller block for the Neutron Activator")
                 .addInfo("Superluminal-velocity Motion.")
+                .addInfo("The minimum height of the Speeding Pipe Casing is 4.")
+                .addInfo("Per extra Speeding Pipe Casing will give time discount.")
+                .addInfo("But it will reduce the Neutron Accelerator efficiency.")
                 .addInfo("You need to input energy to the Neutron Accelerator to get it running.")
                 .addInfo("It will output correct products with Specific Neutron Kinetic Energy.")
                 .addInfo("Otherwise it will output trash.")
@@ -173,7 +183,6 @@ public class NeutronActivator extends GT_MetaTileEntity_MultiblockBase_EM implem
                 .addInfo("The structure is too complex!")
                 .addInfo(BLUE_PRINT_INFO)
                 .addSeparator()
-                .beginStructureBlock(5, 6, 5, false)
                 .addController("Front bottom")
                 .addInputHatch("Hint block with dot 1")
                 .addInputBus("Hint block with dot 1")
@@ -196,14 +205,19 @@ public class NeutronActivator extends GT_MetaTileEntity_MultiblockBase_EM implem
         if (multiDefinition == null) {
             multiDefinition = StructureDefinition
                     .<NeutronActivator>builder()
-                    .addShape(mName,
+                    .addShape(NA_TOP,
                             transpose(new String[][]{
-                                    {"CCCCC", "CDDDC", "CDDDC", "CDDDC", "CCCCC"},
-                                    {"F   F", " GGG ", " GPG ", " GGG ", "F   F"},
-                                    {"F   F", " GGG ", " GPG ", " GGG ", "F   F"},
-                                    {"F   F", " GGG ", " GPG ", " GGG ", "F   F"},
-                                    {"F   F", " GGG ", " GPG ", " GGG ", "F   F"},
-                                    {"XX~XX", "XDDDX", "XDDDX", "XDDDX", "XXXXX"},
+                                    {"CCCCC", "CDDDC", "CDDDC", "CDDDC", "CCCCC"}
+                            })
+                    )
+                    .addShape(NA_MID,
+                            transpose(new String[][]{
+                                    {"F   F", " GGG ", " GPG ", " GGG ", "F   F"}
+                            })
+                    )
+                    .addShape(NA_BOTTOM,
+                            transpose(new String[][]{
+                                    {"XX~XX", "XDDDX", "XDDDX", "XDDDX", "XXXXX"}
                             })
                     )
                     .addElement(
@@ -278,7 +292,13 @@ public class NeutronActivator extends GT_MetaTileEntity_MultiblockBase_EM implem
         this.casingAmount = 0;
         this.mNeutronAccelerator.clear();
         this.mNeutronSensor.clear();
-        return structureCheck_EM(mName, 2, 5, 0) && casingAmount >= 7;
+        if (!structureCheck_EM(NA_BOTTOM, 2, 0, 0)) return false;
+        height = 0;
+        while (structureCheck_EM(NA_MID, 2, height +1, 0)) {
+            height ++;
+        }
+        if (height < 4) return false;
+        return structureCheck_EM(NA_TOP, 2, height + 1, 0) && casingAmount >= 7;
     }
 
     public final boolean addAcceleratorAndSensor(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
@@ -318,7 +338,7 @@ public class NeutronActivator extends GT_MetaTileEntity_MultiblockBase_EM implem
             for (NeutronAccelerator tHatch : mNeutronAccelerator) {
                 if (tHatch.isRunning && this.getRepairStatus() == this.getIdealStatus()) {
                     anyWorking = true;
-                    this.eV += nextInt(tHatch.getMaxEUConsume(), tHatch.getMaxEUConsume() * 2 + 1) * 10;
+                    this.eV += nextInt(tHatch.getMaxEUConsume(), tHatch.getMaxEUConsume() * 2 + 1) * 10 * Math.pow(0.95, height - 4);
                 }
             }
             if (!anyWorking) {
@@ -368,8 +388,14 @@ public class NeutronActivator extends GT_MetaTileEntity_MultiblockBase_EM implem
     }
 
     @Override
-    public void construct(ItemStack itemStack, boolean b) {
-        structureBuild_EM(mName, 2, 5, 0, b, itemStack);
+    public void construct(ItemStack stackSize, boolean hintsOnly) {
+        structureBuild_EM(NA_BOTTOM, 2, 0, 0, hintsOnly, stackSize);
+        int heights = stackSize.stackSize + 3;
+        structureBuild_EM(NA_TOP, 2, heights + 1, 0, hintsOnly, stackSize);
+        while (heights > 0) {
+            structureBuild_EM(NA_MID, 2, heights, 0, hintsOnly, stackSize);
+            heights --;
+        }
     }
 
     @Override
@@ -383,7 +409,7 @@ public class NeutronActivator extends GT_MetaTileEntity_MultiblockBase_EM implem
         boolean anyWorking = false;
         for (NeutronAccelerator tHatch : mNeutronAccelerator) {
             if (tHatch.isRunning) {
-                currentNKEInput += nextInt(tHatch.getMaxEUConsume(), tHatch.getMaxEUConsume() * 2 + 1) * 10;
+                currentNKEInput += nextInt(tHatch.getMaxEUConsume(), tHatch.getMaxEUConsume() * 2 + 1) * 10 * Math.pow(0.95, height - 4);
                 anyWorking = true;
             }
         }

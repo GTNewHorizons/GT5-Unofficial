@@ -1564,6 +1564,51 @@ public class RecipeLoader {
                 30720
         );
 
+        GT_Values.RA.addAssemblylineRecipe(
+                Loaders.NeutronAccelerators[6].copy(),
+                20000,
+                new Object[] {
+                        ItemRefer.Inverter.get(2),
+                        ItemList.Hull_ZPM.get(1L),
+                        GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.VanadiumGallium,2),
+                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.NetherStar,1),
+                        GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Polybenzimidazole,4),
+                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.SamariumMagnetic,4),
+                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.SamariumMagnetic,4),
+                        ItemList.Electric_Motor_ZPM.get(2),
+                        GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorEV,4),
+                },
+                new FluidStack[]{
+                        WerkstoffLoader.Xenon.getFluidOrGas(3000)
+                },
+                Loaders.NeutronAccelerators[7].copy(),
+                300,
+                122880
+        );
+
+        GT_Values.RA.addAssemblylineRecipe(
+                Loaders.NeutronAccelerators[7].copy(),
+                20000,
+                new Object[] {
+                        ItemRefer.Inverter.get(4),
+                        ItemList.Hull_UV.get(1L),
+                        GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.NaquadahAlloy,4),
+                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.NetherStar,2),
+                        GT_OreDictUnificator.get(OrePrefixes.plateTriple, Materials.Polybenzimidazole,4),
+                        ItemList.ZPM_Coil.get(4),
+                        GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.NickelZincFerrite,16),
+                        ItemList.ZPM_Coil.get(4),
+                        ItemList.Electric_Motor_UV.get(2),
+                        GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorLuV,4),
+                },
+                new FluidStack[]{
+                        WerkstoffLoader.Oganesson.getFluidOrGas(3000)
+                },
+                Loaders.NeutronAccelerators[8].copy(),
+                300,
+                491520
+        );
+
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[]{
                         ItemList.Casing_IV.get(1L),
