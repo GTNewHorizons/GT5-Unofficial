@@ -391,10 +391,12 @@ public class AdditionalRecipes {
         boolean aElementSet = false;
         for (Element e : Element.values()) {
             if (e.toString().equals("Uuo")) {
-                werkstoffBridgeMaterial = new Materials(-1, werkstoff.getTexSet(), 0, 0, 0, false, werkstoff.getDefaultName(), werkstoff.getDefaultName());
+                werkstoffBridgeMaterial = werkstoff.getBridgeMaterial() != null ? werkstoff.getBridgeMaterial() :
+                        new Materials(-1, werkstoff.getTexSet(), 0, 0, 0, false, werkstoff.getDefaultName(), werkstoff.getDefaultName());
                 werkstoffBridgeMaterial.mElement = e;
                 e.mLinkedMaterials.add(werkstoffBridgeMaterial);
                 aElementSet = true;
+                werkstoff.setBridgeMaterial(werkstoffBridgeMaterial);
                 break;
             }
         }

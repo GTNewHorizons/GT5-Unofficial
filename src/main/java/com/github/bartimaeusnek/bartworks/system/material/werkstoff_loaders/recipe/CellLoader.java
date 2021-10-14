@@ -158,10 +158,12 @@ public class CellLoader implements IWerkstoffRunnable {
             boolean ElementSet = false;
             for (Element e : Element.values()) {
                 if (e.toString().equals(werkstoff.getToolTip())) {
-                    werkstoffBridgeMaterial = new Materials(-1, werkstoff.getTexSet(), 0, 0, 0, false, werkstoff.getDefaultName(), werkstoff.getDefaultName());
+                    werkstoffBridgeMaterial = werkstoff.getBridgeMaterial() != null ? werkstoff.getBridgeMaterial() :
+                            new Materials(-1, werkstoff.getTexSet(), 0, 0, 0, false, werkstoff.getDefaultName(), werkstoff.getDefaultName());
                     werkstoffBridgeMaterial.mElement = e;
                     e.mLinkedMaterials.add(werkstoffBridgeMaterial);
                     ElementSet = true;
+                    werkstoff.setBridgeMaterial(werkstoffBridgeMaterial);
                     break;
                 }
             }
