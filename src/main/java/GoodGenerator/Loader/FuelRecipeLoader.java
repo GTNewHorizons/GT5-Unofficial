@@ -32,8 +32,8 @@ public class FuelRecipeLoader {
                 new ItemStack[]{
                         MyMaterial.extremelyUnstableNaquadah.get(OrePrefixes.dust,4),
                         WerkstoffLoader.Tiberium.get(OrePrefixes.dust,27),
-                        ItemRefer.High_Density_Uranium.get(16),
-                        ItemRefer.High_Density_Plutonium.get(3),
+                        ItemRefer.High_Density_Uranium.get(2),
+                        ItemRefer.High_Density_Plutonium.get(1),
                 },
                 MyMaterial.naquadahBasedFuelMkIII.getFluidOrGas(100),
                 1100000,
@@ -64,8 +64,8 @@ public class FuelRecipeLoader {
                         FluidRegistry.getFluidStack("heavyradox",1000),
                 },
                 new ItemStack[]{
-                        GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Infinity,64),
-                        MyMaterial.atomicSeparationCatalyst.get(OrePrefixes.dust, 64),
+                        GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Infinity,16),
+                        MyMaterial.atomicSeparationCatalyst.get(OrePrefixes.dust, 32),
                 },
                 MyMaterial.naquadahBasedFuelMkV.getFluidOrGas(500),
                 100000000,
