@@ -338,7 +338,7 @@ public class NeutronActivator extends GT_MetaTileEntity_MultiblockBase_EM implem
             for (NeutronAccelerator tHatch : mNeutronAccelerator) {
                 if (tHatch.isRunning && this.getRepairStatus() == this.getIdealStatus()) {
                     anyWorking = true;
-                    this.eV += nextInt(tHatch.getMaxEUConsume(), tHatch.getMaxEUConsume() * 2 + 1) * 10 * Math.pow(0.95, height - 4);
+                    this.eV += Math.max(nextInt(tHatch.getMaxEUConsume(), tHatch.getMaxEUConsume() * 2 + 1) * 10 * Math.pow(0.95, height - 4), 10);
                 }
             }
             if (!anyWorking) {
