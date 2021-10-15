@@ -3238,3 +3238,6 @@ item.itemBasicTurbine_1.name=Basic Bronze Turbine
 
 interaction.voidexcess.enabled=Void Excess Enabled
 interaction.voidexcess.disabled=Void Excess Disabled
+
+interaction.separateBusses.enabled=Input busses are separated
+interaction.separateBusses.disabled=Input busses are not separated

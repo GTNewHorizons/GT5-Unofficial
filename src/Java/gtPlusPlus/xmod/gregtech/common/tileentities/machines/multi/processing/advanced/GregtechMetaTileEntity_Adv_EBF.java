@@ -5,6 +5,10 @@ import static gtPlusPlus.core.util.data.ArrayUtils.removeNulls;
 import java.util.ArrayList;
 import java.util.List;
 
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentTranslation;
 import org.apache.commons.lang3.ArrayUtils;
 
 import gregtech.api.GregTech_API;
@@ -41,6 +45,7 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 
 	private int mHeatingCapacity = 0;
 	private int controllerY;
+	private boolean isBussesSeparate = false;
 
 	private static boolean mUsingPollutionOutputs = false;
 	
@@ -128,9 +133,29 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 		return aFacing > 1;
 	}
 
+	@Override
 	public boolean checkRecipe(ItemStack aStack) {
-		return checkRecipeGeneric(8, 90, 120); // Will have to clone the logic from parent class to handle heating coil
-		// tiers.
+		if (isBussesSeparate) {
+			FluidStack[] tFluids = getStoredFluids().toArray(new FluidStack[0]);
+			for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
+				ArrayList<ItemStack> tInputs = new ArrayList<>();
+				if (isValidMetaTileEntity(tBus)) {
+					for (int i = tBus.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
+						if (tBus.getBaseMetaTileEntity().getStackInSlot(i) != null) {
+							tInputs.add(tBus.getBaseMetaTileEntity().getStackInSlot(i));
+						}
+					}
+				}
+				if (tInputs.size() > 0) {
+					if (checkRecipeGeneric(tInputs.toArray(new ItemStack[0]), tFluids, 8, 90, 120, 10000)) {
+						return true;
+					}
+				}
+			}
+			return false;
+		} else {
+			return checkRecipeGeneric(8, 90, 120);
+		}
 	}
 
 	public boolean checkMultiblock(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
@@ -460,4 +485,21 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 		return 90;
 	}
 
+	@Override
+	public void onModeChangeByScrewdriver(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+		isBussesSeparate = !isBussesSeparate;
+		aPlayer.addChatMessage(new ChatComponentTranslation(isBussesSeparate ? "interaction.separateBusses.enabled" : "interaction.separateBusses.disabled"));
+	}
+
+	@Override
+	public void saveNBTData(NBTTagCompound aNBT) {
+		aNBT.setBoolean("isBussesSeparate", isBussesSeparate);
+		super.saveNBTData(aNBT);
+	}
+
+	@Override
+	public void loadNBTData(NBTTagCompound aNBT) {
+		isBussesSeparate = aNBT.getBoolean("isBussesSeparate");
+		super.loadNBTData(aNBT);
+	}
 }
