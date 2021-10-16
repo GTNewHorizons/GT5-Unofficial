@@ -1,4 +1,6 @@
+#This is the lang file for GoodGenerator!
 
+#Blocks
 MAR_Casing.0.name=力场约束机械方块
 radiationProtectionSteelFrame.0.name=防辐射钢框架
 fieldRestrictingGlass.0.name=力场约束玻璃
@@ -13,7 +15,9 @@ essentiaCell.0.name=新手源质扩散单元
 essentiaCell.1.name=学徒源质扩散单元
 essentiaCell.2.name=大师源质扩散单元
 essentiaHatch.0.name=源质输入仓
+speedingPipe.0.name=高速管道方块
 
+#Items
 item.radiationProtectionPlate.name=防辐射板
 item.wrappedUraniumIngot.name=封装铀锭
 item.highDensityUraniumNugget.name=浓缩铀粒
@@ -30,7 +34,41 @@ item.chromaticGem.name=彩色宝石
 item.aluminumNitride.name=氮化铝粉
 item.specialCeramics.name=特种陶瓷粉
 item.specialCeramicsPlate.name=特种陶瓷板
+item.radioactiveWaste.name=放射性废料
+item.plasticCase.name=塑料外壳
+item.quartzWafer.name=石英晶元
+item.microHeater.name=微型加热器
+item.quartzCrystalResonator.name=石英晶体谐振器
+item.inverter.name=逆变器
+item.neutronSource.name=中子源
+item.naquadahMass.name=硅岩团
+item.enrichedNaquadahMass.name=富集硅岩团
+item.naquadriaMass.name=超能硅岩团
+item.rodCompressedUraniumDepleted.name=枯竭燃料棒(浓缩铀)
+item.rodCompressedUraniumDepleted2.name=枯竭二联燃料棒(浓缩铀)
+item.rodCompressedUraniumDepleted4.name=枯竭四联燃料棒(浓缩铀)
+item.rodCompressedUranium.name=燃料棒(浓缩铀)
+item.rodCompressedUranium2.name=二联燃料棒(浓缩铀)
+item.rodCompressedUranium4.name=四联燃料棒(浓缩铀)
+item.rodCompressedPlutoniumDepleted.name=枯竭燃料棒(浓缩钚)
+item.rodCompressedPlutoniumDepleted2.name=枯竭二联燃料棒(浓缩钚)
+item.rodCompressedPlutoniumDepleted4.name=枯竭四联燃料棒(浓缩钚)
+item.rodCompressedPlutonium.name=燃料棒(浓缩钚)
+item.rodCompressedPlutonium2.name=二联燃料棒(浓缩钚)
+item.rodCompressedPlutonium4.name=四联燃料棒(浓缩钚)
+item.advancedFuelRod.name=高级燃料棒(空)
 
+#Tooltip
+inverter.tooltip.0=将直流电转化为交流电.
+naquadahMass.tooltip.0=远不够纯.
+enrichedNaquadahMass.tooltip.0=一种强烈的满足感.
+naquadriaMass.tooltip.0=什么?
+EssentiaHatch.tooltip.0=手持源质罐子右键以设置过滤.
+EssentiaHatch.tooltip.1=空手右键以重置过滤.
+fuelrod.tooltip.0=耐久：%s/%s
+depletedfuelrod.tooltip.0=枯竭
+
+#Fluids
 fluid.lightlyCrackedNaquadahGas=轻度裂化硅岩气
 fluid.moderatelyCrackedNaquadahGas=中度裂化硅岩气
 fluid.heavilyCrackedNaquadahGas=重度裂化硅岩气
@@ -81,7 +119,21 @@ fluid.Naquadah Based Liquid Fuel MkIV (Depleted)=硅岩基流体燃料-MkIV(枯�
 fluid.Thorium Based Liquid Fuel (Depleted)=钍基流体燃料(枯竭的)
 fluid.thorium Tetrachloride=四氯化钍
 fluid.Uranium Based Liquid Fuel (Excited State)=铀基流体燃料(激发态)
+fluid.Low Quality Naquadah Emulsion=低纯硅岩乳液
+fluid.2-Ethyl-1-Hexanol=2-乙基己醇
+fluid.P-507=P-507
+fluid.Naquadah-Adamantium Solution=硅岩-精金溶液
+fluid.Naquadah-Rich Solution=高纯硅岩溶液
+fluid.Fluorine-Rich Waste Liquid=富氟废液
+fluid.Waste Liquid=废液
+fluid.Enriched-Naquadah-Rich Solution=高纯富集硅岩溶液
+fluid.Naquadria-Rich Solution=高纯超能硅岩溶液
+fluid.Low Quality Naquadria Sulphate=低纯硫酸超能硅岩
+fluid.Naquadah Goo=硅岩粘浆
+fluid.Enriched Naquadah Goo=富集硅岩粘浆
+fluid.Naquadria Goo=超能硅岩粘浆
 
+#Fluid Tiles
 tile.lightlyCrackedNaquadahGas.name=轻度裂化硅岩气
 tile.moderatelyCrackedNaquadahGas.name=中度裂化硅岩气
 tile.heavilyCrackedNaquadahGas.name=重度裂化硅岩气
@@ -96,16 +148,33 @@ tile.moderatelyCrackedNaquadahAsphalt.name=中度裂化硅岩沥青
 tile.heavilyCrackedNaquadahAsphalt.name=重度裂化硅岩沥青
 tile.combustionPromotor.name=助燃剂
 
+#Tab Name
 itemGroup.Good Generator=更多发电机
 
+#Scanner Info
 scanner.info.FRF=线圈等级：
+scanner.info.NA=当前中子动能：
 
+#GUI Info
+gui.NeutronSensor.0=输入中子动能值.
+gui.NeutronSensor.1=例如 >5000KeV, <=30MeV . . .
+gui.NeutronSensor.2=有效
+gui.NeutronSensor.3=无效
+gui.NeutronActivator.0=当前中子动能：
+gui.NeutronActivator.1=输入：
+
+#NEI Info
 tile.recipe.naquadah_reactor=大型硅岩反应堆
 tile.naquadah_fuel_refine_factory=硅岩燃料精炼厂
+tile.neutron_activator=中子活化器
 value.naquadah_reactor=基础输出电压：
 value.naquadah_fuel_refine_factory.0=要求等级
 value.naquadah_fuel_refine_factory.1=线圈
+value.neutron_activator.0=最低中子动能：
+value.neutron_activator.1=最高中子动能：
+value.neutron_activator.2= MeV
 
+#TecTech Structure Info
 FuelRefineFactory.hint.0=8x力场约束玻璃
 FuelRefineFactory.hint.1=32x力场约束线圈(任意等级)
 FuelRefineFactory.hint.2=104x硅岩燃料精炼机械方块(至少！)
@@ -137,8 +206,17 @@ LargeEssentiaGenerator.hint.0=25x任意源质扩散单元
 LargeEssentiaGenerator.hint.1=4x琥珀砖块
 LargeEssentiaGenerator.hint.2=24x奥术石砖
 LargeEssentiaGenerator.hint.3=53x魔法机械方块(至少！)
-LargeEssentiaGenerator.hint.4=1 - 维护仓/输入仓/动力仓/源质输入仓
+LargeEssentiaGenerator.hint.4=1x动力仓
+LargeEssentiaGenerator.hint.5=1 - 维护仓/输入仓/动力仓/源质输入仓
+NeutronActivator.hint.0=16x钢框架
+NeutronActivator.hint.1=18x处理器机械方块
+NeutronActivator.hint.2=32x防爆玻璃
+NeutronActivator.hint.3=4x高速管道方块
+NeutronActivator.hint.4=7x洁净不锈钢机械方块(至少！)
+NeutronActivator.hint.5=1 - 输入仓/输入总线/洁净不锈钢机械方块
+NeutronActivator.hint.6=2 - 输出仓/输出总线/维护仓/中子加速器/中子传感器/洁净不锈钢机械方块
 
+#Achievement
 achievement.gt.blockmachines.nag=大型硅岩反应堆
 achievement.gt.blockmachines.nag.desc=捡起这个物品以在NEI内查看配方
 achievement.gt.blockmachines.frf=硅岩燃料精炼厂
@@ -152,6 +230,7 @@ achievement.FRF_Coil_2.0.desc=捡起这个物品以在NEI内查看配方
 achievement.FRF_Coil_3.0=终极力场约束线圈
 achievement.FRF_Coil_3.0.desc=捡起这个物品以在NEI内查看配方
 
+#Thaumcraft Research Context
 research.ESSENTIA_GENERATOR.page.0=你发现源质内蕴含的能量超乎你的想象.有没有用这些源质发电的方法呢?
 research.ESSENTIA_GENERATOR.page.1=不同的源质蕴含不等的能量.<BR><BR>Potentia: 45000EU<BR><BR>Ignis: 30000EU<BR><BR>Lucrum: 130000EU<BR><BR>Auram: 120000EU<BR><BR>Arbor: 25000EU<BR><BR>Aer: 13000EU<BR><BR>Praecantatio: 92000EU<BR><BR>Machina: 40000EU<BR><BR>Electrum: 131072EU<BR><BR>Radio: 524288EU
 research.ESSENTIA_GENERATOR.page.2=未列出的源质,每点均含有8192EU.
