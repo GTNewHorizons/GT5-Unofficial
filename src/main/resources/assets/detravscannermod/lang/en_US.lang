@@ -38,3 +38,7 @@ tooltip.detrav.scanner.distance.1=at medium range (3-5), at long range (6-8), fa
 
 gui.detrav.scanner.pollution=Pollution
 gui.detrav.scanner.unknown_fluid=Unknown Fluid name!
+
+gui.detrav.scanner.tooltip.fluid_name=Fluid Name: 
+gui.detrav.scanner.tooltip.fluid_amount=Fluid Amount: 
+gui.detrav.scanner.tooltip.no_fluid=Empty
