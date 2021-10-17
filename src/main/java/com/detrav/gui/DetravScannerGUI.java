@@ -1,6 +1,7 @@
 package com.detrav.gui;
 
 import gregtech.api.util.GT_Utility;
+import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
 
 import com.detrav.gui.textures.DetravMapTexture;
@@ -90,13 +91,17 @@ public class DetravScannerGUI extends GuiScreen {
                     short fluidId = fluidInfo[tX][tY].get((byte) 1);
                     short fluidAmount = fluidInfo[tX][tY].get((byte) 2);
                     if (fluidId != 0 && fluidAmount > 0) {
-                        info.add("Fluid Name: " + map.packet.metaMap.get(fluidId));
-                        info.add("Fluid Amount: " + GT_Utility.formatNumbers(fluidAmount) + " L");
+                        info.add(
+                                StatCollector.translateToLocal("gui.detrav.scanner.tooltip.fluid_name")
+                                        + map.packet.metaMap.get(fluidId));
+                        info.add(
+                                StatCollector.translateToLocal("gui.detrav.scanner.tooltip.fluid_amount")
+                                        + GT_Utility.formatNumbers(fluidAmount) + " L");
                     }
-                    else info.add("Empty");
+                    else info.add(StatCollector.translateToLocal("gui.detrav.scanner.tooltip.no_fluid"));
                 }
                 else {
-                    info.add("Empty");
+                    info.add(StatCollector.translateToLocal("gui.detrav.scanner.tooltip.no_fluid"));
                 }
                 func_146283_a(info, x, y);
             }
