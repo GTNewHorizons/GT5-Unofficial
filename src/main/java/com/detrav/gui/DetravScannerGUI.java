@@ -1,11 +1,16 @@
 package com.detrav.gui;
 
+import gregtech.api.util.GT_Utility;
 import org.lwjgl.opengl.GL11;
 
 import com.detrav.gui.textures.DetravMapTexture;
 
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.ResourceLocation;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by wital_000 on 21.03.2016.
@@ -35,12 +40,10 @@ public class DetravScannerGUI extends GuiScreen {
         map.loadTexture(null);
     }
 
-
     @Override
     public void drawScreen(int x, int y, float f) {
         this.drawDefaultBackground();
         if(map == null) return;
-        
         int currentWidth = Math.max(map.width, minWidth);
         int currentHeight = Math.max(map.height, minHeight);
         int aX = (this.width - currentWidth-100)/2;
@@ -77,6 +80,27 @@ public class DetravScannerGUI extends GuiScreen {
         for(int i = aY ; i <aY + currentHeight ; i += 128) drawTexturedModalRect(aX-5,i,0,5,5,Math.min(128,aY + currentHeight-i)); //left
         for(int i = aY ; i <aY + currentHeight ; i += 128) drawTexturedModalRect(aX+currentWidth+100,i,171,5,5,Math.min(128,aY+currentHeight-i)); //right
 
+        if (map.packet.ptype == 2) {
+            HashMap<Byte, Short>[][] fluidInfo = map.packet.map;
+            int tX = x - aX;
+            int tY = y - aY;
+            if (tX >= 0 && tY >= 0 && tX < fluidInfo.length && tY < fluidInfo[0].length) {
+                List<String> info = new ArrayList<>();
+                if (fluidInfo[tX][tY] != null) {
+                    short fluidId = fluidInfo[tX][tY].get((byte) 1);
+                    short fluidAmount = fluidInfo[tX][tY].get((byte) 2);
+                    if (fluidId != 0 && fluidAmount > 0) {
+                        info.add("Fluid Name: " + map.packet.metaMap.get(fluidId));
+                        info.add("Fluid Amount: " + GT_Utility.formatNumbers(fluidAmount) + " L");
+                    }
+                    else info.add("Empty");
+                }
+                else {
+                    info.add("Empty");
+                }
+                func_146283_a(info, x, y);
+            }
+        }
     }
 
 }
