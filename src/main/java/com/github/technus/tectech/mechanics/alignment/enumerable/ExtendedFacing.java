@@ -138,9 +138,9 @@ public enum ExtendedFacing {
 
     ExtendedFacing(String name) {
         this.name = name;
-        direction= Direction.VALUES[ordinal()/(ROTATIONS_COUNT*FLIPS_COUNT)].getForgeDirection();
-        rotation=Rotation.VALUES[ordinal()/FLIPS_COUNT-direction.ordinal()*ROTATIONS_COUNT];
-        flip=Flip.VALUES[ordinal()%FLIPS_COUNT];
+        direction= Direction.VALUES[ordinal()/(Rotation.COUNT*Flip.COUNT)].getForgeDirection();
+        rotation=Rotation.VALUES[ordinal()/Flip.COUNT-direction.ordinal()*Rotation.COUNT];
+        flip=Flip.VALUES[ordinal()%Flip.COUNT];
         ForgeDirection a,b,c;
         switch (direction){
             case DOWN:
