@@ -878,19 +878,19 @@ public class RecipeLoader {
                 ItemRefer.Radiation_Protection_Plate.get(1),
                 80000,
                 new Object[]{
-                        ItemRefer.Radiation_Protection_Plate.get(4),
-                        GT_OreDictUnificator.get(OrePrefixes.plate,Materials.ElectrumFlux,32),
-                        GT_OreDictUnificator.get(OrePrefixes.plate,Materials.Trinium,32),
-                        GT_OreDictUnificator.get(OrePrefixes.plate,Materials.NaquadahAlloy,32),
-                        GT_OreDictUnificator.get(OrePrefixes.plate,Materials.Osmiridium,32),
-                        GT_OreDictUnificator.get(OrePrefixes.plate,Materials.VibrantAlloy,32),
-                        ItemRefer.Radiation_Protection_Plate.get(4),
+                        ItemRefer.Radiation_Protection_Plate.get(1),
+                        GT_OreDictUnificator.get(OrePrefixes.plate,Materials.ElectrumFlux,4),
+                        GT_OreDictUnificator.get(OrePrefixes.plate,Materials.Trinium,4),
+                        GT_OreDictUnificator.get(OrePrefixes.plate,Materials.NaquadahAlloy,4),
+                        GT_OreDictUnificator.get(OrePrefixes.plate,Materials.Osmiridium,4),
+                        GT_OreDictUnificator.get(OrePrefixes.plate,Materials.VibrantAlloy,4),
+                        ItemRefer.Radiation_Protection_Plate.get(1),
                 },
                 new FluidStack[]{
-                        Materials.SolderingAlloy.getMolten(4608)
+                        Materials.SolderingAlloy.getMolten(1152)
                 },
                 ItemRefer.Advanced_Radiation_Protection_Plate.get(1),
-                2000,
+                1000,
                 65536
         );
 
@@ -900,7 +900,7 @@ public class RecipeLoader {
                 new Object[]{
                         GT_OreDictUnificator.get(OrePrefixes.frameGt,Materials.Thulium,1),
                         ItemRefer.Advanced_Radiation_Protection_Plate.get(6),
-                        ItemList.Field_Generator_UV.get(2),
+                        ItemList.Field_Generator_IV.get(2),
                         GT_OreDictUnificator.get(OrePrefixes.pipeTiny,Materials.Naquadah,16),
                         GT_OreDictUnificator.get(OrePrefixes.wireFine,Materials.NaquadahAlloy,32),
                         GT_OreDictUnificator.get(OrePrefixes.wireFine,Materials.NaquadahAlloy,32),
@@ -923,8 +923,8 @@ public class RecipeLoader {
                     300000,
                     new Object[]{
                             GT_OreDictUnificator.get(OrePrefixes.frameGt,Materials.Osmium,1),
-                            ItemList.Field_Generator_UV.get(8),
-                            ItemList.Electric_Pump_UV.get(32),
+                            ItemList.Field_Generator_UV.get(2),
+                            ItemList.Electric_Pump_UV.get(8),
                             GT_OreDictUnificator.get(OrePrefixes.wireGt01,Materials.SuperconductorZPM,64),
                             GT_OreDictUnificator.get(OrePrefixes.wireGt01,Materials.SuperconductorZPM,64),
                             GT_OreDictUnificator.get(OrePrefixes.plateDense,Materials.Americium,8),
@@ -947,8 +947,8 @@ public class RecipeLoader {
                     350000,
                     new Object[]{
                             GT_OreDictUnificator.get(OrePrefixes.frameGt,Materials.CosmicNeutronium,1),
-                            ItemList.Field_Generator_UHV.get(8),
-                            ItemList.Electric_Pump_UHV.get(32),
+                            ItemList.Field_Generator_UHV.get(2),
+                            ItemList.Electric_Pump_UHV.get(8),
                             GT_OreDictUnificator.get(OrePrefixes.wireGt02,Materials.SuperconductorUV,64),
                             GT_OreDictUnificator.get(OrePrefixes.wireGt02,Materials.SuperconductorUV,64),
                             GT_OreDictUnificator.get(OrePrefixes.plateDense,Materials.Infinity,8),
@@ -971,8 +971,8 @@ public class RecipeLoader {
                     400000,
                     new Object[]{
                             GT_OreDictUnificator.get(OrePrefixes.frameGt,Materials.Infinity,1),
-                            ItemList.Field_Generator_UEV.get(8),
-                            ItemList.Electric_Pump_UEV.get(32),
+                            ItemList.Field_Generator_UEV.get(2),
+                            ItemList.Electric_Pump_UEV.get(8),
                             GT_OreDictUnificator.get(OrePrefixes.wireGt04,Materials.SuperconductorUHV,64),
                             GT_OreDictUnificator.get(OrePrefixes.wireGt04,Materials.SuperconductorUHV,64),
                             new Object[]{"plateDenseRadoxPoly", 8},
