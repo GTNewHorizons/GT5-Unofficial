@@ -82,7 +82,7 @@ public class MyItems extends Item {
 
         @Override
         public String getUnlocalizedName(ItemStack p_77667_1_) {
-                if (this.texture == null || this.texture.length < 1){
+                if (this.textureNames == null || this.textureNames.length < 1){
                         return "item." + this.Name;
                 }
                 else {
