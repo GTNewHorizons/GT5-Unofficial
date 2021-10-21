@@ -43,6 +43,7 @@ import gtPlusPlus.core.util.minecraft.HazmatUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.core.util.sys.SystemUtils;
+import gtPlusPlus.nei.NEI_IMC_Sender;
 import gtPlusPlus.plugin.manager.Core_Manager;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -188,7 +189,7 @@ public class GTplusplus implements ActionListener {
 		proxy.registerNetworkStuff();
 		Meta_GT_Proxy.init();
 		Core_Manager.init();
-
+		NEI_IMC_Sender.IMCSender();
 		// Used by foreign players to generate .lang files for translation.
 		if (CORE.ConfigSwitches.dumpItemAndBlockData) {
 			LocaleUtils.generateFakeLocaleFile();
