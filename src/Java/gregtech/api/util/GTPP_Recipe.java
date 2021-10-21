@@ -327,37 +327,37 @@ public class GTPP_Recipe extends GT_Recipe  implements IComparableRecipe {
 		 * Contains all Recipe Maps
 		 */
 		public static final Collection<GTPP_Recipe_Map> sMappings = new ArrayList<>();
-		//public static final GT_Recipe_Map sChemicalBathRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(200), "gt.recipe.chemicalbath", "Chemical Bath", null, RES_PATH_GUI + "basicmachines/ChemicalBath", 1, 3, 1, 1, 1, E, 1, E, true, true);
-		public static final GTPP_Recipe_Map_Internal sCokeOvenRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(200), "gt.recipe.cokeoven", "Coke Oven", null, RES_PATH_GUI + "basicmachines/Dehydrator", 2, 2, 1, 0, 1, E, 1, E, true, true);
-		public static final GTPP_Recipe_Map_Internal sMatterFab2Recipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(200), "gt.recipe.matterfab2", "Matter Fabricator", null, RES_PATH_GUI + "basicmachines/Default", 9, 9, 0, 0, 1, E, 1, E, true, true);
-		//public static final Gregtech_Recipe_Map sMatterFabRecipes = new Gregtech_Recipe_Map(new HashSet<GregtechRecipe>(200), "gt.recipe.matterfab", "Matter Fabricator", null, RES_PATH_GUI + "basicmachines/Massfabricator", 1, 3, 1, 1, 1, E, 1, E, true, true);
+		//public static final GT_Recipe_Map sChemicalBathRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(200), "gtpp.recipe.chemicalbath", "Chemical Bath", null, RES_PATH_GUI + "basicmachines/ChemicalBath", 1, 3, 1, 1, 1, E, 1, E, true, true);
+		public static final GTPP_Recipe_Map_Internal sCokeOvenRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(200), "gtpp.recipe.cokeoven", "Coke Oven", null, RES_PATH_GUI + "basicmachines/Dehydrator", 2, 2, 1, 0, 1, E, 1, E, true, true);
+		public static final GTPP_Recipe_Map_Internal sMatterFab2Recipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(200), "gtpp.recipe.matterfab2", "Matter Fabricator", null, RES_PATH_GUI + "basicmachines/Default", 9, 9, 0, 0, 1, E, 1, E, true, true);
+		//public static final Gregtech_Recipe_Map sMatterFabRecipes = new Gregtech_Recipe_Map(new HashSet<GregtechRecipe>(200), "gtpp.recipe.matterfab", "Matter Fabricator", null, RES_PATH_GUI + "basicmachines/Massfabricator", 1, 3, 1, 1, 1, E, 1, E, true, true);
 		
-		public static final GT_Recipe_Map_Fuel sRocketFuels = new GT_Recipe_Map_Fuel(new HashSet<GT_Recipe>(10), "gt.recipe.rocketenginefuel", "Rocket Engine Fuel", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 3000, " EU", true, true);
+		public static final GT_Recipe_Map_Fuel sRocketFuels = new GT_Recipe_Map_Fuel(new HashSet<GT_Recipe>(10), "gtpp.recipe.rocketenginefuel", "Rocket Engine Fuel", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 3000, " EU", true, true);
        
-		public static final GTPP_Recipe_Map_Internal sGeoThermalFuels = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(10), "gt.recipe.geothermalfuel", "GeoThermal Fuel", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 1000, " EU", true, true);
-		public static final GTPP_Recipe_Map_Internal sChemicalDehydratorRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(200), "gt.recipe.chemicaldehydrator", "Dehydrator", null, RES_PATH_GUI + "basicmachines/Dehydrator", 2, 9, 0, 0, 1, E, 1, E, true, true);
-		public static final GTPP_Recipe_Map_Internal sVacuumFurnaceRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(500), "gt.recipe.vacfurnace", "Vacuum Furnace", null, "gregtech:textures/gui/basicmachines/Default", 6, 6, 1, 0, 1, "Heat Capacity: ", 1, " K", false, true);
-		public static final GTPP_Recipe_Map_Internal sAlloyBlastSmelterRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(200), "gt.recipe.alloyblastsmelter", "Alloy Blast Smelter", null, RES_PATH_GUI + "basicmachines/BlastSmelter", 9, 9, 1, 0, 1, E, 1, E, true, true);
-		public static final GTPP_Recipe_Map_Internal sSteamTurbineFuels = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(10), "gt.recipe.geothermalfuel", "GeoThermal Fuel", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 1000, " EU", true, true);
+		public static final GTPP_Recipe_Map_Internal sGeoThermalFuels = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(10), "gtpp.recipe.geothermalfuel", "GeoThermal Fuel", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 1000, " EU", true, true);
+		public static final GTPP_Recipe_Map_Internal sChemicalDehydratorRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(200), "gtpp.recipe.chemicaldehydrator", "Dehydrator", null, RES_PATH_GUI + "basicmachines/Dehydrator", 2, 9, 0, 0, 1, E, 1, E, true, true);
+		public static final GTPP_Recipe_Map_Internal sVacuumFurnaceRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(500), "gtpp.recipe.vacfurnace", "Vacuum Furnace", null, "gregtech:textures/gui/basicmachines/Default", 6, 6, 1, 0, 1, "Heat Capacity: ", 1, " K", false, true);
+		public static final GTPP_Recipe_Map_Internal sAlloyBlastSmelterRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(200), "gtpp.recipe.alloyblastsmelter", "Alloy Blast Smelter", null, RES_PATH_GUI + "basicmachines/BlastSmelter", 9, 9, 1, 0, 1, E, 1, E, true, true);
+		public static final GTPP_Recipe_Map_Internal sSteamTurbineFuels = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(10), "gtpp.recipe.steamturbinefuel", "GeoThermal Fuel", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 1000, " EU", true, true);
 
 		//LFTR recipes
-		public static final GTPP_Recipe_Map_Internal sLiquidFluorineThoriumReactorRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(50), "gt.recipe.lftr", "Liquid Fluoride Thorium Reactor", null, RES_PATH_GUI + "basicmachines/LFTR", 0, 0, 0, 2, 1, "Start: ", 1, " EU", true, true);
-		public static final GTPP_Recipe_Map_Internal sLiquidFluorineThoriumReactorRecipesEx = new GTPP_Recipe_Map_Internal(new NoConflictGTRecipeMap(), "gt.recipe.lftr.2", "Liquid Fluoride Thorium Reactor", null, RES_PATH_GUI + "basicmachines/LFTR", 0, 0, 0, 2, 1, "Start: ", 1, " EU", true, true);
+		public static final GTPP_Recipe_Map_Internal sLiquidFluorineThoriumReactorRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(50), "gtpp.recipe.lftr", "Liquid Fluoride Thorium Reactor", null, RES_PATH_GUI + "basicmachines/LFTR", 0, 0, 0, 2, 1, "Start: ", 1, " EU", true, true);
+		public static final GTPP_Recipe_Map_Internal sLiquidFluorineThoriumReactorRecipesEx = new GTPP_Recipe_Map_Internal(new NoConflictGTRecipeMap(), "gtpp.recipe.lftr.2", "Liquid Fluoride Thorium Reactor", null, RES_PATH_GUI + "basicmachines/LFTR", 0, 0, 0, 2, 1, "Start: ", 1, " EU", true, true);
 		
 		// Ore Milling Map
-        public static final GTPP_Recipe_Map_Internal sOreMillRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(10000), "gt.recipe.oremill", "Milling", null, RES_PATH_GUI + "basicmachines/LFTR", 3, 4, 1, 0, 1, E, 1, E, true, false);
+        public static final GTPP_Recipe_Map_Internal sOreMillRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(10000), "gtpp.recipe.oremill", "Milling", null, RES_PATH_GUI + "basicmachines/LFTR", 3, 4, 1, 0, 1, E, 1, E, true, false);
 		
 		//Fission Fuel Plant Recipes
-    	public static final GTPP_Recipe_Map_Internal sFissionFuelProcessing = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(50), "gt.recipe.fissionfuel", "Nuclear Fuel Processing", null, RES_PATH_GUI + "basicmachines/FissionFuel", 0, 0, 0, 0, 1, E, 1, E, true, false);
+    	public static final GTPP_Recipe_Map_Internal sFissionFuelProcessing = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(50), "gtpp.recipe.fissionfuel", "Nuclear Fuel Processing", null, RES_PATH_GUI + "basicmachines/FissionFuel", 0, 0, 0, 0, 1, E, 1, E, true, false);
     	
 		//Basic Washer Map
-		public static final GTPP_Recipe_Map_Internal sSimpleWasherRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(3), "gt.recipe.simplewasher", "Simple Dust Washer", null, RES_PATH_GUI + "basicmachines/PotionBrewer", 1, 1, 0, 0, 1, E, 1, E, true, true);
+		public static final GTPP_Recipe_Map_Internal sSimpleWasherRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(3), "gtpp.recipe.simplewasher", "Simple Dust Washer", null, RES_PATH_GUI + "basicmachines/PotionBrewer", 1, 1, 0, 0, 1, E, 1, E, true, true);
 
-		//public static final GT_Recipe_Map sSimpleWasherRecipes_FakeFuckBW = new GT_Recipe_Map(new HashSet<GT_Recipe>(3), "gt.recipe.simplewasher", "Fuck you Bart", null, RES_PATH_GUI + "basicmachines/PotionBrewer", 1, 1, 0, 0, 1, E, 1, E, true, false);
+		//public static final GT_Recipe_Map sSimpleWasherRecipes_FakeFuckBW = new GT_Recipe_Map(new HashSet<GT_Recipe>(3), "gtpp.recipe.simplewasher", "Fuck you Bart", null, RES_PATH_GUI + "basicmachines/PotionBrewer", 1, 1, 0, 0, 1, E, 1, E, true, false);
 		
 		public static final GTPP_Recipe_Map sChemicalPlantRecipes = new GTPP_Recipe_Map(
 				new HashSet<GTPP_Recipe>(100),
-				"gt.recipe.fluidchemicaleactor",
+				"gtpp.recipe.fluidchemicaleactor",
 				"Chemical Plant",
 				null,
 				CORE.MODID+":textures/gui/FluidReactor",
@@ -375,48 +375,48 @@ public class GTPP_Recipe extends GT_Recipe  implements IComparableRecipe {
 
 		//RTG Fuel Map
 		public static final GT_Recipe.GT_Recipe_Map_Fuel sRTGFuels = new GTPP_Recipe.GT_Recipe_Map_Fuel(
-				new HashSet<GT_Recipe>(10), "gt.recipe.RTGgenerators", "RTG", null,
+				new HashSet<GT_Recipe>(10), "gtpp.recipe.RTGgenerators", "RTG", null,
 				"gregtech:textures/gui/basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 365, " Minecraft Days", true, true);
 
 		//Thermal Boiler map
-		public static final GT_Recipe.GT_Recipe_Map_Fuel sThermalFuels = new GT_Recipe_Map_Fuel(new HashSet<GT_Recipe>(10), "gt.recipe.thermalgeneratorfuel",
+		public static final GT_Recipe.GT_Recipe_Map_Fuel sThermalFuels = new GT_Recipe_Map_Fuel(new HashSet<GT_Recipe>(10), "gtpp.recipe.thermalgeneratorfuel",
 				"Thermal Generator Fuel", null, "gregtech:textures/gui/basicmachines/Default", 1, 1, 0, 0, 1,
 				"Fuel Value: ", 1000, " EU", true, false);
 
 		//Cyclotron recipe map
-		public static final GTPP_Recipe_Map_Internal sCyclotronRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(200), "gt.recipe.cyclotron", "COMET - Compact Cyclotron", null, RES_PATH_GUI + "basicmachines/BlastSmelter", 2, 16, 0, 0, 1, E, 1, E, true, true);
+		public static final GTPP_Recipe_Map_Internal sCyclotronRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(200), "gtpp.recipe.cyclotron", "COMET - Compact Cyclotron", null, RES_PATH_GUI + "basicmachines/BlastSmelter", 2, 16, 0, 0, 1, E, 1, E, true, true);
 
 		//Advanced Mixer
-		public static final GTPP_Recipe_Map_Internal sAdvancedMixerRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(1000), "gt.recipe.advanced.mixer",
+		public static final GTPP_Recipe_Map_Internal sAdvancedMixerRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(1000), "gtpp.recipe.advanced.mixer",
 				"Advanced Material Combiner", null, "gregtech:textures/gui/basicmachines/MixerAdvanced", 4, 4, 1, 0, 2, "", 1, "", true, true);
 
 
 		//Mini Fusion
-		public static final GTPP_Recipe_Map_Internal sSlowFusionRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(50), "gt.recipe.slowfusionreactor",
+		public static final GTPP_Recipe_Map_Internal sSlowFusionRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(50), "gtpp.recipe.slowfusionreactor",
 				"Mimir - Slow Fusion", null, "gregtech:textures/gui/basicmachines/LFTR", 0, 0, 0, 2, 1, "Start: ", 1,
 				" EU", true, true);
 
 
 		//Component Assembler
-		public static final GT_Recipe_Map sComponentAssemblerRecipes = new GT_Recipe_Map_Assembler(new HashSet<GT_Recipe>(300), "gt.recipe.componentassembler", "Component Assembler", null, RES_PATH_GUI + "basicmachines/Assembler", 6, 1, 1, 0, 1, E, 1, E, true, true);
+		public static final GT_Recipe_Map sComponentAssemblerRecipes = new GT_Recipe_Map_Assembler(new HashSet<GT_Recipe>(300), "gtpp.recipe.componentassembler", "Component Assembler", null, RES_PATH_GUI + "basicmachines/Assembler", 6, 1, 1, 0, 1, E, 1, E, true, true);
 		
 		//Special Maps for Multis
-		public static final GTPP_Recipe_Map_Internal sFishPondRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(3), "gt.recipe.fishpond", "Zhuhai - Fishing Port", null, RES_PATH_GUI + "basicmachines/PotionBrewer", 0, 1, 0, 0, 1, "Requires Circuit: ", 1, ".", true, true);
+		public static final GTPP_Recipe_Map_Internal sFishPondRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(3), "gtpp.recipe.fishpond", "Zhuhai - Fishing Port", null, RES_PATH_GUI + "basicmachines/PotionBrewer", 0, 1, 0, 0, 1, "Requires Circuit: ", 1, ".", true, true);
 		
 		//public static final GTPP_Recipe_Map sMultiblockCentrifugeRecipes = new GT_Recipe_Map_LargeCentrifuge();
 		//public static final GTPP_Recipe_Map sMultiblockElectrolyzerRecipes = new GT_Recipe_Map_LargeElectrolyzer();
 		//public static final GTPP_Recipe_Map sAdvFreezerRecipes = new GT_Recipe_Map_AdvancedVacuumFreezer();
 		
-		public static final GTPP_Recipe_Map_Internal sAdvFreezerRecipes_GT = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(2000), "gt.recipe.cryogenicfreezer", "Cryogenic Freezer", null, RES_PATH_GUI + "basicmachines/FissionFuel", 9, 9, 0, 0, 1, "", 0, "", false, true);
-		public static final GTPP_Recipe_Map_Internal sMultiblockCentrifugeRecipes_GT = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(2000), "gt.recipe.multicentrifuge", "Multiblock Centrifuge", null, RES_PATH_GUI + "basicmachines/FissionFuel", 9, 9, 0, 0, 1, "", 0, "", false, true);
-		public static final GTPP_Recipe_Map_Internal sMultiblockElectrolyzerRecipes_GT = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(2000), "gt.recipe.multielectro", "Multiblock Electrolyzer", null, RES_PATH_GUI + "basicmachines/FissionFuel", 9, 9, 0, 0, 1, "", 0, "", false, true);
-		public static final GTPP_Recipe_Map_Internal sChemicalPlant_GT = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(2000), "gt.recipe.temp4", "temp4", null, RES_PATH_GUI + "basicmachines/PotionBrewer", 0, 0, 0, 0, 0, "", 0, "", false, false);
+		public static final GTPP_Recipe_Map_Internal sAdvFreezerRecipes_GT = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(2000), "gtpp.recipe.cryogenicfreezer", "Cryogenic Freezer", null, RES_PATH_GUI + "basicmachines/FissionFuel", 9, 9, 0, 0, 1, "", 0, "", false, true);
+		public static final GTPP_Recipe_Map_Internal sMultiblockCentrifugeRecipes_GT = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(2000), "gtpp.recipe.multicentrifuge", "Multiblock Centrifuge", null, RES_PATH_GUI + "basicmachines/FissionFuel", 9, 9, 0, 0, 1, "", 0, "", false, true);
+		public static final GTPP_Recipe_Map_Internal sMultiblockElectrolyzerRecipes_GT = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(2000), "gtpp.recipe.multielectro", "Multiblock Electrolyzer", null, RES_PATH_GUI + "basicmachines/FissionFuel", 9, 9, 0, 0, 1, "", 0, "", false, true);
+		public static final GTPP_Recipe_Map_Internal sChemicalPlant_GT = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(2000), "gtpp.recipe.temp4", "temp4", null, RES_PATH_GUI + "basicmachines/PotionBrewer", 0, 0, 0, 0, 0, "", 0, "", false, false);
 
 		//Semi-Fluid Fuel Map 
-		public static final GT_Recipe_Map_Fuel sSemiFluidLiquidFuels = new GT_Recipe_Map_Fuel(new HashSet<GT_Recipe>(10), "gt.recipe.semifluidgeneratorfuels", "Semifluid Generator Fuels", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 1000, " EU", true, true);
+		public static final GT_Recipe_Map_Fuel sSemiFluidLiquidFuels = new GT_Recipe_Map_Fuel(new HashSet<GT_Recipe>(10), "gtpp.recipe.semifluidgeneratorfuels", "Semifluid Generator Fuels", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 1000, " EU", true, true);
 		
 		// Flotation Cell
-        public static final GTPP_Recipe_Map_Internal sFlotationCellRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(10000), "gt.recipe.flotationcell", "Flotation Cell", null, RES_PATH_GUI + "basicmachines/LFTR", 6, 4, 1, 1, 1, "Ore Key: ", 1, E, true, false);
+        public static final GTPP_Recipe_Map_Internal sFlotationCellRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(10000), "gtpp.recipe.flotationcell", "Flotation Cell", null, RES_PATH_GUI + "basicmachines/LFTR", 6, 4, 1, 1, 1, "Ore Key: ", 1, E, true, false);
 		
         
 		
