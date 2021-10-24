@@ -30,11 +30,15 @@ import java.lang.reflect.*;
 import java.util.HashSet;
 
 import static GoodGenerator.Items.MyMaterial.*;
+import static GoodGenerator.Main.GG_Config_Loader.EnableNaquadahRework;
 import static gregtech.common.items.GT_MetaGenerated_Item_01.registerCauldronCleaningFor;
 
 public class NaquadahReworkRecipeLoader {
 
     public static void RecipeLoad(){
+
+        if (!EnableNaquadahRework) return;
+
         //Naquadah Rework Line
         GT_Values.RA.addBlastRecipe(
                 naquadahEarth.get(OrePrefixes.dust, 2),
@@ -557,6 +561,8 @@ public class NaquadahReworkRecipeLoader {
     }
 
     public static void Remover() {
+
+        if (!EnableNaquadahRework) return;
 
         GT_Log.out.print(GoodGenerator.MOD_ID + ": Begin to remove pure Naquadah, Enriched Naquadah and Naquadria.\n");
 

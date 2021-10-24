@@ -35,6 +35,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static GoodGenerator.Main.GG_Config_Loader.LiquidAirConsumptionPerSecond;
+import static GoodGenerator.Main.GG_Config_Loader.CoolantEfficiency;
+import static GoodGenerator.Main.GG_Config_Loader.ExcitedLiquidCoe;
 import static GoodGenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
@@ -55,15 +58,15 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
 
     static {
         excitedLiquid = Arrays.asList(
-                new Pair<>(MyMaterial.atomicSeparationCatalyst.getMolten(20), 16),
-                new Pair<>(Materials.Naquadah.getMolten(20L), 4),
-                new Pair<>(Materials.Uranium235.getMolten(180L), 3),
-                new Pair<>(Materials.Caesium.getMolten(180L), 2)
+                new Pair<>(MyMaterial.atomicSeparationCatalyst.getMolten(20), ExcitedLiquidCoe[0]),
+                new Pair<>(Materials.Naquadah.getMolten(20L), ExcitedLiquidCoe[1]),
+                new Pair<>(Materials.Uranium235.getMolten(180L), ExcitedLiquidCoe[2]),
+                new Pair<>(Materials.Caesium.getMolten(180L), ExcitedLiquidCoe[3])
         );
         coolant = Arrays.asList(
-                new Pair<>(FluidRegistry.getFluidStack("cryotheum", 1000), 275),
-                new Pair<>(Materials.SuperCoolant.getFluid(1000L), 150),
-                new Pair<>(FluidRegistry.getFluidStack("ic2coolant",1000), 105)
+                new Pair<>(FluidRegistry.getFluidStack("cryotheum", 1000), CoolantEfficiency[0]),
+                new Pair<>(Materials.SuperCoolant.getFluid(1000L), CoolantEfficiency[1]),
+                new Pair<>(FluidRegistry.getFluidStack("ic2coolant",1000), CoolantEfficiency[2])
         );
     }
 
@@ -235,7 +238,7 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
             if (mMaxProgresstime != 0 && mProgresstime % 20 == 0) {
                 FluidStack[] input = getStoredFluids().toArray(new FluidStack[0]);
                 int eff = 100, time = 1;
-                if (!consumeFuel(Materials.LiquidAir.getFluid(2400), input)) {
+                if (LiquidAirConsumptionPerSecond != 0 && !consumeFuel(Materials.LiquidAir.getFluid(LiquidAirConsumptionPerSecond), input)) {
                     this.mEUt = 0;
                     this.trueEff = 0;
                     this.trueOutput = 0;
@@ -369,16 +372,16 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
                       .addInfo("Controller block for the Naquadah Reactor")
                       .addInfo("Environmental Friendly!")
                       .addInfo("Generate power with the High-energy liquid.")
-                      .addInfo("Consume liquid air 2400 L/s to keep running, otherwise" + EnumChatFormatting.YELLOW + " it will void your fuel" + EnumChatFormatting.GRAY + ".")
+                      .addInfo(String.format("Consume liquid air %d L/s to keep running, otherwise" + EnumChatFormatting.YELLOW + " it will void your fuel" + EnumChatFormatting.GRAY + ".", LiquidAirConsumptionPerSecond))
                       .addInfo("Input liquid nuclear fuel or liquid naquadah fuel.")
                       .addInfo("The reactor will explode when there are more than" + EnumChatFormatting.RED + " ONE" + EnumChatFormatting.GRAY + " types of fuel in the hatch!")
                       .addInfo("Consume coolant 1000 L/s to increase the efficiency:")
-                      .addInfo("IC2 Coolant 105%, Super Coolant 150%, Cryotheum 275%")
+                      .addInfo(String.format("IC2 Coolant %d%%, Super Coolant %d%%, Cryotheum %d%%", CoolantEfficiency[2], CoolantEfficiency[1], CoolantEfficiency[0]))
                       .addInfo("Consume excited liquid to increase the output power:")
-                      .addInfo("molten caesium | 2x power | 180 L/s ")
-                      .addInfo("molten uranium-235 | 3x power | 180 L/s")
-                      .addInfo("molten naquadah | 4x power | 20 L/s")
-                      .addInfo("molten Atomic Separation Catalyst | 16x power | 20 L/s")
+                      .addInfo(String.format("molten caesium | %dx power | 180 L/s ", ExcitedLiquidCoe[3]))
+                      .addInfo(String.format("molten uranium-235 | %dx power | 180 L/s", ExcitedLiquidCoe[2]))
+                      .addInfo(String.format("molten naquadah | %dx power | 20 L/s", ExcitedLiquidCoe[1]))
+                      .addInfo(String.format("molten Atomic Separation Catalyst | %dx power | 20 L/s", ExcitedLiquidCoe[0]))
                       .addInfo("The structure is too complex!")
                       .addInfo(BLUE_PRINT_INFO)
                       .addSeparator()
