@@ -243,8 +243,8 @@ YOTTank.hint.0=At least 47x YOTTank Casing
 YOTTank.hint.1=16x Steel Frame Box
 YOTTank.hint.2=16x Borosilicate Glass Block of the same tier for every layer
 YOTTank.hint.3=9x Fluid Cell Block for every layer
-YOTTank.hint.4=1 - Input Hatch
-YOTTank.hint.5=2 - Maintenance Hatch
+YOTTank.hint.4=1 - Input Hatch/YOTTank Casing
+YOTTank.hint.5=2 - Maintenance Hatch/YOTTank Casing
 YOTTank.hint.6=3 - Output Hatch
 
 #Achievement
