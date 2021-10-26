@@ -6,6 +6,8 @@ import com.detrav.net.DetravNetwork;
 import com.detrav.net.ProspectingPacket;
 import com.detrav.utils.BartWorksHelper;
 import com.detrav.utils.GTppHelper;
+import com.sinthoras.visualprospecting.VisualProspecting_API;
+import cpw.mods.fml.common.Loader;
 import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GT_LanguageManager;
@@ -144,6 +146,21 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
             DetravNetwork.INSTANCE.sendToPlayer(packet, (EntityPlayerMP) aPlayer);
             if (!aPlayer.capabilities.isCreativeMode)
                 tool.doDamage(aStack, this.mCosts * chunks.size());
+
+            if(Loader.isModLoaded("visualprospecting")) {
+                if(data == 0 || data == 1) {
+                    VisualProspecting_API.LogicalServer.sendProspectionResultsToClient(
+                            (EntityPlayerMP) aPlayer,
+                            VisualProspecting_API.LogicalServer.prospectOreVeinsWithinRadius(aWorld.provider.dimensionId, (int) aPlayer.posX, (int) aPlayer.posZ, size * 16),
+                            new ArrayList<>());
+                }
+                else if(data == 2) {
+                    VisualProspecting_API.LogicalServer.sendProspectionResultsToClient(
+                            (EntityPlayerMP) aPlayer,
+                            new ArrayList<>(),
+                            VisualProspecting_API.LogicalServer.prospectUndergroundFluidsWithingRadius(aWorld, (int) aPlayer.posX, (int) aPlayer.posZ, size * 16));
+                }
+            }
         }
         return super.onItemRightClick(aItem, aStack, aWorld, aPlayer);
     }

@@ -4,6 +4,8 @@ import com.detrav.DetravScannerMod;
 import com.detrav.items.DetravMetaGeneratedTool01;
 import com.detrav.utils.BartWorksHelper;
 import com.detrav.utils.GTppHelper;
+import com.sinthoras.visualprospecting.VisualProspecting_API;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
@@ -19,6 +21,7 @@ import gregtech.common.items.behaviors.Behaviour_None;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -29,11 +32,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fluids.FluidStack;
 
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.SplittableRandom;
+import java.util.*;
 
 /**
  * Created by wital_000 on 19.03.2016.
@@ -74,6 +73,13 @@ public class BehaviourDetravToolProspector extends Behaviour_None {
             		aPlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.RED+"You found no liquid."));*/
                 if (!aPlayer.capabilities.isCreativeMode)
                     ((DetravMetaGeneratedTool01)aItem).doDamage(aStack, this.mCosts);
+
+                if(Loader.isModLoaded("visualprospecting")) {
+                    VisualProspecting_API.LogicalServer.sendProspectionResultsToClient(
+                            (EntityPlayerMP) aPlayer,
+                            new ArrayList<>(),
+                            VisualProspecting_API.LogicalServer.prospectUndergroundFluidsWithingRadius(aWorld, (int) aPlayer.posX, (int) aPlayer.posZ, 0));
+                }
             }
             return true;
         }
@@ -163,6 +169,13 @@ public class BehaviourDetravToolProspector extends Behaviour_None {
         for(ChatComponentText msg : oreMessagesSorted) {
             aPlayer.addChatMessage(msg);
         }
+
+        if(Loader.isModLoaded("visualprospecting")) {
+            VisualProspecting_API.LogicalServer.sendProspectionResultsToClient(
+                    (EntityPlayerMP) aPlayer,
+                    VisualProspecting_API.LogicalServer.prospectOreVeinsWithinRadius(aWorld.provider.dimensionId, (int) aPlayer.posX, (int) aPlayer.posZ, range * 16 ),
+                    new ArrayList<>());
+        }
     }
 
     // Used by Electric scanner when scanning the chunk whacked by the scanner. 100% chance find rate
@@ -175,6 +188,13 @@ public class BehaviourDetravToolProspector extends Behaviour_None {
         for (String key : ores.keySet()) {
             int value = ores.get(key);
             addChatMassageByValue(aPlayer,value,key);
+        }
+
+        if(Loader.isModLoaded("visualprospecting")) {
+            VisualProspecting_API.LogicalServer.sendProspectionResultsToClient(
+                    (EntityPlayerMP) aPlayer,
+                    VisualProspecting_API.LogicalServer.prospectOreVeinsWithinRadius(aWorld.provider.dimensionId, (int) aPlayer.posX, (int) aPlayer.posZ, 0),
+                    new ArrayList<>());
         }
     }
 
