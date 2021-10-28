@@ -58,11 +58,16 @@ public class BW_MetaGeneratedBlock_Item extends BW_ItemBlocks {
     @SideOnly(Side.CLIENT)
     @SuppressWarnings("unchecked")
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
-        if (!GT_Utility.isStackValid(aStack) || aPlayer == null || aStack.getItemDamage() <= 0)
+        if (!GT_Utility.isStackValid(aStack) || aPlayer == null || aStack.getItemDamage() <= 0) {
             return;
-        if (aList == null)
+        }
+        if (aList == null) {
             aList = new ArrayList<String>();
-        aList.add(Werkstoff.werkstoffHashMap.get((short) aStack.getItemDamage()).getToolTip());
+        }
+        Werkstoff werkstoff = Werkstoff.werkstoffHashMap.get((short) aStack.getItemDamage());
+        if(werkstoff != null) {
+            aList.add(werkstoff.getToolTip());
+        }
         aList.add(BW_Tooltip_Reference.ADDED_BY_BARTWORKS.get());
     }
 
