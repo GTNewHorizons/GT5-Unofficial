@@ -69,6 +69,9 @@ repositories {
     maven { // AppleCore
         url "http://www.ryanliptak.com/maven/"
     }
+    maven {
+        url = "https://jitpack.io"
+    }
 }
 
 dependencies {
@@ -80,6 +83,9 @@ dependencies {
     provided "applecore:AppleCore:${config.applecore.version}:api"
     provided "com.enderio.core:EnderCore:${config.enderiocore.version}:dev"
     provided ("com.enderio:EnderIO:${config.enderio.version}:dev") {
+        transitive = false
+    }
+    compileOnly("com.github.SinTh0r4s:VisualProspecting:${config.visualprospecting.version}") {
         transitive = false
     }
 }
