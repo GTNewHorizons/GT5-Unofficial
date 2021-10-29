@@ -2,6 +2,7 @@ package pers.gwyog.gtneioreplugin.plugin.gregtech5;
 
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
+import cpw.mods.fml.common.Loader;
 import gregtech.api.GregTech_API;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
@@ -176,12 +177,18 @@ public class PluginGT5VeinStat extends PluginGT5Base {
         GuiDraw.drawString(I18n.format(getLocalizedVeinName(oreLayer)[1]), 2, 30, 0x404040, false);
         }
         else*/
-        if (getGTOreLocalizedName(oreLayer.Meta[0]).contains("Ore"))
-            GuiDraw.drawString(I18n.format("gtnop.gui.nei.veinName") + ": " + getGTOreLocalizedName(oreLayer.Meta[0]).split("Ore")[0] + "" + I18n.format("gtnop.gui.nei.vein"), 2, 20, 0x404040, false);
-        else if (getGTOreLocalizedName(oreLayer.Meta[0]).contains("Sand"))
-            GuiDraw.drawString(I18n.format("gtnop.gui.nei.veinName") + ": " + getGTOreLocalizedName(oreLayer.Meta[0]).split("Sand")[0] + "" + I18n.format("gtnop.gui.nei.vein"), 2, 20, 0x404040, false);
-        else
-            GuiDraw.drawString(I18n.format("gtnop.gui.nei.veinName") + ": " + getGTOreLocalizedName(oreLayer.Meta[0]) + " " + I18n.format("gtnop.gui.nei.vein"), 2, 20, 0x404040, false);
+        if(Loader.isModLoaded("visualprospecting")) {
+            GuiDraw.drawString(I18n.format("gtnop.gui.nei.veinName") + ": " + I18n.format(oreLayer.veinName) + "" + I18n.format("gtnop.gui.nei.vein"), 2, 20, 0x404040, false);
+        }
+        else {
+            if (getGTOreLocalizedName(oreLayer.Meta[0]).contains("Ore"))
+                GuiDraw.drawString(I18n.format("gtnop.gui.nei.veinName") + ": " + getGTOreLocalizedName(oreLayer.Meta[0]).split("Ore")[0] + "" + I18n.format("gtnop.gui.nei.vein"), 2, 20, 0x404040, false);
+            else if (getGTOreLocalizedName(oreLayer.Meta[0]).contains("Sand"))
+                GuiDraw.drawString(I18n.format("gtnop.gui.nei.veinName") + ": " + getGTOreLocalizedName(oreLayer.Meta[0]).split("Sand")[0] + "" + I18n.format("gtnop.gui.nei.vein"), 2, 20, 0x404040, false);
+            else
+                GuiDraw.drawString(I18n.format("gtnop.gui.nei.veinName") + ": " + getGTOreLocalizedName(oreLayer.Meta[0]) + " " + I18n.format("gtnop.gui.nei.vein"), 2, 20, 0x404040, false);
+        }
+        
         drawToolTip(sDimNames);
         if (!ttDisplayed) {
             GuiDraw.drawString(I18n.format("gtnop.gui.nei.primaryOre") + ": " + getGTOreLocalizedName(oreLayer.Meta[0]), 2, 50, 0x404040, false);
