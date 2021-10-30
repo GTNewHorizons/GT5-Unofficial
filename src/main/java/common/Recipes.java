@@ -1,5 +1,6 @@
 package common;
 
+import com.github.technus.tectech.recipe.TT_recipeAdder;
 import common.items.ErrorItem;
 import common.items.MetaItem_CraftingComponent;
 import cpw.mods.fml.common.Loader;
@@ -541,8 +542,9 @@ public class Recipes {
 		);
 		
 		// Ultimate Capacitor
-		GT_Values.RA.addAssemblylineRecipe(
-				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 4), 288000,
+		TT_recipeAdder.addResearchableAssemblylineRecipe(
+				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 4), 12000,
+				16, 300000, 3,
 				new Object[] {
 						GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.CosmicNeutronium, 4),
 						GT_OreDictUnificator.get(OrePrefixes.screw, Materials.CosmicNeutronium, 24),
