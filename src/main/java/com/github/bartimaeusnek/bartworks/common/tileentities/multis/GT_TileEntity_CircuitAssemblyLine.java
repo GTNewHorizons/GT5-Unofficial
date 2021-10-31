@@ -22,10 +22,16 @@
 
 package com.github.bartimaeusnek.bartworks.common.tileentities.multis;
 
+import appeng.integration.modules.GT;
 import com.github.bartimaeusnek.bartworks.system.material.CircuitGeneration.BW_Meta_Items;
 import com.github.bartimaeusnek.bartworks.system.material.CircuitGeneration.CircuitImprintLoader;
 import com.github.bartimaeusnek.bartworks.util.BWRecipes;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
+import com.gtnewhorizon.structurelib.alignment.IAlignment;
+import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -34,19 +40,60 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.Collection;
 import java.util.HashSet;
 
 import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
-public class GT_TileEntity_CircuitAssemblyLine extends GT_MetaTileEntity_MultiBlockBase {
+public class GT_TileEntity_CircuitAssemblyLine extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_TileEntity_CircuitAssemblyLine> {
+
+    private static final IStructureDefinition<GT_TileEntity_CircuitAssemblyLine> STRUCTURE_DEFINITION = StructureDefinition.<GT_TileEntity_CircuitAssemblyLine>builder()
+            .addShape("first", transpose(new String[][] {
+                    {"~", "G", "G"},
+                    {"g", "l", "g"},
+                    {"b", "i", "b"},
+            }))
+            .addShape("next", transpose(new String[][] {
+                    {"G", "G", "G"},
+                    {"g", "l", "g"},
+                    {"b", "I", "b"},
+            }))
+            .addElement('G', ofHatchAdderOptional(GT_TileEntity_CircuitAssemblyLine::addEnergyInputToMachineList, 16, 1, GregTech_API.sBlockCasings3, 10)) //grate machine casings
+            .addElement('g', ofBlockAnyMeta(GameRegistry.findBlock("IC2", "blockAlloyGlass")))
+            .addElement('l', ofBlock(GregTech_API.sBlockCasings2, 5)) //assembling line casings
+            .addElement('b', ofChain(
+                    ofHatchAdder(GT_TileEntity_CircuitAssemblyLine::addMaintenanceToMachineList, 16, 2),
+                    ofHatchAdder(GT_TileEntity_CircuitAssemblyLine::addInputHatchToMachineList, 16, 2),
+                    ofBlock(GregTech_API.sBlockCasings2, 0)
+            ))
+            .addElement('i', ofHatchAdder(GT_TileEntity_CircuitAssemblyLine::addInputToMachineList, 16, 3))
+            .addElement('I', ofChain(
+                    ofHatchAdder(GT_TileEntity_CircuitAssemblyLine::addInputToMachineList, 16, 4),
+                    ofHatchAdder(GT_TileEntity_CircuitAssemblyLine::addOutputToMachineList, 16, 4)
+            ))
+            .build();
+
+    @Override
+    public IStructureDefinition<GT_TileEntity_CircuitAssemblyLine> getStructureDefinition() { return STRUCTURE_DEFINITION; }
+
+    //I can't get this to work properly...
+    protected GT_Multiblock_Tooltip_Builder createTooltip() {
+        return new GT_Multiblock_Tooltip_Builder();
+    }
 
     public String getTypeForDisplay() {
         if (this.type.equals(new NBTTagCompound()))
@@ -164,128 +211,6 @@ public class GT_TileEntity_CircuitAssemblyLine extends GT_MetaTileEntity_MultiBl
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
-        int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
-
-        int xBase = aBaseMetaTileEntity.getXCoord() + xDir;
-        int yBase = aBaseMetaTileEntity.getYCoord();
-        int zBase = aBaseMetaTileEntity.getZCoord() + zDir;
-
-        boolean sided = xDir == 0;
-
-        if (sided)
-            ++zBase;
-        else
-            ++xBase;
-
-        int length = 0;
-        boolean backwards = false;
-
-
-        while (true) {
-            IGregTechTileEntity igtte = aBaseMetaTileEntity.getIGregTechTileEntity(sided ? xBase + length : xBase - 1, yBase - 2, sided ? zBase - 1 : zBase + length);
-            if (igtte == null){
-                backwards = true;
-                length = 0;
-                break;
-            }
-
-            if (igtte.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_OutputBus)
-                break;
-
-            ++length;
-
-            if (length > 7){
-                backwards = true;
-                length = 0;
-                break;
-            }
-
-        }
-        if (backwards)
-            while (true) {
-                IGregTechTileEntity igtte = aBaseMetaTileEntity.getIGregTechTileEntity(sided ? xBase + length : xBase - 1, yBase - 2, sided ? zBase - 1 : zBase + length);
-                if (igtte == null)
-                    return false;
-
-                if (igtte.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_OutputBus)
-                    break;
-
-                --length;
-
-                if (length < -7)
-                    return false;
-
-            }
-
-        if (sided)
-            zBase -= 2;
-        else
-            xBase -= 2;
-
-        for (int x = (backwards && sided ? length : 0); x <= (backwards && sided ? 0 : (sided ? length : 2)); x++) {
-            for (int y = -2; y <= 0; y++) {
-                for (int z = (backwards && !sided ? length : 0); z <= (backwards && !sided ? 0 : (sided ? 2 : length)); z++) {
-                    if (xBase + x == this.getBaseMetaTileEntity().getXCoord() && yBase + y == this.getBaseMetaTileEntity().getYCoord() && zBase + z == this.getBaseMetaTileEntity().getZCoord())
-                        continue;
-
-                    IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntity(xBase + x, yBase + y, zBase + z);
-                    Block block = aBaseMetaTileEntity.getBlock(xBase + x, yBase + y, zBase + z);
-                    byte meta = aBaseMetaTileEntity.getMetaID(xBase + x, yBase + y, zBase + z);
-
-                    switch (y) {
-                        case -2: {
-                            switch (sided ? z : x) {
-                                case 0:
-                                case 2: {
-                                    if (!this.addMaintenanceToMachineList(tTileEntity, 16) && !this.addInputToMachineList(tTileEntity, 16))
-                                        if (block != GregTech_API.sBlockCasings2 || meta != 0)
-                                            return false;
-                                    break;
-                                }
-                                case 1: {
-                                    if (!this.addInputToMachineList(tTileEntity, 16) && !((sided ? x : z) == length && this.addOutputToMachineList(tTileEntity, 16)))
-                                        return false;
-                                    break;
-                                }
-                                default:
-                                    break;
-                            }
-                            break;
-                        }
-                        case -1: {
-                            switch (sided ? z : x) {
-                                case 0:
-                                case 2: {
-                                    if (BW_Util.calculateGlassTier(block, meta) < 4)
-                                        return false;
-                                    break;
-                                }
-                                case 1: {
-                                    if (block != GregTech_API.sBlockCasings2 || meta != 5)
-                                        return false;
-                                    break;
-                                }
-                                default:
-                                    break;
-                            }
-                            break;
-                        }
-                        case 0: {
-                            if (!this.addEnergyInputToMachineList(tTileEntity, 16))
-                                if (block != GregTech_API.sBlockCasings3 || meta != 10)
-                                    return false;
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-        return this.mEnergyHatches.size() == 1 && this.mMaintenanceHatches.size() == 1;
-    }
-
-    @Override
     public boolean addInputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null) {
             return false;
@@ -299,6 +224,23 @@ public class GT_TileEntity_CircuitAssemblyLine extends GT_MetaTileEntity_MultiBl
                 ((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
                 ((GT_MetaTileEntity_Hatch_InputBus)aMetaTileEntity).mRecipeMap = this.getRecipeMap();
                 return this.mInputBusses.add((GT_MetaTileEntity_Hatch_InputBus)aMetaTileEntity);
+            } else {
+                return false;
+            }
+        }
+    }
+
+    private boolean addInputHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity == null) {
+            return false;
+        } else {
+            IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+            if (aMetaTileEntity == null) {
+                return false;
+            } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
+                ((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+                ((GT_MetaTileEntity_Hatch_Input)aMetaTileEntity).mRecipeMap = this.getRecipeMap();
+                return this.mInputHatches.add((GT_MetaTileEntity_Hatch_Input)aMetaTileEntity);
             } else {
                 return false;
             }
@@ -369,5 +311,50 @@ public class GT_TileEntity_CircuitAssemblyLine extends GT_MetaTileEntity_MultiBl
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         return aSide == aFacing ? new ITexture[]{Textures.BlockIcons.getCasingTextureForId(16), TextureFactory.of(aActive ? TextureFactory.of(TextureFactory.of(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE), TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW).glow().build()) : TextureFactory.of(TextureFactory.of(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE), TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_GLOW).glow().build()))} : new ITexture[]{Textures.BlockIcons.getCasingTextureForId(16)};
+    }
+
+    private static final String[] description = new String[] {
+            translateToLocal("BW.keyphrase.Hint_Details") + ":",
+            translateToLocal("BW.tile.CircuitAssemblyLine.hint.0"), //1 - Energy Input Hatch
+            translateToLocal("BW.tile.CircuitAssemblyLine.hint.1"), //2 - Maintenance Hatch, Input Hatch
+            translateToLocal("BW.tile.CircuitAssemblyLine.hint.2"), //3 - Input Bus
+            translateToLocal("BW.tile.CircuitAssemblyLine.hint.3"), //4 - Input Bus, Output Bus
+    };
+
+    @Override
+    public String[] getStructureDescription(ItemStack stackSize) {
+        return description;
+    }
+
+    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        if (!this.checkPiece("first", 0, 0, 0)) {
+            return false;
+        } else {
+            return this.checkMachine(true) || this.checkMachine(false);
+        }
+    }
+
+    private boolean checkMachine(boolean leftToRight) {
+        for(int i = 1; i < 7; ++i) {
+            if (!this.checkPiece("next", leftToRight ? -i : i, 0, 0)) {
+                return false;
+            }
+
+            if (!this.mOutputBusses.isEmpty()) {
+                return !this.mEnergyHatches.isEmpty() && this.mMaintenanceHatches.size() == 1;
+            }
+        }
+
+        return false;
+    }
+
+    public void construct(ItemStack stackSize, boolean hintsOnly) {
+        this.buildPiece("first", stackSize, hintsOnly, 0, 0, 0);
+        int tLength = Math.min(stackSize.stackSize + 1, 7);
+
+        for(int i = 1; i < tLength; ++i) {
+            this.buildPiece("next", stackSize, hintsOnly, -i, 0, 0);
+        }
+
     }
 }
