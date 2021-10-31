@@ -65,7 +65,9 @@ public class GT_TileEntity_CircuitAssemblyLine extends GT_MetaTileEntity_Enhance
                     {"g", "l", "g"},
                     {"b", "I", "b"},
             }))
-            .addElement('G', ofHatchAdderOptional(GT_TileEntity_CircuitAssemblyLine::addEnergyInputToMachineList, 16, 1, GregTech_API.sBlockCasings3, 10)) //grate machine casings
+            .addElement('G', ofChain(
+                    ofHatchAdder(GT_TileEntity_CircuitAssemblyLine::addEnergyInputToMachineList, 16, 1), //grate machine casings
+                    ofBlock(GregTech_API.sBlockCasings3, 10)))
             .addElement('g', ofBlockAnyMeta(GameRegistry.findBlock("IC2", "blockAlloyGlass")))
             .addElement('l', ofBlock(GregTech_API.sBlockCasings2, 5)) //assembling line casings
             .addElement('b', ofChain(
@@ -334,7 +336,7 @@ public class GT_TileEntity_CircuitAssemblyLine extends GT_MetaTileEntity_Enhance
             }
 
             if (!this.mOutputBusses.isEmpty()) {
-                return !this.mEnergyHatches.isEmpty() && this.mMaintenanceHatches.size() == 1;
+                return this.mEnergyHatches.size() == 1 && this.mMaintenanceHatches.size() == 1;
             }
         }
 
