@@ -22,6 +22,7 @@
 
 package com.github.bartimaeusnek.bartworks.common.tileentities.multis;
 
+import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
 import com.github.bartimaeusnek.bartworks.system.material.CircuitGeneration.BW_Meta_Items;
 import com.github.bartimaeusnek.bartworks.system.material.CircuitGeneration.CircuitImprintLoader;
 import com.github.bartimaeusnek.bartworks.util.BWRecipes;
@@ -40,6 +41,7 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -68,7 +70,16 @@ public class GT_TileEntity_CircuitAssemblyLine extends GT_MetaTileEntity_Enhance
             .addElement('G', ofChain(
                     ofHatchAdder(GT_TileEntity_CircuitAssemblyLine::addEnergyInputToMachineList, 16, 1), //grate machine casings
                     ofBlock(GregTech_API.sBlockCasings3, 10)))
-            .addElement('g', ofBlockAnyMeta(GameRegistry.findBlock("IC2", "blockAlloyGlass")))
+            .addElement('g', ofChain(
+                    ofBlockAnyMeta(GameRegistry.findBlock("IC2", "blockAlloyGlass")),
+                    //Forgive me for I have sinned. But it works...
+                    ofBlock(ItemRegistry.bw_realglas, 1),
+                    ofBlock(ItemRegistry.bw_realglas, 2),
+                    ofBlock(ItemRegistry.bw_realglas, 3),
+                    ofBlock(ItemRegistry.bw_realglas, 4),
+                    ofBlock(ItemRegistry.bw_realglas, 5),
+                    ofBlock(ItemRegistry.bw_realglas, 12)
+            ))
             .addElement('l', ofBlock(GregTech_API.sBlockCasings2, 5)) //assembling line casings
             .addElement('b', ofChain(
                     ofHatchAdder(GT_TileEntity_CircuitAssemblyLine::addMaintenanceToMachineList, 16, 2),
