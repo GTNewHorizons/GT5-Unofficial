@@ -127,7 +127,7 @@ public class GregtechMetaTileEntity_IndustrialAlloySmelter extends GregtechMeta_
 
 	@Override
 	public int getEuDiscountForParallelism() {
-		return 0;
+		return 100;
 	}
 
 	@Override
@@ -215,7 +215,7 @@ public class GregtechMetaTileEntity_IndustrialAlloySmelter extends GregtechMeta_
 	}
 
 	public boolean checkRecipe(ItemStack aStack) {
-		return checkRecipeGeneric(this.getMaxParallelRecipes(), 0, 5 * this.mLevel); // Will have to clone the logic from parent class to handle heating coil
+		return checkRecipeGeneric(this.getMaxParallelRecipes(), 100, 5 * this.mLevel); // Will have to clone the logic from parent class to handle heating coil
 		// tiers.
 	}
 	
@@ -256,9 +256,6 @@ public class GregtechMetaTileEntity_IndustrialAlloySmelter extends GregtechMeta_
 		// EU discount
 		float tRecipeEUt = (tRecipe.mEUt * aEUPercent) / 100.0f;
 		int tHeatCapacityDivTiers = mHeatingCapacity / 900;
-		if (tHeatCapacityDivTiers > 0) {
-			tRecipeEUt = (int) (tRecipeEUt * (Math.pow(0.95, tHeatCapacityDivTiers)));
-		}
 		float tTotalEUt = 0.0f;
 
 		int parallelRecipes = 0;
@@ -282,12 +279,12 @@ public class GregtechMetaTileEntity_IndustrialAlloySmelter extends GregtechMeta_
 
 		// Convert speed bonus to duration multiplier
 		// e.g. 100% speed bonus = 200% speed = 100%/200% = 50% recipe duration.
-		aSpeedBonusPercent = Math.max(-99, aSpeedBonusPercent);
+		aSpeedBonusPercent = mLevel * 5;
 		float tTimeFactor = 100.0f / (100.0f + aSpeedBonusPercent);
 		this.mMaxProgresstime = (int) (tRecipe.mDuration * tTimeFactor);
 		int rInt = 2;
 
-		this.mEUt = (int) Math.ceil(tTotalEUt);
+		this.mEUt = (int) Math.max(Math.ceil(tTotalEUt), 1);
 
 		this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
 		this.mEfficiencyIncrease = 10000;
