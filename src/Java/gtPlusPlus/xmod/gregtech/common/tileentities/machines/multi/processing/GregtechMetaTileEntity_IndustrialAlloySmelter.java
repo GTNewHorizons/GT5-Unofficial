@@ -279,7 +279,7 @@ public class GregtechMetaTileEntity_IndustrialAlloySmelter extends GregtechMeta_
 
 		// Convert speed bonus to duration multiplier
 		// e.g. 100% speed bonus = 200% speed = 100%/200% = 50% recipe duration.
-		aSpeedBonusPercent = Math.max(-99, mLevel * 5);
+		aSpeedBonusPercent = mLevel * 5;
 		float tTimeFactor = 100.0f / (100.0f + aSpeedBonusPercent);
 		this.mMaxProgresstime = (int) (tRecipe.mDuration * tTimeFactor);
 		int rInt = 2;
