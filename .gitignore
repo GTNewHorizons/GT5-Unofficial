@@ -1,80 +1,29 @@
 .gradle
-
-# Ignore Gradle GUI config
-gradle-app.setting
-
-# =========================
-# Operating System Files
-# =========================
-
-# OSX
-# =========================
-
-.DS_Store
-.AppleDouble
-.LSOverride
-
-# Thumbnails
-._*
-
-# Files that might appear on external disk
-.Spotlight-V100
-.Trashes
-
-# Directories potentially created on remote AFP share
-.AppleDB
-.AppleDesktop
-Network Trash Folder
-Temporary Items
-.apdisk
-
-# Windows
-# =========================
-
-# Windows image file caches
-Thumbs.db
-ehthumbs.db
-
-# Folder config file
-Desktop.ini
-
-# Recycle Bin used on file shares
-$RECYCLE.BIN/
-
-# Windows Installer files
-*.cab
-*.msi
-*.msm
-*.msp
-
-# Windows shortcuts
-*.lnk
-
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
-
-### Intellij IDEA ###
-
+.settings
+/.idea/
+/run/
+/build/
+/eclipse/
+.classpath
+.project
+/bin/
+/config/
+/crash-reports/
+/logs/
+options.txt
+/saves/
+usernamecache.json
+banned-ips.json
+banned-players.json
+eula.txt
+ops.json
+server.properties
+servers.dat
+usercache.json
+whitelist.json
+world/
+/out/
 *.iml
 *.ipr
 *.iws
-libs/
-.idea/
-.idea_modules/
-
-
-#Folders
-
-eclipse/
-run/
-.gradle/
-
-*.log
-tmp/
-libsrc/
-out/
-*.bat
-.classpath
-.settings
-build/*
-bin/
+src/main/resources/mixins.*.json

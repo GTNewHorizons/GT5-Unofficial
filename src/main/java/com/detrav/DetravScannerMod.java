@@ -23,8 +23,8 @@ import net.minecraftforge.common.config.Configuration;
 @Mod(modid = DetravScannerMod.MODID, version = DetravScannerMod.VERSION,dependencies = "required-after:IC2;required-after:gregtech;after:miscutils;after:bartworks")
 public class DetravScannerMod
 {
-    public static final String MODID = "detravscannermod";
-    public static final String VERSION = "1.6.0";
+    public static final String MODID = "GRADLETOKEN_MODID";
+    public static final String VERSION = "GRADLETOKEN_VERSION";
     public static final String DEBUGOVERRIDE = "@false";
     public static final boolean DEBUGBUILD = Boolean.parseBoolean(DEBUGOVERRIDE.substring(1));
     public static final CreativeTabs TAB_DETRAV = new DetravCreativeTab();

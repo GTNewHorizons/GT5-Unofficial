@@ -1,9 +1,23 @@
+/*
+DO NOT CHANGE THIS FILE!
+
+Also, you may replace this file at any time if there is an update available.
+Please check https://github.com/SinTh0r4s/ExampleMod1.7.10/blob/main/build.gradle for updates.
+ */
+
+
+import com.github.jengelman.gradle.plugins.shadow.tasks.ConfigureShadowRelocation
+import java.util.concurrent.TimeUnit
+
 buildscript {
     repositories {
-        mavenCentral()
+        maven {
+            name = "jitpack"
+            url = "https://jitpack.io"
+        }
         maven {
             name = "forge"
-            url = "http://files.minecraftforge.net/maven"
+            url = "https://maven.minecraftforge.net"
         }
         maven {
             name = "sonatype"
@@ -11,153 +25,352 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+        classpath 'com.github.GTNH2:ForgeGradle:FG_1.2-SNAPSHOT'
     }
 }
-apply plugin: 'java'
+
+plugins {
+    id("org.ajoberstar.grgit") version("3.1.1")
+    id("com.github.johnrengelman.shadow") version("4.0.4")
+    id("com.palantir.git-version") version("0.12.3")
+}
+
 apply plugin: 'forge'
 apply plugin: 'idea'
 
-
-idea { module { inheritOutputDirs = true } }
-
-file "build.properties" withReader {
-    def prop = new Properties()
-    prop.load(it)
-    ext.config = new ConfigSlurper().parse prop
+idea {
+    module {
+        inheritOutputDirs = true
+        downloadJavadoc = true
+        downloadSources = true
+    }
 }
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+configurations.all {
+    resolutionStrategy.cacheChangingModulesFor(0, TimeUnit.SECONDS)
 
-compileJava.options.encoding = 'UTF-8'
+    // Make sure GregTech build won't time out
+    System.setProperty("org.gradle.internal.http.connectionTimeout", 120000 as String)
+    System.setProperty("org.gradle.internal.http.socketTimeout", 120000 as String)
+}
 
-version = "${config.detravscanner.version}"
-group= "com.detrav.detravscannermod" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "GT Scanner Mod"
+// Pulls version from git tag
+version = minecraftVersion + "-" + gitVersion()
+group = modGroup
+archivesBaseName = modId
 
 minecraft {
-    version = "${config.minecraft.version}-${config.forge.version}"
+    if(JavaVersion.current() != JavaVersion.VERSION_1_8) {
+        throw new GradleException("This project requires Java 8, but it's running on " + JavaVersion.current())
+    }
+
+    version = minecraftVersion + "-" + forgeVersion + "-" + minecraftVersion
     runDir = "run"
+
+    if (replaceGradleTokenInFile) {
+        replaceIn replaceGradleTokenInFile
+        if(gradleTokenModId) {
+            replace gradleTokenModId, modId
+        }
+        if(gradleTokenModName) {
+            replace gradleTokenModName, modName
+        }
+        if(gradleTokenModName) {
+            replace gradleTokenVersion, versionDetails().lastTag
+        }
+        if(gradleTokenGroupName) {
+            replace gradleTokenGroupName, modGroup
+        }
+    }
 }
 
+apply from: 'repositories.gradle'
+
 configurations {
-    provided
-    embedded
-    compile.extendsFrom provided, embedded
+    implementation.extendsFrom(shadowImplementation)
 }
 
 repositories {
-    maven {
-        name 'Forge'
-        url 'https://maven.minecraftforge.net/releases/'
-    }
-    maven {
-        name = "chickenbones"
-        url = "http://chickenbones.net/maven/"
-    }
-    maven {
-        name = "ic2, forestry"
-        url = "http://maven.ic2.player.to/"
-    }
-    maven { // EnderIO & EnderCore
-        name 'tterrag Repo'
-        url "http://maven.tterrag.com"
-    }
-    maven { // AppleCore
-        url "http://www.ryanliptak.com/maven/"
-    }
-    maven {
-        url = "https://jitpack.io"
+    if(usesMixins.toBoolean()) {
+        maven {
+            name = "sponge"
+            url = "https://repo.spongepowered.org/repository/maven-public"
+        }
+        maven {
+            url = "https://jitpack.io"
+        }
     }
 }
 
 dependencies {
-    provided "codechicken:CodeChickenLib:${config.minecraft.version}-${config.codechickenlib.version}:dev"
-	provided "codechicken:CodeChickenCore:${config.minecraft.version}-${config.codechickencore.version}:dev"
-    provided "codechicken:NotEnoughItems:${config.minecraft.version}-${config.nei.version}:dev"
-    provided "net.industrial-craft:industrialcraft-2:${config.ic2.version}:dev"
-    provided "net.sengir.forestry:forestry_${config.minecraft.version}:${config.forestry.version}:dev"
-    provided "applecore:AppleCore:${config.applecore.version}:api"
-    provided "com.enderio.core:EnderCore:${config.enderiocore.version}:dev"
-    provided ("com.enderio:EnderIO:${config.enderio.version}:dev") {
-        transitive = false
+    if(usesMixins.toBoolean()) {
+        annotationProcessor("org.ow2.asm:asm-debug-all:5.0.3")
+        annotationProcessor("com.google.guava:guava:24.1.1-jre")
+        annotationProcessor("com.google.code.gson:gson:2.8.6")
+        annotationProcessor("org.spongepowered:mixin:0.8-SNAPSHOT")
+        // using 0.8 to workaround a issue in 0.7 which fails mixin application
+        compile("org.spongepowered:mixin:0.7.11-SNAPSHOT") {
+            // Mixin includes a lot of dependencies that are too up-to-date
+            exclude module: "launchwrapper"
+            exclude module: "guava"
+            exclude module: "gson"
+            exclude module: "commons-io"
+            exclude module: "log4j-core"
+        }
+        compile("com.github.GTNewHorizons:SpongeMixins:1.3.3:dev")
     }
-    compileOnly("com.github.SinTh0r4s:VisualProspecting:${config.visualprospecting.version}") {
-        transitive = false
-    }
-}
-task devJar(type: Jar) {
-    from sourceSets.main.output
-    classifier = 'dev'
-}
-task generateDebugJar(type: Copy) {
-    from sourceSets.main.allSource
-    into "$buildDir/debugjarsrc/java"
-    filter { line -> line.replaceAll('@false', '@true') }
-}
-task compileDebugJar(type: JavaCompile, dependsOn: generateDebugJar){
-	source = file("$buildDir/debugjarsrc")
-	classpath = sourceSets.main.compileClasspath
-	destinationDir =  file("$buildDir/debugjarCompiled")
-}
-task copyResources(type: Copy,dependsOn: compileDebugJar){
-	from sourceSets.main.resources
-	into "$buildDir/debugjarCompiled"
 }
 
-task debugJar(type: Jar, dependsOn: copyResources) {
-    from "$buildDir/debugjarCompiled"
-    classifier = 'dev-debug'
-}
-artifacts {
-    archives devJar
-    archives debugJar
+apply from: 'dependencies.gradle'
+
+task relocateShadowJar(type: ConfigureShadowRelocation) {
+    target = tasks.shadowJar
+    prefix = modGroup + ".shadow"
 }
 
-// Textures in debug mode.  :rage: 
-sourceSets {
-    main { output.resourcesDir = output.classesDir }
+def mixinConfigJson = "mixins." + modId + ".json"
+def mixingConfigRefMap = "mixins." + modId + ".refmap.json"
+def refMap = "${tasks.compileJava.temporaryDir}" + File.separator + mixingConfigRefMap
+def mixinSrg = "${tasks.reobf.temporaryDir}" + File.separator + "mixins.srg"
+
+task generateAssets {
+    if(usesMixins.toBoolean()) {
+        new File(projectDir.toString() + "/src/main/resources/", mixinConfigJson).text = """{
+  "required": true,
+  "minVersion": "0.7.11",
+  "package": "${modGroup}.${mixinsPackage}",
+  "plugin": "${modGroup}.${mixinPlugin}",
+  "refmap": "${mixingConfigRefMap}",
+  "target": "@env(DEFAULT)",
+  "compatibilityLevel": "JAVA_8"
+}
+
+"""
+    }
+}
+
+shadowJar {
+    def manifestAttributes = [:]
+    if(containsMixinsAndOrCoreModOnly.toBoolean() == false) {
+        manifestAttributes += ["FMLCorePluginContainsFMLMod": true]
+    }
+
+    if(accessTransformersFile) {
+        manifestAttributes += ["FMLAT" : accessTransformersFile.toString()]
+    }
+
+    if(coreModClass) {
+        manifestAttributes += ["FMLCorePlugin": modGroup + "." + coreModClass]
+    }
+
+    if(usesMixins.toBoolean()) {
+        from refMap
+        manifestAttributes += [
+                "TweakClass" : "org.spongepowered.asm.launch.MixinTweaker",
+                "MixinConfigs" : mixinConfigJson,
+                "ForceLoadAsMod" : containsMixinsAndOrCoreModOnly.toBoolean() == false
+        ]
+    }
+    manifest {
+        attributes(manifestAttributes)
+    }
+
+    minimize()
+    configurations = [project.configurations.shadowImplementation]
+    dependsOn(relocateShadowJar)
+}
+
+jar {
+    def manifestAttributes = [:]
+    if(containsMixinsAndOrCoreModOnly.toBoolean() == false) {
+        manifestAttributes += ["FMLCorePluginContainsFMLMod": true]
+    }
+
+    if(accessTransformersFile) {
+        manifestAttributes += ["FMLAT" : accessTransformersFile.toString()]
+    }
+
+    if(coreModClass) {
+        manifestAttributes += ["FMLCorePlugin": modGroup + "." + coreModClass]
+    }
+
+    if(usesMixins.toBoolean()) {
+        from refMap
+        manifestAttributes += [
+                "TweakClass" : "org.spongepowered.asm.launch.MixinTweaker",
+                "MixinConfigs" : mixinConfigJson,
+                "ForceLoadAsMod" : containsMixinsAndOrCoreModOnly.toBoolean() == false
+        ]
+    }
+    manifest {
+        attributes(manifestAttributes)
+    }
+
+    if(usesShadowedDependencies.toBoolean()) {
+        dependsOn(shadowJar)
+        enabled = false
+    }
+}
+
+reobf {
+    if(usesMixins.toBoolean()) {
+        addExtraSrgFile mixinSrg
+    }
+}
+
+afterEvaluate {
+    if(usesMixins.toBoolean()) {
+        tasks.compileJava {
+            options.compilerArgs += [
+                    "-AreobfSrgFile=${tasks.reobf.srg}",
+                    "-AoutSrgFile=${mixinSrg}",
+                    "-AoutRefMapFile=${refMap}",
+                    // Elan: from what I understand they are just some linter configs so you get some warning on how to properly code
+                    "-XDenableSunApiLintControl",
+                    "-XDignore.symbol.file"
+            ]
+        }
+    }
+}
+
+runClient {
+    def arguments = []
+
+    if(usesMixins.toBoolean()) {
+        arguments += [
+                "--mods=../build/libs/$modId-${version}.jar",
+                "--tweakClass org.spongepowered.asm.launch.MixinTweaker"
+        ]
+    }
+
+    if(developmentEnvironmentUserName) {
+        arguments += [
+                "--username",
+                developmentEnvironmentUserName
+        ]
+    }
+
+    args(arguments)
+}
+
+runServer {
+    def arguments = []
+
+    if(usesMixins.toBoolean()) {
+        arguments += [
+                "--mods=../build/libs/$modId-${version}.jar",
+                "--tweakClass org.spongepowered.asm.launch.MixinTweaker"
+        ]
+    }
+
+    args(arguments)
 }
 
 processResources
-{
-    // this will ensure that this task is redone when the versions change.
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
+        {
+            // this will ensure that this task is redone when the versions change.
+            inputs.property "version", project.version
+            inputs.property "mcversion", project.minecraft.version
 
-    ext.srcFiles = "$projectDir/src/main/resources"
-    ext.destDir = "$projectDir/build/classes/main"
+            // replace stuff in mcmod.info, nothing else
+            from(sourceSets.main.resources.srcDirs) {
+                include 'mcmod.info'
 
-    // registering inputs & outputs allow gradle to skip if UP-TO-DATE
-    inputs.files srcFiles
-    outputs.dir destDir
+                // replace version and mcversion
+                expand "minecraftVersion": project.minecraft.version,
+                        "modVersion": versionDetails().lastTag,
+                        "modId": modId,
+                        "modName": modName
+            }
 
-    println 'starting processResources'
-    println 'srcFiles: ' + srcFiles
-    println 'destDir: ' + destDir
+            // copy everything else, thats not the mcmod.info
+            from(sourceSets.main.resources.srcDirs) {
+                exclude 'mcmod.info'
+            }
+        }
 
+task sourcesJar(type: Jar) {
+    from (sourceSets.main.allJava)
+    from (file("$projectDir/LICENSE"))
+    getArchiveClassifier().set('sources')
 
-    copy {
-        // replace stuff in mcmod.info, nothing else
-        from(srcFiles)
-        into(destDir)
-        include 'mcmod.info'
-            // replace version and mcversion
-        expand 'version': project.version, 'mcversion': project.minecraft.version
-
+    def manifestAttributes = [:]
+    if(containsMixinsAndOrCoreModOnly.toBoolean() == false) {
+        manifestAttributes += ["FMLCorePluginContainsFMLMod": true]
     }
 
+    if(accessTransformersFile) {
+        manifestAttributes += ["FMLAT" : accessTransformersFile.toString()]
+    }
 
-    copy {
-        // copy everything else, thats not the mcmod.info
-        from(srcFiles)
-        into(destDir)
-        exclude 'mcmod.info'
+    if(coreModClass) {
+        manifestAttributes += ["FMLCorePlugin": modGroup + "." + coreModClass]
+    }
 
+    if(usesMixins.toBoolean()) {
+        from refMap
+        manifestAttributes += [
+                "TweakClass" : "org.spongepowered.asm.launch.MixinTweaker",
+                "MixinConfigs" : mixinConfigJson,
+                "ForceLoadAsMod" : containsMixinsAndOrCoreModOnly.toBoolean() == false
+        ]
+    }
+    manifest {
+        attributes(manifestAttributes)
     }
 }
 
-    
+task devJar(type: Jar) {
+    from sourceSets.main.output
+    getArchiveClassifier().set("dev")
+
+    def manifestAttributes = [:]
+    if(containsMixinsAndOrCoreModOnly.toBoolean() == false) {
+        manifestAttributes += ["FMLCorePluginContainsFMLMod": true]
+    }
+
+    if(accessTransformersFile) {
+        manifestAttributes += ["FMLAT" : accessTransformersFile.toString()]
+    }
+
+    if(coreModClass) {
+        manifestAttributes += ["FMLCorePlugin": modGroup + "." + coreModClass]
+    }
+
+    if(usesMixins.toBoolean()) {
+        from refMap
+        manifestAttributes += [
+                "TweakClass" : "org.spongepowered.asm.launch.MixinTweaker",
+                "MixinConfigs" : mixinConfigJson,
+                "ForceLoadAsMod" : containsMixinsAndOrCoreModOnly.toBoolean() == false
+        ]
+    }
+    manifest {
+        attributes(manifestAttributes)
+    }
+}
+
+task apiJar(type: Jar) {
+    from (sourceSets.main.allJava) {
+        include modGroup.toString().replaceAll("\\.", "/") + "/" + apiPackage.toString() + '/**'
+    }
+
+    from (sourceSets.main.output) {
+        include modGroup.toString().replaceAll("\\.", "/") + "/" + apiPackage.toString() + '/**'
+    }
+
+    from (sourceSets.main.resources.srcDirs) {
+        include("LICENSE")
+    }
+
+    getArchiveClassifier().set('api')
+}
+
+
+artifacts {
+    archives sourcesJar
+    archives devJar
+    if(apiPackage) {
+        archives apiJar
+    }
+}
