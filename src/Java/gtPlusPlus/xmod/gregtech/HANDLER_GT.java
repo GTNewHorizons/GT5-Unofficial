@@ -145,7 +145,7 @@ public class HANDLER_GT {
 
 	public static void onLoadComplete(FMLLoadCompleteEvent event) {
 		removeCrudeTurbineRotors();
-		cleanAssemblyLineRecipeMap();		
+		//cleanAssemblyLineRecipeMap();
 		if (ConfigSwitches.enableHarderRecipesForHighTierCasings) {
 	        removeOldHighTierCasingRecipes();		    
 		}		

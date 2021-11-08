@@ -27,7 +27,9 @@ public final class ELEMENT {
 	public final Material SODIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Sodium);
 	public final Material MAGNESIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Magnesium);
 	public final Material ALUMINIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Aluminium);
+	public final Material ALUMINIUMOXIDE = MaterialUtils.generateMaterialFromGtENUM(Materials.Aluminiumoxide);
 	public final Material SILICON = MaterialUtils.generateMaterialFromGtENUM(Materials.Silicon);
+	public final Material SILICONDIOXIDE = MaterialUtils.generateMaterialFromGtENUM(Materials.SiliconDioxide);
 	public final Material PHOSPHORUS = MaterialUtils.generateMaterialFromGtENUM(Materials.Phosphor);
 	public final Material SULFUR = MaterialUtils.generateMaterialFromGtENUM(Materials.Sulfur);
 	public final Material CHLORINE = MaterialUtils.generateMaterialFromGtENUM(Materials.Chlorine);
@@ -236,8 +238,8 @@ public final class ELEMENT {
 				new MaterialStack[]{
 						new MaterialStack(getInstance().OXYGEN, 30),
 						new MaterialStack(getInstance().IRON, 20),
-						new MaterialStack(getInstance().SILICON, 20),
-						new MaterialStack(getInstance().ALUMINIUM, 10),
+						new MaterialStack(getInstance().SILICONDIOXIDE, 20),
+						new MaterialStack(getInstance().ALUMINIUMOXIDE, 10),
 						new MaterialStack(getInstance().POTASSIUM, 10),
 						new MaterialStack(getInstance().CALCIUM, 5),
 						new MaterialStack(getInstance().SODIUM, 5)

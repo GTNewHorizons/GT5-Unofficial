@@ -41,6 +41,7 @@ public class BaseItemColourable extends Item
 		this.setCreativeTab(creativeTab);
 		this.setMaxStackSize(stackSize);
 		this.setMaxDamage(maxDmg);
+		this.setHasSubtypes(true);
 		this.rarity = regRarity;
 		this.itemDescription = description;
 		this.descColour = colour;
