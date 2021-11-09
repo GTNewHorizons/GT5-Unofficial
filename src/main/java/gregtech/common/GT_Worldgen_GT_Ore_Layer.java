@@ -369,20 +369,20 @@ public class GT_Worldgen_GT_Ore_Layer extends GT_Worldgen {
             int nSmallOres = (eX-wX)*(sZ-nZ)*this.mDensity/10 * oreveinPlacerOresMultiplier;
             //Small ores are placed in the whole chunk in which the vein appears.
             for( int nSmallOresCount = 0; nSmallOresCount < nSmallOres; nSmallOresCount++) {
-                int tX = aRandom.nextInt(32) - 18 + aChunkX + 2;
-                int tZ = aRandom.nextInt(32) - 18 + aChunkZ + 2;
+                int tX = aRandom.nextInt(34) - 18 + aChunkX;
+                int tZ = aRandom.nextInt(34) - 18 + aChunkZ;
                 int tY = aRandom.nextInt(160) + 10; // Y height can vary from 10 to 170 for small ores.
                 if (this.mPrimaryMeta > 0 ) GT_TileEntity_Ores.setOreBlock(aWorld, tX, tY, tZ, this.mPrimaryMeta, true, isUnderdark);
-                tX = aRandom.nextInt(32) - 18 + aChunkX + 2;
-                tZ = aRandom.nextInt(32) - 18 + aChunkZ + 2;
+                tX = aRandom.nextInt(34) - 18 + aChunkX;
+                tZ = aRandom.nextInt(34) - 18 + aChunkZ;
                 tY = aRandom.nextInt(160) + 10; // Y height can vary from 10 to 170 for small ores.
                 if (this.mSecondaryMeta > 0 ) GT_TileEntity_Ores.setOreBlock(aWorld, tX, tY, tZ, this.mSecondaryMeta, true, isUnderdark);
-                tX = aRandom.nextInt(32) - 18 + aChunkX + 2;
-                tZ = aRandom.nextInt(32) - 18 + aChunkZ + 2;
+                tX = aRandom.nextInt(34) - 18 + aChunkX;
+                tZ = aRandom.nextInt(34) - 18 + aChunkZ;
                 tY = aRandom.nextInt(160) + 10; // Y height can vary from 10 to 170 for small ores.
                 if (this.mBetweenMeta > 0 ) GT_TileEntity_Ores.setOreBlock(aWorld, tX, tY, tZ, this.mBetweenMeta, true, isUnderdark);
-                tX = aRandom.nextInt(32) - 18 + aChunkX + 2;
-                tZ = aRandom.nextInt(32) - 18 + aChunkZ + 2;
+                tX = aRandom.nextInt(34) - 18 + aChunkX;
+                tZ = aRandom.nextInt(34) - 18 + aChunkZ;
                 tY = aRandom.nextInt(190) + 10; // Y height can vary from 10 to 200 for small ores.
                 if (this.mSporadicMeta > 0 ) GT_TileEntity_Ores.setOreBlock(aWorld, tX, tY, tZ, this.mSporadicMeta, true, isUnderdark);
             }
