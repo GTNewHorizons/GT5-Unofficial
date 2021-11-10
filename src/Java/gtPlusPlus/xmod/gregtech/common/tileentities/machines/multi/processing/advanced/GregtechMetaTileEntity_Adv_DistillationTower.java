@@ -1,7 +1,5 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.advanced;
 
-import java.util.ArrayList;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
@@ -10,7 +8,7 @@ import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import gregtech.api.objects.GT_RenderedTexture;
@@ -199,29 +197,14 @@ public class GregtechMetaTileEntity_Adv_DistillationTower extends GregtechMeta_M
 			return this.checkRecipeGeneric(getMaxParallelRecipes(), getEuDiscountForParallelism(), 100);
 		}
 		else {
-			for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
-				ArrayList<ItemStack> tBusItems = new ArrayList<ItemStack>();
-				tBus.mRecipeMap = getRecipeMap();
-				if (isValidMetaTileEntity(tBus)) {
-					for (int i = tBus.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
-						if (tBus.getBaseMetaTileEntity().getStackInSlot(i) != null)
-							tBusItems.add(tBus.getBaseMetaTileEntity().getStackInSlot(i));
-					}
-				}			
-				ItemStack[] inputs = new ItemStack[tBusItems.size()];
-				int slot = 0;
-				for (ItemStack g : tBusItems) {
-					inputs[slot++] = g;
-				}			
-				if (inputs.length > 0) {				
+			for (GT_MetaTileEntity_Hatch_Input hatch : mInputHatches) {
+				FluidStack tFluid = hatch.getFluid();
+				if (tFluid != null) {
 					int para = (4* GT_Utility.getTier(this.getMaxInputVoltage()));
-					log("Recipe. ["+inputs.length+"]["+para+"]");				
-					if (checkRecipeGeneric(inputs, new FluidStack[]{}, para, 100, 250, 10000)) {
-						log("Recipe 2.");
+					if (checkRecipeGeneric(null, new FluidStack[]{tFluid}, para,100, 250, 10000)) {
 						return true;
 					}
-				}			
-
+				}
 			}
 			return false;
 		}
