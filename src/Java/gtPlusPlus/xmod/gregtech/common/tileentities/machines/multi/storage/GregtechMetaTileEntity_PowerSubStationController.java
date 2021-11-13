@@ -2,6 +2,10 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.storage;
 
 import java.util.ArrayList;
 
+import com.gtnewhorizon.structurelib.StructureLibAPI;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.IStructureElement;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
@@ -9,8 +13,9 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
@@ -27,13 +32,19 @@ import gtPlusPlus.xmod.gregtech.api.gui.GUI_PowerSubStation;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.GregtechMetaTileEntity_IndustrialElectrolyzer;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
 public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMeta_MultiBlockBase {
 
@@ -45,6 +56,10 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 	protected long mBatteryCapacity = 0;
 
 	private final int ENERGY_TAX = 2;
+
+	private int mCasing;
+	private int[] cellCount = new int[6];
+	private IStructureDefinition<GregtechMetaTileEntity_PowerSubStationController> STRUCTURE_DEFINITION = null;
 
 	//TecTech Support
 	public ArrayList<GT_MetaTileEntity_Hatch> mAllEnergyHatches = new ArrayList<GT_MetaTileEntity_Hatch>();
@@ -64,20 +79,23 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 	}
 
 	@Override
-	public String[] getTooltip() {
-		return new String[]{
-				"[BUG] GUI does not work until structure is assembled correctly. (Do Not Report issue)",
-				"Consumes " + this.ENERGY_TAX + "% of the average voltage of all energy type hatches",
-				"Does not require maintenance",
-				"Can be built with variable height between " + (CELL_HEIGHT_MIN + 2) + "-" + (CELL_HEIGHT_MAX + 2) + "",
-				"Hatches can be placed nearly anywhere",
-				"HV Energy/Dynamo Hatches are the lowest tier you can use",
-				CORE.GTNH ? "Supports voltages >= UHV using MAX tier components." : "Supports upto "+GT_Values.VOLTAGE_NAMES[GT_Values.VOLTAGE_NAMES.length-1],
-						"Controller (Bottom, Centre)",
-						"Size(WxHxD): External 5xHx5, Sub-Station External Casings", 
-						"Size(WxHxD): Internal 3x(H-2)x3, Vanadium Redox Power Cells",
-						"Read '"+BookHandler.ItemBookWritten_MultiPowerStorage.getDisplayName()+"' for more info.",
-		};
+	protected GT_Multiblock_Tooltip_Builder createTooltip() {
+		GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+		tt.addMachineType(getMachineType())
+				.addInfo("[BUG] GUI does not work until structure is assembled correctly. (Do Not Report issue)")
+				.addInfo("Consumes " + this.ENERGY_TAX + "% of the average voltage of all energy type hatches")
+				.addInfo("Does not require maintenance")
+				.addInfo("Can be built with variable height between " + (CELL_HEIGHT_MIN + 2) + "-" + (CELL_HEIGHT_MAX + 2) + "")
+				.addInfo("Hatches can be placed nearly anywhere")
+				.addInfo("HV Energy/Dynamo Hatches are the lowest tier you can use")
+				.addInfo("Supports voltages >= UHV using MAX tier components.")
+				.addSeparator()
+				.addController("Bottom Center")
+				.addCasingInfo("Sub-Station External Casings", 10)
+				.addDynamoHatch("Any Casing", 1)
+				.addEnergyHatch("Any Casing", 1)
+				.toolTipFinisher("GT++");
+		return tt;
 	}
 
 	@Override
@@ -145,6 +163,20 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 		}
 	}
 
+	public static int getMetaFromTier(int tier) {
+		if (tier == 4) return 7;
+		if (tier >= 5 && tier <= 9) return tier - 1;
+		return 0;
+	}
+
+	public static Block getBlockFromTier(int tier) {
+		switch (tier) {
+			case 4: return ModBlocks.blockCasings2Misc;
+			case 5: case 6: case 7: case 8: case 9: return ModBlocks.blockCasings3Misc;
+			default: return null;
+		}
+	}
+
 	public static int getMaxHatchTier(int aCellTier) {
 		switch(aCellTier) {
 			case 9:
@@ -163,174 +195,159 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 	public static final int CELL_HEIGHT_MIN = 2;
 
 	@Override
-	public boolean checkMultiblock(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
-		Logger.INFO("Checking structure for Industrial Power Sub-Station.");
-		final int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 2;
-		final int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * 2;
+	public IStructureDefinition<GregtechMetaTileEntity_PowerSubStationController> getStructureDefinition() {
+		if (STRUCTURE_DEFINITION == null) {
+			STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_PowerSubStationController>builder()
+					.addShape(mName + "bottom", transpose(new String[][]{
+							{"CC~CC", "CCCCC", "CCCCC", "CCCCC", "CCCCC"}
+					}))
+					.addShape(mName + "mid", transpose(new String[][]{
+							{"CCCCC", "CHHHC", "CHHHC", "CHHHC", "CCCCC"}
+					}))
+					.addShape(mName + "top", transpose(new String[][]{
+							{"CCCCC", "CCCCC", "CCCCC", "CCCCC", "CCCCC"}
+					}))
+					.addElement(
+							'C',
+							ofChain(
+									ofHatchAdder(
+											GregtechMetaTileEntity_PowerSubStationController::addPowerSubStationList, TAE.GTPP_INDEX(24), 1
+									),
+									onElementPass(
+											x -> ++x.mCasing,
+											ofBlock(
+													ModBlocks.blockCasings2Misc, 8
+											)
+									)
+							)
+					)
+					.addElement(
+							'H',
+							ofChain(
+									onElementPass(
+											x -> ++x.cellCount[0],
+											ofCell(4)
+									),
+									onElementPass(
+											x -> ++x.cellCount[1],
+											ofCell(5)
+									),
+									onElementPass(
+											x -> ++x.cellCount[2],
+											ofCell(6)
+									),
+									onElementPass(
+											x -> ++x.cellCount[3],
+											ofCell(7)
+									),
+									onElementPass(
+											x -> ++x.cellCount[4],
+											ofCell(8)
+									),
+									onElementPass(
+											x -> ++x.cellCount[5],
+											ofCell(9)
+									)
+							)
+					)
+					.build();
+		}
+		return STRUCTURE_DEFINITION;
+	}
 
-		this.mTecTechDynamoHatches.clear();
-		this.mAllDynamoHatches.clear();		
+	public static <T> IStructureElement<T> ofCell(int aIndex) {
+		return new IStructureElement<T>() {
+			@Override
+			public boolean check(T t, World world, int x, int y, int z) {
+				Block block = world.getBlock(x, y, z);
+				int meta = world.getBlockMetadata(x, y, z);
+				int tier = getCellTier(block, meta);
+				return aIndex == tier;
+			}
 
-		this.mTecTechEnergyHatches.clear();
-		this.mAllEnergyHatches.clear();
+			@Override
+			public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
+				StructureLibAPI.hintParticle(world, x, y, z, getBlockFromTier(aIndex), getMetaFromTier(aIndex));
+				return true;
+			}
 
-		boolean tFoundCeiling = false;
-		int tCasingCount = 0;
-		int tOverallCellTier = -1;
-		int tCellCount = 0;
+			@Override
+			public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
+				return world.setBlock(x, y, z, getBlockFromTier(aIndex), getMetaFromTier(aIndex), 3);
+			}
+		};
+	}
 
-		for (int yOff = 0; yOff < CELL_HEIGHT_MAX + 2; yOff++) {
-			if (tFoundCeiling) continue;
-			if (yOff == CELL_HEIGHT_MAX + 1) tFoundCeiling = true;
+	@Override
+	public void construct(ItemStack stackSize, boolean hintsOnly) {
+		int layer = Math.min(stackSize.stackSize + 3, 18);
+		buildPiece(mName + "bottom" , stackSize, hintsOnly, 2, 0, 0);
+		for (int i = 1; i < layer - 1; i++) {
+			buildPiece(mName + "mid", stackSize, hintsOnly, 2, i, 0);
+		}
+		buildPiece(mName + "top", stackSize, hintsOnly, 2, layer - 1, 0);
+	}
 
-			for (int i = -2; i < 3; i++) {
-				for (int j = -2; j < 3; j++) {
-					int xOff = xDir + i, zOff = zDir + j;
-
-					final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xOff, yOff, zOff);
-					if (tTileEntity == aBaseMetaTileEntity) continue;
-
-					final Block tBlock = aBaseMetaTileEntity.getBlockOffset(xOff, yOff, zOff);
-					final byte tMeta = aBaseMetaTileEntity.getMetaIDOffset(xOff, yOff, zOff);
-
-					if (yOff == 0) {
-						if (tBlock == ModBlocks.blockCasings2Misc && tMeta == 8) {
-							tCasingCount++;
-						} else if (!this.addToMachineList(tTileEntity, TAE.GTPP_INDEX(24))) {
-							checkMachineProblem("Unexpected block in machine floor", xOff, yOff, zOff);
-							return false;
-						}
-					} else {
-						int tCellTier = -1;
-						if (i == -2 || i == 2 || j == -2 || j == 2) {
-							if (tBlock == ModBlocks.blockCasings2Misc && tMeta == 8) {
-								tCasingCount++;
-							} else if (!this.addToMachineList(tTileEntity, TAE.GTPP_INDEX(24))) {
-								checkMachineProblem("Unexpected block in machine wall", xOff, yOff, zOff);
-								return false;
-							}
-						} else {
-							if (tBlock == ModBlocks.blockCasings2Misc && tMeta == 8) {
-								if (yOff > CELL_HEIGHT_MIN && i == -1 && j == -1) {
-									tFoundCeiling = true;
-								} else if (!tFoundCeiling) {
-									checkMachineProblem("Casing found where cell expected", xOff, yOff, zOff);
-									return false;
-								}
-								tCasingCount++;
-							} else if (this.addToMachineList(tTileEntity, TAE.GTPP_INDEX(24))) {
-								if (yOff > 2 && i == -1 && j == -1) {
-									tFoundCeiling = true;
-								} else if (!tFoundCeiling) {
-									checkMachineProblem("Hatch found where cell expected", xOff, yOff, zOff);
-									return false;
-								}
-							} else if ((tCellTier = getCellTier(tBlock, tMeta)) != -1) {
-								if (tFoundCeiling) {
-									checkMachineProblem("Cell found where casing/hatch expected", xOff, yOff, zOff);
-									return false;
-								} else {
-									if (tOverallCellTier == -1) {
-										tOverallCellTier = tCellTier;
-										tCellCount++;
-									} else if (tOverallCellTier != tCellTier) {
-										checkMachineProblem("Mismatched cell found, expected tier " + tOverallCellTier + " cell", xOff, yOff, zOff);
-										return false;
-									} else {
-										tCellCount++;
-									}
-								}
-							} else {
-								checkMachineProblem("Unexpected block in battery core", xOff, yOff, zOff);
-								return false;
-							}
-						}
-					}
-
-				}
+	@Override
+	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+		mCasing = 0;
+		mAllEnergyHatches.clear();
+		mAllDynamoHatches.clear();
+		for (int i = 0; i < 6; i++) {
+			cellCount[i] = 0;
+		}
+		if (!checkPiece(mName + "bottom", 2, 0, 0))
+			return false;
+		int layer = 1;
+		while (!checkPiece(mName + "mid", 2, layer, 0)) {
+			layer ++;
+		}
+		if (layer > 19 || !checkPiece(mName + "top", 2, layer - 1, 0))
+			return false;
+		int level = 0;
+		for (int i = 0; i < 6; i++) {
+			if (cellCount[i] != 0) {
+				if (level == 0) level = i + 4;
+				else return false;
 			}
 		}
-
-		if (tOverallCellTier == -1) {
-			checkMachineProblem("No cells in machine (this really shouldn't happen!)");
-			return false;
+		int tier = getMaxHatchTier(level);
+		long volSum = 0;
+		for (GT_MetaTileEntity_Hatch hatch : mAllDynamoHatches) {
+			if (hatch.mTier > tier || hatch.mTier < 3) return false;
+			volSum += (8 << (hatch.mTier * 2));
 		}
-
-		if (tCasingCount < 35) {
-			checkMachineProblem("Not enough casings (needed 35, found " + tCasingCount + ")");
-			return false;
+		for (GT_MetaTileEntity_Hatch hatch : mAllEnergyHatches) {
+			if (hatch.mTier > tier || hatch.mTier < 3) return false;
+			volSum += (8 << (hatch.mTier * 2));
 		}
-
-		/**
-		 * TecTech Support, this allows adding Multi-Amp dynamos.
-		 */
-		mAllEnergyHatches.addAll(this.mEnergyHatches);
-		mAllDynamoHatches.addAll(this.mDynamoHatches);
-
-		if (LoadedMods.TecTech) {
-			mAllEnergyHatches.addAll(this.mTecTechEnergyHatches);
-			mAllDynamoHatches.addAll(this.mTecTechDynamoHatches);
+		mBatteryCapacity = getCapacityFromCellTier(level) * cellCount[level - 4];
+		if (mAllEnergyHatches.size() + mAllDynamoHatches.size() > 0) {
+			mAverageEuUsage = volSum / (mAllEnergyHatches.size() + mAllDynamoHatches.size());
 		}
-
-
-		if (this.mMaintenanceHatches.size() != 1) {
-			checkMachineProblem("Needed 1 maintenance hatch, found " + this.mMaintenanceHatches.size());
-			return false;
-		}
-		if (this.mAllEnergyHatches.size() < 1) {
-			checkMachineProblem("Needed at least 1 energy hatch, found 0");
-			return false;
-		}
-		if (this.mAllDynamoHatches.size() < 1) {
-			checkMachineProblem("Needed at least 1 dynamo hatch, found 0");
-			return false;
-		}
-
-		// Find average EU throughput
-		int totalEuThroughput = 0;
-		int hatchCount = 0;
-		
-		int aMaxHatchTier = getMaxHatchTier(tOverallCellTier);
-
-		for (GT_MetaTileEntity_Hatch re : this.mAllEnergyHatches) {
-			long tier = re.getOutputTier();
-			if(tier > aMaxHatchTier) {
-				checkMachineProblem("Energy hatch (tier " + tier + ") is too strong for cells (tier " + aMaxHatchTier + ")");
-				return false;
-			}
-			if(tier < 3) {
-				checkMachineProblem("Energy hatch (tier " + tier + ") is too weak for cells (tier " + aMaxHatchTier + ")");
-				return false;
-			}
-			totalEuThroughput += re.maxEUInput();
-			hatchCount++;
-		}
-
-		for (GT_MetaTileEntity_Hatch re : this.mAllDynamoHatches) {
-			long tier = re.getInputTier();
-			if(tier > aMaxHatchTier) {
-				checkMachineProblem("Dynamo hatch (tier " + tier + ") is too strong for cells (tier " + aMaxHatchTier + ")");
-				return false;
-			}
-			if(tier < 3) {
-				checkMachineProblem("Energy hatch (tier " + tier + ") is too weak for cells (tier " + aMaxHatchTier + ")");
-				return false;
-			}
-			totalEuThroughput += re.maxEUOutput();
-			hatchCount++;
-		}
-
-		if (hatchCount > 0) {
-			this.mAverageEuUsage = (totalEuThroughput / hatchCount);
-		} else {
-			// Shouldn't happen
-			this.mAverageEuUsage = 0;
-		}
-
-		// Only set this here, after the machine check is 100% passed.
-		this.fixAllMaintenanceIssue();
-		this.mBatteryCapacity = getCapacityFromCellTier(tOverallCellTier) * tCellCount;
+		else mAverageEuUsage = 0;
 		return true;
+	}
+
+	public final boolean addPowerSubStationList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+		if (aTileEntity == null) {
+			return false;
+		} else {
+			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy) {
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mAllEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Dynamo) {
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mAllDynamoHatches.add((GT_MetaTileEntity_Hatch_Dynamo)aMetaTileEntity);
+			} if (LoadedMods.TecTech) {
+				if (isThisHatchMultiDynamo(aMetaTileEntity))
+					return this.mAllDynamoHatches.add((GT_MetaTileEntity_Hatch) aMetaTileEntity);
+				else if (isThisHatchMultiEnergy(aMetaTileEntity))
+					return this.mAllEnergyHatches.add((GT_MetaTileEntity_Hatch) aMetaTileEntity);
+			}
+		}
+		return false;
 	}
 
 	// Define storage capacity of smallest cell tier (EV) and compute higher tiers from it
@@ -485,7 +502,8 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 		this.setEUVar(Math.max(0, this.getEUVar() - mDecrease));
 
 		// Input Power
-		for (GT_MetaTileEntity_Hatch_OutputBattery tHatch : this.mDischargeHatches) {
+		for (Object THatch : this.mDischargeHatches) {
+			GT_MetaTileEntity_Hatch_OutputBattery tHatch = (GT_MetaTileEntity_Hatch_OutputBattery) THatch;
 			drawEnergyFromHatch(tHatch);
 		}
 		for (GT_MetaTileEntity_Hatch tHatch : this.mAllEnergyHatches) {
@@ -493,7 +511,8 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 		}
 
 		// Output Power
-		for (GT_MetaTileEntity_Hatch_InputBattery tHatch : this.mChargeHatches) {
+		for (Object THatch : this.mChargeHatches) {
+			GT_MetaTileEntity_Hatch_InputBattery tHatch = (GT_MetaTileEntity_Hatch_InputBattery) THatch;
 			addEnergyToHatch(tHatch);
 		}
 		for (GT_MetaTileEntity_Hatch tHatch : this.mAllDynamoHatches) {

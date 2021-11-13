@@ -1,23 +1,32 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.GregTech_API.sBlockCasings1;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
-import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Steam_BusInput;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Steam_BusOutput;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GT_MetaTileEntity_Hatch_CustomFluidBase;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_SteamMultiBase;
-import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class GregtechMetaTileEntity_SteamMacerator extends GregtechMeta_SteamMultiBase {
 
 	private String mCasingName = "Bronze Plated Bricks";
-	
+	private IStructureDefinition<GregtechMetaTileEntity_SteamMacerator> STRUCTURE_DEFINITION = null;
+	private int mCasing;
+
 	public GregtechMetaTileEntity_SteamMacerator(String aName) {
 		super(aName);
 	}
@@ -29,10 +38,6 @@ public class GregtechMetaTileEntity_SteamMacerator extends GregtechMeta_SteamMul
 	@Override
 	public IMetaTileEntity newMetaEntity(IGregTechTileEntity arg0) {
 		return new GregtechMetaTileEntity_SteamMacerator(this.mName);
-	}
-	
-	public boolean isFacingValid(byte aFacing) {
-		return aFacing > 1;
 	}
 
 	@Override
@@ -51,20 +56,82 @@ public class GregtechMetaTileEntity_SteamMacerator extends GregtechMeta_SteamMul
 	}
 
 	@Override
-	public String[] getTooltip() {
+	protected GT_Multiblock_Tooltip_Builder createTooltip() {
 		if (mCasingName.contains("gt.blockcasings")) {
 			mCasingName = ItemList.Casing_BronzePlatedBricks.get(1).getDisplayName();
-		}    	
-		return new String[]{
-                "Controller Block for the Steam Macerator",
-                "Macerates "+getMaxParallelRecipes()+" ores at a time",
-                "Size(WxHxD): 3x3x3 (Hollow), Controller (Front centered)",
-                "1x Input Bus (Any casing)",
-                "1x Output Bus (Any casing)",
-                "1x Steam Hatch (Any casing)",
-                mCasingName+" for the rest (14 at least!)",
-                TAG_HIDE_MAINT
-                };
+		}
+		GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+		tt.addMachineType(getMachineType())
+				.addInfo("Controller Block for the Steam Macerator")
+				.addInfo("Macerates " + getMaxParallelRecipes() + " ores at a time")
+				.addSeparator()
+				.beginStructureBlock(3, 3, 3, true)
+				.addController("Front center")
+				.addCasingInfo(mCasingName, 14)
+				.addStructureHint("Input Bus (Steam)", 1)
+				.addStructureHint("Output Bus (Steam)", 1)
+				.addStructureHint("Steam Hatch", 1)
+				.toolTipFinisher("GT++");
+		return tt;
+	}
+
+	@Override
+	public IStructureDefinition<GregtechMetaTileEntity_SteamMacerator> getStructureDefinition() {
+		if (STRUCTURE_DEFINITION == null) {
+			STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_SteamMacerator>builder()
+					.addShape(mName, transpose(new String[][]{
+							{"CCC", "CCC", "CCC"},
+							{"C~C", "C-C", "CCC"},
+							{"CCC", "CCC", "CCC"},
+					}))
+					.addElement(
+							'C',
+							ofChain(
+									ofHatchAdder(
+											GregtechMetaTileEntity_SteamMacerator::addSteamMaceratorList, 10, 1
+									),
+									onElementPass(
+											x -> ++x.mCasing,
+											ofBlock(
+													sBlockCasings1, 10
+											)
+									)
+							)
+					)
+					.build();
+		}
+		return STRUCTURE_DEFINITION;
+	}
+
+	public final boolean addSteamMaceratorList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+		if (aTileEntity == null) {
+			return false;
+		} else {
+			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_CustomFluidBase && aMetaTileEntity.getBaseMetaTileEntity().getMetaTileID() == 31040){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mSteamInputFluids.add((GT_MetaTileEntity_Hatch_CustomFluidBase)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Steam_BusInput){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mSteamInputs.add((GT_MetaTileEntity_Hatch_Steam_BusInput)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Steam_BusOutput){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mSteamOutputs.add((GT_MetaTileEntity_Hatch_Steam_BusOutput)aMetaTileEntity);
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public void construct(ItemStack stackSize, boolean hintsOnly) {
+		buildPiece(mName, stackSize, hintsOnly, 1, 1, 0);
+	}
+
+	@Override
+	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+		mCasing = 0;
+		fixAllMaintenanceIssue();
+		return checkPiece(mName, 1, 1, 0) && mCasing >= 14;
 	}
 
 	@Override
@@ -75,41 +142,6 @@ public class GregtechMetaTileEntity_SteamMacerator extends GregtechMeta_SteamMul
 
 	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
 		return GT_Recipe.GT_Recipe_Map.sMaceratorRecipes;
-	}
-
-	@Override
-	public boolean checkMultiblock(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-		int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
-		int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
-		int tAmount = 0;
-		if (!aBaseMetaTileEntity.getAirOffset(xDir, 0, zDir)) {
-			return false;
-		} else {
-			for (int i = -1; i < 2; ++i) {
-				for (int j = -1; j < 2; ++j) {
-					for (int h = -1; h < 2; ++h) {
-						if (h != 0 || (xDir + i != 0 || zDir + j != 0) && (i != 0 || j != 0)) {
-							IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i,
-									h, zDir + j);
-							Block aBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
-							int aMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
-
-							if (!isValidBlockForStructure(tTileEntity, 10, true, aBlock, aMeta,
-									sBlockCasings1, 10)) {
-								Logger.INFO("Bad macerator casing");
-								return false;
-							}
-							++tAmount;
-
-						}
-					}
-				}
-			}
-			if (tAmount >= 14) {
-				fixAllMaintenanceIssue();
-			}
-			return tAmount >= 14;
-		}
 	}
 	
 	@Override

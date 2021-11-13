@@ -93,7 +93,7 @@ public class COMPAT_HANDLER {
 			new RECIPES_Extruder();
 			GregtechGeneratorsULV.run();
 			GregtechEnergyBuffer.run();
-			GregtechLFTR.run();
+			//GregtechLFTR.run();
 			GregtechSteamCondenser.run();
 			GregtechSafeBlock.run();
 			//GregtechSuperConductionPoint.run();
@@ -113,12 +113,12 @@ public class COMPAT_HANDLER {
 			GregtechAdvancedBoilers.run();
 			GregtechPollutionDevices.run();
 			GregtechTieredFluidTanks.run();
-			GregtechIndustrialMultiTank.run();
+			//GregtechIndustrialMultiTank.run();
 			GregtechGeothermalThermalGenerator.run();
 			Gregtech4Content.run();
-			GregtechIndustrialFuelRefinery.run();
+			//GregtechIndustrialFuelRefinery.run();
 			GregtechTreeFarmerTE.run();
-			GregtechIndustrialTreeFarm.run();
+			//GregtechIndustrialTreeFarm.run();
 			GregtechIndustrialSifter.run();
 			GregtechSimpleWasher.run();
 			GregtechRTG.run();
@@ -129,17 +129,17 @@ public class COMPAT_HANDLER {
 			GregtechSemiFluidgenerators.run();
 			GregtechAdvancedMixer.run();
 			GregtechWirelessChargers.run();
-			GregtechIndustrialGeneratorArray.run();
+			//GregtechIndustrialGeneratorArray.run();
 			GregtechIndustrialCuttingFactory.run();
-			GregtechMiniRaFusion.run();
+			//GregtechMiniRaFusion.run();
 			GregtechComponentAssembler.run();
-			GregtechTeslaTower.run();
+			//GregtechTeslaTower.run();
 			GregtechSuperChests.run();
 			GregtechIndustrialFishPond.run();
 			GregtechTieredChunkloaders.run();
 			GregtechIndustrialExtruder.run();
 			GregtechIndustrialMultiMachine.run();
-			GregtechBedrockPlatforms.run();
+			//GregtechBedrockPlatforms.run();
 			GregtechBufferDynamos.run();
 			GregtechAmazonWarehouse.run();
 			GregtechFactoryGradeReplacementMultis.run();
@@ -147,9 +147,9 @@ public class COMPAT_HANDLER {
 			GregtechThreadedBuffers.run();
 			GregtechIndustrialMixer.run();
 			GregtechCustomHatches.run();
-			GregtechNaqReactor.run();
+			//GregtechNaqReactor.run();
 			GregtechIndustrialArcFurnace.run();
-			GregtechSolarTower.run();
+			//GregtechSolarTower.run();
 			GregtechLargeTurbinesAndHeatExchanger.run();
 			GregtechPowerBreakers.run();
 			GregtechFluidReactor.run();
@@ -157,7 +157,7 @@ public class COMPAT_HANDLER {
 			GregtechIndustrialAlloySmelter.run();
 			GregtechIsaMill.run();
 			GregtechSteamMultis.run();
-			GregtechIndustrialElementDuplicator.run();
+			//GregtechIndustrialElementDuplicator.run();
 
 			//New Horizons Content
 			NewHorizonsAccelerator.run();

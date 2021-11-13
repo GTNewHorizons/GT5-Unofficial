@@ -2,20 +2,18 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
 import java.util.ArrayList;
 
-import gregtech.api.enums.Dyes;
-import gregtech.api.enums.TAE;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
+import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.GTPP_Recipe;
@@ -29,10 +27,16 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
+
 public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBase {
+
+	private int mCasing;
+	private IStructureDefinition<GregtechMetaTileEntity_Cyclotron> STRUCTURE_DEFINITION = null;
 
 	public GregtechMetaTileEntity_Cyclotron(int aID, String aName, String aNameRegional, int tier) {
 		super(aID, aName, aNameRegional);
@@ -99,140 +103,124 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 	}
 
 	@Override
-	public boolean checkMultiblock(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-		log("Checking form of Cyclotron.");
-		int xCenter = getBaseMetaTileEntity().getXCoord() + ForgeDirection.getOrientation(getBaseMetaTileEntity().getFrontFacing()).offsetX * 5;
-		int yCenter = getBaseMetaTileEntity().getYCoord();
-		int zCenter = getBaseMetaTileEntity().getZCoord() + ForgeDirection.getOrientation(getBaseMetaTileEntity().getFrontFacing()).offsetZ * 5;
-		if (((isAdvancedMachineCasing(xCenter + 5, yCenter, zCenter)) || (xCenter + 5 == getBaseMetaTileEntity().getXCoord()))
-				&& ((isAdvancedMachineCasing(xCenter - 5, yCenter, zCenter)) || (xCenter - 5 == getBaseMetaTileEntity().getXCoord()))
-				&& ((isAdvancedMachineCasing(xCenter, yCenter, zCenter + 5)) || (zCenter + 5 == getBaseMetaTileEntity().getZCoord()))
-				&& ((isAdvancedMachineCasing(xCenter, yCenter, zCenter - 5)) || (zCenter - 5 == getBaseMetaTileEntity().getZCoord())) && (checkCoils(xCenter, yCenter, zCenter))
-				&& (checkHulls(xCenter, yCenter, zCenter)) && (checkUpperOrLowerHulls(xCenter, yCenter + 1, zCenter)) && (checkUpperOrLowerHulls(xCenter, yCenter - 1, zCenter))
-				&& (isAdvancedMachineCasing(xCenter + 4, yCenter, zCenter + 3)) && (isAdvancedMachineCasing(xCenter + 4, yCenter, zCenter - 3))
-				&& (isAdvancedMachineCasing(xCenter + 4, yCenter, zCenter + 5)) && (isAdvancedMachineCasing(xCenter + 4, yCenter, zCenter - 5))
-				&& (isAdvancedMachineCasing(xCenter - 4, yCenter, zCenter + 3)) && (isAdvancedMachineCasing(xCenter - 4, yCenter, zCenter - 3))
-				&& (isAdvancedMachineCasing(xCenter - 4, yCenter, zCenter + 5)) && (isAdvancedMachineCasing(xCenter - 4, yCenter, zCenter - 5))
-				&& (isAdvancedMachineCasing(xCenter + 3, yCenter, zCenter + 4)) && (isAdvancedMachineCasing(xCenter - 3, yCenter, zCenter + 4))
-				&& (isAdvancedMachineCasing(xCenter + 5, yCenter, zCenter + 4)) && (isAdvancedMachineCasing(xCenter - 5, yCenter, zCenter + 4))
-				&& (isAdvancedMachineCasing(xCenter + 3, yCenter, zCenter - 4)) && (isAdvancedMachineCasing(xCenter - 3, yCenter, zCenter - 4))
-				&& (isAdvancedMachineCasing(xCenter + 5, yCenter, zCenter - 4)) && (isAdvancedMachineCasing(xCenter - 5, yCenter, zCenter - 4))
-				&& (isAdvancedMachineCasing(xCenter + 1, yCenter, zCenter - 5)) && (isAdvancedMachineCasing(xCenter + 1, yCenter, zCenter + 5))
-				&& (isAdvancedMachineCasing(xCenter - 1, yCenter, zCenter - 5)) && (isAdvancedMachineCasing(xCenter - 1, yCenter, zCenter + 5))
-				&& (isAdvancedMachineCasing(xCenter + 1, yCenter, zCenter - 7)) && (isAdvancedMachineCasing(xCenter + 1, yCenter, zCenter + 7))
-				&& (isAdvancedMachineCasing(xCenter - 1, yCenter, zCenter - 7)) && (isAdvancedMachineCasing(xCenter - 1, yCenter, zCenter + 7))
-				&& (isAdvancedMachineCasing(xCenter + 5, yCenter, zCenter - 1)) && (isAdvancedMachineCasing(xCenter + 5, yCenter, zCenter + 1))
-				&& (isAdvancedMachineCasing(xCenter - 5, yCenter, zCenter - 1)) && (isAdvancedMachineCasing(xCenter - 5, yCenter, zCenter + 1))
-				&& (isAdvancedMachineCasing(xCenter + 7, yCenter, zCenter - 1)) && (isAdvancedMachineCasing(xCenter + 7, yCenter, zCenter + 1))
-				&& (isAdvancedMachineCasing(xCenter - 7, yCenter, zCenter - 1)) && (isAdvancedMachineCasing(xCenter - 7, yCenter, zCenter + 1))
-				&& (isAdvancedMachineCasing(xCenter + 1, yCenter + 1, zCenter - 6)) && (isAdvancedMachineCasing(xCenter + 1, yCenter + 1, zCenter + 6))
-				&& (isAdvancedMachineCasing(xCenter - 1, yCenter + 1, zCenter - 6)) && (isAdvancedMachineCasing(xCenter - 1, yCenter + 1, zCenter + 6))
-				&& (isAdvancedMachineCasing(xCenter - 6, yCenter + 1, zCenter + 1)) && (isAdvancedMachineCasing(xCenter + 6, yCenter + 1, zCenter + 1))
-				&& (isAdvancedMachineCasing(xCenter - 6, yCenter + 1, zCenter - 1)) && (isAdvancedMachineCasing(xCenter + 6, yCenter + 1, zCenter - 1))
-				&& (isAdvancedMachineCasing(xCenter + 1, yCenter - 1, zCenter - 6)) && (isAdvancedMachineCasing(xCenter + 1, yCenter - 1, zCenter + 6))
-				&& (isAdvancedMachineCasing(xCenter - 1, yCenter - 1, zCenter - 6)) && (isAdvancedMachineCasing(xCenter - 1, yCenter - 1, zCenter + 6))
-				&& (isAdvancedMachineCasing(xCenter - 6, yCenter - 1, zCenter + 1)) && (isAdvancedMachineCasing(xCenter + 6, yCenter - 1, zCenter + 1))
-				&& (isAdvancedMachineCasing(xCenter - 6, yCenter - 1, zCenter - 1)) && (isAdvancedMachineCasing(xCenter + 6, yCenter - 1, zCenter - 1))
-				&& (this.mEnergyHatches.size() >= 1) && (this.mOutputBusses.size() >= 1) && (this.mInputHatches.size() >= 1) && (this.mInputBusses.size() >= 1)) {
-			int mEnergyHatches_sS = this.mEnergyHatches.size();
-			for (int i = 0; i < mEnergyHatches_sS; i++) {
-				if (this.mEnergyHatches.get(i).mTier < tier()){
-					log("bad energy hatch");
-					return false;
-				}
+	public IStructureDefinition<GregtechMetaTileEntity_Cyclotron> getStructureDefinition() {
+		if (STRUCTURE_DEFINITION == null) {
+			STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_Cyclotron>builder()
+					.addShape(mName, transpose(new String[][]{
+							{
+									"               ",
+									"      hhh      ",
+									"    hh   hh    ",
+									"   h       h   ",
+									"  h         h  ",
+									"  h         h  ",
+									" h           h ",
+									" h           h ",
+									" h           h ",
+									"  h         h  ",
+									"  h         h  ",
+									"   h       h   ",
+									"    hh   hh    ",
+									"      hhh      ",
+									"               ",
+							},
+							{
+									"      hhh      ",
+									"    hhccchh    ",
+									"   hcchhhcch   ",
+									"  hchh   hhch  ",
+									" hch       hch ",
+									" hch       hch ",
+									"hch         hch",
+									"hch         hch",
+									"hch         hch",
+									" hch       hch ",
+									" hch       hch ",
+									"  hchh   hhch  ",
+									"   hcch~hcch   ",
+									"    hhccchh    ",
+									"      hhh      ",
+							},
+							{
+									"               ",
+									"      hhh      ",
+									"    hh   hh    ",
+									"   h       h   ",
+									"  h         h  ",
+									"  h         h  ",
+									" h           h ",
+									" h           h ",
+									" h           h ",
+									"  h         h  ",
+									"  h         h  ",
+									"   h       h   ",
+									"    hh   hh    ",
+									"      hhh      ",
+									"               ",
+							}
+					}))
+					.addElement(
+							'h',
+							ofChain(
+									ofHatchAdder(
+											GregtechMetaTileEntity_Cyclotron::addCyclotronList, 44, 1
+									),
+									onElementPass(
+											x -> ++x.mCasing,
+											ofBlock(
+													getCasing(), getCasingMeta()
+											)
+									)
+							)
+					)
+					.addElement(
+							'c',
+							ofBlock(
+									getCyclotronCoil(), getCyclotronCoilMeta()
+							)
+					)
+					.build();
+		}
+		return STRUCTURE_DEFINITION;
+	}
+
+	@Override
+	public void construct(ItemStack stackSize, boolean hintsOnly) {
+		buildPiece(mName , stackSize, hintsOnly, 7, 1, 12);
+	}
+
+	@Override
+	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+		mCasing = 0;
+		return checkPiece(mName, 7, 1, 12) && mCasing >= 40;
+	}
+
+	public final boolean addCyclotronList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+		if (aTileEntity == null) {
+			return false;
+		} else {
+			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus && ((GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity).mTier >= 5){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mInputBusses.add((GT_MetaTileEntity_Hatch_InputBus)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy && ((GT_MetaTileEntity_Hatch_Energy) aMetaTileEntity).mTier >= 5){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus && ((GT_MetaTileEntity_Hatch_OutputBus) aMetaTileEntity).mTier >= 5) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mOutputBusses.add((GT_MetaTileEntity_Hatch_OutputBus) aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler && ((GT_MetaTileEntity_Hatch_Muffler) aMetaTileEntity).mTier >= 5) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mMufflerHatches.add((GT_MetaTileEntity_Hatch_Muffler) aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input && ((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mTier >= 5) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
 			}
-			int mOutputHatches_sS = this.mOutputBusses.size();
-			for (int i = 0; i < mOutputHatches_sS; i++) {
-				if (this.mOutputBusses.get(i).mTier < tier()){
-					log("bad output hatch");
-					return false;
-				}
-			}
-			int mInputHatches_sS = this.mInputHatches.size();
-			for (int i = 0; i < mInputHatches_sS; i++) {
-				if (this.mInputHatches.get(i).mTier < tier()){
-					log("bad input hatch");
-					return false;
-				}
-			}
-			int mInputBusses_sS = this.mInputBusses.size();
-			for (int i = 0; i < mInputBusses_sS; i++) {
-				if (this.mInputBusses.get(i).mTier < tier()){
-					log("bad input hatch");
-					return false;
-				}
-			}
-			this.fixAllMaintenanceIssue();
-			log("Built Cyclotron.");
-			turnCasingActive(true);
-			return true;
-		}    
-		log("Failed building Cyclotron.");
+		}
 		return false;
-	}
-
-	private boolean checkCoils(int aX, int aY, int aZ) {
-		return (isCyclotronCoil(aX + 6, aY, aZ - 1)) && (isCyclotronCoil(aX + 6, aY, aZ)) && (isCyclotronCoil(aX + 6, aY, aZ + 1)) && (isCyclotronCoil(aX + 5, aY, aZ - 3)) && (isCyclotronCoil(aX + 5, aY, aZ - 2))
-				&& (isCyclotronCoil(aX + 5, aY, aZ + 2)) && (isCyclotronCoil(aX + 5, aY, aZ + 3)) && (isCyclotronCoil(aX + 4, aY, aZ - 4)) && (isCyclotronCoil(aX + 4, aY, aZ + 4))
-				&& (isCyclotronCoil(aX + 3, aY, aZ - 5)) && (isCyclotronCoil(aX + 3, aY, aZ + 5)) && (isCyclotronCoil(aX + 2, aY, aZ - 5)) && (isCyclotronCoil(aX + 2, aY, aZ + 5))
-				&& (isCyclotronCoil(aX + 1, aY, aZ - 6)) && (isCyclotronCoil(aX + 1, aY, aZ + 6)) && (isCyclotronCoil(aX, aY, aZ - 6)) && (isCyclotronCoil(aX, aY, aZ + 6)) && (isCyclotronCoil(aX - 1, aY, aZ - 6))
-				&& (isCyclotronCoil(aX - 1, aY, aZ + 6)) && (isCyclotronCoil(aX - 2, aY, aZ - 5)) && (isCyclotronCoil(aX - 2, aY, aZ + 5)) && (isCyclotronCoil(aX - 3, aY, aZ - 5))
-				&& (isCyclotronCoil(aX - 3, aY, aZ + 5)) && (isCyclotronCoil(aX - 4, aY, aZ - 4)) && (isCyclotronCoil(aX - 4, aY, aZ + 4)) && (isCyclotronCoil(aX - 5, aY, aZ - 3))
-				&& (isCyclotronCoil(aX - 5, aY, aZ - 2)) && (isCyclotronCoil(aX - 5, aY, aZ + 2)) && (isCyclotronCoil(aX - 5, aY, aZ + 3)) && (isCyclotronCoil(aX - 6, aY, aZ - 1))
-				&& (isCyclotronCoil(aX - 6, aY, aZ)) && (isCyclotronCoil(aX - 6, aY, aZ + 1));
-	}
-
-	private boolean checkUpperOrLowerHulls(int aX, int aY, int aZ) {
-		return (isAdvancedMachineCasing(aX + 6, aY, aZ)) && (isAdvancedMachineCasing(aX + 5, aY, aZ - 3)) && (isAdvancedMachineCasing(aX + 5, aY, aZ - 2))
-				&& (isAdvancedMachineCasing(aX + 5, aY, aZ + 2)) && (isAdvancedMachineCasing(aX + 5, aY, aZ + 3)) && (isAdvancedMachineCasing(aX + 4, aY, aZ - 4))
-				&& (isAdvancedMachineCasing(aX + 4, aY, aZ + 4)) && (isAdvancedMachineCasing(aX + 3, aY, aZ - 5)) && (isAdvancedMachineCasing(aX + 3, aY, aZ + 5))
-				&& (isAdvancedMachineCasing(aX + 2, aY, aZ - 5)) && (isAdvancedMachineCasing(aX + 2, aY, aZ + 5)) && (isAdvancedMachineCasing(aX, aY, aZ - 6))
-				&& (isAdvancedMachineCasing(aX, aY, aZ + 6)) && (isAdvancedMachineCasing(aX - 2, aY, aZ - 5)) && (isAdvancedMachineCasing(aX - 2, aY, aZ + 5))
-				&& (isAdvancedMachineCasing(aX - 3, aY, aZ - 5)) && (isAdvancedMachineCasing(aX - 3, aY, aZ + 5)) && (isAdvancedMachineCasing(aX - 4, aY, aZ - 4))
-				&& (isAdvancedMachineCasing(aX - 4, aY, aZ + 4)) && (isAdvancedMachineCasing(aX - 5, aY, aZ - 3)) && (isAdvancedMachineCasing(aX - 5, aY, aZ - 2))
-				&& (isAdvancedMachineCasing(aX - 5, aY, aZ + 2)) && (isAdvancedMachineCasing(aX - 5, aY, aZ + 3)) && (isAdvancedMachineCasing(aX - 6, aY, aZ));
-	}
-
-	private boolean checkHulls(int aX, int aY, int aZ) {
-		return (isAdvancedMachineCasing(aX + 6, aY, aZ - 3)) && (isAdvancedMachineCasing(aX + 6, aY, aZ - 2)) && (isAdvancedMachineCasing(aX + 6, aY, aZ + 2))
-				&& (isAdvancedMachineCasing(aX + 6, aY, aZ + 3)) && (isAdvancedMachineCasing(aX + 3, aY, aZ - 6)) && (isAdvancedMachineCasing(aX + 3, aY, aZ + 6))
-				&& (isAdvancedMachineCasing(aX + 2, aY, aZ - 6)) && (isAdvancedMachineCasing(aX + 2, aY, aZ + 6)) && (isAdvancedMachineCasing(aX - 2, aY, aZ - 6))
-				&& (isAdvancedMachineCasing(aX - 2, aY, aZ + 6)) && (isAdvancedMachineCasing(aX - 3, aY, aZ - 6)) && (isAdvancedMachineCasing(aX - 3, aY, aZ + 6))
-				&& (isAdvancedMachineCasing(aX - 7, aY, aZ)) && (isAdvancedMachineCasing(aX + 7, aY, aZ)) && (isAdvancedMachineCasing(aX, aY, aZ - 7)) && (isAdvancedMachineCasing(aX, aY, aZ + 7))
-				&& (isAdvancedMachineCasing(aX - 6, aY, aZ - 3)) && (isAdvancedMachineCasing(aX - 6, aY, aZ - 2)) && (isAdvancedMachineCasing(aX - 6, aY, aZ + 2))
-				&& (isAdvancedMachineCasing(aX - 6, aY, aZ + 3)) && (isAdvancedMachineCasing(aX - 4, aY, aZ - 2)) && (isAdvancedMachineCasing(aX - 4, aY, aZ + 2))
-				&& (isAdvancedMachineCasing(aX + 4, aY, aZ - 2)) && (isAdvancedMachineCasing(aX + 4, aY, aZ + 2)) && (isAdvancedMachineCasing(aX - 2, aY, aZ - 4))
-				&& (isAdvancedMachineCasing(aX - 2, aY, aZ + 4)) && (isAdvancedMachineCasing(aX + 2, aY, aZ - 4)) && (isAdvancedMachineCasing(aX + 2, aY, aZ + 4));
-	}
-
-	private boolean isAdvancedMachineCasing(int aX, int aY, int aZ) {
-		final Block aBlock = getBaseMetaTileEntity().getBlock(aX, aY, aZ);
-		final int aMeta = getBaseMetaTileEntity().getMetaID(aX, aY, aZ);	
-		final IGregTechTileEntity tTileEntity2 = getBaseMetaTileEntity().getIGregTechTileEntity(aX, aY, aZ);	
-		
-		boolean debug = isValidBlockForStructure(tTileEntity2, 44, true, aBlock, aMeta, getCasing(), getCasingMeta());		
-		
-		/*if (!debug) {
-			this.getBaseMetaTileEntity().getWorld().setBlock(aX, aY, aZ, ModBlocks.blockCompressedObsidian);
-			log(""+aX+"/"+aY+"/"+aZ);
-		}*/
-		
-		return debug;
-	}
-
-	private boolean isCyclotronCoil(int aX, int aY, int aZ) {
-		
-		final Block aBlock = getBaseMetaTileEntity().getBlock(aX, aY, aZ);
-		final int aMeta = getBaseMetaTileEntity().getMetaID(aX, aY, aZ);	
-		
-		boolean debug = isValidBlockForStructure(null, 0, false, aBlock, aMeta, getCyclotronCoil(), getCyclotronCoilMeta());		
-		
-		/*if (!debug) {
-			this.getBaseMetaTileEntity().getWorld().setBlock(aX, aY, aZ, ModBlocks.blockCompressedObsidian);
-			log(""+aX+"/"+aY+"/"+aZ);
-		}*/
-		
-		return debug;		
 	}
 
 	public Block getCasing() {
@@ -252,23 +240,31 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 	}
 
 	@Override
-	public String[] getTooltip() {
-		return new String[]{
-				"Super Magnetic Speed Shooter",
-				"------------------------------------------------------------",
-				"Particles are accelerated over 186 revolutions to 80% light speed",
-				"Can produce a continuous beam current of 2.2 mA at 590 MeV",
-				"Which will be extracted from the Isochronous Cyclotron",
-				"------------------------------------------------------------",
-				"Consists of the same layout as a Fusion Reactor",
-				"Any external casing can be a hatch/bus, unlike Fusion",
-				"Cyclotron Machine Casings around Cyclotron Coil Blocks", 
-				"All Hatches must be IV or better",
-				"1-16 Input Hatches", 
-				"1-16 Input Busses",
-				"1-16 Output Busses", 
-				"1-16 Energy Hatches", 
-				};
+	protected GT_Multiblock_Tooltip_Builder createTooltip() {
+		GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+		tt.addMachineType(getMachineType())
+				.addInfo("Super Magnetic Speed Shooter")
+				.addSeparator()
+				.addInfo("Particles are accelerated over 186 revolutions to 80% light speed")
+				.addInfo("Can produce a continuous beam current of 2.2 mA at 590 MeV")
+				.addInfo("Which will be extracted from the Isochronous Cyclotron")
+				.addSeparator()
+				.addInfo("Consists of the same layout as a Fusion Reactor")
+				.addInfo("Any external casing can be a hatch/bus, unlike Fusion")
+				.addInfo("Cyclotron Machine Casings around Cyclotron Coil Blocks")
+				.addInfo("All Hatches must be IV or better")
+				.addPollutionAmount(getPollutionPerTick(null) * 20)
+				.addSeparator()
+				.addCasingInfo("Cyclotron Machine Casings", 40)
+				.addCasingInfo("Cyclotron Coil", 32)
+				.addInputBus("Any Casing", 1)
+				.addOutputBus("Any Casing", 1)
+				.addInputHatch("Any Casing", 1)
+				.addEnergyHatch("Any Casing", 1)
+				.addMaintenanceHatch("Any Casing", 1)
+				.addMufflerHatch("Any Casing", 1)
+				.toolTipFinisher("GT++");
+		return tt;
 	}
 
 	@Override

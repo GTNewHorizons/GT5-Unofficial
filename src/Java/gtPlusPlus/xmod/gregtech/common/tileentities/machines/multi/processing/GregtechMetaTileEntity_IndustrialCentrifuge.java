@@ -1,11 +1,15 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing;
 
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.GTPP_Recipe;
@@ -18,7 +22,10 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
+
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
 public class GregtechMetaTileEntity_IndustrialCentrifuge
 extends GregtechMeta_MultiBlockBase {
@@ -28,6 +35,8 @@ extends GregtechMeta_MultiBlockBase {
 	private static ITexture frontFaceActive;
 	private static CustomIcon GT9_5_Active = new CustomIcon("iconsets/LARGECENTRIFUGE_ACTIVE5");
 	private static CustomIcon GT9_5 = new CustomIcon("iconsets/LARGECENTRIFUGE5");
+	private int mCasing;
+	private IStructureDefinition<GregtechMetaTileEntity_IndustrialCentrifuge> STRUCTURE_DEFINITION = null;
 	//public static double recipesComplete = 0;
 
 	public GregtechMetaTileEntity_IndustrialCentrifuge(final int aID, final String aName, final String aNameRegional) {
@@ -53,22 +62,98 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
-	public String[] getTooltip() {
-		return new String[]{
-				"Controller Block for the Industrial Centrifuge",
-				"125% faster than using single block machines of the same voltage",
-				"Disable animations with a screwdriver",
-				"Only uses 90% of the eu/t normally required",
-				"Processes six items per voltage tier",
-				"Size: 3x3x3 (Hollow)",
-				"Centrifuge Casings (10 at least)",
-				"Controller (Front Center)",
-				"1x Input Hatch",
-				"1x Output Hatch",
-				"1x Input Bus",
-				"1x Output Bus",
-				"1x Energy Hatch",
-				};
+	protected GT_Multiblock_Tooltip_Builder createTooltip() {
+		GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+		tt.addMachineType(getMachineType())
+				.addInfo("Controller Block for the Industrial Centrifuge")
+				.addInfo("125% faster than using single block machines of the same voltage")
+				.addInfo("Disable animations with a screwdriver")
+				.addInfo("Only uses 90% of the eu/t normally required")
+				.addInfo("Processes six items per voltage tier")
+				.addPollutionAmount(getPollutionPerTick(null) * 20)
+				.addSeparator()
+				.beginStructureBlock(3, 3, 3, true)
+				.addController("Front Center")
+				.addCasingInfo("Centrifuge Casings", 10)
+				.addInputBus("Any Casing", 1)
+				.addOutputBus("Any Casing", 1)
+				.addInputHatch("Any Casing", 1)
+				.addOutputHatch("Any Casing", 1)
+				.addEnergyHatch("Any Casing", 1)
+				.addMaintenanceHatch("Any Casing", 1)
+				.addMufflerHatch("Any Casing", 1)
+				.toolTipFinisher("GT++");
+		return tt;
+	}
+
+	@Override
+	public IStructureDefinition<GregtechMetaTileEntity_IndustrialCentrifuge> getStructureDefinition() {
+		if (STRUCTURE_DEFINITION == null) {
+			STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialCentrifuge>builder()
+					.addShape(mName, transpose(new String[][]{
+							{"CCC", "CCC", "CCC"},
+							{"C~C", "C-C", "CCC"},
+							{"CCC", "CCC", "CCC"},
+					}))
+					.addElement(
+							'C',
+							ofChain(
+									ofHatchAdder(
+											GregtechMetaTileEntity_IndustrialCentrifuge::addIndustrialCentrifugeList, getCasingTextureIndex(), 1
+									),
+									onElementPass(
+											x -> ++x.mCasing,
+											ofBlock(
+													ModBlocks.blockCasingsMisc, 0
+											)
+									)
+							)
+					)
+					.build();
+		}
+		return STRUCTURE_DEFINITION;
+	}
+
+	@Override
+	public void construct(ItemStack stackSize, boolean hintsOnly) {
+		buildPiece(mName , stackSize, hintsOnly, 1, 1, 0);
+	}
+
+	@Override
+	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+		mCasing = 0;
+		return checkPiece(mName, 1, 1, 0) && mCasing >= 10;
+	}
+
+	public final boolean addIndustrialCentrifugeList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+		if (aTileEntity == null) {
+			return false;
+		} else {
+			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mInputBusses.add((GT_MetaTileEntity_Hatch_InputBus)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mOutputBusses.add((GT_MetaTileEntity_Hatch_OutputBus) aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mMufflerHatches.add((GT_MetaTileEntity_Hatch_Muffler) aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mOutputHatches.add((GT_MetaTileEntity_Hatch_Output) aMetaTileEntity);
+			}
+		}
+		return false;
 	}
 
 	@Override
@@ -89,11 +174,6 @@ extends GregtechMeta_MultiBlockBase {
 	@Override
 	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
 		return GTPP_Recipe.GTPP_Recipe_Map.sMultiblockCentrifugeRecipes_GT;
-	}
-
-	@Override
-	public boolean isFacingValid(final byte aFacing) {
-		return aFacing > 1;
 	}
 
 	@Override
@@ -121,39 +201,6 @@ extends GregtechMeta_MultiBlockBase {
 
 	public byte getCasingTextureIndex() {
 		return (byte) TAE.GTPP_INDEX(0);
-	}
-
-	@Override
-	public boolean checkMultiblock(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
-		int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
-		int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
-		int tAmount = 0;
-
-		if (!aBaseMetaTileEntity.getAirOffset(xDir, 0, zDir)) {
-			return false;
-		} else {
-			for (int i = -1; i < 2; ++i) {
-				for (int j = -1; j < 2; ++j) {
-					for (int h = -1; h < 2; ++h) {
-						if (h != 0 || (xDir + i != 0 || zDir + j != 0) && (i != 0 || j != 0)) {
-							IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i,
-									h, zDir + j);
-							Block aBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
-							int aMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
-
-							if (!isValidBlockForStructure(tTileEntity, getCasingTextureIndex(), true, aBlock, aMeta,
-									ModBlocks.blockCasingsMisc, 0)) {
-								Logger.INFO("Bad centrifuge casing");
-								return false;
-							}
-							++tAmount;
-
-						}
-					}
-				}
-			}
-			return tAmount >= 10;
-		}
 	}
 
 	@Override

@@ -1,3 +1,4 @@
+/*
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
 import java.util.ArrayList;
@@ -270,10 +271,12 @@ public class GregtechMetaTileEntityGeneratorArray extends GregtechMeta_MultiBloc
 							if (this.depleteInput(tLiquid)) {
 								Logger.INFO("Depleted Fuel");
 								this.boostEu = this.depleteInput(Materials.Oxygen.getGas(2L));
-								/*if (!tFluids.contains(Materials.Lubricant.getFluid(1L))) {
+								*/
+/*if (!tFluids.contains(Materials.Lubricant.getFluid(1L))) {
 									Logger.INFO("No Lube.");
 									return false;
-								}*/
+								}*//*
+
 								if (this.mRuntime % 72 == 0 || this.mRuntime == 0) {
 									this.depleteInput(Materials.Lubricant.getFluid(this.boostEu ? 2L : 1L));
 								}
@@ -381,9 +384,11 @@ public class GregtechMetaTileEntityGeneratorArray extends GregtechMeta_MultiBloc
 	
 	
 	
-	/**
+	*/
+/**
 	 *  Code from single blocks
-	 */
+	 *//*
+
 	
 	
 	public void tryProcessFuelItems(IGregTechTileEntity aBaseMetaTileEntity, ItemStack a) {
@@ -500,3 +505,4 @@ public class GregtechMetaTileEntityGeneratorArray extends GregtechMeta_MultiBloc
 	
 	
 }
+*/

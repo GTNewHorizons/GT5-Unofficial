@@ -1,3 +1,4 @@
+/*
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
 import java.util.ArrayList;
@@ -143,7 +144,8 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 	public boolean checkMultiblock(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {	
 
 			// Life Lessons from Greg.
-			/**
+			*/
+/**
 			[23:41:15] <GregoriusTechneticies> xdir and zdir are x2 and not x3
 			[23:41:26] <GregoriusTechneticies> thats you issue
 			[23:44:33] <Alkalus> mmm?
@@ -158,7 +160,8 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 			[23:45:51] <Alkalus> Ahh
 			[23:45:57] <GregoriusTechneticies> and not 2
 			[23:46:06] <Alkalus> Noted, thanks :D
-			 */
+			 *//*
+
 
 			final int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 3;
 			final int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * 3;
@@ -201,7 +204,8 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 							}
 
 							//TODO - Add Carbon Moderation Rods
-							/*
+							*/
+/*
 								else { //carbon moderation rods are at 1,1 & -1,-1 & 1,-1 & -1,1
 									if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
 										Utils.LOG_WARNING("LFTR Casing(s) Missing from one of the top layers inner 3x3.");
@@ -212,7 +216,8 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 										Utils.LOG_WARNING("LFTR Casing(s) Missing from one of the top layers inner 3x3.");
 										return false;
 									}
-								}*/
+								}*//*
+
 
 						}
 
@@ -678,4 +683,4 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 		super.onPostTick(aBaseMetaTileEntity, aTick);
 	}
 
-}
+}*/

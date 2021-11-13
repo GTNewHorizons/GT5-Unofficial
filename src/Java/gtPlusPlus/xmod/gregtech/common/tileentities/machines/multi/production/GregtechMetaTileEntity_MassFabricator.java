@@ -3,6 +3,8 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -11,14 +13,10 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_Config;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.*;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
-import gregtech.api.util.GT_Utility;
-import gregtech.api.util.GTPP_Recipe;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -26,13 +24,15 @@ import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MatterFab;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
+
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
 public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlockBase {
 
@@ -58,6 +58,9 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 	public static boolean sRequiresUUA = false;
 	private static FluidStack[] mUU = new FluidStack[2];
 	private static ItemStack mScrap[] = new ItemStack[2];
+
+	private int mCasing;
+	private IStructureDefinition<GregtechMetaTileEntity_MassFabricator> STRUCTURE_DEFINITION = null;
 
 	public int getAmplifierUsed(){
 		return this.mAmplifierUsed;
@@ -87,7 +90,7 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 	}
 
 	@Override
-	public String[] getTooltip() {
+	protected GT_Multiblock_Tooltip_Builder createTooltip() {
 
 		if (mCasingName1.toLowerCase().contains(".name")) {
 			mCasingName1 = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasingsMisc, 9);
@@ -98,19 +101,27 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 		if (mCasingName3.toLowerCase().contains(".name")) {
 			mCasingName3 = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasingsMisc, 8);
 		}
-		
-		return new String[]{
-				"Controller Block for the Matter Fabricator",
-				"Produces UU-A, UU-M & Scrap",
-				"Size(WxHxD): 5x4x5, Controller (Bottom center)",
-				"3x1x3 "+mCasingName3+"s (Inside bottom 5x1x5 layer)",
-				"9x "+mCasingName3+" (Centered 3x1x3 area in Bottom layer)",
-				"24x "+mCasingName2+" for the walls",
-				mCasingName1+"s for the edges & top (40 at least!)",
-				"1x Input Hatch/Bus",
-				"1x Output Hatch/Bus",
-				"1x Energy Hatch",
-				};
+
+		GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+		tt.addMachineType(getMachineType())
+				.addInfo("Controller Block for the Matter Fabricator")
+				.addInfo("Produces UU-A, UU-M & Scrap")
+				.addPollutionAmount(getPollutionPerTick(null) * 20)
+				.addSeparator()
+				.beginStructureBlock(5, 4, 5, true)
+				.addController("Front Center")
+				.addCasingInfo(mCasingName3, 9)
+				.addCasingInfo(mCasingName2, 24)
+				.addCasingInfo(mCasingName1, 40)
+				.addInputBus("Any Casing", 1)
+				.addOutputBus("Any Casing", 1)
+				.addInputHatch("Any Casing", 1)
+				.addOutputHatch("Any Casing", 1)
+				.addEnergyHatch("Any Casing", 1)
+				.addMaintenanceHatch("Any Casing", 1)
+				.addMufflerHatch("Any Casing", 1)
+				.toolTipFinisher("GT++");
+		return tt;
 	}
 
 	@Override
@@ -167,92 +178,88 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 		ItemStack[] tItemInputs = tItems.toArray(new ItemStack[tItems.size()]);
 		FluidStack[] tFluidInputs = tFluids.toArray(new FluidStack[tFluids.size()]);
 		return checkRecipeGeneric(tItemInputs, tFluidInputs, 4, 80, 00, 100);
-	}		
-
+	}
 
 	@Override
-	public boolean checkMultiblock(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
-		final int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 2;
-		final int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * 2;
-		
-		Block aContainmentGlass = ModBlocks.blockCasings3Misc;
-		int aContainmentMeta = 15;
-		
-		for (int i = -2; i < 3; i++) {
-			for (int j = -2; j < 3; j++) {
-				for (int h = 0; h < 4; h++) {
+	public IStructureDefinition<GregtechMetaTileEntity_MassFabricator> getStructureDefinition() {
+		if (STRUCTURE_DEFINITION == null) {
+			STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_MassFabricator>builder()
+					.addShape(mName, transpose(new String[][]{
+							{"CCCCC", "CCCCC", "CCCCC", "CCCCC", "CCCCC"},
+							{"CGGGC", "G---G", "G---G", "G---G", "CGGGC"},
+							{"CC~CC", "CHHHC", "CHHHC", "CHHHC", "CCCCC"},
+					}))
+					.addElement(
+							'C',
+							ofChain(
+									ofHatchAdder(
+											GregtechMetaTileEntity_MassFabricator::addMassFabricatorList, TAE.GTPP_INDEX(9), 1
+									),
+									onElementPass(
+											x -> ++x.mCasing,
+											ofBlock(
+													ModBlocks.blockCasingsMisc, 9
+											)
+									)
+							)
+					)
+					.addElement(
+							'H',
+							ofBlock(
+									ModBlocks.blockCasingsMisc, 8
+							)
+					)
+					.addElement(
+							'G',
+							ofBlock(
+									ModBlocks.blockCasings3Misc, 15
+							)
+					)
+					.build();
+		}
+		return STRUCTURE_DEFINITION;
+	}
 
-					//Utils.LOG_INFO("Logging Variables - xDir:"+xDir+" zDir:"+zDir+" h:"+h+" i:"+i+" j:"+j);
+	@Override
+	public void construct(ItemStack stackSize, boolean hintsOnly) {
+		buildPiece(mName , stackSize, hintsOnly, 2, 3, 0);
+	}
 
-					final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
-					
-					if (((i != -2) && (i != 2)) && ((j != -2) && (j != 2))) {
-						if (h == 0) {							
-							if (!isValidBlockForStructure(null, TAE.GTPP_INDEX(9), false, aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j), ModBlocks.blockCasingsMisc, 8)) {
-								Logger.INFO("Matter Generation Coils missings from the bottom layer, inner 3x3.");
-								return false;
-							}
-						} else if (h == 3) {													
-							if (!isValidBlockForStructure(tTileEntity, TAE.GTPP_INDEX(9), true, aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j), ModBlocks.blockCasingsMisc, 9)) {
-								Logger.INFO("Matter Fabricator Casings Missing from one of the top layers inner 3x3.");
-								return false;
-							}
-						} else {
-							if (!aBaseMetaTileEntity.getAirOffset(xDir + i, h, zDir + j)) {
-								Logger.INFO("Make sure the inner 3x3 of the Multiblock is Air.");
-								return false;
-							}
-						}
-					} else {
-						if (h == 0) {							
-							if (!isValidBlockForStructure(tTileEntity, TAE.GTPP_INDEX(9), true, aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j), ModBlocks.blockCasingsMisc, 9)) {
-								Logger.INFO("Matter Fabricator Casings Missing from one of the edges of the bottom layer.");
-								return false;
-							}
-						} else {
-							if (h == 1) {
-								if (((i == -2) || (i == 2)) && ((j == -2) || (j == 2))){									
-									if (!isValidBlockForStructure(tTileEntity, TAE.GTPP_INDEX(9), true, aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j), ModBlocks.blockCasingsMisc, 9)) {
-										Logger.INFO("Matter Fabricator Casings Missing from one of the corners in the second layer.");
-										return false;
-									}
-								}
+	@Override
+	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+		mCasing = 0;
+		return checkPiece(mName, 2, 3, 0) && mCasing >= 40;
+	}
 
-								else if (((i != -2) || (i != 2)) && ((j != -2) || (j != 2))){									
-									if (!isValidBlockForStructure(tTileEntity, TAE.GTPP_INDEX(9), true, aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j), aContainmentGlass, aContainmentMeta)) {
-										Logger.INFO("Glass Casings Missing from somewhere in the second layer.");
-										return false;
-									}
-								}
-							}
-							if (h == 2) {
-								if (((i == -2) || (i == 2)) && ((j == -2) || (j == 2))){									
-									if (!isValidBlockForStructure(tTileEntity, TAE.GTPP_INDEX(9), true, aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j), ModBlocks.blockCasingsMisc, 9)) {
-										Logger.INFO("Matter Fabricator Casings Missing from one of the corners in the third layer.");
-										return false;
-									}
-								}
-
-								else if (((i != -2) || (i != 2)) && ((j != -2) || (j != 2))){									
-									if (!isValidBlockForStructure(null, TAE.GTPP_INDEX(9), false, aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j), aContainmentGlass, aContainmentMeta)) {
-										Logger.INFO("Glass Casings Missing from somewhere in the third layer.");
-										return false;
-									}
-								}
-							}
-							if (h == 3) {								
-								if (!isValidBlockForStructure(tTileEntity, TAE.GTPP_INDEX(9), true, aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j), ModBlocks.blockCasingsMisc, 9)) {
-									Logger.INFO("Matter Fabricator Casings Missing from one of the edges on the top layer.");
-									return false;
-								}
-							}
-						}
-					}
-				}
+	public final boolean addMassFabricatorList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+		if (aTileEntity == null) {
+			return false;
+		} else {
+			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mInputBusses.add((GT_MetaTileEntity_Hatch_InputBus)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mOutputBusses.add((GT_MetaTileEntity_Hatch_OutputBus) aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mMufflerHatches.add((GT_MetaTileEntity_Hatch_Muffler) aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mOutputHatches.add((GT_MetaTileEntity_Hatch_Output) aMetaTileEntity);
 			}
 		}
-		Logger.INFO("Multiblock Formed.");
-		return true;
+		return false;
 	}
 
 	@Override
@@ -351,11 +358,11 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 				return true;
 			}
 			
-			return super.checkRecipeGeneric(c, getMaxParallelRecipes(), getEuDiscountForParallelism(), aSpeedBonusPercent, aOutputChanceRoll);
+			return super.checkRecipeGeneric(c, getMaxParallelRecipes(), getEuDiscountForParallelism(), aSpeedBonusPercent, aOutputChanceRoll, true);
 		}
 		
 		//Return normal Recipe handling
-		return super.checkRecipeGeneric(aItemInputs, aFluidInputs, getMaxParallelRecipes(), getEuDiscountForParallelism(), aSpeedBonusPercent, aOutputChanceRoll);	
+		return super.checkRecipeGeneric(aItemInputs, aFluidInputs, getMaxParallelRecipes(), getEuDiscountForParallelism(), aSpeedBonusPercent, aOutputChanceRoll, true);
 		}	
 	
 	@Override

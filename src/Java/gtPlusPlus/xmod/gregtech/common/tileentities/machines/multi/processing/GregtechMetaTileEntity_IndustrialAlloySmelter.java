@@ -1,10 +1,19 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static gregtech.api.util.GT_StructureUtility.ofCoil;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 import static gtPlusPlus.core.util.data.ArrayUtils.removeNulls;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import gregtech.api.enums.HeatingCoilLevel;
+import gregtech.api.metatileentity.implementations.*;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import org.apache.commons.lang3.ArrayUtils;
 
 import gregtech.api.enums.TAE;
@@ -19,18 +28,17 @@ import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
-import gtPlusPlus.xmod.gregtech.common.StaticFields59;
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 public class GregtechMetaTileEntity_IndustrialAlloySmelter extends GregtechMeta_MultiBlockBase {
 
 	public static int CASING_TEXTURE_ID;
-	private int mHeatingCapacity = 0;
+	private HeatingCoilLevel mHeatingCapacity;
 	private int mLevel = 0;
+	private int mCasing;
+	private IStructureDefinition<GregtechMetaTileEntity_IndustrialAlloySmelter> STRUCTURE_DEFINITION = null;
 
 	public GregtechMetaTileEntity_IndustrialAlloySmelter(int aID, String aName, String aNameRegional) {
 		super(aID, aName, aNameRegional);
@@ -65,10 +73,6 @@ public class GregtechMetaTileEntity_IndustrialAlloySmelter extends GregtechMeta_
 		return true;
 	}
 
-	public boolean isFacingValid(byte aFacing) {
-		return aFacing > 1;
-	}
-
 	public int getMaxEfficiency(ItemStack aStack) {
 		return 10000;
 	}
@@ -101,23 +105,108 @@ public class GregtechMetaTileEntity_IndustrialAlloySmelter extends GregtechMeta_
 	}
 
 	@Override
-	public String[] getTooltip() {
-		return new String[]{
-				"Controller Block for the Industrial Alloy Smelter",
-				"Gains one parallel per voltage tier",
-				"Gains one multiplier per coil tier",
-				"parallel = tier * coil tier",
-				"Gains 5% speed bonus per coil tier",
-				"Size(WxHxD): 3x5x3 (Hollow)", 
-				"Controller (Front middle at bottom)",
-				"Inconel Reinforced Casings (layers 0/4, 10 at least!)",
-				"16x Heating Coils (layers 1/3, hollow)",
-				"8x Integral Encasement V (middle layer, hollow)",
-				"1x Input Bus",
-				"1x Output Bus",
-				"1x Output Hatch",
-				"1x Energy Hatch",
-				};
+	protected GT_Multiblock_Tooltip_Builder createTooltip() {
+		GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+		tt.addMachineType(getMachineType())
+				.addInfo("Controller Block for the Industrial Alloy Smelter")
+				.addInfo("Gains one parallel per voltage tier")
+				.addInfo("Gains one multiplier per coil tier")
+				.addInfo("parallel = tier * coil tier")
+				.addInfo("Gains 5% speed bonus per coil tier")
+				.addPollutionAmount(getPollutionPerTick(null) * 20)
+				.addSeparator()
+				.beginStructureBlock(3, 5, 3, true)
+				.addController("Bottom center")
+				.addCasingInfo("Inconel Reinforced Casings", 10)
+				.addCasingInfo("Integral Encasement V", 18)
+				.addCasingInfo("Heating Coils", 16)
+				.addInputBus("Any Inconel Reinforced Casing", 1)
+				.addOutputBus("Any Inconel Reinforced Casing", 1)
+				.addEnergyHatch("Any Inconel Reinforced Casing", 1)
+				.addMaintenanceHatch("Any Inconel Reinforced Casing", 1)
+				.addMufflerHatch("Any Inconel Reinforced Casing", 1)
+				.toolTipFinisher("GT++");
+		return tt;
+	}
+
+	@Override
+	public IStructureDefinition<GregtechMetaTileEntity_IndustrialAlloySmelter> getStructureDefinition() {
+		if (STRUCTURE_DEFINITION == null) {
+			STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialAlloySmelter>builder()
+					.addShape(mName, transpose(new String[][]{
+							{"CCC", "CCC", "CCC"},
+							{"HHH", "H-H", "HHH"},
+							{"VVV", "V-V", "VVV"},
+							{"HHH", "H-H", "HHH"},
+							{"CCC", "C~C", "CCC"},
+					}))
+					.addElement(
+							'C',
+							ofChain(
+									ofHatchAdder(
+											GregtechMetaTileEntity_IndustrialAlloySmelter::addIndustrialAlloySmelterList, CASING_TEXTURE_ID, 1
+									),
+									onElementPass(
+											x -> ++x.mCasing,
+											ofBlock(
+													ModBlocks.blockCasings3Misc, 1
+											)
+									)
+							)
+					)
+					.addElement(
+							'H',
+							ofCoil(
+									GregtechMetaTileEntity_IndustrialAlloySmelter::setCoilLevel, GregtechMetaTileEntity_IndustrialAlloySmelter::getCoilLevel
+							)
+					)
+					.addElement(
+							'V',
+							ofBlock(
+									ModBlocks.blockCasingsTieredGTPP, 4
+							)
+					)
+					.build();
+		}
+		return STRUCTURE_DEFINITION;
+	}
+
+	public final boolean addIndustrialAlloySmelterList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+		if (aTileEntity == null) {
+			return false;
+		} else {
+			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mInputBusses.add((GT_MetaTileEntity_Hatch_InputBus)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mOutputBusses.add((GT_MetaTileEntity_Hatch_OutputBus) aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mMufflerHatches.add((GT_MetaTileEntity_Hatch_Muffler) aMetaTileEntity);
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public void construct(ItemStack stackSize, boolean hintsOnly) {
+		buildPiece(mName, stackSize, hintsOnly, 1, 4, 0);
+	}
+
+	@Override
+	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+		mCasing = 0;
+		mLevel = 0;
+		setCoilLevel(HeatingCoilLevel.None);
+		return checkPiece(mName, 1, 4, 0) && mCasing >= 10 && getCoilLevel() != HeatingCoilLevel.None && (mLevel = getCoilLevel().getTier() + 1) > 0;
 	}
 
 	@Override
@@ -128,90 +217,6 @@ public class GregtechMetaTileEntity_IndustrialAlloySmelter extends GregtechMeta_
 	@Override
 	public int getEuDiscountForParallelism() {
 		return 100;
-	}
-
-	@Override
-	public boolean checkMultiblock(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-		int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
-		int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
-
-		this.mLevel = 0;
-		this.mHeatingCapacity = 0;
-		for (int i=1;i<4;i++) {
-			if (!aBaseMetaTileEntity.getAirOffset(xDir, i, zDir)) {		
-				Logger.INFO("Did not find air inside on layer "+i);
-				return false;
-			}
-		}
-		/*if (!addMufflerToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir, 3, zDir),
-				CASING_TEXTURE_ID)) {
-			return false;
-		}*/
-		Block tUsedBlock = aBaseMetaTileEntity.getBlockOffset(xDir + 1, 1, zDir);
-		byte tUsedMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + 1, 1, zDir);
-		this.mLevel = StaticFields59.getTierForCoil(tUsedBlock, tUsedMeta);
-		this.mHeatingCapacity = StaticFields59.getHeatingCapacityForCoil(tUsedBlock, tUsedMeta);
-		
-		int aCasingCount = 0;
-
-		for (int i = -1; i < 2; i++) {
-			for (int j = -1; j < 2; j++) {				
-				
-				if ((i != 0) || (j != 0)) {					
-					//Coils 1
-					if (!isValidBlockForStructure(null, CASING_TEXTURE_ID, false, aBaseMetaTileEntity.getBlockOffset(xDir + i, 1, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 1, zDir + j), StaticFields59.getBlockCasings5(), tUsedMeta)) {
-						Logger.INFO("Heating Coils missing. First Layer");
-						return false;
-					}
-					
-					//Integral Casings
-					if (!isValidBlockForStructure(null, CASING_TEXTURE_ID, false, aBaseMetaTileEntity.getBlockOffset(xDir + i, 2, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 2, zDir + j), ModBlocks.blockCasingsTieredGTPP, 4)) {
-						Logger.INFO("Integral Framework missing. Second Layer");
-						return false;
-					}
-					
-					//Coils 2
-					if (!isValidBlockForStructure(null, CASING_TEXTURE_ID, false, aBaseMetaTileEntity.getBlockOffset(xDir + i, 3, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 3, zDir + j), StaticFields59.getBlockCasings5(), tUsedMeta)) {
-						Logger.INFO("Heating Coils missing. Third Layer");
-						return false;
-					}					
-				}
-				
-				//Top Layer
-				
-				Block aCurrentBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, 4, zDir + j);
-				int aCurrentMeta = (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 4, zDir + j);
-				if (aCurrentBlock == ModBlocks.blockCasings3Misc && aCurrentMeta == 1) {
-					aCasingCount++;
-				}
-				
-				final IGregTechTileEntity tTileEntity2 = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, 4, zDir + j);					
-				if (!isValidBlockForStructure(tTileEntity2, CASING_TEXTURE_ID, true, aCurrentBlock, aCurrentMeta, ModBlocks.blockCasings3Misc, 1)) {
-					Logger.INFO("Top Layer missing.");
-					return false;
-				}
-			}
-		}
-		for (int i = -1; i < 2; i++) {
-			for (int j = -1; j < 2; j++) {
-
-				
-				Block aCurrentBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, 0, zDir + j);
-				int aCurrentMeta = (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 0, zDir + j);
-				if (aCurrentBlock == ModBlocks.blockCasings3Misc && aCurrentMeta == 1) {
-					aCasingCount++;
-				}
-				if ((xDir + i != 0) || (zDir + j != 0)) {
-					IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, 0, zDir + j);					
-					if (!isValidBlockForStructure(tTileEntity, CASING_TEXTURE_ID, true, aCurrentBlock, aCurrentMeta, ModBlocks.blockCasings3Misc, 1)) {
-						Logger.INFO("Bottom Layer missing.");
-						return false;
-					}					
-				}
-			}
-		}
-		
-		return aCasingCount >= 10;
 	}
 
 	public boolean checkRecipe(ItemStack aStack) {
@@ -255,7 +260,7 @@ public class GregtechMetaTileEntity_IndustrialAlloySmelter extends GregtechMeta_
 
 		// EU discount
 		float tRecipeEUt = (tRecipe.mEUt * aEUPercent) / 100.0f;
-		int tHeatCapacityDivTiers = mHeatingCapacity / 900;
+		int tHeatCapacityDivTiers = (int) mHeatingCapacity.getHeat() / 900;
 		float tTotalEUt = 0.0f;
 
 		int parallelRecipes = 0;
@@ -373,5 +378,11 @@ public class GregtechMetaTileEntity_IndustrialAlloySmelter extends GregtechMeta_
 
 	}
 
-	
+	public HeatingCoilLevel getCoilLevel() {
+		return mHeatingCapacity;
+	}
+
+	public void setCoilLevel(HeatingCoilLevel aCoilLevel) {
+		mHeatingCapacity = aCoilLevel;
+	}
 }

@@ -227,18 +227,18 @@ public enum GregtechItemList implements GregtechItemContainer {
 
 
 	//LFTR
-	ThoriumReactor,
+	/*ThoriumReactor,*/
 	Casing_Reactor_I, 
 	Casing_Reactor_II,
 
 	//Multitank
-	Industrial_MultiTank, 
+	/*Industrial_MultiTank,*/
 	Industrial_MultiTankDense, 
 	Casing_MultitankExterior,
 
 
 	//Fission Fuel Refinery
-	Industrial_FuelRefinery,
+	/*Industrial_FuelRefinery,*/
 	Casing_Refinery_External,
 	Casing_Refinery_Structural,
 	Casing_Refinery_Internal,
@@ -266,7 +266,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 
 
 	//Tree Farm
-	Industrial_TreeFarm, 
+	/*Industrial_TreeFarm, */
 	TreeFarmer_Structural,
 	Casing_PLACEHOLDER_TreeFarmer,
 
@@ -292,7 +292,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 
 
 	//Generator Array
-	Generator_Array_Controller, 
+	/*Generator_Array_Controller, */
 
 
 	//Cutting Factory Controller
@@ -301,7 +301,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 
 
 	//Tesla Tower
-	TelsaTower,
+	/*TelsaTower,*/
 	Casing_TeslaTower, 
 
 
@@ -316,9 +316,9 @@ public enum GregtechItemList implements GregtechItemContainer {
 
 
 	//Bedrock Mining Platforms
-	BedrockMiner_MKI, 
-	BedrockMiner_MKII, 
-	BedrockMiner_MKIII, 
+	/*BedrockMiner_MKI, */
+	/*BedrockMiner_MKII, */
+	/*BedrockMiner_MKIII, */
 	Casing_BedrockMiner, 
 
 
@@ -334,7 +334,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Machine_Adv_DistillationTower,
 
 	//Advanced Assembly Line
-	Machine_Adv_AssemblyLine,
+	/*Machine_Adv_AssemblyLine,*/
 	
 	//Advanced Vacuum Freezer
 	Industrial_Cryogenic_Freezer, 
@@ -355,7 +355,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Casing_Naq_Reactor_A,
 	Casing_Naq_Reactor_B,
 	Casing_Naq_Reactor_C,
-	Controller_Naq_Reactor, 
+	/*Controller_Naq_Reactor, */
 	Casing_Containment,	
 	
 	//Arc Furnace
@@ -363,13 +363,13 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Casing_Industrial_Arc_Furnace, 
 	
 	//Solar Tower
-	Industrial_Solar_Tower,
+	/*Industrial_Solar_Tower,*/
 	Casing_SolarTower_Structural, 
 	Casing_SolarTower_SaltContainment, 
 	Casing_SolarTower_HeatContainment, 
 	
 	//Larger Turbines
-	Large_Steam_Turbine, Large_HPSteam_Turbine, 
+	/*Large_Steam_Turbine, Large_HPSteam_Turbine, */
 	Casing_Turbine_Shaft, 
 	Casing_Turbine_LP, Casing_Turbine_HP,
 	Casing_Turbine_Gas, Casing_Turbine_Plasma,
@@ -398,7 +398,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Controller_Flotation_Cell,
 	
 	// Elemental Duplicator
-	Controller_ElementalDuplicator,
+	/*Controller_ElementalDuplicator,*/
 	Casing_ElementalDuplicator,
 	
 	// Big Steam Macerator
@@ -427,7 +427,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Hatch_Air_Intake,
 	
 	//XL Turbine Rotor Hatch
-	Hatch_Turbine_Rotor,
+	/*Hatch_Turbine_Rotor,*/
 	
 	//Standard Turbine Rotor Hatch
 	Hatch_Input_TurbineHousing,
@@ -452,7 +452,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Hatch_Output_Bus_Steam,	
 
 	//Elemental Duplicator Data Orb Bus
-	Hatch_Input_Elemental_Duplicator,
+	/*Hatch_Input_Elemental_Duplicator,*/
 	
 	//RTG Hatch 
 	Hatch_RTG_LV,
@@ -556,7 +556,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 	SimpleDustWasher_UV, 
 	
 	//Solar Tower Reflector
-	Solar_Tower_Reflector,
+	/*Solar_Tower_Reflector,*/
 
 	//Super Tier Chests
 	Super_Chest_LV, Super_Chest_MV, Super_Chest_HV, Super_Chest_EV, Super_Chest_IV, 
@@ -572,7 +572,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 
 
 	//Tiny Fusion
-	Miniature_Fusion, 
+	/*Miniature_Fusion, */
 
 
 	//Component Makers
@@ -696,7 +696,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 	RTG,
 	
 	//Plasma Tank
-	Plasma_Tank,
+	/*Plasma_Tank,*/
 	
 	
 	//----------------------------------------------------------------------------

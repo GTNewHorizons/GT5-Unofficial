@@ -1,3 +1,4 @@
+/*
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines;
 
 import static gtPlusPlus.core.lib.CORE.RANDOM;
@@ -185,3 +186,4 @@ public class GT_MTE_LargeTurbine_Steam extends GregtechMetaTileEntity_LargerTurb
 	}
 
 }
+*/

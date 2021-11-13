@@ -1,3 +1,4 @@
+/*
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
 import java.util.HashMap;
@@ -698,3 +699,4 @@ extends GregtechMeta_MultiBlockBase {
 
 
 }
+*/

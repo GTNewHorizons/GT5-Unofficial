@@ -3,24 +3,19 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import gregtech.api.GregTech_API;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
+import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
 import gregtech.api.util.GTPP_Recipe;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.chemistry.RocketFuels;
 import gtPlusPlus.core.lib.LoadedMods;
@@ -36,6 +31,10 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
+
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
 public class GregtechMetaTileEntity_LargeRocketEngine extends GregtechMeta_MultiBlockBase
 {
@@ -53,6 +52,8 @@ public class GregtechMetaTileEntity_LargeRocketEngine extends GregtechMeta_Multi
 	public static String mIntakeHatchName = "Tungstensteel Turbine Casing";
 	public static String mGearboxName = "Inconel Reinforced Casing";
 
+	private int mCasing;
+	private IStructureDefinition<GregtechMetaTileEntity_LargeRocketEngine> STRUCTURE_DEFINITION = null;
 
 	private final static int CASING_ID = TAE.getIndexFromPage(3, 11);
 	
@@ -75,7 +76,7 @@ public class GregtechMetaTileEntity_LargeRocketEngine extends GregtechMeta_Multi
 	}
 
 	@Override
-	public String[] getTooltip() {
+	protected GT_Multiblock_Tooltip_Builder createTooltip() {
 		if (mCasingName.toLowerCase().contains(".name")) {
 			mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings4Misc, 11);
 		}
@@ -91,26 +92,158 @@ public class GregtechMetaTileEntity_LargeRocketEngine extends GregtechMeta_Multi
 		if (mCoolantName.toLowerCase().contains(".")) {
 			mCoolantName = FluidUtils.getFluidStack("liquidhydrogen", 1).getLocalizedName();
 		}
-		return new String[] { 
-				"Controller Block for the Large Rocket Engine",
-				"Supply Rocket Fuels and 1000L(3000L boosted) of "+mLubricantName+" per hour to run",
-				"Supply 4L of "+mCoolantName+" per second per 2100 eu/t to boost output (optional)", 
-				"Consumes 2000L/s of air per 16384 eu/t produced",
-				"Produces as much energy as you put fuel in",
-				"produses 1500 posution/S per 16384 eu/t produced",
-				"When producing more then 32K eu/t fuel wil be consume less efficiently (3x - 1.5x eff@57Keu/t input energy)",
-				"formula: x = input of energy (10K^(1/3)/ x^(1/3)) * (40K^(1/3)/ x^(1/3))",
-				"Boosting will produce 3x the amount of power but will consume 3x fuel",
-				"Size(WxHxD): 3x3x10, Controller (front centered)",
-				"3x3x10 of "+mCasingName+" (hollow, Min 64!)",
-				"8x "+mGearboxName+" inside the Hollow Casing",
-				"1x Dynamo Hatch (Top Middle, Max 8) suports tectech dynamos",
-				"8x Air Intake Hatch (one of the Casings next to a "+mGearboxName+", top row allowed)",
-				"3x Input Hatch (Rocket Fuel/Booster/co2) (one of the Casings next to a "+mGearboxName+", top row not allowed)",
-				"1x Input Bus to supply filters for advanced muffler (one of the Casings next to a \"+mGearboxName+\", top row not allowed)",
-				"1x Maintenance Hatch (one of the Casings next to a "+mGearboxName+")", 
-				"1x Muffler Hatch (Back Centre)",
-		};
+		GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+		tt.addMachineType(getMachineType())
+				.addInfo("Controller Block for the Large Rocket Engine")
+				.addInfo("Supply Rocket Fuels and 1000L(3000L boosted) of " + mLubricantName + " per hour to run")
+				.addInfo("Supply 4L of " + mCoolantName + " per second per 2100 eu/t to boost output (optional)")
+				.addInfo("Consumes 2000L/s of air per 16384 eu/t produced")
+				.addInfo("Produces as much energy as you put fuel in")
+				.addInfo("produses 1500 posution/S per 16384 eu/t produced")
+				.addInfo("When producing more then 32K eu/t fuel wil be consume less efficiently (3x - 1.5x eff@57Keu/t input energy)")
+				.addInfo("formula: x = input of energy (10K^(1/3)/ x^(1/3)) * (40K^(1/3)/ x^(1/3))")
+				.addInfo("Boosting will produce 3x the amount of power but will consume 3x fuel")
+				.addSeparator()
+				.beginStructureBlock(3, 3, 10, false)
+				.addController("Front Center")
+				.addCasingInfo(mCasingName, 64)
+				.addCasingInfo(mGearboxName, 8)
+				.addStructureHint("Air Intake Hatch", 1)
+				.addInputBus("Side center line", 1)
+				.addInputHatch("Side center line", 1)
+				.addOutputHatch("Side center line", 1)
+				.addMaintenanceHatch("Side center line", 1)
+				.addDynamoHatch("Top center line", 2)
+				.addMufflerHatch("Back Center", 3)
+				.toolTipFinisher("GT++");
+		return tt;
+	}
+
+	@Override
+	public IStructureDefinition<GregtechMetaTileEntity_LargeRocketEngine> getStructureDefinition() {
+		if (STRUCTURE_DEFINITION == null) {
+			STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_LargeRocketEngine>builder()
+					.addShape(mName, transpose(new String[][]{
+							{"CCC", "CTC", "CTC", "CTC", "CTC", "CTC", "CTC", "CTC", "CTC", "CCC"},
+							{"C~C", "SIS", "SIS", "SIS", "SIS", "SIS", "SIS", "SIS", "SIS", "CMC"},
+							{"CCC", "CSC", "CSC", "CSC", "CSC", "CSC", "CSC", "CSC", "CSC", "CCC"},
+					}))
+					.addElement(
+							'C',
+							ofBlock(
+									getCasingBlock(), getCasingMeta()
+							)
+					)
+					.addElement(
+							'I',
+							ofBlock(
+									getGearboxBlock(), getGearboxMeta()
+							)
+					)
+					.addElement(
+							'T',
+							ofChain(
+									ofHatchAdder(
+											GregtechMetaTileEntity_LargeRocketEngine::addLargeRocketEngineTopList, getCasingTextureIndex(), 2
+									),
+									onElementPass(
+											x -> ++x.mCasing,
+											ofBlock(
+													getCasingBlock(), getCasingMeta()
+											)
+									)
+							)
+					)
+					.addElement(
+							'S',
+							ofChain(
+									ofHatchAdder(
+											GregtechMetaTileEntity_LargeRocketEngine::addLargeRocketEngineSideList, getCasingTextureIndex(), 1
+									),
+									onElementPass(
+											x -> ++x.mCasing,
+											ofBlock(
+													getCasingBlock(), getCasingMeta()
+											)
+									)
+							)
+					)
+					.addElement(
+							'M',
+							ofHatchAdder(
+									GregtechMetaTileEntity_LargeRocketEngine::addLargeRocketEngineBackList, getCasingTextureIndex(), 3
+							)
+					)
+					.build();
+		}
+		return STRUCTURE_DEFINITION;
+	}
+
+	@Override
+	public void construct(ItemStack stackSize, boolean hintsOnly) {
+		buildPiece(mName , stackSize, hintsOnly, 1, 1, 0);
+	}
+
+	@Override
+	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+		mCasing = 0;
+		this.mTecTechDynamoHatches.clear();
+		this.mAllDynamoHatches.clear();
+		this.mAirIntakes.clear();
+		return checkPiece(mName, 1, 1, 0) && mCasing >= 64 - 48 && mAirIntakes.size() >= 8;
+	}
+
+	public final boolean addLargeRocketEngineTopList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+		if (aTileEntity == null) {
+			return false;
+		} else {
+			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Dynamo) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mAllDynamoHatches.add((GT_MetaTileEntity_Hatch_Dynamo) aMetaTileEntity);
+			} if (LoadedMods.TecTech) {
+				if (isThisHatchMultiDynamo(aMetaTileEntity)) this.mAllDynamoHatches.add((GT_MetaTileEntity_Hatch) aMetaTileEntity);
+			}
+		}
+		return false;
+	}
+
+	public final boolean addLargeRocketEngineSideList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+		if (aTileEntity == null) {
+			return false;
+		} else {
+			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_AirIntake) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mAirIntakes.add(aMetaTileEntity) && this.mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mInputBusses.add((GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity);
+			}
+		}
+		return false;
+	}
+
+	public final boolean addLargeRocketEngineBackList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+		if (aTileEntity == null) {
+			return false;
+		} else {
+			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mMufflerHatches.add((GT_MetaTileEntity_Hatch_Muffler)aMetaTileEntity);
+			}
+		}
+		return false;
 	}
 
 	@Override
@@ -138,7 +271,8 @@ public class GregtechMetaTileEntity_LargeRocketEngine extends GregtechMeta_Multi
 		else {
 			int totalAir = 0;
 			FluidStack airstack = FluidUtils.getFluidStack("air", 1);
-			for (GT_MetaTileEntity_Hatch_AirIntake u : this.mAirIntakes) {
+			for (Object U : this.mAirIntakes) {
+				GT_MetaTileEntity_Hatch_AirIntake u = (GT_MetaTileEntity_Hatch_AirIntake) U;
 				if (u != null && u.mFluid != null) {
 					// had this trow errors cousing the machine to stop probebly fixed
 					FluidStack f = u.mFluid;
@@ -295,159 +429,6 @@ public class GregtechMetaTileEntity_LargeRocketEngine extends GregtechMeta_Multi
 		int LOHamount = (3 * euProduction)/1000;
 		return this.depleteInput(FluidUtils.getFluidStack(RocketFuels.Liquid_Hydrogen, LOHamount)); //(40 * ((long) euProduction / 10000))
 	}
-
-	@Override
-	public boolean checkMultiblock(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
-		byte tSide = getBaseMetaTileEntity().getBackFacing();
-		int tX = getBaseMetaTileEntity().getXCoord();
-		int tY = getBaseMetaTileEntity().getYCoord();
-		int tZ = getBaseMetaTileEntity().getZCoord();
-		
-		this.mTecTechDynamoHatches.clear();
-		this.mAllDynamoHatches.clear();
-		
-		final int MAX_LENGTH = 8;
-		for (int length=0;length<MAX_LENGTH;length++) {
-			if(getBaseMetaTileEntity().getBlockAtSideAndDistance(tSide, length+1) != getGearboxBlock()) {
-				log("Bad Gearbox Block");
-				return false;
-			}
-			if(getBaseMetaTileEntity().getMetaIDAtSideAndDistance(tSide, length+1) != getGearboxMeta()) {
-				log("Bad Gearbox Meta");
-				return false;
-			}
-		}
-		log("Found "+MAX_LENGTH+" "+mGearboxName+"s.");		
-		for (byte i = -1; i < 2; i = (byte) (i + 1)) {
-			for (byte j = -1; j < 2; j = (byte) (j + 1)) {
-				if ((i != 0) || (j != 0)) {
-					for (byte aLength = 0; aLength < (MAX_LENGTH+2); aLength = (byte) (aLength + 1)) { // Length
-
-
-						final int fX = tX - (tSide == 5 ? 1 : tSide == 4 ? -1 : i),
-								fZ = tZ - (tSide == 2 ? -1 : tSide == 3 ? 1 : i),
-								aY = tY + j,
-								aX = tX + (tSide == 5 ? aLength : tSide == 4 ? -aLength : i),
-								aZ = tZ + (tSide == 2 ? -aLength : tSide == 3 ? aLength : i);
-
-
-						//Why check for air in world when each intake requires 1 air block?
-						//final Block frontAir = getBaseMetaTileEntity().getBlock(fX, aY, fZ);
-						//final String frontAirName = frontAir.getUnlocalizedName();						
-						//if(!(getBaseMetaTileEntity().getAir(fX, aY, fZ) || frontAirName.equalsIgnoreCase("tile.air") || frontAirName.equalsIgnoreCase("tile.railcraft.residual.heat"))) {
-						//log("Bad Air Check");
-						//return false; //Fail if vent blocks are obstructed
-						//}
-
-						if (((i == 0) || (j == 0)) && ((aLength > 0) && (aLength <= MAX_LENGTH))) {
-							log("Checking for Hatches. "+aLength);
-							//Top Row
-							if (j == 1) {
-								if (addDynamoToMachineList(getBaseMetaTileEntity().getIGregTechTileEntity(aX, aY, aZ), getCasingTextureIndex())) {
-									// Do Nothing
-								}
-								else if (addAirIntakeToMachineList(getBaseMetaTileEntity().getIGregTechTileEntity(aX, aY, aZ), getCasingTextureIndex())) {
-									// Do Nothing
-								}	
-								else if (getBaseMetaTileEntity().getBlock(aX, aY, aZ) == getCasingBlock() && getBaseMetaTileEntity().getMetaID(aX, aY, aZ) == getCasingMeta()) {
-									// Do nothing
-								}
-								else {
-									log("Top Row - "+aLength+" | Did not find casing or Dynamo");
-									return false;
-								}
-							}
-							else {
-								IGregTechTileEntity aCheck = getBaseMetaTileEntity().getIGregTechTileEntity(aX, aY, aZ);
-								if (aCheck != null) {
-									final IMetaTileEntity bCheck = aCheck.getMetaTileEntity();							        
-									// Only allow Dynamos on Top
-									if (bCheck instanceof GT_MetaTileEntity_Hatch_Dynamo) {
-										log("Found dynamo in disallowed location | "+aX+", "+aY+", "+aZ+" | "+i+", "+j+", "+aLength);
-										return false;
-									}
-								}	
-								if (addAirIntakeToMachineList(getBaseMetaTileEntity().getIGregTechTileEntity(aX, aY, aZ), getCasingTextureIndex())) {
-									// Do Nothing
-								}	
-								else if (addInputToMachineList(getBaseMetaTileEntity().getIGregTechTileEntity(aX, aY, aZ), getCasingTextureIndex())) {
-									// Do Nothing
-								}
-								else if (addOutputToMachineList(getBaseMetaTileEntity().getIGregTechTileEntity(aX, aY, aZ), getCasingTextureIndex())) {
-									// Do Nothing
-								}
-								else if (getBaseMetaTileEntity().getBlock(aX, aY, aZ) == getCasingBlock() && getBaseMetaTileEntity().getMetaID(aX, aY, aZ) == getCasingMeta()) {
-									// Do nothing
-								}
-								else {log("Bad block.");
-								return false;
-								}
-
-							}
-							log("Passed check. "+aLength);
-
-						} else if (aLength == 0) {
-							log("Searching for Gearbox");							
-							if (addMaintenanceToMachineList(getBaseMetaTileEntity().getIGregTechTileEntity(aX, aY, aZ), getCasingTextureIndex())) {
-								// Do Nothing
-							}
-							else if(!(getBaseMetaTileEntity().getBlock(aX, aY, aZ) == getCasingBlock() && getBaseMetaTileEntity().getMetaID(aX, aY, aZ) == getCasingMeta())) {
-								log("Bad Missing Casing || Bad Meta");
-								return false;
-							}
-							else {								
-								log("Found "+mCasingName+".");								
-							}
-						} else if (getBaseMetaTileEntity().getBlock(aX, aY, aZ) == getCasingBlock() && getBaseMetaTileEntity().getMetaID(aX, aY, aZ) == getCasingMeta()) {
-							log("Found Casing.");
-							// Do nothing
-						} else {
-							log("Bad XXX");
-							return false;
-						}
-					}
-				}
-			}
-		}
-
-		this.mMufflerHatches.clear();
-		IGregTechTileEntity tTileEntity = getBaseMetaTileEntity().getIGregTechTileEntityAtSideAndDistance(getBaseMetaTileEntity().getBackFacing(), MAX_LENGTH+1);
-		if ((tTileEntity != null) && (tTileEntity.getMetaTileEntity() != null)) {
-			if ((tTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_Muffler)) {
-				this.mMufflerHatches.add((GT_MetaTileEntity_Hatch_Muffler) tTileEntity.getMetaTileEntity());
-				this.updateTexture(tTileEntity, getCasingTextureIndex());
-			}
-		}
-		
-		mAllDynamoHatches.addAll(this.mDynamoHatches);
-
-		if (LoadedMods.TecTech) {
-			mAllDynamoHatches.addAll(this.mTecTechDynamoHatches);
-		}
-
-		if (this.mAllDynamoHatches.size() <= 0 || this.mAllDynamoHatches.isEmpty()) {
-			log("Wrong count for Dynamos");			
-			return false;			
-		}
-		
-		if (this.mMufflerHatches.size() != 1 || this.mMufflerHatches.isEmpty()) {
-			log("Wrong count for Mufflers");			
-			return false;			
-		}
-		
-		if (this.mAirIntakes.size() < 8 || this.mAirIntakes.isEmpty()) {
-			log("Wrong count for Air Intakes | "+this.mAirIntakes.size());			
-			return false;			
-		}
-		if (this.mMaintenanceHatches.size() < 1 || this.mMaintenanceHatches.isEmpty()) {
-			log("Wrong count for Maint. Hatches");			
-			return false;			
-		}
-
-
-		log("Formed Rocket Engine.");
-		return true;
-	}
 	
 	@Override
 	 public boolean addEnergyOutput(long aEU) {
@@ -555,14 +536,6 @@ public class GregtechMetaTileEntity_LargeRocketEngine extends GregtechMeta_Multi
 
 	public byte getCasingMeta() {
 		return 11;
-	}
-
-	public Block getIntakeBlock() {
-		return GregTech_API.sBlockCasings4;
-	}
-
-	public byte getIntakeMeta() {
-		return 12;
 	}
 
 	public Block getGearboxBlock() {
