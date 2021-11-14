@@ -13,7 +13,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.metatileentity.implementations.*;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.*;
 import net.minecraft.world.World;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -25,9 +25,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GTPP_Recipe;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Triplet;
@@ -109,7 +106,6 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 				.addInfo("Controller Block for the Chemical Plant")
 				.addInfo("Heavy Industry, now right at your doorstep!")
 				.addInfo("Please read to user manual for more information on construction & usage")
-				.addPollutionAmount(getPollutionPerTick(null) * 20)
 				.addSeparator()
 				.addController("Bottom Center")
 				.addStructureHint("Catalyst Housing", 1)
@@ -184,35 +180,35 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 											GregtechMTE_ChemicalPlant::addChemicalPlantList, getCasingTextureID(), 1
 									),
 									onElementPass(
-											x -> ++x.checkCasing[0],
+											x -> {++x.checkCasing[0]; ++x.mCasing;},
 											ofSolidCasing(0)
 									),
 									onElementPass(
-											x -> ++x.checkCasing[1],
+											x -> {++x.checkCasing[1]; ++x.mCasing;},
 											ofSolidCasing(1)
 									),
 									onElementPass(
-											x -> ++x.checkCasing[2],
+											x -> {++x.checkCasing[2]; ++x.mCasing;},
 											ofSolidCasing(2)
 									),
 									onElementPass(
-											x -> ++x.checkCasing[3],
+											x -> {++x.checkCasing[3]; ++x.mCasing;},
 											ofSolidCasing(3)
 									),
 									onElementPass(
-											x -> ++x.checkCasing[4],
+											x -> {++x.checkCasing[4]; ++x.mCasing;},
 											ofSolidCasing(4)
 									),
 									onElementPass(
-											x -> ++x.checkCasing[5],
+											x -> {++x.checkCasing[5]; ++x.mCasing;},
 											ofSolidCasing(5)
 									),
 									onElementPass(
-											x -> ++x.checkCasing[6],
+											x -> {++x.checkCasing[6]; ++x.mCasing;},
 											ofSolidCasing(6)
 									),
 									onElementPass(
-											x -> ++x.checkCasing[7],
+											x -> {++x.checkCasing[7]; ++x.mCasing;},
 											ofSolidCasing(7)
 									)
 							)
@@ -221,35 +217,35 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 							'X',
 							ofChain(
 									onElementPass(
-											x -> ++x.checkCasing[0],
+											x -> {++x.checkCasing[0]; ++x.mCasing;},
 											ofSolidCasing(0)
 									),
 									onElementPass(
-											x -> ++x.checkCasing[1],
+											x -> {++x.checkCasing[1]; ++x.mCasing;},
 											ofSolidCasing(1)
 									),
 									onElementPass(
-											x -> ++x.checkCasing[2],
+											x -> {++x.checkCasing[2]; ++x.mCasing;},
 											ofSolidCasing(2)
 									),
 									onElementPass(
-											x -> ++x.checkCasing[3],
+											x -> {++x.checkCasing[3]; ++x.mCasing;},
 											ofSolidCasing(3)
 									),
 									onElementPass(
-											x -> ++x.checkCasing[4],
+											x -> {++x.checkCasing[4]; ++x.mCasing;},
 											ofSolidCasing(4)
 									),
 									onElementPass(
-											x -> ++x.checkCasing[5],
+											x -> {++x.checkCasing[5]; ++x.mCasing;},
 											ofSolidCasing(5)
 									),
 									onElementPass(
-											x -> ++x.checkCasing[6],
+											x -> {++x.checkCasing[6]; ++x.mCasing;},
 											ofSolidCasing(6)
 									),
 									onElementPass(
-											x -> ++x.checkCasing[7],
+											x -> {++x.checkCasing[7]; ++x.mCasing;},
 											ofSolidCasing(7)
 									)
 							)
@@ -288,15 +284,20 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 				return target.equals(block) && meta == targetMeta;
 			}
 
+			int getIndex(int size) {
+				if (size > 8) size = 8;
+				return size - 1;
+			}
+
 			@Override
 			public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
-				StructureLibAPI.hintParticle(world, x, y, z, mTieredBlockRegistry.get(aIndex).getValue_1(), mTieredBlockRegistry.get(aIndex).getValue_2());
+				StructureLibAPI.hintParticle(world, x, y, z, mTieredBlockRegistry.get(getIndex(trigger.stackSize)).getValue_1(), mTieredBlockRegistry.get(getIndex(trigger.stackSize)).getValue_2());
 				return true;
 			}
 
 			@Override
 			public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
-				return world.setBlock(x, y, z, mTieredBlockRegistry.get(aIndex).getValue_1(), mTieredBlockRegistry.get(aIndex).getValue_2(), 3);
+				return world.setBlock(x, y, z, mTieredBlockRegistry.get(getIndex(trigger.stackSize)).getValue_1(), mTieredBlockRegistry.get(getIndex(trigger.stackSize)).getValue_2(), 3);
 			}
 		};
 	}
@@ -329,11 +330,22 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 					return false;
 			}
 			mMachineCasingTier = checkMachine - 1;
-			mPipeCasingTier = checkPipe;
+			mPipeCasingTier = checkPipe - 12;
 			mCoilTier = coilTier(checkCoil - 1);
+			updateHatchTexture();
 			return mMachineCasingTier >= maxTierOfHatch;
 		}
 		return false;
+	}
+
+	public void updateHatchTexture() {
+		for (GT_MetaTileEntity_Hatch h : mCatalystBuses) h.updateTexture(getCasingTextureID());
+		for (GT_MetaTileEntity_Hatch h : mInputBusses) h.updateTexture(getCasingTextureID());
+		for (GT_MetaTileEntity_Hatch h : mMaintenanceHatches) h.updateTexture(getCasingTextureID());
+		for (GT_MetaTileEntity_Hatch h : mEnergyHatches) h.updateTexture(getCasingTextureID());
+		for (GT_MetaTileEntity_Hatch h : mOutputBusses) h.updateTexture(getCasingTextureID());
+		for (GT_MetaTileEntity_Hatch h : mInputHatches) h.updateTexture(getCasingTextureID());
+		for (GT_MetaTileEntity_Hatch h : mOutputHatches) h.updateTexture(getCasingTextureID());
 	}
 
 	public final boolean addChemicalPlantList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
@@ -342,29 +354,22 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 		} else {
 			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
 			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Catalysts){
-				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
 				return addToMachineListInternal(mCatalystBuses, aMetaTileEntity, aBaseCasingIndex);
 			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus){
-				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
 				maxTierOfHatch = Math.max(maxTierOfHatch, ((GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity).mTier);
 				return this.mInputBusses.add((GT_MetaTileEntity_Hatch_InputBus)aMetaTileEntity);
 			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance){
-				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
 				return this.mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance)aMetaTileEntity);
 			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy){
-				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
 				maxTierOfHatch = Math.max(maxTierOfHatch, ((GT_MetaTileEntity_Hatch_Energy) aMetaTileEntity).mTier);
 				return this.mEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy)aMetaTileEntity);
 			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus) {
-				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
 				maxTierOfHatch = Math.max(maxTierOfHatch, ((GT_MetaTileEntity_Hatch_OutputBus) aMetaTileEntity).mTier);
 				return this.mOutputBusses.add((GT_MetaTileEntity_Hatch_OutputBus) aMetaTileEntity);
 			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
 				maxTierOfHatch = Math.max(maxTierOfHatch, ((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mTier);
 				return this.mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
 			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
-				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
 				maxTierOfHatch = Math.max(maxTierOfHatch, ((GT_MetaTileEntity_Hatch_Output) aMetaTileEntity).mTier);
 				return this.mOutputHatches.add((GT_MetaTileEntity_Hatch_Output) aMetaTileEntity);
 			}
@@ -431,6 +436,7 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 	private int getMachineCasingTier() {
 		return mMachineCasingTier;
 	}
+
 	private int getPipeCasingTier() {
 		return mPipeCasingTier;
 	}

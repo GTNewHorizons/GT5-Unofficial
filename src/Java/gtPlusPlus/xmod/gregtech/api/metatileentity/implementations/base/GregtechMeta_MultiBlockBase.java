@@ -2582,8 +2582,8 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
 			private int getMeta(ItemStack trigger) {
 				int meta = trigger.stackSize;
 				if (meta <= 0) meta = minMeta;
-				if (meta + minMeta > maxMeta) meta = maxMeta - 1;
-				return meta;
+				if (meta + minMeta >= maxMeta) meta = maxMeta - 1 - minMeta;
+				return meta + minMeta;
 			}
 		};
 	}
