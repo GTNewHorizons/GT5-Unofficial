@@ -6,7 +6,6 @@ import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -19,12 +18,10 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.handler.BookHandler;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.NBTUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.preloader.asm.AsmConfig;
 import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_PowerSubStation;
@@ -32,7 +29,6 @@ import gtPlusPlus.xmod.gregtech.api.gui.GUI_PowerSubStation;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.GregtechMetaTileEntity_IndustrialElectrolyzer;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -40,7 +36,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
@@ -113,13 +108,22 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 
 	@Override
 	public boolean hasSlotInGUI() {
-		return false;
+		return true;
 	}
 
 	@Override
 	public String getCustomGUIResourceName() {
 		return null;
-	}	
+	}
+
+	@Override
+	public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+		if (mBatteryCapacity <= 0) return false;
+		if (!aBaseMetaTileEntity.isClientSide()) {
+			aBaseMetaTileEntity.openGUI(aPlayer);
+		}
+		return true;
+	}
 
 	@Override
 	public Object getClientGUI(final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
@@ -265,15 +269,20 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 				return aIndex == tier;
 			}
 
+			public int getIndex(int size) {
+				if (size > 6) size = 6;
+				return size + 3;
+			}
+
 			@Override
 			public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
-				StructureLibAPI.hintParticle(world, x, y, z, getBlockFromTier(aIndex), getMetaFromTier(aIndex));
+				StructureLibAPI.hintParticle(world, x, y, z, getBlockFromTier(getIndex(trigger.stackSize)), getMetaFromTier(getIndex(trigger.stackSize)));
 				return true;
 			}
 
 			@Override
 			public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
-				return world.setBlock(x, y, z, getBlockFromTier(aIndex), getMetaFromTier(aIndex), 3);
+				return world.setBlock(x, y, z, getBlockFromTier(getIndex(trigger.stackSize)), getMetaFromTier(getIndex(trigger.stackSize)), 3);
 			}
 		};
 	}
@@ -299,10 +308,10 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 		if (!checkPiece(mName + "bottom", 2, 0, 0))
 			return false;
 		int layer = 1;
-		while (!checkPiece(mName + "mid", 2, layer, 0)) {
+		while (checkPiece(mName + "mid", 2, layer, 0)) {
 			layer ++;
 		}
-		if (layer > 19 || !checkPiece(mName + "top", 2, layer - 1, 0))
+		if (layer > 19 || !checkPiece(mName + "top", 2, layer, 0))
 			return false;
 		int level = 0;
 		for (int i = 0; i < 6; i++) {
@@ -326,6 +335,7 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 			mAverageEuUsage = volSum / (mAllEnergyHatches.size() + mAllDynamoHatches.size());
 		}
 		else mAverageEuUsage = 0;
+		fixAllMaintenanceIssue();
 		return true;
 	}
 
@@ -341,10 +351,13 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
 				return this.mAllDynamoHatches.add((GT_MetaTileEntity_Hatch_Dynamo)aMetaTileEntity);
 			} if (LoadedMods.TecTech) {
-				if (isThisHatchMultiDynamo(aMetaTileEntity))
+				if (isThisHatchMultiDynamo(aMetaTileEntity)) {
+					((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
 					return this.mAllDynamoHatches.add((GT_MetaTileEntity_Hatch) aMetaTileEntity);
-				else if (isThisHatchMultiEnergy(aMetaTileEntity))
+				} else if (isThisHatchMultiEnergy(aMetaTileEntity)) {
+					((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
 					return this.mAllEnergyHatches.add((GT_MetaTileEntity_Hatch) aMetaTileEntity);
+				}
 			}
 		}
 		return false;
@@ -401,13 +414,7 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 		
 		// Best not to get a long if the Tag Map is holding an int
 		if (aNBT.hasKey("mAverageEuUsage")) {
-			if (NBTUtils.isTagInteger(aNBT, "mAverageEuUsage")) {
-				int aAverageTag = aNBT.getInteger("mAverageEuUsage");
-				this.mAverageEuUsage = aAverageTag;
-			}
-			else {
-				this.mAverageEuUsage = aNBT.getLong("mAverageEuUsage");				
-			}
+			this.mAverageEuUsage = aNBT.getLong("mAverageEuUsage");
 		}		
 
 		//Usage Stats

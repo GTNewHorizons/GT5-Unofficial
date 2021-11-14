@@ -103,7 +103,7 @@ extends GregtechMeta_MultiBlockBase {
 									onElementPass(
 											x -> ++x.mCasing,
 											ofBlock(
-													ModBlocks.blockCasingsMisc, 14
+													ModBlocks.blockCasingsMisc, 15
 											)
 									)
 							)

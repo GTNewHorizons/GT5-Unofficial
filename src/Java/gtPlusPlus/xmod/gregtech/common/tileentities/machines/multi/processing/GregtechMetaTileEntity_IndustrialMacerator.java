@@ -81,7 +81,7 @@ extends GregtechMeta_MultiBlockBase {
 							{"CCC", "C-C", "CCC"},
 					}))
 					.addShape(mName + "bottom", transpose(new String[][]{
-							{"BBB", "B~B", "BBB"},
+							{"B~B", "BBB", "BBB"},
 					}))
 					.addElement(
 							'C',
@@ -133,7 +133,7 @@ extends GregtechMeta_MultiBlockBase {
 		if (checkPiece(mName + "bottom", 1, 0 ,0)) {
 			while (mPerLayer < 4) {
 				if (!checkPiece(mName + "mid", 1, mPerLayer + 1, 0) ||
-						mPerLayer != mOutputBusses.size()) return false;
+						mPerLayer + 1 != mOutputBusses.size()) return false;
 				mPerLayer ++;
 			}
 			return checkPiece(mName + "top", 1, 5, 0) && mOutputBusses.size() == 5 && mCasing >= 26;

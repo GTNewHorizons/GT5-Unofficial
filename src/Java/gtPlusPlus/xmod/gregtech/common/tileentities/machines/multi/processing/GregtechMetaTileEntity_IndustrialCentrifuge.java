@@ -75,13 +75,13 @@ extends GregtechMeta_MultiBlockBase {
 				.beginStructureBlock(3, 3, 3, true)
 				.addController("Front Center")
 				.addCasingInfo("Centrifuge Casings", 10)
-				.addInputBus("Any Casing", 1)
-				.addOutputBus("Any Casing", 1)
-				.addInputHatch("Any Casing", 1)
-				.addOutputHatch("Any Casing", 1)
-				.addEnergyHatch("Any Casing", 1)
-				.addMaintenanceHatch("Any Casing", 1)
-				.addMufflerHatch("Any Casing", 1)
+				.addInputBus("Any Casing except front", 1)
+				.addOutputBus("Any Casing except front", 1)
+				.addInputHatch("Any Casing except front", 1)
+				.addOutputHatch("Any Casing except front", 1)
+				.addEnergyHatch("Any Casing except front", 1)
+				.addMaintenanceHatch("Any Casing except front", 1)
+				.addMufflerHatch("Any Casing except front", 1)
 				.toolTipFinisher("GT++");
 		return tt;
 	}
@@ -91,9 +91,9 @@ extends GregtechMeta_MultiBlockBase {
 		if (STRUCTURE_DEFINITION == null) {
 			STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialCentrifuge>builder()
 					.addShape(mName, transpose(new String[][]{
-							{"CCC", "CCC", "CCC"},
-							{"C~C", "C-C", "CCC"},
-							{"CCC", "CCC", "CCC"},
+							{"XXX", "CCC", "CCC"},
+							{"X~X", "C-C", "CCC"},
+							{"XXX", "CCC", "CCC"},
 					}))
 					.addElement(
 							'C',
@@ -109,6 +109,12 @@ extends GregtechMeta_MultiBlockBase {
 									)
 							)
 					)
+					.addElement(
+							'X',
+							ofBlock(
+									ModBlocks.blockCasingsMisc, 0
+							)
+					)
 					.build();
 		}
 		return STRUCTURE_DEFINITION;
@@ -122,7 +128,7 @@ extends GregtechMeta_MultiBlockBase {
 	@Override
 	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
 		mCasing = 0;
-		return checkPiece(mName, 1, 1, 0) && mCasing >= 10;
+		return checkPiece(mName, 1, 1, 0) && mCasing >= 10 - 8;
 	}
 
 	public final boolean addIndustrialCentrifugeList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {

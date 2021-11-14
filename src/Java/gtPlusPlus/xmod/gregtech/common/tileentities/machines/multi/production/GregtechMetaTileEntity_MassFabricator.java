@@ -187,6 +187,7 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 					.addShape(mName, transpose(new String[][]{
 							{"CCCCC", "CCCCC", "CCCCC", "CCCCC", "CCCCC"},
 							{"CGGGC", "G---G", "G---G", "G---G", "CGGGC"},
+							{"CGGGC", "G---G", "G---G", "G---G", "CGGGC"},
 							{"CC~CC", "CHHHC", "CHHHC", "CHHHC", "CCCCC"},
 					}))
 					.addElement(
