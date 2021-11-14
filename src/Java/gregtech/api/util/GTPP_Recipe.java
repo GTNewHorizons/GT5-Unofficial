@@ -411,6 +411,7 @@ public class GTPP_Recipe extends GT_Recipe  implements IComparableRecipe {
 		public static final GTPP_Recipe_Map_Internal sMultiblockCentrifugeRecipes_GT = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(2000), "gtpp.recipe.multicentrifuge", "Multiblock Centrifuge", null, RES_PATH_GUI + "basicmachines/FissionFuel", 9, 9, 0, 0, 1, "", 0, "", false, true);
 		public static final GTPP_Recipe_Map_Internal sMultiblockElectrolyzerRecipes_GT = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(2000), "gtpp.recipe.multielectro", "Multiblock Electrolyzer", null, RES_PATH_GUI + "basicmachines/FissionFuel", 9, 9, 0, 0, 1, "", 0, "", false, true);
 		public static final GTPP_Recipe_Map_Internal sChemicalPlant_GT = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(2000), "gtpp.recipe.temp4", "temp4", null, RES_PATH_GUI + "basicmachines/PotionBrewer", 0, 0, 0, 0, 0, "", 0, "", false, false);
+		public static final GTPP_Recipe_Map_Internal sMultiblockMixerRecipes_GT = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(2000), "gtpp.recipe.multimixer", "Multiblock Mixer", null, RES_PATH_GUI + "basicmachines/FissionFuel", 12, 9, 0, 0, 1, "", 0, "", false, true);
 
 		//Semi-Fluid Fuel Map 
 		public static final GT_Recipe_Map_Fuel sSemiFluidLiquidFuels = new GT_Recipe_Map_Fuel(new HashSet<GT_Recipe>(10), "gtpp.recipe.semifluidgeneratorfuels", "Semifluid Generator Fuels", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 1000, " EU", true, true);

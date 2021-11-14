@@ -785,6 +785,34 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 
 	}
 
+	public boolean addMultiblockMixerRecipe(ItemStack[] aInputs, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, ItemStack[] aOutputs, int[] aChances, int aDuration, int aEUtick, int aSpecial){
+		if (areItemsAndFluidsBothNull(aInputs, aFluidInputs) || areItemsAndFluidsBothNull(aOutputs, aFluidOutputs) || aEUtick <= 0) {
+			return false;
+		}
+		if (!ItemUtils.checkForInvalidItems(aInputs, aOutputs)) {
+			Logger.INFO("[Recipe] Error generating Large Mixer recipe.");
+			Logger.INFO("Inputs: "+ItemUtils.getArrayStackNames(aInputs));
+			Logger.INFO("Fluid Inputs: "+ItemUtils.getArrayStackNames(aFluidInputs));
+			Logger.INFO("Outputs: "+ItemUtils.getArrayStackNames(aOutputs));
+			Logger.INFO("Fluid Outputs: "+ItemUtils.getArrayStackNames(aFluidOutputs));
+			return false;
+		}
+
+		GTPP_Recipe aRecipe = new GTPP_Recipe(
+				false,
+				aInputs,
+				aOutputs,
+				null,
+				aChances,
+				aFluidInputs,
+				aFluidOutputs,
+				aDuration,
+				aEUtick,
+				aSpecial);
+		GTPP_Recipe.GTPP_Recipe_Map.sMultiblockMixerRecipes_GT.addRecipe(aRecipe);
+		return true;
+	}
+
 	public boolean addAssemblerRecipeWithOreDict(Object aInput1, int aAmount1, Object aInput2, int aAmount2, ItemStack aOutput, int a1, int a2) {		
 		if (aInput1 instanceof String || aInput2 instanceof String) {
 			int mCompleted = 0;

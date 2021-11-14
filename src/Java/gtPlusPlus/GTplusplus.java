@@ -311,7 +311,7 @@ public class GTplusplus implements ActionListener {
 				0, 0, 0
 		};
 		int[] mInvalidCount = new int[]{
-				0, 0, 0
+				0, 0, 0, 0
 		};
 		int[] mOriginalCount = new int[]{
 				0, 0, 0
@@ -331,6 +331,9 @@ public class GTplusplus implements ActionListener {
 		);
 		mInvalidCount[2] = RecipeGen_MultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
 				GT_Recipe.GT_Recipe_Map.sVacuumRecipes, GTPP_Recipe.GTPP_Recipe_Map.sAdvFreezerRecipes_GT
+		);
+		mInvalidCount[3] = RecipeGen_MultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
+				GT_Recipe.GT_Recipe_Map.sMixerRecipes, GTPP_Recipe.GTPP_Recipe_Map.sMultiblockMixerRecipes_GT
 		);
 		/*
 		
