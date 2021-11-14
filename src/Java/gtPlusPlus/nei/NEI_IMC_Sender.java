@@ -15,6 +15,7 @@ public class NEI_IMC_Sender {
         setNBTInfoAndSendIt("gtpp.recipe.semifluidgeneratorfuels", "gregtech:gt.blockmachines:837");
         setNBTInfoAndSendIt("gtpp.recipe.fishpond", "gregtech:gt.blockmachines:829");
         setNBTInfoAndSendIt("gtpp.recipe.multimixer", "gregtech:gt.blockmachines:811");
+        setNBTInfoAndSendIt("gtpp.recipe.advanced.mixer", "gregtech:gt.blockmachines:811");
         setNBTInfoAndSendIt("gtpp.recipe.cryogenicfreezer", "gregtech:gt.blockmachines:910");
         setNBTInfoAndSendIt("gtpp.recipe.fissionfuel", "gregtech:gt.blockmachines:835");
         setNBTInfoAndSendIt("gtpp.recipe.geothermalfuel", "gregtech:gt.blockmachines:830");
