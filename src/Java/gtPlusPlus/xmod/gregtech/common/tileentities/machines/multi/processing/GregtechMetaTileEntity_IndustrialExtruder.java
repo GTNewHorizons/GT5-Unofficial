@@ -69,8 +69,8 @@ extends GregtechMeta_MultiBlockBase {
 				.addInputBus("Any Casing", 1)
 				.addOutputBus("Any Casing", 1)
 				.addEnergyHatch("Any Casing", 1)
-				.addMufflerHatch("Any Casing", 1)
-				.addMaintenanceHatch("Back Center", 2)
+				.addMaintenanceHatch("Any Casing", 1)
+				.addMufflerHatch("Back Center", 2)
 				.toolTipFinisher("GT++");
 		return tt;
 	}
@@ -117,7 +117,7 @@ extends GregtechMeta_MultiBlockBase {
 	@Override
 	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
 		mCasing = 0;
-		return checkPiece(mName, 1, 1, 0) && mCasing >= 28;
+		return checkPiece(mName, 1, 1, 0) && mCasing >= 28 && checkHatch();
 	}
 
 	public final boolean addIndustrialExtruderList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {

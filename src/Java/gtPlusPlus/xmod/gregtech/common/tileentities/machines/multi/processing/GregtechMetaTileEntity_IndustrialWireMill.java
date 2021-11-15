@@ -105,7 +105,7 @@ extends GregtechMeta_MultiBlockBase {
 	@Override
 	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
 		mCasing = 0;
-		return checkPiece(mName, 1, 1, 0) && mCasing >= 32;
+		return checkPiece(mName, 1, 1, 0) && mCasing >= 32 && checkHatch();
 	}
 
 	public final boolean addIndustrialWireMillList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {

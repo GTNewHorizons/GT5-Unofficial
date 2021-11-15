@@ -62,7 +62,7 @@ public class GregtechMetaTileEntity_Adv_DistillationTower extends GregtechMeta_M
 					.addShape(mName + "mid", transpose(new String[][]{
 							{"CCC", "C-C", "CCC"}
 					}))
-					.addShape(mName + "bottom", transpose(new String[][]{
+					.addShape(mName + "top", transpose(new String[][]{
 							{"MMM", "MMM", "MMM"}
 					}))
 					.addElement(
@@ -184,13 +184,13 @@ public class GregtechMetaTileEntity_Adv_DistillationTower extends GregtechMeta_M
 		if (!checkPiece(mName + "bottom", 1, 0, 0))
 			return false;
 		int layer = 1;
-		while (!checkPiece(mName + "mid", 1, layer, 0)) {
+		while (checkPiece(mName + "mid", 1, layer, 0)) {
 			if (layer != mOutputHatches.size()) return false;
 			layer ++;
 		}
-		if (layer > 12 || !checkPiece(mName + "top", 1, layer - 1, 0))
+		if (layer > 12 || !checkPiece(mName + "top", 1, layer, 0))
 			return false;
-		return layer == mOutputHatches.size() && mMufflerHatches.size() == 1;
+		return layer == mOutputHatches.size() && checkHatch();
 	}
 
 	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {

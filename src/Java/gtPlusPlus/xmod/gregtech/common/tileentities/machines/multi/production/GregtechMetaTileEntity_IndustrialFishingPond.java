@@ -159,7 +159,7 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends GregtechMeta_M
 	@Override
 	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
 		mCasing = 0;
-		return checkPiece(mName, 4, 1, 0) && mCasing >= 64;
+		return checkPiece(mName, 4, 1, 0) && mCasing >= 64 && checkHatch();
 	}
 
 	@Override

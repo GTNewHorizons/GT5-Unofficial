@@ -190,7 +190,7 @@ public class GregtechMetaTileEntity_LargeRocketEngine extends GregtechMeta_Multi
 		this.mTecTechDynamoHatches.clear();
 		this.mAllDynamoHatches.clear();
 		this.mAirIntakes.clear();
-		return checkPiece(mName, 1, 1, 0) && mCasing >= 64 - 48 && mAirIntakes.size() >= 8;
+		return checkPiece(mName, 1, 1, 0) && mCasing >= 64 - 48 && mAirIntakes.size() >= 8 && checkHatch();
 	}
 
 	public final boolean addLargeRocketEngineTopList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
@@ -205,7 +205,10 @@ public class GregtechMetaTileEntity_LargeRocketEngine extends GregtechMeta_Multi
 				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
 				return this.mAllDynamoHatches.add((GT_MetaTileEntity_Hatch_Dynamo) aMetaTileEntity);
 			} if (LoadedMods.TecTech) {
-				if (isThisHatchMultiDynamo(aMetaTileEntity)) this.mAllDynamoHatches.add((GT_MetaTileEntity_Hatch) aMetaTileEntity);
+				if (isThisHatchMultiDynamo(aMetaTileEntity)) {
+					((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+					return this.mAllDynamoHatches.add((GT_MetaTileEntity_Hatch) aMetaTileEntity);
+				}
 			}
 		}
 		return false;

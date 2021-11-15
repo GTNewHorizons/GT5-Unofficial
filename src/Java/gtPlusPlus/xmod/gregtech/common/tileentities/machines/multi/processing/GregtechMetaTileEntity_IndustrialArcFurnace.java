@@ -93,21 +93,21 @@ extends GregtechMeta_MultiBlockBase {
 	public IStructureDefinition<GregtechMetaTileEntity_IndustrialArcFurnace> getStructureDefinition() {
 		if (STRUCTURE_DEFINITION == null) {
 			STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialArcFurnace>builder()
-					.addShape(mName + "3", transpose(new String[][]{
+					.addShape(mName + "3", new String[][]{
 							{"CCC", "C~C", "CCC"},
 							{"CCC", "C-C", "CCC"},
 							{"CCC", "CCC", "CCC"},
-					}))
-					.addShape(mName + "5", transpose(new String[][]{
+					})
+					.addShape(mName + "5", new String[][]{
 							{"CCCCC", "CCCCC", "CC~CC", "CCCCC", "CCCCC"},
 							{"CCCCC", "C---C", "C---C", "C---C", "CCCCC"},
 							{"CCCCC", "CCCCC", "CCCCC", "CCCCC", "CCCCC"},
-					}))
-					.addShape(mName + "7", transpose(new String[][]{
+					})
+					.addShape(mName + "7", new String[][]{
 							{"CCCCCCC", "CCCCCCC", "CCCCCCC", "CCC~CCC", "CCCCCCC", "CCCCCCC", "CCCCCCC"},
 							{"CCCCCCC", "C-----C", "C-----C", "C-----C", "C-----C", "C-----C", "CCCCCCC"},
 							{"CCCCCCC", "CCCCCCC", "CCCCCCC", "CCCCCCC", "CCCCCCC", "CCCCCCC", "CCCCCCC"},
-					}))
+					})
 					.addElement(
 							'C',
 							ofChain(
@@ -176,28 +176,28 @@ extends GregtechMeta_MultiBlockBase {
 			case 2: size = 5; break;
 			default: size = 7; break;
 		}
-		buildPiece(mName + size, stackSize, hintsOnly, (size - 1) / 2, 0, (size - 1) / 2);
+		buildPiece(mName + size, stackSize, hintsOnly, (size - 1) / 2, (size - 1) / 2, 0);
 	}
 
 	@Override
 	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
 		mCasing = 0;
 		mSize = 0;
-		if (checkPiece(mName + "3", 1, 0, 1)) {
+		if (checkPiece(mName + "3", 1, 1, 0)) {
 			mSize = 3;
-			return mCasing >= 10;
+			return mCasing >= 10 && checkHatch();
 		}
 		mCasing = 0;
 		clearHatches();
-		if (checkPiece(mName + "5", 2, 0, 2)) {
+		if (checkPiece(mName + "5", 2, 2, 0)) {
 			mSize = 5;
-			return mCasing >= 10;
+			return mCasing >= 10 && checkHatch();
 		}
 		mCasing = 0;
 		clearHatches();
-		if (checkPiece(mName + "7", 3, 0, 3)) {
+		if (checkPiece(mName + "7", 3, 3, 0)) {
 			mSize = 3;
-			return mCasing >= 10;
+			return mCasing >= 10 && checkHatch();
 		}
 		return false;
 	}
@@ -209,7 +209,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-		if (aSide == 0 || aSide == 1) {
+		if (aSide == aFacing) {
 			return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(mCasingTextureID),
 					new GT_RenderedTexture(aActive ? TexturesGtBlock.Overlay_Machine_Controller_Default_Active : TexturesGtBlock.Overlay_Machine_Controller_Default)};
 		}
@@ -287,17 +287,6 @@ extends GregtechMeta_MultiBlockBase {
 
 	public byte getCasingMeta2() {
 		return 15;
-	}
-
-	public boolean isValidCasingBlock(Block aBlock, int aMeta) {
-		if (aBlock == getCasingBlock() && aMeta == getCasingMeta()) {
-			return true;
-		}
-		if (aBlock == getCasingBlock2() && aMeta == getCasingMeta2()) {
-			return true;
-		}
-		Logger.INFO("Found "+(aBlock != null ? aBlock.getLocalizedName() : "Air") + "With Meta "+aMeta);
-		return false;
 	}
 
 	public byte getCasingTextureIndex() {

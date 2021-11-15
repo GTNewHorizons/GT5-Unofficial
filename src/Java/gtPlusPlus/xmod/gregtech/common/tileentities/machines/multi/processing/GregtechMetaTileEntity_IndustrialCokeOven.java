@@ -134,7 +134,7 @@ extends GregtechMeta_MultiBlockBase {
 		if (checkPiece(mName, 1, 2, 0)) {
 			if (mCasing1 == 8) mLevel = 1;
 			if (mCasing2 == 8) mLevel = 2;
-			return mLevel > 0 && mCasing >= 8;
+			return mLevel > 0 && mCasing >= 8 && checkHatch();
 		}
 		return false;
 	}

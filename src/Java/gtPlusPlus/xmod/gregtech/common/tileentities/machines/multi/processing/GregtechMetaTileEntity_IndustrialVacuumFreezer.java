@@ -139,7 +139,7 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends GregtechMeta
 	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
 		mCasing = 0;
 		mHaveHatch = false;
-		return checkPiece(mName, 1, 1, 0) && mCasing >= 10 && mHaveHatch;
+		return checkPiece(mName, 1, 1, 0) && mCasing >= 10 && mHaveHatch && checkHatch();
 	}
 
 	public final boolean addIndustrialVacuumFreezerList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {

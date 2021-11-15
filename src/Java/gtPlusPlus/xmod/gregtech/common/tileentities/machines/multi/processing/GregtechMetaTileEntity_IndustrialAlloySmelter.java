@@ -138,7 +138,7 @@ public class GregtechMetaTileEntity_IndustrialAlloySmelter extends GregtechMeta_
 							{"HHH", "H-H", "HHH"},
 							{"VVV", "V-V", "VVV"},
 							{"HHH", "H-H", "HHH"},
-							{"CCC", "C~C", "CCC"},
+							{"C~C", "CCC", "CCC"},
 					}))
 					.addElement(
 							'C',
@@ -206,7 +206,7 @@ public class GregtechMetaTileEntity_IndustrialAlloySmelter extends GregtechMeta_
 		mCasing = 0;
 		mLevel = 0;
 		setCoilLevel(HeatingCoilLevel.None);
-		return checkPiece(mName, 1, 4, 0) && mCasing >= 10 && getCoilLevel() != HeatingCoilLevel.None && (mLevel = getCoilLevel().getTier() + 1) > 0;
+		return checkPiece(mName, 1, 4, 0) && mCasing >= 10 && getCoilLevel() != HeatingCoilLevel.None && (mLevel = getCoilLevel().getTier() + 1) > 0 && checkHatch();
 	}
 
 	@Override

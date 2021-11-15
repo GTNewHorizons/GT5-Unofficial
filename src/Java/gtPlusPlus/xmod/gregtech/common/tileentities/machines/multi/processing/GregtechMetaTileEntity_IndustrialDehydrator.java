@@ -140,7 +140,7 @@ public class GregtechMetaTileEntity_IndustrialDehydrator extends GregtechMeta_Mu
 	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
 		mCasing = 0;
 		setCoilLevel(HeatingCoilLevel.None);
-		return checkPiece(mName, 1, 4, 0) && mCasing >= 10 && getCoilLevel() != HeatingCoilLevel.None;
+		return checkPiece(mName, 1, 4, 0) && mCasing >= 10 && getCoilLevel() != HeatingCoilLevel.None && checkHatch();
 	}
 
 	public final boolean addIndustrialDehydratorList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {

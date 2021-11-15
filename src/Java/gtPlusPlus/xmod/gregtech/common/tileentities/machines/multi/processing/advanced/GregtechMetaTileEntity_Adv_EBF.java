@@ -154,7 +154,7 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 		mCasing = 0;
 		mHaveHatch = false;
 		setCoilLevel(HeatingCoilLevel.None);
-		return checkPiece(mName, 1, 1, 0) && mCasing >= 9 && mHaveHatch && getCoilLevel() != HeatingCoilLevel.None;
+		return checkPiece(mName, 1, 3, 0) && mCasing >= 9 && mHaveHatch && getCoilLevel() != HeatingCoilLevel.None && checkHatch();
 	}
 
 	public final boolean addAdvEBFList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {

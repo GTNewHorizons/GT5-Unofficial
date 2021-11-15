@@ -135,7 +135,7 @@ extends GregtechMeta_MultiBlockBase {
 	@Override
 	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
 		mCasing = 0;
-		return checkPiece(mName, 1, 2, 0) && mCasing >= 16;
+		return checkPiece(mName, 1, 2, 0) && mCasing >= 16 && checkHatch();
 	}
 
 	public final boolean addIndustrialMixerList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {

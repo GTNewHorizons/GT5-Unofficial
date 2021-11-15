@@ -140,7 +140,7 @@ public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase 
 	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
 		mCasing = 0;
 		mMillingBallBuses.clear();
-		return checkPiece(mName, 1, 1, 0) && mCasing >= 48 - 8;
+		return checkPiece(mName, 1, 1, 0) && mCasing >= 48 - 8 && checkHatch();
 	}
 
 	public final boolean addIsaMillList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {

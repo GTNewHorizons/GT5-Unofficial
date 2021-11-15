@@ -192,7 +192,7 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 	@Override
 	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
 		mCasing = 0;
-		return checkPiece(mName, 7, 1, 12) && mCasing >= 40;
+		return checkPiece(mName, 7, 1, 12) && mCasing >= 40 && checkHatch();
 	}
 
 	public final boolean addCyclotronList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {

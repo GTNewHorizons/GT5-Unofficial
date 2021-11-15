@@ -113,7 +113,7 @@ public class GregtechMTE_FrothFlotationCell extends GregtechMeta_MultiBlockBase 
 	public IStructureDefinition<GregtechMTE_FrothFlotationCell> getStructureDefinition() {
 		if (STRUCTURE_DEFINITION == null) {
 			STRUCTURE_DEFINITION = StructureDefinition.<GregtechMTE_FrothFlotationCell>builder()
-					.addShape(mName, transpose(new String[][]{
+					.addShape(mName, new String[][]{
 							{"       ", "       ", "   X   ", "  X~X  ", "   X   ", "       ", "       "},
 							{"       ", "   F   ", "  FFF  ", " FF FF ", "  FFF  ", "   F   ", "       "},
 							{"       ", "   F   ", "  F F  ", " F   F ", "  F F  ", "   F   ", "       "},
@@ -123,7 +123,7 @@ public class GregtechMTE_FrothFlotationCell extends GregtechMeta_MultiBlockBase 
 							{"       ", "   F   ", "  F F  ", " F   F ", "  F F  ", "   F   ", "       "},
 							{"  CCC  ", " CCCCC ", "CCCCCCC", "CCCCCCC", "CCCCCCC", " CCCCC ", "  CCC  "},
 							{"  CCC  ", " CCCCC ", "CCCCCCC", "CCCCCCC", "CCCCCCC", " CCCCC ", "  CCC  "},
-					}))
+					})
 					.addElement(
 							'C',
 							ofChain(
@@ -157,13 +157,13 @@ public class GregtechMTE_FrothFlotationCell extends GregtechMeta_MultiBlockBase 
 
 	@Override
 	public void construct(ItemStack stackSize, boolean hintsOnly) {
-		buildPiece(mName , stackSize, hintsOnly, 3, 0, 0);
+		buildPiece(mName , stackSize, hintsOnly, 3, 3, 0);
 	}
 
 	@Override
 	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
 		mCasing = 0;
-		return checkPiece(mName, 3,  0, 0) && mCasing >= 68 - 4;
+		return checkPiece(mName, 3,  3, 0) && mCasing >= 68 - 4 && checkHatch();
 	}
 
 	public final boolean addFrothFlotationCellList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {

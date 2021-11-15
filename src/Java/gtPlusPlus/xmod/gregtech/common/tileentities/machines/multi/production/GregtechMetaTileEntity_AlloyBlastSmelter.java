@@ -127,7 +127,7 @@ extends GregtechMeta_MultiBlockBase {
 	@Override
 	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
 		mCasing = 0;
-		return checkPiece(mName, 1, 3, 0) && mCasing >= 10 && mEnergyHatches.size() == 1;
+		return checkPiece(mName, 1, 3, 0) && mCasing >= 10 && mEnergyHatches.size() == 1 && checkHatch();
 	}
 
 	public final boolean addAlloyBlastSmelterList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {

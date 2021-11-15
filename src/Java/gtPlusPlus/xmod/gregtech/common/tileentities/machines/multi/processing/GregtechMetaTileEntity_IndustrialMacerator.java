@@ -136,7 +136,7 @@ extends GregtechMeta_MultiBlockBase {
 						mPerLayer + 1 != mOutputBusses.size()) return false;
 				mPerLayer ++;
 			}
-			return checkPiece(mName + "top", 1, 5, 0) && mOutputBusses.size() == 5 && mCasing >= 26;
+			return checkPiece(mName + "top", 1, 5, 0) && mOutputBusses.size() == 5 && mCasing >= 26 && checkHatch();
 		}
 		return false;
 	}

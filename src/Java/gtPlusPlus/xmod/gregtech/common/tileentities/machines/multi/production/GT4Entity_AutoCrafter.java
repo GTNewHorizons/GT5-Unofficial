@@ -195,7 +195,7 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase {
 	@Override
 	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
 		mCasing = 0;
-		if (checkPiece(mName, 1, 1, 0) && mCasing >= 10) {
+		if (checkPiece(mName, 1, 1, 0) && mCasing >= 10 && checkHatch()) {
 			setTier();
 			return true;
 		} else return false;

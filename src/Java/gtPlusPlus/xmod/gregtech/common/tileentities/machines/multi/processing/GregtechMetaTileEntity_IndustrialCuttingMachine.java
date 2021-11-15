@@ -110,7 +110,7 @@ extends GregtechMeta_MultiBlockBase {
 	@Override
 	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
 		mCasing = 0;
-		return checkPiece(mName, 1, 1, 0) && mCasing >= 26;
+		return checkPiece(mName, 1, 1, 0) && mCasing >= 26 && checkHatch();
 	}
 
 	public final boolean addIndustrialCuttingMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {

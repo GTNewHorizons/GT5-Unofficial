@@ -270,7 +270,7 @@ extends GregtechMeta_MultiBlockBase
 	@Override
 	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
 		mCasing = 0;
-		return checkPiece(mName, 1, 1, 0) && mCasing >= 10;
+		return checkPiece(mName, 1, 1, 0) && mCasing >= 10 && checkHatch();
 	}
 
 	public final boolean addThermalBoilerList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
@@ -329,7 +329,7 @@ extends GregtechMeta_MultiBlockBase
 				if (this.mInputBusses.size() > 0) {
 					for (GT_MetaTileEntity_Hatch_InputBus aBus : this.mInputBusses) {
 						for (ItemStack aStack : aBus.mInventory) {
-							if (aStack.getItem() instanceof ItemLavaFilter) {
+							if (aStack != null && aStack.getItem() instanceof ItemLavaFilter) {
 								this.setGUIItemStack(aStack);								
 							}
 						}						

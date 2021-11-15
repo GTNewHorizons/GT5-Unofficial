@@ -185,7 +185,7 @@ public class GregtechMetaTileEntity_LargeSemifluidGenerator extends GregtechMeta
 	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
 		mCasing = 0;
 		mDynamoHatches.clear();
-		return checkPiece(mName, 1, 1, 0) && mCasing >= 16;
+		return checkPiece(mName, 1, 1, 0) && mCasing >= 16 && checkHatch();
 	}
 
 	public final boolean addLargeSemifluidGeneratorList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {

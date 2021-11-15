@@ -229,7 +229,7 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 	@Override
 	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
 		mCasing = 0;
-		return checkPiece(mName, 2, 3, 0) && mCasing >= 40;
+		return checkPiece(mName, 2, 3, 0) && mCasing >= 40 && checkHatch();
 	}
 
 	public final boolean addMassFabricatorList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
