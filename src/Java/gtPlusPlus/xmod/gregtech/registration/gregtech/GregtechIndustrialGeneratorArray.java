@@ -1,4 +1,3 @@
-/*
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
 import gtPlusPlus.api.objects.Logger;
@@ -24,4 +23,4 @@ public class GregtechIndustrialGeneratorArray {
 				"generatorarray.controller.tier.01",
 				"Large Generator Array").getStackForm(1L));
 	}
-}*/
+}

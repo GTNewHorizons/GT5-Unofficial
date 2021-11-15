@@ -292,7 +292,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 
 
 	//Generator Array
-	/*Generator_Array_Controller, */
+	Generator_Array_Controller,
 
 
 	//Cutting Factory Controller
