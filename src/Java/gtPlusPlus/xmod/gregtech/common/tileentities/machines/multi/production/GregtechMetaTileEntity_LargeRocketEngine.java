@@ -97,7 +97,7 @@ public class GregtechMetaTileEntity_LargeRocketEngine extends GregtechMeta_Multi
 				"Supply 4L of "+mCoolantName+" per second per 2100 eu/t to boost output (optional)", 
 				"Consumes 2000L/s of air per 16384 eu/t produced",
 				"Produces as much energy as you put fuel in",
-				"produses 1500 posution/S per 16384 eu/t produced",
+				"Produces 1500 pollution/S per 16384 eu/t produced",
 				"When producing more then 32K eu/t fuel wil be consume less efficiently (3x - 1.5x eff@57Keu/t input energy)",
 				"formula: x = input of energy (10K^(1/3)/ x^(1/3)) * (40K^(1/3)/ x^(1/3))",
 				"Boosting will produce 3x the amount of power but will consume 3x fuel",
