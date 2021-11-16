@@ -44,6 +44,7 @@ import net.minecraftforge.fluids.FluidStack;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.handleParallelRecipe;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
@@ -231,7 +232,24 @@ public class GT_TileEntity_MegaDistillTower extends GT_MetaTileEntity_Distillati
                 boolean found_Recipe = false;
                 FluidStack[] output;
                 GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sDistillationRecipes.findRecipe(this.getBaseMetaTileEntity(), false, GT_Values.V[tTier], new FluidStack[]{tFluid});
-                while (this.getStoredFluids().size() > 0 && processed < ConfigHandler.megaMachinesMax) {
+
+                if (tRecipe != null) {
+                    found_Recipe = true;
+                    long tMaxPara = Math.min(ConfigHandler.megaMachinesMax, nominalV / tRecipe.mEUt);
+                    int tCurrentPara = handleParallelRecipe(tRecipe, new FluidStack[]{tFluid}, null, (int) tMaxPara);
+                    processed = tCurrentPara;
+                    if (tRecipe.mFluidOutputs != null) {
+                        output = new FluidStack[tRecipe.mFluidOutputs.length];
+                        for (int i = 0; i < tRecipe.mFluidOutputs.length; i++) {
+                            if (tRecipe.getFluidOutput(i) != null) {
+                                output[i] = new FluidStack(tRecipe.getFluidOutput(i).getFluid(), tRecipe.getFluidOutput(i).amount * tCurrentPara);
+                            }
+                        }
+                        outputFluids.add(output);
+                    }
+                }
+
+               /* while (this.getStoredFluids().size() > 0 && processed < ConfigHandler.megaMachinesMax) {
                     if (tRecipe != null && (tRecipe.mEUt * (processed + 1)) < nominalV && tRecipe.isRecipeInputEqual(true, tFluids)) {
                         found_Recipe = true;
                         if (tRecipe.mFluidOutputs.length == 1 && tRecipe.mFluidOutputs[0].amount == 0)
@@ -244,14 +262,14 @@ public class GT_TileEntity_MegaDistillTower extends GT_MetaTileEntity_Distillati
                         ++processed;
                     } else
                         break;
-                }
+                }*/
                 if (!found_Recipe)
                     continue;
-                for (int j = 1; j < outputFluids.size(); j++) {
+                /*for (int j = 1; j < outputFluids.size(); j++) {
                     for (int k = 0; k < outputFluids.get(j).length; k++) {
                         outputFluids.get(0)[k].amount += outputFluids.get(j)[k].amount;
                     }
-                }
+                }*/
                 this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
                 this.mEfficiencyIncrease = 10000;
                 long actualEUT = (long) (tRecipe.mEUt) * processed;

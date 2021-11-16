@@ -45,6 +45,7 @@ import net.minecraftforge.fluids.FluidStack;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.handleParallelRecipe;
 import static gregtech.api.enums.GT_Values.V;
 
 @Optional.Interface(iface = "com.github.bartimaeusnek.crossmod.tectech.TecTechEnabledMulti", modid = "tectech", striprefs = true)
@@ -108,7 +109,38 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_MetaTileEntity_VacuumFre
         boolean found_Recipe = false;
         int processed = 0;
 
-        while ((this.getStoredInputs().size() > 0 || this.getStoredFluids().size() > 0) && processed < ConfigHandler.megaMachinesMax) {
+        if (tRecipe != null) {
+            found_Recipe = true;
+            long tMaxPara = Math.min(ConfigHandler.megaMachinesMax, nominalV / tRecipe.mEUt);
+            int tCurrentPara = handleParallelRecipe(tRecipe, tInputFluids, tInputs, (int) tMaxPara);
+            processed = tCurrentPara;
+            if (tRecipe.mOutputs != null) {
+                for (int i = 0; i < tRecipe.mOutputs.length; i++) {
+                    tCurrentPara = processed;
+                    while (tCurrentPara > 0 && tRecipe.getOutput(i) != null) {
+                        int maxSize = tRecipe.getOutput(i).getMaxStackSize();
+                        if (tCurrentPara <= maxSize) {
+                            outputItems.add(GT_Utility.copyAmount(maxSize, tRecipe.getOutput(i)));
+                            tCurrentPara -= maxSize;
+                        }
+                        else {
+                            outputItems.add(GT_Utility.copyAmount(tCurrentPara, tRecipe.getOutput(i)));
+                            tCurrentPara = 0;
+                        }
+                    }
+                }
+            }
+            if (tRecipe.mFluidOutputs != null) {
+                for (int i = 0; i < tRecipe.mFluidOutputs.length; i++) {
+                    while (tRecipe.getFluidOutput(i) != null) {
+                        FluidStack tOutputFluid = new FluidStack(tRecipe.getFluidOutput(i).getFluid(), tRecipe.getFluidOutput(i).amount * processed);
+                        outputFluids.add(tOutputFluid);
+                    }
+                }
+            }
+        }
+
+        /*while ((this.getStoredInputs().size() > 0 || this.getStoredFluids().size() > 0) && processed < ConfigHandler.megaMachinesMax) {
             if (tRecipe != null && ((long) tRecipe.mEUt * (processed + 1)) < nominalV && tRecipe.isRecipeInputEqual(true, tInputFluids, tInputs)) {
                 found_Recipe = true;
                 if (tRecipe.mOutputs != null) {
@@ -124,7 +156,7 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_MetaTileEntity_VacuumFre
                 ++processed;
             } else
                 break;
-        }
+        }*/
 
         if (found_Recipe) {
             this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);

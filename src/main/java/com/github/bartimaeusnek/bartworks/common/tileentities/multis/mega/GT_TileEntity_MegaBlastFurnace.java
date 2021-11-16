@@ -59,6 +59,7 @@ import net.minecraftforge.fluids.FluidStack;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.handleParallelRecipe;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAdder;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GT_Values.V;
@@ -390,7 +391,39 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_MetaTileEntity_ElectricBl
         int tHeatCapacityDivTiers = (this.mHeatingCapacity - tRecipe.mSpecialValue) / 900;
         long precutRecipeVoltage = (long) (tRecipe.mEUt * Math.pow(0.95, tHeatCapacityDivTiers));
 
-        while (this.getStoredInputs().size() > 0 && processed < ConfigHandler.megaMachinesMax) {
+        long tMaxPara = Math.min(ConfigHandler.megaMachinesMax, nominalV / precutRecipeVoltage);
+
+        if (this.mHeatingCapacity >= tRecipe.mSpecialValue) {
+            int tCurrentPara = handleParallelRecipe(tRecipe, tFluids, tInputs, (int) tMaxPara);
+            processed = tCurrentPara;
+            found_Recipe = true;
+            if (tRecipe.mOutputs != null) {
+                for (int i = 0; i < tRecipe.mOutputs.length; i++) {
+                    tCurrentPara = processed;
+                    while (tCurrentPara > 0 && tRecipe.getOutput(i) != null) {
+                        int maxSize = tRecipe.getOutput(i).getMaxStackSize();
+                        if (tCurrentPara <= maxSize) {
+                            outputItems.add(GT_Utility.copyAmount(maxSize, tRecipe.getOutput(i)));
+                            tCurrentPara -= maxSize;
+                        }
+                        else {
+                            outputItems.add(GT_Utility.copyAmount(tCurrentPara, tRecipe.getOutput(i)));
+                            tCurrentPara = 0;
+                        }
+                    }
+                }
+            }
+            if (tRecipe.mFluidOutputs != null) {
+                for (int i = 0; i < tRecipe.mFluidOutputs.length; i++) {
+                    while (tRecipe.getFluidOutput(i) != null) {
+                        FluidStack tOutputFluid = new FluidStack(tRecipe.getFluidOutput(i).getFluid(), tRecipe.getFluidOutput(i).amount * processed);
+                        outputFluids.add(tOutputFluid);
+                    }
+                }
+            }
+        }
+
+       /* while (this.getStoredInputs().size() > 0 && processed < ConfigHandler.megaMachinesMax) {
             if (this.mHeatingCapacity >= tRecipe.mSpecialValue && (precutRecipeVoltage * (processed + 1)) < nominalV && tRecipe.isRecipeInputEqual(true, tFluids, tInputs)) {
                 found_Recipe = true;
                 for (int i = 0; i < tRecipe.mOutputs.length; i++) {
@@ -402,7 +435,7 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_MetaTileEntity_ElectricBl
                 ++processed;
             } else
                 break;
-        }
+        }*/
 
         if (found_Recipe) {
             this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
