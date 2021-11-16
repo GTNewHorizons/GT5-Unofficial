@@ -92,6 +92,7 @@ public class GregtechMetaTileEntity_LargeRocketEngine extends GregtechMeta_Multi
 		if (mCoolantName.toLowerCase().contains(".")) {
 			mCoolantName = FluidUtils.getFluidStack("liquidhydrogen", 1).getLocalizedName();
 		}
+
 		GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
 		tt.addMachineType(getMachineType())
 				.addInfo("Controller Block for the Large Rocket Engine")
@@ -99,7 +100,7 @@ public class GregtechMetaTileEntity_LargeRocketEngine extends GregtechMeta_Multi
 				.addInfo("Supply 4L of " + mCoolantName + " per second per 2100 eu/t to boost output (optional)")
 				.addInfo("Consumes 2000L/s of air per 16384 eu/t produced")
 				.addInfo("Produces as much energy as you put fuel in")
-				.addInfo("produses 1500 posution/S per 16384 eu/t produced")
+				.addInfo("Produces 1500 pollution/S per 16384 eu/t produced")
 				.addInfo("When producing more then 32K eu/t fuel wil be consume less efficiently (3x - 1.5x eff@57Keu/t input energy)")
 				.addInfo("formula: x = input of energy (10K^(1/3)/ x^(1/3)) * (40K^(1/3)/ x^(1/3))")
 				.addInfo("Boosting will produce 3x the amount of power but will consume 3x fuel")
