@@ -93,7 +93,7 @@ public class RecipeGen_MultisUsingFluidInsteadOfCells {
 					if (aFoundFluid == null) {
 						for (ItemStack aBadStack : mItemsToIgnore) {
 							if (doesItemMatchIgnoringStackSize(aInputStack, aBadStack)) {
-								continue recipe; // Skip this recipe entirely if we find an item we don't like
+									continue recipe; // Skip this recipe entirely if we find an item we don't like
 							}
 						}
 						if (!isEmptyCell(aInputStack)) {
