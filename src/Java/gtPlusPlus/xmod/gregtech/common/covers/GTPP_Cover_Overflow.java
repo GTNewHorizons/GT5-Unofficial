@@ -226,8 +226,8 @@ public class GTPP_Cover_Overflow extends GT_CoverBehavior {
 
 			warn = false;
 			if (box.id == 2) {
-				if (i > (long) mTransferRate * 10) {
-					i = mTransferRate * 10;
+				if (i > (long) mMaxTransferRate) {
+					i = mMaxTransferRate;
 					warn = true;
 				} else if (i < 0) {
 					i = 0;
