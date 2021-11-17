@@ -95,7 +95,7 @@ public class RECIPES_Machines {
 	public static ItemStack RECIPE_ThermalBoilerCasing;
 
 	//Thorium Reactor
-	public static ItemStack RECIPE_LFTRController;
+	/*public static ItemStack RECIPE_LFTRController;*/
 	public static ItemStack RECIPE_LFTROuterCasing;
 	public static ItemStack RECIPE_LFTRInnerCasing;
 
@@ -975,7 +975,7 @@ public class RECIPES_Machines {
 
 			if (CORE.ConfigSwitches.enableMultiblock_MultiTank){
 				//Industrial Multi Tank
-				RECIPE_IndustrialMultiTankController = GregtechItemList.Industrial_MultiTank.get(1);
+				//RECIPE_IndustrialMultiTankController = GregtechItemList.Industrial_MultiTank.get(1);
 				RECIPE_IndustrialMultiTankFrame = GregtechItemList.Casing_MultitankExterior.get(Casing_Amount);
 
 				//Industrial Multi Tank Casing
@@ -1116,22 +1116,22 @@ public class RECIPES_Machines {
 
 			if (CORE.ConfigSwitches.enableMultiblock_TreeFarmer){
 				//Industrial Tree Farmer
-				RECIPE_TreeFarmController = GregtechItemList.Industrial_TreeFarm.get(1);
+				/*RECIPE_TreeFarmController = GregtechItemList.Industrial_TreeFarm.get(1);*/
 				RECIPE_TreeFarmFrame = GregtechItemList.Casing_PLACEHOLDER_TreeFarmer.get(Casing_Amount);
 				//Industrial Tree Farm Controller
 				if (!GTNH) {
-					RecipeUtils.addShapedGregtechRecipe(
+					/*RecipeUtils.addShapedGregtechRecipe(
 							"plateEglinSteel", "rotorEglinSteel", "plateEglinSteel",
 							"cableGt02Steel", "pipeMediumSteel", "cableGt02Steel",
 							"plateEglinSteel", CI.machineCasing_MV, "plateEglinSteel",
-							RECIPE_TreeFarmController);
+							RECIPE_TreeFarmController);*/
 				}
 				else {
-					RecipeUtils.addShapedGregtechRecipe(
+					/*RecipeUtils.addShapedGregtechRecipe(
 							"plateEglinSteel", "rotorEglinSteel", "plateEglinSteel",
 							"cableGt02Silver", "pipeMediumStainlessSteel", "cableGt02Silver",
 							"plateEglinSteel", CI.machineCasing_HV, "plateEglinSteel",
-							RECIPE_TreeFarmController);
+							RECIPE_TreeFarmController);*/
 				}
 				//Industrial Tree Farm Frame
 				RecipeUtils.addShapedGregtechRecipe(
@@ -1374,23 +1374,23 @@ public class RECIPES_Machines {
 			if (CORE.ConfigSwitches.enableMultiblock_LiquidFluorideThoriumReactor){
 
 				//Thorium Reactor
-				RECIPE_LFTRController = GregtechItemList.ThoriumReactor.get(1);
+				/*RECIPE_LFTRController = GregtechItemList.ThoriumReactor.get(1);*/
 				RECIPE_LFTRInnerCasing = GregtechItemList.Casing_Reactor_II.get(1); //Zeron
 				RECIPE_LFTROuterCasing = GregtechItemList.Casing_Reactor_I.get(1); //Hastelloy
 
 				ItemStack controlCircuit = ItemUtils.getSimpleStack(ModItems.itemCircuitLFTR);
 				if(!GTNH) {
-					RecipeUtils.addShapedGregtechRecipe(
+					/*RecipeUtils.addShapedGregtechRecipe(
 							controlCircuit, "cableGt12NaquadahAlloy", controlCircuit,
 							"plateDoubleHastelloyN", GregtechItemList.Gregtech_Computer_Cube.get(1), "plateDoubleHastelloyN",
 							"plateThorium232", CI.machineHull_UV, "plateThorium232",
-							RECIPE_LFTRController);
+							RECIPE_LFTRController);*/
 				} else  {
-					RecipeUtils.addShapedGregtechRecipe(
+					/*RecipeUtils.addShapedGregtechRecipe(
 							controlCircuit, "cableGt12NaquadahAlloy", controlCircuit,
 							"plateDoubleHastelloyN", GregtechItemList.Gregtech_Computer_Cube.get(1), "plateDoubleHastelloyN",
 							"plateThorium232", CI.machineHull_LuV, "plateThorium232",
-							RECIPE_LFTRController);
+							RECIPE_LFTRController);*/
 				}
 				RecipeUtils.addShapedGregtechRecipe(
 						"plateDoubleZeron100", CI.craftingToolScrewdriver, "plateDoubleZeron100",
@@ -1411,11 +1411,11 @@ public class RECIPES_Machines {
 
 
 				//Fission Fuel Plant
-				RecipeUtils.addShapedGregtechRecipe(
+				/*RecipeUtils.addShapedGregtechRecipe(
 						CI.getTieredCircuit(5), CI.craftingToolSolderingIron, CI.getTieredCircuit(5),
 						"plateDenseTungstenSteel", GregtechItemList.Gregtech_Computer_Cube.get(1), "plateDenseTungstenSteel",
 						"gearGtStellite", CI.machineHull_LuV, "gearGtStellite",
-						GregtechItemList.Industrial_FuelRefinery.get(1));
+						GregtechItemList.Industrial_FuelRefinery.get(1));*/
 
 				ItemStack mInnerTank;
 
@@ -1875,7 +1875,7 @@ public class RECIPES_Machines {
 				ItemStack aDrillController = ItemUtils.getValueOfItemList("OreDrill4", ItemList.Hull_UV).get(1);				
 
 				//Drilling Platform
-				CORE.RA.addSixSlotAssemblingRecipe(
+				/*CORE.RA.addSixSlotAssemblingRecipe(
 						new ItemStack[] {
 								aDrillController,
 								ItemUtils.getItemStackOfAmountFromOreDict("frameGtTriniumNaquadahCarbonite", 3),
@@ -1886,7 +1886,7 @@ public class RECIPES_Machines {
 						ALLOY.LAFIUM.getFluid(144 * 8  * (GTNH ? 2 : 1)),
 						GregtechItemList.BedrockMiner_MKI.get(1),
 						(int) GT_Values.V[5],
-						(int) GT_Values.V[7]);
+						(int) GT_Values.V[7]);*/
 
 				//Drilling Platform Casings
 				CORE.RA.addSixSlotAssemblingRecipe(

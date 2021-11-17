@@ -2,14 +2,17 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.misc;
 
 import java.util.ArrayList;
 
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.enums.*;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
+import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.data.AutoMap;
@@ -17,15 +20,18 @@ import gtPlusPlus.api.objects.minecraft.ItemStackData;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
+
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
 public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase {
 
 	private long mVoltage;
 	private byte mTier;
+	private int mCasing;
+	private IStructureDefinition<GMTE_AmazonPackager> STRUCTURE_DEFINITION = null;
 
 	@Override
 	public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
@@ -53,26 +59,87 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase {
 	@Override
 	public String getCustomGUIResourceName() {
 		return "Generic3By3";
-	}	
+	}
 
 	@Override
-	public String[] getTooltip() {
-		return new String[]{
-				"Controller Block for the Amazon Warehouse",
-				"This Multiblock is used for EXTREME packaging requirements",
-				"Dust Schematics are inserted into the input busses",
-				"If inserted into the controller, it is shared across all busses",
-				"1x, 2x, 3x & Other Schematics are to be placed into the controller GUI slot",
-				"Uncomparably fast compared to a single packager of the same tier",
-				"Only uses 75% of the eu/t normally required",
-				"Processes five items per voltage tier",
-				"Size: 3x3x3 (Hollow)",
-				"Supply Depot. Casings (10 at least!)",
-				"Controller (front centered)",
-				"1x Input Bus",
-				"1x Output Bus",
-				"1x Energy Hatch",
-		};
+	public IStructureDefinition<GMTE_AmazonPackager> getStructureDefinition() {
+		if (STRUCTURE_DEFINITION == null) {
+			STRUCTURE_DEFINITION = StructureDefinition.<GMTE_AmazonPackager>builder()
+					.addShape(mName, transpose(new String[][]{
+							{"CCC", "CCC", "CCC"},
+							{"C~C", "C-C", "CCC"},
+							{"CCC", "CCC", "CCC"},
+					}))
+					.addElement(
+							'C',
+							ofChain(
+									ofHatchAdder(
+											GMTE_AmazonPackager::addAmazonPackagerList, TAE.getIndexFromPage(2, 9), 1
+									),
+									onElementPass(
+											x -> ++x.mCasing,
+											ofBlock(
+													ModBlocks.blockCasings3Misc, 9
+											)
+									)
+							)
+					)
+					.build();
+		}
+		return STRUCTURE_DEFINITION;
+	}
+
+
+
+	public final boolean addAmazonPackagerList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+		if (aTileEntity == null) {
+			return false;
+		} else {
+			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mInputBusses.add((GT_MetaTileEntity_Hatch_InputBus)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mOutputBusses.add((GT_MetaTileEntity_Hatch_OutputBus) aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mMufflerHatches.add((GT_MetaTileEntity_Hatch_Muffler) aMetaTileEntity);
+			}
+		}
+		return false;
+	}
+
+	@Override
+	protected GT_Multiblock_Tooltip_Builder createTooltip() {
+		GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+		tt.addMachineType(getMachineType())
+				.addInfo("Controller Block for the Amazon Warehouse")
+				.addInfo("This Multiblock is used for EXTREME packaging requirements")
+				.addInfo("Dust Schematics are inserted into the input busses")
+				.addInfo("If inserted into the controller, it is shared across all busses")
+				.addInfo("1x, 2x, 3x & Other Schematics are to be placed into the controller GUI slot")
+				.addInfo("Uncomparably fast compared to a single packager of the same tier")
+				.addInfo("Only uses 75% of the eu/t normally required")
+				.addInfo("Processes five items per voltage tier")
+				.addPollutionAmount(getPollutionPerTick(null) * 20)
+				.addSeparator()
+				.beginStructureBlock(3, 3, 3, true)
+				.addController("Front center")
+				.addCasingInfo("Supply Depot Casings", 10)
+				.addInputBus("Any casing", 1)
+				.addOutputBus("Any casing", 1)
+				.addEnergyHatch("Any casing", 1)
+				.addMaintenanceHatch("Any casing", 1)
+				.addMufflerHatch("Any casing", 1)
+				.toolTipFinisher("GT++");
+		return tt;
 	}
 
 	private final void initFields() {
@@ -100,7 +167,6 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase {
 			h.updateSlots();
 		}
 	}
-
 
 	@Override
 	public boolean checkRecipe(ItemStack aStack) {	
@@ -229,32 +295,9 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
-	public boolean checkMultiblock(IGregTechTileEntity aBaseMetaTileEntity, ItemStack p1) {
-		final int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
-		final int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
-		if (!aBaseMetaTileEntity.getAirOffset(xDir, 0, zDir)) {
-			return false;
-		}
-		int tAmount = 0;
-		for (int i = -1; i < 2; i++) {
-			for (int j = -1; j < 2; j++) {
-				for (int h = -1; h < 2; h++) {
-					if ((h != 0) || ((((xDir + i) != 0) || ((zDir + j) != 0)) && ((i != 0) || (j != 0)))) {
-						final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
-						if (!this.addToMachineList(tTileEntity, TAE.getIndexFromPage(2, 9))) {
-							final Block tBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
-							final byte tMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
-
-							if (((tBlock != ModBlocks.blockCasings3Misc) || (tMeta != 9))) {
-								return false;
-							}
-							tAmount++;
-						}
-					}
-				}
-			}
-		}
-		return tAmount >= 10;
+	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+		mCasing = 0;
+		return checkPiece(mName, 1, 1, 0) && mCasing >= 10 && checkHatch();
 	}
 
 	@Override
@@ -277,4 +320,8 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase {
 		return 0;
 	}
 
+	@Override
+	public void construct(ItemStack stackSize, boolean hintsOnly) {
+		buildPiece(mName, stackSize, hintsOnly, 1, 1, 0);
+	}
 }

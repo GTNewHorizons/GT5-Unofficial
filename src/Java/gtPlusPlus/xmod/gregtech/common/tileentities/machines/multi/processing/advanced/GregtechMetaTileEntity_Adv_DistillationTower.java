@@ -1,5 +1,8 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.advanced;
 
+import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
@@ -8,11 +11,10 @@ import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
+import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
@@ -26,14 +28,17 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
+
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 
 public class GregtechMetaTileEntity_Adv_DistillationTower extends GregtechMeta_MultiBlockBase {
 
 	private short mControllerY = 0;    
 	private byte mMode = 0;
 	private boolean mUpgraded = false;
+	private IStructureDefinition<GregtechMetaTileEntity_Adv_DistillationTower> STRUCTURE_DEFINITION = null;
 
 	public GregtechMetaTileEntity_Adv_DistillationTower(int aID, String aName, String aNameRegional) {
 		super(aID, aName, aNameRegional);
@@ -47,26 +52,145 @@ public class GregtechMetaTileEntity_Adv_DistillationTower extends GregtechMeta_M
 		return new GregtechMetaTileEntity_Adv_DistillationTower(this.mName);
 	}
 
-	public String[] getTooltip() {
-		String s = "Max parallel dictated by tower tier and mode";
-		String s1 = "DTower Mode: T1=4, T2=12";
-		String s2 = "Distilery Mode: Tower Tier * (4*InputTier)";
-		return new String[]{
-				"Controller Block for the Advanced Distillation Tower",
-				"T1 constructed identical to standard DT",
-				"Place Distillus Upgrade Chip into Controller GUI to upgrade to T2",
-				"T2 is not variable height",
-				"Size(WxHxD): 3x26x3",
-				"Controller (Front bottom)",
-				"1x Input Hatch (Any bottom layer casing)",
-				"24x Output Hatch (One per layer except bottom/top layer)",
-				"1x Output Bus (Any bottom layer casing)",
-				"1x Maintenance Hatch (Any casing)",
-				"1x Energy Hatch (Any casing)",
-				"Integral Framework I's for the rest",
-				s,
-				s1,
-				s2};
+	@Override
+	public IStructureDefinition<GregtechMetaTileEntity_Adv_DistillationTower> getStructureDefinition() {
+		if (STRUCTURE_DEFINITION == null) {
+			STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_Adv_DistillationTower>builder()
+					.addShape(mName + "bottom", transpose(new String[][]{
+							{"I~I", "III", "III"}
+					}))
+					.addShape(mName + "mid", transpose(new String[][]{
+							{"CCC", "C-C", "CCC"}
+					}))
+					.addShape(mName + "top", transpose(new String[][]{
+							{"MMM", "MMM", "MMM"}
+					}))
+					.addElement(
+							'I',
+							ofHatchAdderOptional(
+									GregtechMetaTileEntity_Adv_DistillationTower::addAdvDistillationTowerBottomList, getCasingTextureID(),
+									1, GregTech_API.sBlockCasings4, 1
+							)
+					)
+					.addElement(
+							'C',
+							ofHatchAdderOptional(
+									GregtechMetaTileEntity_Adv_DistillationTower::addAdvDistillationTowerMidList, getCasingTextureID(),
+									2, GregTech_API.sBlockCasings4, 1
+							)
+					)
+					.addElement(
+							'M',
+							ofHatchAdderOptional(
+									GregtechMetaTileEntity_Adv_DistillationTower::addAdvDistillationTowerTopList, getCasingTextureID(),
+									3, GregTech_API.sBlockCasings4, 1
+							)
+					)
+					.build();
+		}
+		return STRUCTURE_DEFINITION;
+	}
+
+	public final boolean addAdvDistillationTowerBottomList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+		if (aTileEntity == null) {
+			return false;
+		} else {
+			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mInputBusses.add((GT_MetaTileEntity_Hatch_InputBus)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mOutputBusses.add((GT_MetaTileEntity_Hatch_OutputBus) aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
+			}
+		}
+		return false;
+	}
+
+	public final boolean addAdvDistillationTowerMidList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+		if (aTileEntity == null) {
+			return false;
+		} else {
+			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mOutputHatches.add((GT_MetaTileEntity_Hatch_Output)aMetaTileEntity);
+			}
+		}
+		return false;
+	}
+
+	public final boolean addAdvDistillationTowerTopList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+		if (aTileEntity == null) {
+			return false;
+		} else {
+			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mOutputHatches.add((GT_MetaTileEntity_Hatch_Output)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mMufflerHatches.add((GT_MetaTileEntity_Hatch_Muffler)aMetaTileEntity);
+			}
+		}
+		return false;
+	}
+
+	@Override
+	protected GT_Multiblock_Tooltip_Builder createTooltip() {
+		GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+		tt.addMachineType(getMachineType())
+				.addInfo("Controller Block for the Advanced Distillation Tower")
+				.addInfo("T1 and T2 constructed identical to standard DT")
+				.addInfo("Right click the controller with screwdriver to change mode.")
+				.addInfo("Max parallel dictated by tower tier and mode")
+				.addInfo("DTower Mode: T1=4, T2=12")
+				.addInfo("Distilery Mode: Tower Tier * (4*InputTier)")
+				.addPollutionAmount(getPollutionPerTick(null) * 20)
+				.addSeparator()
+				.addCasingInfo("Clean Stainless Steel Machine Casing", 7)
+				.addInputBus("Bottom Casing", 1)
+				.addOutputBus("Bottom Casing", 1)
+				.addInputHatch("Bottom Casing", 1)
+				.addMaintenanceHatch("Bottom Casing", 1)
+				.addEnergyHatch("Bottom Casing", 1)
+				.addOutputHatch("One per layer except bottom", 2)
+				.addMufflerHatch("Top Center Casing", 3)
+				.toolTipFinisher("GT++");
+		return tt;
+	}
+
+	@Override
+	public void construct(ItemStack stackSize, boolean hintsOnly) {
+		int layer = Math.min(stackSize.stackSize + 2, 12);
+		buildPiece(mName + "bottom", stackSize, hintsOnly, 1, 0, 0);
+		for (int i = 1; i < layer - 1; i++) {
+			buildPiece(mName + "mid", stackSize, hintsOnly, 1, i, 0);
+		}
+		buildPiece(mName + "top", stackSize, hintsOnly, 1, layer - 1, 0);
+	}
+
+	@Override
+	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+		if (!checkPiece(mName + "bottom", 1, 0, 0))
+			return false;
+		int layer = 1;
+		while (checkPiece(mName + "mid", 1, layer, 0)) {
+			if (layer != mOutputHatches.size()) return false;
+			layer ++;
+		}
+		if (layer > 12 || !checkPiece(mName + "top", 1, layer, 0))
+			return false;
+		return layer == mOutputHatches.size() && checkHatch();
 	}
 
 	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
@@ -81,8 +205,10 @@ public class GregtechMetaTileEntity_Adv_DistillationTower extends GregtechMeta_M
 		return true;
 	}
 
-	public boolean isFacingValid(byte aFacing) {
-		return aFacing > 1;
+	@Override
+	protected IAlignmentLimits getInitialAlignmentLimits() {
+		// don't rotate a freaking tower, it won't work
+		return (d, r, f) -> d.offsetY == 0 && r.isNotRotated() && !f.isVerticallyFliped();
 	}
 
 	public int getMaxEfficiency(ItemStack aStack) {
@@ -226,140 +352,9 @@ public class GregtechMetaTileEntity_Adv_DistillationTower extends GregtechMeta_M
 		return 15;
 	}
 
-	@Override
-	public boolean checkMultiblock(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-		int aTier = getTierOfTower();
-		if (aTier > 0) {
-			if (aTier == 1) {
-				return checkTierOneTower(aBaseMetaTileEntity, aStack);
-			}
-			else if (aTier == 2) {
-				return checkTierTwoTower(aBaseMetaTileEntity, aStack);				
-			}
-		}
-		return false;
-	}
-
 	private int getTierOfTower() {
 		return mUpgraded ? 2 : 1;
 	}
-
-	private boolean checkTierOneTower(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-		mControllerY = aBaseMetaTileEntity.getYCoord();
-		int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
-		int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
-		int y = 0; //height
-		int casingAmount = 0;
-		boolean reachedTop = false;
-
-		for (int x = xDir - 1; x <= xDir + 1; x++) { //x=width
-			for (int z = zDir - 1; z <= zDir + 1; z++) { //z=depth
-				if (x != 0 || z != 0) {
-					IGregTechTileEntity tileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(x, y, z);
-					Block block = aBaseMetaTileEntity.getBlockOffset(x, y, z);
-					if (!addInputToMachineList(tileEntity, getCasingTextureID()) 
-							&& !addOutputToMachineList(tileEntity, getCasingTextureID()) 
-							&& !addMaintenanceToMachineList(tileEntity, getCasingTextureID()) 
-							&& !addEnergyInputToMachineList(tileEntity, getCasingTextureID())) {
-						if (block == GregTech_API.sBlockCasings4 && aBaseMetaTileEntity.getMetaIDOffset(x, y, z) == 1) {
-							casingAmount++;
-						} else {
-							return false;
-						}        						
-					}
-				}
-			}
-		}
-		y++;
-
-		while (y < 12 && !reachedTop) {
-			for (int x = xDir - 1; x <= xDir + 1; x++) { //x=width
-				for (int z = zDir - 1; z <= zDir + 1; z++) { //z=depth
-					IGregTechTileEntity tileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(x, y, z);
-					Block block = aBaseMetaTileEntity.getBlockOffset(x, y, z);
-					if (aBaseMetaTileEntity.getAirOffset(x, y, z)) {
-						if (x != xDir || z != zDir) {
-							return false;
-						}
-					} else {
-						if (x == xDir && z == zDir) {
-							reachedTop = true;
-						}
-						if (!addOutputToMachineList(tileEntity, getCasingTextureID()) 
-								&& !addMaintenanceToMachineList(tileEntity, getCasingTextureID()) 
-								&& !addEnergyInputToMachineList(tileEntity, getCasingTextureID())) {
-							if (block == GregTech_API.sBlockCasings4 && aBaseMetaTileEntity.getMetaIDOffset(x, y, z) == 1) {
-								casingAmount++;
-							} else {
-								return false;
-							}
-						}
-					}
-				}
-			}
-			y++;
-		}        
-		return casingAmount >= 7 * y - 5 && y >= 3 && y <= 12 && reachedTop;    
-	}
-
-	private boolean checkTierTwoTower(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-		mControllerY = aBaseMetaTileEntity.getYCoord();
-		int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
-		int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
-		int y = 0; //height
-		int casingAmount = 0;
-		boolean reachedTop = false;
-
-		for (int x = xDir - 1; x <= xDir + 1; x++) { //x=width
-			for (int z = zDir - 1; z <= zDir + 1; z++) { //z=depth
-				if (x != 0 || z != 0) {
-					IGregTechTileEntity tileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(x, y, z);
-					Block block = aBaseMetaTileEntity.getBlockOffset(x, y, z);
-					if (!addInputToMachineList(tileEntity, getCasingTextureID()) 
-							&& !addOutputToMachineList(tileEntity, getCasingTextureID()) 
-							&& !addMaintenanceToMachineList(tileEntity, getCasingTextureID()) 
-							&& !addEnergyInputToMachineList(tileEntity, getCasingTextureID())) {
-						if (block == GregTech_API.sBlockCasings4 && aBaseMetaTileEntity.getMetaIDOffset(x, y, z) == 1) {
-							casingAmount++;
-						} else {
-							return false;
-						}        						
-					}
-				}
-			}
-		}
-		y++;
-
-		while (y < 12 && !reachedTop) {
-			for (int x = xDir - 1; x <= xDir + 1; x++) { //x=width
-				for (int z = zDir - 1; z <= zDir + 1; z++) { //z=depth
-					IGregTechTileEntity tileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(x, y, z);
-					Block block = aBaseMetaTileEntity.getBlockOffset(x, y, z);
-					if (aBaseMetaTileEntity.getAirOffset(x, y, z)) {
-						if (x != xDir || z != zDir) {
-							return false;
-						}
-					} else {
-						if (x == xDir && z == zDir) {
-							reachedTop = true;
-						}
-						if (!addOutputToMachineList(tileEntity, getCasingTextureID()) 
-								&& !addMaintenanceToMachineList(tileEntity, getCasingTextureID()) 
-								&& !addEnergyInputToMachineList(tileEntity, getCasingTextureID())) {
-							if (block == GregTech_API.sBlockCasings4 && aBaseMetaTileEntity.getMetaIDOffset(x, y, z) == 1) {
-								casingAmount++;
-							} else {
-								return false;
-							}
-						}
-					}
-				}
-			}
-			y++;
-		}        
-		return casingAmount >= 7 * y - 5 && y >= 3 && y <= 12 && reachedTop;    
-	}
-
 
 	private int mCasingTier = 0;
 

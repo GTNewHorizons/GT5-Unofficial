@@ -1,3 +1,4 @@
+/*
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
 import java.util.ArrayList;
@@ -497,4 +498,4 @@ public class GregtechMTE_LargeNaqReactor extends GregtechMeta_MultiBlockBase {
 	public String getMachineType() {
 		return "Reactor";
 	}
-}
+}*/

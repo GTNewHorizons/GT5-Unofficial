@@ -1,3 +1,4 @@
+/*
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
 import gregtech.api.enums.TAE;
@@ -227,3 +228,4 @@ extends GregtechMeta_MultiBlockBase
 	}
 
 }
+*/

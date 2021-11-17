@@ -1,11 +1,18 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 import static gtPlusPlus.core.util.data.ArrayUtils.removeNulls;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import gregtech.api.metatileentity.implementations.*;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import org.apache.commons.lang3.ArrayUtils;
 
 import gregtech.api.enums.TAE;
@@ -43,10 +50,9 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase {
 
-	protected int fuelConsumption = 0;
-	protected int fuelValue = 0;
-	protected int fuelRemaining = 0;
 	protected boolean boostEu = false;
+	private int mCasing;
+	private IStructureDefinition<GregtechMetaTileEntity_IsaMill> STRUCTURE_DEFINITION = null;
 
 	private static ITexture frontFace;
 	private static ITexture frontFaceActive;
@@ -64,26 +70,106 @@ public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase 
 		super(aName);
 	}
 
-	public String[] getTooltip() {
-		return new String[]{
-				"Controller Block for the Large Grinding Machine",
-				"Engine Intake Casings must not be obstructed in front (only air blocks)",
-				"Supply Semifluid Fuels and 2000L of Lubricant per hour to run.",
-				"Supply 80L of Oxygen per second to boost output (optional).",
-				"Default: Produces 2048EU/t at 100% efficiency",
-				"Boosted: Produces 6144EU/t at 150% efficiency",
-				"Size(WxHxD): 3x3x4, Controller (front centered)",
-				"3x3x4 of Stable Titanium Machine Casing (hollow, Min 16!)",
-				"All hatches except dynamo can replace any Stable Titanium casing in middle two segments",
-				"2x Steel Gear Box Machine Casing inside the Hollow Casing",
-				"8x Engine Intake Machine Casing (around controller)",
-				"2x Input Hatch (Fuel/Lubricant)",
-				"1x Maintenance Hatch",
-				"1x Muffler Hatch",
-				"1x Dynamo Hatch (back centered)",
-		};
+	@Override
+	protected GT_Multiblock_Tooltip_Builder createTooltip() {
+		GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+		tt.addMachineType(getMachineType())
+				.addInfo("Controller Block for the Large Grinding Machine")
+				.addInfo("Grind ores.")
+				.addPollutionAmount(getPollutionPerTick(null) * 20)
+				.addSeparator()
+				.beginStructureBlock(3, 3, 4, false)
+				.addController("Front Center")
+				.addCasingInfo("IsaMill Exterior Casing", 40)
+				.addCasingInfo("IsaMill Gearbox", 6)
+				.addInputBus("Any Casing", 1)
+				.addOutputBus("Any Casing", 1)
+				.addEnergyHatch("Any Casing", 1)
+				.addMaintenanceHatch("Any Casing", 1)
+				.addMufflerHatch("Any Casing", 1)
+				.toolTipFinisher("GT++");
+		return tt;
 	}
 
+	@Override
+	public IStructureDefinition<GregtechMetaTileEntity_IsaMill> getStructureDefinition() {
+		if (STRUCTURE_DEFINITION == null) {
+			STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IsaMill>builder()
+					.addShape(mName, transpose(new String[][]{
+							{"DDD", "CCC", "CCC", "CCC", "CCC", "CCC", "CCC"},
+							{"D~D", "CGC", "CGC", "CGC", "CGC", "CGC", "CCC"},
+							{"DDD", "CCC", "CCC", "CCC", "CCC", "CCC", "CCC"},
+					}))
+					.addElement(
+							'C',
+							ofChain(
+									ofHatchAdder(
+											GregtechMetaTileEntity_IsaMill::addIsaMillList, getCasingTextureIndex(), 1
+									),
+									onElementPass(
+											x -> ++x.mCasing,
+											ofBlock(
+													getCasingBlock(), getCasingMeta()
+											)
+									)
+							)
+					)
+					.addElement(
+							'D',
+							ofBlock(
+									getIntakeBlock(), getIntakeMeta()
+							)
+					)
+					.addElement(
+							'G',
+							ofBlock(
+									getGearboxBlock(), getGearboxMeta()
+							)
+					)
+					.build();
+		}
+		return STRUCTURE_DEFINITION;
+	}
+
+	@Override
+	public void construct(ItemStack stackSize, boolean hintsOnly) {
+		buildPiece(mName , stackSize, hintsOnly, 1, 1, 0);
+	}
+
+	@Override
+	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+		mCasing = 0;
+		mMillingBallBuses.clear();
+		return checkPiece(mName, 1, 1, 0) && mCasing >= 48 - 8 && checkHatch();
+	}
+
+	public final boolean addIsaMillList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+		if (aTileEntity == null) {
+			return false;
+		} else {
+			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_MillingBalls){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return addToMachineListInternal(mMillingBallBuses, aMetaTileEntity, aBaseCasingIndex);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mInputBusses.add((GT_MetaTileEntity_Hatch_InputBus)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mOutputBusses.add((GT_MetaTileEntity_Hatch_OutputBus) aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mMufflerHatches.add((GT_MetaTileEntity_Hatch_Muffler) aMetaTileEntity);
+			}
+		}
+		return false;
+	}
 
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
 		return new ITexture[]{
@@ -241,94 +327,8 @@ public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase 
 	}
 
 	@Override
-	public boolean isFacingValid(final byte aFacing) {
-		return aFacing > 1;
-	}
-
-	@Override
 	public boolean checkRecipe(ItemStack aStack) {
 		return checkRecipeGeneric();
-	}
-
-	@Override
-	public boolean checkMultiblock(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-		byte tSide = aBaseMetaTileEntity.getBackFacing();
-		int aTileX = aBaseMetaTileEntity.getXCoord();
-		int aTileY = aBaseMetaTileEntity.getYCoord();
-		int aTileZ = aBaseMetaTileEntity.getZCoord();
-		boolean xFacing = (tSide == 4 || tSide == 5);
-		boolean zFacing = (tSide == 2 || tSide == 3);
-		int aCasingCount = 0;
-		// Check Intake Hatches
-		for (int aHorizontalOffset = -1; aHorizontalOffset < 2; aHorizontalOffset++) {
-			for (int aVerticalOffset = -1; aVerticalOffset < 2; aVerticalOffset++) {
-				if (aHorizontalOffset == 0 && aVerticalOffset == 0) {
-					continue;
-				}			
-				int aX = !xFacing ? (aTileX + aHorizontalOffset) : aTileX;
-				int aY = aTileY + aVerticalOffset;
-				int aZ = !zFacing ? (aTileZ + aHorizontalOffset) : aTileZ;
-				Block aIntakeBlock = aBaseMetaTileEntity.getBlock(aX, aY, aZ);
-				int aIntakeMeta = aBaseMetaTileEntity.getMetaID(aX, aY, aZ);				
-				if (!isValidBlockForStructure(null, 0, false, aIntakeBlock, aIntakeMeta, getIntakeBlock(), getIntakeMeta())) {
-					return false; // Not intake casing surrounding controller					
-				}
-			}
-		}
-		// Check Casings
-		int aStartDepthOffset = (tSide == 2 || tSide == 4) ? -1 : 1;
-		int aFinishDepthOffset = (tSide == 2 || tSide == 4) ? -8 : 8;
-		for (int aDepthOffset = aStartDepthOffset; aDepthOffset != aFinishDepthOffset;) {
-			for (int aHorizontalOffset = -1; aHorizontalOffset < 2; aHorizontalOffset++) {
-				for (int aVerticalOffset = -1; aVerticalOffset < 2; aVerticalOffset++) {
-					if (aHorizontalOffset == 0 && aVerticalOffset == 0) {
-						continue;
-					}				
-					int aX = !xFacing ? (aTileX + aHorizontalOffset) : (aTileX + aDepthOffset);
-					int aY = aTileY + aVerticalOffset;
-					int aZ = !zFacing ? (aTileZ + aHorizontalOffset) : (aTileZ + aDepthOffset);
-					Block aCasingBlock = aBaseMetaTileEntity.getBlock(aX, aY, aZ);
-					int aCasingMeta = aBaseMetaTileEntity.getMetaID(aX, aY, aZ);	
-					IGregTechTileEntity aTileEntity = aBaseMetaTileEntity.getIGregTechTileEntity(aX, aY, aZ);
-					if (aTileEntity != null) {
-						final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-						if (aMetaTileEntity != null) {
-							if (aMetaTileEntity instanceof GregtechMetaTileEntity_IsaMill) {
-								Logger.INFO("Don't be cheeky, only one controller per Mill.");
-								return false;
-							}
-						}
-					}
-
-					if (!isValidBlockForStructure(aTileEntity, getCasingTextureIndex(), true, aCasingBlock, aCasingMeta, getCasingBlock(), getCasingMeta())) {
-						Logger.INFO("Bad casing.");
-						return false; // Not valid casing					
-					}
-					else {
-						if (aTileEntity == null) {
-							aCasingCount++;
-						}
-					}
-				}
-			}
-			// Count Backwards for 2 axis
-			if (aStartDepthOffset == -1) {
-				aDepthOffset--;
-			}
-			// Count Forwards for 2 axis
-			else {
-				aDepthOffset++;
-			}
-		}
-
-		// Check Gear Boxes
-		for (int aInternalDepthAxis = 1; aInternalDepthAxis < 7; aInternalDepthAxis++) {
-			if(aBaseMetaTileEntity.getBlockAtSideAndDistance(tSide, aInternalDepthAxis) != getGearboxBlock() || aBaseMetaTileEntity.getMetaIDAtSideAndDistance(tSide, aInternalDepthAxis) != getGearboxMeta()) {
-				Logger.INFO("Missing Gearbox at depth "+aInternalDepthAxis);
-				return false;
-			}
-		}
-		return aCasingCount >= 48;
 	}
 
 	public Block getCasingBlock() {
@@ -444,7 +444,7 @@ public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase 
             if (isValidMetaTileEntity(tHatch)) {                
             	tItems.addAll(tHatch.getContentUsageSlots());            	
             }
-        }		
+        }
 		return tItems;
 	}
 
@@ -509,7 +509,7 @@ public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase 
 	public boolean checkRecipeGeneric(
 			ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
 			int aMaxParallelRecipes, int aEUPercent,
-			int aSpeedBonusPercent, int aOutputChanceRoll, GT_Recipe aRecipe) {
+			int aSpeedBonusPercent, int aOutputChanceRoll, GT_Recipe aRecipe, boolean isOC) {
 
 		// Based on the Processing Array. A bit overkill, but very flexible.		
 

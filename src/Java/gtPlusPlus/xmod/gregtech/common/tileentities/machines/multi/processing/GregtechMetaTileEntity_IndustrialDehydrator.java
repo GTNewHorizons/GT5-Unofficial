@@ -1,10 +1,19 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static gregtech.api.util.GT_StructureUtility.ofCoil;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 import static gtPlusPlus.core.util.data.ArrayUtils.removeNulls;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import gregtech.api.enums.HeatingCoilLevel;
+import gregtech.api.metatileentity.implementations.*;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import org.apache.commons.lang3.ArrayUtils;
 
 import gregtech.api.enums.TAE;
@@ -35,8 +44,10 @@ public class GregtechMetaTileEntity_IndustrialDehydrator extends GregtechMeta_Mu
 	
 	private static int CASING_TEXTURE_ID;
 	private static String mCasingName = "Vacuum Casing";	
-	private int mHeatingCapacity = 0;
+	private HeatingCoilLevel mHeatingCapacity;
 	private boolean mDehydratorMode = false;
+	private int mCasing;
+	private IStructureDefinition<GregtechMetaTileEntity_IndustrialDehydrator> STRUCTURE_DEFINITION = null;
 
 	public GregtechMetaTileEntity_IndustrialDehydrator(int aID, String aName, String aNameRegional) {
 		super(aID, aName, aNameRegional);
@@ -54,22 +65,113 @@ public class GregtechMetaTileEntity_IndustrialDehydrator extends GregtechMeta_Mu
 		return new GregtechMetaTileEntity_IndustrialDehydrator(mName);
 	}
 
-	public String[] getTooltip() {		
+	@Override
+	protected GT_Multiblock_Tooltip_Builder createTooltip() {
 		if (mCasingName.toLowerCase().contains(".name")) {
 			mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings4Misc, 10);
-		}		
-		return new String[] { 				
-				"Factory Grade Vacuum Furnace",
-				"Can toggle the operation temperature with a Screwdriver",
-				"All Dehydrator recipes are Low Temp recipes",
-				"Speed: 120% | Eu Usage: 50% | Parallel: 4",
-				"Constructed exactly the same as a normal EBF",
-				"Has three layers of coils instead (24)",
-				"Use "+mCasingName+"s (10 at least!)",
-				"Each 900K over the min. Heat Capacity grants 5% speedup (multiplicatively)",
-				"Each 1800K over the min. Heat Capacity allows for one upgraded overclock",
-				"Upgraded overclocks reduce recipe time to 25% and increase EU/t to 400%",				
-		};
+		}
+		GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+		tt.addMachineType(getMachineType())
+				.addInfo("Factory Grade Vacuum Furnace")
+				.addInfo("Can toggle the operation temperature with a Screwdriver")
+				.addInfo("All Dehydrator recipes are Low Temp recipes")
+				.addInfo("Speed: 120% | Eu Usage: 50% | Parallel: 4")
+				.addInfo("Each 900K over the min. Heat Capacity grants 5% speedup (multiplicatively)")
+				.addInfo("Each 1800K over the min. Heat Capacity allows for one upgraded overclock")
+				.addInfo("Upgraded overclocks reduce recipe time to 25% and increase EU/t to 400%")
+				.addPollutionAmount(getPollutionPerTick(null) * 20)
+				.addSeparator()
+				.beginStructureBlock(3, 4, 3, true)
+				.addController("Bottom Center")
+				.addCasingInfo(mCasingName, 10)
+				.addInputBus("Any Casing", 1)
+				.addOutputBus("Any Casing", 1)
+				.addInputHatch("Any Casing", 1)
+				.addOutputHatch("Any Casing", 1)
+				.addEnergyHatch("Any Casing", 1)
+				.addMaintenanceHatch("Any Casing", 1)
+				.addMufflerHatch("Any Casing", 1)
+				.toolTipFinisher("GT++");
+		return tt;
+	}
+
+	@Override
+	public IStructureDefinition<GregtechMetaTileEntity_IndustrialDehydrator> getStructureDefinition() {
+		if (STRUCTURE_DEFINITION == null) {
+			STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialDehydrator>builder()
+					.addShape(mName, transpose(new String[][]{
+							{"CCC", "CCC", "CCC"},
+							{"HHH", "H-H", "HHH"},
+							{"HHH", "H-H", "HHH"},
+							{"HHH", "H-H", "HHH"},
+							{"C~C", "CCC", "CCC"},
+					}))
+					.addElement(
+							'C',
+							ofChain(
+									ofHatchAdder(
+											GregtechMetaTileEntity_IndustrialDehydrator::addIndustrialDehydratorList, CASING_TEXTURE_ID, 1
+									),
+									onElementPass(
+											x -> ++x.mCasing,
+											ofBlock(
+													ModBlocks.blockCasings4Misc, 10
+											)
+									)
+							)
+					)
+					.addElement(
+							'H',
+							ofCoil(
+									GregtechMetaTileEntity_IndustrialDehydrator::setCoilLevel, GregtechMetaTileEntity_IndustrialDehydrator::getCoilLevel
+							)
+					)
+					.build();
+		}
+		return STRUCTURE_DEFINITION;
+	}
+
+	@Override
+	public void construct(ItemStack stackSize, boolean hintsOnly) {
+		buildPiece(mName , stackSize, hintsOnly, 1, 4, 0);
+	}
+
+	@Override
+	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+		mCasing = 0;
+		setCoilLevel(HeatingCoilLevel.None);
+		return checkPiece(mName, 1, 4, 0) && mCasing >= 10 && getCoilLevel() != HeatingCoilLevel.None && checkHatch();
+	}
+
+	public final boolean addIndustrialDehydratorList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+		if (aTileEntity == null) {
+			return false;
+		} else {
+			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mInputBusses.add((GT_MetaTileEntity_Hatch_InputBus)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mOutputBusses.add((GT_MetaTileEntity_Hatch_OutputBus) aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mMufflerHatches.add((GT_MetaTileEntity_Hatch_Muffler) aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mOutputHatches.add((GT_MetaTileEntity_Hatch_Output) aMetaTileEntity);
+			}
+		}
+		return false;
 	}
 
 	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
@@ -87,73 +189,6 @@ public class GregtechMetaTileEntity_IndustrialDehydrator extends GregtechMeta_Mu
 	}
 
 	public boolean isCorrectMachinePart(ItemStack aStack) {
-		return true;
-	}
-
-	public boolean isFacingValid(byte aFacing) {
-		return aFacing > 1;
-	}
-
-
-	public boolean checkMultiblock(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-		int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
-		int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
-
-		this.mHeatingCapacity = 0;
-		if (!aBaseMetaTileEntity.getAirOffset(xDir, 1, zDir)) {
-			return false;
-		}
-		if (!aBaseMetaTileEntity.getAirOffset(xDir, 2, zDir)) {
-			return false;
-		}
-		if (!aBaseMetaTileEntity.getAirOffset(xDir, 3, zDir)) {
-			return false;
-		}
-		Block tUsedBlock = aBaseMetaTileEntity.getBlockOffset(xDir + 1, 2, zDir);
-		byte tUsedMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + 1, 2, zDir);
-		this.mHeatingCapacity = StaticFields59.getHeatingCapacityForCoil(tUsedBlock, tUsedMeta);
-
-		for (int i = -1; i < 2; i++) {
-			for (int j = -1; j < 2; j++) {
-				if ((i != 0) || (j != 0)) {					
-					//Coils 1
-					if (!isValidBlockForStructure(null, CASING_TEXTURE_ID, false, aBaseMetaTileEntity.getBlockOffset(xDir + i, 1, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 1, zDir + j), StaticFields59.getBlockCasings5(), tUsedMeta)) {
-						Logger.INFO("Heating Coils missing.");
-						return false;
-					}
-
-					//Coils 2
-					if (!isValidBlockForStructure(null, CASING_TEXTURE_ID, false, aBaseMetaTileEntity.getBlockOffset(xDir + i, 2, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 2, zDir + j), StaticFields59.getBlockCasings5(), tUsedMeta)) {
-						Logger.INFO("Heating Coils missing.");
-						return false;
-					}	
-					
-					//Coils 3
-					if (!isValidBlockForStructure(null, CASING_TEXTURE_ID, false, aBaseMetaTileEntity.getBlockOffset(xDir + i, 3, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 2, zDir + j), StaticFields59.getBlockCasings5(), tUsedMeta)) {
-						Logger.INFO("Heating Coils missing.");
-						return false;
-					}					
-				}
-				
-				//Top Layer
-				final IGregTechTileEntity tTileEntity2 = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, 4, zDir + j);					
-				if (!isValidBlockForStructure(tTileEntity2, CASING_TEXTURE_ID, true, aBaseMetaTileEntity.getBlockOffset(xDir + i, 4, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 4, zDir + j), ModBlocks.blockCasings4Misc, 10)) {
-					Logger.INFO("Top Layer missing.");
-					return false;
-				}
-			}
-		}
-		for (int i = -1; i < 2; i++) {
-			for (int j = -1; j < 2; j++) {
-				if ((xDir + i != 0) || (zDir + j != 0)) {
-					IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, 0,zDir + j);					
-					if (!isValidBlockForStructure(tTileEntity, CASING_TEXTURE_ID, true, aBaseMetaTileEntity.getBlockOffset(xDir + i, 0, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 0, zDir + j), ModBlocks.blockCasings4Misc, 10)) {
-						Logger.INFO("Bottom Layer missing.");
-						return false;
-					}					
-				}
-			}
-		}
 		return true;
 	}
 
@@ -222,7 +257,7 @@ public class GregtechMetaTileEntity_IndustrialDehydrator extends GregtechMeta_Mu
 		// Remember last recipe - an optimization for findRecipe()
 		this.mLastRecipe = tRecipe;
 
-		if (tRecipe == null || this.mHeatingCapacity < tRecipe.mSpecialValue) {
+		if (tRecipe == null || this.mHeatingCapacity.getHeat() < tRecipe.mSpecialValue) {
 			Logger.WARNING("BAD RETURN - 1");
 			return false;
 		}
@@ -235,7 +270,7 @@ public class GregtechMetaTileEntity_IndustrialDehydrator extends GregtechMeta_Mu
 
 		// EU discount
 		float tRecipeEUt = (tRecipe.mEUt * aEUPercent) / 100.0f;
-		int tHeatCapacityDivTiers = (mHeatingCapacity - tRecipe.mSpecialValue) / 900;
+		int tHeatCapacityDivTiers = (int) (mHeatingCapacity.getHeat() - tRecipe.mSpecialValue) / 900;
 		float tTotalEUt = 0.0f;
 
 		int parallelRecipes = 0;
@@ -376,6 +411,13 @@ public class GregtechMetaTileEntity_IndustrialDehydrator extends GregtechMeta_Mu
 		mDehydratorMode = aNBT.getBoolean("mDehydratorMode");
 	}
 
+	public HeatingCoilLevel getCoilLevel() {
+		return mHeatingCapacity;
+	}
+
+	public void setCoilLevel(HeatingCoilLevel aCoilLevel) {
+		mHeatingCapacity = aCoilLevel;
+	}
 }
 
 

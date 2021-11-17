@@ -42,7 +42,6 @@ import gtPlusPlus.core.util.data.LocaleUtils;
 import gtPlusPlus.core.util.minecraft.HazmatUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import gtPlusPlus.core.util.sys.SystemUtils;
 import gtPlusPlus.nei.NEI_IMC_Sender;
 import gtPlusPlus.plugin.manager.Core_Manager;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
@@ -52,7 +51,6 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.ch
 import gtPlusPlus.xmod.gregtech.loaders.GT_Material_Loader;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_BlastSmelterGT_GTNH;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_MultisUsingFluidInsteadOfCells;
-import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechMiniRaFusion;
 import gtPlusPlus.xmod.thaumcraft.commands.CommandDumpAspects;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.IIcon;
@@ -319,7 +317,7 @@ public class GTplusplus implements ActionListener {
 
 		RecipeGen_BlastSmelterGT_GTNH.generateGTNHBlastSmelterRecipesFromEBFList();
 		FishPondFakeRecipe.generateFishPondRecipes();
-		GregtechMiniRaFusion.generateSlowFusionrecipes();
+		//GregtechMiniRaFusion.generateSlowFusionrecipes();
 		SemiFluidFuelHandler.generateFuels();
 		GregtechMTE_ChemicalPlant.generateRecipes();
 

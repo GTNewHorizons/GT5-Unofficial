@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base;
 
+import com.gtnewhorizon.structurelib.StructureLibAPI;
+import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
@@ -55,10 +57,13 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.function.BiConsumer;
+import java.util.function.BiPredicate;
+import java.util.function.Function;
 
 import static gtPlusPlus.core.util.data.ArrayUtils.removeNulls;
 
-public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_MultiBlockBase {
+public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_EnhancedMultiBlockBase<T>> extends GT_MetaTileEntity_EnhancedMultiBlockBase<T> {
 
 	public static final boolean DEBUG_DISABLE_CORES_TEMPORARILY = true;
 
@@ -301,108 +306,6 @@ public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_Mult
 	public final static String TAG_HIDE_MAINT = "TAG_HIDE_MAINT";
 	public final static String TAG_HIDE_POLLUTION = "TAG_HIDE_POLLUTION";
 	public final static String TAG_HIDE_MACHINE_TYPE = "TAG_HIDE_MACHINE_TYPE";
-
-	@Override
-	public final String[] getDescription() {		
-		/*if (aCachedToolTip != null) {
-			boolean uuuu = false;
-			for (String s : aCachedToolTip) {
-				if (s.toLowerCase().contains(".")) {
-					uuuu = true;
-					break;
-				}
-			}
-			if (!uuuu) {
-				return aCachedToolTip;				
-			}
-			else {
-				aCachedToolTip = null;
-			}			
-		}*/
-
-		String aRequiresMuffler = "1x Muffler Hatch";
-		//String aRequiresCoreModule = "1x Core Module";
-		String aRequiresMaint = "1x Maintenance Hatch";
-
-		String[] x = getTooltip();
-
-		//Filter List, toggle switches, rebuild map without flags
-		boolean showHatches = true;
-		boolean showMachineType = true;
-		boolean showMaint = true;
-		boolean showPollution = getPollutionPerTick(null) > 0;
-		AutoMap<String> aTempMap = new AutoMap<String>();	
-		for (int ee = 0; ee < x.length; ee++) {
-			String hh = x[ee];
-			if (hh.equals(TAG_HIDE_HATCHES)) {
-				showHatches = false;
-			}
-			else if (hh.equals(TAG_HIDE_POLLUTION)) {
-				showPollution = false;
-			}
-			else if (hh.equals(TAG_HIDE_MACHINE_TYPE)) {
-				showMachineType = false;
-			}
-			else if (hh.equals(TAG_HIDE_MAINT)) {
-				showMaint = false;
-			}			
-			else {
-				aTempMap.put(x[ee]);
-			}
-		}
-		//Rebuild
-		x = new String[aTempMap.size()];
-		for (int ee = 0; ee < x.length; ee++) {
-			x[ee] = aTempMap.get(ee);
-		}
-
-
-		//Assemble ordered map for misc tooltips
-		AutoMap<String> aOrderedMap = new AutoMap<String>();		
-		if (showHatches) {
-			//aOrderedMap.put(aRequiresCoreModule);
-			if (showPollution) {
-				aOrderedMap.put(aRequiresMuffler);				
-			}
-			if (showMaint) {
-				aOrderedMap.put(aRequiresMaint);				
-			}
-		}
-
-		if (showMachineType) {
-			aOrderedMap.put(getMachineTooltip());			
-		}
-
-		if (showPollution) {
-			aOrderedMap.put(getPollutionTooltip());				
-		}
-
-
-
-
-
-		//Add Stock Tooltip to bottom of list
-		String[] z;	
-		z = new String[aOrderedMap.size()];
-		for (int ee = 0; ee < z.length; ee++) {
-			z[ee] = aOrderedMap.get(ee);
-		}
-
-		int a2, a3;
-		a2 = x != null ? x.length : 0;
-		a3 = z != null ? z.length : 0; 
-		String[] aToolTip = new String[(a2 + a3)];
-		aToolTip = ArrayUtils.addAll(aToolTip, x);
-		aToolTip = ArrayUtils.addAll(aToolTip, z);
-
-		//Valid Cached Tooltip during Run-Time		
-		if (aCachedToolTip == null || aCachedToolTip.length <= 0 || aCachedToolTip.length != aToolTip.length || this.mTotalRunTime % 100 == 0) {
-			aCachedToolTip = aToolTip;			
-		}		
-		return aCachedToolTip;
-	}
-
-	public abstract String[] getTooltip();
 
 	public synchronized final MultiblockRequirements getRequirements() {
 		return mRequirements;
@@ -813,6 +716,25 @@ public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_Mult
 		return checkRecipeGeneric(tItemInputs, tFluidInputs, aMaxParallelRecipes, aEUPercent, aSpeedBonusPercent, aOutputChanceRoll);
 	}
 
+	public boolean checkRecipeGeneric(GT_Recipe aRecipe,
+									  int aMaxParallelRecipes, int aEUPercent,
+									  int aSpeedBonusPercent, int aOutputChanceRoll, boolean isPerfectOC) {
+		if (aRecipe == null) {
+			return false;
+		}
+		ArrayList<ItemStack> tItems = getStoredInputs();
+		ArrayList<FluidStack> tFluids = getStoredFluids();
+		ItemStack[] tItemInputs = tItems.toArray(new ItemStack[tItems.size()]);
+		FluidStack[] tFluidInputs = tFluids.toArray(new FluidStack[tFluids.size()]);
+		return checkRecipeGeneric(tItemInputs, tFluidInputs, aMaxParallelRecipes, aEUPercent, aSpeedBonusPercent, aOutputChanceRoll, aRecipe, isPerfectOC);
+	}
+
+	public boolean checkRecipeGeneric(
+			ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
+			int aMaxParallelRecipes, int aEUPercent,
+			int aSpeedBonusPercent, int aOutputChanceRoll) {
+		return checkRecipeGeneric(aItemInputs, aFluidInputs, aMaxParallelRecipes, aEUPercent, aSpeedBonusPercent, aOutputChanceRoll, null, false);
+	}
 
 	public boolean checkRecipeGeneric(GT_Recipe aRecipe, 
 			int aMaxParallelRecipes, int aEUPercent,
@@ -824,14 +746,14 @@ public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_Mult
 		ArrayList<FluidStack> tFluids = getStoredFluids();
 		ItemStack[] tItemInputs = tItems.toArray(new ItemStack[tItems.size()]);
 		FluidStack[] tFluidInputs = tFluids.toArray(new FluidStack[tFluids.size()]);
-		return checkRecipeGeneric(tItemInputs, tFluidInputs, aMaxParallelRecipes, aEUPercent, aSpeedBonusPercent, aOutputChanceRoll, aRecipe);
+		return checkRecipeGeneric(tItemInputs, tFluidInputs, aMaxParallelRecipes, aEUPercent, aSpeedBonusPercent, aOutputChanceRoll, aRecipe, false);
 	}
 
 	public boolean checkRecipeGeneric(
 			ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
 			int aMaxParallelRecipes, int aEUPercent,
-			int aSpeedBonusPercent, int aOutputChanceRoll) {
-		return checkRecipeGeneric(aItemInputs, aFluidInputs, aMaxParallelRecipes, aEUPercent, aSpeedBonusPercent, aOutputChanceRoll, null);
+			int aSpeedBonusPercent, int aOutputChanceRoll, boolean isPerfectOC) {
+		return checkRecipeGeneric(aItemInputs, aFluidInputs, aMaxParallelRecipes, aEUPercent, aSpeedBonusPercent, aOutputChanceRoll, null, isPerfectOC);
 	}
 
 
@@ -985,7 +907,7 @@ public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_Mult
 	public boolean checkRecipeGeneric(
 			ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
 			int aMaxParallelRecipes, int aEUPercent,
-			int aSpeedBonusPercent, int aOutputChanceRoll, GT_Recipe aRecipe) {
+			int aSpeedBonusPercent, int aOutputChanceRoll, GT_Recipe aRecipe, boolean isPerpectOC) {
 		// Based on the Processing Array. A bit overkill, but very flexible.		
 
 		// Reset outputs and progress stats
@@ -1110,7 +1032,8 @@ public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_Mult
 		} else {
 			while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
 				this.mEUt *= 4;
-				this.mMaxProgresstime /= 2;
+				if (isPerpectOC) this.mMaxProgresstime /= 4;
+				else this.mMaxProgresstime /= 2;
 			}
 		}
 
@@ -1727,6 +1650,9 @@ public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_Mult
 		this.mScrewdriver = true;		
 	}
 
+	public boolean checkHatch() {
+		return mMaintenanceHatches.size() <= 1 && !mMufflerHatches.isEmpty();
+	}
 
 	public <E> boolean addToMachineListInternal(ArrayList<E> aList, final IMetaTileEntity aTileEntity,
 			final int aBaseCasingIndex) {		
@@ -2237,15 +2163,6 @@ public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_Mult
 		return 0;
 	}
 
-	public String getPollutionTooltip() {
-		if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
-			return "Causes " + 20 * this.getPollutionPerTick(null) + " Pollution per second";
-		}
-		else {
-			return "";
-		}
-	}
-
 	private static Method calculatePollutionReduction = null;
 	public int calculatePollutionReductionForHatch(GT_MetaTileEntity_Hatch_Muffler i , int g) {		
 		if (calculatePollutionReduction != null) {
@@ -2499,15 +2416,6 @@ public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_Mult
 		return true;
 	}
 
-	public final boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-		boolean aStructureCheck = checkMultiblock(aBaseMetaTileEntity, aStack);	
-		boolean aHasCore = DEBUG_DISABLE_CORES_TEMPORARILY; //(requireControlCores ? (this.getControlCoreBus() != null) : true);	
-		return aStructureCheck && aHasCore;
-	}
-
-	public abstract boolean checkMultiblock(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack);
-
-
 	public boolean isValidBlockForStructure(IGregTechTileEntity aBaseMetaTileEntity, int aCasingID, boolean canBeHatch,
 			Block aFoundBlock, int aFoundMeta, Block aExpectedBlock, int aExpectedMeta) {
 		boolean isHatch = false;
@@ -2627,7 +2535,61 @@ public abstract class GregtechMeta_MultiBlockBase extends GT_MetaTileEntity_Mult
 		}*/		
 	}
 
+	//Only support to use meta to tier
+	public static <T> IStructureElement<T> addTieredBlock(Block aBlock, BiConsumer<T, Integer> aSetTheFuckingMeta, Function<T, Integer> aGetTheFuckingMeta, int maxMeta) {
+		return addTieredBlock(aBlock, (t, i) -> {
+					aSetTheFuckingMeta.accept(t, i);
+					return true;
+				}, aGetTheFuckingMeta, 0, maxMeta
+		);
+	}
 
+	public static <T> IStructureElement<T> addTieredBlock(Block aBlock, BiConsumer<T, Integer> aSetTheFuckingMeta, Function<T, Integer> aGetTheFuckingMeta, int minMeta, int maxMeta) {
+		return addTieredBlock(aBlock, (t, i) -> {
+					aSetTheFuckingMeta.accept(t, i);
+					return true;
+				}, aGetTheFuckingMeta, minMeta, maxMeta
+		);
+	}
+
+	public static <T> IStructureElement<T> addTieredBlock(Block aBlock, BiPredicate<T, Integer> aSetTheFuckingMeta, Function<T, Integer> aGetTheFuckingMeta, int minMeta, int maxMeta) {
+
+		return new IStructureElement<T>() {
+			@Override
+			public boolean check(T t, World world, int x, int y, int z) {
+				Block tBlock = world.getBlock(x, y, z);
+				if (aBlock == tBlock) {
+					Integer currentMeta = aGetTheFuckingMeta.apply(t);
+					int newMeta = tBlock.getDamageValue(world, x, y, z) + 1;
+					if (newMeta > maxMeta || newMeta < minMeta + 1) return false;
+					if (currentMeta == 0) {
+						return aSetTheFuckingMeta.test(t, newMeta);
+					} else {
+						return currentMeta == newMeta;
+					}
+				}
+				return false;
+			}
+
+			@Override
+			public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
+				StructureLibAPI.hintParticle(world, x, y, z, aBlock, getMeta(trigger));
+				return true;
+			}
+
+			@Override
+			public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
+				return world.setBlock(x, y, z, aBlock, getMeta(trigger), 3);
+			}
+
+			private int getMeta(ItemStack trigger) {
+				int meta = trigger.stackSize;
+				if (meta <= 0) meta = minMeta;
+				if (meta + minMeta >= maxMeta) meta = maxMeta - 1 - minMeta;
+				return meta + minMeta;
+			}
+		};
+	}
 
 
 }

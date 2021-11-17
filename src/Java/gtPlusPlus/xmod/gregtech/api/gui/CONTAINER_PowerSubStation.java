@@ -32,7 +32,7 @@ public class CONTAINER_PowerSubStation extends GT_Container_MultiMachine {
 	}
 
 	public int getSlotCount() {
-		return 2;
+		return 10;
 	}
 
 	public int getShiftClickSlotCount() {

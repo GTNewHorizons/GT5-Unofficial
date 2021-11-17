@@ -1,3 +1,4 @@
+/*
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
 import static gtPlusPlus.core.util.data.ArrayUtils.removeNulls;
@@ -960,9 +961,11 @@ public class GregtechMTE_ElementalDuplicator extends GregtechMeta_MultiBlockBase
 
 
 
-	/*
+	*/
+/*
 	 *  Catalyst Handling
-	 */
+	 *//*
+
 	
 
 	
@@ -987,3 +990,4 @@ public class GregtechMTE_ElementalDuplicator extends GregtechMeta_MultiBlockBase
 
 
 }
+*/

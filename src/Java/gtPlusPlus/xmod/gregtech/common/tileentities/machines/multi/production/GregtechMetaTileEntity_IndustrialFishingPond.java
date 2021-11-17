@@ -1,22 +1,25 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 import static gtPlusPlus.core.util.data.ArrayUtils.removeNulls;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
+import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.FishPondFakeRecipe;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
-import gregtech.api.util.GTPP_Recipe;
+import gregtech.api.util.*;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
@@ -40,6 +43,8 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends GregtechMeta_M
 
 	private boolean isUsingControllerCircuit = false;
 	private static final Item circuit = CI.getNumberedCircuit(0).getItem();
+	private int mCasing;
+	private IStructureDefinition<GregtechMetaTileEntity_IndustrialFishingPond> STRUCTURE_DEFINITION = null;
 
 	public GregtechMetaTileEntity_IndustrialFishingPond(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
@@ -60,25 +65,101 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends GregtechMeta_M
 	}
 
 	@Override
-	public String[] getTooltip() {
-		return new String[] {
-				"Controller Block for the Fishing Pond",
-				"Size: 9x3x9 [WxHxL] (open)",
-				"X           X",
-				"X           X", 
-				"XXXXXXXXX", 
-				"Can process (Tier + 1) * 2 recipes",
-				"Put a numbered circuit into the input bus.", 
-				"Circuit 14 for Fish",
-				"Circuit 15 for Junk", 
-				"Circuit 16 for Treasure", 
-				"Aquatic Casings (all non-hatches)", 
-				"Controller (front centered)",
-				"1x Output Bus", 
-				"1x Input Bus",
-				"1x Input Hatch (fill with water)",
-				"1x Energy Hatch", 
-				};
+	protected GT_Multiblock_Tooltip_Builder createTooltip() {
+		GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+		tt.addMachineType(getMachineType())
+				.addInfo("Controller Block for the Fishing Pond")
+				.addInfo("Can process (Tier + 1) * 2 recipes")
+				.addInfo("Put a numbered circuit into the input bus.")
+				.addInfo("Circuit 14 for Fish")
+				.addInfo("Circuit 15 for Junk")
+				.addInfo("Circuit 16 for Treasure")
+				.addPollutionAmount(getPollutionPerTick(null) * 20)
+				.addSeparator()
+				.beginStructureBlock(9, 3, 9, true)
+				.addController("Front Center")
+				.addCasingInfo("Aquatic Casings", 64)
+				.addInputBus("Any Casing", 1)
+				.addOutputBus("Any Casing", 1)
+				.addInputHatch("Any Casing", 1)
+				.addEnergyHatch("Any Casing", 1)
+				.addMaintenanceHatch("Any Casing", 1)
+				.addMufflerHatch("Any Casing", 1)
+				.toolTipFinisher("GT++");
+		return tt;
+	}
+
+	@Override
+	protected IAlignmentLimits getInitialAlignmentLimits() {
+		// fuck
+		return (d, r, f) -> d.offsetY == 0 && r.isNotRotated() && !f.isVerticallyFliped();
+	}
+
+	@Override
+	public IStructureDefinition<GregtechMetaTileEntity_IndustrialFishingPond> getStructureDefinition() {
+		if (STRUCTURE_DEFINITION == null) {
+			STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialFishingPond>builder()
+					.addShape(mName, transpose(new String[][]{
+							{"XXXXXXXXX", "X       X", "X       X", "X       X", "X       X", "X       X", "X       X", "X       X", "XXXXXXXXX"},
+							{"XXXX~XXXX", "X       X", "X       X", "X       X", "X       X", "X       X", "X       X", "X       X", "XXXXXXXXX"},
+							{"XXXXXXXXX", "XXXXXXXXX", "XXXXXXXXX", "XXXXXXXXX", "XXXXXXXXX", "XXXXXXXXX", "XXXXXXXXX", "XXXXXXXXX", "XXXXXXXXX"},
+					}))
+					.addElement(
+							'X',
+							ofChain(
+									ofHatchAdder(
+											GregtechMetaTileEntity_IndustrialFishingPond::addIndustrialFishingPondList, getCasingTextureIndex(), 1
+									),
+									onElementPass(
+											x -> ++x.mCasing,
+											ofBlock(
+													getCasingBlock(), getCasingMeta()
+											)
+									)
+							)
+					)
+					.build();
+		}
+		return STRUCTURE_DEFINITION;
+	}
+
+	public final boolean addIndustrialFishingPondList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+		if (aTileEntity == null) {
+			return false;
+		} else {
+			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mInputBusses.add((GT_MetaTileEntity_Hatch_InputBus)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mOutputBusses.add((GT_MetaTileEntity_Hatch_OutputBus) aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mMufflerHatches.add((GT_MetaTileEntity_Hatch_Muffler) aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public void construct(ItemStack stackSize, boolean hintsOnly) {
+		buildPiece(mName , stackSize, hintsOnly, 4, 1, 0);
+	}
+
+	@Override
+	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+		mCasing = 0;
+		return checkPiece(mName, 4, 1, 0) && mCasing >= 64 && checkHatch();
 	}
 
 	@Override
@@ -105,11 +186,6 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends GregtechMeta_M
 	@Override
 	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
 		return null;
-	}
-
-	@Override
-	public boolean isFacingValid(final byte aFacing) {
-		return aFacing > 1;
 	}
 
 	@Override
@@ -161,101 +237,6 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends GregtechMeta_M
 	}
 
 	@Override
-	public boolean checkMultiblock(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
-		// Get Facing direction
-		int mDirectionX = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
-		int mCurrentDirectionX;
-		int mCurrentDirectionZ;
-		int mOffsetX_Lower = 0;
-		int mOffsetX_Upper = 0;
-		int mOffsetZ_Lower = 0;
-		int mOffsetZ_Upper = 0;
-
-		mCurrentDirectionX = 4;
-		mCurrentDirectionZ = 4;
-
-		mOffsetX_Lower = -4;
-		mOffsetX_Upper = 4;
-		mOffsetZ_Lower = -4;
-		mOffsetZ_Upper = 4;
-
-		final int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX
-				* mCurrentDirectionX;
-		final int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ
-				* mCurrentDirectionZ;
-
-		log("xDir" + (xDir));
-		log("zDir" + (zDir));
-		/*
-		 * if (!(aBaseMetaTileEntity.getAirOffset(xDir, 0, zDir))) { return false; }
-		 */
-		int tAmount = 0;
-		check : for (int i = mOffsetX_Lower; i <= mOffsetX_Upper; ++i) {
-			for (int j = mOffsetZ_Lower; j <= mOffsetZ_Upper; ++j) {
-				for (int h = -1; h < 2; ++h) {
-					if ((h != 0) || ((((xDir + i != 0) || (zDir + j != 0))) && (((i != 0) || (j != 0))))) {
-						IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h,
-								zDir + j);
-						if (!addToMachineList(tTileEntity)) {
-							log("X: " + i + " | Z: " + j);
-							Block tBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
-							byte tMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
-
-							if ((tBlock == getCasingBlock()) && (tMeta == getCasingMeta())) {
-								++tAmount;
-							} else {
-								if ((i != mOffsetX_Lower && j != mOffsetZ_Lower && i != mOffsetX_Upper
-										&& j != mOffsetZ_Upper) && (h == 0 || h == 1)) {
-
-									continue;
-
-									/*if (tBlock instanceof BlockAir || tBlock.getUnlocalizedName().equalsIgnoreCase("tile.air") || tBlock.getUnlocalizedName().equalsIgnoreCase("tile.railcraft.residual.heat")) {
-										log("Found Air");
-										continue;
-									} else if (tBlock instanceof BlockWater || tBlock == Blocks.water || tBlock == Blocks.flowing_water) {
-										log("Found Water");
-										continue;
-									}
-									else {
-										break check;
-									}*/
-								} else {
-									if (tBlock.getLocalizedName().contains("gt.blockmachines") || tBlock == Blocks.water
-											|| tBlock == Blocks.flowing_water
-											|| tBlock == BlocksItems.getFluidBlock(InternalName.fluidDistilledWater)) {
-										continue;
-
-									} else {
-										log("[x] Did not form - Found: " + tBlock.getLocalizedName() + " | "
-												+ tBlock.getDamageValue(aBaseMetaTileEntity.getWorld(),
-														aBaseMetaTileEntity.getXCoord() + i,
-														aBaseMetaTileEntity.getYCoord(),
-														aBaseMetaTileEntity.getZCoord() + j)
-												+ " | Special Meta: "
-												+ (tTileEntity == null ? "0" : tTileEntity.getMetaTileID()));
-										log("[x] Did not form - Found: "
-												+ (aBaseMetaTileEntity.getXCoord() + xDir + i) + " | "
-												+ aBaseMetaTileEntity.getYCoord() + " | "
-												+ (aBaseMetaTileEntity.getZCoord() + zDir + j));
-										break check;
-									}
-								}
-
-							}
-						}
-					}
-				}
-			}
-		}
-		if ((tAmount >= 64)) {
-			log("Made structure.");
-		} else {
-			log("Did not make structure.");
-		}
-		return (tAmount >= 64);
-	}
-
-	@Override
 	public int getMaxEfficiency(final ItemStack aStack) {
 		return 10000;
 	}
@@ -285,15 +266,6 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends GregtechMeta_M
 
 	public int getCasingTextureIndex() {
 		return TAE.GTPP_INDEX(32);
-	}
-
-	private boolean addToMachineList(final IGregTechTileEntity tTileEntity) {
-		/*return ((this.addMaintenanceToMachineList(tTileEntity, this.getCasingTextureIndex()))
-				|| (this.addInputToMachineList(tTileEntity, this.getCasingTextureIndex()))
-				|| (this.addOutputToMachineList(tTileEntity, this.getCasingTextureIndex()))
-				|| (this.addMufflerToMachineList(tTileEntity, this.getCasingTextureIndex()))
-				|| (this.addEnergyInputToMachineList(tTileEntity, this.getCasingTextureIndex())));*/
-		return super.addToMachineList(tTileEntity, this.getCasingTextureIndex());
 	}
 
 	public boolean checkForWater() {

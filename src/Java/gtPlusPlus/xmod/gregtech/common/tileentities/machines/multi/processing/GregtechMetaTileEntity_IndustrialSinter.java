@@ -1,3 +1,4 @@
+/*
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing;
 
 import java.util.ArrayList;
@@ -264,3 +265,4 @@ extends GT_MetaTileEntity_MultiBlockBase {
 		return ((this.addEnergyInputToMachineList(tTileEntity, this.getCasingTextureIndex())));
 	}
 }
+*/

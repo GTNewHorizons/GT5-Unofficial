@@ -511,7 +511,7 @@ public class RECIPES_GREGTECH {
 				(int) MaterialUtils.getVoltageForTier(6));
 
 		//Slow Fusion Controller
-		CORE.RA.addAssemblylineRecipe(
+		/*CORE.RA.addAssemblylineRecipe(
 				GregtechItemList.COMET_Cyclotron.get(1), 
 				20 * 60 * 30,
 				new ItemStack[] {
@@ -536,11 +536,11 @@ public class RECIPES_GREGTECH {
 				},
 				GregtechItemList.Miniature_Fusion.get(1), 
 				20 * 60 * 5 * (GTNH ? 2 : 1),
-				(int) MaterialUtils.getVoltageForTier(7));
+				(int) MaterialUtils.getVoltageForTier(7));*/
 
 
 		//Plasma Tank
-		CORE.RA.addAssemblylineRecipe(
+		/*CORE.RA.addAssemblylineRecipe(
 				ItemUtils.getOrePrefixStack(OrePrefixes.pipeMedium, Materials.Superconductor, 1), 
 				20 * 60 * 5,
 				new ItemStack[] {
@@ -559,7 +559,7 @@ public class RECIPES_GREGTECH {
 				},
 				GregtechItemList.Plasma_Tank.get(1), 
 				20 * 60 * 1 * (GTNH ? 2 : 1),
-				(int) MaterialUtils.getVoltageForTier(5));
+				(int) MaterialUtils.getVoltageForTier(5));*/
 
 		// Turbine Automation Port
 		CORE.RA.addAssemblylineRecipe(

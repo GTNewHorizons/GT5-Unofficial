@@ -1,3 +1,4 @@
+/*
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
 import gtPlusPlus.api.objects.Logger;
@@ -28,4 +29,4 @@ public class GregtechSolarTower {
 						0).getStackForm(1L));
 		
 	}
-}
+}*/

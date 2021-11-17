@@ -1,3 +1,4 @@
+/*
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.advanced;
 
 import java.util.ArrayList;
@@ -539,9 +540,11 @@ public class GregtechMetaTileEntity_Adv_AssemblyLine
 		return aCasingCount;
 	}
         
-    /**
+    */
+/**
      * @param state using bitmask, 1 for IntegratedCircuit, 2 for DataStick, 4 for DataOrb
-     */
+     *//*
+
     private boolean isCorrectDataItem(ItemStack aStack, int state){
     	if ((state & 1) != 0 && ItemList.Circuit_Integrated.isStackEqual(aStack, true, true)) return true;
     	if ((state & 2) != 0 && ItemList.Tool_DataStick.isStackEqual(aStack, false, true)) return true;
@@ -549,9 +552,11 @@ public class GregtechMetaTileEntity_Adv_AssemblyLine
     	return false;
     }
     
-    /**
+    */
+/**
      * @param state using bitmask, 1 for IntegratedCircuit, 2 for DataStick, 4 for DataOrb
-     */
+     *//*
+
     public ArrayList<ItemStack> getDataItems(int state) {
         ArrayList<ItemStack> rList = new ArrayList<ItemStack>();
         if (GT_Utility.isStackValid(mInventory[1]) && isCorrectDataItem(mInventory[1], state)) {
@@ -621,3 +626,4 @@ public class GregtechMetaTileEntity_Adv_AssemblyLine
 		return 0;
 	}
 }
+*/

@@ -1,3 +1,4 @@
+/*
 package gtPlusPlus.xmod.gregtech.api.gui;
 
 
@@ -43,3 +44,4 @@ public class GUI_TreeFarmer extends GT_GUIContainerMetaTile_Machine {
 		this.drawTexturedModalRect(x, y, 0, 0, this.xSize, this.ySize);
 	}
 }
+*/

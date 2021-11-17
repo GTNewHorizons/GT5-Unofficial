@@ -1,16 +1,20 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing;
 
+import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
@@ -26,10 +30,16 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
+
 public class GregtechMetaTileEntity_IndustrialWashPlant
 extends GregtechMeta_MultiBlockBase {
 
 	private boolean mChemicalMode = false;
+	private int mCasing;
+	private IStructureDefinition<GregtechMetaTileEntity_IndustrialWashPlant> STRUCTURE_DEFINITION = null;
 
 	public GregtechMetaTileEntity_IndustrialWashPlant(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
@@ -50,25 +60,100 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
-	public String[] getTooltip() {
-		return new String[]{
-				"Controller Block for the Industrial Ore Washing Plant",
-				"Can be configured with a screwdriver to also process Chemical Bathing",
-				"400% faster than using single block machines of the same voltage",
-				"Processes four item per voltage tier",
-				"Always requires an Input Hatch full of water to refill structure",
-				"Size: 5x3x7 [WxHxL] (open)",
-				"X     X",
-				"X     X",
-				"XXXXX",
-				"Controller (front centered)",
-				"1x Input Bus (Any casing)",
-				"2x Input Hatch (Any casing)",
-				"1x Output Bus (Any casing)",
-				"1x Energy Hatch (Any casing)",
-				"Wash Plant Casings for the rest"
+	protected GT_Multiblock_Tooltip_Builder createTooltip() {
+		GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+		tt.addMachineType(getMachineType())
+				.addInfo("Controller Block for the Industrial Ore Washing Plant")
+				.addInfo("Can be configured with a screwdriver to also process Chemical Bathing")
+				.addInfo("400% faster than using single block machines of the same voltage")
+				.addInfo("Processes four item per voltage tier")
+				.addInfo("Always requires an Input Hatch full of water to refill structure")
+				.addPollutionAmount(getPollutionPerTick(null) * 20)
+				.addSeparator()
+				.beginStructureBlock(5, 3, 7, true)
+				.addController("Front Center")
+				.addCasingInfo("Wash Plant Casings", 40)
+				.addInputBus("Any Casing", 1)
+				.addOutputBus("Any Casing", 1)
+				.addInputHatch("Any Casing", 1)
+				.addEnergyHatch("Any Casing", 1)
+				.addMaintenanceHatch("Any Casing", 1)
+				.addMufflerHatch("Any Casing", 1)
+				.toolTipFinisher("GT++");
+		return tt;
+	}
 
-		};
+	@Override
+	public IStructureDefinition<GregtechMetaTileEntity_IndustrialWashPlant> getStructureDefinition() {
+		if (STRUCTURE_DEFINITION == null) {
+			STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialWashPlant>builder()
+					.addShape(mName, transpose(new String[][]{
+							{"CCCCC", "C   C", "C   C", "C   C", "C   C", "C   C", "CCCCC"},
+							{"CC~CC", "C   C", "C   C", "C   C", "C   C", "C   C", "CCCCC"},
+							{"CCCCC", "CCCCC", "CCCCC", "CCCCC", "CCCCC", "CCCCC", "CCCCC"},
+					}))
+					.addElement(
+							'C',
+							ofChain(
+									ofHatchAdder(
+											GregtechMetaTileEntity_IndustrialWashPlant::addIndustrialWashPlantList, getCasingTextureIndex(), 1
+									),
+									onElementPass(
+											x -> ++x.mCasing,
+											ofBlock(
+													getCasingBlock(), getCasingMeta()
+											)
+									)
+							)
+					)
+					.build();
+		}
+		return STRUCTURE_DEFINITION;
+	}
+
+	@Override
+	public void construct(ItemStack stackSize, boolean hintsOnly) {
+		buildPiece(mName , stackSize, hintsOnly, 2, 1, 0);
+	}
+
+	@Override
+	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+		mCasing = 0;
+		return checkPiece(mName, 2, 1, 0) && mCasing >= 40 && checkHatch();
+	}
+
+	public final boolean addIndustrialWashPlantList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+		if (aTileEntity == null) {
+			return false;
+		} else {
+			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mInputBusses.add((GT_MetaTileEntity_Hatch_InputBus)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mOutputBusses.add((GT_MetaTileEntity_Hatch_OutputBus) aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mMufflerHatches.add((GT_MetaTileEntity_Hatch_Muffler) aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
+			}
+		}
+		return false;
+	}
+
+	@Override
+	protected IAlignmentLimits getInitialAlignmentLimits() {
+		// don't rotate a washer, water will flow out.
+		return (d, r, f) -> d.offsetY == 0 && r.isNotRotated() && !f.isVerticallyFliped();
 	}
 
 	@Override
@@ -95,16 +180,9 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
-	public boolean isFacingValid(final byte aFacing) {
-		return aFacing > 1;
-	}
-
-	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
 		if (checkForWater()) {
-			if (checkRecipeGeneric((4* GT_Utility.getTier(this.getMaxInputVoltage())), 100, 400)) {
-				return addSludge();
-			}
+			return checkRecipeGeneric((4 * GT_Utility.getTier(this.getMaxInputVoltage())), 100, 400);
 		}
 		return false;
 	}
@@ -117,94 +195,6 @@ extends GregtechMeta_MultiBlockBase {
 	@Override
 	public int getEuDiscountForParallelism() {
 		return 100;
-	}
-
-	@Override
-	public boolean checkMultiblock(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
-
-		//Get Facing direction
-		int mDirectionX  = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
-
-		int mCurrentDirectionX;
-		int mCurrentDirectionZ;
-		int mOffsetX_Lower = 0;
-		int mOffsetX_Upper = 0;
-		int mOffsetZ_Lower = 0;
-		int mOffsetZ_Upper = 0;
-
-
-		Logger.WARNING("mDirectionX "+(mDirectionX));
-		if (mDirectionX == 0){
-			mCurrentDirectionX = 2;
-			mCurrentDirectionZ = 3;
-			mOffsetX_Lower = -2;
-			mOffsetX_Upper = 2;
-			mOffsetZ_Lower = -3;
-			mOffsetZ_Upper = 3;
-			Logger.WARNING("Controler is facing Z direction.");
-		}
-		else {
-			mCurrentDirectionX = 3;
-			mCurrentDirectionZ = 2;	
-			mOffsetX_Lower = -3;
-			mOffsetX_Upper = 3;
-			mOffsetZ_Lower = -2;
-			mOffsetZ_Upper = 2;	
-			Logger.WARNING("Controler is facing X direction.");	
-		}
-
-		//if (aBaseMetaTileEntity.fac)
-
-		final int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * mCurrentDirectionX;
-		final int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * mCurrentDirectionZ;
-
-		Logger.WARNING("xDir"+(xDir));
-		Logger.WARNING("zDir"+(zDir)); 
-		/*if (!(aBaseMetaTileEntity.getAirOffset(xDir, 0, zDir))) {
-			return false;
-		}*/
-		int tAmount = 0;
-		for (int i = mOffsetX_Lower; i <=mOffsetX_Upper; ++i) {
-			for (int j = mOffsetZ_Lower; j <= mOffsetZ_Upper; ++j) {
-				for (int h = -1; h < 2; ++h) {
-					if ((h != 0) || ((((xDir + i != 0) || (zDir + j != 0))) && (((i != 0) || (j != 0))))) {
-						IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h,
-								zDir + j);
-						if (!addToMachineList(tTileEntity)) {
-							Logger.WARNING("X: "+i+" | Z: "+j);
-							Block tBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
-							byte tMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
-							if ((tBlock == getCasingBlock()) && (tMeta == getCasingMeta())) {
-								++tAmount;
-							}
-							else {
-								if ((i != mOffsetX_Lower && j !=  mOffsetZ_Lower
-										&& i != mOffsetX_Upper && j != mOffsetZ_Upper) && (h == 0 || h == 1)){
-									if (tBlock == Blocks.air){
-										Logger.WARNING("Found Air");
-									}
-									else if (tBlock == Blocks.water){
-										Logger.WARNING("Found Water");
-									}
-								}
-								else {
-									Logger.WARNING("[x] Did not form - Found: "+tBlock.getLocalizedName() + " | "+tBlock.getDamageValue(aBaseMetaTileEntity.getWorld(), aBaseMetaTileEntity.getXCoord()+ i, aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord() + j));
-									Logger.WARNING("[x] Did not form - Found: "+(aBaseMetaTileEntity.getXCoord()+xDir + i) +" | "+ aBaseMetaTileEntity.getYCoord()+" | "+ (aBaseMetaTileEntity.getZCoord()+zDir + j));
-									return false;
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-		if ((tAmount >= 40)){
-			Logger.WARNING("Made structure.");
-		}
-		else {
-			Logger.WARNING("Did not make structure.");
-		}
-		return (tAmount >= 40);
 	}
 
 	@Override
@@ -239,15 +229,6 @@ extends GregtechMeta_MultiBlockBase {
 
 	public byte getCasingTextureIndex() {
 		return (byte) TAE.GTPP_INDEX(11);
-	}
-
-	private boolean addToMachineList(final IGregTechTileEntity tTileEntity) {
-		return ((this.addMaintenanceToMachineList(tTileEntity, this.getCasingTextureIndex())) 
-				|| (this.addInputToMachineList(tTileEntity, this.getCasingTextureIndex())) 
-				|| (this.addOutputToMachineList(tTileEntity, this.getCasingTextureIndex())) 
-				|| (this.addMufflerToMachineList(tTileEntity, this.getCasingTextureIndex()))
-				|| (this.addEnergyInputToMachineList(tTileEntity, this.getCasingTextureIndex()))
-				|| (this.addDynamoToMachineList(tTileEntity, this.getCasingTextureIndex())));
 	}
 
 	public boolean checkForWater() {
@@ -330,25 +311,6 @@ extends GregtechMeta_MultiBlockBase {
 			Logger.WARNING("Did not fill structure.");
 		}
 		return (tAmount >= 45);
-	}
-
-	public boolean addSludge() {		
-		/*if (MathUtils.randInt(0, 100) <= 4) {
-			if (this.mOutputHatches.size() > 0) {
-				for (GT_MetaTileEntity_Hatch_Output h : this.mOutputHatches) {
-					if (h.getFluid() == null || h.getFluid().isFluidEqual(FluidUtils.getFluidStack(DarkWorldContentLoader.SLUDGE, 1000))) {
-						FluidStack current = h.mFluid;
-						if (current == null) {
-							h.mFluid = FluidUtils.getFluidStack(DarkWorldContentLoader.SLUDGE, 1000);
-						}
-						else {
-							h.mFluid.amount += 1000;
-						}
-					}
-				}
-			}
-		}	*/	
-		return true;
 	}
 
 	@Override

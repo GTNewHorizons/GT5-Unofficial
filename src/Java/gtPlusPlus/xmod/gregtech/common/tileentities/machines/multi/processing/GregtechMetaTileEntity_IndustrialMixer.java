@@ -2,26 +2,29 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing;
 
 import java.util.ArrayList;
 
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
+import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.util.data.ArrayUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
+
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
 public class GregtechMetaTileEntity_IndustrialMixer
 extends GregtechMeta_MultiBlockBase {
@@ -29,7 +32,10 @@ extends GregtechMeta_MultiBlockBase {
 	public static int CASING_TEXTURE_ID;
 	public static String mCasingName = "Advanced Blast Furnace Casing";
 	public static String mCasingName2 = "Advanced Blast Furnace Casing";
-	
+	private int mCasing;
+	private IStructureDefinition<GregtechMetaTileEntity_IndustrialMixer> STRUCTURE_DEFINITION = null;
+
+
 	public GregtechMetaTileEntity_IndustrialMixer(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
 		CASING_TEXTURE_ID = TAE.getIndexFromPage(2, 2);
@@ -55,27 +61,112 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
-	public String[] getTooltip() {
-		
+	protected GT_Multiblock_Tooltip_Builder createTooltip() {
+
 		if (mCasingName.toLowerCase().contains(".name")) {
 			mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings3Misc, 2);
 		}
 		if (mCasingName2.toLowerCase().contains(".name")) {
 			mCasingName2 = ItemUtils.getLocalizedNameOfBlock(GregTech_API.sBlockCasings4, 11);
 		}
-		
-		return new String[]{
-				"Controller Block for the Industrial Mixer",
-				"250% faster than using single block machines of the same voltage",
-				"Processes eight recipes per voltage tier",
-				"Size: 3x4x3 (LxHxW)",
-				mCasingName+"s (16 at least!)",
-				mCasingName2+"s for the internal blocks (2)",
-				"Controller (front centered)",
-				"1x Input Bus",
-				"1x Output Bus",
-				"1x Energy Hatch",
-				};
+
+		GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+		tt.addMachineType(getMachineType())
+				.addInfo("Controller Block for the Industrial Mixer")
+				.addInfo("250% faster than using single block machines of the same voltage")
+				.addInfo("Processes eight recipes per voltage tier")
+				.addPollutionAmount(getPollutionPerTick(null) * 20)
+				.addSeparator()
+				.beginStructureBlock(3, 4, 3, false)
+				.addController("Second Layer Center")
+				.addCasingInfo(mCasingName, 16)
+				.addCasingInfo(mCasingName2, 2)
+				.addInputBus("Any Casing", 1)
+				.addOutputBus("Any Casing", 1)
+				.addInputHatch("Any Casing", 1)
+				.addOutputHatch("Any Casing", 1)
+				.addEnergyHatch("Any Casing", 1)
+				.addMaintenanceHatch("Any Casing", 1)
+				.addMufflerHatch("Any Casing", 1)
+				.toolTipFinisher("GT++");
+		return tt;
+	}
+
+	@Override
+	public IStructureDefinition<GregtechMetaTileEntity_IndustrialMixer> getStructureDefinition() {
+		if (STRUCTURE_DEFINITION == null) {
+			STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialMixer>builder()
+					.addShape(mName, transpose(new String[][]{
+							{"CCC", "CCC", "CCC"},
+							{"CCC", "CMC", "CCC"},
+							{"C~C", "CMC", "CCC"},
+							{"CCC", "CCC", "CCC"},
+					}))
+					.addElement(
+							'C',
+							ofChain(
+									ofHatchAdder(
+											GregtechMetaTileEntity_IndustrialMixer::addIndustrialMixerList, CASING_TEXTURE_ID, 1
+									),
+									onElementPass(
+											x -> ++x.mCasing,
+											ofBlock(
+													ModBlocks.blockCasings3Misc, 2
+											)
+									)
+							)
+					)
+					.addElement(
+							'M',
+							ofBlock(
+									GregTech_API.sBlockCasings4, 11
+							)
+					)
+					.build();
+		}
+		return STRUCTURE_DEFINITION;
+	}
+
+	@Override
+	public void construct(ItemStack stackSize, boolean hintsOnly) {
+		buildPiece(mName , stackSize, hintsOnly, 1, 2, 0);
+	}
+
+	@Override
+	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+		mCasing = 0;
+		return checkPiece(mName, 1, 2, 0) && mCasing >= 16 && checkHatch();
+	}
+
+	public final boolean addIndustrialMixerList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+		if (aTileEntity == null) {
+			return false;
+		} else {
+			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mInputBusses.add((GT_MetaTileEntity_Hatch_InputBus)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mOutputBusses.add((GT_MetaTileEntity_Hatch_OutputBus) aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mMufflerHatches.add((GT_MetaTileEntity_Hatch_Muffler) aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mOutputHatches.add((GT_MetaTileEntity_Hatch_Output) aMetaTileEntity);
+			}
+		}
+		return false;
 	}
 
 	@Override
@@ -104,11 +195,6 @@ extends GregtechMeta_MultiBlockBase {
 	@Override
 	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
 		return gregtech.api.util.GTPP_Recipe.GTPP_Recipe_Map.sMultiblockMixerRecipes_GT;
-	}
-
-	@Override
-	public boolean isFacingValid(final byte aFacing) {
-		return aFacing > 1;
 	}
 
 	@Override
@@ -153,57 +239,6 @@ extends GregtechMeta_MultiBlockBase {
 	@Override
 	public void startProcess() {
 		this.sendLoopStart((byte) 1);
-	}
-
-	@Override
-	public boolean checkMultiblock(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
-		final int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
-		final int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
-
-		int tAmount = 0;
-		for (int i = -1; i < 2; i++) {
-			for (int j = -1; j < 2; j++) {
-				for (int h = -1; h < 3; h++) {
-					if ((h != 0) || ((((xDir + i) != 0) || ((zDir + j) != 0)) && ((i != 0) || (j != 0)))) {
-						
-						final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
-						final Block tBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
-						final byte tMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
-						
-						if (h == 0 || h == 1) {
-							if (i == 0 && j == 0){
-								if (!isValidBlockForStructure(tTileEntity, CASING_TEXTURE_ID, false, tBlock, tMeta, GregTech_API.sBlockCasings4, 11)) {
-									Logger.INFO("Inner casings missing");
-									return false;
-								}
-								else {
-									tAmount++;
-								}
-							}
-							else {
-								if (!isValidBlockForStructure(tTileEntity, CASING_TEXTURE_ID, true, tBlock, tMeta, ModBlocks.blockCasings3Misc, 2)) {
-									Logger.INFO("Middle layer casings missing");
-									return false;
-								}
-								else {
-									tAmount++;
-								}
-							}
-						}
-						else {
-							if (!isValidBlockForStructure(tTileEntity, CASING_TEXTURE_ID, true, tBlock, tMeta, ModBlocks.blockCasings3Misc, 2)) {
-								Logger.INFO("Top Or Bottom casings missing");
-								return false;
-							}
-							else {
-								tAmount++;
-							}
-						}						
-					}
-				}
-			}
-		}
-		return tAmount >= 16;
 	}
 
 	@Override

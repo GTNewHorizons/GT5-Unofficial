@@ -2,26 +2,32 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing;
 
 import java.util.Random;
 
-import gregtech.api.GregTech_API;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
+import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
+
 public class GregtechMetaTileEntity_IndustrialSifter
 extends GregtechMeta_MultiBlockBase {
-	private boolean controller;
+	private int mCasing;
+	private IStructureDefinition<GregtechMetaTileEntity_IndustrialSifter> STRUCTURE_DEFINITION = null;
 
 	public GregtechMetaTileEntity_IndustrialSifter(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
@@ -42,21 +48,96 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
-	public String[] getTooltip() {
-		return new String[]{
-				"Controller Block for the Industrial Sifter",
-				"400% faster than single-block machines of the same voltage",
-				"Only uses 75% of the eu/t normally required",
-				"Processes four items per voltage tier",
-				//"Increased output chances on % outputs",
-				"Size[WxHxL]: 5x3x5",
-				"Controller (Center Bottom)",
-				"1x Input Bus (Any top or bottom edge casing)",
-				"4x Output Bus (Any top or bottom edge casing)",
-				"1x Energy Hatch (Any top or bottom edge casing)",
-				"18x Sieve Grate (Top and Middle 3x3)",
-				"Sieve Casings for the rest (35 min)"
-				};
+	protected GT_Multiblock_Tooltip_Builder createTooltip() {
+		GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+		tt.addMachineType(getMachineType())
+				.addInfo("Controller Block for the Industrial Sifter")
+				.addInfo("400% faster than single-block machines of the same voltage")
+				.addInfo("Only uses 75% of the eu/t normally required")
+				.addInfo("Processes four items per voltage tier")
+				.addPollutionAmount(getPollutionPerTick(null) * 20)
+				.addSeparator()
+				.beginStructureBlock(5, 3, 5, false)
+				.addController("Bottom Center")
+				.addCasingInfo("Sieve Grate", 18)
+				.addCasingInfo("Sieve Casings", 35)
+				.addInputBus("Any Casing", 1)
+				.addOutputBus("Any Casing", 1)
+				.addEnergyHatch("Any Casing", 1)
+				.addMaintenanceHatch("Any Casing", 1)
+				.addMufflerHatch("Any Casing", 1)
+				.toolTipFinisher("GT++");
+		return tt;
+	}
+
+	@Override
+	public IStructureDefinition<GregtechMetaTileEntity_IndustrialSifter> getStructureDefinition() {
+		if (STRUCTURE_DEFINITION == null) {
+			STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialSifter>builder()
+					.addShape(mName, transpose(new String[][]{
+							{"CCCCC", "CMMMC", "CMMMC", "CMMMC", "CCCCC"},
+							{"CCCCC", "CMMMC", "CMMMC", "CMMMC", "CCCCC"},
+							{"CC~CC", "CCCCC", "CCCCC", "CCCCC", "CCCCC"},
+					}))
+					.addElement(
+							'C',
+							ofChain(
+									ofHatchAdder(
+											GregtechMetaTileEntity_IndustrialSifter::addIndustrialSifterList, TAE.GTPP_INDEX(21), 1
+									),
+									onElementPass(
+											x -> ++x.mCasing,
+											ofBlock(
+													ModBlocks.blockCasings2Misc, 5
+											)
+									)
+							)
+					)
+					.addElement(
+							'M',
+							ofBlock(
+									ModBlocks.blockCasings2Misc, 6
+							)
+					)
+					.build();
+		}
+		return STRUCTURE_DEFINITION;
+	}
+
+	@Override
+	public void construct(ItemStack stackSize, boolean hintsOnly) {
+		buildPiece(mName , stackSize, hintsOnly, 2, 2, 0);
+	}
+
+	@Override
+	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+		mCasing = 0;
+		return checkPiece(mName, 2, 2, 0) && mCasing >= 35 && mOutputBusses.size() >= 4 && checkHatch();
+	}
+
+	public final boolean addIndustrialSifterList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+		if (aTileEntity == null) {
+			return false;
+		} else {
+			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mInputBusses.add((GT_MetaTileEntity_Hatch_InputBus)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mOutputBusses.add((GT_MetaTileEntity_Hatch_OutputBus) aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mMufflerHatches.add((GT_MetaTileEntity_Hatch_Muffler) aMetaTileEntity);
+			}
+		}
+		return false;
 	}
 
 	@Override
@@ -80,16 +161,6 @@ extends GregtechMeta_MultiBlockBase {
 	@Override
 	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
 		return GT_Recipe.GT_Recipe_Map.sSifterRecipes;
-	}
-
-	/*@Override
-	public boolean isCorrectMachinePart(ItemStack aStack) {
-		return true;
-	}*/
-
-	@Override
-	public boolean isFacingValid(final byte aFacing) {
-		return aFacing > 1;
 	}
 
 	@Override
@@ -129,114 +200,6 @@ extends GregtechMeta_MultiBlockBase {
 	@Override
 	public int getEuDiscountForParallelism() {
 		return 75;
-	}
-
-	@Override
-	public boolean checkMultiblock(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
-		log("Checking structure for Industrial Sifter.");
-		final int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 2;
-		final int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * 2;
-
-		int tAmount = 0;
-		this.controller = false;
-		for (int i = -2; i < 3; i++) {
-			for (int j = -2; j < 3; j++) {
-				for (int h = 0; h < 3; h++) {
-
-					final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
-
-					String sHeight = "";
-					if (h == 2){
-						sHeight = "top";
-					}
-					else if (h == 1){
-						sHeight = "middle";
-					}
-					else {
-						sHeight = "bottom";
-					}
-
-					// Sifter Floor/Roof inner 3x3
-					if (((i != -2) && (i != 2)) && ((j != -2) && (j != 2))) {
-						if (h != 0){
-							
-							if (!isValidBlockForStructure(tTileEntity, TAE.GTPP_INDEX(21), false, aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j), ModBlocks.blockCasings2Misc, 6)) {
-								log("Sifter Casing(s) Missing from one of the "+sHeight+" layers inner 3x3.");
-								log("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
-								return false;
-							}
-							
-						}
-						else {							
-							if (!isValidBlockForStructure(tTileEntity, TAE.GTPP_INDEX(21), true, aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j), ModBlocks.blockCasings2Misc, 5)) {
-								log("Sifter Casing(s) Missing from one of the "+sHeight+" layers inner 3x3.");
-								log("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
-								return false;
-							}
-							tAmount++;
-						}
-					}
-					else {
-						//Dealt with inner 5x5, now deal with the exterior.
-						//Deal with all 4 sides (Sifter walls)
-						boolean checkController = false;											
-							if (!checkController){		
-								if (!isValidBlockForStructure(tTileEntity, TAE.GTPP_INDEX(21), true, aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j), ModBlocks.blockCasings2Misc, 5)) {
-									if ((tTileEntity instanceof GregtechMetaTileEntity_IndustrialSifter) || (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) == GregTech_API.sBlockMachines)){
-										if (h != 0){
-											log("Found a secondary controller at the wrong Y level.");
-											return false;
-										}
-									}
-									else {
-										log("Sifter Casings Missing from somewhere in the "+sHeight+" layer edge.");
-										log("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
-										return false;
-									}
-								}
-							}
-							tAmount++;
-						
-					}
-				}
-			}
-		}
-		if ((this.mInputBusses.size() < 1) || (this.mOutputBusses.size() < 4)
-				|| (this.mMaintenanceHatches.size() != 1) || (this.mEnergyHatches.size() < 1)) {
-			log("Returned False 3");
-			log("Input Buses: "+this.mInputBusses.size()+" | expected: 1");
-			log("Output Buses: "+this.mOutputBusses.size()+" | expected: 4");
-			log("Energy Hatches: "+this.mEnergyHatches.size()+" | expected: 1");
-			log("Maint. hatches: "+this.mMaintenanceHatches.size()+" | expected: 1");
-			return false;
-		}
-		final int height = this.getBaseMetaTileEntity().getYCoord();
-
-		final GT_MetaTileEntity_Hatch_OutputBus[] tmpHatches = new GT_MetaTileEntity_Hatch_OutputBus[4];
-		for (int i = 0; i < this.mOutputBusses.size(); i++) {
-			final int hatchNumber = this.mOutputBusses.get(i).getBaseMetaTileEntity().getYCoord() - 1 - height;
-			if (tmpHatches[i] == null) {
-				tmpHatches[i] = this.mOutputBusses.get(i);
-			} else {
-				log("Returned False 5 - "+this.mOutputBusses.size());
-				return false;
-			}
-		}
-		this.mOutputBusses.clear();
-		for (int i = 0; i < tmpHatches.length; i++) {
-			this.mOutputBusses.add(tmpHatches[i]);
-		}
-
-		log("Industrial Sifter - Structure Built? "+(tAmount>=35));
-
-		return tAmount >= 35;
-	}
-
-	public boolean ignoreController(final Block tTileEntity) {
-		if (!this.controller && (tTileEntity == GregTech_API.sBlockMachines)) {
-			return true;
-		}
-		return false;
 	}
 
 	@Override

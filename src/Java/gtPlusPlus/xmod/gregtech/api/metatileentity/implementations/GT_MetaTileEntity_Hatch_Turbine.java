@@ -1,3 +1,4 @@
+/*
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
 import gregtech.api.GregTech_API;
@@ -312,4 +313,4 @@ public class GT_MetaTileEntity_Hatch_Turbine extends GT_MetaTileEntity_Hatch {
 	
 	
 	
-}
+}*/
