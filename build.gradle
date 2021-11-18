@@ -4,15 +4,16 @@ buildscript {
         mavenCentral()
 		jcenter()	
 		maven {
-			name = "gt"
-			url = "https://gregtech.overminddl1.com/"
+			name = "jitpack"
+			url = "https://jitpack.io"
 		}	
         maven {
-            name = "sonatype"
-            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+            name = "forge"
+            url = "https://maven.minecraftforge.net"
         }
 		maven {
-			url = "https://plugins.gradle.org/m2/"
+            name = "sonatype"
+			url = "https://oss.sonatype.org/content/repositories/snapshots/"
 		}
     }
     dependencies {

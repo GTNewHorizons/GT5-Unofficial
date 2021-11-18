@@ -101,6 +101,8 @@ local.properties
 # IDEA
 .idea/
 *.iml
+*.ipr
+*.iws
 
 # Other
 backups
