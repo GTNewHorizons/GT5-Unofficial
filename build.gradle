@@ -1,24 +1,24 @@
 buildscript {
-    repositories {
+	repositories {
 		mavenLocal()
-        mavenCentral()
+		mavenCentral()
 		jcenter()	
 		maven {
 			name = "jitpack"
 			url = "https://jitpack.io"
 		}	
-        maven {
-            name = "forge"
-            url = "https://maven.minecraftforge.net"
-        }
 		maven {
-            name = "sonatype"
+			name = "forge"
+			url = "https://maven.minecraftforge.net"
+		}
+		maven {
+			name = "sonatype"
 			url = "https://oss.sonatype.org/content/repositories/snapshots/"
 		}
-    }
-    dependencies {
-        classpath "net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT"
-    }
+	}
+	dependencies {
+		classpath "net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT"
+	}
 }
 
 // Because Forge is too stupid to fix Deprecation Issues, and we cannot fix it on our end! (until we fork Forge)
@@ -48,15 +48,15 @@ idea{
 apply plugin: 'forge'
 
 file "build.properties" withReader {
-    def prop = new Properties()
-    prop.load(it)
-    ext.config = new ConfigSlurper().parse prop
+	def prop = new Properties()
+	prop.load(it)
+	ext.config = new ConfigSlurper().parse prop
 }
 
 file "version.properties" withReader {
-    def prop = new Properties()
-    prop.load(it)
-    ext.config2 = new ConfigSlurper().parse prop
+	def prop = new Properties()
+	prop.load(it)
+	ext.config2 = new ConfigSlurper().parse prop
 }
 
 //apply plugin: 'se.bjurr.gitchangelog.git-changelog-gradle-plugin'
@@ -76,20 +76,20 @@ javadoc.options.encoding = 'UTF-8'
 compileJava.options.encoding = 'UTF-8'
 
 minecraft {
-    version = "${config.minecraft.version}-${config.forge.version}"
-    runDir = "eclipse"    
-    srgExtra "PK: org/dom4j gtpp/shaded/org/dom4j"
-    srgExtra "PK: org/javassist gtpp/shaded/org/javassist"
-    srgExtra "PK: org/reflections/reflections gtpp/shaded/org/reflections"
+	version = "${config.minecraft.version}-${config.forge.version}"
+	runDir = "eclipse"	
+	srgExtra "PK: org/dom4j gtpp/shaded/org/dom4j"
+	srgExtra "PK: org/javassist gtpp/shaded/org/javassist"
+	srgExtra "PK: org/reflections/reflections gtpp/shaded/org/reflections"
 }
 
 idea { module { inheritOutputDirs = true } }
 
 configurations {
-    provided
-    embedded
-    shade
-    compile.extendsFrom provided, embedded, shade
+	provided
+	embedded
+	shade
+	compile.extendsFrom provided, embedded, shade
 }
 
 repositories {
@@ -101,74 +101,74 @@ repositories {
 		name = "ic2"
 		url = "http://maven.ic2.player.to/"
 	}
-    ivy {
-        name = 'gtnh_download_source_stupid_underscore_typo'
-        artifactPattern("http://downloads.gtnewhorizons.com/Mods_for_Jenkins/[module]_[revision].[ext]")
-    }
-    ivy {
-        name = 'gtnh_download_source'
-        artifactPattern("http://downloads.gtnewhorizons.com/Mods_for_Jenkins/[module]-[revision].[ext]")
-    }
-    maven {
-        url = "https://jitpack.io"
-    }
-    maven {
-        name = "appleCore"
-        url = "http://www.ryanliptak.com/maven/"
-    }
+	ivy {
+		name = 'gtnh_download_source_stupid_underscore_typo'
+		artifactPattern("http://downloads.gtnewhorizons.com/Mods_for_Jenkins/[module]_[revision].[ext]")
+	}
+	ivy {
+		name = 'gtnh_download_source'
+		artifactPattern("http://downloads.gtnewhorizons.com/Mods_for_Jenkins/[module]-[revision].[ext]")
+	}
+	maven {
+		url = "https://jitpack.io"
+	}
+	maven {
+		name = "appleCore"
+		url = "http://www.ryanliptak.com/maven/"
+	}
 }
 
 sourceSets {
-    main {
-        java { srcDirs = ["$projectDir/src/Java"] }
-        resources { srcDirs = ["$projectDir/src/resources"] }
-    }
+	main {
+		java { srcDirs = ["$projectDir/src/Java"] }
+		resources { srcDirs = ["$projectDir/src/resources"] }
+	}
 }
 
 processResources
 {
-    // this will ensure that this task is redone when the versions change.
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
+	// this will ensure that this task is redone when the versions change.
+	inputs.property "version", project.version
+	inputs.property "mcversion", project.minecraft.version
 
-    // replace stuff in mcmod.info, nothing else
-    from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
-                
-        // replace version and mcversion
-        expand 'version':project.version, 'mcversion':project.minecraft.version
-    }
-        
-    // copy everything else, thats not the mcmod.info
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
-    }
+	// replace stuff in mcmod.info, nothing else
+	from(sourceSets.main.resources.srcDirs) {
+		include 'mcmod.info'
+				
+		// replace version and mcversion
+		expand 'version':project.version, 'mcversion':project.minecraft.version
+	}
+		
+	// copy everything else, thats not the mcmod.info
+	from(sourceSets.main.resources.srcDirs) {
+		exclude 'mcmod.info'
+	}
 	exclude '**/Thumbs.db'
 }
 
 dependencies {
-    compile "appeng:appliedenergistics2:${config.ae2.version}:dev"
+	compile "appeng:appliedenergistics2:${config.ae2.version}:dev"
 
-    // Used for productive reflection without class loading. (0.9.12 has no reliance on Guava either)
+	// Used for productive reflection without class loading. (0.9.12 has no reliance on Guava either)
 	//shade group: 'org.reflections', name: 'reflections', version: '0.9.12'
 	//shade group: 'org.dom4j', name: 'dom4j', version: '2.1.1'
 	//compile group: 'org.javassist', name: 'javassist', version: '3.26.0-GA'
-    
+	
 
-//    compile("com.github.GTNewHorizons:GT5-Unofficial:experimental-SNAPSHOT:dev") {
-//        setChanging(true)
-//    }
-    compile files('libs/gregtech-5.09.37.05-dev.jar')
-    compile ("com.github.GTNewHorizons:StructureLib:${config.structurelib.version}:deobf")
+//	compile("com.github.GTNewHorizons:GT5-Unofficial:experimental-SNAPSHOT:dev") {
+//		setChanging(true)
+//	}
+	compile files('libs/gregtech-5.09.37.05-dev.jar')
+	compile ("com.github.GTNewHorizons:StructureLib:${config.structurelib.version}:deobf")
 
-    provided "net.industrial-craft:industrialcraft-2:${config.ic2.version}:dev"  
-    //compile "ic2:IC2Classic:1.2.1.8:dev" - Does not mirror internal class structure or visibility of IC2, won't ever compile.
+	provided "net.industrial-craft:industrialcraft-2:${config.ic2.version}:dev"  
+	//compile "ic2:IC2Classic:1.2.1.8:dev" - Does not mirror internal class structure or visibility of IC2, won't ever compile.
 
-    compile "mcp.mobius.waila:Waila:1.5.11-RC2-NONEI_1.7.10:dev"
+	compile "mcp.mobius.waila:Waila:1.5.11-RC2-NONEI_1.7.10:dev"
 	compile "codechicken:CodeChickenLib:1.7.10-1.1.3.140:dev"
 	compile "codechicken:CodeChickenCore:1.7.10-1.0.7.47:dev"
 	compile "codechicken:NotEnoughItems:1.7.10-1.0.5.120:dev"
-    compile "api.player:PlayerAPI:1.7.10-1.4"
+	compile "api.player:PlayerAPI:1.7.10-1.4"
 	
 	compile "minetweaker:MineTweaker3:1.7.10-3.0.10:dev-full"
 	
@@ -178,15 +178,15 @@ dependencies {
 	compile "cofh:CoFHCore:1.7.10R3.0.4:dev"
 	compile "cofh:CoFHLib:1.7.10R3.0.3:dev"
 
-    // Forestry .jar from repository is obfuscated and won't compile, so use local unobfuscated one.
-    //compileOnly "net.sengir.forestry:forestry_1.7.10:4.4.0.0:dev"
-    compileOnly files('libs/forestry_1.7.10-4.4.0.0-dev.jar')
+	// Forestry .jar from repository is obfuscated and won't compile, so use local unobfuscated one.
+	//compileOnly "net.sengir.forestry:forestry_1.7.10:4.4.0.0:dev"
+	compileOnly files('libs/forestry_1.7.10-4.4.0.0-dev.jar')
 
 	compileOnly "mods.railcraft:Railcraft_1.7.10:9.12.3.0:dev"
-    compileOnly files('libs/StevesCarts2.0.0.b18-deobf.jar')
-    
-    compileOnly "openmods:OpenModsLib:1.7.10-0.10:deobf"
-    compileOnly "openblocks:OpenBlocks:1.7.10-1.6-1.7.10:deobf"
+	compileOnly files('libs/StevesCarts2.0.0.b18-deobf.jar')
+	
+	compileOnly "openmods:OpenModsLib:1.7.10-0.10:deobf"
+	compileOnly "openblocks:OpenBlocks:1.7.10-1.6-1.7.10:deobf"
 	
 	//compileOnly "micdoodle8.mods:MicdoodleCore:1.7-3.0.12.504:Dev"
 	//compileOnly "micdoodle8.mods:GalacticraftCore:1.7-3.0.12.504:Dev"
@@ -197,22 +197,22 @@ dependencies {
 }
 
 jar {
-    archiveName = archivesBaseName + "-" + version + ".jar"
-    manifest {
-        attributes 'FMLCorePlugin': 'gtPlusPlus.preloader.asm.Preloader_FMLLoadingPlugin'
-        attributes 'FMLCorePluginContainsFMLMod': 'true'
-    }
-    configurations.shade.each { dep ->
-    	from(project.zipTree(dep)){
-        	exclude 'META-INF', 'META-INF/**'
-    	}
-    }
+	archiveName = archivesBaseName + "-" + version + ".jar"
+	manifest {
+		attributes 'FMLCorePlugin': 'gtPlusPlus.preloader.asm.Preloader_FMLLoadingPlugin'
+		attributes 'FMLCorePluginContainsFMLMod': 'true'
+	}
+	configurations.shade.each { dep ->
+		from(project.zipTree(dep)){
+			exclude 'META-INF', 'META-INF/**'
+		}
+	}
 }
 
 task generateDictionaries(type: JavaExec) {
-    group = "Execution"
-    description = "Generates the dictionaries for Proguard"
-    classpath = sourceSets.main.runtimeClasspath
-    main = "gtPlusPlus.GenerateDictionaries"
+	group = "Execution"
+	description = "Generates the dictionaries for Proguard"
+	classpath = sourceSets.main.runtimeClasspath
+	main = "gtPlusPlus.GenerateDictionaries"
 }
 
