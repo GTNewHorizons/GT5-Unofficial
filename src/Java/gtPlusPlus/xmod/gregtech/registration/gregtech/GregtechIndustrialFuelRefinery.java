@@ -1,4 +1,3 @@
-/*
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
 import gtPlusPlus.api.objects.Logger;
@@ -24,4 +23,4 @@ public class GregtechIndustrialFuelRefinery {
 				"industrialrefinery.controller.tier.single", "Reactor Fuel Processing Plant").getStackForm(1L));
 
 	}
-}*/
+}
