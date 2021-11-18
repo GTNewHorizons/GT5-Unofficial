@@ -1,3 +1,4 @@
+/*
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
 import gregtech.api.enums.TAE;
@@ -281,4 +282,4 @@ public class GregtechMetaTileEntity_Refinery extends GregtechMeta_MultiBlockBase
 		return new GregtechMetaTileEntity_Refinery(this.mName);
 	}
 
-}
+}*/

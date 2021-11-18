@@ -1,3 +1,4 @@
+/*
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.bedrock;
 
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -42,4 +43,4 @@ public class GregtechMetaTileEntity_BedrockMiningPlatform2 extends GregtechMetaT
 	protected int getBaseProgressTime() {
 		return 480;
 	}
-}
+}*/

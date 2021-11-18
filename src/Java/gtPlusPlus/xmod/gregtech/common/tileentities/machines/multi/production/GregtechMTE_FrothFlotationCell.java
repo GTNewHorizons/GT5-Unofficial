@@ -1,10 +1,17 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 import static gtPlusPlus.core.util.data.ArrayUtils.removeNulls;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import gregtech.api.metatileentity.implementations.*;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import org.apache.commons.lang3.ArrayUtils;
 
 import gregtech.api.GregTech_API;
@@ -16,28 +23,19 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gregtech.api.util.GTPP_Recipe;
-import gtPlusPlus.api.helpers.GregtechPlusPlus_API.Multiblock_API;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.minecraft.multi.SpecialMultiBehaviour;
+import gregtech.api.util.GTPP_Recipe;;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.item.chemistry.AgriculturalChem;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.helpers.FlotationRecipeHandler;
-import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoader_AlgaeFarm;
-import ic2.core.init.BlocksItems;
-import ic2.core.init.InternalName;
-import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 public class GregtechMTE_FrothFlotationCell extends GregtechMeta_MultiBlockBase {
+
+	private int mCasing;
+	private IStructureDefinition<GregtechMTE_FrothFlotationCell> STRUCTURE_DEFINITION = null;
 
 	public GregtechMTE_FrothFlotationCell(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
@@ -58,24 +56,28 @@ public class GregtechMTE_FrothFlotationCell extends GregtechMeta_MultiBlockBase 
 	}
 
 	@Override
-	public String[] getTooltip() {
-		return new String[] {
-				"Process that milled ore!",
-		};
+	protected GT_Multiblock_Tooltip_Builder createTooltip() {
+		GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+		tt.addMachineType(getMachineType())
+				.addInfo("Process that milled ore!")
+				.addPollutionAmount(getPollutionPerTick(null) * 20)
+				.addSeparator()
+				.beginStructureBlock(3, 3, 3, true)
+				.addController("Front Center")
+				.addCasingInfo("Inconel Reinforced Casing", 68)
+				.addCasingInfo("Flotation Casings", 52)
+				.addInputBus("Bottom Casing", 1)
+				.addInputHatch("Bottom Casing", 1)
+				.addOutputHatch("Bottom Casing", 1)
+				.addEnergyHatch("Bottom Casing", 1)
+				.addMaintenanceHatch("Bottom Casing", 1)
+				.toolTipFinisher("GT++");
+		return tt;
 	}
 
 	@Override
 	public String getSound() {
 		return GregTech_API.sSoundList.get(Integer.valueOf(207));
-	}
-
-
-	@Override
-	public boolean isFacingValid(final byte aFacing) {
-		if (aFacing == 0 || aFacing > 1) {
-			return false;
-		}
-		return true;
 	}
 
 	@Override
@@ -108,127 +110,85 @@ public class GregtechMTE_FrothFlotationCell extends GregtechMeta_MultiBlockBase 
 	}
 
 	@Override
-	public boolean checkMultiblock(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
-		Block aCasing1 = ModBlocks.blockCasings3Misc;
-		int aCasingMeta1 = 1;
-		Block aCasing2 = ModBlocks.blockSpecialMultiCasings;
-		int aCasingMeta2 = 9;
-		int aCasingCount1 = 0;
-		int aCasingCount2 = 0;
-		int aControllerY = aBaseMetaTileEntity.getYCoord();
-		// Check adjacent blocks
-		for (byte side = 2; side < 6; side++) {
-			Block aBlock = aBaseMetaTileEntity.getBlockAtSide(side);
-			int aMeta = aBaseMetaTileEntity.getMetaIDAtSide(side);
-			if (this.isValidBlockForStructure(null, 0, false, aBlock, aMeta, aCasing1, aCasingMeta1)) {
-				aCasingCount1++;
-			}
-			else {
-				log("Bad block at Y:"+(aControllerY));
-				return false;
-			}
+	public IStructureDefinition<GregtechMTE_FrothFlotationCell> getStructureDefinition() {
+		if (STRUCTURE_DEFINITION == null) {
+			STRUCTURE_DEFINITION = StructureDefinition.<GregtechMTE_FrothFlotationCell>builder()
+					.addShape(mName, new String[][]{
+							{"       ", "       ", "   X   ", "  X~X  ", "   X   ", "       ", "       "},
+							{"       ", "   F   ", "  FFF  ", " FF FF ", "  FFF  ", "   F   ", "       "},
+							{"       ", "   F   ", "  F F  ", " F   F ", "  F F  ", "   F   ", "       "},
+							{"       ", "   F   ", "  F F  ", " F   F ", "  F F  ", "   F   ", "       "},
+							{"       ", "   F   ", "  F F  ", " F   F ", "  F F  ", "   F   ", "       "},
+							{"       ", "   F   ", "  F F  ", " F   F ", "  F F  ", "   F   ", "       "},
+							{"       ", "   F   ", "  F F  ", " F   F ", "  F F  ", "   F   ", "       "},
+							{"  CCC  ", " CCCCC ", "CCCCCCC", "CCCCCCC", "CCCCCCC", " CCCCC ", "  CCC  "},
+							{"  CCC  ", " CCCCC ", "CCCCCCC", "CCCCCCC", "CCCCCCC", " CCCCC ", "  CCC  "},
+					})
+					.addElement(
+							'C',
+							ofChain(
+									ofHatchAdder(
+											GregtechMTE_FrothFlotationCell::addFrothFlotationCellList, TAE.getIndexFromPage(2, 1), 1
+									),
+									onElementPass(
+											x -> ++x.mCasing,
+											ofBlock(
+													ModBlocks.blockCasings3Misc, 1
+											)
+									)
+							)
+					)
+					.addElement(
+							'F',
+							ofBlock(
+									ModBlocks.blockSpecialMultiCasings, 9
+							)
+					)
+					.addElement(
+							'X',
+							ofBlock(
+									ModBlocks.blockCasings3Misc, 1
+							)
+					)
+					.build();
 		}
-		// Check first layer
-		aControllerY--;
-		for (int x = -2; x < 3; x++) {
-			for (int z = -2; z < 3; z++) {
+		return STRUCTURE_DEFINITION;
+	}
 
-				int aWorldOffsetX = aBaseMetaTileEntity.getXCoord() + x;
-				int aWorldOffsetZ = aBaseMetaTileEntity.getZCoord() + z;
+	@Override
+	public void construct(ItemStack stackSize, boolean hintsOnly) {
+		buildPiece(mName , stackSize, hintsOnly, 3, 3, 0);
+	}
 
-				// Don't check air
-				if ((x == -2 && z != 0) || (x == 2 && z != 0) || (z == -2 && x != 0) || (z == 2 && x != 0) || (x == 0 && z == 0)) {
-					continue;
-				}
-				else {
-					Block aBlock = aBaseMetaTileEntity.getBlock(aWorldOffsetX, aControllerY, aWorldOffsetZ);
-					int aMeta = aBaseMetaTileEntity.getMetaID(aWorldOffsetX, aControllerY, aWorldOffsetZ);
-					if (this.isValidBlockForStructure(null, 0, false, aBlock, aMeta, aCasing2, aCasingMeta2)) {
-						aCasingCount2++;
-					}
-					else {
-						log("Bad block at Y:"+(aControllerY)+", X:"+aWorldOffsetX+", Z:"+aWorldOffsetZ);
-						aBaseMetaTileEntity.getWorld().setBlock(aWorldOffsetX, aControllerY, aWorldOffsetZ, Blocks.bookshelf);
-						return false;
-					}
-				}				
-			}	
-		}
-		// Check circular tower
-		aControllerY--;
-		for (int y = aControllerY; y > (aControllerY-5); y--) {
-			for (int x = -2; x < 3; x++) {
-				for (int z = -2; z < 3; z++) {
+	@Override
+	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+		mCasing = 0;
+		return checkPiece(mName, 3,  3, 0) && mCasing >= 68 - 4 && checkHatch();
+	}
 
-					int aWorldOffsetX = aBaseMetaTileEntity.getXCoord() + x;
-					int aWorldOffsetZ = aBaseMetaTileEntity.getZCoord() + z;
-
-					// Don't check air
-					if ((x == -2 && z != 0) || (x == 2 && z != 0) || (z == -2 && x != 0) || (z == 2 && x != 0) || (x == 0 && z == 0)) {
-						continue;
-					}
-					// Don't check air
-					else if ((x == -1 && z == 0) || (x == 1 && z == 0) || (z == -1 && x == 0) || (z == 1 && x == 0) || (x == 0 && z == 0)) {
-						continue;
-					}
-					else {
-						Block aBlock = aBaseMetaTileEntity.getBlock(aWorldOffsetX, y, aWorldOffsetZ);
-						int aMeta = aBaseMetaTileEntity.getMetaID(aWorldOffsetX, y, aWorldOffsetZ);
-						if (this.isValidBlockForStructure(null, 0, false, aBlock, aMeta, aCasing2, aCasingMeta2)) {
-							aCasingCount2++;
-						}
-						else {
-							log("Bad block at Y:"+(y)+", X:"+aWorldOffsetX+", Z:"+aWorldOffsetZ);
-							return false;
-						}
-					}				
-				}	
-			}
-		}
-		// Check Base
-		aControllerY -= 5;
-		for (int y = aControllerY; y > (aControllerY-2); y--) {		
-			for (int x = -3; x < 4; x++) {
-				for (int z = -3; z < 4; z++) {
-					int aWorldOffsetX = aBaseMetaTileEntity.getXCoord() + x;
-					int aWorldOffsetZ = aBaseMetaTileEntity.getZCoord() + z;
-					if ((x == -3 && z == -3) || (x == 3 && z == 3) || (x == -3 && z == 3) || (x == 3 && z == -3)) {
-						continue;
-					}				
-					else if ((x == -3 && z == -2) || (x == -2 && z == -3) || (x == 3 && z == 2) || (x == 2 && z == 3)) {
-						continue;
-					}				
-					else if ((x == -2 && z == 3) || (x == -3 && z == 2) || (x == 3 && z == -2) || (x == 2 && z == -3)) {
-						continue;
-					}
-					else {					
-						Block aBlock = aBaseMetaTileEntity.getBlock(aWorldOffsetX, y, aWorldOffsetZ);
-						int aMeta = aBaseMetaTileEntity.getMetaID(aWorldOffsetX, y, aWorldOffsetZ);
-						IGregTechTileEntity aTile = aBaseMetaTileEntity.getIGregTechTileEntity(aWorldOffsetX, y, aWorldOffsetZ);
-						if (this.isValidBlockForStructure(aTile, TAE.getIndexFromPage(2, 1), true, aBlock, aMeta, aCasing1, aCasingMeta1)) {
-							if (aTile == null) {
-								aCasingCount1++;								
-							}
-						}
-						else {
-							log("Bad block at Y:"+(y)+", X:"+aWorldOffsetX+", Z:"+aWorldOffsetZ);
-							return false;
-						}
-					}				
-				}	
-			}
-		}
-		if (aCasingCount1 < 68) {
-			log("Inconel Casings found: "+aCasingCount1);
-			log("Inconel Casings required: 68");
+	public final boolean addFrothFlotationCellList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+		if (aTileEntity == null) {
 			return false;
+		} else {
+			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mInputBusses.add((GT_MetaTileEntity_Hatch_InputBus)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mOutputHatches.add((GT_MetaTileEntity_Hatch_Output) aMetaTileEntity);
+			}
 		}
-		if (aCasingCount2 < 52) {
-			log("Flotation Casings found: "+aCasingCount2);
-			log("Flotation Casings required: 52");
-			return false;
-		}		
-		return true;
+		return false;
 	}
 
 	@Override

@@ -1,3 +1,4 @@
+/*
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
 import java.util.concurrent.ScheduledExecutorService;
@@ -47,9 +48,11 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 
 
 
-	/*
+	*/
+/*
 	 * Static thread for Fake World Handling
-	 */
+	 *//*
+
 
 
 	private static ScheduledExecutorService executor;
@@ -60,7 +63,8 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 		CASING_TEXTURE_ID = TAE.getIndexFromPage(1, 15);
 		mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings2Misc, 15);
 
-		/*if (executor == null || mTreeData == null) {			
+		*/
+/*if (executor == null || mTreeData == null) {
 			if (executor == null) {
 				executor = Executors.newScheduledThreadPool(10);				
 			}
@@ -78,7 +82,8 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 					}
 				}
 			}			
-		}*/	
+		}*//*
+
 
 
 
@@ -325,4 +330,4 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 			}			
 		}		
 	}
-}
+}*/

@@ -1,12 +1,16 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing;
 
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.block.ModBlocks;
@@ -15,8 +19,16 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
+
 public class GregtechMetaTileEntity_IndustrialWireMill
 extends GregtechMeta_MultiBlockBase {
+
+	private int mCasing;
+	private IStructureDefinition<GregtechMetaTileEntity_IndustrialWireMill> STRUCTURE_DEFINITION = null;
+
 	public GregtechMetaTileEntity_IndustrialWireMill(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
 	}
@@ -36,20 +48,89 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
-	public String[] getTooltip() {
-		return new String[]{
-				"Controller Block for the Industrial Wire Factory",
-				"200% faster than using single block machines of the same voltage",
-				"Only uses 75% of the eu/t normally required",
-				"Processes four items per voltage tier",
-				"Size: 3x3x5 [WxHxL] (Hollow)",
-				"Wire Factory Casings (32 at least!)",
-				"Controller (front centered)",
-				"1x Input Bus",
-				"1x Output Bus",
-				"1x Energy Hatch",
-				//"Maintenance Hatch must be at the back, centered",
-		};
+	protected GT_Multiblock_Tooltip_Builder createTooltip() {
+		GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+		tt.addMachineType(getMachineType())
+				.addInfo("Controller Block for the Industrial Wire Factory")
+				.addInfo("200% faster than using single block machines of the same voltage")
+				.addInfo("Only uses 75% of the eu/t normally required")
+				.addInfo("Processes four items per voltage tier")
+				.addPollutionAmount(getPollutionPerTick(null) * 20)
+				.addSeparator()
+				.beginStructureBlock(3, 3, 5, true)
+				.addController("Front Center")
+				.addCasingInfo("Wire Factory Casings", 32)
+				.addInputBus("Any Casing", 1)
+				.addOutputBus("Any Casing", 1)
+				.addEnergyHatch("Any Casing", 1)
+				.addMaintenanceHatch("Any Casing", 1)
+				.addMufflerHatch("Any Casing", 1)
+				.toolTipFinisher("GT++");
+		return tt;
+	}
+
+	@Override
+	public IStructureDefinition<GregtechMetaTileEntity_IndustrialWireMill> getStructureDefinition() {
+		if (STRUCTURE_DEFINITION == null) {
+			STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialWireMill>builder()
+					.addShape(mName, transpose(new String[][]{
+							{"CCC", "CCC", "CCC", "CCC", "CCC"},
+							{"C~C", "C-C", "C-C", "C-C", "CCC"},
+							{"CCC", "CCC", "CCC", "CCC", "CCC"},
+					}))
+					.addElement(
+							'C',
+							ofChain(
+									ofHatchAdder(
+											GregtechMetaTileEntity_IndustrialWireMill::addIndustrialWireMillList, getCasingTextureIndex(), 1
+									),
+									onElementPass(
+											x -> ++x.mCasing,
+											ofBlock(
+													getCasingBlock(), getCasingMeta()
+											)
+									)
+							)
+					)
+					.build();
+		}
+		return STRUCTURE_DEFINITION;
+	}
+
+	@Override
+	public void construct(ItemStack stackSize, boolean hintsOnly) {
+		buildPiece(mName , stackSize, hintsOnly, 1, 1, 0);
+	}
+
+	@Override
+	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+		mCasing = 0;
+		return checkPiece(mName, 1, 1, 0) && mCasing >= 32 && checkHatch();
+	}
+
+	public final boolean addIndustrialWireMillList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+		if (aTileEntity == null) {
+			return false;
+		} else {
+			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mInputBusses.add((GT_MetaTileEntity_Hatch_InputBus)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mOutputBusses.add((GT_MetaTileEntity_Hatch_OutputBus) aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mMufflerHatches.add((GT_MetaTileEntity_Hatch_Muffler) aMetaTileEntity);
+			}
+		}
+		return false;
 	}
 	
 	@Override
@@ -81,11 +162,6 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
-	public boolean isFacingValid(final byte aFacing) {
-		return aFacing > 1;
-	}
-
-	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
 		return checkRecipeGeneric((4* GT_Utility.getTier(this.getMaxInputVoltage())), 75, 200);
 	}
@@ -98,78 +174,6 @@ extends GregtechMeta_MultiBlockBase {
 	@Override
 	public int getEuDiscountForParallelism() {
 		return 75;
-	}
-
-	@Override
-	public boolean checkMultiblock(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
-		final byte tSide = this.getBaseMetaTileEntity().getBackFacing();
-		int aCasingCount = 0;
-		if ((this.getBaseMetaTileEntity().getAirAtSideAndDistance(this.getBaseMetaTileEntity().getBackFacing(), 1)) && (this.getBaseMetaTileEntity().getAirAtSideAndDistance(this.getBaseMetaTileEntity().getBackFacing(), 2) && (this.getBaseMetaTileEntity().getAirAtSideAndDistance(this.getBaseMetaTileEntity().getBackFacing(), 3)))) {
-			for (byte i = 2; i < 6; i = (byte) (i + 1)) {
-				IGregTechTileEntity tTileEntity;
-				if ((null != (tTileEntity = this.getBaseMetaTileEntity().getIGregTechTileEntityAtSideAndDistance(i, 2))) &&
-						(tTileEntity.getFrontFacing() == this.getBaseMetaTileEntity().getFrontFacing()) && (tTileEntity.getMetaTileEntity() != null) &&
-						((tTileEntity.getMetaTileEntity() instanceof GregtechMetaTileEntity_IndustrialWireMill))) {
-					//Utils.LOG_INFO("False 1");
-					return false;
-				}
-			}
-			
-			//Check Rear Middle
-			{
-				Block aBlock = this.getBaseMetaTileEntity()
-						.getBlockAtSideAndDistance(this.getBaseMetaTileEntity().getBackFacing(), 4);
-				int aMeta = this.getBaseMetaTileEntity()
-						.getMetaIDAtSideAndDistance(this.getBaseMetaTileEntity().getBackFacing(), 4);
-				IGregTechTileEntity aTile = this.getBaseMetaTileEntity()
-						.getIGregTechTileEntityAtSideAndDistance(this.getBaseMetaTileEntity().getBackFacing(), 4);
-				if (!isValidBlockForStructure(aTile, getCasingTextureIndex(), true, aBlock, aMeta, getCasingBlock(),
-						getCasingMeta())) {
-					log("Bad Casing on Wiremill.");
-					return false;
-				}
-			}
-			final int tX = this.getBaseMetaTileEntity().getXCoord();
-			final int tY = this.getBaseMetaTileEntity().getYCoord();
-			final int tZ = this.getBaseMetaTileEntity().getZCoord();
-			for (byte i = -1; i < 2; i = (byte) (i + 1)) {
-				for (byte j = -1; j < 2; j = (byte) (j + 1)) {
-					if ((i != 0) || (j != 0)) {
-						for (byte k = 0; k < 5; k = (byte) (k + 1)) {							
-								Block aBlock = this.getBaseMetaTileEntity().getBlock(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i));
-								int aMeta = this.getBaseMetaTileEntity().getMetaID(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i));
-								IGregTechTileEntity aTile = this.getBaseMetaTileEntity().getIGregTechTileEntity(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i));
-								if (!isValidBlockForStructure(aTile, getCasingTextureIndex(), true, aBlock, aMeta, getCasingBlock(), getCasingMeta())) {
-									log("Bad Casing on Wiremill.");
-									return false;
-								}	
-								else {
-									if (aTile == null) {
-										aCasingCount++;
-									}
-								}
-						}
-					}
-				}
-			}
-			if ((this.mOutputHatches.size() != 0) || (this.mInputHatches.size() != 0)) {
-				log("Use Busses, Not Hatches for Input/Output.");
-				return false;
-			}
-			if ((this.mInputBusses.size() == 0) || (this.mOutputBusses.size() == 0)) {
-				log("Incorrect amount of Input & Output busses.");
-				return false;
-			}
-			if ((this.mMaintenanceHatches.size() != 1)) {
-				log("Incorrect amount of Maintenance or Energy hatches.");
-				return false;
-			}
-		} else {
-			log("False 5");
-			return false;
-		}
-		log("True");
-		return aCasingCount >= 32;
 	}
 
 	@Override
@@ -196,11 +200,9 @@ extends GregtechMeta_MultiBlockBase {
 		return ModBlocks.blockCasingsMisc;
 	}
 
-
 	public byte getCasingMeta() {
 		return 6;
 	}
-
 
 	public byte getCasingTextureIndex() {
 		return (byte) TAE.GTPP_INDEX(6);

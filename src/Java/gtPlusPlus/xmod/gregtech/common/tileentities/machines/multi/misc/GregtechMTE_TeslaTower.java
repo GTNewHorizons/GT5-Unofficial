@@ -1,3 +1,4 @@
+/*
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.misc;
 
 import static gregtech.api.enums.GT_Values.*;
@@ -48,11 +49,13 @@ public class GregtechMTE_TeslaTower extends GregtechMeta_MultiBlockBase {
 	private int xLoc, yLoc, zLoc;
 
 	protected int mRange;
-	/**
+	*/
+/**
 	 * Machine Mode, 
 	 * {@value false} Attacks all entities, 
 	 * {@value true} Only attacks players. 
-	 */
+	 *//*
+
 	protected volatile boolean mMode = false;
 
 	@Override
@@ -141,16 +144,20 @@ public class GregtechMTE_TeslaTower extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public boolean checkRecipe(ItemStack aStack) {
-		/*if (!isEnergyEnough()) {
+		*/
+/*if (!isEnergyEnough()) {
 			this.mProgresstime = 0;
 			this.mMaxProgresstime = 20;
 			this.getBaseMetaTileEntity().setActive(false);
 			stopMachine();
 		}
 		else {*//*
+*/
+/*
 			this.mProgresstime = 1;
 			this.mMaxProgresstime = 100;
-			this.getBaseMetaTileEntity().setActive(true);*/
+			this.getBaseMetaTileEntity().setActive(true);*//*
+
 		//}
 		return false;
 	}
@@ -408,11 +415,13 @@ public class GregtechMTE_TeslaTower extends GregtechMeta_MultiBlockBase {
 	}
 
 	protected Materials getFrameMaterial() {		
-		/*casingBlock = getCasingBlockItem().getBlock();
+		*/
+/*casingBlock = getCasingBlockItem().getBlock();
 		casingMeta = getCasingBlockItem().get(0).getItemDamage();
 		int frameId = 4096 + getFrameMaterial().mMetaItemSubID;
 		frameMeta = GregTech_API.METATILEENTITIES[frameId] != null ? GregTech_API.METATILEENTITIES[frameId].getTileEntityBaseType() : W;		
-		 */return Materials.get("TungstenCarbide");
+		 *//*
+return Materials.get("TungstenCarbide");
 	}
 
 	protected int getCasingTextureIndex() {
@@ -467,3 +476,4 @@ public class GregtechMTE_TeslaTower extends GregtechMeta_MultiBlockBase {
 
 
 }
+*/

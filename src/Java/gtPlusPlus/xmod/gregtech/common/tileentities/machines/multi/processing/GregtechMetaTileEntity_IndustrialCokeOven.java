@@ -1,25 +1,35 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing;
 
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.GTPP_Recipe;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
+
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
 public class GregtechMetaTileEntity_IndustrialCokeOven
 extends GregtechMeta_MultiBlockBase {
 	private int mLevel = 0;
+	private int mCasing;
+	private int mCasing1;
+	private int mCasing2;
+	private IStructureDefinition<GregtechMetaTileEntity_IndustrialCokeOven> STRUCTURE_DEFINITION = null;
 
 	public GregtechMetaTileEntity_IndustrialCokeOven(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
@@ -40,22 +50,124 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
-	public String[] getTooltip() {
-		return new String[]{"Processes Logs and Coal into Charcoal and Coal Coke.",
-				"Controller Block for the Industrial Coke Oven",
-				"Gain 4% speed bonus per voltage tier increased",
-				"Process 12x materials with Heat Resistant Casings",
-				"Or 24x materials with Heat Proof Casings",
-				"Size: 3x3x3 (Hollow)",
-				"Structural Coke Oven Casings (8 at least!)",
-				"Controller (front middle at bottom)",
-				"8x Heat Resistant/Proof Coke Oven Casings (middle Layer, hollow)",
-				"1x Input Hatch",
-				"1x Output Hatch",
-				"1x Input Bus",
-				"1x Output Bus",
-				"1x Energy Hatch"
-		};
+	protected GT_Multiblock_Tooltip_Builder createTooltip() {
+		GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+		tt.addMachineType(getMachineType())
+				.addInfo("Processes Logs and Coal into Charcoal and Coal Coke.")
+				.addInfo("Controller Block for the Industrial Coke Oven")
+				.addInfo("Gain 4% speed bonus per voltage tier increased")
+				.addInfo("Process 12x materials with Heat Resistant Casings")
+				.addInfo("Or 24x materials with Heat Proof Casings")
+				.addPollutionAmount(getPollutionPerTick(null) * 20)
+				.addSeparator()
+				.beginStructureBlock(3, 3, 3, true)
+				.addController("Front middle at bottom")
+				.addCasingInfo("Structural Coke Oven Casings", 8)
+				.addCasingInfo("Heat Resistant/Proof Coke Oven Casings", 8)
+				.addInputBus("Any Casing", 1)
+				.addOutputBus("Any Casing", 1)
+				.addInputHatch("Any Casing", 1)
+				.addOutputHatch("Any Casing", 1)
+				.addEnergyHatch("Any Casing", 1)
+				.addMaintenanceHatch("Any Casing", 1)
+				.addMufflerHatch("Any Casing", 1)
+				.toolTipFinisher("GT++");
+		return tt;
+	}
+
+	@Override
+	public IStructureDefinition<GregtechMetaTileEntity_IndustrialCokeOven> getStructureDefinition() {
+		if (STRUCTURE_DEFINITION == null) {
+			STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialCokeOven>builder()
+					.addShape(mName, transpose(new String[][]{
+							{"CCC", "C-C", "CCC"},
+							{"HHH", "H-H", "HHH"},
+							{"C~C", "CCC", "CCC"},
+					}))
+					.addElement(
+							'C',
+							ofChain(
+									ofHatchAdder(
+											GregtechMetaTileEntity_IndustrialCokeOven::addIndustrialCokeOvenList, TAE.GTPP_INDEX(1), 1
+									),
+									onElementPass(
+											x -> ++x.mCasing,
+											ofBlock(
+													ModBlocks.blockCasingsMisc, 1
+											)
+									)
+							)
+					)
+					.addElement(
+							'H',
+							ofChain(
+									onElementPass(
+											x -> ++x.mCasing1,
+											ofBlock(
+													ModBlocks.blockCasingsMisc, 2
+											)
+									),
+									onElementPass(
+											x -> ++x.mCasing2,
+											ofBlock(
+													ModBlocks.blockCasingsMisc, 3
+											)
+									)
+							)
+					)
+					.build();
+		}
+		return STRUCTURE_DEFINITION;
+	}
+
+	@Override
+	public void construct(ItemStack stackSize, boolean hintsOnly) {
+		buildPiece(mName , stackSize, hintsOnly, 1, 2, 0);
+	}
+
+	@Override
+	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+		mCasing = 0;
+		mCasing1 = 0;
+		mCasing2 = 0;
+		mLevel = 0;
+		if (checkPiece(mName, 1, 2, 0)) {
+			if (mCasing1 == 8) mLevel = 1;
+			if (mCasing2 == 8) mLevel = 2;
+			return mLevel > 0 && mCasing >= 8 && checkHatch();
+		}
+		return false;
+	}
+
+	public final boolean addIndustrialCokeOvenList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+		if (aTileEntity == null) {
+			return false;
+		} else {
+			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mInputBusses.add((GT_MetaTileEntity_Hatch_InputBus)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mOutputBusses.add((GT_MetaTileEntity_Hatch_OutputBus) aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mMufflerHatches.add((GT_MetaTileEntity_Hatch_Muffler) aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mOutputHatches.add((GT_MetaTileEntity_Hatch_Output) aMetaTileEntity);
+			}
+		}
+		return false;
 	}
 
 	@Override
@@ -87,16 +199,6 @@ extends GregtechMeta_MultiBlockBase {
 
 	}
 
-	/* @Override
-	public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }*/
-
-	@Override
-	public boolean isFacingValid(final byte aFacing) {
-		return aFacing > 1;
-	}
-
 	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
 		return checkRecipeGeneric(getMaxParallelRecipes(), getEuDiscountForParallelism(), 0);
@@ -113,58 +215,6 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
-	public boolean checkMultiblock(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
-		final int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
-		final int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
-		this.mLevel = 0;
-		if (!aBaseMetaTileEntity.getAirOffset(xDir, 1, zDir)) {
-			Logger.INFO("No air? "+xDir+", 1, "+zDir);
-			return false;
-		}
-
-		final byte tUsedMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + 1, 1, zDir);
-		switch (tUsedMeta) {
-			case 2:
-				this.mLevel = 1;
-				break;
-			case 3:
-				this.mLevel = 2;
-				break;
-			default:
-				Logger.INFO("Bad Heating Coils.");
-				return false;
-		}
-		for (int i = -1; i < 2; i++) {
-			for (int j = -1; j < 2; j++) {
-				if ((i != 0) || (j != 0)) {
-					final IGregTechTileEntity tTileEntity2 = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, 2, zDir + j);					
-					if (!isValidBlockForStructure(null, TAE.GTPP_INDEX(1), false, aBaseMetaTileEntity.getBlockOffset(xDir + i, 1, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 1, zDir + j), ModBlocks.blockCasingsMisc, tUsedMeta)) {
-						Logger.INFO("Heating Coils missing.");
-						return false;
-					}
-
-					if (!isValidBlockForStructure(tTileEntity2, TAE.GTPP_INDEX(1), true, aBaseMetaTileEntity.getBlockOffset(xDir + i, 2, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 2, zDir + j), ModBlocks.blockCasingsMisc, 1)) {
-						Logger.INFO("Casings missing from top layer of coke oven.");
-						return false;
-					}
-				}
-			}
-		}
-		for (int i = -1; i < 2; i++) {
-			for (int j = -1; j < 2; j++) {
-				if (((xDir + i) != 0) || ((zDir + j) != 0)) {
-					final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, 0, zDir + j);
-					if (!isValidBlockForStructure(tTileEntity, TAE.GTPP_INDEX(1), true, aBaseMetaTileEntity.getBlockOffset(xDir + i, 0, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 0, zDir + j), ModBlocks.blockCasingsMisc, 1)) {
-						Logger.INFO("Casings missing from bottom layer of coke oven.");
-						return false;
-					}
-				}
-			}
-		}	
-		return true;
-	}
-
-	@Override
 	public int getMaxEfficiency(final ItemStack aStack) {
 		return 10000;
 	}
@@ -173,11 +223,6 @@ extends GregtechMeta_MultiBlockBase {
 	public int getPollutionPerTick(final ItemStack aStack) {
 		return 4;
 	}
-
-	/* @Override
-	public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }*/
 
 	@Override
 	public int getAmountOfOutputs() {

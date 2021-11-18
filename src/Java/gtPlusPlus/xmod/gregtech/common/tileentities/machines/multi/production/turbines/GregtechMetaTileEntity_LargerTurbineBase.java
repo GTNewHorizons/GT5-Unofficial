@@ -1,3 +1,4 @@
+/*
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines;
 
 import java.util.ArrayList;
@@ -435,16 +436,34 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechM
 		}
 		String[] ret = new String[]{
 				// 8 Lines available for information panels
-				tRunning + ": " + EnumChatFormatting.RED+mEUt+EnumChatFormatting.RESET+" EU/t", /* 1 */
-				tMaintainance, /* 2 */
-				StatCollector.translateToLocal("GT5U.turbine.efficiency")+": "+EnumChatFormatting.YELLOW+(mEfficiency/100F)+EnumChatFormatting.RESET+"%", /* 2 */
-				StatCollector.translateToLocal("GT5U.multiblock.energy")+": " + EnumChatFormatting.GREEN + Long.toString(storedEnergy) + EnumChatFormatting.RESET +" EU / "+ /* 3 */
+				tRunning + ": " + EnumChatFormatting.RED+mEUt+EnumChatFormatting.RESET+" EU/t", */
+/* 1 *//*
+
+				tMaintainance, */
+/* 2 *//*
+
+				StatCollector.translateToLocal("GT5U.turbine.efficiency")+": "+EnumChatFormatting.YELLOW+(mEfficiency/100F)+EnumChatFormatting.RESET+"%", */
+/* 2 *//*
+
+				StatCollector.translateToLocal("GT5U.multiblock.energy")+": " + EnumChatFormatting.GREEN + Long.toString(storedEnergy) + EnumChatFormatting.RESET +" EU / "+ */
+/* 3 *//*
+
 				EnumChatFormatting.YELLOW + Long.toString(maxEnergy) + EnumChatFormatting.RESET +" EU", 
-				StatCollector.translateToLocal("GT5U.turbine.flow")+": "+EnumChatFormatting.YELLOW+MathUtils.safeInt((long)realOptFlow)+EnumChatFormatting.RESET+" L/t" + /* 4 */
-						EnumChatFormatting.YELLOW+" ("+(looseFit?StatCollector.translateToLocal("GT5U.turbine.loose"):StatCollector.translateToLocal("GT5U.turbine.tight"))+")", /* 5 */
-						StatCollector.translateToLocal("GT5U.turbine.fuel")+": "+EnumChatFormatting.GOLD+storedFluid+EnumChatFormatting.RESET+"L", /* 6 */
-						StatCollector.translateToLocal("GT5U.turbine.dmg")+": "+EnumChatFormatting.RED+Integer.toString(tDura)+EnumChatFormatting.RESET+"%", /* 7 */
-						StatCollector.translateToLocal("GT5U.multiblock.pollution")+": "+ EnumChatFormatting.GREEN + mPollutionReduction+ EnumChatFormatting.RESET+" %" /* 8 */
+				StatCollector.translateToLocal("GT5U.turbine.flow")+": "+EnumChatFormatting.YELLOW+MathUtils.safeInt((long)realOptFlow)+EnumChatFormatting.RESET+" L/t" + */
+/* 4 *//*
+
+						EnumChatFormatting.YELLOW+" ("+(looseFit?StatCollector.translateToLocal("GT5U.turbine.loose"):StatCollector.translateToLocal("GT5U.turbine.tight"))+")", */
+/* 5 *//*
+
+						StatCollector.translateToLocal("GT5U.turbine.fuel")+": "+EnumChatFormatting.GOLD+storedFluid+EnumChatFormatting.RESET+"L", */
+/* 6 *//*
+
+						StatCollector.translateToLocal("GT5U.turbine.dmg")+": "+EnumChatFormatting.RED+Integer.toString(tDura)+EnumChatFormatting.RESET+"%", */
+/* 7 *//*
+
+						StatCollector.translateToLocal("GT5U.multiblock.pollution")+": "+ EnumChatFormatting.GREEN + mPollutionReduction+ EnumChatFormatting.RESET+" %" */
+/* 8 *//*
+
 		};
 		if (!this.getClass().getName().contains("Steam"))
 			ret[4]=StatCollector.translateToLocal("GT5U.turbine.flow")+": "+EnumChatFormatting.YELLOW+MathUtils.safeInt((long)realOptFlow)+EnumChatFormatting.RESET+" L/t";
@@ -641,3 +660,4 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechM
 	}
 	
 }
+*/

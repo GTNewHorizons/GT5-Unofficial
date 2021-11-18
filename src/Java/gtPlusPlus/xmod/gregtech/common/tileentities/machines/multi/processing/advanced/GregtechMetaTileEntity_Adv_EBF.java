@@ -1,11 +1,20 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.advanced;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static gregtech.api.util.GT_StructureUtility.ofCoil;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 import static gtPlusPlus.core.util.data.ArrayUtils.removeNulls;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import gregtech.api.enums.HeatingCoilLevel;
+import gregtech.api.metatileentity.implementations.*;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GT_MetaTileEntity_Hatch_CustomFluidBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
@@ -17,23 +26,16 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
-import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase {
@@ -42,13 +44,13 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 	public static String mHotFuelName = "Blazing Pyrotheum";
 	public static String mCasingName = "Advanced Blast Furnace Casing";
 	public static String mHatchName = "Pyrotheum Hatch";
+	private IStructureDefinition<GregtechMetaTileEntity_Adv_EBF> STRUCTURE_DEFINITION = null;
+	private int mCasing;
+	private boolean mHaveHatch;
 
-	private int mHeatingCapacity = 0;
-	private int controllerY;
+	private HeatingCoilLevel mHeatingCapacity;
 	private boolean isBussesSeparate = false;
 
-	private static boolean mUsingPollutionOutputs = false;
-	
 	public GregtechMetaTileEntity_Adv_EBF(int aID, String aName, String aNameRegional) {
 		super(aID, aName, aNameRegional);
 		CASING_TEXTURE_ID = TAE.getIndexFromPage(2, 11);
@@ -74,8 +76,8 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 		return new GregtechMetaTileEntity_Adv_EBF(this.mName);
 	}
 
-	public String[] getTooltip() {
-
+	@Override
+	protected GT_Multiblock_Tooltip_Builder createTooltip() {
 		if (mCasingName.toLowerCase().contains(".name")) {
 			mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings3Misc, 11);
 		}
@@ -85,16 +87,110 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 		if (mHatchName.toLowerCase().contains(".name")) {
 			mHatchName = ItemUtils.getLocalizedNameOfBlock(GregTech_API.sBlockMachines, 968);
 		}
+		GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+		tt.addMachineType(getMachineType())
+				.addInfo("Factory Grade Advanced Blast Furnace")
+				.addInfo("Speed: 120% | Eu Usage: 90% | Parallel: 8")
+				.addInfo("Consumes 10L of " + mHotFuelName + " per second during operation")
+				.addInfo("Constructed exactly the same as a normal EBF")
+				.addPollutionAmount(getPollutionPerTick(null) * 20)
+				.addSeparator()
+				.addController("Bottom center")
+				.addCasingInfo(mCasingName, 9)
+				.addInputHatch("Any Casing", 1)
+				.addInputBus("Any Casing", 1)
+				.addOutputBus("Any Casing", 1)
+				.addOutputHatch("Any Casing", 1)
+				.addStructureHint(mHatchName, 1)
+				.addEnergyHatch("Any Casing", 1)
+				.addMufflerHatch("Any Casing", 1)
+				.addMaintenanceHatch("Any Casing", 1)
+				.toolTipFinisher("GT++");
+		return tt;
+	}
 
-		return new String[] { 
-				"Factory Grade Advanced Blast Furnace",
-				"Speed: 120% | Eu Usage: 90% | Parallel: 8",
-				"Consumes 10L of " + mHotFuelName + " per second during operation",
-				"Constructed exactly the same as a normal EBF",
-				"Use "+mCasingName+"s (9 at least!)",
-				"1x " + mHatchName + " (Required)",
-				"TAG_HIDE_HATCHES"
-		};
+	@Override
+	public IStructureDefinition<GregtechMetaTileEntity_Adv_EBF> getStructureDefinition() {
+		if (STRUCTURE_DEFINITION == null) {
+			STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_Adv_EBF>builder()
+					.addShape(mName, transpose(new String[][]{
+							{"CCC", "CCC", "CCC"},
+							{"HHH", "H-H", "HHH"},
+							{"HHH", "H-H", "HHH"},
+							{"C~C", "CCC", "CCC"},
+					}))
+					.addElement(
+							'C',
+							ofChain(
+									ofHatchAdder(
+											GregtechMetaTileEntity_Adv_EBF::addAdvEBFList, CASING_TEXTURE_ID, 1
+									),
+									onElementPass(
+											x -> ++x.mCasing,
+											ofBlock(
+													ModBlocks.blockCasings3Misc, 11
+											)
+									)
+							)
+					)
+					.addElement(
+							'H',
+							ofCoil(
+									GregtechMetaTileEntity_Adv_EBF::setCoilLevel, GregtechMetaTileEntity_Adv_EBF::getCoilLevel
+							)
+					)
+					.build();
+		}
+		return STRUCTURE_DEFINITION;
+	}
+
+	@Override
+	public void construct(ItemStack stackSize, boolean hintsOnly) {
+		buildPiece(mName, stackSize, hintsOnly, 1, 3, 0);
+	}
+
+	@Override
+	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+		mCasing = 0;
+		mHaveHatch = false;
+		setCoilLevel(HeatingCoilLevel.None);
+		return checkPiece(mName, 1, 3, 0) && mCasing >= 9 && mHaveHatch && getCoilLevel() != HeatingCoilLevel.None && checkHatch();
+	}
+
+	public final boolean addAdvEBFList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+		if (aTileEntity == null) {
+			return false;
+		} else {
+			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_CustomFluidBase && aMetaTileEntity.getBaseMetaTileEntity().getMetaTileID() == 968) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				mHaveHatch = true;
+				return this.mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
+			}
+			else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mInputBusses.add((GT_MetaTileEntity_Hatch_InputBus)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mOutputBusses.add((GT_MetaTileEntity_Hatch_OutputBus) aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mMufflerHatches.add((GT_MetaTileEntity_Hatch_Muffler) aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mOutputHatches.add((GT_MetaTileEntity_Hatch_Output) aMetaTileEntity);
+			}
+		}
+		return false;
 	}
 
 	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
@@ -129,10 +225,6 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 		return true;
 	}
 
-	public boolean isFacingValid(byte aFacing) {
-		return aFacing > 1;
-	}
-
 	@Override
 	public boolean checkRecipe(ItemStack aStack) {
 		if (isBussesSeparate) {
@@ -158,84 +250,6 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 		}
 	}
 
-	public boolean checkMultiblock(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-		controllerY = aBaseMetaTileEntity.getYCoord();
-		int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
-		int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
-
-		this.mHeatingCapacity = 0;
-		if (!aBaseMetaTileEntity.getAirOffset(xDir, 1, zDir)) {
-			return false;
-		}
-		if (!aBaseMetaTileEntity.getAirOffset(xDir, 2, zDir)) {
-			return false;
-		}
-		/*if (!addMufflerToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir, 3, zDir),
-				CASING_TEXTURE_ID)) {
-			return false;
-		}*/
-		Block tUsedBlock = aBaseMetaTileEntity.getBlockOffset(xDir + 1, 2, zDir);
-		byte tUsedMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + 1, 2, zDir);
-		this.mHeatingCapacity = StaticFields59.getHeatingCapacityForCoil(tUsedBlock, tUsedMeta);
-		
-		int aCasingCount = 0;
-
-		for (int i = -1; i < 2; i++) {
-			for (int j = -1; j < 2; j++) {
-				
-				
-				
-				if ((i != 0) || (j != 0)) {					
-					//Coils 1
-					if (!isValidBlockForStructure(null, CASING_TEXTURE_ID, false, aBaseMetaTileEntity.getBlockOffset(xDir + i, 1, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 1, zDir + j), StaticFields59.getBlockCasings5(), tUsedMeta)) {
-						Logger.INFO("Heating Coils missing.");
-						return false;
-					}
-					
-					//Coils 2
-					if (!isValidBlockForStructure(null, CASING_TEXTURE_ID, false, aBaseMetaTileEntity.getBlockOffset(xDir + i, 2, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 2, zDir + j), StaticFields59.getBlockCasings5(), tUsedMeta)) {
-						Logger.INFO("Heating Coils missing.");
-						return false;
-					}					
-				}
-				
-				//Top Layer
-				
-				Block aCurrentBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, 3, zDir + j);
-				int aCurrentMeta = (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 3, zDir + j);
-				if (aCurrentBlock == ModBlocks.blockCasings3Misc && aCurrentMeta == 11) {
-					aCasingCount++;
-				}
-				
-				final IGregTechTileEntity tTileEntity2 = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, 3, zDir + j);					
-				if (!isValidBlockForStructure(tTileEntity2, CASING_TEXTURE_ID, true, aCurrentBlock, aCurrentMeta, ModBlocks.blockCasings3Misc, 11)) {
-					Logger.INFO("Top Layer missing.");
-					return false;
-				}
-			}
-		}
-		for (int i = -1; i < 2; i++) {
-			for (int j = -1; j < 2; j++) {
-
-				
-				Block aCurrentBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, 0, zDir + j);
-				int aCurrentMeta = (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 0, zDir + j);
-				if (aCurrentBlock == ModBlocks.blockCasings3Misc && aCurrentMeta == 11) {
-					aCasingCount++;
-				}
-				if ((xDir + i != 0) || (zDir + j != 0)) {
-					IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, 0,zDir + j);					
-					if (!isValidBlockForStructure(tTileEntity, CASING_TEXTURE_ID, true, aCurrentBlock, aCurrentMeta, ModBlocks.blockCasings3Misc, 11)) {
-						Logger.INFO("Bottom Layer missing.");
-						return false;
-					}					
-				}
-			}
-		}
-		
-		return aCasingCount >= 9;
-	}
-
 	public int getMaxEfficiency(ItemStack aStack) {
 		return 10000;
 	}
@@ -249,51 +263,6 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 	}
 
 	public boolean explodesOnComponentBreak(ItemStack aStack) {
-		return false;
-	}
-
-	@Override
-	public boolean addOutput(FluidStack aLiquid) {
-		if (aLiquid == null)
-			return false;
-		int targetHeight;
-		FluidStack tLiquid = aLiquid.copy();
-		boolean isOutputPollution = false;
-		mUsingPollutionOutputs = PollutionUtils.setPollutionFluids();
-		if (mUsingPollutionOutputs) {
-			for (FluidStack pollutionFluidStack : PollutionUtils.mPollutionFluidStacks) {
-				if (tLiquid.isFluidEqual(pollutionFluidStack)) {
-					isOutputPollution = true;
-					break;
-				}
-			}
-		}
-		if (isOutputPollution) {
-			targetHeight = this.controllerY + 3;
-			int pollutionReduction = 0;
-			for (GT_MetaTileEntity_Hatch_Muffler tHatch : mMufflerHatches) {
-				if (isValidMetaTileEntity(tHatch)) {
-					pollutionReduction = 100 - StaticFields59.calculatePollutionReducation(tHatch, 100);
-					break;
-				}
-			}
-			tLiquid.amount = tLiquid.amount * (pollutionReduction + 5) / 100;
-		} else {
-			targetHeight = this.controllerY;
-		}
-		for (GT_MetaTileEntity_Hatch_Output tHatch : mOutputHatches) {
-			if (isValidMetaTileEntity(tHatch) && GT_ModHandler.isSteam(aLiquid) ? tHatch.outputsSteam()
-					: tHatch.outputsLiquids()) {
-				if (tHatch.getBaseMetaTileEntity().getYCoord() == targetHeight) {
-					int tAmount = tHatch.fill(tLiquid, false);
-					if (tAmount >= tLiquid.amount) {
-						return tHatch.fill(tLiquid, true) >= tLiquid.amount;
-					} else if (tAmount > 0) {
-						tLiquid.amount = tLiquid.amount - tHatch.fill(tLiquid, true);
-					}
-				}
-			}
-		}
 		return false;
 	}
 
@@ -320,7 +289,7 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 		// Remember last recipe - an optimization for findRecipe()
 		this.mLastRecipe = tRecipe;
 
-		if (tRecipe == null || this.mHeatingCapacity < tRecipe.mSpecialValue) {
+		if (tRecipe == null || this.mHeatingCapacity.getHeat() < tRecipe.mSpecialValue) {
 			Logger.WARNING("BAD RETURN - 1");
 			return false;
 		}
@@ -333,7 +302,7 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 
 		// EU discount
 		float tRecipeEUt = (tRecipe.mEUt * aEUPercent) / 100.0f;
-		int tHeatCapacityDivTiers = (mHeatingCapacity - tRecipe.mSpecialValue) / 900;
+		int tHeatCapacityDivTiers = (int) (mHeatingCapacity.getHeat() - tRecipe.mSpecialValue) / 900;
 		if (tHeatCapacityDivTiers > 0)
 		tRecipeEUt = (int) (tRecipeEUt * (Math.pow(0.95, tHeatCapacityDivTiers)));
 		float tTotalEUt = 0.0f;
@@ -501,5 +470,13 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 	public void loadNBTData(NBTTagCompound aNBT) {
 		isBussesSeparate = aNBT.getBoolean("isBussesSeparate");
 		super.loadNBTData(aNBT);
+	}
+
+	public HeatingCoilLevel getCoilLevel() {
+		return mHeatingCapacity;
+	}
+
+	public void setCoilLevel(HeatingCoilLevel aCoilLevel) {
+		mHeatingCapacity = aCoilLevel;
 	}
 }

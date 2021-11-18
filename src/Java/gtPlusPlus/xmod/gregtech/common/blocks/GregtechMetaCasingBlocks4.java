@@ -13,7 +13,6 @@ import gregtech.common.blocks.GT_Material_Casings;
 
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import gtPlusPlus.xmod.gregtech.common.blocks.textures.turbine.LargeTurbineTextureHandler;
 
 
 public class GregtechMetaCasingBlocks4
@@ -51,14 +50,14 @@ extends GregtechMetaCasingBlocksAbstract {
 		GregtechItemList.Casing_RocketEngine.set(new ItemStack(this, 1, 11));
 	}	
 
-	private static final LargeTurbineTextureHandler mTurbineTextures = new LargeTurbineTextureHandler();
+	//private static final LargeTurbineTextureHandler mTurbineTextures = new LargeTurbineTextureHandler();
 	
-	@Override
+	/*@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(final IBlockAccess aWorld, final int xCoord, final int yCoord, final int zCoord, final int aSide) {
 		final GregtechMetaCasingBlocks4 i = this;
 		return mTurbineTextures.handleCasingsGT(aWorld, xCoord, yCoord, zCoord, aSide, i);
-	}
+	}*/
 	
 	@Override
 	public IIcon getIcon(final int aSide, final int aMeta) {

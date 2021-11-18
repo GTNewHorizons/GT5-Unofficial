@@ -1,3 +1,4 @@
+/*
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
 import gtPlusPlus.api.objects.Logger;
@@ -25,3 +26,4 @@ public class GregtechLFTR {
 
 	}
 }
+*/

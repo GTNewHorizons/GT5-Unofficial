@@ -1,3 +1,4 @@
+/*
 package gtPlusPlus.xmod.gregtech.common.blocks.textures.turbine;
 
 import net.minecraft.tileentity.TileEntity;
@@ -13,9 +14,11 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.CustomIco
 
 public class LargeTurbineTextureHandler {
 
-	/**
+	*/
+/**
 	 * LP Turbines
-	 */
+	 *//*
+
 	private static CustomIcon aTex1_Active = new CustomIcon("iconsets/BigTurbine/LARGE_TURBINE_LP_ACTIVE_1");
 	private static CustomIcon aTex1 = new CustomIcon("iconsets/BigTurbine/LARGE_TURBINE_LP_1");
 	private static CustomIcon aTex2_Active = new CustomIcon("iconsets/BigTurbine/LARGE_TURBINE_LP_ACTIVE_2");
@@ -79,9 +82,11 @@ public class LargeTurbineTextureHandler {
 	};
 
 
-	/**
+	*/
+/**
 	 * HP Turbines
-	 */
+	 *//*
+
 	private static CustomIcon aTexHP1_Active = new CustomIcon("iconsets/BigTurbine/LARGE_TURBINE_HP_ACTIVE_1");
 	private static CustomIcon aTexHP1 = new CustomIcon("iconsets/BigTurbine/LARGE_TURBINE_HP_1");
 	private static CustomIcon aTexHP2_Active = new CustomIcon("iconsets/BigTurbine/LARGE_TURBINE_HP_ACTIVE_2");
@@ -283,7 +288,8 @@ public class LargeTurbineTextureHandler {
 
 	public boolean isUsingAnimatedTexture(TileEntity tTileEntity) {
 		boolean aVal = true;
-		/*IGregTechTileEntity aTile;
+		*/
+/*IGregTechTileEntity aTile;
 		if (tTileEntity instanceof IGregTechTileEntity) {
 			aTile = (IGregTechTileEntity) tTileEntity;
 			if (aTile != null) {
@@ -293,7 +299,8 @@ public class LargeTurbineTextureHandler {
 					Logger.INFO("Returning "+aVal+" as Rotor Assembly controller status");
 				}
 			}	
-		}	*/
+		}	*//*
+
 		return aVal;
 	}
 
@@ -308,3 +315,4 @@ public class LargeTurbineTextureHandler {
 	}
 
 }
+*/

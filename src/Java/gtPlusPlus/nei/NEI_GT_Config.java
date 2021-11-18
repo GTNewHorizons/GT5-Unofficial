@@ -27,6 +27,7 @@ implements IConfigureNEI {
 		mUniqueRecipeMapHandling.add(GTPP_Recipe_Map.sAdvFreezerRecipes_GT.mUnlocalizedName);
 		mUniqueRecipeMapHandling.add(GTPP_Recipe_Map.sMultiblockCentrifugeRecipes_GT.mUnlocalizedName);
 		mUniqueRecipeMapHandling.add(GTPP_Recipe_Map.sMultiblockElectrolyzerRecipes_GT.mUnlocalizedName);
+		mUniqueRecipeMapHandling.add(GTPP_Recipe_Map.sMultiblockMixerRecipes_GT.mUnlocalizedName);
 		
 		// Custom Recipe Maps
 		/*Logger.INFO("NEI Registration: "+CustomRecipeMap.sMappings.size()+" CustomRecipeMaps");
@@ -77,8 +78,10 @@ implements IConfigureNEI {
 		Logger.INFO("NEI Registration: Registering NEI handler for "+GTPP_Recipe.GTPP_Recipe_Map.sMultiblockCentrifugeRecipes_GT.mNEIName);
 		new GT_NEI_multiCentriElectroFreezer(GTPP_Recipe.GTPP_Recipe_Map.sMultiblockCentrifugeRecipes_GT);					
 		Logger.INFO("NEI Registration: Registering NEI handler for "+GTPP_Recipe.GTPP_Recipe_Map.sMultiblockElectrolyzerRecipes_GT.mNEIName);
-		new GT_NEI_multiCentriElectroFreezer(GTPP_Recipe.GTPP_Recipe_Map.sMultiblockElectrolyzerRecipes_GT);		
-		
+		new GT_NEI_multiCentriElectroFreezer(GTPP_Recipe.GTPP_Recipe_Map.sMultiblockElectrolyzerRecipes_GT);
+		Logger.INFO("NEI Registration: Registering NEI handler for "+GTPP_Recipe.GTPP_Recipe_Map.sMultiblockMixerRecipes_GT.mNEIName);
+		new GT_NEI_multiCentriElectroFreezer(GTPP_Recipe.GTPP_Recipe_Map.sMultiblockMixerRecipes_GT);
+
 		Logger.INFO("NEI Registration: Registering NEI handler for "+DecayableRecipeHandler.mNEIName);
 		API.registerRecipeHandler(new DecayableRecipeHandler());
 		API.registerUsageHandler(new DecayableRecipeHandler());

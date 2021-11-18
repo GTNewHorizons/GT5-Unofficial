@@ -1,3 +1,4 @@
+/*
 package gtPlusPlus.xmod.gregtech.common.tileentities.misc;
 
 import gregtech.api.enums.Textures;
@@ -344,3 +345,4 @@ public class TileEntitySolarHeater extends GT_MetaTileEntity_TieredMachineBlock 
 
 	}
 }
+*/

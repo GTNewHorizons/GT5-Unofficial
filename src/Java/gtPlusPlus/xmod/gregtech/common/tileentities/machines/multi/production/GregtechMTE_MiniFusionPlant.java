@@ -1,3 +1,4 @@
+/*
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
 import java.util.ArrayList;
@@ -382,3 +383,4 @@ public class GregtechMTE_MiniFusionPlant extends GregtechMeta_MultiBlockBase {
 	}
 
 }
+*/

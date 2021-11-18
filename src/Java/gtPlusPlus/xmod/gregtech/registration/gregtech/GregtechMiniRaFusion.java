@@ -1,3 +1,4 @@
+/*
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
 import gregtech.api.util.GT_Recipe;
@@ -41,3 +42,4 @@ public class GregtechMiniRaFusion {
 	
 	
 }
+*/

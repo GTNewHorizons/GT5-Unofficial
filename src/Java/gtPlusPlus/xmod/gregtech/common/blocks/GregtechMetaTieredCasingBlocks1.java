@@ -21,7 +21,6 @@ import gregtech.common.blocks.GT_Material_Casings;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.CasingTextureHandler;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import gtPlusPlus.xmod.gregtech.common.blocks.textures.turbine.LargeTurbineTextureHandler;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.storage.GregtechMetaTileEntity_PowerSubStationController;
 
 

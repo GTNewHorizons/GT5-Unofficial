@@ -1,3 +1,4 @@
+/*
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.storage;
 
 import java.util.ArrayList;
@@ -74,7 +75,8 @@ extends GregtechMeta_MultiBlockBase {
 	@Override
 	public void saveNBTData(final NBTTagCompound aNBT) {
 		super.saveNBTData(aNBT);
-		/*final NBTTagCompound gtCraftingComponentsTag = aNBT.getCompoundTag("GT.CraftingComponents");
+		*/
+/*final NBTTagCompound gtCraftingComponentsTag = aNBT.getCompoundTag("GT.CraftingComponents");
 		if (gtCraftingComponentsTag != null){
 
 			Utils.LOG_WARNING("Got Crafting Tag");
@@ -98,13 +100,15 @@ extends GregtechMeta_MultiBlockBase {
 
 				aNBT.setTag("GT.CraftingComponents", gtCraftingComponentsTag);
 			}
-		}*/
+		}*//*
+
 	}
 
 	@Override
 	public void loadNBTData(final NBTTagCompound aNBT) {
 		super.loadNBTData(aNBT);
-		/*final NBTTagCompound gtCraftingComponentsTag = aNBT.getCompoundTag("GT.CraftingComponents");
+		*/
+/*final NBTTagCompound gtCraftingComponentsTag = aNBT.getCompoundTag("GT.CraftingComponents");
 		String xFluid = null;
 		int xAmount = 0;
 		if (gtCraftingComponentsTag.hasNoTags()){
@@ -131,7 +135,8 @@ extends GregtechMeta_MultiBlockBase {
 				Utils.LOG_WARNING("Setting Internal Tank, loading "+xAmount+"L of "+xFluid);
 				this.setInternalTank(xFluid, xAmount);
 			}
-		}*/
+		}*//*
+
 	}
 
 	private boolean setInternalTank(final String fluidName, final int amount){
@@ -303,7 +308,9 @@ extends GregtechMeta_MultiBlockBase {
 			Logger.WARNING("Okay - 3");
 			if ((rList.get(0).getKey().mFluid != null) && (rList.get(0).getKey().mFluid.amount > 0)){
 				Logger.WARNING("Okay - 4");
-				Logger.WARNING("Okay - 1"+" rList.get(0).getKey().mFluid.amount: "+rList.get(0).getKey().mFluid.amount /*+" internalStorageTank:"+internalStorageTank.amount*/);
+				Logger.WARNING("Okay - 1"+" rList.get(0).getKey().mFluid.amount: "+rList.get(0).getKey().mFluid.amount */
+/*+" internalStorageTank:"+internalStorageTank.amount*//*
+);
 				final FluidStack tempFluidStack = rList.get(0).getKey().mFluid;
 				final Fluid tempFluid = tempFluidStack.getFluid();
 				this.internalStorageTank = FluidUtils.getFluidStack(tempFluid.getName(), tempFluidStack.amount);
@@ -380,8 +387,10 @@ extends GregtechMeta_MultiBlockBase {
 					//mOutputHatches.get(0).mFluid.amount = tempResult;
 					this.internalStorageTank.amount = (tempCurrentStored-adder);
 					Logger.WARNING("Okay - 3.1.3"+" internalTankStorage: "+this.internalStorageTank.amount +"L | output hatch contains: "+this.mOutputHatches.get(0).mFluid.amount+"L of "+this.mOutputHatches.get(0).mFluid.getFluid().getName());
-					/*if (internalStorageTank.amount <= 0)
-						internalStorageTank = null;*/
+					*/
+/*if (internalStorageTank.amount <= 0)
+						internalStorageTank = null;*//*
+
 				}
 				Logger.WARNING("Tank ok.");
 				return true;
@@ -460,7 +469,8 @@ extends GregtechMeta_MultiBlockBase {
 		return tAmount >= 16;
 	}
 
-	/*public int countCasings() {
+	*/
+/*public int countCasings() {
 		Utils.LOG_INFO("Counting Machine Casings");
 		try{
 		if (this.getBaseMetaTileEntity().getWorld() == null){
@@ -530,7 +540,8 @@ extends GregtechMeta_MultiBlockBase {
 		//Utils.LOG_INFO("Your Multitank can be 20 blocks tall.");
 		Utils.LOG_INFO("Casings Count: "+tAmount+" Valid Multiblock: "+(tAmount >= 16)+" Tank Storage Capacity:"+getMaximumTankStorage(tAmount)+"L");
 		return tAmount;
-	}*/
+	}*//*
+
 
 	@Override
 	public int getMaxEfficiency(final ItemStack aStack) {
@@ -568,6 +579,7 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	private boolean tryForceNBTUpdate(){
+*/
 /*
 		//Block is invalid.
 		if ((this == null) || (this.getBaseMetaTileEntity() == null)){
@@ -602,7 +614,8 @@ extends GregtechMeta_MultiBlockBase {
 		this.getBaseMetaTileEntity().getWorld().markBlockForUpdate(x, y, z);
 
 		//Mark block dirty, let chunk know it's data has changed and it must be saved to disk. (Albeit slowly)
-		this.getBaseMetaTileEntity().markDirty();*/
+		this.getBaseMetaTileEntity().markDirty();*//*
+
 		return true;
 	}
-}
+}*/
