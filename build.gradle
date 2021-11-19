@@ -4,10 +4,6 @@ buildscript {
 		mavenCentral()
 		jcenter()
 		maven {
-			name = "jitpack"
-			url = "https://jitpack.io"
-		}
-		maven {
 			name = "forge"
 			url = "https://maven.minecraftforge.net"
 		}
