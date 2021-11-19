@@ -5,6 +5,7 @@ import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class RecipeFinderForParallel {
@@ -66,6 +67,35 @@ public class RecipeFinderForParallel {
             }
         }
         return tCurrentPara;
+    }
+
+    public static Object[] getMultiOutput(GT_Recipe aRecipe, int aPall) {
+        ArrayList<FluidStack> tFluidList = new ArrayList<>();
+        ArrayList<ItemStack> tItemList = new ArrayList<>();
+        if (aRecipe == null)
+            return new Object[]{tFluidList, tItemList};
+        if (aRecipe.mFluidOutputs != null && aRecipe.mFluidOutputs.length > 0) {
+            for (FluidStack tFluid : aRecipe.mFluidOutputs) {
+                if (tFluid != null && tFluid.amount > 0) {
+                    tFluidList.add(new FluidStack(tFluid.getFluid(), tFluid.amount * aPall));
+                }
+            }
+        }
+        if (aRecipe.mOutputs != null && aRecipe.mOutputs.length > 0) {
+            for (ItemStack tItem : aRecipe.mOutputs) {
+                if (tItem != null && tItem.stackSize > 0) {
+                    int tAmount = tItem.stackSize * aPall;
+                    while (tAmount > tItem.getMaxStackSize()) {
+                        tItemList.add(GT_Utility.copyAmount(tItem.getMaxStackSize(), tItem));
+                        tAmount -= tItem.getMaxStackSize();
+                    }
+                    tItemList.add(GT_Utility.copyAmount(tAmount, tItem));
+                }
+            }
+        }
+        return new Object[]{
+                tFluidList, tItemList
+        };
     }
 
     public static HashMap<Integer, Integer> compressItem(ItemStack[] aItemStacks) {
