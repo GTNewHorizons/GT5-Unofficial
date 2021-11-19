@@ -1,23 +1,30 @@
-/*
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GTPP_Recipe;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
+
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
 public class GregtechMetaTileEntity_Refinery extends GregtechMeta_MultiBlockBase {
-	
+
+	private int mCasing;
+	private IStructureDefinition<GregtechMetaTileEntity_Refinery> STRUCTURE_DEFINITION = null;
+
 	public GregtechMetaTileEntity_Refinery(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
 	}
@@ -32,21 +39,29 @@ public class GregtechMetaTileEntity_Refinery extends GregtechMeta_MultiBlockBase
 	}
 
 	@Override
-	public String[] getTooltip() {
-		return new String[]{
-				"Controller Block for the Fission Fuel Processing Unit",
-				"Size(WxHxD): 3x9x3", "Controller (Front middle at bottom)",
-				"3x2x3 Base platform of Hastelloy-X (7x Casings)",
-				"1x5x1 Incoloy-DS Fluid Containment Block pillar (Center of base, From layer 3 upwards)",
-				"4x Zeron-100 Reactor Shielding (Each side of Second Sealant Tower layer, Surrounding Incoloy-DS Fluid Containment)",
-				"17x Hastelloy-N Sealant Blocks (Each side of Incoloy-DS Fluid Containment casings, except layer 2 and one on top)",
-				"4x Input Hatch (One of base platform)",
-				"2x Output Hatch (One of base platform)",
-				"1x Output Bus (One of base platform)",
-				"1x Maintenance Hatch (One of base platform)",
-				"1x ZPM or better Muffler (One of base platform)",
-				"1x Energy Hatch (One of base platform)",
-		};
+	protected GT_Multiblock_Tooltip_Builder createTooltip() {
+		GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+		tt.addMachineType(getMachineType())
+				.addInfo("Controller Block for the Fission Fuel Processing Unit")
+				.addPollutionAmount(getPollutionPerTick(null) * 20)
+				.addSeparator()
+				.beginStructureBlock(3, 9, 3, false)
+				.addController("Bottom Center")
+				.addCasingInfo("Hastelloy-X Structural Casing", 7)
+				.addCasingInfo("Incoloy-DS Fluid Containment Block", 5)
+				.addCasingInfo("Zeron-100 Reactor Shielding", 4)
+				.addCasingInfo("Hastelloy-N Sealant Blocks", 17)
+				.addInputHatch("Base platform", 1)
+				.addOutputHatch("Base platform", 1)
+				.addOutputBus("Base platform", 1)
+				.addMufflerHatch("Base platform", 1)
+				.addMaintenanceHatch("Base platform", 1)
+				.addEnergyHatch("Base platform", 1)
+				.addStructureInfo("Muffler's Tier must be ZPM/ZPM+")
+				.addStructureInfo("4x Input Hatches, 2x Output Hatches, 1x Output Bus")
+				.addStructureInfo("1x Muffler, 1x Maintenance Hatch, 1x Energy Hatch")
+				.toolTipFinisher("GT++");
+		return tt;
 	}
 
 	@Override
@@ -93,159 +108,102 @@ public class GregtechMetaTileEntity_Refinery extends GregtechMeta_MultiBlockBase
 		return 0;
 	}
 
-	@Override
-	public boolean checkMultiblock(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
-		final int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
-		final int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
-		for (int i = -1; i < 2; i++) {
-			for (int j = -1; j < 2; j++) {
-				int Y = 0;
-				if (((xDir + i) != 0) || ((zDir + j) != 0)) {
-					final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, Y, zDir + j);
-					if ((!this.addToMachineList(tTileEntity, TAE.GTPP_INDEX(18))) && (!this.addEnergyInputToMachineList(tTileEntity, TAE.GTPP_INDEX(18)))) {
-
-						if (aBaseMetaTileEntity.getBlockOffset(xDir + i, Y, zDir + j) != ModBlocks.blockCasings2Misc) {
-							Logger.INFO("1 Wrong Block. Found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, Y, zDir + j).getLocalizedName());
-							return false;
-						}
-						if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, Y, zDir + j) != 2) {
-							Logger.INFO("1 Wrong Meta. Found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, Y, zDir + j).getLocalizedName()+" | Expected Meta 2 | Got Meta "+aBaseMetaTileEntity.getMetaIDOffset(xDir + i, Y, zDir + j));
-							return false;
-						}
-					}
-					else {
-						//Utils.LOG_INFO("Added Hatch. "+tTileEntity.getInventoryName());
-					}
-				}
-				Y = 1;
-				//Utils.LOG_INFO("Checking at Y+1 as well.");
-				final IGregTechTileEntity tTileEntity2 = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, Y, zDir + j);
-				if ((!this.addToMachineList(tTileEntity2, TAE.GTPP_INDEX(18))) && (!this.addEnergyInputToMachineList(tTileEntity2, TAE.GTPP_INDEX(18)))) {
-
-					if (aBaseMetaTileEntity.getBlockOffset(xDir + i, Y, zDir + j) != ModBlocks.blockCasings2Misc) {
-						Logger.INFO("2 Wrong Block. Found "+aBaseMetaTileEntity.getBlockOffset(xDir, Y, zDir).getLocalizedName());
-						return false;
-					}
-					if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, Y, zDir + j) != 2) {
-						Logger.INFO("2 Wrong Meta. Found "+aBaseMetaTileEntity.getBlockOffset(xDir, Y, zDir).getLocalizedName()+" | Expected Meta 2 | Got Meta "+aBaseMetaTileEntity.getMetaIDOffset(xDir, Y, zDir));
-						return false;
-					}
-				}
-				else {
-					//Utils.LOG_INFO("Added Hatch. "+tTileEntity2.getInventoryName());
-				}
-			}
-		}
-
-		for (int y = 2; y < 7; y++) {
-			if (y<=6){
-				if (aBaseMetaTileEntity.getBlockOffset(xDir, y, zDir) != ModBlocks.blockCasings2Misc) { //Must Define meta for center blocks
-					Logger.INFO("3 Wrong Block. Found "+aBaseMetaTileEntity.getBlockOffset(xDir, y, zDir).getLocalizedName());
-					return false;
-				}
-				if (aBaseMetaTileEntity.getMetaIDOffset(xDir, y, zDir) != 3) {
-					Logger.INFO("3 Wrong Meta. Found "+aBaseMetaTileEntity.getBlockOffset(xDir, y, zDir).getLocalizedName()+" | Expected Meta 3 | Got Meta "+aBaseMetaTileEntity.getMetaIDOffset(xDir, y, zDir));
-					return false;
-				}				
-			}
-			if (y==6){
-				if (aBaseMetaTileEntity.getBlockOffset(xDir, y + 1, zDir) != ModBlocks.blockCasings2Misc) {
-					Logger.INFO("8 Wrong Block. Found "+aBaseMetaTileEntity.getBlockOffset(xDir, y+1, zDir).getLocalizedName()+" | "+aBaseMetaTileEntity.getMetaIDOffset(xDir, y+1, zDir));
-					return false;
-				}
-				if (aBaseMetaTileEntity.getMetaIDOffset(xDir, y + 1, zDir) != 1) {
-					Logger.INFO("8 Wrong Meta. Found "+aBaseMetaTileEntity.getBlockOffset(xDir, y+1, zDir).getLocalizedName()+" | Expected Meta 1 | Got Meta "+aBaseMetaTileEntity.getMetaIDOffset(xDir, y + 1, zDir));
-					return false;
-				}
-			}
-			if (aBaseMetaTileEntity.getBlockOffset(xDir + 1, y, zDir) != ModBlocks.blockCasings2Misc) {
-				//Utils.LOG_INFO("4 Wrong Block. Found "+aBaseMetaTileEntity.getBlockOffset(xDir, y, zDir).getLocalizedName());
-				if (y==3){
-					if (aBaseMetaTileEntity.getBlockOffset(xDir + 1, y, zDir) == ModBlocks.blockCasingsMisc) {
-						if (aBaseMetaTileEntity.getMetaIDOffset(xDir + 1, y, zDir) != 13) {
-							Logger.INFO("4 Wrong Meta. Found "+aBaseMetaTileEntity.getBlockOffset(xDir, y, zDir).getLocalizedName()+" | Expected Meta 13 | Got Meta "+aBaseMetaTileEntity.getMetaIDOffset(xDir, y, zDir));
-							return false;
-						}
-						Logger.INFO("Found Zeron-Casing at "+(aBaseMetaTileEntity.getYCoord()+y));
-					}
-				}
-				else {
-					Logger.INFO("debug.1");
-					return false;
-				}
-			}
-
-			if (aBaseMetaTileEntity.getBlockOffset(xDir - 1, y, zDir) != ModBlocks.blockCasings2Misc) {
-				//Utils.LOG_INFO("5 Wrong Block. Found "+aBaseMetaTileEntity.getBlockOffset(xDir, y, zDir).getLocalizedName());
-				if (y==3){
-					if (aBaseMetaTileEntity.getBlockOffset(xDir + 1, y, zDir) == ModBlocks.blockCasingsMisc) {
-						if (aBaseMetaTileEntity.getMetaIDOffset(xDir + 1, y, zDir) != 13) {
-							Logger.INFO("5 Wrong Meta. Found "+aBaseMetaTileEntity.getBlockOffset(xDir, y, zDir).getLocalizedName()+" | Expected Meta 13 | Got Meta "+aBaseMetaTileEntity.getMetaIDOffset(xDir, y, zDir));
-							return false;
-						}
-						Logger.INFO("Found Zeron-Casing at "+(aBaseMetaTileEntity.getYCoord()+y));
-					}
-				}
-				else {
-					Logger.INFO("debug.2");
-					return false;
-				}
-			}
-
-			if (aBaseMetaTileEntity.getBlockOffset(xDir, y, zDir + 1) != ModBlocks.blockCasings2Misc) {
-				//Utils.LOG_INFO("6 Wrong Block. Found "+aBaseMetaTileEntity.getBlockOffset(xDir, y, zDir).getLocalizedName());
-				if (y==3){
-					if (aBaseMetaTileEntity.getBlockOffset(xDir + 1, y, zDir) == ModBlocks.blockCasingsMisc) {
-						if (aBaseMetaTileEntity.getMetaIDOffset(xDir + 1, y, zDir) != 13) {
-							Logger.INFO("6 Wrong Meta. Found "+aBaseMetaTileEntity.getBlockOffset(xDir, y, zDir).getLocalizedName()+" | Expected Meta 13 | Got Meta "+aBaseMetaTileEntity.getMetaIDOffset(xDir, y, zDir));
-							return false;
-						}
-						Logger.INFO("Found Zeron-Casing at "+(aBaseMetaTileEntity.getYCoord()+y));
-					}
-				}
-				else {
-					Logger.INFO("debug.3");
-					return false;
-				}
-			}
-			if (aBaseMetaTileEntity.getBlockOffset(xDir, y, zDir - 1) != ModBlocks.blockCasings2Misc) {
-				//Utils.LOG_INFO("7 Wrong Block. Found "+aBaseMetaTileEntity.getBlockOffset(xDir, y, zDir).getLocalizedName());
-				if (y==3){
-					if (aBaseMetaTileEntity.getBlockOffset(xDir + 1, y, zDir) == ModBlocks.blockCasingsMisc) {
-						if (aBaseMetaTileEntity.getMetaIDOffset(xDir + 1, y, zDir) != 13) {
-							Logger.INFO("7 Wrong Meta. Found "+aBaseMetaTileEntity.getBlockOffset(xDir, y, zDir).getLocalizedName()+" | Expected Meta 13 | Got Meta "+aBaseMetaTileEntity.getMetaIDOffset(xDir, y, zDir));
-							return false;
-						}
-						Logger.INFO("Found Zeron-Casing at "+(aBaseMetaTileEntity.getYCoord()+y));
-					}
-				}
-				else {
-					Logger.INFO("debug.4");
-					return false;
-				}
-			}			
-		}
-
-		if ((this.mInputHatches.size() != 4) || (this.mOutputHatches.size() != 2) ||
-				(this.mOutputBusses.size() != 1) || (this.mMufflerHatches.size() != 1) ||
-				(this.mMaintenanceHatches.size() != 1) || (this.mEnergyHatches.size() != 1)){
-			Logger.INFO("Wrong Hatch count.");
-			Logger.INFO("I-Hatch Count: "+this.mInputHatches.size());
-			Logger.INFO("O-Hatch Count: "+this.mOutputHatches.size());
-			Logger.INFO("O-Bus Count: "+this.mOutputBusses.size());
-			Logger.INFO("Muffler Count: "+this.mMufflerHatches.size());
-			Logger.INFO("Maint Count: "+this.mMaintenanceHatches.size());
-			Logger.INFO("Energy Count: "+this.mEnergyHatches.size());
+	public final boolean addRefineryList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+		if (aTileEntity == null) {
 			return false;
-		}
-		if (this.mMufflerHatches.size() == 1){
-			if (this.mMufflerHatches.get(0).mTier < 7){
-				Logger.INFO("Your Muffler must be AT LEAST ZPM tier or higher.");
+		} else {
+			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mOutputBusses.add((GT_MetaTileEntity_Hatch_OutputBus) aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler && ((GT_MetaTileEntity_Hatch_Muffler) aMetaTileEntity).mTier >= 7) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mMufflerHatches.add((GT_MetaTileEntity_Hatch_Muffler) aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mOutputHatches.add((GT_MetaTileEntity_Hatch_Output) aMetaTileEntity);
 			}
-		}		
-		Logger.INFO("Fission Fuel Production Plant Formed. "+this.getRecipeMap().mRecipeList.size());
-		this.resetRecipeMapForAllInputHatches(this.getRecipeMap());
-		return true;
+		}
+		return false;
+	}
+
+	@Override
+	public IStructureDefinition<GregtechMetaTileEntity_Refinery> getStructureDefinition() {
+		if (STRUCTURE_DEFINITION == null) {
+			STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_Refinery>builder()
+					.addShape(mName, transpose(new String[][]{
+							{"   ", " N ", "   "},
+							{" N ", "NIN", " N "},
+							{" N ", "NIN", " N "},
+							{" N ", "NIN", " N "},
+							{" Z ", "ZIZ", " Z "},
+							{" N ", "NIN", " N "},
+							{"XXX", "XXX", "XXX"},
+							{"X~X", "XXX", "XXX"},
+					}))
+					.addElement(
+							'X',
+							ofChain(
+									ofHatchAdder(
+											GregtechMetaTileEntity_Refinery::addRefineryList, TAE.GTPP_INDEX(18), 1
+									),
+									onElementPass(
+											x -> ++x.mCasing,
+											ofBlock(
+													ModBlocks.blockCasings2Misc, 2
+											)
+									)
+							)
+					)
+					.addElement(
+							'I',
+							ofBlock(
+									ModBlocks.blockCasings2Misc, 3
+							)
+					)
+					.addElement(
+							'N',
+							ofBlock(
+									ModBlocks.blockCasings2Misc, 1
+							)
+					)
+					.addElement(
+							'Z',
+							ofBlock(
+									ModBlocks.blockCasingsMisc, 13
+							)
+					)
+					.build();
+		}
+		return STRUCTURE_DEFINITION;
+	}
+
+	@Override
+	public void construct(ItemStack stackSize, boolean hintsOnly) {
+		buildPiece(mName , stackSize, hintsOnly, 1, 7, 0);
+	}
+
+	@Override
+	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+		mCasing = 0;
+		if (checkPiece(mName, 1, 7, 0) && mCasing >= 7) {
+			if (this.mInputHatches.size() == 4 && this.mOutputHatches.size() == 2 &&
+					this.mOutputBusses.size() == 1 && this.mMufflerHatches.size() == 1 &&
+					this.mMaintenanceHatches.size() == 1 && this.mEnergyHatches.size() == 1) {
+				this.resetRecipeMapForAllInputHatches(this.getRecipeMap());
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override
@@ -282,4 +240,4 @@ public class GregtechMetaTileEntity_Refinery extends GregtechMeta_MultiBlockBase
 		return new GregtechMetaTileEntity_Refinery(this.mName);
 	}
 
-}*/
+}

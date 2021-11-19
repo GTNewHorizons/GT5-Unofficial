@@ -93,7 +93,7 @@ public class COMPAT_HANDLER {
 			new RECIPES_Extruder();
 			GregtechGeneratorsULV.run();
 			GregtechEnergyBuffer.run();
-			//GregtechLFTR.run();
+			GregtechLFTR.run();
 			GregtechSteamCondenser.run();
 			GregtechSafeBlock.run();
 			//GregtechSuperConductionPoint.run();
@@ -116,7 +116,7 @@ public class COMPAT_HANDLER {
 			//GregtechIndustrialMultiTank.run();
 			GregtechGeothermalThermalGenerator.run();
 			Gregtech4Content.run();
-			//GregtechIndustrialFuelRefinery.run();
+			GregtechIndustrialFuelRefinery.run();
 			GregtechTreeFarmerTE.run();
 			//GregtechIndustrialTreeFarm.run();
 			GregtechIndustrialSifter.run();

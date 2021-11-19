@@ -1,9 +1,10 @@
-/*
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
@@ -11,15 +12,11 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
 import gregtech.api.util.GTPP_Recipe;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
@@ -29,19 +26,23 @@ import gtPlusPlus.core.material.nuclear.NUCLIDE;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
-import gtPlusPlus.xmod.gregtech.common.blueprint.Blueprint_LFTR;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
+
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
 public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 
-	protected long mEUStore;
 	protected int fuelConsumption = 0;
 	protected int fuelValue = 0;
 	protected int fuelRemaining = 0;
 	protected boolean boostEu = false;
 	protected boolean heliumSparging = false;
+	private int mCasing;
+	private IStructureDefinition<GregtechMTE_NuclearReactor> STRUCTURE_DEFINITION = null;
+
 
 	public GregtechMTE_NuclearReactor(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
@@ -62,25 +63,31 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
-	public String[] getTooltip() {
-		return new String[]{
-				"Controller Block for the Liquid Fluoride Thorium Reactor.",
-				"Produces Heat & Energy from Radioactive Beta Decay.",
-				"Size(WxHxD): 7x4x7, Controller (Bottom, Center)",
-				"Bottom and Top layer are Hastelloy-N Reactor Casing",
-				"Middle two layers are Zeron-100 Reactor Shielding",
-				"--Hatches go in the top or bottom layer edges--",
-				"10x IV+ Output Hatches",
-				"4x IV+ Input Hatches",
-				"4x IV+ Dynamo Hatches",
-				"2x Maint. Hatch",
-				"--Mufflers go in the top 3x3--",
-				"4x IV+ Mufflers",
-				"Outputs U233 every 10 seconds, on average",
-				"Input Fluorine and Helium for bonus byproducts",
-				"Input Li2BeF4 and a molten salt as fuel.",
-				"LiFBeF2ThF4UF4, LiFBeF2ZrF4UF4 or﻿ LiFBeF2ZrF4U235",
-				};
+	protected GT_Multiblock_Tooltip_Builder createTooltip() {
+		GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+		tt.addMachineType(getMachineType())
+				.addInfo("Controller Block for the Liquid Fluoride Thorium Reactor.")
+				.addInfo("Produces Heat & Energy from Radioactive Beta Decay.")
+				.addInfo("Outputs U233 every 10 seconds, on average")
+				.addInfo("Input Fluorine and Helium for bonus byproducts")
+				.addInfo("Input Li2BeF4 and a molten salt as fuel.")
+				.addInfo("LiFBeF2ThF4UF4, LiFBeF2ZrF4UF4 or LiFBeF2ZrF4U235")
+				.addPollutionAmount(getPollutionPerTick(null) * 20)
+				.addSeparator()
+				.beginStructureBlock(7, 4, 7, true)
+				.addController("Bottom Center")
+				.addCasingInfo("Hastelloy-N Reactor Casing", 27)
+				.addCasingInfo("Zeron-100 Reactor Shielding", 26)
+				.addInputHatch("Top or bottom layer edges", 1)
+				.addOutputHatch("Top or bottom layer edges", 1)
+				.addDynamoHatch("Top or bottom layer edges", 1)
+				.addMaintenanceHatch("Top or bottom layer edges", 1)
+				.addMufflerHatch("Top 3x3", 2)
+				.addStructureInfo("All hatches must have IV+ tier.")
+				.addStructureInfo("10+ Output Hatches, 4+ Input Hatches, 4x Dynamo Hatches")
+				.addStructureInfo("2x Maintenance Hatches, 4x Mufflers")
+				.toolTipFinisher("GT++");
+		return tt;
 	}
 
 	@Override
@@ -136,16 +143,125 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 	@Override
 	public String getCustomGUIResourceName() {
 		return "MatterFabricator";
-	}	
+	}
 
-	private Blueprint_LFTR mBlueprint;
-	
+	public final boolean addNuclearReactorEdgeList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+		if (aTileEntity == null) {
+			return false;
+		} else {
+			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Dynamo && ((GT_MetaTileEntity_Hatch_Dynamo) aMetaTileEntity).mTier >= 5){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mDynamoHatches.add((GT_MetaTileEntity_Hatch_Dynamo)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input && ((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mTier >= 5) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output && ((GT_MetaTileEntity_Hatch_Output) aMetaTileEntity).mTier >= 5) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mOutputHatches.add((GT_MetaTileEntity_Hatch_Output) aMetaTileEntity);
+			}
+		}
+		return false;
+	}
+
+	public final boolean addNuclearReactorTopList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+		if (aTileEntity == null) {
+			return false;
+		} else {
+			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler && ((GT_MetaTileEntity_Hatch_Muffler) aMetaTileEntity).mTier >= 5) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mMufflerHatches.add((GT_MetaTileEntity_Hatch_Muffler) aMetaTileEntity);
+			}
+		}
+		return false;
+	}
+
 	@Override
-	public boolean checkMultiblock(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {	
+	public IStructureDefinition<GregtechMTE_NuclearReactor> getStructureDefinition() {
+		if (STRUCTURE_DEFINITION == null) {
+			STRUCTURE_DEFINITION = StructureDefinition.<GregtechMTE_NuclearReactor>builder()
+					.addShape(mName, transpose(new String[][]{
+							{"CCCCCCC", "COOOOOC", "COXXXOC", "COXXXOC", "COXXXOC", "COOOOOC", "CCCCCCC"},
+							{"GGGGGGG", "G-----G", "G-----G", "G-----G", "G-----G", "G-----G", "GGGGGGG"},
+							{"GGGGGGG", "G-----G", "G-----G", "G-----G", "G-----G", "G-----G", "GGGGGGG"},
+							{"CCC~CCC", "COOOOOC", "COOOOOC", "COOOOOC", "COOOOOC", "COOOOOC", "CCCCCCC"},
+					}))
+					.addElement(
+							'C',
+							ofChain(
+									ofHatchAdder(
+											GregtechMTE_NuclearReactor::addNuclearReactorEdgeList, TAE.GTPP_INDEX(12), 1
+									),
+									onElementPass(
+											x -> ++x.mCasing,
+											ofBlock(
+													ModBlocks.blockCasingsMisc, 12
+											)
+									)
+							)
+					)
+					.addElement(
+							'X',
+							ofChain(
+									ofHatchAdder(
+											GregtechMTE_NuclearReactor::addNuclearReactorTopList, TAE.GTPP_INDEX(12), 2
+									),
+									onElementPass(
+											x -> ++x.mCasing,
+											ofBlock(
+													ModBlocks.blockCasingsMisc, 12
+											)
+									)
+							)
 
-			// Life Lessons from Greg.
-			*/
-/**
+					)
+					.addElement(
+							'O',
+							ofBlock(
+									ModBlocks.blockCasingsMisc, 12
+							)
+					)
+					.addElement(
+							'G',
+							ofBlock(
+									ModBlocks.blockCasingsMisc, 13
+							)
+					)
+					.build();
+		}
+		return STRUCTURE_DEFINITION;
+	}
+
+	@Override
+	public void construct(ItemStack stackSize, boolean hintsOnly) {
+		buildPiece(mName , stackSize, hintsOnly, 3, 3, 0);
+	}
+
+	@Override
+	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+		mCasing = 0;
+		if (checkPiece(mName, 3, 3, 0) && mCasing >= 27) {
+			if (mOutputHatches.size() >= 10 && mInputHatches.size() >= 4 && mDynamoHatches.size() == 4 &&
+					mMufflerHatches.size() == 4 && mMaintenanceHatches.size() == 2) {
+					this.mWrench = true;
+					this.mScrewdriver = true;
+					this.mSoftHammer = true;
+					this.mHardHammer = true;
+					this.mSolderingTool = true;
+					this.mCrowbar = true;
+					this.turnCasingActive(false);
+					return true;
+			}
+		}
+		return false;
+	}
+
+		// Alk's Life Lessons from Greg.
+		/*
 			[23:41:15] <GregoriusTechneticies> xdir and zdir are x2 and not x3
 			[23:41:26] <GregoriusTechneticies> thats you issue
 			[23:44:33] <Alkalus> mmm?
@@ -160,175 +276,7 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 			[23:45:51] <Alkalus> Ahh
 			[23:45:57] <GregoriusTechneticies> and not 2
 			[23:46:06] <Alkalus> Noted, thanks :D
-			 *//*
-
-
-			final int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 3;
-			final int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * 3;
-
-			for (int i = -3; i <= 3; i++) {
-				for (int j = -3; j <= 3; j++) {
-					for (int h = 0; h < 4; h++) {
-						final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
-
-						// Reactor Floor/Roof inner 5x5
-						if (((i != -3) && (i != 3)) && ((j != -3) && (j != 3))) {
-
-							// Reactor Floor & Roof (Inner 5x5) + Mufflers, Dynamos and Fluid outputs.
-							if ((h == 0) || (h == 3)) {
-
-								//If not a hatch, continue, else add hatch and continue.
-								if ((!this.addMufflerToMachineList(tTileEntity, TAE.GTPP_INDEX(12))) && (!this.addOutputToMachineList(tTileEntity, TAE.GTPP_INDEX(12))) && (!this.addDynamoToMachineList(tTileEntity, TAE.GTPP_INDEX(12)))) {
-									if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
-										Logger.INFO("Hastelloy-N Reactor Casing(s) Missing from one of the top layers inner 3x3.");
-										Logger.INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
-										return false;
-									}
-									if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 12) {
-										Logger.INFO("Hastelloy-N Reactor Casing(s) Missing from one of the top layers inner 3x3. Wrong Meta for Casing.");
-										return false;
-									}
-								}
-							}
-
-							// Inside 2 layers, mostly air
-							else {
-
-								// Reactor Inner 5x5
-								//if ((i != -1 && i != 1) && (j != -1 && j != 1)) {
-								if (!aBaseMetaTileEntity.getAirOffset(xDir + i, h, zDir + j)) {
-									Logger.INFO("Make sure the inner 3x3 of the Multiblock is Air.");
-									return false;
-								}
-
-							}
-
-							//TODO - Add Carbon Moderation Rods
-							*/
-/*
-								else { //carbon moderation rods are at 1,1 & -1,-1 & 1,-1 & -1,1
-									if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
-										Utils.LOG_WARNING("LFTR Casing(s) Missing from one of the top layers inner 3x3.");
-										Utils.LOG_WARNING("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
-										return false;
-									}
-									if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 12) {
-										Utils.LOG_WARNING("LFTR Casing(s) Missing from one of the top layers inner 3x3.");
-										return false;
-									}
-								}*//*
-
-
-						}
-
-						//Dealt with inner 5x5, now deal with the exterior.
-						else {
-
-							//Deal with all 4 sides (Reactor walls)
-							if ((h == 1) || (h == 2)) {
-								if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
-									Logger.INFO("Reactor Shielding Missing from somewhere in the second layer.");
-									Logger.INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
-									return false;
-								}
-								if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 13) {
-									Logger.INFO("Reactor Shielding Missing from somewhere in the second layer.");
-									Logger.INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
-									return false;
-								}
-							}
-
-							//Deal with top and Bottom edges (Inner 5x5)
-							else if ((h == 0) || (h == 3)) {
-								if ((!this.addToMachineList(tTileEntity, TAE.GTPP_INDEX(12))) && (!this.addInputToMachineList(tTileEntity, TAE.GTPP_INDEX(12))) && (!this.addOutputToMachineList(tTileEntity, TAE.GTPP_INDEX(12))) && (!this.addDynamoToMachineList(tTileEntity, TAE.GTPP_INDEX(12)))) {
-									if (((xDir + i) != 0) || ((zDir + j) != 0)) {//no controller
-
-										if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
-											Logger.INFO("Hastelloy-N Reactor Casing(s) Missing from one of the edges on the top layer.");
-											Logger.INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
-											return false;
-										}
-										if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 12) {
-											Logger.INFO("Hastelloy-N Reactor Casing(s) Missing from one of the edges on the top layer. "+h);
-											Logger.INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
-											if (h ==0){
-												if (tTileEntity instanceof GregtechMTE_NuclearReactor){
-
-												}
-											}
-											else {
-												return false;
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-
-			
-			if (this.mDynamoHatches != null) {
-				for (int i = 0; i < this.mDynamoHatches.size(); i++) {
-					if (this.mDynamoHatches.get(i).mTier < 5){
-						Logger.INFO("You require at LEAST IV tier Dynamo Hatches.");
-						Logger.INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getXCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getYCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getZCoord());
-						return false;
-					}
-				}
-			}
-			if (this.mOutputHatches != null) {
-				for (int i = 0; i < this.mOutputHatches.size(); i++) {
-
-					if ((this.mOutputHatches.get(i).mTier < 5) && (this.mOutputHatches.get(i).getBaseMetaTileEntity() instanceof GregtechMTE_NuclearReactor)){
-						Logger.INFO("You require at LEAST IV tier Output Hatches.");
-						Logger.INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getXCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getYCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getZCoord());
-						Logger.INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getInventoryName());
-						return false;
-					}
-				}
-			}
-			if (this.mInputHatches != null) {
-				for (int i = 0; i < this.mInputHatches.size(); i++) {
-					if (this.mInputHatches.get(i).mTier < 5){
-						Logger.INFO("You require at LEAST IV tier Input Hatches.");
-						Logger.INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getXCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getYCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getZCoord());
-						Logger.INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getInventoryName());
-						return false;
-					}
-				}
-			}
-			if (this.mMufflerHatches.size() != 4){
-				Logger.INFO("You require EXACTLY 4 muffler hatches on top. FOUR. You have "+this.mMufflerHatches.size());
-				return false;
-			}
-			if (this.mInputHatches.size() < 4){
-				Logger.INFO("You require 4 or more input hatches. You have "+this.mInputHatches.size());
-				return false;
-			}
-			if (this.mOutputHatches.size() < 10){
-				Logger.INFO("You require 10 or more output hatches. You have "+this.mOutputHatches.size());
-				return false;
-			}
-			if (this.mDynamoHatches.size() != 4){
-				Logger.INFO("You require EXACTLY 4 dynamo hatches. FOUR. You have "+this.mDynamoHatches.size());
-				return false;
-			}
-			if (this.mMaintenanceHatches.size() != 2){
-				Logger.INFO("You require EXACTLY 2 Maint. hatches. TWO. You have "+this.mMaintenanceHatches.size());
-				return false;
-			}
-			this.mWrench = true;
-			this.mScrewdriver = true;
-			this.mSoftHammer = true;
-			this.mHardHammer = true;
-			this.mSolderingTool = true;
-			this.mCrowbar = true;
-			this.turnCasingActive(false);
-			Logger.INFO("Multiblock Formed.");
-			return true;
-	}
+		 */
 
 	@Override
 	public boolean isCorrectMachinePart(final ItemStack aStack) {
@@ -393,8 +341,6 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 		}
 		return true;
 	}
-
-
 
 	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
@@ -555,8 +501,6 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 		return 0;
 	}
 
-
-
 	public int getAmountOfOutputs() {
 		return 10;
 	}
@@ -683,4 +627,4 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 		super.onPostTick(aBaseMetaTileEntity, aTick);
 	}
 
-}*/
+}
