@@ -95,7 +95,7 @@ public class RECIPES_Machines {
 	public static ItemStack RECIPE_ThermalBoilerCasing;
 
 	//Thorium Reactor
-	/*public static ItemStack RECIPE_LFTRController;*/
+	public static ItemStack RECIPE_LFTRController;
 	public static ItemStack RECIPE_LFTROuterCasing;
 	public static ItemStack RECIPE_LFTRInnerCasing;
 
@@ -1374,23 +1374,23 @@ public class RECIPES_Machines {
 			if (CORE.ConfigSwitches.enableMultiblock_LiquidFluorideThoriumReactor){
 
 				//Thorium Reactor
-				/*RECIPE_LFTRController = GregtechItemList.ThoriumReactor.get(1);*/
+				RECIPE_LFTRController = GregtechItemList.ThoriumReactor.get(1);
 				RECIPE_LFTRInnerCasing = GregtechItemList.Casing_Reactor_II.get(1); //Zeron
 				RECIPE_LFTROuterCasing = GregtechItemList.Casing_Reactor_I.get(1); //Hastelloy
 
 				ItemStack controlCircuit = ItemUtils.getSimpleStack(ModItems.itemCircuitLFTR);
 				if(!GTNH) {
-					/*RecipeUtils.addShapedGregtechRecipe(
+					RecipeUtils.addShapedGregtechRecipe(
 							controlCircuit, "cableGt12NaquadahAlloy", controlCircuit,
 							"plateDoubleHastelloyN", GregtechItemList.Gregtech_Computer_Cube.get(1), "plateDoubleHastelloyN",
 							"plateThorium232", CI.machineHull_UV, "plateThorium232",
-							RECIPE_LFTRController);*/
+							RECIPE_LFTRController);
 				} else  {
-					/*RecipeUtils.addShapedGregtechRecipe(
+					RecipeUtils.addShapedGregtechRecipe(
 							controlCircuit, "cableGt12NaquadahAlloy", controlCircuit,
 							"plateDoubleHastelloyN", GregtechItemList.Gregtech_Computer_Cube.get(1), "plateDoubleHastelloyN",
 							"plateThorium232", CI.machineHull_LuV, "plateThorium232",
-							RECIPE_LFTRController);*/
+							RECIPE_LFTRController);
 				}
 				RecipeUtils.addShapedGregtechRecipe(
 						"plateDoubleZeron100", CI.craftingToolScrewdriver, "plateDoubleZeron100",
@@ -1411,11 +1411,11 @@ public class RECIPES_Machines {
 
 
 				//Fission Fuel Plant
-				/*RecipeUtils.addShapedGregtechRecipe(
+				RecipeUtils.addShapedGregtechRecipe(
 						CI.getTieredCircuit(5), CI.craftingToolSolderingIron, CI.getTieredCircuit(5),
 						"plateDenseTungstenSteel", GregtechItemList.Gregtech_Computer_Cube.get(1), "plateDenseTungstenSteel",
 						"gearGtStellite", CI.machineHull_LuV, "gearGtStellite",
-						GregtechItemList.Industrial_FuelRefinery.get(1));*/
+						GregtechItemList.Industrial_FuelRefinery.get(1));
 
 				ItemStack mInnerTank;
 

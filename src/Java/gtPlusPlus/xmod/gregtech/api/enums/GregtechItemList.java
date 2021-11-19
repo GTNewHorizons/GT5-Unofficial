@@ -227,7 +227,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 
 
 	//LFTR
-	/*ThoriumReactor,*/
+	ThoriumReactor,
 	Casing_Reactor_I, 
 	Casing_Reactor_II,
 
@@ -238,7 +238,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 
 
 	//Fission Fuel Refinery
-	/*Industrial_FuelRefinery,*/
+	Industrial_FuelRefinery,
 	Casing_Refinery_External,
 	Casing_Refinery_Structural,
 	Casing_Refinery_Internal,
