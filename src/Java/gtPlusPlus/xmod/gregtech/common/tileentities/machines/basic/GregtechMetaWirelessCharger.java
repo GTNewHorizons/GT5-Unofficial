@@ -43,7 +43,7 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 	public String[] getDescription() {
 		return new String[] {this.mDescription,
 				"3 Modes, Long-Range, Local and Mixed.", 
-				"Long-Range: Can supply 2A of power to a single player upto "+(GT_Values.V[this.mTier]*4)+"m away.",
+				"Long-Range: Can supply 2A of power to a single player up to "+(GT_Values.V[this.mTier]*4)+"m away.",
 				"Local: Can supply several Amps to each player within "+this.mTier*20+"m.",
 				"Mixed: Provides both 2A of long range and 1A per player locally.",
 				"Mixed mode is more conservative of power and as a result only",
@@ -391,13 +391,13 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 									if (!mLocalChargingMap.containsKey(mTemp.getPersistentID())){
 										mLocalChargingMap.put(mTemp.getPersistentID(), mTemp);
 										ChargingHelper.addValidPlayer(mTemp, this);
-										PlayerUtils.messagePlayer(mTemp, "You have entered charging range. ["+tempRange+"m - Local].");
+										//PlayerUtils.messagePlayer(mTemp, "You have entered charging range. ["+tempRange+"m - Local].");
 									}
 								}
 								else {
 									if (mLocalChargingMap.containsKey(mTemp.getPersistentID())){
 										if (mLocalChargingMap.remove(mTemp.getPersistentID()) != null){
-											PlayerUtils.messagePlayer(mTemp, "You have left charging range. ["+tempRange+"m - Local].");
+											//PlayerUtils.messagePlayer(mTemp, "You have left charging range. ["+tempRange+"m - Local].");
 											ChargingHelper.removeValidPlayer(mTemp, this);	
 										}
 									}
