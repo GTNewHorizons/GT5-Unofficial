@@ -1,4 +1,4 @@
-/*
+
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
 import java.util.concurrent.ScheduledExecutorService;
@@ -48,10 +48,9 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 
 
 
-	*/
 /*
 	 * Static thread for Fake World Handling
-	 *//*
+	 */
 
 
 
@@ -63,8 +62,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 		CASING_TEXTURE_ID = TAE.getIndexFromPage(1, 15);
 		mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings2Misc, 15);
 
-		*/
-/*if (executor == null || mTreeData == null) {
+if (executor == null || mTreeData == null) {
 			if (executor == null) {
 				executor = Executors.newScheduledThreadPool(10);				
 			}
@@ -82,7 +80,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 					}
 				}
 			}			
-		}*//*
+		}
 
 
 
@@ -106,7 +104,6 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 		}
 
 		return new String[]{
-                "[WIP] Disabled",
 				"Converts EU to Oak Logs",
 				"Speed: Very Fast | Eu Usage: 100% | Parallel: 1",				
 				"Requires a Saw, Buzz Saw or Chainsaw in GUI slot",
@@ -155,9 +152,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 
 	public boolean checkRecipe(final ItemStack aStack) {
 
-		//Logger.WARNING("Trying to process virtual tree farming");
 		if (mTreeData != null) {
-			//Logger.WARNING("Tree Data is valid");
 
 			long tVoltage = getMaxInputVoltage();
 			byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
@@ -189,13 +184,11 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 			AutoMap<ItemStack> aOutputs = new AutoMap<ItemStack>();
 
 			try {
-				//Logger.WARNING("Output Chance - "+aChance+" | Valid number? "+(aChance < 1000));
 				if (aChance < 8) {
 					//1% Chance per Tick				
 					for (int u=0; u<(Math.max(4, (MathUtils.randInt((3*tTier), 100)*tTier*tTier)/14));u++) {
 						aOutputs = mTreeData.generateOutput(0);		
 						if (aOutputs.size() > 0) {
-							Logger.WARNING("Generated some Loot, adding it to the output busses");
 
 							ItemStack aLeaves = ItemUtils.getSimpleStack(Blocks.leaves);
 
@@ -204,7 +197,6 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 									this.addOutput(aOutputItemStack);
 								}
 							}
-							Logger.WARNING("Updating Slots");
 							this.updateSlots();
 						}	
 					}			
@@ -214,12 +206,9 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 			catch (Throwable t) {
 				t.printStackTrace();
 			}
-
-			//Logger.WARNING("Valid Recipe");
 			return true;
 		}
 		else {
-			//Logger.WARNING("Invalid Recipe");
 			return false;
 		}
 		//return this.checkRecipeGeneric(4, 100, 100);
@@ -253,7 +242,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 
 							if (!isValidBlockForStructure(tTileEntity, CASING_TEXTURE_ID, true, aBlock, aMeta,
 									ModBlocks.blockCasings2Misc, 15)) {
-								Logger.WARNING("Bad centrifuge casing");
+								//Logger.WARNING("Bad centrifuge casing");
 								return false;
 							}
 							++tAmount;
@@ -295,19 +284,19 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 						long tVoltage = getMaxInputVoltage();
 						byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));						
 						if (EU.getCharge(invItem) >= tVoltage) {
-							Logger.WARNING("Can drain.");
+							//Logger.WARNING("Can drain.");
 							if (EU.discharge(invItem, (int) tVoltage, -1)) {
-								Logger.WARNING("Drained Power.");
+								//Logger.WARNING("Drained Power.");
 								didElectricDamage = true;
 							}
 							else {
-								Logger.WARNING("Failed when draining Power.");
+								//Logger.WARNING("Failed when draining Power.");
 								this.getBaseMetaTileEntity().disableWorking();
 							}
 						}							
 					}
 				}
-				Logger.WARNING("Drained Power? "+didElectricDamage);
+				//Logger.WARNING("Drained Power? "+didElectricDamage);
 
 
 
@@ -315,7 +304,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 					long aDmg = GT_MetaGenerated_Tool.getToolDamage(invItem);
 					long aDmgMax = GT_MetaGenerated_Tool.getToolMaxDamage(invItem);
 					if (aDmg < aDmgMax && GT_MetaGenerated_Tool.getPrimaryMaterial(invItem) != Materials._NULL) {
-						Logger.WARNING("dmg: "+aDmg+" | max: "+aDmgMax);
+						//Logger.WARNING("dmg: "+aDmg+" | max: "+aDmgMax);
 						GT_MetaGenerated_Tool.setToolDamage(invItem, aDmg+getDamageToComponent(invItem));							
 					}
 					else if (aDmg >= aDmgMax) {
@@ -325,4 +314,4 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 			}			
 		}		
 	}
-}*/
+}

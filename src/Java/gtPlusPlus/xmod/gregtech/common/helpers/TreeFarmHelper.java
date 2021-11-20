@@ -202,7 +202,7 @@ public class TreeFarmHelper {
 									)){
 
 						if (!testBlock.getUnlocalizedName().toLowerCase().contains("air") || !testBlock.getUnlocalizedName().toLowerCase().contains("pumpkin")) {
-							Logger.WARNING("5:"+testBlock.getUnlocalizedName());
+							//Logger.WARNING("5:"+testBlock.getUnlocalizedName());
 						} else {
 							aBaseMetaTileEntity.getWorld().setBlock(aBaseMetaTileEntity.getXCoord()+xDir+i, aBaseMetaTileEntity.getYCoord()+h, aBaseMetaTileEntity.getZCoord()+zDir+j, Blocks.bookshelf);
 						}
@@ -222,14 +222,14 @@ public class TreeFarmHelper {
 							){
 
 						if (!testBlock.getUnlocalizedName().toLowerCase().contains("air") || !testBlock.getUnlocalizedName().toLowerCase().contains("pumpkin")) {
-							Logger.WARNING("0:"+testBlock.getUnlocalizedName());
+							//Logger.WARNING("0:"+testBlock.getUnlocalizedName());
 						} else {
 							aBaseMetaTileEntity.getWorld().setBlock(aBaseMetaTileEntity.getXCoord()+xDir+i, aBaseMetaTileEntity.getYCoord()+h, aBaseMetaTileEntity.getZCoord()+zDir+j, Blocks.melon_block);
 						}
 
 
 						if (isLeaves(testBlock) || isWoodLog(testBlock)){
-							Logger.WARNING("1:"+testBlock.getUnlocalizedName());
+							//Logger.WARNING("1:"+testBlock.getUnlocalizedName());
 							int posiX, posiY, posiZ;
 							posiX = aBaseMetaTileEntity.getXCoord()+xDir+i;
 							posiY = aBaseMetaTileEntity.getYCoord()+h;
@@ -440,10 +440,10 @@ public class TreeFarmHelper {
 	public static boolean isSapling(final Block log){
 		if (log != null){
 			if (OrePrefixes.sapling.contains(new ItemStack(log, 1))){
-				Logger.WARNING(""+log.getLocalizedName());
+				//Logger.WARNING(""+log.getLocalizedName());
 			}
 			if (log.getLocalizedName().toLowerCase().contains("sapling")){
-				Logger.WARNING(""+log.getLocalizedName());
+				//Logger.WARNING(""+log.getLocalizedName());
 				return true;
 			}
 		}
