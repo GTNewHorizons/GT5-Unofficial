@@ -93,11 +93,6 @@ if (executor == null || mTreeData == null) {
 				}
 			}			
 		}
-
-
-
-
-
 	}
 
 	public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
@@ -119,12 +114,11 @@ if (executor == null || mTreeData == null) {
 				.addInfo("Converts EU to Oak Logs")
 				.addInfo("Eu Usage: 100% | Parallel: 1")
 				.addInfo("Requires a Saw or Chainsaw in GUI slot")
-				.addInfo("Constructed exactly the same as a normal Vacuum Freezer")
 				.addPollutionAmount(getPollutionPerTick(null) * 20)
 				.addSeparator()
 				.beginStructureBlock(3, 3, 3, true)
 				.addController("Front center")
-				.addCasingInfo(mCasingName, 10)
+				.addCasingInfo("Sterile Farm Casing", 10)
 				.addInputBus("Any casing", 1)
 				.addOutputBus("Any casing", 1)
 				.addEnergyHatch("Any casing", 1)
@@ -257,8 +251,8 @@ if (executor == null || mTreeData == null) {
 			STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntityTreeFarm>builder()
 					.addShape(mName, transpose(new String[][]{
 							{"XXX", "CCC", "CCC"},
-							{"XXX", "C-C", "CCC"},
-							{"X~X", "CCC", "CCC"},
+							{"X~X", "C-C", "CCC"},
+							{"XXX", "CCC", "CCC"},
 					}))
 					.addElement(
 							'C',
@@ -269,7 +263,7 @@ if (executor == null || mTreeData == null) {
 									onElementPass(
 											x -> ++x.mCasing,
 											ofBlock(
-													ModBlocks.blockCasingsMisc, 0
+													ModBlocks.blockCasings2Misc, 0
 											)
 									)
 							)
@@ -277,7 +271,7 @@ if (executor == null || mTreeData == null) {
 					.addElement(
 							'X',
 							ofBlock(
-									ModBlocks.blockCasingsMisc, 0
+									ModBlocks.blockCasings2Misc, 0
 							)
 					)
 					.build();
