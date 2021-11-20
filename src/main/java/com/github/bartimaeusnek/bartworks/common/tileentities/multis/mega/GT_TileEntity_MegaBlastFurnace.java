@@ -28,6 +28,7 @@ import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
 import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import com.github.bartimaeusnek.bartworks.util.MegaUtils;
+import com.github.bartimaeusnek.bartworks.util.Pair;
 import com.github.bartimaeusnek.crossmod.tectech.TecTechEnabledMulti;
 import com.github.bartimaeusnek.crossmod.tectech.helper.TecTechUtils;
 import com.github.bartimaeusnek.crossmod.tectech.tileentites.tiered.LowPowerLaser;
@@ -398,9 +399,9 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_MetaTileEntity_ElectricBl
             int tCurrentPara = handleParallelRecipe(tRecipe, tFluids, tInputs, (int) tMaxPara);
             processed = tCurrentPara;
             found_Recipe = true;
-            Object[] Outputs = getMultiOutput(tRecipe, tCurrentPara);
-            outputFluids = (ArrayList<FluidStack>) Outputs[0];
-            outputItems = (ArrayList<ItemStack>) Outputs[1];
+            Pair<ArrayList<FluidStack>, ArrayList<ItemStack>> Outputs = getMultiOutput(tRecipe, tCurrentPara);
+            outputFluids = Outputs.getKey();
+            outputItems = Outputs.getValue();
         }
 
         if (found_Recipe) {

@@ -27,6 +27,7 @@ import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import com.github.bartimaeusnek.bartworks.util.MegaUtils;
+import com.github.bartimaeusnek.bartworks.util.Pair;
 import com.github.bartimaeusnek.crossmod.tectech.TecTechEnabledMulti;
 import com.github.bartimaeusnek.crossmod.tectech.helper.TecTechUtils;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -115,9 +116,9 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_MetaTileEntity_VacuumFre
             long tMaxPara = Math.min(ConfigHandler.megaMachinesMax, nominalV / tRecipe.mEUt);
             int tCurrentPara = handleParallelRecipe(tRecipe, tInputFluids, tInputs, (int) tMaxPara);
             processed = tCurrentPara;
-            Object[] Outputs = getMultiOutput(tRecipe, tCurrentPara);
-            outputFluids = (ArrayList<FluidStack>) Outputs[0];
-            outputItems = (ArrayList<ItemStack>) Outputs[1];
+            Pair<ArrayList<FluidStack>, ArrayList<ItemStack>> Outputs = getMultiOutput(tRecipe, tCurrentPara);
+            outputFluids = Outputs.getKey();
+            outputItems = Outputs.getValue();
         }
 
         if (found_Recipe) {

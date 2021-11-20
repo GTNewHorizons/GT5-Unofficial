@@ -230,7 +230,7 @@ public class GT_TileEntity_MegaDistillTower extends GT_MetaTileEntity_Distillati
             for (FluidStack tFluid : tFluids) {
                 ArrayList<FluidStack> outputFluids = new ArrayList<>();
                 ArrayList<ItemStack> outputItems = new ArrayList<>();
-                Object[] Outputs;
+                Pair<ArrayList<FluidStack>, ArrayList<ItemStack>> Outputs;
                 int processed = 0;
                 boolean found_Recipe = false;
                 GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sDistillationRecipes.findRecipe(this.getBaseMetaTileEntity(), false, GT_Values.V[tTier], new FluidStack[]{tFluid});
@@ -241,8 +241,8 @@ public class GT_TileEntity_MegaDistillTower extends GT_MetaTileEntity_Distillati
                     int tCurrentPara = handleParallelRecipe(tRecipe, new FluidStack[]{tFluid}, null, (int) tMaxPara);
                     processed = tCurrentPara;
                     Outputs = getMultiOutput(tRecipe, tCurrentPara);
-                    outputFluids = (ArrayList<FluidStack>) Outputs[0];
-                    outputItems = (ArrayList<ItemStack>) Outputs[1];
+                    outputFluids = Outputs.getKey();
+                    outputItems = Outputs.getValue();
                 }
 
                 if (!found_Recipe)

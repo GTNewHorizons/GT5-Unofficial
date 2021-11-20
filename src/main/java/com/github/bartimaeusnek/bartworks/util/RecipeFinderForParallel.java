@@ -16,6 +16,8 @@ public class RecipeFinderForParallel {
      */
 
     public static int handleParallelRecipe(GT_Recipe aRecipe, FluidStack[] aFluidInputs, ItemStack[] aItemStacks, int aMaxParallel) {
+        if (aFluidInputs == null) aFluidInputs = new FluidStack[0];
+        if (aItemStacks == null) aItemStacks = new ItemStack[0];
         HashMap<Integer, Integer> tCompressedFluidInput = compressFluid(aFluidInputs);
         HashMap<Integer, Integer> tCompressedItemInput = compressItem(aItemStacks);
         HashMap<Integer, Integer> tCompressedFluidRecipe = compressFluid(aRecipe.mFluidInputs);
@@ -69,11 +71,11 @@ public class RecipeFinderForParallel {
         return tCurrentPara;
     }
 
-    public static Object[] getMultiOutput(GT_Recipe aRecipe, int aPall) {
+    public static Pair<ArrayList<FluidStack>, ArrayList<ItemStack>> getMultiOutput(GT_Recipe aRecipe, int aPall) {
         ArrayList<FluidStack> tFluidList = new ArrayList<>();
         ArrayList<ItemStack> tItemList = new ArrayList<>();
         if (aRecipe == null)
-            return new Object[]{tFluidList, tItemList};
+            return new Pair<>(tFluidList, tItemList);
         if (aRecipe.mFluidOutputs != null && aRecipe.mFluidOutputs.length > 0) {
             for (FluidStack tFluid : aRecipe.mFluidOutputs) {
                 if (tFluid != null && tFluid.amount > 0) {
@@ -93,9 +95,7 @@ public class RecipeFinderForParallel {
                 }
             }
         }
-        return new Object[]{
-                tFluidList, tItemList
-        };
+        return new Pair<>(tFluidList, tItemList);
     }
 
     public static HashMap<Integer, Integer> compressItem(ItemStack[] aItemStacks) {
@@ -104,13 +104,7 @@ public class RecipeFinderForParallel {
             if (tItem != null) {
                 int tItemID = GT_Utility.stackToInt(tItem);
                 int tItemSize = tItem.stackSize;
-                if (tCompressed.containsKey(tItemID)) {
-                    int tOldSize = tCompressed.get(tItemID);
-                    tCompressed.put(tItemID, tOldSize + tItemSize);
-                }
-                else {
-                    tCompressed.put(tItemID, tItemSize);
-                }
+                tCompressed.merge(tItemID, tItemSize, Integer::sum);
             }
         }
         return tCompressed;
@@ -122,13 +116,7 @@ public class RecipeFinderForParallel {
             if (tFluid != null) {
                 int tFluidID = tFluid.getFluidID();
                 int tFluidSize = tFluid.amount;
-                if (tCompressed.containsKey(tFluidID)) {
-                    int tOldSize = tCompressed.get(tFluidID);
-                    tCompressed.put(tFluidID, tOldSize + tFluidSize);
-                }
-                else {
-                    tCompressed.put(tFluidID, tFluidSize);
-                }
+                tCompressed.merge(tFluidID, tFluidSize, Integer::sum);
             }
         }
         return tCompressed;
