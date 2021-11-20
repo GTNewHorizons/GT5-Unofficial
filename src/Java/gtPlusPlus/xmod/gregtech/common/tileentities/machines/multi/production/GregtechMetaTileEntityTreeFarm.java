@@ -154,12 +154,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 	}
 
 	public boolean checkRecipe(final ItemStack aStack) {
-	    
-	    if (true) {
-	        return false;
-	    }
-	    
-	    
+
 		//Logger.WARNING("Trying to process virtual tree farming");
 		if (mTreeData != null) {
 			//Logger.WARNING("Tree Data is valid");
@@ -197,7 +192,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 				//Logger.WARNING("Output Chance - "+aChance+" | Valid number? "+(aChance < 1000));
 				if (aChance < 8) {
 					//1% Chance per Tick				
-					for (int u=0; u<(Math.max(20, (MathUtils.randInt((3*tTier), 100)*tTier*tTier)/8));u++) {
+					for (int u=0; u<(Math.max(4, (MathUtils.randInt((3*tTier), 100)*tTier*tTier)/14));u++) {
 						aOutputs = mTreeData.generateOutput(0);		
 						if (aOutputs.size() > 0) {
 							Logger.WARNING("Generated some Loot, adding it to the output busses");
