@@ -25,11 +25,11 @@ import net.minecraftforge.gradle.user.UserExtension
 buildscript {
     repositories {
         mavenCentral()
-        maven("https://gregtech.overminddl1.com/")
+        maven("https://gregtech.overminddl1.com")
         maven("https://jitpack.io")
     }
     dependencies {
-        classpath("com.github.GTNH2:ForgeGradle:FG_1.2-SNAPSHOT")
+        classpath("com.github.GTNewHorizons:ForgeGradle:stable-2021-11-20")
     }
 }
 
