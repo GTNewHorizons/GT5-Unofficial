@@ -1,8 +1,11 @@
 
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
+import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
@@ -12,6 +15,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
@@ -64,12 +68,12 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 
 if (executor == null || mTreeData == null) {
 			if (executor == null) {
-				executor = Executors.newScheduledThreadPool(10);				
+				executor = Executors.newScheduledThreadPool(10);
 			}
 			if (executor != null) {				
 				if (aThread == null) {
 					aThread = new ThreadFakeWorldGenerator();	
-					executor.scheduleAtFixedRate(aThread, 0, 1, TimeUnit.SECONDS);			
+					executor.scheduleAtFixedRate(aThread, 0, 1, TimeUnit.SECONDS);
 					while (aThread.mGenerator == null) {
 						if (aThread.mGenerator != null) {
 							break;
@@ -97,20 +101,29 @@ if (executor == null || mTreeData == null) {
 		return "Tree Farm";
 	}
 
-	public String[] getTooltip() {
-
+	@Override
+	protected GT_Multiblock_Tooltip_Builder createTooltip() {
 		if (mCasingName.toLowerCase().contains(".name")) {
 			mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings2Misc, 15);
 		}
-
-		return new String[]{
-				"Converts EU to Oak Logs",
-				"Speed: Very Fast | Eu Usage: 100% | Parallel: 1",				
-				"Requires a Saw, Buzz Saw or Chainsaw in GUI slot",
-				"Constructed exactly the same as a normal Vacuum Freezer",
-				"Use "+mCasingName+"s (10 at least!)",
-				"TAG_HIDE_HATCHES"
-		};
+		GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+		tt.addMachineType(getMachineType())
+				.addInfo("Converts EU to Oak Logs")
+				.addInfo("Eu Usage: 100% | Parallel: 1")
+				.addInfo("Requires a Saw or Chainsaw in GUI slot")
+				.addInfo("Constructed exactly the same as a normal Vacuum Freezer")
+				.addPollutionAmount(getPollutionPerTick(null) * 20)
+				.addSeparator()
+				.beginStructureBlock(3, 3, 3, true)
+				.addController("Front center")
+				.addCasingInfo(mCasingName, 10)
+				.addInputBus("Any casing", 1)
+				.addOutputBus("Any casing", 1)
+				.addEnergyHatch("Any casing", 1)
+				.addMaintenanceHatch("Any casing", 1)
+				.addMufflerHatch("Any casing", 1)
+				.toolTipFinisher("GT++");
+		return tt;
 	}
 
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
@@ -146,8 +159,13 @@ if (executor == null || mTreeData == null) {
 		//return true;
 	}
 
-	public boolean isFacingValid(final byte aFacing) {
-		return aFacing > 1;
+//	public boolean isFacingValid(final byte aFacing) {
+//		return aFacing > 1;
+//	}
+
+	@Override
+	public IStructureDefinition getStructureDefinition() {
+		return null;
 	}
 
 	public boolean checkRecipe(final ItemStack aStack) {
@@ -212,6 +230,11 @@ if (executor == null || mTreeData == null) {
 			return false;
 		}
 		//return this.checkRecipeGeneric(4, 100, 100);
+	}
+
+	@Override
+	public boolean checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
+		return false;
 	}
 
 	@Override
@@ -313,5 +336,10 @@ if (executor == null || mTreeData == null) {
 				}
 			}			
 		}		
+	}
+
+	@Override
+	public void construct(ItemStack stackSize, boolean hintsOnly) {
+
 	}
 }

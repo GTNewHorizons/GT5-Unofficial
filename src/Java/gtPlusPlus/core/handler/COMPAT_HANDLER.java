@@ -118,7 +118,7 @@ public class COMPAT_HANDLER {
 			Gregtech4Content.run();
 			GregtechIndustrialFuelRefinery.run();
 			GregtechTreeFarmerTE.run();
-			//GregtechIndustrialTreeFarm.run();
+			GregtechIndustrialTreeFarm.run();
 			GregtechIndustrialSifter.run();
 			GregtechSimpleWasher.run();
 			GregtechRTG.run();

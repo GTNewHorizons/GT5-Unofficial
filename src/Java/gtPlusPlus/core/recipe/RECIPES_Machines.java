@@ -1116,22 +1116,22 @@ public class RECIPES_Machines {
 
 			if (CORE.ConfigSwitches.enableMultiblock_TreeFarmer){
 				//Industrial Tree Farmer
-				/*RECIPE_TreeFarmController = GregtechItemList.Industrial_TreeFarm.get(1);*/
+				RECIPE_TreeFarmController = GregtechItemList.Industrial_TreeFarm.get(1);
 				RECIPE_TreeFarmFrame = GregtechItemList.Casing_PLACEHOLDER_TreeFarmer.get(Casing_Amount);
 				//Industrial Tree Farm Controller
 				if (!GTNH) {
-					/*RecipeUtils.addShapedGregtechRecipe(
+					RecipeUtils.addShapedGregtechRecipe(
 							"plateEglinSteel", "rotorEglinSteel", "plateEglinSteel",
 							"cableGt02Steel", "pipeMediumSteel", "cableGt02Steel",
 							"plateEglinSteel", CI.machineCasing_MV, "plateEglinSteel",
-							RECIPE_TreeFarmController);*/
+							RECIPE_TreeFarmController);
 				}
 				else {
-					/*RecipeUtils.addShapedGregtechRecipe(
+					RecipeUtils.addShapedGregtechRecipe(
 							"plateEglinSteel", "rotorEglinSteel", "plateEglinSteel",
 							"cableGt02Silver", "pipeMediumStainlessSteel", "cableGt02Silver",
 							"plateEglinSteel", CI.machineCasing_HV, "plateEglinSteel",
-							RECIPE_TreeFarmController);*/
+							RECIPE_TreeFarmController);
 				}
 				//Industrial Tree Farm Frame
 				RecipeUtils.addShapedGregtechRecipe(
