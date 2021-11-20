@@ -6,6 +6,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
@@ -14,6 +15,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
@@ -29,16 +31,22 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.Gregtech
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.helpers.TreeFarmHelper;
 import gtPlusPlus.xmod.gregtech.common.helpers.treefarm.TreeGenerator;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.GregtechMetaTileEntity_IndustrialSifter;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
 public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase {
 
 	public static int CASING_TEXTURE_ID;
 	public static String mCasingName = "Advanced Cryogenic Casing";
 	public static TreeGenerator mTreeData;
+	private int mCasing;
+	private IStructureDefinition<GregtechMetaTileEntityTreeFarm> STRUCTURE_DEFINITION = null;
 	
 	static {
 		mTreeData = new TreeGenerator();	
@@ -163,11 +171,6 @@ if (executor == null || mTreeData == null) {
 //		return aFacing > 1;
 //	}
 
-	@Override
-	public IStructureDefinition getStructureDefinition() {
-		return null;
-	}
-
 	public boolean checkRecipe(final ItemStack aStack) {
 
 		if (mTreeData != null) {
@@ -233,8 +236,9 @@ if (executor == null || mTreeData == null) {
 	}
 
 	@Override
-	public boolean checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-		return false;
+	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+		mCasing = 0;
+		return checkPiece(mName, 1, 1, 0) && mCasing >= 10 - 8 && checkHatch();
 	}
 
 	@Override
@@ -247,35 +251,73 @@ if (executor == null || mTreeData == null) {
 		return 0;
 	}
 
-	public boolean checkMultiblock(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
-		int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
-		int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
-		int tAmount = 0;
-		if (!aBaseMetaTileEntity.getAirOffset(xDir, 0, zDir)) {
+	@Override
+	public IStructureDefinition<GregtechMetaTileEntityTreeFarm> getStructureDefinition() {
+		if (STRUCTURE_DEFINITION == null) {
+			STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntityTreeFarm>builder()
+					.addShape(mName, transpose(new String[][]{
+							{"XXX", "CCC", "CCC"},
+							{"XXX", "C-C", "CCC"},
+							{"X~X", "CCC", "CCC"},
+					}))
+					.addElement(
+							'C',
+							ofChain(
+									ofHatchAdder(
+											GregtechMetaTileEntityTreeFarm::addTreeFarmList, getCasingTextureIndex(), 1
+									),
+									onElementPass(
+											x -> ++x.mCasing,
+											ofBlock(
+													ModBlocks.blockCasingsMisc, 0
+											)
+									)
+							)
+					)
+					.addElement(
+							'X',
+							ofBlock(
+									ModBlocks.blockCasingsMisc, 0
+							)
+					)
+					.build();
+		}
+		return STRUCTURE_DEFINITION;
+	}
+
+	public final boolean addTreeFarmList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+		if (aTileEntity == null) {
 			return false;
 		} else {
-			for (int i = -1; i < 2; ++i) {
-				for (int j = -1; j < 2; ++j) {
-					for (int h = -1; h < 2; ++h) {
-						if (h != 0 || (xDir + i != 0 || zDir + j != 0) && (i != 0 || j != 0)) {
-							IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i,
-									h, zDir + j);
-							Block aBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
-							int aMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
-
-							if (!isValidBlockForStructure(tTileEntity, CASING_TEXTURE_ID, true, aBlock, aMeta,
-									ModBlocks.blockCasings2Misc, 15)) {
-								//Logger.WARNING("Bad centrifuge casing");
-								return false;
-							}
-							++tAmount;
-
-						}
-					}
-				}
+			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mInputBusses.add((GT_MetaTileEntity_Hatch_InputBus)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy){
+				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy)aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mOutputBusses.add((GT_MetaTileEntity_Hatch_OutputBus) aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mMufflerHatches.add((GT_MetaTileEntity_Hatch_Muffler) aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
+				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				return this.mOutputHatches.add((GT_MetaTileEntity_Hatch_Output) aMetaTileEntity);
 			}
-			return tAmount >= 10;
 		}
+		return false;
+	}
+
+	public byte getCasingTextureIndex() {
+		return (byte) TAE.GTPP_INDEX(0);
 	}
 
 	public int getMaxEfficiency(final ItemStack aStack) {
@@ -340,6 +382,6 @@ if (executor == null || mTreeData == null) {
 
 	@Override
 	public void construct(ItemStack stackSize, boolean hintsOnly) {
-
+		buildPiece(mName , stackSize, hintsOnly, 1, 1, 0);
 	}
 }
