@@ -28,6 +28,7 @@ import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
 import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import com.github.bartimaeusnek.bartworks.util.MegaUtils;
+import com.github.bartimaeusnek.bartworks.util.Pair;
 import com.github.bartimaeusnek.crossmod.tectech.TecTechEnabledMulti;
 import com.github.bartimaeusnek.crossmod.tectech.helper.TecTechUtils;
 import com.github.bartimaeusnek.crossmod.tectech.tileentites.tiered.LowPowerLaser;
@@ -59,6 +60,8 @@ import net.minecraftforge.fluids.FluidStack;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.getMultiOutput;
+import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.handleParallelRecipe;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAdder;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GT_Values.V;
@@ -161,9 +164,9 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_MetaTileEntity_ElectricBl
     }
 
     @SuppressWarnings("rawtypes")
-    public ArrayList TTTunnels = new ArrayList<>();
+    public ArrayList<Object> TTTunnels = new ArrayList<>();
     @SuppressWarnings("rawtypes")
-    public ArrayList TTMultiAmp = new ArrayList<>();
+    public ArrayList<Object> TTMultiAmp = new ArrayList<>();
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
@@ -390,18 +393,15 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_MetaTileEntity_ElectricBl
         int tHeatCapacityDivTiers = (this.mHeatingCapacity - tRecipe.mSpecialValue) / 900;
         long precutRecipeVoltage = (long) (tRecipe.mEUt * Math.pow(0.95, tHeatCapacityDivTiers));
 
-        while (this.getStoredInputs().size() > 0 && processed < ConfigHandler.megaMachinesMax) {
-            if (this.mHeatingCapacity >= tRecipe.mSpecialValue && (precutRecipeVoltage * (processed + 1)) < nominalV && tRecipe.isRecipeInputEqual(true, tFluids, tInputs)) {
-                found_Recipe = true;
-                for (int i = 0; i < tRecipe.mOutputs.length; i++) {
-                    outputItems.add(tRecipe.getOutput(i));
-                }
-                for (int i = 0; i < tRecipe.mFluidOutputs.length; i++) {
-                    outputFluids.add(tRecipe.getFluidOutput(i));
-                }
-                ++processed;
-            } else
-                break;
+        long tMaxPara = Math.min(ConfigHandler.megaMachinesMax, nominalV / precutRecipeVoltage);
+
+        if (this.mHeatingCapacity >= tRecipe.mSpecialValue) {
+            int tCurrentPara = handleParallelRecipe(tRecipe, tFluids, tInputs, (int) tMaxPara);
+            processed = tCurrentPara;
+            found_Recipe = true;
+            Pair<ArrayList<FluidStack>, ArrayList<ItemStack>> Outputs = getMultiOutput(tRecipe, tCurrentPara);
+            outputFluids = Outputs.getKey();
+            outputItems = Outputs.getValue();
         }
 
         if (found_Recipe) {

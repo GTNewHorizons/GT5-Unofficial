@@ -44,6 +44,8 @@ import net.minecraftforge.fluids.FluidStack;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.getMultiOutput;
+import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.handleParallelRecipe;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
@@ -226,32 +228,25 @@ public class GT_TileEntity_MegaDistillTower extends GT_MetaTileEntity_Distillati
         FluidStack[] tFluids = tFluidList.toArray(new FluidStack[0]);
         if (tFluids.length > 0) {
             for (FluidStack tFluid : tFluids) {
-                ArrayList<FluidStack[]> outputFluids = new ArrayList<>();
+                ArrayList<FluidStack> outputFluids = new ArrayList<>();
+                ArrayList<ItemStack> outputItems = new ArrayList<>();
+                Pair<ArrayList<FluidStack>, ArrayList<ItemStack>> Outputs;
                 int processed = 0;
                 boolean found_Recipe = false;
-                FluidStack[] output;
                 GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sDistillationRecipes.findRecipe(this.getBaseMetaTileEntity(), false, GT_Values.V[tTier], new FluidStack[]{tFluid});
-                while (this.getStoredFluids().size() > 0 && processed < ConfigHandler.megaMachinesMax) {
-                    if (tRecipe != null && (tRecipe.mEUt * (processed + 1)) < nominalV && tRecipe.isRecipeInputEqual(true, tFluids)) {
-                        found_Recipe = true;
-                        if (tRecipe.mFluidOutputs.length == 1 && tRecipe.mFluidOutputs[0].amount == 0)
-                            tRecipe.mFluidOutputs[0].amount = tRecipe.mFluidInputs[0].amount;
-                        output = new FluidStack[tRecipe.mFluidOutputs.length];
-                        for (int i = 0; i < output.length; i++) {
-                            output[i] = new FluidStack(tRecipe.mFluidOutputs[i],tRecipe.mFluidOutputs[i].amount);
-                        }
-                        outputFluids.add(output);
-                        ++processed;
-                    } else
-                        break;
+
+                if (tRecipe != null) {
+                    found_Recipe = true;
+                    long tMaxPara = Math.min(ConfigHandler.megaMachinesMax, nominalV / tRecipe.mEUt);
+                    int tCurrentPara = handleParallelRecipe(tRecipe, new FluidStack[]{tFluid}, null, (int) tMaxPara);
+                    processed = tCurrentPara;
+                    Outputs = getMultiOutput(tRecipe, tCurrentPara);
+                    outputFluids = Outputs.getKey();
+                    outputItems = Outputs.getValue();
                 }
+
                 if (!found_Recipe)
                     continue;
-                for (int j = 1; j < outputFluids.size(); j++) {
-                    for (int k = 0; k < outputFluids.get(j).length; k++) {
-                        outputFluids.get(0)[k].amount += outputFluids.get(j)[k].amount;
-                    }
-                }
                 this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
                 this.mEfficiencyIncrease = 10000;
                 long actualEUT = (long) (tRecipe.mEUt) * processed;
@@ -271,20 +266,10 @@ public class GT_TileEntity_MegaDistillTower extends GT_MetaTileEntity_Distillati
                     this.mEUt = (-this.mEUt);
                 }
                 this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-                this.mOutputFluids = outputFluids.get(0).clone();
-                if (tRecipe.getOutput(0) != null) {
-                    int stacks = processed / 64;
-                    ItemStack[] outputs = new ItemStack[stacks];
-                    if (stacks > 0) {
-                        for (int i = 0; i < stacks; i++)
-                            if (i != stacks - 1)
-                                outputs[i] = BW_Util.setStackSize(tRecipe.getOutput(0),64);
-                            else
-                                outputs[i] = BW_Util.setStackSize(tRecipe.getOutput(0),processed - (64 * i));
-                        this.mOutputItems = outputs;
-                    } else
-                        this.mOutputItems = null;
-                } else
+                this.mOutputFluids = outputFluids.toArray(new FluidStack[0]);
+                if (!outputItems.isEmpty())
+                    this.mOutputItems = outputItems.toArray(new ItemStack[0]);
+                else
                     this.mOutputItems = null;
                 this.updateSlots();
                 return true;

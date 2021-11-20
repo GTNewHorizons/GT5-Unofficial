@@ -27,6 +27,7 @@ import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import com.github.bartimaeusnek.bartworks.util.MegaUtils;
+import com.github.bartimaeusnek.bartworks.util.Pair;
 import com.github.bartimaeusnek.crossmod.tectech.TecTechEnabledMulti;
 import com.github.bartimaeusnek.crossmod.tectech.helper.TecTechUtils;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -45,6 +46,8 @@ import net.minecraftforge.fluids.FluidStack;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.getMultiOutput;
+import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.handleParallelRecipe;
 import static gregtech.api.enums.GT_Values.V;
 
 @Optional.Interface(iface = "com.github.bartimaeusnek.crossmod.tectech.TecTechEnabledMulti", modid = "tectech", striprefs = true)
@@ -108,22 +111,14 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_MetaTileEntity_VacuumFre
         boolean found_Recipe = false;
         int processed = 0;
 
-        while ((this.getStoredInputs().size() > 0 || this.getStoredFluids().size() > 0) && processed < ConfigHandler.megaMachinesMax) {
-            if (tRecipe != null && ((long) tRecipe.mEUt * (processed + 1)) < nominalV && tRecipe.isRecipeInputEqual(true, tInputFluids, tInputs)) {
-                found_Recipe = true;
-                if (tRecipe.mOutputs != null) {
-                    for (int i = 0; i < tRecipe.mOutputs.length; i++) {
-                        outputItems.add(tRecipe.getOutput(i));
-                    }
-                }
-                if (tRecipe.mFluidOutputs != null) {
-                    for (int i = 0; i < tRecipe.mFluidOutputs.length; i++) {
-                        outputFluids.add(tRecipe.getFluidOutput(i));
-                    }
-                }
-                ++processed;
-            } else
-                break;
+        if (tRecipe != null) {
+            found_Recipe = true;
+            long tMaxPara = Math.min(ConfigHandler.megaMachinesMax, nominalV / tRecipe.mEUt);
+            int tCurrentPara = handleParallelRecipe(tRecipe, tInputFluids, tInputs, (int) tMaxPara);
+            processed = tCurrentPara;
+            Pair<ArrayList<FluidStack>, ArrayList<ItemStack>> Outputs = getMultiOutput(tRecipe, tCurrentPara);
+            outputFluids = Outputs.getKey();
+            outputItems = Outputs.getValue();
         }
 
         if (found_Recipe) {
