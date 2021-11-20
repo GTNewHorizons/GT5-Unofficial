@@ -20,7 +20,6 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.ThreadFakeWorldGenerator;
 import gtPlusPlus.core.block.ModBlocks;
@@ -31,11 +30,8 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.Gregtech
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.helpers.TreeFarmHelper;
 import gtPlusPlus.xmod.gregtech.common.helpers.treefarm.TreeGenerator;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.GregtechMetaTileEntity_IndustrialSifter;
-import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
@@ -258,12 +254,12 @@ if (executor == null || mTreeData == null) {
 							'C',
 							ofChain(
 									ofHatchAdder(
-											GregtechMetaTileEntityTreeFarm::addTreeFarmList, getCasingTextureIndex(), 1
+											GregtechMetaTileEntityTreeFarm::addTreeFarmList, CASING_TEXTURE_ID, 1
 									),
 									onElementPass(
 											x -> ++x.mCasing,
 											ofBlock(
-													ModBlocks.blockCasings2Misc, 0
+													ModBlocks.blockCasings2Misc, 15
 											)
 									)
 							)
@@ -271,7 +267,7 @@ if (executor == null || mTreeData == null) {
 					.addElement(
 							'X',
 							ofBlock(
-									ModBlocks.blockCasings2Misc, 0
+									ModBlocks.blockCasings2Misc, 15
 							)
 					)
 					.build();
@@ -308,10 +304,6 @@ if (executor == null || mTreeData == null) {
 			}
 		}
 		return false;
-	}
-
-	public byte getCasingTextureIndex() {
-		return (byte) TAE.GTPP_INDEX(0);
 	}
 
 	public int getMaxEfficiency(final ItemStack aStack) {
