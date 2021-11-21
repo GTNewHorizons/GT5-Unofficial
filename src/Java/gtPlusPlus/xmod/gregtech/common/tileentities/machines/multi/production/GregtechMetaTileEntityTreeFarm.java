@@ -305,32 +305,31 @@ if (executor == null || mTreeData == null) {
 			ItemStack invItem = this.mInventory[1];
 			if (isCorrectMachinePart(invItem)) {
 				boolean didElectricDamage = false;
-				//Damage and discharge to the internal tool disabled for now
-//				if (EU.isElectricItem(invItem)) {
-//					if (EU.hasCharge(invItem)) {
-//						long tVoltage = getMaxInputVoltage();
-//						byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-//						if (EU.getCharge(invItem) >= tVoltage) {
-//							if (EU.discharge(invItem, (int) tVoltage, -1)) {
-//								didElectricDamage = true;
-//							}
-//							else {
-//								this.getBaseMetaTileEntity().disableWorking();
-//							}
-//						}
-//					}
-//				}
+				if (EU.isElectricItem(invItem)) {
+					if (EU.hasCharge(invItem)) {
+						long tVoltage = getMaxInputVoltage();
+						byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
+						if (EU.getCharge(invItem) >= tVoltage) {
+							if (EU.discharge(invItem, (int) tVoltage, -1)) {
+								didElectricDamage = true;
+							}
+							else {
+								this.getBaseMetaTileEntity().disableWorking();
+							}
+						}
+					}
+				}
 
-//				if (!didElectricDamage && invItem.getItem() instanceof GT_MetaGenerated_Tool) {
-//					long aDmg = GT_MetaGenerated_Tool.getToolDamage(invItem);
-//					long aDmgMax = GT_MetaGenerated_Tool.getToolMaxDamage(invItem);
-//					if (aDmg < aDmgMax && GT_MetaGenerated_Tool.getPrimaryMaterial(invItem) != Materials._NULL) {
-//						GT_ModHandler.damageOrDechargeItem(invItem, 1, 0, null);
-//					}
-//					else if (aDmg >= aDmgMax) {
-//						this.mInventory[1] = null;
-//					}
-//				}
+				if (!didElectricDamage && invItem.getItem() instanceof GT_MetaGenerated_Tool) {
+					long aDmg = GT_MetaGenerated_Tool.getToolDamage(invItem);
+					long aDmgMax = GT_MetaGenerated_Tool.getToolMaxDamage(invItem);
+					if (aDmg < aDmgMax && GT_MetaGenerated_Tool.getPrimaryMaterial(invItem) != Materials._NULL) {
+						GT_ModHandler.damageOrDechargeItem(invItem, 1, 0, null);
+					}
+					else if (aDmg >= aDmgMax) {
+						this.mInventory[1] = null;
+					}
+				}
 			}
 		}
 	}
