@@ -47,9 +47,9 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 	public static TreeGenerator mTreeData;
 	private int mCasing;
 	private IStructureDefinition<GregtechMetaTileEntityTreeFarm> STRUCTURE_DEFINITION = null;
-	
+
 	static {
-		mTreeData = new TreeGenerator();	
+		mTreeData = new TreeGenerator();
 	}
 
 	public GregtechMetaTileEntityTreeFarm(final int aID, final String aName, final String aNameRegional) {
@@ -58,10 +58,9 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 		mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings2Misc, 15);
 	}
 
-/*
+	/*
 	 * Static thread for Fake World Handling
 	 */
-
 
 
 	private static ScheduledExecutorService executor;
@@ -72,24 +71,24 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 		CASING_TEXTURE_ID = TAE.getIndexFromPage(1, 15);
 		mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings2Misc, 15);
 
-if (executor == null || mTreeData == null) {
+		if (executor == null || mTreeData == null) {
 			if (executor == null) {
 				executor = Executors.newScheduledThreadPool(10);
 			}
-			if (executor != null) {				
+			if (executor != null) {
 				if (aThread == null) {
-					aThread = new ThreadFakeWorldGenerator();	
+					aThread = new ThreadFakeWorldGenerator();
 					executor.scheduleAtFixedRate(aThread, 0, 1, TimeUnit.SECONDS);
 					while (aThread.mGenerator == null) {
 						if (aThread.mGenerator != null) {
 							break;
 						}
-					}		
+					}
 					if (aThread.mGenerator != null) {
 						mTreeData = aThread.mGenerator;
 					}
 				}
-			}			
+			}
 		}
 	}
 
@@ -127,7 +126,7 @@ if (executor == null || mTreeData == null) {
 	}
 
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
-			final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
+								 final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
 		if (aSide == aFacing) {
 			return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_ID),
 					new GT_RenderedTexture((IIconContainer) (aActive ? TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active : TexturesGtBlock.Overlay_Machine_Controller_Advanced))};
@@ -150,7 +149,7 @@ if (executor == null || mTreeData == null) {
 		return "VacuumFreezer";
 	}
 
-	public GT_Recipe.GT_Recipe_Map getRecipeMap() {			
+	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
 		return null;
 	}
 
@@ -192,15 +191,14 @@ if (executor == null || mTreeData == null) {
 			}
 
 
-
 			int aChance = MathUtils.randInt(0, 10);
 			AutoMap<ItemStack> aOutputs = new AutoMap<ItemStack>();
 
 			try {
 				if (aChance < 8) {
 					//1% Chance per Tick				
-					for (int u=0; u<(Math.max(4, (MathUtils.randInt((3*tTier), 100)*tTier*tTier)/14));u++) {
-						aOutputs = mTreeData.generateOutput(0);		
+					for (int u = 0; u < (Math.max(4, (MathUtils.randInt((3 * tTier), 100) * tTier * tTier) / 14)); u++) {
+						aOutputs = mTreeData.generateOutput(0);
 						if (aOutputs.size() > 0) {
 
 							ItemStack aLeaves = ItemUtils.getSimpleStack(Blocks.leaves);
@@ -211,17 +209,15 @@ if (executor == null || mTreeData == null) {
 								}
 							}
 							this.updateSlots();
-						}	
-					}			
+						}
+					}
 
-				}				
-			}
-			catch (Throwable t) {
+				}
+			} catch (Throwable t) {
 				t.printStackTrace();
 			}
 			return true;
-		}
-		else {
+		} else {
 			return false;
 		}
 		//return this.checkRecipeGeneric(4, 100, 100);
@@ -299,13 +295,24 @@ if (executor == null || mTreeData == null) {
 		ItemStack invItem = this.mInventory[1];
 		if (invItem == null) {
 			for (GT_MetaTileEntity_Hatch_InputBus mInputBus : this.mInputBusses) {
-				for (int i = 0; i < mInputBus.mInventory.length ; i++) {
+				for (int i = 0; i < mInputBus.mInventory.length; i++) {
 					ItemStack uStack = mInputBus.mInventory[i];
-					if(uStack != null && TreeFarmHelper.isCorrectPart(uStack)) {
+					if (uStack != null && TreeFarmHelper.isCorrectPart(uStack)) {
 						this.setGUIItemStack(uStack);
 						return true;
 					}
 				}
+			}
+		}
+		return false;
+	}
+
+	public boolean tryDamageTool(ItemStack invItem) {
+		if (invItem != null && invItem.getItem() instanceof GT_MetaGenerated_Tool) {
+			long aDmg = GT_MetaGenerated_Tool.getToolDamage(invItem);
+			long aDmgMax = GT_MetaGenerated_Tool.getToolMaxDamage(invItem);
+			if (aDmg < aDmgMax && GT_MetaGenerated_Tool.getPrimaryMaterial(invItem) != Materials._NULL) {
+				return GT_ModHandler.damageOrDechargeItem(invItem, 1, 0, null);
 			}
 		}
 		return false;
@@ -316,29 +323,22 @@ if (executor == null || mTreeData == null) {
 		super.onPostTick(aBaseMetaTileEntity, aTick);
 		replaceTool();
 		ItemStack invItem = this.mInventory[1];
-		if (invItem != null && aTick % 200 == 0 && this.getBaseMetaTileEntity().isServerSide()) {
-			if (isCorrectMachinePart(invItem)) {
-				boolean didElectricDamage = true;
-				if (EU.isElectricItem(invItem)) {
-					if (!GT_ModHandler.damageOrDechargeItem(invItem, 2, 0, null)) {
-						didElectricDamage = false;
-						addOutput(invItem);
-						this.mInventory[1] = null;
-						if(!replaceTool())
-							this.getBaseMetaTileEntity().disableWorking();
-					}
-				}
+		if (invItem != null && aTick % 200 == 0 && this.getBaseMetaTileEntity().isServerSide() && isCorrectMachinePart(invItem)) {
 
-				if (!didElectricDamage && invItem.getItem() instanceof GT_MetaGenerated_Tool) {
-					long aDmg = GT_MetaGenerated_Tool.getToolDamage(invItem);
-					long aDmgMax = GT_MetaGenerated_Tool.getToolMaxDamage(invItem);
-					if (aDmg < aDmgMax && GT_MetaGenerated_Tool.getPrimaryMaterial(invItem) != Materials._NULL) {
-						GT_ModHandler.damageOrDechargeItem(invItem, 1, 0, null);
+			if (!tryDamageTool(invItem)) {
+				if (!invItem.getItem().isDamageable()) { //item durability is <= 0
+					this.mInventory[1] = null;
+					if (!replaceTool()) {
+						this.getBaseMetaTileEntity().disableWorking();
 					}
-					else if (aDmg >= aDmgMax) {
-						this.mInventory[1] = null;
-						replaceTool();
+					tryDamageTool(invItem);
+				} else {
+					addOutput(invItem);
+					this.mInventory[1] = null;
+					if (!replaceTool()) {
+						this.getBaseMetaTileEntity().disableWorking();
 					}
+					tryDamageTool(invItem);
 				}
 			}
 		}
