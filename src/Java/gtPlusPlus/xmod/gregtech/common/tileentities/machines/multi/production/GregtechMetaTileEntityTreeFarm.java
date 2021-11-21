@@ -31,7 +31,10 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.Gregtech
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.helpers.TreeFarmHelper;
 import gtPlusPlus.xmod.gregtech.common.helpers.treefarm.TreeGenerator;
+import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
+import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
@@ -245,9 +248,9 @@ if (executor == null || mTreeData == null) {
 		if (STRUCTURE_DEFINITION == null) {
 			STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntityTreeFarm>builder()
 					.addShape(mName, transpose(new String[][]{
-							{"XXX", "CCC", "CCC"},
-							{"X~X", "C-C", "CCC"},
-							{"XXX", "CCC", "CCC"},
+							{"CCC", "CCC", "CCC"},
+							{"C~C", "C-C", "CCC"},
+							{"CCC", "CCC", "CCC"},
 					}))
 					.addElement(
 							'C',
@@ -261,12 +264,6 @@ if (executor == null || mTreeData == null) {
 													ModBlocks.blockCasings2Misc, 15
 											)
 									)
-							)
-					)
-					.addElement(
-							'X',
-							ofBlock(
-									ModBlocks.blockCasings2Misc, 15
 							)
 					)
 					.build();
@@ -298,25 +295,37 @@ if (executor == null || mTreeData == null) {
 		return false;
 	}
 
+	public boolean replaceTool() {
+		ItemStack invItem = this.mInventory[1];
+		if (invItem == null) {
+			for (GT_MetaTileEntity_Hatch_InputBus mInputBus : this.mInputBusses) {
+				for (int i = 0; i < mInputBus.mInventory.length ; i++) {
+					ItemStack uStack = mInputBus.mInventory[i];
+					if(uStack != null && TreeFarmHelper.isCorrectPart(uStack)) {
+						this.setGUIItemStack(uStack);
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
 	@Override
 	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
 		super.onPostTick(aBaseMetaTileEntity, aTick);
-		if (this.mInventory[1] != null && aTick % 200 == 0 && this.getBaseMetaTileEntity().isServerSide()) {
-			ItemStack invItem = this.mInventory[1];
+		replaceTool();
+		ItemStack invItem = this.mInventory[1];
+		if (invItem != null && aTick % 200 == 0 && this.getBaseMetaTileEntity().isServerSide()) {
 			if (isCorrectMachinePart(invItem)) {
-				boolean didElectricDamage = false;
+				boolean didElectricDamage = true;
 				if (EU.isElectricItem(invItem)) {
-					if (EU.hasCharge(invItem)) {
-						long tVoltage = getMaxInputVoltage();
-						byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-						if (EU.getCharge(invItem) >= tVoltage) {
-							if (EU.discharge(invItem, (int) tVoltage, -1)) {
-								didElectricDamage = true;
-							}
-							else {
-								this.getBaseMetaTileEntity().disableWorking();
-							}
-						}
+					if (!GT_ModHandler.damageOrDechargeItem(invItem, 2, 0, null)) {
+						didElectricDamage = false;
+						addOutput(invItem);
+						this.mInventory[1] = null;
+						if(!replaceTool())
+							this.getBaseMetaTileEntity().disableWorking();
 					}
 				}
 
@@ -328,6 +337,7 @@ if (executor == null || mTreeData == null) {
 					}
 					else if (aDmg >= aDmgMax) {
 						this.mInventory[1] = null;
+						replaceTool();
 					}
 				}
 			}
