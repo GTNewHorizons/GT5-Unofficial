@@ -17,6 +17,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -53,8 +54,6 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 		CASING_TEXTURE_ID = TAE.getIndexFromPage(1, 15);
 		mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings2Misc, 15);
 	}
-
-
 
 /*
 	 * Static thread for Fake World Handling
@@ -279,31 +278,8 @@ if (executor == null || mTreeData == null) {
 		if (aTileEntity == null) {
 			return false;
 		} else {
-			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus){
-				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
-				return this.mInputBusses.add((GT_MetaTileEntity_Hatch_InputBus)aMetaTileEntity);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance){
-				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
-				return this.mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance)aMetaTileEntity);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy){
-				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
-				return this.mEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy)aMetaTileEntity);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus) {
-				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-				return this.mOutputBusses.add((GT_MetaTileEntity_Hatch_OutputBus) aMetaTileEntity);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler) {
-				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-				return this.mMufflerHatches.add((GT_MetaTileEntity_Hatch_Muffler) aMetaTileEntity);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-				return this.mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
-				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-				return this.mOutputHatches.add((GT_MetaTileEntity_Hatch_Output) aMetaTileEntity);
-			}
+			return addToMachineList(aTileEntity, aBaseCasingIndex);
 		}
-		return false;
 	}
 
 	public int getMaxEfficiency(final ItemStack aStack) {
@@ -324,46 +300,39 @@ if (executor == null || mTreeData == null) {
 
 	@Override
 	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-		super.onPostTick(aBaseMetaTileEntity, aTick);		
+		super.onPostTick(aBaseMetaTileEntity, aTick);
 		if (this.mInventory[1] != null && aTick % 200 == 0 && this.getBaseMetaTileEntity().isServerSide()) {
-			ItemStack invItem = this.mInventory[1];			
+			ItemStack invItem = this.mInventory[1];
 			if (isCorrectMachinePart(invItem)) {
-
 				boolean didElectricDamage = false;
-				if (EU.isElectricItem(invItem)) {
-					if (EU.hasCharge(invItem)) {
-						long tVoltage = getMaxInputVoltage();
-						byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));						
-						if (EU.getCharge(invItem) >= tVoltage) {
-							//Logger.WARNING("Can drain.");
-							if (EU.discharge(invItem, (int) tVoltage, -1)) {
-								//Logger.WARNING("Drained Power.");
-								didElectricDamage = true;
-							}
-							else {
-								//Logger.WARNING("Failed when draining Power.");
-								this.getBaseMetaTileEntity().disableWorking();
-							}
-						}							
-					}
-				}
-				//Logger.WARNING("Drained Power? "+didElectricDamage);
+				//Damage and discharge to the internal tool disabled for now
+//				if (EU.isElectricItem(invItem)) {
+//					if (EU.hasCharge(invItem)) {
+//						long tVoltage = getMaxInputVoltage();
+//						byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
+//						if (EU.getCharge(invItem) >= tVoltage) {
+//							if (EU.discharge(invItem, (int) tVoltage, -1)) {
+//								didElectricDamage = true;
+//							}
+//							else {
+//								this.getBaseMetaTileEntity().disableWorking();
+//							}
+//						}
+//					}
+//				}
 
-
-
-				if (!didElectricDamage && invItem.getItem() instanceof GT_MetaGenerated_Tool) {
-					long aDmg = GT_MetaGenerated_Tool.getToolDamage(invItem);
-					long aDmgMax = GT_MetaGenerated_Tool.getToolMaxDamage(invItem);
-					if (aDmg < aDmgMax && GT_MetaGenerated_Tool.getPrimaryMaterial(invItem) != Materials._NULL) {
-						//Logger.WARNING("dmg: "+aDmg+" | max: "+aDmgMax);
-						GT_MetaGenerated_Tool.setToolDamage(invItem, aDmg+getDamageToComponent(invItem));							
-					}
-					else if (aDmg >= aDmgMax) {
-						this.mInventory[1] = null;
-					}
-				}
-			}			
-		}		
+//				if (!didElectricDamage && invItem.getItem() instanceof GT_MetaGenerated_Tool) {
+//					long aDmg = GT_MetaGenerated_Tool.getToolDamage(invItem);
+//					long aDmgMax = GT_MetaGenerated_Tool.getToolMaxDamage(invItem);
+//					if (aDmg < aDmgMax && GT_MetaGenerated_Tool.getPrimaryMaterial(invItem) != Materials._NULL) {
+//						GT_ModHandler.damageOrDechargeItem(invItem, 1, 0, null);
+//					}
+//					else if (aDmg >= aDmgMax) {
+//						this.mInventory[1] = null;
+//					}
+//				}
+			}
+		}
 	}
 
 	@Override
