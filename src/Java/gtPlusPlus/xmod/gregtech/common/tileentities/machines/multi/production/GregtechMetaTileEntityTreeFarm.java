@@ -1,8 +1,12 @@
-/*
+
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
+import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
@@ -11,10 +15,12 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.ThreadFakeWorldGenerator;
 import gtPlusPlus.core.block.ModBlocks;
@@ -25,19 +31,25 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.Gregtech
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.helpers.TreeFarmHelper;
 import gtPlusPlus.xmod.gregtech.common.helpers.treefarm.TreeGenerator;
-import net.minecraft.block.Block;
+import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
+import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
+
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
 public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase {
 
 	public static int CASING_TEXTURE_ID;
 	public static String mCasingName = "Advanced Cryogenic Casing";
 	public static TreeGenerator mTreeData;
-	
+	private int mCasing;
+	private IStructureDefinition<GregtechMetaTileEntityTreeFarm> STRUCTURE_DEFINITION = null;
+
 	static {
-		mTreeData = new TreeGenerator();	
+		mTreeData = new TreeGenerator();
 	}
 
 	public GregtechMetaTileEntityTreeFarm(final int aID, final String aName, final String aNameRegional) {
@@ -46,13 +58,9 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 		mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings2Misc, 15);
 	}
 
-
-
-	*/
-/*
+	/*
 	 * Static thread for Fake World Handling
-	 *//*
-
+	 */
 
 
 	private static ScheduledExecutorService executor;
@@ -63,31 +71,25 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 		CASING_TEXTURE_ID = TAE.getIndexFromPage(1, 15);
 		mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings2Misc, 15);
 
-		*/
-/*if (executor == null || mTreeData == null) {
+		if (executor == null || mTreeData == null) {
 			if (executor == null) {
-				executor = Executors.newScheduledThreadPool(10);				
+				executor = Executors.newScheduledThreadPool(10);
 			}
-			if (executor != null) {				
+			if (executor != null) {
 				if (aThread == null) {
-					aThread = new ThreadFakeWorldGenerator();	
-					executor.scheduleAtFixedRate(aThread, 0, 1, TimeUnit.SECONDS);			
+					aThread = new ThreadFakeWorldGenerator();
+					executor.scheduleAtFixedRate(aThread, 0, 1, TimeUnit.SECONDS);
 					while (aThread.mGenerator == null) {
 						if (aThread.mGenerator != null) {
 							break;
 						}
-					}		
+					}
 					if (aThread.mGenerator != null) {
 						mTreeData = aThread.mGenerator;
 					}
 				}
-			}			
-		}*//*
-
-
-
-
-
+			}
+		}
 	}
 
 	public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
@@ -99,25 +101,32 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 		return "Tree Farm";
 	}
 
-	public String[] getTooltip() {
-
+	@Override
+	protected GT_Multiblock_Tooltip_Builder createTooltip() {
 		if (mCasingName.toLowerCase().contains(".name")) {
 			mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings2Misc, 15);
 		}
-
-		return new String[]{
-                "[WIP] Disabled",
-				"Converts EU to Oak Logs",
-				"Speed: Very Fast | Eu Usage: 100% | Parallel: 1",				
-				"Requires a Saw, Buzz Saw or Chainsaw in GUI slot",
-				"Constructed exactly the same as a normal Vacuum Freezer",
-				"Use "+mCasingName+"s (10 at least!)",
-				"TAG_HIDE_HATCHES"
-		};
+		GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+		tt.addMachineType(getMachineType())
+				.addInfo("Converts EU to Oak Logs")
+				.addInfo("Eu Usage: 100% | Parallel: 1")
+				.addInfo("Requires a Saw or Chainsaw in GUI slot")
+				.addPollutionAmount(getPollutionPerTick(null) * 20)
+				.addSeparator()
+				.beginStructureBlock(3, 3, 3, true)
+				.addController("Front center")
+				.addCasingInfo("Sterile Farm Casing", 10)
+				.addInputBus("Any casing", 1)
+				.addOutputBus("Any casing", 1)
+				.addEnergyHatch("Any casing", 1)
+				.addMaintenanceHatch("Any casing", 1)
+				.addMufflerHatch("Any casing", 1)
+				.toolTipFinisher("GT++");
+		return tt;
 	}
 
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
-			final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
+								 final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
 		if (aSide == aFacing) {
 			return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_ID),
 					new GT_RenderedTexture((IIconContainer) (aActive ? TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active : TexturesGtBlock.Overlay_Machine_Controller_Advanced))};
@@ -140,7 +149,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 		return "VacuumFreezer";
 	}
 
-	public GT_Recipe.GT_Recipe_Map getRecipeMap() {			
+	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
 		return null;
 	}
 
@@ -149,20 +158,13 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 		//return true;
 	}
 
-	public boolean isFacingValid(final byte aFacing) {
-		return aFacing > 1;
-	}
+//	public boolean isFacingValid(final byte aFacing) {
+//		return aFacing > 1;
+//	}
 
 	public boolean checkRecipe(final ItemStack aStack) {
-	    
-	    if (true) {
-	        return false;
-	    }
-	    
-	    
-		//Logger.WARNING("Trying to process virtual tree farming");
+
 		if (mTreeData != null) {
-			//Logger.WARNING("Tree Data is valid");
 
 			long tVoltage = getMaxInputVoltage();
 			byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
@@ -189,18 +191,15 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 			}
 
 
-
 			int aChance = MathUtils.randInt(0, 10);
 			AutoMap<ItemStack> aOutputs = new AutoMap<ItemStack>();
 
 			try {
-				//Logger.WARNING("Output Chance - "+aChance+" | Valid number? "+(aChance < 1000));
 				if (aChance < 8) {
 					//1% Chance per Tick				
-					for (int u=0; u<(Math.max(20, (MathUtils.randInt((3*tTier), 100)*tTier*tTier)/8));u++) {
-						aOutputs = mTreeData.generateOutput(0);		
+					for (int u = 0; u < (Math.max(4, (MathUtils.randInt((3 * tTier), 100) * tTier * tTier) / 14)); u++) {
+						aOutputs = mTreeData.generateOutput(0);
 						if (aOutputs.size() > 0) {
-							Logger.WARNING("Generated some Loot, adding it to the output busses");
 
 							ItemStack aLeaves = ItemUtils.getSimpleStack(Blocks.leaves);
 
@@ -209,25 +208,25 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 									this.addOutput(aOutputItemStack);
 								}
 							}
-							Logger.WARNING("Updating Slots");
 							this.updateSlots();
-						}	
-					}			
+						}
+					}
 
-				}				
-			}
-			catch (Throwable t) {
+				}
+			} catch (Throwable t) {
 				t.printStackTrace();
 			}
-
-			//Logger.WARNING("Valid Recipe");
 			return true;
-		}
-		else {
-			//Logger.WARNING("Invalid Recipe");
+		} else {
 			return false;
 		}
 		//return this.checkRecipeGeneric(4, 100, 100);
+	}
+
+	@Override
+	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+		mCasing = 0;
+		return checkPiece(mName, 1, 1, 0) && mCasing >= 10 - 8 && checkHatch();
 	}
 
 	@Override
@@ -240,34 +239,39 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 		return 0;
 	}
 
-	public boolean checkMultiblock(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
-		int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
-		int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
-		int tAmount = 0;
-		if (!aBaseMetaTileEntity.getAirOffset(xDir, 0, zDir)) {
+	@Override
+	public IStructureDefinition<GregtechMetaTileEntityTreeFarm> getStructureDefinition() {
+		if (STRUCTURE_DEFINITION == null) {
+			STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntityTreeFarm>builder()
+					.addShape(mName, transpose(new String[][]{
+							{"CCC", "CCC", "CCC"},
+							{"C~C", "C-C", "CCC"},
+							{"CCC", "CCC", "CCC"},
+					}))
+					.addElement(
+							'C',
+							ofChain(
+									ofHatchAdder(
+											GregtechMetaTileEntityTreeFarm::addTreeFarmList, CASING_TEXTURE_ID, 1
+									),
+									onElementPass(
+											x -> ++x.mCasing,
+											ofBlock(
+													ModBlocks.blockCasings2Misc, 15
+											)
+									)
+							)
+					)
+					.build();
+		}
+		return STRUCTURE_DEFINITION;
+	}
+
+	public final boolean addTreeFarmList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+		if (aTileEntity == null) {
 			return false;
 		} else {
-			for (int i = -1; i < 2; ++i) {
-				for (int j = -1; j < 2; ++j) {
-					for (int h = -1; h < 2; ++h) {
-						if (h != 0 || (xDir + i != 0 || zDir + j != 0) && (i != 0 || j != 0)) {
-							IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i,
-									h, zDir + j);
-							Block aBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
-							int aMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
-
-							if (!isValidBlockForStructure(tTileEntity, CASING_TEXTURE_ID, true, aBlock, aMeta,
-									ModBlocks.blockCasings2Misc, 15)) {
-								Logger.WARNING("Bad centrifuge casing");
-								return false;
-							}
-							++tAmount;
-
-						}
-					}
-				}
-			}
-			return tAmount >= 10;
+			return addToMachineList(aTileEntity, aBaseCasingIndex);
 		}
 	}
 
@@ -287,47 +291,61 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 		return false;
 	}
 
+	public boolean replaceTool() {
+		ItemStack invItem = this.mInventory[1];
+		if (invItem == null) {
+			for (GT_MetaTileEntity_Hatch_InputBus mInputBus : this.mInputBusses) {
+				for (int i = 0; i < mInputBus.mInventory.length; i++) {
+					ItemStack uStack = mInputBus.mInventory[i];
+					if (uStack != null && TreeFarmHelper.isCorrectPart(uStack)) {
+						this.setGUIItemStack(uStack);
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	public boolean tryDamageTool(ItemStack invItem) {
+		if (invItem != null && invItem.getItem() instanceof GT_MetaGenerated_Tool) {
+			long aDmg = GT_MetaGenerated_Tool.getToolDamage(invItem);
+			long aDmgMax = GT_MetaGenerated_Tool.getToolMaxDamage(invItem);
+			if (aDmg < aDmgMax && GT_MetaGenerated_Tool.getPrimaryMaterial(invItem) != Materials._NULL) {
+				return GT_ModHandler.damageOrDechargeItem(invItem, 1, 0, null);
+			}
+		}
+		return false;
+	}
+
 	@Override
 	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-		super.onPostTick(aBaseMetaTileEntity, aTick);		
-		if (this.mInventory[1] != null && aTick % 200 == 0 && this.getBaseMetaTileEntity().isServerSide()) {
-			ItemStack invItem = this.mInventory[1];			
-			if (isCorrectMachinePart(invItem)) {
+		super.onPostTick(aBaseMetaTileEntity, aTick);
+		replaceTool();
+		ItemStack invItem = this.mInventory[1];
+		if (invItem != null && aTick % 200 == 0 && this.getBaseMetaTileEntity().isServerSide() && isCorrectMachinePart(invItem)) {
 
-				boolean didElectricDamage = false;
-				if (EU.isElectricItem(invItem)) {
-					if (EU.hasCharge(invItem)) {
-						long tVoltage = getMaxInputVoltage();
-						byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));						
-						if (EU.getCharge(invItem) >= tVoltage) {
-							Logger.WARNING("Can drain.");
-							if (EU.discharge(invItem, (int) tVoltage, -1)) {
-								Logger.WARNING("Drained Power.");
-								didElectricDamage = true;
-							}
-							else {
-								Logger.WARNING("Failed when draining Power.");
-								this.getBaseMetaTileEntity().disableWorking();
-							}
-						}							
+			if (!tryDamageTool(invItem)) {
+				if (!invItem.getItem().isDamageable()) { //item durability is <= 0
+					this.mInventory[1] = null;
+					if (!replaceTool()) {
+						this.getBaseMetaTileEntity().disableWorking();
 					}
+					tryDamageTool(invItem);
+				} else {
+					addOutput(invItem);
+					this.mInventory[1] = null;
+					if (!replaceTool()) {
+						this.getBaseMetaTileEntity().disableWorking();
+					}
+					tryDamageTool(invItem);
 				}
-				Logger.WARNING("Drained Power? "+didElectricDamage);
-
-
-
-				if (!didElectricDamage && invItem.getItem() instanceof GT_MetaGenerated_Tool) {
-					long aDmg = GT_MetaGenerated_Tool.getToolDamage(invItem);
-					long aDmgMax = GT_MetaGenerated_Tool.getToolMaxDamage(invItem);
-					if (aDmg < aDmgMax && GT_MetaGenerated_Tool.getPrimaryMaterial(invItem) != Materials._NULL) {
-						Logger.WARNING("dmg: "+aDmg+" | max: "+aDmgMax);
-						GT_MetaGenerated_Tool.setToolDamage(invItem, aDmg+getDamageToComponent(invItem));							
-					}
-					else if (aDmg >= aDmgMax) {
-						this.mInventory[1] = null;
-					}
-				}
-			}			
-		}		
+			}
+		}
 	}
-}*/
+
+	@Override
+	public void construct(ItemStack stackSize, boolean hintsOnly) {
+		buildPiece(mName , stackSize, hintsOnly, 1, 1, 0);
+	}
+}

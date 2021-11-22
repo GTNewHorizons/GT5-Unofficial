@@ -1,4 +1,4 @@
-/*
+
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
 import gtPlusPlus.api.objects.Logger;
@@ -25,4 +25,4 @@ public class GregtechIndustrialTreeFarm {
 						.getStackForm(1L));
 
 	}
-}*/
+}

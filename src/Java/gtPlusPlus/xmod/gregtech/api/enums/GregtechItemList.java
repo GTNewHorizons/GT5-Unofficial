@@ -266,7 +266,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 
 
 	//Tree Farm
-	/*Industrial_TreeFarm, */
+	Industrial_TreeFarm,
 	TreeFarmer_Structural,
 	Casing_PLACEHOLDER_TreeFarmer,
 
