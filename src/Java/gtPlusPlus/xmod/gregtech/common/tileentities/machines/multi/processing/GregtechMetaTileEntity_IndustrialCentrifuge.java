@@ -91,9 +91,9 @@ extends GregtechMeta_MultiBlockBase {
 		if (STRUCTURE_DEFINITION == null) {
 			STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialCentrifuge>builder()
 					.addShape(mName, transpose(new String[][]{
-							{"XXX", "CCC", "CCC"},
-							{"X~X", "C-C", "CCC"},
-							{"XXX", "CCC", "CCC"},
+							{"CCC", "CCC", "CCC"},
+							{"C~C", "C-C", "CCC"},
+							{"CCC", "CCC", "CCC"},
 					}))
 					.addElement(
 							'C',
@@ -109,12 +109,6 @@ extends GregtechMeta_MultiBlockBase {
 									)
 							)
 					)
-					.addElement(
-							'X',
-							ofBlock(
-									ModBlocks.blockCasingsMisc, 0
-							)
-					)
 					.build();
 		}
 		return STRUCTURE_DEFINITION;
@@ -128,7 +122,7 @@ extends GregtechMeta_MultiBlockBase {
 	@Override
 	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
 		mCasing = 0;
-		return checkPiece(mName, 1, 1, 0) && mCasing >= 10 - 8 && checkHatch();
+		return checkPiece(mName, 1, 1, 0) && mCasing >= 10 && checkHatch();
 	}
 
 	public final boolean addIndustrialCentrifugeList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
