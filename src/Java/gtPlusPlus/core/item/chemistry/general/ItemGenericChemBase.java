@@ -159,8 +159,6 @@ public class ItemGenericChemBase extends Item {
     public String getUnlocalizedName(ItemStack stack) {
 		return super.getUnlocalizedName() + "." + stack.getItemDamage();
     }
-	
-
 
 	@Override
 	public double getDurabilityForDisplay(ItemStack aStack) {
@@ -169,16 +167,14 @@ public class ItemGenericChemBase extends Item {
 				createMillingBallNBT(aStack);
 	        }
 			double currentDamage = getMillingBallDamage(aStack);
-			double durabilitypercent = currentDamage / getMaxBallDurability(aStack);
-	        return  durabilitypercent;
+			return currentDamage / getMaxBallDurability(aStack);
 		}
 		else if (ItemUtils.isCatalyst(aStack)) {			
 			if (aStack.getTagCompound() == null || aStack.getTagCompound().hasNoTags()){
 				createCatalystNBT(aStack);
 	        }
 			double currentDamage = getCatalystDamage(aStack);
-			double durabilitypercent = currentDamage / getCatalystMaxDamage(aStack);
-	        return  durabilitypercent;
+			return currentDamage / getCatalystMaxDamage(aStack);
 		}
 		else {
 			return 1D;
