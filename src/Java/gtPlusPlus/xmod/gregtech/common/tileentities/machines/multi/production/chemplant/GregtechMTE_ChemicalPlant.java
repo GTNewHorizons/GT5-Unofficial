@@ -444,8 +444,7 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 	private int getCasingTextureID() {
 		// Check the Tier Client Side
 		int aTier = mSolidCasingTier;
-		int aCasingID = getCasingTextureIdForTier(aTier);
-		return aCasingID;
+		return getCasingTextureIdForTier(aTier);
 	}
 
 	public boolean addToMachineList(IGregTechTileEntity aTileEntity) {		
@@ -582,9 +581,6 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 
 		//GT_Recipe tRecipe = findRecipe(getBaseMetaTileEntity(), mLastRecipe, false,	gregtech.api.enums.GT_Values.V[tTier], aFluidInputs, aItemInputs);
 		GT_Recipe tRecipe = findRecipe(mLastRecipe, gregtech.api.enums.GT_Values.V[tTier], getSolidCasingTier(), aItemInputs, aFluidInputs);
-
-
-
 
 		if (tRecipe == null) {
 			log("BAD RETURN - 1");

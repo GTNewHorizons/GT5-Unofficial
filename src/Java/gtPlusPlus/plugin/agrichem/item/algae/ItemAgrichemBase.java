@@ -264,10 +264,7 @@ public class ItemAgrichemBase extends Item {
 			aHasSpecialTooltips = true;
 		}
 		if (aHasSpecialTooltips) {			
-			if (aDam > aDamageSegment * 4){
-				durability = EnumChatFormatting.GRAY;
-			}
-			else if (aDam > aDamageSegment * 3){
+			if (aDam > aDamageSegment * 3){
 				durability = EnumChatFormatting.GREEN;
 			}
 			else if (aDam > aDamageSegment * 2){
@@ -276,7 +273,7 @@ public class ItemAgrichemBase extends Item {
 			else if (aDam > aDamageSegment){
 				durability = EnumChatFormatting.GOLD;
 			}
-			else if (aDam > 0){
+			else if (aDam >= 0){
 				durability = EnumChatFormatting.RED;
 			}
 			list.add(durability+""+(aDam)+EnumChatFormatting.GRAY+" / "+aMaxDamage);
