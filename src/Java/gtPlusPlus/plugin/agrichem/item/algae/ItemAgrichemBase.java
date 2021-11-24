@@ -240,8 +240,8 @@ public class ItemAgrichemBase extends Item {
 				createCatalystNBT(aStack);
 	        }
 			double currentDamage = getCatalystDamage(aStack);
-			double durabilitypercent = currentDamage / 100;		
-	        return  durabilitypercent;
+			double durabilitypercent = currentDamage / getCatalystMaxDamage(aStack);
+	        return durabilitypercent;
 		}
 		else {
 			return 1D;
