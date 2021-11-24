@@ -169,7 +169,7 @@ public class ItemGenericChemBase extends Item {
 				createMillingBallNBT(aStack);
 	        }
 			double currentDamage = getMillingBallDamage(aStack);
-			double durabilitypercent = currentDamage / getMillingBallMaxDamage(aStack);
+			double durabilitypercent = currentDamage / getMaxBallDurability(aStack);
 	        return  durabilitypercent;
 		}
 		else if (ItemUtils.isCatalyst(aStack)) {			
