@@ -75,7 +75,7 @@ public class ConfigHandler {
     public static boolean disableReboltedBlocksCasing = false;
 
     public static int pollutionHeatedWaterPumpSecond = 5;
-    public static int basePollutionMBFTick = 5120;
+    public static int basePollutionMBFTick = 20;
 
     private static final int[][] METAFORTIERS_ENERGY = {
             {100, 101, 102, 105},
