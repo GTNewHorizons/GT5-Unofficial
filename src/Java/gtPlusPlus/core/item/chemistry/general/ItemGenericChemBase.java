@@ -177,7 +177,7 @@ public class ItemGenericChemBase extends Item {
 				createCatalystNBT(aStack);
 	        }
 			double currentDamage = getCatalystDamage(aStack);
-			double durabilitypercent = currentDamage / 100;		
+			double durabilitypercent = currentDamage / getCatalystMaxDamage(aStack);
 	        return  durabilitypercent;
 		}
 		else {
