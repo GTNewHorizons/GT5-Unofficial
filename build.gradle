@@ -1,0 +1,256 @@
+import java.util.concurrent.TimeUnit
+
+buildscript {
+    repositories {
+        maven {
+            name = "forge"
+            url = "https://maven.minecraftforge.net"
+        }
+        maven {
+            name = "sonatype"
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
+        maven {
+            name = "Scala CI dependencies"
+            url = "https://repo1.maven.org/maven2/"
+        }
+        maven {
+            name = "jitpack"
+            url = "https://jitpack.io"
+        }
+    }
+    dependencies {
+        classpath 'com.github.GTNewHorizons:ForgeGradle:1.2.4'
+    }
+}
+
+plugins {
+    id("com.palantir.git-version") version("0.12.3")
+    id("se.bjurr.gitchangelog.git-changelog-gradle-plugin") version("1.65")
+}
+
+apply plugin: 'forge'
+
+def projectJavaVersion = JavaLanguageVersion.of(8)
+
+java {
+    toolchain {
+        languageVersion.set(projectJavaVersion)
+    }
+}
+
+idea {
+    module {
+        inheritOutputDirs = false
+        downloadJavadoc = true
+        downloadSources = true
+        outputDir = compileJava.destinationDir
+        testOutputDir = compileTestJava.destinationDir
+    }
+}
+
+configurations.all {
+    resolutionStrategy.cacheChangingModulesFor(0, TimeUnit.SECONDS)
+
+    // Make sure GregTech build won't time out
+    System.setProperty("org.gradle.internal.http.connectionTimeout", 120000 as String)
+    System.setProperty("org.gradle.internal.http.socketTimeout", 120000 as String)
+}
+
+// Fix Jenkins' Git: chmod a file should not be detected as a change and append a '.dirty' to the version
+'git config core.fileMode false'.execute()
+// Pulls version from git tag
+version = minecraftVersion + "-" + gitVersion()
+group = modGroup
+archivesBaseName = modId
+
+minecraft {
+    version = minecraftVersion + "-" + forgeVersion + "-" + minecraftVersion
+    runDir = "run"
+
+    replaceIn "GigaGramFab.java"
+    replace '${version}', versionDetails().lastTag
+}
+
+if(file("addon.gradle").exists()) {
+    apply from: "addon.gradle"
+}
+
+repositories {
+    maven {
+        name = "Overmind forge repo mirror"
+        url = "https://gregtech.overminddl1.com/"
+    }
+    maven {
+        name = "jitpack"
+        url = "https://jitpack.io"
+        content {
+            includeGroupByRegex 'com\\.github\\.[^.]*'
+        }
+    }
+    maven {
+        name = "ic2"
+        url = "https://maven.ic2.player.to/"
+        content {
+            includeGroup 'net.industrial-craft'
+        }
+        metadataSources {
+            artifact()
+        }
+    }
+}
+
+dependencies {
+    compile "net.industrial-craft:industrialcraft-2:2.2.790-experimental:dev"
+    compile "com.github.GTNewHorizons:StructureLib:1.0.11:dev"
+    compile("com.github.GTNewHorizons:GT5-Unofficial:experimental-SNAPSHOT") {
+        transitive = false
+    }
+
+    runtimeOnly "com.github.GTNewHorizons:CodeChickenLib:1.1.4:dev"
+    runtimeOnly "com.github.GTNewHorizons:CodeChickenCore:1.0.9:dev"
+    runtimeOnly "com.github.GTNewHorizons:NotEnoughItems:2.1.16-GTNH:dev"
+}
+
+jar {
+    manifest {
+        attributes(getManifestAttributes())
+    }
+}
+
+runClient {
+    def arguments = []
+
+    if(developmentEnvironmentUserName) {
+        arguments += [
+                "--username",
+                developmentEnvironmentUserName
+        ]
+    }
+
+    args(arguments)
+}
+
+tasks.withType(JavaExec).configureEach {
+    javaLauncher.set(
+            javaToolchains.launcherFor {
+                languageVersion = projectJavaVersion
+            }
+    )
+}
+
+processResources {
+    // this will ensure that this task is redone when the versions change.
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
+
+    // replace stuff in mcmod.info, nothing else
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+
+        // replace version and mcversion
+        expand "minecraftVersion": project.minecraft.version,
+                "modVersion": versionDetails().lastTag,
+                "modId": modId,
+                "modName": modName
+    }
+
+    // copy everything else, thats not the mcmod.info
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+}
+
+static def getManifestAttributes() {
+    def manifestAttributes = [:]
+    return manifestAttributes
+}
+
+task sourcesJar(type: Jar) {
+    from (sourceSets.main.allJava)
+    from (file("$projectDir/LICENSE"))
+    getArchiveClassifier().set('sources')
+}
+
+task devJar(type: Jar) {
+    from sourceSets.main.output
+    getArchiveClassifier().set("dev")
+
+    manifest {
+        attributes(getManifestAttributes())
+    }
+}
+
+task apiJar(type: Jar) {
+    from (sourceSets.main.allJava) {
+        include modGroup.toString().replaceAll("\\.", "/") + "/" + apiPackage.toString() + '/**'
+    }
+
+    from (sourceSets.main.output) {
+        include modGroup.toString().replaceAll("\\.", "/") + "/" + apiPackage.toString() + '/**'
+    }
+
+    from (sourceSets.main.resources.srcDirs) {
+        include("LICENSE")
+    }
+
+    getArchiveClassifier().set('api')
+}
+
+artifacts {
+    archives sourcesJar
+    archives devJar
+}
+
+task generateGitChangelog(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
+    file = new File("CHANGELOG.md")
+    toRef = "HEAD"
+    templateContent = """<!-- Generated file. DO NOT HAND EDIT!!! -->
+# Change log
+Change log generated from git history.
+{{#tags}}
+## {{name}}
+ {{#issues}}
+  {{#commits}}
+   1. {{{messageTitle}}} ([@{{{hash}}} by {{{authorName}}}](https://github.com/Glease/TC4Tweaks/commit/{{{hashFull}}}))
+  {{/commits}}
+ {{/issues}}
+{{/tags}}
+"""
+}
+
+task createSignedJarDir() {
+    onlyIf { // Skip the task if our secret data isn't available
+        project.hasProperty('keyStore')
+    }
+    doLast {
+        mkdir new File(jar.destinationDir, "signed").toString()
+    }
+}
+
+// sign jars
+task signJar() {
+    dependsOn reobf
+    dependsOn createSignedJarDir
+    onlyIf { // Skip the task if our secret data isn't available
+        project.hasProperty('keyStore')
+    }
+    inputs.files jar.outputs.files
+    jar.outputs.files.forEach {
+        outputs.file it
+    }
+    doLast {
+        jar.outputs.files.forEach {
+            ant.signjar destDir: new File(jar.destinationDirectory.asFile.get(), "signed"),
+                    sigfile: project.hasProperty("signerName") ? project.signerName : project.keyStoreAlias,
+                    keystore: project.keyStore,
+                    alias: project.keyStoreAlias,
+                    storepass: project.keyStorePass,
+                    keypass: project.keyStoreKeyPass,
+                    jar: it
+        }
+    }
+}
+
+assemble.dependsOn signJar
+install.dependsOn reobf
