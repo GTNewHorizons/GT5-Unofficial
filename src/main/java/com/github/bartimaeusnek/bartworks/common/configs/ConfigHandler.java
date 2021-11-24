@@ -26,6 +26,7 @@ package com.github.bartimaeusnek.bartworks.common.configs;
 import com.github.bartimaeusnek.ASM.BWCoreTransformer;
 import com.github.bartimaeusnek.bartworks.API.API_ConfigValues;
 import com.github.bartimaeusnek.bartworks.API.SideReference;
+import jdk.nashorn.internal.runtime.regexp.joni.Config;
 import net.minecraftforge.common.config.Configuration;
 
 import java.util.Arrays;
@@ -72,6 +73,9 @@ public class ConfigHandler {
 
     public static boolean disableBoltedBlocksCasing = false;
     public static boolean disableReboltedBlocksCasing = false;
+
+    public static int pollutionHeatedWaterPumpSecond = 5;
+    public static int basePollutionMBFTick = 5120;
 
     private static final int[][] METAFORTIERS_ENERGY = {
             {100, 101, 102, 105},
@@ -134,6 +138,9 @@ public class ConfigHandler {
         ConfigHandler.DEHPDirectSteam = ConfigHandler.c.get("Multiblocks", "DEHP Direct Steam Mode", false, "This switch enables the Direct Steam Mode of the DEHP. If enabled it will take in Waterand output steam. If disabled it will Input IC2Coolant and output hot coolant").getBoolean(false);
         ConfigHandler.megaMachinesMax = ConfigHandler.c.get("Multiblocks", "Mega Machines Maximum Recipes per Operation", 256, "This changes the Maximum Recipes per Operation to the specified Valure").getInt(256);
         ConfigHandler.bioVatMaxParallelBonus = ConfigHandler.c.get("Multiblocks","BioVat Maximum Bonus on Recipes", 1000,"This are the maximum parallel Operations the BioVat can do, when the output is half full.").getInt(1000);
+
+        ConfigHandler.pollutionHeatedWaterPumpSecond = ConfigHandler.c.get("Pollution", "Pollution produced per second by the water pump", ConfigHandler.pollutionHeatedWaterPumpSecond, "How much should the Simple Stirling Water Pump produce pollution per second").getInt(ConfigHandler.pollutionHeatedWaterPumpSecond);
+        ConfigHandler.basePollutionMBFTick = ConfigHandler.c.get("Pollution", "Pollution produced per tick by the MBF per ingot", ConfigHandler.basePollutionMBFTick,"How much should the MBF produce pollution per tick per ingot. Then it'll be multiplied by the amount of ingots done in parallel").getInt(ConfigHandler.basePollutionMBFTick);
 
         if (ConfigHandler.IDOffset == 0) {
             ConfigHandler.IDOffset = 12600;

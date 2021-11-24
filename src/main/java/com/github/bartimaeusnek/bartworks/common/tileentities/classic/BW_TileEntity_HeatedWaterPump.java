@@ -160,7 +160,7 @@ public class BW_TileEntity_HeatedWaterPump extends TileEntity implements ITileDr
         Optional.ofNullable(this.worldObj).ifPresent(e -> {
                     if (e.getTotalWorldTime() % 20 == 0) {
                         Optional.ofNullable(e.getChunkFromBlockCoords(this.xCoord, this.zCoord)).ifPresent(c ->
-                                GT_Pollution.addPollution(c, 5)
+                                GT_Pollution.addPollution(c, ConfigHandler.pollutionHeatedWaterPumpSecond)
                         );
                     }
                 }
@@ -331,7 +331,11 @@ public class BW_TileEntity_HeatedWaterPump extends TileEntity implements ITileDr
     public String[] getInfoData() {
         return new String[]{
                 StatCollector.translateToLocal("tooltip.tile.waterpump.0.name") + " " +
-                        GT_Utility.formatNumbers(ConfigHandler.mbWaterperSec) + StatCollector.translateToLocal("tooltip.tile.waterpump.1.name"),
+                        GT_Utility.formatNumbers(ConfigHandler.mbWaterperSec) +
+                        String.format(
+                                StatCollector.translateToLocal("tooltip.tile.waterpump.1.name"),
+                                ConfigHandler.pollutionHeatedWaterPumpSecond
+                        ),
                 StatCollector.translateToLocal("tooltip.tile.waterpump.2.name")};
     }
 
