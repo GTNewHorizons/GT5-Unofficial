@@ -494,27 +494,27 @@ public class RocketFuels extends ItemPackage {
 
 
 		//Create Kerosene
-		Kerosene = FluidUtils.generateFluidNonMolten("Kerosene", "Kerosene", 500, new short[]{150, 40, 150, 100}, null, null);
+		Kerosene = FluidUtils.generateFluidNonMolten("Kerosene", "Kerosene", 233, new short[]{150, 40, 150, 100}, null, null);
 		CoalTar.Coal_Oil = Kerosene;
 
 		//RP! Focket Fuel
 		RP1 = FluidUtils.generateFluidNonMolten("RP1Fuel", "RP-1", 500, new short[]{210, 50, 50, 100}, null, null);
 
 		//Create Nitrogen Tetroxide
-		Nitrogen_Tetroxide = FluidUtils.generateFluidNonMolten("NitrogenTetroxide", "Nitrogen Tetroxide", -11, new short[]{170, 170, 0, 100}, null, null);
+		Nitrogen_Tetroxide = FluidUtils.generateFluidNonMolten("NitrogenTetroxide", "Nitrogen Tetroxide", 261, new short[]{170, 170, 0, 100}, null, null);
 
 		//Create Hydrazine
 		Hydrazine = FluidUtils.generateFluidNonMolten("Hydrazine", "Hydrazine", 2, new short[]{250, 250, 250, 100}, null, null);
 
 		//Create Monomethylhydrazine
-		Monomethylhydrazine = FluidUtils.generateFluidNonMolten("Monomethylhydrazine", "Monomethylhydrazine", -52, new short[]{125, 125, 125, 100}, null, null);
+		Monomethylhydrazine = FluidUtils.generateFluidNonMolten("Monomethylhydrazine", "Monomethylhydrazine", 221, new short[]{125, 125, 125, 100}, null, null);
 
 		//Create Anthracene
-		Nitrous_Oxide = FluidUtils.generateFluidNonMolten("NitrousOxide", "Nitrous Oxide", -91, new short[]{255, 255, 255, 100}, null, null);
+		Nitrous_Oxide = FluidUtils.generateFluidNonMolten("NitrousOxide", "Nitrous Oxide", 182, new short[]{255, 255, 255, 100}, null, null);
 
 		//Nos
 		if (!FluidUtils.doesFluidExist("NitrousOxide")){
-			Nitrous_Oxide = FluidUtils.generateFluidNoPrefix("NitrousOxide", "Nitrous Oxide", -91, new short[]{255, 255, 255, 100});
+			Nitrous_Oxide = FluidUtils.generateFluidNoPrefix("NitrousOxide", "Nitrous Oxide", 182, new short[]{255, 255, 255, 100});
 		}
 		else {
 			Nitrous_Oxide = FluidUtils.getWildcardFluidStack("NitrousOxide", 1).getFluid();
@@ -525,7 +525,7 @@ public class RocketFuels extends ItemPackage {
 
 		//Unsymmetrical_Dimethylhydrazine		
 		if (FluidUtils.getFluidStack("1,1dimethylhydrazine", 1) == null){
-			Unsymmetrical_Dimethylhydrazine = FluidUtils.generateFluidNonMolten("UnsymmetricalDimethylhydrazine", "Unsymmetrical Dimethylhydrazine", -57, new short[]{70, 210, 20, 100}, null, null);
+			Unsymmetrical_Dimethylhydrazine = FluidUtils.generateFluidNonMolten("UnsymmetricalDimethylhydrazine", "Unsymmetrical Dimethylhydrazine", 216, new short[]{70, 210, 20, 100}, null, null);
 		}
 		else {
 			Unsymmetrical_Dimethylhydrazine = FluidUtils.getFluidStack("1,1dimethylhydrazine", 1000).getFluid();
@@ -539,7 +539,7 @@ public class RocketFuels extends ItemPackage {
 
 		//Create Liquid_Oxygen
 		if (FluidUtils.getFluidStack("LiquidOxygen", 1) == null && FluidUtils.getFluidStack("liquidoxygen", 1) == null){
-			Liquid_Oxygen = FluidUtils.generateFluidNonMolten("LiquidOxygen", "Liquid Oxygen", -240, new short[]{75, 75, 220, 100}, null, null);
+			Liquid_Oxygen = FluidUtils.generateFluidNonMolten("LiquidOxygen", "Liquid Oxygen", 54, new short[]{75, 75, 220, 100}, null, null);
 		}
 		else {
 			if (FluidUtils.getFluidStack("LiquidOxygen", 1) != null ) {
@@ -555,7 +555,7 @@ public class RocketFuels extends ItemPackage {
 
 		//Create Liquid_Hydrogen
 		if (FluidUtils.getFluidStack("LiquidHydrogen", 1) == null && FluidUtils.getFluidStack("liquidhydrogen", 1) == null){
-			Liquid_Hydrogen = FluidUtils.generateFluidNonMolten("LiquidHydrogen", "Liquid Hydrogen", 20, new short[]{75, 75, 220, 100}, null, null);
+			Liquid_Hydrogen = FluidUtils.generateFluidNonMolten("LiquidHydrogen", "Liquid Hydrogen", 14, new short[]{75, 75, 220, 100}, null, null);
 		}
 		else {
 			if (FluidUtils.getFluidStack("LiquidHydrogen", 1) != null ) {
