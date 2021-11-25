@@ -47,7 +47,7 @@ public class RocketFuels extends ItemPackage {
 	public static Fluid Formaldehyde;
 
 
-	//Rocket Fuel Mixs
+	//Rocket Fuel Mixes
 	public static Fluid Unsymmetrical_Dimethylhydrazine_Plus_Nitrogen_Tetroxide;
 	public static Fluid RP1_Plus_Liquid_Oxygen;
 	public static Fluid Dense_Hydrazine_Mix;
@@ -116,7 +116,7 @@ public class RocketFuels extends ItemPackage {
 						FluidUtils.getFluidStack(Nitrogen_Tetroxide, 3000),
 				},
 				new int[]{100, 100, 50, 50}, 
-				20*30, 
+				20 * 30,
 				MaterialUtils.getVoltageForTier(3),
 				3);
 
@@ -211,7 +211,7 @@ public class RocketFuels extends ItemPackage {
 				FluidUtils.getWater(2000), 
 				new ItemStack[] {ItemUtils.getSimpleStack(Ammonium_Nitrate_Dust, 8)}, 
 				new int[] {10000}, 
-				90*20,
+				90 * 20,
 				480);
 
 	}
