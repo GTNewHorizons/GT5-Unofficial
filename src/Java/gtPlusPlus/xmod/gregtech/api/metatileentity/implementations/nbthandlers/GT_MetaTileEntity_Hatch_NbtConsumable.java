@@ -120,7 +120,8 @@ public abstract class GT_MetaTileEntity_Hatch_NbtConsumable extends GT_MetaTileE
 			if (i <= getSlotID_LastInput()) {
 				fillStacksIntoFirstSlots();
 			}
-		}            
+		}
+		tryFillUsageSlots();
 	}
 
 	// Only moves items in the first four slots
