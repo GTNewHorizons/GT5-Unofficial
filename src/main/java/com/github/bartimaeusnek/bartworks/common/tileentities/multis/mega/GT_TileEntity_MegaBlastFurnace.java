@@ -121,7 +121,7 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_MetaTileEntity_ElectricBl
 
     private int mHeatingCapacity;
     private byte glasTier;
-    private int polPtick = ConfigHandler.basePollutionMBFTick*ConfigHandler.megaMachinesMax;
+    private int polPtick = ConfigHandler.basePollutionMBFSecond / 20 * ConfigHandler.megaMachinesMax;
 
     public GT_TileEntity_MegaBlastFurnace(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -426,7 +426,7 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_MetaTileEntity_ElectricBl
 
             this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
 
-            this.polPtick = ConfigHandler.basePollutionMBFTick * processed;
+            this.polPtick = ConfigHandler.basePollutionMBFSecond / 20 * processed;
             this.mOutputItems = new ItemStack[outputItems.size()];
             this.mOutputItems = outputItems.toArray(this.mOutputItems);
             this.mOutputFluids = new FluidStack[outputFluids.size()];
