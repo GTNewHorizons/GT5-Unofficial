@@ -766,7 +766,9 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 		this.mOutputItems = tOutputItems;
 		this.mOutputFluids = tOutputFluids;
 		updateSlots();
-		for (GT_MetaTileEntity_Hatch_Catalysts h : mCatalystBuses) h.updateSlots();
+		for (GT_MetaTileEntity_Hatch_Catalysts h : mCatalystBuses) {
+			h.updateSlots();
+		}
 
 		// Play sounds (GT++ addition - GT multiblocks play no sounds)
 		startProcess();
