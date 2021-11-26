@@ -768,7 +768,6 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 		updateSlots();
 		for (GT_MetaTileEntity_Hatch_Catalysts h : mCatalystBuses) {
 			h.updateSlots();
-			h.tryFillUsageSlots();
 		}
 
 		// Play sounds (GT++ addition - GT multiblocks play no sounds)
