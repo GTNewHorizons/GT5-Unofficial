@@ -47,7 +47,7 @@ public class RocketFuels extends ItemPackage {
 	public static Fluid Formaldehyde;
 
 
-	//Rocket Fuel Mixs
+	//Rocket Fuel Mixes
 	public static Fluid Unsymmetrical_Dimethylhydrazine_Plus_Nitrogen_Tetroxide;
 	public static Fluid RP1_Plus_Liquid_Oxygen;
 	public static Fluid Dense_Hydrazine_Mix;
@@ -116,7 +116,7 @@ public class RocketFuels extends ItemPackage {
 						FluidUtils.getFluidStack(Nitrogen_Tetroxide, 3000),
 				},
 				new int[]{100, 100, 50, 50}, 
-				20*30, 
+				20 * 30,
 				MaterialUtils.getVoltageForTier(3),
 				3);
 
@@ -211,7 +211,7 @@ public class RocketFuels extends ItemPackage {
 				FluidUtils.getWater(2000), 
 				new ItemStack[] {ItemUtils.getSimpleStack(Ammonium_Nitrate_Dust, 8)}, 
 				new int[] {10000}, 
-				90*20,
+				90 * 20,
 				480);
 
 	}
@@ -494,27 +494,27 @@ public class RocketFuels extends ItemPackage {
 
 
 		//Create Kerosene
-		Kerosene = FluidUtils.generateFluidNonMolten("Kerosene", "Kerosene", 500, new short[]{150, 40, 150, 100}, null, null);
+		Kerosene = FluidUtils.generateFluidNonMolten("Kerosene", "Kerosene", 233, new short[]{150, 40, 150, 100}, null, null);
 		CoalTar.Coal_Oil = Kerosene;
 
 		//RP! Focket Fuel
 		RP1 = FluidUtils.generateFluidNonMolten("RP1Fuel", "RP-1", 500, new short[]{210, 50, 50, 100}, null, null);
 
 		//Create Nitrogen Tetroxide
-		Nitrogen_Tetroxide = FluidUtils.generateFluidNonMolten("NitrogenTetroxide", "Nitrogen Tetroxide", -11, new short[]{170, 170, 0, 100}, null, null);
+		Nitrogen_Tetroxide = FluidUtils.generateFluidNonMolten("NitrogenTetroxide", "Nitrogen Tetroxide", 261, new short[]{170, 170, 0, 100}, null, null);
 
 		//Create Hydrazine
 		Hydrazine = FluidUtils.generateFluidNonMolten("Hydrazine", "Hydrazine", 2, new short[]{250, 250, 250, 100}, null, null);
 
 		//Create Monomethylhydrazine
-		Monomethylhydrazine = FluidUtils.generateFluidNonMolten("Monomethylhydrazine", "Monomethylhydrazine", -52, new short[]{125, 125, 125, 100}, null, null);
+		Monomethylhydrazine = FluidUtils.generateFluidNonMolten("Monomethylhydrazine", "Monomethylhydrazine", 221, new short[]{125, 125, 125, 100}, null, null);
 
 		//Create Anthracene
-		Nitrous_Oxide = FluidUtils.generateFluidNonMolten("NitrousOxide", "Nitrous Oxide", -91, new short[]{255, 255, 255, 100}, null, null);
+		Nitrous_Oxide = FluidUtils.generateFluidNonMolten("NitrousOxide", "Nitrous Oxide", 182, new short[]{255, 255, 255, 100}, null, null);
 
 		//Nos
 		if (!FluidUtils.doesFluidExist("NitrousOxide")){
-			Nitrous_Oxide = FluidUtils.generateFluidNoPrefix("NitrousOxide", "Nitrous Oxide", -91, new short[]{255, 255, 255, 100});
+			Nitrous_Oxide = FluidUtils.generateFluidNoPrefix("NitrousOxide", "Nitrous Oxide", 182, new short[]{255, 255, 255, 100});
 		}
 		else {
 			Nitrous_Oxide = FluidUtils.getWildcardFluidStack("NitrousOxide", 1).getFluid();
@@ -525,7 +525,7 @@ public class RocketFuels extends ItemPackage {
 
 		//Unsymmetrical_Dimethylhydrazine		
 		if (FluidUtils.getFluidStack("1,1dimethylhydrazine", 1) == null){
-			Unsymmetrical_Dimethylhydrazine = FluidUtils.generateFluidNonMolten("UnsymmetricalDimethylhydrazine", "Unsymmetrical Dimethylhydrazine", -57, new short[]{70, 210, 20, 100}, null, null);
+			Unsymmetrical_Dimethylhydrazine = FluidUtils.generateFluidNonMolten("UnsymmetricalDimethylhydrazine", "Unsymmetrical Dimethylhydrazine", 216, new short[]{70, 210, 20, 100}, null, null);
 		}
 		else {
 			Unsymmetrical_Dimethylhydrazine = FluidUtils.getFluidStack("1,1dimethylhydrazine", 1000).getFluid();
@@ -539,7 +539,7 @@ public class RocketFuels extends ItemPackage {
 
 		//Create Liquid_Oxygen
 		if (FluidUtils.getFluidStack("LiquidOxygen", 1) == null && FluidUtils.getFluidStack("liquidoxygen", 1) == null){
-			Liquid_Oxygen = FluidUtils.generateFluidNonMolten("LiquidOxygen", "Liquid Oxygen", -240, new short[]{75, 75, 220, 100}, null, null);
+			Liquid_Oxygen = FluidUtils.generateFluidNonMolten("LiquidOxygen", "Liquid Oxygen", 54, new short[]{75, 75, 220, 100}, null, null);
 		}
 		else {
 			if (FluidUtils.getFluidStack("LiquidOxygen", 1) != null ) {
@@ -555,7 +555,7 @@ public class RocketFuels extends ItemPackage {
 
 		//Create Liquid_Hydrogen
 		if (FluidUtils.getFluidStack("LiquidHydrogen", 1) == null && FluidUtils.getFluidStack("liquidhydrogen", 1) == null){
-			Liquid_Hydrogen = FluidUtils.generateFluidNonMolten("LiquidHydrogen", "Liquid Hydrogen", -240, new short[]{75, 75, 220, 100}, null, null);
+			Liquid_Hydrogen = FluidUtils.generateFluidNonMolten("LiquidHydrogen", "Liquid Hydrogen", 14, new short[]{75, 75, 220, 100}, null, null);
 		}
 		else {
 			if (FluidUtils.getFluidStack("LiquidHydrogen", 1) != null ) {
@@ -571,11 +571,10 @@ public class RocketFuels extends ItemPackage {
 
 		Formaldehyde = FluidUtils.generateFluidNonMolten("Formaldehyde", "Formaldehyde", 185, new short[]{150, 75, 150, 100}, null, null);
 
-		Unsymmetrical_Dimethylhydrazine_Plus_Nitrogen_Tetroxide = FluidUtils.generateFluidNonMolten("RocketFuelMixA", "H8N4C2O4 Rocket Fuel", -185, new short[]{50, 220, 50, 100}, null, null);
-		RP1_Plus_Liquid_Oxygen = FluidUtils.generateFluidNonMolten("RocketFuelMixB", "Rp-1 Rocket Fuel", -250, new short[]{250, 50, 50, 100}, null, null);
-		Monomethylhydrazine_Plus_Nitric_Acid = FluidUtils.generateFluidNonMolten("RocketFuelMixC", "CN3H7O3 Rocket Fuel", -300, new short[]{125, 75, 180, 100}, null, null);
-		Dense_Hydrazine_Mix = FluidUtils.generateFluidNonMolten("RocketFuelMixD", "Dense Hydrazine Fuel Mixture", -250, new short[]{175, 80, 120, 100}, null, null);
-
+		Unsymmetrical_Dimethylhydrazine_Plus_Nitrogen_Tetroxide = FluidUtils.generateFluidNonMolten("RocketFuelMixA", "H8N4C2O4 Rocket Fuel", 216, new short[]{50, 220, 50, 100}, null, null);
+		RP1_Plus_Liquid_Oxygen = FluidUtils.generateFluidNonMolten("RocketFuelMixB", "Rp-1 Rocket Fuel", 250, new short[]{250, 50, 50, 100}, null, null);
+		Monomethylhydrazine_Plus_Nitric_Acid = FluidUtils.generateFluidNonMolten("RocketFuelMixC", "CN3H7O3 Rocket Fuel", 221, new short[]{125, 75, 180, 100}, null, null);
+		Dense_Hydrazine_Mix = FluidUtils.generateFluidNonMolten("RocketFuelMixD", "Dense Hydrazine Fuel Mixture", 275, new short[]{175, 80, 120, 100}, null, null);
 
 	}
 
