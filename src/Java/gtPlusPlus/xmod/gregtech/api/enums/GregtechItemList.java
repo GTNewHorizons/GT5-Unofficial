@@ -396,6 +396,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 	
 	// Flotation Cell
 	Controller_Flotation_Cell,
+	Casing_Flotation_Cell,
 	
 	// Elemental Duplicator
 	/*Controller_ElementalDuplicator,*/

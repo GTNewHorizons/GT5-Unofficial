@@ -99,6 +99,14 @@ public class RECIPES_Machines {
 	public static ItemStack RECIPE_LFTROuterCasing;
 	public static ItemStack RECIPE_LFTRInnerCasing;
 
+	//Milling
+	public static ItemStack RECIPE_ISAMill_Controller;
+	public static ItemStack RECIPE_ISAMill_Gearbox;
+	public static ItemStack RECIPE_ISAMill_Casing;
+	public static ItemStack RECIPE_ISAMill_Hatch;
+	public static ItemStack RECIPE_Flotation_Controller;
+	public static ItemStack RECIPE_Flotation_Casing;
+
 	//Cyclotron
 	public static ItemStack RECIPE_CyclotronController;
 	public static ItemStack RECIPE_CyclotronOuterCasing;
@@ -242,6 +250,7 @@ public class RECIPES_Machines {
 		algaeFarm();
 		chemPlant();
 		zyngen();
+		milling();
 
 	}
 
@@ -2366,6 +2375,151 @@ public class RECIPES_Machines {
 				GregtechItemList.Controller_Vacuum_Furnace.get(1),					
 				60 * 20 * 12, 
 				MaterialUtils.getVoltageForTier(7));
+	}
+	
+	private static void milling() {
+
+
+		/*public static ItemStack RECIPE_ISAMill_Controller;
+		public static ItemStack RECIPE_ISAMill_Gearbox;
+		public static ItemStack RECIPE_ISAMill_Casing;
+		public static ItemStack RECIPE_ISAMill_Hatch;
+		public static ItemStack RECIPE_Flotation_Controller;
+		public static ItemStack RECIPE_Flotation_Casing;*/
+
+		// Isa Mill Controller
+		CORE.RA.addAssemblylineRecipe(
+				ItemList.Machine_IV_Macerator.get(1), 
+				20 * 60 * 20,
+				new ItemStack[] {
+						GregtechItemList.Casing_IsaMill_Gearbox.get(4),
+						CI.getTieredGTPPMachineCasing(6, 4),
+						ItemList.Component_Grinder_Tungsten.get(16),
+						ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(6), 8),
+						ALLOY.INCONEL_625.getGear(8),
+						ALLOY.INCONEL_625.getPlate(32),
+						ALLOY.ZERON_100.getPlateDouble(8),
+						ALLOY.ZERON_100.getPlateDouble(8),
+						ALLOY.ZERON_100.getScrew(64),
+						CI.getTieredComponentOfMaterial(Materials.NiobiumTitanium, OrePrefixes.wireFine, 32),
+						CI.getTieredComponentOfMaterial(Materials.NiobiumTitanium, OrePrefixes.wireFine, 32),
+						CI.getTieredComponentOfMaterial(Materials.Titanium, OrePrefixes.foil, 16),
+						CI.getTieredComponentOfMaterial(Materials.Titanium, OrePrefixes.foil, 16),
+
+				}, 
+				new FluidStack[] {
+						CI.getTieredFluid(6, 16 * 144),
+						CI.getAlternativeTieredFluid(6, 32 * 144),
+						CI.getTertiaryTieredFluid(6, 32 * 144)
+				}, 
+				GregtechItemList.Controller_IsaMill.get(1),
+				20 * 60 * 10, 
+				MaterialUtils.getVoltageForTier(6));
+
+		// Isa Mill Gearbox
+		CORE.RA.addSixSlotAssemblingRecipe(
+				new ItemStack[] {
+						CI.getNumberedAdvancedCircuit(7),
+						ItemList.Casing_Gearbox_Titanium.get(2),
+						ALLOY.INCONEL_625.getGear(4),
+						CI.getTieredComponentOfMaterial(Materials.HSSE, OrePrefixes.gearGtSmall, 8),
+						ALLOY.INCONEL_625.getPlate(16),
+						ALLOY.ZERON_100.getBolt(16),
+				}, 
+				ALLOY.TUNGSTENSTEEL.getFluid(8 * 144), 
+				GregtechItemList.Casing_IsaMill_Gearbox.get(1), 
+				60 * 20 * 2, 
+				MaterialUtils.getVoltageForTier(6));
+
+		// Isa Mill Casing
+		CORE.RA.addSixSlotAssemblingRecipe(
+				new ItemStack[] {
+						CI.getNumberedAdvancedCircuit(7),
+						CI.getTieredGTPPMachineCasing(5, 1),
+						ALLOY.INCONEL_625.getPlate(8),
+						ALLOY.ZERON_100.getRod(4),
+						CI.getTieredComponentOfMaterial(Materials.HSSG, OrePrefixes.gearGtSmall, 4),
+						ALLOY.ZERON_100.getScrew(8),
+				}, 
+				ELEMENT.getInstance().TITANIUM.getFluid(4 * 144), 
+				GregtechItemList.Casing_IsaMill_Casing.get(1), 
+				60 * 20 * 2, 
+				MaterialUtils.getVoltageForTier(6));
+
+		// Isa Mill Pipe
+		CORE.RA.addSixSlotAssemblingRecipe(
+				new ItemStack[] {
+						CI.getNumberedAdvancedCircuit(7),
+						CI.getTieredGTPPMachineCasing(4, 2),
+						ALLOY.INCONEL_625.getPlateDouble(4),
+						ALLOY.INCOLOY_MA956.getRing(8),
+						CI.getTieredComponentOfMaterial(Materials.HSSE, OrePrefixes.plate, 8),
+						ALLOY.INCOLOY_MA956.getBolt(16),
+				}, 
+				ELEMENT.getInstance().ALUMINIUM.getFluid(8 * 144), 
+				GregtechItemList.Casing_IsaMill_Pipe.get(1), 
+				60 * 20 * 8, 
+				MaterialUtils.getVoltageForTier(4));	
+
+		// Flotation Cell Controller
+		CORE.RA.addAssemblylineRecipe(
+				ItemList.Distillation_Tower.get(1), 
+				20 * 60 * 20,
+				new ItemStack[] {
+						GregtechItemList.Casing_Flotation_Cell.get(4),
+						CI.getTieredGTPPMachineCasing(5, 4),
+						ItemList.Machine_IV_Distillery.get(1),
+						ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(6), 8),
+						ALLOY.STELLITE.getGear(8),
+						ALLOY.STELLITE.getPlate(32),
+						ALLOY.HASTELLOY_N.getPlateDouble(8),
+						ALLOY.HASTELLOY_N.getPlateDouble(8),
+						ALLOY.HASTELLOY_N.getScrew(64),
+						CI.getTieredComponentOfMaterial(Materials.YttriumBariumCuprate, OrePrefixes.wireFine, 64),
+						CI.getTieredComponentOfMaterial(Materials.YttriumBariumCuprate, OrePrefixes.wireFine, 64),
+						CI.getTieredComponentOfMaterial(Materials.Platinum, OrePrefixes.foil, 32),
+						CI.getTieredComponentOfMaterial(Materials.Platinum, OrePrefixes.foil, 32),
+
+				}, 
+				new FluidStack[] {
+						CI.getTieredFluid(5, 16 * 144),
+						CI.getAlternativeTieredFluid(4, 32 * 144),
+						CI.getTertiaryTieredFluid(4, 32 * 144)
+				}, 
+				GregtechItemList.Controller_Flotation_Cell.get(1),
+				20 * 60 * 10, 
+				MaterialUtils.getVoltageForTier(6));
+
+		// Flotation Cell Casing
+		CORE.RA.addSixSlotAssemblingRecipe(
+				new ItemStack[] {
+						CI.getNumberedAdvancedCircuit(7),
+						CI.getTieredGTPPMachineCasing(4, 1),
+						ALLOY.AQUATIC_STEEL.getPlate(8),
+						ALLOY.STELLITE.getRing(8),
+						CI.getTieredComponentOfMaterial(Materials.HSSG, OrePrefixes.plateDouble, 4),
+						ALLOY.HASTELLOY_N.getScrew(8),
+				}, 
+				ALLOY.STAINLESS_STEEL.getFluid(8 * 144), 
+				GregtechItemList.Casing_Flotation_Cell.get(1), 
+				60 * 20 * 2, 
+				MaterialUtils.getVoltageForTier(6));
+
+		// Milling Bus
+		CORE.RA.addSixSlotAssemblingRecipe(
+				new ItemStack[] {
+						CI.getNumberedAdvancedCircuit(7),
+						CI.getTieredGTPPMachineCasing(5, 1),
+						ItemList.Hatch_Input_Bus_EV.get(1),
+						CI.getTieredComponentOfMaterial(Materials.Titanium, OrePrefixes.gearGt, 8),
+						CI.getTieredComponentOfMaterial(Materials.TungstenSteel, OrePrefixes.plate, 32),
+						CI.getTieredComponentOfMaterial(Materials.SolderingAlloy, OrePrefixes.wireFine, 16),
+				}, 
+				ELEMENT.getInstance().TUNGSTEN.getFluid(8 * 144), 
+				GregtechItemList.Bus_Milling_Balls.get(1), 
+				60 * 20 * 4, 
+				MaterialUtils.getVoltageForTier(5));
+
 	}
 
 	private static void fakeMachineCasingCovers() {	    
