@@ -128,7 +128,6 @@ public abstract class GT_MetaTileEntity_Hatch_NbtConsumable extends GT_MetaTileE
 				fillStacksIntoFirstSlots();
 			}
 		}
-		tryFillUsageSlots();
 	}
 
 	// Only moves items in the first four slots
@@ -142,7 +141,7 @@ public abstract class GT_MetaTileEntity_Hatch_NbtConsumable extends GT_MetaTileE
 		}                
 	}
 	
-	private final void tryFillUsageSlots() {
+	public final void tryFillUsageSlots() {
 		int aSlotSpace = (mInputslotCount - getContentUsageSlots().size());
 		if (aSlotSpace > 0) {
 			Logger.INFO("We have empty usage slots. "+aSlotSpace);
