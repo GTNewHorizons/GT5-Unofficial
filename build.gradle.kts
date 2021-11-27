@@ -29,7 +29,7 @@ buildscript {
         maven("https://jitpack.io")
     }
     dependencies {
-        classpath("com.github.GTNewHorizons:ForgeGradle:stable-2021-11-20")
+        classpath("com.github.GTNewHorizons:ForgeGradle:1.2.4")
     }
 }
 
