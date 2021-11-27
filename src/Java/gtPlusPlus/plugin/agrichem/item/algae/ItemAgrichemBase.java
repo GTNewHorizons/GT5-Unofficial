@@ -240,8 +240,7 @@ public class ItemAgrichemBase extends Item {
 				createCatalystNBT(aStack);
 	        }
 			double currentDamage = getCatalystDamage(aStack);
-			double durabilitypercent = currentDamage / getCatalystMaxDamage(aStack);
-	        return durabilitypercent;
+			return currentDamage / getCatalystMaxDamage(aStack);
 		}
 		else {
 			return 1D;
@@ -285,9 +284,7 @@ public class ItemAgrichemBase extends Item {
 	public boolean showDurabilityBar(ItemStack aStack) {
 		if (ItemUtils.isCatalyst(aStack)) {
 			int aDam = getCatalystDamage(aStack);
-			if (aDam > 0) {
-				return true;
-			}
+			return aDam > 0;
 		}
 		return false;
 	}
