@@ -1623,8 +1623,8 @@ public class RECIPES_GREGTECH {
 					// Fluid
 					// 1
 					null, // Output Fluid 2
-					60 * 60 * 20, // Duration
-					500);
+					120 * 60 * 20, // Duration
+					MaterialUtils.getVoltageForTier(5));
 
 			// 7LiF - BeF2 - ZrF4 - U235 - 590C
 			CORE.RA.addFissionFuel(FluidUtils.getFluidStack(LithiumFluoride, 550), // Input
@@ -1638,8 +1638,8 @@ public class RECIPES_GREGTECH {
 					// Fluid
 					// 1
 					null, // Output Fluid 2
-					45 * 60 * 20, // Duration
-					500);
+					90 * 60 * 20, // Duration
+					MaterialUtils.getVoltageForTier(5));
 
 			// 7liF - BeF2 - ThF4 - UF4 - 566C
 			CORE.RA.addFissionFuel(FluidUtils.getFluidStack(LithiumFluoride, 620), // Input
@@ -1654,8 +1654,8 @@ public class RECIPES_GREGTECH {
 					// Fluid
 					// 1
 					null, // Output Fluid 2
-					60 * 60 * 20, // Duration
-					500);
+					150 * 60 * 20, // Duration
+					MaterialUtils.getVoltageForTier(5));
 
 		}
 		catch (final NullPointerException e) {

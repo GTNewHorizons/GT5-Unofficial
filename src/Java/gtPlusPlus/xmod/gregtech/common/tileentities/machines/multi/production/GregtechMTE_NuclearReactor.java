@@ -383,31 +383,31 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
 		// Warm up for 4~ minutes
-		Logger.INFO("Checking LFTR recipes.");
+		Logger.WARNING("Checking LFTR recipes.");
 		if (mEfficiency < this.getMaxEfficiency(null)) {
 			this.mProgresstime = 1;
 			this.mMaxProgresstime = 1;
 			this.mEfficiencyIncrease = 2;
-			Logger.INFO("Warming Up! "+this.mEfficiency+"/"+this.getMaxEfficiency(null));
+			Logger.WARNING("Warming Up! "+this.mEfficiency+"/"+this.getMaxEfficiency(null));
 			return true;
 		}
-		Logger.INFO("Warmed up, checking LFTR recipes.");
+		Logger.WARNING("Warmed up, checking LFTR recipes.");
 
 		final FluidStack[] tFluids = getStoredFluidsAsArray();
 		final Collection<GT_Recipe> tRecipeList = getRecipeMap().mRecipeList;
 		if(tFluids.length > 0 && tRecipeList != null && tRecipeList.size() > 0) { //Does input hatch have a LFTR fuel?
-			Logger.INFO("Found more than one input fluid and a list of valid recipes.");
+			Logger.WARNING("Found more than one input fluid and a list of valid recipes.");
 			boolean foundLi2bef4 = false;
 			// Find a valid recipe
 			GT_Recipe aFuelProcessing = this.findRecipe(getBaseMetaTileEntity(), mLastRecipe, true, 0, tFluids, new ItemStack[] {});
 			if (aFuelProcessing == null) {
-				Logger.INFO("Did not find valid recipe for given inputs.");
+				Logger.WARNING("Did not find valid recipe for given inputs.");
 				return false;
 			}
 			else {
-				Logger.INFO("Found recipe? "+(aFuelProcessing != null ? "true" : "false"));
+				Logger.WARNING("Found recipe? "+(aFuelProcessing != null ? "true" : "false"));
 				for (FluidStack aFluidInput : aFuelProcessing.mFluidInputs) {
-					Logger.INFO("Using "+aFluidInput.getLocalizedName());				
+					Logger.WARNING("Using "+aFluidInput.getLocalizedName());				
 				}
 			}
 			// Find li2bef4, Helium & Fluorine
@@ -415,13 +415,13 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 				if (hatchFluid1 != null) {
 					if (hatchFluid1.getFluid().equals(ModItems.fluidFLiBeSalt)){
 						foundLi2bef4 = true;
-						Logger.INFO("Found "+hatchFluid1.getLocalizedName());
+						Logger.WARNING("Found "+hatchFluid1.getLocalizedName());
 						continue;
 					}
 				}
 			}			
 			if (!foundLi2bef4) {
-				Logger.INFO("Did not find "+ModItems.fluidFLiBeSalt.getLocalizedName());
+				Logger.WARNING("Did not find "+ModItems.fluidFLiBeSalt.getLocalizedName());
 				return false;
 			}
 			// Reset outputs and progress stats
@@ -433,18 +433,18 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 			// Deplete Inputs
 			if (aFuelProcessing.mFluidInputs.length > 0) {
 				for (FluidStack aInputToConsume : aFuelProcessing.mFluidInputs) {
-					Logger.INFO("Depleting "+aInputToConsume.getLocalizedName()+" - "+aInputToConsume.amount+"L");
+					Logger.WARNING("Depleting "+aInputToConsume.getLocalizedName()+" - "+aInputToConsume.amount+"L");
 					this.depleteInput(aInputToConsume);			
 				}
 			}
 			// -- Try not to fail after this point - inputs have already been consumed! --
 			this.mMaxProgresstime = (int)(aFuelProcessing.mDuration);
 			this.mEUt = aFuelProcessing.mSpecialValue * 4;
-			Logger.INFO("Outputting "+this.mEUt+"eu/t");
+			Logger.WARNING("Outputting "+this.mEUt+"eu/t");
 			this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
 			this.mEfficiencyIncrease = 10000;		
 			this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-			Logger.INFO("Recipe time: "+this.mMaxProgresstime);	
+			Logger.WARNING("Recipe time: "+this.mMaxProgresstime);	
 			mFuelRemaining = getStoredFuel(aFuelProcessing); //Record available fuel	
 
 			FluidStack[] tOutputFluids = new FluidStack[aFuelProcessing.mFluidOutputs.length];
@@ -456,12 +456,12 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 
 			this.mOutputFluids = tOutputFluids;
 			updateSlots();					
-			Logger.INFO("Recipe Good!");	
+			Logger.WARNING("Recipe Good!");	
 			return true;
 		}
 		this.mEUt = 0;
 		this.mEfficiency = 0;
-		Logger.INFO("Recipe Bad!");
+		Logger.WARNING("Recipe Bad!");
 		return false;
 	}	
 
@@ -525,10 +525,10 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 	private void trySparge() {
 		if (mHelium == null) {
 			mHelium = Materials.Helium.getGas(1).getFluid();
-			Logger.INFO("Set Helium.");
+			Logger.WARNING("Set Helium.");
 		}
 		if (mFluorine == null) {
-			Logger.INFO("Set Fluorine.");
+			Logger.WARNING("Set Fluorine.");
 			mFluorine = Materials.Fluorine.getGas(1).getFluid();
 		}
 		final FluidStack[] tFluids = getStoredFluidsAsArray();
@@ -539,25 +539,25 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 			if (hatchFluid1 != null) {
 				if (hatchFluid1.getFluid().equals(mHelium) && hatchFluid1.amount >= 100){
 					aHeliumSparge = hatchFluid1;
-					Logger.INFO("Found "+hatchFluid1.getLocalizedName());
+					Logger.WARNING("Found "+hatchFluid1.getLocalizedName());
 					continue;
 				}
 				else if (hatchFluid1.getFluid().equals(mFluorine) && hatchFluid1.amount >= 10){
 					aFluorineSparge = hatchFluid1;
-					Logger.INFO("Found "+hatchFluid1.getLocalizedName());
+					Logger.WARNING("Found "+hatchFluid1.getLocalizedName());
 					continue;
 				}
 			}
 		}
 		if (aHeliumSparge != null) {
-			Logger.INFO("Sparging Helium.");
+			Logger.WARNING("Sparging Helium.");
 			AutoMap<FluidStack> aSpargeOutputs = getByproductsOfSparge(aHeliumSparge);
 			for (FluidStack aSparge : aSpargeOutputs) {
 				this.addOutput(aSparge);
 			}				
 		}
 		if (aFluorineSparge != null) {
-			Logger.INFO("Sparging Fluorine.");
+			Logger.WARNING("Sparging Fluorine.");
 			AutoMap<FluidStack> aSpargeOutputs = getByproductsOfSparge(aFluorineSparge);
 			for (FluidStack aSparge : aSpargeOutputs) {
 				this.addOutput(aSparge);
@@ -604,24 +604,24 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 			outputChances = new int[]{
 					0,
 					MathUtils.roundToClosestInt(MathUtils.randInt(0, 20)),
-					MathUtils.roundToClosestInt(MathUtils.randInt(0, 10)),
-					MathUtils.roundToClosestInt(MathUtils.randInt(0, 10)),
-					MathUtils.roundToClosestInt(MathUtils.randInt(0, 5)),
-					MathUtils.roundToClosestInt(MathUtils.randInt(0, 5))
+					MathUtils.roundToClosestInt(MathUtils.randInt(0, 20)),
+					MathUtils.roundToClosestInt(MathUtils.randInt(0, 20)),
+					MathUtils.roundToClosestInt(MathUtils.randInt(0, 20)),
+					MathUtils.roundToClosestInt(MathUtils.randInt(0, 20))
 			};
-			aDepletionAmount = 50;
+			aDepletionAmount = 100;
 			outputChances[0] = (aDepletionAmount-outputChances[1]-outputChances[2]-outputChances[3]-outputChances[4]-outputChances[5]);
 			aSpargeType = 0;
 		}
 		else if (spargeGas.getFluid().equals(mFluorine)){
 			outputChances = new int[]{
 					0,
+					MathUtils.roundToClosestInt(MathUtils.randDouble(0, 40)),
 					MathUtils.roundToClosestInt(MathUtils.randDouble(0, 20)),
-					MathUtils.roundToClosestInt(MathUtils.randDouble(0, 10)),
-					MathUtils.roundToClosestInt(MathUtils.randDouble(0, 10)),
-					MathUtils.roundToClosestInt(MathUtils.randDouble(0, 10))
+					MathUtils.roundToClosestInt(MathUtils.randDouble(0, 20)),
+					MathUtils.roundToClosestInt(MathUtils.randDouble(0, 20))
 			};
-			aDepletionAmount = 50;
+			aDepletionAmount = 100;
 			outputChances[0] = (aDepletionAmount-outputChances[1]-outputChances[2]-outputChances[3]-outputChances[4]);
 			aSpargeType = 1;
 		}		
@@ -642,14 +642,21 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-		if (aBaseMetaTileEntity.isActive()){
-			// Set casings active if we're warmed up.
-			if (this.mEfficiency == this.getMaxEfficiency(null)){
-				this.turnCasingActive(true);
+		if (aBaseMetaTileEntity.getWorld().isRemote) {
+			if (aBaseMetaTileEntity.isActive()){
+				// Set casings active if we're warmed up.
+				if (this.mEfficiency == this.getMaxEfficiency(null)){
+					this.turnCasingActive(true);
+				}
+				else {
+					this.turnCasingActive(false);
+				}
 			}
 			else {
 				this.turnCasingActive(false);
 			}
+		}
+		else {
 			// Try output some Uranium-233
 			if (MathUtils.randInt(300, 600) == 1){
 				this.addOutput(ELEMENT.getInstance().URANIUM233.getFluid(MathUtils.randInt(1, 10)));
@@ -657,7 +664,7 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 			// Set a random tick counter, count it up.
 			if (this.mSpargeTime == 0) {
 				this.mSpargeTime = MathUtils.randInt(1200, 2400);
-				Logger.INFO("Set Sparge Timer to "+this.mSpargeTime);
+				Logger.WARNING("Set Sparge Timer to "+this.mSpargeTime);
 			}
 			else {
 				this.mSpargeTicks++;
@@ -666,13 +673,10 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 			if (this.mSpargeTicks >= this.mSpargeTime) {
 				this.mSpargeTime = 0;
 				this.mSpargeTicks = 0;
-				Logger.INFO("Sparging!");
+				Logger.WARNING("Sparging!");
 				trySparge();
 			}
-		}
-		else {
-			this.turnCasingActive(false);
-		}
+		}		
 		super.onPostTick(aBaseMetaTileEntity, aTick);
 	}
 	
