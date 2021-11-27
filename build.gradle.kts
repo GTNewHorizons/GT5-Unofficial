@@ -29,7 +29,7 @@ buildscript {
         maven("https://jitpack.io")
     }
     dependencies {
-        classpath("com.github.GTNewHorizons:ForgeGradle:stable-2021-11-20")
+        classpath("com.github.GTNewHorizons:ForgeGradle:1.2.4")
     }
 }
 
@@ -132,7 +132,7 @@ dependencies {
         this.isChanging = true
     }
     compile ("com.github.GTNewHorizons:StructureLib:1.0.6:deobf")
-    compile("com.github.GTNewHorizons:TinkersConstruct:master-SNAPSHOT:deobf") {
+    compile("com.github.GTNewHorizons:TinkersConstruct:master-SNAPSHOT:dev") {
         this.isChanging = true
     }
     compileOnly("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-1.7.10-SNAPSHOT:dev") {
