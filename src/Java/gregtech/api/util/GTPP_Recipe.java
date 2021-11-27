@@ -341,8 +341,7 @@ public class GTPP_Recipe extends GT_Recipe  implements IComparableRecipe {
 		public static final GTPP_Recipe_Map_Internal sSteamTurbineFuels = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(10), "gtpp.recipe.steamturbinefuel", "GeoThermal Fuel", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 1000, " EU", true, true);
 
 		//LFTR recipes
-		public static final GTPP_Recipe_Map_Internal sLiquidFluorineThoriumReactorRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(50), "gtpp.recipe.lftr", "Liquid Fluoride Thorium Reactor", null, RES_PATH_GUI + "basicmachines/LFTR", 0, 0, 0, 2, 1, "Start: ", 1, " EU", true, true);
-		public static final GTPP_Recipe_Map_Internal sLiquidFluorineThoriumReactorRecipesEx = new GTPP_Recipe_Map_Internal(new NoConflictGTRecipeMap(), "gtpp.recipe.lftr.2", "Liquid Fluoride Thorium Reactor", null, RES_PATH_GUI + "basicmachines/LFTR", 0, 0, 0, 2, 1, "Start: ", 1, " EU", true, true);
+		public static final GTPP_Recipe_Map_Internal sLiquidFluorineThoriumReactorRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(50), "gtpp.recipe.lftr", "Liquid Fluoride Thorium Reactor", null, RES_PATH_GUI + "basicmachines/FissionFuel", 0, 0, 0, 2, 0, "Power: ", 1, " EU/t per Dynamo", true, true);
 		
 		// Ore Milling Map
         public static final GTPP_Recipe_Map_Internal sOreMillRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(10000), "gtpp.recipe.oremill", "Milling", null, RES_PATH_GUI + "basicmachines/LFTR", 3, 4, 1, 0, 1, E, 1, E, true, false);

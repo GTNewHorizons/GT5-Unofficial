@@ -1,10 +1,17 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
@@ -12,34 +19,35 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.*;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.GTPP_Recipe;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GTPP_Recipe;
+import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.material.nuclear.FLUORIDES;
-import gtPlusPlus.core.material.nuclear.NUCLIDE;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
-
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
 public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 
-	protected int fuelConsumption = 0;
-	protected int fuelValue = 0;
+	private static Fluid mHelium;
+	private static Fluid mFluorine;
 	protected int fuelRemaining = 0;
-	protected boolean boostEu = false;
-	protected boolean heliumSparging = false;
+
 	private int mCasing;
 	private IStructureDefinition<GregtechMTE_NuclearReactor> STRUCTURE_DEFINITION = null;
 
@@ -63,30 +71,35 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
+	public GT_Recipe_Map getRecipeMap() {
+		return GTPP_Recipe.GTPP_Recipe_Map.sLiquidFluorineThoriumReactorRecipes;
+	}
+
+	@Override
 	protected GT_Multiblock_Tooltip_Builder createTooltip() {
 		GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
 		tt.addMachineType(getMachineType())
-				.addInfo("Controller Block for the Liquid Fluoride Thorium Reactor.")
-				.addInfo("Produces Heat & Energy from Radioactive Beta Decay.")
-				.addInfo("Outputs U233 every 10 seconds, on average")
-				.addInfo("Input Fluorine and Helium for bonus byproducts")
-				.addInfo("Input Li2BeF4 and a molten salt as fuel.")
-				.addInfo("LiFBeF2ThF4UF4, LiFBeF2ZrF4UF4 or LiFBeF2ZrF4U235")
-				.addPollutionAmount(getPollutionPerTick(null) * 20)
-				.addSeparator()
-				.beginStructureBlock(7, 4, 7, true)
-				.addController("Bottom Center")
-				.addCasingInfo("Hastelloy-N Reactor Casing", 27)
-				.addCasingInfo("Zeron-100 Reactor Shielding", 26)
-				.addInputHatch("Top or bottom layer edges", 1)
-				.addOutputHatch("Top or bottom layer edges", 1)
-				.addDynamoHatch("Top or bottom layer edges", 1)
-				.addMaintenanceHatch("Top or bottom layer edges", 1)
-				.addMufflerHatch("Top 3x3", 2)
-				.addStructureInfo("All hatches must have IV+ tier.")
-				.addStructureInfo("10+ Output Hatches, 4+ Input Hatches, 4x Dynamo Hatches")
-				.addStructureInfo("2x Maintenance Hatches, 4x Mufflers")
-				.toolTipFinisher("GT++");
+		.addInfo("Controller Block for the Liquid Fluoride Thorium Reactor.")
+		.addInfo("Produces Heat & Energy from Radioactive Beta Decay.")
+		.addInfo("Outputs U233 every 10 seconds, on average")
+		.addInfo("Input Fluorine and Helium for bonus byproducts")
+		.addInfo("Input Li2BeF4 and a molten salt as fuel.")
+		.addInfo("LiFBeF2ThF4UF4, LiFBeF2ZrF4UF4 or LiFBeF2ZrF4U235")
+		.addPollutionAmount(getPollutionPerTick(null) * 20)
+		.addSeparator()
+		.beginStructureBlock(7, 4, 7, true)
+		.addController("Bottom Center")
+		.addCasingInfo("Hastelloy-N Reactor Casing", 27)
+		.addCasingInfo("Zeron-100 Reactor Shielding", 26)
+		.addInputHatch("Top or bottom layer edges", 1)
+		.addOutputHatch("Top or bottom layer edges", 1)
+		.addDynamoHatch("Top or bottom layer edges", 1)
+		.addMaintenanceHatch("Top or bottom layer edges", 1)
+		.addMufflerHatch("Top 3x3", 2)
+		.addStructureInfo("All hatches must have IV+ tier.")
+		.addStructureInfo("14+ Output Hatches, 4+ Input Hatches, 4x Dynamo Hatches")
+		.addStructureInfo("2x Maintenance Hatches, 4x Mufflers")
+		.toolTipFinisher("GT++");
 		return tt;
 	}
 
@@ -100,14 +113,10 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 				tRunning,
 				tMaintainance,
 				"Current Output: "+this.mEUt+" EU/t",
-				"Fuel Consumption: "+this.fuelConsumption+"L/t",
-				"Fuel Value: "+this.fuelValue+" EU/L",
 				"Fuel Remaining: "+this.fuelRemaining+" Litres",
 				"Current Efficiency: "+(this.mEfficiency/5)+"%",
 				"Current Efficiency (Raw): "+(this.mEfficiency),
-				"Boosted Output: "+this.boostEu+".",
-				"Boosted Output gives 4x EU/t for double fuel usage.",
-				"It requires you to have 100% Efficiency."};
+		"It requires you to have 100% Efficiency."};
 	}
 
 	@Override
@@ -132,7 +141,7 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 			return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(13))};
 		}
 		return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(12))};
-		
+
 	}
 
 	@Override
@@ -185,52 +194,52 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 		if (STRUCTURE_DEFINITION == null) {
 			STRUCTURE_DEFINITION = StructureDefinition.<GregtechMTE_NuclearReactor>builder()
 					.addShape(mName, transpose(new String[][]{
-							{"CCCCCCC", "COOOOOC", "COXXXOC", "COXXXOC", "COXXXOC", "COOOOOC", "CCCCCCC"},
-							{"GGGGGGG", "G-----G", "G-----G", "G-----G", "G-----G", "G-----G", "GGGGGGG"},
-							{"GGGGGGG", "G-----G", "G-----G", "G-----G", "G-----G", "G-----G", "GGGGGGG"},
-							{"CCC~CCC", "COOOOOC", "COOOOOC", "COOOOOC", "COOOOOC", "COOOOOC", "CCCCCCC"},
+						{"CCCCCCC", "COOOOOC", "COXXXOC", "COXXXOC", "COXXXOC", "COOOOOC", "CCCCCCC"},
+						{"GGGGGGG", "G-----G", "G-----G", "G-----G", "G-----G", "G-----G", "GGGGGGG"},
+						{"GGGGGGG", "G-----G", "G-----G", "G-----G", "G-----G", "G-----G", "GGGGGGG"},
+						{"CCC~CCC", "COOOOOC", "COOOOOC", "COOOOOC", "COOOOOC", "COOOOOC", "CCCCCCC"},
 					}))
 					.addElement(
 							'C',
 							ofChain(
 									ofHatchAdder(
 											GregtechMTE_NuclearReactor::addNuclearReactorEdgeList, TAE.GTPP_INDEX(12), 1
-									),
+											),
 									onElementPass(
 											x -> ++x.mCasing,
 											ofBlock(
 													ModBlocks.blockCasingsMisc, 12
+													)
 											)
 									)
 							)
-					)
 					.addElement(
 							'X',
 							ofChain(
 									ofHatchAdder(
 											GregtechMTE_NuclearReactor::addNuclearReactorTopList, TAE.GTPP_INDEX(12), 2
-									),
+											),
 									onElementPass(
 											x -> ++x.mCasing,
 											ofBlock(
 													ModBlocks.blockCasingsMisc, 12
+													)
 											)
 									)
-							)
 
-					)
+							)
 					.addElement(
 							'O',
 							ofBlock(
 									ModBlocks.blockCasingsMisc, 12
+									)
 							)
-					)
 					.addElement(
 							'G',
 							ofBlock(
 									ModBlocks.blockCasingsMisc, 13
+									)
 							)
-					)
 					.build();
 		}
 		return STRUCTURE_DEFINITION;
@@ -245,23 +254,23 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
 		mCasing = 0;
 		if (checkPiece(mName, 3, 3, 0) && mCasing >= 27) {
-			if (mOutputHatches.size() >= 10 && mInputHatches.size() >= 4 && mDynamoHatches.size() == 4 &&
+			if (mOutputHatches.size() >= 14 && mInputHatches.size() >= 4 && mDynamoHatches.size() == 4 &&
 					mMufflerHatches.size() == 4 && mMaintenanceHatches.size() == 2) {
-					this.mWrench = true;
-					this.mScrewdriver = true;
-					this.mSoftHammer = true;
-					this.mHardHammer = true;
-					this.mSolderingTool = true;
-					this.mCrowbar = true;
-					this.turnCasingActive(false);
-					return true;
+				this.mWrench = true;
+				this.mScrewdriver = true;
+				this.mSoftHammer = true;
+				this.mHardHammer = true;
+				this.mSolderingTool = true;
+				this.mCrowbar = true;
+				this.turnCasingActive(false);
+				return true;
 			}
 		}
 		return false;
 	}
 
-		// Alk's Life Lessons from Greg.
-		/*
+	// Alk's Life Lessons from Greg.
+	/*
 			[23:41:15] <GregoriusTechneticies> xdir and zdir are x2 and not x3
 			[23:41:26] <GregoriusTechneticies> thats you issue
 			[23:44:33] <Alkalus> mmm?
@@ -276,7 +285,7 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 			[23:45:51] <Alkalus> Ahh
 			[23:45:57] <GregoriusTechneticies> and not 2
 			[23:46:06] <Alkalus> Noted, thanks :D
-		 */
+	 */
 
 	@Override
 	public boolean isCorrectMachinePart(final ItemStack aStack) {
@@ -285,12 +294,12 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public int getMaxEfficiency(final ItemStack aStack) {
-		return this.boostEu ? 30000 : 10000;
+		return 10000;
 	}
 
 	@Override
 	public int getPollutionPerTick(final ItemStack aStack) {
-		return this.boostEu ? 8 : 4;
+		return 10;
 	}
 
 	@Override
@@ -306,10 +315,6 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 	@Override
 	public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
 		return new GregtechMTE_NuclearReactor(this.mName);
-	}
-
-	public static int overclock(final int mStartEnergy) {
-		return mStartEnergy < 160000000 ? 4 : mStartEnergy < 320000000 ? 2 : 1;
 	}
 
 	public boolean turnCasingActive(final boolean status) {
@@ -342,155 +347,149 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 		return true;
 	}
 
+	public FluidStack[] getStoredFluidsAsArray() {	
+		final ArrayList<FluidStack> tFluids = this.getStoredFluids();
+		FluidStack[] aStored = new FluidStack[tFluids.size()];	
+		for (int i = 0; i < aStored.length; i++) {
+			aStored[i] = tFluids.get(i);
+		}
+		return aStored;
+	}
+
+	public int getStoredFuel(GT_Recipe aRecipe) {
+		int aFuelStored = 0;
+		FluidStack aFuelFluid = null;
+		for (FluidStack aFluidInput : aRecipe.mFluidInputs) {
+			if (!aFluidInput.getFluid().equals(ModItems.fluidFLiBeSalt)) {
+				aFuelFluid = aFluidInput;
+				break;
+			}
+		}
+		if (aFuelFluid != null) {
+			for (GT_MetaTileEntity_Hatch_Input aInputHatch : this.mInputHatches) {
+				if (aInputHatch.getFluid() != null && aInputHatch.getFluidAmount() > 0) {
+					if (aInputHatch.getFluid().isFluidEqual(aFuelFluid)) {
+						aFuelStored += aInputHatch.getFluidAmount();
+					}
+				}
+			}
+		}		
+		return aFuelStored;
+	}
+
 	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
-		final ArrayList<FluidStack> tFluids = this.getStoredFluids();
-		final Collection<GT_Recipe> tRecipeList = GTPP_Recipe.GTPP_Recipe_Map.sLiquidFluorineThoriumReactorRecipes.mRecipeList;
-		if((tFluids.size() > 0) && (tRecipeList != null)) { //Does input hatch have a LFTR fuel?
-			Logger.WARNING("Found more than one input fluid and a list of valid recipes.");
+		// Warm up for 4~ minutes
+		Logger.INFO("Checking LFTR recipes.");
+		if (mEfficiency < this.getMaxEfficiency(null)) {
+			this.mProgresstime = 1;
+			this.mMaxProgresstime = 1;
+			this.mEfficiencyIncrease = 20;
+			Logger.INFO("Warming Up! "+this.mEfficiency+"/"+this.getMaxEfficiency(null));
+			return true;
+		}
+		Logger.INFO("Warmed up, checking LFTR recipes.");
+		if (mHelium == null) {
+			mHelium = Materials.Helium.getGas(1).getFluid();
+			Logger.INFO("Set Helium.");
+		}
+		if (mFluorine == null) {
+			Logger.INFO("Set Fluorine.");
+			mFluorine = Materials.Fluorine.getGas(1).getFluid();
+		}
+		final FluidStack[] tFluids = getStoredFluidsAsArray();
+		final Collection<GT_Recipe> tRecipeList = getRecipeMap().mRecipeList;
+		if(tFluids.length > 0 && tRecipeList != null && tRecipeList.size() > 0) { //Does input hatch have a LFTR fuel?
+			Logger.INFO("Found more than one input fluid and a list of valid recipes.");
+			boolean foundLi2bef4 = false;
+			FluidStack aHeliumSparge = null;
+			FluidStack aFluorineSparge = null;
+			// Find a valid recipe
+			GT_Recipe aFuelProcessing = this.findRecipe(getBaseMetaTileEntity(), mLastRecipe, true, 0, tFluids, new ItemStack[] {});
+			if (aFuelProcessing == null) {
+				Logger.INFO("Did not find valid recipe for given inputs.");
+				return false;
+			}
+			else {
+				Logger.INFO("Found recipe? "+(aFuelProcessing != null ? "true" : "false"));
+				for (FluidStack aFluidInput : aFuelProcessing.mFluidInputs) {
+					Logger.INFO("Using "+aFluidInput.getLocalizedName());				
+				}
+			}
+			// Find li2bef4, Helium & Fluorine
 			for (final FluidStack hatchFluid1 : tFluids) { //Loops through hatches
-				Logger.WARNING("Looping through Input hatches - Found "+hatchFluid1.getLocalizedName());
-				for(final GT_Recipe aFuel : tRecipeList) { //Loops through LFTR fuel recipes
-					Logger.WARNING("Looping through Recipes. "+aFuel.mSpecialValue);
-					FluidStack tLiquid;
-					final FluidStack testStack = aFuel.mFluidInputs[1];
-					if ((tLiquid = testStack) != null) { //Create fluidstack from current recipe
-						Logger.WARNING("Creating a fluidstack from the current recipe. "+testStack.getLocalizedName());
-						if (hatchFluid1.isFluidEqual(tLiquid)) { //Has a LFTR fluid
-							this.fuelConsumption = this.boostEu ? (aFuel.mSpecialValue/4096) : (aFuel.mSpecialValue/2048); //Calc fuel consumption
-					
-								this.mMaxProgresstime = 500;
-								
-								if(tFluids.contains(NUCLIDE.LiFBeF2ThF4UF4.getFluid(1)) ||
-										tFluids.contains(NUCLIDE.LiFBeF2ZrF4UF4.getFluid(2)) ||
-										tFluids.contains(NUCLIDE.LiFBeF2ZrF4U235.getFluid(10))) { //Has a Primary fuel salt?
-									//Deplete Primary Salt. 1000L should = 1 hour of runtime (if baseEU = 2048) && using 1l each time
-									if(((this.mRuntime % 72) == 0) || (this.mRuntime == 0)){
-										//U235 fuel is 10x less efficient than UF4 with Thorium, UF4 with Zirconium is only 2x less efficient than UF4 with Thorium.
-										//Most Efficient
-										if(tFluids.contains(NUCLIDE.LiFBeF2ThF4UF4.getFluid(2))){
-											
-											FluidStack depletionStack = FluidUtils.getFluidStack(tLiquid, (this.boostEu ? (aFuel.mSpecialValue/4096) : (aFuel.mSpecialValue/2048)));
-											Logger.WARNING("Input hatch contains some FLiBe Fuel, using "+this.fuelConsumption+" | "+aFuel.mSpecialValue+" | "+depletionStack.amount);
-											if(this.depleteInput(depletionStack)) { //Deplete that amount
-												Logger.WARNING("Depleted some FLiBe fluid");
-											}
-											
-											this.depleteInput(NUCLIDE.LiFBeF2ThF4UF4.getFluid(this.boostEu ? 2 : 1));
-											Logger.WARNING("Depleted "+(this.boostEu ? 2 : 1)+"L of LiFBeF2ThF4UF4 fluid");
-										}
-										//1/2 as Efficient
-										if (tFluids.contains(NUCLIDE.LiFBeF2ZrF4UF4.getFluid(4))){
-											
-											FluidStack depletionStack = FluidUtils.getFluidStack(tLiquid, (this.boostEu ? (aFuel.mSpecialValue/4096) : (aFuel.mSpecialValue/2048)));
-											Logger.WARNING("Input hatch contains some FLiBe Fuel, using "+this.fuelConsumption+" | "+aFuel.mSpecialValue+" | "+depletionStack.amount);
-											if(this.depleteInput(depletionStack)) { //Deplete that amount
-												Logger.WARNING("Depleted some FLiBe fluid");
-											}
-											
-											this.depleteInput(NUCLIDE.LiFBeF2ZrF4UF4.getFluid(this.boostEu ? 4 : 2));
-											Logger.WARNING("Depleted "+(this.boostEu ? 4 : 2)+"L of LiFBeF2ZrF4UF4 fluid");
-										}
-										//10x less Efficient.
-										if (tFluids.contains(NUCLIDE.LiFBeF2ZrF4U235.getFluid(20))) {
-											
-											FluidStack depletionStack = FluidUtils.getFluidStack(tLiquid, (this.boostEu ? (aFuel.mSpecialValue/4096) : (aFuel.mSpecialValue/2048)));
-											Logger.WARNING("Input hatch contains some FLiBe Fuel, using "+this.fuelConsumption+" | "+aFuel.mSpecialValue+" | "+depletionStack.amount);
-											if(this.depleteInput(depletionStack)) { //Deplete that amount
-												Logger.WARNING("Depleted some FLiBe fluid");
-											}
-											
-											this.depleteInput(NUCLIDE.LiFBeF2ZrF4U235.getFluid(this.boostEu ? 20 : 10));
-											Logger.WARNING("Depleted "+(this.boostEu ? 20 : 10)+"L of LiFBeF2ZrF4U235 fluid");
-										}
-									}
-								} else {
-									return false;
-								}
-
-
-								if (this.getBaseMetaTileEntity().getWorld().getTotalWorldTime() % 100 == 0) {
-								//Try Sparge Noble Gases
-								if (this.heliumSparging){
-									if (this.depleteInput(Materials.Helium.getGas(1000L))){
-										//Make an empty fluid stack for possible sparging output
-										FluidStack[] spargeOutput = new FluidStack[]{};
-										Logger.WARNING("Doing a Sparge with Helium - "+this.heliumSparging);
-										this.heliumSparging = false;
-										spargeOutput = this.getByproductsOfSparge(Materials.Helium.getGas(1000L));
-										
-										//If Sparging occurred, try add the outputs to the output hatches.
-										try {
-											if (spargeOutput.length >= 1){
-												for (final FluidStack F : spargeOutput){
-													Logger.WARNING("Adding Sparge Output - "+F.getLocalizedName());
-													this.addOutput(F);
-												}
-											}
-										} catch (final Throwable T){}
-									}
-								}
-								//Try Sparge Fluorides
-								else {
-									if (this.depleteInput(Materials.Fluorine.getGas(100L))){
-										//Make an empty fluid stack for possible sparging output
-										FluidStack[] spargeOutput = new FluidStack[]{};
-										Logger.WARNING("Doing a Sparge with Fluorine");
-										spargeOutput = this.getByproductsOfSparge(Materials.Fluorine.getGas(100L));
-										this.heliumSparging = true;
-										//If Sparging occurred, try add the outputs to the output hatches.
-										if (spargeOutput.length > 0){
-											for (final FluidStack F : spargeOutput){
-												Logger.WARNING("Adding Sparge Output - "+F.getLocalizedName());
-												this.addOutput(F);
-											}
-										}
-									}
-								}
-								}
-
-
-								if (aFuel != null){
-									//Utils.LOG_WARNING("Saving previous Recipe.");
-									//this.mLastRecipe = aFuel;
-								}
-
-								this.fuelValue = aFuel.mSpecialValue;
-								this.fuelRemaining = hatchFluid1.amount; //Record available fuel
-
-								if (this.mEfficiency < 500){
-									this.mEfficiency++;
-									this.mMaxProgresstime = 500;
-								}
-								else if (this.mEfficiency == 500) {
-									this.mMaxProgresstime = 300;
-								}
-								else if (this.mEfficiency > 500){
-									this.mEfficiency = 500;
-								}
-								Logger.WARNING("Efficiency == "+this.mEfficiency);
-
-								this.mEUt = (this.mEfficiency < 500 ? 2048 : (8196)); //Output 0 if startup is less than 20%
-								Logger.WARNING("Generating "+this.mEUt+"EU/t @ an efficiency level of "+this.mEfficiency);
-								
-								this.mProgresstime = 1;
-								this.mMaxProgresstime = 1;
-								this.mEfficiencyIncrease = 15;
-
-								//Best output some Fluids
-								//this.mOutputFluids = this.mLastRecipe.mFluidOutputs;
-
-								return true;
-							}
-						}
+				if (hatchFluid1 != null) {
+					if (hatchFluid1.getFluid().equals(ModItems.fluidFLiBeSalt)){
+						foundLi2bef4 = true;
+						Logger.INFO("Found "+hatchFluid1.getLocalizedName());
+						continue;
 					}
-				}			
+					else if (hatchFluid1.getFluid().equals(mHelium) && hatchFluid1.amount >= 1000){
+						aHeliumSparge = hatchFluid1;
+						Logger.INFO("Found "+hatchFluid1.getLocalizedName());
+						continue;
+					}
+					else if (hatchFluid1.getFluid().equals(mFluorine) && hatchFluid1.amount >= 100){
+						aFluorineSparge = hatchFluid1;
+						Logger.INFO("Found "+hatchFluid1.getLocalizedName());
+						continue;
+					}
+				}
+			}			
+			if (!foundLi2bef4) {
+				Logger.INFO("Did not find "+ModItems.fluidFLiBeSalt.getLocalizedName());
+				return false;
+			}
+			// Reset outputs and progress stats
+			this.mEUt = 0;
+			this.mMaxProgresstime = 0;
+			this.mOutputItems = new ItemStack[]{};
+			this.mOutputFluids = new FluidStack[]{};
+			this.mLastRecipe = aFuelProcessing;
+			boolean aValidOutputSpace = this.canBufferOutputs(aFuelProcessing, 1) > 0;
+			if (!aValidOutputSpace) {
+				Logger.INFO("Not enough space to output fluids.");
+				return false;
+			}
+			// Deplete Inputs
+			if (aFuelProcessing.mFluidInputs.length > 0) {
+				for (FluidStack aInputToConsume : aFuelProcessing.mFluidInputs) {
+					Logger.INFO("Depleting "+aInputToConsume.getLocalizedName()+" - "+aInputToConsume.amount+"L");
+					this.depleteInput(aInputToConsume);			
+				}
+			}
+			// -- Try not to fail after this point - inputs have already been consumed! --
+			this.mMaxProgresstime = (int)(aFuelProcessing.mDuration);
+			this.mEUt = aFuelProcessing.mSpecialValue * 4;
+			Logger.INFO("Outputting "+this.mEUt+"eu/t");
+			this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
+			this.mEfficiencyIncrease = 10000;		
+			this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
+			Logger.INFO("Recipe time: "+this.mMaxProgresstime);	
+			fuelRemaining = getStoredFuel(aFuelProcessing); //Record available fuel		
+			if (aHeliumSparge != null) {
+				Logger.INFO("Sparging Helium.");
+				FluidStack[] aSpargeOutputs = getByproductsOfSparge(aHeliumSparge);
+				for (FluidStack aSparge : aSpargeOutputs) {
+					this.addOutput(aSparge);
+				}				
+			}
+			if (aFluorineSparge != null) {
+				Logger.INFO("Sparging Fluorine.");
+				FluidStack[] aSpargeOutputs = getByproductsOfSparge(aFluorineSparge);
+				for (FluidStack aSparge : aSpargeOutputs) {
+					this.addOutput(aSparge);
+				}
+			}		
+			Logger.INFO("Recipe Good!");	
+			return true;
 		}
 		this.mEUt = 0;
 		this.mEfficiency = 0;
+		Logger.INFO("Recipe Bad!");
 		return false;
 	}	
-	
+
 	@Override
 	public int getMaxParallelRecipes() {
 		return 1;
@@ -547,9 +546,12 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 
 
 	protected FluidStack[] getByproductsOfSparge(final FluidStack spargeGas){
+		FluidStack depletionStack = spargeGas.copy();
 		FluidStack[] outputArrayOfGases = new FluidStack[]{};
 		if (spargeGas != null){
-			if (spargeGas.isFluidEqual(Materials.Helium.getGas(1000))){
+			if (spargeGas.getFluid().equals(mHelium)){
+				depletionStack.amount = 1000;
+				this.depleteInput(depletionStack);		
 				final int outputChances[] = {
 						MathUtils.roundToClosestInt(MathUtils.randInt(10, 1000)/10),
 						MathUtils.roundToClosestInt(MathUtils.randInt(10, 600)/10),
@@ -558,7 +560,7 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 						MathUtils.roundToClosestInt(MathUtils.randInt(10, 100)/10)
 				};
 				final int heliumContent = (1000-outputChances[0]-outputChances[1]-outputChances[2]-outputChances[3]-outputChances[4]);
-				Logger.WARNING("Helium remaining: "+heliumContent);
+				Logger.INFO("Helium remaining: "+heliumContent);
 				outputArrayOfGases = new FluidStack[]{
 						ELEMENT.getInstance().XENON.getFluid(outputChances[0]),
 						ELEMENT.getInstance().NEON.getFluid(outputChances[1]),
@@ -568,7 +570,9 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 						Materials.Helium.getGas(heliumContent)
 				};
 			}
-			else if (spargeGas.isFluidEqual(Materials.Fluorine.getGas(100))){
+			else if (spargeGas.getFluid().equals(mFluorine)){
+				depletionStack.amount = 100;
+				this.depleteInput(depletionStack);	
 				final int outputChances[] = {
 						MathUtils.roundToClosestInt(MathUtils.randDouble(10, 100)),
 						MathUtils.roundToClosestInt(MathUtils.randDouble(1, 50)/10),
@@ -576,7 +580,7 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 						MathUtils.roundToClosestInt(MathUtils.randDouble(1, 50)/10)
 				};
 				final int fluorineContent = (100-outputChances[0]-outputChances[1]-outputChances[2]-outputChances[3]);
-				Logger.WARNING("Fluorine remaining: "+fluorineContent);
+				Logger.INFO("Fluorine remaining: "+fluorineContent);
 				outputArrayOfGases = new FluidStack[]{
 						FLUORIDES.LITHIUM_FLUORIDE.getFluid(outputChances[0]),
 						FLUORIDES.NEPTUNIUM_HEXAFLUORIDE.getFluid(outputChances[1]),
@@ -593,33 +597,30 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
 		//Add Power if active
 		if (aBaseMetaTileEntity.isActive()){
-			//this.getBaseMetaTileEntity().increaseStoredEnergyUnits(this.mEUt, false);
-			
-			if (this.mEfficiency >= 500){
-				this.boostEu = true;
+			if (this.mEfficiency == this.getMaxEfficiency(null)){
 				this.turnCasingActive(true);
 			}
 			else {
-				this.boostEu = false;
 				this.turnCasingActive(false);
 			}
-			
+
 			if (MathUtils.randInt(1, 200) == 1){
-				//Utils.LOG_INFO("Adding U233");
 				this.addOutput(ELEMENT.getInstance().URANIUM233.getFluid(MathUtils.randInt(1, 10)));
 			}
-			
-			if (this.mDynamoHatches != null) {
+
+			/*if (this.mDynamoHatches != null) {
+				int hatchNo = 0;
 				for (GT_MetaTileEntity_Hatch_Dynamo tHatch : this.mDynamoHatches) {
 					if (tHatch.mTier >= 5){
+						hatchNo++;
 						if (isValidMetaTileEntity(tHatch)){
 							tHatch.getBaseMetaTileEntity().increaseStoredEnergyUnits(this.mEUt, false);
-							//Utils.LOG_WARNING("Adding "+this.mEUt+"eu to internal storage of dynamo "+hatchNo+".");
+							Logger.INFO("Adding "+this.mEUt+"eu to internal storage of dynamo "+hatchNo+".");
 						}						
 					}
 				}
-			}
-			
+			}*/
+
 		}
 		else {
 			this.turnCasingActive(false);

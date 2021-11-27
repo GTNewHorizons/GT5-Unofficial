@@ -20,7 +20,6 @@ public class NEI_IMC_Sender {
         setNBTInfoAndSendIt("gtpp.recipe.fissionfuel", "gregtech:gt.blockmachines:835");
         setNBTInfoAndSendIt("gtpp.recipe.geothermalfuel", "gregtech:gt.blockmachines:830");
         setNBTInfoAndSendIt("gtpp.recipe.lftr", "gregtech:gt.blockmachines:751");
-        setNBTInfoAndSendIt("gtpp.recipe.lftr.2", "gregtech:gt.blockmachines:751");
         setNBTInfoAndSendIt("gtpp.recipe.matterfab2", "gregtech:gt.blockmachines:799");
         setNBTInfoAndSendIt("gtpp.recipe.multicentrifuge", "gregtech:gt.blockmachines:790");
         setNBTInfoAndSendIt("gtpp.recipe.multielectro", "gregtech:gt.blockmachines:796");

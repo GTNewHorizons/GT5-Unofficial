@@ -19,6 +19,7 @@ implements IConfigureNEI {
 	public synchronized void loadConfig() {
 
 		mUniqueRecipeMapHandling.add(GTPP_Recipe.GTPP_Recipe_Map.sFissionFuelProcessing.mUnlocalizedName);
+		mUniqueRecipeMapHandling.add(GTPP_Recipe.GTPP_Recipe_Map.sLiquidFluorineThoriumReactorRecipes.mUnlocalizedName);
 		mUniqueRecipeMapHandling.add(GTPP_Recipe_Map.sChemicalPlantRecipes.mUnlocalizedName);
 		mUniqueRecipeMapHandling.add(GTPP_Recipe_Map.sOreMillRecipes.mUnlocalizedName);
 		mUniqueRecipeMapHandling.add(GTPP_Recipe_Map.sFlotationCellRecipes.mUnlocalizedName);
@@ -72,6 +73,8 @@ implements IConfigureNEI {
 		new GT_NEI_VacFurnace();
 		Logger.INFO("NEI Registration: Registering NEI handler for "+GTPP_Recipe.GTPP_Recipe_Map.sFissionFuelProcessing.mNEIName);
 		new GT_NEI_RFPP();
+		Logger.INFO("NEI Registration: Registering NEI handler for "+GTPP_Recipe.GTPP_Recipe_Map.sLiquidFluorineThoriumReactorRecipes.mNEIName);
+		new GT_NEI_LFTR();
 
 		Logger.INFO("NEI Registration: Registering NEI handler for "+GTPP_Recipe.GTPP_Recipe_Map.sAdvFreezerRecipes_GT.mNEIName);
 		new GT_NEI_multiCentriElectroFreezer(GTPP_Recipe.GTPP_Recipe_Map.sAdvFreezerRecipes_GT);					

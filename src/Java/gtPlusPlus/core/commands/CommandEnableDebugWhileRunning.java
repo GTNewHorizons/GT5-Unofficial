@@ -133,15 +133,21 @@ public class CommandEnableDebugWhileRunning implements ICommand
 						}
 					}
 					
-					String aFluidContainerData = "";
+					AutoMap<String> aFluidContainerData = new AutoMap<String>();
 					FluidStack aHeldItemFluid = FluidContainerRegistry.getFluidForFilledItem(aHeldItem);
 					if (aHeldItemFluid != null) {
-						aFluidContainerData = "["+aHeldItemFluid.getUnlocalizedName()+"]["+aHeldItemFluid.getLocalizedName()+"]";
+						aFluidContainerData.put("FluidStack Unlocal Name: "+aHeldItemFluid.getUnlocalizedName());
+						aFluidContainerData.put("FluidStack Local Name: "+aHeldItemFluid.getLocalizedName());
+						aFluidContainerData.put("Fluid Unlocal Name: "+aHeldItemFluid.getFluid().getUnlocalizedName());
+						aFluidContainerData.put("Fluid Local Name: "+aHeldItemFluid.getFluid().getLocalizedName());
+						aFluidContainerData.put("Fluid Name: "+aHeldItemFluid.getFluid().getName());
 					}
 
 					PlayerUtils.messagePlayer(P, "["+aItemUnlocalName+"]"+"["+aItemDisplayName+"] ");
-					if (aFluidContainerData.length() > 0) {
-						PlayerUtils.messagePlayer(P, ""+aFluidContainerData);				
+					if (aFluidContainerData.size() > 0) {
+						for (String s : aFluidContainerData) {
+							PlayerUtils.messagePlayer(P, ""+s);							
+						}				
 					}
 					if (!aOreDictNames.isEmpty()) {
 						PlayerUtils.messagePlayer(P, ""+aOreDictData);
