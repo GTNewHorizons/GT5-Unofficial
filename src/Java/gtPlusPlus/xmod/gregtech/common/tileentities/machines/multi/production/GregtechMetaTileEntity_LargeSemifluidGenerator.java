@@ -115,7 +115,8 @@ public class GregtechMetaTileEntity_LargeSemifluidGenerator extends GregtechMeta
 				continue;
 			}
 
-			fuelConsumption = boostEu ? (4096 / aFuel.mSpecialValue) : (2048 / aFuel.mSpecialValue); //Calc fuel consumption
+			int newEUt = boostEu ? 4096 : 2048;
+			fuelConsumption = newEUt / aFuel.mSpecialValue; //Calc fuel consumption
 			FluidStack tLiquid = new FluidStack(hatchFluid.getFluid(), fuelConsumption);
 			if(depleteInput(tLiquid)) { //Deplete that amount
 				// We checked beforehand, so both of these depletions should succeed.
@@ -134,7 +135,7 @@ public class GregtechMetaTileEntity_LargeSemifluidGenerator extends GregtechMeta
 
 				fuelValue = aFuel.mSpecialValue;
 				fuelRemaining = hatchFluid.amount; //Record available fuel
-				this.mEUt = mEfficiency < 2000 ? 0 : 2048; //Output 0 if startup is less than 20%
+				this.mEUt = mEfficiency < 2000 ? 0 : newEUt; //Output 0 if startup is less than 20%
 				this.mProgresstime = 1;
 				this.mMaxProgresstime = 1;
 				this.mEfficiencyIncrease = 15;
@@ -286,7 +287,7 @@ public class GregtechMetaTileEntity_LargeSemifluidGenerator extends GregtechMeta
 	}
 
 	public int getMaxEfficiency(ItemStack aStack) {
-		return boostEu ? 20000 : 10000;
+		return boostEu ? 15000 : 10000;
 	}
 
 	@Override
