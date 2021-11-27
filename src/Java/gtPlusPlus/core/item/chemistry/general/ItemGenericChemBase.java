@@ -159,8 +159,6 @@ public class ItemGenericChemBase extends Item {
     public String getUnlocalizedName(ItemStack stack) {
 		return super.getUnlocalizedName() + "." + stack.getItemDamage();
     }
-	
-
 
 	@Override
 	public double getDurabilityForDisplay(ItemStack aStack) {
@@ -169,16 +167,14 @@ public class ItemGenericChemBase extends Item {
 				createMillingBallNBT(aStack);
 	        }
 			double currentDamage = getMillingBallDamage(aStack);
-			double durabilitypercent = currentDamage / 100;		
-	        return  durabilitypercent;
+			return currentDamage / getMaxBallDurability(aStack);
 		}
 		else if (ItemUtils.isCatalyst(aStack)) {			
 			if (aStack.getTagCompound() == null || aStack.getTagCompound().hasNoTags()){
 				createCatalystNBT(aStack);
 	        }
 			double currentDamage = getCatalystDamage(aStack);
-			double durabilitypercent = currentDamage / 100;		
-	        return  durabilitypercent;
+			return currentDamage / getCatalystMaxDamage(aStack);
 		}
 		else {
 			return 1D;
@@ -208,10 +204,7 @@ public class ItemGenericChemBase extends Item {
 			aHasSpecialTooltips = true;
 		}
 		if (aHasSpecialTooltips) {			
-			if (aDam > aDamageSegment * 4){
-				durability = EnumChatFormatting.GRAY;
-			}
-			else if (aDam > aDamageSegment * 3){
+			if (aDam > aDamageSegment * 3){
 				durability = EnumChatFormatting.GREEN;
 			}
 			else if (aDam > aDamageSegment * 2){
@@ -220,7 +213,7 @@ public class ItemGenericChemBase extends Item {
 			else if (aDam > aDamageSegment){
 				durability = EnumChatFormatting.GOLD;
 			}
-			else if (aDam > 0){
+			else if (aDam >= 0){
 				durability = EnumChatFormatting.RED;
 			}
 			list.add(durability+""+(aDam)+EnumChatFormatting.GRAY+" / "+aMaxDamage);
@@ -322,6 +315,4 @@ public class ItemGenericChemBase extends Item {
 	public static int getMaxCatalystDurability(ItemStack aStack) {
 		return 50;
 	}
-	
-
 }
