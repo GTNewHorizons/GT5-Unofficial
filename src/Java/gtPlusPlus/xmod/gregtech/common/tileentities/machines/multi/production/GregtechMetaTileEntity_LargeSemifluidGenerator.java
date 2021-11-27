@@ -1,7 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
@@ -16,7 +15,6 @@ import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
 import gregtech.api.util.GTPP_Recipe.GTPP_Recipe_Map;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import net.minecraft.block.Block;
@@ -91,40 +89,60 @@ public class GregtechMetaTileEntity_LargeSemifluidGenerator extends GregtechMeta
 	@Override
 	public boolean checkRecipe(ItemStack aStack) {
 		ArrayList<FluidStack> tFluids = getStoredFluids();
-		Collection<GT_Recipe> tRecipeList = GTPP_Recipe_Map.sSemiFluidLiquidFuels.mRecipeList;
 
-		if(tFluids.size() > 0 && tRecipeList != null) { //Does input hatch have a semifluid fuel?
-			for (FluidStack hatchFluid1 : tFluids) { //Loops through hatches
-				for(GT_Recipe aFuel : tRecipeList) { //Loops through semifluid fuel recipes
-					FluidStack tLiquid;
-					if ((tLiquid = GT_Utility.getFluidForFilledItem(aFuel.getRepresentativeInput(0), true)) != null) { //Create fluidstack from current recipe
-						if (hatchFluid1.isFluidEqual(tLiquid)) { //Has a semifluid fluid
-							fuelConsumption = tLiquid.amount = boostEu ? (4096 / aFuel.mSpecialValue) : (2048 / aFuel.mSpecialValue); //Calc fuel consumption
-							if(depleteInput(tLiquid)) { //Deplete that amount
-								boostEu = depleteInput(Materials.Oxygen.getGas(4L));
-								if(tFluids.contains(Materials.Lubricant.getFluid(2L))) { //Has lubricant?
-									//Deplete Lubricant. 2000L should = 1 hour of runtime (if baseEU = 2048)
-									if(mRuntime % 72 == 0 || mRuntime == 0) {
-										depleteInput(Materials.Lubricant.getFluid(boostEu ? 2 : 1));
-									}
-								} 
-								else {
-									return false;
-								}
-
-								fuelValue = aFuel.mSpecialValue;
-								fuelRemaining = hatchFluid1.amount; //Record available fuel
-								this.mEUt = mEfficiency < 2000 ? 0 : 2048; //Output 0 if startup is less than 20%
-								this.mProgresstime = 1;
-								this.mMaxProgresstime = 1;
-								this.mEfficiencyIncrease = 15;
-								return true;
-							}
-						}
-					}
-				}
+		// Check for lubricant and oxygen first, so we can compute costs ahead of time.
+		// This will allow us to check costs without needing to actually try to deplete fluids
+		// (wasting earlier fluids in the check if later fluids turn out to be insufficient).
+		FluidStack lubricant = Materials.Lubricant.getFluid(0L);
+		FluidStack oxygen = Materials.Oxygen.getGas(0L);
+		for (FluidStack hatchFluid : tFluids) {
+			if (hatchFluid.isFluidEqual(lubricant)) {
+				lubricant.amount = Math.max(lubricant.amount, hatchFluid.amount);
+			} else if (hatchFluid.isFluidEqual(oxygen)) {
+				oxygen.amount = Math.max(oxygen.amount, hatchFluid.amount);
 			}
 		}
+		boostEu = oxygen.amount >= 4L;
+		long lubricantCost = boostEu ? 2L : 1L;
+		if (lubricant.amount < lubricantCost) {
+			return false;
+		}
+
+		for (FluidStack hatchFluid : tFluids) { //Loops through hatches
+			GT_Recipe aFuel = GTPP_Recipe_Map.sSemiFluidLiquidFuels.findFuel(hatchFluid);
+			if (aFuel == null) {
+				// Not a valid semi-fluid fuel.
+				continue;
+			}
+
+			int newEUt = boostEu ? 4096 : 2048;
+			fuelConsumption = newEUt / aFuel.mSpecialValue; //Calc fuel consumption
+			FluidStack tLiquid = new FluidStack(hatchFluid.getFluid(), fuelConsumption);
+			if(depleteInput(tLiquid)) { //Deplete that amount
+				// We checked beforehand, so both of these depletions should succeed.
+				// But check the return values anyway just to be safe.
+				if (boostEu) {
+					if (!depleteInput(Materials.Oxygen.getGas(4L))) {
+						return false;
+					}
+				}
+				//Deplete Lubricant. 2000L should = 1 hour of runtime (if baseEU = 2048)
+				if(mRuntime % 72 == 0 || mRuntime == 0) {
+					if(!depleteInput(Materials.Lubricant.getFluid(lubricantCost))) {
+						return false;
+					}
+				}
+
+				fuelValue = aFuel.mSpecialValue;
+				fuelRemaining = hatchFluid.amount; //Record available fuel
+				this.mEUt = mEfficiency < 2000 ? 0 : newEUt; //Output 0 if startup is less than 20%
+				this.mProgresstime = 1;
+				this.mMaxProgresstime = 1;
+				this.mEfficiencyIncrease = 15;
+				return true;
+			}
+		}
+
 		this.mEUt = 0;
 		this.mEfficiency = 0;
 		return false;
@@ -269,7 +287,7 @@ public class GregtechMetaTileEntity_LargeSemifluidGenerator extends GregtechMeta
 	}
 
 	public int getMaxEfficiency(ItemStack aStack) {
-		return boostEu ? 20000 : 10000;
+		return boostEu ? 15000 : 10000;
 	}
 
 	@Override
