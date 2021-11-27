@@ -651,12 +651,12 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 				this.turnCasingActive(false);
 			}
 			// Try output some Uranium-233
-			if (MathUtils.randInt(1, 200) == 1){
-				this.addOutput(ELEMENT.getInstance().URANIUM233.getFluid(MathUtils.randInt(1, 5)));
+			if (MathUtils.randInt(300, 600) == 1){
+				this.addOutput(ELEMENT.getInstance().URANIUM233.getFluid(MathUtils.randInt(1, 10)));
 			}			
 			// Set a random tick counter, count it up.
 			if (this.mSpargeTime == 0) {
-				this.mSpargeTime = MathUtils.randInt(400, 1200);
+				this.mSpargeTime = MathUtils.randInt(1200, 2400);
 				Logger.INFO("Set Sparge Timer to "+this.mSpargeTime);
 			}
 			else {
