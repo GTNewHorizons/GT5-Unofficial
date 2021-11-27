@@ -11,9 +11,13 @@ buildscript {
 			name = "sonatype"
 			url = "https://oss.sonatype.org/content/repositories/snapshots/"
 		}
+		maven {
+			name = "jitpack"
+			url = "https://jitpack.io"
+		}
 	}
 	dependencies {
-		classpath "net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT"
+		classpath "com.github.GTNewHorizons:ForgeGradle:1.2.4"
 	}
 }
 
@@ -154,7 +158,7 @@ dependencies {
 //	compile("com.github.GTNewHorizons:GT5-Unofficial:experimental-SNAPSHOT:dev") {
 //		setChanging(true)
 //	}
-	compile files('libs/gregtech-5.09.37.05-dev.jar')
+	implementation 'com.github.GTNewHorizons:GT5-Unofficial:experimental-SNAPSHOT'
 	compile ("com.github.GTNewHorizons:StructureLib:${config.structurelib.version}:deobf")
 
 	provided "net.industrial-craft:industrialcraft-2:${config.ic2.version}:dev"  
@@ -176,10 +180,10 @@ dependencies {
 
 	// Forestry .jar from repository is obfuscated and won't compile, so use local unobfuscated one.
 	//compileOnly "net.sengir.forestry:forestry_1.7.10:4.4.0.0:dev"
-	compileOnly files('libs/forestry_1.7.10-4.4.0.0-dev.jar')
+	implementation 'com.github.GTNewHorizons:ForestryMC:master-SNAPSHOT'
 
 	compileOnly "mods.railcraft:Railcraft_1.7.10:9.12.3.0:dev"
-	compileOnly files('libs/StevesCarts2.0.0.b18-deobf.jar')
+	implementation 'com.github.GTNewHorizons:SC2:master-SNAPSHOT'
 	
 	compileOnly "openmods:OpenModsLib:1.7.10-0.10:deobf"
 	compileOnly "openblocks:OpenBlocks:1.7.10-1.6-1.7.10:deobf"
@@ -211,4 +215,3 @@ task generateDictionaries(type: JavaExec) {
 	classpath = sourceSets.main.runtimeClasspath
 	main = "gtPlusPlus.GenerateDictionaries"
 }
-
