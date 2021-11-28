@@ -31,12 +31,13 @@ import gregtech.api.util.GTPP_Recipe;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
+import gregtech.api.util.GasSpargingRecipe;
+import gregtech.api.util.GasSpargingRecipeMap;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.material.ELEMENT;
-import gtPlusPlus.core.material.nuclear.FLUORIDES;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import net.minecraft.item.ItemStack;
@@ -49,6 +50,9 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 	private static Fluid mHelium;
 	private static Fluid mFluorine;
 	protected int mFuelRemaining = 0;
+
+	public final static int sMinSpargeWait = 1200;
+	public final static int sMaxSpargeWait = 2400;
 
 	private int mCasing;
 	private IStructureDefinition<GregtechMTE_NuclearReactor> STRUCTURE_DEFINITION = null;
@@ -566,80 +570,34 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 		updateSlots();
 	}
 
-	private static AutoMap<Fluid> mNobleGases;
-	private static AutoMap<Fluid> mFluorideGases;
-	private static AutoMap<Fluid> mSpargeGases;
-
-	public final static int sMinSpargeWait = 1200;
-	public final static int sMaxSpargeWait = 2400;
-
-	private AutoMap<FluidStack> getByproductsOfSparge(final FluidStack spargeGas){
-		AutoMap<FluidStack> aOutputGases = new AutoMap<FluidStack>();
-		if (mNobleGases == null) {
-			mNobleGases = new AutoMap<Fluid>();
-			mNobleGases.add(Materials.Helium.getGas(1).getFluid());
-			mNobleGases.add(ELEMENT.getInstance().XENON.getFluid(1).getFluid());
-			mNobleGases.add(ELEMENT.getInstance().NEON.getFluid(1).getFluid());
-			mNobleGases.add(ELEMENT.getInstance().ARGON.getFluid(1).getFluid());
-			mNobleGases.add(ELEMENT.getInstance().KRYPTON.getFluid(1).getFluid());
-			mNobleGases.add(ELEMENT.getInstance().RADON.getFluid(1).getFluid());
+	private AutoMap<FluidStack> getByproductsOfSparge(final FluidStack spargeGas){		
+		GasSpargingRecipe aSpargeRecipe = null;		
+		AutoMap<FluidStack> aOutputGases = new AutoMap<FluidStack>();		
+		for (GasSpargingRecipe aRecipe : GasSpargingRecipeMap.mRecipes) {
+			if (aRecipe.mInputGas.isFluidEqual(spargeGas)) {
+				aSpargeRecipe = aRecipe;
+			}
 		}
-		if (mFluorideGases == null) {
-			mFluorideGases = new AutoMap<Fluid>();
-			mFluorideGases.add(Materials.Fluorine.getGas(1).getFluid());
-			mFluorideGases.add(FLUORIDES.LITHIUM_FLUORIDE.getFluid(1).getFluid());
-			mFluorideGases.add(FLUORIDES.NEPTUNIUM_HEXAFLUORIDE.getFluid(1).getFluid());
-			mFluorideGases.add(FLUORIDES.TECHNETIUM_HEXAFLUORIDE.getFluid(1).getFluid());
-			mFluorideGases.add(FLUORIDES.SELENIUM_HEXAFLUORIDE.getFluid(1).getFluid());
-		}
-		if (mSpargeGases == null) {
-			mSpargeGases = new AutoMap<Fluid>();
-			mSpargeGases.add(Materials.Helium.getGas(1).getFluid());
-			mSpargeGases.add(Materials.Fluorine.getGas(1).getFluid());
-		}
-		if (spargeGas == null) {
+		if (aSpargeRecipe == null) {
 			return aOutputGases;
-		}
-		int outputChances[] = null;
-		int aDepletionAmount = 0;
-		int aSpargeType = -1;
-		if (spargeGas.getFluid().equals(mHelium)){
-			outputChances = new int[]{
-					0,
-					MathUtils.roundToClosestInt(MathUtils.randInt(0, 20)),
-					MathUtils.roundToClosestInt(MathUtils.randInt(0, 20)),
-					MathUtils.roundToClosestInt(MathUtils.randInt(0, 20)),
-					MathUtils.roundToClosestInt(MathUtils.randInt(0, 20)),
-					MathUtils.roundToClosestInt(MathUtils.randInt(0, 20))
-			};
-			aDepletionAmount = 100;
-			outputChances[0] = (aDepletionAmount-outputChances[1]-outputChances[2]-outputChances[3]-outputChances[4]-outputChances[5]);
-			aSpargeType = 0;
-		}
-		else if (spargeGas.getFluid().equals(mFluorine)){
-			outputChances = new int[]{
-					0,
-					MathUtils.roundToClosestInt(MathUtils.randDouble(0, 40)),
-					MathUtils.roundToClosestInt(MathUtils.randDouble(0, 20)),
-					MathUtils.roundToClosestInt(MathUtils.randDouble(0, 20)),
-					MathUtils.roundToClosestInt(MathUtils.randDouble(0, 20))
-			};
-			aDepletionAmount = 100;
-			outputChances[0] = (aDepletionAmount-outputChances[1]-outputChances[2]-outputChances[3]-outputChances[4]);
-			aSpargeType = 1;
 		}		
-		if (outputChances == null) {
-			return aOutputGases;			
-		}
-		FluidStack depletionStack = spargeGas.copy();
-		depletionStack.amount = aDepletionAmount;
-		AutoMap<Fluid> aTempMap = aSpargeType == 0 ? mNobleGases : mFluorideGases;
-		for (int i = 0; i < aTempMap.size(); i++) {
-			Fluid aFluid = aTempMap.get(i);
-			aOutputGases.add(new FluidStack(aFluid, outputChances[i]));			
-		}
+		int aSpargeGasAmount = aSpargeRecipe.mInputGas.amount;		
+		FluidStack depletionStack = aSpargeRecipe.mInputGas.copy();
+		depletionStack.amount = aSpargeGasAmount;
 		this.depleteInput(depletionStack);
-		updateSlots();
+		updateSlots();		
+		for (int i=0;i<aSpargeRecipe.mFluidOutputs.length;i++) {
+			if (aSpargeRecipe.mInputGas.isFluidEqual(spargeGas)) {
+				continue; // Skip sparge gas
+			}
+			int aGasAmount = MathUtils.randInt(0, aSpargeRecipe.mMaxOutputQuantity[i]);
+			FluidStack aOutput = aSpargeRecipe.mFluidOutputs[i];
+			aSpargeGasAmount -= aGasAmount;
+			aOutputGases.add(new FluidStack(aOutput.getFluid(), aGasAmount));			
+		}
+		if (aSpargeGasAmount > 0) {
+			aOutputGases.add(new FluidStack(aSpargeRecipe.mInputGas.getFluid(), aSpargeGasAmount));	
+		}
 		return aOutputGases;
 	}
 
