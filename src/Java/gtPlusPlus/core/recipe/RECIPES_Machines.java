@@ -272,6 +272,35 @@ public class RECIPES_Machines {
 	}
 
 	private static void chemPlant() {
+		
+
+        GT_ModHandler.addCraftingRecipe(
+        		GregtechItemList.Casing_Machine_Custom_1.get(2L, new Object[0]),
+        		CI.bits, 
+        		new Object[]{
+        				"PhP",
+        				"PFP",
+        				"PwP",
+        				'P',
+        				OrePrefixes.plate.get(Materials.Bronze),
+        				'F',
+        				OrePrefixes.frameGt.get(Materials.Bronze)
+        				}
+        		);
+        
+        GT_ModHandler.addCraftingRecipe(
+        		GregtechItemList.Casing_Machine_Custom_2.get(2L, new Object[0]),
+        		CI.bits, 
+        		new Object[]{
+        				"PhP",
+        				"PFP",
+        				"PwP",
+        				'P',
+        				OrePrefixes.plate.get(Materials.Aluminium),
+        				'F',
+        				OrePrefixes.frameGt.get(Materials.Aluminium)
+        				}
+        		);
 
 		CORE.RA.addSixSlotAssemblingRecipe(
 				new ItemStack[] {

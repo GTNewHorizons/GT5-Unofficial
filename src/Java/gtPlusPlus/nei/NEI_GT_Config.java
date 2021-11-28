@@ -7,6 +7,8 @@ import gregtech.api.util.GTPP_Recipe.GTPP_Recipe_Map;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
+import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class NEI_GT_Config
 implements IConfigureNEI {
@@ -88,6 +90,12 @@ implements IConfigureNEI {
 		Logger.INFO("NEI Registration: Registering NEI handler for "+DecayableRecipeHandler.mNEIName);
 		API.registerRecipeHandler(new DecayableRecipeHandler());
 		API.registerUsageHandler(new DecayableRecipeHandler());
+		
+		// Hide Flasks
+		if (Utils.isClient()) {
+			codechicken.nei.api.API.addItemListEntry(GregtechItemList.VOLUMETRIC_FLASK_8k.get(1));
+			codechicken.nei.api.API.addItemListEntry(GregtechItemList.VOLUMETRIC_FLASK_32k.get(1));			
+		}
 		sIsAdded = true;
 	}
 
