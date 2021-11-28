@@ -201,8 +201,8 @@ extends TemplateRecipeHandler {
 
 	@Override
 	public void drawExtras(final int aRecipeIndex) {
-		final int tEUt = ((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mEUt;
-		final int tDuration = ((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mDuration;
+		final long tEUt = ((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mEUt;
+		final long tDuration = ((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mDuration;
 		if (tEUt != 0) {
 			drawText(10, 73, "Total: " + (tDuration * tEUt) + " EU", -16777216);
 			drawText(10, 83, "Usage: " + tEUt + " EU/t", -16777216);
@@ -215,7 +215,7 @@ extends TemplateRecipeHandler {
 			}
 		}
 		if (tDuration > 0) {
-			drawText(10, 113, "Time: " + (tDuration < 20 ? "< 1" : Integer.valueOf(tDuration / 20)) + " secs", -16777216);
+			drawText(10, 113, "Time: " + (tDuration < 20 ? "< 1" : Long.valueOf(tDuration / 20)) + " secs", -16777216);
 		}
 		if ((GT_Utility.isStringValid(this.mRecipeMap.mNEISpecialValuePre)) || (GT_Utility.isStringValid(this.mRecipeMap.mNEISpecialValuePost))) {
 			drawText(10, 123, this.mRecipeMap.mNEISpecialValuePre + (((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mSpecialValue * this.mRecipeMap.mNEISpecialValueMultiplier) + this.mRecipeMap.mNEISpecialValuePost, -16777216);

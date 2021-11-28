@@ -246,7 +246,7 @@ extends TemplateRecipeHandler {
 
 	@Override
 	public void drawExtras(final int aRecipeIndex) {
-		final int tEUt = ((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mEUt;
+		final long tEUt = ((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mEUt;
 		final int tDuration = ((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mDuration;
 		if (tEUt != 0) {
 			drawText(10, 83, "Total: " + (tDuration * tEUt) + " EU", -16777216);
