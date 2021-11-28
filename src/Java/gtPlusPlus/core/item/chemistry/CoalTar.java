@@ -53,27 +53,35 @@ public class CoalTar extends ItemPackage {
 		FluidStack bioEth1 = FluidUtils.getFluidStack("fluid.bioethanol", 2000);
 		FluidStack bioEth2 = FluidUtils.getFluidStack("bioethanol", 2000);
 
-		if (bioEth1 != null){
+		if (bioEth1 != null){			
 			CORE.RA.addDehydratorRecipe(
-					ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 2),
-					bioEth1,
+					new ItemStack[] {
+							CI.getNumberedBioCircuit(17),
+							ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 1)
+							}, 
+					bioEth1, 
+					FluidUtils.getWater(1000), 
 					new ItemStack[]{
-							ItemUtils.getItemStackOfAmountFromOreDict("cellWater", 1),
 							ItemUtils.getItemStackOfAmountFromOreDict("cellEthylene", 1)
-					},
-					120*20,
+					}, 
+					new int[] {10000}, 
+					120 * 20,
 					80);
 		}
 
 		if (bioEth2 != null){
 			CORE.RA.addDehydratorRecipe(
-					ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 2),
-					bioEth2,
+					new ItemStack[] {
+							CI.getNumberedBioCircuit(18),
+							ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 1)
+							}, 
+					bioEth2, 
+					FluidUtils.getWater(1000), 
 					new ItemStack[]{
-							ItemUtils.getItemStackOfAmountFromOreDict("cellWater", 1),
 							ItemUtils.getItemStackOfAmountFromOreDict("cellEthylene", 1)
-					},
-					120*20,
+					}, 
+					new int[] {10000}, 
+					120 * 20,
 					80);
 		}
 	}
@@ -241,16 +249,19 @@ public class CoalTar extends ItemPackage {
 
 	}
 
-	private static void recipePhthalicAcidToPhthalicAnhydride() {
+	private static void recipePhthalicAcidToPhthalicAnhydride() {		
 		CORE.RA.addDehydratorRecipe(
-				ItemUtils.getGregtechCircuit(6),
-				FluidUtils.getFluidStack("fluid.phthalicacid", 144),
+				new ItemStack[] {
+						CI.getNumberedBioCircuit(15)
+						}, 
+				FluidUtils.getFluidStack("fluid.phthalicacid", 144), 
+				null, 
 				new ItemStack[]{
 						ItemUtils.getItemStackOfAmountFromOreDict("dustPhthalicAnhydride", 1)
-				},
-				60*20,
+				}, 
+				new int[] {10000}, 
+				60 * 20,
 				120);
-
 	}
 
 	@Override

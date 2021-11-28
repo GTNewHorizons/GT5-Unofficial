@@ -18,6 +18,7 @@ import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.material.MaterialStack;
 import gtPlusPlus.core.material.state.MaterialState;
+import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -186,7 +187,7 @@ public class RecipeGen_MaterialProcessing extends RecipeGen_Base {
 
 				ItemStack emptyCell = null;
 				if (mCellCount > 0){
-					emptyCell = ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", mCellCount);
+					emptyCell = CI.emptyCells(mCellCount);
 					Logger.MATERIALS("[Dehydrator] Recipe now requires "+mCellCount+" empty cells as input.");
 				}
 

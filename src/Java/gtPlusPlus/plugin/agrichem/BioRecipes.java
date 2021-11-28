@@ -23,7 +23,11 @@ import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.material.MISC_MATERIALS;
 import gtPlusPlus.core.recipe.common.CI;
-import gtPlusPlus.core.util.minecraft.*;
+import gtPlusPlus.core.util.minecraft.FluidUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.util.minecraft.MaterialUtils;
+import gtPlusPlus.core.util.minecraft.OreDictUtils;
+import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.plugin.agrichem.block.AgrichemFluids;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -502,14 +506,19 @@ public class BioRecipes {
 				120 * 20,
 				60,
 				1);
-
+		
 		CORE.RA.addDehydratorRecipe(
-				CI.emptyCells(1),
-				FluidUtils.getFluidStack(mFermentationBase, 4000),
+				new ItemStack[] {
+						CI.getNumberedBioCircuit(14),
+						CI.emptyCells(1)
+						}, 
+				FluidUtils.getFluidStack(mFermentationBase, 4000), 
+				null, 
 				new ItemStack[] {
 						ItemUtils.getSimpleStack(AgriculturalChem.mCompost, 1),
 						ItemUtils.getItemStackOfAmountFromOreDict("cellAceticAcid", 1)						
 				},
+				new int[] {10000, 10000}, 
 				60 * 20,
 				16);
 

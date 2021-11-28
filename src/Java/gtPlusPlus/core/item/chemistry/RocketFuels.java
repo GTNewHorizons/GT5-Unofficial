@@ -209,7 +209,9 @@ public class RocketFuels extends ItemPackage {
 				new ItemStack[] {CI.getNumberedCircuit(8)}, 
 				FluidUtils.getFluidStack(Hydrated_Ammonium_Nitrate_Slurry, 8*144), 
 				FluidUtils.getWater(2000), 
-				new ItemStack[] {ItemUtils.getSimpleStack(Ammonium_Nitrate_Dust, 8)}, 
+				new ItemStack[] {
+						ItemUtils.getSimpleStack(Ammonium_Nitrate_Dust, 8)
+				}, 
 				new int[] {10000}, 
 				90 * 20,
 				480);

@@ -47,7 +47,7 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
 
 	private void generateRecipes(final Material material, final boolean disableOptional){
 
-		Logger.WARNING("Generating Shaped Crafting recipes for "+material.getLocalizedName());
+		Logger.INFO("Generating Shaped Crafting recipes for "+material.getLocalizedName());
 
 		final ItemStack normalDust = material.getDust(1);
 		final ItemStack smallDust = material.getSmallDust(1);
@@ -59,14 +59,14 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
 
 		if (ItemUtils.checkForInvalidItems(tinyDust) && ItemUtils.checkForInvalidItems(normalDust)) {
 			if (RecipeUtils.addShapedRecipe(
-					tinyDust,	tinyDust, tinyDust,
+					tinyDust, tinyDust, tinyDust,
 					tinyDust, tinyDust, tinyDust,
 					tinyDust, tinyDust, tinyDust,
 					normalDust)){
-				Logger.WARNING("9 Tiny dust to 1 Dust Recipe: "+material.getLocalizedName()+" - Success");
+				Logger.INFO("9 Tiny dust to 1 Dust Recipe: "+material.getLocalizedName()+" - Success");
 			}
 			else {
-				Logger.WARNING("9 Tiny dust to 1 Dust Recipe: "+material.getLocalizedName()+" - Failed");
+				Logger.INFO("9 Tiny dust to 1 Dust Recipe: "+material.getLocalizedName()+" - Failed");
 			}
 
 			if (RecipeUtils.addShapedRecipe(
@@ -74,10 +74,10 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
 					null, null, null,
 					null, null, null,
 					material.getTinyDust(9))){
-				Logger.WARNING("9 Tiny dust from 1 Recipe: "+material.getLocalizedName()+" - Success");
+				Logger.INFO("9 Tiny dust from 1 Recipe: "+material.getLocalizedName()+" - Success");
 			}
 			else {
-				Logger.WARNING("9 Tiny dust from 1 Recipe: "+material.getLocalizedName()+" - Failed");
+				Logger.INFO("9 Tiny dust from 1 Recipe: "+material.getLocalizedName()+" - Failed");
 			}
 		}
 
@@ -87,20 +87,20 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
 					smallDust, smallDust, null,
 					null, null, null,
 					normalDust)){
-				Logger.WARNING("4 Small dust to 1 Dust Recipe: "+material.getLocalizedName()+" - Success");
+				Logger.INFO("4 Small dust to 1 Dust Recipe: "+material.getLocalizedName()+" - Success");
 			}
 			else {
-				Logger.WARNING("4 Small dust to 1 Dust Recipe: "+material.getLocalizedName()+" - Failed");
+				Logger.INFO("4 Small dust to 1 Dust Recipe: "+material.getLocalizedName()+" - Failed");
 			}
 			if (RecipeUtils.addShapedRecipe(
 					null, normalDust, null,
 					null, null, null,
 					null, null, null,
 					material.getSmallDust(4))){
-				Logger.WARNING("4 Small dust from 1 Dust Recipe: "+material.getLocalizedName()+" - Success");
+				Logger.INFO("4 Small dust from 1 Dust Recipe: "+material.getLocalizedName()+" - Success");
 			}
 			else {
-				Logger.WARNING("4 Small dust from 1 Dust Recipe: "+material.getLocalizedName()+" - Failed");
+				Logger.INFO("4 Small dust from 1 Dust Recipe: "+material.getLocalizedName()+" - Failed");
 			}
 		}
 

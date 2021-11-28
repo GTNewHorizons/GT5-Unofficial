@@ -1230,19 +1230,26 @@ public class RECIPES_GREGTECH {
 		Logger.INFO("Loading Recipes for Chemical Dehydrator.");
 
 		try {
-			// Makes Lithium Carbonate
-			CORE.RA.addDehydratorRecipe(ItemUtils.getItemStackOfAmountFromOreDict("cellSulfuricLithium", 1), 
+			// Makes Lithium Carbonate			
+			CORE.RA.addDehydratorRecipe(
+					new ItemStack[] {
+							CI.getNumberedAdvancedCircuit(14),
+							ItemUtils.getItemStackOfAmountFromOreDict("cellSulfuricLithium", 1)
+							}, 
 					FluidUtils.getFluidStack("sulfuriclithium", 440), 
+					null, 
 					new ItemStack[] {
 							CI.emptyCells(1),
 							ItemUtils.getItemStackOfAmountFromOreDict("dustSulfur", 3),
 							ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 1),
 							ItemUtils.getItemStackOfAmountFromOreDict("dustSodium", 1),
 							ItemUtils.getItemStackOfAmountFromOreDict("dustCarbon", 1),
-							ItemUtils.getItemStackOfAmountFromOreDict("dustLithium7", 3) 
-			}, 
-					30 * 20, // Time in ticks
-					30); // EU
+							ItemUtils.getItemStackOfAmountFromOreDict("dustLithium7", 3)						
+					},
+					new int[] {10000, 10000, 10000, 10000, 10000}, 
+					30 * 20,
+					30);
+			
 		}
 		catch (final NullPointerException e) {
 			Logger.INFO("[cellSulfuricLithium] FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");
@@ -1263,7 +1270,7 @@ public class RECIPES_GREGTECH {
 							ItemUtils.getItemStackOfAmountFromOreDict("cellFluorine", 2),
 							ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumCarbonate", 3), // LithiumCarbonate
 			}, // Output Array of Items - Upto 9,
-					new int[] { 0 },
+					new int[] { 10000, 10000, 10000, 10000, 10000 },
 					75 * 20, // Time in ticks
 					1000); // EU
 
@@ -1275,6 +1282,7 @@ public class RECIPES_GREGTECH {
 
 			CORE.RA.addDehydratorRecipe(
 					new ItemStack[] { 
+							CI.getNumberedAdvancedCircuit(13),
 							ItemUtils.getItemStackOfAmountFromOreDict("cellWater", 10)
 					}, 
 					FluidUtils.getFluidStack("molten.uraniumtetrafluoride", 1440), 
@@ -1283,7 +1291,8 @@ public class RECIPES_GREGTECH {
 							ItemUtils.getItemStackOfAmountFromOreDict("dustUraniumTetrafluoride", 10),
 							CI.emptyCells(10) 
 					}, 
-					new int[] { 0 }, 150 * 20, // Time in ticks
+					new int[] { 10000 }, 
+					150 * 20, // Time in ticks
 					2000); // EU
 
 		}
@@ -1294,6 +1303,7 @@ public class RECIPES_GREGTECH {
 
 			CORE.RA.addDehydratorRecipe(
 					new ItemStack[] { 
+							CI.getNumberedAdvancedCircuit(12),
 							ItemUtils.getItemStackOfAmountFromOreDict("cellWater", 10)
 					}, // Item
 					FluidUtils.getFluidStack("molten.uraniumhexafluoride", 1440), // Fluid
@@ -1301,7 +1311,8 @@ public class RECIPES_GREGTECH {
 					new ItemStack[] { 
 							ItemUtils.getItemStackOfAmountFromOreDict("dustUraniumHexafluoride", 10),
 							CI.emptyCells(10) }, // Output
-					new int[] { 0 }, 300 * 20, // Time in ticks
+					new int[] { 10000 }, 
+					300 * 20, // Time in ticks
 					4000); // EU
 
 		}
@@ -1317,6 +1328,7 @@ public class RECIPES_GREGTECH {
 
 			if (cropGrape != null && foodRaisins != null)			
 				CORE.RA.addDehydratorRecipe(new ItemStack[] { 
+						CI.getNumberedBioCircuit(20),
 						cropGrape
 				}, // Item
 						null, // Fluid input (slot 1)
@@ -1324,7 +1336,8 @@ public class RECIPES_GREGTECH {
 						new ItemStack[] { 
 								foodRaisins
 				}, // Output
-						new int[] { 0 }, 10, // Time in ticks
+						new int[] { 10000 },
+						10, // Time in ticks
 						2); // EU
 
 		}
@@ -1337,12 +1350,16 @@ public class RECIPES_GREGTECH {
 			try {
 
 				CORE.RA.addDehydratorRecipe(
-						new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustQuicklime", 10) }, // Item
+						new ItemStack[] { 
+								CI.getNumberedBioCircuit(20),
+								ItemUtils.getItemStackOfAmountFromOreDict("dustQuicklime", 10) 
+						}, // Item
 						FluidUtils.getFluidStack("water", 10000), // Fluid input
 						// (slot 1)
 						null, // Fluid output (slot 2)
 						new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumHydroxide", 20) }, // Output
-						new int[] { 0 }, 120 * 20, // Time in ticks
+						new int[] { 10000 }, 
+						120 * 20, // Time in ticks
 						120); // EU
 
 			}
@@ -1355,7 +1372,10 @@ public class RECIPES_GREGTECH {
 		// Process Waste Water
 		try {
 
-			CORE.RA.addDehydratorRecipe(null, 
+			CORE.RA.addDehydratorRecipe(
+					new ItemStack[] {
+							CI.getNumberedBioCircuit(21)
+					}, 
 					FluidUtils.getFluidStack("fluid.sludge", 1000), 
 					FluidUtils.getFluidStack("nitricacid", 10), 
 					new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustTinyIron", 1),
@@ -1383,6 +1403,7 @@ public class RECIPES_GREGTECH {
 
 			CORE.RA.addDehydratorRecipe(
 					new ItemStack[] {
+							CI.getNumberedAdvancedCircuit(20),
 							ItemUtils.getItemStackOfAmountFromOreDict("dustLi2CO3CaOH2", 5)
 					}, // Item
 					null, // Fluid input (slot 1)
@@ -1391,7 +1412,8 @@ public class RECIPES_GREGTECH {
 							ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumHydroxide", 2),
 							ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumCarbonate", 3) 
 					}, // Output
-					new int[] { 0 }, 120 * 20, // Time in ticks
+					new int[] { 10000, 10000 },
+					120 * 20, // Time in ticks
 					1000); // EU
 
 		}
@@ -1403,14 +1425,14 @@ public class RECIPES_GREGTECH {
 		try {
 
 			CORE.RA.addDehydratorRecipe(new ItemStack[] {
-					ItemUtils.getGregtechCircuit(0)
+					CI.getNumberedAdvancedCircuit(22)
 			}, // Item
 					FluidUtils.getFluidStack("lithiumhydroxide", 144), // Fluid
 					null, // Fluid output (slot 2)
 					new ItemStack[] { 
 							ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumHydroxide", 1)
 			}, // Output
-					new int[] { 0 },
+					new int[] { 10000 },
 					1 * 20, // Time in ticks
 					64); // EU
 
@@ -1422,32 +1444,44 @@ public class RECIPES_GREGTECH {
 		// Zirconium Chloride -> TetraFluoride
 		try {
 
-			CORE.RA.addDehydratorRecipe(
-					new ItemStack[] { 
-							ItemUtils.getItemStackOfAmountFromOreDict("dustCookedZrCl4", 9),
-							CI.emptyCells(9)
-					}, // Item
-					FluidUtils.getFluidStack("hydrofluoricacid", 9 * 144), 
-					null, 
-					new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogenChloride", 9),
-							FLUORIDES.ZIRCONIUM_TETRAFLUORIDE.getDust(9)
-					},
-					new int[] { 0 }, 120 * 20, // Time in ticks
-					500); // EU
-
-
-			if (Utils.getGregtechVersionAsInt() >= 50929) {
+			FluidStack aHydrogenChloride = new FluidStack(GenericChem.HydrochloricAcid, 9000);
+			
+			if (aHydrogenChloride != null) {
 				CORE.RA.addDehydratorRecipe(
-						new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustCookedZrCl4", 9),
-								CI.emptyCells(9) },
-						FluidUtils.getFluidStack("hydrofluoricacid_gt5u", 18 * 144),
-						null,
-						new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogenChloride", 9),
-								FLUORIDES.ZIRCONIUM_TETRAFLUORIDE.getDust(9) },						
-						new int[] { 0 },
+						new ItemStack[] { 
+								CI.getNumberedAdvancedCircuit(11),
+								ItemUtils.getItemStackOfAmountFromOreDict("dustCookedZrCl4", 9),
+						}, // Item
+						FluidUtils.getFluidStack("hydrofluoricacid", 9 * 144), 
+						aHydrogenChloride, 
+						new ItemStack[] {
+								FLUORIDES.ZIRCONIUM_TETRAFLUORIDE.getDust(9)
+						},
+						new int[] { 10000 }, 
 						120 * 20, // Time in ticks
 						500); // EU
+
+
+				FluidStack aGregtechHydro = FluidUtils.getFluidStack("hydrofluoricacid_gt5u", 1);
+				
+				if (aGregtechHydro != null || Utils.getGregtechVersionAsInt() >= 50929) {
+					CORE.RA.addDehydratorRecipe(
+							new ItemStack[] { 
+									ItemUtils.getItemStackOfAmountFromOreDict("dustCookedZrCl4", 9),
+									CI.emptyCells(9)
+							},
+							FluidUtils.getFluidStack("hydrofluoricacid_gt5u", 18 * 144),
+							aHydrogenChloride,
+							new ItemStack[] { 
+									FLUORIDES.ZIRCONIUM_TETRAFLUORIDE.getDust(9) 
+							},						
+							new int[] { 10000 },
+							120 * 20, // Time in ticks
+							500); // EU
+				}
 			}
+			
+			
 
 
 		}
@@ -1458,22 +1492,27 @@ public class RECIPES_GREGTECH {
 		// CaF2 + H2SO4 â†’ CaSO4(solid) + 2 HF
 		try {
 
+
+			FluidStack aGregtechHydro = FluidUtils.getFluidStack("hydrofluoricacid_gt5u", 16000);
+			if (aGregtechHydro == null) {
+				aGregtechHydro = FluidUtils.getFluidStack("hydrofluoricacid", 16000);
+			}
+			
 			CORE.RA.addDehydratorRecipe(
 					new ItemStack[] { 
-							ItemUtils.getItemStackOfAmountFromOreDict("dustFluorite", 37),
-							CI.emptyCells(16)
+							CI.getNumberedAdvancedCircuit(5),
+							ItemUtils.getItemStackOfAmountFromOreDict("dustFluorite", 37),							
 					},
 					FluidUtils.getFluidStack("sulfuricacid", 56 * 144),
-					null, // Fluid output (slot 2)
+					aGregtechHydro, // Fluid output (slot 2)
 					new ItemStack[] {
 							ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumSulfate", 30),
-							ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid", 16),
 							ItemUtils.getItemStackOfAmountFromOreDict("dustSilver", 1),
 							ItemUtils.getItemStackOfAmountFromOreDict("dustGold", 2),
 							ItemUtils.getItemStackOfAmountFromOreDict("dustTin", 1),
 							ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 2)
 					}, 
-					new int[] { 0, 0, 100, 100, 300, 200 },
+					new int[] { 10000, 100, 100, 300, 200 },
 					10 * 60 * 20, 
 					230); // EU
 
@@ -1486,16 +1525,15 @@ public class RECIPES_GREGTECH {
 		try {
 			CORE.RA.addDehydratorRecipe(
 					new ItemStack[] {
-							ItemUtils.getItemStackOfAmountFromOreDict("cellBerylliumHydroxide", 2),
+							CI.getNumberedAdvancedCircuit(6),
 							ItemUtils.getItemStackOfAmountFromOreDict("cellAmmoniumBifluoride", 4)
 					}, 
-					null, // Fluid input (slot 1)
+					FluidUtils.getFluidStack("berylliumhydroxide", 2000), // Fluid input (slot 1)
 					FluidUtils.getFluidStack("ammoniumtetrafluoroberyllate", 6000), 
 					new ItemStack[] {
-							ItemUtils.getItemStackOfAmountFromOreDict("cellWater", 4),
-							CI.emptyCells(2)
+							ItemUtils.getItemStackOfAmountFromOreDict("cellWater", 4)
 					}, 
-					new int[] { 0, 0, 0 }, 
+					new int[] { 10000}, 
 					32 * 20, // Time in ticks
 					64); // EU
 
@@ -1505,35 +1543,42 @@ public class RECIPES_GREGTECH {
 		}
 
 		// (NH4)2BeF4 → 2 NH3 + 2 HF + BeF2
-		try {
+		try {			
 			CORE.RA.addDehydratorRecipe(
 					new ItemStack[] {
-							CI.emptyCells(5) 
-					},
+							CI.getNumberedAdvancedCircuit(17),
+							CI.emptyCells(5)
+							}, 
 					FluidUtils.getFluidStack("ammoniumtetrafluoroberyllate", 5000), 
-					null, // Fluid output (slot 2)
-					new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("cellAmmonia", 2),
+					null, 
+					new ItemStack[] {
+							ItemUtils.getItemStackOfAmountFromOreDict("cellAmmonia", 2),
 							ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid", 2),
-							ItemUtils.getItemStackOfAmountFromOreDict("cellBerylliumFluoride", 1) }, 
-					new int[] { 0, 0, 0 }, 
-					5 * 60 * 20, // Time in ticks
-					120); // EU
-
+							ItemUtils.getItemStackOfAmountFromOreDict("cellBerylliumFluoride", 1)						
+					},
+					new int[] {10000, 10000, 10000}, 
+					5 * 60 * 20,
+					120);
 		}
 		catch (final NullPointerException e) {
 			Logger.INFO("[cellBerylliumFluoride] FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");
 		}
 
-		// Makes Styrene
 		CORE.RA.addDehydratorRecipe(
-				CI.emptyCells(3), // Item Input
-				FluidUtils.getFluidStack("fluid.ethylbenzene", 1000), // Fluid
+				new ItemStack[] {
+						CI.getNumberedAdvancedCircuit(18),
+						CI.emptyCells(3)
+						}, 
+				FluidUtils.getFluidStack("fluid.ethylbenzene", 1000), 
+				null, 
 				new ItemStack[] {
 						ItemUtils.getItemStackOfAmountFromOreDict("cellStyrene", 1),
-						ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogen", 2) }, // Output		
-				3 * 20, // Time in ticks
-				30); // EU
-
+						ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogen", 2)						
+				},
+				new int[] {10000, 10000}, 
+				3 * 20,
+				30);
+		
 		/*
 		 * Try Add custom Recipe for drying leather
 		 */		
@@ -1542,11 +1587,16 @@ public class RECIPES_GREGTECH {
 			aLeather1 = ItemUtils.getCorrectStacktype("harvestcraft:hardenedleatherItem", 1);
 			aLeather2 = ItemUtils.getCorrectStacktype("Backpack:tannedLeather", 1);			
 			CORE.RA.addDehydratorRecipe(
-					aLeather1,
-					GT_Values.NF,
 					new ItemStack[] {
-							aLeather2
+							CI.getNumberedAdvancedCircuit(18),
+							aLeather1
+							}, 
+					FluidUtils.getFluidStack("fluid.ethylbenzene", 1000), 
+					null, 
+					new ItemStack[] {
+							aLeather2						
 					},
+					new int[] {10000}, 
 					5 * 20,
 					180);
 		}

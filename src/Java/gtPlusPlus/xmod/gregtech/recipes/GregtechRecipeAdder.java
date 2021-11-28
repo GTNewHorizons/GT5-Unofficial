@@ -332,7 +332,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 	 * aOutputItems, aDuration, aEUt); return true; }
 	 */
 
-	@Override
+	/*@Override
 	public boolean addDehydratorRecipe(final ItemStack aInput, final FluidStack aFluid, final ItemStack[] aOutput,
 			int aDuration, final int aEUt) {
 		Logger.WARNING("Trying to add a Dehydrator recipe.");
@@ -363,7 +363,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 			Logger.WARNING("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");
 			return false;
 		}
-	}
+	}*/
 
 	@Override
 	public boolean addDehydratorRecipe(final ItemStack[] aInput, final FluidStack aFluidInput,
