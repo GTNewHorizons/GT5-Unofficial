@@ -30,7 +30,6 @@ import gtPlusPlus.core.material.MISC_MATERIALS;
 import gtPlusPlus.core.material.ORES;
 import gtPlusPlus.core.material.Particle;
 import gtPlusPlus.core.material.nuclear.FLUORIDES;
-import gtPlusPlus.core.material.nuclear.NUCLIDE;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.EnchantingUtils;
@@ -1229,346 +1228,77 @@ public class RECIPES_GREGTECH {
 	private static void dehydratorRecipes() {
 		Logger.INFO("Loading Recipes for Chemical Dehydrator.");
 
-		try {
-			// Makes Lithium Carbonate			
-			CORE.RA.addDehydratorRecipe(
-					new ItemStack[] {
-							CI.getNumberedAdvancedCircuit(14),
-							ItemUtils.getItemStackOfAmountFromOreDict("cellSulfuricLithium", 1)
-							}, 
-					FluidUtils.getFluidStack("sulfuriclithium", 440), 
-					null, 
-					new ItemStack[] {
-							CI.emptyCells(1),
-							ItemUtils.getItemStackOfAmountFromOreDict("dustSulfur", 3),
-							ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 1),
-							ItemUtils.getItemStackOfAmountFromOreDict("dustSodium", 1),
-							ItemUtils.getItemStackOfAmountFromOreDict("dustCarbon", 1),
-							ItemUtils.getItemStackOfAmountFromOreDict("dustLithium7", 3)						
-					},
-					new int[] {10000, 10000, 10000, 10000, 10000}, 
-					30 * 20,
-					30);
-			
-		}
-		catch (final NullPointerException e) {
-			Logger.INFO("[cellSulfuricLithium] FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");
-		}
-		try {
 
-			ItemStack cells = CI.emptyCells(12);
+		ItemStack cropGrape = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cropGrape", 1);
+		ItemStack foodRaisins = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("foodRaisins", 1);
 
-			final ItemStack[] input = { cells, ItemUtils.getItemStackOfAmountFromOreDict("dustLepidolite", 20) };
-
-			CORE.RA.addDehydratorRecipe(input, // Item input (Array, up to 2)
-					FluidUtils.getFluidStack("sulfuricacid", 10000), 
-					FluidUtils.getFluidStack("sulfuriclithium", 10000),
-					new ItemStack[] { 
-							ItemUtils.getItemStackOfAmountFromOreDict("dustPotassium", 1),
-							ItemUtils.getItemStackOfAmountFromOreDict("dustAluminium", 4),
-							ItemUtils.getItemStackOfAmountFromOreDict("cellOxygen", 10),
-							ItemUtils.getItemStackOfAmountFromOreDict("cellFluorine", 2),
-							ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumCarbonate", 3), // LithiumCarbonate
-			}, // Output Array of Items - Upto 9,
-					new int[] { 10000, 10000, 10000, 10000, 10000 },
-					75 * 20, // Time in ticks
-					1000); // EU
-
-		}
-		catch (final NullPointerException e) {
-			Logger.INFO("[dustLepidolite] FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");
-		}
-		try {
-
-			CORE.RA.addDehydratorRecipe(
-					new ItemStack[] { 
-							CI.getNumberedAdvancedCircuit(13),
-							ItemUtils.getItemStackOfAmountFromOreDict("cellWater", 10)
-					}, 
-					FluidUtils.getFluidStack("molten.uraniumtetrafluoride", 1440), 
-					null, 
-					new ItemStack[] { 
-							ItemUtils.getItemStackOfAmountFromOreDict("dustUraniumTetrafluoride", 10),
-							CI.emptyCells(10) 
-					}, 
-					new int[] { 10000 }, 
-					150 * 20, // Time in ticks
-					2000); // EU
-
-		}
-		catch (final NullPointerException e) {
-			Logger.INFO("[dustUraniumTetrafluoride] FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");
-		}
-		try {
-
-			CORE.RA.addDehydratorRecipe(
-					new ItemStack[] { 
-							CI.getNumberedAdvancedCircuit(12),
-							ItemUtils.getItemStackOfAmountFromOreDict("cellWater", 10)
-					}, // Item
-					FluidUtils.getFluidStack("molten.uraniumhexafluoride", 1440), // Fluid
-					null, // Fluid output (slot 2)
-					new ItemStack[] { 
-							ItemUtils.getItemStackOfAmountFromOreDict("dustUraniumHexafluoride", 10),
-							CI.emptyCells(10) }, // Output
-					new int[] { 10000 }, 
-					300 * 20, // Time in ticks
-					4000); // EU
-
-		}
-		catch (final NullPointerException e) {
-			Logger.INFO("[dustUraniumHexafluoride] FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");
-		}
-
-		// Raisins from Grapes
-		try {
-
-			ItemStack cropGrape = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cropGrape", 1);
-			ItemStack foodRaisins = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("foodRaisins", 1);
-
-			if (cropGrape != null && foodRaisins != null)			
-				CORE.RA.addDehydratorRecipe(new ItemStack[] { 
-						CI.getNumberedBioCircuit(20),
-						cropGrape
-				}, // Item
-						null, // Fluid input (slot 1)
-						null, // Fluid output (slot 2)
-						new ItemStack[] { 
-								foodRaisins
-				}, // Output
-						new int[] { 10000 },
-						10, // Time in ticks
-						2); // EU
-
-		}
-		catch (final NullPointerException e) {
-			Logger.INFO("[foodRaisins] FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");
-		}
-
-		// Calcium Hydroxide
-		if ((ItemUtils.checkForInvalidItems(ItemUtils.getItemStackOfAmountFromOreDict("dustQuicklime", 1)))	|| LoadedMods.IHL) {
-			try {
-
-				CORE.RA.addDehydratorRecipe(
-						new ItemStack[] { 
-								CI.getNumberedBioCircuit(20),
-								ItemUtils.getItemStackOfAmountFromOreDict("dustQuicklime", 10) 
-						}, // Item
-						FluidUtils.getFluidStack("water", 10000), // Fluid input
-						// (slot 1)
-						null, // Fluid output (slot 2)
-						new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumHydroxide", 20) }, // Output
-						new int[] { 10000 }, 
-						120 * 20, // Time in ticks
-						120); // EU
-
-			}
-			catch (final NullPointerException e) {
-				Logger.INFO("[dustCalciumHydroxide] FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");
-			}	
-
-		}
-
-		// Process Waste Water
-		try {
-
-			CORE.RA.addDehydratorRecipe(
-					new ItemStack[] {
-							CI.getNumberedBioCircuit(21)
-					}, 
-					FluidUtils.getFluidStack("fluid.sludge", 1000), 
-					FluidUtils.getFluidStack("nitricacid", 10), 
-					new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustTinyIron", 1),
-							ItemUtils.getItemStackOfAmountFromOreDict("dustTinyCopper", 1),
-							ItemUtils.getItemStackOfAmountFromOreDict("dustTinyTin", 1),
-							ItemUtils.getItemStackOfAmountFromOreDict("dustTinyNickel", 1),
-							ItemUtils.getItemStackOfAmountFromOreDict("dustTinyCobalt", 1),
-							ItemUtils.getItemStackOfAmountFromOreDict("dustTinyAluminium", 1),
-							ItemUtils.getItemStackOfAmountFromOreDict("dustTinySilver", 1),
-							ItemUtils.getItemStackOfAmountFromOreDict("dustTinyGold", 1),
-							ItemUtils.getItemStackOfAmountFromOreDict("dustTinyIridium", 1) },
-					new int[] { 10, 5, 5, 4, 4, 3, 2, 2, 1 },
-					2 * 20, 
-					500); // EU
-
-		}
-		catch (final NullPointerException e) {
-			Logger.INFO("[sludge] FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");
-		}
-
-
-
-		// 2 LiOH + CaCO3
-		try {
-
-			CORE.RA.addDehydratorRecipe(
-					new ItemStack[] {
-							CI.getNumberedAdvancedCircuit(20),
-							ItemUtils.getItemStackOfAmountFromOreDict("dustLi2CO3CaOH2", 5)
-					}, // Item
+		if (cropGrape != null && foodRaisins != null)			
+			CORE.RA.addDehydratorRecipe(new ItemStack[] { 
+					CI.getNumberedBioCircuit(20),
+					cropGrape
+			}, // Item
 					null, // Fluid input (slot 1)
 					null, // Fluid output (slot 2)
-					new ItemStack[] {
-							ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumHydroxide", 2),
-							ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumCarbonate", 3) 
-					}, // Output
-					new int[] { 10000, 10000 },
-					120 * 20, // Time in ticks
-					1000); // EU
-
-		}
-		catch (final NullPointerException e) {
-			Logger.INFO("[dustLi2CO3CaOH2] FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");
-		}
-
-		// LiOH Liquid to Dust
-		try {
-
-			CORE.RA.addDehydratorRecipe(new ItemStack[] {
-					CI.getNumberedAdvancedCircuit(22)
-			}, // Item
-					FluidUtils.getFluidStack("lithiumhydroxide", 144), // Fluid
-					null, // Fluid output (slot 2)
 					new ItemStack[] { 
-							ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumHydroxide", 1)
+							foodRaisins
 			}, // Output
 					new int[] { 10000 },
-					1 * 20, // Time in ticks
-					64); // EU
-
-		}
-		catch (final NullPointerException e) {
-			Logger.INFO("[dustLithiumHydroxide] FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");
-		}
-
-		// Zirconium Chloride -> TetraFluoride
-		try {
-
-			FluidStack aHydrogenChloride = new FluidStack(GenericChem.HydrochloricAcid, 9000);
-			
-			if (aHydrogenChloride != null) {
-				CORE.RA.addDehydratorRecipe(
-						new ItemStack[] { 
-								CI.getNumberedAdvancedCircuit(11),
-								ItemUtils.getItemStackOfAmountFromOreDict("dustCookedZrCl4", 9),
-						}, // Item
-						FluidUtils.getFluidStack("hydrofluoricacid", 9 * 144), 
-						aHydrogenChloride, 
-						new ItemStack[] {
-								FLUORIDES.ZIRCONIUM_TETRAFLUORIDE.getDust(9)
-						},
-						new int[] { 10000 }, 
-						120 * 20, // Time in ticks
-						500); // EU
+					10, // Time in ticks
+					2); // EU
 
 
-				FluidStack aGregtechHydro = FluidUtils.getFluidStack("hydrofluoricacid_gt5u", 1);
-				
-				if (aGregtechHydro != null || Utils.getGregtechVersionAsInt() >= 50929) {
-					CORE.RA.addDehydratorRecipe(
-							new ItemStack[] { 
-									ItemUtils.getItemStackOfAmountFromOreDict("dustCookedZrCl4", 9),
-									CI.emptyCells(9)
-							},
-							FluidUtils.getFluidStack("hydrofluoricacid_gt5u", 18 * 144),
-							aHydrogenChloride,
-							new ItemStack[] { 
-									FLUORIDES.ZIRCONIUM_TETRAFLUORIDE.getDust(9) 
-							},						
-							new int[] { 10000 },
-							120 * 20, // Time in ticks
-							500); // EU
-				}
-			}
-			
-			
 
-
-		}
-		catch (final NullPointerException e) {
-			Logger.INFO("[dustZrF4] FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");
-		}
+		// Process Waste Water
+		CORE.RA.addDehydratorRecipe(
+				new ItemStack[] {
+						CI.getNumberedBioCircuit(21)
+				}, 
+				FluidUtils.getFluidStack("fluid.sludge", 1000), 
+				FluidUtils.getFluidStack("nitricacid", 10), 
+				new ItemStack[] { 
+						ItemUtils.getItemStackOfAmountFromOreDict("dustTinyIron", 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustTinyCopper", 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustTinyTin", 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustTinyNickel", 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustTinyCobalt", 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustTinyAluminium", 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustTinySilver", 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustTinyGold", 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustTinyIridium", 1) },
+				new int[] { 10, 5, 5, 4, 4, 3, 2, 2, 1 },
+				2 * 20, 
+				500); // EU
 
 		// CaF2 + H2SO4 â†’ CaSO4(solid) + 2 HF
-		try {
-
-
-			FluidStack aGregtechHydro = FluidUtils.getFluidStack("hydrofluoricacid_gt5u", 16000);
-			if (aGregtechHydro == null) {
-				aGregtechHydro = FluidUtils.getFluidStack("hydrofluoricacid", 16000);
-			}
-			
-			CORE.RA.addDehydratorRecipe(
-					new ItemStack[] { 
-							CI.getNumberedAdvancedCircuit(5),
-							ItemUtils.getItemStackOfAmountFromOreDict("dustFluorite", 37),							
-					},
-					FluidUtils.getFluidStack("sulfuricacid", 56 * 144),
-					aGregtechHydro, // Fluid output (slot 2)
-					new ItemStack[] {
-							ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumSulfate", 30),
-							ItemUtils.getItemStackOfAmountFromOreDict("dustSilver", 1),
-							ItemUtils.getItemStackOfAmountFromOreDict("dustGold", 2),
-							ItemUtils.getItemStackOfAmountFromOreDict("dustTin", 1),
-							ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 2)
-					}, 
-					new int[] { 10000, 100, 100, 300, 200 },
-					10 * 60 * 20, 
-					230); // EU
-
-		}
-		catch (final NullPointerException e) {
-			Logger.INFO("[dustFluorite] FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");
+		FluidStack aGregtechHydro = FluidUtils.getFluidStack("hydrofluoricacid_gt5u", 16000);
+		if (aGregtechHydro == null) {
+			aGregtechHydro = FluidUtils.getFluidStack("hydrofluoricacid", 16000);
 		}
 
-		// Be(OH)2 + 2 (NH4)HF2 → (NH4)2BeF4 + 2 H2O
-		try {
-			CORE.RA.addDehydratorRecipe(
-					new ItemStack[] {
-							CI.getNumberedAdvancedCircuit(6),
-							ItemUtils.getItemStackOfAmountFromOreDict("cellAmmoniumBifluoride", 4)
-					}, 
-					FluidUtils.getFluidStack("berylliumhydroxide", 2000), // Fluid input (slot 1)
-					FluidUtils.getFluidStack("ammoniumtetrafluoroberyllate", 6000), 
-					new ItemStack[] {
-							ItemUtils.getItemStackOfAmountFromOreDict("cellWater", 4)
-					}, 
-					new int[] { 10000}, 
-					32 * 20, // Time in ticks
-					64); // EU
+		CORE.RA.addDehydratorRecipe(
+				new ItemStack[] { 
+						CI.getNumberedAdvancedCircuit(5),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustFluorite", 37),							
+				},
+				FluidUtils.getFluidStack("sulfuricacid", 56 * 144),
+				aGregtechHydro, // Fluid output (slot 2)
+				new ItemStack[] {
+						ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumSulfate", 30),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustSilver", 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustGold", 2),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustTin", 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 2)
+				}, 
+				new int[] { 10000, 100, 100, 300, 200 },
+				10 * 60 * 20, 
+				230); // EU
 
-		}
-		catch (final NullPointerException e) {
-			Logger.INFO("[ammoniumtetrafluoroberyllate] FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");
-		}
-
-		// (NH4)2BeF4 → 2 NH3 + 2 HF + BeF2
-		try {			
-			CORE.RA.addDehydratorRecipe(
-					new ItemStack[] {
-							CI.getNumberedAdvancedCircuit(17),
-							CI.emptyCells(5)
-							}, 
-					FluidUtils.getFluidStack("ammoniumtetrafluoroberyllate", 5000), 
-					null, 
-					new ItemStack[] {
-							ItemUtils.getItemStackOfAmountFromOreDict("cellAmmonia", 2),
-							ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid", 2),
-							ItemUtils.getItemStackOfAmountFromOreDict("cellBerylliumFluoride", 1)						
-					},
-					new int[] {10000, 10000, 10000}, 
-					5 * 60 * 20,
-					120);
-		}
-		catch (final NullPointerException e) {
-			Logger.INFO("[cellBerylliumFluoride] FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");
-		}
 
 		CORE.RA.addDehydratorRecipe(
 				new ItemStack[] {
 						CI.getNumberedAdvancedCircuit(18),
 						CI.emptyCells(3)
-						}, 
+				}, 
 				FluidUtils.getFluidStack("fluid.ethylbenzene", 1000), 
 				null, 
 				new ItemStack[] {
@@ -1578,7 +1308,7 @@ public class RECIPES_GREGTECH {
 				new int[] {10000, 10000}, 
 				3 * 20,
 				30);
-		
+
 		/*
 		 * Try Add custom Recipe for drying leather
 		 */		
@@ -1590,7 +1320,7 @@ public class RECIPES_GREGTECH {
 					new ItemStack[] {
 							CI.getNumberedAdvancedCircuit(18),
 							aLeather1
-							}, 
+					}, 
 					FluidUtils.getFluidStack("fluid.ethylbenzene", 1000), 
 					null, 
 					new ItemStack[] {
@@ -1635,77 +1365,6 @@ public class RECIPES_GREGTECH {
 
 	private static void fissionFuelRecipes() {
 		try {
-
-			final String salt_LiFBeF2ThF4UF4 = "LiFBeF2ThF4UF4".toLowerCase();
-			final String salt_LiFBeF2ZrF4U235 = "LiFBeF2ZrF4U235".toLowerCase();
-			final String salt_LiFBeF2ZrF4UF4 = "LiFBeF2ZrF4UF4".toLowerCase();
-
-			final FluidStack LithiumFluoride = FluidUtils.getFluidStack("molten.lithiumfluoride", 100); // Re-usable
-			// FluidStacks
-			final FluidStack BerylliumFluoride = FluidUtils.getFluidStack("molten.berylliumfluoride", 100); // Re-usable
-			// FluidStacks
-			final FluidStack ThoriumFluoride = FluidUtils.getFluidStack("molten.thoriumtetrafluoride", 100); // Re-usable
-			// FluidStacks
-			final FluidStack ZirconiumFluoride = FluidUtils.getFluidStack("zirconiumtetrafluoride", 100); // Re-usable
-			// FluidStacks
-			final FluidStack UraniumTetraFluoride = FluidUtils.getFluidStack("molten.uraniumtetrafluoride", 100); // Re-usable
-			// FluidStacks
-			final FluidStack Uranium235 = FluidUtils.getFluidStack("molten.uranium235", 1000); // Re-usable
-			// FluidStacks
-
-			final FluidStack LiFBeF2ThF4UF4 = FluidUtils.getFluidStack("molten." + salt_LiFBeF2ThF4UF4, 100); // Re-usable
-			// FluidStacks
-			final FluidStack LiFBeF2ZrF4U235 = FluidUtils.getFluidStack("molten." + salt_LiFBeF2ZrF4U235, 100); // Re-usable
-			// FluidStacks
-			final FluidStack LiFBeF2ZrF4UF4 = FluidUtils.getFluidStack("molten." + salt_LiFBeF2ZrF4UF4, 100); // Re-usable
-			// FluidStacks
-
-			// 7LiF - BeF2 - ZrF4 - UF4 - 650C
-			CORE.RA.addFissionFuel(FluidUtils.getFluidStack(LithiumFluoride, 650), // Input
-					// A
-					FluidUtils.getFluidStack(BerylliumFluoride, 250), // Input
-					// B
-					FluidUtils.getFluidStack(ZirconiumFluoride, 80), // Input C
-					FluidUtils.getFluidStack(UraniumTetraFluoride, 70), // Input
-					// D
-					null, null, null, null, null, // Extra 5 inputs
-					FluidUtils.getFluidStack(LiFBeF2ZrF4UF4, 1000), // Output
-					// Fluid
-					// 1
-					null, // Output Fluid 2
-					120 * 60 * 20, // Duration
-					MaterialUtils.getVoltageForTier(5));
-
-			// 7LiF - BeF2 - ZrF4 - U235 - 590C
-			CORE.RA.addFissionFuel(FluidUtils.getFluidStack(LithiumFluoride, 550), // Input
-					// A
-					FluidUtils.getFluidStack(BerylliumFluoride, 150), // Input
-					// B
-					FluidUtils.getFluidStack(ZirconiumFluoride, 60), // Input C
-					FluidUtils.getFluidStack(Uranium235, 240), // Input D
-					null, null, null, null, null, // Extra 5 inputs
-					FluidUtils.getFluidStack(LiFBeF2ZrF4U235, 1000), // Output
-					// Fluid
-					// 1
-					null, // Output Fluid 2
-					90 * 60 * 20, // Duration
-					MaterialUtils.getVoltageForTier(5));
-
-			// 7liF - BeF2 - ThF4 - UF4 - 566C
-			CORE.RA.addFissionFuel(FluidUtils.getFluidStack(LithiumFluoride, 620), // Input
-					// A
-					FluidUtils.getFluidStack(BerylliumFluoride, 280), // Input
-					// B
-					FluidUtils.getFluidStack(ThoriumFluoride, 70), // Input C
-					FluidUtils.getFluidStack(UraniumTetraFluoride, 70), // Input
-					// D
-					null, null, null, null, null, // Extra 5 inputs
-					FluidUtils.getFluidStack(LiFBeF2ThF4UF4, 1000), // Output
-					// Fluid
-					// 1
-					null, // Output Fluid 2
-					150 * 60 * 20, // Duration
-					MaterialUtils.getVoltageForTier(5));
 
 		}
 		catch (final NullPointerException e) {
@@ -1753,7 +1412,7 @@ public class RECIPES_GREGTECH {
 				T5, 1000, 128000);
 		addAR(T5,
 				ItemUtils.getItemStackOfAmountFromOreDict("plateDenseAmericium", 4),
-				FluidUtils.getFluidStack("molten.krypton", 500),
+				FluidUtils.getFluidStack("krypton", 500),
 				T6, 2000, 512000);
 
 		addAR(ItemUtils.getItemStackOfAmountFromOreDict(
@@ -2072,160 +1731,45 @@ public class RECIPES_GREGTECH {
 				ItemList.Battery_Hull_HV.get(4L, new Object[0]));
 	}
 
-	private static void fluidExtractorRecipes() {		
-		//FLiBe fuel
-		CORE.RA.addFluidExtractionRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustLi2BeF4", 1),
-				FluidUtils.getFluidStack("li2bef4", 144), 100, 500);
-		//LFTR Fuel 1
-		CORE.RA.addFluidExtractionRecipe(NUCLIDE.LiFBeF2ZrF4U235.getDust(1),
-				NUCLIDE.LiFBeF2ZrF4U235.getFluid(144), 250, 1000);
-		CORE.RA.addFluidExtractionRecipe(NUCLIDE.LiFBeF2ZrF4UF4.getDust(1),
-				NUCLIDE.LiFBeF2ZrF4UF4.getFluid(144), 150, 2000);
-		CORE.RA.addFluidExtractionRecipe(NUCLIDE.LiFBeF2ThF4UF4.getDust(1),
-				NUCLIDE.LiFBeF2ThF4UF4.getFluid(144), 200, 1500);
-
-		//ZIRCONIUM_TETRAFLUORIDE
-		CORE.RA.addFluidExtractionRecipe(FLUORIDES.ZIRCONIUM_TETRAFLUORIDE.getDust(1),
-				FluidUtils.getFluidStack(ModItems.fluidZrF4, 144), 200, 512+256);
-
-
-
-		/*		GT_Values.RA.addFluidExtractionRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustLiBeF2ZrF4U235", 1), null,
-				FluidUtils.getFluidStack("molten.libef2zrf4u235", 144), 10000, 250, 1000);
-		//LFTR Fuel 2
-		GT_Values.RA.addFluidExtractionRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustLiBeF2ZrF4UF4", 1), null,
-				FluidUtils.getFluidStack("molten.libef2zrf4uf4", 144), 10000, 150, 2000);
-		//LFTR Fuel 2
-		GT_Values.RA.addFluidExtractionRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustLiBeF2ThF4UF4", 1), null,
-				FluidUtils.getFluidStack("molten.libef2thf4uf4", 144), 10000, 200, 1500);*/
+	private static void fluidExtractorRecipes() {
+		
 	}
 
 	private static void chemicalBathRecipes() {
-		int[] chances = {9000, 6000, 3000};
-		GT_Values.RA.addChemicalBathRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustTin", 12),
-				FluidUtils.getFluidStack("chlorine", 2400),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 3),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 4),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 5), chances, 30 * 20, 480);
-		chances = new int[]{9000, 3000, 1000};
-		GT_Values.RA.addChemicalBathRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustRutile", 5),
-				FluidUtils.getFluidStack("chlorine", 4000),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 3),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustTitanium", 1),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustHafnium", 1),
-				chances, 30 * 20, 1024);		
 
-		GT_Values.RA.addChemicalBathRecipe(FLUORIDES.FLUORITE.getCrushed(2), FluidUtils.getFluidStack("hydrogen", 2000),
-				FLUORIDES.FLUORITE.getCrushedPurified(8), FLUORIDES.FLUORITE.getDustImpure(4),
-				FLUORIDES.FLUORITE.getDustPurified(2), new int[] { 10000, 5000, 1000 }, 30 * 20, 240);
-
-		GT_Values.RA.addChemicalBathRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumCarbonate", 10),
-				FluidUtils.getFluidStack("hydrofluoricacid", 10 * 144),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumFluoride", 10), null, null, new int[] {}, 90 * 20,
-				500);
-
+		GT_Values.RA.addChemicalBathRecipe(
+				FLUORIDES.FLUORITE.getCrushed(2), 
+				FluidUtils.getFluidStack("hydrogen", 2000),
+				FLUORIDES.FLUORITE.getCrushedPurified(8), 
+				FLUORIDES.FLUORITE.getDustImpure(4),
+				FLUORIDES.FLUORITE.getDustPurified(2),
+				new int[] { 10000, 5000, 1000 }, 
+				30 * 20, 
+				240);
+		
 	}
 
-	private static void centrifugeRecipes() {				
-
-		//Process Used Fuel Rods for Krypton
-
-		//Uranium
-		GT_Values.RA.addCentrifugeRecipe(
-				CI.getNumberedCircuit(20),
-				ItemUtils.getItemStackFromFQRN("IC2:reactorUraniumSimpledepleted", 8),
-				GT_Values.NF,
-				ELEMENT.getInstance().KRYPTON.getFluid(60),
-				ItemList.IC2_Fuel_Rod_Empty.get(8),
-				ELEMENT.getInstance().URANIUM238.getDust(2),
-				ELEMENT.getInstance().URANIUM232.getSmallDust(1),
-				ELEMENT.getInstance().URANIUM233.getSmallDust(1),
-				ELEMENT.getInstance().URANIUM235.getSmallDust(1),
-				ELEMENT.getInstance().PLUTONIUM239.getTinyDust(1),
-				new int[] { 0, 0, 1000, 1000, 1000, 500 }, 500 * 20, 4000);
-		//Mox
-		GT_Values.RA.addCentrifugeRecipe(
-				CI.getNumberedCircuit(20),
-				ItemUtils.getItemStackFromFQRN("IC2:reactorMOXSimpledepleted", 8),
-				GT_Values.NF,
-				ELEMENT.getInstance().KRYPTON.getFluid(90),
-				ItemList.IC2_Fuel_Rod_Empty.get(8),
-				ELEMENT.getInstance().PLUTONIUM244.getDust(2),
-				ELEMENT.getInstance().PLUTONIUM241.getTinyDust(1),
-				ELEMENT.getInstance().PLUTONIUM239.getTinyDust(1),
-				ELEMENT.getInstance().PLUTONIUM238.getTinyDust(1),
-				ELEMENT.getInstance().PLUTONIUM239.getTinyDust(1),
-				new int[] { 0, 0, 500, 500, 500, 500 }, 750 * 20, 4000);
-
-		//Thorium
-		GT_Values.RA.addCentrifugeRecipe(
-				CI.getNumberedCircuit(20),
-				ItemList.Depleted_Thorium_1.get(8),
-				GT_Values.NF,
-				ELEMENT.getInstance().KRYPTON.getFluid(30),
-				ItemList.IC2_Fuel_Rod_Empty.get(8),
-				ELEMENT.getInstance().THORIUM.getDust(2),
-				ELEMENT.getInstance().THORIUM232.getDust(1),
-				ELEMENT.getInstance().LUTETIUM.getSmallDust(1),
-				ELEMENT.getInstance().POLONIUM.getSmallDust(1),
-				ELEMENT.getInstance().THALLIUM.getTinyDust(1),
-				new int[] { 0, 0, 5000, 5000, 5000, 2500 }, 250 * 20, 4000);
-
-
-
+	private static void centrifugeRecipes() {
+		
 	}
 
 	private static void mixerRecipes() {
-		GT_Values.RA.addMixerRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustSulfur", 1), null, null, null,
-				FluidUtils.getFluidStack("oxygen", 288), FluidUtils.getFluidStack("sulfurdioxide", 432), null, 600, 60);
-		GT_Values.RA.addMixerRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustUranium233", 4),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustUranium235", 1), null, null,
-				FluidUtils.getFluidStack("hydrofluoricacid", 144 * 5),
-				FluidUtils.getFluidStack("molten.uraniumtetrafluoride", 144 * 5), null, 3000, 500);
-		/*GT_Values.RA.addMixerRecipe(
-				ItemUtils.getItemStackOfAmountFromOreDict("cellMercury", 1),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustBarium", 2),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustCalcium", 2),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 3),
+		
+		GT_Values.RA.addMixerRecipe(
+				ItemUtils.getItemStackOfAmountFromOreDict("dustSulfur", 1),
+				null, 
 				null,
-				ALLOY.HG1223.getFluid(144*16), 
-				CI.emptyCells(1),
-				30 * 20,
-				500);*/
+				null,
+				FluidUtils.getFluidStack("oxygen", 2000), 
+				FluidUtils.getFluidStack("sulfurdioxide", 3000),
+				null,
+				600, 
+				60);
+		
 	}
 
 	private static void chemicalReactorRecipes() {
-		GT_Values.RA.addChemicalRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumCarbonate", 5), // Input
-				ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumHydroxide", 5), // Input
-				null, // Fluid Input
-				null, // Fluid Output
-				ItemUtils.getItemStackOfAmountFromOreDict("dustLi2CO3CaOH2", 10), // Output
-				// Stack
-				600 * 20);
-
-		GT_Values.RA.addChemicalRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumHydroxide", 5), // Input
-				null, // Input Stack 2
-				FluidUtils.getFluidStack("hydrofluoricacid", 5 * 144), // Fluid
-				// Input
-				FluidUtils.getFluidStack("water", 5 * 144), // Fluid Output
-				ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumFluoride", 5), // Output
-				// Stack
-				600 * 20);
-
-		GT_Values.RA.addChemicalRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustApatite", 16), null,
-				FluidUtils.getFluidStack("sulfuricacid", 144 * 32),
-				FluidUtils.getFluidStack("sulfuricapatite", 144 * 8),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustSmallSulfur", 1), 20 * 20);
-
-		GT_Values.RA.addChemicalRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustLithium7", 1), null,
-				FluidUtils.getFluidStack("sulfuricacid", 144 * 8), FluidUtils.getFluidStack("sulfuriclithium", 144 * 2),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustSmallLithium7", 1), 20 * 20);
-
-		GT_Values.RA.addChemicalRecipe(ItemUtils.getItemStackOfAmountFromOreDict("cellOxygen", 1),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustLithium7", 16), FluidUtils.getFluidStack("water", 1000),
-				FluidUtils.getFluidStack("lithiumhydroxide", 144 * 4),
-				CI.emptyCells(1), 300 * 20);
-
+		
 		//Bombs
 		GT_Values.RA.addChemicalRecipe(
 				ItemUtils.getSimpleStack(ModItems.itemBombCasing, 4),
@@ -2241,60 +1785,15 @@ public class RECIPES_GREGTECH {
 				FluidUtils.getFluidStack(RocketFuels.Kerosene, 100),
 				null,
 				ItemUtils.getSimpleStack(ModItems.itemBomb, 4),
-				10 * 20);
-
-
-		// LFTR Fuel Related Compounds
-		if (GTNH) {
-			// Hydroxide
-			AddGregtechRecipe.addChemicalRecipeForBasicMachineOnly(
-					ItemUtils.getItemStackOfAmountFromOreDict("cellOxygen", 1),
-					ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogen", 1), GT_Values.NF,
-					FluidUtils.getFluidStack("hydroxide", 2000),
-					CI.emptyCells(2), GT_Values.NI, 8 * 20, 30);
-			// Beryllium Hydroxide
-			GT_Values.RA.addChemicalRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustBeryllium", 7),
-					ItemUtils.getGregtechCircuit(3), FluidUtils.getFluidStack("hydroxide", 1000),
-					FluidUtils.getFluidStack("berylliumhydroxide", 2000), GT_Values.NI, 8 * 20);
-			// Ammonium Bifluoride
-			GT_Values.RA.addChemicalRecipe(ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid", 1),
-					ItemUtils.getGregtechCircuit(3), FluidUtils.getFluidStack("ammonium", 1000),
-					FluidUtils.getFluidStack("ammoniumbifluoride", 2000),
-					CI.emptyCells(1), 26 * 20);
-			// Ammonium
-			AddGregtechRecipe.addChemicalRecipeForBasicMachineOnly(
-					ItemUtils.getItemStackOfAmountFromOreDict("cellAmmonia", 1),
-					ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogen", 1), GT_Values.NF,
-					FluidUtils.getFluidStack("ammonium", 2000),
-					CI.emptyCells(2), GT_Values.NI, 20 * 20, 30);
-		}
-
-		if (!GTNH) {
-			// Hydroxide
-			GT_Values.RA.addChemicalRecipe(ItemUtils.getItemStackOfAmountFromOreDict("cellOxygen", 1),
-					ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogen", 1), GT_Values.NF,
-					FluidUtils.getFluidStack("hydroxide", 2000),
-					CI.emptyCells(2), 8 * 20);
-			// Ammonia (moved to GTNH core mod)
-			GT_Values.RA.addChemicalRecipe(ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogen", 3),
-					ItemUtils.getItemStackOfAmountFromOreDict("dustMagnetite", 0),
-					FluidUtils.getFluidStack("nitrogen", 1000), FluidUtils.getFluidStack("ammonia", 1000),
-					CI.emptyCells(3), 14 * 20);
-			// Beryllium Hydroxide
-			GT_Values.RA.addChemicalRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustBeryllium", 7), GT_Values.NI,
-					FluidUtils.getFluidStack("hydroxide", 1000), FluidUtils.getFluidStack("berylliumhydroxide", 2000),
-					GT_Values.NI, 8 * 20);
-			// Ammonium Bifluoride
-			GT_Values.RA.addChemicalRecipe(ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid", 1),
-					GT_Values.NI, FluidUtils.getFluidStack("ammonium", 1000),
-					FluidUtils.getFluidStack("ammoniumbifluoride", 2000),
-					CI.emptyCells(1), 26 * 20);
-			// Ammonium
-			GT_Values.RA.addChemicalRecipe(ItemUtils.getItemStackOfAmountFromOreDict("cellAmmonia", 1),
-					ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogen", 1), GT_Values.NF,
-					FluidUtils.getFluidStack("ammonium", 2000),
-					CI.emptyCells(2), 20 * 20);
-		}
+				10 * 20);	
+		
+		GT_Values.RA.addChemicalRecipe(
+				ItemUtils.getItemStackOfAmountFromOreDict("dustApatite", 16), 
+				null,
+				FluidUtils.getFluidStack("sulfuricacid", 144 * 32),
+				FluidUtils.getFluidStack("sulfuricapatite", 144 * 8),
+				ItemUtils.getItemStackOfAmountFromOreDict("dustSmallSulfur", 1), 
+				20 * 20);
 
 		ItemStack temp_GT5u_SA = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cellHydrofluoricAcid_GT5U", 5);
 		if (temp_GT5u_SA != null) {
@@ -2308,14 +1807,6 @@ public class RECIPES_GREGTECH {
 					2 * 20);
 		}
 
-
-		//Technetium
-		GT_Values.RA.addChemicalRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustTechnetium99", 1), null,
-				FluidUtils.getFluidStack("sulfuricacid", 1000), FluidUtils.getFluidStack("sulfuricacid", 144 * 2),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustTechnetium", 1), 100 * 20);
-
-
-
 	}
 
 	private static void blastFurnaceRecipes() {
@@ -2324,13 +1815,7 @@ public class RECIPES_GREGTECH {
 		//ItemStack aInput1, ItemStack aInput2, 
 		//FluidStack aFluidInput, FluidStack aFluidOutput, 
 		//ItemStack aOutput1, ItemStack aOutput2,
-		//int aDuration, int aEUt, int aLevel)		
-
-		GT_Values.RA.addBlastRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumFluoride", 2),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustBerylliumFluoride", 1), GT_Values.NF, GT_Values.NF,
-				ItemUtils.getItemStackOfAmountFromOreDict("dustLi2BeF4", 3), null, 60 * 20, 2000, 3000);
-		GT_Values.RA.addBlastRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustZrCl4", 1), null, GT_Values.NF,
-				GT_Values.NF, ItemUtils.getItemStackOfAmountFromOreDict("dustCookedZrCl4", 1), null, 60 * 20, 340, 300);
+		//int aDuration, int aEUt, int aLevel)	
 
 
 		//Synthetic Graphite
@@ -2374,9 +1859,7 @@ public class RECIPES_GREGTECH {
 	}
 
 	private static void autoclaveRecipes() {
-		GT_Values.RA.addAutoclaveRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 9),
-				FluidUtils.getFluidStack("chlorine", 9 * 4 * 144),
-				ItemUtils.getItemStackOfAmountFromOreDict("pelletZirconium", 9), 0, 120 * 20, 30);
+		
 	}
 
 	private static void benderRecipes() {
@@ -2399,9 +1882,7 @@ public class RECIPES_GREGTECH {
 	}
 
 	private static void macerationRecipes() {
-		GT_ModHandler.addPulverisationRecipe(ItemUtils.getItemStackOfAmountFromOreDict("pelletZirconium", 1),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustZrCl4", 1));
-
+		
 		GT_ModHandler.addPulverisationRecipe(ItemUtils.getItemStackOfAmountFromOreDict("blockMeatRaw", 1),
 				ItemUtils.getItemStackOfAmountFromOreDict("dustMeatRaw", 9));
 
@@ -2740,91 +2221,12 @@ public class RECIPES_GREGTECH {
 
 	}
 
-	private static void sifterRecipes() {		
-
-		// Zirconium
-		GT_Values.RA.addSifterRecipe(ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedIlmenite", 1),
-				new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustIron", 1),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustTinyWroughtIron", 1),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustHafnium", 1),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustHafnium", 1) },
-				new int[] { 5000, 2500, 1000, 1000, 300, 300 }, 20 * 30, 500);
-
-		// Zirconium
-		GT_Values.RA.addSifterRecipe(ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedTin", 1),
-				new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustTin", 1),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustTinyZinc", 1),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1) },
-				new int[] { 10000, 5000, 1500, 1000, 500, 500 }, 20 * 30, 500);
-
-		// Zirconium
-		GT_Values.RA.addSifterRecipe(ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedCassiterite", 1),
-				new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustCassiterite", 1),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustTinyTin", 1),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1) },
-				new int[] { 10000, 5000, 1500, 1000, 500, 500 }, 20 * 30, 500);
-
-		// Radium
-		GT_Values.RA.addSifterRecipe(ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedUranium", 1),
-				new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustUranium", 1),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustTinyLead", 1),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1) },
-				new int[] { 10000, 5000, 1000, 500, 500, 500 }, 20 * 30, 500);
-		// Radium
-		GT_Values.RA.addSifterRecipe(ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedUraninite", 1),
-				new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustUraninite", 1),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustTinyUranium", 1),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1) },
-				new int[] { 10000, 5000, 500, 250, 250, 250 }, 20 * 30, 500);
-		// Radium
-		GT_Values.RA.addSifterRecipe(ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedPitchblende", 1),
-				new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustPitchblende", 1),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustTinyLead", 1),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1) },
-				new int[] { 10000, 5000, 500, 250, 250, 250 }, 20 * 30, 500);
+	private static void sifterRecipes() {
+		
 	}
 
 	private static void electroMagneticSeperatorRecipes() {
-		// Zirconium
-		GT_Values.RA.addElectromagneticSeparatorRecipe(
-				ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedBauxite", 1),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustBauxite", 1),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustSmallRutile", 1),
-				ItemUtils.getItemStackOfAmountFromOreDict("nuggetZirconium", 1), new int[] { 10000, 2500, 4000 },
-				20 * 20, 24);
-		// Zircon
-		GT_Values.RA.addElectromagneticSeparatorRecipe(
-				ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedMagnetite", 1),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustMagnetite", 1),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustSmallZircon", 1),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustTinyZircon", 1), new int[] { 10000, 1250, 2500 },
-				20 * 20, 24);
-		GT_Values.RA.addElectromagneticSeparatorRecipe(
-				ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedCassiterite", 1),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustCassiterite", 1),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustSmallZircon", 1),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustTinyZircon", 1), new int[] { 10000, 1250, 2500 },
-				20 * 20, 24);
-
-
-
+		
 		if (!GTNH) {		
 			// Trinium
 			GT_Values.RA.addElectromagneticSeparatorRecipe(
@@ -2850,9 +2252,6 @@ public class RECIPES_GREGTECH {
 					ItemUtils.getItemStackOfAmountFromOreDict("dustSmallTrinium", 1), new int[] { 10000, 3000, 3000 },
 					20 * 20, 24);		
 		}
-
-
-
 
 	}
 

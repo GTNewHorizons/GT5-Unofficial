@@ -126,7 +126,7 @@ public class GT_MetaTileEntity_Hatch_AirIntake extends GT_MetaTileEntity_Hatch_I
 
 	public void onPostTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTick) {
 		super.onPostTick(aBaseMetaTileEntity, aTick);	
-		if (addAirToHatch(aTick)) {
+		if (this.getBaseMetaTileEntity().isActive() && addAirToHatch(aTick)) {
 			if (aTick % 8 == 0) {
 				if (aBaseMetaTileEntity.isClientSide()) {					
 					this.pollutionParticles(this.getBaseMetaTileEntity().getWorld(), "cloud");
