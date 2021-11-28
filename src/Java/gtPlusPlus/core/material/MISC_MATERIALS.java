@@ -71,7 +71,7 @@ public final class MISC_MATERIALS {
 
 	public static final Material HYDROGEN_CYANIDE = new Material(
 			"Hydrogen Cyanide",
-			MaterialState.PURE_LIQUID, //State
+			MaterialState.PURE_GAS, //State
 			null, //Material Colour
 			4, //Melting Point in C
 			26, //Boiling Point in C
@@ -87,7 +87,7 @@ public final class MISC_MATERIALS {
 
 	public static final Material CARBON_MONOXIDE = new Material(
 			"Carbon Monoxide",
-			MaterialState.PURE_LIQUID, //State
+			MaterialState.PURE_GAS, //State
 			null, //Material Colour
 			-1, //Melting Point in C
 			-1, //Boiling Point in C
@@ -102,7 +102,7 @@ public final class MISC_MATERIALS {
 
 	public static final Material CARBON_DIOXIDE = new Material(
 			"Carbon Dioxide",
-			MaterialState.PURE_LIQUID, //State
+			MaterialState.PURE_GAS, //State
 			null, //Material Colour
 			-1, //Melting Point in C
 			-1, //Boiling Point in C
@@ -245,7 +245,7 @@ public final class MISC_MATERIALS {
 
 	public static final Material HYDROGEN_CHLORIDE = new Material(
 			"Hydrogen Chloride",
-			MaterialState.PURE_LIQUID,
+			MaterialState.PURE_GAS,
 			new MaterialStack[]{
 					new MaterialStack(ELEMENT.getInstance().HYDROGEN, 1),
 					new MaterialStack(ELEMENT.getInstance().CHLORINE, 1),
@@ -254,7 +254,7 @@ public final class MISC_MATERIALS {
 
 	public static final Material SODIUM_CHLORIDE = new Material(
 			"Sodium Chloride",
-			MaterialState.PURE_LIQUID,
+			MaterialState.PURE_GAS,
 			new MaterialStack[]{
 					new MaterialStack(ELEMENT.getInstance().SODIUM, 1),
 					new MaterialStack(ELEMENT.getInstance().CHLORINE, 1),
@@ -263,7 +263,7 @@ public final class MISC_MATERIALS {
 
 	public static final Material SODIUM_HYDROXIDE = new Material(
 			"Sodium Hydroxide",
-			MaterialState.PURE_LIQUID,
+			MaterialState.PURE_GAS,
 			new MaterialStack[]{
 					new MaterialStack(ELEMENT.getInstance().SODIUM, 1),
 					new MaterialStack(HYDROXIDE, 1),

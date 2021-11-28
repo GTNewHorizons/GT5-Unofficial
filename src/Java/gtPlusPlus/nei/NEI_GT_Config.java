@@ -91,6 +91,10 @@ implements IConfigureNEI {
 		API.registerRecipeHandler(new DecayableRecipeHandler());
 		API.registerUsageHandler(new DecayableRecipeHandler());
 		
+		Logger.INFO("NEI Registration: Registering NEI handler for "+SpargingRecipeHandler.mNEIName);
+		API.registerRecipeHandler(new SpargingRecipeHandler());
+		API.registerUsageHandler(new SpargingRecipeHandler());
+		
 		// Hide Flasks
 		if (Utils.isClient()) {
 			codechicken.nei.api.API.addItemListEntry(GregtechItemList.VOLUMETRIC_FLASK_8k.get(1));

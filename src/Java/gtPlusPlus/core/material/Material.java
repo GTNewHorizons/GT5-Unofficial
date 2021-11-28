@@ -3,7 +3,11 @@ package gtPlusPlus.core.material;
 import static gregtech.api.enums.GT_Values.M;
 import static gtPlusPlus.core.util.math.MathUtils.safeCast_LongToInt;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -33,6 +37,7 @@ import net.minecraftforge.fluids.FluidStack;
 public class Material {
 
 	public static final Set<Material> mMaterialMap = new HashSet<Material>();
+	public static HashMap<String, Material> mMaterialCache = new HashMap<String, Material>();
 
 	public static final Map<String, Map<String, ItemStack>> mComponentMap = new HashMap<String, Map<String, ItemStack>>();
 
@@ -163,6 +168,8 @@ public class Material {
 		try {
 			this.unlocalizedName = Utils.sanitizeString(materialName);
 			this.localizedName = materialName;
+			mMaterialCache.put(getLocalizedName().toLowerCase(), this);
+			Logger.INFO("Stored "+getLocalizedName()+" to cache with key: "+getLocalizedName().toLowerCase());
 
 			this.materialState = defaultState;
 
@@ -1185,8 +1192,9 @@ public class Material {
 					1000,
 					this.vGenerateCells);
 		}
-		else if (this.materialState == MaterialState.GAS){
-			return FluidUtils.addGTFluid(
+		else if (this.materialState == MaterialState.GAS || this.materialState == MaterialState.PURE_GAS){
+			return FluidUtils.generateGas(unlocalizedName,	this.getLocalizedName(), getMeltingPointK(), getRGBA(), vGenerateCells);
+			/*return FluidUtils.addGTFluid(
 					this.getUnlocalizedName(),
 					this.getLocalizedName()+" Gas",
 					this.RGBA,
@@ -1195,7 +1203,7 @@ public class Material {
 					aFullCell,
 					ItemUtils.getEmptyCell(),
 					1000,
-					this.vGenerateCells);
+					this.vGenerateCells);*/
 		}
 		else { //Plasma
 			return this.generatePlasma();

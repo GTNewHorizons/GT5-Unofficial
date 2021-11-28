@@ -298,7 +298,7 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
 									if (x.getStackMaterial() != null){
 										if (x.getStackMaterial().getDust(1) == null){
 											MaterialState f = x.getStackMaterial().getState();
-											if (f == MaterialState.GAS || f == MaterialState.LIQUID || f == MaterialState.PURE_LIQUID){
+											if (f == MaterialState.GAS || f == MaterialState.LIQUID || f == MaterialState.PURE_LIQUID || f == MaterialState.PURE_GAS){
 												oxygen = x.getStackMaterial().getFluid((int) (material.vSmallestRatio[compSlot] * 1000));
 											}
 										}

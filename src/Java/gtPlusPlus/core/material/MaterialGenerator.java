@@ -188,6 +188,10 @@ public class MaterialGenerator {
 				temp = new BaseItemDust(matInfo);
 				FluidUtils.generateGas(unlocalizedName,	materialName, matInfo.getMeltingPointK(), C, true);
 			}
+			else if (matInfo.getState() == MaterialState.PURE_GAS){
+				FluidUtils.generateGas(unlocalizedName,	materialName, matInfo.getMeltingPointK(), C, true);
+				return true;
+			}
 			else if (matInfo.getState() == MaterialState.PURE_LIQUID){
 				FluidUtils.generateFluidNoPrefix(unlocalizedName,	materialName, matInfo.getMeltingPointK(), C);
 				return true;

@@ -46,6 +46,8 @@ public class BaseItemComponent extends Item{
 	public final int componentColour;
 	public Object extraData;
 
+	private static HashMap<String, String> mChemicalFormula = new HashMap<String, String>();
+
 	protected IIcon base;
 	protected IIcon overlay;
 
@@ -59,6 +61,7 @@ public class BaseItemComponent extends Item{
 		this.setMaxStackSize(64);
 		//this.setTextureName(this.getCorrectTextures());
 		this.componentColour = material.getRgbAsHex();
+		mChemicalFormula.put(materialName.toLowerCase(), material.vChemicalFormula);
 		GameRegistry.registerItem(this, this.unlocalName);
 
 		//if (componentType != ComponentTypes.DUST)
@@ -84,8 +87,9 @@ public class BaseItemComponent extends Item{
 		else {
 			aFormattedNameForFluids = unlocalName;
 		}		
-		 	
-		this.componentMaterial = null;
+		Material aTempMaterial = Material.mMaterialCache.get(localName.toLowerCase());
+		Logger.INFO("Attempted to get "+localName+" cell material from cache. Valid? "+(aTempMaterial != null));
+		this.componentMaterial = aTempMaterial;
 		this.unlocalName = "itemCell"+aFormattedNameForFluids;
 		this.materialName = localName;
 		this.componentType = ComponentTypes.CELL;
@@ -94,6 +98,7 @@ public class BaseItemComponent extends Item{
 		this.setMaxStackSize(64);
 		this.componentColour = MathUtils.getRgbAsHex(RGBA);
 		this.extraData = RGBA;
+		
 		this.setTextureName(CORE.MODID + ":" + "item"+ComponentTypes.CELL.COMPONENT_NAME);
 		GameRegistry.registerItem(this, aFormattedNameForFluids);
 		GT_OreDictUnificator.registerOre(ComponentTypes.CELL.getOreDictName()+Utils.sanitizeStringKeepBrackets(localName), ItemUtils.getSimpleStack(this));
@@ -200,6 +205,12 @@ public class BaseItemComponent extends Item{
 						if ((this.materialName != null) && (this.materialName != "") && !this.materialName.equals("") && this.unlocalName.toLowerCase().contains("hot")){
 							list.add(EnumChatFormatting.GRAY+"Warning: "+EnumChatFormatting.RED+"Very hot! "+EnumChatFormatting.GRAY+" Avoid direct handling..");
 						}
+					}
+				}
+				else {
+					String aChemicalFormula = mChemicalFormula.get(materialName.toLowerCase());
+					if (aChemicalFormula != null && aChemicalFormula.length() > 0) {			
+						list.add(Utils.sanitizeStringKeepBrackets(aChemicalFormula));						
 					}
 				}
 

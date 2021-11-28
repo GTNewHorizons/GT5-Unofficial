@@ -232,6 +232,7 @@ public final class ModItems {
 	public static Item dustFertUN32;
 
 	public static Fluid fluidFLiBeSalt;
+	public static Fluid fluidFLiBeSaltBurnt;
 
 
 	//Possibly missing base items that GT may be missing.
@@ -715,6 +716,7 @@ public final class ModItems {
 		dustLi2BeF4 = ItemUtils.generateSpecialUseDusts("Li2BeF4", "Li2BeF4 Fuel Compound", "Li2BeF4", Utils.rgbtoHexValue(255, 255, 255))[0]; //https://en.wikipedia.org/wiki/FLiBe
 		//fluidFLiBeSalt = ("Li2BeF4", "Li2BeF4", 7430, new short[]{255, 255, 255, 100}, 0);
 		fluidFLiBeSalt = FluidUtils.addGTFluidNoPrefix("Li2BeF4", "Li2BeF4", new short[]{255, 255, 255, 100}, 0, 743, null, CI.emptyCells(1), 1000, true);
+		fluidFLiBeSaltBurnt = FluidUtils.addGTFluidNoPrefix("Li2BeF2UF4", "Li2BeF2UF4", new short[]{50, 255, 50, 100}, 0, 743, null, CI.emptyCells(1), 1000, true);
 
 		//LFTR Control Circuit
 		itemCircuitLFTR = new CoreItem("itemCircuitLFTR", ""+EnumChatFormatting.GREEN+"Control Circuit", AddToCreativeTab.tabMisc, 1, 0,  new String[] {"Keeps Multiblocks Stable"}, EnumRarity.epic, EnumChatFormatting.DARK_GREEN, false, null);

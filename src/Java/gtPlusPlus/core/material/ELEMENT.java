@@ -23,7 +23,7 @@ public final class ELEMENT {
 	public final Material NITROGEN = MaterialUtils.generateMaterialFromGtENUM(Materials.Nitrogen);
 	public final Material OXYGEN = MaterialUtils.generateMaterialFromGtENUM(Materials.Oxygen);
 	public final Material FLUORINE = MaterialUtils.generateMaterialFromGtENUM(Materials.Fluorine);
-	public final Material NEON = new Material("Neon", MaterialState.GAS, new short[]{255, 255, 255}, -248, -246, 10, 10, false, "Ne", 0);//Not a GT Inherited Material
+	public final Material NEON = new Material("Neon", MaterialState.PURE_GAS, new short[]{240, 180, 30}, -248, -246, 10, 10, false, "Ne", 0);//Not a GT Inherited Material
 	public final Material SODIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Sodium);
 	public final Material MAGNESIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Magnesium);
 	public final Material ALUMINIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Aluminium);
@@ -51,7 +51,7 @@ public final class ELEMENT {
 	public final Material ARSENIC = MaterialUtils.generateMaterialFromGtENUM(Materials.Arsenic);
 	public final Material SELENIUM = new Material("Selenium", MaterialState.SOLID, new short[]{190, 190, 190}, 217, 685, 34, 45, false, "Se", 0);//Not a GT Inherited Material
 	public final Material BROMINE = new Material("Bromine", MaterialState.PURE_LIQUID, new short[]{200, 25, 25}, -7, 58, 35, 45, false, "Br", 0);//Not a GT Inherited Material
-	public final Material KRYPTON = new Material("Krypton", MaterialState.PURE_LIQUID, new short[]{255, 255, 255}, -157, -153, 36, 48, false, "Kr", 0);//Not a GT Inherited Material
+	public final Material KRYPTON = new Material("Krypton", MaterialState.PURE_GAS, new short[]{5, 200, 220}, -157, -153, 36, 48, false, "Kr", 0);//Not a GT Inherited Material
 	public final Material RUBIDIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Rubidium);
 	public final Material STRONTIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Strontium, new short[] {230, 210, 110}, TextureSet.SET_FLINT);
 	public final Material YTTRIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Yttrium);
@@ -69,7 +69,7 @@ public final class ELEMENT {
 	public final Material ANTIMONY = MaterialUtils.generateMaterialFromGtENUM(Materials.Antimony);
 	public final Material TELLURIUM = new Material("Tellurium", MaterialState.SOLID, new short[]{210, 210, 210}, 449, 989, 52, 76, false, "Te", 0);//Not a GT Inherited Material
 	public final Material IODINE = new Material("Iodine", MaterialState.SOLID, TextureSet.SET_SHINY, new short[]{96, 96, 96}, 114, 184, 53, 74, false, "I", 0);//Not a GT Inherited Material
-	public final Material XENON = new Material("Xenon", MaterialState.GAS, new short[]{255, 255, 255}, -111, -108, 54, 77, false, "Xe", 0);//Not a GT Inherited Material
+	public final Material XENON = new Material("Xenon", MaterialState.PURE_GAS, new short[]{5, 105, 210}, -111, -108, 54, 77, false, "Xe", 0);//Not a GT Inherited Material
 	public final Material CAESIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Caesium);
 	public final Material BARIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Barium);
 	public final Material LANTHANUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Lanthanum);

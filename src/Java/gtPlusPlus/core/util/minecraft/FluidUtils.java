@@ -232,6 +232,7 @@ public class FluidUtils {
 	public static Fluid addGTFluid(String aName, final String aTexture, final String aLocalized, final short[] aRGBa, final int aState, final long aTemperatureK, ItemStack aFullContainer, final ItemStack aEmptyContainer, final int aFluidAmount, final boolean aGenerateFilledCell) {
 		
 		String aNameOriginal = aName;
+		Logger.INFO("Generating Fluid for "+aName);
 		
 		aName = Utils.sanitizeString(aName.toLowerCase());
 		
@@ -288,8 +289,18 @@ public class FluidUtils {
 
 		
 		if (aFullContainer == null) {
-			ItemStack oreStack = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+aName, 1);				
-			aFullContainer = oreStack;					
+			ItemStack oreStack = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+aLocalName, 1);				
+			aFullContainer = oreStack;		
+			if (aFullContainer == null) {
+				oreStack = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+aNameOriginal, 1);				
+				aFullContainer = oreStack;	
+				if (aFullContainer != null) {	
+					Logger.INFO("Found cell for "+aNameOriginal);
+				}
+			}
+			else {
+				Logger.INFO("Found cell for "+aLocalName);
+			}
 		}		
 		
 		Item tempCell = null;
@@ -304,7 +315,8 @@ public class FluidUtils {
 				aMatName = aMatName.replace("fluid.", "");
 				aMatName = aMatName.substring(0, 1).toUpperCase() + aMatName.substring(1);
 			}			
-			tempCell = new BaseItemComponent(aMatName, aLocalized, aRGBa);
+			Logger.INFO("Generating cell for "+aMatName+", "+aLocalName);
+			tempCell = new BaseItemComponent(aMatName, aLocalName, aRGBa);
 			aFullContainer =  ItemUtils.getSimpleStack(tempCell);
 		}
 		
