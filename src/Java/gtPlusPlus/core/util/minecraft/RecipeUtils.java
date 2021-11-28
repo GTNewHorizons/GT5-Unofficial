@@ -1,6 +1,7 @@
 package gtPlusPlus.core.util.minecraft;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -417,6 +418,20 @@ public static int mInvalidID = 1;
 		}
 		return false;		
 	}
+	
+	public static boolean addShapelessGregtechRecipe(
+			final Object InputItem1, final Object InputItem2, final Object InputItem3,
+			final Object InputItem4, final Object InputItem5, final Object InputItem6,
+			final Object InputItem7, final Object InputItem8, final Object InputItem9,
+			final ItemStack OutputItem){		
+
+		Object[] inputItems = {
+				InputItem1, InputItem2, InputItem3,
+				InputItem4, InputItem5, InputItem6,
+				InputItem7, InputItem8, InputItem9
+		};
+		return addShapelessGregtechRecipe(inputItems, OutputItem);
+	}
 
 	public static boolean addShapelessGregtechRecipe(final Object[] inputItems, final ItemStack OutputItem){
 		//Catch Invalid Recipes
@@ -728,7 +743,7 @@ public static int mInvalidID = 1;
 		Logger.INFO("Data Size: "+aDataObject.length);
 		aDataObject = ArrayUtils.removeNulls(aDataObject);
 		Logger.INFO("Clean Size: "+aDataObject.length);
-		Logger.INFO("ArrayData: "+aDataObject.toString());
+		Logger.INFO("ArrayData: "+Arrays.toString(aDataObject));
 		
 		ShapedOreRecipe aRecipe = new ShapedOreRecipe(aOutputStack, aDataObject);
 		

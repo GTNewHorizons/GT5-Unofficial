@@ -57,8 +57,8 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
 		final ItemStack outputStacks = material.getDust(material.smallestStackSizeWhenProcessing);
 
 
-		if (ItemUtils.checkForInvalidItems(tinyDust) && ItemUtils.checkForInvalidItems(normalDust)) {
-			if (RecipeUtils.addShapedRecipe(
+		if (tinyDust != null && normalDust != null) {
+			if (RecipeUtils.addShapelessGregtechRecipe(
 					tinyDust, tinyDust, tinyDust,
 					tinyDust, tinyDust, tinyDust,
 					tinyDust, tinyDust, tinyDust,
@@ -81,7 +81,7 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
 			}
 		}
 
-		if (ItemUtils.checkForInvalidItems(smallDust) && ItemUtils.checkForInvalidItems(normalDust)) {
+		if (smallDust != null && normalDust != null) {
 			if (RecipeUtils.addShapedRecipe(
 					smallDust, smallDust, null,
 					smallDust, smallDust, null,
