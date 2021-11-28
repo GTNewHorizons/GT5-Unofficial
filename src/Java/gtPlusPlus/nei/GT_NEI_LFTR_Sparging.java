@@ -10,17 +10,23 @@ import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.GuiRecipe;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.objects.ItemData;
+import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.GasSpargingRecipe;
 import gregtech.api.util.GasSpargingRecipeMap;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.gui.machine.GUI_DecayablesChest;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.GregtechMTE_NuclearReactor;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
-public class SpargingRecipeHandler extends TemplateRecipeHandler {
+public class GT_NEI_LFTR_Sparging extends TemplateRecipeHandler {
 
 	public static final String mNEIName = GasSpargingRecipeMap.mNEIDisplayName;
 
@@ -45,51 +51,86 @@ public class SpargingRecipeHandler extends TemplateRecipeHandler {
 	}
 
 	public void loadTransferRects() {
-		this.transferRects.add(new RecipeTransferRect(new Rectangle(72, 14, 22, 16), getOverlayIdentifier(), new Object[0]));
+		this.transferRects.add(new RecipeTransferRect(new Rectangle(72, 14, 22, 16), getRecipeName(), new Object[0]));
 	}
 
-	public void loadCraftingRecipes(ItemStack result) {
-		if (result == null) {
-			return;
-		}
-		if (result != null) {
-			//Logger.INFO("Looking up crafting recipes for "+ItemUtils.getItemName(result));
-		}
-		final List<GasSpargingRecipe> recipes = GasSpargingRecipeMap.mRecipes;
-		for (final GasSpargingRecipe recipe : recipes) {
-			if (recipe.isValid()) {				
-				final GasSpargingRecipeNEI rec = new GasSpargingRecipeNEI(recipe);
-				this.arecipes.add(rec);
-				sort();
-			}
-		}
+	public List<GasSpargingRecipe> getSortedRecipes() {
+		List<GasSpargingRecipe> result = new ArrayList<GasSpargingRecipe>(GasSpargingRecipeMap.mRecipes);
+		Collections.sort(result);
+		return result;
 	}
 
-	public void loadCraftingRecipes(String outputId, Object... results) {
-		if (outputId.equals(getOverlayIdentifier()) && this.getClass() == SpargingRecipeHandler.class) {
-			final List<GasSpargingRecipe> recipes = GasSpargingRecipeMap.mRecipes;
-			for (final GasSpargingRecipe recipe : recipes) {
-				if (recipe.isValid()) {
-					final GasSpargingRecipeNEI rec = new GasSpargingRecipeNEI(recipe);
-					this.arecipes.add(rec);
-					sort();
-				}
+	@Override
+	public void loadCraftingRecipes(final String outputId, final Object... results) {
+		if (outputId.equals(getRecipeName())) {
+			for (GasSpargingRecipe tRecipe : getSortedRecipes()) {
+				this.arecipes.add(new GasSpargingRecipeNEI(tRecipe));
 			}
 		} else {
 			super.loadCraftingRecipes(outputId, results);
 		}
 	}
 
-	public void loadUsageRecipes(ItemStack ingredient) {
-		final List<GasSpargingRecipe> recipes = GasSpargingRecipeMap.mRecipes;
-		if (ingredient != null) {
-			//Logger.INFO("Looking up Usage results for "+ItemUtils.getItemName(ingredient));
+	@Override
+	public void loadCraftingRecipes(final ItemStack aResult) {
+		ItemData tPrefixMaterial = GT_OreDictUnificator.getAssociation(aResult);
+
+		ArrayList<ItemStack> tResults = new ArrayList<ItemStack>();
+		tResults.add(aResult);
+		tResults.add(GT_OreDictUnificator.get(true, aResult));
+		if ((tPrefixMaterial != null) && (!tPrefixMaterial.mBlackListed) && (!tPrefixMaterial.mPrefix.mFamiliarPrefixes.isEmpty())) {
+			for (OrePrefixes tPrefix : tPrefixMaterial.mPrefix.mFamiliarPrefixes) {
+				tResults.add(GT_OreDictUnificator.get(tPrefix, tPrefixMaterial.mMaterial.mMaterial, 1L));
+			}
 		}
-		for (final GasSpargingRecipe recipe : recipes) {
-			if (recipe.isValid()) {
-				final GasSpargingRecipeNEI rec = new GasSpargingRecipeNEI(recipe);
-				this.arecipes.add(rec);
-				sort();
+		FluidStack tFluid = GT_Utility.getFluidForFilledItem(aResult, true);
+		if (tFluid != null) {
+			tResults.add(GT_Utility.getFluidDisplayStack(tFluid, false));
+			for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry.getRegisteredFluidContainerData()) {
+				if (tData.fluid.isFluidEqual(tFluid)) {
+					tResults.add(GT_Utility.copy(new Object[]{tData.filledContainer}));
+				}
+			}
+		}
+		for (GasSpargingRecipe tRecipe : getSortedRecipes()) {
+			GasSpargingRecipeNEI tNEIRecipe = new GasSpargingRecipeNEI(tRecipe);
+			for (ItemStack tStack : tResults) {
+				if (tNEIRecipe.contains(tNEIRecipe.mOutputs, tStack)) {
+					this.arecipes.add(tNEIRecipe);
+					break;
+				}
+			}			
+		}
+		//CachedDefaultRecipe tNEIRecipe;
+	}
+
+	public void loadUsageRecipes(ItemStack aInput) {
+		ItemData tPrefixMaterial = GT_OreDictUnificator.getAssociation(aInput);
+
+		ArrayList<ItemStack> tInputs = new ArrayList<ItemStack>();
+		tInputs.add(aInput);
+		tInputs.add(GT_OreDictUnificator.get(false, aInput));
+		if ((tPrefixMaterial != null) && (!tPrefixMaterial.mPrefix.mFamiliarPrefixes.isEmpty())) {
+			for (OrePrefixes tPrefix : tPrefixMaterial.mPrefix.mFamiliarPrefixes) {
+				tInputs.add(GT_OreDictUnificator.get(tPrefix, tPrefixMaterial.mMaterial.mMaterial, 1L));
+			}
+		}
+		FluidStack tFluid = GT_Utility.getFluidForFilledItem(aInput, true);
+		if (tFluid != null) {
+			tInputs.add(GT_Utility.getFluidDisplayStack(tFluid, false));
+			for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry.getRegisteredFluidContainerData()) {
+				if (tData.fluid.isFluidEqual(tFluid)) {
+					tInputs.add(GT_Utility.copy(new Object[]{tData.filledContainer}));
+				}
+			}
+		}
+		for (GasSpargingRecipe tRecipe : getSortedRecipes()) {
+			GasSpargingRecipeNEI tNEIRecipe = new GasSpargingRecipeNEI(tRecipe);
+			for (ItemStack tStack : tInputs) {
+				if (tNEIRecipe.contains(tNEIRecipe.mInputs, tStack)) {
+					this.arecipes.add(tNEIRecipe);
+					break;
+				}
 			}
 		}
 	}
@@ -105,10 +146,13 @@ public class SpargingRecipeHandler extends TemplateRecipeHandler {
 	}
 
 	public void drawExtras(int recipeIndex) {
-		GasSpargingRecipeNEI recipe = (GasSpargingRecipeNEI) this.arecipes.get(recipeIndex);		
-		//NeiTextureHandler.RECIPE_BUTTON.renderIcon(72.0D, 14.0D, 22.0D, 16.0D, 0.0D, true);
+		GT_NEI_LFTR.drawText(2, 73, "Sparging occurs whilst your", -16777216);
+		GT_NEI_LFTR.drawText(2, 83, "LFTR is running. Happens every", -16777216);
+		GT_NEI_LFTR.drawText(2, 93, ""+(GregtechMTE_NuclearReactor.sMinSpargeWait/20)+"-"+(GregtechMTE_NuclearReactor.sMaxSpargeWait/20)+" seconds. Gas not", -16777216);
+		GT_NEI_LFTR.drawText(2, 103, "used to sparge is returned", -16777216);
+		GT_NEI_LFTR.drawText(2, 113, "alongside outputs.", -16777216);
 	}
-	
+
 	@Override
 	public List<String> handleItemTooltip(final GuiRecipe gui, final ItemStack aStack, final List<String> currenttip, final int aRecipeIndex) {
 		final TemplateRecipeHandler.CachedRecipe tObject = this.arecipes.get(aRecipeIndex);
@@ -142,7 +186,7 @@ public class SpargingRecipeHandler extends TemplateRecipeHandler {
 		}
 		return currenttip;
 	}
-	
+
 	public class FixedPositionedStack
 	extends PositionedStack {
 		public final int mChance;
@@ -299,7 +343,7 @@ public class SpargingRecipeHandler extends TemplateRecipeHandler {
 
 		@Override
 		public List<PositionedStack> getIngredients() {
-			return this.getCycledIngredients(SpargingRecipeHandler.this.cycleticks / 10, this.mInputs);
+			return this.getCycledIngredients(GT_NEI_LFTR_Sparging.this.cycleticks / 10, this.mInputs);
 		}
 
 		@Override
@@ -311,7 +355,7 @@ public class SpargingRecipeHandler extends TemplateRecipeHandler {
 		public List<PositionedStack> getOtherStacks() {
 			return this.mOutputs;
 		}
-		
-		
+
+
 	}
 }

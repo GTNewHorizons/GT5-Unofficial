@@ -3,7 +3,7 @@ package gregtech.api.util;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-public class GasSpargingRecipe {
+public class GasSpargingRecipe implements Comparable<GasSpargingRecipe> {
 
 	public final FluidStack mInputGas;
 	public final int[] mMaxOutputQuantity;
@@ -48,6 +48,17 @@ public class GasSpargingRecipe {
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public int compareTo(GasSpargingRecipe o) {
+		if (o.mFluidOutputs.length > this.mFluidOutputs.length) {
+			return 1;
+		} else if (o.mFluidOutputs.length == this.mFluidOutputs.length) {
+			return 0;
+		} else {
+			return -1;
+		}
 	}
 
 }

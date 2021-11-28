@@ -91,9 +91,9 @@ implements IConfigureNEI {
 		API.registerRecipeHandler(new DecayableRecipeHandler());
 		API.registerUsageHandler(new DecayableRecipeHandler());
 		
-		Logger.INFO("NEI Registration: Registering NEI handler for "+SpargingRecipeHandler.mNEIName);
-		API.registerRecipeHandler(new SpargingRecipeHandler());
-		API.registerUsageHandler(new SpargingRecipeHandler());
+		Logger.INFO("NEI Registration: Registering NEI handler for "+GT_NEI_LFTR_Sparging.mNEIName);
+		API.registerRecipeHandler(new GT_NEI_LFTR_Sparging());
+		API.registerUsageHandler(new GT_NEI_LFTR_Sparging());
 		
 		// Hide Flasks
 		if (Utils.isClient()) {

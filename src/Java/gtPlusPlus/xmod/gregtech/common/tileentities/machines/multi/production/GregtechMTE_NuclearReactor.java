@@ -570,6 +570,9 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 	private static AutoMap<Fluid> mFluorideGases;
 	private static AutoMap<Fluid> mSpargeGases;
 
+	public final static int sMinSpargeWait = 1200;
+	public final static int sMaxSpargeWait = 2400;
+
 	private AutoMap<FluidStack> getByproductsOfSparge(final FluidStack spargeGas){
 		AutoMap<FluidStack> aOutputGases = new AutoMap<FluidStack>();
 		if (mNobleGases == null) {
@@ -663,7 +666,7 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 			}			
 			// Set a random tick counter, count it up.
 			if (this.mSpargeTime == 0) {
-				this.mSpargeTime = MathUtils.randInt(1200, 2400);
+				this.mSpargeTime = MathUtils.randInt(sMinSpargeWait, sMaxSpargeWait);
 				Logger.WARNING("Set Sparge Timer to "+this.mSpargeTime);
 			}
 			else {
