@@ -258,7 +258,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public int getPollutionPerSecond(final ItemStack aStack) {
-		return CORE.ConfigSwitches.PollutionPerSecondMultiIndustrialArcFurnace;
+		return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialArcFurnace;
 	}
 
 	@Override

@@ -262,7 +262,7 @@ public class CORE {
 		//Pollution
 		public static int pollutionPerSecondMultiPackager = 40;
 		public static int pollutionPerSecondMultiIndustrialAlloySmelter = 300;
-		public static int PollutionPerSecondMultiIndustrialArcFurnace = 2400;
+		public static int pollutionPerSecondMultiIndustrialArcFurnace = 2400;
 		public static int pollutionPerSecondMultiIndustrialCentrifuge = 300;
 		public static int pollutionPerSecondMultiIndustrialCokeOven = 80;
 		public static int pollutionPerSecondMultiIndustrialCuttingMachine = 160;
