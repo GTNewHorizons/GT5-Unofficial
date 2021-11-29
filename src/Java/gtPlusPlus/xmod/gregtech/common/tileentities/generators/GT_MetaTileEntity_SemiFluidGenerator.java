@@ -16,11 +16,11 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.GTPP_Recipe.GTPP_Recipe_Map;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.lib.CORE;
 import net.minecraft.item.ItemStack;
 
 public class GT_MetaTileEntity_SemiFluidGenerator extends GT_MetaTileEntity_BasicGenerator {
 
-	public static final int BASE_POLLUTION = 2;
 	public int mEfficiency;
 
 	/*public GT_MetaTileEntity_SemiFluidGenerator(int aID, String aName, String aNameRegional, int aTier) {
@@ -41,7 +41,7 @@ public class GT_MetaTileEntity_SemiFluidGenerator extends GT_MetaTileEntity_Basi
 	}
 
 	public int getPollution() {
-		return (int) (2.0D * Math.pow(2.0D, this.mTier));
+		return (int) (CORE.ConfigSwitches.basePollutionPerSecondSemiFluidGenerator * CORE.ConfigSwitches.pollutionReleasedByTierSemiFluidGenerator[this.mTier]);
 	}
 
 	@Override
@@ -67,7 +67,7 @@ public class GT_MetaTileEntity_SemiFluidGenerator extends GT_MetaTileEntity_Basi
 	
 	@Override
 	public String[] getDescription() {
-		return new String[]{this.mDescription, "Produces "+(this.getPollution()*20)+" pollution/sec", "Fuel Efficiency: "+this.getEfficiency() + "%"};
+		return new String[]{this.mDescription, "Produces "+(this.getPollution())+" pollution/sec", "Fuel Efficiency: "+this.getEfficiency() + "%"};
 	}
 
 	@Override

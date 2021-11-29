@@ -14,6 +14,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GT_MetaTileEntity_Hatch_CustomFluidBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -93,7 +94,7 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 				.addInfo("Speed: 120% | Eu Usage: 90% | Parallel: 8")
 				.addInfo("Consumes 10L of " + mHotFuelName + " per second during operation")
 				.addInfo("Constructed exactly the same as a normal EBF")
-				.addPollutionAmount(getPollutionPerTick(null) * 20)
+				.addPollutionAmount(getPollutionPerSecond(null))
 				.addSeparator()
 				.addController("Bottom center")
 				.addCasingInfo(mCasingName, 9)
@@ -254,8 +255,8 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 		return 10000;
 	}
 
-	public int getPollutionPerTick(ItemStack aStack) {
-		return 25;
+	public int getPollutionPerSecond(ItemStack aStack) {
+		return CORE.ConfigSwitches.pollutionPerSecondMultiAdvEBF;
 	}
 
 	public int getDamageToComponent(ItemStack aStack) {

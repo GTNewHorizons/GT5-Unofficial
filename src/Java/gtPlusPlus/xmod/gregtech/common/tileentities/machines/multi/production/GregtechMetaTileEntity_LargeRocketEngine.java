@@ -112,7 +112,6 @@ public class GregtechMetaTileEntity_LargeRocketEngine extends GregtechMeta_Multi
 				.addStructureHint("Air Intake Hatch", 1)
 				.addInputBus("Side center line", 1)
 				.addInputHatch("Side center line", 1)
-				.addOutputHatch("Side center line", 1)
 				.addMaintenanceHatch("Side center line", 1)
 				.addDynamoHatch("Top center line", 2)
 				.addMufflerHatch("Back Center", 3)

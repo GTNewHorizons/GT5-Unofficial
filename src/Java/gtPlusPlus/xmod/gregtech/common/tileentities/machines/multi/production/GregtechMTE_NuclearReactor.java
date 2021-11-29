@@ -20,6 +20,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GTPP_Recipe;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.material.nuclear.FLUORIDES;
 import gtPlusPlus.core.material.nuclear.NUCLIDE;
@@ -72,7 +73,7 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 				.addInfo("Input Fluorine and Helium for bonus byproducts")
 				.addInfo("Input Li2BeF4 and a molten salt as fuel.")
 				.addInfo("LiFBeF2ThF4UF4, LiFBeF2ZrF4UF4 or LiFBeF2ZrF4U235")
-				.addPollutionAmount(getPollutionPerTick(null) * 20)
+				.addPollutionAmount(getPollutionPerSecond(null))
 				.addSeparator()
 				.beginStructureBlock(7, 4, 7, true)
 				.addController("Bottom Center")
@@ -289,8 +290,9 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
-	public int getPollutionPerTick(final ItemStack aStack) {
-		return this.boostEu ? 8 : 4;
+	public int getPollutionPerSecond(final ItemStack aStack) {
+		if (this.boostEu) return CORE.ConfigSwitches.pollutionPerSecondMultiNuclearReactor_ModeBoosted;
+		return CORE.ConfigSwitches.pollutionPerSecondMultiNuclearReactor_ModeNormal;
 	}
 
 	@Override

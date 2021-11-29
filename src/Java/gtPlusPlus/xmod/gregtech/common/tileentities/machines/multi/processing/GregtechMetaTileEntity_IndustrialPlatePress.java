@@ -15,6 +15,7 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
@@ -61,7 +62,7 @@ public class GregtechMetaTileEntity_IndustrialPlatePress extends GregtechMeta_Mu
 				.addInfo("Processes four items per voltage tier")
 				.addInfo("Circuit for recipe goes in the Input Bus")
 				.addInfo("Each Input Bus can have a different Circuit/Shape!")
-				.addPollutionAmount(getPollutionPerTick(null) * 20)
+				.addPollutionAmount(getPollutionPerSecond(null))
 				.addSeparator()
 				.beginStructureBlock(3, 3, 3, true)
 				.addController("Front Center")
@@ -206,8 +207,9 @@ public class GregtechMetaTileEntity_IndustrialPlatePress extends GregtechMeta_Mu
 	}
 
 	@Override
-	public int getPollutionPerTick(final ItemStack aStack) {
-		return this.mFormingMode ? 12 : 24;
+	public int getPollutionPerSecond(final ItemStack aStack) {
+		if (this.mFormingMode) return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialPlatePress_ModeForming;
+		return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialPlatePress_ModeBending;
 	}
 
 	@Override

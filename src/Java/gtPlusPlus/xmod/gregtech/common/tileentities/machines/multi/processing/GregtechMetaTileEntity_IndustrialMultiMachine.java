@@ -12,6 +12,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.util.*;
+import gtPlusPlus.core.lib.CORE;
 import org.apache.commons.lang3.ArrayUtils;
 
 import gregtech.api.enums.TAE;
@@ -96,7 +97,7 @@ extends GregtechMeta_MultiBlockBase {
 				.addInfo("Machine Type: [B] - " + EnumChatFormatting.YELLOW + aBuiltStrings[1] + EnumChatFormatting.RESET)
 				.addInfo("Machine Type: [C] - " + EnumChatFormatting.YELLOW + aBuiltStrings[2] + EnumChatFormatting.RESET)
 				.addInfo("Read Multi-Machine Manual for extra information")
-				.addPollutionAmount(getPollutionPerTick(null) * 20)
+				.addPollutionAmount(getPollutionPerSecond(null))
 				.addSeparator()
 				.beginStructureBlock(3, 3, 3, true)
 				.addController("Front Center")
@@ -255,19 +256,16 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
-	public int getPollutionPerTick(final ItemStack aStack) {		
+	public int getPollutionPerSecond(final ItemStack aStack) {
 		if (mInternalMode == 0) {
-			return 20;
+			return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialMultiMachine_ModeMetal;
 		}
 		else if (mInternalMode == 1) {
-			return 20;
+			return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialMultiMachine_ModeFluid;
 		}
-		else if (mInternalMode == 2) {
-			return 30;
+		else { //config 2
+			return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialMultiMachine_ModeMisc;
 		}
-		else {
-			return 50;
-		}	
 	}
 
 	public int getTextureIndex() {

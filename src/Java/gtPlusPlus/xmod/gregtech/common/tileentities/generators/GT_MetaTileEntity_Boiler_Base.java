@@ -235,7 +235,7 @@ public class GT_MetaTileEntity_Boiler_Base extends GT_MetaTileEntity_Boiler {
 
 	@Override
 	protected int getPollution() {
-		return 20 + (15 * tier);
+		return (int) (CORE.ConfigSwitches.basePollutionPerSecondBoiler*CORE.ConfigSwitches.pollutionReleasedByTierBoiler[this.tier]);
 	}
 
 	@Override
