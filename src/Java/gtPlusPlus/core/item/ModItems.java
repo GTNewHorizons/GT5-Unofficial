@@ -717,7 +717,7 @@ public final class ModItems {
 		//fluidFLiBeSalt = ("Li2BeF4", "Li2BeF4", 7430, new short[]{255, 255, 255, 100}, 0);
 		fluidFLiBeSalt = FluidUtils.addGTFluidNoPrefix("Li2BeF4", "Li2BeF4", new short[]{255, 255, 255, 100}, 0, 743, null, CI.emptyCells(1), 1000, true);
 		fluidFLiBeSaltBurnt = FluidUtils.addGTFluidNoPrefix("Li2BeF2UF4", "Li2BeF2UF4", new short[]{50, 255, 50, 100}, 0, 743, null, CI.emptyCells(1), 1000, true);
-
+		
 		//LFTR Control Circuit
 		itemCircuitLFTR = new CoreItem("itemCircuitLFTR", ""+EnumChatFormatting.GREEN+"Control Circuit", AddToCreativeTab.tabMisc, 1, 0,  new String[] {"Keeps Multiblocks Stable"}, EnumRarity.epic, EnumChatFormatting.DARK_GREEN, false, null);
 
@@ -739,7 +739,8 @@ public final class ModItems {
 		//GT_OreDictUnificator.registerOre("cellZrF4", ItemUtils.getItemStackOfAmountFromOreDict("cellZirconiumTetrafluoride", 1));
 		//GT_OreDictUnificator.registerOre("dustZrF4", ItemUtils.getItemStackOfAmountFromOreDict("dustZirconiumTetrafluoride", 1));
 		fluidZrF4 = FluidUtils.generateFluidNoPrefix("ZirconiumTetrafluoride", "Zirconium Tetrafluoride", 500, new short[]{170, 170, 140, 100}); //https://en.wikipedia.org/wiki/Zirconium_tetrafluoride
-
+		FLUORIDES.ZIRCONIUM_TETRAFLUORIDE.setFluid(fluidZrF4);
+		
 		//Coolant Salt
 		//NaBF4 - NaF - 621C
 		//dustNaBF4NaF = ItemUtils.generateSpecialUseDusts("NaBF4NaF", "NaBF4NaF", Utils.rgbtoHexValue(45, 45, 90))[0]; //https://en.wikipedia.org/wiki/Zirconium_tetrafluoride

@@ -1242,6 +1242,14 @@ public class Material {
 		final FluidStack moltenFluid = new FluidStack(this.vMoltenFluid, fluidAmount);
 		return moltenFluid;
 	}
+	
+	final public boolean setFluid(Fluid aFluid) {
+		if (this.vMoltenFluid == null){
+			this.vMoltenFluid = aFluid;
+			return true;
+		}
+		return false;
+	}
 
 
 	final public int calculateMeltingPoint(){

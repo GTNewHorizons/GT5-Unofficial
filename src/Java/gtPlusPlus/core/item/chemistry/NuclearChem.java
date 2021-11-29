@@ -1,14 +1,15 @@
 package gtPlusPlus.core.item.chemistry;
 
-import net.minecraft.init.Items;
-
-import gregtech.api.enums.GT_Values;
 import gtPlusPlus.api.objects.minecraft.ItemPackage;
 import gtPlusPlus.core.item.ModItems;
+import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
+import gtPlusPlus.core.item.chemistry.general.ItemNuclearChemBase;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 
 public class NuclearChem extends ItemPackage {
@@ -19,23 +20,39 @@ public class NuclearChem extends ItemPackage {
 	
 	public static Fluid GeneticMutagen;
 	private static boolean generateMutagenRecipe = false;	
+	
+	public static ItemNuclearChemBase mNuclearChemItem1;
 
-	@Override
-	public String errorMessage() {
-		return "bad Nuclear Chemistry Recipes.";
-	}
-
-	@Override
-	public boolean generateRecipes() {		
-		if (generateMutagenRecipe) {
-			chemReator_CreateMutagen();	
-		}		
-		chemReactor_MutagenWithEggs();
-		return true;
-	}
+	public static ItemStack mResidueUranium;
+	public static ItemStack mResiduePlutonium;
+	public static ItemStack mResidueFluorides;
+	public static ItemStack mResidueNobles;
 
 	@Override
 	public void items() {
+
+		mNuclearChemItem1 = new ItemNuclearChemBase();
+		registerItemStacks();
+		registerOreDict();
+	}
+
+
+	public void registerItemStacks() {
+
+		mResidueUranium = ItemUtils.simpleMetaStack(mNuclearChemItem1, 0, 1);
+		mResidueUranium = ItemUtils.simpleMetaStack(mNuclearChemItem1, 1, 1);
+		mResidueUranium = ItemUtils.simpleMetaStack(mNuclearChemItem1, 2, 1);
+		mResidueUranium = ItemUtils.simpleMetaStack(mNuclearChemItem1, 3, 1);
+
+	}
+
+	public void registerOreDict() {
+
+		ItemUtils.addItemToOreDictionary(mResidueUranium, "dustResidueUranium");
+		ItemUtils.addItemToOreDictionary(mResiduePlutonium, "dustResiduePlutonium");
+		ItemUtils.addItemToOreDictionary(mResidueFluorides, "dustResidueFluoride");
+		ItemUtils.addItemToOreDictionary(mResidueNobles, "dustResidueNoble");
+
 	}
 
 	@Override
@@ -56,6 +73,20 @@ public class NuclearChem extends ItemPackage {
 		else {
 			GeneticMutagen = FluidUtils.getFluidStack("fluid.Mutagen", 1).getFluid();
 		}
+	}
+
+	@Override
+	public String errorMessage() {
+		return "Bad Nuclear Chemistry Recipes.";
+	}
+
+	@Override
+	public boolean generateRecipes() {		
+		if (generateMutagenRecipe) {
+			chemReator_CreateMutagen();	
+		}		
+		chemReactor_MutagenWithEggs();
+		return true;
 	}
 	
 	private static void chemReator_CreateMutagen() {

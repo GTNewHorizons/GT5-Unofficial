@@ -3241,3 +3241,18 @@ interaction.voidexcess.disabled=Void Excess Disabled
 
 interaction.separateBusses.enabled=Input busses are separated
 interaction.separateBusses.disabled=Input busses are not separated
+
+//Added 29/11/21
+
+item.BasicNuclearChemItem.0.name=Uranium Residue Mix
+item.BasicNuclearChemItem.1.name=Plutonium Residue Mix
+item.BasicNuclearChemItem.2.name=Fluoride Residue Mix
+item.BasicNuclearChemItem.3.name=Noble Residue Mix
+item.BasicNuclearChemItem.4.name=Red Algae Biomass
+item.BasicNuclearChemItem.5.name=Cellulose Fiber
+item.BasicNuclearChemItem.6.name=Golden-Brown Cellulose Fiber
+item.BasicNuclearChemItem.7.name=Red Cellulose Fiber
+
+item.itemCellLiFBeF2ZrF4U235.name=LFTR Fuel I Cell
+item.itemCellLiFBeF2ZrF4UF4.name=LFTR Fuel II Cell
+item.itemCellLiFBeF2ThF4UF4.name=LFTR Fuel III Cell
