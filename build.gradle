@@ -158,7 +158,7 @@ dependencies {
 //	compile("com.github.GTNewHorizons:GT5-Unofficial:experimental-SNAPSHOT:dev") {
 //		setChanging(true)
 //	}
-	implementation 'com.github.boubou19:GT5-Unofficial:pollution-SNAPSHOT'
+	implementation 'com.github.GTNewHorizons:GT5-Unofficial:experimental-SNAPSHOT'
 	compile ("com.github.GTNewHorizons:StructureLib:${config.structurelib.version}:deobf")
 
 	provided "net.industrial-craft:industrialcraft-2:${config.ic2.version}:dev"  
