@@ -60,18 +60,18 @@ public class CrushedLoader implements IWerkstoffRunnable {
 
         GT_Values.RA.addForgeHammerRecipe(werkstoff.get(crushed), werkstoff.get(dustImpure), 10, 16);
         GT_ModHandler.addPulverisationRecipe(werkstoff.get(crushed), werkstoff.get(dustImpure), werkstoff.getOreByProduct(0, dust), 10, false);
-        GT_ModHandler.addOreWasherRecipe(werkstoff.get(crushed), 1000, werkstoff.get(crushedPurified), werkstoff.getOreByProduct(0, dustTiny), GT_OreDictUnificator.get(dust, Materials.Stone, 1L));
-        GT_ModHandler.addThermalCentrifugeRecipe(werkstoff.get(crushed), (int) Math.min(5000L, Math.abs(werkstoff.getStats().getProtons() * 20L)), werkstoff.get(crushedCentrifuged), werkstoff.getOreByProduct(1, dustTiny), GT_OreDictUnificator.get(dust, Materials.Stone, 1L));
+        GT_ModHandler.addOreWasherRecipe(werkstoff.get(crushed), new int[] {10000, 1111, 10000}, 1000, werkstoff.get(crushedPurified), werkstoff.getOreByProduct(0, dust), GT_OreDictUnificator.get(dust, Materials.Stone, 1L));
+        GT_ModHandler.addThermalCentrifugeRecipe(werkstoff.get(crushed), new int[] {10000, 1111, 10000}, (int) Math.min(5000L, Math.abs(werkstoff.getStats().getProtons() * 20L)), werkstoff.get(crushedCentrifuged), werkstoff.getOreByProduct(1, dust), GT_OreDictUnificator.get(dust, Materials.Stone, 1L));
 
         GT_Values.RA.addForgeHammerRecipe(werkstoff.get(crushedPurified), werkstoff.get(dustPure), 10, 16);
         GT_ModHandler.addPulverisationRecipe(werkstoff.get(crushedPurified), werkstoff.get(dustPure), werkstoff.getOreByProduct(1, dust), 10, false);
-        GT_ModHandler.addThermalCentrifugeRecipe(werkstoff.get(crushedPurified), (int) Math.min(5000L, Math.abs(werkstoff.getStats().getProtons() * 20L)), werkstoff.get(crushedCentrifuged), werkstoff.getOreByProduct(1, dustTiny));
+        GT_ModHandler.addThermalCentrifugeRecipe(werkstoff.get(crushedPurified), new int[] {10000, 1111}, (int) Math.min(5000L, Math.abs(werkstoff.getStats().getProtons() * 20L)), werkstoff.get(crushedCentrifuged), werkstoff.getOreByProduct(1, dust));
 
         GT_Values.RA.addForgeHammerRecipe(werkstoff.get(crushedCentrifuged), werkstoff.get(dust), 10, 16);
         GT_ModHandler.addPulverisationRecipe(werkstoff.get(crushedCentrifuged), werkstoff.get(dust), werkstoff.getOreByProduct(2, dust), 10, false);
 
-        GT_Values.RA.addCentrifugeRecipe(werkstoff.get(dustImpure), 0, werkstoff.get(dust), werkstoff.getOreByProduct(0, dustTiny), null, null, null, null, (int) Math.max(1L, werkstoff.getStats().getMass() * 8L));
-        GT_Values.RA.addCentrifugeRecipe(werkstoff.get(dustPure), 0, werkstoff.get(dust), werkstoff.getOreByProduct(1, dustTiny), null, null, null, null, (int) Math.max(1L, werkstoff.getStats().getMass() * 8L));
+        GT_Values.RA.addCentrifugeRecipe(werkstoff.get(dustImpure), null, null, null, werkstoff.get(dust), werkstoff.getOreByProduct(0, dust), null, null, null, null, new int[] {10000, 1111}, (int) Math.max(1L, werkstoff.getStats().getMass() * 8L), 5);
+        GT_Values.RA.addCentrifugeRecipe(werkstoff.get(dustPure), null, null, null, werkstoff.get(dust), werkstoff.getOreByProduct(1, dust), null, null, null, null, new int[] {10000, 1111}, (int) Math.max(1L, werkstoff.getStats().getMass() * 8L), 5);
 
         if (werkstoff.contains(SubTag.CRYSTALLISABLE)) {
             GT_Values.RA.addAutoclaveRecipe(werkstoff.get(dustPure), Materials.Water.getFluid(200L), werkstoff.get(gem), 9000, 2000, 24);
