@@ -302,14 +302,16 @@ public class CORE {
 		public static int pollutionPerSecondMultiAutoCrafter = 500;
 		public static int pollutionPerSecondMultiThermalBoiler = 700;
 		public static int pollutionPerSecondMultiAlgaePond = 0;
-
-
-
-
-
-
-
-
+		//pollution single blocks
+		public static int basePollutionPerSecondSemiFluidGenerator = 40;
+		public static double[] pollutionReleasedByTierSemiFluidGenerator = new double[]{0,2.0,4.0,8.0};
+		public static int basePollutionPerSecondBoiler = 35;
+		public static double[] pollutionReleasedByTierBoiler = new double[]{0,1.0,1.43, 1.86};
+		public static int baseMinPollutionPerSecondRocketFuelGenerator = 250;
+		public static int baseMaxPollutionPerSecondRocketFuelGenerator = 2000;
+		public static double[] pollutionReleasedByTierRocketFuelGenerator = new double[]{0,0,0,0,1,2,3};
+		public static int basePollutionPerSecondGeothermalGenerator = 100;
+		public static double[] pollutionReleasedByTierGeothermalGenerator = new double[]{0,0,0,0,1,1,1};
 
 	}
 

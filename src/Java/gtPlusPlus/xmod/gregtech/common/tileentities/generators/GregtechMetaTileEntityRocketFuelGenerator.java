@@ -12,6 +12,7 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GTPP_Recipe;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.generators.GregtechRocketFuelGeneratorBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -138,10 +139,4 @@ extends GregtechRocketFuelGeneratorBase {
 	public ITexture[] getSidesActive(final byte aColor) {
 		return new ITexture[]{super.getSidesActive(aColor)[0], this.getCasingTexture(), new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Diesel_Horizontal_Active)};
 	}
-	
-    public int getPollution() {    	
-		int pollMin = mTier == 4 ? 250 : (mTier == 5 ? 500 : 750);
-		int pollMax = mTier == 4 ? 2000 : (mTier == 5 ? 4000 : 6000);		
-		return  (int) (MathUtils.randInt(pollMin, pollMax)/20);    	
-    }
 }
