@@ -328,7 +328,7 @@ public class GTPP_Recipe extends GT_Recipe  implements IComparableRecipe {
 		 */
 		public static final Collection<GTPP_Recipe_Map> sMappings = new ArrayList<>();
 		//public static final GT_Recipe_Map sChemicalBathRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(200), "gtpp.recipe.chemicalbath", "Chemical Bath", null, RES_PATH_GUI + "basicmachines/ChemicalBath", 1, 3, 1, 1, 1, E, 1, E, true, true);
-		public static final GTPP_Recipe_Map_Internal sCokeOvenRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(200), "gtpp.recipe.cokeoven", "Coke Oven", null, RES_PATH_GUI + "basicmachines/Dehydrator", 2, 2, 1, 0, 1, E, 1, E, true, true);
+		public static final GTPP_Recipe_Map_Internal sCokeOvenRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(200), "gtpp.recipe.cokeoven", "Coke Oven", null, RES_PATH_GUI + "basicmachines/Dehydrator", 2, 9, 1, 0, 1, E, 1, E, true, true);
 		public static final GTPP_Recipe_Map_Internal sMatterFab2Recipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(200), "gtpp.recipe.matterfab2", "Matter Fabricator", null, RES_PATH_GUI + "basicmachines/Default", 9, 9, 0, 0, 1, E, 1, E, true, true);
 		//public static final Gregtech_Recipe_Map sMatterFabRecipes = new Gregtech_Recipe_Map(new HashSet<GregtechRecipe>(200), "gtpp.recipe.matterfab", "Matter Fabricator", null, RES_PATH_GUI + "basicmachines/Massfabricator", 1, 3, 1, 1, 1, E, 1, E, true, true);
 		

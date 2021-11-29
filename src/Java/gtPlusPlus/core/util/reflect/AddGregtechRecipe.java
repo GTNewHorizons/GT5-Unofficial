@@ -3,16 +3,15 @@ package gtPlusPlus.core.util.reflect;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import net.minecraft.item.ItemStack;
-
 import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.internal.IGT_RecipeAdder;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 public final class AddGregtechRecipe {
@@ -24,53 +23,47 @@ public final class AddGregtechRecipe {
         
         if (aRecipe.mInputs == null || aRecipe.mFluidInputs == null || aRecipe.mFluidOutputs == null || aRecipe.mOutputs == null) {
             return false;
-        }
-        
-        if (aRecipe.mInputs.length > 2 || aRecipe.mFluidInputs.length > 1 || aRecipe.mFluidOutputs.length > 1 || aRecipe.mOutputs.length > 1) {
+        }        
+        if (aRecipe.mInputs.length > 2 || aRecipe.mFluidInputs.length > 1 || aRecipe.mFluidOutputs.length > 1 || aRecipe.mOutputs.length > 9) {
             return false;
         }
-        else if (aRecipe.mInputs.length <= 0 || aRecipe.mFluidInputs.length <= 0 || aRecipe.mFluidOutputs.length <= 0 || aRecipe.mOutputs.length <= 0) {
+        else if (aRecipe.mInputs.length <= 0) {
             return false;
         }
         
         int aCircuitNumber = -1;
-        int aItemSlot = -1;
+        Item aCircuit = CI.getNumberedCircuit(1).getItem();
+        boolean hasCircuit = false;
         
-        int aSlot = 0;
         for (ItemStack a : aRecipe.mInputs) {
-            if (a != null && a.getItem() != CI.getNumberedCircuit(1).getItem()) {
-                aItemSlot = aSlot;
-            }
-            else {
-                aSlot++;
-            }
-        }
-        
-        for (int i=0;i<25;i++) {
-            ItemStack aTest = CI.getNumberedCircuit(i);
-            for (ItemStack a : aRecipe.mInputs) {
-                if (a != null && GT_Utility.areStacksEqual(a, aTest)) {
-                    aCircuitNumber = i;
-                    break;
-                }
+            if (a != null && a.getItem() == aCircuit) {
+            	hasCircuit = true;
+            	aCircuitNumber = a.getItemDamage();
+            	break;
             }
         }
         
-        if (aCircuitNumber < 0) {
-            return false;
+        ItemStack aInputItem = null;
+        if (!hasCircuit || aCircuitNumber < 1) {
+        	return false;
         }
         
+        for (ItemStack a : aRecipe.mInputs) {
+            if (a != null && a.getItem() != aCircuit) {
+            	aInputItem = a;
+            	break;
+            }
+        }
         
         return CORE.RA.addCokeOvenRecipe(
-                aRecipe.mInputs[aItemSlot],
-                ItemUtils.getGregtechCircuit(aCircuitNumber),
-                aRecipe.mFluidInputs[0],
-                aRecipe.mFluidOutputs[0],
-                aRecipe.mOutputs[0],
-                aModifiedTime,
-                aRecipe.mEUt);
-        
-        
+        		aCircuitNumber,
+        		aInputItem,
+        		aRecipe.mFluidInputs, 
+        		aRecipe.mFluidOutputs, 
+        		aRecipe.mOutputs,
+        		aModifiedTime,
+        		aRecipe.mEUt);
+                
     }
     
 

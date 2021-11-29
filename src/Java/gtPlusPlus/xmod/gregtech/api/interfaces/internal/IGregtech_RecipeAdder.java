@@ -22,6 +22,13 @@ public interface IGregtech_RecipeAdder {
 	//public boolean addCokeOvenRecipe(boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecial, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue);
 	public boolean addCokeOvenRecipe(ItemStack aInput1, ItemStack aInput2,	FluidStack aFluidInput, FluidStack aFluidOutput, ItemStack aOutput,	int aDuration, int aEUt);
 
+
+	public boolean addCokeOvenRecipe(int aCircuit, ItemStack aInput2,	FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, ItemStack[] aOutputs, int aDuration, int aEUt);
+	
+	
+	public boolean addCokeOvenRecipe(ItemStack aInput1, ItemStack aInput2,	FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, ItemStack[] aOutputs, int aDuration, int aEUt);
+
+	
 	public boolean addFuel(ItemStack aInput1, ItemStack aOutput1, int aEU, int aType);
 
 

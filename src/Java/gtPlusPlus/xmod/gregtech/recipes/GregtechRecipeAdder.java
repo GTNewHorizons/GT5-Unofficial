@@ -157,6 +157,30 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 			return false;
 		}
 	}
+	
+
+	@Override
+	public boolean addCokeOvenRecipe(int aCircuit, ItemStack aInput2, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, ItemStack[] aOutputs, int aDuration, int aEUt) {
+		return addCokeOvenRecipe(CI.getNumberedCircuit(aCircuit), aInput2, aFluidInputs, aFluidOutputs, aOutputs, aDuration, aEUt);
+	}
+
+	@Override
+	public boolean addCokeOvenRecipe(ItemStack aInput1, ItemStack aInput2, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, ItemStack[] aOutputs, int aDuration, int aEUt) {
+		GTPP_Recipe aSpecialRecipe = new GTPP_Recipe(
+				true,
+				new ItemStack[] { aInput1, aInput2 },
+				aOutputs,
+				null,
+				new int[] {},
+				aFluidInputs,
+				aFluidOutputs,
+				Math.max(1, aDuration),
+				Math.max(1, aEUt), 
+				0);   
+		int aSize = GTPP_Recipe.GTPP_Recipe_Map.sCokeOvenRecipes.mRecipeList.size();
+		GTPP_Recipe.GTPP_Recipe_Map.sCokeOvenRecipes.add(aSpecialRecipe);
+		return GTPP_Recipe.GTPP_Recipe_Map.sCokeOvenRecipes.mRecipeList.size() > aSize;
+	}
 
 	@Override
 	public boolean addMatterFabricatorRecipe(final FluidStack aFluidInput, final FluidStack aFluidOutput,
