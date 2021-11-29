@@ -13,6 +13,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gtPlusPlus.core.lib.CORE;
 import org.apache.commons.lang3.ArrayUtils;
 
 import gregtech.api.enums.TAE;
@@ -76,7 +77,7 @@ public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase 
 		tt.addMachineType(getMachineType())
 				.addInfo("Controller Block for the Large Grinding Machine")
 				.addInfo("Grind ores.")
-				.addPollutionAmount(getPollutionPerTick(null) * 20)
+				.addPollutionAmount(getPollutionPerSecond(null))
 				.addSeparator()
 				.beginStructureBlock(3, 3, 4, false)
 				.addController("Front Center")
@@ -384,8 +385,8 @@ public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase 
 	}
 
 	@Override
-	public int getPollutionPerTick(ItemStack aStack) {
-		return 64;
+	public int getPollutionPerSecond(ItemStack aStack) {
+		return CORE.ConfigSwitches.pollutionPerSecondMultiIsaMill;
 	}
 
 	@Override

@@ -13,8 +13,8 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
@@ -72,7 +72,7 @@ extends GregtechMeta_MultiBlockBase {
 				.addInfo("250% faster than using single block machines of the same voltage")
 				.addInfo("Processes 8 items per voltage tier")
 				.addInfo("Max Size required to process Plasma recipes")
-				.addPollutionAmount(getPollutionPerTick(null) * 20)
+				.addPollutionAmount(getPollutionPerSecond(null))
 				.addSeparator()
 				.addController("Top center")
 				.addStructureInfo("Size: nx3xn [WxHxL] (Hollow)")
@@ -257,8 +257,8 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
-	public int getPollutionPerTick(final ItemStack aStack) {
-		return 120;
+	public int getPollutionPerSecond(final ItemStack aStack) {
+		return CORE.ConfigSwitches.PollutionPerSecondMultiIndustrialArcFurnace;
 	}
 
 	@Override

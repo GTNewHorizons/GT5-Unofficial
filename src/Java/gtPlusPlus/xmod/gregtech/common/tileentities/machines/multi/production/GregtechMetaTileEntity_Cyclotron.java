@@ -20,6 +20,7 @@ import gregtech.api.util.GTPP_Recipe;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.chemistry.IonParticles;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -253,7 +254,7 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 				.addInfo("Any external casing can be a hatch/bus, unlike Fusion")
 				.addInfo("Cyclotron Machine Casings around Cyclotron Coil Blocks")
 				.addInfo("All Hatches must be IV or better")
-				.addPollutionAmount(getPollutionPerTick(null) * 20)
+				.addPollutionAmount(getPollutionPerSecond(null))
 				.addSeparator()
 				.addCasingInfo("Cyclotron Machine Casings", 40)
 				.addCasingInfo("Cyclotron Coil", 32)
@@ -423,8 +424,8 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 	}
 
 	@Override
-	public int getPollutionPerTick(ItemStack aStack) {
-		return 10;
+	public int getPollutionPerSecond(ItemStack aStack) {
+		return CORE.ConfigSwitches.pollutionPerSecondMultiCyclotron;
 	}
 
 	@Override

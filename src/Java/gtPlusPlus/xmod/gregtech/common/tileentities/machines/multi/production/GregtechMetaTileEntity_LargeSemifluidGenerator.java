@@ -16,6 +16,7 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GTPP_Recipe.GTPP_Recipe_Map;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -55,7 +56,7 @@ public class GregtechMetaTileEntity_LargeSemifluidGenerator extends GregtechMeta
 				.addInfo("Supply 80L of Oxygen per second to boost output (optional).")
 				.addInfo("Default: Produces 2048EU/t at 100% efficiency")
 				.addInfo("Boosted: Produces 6144EU/t at 150% efficiency")
-				.addPollutionAmount(getPollutionPerTick(null) * 20)
+				.addPollutionAmount(getPollutionPerSecond(null))
 				.addSeparator()
 				.beginStructureBlock(3, 3, 4, false)
 				.addController("Front Center")
@@ -291,8 +292,8 @@ public class GregtechMetaTileEntity_LargeSemifluidGenerator extends GregtechMeta
 	}
 
 	@Override
-	public int getPollutionPerTick(ItemStack aStack) {
-		return 64;
+	public int getPollutionPerSecond(ItemStack aStack) {
+		return CORE.ConfigSwitches.pollutionPerSecondMultiLargeSemiFluidGenerator;
 	}
 
 	@Override

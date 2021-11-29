@@ -12,6 +12,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gtPlusPlus.core.lib.CORE;
 import org.apache.commons.lang3.ArrayUtils;
 
 import gregtech.api.GregTech_API;
@@ -60,7 +61,7 @@ public class GregtechMTE_FrothFlotationCell extends GregtechMeta_MultiBlockBase 
 		GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
 		tt.addMachineType(getMachineType())
 				.addInfo("Process that milled ore!")
-				.addPollutionAmount(getPollutionPerTick(null) * 20)
+				.addPollutionAmount(getPollutionPerSecond(null))
 				.addSeparator()
 				.beginStructureBlock(3, 3, 3, true)
 				.addController("Front Center")
@@ -197,8 +198,8 @@ public class GregtechMTE_FrothFlotationCell extends GregtechMeta_MultiBlockBase 
 	}
 
 	@Override
-	public int getPollutionPerTick(final ItemStack aStack) {
-		return 0;
+	public int getPollutionPerSecond(final ItemStack aStack) {
+		return CORE.ConfigSwitches.pollutionPerSecondMultiFrothFlotationCell;
 	}
 
 	@Override

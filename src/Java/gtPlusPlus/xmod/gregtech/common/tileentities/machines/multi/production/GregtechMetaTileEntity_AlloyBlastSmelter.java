@@ -20,6 +20,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.api.util.GTPP_Recipe;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
@@ -68,7 +69,7 @@ extends GregtechMeta_MultiBlockBase {
 				.addInfo("20% Faster than the Electric Blast Furnace")
 				.addInfo("Allows Complex GT++ alloys to be created")
 				.addInfo("Circuit for recipe goes in the Input Bus or GUI slot")
-				.addPollutionAmount(getPollutionPerTick(null) * 20)
+				.addPollutionAmount(getPollutionPerSecond(null))
 				.addSeparator()
 				.beginStructureBlock(3, 4, 3, true)
 				.addController("Bottom Center")
@@ -320,8 +321,8 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
-	public int getPollutionPerTick(final ItemStack aStack) {
-		return 10;
+	public int getPollutionPerSecond(final ItemStack aStack) {
+		return CORE.ConfigSwitches.pollutionPerSecondMultiABS;
 	}
 
 	@Override

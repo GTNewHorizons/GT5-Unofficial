@@ -24,17 +24,14 @@ import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.ThreadFakeWorldGenerator;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.EnergyUtils.EU;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.helpers.TreeFarmHelper;
 import gtPlusPlus.xmod.gregtech.common.helpers.treefarm.TreeGenerator;
-import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
-import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
@@ -111,7 +108,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 				.addInfo("Converts EU to Oak Logs")
 				.addInfo("Eu Usage: 100% | Parallel: 1")
 				.addInfo("Requires a Saw or Chainsaw in GUI slot")
-				.addPollutionAmount(getPollutionPerTick(null) * 20)
+				.addPollutionAmount(getPollutionPerSecond(null))
 				.addSeparator()
 				.beginStructureBlock(3, 3, 3, true)
 				.addController("Front center")
@@ -279,8 +276,8 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 		return 10000;
 	}
 
-	public int getPollutionPerTick(final ItemStack aStack) {
-		return 5;
+	public int getPollutionPerSecond(final ItemStack aStack) {
+		return CORE.ConfigSwitches.pollutionPerSecondMultiTreeFarm;
 	}
 
 	public int getDamageToComponent(final ItemStack aStack) {

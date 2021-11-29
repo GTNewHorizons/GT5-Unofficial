@@ -19,6 +19,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -155,7 +156,7 @@ public class GregtechMetaTileEntity_Adv_DistillationTower extends GregtechMeta_M
 				.addInfo("Max parallel dictated by tower tier and mode")
 				.addInfo("DTower Mode: T1=4, T2=12")
 				.addInfo("Distilery Mode: Tower Tier * (4*InputTier)")
-				.addPollutionAmount(getPollutionPerTick(null) * 20)
+				.addPollutionAmount(getPollutionPerSecond(null))
 				.addSeparator()
 				.addCasingInfo("Clean Stainless Steel Machine Casing", 7)
 				.addInputBus("Bottom Casing", 1)
@@ -215,8 +216,9 @@ public class GregtechMetaTileEntity_Adv_DistillationTower extends GregtechMeta_M
 		return 10000;
 	}
 
-	public int getPollutionPerTick(ItemStack aStack) {
-		return this.mMode == 1 ? 12 : 24;
+	public int getPollutionPerSecond(ItemStack aStack) {
+		if (this.mMode == 1) return CORE.ConfigSwitches.pollutionPerSecondMultiAdvDistillationTower_ModeDistillery;
+		return CORE.ConfigSwitches.pollutionPerSecondMultiAdvDistillationTower_ModeDT;
 	}
 
 	@Override

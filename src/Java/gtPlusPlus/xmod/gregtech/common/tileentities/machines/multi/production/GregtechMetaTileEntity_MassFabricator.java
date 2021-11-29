@@ -19,6 +19,7 @@ import gregtech.api.util.*;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MatterFab;
@@ -106,7 +107,7 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 		tt.addMachineType(getMachineType())
 				.addInfo("Controller Block for the Matter Fabricator")
 				.addInfo("Produces UU-A, UU-M & Scrap")
-				.addPollutionAmount(getPollutionPerTick(null) * 20)
+				.addPollutionAmount(getPollutionPerSecond(null))
 				.addSeparator()
 				.beginStructureBlock(5, 4, 5, true)
 				.addController("Front Center")
@@ -269,8 +270,8 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 	}
 
 	@Override
-	public int getPollutionPerTick(final ItemStack aStack) {
-		return 2;
+	public int getPollutionPerSecond(final ItemStack aStack) {
+		return CORE.ConfigSwitches.pollutionPerSecondMultiMassFabricator;
 	}
 
 	@Override

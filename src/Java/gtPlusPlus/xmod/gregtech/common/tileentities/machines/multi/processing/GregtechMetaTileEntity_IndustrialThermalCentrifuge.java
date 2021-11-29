@@ -14,6 +14,7 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.block.Block;
@@ -55,7 +56,7 @@ extends GregtechMeta_MultiBlockBase {
 				.addInfo("150% faster than using single block machines of the same voltage")
 				.addInfo("Only uses 80% of the eu/t normally required")
 				.addInfo("Processes eight items per voltage tier")
-				.addPollutionAmount(getPollutionPerTick(null) * 20)
+				.addPollutionAmount(getPollutionPerSecond(null))
 				.addSeparator()
 				.beginStructureBlock(3, 2, 3, false)
 				.addController("Front Center")
@@ -199,8 +200,8 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
-	public int getPollutionPerTick(final ItemStack aStack) {
-		return 50;
+	public int getPollutionPerSecond(final ItemStack aStack) {
+		return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialThermalCentrifuge;
 	}
 
 	@Override

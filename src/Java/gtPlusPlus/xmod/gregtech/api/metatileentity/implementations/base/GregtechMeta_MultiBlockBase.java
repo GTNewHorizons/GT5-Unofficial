@@ -2159,10 +2159,6 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
 	 * Pollution Management
 	 */
 
-	public int getPollutionPerTick(ItemStack arg0) {
-		return 0;
-	}
-
 	private static Method calculatePollutionReduction = null;
 	public int calculatePollutionReductionForHatch(GT_MetaTileEntity_Hatch_Muffler i , int g) {		
 		if (calculatePollutionReduction != null) {

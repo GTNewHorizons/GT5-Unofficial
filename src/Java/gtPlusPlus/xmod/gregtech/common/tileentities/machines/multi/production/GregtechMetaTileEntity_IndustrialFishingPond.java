@@ -74,7 +74,7 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends GregtechMeta_M
 				.addInfo("Circuit 14 for Fish")
 				.addInfo("Circuit 15 for Junk")
 				.addInfo("Circuit 16 for Treasure")
-				.addPollutionAmount(getPollutionPerTick(null) * 20)
+				.addPollutionAmount(getPollutionPerSecond(null))
 				.addSeparator()
 				.beginStructureBlock(9, 3, 9, true)
 				.addController("Front Center")
@@ -242,8 +242,8 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends GregtechMeta_M
 	}
 
 	@Override
-	public int getPollutionPerTick(final ItemStack aStack) {
-		return 1;
+	public int getPollutionPerSecond(final ItemStack aStack) {
+		return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialFishingPond;
 	}
 
 	@Override
