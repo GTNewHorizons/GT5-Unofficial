@@ -165,9 +165,9 @@ dependencies {
     compileOnly("com.enderio:EnderIO:$enderioVersion:dev")
 
     //NEI
-    compile("codechicken:CodeChickenLib:1.7.10-1.1.3.140:dev")
-    compile("codechicken:CodeChickenCore:1.7.10-1.0.7.47:dev")
-    compile("codechicken:NotEnoughItems:1.7.10-1.0.5.120:dev")
+    compile("com.github.GTNewHorizons:CodeChickenLib:master-SNAPSHOT:dev")
+    compile("com.github.GTNewHorizons:CodeChickenCore:master-SNAPSHOT:dev")
+    compile("com.github.GTNewHorizons:NotEnoughItems:master-SNAPSHOT:dev")
 }
 
 val Project.minecraft: UserExtension
