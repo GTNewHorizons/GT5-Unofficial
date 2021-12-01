@@ -15,7 +15,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.github.GTNewHorizons:ForgeGradle:stable-2021-11-20'
+        classpath 'com.github.GTNewHorizons:ForgeGradle:1.2.4'
     }
 }
 
@@ -91,28 +91,28 @@ repositories {
 }
 
 dependencies {
-    //Hard dep to start (Without this, it wont compile nor start)
+    //Hard dep to start (without these, it won't compile nor start)
     compile 'com.google.code.findbugs:jsr305:1.3.9'
     compile "net.industrial-craft:industrialcraft-2:${config.ic2.version}:dev"
     compile ("com.github.GTNewHorizons:StructureLib:${config.structurelib.version}:deobf")
 
-    //Hard dep to compile (Without this, it wont compile, not even as library)
+    //Hard dep to compile (Without this, it won't compile, not even as library)
     api "appeng:appliedenergistics2:${config.ae2.version}:dev"
     api "applecore:AppleCore:${config.applecore.version}:api"
-    api "codechicken:CodeChickenLib:${config.minecraft.version}-${config.codechickenlib.version}:dev"
-    api "codechicken:CodeChickenCore:${config.minecraft.version}-${config.codechickencore.version}:dev"
-    api "codechicken:NotEnoughItems:${config.minecraft.version}-${config.nei.version}:dev"
+    api "com.github.GTNewHorizons:CodeChickenLib:master-SNAPSHOT:dev"
+    api "com.github.GTNewHorizons:CodeChickenCore:master-SNAPSHOT:dev"
+    api "com.github.GTNewHorizons:NotEnoughItems:master-SNAPSHOT:dev"
     api "com.enderio.core:EnderCore:${config.enderiocore.version}:dev"
     api("com.enderio:EnderIO:${config.enderio.version}:dev") {
         transitive = false
     }
 
-    //Soft Depths (Without this, it wont compile, not needed as library)
+    //Soft deps (without these it can compile as a library only)
     compileOnly 'commons-io:commons-io:2.4'
     compileOnly 'com.google.auto.value:auto-value-annotations:1.8.2'
     annotationProcessor 'com.google.auto.value:auto-value:1.8.2'
     compileOnly "tconstruct:TConstruct:${config.minecraft.version}-${config.tconstruct.version}:deobf"
-    compileOnly "codechicken:Translocator:${config.minecraft.version}-${config.translocators.version}:dev"
+    compileOnly "com.github.GTNewHorizons:Translocators:${config.translocators.version}:dev"
     compileOnly "net.sengir.forestry:forestry_${config.minecraft.version}:${config.forestry.version}:dev"
     compileOnly files("libs/Galacticraft-API-1.7-${config.gc.version}.jar")
     compileOnly files("libs/GalacticraftCore-Dev-${config.gc.version}.jar")
