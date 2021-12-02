@@ -11,6 +11,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 
+@Deprecated
 public final class MessageSetFlaskCapacity extends GT_Packet_New {
     private int capacity, dimID, playerID;
 

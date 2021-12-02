@@ -28,6 +28,9 @@ public class GT_Container_BasicMachine extends GT_Container_BasicTank {
             mItemTransfer = false,
             mStuttering = false;
 
+    private Runnable circuitSlotClickCallback;
+    GT_Slot_Render slotCircuit;
+
     public GT_Container_BasicMachine(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
         super(aInventoryPlayer, aTileEntity);
     }
@@ -38,8 +41,7 @@ public class GT_Container_BasicMachine extends GT_Container_BasicTank {
         addSlotToContainer(new GT_Slot_Holo(mTileEntity, 0, 26, 63, false, true, 1));
         addSlotToContainer(new GT_Slot_Render(mTileEntity, 2, 107, 63));
         GT_MetaTileEntity_BasicMachine machine = (GT_MetaTileEntity_BasicMachine) mTileEntity.getMetaTileEntity();
-        if (machine.allowSelectCircuit())
-            addSlotToContainer(new GT_Slot_Render(mTileEntity, machine.getCircuitSlot(), 153, 63));
+        addSlotToContainer(slotCircuit = new GT_Slot_Render(mTileEntity, machine.getCircuitSlot(), 153, 63));
 
         int tStartIndex = machine.getInputSlot();
 
@@ -186,17 +188,6 @@ public class GT_Container_BasicMachine extends GT_Container_BasicTank {
         addSlotToContainer(new GT_Slot_Render(mTileEntity, tStartIndex++, 53, 63));
     }
 
-    private static int find(List<ItemStack> aStacks, ItemStack aStack) {
-        if (GT_Utility.isStackInvalid(aStack))
-            return -1;
-        for (int i = 0, aStacksSize = aStacks.size(); i < aStacksSize; i++) {
-            ItemStack tStack = aStacks.get(i);
-            if (GT_Utility.areStacksEqual(aStack, tStack))
-                return i;
-        }
-        return -1;
-    }
-
     @Override
     public ItemStack slotClick(int aSlotIndex, int aMouseclick, int aShifthold, EntityPlayer aPlayer) {
         if (mTileEntity.getMetaTileEntity() == null) return null;
@@ -213,15 +204,21 @@ public class GT_Container_BasicMachine extends GT_Container_BasicTank {
             case 3:
                 if (machine.allowSelectCircuit() && aMouseclick < 2) {
                     ItemStack newCircuit;
-                    if (aMouseclick == 1 && aShifthold == 1) {
-                        // clear
-                        newCircuit = null;
+                    if (aShifthold == 1) {
+                        if (aMouseclick == 0) {
+                            if (circuitSlotClickCallback != null)
+                                circuitSlotClickCallback.run();
+                            return null;
+                        } else {
+                            // clear
+                            newCircuit = null;
+                        }
                     } else {
                         ItemStack cursorStack = aPlayer.inventory.getItemStack();
                         List<ItemStack> tCircuits = machine.getConfigurationCircuits();
-                        int index = find(tCircuits, cursorStack);
+                        int index = GT_Utility.findMatchingStackInList(tCircuits, cursorStack);
                         if (index < 0) {
-                            int curIndex = find(tCircuits, machine.getStackInSlot(machine.getCircuitSlot())) + 1;
+                            int curIndex = GT_Utility.findMatchingStackInList(tCircuits, machine.getStackInSlot(machine.getCircuitSlot())) + 1;
                             if (aMouseclick == 0) {
                                 curIndex += 1;
                             } else {
@@ -314,5 +311,9 @@ public class GT_Container_BasicMachine extends GT_Container_BasicTank {
     @Override
     public int getShiftClickSlotCount() {
         return ((GT_MetaTileEntity_BasicMachine) mTileEntity.getMetaTileEntity()).mInputSlotCount;
+    }
+
+    public void setCircuitSlotClickCallback(Runnable circuitSlotClickCallback) {
+        this.circuitSlotClickCallback = circuitSlotClickCallback;
     }
 }

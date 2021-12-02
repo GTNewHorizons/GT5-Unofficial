@@ -1730,10 +1730,10 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
 
             if (GUI_ID_COVER_SIDE_BASE <= aID && aID < GUI_ID_COVER_SIDE_BASE+6) {
                 byte side = (byte) (aID - GT_Proxy.GUI_ID_COVER_SIDE_BASE);
-                GT_CoverBehavior cover = tile.getCoverBehaviorAtSide(side);
+                GT_CoverBehaviorBase<?> cover = tile.getCoverBehaviorAtSideNew(side);
 
                 if (cover.hasCoverGUI()) {
-                    return cover.getClientGUI(side, tile.getCoverIDAtSide(side), tile.getCoverDataAtSide(side), tile);
+                    return cover.getClientGUI(side, tile.getCoverIDAtSide(side), tile.getComplexCoverDataAtSide(side), tile, aPlayer, aWorld);
                 }
                 return null;
             }
