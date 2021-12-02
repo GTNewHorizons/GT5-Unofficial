@@ -11,7 +11,9 @@ buildscript {
         
     }
     dependencies {
-        classpath("com.github.GTNH2:ForgeGradle:FG_1.2-SNAPSHOT")
+        classpath("com.github.GTNH2:ForgeGradle:FG_1.2-SNAPSHOT"){
+            isChanging = true
+        }
     }
 }
 
@@ -172,6 +174,7 @@ dependencies {
     compile("com.github.GTNewHorizons:StructureLib:1.0.9:deobf")
     compile("com.github.GTNewHorizons:GT5-Unofficial:$gt5uVersion:dev"){
         exclude("net.industrial-craft", "industrialcraft-2")
+        isChanging = true
     }
     compile("eu.usrv:YAMCore:$yamcoreVersion:deobf")
 
@@ -198,7 +201,14 @@ dependencies {
     //    exclude("com.enderio.core", "EnderCore")
     //    exclude("mcp.mobius.waila", "Waila")
     //}
+
+    configurations.all {
+        resolutionStrategy.cacheDynamicVersionsFor(30, "seconds")
+    }
 }
+
+
+
 
 tasks.withType<Jar> {
     //Mark as outdated if versions change
