@@ -24,11 +24,10 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:TinkersConstruct:master-SNAPSHOT:dev") {
         transitive = false
     }
-
-    compileOnly("appeng:appliedenergistics2:rv3-beta-22:dev") {  // TODO: use in-house version
+    compileOnly("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:master-SNAPSHOT:dev") {
         transitive = false
     }
-    compileOnly("com.enderio:EnderIO:1.7.10-2.3.0.417_beta:dev") {  // TODO: use in-house version
+    compileOnly("com.github.GTNewHorizons:EnderIO:master-SNAPSHOT:dev") {
         transitive = false
     }
     compileOnly("com.mod-buildcraft:buildcraft:7.1.23:dev") {
@@ -37,13 +36,13 @@ dependencies {
     compileOnly("commons-io:commons-io:2.4") {
         transitive = false
     }
-    compileOnly("codechicken:Translocator:1.7.10-1.1.2.16:dev") {  // TODO: use in-house version (?)
+    compileOnly("com.github.GTNewHorizons:Translocators:master-SNAPSHOT:dev") {
         transitive = false
     }
-    compileOnly("curse.maven:cofh-lib-220333:2388749") {
+    compileOnly("curse.maven:cofh-core-69162:2388751") {
         transitive = false
     }
-    compileOnly("curse.maven:nuclear-control-2-236813:2464681") {  // TODO: use in-house version
+    compileOnly("com.github.GTNewHorizons:Nuclear-Control:master-SNAPSHOT:dev") {
         transitive = false
     }
     compileOnly("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev") {
