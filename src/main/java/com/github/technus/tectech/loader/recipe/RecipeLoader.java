@@ -55,10 +55,10 @@ public class RecipeLoader implements Runnable {
                         'S', OrePrefixes.stick.get(Materials.Wood),});
 
         //BLUEprint
-        GT_ModHandler.addShapelessCraftingRecipe(new ItemStack(ConstructableTriggerItem.INSTANCE, 1),
+        /*GT_ModHandler.addShapelessCraftingRecipe(new ItemStack(ConstructableTriggerItem.INSTANCE, 1),
                 GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
                 new Object[]{Dyes.dyeBlue, OrePrefixes.plate.get(Materials.Paper), Dyes.dyeBlue, Dyes.dyeWhite});
-
+        */
         //GT EU reader
         GT_ModHandler.addCraftingRecipe(new ItemStack(EuMeterGT.INSTANCE,1),
                 GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
