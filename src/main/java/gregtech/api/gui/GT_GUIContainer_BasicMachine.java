@@ -1,8 +1,14 @@
 package gregtech.api.gui;
 
+import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_Bronze;
+import gregtech.api.net.GT_Packet_SetConfigurationCircuit;
+import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,11 +39,33 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
 
     public GT_GUIContainer_BasicMachine(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName, String aTextureFile, String aNEI, byte aProgressBarDirection, byte aProgressBarAmount) {
         super(new GT_Container_BasicMachine(aInventoryPlayer, aTileEntity), RES_PATH_GUI + "basicmachines/" + aTextureFile);
+        getContainer().setCircuitSlotClickCallback(this::openSelectCircuitDialog);
         mProgressBarDirection = aProgressBarDirection;
         mProgressBarAmount = (byte) Math.max(1, aProgressBarAmount);
         mName = aName;
         mNEI = aNEI;
         mRenderAutoOutputSlots = !(aTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_BasicMachine_Bronze);
+    }
+
+    private void openSelectCircuitDialog() {
+        mc.displayGuiScreen(new GT_GUIDialogSelectItem(
+                StatCollector.translateToLocal("GT5U.machines.select_circuit"),
+                null,
+                this,
+                this::onCircuitSelected,
+                getMachine().getConfigurationCircuits(),
+                GT_Utility.findMatchingStackInList(getMachine().getConfigurationCircuits(), getMachine().getStackInSlot(getMachine().getCircuitSlot()))));
+    }
+
+    private void onCircuitSelected(ItemStack selected) {
+        GT_Values.NW.sendToServer(new GT_Packet_SetConfigurationCircuit(mContainer.mTileEntity, selected));
+        // we will not do any validation on client side
+        // it doesn't get to actually decide what inventory contains anyway
+        mContainer.mTileEntity.setInventorySlotContents(getMachine().getCircuitSlot(), selected);
+    }
+
+    private GT_MetaTileEntity_BasicMachine getMachine() {
+        return (GT_MetaTileEntity_BasicMachine) mContainer.mTileEntity.getMetaTileEntity();
     }
 
     @Override
@@ -72,6 +100,17 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
     }
 
     @Override
+    protected void onMouseWheel(int mx, int my, int delta) {
+        GT_Slot_Render slotCircuit = getContainer().slotCircuit;
+        if (slotCircuit != null && func_146978_c(slotCircuit.xDisplayPosition, slotCircuit.yDisplayPosition, 16, 16, mx, my)) {
+            // emulate click
+            handleMouseClick(slotCircuit, -1, delta > 0 ? 1 : 0, 0);
+            return;
+        }
+        super.onMouseWheel(mx, my, delta);
+    }
+
+    @Override
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
         super.drawGuiContainerBackgroundLayer(par1, par2, par3);
         int x = (width - xSize) / 2;
@@ -79,16 +118,16 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
         drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
         if (mContainer != null) {
             if (mRenderAutoOutputSlots){
-                if (((GT_Container_BasicMachine) mContainer).mFluidTransfer)
+                if (getContainer().mFluidTransfer)
                     drawTexturedModalRect(x + 7, y + 62, 176, 18, 18, 18);
-                if (((GT_Container_BasicMachine) mContainer).mItemTransfer)
+                if (getContainer().mItemTransfer)
                     drawTexturedModalRect(x + 25, y + 62, 176, 36, 18, 18);
             }
-            if (((GT_Container_BasicMachine) mContainer).mStuttering)
+            if (getContainer().mStuttering)
                 drawTexturedModalRect(x + 79, y + 44, 176, 54, 18, 18);
 
             if (mContainer.mMaxProgressTime > 0) {
-                int tSize = (mProgressBarDirection < 2 ? 20 : 18), tProgress = Math.max(1, Math.min(tSize * mProgressBarAmount, (mContainer.mProgressTime > 0 ? 1 : 0) + (mContainer.mProgressTime * tSize * mProgressBarAmount) / mContainer.mMaxProgressTime)) % (tSize + 1);
+                int tSize = mProgressBarDirection < 2 ? 20 : 18, tProgress = Math.max(1, Math.min(tSize * mProgressBarAmount, (mContainer.mProgressTime > 0 ? 1 : 0) + mContainer.mProgressTime * tSize * mProgressBarAmount / mContainer.mMaxProgressTime)) % (tSize + 1);
 
                 switch (mProgressBarDirection) { // yes, my OCD was mad at me before I did the Tabs.
                     case 0:
@@ -122,5 +161,9 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
                 }
             }
         }
+    }
+
+    private GT_Container_BasicMachine getContainer() {
+        return (GT_Container_BasicMachine) mContainer;
     }
 }

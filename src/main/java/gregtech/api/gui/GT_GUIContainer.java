@@ -4,6 +4,7 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.inventory.Container;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.input.Mouse;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -53,6 +54,21 @@ public class GT_GUIContainer extends GuiContainer {
             }
         }
     }
+
+    @Override
+    public void handleMouseInput() {
+        int delta = Mouse.getEventDWheel();
+        if (delta != 0) {
+            int i = Mouse.getEventX() * this.width / this.mc.displayWidth;
+            int j = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
+            onMouseWheel(i, j, delta);
+        }
+        super.handleMouseInput();
+    }
+
+    protected void onMouseWheel(int mx, int my, int delta) {
+    }
+
     /*
     @Override
     protected void drawSlotInventory(Slot par1Slot) {

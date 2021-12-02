@@ -1,6 +1,7 @@
 package gregtech.api.net;
 
 import com.google.common.io.ByteArrayDataInput;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 

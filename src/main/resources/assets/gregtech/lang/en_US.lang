@@ -80,6 +80,17 @@ GT5U.machines.oilfluidpump=Oil/Fluid Pump
 GT5U.machines.minermulti=Multiblock Miner
 GT5U.machines.voidoveflow.enabled=Overflow voiding enabled
 GT5U.machines.voidoveflow.disabled=Overflow voiding disabled
+GT5U.machines.select_circuit=Select Machine Mode
+
+GT5U.gui.select.current=Current:
+
+GT5U.item.programmed_circuit.select.header=Reprogram Circuit
+# Note to translators: this translation entry is supposed to be a number indicating how many taunts you define here
+# Game will randomly display one of them
+GT5U.item.programmed_circuit.no_screwdriver.count=3
+GT5U.item.programmed_circuit.no_screwdriver.0=Trying to mangle a CIRCUIT with your bare hand again huh?
+GT5U.item.programmed_circuit.no_screwdriver.1=Your thumb is not a screwdriver. Try a real one.
+GT5U.item.programmed_circuit.no_screwdriver.2=Chuck Norris stares at the circuit until it reprograms itself. You do not.
 
 GT5U.hatch.disableFilter.true=Input Filter Off
 GT5U.hatch.disableFilter.false=Input Filter On

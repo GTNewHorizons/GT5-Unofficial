@@ -4,6 +4,7 @@ package gregtech.common.gui;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.net.GT_Packet_UpdateItem;
 import gregtech.common.items.GT_VolumetricFlask;
 import gregtech.common.net.MessageSetFlaskCapacity;
 import net.minecraft.client.Minecraft;
@@ -11,6 +12,7 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
@@ -119,7 +121,9 @@ public final class GT_GUIContainerVolumetricFlask extends GuiContainer {
     protected void actionPerformed(GuiButton btn) {
         try {
             if (btn == apply) {
-                GT_Values.NW.sendToServer(new MessageSetFlaskCapacity(Integer.parseInt(amount.getText()), Minecraft.getMinecraft().thePlayer));
+                NBTTagCompound tag = new NBTTagCompound();
+                tag.setInteger("cap", Integer.parseInt(amount.getText()));
+                GT_Values.NW.sendToServer(new GT_Packet_UpdateItem(tag));
                 mc.thePlayer.closeScreen();
             }
 

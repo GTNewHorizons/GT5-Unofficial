@@ -228,6 +228,7 @@ public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilte
             btnMode = new GT_GuiIconCheckButton(this, 0, startX + spaceX * 0, startY + spaceY * 0, GT_GuiIcon.WHITELIST, GT_GuiIcon.BLACKLIST, trans("125", "Whitelist Mode"), trans("124", "Blacklist Mode"));
 
             itemFilterButtons = new GT_GuiFakeItemButton(this, startX + spaceX * 0, startY + spaceY * 2, GT_GuiIcon.SLOT_GRAY);
+            itemFilterButtons.setMimicSlot(true);
         }
 
         @Override
