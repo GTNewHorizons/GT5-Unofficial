@@ -1,10 +1,10 @@
 [
 {
-  "modid": "bartworks",
-  "name": "BartWorks",
+  "modid": "${modId}",
+  "name": "${modName}",
   "description": "A Gregtech Addon.",
-  "version": "${version}",
-  "mcversion": "${mcversion}",
+  "version": "${modVersion}",
+  "mcversion": "${minecraftVersion}",
   "url": "https://github.com/bartimaeusnek/bartworks",
   "updateUrl": "",
   "authorList": ["bartimaeusnek"],

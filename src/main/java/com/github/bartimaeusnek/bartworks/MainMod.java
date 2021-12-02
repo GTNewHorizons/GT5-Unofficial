@@ -78,9 +78,9 @@ import static gregtech.api.enums.GT_Values.VN;
     )
 public final class MainMod {
     public static final String NAME = "BartWorks";
-    public static final String VERSION = "@version@";
+    public static final String VERSION = "GRADLETOKEN_VERSION";
     public static final String MOD_ID = "bartworks";
-    public static final String APIVERSION = "@apiversion@";
+    public static final String APIVERSION = "11";
     public static final Logger LOGGER = LogManager.getLogger(MainMod.NAME);
     public static final CreativeTabs GT2 = new GT2Tab("GT2C");
     public static final CreativeTabs BIO_TAB = new BioTab("BioTab");
