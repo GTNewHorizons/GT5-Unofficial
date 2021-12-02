@@ -1,0 +1,9 @@
+// Add your dependencies here
+
+dependencies {
+    compile("com.github.GTNewHorizons:GT5-Unofficial:master-SNAPSHOT:dev")
+    compile("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:master-SNAPSHOT:dev")
+    compile("com.github.GTNewHorizons:Galacticraft:master-SNAPSHOT:dev")
+
+    compile files("dependencies/bartworks[1.7.10]-0.5.2_pre25-dev.jar")
+}
