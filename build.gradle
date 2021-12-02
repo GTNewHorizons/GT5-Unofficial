@@ -156,7 +156,7 @@ dependencies {
 	
 
 	implementation 'com.github.GTNewHorizons:GT5-Unofficial:master-SNAPSHOT'
-	compile ("com.github.GTNewHorizons:StructureLib:${config.structurelib.version}:deobf")
+	compile ("com.github.GTNewHorizons:StructureLib:${config.structurelib.version}:dev")
 
 	provided "net.industrial-craft:industrialcraft-2:${config.ic2.version}:dev"  
 	//compile "ic2:IC2Classic:1.2.1.8:dev" - Does not mirror internal class structure or visibility of IC2, won't ever compile.
