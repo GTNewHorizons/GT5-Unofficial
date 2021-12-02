@@ -22,18 +22,3 @@ Please report any issues you to find the issue tracker on this repository. Inclu
 ## Contribution
 
 Please do! However, please take a note of current issues and what is currently being worked on.
-
-## Addons
-
-[Gregtech++](https://forum.industrial-craft.net/thread/13325-gt5u-1-7-10-gregtech-add-s-many-new-machines-multiblocks-general-xmod-compat-wit/)Misc GT additions.<br />
-[GTTweaker](https://forum.industrial-craft.net/thread/11353-gt-5-09-minetweaker-3-10-addon-addon-version-1-6-1-adding-custom-recipes-for-all/)Minetweaker Addon for GregTech.<br />
-[Tinkers Gregworks](https://github.com/Vexatos/TinkersGregworks) Tinkers Construct Tools made with GT materials.<br />
-[GalacticGreg](https://forum.industrial-craft.net/thread/11039-gregtech-addon-addon-galacticgreg-1-9-gregtech-oregen-on-galacticraft-planets/)  GregTech Worldgen on Galacticraft Planets (Directly integrated into GT5.09.23+)<br />
-[TecTech](https://github.com/Technus/TecTech)<br />
-
-## Modpacks
-
-[Beyond Reality](https://www.atlauncher.com/pack/BeyondReality)<br />
-[Infitech 2](https://forum.feed-the-beast.com/threads/1-7-10-listed-infitech-2-modpack-v3-2-21-hqm-gregtech-balanced-hard-mode-modpack.50185/)<br />
-[GT New Horizons](https://www.technicpack.net/modpack/mcnewhorizons.677387)<br />
-[Идеальная Индустриальная Сборка / Ideal Industrial Assembly](http://sapientmail.wixsite.com/minecraft)<br />
