@@ -128,7 +128,7 @@ dependencies {
     //hard deps
     compile("net.industrial-craft:industrialcraft-2:$ic2Version:dev")
     //jitpack
-    compile("com.github.GTNewHorizons:GT5-Unofficial:experimental-SNAPSHOT:dev") {
+    compile("com.github.GTNewHorizons:GT5-Unofficial:master-SNAPSHOT:dev") {
         this.isChanging = true
     }
     compile ("com.github.GTNewHorizons:StructureLib:1.0.6:deobf")
