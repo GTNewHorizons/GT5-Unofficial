@@ -175,7 +175,10 @@ public class GT_MetaTileEntity_AssemblyLine extends GT_MetaTileEntity_EnhancedMu
         
         nextDataStick:
         for (ItemStack tDataStick : tDataStickList) {
-        	GT_Recipe_AssemblyLine aFoundRecipe = GT_AssemblyLineUtils.findAssemblyLineRecipeFromDataStick(tDataStick);        	
+        	GT_Recipe_AssemblyLine aFoundRecipe = GT_AssemblyLineUtils.findAssemblyLineRecipeFromDataStick(tDataStick);
+
+            if (aFoundRecipe == null)
+                continue;
 
         	// Check if the recipe on the data stick is the current recipe for it's given output, if not we update it and continue to next.
         	if (!GT_AssemblyLineUtils.processDataStick(tDataStick)) {
