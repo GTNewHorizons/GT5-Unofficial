@@ -762,6 +762,10 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 		this.mOutputItems = tOutputItems;
 		this.mOutputFluids = tOutputFluids;
 		updateSlots();
+		for (GT_MetaTileEntity_Hatch_Catalysts h : mCatalystBuses) {
+			h.updateSlots();
+			h.tryFillUsageSlots();
+		}
 
 		// Play sounds (GT++ addition - GT multiblocks play no sounds)
 		startProcess();
@@ -956,7 +960,7 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 				if (damage >= getMaxCatalystDurability()) {
 					log("consume catalyst");
 					addOutput(CI.getEmptyCatalyst(1));
-					aStack = null;
+					aStack.stackSize -= 1;
 				} 
 				else {
 					log("damaging catalyst");
