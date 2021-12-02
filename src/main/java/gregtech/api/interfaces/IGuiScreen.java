@@ -10,6 +10,7 @@ public interface IGuiScreen {
 
     interface IGuiElement {
         void onInit();
+        default void onRemoved() {}
         void draw(int mouseX, int mouseY, float parTicks);
     }
 

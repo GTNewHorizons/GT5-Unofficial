@@ -193,6 +193,7 @@ public class GT_Cover_ItemMeter extends GT_CoverBehavior {
 
             //only shows if opened gui of block sadly, should've used container.
             intSlotIcon = new GT_GuiFakeItemButton(this, startX + spaceX * 8-4, startY + spaceY * 1, GT_GuiIcon.SLOT_GRAY);
+            intSlotIcon.setMimicSlot(true);
 
             if (tile instanceof TileEntity && !super.tile.isDead())
                 maxSlot = Math.min(tile.getSizeInventory() - 1, SLOT_MASK-1);

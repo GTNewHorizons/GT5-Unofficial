@@ -24,6 +24,8 @@ public enum GT_GuiIcon {
     IMPORT                  (0, 32,    32*2),
     ALLOW_INPUT             (0, 32*2,  32*2),
     BLOCK_INPUT             (0, 32*3,  32*2),
+    GREEN_ARROW_UP          (0, 32*4,  32*2),
+    GREEN_ARROW_DOWN        (0, 32*5,  32*2),
 
     SLOT_DARKGRAY           (1, 176,0,18,18),
     SLOT_GRAY               (1, 176,18,18,18);

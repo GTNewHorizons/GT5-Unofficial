@@ -3,6 +3,7 @@ package gregtech.api.util;
 import cofh.api.transport.IItemDuct;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Iterators;
 import com.google.common.collect.Maps;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
@@ -104,7 +105,16 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.text.NumberFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Optional;
@@ -2425,7 +2435,18 @@ public class GT_Utility {
         return false;
     }
 
-    public static class ItemNBT {
+	public static int findMatchingStackInList(List<ItemStack> aStacks, ItemStack aStack) {
+        if (isStackInvalid(aStack))
+            return -1;
+        for (int i = 0, aStacksSize = aStacks.size(); i < aStacksSize; i++) {
+            ItemStack tStack = aStacks.get(i);
+            if (areStacksEqual(aStack, tStack))
+                return i;
+        }
+        return -1;
+    }
+
+	public static class ItemNBT {
         public static void setNBT(ItemStack aStack, NBTTagCompound aNBT) {
             if (aNBT == null) {
                 aStack.setTagCompound(null);
@@ -2988,5 +3009,9 @@ public class GT_Utility {
 
     public static long getNonnullElementCount(Object[] tArray) {
         return Arrays.stream(tArray).filter(Objects::nonNull).count();
+    }
+
+    public static int clamp(int val, int lo, int hi) {
+        return val > hi ? hi : val < lo ? lo : val;
     }
 }

@@ -4,12 +4,14 @@ package gregtech.common.items;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.interfaces.INetworkUpdatableItem;
 import gregtech.api.items.GT_Generic_Item;
 import ic2.core.util.LiquidUtil;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -21,15 +23,22 @@ import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.*;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.IFluidBlock;
+import net.minecraftforge.fluids.IFluidContainerItem;
+import net.minecraftforge.fluids.IFluidHandler;
 
 import java.util.List;
 
 import static gregtech.api.enums.GT_Values.RES_PATH_ITEM;
-import static ic2.core.util.LiquidUtil.*;
+import static ic2.core.util.LiquidUtil.drainContainerStack;
+import static ic2.core.util.LiquidUtil.fillContainerStack;
+import static ic2.core.util.LiquidUtil.placeFluid;
 
 
-public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContainerItem {
+public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContainerItem, INetworkUpdatableItem {
     private final int maxCapacity;
     private final String unlocalFlaskName;
     @SideOnly(Side.CLIENT)
@@ -284,6 +293,17 @@ public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContain
                     return true;
                 }
             }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean receive(ItemStack stack, EntityPlayerMP player, NBTTagCompound tag) {
+        if (stack != null && stack.stackSize > 0) {
+            Item item = stack.getItem();
+            if (item == this)
+                setCapacity(stack, tag.getInteger("cap"));
+            return true;
         }
         return false;
     }

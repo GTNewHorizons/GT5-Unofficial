@@ -210,6 +210,7 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
             b = new GT_GuiIconButton(this, 5, startX + spaceX*1, startY+spaceY*1, GT_GuiIcon.BLACKLIST).setTooltipText(trans("237","Blacklist Fluid"));
 
             fluidFilterButton = new GT_GuiFakeItemButton(this, startX, startY + spaceY * 3 + 2, GT_GuiIcon.SLOT_DARKGRAY);
+            fluidFilterButton.setMimicSlot(true);
         }
 
         private int getNewFilterMode(int id) {
