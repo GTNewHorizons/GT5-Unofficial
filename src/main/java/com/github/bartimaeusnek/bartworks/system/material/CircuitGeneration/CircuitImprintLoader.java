@@ -22,7 +22,7 @@
 
 package com.github.bartimaeusnek.bartworks.system.material.CircuitGeneration;
 
-import com.github.bartimaeusnek.ASM.BWCoreStaticReplacementMethodes;
+import com.github.bartimaeusnek.bartworks.ASM.BWCoreStaticReplacementMethodes;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.bartimaeusnek.bartworks.util.BWRecipes;

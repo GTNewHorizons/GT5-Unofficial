@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-package com.github.bartimaeusnek.ASM;
+package com.github.bartimaeusnek.bartworks.ASM;
 
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
@@ -39,7 +39,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.github.bartimaeusnek.ASM.BWCoreTransformer.shouldTransform;
+import static com.github.bartimaeusnek.bartworks.ASM.BWCoreTransformer.shouldTransform;
 
 @SuppressWarnings("ALL")
 public class BWCore extends DummyModContainer {

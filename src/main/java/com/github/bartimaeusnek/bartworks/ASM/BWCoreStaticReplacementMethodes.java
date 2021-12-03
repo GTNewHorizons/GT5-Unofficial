@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-package com.github.bartimaeusnek.ASM;
+package com.github.bartimaeusnek.bartworks.ASM;
 
 import com.github.bartimaeusnek.bartworks.util.NonNullWrappedHashSet;
 import com.github.bartimaeusnek.bartworks.util.accessprioritylist.AccessPriorityList;

@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-package com.github.bartimaeusnek.ASM;
+package com.github.bartimaeusnek.bartworks.ASM;
 
 import net.minecraft.launchwrapper.IClassTransformer;
 import org.objectweb.asm.ClassReader;
@@ -294,7 +294,7 @@ public class BWCoreTransformer implements IClassTransformer {
                             toPatch.instructions = new InsnList();
                             toPatch.instructions.add(new VarInsnNode(ALOAD,1));
                             toPatch.instructions.add(new VarInsnNode(ALOAD,2));
-                            toPatch.instructions.add(new MethodInsnNode(INVOKESTATIC,"com/github/bartimaeusnek/ASM/BWCoreStaticReplacementMethodes","findCachedMatchingRecipe","(Lnet/minecraft/inventory/InventoryCrafting;Lnet/minecraft/world/World;)Lnet/minecraft/item/ItemStack;",false));
+                            toPatch.instructions.add(new MethodInsnNode(INVOKESTATIC,"com/github/bartimaeusnek/bartworks/ASM/BWCoreStaticReplacementMethodes","findCachedMatchingRecipe","(Lnet/minecraft/inventory/InventoryCrafting;Lnet/minecraft/world/World;)Lnet/minecraft/item/ItemStack;",false));
                             toPatch.instructions.add(new InsnNode(ARETURN));
                             break scase;
                         }

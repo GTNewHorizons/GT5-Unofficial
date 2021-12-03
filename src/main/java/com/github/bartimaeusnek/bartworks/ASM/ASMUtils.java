@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-package com.github.bartimaeusnek.ASM;
+package com.github.bartimaeusnek.bartworks.ASM;
 
 import org.objectweb.asm.tree.MethodNode;
 

@@ -4,4 +4,4 @@ Visit us on Twitch:
 https://minecraft.curseforge.com/projects/bartworks/
 
 
-Please add -Dfml.coreMods.load=com.github.bartimaeusnek.ASM.BWCorePlugin to your args when you run this in a dev enviroment!
+Please add -Dfml.coreMods.load=com.github.bartimaeusnek.bartworks.ASM.BWCorePlugin to your args when you run this in a dev enviroment!

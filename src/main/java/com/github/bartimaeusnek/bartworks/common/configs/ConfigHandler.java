@@ -23,7 +23,7 @@
 package com.github.bartimaeusnek.bartworks.common.configs;
 
 
-import com.github.bartimaeusnek.ASM.BWCoreTransformer;
+import com.github.bartimaeusnek.bartworks.ASM.BWCoreTransformer;
 import com.github.bartimaeusnek.bartworks.API.API_ConfigValues;
 import net.minecraftforge.common.config.Configuration;
 

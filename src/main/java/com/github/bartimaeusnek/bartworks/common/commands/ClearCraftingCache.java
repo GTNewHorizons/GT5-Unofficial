@@ -22,7 +22,7 @@
 
 package com.github.bartimaeusnek.bartworks.common.commands;
 
-import com.github.bartimaeusnek.ASM.BWCoreStaticReplacementMethodes;
+import com.github.bartimaeusnek.bartworks.ASM.BWCoreStaticReplacementMethodes;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;

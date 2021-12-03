@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-package com.github.bartimaeusnek.ASM;
+package com.github.bartimaeusnek.bartworks.ASM;
 
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import cpw.mods.fml.relauncher.FMLInjectionData;
@@ -33,7 +33,7 @@ import java.util.Map;
 
 @IFMLLoadingPlugin.SortingIndex(Integer.MAX_VALUE)//Load as late as possible (after fastcraft/OptiFine).
 @IFMLLoadingPlugin.MCVersion("1.7.10")
-@IFMLLoadingPlugin.TransformerExclusions("com.github.bartimaeusnek.ASM")
+@IFMLLoadingPlugin.TransformerExclusions("com.github.bartimaeusnek.bartworks.ASM")
 @IFMLLoadingPlugin.Name(BWCorePlugin.BWCORE_PLUGIN_NAME)
 public class BWCorePlugin implements IFMLLoadingPlugin {
 

@@ -1,5 +1,3 @@
 compileJava {
     options.encoding = "UTF-8"
 }
-
-project.coreModClass = "com.github.bartimaeusnek.ASM.BWCorePlugin"
