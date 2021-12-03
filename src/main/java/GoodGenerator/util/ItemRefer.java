@@ -1,16 +1,16 @@
 package GoodGenerator.util;
 
 import gregtech.api.util.GT_Utility;
-import ic2.api.reactor.IReactorComponent;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 import static GoodGenerator.Loader.FuelRodLoader.*;
 import static GoodGenerator.Loader.Loaders.*;
 
 public final class ItemRefer {
+
+    public static ItemRefer NULL = getItemStack(_null_);
 
     public static ItemRefer Radiation_Protection_Plate = getItemStack(radiationProtectionPlate);
     public static ItemRefer Wrapped_Uranium_Ingot = getItemStack(wrappedUraniumIngot);
@@ -56,7 +56,16 @@ public final class ItemRefer {
     public static ItemRefer Fluid_Storage_Core_T4 = getItemStack(fluidCore, 3);
     public static ItemRefer Fluid_Storage_Core_T5 = getItemStack(fluidCore, 4);
     public static ItemRefer Fluid_Storage_Core_T6 = getItemStack(fluidCore, 5);
-
+    public static ItemRefer Essentia_Upgrade_Empty = getItemStack(upgradeEssentia, 0);
+    public static ItemRefer Essentia_Upgrade_Air = getItemStack(upgradeEssentia, 1);
+    public static ItemRefer Essentia_Upgrade_Thermal = getItemStack(upgradeEssentia, 2);
+    public static ItemRefer Essentia_Upgrade_Unstable = getItemStack(upgradeEssentia, 3);
+    public static ItemRefer Essentia_Upgrade_Victus = getItemStack(upgradeEssentia, 4);
+    public static ItemRefer Essentia_Upgrade_Tainted = getItemStack(upgradeEssentia, 5);
+    public static ItemRefer Essentia_Upgrade_Mechanics = getItemStack(upgradeEssentia, 6);
+    public static ItemRefer Essentia_Upgrade_Spirit = getItemStack(upgradeEssentia, 7);
+    public static ItemRefer Essentia_Upgrade_Radiation = getItemStack(upgradeEssentia, 8);
+    public static ItemRefer Essentia_Upgrade_Electric = getItemStack(upgradeEssentia, 9);
 
     public static ItemRefer Field_Restriction_Casing = getItemStack(MAR_Casing);
     public static ItemRefer Naquadah_Fuel_Refinery_Casing = getItemStack(FRF_Casings);
@@ -72,6 +81,7 @@ public final class ItemRefer {
     public static ItemRefer Essentia_Cell_T1 = getItemStack(essentiaCell, 0);
     public static ItemRefer Essentia_Cell_T2 = getItemStack(essentiaCell, 1);
     public static ItemRefer Essentia_Cell_T3 = getItemStack(essentiaCell, 2);
+    public static ItemRefer Essentia_Cell_T4 = getItemStack(essentiaCell, 3);
     public static ItemRefer Essentia_Hatch = getItemStack(essentiaHatch);
     public static ItemRefer YOTTank_Casing = getItemStack(yottaFluidTankCasing);
     public static ItemRefer YOTTank_Cell_T1 = getItemStack(yottaFluidTankCell, 0);
@@ -97,7 +107,7 @@ public final class ItemRefer {
     private int mMeta = 0;
 
     private static ItemRefer getItemStack(ItemStack itemStack) {
-        if (itemStack == null) return null;
+        if (itemStack == null) return NULL;
         return new ItemRefer(itemStack);
     }
 
@@ -106,7 +116,7 @@ public final class ItemRefer {
     }
 
     private static ItemRefer getItemStack(Item item, int meta) {
-        if (item == null) return null;
+        if (item == null) return NULL;
         return new ItemRefer(item, meta);
     }
 
@@ -115,7 +125,7 @@ public final class ItemRefer {
     }
 
     private static ItemRefer getItemStack(Block block, int meta) {
-        if (block == null) return null;
+        if (block == null) return NULL;
         return new ItemRefer(block, meta);
     }
 
@@ -134,9 +144,9 @@ public final class ItemRefer {
     }
 
     public ItemStack get(int amount){
-        if (mItem != null) return new ItemStack(mItem, amount, mMeta);
+        if (mItem != null ) return new ItemStack(mItem, amount, mMeta);
         if (mBlock != null) return new ItemStack(mBlock, amount, mMeta);
         if (mItemStack != null) return GT_Utility.copyAmount(amount, mItemStack);
-        return null;
+        return new ItemStack(_null_, amount, 0);
     }
 }

@@ -9,6 +9,8 @@ import GoodGenerator.Blocks.TEs.*;
 import GoodGenerator.Blocks.TEs.MetaTE.NeutronAccelerator;
 import GoodGenerator.Blocks.TEs.MetaTE.NeutronSensor;
 import GoodGenerator.CrossMod.NEI.IMCForNEI;
+import GoodGenerator.CrossMod.NEI.NEI_Config;
+import GoodGenerator.CrossMod.Thaumcraft.LargeEssentiaEnergyData;
 import GoodGenerator.Items.MyItemBlocks;
 import GoodGenerator.Items.MyItems;
 import GoodGenerator.Items.RadioactiveItem;
@@ -30,6 +32,8 @@ public class Loaders {
 
     public static final int IDOffset = 32001;
     public static final byte GoodGeneratorTexturePage = 12;
+
+    public static final Item _null_ = new MyItems("_null_", null);
 
     public static final Item radiationProtectionPlate = new MyItems("radiationProtectionPlate", GoodGenerator.GG);
     public static final Item wrappedUraniumIngot = new MyItems("wrappedUraniumIngot", GoodGenerator.GG);
@@ -58,6 +62,7 @@ public class Loaders {
     public static final Item naquadriaMass = new MyItems("naquadriaMass", addText("naquadriaMass.tooltip", 1), GoodGenerator.GG);
     public static final Item advancedFuelRod = new MyItems("advancedFuelRod", GoodGenerator.GG);
     public static final Item fluidCore = new MyItems("fluidCore", GoodGenerator.GG, new String[]{GoodGenerator.MOD_ID+":fluidCore/1", GoodGenerator.MOD_ID+":fluidCore/2", GoodGenerator.MOD_ID+":fluidCore/3", GoodGenerator.MOD_ID+":fluidCore/4", GoodGenerator.MOD_ID+":fluidCore/5", GoodGenerator.MOD_ID+":fluidCore/6"});
+    public static final Item upgradeEssentia = new MyItems("upgradeEssentia", GoodGenerator.GG, new String[]{GoodGenerator.MOD_ID+":upgradeEssentia/null", GoodGenerator.MOD_ID+":upgradeEssentia/air", GoodGenerator.MOD_ID+":upgradeEssentia/thermal", GoodGenerator.MOD_ID+":upgradeEssentia/unstable", GoodGenerator.MOD_ID+":upgradeEssentia/victus", GoodGenerator.MOD_ID+":upgradeEssentia/tainted", GoodGenerator.MOD_ID+":upgradeEssentia/mechanics", GoodGenerator.MOD_ID+":upgradeEssentia/spirit", GoodGenerator.MOD_ID+":upgradeEssentia/radiation", GoodGenerator.MOD_ID+":upgradeEssentia/electric"});
 
     public static final Block MAR_Casing = new Casing("MAR_Casing", new String[]{GoodGenerator.MOD_ID+":MAR_Casing"});
     public static final Block FRF_Casings = new Casing("FRF_Casing", new String[]{"gregtech:iconsets/MACHINE_CASING_MINING_BLACKPLUTONIUM"});
@@ -69,7 +74,7 @@ public class Loaders {
     public static final Block rawCylinder = new Casing("rawCylinder", new String[]{GoodGenerator.MOD_ID+":rawCylinder"});
     public static final Block titaniumPlatedCylinder = new Casing("titaniumPlatedCylinder", new String[]{GoodGenerator.MOD_ID+":titaniumPlatedCylinder"});
     public static final Block magicCasing = new Casing("magicCasing", new String[]{GoodGenerator.MOD_ID+":MagicCasing"});
-    public static final Block essentiaCell = new Casing("essentiaCell", new String[]{GoodGenerator.MOD_ID+":essentiaCell/1",GoodGenerator.MOD_ID+":essentiaCell/2",GoodGenerator.MOD_ID+":essentiaCell/3"});
+    public static final Block essentiaCell = new Casing("essentiaCell", new String[]{GoodGenerator.MOD_ID+":essentiaCell/1",GoodGenerator.MOD_ID+":essentiaCell/2",GoodGenerator.MOD_ID+":essentiaCell/3",GoodGenerator.MOD_ID+":essentiaCell/4"});
     public static final Block speedingPipe = new ComplexTextureCasing("speedingPipe", new String[]{GoodGenerator.MOD_ID+":speedingPipe_SIDE"}, new String[]{GoodGenerator.MOD_ID+":speedingPipe_TOP"});
     public static final Block yottaFluidTankCell = new Casing("yottaFluidTankCell", new String[]{GoodGenerator.MOD_ID+":yottaFluidTankCell/1", GoodGenerator.MOD_ID+":yottaFluidTankCell/2", GoodGenerator.MOD_ID+":yottaFluidTankCell/3", GoodGenerator.MOD_ID+":yottaFluidTankCell/4", GoodGenerator.MOD_ID+":yottaFluidTankCell/5",
             GoodGenerator.MOD_ID+":yottaFluidTankCell/6", GoodGenerator.MOD_ID+":yottaFluidTankCell/7", GoodGenerator.MOD_ID+":yottaFluidTankCell/8", GoodGenerator.MOD_ID+":yottaFluidTankCell/9", GoodGenerator.MOD_ID+":yottaFluidTankCell/10",});
@@ -99,7 +104,11 @@ public class Loaders {
         Loaders.YFT = new YottaFluidTank(IDOffset + 13, "YottaFluidTank", "YOTTank").getStackForm(1L);
     }
 
-    public static void Register(){
+    public static void Register() {
+
+        GameRegistry.registerItem(_null_, "_null_", GoodGenerator.MOD_ID);
+        NEI_Config.hide(_null_);
+
         GameRegistry.registerBlock(MAR_Casing, MyItemBlocks.class, "MAR_Casing");
         GameRegistry.registerBlock(radiationProtectionSteelFrame, MyItemBlocks.class, "radiationProtectionSteelFrame");
         GameRegistry.registerBlock(fieldRestrictingGlass, MyItemBlocks.class, "fieldRestrictingGlass");
@@ -143,6 +152,8 @@ public class Loaders {
 
     public static void compactMod() {
         if (Loader.isModLoaded("Thaumcraft")) {
+            LargeEssentiaEnergyData.processEssentiaData();
+            GameRegistry.registerItem(upgradeEssentia, "upgradeEssentia", GoodGenerator.MOD_ID);
             GameRegistry.registerTileEntity(EssentiaHatch.class, "EssentiaHatch");
             Loaders.LEG = new LargeEssentiaGenerator(IDOffset + 1, "LargeEssentiaGenerator", "Large Essentia Generator").getStackForm(1L);
             essentiaHatch = new TEBlock("essentiaHatch", new String[]{GoodGenerator.MOD_ID + ":essentiaHatch"}, 1);

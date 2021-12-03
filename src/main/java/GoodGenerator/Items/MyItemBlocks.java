@@ -12,12 +12,15 @@ import net.minecraft.item.ItemBlock;
 import GoodGenerator.Main.GoodGenerator;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import static GoodGenerator.Loader.Loaders.essentiaCell;
 import static GoodGenerator.Loader.Loaders.yottaFluidTankCell;
+import static GoodGenerator.util.CharExchanger.tierName;
 
 public class MyItemBlocks extends ItemBlock {
     private final String mNoMobsToolTip = GT_LanguageManager.addStringLocalization("gt.nomobspawnsonthisblock", "Mobs cannot Spawn on this Block");
@@ -77,7 +80,11 @@ public class MyItemBlocks extends ItemBlock {
             cap.append(" 1000000");
             for (int i = 0; i < p_77624_1_.getItemDamage(); i++) cap.append("00");
             cap.append(" L");
-            p_77624_3_.add(DescTextLocalization.addText("YOTTankCell.tooltip", 1)[0] + CharExchanger.formatNumber(cap.toString()));
+            p_77624_3_.add(StatCollector.translateToLocal("YOTTankCell.tooltip.0") + CharExchanger.formatNumber(cap.toString()));
+        }
+
+        if (Block.getBlockFromItem(p_77624_1_.getItem()).equals(essentiaCell)) {
+            p_77624_3_.add(StatCollector.translateToLocal("hatchTier.tooltip.0") + " " + tierName[p_77624_1_.getItemDamage() + 3]);
         }
     }
 }

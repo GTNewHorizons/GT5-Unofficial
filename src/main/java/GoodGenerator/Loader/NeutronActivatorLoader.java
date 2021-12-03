@@ -12,14 +12,14 @@ public class NeutronActivatorLoader {
     public static void NARecipeLoad() {
         MyRecipeAdder.instance.addNeutronActivatorRecipe(
                 new FluidStack[]{
-                        thoriumBasedLiquidFuel.getFluidOrGas(200)
+                        thoriumBasedLiquidFuelExcited.getFluidOrGas(200)
                 },
                 null,
                 new FluidStack[]{
                         thoriumBasedLiquidFuelDepleted.getFluidOrGas(200)
                 },
                 null,
-                40,
+                20000,
                 700,
                 500
         );

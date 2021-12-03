@@ -80,6 +80,7 @@ public class StructureHelper {
                 if (aBlock == tBlock) {
                     Integer currentMeta = aGetTheFuckingMeta.apply(t);
                     int newMeta = tBlock.getDamageValue(world, x, y, z) + 1;
+                    if (newMeta > maxMeta) return false;
                     if (currentMeta == 0) {
                         return aSetTheFuckingMeta.test(t, newMeta);
                     } else {
@@ -103,7 +104,7 @@ public class StructureHelper {
             private int getMeta(ItemStack trigger) {
                 int meta = trigger.stackSize;
                 if (meta <= 0) meta = 0;
-                if (meta > maxMeta) meta = maxMeta;
+                if (meta >= maxMeta) meta = maxMeta - 1;
                 return meta;
             }
         };
