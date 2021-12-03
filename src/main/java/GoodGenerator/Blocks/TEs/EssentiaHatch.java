@@ -1,5 +1,7 @@
 package GoodGenerator.Blocks.TEs;
 
+import GoodGenerator.CrossMod.Thaumcraft.LargeEssentiaEnergyData;
+import gregtech.api.util.GT_Log;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
@@ -18,8 +20,8 @@ import java.util.ArrayList;
 public class EssentiaHatch extends TileEntity implements IAspectContainer, IEssentiaTransport {
 
     private Aspect mLocked;
-
     private AspectList current = new AspectList();
+    public int mState = 0;
 
     public void setLockedAspect(Aspect aAspect) {
         this.mLocked = aAspect;
@@ -30,7 +32,7 @@ public class EssentiaHatch extends TileEntity implements IAspectContainer, IEsse
         super.readFromNBT(tagCompound);
 
         this.mLocked = Aspect.getAspect(tagCompound.getString("mLocked"));
-
+        this.mState = tagCompound.getInteger("mState");
         current = new AspectList();
         NBTTagList tlist = tagCompound.getTagList("Aspects", 10);
         for (int j = 0; j < tlist.tagCount(); ++j) {
@@ -46,7 +48,7 @@ public class EssentiaHatch extends TileEntity implements IAspectContainer, IEsse
         super.writeToNBT(tagCompound);
 
         tagCompound.setString("mLocked", this.mLocked == null ? "" : this.mLocked.getTag());
-
+        tagCompound.setInteger("mState", mState);
         NBTTagList tlist = new NBTTagList();
         Aspect[] aspectA = current.getAspects();
         for (Aspect aspect : aspectA) {
@@ -85,6 +87,8 @@ public class EssentiaHatch extends TileEntity implements IAspectContainer, IEsse
     }
 
     public void fillfrompipe() {
+        if (getEssentiaAmount(null) > 1000)
+            return;
         TileEntity[] te = new TileEntity[ForgeDirection.VALID_DIRECTIONS.length];
         for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
             te[i] = ThaumcraftApiHelper.getConnectableTile(this.worldObj, this.xCoord, this.yCoord, this.zCoord, ForgeDirection.VALID_DIRECTIONS[i]);
@@ -94,7 +98,10 @@ public class EssentiaHatch extends TileEntity implements IAspectContainer, IEsse
                     return;
                 }
                 if ((pipe.getEssentiaType(ForgeDirection.VALID_DIRECTIONS[i].getOpposite()) != null) && (pipe.getSuctionAmount(ForgeDirection.VALID_DIRECTIONS[i]) < getSuctionAmount(ForgeDirection.VALID_DIRECTIONS[i]))) {
-                    if (mLocked != null && pipe.getEssentiaType(ForgeDirection.VALID_DIRECTIONS[i].getOpposite()) == mLocked) {
+                    Aspect readyInput = pipe.getEssentiaType(ForgeDirection.VALID_DIRECTIONS[i].getOpposite());
+                    int type = LargeEssentiaEnergyData.getAspectTypeIndex(readyInput);
+                    if (type != -1 && (mState & (1 << type)) == 0) continue;
+                    if (readyInput.equals(mLocked)) {
                         addToContainer(mLocked, pipe.takeEssentia(mLocked, 1, ForgeDirection.VALID_DIRECTIONS[i]));
                     }
                     if (mLocked == null)

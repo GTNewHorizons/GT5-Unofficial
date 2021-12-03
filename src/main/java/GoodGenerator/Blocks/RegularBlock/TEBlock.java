@@ -5,6 +5,7 @@ import GoodGenerator.Main.GoodGenerator;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
+import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -17,8 +18,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.IEssentiaContainerItem;
 
 import java.util.List;
@@ -151,10 +154,16 @@ public class TEBlock extends BlockContainer {
                     ItemStack tItemStack = player.getHeldItem();
                     if (tItemStack != null) {
                         Item tItem = tItemStack.getItem();
-                        if (tItem instanceof IEssentiaContainerItem)
-                            ((EssentiaHatch) tile).setLockedAspect(((IEssentiaContainerItem) tItem).getAspects(player.getHeldItem()).getAspects()[0]);
+                        if (tItem instanceof IEssentiaContainerItem && ((IEssentiaContainerItem) tItem).getAspects(player.getHeldItem()) != null && ((IEssentiaContainerItem) tItem).getAspects(player.getHeldItem()).size() > 0) {
+                            Aspect tLocked = ((IEssentiaContainerItem) tItem).getAspects(player.getHeldItem()).getAspects()[0];
+                            ((EssentiaHatch) tile).setLockedAspect(tLocked);
+                            GT_Utility.sendChatToPlayer(player, String.format(StatCollector.translateToLocal("essentiahatch.chat.0"), tLocked.getLocalizedDescription()));
+                        }
                     }
-                    else ((EssentiaHatch) tile).setLockedAspect(null);
+                    else {
+                        ((EssentiaHatch) tile).setLockedAspect(null);
+                        GT_Utility.sendChatToPlayer(player, StatCollector.translateToLocal("essentiahatch.chat.1"));
+                    }
                     world.markBlockForUpdate(x, y, z);
                     return true;
                 }

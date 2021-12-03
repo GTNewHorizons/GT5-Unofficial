@@ -19,5 +19,6 @@ public class IMCForNEI {
         aNBT.setInteger("handlerHeight", 135);
         aNBT.setInteger("handlerWidth", 166);
         aNBT.setInteger("maxRecipesPerPage", 1);
+        aNBT.setInteger("yShift", 6);
     }
 }
