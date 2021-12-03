@@ -50,7 +50,7 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
     private void openSelectCircuitDialog() {
         mc.displayGuiScreen(new GT_GUIDialogSelectItem(
                 StatCollector.translateToLocal("GT5U.machines.select_circuit"),
-                null,
+                mContainer.mTileEntity.getMetaTileEntity().getStackForm(0),
                 this,
                 this::onCircuitSelected,
                 getMachine().getConfigurationCircuits(),

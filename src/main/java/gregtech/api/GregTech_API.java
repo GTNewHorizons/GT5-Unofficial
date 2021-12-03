@@ -1,5 +1,7 @@
 package gregtech.api;
 
+import com.google.common.collect.Multimap;
+import com.google.common.collect.Multimaps;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
@@ -32,24 +34,29 @@ import gregtech.api.world.GT_Worldgen;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
+import java.util.function.BiFunction;
+import java.util.function.UnaryOperator;
+import java.util.stream.Collectors;
+import java.util.function.Predicate;
 
 import static gregtech.api.enums.GT_Values.B;
 import static gregtech.api.enums.GT_Values.L;
@@ -182,9 +189,22 @@ public class GregTech_API {
             sHeatHazmatList = new GT_HashSet<>(),
             sRadioHazmatList = new GT_HashSet<>(),
             sElectroHazmatList = new GT_HashSet<>();
-    private static final List<ItemStack> sRealConfigurationList = new ArrayList<>();
-    private static final List<ItemStack> sConfigurationList = Collections.unmodifiableList(sRealConfigurationList);
-    public static final GT_HashSet<GT_ItemStack> sCircuitProgrammerList = new GT_HashSet<>();
+    private static final Multimap<Integer, ItemStack> sRealConfigurationList = Multimaps.newListMultimap(new TreeMap<>(), ArrayList::new);
+    private static final Map<Integer, List<ItemStack>> sConfigurationLists = new HashMap<>();
+    private static final Map<Predicate<ItemStack>, BiFunction<ItemStack, EntityPlayerMP, ItemStack>> sRealCircuitProgrammerList = new LinkedHashMap<>();
+    public static final Map<Predicate<ItemStack>, BiFunction<ItemStack, EntityPlayerMP, ItemStack>> sCircuitProgrammerList = Collections.unmodifiableMap(sRealCircuitProgrammerList);
+    static {
+        registerCircuitProgrammer(new Predicate<ItemStack>() {
+            private final int screwdriverOreId = OreDictionary.getOreID("craftingToolScrewdriver");
+            @Override
+            public boolean test(ItemStack stack) {
+                for (int i : OreDictionary.getOreIDs(stack))
+                    if (i == screwdriverOreId)
+                        return true;
+                return false;
+            }
+        }, true);
+    }
     /**
      * The List of Dimensions, which are Whitelisted for the Teleporter. This list should not contain other Planets.
      * Mystcraft Dimensions and other Dimensional Things should be allowed.
@@ -643,24 +663,50 @@ public class GregTech_API {
      * Duplicates or invalid stacks will be silently ignored.
      */
     public static void registerConfigurationCircuit(ItemStack aStack) {
-        if (GT_Utility.isStackInvalid(aStack))
-            return;
-        for (ItemStack tRegistered : sRealConfigurationList)
-            if (GT_Utility.areStacksEqual(tRegistered, aStack))
-                return;
-        sRealConfigurationList.add(GT_Utility.copyAmount(0, aStack));
+        registerConfigurationCircuit(aStack, 0);
     }
 
     /**
-     * Get a list of Configuration circuits. All of these stacks will have a stack size of 0.
-     * Use {@link #registerConfigurationCircuit(ItemStack)} to add to this list.
+     * Register a new ItemStack as configuration circuits.
+     * Duplicates or invalid stacks will be silently ignored.
+     * @param minTier the minimal tier this circuit can be offered for free, e.g. normal configuration circuit is available
+     *                in LV+ single blocks, GT++ breakthrough circuit is offered in HV+ single blocks
+     */
+    public static void registerConfigurationCircuit(ItemStack aStack, int minTier) {
+        if (GT_Utility.isStackInvalid(aStack))
+            return;
+        for (ItemStack tRegistered : sRealConfigurationList.values())
+            if (GT_Utility.areStacksEqual(tRegistered, aStack))
+                return;
+        ItemStack stack = GT_Utility.copyAmount(0, aStack);
+        sRealConfigurationList.put(minTier, stack);
+        sConfigurationLists.entrySet().stream()
+                .filter(e -> e.getKey() >= minTier)
+                .forEach(e -> e.getValue().add(stack));
+    }
+
+    /**
+     * Get a list of Configuration circuits. These stacks will have a stack size of 0.
+     * Use {@link #registerConfigurationCircuit(ItemStack, int)} or its overload to add to this list.
      *
+     * @param machineTier The voltage tier where this list will be used. use Integer.MAX_VALUE to get all circuits
      * @return An unmodifiable view of actual list.
-     * It will reflect the changes to the underlying list as new circuits are registered.
      * DO NOT MODIFY THE ItemStacks!
      */
-    public static List<ItemStack> getConfigurationCircuitList() {
-        return sConfigurationList;
+    public static List<ItemStack> getConfigurationCircuitList(int machineTier) {
+        return Collections.unmodifiableList(sConfigurationLists.computeIfAbsent(machineTier, (t) -> sRealConfigurationList.entries().stream().filter(e -> e.getKey() <= machineTier).map(Map.Entry::getValue).collect(Collectors.toList())));
+    }
+
+    public static void registerCircuitProgrammer(ItemStack stack, boolean ignoreNBT, boolean useContainer) {
+        registerCircuitProgrammer(rhs ->  GT_Utility.areStacksEqual(stack, rhs, ignoreNBT), useContainer);
+    }
+
+    public static void registerCircuitProgrammer(Predicate<ItemStack> predicate, boolean useContainer) {
+        sRealCircuitProgrammerList.put(predicate, useContainer ? (s, p) -> s.getItem().getContainerItem(s) : (s, p) -> s);
+    }
+
+    public static void registerCircuitProgrammer(Predicate<ItemStack> predicate, BiFunction<ItemStack, EntityPlayerMP, ItemStack> doDamage) {
+        sRealCircuitProgrammerList.put(predicate, doDamage);
     }
 
     public static void registerCover(ItemStack aStack, ITexture aCover, GT_CoverBehavior aBehavior) {
