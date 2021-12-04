@@ -7,9 +7,11 @@ import gregtech.api.interfaces.IHasFluidDisplayItem;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Utility;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
@@ -23,6 +25,7 @@ public abstract class GT_MetaTileEntity_BasicTank extends GT_MetaTileEntity_Tier
 
     public FluidStack mFluid;
     protected int mOpenerCount;
+    public boolean mVoidOverflow = false;
 
     /**
      * @param aInvSlotCount should be 3
@@ -238,7 +241,7 @@ public abstract class GT_MetaTileEntity_BasicTank extends GT_MetaTileEntity_Tier
             return 0;
 
         int space = getCapacity() - getFillableStack().amount;
-        if (aFluid.amount <= space) {
+        if (aFluid.amount <= space && !getVoidOverflow()) {
             if (doFill) {
                 getFillableStack().amount += aFluid.amount;
                 getBaseMetaTileEntity().markDirty();
@@ -305,4 +308,23 @@ public abstract class GT_MetaTileEntity_BasicTank extends GT_MetaTileEntity_Tier
     protected void onEmptyingContainerWhenEmpty(){
     	//Do nothing
     }
+
+    public boolean getVoidOverflow() {
+        return mVoidOverflow;
+    }
+
+    public void setVoidOverflow(boolean newState) {
+        mVoidOverflow = newState;
+    }
+
+    public boolean toggleVoidOverflow() {
+        setVoidOverflow(!getVoidOverflow());
+        return mVoidOverflow;
+    }
+
+    @Override
+    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal(toggleVoidOverflow() ? "GT5U.machines.voidoveflow.enabled" : "GT5U.machines.voidoveflow.disabled"));
+    }
+
 }
