@@ -241,16 +241,22 @@ public abstract class GT_MetaTileEntity_BasicTank extends GT_MetaTileEntity_Tier
             return 0;
 
         int space = getCapacity() - getFillableStack().amount;
-        if (aFluid.amount <= space && !getVoidOverflow()) {
+        if (aFluid.amount <= space || getVoidOverflow()) {
             if (doFill) {
                 getFillableStack().amount += aFluid.amount;
                 getBaseMetaTileEntity().markDirty();
             }
+            correctFillAmount();
             return aFluid.amount;
         }
         if (doFill)
             getFillableStack().amount = getCapacity();
         return space;
+    }
+
+    private void correctFillAmount() {
+        if (getFillableStack().amount > getCapacity())
+            getFillableStack().amount = getCapacity();
     }
 
     @Override

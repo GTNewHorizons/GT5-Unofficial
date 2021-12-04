@@ -166,7 +166,7 @@ public class GT_MetaTileEntity_SuperTank extends GT_MetaTileEntity_BasicTank {
                         EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(getCapacity()) + " L" + EnumChatFormatting.RESET
         };
     }
-    
+
     @Override
     public boolean voidableTank() {
         return true;
