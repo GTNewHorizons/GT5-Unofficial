@@ -310,10 +310,14 @@ public abstract class GT_MetaTileEntity_BasicTank extends GT_MetaTileEntity_Tier
     }
 
     public boolean getVoidOverflow() {
+        if (!voidableTank())
+            return false;
         return mVoidOverflow;
     }
 
     public void setVoidOverflow(boolean newState) {
+        if (!voidableTank())
+            return;
         mVoidOverflow = newState;
     }
 
@@ -325,6 +329,10 @@ public abstract class GT_MetaTileEntity_BasicTank extends GT_MetaTileEntity_Tier
     @Override
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal(toggleVoidOverflow() ? "GT5U.machines.voidoveflow.enabled" : "GT5U.machines.voidoveflow.disabled"));
+    }
+
+    public boolean voidableTank() {
+        return false;
     }
 
 }

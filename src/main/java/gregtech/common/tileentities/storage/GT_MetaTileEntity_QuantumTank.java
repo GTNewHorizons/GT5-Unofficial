@@ -167,4 +167,9 @@ public class GT_MetaTileEntity_QuantumTank extends GT_MetaTileEntity_BasicTank {
         };
     }
 
+    @Override
+    public boolean voidableTank() {
+        return true;
+    }
+
 }
