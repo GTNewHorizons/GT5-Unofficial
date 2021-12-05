@@ -1,6 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.tools;
 
 import gregtech.GT_Mod;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures.ItemIcons;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.GT_MetaGenerated_Tool;
@@ -70,9 +71,9 @@ extends GT_Tool_WireCutter {
 	}
 
 	public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-		return !aIsToolHead
+		return aIsToolHead
 				? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa
-				: GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa;
+				: Materials.TungstenSteel.mRGBa;
 	}	
 	
 	

@@ -26,7 +26,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 import net.minecraftforge.event.world.BlockEvent;
 
-public class TOOL_Gregtech_AngelGrinder
+public class TOOL_Gregtech_AngleGrinder
 extends GT_Tool {
 
 	public static final List<String> mEffectiveList = Arrays.asList(new String[]{EntityIronGolem.class.getName(), "EntityTowerGuardian"});
@@ -162,7 +162,7 @@ extends GT_Tool {
 	}
 
 	public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-		return !aIsToolHead
+		return aIsToolHead
 				? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa
 				: Materials.TungstenSteel.mRGBa;
 	}
