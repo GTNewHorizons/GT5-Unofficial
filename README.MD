@@ -8,7 +8,7 @@ These plugins are:
 
 
 ### Download  
-You can find the download link [here](https://github.com/bartimaeusnek/GTNEIOrePlugin/releases).  
+You can find the download link [here](https://github.com/GTNewHorizons/GTNEIOrePlugin/releases).  
 
 ### Build
 If you want a bleeding-edge version of this mod, you can simply download or clone this repository, establish a folder named "libs" and put the dev builds:
@@ -20,5 +20,4 @@ in the folder.
 Then you can build this mod in the same way as building other mods. i.e. run "gradlew build" command in the CMD window. Then the build can be found in "./build/libs/" folder.
 
 ### License
-The whole repository is under [MIT](https://github.com/bartimaeusnek/GTNEIOrePlugin/blob/GT-NH-Mod/LICENSE) License.   
 You can feel free to use the mod in your modpacks. If you add my name in your credit list, I'll be super happy with that.
