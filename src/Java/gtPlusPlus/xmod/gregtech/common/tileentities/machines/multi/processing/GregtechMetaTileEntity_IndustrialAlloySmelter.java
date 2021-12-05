@@ -220,9 +220,27 @@ public class GregtechMetaTileEntity_IndustrialAlloySmelter extends GregtechMeta_
 		return 100;
 	}
 
+
+	@Override
 	public boolean checkRecipe(ItemStack aStack) {
-		return checkRecipeGeneric(this.getMaxParallelRecipes(), 100, 5 * this.mLevel); // Will have to clone the logic from parent class to handle heating coil
-		// tiers.
+		FluidStack[] tFluids = getStoredFluids().toArray(new FluidStack[0]);
+		for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
+			ArrayList<ItemStack> tInputs = new ArrayList<>();
+			if (isValidMetaTileEntity(tBus)) {
+				for (int i = tBus.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
+					if (tBus.getBaseMetaTileEntity().getStackInSlot(i) != null) {
+						tInputs.add(tBus.getBaseMetaTileEntity().getStackInSlot(i));
+					}
+				}
+			}
+			if (tInputs.size() > 1) {
+				ItemStack[] tItems = tInputs.toArray(new ItemStack[0]);
+				if (checkRecipeGeneric(tItems, tFluids, getMaxParallelRecipes(), 100, 5 * this.mLevel, 10000)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 	
 	@Override
