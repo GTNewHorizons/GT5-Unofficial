@@ -243,11 +243,18 @@ public class GT_Item_Machines extends ItemBlock implements IFluidContainerItem {
             NBTTagCompound tNBT = aStack.stackTagCompound;
             if (tNBT == null) return;
             if ((tNBT.hasKey("mItemCount") && tNBT.getInteger("mItemCount") > 0) ||
-                    tNBT.hasKey("mFluid")) {
-                tPlayer.addPotionEffect(new PotionEffect(Potion.hunger.id, 12000, 4));
-                tPlayer.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 12000, 4));
-                tPlayer.addPotionEffect(new PotionEffect(Potion.digSlowdown.id, 12000, 4));
-                tPlayer.addPotionEffect(new PotionEffect(Potion.weakness.id, 12000, 4));
+                    (tNBT.hasKey("mFluid") && FluidStack.loadFluidStackFromNBT(tNBT.getCompoundTag("mFluid")).amount > 64000)) {
+                double tFluidAmount = FluidStack.loadFluidStackFromNBT(tNBT.getCompoundTag("mFluid")).amount;
+                double tMiddlePoint = 4096000;
+                double tSmoothingCoefficient = 2000000;
+                int tMaxLastingTime = 12000;
+                double tmp = (tFluidAmount - tMiddlePoint) / tSmoothingCoefficient;
+                int tLasing = (int) (Math.exp(tmp) / (Math.exp(tmp) + Math.exp(-tmp)) * tMaxLastingTime);
+                if (tFluidAmount == 0) tLasing = 1200;
+                tPlayer.addPotionEffect(new PotionEffect(Potion.hunger.id, tLasing, 4));
+                tPlayer.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, tLasing, 4));
+                tPlayer.addPotionEffect(new PotionEffect(Potion.digSlowdown.id, tLasing, 4));
+                tPlayer.addPotionEffect(new PotionEffect(Potion.weakness.id, tLasing, 4));
             }
         }
     }
