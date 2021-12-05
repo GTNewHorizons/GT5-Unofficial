@@ -69,7 +69,7 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
                 v = (int) v;
                 if (v < 0) return STATUS_TOO_LOW;
                 if (v == 0) return STATUS_NEUTRAL;
-                if (v >= base.eInputHatches.size()) return STATUS_TOO_HIGH;
+                if (v > base.eOutputHatches.size()) return STATUS_TOO_HIGH;
                 return STATUS_OK;
             };
     private static final IStatusFunction<GT_MetaTileEntity_EM_junction> DST_STATUS =
@@ -80,7 +80,7 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
                     v = (int) v;
                     if (v < 0) return STATUS_TOO_LOW;
                     if (v == 0) return STATUS_LOW;
-                    if (v >= base.eInputHatches.size()) return STATUS_TOO_HIGH;
+                    if (v > base.eInputHatches.size()) return STATUS_TOO_HIGH;
                     return STATUS_OK;
                 }
                 return STATUS_NEUTRAL;
