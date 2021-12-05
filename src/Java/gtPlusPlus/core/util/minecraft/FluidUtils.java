@@ -575,11 +575,11 @@ public class FluidUtils {
 		return aFStack1 != null || aFStack2 != null || aFStack3 != null || aFStack4 != null || aFStack5 != null || aFStack6 != null;
 	}
 	
-	public static FluidStack getWildcardFluidStack(String aFluidName, int amount) {
-		FluidStack aFStack1 = (FluidUtils.getFluidStack("molten"+"."+aFluidName.toLowerCase(), amount));
-		FluidStack aFStack2 = (FluidUtils.getFluidStack("fluid"+"."+aFluidName.toLowerCase(), amount));
-		FluidStack aFStack3 = (FluidUtils.getFluidStack(aFluidName.toLowerCase(), amount));		
-		FluidStack aFStack4 = (FluidUtils.getFluidStack(aFluidName, amount));	
+	public static FluidStack getWildcardFluidStack(String aFluidName, int amount) {	
+		FluidStack aFStack1 = (FluidUtils.getFluidStack(aFluidName, amount));	
+		FluidStack aFStack2 = (FluidUtils.getFluidStack(aFluidName.toLowerCase(), amount));	
+		FluidStack aFStack3 = (FluidUtils.getFluidStack("molten"+"."+aFluidName.toLowerCase(), amount));
+		FluidStack aFStack4 = (FluidUtils.getFluidStack("fluid"+"."+aFluidName.toLowerCase(), amount));
 		FluidStack aFStack5 = (FluidUtils.getFluidStack("liquid_"+aFluidName.toLowerCase(), amount));
 		FluidStack aFStack6 = (FluidUtils.getFluidStack("liquid"+"."+aFluidName.toLowerCase(), amount));	
 		if (aFStack1 != null) {

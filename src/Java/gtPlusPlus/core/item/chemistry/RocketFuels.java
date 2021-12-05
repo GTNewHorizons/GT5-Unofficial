@@ -144,6 +144,29 @@ public class RocketFuels extends ItemPackage {
 				MaterialUtils.getVoltageForTier(2), 
 				1);
 
+		FluidStack aBartWorksHydrogenPeroxide = FluidUtils.getWildcardFluidStack("Hydrogen Peroxide", 2000);
+		if (aBartWorksHydrogenPeroxide != null) {
+			Logger.INFO("Found BW Hydrogen Peroxide, adding compat recipe.");
+			CORE.RA.addChemicalPlantRecipe(
+					new ItemStack[] {
+							CI.getNumberedCircuit(22)
+					}, 
+					new FluidStack[] {
+							aBartWorksHydrogenPeroxide,
+							FluidUtils.getFluidStack("ammonia", 2000),
+					}, 
+					new ItemStack[] {
+
+					}, 
+					new FluidStack[] {
+							FluidUtils.getFluidStack(Hydrazine, 4000),
+
+					},
+					20 * 30, 
+					MaterialUtils.getVoltageForTier(2), 
+					1);
+		}		
+
 	}
 
 
@@ -294,7 +317,7 @@ public class RocketFuels extends ItemPackage {
 				new FluidStack[] {},
 				0,
 				0,
-				256)); //Fuel Value
+				512)); //Fuel Value
 
 		mRocketFuels.put(1, new GTPP_Recipe(
 				true,
@@ -306,7 +329,7 @@ public class RocketFuels extends ItemPackage {
 				new FluidStack[] {},
 				0,
 				0,
-				512)); //Fuel Value
+				1024)); //Fuel Value
 
 		mRocketFuels.put(2, new GTPP_Recipe(
 				true,
@@ -318,7 +341,7 @@ public class RocketFuels extends ItemPackage {
 				new FluidStack[] {},
 				0,
 				0,
-				768)); //Fuel Value
+				2048)); //Fuel Value
 
 		mRocketFuels.put(3, new GTPP_Recipe(
 				true,
@@ -330,7 +353,7 @@ public class RocketFuels extends ItemPackage {
 				new FluidStack[] {},
 				0,
 				0,
-				1024)); //Fuel Value
+				4196)); //Fuel Value
 
 
 		//Add in default Diesel for the Buggy

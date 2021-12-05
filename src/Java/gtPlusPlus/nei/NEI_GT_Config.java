@@ -5,6 +5,7 @@ import codechicken.nei.api.IConfigureNEI;
 import gregtech.api.util.GTPP_Recipe;
 import gregtech.api.util.GTPP_Recipe.GTPP_Recipe_Map;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
+import gregtech.nei.GT_NEI_DefaultHandler;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.util.Utils;
@@ -55,7 +56,7 @@ implements IConfigureNEI {
 			if (tMap.mNEIAllowed) {				
 				if (!mUniqueRecipeMapHandling.contains(tMap.mUnlocalizedName)) {
 					Logger.INFO("NEI Registration: Registering NEI handler for "+tMap.mNEIName);
-					new GTPP_NEI_DefaultHandler(tMap);					
+					new GT_NEI_DefaultHandler(tMap);					
 				}	
 				else {
 					Logger.INFO("NEI Registration: Not allowed to register NEI handler for "+tMap.mNEIName);					
