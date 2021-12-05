@@ -45,6 +45,9 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class BioRecipeLoader {
 
     @SuppressWarnings("deprecation")
@@ -132,9 +135,10 @@ public class BioRecipeLoader {
                 }
         );
 
-        if (LoaderReference.croploadcore && OreDictionary.getOres("cropVine").size() > 1)
-            for (int i = 0; i < OreDictionary.getOres("cropVine").size(); i++) {
-                GT_Values.RA.addExtractorRecipe(BW_Util.setStackSize(OreDictionary.getOres("cropVine").get(i),12), BioItemList.getOther(1), 500, BW_Util.getMachineVoltageFromTier(3));
+        List<ItemStack> oreCropVine = OreDictionary.getOres("cropVine", false);
+        if (LoaderReference.croploadcore && !oreCropVine.isEmpty())
+            for (ItemStack stack : oreCropVine) {
+                GT_Values.RA.addExtractorRecipe(BW_Util.setStackSize(stack, 12), BioItemList.getOther(1), 500, BW_Util.getMachineVoltageFromTier(3));
             }
         else
             GT_Values.RA.addExtractorRecipe(new ItemStack(Blocks.vine, 12), BioItemList.getOther(1), 500, BW_Util.getMachineVoltageFromTier(3));

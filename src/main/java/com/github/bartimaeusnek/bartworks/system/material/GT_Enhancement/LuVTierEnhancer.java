@@ -28,11 +28,11 @@ import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.bartimaeusnek.bartworks.system.material.processingLoaders.AfterLuVTierEnhacement;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.*;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.*;
+import gregtech.api.util.GT_Recipe.GT_Recipe_AssemblyLine;
+import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
@@ -93,20 +93,25 @@ public class LuVTierEnhancer implements Runnable {
 
     private static void replaceAllRecipes(Collection<ItemStack> LuVMachines, OrePrefixes[] LuVMaterialsGenerated, List<IRecipe> bufferedRecipeList){
         LuVTierEnhancer.replaceOsmiridiumInLuVRecipes();
-        LuVMachines.stream().forEach(stack -> {
 
-                    Predicate recipeFilter = obj -> obj instanceof GT_Shaped_Recipe && GT_Utility.areStacksEqual(((GT_Shaped_Recipe) obj).getRecipeOutput(), stack, true);
+        for (GT_Recipe_AssemblyLine sAssemblylineRecipe : GT_Recipe_AssemblyLine.sAssemblylineRecipes) {
+            for (ItemStack stack : LuVMachines) {
+                rewriteAsslineRecipes(stack, LuVMaterialsGenerated, sAssemblylineRecipe);
+            }
+        }
 
-                    GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes.forEach(
-                            recipe -> rewriteAsslineRecipes(stack, LuVMaterialsGenerated, recipe));
-
-                    GT_Recipe.GT_Recipe_Map.sMappings.forEach(
-                            map -> map.mRecipeList.forEach(
-                                    recipe -> rewriteMachineRecipes(stack, LuVMaterialsGenerated, recipe)));
-
-                    rewriteCraftingRecipes(bufferedRecipeList, LuVMaterialsGenerated, recipeFilter);
+        for (GT_Recipe_Map map : GT_Recipe_Map.sMappings) {
+            for (GT_Recipe recipe : map.mRecipeList) {
+                for (ItemStack stack : LuVMachines) {
+                    rewriteMachineRecipes(stack, LuVMaterialsGenerated, recipe);
                 }
-        );
+            }
+        }
+
+        for (ItemStack stack : LuVMachines) {
+            Predicate recipeFilter = obj -> obj instanceof GT_Shaped_Recipe && GT_Utility.areStacksEqual(((GT_Shaped_Recipe) obj).getRecipeOutput(), stack, true);
+            rewriteCraftingRecipes(bufferedRecipeList, LuVMaterialsGenerated, recipeFilter);
+        }
     }
 
     private static void addDreamcraftItemListItems(Collection LuVMachines){
@@ -135,25 +140,23 @@ public class LuVTierEnhancer implements Runnable {
         }
     }
 
-    private static void rewriteMachineRecipes(ItemStack stack, OrePrefixes[] LuVMaterialsGenerated, GT_Recipe recipe){
+    private static void rewriteMachineRecipes(ItemStack stack, OrePrefixes[] LuVMaterialsGenerated, GT_Recipe recipe) {
+        if (LuVTierEnhancer.doStacksCointainAndReplace(recipe.mInputs, stack, false)) {
             for (OrePrefixes prefixes : LuVMaterialsGenerated) {
-                if (LuVTierEnhancer.doStacksCointainAndReplace(recipe.mInputs, stack, false)) {
-                    LuVTierEnhancer.doStacksCointainAndReplace(recipe.mInputs, GT_OreDictUnificator.get(prefixes, Materials.Chrome, 1), true, WerkstoffLoader.LuVTierMaterial.get(prefixes));
-                    LuVTierEnhancer.doStacksCointainAndReplace(recipe.mOutputs, GT_OreDictUnificator.get(prefixes, Materials.Chrome, 1), true, WerkstoffLoader.LuVTierMaterial.get(prefixes));
-                }
-                if (LuVTierEnhancer.doStacksCointainAndReplace(recipe.mOutputs, stack, false)) {
-                    LuVTierEnhancer.doStacksCointainAndReplace(recipe.mInputs, GT_OreDictUnificator.get(prefixes, Materials.Chrome, 1), true, WerkstoffLoader.LuVTierMaterial.get(prefixes));
-                    LuVTierEnhancer.doStacksCointainAndReplace(recipe.mOutputs, GT_OreDictUnificator.get(prefixes, Materials.Chrome, 1), true, WerkstoffLoader.LuVTierMaterial.get(prefixes));
-                }
+                LuVTierEnhancer.doStacksCointainAndReplace(recipe.mInputs, GT_OreDictUnificator.get(prefixes, Materials.Chrome, 1), true, WerkstoffLoader.LuVTierMaterial.get(prefixes));
+                LuVTierEnhancer.doStacksCointainAndReplace(recipe.mOutputs, GT_OreDictUnificator.get(prefixes, Materials.Chrome, 1), true, WerkstoffLoader.LuVTierMaterial.get(prefixes));
             }
-            if (LuVTierEnhancer.doStacksCointainAndReplace(recipe.mInputs, stack, false)) {
-                LuVTierEnhancer.doStacksCointainAndReplace(recipe.mFluidInputs, Materials.Chrome.getMolten(1), true, WerkstoffLoader.LuVTierMaterial.getMolten(1).getFluid());
-                LuVTierEnhancer.doStacksCointainAndReplace(recipe.mFluidOutputs, Materials.Chrome.getMolten(1), true, WerkstoffLoader.LuVTierMaterial.getMolten(1).getFluid());
+            LuVTierEnhancer.doStacksCointainAndReplace(recipe.mFluidInputs, Materials.Chrome.getMolten(1), true, WerkstoffLoader.LuVTierMaterial.getMolten(1).getFluid());
+            LuVTierEnhancer.doStacksCointainAndReplace(recipe.mFluidOutputs, Materials.Chrome.getMolten(1), true, WerkstoffLoader.LuVTierMaterial.getMolten(1).getFluid());
+        }
+        if (LuVTierEnhancer.doStacksCointainAndReplace(recipe.mOutputs, stack, false)) {
+            for (OrePrefixes prefixes : LuVMaterialsGenerated) {
+                LuVTierEnhancer.doStacksCointainAndReplace(recipe.mInputs, GT_OreDictUnificator.get(prefixes, Materials.Chrome, 1), true, WerkstoffLoader.LuVTierMaterial.get(prefixes));
+                LuVTierEnhancer.doStacksCointainAndReplace(recipe.mOutputs, GT_OreDictUnificator.get(prefixes, Materials.Chrome, 1), true, WerkstoffLoader.LuVTierMaterial.get(prefixes));
             }
-            if (LuVTierEnhancer.doStacksCointainAndReplace(recipe.mOutputs, stack, false)) {
-                LuVTierEnhancer.doStacksCointainAndReplace(recipe.mFluidInputs, Materials.Chrome.getMolten(1), true, WerkstoffLoader.LuVTierMaterial.getMolten(1).getFluid());
-                LuVTierEnhancer.doStacksCointainAndReplace(recipe.mFluidOutputs, Materials.Chrome.getMolten(1), true, WerkstoffLoader.LuVTierMaterial.getMolten(1).getFluid());
-            }
+            LuVTierEnhancer.doStacksCointainAndReplace(recipe.mFluidInputs, Materials.Chrome.getMolten(1), true, WerkstoffLoader.LuVTierMaterial.getMolten(1).getFluid());
+            LuVTierEnhancer.doStacksCointainAndReplace(recipe.mFluidOutputs, Materials.Chrome.getMolten(1), true, WerkstoffLoader.LuVTierMaterial.getMolten(1).getFluid());
+        }
     }
     private static void rewriteAsslineRecipes(ItemStack stack, OrePrefixes[] LuVMaterialsGenerated, GT_Recipe.GT_Recipe_AssemblyLine recipe){
         for (OrePrefixes prefixes : LuVMaterialsGenerated) {

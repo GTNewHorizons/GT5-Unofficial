@@ -27,6 +27,7 @@ import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.system.material.BW_MetaGenerated_Items;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
+import com.github.bartimaeusnek.bartworks.util.CachedReflectionUtils;
 import com.github.bartimaeusnek.crossmod.BartWorksCrossmod;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GT_Values;
@@ -212,8 +213,9 @@ public class PlatinumSludgeOverHaul {
         //furnace
         for (Object entry : FurnaceRecipes.smelting().getSmeltingList().entrySet()) {
             Map.Entry realEntry = (Map.Entry) entry;
-            if (GT_Utility.isStackValid(realEntry.getKey()) && BW_Util.checkStackAndPrefix((ItemStack) realEntry.getKey()))
-                if ((!GT_OreDictUnificator.getAssociation((ItemStack) realEntry.getKey()).mPrefix.equals(dust) && !GT_OreDictUnificator.getAssociation((ItemStack) realEntry.getKey()).mPrefix.equals(dustTiny)) || !GT_OreDictUnificator.getAssociation((ItemStack) realEntry.getKey()).mMaterial.mMaterial.equals(Materials.Platinum))
+            if (GT_Utility.isStackValid(realEntry.getKey()) && BW_Util.checkStackAndPrefix((ItemStack) realEntry.getKey())) {
+                ItemData association = GT_OreDictUnificator.getAssociation((ItemStack) realEntry.getKey());
+                if ((!association.mPrefix.equals(dust) && !association.mPrefix.equals(dustTiny)) || !association.mMaterial.mMaterial.equals(Materials.Platinum))
                     if (GT_Utility.isStackValid(realEntry.getValue()) && BW_Util.checkStackAndPrefix((ItemStack) realEntry.getValue())){
                         ItemData ass = GT_OreDictUnificator.getAssociation((ItemStack) realEntry.getValue());
                         if (ass.mMaterial.mMaterial.equals(Materials.Platinum))
@@ -223,6 +225,7 @@ public class PlatinumSludgeOverHaul {
                             if (!PlatinumSludgeOverHaul.isInBlackList((ItemStack) realEntry.getKey()))
                                 realEntry.setValue(PDMetallicPowder.get(ass.mPrefix == nugget ? dustTiny : dust, ((ItemStack) realEntry.getValue()).stackSize * 2));
                     }
+            }
         }
         //vanilla crafting
         CraftingManager.getInstance().getRecipeList().forEach(PlatinumSludgeOverHaul::setnewMaterialInRecipe);
@@ -396,7 +399,7 @@ public class PlatinumSludgeOverHaul {
                 else if (LoaderReference.miscutils) {
                     try {
                         if (Class.forName("gtPlusPlus.api.objects.minecraft.ShapedRecipe").isAssignableFrom(obj.getClass()))
-                            obj = FieldUtils.getField(obj.getClass(),"mRecipe",true).get(obj);
+                            obj = CachedReflectionUtils.getField(obj.getClass(),"mRecipe").get(obj);
                     } catch (ClassNotFoundException | IllegalAccessException e) {
                         e.printStackTrace();
                     }
@@ -406,14 +409,14 @@ public class PlatinumSludgeOverHaul {
         IRecipe recipe = (IRecipe) obj;
         ItemStack otpt = recipe.getRecipeOutput();
 
-        Field out = FieldUtils.getDeclaredField(recipe.getClass(), inputName, true);
+        Field out = CachedReflectionUtils.getDeclaredField(recipe.getClass(), inputName);
         if (out == null)
-            out = FieldUtils.getField(recipe.getClass(), inputName, true);
+            out = CachedReflectionUtils.getField(recipe.getClass(), inputName);
 
 
-        Field in = FieldUtils.getDeclaredField(recipe.getClass(), inputItemName, true);
+        Field in = CachedReflectionUtils.getDeclaredField(recipe.getClass(), inputItemName);
         if (in == null)
-            in = FieldUtils.getField(recipe.getClass(), inputItemName, true);
+            in = CachedReflectionUtils.getField(recipe.getClass(), inputItemName);
         if (in == null)
             return;
 
