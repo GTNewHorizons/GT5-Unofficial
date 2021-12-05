@@ -15,6 +15,8 @@ import java.util.Set;
 @SuppressWarnings("rawtypes, unchecked, deprecation")
 public class GT_CLS_Compat {
 
+    private static long lastUpdate = 0;
+
     private static Class alexiilMinecraftDisplayer;
     private static Class alexiilProgressDisplayer;
 
@@ -61,7 +63,11 @@ public class GT_CLS_Compat {
 
             String materialName = tEvent.mMaterial == null ? "" : tEvent.mMaterial.toString();
 
-            displayProgress.invoke(null, materialName, ((float) size) / 100);
+            long now = System.currentTimeMillis();
+            if (now - lastUpdate >= 1000 / 30) { // 30 fps
+                displayProgress.invoke(null, materialName, ((float) size) / 100);
+                lastUpdate = now;
+            }
 
             if (sizeStep == 0) {
                 if (size % 5 == 0)
