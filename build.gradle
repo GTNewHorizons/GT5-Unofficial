@@ -15,13 +15,11 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.github.GTNH2:ForgeGradle:FG_1.2-SNAPSHOT'
-		classpath "de.undercouch:gradle-download-task:3.1.2"
+        classpath 'com.github.GTNewHorizons:ForgeGradle:1.2.4'
     }
 }
 apply plugin: 'forge'
 apply plugin: 'signing'
-import de.undercouch.gradle.tasks.download.Download
 
 version = "1.7.10-1.0.9"
 group= "pers.gwyog.gtneioreplugin"
@@ -44,40 +42,28 @@ file "build.properties" withReader {
 }
 
 repositories {
-    mavenLocal()
-    maven {
-        name "ChickenBones"
-        url "http://chickenbones.net/maven/"
-    }
+    mavenCentral()
 	 maven {
         name = "ic2"
-        url = "http://maven.ic2.player.to/"
+        url = "https://maven.ic2.player.to/"
+    }
+    maven {
+        name = "jitpack.io"
+        url = "https://jitpack.io"
     }
 }
 
 dependencies {
-    //compile "codechicken:ForgeMultipart:${config.minecraft.version}-${config.fmp.version}:dev"
-    compile "codechicken:CodeChickenLib:${config.minecraft.version}-${config.ccl.version}:dev"
-    compile "codechicken:CodeChickenCore:${config.minecraft.version}-${config.ccc.version}:dev"
-    compile "codechicken:NotEnoughItems:${config.minecraft.version}-${config.nei.version}:dev"
-    compile "com.opencsv:opencsv:4.0"
-	compile "net.industrial-craft:industrialcraft-2:${config.ic2.version}:dev"
-}
-
-task getGregTech(type: Download) {
-    onlyIf {
-        !file("libs/gregtech-${config.gregtech.version}-dev.jar").exists()
+    implementation "com.github.GTNewHorizons:CodeChickenLib:master-SNAPSHOT:dev"
+    implementation "com.github.GTNewHorizons:CodeChickenCore:master-SNAPSHOT:dev"
+    implementation "com.github.GTNewHorizons:NotEnoughItems:master-SNAPSHOT:dev"
+    implementation("com.github.GTNewHorizons:GT5-Unofficial:master-SNAPSHOT:dev") {
+        setChanging(true)
+        transitive = false
     }
-    src "http://jenkins.usrv.eu:8080/job/Gregtech-5-Unofficial/${config.gregtech.jenkinsbuild}/artifact/build/libs/gregtech-${config.gregtech.version}-dev.jar"
-    dest file("libs/gregtech-${config.gregtech.version}-dev.jar")
-    mustRunAfter "deobfBinJar"
-    mustRunAfter "repackMinecraft"
+    implementation "net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev"
+    implementation 'com.opencsv:opencsv:4.0' //5.5.2 is a breaking update
 }
-
-tasks.setupCIWorkspace.dependsOn getGregTech
-tasks.setupDevWorkspace.dependsOn getGregTech
-tasks.setupDecompWorkspace.dependsOn getGregTech
-tasks.compileJava.dependsOn getGregTech
 
 processResources
 {
@@ -93,7 +79,7 @@ processResources
         expand 'version':project.version, 'mcversion':project.minecraft.version
     }
         
-    // copy everything else, thats not the mcmod.info
+    // copy everything else, that's not the mcmod.info
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
     }
