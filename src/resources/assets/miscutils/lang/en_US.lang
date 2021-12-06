@@ -3257,3 +3257,15 @@ item.itemCellLiFBeF2ZrF4U235.name=LFTR Fuel I Cell
 item.itemCellLiFBeF2ZrF4UF4.name=LFTR Fuel II Cell
 item.itemCellLiFBeF2ThF4UF4.name=LFTR Fuel III Cell
 item.Li2BeF2UF4.name=Burnt Li2BeF2UF4 Cell
+
+//Added 6/12/21
+item.itemCellLiBeF2UF4FP.name=LiBeF2UF4FP Cell
+item.itemCellUF6F2.name=UF6F2 Cell
+item.itemCellLiFBeF2ThF4.name=LiFBeF2ThF4 Cell
+item.itemCellUF6F2FP.name=UF6F2FP Cell
+item.dustProtactinium233.name=Protactinium-233 Dust
+item.itemCellLiFThF4.name=LiFThF4 Cell
+item.NuclearWaste.name=Nuclear Waste Cell
+item.itemCellLiFBeF2UF4.name=LiFBeF2UF4 Cell
+item.itemCellSodiumFluoride.name=Sodium Fluoride Cell
+item.itemCellLiFBeF2.name=LiFBeF2 Cell

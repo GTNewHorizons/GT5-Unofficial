@@ -210,28 +210,13 @@ achievement.decay.technetium99m.desc=Cyclotron Product
 achievement.decay.technetium99=Technetium 99
 achievement.decay.technetium99.desc=Cyclotron Product
 
-
-
 //24/11/19
 achievement.gt.blockmachines.hatch.turbine.input.tier.00=Turbine Housing
 achievement.gt.blockmachines.hatch.turbine.input.tier.00.desc=[AL] Pickup this item to see the recipe in NEI
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//Added 6/12/21
+achievement.gt.blockmachines.gtpp.multimachine.flotationcell=Flotation Cell
+achievement.gt.blockmachines.gtpp.multimachine.flotationcell.desc=[AL] Pickup this item to see the recipe in NEI
+achievement.gt.blockmachines.gtpp.multimachine.isamill=IsaMill
+achievement.gt.blockmachines.gtpp.multimachine.isamill.desc=[AL] Pickup this item to see the recipe in NEI
 
