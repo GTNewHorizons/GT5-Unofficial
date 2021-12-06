@@ -114,6 +114,8 @@ public class GT_IntegratedCircuit_Item extends GT_Generic_Item implements INetwo
     public void addAdditionalToolTips(List aList, ItemStack aStack, EntityPlayer aPlayer) {
         super.addAdditionalToolTips(aList, aStack, aPlayer);
         aList.add(GT_LanguageManager.addStringLocalization(new StringBuilder().append(getUnlocalizedName()).append(".configuration").toString(), "Configuration: ") + getConfigurationString(getDamage(aStack)));
+        aList.add(GT_LanguageManager.addStringLocalization(new StringBuilder().append(getUnlocalizedName()).append(".tooltip.0").toString(), "Right click to reconfigure"));
+        aList.add(GT_LanguageManager.addStringLocalization(new StringBuilder().append(getUnlocalizedName()).append(".tooltip.1").toString(), "Needs a screwdriver or circuit programming tool"));
     }
 
     @Override
