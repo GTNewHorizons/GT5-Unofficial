@@ -180,7 +180,7 @@ public class GT_IntegratedCircuit_Item extends GT_Generic_Item implements INetwo
         if (player instanceof FakePlayer || !world.isRemote) return false;
         // check if any screwdriver
         ItemStack configuratorStack;
-        if (!player.capabilities.isCreativeMode) {
+        if (player.capabilities.isCreativeMode) {
             configuratorStack = null;
         } else {
             Pair<Integer, ?> configurator = findConfiguratorInInv(player);
