@@ -64,7 +64,7 @@ public class RecipeLoader_Nuclear {
 				ItemUtils.getItemStackOfAmountFromOreDict("dustBerylliumFluoride", 1),
 				GT_Values.NF, 
 				GT_Values.NF,
-				ItemUtils.getItemStackOfAmountFromOreDict("dustLi2BeF4", 3),
+				ItemUtils.getSimpleStack(ModItems.dustLi2BeF4, 3),
 				null, 
 				60 * 20, 2000, 
 				3000);
@@ -495,7 +495,7 @@ public class RecipeLoader_Nuclear {
 	private static void fluidExtractorRecipes() {
 
 		//FLiBe fuel
-		CORE.RA.addFluidExtractionRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustLi2BeF4", 1),
+		CORE.RA.addFluidExtractionRecipe(ItemUtils.getSimpleStack(ModItems.dustLi2BeF4, 1),
 				new FluidStack(ModItems.fluidFLiBeSalt, 144), 100, 500);
 		//LFTR Fuel 1
 		CORE.RA.addFluidExtractionRecipe(NUCLIDE.LiFBeF2ZrF4U235.getDust(1),

@@ -744,11 +744,23 @@ public class Material {
 			Materials Erf = MaterialUtils.getMaterial(this.unlocalizedName);
 			if (Erf != null && Erf != Materials._NULL) {
 				ItemStack Erg = ItemUtils.getOrePrefixStack(aPrefix, Erf, stacksize);
-				if (Erg != null) {
+				if (Erg != null && ItemUtils.checkForInvalidItems(Erg)) {
 					Logger.MATERIALS("Found \"" + aKey + this.unlocalizedName + "\" using backup GT Materials option.");
 					g.put(aKey, Erg);
 					mComponentMap.put(unlocalizedName, g);
 					return Erg;
+				}
+				else {
+					// Try get a molten cell
+					if (aPrefix == OrePrefixes.cell) {
+						Erg = ItemUtils.getOrePrefixStack(OrePrefixes.cellMolten, Erf, stacksize);
+						if (Erg != null && ItemUtils.checkForInvalidItems(Erg)) {
+							Logger.MATERIALS("Found \"" + OrePrefixes.cellMolten.name() + this.unlocalizedName + "\" using backup GT Materials option.");
+							g.put(aKey, Erg);
+							mComponentMap.put(unlocalizedName, g);
+							return Erg;
+						}
+					}
 				}
 			} else {
 				ItemStack u = ItemUtils.getItemStackOfAmountFromOreDictNoBroken(aKey + this.unlocalizedName, stacksize);

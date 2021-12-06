@@ -350,18 +350,18 @@ public class GTPP_Recipe extends GT_Recipe  implements IComparableRecipe {
     	public static final GTPP_Recipe_Map_Internal sFissionFuelProcessing = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(50), "gtpp.recipe.fissionfuel", "Nuclear Fuel Processing", null, RES_PATH_GUI + "basicmachines/FissionFuel", 0, 0, 0, 0, 1, E, 1, E, true, false);
 
 		//Cold Trap
-		public static final GTPP_Recipe_Map_Internal sColdTrapRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(3), "gtpp.recipe.coldtrap", "Cold Trap", null, RES_PATH_GUI + "basicmachines/ChemicalReactor", 1, 1, 0, 0, 1, E, 1, E, true, true);
+		public static final GTPP_Recipe_Map_Internal sColdTrapRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(10000), "gtpp.recipe.coldtrap", "Cold Trap", null, RES_PATH_GUI + "basicmachines/Dehydrator", 2, 9, 0, 0, 1, E, 1, E, true, true);
 
 		//Reactor Processing Unit
-		public static final GTPP_Recipe_Map_Internal sReactorProcessingUnitRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(3), "gtpp.recipe.reactorprocessingunit", "Reactor Processing Unit", null, RES_PATH_GUI + "basicmachines/ChemicalReactor", 1, 1, 0, 0, 1, E, 1, E, true, true);
+		public static final GTPP_Recipe_Map_Internal sReactorProcessingUnitRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(10000), "gtpp.recipe.reactorprocessingunit", "Reactor Processing Unit", null, RES_PATH_GUI + "basicmachines/Dehydrator", 2, 9, 0, 0, 1, E, 1, E, true, true);
 
 		//Basic Washer Map
 		public static final GTPP_Recipe_Map_Internal sSimpleWasherRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(3), "gtpp.recipe.simplewasher", "Simple Dust Washer", null, RES_PATH_GUI + "basicmachines/PotionBrewer", 1, 1, 0, 0, 1, E, 1, E, true, true);
 
 		//public static final GT_Recipe_Map sSimpleWasherRecipes_FakeFuckBW = new GT_Recipe_Map(new HashSet<GT_Recipe>(3), "gtpp.recipe.simplewasher", "Fuck you Bart", null, RES_PATH_GUI + "basicmachines/PotionBrewer", 1, 1, 0, 0, 1, E, 1, E, true, false);
 		
-		public static final GTPP_Recipe_Map sChemicalPlantRecipes = new GTPP_Recipe_Map(
-				new HashSet<GTPP_Recipe>(100),
+		public static final GTPP_Recipe_Map_Internal sChemicalPlantRecipes = new GTPP_Recipe_Map_Internal(
+				new HashSet<GT_Recipe>(100),
 				"gtpp.recipe.fluidchemicaleactor",
 				"Chemical Plant",
 				null,

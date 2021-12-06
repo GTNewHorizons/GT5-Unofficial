@@ -1757,13 +1757,13 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 
 
 	@Override
-	public boolean addColdTrapRecipe(int aCircuit, ItemStack aInput, FluidStack aFluidInput, ItemStack[] aOutputs, FluidStack aFluidOutput, int aTime, int aEU) {
+	public boolean addColdTrapRecipe(int aCircuit, ItemStack aInput, FluidStack aFluidInput, ItemStack[] aOutputs, int[] aChances, FluidStack aFluidOutput, int aTime, int aEU) {
 		GTPP_Recipe aRecipe = new GTPP_Recipe(
 				false,
 				new ItemStack[] {CI.getNumberedAdvancedCircuit(aCircuit), aInput},
 				aOutputs,
 				null,
-				new int[] {},
+				aChances,
 				new FluidStack[] {aFluidInput},
 				new FluidStack[] {aFluidOutput},
 				aTime,

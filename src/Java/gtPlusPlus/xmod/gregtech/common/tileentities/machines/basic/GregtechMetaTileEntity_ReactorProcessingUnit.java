@@ -16,7 +16,7 @@ public class GregtechMetaTileEntity_ReactorProcessingUnit extends GT_MetaTileEnt
 
 	public GregtechMetaTileEntity_ReactorProcessingUnit(int aID, String aName, String aNameRegional, int aTier) {
 		super(aID, aName, aNameRegional, aTier, 1, 
-				"Processes Nuclear things", 1, 1, "ChemicalReactor.png", "",
+				"Processes Nuclear things", 2, 9, "Dehydrator.png", "",
 				new ITexture[]{
 						new GT_RenderedTexture(TexturesGtBlock.OVERLAY_REACTOR_PROCESSINGUNIT_SIDE_ACTIVE),
 						new GT_RenderedTexture(TexturesGtBlock.OVERLAY_REACTOR_PROCESSINGUNIT_SIDE),

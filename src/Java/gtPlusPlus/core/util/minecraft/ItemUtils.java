@@ -913,10 +913,11 @@ public class ItemUtils {
 	}
 
 	public static ItemStack getErrorStack(int mAmount, String aName) {	
-		ItemStack g = getSimpleStack(ModItems.AAA_Broken, 1);
-		NBTUtils.setString(g, "Lore", EnumChatFormatting.RED+aName);		
+		ItemStack g = getSimpleStack(ModItems.AAA_Broken, 1);		
 		if (aName != null) {
-			NBTUtils.setBookTitle(g, EnumChatFormatting.YELLOW+"Maybe Alkalus should know about this");
+			//NBTUtils.setString(g, "Lore", EnumChatFormatting.RED+aName);
+			NBTUtils.setBookTitle(g, EnumChatFormatting.RED+aName);
+			//NBTUtils.setBookTitle(g, EnumChatFormatting.YELLOW+"Maybe Alkalus should know about this");
 		}		
 		return g;
 	}

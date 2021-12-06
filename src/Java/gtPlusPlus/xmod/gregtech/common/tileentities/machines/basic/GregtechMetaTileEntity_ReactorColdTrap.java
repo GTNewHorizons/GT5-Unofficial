@@ -16,7 +16,7 @@ public class GregtechMetaTileEntity_ReactorColdTrap extends GT_MetaTileEntity_Ba
 
 	public GregtechMetaTileEntity_ReactorColdTrap(int aID, String aName, String aNameRegional, int aTier) {
 		super(aID, aName, aNameRegional, aTier, 1, 
-				"Just like the Arctic", 1, 1, "ChemicalReactor.png", "",
+				"Just like the Arctic", 2, 9, "Dehydrator.png", "",
 				new ITexture[]{
 						new GT_RenderedTexture(TexturesGtBlock.OVERLAY_REACTOR_COLDTRAP_SIDE_ACTIVE),
 						new GT_RenderedTexture(TexturesGtBlock.OVERLAY_REACTOR_COLDTRAP_SIDE),

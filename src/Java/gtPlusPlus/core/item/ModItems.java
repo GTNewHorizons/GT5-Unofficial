@@ -241,6 +241,7 @@ public final class ModItems {
 	public static Fluid fluidLftrBlanket1;
 	public static Fluid fluidLftrBlanket2;
 	public static Fluid fluidLftrBlanket3;
+	public static Fluid fluidNuclearWaste;
 
 
 	//Possibly missing base items that GT may be missing.
@@ -728,14 +729,15 @@ public final class ModItems {
 		fluidFLiBeSaltBurnt = FluidUtils.addGTFluidNoPrefix("Li2BeF2UF4", "Li2BeF2UF4", new short[]{50, 255, 50, 100}, 0, 743, null, CI.emptyCells(1), 1000, true);
 		
 		// LFTR Core Fluid Processing
-		fluidLftrCore1 = FluidUtils.addGTFluidNoPrefix("LiBeF2UF4FP", "LiBeF2UF4FP", new short[]{110, 255, 110, 100}, 0, 800, null, CI.emptyCells(1), 1000, true);
-		fluidLftrCore2 = FluidUtils.addGTFluidNoPrefix("UF6F2FP", "UF6F2FP", new short[]{150, 255, 150, 100}, 0, 800, null, CI.emptyCells(1), 1000, true);
-		fluidLftrCore3 = FluidUtils.addGTFluidNoPrefix("LiFBeF2", "LiFBeF2", new short[]{100, 255, 50, 100}, 0, 800, null, CI.emptyCells(1), 1000, true);
-		fluidLftrCore4 = FluidUtils.addGTFluidNoPrefix("LiFBeF2UF4", "LiFBeF2UF4", new short[]{50, 255, 100, 100}, 0, 800, null, CI.emptyCells(1), 1000, true);
+		//fluidLftrCore1 = FluidUtils.addGTFluidNoPrefix("LiBeF2UF4FP", "LiBeF2UF4FP", new short[]{110, 255, 110, 100}, 0, 800, null, CI.emptyCells(1), 1000, true);
+		//fluidLftrCore2 = FluidUtils.addGTFluidNoPrefix("UF6F2FP", "UF6F2FP", new short[]{150, 255, 150, 100}, 0, 800, null, CI.emptyCells(1), 1000, true);
+		//fluidLftrCore3 = FluidUtils.addGTFluidNoPrefix("LiFBeF2", "LiFBeF2", new short[]{100, 255, 50, 100}, 0, 800, null, CI.emptyCells(1), 1000, true);
+		//fluidLftrCore4 = FluidUtils.addGTFluidNoPrefix("LiFBeF2UF4", "LiFBeF2UF4", new short[]{50, 255, 100, 100}, 0, 800, null, CI.emptyCells(1), 1000, true);
 		// LFTR Blanket Fluid Processing
-		fluidLftrBlanket1 = FluidUtils.addGTFluidNoPrefix("LiFThF4", "LiFThF4", new short[]{50, 150, 255, 50}, 0, 500, null, CI.emptyCells(1), 1000, true);
-		fluidLftrBlanket2 = FluidUtils.addGTFluidNoPrefix("LiFBeF2ThF4", "LiFBeF2ThF4", new short[]{100, 150, 100, 100}, 0, 500, null, CI.emptyCells(1), 1000, true);
-		fluidLftrBlanket3 = FluidUtils.addGTFluidNoPrefix("UF6F2", "UF6F2", new short[]{10, 150, 10, 100}, 0, 500, null, CI.emptyCells(1), 1000, true);
+		//fluidLftrBlanket1 = FluidUtils.addGTFluidNoPrefix("LiFThF4", "LiFThF4", new short[]{50, 150, 255, 50}, 0, 500, null, CI.emptyCells(1), 1000, true);
+		//fluidLftrBlanket2 = FluidUtils.addGTFluidNoPrefix("LiFBeF2ThF4", "LiFBeF2ThF4", new short[]{100, 150, 100, 100}, 0, 500, null, CI.emptyCells(1), 1000, true);
+		//fluidLftrBlanket3 = FluidUtils.addGTFluidNoPrefix("UF6F2", "UF6F2", new short[]{10, 150, 10, 100}, 0, 500, null, CI.emptyCells(1), 1000, true);
+		fluidNuclearWaste = FluidUtils.addGTFluidNoPrefix("nuclear.waste", "Nuclear Waste", new short[]{10, 250, 10, 100}, 0, 1000, null, CI.emptyCells(1), 1000, true);
 		
 		
 		//LFTR Control Circuit
