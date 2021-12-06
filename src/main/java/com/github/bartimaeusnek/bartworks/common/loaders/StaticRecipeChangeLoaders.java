@@ -138,7 +138,7 @@ public class StaticRecipeChangeLoaders {
                             continue;
                         String fullOreName = prefixes + s;
                         List<ItemStack> ores = OreDictionary.getOres(fullOreName, false);
-                        if (ores.isEmpty())
+                        if (ores.size() <= 1) // empty or one entry, i.e. no unification needed
                             continue;
                         for (ItemStack toReplace : ores) {
                             ItemStack replacement = werkstoff.get(prefixes);
