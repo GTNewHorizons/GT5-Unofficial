@@ -12,6 +12,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.internal.IGT_RecipeAdder;
 import gregtech.api.util.*;
+import gregtech.api.util.GTPP_Recipe.GTPP_Recipe_Map;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
@@ -1752,6 +1753,46 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 		else {
 			return false;
 		}
+	}
+
+
+	@Override
+	public boolean addColdTrapRecipe(int aCircuit, ItemStack aInput, FluidStack aFluidInput, ItemStack[] aOutputs, FluidStack aFluidOutput, int aTime, int aEU) {
+		GTPP_Recipe aRecipe = new GTPP_Recipe(
+				false,
+				new ItemStack[] {CI.getNumberedAdvancedCircuit(aCircuit), aInput},
+				aOutputs,
+				null,
+				new int[] {},
+				new FluidStack[] {aFluidInput},
+				new FluidStack[] {aFluidOutput},
+				aTime,
+				aEU,
+				0);		
+
+		int aSize = GTPP_Recipe_Map.sColdTrapRecipes.mRecipeList.size();
+		GTPP_Recipe_Map.sColdTrapRecipes.add(aRecipe);
+		return GTPP_Recipe_Map.sColdTrapRecipes.mRecipeList.size() > aSize;
+	}
+
+
+	@Override
+	public boolean addReactorProcessingUnitRecipe(ItemStack aInput1, ItemStack aInput2, FluidStack aFluidInput, ItemStack[] aOutputs, int[] aChances, FluidStack aFluidOutput, int aTime, int aEU) {
+		GTPP_Recipe aRecipe = new GTPP_Recipe(
+				false,
+				new ItemStack[] {aInput1, aInput2},
+				aOutputs,
+				null,
+				aChances,
+				new FluidStack[] {aFluidInput},
+				new FluidStack[] {aFluidOutput},
+				aTime,
+				aEU,
+				0);		
+
+		int aSize = GTPP_Recipe_Map.sReactorProcessingUnitRecipes.mRecipeList.size();
+		GTPP_Recipe_Map.sReactorProcessingUnitRecipes.add(aRecipe);
+		return GTPP_Recipe_Map.sReactorProcessingUnitRecipes.mRecipeList.size() > aSize;
 	}
 
 

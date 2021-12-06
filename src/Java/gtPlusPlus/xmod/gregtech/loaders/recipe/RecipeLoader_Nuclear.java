@@ -28,7 +28,7 @@ public class RecipeLoader_Nuclear {
 	public static void generate() {
 		createRecipes();
 		RecipeLoader_LFTR.generate();
-		RecipeLoader_FFPP.generate();	
+		RecipeLoader_NuclearFuelProcessing.generate();	
 	}
 
 	private static void createRecipes() {

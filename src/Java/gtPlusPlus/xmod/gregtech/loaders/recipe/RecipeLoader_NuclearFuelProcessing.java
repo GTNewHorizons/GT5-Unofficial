@@ -11,7 +11,7 @@ import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import net.minecraftforge.fluids.FluidStack;
 
-public class RecipeLoader_FFPP {	
+public class RecipeLoader_NuclearFuelProcessing {	
 
 	public static void generate() {
 

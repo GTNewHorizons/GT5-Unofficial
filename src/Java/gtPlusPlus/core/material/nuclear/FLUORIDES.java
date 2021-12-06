@@ -1,7 +1,6 @@
 package gtPlusPlus.core.material.nuclear;
 
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.TextureSet;
 import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.material.MISC_MATERIALS;
 import gtPlusPlus.core.material.Material;
@@ -262,6 +261,21 @@ public class FLUORIDES {
 			new MaterialStack[]{
 					new MaterialStack(ELEMENT.getInstance().SELENIUM, 1),
 					new MaterialStack(ELEMENT.getInstance().FLUORINE, 6)
+			});
+	
+	public static final Material SODIUM_FLUORIDE = new Material(
+			"Sodium Fluoride", //Material Name
+			MaterialState.PURE_LIQUID, //State
+			null, //Material Colour
+			-1, //Melting Point in C
+			-1, //Boiling Point in C
+			-1, //Protons
+			-1, //Neutrons
+			false, //Uses Blast furnace?
+			//Material Stacks with Percentage of required elements.
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.getInstance().SODIUM, 1),
+					new MaterialStack(ELEMENT.getInstance().FLUORINE, 1)
 			});
 
 	private static final FLUORIDES INSTANCE = new FLUORIDES();

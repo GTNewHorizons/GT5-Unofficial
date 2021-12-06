@@ -586,9 +586,13 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Machine_ZPM_Component_Maker,
 	Machine_UV_Component_Maker,
 	
-	// Fluid Reactor
-	FluidReactor_LV, FluidReactor_HV,
-	FluidReactor_IV, FluidReactor_ZPM,
+	// Reactor Processing Unit
+	ReactorProcessingUnit_IV, 
+	ReactorProcessingUnit_ZPM,
+	
+	// Cold Trap
+	ColdTrap_IV, 
+	ColdTrap_ZPM,
 	
 	//Breakers
 	BreakerBox_ULV, BreakerBox_LV, BreakerBox_MV,

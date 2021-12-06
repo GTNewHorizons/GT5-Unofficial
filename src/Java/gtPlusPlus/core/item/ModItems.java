@@ -234,6 +234,14 @@ public final class ModItems {
 	public static Fluid fluidFLiBeSalt;
 	public static Fluid fluidFLiBeSaltBurnt;
 
+	public static Fluid fluidLftrCore1;
+	public static Fluid fluidLftrCore2;
+	public static Fluid fluidLftrCore3;
+	public static Fluid fluidLftrCore4;
+	public static Fluid fluidLftrBlanket1;
+	public static Fluid fluidLftrBlanket2;
+	public static Fluid fluidLftrBlanket3;
+
 
 	//Possibly missing base items that GT may be missing.
 
@@ -284,6 +292,7 @@ public final class ModItems {
 	public static Item dustNeptunium238;
 	public static Item dustDecayedRadium226;
 	public static Item dustRadium226;
+	public static Item dustProtactinium233;
 	
 	public static ItemGiantEgg itemBigEgg;
 
@@ -718,6 +727,17 @@ public final class ModItems {
 		fluidFLiBeSalt = FluidUtils.addGTFluidNoPrefix("Li2BeF4", "Li2BeF4", new short[]{255, 255, 255, 100}, 0, 743, null, CI.emptyCells(1), 1000, true);
 		fluidFLiBeSaltBurnt = FluidUtils.addGTFluidNoPrefix("Li2BeF2UF4", "Li2BeF2UF4", new short[]{50, 255, 50, 100}, 0, 743, null, CI.emptyCells(1), 1000, true);
 		
+		// LFTR Core Fluid Processing
+		fluidLftrCore1 = FluidUtils.addGTFluidNoPrefix("LiBeF2UF4FP", "LiBeF2UF4FP", new short[]{110, 255, 110, 100}, 0, 800, null, CI.emptyCells(1), 1000, true);
+		fluidLftrCore2 = FluidUtils.addGTFluidNoPrefix("UF6F2FP", "UF6F2FP", new short[]{150, 255, 150, 100}, 0, 800, null, CI.emptyCells(1), 1000, true);
+		fluidLftrCore3 = FluidUtils.addGTFluidNoPrefix("LiFBeF2", "LiFBeF2", new short[]{100, 255, 50, 100}, 0, 800, null, CI.emptyCells(1), 1000, true);
+		fluidLftrCore4 = FluidUtils.addGTFluidNoPrefix("LiFBeF2UF4", "LiFBeF2UF4", new short[]{50, 255, 100, 100}, 0, 800, null, CI.emptyCells(1), 1000, true);
+		// LFTR Blanket Fluid Processing
+		fluidLftrBlanket1 = FluidUtils.addGTFluidNoPrefix("LiFThF4", "LiFThF4", new short[]{50, 150, 255, 50}, 0, 500, null, CI.emptyCells(1), 1000, true);
+		fluidLftrBlanket2 = FluidUtils.addGTFluidNoPrefix("LiFBeF2ThF4", "LiFBeF2ThF4", new short[]{100, 150, 100, 100}, 0, 500, null, CI.emptyCells(1), 1000, true);
+		fluidLftrBlanket3 = FluidUtils.addGTFluidNoPrefix("UF6F2", "UF6F2", new short[]{10, 150, 10, 100}, 0, 500, null, CI.emptyCells(1), 1000, true);
+		
+		
 		//LFTR Control Circuit
 		itemCircuitLFTR = new CoreItem("itemCircuitLFTR", ""+EnumChatFormatting.GREEN+"Control Circuit", AddToCreativeTab.tabMisc, 1, 0,  new String[] {"Keeps Multiblocks Stable"}, EnumRarity.epic, EnumChatFormatting.DARK_GREEN, false, null);
 
@@ -941,7 +961,7 @@ public final class ModItems {
 		dustNeptunium238 = new DustDecayable("dustNeptunium238", Utils.rgbtoHexValue(175, 240, 75), 50640, new String[] {""+StringUtils.superscript("238Np"), "Result: Plutonium 238 ("+StringUtils.superscript("238Pu")+")"}, ELEMENT.getInstance().PLUTONIUM238.getDust(1).getItem(), 5);
 		dustDecayedRadium226 = ItemUtils.generateSpecialUseDusts("DecayedRadium226", "Decayed Radium-226", "Contains Radon ("+StringUtils.superscript("222Rn")+")", ELEMENT.getInstance().RADIUM.getRgbAsHex())[0];
 		dustRadium226 = new DustDecayable("dustRadium226", ELEMENT.getInstance().RADIUM.getRgbAsHex(), 90000, new String[] {""+StringUtils.superscript("226Ra"), "Result: Radon ("+StringUtils.superscript("222Rn")+")"}, ItemUtils.getSimpleStack(dustDecayedRadium226).getItem(), 5);
-
+		dustProtactinium233 = new DustDecayable("dustProtactinium233", ELEMENT.getInstance().PROTACTINIUM.getRgbAsHex(), 32000, new String[] {""+StringUtils.superscript("233Pa"), "Result: Uranium 233("+StringUtils.superscript("233U")+")"}, ELEMENT.getInstance().URANIUM233.getDust(1).getItem(), 6);
 		dustTechnetium99 = new DustDecayable("dustTechnetium99", ELEMENT.getInstance().TECHNETIUM.getRgbAsHex(), 164500, new String[] {""+StringUtils.superscript("99Mo"), "Result: Ruthenium 99("+StringUtils.superscript("99Ru")+")"}, ELEMENT.getInstance().RUTHENIUM.getDust(1).getItem(), 4);
 		dustTechnetium99M = new DustDecayable("dustTechnetium99M", ELEMENT.getInstance().TECHNETIUM.getRgbAsHex(), 8570, new String[] {""+StringUtils.superscript("99ᵐTc"), "Result: Technicium 99 ("+StringUtils.superscript("99Tc")+")"}, dustTechnetium99, 4);
 		dustMolybdenum99 = new DustDecayable("dustMolybdenum99", ELEMENT.getInstance().MOLYBDENUM.getRgbAsHex(), 16450, new String[] {""+StringUtils.superscript("99Mo"), "Result: Technicium 99ᵐ ("+StringUtils.superscript("99ᵐTc")+")"}, dustTechnetium99M, 4);

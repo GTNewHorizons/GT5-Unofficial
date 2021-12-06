@@ -45,6 +45,7 @@ public class BaseItemTickable extends CoreItem {
 		this.maxTicks = maxTicks;
 		this.twoRenderPasses = twoPass;
 		this.ticksInContainers = containerTick;
+		this.maxStackSize = 1;
 		//setGregtechItemList();
 	}
 

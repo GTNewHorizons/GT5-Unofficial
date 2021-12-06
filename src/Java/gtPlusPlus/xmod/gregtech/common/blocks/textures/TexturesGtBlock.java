@@ -477,6 +477,21 @@ public class TexturesGtBlock {
 
 	public static final CustomIcon TEXTURE_TECH_PANEL_RADIOACTIVE = new CustomIcon("TileEntities/DecayablesChest_bottom");
 	public static final CustomIcon TEXTURE_TECH_PANEL_RADIOACTIVE_ALT = new CustomIcon("TileEntities/DecayablesChest_top");
+	
+	// LFTR Single blocks
+	public static final CustomIcon OVERLAY_REACTOR_COLDTRAP_FRONT = new CustomIcon("TileEntities/ReactorColdTrap/OVERLAY_FRONT");
+	public static final CustomIcon OVERLAY_REACTOR_COLDTRAP_FRONT_ACTIVE = new CustomIcon("TileEntities/ReactorColdTrap/OVERLAY_FRONT_ACTIVE");
+	public static final CustomIcon OVERLAY_REACTOR_COLDTRAP_SIDE = new CustomIcon("TileEntities/ReactorColdTrap/OVERLAY_SIDE");
+	public static final CustomIcon OVERLAY_REACTOR_COLDTRAP_SIDE_ACTIVE = new CustomIcon("TileEntities/ReactorColdTrap/OVERLAY_SIDE_ACTIVE");
+	public static final CustomIcon OVERLAY_REACTOR_COLDTRAP_TOP = new CustomIcon("TileEntities/ReactorColdTrap/OVERLAY_TOP");
+	public static final CustomIcon OVERLAY_REACTOR_COLDTRAP_TOP_ACTIVE = new CustomIcon("TileEntities/ReactorColdTrap/OVERLAY_TOP_ACTIVE");
+	
+	public static final CustomIcon OVERLAY_REACTOR_PROCESSINGUNIT_FRONT = new CustomIcon("TileEntities/ReactorProcessingUnit/OVERLAY_FRONT");
+	public static final CustomIcon OVERLAY_REACTOR_PROCESSINGUNIT_FRONT_ACTIVE = new CustomIcon("TileEntities/ReactorProcessingUnit/OVERLAY_FRONT_ACTIVE");
+	public static final CustomIcon OVERLAY_REACTOR_PROCESSINGUNIT_SIDE = new CustomIcon("TileEntities/ReactorProcessingUnit/OVERLAY_SIDE");
+	public static final CustomIcon OVERLAY_REACTOR_PROCESSINGUNIT_SIDE_ACTIVE = new CustomIcon("TileEntities/ReactorProcessingUnit/OVERLAY_SIDE_ACTIVE");
+	public static final CustomIcon OVERLAY_REACTOR_PROCESSINGUNIT_TOP = new CustomIcon("TileEntities/ReactorProcessingUnit/OVERLAY_TOP");
+	public static final CustomIcon OVERLAY_REACTOR_PROCESSINGUNIT_TOP_ACTIVE = new CustomIcon("TileEntities/ReactorProcessingUnit/OVERLAY_TOP_ACTIVE");
 
 
 	//Overlay Arrays
