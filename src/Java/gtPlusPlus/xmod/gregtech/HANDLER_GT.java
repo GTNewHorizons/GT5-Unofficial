@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.List;
 
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -40,6 +41,7 @@ import gtPlusPlus.core.util.reflect.AddGregtechRecipe;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.everglades.gen.gt.WorldGen_GT;
 import gtPlusPlus.xmod.gregtech.api.enums.CustomOrePrefix;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import gtPlusPlus.xmod.gregtech.api.util.GTPP_Config;
 import gtPlusPlus.xmod.gregtech.api.world.GTPP_Worldgen;
@@ -141,6 +143,18 @@ public class HANDLER_GT {
 
 		//Register some custom recipe maps for any enabled multiblocks.
 		//MultiblockRecipeMapHandler.run();
+
+		if (GregtechItemList.Circuit_BioRecipeSelector.hasBeenSet()) {
+			for (int i = 1; i <= 24; i++) {
+				GregTech_API.registerConfigurationCircuit(CI.getNumberedBioCircuit(i), 0);
+			}
+		}
+
+		if (GregtechItemList.Circuit_T3RecipeSelector.hasBeenSet()) {
+			for (int i = 1; i <= 24; i++) {
+				GregTech_API.registerConfigurationCircuit(CI.getNumberedAdvancedCircuit(i), 3);
+			}
+		}
 	}
 
 	public static void onLoadComplete(FMLLoadCompleteEvent event) {
