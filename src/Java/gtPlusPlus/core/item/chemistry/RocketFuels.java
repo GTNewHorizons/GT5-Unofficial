@@ -200,7 +200,7 @@ public class RocketFuels extends ItemPackage {
 	}
 
 	private static void createLOH() {		
-		GT_Values.RA.addVacuumFreezerRecipe(ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogen", 1), ItemUtils.getItemStackOfAmountFromOreDict("cellLiquidhydrogen", 1), 20*16);
+		GT_Values.RA.addVacuumFreezerRecipe(ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogen", 1), ItemUtils.getItemStackOfAmountFromOreDict("cellLiquidHydrogen", 1), 20*16);
 		CORE.RA.addAdvancedFreezerRecipe(new ItemStack[] {}, new FluidStack[] {FluidUtils.getFluidStack("hydrogen", 300)}, new FluidStack[] {FluidUtils.getFluidStack(Liquid_Hydrogen, 300)}, new ItemStack[] {}, new int[] {}, 20*4, 540, 0);
 	}
 

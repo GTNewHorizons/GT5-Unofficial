@@ -46,8 +46,6 @@ public class BaseItemComponent extends Item{
 	public final int componentColour;
 	public Object extraData;
 
-	private static HashMap<String, String> mChemicalFormula = new HashMap<String, String>();
-
 	protected IIcon base;
 	protected IIcon overlay;
 
@@ -61,7 +59,6 @@ public class BaseItemComponent extends Item{
 		this.setMaxStackSize(64);
 		//this.setTextureName(this.getCorrectTextures());
 		this.componentColour = material.getRgbAsHex();
-		mChemicalFormula.put(materialName.toLowerCase(), material.vChemicalFormula);
 		GameRegistry.registerItem(this, this.unlocalName);
 
 		//if (componentType != ComponentTypes.DUST)
@@ -182,10 +179,10 @@ public class BaseItemComponent extends Item{
 
 
 				if (this.componentMaterial != null){
-					if (!this.componentMaterial.vChemicalFormula.contains("?") && this.componentMaterial.getState() != MaterialState.PURE_LIQUID) {
+					if (!this.componentMaterial.vChemicalFormula.contains("?")) {
 						list.add(Utils.sanitizeStringKeepBrackets(this.componentMaterial.vChemicalFormula));
 					}
-					else if (this.componentMaterial.vChemicalFormula.contains("?") && this.componentMaterial.getState() != MaterialState.PURE_LIQUID) {
+					else if (this.componentMaterial.vChemicalFormula.contains("?")) {
 						String temp = componentMaterial.vChemicalFormula;
 						temp = temp.replace(" ", "");
 						temp = temp.replace("-", "");
@@ -208,7 +205,7 @@ public class BaseItemComponent extends Item{
 					}
 				}
 				else {
-					String aChemicalFormula = mChemicalFormula.get(materialName.toLowerCase());
+					String aChemicalFormula = Material.sChemicalFormula.get(materialName.toLowerCase());
 					if (aChemicalFormula != null && aChemicalFormula.length() > 0) {			
 						list.add(Utils.sanitizeStringKeepBrackets(aChemicalFormula));						
 					}

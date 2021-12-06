@@ -41,6 +41,8 @@ public class Material {
 
 	public static final Map<String, Map<String, ItemStack>> mComponentMap = new HashMap<String, Map<String, ItemStack>>();
 
+	public static HashMap<String, String> sChemicalFormula = new HashMap<String, String>();
+
 	private String unlocalizedName;
 	private String localizedName;
 
@@ -518,6 +520,7 @@ public class Material {
 				}
 			}
 
+			sChemicalFormula.put(materialName.toLowerCase(), this.vChemicalFormula);
 			Logger.MATERIALS("Creating a Material instance for "+materialName);
 			Logger.MATERIALS("Formula: "+this.vChemicalFormula + " Smallest Stack: "+this.smallestStackSizeWhenProcessing+" Smallest Ratio:"+ratio);
 			Logger.MATERIALS("Protons: "+this.vProtons);

@@ -13,6 +13,7 @@ import gtPlusPlus.core.common.compat.COMPAT_Baubles;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.*;
 import gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes;
+import gtPlusPlus.core.item.base.dusts.BaseItemDust;
 import gtPlusPlus.core.item.base.foil.BaseItemFoil;
 import gtPlusPlus.core.item.base.foods.BaseItemFood;
 import gtPlusPlus.core.item.base.foods.BaseItemHotFood;
@@ -255,6 +256,7 @@ public final class ModItems {
 	public static Item itemDoublePlateClay;
 	public static Item itemDoublePlateEuropium;
 	public static Item itemFoilUranium235;
+	public static Item itemDustIndium;
 	public static BlockBaseModular blockRawMeat;
 	
 	public static Item itemBoilerChassis;
@@ -855,6 +857,11 @@ public final class ModItems {
 		}
 		else {
 			itemHotTitaniumIngot = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("ingotHotTitanium", 1);
+		}
+
+		//Need this for Laurenium
+		if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustIndium", 1) == null){
+			itemDustIndium = new BaseItemDust(ELEMENT.getInstance().INDIUM);
 		}
 		
 		//Industrial Diamonds
