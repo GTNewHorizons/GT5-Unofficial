@@ -11,6 +11,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 
 import java.util.List;
@@ -48,7 +49,7 @@ public class NuclearMetaItemGenerator extends GT_MetaGenerated_Item {
                 String tOreName = tType.getValue();
                 ItemStack tStack = new ItemStack(this, 1, tIsotope.mID + tOffset);
                 GT_LanguageManager.addStringLocalization(this.getUnlocalizedName(tStack) + ".name", String.format(tOreName, tIsotope.mLocalizedName));
-                GT_LanguageManager.addStringLocalization(this.getUnlocalizedName(tStack) + ".tooltip", String.format("§b%s's Isotope.§r", tIsotope.mMaterialName));
+                GT_LanguageManager.addStringLocalization(this.getUnlocalizedName(tStack) + ".tooltip", EnumChatFormatting.AQUA + String.format("%s's Isotope.", tIsotope.mMaterialName) + EnumChatFormatting.RESET);
             }
             for (Pair<Integer, String> tOreDict : OREPREFIX) {
                 int tOffset = tOreDict.getKey();
@@ -89,9 +90,13 @@ public class NuclearMetaItemGenerator extends GT_MetaGenerated_Item {
     @Override
     public short[] getRGBa(ItemStack aStack) {
         int tID = aStack.getItemDamage() % 1000;
+        int tType = aStack.getItemDamage() / 1000;
         IsotopeMaterial tMaterial = mIDMap.get(tID);
         if (tMaterial != null) {
-            return tMaterial.mRGB;
+            if (tType == 1 || tType == 2)
+                return tMaterial.mRGB;
+            else
+                return tMaterial.mRGBO;
         }
         return null;
     }

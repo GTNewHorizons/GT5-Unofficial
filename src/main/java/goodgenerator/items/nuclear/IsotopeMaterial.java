@@ -18,6 +18,7 @@ public class IsotopeMaterial {
     public final String mLocalizedName;
     public final String mMaterialName;
     public final short[] mRGB;
+    public final short[] mRGBO;
     public final NuclearTextures mTexture;
 
     public IsotopeMaterial(int aID, String aName, String aMaterialName, String aLocalizedName, NuclearTextures aTexture, int aR, int aG, int aB, int aNeutron) {
@@ -26,7 +27,8 @@ public class IsotopeMaterial {
         this.mName = aName;
         this.mMaterialName = aMaterialName;
         this.mLocalizedName = aLocalizedName;
-        this.mRGB = new short[] {(short) aR,(short) aG,(short) aB, 0};
+        this.mRGB = new short[] {(short) (aR * 0.6), (short) (aG * 0.6), (short) (aB * 0.6), 0};
+        this.mRGBO = new short[] {(short) aR, (short) aG, (short) aB, 0};
         this.mTexture = aTexture;
         mIsotopeMaterial.add(this);
         mIDMap.put(this.mID, this);
