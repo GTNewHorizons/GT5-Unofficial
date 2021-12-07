@@ -160,7 +160,7 @@ public final class NUCLIDE {
 			new MaterialStack[]{
 					new MaterialStack(FLUORIDES.URANIUM_HEXAFLUORIDE, 1),
 					new MaterialStack(ELEMENT.getInstance().FLUORINE, 3),
-					new MaterialStack(ELEMENT.getInstance().PROTACTINIUM, 1)
+					new MaterialStack(ELEMENT.getInstance().PHOSPHORUS, 1)
 			});
 	
 	public static final Material LiFBeF2 = new Material(
