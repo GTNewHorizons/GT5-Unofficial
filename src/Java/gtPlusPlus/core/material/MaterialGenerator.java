@@ -275,7 +275,7 @@ public class MaterialGenerator {
 		if (generateDehydratorRecipe && matInfo.getFluid() != null && matInfo.getDust(0) != null) {
 			CORE.RA.addDehydratorRecipe(
 					new ItemStack[] {
-							
+							CI.getNumberedAdvancedCircuit(20)
 					}, 
 					matInfo.getFluidStack(144), 
 					null, 
@@ -285,6 +285,9 @@ public class MaterialGenerator {
 					new int[] { 10000 }, 
 					10*(matInfo.vVoltageMultiplier/5), // Time in ticks
 					matInfo.vVoltageMultiplier); // EU
+		}
+		else {
+			Logger.INFO("Nuclear Dehydrator: Did not generate recipe for "+matInfo.getLocalizedName()+" | Null Fluid? "+(matInfo.getFluid() == null)+" | Null Dust? "+(matInfo.getDust(0) == null));
 		}
 	}
 	

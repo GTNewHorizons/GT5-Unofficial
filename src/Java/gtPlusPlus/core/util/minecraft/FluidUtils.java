@@ -287,6 +287,7 @@ public class FluidUtils {
 		}
 		
 
+		String aNameNonMolten = aLocalName.contains("Molten") ? aLocalName.replace("Molten", "") : aLocalName;
 		
 		if (aFullContainer == null) {
 			ItemStack oreStack = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+aLocalName, 1);				
@@ -294,7 +295,14 @@ public class FluidUtils {
 			if (aFullContainer == null) {
 				oreStack = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+aNameOriginal, 1);				
 				aFullContainer = oreStack;	
-				if (aFullContainer != null) {	
+				if (aFullContainer == null) {
+					oreStack = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+aNameNonMolten, 1);				
+					aFullContainer = oreStack;	
+					if (aFullContainer != null) {	
+						Logger.INFO("Found cell for "+aNameNonMolten);
+					}
+				}
+				else {
 					Logger.INFO("Found cell for "+aNameOriginal);
 				}
 			}

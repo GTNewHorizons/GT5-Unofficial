@@ -3269,3 +3269,24 @@ item.NuclearWaste.name=Nuclear Waste Cell
 item.itemCellLiFBeF2UF4.name=LiFBeF2UF4 Cell
 item.itemCellSodiumFluoride.name=Sodium Fluoride Cell
 item.itemCellLiFBeF2.name=LiFBeF2 Cell
+
+//Added 7/12/21
+item.itemCellDysprosium.name=Dysprosium Cell
+item.itemCellThorium.name=Thorium Cell
+item.itemCellTellurium.name=Tellurium Cell
+item.itemCellThorium232.name=Thorium-232 Cell
+item.itemCellLithiumTetrafluoroberyllate.name=Lithium Tetrafluoroberyllate Cell
+item.itemCellBurntReactorFuelI.name=Spent LFTR Fuel I Cell
+item.itemCellBurntReactorFuelII.name=Spent LFTR Fuel II Cell
+item.itemDustTinyIndium.name=Tiny Indium Dust
+item.itemDustSmallIndium.name=Small Indium Dust
+item.itemDustIndium.name=Indium Dust
+item.itemDustTinyBerylliumHydroxide.name=Tiny Beryllium Hydroxide Dust
+item.itemDustSmallBerylliumHydroxide.name=Small Beryllium Hydroxide Dust
+item.itemDustBerylliumHydroxide.name=Beryllium Hydroxide Dust
+item.itemDustTinyAmmoniumBifluoride.name=Tiny Ammonium Bifluoride Dust
+item.itemDustSmallAmmoniumBifluoride.name=Small Ammonium Bifluoride Dust
+item.itemDustAmmoniumBifluoride.name=Ammonium Bifluoride Dust
+item.itemDustTinyAmmoniumTetrafluoroberyllate.name=Tiny Ammonium Tetrafluoroberyllate Dust
+item.itemDustSmallAmmoniumTetrafluoroberyllate.name=Small Ammonium Tetrafluoroberyllate Dust
+item.itemDustAmmoniumTetrafluoroberyllate.name=Ammonium Tetrafluoroberyllate Dust

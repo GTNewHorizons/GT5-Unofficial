@@ -6,11 +6,13 @@ import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableCustomCapes;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Collection;
+import java.util.HashMap;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.*;
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -52,6 +54,7 @@ import gtPlusPlus.xmod.gregtech.loaders.GT_Material_Loader;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_BlastSmelterGT_GTNH;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_MultisUsingFluidInsteadOfCells;
 import gtPlusPlus.xmod.thaumcraft.commands.CommandDumpAspects;
+import net.minecraft.item.Item;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.IIcon;
 
@@ -496,5 +499,38 @@ public class GTplusplus implements ActionListener {
 		// Force - Alloying
 		mGregMatLoader.enableMaterial(Materials.Force);
 	}
+	
+	private static final HashMap<String, Item> sMissingMappings = new HashMap<String, Item>();
+	
+	private static void processMissingMappings() {
+		sMissingMappings.put("miscutils:Ammonium", GameRegistry.findItem(CORE.MODID, "itemCellAmmonium"));
+		sMissingMappings.put("miscutils:Hydroxide", GameRegistry.findItem(CORE.MODID, "itemCellHydroxide"));
+		sMissingMappings.put("miscutils:BerylliumHydroxide", GameRegistry.findItem(CORE.MODID, "itemCellmiscutils:BerylliumHydroxide"));		
+		sMissingMappings.put("miscutils:Bromine", GameRegistry.findItem(CORE.MODID, "itemCellBromine"));
+		sMissingMappings.put("miscutils:Krypton", GameRegistry.findItem(CORE.MODID, "itemCellKrypton"));
+		sMissingMappings.put("miscutils:itemCellZirconiumTetrafluoride", GameRegistry.findItem(CORE.MODID, "ZirconiumTetrafluoride"));
+		sMissingMappings.put("miscutils:Li2BeF4", GameRegistry.findItem(CORE.MODID, "itemCellLithiumTetrafluoroberyllate"));
+	}
+	
+    @Mod.EventHandler
+    public void missingMapping(FMLMissingMappingsEvent event) {
+    	processMissingMappings();
+        for (FMLMissingMappingsEvent.MissingMapping mapping : event.get()) {
+            if (mapping.type == GameRegistry.Type.ITEM) {
+                Item aReplacement = sMissingMappings.get(mapping.name);
+                if (aReplacement != null) {
+                	remap(aReplacement, mapping);
+                }
+                else {
+                	//Logger.INFO("Unable to remap: "+mapping.name+", item has no replacement mapping.");
+                }
+            }
+        }
+    }
+    
+    private void remap(Item item, FMLMissingMappingsEvent.MissingMapping mapping) {
+        mapping.remap(item);
+        Logger.INFO("Remapping item " + mapping.name + " to " + CORE.MODID + ":" + item.getUnlocalizedName());
+    }
 
 }

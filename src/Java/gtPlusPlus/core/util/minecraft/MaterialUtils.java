@@ -512,5 +512,12 @@ public class MaterialUtils {
 		return false;		
 	}
 
+	public static boolean isNullGregtechMaterial(Materials aGregtechMaterial) {
+		if (aGregtechMaterial == Materials._NULL || aGregtechMaterial.equals(Materials._NULL) || aGregtechMaterial.name().equals(Materials._NULL.name())) {
+			return true;
+		}
+		return false;
+	}
+
 
 }
