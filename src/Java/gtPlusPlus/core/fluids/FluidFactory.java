@@ -3,6 +3,7 @@ package gtPlusPlus.core.fluids;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -122,7 +123,7 @@ public class FluidFactory {
 			try {
 				throw new GregtechException("Cannot generate Fluid Packages outside of Pre-Init!");
 			} catch (GregtechException e) {
-				System.exit(0);
+				FMLCommonHandler.instance().exitJava(0, true);
 			}
 		}
 		
