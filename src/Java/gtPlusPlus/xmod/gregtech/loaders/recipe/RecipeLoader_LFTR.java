@@ -5,7 +5,6 @@ import gregtech.api.util.GTPP_Recipe;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GasSpargingRecipeMap;
 import gtPlusPlus.api.objects.data.AutoMap;
-import gtPlusPlus.core.item.chemistry.NuclearChem;
 import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.material.nuclear.FLUORIDES;
 import gtPlusPlus.core.material.nuclear.NUCLIDE;
@@ -54,42 +53,42 @@ public class RecipeLoader_LFTR {
 		//1l/10t= 1000l/2.5hr LiFBeF2ZrF4U235
 
 		configureSparging();
-		FluidStack Li2BeF4 = NUCLIDE.Li2BeF4.getFluidStack(34);
+		FluidStack Li2BeF4 = NUCLIDE.Li2BeF4.getFluidStack(36);
 
 		//LiFBeF2ThF4UF4 - T3
 		GT_Recipe LFTR1 = new GTPP_Recipe(
-				true, 
+				false, 
 				new ItemStack[] {},
 				new ItemStack[] {},
 				null, new int[] {10000, 10000, 5000, 2500},
 				new FluidStack[] {
-						NUCLIDE.LiFBeF2ThF4UF4.getFluidStack(17),
+						NUCLIDE.LiFBeF2ThF4UF4.getFluidStack(18),
 						Li2BeF4
 				},
 				new FluidStack[] {
-						new FluidStack(NuclearChem.Burnt_LiFBeF2ThF4UF4, 17),
-						NUCLIDE.LiFBeF2ThF4.getFluidStack(34),
+						NUCLIDE.LiFBeF2UF4FP.getFluidStack(18),
+						NUCLIDE.LiFBeF2ThF4.getFluidStack(36),
 						FLUORIDES.URANIUM_HEXAFLUORIDE.getFluidStack(10),
 						FLUORIDES.URANIUM_HEXAFLUORIDE.getFluidStack(5)
 				},
-				12000,//time
+				9000,//time
 				0,//cost
-				8192//fuel value
+				8192*4//fuel value
 				);
 
 		//LiFBeF2ZrF4UF4 - T2
 		GT_Recipe LFTR2 = new GTPP_Recipe(
-				true, 
+				false, 
 				new ItemStack[] {},
 				new ItemStack[] {},
 				null, new int[] {10000, 10000, 2500, 1250},
 				new FluidStack[] {
-						NUCLIDE.LiFBeF2ZrF4UF4.getFluidStack(17),
+						NUCLIDE.LiFBeF2ZrF4UF4.getFluidStack(18),
 						Li2BeF4
 				},
 				new FluidStack[] {
-						new FluidStack(NuclearChem.Burnt_LiFBeF2ZrF4UF4, 17),
-						NUCLIDE.LiFBeF2ThF4.getFluidStack(34),
+						NUCLIDE.LiFBeF2UF4FP.getFluidStack(12),
+						NUCLIDE.LiFBeF2ThF4.getFluidStack(24),
 						FLUORIDES.URANIUM_HEXAFLUORIDE.getFluidStack(4),
 						FLUORIDES.URANIUM_HEXAFLUORIDE.getFluidStack(2)						
 				},
@@ -100,17 +99,17 @@ public class RecipeLoader_LFTR {
 
 		//LiFBeF2ZrF4U235 - T1
 		GT_Recipe LFTR3 = new GTPP_Recipe(
-				true, 
+				false, 
 				new ItemStack[] {},
 				new ItemStack[] {},
 				null, new int[] {10000, 10000, 1000, 500},
 				new FluidStack[] {
-						NUCLIDE.LiFBeF2ZrF4U235.getFluidStack(17),
+						NUCLIDE.LiFBeF2ZrF4U235.getFluidStack(18),
 						Li2BeF4
 				},
 				new FluidStack[] {
-						new FluidStack(NuclearChem.Burnt_LiFBeF2ZrF4U235, 17),
-						NUCLIDE.LiFThF4.getFluidStack(34),
+						NUCLIDE.LiFBeF2UF4FP.getFluidStack(6),
+						NUCLIDE.LiFThF4.getFluidStack(12),
 						FLUORIDES.URANIUM_HEXAFLUORIDE.getFluidStack(2),
 						FLUORIDES.URANIUM_HEXAFLUORIDE.getFluidStack(1)
 				},

@@ -1790,7 +1790,14 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 	}
 
 
-
+    @Override
+    public boolean addFluidHeaterRecipe(ItemStack aInput, FluidStack aFluidInput, FluidStack aOutput, int aDuration, int aEUt) {
+        if ((aInput == null && aFluidInput == null) || (aOutput == null)) {
+            return false;
+        }
+        GT_Recipe.GT_Recipe_Map.sFluidHeaterRecipes.addRecipe(true, new ItemStack[]{aInput}, null, null, new FluidStack[]{aFluidInput}, new FluidStack[]{aOutput}, aDuration, aEUt, 0);
+        return true;
+    }
 
 
 

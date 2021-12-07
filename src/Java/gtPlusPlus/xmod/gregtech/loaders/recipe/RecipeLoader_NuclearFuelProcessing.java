@@ -145,18 +145,18 @@ public class RecipeLoader_NuclearFuelProcessing {
 
 		// Reactor Core step 0 - Process Burnt Salt
 		// Tier 1 Fuel - Gives back FLIBE and breeds U233
-		CORE.RA.addReactorProcessingUnitRecipe(
-				CI.getNumberedAdvancedCircuit(1),
-				CI.emptyCells(2),
-				new FluidStack(NuclearChem.Burnt_LiFBeF2ZrF4U235, 4000),
-				new ItemStack[] {
-						FLUORIDES.LITHIUM_FLUORIDE.getCell(1),
-						ELEMENT.getInstance().URANIUM233.getCell(1)
-				},
-				new int[] {10000, 10000},
-				NUCLIDE.LiFBeF2.getFluidStack(2000),
-				20 * 60 * 60,
-				MaterialUtils.getVoltageForTier(3));
+		/*		CORE.RA.addReactorProcessingUnitRecipe(
+						CI.getNumberedAdvancedCircuit(1),
+						CI.emptyCells(2),
+						new FluidStack(NuclearChem.Burnt_LiFBeF2ZrF4U235, 4000),
+						new ItemStack[] {
+								FLUORIDES.LITHIUM_FLUORIDE.getCell(1),
+								ELEMENT.getInstance().URANIUM233.getCell(1)
+						},
+						new int[] {10000, 10000},
+						NUCLIDE.LiFBeF2.getFluidStack(2000),
+						20 * 60 * 60,
+						MaterialUtils.getVoltageForTier(3));*/
 
 
 		// LiBeF2UF4FP + F2 = LiFBeF2 & UF6F2FP
@@ -164,7 +164,7 @@ public class RecipeLoader_NuclearFuelProcessing {
 		CORE.RA.addReactorProcessingUnitRecipe(
 				CI.getNumberedAdvancedCircuit(1),
 				ELEMENT.getInstance().FLUORINE.getCell(3),
-				NUCLIDE.LiBeF2UF4FP.getFluidStack(1000),
+				NUCLIDE.LiFBeF2UF4FP.getFluidStack(1000),
 				new ItemStack[] {
 						NUCLIDE.UF6F2FP.getCell(2)
 				},

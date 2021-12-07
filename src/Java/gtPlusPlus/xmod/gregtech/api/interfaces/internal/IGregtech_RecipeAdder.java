@@ -1,6 +1,8 @@
 package gtPlusPlus.xmod.gregtech.api.interfaces.internal;
 
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
+import gregtech.api.util.GT_Recipe;
 import gtPlusPlus.core.material.Material;
 import net.minecraft.item.ItemStack;
 
@@ -308,5 +310,6 @@ public interface IGregtech_RecipeAdder {
 	
 	public boolean addReactorProcessingUnitRecipe(ItemStack aInput1, ItemStack aInput2, FluidStack aFluidInput, ItemStack[] aOutputs, int[] aChances, FluidStack aFluidOutput, int aTime, int aEU);
 
+    public boolean addFluidHeaterRecipe(ItemStack aCircuit, FluidStack aInput, FluidStack aOutput, int aDuration, int aEUt);
 
 }

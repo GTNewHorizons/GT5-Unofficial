@@ -128,8 +128,8 @@ public final class NUCLIDE {
 	
 	
 	// LFTR Core Fluids
-	public static final Material LiBeF2UF4FP = new Material(
-			"LiBeF2UF4FP", //Material Name
+	public static final Material LiFBeF2UF4FP = new Material(
+			"LiFBeF2UF4FP", //Material Name
 			MaterialState.PURE_LIQUID, //State
 			null, //Material Colour
 			-1, //Melting Point in C
@@ -137,10 +137,10 @@ public final class NUCLIDE {
 			-1, //Protons
 			-1, //Neutrons
 			false, //Uses Blast furnace?
-			StringUtils.subscript(StringUtils.superscript("7")+"LiBeF2UF4FP"), //Chemical Formula
+			StringUtils.subscript(StringUtils.superscript("7")+"LiFBeF2UF4FP"), //Chemical Formula
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
-					new MaterialStack(ELEMENT.getInstance().LITHIUM, 1),
+					new MaterialStack(FLUORIDES.LITHIUM_FLUORIDE, 1),
 					new MaterialStack(FLUORIDES.BERYLLIUM_FLUORIDE, 1),
 					new MaterialStack(FLUORIDES.URANIUM_TETRAFLUORIDE, 1),
 					new MaterialStack(ELEMENT.getInstance().PROTACTINIUM, 1)

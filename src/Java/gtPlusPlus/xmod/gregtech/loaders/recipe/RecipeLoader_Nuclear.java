@@ -17,7 +17,6 @@ import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.reflect.AddGregtechRecipe;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -40,6 +39,7 @@ public class RecipeLoader_Nuclear {
 		dehydratorRecipes();
 		electroMagneticSeperator();
 		fluidExtractorRecipes();
+		fluidHeater();
 		macerator();
 		mixerRecipes();		
 		sifter();
@@ -325,6 +325,25 @@ public class RecipeLoader_Nuclear {
 				FluidUtils.getFluidStack("sulfuricacid", 144 * 2),
 				ItemUtils.getItemStackOfAmountFromOreDict("dustTechnetium", 1),
 				100 * 20);
+		
+		// Sodium Hydroxide
+		GT_Values.RA.addChemicalRecipe(
+				CI.getNumberedBioCircuit(15),
+				ItemUtils.getItemStackOfAmountFromOreDict("dustSodiumHydroxide", 1), 
+				FluidUtils.getFluidStack("hydrofluoricacid", 500),
+				FluidUtils.getWater(1000),
+				FLUORIDES.SODIUM_FLUORIDE.getDust(1),
+				60 * 20);
+		
+		if (FluidUtils.doesFluidExist("hydrofluoricacid_gt5u")) {
+			GT_Values.RA.addChemicalRecipe(
+					CI.getNumberedBioCircuit(15),
+					ItemUtils.getItemStackOfAmountFromOreDict("dustSodiumHydroxide", 1), 
+					FluidUtils.getFluidStack("hydrofluoricacid_gt5u", 1000),
+					FluidUtils.getWater(1000),
+					FLUORIDES.SODIUM_FLUORIDE.getDust(1),
+					60 * 20);
+		}
 
 	}
 
@@ -368,37 +387,6 @@ public class RecipeLoader_Nuclear {
 				new int[] { 10000, 10000, 10000, 10000, 10000 },
 				75 * 20, // Time in ticks
 				1000); // EU
-
-		// Makes Uranium Tetrafluoride
-		CORE.RA.addDehydratorRecipe(
-				new ItemStack[] { 
-						CI.getNumberedAdvancedCircuit(13),
-						ItemUtils.getItemStackOfAmountFromOreDict("cellWater", 10)
-				}, 
-				FLUORIDES.URANIUM_TETRAFLUORIDE.getFluidStack(1440), 
-				null, 
-				new ItemStack[] { 
-						FLUORIDES.URANIUM_TETRAFLUORIDE.getDust(10),
-						CI.emptyCells(10) 
-				}, 
-				new int[] { 10000 }, 
-				150 * 20, // Time in ticks
-				2000); // EU
-
-		// Makes Uranium Hexafluoride
-		CORE.RA.addDehydratorRecipe(
-				new ItemStack[] { 
-						CI.getNumberedAdvancedCircuit(12),
-						ItemUtils.getItemStackOfAmountFromOreDict("cellWater", 10)
-				}, // Item
-				FLUORIDES.URANIUM_HEXAFLUORIDE.getFluidStack(1440), 
-				null, // Fluid output (slot 2)
-				new ItemStack[] { 
-						FLUORIDES.URANIUM_HEXAFLUORIDE.getDust(10),
-						CI.emptyCells(10) }, // Output
-				new int[] { 10000 }, 
-				300 * 20, // Time in ticks
-				4000); // EU
 
 		// Calcium Hydroxide
 		if ((ItemUtils.checkForInvalidItems(ItemUtils.getItemStackOfAmountFromOreDict("dustQuicklime", 1)))	|| LoadedMods.IHL) {
@@ -691,6 +679,17 @@ public class RecipeLoader_Nuclear {
 				new int[] { 10000, 5000, 500, 250, 250, 250 }, 
 				20 * 30, 
 				500);
+	}
+	
+	private static void fluidHeater() {
+		
+		CORE.RA.addFluidHeaterRecipe(
+				FLUORIDES.SODIUM_FLUORIDE.getDust(1),
+				null,
+				FLUORIDES.SODIUM_FLUORIDE.getFluidStack(144),
+				20 * 30, 
+				500);
+		
 	}
 
 }
