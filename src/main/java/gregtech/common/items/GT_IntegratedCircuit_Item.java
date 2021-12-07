@@ -8,7 +8,6 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.ToolDictNames;
 import gregtech.api.gui.GT_GUIDialogSelectItem;
 import gregtech.api.interfaces.INetworkUpdatableItem;
 import gregtech.api.items.GT_Generic_Item;
@@ -33,11 +32,13 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.oredict.OreDictionary;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.function.BiFunction;
+import java.util.function.Predicate;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
 import static gregtech.api.enums.GT_Values.RES_PATH_ITEM;
@@ -56,7 +57,7 @@ public class GT_IntegratedCircuit_Item extends GT_Generic_Item implements INetwo
         ALL_VARIANTS.add(new ItemStack(this, 0, 0));
         for (int i = 1; i <= 24; i++) {
             ItemStack aStack = new ItemStack(this, 0, i);
-            GregTech_API.registerConfigurationCircuit(aStack);
+            GregTech_API.registerConfigurationCircuit(aStack, 1);
             ALL_VARIANTS.add(aStack);
         }
 
@@ -113,6 +114,8 @@ public class GT_IntegratedCircuit_Item extends GT_Generic_Item implements INetwo
     public void addAdditionalToolTips(List aList, ItemStack aStack, EntityPlayer aPlayer) {
         super.addAdditionalToolTips(aList, aStack, aPlayer);
         aList.add(GT_LanguageManager.addStringLocalization(new StringBuilder().append(getUnlocalizedName()).append(".configuration").toString(), "Configuration: ") + getConfigurationString(getDamage(aStack)));
+        aList.add(GT_LanguageManager.addStringLocalization(new StringBuilder().append(getUnlocalizedName()).append(".tooltip.0").toString(), "Right click to reconfigure"));
+        aList.add(GT_LanguageManager.addStringLocalization(new StringBuilder().append(getUnlocalizedName()).append(".tooltip.1").toString(), "Needs a screwdriver or circuit programming tool"));
     }
 
     @Override
@@ -160,12 +163,11 @@ public class GT_IntegratedCircuit_Item extends GT_Generic_Item implements INetwo
             return true;
 
         if (!player.capabilities.isCreativeMode) {
-            int toolIndex = findConfiguratorInInv(player);
-            if (toolIndex < 0) return true;
+            Pair<Integer, BiFunction<ItemStack, EntityPlayerMP, ItemStack>> toolIndex = findConfiguratorInInv(player);
+            if (toolIndex == null) return true;
 
             ItemStack[] mainInventory = player.inventory.mainInventory;
-            ItemStack oldToolStack = mainInventory[toolIndex];
-            mainInventory[toolIndex] = oldToolStack.getItem().getContainerItem(oldToolStack);
+            mainInventory[toolIndex.getKey()] = toolIndex.getValue().apply(mainInventory[toolIndex.getKey()], player);
         }
         stack.setItemDamage(meta);
 
@@ -181,8 +183,8 @@ public class GT_IntegratedCircuit_Item extends GT_Generic_Item implements INetwo
         if (player.capabilities.isCreativeMode) {
             configuratorStack = null;
         } else {
-            int configurator = findConfiguratorInInv(player);
-            if (configurator < 0) {
+            Pair<Integer, ?> configurator = findConfiguratorInInv(player);
+            if (configurator == null) {
                 int count;
                 try {
                     count = Integer.parseInt(StatCollector.translateToLocal("GT5U.item.programmed_circuit.no_screwdriver.count"));
@@ -193,13 +195,13 @@ public class GT_IntegratedCircuit_Item extends GT_Generic_Item implements INetwo
                 player.addChatComponentMessage(new ChatComponentTranslation("GT5U.item.programmed_circuit.no_screwdriver." + XSTR.XSTR_INSTANCE.nextInt(count)));
                 return false;
             }
-            configuratorStack = player.inventory.mainInventory[configurator];
+            configuratorStack = player.inventory.mainInventory[configurator.getKey()];
         }
-        openSelectorGui(player, configuratorStack, stack.getItemDamage());
+        openSelectorGui(configuratorStack, stack.getItemDamage());
         return true;
     }
 
-    private void openSelectorGui(EntityPlayer player, ItemStack configurator, int meta) {
+    private void openSelectorGui(ItemStack configurator, int meta) {
         FMLCommonHandler.instance().showGuiScreen(new GT_GUIDialogSelectItem(
                 StatCollector.translateToLocal("GT5U.item.programmed_circuit.select.header"),
                 configurator,
@@ -217,16 +219,18 @@ public class GT_IntegratedCircuit_Item extends GT_Generic_Item implements INetwo
         GT_Values.NW.sendToServer(new GT_Packet_UpdateItem(tag));
     }
 
-    private static int findConfiguratorInInv(EntityPlayer player) {
-        int screwdriverOreId = OreDictionary.getOreID(ToolDictNames.craftingToolScrewdriver.name());
+    private static Pair<Integer, BiFunction<ItemStack, EntityPlayerMP, ItemStack>> findConfiguratorInInv(EntityPlayer player) {
         ItemStack[] mainInventory = player.inventory.mainInventory;
         for (int j = 0, mainInventoryLength = mainInventory.length; j < mainInventoryLength; j++) {
             ItemStack toolStack = mainInventory[j];
-            boolean accepted = GT_Utility.isStackInList(toolStack, GregTech_API.sCircuitProgrammerList) ||
-                    Arrays.stream(OreDictionary.getOreIDs(toolStack)).anyMatch(i -> i == screwdriverOreId);
-            if (accepted)
-                return j;
+
+            if (!GT_Utility.isStackValid(toolStack))
+                continue;
+
+            for (Map.Entry<Predicate<ItemStack>, BiFunction<ItemStack, EntityPlayerMP, ItemStack>> p : GregTech_API.sCircuitProgrammerList.entrySet())
+                if (p.getKey().test(toolStack))
+                    return Pair.of(j, p.getValue());
         }
-        return -1;
+        return null;
     }
 }

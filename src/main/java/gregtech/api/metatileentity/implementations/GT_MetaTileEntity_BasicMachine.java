@@ -139,6 +139,13 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     }
 
     @Override
+    public void setInventorySlotContents(int aIndex, ItemStack aStack) {
+        if (allowSelectCircuit() && aIndex == getCircuitSlot() && aStack != null && aStack.stackSize != 0)
+            aStack = GT_Utility.copyAmount(0, aStack);
+        super.setInventorySlotContents(aIndex, aStack);
+    }
+
+    @Override
     public GT_MetaTileEntity_Cleanroom getCallbackBase() {
         return this.mCleanroom;
     }
@@ -210,7 +217,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
 
     @Override
     public boolean isValidSlot(int aIndex) {
-        return aIndex > 0 && super.isValidSlot(aIndex) && aIndex != OTHER_SLOT_COUNT + mInputSlotCount + mOutputItems.length;
+        return aIndex > 0 && super.isValidSlot(aIndex) && aIndex != getCircuitSlot() && aIndex != OTHER_SLOT_COUNT + mInputSlotCount + mOutputItems.length;
     }
 
     @Override
@@ -871,7 +878,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
      * This list is unmodifiable. Its elements are not supposed to be modified in any way!
      */
     public List<ItemStack> getConfigurationCircuits() {
-        return GregTech_API.getConfigurationCircuitList();
+        return GregTech_API.getConfigurationCircuitList(mTier);
     }
 
     /**

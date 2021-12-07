@@ -4,8 +4,10 @@ import codechicken.lib.gui.GuiDraw;
 import gregtech.api.interfaces.IGuiScreen;
 import gregtech.api.util.GT_UtilityClient;
 import net.minecraft.client.Minecraft;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 
 import java.awt.*;
 import java.util.List;
@@ -108,8 +110,16 @@ public class GT_GuiFakeItemButton implements IGuiScreen.IGuiElement {
             GT_GuiIcon.render(bgIcon, xPosition-1, yPosition-1, 18, 18,0,true);
         }
 
-        if (item != null)
+        if (item != null) {
+            if (item.getItem() instanceof ItemBlock) {
+                GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
+                GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+            }
             gui.getItemRenderer().renderItemAndEffectIntoGUI(gui.getFontRenderer(), Minecraft.getMinecraft().getTextureManager(), item, xPosition, yPosition);
+
+            if (item.getItem() instanceof ItemBlock)
+                GL11.glPopAttrib();
+        }
 
         if (getMimicSlot())
             if (getBounds().contains(mouseX - gui.getGuiLeft(), mouseY - gui.getGuiTop())) {

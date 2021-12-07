@@ -272,55 +272,32 @@ public abstract class GT_MetaTileEntity_BasicGenerator extends GT_MetaTileEntity
     }
 
     public int getFuelValue(FluidStack aLiquid) {
-        //System.out.println("Fluid stack check");
-        GT_Recipe_Map tRecipes = getRecipes();
-        if (aLiquid == null || !(tRecipes instanceof GT_Recipe.GT_Recipe_Map_Fuel)) return 0;
-        GT_Recipe.GT_Recipe_Map_Fuel tFuels = (GT_Recipe.GT_Recipe_Map_Fuel) tRecipes;
-        GT_Recipe tFuel = tFuels.findFuel(aLiquid);
-        if (tFuel == null) {
-            return 0;
-        }
-        long val=(long)tFuel.mSpecialValue * getEfficiency() * consumedFluidPerOperation(aLiquid) / 100;
-        if(val> Integer.MAX_VALUE){
-            val = 0;
-        }
-        return (int) val;
-    }
-
-    public int getFuelValue(ItemStack aStack) {
-        //System.out.println("Item stack check");
-        if (GT_Utility.isStackInvalid(aStack) || getRecipes() == null) return 0;
-        GT_Recipe tFuel = getRecipes().findRecipe(getBaseMetaTileEntity(), false, Long.MAX_VALUE, null, aStack);
-        if (tFuel != null){
-            long val=(long)tFuel.mSpecialValue * 10L /*<- 1000mb/100 */ * getEfficiency();
-            if(val> Integer.MAX_VALUE){
-                val = 0;
-            }
-            return (int) val;
-        }
-        return 0;
+        long value = getFuelValue(aLiquid, true);
+        return (value > Integer.MAX_VALUE) ? 0 : (int) value;
     }
 
     public long getFuelValue(FluidStack aLiquid, boolean aLong) {
-        //System.out.println("Fluid stack check");
         GT_Recipe_Map tRecipes = getRecipes();
         if (aLiquid == null || !(tRecipes instanceof GT_Recipe.GT_Recipe_Map_Fuel)) return 0;
         GT_Recipe.GT_Recipe_Map_Fuel tFuels = (GT_Recipe.GT_Recipe_Map_Fuel) tRecipes;
         GT_Recipe tFuel = tFuels.findFuel(aLiquid);
-        if (tFuel == null) {
-            return 0;
-        }
-        return (long)tFuel.mSpecialValue * getEfficiency() * consumedFluidPerOperation(aLiquid) / 100;
+        if (tFuel == null) return 0;
+
+        return (long) tFuel.mSpecialValue * getEfficiency() * consumedFluidPerOperation(aLiquid) / 100;
+    }
+
+    public int getFuelValue(ItemStack aStack) {
+        long value = getFuelValue(aStack, true);
+        return (value > Integer.MAX_VALUE) ? 0 : (int) value;
     }
 
     public long getFuelValue(ItemStack aStack, boolean aLong) {
-        //System.out.println("Item stack check");
         if (GT_Utility.isStackInvalid(aStack) || getRecipes() == null) return 0;
         GT_Recipe tFuel = getRecipes().findRecipe(getBaseMetaTileEntity(), false, Long.MAX_VALUE, null, aStack);
-        if (tFuel != null){
-            return (long)tFuel.mSpecialValue * 10L /*<- 1000mb/100 */ * getEfficiency();
-        }
-        return 0;
+        if (tFuel == null) return 0;
+
+        long liters = 10L; // 1000mb/100
+        return (long) tFuel.mSpecialValue * liters * getEfficiency();
     }
 
     public ItemStack getEmptyContainer(ItemStack aStack) {
@@ -332,7 +309,7 @@ public abstract class GT_MetaTileEntity_BasicGenerator extends GT_MetaTileEntity
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return super.allowPutStack(aBaseMetaTileEntity, aIndex, aSide, aStack) && (getFuelValue(aStack) > 0 || getFuelValue(aStack, true) > 0 || getFuelValue(GT_Utility.getFluidForFilledItem(aStack, true)) > 0 || getFuelValue(GT_Utility.getFluidForFilledItem(aStack, true), true) > 0);
+        return super.allowPutStack(aBaseMetaTileEntity, aIndex, aSide, aStack) && (getFuelValue(aStack, true) > 0 || getFuelValue(GT_Utility.getFluidForFilledItem(aStack, true), true) > 0);
     }
 
     @Override

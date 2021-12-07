@@ -11,24 +11,35 @@ import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.function.Consumer;
+
 
 @SuppressWarnings("rawtypes, unchecked, deprecation")
 public class GT_CLS_Compat {
 
     private static Class alexiilMinecraftDisplayer;
     private static Class alexiilProgressDisplayer;
+    private static Class cpwProgressBar;
 
     private static Method getLastPercent;
     private static Method displayProgress;
 
     private static Field isReplacingVanillaMaterials;
     private static Field isRegisteringGTmaterials;
+    private static Field progressBarStep;
 
     static {
         //CLS
         try {
             alexiilMinecraftDisplayer = Class.forName("alexiil.mods.load.MinecraftDisplayer");
             alexiilProgressDisplayer = Class.forName("alexiil.mods.load.ProgressDisplayer");
+        } catch (ClassNotFoundException ex) {
+            GT_Mod.GT_FML_LOGGER.catching(ex);
+        }
+
+        try {
+            cpwProgressBar = Class.forName("cpw.mods.fml.common.ProgressManager$ProgressBar");
         } catch (ClassNotFoundException ex) {
             GT_Mod.GT_FML_LOGGER.catching(ex);
         }
@@ -51,90 +62,83 @@ public class GT_CLS_Compat {
                 GT_Mod.GT_FML_LOGGER.catching(ex);
             }
         });
-    }
 
-    public static void stepMaterialsCLS(Collection<GT_Proxy.OreDictEventContainer> mEvents, ProgressManager.ProgressBar progressBar) throws IllegalAccessException, InvocationTargetException {
-        int sizeStep = GT_CLS_Compat.setStepSize(mEvents);
-        int size = 0;
-        for (GT_Proxy.OreDictEventContainer tEvent : mEvents) {
-            sizeStep--;
-
-            String materialName = tEvent.mMaterial == null ? "" : tEvent.mMaterial.toString();
-
-            displayProgress.invoke(null, materialName, ((float) size) / 100);
-
-            if (sizeStep == 0) {
-                if (size % 5 == 0)
-                    GT_Mod.GT_FML_LOGGER.info("Baking: " + size + "%");
-                sizeStep = mEvents.size() / 100 - 1;
-                size++;
-            }
-
-            progressBar.step(materialName);
-            GT_Proxy.registerRecipes(tEvent);
-        }
-        ProgressManager.pop(progressBar);
-        isRegisteringGTmaterials.set(null, false);
-    }
-
-
-    public static int setStepSize(Collection mEvents) {
         try {
-            isRegisteringGTmaterials.set(null, true);
-        } catch (IllegalArgumentException | IllegalAccessException e) {
-            GT_Mod.GT_FML_LOGGER.catching(e);
+            progressBarStep = cpwProgressBar.getDeclaredField("step");
+            progressBarStep.setAccessible(true);
+        } catch (NoSuchFieldException ex) {
+            GT_Mod.GT_FML_LOGGER.catching(ex);
         }
-
-        return mEvents.size() / 100 - 1;
     }
 
     private GT_CLS_Compat() {
     }
 
-    private static int[] setSizeSteps(Set<Materials> replaceVanillaItemsSet){
-        int sizeStep;
-        int sizeStep2;
-        if (replaceVanillaItemsSet.size() >= 100) {
-            sizeStep = replaceVanillaItemsSet.size() / 100 - 1;
-            sizeStep2 = 1;
-        } else {
-            sizeStep = 100 / replaceVanillaItemsSet.size();
-            sizeStep2 = sizeStep;
-        }
-        return new int[]{sizeStep, sizeStep2};
-    }
+    private static <T> void registerAndReportProgression(String materialsType, Collection<T> materials, ProgressManager.ProgressBar progressBar, Function<T,Object> getName, Consumer<T> action) {
+        int sizeStep = materials.size();
+        final long progressionReportsEvery = 100;
+        final long bakingMsgEvery = 1000;
+        long nextProgressionReportAt = 0;
+        long nextBakingMsgAt = 0;
+        int currentStep = 0;
 
-    private static void displayMethodAdapter(int counter, String mDefaultLocalName, int size) throws InvocationTargetException, IllegalAccessException {
-        if (counter == 1) {
-            displayProgress.invoke(null, mDefaultLocalName, ((float) 95) / 100);
-        } else if (counter == 0) {
-            displayProgress.invoke(null, mDefaultLocalName, (float) 1);
-        } else {
-            displayProgress.invoke(null, mDefaultLocalName, ((float) size) / 100);
-        }
-    }
+        for (T m : materials) {
+            long now = System.currentTimeMillis();
 
-    public static void doActualRegistrationCLS(ProgressManager.ProgressBar progressBar, Set<Materials> replaceVanillaItemsSet) throws InvocationTargetException, IllegalAccessException {
-        int size = 0;
-        int counter = replaceVanillaItemsSet.size();
+            if (nextProgressionReportAt < now) {
+                nextProgressionReportAt = now + progressionReportsEvery;
+                String materialName = getName.apply(m).toString();
+                try {
+                    displayProgress.invoke(null, materialName, (float)currentStep / sizeStep);
+                } catch (IllegalAccessException | InvocationTargetException iae) {
+                    GT_Mod.GT_FML_LOGGER.error("While updating progression", iae);
+                }
+                try {
+                    progressBarStep.set(progressBar, currentStep);
+                } catch (IllegalAccessException iae) {
+                    GT_Mod.GT_FML_LOGGER.error("While updating intermediate progression steps number", iae);
+                }
+                progressBar.step(materialName);
+            }
+            if (nextBakingMsgAt < now) {
+                nextBakingMsgAt = now + bakingMsgEvery;
+                GT_Mod.GT_FML_LOGGER.info(String.format("%s - Baking: %d%%", materialsType, (Integer)(currentStep * 100 / sizeStep)));
+            }
+            action.accept(m);
+            currentStep += 1;
+        };
+        GT_Mod.GT_FML_LOGGER.info(String.format("%s - Baking: Done", materialsType));
         try {
-            isReplacingVanillaMaterials.set(null, true);
+            progressBarStep.set(progressBar, currentStep);
+        } catch (IllegalAccessException iae) {
+            GT_Mod.GT_FML_LOGGER.error("While updating final progression steps number", iae);
+        }
+    }
+
+    public static void stepMaterialsCLS(Collection<GT_Proxy.OreDictEventContainer> mEvents, ProgressManager.ProgressBar progressBar) throws IllegalAccessException, InvocationTargetException {
+        try {
+            isRegisteringGTmaterials.set(null, true);
         } catch (IllegalArgumentException | IllegalAccessException e) {
             GT_Mod.GT_FML_LOGGER.catching(e);
         }
+        registerAndReportProgression("GregTech materials", mEvents, progressBar,
+            m -> m.mMaterial,
+            m -> GT_Proxy.registerRecipes(m)
+        );
+        ProgressManager.pop(progressBar);
+        isRegisteringGTmaterials.set(null, false);
+	}
 
-        int[] sizeSteps = setSizeSteps(replaceVanillaItemsSet);
-
-        for (Materials m : replaceVanillaItemsSet) {
-            counter--;
-            sizeSteps[0]--;
-
-            displayMethodAdapter(counter,m.mDefaultLocalName,size);
-            GT_Mod.doActualRegistration(m);
-
-            size += sizeSteps[1];
-            progressBar.step(m.mDefaultLocalName);
+    public static void doActualRegistrationCLS(ProgressManager.ProgressBar progressBar, Set<Materials> replacedVanillaItemsSet) throws InvocationTargetException, IllegalAccessException {
+        try {
+           isReplacingVanillaMaterials.set(null, true);
+         } catch (IllegalArgumentException | IllegalAccessException e) {
+            GT_Mod.GT_FML_LOGGER.catching(e);
         }
+        registerAndReportProgression("Vanilla materials", replacedVanillaItemsSet, progressBar,
+            m -> m.mDefaultLocalName,
+            m -> GT_Mod.doActualRegistration(m)
+        );
     }
 
     public static void pushToDisplayProgress() throws InvocationTargetException, IllegalAccessException {
