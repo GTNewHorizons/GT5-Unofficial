@@ -2,6 +2,9 @@ package gtPlusPlus.core.material;
 
 import java.util.Set;
 
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
@@ -45,6 +48,7 @@ import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_FluidCanning;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_Fluids;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_MaterialProcessing;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_Ore;
+import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_Plasma;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_Plates;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_Recycling;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_ShapedCrafting;
@@ -217,6 +221,8 @@ public class MaterialGenerator {
 			
 			new RecipeGen_DustGeneration(matInfo);
 			new RecipeGen_Recycling(matInfo);
+			new RecipeGen_Plasma(matInfo);
+			
 			return true;
 
 		} catch (final Throwable t)
@@ -323,6 +329,7 @@ public class MaterialGenerator {
 			new RecipeGen_MaterialProcessing(matInfo);
 			new RecipeGen_DustGeneration(matInfo, true);
 			new RecipeGen_Recycling(matInfo);	
+			new RecipeGen_Plasma(matInfo);
 			
 		} catch (final Throwable t){
 			Logger.MATERIALS(""+matInfo.getLocalizedName()+" failed to generate.");

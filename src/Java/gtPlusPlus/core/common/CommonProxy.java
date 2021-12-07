@@ -219,7 +219,7 @@ public class CommonProxy {
 	}
 
 	public void registerCustomItemsForMaterials() {
-		Material.registerComponentForMaterial(GenericChem.CARBYNE, OrePrefixes.plate, GregtechItemList.Carbyne_Sheet_Finished.get(1));
+		//Material.registerComponentForMaterial(GenericChem.CARBYNE, OrePrefixes.plate, GregtechItemList.Carbyne_Sheet_Finished.get(1));
 	}
 
 	public void registerCustomMobDrops() {
