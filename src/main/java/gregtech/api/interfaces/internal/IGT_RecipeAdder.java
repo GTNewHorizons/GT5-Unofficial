@@ -439,7 +439,7 @@ public interface IGT_RecipeAdder {
      * @param aOutput2 can be null
      */
     boolean addDistillationTowerRecipe(FluidStack aInput, FluidStack[] aOutputs, ItemStack aOutput2, int aDuration, int aEUt);
-
+    boolean addDistillationTowerRecipe(FluidStack aInput, ItemStack[] aCircuit, FluidStack[] aOutputs, ItemStack aOutput2, int aDuration, int aEUt);
 
     boolean addSimpleArcFurnaceRecipe(ItemStack aInput, FluidStack aFluidInput, ItemStack[] aOutputs, int[] aChances, int aDuration, int aEUt);
 
