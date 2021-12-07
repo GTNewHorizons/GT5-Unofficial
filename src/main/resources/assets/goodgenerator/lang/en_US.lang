@@ -180,6 +180,7 @@ tile.combustionPromotor.name=Combustion Promoter
 
 #Tab Name
 itemGroup.Good Generator=Good Generator
+itemGroup.Nuclear Items=[GG] Multi Nuclear Reactor
 
 #Scanner Info
 scanner.info.FRF=Coil Tier:
