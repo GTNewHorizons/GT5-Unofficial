@@ -6,11 +6,11 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.chemistry.GenericChem;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.ELEMENT;
+import gtPlusPlus.core.material.MISC_MATERIALS;
 import gtPlusPlus.core.material.nuclear.FLUORIDES;
 import gtPlusPlus.core.material.nuclear.NUCLIDE;
 import gtPlusPlus.core.recipe.common.CI;
@@ -60,11 +60,11 @@ public class RecipeLoader_Nuclear {
 	private static void blastFurnace() {
 
 		GT_Values.RA.addBlastRecipe(
-				ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumFluoride", 2),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustBerylliumFluoride", 1),
+				FLUORIDES.LITHIUM_FLUORIDE.getDust(2),
+				FLUORIDES.BERYLLIUM_FLUORIDE.getDust(1),
 				GT_Values.NF, 
 				GT_Values.NF,
-				ItemUtils.getSimpleStack(ModItems.dustLi2BeF4, 3),
+				NUCLIDE.Li2BeF4.getDust(3),
 				null, 
 				60 * 20, 2000, 
 				3000);
@@ -92,7 +92,7 @@ public class RecipeLoader_Nuclear {
 				CI.getNumberedCircuit(20),
 				ItemUtils.getItemStackFromFQRN("IC2:reactorUraniumSimpledepleted", 8),
 				GT_Values.NF,
-				ELEMENT.getInstance().KRYPTON.getFluid(60),
+				ELEMENT.getInstance().KRYPTON.getFluidStack(60),
 				ItemList.IC2_Fuel_Rod_Empty.get(8),
 				ELEMENT.getInstance().URANIUM238.getDust(2),
 				ELEMENT.getInstance().URANIUM232.getSmallDust(1),
@@ -105,7 +105,7 @@ public class RecipeLoader_Nuclear {
 				CI.getNumberedCircuit(20),
 				ItemUtils.getItemStackFromFQRN("IC2:reactorMOXSimpledepleted", 8),
 				GT_Values.NF,
-				ELEMENT.getInstance().KRYPTON.getFluid(90),
+				ELEMENT.getInstance().KRYPTON.getFluidStack(90),
 				ItemList.IC2_Fuel_Rod_Empty.get(8),
 				ELEMENT.getInstance().PLUTONIUM244.getDust(2),
 				ELEMENT.getInstance().PLUTONIUM241.getTinyDust(1),
@@ -119,7 +119,7 @@ public class RecipeLoader_Nuclear {
 				CI.getNumberedCircuit(20),
 				ItemList.Depleted_Thorium_1.get(8),
 				GT_Values.NF,
-				ELEMENT.getInstance().KRYPTON.getFluid(30),
+				ELEMENT.getInstance().KRYPTON.getFluidStack(30),
 				ItemList.IC2_Fuel_Rod_Empty.get(8),
 				ELEMENT.getInstance().THORIUM.getDust(2),
 				ELEMENT.getInstance().THORIUM232.getDust(1),
@@ -202,26 +202,43 @@ public class RecipeLoader_Nuclear {
 		// LFTR Fuel Related Compounds
 		if (GTNH) {
 			// Hydroxide
-			AddGregtechRecipe.addChemicalRecipeForBasicMachineOnly(
-					ItemUtils.getItemStackOfAmountFromOreDict("cellOxygen", 1),
-					ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogen", 1), GT_Values.NF,
-					FluidUtils.getFluidStack("hydroxide", 2000),
-					CI.emptyCells(2), GT_Values.NI, 8 * 20, 30);
+			GT_Values.RA.addChemicalRecipe(
+					ItemUtils.getGregtechCircuit(3),
+					ELEMENT.getInstance().OXYGEN.getCell(1), 
+					ELEMENT.getInstance().HYDROGEN.getFluidStack(1000),
+					MISC_MATERIALS.HYDROXIDE.getFluidStack(2000),
+					CI.emptyCells(2), 
+					GT_Values.NI, 
+					8 * 20, 
+					30);
 			// Beryllium Hydroxide
-			GT_Values.RA.addChemicalRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustBeryllium", 7),
-					ItemUtils.getGregtechCircuit(3), FluidUtils.getFluidStack("hydroxide", 1000),
-					FluidUtils.getFluidStack("berylliumhydroxide", 2000), GT_Values.NI, 8 * 20);
+			GT_Values.RA.addChemicalRecipe(
+					ItemUtils.getGregtechCircuit(3),
+					ELEMENT.getInstance().BERYLLIUM.getDust(7),
+					MISC_MATERIALS.HYDROXIDE.getFluidStack(1000),
+					FLUORIDES.BERYLLIUM_HYDROXIDE.getFluidStack(2000),
+					GT_Values.NI,
+					8 * 20,
+					30);
 			// Ammonium Bifluoride
-			GT_Values.RA.addChemicalRecipe(ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid", 1),
-					ItemUtils.getGregtechCircuit(3), FluidUtils.getFluidStack("ammonium", 1000),
-					FluidUtils.getFluidStack("ammoniumbifluoride", 2000),
-					CI.emptyCells(1), 26 * 20);
+			GT_Values.RA.addChemicalRecipe(
+					ItemUtils.getGregtechCircuit(3),
+					ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid", 1),
+					MISC_MATERIALS.AMMONIUM.getFluidStack(1000),
+					FLUORIDES.AMMONIUM_BIFLUORIDE.getFluidStack(2000),
+					CI.emptyCells(1),
+					20 * 20,
+					30);
 			// Ammonium
-			AddGregtechRecipe.addChemicalRecipeForBasicMachineOnly(
-					ItemUtils.getItemStackOfAmountFromOreDict("cellAmmonia", 1),
-					ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogen", 1), GT_Values.NF,
-					FluidUtils.getFluidStack("ammonium", 2000),
-					CI.emptyCells(2), GT_Values.NI, 20 * 20, 30);
+			GT_Values.RA.addChemicalRecipe(
+					ItemUtils.getGregtechCircuit(3),
+					ELEMENT.getInstance().HYDROGEN.getCell(1),
+					MISC_MATERIALS.AMMONIA.getFluidStack(1000),
+					MISC_MATERIALS.AMMONIUM.getFluidStack(2000),
+					CI.emptyCells(1), 
+					GT_Values.NI, 
+					20 * 20, 
+					30);
 		}
 
 		if (!GTNH) {
@@ -254,8 +271,8 @@ public class RecipeLoader_Nuclear {
 
 		//Technetium
 		GT_Values.RA.addChemicalRecipe(
+				CI.getNumberedAdvancedCircuit(22),
 				ItemUtils.getItemStackOfAmountFromOreDict("dustTechnetium99", 1), 
-				null,
 				FluidUtils.getFluidStack("sulfuricacid", 1000), 
 				FluidUtils.getFluidStack("sulfuricacid", 144 * 2),
 				ItemUtils.getItemStackOfAmountFromOreDict("dustTechnetium", 1),
@@ -310,10 +327,10 @@ public class RecipeLoader_Nuclear {
 						CI.getNumberedAdvancedCircuit(13),
 						ItemUtils.getItemStackOfAmountFromOreDict("cellWater", 10)
 				}, 
-				FluidUtils.getFluidStack("molten.uraniumtetrafluoride", 1440), 
+				FLUORIDES.URANIUM_TETRAFLUORIDE.getFluidStack(1440), 
 				null, 
 				new ItemStack[] { 
-						ItemUtils.getItemStackOfAmountFromOreDict("dustUraniumTetrafluoride", 10),
+						FLUORIDES.URANIUM_TETRAFLUORIDE.getDust(10),
 						CI.emptyCells(10) 
 				}, 
 				new int[] { 10000 }, 
@@ -326,10 +343,10 @@ public class RecipeLoader_Nuclear {
 						CI.getNumberedAdvancedCircuit(12),
 						ItemUtils.getItemStackOfAmountFromOreDict("cellWater", 10)
 				}, // Item
-				FluidUtils.getFluidStack("molten.uraniumhexafluoride", 1440), // Fluid
+				FLUORIDES.URANIUM_HEXAFLUORIDE.getFluidStack(1440), 
 				null, // Fluid output (slot 2)
 				new ItemStack[] { 
-						ItemUtils.getItemStackOfAmountFromOreDict("dustUraniumHexafluoride", 10),
+						FLUORIDES.URANIUM_HEXAFLUORIDE.getDust(10),
 						CI.emptyCells(10) }, // Output
 				new int[] { 10000 }, 
 				300 * 20, // Time in ticks
@@ -369,7 +386,7 @@ public class RecipeLoader_Nuclear {
 				}, // Item
 				null, // Fluid input (slot 1)
 				null, // Fluid output (slot 2)
-				new ItemStack[] {
+				new ItemStack[] {						
 						ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumHydroxide", 2),
 						ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumCarbonate", 3) 
 				}, // Output
@@ -429,10 +446,10 @@ public class RecipeLoader_Nuclear {
 		CORE.RA.addDehydratorRecipe(
 				new ItemStack[] {
 						CI.getNumberedAdvancedCircuit(6),
-						ItemUtils.getItemStackOfAmountFromOreDict("cellAmmoniumBifluoride", 4)
+						FLUORIDES.AMMONIUM_BIFLUORIDE.getCell(4)
 				}, 
-				FluidUtils.getFluidStack("berylliumhydroxide", 2000), // Fluid input (slot 1)
-				FluidUtils.getFluidStack("ammoniumtetrafluoroberyllate", 6000), 
+				FLUORIDES.BERYLLIUM_HYDROXIDE.getFluidStack(2000), // Fluid input (slot 1)
+				FLUORIDES.AMMONIUM_TETRAFLUOROBERYLLATE.getFluidStack(6000), 
 				new ItemStack[] {
 						ItemUtils.getItemStackOfAmountFromOreDict("cellWater", 4)
 				}, 
@@ -446,17 +463,16 @@ public class RecipeLoader_Nuclear {
 						CI.getNumberedAdvancedCircuit(17),
 						CI.emptyCells(5)
 				}, 
-				FluidUtils.getFluidStack("ammoniumtetrafluoroberyllate", 5000), 
+				FLUORIDES.AMMONIUM_TETRAFLUOROBERYLLATE.getFluidStack(5000), 
 				null, 
 				new ItemStack[] {
-						ItemUtils.getItemStackOfAmountFromOreDict("cellAmmonia", 2),
+						MISC_MATERIALS.AMMONIA.getCell(2),
 						ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid", 2),
-						ItemUtils.getItemStackOfAmountFromOreDict("cellBerylliumFluoride", 1)						
+						FLUORIDES.BERYLLIUM_FLUORIDE.getCell(1)					
 				},
 				new int[] {10000, 10000, 10000}, 
 				5 * 60 * 20,
 				120);
-
 
 	}
 
@@ -495,19 +511,34 @@ public class RecipeLoader_Nuclear {
 	private static void fluidExtractorRecipes() {
 
 		//FLiBe fuel
-		CORE.RA.addFluidExtractionRecipe(ItemUtils.getSimpleStack(ModItems.dustLi2BeF4, 1),
-				new FluidStack(ModItems.fluidFLiBeSalt, 144), 100, 500);
+		CORE.RA.addFluidExtractionRecipe(
+				NUCLIDE.Li2BeF4.getDust(1),
+				NUCLIDE.Li2BeF4.getFluidStack(144),
+				100,
+				500);
 		//LFTR Fuel 1
-		CORE.RA.addFluidExtractionRecipe(NUCLIDE.LiFBeF2ZrF4U235.getDust(1),
-				NUCLIDE.LiFBeF2ZrF4U235.getFluid(144), 250, 1000);
-		CORE.RA.addFluidExtractionRecipe(NUCLIDE.LiFBeF2ZrF4UF4.getDust(1),
-				NUCLIDE.LiFBeF2ZrF4UF4.getFluid(144), 150, 2000);
-		CORE.RA.addFluidExtractionRecipe(NUCLIDE.LiFBeF2ThF4UF4.getDust(1),
-				NUCLIDE.LiFBeF2ThF4UF4.getFluid(144), 200, 1500);
+		CORE.RA.addFluidExtractionRecipe(
+				NUCLIDE.LiFBeF2ZrF4U235.getDust(1),
+				NUCLIDE.LiFBeF2ZrF4U235.getFluidStack(144),
+				250, 
+				1000);
+		CORE.RA.addFluidExtractionRecipe(
+				NUCLIDE.LiFBeF2ZrF4UF4.getDust(1),
+				NUCLIDE.LiFBeF2ZrF4UF4.getFluidStack(144),
+				150, 
+				1500);
+		CORE.RA.addFluidExtractionRecipe(
+				NUCLIDE.LiFBeF2ThF4UF4.getDust(1),
+				NUCLIDE.LiFBeF2ThF4UF4.getFluidStack(144),
+				150, 
+				2000);
 
 		//ZIRCONIUM_TETRAFLUORIDE
-		CORE.RA.addFluidExtractionRecipe(FLUORIDES.ZIRCONIUM_TETRAFLUORIDE.getDust(1),
-				FluidUtils.getFluidStack(ModItems.fluidZrF4, 144), 200, 512+256);
+		CORE.RA.addFluidExtractionRecipe(
+				FLUORIDES.ZIRCONIUM_TETRAFLUORIDE.getDust(1),
+				FLUORIDES.ZIRCONIUM_TETRAFLUORIDE.getFluidStack(144),
+				200, 
+				512+256);
 
 	}
 
@@ -526,8 +557,8 @@ public class RecipeLoader_Nuclear {
 				ItemUtils.getItemStackOfAmountFromOreDict("dustUranium235", 1),
 				null, 
 				null,
-				FluidUtils.getFluidStack("hydrofluoricacid", 144 * 5),
-				FluidUtils.getFluidStack("molten.uraniumtetrafluoride", 144 * 5), 
+				FluidUtils.getFluidStack("hydrofluoricacid", 5000),
+				FLUORIDES.URANIUM_TETRAFLUORIDE.getFluidStack(5000),
 				null,
 				3000, 
 				500);

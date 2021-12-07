@@ -3,17 +3,12 @@ package gtPlusPlus.xmod.gregtech.loaders.recipe;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GTPP_Recipe;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GasSpargingRecipe;
 import gregtech.api.util.GasSpargingRecipeMap;
 import gtPlusPlus.api.objects.data.AutoMap;
-import gtPlusPlus.api.objects.data.Pair;
-import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.chemistry.NuclearChem;
 import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.material.nuclear.FLUORIDES;
 import gtPlusPlus.core.material.nuclear.NUCLIDE;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -33,20 +28,20 @@ public class RecipeLoader_LFTR {
 		if (mNobleGases == null) {
 			mNobleGases = new AutoMap<Fluid>();
 			mNobleGases.add(mSpargeGases.get(0));
-			mNobleGases.add(ELEMENT.getInstance().XENON.getFluid(1).getFluid());
-			mNobleGases.add(ELEMENT.getInstance().NEON.getFluid(1).getFluid());
-			mNobleGases.add(ELEMENT.getInstance().ARGON.getFluid(1).getFluid());
-			mNobleGases.add(ELEMENT.getInstance().KRYPTON.getFluid(1).getFluid());
-			mNobleGases.add(ELEMENT.getInstance().RADON.getFluid(1).getFluid());
+			mNobleGases.add(ELEMENT.getInstance().XENON.getFluid());
+			mNobleGases.add(ELEMENT.getInstance().NEON.getFluid());
+			mNobleGases.add(ELEMENT.getInstance().ARGON.getFluid());
+			mNobleGases.add(ELEMENT.getInstance().KRYPTON.getFluid());
+			mNobleGases.add(ELEMENT.getInstance().RADON.getFluid());
 		}
 		if (mFluorideGases == null) {
 			mFluorideGases = new AutoMap<Fluid>();
 			mFluorideGases.add(mSpargeGases.get(1));
-			mFluorideGases.add(FLUORIDES.LITHIUM_FLUORIDE.getFluid(1).getFluid());
-			mFluorideGases.add(FLUORIDES.NEPTUNIUM_HEXAFLUORIDE.getFluid(1).getFluid());
-			mFluorideGases.add(FLUORIDES.TECHNETIUM_HEXAFLUORIDE.getFluid(1).getFluid());
-			mFluorideGases.add(FLUORIDES.SELENIUM_HEXAFLUORIDE.getFluid(1).getFluid());
-			mFluorideGases.add(FLUORIDES.THORIUM_TETRAFLUORIDE.getFluid(1).getFluid());
+			mFluorideGases.add(FLUORIDES.LITHIUM_FLUORIDE.getFluid());
+			mFluorideGases.add(FLUORIDES.NEPTUNIUM_HEXAFLUORIDE.getFluid());
+			mFluorideGases.add(FLUORIDES.TECHNETIUM_HEXAFLUORIDE.getFluid());
+			mFluorideGases.add(FLUORIDES.SELENIUM_HEXAFLUORIDE.getFluid());
+			mFluorideGases.add(FLUORIDES.THORIUM_TETRAFLUORIDE.getFluid());
 		}
 	}
 
@@ -59,66 +54,65 @@ public class RecipeLoader_LFTR {
 		//1l/10t= 1000l/2.5hr LiFBeF2ZrF4U235
 
 		configureSparging();
-		FluidStack Li2BeF4 = new FluidStack(ModItems.fluidFLiBeSalt, 34);
-		FluidStack aBurntLi2BeF4 = new FluidStack(ModItems.fluidFLiBeSaltBurnt, 34);
+		FluidStack Li2BeF4 = NUCLIDE.Li2BeF4.getFluidStack(34);
 
-		//LiFBeF2ThF4UF4
+		//LiFBeF2ThF4UF4 - T3
 		GT_Recipe LFTR1 = new GTPP_Recipe(
 				true, 
 				new ItemStack[] {},
 				new ItemStack[] {},
 				null, new int[] {10000, 10000, 5000, 2500},
 				new FluidStack[] {
-						NUCLIDE.LiFBeF2ThF4UF4.getFluid(17),
+						NUCLIDE.LiFBeF2ThF4UF4.getFluidStack(17),
 						Li2BeF4
 				},
 				new FluidStack[] {
 						new FluidStack(NuclearChem.Burnt_LiFBeF2ThF4UF4, 17),
-						aBurntLi2BeF4,
-						FluidUtils.getFluidStack("molten.uraniumhexafluoride", 10),
-						FluidUtils.getFluidStack("molten.uraniumhexafluoride", 5)
+						NUCLIDE.LiFBeF2ThF4.getFluidStack(34),
+						FLUORIDES.URANIUM_HEXAFLUORIDE.getFluidStack(10),
+						FLUORIDES.URANIUM_HEXAFLUORIDE.getFluidStack(5)
 				},
 				12000,//time
 				0,//cost
 				8192//fuel value
 				);
 
-		//LiFBeF2ZrF4UF4
+		//LiFBeF2ZrF4UF4 - T2
 		GT_Recipe LFTR2 = new GTPP_Recipe(
 				true, 
 				new ItemStack[] {},
 				new ItemStack[] {},
 				null, new int[] {10000, 10000, 2500, 1250},
 				new FluidStack[] {
-						NUCLIDE.LiFBeF2ZrF4UF4.getFluid(17),
+						NUCLIDE.LiFBeF2ZrF4UF4.getFluidStack(17),
 						Li2BeF4
 				},
 				new FluidStack[] {
 						new FluidStack(NuclearChem.Burnt_LiFBeF2ZrF4UF4, 17),
-						aBurntLi2BeF4,
-						FluidUtils.getFluidStack("molten.uraniumhexafluoride", 4),
-						FluidUtils.getFluidStack("molten.uraniumhexafluoride", 2)						
+						NUCLIDE.LiFBeF2ThF4.getFluidStack(34),
+						FLUORIDES.URANIUM_HEXAFLUORIDE.getFluidStack(4),
+						FLUORIDES.URANIUM_HEXAFLUORIDE.getFluidStack(2)						
 				},
 				6000,//time
 				0,//cost
 				8192//fuel value
 				);
 
-		//LiFBeF2ZrF4U235
+		//LiFBeF2ZrF4U235 - T1
 		GT_Recipe LFTR3 = new GTPP_Recipe(
 				true, 
 				new ItemStack[] {},
 				new ItemStack[] {},
 				null, new int[] {10000, 10000, 1000, 500},
 				new FluidStack[] {
-						NUCLIDE.LiFBeF2ZrF4U235.getFluid(17),
+						NUCLIDE.LiFBeF2ZrF4U235.getFluidStack(17),
 						Li2BeF4
 				},
 				new FluidStack[] {
 						new FluidStack(NuclearChem.Burnt_LiFBeF2ZrF4U235, 17),
-						aBurntLi2BeF4,
-						FluidUtils.getFluidStack("molten.uraniumhexafluoride", 2),
-						FluidUtils.getFluidStack("molten.uraniumhexafluoride", 1)
+						NUCLIDE.LiFThF4.getFluidStack(34),
+						FLUORIDES.URANIUM_HEXAFLUORIDE.getFluidStack(2),
+						FLUORIDES.URANIUM_HEXAFLUORIDE.getFluidStack(1)
 				},
 				3000,//time
 				0,//cost

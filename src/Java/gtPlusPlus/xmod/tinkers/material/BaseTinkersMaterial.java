@@ -204,7 +204,7 @@ public class BaseTinkersMaterial {
 		try {
 			aMatBlock = aMaterial.getBlock();
 			aMelt = aMaterial.getMeltingPointC();
-			aFluid = aMaterial.getFluid(0).getFluid();
+			aFluid = aMaterial.getFluidStack(0).getFluid();
 		}
 		catch (Throwable t) {
 			return false;
@@ -217,14 +217,14 @@ public class BaseTinkersMaterial {
 		
 		//Smeltery.addMelting(new ItemStack(ExtraUtils.unstableIngot, 1, 0), ExtraUtils.decorative1, 5, 850,	aMaterial.getFluid(72));		
 		TinkersUtils.registerFluidType(mLocalName, aMatBlock, 0, aMelt, aFluid, true);		
-		TinkersUtils.addMelting(aMaterial.getBlock(1), aMatBlock, 0, aMelt, aMaterial.getFluid(144*9));
-		TinkersUtils.addMelting(aMaterial.getIngot(1), aMatBlock, 0, aMelt, aMaterial.getFluid(144));		
+		TinkersUtils.addMelting(aMaterial.getBlock(1), aMatBlock, 0, aMelt, aMaterial.getFluidStack(144*9));
+		TinkersUtils.addMelting(aMaterial.getIngot(1), aMatBlock, 0, aMelt, aMaterial.getFluidStack(144));		
 		if (aMelt <= 3600) {
 			ItemStack ingotcast = TinkersUtils.getPattern(1);
 			TinkersUtils.addBasinRecipe(aMaterial.getBlock(1),
-					aMaterial.getFluid(144*9), (ItemStack) null, true, 100);
+					aMaterial.getFluidStack(144*9), (ItemStack) null, true, 100);
 			TinkersUtils.addCastingTableRecipe(aMaterial.getIngot(1),
-					aMaterial.getFluid(144), ingotcast, false, 50);
+					aMaterial.getFluidStack(144), ingotcast, false, 50);
 		}
 		
 		boolean extended = TinkersUtils.generateCastingRecipes(aMaterial, aID);

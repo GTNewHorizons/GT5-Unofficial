@@ -10,6 +10,24 @@ import gtPlusPlus.core.util.data.StringUtils;
 
 public final class NUCLIDE {
 
+	public static final Material Li2BeF4 = new Material(
+			"Lithium Tetrafluoroberyllate", //Material Name
+			MaterialState.LIQUID, //State
+			TextureSets.NUCLEAR.get(),
+			null, //Material Colour
+			566, //Melting Point in C
+			870, //Boiling Point in C
+			-1, //Protons
+			-1, //Neutrons
+			false, //Uses Blast furnace?
+			StringUtils.subscript(StringUtils.superscript("7")+"Li2BeF4"), //Chemical Formula
+			4, //Radioactivity Level
+			//Material Stacks with Percentage of required elements.
+			new MaterialStack[]{
+					new MaterialStack(FLUORIDES.LITHIUM_FLUORIDE, 2),
+					new MaterialStack(FLUORIDES.BERYLLIUM_FLUORIDE, 1)
+			});
+	
 	public static final Material LiFBeF2ThF4UF4 = new Material(
 			"LiFBeF2ThF4UF4", //Material Name
 			MaterialState.LIQUID, //State
@@ -70,6 +88,44 @@ public final class NUCLIDE {
 					new MaterialStack(ELEMENT.getInstance().URANIUM235, 14)
 			});
 	
+	// Misc	
+	public static final Material BurntLftrFuel_MK1 = new Material(
+			"Burnt Reactor Fuel I", //Material Name
+			MaterialState.PURE_LIQUID, //State
+			null, //Material Colour
+			-1, //Melting Point in C
+			-1, //Boiling Point in C
+			-1, //Protons
+			-1, //Neutrons
+			false, //Uses Blast furnace?
+			StringUtils.subscript(StringUtils.superscript("7")+"LiBeF2UF4FP"), //Chemical Formula
+			//Material Stacks with Percentage of required elements.
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.getInstance().LITHIUM, 1),
+					new MaterialStack(FLUORIDES.BERYLLIUM_FLUORIDE, 1),
+					new MaterialStack(FLUORIDES.URANIUM_TETRAFLUORIDE, 1),
+					new MaterialStack(ELEMENT.getInstance().PROTACTINIUM, 1)
+			});
+	
+	public static final Material BurntLftrFuel_MK2 = new Material(
+			"Burnt Reactor Fuel II", //Material Name
+			MaterialState.PURE_LIQUID, //State
+			null, //Material Colour
+			-1, //Melting Point in C
+			-1, //Boiling Point in C
+			-1, //Protons
+			-1, //Neutrons
+			false, //Uses Blast furnace?
+			StringUtils.subscript(StringUtils.superscript("7")+"LiBeF2UF4FP"), //Chemical Formula
+			//Material Stacks with Percentage of required elements.
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.getInstance().LITHIUM, 1),
+					new MaterialStack(FLUORIDES.BERYLLIUM_FLUORIDE, 1),
+					new MaterialStack(FLUORIDES.URANIUM_TETRAFLUORIDE, 1),
+					new MaterialStack(ELEMENT.getInstance().PROTACTINIUM, 1)
+			});
+	
+	
 	
 	// LFTR Core Fluids
 	public static final Material LiBeF2UF4FP = new Material(
@@ -81,6 +137,7 @@ public final class NUCLIDE {
 			-1, //Protons
 			-1, //Neutrons
 			false, //Uses Blast furnace?
+			StringUtils.subscript(StringUtils.superscript("7")+"LiBeF2UF4FP"), //Chemical Formula
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
 					new MaterialStack(ELEMENT.getInstance().LITHIUM, 1),
@@ -98,6 +155,7 @@ public final class NUCLIDE {
 			-1, //Protons
 			-1, //Neutrons
 			false, //Uses Blast furnace?
+			StringUtils.subscript("UF6F2FP"), //Chemical Formula
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
 					new MaterialStack(FLUORIDES.URANIUM_HEXAFLUORIDE, 1),
@@ -114,6 +172,7 @@ public final class NUCLIDE {
 			-1, //Protons
 			-1, //Neutrons
 			false, //Uses Blast furnace?
+			StringUtils.subscript(StringUtils.superscript("7")+"LiFBeF2"), //Chemical Formula
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
 					new MaterialStack(FLUORIDES.LITHIUM_FLUORIDE, 1),
@@ -129,6 +188,7 @@ public final class NUCLIDE {
 			-1, //Protons
 			-1, //Neutrons
 			false, //Uses Blast furnace?
+			StringUtils.subscript(StringUtils.superscript("7")+"LiFBeF2UF4"), //Chemical Formula
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
 					new MaterialStack(LiFBeF2, 1),
@@ -142,6 +202,7 @@ public final class NUCLIDE {
 	
 	// LFTR Blanket Fluids
 
+	// Tier 1 Fuel blanket output
 	public static final Material LiFThF4 = new Material(
 			"LiFThF4", //Material Name
 			MaterialState.PURE_LIQUID, //State
@@ -151,12 +212,14 @@ public final class NUCLIDE {
 			-1, //Protons
 			-1, //Neutrons
 			false, //Uses Blast furnace?
+			StringUtils.subscript(StringUtils.superscript("7")+"LiFThF4"), //Chemical Formula
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
 					new MaterialStack(FLUORIDES.LITHIUM_FLUORIDE, 1),
 					new MaterialStack(FLUORIDES.THORIUM_TETRAFLUORIDE, 1)
 			});
 	
+	// Tier 2 Fuel blanket output
 	public static final Material LiFBeF2ThF4 = new Material(
 			"LiFBeF2ThF4", //Material Name
 			MaterialState.PURE_LIQUID, //State
@@ -166,6 +229,7 @@ public final class NUCLIDE {
 			-1, //Protons
 			-1, //Neutrons
 			false, //Uses Blast furnace?
+			StringUtils.subscript(StringUtils.superscript("7")+"LiFBeF2ThF4"), //Chemical Formula
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
 					new MaterialStack(FLUORIDES.LITHIUM_FLUORIDE, 1),
@@ -182,6 +246,7 @@ public final class NUCLIDE {
 			-1, //Protons
 			-1, //Neutrons
 			false, //Uses Blast furnace?
+			StringUtils.subscript("UF6F2"), //Chemical Formula
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
 					new MaterialStack(FLUORIDES.URANIUM_HEXAFLUORIDE, 1),

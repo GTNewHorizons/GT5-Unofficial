@@ -131,13 +131,13 @@ public class RecipeGen_BlastSmelter extends RecipeGen_Base {
 			//Generate Recipes for all singular materials that can be made molten.
 			if (hasMoreInputThanACircuit){
 				if (M.requiresBlastFurnace()) {
-					if (CORE.RA.addBlastSmelterRecipe(tItemStackTest, M.getFluid(fluidAmount), 100, (duration/(mTotalPartsCounter > 0 ? mTotalPartsCounter : 1)), (int) aVoltage)){
+					if (CORE.RA.addBlastSmelterRecipe(tItemStackTest, M.getFluidStack(fluidAmount), 100, (duration/(mTotalPartsCounter > 0 ? mTotalPartsCounter : 1)), (int) aVoltage)){
 						Logger.WARNING("[BAS] Success.");
 						Logger.WARNING("[BAS] Success, Also added a Fluid solidifier recipe.");
-						if (GT_Values.RA.addFluidExtractionRecipe(M.getIngot(1), null, M.getFluid(144), 100, duration, 120)){
+						if (GT_Values.RA.addFluidExtractionRecipe(M.getIngot(1), null, M.getFluidStack(144), 100, duration, 120)){
 							Logger.WARNING("[BAS] Success, Also added a Fluid Extractor recipe.");
 						}
-						if (GT_Values.RA.addFluidExtractionRecipe(M.getNugget(1), null, M.getFluid(16), 100, duration/9, 120)){
+						if (GT_Values.RA.addFluidExtractionRecipe(M.getNugget(1), null, M.getFluidStack(16), 100, duration/9, 120)){
 							Logger.WARNING("[BAS] Success, Also added a Fluid Extractor recipe.");
 						}
 						/*if (GT_Values.RA.addFluidExtractionRecipe(M.getSmallDust(1), null, M.getFluid(36), 100, duration/4, 120)){
@@ -153,14 +153,14 @@ public class RecipeGen_BlastSmelter extends RecipeGen_Base {
 				}
 			}
 			else {
-				if (CORE.RA.addBlastSmelterRecipe(tItemStackTest, M.getFluid(fluidAmount), 100, duration/(mTotalPartsCounter > 0 ? mTotalPartsCounter : 1)/2, (int) aVoltage)){
+				if (CORE.RA.addBlastSmelterRecipe(tItemStackTest, M.getFluidStack(fluidAmount), 100, duration/(mTotalPartsCounter > 0 ? mTotalPartsCounter : 1)/2, (int) aVoltage)){
 					Logger.WARNING("[BAS] Success.");
-					if (GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Ingot.get(0), M.getFluid(144), M.getIngot(1), duration/2, 60)){
+					if (GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Ingot.get(0), M.getFluidStack(144), M.getIngot(1), duration/2, 60)){
 						Logger.WARNING("[BAS] Success, Also added a Fluid solidifier recipe.");
-						if (GT_Values.RA.addFluidExtractionRecipe(M.getIngot(1), null, M.getFluid(144), 100, duration/2, 60)){
+						if (GT_Values.RA.addFluidExtractionRecipe(M.getIngot(1), null, M.getFluidStack(144), 100, duration/2, 60)){
 							Logger.WARNING("[BAS] Success, Also added a Fluid Extractor recipe.");
 						}
-						if (GT_Values.RA.addFluidExtractionRecipe(M.getNugget(1), null, M.getFluid(16), 100, duration/2/9, 60)){
+						if (GT_Values.RA.addFluidExtractionRecipe(M.getNugget(1), null, M.getFluidStack(16), 100, duration/2/9, 60)){
 							Logger.WARNING("[BAS] Success, Also added a Fluid Extractor recipe.");
 						}
 						/*if (GT_Values.RA.addFluidExtractionRecipe(M.getSmallDust(1), null, M.getFluid(36), 100, duration/2/4, 60)){
@@ -212,7 +212,7 @@ public class RecipeGen_BlastSmelter extends RecipeGen_Base {
 									final int xr = r;
 									if ((xr > 0) && (xr <= 100)){
 										final int mathmatics = (r*1000);
-										componentsFluid = FluidUtils.getFluidStack(M.getComposites().get(irc).getStackMaterial().getFluid(mathmatics), mathmatics);
+										componentsFluid = FluidUtils.getFluidStack(M.getComposites().get(irc).getStackMaterial().getFluidStack(mathmatics), mathmatics);
 									}
 								}
 								else {
@@ -254,7 +254,7 @@ public class RecipeGen_BlastSmelter extends RecipeGen_Base {
 
 						//Adds Recipe
 						if (M.requiresBlastFurnace()) {
-							if (CORE.RA.addBlastSmelterRecipe(components, componentsFluid, M.getFluid(fluidAmount), 100, duration, (int) aVoltage)){
+							if (CORE.RA.addBlastSmelterRecipe(components, componentsFluid, M.getFluidStack(fluidAmount), 100, duration, (int) aVoltage)){
 								Logger.WARNING("[BAS] Success.");
 							}
 							else {
@@ -262,7 +262,7 @@ public class RecipeGen_BlastSmelter extends RecipeGen_Base {
 							}
 						}
 						else {
-							if (CORE.RA.addBlastSmelterRecipe(components, componentsFluid, M.getFluid(fluidAmount), 100, duration, (int) aVoltage/2)){
+							if (CORE.RA.addBlastSmelterRecipe(components, componentsFluid, M.getFluidStack(fluidAmount), 100, duration, (int) aVoltage/2)){
 								Logger.WARNING("[BAS] Success.");
 							}
 							else {

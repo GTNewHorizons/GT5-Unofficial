@@ -396,31 +396,25 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 			final int aEUt) throws IndexOutOfBoundsException {
 		Logger.WARNING("Trying to add a Dehydrator recipe.");
 		try {
-			if (aInput[0] != null) {
-				Logger.WARNING("Recipe requires input: " + aInput[0].getDisplayName() + " x" + aInput[0].stackSize);
-			}
-			if (aInput.length > 1) {
-				if (aInput[1] != null) {
-					Logger.WARNING("Recipe requires input: " + aInput[1].getDisplayName() + " x" + aInput[1].stackSize);
+			if (aInput != null && aInput.length > 0) {
+				if (aInput[0] != null) {
+					Logger.WARNING("Recipe requires input: " + aInput[0].getDisplayName() + " x" + aInput[0].stackSize);
+				}
+				if (aInput.length > 1) {
+					if (aInput[1] != null) {
+						Logger.WARNING("Recipe requires input: " + aInput[1].getDisplayName() + " x" + aInput[1].stackSize);
+					}
 				}
 			}
 			if (aFluidInput != null) {
 				Logger.WARNING("Recipe requires input: " + aFluidInput.getFluid().getName() + " " + aFluidInput.amount
-						+ "mbst");
+						+ "mbs");
 			}
-			if (((aInput[0] == null) && (aFluidInput == null)) || ((aOutputItems == null) && (aFluidOutput == null))) {
-				return false;
-			}
-			if ((aOutputItems != null)
-					&& ((aDuration = GregTech_API.sRecipeFile.get("dehydrator", aOutputItems[0], aDuration)) <= 0)) {
+			if (((aInput == null || aInput.length == 0) && (aFluidInput == null)) || ((aOutputItems == null || aOutputItems.length == 0) && (aFluidOutput == null))) {
 				return false;
 			}
 			if (aOutputItems != null) {
 				Logger.WARNING("Recipe will output: " + ItemUtils.getArrayStackNames(aOutputItems));
-			}
-			if ((aFluidOutput != null) && ((aDuration = GregTech_API.sRecipeFile.get("dehydrator",
-					aFluidOutput.getFluid().getName(), aDuration)) <= 0)) {
-				return false;
 			}
 			if (aFluidOutput != null) {
 				Logger.WARNING("Recipe will output: " + aFluidOutput.getFluid().getName());
@@ -574,7 +568,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 			final FluidStack aInput8, final FluidStack aInput9, final FluidStack aOutput1, final FluidStack aOutput2,
 			final int aDuration, final int aEUt) {
 
-		if ((aInput1 == null) || (aInput2 == null) || (aOutput1 == null) || (aDuration < 1) || (aEUt < 1)) {
+		if ((aInput1 == null) || (aOutput1 == null) || (aDuration < 1) || (aEUt < 1)) {
 			return false;
 		}
 		final FluidStack inputs[] = { aInput1, aInput2, aInput3, aInput4, aInput5, aInput6, aInput7, aInput8, aInput9 };

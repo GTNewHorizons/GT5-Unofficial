@@ -632,7 +632,7 @@ public class CI {
 		}*/		
 
 		// Modern Handling
-		FluidStack a = aMaster[aType][aTier].getFluid(aAmount);			
+		FluidStack a = aMaster[aType][aTier].getFluidStack(aAmount);			
 		if (a == null) {
 			ItemStack aCell = getTieredComponent(OrePrefixes.liquid, aTier, 1);
 			if (aCell != null) {

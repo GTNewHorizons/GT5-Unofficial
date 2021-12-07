@@ -447,17 +447,17 @@ public class RECIPES_GREGTECH {
 		//Hypogen Creation
 		GT_Values.RA.addFusionReactorRecipe(
 				Materials.Neutronium.getMolten(128),
-				ALLOY.QUANTUM.getFluid(256),
-				ELEMENT.STANDALONE.HYPOGEN.getFluid(4),
+				ALLOY.QUANTUM.getFluidStack(256),
+				ELEMENT.STANDALONE.HYPOGEN.getFluidStack(4),
 				2048 * 4,
 				(int) MaterialUtils.getVoltageForTier(9),
 				600000000 * 2);
 
 		//Rhugnor
 		GT_Values.RA.addFusionReactorRecipe(
-				GenericChem.TEFLON.getFluid(64),
-				ALLOY.PIKYONIUM.getFluid(128),
-				ELEMENT.STANDALONE.RHUGNOR.getFluid(8),
+				GenericChem.TEFLON.getFluidStack(64),
+				ALLOY.PIKYONIUM.getFluidStack(128),
+				ELEMENT.STANDALONE.RHUGNOR.getFluidStack(8),
 				2048 * 4,
 				(int) MaterialUtils.getVoltageForTier(7),
 				150000000 * 2);
@@ -499,10 +499,10 @@ public class RECIPES_GREGTECH {
 						aCoilWire[3]
 				}, 
 				new FluidStack[] {
-						ALLOY.NITINOL_60.getFluid(144 * 9 * (GTNH ? 4 : 2)),
-						ALLOY.ENERGYCRYSTAL.getFluid(144 * 9 * (GTNH ? 8 : 4)),
-						ALLOY.TUMBAGA.getFluid(144 * 9 * (GTNH ? 32 : 8)),
-						ALLOY.NICHROME.getFluid(144 * 1 * (GTNH ? 16 : 4)),
+						ALLOY.NITINOL_60.getFluidStack(144 * 9 * (GTNH ? 4 : 2)),
+						ALLOY.ENERGYCRYSTAL.getFluidStack(144 * 9 * (GTNH ? 8 : 4)),
+						ALLOY.TUMBAGA.getFluidStack(144 * 9 * (GTNH ? 32 : 8)),
+						ALLOY.NICHROME.getFluidStack(144 * 1 * (GTNH ? 16 : 4)),
 
 				},
 				ItemUtils.getSimpleStack(ModBlocks.blockCasings3Misc, 15, 32), 
@@ -581,8 +581,8 @@ public class RECIPES_GREGTECH {
 						CI.getTieredFluid(8, 144 * 32),
 						CI.getAlternativeTieredFluid(7, 144 * 16),
 						CI.getTertiaryTieredFluid(7, 144 * 16),
-						ALLOY.BABBIT_ALLOY.getFluid(128 * 144),
-						ALLOY.ZERON_100.getFluid(144 * 64)
+						ALLOY.BABBIT_ALLOY.getFluidStack(128 * 144),
+						ALLOY.ZERON_100.getFluidStack(144 * 64)
 
 				},
 				GregtechItemList.Hatch_Input_TurbineHousing.get(4), 
@@ -934,7 +934,7 @@ public class RECIPES_GREGTECH {
 						ELEMENT.getInstance().CARBON.getDust(1),
 						ELEMENT.getInstance().SILICON.getDust(4)
 				},
-				ALLOY.EGLIN_STEEL.getFluid(16 * 144),
+				ALLOY.EGLIN_STEEL.getFluidStack(16 * 144),
 				0, 
 				20 * 45,
 				120);
@@ -948,8 +948,8 @@ public class RECIPES_GREGTECH {
 						ELEMENT.getInstance().CALCIUM.getDust(2),
 						ELEMENT.getInstance().COPPER.getDust(3),
 				},
-				ELEMENT.getInstance().OXYGEN.getFluid(8000),
-				ALLOY.HG1223.getFluid(16 * 144),
+				ELEMENT.getInstance().OXYGEN.getFluidStack(8000),
+				ALLOY.HG1223.getFluidStack(16 * 144),
 				new ItemStack[] { 
 						CI.emptyCells(1)
 				},
@@ -964,7 +964,7 @@ public class RECIPES_GREGTECH {
 						ELEMENT.getInstance().TITANIUM.getDust(3),
 						ELEMENT.getInstance().NICKEL.getDust(2)
 				},
-				ALLOY.NITINOL_60.getFluid(5 * 144),
+				ALLOY.NITINOL_60.getFluidStack(5 * 144),
 				0,
 				20 * 75,
 				7680);
@@ -981,7 +981,7 @@ public class RECIPES_GREGTECH {
 						ELEMENT.getInstance().CARBON.getDust(32),
 				},
 				Materials.SulfuricAcid.getFluid(2000),
-				ELEMENT.getInstance().GERMANIUM.getFluid(288),
+				ELEMENT.getInstance().GERMANIUM.getFluidStack(288),
 				0,
 				20 * 300,
 				4000);
@@ -995,7 +995,7 @@ public class RECIPES_GREGTECH {
 						ELEMENT.getInstance().CARBON.getDust(32),
 				},
 				Materials.SulfuricAcid.getFluid(2000),
-				ELEMENT.getInstance().RUTHENIUM.getFluid(288),
+				ELEMENT.getInstance().RUTHENIUM.getFluidStack(288),
 				0,
 				20 * 300,
 				8000);
@@ -1006,7 +1006,7 @@ public class RECIPES_GREGTECH {
 						ELEMENT.getInstance().CARBON.getDust(32),
 				},
 				Materials.SulfuricAcid.getFluid(2000),
-				ELEMENT.getInstance().RUTHENIUM.getFluid(288),
+				ELEMENT.getInstance().RUTHENIUM.getFluidStack(288),
 				0,
 				20 * 300,
 				8000);
@@ -1017,7 +1017,7 @@ public class RECIPES_GREGTECH {
 						ELEMENT.getInstance().CARBON.getDust(32),
 				},
 				Materials.SulfuricAcid.getFluid(2000),
-				ELEMENT.getInstance().RUTHENIUM.getFluid(288),
+				ELEMENT.getInstance().RUTHENIUM.getFluidStack(288),
 				0,
 				20 * 300,
 				8000);
@@ -1028,7 +1028,7 @@ public class RECIPES_GREGTECH {
 						ELEMENT.getInstance().CARBON.getDust(32),
 				},
 				Materials.SulfuricAcid.getFluid(8000),
-				ELEMENT.getInstance().RUTHENIUM.getFluid(144),
+				ELEMENT.getInstance().RUTHENIUM.getFluidStack(144),
 				0,
 				20 * 300,
 				8000);
@@ -1041,7 +1041,7 @@ public class RECIPES_GREGTECH {
 						ELEMENT.getInstance().CARBON.getDust(32),
 				},
 				Materials.SulfuricAcid.getFluid(10000),
-				ELEMENT.getInstance().RHENIUM.getFluid(144),
+				ELEMENT.getInstance().RHENIUM.getFluidStack(144),
 				0,
 				20 * 300,
 				4000);
@@ -1052,7 +1052,7 @@ public class RECIPES_GREGTECH {
 						ELEMENT.getInstance().CARBON.getDust(32),
 				},
 				Materials.SulfuricAcid.getFluid(7500),
-				ELEMENT.getInstance().RHENIUM.getFluid(144),
+				ELEMENT.getInstance().RHENIUM.getFluidStack(144),
 				0,
 				20 * 300,
 				4000);
@@ -1063,7 +1063,7 @@ public class RECIPES_GREGTECH {
 						ELEMENT.getInstance().CARBON.getDust(32),
 				},
 				Materials.SulfuricAcid.getFluid(5000),
-				ELEMENT.getInstance().RHENIUM.getFluid(288),
+				ELEMENT.getInstance().RHENIUM.getFluidStack(288),
 				0,
 				20 * 300,
 				4000);
@@ -1077,7 +1077,7 @@ public class RECIPES_GREGTECH {
 						ELEMENT.getInstance().CARBON.getDust(64),
 				},
 				Materials.SulfuricAcid.getFluid(5000),
-				ELEMENT.getInstance().THALLIUM.getFluid(288+144),
+				ELEMENT.getInstance().THALLIUM.getFluidStack(288+144),
 				0,
 				20 * 300,
 				8000);
@@ -1092,7 +1092,7 @@ public class RECIPES_GREGTECH {
 						ELEMENT.getInstance().ALUMINIUM.getDust(8),
 				},
 				null,
-				ELEMENT.getInstance().OXYGEN.getFluid(8000),
+				ELEMENT.getInstance().OXYGEN.getFluidStack(8000),
 				new ItemStack[] { 
 						ELEMENT.getInstance().ALUMINIUM.getIngot(8),
 						ELEMENT.getInstance().STRONTIUM.getIngot(8)
@@ -1822,7 +1822,7 @@ public class RECIPES_GREGTECH {
 		GT_Values.RA.addBlastRecipe(
 				CI.getNumberedCircuit(22),
 				ALLOY.SILICON_CARBIDE.getDust(16),
-				ELEMENT.getInstance().NITROGEN.getFluid(4000),
+				ELEMENT.getInstance().NITROGEN.getFluidStack(4000),
 				GT_Values.NF,
 				ItemUtils.getItemStackOfAmountFromOreDict("dustGraphite", 8),
 				ItemUtils.getItemStackOfAmountFromOreDict("dustSmallSilicon", 8),
@@ -1834,7 +1834,7 @@ public class RECIPES_GREGTECH {
 		GT_Values.RA.addBlastRecipe(
 				GregtechItemList.Bomb_Cast.get(4),
 				ALLOY.STEEL.getDust(16),
-				ELEMENT.getInstance().OXYGEN.getFluid(2000),
+				ELEMENT.getInstance().OXYGEN.getFluidStack(2000),
 				GT_Values.NF,
 				GregtechItemList.Bomb_Cast_Molten.get(4),
 				null,

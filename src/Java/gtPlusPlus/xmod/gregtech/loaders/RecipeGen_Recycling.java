@@ -137,9 +137,9 @@ public class RecipeGen_Recycling implements Runnable {
 					//Fluid Extractor
 					if (ItemUtils.checkForInvalidItems(tempStack)) {
 						// mValidItems[mSlotIndex++] = tempStack;
-						if ((mDust != null) && CORE.RA.addFluidExtractionRecipe(tempStack, material.getFluid(mFluidAmount), 30, material.vVoltageMultiplier)) {
+						if ((mDust != null) && CORE.RA.addFluidExtractionRecipe(tempStack, material.getFluidStack(mFluidAmount), 30, material.vVoltageMultiplier)) {
 							Logger.WARNING("Fluid Recycle Recipe: " + material.getLocalizedName() + " - Success - Recycle "
-									+ tempStack.getDisplayName() + " and obtain " + mFluidAmount+"mb of "+material.getFluid(1).getLocalizedName()+".");
+									+ tempStack.getDisplayName() + " and obtain " + mFluidAmount+"mb of "+material.getFluidStack(1).getLocalizedName()+".");
 						}
 						else {
 							Logger.WARNING("Fluid Recycle Recipe: " + material.getLocalizedName() + " - Failed");

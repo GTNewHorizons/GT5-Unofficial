@@ -41,8 +41,8 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 		}
 
 		// Melting Shapes to fluid
-		if (material.getFluid(1) != null
-				&& !material.getFluid(1).getUnlocalizedName().toLowerCase().contains("plasma")) {
+		if (material.getFluidStack(1) != null
+				&& !material.getFluidStack(1).getUnlocalizedName().toLowerCase().contains("plasma")) {
 
 			if (!material.requiresBlastFurnace()) {
 
@@ -50,7 +50,7 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 				if (ItemUtils.checkForInvalidItems(material.getIngot(1)))
 					if (CORE.RA.addFluidExtractionRecipe(
 							material.getIngot(1), // Input
-							material.getFluid(144), // Fluid Output
+							material.getFluidStack(144), // Fluid Output
 							1 * 20, // Duration
 							material.vVoltageMultiplier // Eu Tick
 					)) {
@@ -65,7 +65,7 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 				if (ItemUtils.checkForInvalidItems(material.getPlate(1)))
 					if (CORE.RA.addFluidExtractionRecipe(
 							material.getPlate(1), // Input
-							material.getFluid(144), // Fluid Output
+							material.getFluidStack(144), // Fluid Output
 							1 * 20, // Duration
 							material.vVoltageMultiplier // Eu Tick
 					)) {
@@ -80,7 +80,7 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 				if (ItemUtils.checkForInvalidItems(material.getPlateDouble(1)))
 					if (CORE.RA.addFluidExtractionRecipe(
 							material.getPlateDouble(1), // Input
-							material.getFluid(288), // Fluid Output
+							material.getFluidStack(288), // Fluid Output
 							1 * 20, // Duration
 							material.vVoltageMultiplier // Eu Tick
 					)) {
@@ -95,7 +95,7 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 				if (ItemUtils.checkForInvalidItems(material.getNugget(1)))
 					if (CORE.RA.addFluidExtractionRecipe(
 							material.getNugget(1), // Input
-							material.getFluid(16), // Fluid Output
+							material.getFluidStack(16), // Fluid Output
 							16, // Duration
 							material.vVoltageMultiplier // Eu Tick
 					)) {
@@ -110,7 +110,7 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 				if (ItemUtils.checkForInvalidItems(material.getBlock(1)))
 					if (CORE.RA.addFluidExtractionRecipe(
 							material.getBlock(1), // Input
-							material.getFluid(144 * 9), // Fluid Output
+							material.getFluidStack(144 * 9), // Fluid Output
 							288, // Duration
 							material.vVoltageMultiplier // Eu Tick
 					)) {
@@ -128,7 +128,7 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 			// Ingot
 			if (ItemUtils.checkForInvalidItems(material.getIngot(1)))
 				if (GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Ingot.get(0), // Item Shape
-						material.getFluid(144), // Fluid Input
+						material.getFluidStack(144), // Fluid Input
 						material.getIngot(1), // output
 						32, // Duration
 						material.vVoltageMultiplier // Eu Tick
@@ -143,7 +143,7 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 			// Plate
 			if (ItemUtils.checkForInvalidItems(material.getPlate(1)))
 				if (GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Plate.get(0), // Item Shape
-						material.getFluid(144), // Fluid Input
+						material.getFluidStack(144), // Fluid Input
 						material.getPlate(1), // output
 						32, // Duration
 						material.vVoltageMultiplier // Eu Tick
@@ -158,7 +158,7 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 			// Nugget
 			if (ItemUtils.checkForInvalidItems(material.getNugget(1)))
 				if (GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Nugget.get(0), // Item Shape
-						material.getFluid(16), // Fluid Input
+						material.getFluidStack(16), // Fluid Input
 						material.getNugget(1), // output
 						16, // Duration
 						material.vVoltageMultiplier // Eu Tick
@@ -173,7 +173,7 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 			// Gears
 			if (ItemUtils.checkForInvalidItems(material.getGear(1)))
 				if (GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Gear.get(0), // Item Shape
-						material.getFluid(576), // Fluid Input
+						material.getFluidStack(576), // Fluid Input
 						material.getGear(1), // output
 						128, // Duration
 						material.vVoltageMultiplier // Eu Tick
@@ -187,7 +187,7 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 			// Blocks
 			if (ItemUtils.checkForInvalidItems(material.getBlock(1)))
 				if (GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Block.get(0), // Item Shape
-						material.getFluid(144 * 9), // Fluid Input
+						material.getFluidStack(144 * 9), // Fluid Input
 						material.getBlock(1), // output
 						288, // Duration
 						material.vVoltageMultiplier // Eu Tick
@@ -219,7 +219,7 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 				// Rod
 				if (ItemUtils.checkForInvalidItems(material.getRod(1)))
 					if (mold_Rod != null && GT_Values.RA.addFluidSolidifierRecipe(mold_Rod.get(0), // Item Shape
-							material.getFluid(72), // Fluid Input
+							material.getFluidStack(72), // Fluid Input
 							material.getRod(1), // output
 							150, // Duration
 							material.vVoltageMultiplier // Eu Tick
@@ -235,7 +235,7 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 				if (ItemUtils.checkForInvalidItems(material.getLongRod(1)))
 					if (mold_Rod_Long != null && GT_Values.RA.addFluidSolidifierRecipe(mold_Rod_Long.get(0), // Item
 																												// Shape
-							material.getFluid(144), // Fluid Input
+							material.getFluidStack(144), // Fluid Input
 							material.getLongRod(1), // output
 							300, // Duration
 							material.vVoltageMultiplier // Eu Tick
@@ -250,7 +250,7 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 				// Bolt
 				if (ItemUtils.checkForInvalidItems(material.getBolt(1)))
 					if (mold_Bolt != null && GT_Values.RA.addFluidSolidifierRecipe(mold_Bolt.get(0), // Item Shape
-							material.getFluid(18), // Fluid Input
+							material.getFluidStack(18), // Fluid Input
 							material.getBolt(1), // output
 							50, // Duration
 							material.vVoltageMultiplier // Eu Tick
@@ -265,7 +265,7 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 				// Screw
 				if (ItemUtils.checkForInvalidItems(material.getScrew(1)))
 					if (mold_Screw != null && GT_Values.RA.addFluidSolidifierRecipe(mold_Screw.get(0), // Item Shape
-							material.getFluid(18), // Fluid Input
+							material.getFluidStack(18), // Fluid Input
 							material.getScrew(1), // output
 							50, // Duration
 							material.vVoltageMultiplier // Eu Tick
@@ -280,7 +280,7 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 				// Ring
 				if (ItemUtils.checkForInvalidItems(material.getRing(1)))
 					if (mold_Ring != null && GT_Values.RA.addFluidSolidifierRecipe(mold_Ring.get(0), // Item Shape
-							material.getFluid(36), // Fluid Input
+							material.getFluidStack(36), // Fluid Input
 							material.getRing(1), // output
 							100, // Duration
 							material.vVoltageMultiplier // Eu Tick

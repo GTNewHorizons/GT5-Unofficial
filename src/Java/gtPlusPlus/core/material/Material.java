@@ -49,7 +49,7 @@ public class Material {
 	private MaterialState materialState;
 	private TextureSet textureSet;
 
-	private Fluid vMoltenFluid;
+	private Fluid mFluid;
 	private Fluid vPlasma;
 
 	private boolean vGenerateCells;
@@ -478,7 +478,7 @@ public class Material {
 				final Materials isValid = Materials.get(this.getLocalizedName());				
 				FluidStack aTest = FluidUtils.getWildcardFluidStack(localizedName, 1);				
 				if (aTest != null){
-					this.vMoltenFluid = aTest.getFluid();
+					this.mFluid = aTest.getFluid();
 				}
 				else {
 					if (isValid == null || isValid == Materials._NULL){
@@ -487,7 +487,7 @@ public class Material {
 					else {		
 						FluidStack aTest2 = FluidUtils.getWildcardFluidStack(localizedName, 1);	
 						if (aTest2 != null){
-							this.vMoltenFluid = aTest2.getFluid();
+							this.mFluid = aTest2.getFluid();
 						}
 						else {
 							queueFluidGeneration();
@@ -497,7 +497,7 @@ public class Material {
 				this.vPlasma = this.generatePlasma();
 			}
 			else {
-				this.vMoltenFluid = null;
+				this.mFluid = null;
 				this.vPlasma = null;
 			}
 			String ratio = "";
@@ -1104,7 +1104,7 @@ public class Material {
 	public final static void generateQueuedFluids() {
 		for (Material m : mMaterialMap) {
 			if (m.isFluidQueued) {
-				m.vMoltenFluid = m.generateFluid();
+				m.mFluid = m.generateFluid();
 			}
 		}
 	}
@@ -1249,18 +1249,21 @@ public class Material {
 	}
 
 
+	public Fluid getFluid() {
+		return mFluid;
+	}
 
-	final public FluidStack getFluid(final int fluidAmount) {
-		if (this.vMoltenFluid == null){
+	final public FluidStack getFluidStack(final int fluidAmount) {
+		if (this.mFluid == null){
 			return null;
 		}
-		final FluidStack moltenFluid = new FluidStack(this.vMoltenFluid, fluidAmount);
+		final FluidStack moltenFluid = new FluidStack(this.mFluid, fluidAmount);
 		return moltenFluid;
 	}
 	
 	final public boolean setFluid(Fluid aFluid) {
-		if (this.vMoltenFluid == null){
-			this.vMoltenFluid = aFluid;
+		if (this.mFluid == null){
+			this.mFluid = aFluid;
 			return true;
 		}
 		return false;
@@ -1353,8 +1356,8 @@ public class Material {
 	}
 	
 	private static boolean registerComponentForMaterial(Material componentMaterial, FluidStack aStack) {		
-		if (componentMaterial != null && aStack != null && componentMaterial.vMoltenFluid == null) {
-			componentMaterial.vMoltenFluid = aStack.getFluid();
+		if (componentMaterial != null && aStack != null && componentMaterial.mFluid == null) {
+			componentMaterial.mFluid = aStack.getFluid();
 			return true;
 		}
 		return false;

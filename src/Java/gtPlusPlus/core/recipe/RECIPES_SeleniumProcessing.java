@@ -23,10 +23,10 @@ public class RECIPES_SeleniumProcessing {
 		processCopperRecipes();
 
 		//Liquify the Dried Dioxide
-		AddGregtechRecipe.addCokeAndPyrolyseRecipes(MISC_MATERIALS.SELENIUM_DIOXIDE.getDust(1), 13, FluidUtils.getSteam(500), null, MISC_MATERIALS.SELENIUM_DIOXIDE.getFluid(1000), 20, 1024);
+		AddGregtechRecipe.addCokeAndPyrolyseRecipes(MISC_MATERIALS.SELENIUM_DIOXIDE.getDust(1), 13, FluidUtils.getSteam(500), null, MISC_MATERIALS.SELENIUM_DIOXIDE.getFluidStack(1000), 20, 1024);
 
 		// Produce Selenious Acid        
-		AddGregtechRecipe.addCokeAndPyrolyseRecipes(MISC_MATERIALS.SELENIUM_DIOXIDE.getCell(1), 14, FluidUtils.getHotWater(4000), CI.emptyCells(1), MISC_MATERIALS.SELENIOUS_ACID.getFluid(1000), 20, 2048);
+		AddGregtechRecipe.addCokeAndPyrolyseRecipes(MISC_MATERIALS.SELENIUM_DIOXIDE.getCell(1), 14, FluidUtils.getHotWater(4000), CI.emptyCells(1), MISC_MATERIALS.SELENIOUS_ACID.getFluidStack(1000), 20, 2048);
 
 		// Make Selenium        
 		CORE.RA.addBlastSmelterRecipe(
@@ -35,8 +35,8 @@ public class RECIPES_SeleniumProcessing {
 						ItemUtils.getItemStackOfAmountFromOreDict("cellSulfuricAcid", 8),
 						ELEMENT.getInstance().CARBON.getDust(16),
 				},
-				MISC_MATERIALS.SELENIOUS_ACID.getFluid(750),
-				ELEMENT.getInstance().SELENIUM.getFluid(144 * 1),
+				MISC_MATERIALS.SELENIOUS_ACID.getFluidStack(750),
+				ELEMENT.getInstance().SELENIUM.getFluidStack(144 * 1),
 				new ItemStack[] {
 						CI.emptyCells(8),
 						ELEMENT.getInstance().SELENIUM.getIngot(1),
@@ -93,7 +93,7 @@ public class RECIPES_SeleniumProcessing {
 						ItemUtils.getOrePrefixStack(OrePrefixes.crushedPurified, Materials.Copper, 1), // Item Input
 				},
 				FluidUtils.getHotWater(1000), // Fluid
-				MISC_MATERIALS.SELENIUM_DIOXIDE.getFluid(20), // Fluid
+				MISC_MATERIALS.SELENIUM_DIOXIDE.getFluidStack(20), // Fluid
 				new ItemStack[] {
 						ItemUtils.getOrePrefixStack(OrePrefixes.crushedCentrifuged, Materials.Copper, 1),
 						MISC_MATERIALS.SELENIUM_DIOXIDE.getDust(1),
@@ -126,7 +126,7 @@ public class RECIPES_SeleniumProcessing {
 						ItemUtils.getOrePrefixStack(OrePrefixes.crushedPurified, Materials.Tetrahedrite, 1), // Item Input
 				},
 				FluidUtils.getHotWater(1000), // Fluid
-				MISC_MATERIALS.SELENIUM_DIOXIDE.getFluid(10), // Fluid
+				MISC_MATERIALS.SELENIUM_DIOXIDE.getFluidStack(10), // Fluid
 				new ItemStack[] {
 						ItemUtils.getOrePrefixStack(OrePrefixes.crushedCentrifuged, Materials.Tetrahedrite, 1),
 						MISC_MATERIALS.SELENIUM_DIOXIDE.getDust(1),
@@ -159,7 +159,7 @@ public class RECIPES_SeleniumProcessing {
 						ItemUtils.getOrePrefixStack(OrePrefixes.crushedPurified, Materials.Chalcopyrite, 1), // Item Input
 				},
 				FluidUtils.getHotWater(1000), // Fluid
-				MISC_MATERIALS.SELENIUM_DIOXIDE.getFluid(10), // Fluid
+				MISC_MATERIALS.SELENIUM_DIOXIDE.getFluidStack(10), // Fluid
 				new ItemStack[] {
 						ItemUtils.getOrePrefixStack(OrePrefixes.crushedCentrifuged, Materials.Chalcopyrite, 1),
 						MISC_MATERIALS.SELENIUM_DIOXIDE.getDust(1),
@@ -192,7 +192,7 @@ public class RECIPES_SeleniumProcessing {
 						ItemUtils.getOrePrefixStack(OrePrefixes.crushedPurified, Materials.Malachite, 1), // Item Input
 				},
 				FluidUtils.getHotWater(1000), // Fluid
-				MISC_MATERIALS.SELENIUM_DIOXIDE.getFluid(10), // Fluid
+				MISC_MATERIALS.SELENIUM_DIOXIDE.getFluidStack(10), // Fluid
 				new ItemStack[] {
 						ItemUtils.getOrePrefixStack(OrePrefixes.crushedCentrifuged, Materials.Malachite, 1),
 						MISC_MATERIALS.SELENIUM_DIOXIDE.getDust(1),

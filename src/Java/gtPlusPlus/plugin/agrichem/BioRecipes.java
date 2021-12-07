@@ -132,7 +132,7 @@ public class BioRecipes {
 		mThermalWater = FluidUtils.getFluidStack("ic2hotwater", 1).getFluid();		
 		mAir = FluidUtils.getFluidStack("air", 1).getFluid();		
 		mSulfuricWasteWater = FluidUtils.getFluidStack("sulfuricapatite", 1).getFluid();
-		mAmmonia = MISC_MATERIALS.AMMONIA.getFluid(1).getFluid();
+		mAmmonia = MISC_MATERIALS.AMMONIA.getFluidStack(1).getFluid();
 		mEthylene = FluidUtils.getFluidStack("ethylene", 1).getFluid();
 		mEthanol = FluidUtils.getFluidStack("bioethanol", 1).getFluid();
 		mDilutedSulfuricAcid = FluidUtils.getFluidStack("dilutedsulfuricacid", 1).getFluid();
@@ -144,8 +144,8 @@ public class BioRecipes {
 		mStyrene = FluidUtils.getFluidStack("styrene", 1).getFluid();		
 		mMethanol = FluidUtils.getFluidStack("methanol", 1).getFluid();
 		mLiquidPlastic = FluidUtils.getWildcardFluidStack("plastic", 1).getFluid();
-		mCarbonDioxide = MISC_MATERIALS.CARBON_DIOXIDE.getFluid(1).getFluid();
-		mCarbonMonoxide = MISC_MATERIALS.CARBON_MONOXIDE.getFluid(1).getFluid();
+		mCarbonDioxide = MISC_MATERIALS.CARBON_DIOXIDE.getFluidStack(1).getFluid();
+		mCarbonMonoxide = MISC_MATERIALS.CARBON_MONOXIDE.getFluidStack(1).getFluid();
 		mChlorine = FluidUtils.getFluidStack("chlorine", 1).getFluid();
 		mHydrogen = FluidUtils.getFluidStack("hydrogen", 1).getFluid();		
 		mAceticAcid = AgrichemFluids.mAceticAcid;

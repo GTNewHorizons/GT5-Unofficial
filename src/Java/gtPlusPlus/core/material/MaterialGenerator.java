@@ -29,7 +29,10 @@ import gtPlusPlus.core.item.base.rods.BaseItemRod;
 import gtPlusPlus.core.item.base.rods.BaseItemRodLong;
 import gtPlusPlus.core.item.base.rotors.BaseItemRotor;
 import gtPlusPlus.core.item.base.screws.BaseItemScrew;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.material.nuclear.FLUORIDES;
 import gtPlusPlus.core.material.state.MaterialState;
+import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -262,13 +265,47 @@ public class MaterialGenerator {
 		generateNuclearMaterial(matInfo, true);
 	}
 
+
+	public static void generateNuclearDusts(final Material matInfo){
+		generateNuclearDusts(matInfo, true);
+	}
+
+	public static void generateNuclearDusts(final Material matInfo, boolean generateDehydratorRecipe){
+		generateNuclearMaterial(matInfo, false, true, false, false);
+		if (generateDehydratorRecipe && matInfo.getFluid() != null && matInfo.getDust(0) != null) {
+			CORE.RA.addDehydratorRecipe(
+					new ItemStack[] {
+							
+					}, 
+					matInfo.getFluidStack(144), 
+					null, 
+					new ItemStack[] { 
+							matInfo.getDust(1),
+					}, 
+					new int[] { 10000 }, 
+					10*(matInfo.vVoltageMultiplier/5), // Time in ticks
+					matInfo.vVoltageMultiplier); // EU
+		}
+	}
+	
 	public static void generateNuclearMaterial(final Material matInfo, final boolean generatePlates){
+		generateNuclearMaterial(matInfo, true, true, true, generatePlates);
+	}
+
+	public static void generateNuclearMaterial(final Material matInfo, final boolean generateBlock, 
+			final boolean generateDusts, final boolean generateIngot, final boolean generatePlates){
 		try {
 			
-			tempBlock = new BlockBaseModular(matInfo,BlockTypes.STANDARD);
-			temp = new BaseItemDust(matInfo);
-			temp = new BaseItemIngot(matInfo);
-			temp = new BaseItemNugget(matInfo);
+			if (generateBlock) {
+				tempBlock = new BlockBaseModular(matInfo,BlockTypes.STANDARD);
+			}
+			if (generateDusts) {
+				temp = new BaseItemDust(matInfo);
+			}
+			if (generateIngot) {
+				temp = new BaseItemIngot(matInfo);
+				temp = new BaseItemNugget(matInfo);
+			}
 
 			if (generatePlates) {
 				temp = new BaseItemPlate(matInfo);

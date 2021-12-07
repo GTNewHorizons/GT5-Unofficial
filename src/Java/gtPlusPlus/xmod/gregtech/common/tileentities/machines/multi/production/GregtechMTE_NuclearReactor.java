@@ -38,6 +38,7 @@ import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.material.ELEMENT;
+import gtPlusPlus.core.material.nuclear.NUCLIDE;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import net.minecraft.item.ItemStack;
@@ -367,7 +368,7 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 		int aFuelStored = 0;
 		FluidStack aFuelFluid = null;
 		for (FluidStack aFluidInput : aRecipe.mFluidInputs) {
-			if (!aFluidInput.getFluid().equals(ModItems.fluidFLiBeSalt)) {
+			if (!aFluidInput.getFluid().equals(NUCLIDE.Li2BeF4.getFluid())) {
 				aFuelFluid = aFluidInput;
 				break;
 			}
@@ -417,7 +418,7 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 			// Find li2bef4, Helium & Fluorine
 			for (final FluidStack hatchFluid1 : tFluids) { //Loops through hatches
 				if (hatchFluid1 != null) {
-					if (hatchFluid1.getFluid().equals(ModItems.fluidFLiBeSalt)){
+					if (hatchFluid1.getFluid().equals(NUCLIDE.Li2BeF4.getFluid())){
 						foundLi2bef4 = true;
 						Logger.WARNING("Found "+hatchFluid1.getLocalizedName());
 						continue;
@@ -425,7 +426,7 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 				}
 			}			
 			if (!foundLi2bef4) {
-				Logger.WARNING("Did not find "+ModItems.fluidFLiBeSalt.getLocalizedName());
+				Logger.WARNING("Did not find "+NUCLIDE.Li2BeF4.getFluid().getLocalizedName());
 				return false;
 			}
 			// Reset outputs and progress stats
@@ -620,7 +621,7 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 		else {
 			// Try output some Uranium-233
 			if (MathUtils.randInt(1, 300) == 1){
-				this.addOutput(ELEMENT.getInstance().URANIUM233.getFluid(MathUtils.randInt(1, 10)));
+				this.addOutput(ELEMENT.getInstance().URANIUM233.getFluidStack(MathUtils.randInt(1, 10)));
 			}			
 			// Set a random tick counter, count it up.
 			if (this.mSpargeTime == 0) {

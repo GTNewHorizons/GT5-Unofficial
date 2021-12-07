@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 import java.lang.ref.SoftReference;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,6 +31,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.util.math.MathUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -37,16 +39,35 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-public class GTPP_NEI_DefaultHandler
-extends TemplateRecipeHandler {
+public class GTPP_NEI_DefaultHandler extends TemplateRecipeHandler {
 	
 	public static final int sOffsetX = 5;
 	public static final int sOffsetY = 11;
     private SoftReference<List<CachedDefaultRecipe>> mCachedRecipes = null;
+	
+	private static final HashMap<Integer, Pair<Integer, Integer>> mInputSlotMap = new HashMap<Integer, Pair<Integer, Integer>>();
+	private static final HashMap<Integer, Pair<Integer, Integer>> mOutputSlotMap = new HashMap<Integer, Pair<Integer, Integer>>();
 
 	static {
 		GuiContainerManager.addInputHandler(new GT_RectHandler());
 		GuiContainerManager.addTooltipHandler(new GT_RectHandler());
+		int[] aSlotX = new int[] {12, 30, 48};
+		int[] aSlotY = new int[] {5, 23, 41, 64};	
+		// Input slots
+		int aIndex = 0;
+		for (int y=0; y<aSlotY.length;y++) {
+			for (int x=0; x<aSlotX.length;x++) {
+				mInputSlotMap.put(aIndex++, new Pair<Integer, Integer>(aSlotX[x], aSlotY[y]));				
+			}
+		}
+		// Output slots
+		aSlotX = new int[] {102, 120, 138};
+		aIndex = 0;
+		for (int y=0; y<aSlotY.length;y++) {
+			for (int x=0; x<aSlotX.length;x++) {
+				mOutputSlotMap.put(aIndex++, new Pair<Integer, Integer>(aSlotX[x], aSlotY[y]));				
+			}
+		}
 	}
 
 	protected final GT_Recipe_Map mRecipeMap;
@@ -827,6 +848,90 @@ extends TemplateRecipeHandler {
 		@Override
 		public List<PositionedStack> getOtherStacks() {
 			return this.mOutputs;
+		}
+	}
+
+	public class NoCellMultiDefaultRecipe extends CachedDefaultRecipe {
+
+		public NoCellMultiDefaultRecipe(final GT_Recipe aRecipe) {
+			super(aRecipe);
+			
+		}
+
+		@Override
+		public void handleSlots() {
+
+			int aInputItemsCount = this.mRecipe.mInputs.length;
+			int aInputFluidsCount = this.mRecipe.mFluidInputs.length;			
+			int aOutputItemsCount = this.mRecipe.mOutputs.length;
+			int aOutputFluidsCount = this.mRecipe.mFluidOutputs.length;
+			int aInputSlotsUsed = 0;
+			int aOutputSlotsUsed = 0;			
+			int aSlotToCheck = 0;	
+
+			// Special Slot
+			if (mRecipe.mSpecialItems != null) {
+				this.mInputs.add(new FixedPositionedStack(mRecipe.mSpecialItems, 120, 52));
+			}
+			
+			/*
+			 * Items
+			 */
+			
+			// Upto 9 Inputs Slots
+			if (aInputItemsCount > 0) {				
+				if (aInputItemsCount > 9) {
+					aInputItemsCount = 9;
+				}				
+				for (int i=0;i<aInputItemsCount;i++) {
+					int x = mInputSlotMap.get(aSlotToCheck).getKey();
+					int y = mInputSlotMap.get(aSlotToCheck).getValue();
+					this.mInputs.add(new FixedPositionedStack(mRecipe.getRepresentativeInput(aSlotToCheck), x, y));	
+					aSlotToCheck++;
+					aInputSlotsUsed++;
+				}
+			}
+			aSlotToCheck = 0;	
+			// Upto 9 Output Slots
+			if (aOutputItemsCount > 0) {			
+				if (aOutputItemsCount > 9) {
+					aOutputItemsCount = 9;
+				}		
+				for (int i=0;i<aOutputItemsCount;i++) {
+					int x = mOutputSlotMap.get(aSlotToCheck).getKey();
+					int y = mOutputSlotMap.get(aSlotToCheck).getValue();
+					this.mOutputs.add(new FixedPositionedStack(mRecipe.getOutput(aSlotToCheck), x, y, mRecipe.getOutputChance(aSlotToCheck)));	
+					aSlotToCheck++;
+					aOutputSlotsUsed++;
+				}
+			}					
+			
+			/*
+			 * Fluids
+			 */
+
+			// Upto 9 Fluid Inputs Slots
+			aSlotToCheck = aInputSlotsUsed;	
+			if (aInputFluidsCount > 0) {				
+				for (int i=0;i<aInputFluidsCount;i++) {
+					int x = mInputSlotMap.get(aSlotToCheck).getKey();
+					int y = mInputSlotMap.get(aSlotToCheck).getValue();
+					this.mInputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(mRecipe.mFluidInputs[i], true), x, y));
+					aSlotToCheck++;
+					aInputSlotsUsed++;
+				}
+			}
+			// Upto 9 Fluid Outputs Slots
+			aSlotToCheck = aOutputSlotsUsed;	
+			if (aOutputFluidsCount > 0) {				
+				for (int i=0;i<aOutputFluidsCount;i++) {
+					int x = mOutputSlotMap.get(aSlotToCheck).getKey();
+					int y = mOutputSlotMap.get(aSlotToCheck).getValue();
+					this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(mRecipe.mFluidOutputs[i], true), x, y));
+					aSlotToCheck++;
+					aOutputSlotsUsed++;
+				}
+			}
 		}
 	}
 }

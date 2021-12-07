@@ -51,7 +51,7 @@ public class RECIPES_RareEarthProcessing {
 		if (mSaltWater == null) {
 			Fluid f = SALT_WATER.generateFluid();
 			SALT_WATER.registerComponentForMaterial(FluidUtils.getFluidStack(f, 1000));
-			mSaltWater = SALT_WATER.getFluid(1000);
+			mSaltWater = SALT_WATER.getFluidStack(1000);
 		}
 		else {
 			SALT_WATER.registerComponentForMaterial(FluidUtils.getFluidStack(mSaltWater, 1000));    		
@@ -62,7 +62,7 @@ public class RECIPES_RareEarthProcessing {
 		if (mBrine == null) {
 			Fluid f = BRINE.generateFluid();
 			BRINE.registerComponentForMaterial(FluidUtils.getFluidStack(f, 1000));
-			mBrine = BRINE.getFluid(1000);
+			mBrine = BRINE.getFluidStack(1000);
 		}
 		else {
 			BRINE.registerComponentForMaterial(FluidUtils.getFluidStack(mBrine, 1000));    		
@@ -88,7 +88,7 @@ public class RECIPES_RareEarthProcessing {
 		mHydrogenChloride = FluidUtils.getFluidStack("hydrogenchloride", 1000);
 		if (mHydrogenChloride == null) {
 			HYDROGEN_CHLORIDE.generateFluid();
-			mHydrogenChloride = BRINE.getFluid(1000);
+			mHydrogenChloride = BRINE.getFluidStack(1000);
 		}
 		else {
 			HYDROGEN_CHLORIDE.registerComponentForMaterial(FluidUtils.getFluidStack(mHydrogenChloride, 1000));    		
@@ -98,7 +98,7 @@ public class RECIPES_RareEarthProcessing {
 		// Add Process for creating Brine
 		CORE.RA.addBrewingRecipe(
 				ItemUtils.getSimpleStack(mDustSalt, 16),
-				MISC_MATERIALS.SALT_WATER.getFluid(2000),
+				MISC_MATERIALS.SALT_WATER.getFluidStack(2000),
 				FluidUtils.getFluidStack(mBrine, 4000),
 				20 * 20,
 				120,

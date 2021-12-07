@@ -193,7 +193,7 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
 									if (x.getStackMaterial() != null){
 										if (x.getStackMaterial().getDust(1) == null){
 											if (x.getStackMaterial().getState() != MaterialState.SOLID && x.getStackMaterial().getState() != MaterialState.ORE && x.getStackMaterial().getState() != MaterialState.PLASMA){
-												oxygen = x.getStackMaterial().getFluid(1000);
+												oxygen = x.getStackMaterial().getFluidStack(1000);
 												break;
 											}
 										}
@@ -299,7 +299,7 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
 										if (x.getStackMaterial().getDust(1) == null){
 											MaterialState f = x.getStackMaterial().getState();
 											if (f == MaterialState.GAS || f == MaterialState.LIQUID || f == MaterialState.PURE_LIQUID || f == MaterialState.PURE_GAS){
-												oxygen = x.getStackMaterial().getFluid((int) (material.vSmallestRatio[compSlot] * 1000));
+												oxygen = x.getStackMaterial().getFluidStack((int) (material.vSmallestRatio[compSlot] * 1000));
 											}
 										}
 									}

@@ -351,7 +351,7 @@ public class GenericChem extends ItemPackage {
 
 				}, 
 				new FluidStack[] {
-						ELEMENT.getInstance().HYDROGEN.getFluid(2000)						
+						ELEMENT.getInstance().HYDROGEN.getFluidStack(2000)						
 				}, 
 				20 *20,
 				120, 
@@ -433,8 +433,8 @@ public class GenericChem extends ItemPackage {
 	private void recipeHydricSulfur() {
 		
 		ItemStack aCellHydricSulfide = ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogenSulfide", 1);		
-        GT_Values.RA.addChemicalRecipe(                   ELEMENT.getInstance().SULFUR.getDust(1), GT_Utility.getIntegratedCircuit(1), ELEMENT.getInstance().HYDROGEN.getFluid(2000), FluidUtils.getFluidStack(Hydrogen_Sulfide, 3000), GT_Values.NI, 60, 8);
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(ELEMENT.getInstance().SULFUR.getDust(1), CI.emptyCells(3),        ELEMENT.getInstance().HYDROGEN.getFluid(2000), GT_Values.NF, ItemUtils.getSimpleStack(aCellHydricSulfide, 3), GT_Values.NI, 60, 8);
+        GT_Values.RA.addChemicalRecipe(                   ELEMENT.getInstance().SULFUR.getDust(1), GT_Utility.getIntegratedCircuit(1), ELEMENT.getInstance().HYDROGEN.getFluidStack(2000), FluidUtils.getFluidStack(Hydrogen_Sulfide, 3000), GT_Values.NI, 60, 8);
+        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(ELEMENT.getInstance().SULFUR.getDust(1), CI.emptyCells(3),        ELEMENT.getInstance().HYDROGEN.getFluidStack(2000), GT_Values.NF, ItemUtils.getSimpleStack(aCellHydricSulfide, 3), GT_Values.NI, 60, 8);
 		
 	}
 
@@ -516,9 +516,9 @@ public class GenericChem extends ItemPackage {
 	private void recipeNitrogenDioxide() {
 		ItemStack aNitricOxideCell = ItemUtils.getItemStackOfAmountFromOreDict("cellNitricOxide", 1); 
 		ItemStack aNitrogenDioxideCell = ItemUtils.getItemStackOfAmountFromOreDict("cellNitrogenDioxide", 1);		
-		GT_Values.RA.addChemicalRecipe(                   ItemUtils.getSimpleStack(aNitricOxideCell, 2), GT_Utility.getIntegratedCircuit(1), ELEMENT.getInstance().OXYGEN.getFluid(1000),      FluidUtils.getFluidStack(Nitrogen_Dioxide, 3000), CI.emptyCells(2), 160);
+		GT_Values.RA.addChemicalRecipe(                   ItemUtils.getSimpleStack(aNitricOxideCell, 2), GT_Utility.getIntegratedCircuit(1), ELEMENT.getInstance().OXYGEN.getFluidStack(1000),      FluidUtils.getFluidStack(Nitrogen_Dioxide, 3000), CI.emptyCells(2), 160);
 		GT_Values.RA.addChemicalRecipe(                   ELEMENT.getInstance().OXYGEN.getCell(1),      GT_Utility.getIntegratedCircuit(1), FluidUtils.getFluidStack(Nitric_Oxide, 2000), FluidUtils.getFluidStack(Nitrogen_Dioxide, 3000), CI.emptyCells(1), 160);
-		GT_Values.RA.addChemicalRecipeForBasicMachineOnly(ItemUtils.getSimpleStack(aNitricOxideCell, 2), CI.emptyCells(1),        ELEMENT.getInstance().OXYGEN.getFluid(1000),      GT_Values.NF,                           ItemUtils.getSimpleStack(aNitrogenDioxideCell, 3), GT_Values.NI, 160, 30);
+		GT_Values.RA.addChemicalRecipeForBasicMachineOnly(ItemUtils.getSimpleStack(aNitricOxideCell, 2), CI.emptyCells(1),        ELEMENT.getInstance().OXYGEN.getFluidStack(1000),      GT_Values.NF,                           ItemUtils.getSimpleStack(aNitrogenDioxideCell, 3), GT_Values.NI, 160, 30);
 		GT_Values.RA.addChemicalRecipeForBasicMachineOnly(ELEMENT.getInstance().OXYGEN.getCell(1),      CI.emptyCells(2),        FluidUtils.getFluidStack(Nitric_Oxide, 2000), GT_Values.NF,                           ItemUtils.getSimpleStack(aNitrogenDioxideCell, 3), GT_Values.NI, 160, 30);
 		GT_Values.RA.addChemicalRecipeForBasicMachineOnly(ItemUtils.getSimpleStack(aNitricOxideCell, 2), ELEMENT.getInstance().OXYGEN.getCell(1),       GT_Values.NF,                       GT_Values.NF,                           ItemUtils.getSimpleStack(aNitrogenDioxideCell, 3), GT_Values.NI, 160, 30);
 	}
@@ -527,16 +527,16 @@ public class GenericChem extends ItemPackage {
 	private void recipeNitricOxide() {
 		ItemStack aWaterCell = ItemUtils.getItemStackOfAmountFromOreDict("cellWater", 1);
 		ItemStack aNitricOxideCell = ItemUtils.getItemStackOfAmountFromOreDict("cellNitricOxide", 1); 		
-		GT_Values.RA.addChemicalRecipeForBasicMachineOnly(MISC_MATERIALS.AMMONIA.getCell(8), CI.emptyCells(1),         ELEMENT.getInstance().OXYGEN.getFluid(5000),  FluidUtils.getFluidStack(Nitric_Oxide, 4000), ItemUtils.getSimpleStack(aWaterCell, 9),       GT_Values.NI, 160, 30);
-		GT_Values.RA.addChemicalRecipeForBasicMachineOnly(ELEMENT.getInstance().OXYGEN.getCell(5),  CI.emptyCells(4),         MISC_MATERIALS.AMMONIA.getFluid(8000), FluidUtils.getFluidStack(Nitric_Oxide, 4000), ItemUtils.getSimpleStack(aWaterCell, 9),       GT_Values.NI, 160, 30);
-		GT_Values.RA.addChemicalRecipe(                   MISC_MATERIALS.AMMONIA.getCell(8), GT_Utility.getIntegratedCircuit(11), ELEMENT.getInstance().OXYGEN.getFluid(5000),  FluidUtils.getWater(9000),     ItemUtils.getSimpleStack(aNitricOxideCell, 4), CI.emptyCells(4), 160);
-		GT_Values.RA.addChemicalRecipe(                   ELEMENT.getInstance().OXYGEN.getCell(5),  GT_Utility.getIntegratedCircuit(11), MISC_MATERIALS.AMMONIA.getFluid(8000), FluidUtils.getWater(9000),     ItemUtils.getSimpleStack(aNitricOxideCell, 4), CI.emptyCells(1), 160);
-		GT_Values.RA.addChemicalRecipe(                   MISC_MATERIALS.AMMONIA.getCell(8), GT_Utility.getIntegratedCircuit(2),  ELEMENT.getInstance().OXYGEN.getFluid(5000),  FluidUtils.getFluidStack(Nitric_Oxide, 4000), CI.emptyCells(8), 320);
-		GT_Values.RA.addChemicalRecipe(                   ELEMENT.getInstance().OXYGEN.getCell(5),  GT_Utility.getIntegratedCircuit(2),  MISC_MATERIALS.AMMONIA.getFluid(8000), FluidUtils.getFluidStack(Nitric_Oxide, 4000), CI.emptyCells(5), 320);
-		GT_Values.RA.addChemicalRecipe(                   MISC_MATERIALS.AMMONIA.getCell(8), GT_Utility.getIntegratedCircuit(12), ELEMENT.getInstance().OXYGEN.getFluid(5000),  GT_Values.NF,                       ItemUtils.getSimpleStack(aNitricOxideCell, 4), CI.emptyCells(4), 160);
-		GT_Values.RA.addChemicalRecipe(                   ELEMENT.getInstance().OXYGEN.getCell(5),  GT_Utility.getIntegratedCircuit(12), MISC_MATERIALS.AMMONIA.getFluid(8000), GT_Values.NF,                       ItemUtils.getSimpleStack(aNitricOxideCell, 4), CI.emptyCells(1), 160);
+		GT_Values.RA.addChemicalRecipeForBasicMachineOnly(MISC_MATERIALS.AMMONIA.getCell(8), CI.emptyCells(1),         ELEMENT.getInstance().OXYGEN.getFluidStack(5000),  FluidUtils.getFluidStack(Nitric_Oxide, 4000), ItemUtils.getSimpleStack(aWaterCell, 9),       GT_Values.NI, 160, 30);
+		GT_Values.RA.addChemicalRecipeForBasicMachineOnly(ELEMENT.getInstance().OXYGEN.getCell(5),  CI.emptyCells(4),         MISC_MATERIALS.AMMONIA.getFluidStack(8000), FluidUtils.getFluidStack(Nitric_Oxide, 4000), ItemUtils.getSimpleStack(aWaterCell, 9),       GT_Values.NI, 160, 30);
+		GT_Values.RA.addChemicalRecipe(                   MISC_MATERIALS.AMMONIA.getCell(8), GT_Utility.getIntegratedCircuit(11), ELEMENT.getInstance().OXYGEN.getFluidStack(5000),  FluidUtils.getWater(9000),     ItemUtils.getSimpleStack(aNitricOxideCell, 4), CI.emptyCells(4), 160);
+		GT_Values.RA.addChemicalRecipe(                   ELEMENT.getInstance().OXYGEN.getCell(5),  GT_Utility.getIntegratedCircuit(11), MISC_MATERIALS.AMMONIA.getFluidStack(8000), FluidUtils.getWater(9000),     ItemUtils.getSimpleStack(aNitricOxideCell, 4), CI.emptyCells(1), 160);
+		GT_Values.RA.addChemicalRecipe(                   MISC_MATERIALS.AMMONIA.getCell(8), GT_Utility.getIntegratedCircuit(2),  ELEMENT.getInstance().OXYGEN.getFluidStack(5000),  FluidUtils.getFluidStack(Nitric_Oxide, 4000), CI.emptyCells(8), 320);
+		GT_Values.RA.addChemicalRecipe(                   ELEMENT.getInstance().OXYGEN.getCell(5),  GT_Utility.getIntegratedCircuit(2),  MISC_MATERIALS.AMMONIA.getFluidStack(8000), FluidUtils.getFluidStack(Nitric_Oxide, 4000), CI.emptyCells(5), 320);
+		GT_Values.RA.addChemicalRecipe(                   MISC_MATERIALS.AMMONIA.getCell(8), GT_Utility.getIntegratedCircuit(12), ELEMENT.getInstance().OXYGEN.getFluidStack(5000),  GT_Values.NF,                       ItemUtils.getSimpleStack(aNitricOxideCell, 4), CI.emptyCells(4), 160);
+		GT_Values.RA.addChemicalRecipe(                   ELEMENT.getInstance().OXYGEN.getCell(5),  GT_Utility.getIntegratedCircuit(12), MISC_MATERIALS.AMMONIA.getFluidStack(8000), GT_Values.NF,                       ItemUtils.getSimpleStack(aNitricOxideCell, 4), CI.emptyCells(1), 160);
 		GT_Values.RA.addChemicalRecipeForBasicMachineOnly(MISC_MATERIALS.AMMONIA.getCell(8), ELEMENT.getInstance().OXYGEN.getCell(5),        GT_Values.NF,                   GT_Values.NF,                       ItemUtils.getSimpleStack(aNitricOxideCell, 4), ItemUtils.getSimpleStack(aWaterCell, 9), 160, 30);
-		GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(1)}, new FluidStack[]{MISC_MATERIALS.AMMONIA.getFluid(8000), ELEMENT.getInstance().OXYGEN.getFluid(5000)}, new FluidStack[]{FluidUtils.getFluidStack(Nitric_Oxide, 4000), FluidUtils.getWater(9000)}, null, 160, 30);
+		GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(1)}, new FluidStack[]{MISC_MATERIALS.AMMONIA.getFluidStack(8000), ELEMENT.getInstance().OXYGEN.getFluidStack(5000)}, new FluidStack[]{FluidUtils.getFluidStack(Nitric_Oxide, 4000), FluidUtils.getWater(9000)}, null, 160, 30);
 	}
 
 
@@ -547,7 +547,7 @@ public class GenericChem extends ItemPackage {
 		CORE.RA.addChemicalRecipe(                   
 				ELEMENT.getInstance().CHLORINE.getCell(1), 
 				GT_Utility.getIntegratedCircuit(1),  
-				ELEMENT.getInstance().HYDROGEN.getFluid(1000), 
+				ELEMENT.getInstance().HYDROGEN.getFluidStack(1000), 
 				FluidUtils.getFluidStack(HydrochloricAcid, 2000), 
 				CI.emptyCells(1), 
 				60, 
@@ -556,7 +556,7 @@ public class GenericChem extends ItemPackage {
 		CORE.RA.addChemicalRecipe(                  
 				ELEMENT.getInstance().HYDROGEN.getCell(1),
 				GT_Utility.getIntegratedCircuit(1),  
-				ELEMENT.getInstance().CHLORINE.getFluid(1000), 
+				ELEMENT.getInstance().CHLORINE.getFluidStack(1000), 
 				FluidUtils.getFluidStack(HydrochloricAcid, 2000), 
 				CI.emptyCells(1), 
 				60, 
@@ -566,7 +566,7 @@ public class GenericChem extends ItemPackage {
 				CI.emptyCells(1), 
 				GT_Utility.getIntegratedCircuit(1),
 				FluidUtils.getFluidStack(HydrochloricAcid, 2000),
-				ELEMENT.getInstance().CHLORINE.getFluid(1000),
+				ELEMENT.getInstance().CHLORINE.getFluidStack(1000),
 				ELEMENT.getInstance().HYDROGEN.getCell(1), 
 				GT_Values.NI,            
 				GT_Values.NI, 
@@ -581,7 +581,7 @@ public class GenericChem extends ItemPackage {
 				CI.emptyCells(1),            
 				GT_Utility.getIntegratedCircuit(11), 
 				FluidUtils.getFluidStack(HydrochloricAcid, 2000),        
-				ELEMENT.getInstance().HYDROGEN.getFluid(1000), 
+				ELEMENT.getInstance().HYDROGEN.getFluidStack(1000), 
 				ELEMENT.getInstance().CHLORINE.getCell(1),      
 				GT_Values.NI,                  
 				GT_Values.NI, 
