@@ -332,7 +332,7 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 		aSpeedBonusPercent = Math.max(-99, aSpeedBonusPercent);
 		float tTimeFactor = 100.0f / (100.0f + aSpeedBonusPercent);
 		this.mMaxProgresstime = (int) (tRecipe.mDuration * tTimeFactor);
-		int rInt = 2;
+		int tHalfHeatCapacityDivTiers = tHeatCapacityDivTiers / 2;
 
 		this.mEUt = (int) Math.ceil(tTotalEUt);
 
@@ -346,7 +346,15 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 		} else {
 			while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
 				this.mEUt *= 4;
-				this.mMaxProgresstime /= (tHeatCapacityDivTiers >= rInt ? 4 : 2);
+				if (tHalfHeatCapacityDivTiers > 0) {
+					this.mMaxProgresstime = mMaxProgresstime / 4;
+					tHalfHeatCapacityDivTiers--;
+				} else {
+					this.mMaxProgresstime = mMaxProgresstime / 2;
+				}
+				if (this.mMaxProgresstime <= 1) {
+					break;
+				}
 			}
 		}
 		if (this.mEUt > 0) {
