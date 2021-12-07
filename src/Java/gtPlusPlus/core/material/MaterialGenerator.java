@@ -277,7 +277,7 @@ public class MaterialGenerator {
 	}
 
 	public static void generateNuclearDusts(final Material matInfo, boolean generateDehydratorRecipe){
-		generateNuclearMaterial(matInfo, false, true, false, false);
+		generateNuclearMaterial(matInfo, false, true, false, false, false);
 		if (generateDehydratorRecipe && matInfo.getFluid() != null && matInfo.getDust(0) != null) {
 			CORE.RA.addDehydratorRecipe(
 					new ItemStack[] {
@@ -298,11 +298,11 @@ public class MaterialGenerator {
 	}
 	
 	public static void generateNuclearMaterial(final Material matInfo, final boolean generatePlates){
-		generateNuclearMaterial(matInfo, true, true, true, generatePlates);
+		generateNuclearMaterial(matInfo, true, true, true, generatePlates, true);
 	}
 
 	public static void generateNuclearMaterial(final Material matInfo, final boolean generateBlock, 
-			final boolean generateDusts, final boolean generateIngot, final boolean generatePlates){
+			final boolean generateDusts, final boolean generateIngot, final boolean generatePlates, final boolean generateMiscRecipes){
 		try {
 			
 			if (generateBlock) {
@@ -324,11 +324,14 @@ public class MaterialGenerator {
 				new RecipeGen_Assembler(matInfo);
 			}
 
-			new RecipeGen_ShapedCrafting(matInfo);
-			new RecipeGen_Fluids(matInfo);
-			new RecipeGen_MaterialProcessing(matInfo);
-			new RecipeGen_DustGeneration(matInfo, true);
-			new RecipeGen_Recycling(matInfo);	
+			if (generateMiscRecipes) {
+				new RecipeGen_ShapedCrafting(matInfo);
+				new RecipeGen_Fluids(matInfo);
+				new RecipeGen_MaterialProcessing(matInfo);
+				new RecipeGen_Recycling(matInfo);	
+			}
+
+			new RecipeGen_DustGeneration(matInfo, generateMiscRecipes);			
 			new RecipeGen_Plasma(matInfo);
 			
 		} catch (final Throwable t){

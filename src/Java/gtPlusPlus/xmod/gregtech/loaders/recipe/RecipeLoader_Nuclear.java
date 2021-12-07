@@ -168,6 +168,8 @@ public class RecipeLoader_Nuclear {
 
 	private static void chemicalReactorRecipes() {
 
+		ItemStack aGtHydrofluoricAcid = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cellHydrofluoricAcid_GT5U", 2);
+
 		GT_Values.RA.addChemicalRecipe(
 				ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumCarbonate", 5), // Input
 				ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumHydroxide", 5), // Input
@@ -229,6 +231,17 @@ public class RecipeLoader_Nuclear {
 					CI.emptyCells(1),
 					20 * 20,
 					30);
+			if (aGtHydrofluoricAcid != null) {
+				// Ammonium Bifluoride
+				GT_Values.RA.addChemicalRecipe(
+						ItemUtils.getGregtechCircuit(3),
+						aGtHydrofluoricAcid,
+						MISC_MATERIALS.AMMONIUM.getFluidStack(1000),
+						FLUORIDES.AMMONIUM_BIFLUORIDE.getFluidStack(2000),
+						CI.emptyCells(2),
+						40 * 20,
+						30);
+			}
 			// Ammonium
 			GT_Values.RA.addChemicalRecipe(
 					ItemUtils.getGregtechCircuit(3),
@@ -243,29 +256,64 @@ public class RecipeLoader_Nuclear {
 
 		if (!GTNH) {
 			// Hydroxide
-			GT_Values.RA.addChemicalRecipe(ItemUtils.getItemStackOfAmountFromOreDict("cellOxygen", 1),
-					ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogen", 1), GT_Values.NF,
-					FluidUtils.getFluidStack("hydroxide", 2000),
-					CI.emptyCells(2), 8 * 20);
-			// Ammonia (moved to GTNH core mod)
-			GT_Values.RA.addChemicalRecipe(ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogen", 3),
-					ItemUtils.getItemStackOfAmountFromOreDict("dustMagnetite", 0),
-					FluidUtils.getFluidStack("nitrogen", 1000), FluidUtils.getFluidStack("ammonia", 1000),
-					CI.emptyCells(3), 14 * 20);
+			GT_Values.RA.addChemicalRecipe(
+					ItemUtils.getGregtechCircuit(3),
+					ELEMENT.getInstance().OXYGEN.getCell(1), 
+					ELEMENT.getInstance().HYDROGEN.getFluidStack(1000),
+					MISC_MATERIALS.HYDROXIDE.getFluidStack(2000),
+					CI.emptyCells(2), 
+					GT_Values.NI, 
+					8 * 20, 
+					30);
 			// Beryllium Hydroxide
-			GT_Values.RA.addChemicalRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustBeryllium", 7), GT_Values.NI,
-					FluidUtils.getFluidStack("hydroxide", 1000), FluidUtils.getFluidStack("berylliumhydroxide", 2000),
-					GT_Values.NI, 8 * 20);
+			GT_Values.RA.addChemicalRecipe(
+					ItemUtils.getGregtechCircuit(3),
+					ELEMENT.getInstance().BERYLLIUM.getDust(7),
+					MISC_MATERIALS.HYDROXIDE.getFluidStack(1000),
+					FLUORIDES.BERYLLIUM_HYDROXIDE.getFluidStack(2000),
+					GT_Values.NI,
+					8 * 20,
+					30);
 			// Ammonium Bifluoride
-			GT_Values.RA.addChemicalRecipe(ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid", 1),
-					GT_Values.NI, FluidUtils.getFluidStack("ammonium", 1000),
-					FluidUtils.getFluidStack("ammoniumbifluoride", 2000),
-					CI.emptyCells(1), 26 * 20);
+			GT_Values.RA.addChemicalRecipe(
+					ItemUtils.getGregtechCircuit(3),
+					ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid", 1),
+					MISC_MATERIALS.AMMONIUM.getFluidStack(1000),
+					FLUORIDES.AMMONIUM_BIFLUORIDE.getFluidStack(3000),
+					CI.emptyCells(1),
+					20 * 20,
+					30);
+
+			if (aGtHydrofluoricAcid != null) {
+				// Ammonium Bifluoride
+				GT_Values.RA.addChemicalRecipe(
+						ItemUtils.getGregtechCircuit(3),
+						aGtHydrofluoricAcid,
+						MISC_MATERIALS.AMMONIUM.getFluidStack(1000),
+						FLUORIDES.AMMONIUM_BIFLUORIDE.getFluidStack(2000),
+						CI.emptyCells(2),
+						40 * 20,
+						30);
+			}
+
 			// Ammonium
-			GT_Values.RA.addChemicalRecipe(ItemUtils.getItemStackOfAmountFromOreDict("cellAmmonia", 1),
-					ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogen", 1), GT_Values.NF,
-					FluidUtils.getFluidStack("ammonium", 2000),
-					CI.emptyCells(2), 20 * 20);
+			GT_Values.RA.addChemicalRecipe(
+					ItemUtils.getGregtechCircuit(3),
+					ELEMENT.getInstance().HYDROGEN.getCell(1),
+					MISC_MATERIALS.AMMONIA.getFluidStack(1000),
+					MISC_MATERIALS.AMMONIUM.getFluidStack(2000),
+					CI.emptyCells(1), 
+					GT_Values.NI, 
+					20 * 20, 
+					30);
+			// Ammonia
+			GT_Values.RA.addChemicalRecipe(
+					ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogen", 3),
+					ItemUtils.getItemStackOfAmountFromOreDict("dustMagnetite", 0),
+					FluidUtils.getFluidStack("nitrogen", 1000),
+					FluidUtils.getFluidStack("ammonia", 1000),
+					CI.emptyCells(3),
+					14 * 20);
 		}
 
 
