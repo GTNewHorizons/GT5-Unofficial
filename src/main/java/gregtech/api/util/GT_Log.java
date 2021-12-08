@@ -1,6 +1,9 @@
 package gregtech.api.util;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -14,6 +17,17 @@ import java.util.List;
 public class GT_Log {
     public static PrintStream out = System.out;
     public static PrintStream err = System.err;
+    public static PrintStream recipe;
+
+    static {
+        try {
+            recipe = new PrintStream(new BufferedOutputStream(new FileOutputStream("GTRecipes.csv")), true);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            recipe = err;
+        }
+    }
+
     public static PrintStream ore = new LogBuffer();
     public static PrintStream pal = null;
     public static PrintStream exp = new LogBuffer();

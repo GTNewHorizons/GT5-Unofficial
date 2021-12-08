@@ -1,6 +1,7 @@
 package gregtech.api.util;
 
 import codechicken.nei.PositionedStack;
+import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -23,8 +24,10 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
+import java.io.PrintStream;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 import static gregtech.api.enums.GT_Values.*;
 
@@ -80,6 +83,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
      * Used for describing recipes that do not fit the default recipe pattern (for example Large Boiler Fuels)
      */
     private String[] neiDesc = null;
+    String addStackTrace;
     
     private GT_Recipe(GT_Recipe aRecipe) {
         mInputs = GT_Utility.copyStackArray((Object[]) aRecipe.mInputs);
@@ -847,9 +851,95 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             aRecipe.mFakeRecipe = aFakeRecipe;
             if (aRecipe.mFluidInputs.length < mMinimalInputFluids && aRecipe.mInputs.length < mMinimalInputItems)
                 return null;
-            if (aCheckForCollisions && findRecipe(null, false, Long.MAX_VALUE, aRecipe.mFluidInputs, aRecipe.mInputs) != null)
-                return null;
+            if (aCheckForCollisions) {
+                GT_Recipe found = findRecipe(null, false, Long.MAX_VALUE, aRecipe.mFluidInputs, aRecipe.mInputs);
+                if (found != null) {
+                    GT_Log.recipe.print('"');
+                    GT_Log.recipe.print(mUniqueIdentifier);
+                    GT_Log.recipe.print("\",\"");
+                    printRecipe(GT_Log.recipe, aRecipe);
+                    printRecipe(GT_Log.recipe, found);
+                    GT_Log.recipe.print(getStackTrace());
+                    GT_Log.recipe.print("\",\"");
+                    GT_Log.recipe.print(found.addStackTrace);
+                    GT_Log.recipe.println();
+                    return null;
+                }
+            }
             return add(aRecipe);
+        }
+
+        private static String getStackTrace() {
+            return Arrays.stream(Thread.currentThread().getStackTrace()).map(StackTraceElement::toString).collect(Collectors.joining("#", "", ""));
+        }
+
+        private static void printRecipe(PrintStream stream, GT_Recipe aRecipe) {
+            stream.print(aRecipe.mEUt);
+            GT_Log.recipe.print("\",\"");
+            GT_Log.recipe.print(aRecipe.mDuration);
+            GT_Log.recipe.print("\",\"");
+            GT_Log.recipe.print(aRecipe.mSpecialValue);
+            GT_Log.recipe.print("\",\"");
+            for (int i = 0; i < 16; i++) {
+                if (aRecipe.mInputs.length > i && aRecipe.mInputs[i] != null) {
+                    String displayName;
+                    try {
+                        displayName = aRecipe.mInputs[i].getDisplayName();
+                    } catch (Exception e) {
+                        GameRegistry.UniqueIdentifier id = GameRegistry.findUniqueIdentifierFor(aRecipe.mInputs[i].getItem());
+                        if (id == null)
+                            displayName = aRecipe.mInputs[i].getUnlocalizedName();
+                        else
+                            displayName = id.toString();
+                    }
+                    GT_Log.recipe.print(displayName);
+                }
+                GT_Log.recipe.print("\",\"");
+                if (aRecipe.mInputs.length > i && aRecipe.mInputs[i] != null)
+                    GT_Log.recipe.print(Items.feather.getDamage(aRecipe.mInputs[i]));
+                GT_Log.recipe.print("\",\"");
+                if (aRecipe.mInputs.length > i && aRecipe.mInputs[i] != null)
+                    GT_Log.recipe.print(aRecipe.mInputs[i].stackSize);
+                GT_Log.recipe.print("\",\"");
+            }
+            for (int i = 0; i < 8; i++) {
+                if (aRecipe.mFluidInputs.length > i && aRecipe.mFluidInputs[i] != null)
+                    GT_Log.recipe.print(aRecipe.mFluidInputs[i].fluid.getName());
+                GT_Log.recipe.print("\",\"");
+                if (aRecipe.mFluidInputs.length > i && aRecipe.mFluidInputs[i] != null)
+                    GT_Log.recipe.print(aRecipe.mFluidInputs[i].amount);
+                GT_Log.recipe.print("\",\"");
+            }
+            for (int i = 0; i < 9; i++) {
+                if (aRecipe.mOutputs.length > i && aRecipe.mOutputs[i] != null) {
+                    String displayName;
+                    try {
+                        displayName = aRecipe.mOutputs[i].getDisplayName();
+                    } catch (Exception e) {
+                        GameRegistry.UniqueIdentifier id = GameRegistry.findUniqueIdentifierFor(aRecipe.mOutputs[i].getItem());
+                        if (id == null)
+                            displayName = aRecipe.mOutputs[i].getUnlocalizedName();
+                        else
+                            displayName = id.toString();
+                    }
+                    GT_Log.recipe.print(displayName);
+                }
+                GT_Log.recipe.print("\",\"");
+                if (aRecipe.mOutputs.length > i && aRecipe.mOutputs[i] != null)
+                    GT_Log.recipe.print(Items.feather.getDamage(aRecipe.mOutputs[i]));
+                GT_Log.recipe.print("\",\"");
+                if (aRecipe.mOutputs.length > i && aRecipe.mOutputs[i] != null)
+                    GT_Log.recipe.print(aRecipe.mOutputs[i].stackSize);
+                GT_Log.recipe.print("\",\"");
+            }
+            for (int i = 0; i < 8; i++) {
+                if (aRecipe.mFluidOutputs.length > i && aRecipe.mFluidOutputs[i] != null)
+                    GT_Log.recipe.print(aRecipe.mFluidOutputs[i].fluid.getName());
+                GT_Log.recipe.print("\",\"");
+                if (aRecipe.mFluidOutputs.length > i && aRecipe.mFluidOutputs[i] != null)
+                    GT_Log.recipe.print(aRecipe.mFluidOutputs[i].amount);
+                GT_Log.recipe.print("\",\"");
+            }
         }
 
         /**
@@ -884,6 +974,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         }
 
         public GT_Recipe add(GT_Recipe aRecipe) {
+            aRecipe.addStackTrace = getStackTrace();
             mRecipeList.add(aRecipe);
             for (FluidStack aFluid : aRecipe.mFluidInputs)
                 if (aFluid != null) {
