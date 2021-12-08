@@ -26,6 +26,7 @@ import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.items.GT_Generic_Item;
 import ic2.api.item.ElectricItem;
@@ -42,12 +43,21 @@ import java.util.List;
 
 public class Circuit_Programmer extends GT_Generic_Item implements IElectricItem {
 
+    private static final int COST_PER_USE = 100;
+
     public Circuit_Programmer() {
         super("BWCircuitProgrammer", "Circuit Programmer", "Programs Integrated Circuits");
         this.setMaxStackSize(1);
         this.setNoRepair();
         this.setHasSubtypes(false);
         this.setCreativeTab(MainMod.BWT);
+        GregTech_API.registerCircuitProgrammer(
+                s -> s.getItem() instanceof Circuit_Programmer && ElectricItem.manager.canUse(s, COST_PER_USE),
+                (s, p) -> {
+                    ElectricItem.manager.use(s, COST_PER_USE, p);
+                    return s;
+                }
+        );
     }
 
     @Override
@@ -61,7 +71,7 @@ public class Circuit_Programmer extends GT_Generic_Item implements IElectricItem
 
     @Override
     public ItemStack onItemRightClick(ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
-        if (ElectricItem.manager.use(aStack, 100, aPlayer)) {
+        if (ElectricItem.manager.use(aStack, COST_PER_USE, aPlayer)) {
             aPlayer.openGui(MainMod.instance, 1, aWorld, 0, 0, 0);
         }
         return aStack;
