@@ -1775,7 +1775,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         // If we have something from the GT MetaGenerated_Item, ItemFuelValue, or OreDict return
         if (rFuelValue > 0) return rFuelValue;
         
-        // Otherwise a few more checks
+        // Otherwise, a few more checks
         if (GT_Utility.areStacksEqual(aFuel, new ItemStack(Blocks.wooden_button, 1)))    return 150; 
         else if (GT_Utility.areStacksEqual(aFuel, new ItemStack(Blocks.ladder, 1)))      return 100; 
         else if (GT_Utility.areStacksEqual(aFuel, new ItemStack(Items.sign, 1)))         return 600; 
