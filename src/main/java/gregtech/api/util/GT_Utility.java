@@ -965,6 +965,30 @@ public class GT_Utility {
             && (Items.feather.getDamage(aStack1) == Items.feather.getDamage(aStack2) || Items.feather.getDamage(aStack1) == W || Items.feather.getDamage(aStack2) == W);
     }
 
+    /**
+     * Treat both null list, or both null item stack at same list position as equal.
+     *
+     * Since ItemStack doesn't override equals and hashCode, you cannot just use Objects.equals
+     */
+    public static boolean areStackListsEqual(List<ItemStack> lhs, List<ItemStack> rhs, boolean ignoreStackSize, boolean ignoreNBT) {
+        if (lhs == null) return rhs == null;
+        if (rhs == null) return false;
+        if (lhs.size() != rhs.size()) return false;
+        for (Iterator<ItemStack> it1 = lhs.iterator(), it2 = rhs.iterator(); it1.hasNext() && it2.hasNext(); ) {
+            if (!areStacksEqualExtended(it1.next(), it2.next(), ignoreStackSize, ignoreNBT))
+                return false;
+        }
+        return true;
+    }
+
+    private static boolean areStacksEqualExtended(ItemStack lhs, ItemStack rhs, boolean ignoreStackSize, boolean ignoreNBT) {
+        if (lhs == null) return rhs == null;
+        if (rhs == null) return false;
+        return lhs.getItem() == rhs.getItem() &&
+                (ignoreNBT || Objects.equals(lhs.stackTagCompound, rhs.stackTagCompound)) &&
+                (ignoreStackSize || lhs.stackSize == rhs.stackSize);
+    }
+
     public static boolean areUnificationsEqual(ItemStack aStack1, ItemStack aStack2) {
         return areUnificationsEqual(aStack1, aStack2, false);
     }

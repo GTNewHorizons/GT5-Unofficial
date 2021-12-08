@@ -2,8 +2,11 @@ package gregtech.api.util;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import gregtech.api.enums.GT_Values;
@@ -15,6 +18,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraftforge.fluids.FluidStack;
+
+import javax.annotation.Nonnull;
 
 public class GT_AssemblyLineUtils {
 
@@ -58,7 +63,7 @@ public class GT_AssemblyLineUtils {
 	 * @return The GT_Recipe_AssemblyLine recipe contained on the DataStick, if any.
 	 */
 	public static GT_Recipe_AssemblyLine findAssemblyLineRecipeFromDataStick(ItemStack aDataStick) {	
-		return findAssemblyLineRecipeFromDataStick(aDataStick, false);
+		return findAssemblyLineRecipeFromDataStick(aDataStick, false).getRecipe();
 	}
 
 	/**
@@ -67,24 +72,26 @@ public class GT_AssemblyLineUtils {
 	 * @param aReturnBuiltRecipe - Do we return a GT_Recipe_AssemblyLine built from the data on the Data Stick instead of searching the Recipe Map?
 	 * @return The GT_Recipe_AssemblyLine recipe contained on the DataStick, if any.
 	 */
-	public static GT_Recipe_AssemblyLine findAssemblyLineRecipeFromDataStick(ItemStack aDataStick, boolean aReturnBuiltRecipe) {	
+	@Nonnull
+	public static LookupResult findAssemblyLineRecipeFromDataStick(ItemStack aDataStick, boolean aReturnBuiltRecipe) {
 		if (!isItemDataStick(aDataStick)) {
-			return null;
+			return LookupResultType.INVALID_STICK.getResult();
 		}
-		ItemStack[] aInputs = new ItemStack[15];
-		ItemStack[] aOutputs = new ItemStack[1];
-		FluidStack[] aFluidInputs = new FluidStack[4];
+		List<ItemStack> aInputs = new ArrayList<>(15);
+		ItemStack aOutput = null;
+		List<List<ItemStack>> mOreDictAlt = new ArrayList<>(15);
+		List<FluidStack> aFluidInputs = new ArrayList<>(4);
 
 		NBTTagCompound aTag = aDataStick.getTagCompound();
 		if (aTag == null) {
-			return null;
+			return LookupResultType.INVALID_STICK.getResult();
 		}
 
 		//Get From Cache
 		if (doesDataStickHaveRecipeHash(aDataStick)) {
 			GT_Recipe_AssemblyLine aRecipeFromCache = sRecipeCacheByRecipeHash.get(getHashFromDataStack(aDataStick));
 			if (aRecipeFromCache != null) {
-				return aRecipeFromCache;
+				return LookupResultType.VALID_STACK_AND_VALID_HASH.getResult(aRecipeFromCache);
 			}
 		}
 
@@ -94,33 +101,25 @@ public class GT_AssemblyLineUtils {
 				continue;
 			}
 
-			boolean flag = true;
-			if (count > 0) {
-				for (int j = 0; j < count; j++) {
-					aInputs[i] = GT_Utility.loadItem(aTag, "a" + i + ":" + j);
-					if (aInputs[i] == null) {
-						continue;
-					}
-					if (GT_Values.D1) {
-						GT_FML_LOGGER.info("Item " + i + " : " + aInputs[i].getUnlocalizedName());
-					}
-					flag = false;
-					break;
-				}
-			}
-			if (flag) {
-				aInputs[i] = GT_Utility.loadItem(aTag, "" + i);
-				if (aInputs[i] == null) {
-					flag = false;
+			List<ItemStack> tAltCurrent = new ArrayList<>();
+			for (int j = 0; j < count; j++) {
+				ItemStack tLoaded = GT_Utility.loadItem(aTag, "a" + i + ":" + j);
+				if (tLoaded == null) {
 					continue;
 				}
+				tAltCurrent.add(tLoaded);
 				if (GT_Values.D1) {
-					GT_FML_LOGGER.info("Item " + i + " : " + aInputs[i].getUnlocalizedName());
+					GT_FML_LOGGER.info("Item Alt " + i + " : " + tLoaded.getUnlocalizedName());
 				}
-				flag = false;
 			}
+			mOreDictAlt.add(tAltCurrent);
+			ItemStack tLoaded = GT_Utility.loadItem(aTag, "" + i);
+			if (tLoaded == null) {
+				continue;
+			}
+			aInputs.add(tLoaded);
 			if (GT_Values.D1) {
-				GT_FML_LOGGER.info(i + (flag ? " not accepted" : " accepted"));
+				GT_FML_LOGGER.info("Item " + i + " : " + tLoaded.getUnlocalizedName());
 			}
 		}
 
@@ -129,18 +128,16 @@ public class GT_AssemblyLineUtils {
 		}
 		for (int i = 0; i < 4; i++) {
 			if (!aTag.hasKey("f" + i)) continue;
-			aFluidInputs[i] = GT_Utility.loadFluid(aTag, "f" + i);
-			if (aFluidInputs[i] == null) continue;
+			FluidStack tLoaded = GT_Utility.loadFluid(aTag, "f" + i);
+			if (tLoaded == null) continue;
+			aFluidInputs.add(tLoaded);
 			if (GT_Values.D1) {
-				GT_FML_LOGGER.info("Fluid " + i + " " + aFluidInputs[i].getUnlocalizedName());
-			}
-			if (GT_Values.D1) {
-				GT_FML_LOGGER.info(i + " accepted");
+				GT_FML_LOGGER.info("Fluid " + i + " " + tLoaded.getUnlocalizedName());
 			}
 		}
-		aOutputs = new ItemStack[]{GT_Utility.loadItem(aTag, "output")};
-		if (!aTag.hasKey("output") || !aTag.hasKey("time") || aTag.getInteger("time") <= 0 || !aTag.hasKey("eu") || aOutputs[0] == null || !GT_Utility.isStackValid(aOutputs[0])) {
-			return null;
+		aOutput = GT_Utility.loadItem(aTag, "output");
+		if (!aTag.hasKey("output") || !aTag.hasKey("time") || aTag.getInteger("time") <= 0 || !aTag.hasKey("eu") || !GT_Utility.isStackValid(aOutput)) {
+			return LookupResultType.INVALID_STICK.getResult();
 		}
 		if (GT_Values.D1) {
 			GT_FML_LOGGER.info("Found Data Stick recipe");
@@ -151,25 +148,36 @@ public class GT_AssemblyLineUtils {
 
 		// Try build a recipe instance
 		if (aReturnBuiltRecipe) {
-			GT_Recipe_AssemblyLine aBuiltRecipe = new GT_Recipe_AssemblyLine(null, 0, aInputs, aFluidInputs, aOutputs[0], aTime, aEU);
-			return aBuiltRecipe;
+			return LookupResultType.VALID_STACK_AND_VALID_HASH.getResult(new GT_Recipe_AssemblyLine(null, 0, aInputs.toArray(new ItemStack[0]), aFluidInputs.toArray(new FluidStack[0]), aOutput, aTime, aEU));
 		}
 
 
 		for (GT_Recipe_AssemblyLine aRecipe : GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes) {
-			if (aRecipe.mEUt == aEU && aRecipe.mDuration == aTime) {
-				if (GT_Utility.areStacksEqual(aOutputs[0], aRecipe.mOutput, true)) {
-					if (Arrays.equals(aRecipe.mInputs, aInputs) && Arrays.equals(aRecipe.mFluidInputs, aFluidInputs)) {
-						// Cache it
-						String aRecipeHash = generateRecipeHash(aRecipe);
-						sRecipeCacheByRecipeHash.put(aRecipeHash, aRecipe);
-						sRecipeCacheByOutput.put(new GT_ItemStack(aRecipe.mOutput), aRecipe);							
-						return aRecipe;
-					}
-				}
-			}
+			if (aRecipe.mEUt != aEU || aRecipe.mDuration != aTime) continue;
+			if (!GT_Utility.areStacksEqual(aOutput, aRecipe.mOutput, true)) continue;
+			if (!GT_Utility.areStackListsEqual(Arrays.asList(aRecipe.mInputs), aInputs, false, true)) continue;
+			if (!Objects.equals(Arrays.asList(aRecipe.mFluidInputs), aFluidInputs)) continue;
+			if (!areStacksEqual(aRecipe.mOreDictAlt, mOreDictAlt)) continue;
+
+			// Cache it
+			String aRecipeHash = generateRecipeHash(aRecipe);
+			sRecipeCacheByRecipeHash.put(aRecipeHash, aRecipe);
+			sRecipeCacheByOutput.put(new GT_ItemStack(aRecipe.mOutput), aRecipe);
+			return LookupResultType.VALID_STACK_AND_VALID_RECIPE.getResult(aRecipe);
 		}
-		return null;
+		return LookupResultType.VALID_STACK_BUT_INVALID_RECIPE.getResult();
+	}
+
+	private static boolean areStacksEqual(ItemStack[][] lhs, List<List<ItemStack>> rhs) {
+		for (int i = 0; i < lhs.length; i++) {
+			if (!areStacksEqual(lhs[i], rhs.get(i)))
+				return false;
+		}
+		return true;
+	}
+
+	private static boolean areStacksEqual(ItemStack[] lhs, List<ItemStack> rhs) {
+		return lhs == null ? rhs.isEmpty() : !rhs.isEmpty() && GT_Utility.areStackListsEqual(Arrays.asList(lhs), rhs, false, true);
 	}
 
 
@@ -343,7 +351,7 @@ public class GT_AssemblyLineUtils {
 
 			String aHash = generateRecipeHash(aNewRecipe);
 			if (GT_Values.D1) {
-				GT_Recipe_AssemblyLine aOldRecipe = findAssemblyLineRecipeFromDataStick(aDataStick, true);
+				GT_Recipe_AssemblyLine aOldRecipe = findAssemblyLineRecipeFromDataStick(aDataStick, true).recipe;
 				GT_FML_LOGGER.info("Updating data stick: "+aDataStick.getDisplayName()+" | Old Recipe Hash: "+generateRecipeHash(aOldRecipe)+", New Recipe Hash: "+aHash);
 			}
 
@@ -437,4 +445,49 @@ public class GT_AssemblyLineUtils {
 		return false;
 	}
 
+	public enum LookupResultType {
+		INVALID_STICK(false),
+		VALID_STACK_BUT_INVALID_RECIPE(false),
+		VALID_STACK_AND_VALID_RECIPE(true),
+		VALID_STACK_AND_VALID_HASH(true);
+
+		private final boolean recipeNull;
+		private LookupResult singletonResult;
+
+		LookupResultType(boolean recipeNull) {
+			this.recipeNull = recipeNull;
+		}
+
+		public LookupResult getResult() {
+			if (!recipeNull)
+				throw new IllegalArgumentException("This result type require a nonnull recipe");
+			if (singletonResult == null)
+				singletonResult = new LookupResult(null, this);
+			return singletonResult;
+		}
+
+		public LookupResult getResult(GT_Recipe_AssemblyLine recipe) {
+			if ((recipe == null) == recipeNull)
+				throw new IllegalArgumentException("This result type does not allow given input");
+			return new LookupResult(recipe, this);
+		}
+	}
+
+	public static class LookupResult {
+		private final GT_Recipe_AssemblyLine recipe;
+		private final LookupResultType type;
+
+		LookupResult(GT_Recipe_AssemblyLine recipe, LookupResultType type) {
+			this.recipe = recipe;
+			this.type = type;
+		}
+
+		public GT_Recipe_AssemblyLine getRecipe() {
+			return recipe;
+		}
+
+		public LookupResultType getType() {
+			return type;
+		}
+	}
 }
