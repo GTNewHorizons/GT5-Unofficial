@@ -1,5 +1,7 @@
 package gregtech.api.util;
 
+import gregtech.api.RecipeDebugConstants;
+
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -22,6 +24,7 @@ public class GT_Log {
     static {
         try {
             recipe = new PrintStream(new BufferedOutputStream(new FileOutputStream("GTRecipes.csv")), true);
+            recipe.println(RecipeDebugConstants.CSV_HEADER);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             recipe = err;

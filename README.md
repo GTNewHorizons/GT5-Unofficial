@@ -8,7 +8,7 @@ this catch all and every duplication and logs them into a CSV.
 
 ## How to use
 
-On the latest branch, run these
+On the latest branch, run this command to get the patch on your latest
 
 ```bash
 git cherrypick 2777b95fe6e133809f721dafdde3a99556248f6a
@@ -22,20 +22,15 @@ Because the code quality is TERRIBLE, and it adds considerable overhead to the c
 
 Merging this back to master would be a disaster, plus I do not want to take on the burden of maintaining this mess.
 
-### CSV format
+## CSV format
 
-This is a LOOOOOOOONG line. 
-```
-RecipeMapIdentifier, EU/t, duration, special value, 
-new recipe input stack #A name, new recipe input stack #A meta, new recipe input stack #A size, new recipe input fluid #B name, new recipe input fluid #B amoumnt, new recipe output stack #C name, new recipe output stack #C meta, new recipe output stack #C size, new recipe output fluid #D name, new recipe output fluid #D amoumnt,
-old recipe input stack #A name, old recipe input stack #A meta, old recipe input stack #A size, old recipe input fluid #B name, old recipe input fluid #B amoumnt, old recipe output stack #C name, old recipe output stack #C meta, old recipe output stack #C size, old recipe output fluid #D name, old recipe output fluid #D amoumnt,
-new recipe adder stack trace with # as delimiter
-old recipe adder stack trace with # as delimiter
-```
+This is a LOOOOOOOONG line. The first line is a header
 
-Where A must be repeated through 0 to 15 (both end inclusive, same for below), B 0 to 7, C 0 to 8, D 0 to 7
+### Too many empty fields!
 
-### Precautions
+Tweak RecipeDebugConstants.java. Those int constants control how many stacks to print. Be aware, if the recipe has more stacks than you specfied, it will be silently ignored! 
 
-1. This is slow
+## Precautions
+
+1. This is slow!
 2. Make sure your minecraft directory's disk has at least 500MB disk space left.
