@@ -1,24 +1,39 @@
 GT5-Unofficial
 ===
 
-## About
+# detect-conflicts branch
 
-GT5-Unofficial is a decompiled and modified version of GT5.07.07. The goal of the mod is to maintain and extend the end game of GT5. This version has been heavily modified for use with the GTNH modpack.
+This branch contains a patch to log all gregtech caught recipe duplications. Unlike NEI Custom Diagram's recipe debugger, 
+this catch all and every duplication and logs them into a CSV. 
 
-## Downloads
+## How to use
 
-Builds can be found on the [GTNH Jenkins Server](http://jenkins.usrv.eu:8080/job/Gregtech-5-Unofficial/).
+On the latest branch, run these
 
-## Installation
+```bash
+git cherrypick 2777b95fe6e133809f721dafdde3a99556248f6a
+```
 
-GT5U requires IndustrialCraft2-experimental. Version 2.2.780-experimental or newer is recommended.
-Forge versions 1428-1480 are known to break multiplayer. 1481 or newer are recommended.
-Place the downloaded jar file into your mods/ folder.
+Resolve merge conflicts, if any. Run `gradlew build` as usual, and use the resulting jar to run the full pack.
 
-## Issues
+## Why not just add this into the main branch?
 
-Please report any issues you to find the issue tracker on this repository. Include as much information as possible including as version and steps to reproduce.
+Because the code quality is TERRIBLE, and it adds considerable overhead to the code base. I made this while thinking this would be a throwaway code.  
 
-## Contribution
+Merging this back to master would be a disaster, plus I do not want to take on the burden of maintaining this mess.
 
-Please do! However, please take a note of current issues and what is currently being worked on.
+### CSV format
+
+This is a LOOOOOOOONG line. 
+```
+RecipeMapIdentifier, EU/t, duration, special value, 
+new recipe input stack #A name, new recipe input stack #A meta, new recipe input stack #A size, new recipe input fluid #B name, new recipe input fluid #B amoumnt, new recipe output stack #C name, new recipe output stack #C meta, new recipe output stack #C size, new recipe output fluid #D name, new recipe output fluid #D amoumnt,
+old recipe input stack #A name, old recipe input stack #A meta, old recipe input stack #A size, old recipe input fluid #B name, old recipe input fluid #B amoumnt, old recipe output stack #C name, old recipe output stack #C meta, old recipe output stack #C size, old recipe output fluid #D name, old recipe output fluid #D amoumnt,
+new recipe adder stack trace with # as delimiter
+old recipe adder stack trace with # as delimiter
+```
+
+### Precautions
+
+1. This is slow
+2. Make sure your minecraft directory's disk has at least 500MB disk space left.
