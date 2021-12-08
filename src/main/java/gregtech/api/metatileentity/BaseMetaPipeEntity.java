@@ -176,9 +176,10 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
                     GT_CoverBehaviorBase<?> tBehavior = getCoverBehaviorAtSideNew(i);
                     if (tBehavior == null)
                         continue;
-                    mCoverData[i] = tBehavior.createDataObject();
                     if (aNBT.hasKey(COVER_DATA_NBT_KEYS[i]))
-                        mCoverData[i].loadDataFromNBT(aNBT.getTag(COVER_DATA_NBT_KEYS[i]));
+                        mCoverData[i] = tBehavior.createDataObject(aNBT.getTag(COVER_DATA_NBT_KEYS[i]));
+                    else
+                        mCoverData[i] = tBehavior.createDataObject();
                 }
             }
             if (mSidedRedstone.length != 6) mSidedRedstone = new byte[]{0, 0, 0, 0, 0, 0};
