@@ -83,7 +83,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
      * Used for describing recipes that do not fit the default recipe pattern (for example Large Boiler Fuels)
      */
     private String[] neiDesc = null;
-    String addStackTrace;
+    final String addStackTrace = getStackTrace();
     
     private GT_Recipe(GT_Recipe aRecipe) {
         mInputs = GT_Utility.copyStackArray((Object[]) aRecipe.mInputs);
@@ -196,6 +196,22 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         mSpecialValue = aSpecialValue;
         mEUt = aEUt;
 //		checkCellBalance();
+    }
+
+    private static String getStackTrace() {
+        StringJoiner joiner = new StringJoiner("#", "", "");
+        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+        // make it skip the first 2 stack frame, which is getStackTrace
+        for (int i = 2, stackTraceLength = stackTrace.length; i < stackTraceLength; i++) {
+            StackTraceElement stackTraceElement = stackTrace[i];
+            String className = stackTraceElement.getClassName();
+            if ("net.minecraft.launchwrapper.Launch".equals(className) || "net.minecraft.client.main.Main".equals(className))
+                // stop, do not print useless mmc stuff
+                break;
+            String toString = stackTraceElement.toString();
+            joiner.add(toString);
+        }
+        return joiner.toString();
     }
 
     public GT_Recipe(ItemStack aInput1, ItemStack aOutput1, int aFuelValue, int aType) {
@@ -859,7 +875,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     GT_Log.recipe.print("\",\"");
                     printRecipe(GT_Log.recipe, aRecipe);
                     printRecipe(GT_Log.recipe, found);
-                    GT_Log.recipe.print(getStackTrace());
+                    GT_Log.recipe.print(aRecipe.addStackTrace);
                     GT_Log.recipe.print("\",\"");
                     GT_Log.recipe.print(found.addStackTrace);
                     GT_Log.recipe.println('"');
@@ -867,19 +883,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 }
             }
             return add(aRecipe);
-        }
-
-        private static String getStackTrace() {
-            StringJoiner joiner = new StringJoiner("#", "", "");
-            for (StackTraceElement stackTraceElement : Thread.currentThread().getStackTrace()) {
-                String className = stackTraceElement.getClassName();
-                if ("net.minecraft.launchwrapper.Launch".equals(className) || "net.minecraft.client.main.Main".equals(className))
-                    // stop, do not print useless mmc stuff
-                    break;
-                String toString = stackTraceElement.toString();
-                joiner.add(toString);
-            }
-            return joiner.toString();
         }
 
         private static void printRecipe(PrintStream stream, GT_Recipe aRecipe) {
@@ -983,7 +986,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         }
 
         public GT_Recipe add(GT_Recipe aRecipe) {
-            aRecipe.addStackTrace = getStackTrace();
             mRecipeList.add(aRecipe);
             for (FluidStack aFluid : aRecipe.mFluidInputs)
                 if (aFluid != null) {
