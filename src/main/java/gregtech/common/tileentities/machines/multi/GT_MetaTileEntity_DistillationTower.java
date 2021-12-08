@@ -144,6 +144,27 @@ public class GT_MetaTileEntity_DistillationTower extends GT_MetaTileEntity_Enhan
 
     @Override
     public boolean checkRecipe(ItemStack aStack) {
+        GT_Recipe tRecipe;
+
+        ArrayList<ItemStack> tInputList = getStoredInputs();
+        int tInputList_sS = tInputList.size();
+        for (int i = 0; i < tInputList_sS - 1; i++) {
+            for (int j = i + 1; j < tInputList_sS; j++) {
+                if (GT_Utility.areStacksEqual(tInputList.get(i), tInputList.get(j))) {
+                    if (tInputList.get(i).stackSize >= tInputList.get(j).stackSize) {
+                        tInputList.remove(j--);
+                        tInputList_sS = tInputList.size();
+                    } else {
+                        tInputList.remove(i--);
+                        tInputList_sS = tInputList.size();
+                        break;
+                    }
+                }
+            }
+        }
+        tInputList.add(mInventory[1]);
+        ItemStack[] inputs = tInputList.toArray(new ItemStack[0]);
+
         ArrayList<FluidStack> tFluidList = getStoredFluids();
         for (int i = 0; i < tFluidList.size() - 1; i++) {
             for (int j = i + 1; j < tFluidList.size(); j++) {
@@ -158,14 +179,21 @@ public class GT_MetaTileEntity_DistillationTower extends GT_MetaTileEntity_Enhan
             }
         }
 
+        FluidStack[] fluids = tFluidList.toArray(new FluidStack[0]);
+
+        if (inputs.length == 0 && fluids.length == 0) {
+            return false;
+        }
+
+
         long tVoltage = getMaxInputVoltage();
         byte tTier = (byte) Math.max(0, GT_Utility.getTier(tVoltage));
         FluidStack[] tFluids = tFluidList.toArray(new FluidStack[0]);
         if (tFluids.length > 0) {
             for (FluidStack tFluid : tFluids) {
-                GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sDistillationRecipes.findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], new FluidStack[]{tFluid});
+                tRecipe = GT_Recipe.GT_Recipe_Map.sDistillationRecipes.findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], new FluidStack[]{tFluid}, inputs);
                 if (tRecipe != null) {
-                    if (tRecipe.isRecipeInputEqual(true, tFluids)) {
+                    if (tRecipe.isRecipeInputEqual(true, tFluids, inputs)) {
                         this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
                         this.mEfficiencyIncrease = 10000;
                         calculateOverclockedNessMulti(tRecipe.mEUt, tRecipe.mDuration, 1, tVoltage);
