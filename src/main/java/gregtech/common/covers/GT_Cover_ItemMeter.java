@@ -23,7 +23,10 @@ import net.minecraftforge.fluids.Fluid;
 public class GT_Cover_ItemMeter extends GT_CoverBehavior {
 
     // format:
-    private static final int SLOT_MASK = 0x3FFFFFF; // 0 = all, 1 = 0 ...
+    private static final int SLOT_MASK = 0x0000FFFF; // 0 = all, 1 = 0 ...
+    private static final int THRESHOLD_MASK = 0x00FF0000;
+    /** {@code THRESHOLD_MASK >>> THRESHOLD_BIT_SHIFT} should exactly remove all {@code 0} bits on the right side of {@code THRESHOLD_MASK}. */
+    private static final int THRESHOLD_MASK_BIT_SHIFT = 16;
     private static final int CONVERTED_BIT = 0x80000000;
     private static final int INVERT_BIT = 0x40000000;
 
@@ -72,13 +75,33 @@ public class GT_Cover_ItemMeter extends GT_CoverBehavior {
             }
         }
 
+        long redstoneSignal;
+        if (tUsed == 0L) {
+            // nothing
+            redstoneSignal = 0;
+        } else if (tUsed >= tMax) {
+            // full
+            redstoneSignal = 15;
+        } else {
+            // 1-14 range
+            redstoneSignal = 1 + (14 * tUsed) / tMax;
+        }
+
         boolean inverted = (aCoverVariable & INVERT_BIT) == INVERT_BIT;
-        if(tUsed==0)//nothing
-            aTileEntity.setOutputRedstoneSignal(aSide, (byte)(inverted ? 15 : 0));
-        else if(tUsed >= tMax)//full
-            aTileEntity.setOutputRedstoneSignal(aSide, (byte)(inverted ? 0 : 15));
-        else//1-14 range
-            aTileEntity.setOutputRedstoneSignal(aSide, (byte)(inverted ? 14-((14*tUsed)/tMax) : 1+((14*tUsed)/tMax)) );
+        if (inverted) {
+            redstoneSignal = 15 - redstoneSignal;
+        }
+
+        int threshold = (aCoverVariable & THRESHOLD_MASK) >>> THRESHOLD_MASK_BIT_SHIFT;
+        if (threshold > 0L) {
+            if (inverted && tUsed >= threshold) {
+                redstoneSignal = 0;
+            } else if (!inverted && tUsed < threshold) {
+                redstoneSignal = 0;
+            }
+        }
+
+        aTileEntity.setOutputRedstoneSignal(aSide, (byte) redstoneSignal);
         return aCoverVariable;
     }
 
@@ -87,11 +110,11 @@ public class GT_Cover_ItemMeter extends GT_CoverBehavior {
         if (aPlayer.isSneaking()) {
             if ((aCoverVariable & INVERT_BIT) == INVERT_BIT) {
                 aCoverVariable = aCoverVariable & ~INVERT_BIT;
-                GT_Utility.sendChatToPlayer(aPlayer, trans("NORMAL","Normal"));
+                GT_Utility.sendChatToPlayer(aPlayer, trans("055","Normal"));
             }
             else {
                 aCoverVariable = aCoverVariable | INVERT_BIT;
-                GT_Utility.sendChatToPlayer(aPlayer, trans("INVERTED","Inverted"));
+                GT_Utility.sendChatToPlayer(aPlayer, trans("054","Inverted"));
             }
             return aCoverVariable;
         }
@@ -164,9 +187,10 @@ public class GT_Cover_ItemMeter extends GT_CoverBehavior {
     private class GUI extends GT_GUICover {
         private final byte side;
         private final int coverID;
-        private final GT_GuiIconCheckButton button;
+        private final GT_GuiIconCheckButton invertedButton;
         private final GT_GuiIntegerTextBox intSlot;
         private final GT_GuiFakeItemButton intSlotIcon;
+        private final GT_GuiIntegerTextBox thresholdSlot;
         private int coverVariable;
 
         private static final int startX = 10;
@@ -186,7 +210,7 @@ public class GT_Cover_ItemMeter extends GT_CoverBehavior {
             this.coverID = aCoverID;
             this.coverVariable = aCoverVariable;
 
-            button = new GT_GuiIconCheckButton(this, 0, startX + spaceX*0, startY+spaceY*0, GT_GuiIcon.REDSTONE_ON, GT_GuiIcon.REDSTONE_OFF);
+            invertedButton = new GT_GuiIconCheckButton(this, 0, startX + spaceX*0, startY+spaceY*0, GT_GuiIcon.REDSTONE_ON, GT_GuiIcon.REDSTONE_OFF, INVERTED, NORMAL);
 
             intSlot = new GT_GuiIntegerTextBox(this, 1, startX + spaceX * 0, startY + spaceY * 1 + 2, spaceX * 2+5, 12);
             intSlot.setMaxStringLength(6);
@@ -202,17 +226,17 @@ public class GT_Cover_ItemMeter extends GT_CoverBehavior {
 
             if (maxSlot == -1 || tile instanceof GT_MetaTileEntity_DigitalChestBase)
                 intSlot.setEnabled(false);
+
+            thresholdSlot = new GT_GuiIntegerTextBox(this, 2, startX + spaceX * 0, startY + spaceY * 2 + 2, spaceX * 2 + 5, 12);
+            thresholdSlot.setMaxStringLength(2);
         }
 
         @Override
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
-            if (isInverted())
-                this.getFontRenderer().drawString(INVERTED,  startX + spaceX*3, 4+startY+spaceY*0, 0xFF555555);
-            else
-                this.getFontRenderer().drawString(NORMAL,  startX + spaceX*3, 4+startY+spaceY*0, 0xFF555555);
-
-            this.getFontRenderer().drawString(trans("254", "Detect slot#"),     startX + spaceX*3, 4+startY+spaceY*1, 0xFF555555);
+            this.getFontRenderer().drawString(isInverted() ? INVERTED : NORMAL, startX + spaceX*3, 4+startY+spaceY*0, 0xFF555555);
+            this.getFontRenderer().drawString(trans("254", "Detect slot#"), startX + spaceX*3, 4+startY+spaceY*1, 0xFF555555);
+            this.getFontRenderer().drawString(trans("221", "Item threshold"), startX + spaceX * 3, startY + spaceY * 2 + 4, 0xFF555555);
         }
 
         @Override
@@ -233,9 +257,65 @@ public class GT_Cover_ItemMeter extends GT_CoverBehavior {
             update();
         }
 
+        @Override
+        public void onMouseWheel(int x, int y, int delta) {
+            if (intSlot.isFocused()) {
+                int step = Math.max(1, Math.abs(delta / 120));
+                step = (isShiftKeyDown() ? 50 : isCtrlKeyDown() ? 5 : 1) * (delta > 0 ? step : -step);
+                int val = parseTextBox(intSlot);
+
+                if (val < 0)
+                    val = -1;
+
+                val = val + step;
+
+                if (val < 0)
+                    val = -1;
+                else if (val > maxSlot)
+                    val = maxSlot;
+
+                intSlot.setText(val < 0 ? ALL : String.valueOf(val));
+            } else if (thresholdSlot.isFocused()) {
+                int val = Integer.parseInt(thresholdSlot.getText().trim());
+                val += (isShiftKeyDown() ? 64 : 1) * Integer.signum(delta);
+                val = GT_Utility.clamp(val, 0, 64);
+                thresholdSlot.setText(Integer.toString(val));
+            }
+        }
+
+        @Override
+        public void applyTextBox(GT_GuiIntegerTextBox box) {
+            if (box == intSlot) {
+                int val = parseTextBox(box) + 1;
+
+                if (val > SLOT_MASK)
+                    val = SLOT_MASK;
+                else if (val < 0)
+                    val = 0;
+
+                coverVariable = (coverVariable & ~SLOT_MASK) | (val & SLOT_MASK);
+            } else if (box == thresholdSlot) {
+                int val = parseTextBox(thresholdSlot);
+                coverVariable = (coverVariable & ~THRESHOLD_MASK) | ((val << THRESHOLD_MASK_BIT_SHIFT) & THRESHOLD_MASK);
+            }
+
+            GT_Values.NW.sendToServer(new GT_Packet_TileEntityCover(side, coverID, coverVariable, tile));
+            update();
+        }
+
+        @Override
+        public void resetTextBox(GT_GuiIntegerTextBox box) {
+            if (box == intSlot) {
+                intSlot.setText(getSlot() < 0 ? ALL : String.valueOf(getSlot()));
+            } else if (box == thresholdSlot) {
+                thresholdSlot.setText(Integer.toString(getThreshold()));
+            }
+        }
+
         private void update() {
+            invertedButton.setChecked(isInverted());
             resetTextBox(intSlot);
-            button.setChecked(isInverted());
+            resetTextBox(thresholdSlot);
 
             int slot = getSlot();
             if (slot < 0) {
@@ -252,73 +332,47 @@ public class GT_Cover_ItemMeter extends GT_CoverBehavior {
             intSlotIcon.setItem(null);
         }
 
-        @Override
-        public void onMouseWheel(int x, int y, int delta) {
-            for (GT_GuiIntegerTextBox box : textBoxes) {
-                if (box.isFocused()) {
-                    int step = Math.max(1, Math.abs(delta / 120));
-                    step = (isShiftKeyDown() ? 50 : isCtrlKeyDown() ? 5 : 1) * (delta > 0 ? step : -step);
-                    int val = parseTextBox(box);
-
-                    if (val < 0)
-                        val = -1;
-
-                    val = val + step;
-
-                    if (val < 0)
-                        val = -1;
-                    else if (val > maxSlot )
-                        val = maxSlot;
-
-                    box.setText(val < 0 ? ALL : String.valueOf(val));
-                    return;
-                }
-            }
-        }
-
-        @Override
-        public void applyTextBox(GT_GuiIntegerTextBox box) {
-            int val = parseTextBox(box)+1;
-
-            if (val > SLOT_MASK)
-                val = SLOT_MASK;
-            else if (val < 0)
-                val = 0;
-
-            coverVariable = val | CONVERTED_BIT | (coverVariable & INVERT_BIT);
-
-            GT_Values.NW.sendToServer(new GT_Packet_TileEntityCover(side, coverID, coverVariable, tile));
-            update();
-        }
-
-        @Override
-        public void resetTextBox(GT_GuiIntegerTextBox box) {
-            box.setText(getSlot() < 0 ? ALL : String.valueOf(getSlot()));
-        }
-
         private int parseTextBox(GT_GuiIntegerTextBox box) {
-            String text = box.getText();
-            if (text == null)
-                return -1;
-            text = text.trim();
-            if (text.startsWith(ALL))
-                text = text.substring(ALL.length());
+            if (box == intSlot) {
+                String text = box.getText();
+                if (text == null)
+                    return -1;
+                text = text.trim();
+                if (text.startsWith(ALL))
+                    text = text.substring(ALL.length());
 
-            if (text.isEmpty())
-                return -1;
+                if (text.isEmpty())
+                    return -1;
 
-            int val;
-            try {
-                val = Integer.parseInt(text);
-            } catch (NumberFormatException e) {
-                return -1;
+                int val;
+                try {
+                    val = Integer.parseInt(text);
+                } catch (NumberFormatException e) {
+                    return -1;
+                }
+
+                if (val < 0)
+                    return -1;
+                else if (maxSlot < val)
+                    return maxSlot;
+                return val;
+            } else if (box == thresholdSlot) {
+                String text = box.getText();
+                if (text == null) {
+                    return 0;
+                }
+
+                int val;
+                try {
+                    val = Integer.parseInt(text.trim());
+                } catch (NumberFormatException e) {
+                    return 0;
+                }
+
+                return GT_Utility.clamp(val, 0, 64);
             }
 
-            if (val < 0)
-                return -1;
-            else if (maxSlot < val)
-                return maxSlot;
-            return val;
+            throw new UnsupportedOperationException("Unknown text box: " + box);
         }
 
         private boolean isInverted() {
@@ -327,6 +381,10 @@ public class GT_Cover_ItemMeter extends GT_CoverBehavior {
 
         private int getSlot() {
             return (coverVariable & SLOT_MASK) - 1;
+        }
+
+        private int getThreshold() {
+            return (coverVariable & THRESHOLD_MASK) >>> THRESHOLD_MASK_BIT_SHIFT;
         }
     }
 }

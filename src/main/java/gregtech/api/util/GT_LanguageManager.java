@@ -337,6 +337,8 @@ public class GT_LanguageManager {
 		addStringLocalization("Interaction_DESCRIPTION_Index_218", "Transfer size mode. Add exactly this many items in destination input slots as long as there is room.");
 		addStringLocalization("Interaction_DESCRIPTION_Index_219", "Single recipe locking enabled. Will lock to next recipe.");
 		addStringLocalization("Interaction_DESCRIPTION_Index_220", "Single recipe locking disabled.");
+		addStringLocalization("Interaction_DESCRIPTION_Index_221", "Item threshold");
+		addStringLocalization("Interaction_DESCRIPTION_Index_222", "Fluid threshold (KL)");
 		addStringLocalization("Interaction_DESCRIPTION_Index_500", "Fitting: Loose - More Flow");
 		addStringLocalization("Interaction_DESCRIPTION_Index_501", "Fitting: Tight - More Efficiency");
 
