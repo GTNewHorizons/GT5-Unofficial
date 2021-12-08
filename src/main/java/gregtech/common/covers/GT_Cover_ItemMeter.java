@@ -309,7 +309,7 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
                 intSlot.setEnabled(false);
 
             thresholdSlot = new GT_GuiIntegerTextBox(this, 2, startX + spaceX * 0, startY + spaceY * 2 + 2, spaceX * 2 + 5, 12);
-            thresholdSlot.setMaxStringLength(5);
+            thresholdSlot.setMaxStringLength(6);
         }
 
         @Override
@@ -365,7 +365,7 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
 
                 val += step * Integer.signum(delta);
 
-                int upperBound = maxSlot > 0 ? maxSlot * 64 : Integer.MAX_VALUE;
+                int upperBound = maxSlot > 0 ? maxSlot * 64 : 999_999;
                 val = GT_Utility.clamp(val, 0, upperBound);
                 thresholdSlot.setText(Integer.toString(val));
             }
@@ -448,7 +448,7 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
                     return 0;
                 }
 
-                int upperBound = maxSlot > 0 ? maxSlot * 64 : Integer.MAX_VALUE;
+                int upperBound = maxSlot > 0 ? maxSlot * 64 : 999_999;
                 return GT_Utility.clamp(val, 0, upperBound);
             }
 
