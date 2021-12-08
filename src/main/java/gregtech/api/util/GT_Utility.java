@@ -9,6 +9,7 @@ import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
 import com.mojang.authlib.GameProfile;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.damagesources.GT_DamageSources;
 import gregtech.api.damagesources.GT_DamageSources.DamageSourceHotItem;
@@ -963,6 +964,30 @@ public class GT_Utility {
         return aStack1 != null && aStack2 != null && aStack1.getItem() == aStack2.getItem() 
             && (aIgnoreNBT || (((aStack1.getTagCompound() == null) == (aStack2.getTagCompound() == null)) && (aStack1.getTagCompound() == null || aStack1.getTagCompound().equals(aStack2.getTagCompound())))) 
             && (Items.feather.getDamage(aStack1) == Items.feather.getDamage(aStack2) || Items.feather.getDamage(aStack1) == W || Items.feather.getDamage(aStack2) == W);
+    }
+
+    /**
+     * Treat both null list, or both null item stack at same list position as equal.
+     *
+     * Since ItemStack doesn't override equals and hashCode, you cannot just use Objects.equals
+     */
+    public static boolean areStackListsEqual(List<ItemStack> lhs, List<ItemStack> rhs, boolean ignoreStackSize, boolean ignoreNBT) {
+        if (lhs == null) return rhs == null;
+        if (rhs == null) return false;
+        if (lhs.size() != rhs.size()) return false;
+        for (Iterator<ItemStack> it1 = lhs.iterator(), it2 = rhs.iterator(); it1.hasNext() && it2.hasNext(); ) {
+            if (!areStacksEqualExtended(it1.next(), it2.next(), ignoreStackSize, ignoreNBT))
+                return false;
+        }
+        return true;
+    }
+
+    private static boolean areStacksEqualExtended(ItemStack lhs, ItemStack rhs, boolean ignoreStackSize, boolean ignoreNBT) {
+        if (lhs == null) return rhs == null;
+        if (rhs == null) return false;
+        return lhs.getItem() == rhs.getItem() &&
+                (ignoreNBT || Objects.equals(lhs.stackTagCompound, rhs.stackTagCompound)) &&
+                (ignoreStackSize || lhs.stackSize == rhs.stackSize);
     }
 
     public static boolean areUnificationsEqual(ItemStack aStack1, ItemStack aStack2) {
@@ -3013,5 +3038,32 @@ public class GT_Utility {
 
     public static int clamp(int val, int lo, int hi) {
         return val > hi ? hi : val < lo ? lo : val;
+    }
+
+    /**
+     * Hash an item stack for the purpose of storing hash across launches
+     */
+    public static int persistentHash(ItemStack aStack, boolean aUseStackSize, boolean aUseNBT) {
+        if (aStack == null)
+            return 0;
+        int result = Objects.hashCode(GameRegistry.findUniqueIdentifierFor(aStack.getItem()));
+        result = result * 31 + Items.feather.getDamage(aStack);
+
+        if (aUseStackSize) result = result * 31 + aStack.stackSize;
+        if (aUseNBT) result = result * 31 + Objects.hashCode(aStack.stackTagCompound);
+        return result;
+    }
+
+    /**
+     * Hash an item stack for the purpose of storing hash across launches
+     */
+    public static int persistentHash(FluidStack aStack, boolean aUseStackSize, boolean aUseNBT) {
+        if (aStack == null)
+            return 0;
+        int base = Objects.hashCode(aStack.getFluid().getName());
+
+        if (aUseStackSize) base = base * 31 + aStack.amount;
+        if (aUseNBT) base = base * 31 + Objects.hashCode(aStack.tag);
+        return base;
     }
 }

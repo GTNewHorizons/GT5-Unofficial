@@ -1,6 +1,7 @@
 package gregtech.common;
 
 import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
@@ -16,6 +17,7 @@ import gregtech.common.items.GT_IntegratedCircuit_Item;
 import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
 import mods.railcraft.common.items.RailcraftToolItems;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -23,6 +25,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
@@ -1418,7 +1421,19 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         }
         GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.addFakeRecipe(false, new ItemStack[]{aResearchItem}, new ItemStack[]{aOutput}, new ItemStack[]{ItemList.Tool_DataStick.getWithName(1L, "Writes Research result", new Object[0])}, null, null, aResearchTime, 30, -201);
         GT_Recipe.GT_Recipe_Map.sAssemblylineVisualRecipes.addFakeRecipe(false, aInputs, new ItemStack[]{aOutput}, new ItemStack[]{ItemList.Tool_DataStick.getWithName(1L, "Reads Research result", new Object[0])}, aFluidInputs, null, aDuration, aEUt, 0,true);
-        GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes.add(new GT_Recipe_AssemblyLine( aResearchItem, aResearchTime, aInputs, aFluidInputs, aOutput, aDuration, aEUt));
+        GT_Recipe_AssemblyLine tRecipe = new GT_Recipe_AssemblyLine(aResearchItem, aResearchTime, aInputs, aFluidInputs, aOutput, aDuration, aEUt);
+        int tPersistentHash = 1;
+        for (ItemStack tInput : aInputs)
+            tPersistentHash = tPersistentHash * 31 + GT_Utility.persistentHash(tInput, true, false);
+        tPersistentHash = tPersistentHash * 31 + GT_Utility.persistentHash(aResearchItem, true, false);
+        tPersistentHash = tPersistentHash * 31 + GT_Utility.persistentHash(aOutput, true, false);
+        for (FluidStack tFluidInput : aFluidInputs)
+            tPersistentHash = tPersistentHash * 31 + GT_Utility.persistentHash(tFluidInput, true, false);
+        tPersistentHash = tPersistentHash * 31 + aResearchTime;
+        tPersistentHash = tPersistentHash * 31 + aDuration;
+        tPersistentHash = tPersistentHash * 31 + aEUt;
+        tRecipe.setPersistentHash(tPersistentHash == 0 ? 1 : tPersistentHash);
+        GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes.add(tRecipe);
         return true;
     }
 
@@ -1432,17 +1447,23 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         } 
         ItemStack[] tInputs = new ItemStack[aInputs.length];
         ItemStack[][] tAlts = new ItemStack[aInputs.length][];
+        int tPersistentHash = 1;
         for(int i = 0; i < aInputs.length; i++){
         	Object obj = aInputs[i];
         	if (obj instanceof ItemStack) {
         		tInputs[i] = (ItemStack) obj;
         		tAlts[i] = null;
+                tPersistentHash = tPersistentHash * 31 + GT_Utility.persistentHash(tInputs[i], true, false);
         		continue;
         	} else if (obj instanceof ItemStack[]) {
         		ItemStack[] aStacks = (ItemStack[]) obj;
         		if (aStacks.length > 0) {
         			tInputs[i] = aStacks[0];
         			tAlts[i] = (ItemStack[]) Arrays.copyOf(aStacks, aStacks.length);
+                    for (ItemStack tAlt : tAlts[i]) {
+                        tPersistentHash = tPersistentHash * 31 + GT_Utility.persistentHash(tAlt, true, false);
+                    }
+                    tPersistentHash *= 31;
         			continue;
         		}
         	} else if (obj instanceof Object[]) {
@@ -1450,6 +1471,11 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         		List<ItemStack> tList;
         		if (objs.length >= 2 && !(tList = GT_OreDictUnificator.getOres(objs[0])).isEmpty()) {
         			try {
+                        // sort the output, so the hash code is stable across launches
+                        tList.sort(Comparator.<ItemStack, String>comparing(s -> GameRegistry.findUniqueIdentifierFor(s.getItem()).modId)
+                                .thenComparing(s -> GameRegistry.findUniqueIdentifierFor(s.getItem()).modId)
+                                .thenComparingInt(Items.feather::getDamage)
+                                .thenComparingInt(s -> s.stackSize));
         				int tAmount = ((Number) objs[1]).intValue();
             			List<ItemStack> uList = new ArrayList<>();
             			for (ItemStack tStack : tList) {
@@ -1460,16 +1486,30 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
             					    tInputs[i] = uStack;
             				}
             			}
-            			tAlts[i] = uList.toArray(new ItemStack[uList.size()]);
+            			tAlts[i] = uList.toArray(new ItemStack[0]);
+                        tPersistentHash = tPersistentHash * 31 + (objs[0] == null ? "" : objs[0].toString()).hashCode();
+                        tPersistentHash = tPersistentHash * 31 + tAmount;
             			continue;
         			} catch (Exception t) {}
         		}
         	}
         	GT_FML_LOGGER.info("addAssemblingLineRecipe "+aResearchItem.getDisplayName()+" --> "+aOutput.getUnlocalizedName()+" there is some null item in that recipe");
         }
+        tPersistentHash = tPersistentHash * 31 + GT_Utility.persistentHash(aResearchItem, true, false);
+        tPersistentHash = tPersistentHash * 31 + GT_Utility.persistentHash(aOutput, true, false);
+        for (FluidStack tFluidInput : aFluidInputs) {
+            if (tFluidInput == null)
+                continue;
+            tPersistentHash = tPersistentHash * 31 + GT_Utility.persistentHash(tFluidInput, true, false);
+        }
+        tPersistentHash = tPersistentHash * 31 + aResearchTime;
+        tPersistentHash = tPersistentHash * 31 + aDuration;
+        tPersistentHash = tPersistentHash * 31 + aEUt;
         GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.addFakeRecipe(false, new ItemStack[]{aResearchItem}, new ItemStack[]{aOutput}, new ItemStack[]{ItemList.Tool_DataStick.getWithName(1L, "Writes Research result", new Object[0])}, null, null, aResearchTime, 30, -201);
         GT_Recipe.GT_Recipe_Map.sAssemblylineVisualRecipes.addFakeRecipe(false,tInputs,new ItemStack[]{aOutput},new ItemStack[]{ItemList.Tool_DataStick.getWithName(1L, "Reads Research result", new Object[0])},aFluidInputs,null,aDuration,aEUt,0,tAlts,true);
-        GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes.add(new GT_Recipe_AssemblyLine( aResearchItem, aResearchTime, tInputs, aFluidInputs, aOutput, aDuration, aEUt, tAlts));
+        GT_Recipe_AssemblyLine tRecipe = new GT_Recipe_AssemblyLine(aResearchItem, aResearchTime, tInputs, aFluidInputs, aOutput, aDuration, aEUt, tAlts);
+        tRecipe.setPersistentHash(tPersistentHash == 0 ? 1 : tPersistentHash);
+        GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes.add(tRecipe);
         return true;
 	}
 

@@ -565,6 +565,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public int mDuration;
         public int mEUt;
         public ItemStack[][] mOreDictAlt;
+        private int mPersistentHash;
 
         public GT_Recipe_AssemblyLine(ItemStack aResearchItem, int aResearchTime, ItemStack[] aInputs, FluidStack[] aFluidInputs, ItemStack aOutput, int aDuration, int aEUt) {
         	this(aResearchItem, aResearchTime, aInputs, aFluidInputs, aOutput, aDuration, aEUt, new ItemStack[aInputs.length][]);
@@ -658,7 +659,19 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 					&& this.mEUt == other.mEUt
 					&& this.mResearchTime == other.mResearchTime;
 		}
-        
+
+        public int getPersistentHash() {
+            return mPersistentHash;
+        }
+
+        public void setPersistentHash(int aPersistentHash) {
+            if (this.mPersistentHash != 0)
+                throw new IllegalStateException("Cannot set persistent hash twice!");
+            if (aPersistentHash == 0)
+                this.mPersistentHash = 1;
+            else
+                this.mPersistentHash = aPersistentHash;
+        }
     }
 
     public static class GT_Recipe_Map {
