@@ -119,7 +119,7 @@ public class GregtechMetaTileEntity_IndustrialAlloySmelter extends GregtechMeta_
 				.beginStructureBlock(3, 5, 3, true)
 				.addController("Bottom center")
 				.addCasingInfo("Inconel Reinforced Casings", 10)
-				.addCasingInfo("Integral Encasement V", 18)
+				.addCasingInfo("Integral Encasement V", 8)
 				.addCasingInfo("Heating Coils", 16)
 				.addInputBus("Any Inconel Reinforced Casing", 1)
 				.addOutputBus("Any Inconel Reinforced Casing", 1)
