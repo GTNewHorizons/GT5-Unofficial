@@ -9,6 +9,7 @@ import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
 import com.mojang.authlib.GameProfile;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.damagesources.GT_DamageSources;
 import gregtech.api.damagesources.GT_DamageSources.DamageSourceHotItem;
@@ -3037,5 +3038,32 @@ public class GT_Utility {
 
     public static int clamp(int val, int lo, int hi) {
         return val > hi ? hi : val < lo ? lo : val;
+    }
+
+    /**
+     * Hash an item stack for the purpose of storing hash across launches
+     */
+    public static int persistentHash(ItemStack aStack, boolean aUseStackSize, boolean aUseNBT) {
+        if (aStack == null)
+            return 0;
+        int result = Objects.hashCode(GameRegistry.findUniqueIdentifierFor(aStack.getItem()));
+        result = result * 31 + Items.feather.getDamage(aStack);
+
+        if (aUseStackSize) result = result * 31 + aStack.stackSize;
+        if (aUseNBT) result = result * 31 + Objects.hashCode(aStack.stackTagCompound);
+        return result;
+    }
+
+    /**
+     * Hash an item stack for the purpose of storing hash across launches
+     */
+    public static int persistentHash(FluidStack aStack, boolean aUseStackSize, boolean aUseNBT) {
+        if (aStack == null)
+            return 0;
+        int base = Objects.hashCode(aStack.getFluid().getName());
+
+        if (aUseStackSize) base = base * 31 + aStack.amount;
+        if (aUseNBT) base = base * 31 + Objects.hashCode(aStack.tag);
+        return base;
     }
 }

@@ -181,17 +181,20 @@ public class GT_MetaTileEntity_AssemblyLine extends GT_MetaTileEntity_EnhancedMu
             if (tLookupResult.getType() == GT_AssemblyLineUtils.LookupResultType.INVALID_STICK)
                 continue;
 
+            GT_Recipe_AssemblyLine tRecipe = tLookupResult.getRecipe();
         	// Check if the recipe on the data stick is the current recipe for it's given output, if not we update it and continue to next.
-        	if (tLookupResult.getType() != GT_AssemblyLineUtils.LookupResultType.VALID_STACK_AND_VALID_HASH && !GT_AssemblyLineUtils.processDataStick(tDataStick)) {
-        		continue;
-        	}
+            if (tLookupResult.getType() != GT_AssemblyLineUtils.LookupResultType.VALID_STACK_AND_VALID_HASH) {
+                tRecipe = GT_AssemblyLineUtils.processDataStick(tDataStick);
+                if (tRecipe == null) {
+                    continue;
+                }
+            }
         	
         	// So here we check against the recipe found on the data stick.
         	// If we run into missing buses/hatches or bad inputs, we go to the next data stick.
         	// This check only happens if we have a valid up to date data stick.
         	
         	// Check Inputs allign
-            GT_Recipe_AssemblyLine tRecipe = tLookupResult.getRecipe();
             int aItemCount = tRecipe.mInputs.length;
             tStack = new int[aItemCount];
             for (int i = 0; i < aItemCount; i++) {

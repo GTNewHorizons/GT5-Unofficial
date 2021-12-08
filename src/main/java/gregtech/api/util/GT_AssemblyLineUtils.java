@@ -39,21 +39,19 @@ public class GT_AssemblyLineUtils {
 	 * @param aDataStick - The DataStick to process 
 	 * @return Is this DataStick now valid with a current recipe?
 	 */
-	public static boolean processDataStick(ItemStack aDataStick) {
+	public static GT_Recipe_AssemblyLine processDataStick(ItemStack aDataStick) {
 		if (!isItemDataStick(aDataStick)) {
-			return false;
+			return null;
 		}
 		if (doesDataStickNeedUpdate(aDataStick)) {
 			ItemStack aStickOutput = getDataStickOutput(aDataStick);
 			if (aStickOutput != null) {
 				GT_Recipe_AssemblyLine aIntendedRecipe = findAssemblyLineRecipeByOutput(aStickOutput);
-				if (aIntendedRecipe != null) {
-					return setAssemblyLineRecipeOnDataStick(aDataStick, aIntendedRecipe);
-				}
+				if (aIntendedRecipe != null && setAssemblyLineRecipeOnDataStick(aDataStick, aIntendedRecipe))
+					return aIntendedRecipe;
 			}
-			return false;			
 		}
-		return true;
+		return null;
 	}
 
 
@@ -163,6 +161,11 @@ public class GT_AssemblyLineUtils {
 			String aRecipeHash = generateRecipeHash(aRecipe);
 			sRecipeCacheByRecipeHash.put(aRecipeHash, aRecipe);
 			sRecipeCacheByOutput.put(new GT_ItemStack(aRecipe.mOutput), aRecipe);
+			if (doesDataStickHaveRecipeHash(aDataStick)) {
+				String aStickHash = getHashFromDataStack(aDataStick);
+				if (aRecipeHash.equals(aStickHash))
+					return LookupResultType.VALID_STACK_AND_VALID_HASH.getResult(aRecipe);
+			}
 			return LookupResultType.VALID_STACK_AND_VALID_RECIPE.getResult(aRecipe);
 		}
 		return LookupResultType.VALID_STACK_BUT_INVALID_RECIPE.getResult();
@@ -218,7 +221,7 @@ public class GT_AssemblyLineUtils {
 	public static String generateRecipeHash(GT_Recipe_AssemblyLine aRecipe) {
 		String aHash = "Invalid.Recipe.Hash";		
 		if (aRecipe != null) {
-			aHash = "Hash."+aRecipe.hashCode();
+			aHash = "Hash."+aRecipe.getPersistentHash();
 		}		
 		return aHash;
 	}
@@ -446,10 +449,10 @@ public class GT_AssemblyLineUtils {
 	}
 
 	public enum LookupResultType {
-		INVALID_STICK(false),
-		VALID_STACK_BUT_INVALID_RECIPE(false),
-		VALID_STACK_AND_VALID_RECIPE(true),
-		VALID_STACK_AND_VALID_HASH(true);
+		INVALID_STICK(true),
+		VALID_STACK_BUT_INVALID_RECIPE(true),
+		VALID_STACK_AND_VALID_RECIPE(false),
+		VALID_STACK_AND_VALID_HASH(false);
 
 		private final boolean recipeNull;
 		private LookupResult singletonResult;
@@ -467,7 +470,7 @@ public class GT_AssemblyLineUtils {
 		}
 
 		public LookupResult getResult(GT_Recipe_AssemblyLine recipe) {
-			if ((recipe == null) == recipeNull)
+			if ((recipe == null) != recipeNull)
 				throw new IllegalArgumentException("This result type does not allow given input");
 			return new LookupResult(recipe, this);
 		}
