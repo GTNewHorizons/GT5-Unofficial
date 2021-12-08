@@ -179,13 +179,6 @@ public class GT_MetaTileEntity_DistillationTower extends GT_MetaTileEntity_Enhan
             }
         }
 
-        FluidStack[] fluids = tFluidList.toArray(new FluidStack[0]);
-
-        if (inputs.length == 0 && fluids.length == 0) {
-            return false;
-        }
-
-
         long tVoltage = getMaxInputVoltage();
         byte tTier = (byte) Math.max(0, GT_Utility.getTier(tVoltage));
         FluidStack[] tFluids = tFluidList.toArray(new FluidStack[0]);
