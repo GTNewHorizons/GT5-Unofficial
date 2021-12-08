@@ -862,7 +862,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     GT_Log.recipe.print(getStackTrace());
                     GT_Log.recipe.print("\",\"");
                     GT_Log.recipe.print(found.addStackTrace);
-                    GT_Log.recipe.println();
+                    GT_Log.recipe.println('"');
                     return null;
                 }
             }
