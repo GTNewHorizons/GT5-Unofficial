@@ -33,6 +33,8 @@ new recipe adder stack trace with # as delimiter
 old recipe adder stack trace with # as delimiter
 ```
 
+Where A must be repeated through 0 to 15 (both end inclusive, same for below), B 0 to 7, C 0 to 8, D 0 to 7
+
 ### Precautions
 
 1. This is slow
