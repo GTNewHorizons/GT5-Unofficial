@@ -4,7 +4,7 @@ on:
   pull_request:
     branches: [ master, main ]
   push:
-    branches: [ "**" ]
+    branches: [ master, main ]
 
 jobs:
   test-scala-presence:

@@ -24,6 +24,11 @@ public interface ISerializableObject {
     @Nonnull
     ISerializableObject copy();
 
+    /**
+     * If you are overriding this, you must <b>NOT</b> return {@link NBTTagInt} here! That return
+     * type is how we tell that we are loading legacy data, and only {@link LegacyCoverData} is
+     * allowed to return it. You probably want to return {@link NBTTagCompound} anyway.
+     */
     @Nonnull
     NBTBase saveDataToNBT();
 
@@ -109,7 +114,7 @@ public interface ISerializableObject {
 
         @Override
         public void loadDataFromNBT(NBTBase aNBT) {
-            mData = aNBT instanceof NBTBase.NBTPrimitive ? ((NBTBase.NBTPrimitive) aNBT).func_150287_d() : 0;
+            mData = aNBT instanceof NBTTagInt ? ((NBTTagInt) aNBT).func_150287_d() : 0;
         }
 
         @Override

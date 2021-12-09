@@ -565,6 +565,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public int mDuration;
         public int mEUt;
         public ItemStack[][] mOreDictAlt;
+        private int mPersistentHash;
 
         public GT_Recipe_AssemblyLine(ItemStack aResearchItem, int aResearchTime, ItemStack[] aInputs, FluidStack[] aFluidInputs, ItemStack aOutput, int aDuration, int aEUt) {
         	this(aResearchItem, aResearchTime, aInputs, aFluidInputs, aOutput, aDuration, aEUt, new ItemStack[aInputs.length][]);
@@ -658,7 +659,19 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 					&& this.mEUt == other.mEUt
 					&& this.mResearchTime == other.mResearchTime;
 		}
-        
+
+        public int getPersistentHash() {
+            return mPersistentHash;
+        }
+
+        public void setPersistentHash(int aPersistentHash) {
+            if (this.mPersistentHash != 0)
+                throw new IllegalStateException("Cannot set persistent hash twice!");
+            if (aPersistentHash == 0)
+                this.mPersistentHash = 1;
+            else
+                this.mPersistentHash = aPersistentHash;
+        }
     }
 
     public static class GT_Recipe_Map {
@@ -1931,6 +1944,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         }
     }
     public static class GT_Recipe_Map_DistillationTower extends GT_Recipe_Map {
+    private static final int TOTAL_INPUT_COUNT = 6;
    	private static final int FLUID_OUTPUT_COUNT = 11;
    	private static final int ROW_SIZE = 3;
 
@@ -1947,7 +1961,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public GT_Recipe addRecipe(boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecial, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
             return addRecipe(aOptimize, aInputs, aOutputs, aSpecial, null, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue);
               }
-
               private static class GT_Recipe_DistillationTower extends GT_Recipe{
                    protected GT_Recipe_DistillationTower(boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems, int[] aChances, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
                        super(aOptimize, aInputs, aOutputs, aSpecialItems, aChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue);
@@ -1955,13 +1968,46 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
                    @Override
                    public ArrayList<PositionedStack> getInputPositionedStacks() {
-                       ArrayList<PositionedStack> inputStacks = new ArrayList<>(1);
+                           int itemLimit = Math.min(mInputs.length, TOTAL_INPUT_COUNT);
+                           int fluidLimit = Math.min(mFluidInputs.length, TOTAL_INPUT_COUNT - itemLimit);
+                           int inputlimit = itemLimit + fluidLimit;
+                           int j = 0;
 
-                       if (this.mFluidInputs.length > 0 && this.mFluidInputs[0] != null) {
-                           inputStacks.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(this.mFluidInputs[0], true), 48, 52));
+                           ArrayList<PositionedStack> inputStacks = new ArrayList<>(inputlimit);
+
+                           for (int i = 0; i < itemLimit; i++, j++) {
+                               if (this.mInputs == null || (this.mInputs[i] == null && (i == 0 && itemLimit == 1))) {
+                                   if (this.mOutputs != null && this.mOutputs.length > 0 && this.mOutputs[0] != null)
+                                       GT_Log.out.println("recipe " + this + " Output 0:" + this.mOutputs[0].getDisplayName() + " has errored!");
+                                   else
+                                       GT_Log.out.println("recipe " + this + " has errored!");
+
+                                   new Exception("Recipe Fixme").printStackTrace(GT_Log.out);
+                               }
+
+
+                               if ((this.mInputs != null && this.mInputs[i] != null) || !GT_Values.allow_broken_recipemap)
+                                   inputStacks.add(new FixedPositionedStack(this.mInputs[i].copy(), 48 - j % 3 * 18, (j >= 3 ? 5 : 23)));
+                               else
+                                   inputStacks.add(new FixedPositionedStack(new ItemStack(Items.command_block_minecart), 48 - j % 3 * 18, (j >= 3 ? 5 : 23)));
+                           }
+
+                           for (int i = 0; i < fluidLimit; i++, j++) {
+                               if (this.mFluidInputs == null || this.mFluidInputs[i] == null) {
+                                   if (this.mOutputs != null && this.mOutputs.length > 0 && this.mOutputs[0] != null)
+                                       GT_Log.out.println("recipe " + this + " Output 0:" + this.mOutputs[0].getDisplayName() + " has errored!");
+                                   else
+                                       GT_Log.out.println("recipe " + this + " has errored!");
+
+                                   new Exception("Recipe Fixme").printStackTrace(GT_Log.out);
+                               }
+
+                               if ((this.mFluidInputs != null && this.mFluidInputs[i] != null) || !GT_Values.allow_broken_recipemap)
+                                   inputStacks.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(this.mFluidInputs[i], true), 48 - j % 3 * 18, (j >= 3 ? 5 : 23)));
+                           }
+
+                           return inputStacks;
                        }
-                       return inputStacks;
-                   }
                   @Override
                   public ArrayList<PositionedStack> getOutputPositionedStacks() {
                       int fluidLimit = Math.min(mFluidOutputs.length, FLUID_OUTPUT_COUNT);

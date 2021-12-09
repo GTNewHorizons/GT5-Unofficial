@@ -8,6 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 
@@ -31,7 +32,12 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
 
     public abstract T createDataObject();
 
-    public T createDataObject(NBTBase aNBT) {
+    public final T createDataObject(NBTBase aNBT) {
+        // Handle legacy data (migrating from GT_CoverBehavior to GT_CoverBehaviorBase)
+        if (aNBT instanceof NBTTagInt) {
+            return createDataObject(((NBTTagInt) aNBT).func_150287_d());
+        }
+
         T ret = createDataObject();
         ret.loadDataFromNBT(aNBT);
         return ret;
