@@ -6,6 +6,9 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import org.lwjgl.opengl.GL11;
+
+import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.GuiRecipe;
 import codechicken.nei.recipe.TemplateRecipeHandler;
@@ -18,8 +21,8 @@ import gregtech.api.util.GasSpargingRecipe;
 import gregtech.api.util.GasSpargingRecipeMap;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.gui.machine.GUI_DecayablesChest;
+import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.GregtechMTE_NuclearReactor;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -48,6 +51,13 @@ public class GT_NEI_LFTR_Sparging extends TemplateRecipeHandler {
 
 	public int recipiesPerPage() {
 		return 1;
+	}
+
+	@Override
+	public void drawBackground(final int recipe) {
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		GuiDraw.changeTexture(this.getGuiTexture());
+		GuiDraw.drawTexturedModalRect(-4, -8, 1, 3, 174, 68);
 	}
 
 	public void loadTransferRects() {
@@ -145,12 +155,14 @@ public class GT_NEI_LFTR_Sparging extends TemplateRecipeHandler {
 		}
 	}
 
-	public void drawExtras(int recipeIndex) {
-		GT_NEI_LFTR.drawText(2, 73, "Sparging occurs whilst your", -16777216);
-		GT_NEI_LFTR.drawText(2, 83, "LFTR is running. Happens every", -16777216);
-		GT_NEI_LFTR.drawText(2, 93, ""+(GregtechMTE_NuclearReactor.sMinSpargeWait/20)+"-"+(GregtechMTE_NuclearReactor.sMaxSpargeWait/20)+" seconds. Gas not", -16777216);
-		GT_NEI_LFTR.drawText(2, 103, "used to sparge is returned", -16777216);
-		GT_NEI_LFTR.drawText(2, 113, "alongside outputs.", -16777216);
+	public void drawExtras(int aRecipeIndex) {
+		final long tEUt = ((GasSpargingRecipeNEI) this.arecipes.get(aRecipeIndex)).mRecipe.mEUt;
+		final long tDuration = ((GasSpargingRecipeNEI) this.arecipes.get(aRecipeIndex)).mRecipe.mDuration;
+		GT_NEI_LFTR.drawText(10, 73, "Total: " + MathUtils.formatNumbers((long) (tDuration * tEUt)) + " EU", -16777216);
+		GT_NEI_LFTR.drawText(10, 83, "Usage: " + MathUtils.formatNumbers(tEUt) + " EU/t", -16777216);
+		GT_NEI_LFTR.drawText(10, 93, "Time: " + (tDuration < 20 ? "< 1" : MathUtils.formatNumbers(Long.valueOf(tDuration / 20))) + " secs", -16777216);
+		GT_NEI_LFTR.drawText(10, 103, "Gas not used to sparge is", -16777216);
+		GT_NEI_LFTR.drawText(10, 113, "returned alongside outputs.", -16777216);
 	}
 
 	@Override
@@ -161,7 +173,7 @@ public class GT_NEI_LFTR_Sparging extends TemplateRecipeHandler {
 			ItemStack aInput = tRecipe.mInputs.get(0).item;
 			for (final PositionedStack tStack : tRecipe.mOutputs) {
 				if (aStack == tStack.item) {
-					if (ItemList.Display_Fluid.isStackEqual(tStack.item, true, true) && ((FixedPositionedStack) tStack).mChance <= 10000) {						
+					if (ItemList.Display_Fluid.isStackEqual(tStack.item, true, true) && ((FixedPositionedStack) tStack).mChance < 10000) {						
 						if (GT_Utility.areStacksEqual(aStack, aInput, true)) {
 							currenttip.add("The amount returned is the remainder after all other outputs.");
 						}
@@ -278,7 +290,7 @@ public class GT_NEI_LFTR_Sparging extends TemplateRecipeHandler {
 			tStartIndex = 0;
 			if (tRecipe.mFluidOutputs.length > 0) {
 				if ((tRecipe.mFluidOutputs[0] != null) && (tRecipe.mFluidOutputs[0].getFluid() != null)) {
-					this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(tRecipe.mFluidOutputs[0], false), 102, 5, tRecipe.getMaxOutput(tStartIndex++)));
+					this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(tRecipe.mFluidOutputs[0], true), 102, 5, tRecipe.getMaxOutput(tStartIndex++)));
 				}
 				if ((tRecipe.mFluidOutputs.length > 1) && (tRecipe.mFluidOutputs[1] != null) && (tRecipe.mFluidOutputs[1].getFluid() != null)) {
 					this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(tRecipe.mFluidOutputs[1], false), 120, 5, tRecipe.getMaxOutput(tStartIndex++)));

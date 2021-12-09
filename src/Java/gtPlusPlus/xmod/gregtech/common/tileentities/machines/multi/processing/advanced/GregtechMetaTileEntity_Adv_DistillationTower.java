@@ -19,6 +19,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -165,7 +166,7 @@ public class GregtechMetaTileEntity_Adv_DistillationTower extends GregtechMeta_M
 				.addEnergyHatch("Bottom Casing", 1)
 				.addOutputHatch("One per layer except bottom", 2)
 				.addMufflerHatch("Top Center Casing", 3)
-				.toolTipFinisher("GT++");
+				.toolTipFinisher(CORE.GT_Tooltip_Builder);
 		return tt;
 	}
 

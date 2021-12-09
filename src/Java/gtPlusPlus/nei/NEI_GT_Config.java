@@ -31,6 +31,7 @@ implements IConfigureNEI {
 		mUniqueRecipeMapHandling.add(GTPP_Recipe_Map.sMultiblockCentrifugeRecipes_GT.mUnlocalizedName);
 		mUniqueRecipeMapHandling.add(GTPP_Recipe_Map.sMultiblockElectrolyzerRecipes_GT.mUnlocalizedName);
 		mUniqueRecipeMapHandling.add(GTPP_Recipe_Map.sMultiblockMixerRecipes_GT.mUnlocalizedName);
+		mUniqueRecipeMapHandling.add(GTPP_Recipe_Map.sSpargeTowerRecipes.mUnlocalizedName);
 		
 		// Standard GT Recipe Maps
 		Logger.INFO("NEI Registration: "+GTPP_Recipe_Map_Internal.sMappingsEx.size()+" sMappingEx");
@@ -69,6 +70,8 @@ implements IConfigureNEI {
 		new GT_NEI_MultiNoCell(GTPP_Recipe_Map.sMultiblockElectrolyzerRecipes_GT);
 		Logger.INFO("NEI Registration: Registering NEI handler for "+GTPP_Recipe_Map.sMultiblockMixerRecipes_GT.mNEIName);
 		new GT_NEI_MultiNoCell(GTPP_Recipe_Map.sMultiblockMixerRecipes_GT);
+		Logger.INFO("NEI Registration: Registering NEI handler for "+GTPP_Recipe_Map.sSpargeTowerRecipes.mNEIName);
+		new GT_NEI_MultiNoCell(GTPP_Recipe_Map.sSpargeTowerRecipes);
 
 		Logger.INFO("NEI Registration: Registering NEI handler for "+DecayableRecipeHandler.mNEIName);
 		API.registerRecipeHandler(new DecayableRecipeHandler());

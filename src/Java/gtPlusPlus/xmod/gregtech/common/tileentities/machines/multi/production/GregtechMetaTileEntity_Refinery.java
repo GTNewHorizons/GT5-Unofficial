@@ -13,6 +13,7 @@ import gregtech.api.util.GTPP_Recipe;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import net.minecraft.item.ItemStack;
 
@@ -60,7 +61,7 @@ public class GregtechMetaTileEntity_Refinery extends GregtechMeta_MultiBlockBase
 				.addStructureInfo("Muffler's Tier must be LuV+")
 				.addStructureInfo("4x Input Hatches, 2x Output Hatches, 1x Output Bus")
 				.addStructureInfo("1x Muffler, 1x Maintenance Hatch, 1x Energy Hatch")
-				.toolTipFinisher("GT++");
+				.toolTipFinisher(CORE.GT_Tooltip_Builder);
 		return tt;
 	}
 

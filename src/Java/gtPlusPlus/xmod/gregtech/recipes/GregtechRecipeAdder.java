@@ -561,9 +561,17 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 				new FluidStack[] { aInput1, aInput2 }, new FluidStack[] { aOutput1 }, aDuration, aEUt, 16000);
 		return true;
 	}
-
+	
 	@Override
 	public boolean addFissionFuel(final FluidStack aInput1, final FluidStack aInput2, final FluidStack aInput3,
+			final FluidStack aInput4, final FluidStack aInput5, final FluidStack aInput6, final FluidStack aInput7,
+			final FluidStack aInput8, final FluidStack aInput9, final FluidStack aOutput1, final FluidStack aOutput2,
+			final int aDuration, final int aEUt) {
+		return addFissionFuel(false, aInput1, aInput2, aInput3, aInput4, aInput5, aInput6, aInput7, aInput8, aInput9, aOutput1, aOutput2, aDuration, aEUt);
+	}
+
+	@Override
+	public boolean addFissionFuel(final boolean aOptimise, final FluidStack aInput1, final FluidStack aInput2, final FluidStack aInput3,
 			final FluidStack aInput4, final FluidStack aInput5, final FluidStack aInput6, final FluidStack aInput7,
 			final FluidStack aInput8, final FluidStack aInput9, final FluidStack aOutput1, final FluidStack aOutput2,
 			final int aDuration, final int aEUt) {
@@ -575,7 +583,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 		final FluidStack outputs[] = { aOutput1, aOutput2 };
 
 		GTPP_Recipe aSpecialRecipe = new GTPP_Recipe(
-				true,
+				aOptimise,
 				new ItemStack[] {},
 				new ItemStack[] {},
 				null,

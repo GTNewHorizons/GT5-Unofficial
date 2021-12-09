@@ -89,7 +89,7 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 				.addCasingInfo("Sub-Station External Casings", 10)
 				.addDynamoHatch("Any Casing", 1)
 				.addEnergyHatch("Any Casing", 1)
-				.toolTipFinisher("GT++");
+				.toolTipFinisher(CORE.GT_Tooltip_Builder);
 		return tt;
 	}
 

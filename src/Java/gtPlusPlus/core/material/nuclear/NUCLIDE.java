@@ -146,6 +146,24 @@ public final class NUCLIDE {
 					new MaterialStack(ELEMENT.getInstance().PROTACTINIUM, 1)
 			});
 	
+	public static final Material Sparged_LiFBeF2UF4FP = new Material(
+			"Helium Sparged LiFBeF2UF4FP", //Material Name
+			MaterialState.PURE_LIQUID, //State
+			null, //Material Colour
+			-1, //Melting Point in C
+			-1, //Boiling Point in C
+			-1, //Protons
+			-1, //Neutrons
+			false, //Uses Blast furnace?
+			StringUtils.subscript(StringUtils.superscript("7")+"LiFBeF2UF4FP"), //Chemical Formula
+			//Material Stacks with Percentage of required elements.
+			new MaterialStack[]{
+					new MaterialStack(FLUORIDES.LITHIUM_FLUORIDE, 1),
+					new MaterialStack(FLUORIDES.BERYLLIUM_FLUORIDE, 1),
+					new MaterialStack(FLUORIDES.URANIUM_TETRAFLUORIDE, 1),
+					new MaterialStack(ELEMENT.getInstance().PROTACTINIUM, 1)
+			});
+	
 	public static final Material UF6F2FP = new Material(
 			"UF6F2FP", //Material Name
 			MaterialState.PURE_LIQUID, //State
@@ -222,6 +240,41 @@ public final class NUCLIDE {
 	// Tier 2 Fuel blanket output
 	public static final Material LiFBeF2ThF4 = new Material(
 			"LiFBeF2ThF4", //Material Name
+			MaterialState.PURE_LIQUID, //State
+			null, //Material Colour
+			-1, //Melting Point in C
+			-1, //Boiling Point in C
+			-1, //Protons
+			-1, //Neutrons
+			false, //Uses Blast furnace?
+			StringUtils.subscript(StringUtils.superscript("7")+"LiFBeF2ThF4"), //Chemical Formula
+			//Material Stacks with Percentage of required elements.
+			new MaterialStack[]{
+					new MaterialStack(FLUORIDES.LITHIUM_FLUORIDE, 1),
+					new MaterialStack(FLUORIDES.BERYLLIUM_FLUORIDE, 1),
+					new MaterialStack(FLUORIDES.THORIUM_TETRAFLUORIDE, 1)
+			});
+	
+	// Tier 1 Fuel blanket output
+	public static final Material Sparged_LiFThF4 = new Material(
+			"Fluorine Sparged LiFThF4", //Material Name
+			MaterialState.PURE_LIQUID, //State
+			null, //Material Colour
+			-1, //Melting Point in C
+			-1, //Boiling Point in C
+			-1, //Protons
+			-1, //Neutrons
+			false, //Uses Blast furnace?
+			StringUtils.subscript(StringUtils.superscript("7")+"LiFThF4"), //Chemical Formula
+			//Material Stacks with Percentage of required elements.
+			new MaterialStack[]{
+					new MaterialStack(FLUORIDES.LITHIUM_FLUORIDE, 1),
+					new MaterialStack(FLUORIDES.THORIUM_TETRAFLUORIDE, 1)
+			});
+	
+	// Tier 2 Fuel blanket output
+	public static final Material Sparged_LiFBeF2ThF4 = new Material(
+			"Fluorine Sparged LiFBeF2ThF4", //Material Name
 			MaterialState.PURE_LIQUID, //State
 			null, //Material Colour
 			-1, //Melting Point in C

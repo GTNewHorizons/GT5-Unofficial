@@ -14,8 +14,9 @@ public class GasSpargingRecipeMap extends AutoMap<GasSpargingRecipe>{
 	public static final String mNEIGUIPath = RES_PATH_GUI + "basicmachines/FissionFuel.png";
 	
 	
-	public static boolean addRecipe(FluidStack aSpargeGas, FluidStack[] aOutputs, int[] aMaxOutputs) {
+	public static boolean addRecipe(FluidStack aSpargeGas, FluidStack aSpentFuel, FluidStack[] aOutputs, int[] aMaxOutputs) {
 		if (aSpargeGas == null || aSpargeGas.amount <= 0 ||
+				aSpentFuel == null || aSpentFuel.amount <= 0 ||
 				aOutputs == null || aOutputs.length < 1 ||
 				aMaxOutputs == null || aMaxOutputs.length < 1 ||
 				aOutputs.length != aMaxOutputs.length) {
@@ -24,6 +25,7 @@ public class GasSpargingRecipeMap extends AutoMap<GasSpargingRecipe>{
 		int aMapSize = mRecipes.size();
 		GasSpargingRecipe aRecipe = new GasSpargingRecipe(
 				aSpargeGas,
+				aSpentFuel,
 				aOutputs,
 				aMaxOutputs
 				);

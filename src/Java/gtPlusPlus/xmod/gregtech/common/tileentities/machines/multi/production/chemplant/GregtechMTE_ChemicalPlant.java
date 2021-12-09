@@ -128,7 +128,7 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 				.addOutputHatch("Bottom Casing", 1)
 				.addEnergyHatch("Bottom Casing", 1)
 				.addMaintenanceHatch("Bottom Casing", 1)
-				.toolTipFinisher("GT++");
+				.toolTipFinisher(CORE.GT_Tooltip_Builder);
 		return tt;
 	}
 

@@ -121,7 +121,9 @@ public class RecipeLoader_LFTR {
 		// Sparging NEI Recipes
 		GasSpargingRecipeMap.addRecipe(
 				new FluidStack(mSpargeGases.get(0), 50),
+				NUCLIDE.LiFBeF2UF4FP.getFluidStack(50),
 				new FluidStack[] {
+						NUCLIDE.Sparged_LiFBeF2UF4FP.getFluidStack(50),
 						new FluidStack(mNobleGases.get(0), 50),
 						new FluidStack(mNobleGases.get(1), 10),
 						new FluidStack(mNobleGases.get(2), 10),
@@ -130,21 +132,39 @@ public class RecipeLoader_LFTR {
 						new FluidStack(mNobleGases.get(5), 10)
 				},
 				new int[] {
-						5000, 1000, 1000, 1000, 1000, 1000
+						10000, 5000, 1000, 1000, 1000, 1000, 1000
 				});
 
 		GasSpargingRecipeMap.addRecipe(
-				new FluidStack(mSpargeGases.get(1), 100),
+				new FluidStack(mSpargeGases.get(1), 50),
+				NUCLIDE.LiFThF4.getFluidStack(50),
 				new FluidStack[] {
-						new FluidStack(mFluorideGases.get(0), 100),
-						new FluidStack(mFluorideGases.get(1), 20),
-						new FluidStack(mFluorideGases.get(2), 20),
-						new FluidStack(mFluorideGases.get(3), 20),
-						new FluidStack(mFluorideGases.get(4), 20),
-						new FluidStack(mFluorideGases.get(5), 20)
+						NUCLIDE.Sparged_LiFThF4.getFluidStack(50),
+						new FluidStack(mFluorideGases.get(0), 50),
+						new FluidStack(mFluorideGases.get(1), 10),
+						new FluidStack(mFluorideGases.get(2), 10),
+						new FluidStack(mFluorideGases.get(3), 10),
+						new FluidStack(mFluorideGases.get(4), 10),
+						new FluidStack(mFluorideGases.get(5), 10)
 				},
 				new int[] {
-						10000, 2000, 2000, 2000, 2000, 2000
+						10000, 5000, 1000, 1000, 1000, 1000, 1000
+				});
+
+		GasSpargingRecipeMap.addRecipe(
+				new FluidStack(mSpargeGases.get(1), 50),
+				NUCLIDE.LiFBeF2ThF4.getFluidStack(50),
+				new FluidStack[] {
+						NUCLIDE.Sparged_LiFBeF2ThF4.getFluidStack(50),
+						new FluidStack(mFluorideGases.get(0), 50),
+						new FluidStack(mFluorideGases.get(1), 10),
+						new FluidStack(mFluorideGases.get(2), 10),
+						new FluidStack(mFluorideGases.get(3), 10),
+						new FluidStack(mFluorideGases.get(4), 10),
+						new FluidStack(mFluorideGases.get(5), 10)
+				},
+				new int[] {
+						10000, 5000, 1000, 1000, 1000, 1000, 1000
 				});
 	
 		GTPP_Recipe.GTPP_Recipe_Map.sLiquidFluorineThoriumReactorRecipes.add(LFTR1);

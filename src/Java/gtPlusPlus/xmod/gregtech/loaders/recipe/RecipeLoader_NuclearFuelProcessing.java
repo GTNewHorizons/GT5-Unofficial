@@ -85,9 +85,48 @@ public class RecipeLoader_NuclearFuelProcessing {
 
 		// Reactor Blanket step 1 - Fluorination
 		CORE.RA.addReactorProcessingUnitRecipe(
+				CI.getNumberedAdvancedCircuit(17),
+				ELEMENT.getInstance().FLUORINE.getCell(5),
+				NUCLIDE.LiFThF4.getFluidStack(10000),
+				new ItemStack[] {
+						CI.emptyCells(4),
+						ELEMENT.getInstance().LITHIUM.getCell(1),
+						ItemUtils.getSimpleStack(ModItems.dustProtactinium233),
+						ItemUtils.getSimpleStack(ModItems.dustProtactinium233),
+						ItemUtils.getSimpleStack(ModItems.dustProtactinium233),
+						ItemUtils.getSimpleStack(ModItems.dustProtactinium233),
+						ItemUtils.getSimpleStack(ModItems.dustProtactinium233),
+						ItemUtils.getSimpleStack(ModItems.dustProtactinium233)
+				},
+				new int[] {10000, 10000, 1000, 1000, 1000, 500, 500, 500},
+				NUCLIDE.UF6F2.getFluidStack(5000),
+				20 * 60 * 10,
+				MaterialUtils.getVoltageForTier(5));		
+		CORE.RA.addReactorProcessingUnitRecipe(
+				CI.getNumberedAdvancedCircuit(18),
+				ELEMENT.getInstance().FLUORINE.getCell(5),
+				NUCLIDE.LiFBeF2ThF4.getFluidStack(10000),
+				new ItemStack[] {
+						CI.emptyCells(3),
+						ELEMENT.getInstance().LITHIUM.getCell(1),
+						FLUORIDES.BERYLLIUM_FLUORIDE.getCell(1),
+						ItemUtils.getSimpleStack(ModItems.dustProtactinium233),
+						ItemUtils.getSimpleStack(ModItems.dustProtactinium233),
+						ItemUtils.getSimpleStack(ModItems.dustProtactinium233),
+						ItemUtils.getSimpleStack(ModItems.dustProtactinium233),
+						ItemUtils.getSimpleStack(ModItems.dustProtactinium233),
+						ItemUtils.getSimpleStack(ModItems.dustProtactinium233)
+				},
+				new int[] {10000, 10000, 10000, 1000, 1000, 1000, 500, 500, 500},
+				NUCLIDE.UF6F2.getFluidStack(10000),
+				20 * 60 * 10,
+				MaterialUtils.getVoltageForTier(5));
+		
+		// Reactor Blanket step 1 - Fluorination
+		CORE.RA.addReactorProcessingUnitRecipe(
 				CI.getNumberedAdvancedCircuit(7),
 				ELEMENT.getInstance().FLUORINE.getCell(10),
-				NUCLIDE.LiFThF4.getFluidStack(10000),
+				NUCLIDE.Sparged_LiFThF4.getFluidStack(10000),
 				new ItemStack[] {
 						CI.emptyCells(8),
 						ELEMENT.getInstance().LITHIUM.getCell(2),
@@ -105,7 +144,7 @@ public class RecipeLoader_NuclearFuelProcessing {
 		CORE.RA.addReactorProcessingUnitRecipe(
 				CI.getNumberedAdvancedCircuit(8),
 				ELEMENT.getInstance().FLUORINE.getCell(10),
-				NUCLIDE.LiFBeF2ThF4.getFluidStack(10000),
+				NUCLIDE.Sparged_LiFBeF2ThF4.getFluidStack(10000),
 				new ItemStack[] {
 						CI.emptyCells(6),
 						ELEMENT.getInstance().LITHIUM.getCell(2),
@@ -159,12 +198,27 @@ public class RecipeLoader_NuclearFuelProcessing {
 						MaterialUtils.getVoltageForTier(3));*/
 
 
+
+		// LiBeF2UF4FP + F2 = LiFBeF2 & UF6F2FP
+		// Reactor Core step 1 - Process Burnt Salt
+		CORE.RA.addReactorProcessingUnitRecipe(
+				CI.getNumberedAdvancedCircuit(1),
+				ELEMENT.getInstance().FLUORINE.getCell(1),
+				NUCLIDE.LiFBeF2UF4FP.getFluidStack(1000),
+				new ItemStack[] {
+						NUCLIDE.UF6F2FP.getCell(1)
+				},
+				new int[] {10000},
+				FluidUtils.getFluidStack(NuclearChem.Impure_LiFBeF2, 1000),
+				20 * 60 * 120,
+				MaterialUtils.getVoltageForTier(3));
+		
 		// LiBeF2UF4FP + F2 = LiFBeF2 & UF6F2FP
 		// Reactor Core step 1 - Process Burnt Salt
 		CORE.RA.addReactorProcessingUnitRecipe(
 				CI.getNumberedAdvancedCircuit(1),
 				ELEMENT.getInstance().FLUORINE.getCell(3),
-				NUCLIDE.LiFBeF2UF4FP.getFluidStack(1000),
+				NUCLIDE.Sparged_LiFBeF2UF4FP.getFluidStack(1000),
 				new ItemStack[] {
 						NUCLIDE.UF6F2FP.getCell(2)
 				},
@@ -246,7 +300,7 @@ public class RecipeLoader_NuclearFuelProcessing {
 				MaterialUtils.getVoltageForTier(4));*/
 
 		// LiFBeF2ZrF4UF4
-		CORE.RA.addReactorProcessingUnitRecipe(
+		/*CORE.RA.addReactorProcessingUnitRecipe(
 				CI.getNumberedAdvancedCircuit(9),
 				NUCLIDE.LiFBeF2UF4.getCell(9),
 				FLUORIDES.ZIRCONIUM_TETRAFLUORIDE.getFluidStack(1000),
@@ -257,7 +311,7 @@ public class RecipeLoader_NuclearFuelProcessing {
 				NUCLIDE.LiFBeF2ZrF4UF4.getFluidStack(10000),
 				20 * 60 * 5,
 				MaterialUtils.getVoltageForTier(5));
-
+		
 		CORE.RA.addReactorProcessingUnitRecipe(
 				CI.getNumberedAdvancedCircuit(9),
 				FLUORIDES.ZIRCONIUM_TETRAFLUORIDE.getCell(1),
@@ -268,10 +322,22 @@ public class RecipeLoader_NuclearFuelProcessing {
 				new int[] {10000},
 				NUCLIDE.LiFBeF2ZrF4UF4.getFluidStack(10000),
 				20 * 60 * 5,
-				MaterialUtils.getVoltageForTier(5));
+				MaterialUtils.getVoltageForTier(5));*/
+		
+		CORE.RA.addFissionFuel(
+				FLUORIDES.ZIRCONIUM_TETRAFLUORIDE.getFluidStack(1000),
+				NUCLIDE.LiFBeF2UF4.getFluidStack(9000),
+				null,
+				null,
+				null, null, null, null, null,
+				NUCLIDE.LiFBeF2ZrF4UF4.getFluidStack(10000),
+				null,
+				20 * 60 * 15, // Duration
+				MaterialUtils.getVoltageForTier(5)
+				);
 
 		// LiFBeF2ThF4UF4
-		CORE.RA.addReactorProcessingUnitRecipe(
+		/*CORE.RA.addReactorProcessingUnitRecipe(
 				CI.getNumberedAdvancedCircuit(10),
 				NUCLIDE.LiFBeF2UF4.getCell(9),
 				FLUORIDES.THORIUM_TETRAFLUORIDE.getFluidStack(1000),
@@ -282,7 +348,7 @@ public class RecipeLoader_NuclearFuelProcessing {
 				NUCLIDE.LiFBeF2ThF4UF4.getFluidStack(10000),
 				20 * 60 * 5,
 				MaterialUtils.getVoltageForTier(5));
-
+		
 		CORE.RA.addReactorProcessingUnitRecipe(
 				CI.getNumberedAdvancedCircuit(10),
 				FLUORIDES.THORIUM_TETRAFLUORIDE.getCell(1),
@@ -293,8 +359,20 @@ public class RecipeLoader_NuclearFuelProcessing {
 				new int[] {10000},
 				NUCLIDE.LiFBeF2ThF4UF4.getFluidStack(10000),
 				20 * 60 * 5,
-				MaterialUtils.getVoltageForTier(5));
+				MaterialUtils.getVoltageForTier(5));*/
 
+
+		CORE.RA.addFissionFuel(
+				FLUORIDES.THORIUM_TETRAFLUORIDE.getFluidStack(1000),
+				NUCLIDE.LiFBeF2UF4.getFluidStack(9000),
+				null,
+				null,
+				null, null, null, null, null,
+				NUCLIDE.LiFBeF2ThF4UF4.getFluidStack(10000),
+				null,
+				20 * 60 * 30, // Duration
+				MaterialUtils.getVoltageForTier(5)
+				);
 
 
 

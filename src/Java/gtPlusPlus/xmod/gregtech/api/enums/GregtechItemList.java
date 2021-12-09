@@ -398,6 +398,11 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Controller_Flotation_Cell,
 	Casing_Flotation_Cell,
 	
+	// Sparge Tower
+	Controller_Sparge_Tower,
+	Casing_Sparge_Tower_Exterior,
+	Casing_Sparge_Tower_Interior,
+	
 	// Elemental Duplicator
 	/*Controller_ElementalDuplicator,*/
 	Casing_ElementalDuplicator,

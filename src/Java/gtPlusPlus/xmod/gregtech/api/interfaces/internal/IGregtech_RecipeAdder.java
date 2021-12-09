@@ -133,16 +133,16 @@ public interface IGregtech_RecipeAdder {
 	public boolean addBlastSmelterRecipe(ItemStack[] aInput, FluidStack aInputFluid, FluidStack aOutput, int aChance, int aDuration, int aEUt, int aSpecialValue);
 	
 	/**
-	 * Adds a Recipe for the Alloy Blast Smelter. (up to 9 Inputs)
+	 * Adds a Recipe for the LFTRr. (up to 9 Inputs)
 	 *
 	 * @param aInput   = ItemStack[] (not null, and respects StackSize)
 	 * @param aFluidInput   = Input of a fluid (can be null, and respects StackSize)
-	 * @param aFluidOutput   = Output of the Molten Metal (not null, and respects StackSize)
+	 * @param aFluidOutput   = Output of the Molten Salts (not null, and respects StackSize)
 	 * @param aOutputStack  = Item Output (Can be null)
 	 * @param aChances 	= Output Chance (can be == 0)
 	 * @param aDuration 	= Duration (must be >= 0)
 	 * @param aEUt			= EU per tick needed for heating up (must be >= 0)
-	 * @param aSpecialValue			= Stores the Required Temp for the Recipe
+	 * @param aSpecialValue			= Power produced in EU/t per dynamo
 	 * @return true if the Recipe got added, otherwise false.
 	 */
 	public boolean addBlastSmelterRecipe(ItemStack[] aInput, FluidStack aInputFluid, FluidStack aOutput, ItemStack[] aOutputStack, int[] aChance, int aDuration, int aEUt, int aSpecialValue);
@@ -170,6 +170,14 @@ public interface IGregtech_RecipeAdder {
 	public boolean addSemifluidFuel(ItemStack aFuelItem, int aFuelValue);
 	
 	public boolean addFissionFuel(
+			FluidStack aInput1, FluidStack aInput2, FluidStack aInput3,
+			FluidStack aInput4, FluidStack aInput5, FluidStack aInput6,
+			FluidStack aInput7, FluidStack aInput8, FluidStack aInput9,
+			FluidStack aOutput1, FluidStack aOutput2,
+			int aDuration, int aEUt);
+	
+	public boolean addFissionFuel(
+			boolean aOptimise, 
 			FluidStack aInput1, FluidStack aInput2, FluidStack aInput3,
 			FluidStack aInput4, FluidStack aInput5, FluidStack aInput6,
 			FluidStack aInput7, FluidStack aInput8, FluidStack aInput9,

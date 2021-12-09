@@ -18,6 +18,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GTPP_Recipe;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.chemistry.RocketFuels;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.MISC_MATERIALS;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
@@ -116,7 +117,7 @@ public class GregtechMetaTileEntity_LargeRocketEngine extends GregtechMeta_Multi
 				.addMaintenanceHatch("Side center line", 1)
 				.addDynamoHatch("Top center line", 2)
 				.addMufflerHatch("Back Center", 3)
-				.toolTipFinisher("GT++");
+				.toolTipFinisher(CORE.GT_Tooltip_Builder);
 		return tt;
 	}
 

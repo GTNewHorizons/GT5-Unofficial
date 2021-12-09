@@ -355,7 +355,7 @@ public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase 
 	}
 
 	public int getMaxEfficiency(ItemStack aStack) {
-		return boostEu ? 20000 : 10000;
+		return 10000;
 	}
 
 	@Override

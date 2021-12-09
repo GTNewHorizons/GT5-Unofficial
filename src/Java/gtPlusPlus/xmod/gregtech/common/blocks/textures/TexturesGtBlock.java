@@ -276,6 +276,14 @@ public class TexturesGtBlock {
 	public static final CustomIcon Casing_Machine_Metal_Sheet_A = Internal_Casing_Machine_Metal_Sheet_A;
 	private static final CustomIcon Internal_Casing_Machine_Metal_Sheet_B = new CustomIcon("chrono/MetalSheet2");
 	public static final CustomIcon Casing_Machine_Metal_Sheet_B = Internal_Casing_Machine_Metal_Sheet_B;
+	private static final CustomIcon Internal_Casing_Machine_Metal_Sheet_C = new CustomIcon("chrono/MetalSheet3");
+	public static final CustomIcon Casing_Machine_Metal_Sheet_C = Internal_Casing_Machine_Metal_Sheet_C;
+	private static final CustomIcon Internal_Casing_Machine_Metal_Sheet_D = new CustomIcon("chrono/MetalSheet4");
+	public static final CustomIcon Casing_Machine_Metal_Sheet_D = Internal_Casing_Machine_Metal_Sheet_D;
+	private static final CustomIcon Internal_Casing_Machine_Metal_Sheet_E = new CustomIcon("chrono/MetalSheet5");
+	public static final CustomIcon Casing_Machine_Metal_Sheet_E = Internal_Casing_Machine_Metal_Sheet_E;
+	private static final CustomIcon Internal_Casing_Machine_Metal_Sheet_F = new CustomIcon("chrono/MetalSheet6");
+	public static final CustomIcon Casing_Machine_Metal_Sheet_F = Internal_Casing_Machine_Metal_Sheet_F;
 	private static final CustomIcon Internal_Overlay_Machine_Cyber_A = new CustomIcon("chrono/CyberPanel");
 	public static final CustomIcon Overlay_Machine_Cyber_A = Internal_Overlay_Machine_Cyber_A;
 	private static final CustomIcon Internal_Overlay_Machine_Cyber_B = new CustomIcon("chrono/CyberPanel2");

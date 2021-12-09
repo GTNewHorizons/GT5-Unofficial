@@ -37,6 +37,7 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.material.nuclear.NUCLIDE;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -107,7 +108,7 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 		.addStructureInfo("All other hatches must be IV+ tier.")
 		.addStructureInfo("14+ Output Hatches, 4+ Input Hatches, 4x Dynamo Hatches")
 		.addStructureInfo("2x Maintenance Hatches, 4x Mufflers")
-		.toolTipFinisher("GT++");
+		.toolTipFinisher(CORE.GT_Tooltip_Builder);
 		return tt;
 	}
 
