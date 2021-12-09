@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
+import com.mojang.authlib.GameProfile;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
@@ -17,7 +18,6 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import ic2.core.IHasGui;
-import ic2.core.Ic2Items;
 import ic2.core.item.ItemToolbox;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,6 +26,8 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import java.util.HashSet;
+
+import net.minecraftforge.common.util.FakePlayer;
 
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_AUTOMAINTENANCE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_AUTOMAINTENANCE_GLOW;
@@ -131,8 +133,17 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, byte aSide, float aX, float aY, float aZ) {
-        if (aBaseMetaTileEntity.isClientSide()) return true;
-        if (aSide == aBaseMetaTileEntity.getFrontFacing()) aBaseMetaTileEntity.openGUI(aPlayer);
+        if (aBaseMetaTileEntity.isClientSide())
+            return true;
+        if (aSide == aBaseMetaTileEntity.getFrontFacing()) {
+            // only allow OC robot fake player
+            if (aPlayer instanceof FakePlayer && !aPlayer.getGameProfile().getName().endsWith(".robot"))
+                return true;
+            if (aPlayer.getCurrentEquippedItem() != null && aPlayer.getCurrentEquippedItem().getItem() instanceof ItemToolbox)
+                applyToolbox(aPlayer.getCurrentEquippedItem(), aPlayer);
+            else
+                aBaseMetaTileEntity.openGUI(aPlayer);
+        }
         return true;
     }
 
@@ -225,23 +236,10 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
         
         // Allow IC2 Toolbox with tools to function for maint issues.
         if (aStack.getItem() instanceof ItemToolbox && aPlayer instanceof EntityPlayer) {
-        	EntityPlayer aPlayerEntity = (EntityPlayer) aPlayer;
-        	ItemToolbox aToolbox = (ItemToolbox) aStack.getItem();
-        	IHasGui aToolboxGUI = aToolbox.getInventory(aPlayerEntity, aStack);
-        	HashSet<ItemStack> aToolboxContents = new HashSet<ItemStack>();
-        	for (int i=0; i<aToolboxGUI.getSizeInventory(); i++) {
-        		ItemStack aTemp = aToolboxGUI.getStackInSlot(i);
-        		if (aTemp != null) {
-        			aToolboxContents.add(aTemp);
-        		}
-        	}
-        	if (!aToolboxContents.isEmpty()) {
-        		for (ItemStack aTool : aToolboxContents) {
-        			onToolClick(aTool, aPlayer);
-        		}
-        	}
+            applyToolbox(aStack, (EntityPlayer)aPlayer);
+            return;
         }
-        
+
         if (GT_Utility.isStackInList(aStack, GregTech_API.sWrenchList) && !mWrench && GT_ModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer))
             mWrench = true;
         if (GT_Utility.isStackInList(aStack, GregTech_API.sScrewdriverList) && !mScrewdriver && GT_ModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer))
@@ -265,6 +263,13 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
             } catch (Exception ignored) {
             }
         }
+    }
+
+    private void applyToolbox(ItemStack aStack, EntityPlayer aPlayer) {
+        ItemToolbox aToolbox = (ItemToolbox) aStack.getItem();
+        IHasGui aToolboxGUI = aToolbox.getInventory(aPlayer, aStack);
+        for (int i=0; i<aToolboxGUI.getSizeInventory(); i++)
+            onToolClick(aToolboxGUI.getStackInSlot(i), aPlayer);
     }
 
     @Override
