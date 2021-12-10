@@ -54,6 +54,7 @@ import gtPlusPlus.xmod.gregtech.loaders.GT_Material_Loader;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_BlastSmelterGT_GTNH;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_MultisUsingFluidInsteadOfCells;
 import gtPlusPlus.xmod.thaumcraft.commands.CommandDumpAspects;
+import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.IIcon;
@@ -499,38 +500,65 @@ public class GTplusplus implements ActionListener {
 		// Force - Alloying
 		mGregMatLoader.enableMaterial(Materials.Force);
 	}
-	
-	private static final HashMap<String, Item> sMissingMappings = new HashMap<String, Item>();
+
+	private static final HashMap<String, Item> sMissingItemMappings = new HashMap<String, Item>();
+	private static final HashMap<String, Block> sMissingBlockMappings = new HashMap<String, Block>();
 	
 	private static void processMissingMappings() {
-		sMissingMappings.put("miscutils:Ammonium", GameRegistry.findItem(CORE.MODID, "itemCellAmmonium"));
-		sMissingMappings.put("miscutils:Hydroxide", GameRegistry.findItem(CORE.MODID, "itemCellHydroxide"));
-		sMissingMappings.put("miscutils:BerylliumHydroxide", GameRegistry.findItem(CORE.MODID, "itemCellmiscutils:BerylliumHydroxide"));		
-		sMissingMappings.put("miscutils:Bromine", GameRegistry.findItem(CORE.MODID, "itemCellBromine"));
-		sMissingMappings.put("miscutils:Krypton", GameRegistry.findItem(CORE.MODID, "itemCellKrypton"));
-		sMissingMappings.put("miscutils:itemCellZirconiumTetrafluoride", GameRegistry.findItem(CORE.MODID, "ZirconiumTetrafluoride"));
-		sMissingMappings.put("miscutils:Li2BeF4", GameRegistry.findItem(CORE.MODID, "itemCellLithiumTetrafluoroberyllate"));
+		sMissingItemMappings.put("miscutils:Ammonium", GameRegistry.findItem(CORE.MODID, "itemCellAmmonium"));
+		sMissingItemMappings.put("miscutils:Hydroxide", GameRegistry.findItem(CORE.MODID, "itemCellHydroxide"));
+		sMissingItemMappings.put("miscutils:BerylliumHydroxide", GameRegistry.findItem(CORE.MODID, "itemCellmiscutils:BerylliumHydroxide"));		
+		sMissingItemMappings.put("miscutils:Bromine", GameRegistry.findItem(CORE.MODID, "itemCellBromine"));
+		sMissingItemMappings.put("miscutils:Krypton", GameRegistry.findItem(CORE.MODID, "itemCellKrypton"));
+		sMissingItemMappings.put("miscutils:itemCellZirconiumTetrafluoride", GameRegistry.findItem(CORE.MODID, "ZirconiumTetrafluoride"));
+		sMissingItemMappings.put("miscutils:Li2BeF4", GameRegistry.findItem(CORE.MODID, "itemCellLithiumTetrafluoroberyllate"));
+		
+		// Cryolite
+		sMissingBlockMappings.put("miscutils:oreCryolite", GameRegistry.findBlock(CORE.MODID, "oreCryoliteF"));
+		sMissingItemMappings.put("miscutils:itemDustTinyCryolite", GameRegistry.findItem(CORE.MODID, "itemDustTinyCryoliteF"));
+		sMissingItemMappings.put("miscutils:itemDustSmallCryolite", GameRegistry.findItem(CORE.MODID, "itemDustSmallCryoliteF"));
+		sMissingItemMappings.put("miscutils:itemDustCryolite", GameRegistry.findItem(CORE.MODID, "itemDustCryoliteF"));
+		sMissingItemMappings.put("miscutils:dustPureCryolite", GameRegistry.findItem(CORE.MODID, "dustPureCryoliteF"));
+		sMissingItemMappings.put("miscutils:dustImpureCryolite", GameRegistry.findItem(CORE.MODID, "dustImpureCryoliteF"));
+		sMissingItemMappings.put("miscutils:crushedCryolite", GameRegistry.findItem(CORE.MODID, "crushedCryoliteF"));
+		sMissingItemMappings.put("miscutils:crushedPurifiedCryolite", GameRegistry.findItem(CORE.MODID, "crushedPurifiedCryoliteF"));
+		sMissingItemMappings.put("miscutils:crushedCentrifugedCryolite", GameRegistry.findItem(CORE.MODID, "crushedCentrifugedCryoliteF"));
+		sMissingItemMappings.put("miscutils:oreCryolite", GameRegistry.findItem(CORE.MODID, "oreCryoliteF"));
 	}
 	
     @Mod.EventHandler
     public void missingMapping(FMLMissingMappingsEvent event) {
     	processMissingMappings();
-        for (FMLMissingMappingsEvent.MissingMapping mapping : event.get()) {
-            if (mapping.type == GameRegistry.Type.ITEM) {
-                Item aReplacement = sMissingMappings.get(mapping.name);
-                if (aReplacement != null) {
-                	remap(aReplacement, mapping);
-                }
-                else {
-                	//Logger.INFO("Unable to remap: "+mapping.name+", item has no replacement mapping.");
-                }
-            }
-        }
+    	for (FMLMissingMappingsEvent.MissingMapping mapping : event.get()) {
+    		if (mapping.type == GameRegistry.Type.ITEM) {
+    			Item aReplacement = sMissingItemMappings.get(mapping.name);
+    			if (aReplacement != null) {
+    				remap(aReplacement, mapping);
+    			}
+    			else {
+    				//Logger.INFO("Unable to remap: "+mapping.name+", item has no replacement mapping.");
+    			}
+    		}
+    		else if (mapping.type == GameRegistry.Type.BLOCK) {
+    			Block aReplacement = sMissingBlockMappings.get(mapping.name);
+    			if (aReplacement != null) {
+    				remap(aReplacement, mapping);
+    			}
+    			else {
+    				//Logger.INFO("Unable to remap: "+mapping.name+", block has no replacement mapping.");
+    			}
+    		}
+    	}
     }
     
-    private void remap(Item item, FMLMissingMappingsEvent.MissingMapping mapping) {
+    private static void remap(Item item, FMLMissingMappingsEvent.MissingMapping mapping) {
         mapping.remap(item);
         Logger.INFO("Remapping item " + mapping.name + " to " + CORE.MODID + ":" + item.getUnlocalizedName());
+    }
+    
+    private static void remap(Block block, FMLMissingMappingsEvent.MissingMapping mapping) {
+        mapping.remap(block);
+        Logger.INFO("Remapping block " + mapping.name + " to " + CORE.MODID + ":" + block.getUnlocalizedName());
     }
 
 }

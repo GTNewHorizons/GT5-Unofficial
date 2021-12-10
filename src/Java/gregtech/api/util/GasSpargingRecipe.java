@@ -1,32 +1,31 @@
 package gregtech.api.util;
 
+import gtPlusPlus.api.objects.data.AutoMap;
+import gtPlusPlus.core.util.data.ArrayUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 public class GasSpargingRecipe implements Comparable<GasSpargingRecipe> {
 
 	public final FluidStack mInputGas;
 	public final FluidStack mInputSpentFuel;
+	public final FluidStack mOutputSpargedFuel;
 	public final int[] mMaxOutputQuantity;
 	public final FluidStack[] mFluidInputs;
 	public final FluidStack[] mFluidOutputs;
-	public final ItemStack[] mInputs;
-	public final ItemStack[] mOutputs;
 	public final int mDuration;
 	public final int mEUt;
 
-	public GasSpargingRecipe(FluidStack aSpargeGas, FluidStack aSpentFuel, FluidStack[] aOutputs, int[] aMaxOutputQuantity) {
+	public GasSpargingRecipe(FluidStack aSpargeGas, FluidStack aSpentFuel, FluidStack aSpargedFuel, FluidStack[] aOutputs, int[] aMaxOutputQuantity) {
 		mInputGas = aSpargeGas;
 		mInputSpentFuel = aSpentFuel;
+		mOutputSpargedFuel = aSpargedFuel;
 		mFluidInputs = new FluidStack[] {mInputGas, mInputSpentFuel};
+		aOutputs = ArrayUtils.insertElementAtIndex(aOutputs, 0, aSpargeGas);
+		aOutputs = ArrayUtils.insertElementAtIndex(aOutputs, 1, aSpargedFuel);
 		mFluidOutputs = aOutputs;
 		mMaxOutputQuantity = aMaxOutputQuantity;
-		mInputs = new ItemStack[] {GT_Utility.getFluidDisplayStack(mFluidInputs[0], true), GT_Utility.getFluidDisplayStack(mFluidInputs[1], true)};
-		mOutputs = new ItemStack[mFluidOutputs.length];
-		for (int i=0; i<mFluidOutputs.length;i++) {
-			mOutputs[i] = GT_Utility.getFluidDisplayStack(mFluidOutputs[i], true);
-		}
 		mDuration = 20 * 60 * 5;
 		mEUt = MaterialUtils.getVoltageForTier(3);
 	}
@@ -42,7 +41,14 @@ public class GasSpargingRecipe implements Comparable<GasSpargingRecipe> {
 		return false;
 	}
 
-	public int getMaxOutput(final int aIndex) {
+	public int getMaxOutput(int aIndex) {
+		if (aIndex == 0) {
+			return mInputGas.amount * 100;
+		}
+		else if (aIndex == 1) {
+			return mOutputSpargedFuel.amount * 100;
+		}
+		aIndex -= 2;
 		if ((aIndex < 0) || (aIndex >= this.mMaxOutputQuantity.length)) {
 			return 10000;
 		}
@@ -59,6 +65,15 @@ public class GasSpargingRecipe implements Comparable<GasSpargingRecipe> {
 		}
 		return true;
 	}
+	
+	public boolean containsInputs(FluidStack aSpargeGas, FluidStack aSpentFuel) {
+		if (aSpargeGas != null && aSpargeGas.getFluid().equals(this.mInputGas.getFluid())) {
+			if (aSpentFuel != null && aSpentFuel.getFluid().equals(this.mInputSpentFuel.getFluid())) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	@Override
 	public int compareTo(GasSpargingRecipe o) {
@@ -69,6 +84,16 @@ public class GasSpargingRecipe implements Comparable<GasSpargingRecipe> {
 		} else {
 			return -1;
 		}
+	}
+	
+	public String[] getRecipeInfo() {
+		AutoMap<String> result = new AutoMap<String>();
+		result.put("Input "+ItemUtils.getArrayStackNames(mFluidInputs));
+		result.put("Output "+ItemUtils.getArrayStackNames(mFluidOutputs));
+		result.put("Duration: "+mDuration);
+		result.put("EU/t: "+mEUt);	
+		String s[] = result.toArray();	
+		return s;
 	}
 
 }

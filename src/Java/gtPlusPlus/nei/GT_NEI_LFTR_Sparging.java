@@ -170,13 +170,17 @@ public class GT_NEI_LFTR_Sparging extends TemplateRecipeHandler {
 		final TemplateRecipeHandler.CachedRecipe tObject = this.arecipes.get(aRecipeIndex);
 		if ((tObject instanceof GasSpargingRecipeNEI)) {
 			final GasSpargingRecipeNEI tRecipe = (GasSpargingRecipeNEI) tObject;
-			ItemStack aInput = tRecipe.mInputs.get(0).item;
+			ItemStack aSpargeInput = tRecipe.mOutputs.get(0).item;
+			ItemStack aSpentFuel = tRecipe.mOutputs.get(1).item;
 			for (final PositionedStack tStack : tRecipe.mOutputs) {
 				if (aStack == tStack.item) {
-					if (ItemList.Display_Fluid.isStackEqual(tStack.item, true, true) && ((FixedPositionedStack) tStack).mChance < 10000) {						
-						if (GT_Utility.areStacksEqual(aStack, aInput, true)) {
-							currenttip.add("The amount returned is the remainder after all other outputs.");
+					if (ItemList.Display_Fluid.isStackEqual(tStack.item, true, true)) {	
+						if (GT_Utility.areStacksEqual(aStack, aSpentFuel, true)) {
+							break;
 						}
+						if (GT_Utility.areStacksEqual(aStack, aSpargeInput, true)) {
+							currenttip.add("The amount returned is the remainder after all other outputs.");
+						}						
 						currenttip.add("Maximum Output: " + (((FixedPositionedStack) tStack).mChance / 100) + "." + ((((FixedPositionedStack) tStack).mChance % 100) < 10 ? "0" + (((FixedPositionedStack) tStack).mChance % 100) : Integer.valueOf(((FixedPositionedStack) tStack).mChance % 100)) + "L");
 						break;
 					}
@@ -259,10 +263,10 @@ public class GT_NEI_LFTR_Sparging extends TemplateRecipeHandler {
 			int tStartIndex = 0;
 			if (tRecipe.mFluidInputs.length > 0) {
 				if ((tRecipe.mFluidInputs[0] != null) && (tRecipe.mFluidInputs[0].getFluid() != null)) {
-					this.mInputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(tRecipe.mFluidInputs[0], true), 12, 5));
+					this.mInputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(tRecipe.mFluidInputs[0], true), 30, 5));
 				}
 				if ((tRecipe.mFluidInputs.length > 1) && (tRecipe.mFluidInputs[1] != null) && (tRecipe.mFluidInputs[1].getFluid() != null)) {
-					this.mInputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(tRecipe.mFluidInputs[1], true), 30, 5));
+					this.mInputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(tRecipe.mFluidInputs[1], true), 12, 5));
 				}
 				if ((tRecipe.mFluidInputs.length > 2) && (tRecipe.mFluidInputs[2] != null) && (tRecipe.mFluidInputs[2].getFluid() != null)) {
 					this.mInputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(tRecipe.mFluidInputs[2], true), 48, 5));
@@ -290,10 +294,10 @@ public class GT_NEI_LFTR_Sparging extends TemplateRecipeHandler {
 			tStartIndex = 0;
 			if (tRecipe.mFluidOutputs.length > 0) {
 				if ((tRecipe.mFluidOutputs[0] != null) && (tRecipe.mFluidOutputs[0].getFluid() != null)) {
-					this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(tRecipe.mFluidOutputs[0], true), 102, 5, tRecipe.getMaxOutput(tStartIndex++)));
+					this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(tRecipe.mFluidOutputs[0], false), 120, 5, tRecipe.getMaxOutput(tStartIndex++)));
 				}
 				if ((tRecipe.mFluidOutputs.length > 1) && (tRecipe.mFluidOutputs[1] != null) && (tRecipe.mFluidOutputs[1].getFluid() != null)) {
-					this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(tRecipe.mFluidOutputs[1], false), 120, 5, tRecipe.getMaxOutput(tStartIndex++)));
+					this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(tRecipe.mFluidOutputs[1], true), 102, 5, tRecipe.getMaxOutput(tStartIndex++)));
 				}
 				if ((tRecipe.mFluidOutputs.length > 2) && (tRecipe.mFluidOutputs[2] != null) && (tRecipe.mFluidOutputs[2].getFluid() != null)) {
 					this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(tRecipe.mFluidOutputs[2], false), 138, 5, tRecipe.getMaxOutput(tStartIndex++)));

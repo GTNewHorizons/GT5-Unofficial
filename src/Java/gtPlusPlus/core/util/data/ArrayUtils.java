@@ -26,6 +26,18 @@ public class ArrayUtils {
 		return series;
 	}
 	
+	public static <V> V[] insertElementAtIndex(V[] aArray, int aIndex, V aObjectToInsert) {
+		V[] newArray = Arrays.copyOf(aArray, aArray.length + 1);
+		for (int i=0;i<aIndex;i++) {
+			newArray[i] = aArray[i];
+		}
+		newArray[aIndex] = aObjectToInsert;
+		for (int i=(aIndex+1);i<newArray.length;i++) {
+			newArray[i] = aArray[i-1];
+		}		
+		return newArray;
+	}
+	
 	/*public static <V> Object getMostCommonElement(List<V> list) {
 		Optional r = list.stream().map(V::getTextureSet).collect(Collectors.groupingBy(Function.identity(), Collectors.counting())).entrySet().stream().max(Map.Entry.comparingByValue()).map(Map.Entry::getKey);
 		return r.get();

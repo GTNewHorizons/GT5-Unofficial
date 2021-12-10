@@ -391,7 +391,7 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 		// Warm up for 4~ minutes
 		Logger.WARNING("Checking LFTR recipes.");
 		if (mEfficiency < this.getMaxEfficiency(null)) {
-			this.mProgresstime = 1;
+			this.mProgresstime = 0;
 			this.mMaxProgresstime = 1;
 			this.mEfficiencyIncrease = 2;
 			Logger.WARNING("Warming Up! "+this.mEfficiency+"/"+this.getMaxEfficiency(null));
@@ -636,8 +636,8 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 			if (this.mSpargeTicks >= this.mSpargeTime) {
 				this.mSpargeTime = 0;
 				this.mSpargeTicks = 0;
-				Logger.WARNING("Sparging!");
-				trySparge();
+				//Logger.WARNING("Sparging!");
+				//trySparge();
 			}
 		}		
 		super.onPostTick(aBaseMetaTileEntity, aTick);

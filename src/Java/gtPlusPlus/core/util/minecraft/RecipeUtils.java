@@ -506,10 +506,7 @@ public static int mInvalidID = 1;
 		result.put("Is Enabled? "+m.mEnabled);
 		result.put("Special Value: "+m.mSpecialValue);
 		result.put("=====================================");		
-		String s[] = new String[result.size()];
-		for (int i=0;i<result.size();i++) {
-			s[i] = result.get(i);
-		}		
+		String s[] = result.toArray();	
 		return s;
 	}
 

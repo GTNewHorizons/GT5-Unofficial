@@ -53,7 +53,7 @@ public class RecipeLoader_LFTR {
 		//1l/10t= 1000l/2.5hr LiFBeF2ZrF4U235
 
 		configureSparging();
-		FluidStack Li2BeF4 = NUCLIDE.Li2BeF4.getFluidStack(36);
+		FluidStack Li2BeF4 = NUCLIDE.Li2BeF4.getFluidStack(200);
 
 		//LiFBeF2ThF4UF4 - T3
 		GT_Recipe LFTR1 = new GTPP_Recipe(
@@ -62,16 +62,16 @@ public class RecipeLoader_LFTR {
 				new ItemStack[] {},
 				null, new int[] {10000, 10000, 5000, 2500},
 				new FluidStack[] {
-						NUCLIDE.LiFBeF2ThF4UF4.getFluidStack(18),
+						NUCLIDE.LiFBeF2ThF4UF4.getFluidStack(100),
 						Li2BeF4
 				},
 				new FluidStack[] {
-						NUCLIDE.LiFBeF2UF4FP.getFluidStack(18),
-						NUCLIDE.LiFBeF2ThF4.getFluidStack(36),
-						FLUORIDES.URANIUM_HEXAFLUORIDE.getFluidStack(10),
-						FLUORIDES.URANIUM_HEXAFLUORIDE.getFluidStack(5)
+						NUCLIDE.LiFBeF2UF4FP.getFluidStack(100),
+						NUCLIDE.LiFBeF2ThF4.getFluidStack(200),
+						FLUORIDES.URANIUM_HEXAFLUORIDE.getFluidStack(20),
+						FLUORIDES.URANIUM_HEXAFLUORIDE.getFluidStack(10)
 				},
-				9000,//time
+				400 * 20,//time
 				0,//cost
 				8192*4//fuel value
 				);
@@ -83,16 +83,16 @@ public class RecipeLoader_LFTR {
 				new ItemStack[] {},
 				null, new int[] {10000, 10000, 2500, 1250},
 				new FluidStack[] {
-						NUCLIDE.LiFBeF2ZrF4UF4.getFluidStack(18),
+						NUCLIDE.LiFBeF2ZrF4UF4.getFluidStack(100),
 						Li2BeF4
 				},
 				new FluidStack[] {
-						NUCLIDE.LiFBeF2UF4FP.getFluidStack(12),
-						NUCLIDE.LiFBeF2ThF4.getFluidStack(24),
-						FLUORIDES.URANIUM_HEXAFLUORIDE.getFluidStack(4),
-						FLUORIDES.URANIUM_HEXAFLUORIDE.getFluidStack(2)						
+						NUCLIDE.LiFBeF2UF4FP.getFluidStack(50),
+						NUCLIDE.LiFBeF2ThF4.getFluidStack(100),
+						FLUORIDES.URANIUM_HEXAFLUORIDE.getFluidStack(10),
+						FLUORIDES.URANIUM_HEXAFLUORIDE.getFluidStack(5)						
 				},
-				6000,//time
+				400 * 20,//time
 				0,//cost
 				8192//fuel value
 				);
@@ -104,16 +104,16 @@ public class RecipeLoader_LFTR {
 				new ItemStack[] {},
 				null, new int[] {10000, 10000, 1000, 500},
 				new FluidStack[] {
-						NUCLIDE.LiFBeF2ZrF4U235.getFluidStack(18),
+						NUCLIDE.LiFBeF2ZrF4U235.getFluidStack(100),
 						Li2BeF4
 				},
 				new FluidStack[] {
-						NUCLIDE.LiFBeF2UF4FP.getFluidStack(6),
-						NUCLIDE.LiFThF4.getFluidStack(12),
-						FLUORIDES.URANIUM_HEXAFLUORIDE.getFluidStack(2),
-						FLUORIDES.URANIUM_HEXAFLUORIDE.getFluidStack(1)
+						NUCLIDE.LiFBeF2UF4FP.getFluidStack(25),
+						NUCLIDE.LiFThF4.getFluidStack(50),
+						FLUORIDES.URANIUM_HEXAFLUORIDE.getFluidStack(4),
+						FLUORIDES.URANIUM_HEXAFLUORIDE.getFluidStack(2)
 				},
-				3000,//time
+				100 *20,//time
 				0,//cost
 				8192//fuel value
 				);
@@ -122,9 +122,8 @@ public class RecipeLoader_LFTR {
 		GasSpargingRecipeMap.addRecipe(
 				new FluidStack(mSpargeGases.get(0), 50),
 				NUCLIDE.LiFBeF2UF4FP.getFluidStack(50),
+				NUCLIDE.Sparged_LiFBeF2UF4FP.getFluidStack(50),
 				new FluidStack[] {
-						NUCLIDE.Sparged_LiFBeF2UF4FP.getFluidStack(50),
-						new FluidStack(mNobleGases.get(0), 50),
 						new FluidStack(mNobleGases.get(1), 10),
 						new FluidStack(mNobleGases.get(2), 10),
 						new FluidStack(mNobleGases.get(3), 10),
@@ -132,31 +131,29 @@ public class RecipeLoader_LFTR {
 						new FluidStack(mNobleGases.get(5), 10)
 				},
 				new int[] {
-						10000, 5000, 1000, 1000, 1000, 1000, 1000
+						1000, 1000, 1000, 1000, 1000
 				});
 
 		GasSpargingRecipeMap.addRecipe(
 				new FluidStack(mSpargeGases.get(1), 50),
 				NUCLIDE.LiFThF4.getFluidStack(50),
+				NUCLIDE.Sparged_LiFThF4.getFluidStack(50),
 				new FluidStack[] {
-						NUCLIDE.Sparged_LiFThF4.getFluidStack(50),
-						new FluidStack(mFluorideGases.get(0), 50),
-						new FluidStack(mFluorideGases.get(1), 10),
-						new FluidStack(mFluorideGases.get(2), 10),
-						new FluidStack(mFluorideGases.get(3), 10),
-						new FluidStack(mFluorideGases.get(4), 10),
-						new FluidStack(mFluorideGases.get(5), 10)
+						new FluidStack(mFluorideGases.get(1), 5),
+						new FluidStack(mFluorideGases.get(2), 5),
+						new FluidStack(mFluorideGases.get(3), 5),
+						new FluidStack(mFluorideGases.get(4), 5),
+						new FluidStack(mFluorideGases.get(5), 5)
 				},
 				new int[] {
-						10000, 5000, 1000, 1000, 1000, 1000, 1000
+						500, 500, 500, 500, 500
 				});
 
 		GasSpargingRecipeMap.addRecipe(
 				new FluidStack(mSpargeGases.get(1), 50),
 				NUCLIDE.LiFBeF2ThF4.getFluidStack(50),
+				NUCLIDE.Sparged_LiFBeF2ThF4.getFluidStack(50),
 				new FluidStack[] {
-						NUCLIDE.Sparged_LiFBeF2ThF4.getFluidStack(50),
-						new FluidStack(mFluorideGases.get(0), 50),
 						new FluidStack(mFluorideGases.get(1), 10),
 						new FluidStack(mFluorideGases.get(2), 10),
 						new FluidStack(mFluorideGases.get(3), 10),
@@ -164,7 +161,7 @@ public class RecipeLoader_LFTR {
 						new FluidStack(mFluorideGases.get(5), 10)
 				},
 				new int[] {
-						10000, 5000, 1000, 1000, 1000, 1000, 1000
+						1000, 1000, 1000, 1000, 1000
 				});
 	
 		GTPP_Recipe.GTPP_Recipe_Map.sLiquidFluorineThoriumReactorRecipes.add(LFTR1);

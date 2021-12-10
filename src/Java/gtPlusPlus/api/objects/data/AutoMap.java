@@ -153,14 +153,12 @@ public class AutoMap<V> implements Iterable<V>, Cloneable, Serializable, Collect
 	}
 	
 	@SuppressWarnings("unchecked")
-	public synchronized V[] toArray() {		
-		Collection<V> col = this.mInternalMap.values();	
-		List<V> abcList = new ArrayList<V>();		
-		for (V g : col) {
-			abcList.add(g);
+	public V[] toArray() {
+		V[] toR = (V[]) java.lang.reflect.Array.newInstance(mInternalMap.get(0).getClass(), mInternalMap.size());
+		for (int i = 0; i < mInternalMap.size(); i++) {
+			toR[i] = mInternalMap.get(i);
 		}
-		return (V[]) abcList.toArray();
-		//return (V[]) new AutoArray(this).getGenericArray();
+		return toR;
 	}
 
 	public synchronized final int getInternalID() {

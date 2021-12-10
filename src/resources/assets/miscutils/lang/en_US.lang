@@ -1418,14 +1418,14 @@ item.crushedCentrifugedFlorencite.name=Centrifuged Crushed Florencite Ore
 item.crushedPurifiedFlorencite.name=Purified Crushed Florencite Ore
 item.dustImpureFlorencite.name=Impure Florencite Dust
 item.dustPureFlorencite.name=Purified Florencite Dust
-item.itemDustCryolite.name=Cryolite Dust
-item.itemDustTinyCryolite.name=Tiny Pile of Cryolite Dust
-item.itemDustSmallCryolite.name=Small Pile of Cryolite Dust
-item.crushedCryolite.name=Crushed Cryolite Ore
-item.crushedCentrifugedCryolite.name=Centrifuged Crushed Cryolite Ore
-item.crushedPurifiedCryolite.name=Purified Crushed Cryolite Ore
-item.dustImpureCryolite.name=Impure Cryolite Dust
-item.dustPureCryolite.name=Purified Cryolite Dust
+item.itemDustCryoliteF.name=Cryolite (F) Dust
+item.itemDustTinyCryoliteF.name=Tiny Pile of Cryolite (F) Dust
+item.itemDustSmallCryoliteF.name=Small Pile of Cryolite (F) Dust
+item.crushedCryoliteF.name=Crushed Cryolite (F) Ore
+item.crushedCentrifugedCryoliteF.name=Centrifuged Crushed Cryolite (F) Ore
+item.crushedPurifiedCryoliteF.name=Purified Crushed Cryolite (F) Ore
+item.dustImpureCryoliteF.name=Impure Cryolite (F) Dust
+item.dustPureCryoliteF.name=Purified Cryolite (F) Dust
 item.itemDustTinyYellorium.name=Tiny Pile of Yellorium Dust
 item.itemDustSmallYellorium.name=Small Pile of Yellorium Dust
 item.crushedYellorium.name=Crushed Yellorium Ore
@@ -1921,7 +1921,7 @@ tile.OreHibonite.name=Hibonite Ore
 tile.OreCerite.name=Cerite Ore
 tile.OreFluorcaphite.name=Fluorcaphite Ore
 tile.OreFlorencite.name=Florencite Ore
-tile.OreCryolite.name=Cryolite Ore
+tile.OreCryoliteF.name=Cryolite (F) Ore
 
 //Misc
 tile.blockMFEffect.name=Special
@@ -3290,3 +3290,10 @@ item.itemDustAmmoniumBifluoride.name=Ammonium Bifluoride Dust
 item.itemDustTinyAmmoniumTetrafluoroberyllate.name=Tiny Ammonium Tetrafluoroberyllate Dust
 item.itemDustSmallAmmoniumTetrafluoroberyllate.name=Small Ammonium Tetrafluoroberyllate Dust
 item.itemDustAmmoniumTetrafluoroberyllate.name=Ammonium Tetrafluoroberyllate Dust
+
+//Added 10/12/21
+item.ImpureLiFBeF2.name=Impure LiFBeF2 Cell
+item.itemCellHeliumSpargedLiFBeF2UF4FP.name=Helium Sparged LiFBeF2UF4FP Cell
+item.itemCellFluorineSpargedLiFThF4.name=Fluorine Sparged LiFThF4 Cell
+item.itemCellFluorineSpargedLiFBeF2ThF4.name=Fluorine Sparged LiFBeF2ThF4 Cell
+

@@ -7,6 +7,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.gui.GT_Container_MultiMachine;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
+import gregtech.api.interfaces.IToolStats;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
@@ -30,6 +31,7 @@ import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.preloader.CORE_Preloader;
 import gtPlusPlus.preloader.asm.AsmConfig;
@@ -51,6 +53,8 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
+
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.lang.reflect.InvocationTargetException;
@@ -2392,18 +2396,41 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
 	@Override
 	public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, byte aSide, float aX,
 			float aY, float aZ) {		
-		//Do Super
-		boolean aSuper = super.onRightclick(aBaseMetaTileEntity, aPlayer, aSide, aX, aY, aZ);
 		// Do Things
 		if (this.getBaseMetaTileEntity().isServerSide()) {
+			//Logger.INFO("Right Clicked Controller.");
 			ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
-			if (tCurrentItem != null) {				
-				if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sSoftHammerList)) {	
-
-				}
+			if (tCurrentItem != null) {	
+				//Logger.INFO("Holding Item.");
+				if (tCurrentItem.getItem() instanceof GT_MetaGenerated_Tool) {
+					//Logger.INFO("Is GT_MetaGenerated_Tool.");	
+					int[] aOreID = OreDictionary.getOreIDs(tCurrentItem);
+					for (int id : aOreID) {
+						// Plunger
+						if (OreDictionary.getOreName(id).equals("craftingToolPlunger")) {
+							//Logger.INFO("Is Plunger.");	
+							return onPlungerRightClick(aPlayer, aSide, aX, aY, aZ);							
+						}
+					}
+				}				
 			}
 		}
+		//Do Super
+		boolean aSuper = super.onRightclick(aBaseMetaTileEntity, aPlayer, aSide, aX, aY, aZ);
 		return aSuper;
+	}
+
+	public boolean onPlungerRightClick(EntityPlayer aPlayer, byte aSide, float aX, float aY, float aZ) {
+		int aHatchIndex = 0;
+		PlayerUtils.messagePlayer(aPlayer, "Trying to clear "+mOutputHatches.size()+" output hatches.");
+		for (GT_MetaTileEntity_Hatch_Output hatch : this.mOutputHatches) {
+			if (hatch.mFluid != null) {
+				PlayerUtils.messagePlayer(aPlayer, "Clearing "+hatch.mFluid.amount+"L of "+hatch.mFluid.getLocalizedName()+" from hatch "+aHatchIndex+".");
+				hatch.mFluid = null;
+			}
+			aHatchIndex++;
+		}
+		return aHatchIndex > 0;
 	}
 
 	@Override
