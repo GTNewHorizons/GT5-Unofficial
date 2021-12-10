@@ -17,7 +17,7 @@ public class ConsumerNode extends Node {
         return !mTileEntity.isInvalid();
     }
 
-    public int injectEnergy(int aVoltage, int aMaxAmps) {
+    public int injectEnergy(long aVoltage, long aMaxAmps) {
         return 0;
     }
 }

@@ -18,7 +18,7 @@ public class EmptyPowerConsumer extends ConsumerNode{
     }
 
     @Override
-    public int injectEnergy(int aVoltage, int aMaxAmps) {
+    public int injectEnergy(long aVoltage, long aMaxAmps) {
         BaseMetaPipeEntity tPipe = (BaseMetaPipeEntity) mTileEntity;
         PowerNodePath tPath =(PowerNodePath) tPipe.getNodePath();
         tPath.applyVoltage(aVoltage,true);

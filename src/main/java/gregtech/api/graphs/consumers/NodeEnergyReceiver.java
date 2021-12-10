@@ -23,7 +23,7 @@ public class NodeEnergyReceiver extends ConsumerNode {
     }
 
     @Override
-    public int injectEnergy(int aVoltage, int aMaxAmps) {
+    public int injectEnergy(long aVoltage, long aMaxAmps) {
         ForgeDirection tDirection = ForgeDirection.getOrientation(mSide);
         int rfOut = GT_Utility.safeInt(aVoltage * GregTech_API.mEUtoRF / 100);
         int ampsUsed = 0;
