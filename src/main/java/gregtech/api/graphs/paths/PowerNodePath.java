@@ -32,13 +32,13 @@ public class PowerNodePath extends NodePath {
             mTick = tNewTime;
             this.mVoltage = aVoltage;
             this.mCountUp = aCountUp;
-        } else if (this.mCountUp != aCountUp && (aVoltage - mLoss)> this.mVoltage || aVoltage > this.mVoltage){
+        } else if (this.mCountUp != aCountUp && (aVoltage - mLoss) > this.mVoltage || aVoltage > this.mVoltage) {
             this.mCountUp = aCountUp;
             this.mVoltage = aVoltage;
         }
         if (aVoltage > mMaxVoltage) {
             for (MetaPipeEntity tCable : mPipes) {
-                if (((GT_MetaPipeEntity_Cable)tCable).mVoltage < this.mVoltage) {
+                if (((GT_MetaPipeEntity_Cable) tCable).mVoltage < this.mVoltage) {
                     BaseMetaPipeEntity tBaseCable = (BaseMetaPipeEntity) tCable.getBaseMetaTileEntity();
                     if (tBaseCable != null) {
                         tBaseCable.setToFire();
@@ -48,11 +48,18 @@ public class PowerNodePath extends NodePath {
         }
     }
 
+    private void reset(int aTimePassed) {
+        if (aTimePassed < 0 || aTimePassed > 100) {
+            mAmps = 0;
+        }
+        mAmps = Math.max(0, mAmps - (mMaxAmps * aTimePassed));
+    }
+
     public void addAmps(int aAmps) {
         this.mAmps += aAmps;
         if (this.mAmps > mMaxAmps * 40) {
             for (MetaPipeEntity tCable : mPipes) {
-                if (((GT_MetaPipeEntity_Cable)tCable).mAmperage*40 < this.mAmps) {
+                if (((GT_MetaPipeEntity_Cable) tCable).mAmperage * 40 < this.mAmps) {
                     BaseMetaPipeEntity tBaseCable = (BaseMetaPipeEntity) tCable.getBaseMetaTileEntity();
                     if (tBaseCable != null) {
                         tBaseCable.setToFire();
@@ -95,13 +102,6 @@ public class PowerNodePath extends NodePath {
         return -1;
     }
 
-    private void reset(int aTimePassed) {
-        if (aTimePassed < 0 || aTimePassed > 100) {
-            mAmps = 0;
-        }
-        mAmps = Math.max(0, mAmps - (mMaxAmps * aTimePassed));
-    }
-
     @Override
     protected void processPipes() {
         super.processPipes();
@@ -109,9 +109,9 @@ public class PowerNodePath extends NodePath {
         mMaxVoltage = Integer.MAX_VALUE;
         for (MetaPipeEntity tCable : mPipes) {
             if (tCable instanceof GT_MetaPipeEntity_Cable) {
-                mMaxAmps = Math.min((int)((GT_MetaPipeEntity_Cable) tCable).mAmperage, mMaxAmps);
-                mLoss += (int)((GT_MetaPipeEntity_Cable) tCable).mCableLossPerMeter;
-                mMaxVoltage = Math.min((int)((GT_MetaPipeEntity_Cable) tCable).mVoltage, mMaxVoltage);
+                mMaxAmps = Math.min((int) ((GT_MetaPipeEntity_Cable) tCable).mAmperage, mMaxAmps);
+                mLoss += (int) ((GT_MetaPipeEntity_Cable) tCable).mCableLossPerMeter;
+                mMaxVoltage = Math.min((int) ((GT_MetaPipeEntity_Cable) tCable).mVoltage, mMaxVoltage);
             }
         }
     }

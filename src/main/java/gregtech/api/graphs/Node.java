@@ -6,14 +6,14 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import java.util.ArrayList;
 
-//base Node class
+// base Node class
 public class Node {
     public Node(int aNodeValue,TileEntity aTileEntity,ArrayList<ConsumerNode> aConsumers){
         this.mNodeValue = aNodeValue;
         this.mTileEntity = aTileEntity;
         this.mConsumers = aConsumers;
         mHighestNodeValue = aNodeValue;
-        //you don't want to generate map multiple times in the same tick
+        // you don't want to generate map multiple times in the same tick
         mCreationTime = MinecraftServer.getServer().getTickCounter();
     }
 
