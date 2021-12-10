@@ -983,7 +983,7 @@ public class MyMaterial implements Runnable {
             new short[]{0xa4,0x8f,0x8b},
             "Incoloy-903",
             subscriptNumbers("Fe12Ni10Co8Ti4Mo2Al"),
-            new Werkstoff.Stats().setCentrifuge(true).setBlastFurnace(true).setMeltingPoint(3700).setGas(true),
+            new Werkstoff.Stats().setCentrifuge(true).setBlastFurnace(true).setMeltingPoint(3700),
             Werkstoff.Types.MIXTURE,
             new Werkstoff.GenerationFeatures().onlyDust().addMolten().addMetalItems().addCraftingMetalWorkingItems().addSimpleMetalWorkingItems().addMixerRecipes((short) 6),
             OffsetID + 83,
@@ -1000,7 +1000,7 @@ public class MyMaterial implements Runnable {
             new short[]{0xa0,0xa0,0xa0},
             "Adamantium Alloy",
             subscriptNumbers("Ad5Nq2La3"),
-            new Werkstoff.Stats().setCentrifuge(true).setBlastFurnace(true).setMeltingPoint(5000).setGas(true),
+            new Werkstoff.Stats().setCentrifuge(true).setBlastFurnace(true).setMeltingPoint(5000),
             Werkstoff.Types.MIXTURE,
             new Werkstoff.GenerationFeatures().onlyDust().addMolten().addMetalItems().addCraftingMetalWorkingItems().addSimpleMetalWorkingItems().addMixerRecipes((short) 3),
             OffsetID + 84,
@@ -1008,6 +1008,16 @@ public class MyMaterial implements Runnable {
             new Pair<>(Adamantium, 5),
             new Pair<>(Naquadah, 2),
             new Pair<>(Lanthanum, 3)
+    );
+
+    public static final Werkstoff ethanolGasoline = new Werkstoff(
+            new short[]{0xe4,0xc6,0x61},
+            "Ethanol Gasoline",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            OffsetID + 85,
+            TextureSet.SET_FLUID
     );
 
     @Override

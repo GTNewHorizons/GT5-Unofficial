@@ -22,6 +22,8 @@ public class IsotopeMaterial {
     public final NuclearTextures mTexture;
 
     public IsotopeMaterial(int aID, String aName, String aMaterialName, String aLocalizedName, NuclearTextures aTexture, int aR, int aG, int aB, int aNeutron) {
+        if (mIDMap.get(aID) != null)
+            throw new UnsupportedOperationException("ID:" + aID + " is already used!");
         this.mID = aID;
         this.mNeutron = aNeutron;
         this.mName = aName;

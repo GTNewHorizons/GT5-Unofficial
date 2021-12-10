@@ -64,18 +64,12 @@ public class NaquadahReworkRecipeLoader {
                 2000
         );
 
-        GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[]{
-                        GT_Utility.copyAmount(0, GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Copper, 1))
-                },
-                new FluidStack[]{
-                        Materials.Hydrogen.getGas(8000),
-                        FluidRegistry.getFluidStack("seedoil", 3000)
-                },
-                new FluidStack[]{
-                        towEthyl1Hexanol.getFluidOrGas(1000)
-                },
-                null,
+        GT_Values.RA.addChemicalRecipe(
+                GT_Utility.copyAmount(0, GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Copper, 1)),
+                Materials.Hydrogen.getCells(8),
+                FluidRegistry.getFluidStack("seedoil", 3000),
+                towEthyl1Hexanol.getFluidOrGas(1000),
+                ItemList.Cell_Empty.get(8),
                 400,
                 480
         );
@@ -97,34 +91,23 @@ public class NaquadahReworkRecipeLoader {
                 1920
         );
 
-        GT_Values.RA.addMultiblockChemicalRecipe(
+        GT_Values.RA.addChemicalRecipe(
+                lowQualityNaquadahSolution.get(OrePrefixes.cell, 36),
+                P507.get(OrePrefixes.cell, 4),
                 null,
-                new FluidStack[]{
-                        P507.getFluidOrGas(4000),
-                        lowQualityNaquadahSolution.getFluidOrGas(36000),
-                },
-                new FluidStack[]{
-                        fluorineRichWasteLiquid.getFluidOrGas(6000),
-                        naquadahAdamantiumSolution.getFluidOrGas(30000)
-                },
-                null,
+                fluorineRichWasteLiquid.getFluidOrGas(6000),
+                naquadahAdamantiumSolution.get(OrePrefixes.cell, 30),
+                ItemList.Cell_Empty.get(10),
                 4000,
                 1920
         );
 
-        GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[]{
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Quicklime, 60),
-                },
-                new FluidStack[]{
-                        fluorineRichWasteLiquid.getFluidOrGas(1500)
-                },
-                new FluidStack[]{
-                        wasteLiquid.getFluidOrGas(1000)
-                },
-                new ItemStack[]{
-                        WerkstoffLoader.Fluorspar.get(OrePrefixes.dust, 60)
-                },
+        GT_Values.RA.addChemicalRecipe(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Quicklime, 60),
+                null,
+                fluorineRichWasteLiquid.getFluidOrGas(1500),
+                wasteLiquid.getFluidOrGas(1000),
+                WerkstoffLoader.Fluorspar.get(OrePrefixes.dust, 60),
                 1000,
                 120
         );
@@ -304,19 +287,13 @@ public class NaquadahReworkRecipeLoader {
                 30
         );
 
-        GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[]{
-                        lowQualityNaquadriaPhosphate.get(OrePrefixes.dust, 10),
-                },
-                new FluidStack[]{
-                        Materials.SulfuricAcid.getFluid(30000)
-                },
-                new FluidStack[]{
-                        naquadriaRichSolution.getFluidOrGas(9000)
-                },
-                new ItemStack[]{
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Barite, 1),
-                },
+        GT_Values.RA.addChemicalRecipe(
+                lowQualityNaquadriaPhosphate.get(OrePrefixes.dust, 10),
+                Materials.SulfuricAcid.getCells(30),
+                null,
+                naquadriaRichSolution.getFluidOrGas(9000),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Barite, 1),
+                ItemList.Cell_Empty.get(30),
                 1000,
                 7680
         );
@@ -336,18 +313,12 @@ public class NaquadahReworkRecipeLoader {
                 1050
         );
 
-        GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[]{
-                        lowQualityNaquadriaSulphate.get(OrePrefixes.dust, 3),
-                },
-                new FluidStack[]{
-                        Materials.Water.getFluid(3000),
-                        P507.getFluidOrGas(500)
-                },
-                new FluidStack[]{
-                        lowQualityNaquadriaSolution.getFluidOrGas(3500)
-                },
-                null,
+        GT_Values.RA.addChemicalRecipe(
+                lowQualityNaquadriaSulphate.get(OrePrefixes.dust, 3),
+                Materials.Water.getCells(3),
+                P507.getFluidOrGas(500),
+                lowQualityNaquadriaSolution.getFluidOrGas(3500),
+                ItemList.Cell_Empty.get(3),
                 500,
                 1920
         );

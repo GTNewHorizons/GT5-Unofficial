@@ -679,8 +679,17 @@ public class RecipeLoader {
                 120
         );
 
-        GT_Values.RA.addFuel(MyMaterial.ether.get(OrePrefixes.cell),GT_OreDictUnificator.get(OrePrefixes.cell,Materials.Empty,1),537,0);
-        GT_Values.RA.addFuel(MyMaterial.ether.get(OrePrefixes.cell),null,537,1);
+        GT_Values.RA.addChemicalRecipe(
+                Materials.GasolineRaw.getCells(9),
+                Materials.Ethanol.getCells(1),
+                MyMaterial.ethanolGasoline.get(OrePrefixes.cell, 10),
+                15,
+                120
+        );
+
+        GT_Values.RA.addFuel(MyMaterial.ether.get(OrePrefixes.cell), null, 537, 0);
+        GT_Values.RA.addFuel(MyMaterial.ether.get(OrePrefixes.cell), null, 537, 1);
+        GT_Values.RA.addFuel(MyMaterial.ethanolGasoline.get(OrePrefixes.cell), null, 750, 0);
 
         GT_Values.RA.addMultiblockChemicalRecipe(
                 new ItemStack[]{

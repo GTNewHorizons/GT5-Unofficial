@@ -47,7 +47,7 @@ public final class GoodGenerator {
     public static void preInit(FMLPreInitializationEvent event) {
         GG_Config_Loader.run();
         WerkstoffAdderRegistry.addWerkstoffAdder(new MyMaterial());
-        WerkstoffAdderRegistry.addWerkstoffAdder(new IsotopeMaterialLoader());
+        //WerkstoffAdderRegistry.addWerkstoffAdder(new IsotopeMaterialLoader());
         Loaders.preInitLoad();
         proxy.preInit(event);
     }

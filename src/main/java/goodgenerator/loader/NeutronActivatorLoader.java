@@ -16,7 +16,7 @@ public class NeutronActivatorLoader {
                         thoriumBasedLiquidFuelDepleted.getFluidOrGas(200)
                 },
                 null,
-                20000,
+                10000,
                 700,
                 500
         );

@@ -310,10 +310,10 @@ public class LargeEssentiaGenerator extends GT_MetaTileEntity_MultiblockBase_EM 
         long baseValue = LargeEssentiaEnergyData.getAspectFuelValue(aspect);
         double ceoOutput = 0;
         int ceoInput = (int) LargeEssentiaEnergyData.getAspectCeo(aspect) * 2;
-        if (depleteInput(FluidRegistry.getFluidStack("cryotheum", ceoInput))) {
+        if (depleteInput(Materials.SuperCoolant.getFluid(ceoInput))) {
             ceoOutput = 9.0D;
         }
-        else if (depleteInput(Materials.SuperCoolant.getFluid(ceoInput))) {
+        else if (depleteInput(FluidRegistry.getFluidStack("cryotheum", ceoInput))) {
             ceoOutput = 5.0D;
         }
         else if (depleteInput(FluidRegistry.getFluidStack("ic2coolant", ceoInput))) {
