@@ -372,8 +372,8 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
     public String[] getInfoData() {
         BaseMetaPipeEntity base = (BaseMetaPipeEntity) getBaseMetaTileEntity();
         PowerNodePath path =(PowerNodePath) base.getNodePath();
-        int amps = 0;
-        int volts = 0;
+        long amps = 0;
+        long volts = 0;
         if (path != null) {
             amps = path.getAmps();
             volts = path.getVoltage(this);

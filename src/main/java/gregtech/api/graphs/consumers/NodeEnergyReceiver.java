@@ -23,7 +23,7 @@ public class NodeEnergyReceiver extends ConsumerNode {
     }
 
     @Override
-    public int injectEnergy(int aVoltage, int aMaxAmps) {
+    public int injectEnergy(long aVoltage, long aMaxAmps) {
         ForgeDirection tDirection = ForgeDirection.getOrientation(mSide);
         int rfOut = GT_Utility.safeInt(aVoltage * GregTech_API.mEUtoRF / 100);
         int ampsUsed = 0;
@@ -48,25 +48,25 @@ public class NodeEnergyReceiver extends ConsumerNode {
         if (aRfOut > 32L * GregTech_API.mEUtoRF / 100L) {
             int aExplosionPower = aRfOut;
             float tStrength =
-                    aExplosionPower < V[0] ? 1.0F :
-                            aExplosionPower < V[1] ? 2.0F :
-                                    aExplosionPower < V[2] ? 3.0F :
-                                            aExplosionPower < V[3] ? 4.0F :
-                                                    aExplosionPower < V[4] ? 5.0F :
-                                                            aExplosionPower < V[4] * 2 ? 6.0F :
-                                                                    aExplosionPower < V[5] ? 7.0F :
-                                                                            aExplosionPower < V[6] ? 8.0F :
-                                                                                    aExplosionPower < V[7] ? 9.0F :
-                                                                                            aExplosionPower < V[8] ? 10.0F :
-                                                                                                    aExplosionPower < V[8] * 2 ? 11.0F :
-                                                                                                            aExplosionPower < V[9] ? 12.0F :
-                                                                                                                    aExplosionPower < V[10] ? 13.0F :
-                                                                                                                            aExplosionPower < V[11] ? 14.0F :
-                                                                                                                                    aExplosionPower < V[12] ? 15.0F :
-                                                                                                                                            aExplosionPower < V[12] * 2 ? 16.0F :
-                                                                                                                                                    aExplosionPower < V[13] ? 17.0F :
-                                                                                                                                                            aExplosionPower < V[14] ? 18.0F :
-                                                                                                                                                                    aExplosionPower < V[15] ? 19.0F : 20.0F;
+                aExplosionPower < V[0] ? 1.0F :
+                aExplosionPower < V[1] ? 2.0F :
+                aExplosionPower < V[2] ? 3.0F :
+                aExplosionPower < V[3] ? 4.0F :
+                aExplosionPower < V[4] ? 5.0F :
+                aExplosionPower < V[4] * 2 ? 6.0F :
+                aExplosionPower < V[5] ? 7.0F :
+                aExplosionPower < V[6] ? 8.0F :
+                aExplosionPower < V[7] ? 9.0F :
+                aExplosionPower < V[8] ? 10.0F :
+                aExplosionPower < V[8] * 2 ? 11.0F :
+                aExplosionPower < V[9] ? 12.0F :
+                aExplosionPower < V[10] ? 13.0F :
+                aExplosionPower < V[11] ? 14.0F :
+                aExplosionPower < V[12] ? 15.0F :
+                aExplosionPower < V[12] * 2 ? 16.0F :
+                aExplosionPower < V[13] ? 17.0F :
+                aExplosionPower < V[14] ? 18.0F :
+                aExplosionPower < V[15] ? 19.0F : 20.0F;
             int tX = mTileEntity.xCoord, tY = mTileEntity.yCoord, tZ = mTileEntity.zCoord;
             World tWorld = mTileEntity.getWorldObj();
             GT_Utility.sendSoundToPlayers(tWorld, GregTech_API.sSoundList.get(209), 1.0F, -1, tX, tY, tZ);

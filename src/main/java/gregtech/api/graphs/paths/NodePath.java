@@ -12,18 +12,19 @@ public class NodePath {
         processPipes();
     }
 
-    public void clearPath() {
-        for (int i = 0; i< mPipes.length; i++) {
-            BaseMetaPipeEntity tBasePipe = (BaseMetaPipeEntity) mPipes[i].getBaseMetaTileEntity();
-            if (tBasePipe != null) {
-                tBasePipe.setNodePath(null);
-            }
-        }
-    }
     protected void processPipes() {
         for (MetaPipeEntity tPipe : mPipes) {
             BaseMetaPipeEntity basePipe = (BaseMetaPipeEntity) tPipe.getBaseMetaTileEntity();
             basePipe.setNodePath(this);
+        }
+    }
+
+    public void clearPath() {
+        for (int i = 0; i < mPipes.length; i++) {
+            BaseMetaPipeEntity tBasePipe = (BaseMetaPipeEntity) mPipes[i].getBaseMetaTileEntity();
+            if (tBasePipe != null) {
+                tBasePipe.setNodePath(null);
+            }
         }
     }
 }
