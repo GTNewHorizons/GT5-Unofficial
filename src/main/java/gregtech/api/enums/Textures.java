@@ -1057,6 +1057,7 @@ public class Textures {
         BLOCK_NETHERSTAR,
         BLOCK_CHARCOAL,
         BLOCK_BLAZE,
+        BLOCK_CRYOLITE,
         MARBLE_STONE,
         MARBLE_COBBLE,
 
@@ -1588,7 +1589,8 @@ public class Textures {
                         BLOCK_YELLOWGARNET,
                         BLOCK_NETHERSTAR,
                         BLOCK_CHARCOAL,
-                        BLOCK_BLAZE
+                        BLOCK_BLAZE,
+                        BLOCK_CRYOLITE
                 };
         public static ITexture[] HIDDEN_TEXTURE = {
                 TextureFactory.builder().addIcon(HIDDEN_FACE).stdOrient().build()
