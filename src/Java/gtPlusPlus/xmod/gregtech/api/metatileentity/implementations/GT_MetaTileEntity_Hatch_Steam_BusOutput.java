@@ -8,6 +8,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
+import gtPlusPlus.core.lib.CORE;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -16,7 +17,8 @@ public class GT_MetaTileEntity_Hatch_Steam_BusOutput extends GT_MetaTileEntity_H
     public GT_MetaTileEntity_Hatch_Steam_BusOutput(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 4, new String[]{"Item Output for Steam Multiblocks",
         		"Capacity: 4 stacks",
-				"Does not work with non-steam multiblocks"});
+				"Does not work with non-steam multiblocks",
+				CORE.GT_Tooltip});
     }
 
     public GT_MetaTileEntity_Hatch_Steam_BusOutput(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {

@@ -10,6 +10,7 @@ import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.item.general.ItemControlCore;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.entity.player.EntityPlayer;
@@ -34,6 +35,13 @@ public class GT_MetaTileEntity_Hatch_ControlCore extends GT_MetaTileEntity_Hatch
     public GT_MetaTileEntity_Hatch_ControlCore(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aTier < 1 ? 1 : aTier == 1 ? 4 : aTier == 2 ? 9 : 16, aDescription[0], aTextures);
     }
+	
+	@Override
+	public String[] getDescription() {
+		return new String[]{
+				this.mDescription,
+                CORE.GT_Tooltip};
+	}
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {

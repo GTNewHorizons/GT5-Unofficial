@@ -9,6 +9,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -22,6 +23,7 @@ public class GT_MetaTileEntity_Hatch_ElementalDataOrbHolder extends GT_MetaTileE
 	public GT_MetaTileEntity_Hatch_ElementalDataOrbHolder(int aID, String aName, String aNameRegional, int aTier) {
 		super(aID, aName, aNameRegional, aTier, 16, new String[]{
 				"Holds Data Orbs for the Elemental Duplicator",
+				CORE.GT_Tooltip
 				});
 		disableSort = true;
 	}

@@ -10,6 +10,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
+import gtPlusPlus.core.lib.CORE;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -25,7 +26,8 @@ public class GT_MetaTileEntity_Hatch_Steam_BusInput extends GT_MetaTileEntity_Ha
 				"Item Input for Steam Multiblocks",
 				"Shift + right click with screwdriver to toggle automatic item shuffling",
 				"Capacity: 4 stacks",
-				"Does not work with non-steam multiblocks"});
+				"Does not work with non-steam multiblocks",
+				CORE.GT_Tooltip});
 	}
 
 	public GT_MetaTileEntity_Hatch_Steam_BusInput(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {

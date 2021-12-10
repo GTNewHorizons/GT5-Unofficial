@@ -62,15 +62,15 @@ public class GT_MetaTileEntity_Hatch_Muffler_Adv extends GT_MetaTileEntity_Hatch
 	public String[] getDescription() {
 		if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {		
 		String[] mDescArray = StaticFields59.getDescriptionArray(this);			
-		String[] desc = new String[mDescArray.length + 6];
+		String[] desc = new String[mDescArray.length + 7];
 		System.arraycopy(mDescArray, 0, desc, 0, mDescArray.length);
 		desc[mDescArray.length] = "DO NOT OBSTRUCT THE OUTPUT!";
 		desc[mDescArray.length + 1] = "Requires 3 Air on the exhaust face";
 		desc[mDescArray.length + 2] = "Requires Air Filters";
 		desc[mDescArray.length + 3] = "Mufflers require T2 Filters from IV-"+GT_Values.VN[9];
 		desc[mDescArray.length + 4] = "Reduces Pollution to " + this.calculatePollutionReductionForTooltip(100) + "%";
-		desc[mDescArray.length + 5] = "Recovers " + (105 - this.calculatePollutionReductionForTooltip(100))
-				+ "% of CO2/CO/SO2";
+		desc[mDescArray.length + 5] = "Recovers " + (105 - this.calculatePollutionReductionForTooltip(100))	+ "% of CO2/CO/SO2";
+		desc[mDescArray.length + 6] = CORE.GT_Tooltip;
 		return desc;
 		}
 		else {

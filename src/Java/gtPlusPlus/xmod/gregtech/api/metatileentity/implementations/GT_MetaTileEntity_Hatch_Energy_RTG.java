@@ -12,6 +12,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.InventoryUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
@@ -37,8 +38,12 @@ public class GT_MetaTileEntity_Hatch_Energy_RTG extends GT_MetaTileEntity_Hatch_
 	}
 	
 	@Override
-	public String[] getDescription() {		
-		return super.getDescription();
+	public String[] getDescription() {
+		String[] S = super.getDescription();
+		final String[] desc = new String[S.length + 1];
+		System.arraycopy(S, 0, desc, 0, S.length);
+		desc[S.length] = CORE.GT_Tooltip;
+		return desc;
 	}
 
 	@Override

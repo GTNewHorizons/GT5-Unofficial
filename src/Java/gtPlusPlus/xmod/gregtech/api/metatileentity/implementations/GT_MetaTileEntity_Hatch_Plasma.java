@@ -11,6 +11,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.data.AutoMap;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 import net.minecraft.item.ItemStack;
@@ -159,7 +160,7 @@ public class GT_MetaTileEntity_Hatch_Plasma extends GT_MetaTileEntity_Hatch_Outp
 		
 		
 		String[] s2 = new String[]{
-				a1, a2, a3
+				a1, a2, a3, CORE.GT_Tooltip
 				};		
 		return s2;
 	}

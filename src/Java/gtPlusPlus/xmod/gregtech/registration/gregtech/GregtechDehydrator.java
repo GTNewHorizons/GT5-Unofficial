@@ -1,12 +1,10 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
-import net.minecraft.item.ItemStack;
-
-import gregtech.api.enums.*;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_GT_Recipe;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GTPP_Recipe;
-
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
@@ -14,8 +12,9 @@ import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Dehydrator;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.GregtechMetaTileEntity_IndustrialDehydrator;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.advanced.GregtechMetaTileEntity_Adv_EBF;
+import net.minecraft.item.ItemStack;
 
 public class GregtechDehydrator {
 	public static void run() {
@@ -44,37 +43,67 @@ public class GregtechDehydrator {
 
 		//Basic
 		GregtechItemList.GT_Dehydrator_MV
-		.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(911, "machine.dehydrator.tier.00",
-				"Basic Dehydrator I", 2, "This dehydrates your Grapes into Raisins. ",
-				GTPP_Recipe.GTPP_Recipe_Map.sChemicalDehydratorRecipes, 2, 9, 16000, 2, 5, "Dehydrator.png",
-				"", false, false, 0, "UNBOXINATOR", null).getStackForm(1L));
+		.set(new GT_MetaTileEntity_Dehydrator(
+				911, 
+				"machine.dehydrator.tier.00",
+				"Basic Dehydrator I",
+				2, 
+				"This dehydrates your Grapes into Raisins.",
+				16000)
+				.getStackForm(1L));
+
 		GregtechItemList.GT_Dehydrator_HV
-		.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(912, "machine.dehydrator.tier.01",
-				"Basic Dehydrator II", 3, "This dehydrates your Grapes into Raisins. ",
-				GTPP_Recipe.GTPP_Recipe_Map.sChemicalDehydratorRecipes, 2, 9, 32000, 2, 5, "Dehydrator.png",
-				"", false, false, 0, "UNBOXINATOR", null).getStackForm(1L));
+		.set(new GT_MetaTileEntity_Dehydrator(
+				912, 
+				"machine.dehydrator.tier.01",
+				"Basic Dehydrator II",
+				3, 
+				"This dehydrates your Grapes into Raisins.",
+				32000)
+				.getStackForm(1L));
+		
 		
 		//Chemical
+
 		GregtechItemList.GT_Dehydrator_EV
-				.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(813, "advancedmachine.dehydrator.tier.01",
-						"Chemical Dehydrator I", 4, "This dehydrates your Grapes into Raisins. ",
-						GTPP_Recipe.GTPP_Recipe_Map.sChemicalDehydratorRecipes, 2, 9, 48000, 2, 5, "Dehydrator.png",
-						"", false, false, 0, "UNBOXINATOR", null).getStackForm(1L));
-		GregtechItemList.GT_Dehydrator_IV.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(814,
-				"advancedmachine.dehydrator.tier.02", "Chemical Dehydrator II", 5,
-				"A hangover is the way your body reacts to dehydration. ",
-				GTPP_Recipe.GTPP_Recipe_Map.sChemicalDehydratorRecipes, 2, 9, 64000, 2, 5, "Dehydrator.png", "",
-				false, false, 0, "UNBOXINATOR", null).getStackForm(1L));
-		GregtechItemList.GT_Dehydrator_LuV.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(815,
-				"advancedmachine.dehydrator.tier.03", "Chemical Dehydrator III", 6,
-				"You could probably make space icecream with this.. ",
-				GTPP_Recipe.GTPP_Recipe_Map.sChemicalDehydratorRecipes, 2, 9, 64000, 2, 5, "Dehydrator.png", "",
-				false, false, 0, "UNBOXINATOR", null).getStackForm(1L));
-		GregtechItemList.GT_Dehydrator_ZPM.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(816,
-				"advancedmachine.dehydrator.tier.04", "Chemical Dehydrator IV", 7,
-				"You can definitely make space icecream with this.. ",
-				GTPP_Recipe.GTPP_Recipe_Map.sChemicalDehydratorRecipes, 2, 9, 64000, 2, 5, "Dehydrator.png", "",
-				false, false, 0, "UNBOXINATOR", null).getStackForm(1L));
+		.set(new GT_MetaTileEntity_Dehydrator(
+				813, 
+				"advancedmachine.dehydrator.tier.01",
+				"Chemical Dehydrator I",
+				4, 
+				"A hangover is the way your body reacts to dehydration.",
+				48000)
+				.getStackForm(1L));
+
+		GregtechItemList.GT_Dehydrator_IV
+		.set(new GT_MetaTileEntity_Dehydrator(
+				814, 
+				"advancedmachine.dehydrator.tier.02",
+				"Chemical Dehydrator II",
+				5, 
+				"A hangover is the way your body reacts to dehydration.",
+				48000)
+				.getStackForm(1L));
+
+		GregtechItemList.GT_Dehydrator_LuV
+		.set(new GT_MetaTileEntity_Dehydrator(
+				815, 
+				"advancedmachine.dehydrator.tier.03",
+				"Chemical Dehydrator III",
+				6, 
+				"You could probably make space icecream with this..",
+				64000)
+				.getStackForm(1L));
+
+		GregtechItemList.GT_Dehydrator_ZPM
+		.set(new GT_MetaTileEntity_Dehydrator(
+				816, 
+				"advancedmachine.dehydrator.tier.04",
+				"Chemical Dehydrator IV",
+				7, 
+				"You can definitely make space icecream with this..",
+				64000)
+				.getStackForm(1L));
 		
 		//Advanced
 		GregtechItemList.Controller_Vacuum_Furnace.set(new GregtechMetaTileEntity_IndustrialDehydrator(995, "multimachine.adv.vacuumfurnace", "Utupu-Tanuri").getStackForm(1L));

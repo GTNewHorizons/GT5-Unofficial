@@ -8,6 +8,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.core.util.sys.KeyboardUtils;
@@ -49,7 +50,14 @@ public class GT_MetaTileEntity_Hatch_TurbineProvider extends GT_MetaTileEntity_H
 	@Override
 	public String[] getDescription() {					
 		return new String[]{				
-				"An automation port for Large Turbines", "Will attempt once per 1200 ticks to fill the turbine slot of it's parent turbine", "You may adjust this with a screwdriver", "Hold shift to adjust in finer amounts", "Hold control to adjust direction", "Left Click with Screwdriver to reset", "This module assumes the entire turbine is in the same Chunk"};
+				"An automation port for Large Turbines", 
+				"Will attempt once per 1200 ticks to fill the turbine slot of it's parent turbine", 
+				"You may adjust this with a screwdriver", 
+				"Hold shift to adjust in finer amounts", 
+				"Hold control to adjust direction", 
+				"Left Click with Screwdriver to reset", 
+				"This module assumes the entire turbine is in the same Chunk",
+				CORE.GT_Tooltip};
 	}
 	
 	
