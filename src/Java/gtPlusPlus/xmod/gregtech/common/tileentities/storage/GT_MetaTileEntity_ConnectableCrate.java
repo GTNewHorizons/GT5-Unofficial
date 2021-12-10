@@ -19,6 +19,7 @@ import gregtech.api.util.GT_Utility;
 
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.data.ArrayUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_SuperChest;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_SuperChest;
@@ -72,6 +73,13 @@ public class GT_MetaTileEntity_ConnectableCrate extends GT_MetaTileEntity_Tiered
 
 	public GT_MetaTileEntity_ConnectableCrate(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
 		super(aName, aTier, 3, aDescription, aTextures);
+	}
+	
+	@Override
+	public String[] getDescription() {
+		return new String[]{
+				this.mDescription,
+                CORE.GT_Tooltip};
 	}
 
 	public boolean isSimpleMachine() {

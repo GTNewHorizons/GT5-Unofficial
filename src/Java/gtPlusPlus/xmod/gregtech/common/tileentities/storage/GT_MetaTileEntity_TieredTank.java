@@ -29,13 +29,13 @@ public class GT_MetaTileEntity_TieredTank extends GT_MetaTileEntity_BasicTank {
 	public String[] getDescription() {
 		String[] aTip;
 
-		String aTankPortableness = CORE.GTNH ? "non-portable" : "portable";
+		String aTankPortableness = "portable";
 
 		if (this.mFluid == null) {
-			aTip = new String[] {this.mDescription, "A "+aTankPortableness+" tank."};
+			aTip = new String[] {this.mDescription, "A "+aTankPortableness+" tank.", CORE.GT_Tooltip};
 		}
 		else {
-			aTip = new String[] {this.mDescription, "A "+aTankPortableness+" tank.", "Fluid: "+mFluid.getLocalizedName()+" "+mFluid.amount+"L"};
+			aTip = new String[] {this.mDescription, "A "+aTankPortableness+" tank.", "Fluid: "+mFluid.getLocalizedName()+" "+mFluid.amount+"L", CORE.GT_Tooltip};
 		}		
 		return aTip;
 	}
@@ -146,7 +146,7 @@ public class GT_MetaTileEntity_TieredTank extends GT_MetaTileEntity_BasicTank {
 
 	@Override
 	public void setItemNBT(NBTTagCompound aNBT) {
-		if (CORE.NBT_PERSISTENCY_PATCH_APPLIED && !CORE.GTNH) {		
+		if (CORE.NBT_PERSISTENCY_PATCH_APPLIED) {		
 			if (mFluid != null){
 				Logger.WARNING("Setting item fluid nbt");
 				aNBT.setTag("mFluid", mFluid.writeToNBT(new NBTTagCompound()));

@@ -48,6 +48,7 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 				"Mixed: Provides both 2A of long range and 1A per player locally.",
 				"Mixed mode is more conservative of power and as a result only",
 				"Gets half the distances each singular mode gets.",
+				CORE.GT_Tooltip
 				};
 	}
 

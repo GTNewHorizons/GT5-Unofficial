@@ -54,7 +54,11 @@ public class GT_MetaTileEntity_RfConvertor extends GregtechMetaEnergyBuffer impl
 
 	@Override
 	public String[] getDescription() {
-		return new String[] {"Use Screwdriver to change voltage", "Hold Shift while using Screwdriver to change amperage", EnumChatFormatting.DARK_AQUA+"Variable Output Voltage"};
+		return new String[] {
+				"Use Screwdriver to change voltage",
+				"Hold Shift while using Screwdriver to change amperage",
+				EnumChatFormatting.DARK_AQUA+"Variable Output Voltage",
+				CORE.GT_Tooltip};
 	}
 
 	@Override

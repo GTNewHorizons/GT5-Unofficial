@@ -12,7 +12,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
-
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_SuperChest;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_SuperChest;
 
@@ -33,6 +33,13 @@ public class GT_MetaTileEntity_TieredChest extends GT_MetaTileEntity_TieredMachi
 	/*public GT_MetaTileEntity_TieredChest(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
 		super(aName, aTier, 3, aDescription, aTextures);
 	}*/
+	
+	@Override
+	public String[] getDescription() {
+		return new String[]{
+				this.mDescription,
+                CORE.GT_Tooltip};
+	}
 
 	public boolean isSimpleMachine() {
 		return true;

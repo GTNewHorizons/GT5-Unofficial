@@ -38,7 +38,11 @@ public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
 
 	@Override
 	public String[] getDescription() {
-		return new String[] {this.mDescription, "Defaults 4A In/Out", "Change output Amperage with a screwdriver", "Now Portable!"};
+		return new String[] {this.mDescription, 
+				"Defaults 4A In/Out",
+				"Change output Amperage with a screwdriver",
+				"Now Portable!",
+				CORE.GT_Tooltip};
 	}
 	
 	@Override

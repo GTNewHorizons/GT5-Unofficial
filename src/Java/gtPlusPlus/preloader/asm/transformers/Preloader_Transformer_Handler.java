@@ -223,8 +223,8 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 
 		//Patching Meta Tile Tooltips
 		if (transformedName.equals(GT_ITEM_MACHINES) && AsmConfig.enableGtTooltipFix) {	
-			Preloader_Logger.INFO("Gregtech Tooltip Patch", "Transforming "+transformedName);
-			return new ClassTransformer_GT_ItemMachines_Tooltip(basicClass, false).getWriter().toByteArray();
+			//Preloader_Logger.INFO("Gregtech Tooltip Patch", "Transforming "+transformedName);
+			//return new ClassTransformer_GT_ItemMachines_Tooltip(basicClass, false).getWriter().toByteArray();
 		}
 
 

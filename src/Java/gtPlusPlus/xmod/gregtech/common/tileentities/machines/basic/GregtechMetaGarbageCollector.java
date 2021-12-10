@@ -32,7 +32,12 @@ public class GregtechMetaGarbageCollector extends GregtechMetaTileEntity {
 
 	@Override
 	public String[] getDescription() {
-		return new String[] {this.mDescription, "Can request the JVM to perform garbage collection", "Configurable to run once every 5 minute interval (5-180)", "This Machine has no recipe", "Admin Tool, Limit one per world if possible"};
+		return new String[] {this.mDescription, 
+				"Can request the JVM to perform garbage collection", 
+				"Configurable to run once every 5 minute interval (5-180)", 
+				"This Machine has no recipe", 
+				"Admin Tool, Limit one per world if possible",
+				CORE.GT_Tooltip};
 	}
 
 	@Override

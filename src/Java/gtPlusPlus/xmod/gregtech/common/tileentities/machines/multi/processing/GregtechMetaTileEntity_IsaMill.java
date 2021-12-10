@@ -30,6 +30,7 @@ import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -78,7 +79,7 @@ public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase 
 				.addInfo("Grind ores.")
 				.addPollutionAmount(getPollutionPerTick(null) * 20)
 				.addSeparator()
-				.beginStructureBlock(3, 3, 4, false)
+				.beginStructureBlock(3, 3, 7, false)
 				.addController("Front Center")
 				.addCasingInfo("IsaMill Exterior Casing", 40)
                 .addOtherStructurePart("IsaMill Gearbox", "Inner Blocks")
@@ -90,7 +91,7 @@ public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase 
 				.addEnergyHatch("Any Casing", 1)
 				.addMaintenanceHatch("Any Casing", 1)
 				.addMufflerHatch("Any Casing", 1)
-				.toolTipFinisher("GT++");
+				.toolTipFinisher(CORE.GT_Tooltip_Builder);
 		return tt;
 	}
 

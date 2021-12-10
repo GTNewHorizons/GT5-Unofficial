@@ -16,6 +16,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.GTPP_Recipe.GTPP_Recipe_Map;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.lib.CORE;
 import net.minecraft.item.ItemStack;
 
 public class GT_MetaTileEntity_SemiFluidGenerator extends GT_MetaTileEntity_BasicGenerator {
@@ -67,7 +68,11 @@ public class GT_MetaTileEntity_SemiFluidGenerator extends GT_MetaTileEntity_Basi
 	
 	@Override
 	public String[] getDescription() {
-		return new String[]{this.mDescription, "Produces "+(this.getPollution()*20)+" pollution/sec", "Fuel Efficiency: "+this.getEfficiency() + "%"};
+		return new String[]{
+				this.mDescription,
+				"Produces "+(this.getPollution()*20)+" pollution/sec", 
+				"Fuel Efficiency: "+this.getEfficiency() + "%",
+                CORE.GT_Tooltip};
 	}
 
 	@Override

@@ -49,7 +49,11 @@ public class GregtechMetaCreativeEnergyBuffer extends GregtechMetaEnergyBuffer {
 
 	@Override
 	public String[] getDescription() {
-		return new String[] {this.mDescription, "Use Screwdriver to change voltage", "Hold Shift while using Screwdriver to change amperage", EnumChatFormatting.GREEN+"CREATIVE MACHINE"};
+		return new String[] {this.mDescription, 
+				"Use Screwdriver to change voltage", 
+				"Hold Shift while using Screwdriver to change amperage", 
+				EnumChatFormatting.GREEN+"CREATIVE MACHINE", 
+				CORE.GT_Tooltip};
 	}
 
 	/*
