@@ -39,7 +39,7 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:Translocators:master-SNAPSHOT:dev") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:CoFHCore.master-SNAPSHOT:dev") {
+    compileOnly("curse.maven:cofh-core-69162:2388751") {
         transitive = false
     }
     compileOnly("com.github.GTNewHorizons:Nuclear-Control:master-SNAPSHOT:dev") {
