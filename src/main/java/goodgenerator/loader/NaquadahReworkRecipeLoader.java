@@ -91,13 +91,28 @@ public class NaquadahReworkRecipeLoader {
                 1920
         );
 
-        GT_Values.RA.addChemicalRecipe(
+        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
                 lowQualityNaquadahSolution.get(OrePrefixes.cell, 36),
                 P507.get(OrePrefixes.cell, 4),
                 null,
                 fluorineRichWasteLiquid.getFluidOrGas(6000),
                 naquadahAdamantiumSolution.get(OrePrefixes.cell, 30),
                 ItemList.Cell_Empty.get(10),
+                4000,
+                1920
+        );
+
+        GT_Values.RA.addMultiblockChemicalRecipe(
+                null,
+                new FluidStack[]{
+                        P507.getFluidOrGas(4000),
+                        lowQualityNaquadahSolution.getFluidOrGas(36000),
+                },
+                new FluidStack[]{
+                        fluorineRichWasteLiquid.getFluidOrGas(6000),
+                        naquadahAdamantiumSolution.getFluidOrGas(30000)
+                },
+                null,
                 4000,
                 1920
         );

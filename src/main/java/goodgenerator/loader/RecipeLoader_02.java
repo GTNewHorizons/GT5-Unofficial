@@ -568,6 +568,18 @@ public class RecipeLoader_02 {
                 400,
                 1980
         );
+
+        GT_Values.RA.addDistillationTowerRecipe(
+                Materials.HeavyFuel.getFluid(1000),
+                new FluidStack[] {
+                        Materials.Toluene.getFluid(400),
+                        Materials.Benzene.getFluid(400),
+                        Materials.Phenol.getFluid(250)
+                },
+                null,
+                120,
+                480
+        );
     }
 
     public static void InitLoadRecipe() {

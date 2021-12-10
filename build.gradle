@@ -105,8 +105,8 @@ repositories {
 
 dependencies {
     compile("com.enderio.core:EnderCore:1.7.10-0.1.0.25_beta:dev")
-    compile("appeng:appliedenergistics2:rv3-beta-22:dev")
-    compile("applecore:AppleCore:1.7.10-1.3.2:deobf")
+    compile("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:master-SNAPSHOT:dev")
+    compile("com.github.GTNewHorizons:AppleCore:master-SNAPSHOT:dev")
     compile("com.github.GTNewHorizons:GT5-Unofficial:master-SNAPSHOT:dev")
 /*    compileOnly("com.github.GTNewHorizons:Avaritia:master-SNAPSHOT") {
         setChanging(true)
