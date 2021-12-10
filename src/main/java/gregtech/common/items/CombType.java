@@ -73,6 +73,7 @@ public enum CombType {
     NICKEL("nickel", true, Materials.Nickel, 100,0x8585AD, 0x9D9DBD),
     ZINC("zinc", true, Materials.Zinc, 100,0xF0DEF0, 0xF2E1F2),
     SILVER("silver", true, Materials.Silver, 100,0xC2C2D6, 0xCECEDE),
+    CRYOLITE("cryolite", true, Materials.Cryolite, 90, 0xBFEFFF, 0x73B9D0),
     GOLD("gold", true, Materials.Gold, 100,0xE6B800, 0xCFA600),
     SULFUR("sulfur", true, Materials.Sulfur, 100,0x6F6F01, 0x8B8B8B),
     GALLIUM ("gallium", true, Materials.Gallium, 75,0x8B8B8B, 0xC5C5E4),
