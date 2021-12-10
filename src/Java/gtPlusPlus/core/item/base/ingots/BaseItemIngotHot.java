@@ -52,8 +52,8 @@ public class BaseItemIngotHot extends BaseItemIngot{
 	}
 
 	private void generateRecipe(){
-		Logger.WARNING("Adding Vacuum Freezer recipe for a Hot Ingot of "+this.materialName+".");
-		GT_Values.RA.addVacuumFreezerRecipe(ItemUtils.getSimpleStack(this), this.outputIngot.copy(), 60*this.mTier);
+		Logger.WARNING("Adding Vacuum Freezer recipe for a Hot Ingot of "+this.materialName+".");	
+		CORE.RA.addVacuumFreezerRecipe(ItemUtils.getSimpleStack(this), this.outputIngot.copy(), (int) Math.max(this.componentMaterial.getMass() * 3L, 1L), this.componentMaterial.vVoltageMultiplier);
 	}
 
 	@Override

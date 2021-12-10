@@ -1808,6 +1808,28 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
     }
 
 
+    @Override
+    public boolean addVacuumFreezerRecipe(ItemStack aInput, ItemStack aOutput, int aDuration, int aEUt) {
+        if ((aInput == null) || (aOutput == null)) {
+            return false;
+        }        
+        GTPP_Recipe aRecipe = new GTPP_Recipe(
+				false,
+				new ItemStack[] {aInput},
+				new ItemStack[] {aOutput},
+				null,
+				new int[] {10000},
+				new FluidStack[] {},
+				new FluidStack[] {},
+				aDuration,
+				aEUt,
+				0);		
+
+		int aSize = GT_Recipe_Map.sVacuumRecipes.mRecipeList.size();
+		GT_Recipe_Map.sVacuumRecipes.add(aRecipe);
+		return GT_Recipe_Map.sVacuumRecipes.mRecipeList.size() > aSize;
+    }
+
 
 
 
