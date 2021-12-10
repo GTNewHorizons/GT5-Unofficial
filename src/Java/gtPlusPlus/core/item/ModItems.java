@@ -647,6 +647,7 @@ public final class ModItems {
 			MaterialGenerator.generate(ALLOY.ABYSSAL);
 			MaterialGenerator.generate(ALLOY.LAURENIUM);
 			MaterialGenerator.generate(ALLOY.BOTMIUM);
+			MaterialGenerator.generate(ALLOY.HS188A);
 			
 
 			MaterialGenerator.generate(ALLOY.TITANSTEEL);

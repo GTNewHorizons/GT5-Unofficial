@@ -95,7 +95,7 @@ public class BatteryPackBaseBauble extends ElectricBaseBauble {
 		String aEUT = aEU+"/t";
 
 		list.add(EnumChatFormatting.GREEN + aString1 + EnumChatFormatting.GRAY);
-		list.add(EnumChatFormatting.GREEN + aString2+" " + (int) getTransferLimit(stack) + aEUT +" "+ aString3 + EnumChatFormatting.GRAY);
+		list.add(EnumChatFormatting.GREEN + aString2+" " + (int) getTransferLimit(stack) + aEUT +" 7"+ aString3 + EnumChatFormatting.GRAY);
 		list.add(EnumChatFormatting.GREEN + aString4 + EnumChatFormatting.GRAY);
 		super.addInformation(stack, aPlayer, list, bool);
 	}

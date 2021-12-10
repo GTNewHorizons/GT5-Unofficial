@@ -407,7 +407,7 @@ public class GTPP_Recipe extends GT_Recipe  implements IComparableRecipe {
 		
 		//Special Maps for Multis
 		public static final GTPP_Recipe_Map_Internal sFishPondRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(3), "gtpp.recipe.fishpond", "Zhuhai - Fishing Port", null, RES_PATH_GUI + "basicmachines/PotionBrewer", 0, 1, 0, 0, 1, "Requires Circuit: ", 1, ".", true, true);
-        public static final GTPP_Recipe_Map_Internal sSpargeTowerRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(10000), "gtpp.recipe.spargetower", "Sparging", null, RES_PATH_GUI + "basicmachines/FissionFuel", 9, 9, 0, 0, 1, E, 1, E, true, true);
+        public static final GTPP_Recipe_Map_Internal sSpargeTowerRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(10000), "gtpp.recipe.spargetower", "Sparging", null, RES_PATH_GUI + "basicmachines/FissionFuel", 9, 9, 0, 0, 1, E, 1, E, true, false);
 		
 		//public static final GTPP_Recipe_Map sMultiblockCentrifugeRecipes = new GT_Recipe_Map_LargeCentrifuge();
 		//public static final GTPP_Recipe_Map sMultiblockElectrolyzerRecipes = new GT_Recipe_Map_LargeElectrolyzer();

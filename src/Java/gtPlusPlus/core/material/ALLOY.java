@@ -635,7 +635,27 @@ public final class ALLOY {
 					new MaterialStack(ELEMENT.getInstance().COPPER, 3),
 					new MaterialStack(ELEMENT.getInstance().OXYGEN, 8)
 			});
-
+	
+	
+	public static final Material HS188A = new Material(
+			"HS188-A", //Material Name
+			MaterialState.SOLID, //State
+			null, //Material Colour
+			4870, //Melting Point in C
+			7550, //Boiling Point in C
+			-1, //Protons
+			-1, //Neutrons
+			true, //Uses Blast furnace?
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.getInstance().COBALT, 20),
+					new MaterialStack(ELEMENT.getInstance().HAFNIUM, 20),
+					new MaterialStack(TALONITE, 16),
+					new MaterialStack(ELEMENT.getInstance().RHENIUM, 10),
+					new MaterialStack(NIOBIUM_CARBIDE, 10),
+					new MaterialStack(HASTELLOY_X, 8),
+					new MaterialStack(TUNGSTENSTEEL, 8),
+					new MaterialStack(ZIRCONIUM_CARBIDE, 8),
+			});	//Material Stacks with Percentage of required elements.
 
 	/**
 	 * Stargate Materials - #D2FFA9 210, 255, 170
