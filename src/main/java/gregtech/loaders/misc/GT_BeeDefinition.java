@@ -554,6 +554,20 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 tMutation.requireResource("blockSilver");
             }
     ),
+    CRYOLITE(GT_BranchDefinition.METAL, "Cryolite", true, new Color(0xBFEFFF), new Color(0x73B9D0),
+            beeSpecies -> {
+                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SLAG), 0.30f);
+                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.CRYOLITE), 0.15f);
+                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.SILVER), 0.05f);
+                beeSpecies.setHumidity(EnumHumidity.NORMAL);
+                beeSpecies.setTemperature(WARM);
+            },
+            template -> AlleleHelper.instance.set(template, SPEED, Speed.FASTEST),
+            dis -> {
+                IBeeMutationCustom tMutation = dis.registerMutation(LEAD, SILVER, 9);
+                tMutation.requireResource("blockCryolite");
+            }
+    ),
     GOLD(GT_BranchDefinition.METAL, "Gold", true, new Color(0xEBC633), new Color(0xEDCC47),
             beeSpecies -> {
                 beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SLAG), 0.30f);
