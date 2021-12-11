@@ -33,9 +33,7 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
-import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.entity.player.EntityPlayer;
@@ -188,15 +186,6 @@ public class GregtechMetaTileEntity_SpargeTower extends GregtechMeta_MultiBlockB
 			GT_Recipe tRecipe = getRecipeMap().findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluids);
 			if (tRecipe != null) {
 				Logger.INFO("Found recipe!");
-				try {
-					String[] aRecipeInfo = RecipeUtils.getRecipeInfo(tRecipe);
-					for (String info : aRecipeInfo) {
-						Logger.INFO("	"+info);        			
-					}
-				}
-				catch (Throwable e) {
-					e.printStackTrace();
-				}
 				if (tRecipe.isRecipeInputEqual(true, tFluids)) {
 					Logger.INFO("Found recipe that matches!");
 					this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
@@ -208,27 +197,14 @@ public class GregtechMetaTileEntity_SpargeTower extends GregtechMeta_MultiBlockB
 					this.mMaxProgresstime = 0;
 					this.mOutputItems = new ItemStack[]{};
 					this.mOutputFluids = new FluidStack[]{};
-					this.mLastRecipe = tRecipe;		
-					
-					// Deplete Inputs
-					if (tRecipe.mFluidInputs.length > 0) {
-						for (FluidStack aInputToConsume : tRecipe.mFluidInputs) {
-							Logger.INFO("Depleting "+aInputToConsume.getLocalizedName()+" - "+aInputToConsume.amount+"L");
-							this.depleteInput(aInputToConsume);			
-						}
-					}
-					else {
-						this.mEUt = 0;
-						this.mEfficiency = 0;
-						return false;
-					}
+					this.mLastRecipe = tRecipe;
 					
 					calculateOverclockedNessMulti(tRecipe.mEUt, tRecipe.mDuration, 1, tVoltage);
 					int aDevProgress = this.mMaxProgresstime / 10;
 					this.mMaxProgresstime = Math.max(1, aDevProgress);
 					this.mOutputItems = new ItemStack[]{};
 					ArrayList<FluidStack> aFluidOutputs = getByproductsOfSparge(tRecipe.mFluidInputs[0], tRecipe.mFluidInputs[1]);					
-					this.mOutputFluids = (FluidStack[]) aFluidOutputs.toArray(new FluidStack[0]).clone();
+					this.mOutputFluids = (FluidStack[]) aFluidOutputs.toArray(new FluidStack[0]);
 					updateSlots();
 					Logger.INFO("Done!");  
 					return true;
@@ -250,18 +226,6 @@ public class GregtechMetaTileEntity_SpargeTower extends GregtechMeta_MultiBlockB
 		if (aSpargeRecipe == null) {
 			Logger.INFO("Did not find sparge recipe!");
 			return aOutputGases;
-		}		
-		else {
-			Logger.INFO("Found sparge recipe!");
-			try {
-				String[] aRecipeInfo = aSpargeRecipe.getRecipeInfo();
-				for (String info : aRecipeInfo) {
-					Logger.INFO("	"+info);        			
-				}
-			}
-			catch (Throwable e) {
-				e.printStackTrace();
-			}
 		}
 		int aSpargeGasAmount = aSpargeRecipe.mInputGas.amount;
 
@@ -281,10 +245,10 @@ public class GregtechMetaTileEntity_SpargeTower extends GregtechMeta_MultiBlockB
 		if (aSpargeGasAmount > 0) {
 			aOutputGases.add(new FluidStack(aSpargeRecipe.mInputGas.getFluid(), aSpargeGasAmount));	
 		}
-		Logger.INFO("Sparge Outputs: "+ItemUtils.getArrayStackNames(aTempMap));
+		//Logger.INFO("Sparge Outputs: "+ItemUtils.getArrayStackNames(aTempMap));
 		aOutputGases.addAll(aTempMap);
 		Logger.INFO("Sparge output size: "+aOutputGases.size());
-		Logger.INFO("Output of sparging: "+ItemUtils.getArrayStackNames(aOutputGases));
+		//Logger.INFO("Output of sparging: "+ItemUtils.getArrayStackNames(aOutputGases));
 		return aOutputGases;
 	}
 
