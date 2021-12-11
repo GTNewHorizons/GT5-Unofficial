@@ -147,6 +147,10 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
                 ) >> tier);
     }
 
+    protected float computeSpeed(){
+       return .5F+(GT_Utility.getTier(getMaxInputVoltage()) - getMinTier()) *.25F;
+    }
+
     @Override
     protected boolean workingAtBottom(ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe, int yHead, int oldYHead) {
         switch (tryLowerPipeState(true)) {
@@ -160,7 +164,7 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
                 GT_ChunkManager.requestChunkLoad((TileEntity) getBaseMetaTileEntity(), null);
                 mWorkChunkNeedsReload = false;
             }
-            float speed = .5F+(GT_Utility.getTier(getMaxInputVoltage()) - getMinTier()) *.25F;
+            float speed = computeSpeed();
             FluidStack tFluid = pumpOil(speed);
             if (tFluid != null && tFluid.amount > getTotalConfigValue()){
                 this.mOutputFluids = new FluidStack[]{tFluid};
@@ -234,7 +238,7 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
         return !mOilFieldChunks.isEmpty();
     }
 
-    private FluidStack pumpOil(float speed){
+    protected FluidStack pumpOil(float speed){
         if (mOilId <= 0) return null;
         FluidStack tFluid, tOil;
         tOil = new FluidStack(FluidRegistry.getFluid(mOilId), 0);
@@ -245,13 +249,13 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
         }
 
         ArrayList<Chunk> emptyChunks = new ArrayList<>();
-        
+
         for (Chunk tChunk : mOilFieldChunks) {
             tFluid = undergroundOil(tChunk,speed);
             if (debugDriller) {
                 GT_Log.out.println(
-                    " chunkX = " + tChunk.getChunkCoordIntPair().chunkXPos + 
-                    " chunkZ = " + tChunk.getChunkCoordIntPair().chunkZPos 
+                    " chunkX = " + tChunk.getChunkCoordIntPair().chunkXPos +
+                    " chunkZ = " + tChunk.getChunkCoordIntPair().chunkZPos
                 );
                 if( tFluid != null ) {
                     GT_Log.out.println(
@@ -259,10 +263,10 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
                     );
                 } else {
                     GT_Log.out.println(
-                        "     No fluid pumped " 
+                        "     No fluid pumped "
                     );
                 }
-                
+
             }
             if (tFluid == null || tFluid.amount<1) emptyChunks.add(tChunk);
             if (tOil.isFluidEqual(tFluid)) tOil.amount += tFluid.amount;
