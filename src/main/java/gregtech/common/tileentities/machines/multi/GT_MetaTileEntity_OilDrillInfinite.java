@@ -4,13 +4,8 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.objects.GT_ChunkManager;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraftforge.fluids.FluidStack;
 
 import static gregtech.api.enums.GT_Values.VN;
@@ -73,16 +68,16 @@ public class GT_MetaTileEntity_OilDrillInfinite extends GT_MetaTileEntity_OilDri
 
     @Override
     protected int getRangeInChunks() {
-        return 4;
+        return 8;
     }
 
     @Override
-    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ){
-        return;
+    protected float computeSpeed(){
+        return .5F+(GT_Utility.getTier(getMaxInputVoltage()) - getMinTier()+5) *.25F;
     }
 
     @Override
     protected int getMinTier() {
-        return 4; //to match the speed of the oil drill III
+        return 9;
     }
 }
