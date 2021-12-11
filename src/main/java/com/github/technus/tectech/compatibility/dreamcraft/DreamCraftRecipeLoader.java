@@ -170,6 +170,23 @@ public class DreamCraftRecipeLoader implements Runnable {
                         getOrDefault("Trinium", Materials.Osmium).getMolten(1296),
                 }, CustomItemList.eM_Coil.get(4), 800, 2000000);
 
+        //infinite oil rig
+        TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.OilDrill3.get(1),
+                1843200, 1024, 2000000, 4, new ItemStack[]{
+                        ItemList.OilDrill3.get(1),
+                        GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 4),
+                        GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Infinite, 4),
+                        ItemList.Electric_Motor_UHV.get(4),
+                        ItemList.Electric_Pump_UHV.get(4),
+                        GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.Neutronium, 4),
+                        ItemList.Sensor_UHV.get(3),
+                        ItemList.Field_Generator_UHV.get(3),
+                        GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Neutronium, 12)
+                }, new FluidStack[]{
+                        Materials.SolderingAlloy.getMolten(1296),
+                        Materials.Neutronium.getMolten(576)
+                }, ItemList.OilDrillInfinite.get(1), 1200, 2000000);
+
         //Tesla Base
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.NickelZincFerrite, 6),
