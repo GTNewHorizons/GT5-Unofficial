@@ -404,7 +404,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Casing_Sparge_Tower_Interior,
 	
 	// Elemental Duplicator
-	/*Controller_ElementalDuplicator,*/
+	Controller_ElementalDuplicator,
 	Casing_ElementalDuplicator,
 	
 	// Big Steam Macerator
@@ -458,7 +458,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Hatch_Output_Bus_Steam,	
 
 	//Elemental Duplicator Data Orb Bus
-	/*Hatch_Input_Elemental_Duplicator,*/
+	Hatch_Input_Elemental_Duplicator,
 	
 	//RTG Hatch 
 	Hatch_RTG_LV,
