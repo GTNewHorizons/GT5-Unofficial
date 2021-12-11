@@ -6,7 +6,7 @@ import net.minecraft.tileentity.TileEntity;
 
 import java.util.ArrayList;
 
-//this is here to apply voltage to death ends
+//this is here to apply voltage to dead ends
 public class EmptyPowerConsumer extends ConsumerNode{
     public EmptyPowerConsumer(int aNodeValue, TileEntity aTileEntity, byte aSide, ArrayList<ConsumerNode> aConsumers) {
         super(aNodeValue, aTileEntity, aSide, aConsumers);
@@ -18,7 +18,7 @@ public class EmptyPowerConsumer extends ConsumerNode{
     }
 
     @Override
-    public int injectEnergy(int aVoltage, int aMaxAmps) {
+    public int injectEnergy(long aVoltage, long aMaxAmps) {
         BaseMetaPipeEntity tPipe = (BaseMetaPipeEntity) mTileEntity;
         PowerNodePath tPath =(PowerNodePath) tPipe.getNodePath();
         tPath.applyVoltage(aVoltage,true);

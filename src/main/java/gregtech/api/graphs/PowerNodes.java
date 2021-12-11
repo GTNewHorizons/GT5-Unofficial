@@ -21,43 +21,43 @@ import gregtech.api.graphs.paths.PowerNodePath;
  *
  */
 public class PowerNodes {
-    //check if the looked for node is next to or get the next node that is closer to it
-    static public int powerNode(Node aCurrentNode, Node aPreviousNode, NodeList aConsumers, int aVoltage, int aMaxAmps) {
-        int tAmpsUsed = 0;
-        ConsumerNode tConsumer =(ConsumerNode) aConsumers.getNode();
+    // check if the looked for node is next to or get the next node that is closer to it
+    static public long powerNode(Node aCurrentNode, Node aPreviousNode, NodeList aConsumers, long aVoltage, long aMaxAmps) {
+        long tAmpsUsed = 0;
+        ConsumerNode tConsumer = (ConsumerNode) aConsumers.getNode();
         int tLoopProtection = 0;
         while (tConsumer != null) {
             int tTargetNodeValue = tConsumer.mNodeValue;
-            //if the target node has a value less then the current node
+            // if the target node has a value less then the current node
             if (tTargetNodeValue < aCurrentNode.mNodeValue || tTargetNodeValue > aCurrentNode.mHighestNodeValue) {
-                for (int j = 0;j<6;j++) {
-                    Node tNextNode = aCurrentNode.mNeighbourNodes[j];
+                for (int j = 0; j < 6; j++) {
+                    final Node tNextNode = aCurrentNode.mNeighbourNodes[j];
                     if (tNextNode != null && tNextNode.mNodeValue < aCurrentNode.mNodeValue) {
                         if (tNextNode.mNodeValue == tConsumer.mNodeValue) {
-                            tAmpsUsed += processNodeInject(aCurrentNode,tConsumer,j,aMaxAmps-tAmpsUsed,aVoltage,false);
-                            tConsumer =(ConsumerNode) aConsumers.getNextNode();
+                            tAmpsUsed += processNodeInject(aCurrentNode, tConsumer, j, aMaxAmps - tAmpsUsed, aVoltage, false);
+                            tConsumer = (ConsumerNode) aConsumers.getNextNode();
                             break;
                         } else {
                             if (aPreviousNode == tNextNode) return tAmpsUsed;
-                            tAmpsUsed += processNextNode(aCurrentNode,tNextNode,aConsumers,j,aMaxAmps-tAmpsUsed,aVoltage);
-                            tConsumer =(ConsumerNode) aConsumers.getNode();
+                            tAmpsUsed += processNextNode(aCurrentNode, tNextNode, aConsumers, j, aMaxAmps - tAmpsUsed, aVoltage);
+                            tConsumer = (ConsumerNode) aConsumers.getNode();
                             break;
                         }
                     }
                 }
             } else {
-                //if the target node has a node value greater then current node value
-                for (int side = 5;side>-1;side--) {
-                    Node tNextNode = aCurrentNode.mNeighbourNodes[side];
+                // if the target node has a node value greater then current node value
+                for (int side = 5; side > -1; side--) {
+                    final Node tNextNode = aCurrentNode.mNeighbourNodes[side];
                     if (tNextNode == null) continue;
                     if (tNextNode.mNodeValue > aCurrentNode.mNodeValue && tNextNode.mNodeValue < tTargetNodeValue) {
                         if (tNextNode == aPreviousNode) return tAmpsUsed;
-                        tAmpsUsed += processNextNodeAbove(aCurrentNode,tNextNode,aConsumers,side,aMaxAmps-tAmpsUsed,aVoltage);
-                        tConsumer =(ConsumerNode) aConsumers.getNode();
+                        tAmpsUsed += processNextNodeAbove(aCurrentNode, tNextNode, aConsumers, side, aMaxAmps - tAmpsUsed, aVoltage);
+                        tConsumer = (ConsumerNode) aConsumers.getNode();
                         break;
                     } else if (tNextNode.mNodeValue == tTargetNodeValue) {
-                        tAmpsUsed += processNodeInject(aCurrentNode,tConsumer,side,aMaxAmps-tAmpsUsed,aVoltage,true);
-                        tConsumer =(ConsumerNode) aConsumers.getNextNode();
+                        tAmpsUsed += processNodeInject(aCurrentNode, tConsumer, side, aMaxAmps - tAmpsUsed, aVoltage, true);
+                        tConsumer = (ConsumerNode) aConsumers.getNextNode();
                         break;
                     }
                 }
@@ -72,28 +72,28 @@ public class PowerNodes {
         return tAmpsUsed;
     }
 
-    //checking if target node is next to it or has a higher value then current node value
-    //these functions are different to either go down or up the stack
-    protected static int powerNodeAbove(Node aCurrentNode, Node aPreviousNode, NodeList aConsumers, int aVoltage, int aMaxAmps) {
-        int tAmpsUsed = 0;
+    // checking if target node is next to it or has a higher value then current node value
+    // these functions are different to either go down or up the stack
+    protected static long powerNodeAbove(Node aCurrentNode, Node aPreviousNode, NodeList aConsumers, long aVoltage, long aMaxAmps) {
+        long tAmpsUsed = 0;
         int tLoopProtection = 0;
-        ConsumerNode tConsumer =(ConsumerNode) aConsumers.getNode();
+        ConsumerNode tConsumer = (ConsumerNode) aConsumers.getNode();
         while (tConsumer != null) {
             int tTargetNodeValue = tConsumer.mNodeValue;
             if (tTargetNodeValue > aCurrentNode.mHighestNodeValue || tTargetNodeValue < aCurrentNode.mNodeValue) {
                 return tAmpsUsed;
             } else {
-                for (int side = 5;side>-1;side--) {
-                    Node tNextNode = aCurrentNode.mNeighbourNodes[side];
+                for (int side = 5; side > -1; side--) {
+                    final Node tNextNode = aCurrentNode.mNeighbourNodes[side];
                     if (tNextNode == null) continue;
                     if (tNextNode.mNodeValue > aCurrentNode.mNodeValue && tNextNode.mNodeValue < tTargetNodeValue) {
                         if (tNextNode == aPreviousNode) return tAmpsUsed;
-                        tAmpsUsed += processNextNodeAbove(aCurrentNode,tNextNode,aConsumers,side,aMaxAmps-tAmpsUsed,aVoltage);
-                        tConsumer =(ConsumerNode) aConsumers.getNode();
+                        tAmpsUsed += processNextNodeAbove(aCurrentNode, tNextNode, aConsumers, side, aMaxAmps - tAmpsUsed, aVoltage);
+                        tConsumer = (ConsumerNode) aConsumers.getNode();
                         break;
                     } else if (tNextNode.mNodeValue == tTargetNodeValue) {
-                        tAmpsUsed += processNodeInject(aCurrentNode,tConsumer,side,aMaxAmps-tAmpsUsed,aVoltage,true);
-                        tConsumer =(ConsumerNode) aConsumers.getNextNode();
+                        tAmpsUsed += processNodeInject(aCurrentNode, tConsumer, side, aMaxAmps - tAmpsUsed, aVoltage, true);
+                        tConsumer = (ConsumerNode) aConsumers.getNextNode();
                         break;
                     }
                 }
@@ -108,52 +108,51 @@ public class PowerNodes {
         return tAmpsUsed;
     }
 
-    protected static int processNextNode(Node aCurrentNode, Node aNextNode, NodeList aConsumers, int aSide, int aMaxAmps, int aVoltage) {
-        PowerNodePath tPath = (PowerNodePath)aCurrentNode.mNodePaths[aSide];
-        PowerNodePath tSelfPath = (PowerNodePath) aCurrentNode.mSelfPath;
-        int tVoltLoss = 0;
+    protected static long processNextNode(Node aCurrentNode, Node aNextNode, NodeList aConsumers, int aSide, long aMaxAmps, long aVoltage) {
+        final PowerNodePath tPath = (PowerNodePath) aCurrentNode.mNodePaths[aSide];
+        final PowerNodePath tSelfPath = (PowerNodePath) aCurrentNode.mSelfPath;
+        long tVoltLoss = 0;
         if (tSelfPath != null) {
             tVoltLoss += tSelfPath.getLoss();
-            tSelfPath.applyVoltage(aVoltage,false);
+            tSelfPath.applyVoltage(aVoltage, false);
         }
-        tPath.applyVoltage(aVoltage - tVoltLoss,true);
+        tPath.applyVoltage(aVoltage - tVoltLoss, true);
         tVoltLoss += tPath.getLoss();
-        int tAmps = powerNode(aNextNode,aCurrentNode,aConsumers,aVoltage - tVoltLoss,aMaxAmps );
+        long tAmps = powerNode(aNextNode, aCurrentNode, aConsumers, aVoltage - tVoltLoss, aMaxAmps);
         tPath.addAmps(tAmps);
         if (tSelfPath != null)
             tSelfPath.addAmps(tAmps);
         return tAmps;
     }
 
-    protected static int processNextNodeAbove(Node aCurrentNode, Node aNextNode, NodeList aConsumers, int aSide, int aMaxAmps, int aVoltage) {
-        PowerNodePath tPath = (PowerNodePath)aCurrentNode.mNodePaths[aSide];
-        PowerNodePath tSelfPath = (PowerNodePath) aCurrentNode.mSelfPath;
-        int tVoltLoss = 0;
+    protected static long processNextNodeAbove(Node aCurrentNode, Node aNextNode, NodeList aConsumers, int aSide, long aMaxAmps, long aVoltage) {
+        final PowerNodePath tPath = (PowerNodePath) aCurrentNode.mNodePaths[aSide];
+        final PowerNodePath tSelfPath = (PowerNodePath) aCurrentNode.mSelfPath;
+        long tVoltLoss = 0;
         if (tSelfPath != null) {
             tVoltLoss += tSelfPath.getLoss();
-            tSelfPath.applyVoltage(aVoltage,false);
+            tSelfPath.applyVoltage(aVoltage, false);
         }
-        tPath.applyVoltage(aVoltage - tVoltLoss,true);
+        tPath.applyVoltage(aVoltage - tVoltLoss, true);
         tVoltLoss += tPath.getLoss();
-        int tAmps = powerNodeAbove(aNextNode,aCurrentNode,aConsumers,aVoltage - tVoltLoss,aMaxAmps );
+        long tAmps = powerNodeAbove(aNextNode, aCurrentNode, aConsumers, aVoltage - tVoltLoss, aMaxAmps);
         tPath.addAmps(tAmps);
         if (tSelfPath != null)
             tSelfPath.addAmps(tAmps);
         return tAmps;
     }
 
-    protected static int processNodeInject(Node aCurrentNode, ConsumerNode aConsumer, int aSide,int aMaxAmps, int aVoltage,
-                                           boolean isUp) {
-        PowerNodePath tPath = (PowerNodePath)aCurrentNode.mNodePaths[aSide];
-        PowerNodePath tSelfPath = (PowerNodePath) aCurrentNode.mSelfPath;
-        int tVoltLoss = 0;
+    protected static long processNodeInject(Node aCurrentNode, ConsumerNode aConsumer, int aSide, long aMaxAmps, long aVoltage, boolean isUp) {
+        final PowerNodePath tPath = (PowerNodePath) aCurrentNode.mNodePaths[aSide];
+        final PowerNodePath tSelfPath = (PowerNodePath) aCurrentNode.mSelfPath;
+        long tVoltLoss = 0;
         if (tSelfPath != null) {
             tVoltLoss += tSelfPath.getLoss();
-            tSelfPath.applyVoltage(aVoltage,false);
+            tSelfPath.applyVoltage(aVoltage, false);
         }
-        tPath.applyVoltage(aVoltage - tVoltLoss,true);
+        tPath.applyVoltage(aVoltage - tVoltLoss, true);
         tVoltLoss += tPath.getLoss();
-        int tAmps = aConsumer.injectEnergy(aVoltage - tVoltLoss,aMaxAmps);
+        long tAmps = aConsumer.injectEnergy(aVoltage - tVoltLoss, aMaxAmps);
         tPath.addAmps(tAmps);
         if (tSelfPath != null)
             tSelfPath.addAmps(tAmps);

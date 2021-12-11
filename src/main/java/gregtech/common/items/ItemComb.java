@@ -233,6 +233,7 @@ public class ItemComb extends Item {
 		addProcessGT(CombType.NICKEL, new Materials[] {Materials.Nickel, Materials.Garnierite, Materials.Pentlandite, Materials.Cobaltite, Materials.Wulfenite, Materials.Powellite}, Voltage.LV);
 		addProcessGT(CombType.ZINC, new Materials[] {Materials.Zinc, Materials.Sulfur}, Voltage.LV);
 		addProcessGT(CombType.SILVER, new Materials[] {Materials.Silver, Materials.Galena}, Voltage.LV);
+		addProcessGT(CombType.CRYOLITE, new Materials[] {Materials.Cryolite, Materials.Silver}, Voltage.LV);
 		addProcessGT(CombType.GOLD, new Materials[] {Materials.Gold, Materials.Magnetite}, Voltage.LV);
 		addChemicalProcess(CombType.GOLD, Materials.Magnetite, Materials.Gold, Voltage.LV);
 		addProcessGT(CombType.SULFUR, new Materials[] {Materials.Sulfur, Materials.Pyrite, Materials.Sphalerite}, Voltage.LV);
@@ -255,6 +256,7 @@ public class ItemComb extends Item {
 			addCentrifugeToMaterial(CombType.IRON, new Materials[] {Materials.Iron}, new int[] {30 * 100}, new int[] {}, Voltage.ULV, NI, 30 * 100);
 			addCentrifugeToMaterial(CombType.STEEL, new Materials[] {Materials.Steel}, new int[] {40 * 100}, new int[] {}, Voltage.ULV, NI, 30 * 100);
 			addCentrifugeToMaterial(CombType.SILVER, new Materials[] {Materials.Silver}, new int[] {80 * 100}, new int[] {}, Voltage.ULV, NI, 30 * 100);
+			addCentrifugeToMaterial(CombType.CRYOLITE, new Materials[] {Materials.Cryolite}, new int[] {80 * 100}, new int[] {}, Voltage.ULV, NI, 30 * 100);
 		}else {
 			addCentrifugeToMaterial(CombType.SLAG, new Materials[] {Materials.Salt, Materials.RockSalt, Materials.Lepidolite, Materials.Spodumene, Materials.Monazite}, new int[] {100 * 100, 100 * 100, 100 * 100}, new int[] {}, Voltage.ULV, NI, 30 * 100);
 			addCentrifugeToMaterial(CombType.COPPER, new Materials[] {Materials.Copper, Materials.Tetrahedrite, Materials.Chalcopyrite, Materials.Malachite, Materials.Pyrite, Materials.Stibnite}, new int[] {100 * 100, 85 * 100, 95 * 100, 80 * 100, 75 * 100, 65 * 100}, new int[] {}, Voltage.ULV, NI, 30 * 100);
@@ -270,6 +272,7 @@ public class ItemComb extends Item {
 			addCentrifugeToMaterial(CombType.NICKEL, new Materials[] {Materials.Nickel, Materials.Garnierite, Materials.Pentlandite, Materials.Cobaltite, Materials.Wulfenite, Materials.Powellite}, new int[] {100 * 100, 85 * 100, 85 * 100, 80 * 100, 75 * 100, 75 * 100}, new int[] {}, Voltage.ULV, NI, 30 * 100);
 			addCentrifugeToMaterial(CombType.ZINC, new Materials[] {Materials.Zinc, Materials.Sphalerite, Materials.Sulfur}, new int[] {100 * 100, 80 * 100, 75 * 100}, new int[] {}, Voltage.ULV, NI, 30 * 100);
 			addCentrifugeToMaterial(CombType.SILVER, new Materials[] {Materials.Silver, Materials.Galena}, new int[] {100 * 100, 80 * 100}, new int[] {}, Voltage.ULV, NI, 30 * 100);
+			addCentrifugeToMaterial(CombType.CRYOLITE, new Materials[] {Materials.Cryolite, Materials.Silver}, new int[] {100 * 100, 80 * 100}, new int[] {}, Voltage.ULV, NI, 30 * 100);
 			addCentrifugeToMaterial(CombType.GOLD, new Materials[] {Materials.Gold}, new int[] {100 * 100}, new int[] {}, Voltage.ULV, NI, 30 * 100);
 			addCentrifugeToMaterial(CombType.SULFUR, new Materials[] {Materials.Sulfur, Materials.Pyrite, Materials.Sphalerite}, new int[] {100 * 100, 90 * 100, 80 * 100}, new int[] {}, Voltage.ULV, NI, 30 * 100);
 			addCentrifugeToMaterial(CombType.GALLIUM, new Materials[] {Materials.Gallium, Materials.Niobium}, new int[] { 80 * 100, 75 * 100}, new int[] {}, Voltage.ULV, NI, 30 * 100);
