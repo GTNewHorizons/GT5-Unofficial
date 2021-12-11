@@ -726,7 +726,7 @@ public class RecipeLoader_02 {
                             MyMaterial.diethylamine.getFluidOrGas(1000)
                     },
                     new FluidStack[]{
-                            MyMaterial.ironedKerosene.getFluidOrGas(16000)
+                            MyMaterial.ironedKerosene.getFluidOrGas(44000)
                     },
                     null,
                     2400,
@@ -746,7 +746,7 @@ public class RecipeLoader_02 {
                         Materials.Tetranitromethane.getFluid(2000),
                 },
                 new FluidStack[]{
-                        MyMaterial.ironedFuel.getFluidOrGas(24000)
+                        MyMaterial.ironedFuel.getFluidOrGas(50000)
                 },
                 null,
                 2400,
