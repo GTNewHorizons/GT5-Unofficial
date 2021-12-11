@@ -36,7 +36,6 @@ import gregtech.api.util.GasSpargingRecipeMap;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.material.nuclear.NUCLIDE;
@@ -104,9 +103,9 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 		.addDynamoHatch("Top or bottom layer edges", 1)
 		.addMaintenanceHatch("Top or bottom layer edges", 1)
 		.addMufflerHatch("Top 3x3", 2)
-		.addStructureInfo("All dynamos must be IV tier.")
+		.addStructureInfo("All dynamos must be IV or LuV tier.")
 		.addStructureInfo("All other hatches must be IV+ tier.")
-		.addStructureInfo("14+ Output Hatches, 4+ Input Hatches, 4x Dynamo Hatches")
+		.addStructureInfo("3x Output Hatches, 2x Input Hatches, 4x Dynamo Hatches")
 		.addStructureInfo("2x Maintenance Hatches, 4x Mufflers")
 		.toolTipFinisher(CORE.GT_Tooltip_Builder);
 		return tt;
@@ -135,14 +134,15 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-		if (!aBaseMetaTileEntity.isActive() || this.mEfficiency < 500){
+		boolean aWarmedUp = this.mEfficiency == this.getMaxEfficiency(null);
+		if (!aBaseMetaTileEntity.isActive() || !aWarmedUp){
 			if (aSide == aFacing) {
 				return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(12)),
 						new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_REPLICATOR_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_REPLICATOR)};
 			}
 			return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(12))};
 		}
-		else if(aBaseMetaTileEntity.isActive() && this.mEfficiency >= 500){
+		else if(aBaseMetaTileEntity.isActive() && aWarmedUp){
 			if (aSide == aFacing) {
 				return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(13)),
 						new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_REPLICATOR_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_REPLICATOR)};
@@ -171,10 +171,10 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance){
 				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
 				return this.mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance)aMetaTileEntity);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Dynamo && ((GT_MetaTileEntity_Hatch_Dynamo) aMetaTileEntity).mTier >= 5){
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Dynamo && (((GT_MetaTileEntity_Hatch_Dynamo) aMetaTileEntity).mTier >= 5 && ((GT_MetaTileEntity_Hatch_Dynamo) aMetaTileEntity).mTier <= 6)){
 				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
 				return this.mDynamoHatches.add((GT_MetaTileEntity_Hatch_Dynamo)aMetaTileEntity);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input && ((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mTier == 5) {
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input && ((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mTier >= 5) {
 				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
 				return this.mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
 			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output && ((GT_MetaTileEntity_Hatch_Output) aMetaTileEntity).mTier >= 5) {
@@ -263,7 +263,7 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
 		mCasing = 0;
 		if (checkPiece(mName, 3, 3, 0) && mCasing >= 27) {
-			if (mOutputHatches.size() >= 14 && mInputHatches.size() >= 4 && mDynamoHatches.size() == 4 &&
+			if (mOutputHatches.size() >= 3 && mInputHatches.size() >= 2 && mDynamoHatches.size() == 4 &&
 					mMufflerHatches.size() == 4 && mMaintenanceHatches.size() == 2) {
 				this.mWrench = true;
 				this.mScrewdriver = true;
@@ -308,7 +308,7 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public int getPollutionPerTick(final ItemStack aStack) {
-		return 10;
+		return 0;
 	}
 
 	@Override
@@ -479,10 +479,6 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 	@Override
 	public int getEuDiscountForParallelism() {
 		return 0;
-	}
-
-	public int getAmountOfOutputs() {
-		return 10;
 	}
 
 	@Override
