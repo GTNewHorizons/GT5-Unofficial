@@ -45,7 +45,7 @@ public class RecipeLoader_NuclearFuelProcessing {
 
 		// 7LiF - BeF2 - ZrF4 - UF4 - 650C
 		CORE.RA.addFissionFuel(
-				FluidUtils.getFluidStack(aLithiumFluoride, 650),
+				FluidUtils.getFluidStack(aLithiumFluoride, 600),
 				FluidUtils.getFluidStack(aBerylliumFluoride, 250),
 				FluidUtils.getFluidStack(aZirconiumFluoride, 80),
 				FluidUtils.getFluidStack(aUraniumTetraFluoride, 70),
@@ -58,9 +58,9 @@ public class RecipeLoader_NuclearFuelProcessing {
 
 		// 7liF - BeF2 - ThF4 - UF4 - 566C
 		CORE.RA.addFissionFuel(
-				FluidUtils.getFluidStack(aLithiumFluoride, 620),
-				FluidUtils.getFluidStack(aBerylliumFluoride, 280),
-				FluidUtils.getFluidStack(aThoriumFluoride, 70),
+				FluidUtils.getFluidStack(aLithiumFluoride, 580),
+				FluidUtils.getFluidStack(aBerylliumFluoride, 270),
+				FluidUtils.getFluidStack(aThoriumFluoride, 80),
 				FluidUtils.getFluidStack(aUraniumTetraFluoride, 70),
 				null, null, null, null, null, // Extra 5 inputs
 				FluidUtils.getFluidStack(aLiFBeF2ThF4UF4, 1000),
