@@ -23,6 +23,7 @@ public class FluidsBuilder {
         crackedNaquadahAsphalt_Moderately();
         crackedNaquadahAsphalt_Heavily();
         combustionPromotor();
+        coalTar();
     }
 
     public static void crackedNaquadahGas_Lightly(){
@@ -171,6 +172,18 @@ public class FluidsBuilder {
         tmp2.SetTexture("combustionPromotor");
         tmp2.setBlockName("combustionPromotor");
         GameRegistry.registerBlock(tmp2,"combustionPromotor");
+        NEI_Config.hide(tmp2);
+    }
+
+    public static void coalTar(){
+        Fluid tmp = BaseFluid.BuildFluid("fluid.coalTar");
+        tmp.setGaseous(false)
+                .setTemperature(450)
+                .setUnlocalizedName("fluid.coalTar");
+        BaseFluid tmp2 = new BaseFluid(tmp, Material.water);
+        tmp2.SetTexture("coalTar");
+        tmp2.setBlockTextureName("coalTar");
+        GameRegistry.registerBlock(tmp2,"coalTar");
         NEI_Config.hide(tmp2);
     }
 }

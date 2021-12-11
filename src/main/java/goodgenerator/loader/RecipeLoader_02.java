@@ -1,5 +1,6 @@
 package goodgenerator.loader;
 
+import goodgenerator.crossmod.LoadedList;
 import goodgenerator.items.MyMaterial;
 import goodgenerator.util.CrackRecipeAdder;
 import goodgenerator.util.ItemRefer;
@@ -14,6 +15,7 @@ import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class RecipeLoader_02 {
 
@@ -38,7 +40,7 @@ public class RecipeLoader_02 {
         CrackRecipeAdder.reAddBlastRecipe(MyMaterial.zircaloy4, 500, 480, 2800, true);
         CrackRecipeAdder.reAddBlastRecipe(MyMaterial.zircaloy4, 513, 480, 2800, false);
         CrackRecipeAdder.reAddBlastRecipe(MyMaterial.incoloy903, 2400, 1920, 3700, true);
-        CrackRecipeAdder.reAddBlastRecipe(MyMaterial.adamantiumAlloy, 2500, 1920, 5000, true);
+        CrackRecipeAdder.reAddBlastRecipe(MyMaterial.adamantiumAlloy, 2500, 1920, 5500, true);
 
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
@@ -580,6 +582,205 @@ public class RecipeLoader_02 {
                 120,
                 480
         );
+
+        GT_Values.RA.addFluidExtractionRecipe(
+                Materials.Coal.getGems(1),
+                Materials.Ash.getDust(1),
+                FluidRegistry.getFluidStack("fluid.coaltar", 250),
+                10,
+                60,
+                120
+        );
+
+        if (OreDictionary.getOres("fuelCoke").size() > 0) {
+            GT_Values.RA.addFluidExtractionRecipe(
+                    OreDictionary.getOres("fuelCoke").get(0),
+                    Materials.Ash.getDust(1),
+                    FluidRegistry.getFluidStack("fluid.coaltar", 500),
+                    10,
+                    60,
+                    120
+            );
+        }
+
+        if (LoadedList.GTPP) {
+            GT_Values.RA.addDistilleryRecipe(
+                    24,
+                    FluidRegistry.getFluidStack("fluid.coaltaroil", 100),
+                    MyMaterial.cyclopentadiene.getFluidOrGas(30),
+                    100,
+                    120,
+                    false
+            );
+        }
+        else {
+            GT_Values.RA.addDistilleryRecipe(
+                    24,
+                    FluidRegistry.getFluidStack("fluid.coaltar", 300),
+                    MyMaterial.cyclopentadiene.getFluidOrGas(100),
+                    100,
+                    120,
+                    false
+            );
+        }
+
+        GT_Values.RA.addDistilleryRecipe(
+                24,
+                Materials.WoodTar.getFluid(500),
+                MyMaterial.cyclopentadiene.getFluidOrGas(20),
+                100,
+                120,
+                false
+        );
+
+        GT_Values.RA.addChemicalRecipe(
+                MyMaterial.ferrousChloride.get(OrePrefixes.cell, 1),
+                GT_Utility.getIntegratedCircuit(1),
+                Materials.Chlorine.getGas(1000),
+                null,
+                Materials.IronIIIChloride.getCells(1),
+                40
+        );
+
+        GT_Values.RA.addChemicalRecipe(
+                Materials.IronIIIChloride.getCells(1),
+                GT_Utility.getIntegratedCircuit(7),
+                Materials.Hydrogen.getGas(1000),
+                Materials.HydrochloricAcid.getFluid(1000),
+                MyMaterial.ferrousChloride.get(OrePrefixes.cell, 1),
+                80,
+                120
+        );
+
+        GT_Values.RA.addChemicalRecipe(
+                Materials.Ammonia.getCells(1),
+                GT_Utility.getIntegratedCircuit(1),
+                Materials.Ethanol.getFluid(2000),
+                null,
+                MyMaterial.diethylamine.get(OrePrefixes.cell, 1),
+                200,
+                120
+        );
+
+        GT_Values.RA.addMultiblockChemicalRecipe(
+                new ItemStack[]{
+                        GT_Utility.getIntegratedCircuit(2)
+                },
+                new FluidStack[]{
+                        MyMaterial.cyclopentadiene.getFluidOrGas(2000),
+                        MyMaterial.ferrousChloride.getFluidOrGas(1000),
+                        MyMaterial.diethylamine.getFluidOrGas(8000),
+                        Materials.Ice.getSolid(4000)
+                },
+                new FluidStack[]{
+                        MyMaterial.impureFerroceneMixture.getFluidOrGas(15000)
+                },
+                null,
+                2400,
+                120
+        );
+
+        GT_Values.RA.addMixerRecipe(
+                MyMaterial.ether.get(OrePrefixes.cell, 1),
+                GT_Utility.getIntegratedCircuit(1),
+                null,
+                null,
+                MyMaterial.impureFerroceneMixture.getFluidOrGas(7500),
+                MyMaterial.ferroceneWaste.getFluidOrGas(5000),
+                MyMaterial.ferroceneSolution.get(OrePrefixes.cell, 1),
+                800,
+                120
+        );
+
+        GT_Values.RA.addUniversalDistillationRecipe(
+                MyMaterial.ferroceneWaste.getFluidOrGas(1000),
+                new FluidStack[] {
+                        Materials.Water.getFluid(400),
+                        MyMaterial.diethylamine.getFluidOrGas(800),
+                        MyMaterial.ether.getFluidOrGas(500)
+                },
+                null,
+                600,
+                120
+        );
+
+        GT_Values.RA.addUniversalDistillationRecipe(
+                MyMaterial.ferroceneSolution.getFluidOrGas(2000),
+                new FluidStack[]{
+                        MyMaterial.ether.getFluidOrGas(1000)
+                },
+                MyMaterial.ferrocene.get(OrePrefixes.dust, 1),
+                600,
+                120
+        );
+
+        if (LoadedList.GTPP) {
+            GT_Values.RA.addMultiblockChemicalRecipe(
+                    new ItemStack[]{
+                            MyMaterial.ferrocene.get(OrePrefixes.dust, 4),
+                            Materials.SodiumHydroxide.getDust(8)
+                    },
+                    new FluidStack[]{
+                            FluidRegistry.getFluidStack("fluid.kerosene", 40000),
+                            Materials.Naphtha.getFluid(3000),
+                            MyMaterial.diethylamine.getFluidOrGas(1000)
+                    },
+                    new FluidStack[]{
+                            MyMaterial.ironedKerosene.getFluidOrGas(16000)
+                    },
+                    null,
+                    2400,
+                    1920
+            );
+        }
+
+        GT_Values.RA.addMultiblockChemicalRecipe(
+                new ItemStack[]{
+                        MyMaterial.ferrocene.get(OrePrefixes.dust, 4),
+                },
+                new FluidStack[]{
+                        FluidRegistry.getFluidStack("combustionpromotor", 4000),
+                        Materials.Naphtha.getFluid(40000),
+                        Materials.LightFuel.getFluid(3000),
+                        Materials.LPG.getFluid(1000),
+                        Materials.Tetranitromethane.getFluid(2000),
+                },
+                new FluidStack[]{
+                        MyMaterial.ironedFuel.getFluidOrGas(24000)
+                },
+                null,
+                2400,
+                7680
+        );
+
+        GT_ModHandler.addCraftingRecipe(
+                ItemRefer.Combustion_Generator_EV.get(1),
+                GT_ModHandler.RecipeBits.DISMANTLEABLE,
+                new Object[] {
+                        "PCP","MHM","GWG",
+                        'G', GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.Titanium,1),
+                        'C', "circuitData",
+                        'W', GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Aluminium,1),
+                        'P', ItemList.Electric_Piston_EV,
+                        'H', ItemList.Hull_EV,
+                        'M', ItemList.Electric_Motor_EV
+                }
+        );
+
+        GT_ModHandler.addCraftingRecipe(
+                ItemRefer.Combustion_Generator_IV.get(1),
+                GT_ModHandler.RecipeBits.DISMANTLEABLE,
+                new Object[] {
+                        "PCP","MHM","GWG",
+                        'G', GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.TungstenSteel,1),
+                        'C', "circuitElite",
+                        'W', GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Tungsten,1),
+                        'P', ItemList.Electric_Piston_IV,
+                        'H', ItemList.Hull_IV,
+                        'M', ItemList.Electric_Motor_IV
+                }
+        );
+
     }
 
     public static void InitLoadRecipe() {

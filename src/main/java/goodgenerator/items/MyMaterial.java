@@ -605,7 +605,7 @@ public class MyMaterial implements Runnable {
             subscriptNumbers("ZnTh"),
             new Werkstoff.Stats(),
             Werkstoff.Types.COMPOUND,
-            new Werkstoff.GenerationFeatures().disable().onlyDust().addMolten().addMetalItems(),
+            new Werkstoff.GenerationFeatures().disable().onlyDust().addMolten().addMetalItems().addMultipleIngotMetalWorkingItems(),
             OffsetID + 52,
             TextureSet.SET_SHINY,
             new Pair<>(Zinc, 1),
@@ -954,7 +954,7 @@ public class MyMaterial implements Runnable {
             subscriptNumbers("Zr34Sn5Fe2Cr"),
             new Werkstoff.Stats().setCentrifuge(true).setBlastFurnace(true).setMeltingPoint(2800),
             Werkstoff.Types.MIXTURE,
-            new Werkstoff.GenerationFeatures().onlyDust().addMolten().addMetalItems().addCraftingMetalWorkingItems().addSimpleMetalWorkingItems().addMixerRecipes((short) 4),
+            new Werkstoff.GenerationFeatures().onlyDust().addMolten().addMetalItems().addCraftingMetalWorkingItems().addSimpleMetalWorkingItems().addMultipleIngotMetalWorkingItems().addMixerRecipes((short) 4),
             OffsetID + 81,
             TextureSet.SET_METALLIC,
             new Pair<>(WerkstoffLoader.Zirconium, 34),
@@ -969,7 +969,7 @@ public class MyMaterial implements Runnable {
             subscriptNumbers("Zr34Sn4FeCrNi"),
             new Werkstoff.Stats().setCentrifuge(true).setBlastFurnace(true).setMeltingPoint(2800),
             Werkstoff.Types.MIXTURE,
-            new Werkstoff.GenerationFeatures().onlyDust().addMolten().addMetalItems().addCraftingMetalWorkingItems().addSimpleMetalWorkingItems().addMixerRecipes((short) 2),
+            new Werkstoff.GenerationFeatures().onlyDust().addMolten().addMetalItems().addCraftingMetalWorkingItems().addSimpleMetalWorkingItems().addMultipleIngotMetalWorkingItems().addMixerRecipes((short) 2),
             OffsetID + 82,
             TextureSet.SET_METALLIC,
             new Pair<>(WerkstoffLoader.Zirconium, 34),
@@ -985,7 +985,7 @@ public class MyMaterial implements Runnable {
             subscriptNumbers("Fe12Ni10Co8Ti4Mo2Al"),
             new Werkstoff.Stats().setCentrifuge(true).setBlastFurnace(true).setMeltingPoint(3700),
             Werkstoff.Types.MIXTURE,
-            new Werkstoff.GenerationFeatures().onlyDust().addMolten().addMetalItems().addCraftingMetalWorkingItems().addSimpleMetalWorkingItems().addMixerRecipes((short) 6),
+            new Werkstoff.GenerationFeatures().onlyDust().addMolten().addMetalItems().addCraftingMetalWorkingItems().addSimpleMetalWorkingItems().addMultipleIngotMetalWorkingItems().addMixerRecipes((short) 6),
             OffsetID + 83,
             TextureSet.SET_METALLIC,
             new Pair<>(Iron, 12),
@@ -1000,9 +1000,9 @@ public class MyMaterial implements Runnable {
             new short[]{0xa0,0xa0,0xa0},
             "Adamantium Alloy",
             subscriptNumbers("Ad5Nq2La3"),
-            new Werkstoff.Stats().setCentrifuge(true).setBlastFurnace(true).setMeltingPoint(5000),
+            new Werkstoff.Stats().setCentrifuge(true).setBlastFurnace(true).setMeltingPoint(5500).setSpeedOverride(191.2F).setDurOverride(102400),
             Werkstoff.Types.MIXTURE,
-            new Werkstoff.GenerationFeatures().onlyDust().addMolten().addMetalItems().addCraftingMetalWorkingItems().addSimpleMetalWorkingItems().addMixerRecipes((short) 3),
+            new Werkstoff.GenerationFeatures().onlyDust().addMolten().addMetalItems().addCraftingMetalWorkingItems().addSimpleMetalWorkingItems().addMultipleIngotMetalWorkingItems().addMixerRecipes((short) 3),
             OffsetID + 84,
             TextureSet.SET_SHINY,
             new Pair<>(Adamantium, 5),
@@ -1014,9 +1014,103 @@ public class MyMaterial implements Runnable {
             new short[]{0xe4,0xc6,0x61},
             "Ethanol Gasoline",
             new Werkstoff.Stats(),
-            Werkstoff.Types.COMPOUND,
+            Werkstoff.Types.MIXTURE,
             new Werkstoff.GenerationFeatures().disable().addCells(),
             OffsetID + 85,
+            TextureSet.SET_FLUID
+    );
+
+    public static final Werkstoff cyclopentadiene = new Werkstoff(
+            new short[]{0xff,0xf6,0xbd},
+            "Cyclopentadiene",
+            subscriptNumbers("C5H6"),
+            new Werkstoff.Stats(),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            OffsetID + 86,
+            TextureSet.SET_FLUID
+    );
+
+    public static final Werkstoff ferrousChloride = new Werkstoff(
+            new short[]{0x5b,0x5b,0x5b},
+            "Iron II Chloride",
+            subscriptNumbers("FeCl2"),
+            new Werkstoff.Stats(),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            OffsetID + 87,
+            TextureSet.SET_FLUID
+    );
+
+    public static final Werkstoff diethylamine = new Werkstoff(
+            new short[]{0x69,0x77,0xca},
+            "Diethylamine",
+            subscriptNumbers("C4H11N"),
+            new Werkstoff.Stats(),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            OffsetID + 88,
+            TextureSet.SET_FLUID
+    );
+
+    public static final Werkstoff impureFerroceneMixture = new Werkstoff(
+            new short[]{0x79,0x55,0x08},
+            "Impure Ferrocene Mixture",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            OffsetID + 89,
+            TextureSet.SET_FLUID
+    );
+
+    public static final Werkstoff ferroceneSolution = new Werkstoff(
+            new short[]{0xde,0x7e,0x1c},
+            "Ferrocene Solution",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            OffsetID + 90,
+            TextureSet.SET_FLUID
+    );
+
+    public static final Werkstoff ferroceneWaste = new Werkstoff(
+            new short[]{0x35,0x1d,0x03},
+            "Ferrocene Waste",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            OffsetID + 91,
+            TextureSet.SET_FLUID
+    );
+
+    public static final Werkstoff ferrocene = new Werkstoff(
+            new short[]{0xf1,0x8f,0x2b},
+            "Ferrocene",
+            subscriptNumbers("Fe(C5H5)2"),
+            new Werkstoff.Stats(),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            OffsetID + 92,
+            TextureSet.SET_SHINY
+    );
+
+    public static final Werkstoff ironedKerosene = new Werkstoff(
+            new short[]{0x97,0x00,0x61},
+            "Jet Fuel No.3",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            OffsetID + 93,
+            TextureSet.SET_FLUID
+    );
+
+    public static final Werkstoff ironedFuel = new Werkstoff(
+            new short[]{0xff,0x98,0x00},
+            "Jet Fuel A",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            OffsetID + 94,
             TextureSet.SET_FLUID
     );
 

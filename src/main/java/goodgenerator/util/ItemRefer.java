@@ -100,6 +100,8 @@ public final class ItemRefer {
     public static ItemRefer Universal_Chemical_Fuel_Engine = getItemStack(UCFE);
     public static ItemRefer Large_Essentia_Generator = getItemStack(LEG);
     public static ItemRefer YOTTank = getItemStack(YFT);
+    public static ItemRefer Combustion_Generator_EV = getItemStack(Generator_Diesel[0]);
+    public static ItemRefer Combustion_Generator_IV = getItemStack(Generator_Diesel[1]);
 
     private Item mItem = null;
     private Block mBlock = null;

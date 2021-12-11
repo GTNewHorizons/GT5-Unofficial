@@ -1,11 +1,11 @@
 package goodgenerator.loader;
 
+import goodgenerator.crossmod.LoadedList;
 import goodgenerator.main.GoodGenerator;
 import goodgenerator.util.ItemRefer;
 import goodgenerator.util.MyRecipeAdder;
 import com.github.bartimaeusnek.bartworks.system.material.GT_Enhancement.PlatinumSludgeOverHaul;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
-import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -853,7 +853,7 @@ public class NaquadahReworkRecipeLoader {
 
         GT_Log.out.print("Multi Chemical Reactor done!\n");
 
-        if (Loader.isModLoaded("miscutils")) {
+        if (LoadedList.GTPP) {
             //For Multi Centrifuge
             //Blame alk. She made some shit in it, NEI will break down if anyone modify the hash list directly.
             GTPP_Recipe.GTPP_Recipe_Map.sMultiblockCentrifugeRecipes_GT.mRecipeList.clear();

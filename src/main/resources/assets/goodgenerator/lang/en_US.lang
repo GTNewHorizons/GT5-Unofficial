@@ -112,6 +112,7 @@ fluid.lightlyCrackedNaquadahAsphalt=Lightly Cracked Naquadah Asphalt
 fluid.moderatelyCrackedNaquadahAsphalt=Moderately Cracked Naquadah Asphalt
 fluid.heavilyCrackedNaquadahAsphalt=Severely Cracked Naquadah Asphalt
 fluid.combustionPromotor=Combustion Promoter
+fluid.fluid.coalTar=Coal Tar
 fluid.Naquadah Based Liquid Fuel MkI (Depleted)=Naquadah Based Liquid Fuel MkI (Depleted)
 fluid.Acid Naquadah Emulsion=Acid Naquadah Emulsion
 fluid.Antimony Pentafluoride=Antimony Pentafluoride
@@ -177,6 +178,7 @@ tile.lightlyCrackedNaquadahAsphalt.name=Lightly Cracked Naquadah Asphalt
 tile.moderatelyCrackedNaquadahAsphalt.name=Moderately Cracked Naquadah Asphalt
 tile.heavilyCrackedNaquadahAsphalt.name=Severely Cracked Naquadah Asphalt
 tile.combustionPromotor.name=Combustion Promoter
+tile.coalTar.name=Coal Tar
 
 #Tab Name
 itemGroup.Good Generator=Good Generator

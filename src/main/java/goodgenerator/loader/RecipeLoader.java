@@ -1,11 +1,11 @@
 package goodgenerator.loader;
 
+import goodgenerator.crossmod.LoadedList;
 import goodgenerator.items.MyMaterial;
 import goodgenerator.util.CrackRecipeAdder;
 import goodgenerator.util.ItemRefer;
 import goodgenerator.util.MaterialFix;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
-import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -690,6 +690,9 @@ public class RecipeLoader {
         GT_Values.RA.addFuel(MyMaterial.ether.get(OrePrefixes.cell), null, 537, 0);
         GT_Values.RA.addFuel(MyMaterial.ether.get(OrePrefixes.cell), null, 537, 1);
         GT_Values.RA.addFuel(MyMaterial.ethanolGasoline.get(OrePrefixes.cell), null, 750, 0);
+        GT_Values.RA.addFuel(MyMaterial.cyclopentadiene.get(OrePrefixes.cell), null, 70, 1);
+        GT_Values.RA.addFuel(MyMaterial.ironedFuel.get(OrePrefixes.cell), null, 2048, 0);
+        GT_Values.RA.addFuel(MyMaterial.ironedKerosene.get(OrePrefixes.cell), null, 1324, 0);
 
         GT_Values.RA.addMultiblockChemicalRecipe(
                 new ItemStack[]{
@@ -926,7 +929,7 @@ public class RecipeLoader {
                 65536
         );
 
-        if (Loader.isModLoaded("dreamcraft")) {
+        if (LoadedList.GTNH_CORE) {
             GT_Values.RA.addAssemblylineRecipe(
                     MyMaterial.extremelyUnstableNaquadah.get(OrePrefixes.ingot),
                     300000,
@@ -1237,7 +1240,7 @@ public class RecipeLoader {
                 120
         );
 
-        if (Loader.isModLoaded("miscutils")) {
+        if (LoadedList.GTPP) {
             GT_Values.RA.addMultiblockChemicalRecipe(
                     new ItemStack[]{
                             GT_Utility.getIntegratedCircuit(16),
@@ -1290,7 +1293,7 @@ public class RecipeLoader {
             );
         }
 
-        if (Loader.isModLoaded("botdustries")) {
+        if (LoadedList.BOTDUSTRIES) {
             GT_Values.RA.addMultiblockChemicalRecipe(
                     new ItemStack[]{
                             GT_Utility.getIntegratedCircuit(16),
