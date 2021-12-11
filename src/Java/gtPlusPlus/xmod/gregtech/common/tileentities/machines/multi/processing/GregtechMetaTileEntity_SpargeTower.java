@@ -20,7 +20,6 @@ import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTPP_Recipe;
@@ -31,7 +30,6 @@ import gregtech.api.util.GT_Utility;
 import gregtech.api.util.GasSpargingRecipe;
 import gregtech.api.util.GasSpargingRecipeMap;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -147,7 +145,6 @@ public class GregtechMetaTileEntity_SpargeTower extends GregtechMeta_MultiBlockB
 
 	@Override
 	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-		GTPP_Recipe_Map.sSpargeTowerRecipes.mRecipeList.clear();
 		if (GTPP_Recipe_Map.sSpargeTowerRecipes.mRecipeList.isEmpty()) {
 			generateRecipes();
 		}

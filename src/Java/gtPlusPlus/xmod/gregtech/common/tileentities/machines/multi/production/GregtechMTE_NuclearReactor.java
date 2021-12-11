@@ -416,14 +416,7 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase<Greg
 			Logger.WARNING("Recipe time: "+this.mMaxProgresstime);	
 			mFuelRemaining = getStoredFuel(aFuelProcessing); //Record available fuel	
 
-			FluidStack[] tOutputFluids = new FluidStack[aFuelProcessing.mFluidOutputs.length];
-			for (int h = 0; h < aFuelProcessing.mFluidOutputs.length; h++) {
-				if (aFuelProcessing.getFluidOutput(h) != null) {
-					tOutputFluids[h] = aFuelProcessing.getFluidOutput(h).copy();
-				}
-			}
-
-			this.mOutputFluids = tOutputFluids;
+			this.mOutputFluids = aFuelProcessing.mFluidOutputs.clone();
 			updateSlots();					
 			Logger.WARNING("Recipe Good!");	
 			return true;
@@ -499,22 +492,22 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase<Greg
 			else {
 				this.turnCasingActive(false);
 			}
-		}
-		else {
-
-			if (aBaseMetaTileEntity.isActive()){
-				// Set casings active if we're warmed up.
-				if (this.mEfficiency == this.getMaxEfficiency(null)){
-					// Try output some Uranium-233
-					if (MathUtils.randInt(1, 300) == 1){
-						this.addOutput(ELEMENT.getInstance().URANIUM233.getFluidStack(MathUtils.randInt(1, 10)));
-					}
-				}
-			}
-		}		
+		}	
 		super.onPostTick(aBaseMetaTileEntity, aTick);
 	}
-	
+
+	@Override
+	public boolean onRunningTick(ItemStack aStack) {
+		// See if we're warmed up.
+		if (this.mEfficiency == this.getMaxEfficiency(null)){
+			// Try output some Uranium-233
+			if (MathUtils.randInt(1, 300) == 1){
+				this.addOutput(ELEMENT.getInstance().URANIUM233.getFluidStack(MathUtils.randInt(1, 10)));
+			}
+		}
+		return super.onRunningTick(aStack);
+	}
+
 	@Override
 	public void saveNBTData(NBTTagCompound aNBT) {
 		aNBT.setInteger("mFuelRemaining", this.mFuelRemaining);
