@@ -4,9 +4,13 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.objects.GT_ChunkManager;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraftforge.fluids.FluidStack;
 
 import static gregtech.api.enums.GT_Values.VN;
@@ -46,11 +50,10 @@ public class GT_MetaTileEntity_OilDrillInfinite extends GT_MetaTileEntity_OilDri
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_OilDrillInfinite(mName);
     }
+
     @Override
     protected FluidStack pumpOil(float speed){
-        FluidStack baseRate = super.pumpOil(-1);
-        baseRate.amount *= 1+(GT_Utility.getTier(getMaxInputVoltage()) - getMinTier());
-        return baseRate;
+        return super.pumpOil(-speed);
     }
 
     @Override
@@ -80,6 +83,6 @@ public class GT_MetaTileEntity_OilDrillInfinite extends GT_MetaTileEntity_OilDri
 
     @Override
     protected int getMinTier() {
-        return 9;
+        return 4; //to match the speed of the oil drill III
     }
 }
