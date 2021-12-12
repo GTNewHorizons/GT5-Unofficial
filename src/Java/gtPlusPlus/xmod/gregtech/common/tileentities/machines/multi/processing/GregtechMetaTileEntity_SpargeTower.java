@@ -61,21 +61,21 @@ public class GregtechMetaTileEntity_SpargeTower extends GregtechMeta_MultiBlockB
 				{"lll", "lll", "lll"}
 			}))
 			.addElement('b', ofChain(
-					ofHatchAdder(GregtechMetaTileEntity_SpargeTower::addToMachineList, getCasingIndex(), 1),
-					ofHatchAdder(GregtechMetaTileEntity_SpargeTower::addToMachineList, getCasingIndex(), 1),
-					ofHatchAdder(GregtechMetaTileEntity_SpargeTower::addToMachineList, getCasingIndex(), 1),
-					ofHatchAdder(GregtechMetaTileEntity_SpargeTower::addToMachineList, getCasingIndex(), 1),
+					ofHatchAdder(GregtechMetaTileEntity_SpargeTower::addEnergyInputToMachineList, getCasingIndex(), 1),
+					ofHatchAdder(GregtechMetaTileEntity_SpargeTower::addOutputToMachineList, getCasingIndex(), 1),
+					ofHatchAdder(GregtechMetaTileEntity_SpargeTower::addInputToMachineList, getCasingIndex(), 1),
+					ofHatchAdder(GregtechMetaTileEntity_SpargeTower::addMaintenanceToMachineList, getCasingIndex(), 1),
 					onElementPass(GregtechMetaTileEntity_SpargeTower::onCasingFound, ofBlock(ModBlocks.blockCasings5Misc, 4))
 					))
 			.addElement('l', ofChain(
-					ofHatchAdder(GregtechMetaTileEntity_SpargeTower::addToMachineList, getCasingIndex(), 2),
-					ofHatchAdder(GregtechMetaTileEntity_SpargeTower::addToMachineList, getCasingIndex(), 2),
-					ofHatchAdder(GregtechMetaTileEntity_SpargeTower::addToMachineList, getCasingIndex(), 2),
+					ofHatchAdder(GregtechMetaTileEntity_SpargeTower::addEnergyInputToMachineList, getCasingIndex(), 2),
+					ofHatchAdder(GregtechMetaTileEntity_SpargeTower::addLayerOutputHatch, getCasingIndex(), 2),
+					ofHatchAdder(GregtechMetaTileEntity_SpargeTower::addMaintenanceToMachineList, getCasingIndex(), 2),
 					onElementPass(GregtechMetaTileEntity_SpargeTower::onCasingFound, ofBlock(ModBlocks.blockCasings5Misc, 4))
 					))
 			.addElement('c', ofChain(
-					onElementPass(t -> t.onTopLayerFound(false), ofHatchAdder(GregtechMetaTileEntity_SpargeTower::addToMachineList, getCasingIndex(), 3)),
-					onElementPass(t -> t.onTopLayerFound(false), ofHatchAdder(GregtechMetaTileEntity_SpargeTower::addToMachineList, getCasingIndex(), 3)),
+					onElementPass(t -> t.onTopLayerFound(false), ofHatchAdder(GregtechMetaTileEntity_SpargeTower::addOutputToMachineList, getCasingIndex(), 3)),
+					onElementPass(t -> t.onTopLayerFound(false), ofHatchAdder(GregtechMetaTileEntity_SpargeTower::addMaintenanceToMachineList, getCasingIndex(), 3)),
 					onElementPass(t -> t.onTopLayerFound(true), ofBlock(ModBlocks.blockCasings5Misc, 4)),
 					isAir()
 					))
