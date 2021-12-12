@@ -13,7 +13,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.nio.ByteBuffer;
@@ -115,9 +115,9 @@ public class GT_Container_OutputHatch extends GT_Container_BasicTank {
             sb.append(buffer.getChar(i * Character.BYTES + Integer.BYTES + 1));
         }
         byte mode = buffer.get(Integer.BYTES);
-        FluidStack tFluid = FluidRegistry.getFluidStack(sb.toString().replace("fluid.", "")
-            .replace("tile.", "").replace(".name", "").replace("ic2.fluid", "ic2").toLowerCase(), 1);
+        Fluid tFluid = GT_Utility.getFluidFromUnlocalizedName(sb.toString());
         if (tFluid == null || mode < 8) return "Empty";
-        else return tFluid.getLocalizedName().replace("fluid.", "");
+        FluidStack tFluidStack = new FluidStack(tFluid, 1);
+        return tFluidStack.getLocalizedName().replace("fluid.", "");
     }
 }

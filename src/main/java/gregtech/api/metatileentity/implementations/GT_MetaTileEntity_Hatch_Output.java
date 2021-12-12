@@ -157,8 +157,9 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch {
         super.updateFluidDisplayItem();
         if (lockedFluidName == null || mMode < 8) mInventory[3] = null;
         else {
-            FluidStack tLockedFluid = FluidRegistry.getFluidStack(lockedFluidName.replace("fluid.", "")
-                .replace("tile.", "").replace(".name", "").replace("ic2.fluid", "ic2").toLowerCase(), 1);
+            Fluid tFluid = GT_Utility.getFluidFromUnlocalizedName(lockedFluidName);
+            FluidStack tLockedFluid = null;
+            if (tFluid != null) tLockedFluid = new FluidStack(tFluid, 1);
             // Because getStackDisplaySlot() only allow return one int, this place I only can manually set.
             if (tLockedFluid != null) {
                 mInventory[3] = GT_Utility.getFluidDisplayStack(tLockedFluid, false, true);

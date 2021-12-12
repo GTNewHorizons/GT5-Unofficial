@@ -152,6 +152,7 @@ public class GT_Utility {
     private static final Map<GT_ItemStack, FluidContainerData> sFilledContainerToData = new /*Concurrent*/HashMap<>();
     private static final Map<GT_ItemStack, Map<Fluid, FluidContainerData>> sEmptyContainerToFluidToData = new /*Concurrent*/HashMap<>();
     private static final Map<Fluid, List<ItemStack>> sFluidToContainers = new HashMap<>();
+    private static final Map<String, Fluid> sFluidUnlocalizedNameToFluid = new HashMap<>();
     /** Must use {@code Supplier} here because the ore prefixes have not yet been registered at class load time. */
     private static final Map<OrePrefixes, Supplier<ItemStack>> sOreToCobble = new HashMap<>();
     public static volatile int VERSION = 509;
@@ -1015,6 +1016,7 @@ public class GT_Utility {
         sFilledContainerToData.clear();
         sEmptyContainerToFluidToData.clear();
         sFluidToContainers.clear();
+        sFluidUnlocalizedNameToFluid.clear();
         for (FluidContainerData tData : sFluidContainerList) {
             sFilledContainerToData.put(new GT_ItemStack(tData.filledContainer), tData);
             Map<Fluid, FluidContainerData> tFluidToContainer = sEmptyContainerToFluidToData.get(new GT_ItemStack(tData.emptyContainer));
@@ -1031,6 +1033,13 @@ public class GT_Utility {
             }
             else tContainers.add(tData.filledContainer);
         }
+        for (Fluid tFluid : FluidRegistry.getRegisteredFluids().values()) {
+            sFluidUnlocalizedNameToFluid.put(tFluid.getUnlocalizedName(), tFluid);
+        }
+    }
+
+    public static Fluid getFluidFromUnlocalizedName(String aUnlocalizedName) {
+        return sFluidUnlocalizedNameToFluid.get(aUnlocalizedName);
     }
 
     public static void addFluidContainerData(FluidContainerData aData) {
