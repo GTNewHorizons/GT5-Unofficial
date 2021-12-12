@@ -62,7 +62,6 @@ public class GregtechMetaTileEntity_SpargeTower extends GregtechMeta_MultiBlockB
 			}))
 			.addElement('b', ofChain(
 					ofHatchAdder(GregtechMetaTileEntity_SpargeTower::addEnergyInputToMachineList, getCasingIndex(), 1),
-					ofHatchAdder(GregtechMetaTileEntity_SpargeTower::addOutputToMachineList, getCasingIndex(), 1),
 					ofHatchAdder(GregtechMetaTileEntity_SpargeTower::addInputToMachineList, getCasingIndex(), 1),
 					ofHatchAdder(GregtechMetaTileEntity_SpargeTower::addMaintenanceToMachineList, getCasingIndex(), 1),
 					onElementPass(GregtechMetaTileEntity_SpargeTower::onCasingFound, ofBlock(ModBlocks.blockCasings5Misc, 4))
@@ -264,14 +263,18 @@ public class GregtechMetaTileEntity_SpargeTower extends GregtechMeta_MultiBlockB
 	}
 
 	protected boolean addLayerOutputHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-		if (aTileEntity == null || aTileEntity.isDead() || !(aTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_Output))
+		if (aTileEntity == null || aTileEntity.isDead() || !(aTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_Output)) {
+			Logger.INFO("Bad Output Hatch");
 			return false;
+		}
 		while (mOutputHatchesByLayer.size() < mHeight) {
 			mOutputHatchesByLayer.add(new ArrayList<>());
 		}
 		GT_MetaTileEntity_Hatch_Output tHatch = (GT_MetaTileEntity_Hatch_Output) aTileEntity.getMetaTileEntity();
 		tHatch.updateTexture(aBaseCasingIndex);
-		return mOutputHatchesByLayer.get(mHeight - 1).add(tHatch);
+		boolean addedHatch = mOutputHatchesByLayer.get(mHeight - 1).add(tHatch);
+		Logger.INFO("Added Hatch: "+addedHatch);
+		return addedHatch;
 	}
 
 	@Override
@@ -295,6 +298,7 @@ public class GregtechMetaTileEntity_SpargeTower extends GregtechMeta_MultiBlockB
 
 		// check base
 		if (!checkPiece(STRUCTURE_PIECE_BASE, 1, 0, 0)) {
+			Logger.INFO("Bad Base. Height: "+mHeight);
 			return false;
 		}
 
@@ -302,6 +306,7 @@ public class GregtechMetaTileEntity_SpargeTower extends GregtechMeta_MultiBlockB
 		while (mHeight < 8 && checkPiece(STRUCTURE_PIECE_LAYER, 1, mHeight, 0) && !mTopLayerFound) {
 			if (mOutputHatchesByLayer.get(mHeight - 1).isEmpty()) {
 				// layer without output hatch
+				Logger.INFO("Height: "+mHeight + " - Missing output on "+(mHeight - 1));
 				return false;
 			}
 			// not top
@@ -313,7 +318,7 @@ public class GregtechMetaTileEntity_SpargeTower extends GregtechMeta_MultiBlockB
 		Logger.INFO("Casings: "+mCasing);
 		Logger.INFO("Required: "+(7 * mHeight - 5));
 		Logger.INFO("Found Top: "+mTopLayerFound);
-		return mCasing >= 7 * mHeight - 5 && mTopLayerFound && mMaintenanceHatches.size() == 1;
+		return mCasing >= 45 && mTopLayerFound && mMaintenanceHatches.size() == 1;
 	}
 
 	@Override
@@ -367,6 +372,11 @@ public class GregtechMetaTileEntity_SpargeTower extends GregtechMeta_MultiBlockB
 	@Override
 	public String getCustomGUIResourceName() {
 		return null;
+	}
+
+	@Override
+	public boolean requiresVanillaGtGUI() {
+		return true;
 	}
 
 	@Override

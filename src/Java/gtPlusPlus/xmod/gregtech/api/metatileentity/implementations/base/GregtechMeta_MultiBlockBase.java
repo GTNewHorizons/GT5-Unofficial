@@ -1665,14 +1665,7 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
 	}
 
 	public <E> boolean addToMachineListInternal(ArrayList<E> aList, final IGregTechTileEntity aTileEntity, final int aBaseCasingIndex) {	
-		if (aTileEntity == null) {
-			return false;
-		}
-		final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-		if (aMetaTileEntity == null) {
-			return false;
-		}
-		return addToMachineListInternal(aList, aMetaTileEntity, aBaseCasingIndex);
+		return addToMachineListInternal(aList, getMetaTileEntity(aTileEntity), aBaseCasingIndex);
 	}
 
 	public <E> boolean addToMachineListInternal(ArrayList<E> aList, final IMetaTileEntity aTileEntity, final int aBaseCasingIndex) {		
@@ -1770,33 +1763,35 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
 
 	//mControlCoreBus
 	public boolean addControlCoreToMachineList(final IGregTechTileEntity aTileEntity, final int aBaseCasingIndex) {		
-		final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-		if (aMetaTileEntity == null) {
-			log("Tried to add null module entity.");
-			return false;
-		}
 		if (!mControlCoreBus.isEmpty()) {
 			log("Tried to add a secondary control core module.");
 			return false;
 		}
-
-		GT_MetaTileEntity_Hatch_ControlCore Module = (GT_MetaTileEntity_Hatch_ControlCore) aMetaTileEntity;
-
+		GT_MetaTileEntity_Hatch_ControlCore Module = (GT_MetaTileEntity_Hatch_ControlCore) getMetaTileEntity(aTileEntity);
 		if (Module != null) {
 			if (Module.setOwner(aTileEntity)) {
 				log("Adding control core module.");
-				return addToMachineListInternal(mControlCoreBus, aMetaTileEntity, aBaseCasingIndex);	
+				return addToMachineListInternal(mControlCoreBus, Module, aBaseCasingIndex);	
 			}
 		}
 		return false;
 	}
 
-	@Override
-	public boolean addToMachineList(final IGregTechTileEntity aTileEntity, final int aBaseCasingIndex) {
+	private IMetaTileEntity getMetaTileEntity(final IGregTechTileEntity aTileEntity) {
 		if (aTileEntity == null) {
-			return false;
+			return null;
 		}
 		final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+		return aMetaTileEntity;
+	}
+	
+
+	@Override
+	public boolean addToMachineList(final IGregTechTileEntity aTileEntity, final int aBaseCasingIndex) {
+		return addToMachineList(getMetaTileEntity(aTileEntity), aBaseCasingIndex);
+	}
+	
+	public boolean addToMachineList(final IMetaTileEntity aMetaTileEntity, final int aBaseCasingIndex) {
 		if (aMetaTileEntity == null) {
 			return false;
 		}
@@ -1807,7 +1802,11 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
 		//Handle Custom Hatches
 		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_ControlCore) {
 			log("Found GT_MetaTileEntity_Hatch_ControlCore");
-			aDidAdd = addControlCoreToMachineList(aTileEntity, aBaseCasingIndex);
+			if (!mControlCoreBus.isEmpty()) {
+				log("Tried to add a secondary control core module.");
+				return false;
+			}
+			aDidAdd = addToMachineListInternal(this.mControlCoreBus, aMetaTileEntity, aBaseCasingIndex);
 		}
 		else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBattery) {
 			log("Found GT_MetaTileEntity_Hatch_InputBattery");
@@ -1824,15 +1823,15 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
 		//Handle TT Multi-A Energy Hatches
 		else if (LoadedMods.TecTech && isThisHatchMultiEnergy(aMetaTileEntity)) {
 			log("Found isThisHatchMultiEnergy");
-			aDidAdd = addToMachineListInternal(mTecTechEnergyHatches, aTileEntity, aBaseCasingIndex);
-			updateMasterEnergyHatchList(aTileEntity);
+			aDidAdd = addToMachineListInternal(mTecTechEnergyHatches, aMetaTileEntity, aBaseCasingIndex);
+			updateMasterEnergyHatchList(aMetaTileEntity);
 		}		
 
 		//Handle TT Multi-A Dynamos
 		else if (LoadedMods.TecTech && isThisHatchMultiDynamo(aMetaTileEntity)) {
 			log("Found isThisHatchMultiDynamo");
-			aDidAdd = addToMachineListInternal(mTecTechDynamoHatches, aTileEntity, aBaseCasingIndex);
-			updateMasterDynamoHatchList(aTileEntity);
+			aDidAdd = addToMachineListInternal(mTecTechDynamoHatches, aMetaTileEntity, aBaseCasingIndex);
+			updateMasterDynamoHatchList(aMetaTileEntity);
 		}		
 
 		//Handle Fluid Hatches using seperate logic
@@ -1847,12 +1846,12 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
 		else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus)
 			aDidAdd = addToMachineListInternal(mOutputBusses, aMetaTileEntity, aBaseCasingIndex);
 		else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy) {
-			aDidAdd = addToMachineListInternal(mEnergyHatches, aTileEntity, aBaseCasingIndex);
-			updateMasterEnergyHatchList(aTileEntity);
+			aDidAdd = addToMachineListInternal(mEnergyHatches, aMetaTileEntity, aBaseCasingIndex);
+			updateMasterEnergyHatchList(aMetaTileEntity);
 		}
 		else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Dynamo) {
-			aDidAdd = addToMachineListInternal(mDynamoHatches, aTileEntity, aBaseCasingIndex);
-			updateMasterDynamoHatchList(aTileEntity);
+			aDidAdd = addToMachineListInternal(mDynamoHatches, aMetaTileEntity, aBaseCasingIndex);
+			updateMasterDynamoHatchList(aMetaTileEntity);
 		}
 		else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance)
 			aDidAdd = addToMachineListInternal(mMaintenanceHatches, aMetaTileEntity, aBaseCasingIndex);
@@ -1867,47 +1866,54 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
 
 	@Override
 	public boolean addMaintenanceToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-		return addToMachineList(aTileEntity, aBaseCasingIndex);
+		IMetaTileEntity aMetaTileEntity = getMetaTileEntity(aTileEntity);
+		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance) {
+			return addToMachineList(aMetaTileEntity, aBaseCasingIndex);
+		}
+		return false;
 	}
 
 	@Override
 	public boolean addMufflerToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-		return addToMachineList(aTileEntity, aBaseCasingIndex);
+		IMetaTileEntity aMetaTileEntity = getMetaTileEntity(aTileEntity);
+		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler) {
+			return addToMachineList(aMetaTileEntity, aBaseCasingIndex);
+		}
+		return false;
 	}
 
 	@Override
 	public boolean addInputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-		return addToMachineList(aTileEntity, aBaseCasingIndex);
+		IMetaTileEntity aMetaTileEntity = getMetaTileEntity(aTileEntity);
+		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input || aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus) {
+			return addToMachineList(aMetaTileEntity, aBaseCasingIndex);
+		}
+		return false;
 	}
 
 	@Override
 	public boolean addOutputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-		return addToMachineList(aTileEntity, aBaseCasingIndex);
+		IMetaTileEntity aMetaTileEntity = getMetaTileEntity(aTileEntity);
+		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output || aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus) {
+			return addToMachineList(aMetaTileEntity, aBaseCasingIndex);
+		}
+		return false;
 	}
 
-	public boolean addAirIntakeToMachineList(final IGregTechTileEntity aTileEntity, final int aBaseCasingIndex) {
-		return addToMachineList(aTileEntity, aBaseCasingIndex);
+	public boolean addAirIntakeToMachineList(final IGregTechTileEntity aMetaTileEntity, final int aBaseCasingIndex) {
+		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_AirIntake) {
+			return addToMachineList(aMetaTileEntity, aBaseCasingIndex);
+		}
+		return false;
 	}
 
 	public boolean addFluidInputToMachineList(final IGregTechTileEntity aTileEntity, final int aBaseCasingIndex) {
-		if (aTileEntity == null) {
-			return false;
-		}
-		final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-		if (aMetaTileEntity == null) {
-			return false;
-		}
-		return addFluidInputToMachineList(aMetaTileEntity, aBaseCasingIndex);
+		return addFluidInputToMachineList(getMetaTileEntity(aTileEntity), aBaseCasingIndex);
 	}
 
-	public boolean addFluidInputToMachineList(final IMetaTileEntity aTileEntity, final int aBaseCasingIndex) {
-		if (aTileEntity == null) {
-			return false;
-		}
-		final IMetaTileEntity aMetaTileEntity = aTileEntity;
+	public boolean addFluidInputToMachineList(final IMetaTileEntity aMetaTileEntity, final int aBaseCasingIndex) {
 		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-			((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mRecipeMap = this.getRecipeMap();
-			return addToMachineListInternal(mInputHatches, aMetaTileEntity, aBaseCasingIndex);			
+			return addToMachineList(aMetaTileEntity, aBaseCasingIndex);
 		}
 		return false;
 	}
@@ -1936,10 +1942,7 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
 	}
 	public boolean resetRecipeMapForHatch(IGregTechTileEntity aTileEntity, GT_Recipe_Map aMap) {
 		try {
-			if (aTileEntity == null) {
-				return false;
-			}
-			final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+			final IMetaTileEntity aMetaTileEntity = getMetaTileEntity(aTileEntity);
 			if (aMetaTileEntity == null) {
 				return false;
 			}
@@ -2009,11 +2012,7 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
 	 */
 
 	public boolean updateTexture(final IGregTechTileEntity aTileEntity, int aCasingID){
-		final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-		if (aMetaTileEntity == null) {
-			return false;
-		}	
-		return updateTexture(aMetaTileEntity, aCasingID);
+		return updateTexture(getMetaTileEntity(aTileEntity), aCasingID);
 	}
 
 	/**
@@ -2098,11 +2097,7 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
 	 */
 
 	public boolean addMultiAmpDynamoToMachineList(final IGregTechTileEntity aTileEntity, final int aBaseCasingIndex){
-		//GT_MetaTileEntity_Hatch_DynamoMulti
-		if (aTileEntity == null) {
-			return false;
-		}
-		final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+		final IMetaTileEntity aMetaTileEntity = getMetaTileEntity(aTileEntity);
 		if (aMetaTileEntity == null) {
 			return false;
 		}
@@ -2113,14 +2108,7 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
 	}
 
 	public boolean isThisHatchMultiDynamo(IGregTechTileEntity aTileEntity){
-		if (aTileEntity == null) {
-			return false;
-		}
-		final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-		if (aMetaTileEntity == null) {
-			return false;
-		}
-		return isThisHatchMultiDynamo(aMetaTileEntity);
+		return isThisHatchMultiDynamo(getMetaTileEntity(aTileEntity));
 	}
 
 	public boolean isThisHatchMultiDynamo(IMetaTileEntity aMetaTileEntity){
@@ -2136,18 +2124,17 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
 
 	@Override
 	public boolean addDynamoToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-		return addToMachineList(aTileEntity, aBaseCasingIndex);
+		IMetaTileEntity aMetaTileEntity = getMetaTileEntity(aTileEntity);
+		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Dynamo || isThisHatchMultiDynamo(aMetaTileEntity)) {
+			return addToMachineList(aMetaTileEntity, aBaseCasingIndex);
+		}
+		return false;
 	}
 	
-	private boolean updateMasterDynamoHatchList(IGregTechTileEntity aTileEntity) {
-		if (aTileEntity == null) {
-			return false;
-		}
-		final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+	private boolean updateMasterDynamoHatchList(IMetaTileEntity aMetaTileEntity) {
 		if (aMetaTileEntity == null) {
 			return false;
 		}
-
 		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch) {
 			GT_MetaTileEntity_Hatch aHatch = (GT_MetaTileEntity_Hatch) aMetaTileEntity;
 			return mAllDynamoHatches.add(aHatch);
@@ -2164,11 +2151,7 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
 	 */
 
 	public boolean addMultiAmpEnergyToMachineList(final IGregTechTileEntity aTileEntity, final int aBaseCasingIndex){
-		//GT_MetaTileEntity_Hatch_DynamoMulti
-		if (aTileEntity == null) {
-			return false;
-		}
-		final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+		final IMetaTileEntity aMetaTileEntity = getMetaTileEntity(aTileEntity);
 		if (aMetaTileEntity == null) {
 			return false;
 		}
@@ -2179,14 +2162,7 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
 	}	
 
 	public boolean isThisHatchMultiEnergy(IGregTechTileEntity aTileEntity){
-		if (aTileEntity == null) {
-			return false;
-		}
-		final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-		if (aMetaTileEntity == null) {
-			return false;
-		}
-		return isThisHatchMultiEnergy(aMetaTileEntity);
+		return isThisHatchMultiEnergy(getMetaTileEntity(aTileEntity));
 	}
 	
 	public boolean isThisHatchMultiEnergy(IMetaTileEntity aMetaTileEntity){
@@ -2202,14 +2178,14 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
 
 	@Override
 	public boolean addEnergyInputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-		return addToMachineList(aTileEntity, aBaseCasingIndex);
+		IMetaTileEntity aMetaTileEntity = getMetaTileEntity(aTileEntity);
+		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy || isThisHatchMultiEnergy(aMetaTileEntity)) {
+			return addToMachineList(aMetaTileEntity, aBaseCasingIndex);
+		}
+		return false;
 	}
 	
-	private boolean updateMasterEnergyHatchList(IGregTechTileEntity aTileEntity) {
-		if (aTileEntity == null) {
-			return false;
-		}
-		final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+	private boolean updateMasterEnergyHatchList(IMetaTileEntity aMetaTileEntity) {
 		if (aMetaTileEntity == null) {
 			return false;
 		}
