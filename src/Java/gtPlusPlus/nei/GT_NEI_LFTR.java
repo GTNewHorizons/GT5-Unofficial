@@ -101,7 +101,6 @@ public class GT_NEI_LFTR extends GTPP_NEI_DefaultHandler {
 				if ((mRecipe.mFluidOutputs.length > 8) && (mRecipe.mFluidOutputs[8] != null) && (mRecipe.mFluidOutputs[8].getFluid() != null)) {
 					this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(mRecipe.mFluidOutputs[8], true), 138, 41, mRecipe.getOutputChance(tStartIndex++)));
 				}
-				Logger.INFO("Outputs: "+mRecipe.mFluidOutputs.length);
 			}
 			
 		}

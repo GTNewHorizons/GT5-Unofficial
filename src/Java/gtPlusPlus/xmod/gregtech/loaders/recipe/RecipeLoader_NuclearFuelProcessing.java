@@ -97,7 +97,7 @@ public class RecipeLoader_NuclearFuelProcessing {
 				ELEMENT.getInstance().FLUORINE.getCell(6),
 				NUCLIDE.LiFBeF2ThF4.getFluidStack(10000),
 				new ItemStack[] {
-						CI.emptyCells(3),
+						CI.emptyCells(4),
 						FLUORIDES.LITHIUM_FLUORIDE.getCell(1),
 						FLUORIDES.BERYLLIUM_FLUORIDE.getCell(1),
 						ItemUtils.getSimpleStack(ModItems.dustProtactinium233),
@@ -210,6 +210,7 @@ public class RecipeLoader_NuclearFuelProcessing {
 				ELEMENT.getInstance().FLUORINE.getCell(3),
 				NUCLIDE.Sparged_LiFBeF2UF4FP.getFluidStack(1000),
 				new ItemStack[] {
+						CI.emptyCells(1),
 						NUCLIDE.UF6F2FP.getCell(2)
 				},
 				new int[] {10000},

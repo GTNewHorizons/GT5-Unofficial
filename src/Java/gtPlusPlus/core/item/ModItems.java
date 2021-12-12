@@ -472,6 +472,7 @@ public final class ModItems {
 			MaterialGenerator.generate(ELEMENT.getInstance().IODINE); //LFTR byproduct
 			MaterialGenerator.generate(ELEMENT.getInstance().HAFNIUM);
 			MaterialGenerator.generate(ELEMENT.getInstance().DYSPROSIUM);
+			MaterialGenerator.generate(ELEMENT.getInstance().ERBIUM);
 			MaterialGenerator.generate(ELEMENT.getInstance().TELLURIUM); //LFTR byproduct
 			MaterialGenerator.generate(ELEMENT.getInstance().RHODIUM);
 			MaterialGenerator.generate(ELEMENT.getInstance().RHENIUM);
@@ -641,6 +642,7 @@ public final class ModItems {
 			MaterialGenerator.generate(ALLOY.TRINIUM_REINFORCED_STEEL);
 			
 			//Top Tier Alloys
+			MaterialGenerator.generate(ALLOY.HELICOPTER);
 			MaterialGenerator.generate(ALLOY.LAFIUM);
 			MaterialGenerator.generate(ALLOY.CINOBITE);
 			MaterialGenerator.generate(ALLOY.PIKYONIUM);

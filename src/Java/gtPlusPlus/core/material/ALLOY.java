@@ -745,6 +745,24 @@ public final class ALLOY {
 	/*
 	 * Top Tier Alloys
 	 */
+	
+	public static final Material HELICOPTER = new Material(
+			"HeLiCoPtEr", //Material Name
+			MaterialState.SOLID, //State
+			null, //Material Colour
+			5763,
+			8192,
+			-1,
+			-1,
+			true, //Uses Blast furnace?
+			//Material Stacks with Percentage of required elements.
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.getInstance().HELIUM, 20),
+					new MaterialStack(ELEMENT.getInstance().LITHIUM, 20),
+					new MaterialStack(ELEMENT.getInstance().COBALT, 20),
+					new MaterialStack(ELEMENT.getInstance().PLATINUM, 20),
+					new MaterialStack(ELEMENT.getInstance().ERBIUM, 20)
+			});
 
 	//0lafe Compound
 	public static final Material LAFIUM = new Material(

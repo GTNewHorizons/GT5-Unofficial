@@ -245,6 +245,7 @@ public final class ORES {
 			-1, //Radiation
 			new MaterialStack[]{
 					new MaterialStack(ELEMENT.getInstance().CERIUM, 4),
+					new MaterialStack(ELEMENT.getInstance().ERBIUM, 2),
 					new MaterialStack(ELEMENT.getInstance().LANTHANUM, 2),
 					new MaterialStack(ELEMENT.getInstance().NEODYMIUM, 2),
 					new MaterialStack(ELEMENT.getInstance().YTTRIUM, 2),
@@ -267,6 +268,7 @@ public final class ORES {
 			-1, //Radiation
 			new MaterialStack[]{
 					new MaterialStack(ELEMENT.getInstance().CERIUM, 2),
+					new MaterialStack(ELEMENT.getInstance().ERBIUM, 2),
 					new MaterialStack(ELEMENT.getInstance().LANTHANUM, 2),
 					new MaterialStack(ELEMENT.getInstance().NEODYMIUM, 2),
 					new MaterialStack(ELEMENT.getInstance().YTTRIUM, 4),
@@ -661,6 +663,7 @@ public final class ORES {
 			new MaterialStack[]{
 					new MaterialStack(ELEMENT.getInstance().YTTRIUM, 2),
 					new MaterialStack(ELEMENT.getInstance().YTTERBIUM, 2),
+					new MaterialStack(ELEMENT.getInstance().ERBIUM, 2),
 					new MaterialStack(ELEMENT.getInstance().EUROPIUM, 1),
 					new MaterialStack(ELEMENT.getInstance().PHOSPHORUS, 2),
 					new MaterialStack(ELEMENT.getInstance().OXYGEN, 8)

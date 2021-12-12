@@ -1,10 +1,11 @@
 package gtPlusPlus.nei;
 
 import java.awt.Rectangle;
+import java.lang.ref.SoftReference;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.lwjgl.opengl.GL11;
 
@@ -19,19 +20,18 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.GasSpargingRecipe;
 import gregtech.api.util.GasSpargingRecipeMap;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.gui.machine.GUI_DecayablesChest;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 public class GT_NEI_LFTR_Sparging extends TemplateRecipeHandler {
 
 	public static final String mNEIName = GasSpargingRecipeMap.mNEIDisplayName;
+    private SoftReference<List<GasSpargingRecipeNEI>> mCachedRecipes = null;
 
 	public String getRecipeName() {
 		return mNEIName;
@@ -63,97 +63,86 @@ public class GT_NEI_LFTR_Sparging extends TemplateRecipeHandler {
 	public void loadTransferRects() {
 		this.transferRects.add(new RecipeTransferRect(new Rectangle(72, 14, 22, 16), getRecipeName(), new Object[0]));
 	}
+    
+    public List<GasSpargingRecipeNEI> getCache() {
+        List<GasSpargingRecipeNEI> cache;
+        if (mCachedRecipes == null || (cache = mCachedRecipes.get()) == null) {
+            cache = GasSpargingRecipeMap.mRecipes.stream()  // do not use parallel stream. This is already parallelized by NEI
+                    .sorted()
+                    .map(temp -> {return createCachedRecipe(temp);})
+                    .collect(Collectors.toList());
+            // while the NEI parallelize handlers, for each individual handler it still uses sequential execution model
+            // so we do not need any synchronization here
+            mCachedRecipes = new SoftReference<>(cache);
+        }
+        return cache;
+    }
+    
+    public GasSpargingRecipeNEI createCachedRecipe(GasSpargingRecipe aRecipe) {
+    	return new GasSpargingRecipeNEI(aRecipe);
+    }
+    
+    public void loadCraftingRecipes(String outputId, Object... results) {
+        if (outputId.equals(getOverlayIdentifier())) {
+            arecipes.addAll(getCache());
+        } else {
+            super.loadCraftingRecipes(outputId, results);
+        }
+    }
 
-	public List<GasSpargingRecipe> getSortedRecipes() {
-		List<GasSpargingRecipe> result = new ArrayList<GasSpargingRecipe>(GasSpargingRecipeMap.mRecipes);
-		Collections.sort(result);
-		return result;
-	}
+    public void loadCraftingRecipes(ItemStack aResult) {
+        ItemData tPrefixMaterial = GT_OreDictUnificator.getAssociation(aResult);
 
-	@Override
-	public void loadCraftingRecipes(final String outputId, final Object... results) {
-		if (outputId.equals(getRecipeName())) {
-			for (GasSpargingRecipe tRecipe : getSortedRecipes()) {
-				this.arecipes.add(new GasSpargingRecipeNEI(tRecipe));
-			}
-		} else {
-			super.loadCraftingRecipes(outputId, results);
-		}
-	}
+        ArrayList<ItemStack> tResults = new ArrayList<>();
+        tResults.add(aResult);
+        tResults.add(GT_OreDictUnificator.get(true, aResult));
+        if ((tPrefixMaterial != null) && (!tPrefixMaterial.mBlackListed) && (!tPrefixMaterial.mPrefix.mFamiliarPrefixes.isEmpty())) {
+            for (OrePrefixes tPrefix : tPrefixMaterial.mPrefix.mFamiliarPrefixes) {
+                tResults.add(GT_OreDictUnificator.get(tPrefix, tPrefixMaterial.mMaterial.mMaterial, 1L));
+            }
+        }
+        FluidStack tFluid = GT_Utility.getFluidForFilledItem(aResult, true);
+        FluidStack tFluidStack;
+        if (tFluid != null) {
+            tFluidStack = tFluid;
+            tResults.add(GT_Utility.getFluidDisplayStack(tFluid, false));
+        }
+        else tFluidStack = GT_Utility.getFluidFromDisplayStack(aResult);
+        if (tFluidStack != null) {
+            tResults.addAll(GT_Utility.getContainersFromFluid(tFluidStack));
+        }
+        for (GasSpargingRecipeNEI recipe : getCache()) {
+            if (tResults.stream().anyMatch(stack -> recipe.contains(recipe.mOutputs, stack)))
+                arecipes.add(recipe);
+        }
+    }
 
-	@Override
-	public void loadCraftingRecipes(final ItemStack aResult) {
-		ItemData tPrefixMaterial = GT_OreDictUnificator.getAssociation(aResult);
+    public void loadUsageRecipes(ItemStack aInput) {
+        ItemData tPrefixMaterial = GT_OreDictUnificator.getAssociation(aInput);
 
-		ArrayList<ItemStack> tResults = new ArrayList<ItemStack>();
-		tResults.add(aResult);
-		tResults.add(GT_OreDictUnificator.get(true, aResult));
-		if ((tPrefixMaterial != null) && (!tPrefixMaterial.mBlackListed) && (!tPrefixMaterial.mPrefix.mFamiliarPrefixes.isEmpty())) {
-			for (OrePrefixes tPrefix : tPrefixMaterial.mPrefix.mFamiliarPrefixes) {
-				tResults.add(GT_OreDictUnificator.get(tPrefix, tPrefixMaterial.mMaterial.mMaterial, 1L));
-			}
-		}
-		FluidStack tFluid = GT_Utility.getFluidForFilledItem(aResult, true);
-		if (tFluid != null) {
-			tResults.add(GT_Utility.getFluidDisplayStack(tFluid, false));
-			for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry.getRegisteredFluidContainerData()) {
-				if (tData.fluid.isFluidEqual(tFluid)) {
-					tResults.add(GT_Utility.copy(new Object[]{tData.filledContainer}));
-				}
-			}
-		}
-		for (GasSpargingRecipe tRecipe : getSortedRecipes()) {
-			GasSpargingRecipeNEI tNEIRecipe = new GasSpargingRecipeNEI(tRecipe);
-			for (ItemStack tStack : tResults) {
-				if (tNEIRecipe.contains(tNEIRecipe.mOutputs, tStack)) {
-					this.arecipes.add(tNEIRecipe);
-					break;
-				}
-			}			
-		}
-		//CachedDefaultRecipe tNEIRecipe;
-	}
-
-	public void loadUsageRecipes(ItemStack aInput) {
-		ItemData tPrefixMaterial = GT_OreDictUnificator.getAssociation(aInput);
-
-		ArrayList<ItemStack> tInputs = new ArrayList<ItemStack>();
-		tInputs.add(aInput);
-		tInputs.add(GT_OreDictUnificator.get(false, aInput));
-		if ((tPrefixMaterial != null) && (!tPrefixMaterial.mPrefix.mFamiliarPrefixes.isEmpty())) {
-			for (OrePrefixes tPrefix : tPrefixMaterial.mPrefix.mFamiliarPrefixes) {
-				tInputs.add(GT_OreDictUnificator.get(tPrefix, tPrefixMaterial.mMaterial.mMaterial, 1L));
-			}
-		}
-		FluidStack tFluid = GT_Utility.getFluidForFilledItem(aInput, true);
-		if (tFluid != null) {
-			tInputs.add(GT_Utility.getFluidDisplayStack(tFluid, false));
-			for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry.getRegisteredFluidContainerData()) {
-				if (tData.fluid.isFluidEqual(tFluid)) {
-					tInputs.add(GT_Utility.copy(new Object[]{tData.filledContainer}));
-				}
-			}
-		}
-		for (GasSpargingRecipe tRecipe : getSortedRecipes()) {
-			GasSpargingRecipeNEI tNEIRecipe = new GasSpargingRecipeNEI(tRecipe);
-			for (ItemStack tStack : tInputs) {
-				if (tNEIRecipe.contains(tNEIRecipe.mInputs, tStack)) {
-					this.arecipes.add(tNEIRecipe);
-					break;
-				}
-			}
-		}
-	}
-
-	private final void sort() {
-		List<GasSpargingRecipeNEI> g = new ArrayList<GasSpargingRecipeNEI>();
-		for (CachedRecipe u : arecipes) {
-			g.add((GasSpargingRecipeNEI) u);
-		}
-		if (g != null && !g.isEmpty()) {
-			Collections.sort(g);
-		}
-	}
+        ArrayList<ItemStack> tInputs = new ArrayList<>();
+        tInputs.add(aInput);
+        tInputs.add(GT_OreDictUnificator.get(false, aInput));
+        if ((tPrefixMaterial != null) && (!tPrefixMaterial.mPrefix.mFamiliarPrefixes.isEmpty())) {
+            for (OrePrefixes tPrefix : tPrefixMaterial.mPrefix.mFamiliarPrefixes) {
+                tInputs.add(GT_OreDictUnificator.get(tPrefix, tPrefixMaterial.mMaterial.mMaterial, 1L));
+            }
+        }
+        FluidStack tFluid = GT_Utility.getFluidForFilledItem(aInput, true);
+        FluidStack tFluidStack;
+        if (tFluid != null) {
+            tFluidStack = tFluid;
+            tInputs.add(GT_Utility.getFluidDisplayStack(tFluid, false));
+        }
+        else tFluidStack = GT_Utility.getFluidFromDisplayStack(aInput);
+        if (tFluidStack != null) {
+            tInputs.addAll(GT_Utility.getContainersFromFluid(tFluidStack));
+        }
+        for (GasSpargingRecipeNEI recipe : getCache()) {
+            if (tInputs.stream().anyMatch(stack -> recipe.contains(recipe.mInputs, stack)))
+                arecipes.add(recipe);
+        }
+    }
 
 	public void drawExtras(int aRecipeIndex) {
 		final long tEUt = ((GasSpargingRecipeNEI) this.arecipes.get(aRecipeIndex)).mRecipe.mEUt;
@@ -320,7 +309,6 @@ public class GT_NEI_LFTR_Sparging extends TemplateRecipeHandler {
 				if ((tRecipe.mFluidOutputs.length > 8) && (tRecipe.mFluidOutputs[8] != null) && (tRecipe.mFluidOutputs[8].getFluid() != null)) {
 					this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(tRecipe.mFluidOutputs[8], false), 138, 41, tRecipe.getMaxOutput(tStartIndex++)));
 				}
-				Logger.INFO("Outputs: "+tRecipe.mFluidOutputs.length);
 			}
 		}		
 
