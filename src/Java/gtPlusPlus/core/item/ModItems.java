@@ -473,6 +473,7 @@ public final class ModItems {
 			MaterialGenerator.generate(ELEMENT.getInstance().HAFNIUM);
 			MaterialGenerator.generate(ELEMENT.getInstance().DYSPROSIUM);
 			MaterialGenerator.generate(ELEMENT.getInstance().ERBIUM);
+			MaterialGenerator.generate(ELEMENT.getInstance().PRASEODYMIUM);
 			MaterialGenerator.generate(ELEMENT.getInstance().TELLURIUM); //LFTR byproduct
 			MaterialGenerator.generate(ELEMENT.getInstance().RHODIUM);
 			MaterialGenerator.generate(ELEMENT.getInstance().RHENIUM);
