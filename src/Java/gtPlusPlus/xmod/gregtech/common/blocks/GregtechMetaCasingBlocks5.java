@@ -68,7 +68,7 @@ extends GregtechMetaCasingBlocksAbstract {
 				case 3:
 					return TexturesGtBlock.TEXTURE_TECH_PANEL_D.getIcon();
 				case 4:
-					return TexturesGtBlock.Casing_Machine_Metal_Sheet_E.getIcon();
+					return TexturesGtBlock.Casing_Machine_Metal_Sheet_H.getIcon();
 			}
 		}
 		return Textures.BlockIcons.RENDERING_ERROR.getIcon();		
