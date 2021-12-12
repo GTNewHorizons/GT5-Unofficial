@@ -156,10 +156,7 @@ public class StaticRecipeChangeLoaders {
                                             iterator.remove();
                                             continue nextRecipe;
                                         }
-                                        else {
-                                            int amount = recipe.mInputs[i].stackSize;
-                                            recipe.mInputs[i] = BW_Util.setStackSize(replacement, amount);
-                                        }
+                                        recipe.mInputs[i] = GT_Utility.copyAmount(recipe.mInputs[i].stackSize, replacement);
                                     }
                                     for (int i = 0; i < recipe.mOutputs.length; i++) {
                                         if (!GT_Utility.areStacksEqual(recipe.mOutputs[i], toReplace))
@@ -168,22 +165,17 @@ public class StaticRecipeChangeLoaders {
                                             iterator.remove();
                                             continue nextRecipe;
                                         }
-                                        else {
-                                            int amount = recipe.mOutputs[i].stackSize;
-                                            recipe.mOutputs[i] = BW_Util.setStackSize(replacement, amount);
-                                        }
+                                        recipe.mOutputs[i] = GT_Utility.copyAmount(recipe.mOutputs[i].stackSize, replacement);
                                     }
                                     if (recipe.mSpecialItems instanceof ItemStack) {
-                                        if (!GT_Utility.areStacksEqual((ItemStack) recipe.mSpecialItems, toReplace))
+                                        ItemStack specialItemStack = (ItemStack) recipe.mSpecialItems;
+                                        if (!GT_Utility.areStacksEqual(specialItemStack, toReplace))
                                             continue;
                                         if (removal) {
                                             iterator.remove();
                                             continue nextRecipe;
                                         }
-                                        else {
-                                            int amount = ((ItemStack) recipe.mSpecialItems).stackSize;
-                                            recipe.mSpecialItems = BW_Util.setStackSize(replacement, amount);
-                                        }
+                                        recipe.mSpecialItems = GT_Utility.copyAmount((specialItemStack).stackSize, replacement);
                                     }
                                 }
                             }
