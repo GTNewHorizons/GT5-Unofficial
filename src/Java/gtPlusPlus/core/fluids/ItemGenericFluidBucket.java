@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import cpw.mods.fml.common.eventhandler.Event;
-import cpw.mods.fml.common.FMLCommonHandler;
 import gtPlusPlus.api.objects.GregtechException;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.lib.CORE;
@@ -45,7 +44,8 @@ public class ItemGenericFluidBucket extends ItemBucket {
 			try {
 				throw new GregtechException(""+aID+" is already registered! Unable to register fluid: "+FluidFactory.mMetaToFluidMap.get(aID).getLocalizedName());
 			} catch (GregtechException e) {
-				FMLCommonHandler.instance().exitJava(0, true);
+				e.printStackTrace();
+				CORE.crash(""+aID+" is already registered! Unable to register fluid: "+FluidFactory.mMetaToFluidMap.get(aID).getLocalizedName());
 			}
 		}		
 		mInternalFluidCache.put(FluidFactory.mMetaToBlockMap.get(aID));

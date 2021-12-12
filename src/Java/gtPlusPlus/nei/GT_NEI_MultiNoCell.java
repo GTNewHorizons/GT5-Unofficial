@@ -7,9 +7,8 @@ import org.lwjgl.opengl.GL11;
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
-import gregtech.api.util.GTPP_Recipe.GTPP_Recipe_Map;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.util.math.MathUtils;
 
 public class GT_NEI_MultiNoCell extends GTPP_NEI_DefaultHandler {

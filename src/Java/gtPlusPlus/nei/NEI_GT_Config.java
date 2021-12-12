@@ -31,7 +31,7 @@ implements IConfigureNEI {
 		mUniqueRecipeMapHandling.add(GTPP_Recipe_Map.sMultiblockCentrifugeRecipes_GT.mUnlocalizedName);
 		mUniqueRecipeMapHandling.add(GTPP_Recipe_Map.sMultiblockElectrolyzerRecipes_GT.mUnlocalizedName);
 		mUniqueRecipeMapHandling.add(GTPP_Recipe_Map.sMultiblockMixerRecipes_GT.mUnlocalizedName);
-		mUniqueRecipeMapHandling.add(GTPP_Recipe_Map.sSpargeTowerRecipes.mUnlocalizedName);
+		mUniqueRecipeMapHandling.add(GTPP_Recipe_Map.sAlloyBlastSmelterRecipes.mUnlocalizedName);
 		
 		// Standard GT Recipe Maps
 		Logger.INFO("NEI Registration: "+GTPP_Recipe_Map_Internal.sMappingsEx.size()+" sMappingEx");
@@ -70,14 +70,15 @@ implements IConfigureNEI {
 		new GT_NEI_MultiNoCell(GTPP_Recipe_Map.sMultiblockElectrolyzerRecipes_GT);
 		Logger.INFO("NEI Registration: Registering NEI handler for "+GTPP_Recipe_Map.sMultiblockMixerRecipes_GT.mNEIName);
 		new GT_NEI_MultiNoCell(GTPP_Recipe_Map.sMultiblockMixerRecipes_GT);
+		Logger.INFO("NEI Registration: Registering NEI handler for "+GTPP_Recipe_Map.sAlloyBlastSmelterRecipes.mNEIName);
+		new GT_NEI_MultiNoCell(GTPP_Recipe_Map.sAlloyBlastSmelterRecipes);
 
 		Logger.INFO("NEI Registration: Registering NEI handler for "+DecayableRecipeHandler.mNEIName);
 		API.registerRecipeHandler(new DecayableRecipeHandler());
 		API.registerUsageHandler(new DecayableRecipeHandler());
 		
 		Logger.INFO("NEI Registration: Registering NEI handler for "+GT_NEI_LFTR_Sparging.mNEIName);
-		API.registerRecipeHandler(new GT_NEI_LFTR_Sparging());
-		API.registerUsageHandler(new GT_NEI_LFTR_Sparging());
+		new GT_NEI_LFTR_Sparging();
 		
 		// Hide Flasks
 		if (Utils.isClient()) {

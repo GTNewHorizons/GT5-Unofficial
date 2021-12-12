@@ -1,10 +1,12 @@
 package gtPlusPlus.nei;
 
+import org.lwjgl.opengl.GL11;
+
+import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import gregtech.api.util.GTPP_Recipe.GTPP_Recipe_Map;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.math.MathUtils;
 
 public class GT_NEI_LFTR extends GTPP_NEI_DefaultHandler {
@@ -22,6 +24,13 @@ public class GT_NEI_LFTR extends GTPP_NEI_DefaultHandler {
     public CachedDefaultRecipe createCachedRecipe(GT_Recipe aRecipe) {
     	return new LFTRDefaultRecipe(aRecipe);
     }
+	
+	@Override
+	public void drawBackground(final int recipe) {
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		GuiDraw.changeTexture(this.getGuiTexture());
+		GuiDraw.drawTexturedModalRect(-4, -8, 1, 3, 174, 89);
+	}
 
 	@Override
 	public void drawExtras(final int aRecipeIndex) {

@@ -1424,18 +1424,18 @@ public class RECIPES_Machines {
 					RecipeUtils.addShapedGregtechRecipe(
 							controlCircuit, "cableGt12NaquadahAlloy", controlCircuit,
 							"plateDoubleHastelloyN", GregtechItemList.Gregtech_Computer_Cube.get(1), "plateDoubleHastelloyN",
-							"plateThorium232", CI.machineHull_UV, "plateThorium232",
+							"plateThorium232", CI.machineHull_EV, "plateThorium232",
 							RECIPE_LFTRController);
 				} else  {
 					RecipeUtils.addShapedGregtechRecipe(
 							controlCircuit, "cableGt12NaquadahAlloy", controlCircuit,
 							"plateDoubleHastelloyN", GregtechItemList.Gregtech_Computer_Cube.get(1), "plateDoubleHastelloyN",
-							"plateThorium232", CI.machineHull_LuV, "plateThorium232",
+							"plateThorium232", CI.machineHull_IV, "plateThorium232",
 							RECIPE_LFTRController);
 				}
 				RecipeUtils.addShapedGregtechRecipe(
 						"plateDoubleZeron100", CI.craftingToolScrewdriver, "plateDoubleZeron100",
-						"gearGtTalonite", CI.fieldGenerator_ULV, "gearGtTalonite",
+						"gearGtTalonite", CI.fieldGenerator_MV, "gearGtTalonite",
 						"plateDoubleZeron100", CI.craftingToolHammer_Hard, "plateDoubleZeron100",
 						RECIPE_LFTRInnerCasing);
 
@@ -1453,9 +1453,9 @@ public class RECIPES_Machines {
 
 				//Fission Fuel Plant
 				RecipeUtils.addShapedGregtechRecipe(
-						CI.getTieredCircuit(5), CI.craftingToolSolderingIron, CI.getTieredCircuit(5),
+						CI.getTieredCircuitOreDictName(5), CI.craftingToolSolderingIron, CI.getTieredCircuitOreDictName(5),
 						"plateDenseTungstenSteel", GregtechItemList.Gregtech_Computer_Cube.get(1), "plateDenseTungstenSteel",
-						"gearGtStellite", CI.machineHull_LuV, "gearGtStellite",
+						"gearGtStellite", CI.machineHull_IV, "gearGtStellite",
 						GregtechItemList.Industrial_FuelRefinery.get(1));
 
 				ItemStack mInnerTank;
@@ -1486,7 +1486,30 @@ public class RECIPES_Machines {
 						"ringInconel792", "gearGtHastelloyX", CI.component_Plate[5],
 						CI.craftingToolHammer_Hard, "frameGtHastelloyC276", CI.craftingToolWrench,
 						CI.component_Plate[5], CI.getTieredMachineCasing(4), "ringInconel792",
-						GregtechItemList.Casing_Refinery_Structural.get(Casing_Amount));
+						GregtechItemList.Casing_Refinery_Structural.get(Casing_Amount));				
+
+				RecipeUtils.addShapedGregtechRecipe(
+						CI.getPlate(5, 1), ALLOY.HASTELLOY_X.getPlateDouble(1), CI.getPlate(5, 1),
+						CI.getPlate(5, 1), CI.getTieredMachineCasing(5), CI.getPlate(5, 1),
+						CI.getRobotArm(5, 1), ItemList.Casing_FrostProof.get(1), CI.getRobotArm(5, 1),
+						GregtechItemList.ColdTrap_IV.get(1));
+				RecipeUtils.addShapedGregtechRecipe(
+						CI.getPlate(7, 1), ALLOY.HS188A.getPlateDouble(1), CI.getPlate(7, 1),
+						CI.getPlate(7, 1), GregtechItemList.ColdTrap_IV.get(1), CI.getPlate(7, 1),
+						CI.getRobotArm(7, 1), ItemList.Casing_FrostProof.get(1), CI.getRobotArm(7, 1),
+						GregtechItemList.ColdTrap_ZPM.get(1));
+
+				RecipeUtils.addShapedGregtechRecipe(
+						CI.getFieldGenerator(3, 1), CI.getRobotArm(5, 1), CI.getPlate(5, 1),
+						ALLOY.HASTELLOY_N.getPlateDouble(1), ItemList.Machine_IV_ChemicalReactor.get(1), ALLOY.HASTELLOY_N.getPlateDouble(1),
+						CI.getPlate(5, 1), ALLOY.HASTELLOY_N.getPlateDouble(1), CI.getFieldGenerator(3, 1),
+						GregtechItemList.ReactorProcessingUnit_IV.get(1));
+				RecipeUtils.addShapedGregtechRecipe(
+						CI.getFieldGenerator(5, 1), CI.getRobotArm(7, 1), CI.getPlate(7, 1),
+						ALLOY.HS188A.getPlateDouble(1), GregtechItemList.ReactorProcessingUnit_IV.get(1), ALLOY.HS188A.getPlateDouble(1),
+						CI.getPlate(7, 1), ALLOY.HS188A.getPlateDouble(1), CI.getFieldGenerator(5, 1),
+						GregtechItemList.ReactorProcessingUnit_ZPM.get(1));
+				
 			}
 
 			//Shelves

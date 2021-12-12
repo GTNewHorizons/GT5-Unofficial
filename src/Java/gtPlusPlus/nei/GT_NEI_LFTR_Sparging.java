@@ -11,8 +11,12 @@ import org.lwjgl.opengl.GL11;
 
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
+import codechicken.nei.recipe.GuiCraftingRecipe;
 import codechicken.nei.recipe.GuiRecipe;
+import codechicken.nei.recipe.GuiUsageRecipe;
 import codechicken.nei.recipe.TemplateRecipeHandler;
+import cpw.mods.fml.common.event.FMLInterModComms;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.objects.ItemData;
@@ -20,10 +24,8 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.GasSpargingRecipe;
 import gregtech.api.util.GasSpargingRecipeMap;
-import gtPlusPlus.core.gui.machine.GUI_DecayablesChest;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -33,6 +35,15 @@ public class GT_NEI_LFTR_Sparging extends TemplateRecipeHandler {
 	public static final String mNEIName = GasSpargingRecipeMap.mNEIDisplayName;
     private SoftReference<List<GasSpargingRecipeNEI>> mCachedRecipes = null;
 
+	public GT_NEI_LFTR_Sparging() {
+		this.transferRects.add(new TemplateRecipeHandler.RecipeTransferRect(new Rectangle(65, 13, 36, 18), this.getOverlayIdentifier(), new Object[0]));
+		if (!NEI_GT_Config.sIsAdded) {
+			FMLInterModComms.sendRuntimeMessage(GT_Values.GT, "NEIPlugins", "register-crafting-handler", "gregtechplusplus@" + this.getRecipeName() + "@" + this.getOverlayIdentifier());
+			GuiCraftingRecipe.craftinghandlers.add(this);
+			GuiUsageRecipe.usagehandlers.add(this);
+		}
+	}
+    
 	public String getRecipeName() {
 		return mNEIName;
 	}
@@ -41,12 +52,8 @@ public class GT_NEI_LFTR_Sparging extends TemplateRecipeHandler {
 		return GasSpargingRecipeMap.mNEIGUIPath;
 	}
 
-	public Class<? extends GuiContainer> getGuiClass() {
-		return GUI_DecayablesChest.class;
-	}
-
 	public String getOverlayIdentifier() {
-		return "GTPP_Sparging";
+		return gregtech.api.util.GasSpargingRecipeMap.mUnlocalizedName;
 	}
 
 	public int recipiesPerPage() {

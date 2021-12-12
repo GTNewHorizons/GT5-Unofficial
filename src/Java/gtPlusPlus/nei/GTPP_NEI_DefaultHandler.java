@@ -31,6 +31,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.util.math.MathUtils;
 import net.minecraft.client.Minecraft;
@@ -884,11 +885,13 @@ public class GTPP_NEI_DefaultHandler extends TemplateRecipeHandler {
 					aInputItemsCount = 9;
 				}				
 				for (int i=0;i<aInputItemsCount;i++) {
-					int x = mInputSlotMap.get(aSlotToCheck).getKey();
-					int y = mInputSlotMap.get(aSlotToCheck).getValue();
-					this.mInputs.add(new FixedPositionedStack(mRecipe.getRepresentativeInput(aSlotToCheck), x, y));	
-					aSlotToCheck++;
-					aInputSlotsUsed++;
+					int x = mInputSlotMap.get(aInputSlotsUsed).getKey();
+					int y = mInputSlotMap.get(aInputSlotsUsed).getValue();
+					ItemStack aRepStack = mRecipe.getRepresentativeInput(aSlotToCheck++);
+					if (aRepStack != null) {
+						this.mInputs.add(new FixedPositionedStack(aRepStack, x, y));	
+						aInputSlotsUsed++;
+					}
 				}
 			}
 			aSlotToCheck = 0;	
@@ -898,11 +901,13 @@ public class GTPP_NEI_DefaultHandler extends TemplateRecipeHandler {
 					aOutputItemsCount = 9;
 				}		
 				for (int i=0;i<aOutputItemsCount;i++) {
-					int x = mOutputSlotMap.get(aSlotToCheck).getKey();
-					int y = mOutputSlotMap.get(aSlotToCheck).getValue();
-					this.mOutputs.add(new FixedPositionedStack(mRecipe.getOutput(aSlotToCheck), x, y, mRecipe.getOutputChance(aSlotToCheck)));	
-					aSlotToCheck++;
-					aOutputSlotsUsed++;
+					int x = mOutputSlotMap.get(aOutputSlotsUsed).getKey();
+					int y = mOutputSlotMap.get(aOutputSlotsUsed).getValue();
+					ItemStack aRepStack = mRecipe.getOutput(aSlotToCheck++);
+					if (aRepStack != null) {
+						this.mOutputs.add(new FixedPositionedStack(aRepStack, x, y, mRecipe.getOutputChance(aSlotToCheck)));	
+						aOutputSlotsUsed++;
+					}
 				}
 			}					
 			

@@ -30,6 +30,7 @@ public class GregtechLFTR {
 		GregtechItemList.ColdTrap_IV.set(new GregtechMetaTileEntity_ReactorColdTrap(31033, "coldtrap.tier.01", "Cold Trap I", 5).getStackForm(1L));
 		GregtechItemList.ColdTrap_ZPM.set(new GregtechMetaTileEntity_ReactorColdTrap(31034, "coldtrap.tier.02", "Cold Trap II", 7).getStackForm(1L));
 		// Sparge Tower
-		GregtechItemList.Controller_Sparge_Tower.set(new GregtechMetaTileEntity_SpargeTower(31035, "sparge.controller.single", "Sparge Tower Controller").getStackForm(1L));
+		GregtechItemList.Controller_Sparge_Tower.set(new GregtechMetaTileEntity_SpargeTower(31035, "sparge.controller.single", "Sparge Tower Controller").getStackForm(1L));	
+	
 	}
 }
