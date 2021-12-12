@@ -146,7 +146,7 @@ public class RecipeLoader_02 {
 
         GT_ModHandler.addCraftingRecipe(
                 ItemRefer.YOTTank_Casing.get(1),
-                GT_ModHandler.RecipeBits.DISMANTLEABLE,
+                GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
                 new Object[]{
                         "BPB","FOF","BPB",
                         'B', GT_OreDictUnificator.get(OrePrefixes.plate, Materials.BlackSteel,1),
@@ -158,7 +158,7 @@ public class RecipeLoader_02 {
 
         GT_ModHandler.addCraftingRecipe(
                 ItemRefer.YOTTank.get(1),
-                GT_ModHandler.RecipeBits.DISMANTLEABLE,
+                GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
                 new Object[]{
                         "SPS","ECE","SLS",
                         'S', GT_OreDictUnificator.get(OrePrefixes.screw, Materials.BlueSteel,1),
@@ -755,7 +755,7 @@ public class RecipeLoader_02 {
 
         GT_ModHandler.addCraftingRecipe(
                 ItemRefer.Combustion_Generator_EV.get(1),
-                GT_ModHandler.RecipeBits.DISMANTLEABLE,
+                GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
                 new Object[] {
                         "PCP","MHM","GWG",
                         'G', GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.Titanium,1),
@@ -769,7 +769,7 @@ public class RecipeLoader_02 {
 
         GT_ModHandler.addCraftingRecipe(
                 ItemRefer.Combustion_Generator_IV.get(1),
-                GT_ModHandler.RecipeBits.DISMANTLEABLE,
+                GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
                 new Object[] {
                         "PCP","MHM","GWG",
                         'G', GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.TungstenSteel,1),

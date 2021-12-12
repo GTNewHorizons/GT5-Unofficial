@@ -1167,7 +1167,7 @@ public class RecipeLoader {
 
         GT_ModHandler.addCraftingRecipe(
                 ItemRefer.Raw_Cylinder.get(1),
-                GT_ModHandler.RecipeBits.DISMANTLEABLE,
+                GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
                 new Object[]{
                         "PPP","PFP","PPP",
                         'P', ItemRefer.Special_Ceramics_Plate.get(1),
@@ -1348,7 +1348,7 @@ public class RecipeLoader {
 
         GT_ModHandler.addCraftingRecipe(
                 ItemRefer.Universal_Chemical_Fuel_Engine.get(1),
-                GT_ModHandler.RecipeBits.DISMANTLEABLE,
+                GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
                 new Object[]{
                         "TZT","ALB","WGW",
                         'T', GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Titanium,1),
@@ -1398,7 +1398,7 @@ public class RecipeLoader {
 
         GT_ModHandler.addCraftingRecipe(
                 ItemRefer.Micro_Heater.get(1),
-                GT_ModHandler.RecipeBits.DISMANTLEABLE,
+                GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
                 new Object[]{
                         "PIP","UBU","CTC",
                         'P', "plateQuintuplePaper",
@@ -1498,7 +1498,7 @@ public class RecipeLoader {
 
         GT_ModHandler.addCraftingRecipe(
                 Loaders.NeutronAccelerators[0].copy(),
-                GT_ModHandler.RecipeBits.DISMANTLEABLE,
+                GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
                 new Object[]{
                         "WPM","CHI","WPM",
                         'W', GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Lead,1),
@@ -1512,7 +1512,7 @@ public class RecipeLoader {
 
         GT_ModHandler.addCraftingRecipe(
                 Loaders.NeutronAccelerators[1].copy(),
-                GT_ModHandler.RecipeBits.DISMANTLEABLE,
+                GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
                 new Object[]{
                         "WPM","CHI","WPM",
                         'W', GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Tin,1),
@@ -1639,7 +1639,7 @@ public class RecipeLoader {
 
         GT_ModHandler.addCraftingRecipe(
                 ItemRefer.Neutron_Source.get(1),
-                GT_ModHandler.RecipeBits.DISMANTLEABLE,
+                GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
                 new Object[]{
                         " P ","PUP"," P ",
                         'P', GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Steel,1),
@@ -1649,7 +1649,7 @@ public class RecipeLoader {
 
         GT_ModHandler.addCraftingRecipe(
                 Loaders.NA.copy(),
-                GT_ModHandler.RecipeBits.DISMANTLEABLE,
+                GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
                 new Object[]{
                         "PCP","ESE","PCP",
                         'C', "circuitMaster",
