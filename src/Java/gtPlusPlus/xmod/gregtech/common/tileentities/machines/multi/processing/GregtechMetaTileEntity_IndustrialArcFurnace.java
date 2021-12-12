@@ -1,14 +1,26 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
+
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.*;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
@@ -26,12 +38,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
-
-public class GregtechMetaTileEntity_IndustrialArcFurnace
-extends GregtechMeta_MultiBlockBase {
+public class GregtechMetaTileEntity_IndustrialArcFurnace extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialArcFurnace> {
 
 	//862
 	private static final int mCasingTextureID = TAE.getIndexFromPage(3, 3);
@@ -70,7 +77,7 @@ extends GregtechMeta_MultiBlockBase {
 		tt.addMachineType(getMachineType())
 				.addInfo("Controller Block for Industrial Arc Furnace")
 				.addInfo("250% faster than using single block machines of the same voltage")
-				.addInfo("Processes 8 items per voltage tier")
+				.addInfo("Processes 8 items per voltage tier * W/L")
 				.addInfo("Max Size required to process Plasma recipes")
 				.addPollutionAmount(getPollutionPerSecond(null))
 				.addSeparator()
@@ -189,7 +196,7 @@ extends GregtechMeta_MultiBlockBase {
 		mCasing = 0;
 		clearHatches();
 		if (checkPiece(mName + "7", 3, 3, 0)) {
-			mSize = 3;
+			mSize = 7;
 			return mCasing >= 10 && checkHatch();
 		}
 		return false;
@@ -226,7 +233,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
-		return this.checkRecipeGeneric(this.mSize * 8 * GT_Utility.getTier(this.getMaxInputVoltage()), 100, 250);
+		return this.checkRecipeGeneric(getMaxParallelRecipes(), 100, 250);
 	}
 	
 	@Override
@@ -288,7 +295,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public void onModeChangeByScrewdriver(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-		if (this.mSize > 3) {
+		if (this.mSize > 5) {
 			this.mPlasmaMode = Utils.invertBoolean(mPlasmaMode);
 			if (mPlasmaMode) {
 				PlayerUtils.messagePlayer(aPlayer, "["+EnumChatFormatting.RED+"MODE"+EnumChatFormatting.RESET+"] "+EnumChatFormatting.LIGHT_PURPLE+"Plasma"+EnumChatFormatting.RESET);
@@ -296,7 +303,10 @@ extends GregtechMeta_MultiBlockBase {
 			else {
 				PlayerUtils.messagePlayer(aPlayer, "["+EnumChatFormatting.RED+"MODE"+EnumChatFormatting.RESET+"] "+EnumChatFormatting.YELLOW+"Electric"+EnumChatFormatting.RESET);			
 			}
-		}		
+		}	
+		else {
+			PlayerUtils.messagePlayer(aPlayer, "["+EnumChatFormatting.RED+"MODE"+EnumChatFormatting.RESET+"] "+EnumChatFormatting.GRAY+"Cannot change mode, structure not large enough."+EnumChatFormatting.RESET);
+		}
 	}
 
 	@Override
