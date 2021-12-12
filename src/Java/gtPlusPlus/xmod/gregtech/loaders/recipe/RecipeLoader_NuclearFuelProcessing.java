@@ -323,7 +323,7 @@ public class RecipeLoader_NuclearFuelProcessing {
 				null, null, null, null, null,
 				NUCLIDE.LiFBeF2ZrF4UF4.getFluidStack(10000),
 				null,
-				20 * 60 * 120 * 10, // Duration
+				20 * 60 * 120, // Duration
 				MaterialUtils.getVoltageForTier(5)
 				);
 
@@ -361,7 +361,7 @@ public class RecipeLoader_NuclearFuelProcessing {
 				null, null, null, null, null,
 				NUCLIDE.LiFBeF2ThF4UF4.getFluidStack(10000),
 				null,
-				20 * 60 * 150 * 10, // Duration
+				20 * 60 * 150, // Duration
 				MaterialUtils.getVoltageForTier(5)
 				);
 
