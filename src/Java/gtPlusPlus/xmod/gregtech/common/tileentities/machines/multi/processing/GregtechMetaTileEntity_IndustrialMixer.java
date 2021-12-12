@@ -76,7 +76,7 @@ extends GregtechMeta_MultiBlockBase {
 				.addInfo("Controller Block for the Industrial Mixer")
 				.addInfo("250% faster than using single block machines of the same voltage")
 				.addInfo("Processes eight recipes per voltage tier")
-				.addPollutionAmount(getPollutionPerTick(null) * 20)
+				.addPollutionAmount(getPollutionPerSecond(null))
 				.addSeparator()
 				.beginStructureBlock(3, 4, 3, false)
 				.addController("Second Layer Center")
@@ -241,8 +241,8 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
-	public int getPollutionPerTick(final ItemStack aStack) {
-		return 40;
+	public int getPollutionPerSecond(final ItemStack aStack) {
+		return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialMixer;
 	}
 
 	@Override

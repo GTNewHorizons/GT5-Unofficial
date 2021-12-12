@@ -13,6 +13,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gtPlusPlus.core.lib.CORE;
 import org.apache.commons.lang3.ArrayUtils;
 
 import gregtech.api.GregTech_API;
@@ -76,7 +77,7 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase {
 				.addInfo("Does not require power or maintenance")
 				.addInfo("All Machine Casings must be the same tier, this dictates machine speed.")
 				.addInfo("Fill Input Hatch with water.")
-				.addPollutionAmount(getPollutionPerTick(null) * 20)
+				.addPollutionAmount(getPollutionPerSecond(null))
 				.addSeparator()
 				.beginStructureBlock(9, 3, 9, true)
 				.addController("Front Center")
@@ -285,8 +286,8 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
-	public int getPollutionPerTick(final ItemStack aStack) {
-		return 0;
+	public int getPollutionPerSecond(final ItemStack aStack) {
+		return CORE.ConfigSwitches.pollutionPerSecondMultiAlgaePond;
 	}
 
 	@Override

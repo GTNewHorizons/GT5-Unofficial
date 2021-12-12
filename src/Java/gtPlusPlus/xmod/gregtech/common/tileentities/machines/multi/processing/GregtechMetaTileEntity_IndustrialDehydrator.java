@@ -14,6 +14,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gtPlusPlus.core.lib.CORE;
 import org.apache.commons.lang3.ArrayUtils;
 
 import gregtech.api.enums.TAE;
@@ -32,13 +33,10 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
-import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 public class GregtechMetaTileEntity_IndustrialDehydrator extends GregtechMeta_MultiBlockBase {
@@ -80,7 +78,7 @@ public class GregtechMetaTileEntity_IndustrialDehydrator extends GregtechMeta_Mu
 				.addInfo("Each 900K over the min. Heat Capacity grants 5% speedup (multiplicatively)")
 				.addInfo("Each 1800K over the min. Heat Capacity allows for one upgraded overclock")
 				.addInfo("Upgraded overclocks reduce recipe time to 25% and increase EU/t to 400%")
-				.addPollutionAmount(getPollutionPerTick(null) * 20)
+				.addPollutionAmount(getPollutionPerSecond(null))
 				.addSeparator()
 				.beginStructureBlock(3, 4, 3, true)
 				.addController("Bottom Center")
@@ -190,8 +188,8 @@ public class GregtechMetaTileEntity_IndustrialDehydrator extends GregtechMeta_Mu
 		return 10000;
 	}
 
-	public int getPollutionPerTick(ItemStack aStack) {
-		return 25;
+	public int getPollutionPerSecond(ItemStack aStack) {
+		return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialDehydrator;
 	}
 
 	@Override

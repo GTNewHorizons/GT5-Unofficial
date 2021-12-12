@@ -14,6 +14,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gtPlusPlus.core.lib.CORE;
 import org.apache.commons.lang3.ArrayUtils;
 
 import gregtech.api.enums.TAE;
@@ -78,8 +79,8 @@ public class GregtechMetaTileEntity_IndustrialAlloySmelter extends GregtechMeta_
 		return 10000;
 	}
 
-	public int getPollutionPerTick(ItemStack aStack) {
-		return 15;
+	public int getPollutionPerSecond(ItemStack aStack) {
+		return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialAlloySmelter;
 	}
 
 	public int getDamageToComponent(ItemStack aStack) {
@@ -114,12 +115,12 @@ public class GregtechMetaTileEntity_IndustrialAlloySmelter extends GregtechMeta_
 				.addInfo("Gains one multiplier per coil tier")
 				.addInfo("parallel = tier * coil tier")
 				.addInfo("Gains 5% speed bonus per coil tier")
-				.addPollutionAmount(getPollutionPerTick(null) * 20)
+				.addPollutionAmount(getPollutionPerSecond(null))
 				.addSeparator()
 				.beginStructureBlock(3, 5, 3, true)
 				.addController("Bottom center")
 				.addCasingInfo("Inconel Reinforced Casings", 10)
-				.addCasingInfo("Integral Encasement V", 18)
+				.addCasingInfo("Integral Encasement V", 8)
 				.addCasingInfo("Heating Coils", 16)
 				.addInputBus("Any Inconel Reinforced Casing", 1)
 				.addOutputBus("Any Inconel Reinforced Casing", 1)
@@ -215,9 +216,27 @@ public class GregtechMetaTileEntity_IndustrialAlloySmelter extends GregtechMeta_
 		return 100;
 	}
 
+
+	@Override
 	public boolean checkRecipe(ItemStack aStack) {
-		return checkRecipeGeneric(this.getMaxParallelRecipes(), 100, 5 * this.mLevel); // Will have to clone the logic from parent class to handle heating coil
-		// tiers.
+		FluidStack[] tFluids = getStoredFluids().toArray(new FluidStack[0]);
+		for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
+			ArrayList<ItemStack> tInputs = new ArrayList<>();
+			if (isValidMetaTileEntity(tBus)) {
+				for (int i = tBus.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
+					if (tBus.getBaseMetaTileEntity().getStackInSlot(i) != null) {
+						tInputs.add(tBus.getBaseMetaTileEntity().getStackInSlot(i));
+					}
+				}
+			}
+			if (tInputs.size() > 1) {
+				ItemStack[] tItems = tInputs.toArray(new ItemStack[0]);
+				if (checkRecipeGeneric(tItems, tFluids, getMaxParallelRecipes(), 100, 5 * this.mLevel, 10000)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 	
 	@Override

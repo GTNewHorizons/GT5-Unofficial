@@ -107,7 +107,7 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 		tt.addMachineType(getMachineType())
 				.addInfo("Controller Block for the Matter Fabricator")
 				.addInfo("Produces UU-A, UU-M & Scrap")
-				.addPollutionAmount(getPollutionPerTick(null) * 20)
+				.addPollutionAmount(getPollutionPerSecond(null))
 				.addSeparator()
 				.beginStructureBlock(5, 4, 5, true)
 				.addController("Front Center")
@@ -263,8 +263,8 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 	}
 
 	@Override
-	public int getPollutionPerTick(final ItemStack aStack) {
-		return 2;
+	public int getPollutionPerSecond(final ItemStack aStack) {
+		return CORE.ConfigSwitches.pollutionPerSecondMultiMassFabricator;
 	}
 
 	@Override

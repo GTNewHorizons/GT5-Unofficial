@@ -118,7 +118,7 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 		tt.addMachineType(getMachineType())
 				.addInfo("Controller Block for the Chemical Plant")
 				.addInfo("Heavy Industry, now right at your doorstep!")
-				.addInfo("Please read to user manual for more information on construction & usage")
+				.addInfo("Please read the user manual for more information on construction and usage")
 				.addSeparator()
 				.addController("Bottom Center")
 				.addStructureHint("Catalyst Housing", 1)
@@ -457,8 +457,7 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 	private int getCasingTextureID() {
 		// Check the Tier Client Side
 		int aTier = mSolidCasingTier;
-		int aCasingID = getCasingTextureIdForTier(aTier);
-		return aCasingID;
+		return getCasingTextureIdForTier(aTier);
 	}
 
 	public boolean addToMachineList(IGregTechTileEntity aTileEntity) {		
@@ -596,15 +595,12 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 		//GT_Recipe tRecipe = findRecipe(getBaseMetaTileEntity(), mLastRecipe, false,	gregtech.api.enums.GT_Values.V[tTier], aFluidInputs, aItemInputs);
 		GT_Recipe tRecipe = findRecipe(mLastRecipe, gregtech.api.enums.GT_Values.V[tTier], getSolidCasingTier(), aItemInputs, aFluidInputs);
 
-
-
-
 		if (tRecipe == null) {
 			log("BAD RETURN - 1");
 			return false;
 		}		
 
-		// checks if it has a catalyst with enough durability
+		// checks if it has a catalyst
 		ItemStack tCatalystRecipe = findCatalyst(aItemInputs);
 		boolean aDoesRecipeNeedCatalyst = false;
 		for (ItemStack aInputItem : tRecipe.mInputs) {
@@ -619,7 +615,7 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 				return false;
 			}
 			if (mCatalystBuses.size() != 1) {
-				log("does not have correct number of catalyst hatchs. (Required 1, found "+mCatalystBuses.size()+")");
+				log("does not have correct number of catalyst hatches. (Required 1, found "+mCatalystBuses.size()+")");
 				return false;
 			}
 		}
@@ -640,16 +636,16 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 			return false;
 		}
 
-		// checks if it has enough catalyst durabilety
+		// checks if it has enough catalyst durability
 		ArrayList<ItemStack>tCatalysts = null; 
-		int tMaxParrallelCatalyst = aMaxParallelRecipes;
+		int tMaxParallelCatalyst = aMaxParallelRecipes;
 		if (tCatalystRecipe != null) {
 			tCatalysts = new ArrayList<ItemStack>();
-			tMaxParrallelCatalyst = getCatalysts(aItemInputs, tCatalystRecipe, aMaxParallelRecipes, tCatalysts);
-			log("Can process "+tMaxParrallelCatalyst+" recipes. If less than "+aMaxParallelRecipes+", catalyst does not have enough durability.");
+			tMaxParallelCatalyst = getCatalysts(aItemInputs, tCatalystRecipe, aMaxParallelRecipes, tCatalysts);
+			log("Can process "+tMaxParallelCatalyst+" recipes. If less than "+aMaxParallelRecipes+", catalyst does not have enough durability.");
 		}
 
-		if (tMaxParrallelCatalyst == 0) {
+		if (tMaxParallelCatalyst == 0) {
 			log("found not enough catalysts");
 			return false;
 		}
@@ -663,13 +659,13 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 		int parallelRecipes = 0;
 
 		log("parallelRecipes: "+parallelRecipes);
-		log("aMaxParallelRecipes: "+tMaxParrallelCatalyst);
+		log("aMaxParallelRecipes: "+tMaxParallelCatalyst);
 		log("tTotalEUt: "+tTotalEUt);
 		log("tVoltage: "+tVoltage);
 		log("tEnergy: "+tEnergy);
 		log("tRecipeEUt: "+tRecipeEUt);
 		// Count recipes to do in parallel, consuming input items and fluids and considering input voltage limits
-		for (; parallelRecipes < tMaxParrallelCatalyst && tTotalEUt < (tEnergy - tRecipeEUt); parallelRecipes++) {
+		for (; parallelRecipes < tMaxParallelCatalyst && tTotalEUt < (tEnergy - tRecipeEUt); parallelRecipes++) {
 			if (!tRecipe.isRecipeInputEqual(true, aFluidInputs, aItemInputs)) {
 				log("Broke at "+parallelRecipes+".");
 				break;
@@ -779,6 +775,10 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 		this.mOutputItems = tOutputItems;
 		this.mOutputFluids = tOutputFluids;
 		updateSlots();
+		for (GT_MetaTileEntity_Hatch_Catalysts h : mCatalystBuses) {
+			h.updateSlots();
+			h.tryFillUsageSlots();
+		}
 
 		// Play sounds (GT++ addition - GT multiblocks play no sounds)
 		startProcess();
@@ -941,14 +941,14 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 	}
 
 	private int getCatalysts(ItemStack[] aItemInputs, ItemStack aRecipeCatalyst, int aMaxParrallel, ArrayList<ItemStack> aOutPut) {
-		int allowedParrallel = 0;
+		int allowedParallel = 0;
 		for (final ItemStack aInput : aItemInputs) {
 			if (aRecipeCatalyst.isItemEqual(aInput)) {				
 				int aDurabilityRemaining = getMaxCatalystDurability() - getDamage(aInput);
 				return Math.min(aMaxParrallel, aDurabilityRemaining);
 			}
 		}
-		return allowedParrallel;
+		return allowedParallel;
 	}
 
 	private ItemStack findCatalyst(ItemStack[] aItemInputs) {
@@ -973,7 +973,7 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 				if (damage >= getMaxCatalystDurability()) {
 					log("consume catalyst");
 					addOutput(CI.getEmptyCatalyst(1));
-					aStack = null;
+					aStack.stackSize -= 1;
 				} 
 				else {
 					log("damaging catalyst");
@@ -984,9 +984,6 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 				log("not consuming catalyst");
 			}
 		}
-
-
-
 	}
 
 	private int getDamage(ItemStack aStack) {
@@ -996,8 +993,6 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 	private void setDamage(ItemStack aStack,int aAmount) {
 		ItemGenericChemBase.setCatalystDamage(aStack, aAmount);
 	}
-
-
 
 	@SideOnly(Side.CLIENT)
 	private final int getCasingTierOnClientSide() {
@@ -1031,7 +1026,6 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 			t.printStackTrace();
 			return 0;
 		}
-
 	}
 
 	/*
@@ -1049,5 +1043,4 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 		}		
 		return tItems;
 	}
-
 }

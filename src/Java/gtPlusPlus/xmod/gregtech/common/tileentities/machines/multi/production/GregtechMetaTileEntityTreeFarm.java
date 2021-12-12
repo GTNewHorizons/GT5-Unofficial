@@ -1,41 +1,29 @@
 
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-
+import codechicken.nei.ItemStackMap;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.*;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.metatileentity.implementations.*;
-import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.render.TextureFactory;
+import gregtech.api.util.*;
 import gtPlusPlus.api.objects.data.AutoMap;
-import gtPlusPlus.api.objects.minecraft.ThreadFakeWorldGenerator;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.EnergyUtils.EU;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.helpers.TreeFarmHelper;
 import gtPlusPlus.xmod.gregtech.common.helpers.treefarm.TreeGenerator;
-import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
-import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
@@ -50,8 +38,15 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 	private IStructureDefinition<GregtechMetaTileEntityTreeFarm> STRUCTURE_DEFINITION = null;
 
 	static {
-		mTreeData = new TreeGenerator();
+		new Thread("GTPP-TreeDataWorker") {
+			@Override
+			public void run() {
+				mTreeData = new TreeGenerator();
+			}
+		}.start();
 	}
+
+	private static ItemStack aLeaves;
 
 	public GregtechMetaTileEntityTreeFarm(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
@@ -59,42 +54,14 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 		mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings2Misc, 15);
 	}
 
-	/*
-	 * Static thread for Fake World Handling
-	 */
-
-
-	private static ScheduledExecutorService executor;
-	private static ThreadFakeWorldGenerator aThread;
-
 	public GregtechMetaTileEntityTreeFarm(final String aName) {
 		super(aName);
 		CASING_TEXTURE_ID = TAE.getIndexFromPage(1, 15);
 		mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings2Misc, 15);
-
-		if (executor == null || mTreeData == null) {
-			if (executor == null) {
-				executor = Executors.newScheduledThreadPool(10);
-			}
-			if (executor != null) {
-				if (aThread == null) {
-					aThread = new ThreadFakeWorldGenerator();
-					executor.scheduleAtFixedRate(aThread, 0, 1, TimeUnit.SECONDS);
-					while (aThread.mGenerator == null) {
-						if (aThread.mGenerator != null) {
-							break;
-						}
-					}
-					if (aThread.mGenerator != null) {
-						mTreeData = aThread.mGenerator;
-					}
-				}
-			}
-		}
 	}
 
 	public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-		return (IMetaTileEntity) new GregtechMetaTileEntityTreeFarm(this.mName);
+		return new GregtechMetaTileEntityTreeFarm(this.mName);
 	}
 
 	@Override
@@ -112,7 +79,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 				.addInfo("Converts EU to Oak Logs")
 				.addInfo("Eu Usage: 100% | Parallel: 1")
 				.addInfo("Requires a Saw or Chainsaw in GUI slot")
-				.addPollutionAmount(getPollutionPerTick(null) * 20)
+				.addPollutionAmount(getPollutionPerSecond(null))
 				.addSeparator()
 				.beginStructureBlock(3, 3, 3, true)
 				.addController("Front center")
@@ -130,7 +97,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 								 final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
 		if (aSide == aFacing) {
 			return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_ID),
-					new GT_RenderedTexture((IIconContainer) (aActive ? TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active : TexturesGtBlock.Overlay_Machine_Controller_Advanced))};
+					TextureFactory.of(aActive ? TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active : TexturesGtBlock.Overlay_Machine_Controller_Advanced)};
 		}
 		return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_ID)};
 	}
@@ -155,16 +122,20 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 	}
 
 	public boolean isCorrectMachinePart(final ItemStack aStack) {
-		return TreeFarmHelper.isCorrectPart(aStack);
-		//return true;
+		// is correct part && either not powered tool or have enough power
+		return TreeFarmHelper.getPartType(aStack) != null && !GT_ModHandler.isElectricItem(aStack) || GT_ModHandler.canUseElectricItem(aStack, 1);
 	}
 
-//	public boolean isFacingValid(final byte aFacing) {
-//		return aFacing > 1;
-//	}
-
 	public boolean checkRecipe(final ItemStack aStack) {
-
+		if (mTreeData == null)
+			// not finished somehow
+			return false;
+		if (aStack == null && !replaceTool())
+			// no tool
+			return false;
+		if (!isCorrectMachinePart(aStack))
+			// not a tool
+			return false;
 		if (mTreeData != null) {
 
 			long tVoltage = getMaxInputVoltage();
@@ -193,35 +164,44 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 
 
 			int aChance = MathUtils.randInt(0, 10);
-			AutoMap<ItemStack> aOutputs = new AutoMap<ItemStack>();
 
 			try {
 				if (aChance < 8) {
+					ItemStackMap<Integer> allOutputs = new ItemStackMap<>();
+					if (aLeaves == null)
+						aLeaves = ItemUtils.getSimpleStack(Blocks.leaves);
 					//1% Chance per Tick				
 					for (int u = 0; u < (Math.max(4, (MathUtils.randInt((3 * tTier), 100) * tTier * tTier) / 14)); u++) {
-						aOutputs = mTreeData.generateOutput(0);
+						AutoMap<ItemStack> aOutputs = mTreeData.generateOutput(0);
 						if (aOutputs.size() > 0) {
-
-							ItemStack aLeaves = ItemUtils.getSimpleStack(Blocks.leaves);
-
 							for (ItemStack aOutputItemStack : aOutputs) {
 								if (!GT_Utility.areStacksEqual(aLeaves, aOutputItemStack)) {
-									this.addOutput(aOutputItemStack);
+									Integer oldStackSize = allOutputs.get(aOutputItemStack);
+									int oldStackSizeUnboxed = oldStackSize == null ? 0 : oldStackSize;
+									allOutputs.put(aOutputItemStack, oldStackSizeUnboxed + aOutputItemStack.stackSize);
 								}
 							}
-							this.updateSlots();
 						}
 					}
 
+					mOutputItems = allOutputs.entries().stream()
+							.map(e -> {
+								e.key.stackSize = e.value;
+								return e.key;
+							}).toArray(ItemStack[]::new);
 				}
 			} catch (Throwable t) {
-				t.printStackTrace();
+				t.printStackTrace(GT_Log.err);
 			}
 			return true;
 		} else {
 			return false;
 		}
-		//return this.checkRecipeGeneric(4, 100, 100);
+	}
+
+	@Override
+	public boolean checkHatch() {
+		return super.checkHatch() && mEnergyHatches.size() == 1;
 	}
 
 	@Override
@@ -280,8 +260,8 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 		return 10000;
 	}
 
-	public int getPollutionPerTick(final ItemStack aStack) {
-		return 5;
+	public int getPollutionPerSecond(final ItemStack aStack) {
+		return CORE.ConfigSwitches.pollutionPerSecondMultiTreeFarm;
 	}
 
 	public int getDamageToComponent(final ItemStack aStack) {
@@ -298,7 +278,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 			for (GT_MetaTileEntity_Hatch_InputBus mInputBus : this.mInputBusses) {
 				for (int i = 0; i < mInputBus.mInventory.length; i++) {
 					ItemStack uStack = mInputBus.mInventory[i];
-					if (uStack != null && TreeFarmHelper.isCorrectPart(uStack)) {
+					if (uStack != null && TreeFarmHelper.getPartType(uStack) != null) {
 						this.setGUIItemStack(uStack);
 						return true;
 					}
@@ -320,29 +300,29 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 	}
 
 	@Override
+	public boolean doRandomMaintenanceDamage() {
+		ItemStack tSaw = mInventory[1];
+		if (!isCorrectMachinePart(tSaw) || getRepairStatus() == 0) {
+			stopMachine();
+			return false;
+		}
+		if (CORE.RANDOM.nextInt(200) == 0) {
+			if (!tryDamageTool(tSaw)) {
+				if (tSaw.getItem().isDamageable())
+					addOutput(tSaw);
+				this.mInventory[1] = null;
+				if (!replaceTool())
+					this.getBaseMetaTileEntity().disableWorking();
+				tryDamageTool(tSaw);
+			}
+		}
+		return super.doRandomMaintenanceDamage();
+	}
+
+	@Override
 	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
 		super.onPostTick(aBaseMetaTileEntity, aTick);
 		replaceTool();
-		ItemStack invItem = this.mInventory[1];
-		if (invItem != null && aTick % 200 == 0 && this.getBaseMetaTileEntity().isServerSide() && isCorrectMachinePart(invItem)) {
-
-			if (!tryDamageTool(invItem)) {
-				if (!invItem.getItem().isDamageable()) { //item durability is <= 0
-					this.mInventory[1] = null;
-					if (!replaceTool()) {
-						this.getBaseMetaTileEntity().disableWorking();
-					}
-					tryDamageTool(invItem);
-				} else {
-					addOutput(invItem);
-					this.mInventory[1] = null;
-					if (!replaceTool()) {
-						this.getBaseMetaTileEntity().disableWorking();
-					}
-					tryDamageTool(invItem);
-				}
-			}
-		}
 	}
 
 	@Override

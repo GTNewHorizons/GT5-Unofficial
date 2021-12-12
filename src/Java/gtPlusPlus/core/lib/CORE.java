@@ -259,12 +259,59 @@ public class CORE {
 		public static boolean enableTreeFarmerParticles = true;
 		public static boolean useGregtechTextures = true;
 
-
-
-
-
-
-
+		//Pollution
+		public static int pollutionPerSecondMultiPackager = 40;
+		public static int pollutionPerSecondMultiIndustrialAlloySmelter = 300;
+		public static int pollutionPerSecondMultiIndustrialArcFurnace = 2400;
+		public static int pollutionPerSecondMultiIndustrialCentrifuge = 300;
+		public static int pollutionPerSecondMultiIndustrialCokeOven = 80;
+		public static int pollutionPerSecondMultiIndustrialCuttingMachine = 160;
+		public static int pollutionPerSecondMultiIndustrialDehydrator = 500;
+		public static int pollutionPerSecondMultiIndustrialElectrolyzer = 300;
+		public static int pollutionPerSecondMultiIndustrialExtruder = 1000;
+		public static int pollutionPerSecondMultiIndustrialMacerator = 400;
+		public static int pollutionPerSecondMultiIndustrialMixer = 800;
+		public static int pollutionPerSecondMultiIndustrialMultiMachine_ModeMetal = 400;
+		public static int pollutionPerSecondMultiIndustrialMultiMachine_ModeFluid = 400;
+		public static int pollutionPerSecondMultiIndustrialMultiMachine_ModeMisc = 600;
+		public static int pollutionPerSecondMultiIndustrialPlatePress_ModeForming = 240;
+		public static int pollutionPerSecondMultiIndustrialPlatePress_ModeBending = 480;
+		public static int pollutionPerSecondMultiIndustrialSifter = 40;
+		public static int pollutionPerSecondMultiIndustrialThermalCentrifuge = 1000;
+		public static int pollutionPerSecondMultiIndustrialVacuumFreezer = 500;
+		public static int pollutionPerSecondMultiIndustrialWashPlant_ModeChemBath = 400;
+		public static int pollutionPerSecondMultiIndustrialWashPlant_ModeWasher = 100;
+		public static int pollutionPerSecondMultiIndustrialWireMill = 100;
+		public static int pollutionPerSecondMultiIsaMill = 1280;
+		public static int pollutionPerSecondMultiAdvDistillationTower_ModeDistillery = 240;
+		public static int pollutionPerSecondMultiAdvDistillationTower_ModeDT = 480;
+		public static int pollutionPerSecondMultiAdvEBF = 500;
+		public static int pollutionPerSecondMultiAdvImplosion = 5000;
+		public static int pollutionPerSecondMultiABS = 200;
+		public static int pollutionPerSecondMultiCyclotron = 200;
+		public static int pollutionPerSecondMultiIndustrialFishingPond = 20;
+		public static int pollutionPerSecondMultiLargeRocketEngine;
+		public static int pollutionPerSecondMultiLargeSemiFluidGenerator = 1280;
+		public static int pollutionPerSecondMultiMassFabricator = 40;
+		public static int pollutionPerSecondMultiRefinery = 4000;
+		public static int pollutionPerSecondMultiGeneratorArray;
+		public static int pollutionPerSecondMultiTreeFarm = 100;
+		public static int pollutionPerSecondMultiFrothFlotationCell = 0;
+		public static int pollutionPerSecondMultiNuclearReactor_ModeBoosted = 160;
+		public static int pollutionPerSecondMultiNuclearReactor_ModeNormal = 80;
+		public static int pollutionPerSecondMultiAutoCrafter = 500;
+		public static int pollutionPerSecondMultiThermalBoiler = 700;
+		public static int pollutionPerSecondMultiAlgaePond = 0;
+		//pollution single blocks
+		public static int basePollutionPerSecondSemiFluidGenerator = 40;
+		public static double[] pollutionReleasedByTierSemiFluidGenerator = new double[]{0,2.0,4.0,8.0};
+		public static int basePollutionPerSecondBoiler = 35;
+		public static double[] pollutionReleasedByTierBoiler = new double[]{0,1.0,1.43, 1.86};
+		public static int baseMinPollutionPerSecondRocketFuelGenerator = 250;
+		public static int baseMaxPollutionPerSecondRocketFuelGenerator = 2000;
+		public static double[] pollutionReleasedByTierRocketFuelGenerator = new double[]{0,0,0,0,1,2,3};
+		public static int basePollutionPerSecondGeothermalGenerator = 100;
+		public static double[] pollutionReleasedByTierGeothermalGenerator = new double[]{0,0,0,0,1,1,1};
 
 	}
 

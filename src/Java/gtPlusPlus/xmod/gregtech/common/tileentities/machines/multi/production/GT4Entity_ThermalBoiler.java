@@ -194,9 +194,9 @@ extends GregtechMeta_MultiBlockBase
 	}
 
 	@Override
-	public int getPollutionPerTick(ItemStack aStack)
+	public int getPollutionPerSecond(ItemStack aStack)
 	{
-		return 35;
+		return CORE.ConfigSwitches.pollutionPerSecondMultiThermalBoiler;
 	}
 
 	public int getAmountOfOutputs()
@@ -211,7 +211,7 @@ extends GregtechMeta_MultiBlockBase
 				.addInfo("Thermal Boiler Controller")
 				.addInfo("Converts Water & Heat into Steam")
 				.addInfo("Consult user manual for more information")
-				.addPollutionAmount(getPollutionPerTick(null) * 20)
+				.addPollutionAmount(getPollutionPerSecond(null))
 				.addSeparator()
 				.beginStructureBlock(3, 3, 3, true)
 				.addController("Front Center")

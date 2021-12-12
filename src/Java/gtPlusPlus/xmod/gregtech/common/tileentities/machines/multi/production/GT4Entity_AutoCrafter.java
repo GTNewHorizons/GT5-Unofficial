@@ -117,8 +117,8 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
-	public int getPollutionPerTick(ItemStack aStack) {
-		return 25;
+	public int getPollutionPerSecond(ItemStack aStack) {
+		return CORE.ConfigSwitches.pollutionPerSecondMultiAutoCrafter;
 	}
 
 	public int getAmountOfOutputs() {
@@ -133,7 +133,7 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase {
 				.addInfo("Right Click with a Screwdriver to change mode")
 				.addInfo("200% faster than using single block machines of the same voltage")
 				.addInfo("Processes two items per voltage tier")
-				.addPollutionAmount(getPollutionPerTick(null) * 20)
+				.addPollutionAmount(getPollutionPerSecond(null))
 				.addSeparator()
 				.beginStructureBlock(3, 3, 3, true)
 				.addController("Front Center")

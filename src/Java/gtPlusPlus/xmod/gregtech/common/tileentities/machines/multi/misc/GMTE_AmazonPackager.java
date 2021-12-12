@@ -18,6 +18,7 @@ import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.ItemStackData;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.item.ItemStack;
@@ -123,7 +124,7 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase {
 				.addInfo("Uncomparably fast compared to a single packager of the same tier")
 				.addInfo("Only uses 75% of the eu/t normally required")
 				.addInfo("Processes five items per voltage tier")
-				.addPollutionAmount(getPollutionPerTick(null) * 20)
+				.addPollutionAmount(getPollutionPerSecond(null))
 				.addSeparator()
 				.beginStructureBlock(3, 3, 3, true)
 				.addController("Front center")
@@ -301,8 +302,8 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
-	public int getPollutionPerTick(ItemStack arg0) {
-		return 2;
+	public int getPollutionPerSecond(ItemStack arg0){
+		return CORE.ConfigSwitches.pollutionPerSecondMultiPackager;
 	}
 
 	@Override

@@ -59,7 +59,7 @@ extends GregtechMeta_MultiBlockBase {
 				.addInfo("Gain 4% speed bonus per voltage tier increased")
 				.addInfo("Process 12x materials with Heat Resistant Casings")
 				.addInfo("Or 24x materials with Heat Proof Casings")
-				.addPollutionAmount(getPollutionPerTick(null) * 20)
+				.addPollutionAmount(getPollutionPerSecond(null))
 				.addSeparator()
 				.beginStructureBlock(3, 3, 3, true)
 				.addController("Front middle at bottom")
@@ -214,8 +214,8 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
-	public int getPollutionPerTick(final ItemStack aStack) {
-		return 4;
+	public int getPollutionPerSecond(final ItemStack aStack) {
+		return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialCokeOven;
 	}
 
 	@Override

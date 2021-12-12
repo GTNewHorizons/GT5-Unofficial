@@ -41,7 +41,7 @@ public abstract class GT_MetaTileEntity_Hatch_NbtConsumable extends GT_MetaTileE
 	}
 
 	public GT_MetaTileEntity_Hatch_NbtConsumable(String aName, int aTier, int aInputSlots, String[] aDescription, boolean aAllowDuplicateTypes, ITexture[][][] aTextures) {
-		super(aName, aTier, aInputSlots*2, aDescription[0], aTextures);
+		super(aName, aTier, aInputSlots*2, aDescription, aTextures);
 		mInputslotCount = getInputSlotCount();
 		mTotalSlotCount = getInputSlotCount()*2;
 		mAllowDuplicateUsageTypes = aAllowDuplicateTypes;
@@ -127,7 +127,7 @@ public abstract class GT_MetaTileEntity_Hatch_NbtConsumable extends GT_MetaTileE
 			if (i <= getSlotID_LastInput()) {
 				fillStacksIntoFirstSlots();
 			}
-		}            
+		}
 	}
 
 	// Only moves items in the first four slots
@@ -141,7 +141,7 @@ public abstract class GT_MetaTileEntity_Hatch_NbtConsumable extends GT_MetaTileE
 		}                
 	}
 	
-	private final void tryFillUsageSlots() {
+	public final void tryFillUsageSlots() {
 		int aSlotSpace = (mInputslotCount - getContentUsageSlots().size());
 		if (aSlotSpace > 0) {
 			Logger.INFO("We have empty usage slots. "+aSlotSpace);

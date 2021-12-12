@@ -56,7 +56,7 @@ extends GregtechMeta_MultiBlockBase {
 				.addInfo("150% faster than using single block machines of the same voltage")
 				.addInfo("Only uses 80% of the eu/t normally required")
 				.addInfo("Processes eight items per voltage tier")
-				.addPollutionAmount(getPollutionPerTick(null) * 20)
+				.addPollutionAmount(getPollutionPerSecond(null))
 				.addSeparator()
 				.beginStructureBlock(3, 2, 3, false)
 				.addController("Front Center")
@@ -195,8 +195,8 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
-	public int getPollutionPerTick(final ItemStack aStack) {
-		return 50;
+	public int getPollutionPerSecond(final ItemStack aStack) {
+		return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialThermalCentrifuge;
 	}
 
 	@Override

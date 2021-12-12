@@ -35,14 +35,13 @@ public class TreeGenerator {
 	}
 	
 	public AutoMap<ItemStack> generateOutput(int aTreeSize){
-		AutoMap<ItemStack> aTemp = new AutoMap<ItemStack>();
 		AutoMap<ItemStack> aOutputMap = mTreeData.getOutputFromTree();
 		if (aOutputMap != null && aOutputMap.size() > 0) {
 			Logger.WARNING("Valid tree data output");
 			return aOutputMap;
 		}		
 		Logger.WARNING("Invalid tree data output");
-		return aTemp;
+		return new AutoMap<ItemStack>();
 	}
 	
 	public static class FakeTreeInFakeWorldGenerator extends WorldGenAbstractTree

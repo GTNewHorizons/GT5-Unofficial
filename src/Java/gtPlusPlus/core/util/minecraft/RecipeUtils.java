@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.FMLCommonHandler;
 import gregtech.api.enums.Materials;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.*;
@@ -47,7 +48,7 @@ public static int mInvalidID = 1;
 			Logger.RECIPE(ReflectionUtils.getMethodName(7));
 			Logger.RECIPE(ReflectionUtils.getMethodName(8));
 			Logger.RECIPE(ReflectionUtils.getMethodName(9));
-			System.exit(1);
+			FMLCommonHandler.instance().exitJava(1, true);
 		}*/
 		
 		if (resultItem == null){
@@ -357,7 +358,7 @@ public static int mInvalidID = 1;
 			Logger.RECIPE(ReflectionUtils.getMethodName(7));
 			Logger.RECIPE(ReflectionUtils.getMethodName(8));
 			Logger.RECIPE(ReflectionUtils.getMethodName(9));
-			System.exit(1);
+			FMLCommonHandler.instance().exitJava(1, true);
 		}
 		
 

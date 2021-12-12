@@ -59,7 +59,7 @@ extends GregtechMeta_MultiBlockBase {
 				.addInfo("Factory Grade Advanced Implosion Compressor")
 				.addInfo("Speed: 100% | Eu Usage: 100% | Parallel: ((Tier/2)+1)")
 				.addInfo("Constructed exactly the same as a normal Implosion Compressor")
-				.addPollutionAmount(getPollutionPerTick(null) * 20)
+				.addPollutionAmount(getPollutionPerSecond(null))
 				.addSeparator()
 				.beginStructureBlock(3, 3, 3, true)
 				.addController("Front center")
@@ -182,8 +182,8 @@ extends GregtechMeta_MultiBlockBase {
 		return 10000;
 	}
 
-	public int getPollutionPerTick(ItemStack aStack) {
-		return 250;
+	public int getPollutionPerSecond(ItemStack aStack) {
+		return CORE.ConfigSwitches.pollutionPerSecondMultiAdvImplosion;
 	}
 
 	public int getDamageToComponent(ItemStack aStack) {

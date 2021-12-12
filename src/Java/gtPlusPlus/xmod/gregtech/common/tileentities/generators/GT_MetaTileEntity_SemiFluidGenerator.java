@@ -21,7 +21,6 @@ import net.minecraft.item.ItemStack;
 
 public class GT_MetaTileEntity_SemiFluidGenerator extends GT_MetaTileEntity_BasicGenerator {
 
-	public static final int BASE_POLLUTION = 2;
 	public int mEfficiency;
 
 	/*public GT_MetaTileEntity_SemiFluidGenerator(int aID, String aName, String aNameRegional, int aTier) {
@@ -42,7 +41,7 @@ public class GT_MetaTileEntity_SemiFluidGenerator extends GT_MetaTileEntity_Basi
 	}
 
 	public int getPollution() {
-		return (int) (2.0D * Math.pow(2.0D, this.mTier));
+		return (int) (CORE.ConfigSwitches.basePollutionPerSecondSemiFluidGenerator * CORE.ConfigSwitches.pollutionReleasedByTierSemiFluidGenerator[this.mTier]);
 	}
 
 	@Override
@@ -70,7 +69,7 @@ public class GT_MetaTileEntity_SemiFluidGenerator extends GT_MetaTileEntity_Basi
 	public String[] getDescription() {
 		return new String[]{
 				this.mDescription,
-				"Produces "+(this.getPollution()*20)+" pollution/sec", 
+				"Produces "+(this.getPollution())+" pollution/sec", 
 				"Fuel Efficiency: "+this.getEfficiency() + "%",
                 CORE.GT_Tooltip};
 	}

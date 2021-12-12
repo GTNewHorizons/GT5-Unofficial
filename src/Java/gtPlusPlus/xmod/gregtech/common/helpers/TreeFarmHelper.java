@@ -15,6 +15,7 @@ import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 
+import gregtech.api.enums.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.block.IGrowable;
@@ -28,8 +29,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.World;
 
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaGenerated_Tool;
@@ -54,12 +53,14 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.BonemealEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class TreeFarmHelper {
 
 	public static final FluidStack fertT1 = FluidUtils.getFluidStack("fluid.fertiliser", 3);
 	public static final FluidStack fertT2 = FluidUtils.getFluidStack("fluid.un18fertiliser", 2);
 	public static final FluidStack fertT3 = FluidUtils.getFluidStack("fluid.un32fertiliser", 1);
+	private static final int sawOreId = OreDictionary.getOreID(ToolDictNames.craftingToolSaw.name());
 
 	public static ITexture[][][] getTextureSet() {
 		final ITexture[][][] rTextures = new ITexture[10][17][];
@@ -287,73 +288,26 @@ public class TreeFarmHelper {
 		return SAWTOOL.NONE;
 	}
 	
-	public static boolean isCorrectPart(final ItemStack aStack) {
+	public static ToolType getPartType(final ItemStack aStack) {
 		if (aStack != null){
 			//Utils.LOG_WARNING("Found "+aStack.getDisplayName()+" in the GUI slot.");
 			
-			if (aStack.getItem() instanceof MetaGeneratedGregtechItems) {
+			if (aStack.getItem() == MetaGeneratedGregtechItems.INSTANCE) {
 				int aDmg = aStack.getItemDamage();
 				if (aDmg >= 32120 && aDmg <= 32128) {
-					return true;
-				}
-				else if (aStack.getUnlocalizedName().toLowerCase().contains("mu-metaitem")) {
-					String[] aData = aStack.getUnlocalizedName().toLowerCase().split("//.");
-					if (aData != null && aData.length > 0) {
-						for (String s : aData) {
-							if (s.contains("32120")) {
-								return true;
-							}
-							else if (s.contains("32122")) {
-								return true;
-							}
-							else if (s.contains("32124")) {
-								return true;
-							}
-							else if (s.contains("32126")) {
-								return true;
-							}
-							else if (s.contains("32128")) {
-								return true;
-							}
-							else {
-								Logger.INFO("bad Tool in Slot 1");
-								return false;
-							}
-						}
-					}
+					return ToolType.Unbreakable;
 				}
 				Logger.INFO("bad Tool in Slot 2 | "+aStack.getUnlocalizedName().toLowerCase() + " | "+aDmg);
-				return false;
+				return null;
 			}			
 			
-			if ((aStack.getItem() instanceof GT_MetaGenerated_Item_02) || (aStack.getItem() instanceof GT_MetaGenerated_Tool)){
-				if (OrePrefixes.craftingTool.contains(aStack)){
-					if (aStack.getDisplayName().toLowerCase().contains("saw") || aStack.getDisplayName().toLowerCase().contains("gt.metatool.01")){
-						if (aStack.getItemDamage() == 10){
-							return true;
-						}
-						else if (aStack.getItemDamage() == 140  || aStack.getDisplayName().toLowerCase().contains("gt.metatool.01.140")){
-							return true;
-						}
-						else if (aStack.getItemDamage() == 110  || aStack.getDisplayName().toLowerCase().contains("gt.metatool.01.110")){
-							return true;
-						}
-						else if (aStack.getItemDamage() == 112  || aStack.getDisplayName().toLowerCase().contains("gt.metatool.01.112")){
-							return true;
-						}
-						else if (aStack.getItemDamage() == 114  || aStack.getDisplayName().toLowerCase().contains("gt.metatool.01.114")){
-							return true;
-						}
-						else {
-							Logger.INFO("bad Tool in Slot 3");
-							return false;
-						}
-					}
-				}
+			if (aStack.getItem() instanceof GT_MetaGenerated_Tool) {
+				if (Arrays.stream(OreDictionary.getOreIDs(aStack)).anyMatch(i -> i == sawOreId))
+					return ToolType.Breakable;
 			}
 		}
 		Logger.INFO("bad Tool in Slot 4");
-		return false;
+		return null;
 	}
 
 	public static boolean isHumusLoaded = false;
@@ -716,7 +670,10 @@ public class TreeFarmHelper {
 	}
 
 	
-
+	public enum ToolType {
+		Unbreakable,
+		Breakable
+	}
 
 
 	/**

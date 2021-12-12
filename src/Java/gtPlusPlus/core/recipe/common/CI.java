@@ -529,12 +529,6 @@ public class CI {
 		return ItemUtils.getEmptyCell(i);
 	}
 
-
-
-	/*
-	 * 
-	 */
-
 	private static final Material[] aMaterial_Main = new Material[] {
 			ALLOY.POTIN,
 			ALLOY.TUMBAGA,				
@@ -683,11 +677,6 @@ public class CI {
 		aTier = Math.max(0, aTier);		
 
 		Material m = null;
-
-
-
-
-
 
 		if (aPrefix == OrePrefixes.liquid) {
 			int aMatID = (aTier == 0 || aTier == 2 || aTier == 5 || aTier == 8 ? 0 : (aTier == 1 || aTier == 3 || aTier == 6 || aTier == 9 ? 1 : 2));

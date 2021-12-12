@@ -56,7 +56,7 @@ extends GregtechMeta_MultiBlockBase {
 				.addInfo("200% faster than using single block machines of the same voltage")
 				.addInfo("Only uses 75% of the eu/t normally required")
 				.addInfo("Processes four items per voltage tier")
-				.addPollutionAmount(getPollutionPerTick(null) * 20)
+				.addPollutionAmount(getPollutionPerSecond(null))
 				.addSeparator()
 				.beginStructureBlock(3, 3, 5, true)
 				.addController("Front Center")
@@ -178,8 +178,8 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
-	public int getPollutionPerTick(final ItemStack aStack) {
-		return 5;
+	public int getPollutionPerSecond(final ItemStack aStack) {
+		return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialWireMill;
 	}
 
 	@Override

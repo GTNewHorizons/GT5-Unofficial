@@ -86,7 +86,7 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends GregtechMeta
 				.addInfo("Speed: 200% | Eu Usage: 100% | Parallel: 4")
 				.addInfo("Consumes 1L of " + mCryoFuelName + "/t during operation")
 				.addInfo("Constructed exactly the same as a normal Vacuum Freezer")
-				.addPollutionAmount(getPollutionPerTick(null) * 20)
+				.addPollutionAmount(getPollutionPerSecond(null))
 				.addSeparator()
 				.beginStructureBlock(3, 3, 3, true)
 				.addController("Front Center")
@@ -221,8 +221,8 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends GregtechMeta
 		return 10000;
 	}
 
-	public int getPollutionPerTick(final ItemStack aStack) {
-		return 25;
+	public int getPollutionPerSecond(final ItemStack aStack) {
+		return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialVacuumFreezer;
 	}
 
 	public int getDamageToComponent(final ItemStack aStack) {

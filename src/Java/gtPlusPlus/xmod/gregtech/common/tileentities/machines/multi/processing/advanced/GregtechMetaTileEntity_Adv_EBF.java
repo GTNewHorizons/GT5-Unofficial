@@ -14,6 +14,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GT_MetaTileEntity_Hatch_CustomFluidBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -94,7 +95,7 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 				.addInfo("Speed: 120% | Eu Usage: 90% | Parallel: 8")
 				.addInfo("Consumes 10L of " + mHotFuelName + " per second during operation")
 				.addInfo("Constructed exactly the same as a normal EBF")
-				.addPollutionAmount(getPollutionPerTick(null) * 20)
+				.addPollutionAmount(getPollutionPerSecond(null))
 				.addSeparator()
 				.addController("Bottom center")
 				.addCasingInfo(mCasingName, 9)
@@ -247,8 +248,8 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 		return 10000;
 	}
 
-	public int getPollutionPerTick(ItemStack aStack) {
-		return 25;
+	public int getPollutionPerSecond(ItemStack aStack) {
+		return CORE.ConfigSwitches.pollutionPerSecondMultiAdvEBF;
 	}
 
 	public int getDamageToComponent(ItemStack aStack) {
@@ -324,7 +325,7 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 		aSpeedBonusPercent = Math.max(-99, aSpeedBonusPercent);
 		float tTimeFactor = 100.0f / (100.0f + aSpeedBonusPercent);
 		this.mMaxProgresstime = (int) (tRecipe.mDuration * tTimeFactor);
-		int rInt = 2;
+		int tHalfHeatCapacityDivTiers = tHeatCapacityDivTiers / 2;
 
 		this.mEUt = (int) Math.ceil(tTotalEUt);
 
@@ -338,7 +339,15 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 		} else {
 			while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
 				this.mEUt *= 4;
-				this.mMaxProgresstime /= (tHeatCapacityDivTiers >= rInt ? 4 : 2);
+				if (tHalfHeatCapacityDivTiers > 0) {
+					this.mMaxProgresstime = mMaxProgresstime / 4;
+					tHalfHeatCapacityDivTiers--;
+				} else {
+					this.mMaxProgresstime = mMaxProgresstime / 2;
+				}
+				if (this.mMaxProgresstime <= 1) {
+					break;
+				}
 			}
 		}
 		if (this.mEUt > 0) {
