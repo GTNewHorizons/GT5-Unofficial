@@ -38,6 +38,55 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
 		this.toGenerate = M;		
 		this.disableOptional = O;
 		mRecipeGenMap.add(this);
+		final ItemStack normalDust = M.getDust(1);
+		final ItemStack smallDust = M.getSmallDust(1);
+		final ItemStack tinyDust = M.getTinyDust(1);
+		if (tinyDust != null && normalDust != null) {
+			if (RecipeUtils.addShapedRecipe(
+					tinyDust, tinyDust, tinyDust,
+					tinyDust, tinyDust, tinyDust,
+					tinyDust, tinyDust, tinyDust,
+					normalDust)){
+				Logger.INFO("9 Tiny dust to 1 Dust Recipe: "+M.getLocalizedName()+" - Success");
+			}
+			else {
+				Logger.INFO("9 Tiny dust to 1 Dust Recipe: "+M.getLocalizedName()+" - Failed");
+			}
+
+			if (RecipeUtils.addShapedRecipe(
+					normalDust, null, null,
+					null, null, null,
+					null, null, null,
+					M.getTinyDust(9))){
+				Logger.INFO("9 Tiny dust from 1 Recipe: "+M.getLocalizedName()+" - Success");
+			}
+			else {
+				Logger.INFO("9 Tiny dust from 1 Recipe: "+M.getLocalizedName()+" - Failed");
+			}
+		}
+
+		if (smallDust != null && normalDust != null) {
+			if (RecipeUtils.addShapedRecipe(
+					smallDust, smallDust, null,
+					smallDust, smallDust, null,
+					null, null, null,
+					normalDust)){
+				Logger.INFO("4 Small dust to 1 Dust Recipe: "+M.getLocalizedName()+" - Success");
+			}
+			else {
+				Logger.INFO("4 Small dust to 1 Dust Recipe: "+M.getLocalizedName()+" - Failed");
+			}
+			if (RecipeUtils.addShapedRecipe(
+					null, normalDust, null,
+					null, null, null,
+					null, null, null,
+					M.getSmallDust(4))){
+				Logger.INFO("4 Small dust from 1 Dust Recipe: "+M.getLocalizedName()+" - Success");
+			}
+			else {
+				Logger.INFO("4 Small dust from 1 Dust Recipe: "+M.getLocalizedName()+" - Failed");
+			}
+		}
 	}
 
 	@Override
@@ -47,7 +96,7 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
 
 	private void generateRecipes(final Material material, final boolean disableOptional){
 
-		Logger.WARNING("Generating Shaped Crafting recipes for "+material.getLocalizedName());
+		Logger.INFO("Generating Shaped Crafting recipes for "+material.getLocalizedName());
 
 		final ItemStack normalDust = material.getDust(1);
 		final ItemStack smallDust = material.getSmallDust(1);
@@ -55,54 +104,6 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
 
 		final ItemStack[] inputStacks = material.getMaterialComposites();
 		final ItemStack outputStacks = material.getDust(material.smallestStackSizeWhenProcessing);
-
-
-		if (ItemUtils.checkForInvalidItems(tinyDust) && ItemUtils.checkForInvalidItems(normalDust)) {
-			if (RecipeUtils.addShapedRecipe(
-					tinyDust,	tinyDust, tinyDust,
-					tinyDust, tinyDust, tinyDust,
-					tinyDust, tinyDust, tinyDust,
-					normalDust)){
-				Logger.WARNING("9 Tiny dust to 1 Dust Recipe: "+material.getLocalizedName()+" - Success");
-			}
-			else {
-				Logger.WARNING("9 Tiny dust to 1 Dust Recipe: "+material.getLocalizedName()+" - Failed");
-			}
-
-			if (RecipeUtils.addShapedRecipe(
-					normalDust, null, null,
-					null, null, null,
-					null, null, null,
-					material.getTinyDust(9))){
-				Logger.WARNING("9 Tiny dust from 1 Recipe: "+material.getLocalizedName()+" - Success");
-			}
-			else {
-				Logger.WARNING("9 Tiny dust from 1 Recipe: "+material.getLocalizedName()+" - Failed");
-			}
-		}
-
-		if (ItemUtils.checkForInvalidItems(smallDust) && ItemUtils.checkForInvalidItems(normalDust)) {
-			if (RecipeUtils.addShapedRecipe(
-					smallDust, smallDust, null,
-					smallDust, smallDust, null,
-					null, null, null,
-					normalDust)){
-				Logger.WARNING("4 Small dust to 1 Dust Recipe: "+material.getLocalizedName()+" - Success");
-			}
-			else {
-				Logger.WARNING("4 Small dust to 1 Dust Recipe: "+material.getLocalizedName()+" - Failed");
-			}
-			if (RecipeUtils.addShapedRecipe(
-					null, normalDust, null,
-					null, null, null,
-					null, null, null,
-					material.getSmallDust(4))){
-				Logger.WARNING("4 Small dust from 1 Dust Recipe: "+material.getLocalizedName()+" - Success");
-			}
-			else {
-				Logger.WARNING("4 Small dust from 1 Dust Recipe: "+material.getLocalizedName()+" - Failed");
-			}
-		}
 
 		//Macerate blocks back to dusts.
 		final ItemStack materialBlock = material.getBlock(1);
@@ -192,7 +193,7 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
 									if (x.getStackMaterial() != null){
 										if (x.getStackMaterial().getDust(1) == null){
 											if (x.getStackMaterial().getState() != MaterialState.SOLID && x.getStackMaterial().getState() != MaterialState.ORE && x.getStackMaterial().getState() != MaterialState.PLASMA){
-												oxygen = x.getStackMaterial().getFluid(1000);
+												oxygen = x.getStackMaterial().getFluidStack(1000);
 												break;
 											}
 										}
@@ -297,8 +298,8 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
 									if (x.getStackMaterial() != null){
 										if (x.getStackMaterial().getDust(1) == null){
 											MaterialState f = x.getStackMaterial().getState();
-											if (f == MaterialState.GAS || f == MaterialState.LIQUID || f == MaterialState.PURE_LIQUID){
-												oxygen = x.getStackMaterial().getFluid((int) (material.vSmallestRatio[compSlot] * 1000));
+											if (f == MaterialState.GAS || f == MaterialState.LIQUID || f == MaterialState.PURE_LIQUID || f == MaterialState.PURE_GAS){
+												oxygen = x.getStackMaterial().getFluidStack((int) (material.vSmallestRatio[compSlot] * 1000));
 											}
 										}
 									}

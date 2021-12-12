@@ -3,7 +3,6 @@ package gtPlusPlus.core.fluids;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -12,11 +11,11 @@ import gtPlusPlus.GTplusplus.INIT_PHASE;
 import gtPlusPlus.api.objects.GregtechException;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.item.base.itemblock.FluidItemBlock;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -123,7 +122,8 @@ public class FluidFactory {
 			try {
 				throw new GregtechException("Cannot generate Fluid Packages outside of Pre-Init!");
 			} catch (GregtechException e) {
-				FMLCommonHandler.instance().exitJava(0, true);
+				e.printStackTrace();
+				CORE.crash("Cannot generate Fluid Packages outside of Pre-Init!");
 			}
 		}
 		

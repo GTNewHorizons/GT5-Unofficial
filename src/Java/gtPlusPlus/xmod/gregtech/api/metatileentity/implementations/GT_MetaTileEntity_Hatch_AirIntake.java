@@ -70,15 +70,16 @@ public class GT_MetaTileEntity_Hatch_AirIntake extends GT_MetaTileEntity_Hatch_I
 
 		}
 		if (S != null) {
-			final String[] desc = new String[S.length + 3];
+			final String[] desc = new String[S.length + 4];
 			System.arraycopy(S, 0, desc, 0, S.length);
 			desc[S.length] = "DO NOT OBSTRUCT THE INPUT!";
 			desc[S.length + 1] = "Draws in Air from the surrounding environment";
 			desc[S.length + 2] = "Creates 1000L of Air every 4 ticks";
+			desc[S.length + 3] = CORE.GT_Tooltip;
 			return desc;
 		}
 		else {
-			return new String[] {"DO NOT OBSTRUCT THE INPUT!", "Draws in Air from the surrounding environment", "Creates 1000L of Air every 4 ticks"};
+			return new String[] {"DO NOT OBSTRUCT THE INPUT!", "Draws in Air from the surrounding environment", "Creates 1000L of Air every 4 ticks", CORE.GT_Tooltip};
 		}
 
 
@@ -126,7 +127,7 @@ public class GT_MetaTileEntity_Hatch_AirIntake extends GT_MetaTileEntity_Hatch_I
 
 	public void onPostTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTick) {
 		super.onPostTick(aBaseMetaTileEntity, aTick);	
-		if (addAirToHatch(aTick)) {
+		if (this.getBaseMetaTileEntity().isActive() && addAirToHatch(aTick)) {
 			if (aTick % 8 == 0) {
 				if (aBaseMetaTileEntity.isClientSide()) {					
 					this.pollutionParticles(this.getBaseMetaTileEntity().getWorld(), "cloud");

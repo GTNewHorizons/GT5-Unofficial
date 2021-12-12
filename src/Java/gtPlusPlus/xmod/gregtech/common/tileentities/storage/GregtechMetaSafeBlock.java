@@ -16,11 +16,6 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.machines
 public class GregtechMetaSafeBlock
 extends GregtechMetaSafeBlockBase {
 
-	@Override
-	public String[] getDescription() {
-		return new String[] {this.mDescription};
-	}
-
 	public GregtechMetaSafeBlock(final int aID, final String aName, final String aNameRegional, final int aTier) {
 		super(aID, aName, aNameRegional, aTier, 28, "Protecting your items from sticky fingers.");
 	}
@@ -31,6 +26,13 @@ extends GregtechMetaSafeBlockBase {
 
 	public GregtechMetaSafeBlock(final String aName, final int aTier, final int aInvSlotCount, final String aDescription, final ITexture[][][] aTextures) {
 		super(aName, aTier, aInvSlotCount, aDescription, aTextures);
+	}
+	
+	@Override
+	public String[] getDescription() {
+		return new String[]{
+				this.mDescription,
+                CORE.GT_Tooltip};
 	}
 
 	@Override

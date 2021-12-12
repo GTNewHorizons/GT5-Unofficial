@@ -8,4 +8,5 @@ public class BaseItemRing extends BaseItemComponent{
 	public BaseItemRing(final Material material) {
 		super(material, BaseItemComponent.ComponentTypes.RING);
 	}
+	
 }

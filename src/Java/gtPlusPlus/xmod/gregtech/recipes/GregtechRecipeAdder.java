@@ -1,17 +1,23 @@
 package gtPlusPlus.xmod.gregtech.recipes;
 
+import static gregtech.GT_Mod.GT_FML_LOGGER;
 import static gtPlusPlus.core.lib.CORE.GTNH;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.internal.IGT_RecipeAdder;
 import gregtech.api.util.*;
+import gregtech.api.util.GTPP_Recipe.GTPP_Recipe_Map;
+import gregtech.api.util.GT_Recipe.GT_Recipe_AssemblyLine;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
@@ -156,6 +162,30 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 			e.getStackTrace();
 			return false;
 		}
+	}
+	
+
+	@Override
+	public boolean addCokeOvenRecipe(int aCircuit, ItemStack aInput2, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, ItemStack[] aOutputs, int aDuration, int aEUt) {
+		return addCokeOvenRecipe(CI.getNumberedCircuit(aCircuit), aInput2, aFluidInputs, aFluidOutputs, aOutputs, aDuration, aEUt);
+	}
+
+	@Override
+	public boolean addCokeOvenRecipe(ItemStack aInput1, ItemStack aInput2, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, ItemStack[] aOutputs, int aDuration, int aEUt) {
+		GTPP_Recipe aSpecialRecipe = new GTPP_Recipe(
+				true,
+				new ItemStack[] { aInput1, aInput2 },
+				aOutputs,
+				null,
+				new int[] {},
+				aFluidInputs,
+				aFluidOutputs,
+				Math.max(1, aDuration),
+				Math.max(1, aEUt), 
+				0);   
+		int aSize = GTPP_Recipe.GTPP_Recipe_Map.sCokeOvenRecipes.mRecipeList.size();
+		GTPP_Recipe.GTPP_Recipe_Map.sCokeOvenRecipes.add(aSpecialRecipe);
+		return GTPP_Recipe.GTPP_Recipe_Map.sCokeOvenRecipes.mRecipeList.size() > aSize;
 	}
 
 	@Override
@@ -332,7 +362,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 	 * aOutputItems, aDuration, aEUt); return true; }
 	 */
 
-	@Override
+	/*@Override
 	public boolean addDehydratorRecipe(final ItemStack aInput, final FluidStack aFluid, final ItemStack[] aOutput,
 			int aDuration, final int aEUt) {
 		Logger.WARNING("Trying to add a Dehydrator recipe.");
@@ -363,7 +393,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 			Logger.WARNING("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");
 			return false;
 		}
-	}
+	}*/
 
 	@Override
 	public boolean addDehydratorRecipe(final ItemStack[] aInput, final FluidStack aFluidInput,
@@ -371,31 +401,25 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 			final int aEUt) throws IndexOutOfBoundsException {
 		Logger.WARNING("Trying to add a Dehydrator recipe.");
 		try {
-			if (aInput[0] != null) {
-				Logger.WARNING("Recipe requires input: " + aInput[0].getDisplayName() + " x" + aInput[0].stackSize);
-			}
-			if (aInput.length > 1) {
-				if (aInput[1] != null) {
-					Logger.WARNING("Recipe requires input: " + aInput[1].getDisplayName() + " x" + aInput[1].stackSize);
+			if (aInput != null && aInput.length > 0) {
+				if (aInput[0] != null) {
+					Logger.WARNING("Recipe requires input: " + aInput[0].getDisplayName() + " x" + aInput[0].stackSize);
+				}
+				if (aInput.length > 1) {
+					if (aInput[1] != null) {
+						Logger.WARNING("Recipe requires input: " + aInput[1].getDisplayName() + " x" + aInput[1].stackSize);
+					}
 				}
 			}
 			if (aFluidInput != null) {
 				Logger.WARNING("Recipe requires input: " + aFluidInput.getFluid().getName() + " " + aFluidInput.amount
-						+ "mbst");
+						+ "mbs");
 			}
-			if (((aInput[0] == null) && (aFluidInput == null)) || ((aOutputItems == null) && (aFluidOutput == null))) {
-				return false;
-			}
-			if ((aOutputItems != null)
-					&& ((aDuration = GregTech_API.sRecipeFile.get("dehydrator", aOutputItems[0], aDuration)) <= 0)) {
+			if (((aInput == null || aInput.length == 0) && (aFluidInput == null)) || ((aOutputItems == null || aOutputItems.length == 0) && (aFluidOutput == null))) {
 				return false;
 			}
 			if (aOutputItems != null) {
 				Logger.WARNING("Recipe will output: " + ItemUtils.getArrayStackNames(aOutputItems));
-			}
-			if ((aFluidOutput != null) && ((aDuration = GregTech_API.sRecipeFile.get("dehydrator",
-					aFluidOutput.getFluid().getName(), aDuration)) <= 0)) {
-				return false;
 			}
 			if (aFluidOutput != null) {
 				Logger.WARNING("Recipe will output: " + aFluidOutput.getFluid().getName());
@@ -542,21 +566,29 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 				new FluidStack[] { aInput1, aInput2 }, new FluidStack[] { aOutput1 }, aDuration, aEUt, 16000);
 		return true;
 	}
-
+	
 	@Override
 	public boolean addFissionFuel(final FluidStack aInput1, final FluidStack aInput2, final FluidStack aInput3,
 			final FluidStack aInput4, final FluidStack aInput5, final FluidStack aInput6, final FluidStack aInput7,
 			final FluidStack aInput8, final FluidStack aInput9, final FluidStack aOutput1, final FluidStack aOutput2,
 			final int aDuration, final int aEUt) {
+		return addFissionFuel(false, aInput1, aInput2, aInput3, aInput4, aInput5, aInput6, aInput7, aInput8, aInput9, aOutput1, aOutput2, aDuration, aEUt);
+	}
 
-		if ((aInput1 == null) || (aInput2 == null) || (aOutput1 == null) || (aDuration < 1) || (aEUt < 1)) {
+	@Override
+	public boolean addFissionFuel(final boolean aOptimise, final FluidStack aInput1, final FluidStack aInput2, final FluidStack aInput3,
+			final FluidStack aInput4, final FluidStack aInput5, final FluidStack aInput6, final FluidStack aInput7,
+			final FluidStack aInput8, final FluidStack aInput9, final FluidStack aOutput1, final FluidStack aOutput2,
+			final int aDuration, final int aEUt) {
+
+		if ((aInput1 == null) || (aOutput1 == null) || (aDuration < 1) || (aEUt < 1)) {
 			return false;
 		}
 		final FluidStack inputs[] = { aInput1, aInput2, aInput3, aInput4, aInput5, aInput6, aInput7, aInput8, aInput9 };
 		final FluidStack outputs[] = { aOutput1, aOutput2 };
 
 		GTPP_Recipe aSpecialRecipe = new GTPP_Recipe(
-				true,
+				aOptimise,
 				new ItemStack[] {},
 				new ItemStack[] {},
 				null,
@@ -1004,67 +1036,74 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 		return CORE.RA.addComponentMakerRecipe(aInputs, aInputFluid, aOutput1, aDuration, aEUt);		
 	}
 
-	public boolean addAssemblylineRecipe(ItemStack aResearchItem, int aResearchTime, ItemStack[] aInputs, FluidStack[] aFluidInputs_OLD, ItemStack aOutput, int aDuration, int aEUt) {
+    @Override
+    public boolean addAssemblylineRecipe(ItemStack aResearchItem, int aResearchTime, ItemStack[] aInputs, FluidStack[] aFluidInputs, ItemStack aOutput, int aDuration, int aEUt) {
+        if ((aResearchItem==null)||(aResearchTime<=0)||(aInputs == null) || (aOutput == null) || aInputs.length>15 || aInputs.length<4) {
+            return false;
+        }
+        if ((aDuration = GregTech_API.sRecipeFile.get("assemblingline", aOutput, aDuration)) <= 0) {
+            return false;
+        }
+        for(ItemStack tItem : aInputs){
+            if(tItem==null){
+                GT_FML_LOGGER.info("addAssemblingLineRecipe "+aResearchItem.getDisplayName()+" --> "+aOutput.getUnlocalizedName()+" there is some null item in that recipe");
+            }
+        }
+        GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.addFakeRecipe(false, new ItemStack[]{aResearchItem}, new ItemStack[]{aOutput}, new ItemStack[]{ItemList.Tool_DataStick.getWithName(1L, "Writes Research result", new Object[0])}, null, null, aResearchTime, 30, -201);
+        GT_Recipe.GT_Recipe_Map.sAssemblylineVisualRecipes.addFakeRecipe(false, aInputs, new ItemStack[]{aOutput}, new ItemStack[]{ItemList.Tool_DataStick.getWithName(1L, "Reads Research result", new Object[0])}, aFluidInputs, null, aDuration, aEUt, 0,true);
+        GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes.add(new GT_Recipe_AssemblyLine( aResearchItem, aResearchTime, aInputs, aFluidInputs, aOutput, aDuration, aEUt));
+        return true;
+    }
 
-		FluidStack[] aFluidInputs = new FluidStack[4];	
-		AutoMap<FluidStack> aNewFluidMap = new AutoMap<FluidStack>();
-		if (aFluidInputs_OLD.length > 4) {
-			for (FluidStack s : aFluidInputs_OLD) {
-				aNewFluidMap.put(s);
-			}
-			for (int i = 0; i < 4; i++) {
-				aFluidInputs[i] = aNewFluidMap.get(i);				
-			}
-		}
-		else {
-			aFluidInputs = aFluidInputs_OLD;
-		}
-
-
-		if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
-			if (aInputs.length < 6 && aFluidInputs.length < 2) {
-				ItemStack[] aInputStack = new ItemStack[] {aResearchItem, aInputs[0], aInputs[1], aInputs[2], aInputs[3], aInputs[4]};
-				return addSixSlotAssemblingRecipe(aInputStack, aFluidInputs[0], aOutput, aDuration, aEUt);
-			}        	
-			return false;
-		}
-		else {
-			if ((aResearchItem==null)||(aResearchTime<=0)||(aInputs == null) || (aOutput == null) || aInputs.length>15 || aInputs.length<4) {
-				return false;
-			}
-			else {
-				if (mAssemblyLine != null) {
-					try {						
-						if (!tryAddTecTechScannerRecipe(aResearchItem, aInputs, aFluidInputs, aOutput, aDuration, aEUt)) {
-							try {								
-								Logger.INFO("Failed to generate TecTech recipe for "+ItemUtils.getItemName(aResearchItem)+", please report this to Alkalus.");
-							}
-							catch (Throwable t) {
-								t.printStackTrace();
-							}
-						}
-						return (boolean) mAssemblyLine.invoke(GT_Values.RA, aResearchItem, aResearchTime, aInputs,
-								aFluidInputs, aOutput, aDuration, aEUt);
-					} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-						if (aInputs.length < 6 && aFluidInputs.length < 2) {
-							ItemStack[] aInputStack = new ItemStack[] { aResearchItem, aInputs[0], aInputs[1],
-									aInputs[2], aInputs[3], aInputs[4] };
-							return addSixSlotAssemblingRecipe(aInputStack, aFluidInputs[0], aOutput, aDuration,
-									aEUt);
-						}
-						return false;
-					}
-				} else {
-					if (aInputs.length < 6 && aFluidInputs.length < 2) {
-						ItemStack[] aInputStack = new ItemStack[] { aResearchItem, aInputs[0], aInputs[1], aInputs[2],
-								aInputs[3], aInputs[4] };
-						return addSixSlotAssemblingRecipe(aInputStack, aFluidInputs[0], aOutput, aDuration,
-								aEUt);
-					}
-					return false;
-				}
-			}		
-		}
+    @Override
+	public boolean addAssemblylineRecipe(ItemStack aResearchItem, int aResearchTime, Object[] aInputs, FluidStack[] aFluidInputs, ItemStack aOutput, int aDuration, int aEUt) {
+        if ((aResearchItem==null)||(aResearchTime<=0)||(aInputs == null) || (aOutput == null) || aInputs.length>15 || aInputs.length<4) {
+            return false;
+        }
+        if ((aDuration = GregTech_API.sRecipeFile.get("assemblingline", aOutput, aDuration)) <= 0) {
+            return false;
+        } 
+        ItemStack[] tInputs = new ItemStack[aInputs.length];
+        ItemStack[][] tAlts = new ItemStack[aInputs.length][];
+        for(int i = 0; i < aInputs.length; i++){
+        	Object obj = aInputs[i];
+        	if (obj instanceof ItemStack) {
+        		tInputs[i] = (ItemStack) obj;
+        		tAlts[i] = null;
+        		continue;
+        	} else if (obj instanceof ItemStack[]) {
+        		ItemStack[] aStacks = (ItemStack[]) obj;
+        		if (aStacks.length > 0) {
+        			tInputs[i] = aStacks[0];
+        			tAlts[i] = (ItemStack[]) Arrays.copyOf(aStacks, aStacks.length);
+        			continue;
+        		}
+        	} else if (obj instanceof Object[]) {
+        		Object[] objs = (Object[]) obj;
+        		List<ItemStack> tList;
+        		if (objs.length >= 2 && !(tList = GT_OreDictUnificator.getOres(objs[0])).isEmpty()) {
+        			try {
+        				int tAmount = ((Number) objs[1]).intValue();
+            			List<ItemStack> uList = new ArrayList<>();
+            			for (ItemStack tStack : tList) {
+            				ItemStack uStack = GT_Utility.copyAmount(tAmount, tStack); 
+            				if (GT_Utility.isStackValid(uStack)) {
+            					uList.add(uStack);
+            					if (tInputs[i] == null)
+            					    tInputs[i] = uStack;
+            				}
+            			}
+            			tAlts[i] = uList.toArray(new ItemStack[uList.size()]);
+            			continue;
+        			} catch (Exception t) {}
+        		}
+        	}
+        	GT_FML_LOGGER.info("addAssemblingLineRecipe "+aResearchItem.getDisplayName()+" --> "+aOutput.getUnlocalizedName()+" there is some null item in that recipe");
+        }
+        GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.addFakeRecipe(false, new ItemStack[]{aResearchItem}, new ItemStack[]{aOutput}, new ItemStack[]{ItemList.Tool_DataStick.getWithName(1L, "Writes Research result", new Object[0])}, null, null, aResearchTime, 30, -201);
+        GT_Recipe.GT_Recipe_Map.sAssemblylineVisualRecipes.addFakeRecipe(false,tInputs,new ItemStack[]{aOutput},new ItemStack[]{ItemList.Tool_DataStick.getWithName(1L, "Reads Research result", new Object[0])},aFluidInputs,null,aDuration,aEUt,0,tAlts,true);
+        GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes.add(new GT_Recipe_AssemblyLine( aResearchItem, aResearchTime, tInputs, aFluidInputs, aOutput, aDuration, aEUt, tAlts));
+        return true;
 	}
 
 	private boolean tryAddTecTechScannerRecipe(ItemStack aResearchItem,	Object[] aInputs, FluidStack[] aFluidInputs, ItemStack aOutput, int assDuration, int assEUt) {
@@ -1731,8 +1770,77 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 	}
 
 
+	@Override
+	public boolean addColdTrapRecipe(int aCircuit, ItemStack aInput, FluidStack aFluidInput, ItemStack[] aOutputs, int[] aChances, FluidStack aFluidOutput, int aTime, int aEU) {
+		GTPP_Recipe aRecipe = new GTPP_Recipe(
+				false,
+				new ItemStack[] {CI.getNumberedAdvancedCircuit(aCircuit), aInput},
+				aOutputs,
+				null,
+				aChances,
+				new FluidStack[] {aFluidInput},
+				new FluidStack[] {aFluidOutput},
+				aTime,
+				aEU,
+				0);		
+
+		int aSize = GTPP_Recipe_Map.sColdTrapRecipes.mRecipeList.size();
+		GTPP_Recipe_Map.sColdTrapRecipes.add(aRecipe);
+		return GTPP_Recipe_Map.sColdTrapRecipes.mRecipeList.size() > aSize;
+	}
 
 
+	@Override
+	public boolean addReactorProcessingUnitRecipe(ItemStack aInput1, ItemStack aInput2, FluidStack aFluidInput, ItemStack[] aOutputs, int[] aChances, FluidStack aFluidOutput, int aTime, int aEU) {
+		GTPP_Recipe aRecipe = new GTPP_Recipe(
+				false,
+				new ItemStack[] {aInput1, aInput2},
+				aOutputs,
+				null,
+				aChances,
+				new FluidStack[] {aFluidInput},
+				new FluidStack[] {aFluidOutput},
+				aTime,
+				aEU,
+				0);		
+
+		int aSize = GTPP_Recipe_Map.sReactorProcessingUnitRecipes.mRecipeList.size();
+		GTPP_Recipe_Map.sReactorProcessingUnitRecipes.add(aRecipe);
+		return GTPP_Recipe_Map.sReactorProcessingUnitRecipes.mRecipeList.size() > aSize;
+	}
+
+
+    @Override
+    public boolean addFluidHeaterRecipe(ItemStack aInput, FluidStack aFluidInput, FluidStack aOutput, int aDuration, int aEUt) {
+        if ((aInput == null && aFluidInput == null) || (aOutput == null)) {
+            return false;
+        }
+        GT_Recipe.GT_Recipe_Map.sFluidHeaterRecipes.addRecipe(true, new ItemStack[]{aInput}, null, null, new FluidStack[]{aFluidInput}, new FluidStack[]{aOutput}, aDuration, aEUt, 0);
+        return true;
+    }
+
+
+    @Override
+    public boolean addVacuumFreezerRecipe(ItemStack aInput, ItemStack aOutput, int aDuration, int aEUt) {
+        if ((aInput == null) || (aOutput == null)) {
+            return false;
+        }        
+        GTPP_Recipe aRecipe = new GTPP_Recipe(
+				false,
+				new ItemStack[] {aInput},
+				new ItemStack[] {aOutput},
+				null,
+				new int[] {10000},
+				new FluidStack[] {},
+				new FluidStack[] {},
+				aDuration,
+				aEUt,
+				0);		
+
+		int aSize = GT_Recipe_Map.sVacuumRecipes.mRecipeList.size();
+		GT_Recipe_Map.sVacuumRecipes.add(aRecipe);
+		return GT_Recipe_Map.sVacuumRecipes.mRecipeList.size() > aSize;
+    }
 
 
 

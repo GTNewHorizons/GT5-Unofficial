@@ -532,14 +532,12 @@ public class Machine_SuperJukebox extends BlockJukebox
 			}			
 			return this.getInventory().isItemValidForSlot(slot, itemstack);
 		}
+		
+		private final static int[] SIDED_SLOTS = new int[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17};
 
 		@Override
 		public int[] getAccessibleSlotsFromSide(final int p_94128_1_) {
-			final int[] accessibleSides = new int[this.getSizeInventory()];
-			for (int r = 0; r < this.getInventory().getSizeInventory(); r++) {
-				accessibleSides[r] = r;
-			}
-			return accessibleSides;
+			return SIDED_SLOTS;
 
 		}
 

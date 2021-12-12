@@ -396,9 +396,15 @@ public enum GregtechItemList implements GregtechItemContainer {
 	
 	// Flotation Cell
 	Controller_Flotation_Cell,
+	Casing_Flotation_Cell,
+	
+	// Sparge Tower
+	Controller_Sparge_Tower,
+	Casing_Sparge_Tower_Exterior,
+	Casing_Sparge_Tower_Interior,
 	
 	// Elemental Duplicator
-	/*Controller_ElementalDuplicator,*/
+	Controller_ElementalDuplicator,
 	Casing_ElementalDuplicator,
 	
 	// Big Steam Macerator
@@ -452,7 +458,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Hatch_Output_Bus_Steam,	
 
 	//Elemental Duplicator Data Orb Bus
-	/*Hatch_Input_Elemental_Duplicator,*/
+	Hatch_Input_Elemental_Duplicator,
 	
 	//RTG Hatch 
 	Hatch_RTG_LV,
@@ -585,9 +591,13 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Machine_ZPM_Component_Maker,
 	Machine_UV_Component_Maker,
 	
-	// Fluid Reactor
-	FluidReactor_LV, FluidReactor_HV,
-	FluidReactor_IV, FluidReactor_ZPM,
+	// Reactor Processing Unit
+	ReactorProcessingUnit_IV, 
+	ReactorProcessingUnit_ZPM,
+	
+	// Cold Trap
+	ColdTrap_IV, 
+	ColdTrap_ZPM,
 	
 	//Breakers
 	BreakerBox_ULV, BreakerBox_LV, BreakerBox_MV,

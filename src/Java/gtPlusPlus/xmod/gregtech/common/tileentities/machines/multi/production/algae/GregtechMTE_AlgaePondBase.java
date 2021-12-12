@@ -28,6 +28,7 @@ import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.chemistry.AgriculturalChem;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
@@ -85,7 +86,7 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase {
 				.addInputBus("Any Casing", 1)
 				.addOutputBus("Any Casing", 1)
 				.addInputHatch("Any Casing", 1)
-				.toolTipFinisher("GT++");
+				.toolTipFinisher(CORE.GT_Tooltip_Builder);
 		return tt;
 	}
 
@@ -154,14 +155,11 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase {
 		} else {
 			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
 			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus){
-				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
-				return this.mInputBusses.add((GT_MetaTileEntity_Hatch_InputBus)aMetaTileEntity);
+				return addToMachineList(aTileEntity, aBaseCasingIndex);
 			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus) {
-				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-				return this.mOutputBusses.add((GT_MetaTileEntity_Hatch_OutputBus) aMetaTileEntity);
+				return addToMachineList(aTileEntity, aBaseCasingIndex);
 			}else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-				return this.mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
+				return addToMachineList(aTileEntity, aBaseCasingIndex);
 			}
 		}
 		return false;

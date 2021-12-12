@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -105,6 +107,20 @@ public class CommandEnableDebugWhileRunning implements ICommand
 						PlayerUtils.messagePlayer(P, ItemUtils.getItemName(mSemiFluidgen));
 					}			
 				}*/
+
+		else if (argString[0].toLowerCase().equals("inv")) {
+			final EntityPlayer P = CommandUtils.getPlayer(S);	
+			if (P != null && !P.worldObj.isRemote) {
+				ItemStack[] aInv = P.inventory.mainInventory;
+				for (ItemStack aItem : aInv) {
+					if (aItem != null) {
+						String aModID = GameRegistry.findUniqueIdentifierFor(aItem.getItem()).modId;
+						String aRegistryName = GameRegistry.findUniqueIdentifierFor(aItem.getItem()).name;
+						Logger.INFO(aModID+":"+aRegistryName);
+					}
+				}
+			}
+		}
 		else if (argString[0].toLowerCase().equals("hand")) {
 			final EntityPlayer P = CommandUtils.getPlayer(S);	
 			if (P != null) {
@@ -133,15 +149,21 @@ public class CommandEnableDebugWhileRunning implements ICommand
 						}
 					}
 					
-					String aFluidContainerData = "";
+					AutoMap<String> aFluidContainerData = new AutoMap<String>();
 					FluidStack aHeldItemFluid = FluidContainerRegistry.getFluidForFilledItem(aHeldItem);
 					if (aHeldItemFluid != null) {
-						aFluidContainerData = "["+aHeldItemFluid.getUnlocalizedName()+"]["+aHeldItemFluid.getLocalizedName()+"]";
+						aFluidContainerData.put("FluidStack Unlocal Name: "+aHeldItemFluid.getUnlocalizedName());
+						aFluidContainerData.put("FluidStack Local Name: "+aHeldItemFluid.getLocalizedName());
+						aFluidContainerData.put("Fluid Unlocal Name: "+aHeldItemFluid.getFluid().getUnlocalizedName());
+						aFluidContainerData.put("Fluid Local Name: "+aHeldItemFluid.getFluid().getLocalizedName());
+						aFluidContainerData.put("Fluid Name: "+aHeldItemFluid.getFluid().getName());
 					}
 
 					PlayerUtils.messagePlayer(P, "["+aItemUnlocalName+"]"+"["+aItemDisplayName+"] ");
-					if (aFluidContainerData.length() > 0) {
-						PlayerUtils.messagePlayer(P, ""+aFluidContainerData);				
+					if (aFluidContainerData.size() > 0) {
+						for (String s : aFluidContainerData) {
+							PlayerUtils.messagePlayer(P, ""+s);							
+						}				
 					}
 					if (!aOreDictNames.isEmpty()) {
 						PlayerUtils.messagePlayer(P, ""+aOreDictData);

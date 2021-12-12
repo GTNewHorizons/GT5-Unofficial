@@ -272,7 +272,7 @@ public class RECIPE_IC2 {
 						ItemUtils.getSimpleStack(aCoilIC2, 8),
 						ItemUtils.getSimpleStack(aGearSmallAluminium, 4),
 				}, 
-				aRubber.getFluid(144 * 4), 
+				aRubber.getFluidStack(144 * 4), 
 				GregtechItemList.Armour_Hazmat_Advanced_Helmet.get(1), 
 				30 * 20, 
 				MaterialUtils.getVoltageForTier(2));
@@ -287,7 +287,7 @@ public class RECIPE_IC2 {
 						ItemUtils.getSimpleStack(aPlateCobalt, 16),
 						ItemUtils.getSimpleStack(aGearSiliconCarbide, 8),
 				}, 
-				aRubber.getFluid(144 * 10), 
+				aRubber.getFluidStack(144 * 10), 
 				GregtechItemList.Armour_Hazmat_Advanced_Chest.get(1), 
 				90 * 20, 
 				MaterialUtils.getVoltageForTier(2));
@@ -302,7 +302,7 @@ public class RECIPE_IC2 {
 						ItemUtils.getSimpleStack(aPlateCobalt, 8),
 						ItemUtils.getSimpleStack(aGearSiliconCarbide, 4),
 				}, 
-				aRubber.getFluid(144 * 8), 
+				aRubber.getFluidStack(144 * 8), 
 				GregtechItemList.Armour_Hazmat_Advanced_Legs.get(1), 
 				75 * 20, 
 				MaterialUtils.getVoltageForTier(2));
@@ -317,7 +317,7 @@ public class RECIPE_IC2 {
 						ItemUtils.getSimpleStack(aGearSmallSteel, 8),
 						ItemUtils.getSimpleStack(aGearPotin, 4),
 				}, 
-				aRubber.getFluid(144 * 6), 
+				aRubber.getFluidStack(144 * 6), 
 				GregtechItemList.Armour_Hazmat_Advanced_Boots.get(1), 
 				45 * 20, 
 				MaterialUtils.getVoltageForTier(2));

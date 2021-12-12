@@ -2,6 +2,9 @@ package gtPlusPlus.core.material;
 
 import java.util.Set;
 
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
@@ -29,7 +32,10 @@ import gtPlusPlus.core.item.base.rods.BaseItemRod;
 import gtPlusPlus.core.item.base.rods.BaseItemRodLong;
 import gtPlusPlus.core.item.base.rotors.BaseItemRotor;
 import gtPlusPlus.core.item.base.screws.BaseItemScrew;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.material.nuclear.FLUORIDES;
 import gtPlusPlus.core.material.state.MaterialState;
+import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -41,7 +47,9 @@ import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_Extruder;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_FluidCanning;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_Fluids;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_MaterialProcessing;
+import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_MetalRecipe;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_Ore;
+import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_Plasma;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_Plates;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_Recycling;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_ShapedCrafting;
@@ -188,6 +196,10 @@ public class MaterialGenerator {
 				temp = new BaseItemDust(matInfo);
 				FluidUtils.generateGas(unlocalizedName,	materialName, matInfo.getMeltingPointK(), C, true);
 			}
+			else if (matInfo.getState() == MaterialState.PURE_GAS){
+				FluidUtils.generateGas(unlocalizedName,	materialName, matInfo.getMeltingPointK(), C, true);
+				return true;
+			}
 			else if (matInfo.getState() == MaterialState.PURE_LIQUID){
 				FluidUtils.generateFluidNoPrefix(unlocalizedName,	materialName, matInfo.getMeltingPointK(), C);
 				return true;
@@ -202,6 +214,7 @@ public class MaterialGenerator {
 			if (generateBlastSmelterRecipes){
 				new RecipeGen_BlastSmelter(matInfo);
 			}
+			new RecipeGen_MetalRecipe(matInfo);
 			new RecipeGen_Extruder(matInfo);
 			new RecipeGen_Fluids(matInfo);
 			new RecipeGen_Plates(matInfo);
@@ -210,6 +223,8 @@ public class MaterialGenerator {
 			
 			new RecipeGen_DustGeneration(matInfo);
 			new RecipeGen_Recycling(matInfo);
+			new RecipeGen_Plasma(matInfo);
+			
 			return true;
 
 		} catch (final Throwable t)
@@ -258,13 +273,50 @@ public class MaterialGenerator {
 		generateNuclearMaterial(matInfo, true);
 	}
 
+
+	public static void generateNuclearDusts(final Material matInfo){
+		generateNuclearDusts(matInfo, true);
+	}
+
+	public static void generateNuclearDusts(final Material matInfo, boolean generateDehydratorRecipe){
+		generateNuclearMaterial(matInfo, false, true, false, false, true);
+		if (generateDehydratorRecipe && matInfo.getFluid() != null && matInfo.getDust(0) != null) {
+			CORE.RA.addDehydratorRecipe(
+					new ItemStack[] {
+							CI.getNumberedAdvancedCircuit(20)
+					}, 
+					matInfo.getFluidStack(144), 
+					null, 
+					new ItemStack[] { 
+							matInfo.getDust(1),
+					}, 
+					new int[] { 10000 }, 
+					10*(matInfo.vVoltageMultiplier/5), // Time in ticks
+					matInfo.vVoltageMultiplier); // EU
+		}
+		else {
+			Logger.INFO("Nuclear Dehydrator: Did not generate recipe for "+matInfo.getLocalizedName()+" | Null Fluid? "+(matInfo.getFluid() == null)+" | Null Dust? "+(matInfo.getDust(0) == null));
+		}
+	}
+	
 	public static void generateNuclearMaterial(final Material matInfo, final boolean generatePlates){
+		generateNuclearMaterial(matInfo, true, true, true, generatePlates, true);
+	}
+
+	public static void generateNuclearMaterial(final Material matInfo, final boolean generateBlock, 
+			final boolean generateDusts, final boolean generateIngot, final boolean generatePlates, final boolean disableOptionalRecipes){
 		try {
 			
-			tempBlock = new BlockBaseModular(matInfo,BlockTypes.STANDARD);
-			temp = new BaseItemDust(matInfo);
-			temp = new BaseItemIngot(matInfo);
-			temp = new BaseItemNugget(matInfo);
+			if (generateBlock) {
+				tempBlock = new BlockBaseModular(matInfo,BlockTypes.STANDARD);
+			}
+			if (generateDusts) {
+				temp = new BaseItemDust(matInfo);
+			}
+			if (generateIngot) {
+				temp = new BaseItemIngot(matInfo);
+				temp = new BaseItemNugget(matInfo);
+			}
 
 			if (generatePlates) {
 				temp = new BaseItemPlate(matInfo);
@@ -274,11 +326,16 @@ public class MaterialGenerator {
 				new RecipeGen_Assembler(matInfo);
 			}
 
-			new RecipeGen_ShapedCrafting(matInfo);
-			new RecipeGen_Fluids(matInfo);
-			new RecipeGen_MaterialProcessing(matInfo);
-			new RecipeGen_DustGeneration(matInfo, true);
-			new RecipeGen_Recycling(matInfo);	
+			if (!disableOptionalRecipes) {
+				new RecipeGen_ShapedCrafting(matInfo);
+				new RecipeGen_Fluids(matInfo);
+				new RecipeGen_MaterialProcessing(matInfo);
+				new RecipeGen_Recycling(matInfo);	
+			}
+
+			new RecipeGen_MetalRecipe(matInfo);
+			new RecipeGen_DustGeneration(matInfo, disableOptionalRecipes);			
+			new RecipeGen_Plasma(matInfo);
 			
 		} catch (final Throwable t){
 			Logger.MATERIALS(""+matInfo.getLocalizedName()+" failed to generate.");

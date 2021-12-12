@@ -703,6 +703,44 @@ public class ItemUtils {
 		}
 		return sRadiation;
 	}
+	
+	public static String getArrayStackNames(ArrayList<?> aStack) {
+		Object aType = aStack.get(0);
+		if (aType instanceof FluidStack) {
+			FluidStack[] aItems = new FluidStack[aStack.size()];
+			for (int i=0;i<aItems.length;i++) {
+				aItems[i] = (FluidStack) aStack.get(i);
+			}
+			return getArrayStackNames(aItems);
+		}			
+		if (aType instanceof ItemStack) {
+			ItemStack[] aItems = new ItemStack[aStack.size()];
+			for (int i=0;i<aItems.length;i++) {
+				aItems[i] = (ItemStack) aStack.get(i);
+			}
+			return getArrayStackNames(aItems);
+		}
+		return "";	
+	}
+
+	public static String getArrayStackNames(final AutoMap<?> aStack) {
+		Object aType = aStack.get(0);
+		if (aType instanceof FluidStack) {
+			FluidStack[] aItems = new FluidStack[aStack.size()];
+			for (int i=0;i<aItems.length;i++) {
+				aItems[i] = (FluidStack) aStack.get(i);
+			}
+			return getArrayStackNames(aItems);
+		}			
+		if (aType instanceof ItemStack) {
+			ItemStack[] aItems = new ItemStack[aStack.size()];
+			for (int i=0;i<aItems.length;i++) {
+				aItems[i] = (ItemStack) aStack.get(i);
+			}
+			return getArrayStackNames(aItems);
+		}
+		return "";		
+	}
 
 	public static String getArrayStackNames(final FluidStack[] aStack) {
 		String itemNames = "Fluid Array: ";
@@ -717,7 +755,7 @@ public class ItemUtils {
 		}
 		return itemNames;
 	}
-
+	
 	public static String getArrayStackNames(final ItemStack[] aStack) {
 		String itemNames = "";
 		int aPos = 0;
@@ -913,10 +951,11 @@ public class ItemUtils {
 	}
 
 	public static ItemStack getErrorStack(int mAmount, String aName) {	
-		ItemStack g = getSimpleStack(ModItems.AAA_Broken, 1);
-		NBTUtils.setString(g, "Lore", EnumChatFormatting.RED+aName);		
+		ItemStack g = getSimpleStack(ModItems.AAA_Broken, 1);		
 		if (aName != null) {
-			NBTUtils.setBookTitle(g, EnumChatFormatting.YELLOW+"Maybe Alkalus should know about this");
+			//NBTUtils.setString(g, "Lore", EnumChatFormatting.RED+aName);
+			NBTUtils.setBookTitle(g, EnumChatFormatting.RED+aName);
+			//NBTUtils.setBookTitle(g, EnumChatFormatting.YELLOW+"Maybe Alkalus should know about this");
 		}		
 		return g;
 	}
@@ -1375,6 +1414,6 @@ public class ItemUtils {
 	
 	public static boolean areItemsEqual(ItemStack aStack1, ItemStack aStack2, boolean aIgnoreNBT) {
 		return GT_Utility.areStacksEqual(aStack1, aStack2, aIgnoreNBT);
-	}
+	}	
 
 }

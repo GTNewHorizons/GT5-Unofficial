@@ -8,6 +8,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.extensions.ArrayExt;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import net.minecraft.entity.player.EntityPlayer;
@@ -125,6 +126,7 @@ public class GT_MetaTileEntity_SuperBus_Input extends GT_MetaTileEntity_Hatch_In
 				"Item Input for Multiblocks",
 				"This bus has no GUI, but can have items extracted",
 				""+getSlots(this.mTier)+" Slots",
+				CORE.GT_Tooltip
 		};
 		return aDesc;
 	}

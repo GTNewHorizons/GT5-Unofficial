@@ -144,6 +144,29 @@ public class RocketFuels extends ItemPackage {
 				MaterialUtils.getVoltageForTier(2), 
 				1);
 
+		FluidStack aBartWorksHydrogenPeroxide = FluidUtils.getWildcardFluidStack("Hydrogen Peroxide", 2000);
+		if (aBartWorksHydrogenPeroxide != null) {
+			Logger.INFO("Found BW Hydrogen Peroxide, adding compat recipe.");
+			CORE.RA.addChemicalPlantRecipe(
+					new ItemStack[] {
+							CI.getNumberedCircuit(22)
+					}, 
+					new FluidStack[] {
+							aBartWorksHydrogenPeroxide,
+							FluidUtils.getFluidStack("ammonia", 2000),
+					}, 
+					new ItemStack[] {
+
+					}, 
+					new FluidStack[] {
+							FluidUtils.getFluidStack(Hydrazine, 4000),
+
+					},
+					20 * 30, 
+					MaterialUtils.getVoltageForTier(2), 
+					1);
+		}		
+
 	}
 
 
@@ -177,7 +200,7 @@ public class RocketFuels extends ItemPackage {
 	}
 
 	private static void createLOH() {		
-		GT_Values.RA.addVacuumFreezerRecipe(ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogen", 1), ItemUtils.getItemStackOfAmountFromOreDict("cellLiquidhydrogen", 1), 20*16);
+		GT_Values.RA.addVacuumFreezerRecipe(ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogen", 1), ItemUtils.getItemStackOfAmountFromOreDict("cellLiquidHydrogen", 1), 20*16);
 		CORE.RA.addAdvancedFreezerRecipe(new ItemStack[] {}, new FluidStack[] {FluidUtils.getFluidStack("hydrogen", 300)}, new FluidStack[] {FluidUtils.getFluidStack(Liquid_Hydrogen, 300)}, new ItemStack[] {}, new int[] {}, 20*4, 540, 0);
 	}
 
@@ -209,7 +232,9 @@ public class RocketFuels extends ItemPackage {
 				new ItemStack[] {CI.getNumberedCircuit(8)}, 
 				FluidUtils.getFluidStack(Hydrated_Ammonium_Nitrate_Slurry, 8*144), 
 				FluidUtils.getWater(2000), 
-				new ItemStack[] {ItemUtils.getSimpleStack(Ammonium_Nitrate_Dust, 8)}, 
+				new ItemStack[] {
+						ItemUtils.getSimpleStack(Ammonium_Nitrate_Dust, 8)
+				}, 
 				new int[] {10000}, 
 				90 * 20,
 				480);
@@ -292,7 +317,7 @@ public class RocketFuels extends ItemPackage {
 				new FluidStack[] {},
 				0,
 				0,
-				256)); //Fuel Value
+				512)); //Fuel Value
 
 		mRocketFuels.put(1, new GTPP_Recipe(
 				true,
@@ -304,7 +329,7 @@ public class RocketFuels extends ItemPackage {
 				new FluidStack[] {},
 				0,
 				0,
-				512)); //Fuel Value
+				1024)); //Fuel Value
 
 		mRocketFuels.put(2, new GTPP_Recipe(
 				true,
@@ -316,7 +341,7 @@ public class RocketFuels extends ItemPackage {
 				new FluidStack[] {},
 				0,
 				0,
-				768)); //Fuel Value
+				2048)); //Fuel Value
 
 		mRocketFuels.put(3, new GTPP_Recipe(
 				true,
@@ -328,7 +353,7 @@ public class RocketFuels extends ItemPackage {
 				new FluidStack[] {},
 				0,
 				0,
-				1024)); //Fuel Value
+				4196)); //Fuel Value
 
 
 		//Add in default Diesel for the Buggy

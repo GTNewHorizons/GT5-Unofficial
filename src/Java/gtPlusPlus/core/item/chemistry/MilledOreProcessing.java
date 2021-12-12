@@ -42,6 +42,7 @@ public class MilledOreProcessing extends ItemPackage {
 	public static Fluid GrossularFlotationFroth;
 	public static Fluid AlmandineFlotationFroth;
 	public static Fluid PyropeFlotationFroth;
+	public static Fluid MonaziteFlotationFroth;
 
 	public static Fluid PineOil;
 
@@ -81,7 +82,10 @@ public class MilledOreProcessing extends ItemPackage {
 	public static Item milledAlmandine;
 
 	// Magnesium, Manganese, Borax, Rhenium
-	public static Item milledPyrope;
+	public static Item milledPyrope;	
+
+	// Erbium, Lanthanum, Praseodymium, Europium
+	public static Item milledMonazite;
 
 
 	@Override
@@ -98,6 +102,7 @@ public class MilledOreProcessing extends ItemPackage {
 		milledGrossular = BaseItemMilledOre.generate(Materials.Grossular, MaterialUtils.getVoltageForTier(6));
 		milledAlmandine = BaseItemMilledOre.generate(Materials.Almandine, MaterialUtils.getVoltageForTier(6));
 		milledPyrope = BaseItemMilledOre.generate(Materials.Pyrope, MaterialUtils.getVoltageForTier(4));
+		milledMonazite = BaseItemMilledOre.generate(Materials.Monazite, MaterialUtils.getVoltageForTier(7));
 
 	}
 
@@ -130,6 +135,8 @@ public class MilledOreProcessing extends ItemPackage {
 		AlmandineFlotationFroth = FluidUtils.generateFluidNoPrefix("froth.almandineflotation", "Almandine Froth", 32 + 175, new short[] { aAlmandineFrothRGB[0], aAlmandineFrothRGB[1], aAlmandineFrothRGB[2], 100 }, true);
 		short[] aPyropeFrothRGB = Materials.Pyrope.mRGBa;
 		PyropeFlotationFroth = FluidUtils.generateFluidNoPrefix("froth.pyropeflotation", "Pyrope Froth", 32 + 175, new short[] { aPyropeFrothRGB[0], aPyropeFrothRGB[1], aPyropeFrothRGB[2], 100 }, true);
+		short[] aMonaziteFrothRGB = Materials.Monazite.mRGBa;
+		MonaziteFlotationFroth = FluidUtils.generateFluidNoPrefix("froth.Monaziteflotation", "Monazite Froth", 32 + 175, new short[] { aMonaziteFrothRGB[0], aMonaziteFrothRGB[1], aMonaziteFrothRGB[2], 100 }, true);
 
 
 		PineOil = FluidUtils.generateFluidNoPrefix("pineoil", "Pine Oil", 32 + 175, new short[] { 250, 200, 60, 100 }, true);
@@ -232,6 +239,14 @@ public class MilledOreProcessing extends ItemPackage {
 				ELEMENT.getInstance().MANGANESE, 70,
 				MaterialUtils.generateMaterialFromGtENUM(Materials.Borax), 60,
 				ELEMENT.getInstance().RHENIUM, 20
+				);
+		//milledMonazite TODO
+		registerOreDataForMilledType(
+				MonaziteFlotationFroth, 
+				ELEMENT.getInstance().ERBIUM, 96, 
+				ELEMENT.getInstance().LANTHANUM, 96,
+				ELEMENT.getInstance().PRASEODYMIUM, 96,
+				ELEMENT.getInstance().EUROPIUM, 32
 				);
 
 
@@ -409,6 +424,21 @@ public class MilledOreProcessing extends ItemPackage {
 				20 * 120, 
 				MaterialUtils.getVoltageForTier(4), 
 				3500);
+		CORE.RA.addVacuumFurnaceRecipe(
+				new ItemStack[] {
+					CI.getNumberedCircuit(aCircuitID++)
+				},
+				new FluidStack[] {
+					FluidUtils.getFluidStack(MonaziteFlotationFroth, 4000)
+				},
+				getOutputsFromMap(MonaziteFlotationFroth),
+				new FluidStack[] {
+					FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000),
+					FluidUtils.getWater(2000)
+				}, 
+				20 * 120, 
+				MaterialUtils.getVoltageForTier(7), 
+				7500);
 		
 	}
 
@@ -557,6 +587,20 @@ public class MilledOreProcessing extends ItemPackage {
 				},
 				20 * 1200, 
 				MaterialUtils.getVoltageForTier(4)
+				);
+
+		// Monazite
+		CORE.RA.addFlotationRecipe(				
+				Materials.Monazite, 
+				ItemUtils.getSimpleStack(GenericChem.mPotassiumEthylXanthate, 1),
+				new FluidStack[] {
+						FluidUtils.getFluidStack(PineOil, 30000),
+				}, 
+				new FluidStack[] {
+						FluidUtils.getFluidStack(MonaziteFlotationFroth, 1000)						
+				},
+				20 * 1200, 
+				MaterialUtils.getVoltageForTier(6)
 				);
 
 	}

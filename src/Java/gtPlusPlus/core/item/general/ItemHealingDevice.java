@@ -144,7 +144,7 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
 		list.add(EnumChatFormatting.GOLD + aEuInfo + EnumChatFormatting.GRAY);
 		list.add(EnumChatFormatting.GRAY + aTier+": [" + EnumChatFormatting.YELLOW + this.getTier(stack)
 		+ EnumChatFormatting.GRAY + "] "+aInputLimit+": [" + EnumChatFormatting.YELLOW
-		+ this.getTransferLimit(stack) + EnumChatFormatting.GRAY + aEUT);
+		+ this.getTransferLimit(stack) + EnumChatFormatting.GRAY + aEUT+"]");
 		list.add(EnumChatFormatting.GRAY + aCurrentPower +": [" + EnumChatFormatting.YELLOW + (long) this.getCharge(stack)
 		+ EnumChatFormatting.GRAY + aEU +"] [" + EnumChatFormatting.YELLOW
 		+ MathUtils.findPercentage(this.getCharge(stack), this.getMaxCharge(stack)) + EnumChatFormatting.GRAY

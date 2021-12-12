@@ -180,8 +180,8 @@ public class TinkersUtils {
 	
 	
 	public static boolean addBaseMeltingRecipes(Material aMaterial) {		
-		return addMelting(aMaterial.getBlock(1), aMaterial.getBlock(), 0, aMaterial.getMeltingPointC(), aMaterial.getFluid(144*9)) &&
-		addMelting(aMaterial.getIngot(1), aMaterial.getBlock(), 0, aMaterial.getMeltingPointC(), aMaterial.getFluid(144));
+		return addMelting(aMaterial.getBlock(1), aMaterial.getBlock(), 0, aMaterial.getMeltingPointC(), aMaterial.getFluidStack(144*9)) &&
+		addMelting(aMaterial.getIngot(1), aMaterial.getBlock(), 0, aMaterial.getMeltingPointC(), aMaterial.getFluidStack(144));
 	}
 	
 	public static boolean addMelting(ItemStack input, Block block, int metadata, int temperature, FluidStack liquid) {
@@ -221,7 +221,7 @@ public class TinkersUtils {
 	
 	
 	public static boolean addBaseBasinRecipes(Material aMaterial) {
-		return addBasinRecipe(aMaterial.getBlock(1), aMaterial.getFluid(144*9), (ItemStack) null, true, 100);
+		return addBasinRecipe(aMaterial.getBlock(1), aMaterial.getFluidStack(144*9), (ItemStack) null, true, 100);
 	}
 	
 	public static boolean addBasinRecipe(ItemStack output, FluidStack metal, ItemStack cast, boolean consume, int delay) {
@@ -245,7 +245,7 @@ public class TinkersUtils {
 	
 	public static boolean addBaseCastingRecipes(Material aMaterial) {
 		ItemStack ingotcast = getPattern(1);		
-		return addCastingTableRecipe(aMaterial.getIngot(1), aMaterial.getFluid(144), ingotcast, false, 50);
+		return addCastingTableRecipe(aMaterial.getIngot(1), aMaterial.getFluidStack(144), ingotcast, false, 50);
 	}
 	
 	public static boolean addCastingTableRecipe(ItemStack output, FluidStack metal, ItemStack cast, boolean consume, int delay) {		
@@ -482,7 +482,7 @@ public class TinkersUtils {
 					//CastingRecipe recipe = (CastingRecipe) i$.next();
 					ItemStack output = recipe.getResult().copy();
 					output.setItemDamage(aID);
-					FluidStack liquid2 = new FluidStack(aMaterial.getFluid(0).getFluid(), recipe.castingMetal.amount);
+					FluidStack liquid2 = new FluidStack(aMaterial.getFluidStack(0).getFluid(), recipe.castingMetal.amount);
 					addCastingTableRecipe(output, liquid2, recipe.cast, recipe.consumeCast, recipe.coolTime);
 					addMelting(ft, output, 0, liquid2.amount / 2);
 				}

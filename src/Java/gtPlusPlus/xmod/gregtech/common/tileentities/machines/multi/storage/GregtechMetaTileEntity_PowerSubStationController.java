@@ -1,18 +1,25 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.storage;
 
-import java.util.ArrayList;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.*;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
@@ -37,11 +44,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
-
-public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMeta_MultiBlockBase {
+public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_PowerSubStationController> {
 
 	protected long mAverageEuUsage = 0;
 	protected long mTotalEnergyAdded = 0;
@@ -55,10 +58,6 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 	private int mCasing;
 	private int[] cellCount = new int[6];
 	private IStructureDefinition<GregtechMetaTileEntity_PowerSubStationController> STRUCTURE_DEFINITION = null;
-
-	//TecTech Support
-	public ArrayList<GT_MetaTileEntity_Hatch> mAllEnergyHatches = new ArrayList<GT_MetaTileEntity_Hatch>();
-	public ArrayList<GT_MetaTileEntity_Hatch> mAllDynamoHatches = new ArrayList<GT_MetaTileEntity_Hatch>();
 
 	public GregtechMetaTileEntity_PowerSubStationController(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
@@ -89,7 +88,7 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 				.addCasingInfo("Sub-Station External Casings", 10)
 				.addDynamoHatch("Any Casing", 1)
 				.addEnergyHatch("Any Casing", 1)
-				.toolTipFinisher("GT++");
+				.toolTipFinisher(CORE.GT_Tooltip_Builder);
 		return tt;
 	}
 
@@ -345,18 +344,14 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 		} else {
 			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
 			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy) {
-				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
-				return this.mAllEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy)aMetaTileEntity);
+				return addToMachineList(aTileEntity, aBaseCasingIndex);
 			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Dynamo) {
-				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
-				return this.mAllDynamoHatches.add((GT_MetaTileEntity_Hatch_Dynamo)aMetaTileEntity);
+				return addToMachineList(aTileEntity, aBaseCasingIndex);
 			} if (LoadedMods.TecTech) {
 				if (isThisHatchMultiDynamo(aMetaTileEntity)) {
-					((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
-					return this.mAllDynamoHatches.add((GT_MetaTileEntity_Hatch) aMetaTileEntity);
+					return addToMachineList(aTileEntity, aBaseCasingIndex);
 				} else if (isThisHatchMultiEnergy(aMetaTileEntity)) {
-					((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
-					return this.mAllEnergyHatches.add((GT_MetaTileEntity_Hatch) aMetaTileEntity);
+					return addToMachineList(aTileEntity, aBaseCasingIndex);
 				}
 			}
 		}

@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base;
 
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -114,7 +115,8 @@ public class GT_MetaTileEntity_Hatch_CustomFluidBase extends GT_MetaTileEntity_H
 		String[] s2 = new String[]{
 				"Fluid Input for "+(isSteam ? "Steam " : "")+"Multiblocks",
 				"Capacity: " + getCapacity()+"L",
-				aFluidName
+				aFluidName,
+				CORE.GT_Tooltip
 		};		
 		return s2;
 	}

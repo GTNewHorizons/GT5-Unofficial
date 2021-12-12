@@ -14,7 +14,6 @@ import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -124,10 +123,10 @@ public class BaseOreComponent extends Item{
 	public final void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
 		if (this.materialName != null && !this.materialName.equals("")){
 			if (this.componentMaterial != null){
-				if (!this.componentMaterial.vChemicalFormula.contains("?") && this.componentMaterial.getState() != MaterialState.PURE_LIQUID) {
+				if (!this.componentMaterial.vChemicalFormula.contains("?")) {
 					list.add(Utils.sanitizeStringKeepBrackets(this.componentMaterial.vChemicalFormula));
 				}
-				else if (this.componentMaterial.vChemicalFormula.contains("?") && this.componentMaterial.getState() != MaterialState.PURE_LIQUID) {
+				else if (this.componentMaterial.vChemicalFormula.contains("?")) {
 					String temp = componentMaterial.vChemicalFormula;
 					temp = temp.replace(" ", "");
 					temp = temp.replace("-", "");
@@ -140,6 +139,12 @@ public class BaseOreComponent extends Item{
 				}
 				if (this.componentMaterial.isRadioactive){
 					list.add(CORE.GT_Tooltip_Radioactive+" | Level: "+this.componentMaterial.vRadiationLevel);
+				}
+			}
+			else {
+				String aChemicalFormula = Material.sChemicalFormula.get(materialName.toLowerCase());
+				if (aChemicalFormula != null && aChemicalFormula.length() > 0) {			
+					list.add(Utils.sanitizeStringKeepBrackets(aChemicalFormula));						
 				}
 			}
 		}

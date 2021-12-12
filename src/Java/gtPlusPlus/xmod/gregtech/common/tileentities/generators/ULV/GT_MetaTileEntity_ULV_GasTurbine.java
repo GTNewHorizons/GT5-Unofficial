@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.generators.ULV;
 
+import static gregtech.api.enums.GT_Values.V;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.interfaces.IIconContainer;
@@ -8,7 +10,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.common.tileentities.generators.GT_MetaTileEntity_GasTurbine;
-
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class GT_MetaTileEntity_ULV_GasTurbine extends GT_MetaTileEntity_GasTurbine {
@@ -19,6 +21,20 @@ public class GT_MetaTileEntity_ULV_GasTurbine extends GT_MetaTileEntity_GasTurbi
     public GT_MetaTileEntity_ULV_GasTurbine(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
+	
+	@Override
+	public String[] getDescription() {
+		return new String[]{
+				this.mDescription,
+				"Produces "+(this.getPollution()*20)+" pollution/sec", 
+				"Fuel Efficiency: "+this.getEfficiency() + "%",
+                CORE.GT_Tooltip};
+	}
+
+    @Override
+	public long maxEUStore() {
+        return Math.max(getEUVar(), V[1] * 80L + getMinimumStoredEU());
+	}
 
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_ULV_GasTurbine(this.mName, this.mTier, this.mDescription, this.mTextures);

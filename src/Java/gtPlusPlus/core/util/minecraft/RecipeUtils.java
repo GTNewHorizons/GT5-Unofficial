@@ -1,15 +1,18 @@
 package gtPlusPlus.core.util.minecraft;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.FMLCommonHandler;
 import gregtech.api.enums.Materials;
 import gregtech.api.objects.ItemData;
-import gregtech.api.util.*;
+import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
@@ -21,7 +24,6 @@ import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.data.ArrayUtils;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -348,16 +350,7 @@ public static int mInvalidID = 1;
 		
 
 		if (gtPlusPlus.GTplusplus.CURRENT_LOAD_PHASE != GTplusplus.INIT_PHASE.POST_INIT) {
-			Logger.RECIPE(ReflectionUtils.getMethodName(1));
-			Logger.RECIPE(ReflectionUtils.getMethodName(2));
-			Logger.RECIPE(ReflectionUtils.getMethodName(3));
-			Logger.RECIPE(ReflectionUtils.getMethodName(4));
-			Logger.RECIPE(ReflectionUtils.getMethodName(5));
-			Logger.RECIPE(ReflectionUtils.getMethodName(6));
-			Logger.RECIPE(ReflectionUtils.getMethodName(7));
-			Logger.RECIPE(ReflectionUtils.getMethodName(8));
-			Logger.RECIPE(ReflectionUtils.getMethodName(9));
-			FMLCommonHandler.instance().exitJava(1, true);
+			CORE.crash("Load Phase "+gtPlusPlus.GTplusplus.CURRENT_LOAD_PHASE+" should be "+GTplusplus.INIT_PHASE.POST_INIT+". Unable to register recipe.");
 		}
 		
 
@@ -417,6 +410,20 @@ public static int mInvalidID = 1;
 			return true;
 		}
 		return false;		
+	}
+	
+	public static boolean addShapelessGregtechRecipe(
+			final Object InputItem1, final Object InputItem2, final Object InputItem3,
+			final Object InputItem4, final Object InputItem5, final Object InputItem6,
+			final Object InputItem7, final Object InputItem8, final Object InputItem9,
+			final ItemStack OutputItem){		
+
+		Object[] inputItems = {
+				InputItem1, InputItem2, InputItem3,
+				InputItem4, InputItem5, InputItem6,
+				InputItem7, InputItem8, InputItem9
+		};
+		return addShapelessGregtechRecipe(inputItems, OutputItem);
 	}
 
 	public static boolean addShapelessGregtechRecipe(final Object[] inputItems, final ItemStack OutputItem){
@@ -492,10 +499,7 @@ public static int mInvalidID = 1;
 		result.put("Is Enabled? "+m.mEnabled);
 		result.put("Special Value: "+m.mSpecialValue);
 		result.put("=====================================");		
-		String s[] = new String[result.size()];
-		for (int i=0;i<result.size();i++) {
-			s[i] = result.get(i);
-		}		
+		String s[] = result.toArray();	
 		return s;
 	}
 
@@ -729,7 +733,7 @@ public static int mInvalidID = 1;
 		Logger.INFO("Data Size: "+aDataObject.length);
 		aDataObject = ArrayUtils.removeNulls(aDataObject);
 		Logger.INFO("Clean Size: "+aDataObject.length);
-		Logger.INFO("ArrayData: "+aDataObject.toString());
+		Logger.INFO("ArrayData: "+Arrays.toString(aDataObject));
 		
 		ShapedOreRecipe aRecipe = new ShapedOreRecipe(aOutputStack, aDataObject);
 		

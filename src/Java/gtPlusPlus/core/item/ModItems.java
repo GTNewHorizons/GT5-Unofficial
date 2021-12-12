@@ -5,6 +5,7 @@ import static gtPlusPlus.core.lib.CORE.LOAD_ALL_CONTENT;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
@@ -13,6 +14,7 @@ import gtPlusPlus.core.common.compat.COMPAT_Baubles;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.*;
 import gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes;
+import gtPlusPlus.core.item.base.dusts.BaseItemDust;
 import gtPlusPlus.core.item.base.foil.BaseItemFoil;
 import gtPlusPlus.core.item.base.foods.BaseItemFood;
 import gtPlusPlus.core.item.base.foods.BaseItemHotFood;
@@ -231,7 +233,17 @@ public final class ModItems {
 	public static Item dustFertUN18;
 	public static Item dustFertUN32;
 
-	public static Fluid fluidFLiBeSalt;
+	//public static Fluid fluidFLiBeSalt;
+	//public static Fluid fluidFLiBeSaltBurnt;
+
+	public static Fluid fluidLftrCore1;
+	public static Fluid fluidLftrCore2;
+	public static Fluid fluidLftrCore3;
+	public static Fluid fluidLftrCore4;
+	public static Fluid fluidLftrBlanket1;
+	public static Fluid fluidLftrBlanket2;
+	public static Fluid fluidLftrBlanket3;
+	public static Fluid fluidNuclearWaste;
 
 
 	//Possibly missing base items that GT may be missing.
@@ -245,6 +257,7 @@ public final class ModItems {
 	public static Item itemDoublePlateClay;
 	public static Item itemDoublePlateEuropium;
 	public static Item itemFoilUranium235;
+	public static Item itemDustIndium;
 	public static BlockBaseModular blockRawMeat;
 	
 	public static Item itemBoilerChassis;
@@ -283,6 +296,7 @@ public final class ModItems {
 	public static Item dustNeptunium238;
 	public static Item dustDecayedRadium226;
 	public static Item dustRadium226;
+	public static Item dustProtactinium233;
 	
 	public static ItemGiantEgg itemBigEgg;
 
@@ -458,6 +472,8 @@ public final class ModItems {
 			MaterialGenerator.generate(ELEMENT.getInstance().IODINE); //LFTR byproduct
 			MaterialGenerator.generate(ELEMENT.getInstance().HAFNIUM);
 			MaterialGenerator.generate(ELEMENT.getInstance().DYSPROSIUM);
+			MaterialGenerator.generate(ELEMENT.getInstance().ERBIUM);
+			MaterialGenerator.generate(ELEMENT.getInstance().PRASEODYMIUM);
 			MaterialGenerator.generate(ELEMENT.getInstance().TELLURIUM); //LFTR byproduct
 			MaterialGenerator.generate(ELEMENT.getInstance().RHODIUM);
 			MaterialGenerator.generate(ELEMENT.getInstance().RHENIUM);
@@ -536,30 +552,31 @@ public final class ModItems {
 			MaterialGenerator.generate(ALLOY.TUNGSTEN_TITANIUM_CARBIDE);
 
 			//LFTR Fuel components
-			MaterialGenerator.generate(MISC_MATERIALS.HYDROXIDE); //LFTR fuel component
-			MaterialGenerator.generate(MISC_MATERIALS.AMMONIA); //LFTR fuel component
-			MaterialGenerator.generate(MISC_MATERIALS.AMMONIUM); //LFTR fuel component
-			MaterialGenerator.generate(FLUORIDES.AMMONIUM_BIFLUORIDE); //LFTR fuel component
-			MaterialGenerator.generate(FLUORIDES.BERYLLIUM_HYDROXIDE); //LFTR fuel component
-			MaterialGenerator.generate(FLUORIDES.AMMONIUM_TETRAFLUOROBERYLLATE); //LFTR fuel component
+			//MaterialGenerator.generate(MISC_MATERIALS.HYDROXIDE); //LFTR fuel component
+			//MaterialGenerator.generate(MISC_MATERIALS.AMMONIA); //LFTR fuel component
+			//MaterialGenerator.generate(MISC_MATERIALS.AMMONIUM); //LFTR fuel component
+			MaterialGenerator.generateNuclearDusts(FLUORIDES.AMMONIUM_BIFLUORIDE); //LFTR fuel component
+			MaterialGenerator.generateNuclearDusts(FLUORIDES.BERYLLIUM_HYDROXIDE); //LFTR fuel component
+			MaterialGenerator.generateNuclearDusts(FLUORIDES.AMMONIUM_TETRAFLUOROBERYLLATE); //LFTR fuel component
 
 			//Generate Fluorides
-			MaterialGenerator.generateNuclearMaterial(FLUORIDES.BERYLLIUM_FLUORIDE);
-			MaterialGenerator.generateNuclearMaterial(FLUORIDES.LITHIUM_FLUORIDE);
-			MaterialGenerator.generateNuclearMaterial(FLUORIDES.THORIUM_TETRAFLUORIDE);
-			MaterialGenerator.generateNuclearMaterial(FLUORIDES.THORIUM_HEXAFLUORIDE);
-			MaterialGenerator.generateNuclearMaterial(FLUORIDES.URANIUM_TETRAFLUORIDE);
-			MaterialGenerator.generateNuclearMaterial(FLUORIDES.URANIUM_HEXAFLUORIDE);
-			MaterialGenerator.generateNuclearMaterial(FLUORIDES.ZIRCONIUM_TETRAFLUORIDE);
+			MaterialGenerator.generateNuclearDusts(FLUORIDES.BERYLLIUM_FLUORIDE);
+			MaterialGenerator.generateNuclearDusts(FLUORIDES.LITHIUM_FLUORIDE);
+			MaterialGenerator.generateNuclearDusts(FLUORIDES.THORIUM_TETRAFLUORIDE);
+			MaterialGenerator.generateNuclearDusts(FLUORIDES.THORIUM_HEXAFLUORIDE);
+			MaterialGenerator.generateNuclearDusts(FLUORIDES.URANIUM_TETRAFLUORIDE, false);
+			MaterialGenerator.generateNuclearDusts(FLUORIDES.URANIUM_HEXAFLUORIDE, false);
+			MaterialGenerator.generateNuclearDusts(FLUORIDES.ZIRCONIUM_TETRAFLUORIDE);
 			//LFTR Fluoride outputs
-			MaterialGenerator.generateNuclearMaterial(FLUORIDES.NEPTUNIUM_HEXAFLUORIDE);
-			MaterialGenerator.generateNuclearMaterial(FLUORIDES.TECHNETIUM_HEXAFLUORIDE);
-			MaterialGenerator.generateNuclearMaterial(FLUORIDES.SELENIUM_HEXAFLUORIDE);
+			MaterialGenerator.generateNuclearDusts(FLUORIDES.NEPTUNIUM_HEXAFLUORIDE);
+			MaterialGenerator.generateNuclearDusts(FLUORIDES.TECHNETIUM_HEXAFLUORIDE);
+			MaterialGenerator.generateNuclearDusts(FLUORIDES.SELENIUM_HEXAFLUORIDE);
 
 			//Generate Reactor Fuel Salts
-			MaterialGenerator.generateNuclearMaterial(NUCLIDE.LiFBeF2ZrF4U235, false);
-			MaterialGenerator.generateNuclearMaterial(NUCLIDE.LiFBeF2ZrF4UF4, false);
-			MaterialGenerator.generateNuclearMaterial(NUCLIDE.LiFBeF2ThF4UF4, false);
+			MaterialGenerator.generateNuclearDusts(NUCLIDE.LiFBeF2ZrF4U235);
+			MaterialGenerator.generateNuclearDusts(NUCLIDE.LiFBeF2ZrF4UF4);
+			MaterialGenerator.generateNuclearDusts(NUCLIDE.LiFBeF2ThF4UF4);
+			//MaterialGenerator.generateNuclearMaterial(NUCLIDE.Li2BeF4, false);
 
 			//Generate some Alloys
 
@@ -626,12 +643,14 @@ public final class ModItems {
 			MaterialGenerator.generate(ALLOY.TRINIUM_REINFORCED_STEEL);
 			
 			//Top Tier Alloys
+			MaterialGenerator.generate(ALLOY.HELICOPTER);
 			MaterialGenerator.generate(ALLOY.LAFIUM);
 			MaterialGenerator.generate(ALLOY.CINOBITE);
 			MaterialGenerator.generate(ALLOY.PIKYONIUM);
 			MaterialGenerator.generate(ALLOY.ABYSSAL);
 			MaterialGenerator.generate(ALLOY.LAURENIUM);
 			MaterialGenerator.generate(ALLOY.BOTMIUM);
+			MaterialGenerator.generate(ALLOY.HS188A);
 			
 
 			MaterialGenerator.generate(ALLOY.TITANSTEEL);
@@ -710,12 +729,26 @@ public final class ModItems {
 			GT_OreDictUnificator.registerOre("dustCalciumSulfate", ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustGypsum", 1));
 		}
 		dustLi2CO3CaOH2 = ItemUtils.generateSpecialUseDusts("Li2CO3CaOH2", "Li2CO3 + Ca(OH)2 Compound", "Li2CO3CaOH2", Utils.rgbtoHexValue(255, 255, 255))[0]; //https://en.wikipedia.org/wiki/Calcium_carbonate
-
+		MaterialUtils.generateSpecialDustAndAssignToAMaterial(FLUORIDES.SODIUM_FLUORIDE, false);
 		//FLiBe Fuel Compounds
-		dustLi2BeF4 = ItemUtils.generateSpecialUseDusts("Li2BeF4", "Li2BeF4 Fuel Compound", "Li2BeF4", Utils.rgbtoHexValue(255, 255, 255))[0]; //https://en.wikipedia.org/wiki/FLiBe
+		dustLi2BeF4 = ItemUtils.generateSpecialUseDusts("Li2BeF4", "Lithium Tetrafluoroberyllate Fuel Compound", "Li2BeF4", Utils.rgbtoHexValue(255, 255, 255))[0]; //https://en.wikipedia.org/wiki/FLiBe
+		Material.registerComponentForMaterial(NUCLIDE.Li2BeF4, OrePrefixes.dust, ItemUtils.getSimpleStack(dustLi2BeF4));
 		//fluidFLiBeSalt = ("Li2BeF4", "Li2BeF4", 7430, new short[]{255, 255, 255, 100}, 0);
-		fluidFLiBeSalt = FluidUtils.addGTFluidNoPrefix("Li2BeF4", "Li2BeF4", new short[]{255, 255, 255, 100}, 0, 743, null, CI.emptyCells(1), 1000, true);
-
+		//fluidFLiBeSalt = FluidUtils.addGTFluidNoPrefix("Li2BeF4", "Lithium Tetrafluoroberyllate", new short[]{255, 255, 255, 100}, 0, 743, null, CI.emptyCells(1), 1000, true);
+		//fluidFLiBeSaltBurnt = FluidUtils.addGTFluidNoPrefix("Li2BeF2UF4", "Li2BeF2UF4", new short[]{50, 255, 50, 100}, 0, 743, null, CI.emptyCells(1), 1000, true);
+		
+		// LFTR Core Fluid Processing
+		//fluidLftrCore1 = FluidUtils.addGTFluidNoPrefix("LiBeF2UF4FP", "LiBeF2UF4FP", new short[]{110, 255, 110, 100}, 0, 800, null, CI.emptyCells(1), 1000, true);
+		//fluidLftrCore2 = FluidUtils.addGTFluidNoPrefix("UF6F2FP", "UF6F2FP", new short[]{150, 255, 150, 100}, 0, 800, null, CI.emptyCells(1), 1000, true);
+		//fluidLftrCore3 = FluidUtils.addGTFluidNoPrefix("LiFBeF2", "LiFBeF2", new short[]{100, 255, 50, 100}, 0, 800, null, CI.emptyCells(1), 1000, true);
+		//fluidLftrCore4 = FluidUtils.addGTFluidNoPrefix("LiFBeF2UF4", "LiFBeF2UF4", new short[]{50, 255, 100, 100}, 0, 800, null, CI.emptyCells(1), 1000, true);
+		// LFTR Blanket Fluid Processing
+		//fluidLftrBlanket1 = FluidUtils.addGTFluidNoPrefix("LiFThF4", "LiFThF4", new short[]{50, 150, 255, 50}, 0, 500, null, CI.emptyCells(1), 1000, true);
+		//fluidLftrBlanket2 = FluidUtils.addGTFluidNoPrefix("LiFBeF2ThF4", "LiFBeF2ThF4", new short[]{100, 150, 100, 100}, 0, 500, null, CI.emptyCells(1), 1000, true);
+		//fluidLftrBlanket3 = FluidUtils.addGTFluidNoPrefix("UF6F2", "UF6F2", new short[]{10, 150, 10, 100}, 0, 500, null, CI.emptyCells(1), 1000, true);
+		fluidNuclearWaste = FluidUtils.addGTFluidNoPrefix("nuclear.waste", "Nuclear Waste", new short[]{10, 250, 10, 100}, 0, 1000, null, CI.emptyCells(1), 1000, true);
+		
+		
 		//LFTR Control Circuit
 		itemCircuitLFTR = new CoreItem("itemCircuitLFTR", ""+EnumChatFormatting.GREEN+"Control Circuit", AddToCreativeTab.tabMisc, 1, 0,  new String[] {"Keeps Multiblocks Stable"}, EnumRarity.epic, EnumChatFormatting.DARK_GREEN, false, null);
 
@@ -737,7 +770,8 @@ public final class ModItems {
 		//GT_OreDictUnificator.registerOre("cellZrF4", ItemUtils.getItemStackOfAmountFromOreDict("cellZirconiumTetrafluoride", 1));
 		//GT_OreDictUnificator.registerOre("dustZrF4", ItemUtils.getItemStackOfAmountFromOreDict("dustZirconiumTetrafluoride", 1));
 		fluidZrF4 = FluidUtils.generateFluidNoPrefix("ZirconiumTetrafluoride", "Zirconium Tetrafluoride", 500, new short[]{170, 170, 140, 100}); //https://en.wikipedia.org/wiki/Zirconium_tetrafluoride
-
+		FLUORIDES.ZIRCONIUM_TETRAFLUORIDE.setFluid(fluidZrF4);
+		
 		//Coolant Salt
 		//NaBF4 - NaF - 621C
 		//dustNaBF4NaF = ItemUtils.generateSpecialUseDusts("NaBF4NaF", "NaBF4NaF", Utils.rgbtoHexValue(45, 45, 90))[0]; //https://en.wikipedia.org/wiki/Zirconium_tetrafluoride
@@ -830,6 +864,11 @@ public final class ModItems {
 		}
 		else {
 			itemHotTitaniumIngot = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("ingotHotTitanium", 1);
+		}
+
+		//Need this for Laurenium
+		if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustIndium", 1) == null){
+			itemDustIndium = new BaseItemDust(ELEMENT.getInstance().INDIUM);
 		}
 		
 		//Industrial Diamonds
@@ -938,7 +977,7 @@ public final class ModItems {
 		dustNeptunium238 = new DustDecayable("dustNeptunium238", Utils.rgbtoHexValue(175, 240, 75), 50640, new String[] {""+StringUtils.superscript("238Np"), "Result: Plutonium 238 ("+StringUtils.superscript("238Pu")+")"}, ELEMENT.getInstance().PLUTONIUM238.getDust(1).getItem(), 5);
 		dustDecayedRadium226 = ItemUtils.generateSpecialUseDusts("DecayedRadium226", "Decayed Radium-226", "Contains Radon ("+StringUtils.superscript("222Rn")+")", ELEMENT.getInstance().RADIUM.getRgbAsHex())[0];
 		dustRadium226 = new DustDecayable("dustRadium226", ELEMENT.getInstance().RADIUM.getRgbAsHex(), 90000, new String[] {""+StringUtils.superscript("226Ra"), "Result: Radon ("+StringUtils.superscript("222Rn")+")"}, ItemUtils.getSimpleStack(dustDecayedRadium226).getItem(), 5);
-
+		dustProtactinium233 = new DustDecayable("dustProtactinium233", ELEMENT.getInstance().PROTACTINIUM.getRgbAsHex(), 32000, new String[] {""+StringUtils.superscript("233Pa"), "Result: Uranium 233("+StringUtils.superscript("233U")+")"}, ELEMENT.getInstance().URANIUM233.getDust(1).getItem(), 6);
 		dustTechnetium99 = new DustDecayable("dustTechnetium99", ELEMENT.getInstance().TECHNETIUM.getRgbAsHex(), 164500, new String[] {""+StringUtils.superscript("99Mo"), "Result: Ruthenium 99("+StringUtils.superscript("99Ru")+")"}, ELEMENT.getInstance().RUTHENIUM.getDust(1).getItem(), 4);
 		dustTechnetium99M = new DustDecayable("dustTechnetium99M", ELEMENT.getInstance().TECHNETIUM.getRgbAsHex(), 8570, new String[] {""+StringUtils.superscript("99ᵐTc"), "Result: Technicium 99 ("+StringUtils.superscript("99Tc")+")"}, dustTechnetium99, 4);
 		dustMolybdenum99 = new DustDecayable("dustMolybdenum99", ELEMENT.getInstance().MOLYBDENUM.getRgbAsHex(), 16450, new String[] {""+StringUtils.superscript("99Mo"), "Result: Technicium 99ᵐ ("+StringUtils.superscript("99ᵐTc")+")"}, dustTechnetium99M, 4);
@@ -1037,10 +1076,10 @@ public final class ModItems {
 			GT_OreDictUnificator.registerOre("platePhasedIron", ItemUtils.getSimpleStack(itemPlatePulsatingIron));
 			GT_OreDictUnificator.registerOre("blockVibrantAlloy", ItemUtils.getItemStackOfAmountFromOreDict("blockPhasedGold", 1));			
 
-			CORE.RA.addFluidExtractionRecipe(MaterialEIO.REDSTONE_ALLOY.getPlate(1), MaterialEIO.REDSTONE_ALLOY.getFluid(144), 16, 4*9);
-			CORE.RA.addFluidExtractionRecipe(MaterialEIO.REDSTONE_ALLOY.getIngot(1), MaterialEIO.REDSTONE_ALLOY.getFluid(144), 16, 4*9);
-			CORE.RA.addFluidExtractionRecipe(MaterialEIO.REDSTONE_ALLOY.getNugget(1), MaterialEIO.REDSTONE_ALLOY.getFluid(16), 16, 4);
-			CORE.RA.addFluidExtractionRecipe(MaterialEIO.REDSTONE_ALLOY.getBlock(1), MaterialEIO.REDSTONE_ALLOY.getFluid(1294), 16, 4*9*9);
+			CORE.RA.addFluidExtractionRecipe(MaterialEIO.REDSTONE_ALLOY.getPlate(1), MaterialEIO.REDSTONE_ALLOY.getFluidStack(144), 16, 4*9);
+			CORE.RA.addFluidExtractionRecipe(MaterialEIO.REDSTONE_ALLOY.getIngot(1), MaterialEIO.REDSTONE_ALLOY.getFluidStack(144), 16, 4*9);
+			CORE.RA.addFluidExtractionRecipe(MaterialEIO.REDSTONE_ALLOY.getNugget(1), MaterialEIO.REDSTONE_ALLOY.getFluidStack(16), 16, 4);
+			CORE.RA.addFluidExtractionRecipe(MaterialEIO.REDSTONE_ALLOY.getBlock(1), MaterialEIO.REDSTONE_ALLOY.getFluidStack(1294), 16, 4*9*9);
 			
 		}
 		else {

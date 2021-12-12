@@ -151,6 +151,11 @@ public class RecipeGen_MultisUsingFluidInsteadOfCells {
 				for (int i = 0; i < aOutputFluidsMap.size(); i++) {
 					aNewFluidOutputs[i] = aOutputFluidsMap.get(i);
 				}
+				
+				if (!ItemUtils.checkForInvalidItems(aNewItemInputs, aNewItemOutputs)) {
+					aInvalidRecipesToConvert++;
+					continue recipe; // Skip this recipe entirely if we find an item we don't like
+				}
 
 				// Add Recipe to map
 				GT_Recipe aNewRecipe = new GTPP_Recipe(

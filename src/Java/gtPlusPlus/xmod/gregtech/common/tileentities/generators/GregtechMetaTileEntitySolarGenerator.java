@@ -13,6 +13,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_SolarGenerator;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_SolarGenerator;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.generators.GregtechMetaSolarGenerator;
@@ -28,6 +29,15 @@ public class GregtechMetaTileEntitySolarGenerator extends GregtechMetaSolarGener
 		super(aName, aTier, aDescription, aTextures);
 		this.onConfigLoad();
 	}
+	
+    @Override
+    public String[] getDescription() {
+        return new String[]{this.mDescription,
+                "Generates power at " + this.getEfficiency() + "% Efficiency per tick",
+                "Output Voltage: "+this.getOutputTier()+" EU/t",
+                CORE.GT_Tooltip
+            };
+    }
 
 	@Override
 	public boolean isOutputFacing(final byte aSide) {

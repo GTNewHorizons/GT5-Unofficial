@@ -67,7 +67,11 @@ public class GT_MetaTileEntity_SemiFluidGenerator extends GT_MetaTileEntity_Basi
 	
 	@Override
 	public String[] getDescription() {
-		return new String[]{this.mDescription, "Produces "+(this.getPollution())+" pollution/sec", "Fuel Efficiency: "+this.getEfficiency() + "%"};
+		return new String[]{
+				this.mDescription,
+				"Produces "+(this.getPollution())+" pollution/sec", 
+				"Fuel Efficiency: "+this.getEfficiency() + "%",
+                CORE.GT_Tooltip};
 	}
 
 	@Override

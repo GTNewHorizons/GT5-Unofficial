@@ -31,6 +31,7 @@ import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -79,16 +80,19 @@ public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase 
 				.addInfo("Grind ores.")
 				.addPollutionAmount(getPollutionPerSecond(null))
 				.addSeparator()
-				.beginStructureBlock(3, 3, 4, false)
+				.beginStructureBlock(3, 3, 7, false)
 				.addController("Front Center")
 				.addCasingInfo("IsaMill Exterior Casing", 40)
-				.addCasingInfo("IsaMill Gearbox", 6)
+                .addOtherStructurePart("IsaMill Gearbox", "Inner Blocks")
+                .addOtherStructurePart("IsaMill Piping", "8x, ring around controller")
+                .addStructureInfo("IsaMill Pipings must not be obstructed in front (only air blocks)")
+				.addOtherStructurePart("Milling Ball Hatch", "Any Casing")
 				.addInputBus("Any Casing", 1)
 				.addOutputBus("Any Casing", 1)
 				.addEnergyHatch("Any Casing", 1)
 				.addMaintenanceHatch("Any Casing", 1)
 				.addMufflerHatch("Any Casing", 1)
-				.toolTipFinisher("GT++");
+				.toolTipFinisher(CORE.GT_Tooltip_Builder);
 		return tt;
 	}
 
@@ -105,7 +109,7 @@ public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase 
 							'C',
 							ofChain(
 									ofHatchAdder(
-											GregtechMetaTileEntity_IsaMill::addIsaMillList, getCasingTextureIndex(), 1
+											GregtechMetaTileEntity_IsaMill::addToMachineList, getCasingTextureIndex(), 1
 									),
 									onElementPass(
 											x -> ++x.mCasing,
@@ -142,34 +146,6 @@ public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase 
 		mCasing = 0;
 		mMillingBallBuses.clear();
 		return checkPiece(mName, 1, 1, 0) && mCasing >= 48 - 8 && checkHatch();
-	}
-
-	public final boolean addIsaMillList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-		if (aTileEntity == null) {
-			return false;
-		} else {
-			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_MillingBalls){
-				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
-				return addToMachineListInternal(mMillingBallBuses, aMetaTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus){
-				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
-				return this.mInputBusses.add((GT_MetaTileEntity_Hatch_InputBus)aMetaTileEntity);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance){
-				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
-				return this.mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance)aMetaTileEntity);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy){
-				((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
-				return this.mEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy)aMetaTileEntity);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus) {
-				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-				return this.mOutputBusses.add((GT_MetaTileEntity_Hatch_OutputBus) aMetaTileEntity);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler) {
-				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-				return this.mMufflerHatches.add((GT_MetaTileEntity_Hatch_Muffler) aMetaTileEntity);
-			}
-		}
-		return false;
 	}
 
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
@@ -345,7 +321,7 @@ public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase 
 	}
 
 	public byte getIntakeMeta() {
-		return 0;
+		return 1;
 	}
 
 	public Block getGearboxBlock() {
@@ -381,7 +357,7 @@ public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase 
 	}
 
 	public int getMaxEfficiency(ItemStack aStack) {
-		return boostEu ? 20000 : 10000;
+		return 10000;
 	}
 
 	@Override

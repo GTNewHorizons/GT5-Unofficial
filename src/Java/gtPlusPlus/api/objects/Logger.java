@@ -121,7 +121,7 @@ public class Logger {
 	 */
 	public static void MATERIALS(final String s) {
 		if (enabled) {
-			if (/* CORE_Preloader.DEV_ENVIRONMENT || */CORE_Preloader.DEBUG_MODE) {
+			if (CORE_Preloader.DEV_ENVIRONMENT || CORE_Preloader.DEBUG_MODE) {
 				modLogger.info("[Materials] "+s);
 			}
 		}

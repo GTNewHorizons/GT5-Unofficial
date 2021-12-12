@@ -64,7 +64,8 @@ public class GregtechMetaSpecialMultiCasings extends GregtechMetaCasingBlocksAbs
 		GregtechItemList.Casing_SolarTower_Structural.set(new ItemStack(this, 1, 6));
 		GregtechItemList.Casing_SolarTower_SaltContainment.set(new ItemStack(this, 1, 7));
 		GregtechItemList.Casing_SolarTower_HeatContainment.set(new ItemStack(this, 1, 8));
-		GregtechItemList.Casing_Reinforced_Engine_Casing.set(new ItemStack(this, 1, 9));
+		GregtechItemList.Casing_Flotation_Cell.set(new ItemStack(this, 1, 9));
+		GregtechItemList.Casing_Reinforced_Engine_Casing.set(new ItemStack(this, 1, 10));
 	}	
 
 	public IIcon getIcon(int aSide, int aMeta) {

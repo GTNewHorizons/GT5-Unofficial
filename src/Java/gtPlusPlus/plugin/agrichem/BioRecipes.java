@@ -23,7 +23,11 @@ import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.material.MISC_MATERIALS;
 import gtPlusPlus.core.recipe.common.CI;
-import gtPlusPlus.core.util.minecraft.*;
+import gtPlusPlus.core.util.minecraft.FluidUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.util.minecraft.MaterialUtils;
+import gtPlusPlus.core.util.minecraft.OreDictUtils;
+import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.plugin.agrichem.block.AgrichemFluids;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -128,7 +132,7 @@ public class BioRecipes {
 		mThermalWater = FluidUtils.getFluidStack("ic2hotwater", 1).getFluid();		
 		mAir = FluidUtils.getFluidStack("air", 1).getFluid();		
 		mSulfuricWasteWater = FluidUtils.getFluidStack("sulfuricapatite", 1).getFluid();
-		mAmmonia = MISC_MATERIALS.AMMONIA.getFluid(1).getFluid();
+		mAmmonia = MISC_MATERIALS.AMMONIA.getFluidStack(1).getFluid();
 		mEthylene = FluidUtils.getFluidStack("ethylene", 1).getFluid();
 		mEthanol = FluidUtils.getFluidStack("bioethanol", 1).getFluid();
 		mDilutedSulfuricAcid = FluidUtils.getFluidStack("dilutedsulfuricacid", 1).getFluid();
@@ -140,8 +144,8 @@ public class BioRecipes {
 		mStyrene = FluidUtils.getFluidStack("styrene", 1).getFluid();		
 		mMethanol = FluidUtils.getFluidStack("methanol", 1).getFluid();
 		mLiquidPlastic = FluidUtils.getWildcardFluidStack("plastic", 1).getFluid();
-		mCarbonDioxide = MISC_MATERIALS.CARBON_DIOXIDE.getFluid(1).getFluid();
-		mCarbonMonoxide = MISC_MATERIALS.CARBON_MONOXIDE.getFluid(1).getFluid();
+		mCarbonDioxide = MISC_MATERIALS.CARBON_DIOXIDE.getFluidStack(1).getFluid();
+		mCarbonMonoxide = MISC_MATERIALS.CARBON_MONOXIDE.getFluidStack(1).getFluid();
 		mChlorine = FluidUtils.getFluidStack("chlorine", 1).getFluid();
 		mHydrogen = FluidUtils.getFluidStack("hydrogen", 1).getFluid();		
 		mAceticAcid = AgrichemFluids.mAceticAcid;
@@ -502,14 +506,19 @@ public class BioRecipes {
 				120 * 20,
 				60,
 				1);
-
+		
 		CORE.RA.addDehydratorRecipe(
-				CI.emptyCells(1),
-				FluidUtils.getFluidStack(mFermentationBase, 4000),
+				new ItemStack[] {
+						CI.getNumberedBioCircuit(14),
+						CI.emptyCells(1)
+						}, 
+				FluidUtils.getFluidStack(mFermentationBase, 4000), 
+				null, 
 				new ItemStack[] {
 						ItemUtils.getSimpleStack(AgriculturalChem.mCompost, 1),
 						ItemUtils.getItemStackOfAmountFromOreDict("cellAceticAcid", 1)						
 				},
+				new int[] {10000, 10000}, 
 				60 * 20,
 				16);
 

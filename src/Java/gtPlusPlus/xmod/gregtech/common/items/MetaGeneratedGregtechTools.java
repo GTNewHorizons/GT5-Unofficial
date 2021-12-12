@@ -10,7 +10,7 @@ import gregtech.api.objects.GT_HashSet;
 import gregtech.api.objects.GT_ItemStack;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechToolDictNames;
-import gtPlusPlus.xmod.gregtech.common.tools.TOOL_Gregtech_AngelGrinder;
+import gtPlusPlus.xmod.gregtech.common.tools.TOOL_Gregtech_AngleGrinder;
 import gtPlusPlus.xmod.gregtech.common.tools.TOOL_Gregtech_Choocher;
 import gtPlusPlus.xmod.gregtech.common.tools.TOOL_Gregtech_ElectricButcherKnife;
 import gtPlusPlus.xmod.gregtech.common.tools.TOOL_Gregtech_ElectricLighter;
@@ -47,7 +47,7 @@ public class MetaGeneratedGregtechTools extends GT_MetaGenerated_Tool {
 
 		// Electric File
 		this.addTool(ANGLE_GRINDER, "Angle Grinder", "Hand-held electric filing device",
-				new TOOL_Gregtech_AngelGrinder(),
+				new TOOL_Gregtech_AngleGrinder(),
 				new Object[] { GregtechToolDictNames.craftingToolAngleGrinder, ToolDictNames.craftingToolFile,
 						new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L),
 						new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 2L),

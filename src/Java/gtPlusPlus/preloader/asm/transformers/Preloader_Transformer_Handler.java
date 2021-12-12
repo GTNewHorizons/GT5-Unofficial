@@ -122,8 +122,8 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 		
 		// Log Handling of CodeChicken
 		if (transformedName.equals("codechicken.nei.guihook.GuiContainerManager")) {	
-			Preloader_Logger.INFO("CodeChicken GuiContainerManager Patch", "Transforming "+transformedName);
-			return new ClassTransformer_CC_GuiContainerManager(basicClass).getWriter().toByteArray();
+			//Preloader_Logger.INFO("CodeChicken GuiContainerManager Patch", "Transforming "+transformedName);
+			//return new ClassTransformer_CC_GuiContainerManager(basicClass).getWriter().toByteArray();
 		}
 		// Fix the OreDictionary COFH
 		if (transformedName.equals(COFH_ORE_DICTIONARY_ARBITER) && (AsmConfig.enableCofhPatch || !obfuscated)) {
@@ -223,8 +223,8 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 
 		//Patching Meta Tile Tooltips
 		if (transformedName.equals(GT_ITEM_MACHINES) && AsmConfig.enableGtTooltipFix) {	
-			Preloader_Logger.INFO("Gregtech Tooltip Patch", "Transforming "+transformedName);
-			return new ClassTransformer_GT_ItemMachines_Tooltip(basicClass, false).getWriter().toByteArray();
+			//Preloader_Logger.INFO("Gregtech Tooltip Patch", "Transforming "+transformedName);
+			//return new ClassTransformer_GT_ItemMachines_Tooltip(basicClass, false).getWriter().toByteArray();
 		}
 
 

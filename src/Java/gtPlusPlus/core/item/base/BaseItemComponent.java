@@ -84,8 +84,9 @@ public class BaseItemComponent extends Item{
 		else {
 			aFormattedNameForFluids = unlocalName;
 		}		
-		 	
-		this.componentMaterial = null;
+		Material aTempMaterial = Material.mMaterialCache.get(localName.toLowerCase());
+		Logger.INFO("Attempted to get "+localName+" cell material from cache. Valid? "+(aTempMaterial != null));
+		this.componentMaterial = aTempMaterial;
 		this.unlocalName = "itemCell"+aFormattedNameForFluids;
 		this.materialName = localName;
 		this.componentType = ComponentTypes.CELL;
@@ -94,6 +95,7 @@ public class BaseItemComponent extends Item{
 		this.setMaxStackSize(64);
 		this.componentColour = MathUtils.getRgbAsHex(RGBA);
 		this.extraData = RGBA;
+		
 		this.setTextureName(CORE.MODID + ":" + "item"+ComponentTypes.CELL.COMPONENT_NAME);
 		GameRegistry.registerItem(this, aFormattedNameForFluids);
 		GT_OreDictUnificator.registerOre(ComponentTypes.CELL.getOreDictName()+Utils.sanitizeStringKeepBrackets(localName), ItemUtils.getSimpleStack(this));
@@ -177,10 +179,10 @@ public class BaseItemComponent extends Item{
 
 
 				if (this.componentMaterial != null){
-					if (!this.componentMaterial.vChemicalFormula.contains("?") && this.componentMaterial.getState() != MaterialState.PURE_LIQUID) {
+					if (!this.componentMaterial.vChemicalFormula.contains("?")) {
 						list.add(Utils.sanitizeStringKeepBrackets(this.componentMaterial.vChemicalFormula));
 					}
-					else if (this.componentMaterial.vChemicalFormula.contains("?") && this.componentMaterial.getState() != MaterialState.PURE_LIQUID) {
+					else if (this.componentMaterial.vChemicalFormula.contains("?")) {
 						String temp = componentMaterial.vChemicalFormula;
 						temp = temp.replace(" ", "");
 						temp = temp.replace("-", "");
@@ -200,6 +202,12 @@ public class BaseItemComponent extends Item{
 						if ((this.materialName != null) && (this.materialName != "") && !this.materialName.equals("") && this.unlocalName.toLowerCase().contains("hot")){
 							list.add(EnumChatFormatting.GRAY+"Warning: "+EnumChatFormatting.RED+"Very hot! "+EnumChatFormatting.GRAY+" Avoid direct handling..");
 						}
+					}
+				}
+				else {
+					String aChemicalFormula = Material.sChemicalFormula.get(materialName.toLowerCase());
+					if (aChemicalFormula != null && aChemicalFormula.length() > 0) {			
+						list.add(Utils.sanitizeStringKeepBrackets(aChemicalFormula));						
 					}
 				}
 

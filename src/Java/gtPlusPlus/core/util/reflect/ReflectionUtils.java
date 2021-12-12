@@ -432,6 +432,18 @@ public class ReflectionUtils {
 			t.printStackTrace();
 		}
 	}
+	
+	/**
+	 * Allows to change the state of an immutable instance. Huh?!?
+	 */
+	public static void setFinalFieldValue(Class<?> clazz,  Field field, Object newValue) {
+		try {
+			setFieldValue_Internal(clazz, field, newValue);
+		}
+		catch (Throwable t) {
+			t.printStackTrace();
+		}
+	}
 
 	@Deprecated
 	public static void setFinalStatic(Field field, Object newValue) throws Exception {

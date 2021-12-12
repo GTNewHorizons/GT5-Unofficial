@@ -288,49 +288,49 @@ public class BookHandler {
 										"XXXXXXX",
 
 								"Layer 2:" + "\n"  + "\n" +
-										"AAAAAAA" + "\n" +
+										"XAAAAAX" + "\n" +
 										"AMMMMMA" + "\n" +
 										"AMCCCMA" + "\n" +
 										"AMCCCMA" + "\n" +
 										"AMCCCMA" + "\n" +
 										"AMMMMMA" + "\n" +
-										"AAAAAAA",
+										"XAAAAAX",
 										
 								"Layer 3:" + "\n"  + "\n" +
-										"AAAAAAA" + "\n" +
+										"XAAAAAX" + "\n" +
 										"AAAAAAA" + "\n" +
 										"AAPPPAA" + "\n" +
 										"AAPPPAA" + "\n" +
 										"AAPPPAA" + "\n" +
 										"AAAAAAA" + "\n" +
-										"AAAAAAA",
+										"XAAAAAX",
 												
 								"Layer 4:" + "\n"  + "\n" +
-										"AAAAAAA" + "\n" +
+										"XAAAAAX" + "\n" +
 										"AAAAAAA" + "\n" +
 										"AACCCAA" + "\n" +
 										"AACCCAA" + "\n" +
 										"AACCCAA" + "\n" +
 										"AAAAAAA" + "\n" +
-										"AAAAAAA",
+										"XAAAAAX",
 														
 								"Layer 5:" + "\n"  + "\n" +
-										"AAAAAAA" + "\n" +
+										"XAAAAAX" + "\n" +
 										"AAAAAAA" + "\n" +
 										"AAPPPAA" + "\n" +
 										"AAPPPAA" + "\n" +
 										"AAPPPAA" + "\n" +
 										"AAAAAAA" + "\n" +
-										"AAAAAAA",
+										"XAAAAAX",
 										
 								"Layer 6:" + "\n"  + "\n" +
-										"AAAAAAA" + "\n" +
+										"XAAAAAX" + "\n" +
 										"AMMMMMA" + "\n" +
 										"AMCCCMA" + "\n" +
 										"AMCCCMA" + "\n" +
 										"AMCCCMA" + "\n" +
 										"AMMMMMA" + "\n" +
-										"AAAAAAA",
+										"XAAAAAX",
 						
 								"Layer 7:" + "\n"  + "\n" +
 										"XXXXXXX" + "\n" +

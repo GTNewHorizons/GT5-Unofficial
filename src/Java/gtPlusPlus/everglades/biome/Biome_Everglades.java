@@ -61,7 +61,7 @@ public class Biome_Everglades {
 		@SuppressWarnings("unchecked")
 		public BiomeGenEverglades() {
 			super(CORE.EVERGLADESBIOME_ID);
-			this.setBiomeID();
+			//this.setBiomeID();
 			this.theBiomeDecorator = new BiomeGenerator_Custom();
 			this.theBiomeDecorator.treesPerChunk = 10;
 			//Logger.INFO("Dark World Temperature Category: "+getTempCategory());
@@ -93,27 +93,31 @@ public class Biome_Everglades {
 		}
 
 		private synchronized boolean setBiomeID() {
-			BiomeGenBase[] mTempList;
 			try {
 				Field mInternalBiomeList = ReflectionUtils.getField(BiomeGenBase.class, "biomeList");
 				Field mClone = mInternalBiomeList;
-				mTempList = (BiomeGenBase[]) mInternalBiomeList.get(null);
+				BiomeGenBase[] mOriginalList = (BiomeGenBase[]) mInternalBiomeList.get(null);
+				BiomeGenBase[] mTempList = new BiomeGenBase[mOriginalList.length];
+				for (int index=0;index<mTempList.length;index++) {
+					mTempList[index] = mOriginalList[index];
+				}
 				if (mTempList != null){
-					mTempList[CORE.EVERGLADESBIOME_ID] = this;
+					mTempList[CORE.AUSTRALIA_BIOME_DESERT_1_ID] = this;
 					mInternalBiomeList.set(null, mTempList);
 					if (mTempList != mInternalBiomeList.get(null)){
-						ReflectionUtils.setFinalStatic(mInternalBiomeList, mTempList);
-						Logger.REFLECTION("Set Biome ID for Dark World Biome internally in 'biomeList' field from "+BiomeGenBase.class.getCanonicalName()+".");						
+						ReflectionUtils.setFinalFieldValue(BiomeGenBase.class, mInternalBiomeList, mTempList);
+						Logger.REFLECTION("Set Biome ID for "+this.biomeName+" Biome internally in 'biomeList' field from "+BiomeGenBase.class.getCanonicalName()+".");						
 						return true;
 					}
 					else {
-						Logger.REFLECTION("Failed to set Biome ID for Dark World Biome internally in 'biomeList' field from "+BiomeGenBase.class.getCanonicalName()+".");					
+						Logger.REFLECTION("Failed to set Biome ID for "+this.biomeName+" Biome internally in 'biomeList' field from "+BiomeGenBase.class.getCanonicalName()+".");					
 					}
 				}
 				return false;
 			}
 			catch (Exception e) {
 				Logger.REFLECTION("Could not access 'biomeList' field in "+BiomeGenBase.class.getCanonicalName()+".");
+				e.printStackTrace();
 				return false;
 			}			
 		}

@@ -12,7 +12,6 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import net.minecraft.entity.player.EntityPlayer;
@@ -63,14 +62,14 @@ public abstract class GregtechRocketFuelGeneratorBase extends GT_MetaTileEntity_
 
 	@Override
 	public String[] getDescription() {
-			int pollMin = mTier == 4 ? 250 : (mTier == 5 ? 500 : 750);
-			int pollMax = mTier == 4 ? 2000 : (mTier == 5 ? 4000 : 6000);			
-			String aPollution = "Causes between "+pollMin+" and "+pollMax+ " Pollution per second";			
-			return new String[]{
-					this.mDescription,
-					"Fuel Efficiency: " + this.getEfficiency() + "%",
-					aPollution};
+		String aPollution = "Causes between "+pollMin+" and "+pollMax+ " Pollution per second";			
+		return new String[]{
+				this.mDescription,
+				"Fuel Efficiency: " + this.getEfficiency() + "%",
+				aPollution,
+				CORE.GT_Tooltip};
 	}
+
 
 
 	@Override
@@ -199,8 +198,8 @@ public abstract class GregtechRocketFuelGeneratorBase extends GT_MetaTileEntity_
 
 	@Override
 	public void onPostTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTick) {
-		
-		
+
+
 		//super.onPostTick(aBaseMetaTileEntity, aTick);		
 
 		/*if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.isAllowedToWork() && aTick % 10L == 0L) {
@@ -251,9 +250,9 @@ public abstract class GregtechRocketFuelGeneratorBase extends GT_MetaTileEntity_
 					.getUniversalEnergyStored() >= this.maxEUOutput() + this.getMinimumStoredEU());
 		}*/
 
-	
-		
-		
+
+
+
 		if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.isAllowedToWork() && ((aTick % 10) == 0)) {
 			if (this.mFluid == null) {
 				if (aBaseMetaTileEntity.getUniversalEnergyStored() < (this.maxEUOutput() + this.getMinimumStoredEU())) {

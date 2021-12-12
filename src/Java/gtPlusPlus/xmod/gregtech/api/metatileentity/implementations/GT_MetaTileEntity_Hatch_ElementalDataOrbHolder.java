@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
+import java.util.ArrayList;
+
 import gregtech.api.gui.GT_Container_4by4;
 import gregtech.api.gui.GT_GUIContainer_4by4;
 import gregtech.api.interfaces.ITexture;
@@ -9,6 +11,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -17,13 +20,12 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class GT_MetaTileEntity_Hatch_ElementalDataOrbHolder extends GT_MetaTileEntity_Hatch {
 	public GT_Recipe_Map mRecipeMap = null;
-	public boolean disableSort;
 
 	public GT_MetaTileEntity_Hatch_ElementalDataOrbHolder(int aID, String aName, String aNameRegional, int aTier) {
 		super(aID, aName, aNameRegional, aTier, 16, new String[]{
 				"Holds Data Orbs for the Elemental Duplicator",
-				});
-		disableSort = true;
+				CORE.GT_Tooltip
+		});
 	}
 
 	public GT_MetaTileEntity_Hatch_ElementalDataOrbHolder(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
@@ -83,7 +85,7 @@ public class GT_MetaTileEntity_Hatch_ElementalDataOrbHolder extends GT_MetaTileE
 
 	@Override
 	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GT_GUIContainer_4by4(aPlayerInventory, aBaseMetaTileEntity, "Steam Input Bus");
+		return new GT_GUIContainer_4by4(aPlayerInventory, aBaseMetaTileEntity, "Data Orb Repository");
 	}
 
 	@Override
@@ -100,28 +102,26 @@ public class GT_MetaTileEntity_Hatch_ElementalDataOrbHolder extends GT_MetaTileE
 	}
 
 	protected void fillStacksIntoFirstSlots() {
-		if (disableSort) {
-			for (int i = 0; i < mInventory.length; i++)
-				if (mInventory[i] != null && mInventory[i].stackSize <= 0)
-					mInventory[i] = null;
-		}
+		for (int i = 0; i < mInventory.length; i++) {
+			if (mInventory[i] != null && mInventory[i].stackSize <= 0) {
+				mInventory[i] = null;				
+			}
+		}					
 	}
 
 	@Override
 	public void saveNBTData(NBTTagCompound aNBT) {
 		super.saveNBTData(aNBT);
-		aNBT.setBoolean("disableSort", disableSort);
 	}
 
 	@Override
 	public void loadNBTData(NBTTagCompound aNBT) {
 		super.loadNBTData(aNBT);
-		disableSort = aNBT.getBoolean("disableSort");
 	}
 
 	@Override
 	public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-		
+
 	}
 
 	public String trans(String aKey, String aEnglish) {
@@ -136,6 +136,14 @@ public class GT_MetaTileEntity_Hatch_ElementalDataOrbHolder extends GT_MetaTileE
 	@Override
 	public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
 		return aSide == getBaseMetaTileEntity().getFrontFacing() && (mRecipeMap == null || mRecipeMap.containsInput(aStack));
+	}
+	
+	public ArrayList<ItemStack> getInventory(){
+		ArrayList<ItemStack> aContents = new ArrayList<ItemStack>();
+		for (int i=0;i<this.getSizeInventory();i++) {
+			aContents.add(this.getStackInSlot(i));
+		}
+		return aContents;
 	}
 
 }

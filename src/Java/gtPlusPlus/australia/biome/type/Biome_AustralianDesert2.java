@@ -80,7 +80,7 @@ public class Biome_AustralianDesert2 {
 		public BiomeGenAustralianDesert2() {
 			super(CORE.AUSTRALIA_BIOME_DESERT_2_ID);
 			this.setBiomeName("Australian Desert II");
-			this.setBiomeID();
+			//this.setBiomeID();
 			this.enableRain = true;
 			this.enableSnow = false;
 			this.topBlock = blockTopLayer;
@@ -123,16 +123,19 @@ public class Biome_AustralianDesert2 {
 		}
 
 		private synchronized boolean setBiomeID() {
-			BiomeGenBase[] mTempList;
 			try {
 				Field mInternalBiomeList = ReflectionUtils.getField(BiomeGenBase.class, "biomeList");
 				Field mClone = mInternalBiomeList;
-				mTempList = (BiomeGenBase[]) mInternalBiomeList.get(null);
+				BiomeGenBase[] mOriginalList = (BiomeGenBase[]) mInternalBiomeList.get(null);
+				BiomeGenBase[] mTempList = new BiomeGenBase[mOriginalList.length];
+				for (int index=0;index<mTempList.length;index++) {
+					mTempList[index] = mOriginalList[index];
+				}
 				if (mTempList != null){
-					mTempList[CORE.AUSTRALIA_BIOME_DESERT_2_ID] = this;
+					mTempList[CORE.AUSTRALIA_BIOME_DESERT_1_ID] = this;
 					mInternalBiomeList.set(null, mTempList);
 					if (mTempList != mInternalBiomeList.get(null)){
-						ReflectionUtils.setFinalStatic(mInternalBiomeList, mTempList);
+						ReflectionUtils.setFinalFieldValue(BiomeGenBase.class, mInternalBiomeList, mTempList);
 						Logger.REFLECTION("Set Biome ID for "+this.biomeName+" Biome internally in 'biomeList' field from "+BiomeGenBase.class.getCanonicalName()+".");						
 						return true;
 					}
@@ -144,6 +147,7 @@ public class Biome_AustralianDesert2 {
 			}
 			catch (Exception e) {
 				Logger.REFLECTION("Could not access 'biomeList' field in "+BiomeGenBase.class.getCanonicalName()+".");
+				e.printStackTrace();
 				return false;
 			}			
 		}

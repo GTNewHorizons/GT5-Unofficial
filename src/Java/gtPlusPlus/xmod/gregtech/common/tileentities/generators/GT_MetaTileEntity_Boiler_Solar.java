@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.generators;
 
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_AdvancedBoiler;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_AdvancedBoiler;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -28,6 +29,14 @@ extends GT_MetaTileEntity_Boiler {
 
 	public GT_MetaTileEntity_Boiler_Solar(final String aName, final int aTier, final String aDescription, final ITexture[][][] aTextures) {
 		super(aName, aTier, aDescription, aTextures);
+	}
+	
+	@Override
+	public String[] getDescription() {
+		return new String[]{
+				this.mDescription,
+				"Produces "+(this.getPollution()*20)+" pollution/sec",
+                CORE.GT_Tooltip};
 	}
 
 	@Override

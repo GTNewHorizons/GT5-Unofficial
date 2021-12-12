@@ -276,6 +276,26 @@ public class TexturesGtBlock {
 	public static final CustomIcon Casing_Machine_Metal_Sheet_A = Internal_Casing_Machine_Metal_Sheet_A;
 	private static final CustomIcon Internal_Casing_Machine_Metal_Sheet_B = new CustomIcon("chrono/MetalSheet2");
 	public static final CustomIcon Casing_Machine_Metal_Sheet_B = Internal_Casing_Machine_Metal_Sheet_B;
+	private static final CustomIcon Internal_Casing_Machine_Metal_Sheet_C = new CustomIcon("chrono/MetalSheet3");
+	public static final CustomIcon Casing_Machine_Metal_Sheet_C = Internal_Casing_Machine_Metal_Sheet_C;
+	private static final CustomIcon Internal_Casing_Machine_Metal_Sheet_D = new CustomIcon("chrono/MetalSheet4");
+	public static final CustomIcon Casing_Machine_Metal_Sheet_D = Internal_Casing_Machine_Metal_Sheet_D;
+	private static final CustomIcon Internal_Casing_Machine_Metal_Sheet_E = new CustomIcon("chrono/MetalSheet5");
+	public static final CustomIcon Casing_Machine_Metal_Sheet_E = Internal_Casing_Machine_Metal_Sheet_E;
+	private static final CustomIcon Internal_Casing_Machine_Metal_Sheet_F = new CustomIcon("chrono/MetalSheet6");
+	public static final CustomIcon Casing_Machine_Metal_Sheet_F = Internal_Casing_Machine_Metal_Sheet_F;
+	private static final CustomIcon Internal_Casing_Machine_Metal_Sheet_G = new CustomIcon("chrono/MetalSheet7");
+	public static final CustomIcon Casing_Machine_Metal_Sheet_G = Internal_Casing_Machine_Metal_Sheet_G;
+	private static final CustomIcon Internal_Casing_Machine_Metal_Sheet_H = new CustomIcon("chrono/MetalSheet8");
+	public static final CustomIcon Casing_Machine_Metal_Sheet_H = Internal_Casing_Machine_Metal_Sheet_H;
+	private static final CustomIcon Internal_Casing_Machine_Metal_Sheet_I = new CustomIcon("chrono/MetalSheet9");
+	public static final CustomIcon Casing_Machine_Metal_Sheet_I = Internal_Casing_Machine_Metal_Sheet_I;
+	private static final CustomIcon Internal_Casing_Machine_Metal_Sheet_J = new CustomIcon("chrono/MetalSheet10");
+	public static final CustomIcon Casing_Machine_Metal_Sheet_J = Internal_Casing_Machine_Metal_Sheet_J;
+	private static final CustomIcon Internal_Casing_Machine_Metal_Sheet_K = new CustomIcon("chrono/MetalSheet11");
+	public static final CustomIcon Casing_Machine_Metal_Sheet_K = Internal_Casing_Machine_Metal_Sheet_K;
+	private static final CustomIcon Internal_Casing_Machine_Metal_Sheet_L = new CustomIcon("chrono/MetalSheet12");
+	public static final CustomIcon Casing_Machine_Metal_Sheet_L = Internal_Casing_Machine_Metal_Sheet_L;
 	private static final CustomIcon Internal_Overlay_Machine_Cyber_A = new CustomIcon("chrono/CyberPanel");
 	public static final CustomIcon Overlay_Machine_Cyber_A = Internal_Overlay_Machine_Cyber_A;
 	private static final CustomIcon Internal_Overlay_Machine_Cyber_B = new CustomIcon("chrono/CyberPanel2");
@@ -477,6 +497,21 @@ public class TexturesGtBlock {
 
 	public static final CustomIcon TEXTURE_TECH_PANEL_RADIOACTIVE = new CustomIcon("TileEntities/DecayablesChest_bottom");
 	public static final CustomIcon TEXTURE_TECH_PANEL_RADIOACTIVE_ALT = new CustomIcon("TileEntities/DecayablesChest_top");
+	
+	// LFTR Single blocks
+	public static final CustomIcon OVERLAY_REACTOR_COLDTRAP_FRONT = new CustomIcon("TileEntities/ReactorColdTrap/OVERLAY_FRONT");
+	public static final CustomIcon OVERLAY_REACTOR_COLDTRAP_FRONT_ACTIVE = new CustomIcon("TileEntities/ReactorColdTrap/OVERLAY_FRONT_ACTIVE");
+	public static final CustomIcon OVERLAY_REACTOR_COLDTRAP_SIDE = new CustomIcon("TileEntities/ReactorColdTrap/OVERLAY_SIDE");
+	public static final CustomIcon OVERLAY_REACTOR_COLDTRAP_SIDE_ACTIVE = new CustomIcon("TileEntities/ReactorColdTrap/OVERLAY_SIDE_ACTIVE");
+	public static final CustomIcon OVERLAY_REACTOR_COLDTRAP_TOP = new CustomIcon("TileEntities/ReactorColdTrap/OVERLAY_TOP");
+	public static final CustomIcon OVERLAY_REACTOR_COLDTRAP_TOP_ACTIVE = new CustomIcon("TileEntities/ReactorColdTrap/OVERLAY_TOP_ACTIVE");
+	
+	public static final CustomIcon OVERLAY_REACTOR_PROCESSINGUNIT_FRONT = new CustomIcon("TileEntities/ReactorProcessingUnit/OVERLAY_FRONT");
+	public static final CustomIcon OVERLAY_REACTOR_PROCESSINGUNIT_FRONT_ACTIVE = new CustomIcon("TileEntities/ReactorProcessingUnit/OVERLAY_FRONT_ACTIVE");
+	public static final CustomIcon OVERLAY_REACTOR_PROCESSINGUNIT_SIDE = new CustomIcon("TileEntities/ReactorProcessingUnit/OVERLAY_SIDE");
+	public static final CustomIcon OVERLAY_REACTOR_PROCESSINGUNIT_SIDE_ACTIVE = new CustomIcon("TileEntities/ReactorProcessingUnit/OVERLAY_SIDE_ACTIVE");
+	public static final CustomIcon OVERLAY_REACTOR_PROCESSINGUNIT_TOP = new CustomIcon("TileEntities/ReactorProcessingUnit/OVERLAY_TOP");
+	public static final CustomIcon OVERLAY_REACTOR_PROCESSINGUNIT_TOP_ACTIVE = new CustomIcon("TileEntities/ReactorProcessingUnit/OVERLAY_TOP_ACTIVE");
 
 
 	//Overlay Arrays

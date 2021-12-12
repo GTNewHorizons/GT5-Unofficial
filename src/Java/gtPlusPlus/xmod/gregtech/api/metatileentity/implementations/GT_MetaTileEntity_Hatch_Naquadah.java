@@ -12,6 +12,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 import net.minecraft.item.ItemStack;
@@ -115,7 +116,8 @@ public class GT_MetaTileEntity_Hatch_Naquadah extends GT_MetaTileEntity_Hatch_In
 				"Capacity: " + getCapacity()+"L",
 				"Accepted Fluid: " + aNaq,
 				"Accepted Fluid: " + aEnrNaq,
-				"Accepted Fluid: " + aNaquad
+				"Accepted Fluid: " + aNaquad,
+				CORE.GT_Tooltip
 				};		
 		return s2;
 	}

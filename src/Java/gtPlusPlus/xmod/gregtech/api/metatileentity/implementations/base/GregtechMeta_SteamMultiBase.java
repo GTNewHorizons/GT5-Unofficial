@@ -290,18 +290,18 @@ public abstract class GregtechMeta_SteamMultiBase extends GregtechMeta_MultiBloc
 		}
 
 		//Use this to determine the correct value, then update the hatch texture after.
-		boolean aDidAdd = false;		
+		boolean aDidAdd = false;
 
-		//Handle Custom Hustoms	
-
-		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_CustomFluidBase)
+		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_CustomFluidBase) {
 			aDidAdd = addToMachineListInternal(mSteamInputFluids, aMetaTileEntity, aBaseCasingIndex);
-		
-		else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Steam_BusInput)
-			aDidAdd = addToMachineListInternal(mSteamInputs, aMetaTileEntity, aBaseCasingIndex);
-		
-		else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Steam_BusOutput)
+		}		
+		else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Steam_BusInput) {
+            ((GT_MetaTileEntity_Hatch_InputBus) aTileEntity).mRecipeMap = getRecipeMap();
+            aDidAdd = addToMachineListInternal(mSteamInputs, aMetaTileEntity, aBaseCasingIndex);
+		}		
+		else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Steam_BusOutput) {
 			aDidAdd = addToMachineListInternal(mSteamOutputs, aMetaTileEntity, aBaseCasingIndex);
+		}
 
 		return aDidAdd;
 	}

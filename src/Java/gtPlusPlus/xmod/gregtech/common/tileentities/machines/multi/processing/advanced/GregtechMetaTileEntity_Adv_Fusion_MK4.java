@@ -15,6 +15,7 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_FusionComputer;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.block.Block;
@@ -52,7 +53,7 @@ public class GregtechMetaTileEntity_Adv_Fusion_MK4 extends GT_MetaTileEntity_Fus
                 .addInputHatch("2-16, Specified casings", 1)
                 .addOutputHatch("1-16, Specified casings", 3)
                 .addStructureInfo("ALL Hatches must be UHV or better")
-                .toolTipFinisher("GT++");
+                .toolTipFinisher(CORE.GT_Tooltip_Builder);
         return tt;
 	}
 

@@ -152,6 +152,26 @@ public class VolumetricFlaskHelper {
 		nbt.setInteger("Capacity", aCapacity);
 		return true;
 	}
+	
+    public static int fillFlask(ItemStack stack, FluidStack resource, boolean doFill) {
+        if (stack.stackSize != 1)
+            return 0;
+        if ((resource == null) || (resource.amount <= 0)) {
+            return 0;
+        }
+        FluidStack fluidStack = getFlaskFluid(stack);
+        if (fluidStack == null) {
+            fluidStack = new FluidStack(resource, 0);
+        } else if (!fluidStack.isFluidEqual(resource)) {
+            return 0;
+        }
+        int amount = Math.min(getMaxFlaskCapacity(stack) - fluidStack.amount, resource.amount);
+        if ((doFill) && (amount > 0)) {
+            fluidStack.amount += amount;
+            setFluid(stack, fluidStack);
+        }
+        return amount;
+    }
 
 	public static Item generateNewFlask(String unlocalized, String english, int maxCapacity) {
 		Constructor aFlask = ReflectionUtils.getConstructor(sClassVolumetricFlask, new Class[] {String.class, String.class, int.class});

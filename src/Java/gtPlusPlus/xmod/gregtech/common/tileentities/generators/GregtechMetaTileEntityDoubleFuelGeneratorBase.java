@@ -14,7 +14,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
-
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.generators.GregtechRocketFuelGeneratorBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -32,6 +32,15 @@ extends GregtechRocketFuelGeneratorBase {
 		super(aName, aTier, aDescription, aTextures);
 		this.onConfigLoad();
 	}
+	
+    @Override
+    public String[] getDescription() {
+        return new String[]{this.mDescription,
+                "Generates power at " + this.getEfficiency() + "% Efficiency per tick",
+                "Output Voltage: "+this.getOutputTier()+" EU/t",
+                CORE.GT_Tooltip
+            };
+    }
 
 	@Override
 	public boolean isOutputFacing(final byte aSide) {

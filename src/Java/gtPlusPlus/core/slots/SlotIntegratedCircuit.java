@@ -82,7 +82,7 @@ public class SlotIntegratedCircuit extends Slot {
 		}
 		if (mCircuitItem != null && mCircuitItem2 != null && mCircuitItem3 != null) {
 			if (itemstack != null) {
-				if (itemstack.getItem() == mCircuitItem || itemstack.getItem() == mCircuitItem2) {
+				if (itemstack.getItem() == mCircuitItem || itemstack.getItem() == mCircuitItem2 || itemstack.getItem() == mCircuitItem3) {
 					if (itemstack.getItem() == mCircuitItem) {
 						return 0;
 					}

@@ -38,7 +38,7 @@ public class StopAnnoyingFuckingAchievements {
 				Field aGameSettings = ReflectionUtils.getField(aClazz2, "gameSettings");
 				Object aGameSettingsObj = ReflectionUtils.getFieldValue(aInstanceMC, aGameSettings);
 				Class aClazz3 = aGameSettingsObj.getClass();
-				if (aClazz2 != null) {
+				if (aClazz3 != null) {
 					Field ainvHint = ReflectionUtils.getField(aClazz3, "showInventoryAchievementHint");
 					ReflectionUtils.setField(aGameSettingsObj, ainvHint, false);
 				}

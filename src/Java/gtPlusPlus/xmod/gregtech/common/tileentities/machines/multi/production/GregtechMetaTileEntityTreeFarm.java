@@ -89,7 +89,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 				.addEnergyHatch("Any casing", 1)
 				.addMaintenanceHatch("Any casing", 1)
 				.addMufflerHatch("Any casing", 1)
-				.toolTipFinisher("GT++");
+				.toolTipFinisher(CORE.GT_Tooltip_Builder);
 		return tt;
 	}
 

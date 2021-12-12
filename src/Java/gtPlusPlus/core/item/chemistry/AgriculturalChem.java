@@ -296,7 +296,7 @@ public class AgriculturalChem extends ItemPackage {
 		}
 
 		if (aTiCon) {
-			aBlood = FluidUtils.getFluidStack("hell_blood", 100);
+			aBlood = FluidUtils.getFluidStack("blood", 100);
 			if (aBlood != null) {
 				Logger.INFO("Found Tinker's Construct, enabled Blood support.");
 				CustomBlood = aBlood.getFluid();
@@ -435,7 +435,7 @@ public class AgriculturalChem extends ItemPackage {
 		ItemStack aBone;
 		ItemStack aMeat;
 		ItemStack aEmptyCells = CI.emptyCells(2);
-		ItemStack aInputCells = ItemUtils.getItemStackOfAmountFromOreDict("cellRawWaste", 2);
+		ItemStack aInputCells = ItemUtils.getItemStackOfAmountFromOreDict("cellRawAnimalWaste", 2);
 		FluidStack aOutput = FluidUtils.getFluidStack(FertileManureSlurry, 1000);
 
 		for (FluidStack aBloodStack : mBloodFluids) {

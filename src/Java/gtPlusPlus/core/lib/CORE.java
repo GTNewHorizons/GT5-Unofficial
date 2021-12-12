@@ -10,7 +10,6 @@ import gregtech.api.GregTech_API;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.api.objects.random.XSTR;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.preloader.CORE_Preloader;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
@@ -52,7 +51,7 @@ public class CORE {
 
 	public static final String name = "GT++";
 	public static final String MODID = "miscutils";
-	public static final String VERSION = "1.7.06-GTNH";
+	public static final String VERSION = "1.7.15-GTNH";
 
 	//Tweakables
 	public static int EVERGLADES_ID = 227;
@@ -77,6 +76,7 @@ public class CORE {
 	public static final WeakHashMap<World, EntityPlayerMP> fakePlayerCache = new WeakHashMap<World, EntityPlayerMP>();
 	//Tooltips;
 	public static final String GT_Tooltip = "Added by: " + EnumChatFormatting.DARK_GREEN+"Alkalus "+EnumChatFormatting.GRAY+"- "+EnumChatFormatting.RED+"[GT++]";
+	public static final String GT_Tooltip_Builder = "" + EnumChatFormatting.DARK_GREEN+"Alkalus "+EnumChatFormatting.GRAY+"- "+EnumChatFormatting.RED+"[GT++]";
 	public static final String GT_Tooltip_Radioactive = EnumChatFormatting.GRAY+"Warning: "+EnumChatFormatting.GREEN+"Radioactive! "+EnumChatFormatting.GOLD+" Avoid direct handling without hazmat protection.";
 	public static final String noItem = "";
 
@@ -297,8 +297,6 @@ public class CORE {
 		public static int pollutionPerSecondMultiGeneratorArray;
 		public static int pollutionPerSecondMultiTreeFarm = 100;
 		public static int pollutionPerSecondMultiFrothFlotationCell = 0;
-		public static int pollutionPerSecondMultiNuclearReactor_ModeBoosted = 160;
-		public static int pollutionPerSecondMultiNuclearReactor_ModeNormal = 80;
 		public static int pollutionPerSecondMultiAutoCrafter = 500;
 		public static int pollutionPerSecondMultiThermalBoiler = 700;
 		public static int pollutionPerSecondMultiAlgaePond = 0;
@@ -340,13 +338,21 @@ public class CORE {
 		Logger.INFO("This should only happy in a development environment or when something really bad happens.");
 		Logger.INFO("Reason: "+aReason);
 		Logger.INFO("==========================================================");
-		Logger.INFO("Called from: "+ReflectionUtils.getMethodName(0));
-		Logger.INFO(ReflectionUtils.getMethodName(1));
+		Logger.INFO("Called from: "+ReflectionUtils.getMethodName(1));
 		Logger.INFO(ReflectionUtils.getMethodName(2));
 		Logger.INFO(ReflectionUtils.getMethodName(3));
 		Logger.INFO(ReflectionUtils.getMethodName(4));
 		Logger.INFO(ReflectionUtils.getMethodName(5));
-		Logger.INFO(ReflectionUtils.getMethodName(6));		
+		Logger.INFO(ReflectionUtils.getMethodName(6));	
+		Logger.INFO(ReflectionUtils.getMethodName(7));	
+		Logger.INFO(ReflectionUtils.getMethodName(8));	
+		Logger.INFO(ReflectionUtils.getMethodName(9));	
+		Logger.INFO(ReflectionUtils.getMethodName(10));	
+		Logger.INFO(ReflectionUtils.getMethodName(11));	
+		Logger.INFO(ReflectionUtils.getMethodName(12));	
+		Logger.INFO(ReflectionUtils.getMethodName(13));	
+		Logger.INFO(ReflectionUtils.getMethodName(14));	
+		Logger.INFO(ReflectionUtils.getMethodName(15));		
 		FMLCommonHandler.instance().exitJava(0, true);
 	}
 	

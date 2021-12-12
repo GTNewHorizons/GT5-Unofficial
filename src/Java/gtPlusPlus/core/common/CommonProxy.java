@@ -3,7 +3,6 @@ package gtPlusPlus.core.common;
 import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.objects.Logger;
@@ -51,8 +50,6 @@ import net.minecraftforge.client.IItemRenderer;
 
 public class CommonProxy {
 
-	private boolean mFluidsGenerated = false;
-
 	public CommonProxy() {
 		// Should Register Gregtech Materials I've Made
 		Utils.registerEvent(this);
@@ -99,11 +96,6 @@ public class CommonProxy {
 		Logger.INFO("[Proxy] Calling Render registrator.");
 		registerRenderThings();
 
-		if (!mFluidsGenerated && ItemList.Cell_Empty.hasBeenSet()) {
-			Material.generateQueuedFluids();
-			mFluidsGenerated = true;
-		}
-
 	}
 
 	public void init(final FMLInitializationEvent e) {
@@ -114,15 +106,6 @@ public class CommonProxy {
 
 		registerCustomItemsForMaterials();
 		ModBlocks.blockCustomMobSpawner = new BlockGenericSpawner();
-
-		if (!mFluidsGenerated && ItemList.Cell_Empty.hasBeenSet()) {
-			Material.generateQueuedFluids();
-			mFluidsGenerated = true;
-		} else {
-			Logger.INFO("[ERROR] Did not generate fluids at all.");
-			Logger.WARNING("[ERROR] Did not generate fluids at all.");
-			Logger.ERROR("[ERROR] Did not generate fluids at all.");
-		}
 		CI.init();
 		FluidFactory.init();
 
@@ -236,7 +219,7 @@ public class CommonProxy {
 	}
 
 	public void registerCustomItemsForMaterials() {
-		Material.registerComponentForMaterial(GenericChem.CARBYNE, OrePrefixes.plate, GregtechItemList.Carbyne_Sheet_Finished.get(1));
+		//Material.registerComponentForMaterial(GenericChem.CARBYNE, OrePrefixes.plate, GregtechItemList.Carbyne_Sheet_Finished.get(1));
 	}
 
 	public void registerCustomMobDrops() {

@@ -3,7 +3,11 @@ package gtPlusPlus.core.material;
 import static gregtech.api.enums.GT_Values.M;
 import static gtPlusPlus.core.util.math.MathUtils.safeCast_LongToInt;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -33,8 +37,11 @@ import net.minecraftforge.fluids.FluidStack;
 public class Material {
 
 	public static final Set<Material> mMaterialMap = new HashSet<Material>();
+	public static HashMap<String, Material> mMaterialCache = new HashMap<String, Material>();
 
 	public static final Map<String, Map<String, ItemStack>> mComponentMap = new HashMap<String, Map<String, ItemStack>>();
+
+	public static HashMap<String, String> sChemicalFormula = new HashMap<String, String>();
 
 	private String unlocalizedName;
 	private String localizedName;
@@ -42,7 +49,7 @@ public class Material {
 	private MaterialState materialState;
 	private TextureSet textureSet;
 
-	private Fluid vMoltenFluid;
+	private Fluid mFluid;
 	private Fluid vPlasma;
 
 	private boolean vGenerateCells;
@@ -163,6 +170,8 @@ public class Material {
 		try {
 			this.unlocalizedName = Utils.sanitizeString(materialName);
 			this.localizedName = materialName;
+			mMaterialCache.put(getLocalizedName().toLowerCase(), this);
+			Logger.INFO("Stored "+getLocalizedName()+" to cache with key: "+getLocalizedName().toLowerCase());
 
 			this.materialState = defaultState;
 
@@ -466,29 +475,28 @@ public class Material {
 			}
 
 			if (generateFluid){
-				final Materials isValid = Materials.get(this.getLocalizedName());				
+				final Materials aGregtechMaterial = tryFindGregtechMaterialEquivalent();				
 				FluidStack aTest = FluidUtils.getWildcardFluidStack(localizedName, 1);				
 				if (aTest != null){
-					this.vMoltenFluid = aTest.getFluid();
+					this.mFluid = aTest.getFluid();
+					checkForCellAndGenerate(this);
 				}
 				else {
-					if (isValid == null || isValid == Materials._NULL){
-						queueFluidGeneration();
+					if (aGregtechMaterial != null && !MaterialUtils.isNullGregtechMaterial(aGregtechMaterial)){
+						aTest = FluidUtils.getWildcardFluidStack(aGregtechMaterial, 1);						
 					}
-					else {		
-						FluidStack aTest2 = FluidUtils.getWildcardFluidStack(localizedName, 1);	
-						if (aTest2 != null){
-							this.vMoltenFluid = aTest2.getFluid();
-						}
-						else {
-							queueFluidGeneration();
-						}
+					if (aTest != null){
+						this.mFluid = aTest.getFluid();
+						checkForCellAndGenerate(this);
 					}
+					else {
+						mFluid = generateFluid();						
+					}					
 				}
 				this.vPlasma = this.generatePlasma();
 			}
 			else {
-				this.vMoltenFluid = null;
+				this.mFluid = null;
 				this.vPlasma = null;
 			}
 			String ratio = "";
@@ -511,6 +519,7 @@ public class Material {
 				}
 			}
 
+			sChemicalFormula.put(materialName.toLowerCase(), this.vChemicalFormula);
 			Logger.MATERIALS("Creating a Material instance for "+materialName);
 			Logger.MATERIALS("Formula: "+this.vChemicalFormula + " Smallest Stack: "+this.smallestStackSizeWhenProcessing+" Smallest Ratio:"+ratio);
 			Logger.MATERIALS("Protons: "+this.vProtons);
@@ -523,6 +532,36 @@ public class Material {
 			Logger.MATERIALS("Stack Trace for "+materialName);
 			t.printStackTrace();
 		}
+	}
+
+	private static void checkForCellAndGenerate(Material material) {
+		if (!material.vGenerateCells) {
+			return;
+		}
+		String aName = Utils.sanitizeString(material.unlocalizedName);		
+		String aName2 = Utils.sanitizeString(material.unlocalizedName.toLowerCase());
+		String aName3 = (material.localizedName == null) ? aName : material.localizedName;	
+		ItemStack aTestCell1 = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+aName, 1);
+		ItemStack aTestCell2 = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+aName2, 1);
+		ItemStack aTestCell3 = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+aName3, 1);
+		if (aTestCell1 == null && aTestCell2 == null && aTestCell3 == null) {
+			Logger.INFO("Generating cell for "+ material.localizedName);
+			new BaseItemCell(material);
+		}
+		else {
+			if (aTestCell1 != null) {
+				Logger.INFO("Registering existing cell for "+ material.localizedName+", "+aName);
+				material.registerComponentForMaterial(OrePrefixes.cell, aTestCell1);
+			}
+			else if (aTestCell2 != null) {
+				Logger.INFO("Registering existing cell for "+ material.localizedName+", "+aName2);
+				material.registerComponentForMaterial(OrePrefixes.cell, aTestCell2);
+			}
+			else if (aTestCell3 != null) {
+				Logger.INFO("Registering existing cell for "+ material.localizedName+", "+aName3);
+				material.registerComponentForMaterial(OrePrefixes.cell, aTestCell3);
+			}
+		}		
 	}
 
 	public final TextureSet getTextureSet() {
@@ -735,13 +774,25 @@ public class Material {
 		else {
 			// Try get a GT Material
 			Materials Erf = MaterialUtils.getMaterial(this.unlocalizedName);
-			if (Erf != null && Erf != Materials._NULL) {
+			if (Erf != null && !MaterialUtils.isNullGregtechMaterial(Erf)) {
 				ItemStack Erg = ItemUtils.getOrePrefixStack(aPrefix, Erf, stacksize);
-				if (Erg != null) {
+				if (Erg != null && ItemUtils.checkForInvalidItems(Erg)) {
 					Logger.MATERIALS("Found \"" + aKey + this.unlocalizedName + "\" using backup GT Materials option.");
 					g.put(aKey, Erg);
 					mComponentMap.put(unlocalizedName, g);
 					return Erg;
+				}
+				else {
+					// Try get a molten cell
+					if (aPrefix == OrePrefixes.cell) {
+						Erg = ItemUtils.getOrePrefixStack(OrePrefixes.cellMolten, Erf, stacksize);
+						if (Erg != null && ItemUtils.checkForInvalidItems(Erg)) {
+							Logger.MATERIALS("Found \"" + OrePrefixes.cellMolten.name() + this.unlocalizedName + "\" using backup GT Materials option.");
+							g.put(aKey, Erg);
+							mComponentMap.put(unlocalizedName, g);
+							return Erg;
+						}
+					}
 				}
 			} else {
 				ItemStack u = ItemUtils.getItemStackOfAmountFromOreDictNoBroken(aKey + this.unlocalizedName, stacksize);
@@ -1082,7 +1133,6 @@ public class Material {
 	public final static void generateQueuedFluids() {
 		for (Material m : mMaterialMap) {
 			if (m.isFluidQueued) {
-				m.vMoltenFluid = m.generateFluid();
 			}
 		}
 	}
@@ -1185,8 +1235,9 @@ public class Material {
 					1000,
 					this.vGenerateCells);
 		}
-		else if (this.materialState == MaterialState.GAS){
-			return FluidUtils.addGTFluid(
+		else if (this.materialState == MaterialState.GAS || this.materialState == MaterialState.PURE_GAS){
+			return FluidUtils.generateGas(unlocalizedName,	this.getLocalizedName(), getMeltingPointK(), getRGBA(), vGenerateCells);
+			/*return FluidUtils.addGTFluid(
 					this.getUnlocalizedName(),
 					this.getLocalizedName()+" Gas",
 					this.RGBA,
@@ -1195,7 +1246,7 @@ public class Material {
 					aFullCell,
 					ItemUtils.getEmptyCell(),
 					1000,
-					this.vGenerateCells);
+					this.vGenerateCells);*/
 		}
 		else { //Plasma
 			return this.generatePlasma();
@@ -1206,33 +1257,45 @@ public class Material {
 		if (this.materialState == MaterialState.ORE){
 			return null;
 		}
-		final Materials isValid = Materials.get(this.getLocalizedName());
+		final Materials isValid = tryFindGregtechMaterialEquivalent();
 
 		if (!this.vGenerateCells){
 			return null;
 		}
-		for (Materials m : invalidMaterials.values()){
-			if (isValid == m){
-				return (m.mPlasma != null ? m.mPlasma : null);
+		if (isValid != null) {
+			for (Materials m : invalidMaterials.values()){
+				if (isValid == m){
+					return null;
+				}
+			}
+			if (isValid.mPlasma != null){
+				Logger.MATERIALS("Using a pre-defined Plasma from GT.");
+				return isValid.mPlasma;
 			}
 		}
-		if (isValid.mPlasma != null){
-			Logger.MATERIALS("Using a pre-defined Plasma from GT.");
-			return isValid.mPlasma;
-		}
-
 		Logger.MATERIALS("Generating our own Plasma.");
 		return FluidUtils.addGTPlasma(this);
 	}
 
 
+	public Fluid getFluid() {
+		return mFluid;
+	}
 
-	final public FluidStack getFluid(final int fluidAmount) {
-		if (this.vMoltenFluid == null){
+	final public FluidStack getFluidStack(final int fluidAmount) {
+		if (this.mFluid == null){
 			return null;
 		}
-		final FluidStack moltenFluid = new FluidStack(this.vMoltenFluid, fluidAmount);
+		final FluidStack moltenFluid = new FluidStack(this.mFluid, fluidAmount);
 		return moltenFluid;
+	}
+	
+	final public boolean setFluid(Fluid aFluid) {
+		if (this.mFluid == null){
+			this.mFluid = aFluid;
+			return true;
+		}
+		return false;
 	}
 
 
@@ -1322,8 +1385,8 @@ public class Material {
 	}
 	
 	private static boolean registerComponentForMaterial(Material componentMaterial, FluidStack aStack) {		
-		if (componentMaterial != null && aStack != null && componentMaterial.vMoltenFluid == null) {
-			componentMaterial.vMoltenFluid = aStack.getFluid();
+		if (componentMaterial != null && aStack != null && componentMaterial.mFluid == null) {
+			componentMaterial.mFluid = aStack.getFluid();
 			return true;
 		}
 		return false;
@@ -1362,6 +1425,36 @@ public class Material {
 			//Bad
 			Logger.MATERIALS("Tried to double register a material component. ");
 			return false;
+		}
+	}
+	
+	public Materials tryFindGregtechMaterialEquivalent() {
+		return tryFindGregtechMaterialEquivalent(this);
+	}
+	
+
+	public static Materials tryFindGregtechMaterialEquivalent(Material aMaterial) {
+		String aMaterialName = aMaterial.getLocalizedName();
+		Materials aGregtechMaterial = Materials.get(aMaterialName);		
+		if (aGregtechMaterial == null || MaterialUtils.isNullGregtechMaterial(aGregtechMaterial)) {
+			aMaterialName = aMaterialName.replace(" ", "_");
+			aGregtechMaterial = Materials.get(aMaterialName);
+			if (aGregtechMaterial == null || MaterialUtils.isNullGregtechMaterial(aGregtechMaterial)) {
+				aMaterialName = aMaterialName.replace(" ", "");
+				aGregtechMaterial = Materials.get(aMaterialName);
+				if (aGregtechMaterial == null || MaterialUtils.isNullGregtechMaterial(aGregtechMaterial)) {
+					return null;
+				}
+				else {
+					return aGregtechMaterial;
+				}
+			}
+			else {
+				return aGregtechMaterial;
+			}
+		}
+		else {
+			return aGregtechMaterial;
 		}
 	}
 

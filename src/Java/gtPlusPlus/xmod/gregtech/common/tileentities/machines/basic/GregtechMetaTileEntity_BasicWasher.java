@@ -7,6 +7,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
+import gtPlusPlus.core.lib.CORE;
 import gregtech.api.util.GTPP_Recipe;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -39,7 +40,7 @@ public class GregtechMetaTileEntity_BasicWasher extends GT_MetaTileEntity_BasicM
 
 	@Override
 	public String[] getDescription() {
-		return new String[]{this.mDescription, "Grants no byproducts, but it is fast.", };
+		return new String[]{this.mDescription, "Grants no byproducts, but it is fast.", CORE.GT_Tooltip};
 	}
 
 	@Override

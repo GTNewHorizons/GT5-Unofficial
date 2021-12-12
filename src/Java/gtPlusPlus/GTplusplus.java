@@ -6,11 +6,13 @@ import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableCustomCapes;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Collection;
+import java.util.HashMap;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.*;
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -52,6 +54,8 @@ import gtPlusPlus.xmod.gregtech.loaders.GT_Material_Loader;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_BlastSmelterGT_GTNH;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_MultisUsingFluidInsteadOfCells;
 import gtPlusPlus.xmod.thaumcraft.commands.CommandDumpAspects;
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.IIcon;
 
@@ -496,5 +500,65 @@ public class GTplusplus implements ActionListener {
 		// Force - Alloying
 		mGregMatLoader.enableMaterial(Materials.Force);
 	}
+
+	private static final HashMap<String, Item> sMissingItemMappings = new HashMap<String, Item>();
+	private static final HashMap<String, Block> sMissingBlockMappings = new HashMap<String, Block>();
+	
+	private static void processMissingMappings() {
+		sMissingItemMappings.put("miscutils:Ammonium", GameRegistry.findItem(CORE.MODID, "itemCellAmmonium"));
+		sMissingItemMappings.put("miscutils:Hydroxide", GameRegistry.findItem(CORE.MODID, "itemCellHydroxide"));
+		sMissingItemMappings.put("miscutils:BerylliumHydroxide", GameRegistry.findItem(CORE.MODID, "itemCellmiscutils:BerylliumHydroxide"));		
+		sMissingItemMappings.put("miscutils:Bromine", GameRegistry.findItem(CORE.MODID, "itemCellBromine"));
+		sMissingItemMappings.put("miscutils:Krypton", GameRegistry.findItem(CORE.MODID, "itemCellKrypton"));
+		sMissingItemMappings.put("miscutils:itemCellZirconiumTetrafluoride", GameRegistry.findItem(CORE.MODID, "ZirconiumTetrafluoride"));
+		sMissingItemMappings.put("miscutils:Li2BeF4", GameRegistry.findItem(CORE.MODID, "itemCellLithiumTetrafluoroberyllate"));
+		
+		// Cryolite
+		sMissingBlockMappings.put("miscutils:oreCryolite", GameRegistry.findBlock(CORE.MODID, "oreCryoliteF"));
+		sMissingItemMappings.put("miscutils:itemDustTinyCryolite", GameRegistry.findItem(CORE.MODID, "itemDustTinyCryoliteF"));
+		sMissingItemMappings.put("miscutils:itemDustSmallCryolite", GameRegistry.findItem(CORE.MODID, "itemDustSmallCryoliteF"));
+		sMissingItemMappings.put("miscutils:itemDustCryolite", GameRegistry.findItem(CORE.MODID, "itemDustCryoliteF"));
+		sMissingItemMappings.put("miscutils:dustPureCryolite", GameRegistry.findItem(CORE.MODID, "dustPureCryoliteF"));
+		sMissingItemMappings.put("miscutils:dustImpureCryolite", GameRegistry.findItem(CORE.MODID, "dustImpureCryoliteF"));
+		sMissingItemMappings.put("miscutils:crushedCryolite", GameRegistry.findItem(CORE.MODID, "crushedCryoliteF"));
+		sMissingItemMappings.put("miscutils:crushedPurifiedCryolite", GameRegistry.findItem(CORE.MODID, "crushedPurifiedCryoliteF"));
+		sMissingItemMappings.put("miscutils:crushedCentrifugedCryolite", GameRegistry.findItem(CORE.MODID, "crushedCentrifugedCryoliteF"));
+		sMissingItemMappings.put("miscutils:oreCryolite", GameRegistry.findItem(CORE.MODID, "oreCryoliteF"));
+	}
+	
+    @Mod.EventHandler
+    public void missingMapping(FMLMissingMappingsEvent event) {
+    	processMissingMappings();
+    	for (FMLMissingMappingsEvent.MissingMapping mapping : event.get()) {
+    		if (mapping.type == GameRegistry.Type.ITEM) {
+    			Item aReplacement = sMissingItemMappings.get(mapping.name);
+    			if (aReplacement != null) {
+    				remap(aReplacement, mapping);
+    			}
+    			else {
+    				//Logger.INFO("Unable to remap: "+mapping.name+", item has no replacement mapping.");
+    			}
+    		}
+    		else if (mapping.type == GameRegistry.Type.BLOCK) {
+    			Block aReplacement = sMissingBlockMappings.get(mapping.name);
+    			if (aReplacement != null) {
+    				remap(aReplacement, mapping);
+    			}
+    			else {
+    				//Logger.INFO("Unable to remap: "+mapping.name+", block has no replacement mapping.");
+    			}
+    		}
+    	}
+    }
+    
+    private static void remap(Item item, FMLMissingMappingsEvent.MissingMapping mapping) {
+        mapping.remap(item);
+        Logger.INFO("Remapping item " + mapping.name + " to " + CORE.MODID + ":" + item.getUnlocalizedName());
+    }
+    
+    private static void remap(Block block, FMLMissingMappingsEvent.MissingMapping mapping) {
+        mapping.remap(block);
+        Logger.INFO("Remapping block " + mapping.name + " to " + CORE.MODID + ":" + block.getUnlocalizedName());
+    }
 
 }
