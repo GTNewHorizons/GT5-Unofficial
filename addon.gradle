@@ -5,7 +5,7 @@ sourceSets.main {
 task initAVRcore(type: Exec) {
     description = "Updates (and inits) git submodules"
     group = "Build Setup"
-    commandLine("git", "submodule", "update", "--init", "--recursive", "--remote")
+    commandLine(projectDir.toString() + "/git", "submodule", "update", "--init", "--recursive", "--remote")
 }
 
 tasks.setupCIWorkspace.dependsOn initAVRcore
