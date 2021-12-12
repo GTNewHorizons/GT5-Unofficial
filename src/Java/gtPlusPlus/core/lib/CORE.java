@@ -297,8 +297,6 @@ public class CORE {
 		public static int pollutionPerSecondMultiGeneratorArray;
 		public static int pollutionPerSecondMultiTreeFarm = 100;
 		public static int pollutionPerSecondMultiFrothFlotationCell = 0;
-		public static int pollutionPerSecondMultiNuclearReactor_ModeBoosted = 160;
-		public static int pollutionPerSecondMultiNuclearReactor_ModeNormal = 80;
 		public static int pollutionPerSecondMultiAutoCrafter = 500;
 		public static int pollutionPerSecondMultiThermalBoiler = 700;
 		public static int pollutionPerSecondMultiAlgaePond = 0;
