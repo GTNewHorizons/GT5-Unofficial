@@ -79,7 +79,7 @@ public class RecipeLoader_NuclearFuelProcessing {
 				ELEMENT.getInstance().FLUORINE.getCell(6),
 				NUCLIDE.LiFThF4.getFluidStack(10000),
 				new ItemStack[] {
-						CI.emptyCells(4),
+						CI.emptyCells(5),
 						FLUORIDES.LITHIUM_FLUORIDE.getCell(1),
 						ItemUtils.getSimpleStack(ModItems.dustProtactinium233),
 						ItemUtils.getSimpleStack(ModItems.dustProtactinium233),
