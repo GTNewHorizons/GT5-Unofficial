@@ -11,7 +11,7 @@ buildscript {
         
     }
     dependencies {
-        classpath("com.github.GTNH2:ForgeGradle:FG_1.2-SNAPSHOT")
+        classpath("com.github.GTNewHorizons:ForgeGradle:1.2.4")
     }
 }
 
@@ -169,8 +169,8 @@ dependencies {
 
     //Hard Dependencies
     compile("net.industrial-craft:industrialcraft-2:$ic2Version:dev")
-    compile("com.github.GTNewHorizons:StructureLib:1.0.9:deobf")
-    compile("com.github.GTNewHorizons:GT5-Unofficial:$gt5uVersion:dev"){
+    compile("com.github.GTNewHorizons:StructureLib:1.0.12:dev")
+    compile("com.github.GTNewHorizons:GT5-Unofficial:master-SNAPSHOT:dev"){
         exclude("net.industrial-craft", "industrialcraft-2")
     }
     compile("eu.usrv:YAMCore:$yamcoreVersion:deobf")
