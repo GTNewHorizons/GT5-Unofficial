@@ -170,8 +170,12 @@ dependencies {
     //Hard Dependencies
     compile("net.industrial-craft:industrialcraft-2:$ic2Version:dev")
     compile("com.github.GTNewHorizons:StructureLib:1.0.12:dev")
-    compile("com.github.GTNewHorizons:GT5-Unofficial:master-SNAPSHOT:dev"){
+    compile("com.github.GTNewHorizons:GT5-Unofficial:$gt5uVersion:dev"){
         exclude("net.industrial-craft", "industrialcraft-2")
+        exclude("com.github.GTNewHorizons", "StructureLib")
+    }
+    compileOnly("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:master-SNAPSHOT:dev") {
+        isTransitive = false
     }
     compile("eu.usrv:YAMCore:$yamcoreVersion:deobf")
 
