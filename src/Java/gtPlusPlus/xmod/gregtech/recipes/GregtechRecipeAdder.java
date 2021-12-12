@@ -1,18 +1,23 @@
 package gtPlusPlus.xmod.gregtech.recipes;
 
+import static gregtech.GT_Mod.GT_FML_LOGGER;
 import static gtPlusPlus.core.lib.CORE.GTNH;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.internal.IGT_RecipeAdder;
 import gregtech.api.util.*;
 import gregtech.api.util.GTPP_Recipe.GTPP_Recipe_Map;
+import gregtech.api.util.GT_Recipe.GT_Recipe_AssemblyLine;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
@@ -1031,67 +1036,74 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 		return CORE.RA.addComponentMakerRecipe(aInputs, aInputFluid, aOutput1, aDuration, aEUt);		
 	}
 
-	public boolean addAssemblylineRecipe(ItemStack aResearchItem, int aResearchTime, ItemStack[] aInputs, FluidStack[] aFluidInputs_OLD, ItemStack aOutput, int aDuration, int aEUt) {
+    @Override
+    public boolean addAssemblylineRecipe(ItemStack aResearchItem, int aResearchTime, ItemStack[] aInputs, FluidStack[] aFluidInputs, ItemStack aOutput, int aDuration, int aEUt) {
+        if ((aResearchItem==null)||(aResearchTime<=0)||(aInputs == null) || (aOutput == null) || aInputs.length>15 || aInputs.length<4) {
+            return false;
+        }
+        if ((aDuration = GregTech_API.sRecipeFile.get("assemblingline", aOutput, aDuration)) <= 0) {
+            return false;
+        }
+        for(ItemStack tItem : aInputs){
+            if(tItem==null){
+                GT_FML_LOGGER.info("addAssemblingLineRecipe "+aResearchItem.getDisplayName()+" --> "+aOutput.getUnlocalizedName()+" there is some null item in that recipe");
+            }
+        }
+        GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.addFakeRecipe(false, new ItemStack[]{aResearchItem}, new ItemStack[]{aOutput}, new ItemStack[]{ItemList.Tool_DataStick.getWithName(1L, "Writes Research result", new Object[0])}, null, null, aResearchTime, 30, -201);
+        GT_Recipe.GT_Recipe_Map.sAssemblylineVisualRecipes.addFakeRecipe(false, aInputs, new ItemStack[]{aOutput}, new ItemStack[]{ItemList.Tool_DataStick.getWithName(1L, "Reads Research result", new Object[0])}, aFluidInputs, null, aDuration, aEUt, 0,true);
+        GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes.add(new GT_Recipe_AssemblyLine( aResearchItem, aResearchTime, aInputs, aFluidInputs, aOutput, aDuration, aEUt));
+        return true;
+    }
 
-		FluidStack[] aFluidInputs = new FluidStack[4];	
-		AutoMap<FluidStack> aNewFluidMap = new AutoMap<FluidStack>();
-		if (aFluidInputs_OLD.length > 4) {
-			for (FluidStack s : aFluidInputs_OLD) {
-				aNewFluidMap.put(s);
-			}
-			for (int i = 0; i < 4; i++) {
-				aFluidInputs[i] = aNewFluidMap.get(i);				
-			}
-		}
-		else {
-			aFluidInputs = aFluidInputs_OLD;
-		}
-
-
-		if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
-			if (aInputs.length < 6 && aFluidInputs.length < 2) {
-				ItemStack[] aInputStack = new ItemStack[] {aResearchItem, aInputs[0], aInputs[1], aInputs[2], aInputs[3], aInputs[4]};
-				return addSixSlotAssemblingRecipe(aInputStack, aFluidInputs[0], aOutput, aDuration, aEUt);
-			}        	
-			return false;
-		}
-		else {
-			if ((aResearchItem==null)||(aResearchTime<=0)||(aInputs == null) || (aOutput == null) || aInputs.length>15 || aInputs.length<4) {
-				return false;
-			}
-			else {
-				if (mAssemblyLine != null) {
-					try {						
-						if (!tryAddTecTechScannerRecipe(aResearchItem, aInputs, aFluidInputs, aOutput, aDuration, aEUt)) {
-							try {								
-								Logger.INFO("Failed to generate TecTech recipe for "+ItemUtils.getItemName(aResearchItem)+", please report this to Alkalus.");
-							}
-							catch (Throwable t) {
-								t.printStackTrace();
-							}
-						}
-						return (boolean) mAssemblyLine.invoke(GT_Values.RA, aResearchItem, aResearchTime, aInputs,
-								aFluidInputs, aOutput, aDuration, aEUt);
-					} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-						if (aInputs.length < 6 && aFluidInputs.length < 2) {
-							ItemStack[] aInputStack = new ItemStack[] { aResearchItem, aInputs[0], aInputs[1],
-									aInputs[2], aInputs[3], aInputs[4] };
-							return addSixSlotAssemblingRecipe(aInputStack, aFluidInputs[0], aOutput, aDuration,
-									aEUt);
-						}
-						return false;
-					}
-				} else {
-					if (aInputs.length < 6 && aFluidInputs.length < 2) {
-						ItemStack[] aInputStack = new ItemStack[] { aResearchItem, aInputs[0], aInputs[1], aInputs[2],
-								aInputs[3], aInputs[4] };
-						return addSixSlotAssemblingRecipe(aInputStack, aFluidInputs[0], aOutput, aDuration,
-								aEUt);
-					}
-					return false;
-				}
-			}		
-		}
+    @Override
+	public boolean addAssemblylineRecipe(ItemStack aResearchItem, int aResearchTime, Object[] aInputs, FluidStack[] aFluidInputs, ItemStack aOutput, int aDuration, int aEUt) {
+        if ((aResearchItem==null)||(aResearchTime<=0)||(aInputs == null) || (aOutput == null) || aInputs.length>15 || aInputs.length<4) {
+            return false;
+        }
+        if ((aDuration = GregTech_API.sRecipeFile.get("assemblingline", aOutput, aDuration)) <= 0) {
+            return false;
+        } 
+        ItemStack[] tInputs = new ItemStack[aInputs.length];
+        ItemStack[][] tAlts = new ItemStack[aInputs.length][];
+        for(int i = 0; i < aInputs.length; i++){
+        	Object obj = aInputs[i];
+        	if (obj instanceof ItemStack) {
+        		tInputs[i] = (ItemStack) obj;
+        		tAlts[i] = null;
+        		continue;
+        	} else if (obj instanceof ItemStack[]) {
+        		ItemStack[] aStacks = (ItemStack[]) obj;
+        		if (aStacks.length > 0) {
+        			tInputs[i] = aStacks[0];
+        			tAlts[i] = (ItemStack[]) Arrays.copyOf(aStacks, aStacks.length);
+        			continue;
+        		}
+        	} else if (obj instanceof Object[]) {
+        		Object[] objs = (Object[]) obj;
+        		List<ItemStack> tList;
+        		if (objs.length >= 2 && !(tList = GT_OreDictUnificator.getOres(objs[0])).isEmpty()) {
+        			try {
+        				int tAmount = ((Number) objs[1]).intValue();
+            			List<ItemStack> uList = new ArrayList<>();
+            			for (ItemStack tStack : tList) {
+            				ItemStack uStack = GT_Utility.copyAmount(tAmount, tStack); 
+            				if (GT_Utility.isStackValid(uStack)) {
+            					uList.add(uStack);
+            					if (tInputs[i] == null)
+            					    tInputs[i] = uStack;
+            				}
+            			}
+            			tAlts[i] = uList.toArray(new ItemStack[uList.size()]);
+            			continue;
+        			} catch (Exception t) {}
+        		}
+        	}
+        	GT_FML_LOGGER.info("addAssemblingLineRecipe "+aResearchItem.getDisplayName()+" --> "+aOutput.getUnlocalizedName()+" there is some null item in that recipe");
+        }
+        GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.addFakeRecipe(false, new ItemStack[]{aResearchItem}, new ItemStack[]{aOutput}, new ItemStack[]{ItemList.Tool_DataStick.getWithName(1L, "Writes Research result", new Object[0])}, null, null, aResearchTime, 30, -201);
+        GT_Recipe.GT_Recipe_Map.sAssemblylineVisualRecipes.addFakeRecipe(false,tInputs,new ItemStack[]{aOutput},new ItemStack[]{ItemList.Tool_DataStick.getWithName(1L, "Reads Research result", new Object[0])},aFluidInputs,null,aDuration,aEUt,0,tAlts,true);
+        GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes.add(new GT_Recipe_AssemblyLine( aResearchItem, aResearchTime, tInputs, aFluidInputs, aOutput, aDuration, aEUt, tAlts));
+        return true;
 	}
 
 	private boolean tryAddTecTechScannerRecipe(ItemStack aResearchItem,	Object[] aInputs, FluidStack[] aFluidInputs, ItemStack aOutput, int assDuration, int assEUt) {

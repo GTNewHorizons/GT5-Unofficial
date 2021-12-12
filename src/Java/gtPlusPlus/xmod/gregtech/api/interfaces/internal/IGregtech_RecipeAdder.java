@@ -217,8 +217,26 @@ public interface IGregtech_RecipeAdder {
 	public boolean addAssemblerRecipeWithOreDict(Object aInput1, int aAmount1, Object aInput2, int aAmount2, FluidStack aInputFluid, ItemStack aOutput, int a1, int a2);
 
 	public boolean addSixSlotAssemblingRecipe(ItemStack[] aInputs, FluidStack aInputFluid, ItemStack aOutput1, int aDuration, int aEUt);
-	
+    /**
+     * Adds an Assemblyline Recipe
+     *
+     * @param aInputs      must be != null, 4-16 inputs
+     * @param aFluidInputs 0-4 fluids
+     * @param aOutput1     must be != null
+     * @param aDuration    must be > 0
+     * @param aEUt         should be > 0
+     */
 	public boolean addAssemblylineRecipe(ItemStack aResearchItem, int aResearchTime, ItemStack[] aInputs, FluidStack[] aFluidInputs, ItemStack aOutput, int aDuration, int aEUt);
+	
+    /**
+     * Adds a Assemblyline Recipe
+     *
+     * @param aInputs elements should be: ItemStack for single item;
+     *                ItemStack[] for multiple equivalent items;
+     *                {OreDict, amount} for oredict.
+     */
+    boolean addAssemblylineRecipe(ItemStack aResearchItem, int aResearchTime, Object[] aInputs, FluidStack[] aFluidInputs, ItemStack aOutput1, int aDuration, int aEUt);
+
 	
 	public boolean addChemicalRecipe(ItemStack input1, ItemStack input2, FluidStack inputFluid, FluidStack outputFluid, ItemStack output, int time, int eu);
 	public boolean addChemicalRecipe(ItemStack input1, ItemStack input2, FluidStack inputFluid, FluidStack outputFluid, ItemStack output, Object object, int time, int eu);

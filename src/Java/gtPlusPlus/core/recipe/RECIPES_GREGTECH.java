@@ -482,7 +482,7 @@ public class RECIPES_GREGTECH {
 		CORE.RA.addAssemblylineRecipe(
 				ItemDummyResearch.getResearchStack(ASSEMBLY_LINE_RESEARCH.RESEARCH_1_CONTAINMENT, 1), 
 				20 * 60 * 30,
-				new ItemStack[] {
+				new Object[] {
 						ItemList.Field_Generator_IV.get(GTNH ? 32 : 16),
 						ItemList.Electric_Motor_EV.get(GTNH ? 64 : 32),
 						ItemList.Energy_LapotronicOrb.get(GTNH ? 32 : 16),
@@ -492,9 +492,9 @@ public class RECIPES_GREGTECH {
 						ELEMENT.getInstance().GADOLINIUM.getDust(GTNH ? 32 : 8),
 						ELEMENT.getInstance().SAMARIUM.getDust(GTNH ? 16 : 4),
 						ALLOY.ARCANITE.getGear(GTNH ? 8 : 2),
-						CI.getTieredComponent(OrePrefixes.circuit, 5, GTNH ? 64 : 32),
-						CI.getTieredComponent(OrePrefixes.circuit, 6, GTNH ? 32 : 16),
-						CI.getTieredComponent(OrePrefixes.circuit, 7, GTNH ? 16 : 8),
+						new Object[] {CI.getTieredCircuitOreDictName(5), 64},
+						new Object[] {CI.getTieredCircuitOreDictName(6), 32},
+						new Object[] {CI.getTieredCircuitOreDictName(7), 16},
 						GregtechItemList.Laser_Lens_Special.get(1),
 						aCoilWire[3]
 				}, 
@@ -503,7 +503,6 @@ public class RECIPES_GREGTECH {
 						ALLOY.ENERGYCRYSTAL.getFluidStack(144 * 9 * (GTNH ? 8 : 4)),
 						ALLOY.TUMBAGA.getFluidStack(144 * 9 * (GTNH ? 32 : 8)),
 						ALLOY.NICHROME.getFluidStack(144 * 1 * (GTNH ? 16 : 4)),
-
 				},
 				ItemUtils.getSimpleStack(ModBlocks.blockCasings3Misc, 15, 32), 
 				20 * 60 * 10 * (GTNH ? 2 : 1),
@@ -564,7 +563,7 @@ public class RECIPES_GREGTECH {
 		CORE.RA.addAssemblylineRecipe(
 				ItemDummyResearch.getResearchStack(ASSEMBLY_LINE_RESEARCH.RESEARCH_8_TURBINE_AUTOMATION, 1), 
 				20 * 60 * 60 * 24,
-				new ItemStack[] {
+				new Object[] {
 						CI.getTieredMachineHull(8, 4),
 						CI.getConveyor(8, GTNH ? 24 : 12),
 						CI.getElectricMotor(7, GTNH ? 32 : 16),
@@ -574,7 +573,7 @@ public class RECIPES_GREGTECH {
 						CI.getTieredComponent(OrePrefixes.screw, 8, GTNH ? 48 : 24),
 						CI.getTieredComponent(OrePrefixes.bolt, 7, GTNH ? 32 : 16),
 						CI.getTieredComponent(OrePrefixes.rod, 6, GTNH ? 12 : 6),
-						CI.getTieredComponent(OrePrefixes.circuit, 7, GTNH ? 20 : 10),
+						new Object[] {CI.getTieredCircuitOreDictName(7), 20},
 						CI.getTieredComponent(OrePrefixes.rotor, 6, GTNH ? 16 : 8),
 				}, 
 				new FluidStack[] {
@@ -651,11 +650,11 @@ public class RECIPES_GREGTECH {
 			CORE.RA.addAssemblylineRecipe(
 					aExoticInputs[aCasingSlot], 
 					20 * 60 * 60 * 5,
-					new ItemStack[] {
+					new Object[] {
 							aGemCasings[aCasingSlot],
 							ItemUtils.getSimpleStack(aExoticInputs[aCasingSlot], 16),
 							CI.getTieredComponent(OrePrefixes.plate, j, 16),
-							CI.getTieredComponent(OrePrefixes.circuit, j, 8),
+							new Object[] {CI.getTieredCircuitOreDictName(j), 8},
 							CI.getTieredComponent(OrePrefixes.wireGt16, j+1, GTNH ? 32 : 16),
 							CI.getTieredComponent(OrePrefixes.bolt, j, GTNH ? 8 : 4),
 							CI.getTieredComponent(OrePrefixes.screw, j-1, GTNH ? 8 : 4),
@@ -677,10 +676,10 @@ public class RECIPES_GREGTECH {
 			CORE.RA.addAssemblylineRecipe(
 					ItemUtils.simpleMetaStack(Items.golden_apple, 1, 1), 
 					20 * 60 * 10,
-					new ItemStack[] {
+					new Object[] {
 							ItemUtils.getSimpleStack(aGemCasings[2], GTNH ? 4 : 2),
 							CI.getTieredComponent(OrePrefixes.plate, 8, GTNH ? 32 : 16),
-							CI.getTieredComponent(OrePrefixes.circuit, 7, GTNH ? 16 : 4),
+							new Object[] {CI.getTieredCircuitOreDictName(7), 16},
 							CI.getTieredComponent(OrePrefixes.cableGt02, 7, GTNH ? 16 : 8),
 							CI.getTieredComponent(OrePrefixes.gearGt, 6, GTNH ? 6 : 3),
 							CI.getTieredComponent(OrePrefixes.screw, 7, GTNH ? 16 : 8),
@@ -722,12 +721,12 @@ public class RECIPES_GREGTECH {
 				CORE.RA.addAssemblylineRecipe(
 						aChargeResearch[aCurrSlot], 
 						20 * 60 * 10 * (aCurrSlot + 1),
-						new ItemStack[] {
+						new Object[] {
 								ItemUtils.getSimpleStack(aGemBatteries[aCurrSlot],2),
 								aCoilWire[aCurrSlot],
 								CI.getTieredComponent(OrePrefixes.plate, h, 8),
-								CI.getTieredComponent(OrePrefixes.circuit, h, 4),
-								CI.getTieredComponent(OrePrefixes.circuit, h-1, 8),
+								new Object[] {CI.getTieredCircuitOreDictName(h), 4},
+								new Object[] {CI.getTieredCircuitOreDictName(h-1), 8},
 								CI.getTieredComponent(OrePrefixes.cableGt12, h-1, 16),
 								CI.getTieredComponent(OrePrefixes.screw, h, GTNH ? 16 : 8),
 								CI.getTieredComponent(OrePrefixes.bolt, h-2, GTNH ? 32 : 16),
@@ -749,10 +748,10 @@ public class RECIPES_GREGTECH {
 			CORE.RA.addAssemblylineRecipe(
 					ItemDummyResearch.getResearchStack(ASSEMBLY_LINE_RESEARCH.RESEARCH_9_CLOAKING, 1), 
 					20 * 60 * 10,
-					new ItemStack[] {
+					new Object[] {
 							ItemUtils.getSimpleStack(aGemCasings[3], GTNH ? 4 : 2),
 							CI.getTieredComponent(OrePrefixes.plate, 8, GTNH ? 32 : 16),
-							CI.getTieredComponent(OrePrefixes.circuit, 7, GTNH ? 16 : 4),
+							new Object[] {CI.getTieredCircuitOreDictName(7), 16},
 							CI.getTieredComponent(OrePrefixes.cableGt04, 8, GTNH ? 16 : 8),
 							CI.getTieredComponent(OrePrefixes.gearGt, 7, GTNH ? 6 : 3),
 							CI.getTieredComponent(OrePrefixes.screw, 8, GTNH ? 16 : 8),

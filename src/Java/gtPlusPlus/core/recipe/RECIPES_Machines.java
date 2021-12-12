@@ -1847,9 +1847,9 @@ public class RECIPES_Machines {
 				CORE.RA.addAssemblylineRecipe(
 						ItemList.FusionComputer_UV.get(1),
 						(int) GT_Values.V[5],
-						new ItemStack[] {
-								ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(9), 4 * (GTNH ? 2 : 1)),
-								ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(7), 32 * (GTNH ? 2 : 1)),
+						new Object[] {
+								new Object[] {CI.getTieredCircuitOreDictName(9), 4 * (GTNH ? 2 : 1)},
+								new Object[] {CI.getTieredCircuitOreDictName(7), 32 * (GTNH ? 2 : 1)},
 								ItemUtils.getItemStackOfAmountFromOreDict("wireGt16Superconductor", 8 * (GTNH ? 4 : 2)),
 								ItemUtils.getItemStackOfAmountFromOreDict("plateDenseNeutronium", 2 * (GTNH ? 4 : 1)),
 								ItemUtils.getSimpleStack((GTNH ? CI.fieldGenerator_MAX : CI.fieldGenerator_ZPM), 5),
@@ -1869,9 +1869,9 @@ public class RECIPES_Machines {
 				CORE.RA.addAssemblylineRecipe(
 						ItemList.Casing_Fusion2.get(1),
 						(int) GT_Values.V[4],
-						new ItemStack[] {
-								ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(5), 8 * (GTNH ? 2 : 1)),
-								ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(4), 16 * (GTNH ? 2 : 1)),
+						new Object[] {
+								new Object[] {CI.getTieredCircuitOreDictName(5), 8 * (GTNH ? 2 : 1)},
+								new Object[] {CI.getTieredCircuitOreDictName(4), 16 * (GTNH ? 2 : 1)},
 								ItemUtils.getItemStackOfAmountFromOreDict("blockTungstenCarbide", 4 * (GTNH ? 2 : 1)),
 								ItemUtils.getItemStackOfAmountFromOreDict("plateNeutronium", 2 * (GTNH ? 2 : 1)),
 								ItemUtils.getSimpleStack((GTNH ? CI.electricMotor_MAX : CI.electricMotor_ZPM), 3 * (GTNH ? 2 : 1)),
@@ -1891,14 +1891,14 @@ public class RECIPES_Machines {
 				CORE.RA.addAssemblylineRecipe(
 						ItemList.Casing_Fusion_Coil.get(1),
 						(int) GT_Values.V[4],
-						new ItemStack[] {
-								ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(8), 4 * (GTNH ? 2 : 1)),
-								ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(6), 8 * (GTNH ? 2 : 1)),
+						new Object[] {
+								new Object[] {CI.getTieredCircuitOreDictName(8), 4 * (GTNH ? 2 : 1)},
+								new Object[] {CI.getTieredCircuitOreDictName(6), 8 * (GTNH ? 2 : 1)},
 								ItemUtils.getItemStackOfAmountFromOreDict("plateNeutronium", 2 * (GTNH ? 3 : 1)),
 								ItemUtils.getSimpleStack((GTNH ? CI.emitter_MAX : CI.emitter_ZPM), 2 * (GTNH ? 2 : 1)),
 								ItemUtils.getSimpleStack((GTNH ? CI.sensor_MAX : CI.sensor_ZPM), 2 * (GTNH ? 2 : 1)),
 								ItemUtils.getSimpleStack((GTNH ? CI.fieldGenerator_MAX : CI.fieldGenerator_LuV), 2 * (GTNH ? 2 : 1)),
-								ItemUtils.getSimpleStack((GTNH ? ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(8), 8) : CI.getDataOrb()), 8 * (GTNH ? 2 : 1)),
+								new Object[] {CI.getTieredCircuitOreDictName(8), 8},
 								ItemList.Energy_LapotronicOrb2.get(2 * (GTNH ? 16 : 1)),
 								ItemList.Casing_Fusion_Coil.get(1)
 						},
@@ -2423,11 +2423,11 @@ public class RECIPES_Machines {
 		CORE.RA.addAssemblylineRecipe(
 				ItemList.Machine_IV_Macerator.get(1), 
 				20 * 60 * 20,
-				new ItemStack[] {
+				new Object[] {
 						GregtechItemList.Casing_IsaMill_Gearbox.get(4),
 						CI.getTieredGTPPMachineCasing(6, 4),
 						ItemList.Component_Grinder_Tungsten.get(16),
-						ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(6), 8),
+						new Object[] {CI.getTieredCircuitOreDictName(6), 8},
 						ALLOY.INCONEL_625.getGear(8),
 						ALLOY.INCONEL_625.getPlate(32),
 						ALLOY.ZERON_100.getPlateDouble(8),
@@ -2497,11 +2497,11 @@ public class RECIPES_Machines {
 		CORE.RA.addAssemblylineRecipe(
 				ItemList.Distillation_Tower.get(1), 
 				20 * 60 * 20,
-				new ItemStack[] {
+				new Object[] {
 						GregtechItemList.Casing_Flotation_Cell.get(4),
 						CI.getTieredGTPPMachineCasing(5, 4),
 						ItemList.Machine_IV_Distillery.get(1),
-						ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(6), 8),
+						new Object[] {CI.getTieredCircuitOreDictName(6), 8},
 						ALLOY.STELLITE.getGear(8),
 						ALLOY.STELLITE.getPlate(32),
 						ALLOY.HASTELLOY_N.getPlateDouble(8),
@@ -2563,6 +2563,7 @@ public class RECIPES_Machines {
 						ELEMENT.getInstance().HELIUM.getCell(8),
 						ELEMENT.getInstance().FLUORINE.getCell(8),
 						ALLOY.HS188A.getIngot(8),
+						ItemList.Distillation_Tower.get(1)
 				}, 
 				null, 
 				ItemDummyResearch.getResearchStack(ASSEMBLY_LINE_RESEARCH.RESEARCH_10_SPARGING, 1), 
@@ -2573,11 +2574,11 @@ public class RECIPES_Machines {
 		CORE.RA.addAssemblylineRecipe(
 				ItemDummyResearch.getResearchStack(ASSEMBLY_LINE_RESEARCH.RESEARCH_10_SPARGING, 1), 
 				20 * 60 * 20,
-				new ItemStack[] {
+				new Object[] {
 						GregtechItemList.Casing_Sparge_Tower_Exterior.get(4),
 						CI.getTieredGTPPMachineCasing(4, 4),
 						ItemList.Machine_IV_Distillery.get(1),
-						ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(5), 8),
+						new Object[] {CI.getTieredCircuitOreDictName(5), 8},
 						ALLOY.HS188A.getGear(8),
 						ALLOY.HS188A.getPlate(32),
 						ALLOY.HASTELLOY_N.getPlateDouble(8),
