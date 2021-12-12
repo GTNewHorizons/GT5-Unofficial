@@ -10,6 +10,8 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.chemistry.AgriculturalChem;
+import gtPlusPlus.core.item.crafting.ItemDummyResearch;
+import gtPlusPlus.core.item.crafting.ItemDummyResearch.ASSEMBLY_LINE_RESEARCH;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.ALLOY;
@@ -251,6 +253,7 @@ public class RECIPES_Machines {
 		chemPlant();
 		zyngen();
 		milling();
+		sparging();
 
 	}
 
@@ -2549,6 +2552,66 @@ public class RECIPES_Machines {
 				60 * 20 * 4, 
 				MaterialUtils.getVoltageForTier(5));
 
+	}
+	
+	private static void sparging() {
+		
+		// Sparge Tower Research
+		CORE.RA.addSixSlotAssemblingRecipe(
+				new ItemStack[] {
+						CI.getNumberedAdvancedCircuit(8),
+						ELEMENT.getInstance().HELIUM.getCell(8),
+						ELEMENT.getInstance().FLUORINE.getCell(8),
+						ALLOY.HS188A.getIngot(8),
+				}, 
+				null, 
+				ItemDummyResearch.getResearchStack(ASSEMBLY_LINE_RESEARCH.RESEARCH_10_SPARGING, 1), 
+				60 * 20 * 5, 
+				MaterialUtils.getVoltageForTier(5));
+		
+		// Sparge Tower Controller
+		CORE.RA.addAssemblylineRecipe(
+				ItemDummyResearch.getResearchStack(ASSEMBLY_LINE_RESEARCH.RESEARCH_10_SPARGING, 1), 
+				20 * 60 * 20,
+				new ItemStack[] {
+						GregtechItemList.Casing_Sparge_Tower_Exterior.get(4),
+						CI.getTieredGTPPMachineCasing(4, 4),
+						ItemList.Machine_IV_Distillery.get(1),
+						ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(5), 8),
+						ALLOY.HS188A.getGear(8),
+						ALLOY.HS188A.getPlate(32),
+						ALLOY.HASTELLOY_N.getPlateDouble(8),
+						ALLOY.HASTELLOY_N.getPlateDouble(8),
+						ALLOY.HASTELLOY_N.getScrew(64),
+						CI.getTieredComponentOfMaterial(Materials.YttriumBariumCuprate, OrePrefixes.wireFine, 64),
+						CI.getTieredComponentOfMaterial(Materials.YttriumBariumCuprate, OrePrefixes.wireFine, 64),
+						CI.getTieredComponentOfMaterial(Materials.Platinum, OrePrefixes.foil, 32),
+						CI.getTieredComponentOfMaterial(Materials.Platinum, OrePrefixes.foil, 32),
+
+				}, 
+				new FluidStack[] {
+						CI.getTieredFluid(4, 16 * 144),
+						CI.getAlternativeTieredFluid(3, 32 * 144),
+						CI.getTertiaryTieredFluid(3, 32 * 144)
+				}, 
+				GregtechItemList.Controller_Sparge_Tower.get(1),
+				20 * 60 * 10, 
+				MaterialUtils.getVoltageForTier(6));
+
+		// Sparge Tower Casing
+		CORE.RA.addSixSlotAssemblingRecipe(
+				new ItemStack[] {
+						CI.getNumberedAdvancedCircuit(8),
+						CI.getTieredGTPPMachineCasing(3, 1),
+						ALLOY.HS188A.getPlate(8),
+						ALLOY.HASTELLOY_N.getRing(4),
+						CI.getTieredComponentOfMaterial(Materials.TungstenSteel, OrePrefixes.plateDouble, 4),
+						ALLOY.HASTELLOY_N.getScrew(4),
+				}, 
+				ALLOY.STAINLESS_STEEL.getFluidStack(8 * 144), 
+				GregtechItemList.Casing_Sparge_Tower_Exterior.get(1), 
+				60 * 20 * 2, 
+				MaterialUtils.getVoltageForTier(5));
 	}
 
 	private static void fakeMachineCasingCovers() {	    

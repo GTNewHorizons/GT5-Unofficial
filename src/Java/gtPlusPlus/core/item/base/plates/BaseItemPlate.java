@@ -15,6 +15,4 @@ public class BaseItemPlate extends BaseItemComponent{
 		this(MaterialUtils.generateQuickMaterial(materialName, state, new short[]{colour[0], colour[1], colour[2], 0}, sRadioactivity));
 	}
 
-
-
 }

@@ -16,4 +16,5 @@ public class BaseItemPlateDouble extends BaseItemComponent{
 	public String getItemStackDisplayName(final ItemStack p_77653_1_) {
 		return ("Double "+this.materialName+ " Plate");
 	}
+	
 }

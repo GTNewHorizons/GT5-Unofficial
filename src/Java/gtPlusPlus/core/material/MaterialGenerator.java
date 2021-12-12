@@ -47,6 +47,7 @@ import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_Extruder;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_FluidCanning;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_Fluids;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_MaterialProcessing;
+import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_MetalRecipe;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_Ore;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_Plasma;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_Plates;
@@ -213,6 +214,7 @@ public class MaterialGenerator {
 			if (generateBlastSmelterRecipes){
 				new RecipeGen_BlastSmelter(matInfo);
 			}
+			new RecipeGen_MetalRecipe(matInfo);
 			new RecipeGen_Extruder(matInfo);
 			new RecipeGen_Fluids(matInfo);
 			new RecipeGen_Plates(matInfo);
@@ -331,6 +333,7 @@ public class MaterialGenerator {
 				new RecipeGen_Recycling(matInfo);	
 			}
 
+			new RecipeGen_MetalRecipe(matInfo);
 			new RecipeGen_DustGeneration(matInfo, disableOptionalRecipes);			
 			new RecipeGen_Plasma(matInfo);
 			
