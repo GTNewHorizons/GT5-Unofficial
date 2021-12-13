@@ -33,20 +33,25 @@ public class RecipeGen_Ore extends RecipeGen_Base {
 	static {
 		MaterialGenerator.mRecipeMapsToGenerate.put(mRecipeGenMap);
 	}	
-
+	
 	public RecipeGen_Ore(final Material M){
+		this(M, false);
+	}
+
+	public RecipeGen_Ore(final Material M, final boolean O){
 		this.toGenerate = M;
+		this.disableOptional = O;
 		mRecipeGenMap.add(this);
 	}
 
 	@Override
 	public void run() {
-		generateRecipes(this.toGenerate);
+		generateRecipes(this.toGenerate, this.disableOptional);
 	}
 
 	private static Material mStone;
 
-	public static void generateRecipes(final Material material){
+	private void generateRecipes(final Material material, final boolean disableOptional){
 
 		if (mStone == null) {
 			mStone = MaterialUtils.generateMaterialFromGtENUM(Materials.Stone);
@@ -285,6 +290,7 @@ public class RecipeGen_Ore extends RecipeGen_Base {
 		 * Electrolyzer
 		 */
 
+		if (!disableOptional) {
 		//Process Dust
 		if (componentMap.size() > 0 && componentMap.size() <= 6){
 
@@ -434,9 +440,7 @@ public class RecipeGen_Ore extends RecipeGen_Base {
 				}
 			}
 
-			try{		
-
-
+			try{
 				if (CORE.RA.addDehydratorRecipe(
 						new ItemStack[]{mainDust, emptyCell},
 						null,
@@ -446,6 +450,10 @@ public class RecipeGen_Ore extends RecipeGen_Base {
 						(int) Math.max(material.getMass() * 4L * 1, 1),
 						tVoltageMultiplier)){
 					Logger.MATERIALS("[Dehydrator] Generated Dehydrator recipe for "+matDust.getDisplayName());
+					Logger.MATERIALS("Inputs: "+mainDust.getDisplayName()+" x"+mainDust.stackSize+", "+(emptyCell == null ? "No Cells" : ""+emptyCell.getDisplayName()+" x"+emptyCell.stackSize));
+					Logger.MATERIALS("Outputs "+ItemUtils.getArrayStackNames(mInternalOutputs));
+					Logger.MATERIALS("Time: "+((int) Math.max(material.getMass() * 4L * 1, 1)));
+					Logger.MATERIALS("EU: "+tVoltageMultiplier);
 				}
 				else {
 					Logger.MATERIALS("[Dehydrator] Failed to generate Dehydrator recipe for "+matDust.getDisplayName());					
@@ -457,6 +465,7 @@ public class RecipeGen_Ore extends RecipeGen_Base {
 
 
 		}
+	}
 
 
 		/**

@@ -411,6 +411,54 @@ public class MaterialGenerator {
 			t.printStackTrace();
 		}
 	}
+	
+	public static boolean generateOreMaterialWithAllExcessComponents(final Material matInfo){
+		try {
+			if (matInfo == null){
+				Logger.DEBUG_MATERIALS("Invalid Material while constructing null material.");
+				return false;
+			}
+			final short[] C = matInfo.getRGBA();
+			final Integer Colour = Utils.rgbtoHexValue(C[0], C[1], C[2]);
+			
+			tempBlock = new BlockBaseOre(matInfo, BlockTypes.ORE, Colour.intValue());	
+			tempBlock = new BlockBaseModular(matInfo,BlockTypes.STANDARD);
+			temp = new BaseItemIngot(matInfo);
+			temp = new BaseItemDust(matInfo);
+			temp = new BaseItemNugget(matInfo);
+			temp = new BaseItemPlate(matInfo);
+			temp = new BaseItemPlateDouble(matInfo);
+
+
+			temp = new BaseItemCrushedOre(matInfo);
+			temp = new BaseItemCentrifugedCrushedOre(matInfo);
+			temp = new BaseItemPurifiedCrushedOre(matInfo);
+			temp = new BaseItemImpureDust(matInfo);
+			temp = new BaseItemPurifiedDust(matInfo);
+
+			Logger.MATERIALS("Generated all ore & base components for "+matInfo.getLocalizedName()+", now generating processing recipes.");			
+
+			new RecipeGen_Ore(matInfo, true);		
+			new RecipeGen_AlloySmelter(matInfo);
+			new RecipeGen_Assembler(matInfo);
+			new RecipeGen_BlastSmelter(matInfo);
+			new RecipeGen_MetalRecipe(matInfo);
+			new RecipeGen_Extruder(matInfo);
+			new RecipeGen_Fluids(matInfo);
+			new RecipeGen_Plates(matInfo);
+			new RecipeGen_ShapedCrafting(matInfo);
+			new RecipeGen_MaterialProcessing(matInfo);
+			new RecipeGen_DustGeneration(matInfo);
+			new RecipeGen_Recycling(matInfo);
+			return true;
+		} 
+		catch (final Throwable t){
+			Logger.MATERIALS(""+matInfo.getLocalizedName()+" failed to generate.");
+			t.printStackTrace();
+			return false;
+		}
+
+	}
 
 
 }
