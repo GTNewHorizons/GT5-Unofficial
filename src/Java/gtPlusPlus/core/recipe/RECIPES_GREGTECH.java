@@ -1290,30 +1290,6 @@ public class RECIPES_GREGTECH {
 				2 * 20, 
 				500); // EU
 
-		// CaF2 + H2SO4 â†’ CaSO4(solid) + 2 HF
-		FluidStack aGregtechHydro = FluidUtils.getFluidStack("hydrofluoricacid_gt5u", 16000);
-		if (aGregtechHydro == null) {
-			aGregtechHydro = FluidUtils.getFluidStack("hydrofluoricacid", 16000);
-		}
-
-		CORE.RA.addDehydratorRecipe(
-				new ItemStack[] { 
-						CI.getNumberedAdvancedCircuit(5),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustFluorite", 37),							
-				},
-				FluidUtils.getFluidStack("sulfuricacid", 56 * 144),
-				aGregtechHydro, // Fluid output (slot 2)
-				new ItemStack[] {
-						ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumSulfate", 30),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustSilver", 1),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustGold", 2),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustTin", 1),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 2)
-				}, 
-				new int[] { 10000, 100, 100, 300, 200 },
-				10 * 60 * 20, 
-				230); // EU
-
 
 		CORE.RA.addDehydratorRecipe(
 				new ItemStack[] {
