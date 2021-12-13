@@ -225,13 +225,13 @@ public class RecipeGen_Ore extends RecipeGen_Base {
 		
 		try {
 			//.08 compat
-			if (GT_ModHandler.addThermalCentrifugeRecipe(material.getCrushed(1), 200, material.getCrushedCentrifuged(1), tinyDustB, dustStone)){
+			if (GT_ModHandler.addThermalCentrifugeRecipe(material.getCrushed(1), (int) Math.min(5000L, Math.abs(material.getMass() * 20L)), material.getCrushedCentrifuged(1), tinyDustB, dustStone)){
 				Logger.MATERIALS("[ThermalCentrifuge] Added Recipe: 'Crushed ore to Centrifuged Ore' | Input: "+material.getCrushed(1).getDisplayName()+" | Outputs: "+material.getCrushedCentrifuged(1).getDisplayName()+", "+tinyDustB.getDisplayName()+", "+dustStone.getDisplayName()+".");
 			}
 		}
 		catch (Throwable t) {}
 		try {
-			if (GT_ModHandler.addThermalCentrifugeRecipe(material.getCrushedPurified(1), 200, material.getCrushedCentrifuged(1), tinyDustA, dustStone)){
+			if (GT_ModHandler.addThermalCentrifugeRecipe(material.getCrushedPurified(1), (int) Math.min(5000L, Math.abs(material.getMass() * 20L)), material.getCrushedCentrifuged(1), tinyDustA, dustStone)){
 				Logger.MATERIALS("[ThermalCentrifuge] Added Recipe: 'Washed ore to Centrifuged Ore' | Input: "+material.getCrushedPurified(1).getDisplayName()+" | Outputs: "+material.getCrushedCentrifuged(1).getDisplayName()+", "+tinyDustA.getDisplayName()+", "+dustStone.getDisplayName()+".");
 			}
 		}
@@ -262,7 +262,7 @@ public class RecipeGen_Ore extends RecipeGen_Base {
 				matDust, tinyDustA,null, 
 				null, null,null, 
 				new int[]{10000, 10000}, //Chances
-				5*20, //Time
+				(int) Math.max(1L, material.getMass() * 8L), //Time
 				tVoltageMultiplier/2)){ //Eu
 			Logger.MATERIALS("[Centrifuge] Added Recipe: Purified Dust to Clean Dust");
 		}
@@ -275,7 +275,7 @@ public class RecipeGen_Ore extends RecipeGen_Base {
 				matDust, tinyDustB,null, 
 				null, null,null, 
 				new int[]{10000, 10000}, //Chances
-				5*20, //Time
+				(int) Math.max(1L, material.getMass() * 8L), //Time
 				tVoltageMultiplier/2)){ //Eu
 			Logger.MATERIALS("[Centrifuge] Added Recipe: Inpure Dust to Clean Dust");
 		}
