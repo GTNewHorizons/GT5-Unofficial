@@ -2215,8 +2215,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         aMaterial.mArcSmeltInto = MATERIALS_MAP.get(GregTech_API.sMaterialProperties.get(aConfigPath, "MaterialArcSmeltInto", aMaterial.mArcSmeltInto.mName));
         aMaterial.mDirectSmelting = MATERIALS_MAP.get(GregTech_API.sMaterialProperties.get(aConfigPath, "MaterialDirectSmeltInto", aMaterial.mDirectSmelting.mName));
         aMaterial.mAutoGenerateBlastFurnaceRecipes = GregTech_API.sMaterialProperties.get(aConfigPath, "AutoGenerateBlastFurnaceRecipes", aMaterial.mAutoGenerateBlastFurnaceRecipes);
-        if (GT_Mod.gregtechproxy.mTEMachineRecipes && aMaterial.mBlastFurnaceRequired && aMaterial.mBlastFurnaceTemp < 1500)
-            GT_ModHandler.ThermalExpansion.addSmelterBlastOre(aMaterial);
     }
 
     private static void addMultiplierValues(Materials aMaterial, String aConfigPath) {
