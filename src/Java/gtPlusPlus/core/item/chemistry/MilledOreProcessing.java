@@ -243,9 +243,9 @@ public class MilledOreProcessing extends ItemPackage {
 		//milledMonazite TODO
 		registerOreDataForMilledType(
 				MonaziteFlotationFroth, 
-				ELEMENT.getInstance().ERBIUM, 96, 
-				ELEMENT.getInstance().LANTHANUM, 96,
-				ELEMENT.getInstance().YTTRIUM, 96,
+				ELEMENT.getInstance().ERBIUM, 64, 
+				ELEMENT.getInstance().LANTHANUM, 32,
+				ELEMENT.getInstance().LUTETIUM, 16,
 				ELEMENT.getInstance().EUROPIUM, 8
 				);
 
