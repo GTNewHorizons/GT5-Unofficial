@@ -138,8 +138,8 @@ public final class MISC_MATERIALS {
 					new MaterialStack(MaterialUtils.generateMaterialFromGtENUM(Materials.NetherQuartz), 1),
 					new MaterialStack(MaterialUtils.generateMaterialFromGtENUM(Materials.Galena), 1),
 					new MaterialStack(MaterialUtils.generateMaterialFromGtENUM(Materials.Chalcopyrite), 1),
-					new MaterialStack(MaterialUtils.generateMaterialFromGtENUM(Materials.Cobaltite), 1),
-					new MaterialStack(ELEMENT.STANDALONE.GRANITE, 1)
+					new MaterialStack(ORES.CRYOLITE, 1),
+					new MaterialStack(ELEMENT.getInstance().YTTRIUM, 1)
 			});
 
 	public static final Material RARE_EARTH_MID = new Material(
