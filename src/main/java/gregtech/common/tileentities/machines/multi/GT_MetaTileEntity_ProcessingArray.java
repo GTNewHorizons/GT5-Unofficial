@@ -142,7 +142,7 @@ public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_CubicMu
 
     @Override
     public boolean isCorrectMachinePart(ItemStack aStack) {
-        return aStack != null && aStack.getUnlocalizedName().startsWith("gt.blockmachines.basicmachine.");
+        return aStack != null && aStack.getUnlocalizedName().startsWith("gt.blockmachines.");
     }
 
     @Override
