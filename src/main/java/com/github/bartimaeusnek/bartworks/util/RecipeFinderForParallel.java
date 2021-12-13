@@ -1,5 +1,6 @@
 package com.github.bartimaeusnek.bartworks.util;
 
+import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
@@ -29,7 +30,17 @@ public class RecipeFinderForParallel {
             }
         }
         for (int tItem : tCompressedItemRecipe.keySet()) {
-            if (tCompressedItemInput.containsKey(tItem) && tCompressedItemRecipe.get(tItem) != 0) {
+            /*Wildcard Stuff*/
+            if (tItem >> 16 == Short.MAX_VALUE) {
+                int tCountWildcard = 0;
+                for (int tInputItem : tCompressedItemInput.keySet()) {
+                    if ((tInputItem & 0xffff) == (tItem & 0xffff)) {
+                        tCountWildcard += tCompressedItemInput.get(tInputItem);
+                    }
+                }
+                tCurrentPara = Math.min(tCurrentPara, tCountWildcard / tCompressedItemRecipe.get(tItem));
+            }
+            else if (tCompressedItemInput.containsKey(tItem) && tCompressedItemRecipe.get(tItem) != 0) {
                 tCurrentPara = Math.min(tCurrentPara, tCompressedItemInput.get(tItem) / tCompressedItemRecipe.get(tItem));
             }
         }
@@ -47,7 +58,7 @@ public class RecipeFinderForParallel {
             if (tFluid != null && tCompressedFluidRecipe.containsKey(tFluid.getFluidID())) {
                 if (tFluid.amount >= tCompressedFluidRecipe.get(tFluid.getFluidID())) {
                     tFluid.amount -= tCompressedFluidRecipe.get(tFluid.getFluidID());
-                    tCompressedItemRecipe.remove(tFluid.getFluidID());
+                    tCompressedFluidRecipe.remove(tFluid.getFluidID());
                 }
                 else {
                     tCompressedFluidRecipe.put(tFluid.getFluidID(), tCompressedFluidRecipe.get(tFluid.getFluidID()) - tFluid.amount);
@@ -68,6 +79,26 @@ public class RecipeFinderForParallel {
                 }
             }
         }
+        /*Wildcard Stuff*/
+        for (int tItem : tCompressedItemRecipe.keySet()) {
+            if (tItem >> 16 == Short.MAX_VALUE) {
+                for (ItemStack tInputItem : aItemStacks) {
+                    int InputID = GT_Utility.stackToInt(tInputItem);
+                    if ((InputID & 0xffff) == (tItem & 0xffff)) {
+                        if (tInputItem.stackSize >= tCompressedItemRecipe.get(tItem)) {
+                            tInputItem.stackSize -= tCompressedItemRecipe.get(tItem);
+                            tCompressedItemRecipe.remove(tItem);
+                            break;
+                        }
+                        else {
+                            tCompressedItemRecipe.put(tItem, tCompressedItemRecipe.get(tItem) - tInputItem.stackSize);
+                            tInputItem.stackSize = 0;
+                        }
+                    }
+                }
+            }
+        }
+
         return tCurrentPara;
     }
 
