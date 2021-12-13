@@ -724,7 +724,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
         		if (!tHatch.outputsLiquids()) {
         			continue;
         		}
-        		if (tHatch.isFluidLocked() && tHatch.getLockedFluidName() != null && !tHatch.getLockedFluidName().equals(copiedFluidStack.getUnlocalizedName())) {
+        		if (tHatch.isFluidLocked() && tHatch.getLockedFluidName() != null && !tHatch.getLockedFluidName().equals(copiedFluidStack.getFluid().getName())) {
         			continue;
         		}
         	}

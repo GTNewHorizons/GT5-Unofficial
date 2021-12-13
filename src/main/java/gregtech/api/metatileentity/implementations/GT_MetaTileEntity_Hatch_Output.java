@@ -120,6 +120,9 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch {
         mMode = aNBT.getByte("mMode");
         lockedFluidName = aNBT.getString("lockedFluidName");
         lockedFluidName = lockedFluidName.length() == 0 ? null : lockedFluidName;
+        if (GT_Utility.getFluidFromUnlocalizedName(lockedFluidName) != null) {
+            lockedFluidName = GT_Utility.getFluidFromUnlocalizedName(lockedFluidName).getName();
+        }
     }
 
     @Override
@@ -157,9 +160,7 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch {
         super.updateFluidDisplayItem();
         if (lockedFluidName == null || mMode < 8) mInventory[3] = null;
         else {
-            Fluid tFluid = GT_Utility.getFluidFromUnlocalizedName(lockedFluidName);
-            FluidStack tLockedFluid = null;
-            if (tFluid != null) tLockedFluid = new FluidStack(tFluid, 1);
+            FluidStack tLockedFluid = FluidRegistry.getFluidStack(lockedFluidName, 1);
             // Because getStackDisplaySlot() only allow return one int, this place I only can manually set.
             if (tLockedFluid != null) {
                 mInventory[3] = GT_Utility.getFluidDisplayStack(tLockedFluid, false, true);
@@ -250,7 +251,7 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch {
                     this.setLockedFluidName(null);
                     inBrackets = trans("115.3","currently none, will be locked to the next that is put in (or use fluid cell to lock)");
                 } else {
-                    this.setLockedFluidName(this.getDrainableStack().getUnlocalizedName());
+                    this.setLockedFluidName(this.getDrainableStack().getFluid().getName());
                     inBrackets = this.getDrainableStack().getLocalizedName();
                 }
                 GT_Utility.sendChatToPlayer(aPlayer, String.format("%s (%s)", trans("151.1", "Outputs items and 1 specific Fluid"), inBrackets));
@@ -261,7 +262,7 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch {
                     this.setLockedFluidName(null);
                     inBrackets = trans("115.3","currently none, will be locked to the next that is put in (or use fluid cell to lock)");
                 } else {
-                    this.setLockedFluidName(this.getDrainableStack().getUnlocalizedName());
+                    this.setLockedFluidName(this.getDrainableStack().getFluid().getName());
                     inBrackets = this.getDrainableStack().getLocalizedName();
                 }
                 GT_Utility.sendChatToPlayer(aPlayer, String.format("%s (%s)", trans("151.2", "Outputs 1 specific Fluid"), inBrackets));
@@ -281,13 +282,13 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch {
         if (tFluid == null && tCurrentItem.getItem() instanceof IFluidContainerItem)
             tFluid = ((IFluidContainerItem)tCurrentItem.getItem()).getFluid(tCurrentItem);
         if (tFluid != null) {
-            if (getLockedFluidName() != null && !getLockedFluidName().equals(tFluid.getUnlocalizedName())) {
+            if (getLockedFluidName() != null && !getLockedFluidName().equals(tFluid.getFluid().getName())) {
                 GT_Utility.sendChatToPlayer(aPlayer, String.format("%s %s", trans("151.3",
                         "Hatch is locked to a different fluid. To change the locking, empty it and made it locked to the next fluid with a screwdriver. Currently locked to")
-                        , StatCollector.translateToLocal(getLockedFluidName())));
+                        , StatCollector.translateToLocal(tFluid.getUnlocalizedName())));
             }
             else {
-                setLockedFluidName(tFluid.getUnlocalizedName());
+                setLockedFluidName(tFluid.getFluid().getName());
                 if (mMode == 8)
                     GT_Utility.sendChatToPlayer(aPlayer, String.format("%s (%s)", trans("151.1", "Outputs items and 1 specific Fluid"), tFluid.getLocalizedName()));
                 else
@@ -346,7 +347,7 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch {
     @Override
     protected void onEmptyingContainerWhenEmpty() {
         if (this.lockedFluidName == null && this.mFluid != null) {
-            this.setLockedFluidName(this.mFluid.getUnlocalizedName());
+            this.setLockedFluidName(this.mFluid.getFluid().getName());
             GT_Utility.sendChatToPlayer(playerThatLockedfluid, String.format(trans("151.4","Sucessfully locked Fluid to %s"), mFluid.getLocalizedName()));
         }
     }
@@ -364,7 +365,7 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch {
                 EnumChatFormatting.GOLD + (mFluid == null ? "No Fluid" : mFluid.getLocalizedName()) + EnumChatFormatting.RESET,
                 EnumChatFormatting.GREEN + GT_Utility.formatNumbers(mFluid == null ? 0 : mFluid.amount) + " L" + EnumChatFormatting.RESET + " " +
                         EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(getCapacity()) + " L"+ EnumChatFormatting.RESET,
-            (!isFluidLocked() || lockedFluidName == null) ? "Not Locked" : ("Locked to " + StatCollector.translateToLocal(getLockedFluidName()))
+            (!isFluidLocked() || lockedFluidName == null) ? "Not Locked" : ("Locked to " + StatCollector.translateToLocal(FluidRegistry.getFluidStack(lockedFluidName, 1).getUnlocalizedName()))
         };
     }
 }
