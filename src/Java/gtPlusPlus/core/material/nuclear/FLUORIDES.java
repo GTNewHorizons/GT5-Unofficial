@@ -10,7 +10,7 @@ import gtPlusPlus.core.material.state.MaterialState;
 public class FLUORIDES {
 
 	public static final Material FLUORITE = new Material(
-			"Fluorite", //Material Name
+			"Fluorite (F)", //Material Name
 			MaterialState.ORE, //State
 			null, //Material Colour
 			Materials.Fluorine.mMeltingPoint, //Melting Point in C

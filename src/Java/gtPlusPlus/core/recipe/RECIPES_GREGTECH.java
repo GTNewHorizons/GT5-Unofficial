@@ -390,6 +390,28 @@ public class RECIPES_GREGTECH {
 				20 * 20,
 				MaterialUtils.getVoltageForTier(aBotmiumTier-2),
 				6);
+		
+
+		//Refine GT HF into GT++ HF
+		if (FluidUtils.doesHydrofluoricAcidGtExist()) {			
+			CORE.RA.addChemicalPlantRecipe(
+					new ItemStack[] {
+							CI.getNumberedAdvancedCircuit(22),
+					},
+					new FluidStack[] {
+							FluidUtils.getHydrofluoricAcid(2000),
+							FluidUtils.getHydrofluoricAcidGT(5000)
+					},
+					new ItemStack[] {
+
+					},
+					new FluidStack[] {
+							FluidUtils.getHydrofluoricAcid(6000)
+					},
+					30 * 20,
+					480,
+					3);
+		}
 
 	}
 
@@ -1751,16 +1773,6 @@ public class RECIPES_GREGTECH {
 	}
 
 	private static void chemicalBathRecipes() {
-
-		GT_Values.RA.addChemicalBathRecipe(
-				FLUORIDES.FLUORITE.getCrushed(2), 
-				FluidUtils.getFluidStack("hydrogen", 2000),
-				FLUORIDES.FLUORITE.getCrushedPurified(8), 
-				FLUORIDES.FLUORITE.getDustImpure(4),
-				FLUORIDES.FLUORITE.getDustPurified(2),
-				new int[] { 10000, 5000, 1000 }, 
-				30 * 20, 
-				240);
 		
 	}
 
@@ -1804,23 +1816,11 @@ public class RECIPES_GREGTECH {
 		
 		GT_Values.RA.addChemicalRecipe(
 				CI.getNumberedAdvancedCircuit(21),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustApatite", 16),
-				FluidUtils.getFluidStack("sulfuricacid", 144 * 32),
-				FluidUtils.getFluidStack("sulfuricapatite", 144 * 8),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustSmallSulfur", 1), 
+				ItemUtils.getItemStackOfAmountFromOreDict("dustApatite", 32),
+				FluidUtils.getFluidStack("sulfuricacid", 4000),
+				FluidUtils.getFluidStack("sulfuricapatite", 8000),
+				ItemUtils.getItemStackOfAmountFromOreDict("dustSmallSulfur", 8), 
 				20 * 20);
-
-		ItemStack temp_GT5u_SA = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cellHydrofluoricAcid_GT5U", 5);
-		if (temp_GT5u_SA != null) {
-			//Refine GT HF into GT++ HF
-			GT_Values.RA.addChemicalRecipe(
-					CI.getNumberedAdvancedCircuit(21),
-					temp_GT5u_SA,
-					FluidUtils.getHydrofluoricAcid(2000), // Fluid Input
-					FluidUtils.getFluidStack("hydrofluoricacid", 6000), // Fluid Output
-					CI.emptyCells(5),
-					30 * 20);
-		}
 
 	}
 

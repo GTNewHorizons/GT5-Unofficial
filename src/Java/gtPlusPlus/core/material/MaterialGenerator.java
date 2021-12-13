@@ -46,6 +46,7 @@ import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_DustGeneration;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_Extruder;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_FluidCanning;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_Fluids;
+import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_Fluorite;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_MaterialProcessing;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_MetalRecipe;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_Ore;
@@ -397,7 +398,13 @@ public class MaterialGenerator {
 			temp = new BaseItemPurifiedDust(matInfo);
 
 			Logger.MATERIALS("Generated all ore components for "+matInfo.getLocalizedName()+", now generating processing recipes.");
-			new RecipeGen_Ore(matInfo);
+
+			if (matInfo == FLUORIDES.FLUORITE){
+				new RecipeGen_Fluorite(matInfo);				
+			}
+			else {
+				new RecipeGen_Ore(matInfo);				
+			}
 
 		} catch (final Throwable t){
 			Logger.MATERIALS("[Error] "+(matInfo != null ? matInfo.getLocalizedName() : "Null Material")+" failed to generate.");

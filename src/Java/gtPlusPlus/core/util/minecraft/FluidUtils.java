@@ -106,6 +106,9 @@ public class FluidUtils {
 	}
 	
 	public static boolean doesHydrofluoricAcidGtExist() {
+		if (sGregtechHydrofluoricAcid == null) {
+			getHydrofluoricAcidGT(1);
+		}
 		return sGregtechHydrofluoricAcid != null && sGregtechHydrofluoricAcid != getHydrofluoricAcid(1).getFluid();
 	}
 	

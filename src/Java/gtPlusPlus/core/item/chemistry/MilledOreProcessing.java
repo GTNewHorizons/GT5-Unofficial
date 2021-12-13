@@ -245,8 +245,8 @@ public class MilledOreProcessing extends ItemPackage {
 				MonaziteFlotationFroth, 
 				ELEMENT.getInstance().ERBIUM, 96, 
 				ELEMENT.getInstance().LANTHANUM, 96,
-				ELEMENT.getInstance().PRASEODYMIUM, 96,
-				ELEMENT.getInstance().EUROPIUM, 32
+				ELEMENT.getInstance().YTTRIUM, 96,
+				ELEMENT.getInstance().EUROPIUM, 8
 				);
 
 
