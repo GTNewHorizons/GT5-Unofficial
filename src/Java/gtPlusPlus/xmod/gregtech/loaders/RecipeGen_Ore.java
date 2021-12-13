@@ -33,20 +33,25 @@ public class RecipeGen_Ore extends RecipeGen_Base {
 	static {
 		MaterialGenerator.mRecipeMapsToGenerate.put(mRecipeGenMap);
 	}	
-
+	
 	public RecipeGen_Ore(final Material M){
+		this(M, false);
+	}
+
+	public RecipeGen_Ore(final Material M, final boolean O){
 		this.toGenerate = M;
+		this.disableOptional = O;
 		mRecipeGenMap.add(this);
 	}
 
 	@Override
 	public void run() {
-		generateRecipes(this.toGenerate);
+		generateRecipes(this.toGenerate, this.disableOptional);
 	}
 
 	private static Material mStone;
 
-	public static void generateRecipes(final Material material){
+	private void generateRecipes(final Material material, final boolean disableOptional){
 
 		if (mStone == null) {
 			mStone = MaterialUtils.generateMaterialFromGtENUM(Materials.Stone);
@@ -225,13 +230,13 @@ public class RecipeGen_Ore extends RecipeGen_Base {
 		
 		try {
 			//.08 compat
-			if (GT_ModHandler.addThermalCentrifugeRecipe(material.getCrushed(1), 200, material.getCrushedCentrifuged(1), tinyDustB, dustStone)){
+			if (GT_ModHandler.addThermalCentrifugeRecipe(material.getCrushed(1), (int) Math.min(5000L, Math.abs(material.getMass() * 20L)), material.getCrushedCentrifuged(1), tinyDustB, dustStone)){
 				Logger.MATERIALS("[ThermalCentrifuge] Added Recipe: 'Crushed ore to Centrifuged Ore' | Input: "+material.getCrushed(1).getDisplayName()+" | Outputs: "+material.getCrushedCentrifuged(1).getDisplayName()+", "+tinyDustB.getDisplayName()+", "+dustStone.getDisplayName()+".");
 			}
 		}
 		catch (Throwable t) {}
 		try {
-			if (GT_ModHandler.addThermalCentrifugeRecipe(material.getCrushedPurified(1), 200, material.getCrushedCentrifuged(1), tinyDustA, dustStone)){
+			if (GT_ModHandler.addThermalCentrifugeRecipe(material.getCrushedPurified(1), (int) Math.min(5000L, Math.abs(material.getMass() * 20L)), material.getCrushedCentrifuged(1), tinyDustA, dustStone)){
 				Logger.MATERIALS("[ThermalCentrifuge] Added Recipe: 'Washed ore to Centrifuged Ore' | Input: "+material.getCrushedPurified(1).getDisplayName()+" | Outputs: "+material.getCrushedCentrifuged(1).getDisplayName()+", "+tinyDustA.getDisplayName()+", "+dustStone.getDisplayName()+".");
 			}
 		}
@@ -262,7 +267,7 @@ public class RecipeGen_Ore extends RecipeGen_Base {
 				matDust, tinyDustA,null, 
 				null, null,null, 
 				new int[]{10000, 10000}, //Chances
-				5*20, //Time
+				(int) Math.max(1L, material.getMass() * 8L), //Time
 				tVoltageMultiplier/2)){ //Eu
 			Logger.MATERIALS("[Centrifuge] Added Recipe: Purified Dust to Clean Dust");
 		}
@@ -275,7 +280,7 @@ public class RecipeGen_Ore extends RecipeGen_Base {
 				matDust, tinyDustB,null, 
 				null, null,null, 
 				new int[]{10000, 10000}, //Chances
-				5*20, //Time
+				(int) Math.max(1L, material.getMass() * 8L), //Time
 				tVoltageMultiplier/2)){ //Eu
 			Logger.MATERIALS("[Centrifuge] Added Recipe: Inpure Dust to Clean Dust");
 		}
@@ -285,6 +290,7 @@ public class RecipeGen_Ore extends RecipeGen_Base {
 		 * Electrolyzer
 		 */
 
+		if (!disableOptional) {
 		//Process Dust
 		if (componentMap.size() > 0 && componentMap.size() <= 6){
 
@@ -434,9 +440,7 @@ public class RecipeGen_Ore extends RecipeGen_Base {
 				}
 			}
 
-			try{		
-
-
+			try{
 				if (CORE.RA.addDehydratorRecipe(
 						new ItemStack[]{mainDust, emptyCell},
 						null,
@@ -446,6 +450,10 @@ public class RecipeGen_Ore extends RecipeGen_Base {
 						(int) Math.max(material.getMass() * 4L * 1, 1),
 						tVoltageMultiplier)){
 					Logger.MATERIALS("[Dehydrator] Generated Dehydrator recipe for "+matDust.getDisplayName());
+					Logger.MATERIALS("Inputs: "+mainDust.getDisplayName()+" x"+mainDust.stackSize+", "+(emptyCell == null ? "No Cells" : ""+emptyCell.getDisplayName()+" x"+emptyCell.stackSize));
+					Logger.MATERIALS("Outputs "+ItemUtils.getArrayStackNames(mInternalOutputs));
+					Logger.MATERIALS("Time: "+((int) Math.max(material.getMass() * 4L * 1, 1)));
+					Logger.MATERIALS("EU: "+tVoltageMultiplier);
 				}
 				else {
 					Logger.MATERIALS("[Dehydrator] Failed to generate Dehydrator recipe for "+matDust.getDisplayName());					
@@ -457,6 +465,7 @@ public class RecipeGen_Ore extends RecipeGen_Base {
 
 
 		}
+	}
 
 
 		/**

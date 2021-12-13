@@ -512,7 +512,7 @@ public class GTplusplus implements ActionListener {
 		sMissingItemMappings.put("miscutils:Krypton", GameRegistry.findItem(CORE.MODID, "itemCellKrypton"));
 		sMissingItemMappings.put("miscutils:itemCellZirconiumTetrafluoride", GameRegistry.findItem(CORE.MODID, "ZirconiumTetrafluoride"));
 		sMissingItemMappings.put("miscutils:Li2BeF4", GameRegistry.findItem(CORE.MODID, "itemCellLithiumTetrafluoroberyllate"));
-		
+
 		// Cryolite
 		sMissingBlockMappings.put("miscutils:oreCryolite", GameRegistry.findBlock(CORE.MODID, "oreCryoliteF"));
 		sMissingItemMappings.put("miscutils:itemDustTinyCryolite", GameRegistry.findItem(CORE.MODID, "itemDustTinyCryoliteF"));
@@ -524,6 +524,18 @@ public class GTplusplus implements ActionListener {
 		sMissingItemMappings.put("miscutils:crushedPurifiedCryolite", GameRegistry.findItem(CORE.MODID, "crushedPurifiedCryoliteF"));
 		sMissingItemMappings.put("miscutils:crushedCentrifugedCryolite", GameRegistry.findItem(CORE.MODID, "crushedCentrifugedCryoliteF"));
 		sMissingItemMappings.put("miscutils:oreCryolite", GameRegistry.findItem(CORE.MODID, "oreCryoliteF"));
+		
+		// Fluorite
+		sMissingBlockMappings.put("miscutils:oreFluorite", GameRegistry.findBlock(CORE.MODID, "oreFluoriteF"));
+		sMissingItemMappings.put("miscutils:itemDustTinyFluorite", GameRegistry.findItem(CORE.MODID, "itemDustTinyFluoriteF"));
+		sMissingItemMappings.put("miscutils:itemDustSmallFluorite", GameRegistry.findItem(CORE.MODID, "itemDustSmallFluoriteF"));
+		sMissingItemMappings.put("miscutils:itemDustFluorite", GameRegistry.findItem(CORE.MODID, "itemDustFluoriteF"));
+		sMissingItemMappings.put("miscutils:dustPureFluorite", GameRegistry.findItem(CORE.MODID, "dustPureFluoriteF"));
+		sMissingItemMappings.put("miscutils:dustImpureFluorite", GameRegistry.findItem(CORE.MODID, "dustImpureFluoriteF"));
+		sMissingItemMappings.put("miscutils:crushedFluorite", GameRegistry.findItem(CORE.MODID, "crushedFluoriteF"));
+		sMissingItemMappings.put("miscutils:crushedPurifiedFluorite", GameRegistry.findItem(CORE.MODID, "crushedPurifiedFluoriteF"));
+		sMissingItemMappings.put("miscutils:crushedCentrifugedFluorite", GameRegistry.findItem(CORE.MODID, "crushedCentrifugedFluoriteF"));
+		sMissingItemMappings.put("miscutils:oreFluorite", GameRegistry.findItem(CORE.MODID, "oreFluoriteF"));
 	}
 	
     @Mod.EventHandler

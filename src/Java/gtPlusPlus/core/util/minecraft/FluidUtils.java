@@ -1,5 +1,7 @@
 package gtPlusPlus.core.util.minecraft;
 
+import java.util.HashMap;
+
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -24,7 +26,9 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
 public class FluidUtils {
-
+	
+	private static HashMap<String, Fluid> sFluidCache = new HashMap<String, Fluid>();
+	
 	public static FluidStack getWater(final int amount){
 		return FluidUtils.getFluidStack("water", amount);
 	}
@@ -87,44 +91,67 @@ public class FluidUtils {
 		return FluidUtils.getFluidStack("ic2uumatter", amount);
 	}
 	
-	public static FluidStack getFluidStack(final String fluidName, final int amount){
-		Logger.WARNING("Trying to get a fluid stack of "+fluidName);
-		try {
-			FluidStack x = FluidRegistry.getFluidStack(fluidName, amount);
-			return x != null ? x.copy() : null;
-		}
-		catch (final Throwable e){
-			return null;
-		}
-
+	public static FluidStack getHydrofluoricAcid(int amount) {
+		return FluidUtils.getFluidStack("hydrofluoricacid", amount);
 	}
 
-	public static FluidStack getFluidStack(final FluidStack vmoltenFluid, final int fluidAmount) {
-		Logger.WARNING("Trying to get a fluid stack of "+vmoltenFluid.getFluid().getName());
-		try {
-			FluidStack x = FluidRegistry.getFluidStack(vmoltenFluid.getFluid().getName(), fluidAmount);
-			return x != null ? x.copy() : null;
+	public static Fluid sGregtechHydrofluoricAcid = null;
+	
+	public static FluidStack getHydrofluoricAcidGT(int amount) {
+		if (sGregtechHydrofluoricAcid == null) {
+			FluidStack aGTHF = FluidUtils.getFluidStack("hydrofluoricacid_gt5u", 1);
+			sGregtechHydrofluoricAcid = aGTHF != null ? aGTHF.getFluid() : getHydrofluoricAcid(1).getFluid();
 		}
-		catch (final Throwable e){
-			return null;
+		return FluidUtils.getFluidStack(sGregtechHydrofluoricAcid, amount);
+	}
+	
+	public static boolean doesHydrofluoricAcidGtExist() {
+		if (sGregtechHydrofluoricAcid == null) {
+			getHydrofluoricAcidGT(1);
 		}
+		return sGregtechHydrofluoricAcid != null && sGregtechHydrofluoricAcid != getHydrofluoricAcid(1).getFluid();
+	}
+	
+	private static FluidStack createFluidStack(Fluid aFluid, int aAmount) {
+		if (aFluid != null) {
+			return new FluidStack(aFluid, aAmount);
+		}
+		return null;
+	}
+	
+	public static FluidStack getFluidStack(final String aFluidName, final int aAmount){
+		Fluid aFluid = sFluidCache.get(aFluidName);
+		if (aFluid != null) {
+			return createFluidStack(aFluid, aAmount);
+		}
+		else {
+			Fluid aLookupFluid = FluidRegistry.getFluid(aFluidName);
+			if (aLookupFluid != null) {
+				sFluidCache.put(aFluidName, aLookupFluid);
+				return createFluidStack(aLookupFluid, aAmount);
+			}
+		}
+		return null;
 	}
 
-	public static FluidStack getFluidStack(final Fluid vFluid, final int fluidAmount) {
-		Logger.WARNING("Trying to get a fluid stack of "+vFluid.getName());
-		try {
-			FluidStack x = FluidRegistry.getFluidStack(vFluid.getName(), fluidAmount);
-			return x != null ? x.copy() : null;
-		}
-		catch (final Throwable e){
+	public static FluidStack getFluidStack(final FluidStack aFluidStack, final int aAmount) {
+		if (aFluidStack == null) {
 			return null;
 		}
+		return new FluidStack(aFluidStack, aAmount);
+	}
+
+	public static FluidStack getFluidStack(final Fluid aFluid, final int aAmount) {
+		if (aFluid == null) {
+			return null;
+		}
+		return new FluidStack(aFluid, aAmount);
 	}
 
 	public static FluidStack[] getFluidStackArray(final String fluidName, final int amount){
 		Logger.WARNING("Trying to get a fluid stack of "+fluidName);
 		try {
-			final FluidStack[] singleFluid = {FluidRegistry.getFluidStack(fluidName, amount)};
+			final FluidStack[] singleFluid = {getFluidStack(fluidName, amount)};
 			return singleFluid;
 		}
 		catch (final Throwable e){
@@ -136,7 +163,7 @@ public class FluidUtils {
 	public static FluidStack[] getFluidStackArray(final FluidStack fluidName, final int amount){
 		Logger.WARNING("Trying to get a fluid stack of "+fluidName);
 		try {
-			final FluidStack[] singleFluid = {FluidRegistry.getFluidStack(fluidName.getLocalizedName(), amount)};
+			final FluidStack[] singleFluid = {getFluidStack(fluidName, amount)};
 			return singleFluid;
 		}
 		catch (final Throwable e){

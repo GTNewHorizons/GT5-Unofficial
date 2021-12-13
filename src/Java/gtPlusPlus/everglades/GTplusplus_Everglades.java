@@ -126,36 +126,6 @@ public class GTplusplus_Everglades implements ActionListener {
 		if (LoadedMods.Big_Reactors) {
 			MaterialGenerator.generateOreMaterial(ELEMENT.getInstance().YELLORIUM, false, false, true, new short[] {255, 242, 10});
 		}
-
-		if (!CORE.GTNH) {
-			MaterialGenerator.generateOreMaterial(
-					ELEMENT.getInstance().TRINIUM,
-					true,
-					false,
-					false,
-					ELEMENT.getInstance().TRINIUM_REFINED.getRGBA());
-		}
-		
-		
-		
-		/*
-		 * OSRS Materials
-		 */
-		
-		MaterialGenerator.generateOreMaterial(
-				ELEMENT.STANDALONE.GRANITE,
-				true,
-				false,
-				false,
-				ELEMENT.STANDALONE.GRANITE.getRGBA());		
-		MaterialGenerator.generateOreMaterial(
-				ELEMENT.STANDALONE.RUNITE,
-				true,
-				false,
-				false,
-				ELEMENT.STANDALONE.RUNITE.getRGBA());
-		
-
 		
 	}
 

@@ -523,6 +523,9 @@ public final class ModItems {
 			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().POLONIUM210, false);
 			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().AMERICIUM241, false);
 			
+			if (!CORE.GTNH) {
+				MaterialGenerator.generateOreMaterialWithAllExcessComponents(ELEMENT.getInstance().TRINIUM);				
+			}
 			
 			//Custom Materials that will have standalone refinery processes
 			MaterialGenerator.generate(ELEMENT.STANDALONE.ADVANCED_NITINOL, false);
@@ -534,8 +537,8 @@ public final class ModItems {
 			//Custom Materials that are from Runescape
 			MaterialGenerator.generate(ELEMENT.STANDALONE.BLACK_METAL);
 			MaterialGenerator.generate(ELEMENT.STANDALONE.WHITE_METAL);
-			MaterialGenerator.generate(ELEMENT.STANDALONE.GRANITE, false, false);
-			MaterialGenerator.generate(ELEMENT.STANDALONE.RUNITE, false);
+			MaterialGenerator.generateOreMaterialWithAllExcessComponents(ELEMENT.STANDALONE.GRANITE);
+			MaterialGenerator.generateOreMaterialWithAllExcessComponents(ELEMENT.STANDALONE.RUNITE);
 			MaterialGenerator.generate(ELEMENT.STANDALONE.DRAGON_METAL, false);
 			
 			MISC_MATERIALS.run();

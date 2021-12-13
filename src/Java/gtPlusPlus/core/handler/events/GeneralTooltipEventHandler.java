@@ -6,8 +6,10 @@ import gtPlusPlus.GTplusplus;
 import gtPlusPlus.GTplusplus.INIT_PHASE;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.sys.KeyboardUtils;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -22,7 +24,7 @@ public class GeneralTooltipEventHandler {
 	@SubscribeEvent
 	public void onItemTooltip(ItemTooltipEvent event){
 
-		
+
 		if (GTplusplus.CURRENT_LOAD_PHASE != INIT_PHASE.STARTED && GTplusplus.CURRENT_LOAD_PHASE != INIT_PHASE.SERVER_START) {
 			return;
 		}
@@ -68,8 +70,16 @@ public class GeneralTooltipEventHandler {
 				event.toolTip.add(EnumChatFormatting.GOLD+"Capacity: "+EnumChatFormatting.AQUA+"128000L");
 			}
 		}
-		
-		
+
+		// Custom Flasks
+
+		if (GregtechItemList.VOLUMETRIC_FLASK_8k.hasBeenSet() && event.itemStack.getItem() == GregtechItemList.VOLUMETRIC_FLASK_8k.getItem()) {		
+			event.toolTip.add("Max Capacity: "+MathUtils.formatNumbers(8000)+"L");
+		}
+		if (GregtechItemList.VOLUMETRIC_FLASK_32k.hasBeenSet() && event.itemStack.getItem() == GregtechItemList.VOLUMETRIC_FLASK_32k.getItem()) {	
+			event.toolTip.add("Max Capacity: "+MathUtils.formatNumbers(32000)+"L");
+		}
+
 
 		if (CORE.ConfigSwitches.enableAnimatedTurbines) {
 			boolean shift = false;					

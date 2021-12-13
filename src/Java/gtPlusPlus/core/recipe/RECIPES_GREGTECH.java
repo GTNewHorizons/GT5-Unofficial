@@ -390,6 +390,28 @@ public class RECIPES_GREGTECH {
 				20 * 20,
 				MaterialUtils.getVoltageForTier(aBotmiumTier-2),
 				6);
+		
+
+		//Refine GT HF into GT++ HF
+		if (FluidUtils.doesHydrofluoricAcidGtExist()) {			
+			CORE.RA.addChemicalPlantRecipe(
+					new ItemStack[] {
+							CI.getNumberedAdvancedCircuit(22),
+					},
+					new FluidStack[] {
+							FluidUtils.getHydrofluoricAcid(2000),
+							FluidUtils.getHydrofluoricAcidGT(5000)
+					},
+					new ItemStack[] {
+
+					},
+					new FluidStack[] {
+							FluidUtils.getHydrofluoricAcid(6000)
+					},
+					30 * 20,
+					480,
+					3);
+		}
 
 	}
 
@@ -1268,30 +1290,6 @@ public class RECIPES_GREGTECH {
 				2 * 20, 
 				500); // EU
 
-		// CaF2 + H2SO4 â†’ CaSO4(solid) + 2 HF
-		FluidStack aGregtechHydro = FluidUtils.getFluidStack("hydrofluoricacid_gt5u", 16000);
-		if (aGregtechHydro == null) {
-			aGregtechHydro = FluidUtils.getFluidStack("hydrofluoricacid", 16000);
-		}
-
-		CORE.RA.addDehydratorRecipe(
-				new ItemStack[] { 
-						CI.getNumberedAdvancedCircuit(5),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustFluorite", 37),							
-				},
-				FluidUtils.getFluidStack("sulfuricacid", 56 * 144),
-				aGregtechHydro, // Fluid output (slot 2)
-				new ItemStack[] {
-						ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumSulfate", 30),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustSilver", 1),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustGold", 2),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustTin", 1),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 2)
-				}, 
-				new int[] { 10000, 100, 100, 300, 200 },
-				10 * 60 * 20, 
-				230); // EU
-
 
 		CORE.RA.addDehydratorRecipe(
 				new ItemStack[] {
@@ -1662,19 +1660,35 @@ public class RECIPES_GREGTECH {
 		 * so if you dissolve aparite in sulphuric acid you'll get a mixture of
 		 * SO2, H2O, HF and HCl
 		 */
-		final FluidStack[] apatiteOutput = { FluidUtils.getFluidStack("sulfurousacid", 3800),
-				FluidUtils.getFluidStack("hydrogenchloride", 1000), FluidUtils.getFluidStack("hydrofluoricacid", 400) };
-		GT_Values.RA.addDistillationTowerRecipe(FluidUtils.getFluidStack("sulfuricapatite", 5200), apatiteOutput, null,
-				45 * 20, 256);
+		final FluidStack[] apatiteOutput = { 
+				FluidUtils.getFluidStack("sulfurousacid", 3800),
+				FluidUtils.getFluidStack("hydrogenchloride", 1000), 
+				FluidUtils.getFluidStack("hydrofluoricacid", 400) };
+		GT_Values.RA.addDistillationTowerRecipe(
+				FluidUtils.getFluidStack("sulfuricapatite", 5200),
+				apatiteOutput, null,
+				45 * 20, 
+				120);
 
-		final FluidStack[] sulfurousacidOutput = { FluidUtils.getFluidStack("sulfurdioxide", 500),
+		final FluidStack[] sulfurousacidOutput = { 
+				FluidUtils.getFluidStack("sulfurdioxide", 500),
 				FluidUtils.getFluidStack("water", 500) };
-		GT_Values.RA.addDistillationTowerRecipe(FluidUtils.getFluidStack("sulfurousacid", 1000), sulfurousacidOutput,
-				null, 10 * 20, 60);
+		GT_Values.RA.addDistillationTowerRecipe(
+				FluidUtils.getFluidStack("sulfurousacid", 1000), 
+				sulfurousacidOutput,
+				null, 
+				10 * 20, 
+				60);
 
-		final FluidStack[] sulfurdioxideOutput = { FluidUtils.getFluidStack("oxygen", 144 * 2) };
-		GT_Values.RA.addDistillationTowerRecipe(FluidUtils.getFluidStack("sulfurdioxide", 144 * 3), sulfurdioxideOutput,
-				ItemUtils.getItemStackOfAmountFromOreDict("dustSulfur", 1), 5 * 20, 30);
+		final FluidStack[] sulfurdioxideOutput = { 
+				FluidUtils.getFluidStack("oxygen", 2000) 
+				};
+		GT_Values.RA.addDistillationTowerRecipe(
+				FluidUtils.getFluidStack("sulfurdioxide", 144 * 3),
+				sulfurdioxideOutput,
+				ItemUtils.getItemStackOfAmountFromOreDict("dustSulfur", 1),
+				5 * 20, 
+				30);
 	}
 
 	private static void addFuels() {
@@ -1735,16 +1749,6 @@ public class RECIPES_GREGTECH {
 	}
 
 	private static void chemicalBathRecipes() {
-
-		GT_Values.RA.addChemicalBathRecipe(
-				FLUORIDES.FLUORITE.getCrushed(2), 
-				FluidUtils.getFluidStack("hydrogen", 2000),
-				FLUORIDES.FLUORITE.getCrushedPurified(8), 
-				FLUORIDES.FLUORITE.getDustImpure(4),
-				FLUORIDES.FLUORITE.getDustPurified(2),
-				new int[] { 10000, 5000, 1000 }, 
-				30 * 20, 
-				240);
 		
 	}
 
@@ -1787,24 +1791,12 @@ public class RECIPES_GREGTECH {
 				10 * 20);	
 		
 		GT_Values.RA.addChemicalRecipe(
-				ItemUtils.getItemStackOfAmountFromOreDict("dustApatite", 16), 
-				null,
-				FluidUtils.getFluidStack("sulfuricacid", 144 * 32),
-				FluidUtils.getFluidStack("sulfuricapatite", 144 * 8),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustSmallSulfur", 1), 
+				CI.getNumberedAdvancedCircuit(21),
+				ItemUtils.getItemStackOfAmountFromOreDict("dustApatite", 32),
+				FluidUtils.getFluidStack("sulfuricacid", 4000),
+				FluidUtils.getFluidStack("sulfuricapatite", 8000),
+				ItemUtils.getItemStackOfAmountFromOreDict("dustSmallSulfur", 8), 
 				20 * 20);
-
-		ItemStack temp_GT5u_SA = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cellHydrofluoricAcid_GT5U", 5);
-		if (temp_GT5u_SA != null) {
-			//Refine GT HF into GT++ HF
-			GT_Values.RA.addChemicalRecipe(
-					ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid", 2),
-					temp_GT5u_SA,
-					null, // Fluid Input
-					FluidUtils.getFluidStack("hydrofluoricacid", 6000), // Fluid Output
-					CI.emptyCells(7),
-					2 * 20);
-		}
 
 	}
 

@@ -3,12 +3,7 @@ package gtPlusPlus.xmod.gregtech.loaders;
 import java.util.HashSet;
 import java.util.Set;
 
-import net.minecraft.item.ItemStack;
-
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
-import gregtech.api.util.GT_Recipe;
-
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
@@ -20,6 +15,7 @@ import gtPlusPlus.core.material.MaterialStack;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 public class RecipeGen_MaterialProcessing extends RecipeGen_Base {
@@ -30,16 +26,24 @@ public class RecipeGen_MaterialProcessing extends RecipeGen_Base {
 	}
 
 	public RecipeGen_MaterialProcessing(final Material M){
-		this.toGenerate = M;
+		this(M, false);
+	}
+
+	public RecipeGen_MaterialProcessing(final Material M, final boolean O){
+		this.toGenerate = M;	
+		this.disableOptional = O;
 		mRecipeGenMap.add(this);
 	}
 
 	@Override
 	public void run() {
-		generateRecipes(this.toGenerate);
+		generateRecipes(this.toGenerate, this.disableOptional);
 	}
 
-	private void generateRecipes(final Material material){
+	private void generateRecipes(final Material material, final boolean disableOptional){
+		if (disableOptional) {
+			return;
+		}
 
 		if (material.getMaterialComposites().length > 1){
 			Logger.MATERIALS("[Recipe Generator Debug] ["+material.getLocalizedName()+"]");
@@ -65,7 +69,7 @@ public class RecipeGen_MaterialProcessing extends RecipeGen_Base {
 
 
 			/**
-			 * Electrolyzer
+			 * Centrifuge
 			 */
 
 			//Process Dust
@@ -79,14 +83,14 @@ public class RecipeGen_MaterialProcessing extends RecipeGen_Base {
 				int mCounter = 0;
 				for (Pair<Integer, Material> f : componentMap){
 					if (f.getValue().getState() != MaterialState.SOLID){
-						Logger.MATERIALS("[Electrolyzer] Found Fluid Component, adding "+f.getKey()+" cells of "+f.getValue().getLocalizedName()+".");
+						Logger.MATERIALS("[Centrifuge] Found Fluid Component, adding "+f.getKey()+" cells of "+f.getValue().getLocalizedName()+".");
 						mInternalOutputs[mCounter++] = f.getValue().getCell(f.getKey());
 						mCellCount += f.getKey();
 						mTotalCount += f.getKey();
-						Logger.MATERIALS("[Electrolyzer] In total, adding "+mCellCount+" cells for "+material.getLocalizedName()+" processing.");
+						Logger.MATERIALS("[Centrifuge] In total, adding "+mCellCount+" cells for "+material.getLocalizedName()+" processing.");
 					}
 					else {
-						Logger.MATERIALS("[Electrolyzer] Found Solid Component, adding "+f.getKey()+" dusts of "+f.getValue().getLocalizedName()+".");
+						Logger.MATERIALS("[Centrifuge] Found Solid Component, adding "+f.getKey()+" dusts of "+f.getValue().getLocalizedName()+".");
 						mInternalOutputs[mCounter++] = f.getValue().getDust(f.getKey());
 						mTotalCount += f.getKey();
 					}
@@ -94,38 +98,38 @@ public class RecipeGen_MaterialProcessing extends RecipeGen_Base {
 
 				//Build Output Array
 				for (int g=0;g<mInternalOutputs.length;g++){
-					Logger.MATERIALS("[Electrolyzer] Is output["+g+"] valid with a chance? "+(mInternalOutputs[g] != null ? 10000 : 0));
+					Logger.MATERIALS("[Centrifuge] Is output["+g+"] valid with a chance? "+(mInternalOutputs[g] != null ? 10000 : 0));
 					mChances[g] = (mInternalOutputs[g] != null ? 10000 : 0);
 				}
 
 				ItemStack emptyCell = null;
 				if (mCellCount > 0){
 					emptyCell = ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", mCellCount);
-					Logger.MATERIALS("[Electrolyzer] Recipe now requires "+mCellCount+" empty cells as input.");
+					Logger.MATERIALS("[Centrifuge] Recipe now requires "+mCellCount+" empty cells as input.");
 				}
 
 				ItemStack mainDust = material.getDust(material.smallestStackSizeWhenProcessing);
 				if (mainDust != null){
-					Logger.MATERIALS("[Electrolyzer] Recipe now requires "+material.smallestStackSizeWhenProcessing+"x "+mainDust.getDisplayName()+" as input.");					
+					Logger.MATERIALS("[Centrifuge] Recipe now requires "+material.smallestStackSizeWhenProcessing+"x "+mainDust.getDisplayName()+" as input.");					
 				}
 				else {
 					mainDust = material.getDust(mTotalCount);
-					Logger.MATERIALS("[Electrolyzer] Could not find valid input dust, trying alternative.");	
+					Logger.MATERIALS("[Centrifuge] Could not find valid input dust, trying alternative.");	
 					if (mainDust != null){
-						Logger.MATERIALS("[Electrolyzer] Recipe now requires "+mTotalCount+"x "+mainDust.getDisplayName()+" as input.");					
+						Logger.MATERIALS("[Centrifuge] Recipe now requires "+mTotalCount+"x "+mainDust.getDisplayName()+" as input.");					
 					}
 					else {
-						Logger.MATERIALS("[Electrolyzer] Could not find valid input dust, exiting.");					
+						Logger.MATERIALS("[Centrifuge] Could not find valid input dust, exiting.");					
 					}
 				}
 
 				for (int j=0;j<mInternalOutputs.length;j++){
 					if (mInternalOutputs[j] == null){
 						mInternalOutputs[j] = GT_Values.NI;
-						Logger.MATERIALS("[Electrolyzer] Set slot "+j+"  to null.");
+						Logger.MATERIALS("[Centrifuge] Set slot "+j+"  to null.");
 					}
 					else {
-						Logger.MATERIALS("[Electrolyzer] Set slot "+j+" to "+mInternalOutputs[j].getDisplayName()+".");						
+						Logger.MATERIALS("[Centrifuge] Set slot "+j+" to "+mInternalOutputs[j].getDisplayName()+".");						
 					}
 				}
 
@@ -144,10 +148,10 @@ public class RecipeGen_MaterialProcessing extends RecipeGen_Base {
 							mChances, 
 							20*1*(tVoltageMultiplier/10), 
 							tVoltageMultiplier)){
-						Logger.MATERIALS("[Electrolyzer] Generated Electrolyzer recipe for "+material.getDust(1).getDisplayName());
+						Logger.MATERIALS("[Centrifuge] Generated Centrifuge recipe for "+material.getDust(1).getDisplayName());
 					}
 					else {
-						Logger.MATERIALS("[Electrolyzer] Failed to generate Electrolyzer recipe for "+material.getDust(1).getDisplayName());					
+						Logger.MATERIALS("[Centrifuge] Failed to generate Centrifuge recipe for "+material.getDust(1).getDisplayName());					
 					}
 				}
 				catch(Throwable t){
@@ -252,23 +256,5 @@ public class RecipeGen_MaterialProcessing extends RecipeGen_Base {
 	public static boolean addCentrifgeRecipe(ItemStack aInput1, ItemStack aInput2, FluidStack aFluidInput, FluidStack aFluidOutput, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3, ItemStack aOutput4, ItemStack aOutput5, ItemStack aOutput6, int[] aChances, int aDuration, int aEUt) {
 		return GT_Values.RA.addCentrifugeRecipe(aInput1, aInput2, aFluidInput, aFluidOutput, aOutput1, aOutput2, aOutput3, aOutput4, aOutput5, aOutput6, aChances, aDuration, aEUt);
 	}
-
-	public static boolean addElectrolyzerRecipe(ItemStack aInput1, ItemStack aInput2, FluidStack aFluidInput, FluidStack aFluidOutput, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3, ItemStack aOutput4, ItemStack aOutput5, ItemStack aOutput6, int[] aChances, int aDuration, int aEUt) {
-		if (((aInput1 == null) && (aFluidInput == null)) || ((aOutput1 == null) && (aFluidOutput == null))) {
-			Logger.MATERIALS("[Electrolyzer] Either both inputs or outputs are null.");
-			return false;
-		}
-		if ((aInput1 != null) && ((aDuration = GregTech_API.sRecipeFile.get("electrolyzer", aInput1, aDuration)) <= 0)) {
-			Logger.MATERIALS("[Electrolyzer] Fail 1.");
-			return false;
-		}
-		if ((aFluidInput != null) && ((aDuration = GregTech_API.sRecipeFile.get("electrolyzer", aFluidInput.getFluid().getName(), aDuration)) <= 0)) {
-			Logger.MATERIALS("[Electrolyzer] Fail 2.");
-			return false;
-		}
-		GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes.addRecipe(true, new ItemStack[]{aInput1, aInput2}, new ItemStack[]{aOutput1, aOutput2, aOutput3, aOutput4, aOutput5, aOutput6}, null, aChances, new FluidStack[]{aFluidInput}, new FluidStack[]{aFluidOutput}, aDuration, aEUt, 0);
-		Logger.MATERIALS("[Electrolyzer] Recipe added.");
-		return true;
-	}
-
+	
 }
