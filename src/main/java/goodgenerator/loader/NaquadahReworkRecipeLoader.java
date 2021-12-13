@@ -896,6 +896,28 @@ public class NaquadahReworkRecipeLoader {
             remove.clear();
             reAdd.clear();
 
+            for (GT_Recipe recipe : GTPP_Recipe.GTPP_Recipe_Map.sVacuumFurnaceRecipes.mRecipeList) {
+                FluidStack input = recipe.mFluidInputs[0];
+                if (input.isFluidEqual(FluidRegistry.getFluidStack("froth.monaziteflotation", 1))) {
+                    GT_Recipe tRecipe = recipe.copy();
+                    for (int i = 0; i < tRecipe.mOutputs.length; i ++) {
+                        if (!GT_Utility.isStackValid(tRecipe.mOutputs[i])) continue;
+                        if (tRecipe.mOutputs[i].isItemEqual(Materials.Praseodymium.getDust(1)))
+                            tRecipe.mOutputs[i] = Materials.Cerium.getDust(tRecipe.mOutputs[i].stackSize);
+                    }
+                    if (!tRecipe.equals(recipe)){
+                        reAdd.add(tRecipe);
+                        remove.add(recipe);
+                    }
+                }
+            }
+            GTPP_Recipe.GTPP_Recipe_Map.sVacuumFurnaceRecipes.mRecipeList.removeAll(remove);
+            GTPP_Recipe.GTPP_Recipe_Map.sVacuumFurnaceRecipes.mRecipeList.addAll(reAdd);
+            GTPP_Recipe.GTPP_Recipe_Map.sVacuumFurnaceRecipes.reInit();
+
+            remove.clear();
+            reAdd.clear();
+
             GT_Log.out.print("Simple Washer done!\n");
         }
 
