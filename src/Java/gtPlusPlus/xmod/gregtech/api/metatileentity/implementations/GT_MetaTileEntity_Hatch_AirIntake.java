@@ -1,28 +1,25 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraft.world.World;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import gtPlusPlus.api.objects.Logger;
+import java.lang.reflect.Field;
+
+import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.objects.GT_RenderedTexture;
 import gtPlusPlus.api.objects.random.XSTR;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
-
-import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-
-import java.lang.reflect.Field;
-
 import net.minecraft.entity.player.EntityPlayer;
-import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.ITexture;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
 
 public class GT_MetaTileEntity_Hatch_AirIntake extends GT_MetaTileEntity_Hatch_Input {
 	
@@ -132,25 +129,17 @@ public class GT_MetaTileEntity_Hatch_AirIntake extends GT_MetaTileEntity_Hatch_I
 		super.onPostTick(aBaseMetaTileEntity, aTick);	
 		
 		if (!aBaseMetaTileEntity.isAllowedToWork()) {
+            aBaseMetaTileEntity.setActive(false);	
             mProgresstime = 0;
-            mMaxProgresstime = 0;	
-            aBaseMetaTileEntity.setActive(false);		
+            mMaxProgresstime = 0;		
 		}
 		else {
-			if (mMaxProgresstime <= 0) {
-				mMaxProgresstime = 4;
+			aBaseMetaTileEntity.setActive(true);
+			mMaxProgresstime = 4;
+			if (++mProgresstime >= mMaxProgresstime) {
+				addAirToHatch(aTick);
+				mProgresstime = 0;
 			}
-	        if (mMaxProgresstime > 0 && mProgresstime >= 0) {
-	            aBaseMetaTileEntity.setActive(true);
-	            if (++mProgresstime >= mMaxProgresstime) {
-	            	addAirToHatch(aTick);
-	                mProgresstime = 0;
-	                mMaxProgresstime = 0;
-	            }
-	        }
-	        else {
-	            aBaseMetaTileEntity.setActive(false);
-	        }
 		}
 	}
 	
@@ -171,7 +160,9 @@ public class GT_MetaTileEntity_Hatch_AirIntake extends GT_MetaTileEntity_Hatch_I
     }
 
 	public void pollutionParticles(final World aWorld, final String name) {
-
+		if (this.getBaseMetaTileEntity().isServerSide()) {
+			return;
+		}		
 		final float ran1 = GT_MetaTileEntity_Hatch_AirIntake.floatGen.nextFloat();
 		float ran2 = 0.0f;
 		float ran3 = 0.0f;
@@ -193,14 +184,13 @@ public class GT_MetaTileEntity_Hatch_AirIntake extends GT_MetaTileEntity_Hatch_I
 			zSpd = (float) Math.cos(temp) * 0.1f;
 			ySpd = -ySpd;
 			yPos = yPos - 0.8f;
-		} else {
+		} 
+		else {
 			xSpd = aDir.offsetX * (0.1f + 0.2f * GT_MetaTileEntity_Hatch_AirIntake.floatGen.nextFloat());
 			zSpd = aDir.offsetZ * (0.1f + 0.2f * GT_MetaTileEntity_Hatch_AirIntake.floatGen.nextFloat());
 
 			xSpd = -xSpd;
 			zSpd = -zSpd;
-
-
 		}
 
 		aWorld.spawnParticle(name, (double) (xPos + ran1 * 0.5f),
@@ -252,35 +242,16 @@ public class GT_MetaTileEntity_Hatch_AirIntake extends GT_MetaTileEntity_Hatch_I
 		if (!this.getBaseMetaTileEntity().getAirAtSide(this.getBaseMetaTileEntity().getFrontFacing())) {
 			return false;
 		}		
-		boolean a1 = canTankBeFilled();
-		if (this.mFluid != null && !isAirInHatch()) {
-			return false;
+		boolean didFill = this.fill(FluidUtils.getAir(1000), true) > 0;
+        if (didFill) {					
+			this.pollutionParticles(this.getBaseMetaTileEntity().getWorld(), "cloud");
 		}
-		if (this.mFluid != null && a1) {
-			this.mFluid.amount += 1000;
-            if (this.getBaseMetaTileEntity().isClientSide()) {					
-				this.pollutionParticles(this.getBaseMetaTileEntity().getWorld(), "cloud");
-			}
-			return true;
-		}
-		else if (this.mFluid != null && !a1) {
-			return false;
-		}
-		else {
-			if (this.mFluid == null) {
-				this.mFluid = FluidUtils.getFluidStack("air", 1000);
-				return true;
-			}
-			else {
-				//Not sure how any other fluid got in here
-				return false;
-			}
-		}	
+		return didFill;	
 	}
 
 	@Override
 	public boolean canTankBeFilled() {
-		if (this.mFluid == null || (this.mFluid != null && ((this.mFluid.amount+1000) <= this.getCapacity()))) {
+		if (this.mFluid == null || (this.mFluid != null && (this.mFluid.amount <= this.getCapacity()))) {
 			return true;
 		}
 		return false;
@@ -293,12 +264,12 @@ public class GT_MetaTileEntity_Hatch_AirIntake extends GT_MetaTileEntity_Hatch_I
 
 	@Override
 	public boolean doesFillContainers() {
-		return false;
+		return true;
 	}
 
 	@Override
 	public int fill(FluidStack aFluid, boolean doFill) {
-		return 0;
+		return super.fill(aFluid, doFill);
 	}
 
 	@Override
