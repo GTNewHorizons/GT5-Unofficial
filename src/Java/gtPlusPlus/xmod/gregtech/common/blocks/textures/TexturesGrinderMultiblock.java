@@ -85,7 +85,7 @@ public class TexturesGrinderMultiblock {
 
 	public IIcon handleCasingsGT(final IBlockAccess aWorld, final int xCoord, final int yCoord, final int zCoord, final int aSide, final GregtechMetaCasingBlocks5 ii) {
 		final int tMeta = aWorld.getBlockMetadata(xCoord, yCoord, zCoord);
-		if (tMeta != 0) {
+		if (tMeta != 1) {
 			return GregtechMetaCasingBlocks5.getStaticIcon(aSide, tMeta);
 		}
 		int tInvertLeftRightMod = aSide % 2 * 2 - 1;
