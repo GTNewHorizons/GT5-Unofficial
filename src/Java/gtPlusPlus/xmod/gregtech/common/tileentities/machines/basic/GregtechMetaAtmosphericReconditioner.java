@@ -293,6 +293,8 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 											//Makes sure we don't get negative pollution.
 											toRemove = mCurrentPollution;						
 										}
+										
+										toRemove = toRemove/2;
 										Logger.INFO("mCurrentPollution[6]:"+toRemove);
 
 										//We are good to clean
