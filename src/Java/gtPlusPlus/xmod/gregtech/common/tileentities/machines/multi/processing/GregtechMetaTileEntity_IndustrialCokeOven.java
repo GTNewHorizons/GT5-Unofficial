@@ -81,7 +81,7 @@ extends GregtechMeta_MultiBlockBase {
 		if (STRUCTURE_DEFINITION == null) {
 			STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialCokeOven>builder()
 					.addShape(mName, transpose(new String[][]{
-							{"CCC", "C-C", "CCC"},
+							{"CCC", "CCC", "CCC"},
 							{"HHH", "H-H", "HHH"},
 							{"C~C", "CCC", "CCC"},
 					}))
