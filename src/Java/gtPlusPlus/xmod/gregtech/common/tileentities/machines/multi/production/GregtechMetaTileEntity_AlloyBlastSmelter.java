@@ -148,6 +148,8 @@ extends GregtechMeta_MultiBlockBase {
 				return addToMachineList(aTileEntity, aBaseCasingIndex);
 			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
 				return addToMachineList(aTileEntity, aBaseCasingIndex);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus) {
+				return addToMachineList(aTileEntity, aBaseCasingIndex);
 			}
 		}
 		return false;
