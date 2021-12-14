@@ -282,10 +282,12 @@ public abstract class GregtechMeta_SteamMultiBase extends GregtechMeta_MultiBloc
 	@Override
 	public boolean addToMachineList(final IGregTechTileEntity aTileEntity, final int aBaseCasingIndex) {
 		if (aTileEntity == null) {
+			log("Invalid IGregTechTileEntity");
 			return false;
 		}
 		final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
 		if (aMetaTileEntity == null) {
+			log("Invalid IMetaTileEntity");
 			return false;
 		}
 
@@ -293,16 +295,20 @@ public abstract class GregtechMeta_SteamMultiBase extends GregtechMeta_MultiBloc
 		boolean aDidAdd = false;
 
 		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_CustomFluidBase) {
+			log("Adding Steam Input Hatch");
 			aDidAdd = addToMachineListInternal(mSteamInputFluids, aMetaTileEntity, aBaseCasingIndex);
 		}		
 		else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Steam_BusInput) {
-            ((GT_MetaTileEntity_Hatch_InputBus) aTileEntity).mRecipeMap = getRecipeMap();
+			log("Trying to set recipe map. Type: "+(getRecipeMap() != null ? getRecipeMap().mNEIName : "Null"));
+			this.resetRecipeMapForHatch(aTileEntity, getRecipeMap());
+			log("Adding Steam Input Bus");
             aDidAdd = addToMachineListInternal(mSteamInputs, aMetaTileEntity, aBaseCasingIndex);
 		}		
 		else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Steam_BusOutput) {
+			log("Adding Steam Output Bus");
 			aDidAdd = addToMachineListInternal(mSteamOutputs, aMetaTileEntity, aBaseCasingIndex);
 		}
-
+		
 		return aDidAdd;
 	}
     
