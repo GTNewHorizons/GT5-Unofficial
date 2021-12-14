@@ -95,7 +95,7 @@ public class NaquadahReworkRecipeLoader {
                 lowQualityNaquadahSolution.get(OrePrefixes.cell, 36),
                 P507.get(OrePrefixes.cell, 4),
                 null,
-                fluorineRichWasteLiquid.getFluidOrGas(6000),
+                fluorineRichWasteLiquid.getFluidOrGas(10000),
                 naquadahAdamantiumSolution.get(OrePrefixes.cell, 30),
                 ItemList.Cell_Empty.get(10),
                 4000,
@@ -109,7 +109,7 @@ public class NaquadahReworkRecipeLoader {
                         lowQualityNaquadahSolution.getFluidOrGas(36000),
                 },
                 new FluidStack[]{
-                        fluorineRichWasteLiquid.getFluidOrGas(6000),
+                        fluorineRichWasteLiquid.getFluidOrGas(10000),
                         naquadahAdamantiumSolution.getFluidOrGas(30000)
                 },
                 null,
