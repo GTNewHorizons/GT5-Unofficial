@@ -58,7 +58,7 @@ import java.util.stream.Stream;
 @ParametersAreNonnullByDefault
 public abstract class GT_ChunkAssociatedData<T extends GT_ChunkAssociatedData.IData> {
 	private static final Map<String, GT_ChunkAssociatedData<?>> instances = new ConcurrentHashMap<>();
-	private static final int IO_PARALLELISM = Math.min(8, Math.max(1, Runtime.getRuntime().availableProcessors()) * 2 / 3);
+	private static final int IO_PARALLELISM = Math.min(8, Math.max(1, Runtime.getRuntime().availableProcessors() * 2 / 3));
 	private static final ExecutorService IO_WORKERS = Executors.newWorkStealingPool(IO_PARALLELISM);
 	private static final Pattern FILE_PATTERN = Pattern.compile("(.+)\\.(-?\\d+)\\.(-?\\d+)\\.dat");
 
