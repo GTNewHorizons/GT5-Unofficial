@@ -73,7 +73,7 @@ public class GT_AssemblyLineUtils {
 	 */
 	@Nonnull
 	public static LookupResult findAssemblyLineRecipeFromDataStick(ItemStack aDataStick, boolean aReturnBuiltRecipe) {
-		if (!isItemDataStick(aDataStick) || doesDataStickHaveOutput(aDataStick)) {
+		if (!isItemDataStick(aDataStick) || !doesDataStickHaveOutput(aDataStick)) {
 			return LookupResultType.INVALID_STICK.getResult();
 		}
 		List<ItemStack> aInputs = new ArrayList<>(15);
@@ -298,7 +298,7 @@ public class GT_AssemblyLineUtils {
 	public static boolean doesDataStickHaveRecipeHash(ItemStack aDataStick) {
 		if (isItemDataStick(aDataStick) && aDataStick.hasTagCompound()) {
 			NBTTagCompound aNBT = aDataStick.getTagCompound();
-			if (aNBT.hasKey("Data.Recipe.Hash") && aNBT.getString("Data.Recipe.Hash").equals("Hash.0")) {
+			if (aNBT.hasKey("Data.Recipe.Hash") && !aNBT.getString("Data.Recipe.Hash").equals("Hash.0")) {
 				return true;
 			}
 		}
@@ -374,9 +374,24 @@ public class GT_AssemblyLineUtils {
 				GT_FML_LOGGER.info("Updating data stick: "+aDataStick.getDisplayName()+" | Old Recipe Hash: "+generateRecipeHash(aOldRecipe)+", New Recipe Hash: "+aHash);
 			}
 
+			String author = "Assembling Line Recipe Generator";
+			String displayName = null;
+			if (aDataStick.hasTagCompound()) {
+				NBTTagCompound tag = aDataStick.getTagCompound();
+				if (tag.hasKey("author", NBT.TAG_STRING)) {
+					author = tag.getString("author");
+				}
+				if (tag.hasKey("display", NBT.TAG_COMPOUND)) {
+					NBTTagCompound displayTag = tag.getCompoundTag("display");
+					if (displayTag.hasKey("Name", NBT.TAG_STRING))
+						displayName = displayTag.getString("Name");
+				}
+			}
 
 			//remove possible old NBTTagCompound
 			aDataStick.setTagCompound(new NBTTagCompound());
+			if (displayName != null)
+				aDataStick.setStackDisplayName(displayName);
 			if (GT_Values.D1) {
 				GT_Utility.ItemNBT.setBookTitle(aDataStick, s + " Construction Data ("+aHash+")");				
 			}
@@ -406,7 +421,7 @@ public class GT_AssemblyLineUtils {
 			for (int i = 0; i < aNewRecipe.mFluidInputs.length; i++) {
 				tNBT.setTag("f" + i, aNewRecipe.mFluidInputs[i].writeToNBT(new NBTTagCompound()));
 			}
-			tNBT.setString("author", "Assembling Line Recipe Generator");
+			tNBT.setString("author", author);
 			NBTTagList tNBTList = new NBTTagList();
 			s = aNewRecipe.mOutput.getDisplayName();
 			if (FMLCommonHandler.instance().getEffectiveSide().isServer()) {
@@ -455,8 +470,9 @@ public class GT_AssemblyLineUtils {
 					tNBTList.appendTag(new NBTTagString("Input Hatch " + (i + 1) + ": " + aNewRecipe.mFluidInputs[i].amount + "L " + s));
 				}
 			}
-			tNBT.setTag("pages", tNBTList);		
-			aDataStick.setTagCompound(tNBT);	
+			tNBT.setTag("pages", tNBTList);
+			tNBT.setLong("lastUpdate", System.currentTimeMillis());
+			aDataStick.setTagCompound(tNBT);
 			// Set recipe hash
 			setRecipeHashOnDataStick(aDataStick, aHash);
 			return true;
