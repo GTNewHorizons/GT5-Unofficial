@@ -1401,7 +1401,7 @@ public class DreamCraftRecipeLoader implements Runnable {
                 ItemList.Circuit_Parts_DiodeASMD.get(64),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorUHV, 64),
         }, new FluidStack[]{
-                Materials.SolderingAlloy.getMolten(3760),
+                Materials.SolderingAlloy.getMolten(4608),
                 Materials.Naquadria.getMolten(9216),
                 new FluidStack(FluidRegistry.getFluid("ic2coolant"), 32000)
         }, ItemList.ZPM3.get(1), 4000, 1600000);
