@@ -562,7 +562,7 @@ public class Recipes {
 						ItemList.Circuit_Parts_DiodeASMD.get(64)
 				},
 				new FluidStack[] {
-						Materials.SolderingAlloy.getMolten(3760),
+						Materials.SolderingAlloy.getMolten(4608),
 						Materials.Naquadria.getMolten(9216),
 						new FluidStack(FluidRegistry.getFluid("ic2coolant"), 32000)
 				},
