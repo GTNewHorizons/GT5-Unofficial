@@ -1,7 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic;
 
 import static gregtech.api.enums.GT_Values.V;
-import static gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils.mPollution;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -42,14 +41,14 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 	protected int mBaseEff = 2500;
 	protected int mOptimalAirFlow = 0;
 	protected boolean mHasPollution = false;
-	protected int SLOT_ROTOR = 4;
-	protected int SLOT_FILTER = 5;
+	protected int SLOT_ROTOR = 5;
+	protected int SLOT_FILTER = 6;
 	protected static boolean mPollutionEnabled = true;
 
 	protected boolean mSaveRotor = false;
 
 	public GregtechMetaAtmosphericReconditioner(int aID, String aName, String aNameRegional, int aTier) {
-		super(aID, aName, aNameRegional, aTier, 2, "Making sure you don't live in Gwalior - Uses 2A", 2, 0, "Recycler.png", "", 
+		super(aID, aName, aNameRegional, aTier, 2, "Making sure you don't live in Gwalior - Uses 2A", 3, 0, "Recycler.png", "", 
 				new ITexture[]{
 						new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_SIDE_MASSFAB_ACTIVE),
 						new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_SIDE_MASSFAB),
@@ -60,12 +59,12 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 						new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_BOTTOM_MASSFAB_ACTIVE),
 						new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_BOTTOM_MASSFAB)
 		});
-		mPollutionEnabled = PollutionUtils.mPollution();
+		mPollutionEnabled = PollutionUtils.isPollutionEnabled();
 	}
 
 	public GregtechMetaAtmosphericReconditioner(String aName, int aTier, String aDescription, ITexture[][][] aTextures, String aGUIName, String aNEIName) {
 		super(aName, aTier, 2, aDescription, aTextures, 2, 0, aGUIName, aNEIName);
-		mPollutionEnabled = PollutionUtils.mPollution();
+		mPollutionEnabled = PollutionUtils.isPollutionEnabled();
 	}
 
 	/*public GregtechMetaAtmosphericReconditioner(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures, String aGUIName, String aNEIName) {
@@ -152,8 +151,8 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 
 			//Get Inventory Item
 			ItemStack stackRotor = this.mInventory[SLOT_ROTOR];
-			ItemStack stackFilter = this.mInventory[SLOT_FILTER];			
-
+			ItemStack stackFilter = this.mInventory[SLOT_FILTER];
+			
 			//Power Drain
 			long drainEU = maxEUInput() * maxAmperesIn();
 			if (aBaseMetaTileEntity.isActive() && aBaseMetaTileEntity.getStoredEU() >= drainEU){
@@ -181,34 +180,61 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 
 			//Only try once/sec.
 			if (!isIdle && aTick % 20L == 0L){
+				
+
+				
+				for (int i=0;i<this.mInventory.length;i++) {
+					ItemStack aSlotContent = this.mInventory[i];
+					if (aSlotContent != null) {
+						Logger.INFO("Found "+aSlotContent.getDisplayName()+" in slot "+i);
+					}
+				}
+				
+				for (int i=0;i<this.mInventory.length;i++) {
+					if (hasRotor(this.mInventory[i])) {
+						Logger.INFO("Found Rotor in slot "+i);
+						break;
+					}
+				}
+				for (int i=0;i<this.mInventory.length;i++) {
+					if (hasAirFilter(this.mInventory[i])) {
+						Logger.INFO("Found Filter in slot "+i);
+						break;
+					}
+				}
 
 				//Check if machine can work.
 				if ((aBaseMetaTileEntity.isAllowedToWork())){
+					Logger.INFO("Can work.");
 
 					//Enable machine animation/graphic
 					if (hasRotor(stackRotor) && hasAirFilter(stackFilter) && this.mHasPollution){						
 						if (!this.getBaseMetaTileEntity().isActive()) {
+							Logger.INFO("Set Active.");
 							aBaseMetaTileEntity.setActive(true);
 						}																		
 					}
 					else if (!this.mHasPollution || mCurrentPollution <= 0 || stackRotor == null || stackFilter == null || !hasRotor(stackRotor) || !hasAirFilter(stackFilter)){						
 						if (!this.getBaseMetaTileEntity().isActive()) {
+							Logger.INFO("Set Inactive.");
 							aBaseMetaTileEntity.setActive(false);
 							this.sendSound((byte) -122);
 						}
 					}
 
 					//If Active.
-					if (aBaseMetaTileEntity.isActive()){							
+					if (aBaseMetaTileEntity.isActive()){	
+						Logger.INFO("Doing something.");						
 
 						//Do nothing if there is no pollution.
 						if(this.mHasPollution && mCurrentPollution > 0){
+							Logger.INFO("Has Pollution? "+mHasPollution+", Current Pollution: "+mCurrentPollution);
 
 							//Only check every 30s.
 							if (!isIdle && aTick % (20L * 30) == 0L){
-								mPollutionEnabled = PollutionUtils.mPollution();
+								mPollutionEnabled = PollutionUtils.isPollutionEnabled();
 								//Clear out pollution if it's disabled, because I am a nice gal.
-								if (!mPollution()) {
+								if (!PollutionUtils.isPollutionEnabled()) {
 									PollutionUtils.nullifyPollution(this.getBaseMetaTileEntity());
 								}
 							}
@@ -218,18 +244,18 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 
 							//Use a Turbine
 							if(hasRotor(stackRotor) && hasAirFilter(stackFilter)){
-								Logger.WARNING("Found Turbine.");
-								mBaseEff = (int) ((50.0F + (10.0F * ((GT_MetaGenerated_Tool) stackRotor.getItem()).getToolCombatDamage(stackRotor))) * 100);
-								mOptimalAirFlow = (int) Math.max(Float.MIN_NORMAL, ((GT_MetaGenerated_Tool) stackRotor.getItem()).getToolStats(stackRotor).getSpeedMultiplier()
-										* GT_MetaGenerated_Tool.getPrimaryMaterial(stackRotor).mToolSpeed * 50);
+								Logger.INFO("Found Turbine.");
+
+								mBaseEff = getBaseEfficiency(stackRotor);
+								mOptimalAirFlow = getOptimalAirFlow(stackRotor);
 
 								//Make sure we have a valid Turbine and Eff/Airflow
 								if (this.mBaseEff > 0 && this.mOptimalAirFlow > 0){
 									//Utils.LOG_WARNING("Pollution Cleaner [5]");
 
 									//Log Debug information.
-									Logger.WARNING("mBaseEff[1]:"+mBaseEff);
-									Logger.WARNING("mOptimalAirFlow[1]:"+mOptimalAirFlow);
+									Logger.INFO("mBaseEff[1]:"+mBaseEff);
+									Logger.INFO("mOptimalAirFlow[1]:"+mOptimalAirFlow);
 
 									//Calculate The Voltage we are running
 									long tVoltage = drainEU;
@@ -244,20 +270,21 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 									//If no sides are free, how will you process the atmosphere?
 									if (mAirSides > 0){
 										reduction += (((Math.max((tTier-2), 1)*2)*50)*mAirSides); //Was originally *100
-										Logger.WARNING("mPollutionReduction[1]:"+reduction);
+										Logger.INFO("mPollutionReduction[1]:"+reduction);
 
 										//I stole this code
 										reduction = (MathUtils.safeInt((long)reduction*this.mBaseEff)/100000)*mAirSides*Math.max((tTier-2), 1);
-										Logger.WARNING("reduction[2]:"+reduction);
+										Logger.INFO("reduction[2]:"+reduction);
 										reduction = MathUtils.safeInt(((long)reduction/100)*this.mOptimalAirFlow);
-										Logger.WARNING("reduction[3]:"+reduction);
+										Logger.INFO("reduction[3]:"+reduction);
 
 										mPollutionReduction = reduction;
 
 										//Set a temp to remove variable to aleviate duplicate code.
 										int toRemove = 0;
 
-										Logger.WARNING("mCurrentPollution[4]:"+mCurrentPollution);
+										Logger.INFO("mCurrentPollution[4]:"+mCurrentPollution);
+										Logger.INFO("mCurrentPollution[5]:"+reduction);
 										if (reduction <= mCurrentPollution){
 											//Clean some Air.
 											toRemove = reduction;
@@ -265,17 +292,20 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 										else {
 											//Makes sure we don't get negative pollution.
 											toRemove = mCurrentPollution;						
-										}	
+										}
+										
+										toRemove = toRemove/2;
+										Logger.INFO("mCurrentPollution[6]:"+toRemove);
 
 										//We are good to clean
 										if (toRemove > 0){
 											if (damageTurbineRotor() && damageAirFilter()){
 												Logger.INFO("Removing "+toRemove+" pollution");
 												removePollution(mSaveRotor ? (toRemove/2) : toRemove);	
-												Logger.WARNING("mNewPollution[4]:"+getCurrentChunkPollution());		
+												Logger.INFO("mNewPollution[4]:"+getCurrentChunkPollution());		
 											}
 											else {
-												Logger.WARNING("Could not damage turbine rotor or Air Filter.");
+												Logger.INFO("Could not damage turbine rotor or Air Filter.");
 												aBaseMetaTileEntity.setActive(false);
 											}
 										} //End of pollution removal block.								
@@ -370,12 +400,18 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 	public boolean hasRotor(ItemStack rotorStack){
 		if(rotorStack != null){ 
 			if (rotorStack.getItem() instanceof ItemBasicScrubberTurbine) {
+				//Logger.INFO("Found Basic Turbine Rotor.");
 				return true;
 			}			
-			if (rotorStack.getItem() instanceof GT_MetaGenerated_Tool  && rotorStack.getItemDamage() >= 170 && rotorStack.getItemDamage() <= 179){
+			else if (rotorStack.getItem() instanceof GT_MetaGenerated_Tool  && rotorStack.getItemDamage() >= 170 && rotorStack.getItemDamage() <= 179){
+				//Logger.INFO("Found Turbine Rotor.");
 				return true;
 			}
+			else {
+				//Logger.INFO("Found: "+rotorStack.getDisplayName()+":"+rotorStack.getItemDamage());
+			}
 		}	
+		//Logger.INFO("Found No Turbine Rotor.");
 		return false;
 	}
 
@@ -387,33 +423,43 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 			if (rotorStack == null) {
 				return false;
 			}
-			else {				
-				if(rotorStack.getItem() instanceof GT_MetaGenerated_Tool_01) {
-					Materials t1 = GT_MetaGenerated_Tool.getPrimaryMaterial(rotorStack);
-					Materials t2 = GT_MetaGenerated_Tool.getSecondaryMaterial(rotorStack);
-					if (t1 == Materials._NULL && t2 == Materials._NULL){
-						creativeRotor = true;
-					}
-				}				
-			}		
-
-			if (rotorStack.getItem() instanceof ItemBasicScrubberTurbine) {
+			else if (rotorStack.getItem() instanceof ItemBasicScrubberTurbine) {
 				long currentUse = ItemBasicScrubberTurbine.getFilterDamage(rotorStack);
 				//Remove broken Filter
-				if (rotorStack.getItemDamage() == 0 && currentUse >= 2500-10){			
+				if (rotorStack.getItemDamage() == 0 && currentUse >= 2000-10){
+					Logger.INFO("Depleting ItemBasicScrubberTurbine T1");			
 					this.mInventory[this.SLOT_FILTER] = null;
 					return false;				
 				}
-				else if (rotorStack.getItemDamage() == 1 && currentUse >= 5000-10){
+				else if (rotorStack.getItemDamage() == 1 && currentUse >= 4000-10){
+					Logger.INFO("Depleting ItemBasicScrubberTurbine T2");
+					this.mInventory[this.SLOT_FILTER] = null;
+					return false;			
+				}	
+				else if (rotorStack.getItemDamage() == 2 && currentUse >= 6000-10){
+					Logger.INFO("Depleting ItemBasicScrubberTurbine T3");
 					this.mInventory[this.SLOT_FILTER] = null;
 					return false;			
 				}		
 				else {
 					//Do Damage
-					ItemAirFilter.setFilterDamage(rotorStack, currentUse+10);
-					Logger.WARNING("Rotor Damage: "+currentUse);
+					Logger.INFO("Damaging ItemBasicScrubberTurbine");
+					ItemBasicScrubberTurbine.setFilterDamage(rotorStack, currentUse+10);
+					Logger.INFO("Rotor Damage: "+currentUse);
 					return true;
 				}	
+			}			
+			else if(rotorStack.getItem() instanceof GT_MetaGenerated_Tool_01) {
+				Materials t1 = GT_MetaGenerated_Tool.getPrimaryMaterial(rotorStack);
+				Materials t2 = GT_MetaGenerated_Tool.getSecondaryMaterial(rotorStack);
+				if (t1 == Materials._NULL && t2 == Materials._NULL){
+					Logger.INFO("Found creative rotor.");
+					creativeRotor = true;
+				}
+			}
+			else {
+				Logger.INFO("Bad item in rotor slot.");
+				return false;
 			}
 
 			if(mInventory[SLOT_ROTOR].getItem() instanceof GT_MetaGenerated_Tool_01 &&
@@ -424,23 +470,23 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 				double fDam = Math.floor(Math.abs(MathUtils.randFloat(1f, 2f) - MathUtils.randFloat(1f, 2f)) * (1f + 2f - 1f) + 1f);
 				damageValue -= fDam;
 
-				//Logger.WARNING("Trying to do "+damageValue+" damage to the rotor. ["+fDam+"]");
+				//Logger.INFO("Trying to do "+damageValue+" damage to the rotor. ["+fDam+"]");
 				/*Materials M1 = GT_MetaGenerated_Tool.getPrimaryMaterial(this.mInventory[this.SLOT_ROTOR]);
 				Materials M2 = GT_MetaGenerated_Tool.getSecondaryMaterial(this.mInventory[this.SLOT_ROTOR]);				
 
-				Logger.WARNING("Trying to do "+damageValue+" damage to the rotor. [2]");*/
+				Logger.INFO("Trying to do "+damageValue+" damage to the rotor. [2]");*/
 
 				//Damage Rotor
 				//int rotorDurability = this.mInventory[this.SLOT_ROTOR].getItemDamage();
 				long rotorDamage = creativeRotor ? 0 : GT_MetaGenerated_Tool.getToolDamage(this.mInventory[this.SLOT_ROTOR]);
 				long rotorDurabilityMax = creativeRotor ? Integer.MAX_VALUE : GT_MetaGenerated_Tool.getToolMaxDamage(this.mInventory[this.SLOT_ROTOR]);
 				long rotorDurability = (rotorDurabilityMax - rotorDamage);
-				Logger.WARNING("Rotor Damage: "+rotorDamage + " | Max Durability: "+rotorDurabilityMax+" | "+" Remaining Durability: "+rotorDurability);
+				Logger.INFO("Rotor Damage: "+rotorDamage + " | Max Durability: "+rotorDurabilityMax+" | "+" Remaining Durability: "+rotorDurability);
 				if (rotorDurability >= damageValue){
 
 
 					if (!mSaveRotor){
-						Logger.WARNING("Damaging Rotor.");
+						Logger.INFO("Damaging Rotor.");
 
 						if (!creativeRotor)
 							GT_ModHandler.damageOrDechargeItem(this.mInventory[this.SLOT_ROTOR], (int) damageValue, 0, null);
@@ -454,7 +500,7 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 						}
 					}
 					else {
-						Logger.WARNING("Damaging Rotor.");							
+						Logger.INFO("Damaging Rotor.");							
 						if (rotorDurability > 1000){
 							if (!creativeRotor)
 								GT_ModHandler.damageOrDechargeItem(this.mInventory[this.SLOT_ROTOR], (int) damageValue/2, 0, null);
@@ -472,47 +518,46 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 				}
 
 				if (rotorDurability <= 0 && !mSaveRotor && !creativeRotor) {
-					Logger.WARNING("Destroying Rotor.");
+					Logger.INFO("Destroying Rotor.");
 					this.mInventory[this.SLOT_ROTOR] = null;
 					return false;
 				}
 				else if (rotorDurability <= 0 && mSaveRotor) {
-					Logger.WARNING("Saving Rotor.");
+					Logger.INFO("Saving Rotor.");
 					return false;
 				}
 
 
 			}else {
-				Logger.WARNING("Bad Rotor.");
+				Logger.INFO("Bad Rotor.");
 				return false;
 			}
 		}
-		catch (Throwable t){}
+		catch (Throwable t){
+			t.printStackTrace();
+		}
 		return false;
 	}
 
 	public int getFreeSpaces(){
 		int mAir = 0;
 		IGregTechTileEntity aBaseMetaTileEntity = this.getBaseMetaTileEntity();
-		int x = aBaseMetaTileEntity.getXCoord();
-		int y = aBaseMetaTileEntity.getYCoord();
-		int z = aBaseMetaTileEntity.getZCoord();
-		if(aBaseMetaTileEntity.getAirOffset(x+1, y, z)){
+		if(aBaseMetaTileEntity.getAirOffset(1, 0, 0)){
 			mAir++;
 		}
-		if(aBaseMetaTileEntity.getAirOffset(x-1, y, z)){
+		if(aBaseMetaTileEntity.getAirOffset(-1, 0, 0)){
 			mAir++;
 		}
-		if(aBaseMetaTileEntity.getAirOffset(x, y, z+1)){
+		if(aBaseMetaTileEntity.getAirOffset(0, 0, 1)){
 			mAir++;
 		}
-		if(aBaseMetaTileEntity.getAirOffset(x, y, z-1)){
+		if(aBaseMetaTileEntity.getAirOffset(0, 0, -1)){
 			mAir++;
 		}
-		if(aBaseMetaTileEntity.getAirOffset(x, y+1, z)){
+		if(aBaseMetaTileEntity.getAirOffset(0, 1, 0)){
 			mAir++;
 		}
-		if(aBaseMetaTileEntity.getAirOffset(x, y-1, z)){
+		if(aBaseMetaTileEntity.getAirOffset(0, -1, 0)){
 			mAir++;
 		}
 		return mAir;						
@@ -526,8 +571,10 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 
 		if (this.mTier < 7) {
 			int startPollution = getCurrentChunkPollution();
+			Logger.INFO("Current Chunk Pollution: "+startPollution);
 			PollutionUtils.removePollution(this.getBaseMetaTileEntity(), toRemove);
 			int after = getCurrentChunkPollution();
+			Logger.INFO("Current Chunk Pollution: "+after);
 			return (after<startPollution);	
 		}
 		else {
@@ -572,7 +619,7 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 					continue;
 				}
 
-				Logger.WARNING("Trying to remove pollution from chunk "+r.xPosition+", "+r.zPosition+" | "+startPollution);
+				Logger.INFO("Trying to remove pollution from chunk "+r.xPosition+", "+r.zPosition+" | "+startPollution);
 				int after = 0;
 				boolean isMainChunk = r.isAtLocation(mainChunkX, mainChunkZ);
 
@@ -587,7 +634,7 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 				if (startPollution - after > 0) {
 					totalRemoved += (startPollution - after);
 				}
-				Logger.WARNING("Removed "+(startPollution - after)+" pollution from chunk "+r.xPosition+", "+r.zPosition+" | "+after);				
+				Logger.INFO("Removed "+(startPollution - after)+" pollution from chunk "+r.xPosition+", "+r.zPosition+" | "+after);				
 			}
 			return totalRemoved > 0 && chunksWithRemoval > 0;	
 		}
@@ -650,7 +697,7 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 			else {
 				//Do Damage
 				ItemAirFilter.setFilterDamage(filter, currentUse+1);
-				Logger.WARNING("Filter Damage: "+currentUse);
+				Logger.INFO("Filter Damage: "+currentUse);
 				return true;
 			}			
 		}		
@@ -670,14 +717,14 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 
 	@Override
 	public boolean canInsertItem(int aIndex, ItemStack aStack, int aSide) {
-		if (aIndex == 5) {
+		if (aIndex == SLOT_FILTER) {
 			if (aStack.getItem() instanceof ItemAirFilter) {
 				Logger.INFO("Inserting Air Filter into "+aIndex);
 				return true;
 			}
 		}
-		if (aIndex == 4) {
-			if (this.mInventory[6] != null) {
+		if (aIndex == SLOT_ROTOR) {
+			if (this.mInventory[7] != null) {
 				Logger.INFO("Found conveyor, can automate turbines. Inserting into "+aIndex);
 				if (aStack.getItem() instanceof ItemBasicScrubberTurbine) {
 					return true;
@@ -786,4 +833,35 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 		super.setItemNBT(aNBT);
 	}
 
+	private static ItemStack[] sGregTurbines;
+	
+	public static ItemStack getTieredTurbine(int aTier) {
+		if (sGregTurbines == null) {
+			sGregTurbines = new ItemStack[3];
+			sGregTurbines[0] = GT_MetaGenerated_Tool.sInstances.get("gt.metatool.01").getToolWithStats(GT_MetaGenerated_Tool_01.TURBINE_SMALL, 1, Materials.Iron, Materials.Iron, null);
+			sGregTurbines[1] = GT_MetaGenerated_Tool.sInstances.get("gt.metatool.01").getToolWithStats(GT_MetaGenerated_Tool_01.TURBINE_SMALL, 1, Materials.Bronze, Materials.Bronze, null);
+			sGregTurbines[2] = GT_MetaGenerated_Tool.sInstances.get("gt.metatool.01").getToolWithStats(GT_MetaGenerated_Tool_01.TURBINE_SMALL, 1, Materials.Steel, Materials.Steel, null);
+		}
+		else {
+			return sGregTurbines[aTier];
+		}
+		
+		return null;
+	}
+	
+	public int getBaseEfficiency(ItemStack aStackRotor) {
+		if (aStackRotor.getItem() instanceof ItemBasicScrubberTurbine) {
+			return getBaseEfficiency(getTieredTurbine(aStackRotor.getItemDamage()));
+		}
+		return (int) ((50.0F + (10.0F * ((GT_MetaGenerated_Tool) aStackRotor.getItem()).getToolCombatDamage(aStackRotor))) * 100);
+	}
+	
+	public int getOptimalAirFlow(ItemStack aStackRotor) {
+		if (aStackRotor.getItem() instanceof ItemBasicScrubberTurbine) {
+			return getOptimalAirFlow(getTieredTurbine(aStackRotor.getItemDamage()));
+		}
+		return (int) Math.max(Float.MIN_NORMAL, ((GT_MetaGenerated_Tool) aStackRotor.getItem()).getToolStats(aStackRotor).getSpeedMultiplier()
+				* GT_MetaGenerated_Tool.getPrimaryMaterial(aStackRotor).mToolSpeed * 50);
+	}
+	
 }

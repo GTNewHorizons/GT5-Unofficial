@@ -2,17 +2,13 @@ package gtPlusPlus.core.util.minecraft.gregtech;
 
 import static gtPlusPlus.core.lib.CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
 import org.apache.commons.lang3.ArrayUtils;
 
 import gregtech.GT_Mod;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
-import gregtech.common.GT_Proxy;
+import gregtech.common.GT_Pollution;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.item.base.cell.BaseItemCell;
@@ -21,7 +17,6 @@ import gtPlusPlus.core.material.MISC_MATERIALS;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fluids.FluidStack;
@@ -29,12 +24,6 @@ import net.minecraftforge.fluids.FluidStack;
 public class PollutionUtils {
 
 	private static boolean mIsPollutionEnabled = true;
-
-	private static Method mAddPollution;
-	private static Method mAddPollution2;
-
-	private static Method mGetPollution;
-	private static Method mGetPollution2;
 
 	public static AutoMap<FluidStack> mPollutionFluidStacks = new AutoMap<FluidStack>();
 
@@ -45,85 +34,37 @@ public class PollutionUtils {
 			mIsPollutionEnabled = false;
 		}
 	}
-	
+
 	public static boolean isPollutionEnabled() {
 		return mIsPollutionEnabled;
 	}
 
-	public static boolean mPollution() {
-		try {
-			GT_Proxy GT_Pollution = GT_Mod.gregtechproxy;
-			if (GT_Pollution != null) {
-				Field mPollution = ReflectionUtils.getField(GT_Pollution.getClass(), "mPollution");
-				if (mPollution != null) {
-					return mPollution.getBoolean(GT_Pollution);
-				}
-			}
-		} catch (SecurityException | IllegalArgumentException | IllegalAccessException e) {
+	private static boolean mPollution() {
+		return GT_Mod.gregtechproxy.mPollution;
+	}
+
+	public static boolean addPollution(IGregTechTileEntity te, int pollutionValue) {
+		if (mIsPollutionEnabled) {
+			GT_Pollution.addPollution(te, pollutionValue);
+			return true;
 		}
 		return false;
 	}
 
-	public static boolean addPollution(IGregTechTileEntity te, int pollutionValue) {
-		if (mIsPollutionEnabled)
-			try {
-				if (te == null) {
-					return false;
-				}
-				if (mAddPollution != null) {
-					mAddPollution.invoke(null, te, pollutionValue);
-				}
-				Class<?> GT_Pollution = ReflectionUtils.getClass("gregtech.common.GT_Pollution");
-				if (GT_Pollution != null) {
-					Method addPollution = ReflectionUtils.getMethod(GT_Pollution, "addPollution", IGregTechTileEntity.class, int.class);
-					if (addPollution != null) {
-						mAddPollution = addPollution;
-						addPollution.invoke(null, te, pollutionValue);
-						return true;
-					}
-				}
-			} catch (SecurityException | IllegalAccessException
-					| IllegalArgumentException | InvocationTargetException e) {
-			}
-		return false;
-	}
-
 	public static boolean addPollution(IHasWorldObjectAndCoords aTileOfSomeSort, int pollutionValue) {
-		if (mIsPollutionEnabled)
-			try {
-				if (aTileOfSomeSort == null) {
-					return false;
-				}
-				IHasWorldObjectAndCoords j = (IHasWorldObjectAndCoords) aTileOfSomeSort;
-				Chunk c = j.getWorld().getChunkFromBlockCoords(j.getXCoord(), j.getZCoord());
-				return addPollution(c, pollutionValue);
-			} catch (SecurityException | IllegalArgumentException e) {
-			}
+		if (mIsPollutionEnabled) {
+			IHasWorldObjectAndCoords j = (IHasWorldObjectAndCoords) aTileOfSomeSort;
+			Chunk c = j.getWorld().getChunkFromBlockCoords(j.getXCoord(), j.getZCoord());
+			return addPollution(c, pollutionValue);
+		}
 		return false;
 	}
 
 	public static boolean addPollution(Chunk aChunk, int pollutionValue) {
-		if (mIsPollutionEnabled)
-			try {
-				if (aChunk == null) {
-					return false;
-				}
-				if (mAddPollution2 != null) {
-					mAddPollution2.invoke(null, aChunk, pollutionValue);
-					return true;
-				}
-				Class<?> GT_Pollution = ReflectionUtils.getClass("gregtech.common.GT_Pollution");
-				if (GT_Pollution != null) {
-					Method addPollution = ReflectionUtils.getMethod(GT_Pollution, "addPollution", Chunk.class, int.class);
-					if (addPollution != null) {
-						mAddPollution2 = addPollution;
-						mAddPollution2.invoke(null, aChunk, pollutionValue);
-						return true;
-					}
-				}
-			} catch (SecurityException | IllegalAccessException
-					| IllegalArgumentException | InvocationTargetException e) {
-			}
+		if (mIsPollutionEnabled) {
+			GT_Pollution.addPollution(aChunk, pollutionValue);
+			return true;
+		}
 		return false;
 	}
 
@@ -155,85 +96,30 @@ public class PollutionUtils {
 		return nullifyPollution(c);
 	}
 
-	public static boolean nullifyPollution(Chunk aChunk) {		
-		try {
+	public static boolean nullifyPollution(Chunk aChunk) {
+		if (mIsPollutionEnabled) {
 			if (aChunk == null) {
 				return false;
 			}
-			long getCurrentPollution = getPollution(aChunk);
+			int getCurrentPollution = getPollution(aChunk);
 			if (getCurrentPollution <= 0) {
 				return false;
 			}
 			else {
-				if (mAddPollution2 != null) {
-					mAddPollution2.invoke(null, aChunk, -getCurrentPollution);
-					return true;
-				}
-				else {
-					Class<?> GT_Pollution = ReflectionUtils.getClass("gregtech.common.GT_Pollution");
-					if (GT_Pollution != null) {
-						Method addPollution = ReflectionUtils.getMethod(GT_Pollution, "addPollution", Chunk.class, int.class);
-						if (addPollution != null) {
-							mAddPollution2 = addPollution;
-							mAddPollution2.invoke(null, aChunk, 0);
-							return true;
-						}
-					}
-				}				
+				return removePollution(aChunk, getCurrentPollution);
 			}
-			
-		} catch (SecurityException | IllegalAccessException
-				| IllegalArgumentException | InvocationTargetException e) {
-		}		
+		}
 		return false;
 	}
 
 	public static int getPollution(IGregTechTileEntity te) {
-		if (MAIN_GREGTECH_5U_EXPERIMENTAL_FORK)
-			try {
-				if (te == null) {
-					return 0;
-				}
-				if (mGetPollution != null) {
-					mGetPollution.invoke(null, te);
-				}
-				Class<?> GT_Pollution = ReflectionUtils.getClass("gregtech.common.GT_Pollution");
-				if (GT_Pollution != null) {
-					Method addPollution = ReflectionUtils.getMethod(GT_Pollution, "getPollution", IGregTechTileEntity.class);
-					if (addPollution != null) {
-						mGetPollution = addPollution;
-						return (int) addPollution.invoke(null, te);
-					}
-				}
-			} catch (SecurityException | IllegalAccessException
-					| IllegalArgumentException | InvocationTargetException e) {
-			}
-		return 0;
+		return GT_Pollution.getPollution(te);
 	}
 
 	public static int getPollution(Chunk te) {
-		if (MAIN_GREGTECH_5U_EXPERIMENTAL_FORK)
-			try {
-				if (te == null) {
-					return 0;
-				}
-				if (mGetPollution2 != null) {
-					mGetPollution2.invoke(null, te);
-				}
-				Class<?> GT_Pollution = ReflectionUtils.getClass("gregtech.common.GT_Pollution");
-				if (GT_Pollution != null) {
-					Method addPollution = ReflectionUtils.getMethod(GT_Pollution, "getPollution", Chunk.class);
-					if (addPollution != null) {
-						mGetPollution2 = addPollution;
-						return (int) addPollution.invoke(null, te);
-					}
-				}
-			} catch (SecurityException | IllegalAccessException
-					| IllegalArgumentException | InvocationTargetException e) {
-			}
-		return 0;
+		return GT_Pollution.getPollution(te);
 	}
-	
+
 	public static boolean setPollutionFluids() {		
 		if (mPollutionFluidStacks.isEmpty()) {
 			FluidStack CD, CM, SD;
@@ -258,7 +144,7 @@ public class PollutionUtils {
 				else {
 					MaterialGenerator.generate(MISC_MATERIALS.CARBON_DIOXIDE, false, false);
 				}
-				
+
 				if (CM != null) {
 					Logger.INFO("[PollutionCompat] Found carbon monoxide fluid, registering it.");
 					PollutionUtils.mPollutionFluidStacks.put(CM);
@@ -276,7 +162,7 @@ public class PollutionUtils {
 				else {
 					MaterialGenerator.generate(MISC_MATERIALS.CARBON_MONOXIDE, false, false);
 				}
-				
+
 				if (SD != null) {
 					Logger.INFO("[PollutionCompat] Found sulfur dioxide fluid, registering it.");
 					PollutionUtils.mPollutionFluidStacks.put(SD);
@@ -297,9 +183,9 @@ public class PollutionUtils {
 				return true;
 			}
 		}
-		
-		
-		
+
+
+
 	}
 
 }

@@ -194,6 +194,12 @@ public class RECIPES_General {
 					"stickBronze", "plateBronze", CI.craftingToolHammer_Hard, 
 					ItemUtils.simpleMetaStack(ModItems.itemBasicTurbine, 1, 1)
 					);
+			RecipeUtils.addShapedRecipe(
+					CI.craftingToolFile, "plateSteel", "stickSteel", 
+					"plateSteel", "ringSteel", "plateSteel", 
+					"stickSteel", "plateSteel", CI.craftingToolHammer_Hard, 
+					ItemUtils.simpleMetaStack(ModItems.itemBasicTurbine, 2, 1)
+					);
 		}
 
 		if (Meta_GT_Proxy.sDoesVolumetricFlaskExist) {
