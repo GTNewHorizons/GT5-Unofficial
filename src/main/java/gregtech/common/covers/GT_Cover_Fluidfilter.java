@@ -135,15 +135,6 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
 
     @Override
     protected boolean letsFluidInImpl(byte aSide, int aCoverID, FluidFilterData aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
-        return isFluidAllowed(aCoverVariable, aFluid);
-    }
-
-    @Override
-    protected boolean letsFluidOutImpl(byte aSide, int aCoverID, FluidFilterData aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
-        return isFluidAllowed(aCoverVariable, aFluid);
-    }
-
-    protected boolean isFluidAllowed(FluidFilterData aCoverVariable, Fluid aFluid) {
         if (aFluid == null) return true;
 
         int aFilterMode = aCoverVariable.mFilterMode;
@@ -157,6 +148,23 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
             return aFilterMode == FILTER_INPUT_DENY_OUTPUT || aFilterMode == FILTER_INPUT_ANY_OUTPUT;
         else
             return aFilterMode == INVERT_INPUT_DENY_OUTPUT || aFilterMode == INVERT_INPUT_ANY_OUTPUT;
+    }
+
+    @Override
+    protected boolean letsFluidOutImpl(byte aSide, int aCoverID, FluidFilterData aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
+        if (aFluid == null) return true;
+
+        int aFilterMode = aCoverVariable.mFilterMode;
+        int aFilterFluid = aCoverVariable.mFluidID;
+
+        if (aFilterMode == FILTER_INPUT_DENY_OUTPUT || aFilterMode == INVERT_INPUT_DENY_OUTPUT)
+            return false;
+        else if (aFilterMode == FILTER_INPUT_ANY_OUTPUT || aFilterMode == INVERT_INPUT_ANY_OUTPUT)
+            return true;
+        else if (aFluid.getID() == aFilterFluid)
+            return aFilterMode == DENY_INPUT_FILTER_OUTPUT || aFilterMode == ANY_INPUT_FILTER_OUTPUT;
+        else
+            return aFilterMode == DENY_INPUT_INVERT_OUTPUT || aFilterMode == ANY_INPUT_INVERT_OUTPUT;
     }
 
     @Override
