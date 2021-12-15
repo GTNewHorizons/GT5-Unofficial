@@ -849,7 +849,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         if (aSide == mMainFacing || aIndex < getInputSlot() || aIndex >= getInputSlot() + mInputSlotCount || (!mAllowInputFromOutputSide && aSide == aBaseMetaTileEntity.getFrontFacing()))
             return false;
         for (int i = getInputSlot(), j = i + mInputSlotCount; i < j; i++)
-            if (GT_Utility.areStacksEqual(GT_OreDictUnificator.get(aStack), mInventory[i])) return i == aIndex;
+            if (GT_Utility.areStacksEqual(GT_OreDictUnificator.get(aStack), mInventory[i]) && (!mDisableFilter || mInventory[i].stackSize + aStack.stackSize <= aStack.getMaxStackSize())) return i == aIndex;
         return mDisableFilter || allowPutStackValidated(aBaseMetaTileEntity, aIndex, aSide, aStack);
     }
 
