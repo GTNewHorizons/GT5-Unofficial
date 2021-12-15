@@ -134,7 +134,7 @@ public final class MISC_MATERIALS {
 					new MaterialStack(ORES.GREENOCKITE, 1),
 					new MaterialStack(ORES.LANTHANITE_CE, 1),					
 					new MaterialStack(ORES.AGARDITE_CD, 1),					
-					new MaterialStack(ORES.XENOTIME, 1),
+					new MaterialStack(ORES.YTTRIALITE, 1),
 					new MaterialStack(MaterialUtils.generateMaterialFromGtENUM(Materials.NetherQuartz), 1),
 					new MaterialStack(MaterialUtils.generateMaterialFromGtENUM(Materials.Galena), 1),
 					new MaterialStack(MaterialUtils.generateMaterialFromGtENUM(Materials.Chalcopyrite), 1),
@@ -182,7 +182,7 @@ public final class MISC_MATERIALS {
 					new MaterialStack(ORES.LAUTARITE, 1),
 					new MaterialStack(ORES.DEMICHELEITE_BR, 1),					
 					new MaterialStack(ORES.ALBURNITE, 1),
-					new MaterialStack(ORES.KASHINITE, 1),
+					new MaterialStack(ORES.SAMARSKITE_Y, 1),
 					new MaterialStack(ORES.AGARDITE_LA, 1),
 			});
 

@@ -47,7 +47,7 @@ public class GUI_PollutionCleaner extends GT_GUIContainerMetaTile_Machine {
 				//Do Dumb shit				
 				CONTAINER_PollutionCleaner aContainerCast = (CONTAINER_PollutionCleaner) this.mContainer;				
 				mReduction = aContainerCast.mReduction;
-				list.add("Reduction: "+mReduction);	
+				list.add("Reduction: "+mReduction+"/s");	
 			}
 		}
 		if (!list.isEmpty()) {

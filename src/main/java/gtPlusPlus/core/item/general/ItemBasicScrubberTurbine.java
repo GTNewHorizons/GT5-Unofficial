@@ -42,7 +42,7 @@ public class ItemBasicScrubberTurbine extends Item {
 
 	@Override
 	public void getSubItems(Item item, CreativeTabs tab, List list) {
-		for (int i = 0; i < 2; i ++) {
+		for (int i = 0; i < 3; i ++) {
 			list.add(new ItemStack(item, 1, i));
 		}
 	}
@@ -68,6 +68,9 @@ public class ItemBasicScrubberTurbine extends Item {
 		}
 		if (meta == 1){
 			HEX_OxFFFFFF = Utils.rgbtoHexValue(255,128,0);
+		}
+		if (meta == 2){
+			HEX_OxFFFFFF = Utils.rgbtoHexValue(128,128,128);
 		}
 		return HEX_OxFFFFFF;
 	}
@@ -111,10 +114,13 @@ public class ItemBasicScrubberTurbine extends Item {
 		if (aStack != null) {
 			int aMeta = aStack.getItemDamage();
 			if (aMeta == 0) {
-				return 2500;
+				return 2000;
 			}
 			if (aMeta == 1) {
-				return 5000;
+				return 4000;
+			}
+			if (aMeta == 2) {
+				return 6000;
 			}
 		}
 		return 0;		

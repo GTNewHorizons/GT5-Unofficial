@@ -39,6 +39,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEn
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_ControlCore;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBattery;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Steam_BusInput;
 import gtPlusPlus.xmod.gregtech.api.objects.MultiblockRequirements;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -1681,12 +1682,17 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
 		
 		// Try setRecipeMap
 
-        if (aTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-            ((GT_MetaTileEntity_Hatch_Input) aTileEntity).mRecipeMap = getRecipeMap();
-        }
-        if (aTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus) {
-            ((GT_MetaTileEntity_Hatch_InputBus) aTileEntity).mRecipeMap = getRecipeMap();
-        }
+		try {
+			if (aTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
+				resetRecipeMapForHatch((GT_MetaTileEntity_Hatch) aTileEntity, getRecipeMap());
+			}
+			if (aTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus) {
+				resetRecipeMapForHatch((GT_MetaTileEntity_Hatch) aTileEntity, getRecipeMap());
+			}
+		}
+		catch (Throwable t) {
+			t.printStackTrace();
+		}
 
 		if (aList.isEmpty()) {
 			if (aTileEntity instanceof GT_MetaTileEntity_Hatch) {
@@ -1696,8 +1702,13 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
 				updateTexture(aTileEntity, aBaseCasingIndex);
 				return aList.add((E) aTileEntity);
 			}
-		} else {
+		} 
+		else {
 			IGregTechTileEntity aCur = aTileEntity.getBaseMetaTileEntity();
+			if (aList.contains(aTileEntity)) {
+				log("Found Duplicate "+aTileEntity.getInventoryName()+" @ " + new BlockPos(aCur).getLocationString());
+				return false;
+			}
 			BlockPos aCurPos = new BlockPos(aCur);
 			boolean aExists = false;
 			for (E m : aList) {
@@ -1946,7 +1957,7 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
 			if (aMetaTileEntity == null) {
 				return false;
 			}
-			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input || aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus) {
+			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input || aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus || aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Steam_BusInput) {
 				return resetRecipeMapForHatch((GT_MetaTileEntity_Hatch)aMetaTileEntity, aMap);
 			}
 			else {
@@ -1954,6 +1965,7 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
 			}
 		}
 		catch (Throwable t) {
+			t.printStackTrace();
 			return false;
 		}
 	}
@@ -1963,7 +1975,7 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
 			return false;
 		}
 		final IMetaTileEntity aMetaTileEntity = aTileEntity;
-		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input || aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus) {
+		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input || aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus || aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Steam_BusInput) {
 			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input){				
 				((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mRecipeMap = null;	
 				((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mRecipeMap = aMap;				
@@ -1974,9 +1986,19 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
 					log("Cleared Input Hatch.");					
 				}				
 			}
-			else {	
+			else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus) {	
 				((GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity).mRecipeMap = null;	
 				((GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity).mRecipeMap = aMap;					
+				if (aMap != null && aMap.mNEIName != null) {
+					log("Remapped Input Bus to "+aMap.mNEIName+".");					
+				}
+				else {
+					log("Cleared Input Bus.");					
+				}							
+			}
+			else {	
+				((GT_MetaTileEntity_Hatch_Steam_BusInput) aMetaTileEntity).mRecipeMap = null;	
+				((GT_MetaTileEntity_Hatch_Steam_BusInput) aMetaTileEntity).mRecipeMap = aMap;					
 				if (aMap != null && aMap.mNEIName != null) {
 					log("Remapped Input Bus to "+aMap.mNEIName+".");					
 				}
@@ -2032,7 +2054,7 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
 				if (GT_MetaTileEntity_Hatch.class.isInstance(aMetaTileEntity)){
 					mProper.setAccessible(true);
 					mProper.invoke(aMetaTileEntity, aCasingID);
-					log("Good Method Call for updateTexture.");
+					//log("Good Method Call for updateTexture.");
 					return true;
 				}
 			}

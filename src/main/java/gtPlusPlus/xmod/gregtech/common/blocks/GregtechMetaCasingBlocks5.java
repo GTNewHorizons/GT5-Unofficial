@@ -60,9 +60,9 @@ extends GregtechMetaCasingBlocksAbstract {
 		if ((aMeta >= 0) && (aMeta < 16)) {
 			switch (aMeta) {
 				case 0:
-					return TexturesGtBlock.TEXTURE_CASING_GRINDING_MILL.getIcon();
-				case 1:
 					return TexturesGtBlock.TEXTURE_PIPE_GRINDING_MILL.getIcon();
+				case 1:
+					return TexturesGtBlock.TEXTURE_CASING_GRINDING_MILL.getIcon();
 				case 2:
 					return TexturesGtBlock.TEXTURE_GEARBOX_GRINDING_MILL.getIcon();
 				case 3:
