@@ -86,7 +86,7 @@ extends GregtechMeta_MultiBlockBase {
 		String[] aBuiltStrings = new String[3];
 		aBuiltStrings[0] = aToolTipNames[0] + ", " + aToolTipNames[1] + ", " + aToolTipNames[2];
 		aBuiltStrings[1] = aToolTipNames[3] + ", " + aToolTipNames[4] + ", " + aToolTipNames[5];
-		aBuiltStrings[2] = aToolTipNames[6] + ", " + aToolTipNames[7];
+		aBuiltStrings[2] = aToolTipNames[6] + ", " + aToolTipNames[7] + ", " + aToolTipNames[8];
 
 		GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
 		tt.addMachineType(getMachineType())
