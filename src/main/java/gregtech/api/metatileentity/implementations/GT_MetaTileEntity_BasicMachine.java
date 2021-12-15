@@ -59,6 +59,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     public final int mInputSlotCount, mAmperage;
     public boolean mAllowInputFromOutputSide = false, mFluidTransfer = false, mItemTransfer = false, mHasBeenUpdated = false, mStuttering = false, mCharge = false, mDecharge = false;
     public boolean mDisableFilter = true;
+    public boolean mDisableMultiStack = true;
     public int mMainFacing = -1, mProgresstime = 0, mMaxProgresstime = 0, mEUt = 0, mOutputBlocked = 0;
     public FluidStack mOutputFluid;
     public String mGUIName, mNEIName;
@@ -442,6 +443,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         aNBT.setBoolean("mHasBeenUpdated", mHasBeenUpdated);
         aNBT.setBoolean("mAllowInputFromOutputSide", mAllowInputFromOutputSide);
         aNBT.setBoolean("mDisableFilter", mDisableFilter);
+        aNBT.setBoolean("mDisableMultiStack", mDisableMultiStack);
         aNBT.setInteger("mEUt", mEUt);
         aNBT.setInteger("mMainFacing", mMainFacing);
         aNBT.setInteger("mProgresstime", mProgresstime);
@@ -462,6 +464,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         mHasBeenUpdated = aNBT.getBoolean("mHasBeenUpdated");
         mAllowInputFromOutputSide = aNBT.getBoolean("mAllowInputFromOutputSide");
         mDisableFilter = aNBT.getBoolean("mDisableFilter");
+        mDisableMultiStack = aNBT.getBoolean("mDisableMultiStack");
         mEUt = aNBT.getInteger("mEUt");
         mMainFacing = aNBT.getInteger("mMainFacing");
         mProgresstime = aNBT.getInteger("mProgresstime");
@@ -824,8 +827,31 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (aSide == getBaseMetaTileEntity().getFrontFacing() || aSide == mMainFacing) {
             if (aPlayer.isSneaking()){
-                mDisableFilter = !mDisableFilter;
-                GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.hatch.disableFilter." + mDisableFilter));
+                int tMode = mDisableFilter ? 0 : 2;
+                tMode += mDisableMultiStack ? 0 : 1;
+
+                switch (tMode) {
+                    case 0: mDisableFilter = true;
+                        mDisableMultiStack = false;
+                        GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.hatch.disableFilter." + mDisableFilter));
+                        GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.hatch.disableMultiStack." + mDisableMultiStack));
+                        break;
+                    case 1: mDisableFilter = false;
+                        mDisableMultiStack = true;
+                        GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.hatch.disableFilter." + mDisableFilter));
+                        GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.hatch.disableMultiStack." + mDisableMultiStack));
+                        break;
+                    case 2: mDisableFilter = false;
+                        mDisableMultiStack = false;
+                        GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.hatch.disableFilter." + mDisableFilter));
+                        GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.hatch.disableMultiStack." + mDisableMultiStack));
+                        break;
+                    case 3: mDisableFilter = true;
+                        mDisableMultiStack = true;
+                        GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.hatch.disableFilter." + mDisableFilter));
+                        GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.hatch.disableMultiStack." + mDisableMultiStack));
+                        break;
+                }
             } else {
                 mAllowInputFromOutputSide = !mAllowInputFromOutputSide;
                 GT_Utility.sendChatToPlayer(aPlayer, mAllowInputFromOutputSide ? trans("095", "Input from Output Side allowed") : trans("096", "Input from Output Side forbidden"));
@@ -849,7 +875,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         if (aSide == mMainFacing || aIndex < getInputSlot() || aIndex >= getInputSlot() + mInputSlotCount || (!mAllowInputFromOutputSide && aSide == aBaseMetaTileEntity.getFrontFacing()))
             return false;
         for (int i = getInputSlot(), j = i + mInputSlotCount; i < j; i++)
-            if (GT_Utility.areStacksEqual(GT_OreDictUnificator.get(aStack), mInventory[i]) && (!mDisableFilter || mInventory[i].stackSize + aStack.stackSize <= aStack.getMaxStackSize())) return i == aIndex;
+            if (GT_Utility.areStacksEqual(GT_OreDictUnificator.get(aStack), mInventory[i]) && (mDisableMultiStack || mInventory[i].stackSize + aStack.stackSize <= aStack.getMaxStackSize())) return i == aIndex;
         return mDisableFilter || allowPutStackValidated(aBaseMetaTileEntity, aIndex, aSide, aStack);
     }
 
