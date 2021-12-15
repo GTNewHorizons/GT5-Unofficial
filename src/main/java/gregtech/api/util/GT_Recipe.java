@@ -713,7 +713,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 this.mPersistentHash = 1;
             else
                 this.mPersistentHash = aPersistentHash;
-            GT_AssemblyLineUtils.addRecipeToCache(this);
         }
     }
 

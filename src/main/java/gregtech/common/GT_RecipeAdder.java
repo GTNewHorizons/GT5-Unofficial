@@ -1423,6 +1423,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         GT_Recipe.GT_Recipe_Map.sAssemblylineVisualRecipes.addFakeRecipe(false, aInputs, new ItemStack[]{aOutput}, new ItemStack[]{ItemList.Tool_DataStick.getWithName(1L, "Reads Research result", new Object[0])}, aFluidInputs, null, aDuration, aEUt, 0,true);
         GT_Recipe_AssemblyLine tRecipe = new GT_Recipe_AssemblyLine(aResearchItem, aResearchTime, aInputs, aFluidInputs, aOutput, aDuration, aEUt);
         GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes.add(tRecipe);
+        GT_AssemblyLineUtils.addRecipeToCache(tRecipe);
         return true;
     }
 
@@ -1499,6 +1500,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         GT_Recipe_AssemblyLine tRecipe = new GT_Recipe_AssemblyLine(aResearchItem, aResearchTime, tInputs, aFluidInputs, aOutput, aDuration, aEUt, tAlts);
         tRecipe.setPersistentHash(tPersistentHash);
         GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes.add(tRecipe);
+        GT_AssemblyLineUtils.addRecipeToCache(tRecipe);
         return true;
 	}
 
