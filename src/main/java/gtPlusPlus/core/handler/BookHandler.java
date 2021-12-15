@@ -38,7 +38,7 @@ public class BookHandler {
 						"First you need to craft the following things for a Thermal Boiler to Function: The Main Boiler Block, 20 Thermal Containment Casings, two Input Hatches, two Output Hatches, a bunch of different Tools and a Maintenance Hatch.",
 						"To begin the building, lay out the first 3x3 layer of Machine Casings on the ground (with a Hatch in the Middle), then place the Boiler Block facing outward in the middle of one of the 3m wide Sides.", 
 						"Now grab 3 other Hatches and place them on the remaining three 3m wide Sides also facing outwards. And now the four corners of the Machine need also a Machine Casing. There should only be a Hole left in the middle of the Cube.",
-						"So, now place a 3x3 of Machine Casings ontop, at the 3rd Layer with the last Hatch in the middle facing outwards as well.", 
+						"So, now place a 3x3 of Machine Casings on top, at the 3rd Layer with the last Hatch in the middle facing outwards as well.",
 						"When accessing the Boiler Block, it should now stop telling you, that the structure is incomplete (bottom Line of that Screen). Now go with a bunch of different Tools (Metal Hammer, Rubber Hammer, Screwdriver, Wrench, Soldering Iron and Crowbar)", 
 						"to the Maintenance Hatch and access it. After that you grab the 6 Tools and rightclick the Slot with each of them in your Hand in the Maintenance GUI. Note that you need Soldering Tin/Lead in your Inventory to use the Soldering Iron.", 
 						"The Main Block should now tell you that you need to use the Rubber Hammer on it to (re)activate the Machine. The Rubber Hammer can enable and disable Machines. The Machine disables itself after something important broke.", 
@@ -49,7 +49,7 @@ public class BookHandler {
 						"The Thermal Boiler will produce 800 Liters of Steam per tick for about 5 or 6 Liters of Water per tick at reaching 100% Efficiency. In case of Lava it consumes 1666 Liters every Second.", 
 						"A Thermal Boiler is worth about 33 small Thermal Generators, and as the Boilers get much less Efficient, when not having enough Fuel, you should consider making a large Nether Pump for Lava, or a good Nuclear Reactor for molten Salt.", 
 						"Input and Output Slots are fully optional, you can place multiple ones of them or even none on the Machine. A Machine without Input couldn't process any Recipes, while a Machine without Output just voids all outputted Items and Liquids.", 
-				"It might be useful to use the Screwdriver on the Output Hatches to determine what is outputted where." });
+						"It might be useful to use the Screwdriver on the Output Hatches to determine what is outputted where." });
 
 
 
@@ -60,7 +60,7 @@ public class BookHandler {
 				"Alkalus", 
 				new String[] {
 						//Page 1
-						"So, when it comes to power storage you relaly have three seperate options:\n"+
+						"So, when it comes to power storage you really have three separate options:\n"+
 						" \n"+
 						"Battery Buffers,\n"+
 						"Energy Buffers,\n"+
@@ -69,7 +69,7 @@ public class BookHandler {
 						"Battery Buffer\n" + 
 						" \n" +
 						"Is rather portable. Allowing you to throw set one up and insert batteries where ever you may need."+"\n"+
-						"They output 1A for each battery stored inside, upto a maximum of 16A.",
+						"They output 1A for each battery stored inside, up to a maximum of 16A.",
 						//Page 3
 						"Energy Buffer\n" + 
 						" \n" +
@@ -81,7 +81,7 @@ public class BookHandler {
 						"Is used for storing Insane amounts of power later game."+"\n"+
 						"Consumes 2% of the average voltage of all energy type hatches every tick."+"\n",
 						//Page 5
-						"Allows Insertation/Removal of power from the rear face of the controller, swap with a screwdriver."+"\n"+
+						"Allows Insertion/Removal of power from the rear face of the controller, swap with a screwdriver."+"\n"+
 						"Variable Height Structure, between 4-16Y. Inserted Redox Cells dictate max energy tier of structure."+"\n",
 						//Page 6
 						"Redox Cells cannot be placed into the Top or Bottom layer and only take up 3xhx3 internally."+"\n"+
