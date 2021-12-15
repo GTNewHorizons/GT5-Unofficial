@@ -1659,10 +1659,6 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addPulveriserRecipe(ItemList.Casing_Coil_ElectrumFlux.get(1L),new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust,Materials.ElectrumFlux,8),GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Trinium,1),GT_OreDictUnificator.get(OrePrefixes.dust,Materials.QuartzSand,11)},null,1500,80);
         GT_Values.RA.addPulveriserRecipe(ItemList.Casing_Coil_AwakenedDraconium.get(1L),new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust,Materials.DraconiumAwakened,8),GT_OreDictUnificator.get(OrePrefixes.dust,Materials.ElectrumFlux,1),GT_OreDictUnificator.get(OrePrefixes.dust,Materials.QuartzSand,12)},null,1500,80);
 
-
-
-
-
         GT_Values.RA.addCentrifugeRecipe(new ItemStack(Items.golden_apple, 1, 1), GT_Utility.getIntegratedCircuit(1), GT_Values.NF, Materials.Methane.getGas(4608L), new ItemStack(Items.gold_ingot, 64), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, null, 9216, 5);
         GT_Values.RA.addCentrifugeRecipe(new ItemStack(Items.golden_apple, 1, 0), GT_Utility.getIntegratedCircuit(1), GT_Values.NF, Materials.Methane.getGas(576L), new ItemStack(Items.gold_ingot, 7), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, null, 9216, 5);
         GT_Values.RA.addCentrifugeRecipe(new ItemStack(Items.golden_carrot, 1, 0), GT_Utility.getIntegratedCircuit(1), GT_Values.NF, Materials.Methane.getGas(576L), new ItemStack(Items.gold_nugget, 6), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, null, 9216, 5);
@@ -1726,11 +1722,15 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addCentrifugeRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.RareEarth, 1L), GT_Values.NI, GT_Values.NF, GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Neodymium, 1L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Yttrium, 1L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Lanthanum, 1L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Cerium, 1L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Cadmium, 1L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Caesium, 1L), new int[]{2500, 2500, 2500, 2500, 2500, 2500}, 64, 20);
         GT_Values.RA.addCentrifugeRecipe(GT_ModHandler.getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 1L, 45), GT_Values.NI, GT_Values.NF, GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.BasalticMineralSand, 1L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Olivine, 1L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Obsidian, 1L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Basalt, 1L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Flint, 1L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.RareEarth, 1L), new int[]{2000, 2000, 2000, 2000, 2000, 2000}, 64, 20);
 
-        //Ash centrifuge recipes
-        GT_Values.RA.addCentrifugeRecipe(Materials.Ash.getDust(36), GT_Values.NI, GT_Values.NF, GT_Values.NF,
-                Materials.Quicklime.getDust(18), Materials.Potash.getDust(9), Materials.Magnesia.getDust(9),
-                Materials.PhosphorousPentoxide.getDust(4), Materials.SodaAsh.getDust(4), Materials.BandedIron.getDust(4), new int[]
-                        {6400, 6000, 500, 5000, 2500, 10000}, 6000, 30);
+        //Stone Dust and Metal Mixture centrifuge recipes
+        GT_Values.RA.addCentrifugeRecipe(Materials.Stone.getDust(36), GT_Values.NI, GT_Values.NF, GT_Values.NF,
+                Materials.Quartzite.getDust(9), Materials.PotassiumFeldspar.getDust(9), Materials.Marble.getDust(8),
+                Materials.Biotite.getDust(4), Materials.MetalMixture.getDust(4), Materials.Sodalite.getDust(4),
+                new int[]{10000, 10000, 10000, 10000, 7500, 5000}, 8640, 30);
+        GT_Values.RA.addCentrifugeRecipe(Materials.MetalMixture.getDust(36), GT_Values.NI, GT_Values.NF, GT_Values.NF,
+                Materials.BandedIron.getDust(9), Materials.Bauxite.getDust(9), Materials.Pyrolusite.getDust(8),
+                Materials.Barite.getDust(4), Materials.Chromite.getDust(4), Materials.Ilmenite.getDust(4),
+                new int[]{10000, 10000, 10000, 10000, 7500, 5000}, 13125, 1920);
 
         this.run3();
 
