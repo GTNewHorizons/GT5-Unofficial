@@ -42,9 +42,6 @@ dependencies {
     compileOnly("player-api:PlayerAPI:1.7.10:1.4") {
         transitive = false
     }
-    compileOnly("com.mod-buildcraft:buildcraft:7.1.23:dev") {
-        transitive = false
-    }
     compileOnly("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev") {
         transitive = false
     }
