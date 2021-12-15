@@ -77,7 +77,7 @@ import static gregtech.api.enums.GT_Values.MOD_ID_AE;
 import static gregtech.api.enums.GT_Values.MOD_ID_FR;
 
 @SuppressWarnings("ALL")
-@Mod(modid = "gregtech", name = "GregTech5-Unofficial", version = "MC1710", useMetadata = false,
+@Mod(modid = "gregtech", name = "GregTech", version = "MC1710", useMetadata = false,
         dependencies = " required-after:IC2;" +
                 " required-after:structurelib;" +
                 " after:dreamcraft;" +
