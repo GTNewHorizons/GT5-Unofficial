@@ -901,14 +901,16 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
         ItemStack rStack = new ItemStack(GregTech_API.sBlockMachines, 1, mID);
         NBTTagCompound tNBT = new NBTTagCompound();
         if (mStrongRedstone > 0) tNBT.setByte("mStrongRedstone", mStrongRedstone);
+        boolean hasCover = false;
         for (byte i = 0; i < mCoverSides.length; i++) {
             if (mCoverSides[i] != 0) {
                 if (mCoverData[i] != null) // this really shouldn't be null if a cover is there already, but whatever
                     tNBT.setTag(COVER_DATA_NBT_KEYS[i], mCoverData[i].saveDataToNBT());
-                tNBT.setIntArray("mCoverSides", mCoverSides);
-                break;
+                hasCover = true;
             }
         }
+        if (hasCover)
+            tNBT.setIntArray("mCoverSides", mCoverSides);
         if (hasValidMetaTileEntity()) mMetaTileEntity.setItemNBT(tNBT);
         if (!tNBT.hasNoTags()) rStack.setTagCompound(tNBT);
         return new ArrayList<ItemStack>(Arrays.asList(rStack));

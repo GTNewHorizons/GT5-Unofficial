@@ -632,6 +632,7 @@ public class GT_Mod implements IGT_Mod {
         new GT_SonictronLoader().run();
         new GT_SpawnEventHandler();
 
+
         double ashOutputMultiplier = Math.min(GregTech_API.sOPStuff.get(ConfigCategories.Recipes.gregtechrecipes, "AshOutputMultiplier", 1.0), 1.0);
         if (GregTech_API.sOPStuff.get(ConfigCategories.Recipes.gregtechrecipes, "AshYieldsAlkaliMetalOxides", true)) {
             int[] outputChances = new int[]{(int) (9900 * ashOutputMultiplier), (int) (6400 * ashOutputMultiplier),
