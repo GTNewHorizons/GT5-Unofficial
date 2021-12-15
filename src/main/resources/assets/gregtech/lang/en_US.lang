@@ -94,6 +94,8 @@ GT5U.item.programmed_circuit.no_screwdriver.2=Chuck Norris stares at the circuit
 
 GT5U.hatch.disableFilter.true=Input Filter Off
 GT5U.hatch.disableFilter.false=Input Filter On
+GT5U.hatch.disableMultiStack.true=Multi Stack Input Off
+GT5U.hatch.disableMultiStack.false=Multi Stack Input On
 GT5U.hatch.disableSort.true=Sorting mode: OFF
 GT5U.hatch.disableSort.false=Sorting mode: ON
 GT5U.hatch.disableLimited.true=Limiting mode: OFF
