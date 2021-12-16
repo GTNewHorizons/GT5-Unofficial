@@ -887,11 +887,11 @@ public class GTPP_NEI_DefaultHandler extends TemplateRecipeHandler {
 				for (int i=0;i<aInputItemsCount;i++) {
 					int x = mInputSlotMap.get(aInputSlotsUsed).getKey();
 					int y = mInputSlotMap.get(aInputSlotsUsed).getValue();
-					ItemStack aRepStack = mRecipe.getRepresentativeInput(aSlotToCheck++);
+					ItemStack aRepStack = mRecipe.getRepresentativeInput(aSlotToCheck);
 					if (aRepStack != null) {
-						this.mInputs.add(new FixedPositionedStack(aRepStack, x, y));	
-						aInputSlotsUsed++;
+						this.mInputs.add(new FixedPositionedStack(aRepStack, x, y));
 					}
+					aInputSlotsUsed++;
 				}
 			}
 			aSlotToCheck = 0;	
@@ -903,11 +903,12 @@ public class GTPP_NEI_DefaultHandler extends TemplateRecipeHandler {
 				for (int i=0;i<aOutputItemsCount;i++) {
 					int x = mOutputSlotMap.get(aOutputSlotsUsed).getKey();
 					int y = mOutputSlotMap.get(aOutputSlotsUsed).getValue();
-					ItemStack aRepStack = mRecipe.getOutput(aSlotToCheck++);
+					ItemStack aRepStack = mRecipe.getOutput(aSlotToCheck);
 					if (aRepStack != null) {
 						this.mOutputs.add(new FixedPositionedStack(aRepStack, x, y, mRecipe.getOutputChance(aSlotToCheck)));	
 						aOutputSlotsUsed++;
 					}
+					aSlotToCheck++;
 				}
 			}					
 			
