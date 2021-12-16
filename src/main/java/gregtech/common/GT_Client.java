@@ -630,70 +630,77 @@ public class GT_Client extends GT_Proxy
             int tDirection = mAnimationDirection ? 1 : -1;
             for (Object o : mPosR) {
                 Materials tMaterial = (Materials) o;
-                tMaterial.mRGBa[0] += tDirection;
+                tMaterial.mRGBa[0] = getSafeRGBValue(tMaterial.mRGBa[0], tDirection);
             }
 
             for (Materials tMaterial : mPosG) {
-                tMaterial.mRGBa[1] += tDirection;
+                tMaterial.mRGBa[1] = getSafeRGBValue(tMaterial.mRGBa[1], tDirection);
             }
 
             for (Materials tMaterial : mPosB) {
-                tMaterial.mRGBa[2] += tDirection;
+                tMaterial.mRGBa[2] = getSafeRGBValue(tMaterial.mRGBa[2], tDirection);
             }
 
             for (Materials tMaterial : mPosA) {
-                tMaterial.mRGBa[3] += tDirection;
+                tMaterial.mRGBa[3] = getSafeRGBValue(tMaterial.mRGBa[3], tDirection);
             }
 
             for (Materials tMaterial : mNegR) {
-                tMaterial.mRGBa[0] -= tDirection;
+                tMaterial.mRGBa[0] = getSafeRGBValue(tMaterial.mRGBa[0], -tDirection);
             }
 
             for (Materials tMaterial : mNegG) {
-                tMaterial.mRGBa[1] -= tDirection;
+                tMaterial.mRGBa[1] = getSafeRGBValue(tMaterial.mRGBa[1], -tDirection);
             }
 
             for (Materials tMaterial : mNegB) {
-                tMaterial.mRGBa[2] -= tDirection;
+                tMaterial.mRGBa[2] = getSafeRGBValue(tMaterial.mRGBa[2], -tDirection);
             }
 
             for (Materials tMaterial : mNegA) {
-                tMaterial.mRGBa[3] -= tDirection;
+                tMaterial.mRGBa[3] = getSafeRGBValue(tMaterial.mRGBa[3], -tDirection);
             }
 
             for (Materials tMaterial : mMoltenPosR) {
-                tMaterial.mMoltenRGBa[0] += tDirection;
+                tMaterial.mMoltenRGBa[0] = getSafeRGBValue(tMaterial.mMoltenRGBa[0], tDirection);
             }
 
             for (Materials tMaterial : mMoltenPosG) {
-                tMaterial.mMoltenRGBa[1] += tDirection;
+                tMaterial.mMoltenRGBa[1] = getSafeRGBValue(tMaterial.mMoltenRGBa[1], tDirection);
             }
 
             for (Materials tMaterial : mMoltenPosB) {
-                tMaterial.mMoltenRGBa[2] += tDirection;
+                tMaterial.mMoltenRGBa[2] = getSafeRGBValue(tMaterial.mMoltenRGBa[2], tDirection);
             }
 
             for (Materials tMaterial : mMoltenPosA) {
-                tMaterial.mMoltenRGBa[3] += tDirection;
+                tMaterial.mMoltenRGBa[3] = getSafeRGBValue(tMaterial.mMoltenRGBa[3], tDirection);
             }
 
             for (Materials tMaterial : mMoltenNegR) {
-                tMaterial.mMoltenRGBa[0] -= tDirection;
+                tMaterial.mMoltenRGBa[0] = getSafeRGBValue(tMaterial.mMoltenRGBa[0], -tDirection);
             }
 
             for (Materials tMaterial : mMoltenNegG) {
-                tMaterial.mMoltenRGBa[1] -= tDirection;
+                tMaterial.mMoltenRGBa[1] = getSafeRGBValue(tMaterial.mMoltenRGBa[1], -tDirection);
             }
 
             for (Materials tMaterial : mMoltenNegB) {
-                tMaterial.mMoltenRGBa[2] -= tDirection;
+                tMaterial.mMoltenRGBa[2] = getSafeRGBValue(tMaterial.mMoltenRGBa[2], -tDirection);
             }
 
             for (Materials tMaterial : mMoltenNegA) {
-                tMaterial.mMoltenRGBa[3] -= tDirection;
+                tMaterial.mMoltenRGBa[3] = getSafeRGBValue(tMaterial.mMoltenRGBa[3], -tDirection);
             }
 
         }
+    }
+
+    public short getSafeRGBValue(short aRBG, int aDelta) {
+        int tmp = aRBG + aDelta;
+        if (tmp > 255) tmp = 255;
+        if (tmp < 0) tmp = 0;
+        return (short) tmp;
     }
 
     @Override
