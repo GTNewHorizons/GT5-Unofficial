@@ -141,6 +141,8 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
         outputHardOverrides.put(new GT_ItemStack(new ItemStack(Blocks.torch,6)), new ItemStack(Items.stick));
         blackList = new HashSet<>();
         blackList.add(new GT_ItemStack(ItemList.Casing_Coil_Superconductor.get(1L)));
+        blackList.add(new GT_ItemStack(Materials.Graphene.getDust(1)));
+        blackList.add(new GT_ItemStack(ItemList.Circuit_Parts_Vacuum_Tube.get(1L)));
     }
 
     private boolean compareToUnpacker(ItemStack is){
@@ -162,7 +164,7 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
 
         if (
                 is.getItem() instanceof GT_MetaGenerated_Tool
-                || blackList.contains(new GT_ItemStack(is))
+                || blackList.stream().anyMatch(t -> t.isStackEqual(is))
                 || compareToUnpacker(is)
         )
             return DID_NOT_FIND_RECIPE;
