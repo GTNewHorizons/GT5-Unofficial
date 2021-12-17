@@ -176,7 +176,7 @@ public class NaquadahReworkRecipeLoader {
                 Materials.CarbonDioxide.getGas(1000),
                 GT_OreDictUnificator.get(OrePrefixes.ingotHot, Materials.Naquadah, 1),
                 null,
-                20,
+                40,
                 7680,
                 5000
         );
@@ -447,7 +447,7 @@ public class NaquadahReworkRecipeLoader {
                 naquadahine.get(OrePrefixes.dust, 1),
                 Materials.Sodium.getDust(1),
                 Materials.Naquadah.getDust(1),
-                10,
+                100,
                 1920
         );
 
