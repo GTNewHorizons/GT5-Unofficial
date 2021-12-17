@@ -887,11 +887,11 @@ public class GTPP_NEI_DefaultHandler extends TemplateRecipeHandler {
 				for (int i=0;i<aInputItemsCount;i++) {
 					int x = mInputSlotMap.get(aInputSlotsUsed).getKey();
 					int y = mInputSlotMap.get(aInputSlotsUsed).getValue();
-					ItemStack aRepStack = mRecipe.getRepresentativeInput(aSlotToCheck);
+					ItemStack aRepStack = mRecipe.getRepresentativeInput(aSlotToCheck++);
 					if (aRepStack != null) {
 						this.mInputs.add(new FixedPositionedStack(aRepStack, x, y));
+						aInputSlotsUsed++;
 					}
-					aInputSlotsUsed++;
 				}
 			}
 			aSlotToCheck = 0;	
