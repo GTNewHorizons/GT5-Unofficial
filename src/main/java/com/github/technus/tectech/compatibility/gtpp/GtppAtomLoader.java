@@ -40,6 +40,14 @@ public class GtppAtomLoader implements Runnable{
     }
     //endregion
 
+    private static Method getMethodWithReplacements(Class<?> owner, String name1, String name2, Class<?>... arguments) throws ReflectiveOperationException {
+        try {
+            return owner.getMethod(name1, arguments);
+        } catch (ReflectiveOperationException e) {
+            return owner.getMethod(name2, arguments);
+        }
+    }
+
     @Override
     public void run() {
         //region reflect a bit
@@ -47,9 +55,9 @@ public class GtppAtomLoader implements Runnable{
             ELEMENT=Class.forName("gtPlusPlus.core.material.ELEMENT");
             ELEMENT_INSTANCE=ELEMENT.getMethod("getInstance").invoke(null);
 
-            Class clazz=Class.forName("gtPlusPlus.core.material.Material");
+            Class<?> clazz=Class.forName("gtPlusPlus.core.material.Material");
             getUnlocalizedName=clazz.getMethod("getUnlocalizedName");
-            getFluid=clazz.getMethod("getFluid", int.class);
+            getFluid=getMethodWithReplacements(clazz,"getFluidStack", "getFluid", int.class);
 
             clazz=Class.forName("gtPlusPlus.core.material.MaterialGenerator");
             generate=clazz.getMethod("generate", Class.forName("gtPlusPlus.core.material.Material"), boolean.class, boolean.class);
