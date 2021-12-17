@@ -693,14 +693,12 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
             createNewMetatileEntity(mID);
         }
 
-        mCoverSides[0] = aCover0;
-        mCoverSides[1] = aCover1;
-        mCoverSides[2] = aCover2;
-        mCoverSides[3] = aCover3;
-        mCoverSides[4] = aCover4;
-        mCoverSides[5] = aCover5;
-
-        for (byte i = 0; i < 6; i++) mCoverBehaviors[i] = GregTech_API.getCoverBehaviorNew(mCoverSides[i]);
+        setCoverIDAtSide((byte) 0, aCover0);
+        setCoverIDAtSide((byte) 1, aCover1);
+        setCoverIDAtSide((byte) 2, aCover2);
+        setCoverIDAtSide((byte) 3, aCover3);
+        setCoverIDAtSide((byte) 4, aCover4);
+        setCoverIDAtSide((byte) 5, aCover5);
 
         receiveClientEvent(ClientEvents.CHANGE_COMMON_DATA, aTextureData);
         receiveClientEvent(ClientEvents.CHANGE_CUSTOM_DATA, aUpdateData & 0x7F);
