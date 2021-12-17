@@ -430,8 +430,10 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         mMainFacing = -1;
         if (!getBaseMetaTileEntity().getWorld().isRemote) {
             GT_ClientPreference tPreference = GT_Mod.gregtechproxy.getClientPreference(getBaseMetaTileEntity().getOwnerUuid());
-            if (tPreference != null)
+            if (tPreference != null) {
                 mDisableFilter = !tPreference.isSingleBlockInitialFilterEnabled();
+                mDisableMultiStack = !tPreference.isSingleBlockInitialMultiStackEnabled();
+            }
         }
     }
 
