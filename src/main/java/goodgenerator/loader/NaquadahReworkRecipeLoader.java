@@ -281,7 +281,7 @@ public class NaquadahReworkRecipeLoader {
                 null, null, null, null,
                 new int[]{2000, 10000},
                 400,
-                7680
+                122880
         );
 
         GT_Values.RA.addChemicalRecipe(
