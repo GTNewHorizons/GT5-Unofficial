@@ -2,35 +2,19 @@
 
 repositories {
     maven {
-        name 'Forge'
-        url 'https://maven.minecraftforge.net/releases/'
+        name = "sponge"
+        url = "https://repo.spongepowered.org/repository/maven-public"
     }
     maven {
-        name = "chickenbones"
-        url = "http://chickenbones.net/maven/"
-    }
-    maven {
-        name = "ic2, forestry"
+        name = "ic2"
         url = "http://maven.ic2.player.to/"
+        metadataSources {
+            mavenPom()
+            artifact()
+        }
     }
-    maven { // EnderIO & EnderCore
-        name 'tterrag Repo'
-        url "http://maven.tterrag.com"
-    }
-    maven { // AppleCore
-        url "http://www.ryanliptak.com/maven/"
-    }
-    maven { // GalacticGreg, YAMCore,..
-        name = 'UsrvDE'
-        url = "http://jenkins.usrv.eu:8081/nexus/content/repositories/releases/"
-    }
-    ivy {
-        name = 'gtnh_download_source'
-        artifactPattern("http://downloads.gtnewhorizons.com/Mods_for_Jenkins/[module]-[revision].[ext]")
-    }
-    ivy {
-        name = 'gtnh_download_source_stupid_underscore_typo'
-        artifactPattern("http://downloads.gtnewhorizons.com/Mods_for_Jenkins/[module]_[revision].[ext]")
+    maven {
+        url "https://cursemaven.com"
     }
     maven {
         url = "https://jitpack.io"

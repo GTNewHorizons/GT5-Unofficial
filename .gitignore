@@ -21,9 +21,11 @@ server.properties
 servers.dat
 usercache.json
 whitelist.json
-world/
 /out/
 *.iml
 *.ipr
 *.iws
 src/main/resources/mixins.*.json
+*.bat
+*.DS_Store
+!gradlew.bat
