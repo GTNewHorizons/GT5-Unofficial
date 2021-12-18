@@ -140,7 +140,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
             aNBT.setLong("mStoredSteam", mStoredSteam);
             aNBT.setLong("mStoredEnergy", mStoredEnergy);
             for (int i = 0; i < mCoverData.length; i++) {
-                if (mCoverData[i] != null)
+                if (mCoverSides[i] != 0 && mCoverData[i] != null)
                     aNBT.setTag(COVER_DATA_NBT_KEYS[i], mCoverData[i].saveDataToNBT());
             }
             aNBT.setIntArray("mCoverSides", mCoverSides);
