@@ -160,6 +160,8 @@ public class COMPAT_HANDLER {
 			GregtechIsaMill.run();
 			GregtechSteamMultis.run();
 			//GregtechIndustrialElementDuplicator.run();
+			GregtechIndustrialRockBreaker.run();
+			GregtechIndustrialChisel.run();
 
 			//New Horizons Content
 			NewHorizonsAccelerator.run();
