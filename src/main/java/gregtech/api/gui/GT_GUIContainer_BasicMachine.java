@@ -8,10 +8,13 @@ import gregtech.api.net.GT_Packet_SetConfigurationCircuit;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 
@@ -24,6 +27,12 @@ import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
  */
 public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machine {
 
+    private static final List<String> GHOST_CIRCUIT_TOOLTIP = Arrays.asList(
+            "GT5U.machines.select_circuit.tooltip",
+            "GT5U.machines.select_circuit.tooltip.1",
+            "GT5U.machines.select_circuit.tooltip.2",
+            "GT5U.machines.select_circuit.tooltip.3"
+    );
     public final String
             mName,
             mNEI;
@@ -86,17 +95,17 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
         int yStart = (height - ySize) / 2;
         int x = x2 - xStart;
         int y = y2 - yStart + 5;
-        List<String> list = new ArrayList<>();
         if (y >= 67 && y <= 84) {
-            if (x >= 7 && x <= 24) {
-                list.add("Fluid Auto-Output");
+            if (mRenderAutoOutputSlots && x >= 7 && x <= 24) {
+                drawHoveringText(Collections.singletonList("Fluid Auto-Output"), x2, y2, fontRendererObj);
             }
-            if (x >= 25 && x <= 42) {
-                list.add("Item Auto-Output");
+            if (mRenderAutoOutputSlots && x >= 25 && x <= 42) {
+                drawHoveringText(Collections.singletonList("Item Auto-Output"), x2, y2, fontRendererObj);
+            }
+            if (getMachine().allowSelectCircuit() && getMachine().getStackInSlot(getMachine().getCircuitSlot()) == null && x >= 153 && x <= 180) {
+                drawHoveringText(GHOST_CIRCUIT_TOOLTIP.stream().map(StatCollector::translateToLocal).collect(Collectors.toList()), x2, y2, fontRendererObj);
             }
         }
-        if (!list.isEmpty())
-            drawHoveringText(list, x2, y2, fontRendererObj);
     }
 
     @Override
