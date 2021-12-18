@@ -772,7 +772,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                     return !this.mRequiresFluidForFiltering && this.getRecipeList().containsInput(aStack);
                 else
                     return this.getRecipeList().findRecipe(
-                            this.getBaseMetaTileEntity(), this.mLastRecipe, true, V[this.mTier], new FluidStack[]{this.getFillableStack()}, 
+                            this.getBaseMetaTileEntity(), this.mLastRecipe, true, true, V[this.mTier], new FluidStack[]{this.getFillableStack()},
                             this.getSpecialSlot(), new ItemStack[]{aStack}
                         ) != null;
             case 2:
@@ -788,7 +788,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                                         (
                                             this.getRecipeList().containsInput(aStack) && 
                                             this.getRecipeList().findRecipe(
-                                                this.getBaseMetaTileEntity(), this.mLastRecipe, true, V[this.mTier], 
+                                                this.getBaseMetaTileEntity(), this.mLastRecipe, true, true, V[this.mTier],
                                                 new FluidStack[]{this.getFillableStack()}, 
                                                 this.getSpecialSlot(), aIndex == this.getInputSlot() ? 
                                                     new ItemStack[]{aStack, this.getInputAt(1)} : 
