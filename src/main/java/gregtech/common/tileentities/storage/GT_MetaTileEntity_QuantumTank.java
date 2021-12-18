@@ -10,6 +10,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
+import org.lwjgl.input.Keyboard;
 
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_QTANK;
@@ -19,7 +20,8 @@ public class GT_MetaTileEntity_QuantumTank extends GT_MetaTileEntity_BasicTank {
     public GT_MetaTileEntity_QuantumTank(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 3, new String[]{
                 "Stores " + GT_Utility.formatNumbers(commonSizeCompute(aTier)) + "L of fluid",
-                "Can keep its contents when harvested"
+                "Can keep its contents when harvested",
+                "Hold shift when harvesting to void its contents"
         });
     }
 
@@ -55,8 +57,10 @@ public class GT_MetaTileEntity_QuantumTank extends GT_MetaTileEntity_BasicTank {
 
     @Override
     public void setItemNBT(NBTTagCompound aNBT) {
-        if (mFluid != null && mFluid.amount > 0)
-            aNBT.setTag("mFluid", mFluid.writeToNBT(new NBTTagCompound()));
+        if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+            if (mFluid != null && mFluid.amount > 0)
+                aNBT.setTag("mFluid", mFluid.writeToNBT(new NBTTagCompound()));
+        }
         super.setItemNBT(aNBT);
     }
 

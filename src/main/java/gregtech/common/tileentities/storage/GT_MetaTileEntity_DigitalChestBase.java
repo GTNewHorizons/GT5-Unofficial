@@ -35,7 +35,8 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
                 "This Chest stores " + GT_Utility.formatNumbers(commonSizeCompute(aTier)) + " Blocks",
                 "Use a screwdriver to enable",
                 "voiding items on overflow",
-                "Can keep its contents when harvested"
+                "Can keep its contents when harvested",
+                "Hold shift when harvesting to void its contents"
         });
     }
 
