@@ -19,6 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -331,7 +332,8 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
         public NBTBase saveDataToNBT() {
             NBTTagCompound tNBT = new NBTTagCompound();
             tNBT.setInteger("mFilterMode", mFilterMode);
-            tNBT.setString("mFluid", FluidRegistry.getFluid(mFluidID).getName());
+            if (mFluidID >= 0)
+                tNBT.setString("mFluid", FluidRegistry.getFluid(mFluidID).getName());
             return tNBT;
         }
 
@@ -345,7 +347,10 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
             if (aNBT instanceof NBTTagCompound) {
                 NBTTagCompound tNBT = (NBTTagCompound) aNBT;
                 mFilterMode = tNBT.getByte("mFilterMod");
-                mFluidID = FluidRegistry.getFluidID(tNBT.getString("mFluid"));
+                if (tNBT.hasKey("mFluid", NBT.TAG_STRING))
+                    mFluidID = FluidRegistry.getFluidID(tNBT.getString("mFluid"));
+                else
+                    mFluidID = -1;
             }
         }
 
