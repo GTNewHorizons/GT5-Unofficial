@@ -54,7 +54,7 @@ public class RocketFuels extends ItemPackage {
 	public static Fluid Monomethylhydrazine_Plus_Nitric_Acid;
 
 	public static Item Ammonium_Nitrate_Dust;
-	public static Item Formaldehyde_Catalyst;
+	public static Item Formaldehyde_Catalyst_Dust;
 	public static ItemStack Formaldehyde_Catalyst_Stack;
 	
 	public RocketFuels() {
@@ -246,7 +246,7 @@ public class RocketFuels extends ItemPackage {
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
 						CI.getNumberedAdvancedCircuit(21),
-						ItemUtils.getSimpleStack(Formaldehyde_Catalyst, 0),
+						ItemUtils.getSimpleStack(GenericChem.mFormaldehydeCatalyst, 0),
 				}, 
 				new FluidStack[] {
 						FluidUtils.getFluidStack("oxygen", 16000),
@@ -273,7 +273,7 @@ public class RocketFuels extends ItemPackage {
 				null,
 				null,
 				null,
-				ItemUtils.getSimpleStack(Formaldehyde_Catalyst, 4), 
+				ItemUtils.getSimpleStack(Formaldehyde_Catalyst_Dust, 4), 
 				160, 
 				30);
 
@@ -284,7 +284,7 @@ public class RocketFuels extends ItemPackage {
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
 						CI.getNumberedAdvancedCircuit(21),
-						ItemUtils.getSimpleStack(Formaldehyde_Catalyst, 0),
+						ItemUtils.getSimpleStack(GenericChem.mFormaldehydeCatalyst, 0),
 				}, 
 				new FluidStack[] {
 						FluidUtils.getFluidStack("fluid.hydrazine", 2000),
@@ -492,8 +492,8 @@ public class RocketFuels extends ItemPackage {
 
 	@Override
 	public void items() {
-		Formaldehyde_Catalyst = ItemUtils.generateSpecialUseDusts("FormaldehydeCatalyst", "Formaldehyde Catalyst", "Fe16V1", Utils.rgbtoHexValue(25, 5, 25))[0];
-		Formaldehyde_Catalyst_Stack = ItemUtils.getSimpleStack(Formaldehyde_Catalyst);
+		Formaldehyde_Catalyst_Dust = ItemUtils.generateSpecialUseDusts("FormaldehydeCatalyst", "Formaldehyde Catalyst", "Fe16V1", Utils.rgbtoHexValue(25, 5, 25))[0];
+		Formaldehyde_Catalyst_Stack = ItemUtils.getSimpleStack(Formaldehyde_Catalyst_Dust);
 	}
 
 	@Override
