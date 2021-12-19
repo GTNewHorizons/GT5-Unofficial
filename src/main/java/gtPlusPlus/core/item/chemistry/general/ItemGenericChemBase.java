@@ -23,7 +23,7 @@ public class ItemGenericChemBase extends Item {
 
 	final protected IIcon base[];
 	
-	final private int aMetaSize = 13;
+	final private int aMetaSize = 14;
 	
 	/*
 	 * 0 - Red Metal Catalyst //FeCu
@@ -39,6 +39,7 @@ public class ItemGenericChemBase extends Item {
 	 * 10 - Sodium Ethyl Xanthate //CH3CH2ONa + CS2 → CH3CH2OCS2Na
 	 * 11 - Potassium Ethyl Xanthate //CH3CH2OH + CS2 + KOH → CH3CH2OCS2K + H2O
 	 * 12 - Potassium Hydroxide // KOH
+	 * 13 - Formaldehyde Catalyst //Fe16V1
 	 */
 	
 	public ItemGenericChemBase() {
