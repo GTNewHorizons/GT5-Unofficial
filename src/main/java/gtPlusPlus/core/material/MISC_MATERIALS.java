@@ -114,6 +114,26 @@ public final class MISC_MATERIALS {
 					new MaterialStack(ELEMENT.getInstance().CARBON, 1),
 					new MaterialStack(ELEMENT.getInstance().OXYGEN, 2)
 			});
+	
+	public static final Material WOODS_GLASS = new Material(
+			"Wood's Glass", //Material Name
+			MaterialState.SOLID, //State
+			TextureSets.GEM_A.get(), //Texture Set
+			new short[] {220, 60, 255}, //Material Colour	
+			-1,
+			-1,
+			-1,
+			-1, 
+			false, 
+			"Si4Ba3Na2Ni",
+			0, 
+			false,
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.getInstance().SILICON, 40),
+					new MaterialStack(ELEMENT.getInstance().BARIUM, 30),
+					new MaterialStack(ELEMENT.getInstance().SODIUM, 20),
+					new MaterialStack(ELEMENT.getInstance().NICKEL, 10),
+			});
 
 
 	/*

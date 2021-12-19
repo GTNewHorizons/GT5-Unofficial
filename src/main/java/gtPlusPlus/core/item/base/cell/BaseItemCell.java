@@ -12,6 +12,7 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import ic2.core.Ic2Items;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
 public class BaseItemCell extends BaseItemComponent{
 
@@ -26,7 +27,10 @@ public class BaseItemCell extends BaseItemComponent{
 	public BaseItemCell(final String unlocalName, final String localName, final short[] RGBa) {
 		super(unlocalName, localName, RGBa);
 		this.fluidColour = RGBa;
-		FluidContainerRegistry.registerFluidContainer(FluidUtils.getFluidStack(unlocalName.toLowerCase(), 0), ItemUtils.getSimpleStack(this), Ic2Items.cell.copy());
+		FluidStack aFluid = FluidUtils.getFluidStack(unlocalName.toLowerCase(), 1000);
+		if (aFluid != null) {
+			FluidContainerRegistry.registerFluidContainer(aFluid, ItemUtils.getSimpleStack(this), Ic2Items.cell.copy());
+		}
 	}
 	
 	public BaseItemCell(final String unlocalName, final String localName, final short[] RGBa, final Fluid cellFluid) {

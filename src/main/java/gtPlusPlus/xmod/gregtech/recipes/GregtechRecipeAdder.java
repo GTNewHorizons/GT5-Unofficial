@@ -658,14 +658,6 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 		if (((aInput1 == null) && (aFluidInput == null)) || ((aOutput1 == null) && (aFluidOutput == null))) {
 			return false;
 		}
-		if ((aOutput1 != null)
-				&& ((aDuration = GregTech_API.sRecipeFile.get("advancedmixer", aOutput1, aDuration)) <= 0)) {
-			return false;
-		}
-		if ((aFluidOutput != null) && ((aDuration = GregTech_API.sRecipeFile.get("advancedmixer",
-				aFluidOutput.getFluid().getName(), aDuration)) <= 0)) {
-			return false;
-		}
 		GTPP_Recipe aSpecialRecipe = new GTPP_Recipe(
 				true,
 				new ItemStack[] { aInput1, aInput2, aInput3, aInput4 },
@@ -678,17 +670,9 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 				Math.max(1, aEUt), 
 				0);   
 
-		int aSize = GTPP_Recipe.GTPP_Recipe_Map.sAdvancedMixerRecipes.mRecipeList.size();
-		int aSize2 = aSize;
-		GTPP_Recipe.GTPP_Recipe_Map.sAdvancedMixerRecipes.add(aSpecialRecipe);
-		aSize = GTPP_Recipe.GTPP_Recipe_Map.sAdvancedMixerRecipes.mRecipeList.size();
-
-		/*GTPP_Recipe.GTPP_Recipe_Map.sAdvancedMixerRecipes.addRecipe(true,
-				new ItemStack[] { aInput1, aInput2, aInput3, aInput4 },
-				new ItemStack[] { aOutput1, aOutput2, aOutput3, aOutput4 }, null, null,
-				new FluidStack[] { aFluidInput }, new FluidStack[] { aFluidOutput }, aDuration, aEUt, 0);*/
-
-		return aSize > aSize2;
+		int aSize = GT_Recipe_Map.sMixerRecipes.mRecipeList.size();
+		GT_Recipe_Map.sMixerRecipes.add(aSpecialRecipe);
+		return GT_Recipe_Map.sMixerRecipes.mRecipeList.size() > aSize;
 	}
 
 	// Machine Component Assembler
@@ -1445,18 +1429,18 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 	}
 
 	@Override
-	public boolean addUvLaserRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aOutput, int time, long eu) {
+	public boolean addUvLaserRecipe(ItemStack aInput1, ItemStack aOutput, int time, long eu) {
 		// Generate Special Laser Recipe
 		GT_Recipe u = new GTPP_Recipe(
 				false,
 				new ItemStack[] {
 						aInput1,
-						aInput2,
+						GregtechItemList.Laser_Lens_WoodsGlass.get(1),
 				},
 				new ItemStack[] {
 						aOutput
 				},
-				GregtechItemList.Laser_Lens_WoodsGlass.get(1),
+				null,
 				new int[] {
 						10000
 				}, 
@@ -1469,8 +1453,8 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 	}
 
 	@Override
-	public boolean addIrLaserRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aOutput, int time, long eu) {
-		return addUvLaserRecipe(aInput1, aInput2, aOutput, time, eu);
+	public boolean addIrLaserRecipe(ItemStack aInput1, ItemStack aOutput, int time, long eu) {
+		return addUvLaserRecipe(aInput1, aOutput, time, eu);
 	}
 
 
