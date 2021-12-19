@@ -79,18 +79,20 @@ public class TecTechUtils {
         if (allTheEu < aEU)
             return false;
 
+        if (hatches == 0) return false;
+        
         long euperhatch = aEU / hatches;
 
-        boolean hasDrained = false;
+        boolean hasDrained = true;
 
         for (GT_MetaTileEntity_Hatch_Energy tHatch : multi.getVanillaEnergyHatches())
-            hasDrained |= tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(euperhatch, false);
+            hasDrained &= tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(euperhatch, false);
 
         for (GT_MetaTileEntity_Hatch_EnergyTunnel tHatch : multi.getTecTechEnergyTunnels())
-            hasDrained |= tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(euperhatch, false);
+            hasDrained &= tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(euperhatch, false);
 
         for (GT_MetaTileEntity_Hatch_EnergyMulti tHatch : multi.getTecTechEnergyMultis())
-            hasDrained |= tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(euperhatch, false);
+            hasDrained &= tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(euperhatch, false);
 
         return hasDrained && (multi.getVanillaEnergyHatches().size() > 0 || multi.getTecTechEnergyTunnels().size() > 0 || multi.getTecTechEnergyMultis().size() > 0);
     }
