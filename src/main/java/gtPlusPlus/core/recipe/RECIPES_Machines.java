@@ -1406,14 +1406,24 @@ public class RECIPES_Machines {
 			}
 
 			//Air Intake Hatch
-			ItemList FluidRegulator_IV = ItemUtils.getValueOfItemList("FluidRegulator_IV", ItemList.Pump_IV);				
-			ItemStack aTieredFluidRegulator = CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK ? FluidRegulator_IV.get(1) : ItemList.Pump_IV.get(1);
 			RecipeUtils.addShapedGregtechRecipe(
 					CI.component_Plate[6], ItemList.Casing_Grate.get(1), CI.component_Plate[6],
-					CI.component_Plate[6], aTieredFluidRegulator, CI.component_Plate[6],
-					CI.getTieredCircuit(4), ItemList.Hatch_Input_IV.get(1), CI.getTieredCircuit(4),
+					CI.component_Plate[6], CI.getFluidRegulator(5, 1), CI.component_Plate[6],
+					CI.getTieredCircuit(5), ItemList.Hatch_Input_IV.get(1), CI.getTieredCircuit(5),
 					GregtechItemList.Hatch_Air_Intake.get(1));
-
+			
+			
+			RecipeUtils.addShapedGregtechRecipe(
+					CI.getPlate(6, 1), ItemList.Casing_Grate.get(1), CI.getPlate(6, 1),
+					CI.getPlate(6, 1), CI.getFluidRegulator(6, 1), CI.getPlate(6, 1),
+					CI.getTieredCircuit(6), ItemList.Hatch_Input_LuV.get(1), CI.getTieredCircuit(6),
+					GregtechItemList.Hatch_Reservoir.get(1));
+			
+			RecipeUtils.addShapedGregtechRecipe(
+					CI.getPlate(7, 1), GregtechItemList.Hatch_Air_Intake.get(1), CI.getPlate(7, 1),
+					CI.getPlate(7, 1), CI.getFluidRegulator(7, 1), CI.getPlate(7, 1),
+					CI.getTieredCircuit(7), ItemList.Hatch_Input_ZPM.get(1), CI.getTieredCircuit(7),
+					GregtechItemList.Hatch_Air_Intake_Extreme.get(1));
 			if (CORE.ConfigSwitches.enableMultiblock_LiquidFluorideThoriumReactor){
 
 				//Thorium Reactor

@@ -128,6 +128,15 @@ public class CI {
 	public static ItemStack sensor_ZPM;
 	public static ItemStack sensor_UV;
 	public static ItemStack sensor_MAX;
+	
+	public static ItemStack fluidRegulator_LV;
+	public static ItemStack fluidRegulator_MV;
+	public static ItemStack fluidRegulator_HV;
+	public static ItemStack fluidRegulator_EV;
+	public static ItemStack fluidRegulator_IV;
+	public static ItemStack fluidRegulator_LuV;
+	public static ItemStack fluidRegulator_ZPM;
+	public static ItemStack fluidRegulator_UV;
 
 	//Machine Casings
 	public static ItemStack machineCasing_ULV;
@@ -878,6 +887,45 @@ public class CI {
 		}
 		else {
 			aType = CI.electricMotor_LV;			
+		}		
+		return ItemUtils.getSimpleStack(aType, aSize);
+	}
+	
+	public static ItemStack getFluidRegulator(int aTier, int aSize) {
+		if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
+			return CI.getElectricPump(aTier, aSize);
+		}
+		ItemStack aType;
+		int aLazyTier = 0;
+		if (aTier == aLazyTier++) {
+			aType = CI.fluidRegulator_LV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.fluidRegulator_MV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.fluidRegulator_HV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.fluidRegulator_EV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.fluidRegulator_IV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.fluidRegulator_LuV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.fluidRegulator_ZPM;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.fluidRegulator_UV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.fluidRegulator_UV;			
+		}
+		else {
+			aType = CI.fluidRegulator_LV;			
 		}		
 		return ItemUtils.getSimpleStack(aType, aSize);
 	}

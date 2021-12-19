@@ -439,12 +439,6 @@ public class RECIPES_General {
 			generatePipeRecipes(e.mDefaultLocalName, e.getMass(), tVoltageMultiplier);
 		}
 
-		RecipeUtils.addShapedGregtechRecipe(
-				CI.component_Plate[4], "rotorGtStainlessSteel", CI.component_Plate[4],
-				CI.getTieredCircuitOreDictName(3), CI.machineHull_HV, CI.getTieredCircuitOreDictName(3),
-				CI.component_Plate[4], CI.electricPump_HV, CI.component_Plate[4],
-				GregtechItemList.Hatch_Air_Intake.get(1L, new Object[0]));
-
 		RecipeUtils.addShapedGregtechRecipe(CI.component_Plate[6], ALLOY.MARAGING250.getGear(1), CI.component_Plate[6],
 				CI.getTieredCircuitOreDictName(4), GregtechItemList.Casing_AdvancedVacuum.get(1),
 				CI.getTieredCircuitOreDictName(4), CI.component_Plate[5], ItemList.Hatch_Input_IV.get(1),

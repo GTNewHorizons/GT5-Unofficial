@@ -68,6 +68,13 @@ public class LOADER_Machine_Components {
 		CI.sensor_HV = ItemList.Sensor_HV.get(1);
 		CI.sensor_EV = ItemList.Sensor_EV.get(1);
 		CI.sensor_IV = ItemList.Sensor_IV.get(1);
+		if(CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
+			CI.fluidRegulator_LV = ItemUtils.getValueOfItemList("FluidRegulator_LV", ItemList.Pump_LV).get(1);
+			CI.fluidRegulator_MV = ItemUtils.getValueOfItemList("FluidRegulator_MV", ItemList.Pump_MV).get(1);
+			CI.fluidRegulator_HV = ItemUtils.getValueOfItemList("FluidRegulator_HV", ItemList.Pump_HV).get(1);
+			CI.fluidRegulator_EV = ItemUtils.getValueOfItemList("FluidRegulator_EV", ItemList.Pump_EV).get(1);
+			CI.fluidRegulator_IV = ItemUtils.getValueOfItemList("FluidRegulator_IV", ItemList.Pump_IV).get(1);
+		}
 	}
 
 	private static void registerGTExperimentalComponents(){
@@ -96,7 +103,13 @@ public class LOADER_Machine_Components {
 		CI.sensor_LuV = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32695, 1);
 		CI.sensor_ZPM = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32696, 1);
 		CI.sensor_UV = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32697, 1);
-
+		
+		if(CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
+			CI.fluidRegulator_LuV = ItemUtils.getValueOfItemList("FluidRegulator_LuV", ItemList.Pump_LuV).get(1);
+			CI.fluidRegulator_ZPM = ItemUtils.getValueOfItemList("FluidRegulator_ZPM", ItemList.Pump_ZPM).get(1);
+			CI.fluidRegulator_UV = ItemUtils.getValueOfItemList("FluidRegulator_UV", ItemList.Pump_UV).get(1);
+		}
+		
 		registerComponentsULV();
 		registerComponentsMAX();
 	}
@@ -135,6 +148,12 @@ public class LOADER_Machine_Components {
 		CI.sensor_UV = GregtechItemList.Sensor_UV.get(1);
 		CI.sensor_MAX = GregtechItemList.Sensor_MAX.get(1);
 
+		if(CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
+			CI.fluidRegulator_LuV = ItemUtils.getValueOfItemList("FluidRegulator_LuV", ItemList.Pump_LuV).get(1);
+			CI.fluidRegulator_ZPM = ItemUtils.getValueOfItemList("FluidRegulator_ZPM", ItemList.Pump_ZPM).get(1);
+			CI.fluidRegulator_UV = ItemUtils.getValueOfItemList("FluidRegulator_UV", ItemList.Pump_UV).get(1);
+		}
+		
 		registerComponentsULV();
 	}
 
@@ -171,6 +190,12 @@ public class LOADER_Machine_Components {
 		CI.sensor_LuV = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32695, 1);
 		CI.sensor_ZPM = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32696, 1);
 		CI.sensor_UV = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32697, 1);
+		
+		if(CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
+			CI.fluidRegulator_LuV = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32665, 1);
+			CI.fluidRegulator_ZPM = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32666, 1);
+			CI.fluidRegulator_UV = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32667, 1);
+		}
 
 		// Thanks 0lafe
 		CI.electricMotor_MAX = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32596, 1);
