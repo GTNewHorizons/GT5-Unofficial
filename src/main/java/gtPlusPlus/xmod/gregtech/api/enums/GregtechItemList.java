@@ -438,6 +438,10 @@ public enum GregtechItemList implements GregtechItemContainer {
 
 	//Air Intake hatch
 	Hatch_Air_Intake,
+	Hatch_Air_Intake_Extreme,
+	
+	//Reservoir Hatch
+	Hatch_Reservoir,
 	
 	//XL Turbine Rotor Hatch
 	/*Hatch_Turbine_Rotor,*/
