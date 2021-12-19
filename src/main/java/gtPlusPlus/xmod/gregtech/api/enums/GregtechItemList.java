@@ -415,6 +415,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 	
 	// Industrial Chisel
 	Controller_IndustrialAutoChisel,
+	Casing_IndustrialAutoChisel,
 
 	// Custom Machine Casings
 	Casing_Machine_Custom_1,

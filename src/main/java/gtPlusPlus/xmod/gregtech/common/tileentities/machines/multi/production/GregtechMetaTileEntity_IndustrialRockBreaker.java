@@ -4,10 +4,13 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.GT_Values.E;
+import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 import static gtPlusPlus.core.util.data.ArrayUtils.removeNulls;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -35,10 +38,12 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
+import gregtech.api.util.GT_Recipe.GT_Recipe_Map_Microwave;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.recipe.common.CI;
+import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -50,7 +55,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class GregtechMetaTileEntity_IndustrialRockBreaker extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialRockBreaker> {
 
-	private static Item circuit;
 	private int mCasing;
 	private IStructureDefinition<GregtechMetaTileEntity_IndustrialRockBreaker> STRUCTURE_DEFINITION = null;
 
@@ -88,7 +92,7 @@ public class GregtechMetaTileEntity_IndustrialRockBreaker extends GregtechMeta_M
 		.addSeparator()
 		.beginStructureBlock(3, 4, 3, true)
 		.addController("Bottom Center")
-		.addCasingInfo("Thermal Processing Casing", 10)
+		.addCasingInfo("Thermal Processing Casing", 9)
 		.addCasingInfo("Thermal Containment Casing", 16)
 		.addInputBus("Any Casing", 1)
 		.addInputHatch("Any Casing", 1)
@@ -143,7 +147,11 @@ public class GregtechMetaTileEntity_IndustrialRockBreaker extends GregtechMeta_M
 	@Override
 	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
 		mCasing = 0;
-		return checkPiece(mName, 1, 3, 0) && mCasing >= 10 && mEnergyHatches.size() == 1 && checkHatch();
+		boolean aCheckPiece = checkPiece(mName, 1, 3, 0);
+		boolean aCasingCount = mCasing >= 9;
+		boolean aCheckHatch = checkHatch();
+		log(""+aCheckPiece+", "+aCasingCount+", "+aCheckHatch);
+		return aCheckPiece && aCasingCount && aCheckHatch;
 	}
 
 	public final boolean addRockBreakerList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
@@ -196,10 +204,31 @@ public class GregtechMetaTileEntity_IndustrialRockBreaker extends GregtechMeta_M
 	public String getCustomGUIResourceName() {
 		return "ElectricBlastFurnace";
 	}	
+	
+	private static final GT_Recipe_Map sFakeRecipeMap = new GT_Recipe_Map(new HashSet<>(0), "gt.recipe.fakerockbreaker", "Rock Breaker", "smelting", RES_PATH_GUI + "basicmachines/E_Furnace", 1, 1, 0, 0, 1, E, 1, E, true, false);
 
+	private static void generateRecipeMap() {
+		if (sRecipe_Cobblestone == null || sRecipe_SmoothStone == null || sRecipe_Redstone == null) {
+			generateRecipes();			
+		}
+		FluidStack[] aInputFluids = new FluidStack[] {FluidUtils.getWater(1000), FluidUtils.getLava(1000)};
+		GT_Recipe aTemp = sRecipe_Cobblestone.copy();
+		aTemp.mFluidInputs = aInputFluids;
+		sFakeRecipeMap.add(aTemp);
+		aTemp = sRecipe_SmoothStone.copy();
+		aTemp.mFluidInputs = aInputFluids;
+		sFakeRecipeMap.add(aTemp);
+		aTemp = sRecipe_Redstone.copy();
+		aTemp.mFluidInputs = aInputFluids;
+		sFakeRecipeMap.add(aTemp);		
+	}
+	
 	@Override
 	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-		return GT_Recipe_Map.sRockBreakerFakeRecipes;
+		if (sFakeRecipeMap.mRecipeList.isEmpty()) {
+			generateRecipeMap();
+		}
+		return sFakeRecipeMap;
 	}
 
 	@Override
@@ -212,58 +241,52 @@ public class GregtechMetaTileEntity_IndustrialRockBreaker extends GregtechMeta_M
 	private static GT_Recipe sRecipe_Redstone;
 
 	private static final void generateRecipes() {
-		if (sRecipe_Cobblestone == null) {
-			sRecipe_Cobblestone = new GTPP_Recipe(
-					false,
-					new ItemStack[] {
-							CI.getNumberedCircuit(1)
-					},
-					new ItemStack[] {
-							ItemUtils.getSimpleStack(Blocks.cobblestone)
-					},
-					null, 
-					new int[] {10000}, 
-					null, 
-					null, 
-					16, 
-					32, 
-					0);
-		}
-		if (sRecipe_SmoothStone == null) {
-			sRecipe_SmoothStone = new GTPP_Recipe(
-					false,
-					new ItemStack[] {
-							CI.getNumberedCircuit(2)
-					},
-					new ItemStack[] {
-							ItemUtils.getSimpleStack(Blocks.stone)
-					},
-					null, 
-					new int[] {10000}, 
-					null, 
-					null, 
-					16, 
-					32, 
-					0);
-		}
-		if (sRecipe_Redstone == null) {
-			sRecipe_Redstone = new GTPP_Recipe(
-					false,
-					new ItemStack[] {
-							CI.getNumberedCircuit(3),
-							GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L)
-					},
-					new ItemStack[] {
-							ItemUtils.getSimpleStack(Blocks.obsidian)
-					},
-					null, 
-					new int[] {10000}, 
-					null, 
-					null, 
-					128, 
-					32, 
-					0);
-		}
+		sRecipe_Cobblestone = new GTPP_Recipe(
+				false,
+				new ItemStack[] {
+						CI.getNumberedCircuit(1)
+				},
+				new ItemStack[] {
+						ItemUtils.getSimpleStack(Blocks.cobblestone)
+				},
+				null, 
+				new int[] {10000}, 
+				null, 
+				null, 
+				16, 
+				32, 
+				0);
+		sRecipe_SmoothStone = new GTPP_Recipe(
+				false,
+				new ItemStack[] {
+						CI.getNumberedCircuit(2)
+				},
+				new ItemStack[] {
+						ItemUtils.getSimpleStack(Blocks.stone)
+				},
+				null, 
+				new int[] {10000}, 
+				null, 
+				null, 
+				16, 
+				32, 
+				0);
+		sRecipe_Redstone = new GTPP_Recipe(
+				false,
+				new ItemStack[] {
+						CI.getNumberedCircuit(3),
+						GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L)
+				},
+				new ItemStack[] {
+						ItemUtils.getSimpleStack(Blocks.obsidian)
+				},
+				null, 
+				new int[] {10000}, 
+				null, 
+				null, 
+				128, 
+				32, 
+				0);
 	}
 
 	@Override
@@ -301,7 +324,9 @@ public class GregtechMetaTileEntity_IndustrialRockBreaker extends GregtechMeta_M
 				return false;				
 			}
 
-			generateRecipes();
+			if (sRecipe_Cobblestone == null || sRecipe_SmoothStone == null || sRecipe_Redstone == null) {
+				generateRecipes();			
+			}
 			
 			int aCircuit = aGuiCircuit.getItemDamage();
 
@@ -327,7 +352,7 @@ public class GregtechMetaTileEntity_IndustrialRockBreaker extends GregtechMeta_M
 
 			// Based on the Processing Array. A bit overkill, but very flexible.	
 			ItemStack[] aItemInputs = aItems.toArray(new ItemStack[aItems.size()]);
-			FluidStack[] aFluidInputs = aFluids.toArray(new FluidStack[aFluids.size()]);	
+			FluidStack[] aFluidInputs = new FluidStack[] {};	
 
 			// Reset outputs and progress stats
 			this.mEUt = 0;
@@ -365,16 +390,25 @@ public class GregtechMetaTileEntity_IndustrialRockBreaker extends GregtechMeta_M
 			log("tTotalEUt: "+tTotalEUt);
 			log("tVoltage: "+tVoltage);
 			log("tRecipeEUt: "+tRecipeEUt);
-			// Count recipes to do in parallel, consuming input items and fluids and considering input voltage limits
-			for (; parallelRecipes < aMaxParallelRecipes && tTotalEUt < (tEnergy - tRecipeEUt); parallelRecipes++) {
-				if (!tRecipe.isRecipeInputEqual(true, aFluidInputs, aItemInputs)) {
-					log("Broke at "+parallelRecipes+".");
-					break;
+			
+			if (aItems.size() > 0 && aCircuit == 3) {
+				// Count recipes to do in parallel, consuming input items and fluids and considering input voltage limits
+				for (; parallelRecipes < aMaxParallelRecipes && tTotalEUt < (tEnergy - tRecipeEUt); parallelRecipes++) {
+					if (!tRecipe.isRecipeInputEqual(true, aFluidInputs, aItemInputs)) {
+						break;
+					}
+					log("Bumped EU from "+tTotalEUt+" to "+(tTotalEUt+tRecipeEUt)+".");
+					tTotalEUt += tRecipeEUt;
 				}
-				log("Bumped EU from "+tTotalEUt+" to "+(tTotalEUt+tRecipeEUt)+".");
-				tTotalEUt += tRecipeEUt;
+			}
+			else if (aCircuit >= 1 && aCircuit <= 2) {
+				for (; parallelRecipes < aMaxParallelRecipes && tTotalEUt < (tEnergy - tRecipeEUt); parallelRecipes++) {
+					log("Bumped EU from "+tTotalEUt+" to "+(tTotalEUt+tRecipeEUt)+".");
+					tTotalEUt += tRecipeEUt;
+				}
 			}
 
+			log("Broke at "+parallelRecipes+".");
 			if (parallelRecipes == 0) {
 				log("BAD RETURN - 3");
 				return false;
@@ -488,7 +522,7 @@ public class GregtechMetaTileEntity_IndustrialRockBreaker extends GregtechMeta_M
 
 	@Override
 	public int getEuDiscountForParallelism() {
-		return 80;
+		return 75;
 	}
 
 	@Override

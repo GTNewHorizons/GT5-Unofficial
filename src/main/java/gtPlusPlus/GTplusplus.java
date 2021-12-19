@@ -228,6 +228,22 @@ public class GTplusplus implements ActionListener {
 		Logger.INFO(
 				"Finally, we are finished. Have some cripsy bacon as a reward."
 		);
+		
+		// Log free GT++ Meta IDs
+		if (CORE.DEVENV) {
+			// 750	-  999  are reserved for Alkalus.
+			for (int i=750; i<1000;i++) {
+				if (gregtech.api.GregTech_API.METATILEENTITIES[i] == null) {
+					Logger.INFO("MetaID "+i+" is free.");
+				}
+			}
+			// 30000 - 31999 are reserved for Alkalus.
+			for (int i=30000; i<32000;i++) {
+				if (gregtech.api.GregTech_API.METATILEENTITIES[i] == null) {
+					Logger.INFO("MetaID "+i+" is free.");
+				}
+			}
+		}
 	}
 
 	@EventHandler
