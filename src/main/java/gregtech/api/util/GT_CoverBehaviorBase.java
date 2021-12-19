@@ -50,7 +50,11 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
     }
 
     private T forceCast(ISerializableObject aData) {
-        return typeToken.cast(aData);
+        try {
+            return typeToken.cast(aData);
+        } catch (Exception e) {
+            throw new RuntimeException("Casting data in " + this.getClass() + ", data " + aData, e);
+        }
     }
 
     // region facade

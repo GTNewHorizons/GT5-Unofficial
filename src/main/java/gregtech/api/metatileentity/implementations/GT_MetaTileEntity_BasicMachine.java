@@ -893,6 +893,18 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         return false;
     }
 
+    protected final ItemStack[] appendSelectedCircuit(ItemStack... inputs) {
+        if (allowSelectCircuit()) {
+            ItemStack circuit = getStackInSlot(getCircuitSlot());
+            if (circuit != null) {
+                ItemStack[] result = Arrays.copyOf(inputs, inputs.length + 1);
+                result[inputs.length] = circuit;
+                return result;
+            }
+        }
+        return inputs;
+    }
+
     /**
      * This might be non-final in the future, but for now, no, don't change this.
      */

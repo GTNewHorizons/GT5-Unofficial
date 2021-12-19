@@ -773,7 +773,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                 else
                     return this.getRecipeList().findRecipe(
                             this.getBaseMetaTileEntity(), this.mLastRecipe, true, true, V[this.mTier], new FluidStack[]{this.getFillableStack()},
-                            this.getSpecialSlot(), new ItemStack[]{aStack}
+                            this.getSpecialSlot(), appendSelectedCircuit(aStack)
                         ) != null;
             case 2:
                 
@@ -790,9 +790,9 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                                             this.getRecipeList().findRecipe(
                                                 this.getBaseMetaTileEntity(), this.mLastRecipe, true, true, V[this.mTier],
                                                 new FluidStack[]{this.getFillableStack()}, 
-                                                this.getSpecialSlot(), aIndex == this.getInputSlot() ? 
-                                                    new ItemStack[]{aStack, this.getInputAt(1)} : 
-                                                    new ItemStack[]{this.getInputAt(0), aStack}
+                                                this.getSpecialSlot(), aIndex == this.getInputSlot() ?
+                                                    appendSelectedCircuit(aStack, this.getInputAt(1)) :
+                                                    appendSelectedCircuit(this.getInputAt(0), aStack)
                                             ) != null
                                         )
                                 )
@@ -803,7 +803,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                 if (tID >= 211 && tID <= 218 || tID >= 1180 && tID <= 1187 || tID >= 10780 && tID <= 10786) { //assembler lv-iv; circuit asseblers lv - uv; assemblers luv-uev
                     if (GT_Utility.isStackValid(aStack))
                         for (int oreID : OreDictionary.getOreIDs(aStack)) {
-                            if (OreDictionary.getOreName(oreID).contains("circuit"))
+                            if (OreDictionary.getOreName(oreID).startsWith("circuit"))
                                 return true;
                         }
                 }
