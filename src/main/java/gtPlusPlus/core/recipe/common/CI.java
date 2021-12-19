@@ -901,6 +901,9 @@ public class CI {
 			aType = CI.fluidRegulator_LV;			
 		}
 		else if (aTier == aLazyTier++) {
+			aType = CI.fluidRegulator_LV;			
+		}
+		else if (aTier == aLazyTier++) {
 			aType = CI.fluidRegulator_MV;			
 		}
 		else if (aTier == aLazyTier++) {
