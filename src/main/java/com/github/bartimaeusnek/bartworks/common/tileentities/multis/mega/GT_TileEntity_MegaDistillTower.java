@@ -22,16 +22,21 @@
 
 package com.github.bartimaeusnek.bartworks.common.tileentities.multis.mega;
 
+import com.github.bartimaeusnek.bartworks.API.LoaderReference;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.util.*;
+import com.github.bartimaeusnek.crossmod.tectech.TecTechEnabledMulti;
+import com.github.bartimaeusnek.crossmod.tectech.helper.TecTechUtils;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -50,7 +55,8 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
-public class GT_TileEntity_MegaDistillTower extends GT_MetaTileEntity_DistillationTower {
+@Optional.Interface(iface = "com.github.bartimaeusnek.crossmod.tectech.TecTechEnabledMulti", modid = "tectech", striprefs = true)
+public class GT_TileEntity_MegaDistillTower extends GT_MetaTileEntity_DistillationTower implements TecTechEnabledMulti{
     private static final IStructureDefinition<GT_TileEntity_MegaDistillTower> STRUCTURE_DEFINITION = StructureDefinition.<GT_TileEntity_MegaDistillTower>builder()
             .addShape(STRUCTURE_PIECE_BASE, transpose(new String[][]{
                     {"bbbbbbb~bbbbbbb", "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb"},
@@ -132,6 +138,10 @@ public class GT_TileEntity_MegaDistillTower extends GT_MetaTileEntity_Distillati
 
     // -1 => maybe top, maybe not, 0 => definitely not top, 1 => definitely top
     private int mTopState = -1;
+    @SuppressWarnings("rawtypes")
+    public ArrayList TTTunnels = new ArrayList<>();
+    @SuppressWarnings("rawtypes")
+    public ArrayList TTMultiAmp = new ArrayList<>();
 
     public GT_TileEntity_MegaDistillTower(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -175,7 +185,18 @@ public class GT_TileEntity_MegaDistillTower extends GT_MetaTileEntity_Distillati
     }
 
     @Override
+    public boolean addEnergyInputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (LoaderReference.tectech)
+            return TecTechUtils.addEnergyInputToMachineList(this, aTileEntity, aBaseCasingIndex);
+        return super.addEnergyInputToMachineList(aTileEntity, aBaseCasingIndex);
+    }
+
+    @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        if (LoaderReference.tectech) {
+            this.getTecTechEnergyMultis().clear();
+            this.getTecTechEnergyTunnels().clear();
+        }
         // reset
         mOutputHatchesByLayer.forEach(List::clear);
         mHeight = 1;
@@ -224,7 +245,7 @@ public class GT_TileEntity_MegaDistillTower extends GT_MetaTileEntity_Distillati
         long tVoltage = this.getMaxInputVoltage();
         byte tTier = (byte) Math.max(0, Math.min(GT_Utility.getTier(tVoltage), V.length - 1));
 
-        long nominalV = BW_Util.getnominalVoltage(this);
+        long nominalV = LoaderReference.tectech ? TecTechUtils.getnominalVoltageTT(this) : BW_Util.getnominalVoltage(this);
         FluidStack[] tFluids = tFluidList.toArray(new FluidStack[0]);
         if (tFluids.length > 0) {
             for (FluidStack tFluid : tFluids) {
@@ -280,6 +301,35 @@ public class GT_TileEntity_MegaDistillTower extends GT_MetaTileEntity_Distillati
 
     @Override
     public boolean drainEnergyInput(long aEU) {
+        if (LoaderReference.tectech)
+            return TecTechUtils.drainEnergyMEBFTecTech(this, aEU);
         return MegaUtils.drainEnergyMegaVanilla(this, aEU);
+    }
+
+    @Override
+    public long getMaxInputVoltage() {
+        if (LoaderReference.tectech)
+            return TecTechUtils.getMaxInputVoltage(this);
+        return super.getMaxInputVoltage();
+    }
+
+    @Override
+    @Optional.Method(modid = "tectech")
+    public List<GT_MetaTileEntity_Hatch_Energy> getVanillaEnergyHatches() {
+        return this.mEnergyHatches;
+    }
+
+    @Override
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    @Optional.Method(modid = "tectech")
+    public List getTecTechEnergyTunnels() {
+        return TTTunnels;
+    }
+
+    @Override
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    @Optional.Method(modid = "tectech")
+    public List getTecTechEnergyMultis() {
+        return TTMultiAmp;
     }
 }

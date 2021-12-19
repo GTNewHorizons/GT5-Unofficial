@@ -397,6 +397,7 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_MetaTileEntity_ElectricBl
 
         if (this.mHeatingCapacity >= tRecipe.mSpecialValue) {
             int tCurrentPara = handleParallelRecipe(tRecipe, tFluids, tInputs, (int) tMaxPara);
+            if (tCurrentPara <= 0) return false;
             processed = tCurrentPara;
             found_Recipe = true;
             Pair<ArrayList<FluidStack>, ArrayList<ItemStack>> Outputs = getMultiOutput(tRecipe, tCurrentPara);
