@@ -424,7 +424,7 @@ public class GregtechMetaTileEntity_IndustrialChisel extends GregtechMeta_MultiB
 	}
 
 	public int getPollutionPerSecond(ItemStack aStack) {
-		return CORE.ConfigSwitches.pollutionPerSecondMultiAdvImplosion;
+		return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialChisel;
 	}
 
 	public int getDamageToComponent(ItemStack aStack) {

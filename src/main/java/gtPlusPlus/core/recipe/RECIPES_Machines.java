@@ -253,7 +253,9 @@ public class RECIPES_Machines {
 		chemPlant();
 		zyngen();
 		milling();
-		sparging();
+		sparging();		
+		chisels();		
+		rockBreaker();
 
 	}
 
@@ -2636,6 +2638,78 @@ public class RECIPES_Machines {
 				GregtechItemList.Casing_Sparge_Tower_Exterior.get(1), 
 				60 * 20 * 2, 
 				MaterialUtils.getVoltageForTier(5));
+	}
+	
+	private static void chisels() {
+		ItemStack[] aChisels = new ItemStack[] {
+				GregtechItemList.GT_Chisel_LV.get(1),
+				GregtechItemList.GT_Chisel_MV.get(1),
+				GregtechItemList.GT_Chisel_HV.get(1),
+		};
+		for (int i=1;i<4;i++) {
+			CORE.RA.addSixSlotAssemblingRecipe(
+					new ItemStack[] {
+							CI.getNumberedBioCircuit(10+i),
+							CI.getTieredMachineCasing(i),
+							CI.getPlate(i, 4),
+							CI.getElectricMotor(i, 2),
+							CI.getConveyor(i, 2),
+							CI.getRobotArm(i, 1)
+					}, 
+					CI.getTieredFluid(i, 144 * 4), 
+					aChisels[i-1], 
+					20 * 20, 
+					MaterialUtils.getVoltageForTier(i));
+		}
+		
+		CORE.RA.addSixSlotAssemblingRecipe(
+				new ItemStack[] {
+						CI.getNumberedBioCircuit(14),
+						aChisels[2],
+						CI.getPlate(4, 8),
+						CI.getElectricMotor(4, 8),
+						CI.getConveyor(4, 8),
+						CI.getRobotArm(4, 4)
+				}, 
+				CI.getTieredFluid(4, 144 * 8), 
+				GregtechItemList.Controller_IndustrialAutoChisel.get(1), 
+				20 * 20, 
+				MaterialUtils.getVoltageForTier(4));
+	
+		CORE.RA.addSixSlotAssemblingRecipe(
+				new ItemStack[] {
+						CI.getNumberedBioCircuit(14),
+						ItemList.Casing_SolidSteel.get(2),
+						CI.getPlate(4, 2),
+						CI.getTieredComponent(OrePrefixes.plate, 3, 4),
+						CI.getTieredComponent(OrePrefixes.ring, 3, 8),
+						CI.getTieredComponent(OrePrefixes.rod, 2, 4),
+				}, 
+				CI.getTieredFluid(2, 144 * 2), 
+				GregtechItemList.Casing_IndustrialAutoChisel.get(1), 
+				20 * 20, 
+				MaterialUtils.getVoltageForTier(3));
+
+		
+		
+	}
+	
+	private static void rockBreaker() {
+
+		CORE.RA.addSixSlotAssemblingRecipe(
+				new ItemStack[] {
+						CI.getNumberedAdvancedCircuit(12),
+						ItemList.Machine_EV_RockBreaker.get(1),
+						ALLOY.STAINLESS_STEEL.getPlate(8),
+						ALLOY.STAINLESS_STEEL.getRing(4),
+						CI.getTieredComponentOfMaterial(Materials.Aluminium, OrePrefixes.plateDouble, 8),
+						ALLOY.EGLIN_STEEL.getScrew(8),
+				}, 
+				ELEMENT.getInstance().ALUMINIUM.getFluidStack(144 * 8), 
+				GregtechItemList.Controller_IndustrialRockBreaker.get(1), 
+				60 * 20 * 2, 
+				MaterialUtils.getVoltageForTier(4));
+		
 	}
 
 	private static void fakeMachineCasingCovers() {	    

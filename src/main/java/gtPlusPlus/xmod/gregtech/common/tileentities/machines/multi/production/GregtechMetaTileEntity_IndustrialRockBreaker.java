@@ -82,9 +82,7 @@ public class GregtechMetaTileEntity_IndustrialRockBreaker extends GregtechMeta_M
 		GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
 		tt.addMachineType(getMachineType())
 		.addInfo("Controller Block for the Industrial Rock Breaker")
-		.addInfo("200% Faster than the single block version")
-		.addInfo("Only uses 80% of the eu/t normally required")
-		.addInfo("Processes 8 items per voltage tier")
+		.addInfo("Speed: 200% | Eu Usage: 75% | Parallel: Tier x 8")
 		.addInfo("Circuit goes in the Input Bus or GUI slot")
 		.addInfo("1 = cobble, 2 = stone, 3 = obsidian")
 		.addInfo("Supply Water/Lava")
@@ -394,8 +392,8 @@ public class GregtechMetaTileEntity_IndustrialRockBreaker extends GregtechMeta_M
 			if (aItems.size() > 0 && aCircuit == 3) {
 				// Count recipes to do in parallel, consuming input items and fluids and considering input voltage limits
 				for (; parallelRecipes < aMaxParallelRecipes && tTotalEUt < (tEnergy - tRecipeEUt); parallelRecipes++) {
-					if (!tRecipe.isRecipeInputEqual(true, aFluidInputs, aItemInputs)) {
-						break;
+					if (!this.depleteInput(tRecipe.mInputs[1])) {
+						break;						
 					}
 					log("Bumped EU from "+tTotalEUt+" to "+(tTotalEUt+tRecipeEUt)+".");
 					tTotalEUt += tRecipeEUt;
@@ -532,7 +530,7 @@ public class GregtechMetaTileEntity_IndustrialRockBreaker extends GregtechMeta_M
 
 	@Override
 	public int getPollutionPerSecond(final ItemStack aStack) {
-		return CORE.ConfigSwitches.pollutionPerSecondMultiABS;
+		return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialRockBreaker;
 	}
 
 	@Override

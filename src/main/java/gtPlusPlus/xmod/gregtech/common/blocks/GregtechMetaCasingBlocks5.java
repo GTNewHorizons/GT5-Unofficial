@@ -18,7 +18,8 @@ import net.minecraft.world.IBlockAccess;
 public class GregtechMetaCasingBlocks5
 extends GregtechMetaCasingBlocksAbstract {
 
-	//Free Indexes within TAE: 90, 91, 92, 94, 114, 116, 117, 118, 119, 120, 121, 124, 125, 126, 127
+	// Free Indexes within TAE: 91, 92, 94, 100, 101, 102, 103, 104, 114, 116, 117, 118, 119, 120, 121, 124, 125, 126, 127
+	// 19 Free Indexes
 	private static final TexturesGrinderMultiblock mGrinderOverlayHandler = new TexturesGrinderMultiblock();
 	
 	public GregtechMetaCasingBlocks5() {
