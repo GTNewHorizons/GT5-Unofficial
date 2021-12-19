@@ -1,7 +1,7 @@
 // Add your dependencies here
 
 dependencies {
-    shadowImplementation("com.github.GTNewHorizons:AVRcore:add-build-script-SNAPSHOT")
+    shadowImplementation("com.github.GTNewHorizons:AVRcore:master-SNAPSHOT")
 
     compile("com.github.GTNewHorizons:GT5-Unofficial:master-SNAPSHOT:dev")
     compile("com.github.GTNewHorizons:Yamcl:master-SNAPSHOT:dev")
