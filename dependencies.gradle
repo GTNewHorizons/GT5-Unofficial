@@ -1,0 +1,12 @@
+// Add your dependencies here
+
+dependencies {
+    compile("com.github.GTNewHorizons:GT5-Unofficial:master-SNAPSHOT:dev")
+    compile("com.github.GTNewHorizons:TecTech:master-SNAPSHOT:dev")
+    compile("com.github.GTNewHorizons:ThaumicTinkerer:unified-build-script-SNAPSHOT:dev")
+
+    compile("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev")
+    compile("org.joml:joml:1.9.18")
+
+    runtime("com.github.GTNewHorizons:Baubles:master-SNAPSHOT:dev")
+}
