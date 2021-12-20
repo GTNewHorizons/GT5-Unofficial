@@ -1314,9 +1314,6 @@ public class ItemUtils {
 	}
 
 	public static boolean isCatalyst(ItemStack aStack) {
-		if (GT_Utility.areStacksEqual(aStack, RocketFuels.Formaldehyde_Catalyst_Stack, true)) {
-			return true;
-		}
 		if (GT_Utility.areStacksEqual(aStack, GenericChem.mBlueCatalyst, true)) {
 			return true;
 		}
@@ -1336,6 +1333,9 @@ public class ItemUtils {
 			return true;
 		}
 		if (GT_Utility.areStacksEqual(aStack, GenericChem.mPinkCatalyst, true)) {
+			return true;
+		}
+		if (GT_Utility.areStacksEqual(aStack, GenericChem.mFormaldehydeCatalyst, true)) {
 			return true;
 		}
 		if (GT_Utility.areStacksEqual(aStack, AgriculturalChem.mGreenCatalyst, true)) {
