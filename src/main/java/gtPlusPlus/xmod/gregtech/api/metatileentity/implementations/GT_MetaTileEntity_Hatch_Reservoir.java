@@ -1,13 +1,11 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
-import java.lang.reflect.Field;
-
+import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gtPlusPlus.core.lib.LoadedMods;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -20,10 +18,6 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 public class GT_MetaTileEntity_Hatch_Reservoir extends GT_MetaTileEntity_Hatch_FluidGenerator {
 
-	private static Class sClass_EIO;
-	private static Class sClass_RIO;
-	private static Field sField_EIO;
-	private static Field sField_RIO;
 	private static Block sBlock_EIO;
 	private static Block sBlock_RIO;
 	
@@ -70,15 +64,11 @@ public class GT_MetaTileEntity_Hatch_Reservoir extends GT_MetaTileEntity_Hatch_F
 	}
 	
 	private static void setCrossModData() {
-		if (LoadedMods.EnderIO && sClass_EIO == null) {
-			sClass_EIO = ReflectionUtils.getClass("crazypants.enderio.EnderIO");
-			sField_EIO = ReflectionUtils.getField(sClass_EIO, "blockReservoir");
-			sBlock_EIO = ReflectionUtils.getFieldValue(sField_EIO, null);
+		if (LoadedMods.EnderIO && sBlock_EIO == null) {
+			sBlock_EIO = GameRegistry.findBlock("EnderIO", "blockReservoir");
 		}
-		if (LoadedMods.RemoteIO && sClass_RIO == null) {
-			sClass_RIO = ReflectionUtils.getClass("remoteio.common.lib.ModBlocks");
-			sField_RIO = ReflectionUtils.getField(sClass_RIO, "machine");
-			sBlock_RIO = ReflectionUtils.getFieldValue(sField_RIO, null);
+		if (LoadedMods.RemoteIO && sBlock_RIO == null) {
+			sBlock_RIO = GameRegistry.findBlock("RIO", "machine");
 		}
 	}
 	

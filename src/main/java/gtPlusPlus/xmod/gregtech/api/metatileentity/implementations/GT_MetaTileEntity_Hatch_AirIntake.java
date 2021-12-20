@@ -29,7 +29,7 @@ public class GT_MetaTileEntity_Hatch_AirIntake extends GT_MetaTileEntity_Hatch_F
 		String[] aTooltip = new String[3];
 		aTooltip[0] = "DO NOT OBSTRUCT THE INPUT!";
 		aTooltip[1] = "Draws in Air from the surrounding environment";
-		aTooltip[2] = "Creates 1000L of Air every 4 ticks";
+		aTooltip[2] = "Creates "+getAmountOfFluidToGenerate()+"L of Air every "+getMaxTickTime()+" ticks";
 		return aTooltip;
 	}
 

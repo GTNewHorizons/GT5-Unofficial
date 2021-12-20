@@ -9,13 +9,15 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.item.ItemStack;
 import team.chisel.carving.Carving;
 
 public class GregtechMetaTileEntity_AutoChisel extends GT_MetaTileEntity_BasicMachine {
 
+	private ItemStack mInputCache;
+	private ItemStack mOutputCache;
+	
 	public GregtechMetaTileEntity_AutoChisel(int aID, String aName, String aNameRegional, int aTier) {
 		super(aID, aName, aNameRegional, aTier, 1, "Chisels things, Gregtech style", 1, 1, "Compressor.png", "", 
 				new ITexture[]{
@@ -54,10 +56,30 @@ public class GregtechMetaTileEntity_AutoChisel extends GT_MetaTileEntity_BasicMa
     public GT_Recipe.GT_Recipe_Map getRecipeList() {
         return null;
     }
+    
+    private boolean hasValidCache(ItemStack mItem, boolean mClearOnFailure) {
+        if (mInputCache != null
+                && mOutputCache != null
+                && mInputCache.isItemEqual(mItem)
+                && ItemStack.areItemStackTagsEqual(mItem, mInputCache)) {
+        	return true;
+        }
+        // clear cache if it was invalid
+        if (mClearOnFailure) {
+            mInputCache = null;
+            mOutputCache = null;
+        }
+        return false;
+    }
+    
+    private void cacheItem(ItemStack mInputItem, ItemStack mOutputItem) {
+        mOutputCache = mOutputItem.copy();
+        mInputCache = mInputItem.copy();
+    }
 
     @Override
     protected boolean allowPutStackValidated(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, aSide, aStack) && hasChiselResults(aStack);
+        return hasValidCache(aStack, false) ? true : super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, aSide, aStack) && hasChiselResults(aStack);
     }
     
 	// lets make sure the user isn't trying to make something from a block that doesn't have this as a valid target
@@ -81,48 +103,46 @@ public class GregtechMetaTileEntity_AutoChisel extends GT_MetaTileEntity_BasicMa
 		return Carving.chisel.getItemsForChiseling(aStack);
 	}
 	
+	private static ItemStack getChiselOutput(ItemStack aInput, ItemStack aTarget) {
+		ItemStack tOutput = null;
+		if (aTarget != null && canBeMadeFrom(aInput, aTarget)) {
+			tOutput = aTarget;
+		}
+		else {
+			tOutput = getItemsForChiseling(aInput).get(0);
+		}
+		return tOutput;
+	}
+	
     @Override
     public int checkRecipe() {
     	ItemStack tOutput = null;
     	ItemStack aInput = getInputAt(0);
     	ItemStack aTarget = getSpecialSlot();
+        boolean tIsCached = hasValidCache(aInput, true);
     	if (aInput != null && hasChiselResults(aInput) && aInput.stackSize > 0) {
-    		Logger.INFO("Has Valid Input.");
-    		if (aTarget != null && canBeMadeFrom(aInput, aTarget)) {
-    			tOutput = aTarget;
-        		Logger.INFO("Has Valid Target.");
-    		}
-    		else {
-    			tOutput = getItemsForChiseling(aInput).get(0);
-        		Logger.INFO("Using target(0)");
-    		}
+    		tOutput = tIsCached ? mOutputCache.copy() : getChiselOutput(aInput, aTarget);    		
     		if (tOutput != null) {
-        		Logger.INFO("Has Valid Output. "+tOutput.getDisplayName());
     			// We can chisel this
     			if (canOutput(tOutput)) {
-    	    		Logger.INFO("Can Output");
         			getInputAt(0).stackSize -= 1;
-    	    		Logger.INFO("Consuming 1 input");
         			calculateOverclockedNess(16, 20);
-    	    		Logger.INFO("Did Overclock");
         			//In case recipe is too OP for that machine
         			if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1) {
-        	    		Logger.INFO("Brrrrr");
         				return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
         			}
-    	    		Logger.INFO("Setting Output");
-        			this.mOutputItems[0] = tOutput;
-            		Logger.INFO("Recipe good.");
+        			if (!tIsCached) {
+        				cacheItem(aInput, tOutput);
+        			}
+        			this.mOutputItems[0] = tOutput.copy();
         			return FOUND_AND_SUCCESSFULLY_USED_RECIPE;	
         		}
     			else {
-    	    		Logger.INFO("Cannot Output");
     	            mOutputBlocked++;
     	            return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
     	        }
     		}
     	}
-		Logger.INFO("Recipe bad.");
     	return DID_NOT_FIND_RECIPE;
     }
 	
