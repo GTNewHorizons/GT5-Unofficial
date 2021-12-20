@@ -60,6 +60,7 @@ public class LoadedMods {
 	public static boolean CropsPlusPlus = false; //Barts Crop Mod
 	public static boolean Reliquary = false;
 	public static boolean SpiceOfLife = false;
+	public static boolean RemoteIO = false;
 
 
 
@@ -321,6 +322,11 @@ public class LoadedMods {
 		if (isModLoaded("witchery")){
 			Witchery  = true;
 			Logger.INFO("Components enabled for: Witchery");
+			totalMods++;
+		}	
+		if (isModLoaded("RIO")){
+			RemoteIO  = true;
+			Logger.INFO("Components enabled for: RemoteIO");
 			totalMods++;
 		}		
 

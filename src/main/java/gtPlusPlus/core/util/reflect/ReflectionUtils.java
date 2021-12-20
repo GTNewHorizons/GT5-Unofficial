@@ -1060,13 +1060,13 @@ public class ReflectionUtils {
 		return false;
 	}
 
-	public static Object getFieldValue(Field field) {
+	public static <T> T getFieldValue(Field field) {
 		return getFieldValue(field, null);
 	}
 
-	public static Object getFieldValue(Field field, Object instance) {
+	public static <T> T getFieldValue(Field field, Object instance) {
 		try {
-			return field.get(instance);
+			return (T) field.get(instance);
 		} catch (IllegalArgumentException | IllegalAccessException e) {
 		}
 		return null;

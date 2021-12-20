@@ -178,31 +178,29 @@ public abstract class GT_MetaTileEntity_Hatch_FluidGenerator extends GT_MetaTile
 		return true;
 	}
 	
-	public boolean isAirInHatch() {		
-		if (this.mFluid != null) {
-			if (getFluidToGenerate() == this.mFluid.getFluid()) {
-				return true;
-			}
-		}		
-		return false;
-	}
-	
 	public abstract boolean doesHatchMeetConditionsToGenerate();
 
 	public boolean addFluidToHatch(long aTick) {		
 		if (!doesHatchMeetConditionsToGenerate()) {
 			return false;
-		}		
-		boolean didFill = this.fill(FluidUtils.getFluidStack(getFluidToGenerate(), getAmountOfFluidToGenerate()), true) > 0;
-        if (didFill) {					
-			this.generateParticles(this.getBaseMetaTileEntity().getWorld(), "cloud");
+		}
+		boolean didFill = false;
+		if (canTankBeFilled()) {
+			didFill = this.fill(FluidUtils.getFluidStack(getFluidToGenerate(), getAmountOfFluidToGenerate()), true) > 0;
+			if (didFill) {					
+				this.generateParticles(this.getBaseMetaTileEntity().getWorld(), "cloud");
+			}
 		}
 		return didFill;	
 	}
 
 	@Override
 	public boolean canTankBeFilled() {
-		if (this.mFluid == null || (this.mFluid != null && (this.mFluid.amount <= this.getCapacity()))) {
+		//Logger.INFO("Total Space: "+this.getCapacity());
+		//Logger.INFO("Current capacity: "+this.getFluidAmount());
+		//Logger.INFO("To add: "+this.getAmountOfFluidToGenerate());		
+		//Logger.INFO("Space Free: "+(this.getCapacity()-this.getFluidAmount()));
+		if (this.mFluid == null || (this.mFluid != null && (this.getCapacity() - this.getFluidAmount() >= this.getAmountOfFluidToGenerate()))) {
 			return true;
 		}
 		return false;

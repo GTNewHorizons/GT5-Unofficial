@@ -76,8 +76,8 @@ public class Preloader_FMLLoadingPlugin implements IFMLLoadingPlugin  {
         Preloader_Logger.INFO("Running on "+gtPlusPlus.preloader.CORE_Preloader.JAVA_VERSION+" | Development Environment: "+CORE_Preloader.DEV_ENVIRONMENT);
         Locale aDefaultLocale = Locale.getDefault();
         NumberFormat aFormat = NumberFormat.getInstance();
-        Locale aDisplayLocale = (Locale) ReflectionUtils.getFieldValue(ReflectionUtils.getField(Locale.class, "defaultDisplayLocale"));
-        Locale aFormatLocale = (Locale) ReflectionUtils.getFieldValue(ReflectionUtils.getField(Locale.class, "defaultFormatLocale"));
+        Locale aDisplayLocale = ReflectionUtils.getFieldValue(ReflectionUtils.getField(Locale.class, "defaultDisplayLocale"));
+        Locale aFormatLocale = ReflectionUtils.getFieldValue(ReflectionUtils.getField(Locale.class, "defaultFormatLocale"));
         Preloader_Logger.INFO("Locale: "+aDefaultLocale+" | Test: "+aFormat.format(1000000000)+" | Display: "+aDisplayLocale+" | Format: "+aFormatLocale);
 	}
 

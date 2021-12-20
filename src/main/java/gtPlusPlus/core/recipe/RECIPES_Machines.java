@@ -2764,11 +2764,11 @@ public class RECIPES_Machines {
 			return;
 		}
 		Class ModBlocksClass = ReflectionUtils.getClass("com.riciJak.Ztones.init.ModBlocks");
-		Block agon = (Block) ReflectionUtils.getFieldValue( ReflectionUtils.getField(ModBlocksClass, "agonBlock"));
-		Block korp = (Block) ReflectionUtils.getFieldValue( ReflectionUtils.getField(ModBlocksClass, "korpBlock"));
-		Block jelt = (Block) ReflectionUtils.getFieldValue( ReflectionUtils.getField(ModBlocksClass, "jeltBlock"));
-		Block bitt = (Block) ReflectionUtils.getFieldValue( ReflectionUtils.getField(ModBlocksClass, "bittBlock"));
-		Block iszm = (Block) ReflectionUtils.getFieldValue( ReflectionUtils.getField(ModBlocksClass, "iszmBlock"));
+		Block agon = ReflectionUtils.getFieldValue( ReflectionUtils.getField(ModBlocksClass, "agonBlock"));
+		Block korp = ReflectionUtils.getFieldValue( ReflectionUtils.getField(ModBlocksClass, "korpBlock"));
+		Block jelt = ReflectionUtils.getFieldValue( ReflectionUtils.getField(ModBlocksClass, "jeltBlock"));
+		Block bitt = ReflectionUtils.getFieldValue( ReflectionUtils.getField(ModBlocksClass, "bittBlock"));
+		Block iszm = ReflectionUtils.getFieldValue( ReflectionUtils.getField(ModBlocksClass, "iszmBlock"));
 
 		// "agon", "iszm", "korp", "jelt", "bitt" 
 
