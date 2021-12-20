@@ -96,7 +96,7 @@ public class Loaders {
     public static ItemStack[] NeutronAccelerators = new ItemStack[9];
     public static ItemStack[] Generator_Diesel = new ItemStack[2];
 
-    public static Item Isotope = new NuclearMetaItemGenerator();
+    //public static Item Isotope = new NuclearMetaItemGenerator();
 
     public static void GTMetaTileRegister(){
         Loaders.MAR = new MultiNqGenerator(12732, "NaG", "Large Naquadah Reactor").getStackForm(1L);
