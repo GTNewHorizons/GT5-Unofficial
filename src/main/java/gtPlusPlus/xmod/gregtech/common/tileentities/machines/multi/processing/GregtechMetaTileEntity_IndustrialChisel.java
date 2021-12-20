@@ -222,6 +222,9 @@ public class GregtechMetaTileEntity_IndustrialChisel extends GregtechMeta_MultiB
 		if (aTarget != null && canBeMadeFrom(aInput, aTarget)) {
 			tOutput = aTarget;
 		}
+		else if (aTarget != null && !canBeMadeFrom(aInput, aTarget)) {
+			tOutput = null;
+		}
 		else {
 			tOutput = getItemsForChiseling(aInput).get(0);
 		}

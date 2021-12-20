@@ -9,6 +9,8 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Utility;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.item.ItemStack;
 import team.chisel.carving.Carving;
@@ -57,15 +59,14 @@ public class GregtechMetaTileEntity_AutoChisel extends GT_MetaTileEntity_BasicMa
         return null;
     }
     
-    private boolean hasValidCache(ItemStack mItem, boolean mClearOnFailure) {
-        if (mInputCache != null
-                && mOutputCache != null
-                && mInputCache.isItemEqual(mItem)
-                && ItemStack.areItemStackTagsEqual(mItem, mInputCache)) {
-        	return true;
+    private boolean hasValidCache(ItemStack aStack, ItemStack aSpecialSlot, boolean aClearOnFailure) {
+        if (mInputCache != null && mOutputCache != null) {        	
+        	if (GT_Utility.areStacksEqual(aStack, mInputCache) && GT_Utility.areStacksEqual(aSpecialSlot, mOutputCache)) {
+            	return true;        		
+        	}        	
         }
         // clear cache if it was invalid
-        if (mClearOnFailure) {
+        if (aClearOnFailure) {
             mInputCache = null;
             mOutputCache = null;
         }
@@ -79,7 +80,7 @@ public class GregtechMetaTileEntity_AutoChisel extends GT_MetaTileEntity_BasicMa
 
     @Override
     protected boolean allowPutStackValidated(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return hasValidCache(aStack, false) ? true : super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, aSide, aStack) && hasChiselResults(aStack);
+        return hasValidCache(aStack, this.getSpecialSlot(), false) ? true : super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, aSide, aStack) && hasChiselResults(aStack);
     }
     
 	// lets make sure the user isn't trying to make something from a block that doesn't have this as a valid target
@@ -108,6 +109,9 @@ public class GregtechMetaTileEntity_AutoChisel extends GT_MetaTileEntity_BasicMa
 		if (aTarget != null && canBeMadeFrom(aInput, aTarget)) {
 			tOutput = aTarget;
 		}
+		else if (aTarget != null && !canBeMadeFrom(aInput, aTarget)) {
+			tOutput = null;
+		}
 		else {
 			tOutput = getItemsForChiseling(aInput).get(0);
 		}
@@ -119,10 +123,12 @@ public class GregtechMetaTileEntity_AutoChisel extends GT_MetaTileEntity_BasicMa
     	ItemStack tOutput = null;
     	ItemStack aInput = getInputAt(0);
     	ItemStack aTarget = getSpecialSlot();
-        boolean tIsCached = hasValidCache(aInput, true);
+        boolean tIsCached = hasValidCache(aInput, aTarget, true);
     	if (aInput != null && hasChiselResults(aInput) && aInput.stackSize > 0) {
     		tOutput = tIsCached ? mOutputCache.copy() : getChiselOutput(aInput, aTarget);    		
     		if (tOutput != null) {
+    			tOutput = tOutput.copy();
+    			tOutput.stackSize = 1;
     			// We can chisel this
     			if (canOutput(tOutput)) {
         			getInputAt(0).stackSize -= 1;
@@ -132,7 +138,7 @@ public class GregtechMetaTileEntity_AutoChisel extends GT_MetaTileEntity_BasicMa
         				return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
         			}
         			if (!tIsCached) {
-        				cacheItem(aInput, tOutput);
+        				cacheItem(ItemUtils.getSimpleStack(aInput, 1), ItemUtils.getSimpleStack(tOutput, 1));
         			}
         			this.mOutputItems[0] = tOutput.copy();
         			return FOUND_AND_SUCCESSFULLY_USED_RECIPE;	
