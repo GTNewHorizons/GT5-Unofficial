@@ -3,7 +3,6 @@ package goodgenerator.main;
 import goodgenerator.common.CommonProxy;
 import goodgenerator.crossmod.thaumcraft.Research;
 import goodgenerator.items.MyMaterial;
-import goodgenerator.items.nuclear.IsotopeMaterialLoader;
 import goodgenerator.loader.*;
 import goodgenerator.network.MessageOpenNeutronSensorGUI;
 import goodgenerator.network.MessageSetNeutronSensorData;

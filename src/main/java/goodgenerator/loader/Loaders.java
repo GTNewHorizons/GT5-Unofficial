@@ -16,7 +16,6 @@ import goodgenerator.crossmod.thaumcraft.LargeEssentiaEnergyData;
 import goodgenerator.items.MyItemBlocks;
 import goodgenerator.items.MyItems;
 import goodgenerator.items.RadioactiveItem;
-import goodgenerator.items.nuclear.NuclearMetaItemGenerator;
 import goodgenerator.main.GoodGenerator;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
