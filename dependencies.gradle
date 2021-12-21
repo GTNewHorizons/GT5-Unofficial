@@ -1,0 +1,28 @@
+// Add your dependencies here
+
+dependencies {
+    compile("com.github.GTNewHorizons:bartworks:master-SNAPSHOT:dev")
+    compile("com.github.GTNewHorizons:GTplusplus:master-SNAPSHOT:dev")
+    compile("com.github.GTNewHorizons:GT5-Unofficial:master-SNAPSHOT:dev")
+    compile("com.github.GTNewHorizons:NewHorizonsCoreMod:master-SNAPSHOT:dev")
+
+    compileOnly("com.github.GTNewHorizons:VisualProspecting:master-SNAPSHOT:dev") {
+        transitive = false
+    }
+    compileOnly("com.github.GTNewHorizons:ForestryMC:master-SNAPSHOT:dev") {
+        transitive = false
+    }
+    compileOnly("com.github.GTNewHorizons:Railcraft:master-SNAPSHOT:dev") {
+        transitive = false
+    }
+    compileOnly("com.github.GTNewHorizons:EnderIO:master-SNAPSHOT:dev") {
+        transitive = false
+    }
+
+    compileOnly("com.mod-buildcraft:buildcraft:7.1.23:dev") {
+        transitive = false
+    }
+    compileOnly("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev") {
+        transitive = false
+    }
+}

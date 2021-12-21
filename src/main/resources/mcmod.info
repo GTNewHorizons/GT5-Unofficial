@@ -1,10 +1,10 @@
 [
 {
-  "modid": "detravscannermod",
-  "name": "GT Scanner Mod",
+  "modid": "${modId}",
+  "name": "${modName}",
   "description": "To locate ores deep underground.",
-  "version": "1.6.0",
-  "mcversion": "1.7.10",
+  "version": "${modVersion}",
+  "mcversion": "${minecraftVersion}",
   "url": "https://github.com/GTNewHorizons/GTScannerMod",
   "updateUrl": "",
   "authorList": ["Ethryan, GTNewHorizons Team, bartimaeusnek, richardhendricks, mitchej123"],
