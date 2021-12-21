@@ -4,8 +4,7 @@ dependencies {
     compile("com.github.GTNewHorizons:bartworks:master-SNAPSHOT:dev")
     compile("com.github.GTNewHorizons:GTplusplus:master-SNAPSHOT:dev")
     compile("com.github.GTNewHorizons:GT5-Unofficial:master-SNAPSHOT:dev")
-
-    compile files("dependencies/GTNewHorizonsCoreMod-1.7.10-1.9.00-dev.jar")  // TODO
+    compile("com.github.GTNewHorizons:NewHorizonsCoreMod:master-SNAPSHOT:dev")
 
     compileOnly("com.github.GTNewHorizons:VisualProspecting:master-SNAPSHOT:dev") {
         transitive = false
@@ -26,8 +25,4 @@ dependencies {
     compileOnly("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev") {
         transitive = false
     }
-
-    runtime("com.github.GTNewHorizons:Baubles:master-SNAPSHOT:dev")  // TODO: remove once GTNH CoreMod is migrated
-    /*runtime("eu.usrv:YAMCore:1.7.10-0.5.80:deobf")
-    runtime("com.enderio.core:EnderCore:1.7.10-0.1.0.25_beta:dev")*/
 }
