@@ -1,9 +1,10 @@
 // Add your dependencies here
 
 dependencies {
-    compile("com.github.GTNewHorizons:GalacticGregGT5:master-SNAPSHOT:dev")
-
-    compile files("dependencies/TecTech-1.7.10-4.10.4-local-b6491dd.jar")
+    compile("com.github.GTNewHorizons:TecTech:master-SNAPSHOT:dev")
+    compile("com.github.GTNewHorizons:GalacticGregGT5:master-SNAPSHOT:dev") {
+        exclude group:"com.github.GTNewHorizons", module:"bartworks"
+    }
 
     compileOnly("com.github.GTNewHorizons:AppleCore:master-SNAPSHOT:dev") {
         transitive = false
@@ -27,6 +28,4 @@ dependencies {
     compileOnly("com.mod-buildcraft:buildcraft:7.1.23:dev") {
         transitive = false
     }
-
-    runtime("com.github.GTNewHorizons:Yamcl:master-SNAPSHOT:dev")
 }
