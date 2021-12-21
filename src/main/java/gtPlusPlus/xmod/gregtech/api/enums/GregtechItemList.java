@@ -407,6 +407,14 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Controller_ElementalDuplicator,
 	Casing_ElementalDuplicator,
 	
+	// Forge Hammer
+	Controller_IndustrialForgeHammer,
+	Casing_IndustrialForgeHammer,
+
+	// Molecular Transformer
+	Controller_MolecularTransformer,
+	Casing_MolecularTransformer,
+	
 	// Big Steam Macerator
 	Controller_SteamMaceratorMulti,
 

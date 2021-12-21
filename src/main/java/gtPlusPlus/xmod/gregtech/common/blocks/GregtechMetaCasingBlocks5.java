@@ -32,7 +32,8 @@ extends GregtechMetaCasingBlocksAbstract {
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".4.name", "Sparge Tower Exterior Casing"); // Sparge Tower Casing
 		TAE.registerTexture(0, 4, new GT_CopiedBlockTexture(this, 6, 4));
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".5.name", ""); // Unused
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".6.name", ""); // Unused
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".6.name", "Forge Casing"); // Forge Hammer Casing
+		TAE.registerTexture(1, 11, new GT_CopiedBlockTexture(this, 6, 6));
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".7.name", ""); // Unused
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".8.name", ""); // Unused
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".9.name", ""); // Unused
@@ -48,6 +49,7 @@ extends GregtechMetaCasingBlocksAbstract {
 		GregtechItemList.Casing_IsaMill_Gearbox.set(new ItemStack(this, 1, 2));
 		GregtechItemList.Casing_ElementalDuplicator.set(new ItemStack(this, 1, 3));
 		GregtechItemList.Casing_Sparge_Tower_Exterior.set(new ItemStack(this, 1, 4));
+		GregtechItemList.Casing_IndustrialForgeHammer.set(new ItemStack(this, 1, 6));
 	}
 	
 	@Override
@@ -69,6 +71,8 @@ extends GregtechMetaCasingBlocksAbstract {
 					return TexturesGtBlock.TEXTURE_TECH_PANEL_D.getIcon();
 				case 4:
 					return TexturesGtBlock.Casing_Machine_Metal_Sheet_H.getIcon();
+				case 6:
+					return TexturesGtBlock.TEXTURE_TECH_PANEL_H.getIcon();
 			}
 		}
 		return Textures.BlockIcons.RENDERING_ERROR.getIcon();		

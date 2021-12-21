@@ -276,6 +276,7 @@ public class CORE {
 		public static int pollutionPerSecondMultiIndustrialMultiMachine_ModeMisc = 600;
 		public static int pollutionPerSecondMultiIndustrialPlatePress_ModeForming = 240;
 		public static int pollutionPerSecondMultiIndustrialPlatePress_ModeBending = 480;
+		public static int pollutionPerSecondMultiIndustrialForgeHammer = 250;
 		public static int pollutionPerSecondMultiIndustrialSifter = 40;
 		public static int pollutionPerSecondMultiIndustrialThermalCentrifuge = 1000;
 		public static int pollutionPerSecondMultiIndustrialVacuumFreezer = 500;

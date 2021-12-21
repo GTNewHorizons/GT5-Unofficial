@@ -25,7 +25,8 @@ implements IConfigureNEI {
 		mUniqueRecipeMapHandling.add(GTPP_Recipe_Map.sChemicalPlantRecipes.mUnlocalizedName);
 		mUniqueRecipeMapHandling.add(GTPP_Recipe_Map.sOreMillRecipes.mUnlocalizedName);
 		mUniqueRecipeMapHandling.add(GTPP_Recipe_Map.sFlotationCellRecipes.mUnlocalizedName);
-		mUniqueRecipeMapHandling.add(GTPP_Recipe_Map.sVacuumFurnaceRecipes.mUnlocalizedName);		
+		mUniqueRecipeMapHandling.add(GTPP_Recipe_Map.sVacuumFurnaceRecipes.mUnlocalizedName);	
+		mUniqueRecipeMapHandling.add(GTPP_Recipe_Map.sMolecularTransformerRecipes.mUnlocalizedName);	
 
 		mUniqueRecipeMapHandling.add(GTPP_Recipe_Map.sAdvFreezerRecipes_GT.mUnlocalizedName);
 		mUniqueRecipeMapHandling.add(GTPP_Recipe_Map.sMultiblockCentrifugeRecipes_GT.mUnlocalizedName);
@@ -52,6 +53,8 @@ implements IConfigureNEI {
 		
 		Logger.INFO("NEI Registration: Registering NEI handler for "+GTPP_Recipe_Map.sChemicalPlantRecipes.mNEIName);
 		new GT_NEI_FluidReactor();
+		Logger.INFO("NEI Registration: Registering NEI handler for "+GTPP_Recipe_Map.sMolecularTransformerRecipes.mNEIName);
+		new GT_NEI_MolecularTransformer();
 		Logger.INFO("NEI Registration: Registering NEI handler for "+GTPP_Recipe_Map.sOreMillRecipes.mNEIName);
 		new GT_NEI_MillingMachine();
 		Logger.INFO("NEI Registration: Registering NEI handler for "+GTPP_Recipe_Map.sFlotationCellRecipes.mNEIName);

@@ -32,6 +32,7 @@ import gtPlusPlus.core.handler.COMPAT_HANDLER;
 import gtPlusPlus.core.handler.OldCircuitHandler;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.CORE.ConfigSwitches;
+import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -57,6 +58,7 @@ import gtPlusPlus.xmod.gregtech.loaders.ProcessingElectricSnips;
 import gtPlusPlus.xmod.gregtech.loaders.ProcessingToolHeadChoocher;
 import gtPlusPlus.xmod.gregtech.loaders.misc.AddCustomMachineToPA;
 import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoader_AlgaeFarm;
+import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoader_MolecularTransformer;
 import gtPlusPlus.xmod.gregtech.recipes.RecipesToRemove;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechNitroDieselFix;
@@ -167,6 +169,9 @@ public class HANDLER_GT {
 		convertPyroToCokeOven();
 		Meta_GT_Proxy.fixIC2FluidNames();
 		RecipeLoader_AlgaeFarm.generateRecipes();
+		if (LoadedMods.AdvancedSolarPanel) {
+			RecipeLoader_MolecularTransformer.run();
+		}
 	}
 
 	public static void addNewOrePrefixes() {
