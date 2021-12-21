@@ -180,6 +180,7 @@ public class NeutronActivator extends GT_MetaTileEntity_MultiblockBase_EM implem
                 .addInfo("Otherwise it will output trash.")
                 .addInfo("The Neutron Kinetic Energy will decrease 72KeV/s when no Neutron Accelerator is running.")
                 .addInfo("It will explode when the Neutron Kinetic Energy is over" + EnumChatFormatting.RED + " 1200MeV" + EnumChatFormatting.GRAY + ".")
+                .addInfo("Inputting Graphite/Beryllium dust can reduce 10MeV per dust immediately.")
                 .addInfo("The structure is too complex!")
                 .addInfo(BLUE_PRINT_INFO)
                 .addSeparator()
@@ -335,6 +336,15 @@ public class NeutronActivator extends GT_MetaTileEntity_MultiblockBase_EM implem
         super.onPostTick(aBaseMetaTileEntity, aTick);
         boolean anyWorking = false;
         if (this.getBaseMetaTileEntity().isServerSide()) {
+
+            for (ItemStack input : getStoredInputs()) {
+                if (input.isItemEqual(Materials.Graphite.getDust(1)) || input.isItemEqual(Materials.Beryllium.getDust(1))) {
+                    int consume = Math.min(this.eV / 10000000, input.stackSize);
+                    depleteInput(GT_Utility.copyAmount(consume, input));
+                    this.eV -= 10000000 * consume;
+                }
+            }
+
             for (NeutronAccelerator tHatch : mNeutronAccelerator) {
                 if (tHatch.isRunning && this.getRepairStatus() == this.getIdealStatus()) {
                     anyWorking = true;
