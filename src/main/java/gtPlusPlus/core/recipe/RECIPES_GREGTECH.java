@@ -93,6 +93,7 @@ public class RECIPES_GREGTECH {
 		fluidheaterRecipes();
 		chemplantRecipes();
 		packagerRecipes();
+		alloySmelterRecipes();
 
 
 		/**
@@ -109,7 +110,17 @@ public class RECIPES_GREGTECH {
 		addFuels();
 	}
 
+	private static void alloySmelterRecipes() {
+		
+		//Wood's Glass Laser Lens
+		GT_Values.RA.addAlloySmelterRecipe(
+				MISC_MATERIALS.WOODS_GLASS.getDust(5),
+				ItemList.Shape_Mold_Ball.get(0),
+				GregtechItemList.Laser_Lens_WoodsGlass.get(1),
+				20 * 300, 
+				MaterialUtils.getVoltageForTier(3));
 
+	}
 
 	private static void packagerRecipes() {
 		
@@ -1121,29 +1132,6 @@ public class RECIPES_GREGTECH {
 				new int[] {10000, 10000}, //Output Chance 
 				20 * 120,
 				480*4);
-
-
-		//Wood's Glass Laser Lens
-		CORE.RA.addBlastSmelterRecipe(
-				new ItemStack[] { 
-						ItemUtils.getGregtechCircuit(5),
-						ItemList.Shape_Mold_Ball.get(0),
-						ELEMENT.getInstance().BARIUM.getDust(1),
-						ELEMENT.getInstance().SODIUM.getDust(1),
-						ELEMENT.getInstance().SILICON.getDust(2),
-						ELEMENT.getInstance().NICKEL.getDust(1),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustGlass", 5)
-				},
-				FluidUtils.getUUM(1000),
-				null,
-				new ItemStack[] { 
-						GregtechItemList.Laser_Lens_WoodsGlass.get(1)
-				},
-				new int[] {10000},
-				20 * 300,
-				(int) GT_Values.V[3]);
-
-
 
 	}
 

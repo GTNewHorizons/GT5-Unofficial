@@ -13,6 +13,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
+import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.material.MISC_MATERIALS;
@@ -118,12 +119,25 @@ public class RECIPES_RareEarthProcessing {
 				null,
 				new int[] {10000, 10000, 10000},
 				20 * 30,
-				(int) GT_Values.V[2]);
+				120);
 
 		// Generate Special Laser Recipe
+		CORE.RA.addMixerRecipe(
+				CI.getNumberedBioCircuit(2),
+				ItemUtils.getItemStackOfAmountFromOreDict("cellChlorine", 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogen", 1),
+				null, 
+				null,
+				null,
+				ItemUtils.getSimpleStack(ModItems.cellHydrogenChlorideMix, 2), 
+				null, 
+				null, 
+				null, 
+				20 * 10,
+				480);
+		
 		CORE.RA.addUvLaserRecipe(
-				ELEMENT.getInstance().CHLORINE.getCell(2),
-				ELEMENT.getInstance().HYDROGEN.getCell(2),
+				ItemUtils.getSimpleStack(ModItems.cellHydrogenChlorideMix, 4),
 				ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogenChloride", 4),
 				20 * 30,
 				480);

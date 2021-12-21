@@ -409,6 +409,13 @@ public enum GregtechItemList implements GregtechItemContainer {
 	
 	// Big Steam Macerator
 	Controller_SteamMaceratorMulti,
+	
+	// Industrial Rock Breaker
+	Controller_IndustrialRockBreaker,
+	
+	// Industrial Chisel
+	Controller_IndustrialAutoChisel,
+	Casing_IndustrialAutoChisel,
 
 	// Custom Machine Casings
 	Casing_Machine_Custom_1,
@@ -431,6 +438,10 @@ public enum GregtechItemList implements GregtechItemContainer {
 
 	//Air Intake hatch
 	Hatch_Air_Intake,
+	Hatch_Air_Intake_Extreme,
+	
+	//Reservoir Hatch
+	Hatch_Reservoir,
 	
 	//XL Turbine Rotor Hatch
 	/*Hatch_Turbine_Rotor,*/
@@ -704,6 +715,12 @@ public enum GregtechItemList implements GregtechItemContainer {
 
 	//GT RTG
 	RTG,
+	
+
+	// Chisel Machines
+	GT_Chisel_LV, 
+	GT_Chisel_MV, 
+	GT_Chisel_HV, 
 	
 	//Plasma Tank
 	/*Plasma_Tank,*/

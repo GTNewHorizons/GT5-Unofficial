@@ -82,7 +82,7 @@ public class ClassTransformer_TT_ThaumicRestorer {
 			mTookLastTick = ReflectionUtils.getField(mTileRepairerClass, "tookLastTick");
 			mDamageLastTick = ReflectionUtils.getField(mTileRepairerClass, "dmgLastTick");
 			mProxyTC = ReflectionUtils.getField(mThaumicTinkerer, "tcProxy");			
-			repairTConTools = (boolean) ReflectionUtils.getFieldValue(mRepairTiconTools);			
+			repairTConTools = ReflectionUtils.getFieldValue(mRepairTiconTools);			
 			mInit = true;
 		}
 		if (mInit) {

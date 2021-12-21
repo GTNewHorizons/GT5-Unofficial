@@ -253,7 +253,9 @@ public class RECIPES_Machines {
 		chemPlant();
 		zyngen();
 		milling();
-		sparging();
+		sparging();		
+		chisels();		
+		rockBreaker();
 
 	}
 
@@ -1404,14 +1406,24 @@ public class RECIPES_Machines {
 			}
 
 			//Air Intake Hatch
-			ItemList FluidRegulator_IV = ItemUtils.getValueOfItemList("FluidRegulator_IV", ItemList.Pump_IV);				
-			ItemStack aTieredFluidRegulator = CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK ? FluidRegulator_IV.get(1) : ItemList.Pump_IV.get(1);
 			RecipeUtils.addShapedGregtechRecipe(
 					CI.component_Plate[6], ItemList.Casing_Grate.get(1), CI.component_Plate[6],
-					CI.component_Plate[6], aTieredFluidRegulator, CI.component_Plate[6],
-					CI.getTieredCircuit(4), ItemList.Hatch_Input_IV.get(1), CI.getTieredCircuit(4),
+					CI.component_Plate[6], CI.getFluidRegulator(5, 1), CI.component_Plate[6],
+					CI.getTieredCircuit(5), ItemList.Hatch_Input_IV.get(1), CI.getTieredCircuit(5),
 					GregtechItemList.Hatch_Air_Intake.get(1));
-
+			
+			
+			RecipeUtils.addShapedGregtechRecipe(
+					CI.getPlate(6, 1), ItemList.Casing_Gearbox_Titanium, CI.getPlate(6, 1),
+					CI.getPlate(6, 1), CI.getFluidRegulator(5, 1), CI.getPlate(6, 1),
+					CI.getTieredCircuit(6), ItemList.Hatch_Input_IV.get(1), CI.getTieredCircuit(6),
+					GregtechItemList.Hatch_Reservoir.get(1));
+			
+			RecipeUtils.addShapedGregtechRecipe(
+					CI.getPlate(7, 1), GregtechItemList.Hatch_Air_Intake.get(1), CI.getPlate(7, 1),
+					CI.getPlate(7, 1), CI.getFluidRegulator(7, 1), CI.getPlate(7, 1),
+					CI.getTieredCircuit(7), ItemList.Hatch_Input_ZPM.get(1), CI.getTieredCircuit(7),
+					GregtechItemList.Hatch_Air_Intake_Extreme.get(1));
 			if (CORE.ConfigSwitches.enableMultiblock_LiquidFluorideThoriumReactor){
 
 				//Thorium Reactor
@@ -2637,6 +2649,78 @@ public class RECIPES_Machines {
 				60 * 20 * 2, 
 				MaterialUtils.getVoltageForTier(5));
 	}
+	
+	private static void chisels() {
+		ItemStack[] aChisels = new ItemStack[] {
+				GregtechItemList.GT_Chisel_LV.get(1),
+				GregtechItemList.GT_Chisel_MV.get(1),
+				GregtechItemList.GT_Chisel_HV.get(1),
+		};
+		for (int i=1;i<4;i++) {
+			CORE.RA.addSixSlotAssemblingRecipe(
+					new ItemStack[] {
+							CI.getNumberedBioCircuit(10+i),
+							CI.getTieredMachineCasing(i),
+							CI.getPlate(i, 4),
+							CI.getElectricMotor(i, 2),
+							CI.getConveyor(i, 2),
+							CI.getRobotArm(i, 1)
+					}, 
+					CI.getTieredFluid(i, 144 * 4), 
+					aChisels[i-1], 
+					20 * 20, 
+					MaterialUtils.getVoltageForTier(i));
+		}
+		
+		CORE.RA.addSixSlotAssemblingRecipe(
+				new ItemStack[] {
+						CI.getNumberedBioCircuit(14),
+						aChisels[2],
+						CI.getPlate(4, 8),
+						CI.getElectricMotor(4, 8),
+						CI.getConveyor(4, 8),
+						CI.getRobotArm(4, 4)
+				}, 
+				CI.getTieredFluid(4, 144 * 8), 
+				GregtechItemList.Controller_IndustrialAutoChisel.get(1), 
+				20 * 20, 
+				MaterialUtils.getVoltageForTier(4));
+	
+		CORE.RA.addSixSlotAssemblingRecipe(
+				new ItemStack[] {
+						CI.getNumberedBioCircuit(14),
+						ItemList.Casing_SolidSteel.get(2),
+						CI.getPlate(4, 2),
+						CI.getTieredComponent(OrePrefixes.plate, 3, 4),
+						CI.getTieredComponent(OrePrefixes.ring, 3, 8),
+						CI.getTieredComponent(OrePrefixes.rod, 2, 4),
+				}, 
+				CI.getTieredFluid(2, 144 * 2), 
+				GregtechItemList.Casing_IndustrialAutoChisel.get(1), 
+				20 * 20, 
+				MaterialUtils.getVoltageForTier(3));
+
+		
+		
+	}
+	
+	private static void rockBreaker() {
+
+		CORE.RA.addSixSlotAssemblingRecipe(
+				new ItemStack[] {
+						CI.getNumberedAdvancedCircuit(12),
+						ItemList.Machine_EV_RockBreaker.get(1),
+						ALLOY.STAINLESS_STEEL.getPlate(8),
+						ALLOY.STAINLESS_STEEL.getRing(4),
+						CI.getTieredComponentOfMaterial(Materials.Aluminium, OrePrefixes.plateDouble, 8),
+						ALLOY.EGLIN_STEEL.getScrew(8),
+				}, 
+				ELEMENT.getInstance().ALUMINIUM.getFluidStack(144 * 8), 
+				GregtechItemList.Controller_IndustrialRockBreaker.get(1), 
+				60 * 20 * 2, 
+				MaterialUtils.getVoltageForTier(4));
+		
+	}
 
 	private static void fakeMachineCasingCovers() {	    
 		GregtechItemList[] mMachineCasingCovers = new GregtechItemList[] {
@@ -2680,11 +2764,11 @@ public class RECIPES_Machines {
 			return;
 		}
 		Class ModBlocksClass = ReflectionUtils.getClass("com.riciJak.Ztones.init.ModBlocks");
-		Block agon = (Block) ReflectionUtils.getFieldValue( ReflectionUtils.getField(ModBlocksClass, "agonBlock"));
-		Block korp = (Block) ReflectionUtils.getFieldValue( ReflectionUtils.getField(ModBlocksClass, "korpBlock"));
-		Block jelt = (Block) ReflectionUtils.getFieldValue( ReflectionUtils.getField(ModBlocksClass, "jeltBlock"));
-		Block bitt = (Block) ReflectionUtils.getFieldValue( ReflectionUtils.getField(ModBlocksClass, "bittBlock"));
-		Block iszm = (Block) ReflectionUtils.getFieldValue( ReflectionUtils.getField(ModBlocksClass, "iszmBlock"));
+		Block agon = ReflectionUtils.getFieldValue( ReflectionUtils.getField(ModBlocksClass, "agonBlock"));
+		Block korp = ReflectionUtils.getFieldValue( ReflectionUtils.getField(ModBlocksClass, "korpBlock"));
+		Block jelt = ReflectionUtils.getFieldValue( ReflectionUtils.getField(ModBlocksClass, "jeltBlock"));
+		Block bitt = ReflectionUtils.getFieldValue( ReflectionUtils.getField(ModBlocksClass, "bittBlock"));
+		Block iszm = ReflectionUtils.getFieldValue( ReflectionUtils.getField(ModBlocksClass, "iszmBlock"));
 
 		// "agon", "iszm", "korp", "jelt", "bitt" 
 
