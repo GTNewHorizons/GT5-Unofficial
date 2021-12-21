@@ -346,7 +346,7 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
         public void loadDataFromNBT(NBTBase aNBT) {
             if (aNBT instanceof NBTTagCompound) {
                 NBTTagCompound tNBT = (NBTTagCompound) aNBT;
-                mFilterMode = tNBT.getByte("mFilterMod");
+                mFilterMode = tNBT.getInteger("mFilterMode");
                 if (tNBT.hasKey("mFluid", NBT.TAG_STRING))
                     mFluidID = FluidRegistry.getFluidID(tNBT.getString("mFluid"));
                 else
