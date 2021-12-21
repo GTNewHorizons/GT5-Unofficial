@@ -39,7 +39,7 @@ public class GT_MetaTileEntity_Hatch_Reservoir extends GT_MetaTileEntity_Hatch_F
 		String[] aTooltip = new String[3];
 		aTooltip[0] = "Requires a Block of water facing the intake";
 		aTooltip[1] = "Infinite water supply hatch";
-		aTooltip[2] = "Creates 2000L of Water every 4 ticks";
+		aTooltip[2] = "Creates 8000L of Water every 4 ticks";
 		return aTooltip;
 	}
 
@@ -50,7 +50,7 @@ public class GT_MetaTileEntity_Hatch_Reservoir extends GT_MetaTileEntity_Hatch_F
 
 	@Override
 	public int getAmountOfFluidToGenerate() {
-		return 2000;
+		return 8000;
 	}
 
 	@Override
@@ -60,7 +60,7 @@ public class GT_MetaTileEntity_Hatch_Reservoir extends GT_MetaTileEntity_Hatch_F
 
 	@Override
 	public int getCapacity() {
-		return 128000;
+		return 256000;
 	}
 	
 	private static void setCrossModData() {
