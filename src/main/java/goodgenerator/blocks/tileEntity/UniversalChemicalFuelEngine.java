@@ -1,10 +1,9 @@
 package goodgenerator.blocks.tileEntity;
 
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti;
+import goodgenerator.crossmod.LoadedList;
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.DescTextLocalization;
-import com.github.bartimaeusnek.crossmod.tectech.TecTechEnabledMulti;
-import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
-import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyTunnel;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -15,6 +14,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTPP_Recipe;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -33,11 +33,15 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
-public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_MultiblockBase_EM implements TecTechEnabledMulti, IConstructable {
+public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
 
     protected final double DIESEL_EFFICIENCY_COEFFICIENT = 0.02D;
     protected final double GAS_EFFICIENCY_COEFFICIENT = 0.01D;
+    protected final double ROCKET_EFFICIENCY_COEFFICIENT = 0.005D;
     protected final double EFFICIENCY_CEILING = 1.5D;
+
+    private long lEUt;
+    private long tEff;
 
     private IStructureDefinition<UniversalChemicalFuelEngine> multiDefinition = null;
 
@@ -94,6 +98,9 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_MultiblockBas
             if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Dynamo){
                 ((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
                 return this.mDynamoHatches.add((GT_MetaTileEntity_Hatch_Dynamo)aMetaTileEntity);
+            } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_DynamoMulti){
+                ((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+                return this.eDynamoMulti.add((GT_MetaTileEntity_Hatch_DynamoMulti)aMetaTileEntity);
             }
         }
         return false;
@@ -192,7 +199,7 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_MultiblockBas
     }
 
     @Override
-    public String[] getDescription(){
+    public String[] getDescription() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Chemical Engine")
                 .addInfo("Controller block for the Chemical Engine")
@@ -242,6 +249,7 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_MultiblockBas
             consumeAllLiquid(getPromoter());
 
             this.mEUt = (int)(FuelAmount * recipe.mSpecialValue / 20.0D);
+            this.lEUt = (long)(FuelAmount * recipe.mSpecialValue / 20.0D);
             this.mMaxProgresstime = 20;
             this.updateSlots();
             return true;
@@ -258,12 +266,68 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_MultiblockBas
             consumeAllLiquid(getPromoter());
 
             this.mEUt = (int)(FuelAmount * recipe.mSpecialValue / 20.0D);
+            this.lEUt = (long)(FuelAmount * recipe.mSpecialValue / 20.0D);
             this.mMaxProgresstime = 20;
             this.updateSlots();
             return true;
         }
 
+        if (LoadedList.GTPP) {
+            Collection<GT_Recipe> tRocketFuels = GTPP_Recipe.GTPP_Recipe_Map.sRocketFuels.mRecipeList;
+            for (GT_Recipe recipe : tRocketFuels) {
+                FluidStack tFuel = findFuel(recipe);
+                if (tFuel == null) continue;
+                int FuelAmount = findLiquidAmount(tFuel, tFluids);
+                if (FuelAmount == 0) continue;
+                calculateEfficiency(FuelAmount, PromoterAmount, ROCKET_EFFICIENCY_COEFFICIENT);
+
+                consumeAllLiquid(tFuel);
+                consumeAllLiquid(getPromoter());
+
+                this.mEUt = (int)(FuelAmount * recipe.mSpecialValue / 20.0D);
+                this.lEUt = (long)(FuelAmount * recipe.mSpecialValue / 20.0D);
+                this.mMaxProgresstime = 20;
+                this.updateSlots();
+                return true;
+            }
+        }
+
         return false;
+    }
+
+    @Override
+    public boolean onRunningTick(ItemStack stack) {
+        super.onRunningTick(stack);
+        if (this.getBaseMetaTileEntity().isServerSide()) {
+            addAutoEnergy();
+        }
+        return true;
+    }
+
+    @Override
+    public String[] getInfoData() {
+        String[] info = super.getInfoData();
+        info[4] = "Probably makes: " + EnumChatFormatting.RED + this.lEUt + EnumChatFormatting.RESET + " EU/t";
+        info[6] = "Problems: " + EnumChatFormatting.RED + (this.getIdealStatus() - this.getRepairStatus()) + EnumChatFormatting.RESET + " Efficiency: " + EnumChatFormatting.YELLOW + tEff / 100D + EnumChatFormatting.RESET + " %";
+        return info;
+    }
+
+    void addAutoEnergy() {
+        long exEU = lEUt * tEff / 10000;
+        if (!mDynamoHatches.isEmpty()) {
+            GT_MetaTileEntity_Hatch_Dynamo tHatch = mDynamoHatches.get(0);
+            if (tHatch.maxEUOutput() * tHatch.maxAmperesOut() >= exEU) {
+                tHatch.setEUVar(Math.min(tHatch.maxEUStore(), tHatch.getBaseMetaTileEntity().getStoredEU() + exEU));
+            }
+            else tHatch.doExplosion(tHatch.maxEUOutput());
+        }
+        if (!eDynamoMulti.isEmpty()) {
+            GT_MetaTileEntity_Hatch_DynamoMulti tHatch = eDynamoMulti.get(0);
+            if (tHatch.maxEUOutput() * tHatch.maxAmperesOut() >= exEU) {
+                tHatch.setEUVar(Math.min(tHatch.maxEUStore(), tHatch.getBaseMetaTileEntity().getStoredEU() + exEU));
+            }
+            else tHatch.doExplosion(tHatch.maxEUOutput());
+        }
     }
 
     public FluidStack getPromoter() {
@@ -271,15 +335,18 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_MultiblockBas
     }
 
     public FluidStack findFuel(GT_Recipe aFuel) {
-        return GT_Utility.getFluidForFilledItem(aFuel.mInputs[0], true);
+        if (aFuel.mInputs != null && aFuel.mInputs.length > 0)
+            return GT_Utility.getFluidForFilledItem(aFuel.mInputs[0], true);
+        else
+            return aFuel.mFluidInputs[0];
     }
 
-    public void calculateEfficiency(int aFuel, int aPromoter, double coefficient){
-        if (aPromoter == 0){
-            this.mEfficiency = 0;
+    public void calculateEfficiency(int aFuel, int aPromoter, double coefficient) {
+        if (aPromoter == 0) {
+            this.tEff = 0;
             return;
         }
-        this.mEfficiency = (int)(Math.exp(-coefficient * (double)aFuel / (double)aPromoter) * EFFICIENCY_CEILING * 10000);
+        this.tEff = (int)(Math.exp(-coefficient * (double)aFuel / (double)aPromoter) * EFFICIENCY_CEILING * 10000);
     }
 
     public int findLiquidAmount(FluidStack liquid, List<FluidStack> input) {
@@ -305,40 +372,20 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_MultiblockBas
     }
 
     @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return (int)(10000 * EFFICIENCY_CEILING);
-    }
-
-    @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone){
-        if(aSide == aFacing){
-            if(aActive) return new ITexture[]{
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
+        if(aSide == aFacing) {
+            if(aActive) return new ITexture[] {
                     casingTexturePages[0][50],
                     TextureFactory.of(OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE),
                     TextureFactory.builder().addIcon(OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE_GLOW).glow().build()
             };
-            return new ITexture[]{
+            return new ITexture[] {
                     casingTexturePages[0][50],
                     TextureFactory.of(OVERLAY_FRONT_DIESEL_ENGINE),
                     TextureFactory.builder().addIcon(OVERLAY_FRONT_DIESEL_ENGINE_GLOW).glow().build()
             };
         }
         return new ITexture[]{casingTexturePages[0][50]};
-    }
-
-    @Override
-    public List<GT_MetaTileEntity_Hatch_Energy> getVanillaEnergyHatches() {
-        return this.mEnergyHatches;
-    }
-
-    @Override
-    public List<GT_MetaTileEntity_Hatch_EnergyTunnel> getTecTechEnergyTunnels() {
-        return new ArrayList<>();
-    }
-
-    @Override
-    public List<GT_MetaTileEntity_Hatch_EnergyMulti> getTecTechEnergyMultis() {
-        return new ArrayList<>();
     }
 
     @Override
