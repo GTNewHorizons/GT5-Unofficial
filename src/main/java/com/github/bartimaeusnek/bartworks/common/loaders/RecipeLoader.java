@@ -320,6 +320,20 @@ public class RecipeLoader {
                 );
             }
 
+                GT_ModHandler.addCraftingRecipe(
+                        ItemRegistry.acidGensLV,
+                        RecipeLoader.BITSD,
+                        new Object[]{
+                                "HRH",
+                                "KCK",
+                                "HKH",
+                                'H', ItemList.Battery_Hull_LV.get(1L),
+                                'K', GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Tin, 1L),
+                                'C', ItemList.Hull_LV.get(1L),
+                                'R', ItemList.Machine_LV_ChemicalReactor.get(1L),
+                        }
+                );
+
             for (int i = 0; i < GT_Values.VN.length; i++) {
                 try {
                     Materials cable = cables[i];

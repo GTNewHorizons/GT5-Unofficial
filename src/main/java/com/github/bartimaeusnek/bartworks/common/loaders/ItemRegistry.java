@@ -141,6 +141,7 @@ public class ItemRegistry {
     public static ItemStack[] diode16A = new ItemStack[GT_Values.VN.length];
     public static ItemStack[] energyDistributor = new ItemStack[GT_Values.VN.length];
     public static ItemStack[] acidGens = new ItemStack[3];
+    public static ItemStack acidGensLV;
     public static ItemStack[] megaMachines = new ItemStack[3];
     public static ItemStack dehp;
     public static ItemStack[] voidminer = new ItemStack[3];
@@ -204,6 +205,9 @@ public class ItemRegistry {
             for (int i = 0; i < 3; i++) {
                 ItemRegistry.acidGens[i] = new GT_MetaTileEntity_AcidGenerator(ConfigHandler.IDOffset + GT_Values.VN.length * 8 - 2 + i, "acidgenerator" + GT_Values.VN[i + 2], StatCollector.translateToLocal("tile.acidgenerator.name") + " " + GT_Values.VN[i + 2], i + 2).getStackForm(1);
             }
+
+            ItemRegistry.acidGensLV = new GT_MetaTileEntity_AcidGenerator(ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 65, "acidgenerator" + GT_Values.VN[1], StatCollector.translateToLocal("tile.acidgenerator.name") + " " + GT_Values.VN[1], + 1).getStackForm(1L);
+
             ItemRegistry.dehp = new GT_TileEntity_DEHP(ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 1, 1, "DEHP", "Deep Earth Heating Pump").getStackForm(1L);
             ItemRegistry.megaMachines[0] = new GT_TileEntity_MegaBlastFurnace(ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 2, "MegaBlastFurnace", StatCollector.translateToLocal("tile.bw.mbf.name")).getStackForm(1L);
             ItemRegistry.megaMachines[1] = new GT_TileEntity_MegaVacuumFreezer(ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 3, "MegaVacuumFreezer", StatCollector.translateToLocal("tile.bw.mvf.name")).getStackForm(1L);
