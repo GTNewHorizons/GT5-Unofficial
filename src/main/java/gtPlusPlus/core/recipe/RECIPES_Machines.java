@@ -923,6 +923,21 @@ public class RECIPES_Machines {
 			if (CORE.ConfigSwitches.enableMachine_FluidTanks){
 				Logger.WARNING("Is New Horizons Loaded? "+GTNH);
 				if (!GTNH){
+					
+					// Allows clearing stored fluids.
+					GregtechItemList[] aTanks = new GregtechItemList[] {
+							GregtechItemList.GT_FluidTank_ULV, GregtechItemList.GT_FluidTank_LV, GregtechItemList.GT_FluidTank_MV,
+							GregtechItemList.GT_FluidTank_HV, GregtechItemList.GT_FluidTank_EV, GregtechItemList.GT_FluidTank_IV,
+							GregtechItemList.GT_FluidTank_LuV, GregtechItemList.GT_FluidTank_ZPM, GregtechItemList.GT_FluidTank_UV,
+							GregtechItemList.GT_FluidTank_MAX};
+					for (GregtechItemList aTank : aTanks) {
+						RecipeUtils.addShapelessGregtechRecipe(
+								aTank.get(1), null, null,
+								null, null, null,
+								null, null, null,
+								aTank.get(1));
+					}	
+					
 					RecipeUtils.addShapedGregtechRecipe(
 							CI.component_Plate[1], CI.component_Plate[1], CI.component_Plate[1],
 							CI.component_Plate[1], pipeTier1, CI.component_Plate[1],
@@ -991,6 +1006,16 @@ public class RECIPES_Machines {
 					CI.component_Plate[8] = "plateDarkSteel";
 					ItemStack waterBucket = ItemUtils.getSimpleStack(Items.water_bucket);
 
+					// Allows clearing stored fluids.
+					GregtechItemList[] aTanks = new GregtechItemList[] {GregtechItemList.GT_FluidTank_ULV, GregtechItemList.GT_FluidTank_LV, GregtechItemList.GT_FluidTank_MV, GregtechItemList.GT_FluidTank_HV};
+					for (GregtechItemList aTank : aTanks) {
+						RecipeUtils.addShapelessGregtechRecipe(
+								aTank.get(1), null, null,
+								null, null, null,
+								null, null, null,
+								aTank.get(1));
+					}					
+					
 					RecipeUtils.addShapedGregtechRecipe(
 							CI.component_Plate[1], CI.component_Plate[5], CI.component_Plate[1],
 							CI.component_Plate[4], pipeTier1, CI.component_Plate[4],
