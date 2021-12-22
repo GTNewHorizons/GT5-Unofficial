@@ -931,7 +931,7 @@ public class RECIPES_Machines {
 							GregtechItemList.GT_FluidTank_LuV, GregtechItemList.GT_FluidTank_ZPM, GregtechItemList.GT_FluidTank_UV,
 							GregtechItemList.GT_FluidTank_MAX};
 					for (GregtechItemList aTank : aTanks) {
-						RecipeUtils.addShapelessGregtechRecipe(
+						RecipeUtils.addShapedGregtechRecipe(
 								aTank.get(1), null, null,
 								null, null, null,
 								null, null, null,
@@ -1009,7 +1009,7 @@ public class RECIPES_Machines {
 					// Allows clearing stored fluids.
 					GregtechItemList[] aTanks = new GregtechItemList[] {GregtechItemList.GT_FluidTank_ULV, GregtechItemList.GT_FluidTank_LV, GregtechItemList.GT_FluidTank_MV, GregtechItemList.GT_FluidTank_HV};
 					for (GregtechItemList aTank : aTanks) {
-						RecipeUtils.addShapelessGregtechRecipe(
+						RecipeUtils.addShapedGregtechRecipe(
 								aTank.get(1), null, null,
 								null, null, null,
 								null, null, null,
