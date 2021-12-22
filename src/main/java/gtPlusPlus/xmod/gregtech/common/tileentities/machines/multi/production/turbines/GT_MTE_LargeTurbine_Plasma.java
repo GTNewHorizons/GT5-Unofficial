@@ -5,9 +5,12 @@ import java.util.ArrayList;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
+import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Turbine;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -51,11 +54,115 @@ public class GT_MTE_LargeTurbine_Plasma extends GregtechMetaTileEntity_LargerTur
     }
     
     public int getFuelValue(FluidStack aLiquid) {
-        if (aLiquid == null) return 0;
+        if (aLiquid == null) {
+        	return 0;
+        }
         GT_Recipe tFuel = GT_Recipe_Map.sPlasmaFuels.findFuel(aLiquid);
-        if (tFuel != null) return tFuel.mSpecialValue;
+        if (tFuel != null) {
+        	return tFuel.mSpecialValue;
+        }
         return 0;
     }
+    
+	public boolean checkRecipeGeneric(
+			ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
+			int aMaxParallelRecipes, int aEUPercent,
+			int aSpeedBonusPercent, int aOutputChanceRoll, GT_Recipe aRecipe, boolean isPerpectOC) {
+
+		try {
+			ArrayList<GT_MetaTileEntity_Hatch_Turbine> aEmptyTurbineRotorHatches = getEmptyTurbineAssemblies();
+			if (aEmptyTurbineRotorHatches.size() > 0) {
+				log("Found "+aEmptyTurbineRotorHatches.size()+" Assemblies without Turbine.");
+				ArrayList<ItemStack> aTurbines = getAllBufferedTurbines();
+				hatch : for (GT_MetaTileEntity_Hatch_Turbine aHatch : aEmptyTurbineRotorHatches) {
+					for (ItemStack aTurbineItem : aTurbines) {
+						if (aTurbineItem == null) {
+							continue;
+						}
+						if (aTurbineItem != null && aHatch.insertTurbine(aTurbineItem.copy())) {
+							boolean aDidDeplete = depleteTurbineFromStock(aTurbineItem);
+							log("Put Turbine into Assembly - "+aDidDeplete);
+							continue hatch;
+						}
+					}
+				}
+			}
+			//log("Found "+getFullTurbineAssemblies().size()+" Assemblies with a Turbine.");
+
+			if (getEmptyTurbineAssemblies().size() > 0 || !areAllTurbinesTheSame()) {
+				log("BAD RETURN - 1");            
+				stopMachine();
+				return false;		
+			}
+
+			//log("Running checkRecipeGeneric(0)");
+
+			ArrayList<FluidStack> tFluids = getStoredFluids();
+
+			if (tFluids.size() > 0) {
+				if (baseEff == 0 || optFlow == 0 || counter >= 512 || this.getBaseMetaTileEntity().hasWorkJustBeenEnabled()
+						|| this.getBaseMetaTileEntity().hasInventoryBeenModified()) {
+					counter = 0;
+					float aTotalBaseEff = 0;
+					float aTotalOptimalFlow = 0;
+					ItemStack aStack = getFullTurbineAssemblies().get(0).getTurbine();
+					for (int i=0;i<18;i++) {
+						if (i == 0) {
+							aTotalBaseEff += GT_Utility.safeInt((long) ((5F + ((GT_MetaGenerated_Tool) aStack.getItem()).getToolCombatDamage(aStack)) * 1000F));					
+						}		
+						aTotalOptimalFlow += GT_Utility.safeInt((long) Math.max(Float.MIN_NORMAL,
+								((GT_MetaGenerated_Tool) aStack.getItem()).getToolStats(aStack).getSpeedMultiplier()
+								* GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mToolSpeed
+								* 50));
+					}
+
+					baseEff = MathUtils.roundToClosestInt(aTotalBaseEff);
+					optFlow = MathUtils.roundToClosestInt(aTotalOptimalFlow);
+					if(optFlow<=0 || baseEff<=0){
+						log("Running checkRecipeGeneric(bad-1)");
+						stopMachine();//in case the turbine got removed
+						return false;
+					}
+				} else {
+					counter++;
+				}
+			}
+
+			// How much the turbine should be producing with this flow
+			int newPower = fluidIntoPower(tFluids, optFlow, baseEff);
+			int difference = newPower - this.mEUt; // difference between current output and new output
+
+			// Magic numbers: can always change by at least 10 eu/t, but otherwise by at most 1 percent of the difference in power level (per tick)
+			// This is how much the turbine can actually change during this tick
+	        int maxChangeAllowed = Math.max(200, GT_Utility.safeInt((long) Math.abs(difference) / 5));
+
+			if (Math.abs(difference) > maxChangeAllowed) { // If this difference is too big, use the maximum allowed change
+				int change = maxChangeAllowed * (difference > 0 ? 1 : -1); // Make the change positive or negative.
+				this.mEUt += change; // Apply the change
+			} 
+			else {
+				this.mEUt = newPower;
+			}
+			if (this.mEUt <= 0) {
+				this.mEUt=0;
+				this.mEfficiency=0;
+				log("Running checkRecipeGeneric(bad-2)");
+				return false;
+			} else {
+	            this.mMaxProgresstime = 20;
+	            this.mEfficiencyIncrease = 200;
+				// Overvoltage is handled inside the MultiBlockBase when pushing out to dynamos.  no need to do it here.
+				// Play sounds (GT++ addition - GT multiblocks play no sounds)
+				startProcess();
+				//log("GOOD RETURN - Making: "+this.mEUt+" EU/t");
+				return true;
+			}
+		}
+		catch (Throwable t) {
+			t.printStackTrace();
+		}
+		return false;
+	}
 
     @Override
     int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow, int aBaseEff) {

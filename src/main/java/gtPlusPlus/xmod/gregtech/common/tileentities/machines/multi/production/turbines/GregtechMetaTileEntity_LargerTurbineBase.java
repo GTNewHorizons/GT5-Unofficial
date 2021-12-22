@@ -28,7 +28,6 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Outpu
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
@@ -312,7 +311,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechM
 		return (aTurbine !=null && aTurbine.getItem() instanceof GT_MetaGenerated_Tool  && aTurbine.getItemDamage() >= 170 && aTurbine.getItemDamage() <= 176);
 	}
 
-	private ArrayList<ItemStack> getAllBufferedTurbines(){
+	protected ArrayList<ItemStack> getAllBufferedTurbines(){
 		ArrayList<ItemStack> aTurbinesInStorage = new ArrayList<ItemStack>();
 		for (GT_MetaTileEntity_Hatch_InputBus aBus: this.mInputBusses) {
 			if (isValidMetaTileEntity(aBus)) {
@@ -386,7 +385,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechM
 		}
 	}
 
-	private ArrayList<GT_MetaTileEntity_Hatch_Turbine> getEmptyTurbineAssemblies() {
+	protected ArrayList<GT_MetaTileEntity_Hatch_Turbine> getEmptyTurbineAssemblies() {
 		ArrayList<GT_MetaTileEntity_Hatch_Turbine> aEmptyTurbineRotorHatches = new ArrayList<GT_MetaTileEntity_Hatch_Turbine>();
 		//log("Checking "+mTurbineRotorHatches.size()+" Assemblies for empties.");
 		for (GT_MetaTileEntity_Hatch_Turbine aTurbineHatch : this.mTurbineRotorHatches) {
@@ -398,7 +397,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechM
 		return aEmptyTurbineRotorHatches;
 	}
 
-	private ArrayList<GT_MetaTileEntity_Hatch_Turbine> getFullTurbineAssemblies() {
+	protected ArrayList<GT_MetaTileEntity_Hatch_Turbine> getFullTurbineAssemblies() {
 		ArrayList<GT_MetaTileEntity_Hatch_Turbine> aTurbineRotorHatches = new ArrayList<GT_MetaTileEntity_Hatch_Turbine>();
 		//log("Checking "+mTurbineRotorHatches.size()+" Assemblies for Turbines.");
 		for (GT_MetaTileEntity_Hatch_Turbine aTurbineHatch : this.mTurbineRotorHatches) {
@@ -410,7 +409,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechM
 		return aTurbineRotorHatches;
 	}
 
-	private boolean depleteTurbineFromStock(ItemStack aTurbine) {
+	protected boolean depleteTurbineFromStock(ItemStack aTurbine) {
 		for (GT_MetaTileEntity_Hatch_InputBus aInputBus : this.mInputBusses) {
 			for (int slot = 0; slot < aInputBus.mInventory.length; slot++) {
 				ItemStack aStack = aInputBus.getStackInSlot(slot);
