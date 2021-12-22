@@ -1452,7 +1452,7 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
 
 	public boolean isMachineRunning() {
 		boolean aRunning = this.getBaseMetaTileEntity().isActive();
-		log("Queried Multiblock is currently running: "+aRunning);
+		//log("Queried Multiblock is currently running: "+aRunning);
 		return aRunning;
 	}
 

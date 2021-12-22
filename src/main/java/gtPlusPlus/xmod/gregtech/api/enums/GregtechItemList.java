@@ -369,7 +369,8 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Casing_SolarTower_HeatContainment, 
 	
 	//Larger Turbines
-	/*Large_Steam_Turbine, Large_HPSteam_Turbine, */
+	Large_Steam_Turbine, Large_HPSteam_Turbine,
+	Large_Gas_Turbine, Large_Plasma_Turbine,
 	Casing_Turbine_Shaft, 
 	Casing_Turbine_LP, Casing_Turbine_HP,
 	Casing_Turbine_Gas, Casing_Turbine_Plasma,
@@ -441,7 +442,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Hatch_Air_Intake,
 	
 	//XL Turbine Rotor Hatch
-	/*Hatch_Turbine_Rotor,*/
+	Hatch_Turbine_Rotor,
 	
 	//Standard Turbine Rotor Hatch
 	Hatch_Input_TurbineHousing,

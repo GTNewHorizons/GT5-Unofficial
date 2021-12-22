@@ -100,34 +100,14 @@ public class GregtechMetaTileEntity_IndustrialForgeHammer extends GregtechMeta_M
 						{"C~C", "CAC", "CCC"},
 						{"CCC", "CCC", "CCC"},
 					}))
-					.addElement(
-							'C',
-							ofChain(
-									ofHatchAdder(
-											GregtechMetaTileEntity_IndustrialForgeHammer::addIndustrialForgeHammerList, TAE.getIndexFromPage(1, 11), 1
-											),
-									onElementPass(
-											x -> ++x.mCasing,
-											ofBlock(
-													ModBlocks.blockCasings5Misc, 6
-													)
+					.addElement('C', ofChain(
+									ofHatchAdder(GregtechMetaTileEntity_IndustrialForgeHammer::addIndustrialForgeHammerList, TAE.getIndexFromPage(1, 11), 1	),
+									onElementPass(x -> ++x.mCasing,	ofBlock(ModBlocks.blockCasings5Misc, 6)
 											)
 									)
 							)
-					.addElement(
-							'A',
-							ofChain(
-									ofHatchAdder(
-											GregtechMetaTileEntity_IndustrialForgeHammer::addIndustrialForgeHammerList, TAE.getIndexFromPage(1, 11), 1
-											),
-									onElementPass(
-											x -> ++x.mCasing,
-											ofBlock(
-													ModBlocks.blockCasings5Misc, 6
-													)
-											)
-									)
-							)
+
+		            //.addElement('A', ofBlockAdder(GregtechMetaTileEntity_IndustrialForgeHammer::isBlockAnvil, Blocks.anvil, 1))
 							
 					.build();
 		}

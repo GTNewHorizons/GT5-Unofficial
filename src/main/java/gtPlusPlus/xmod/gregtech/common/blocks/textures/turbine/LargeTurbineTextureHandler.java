@@ -1,180 +1,237 @@
-/*
 package gtPlusPlus.xmod.gregtech.common.blocks.textures.turbine;
 
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_SS1;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_SS2;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_SS3;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_SS4;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_SS5;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_SS6;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_SS7;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_SS8;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_SS9;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_SS_ACTIVE1;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_SS_ACTIVE2;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_SS_ACTIVE3;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_SS_ACTIVE4;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_SS_ACTIVE5;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_SS_ACTIVE6;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_SS_ACTIVE7;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_SS_ACTIVE8;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_SS_ACTIVE9;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_ST1;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_ST2;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_ST3;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_ST4;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_ST5;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_ST6;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_ST7;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_ST8;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_ST9;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_ST_ACTIVE1;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_ST_ACTIVE2;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_ST_ACTIVE3;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_ST_ACTIVE4;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_ST_ACTIVE5;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_ST_ACTIVE6;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_ST_ACTIVE7;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_ST_ACTIVE8;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_ST_ACTIVE9;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_TI1;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_TI2;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_TI3;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_TI4;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_TI5;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_TI6;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_TI7;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_TI8;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_TI9;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_TI_ACTIVE1;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_TI_ACTIVE2;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_TI_ACTIVE3;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_TI_ACTIVE4;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_TI_ACTIVE5;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_TI_ACTIVE6;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_TI_ACTIVE7;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_TI_ACTIVE8;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_TI_ACTIVE9;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_TU1;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_TU2;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_TU3;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_TU4;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_TU5;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_TU6;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_TU7;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_TU8;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_TU9;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_TU_ACTIVE1;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_TU_ACTIVE2;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_TU_ACTIVE3;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_TU_ACTIVE4;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_TU_ACTIVE5;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_TU_ACTIVE6;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_TU_ACTIVE7;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_TU_ACTIVE8;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_TU_ACTIVE9;
 
+import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Turbine;
-import gtPlusPlus.xmod.gregtech.common.blocks.GregtechMetaCasingBlocks4;
-import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.CustomIcon;
+import gtPlusPlus.xmod.gregtech.common.blocks.GregtechMetaSpecialMultiCasings;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 
 public class LargeTurbineTextureHandler {
 
-	*/
-/**
+	/**
 	 * LP Turbines
-	 *//*
+	 */
 
-	private static CustomIcon aTex1_Active = new CustomIcon("iconsets/BigTurbine/LARGE_TURBINE_LP_ACTIVE_1");
-	private static CustomIcon aTex1 = new CustomIcon("iconsets/BigTurbine/LARGE_TURBINE_LP_1");
-	private static CustomIcon aTex2_Active = new CustomIcon("iconsets/BigTurbine/LARGE_TURBINE_LP_ACTIVE_2");
-	private static CustomIcon aTex2 = new CustomIcon("iconsets/BigTurbine/LARGE_TURBINE_LP_2");
-	private static CustomIcon aTex3_Active = new CustomIcon("iconsets/BigTurbine/LARGE_TURBINE_LP_ACTIVE_3");
-	private static CustomIcon aTex3 = new CustomIcon("iconsets/BigTurbine/LARGE_TURBINE_LP_3");
-	private static CustomIcon aTex4_Active = new CustomIcon("iconsets/BigTurbine/LARGE_TURBINE_LP_ACTIVE_4");
-	private static CustomIcon aTex4 = new CustomIcon("iconsets/BigTurbine/LARGE_TURBINE_LP_4");
-	private static CustomIcon aTex5_Active = new CustomIcon("iconsets/BigTurbine/LARGE_TURBINE_LP_ACTIVE_5");
-	private static CustomIcon aTex5 = new CustomIcon("iconsets/BigTurbine/LARGE_TURBINE_LP_5");
-	private static CustomIcon aTex6_Active = new CustomIcon("iconsets/BigTurbine/LARGE_TURBINE_LP_ACTIVE_6");
-	private static CustomIcon aTex6 = new CustomIcon("iconsets/BigTurbine/LARGE_TURBINE_LP_6");
-	private static CustomIcon aTex7_Active = new CustomIcon("iconsets/BigTurbine/LARGE_TURBINE_LP_ACTIVE_7");
-	private static CustomIcon aTex7 = new CustomIcon("iconsets/BigTurbine/LARGE_TURBINE_LP_7");
-	private static CustomIcon aTex8_Active = new CustomIcon("iconsets/BigTurbine/LARGE_TURBINE_LP_ACTIVE_8");
-	private static CustomIcon aTex8 = new CustomIcon("iconsets/BigTurbine/LARGE_TURBINE_LP_8");
-	private static CustomIcon aTex9_Active = new CustomIcon("iconsets/BigTurbine/LARGE_TURBINE_LP_ACTIVE_9");
-	private static CustomIcon aTex9 = new CustomIcon("iconsets/BigTurbine/LARGE_TURBINE_LP_9");
-
-	private static CustomIcon frontFace_0 = (aTex1);
-	private static CustomIcon frontFaceActive_0 = (aTex1_Active);
-	private static CustomIcon frontFace_1 = (aTex2);
-	private static CustomIcon frontFaceActive_1 = (aTex2_Active);
-	private static CustomIcon frontFace_2 = (aTex3);
-	private static CustomIcon frontFaceActive_2 = (aTex3_Active);
-	private static CustomIcon frontFace_3 = (aTex4);
-	private static CustomIcon frontFaceActive_3 = (aTex4_Active);
-	public static CustomIcon frontFace_4 = (aTex5);
-	public static CustomIcon frontFaceActive_4 = (aTex5_Active);
-	private static CustomIcon frontFace_5 = (aTex6);
-	private static CustomIcon frontFaceActive_5 = (aTex6_Active);
-	private static CustomIcon frontFace_6 = (aTex7);
-	private static CustomIcon frontFaceActive_6 = (aTex7_Active);
-	private static CustomIcon frontFace_7 = (aTex8);
-	private static CustomIcon frontFaceActive_7 = (aTex8_Active);
-	private static CustomIcon frontFace_8 = (aTex9);
-	private static CustomIcon frontFaceActive_8 = (aTex9_Active);
-
-	CustomIcon[] OVERLAY_LP_TURBINE = new CustomIcon[]{
-			frontFace_0,
-			frontFace_1,
-			frontFace_2,
-			frontFace_3,
-			frontFace_4,
-			frontFace_5,
-			frontFace_6,
-			frontFace_7,
-			frontFace_8
+	public static BlockIcons[] OVERLAY_LP_TURBINE = new BlockIcons[]{
+	        LARGETURBINE_ST1,
+	        LARGETURBINE_ST2,
+	        LARGETURBINE_ST3,
+	        LARGETURBINE_ST4,
+	        LARGETURBINE_ST5,
+	        LARGETURBINE_ST6,
+	        LARGETURBINE_ST7,
+	        LARGETURBINE_ST8,
+	        LARGETURBINE_ST9,
 	};
 
-	CustomIcon[] OVERLAY_LP_TURBINE_ACTIVE = new CustomIcon[]{
-			frontFaceActive_0,
-			frontFaceActive_1,
-			frontFaceActive_2,
-			frontFaceActive_3,
-			frontFaceActive_4,
-			frontFaceActive_5,
-			frontFaceActive_6,
-			frontFaceActive_7,
-			frontFaceActive_8
+	public static BlockIcons[] OVERLAY_LP_TURBINE_ACTIVE = new BlockIcons[]{
+	        LARGETURBINE_ST_ACTIVE1,
+	        LARGETURBINE_ST_ACTIVE2,
+	        LARGETURBINE_ST_ACTIVE3,
+	        LARGETURBINE_ST_ACTIVE4,
+	        LARGETURBINE_ST_ACTIVE5,
+	        LARGETURBINE_ST_ACTIVE6,
+	        LARGETURBINE_ST_ACTIVE7,
+	        LARGETURBINE_ST_ACTIVE8,
+	        LARGETURBINE_ST_ACTIVE9,
 	};
 
-
-	*/
-/**
+	/**
 	 * HP Turbines
-	 *//*
+	 */
 
-	private static CustomIcon aTexHP1_Active = new CustomIcon("iconsets/BigTurbine/LARGE_TURBINE_HP_ACTIVE_1");
-	private static CustomIcon aTexHP1 = new CustomIcon("iconsets/BigTurbine/LARGE_TURBINE_HP_1");
-	private static CustomIcon aTexHP2_Active = new CustomIcon("iconsets/BigTurbine/LARGE_TURBINE_HP_ACTIVE_2");
-	private static CustomIcon aTexHP2 = new CustomIcon("iconsets/BigTurbine/LARGE_TURBINE_HP_2");
-	private static CustomIcon aTexHP3_Active = new CustomIcon("iconsets/BigTurbine/LARGE_TURBINE_HP_ACTIVE_3");
-	private static CustomIcon aTexHP3 = new CustomIcon("iconsets/BigTurbine/LARGE_TURBINE_HP_3");
-	private static CustomIcon aTexHP4_Active = new CustomIcon("iconsets/BigTurbine/LARGE_TURBINE_HP_ACTIVE_4");
-	private static CustomIcon aTexHP4 = new CustomIcon("iconsets/BigTurbine/LARGE_TURBINE_HP_4");
-	private static CustomIcon aTexHP5_Active = new CustomIcon("iconsets/BigTurbine/LARGE_TURBINE_HP_ACTIVE_5");
-	private static CustomIcon aTexHP5 = new CustomIcon("iconsets/BigTurbine/LARGE_TURBINE_HP_5");
-	private static CustomIcon aTexHP6_Active = new CustomIcon("iconsets/BigTurbine/LARGE_TURBINE_HP_ACTIVE_6");
-	private static CustomIcon aTexHP6 = new CustomIcon("iconsets/BigTurbine/LARGE_TURBINE_HP_6");
-	private static CustomIcon aTexHP7_Active = new CustomIcon("iconsets/BigTurbine/LARGE_TURBINE_HP_ACTIVE_7");
-	private static CustomIcon aTexHP7 = new CustomIcon("iconsets/BigTurbine/LARGE_TURBINE_HP_7");
-	private static CustomIcon aTexHP8_Active = new CustomIcon("iconsets/BigTurbine/LARGE_TURBINE_HP_ACTIVE_8");
-	private static CustomIcon aTexHP8 = new CustomIcon("iconsets/BigTurbine/LARGE_TURBINE_HP_8");
-	private static CustomIcon aTexHP9_Active = new CustomIcon("iconsets/BigTurbine/LARGE_TURBINE_HP_ACTIVE_9");
-	private static CustomIcon aTexHP9 = new CustomIcon("iconsets/BigTurbine/LARGE_TURBINE_HP_9");
-
-	private static CustomIcon frontFaceHP_0 = (aTexHP1);
-	private static CustomIcon frontFaceHPActive_0 = (aTexHP1_Active);
-	private static CustomIcon frontFaceHP_1 = (aTexHP2);
-	private static CustomIcon frontFaceHPActive_1 = (aTexHP2_Active);
-	private static CustomIcon frontFaceHP_2 = (aTexHP3);
-	private static CustomIcon frontFaceHPActive_2 = (aTexHP3_Active);
-	private static CustomIcon frontFaceHP_3 = (aTexHP4);
-	private static CustomIcon frontFaceHPActive_3 = (aTexHP4_Active);
-	public static CustomIcon frontFaceHP_4 = (aTexHP5);
-	public static CustomIcon frontFaceHPActive_4 = (aTexHP5_Active);
-	private static CustomIcon frontFaceHP_5 = (aTexHP6);
-	private static CustomIcon frontFaceHPActive_5 = (aTexHP6_Active);
-	private static CustomIcon frontFaceHP_6 = (aTexHP7);
-	private static CustomIcon frontFaceHPActive_6 = (aTexHP7_Active);
-	private static CustomIcon frontFaceHP_7 = (aTexHP8);
-	private static CustomIcon frontFaceHPActive_7 = (aTexHP8_Active);
-	private static CustomIcon frontFaceHP_8 = (aTexHP9);
-	private static CustomIcon frontFaceHPActive_8 = (aTexHP9_Active);
-
-	CustomIcon[] OVERLAY_HP_TURBINE = new CustomIcon[]{
-			frontFaceHP_0,
-			frontFaceHP_1,
-			frontFaceHP_2,
-			frontFaceHP_3,
-			frontFaceHP_4,
-			frontFaceHP_5,
-			frontFaceHP_6,
-			frontFaceHP_7,
-			frontFaceHP_8
+	public static BlockIcons[] OVERLAY_HP_TURBINE = new BlockIcons[]{
+	        LARGETURBINE_TI1,
+	        LARGETURBINE_TI2,
+	        LARGETURBINE_TI3,
+	        LARGETURBINE_TI4,
+	        LARGETURBINE_TI5,
+	        LARGETURBINE_TI6,
+	        LARGETURBINE_TI7,
+	        LARGETURBINE_TI8,
+	        LARGETURBINE_TI9,
 	};
 
-	CustomIcon[] OVERLAY_HP_TURBINE_ACTIVE = new CustomIcon[]{
-			frontFaceHPActive_0,
-			frontFaceHPActive_1,
-			frontFaceHPActive_2,
-			frontFaceHPActive_3,
-			frontFaceHPActive_4,
-			frontFaceHPActive_5,
-			frontFaceHPActive_6,
-			frontFaceHPActive_7,
-			frontFaceHPActive_8
+	public static BlockIcons[] OVERLAY_HP_TURBINE_ACTIVE = new BlockIcons[]{
+	        LARGETURBINE_TI_ACTIVE1,
+	        LARGETURBINE_TI_ACTIVE2,
+	        LARGETURBINE_TI_ACTIVE3,
+	        LARGETURBINE_TI_ACTIVE4,
+	        LARGETURBINE_TI_ACTIVE5,
+	        LARGETURBINE_TI_ACTIVE6,
+	        LARGETURBINE_TI_ACTIVE7,
+	        LARGETURBINE_TI_ACTIVE8,
+	        LARGETURBINE_TI_ACTIVE9,
+	};
+	
+	/**
+	 * Gas Turbines
+	 */
+	
+	public static BlockIcons[] OVERLAY_GAS_TURBINE = new BlockIcons[]{			
+	        LARGETURBINE_SS1,
+	        LARGETURBINE_SS2,
+	        LARGETURBINE_SS3,
+	        LARGETURBINE_SS4,
+	        LARGETURBINE_SS5,
+	        LARGETURBINE_SS6,
+	        LARGETURBINE_SS7,
+	        LARGETURBINE_SS8,
+	        LARGETURBINE_SS9,
 	};
 
+	public static BlockIcons[] OVERLAY_GAS_TURBINE_ACTIVE = new BlockIcons[]{
+			LARGETURBINE_SS_ACTIVE1,
+			LARGETURBINE_SS_ACTIVE2,
+			LARGETURBINE_SS_ACTIVE3,
+			LARGETURBINE_SS_ACTIVE4,
+			LARGETURBINE_SS_ACTIVE5,
+	        LARGETURBINE_SS_ACTIVE6,
+	        LARGETURBINE_SS_ACTIVE7,
+	        LARGETURBINE_SS_ACTIVE8,
+	        LARGETURBINE_SS_ACTIVE9,
+	};
+	
+	/**
+	 * Plasma Turbines
+	 */
+	
+	public static BlockIcons[] OVERLAY_PLASMA_TURBINE = new BlockIcons[]{
+	        LARGETURBINE_TU1,
+	        LARGETURBINE_TU2,
+	        LARGETURBINE_TU3,
+	        LARGETURBINE_TU4,
+	        LARGETURBINE_TU5,
+	        LARGETURBINE_TU6,
+	        LARGETURBINE_TU7,
+	        LARGETURBINE_TU8,
+	        LARGETURBINE_TU9,
+	};
 
+	public static BlockIcons[] OVERLAY_PLASMA_TURBINE_ACTIVE = new BlockIcons[]{
+	        LARGETURBINE_TU_ACTIVE1,
+	        LARGETURBINE_TU_ACTIVE2,
+	        LARGETURBINE_TU_ACTIVE3,
+	        LARGETURBINE_TU_ACTIVE4,
+	        LARGETURBINE_TU_ACTIVE5,
+	        LARGETURBINE_TU_ACTIVE6,
+	        LARGETURBINE_TU_ACTIVE7,
+	        LARGETURBINE_TU_ACTIVE8,
+	        LARGETURBINE_TU_ACTIVE9,
+	};
 
-	public IIcon handleCasingsGT(final IBlockAccess aWorld, final int xCoord, final int yCoord, final int zCoord, final int aSide, final GregtechMetaCasingBlocks4 thisBlock) {
+	public static IIcon handleCasingsGT(final IBlockAccess aWorld, final int xCoord, final int yCoord, final int zCoord, final int aSide, final GregtechMetaSpecialMultiCasings i) {
 		final int tMeta = aWorld.getBlockMetadata(xCoord, yCoord, zCoord);
 
-		//7 - shaft
-		//8 LP
-		//9 HP
+		//0 shaft
+		//1 LP
+		//2 HP
+		//3 Gas
+		//4 Plasma
 
-		CustomIcon[] mGetCurrentTextureSet = null, mGetCurrentTextureSet_ACTIVE = null;
+		BlockIcons[] mGetCurrentTextureSet = null;
+		BlockIcons[] mGetCurrentTextureSet_ACTIVE = null;
 
 
-		if (tMeta <= 6 || tMeta >= 10) {
-			return GregtechMetaCasingBlocks4.getStaticIcon((byte) aSide, (byte) tMeta);
+		if (tMeta <= 0 || tMeta >= 5) {
+			return GregtechMetaSpecialMultiCasings.getStaticIcon((byte) aSide, (byte) tMeta);
 		}
 		else {
-			if (tMeta == 8) {
+			if (tMeta == 1) {
 				mGetCurrentTextureSet = OVERLAY_LP_TURBINE;
 				mGetCurrentTextureSet_ACTIVE = OVERLAY_LP_TURBINE_ACTIVE;
 			}
-			else if (tMeta == 9) {
+			else if (tMeta == 2) {
 				mGetCurrentTextureSet = OVERLAY_HP_TURBINE;
 				mGetCurrentTextureSet_ACTIVE = OVERLAY_HP_TURBINE_ACTIVE;
 			}
+			else if (tMeta == 3) {
+				mGetCurrentTextureSet = OVERLAY_GAS_TURBINE;
+				mGetCurrentTextureSet_ACTIVE = OVERLAY_GAS_TURBINE_ACTIVE;
+			}
+			else if (tMeta == 4) {
+				mGetCurrentTextureSet = OVERLAY_PLASMA_TURBINE;
+				mGetCurrentTextureSet_ACTIVE = OVERLAY_PLASMA_TURBINE_ACTIVE;
+			}
 			if (mGetCurrentTextureSet == null || mGetCurrentTextureSet_ACTIVE == null) {
-				return GregtechMetaCasingBlocks4.getStaticIcon((byte) aSide, (byte) tMeta);
+				return GregtechMetaSpecialMultiCasings.getStaticIcon((byte) aSide, (byte) tMeta);
 			}
 
 
@@ -283,28 +340,26 @@ public class LargeTurbineTextureHandler {
 				}
 			}
 		}
-		return GregtechMetaCasingBlocks4.getStaticIcon((byte) aSide, (byte) tMeta);
+		return GregtechMetaSpecialMultiCasings.getStaticIcon((byte) aSide, (byte) tMeta);
 	}
 
-	public boolean isUsingAnimatedTexture(TileEntity tTileEntity) {
+	public static boolean isUsingAnimatedTexture(TileEntity tTileEntity) {
 		boolean aVal = true;
-		*/
-/*IGregTechTileEntity aTile;
+		IGregTechTileEntity aTile;
 		if (tTileEntity instanceof IGregTechTileEntity) {
 			aTile = (IGregTechTileEntity) tTileEntity;
 			if (aTile != null) {
 				final IMetaTileEntity aMetaTileEntity = aTile.getMetaTileEntity();
 				if (aMetaTileEntity != null && aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Turbine) {
 					aVal = ((GT_MetaTileEntity_Hatch_Turbine) aMetaTileEntity).isControllerActive();	
-					Logger.INFO("Returning "+aVal+" as Rotor Assembly controller status");
+					//Logger.INFO("Returning "+aVal+" as Rotor Assembly controller status");
 				}
 			}	
-		}	*//*
-
+		}
 		return aVal;
 	}
 
-	public GT_MetaTileEntity_Hatch_Turbine isTurbineHatch(final IGregTechTileEntity aTileEntity) {
+	public static GT_MetaTileEntity_Hatch_Turbine isTurbineHatch(final IGregTechTileEntity aTileEntity) {
 		if (aTileEntity != null) {
 			final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
 			if (aMetaTileEntity != null && aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Turbine) {
@@ -315,4 +370,3 @@ public class LargeTurbineTextureHandler {
 	}
 
 }
-*/

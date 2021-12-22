@@ -222,7 +222,7 @@ public class GregtechMTE_FrothFlotationCell extends GregtechMeta_MultiBlockBase 
 	public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
 		super.onPreTick(aBaseMetaTileEntity, aTick);		
 		// Fix GT bug
-		if (this.getBaseMetaTileEntity().getFrontFacing() == 0 && this.getBaseMetaTileEntity().getBackFacing() == 1) {
+		if (this.getBaseMetaTileEntity().getFrontFacing() != 1) {
 			log("Fixing Bad Facing. (GT Bug)");
 			this.getBaseMetaTileEntity().setFrontFacing((byte) 1); 
 		}

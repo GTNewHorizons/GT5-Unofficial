@@ -1,10 +1,15 @@
-/*
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines;
+
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 
 import java.util.ArrayList;
 
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.TAE;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
@@ -13,33 +18,33 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
+import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.core.util.sys.KeyboardUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Turbine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.StaticFields59;
-import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.CustomIcon;
-import gtPlusPlus.xmod.gregtech.common.blocks.textures.turbine.LargeTurbineTextureHandler;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
-public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechMeta_MultiBlockBase {
+public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_LargerTurbineBase> {
 
 	protected int baseEff = 0;
 	protected int optFlow = 0;
@@ -47,38 +52,191 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechM
 	protected int storedFluid = 0;
 	protected int counter = 0;
 	protected boolean looseFit=false;
-
-	private final int mCasingTextureID;
-	public static String mCasingName;
 	
-    public ArrayList<GT_MetaTileEntity_Hatch_Turbine> mTurbineRotorHatches = new ArrayList<GT_MetaTileEntity_Hatch_Turbine>();
+	public ITexture frontFace;
+	public ITexture frontFaceActive;	
+
+
+	public ArrayList<GT_MetaTileEntity_Hatch_Turbine> mTurbineRotorHatches = new ArrayList<GT_MetaTileEntity_Hatch_Turbine>();
 
 	public GregtechMetaTileEntity_LargerTurbineBase(int aID, String aName, String aNameRegional) {
 		super(aID, aName, aNameRegional);
-		mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings4Misc, getCasingMeta());
-		mCasingTextureID = getTAE();
-		GT9_5_Active = getCasingMeta() == 8 ? LargeTurbineTextureHandler.frontFaceActive_4 : LargeTurbineTextureHandler.frontFaceHPActive_4;
-		GT9_5 = getCasingMeta() == 8 ? LargeTurbineTextureHandler.frontFace_4 : LargeTurbineTextureHandler.frontFaceHP_4;
-		frontFaceActive = new GT_RenderedTexture(GT9_5_Active);
-		frontFace = new GT_RenderedTexture(GT9_5);
-		
+		frontFace = getTextureFrontFace();
+		frontFaceActive = getTextureFrontFaceActive();
+
 	}
 	public GregtechMetaTileEntity_LargerTurbineBase(String aName) {
 		super(aName);
-		mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings4Misc, getCasingMeta());
-		mCasingTextureID = getTAE();
-		GT9_5_Active = getCasingMeta() == 8 ? LargeTurbineTextureHandler.frontFaceActive_4 : LargeTurbineTextureHandler.frontFaceHPActive_4;
-		GT9_5 = getCasingMeta() == 8 ? LargeTurbineTextureHandler.frontFace_4 : LargeTurbineTextureHandler.frontFaceHP_4;
-		frontFaceActive = new GT_RenderedTexture(GT9_5_Active);
-		frontFace = new GT_RenderedTexture(GT9_5);
+		frontFace = getTextureFrontFace();
+		frontFaceActive = getTextureFrontFaceActive();
+	}
+	
+
+	protected abstract ITexture getTextureFrontFace();
+	
+	protected abstract ITexture getTextureFrontFaceActive();
+	
+	protected abstract String getTurbineType();
+	
+	protected abstract String getCasingName();
+
+	@Override
+	protected final GT_Multiblock_Tooltip_Builder createTooltip() {
+		GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+		tt.addMachineType(getMachineType())
+				.addInfo("Controller Block for the XL "+getTurbineType()+" Turbine")
+				.addPollutionAmount(getPollutionPerSecond(null))
+				.addSeparator()
+				.beginStructureBlock(3, 3, 9, false)
+				.addController("Top Middle")
+				.addCasingInfo(getCasingName(), 64)
+				.addOtherStructurePart("Rotor Assembly", "Any 1 dot hint", 1)
+				.addInputBus("Any 4 dot hint", 4)
+				.addInputHatch("Any 4 dot hint", 4)
+				.addOutputHatch("Any 4 dot hint", 4)
+				.addDynamoHatch("Any 4 dot hint", 4)
+				.addMaintenanceHatch("Any 4 dot hint", 4)
+				.addMufflerHatch("Any 7 dot hint x4", 7)
+				.toolTipFinisher(CORE.GT_Tooltip_Builder);
+		return tt;
+	}
+	
+	private static final String STRUCTURE_PIECE_MAIN = "main";
+	private static final ClassValue<IStructureDefinition<GregtechMetaTileEntity_LargerTurbineBase>> STRUCTURE_DEFINITION = new ClassValue<IStructureDefinition<GregtechMetaTileEntity_LargerTurbineBase>>() {
+		@Override
+		protected IStructureDefinition<GregtechMetaTileEntity_LargerTurbineBase> computeValue(Class<?> type) {
+			return StructureDefinition.<GregtechMetaTileEntity_LargerTurbineBase>builder()
+					// c = turbine casing
+					// s = turbine shaft            		
+					// t = turbine housing   
+					// h = dynamo/maint
+					// m = muffler
+					.addShape(STRUCTURE_PIECE_MAIN, (new String[][]{
+						{"ccchccc", "ccccccc", "ccmmmcc", "ccm~mcc", "ccmmmcc", "ccccccc", "ccchccc"},
+						{"ctchctc", "cscccsc", "cscccsc", "cscccsc", "cscccsc", "cscccsc", "ctchctc"},
+						{"ccchccc", "ccccccc", "ccccccc", "ccccccc", "ccccccc", "ccccccc", "ccchccc"},
+						{"ccchccc", "ccccccc", "ccccccc", "ccccccc", "ccccccc", "ccccccc", "ccchccc"},
+						{"ctchctc", "cscccsc", "cscccsc", "cscccsc", "cscccsc", "cscccsc", "ctchctc"},
+						{"ccchccc", "ccccccc", "ccccccc", "ccccccc", "ccccccc", "ccccccc", "ccchccc"},
+						{"ccchccc", "ccccccc", "ccccccc", "ccccccc", "ccccccc", "ccccccc", "ccchccc"},
+						{"ctchctc", "cscccsc", "cscccsc", "cscccsc", "cscccsc", "cscccsc", "ctchctc"},
+						{"ccchccc", "ccccccc", "ccccccc", "ccccccc", "ccccccc", "ccccccc", "ccchccc"},
+					}))
+					.addElement('c', lazy(t -> ofBlock(t.getCasingBlock(), t.getCasingMeta())))
+					.addElement('s', lazy(t -> ofBlock(t.getCasingBlock(), t.getTurbineShaftMeta())))
+					.addElement('t', lazy(t -> ofHatchAdder(GregtechMetaTileEntity_LargerTurbineBase::addTurbineHatch, t.getCasingTextureIndex(), 1)))
+                    .addElement('h', lazy(t -> ofHatchAdderOptional(GregtechMetaTileEntity_LargerTurbineBase::addGenericHatch, t.getCasingTextureIndex(), 4, t.getCasingBlock(), t.getCasingMeta())))
+                    .addElement('m', lazy(t -> ofHatchAdderOptional(GregtechMetaTileEntity_LargerTurbineBase::addMuffler, t.getCasingTextureIndex(), 7, t.getCasingBlock(), t.getCasingMeta())))
+					.build();
+		}
+	};
+
+	@Override
+	public IStructureDefinition<GregtechMetaTileEntity_LargerTurbineBase> getStructureDefinition() {
+		return STRUCTURE_DEFINITION.get(getClass());
 	}
 
-	public final int getTAE() {
-		return TAE.getIndexFromPage(3, getCasingMeta());
+	@Override
+	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+		this.mDynamoHatches.clear();
+		this.mTurbineRotorHatches.clear();
+		this.mMaintenanceHatches.clear();
+		this.mMufflerHatches.clear();
+		this.mInputBusses.clear();
+		this.mInputHatches.clear();
+		this.mOutputHatches.clear();
+		
+		boolean aStructure = checkPiece(STRUCTURE_PIECE_MAIN, 3, 3, 0);	
+		log("Structure Check: "+aStructure);	
+		if (mTurbineRotorHatches.size() != 12 ||
+				mMaintenanceHatches.size() != 1 || 
+				mDynamoHatches.size() < 1 || 
+				mMufflerHatches.size() != 4 ||
+				mInputBusses.size() < 1 ||
+				mInputHatches.size() < 1 ||
+				mOutputHatches.size() < 1
+				) {
+			log("Bad Hatches - Turbine Housings: "+mTurbineRotorHatches.size()+
+					", Maint: "+mMaintenanceHatches.size()+
+					", Dynamo: "+mDynamoHatches.size()+
+					", Muffler: "+mMufflerHatches.size()+
+					", Input Buses: "+mInputBusses.size()+
+					", Input Hatches: "+mInputHatches.size()+
+					", Output Hatches: "+mOutputHatches.size()+
+					", ");
+			return false;
+		}		
+		log("Built "+this.getLocalName());	
+		return  aStructure;
 	}
 
-	public final String getCasingNaming() {
-		return ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings4Misc, getCasingMeta());
+	@Override
+	public void construct(ItemStack stackSize, boolean hintsOnly) {
+		buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 3, 3, 0);
+	}
+
+	public boolean addTurbineHatch(final IGregTechTileEntity aTileEntity, final int aBaseCasingIndex) {
+		if (aTileEntity == null) {
+			return false;
+		}
+		final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+		if (aMetaTileEntity == null) {
+			return false;
+		}
+		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Turbine) {
+			log("Found GT_MetaTileEntity_Hatch_Turbine");
+			updateTexture(aTileEntity, aBaseCasingIndex);
+			GT_MetaTileEntity_Hatch_Turbine aTurbineHatch = (GT_MetaTileEntity_Hatch_Turbine) aMetaTileEntity;
+			IGregTechTileEntity g = this.getBaseMetaTileEntity();
+			if (aTurbineHatch.setController(new BlockPos(g.getXCoord(), g.getYCoord(), g.getZCoord(), g.getWorld()))) {
+				Logger.INFO("Injected Controller into Turbine Assembly.");
+				return this.mTurbineRotorHatches.add(aTurbineHatch);
+			}
+			else {
+				Logger.INFO("Failed to inject controller into Turbine Assembly Hatch.");
+			}
+		}
+		log("Bad Turbine Housing");
+		return false;
+	}
+
+	public final boolean addMuffler(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+		if (aTileEntity == null) {
+			return false;
+		} else {
+			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler) {
+				return addToMachineList(aTileEntity, aBaseCasingIndex);
+			}
+		}
+		log("Bad Muffler");
+		return false;
+	}
+
+	public final boolean addGenericHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+		if (aTileEntity == null) {
+			return false;
+		} 
+		else {
+			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance){
+				return addToMachineList(aTileEntity, aBaseCasingIndex);
+			}
+			else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
+				return addToMachineList(aTileEntity, aBaseCasingIndex);
+			}
+			else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
+				return addToMachineList(aTileEntity, aBaseCasingIndex);
+			}
+			else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus) {
+				return addToMachineList(aTileEntity, aBaseCasingIndex);
+			}
+			else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Dynamo) {
+				return addToMachineList(aTileEntity, aBaseCasingIndex);
+			}
+		}
+		log("Bad Hatch");
+		return false;
 	}
 
 	@Override
@@ -90,242 +248,79 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechM
 		return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "LargeTurbine.png");
 	}
 
-	@Override
-	public boolean checkMultiblock(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {	
-		return checkMachine2(aBaseMetaTileEntity, aStack);
-	}
-
-	public boolean checkMachine2(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
-		//9 high
-		//7x7		
-		
-		this.mDynamoHatches.clear();
-		this.mTurbineRotorHatches.clear();
-		this.mMaintenanceHatches.clear();
-		this.mMufflerHatches.clear();
-		this.mInputHatches.clear();
-		this.mOutputHatches.clear();
-		
-		for (int i=0;i>-9;i--) {
-			if (!getLayer(i)) {
-				Logger.INFO("Bad Layer: "+(+i));
-				return false;
-			}
-		}	
-		
-		Logger.INFO("Hatches | Found "+mTurbineRotorHatches.size()+" Rotor Assemblies, "+12+" are required.");
-		Logger.INFO("Hatches | Found "+mMaintenanceHatches.size()+" Maint. hatches, "+1+" are required.");
-		Logger.INFO("Hatches | Found "+mDynamoHatches.size()+"  Dynamos, "+1+" or more are required.");
-		Logger.INFO("Hatches | Found "+mMufflerHatches.size()+" Mufflers, "+4+" are required.");
-		Logger.INFO("Hatches | Found "+mInputHatches.size()+" Input Hatches, "+1+" or more are required.");
-		Logger.INFO("Hatches | Found "+mOutputHatches.size()+" Output Hatches, "+1+" ore more are required.");
-		
-		if (mTurbineRotorHatches.size() != 12 ||
-				mMaintenanceHatches.size() != 1 || 
-				mDynamoHatches.size() < 1 || 
-				mMufflerHatches.size() != 4 ||
-				mInputHatches.size() < 1 ||
-				mOutputHatches.size() < 1
-				) {
-			return false;
-		}
-		Logger.INFO("Built Structure");
-		return true;
-	}
-
-
-	public boolean getLayer(int aY) {
-		if (aY == 0 || aY == -2 || aY == -3 || aY == -5 || aY == -6 || aY == -8) {
-			return checkNormalLayer(aY);
-		}
-		else {
-			return checkTurbineLayer(aY);
-		}
-	}
-
-	public boolean checkNormalLayer(int aY) {
-		Block tBlock;
-		int tMeta;
-		for (int x = -3; x <= 3; x++) {
-			for (int z = -3; z <= 3; z++) {
-				tBlock = this.getBaseMetaTileEntity().getBlockOffset(x, aY, z);
-				tMeta = this.getBaseMetaTileEntity().getMetaIDOffset(x, aY, z);
-				IGregTechTileEntity tTileEntity;
-
-				if (aY == 0 && x == 0 && z == 0) {
-					continue;
-				}				
-				else if ((x == 0 && z == -3) || (x == 0 && z == 3) || (x == 3 && z == 0) || (x == -3 && z == 0) || 
-						((aY == 0) && (x == 0 && z == -2) || (x == 0 && z == 2) || (x == 2 && z == 0) || (x == -2 && z == 0))) {
-					tTileEntity = this.getBaseMetaTileEntity().getIGregTechTileEntityOffset(x, aY, z);    					
-					if (this.addToMachineList(tTileEntity, this.mCasingTextureID)) {
-						Logger.INFO("Added Hatch at offset "+x+", "+aY+", "+z+" | Type: "+tTileEntity.getInventoryName());
-						continue;
-					}
-				}				
-				else if (isValidCasingBlock(tBlock, tMeta)) {
-					continue;
-				}  else {					
-					if (tBlock != null) {
-						log("Offset: "+x+", "+aY+", "+z);
-						log("Found "+tBlock.getLocalizedName()+" with Meta "+tMeta);
-						log("Expected "+getCasingBlock().getLocalizedName()+" with Meta "+getCasingMeta());
-					}
-					return false;
-				}
-			}
-		}
-		return true;
-	}
-
-
-	public boolean checkTurbineLayer(int aY) {
-		if (!checkTurbineLayerX(aY)) {
-			return checkTurbineLayerZ(aY);
-		}
-		else {
-			return true;
-		}
-	}
-
-	public boolean checkTurbineLayerX(int aY) {		
-		Logger.INFO("checking X");
-		Block tBlock;
-		int tMeta;
-		for (int x = -3; x <= 3; x++) {
-			for (int z = -3; z <= 3; z++) {
-				tBlock = this.getBaseMetaTileEntity().getBlockOffset(x, aY, z);
-				tMeta = this.getBaseMetaTileEntity().getMetaIDOffset(x, aY, z);   
-
-				if ((x == 0 && z == -3) || (x == 0 && z == 3) || (x == 3 && z == 0) || (x == -3 && z == 0) || 
-						((aY == 0) && (x == 0 && z == -2) || (x == 0 && z == 2) || (x == 2 && z == 0) || (x == -2 && z == 0))) {
-					IGregTechTileEntity tTileEntity = this.getBaseMetaTileEntity().getIGregTechTileEntityOffset(x, aY, z);    					
-					if (this.addToMachineList(tTileEntity, this.mCasingTextureID)) {
-						Logger.INFO("Added Hatch at offset "+x+", "+aY+", "+z+" | Type: "+tTileEntity.getInventoryName());
-						continue;
-					}
-				}				    	
-
-
-				if (x == -2 || x == 2) {
-					
-					//Find Hatches on the ends
-					if (z == -3 || z == 3) {
-						IGregTechTileEntity tTileEntity = this.getBaseMetaTileEntity().getIGregTechTileEntityOffset(x, aY, z);    					
-						if (this.addTurbineHatch(tTileEntity, this.mCasingTextureID)) {
-							log("Found x axis Turbine Assembly at Offset: "+x+", "+aY+", "+z);
-							continue;
-						}
-						else {
-							log("Missing x axis Turbine Assembly at Offset: "+x+", "+aY+", "+z);							
-						}
-					}					
-					
-					if (isValidTurbineBlock(tBlock, tMeta)) {
-						continue;
-					}
-					else {
-						return false;
-					}
-				}
-				else {
-					if (isValidCasingBlock(tBlock, tMeta)) {
-						continue;
-					}
-					else {
-						return false;
-					}  
-				}    			  			
-			}	
-		}    	
-		return true;
-	}
-
-	public boolean checkTurbineLayerZ(int aY) {
-		Logger.INFO("checking Z");
-		Block tBlock;
-		int tMeta;
-		for (int x = -3; x <= 3; x++) {
-			for (int z = -3; z <= 3; z++) {
-				tBlock = this.getBaseMetaTileEntity().getBlockOffset(x, aY, z);
-				tMeta = this.getBaseMetaTileEntity().getMetaIDOffset(x, aY, z);
-
-				if ((x == 0 && z == -3) || (x == 0 && z == 3) || (x == 3 && z == 0) || (x == -3 && z == 0) || 
-						((aY == 0) && (x == 0 && z == -2) || (x == 0 && z == 2) || (x == 2 && z == 0) || (x == -2 && z == 0))) {
-					IGregTechTileEntity tTileEntity = this.getBaseMetaTileEntity().getIGregTechTileEntityOffset(x, aY, z);    					
-					if (this.addToMachineList(tTileEntity, this.mCasingTextureID)) {
-						Logger.INFO("Added Hatch at offset "+x+", "+aY+", "+z+" | Type: "+tTileEntity.getInventoryName());
-						continue;
-					}
-				}
-
-				if (z == -2 || z == 2) {
-					
-					//Find Hatches on the ends
-					if (x == -3 || x == 3) {
-						IGregTechTileEntity tTileEntity = this.getBaseMetaTileEntity().getIGregTechTileEntityOffset(x, aY, z);    					
-						if (this.addTurbineHatch(tTileEntity, this.mCasingTextureID)) {
-							log("Found z axis Turbine Assembly at Offset: "+x+", "+aY+", "+z);
-							continue;
-						}
-						else {
-							log("Missing z axis Turbine Assembly at Offset: "+x+", "+aY+", "+z);							
-						}
-					}					
-					
-					if (isValidTurbineBlock(tBlock, tMeta)) {
-						continue;
-					}
-					else {
-						return false;
-					}
-				}
-				else {
-					if (isValidCasingBlock(tBlock, tMeta)) {
-						continue;
-					}
-					else {
-						return false;
-					}  
-				}    			  			
-			}	
-		}    	
-		return true;
-	}   
-
 	public boolean isValidCasingBlock(Block aBlock, int aMeta) {
-		if (GregTech_API.sBlockMachines == aBlock) {
+		if (Block.isEqualTo(aBlock, getCasingBlock()) && aMeta == getCasingMeta()) {
+			return true;
+		}return false;
+	}
+
+	public boolean isValidTurbineShaft(Block aBlock, int aMeta) {
+		if (aBlock == getCasingBlock() && aMeta == getTurbineShaftMeta()) {
 			return true;
 		}
-		if (Block.isEqualTo(aBlock, getCasingBlock()) && (int) aMeta == (int) getCasingMeta()) {
-			return true;
-		}
-		log("Found "+(aBlock != null ? aBlock.getLocalizedName() : "Air") + " With Meta "+aMeta+", Expected "+getCasingBlock().getLocalizedName()+" With Meta "+getCasingMeta());
 		return false;
 	}
 
-	public boolean isValidTurbineBlock(Block aBlock, int aMeta) {
-		if (aBlock == getCasingBlock() && aMeta == getCasingMetaTurbine()) {
-			return true;
-		}
-		log("Found "+(aBlock != null ? aBlock.getLocalizedName() : "Air") + " With Meta "+aMeta+", Expected "+getCasingBlock().getLocalizedName()+" With Meta "+getCasingMetaTurbine());
+	public final Block getCasingBlock() {
+		return ModBlocks.blockSpecialMultiCasings;
+	}	
+	
+	@Override
+	public final boolean hasSlotInGUI() {
 		return false;
 	}
 
-	public Block getCasingBlock() {
-		return ModBlocks.blockCasings4Misc;
-	}
+	public abstract int getCasingMeta();
 
-	public abstract byte getCasingMeta();
-
-	public byte getCasingMetaTurbine() {
-		return 7;
+	public byte getTurbineShaftMeta() {
+		return 0;
 	}
 
 	public abstract byte getCasingTextureIndex();
 
+    public abstract int getFuelValue(FluidStack aLiquid);
+	
+    public static boolean isValidTurbine(ItemStack aTurbine) {    	
+    	return (aTurbine !=null && aTurbine.getItem() instanceof GT_MetaGenerated_Tool  && aTurbine.getItemDamage() >= 170 && aTurbine.getItemDamage() <= 176);
+    }
+    
+    private ArrayList<ItemStack> getAllBufferedTurbines(){
+    	ArrayList<ItemStack> aTurbinesInStorage = new ArrayList<ItemStack>();
+    	for (GT_MetaTileEntity_Hatch_InputBus aBus: this.mInputBusses) {
+    		if (isValidMetaTileEntity(aBus)) {
+    			for (ItemStack aContent : aBus.mInventory) {
+    				if (isValidTurbine(aContent)) {
+    					aTurbinesInStorage.add(aContent);
+    				}
+    			}
+    		}
+    	}
+    	return aTurbinesInStorage;
+    }
+    
 	@Override
 	public boolean checkRecipe(ItemStack aStack) {
+		
+		ArrayList<GT_MetaTileEntity_Hatch_Turbine> aEmptyTurbineRotorHatches = new ArrayList<GT_MetaTileEntity_Hatch_Turbine>();
+		for (GT_MetaTileEntity_Hatch_Turbine aTurbineHatch : this.mTurbineRotorHatches) {
+			if (!aTurbineHatch.hasTurbine()) {
+				aEmptyTurbineRotorHatches.add(aTurbineHatch);
+			}
+		}
+		if (aEmptyTurbineRotorHatches.size() > 0) {
+			ArrayList<ItemStack> aTurbines = getAllBufferedTurbines();
+			for (GT_MetaTileEntity_Hatch_Turbine aHatch : aEmptyTurbineRotorHatches) {
+				for (ItemStack aTurbineItem : aTurbines) {
+					if (aHatch.insertTurbine(aTurbineItem) && this.depleteInput(aTurbineItem)) {
+						continue;
+					}
+					else {
+						break;
+					}
+				}
+			}
+		}		
+		
 		if((counter&7)==0 && (aStack==null || !(aStack.getItem() instanceof GT_MetaGenerated_Tool)  || aStack.getItemDamage() < 170 || aStack.getItemDamage() >179)) {
 			stopMachine();
 			return false;
@@ -436,34 +431,25 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechM
 		}
 		String[] ret = new String[]{
 				// 8 Lines available for information panels
-				tRunning + ": " + EnumChatFormatting.RED+mEUt+EnumChatFormatting.RESET+" EU/t", */
-/* 1 *//*
-
-				tMaintainance, */
-/* 2 *//*
-
-				StatCollector.translateToLocal("GT5U.turbine.efficiency")+": "+EnumChatFormatting.YELLOW+(mEfficiency/100F)+EnumChatFormatting.RESET+"%", */
-/* 2 *//*
-
-				StatCollector.translateToLocal("GT5U.multiblock.energy")+": " + EnumChatFormatting.GREEN + Long.toString(storedEnergy) + EnumChatFormatting.RESET +" EU / "+ */
-/* 3 *//*
-
+				tRunning + ": " + EnumChatFormatting.RED+mEUt+EnumChatFormatting.RESET+" EU/t",
+				/* 1 */
+				tMaintainance,
+				/* 2 */
+				StatCollector.translateToLocal("GT5U.turbine.efficiency")+": "+EnumChatFormatting.YELLOW+(mEfficiency/100F)+EnumChatFormatting.RESET+"%",
+				/* 2 */
+				StatCollector.translateToLocal("GT5U.multiblock.energy")+": " + EnumChatFormatting.GREEN + Long.toString(storedEnergy) + EnumChatFormatting.RESET +" EU / "+
+				/* 3 */
 				EnumChatFormatting.YELLOW + Long.toString(maxEnergy) + EnumChatFormatting.RESET +" EU", 
-				StatCollector.translateToLocal("GT5U.turbine.flow")+": "+EnumChatFormatting.YELLOW+MathUtils.safeInt((long)realOptFlow)+EnumChatFormatting.RESET+" L/t" + */
-/* 4 *//*
-
-						EnumChatFormatting.YELLOW+" ("+(looseFit?StatCollector.translateToLocal("GT5U.turbine.loose"):StatCollector.translateToLocal("GT5U.turbine.tight"))+")", */
-/* 5 *//*
-
-						StatCollector.translateToLocal("GT5U.turbine.fuel")+": "+EnumChatFormatting.GOLD+storedFluid+EnumChatFormatting.RESET+"L", */
-/* 6 *//*
-
-						StatCollector.translateToLocal("GT5U.turbine.dmg")+": "+EnumChatFormatting.RED+Integer.toString(tDura)+EnumChatFormatting.RESET+"%", */
-/* 7 *//*
-
-						StatCollector.translateToLocal("GT5U.multiblock.pollution")+": "+ EnumChatFormatting.GREEN + mPollutionReduction+ EnumChatFormatting.RESET+" %" */
-/* 8 *//*
-
+				StatCollector.translateToLocal("GT5U.turbine.flow")+": "+EnumChatFormatting.YELLOW+MathUtils.safeInt((long)realOptFlow)+EnumChatFormatting.RESET+" L/t" +
+						/* 4 */
+						EnumChatFormatting.YELLOW+" ("+(looseFit?StatCollector.translateToLocal("GT5U.turbine.loose"):StatCollector.translateToLocal("GT5U.turbine.tight"))+")",
+						/* 5 */
+						StatCollector.translateToLocal("GT5U.turbine.fuel")+": "+EnumChatFormatting.GOLD+storedFluid+EnumChatFormatting.RESET+"L",
+						/* 6 */
+						StatCollector.translateToLocal("GT5U.turbine.dmg")+": "+EnumChatFormatting.RED+Integer.toString(tDura)+EnumChatFormatting.RESET+"%",
+						/* 7 */
+						StatCollector.translateToLocal("GT5U.multiblock.pollution")+": "+ EnumChatFormatting.GREEN + mPollutionReduction+ EnumChatFormatting.RESET+" %"
+						/* 8 */
 		};
 		if (!this.getClass().getName().contains("Steam"))
 			ret[4]=StatCollector.translateToLocal("GT5U.turbine.flow")+": "+EnumChatFormatting.YELLOW+MathUtils.safeInt((long)realOptFlow)+EnumChatFormatting.RESET+" L/t";
@@ -482,8 +468,8 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechM
 		mPollution += aPollutionLevel;
 		for (GT_MetaTileEntity_Hatch_Muffler tHatch : mMufflerHatches) {
 			if (isValidMetaTileEntity(tHatch)) {
-				if (mPollution >= 1000) {
-					if (tHatch.polluteEnvironment()) {
+				if (mPollution >= 1000) {					
+					if (PollutionUtils.addPollution(this.getBaseMetaTileEntity(), 1000)) {
 						mPollution -= 1000;
 					}
 				} else {
@@ -505,84 +491,36 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechM
 			//super.onModeChangeByScrewdriver(aSide, aPlayer, aX, aY, aZ);		
 		}
 		else {
+			/*
 			this.mIsAnimated = Utils.invertBoolean(mIsAnimated);
 			if (this.mIsAnimated) {
-				PlayerUtils.messagePlayer(aPlayer, "Using Animated Turbine Texture.");
+			PlayerUtils.messagePlayer(aPlayer, "Using Animated Turbine Texture.");
 			}
 			else {
-				PlayerUtils.messagePlayer(aPlayer, "Using Static Turbine Texture.");			
+			PlayerUtils.messagePlayer(aPlayer, "Using Static Turbine Texture.");			
 			}		
 			if (mTurbineRotorHatches.size() > 0) {
-				for (GT_MetaTileEntity_Hatch_Turbine h : mTurbineRotorHatches) {
-					if (h != null) {
-						h.mUsingAnimation = mIsAnimated;
-					}
+			for (GT_MetaTileEntity_Hatch_Turbine h : mTurbineRotorHatches) {
+				if (h != null) {
+					h.mUsingAnimation = mIsAnimated;
 				}
-			}	
-		}			
-	}
-
-	@Override
-	public void saveNBTData(NBTTagCompound aNBT) {
-		super.saveNBTData(aNBT);
-		aNBT.setBoolean("mIsAnimated", mIsAnimated);
-	}
-
-	@Override
-	public void loadNBTData(NBTTagCompound aNBT) {
-		super.loadNBTData(aNBT);
-		mIsAnimated = aNBT.getBoolean("mIsAnimated");
-	}
-	
-	private boolean mIsAnimated = true;
-	public ITexture frontFace;
-	public ITexture frontFaceActive;
-	private CustomIcon GT9_5_Active;
-	private CustomIcon GT9_5;	
-	
-	public boolean usingAnimations() {
-		return mIsAnimated;
-	}	
-
-    @Override
-    public final ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[1][aColorIndex + 1], aFacing == aSide ? getFrontFacingTurbineTexture(aActive) : Textures.BlockIcons.getCasingTextureForId(getTAE())};
-    }
-	
-	protected ITexture getFrontFacingTurbineTexture(boolean isActive) {
-		if (usingAnimations()) {
-			if (isActive) {
-				return frontFaceActive;
 			}
+			}	
+			*/}			
+	}
+
+	@Override
+	public final ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
+		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[1][aColorIndex + 1], aFacing == aSide ? getFrontFacingTurbineTexture(aActive) : Textures.BlockIcons.getCasingTextureForId(getCasingTextureIndex())};
+	}
+
+	protected ITexture getFrontFacingTurbineTexture(boolean isActive) {
+		if (isActive) {
+			return frontFaceActive;
 		}
 		return frontFace;
 	}
-	
-	public boolean addTurbineHatch(final IGregTechTileEntity aTileEntity,
-			final int aBaseCasingIndex) {
-		if (aTileEntity == null) {
-			return false;
-		}
-		final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-		if (aMetaTileEntity == null) {
-			return false;
-		}
-		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Turbine) {
-			log("Found GT_MetaTileEntity_Hatch_Turbine");
-			updateTexture(aTileEntity, aBaseCasingIndex);
-			GT_MetaTileEntity_Hatch_Turbine aTurbineHatch = (GT_MetaTileEntity_Hatch_Turbine) aMetaTileEntity;
-			IGregTechTileEntity g = this.getBaseMetaTileEntity();
-			if (aTurbineHatch.setController(new BlockPos(g.getXCoord(), g.getYCoord(), g.getZCoord(), g.getWorld()))) {
-				Logger.INFO("Injected Controller into Turbine Assembly.");
-				return this.mTurbineRotorHatches.add(aTurbineHatch);
-			}
-			else {
-				Logger.INFO("Failed to inject controller into Turbine Assembly Hatch.");
-			}
-		}
-		return false;
-	}
-	
+
 	@Override
 	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
 		super.onPostTick(aBaseMetaTileEntity, aTick);
@@ -594,21 +532,19 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechM
 		if (aTick % 20 == 0 || this.getBaseMetaTileEntity().hasWorkJustBeenEnabled()) {
 			enableAllTurbineHatches();
 		}
-		
+
 	}
 	@Override
 	public void startProcess() {
 		super.startProcess();
 		enableAllTurbineHatches();
 	}
-	@Override
-	public void onMachineBlockUpdate() {
-		super.onMachineBlockUpdate();
-	}
+	
 	@Override
 	public boolean onRunningTick(ItemStack aStack) {	
 		return super.onRunningTick(aStack);		
 	}
+	
 	@Override
 	public void stopMachine() {
 		super.stopMachine();
@@ -630,7 +566,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechM
 	public boolean disableAllTurbineHatches() {
 		return updateTurbineHatches(false) > 0;
 	}
-	
+
 	private Long mLastHatchUpdate;	
 	public int updateTurbineHatches(boolean aState) {
 		int aUpdated = 0;		
@@ -648,7 +584,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechM
 		mLastHatchUpdate = System.currentTimeMillis()/1000;
 		return aUpdated;
 	}
-	
+
 	@Override
 	public int getMaxParallelRecipes() {
 		return 1;
@@ -659,5 +595,14 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechM
 		return 0;
 	}
 	
+	@Override
+	public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+		super.onPreTick(aBaseMetaTileEntity, aTick);		
+		// Fix GT bug
+		if (this.getBaseMetaTileEntity().getFrontFacing() != 1) {
+			log("Fixing Bad Facing. (GT Bug)");
+			this.getBaseMetaTileEntity().setFrontFacing((byte) 1); 
+		}
+	}
+
 }
-*/

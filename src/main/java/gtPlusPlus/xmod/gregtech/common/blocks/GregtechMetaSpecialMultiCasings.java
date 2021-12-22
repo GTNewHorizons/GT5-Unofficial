@@ -2,21 +2,24 @@ package gtPlusPlus.xmod.gregtech.common.blocks;
 
 import java.util.List;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.common.blocks.GT_Material_Casings;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import gtPlusPlus.xmod.gregtech.common.blocks.textures.turbine.LargeTurbineTextureHandler;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 
 
 public class GregtechMetaSpecialMultiCasings extends GregtechMetaCasingBlocksAbstract {
-
-
-	public static class SpecialCasingItemBlock extends GregtechMetaCasingItems {
+	
+	public static class SpecialCasingItemBlock extends GregtechMetaCasingItems {		
 
 		public SpecialCasingItemBlock(Block par1) {
 			super(par1);
@@ -67,36 +70,43 @@ public class GregtechMetaSpecialMultiCasings extends GregtechMetaCasingBlocksAbs
 		GregtechItemList.Casing_Flotation_Cell.set(new ItemStack(this, 1, 9));
 		GregtechItemList.Casing_Reinforced_Engine_Casing.set(new ItemStack(this, 1, 10));
 	}	
-
-	public IIcon getIcon(int aSide, int aMeta) {
-
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public IIcon getIcon(final IBlockAccess aWorld, final int xCoord, final int yCoord, final int zCoord, final int aSide) {
+		return LargeTurbineTextureHandler.handleCasingsGT(aWorld, xCoord, yCoord, zCoord, aSide, this);
+	}
+	@Override
+	public IIcon getIcon(final int aSide, final int aMeta) {
+		return getStaticIcon((byte) aSide, (byte) aMeta);
+	}
+	
+	public static IIcon getStaticIcon(final byte aSide, final byte aMeta) {
 		switch (aMeta) {
+			case 0:
+				return TexturesGtBlock.Casing_Redox_1.getIcon();
+			case 1:
+				return Textures.BlockIcons.MACHINE_CASING_TURBINE.getIcon();
+			case 2:
+				return Textures.BlockIcons.MACHINE_CASING_STABLE_TITANIUM.getIcon();
+			case 3:
+				return Textures.BlockIcons.MACHINE_CASING_CLEAN_STAINLESSSTEEL.getIcon();
+			case 4:
+				return Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
+			case 5:
+				return TexturesGtBlock.Casing_Material_RedSteel.getIcon();
+			case 6:
+				return TexturesGtBlock.Casing_Material_MaragingSteel.getIcon();	
+			case 7:
+				return TexturesGtBlock.Casing_Material_Stellite.getIcon();
+			case 8:
+				return TexturesGtBlock.Casing_Machine_Simple_Top.getIcon();
+			case 9:
+				return TexturesGtBlock.TEXTURE_CASING_FLOTATION.getIcon();
+			case 10:
+				return TexturesGtBlock.Casing_Material_Talonite.getIcon();
 
-		case 0:
-			return TexturesGtBlock.Casing_Redox_1.getIcon();
-		case 1:
-			return Textures.BlockIcons.MACHINE_CASING_TURBINE.getIcon();
-		case 2:
-			return Textures.BlockIcons.MACHINE_CASING_CLEAN_STAINLESSSTEEL.getIcon();
-		case 3:
-			return Textures.BlockIcons.MACHINE_CASING_STABLE_TITANIUM.getIcon();
-		case 4:
-			return Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
-		case 5:
-			return TexturesGtBlock.Casing_Material_RedSteel.getIcon();
-		case 6:
-			return TexturesGtBlock.Casing_Material_MaragingSteel.getIcon();	
-		case 7:
-			return TexturesGtBlock.Casing_Material_Stellite.getIcon();
-		case 8:
-			return TexturesGtBlock.Casing_Machine_Simple_Top.getIcon();
-		case 9:
-			return TexturesGtBlock.TEXTURE_CASING_FLOTATION.getIcon();
-		case 10:
-			return TexturesGtBlock.Casing_Material_Talonite.getIcon();
-			
 		}
-
 		return Textures.BlockIcons.RENDERING_ERROR.getIcon();
 	}
 

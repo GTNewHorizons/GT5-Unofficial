@@ -1,11 +1,9 @@
-/*
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
@@ -21,10 +19,10 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.turbine.LargeTurbineTextu
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines.GregtechMetaTileEntity_LargerTurbineBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
+@SuppressWarnings("deprecation")
 public class GT_MetaTileEntity_Hatch_Turbine extends GT_MetaTileEntity_Hatch {
 
 	public boolean mHasController = false;
@@ -72,6 +70,22 @@ public class GT_MetaTileEntity_Hatch_Turbine extends GT_MetaTileEntity_Hatch {
 	public boolean isValidSlot(int aIndex) {
 		return false;
 	}
+	
+	public boolean hasTurbine() {
+		return GregtechMetaTileEntity_LargerTurbineBase.isValidTurbine(this.mInventory[0]);
+	}
+	
+	public boolean canWork() {
+		return hasTurbine();
+	}
+	
+	public boolean insertTurbine(ItemStack aTurbine) {
+		if (GregtechMetaTileEntity_LargerTurbineBase.isValidTurbine(aTurbine)) {
+			this.mInventory[0] = aTurbine;
+			return true;
+		}
+		return false;
+	}
 
 	@Override
 	public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
@@ -89,6 +103,7 @@ public class GT_MetaTileEntity_Hatch_Turbine extends GT_MetaTileEntity_Hatch {
 			PlayerUtils.messagePlayer(aPlayer, "[Turbine Assembly Data] Controller Active? "+this.isControllerActive());
 		}
 		PlayerUtils.messagePlayer(aPlayer, "[Turbine Assembly Data] Is Active? "+this.getBaseMetaTileEntity().isActive());
+		PlayerUtils.messagePlayer(aPlayer, "[Turbine Assembly Data] Has Turbine inserted? "+this.hasTurbine());
 		return true;
 	}
 
@@ -180,10 +195,10 @@ public class GT_MetaTileEntity_Hatch_Turbine extends GT_MetaTileEntity_Hatch {
 	public boolean isControllerActive() {
 		GregtechMetaTileEntity_LargerTurbineBase x = getController();
 		if (x != null) {
-			Logger.INFO("Checking Status of Controller.");
+			//Logger.INFO("Checking Status of Controller.");
 			return x.isMachineRunning();
 		}
-		Logger.INFO("Status of Controller failed, controller is null.");
+		//Logger.INFO("Status of Controller failed, controller is null.");
 		return false;
 	}
 
@@ -239,7 +254,7 @@ public class GT_MetaTileEntity_Hatch_Turbine extends GT_MetaTileEntity_Hatch {
 
 	private ITexture getFrontFacingTurbineTexture() {
 		if (!mHasController) {						
-			return this.getBaseMetaTileEntity().isActive() ? new GT_RenderedTexture(LargeTurbineTextureHandler.frontFaceHPActive_4) : new GT_RenderedTexture(LargeTurbineTextureHandler.frontFace_4 );
+			return this.getBaseMetaTileEntity().isActive() ? new GT_RenderedTexture(LargeTurbineTextureHandler.OVERLAY_LP_TURBINE_ACTIVE[4] ) : new GT_RenderedTexture(LargeTurbineTextureHandler.OVERLAY_LP_TURBINE[4] );
 		}
 		else {
 			if (usingAnimations()) {
@@ -272,8 +287,7 @@ public class GT_MetaTileEntity_Hatch_Turbine extends GT_MetaTileEntity_Hatch {
 	}
 
 	@Override
-	public boolean onWrenchRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY,
-			float aZ) {
+	public boolean onWrenchRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
 		// TODO Auto-generated method stub
 		return super.onWrenchRightClick(aSide, aWrenchingSide, aPlayer, aX, aY, aZ);
 	}
@@ -309,8 +323,4 @@ public class GT_MetaTileEntity_Hatch_Turbine extends GT_MetaTileEntity_Hatch {
 		this.getBaseMetaTileEntity().setActive(b);
 	}
 	
-	
-	
-	
-	
-}*/
+}
