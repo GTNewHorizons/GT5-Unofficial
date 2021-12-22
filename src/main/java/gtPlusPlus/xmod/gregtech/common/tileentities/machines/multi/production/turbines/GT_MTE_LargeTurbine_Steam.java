@@ -10,9 +10,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gtPlusPlus.core.util.math.MathUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -50,8 +48,13 @@ public class GT_MTE_LargeTurbine_Steam extends GregtechMetaTileEntity_LargerTurb
         return 16;
     }
 
+	@Override
+	protected boolean requiresOutputHatch() {
+		return true;
+	}
+
     @Override
-    public int getPollutionPerTick(ItemStack aStack) {
+    public int getPollutionPerSecond(ItemStack aStack) {
         return 0;
     }
 
@@ -132,13 +135,10 @@ public class GT_MTE_LargeTurbine_Steam extends GregtechMetaTileEntity_LargerTurb
     public int getDamageToComponent(ItemStack aStack) {
         return (looseFit && RANDOM.nextInt(4)==0)?0:1;
     }
-
- 
-    @Override
-    public String[] getExtraInfoData() {
-    	super.looseFit = looseFit;
-    	return super.getInfoData();
-    }
+    
+    public boolean isLooseMode() {
+		return looseFit;
+	}
  
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {

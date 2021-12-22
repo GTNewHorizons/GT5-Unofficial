@@ -11,7 +11,6 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.xmod.gregtech.common.blocks.textures.turbine.LargeTurbineTextureHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -46,8 +45,13 @@ public class GT_MTE_LargeTurbine_SHSteam extends GregtechMetaTileEntity_LargerTu
         return 59;
     }
 
+	@Override
+	protected boolean requiresOutputHatch() {
+		return true;
+	}
+
     @Override
-    public int getPollutionPerTick(ItemStack aStack) {
+    public int getPollutionPerSecond(ItemStack aStack) {
         return 0;
     }
 
@@ -125,11 +129,9 @@ public class GT_MTE_LargeTurbine_SHSteam extends GregtechMetaTileEntity_LargerTu
         return (looseFit && CORE.RANDOM.nextInt(4)==0)?0:1;
     }
     
-    @Override
-    public String[] getExtraInfoData() {
-    	super.looseFit = looseFit;
-    	return super.getInfoData();
-    }
+    public boolean isLooseMode() {
+		return looseFit;
+	}
     
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {

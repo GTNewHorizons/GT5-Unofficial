@@ -3,6 +3,7 @@ package gtPlusPlus.xmod.gregtech.api.gui.hatches;
 import gregtech.api.gui.GT_Container_1by1;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaGenerated_Tool;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines.GregtechMetaTileEntity_LargerTurbineBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
@@ -36,12 +37,7 @@ public class CONTAINER_1by1_Turbine extends GT_Container_1by1 {
     	}
     	@Override
     	public boolean isItemValid(final ItemStack itemstack) {
-    		if (itemstack.getItem() instanceof GT_MetaGenerated_Tool) {
-    			if (itemstack.getItemDamage() >= 170 && itemstack.getItemDamage() <= 176) {
-    				return true;
-    			}    			
-    		}
-    		return false;
+    		return GregtechMetaTileEntity_LargerTurbineBase.isValidTurbine(itemstack);
     	}
     	@Override
     	public int getSlotStackLimit() {
@@ -52,9 +48,10 @@ public class CONTAINER_1by1_Turbine extends GT_Container_1by1 {
 			return false;
 		}
 		@Override
-		public void putStack(ItemStack p_75215_1_) {
-			// TODO Auto-generated method stub
-			super.putStack(p_75215_1_);
+		public void putStack(ItemStack aStack) {
+			if (isItemValid(aStack)) {
+				this.inventory.setInventorySlotContents(0, aStack);
+			}
 		}		
     }    
 }

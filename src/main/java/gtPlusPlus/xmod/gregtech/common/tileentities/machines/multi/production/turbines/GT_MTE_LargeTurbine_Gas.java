@@ -11,7 +11,6 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
@@ -43,15 +42,25 @@ public class GT_MTE_LargeTurbine_Gas extends GregtechMetaTileEntity_LargerTurbin
         return 58;
     }
 
+
+	@Override
+	protected boolean requiresOutputHatch() {
+		return false;
+	}
+
     @Override
-    public int getPollutionPerTick(ItemStack aStack) {
-        return 15;
+    public int getPollutionPerSecond(ItemStack aStack) {
+        return 5000;
     }
     
     public int getFuelValue(FluidStack aLiquid) {
-        if (aLiquid == null) return 0;
+        if (aLiquid == null) {
+        	return 0;
+        }
         GT_Recipe tFuel = GT_Recipe_Map.sTurbineFuels.findFuel(aLiquid);
-        if (tFuel != null) return tFuel.mSpecialValue;
+        if (tFuel != null) {
+        	return tFuel.mSpecialValue;
+        }
         return 0;
     }
 
@@ -63,7 +72,7 @@ public class GT_MTE_LargeTurbine_Gas extends GregtechMetaTileEntity_LargerTurbin
 
             FluidStack firstFuelType = new FluidStack(aFluids.get(0), 0); // Identify a SINGLE type of fluid to process.  Doesn't matter which one. Ignore the rest!
             int fuelValue = getFuelValue(firstFuelType);
-
+            //log("Fuel Value of "+aFluids.get(0).getLocalizedName()+" is "+fuelValue+"eu");
             if (aOptFlow < fuelValue) {
                 // turbine too weak and/or fuel too powerful
                 // at least consume 1L
@@ -94,6 +103,11 @@ public class GT_MTE_LargeTurbine_Gas extends GregtechMetaTileEntity_LargerTurbin
             if (totalFlow <= 0) return 0;
             tEU = GT_Utility.safeInt((long) totalFlow * fuelValue);
 
+            //log("Total Flow: "+totalFlow);
+            //log("Real Optimal Flow: "+actualOptimalFlow);
+            //log("Flow: "+flow);
+            //log("Remaining Flow: "+remainingFlow);
+            
             if (totalFlow == actualOptimalFlow) {
                 tEU = GT_Utility.safeInt((long) tEU * (long) aBaseEff / 10000L);
             } else {
@@ -110,26 +124,17 @@ public class GT_MTE_LargeTurbine_Gas extends GregtechMetaTileEntity_LargerTurbin
 
     @Override
     public int getDamageToComponent(ItemStack aStack) {
-        return (looseFit && RANDOM.nextInt(4)==0)?0:1;
-    }
-
- 
-    @Override
-    public String[] getExtraInfoData() {
-    	super.looseFit = looseFit;
-    	return super.getInfoData();
+        return (RANDOM.nextInt(4) == 0) ? 0 : 1;
     }
  
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setBoolean("turbineFitting",looseFit);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        looseFit=aNBT.getBoolean("turbineFitting");
     }
 
 	@Override
@@ -139,27 +144,27 @@ public class GT_MTE_LargeTurbine_Gas extends GregtechMetaTileEntity_LargerTurbin
 
 	@Override
 	public String getMachineType() {
-		return "Large Steam Turbine";
+		return "Large Gas Turbine";
 	}
 
 	@Override
 	protected String getTurbineType() {
-		return "Steam";
+		return "Gas";
 	}
 
 	@Override
 	protected String getCasingName() {
-		return "Reinforced Steam Turbine Casing";
+		return "Reinforced Gas Turbine Casing";
 	}
 
 	@Override
 	protected ITexture getTextureFrontFace() {
-		return new GT_RenderedTexture(gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_ST5);
+		return new GT_RenderedTexture(gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_SS5);
 	}
 
 	@Override
 	protected ITexture getTextureFrontFaceActive() {
-		return new GT_RenderedTexture(gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_ST_ACTIVE5);
+		return new GT_RenderedTexture(gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_SS_ACTIVE5);
 	}
 
 }

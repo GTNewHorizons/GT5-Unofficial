@@ -40,8 +40,13 @@ public class GT_MTE_LargeTurbine_Plasma extends GregtechMetaTileEntity_LargerTur
         return 60;
     }
 
+	@Override
+	protected boolean requiresOutputHatch() {
+		return true;
+	}
+
     @Override
-    public int getPollutionPerTick(ItemStack aStack) {
+    public int getPollutionPerSecond(ItemStack aStack) {
         return 0;
     }
     
@@ -115,11 +120,6 @@ public class GT_MTE_LargeTurbine_Plasma extends GregtechMetaTileEntity_LargerTur
     public int getDamageToComponent(ItemStack aStack) {
         return 1;
     }
- 
-    @Override
-    public String[] getExtraInfoData() {
-    	return super.getInfoData();
-    }
 
 	@Override
 	public String getCustomGUIResourceName() {
@@ -128,28 +128,28 @@ public class GT_MTE_LargeTurbine_Plasma extends GregtechMetaTileEntity_LargerTur
 
 	@Override
 	public String getMachineType() {
-		return "Large Steam Turbine";
+		return "Large Plasma Turbine";
 	}
 
 
 	@Override
 	protected String getTurbineType() {
-		return "Steam";
+		return "Plasma";
 	}
 
 	@Override
 	protected String getCasingName() {
-		return "Reinforced Steam Turbine Casing";
+		return "Reinforced Plasma Turbine Casing";
 	}
 	
 	@Override
 	protected ITexture getTextureFrontFace() {
-		return new GT_RenderedTexture(gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_ST5);
+		return new GT_RenderedTexture(gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_TU5);
 	}
 
 	@Override
 	protected ITexture getTextureFrontFaceActive() {
-		return new GT_RenderedTexture(gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_ST_ACTIVE5);
+		return new GT_RenderedTexture(gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_TU_ACTIVE5);
 	}
 
 }

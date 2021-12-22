@@ -63,7 +63,7 @@ extends GregtechMeta_MultiBlockBase {
 				.addCasingInfo("Sieve Grate", 18)
 				.addCasingInfo("Sieve Casings", 35)
 				.addInputBus("Any Casing", 1)
-				.addOutputBus("Any Casing", 1)
+				.addOutputBus("Any Casing (x4)", 1)
 				.addEnergyHatch("Any Casing", 1)
 				.addMaintenanceHatch("Any Casing", 1)
 				.addMufflerHatch("Any Casing", 1)
