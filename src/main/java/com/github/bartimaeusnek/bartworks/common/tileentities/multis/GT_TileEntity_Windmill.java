@@ -107,7 +107,8 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_MultiBlockBase {
         if (tRecipe == null)
             return false;
         if (tRecipe.getOutput(0) != null) {
-            aStack.stackSize--;
+            // Decrease input stack by appropriate amount (Not always 1)
+            tRecipe.isRecipeInputEqual(true, null, aStack);
             this.mOutputItems[0] = tRecipe.getOutput(0);
 
             if (new XSTR().nextInt(2) == 0) {
@@ -124,7 +125,6 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_MultiBlockBase {
                         BW_Util.checkStackAndPrefix(this.mOutputItems[0]) && GT_OreDictUnificator.getAssociation(this.mOutputItems[0]).mMaterial.mMaterial == Materials.Sugar ||
                         BW_Util.checkStackAndPrefix(this.mOutputItems[0]) && GT_OreDictUnificator.getAssociation(this.mOutputItems[0]).mMaterial.mMaterial == Materials.Wheat ||
                         BW_Util.checkStackAndPrefix(this.mOutputItems[0]) && GT_OreDictUnificator.getAssociation(this.mOutputItems[0]).mMaterial.mMaterial == Materials.Wood ||
-                        BW_Util.checkStackAndPrefix(this.mOutputItems[0]) && GT_OreDictUnificator.getAssociation(this.mOutputItems[0]).mMaterial.mMaterial == Materials.Clay ||
                         BW_Util.checkStackAndPrefix(this.mOutputItems[0]) && GT_OreDictUnificator.getAssociation(this.mOutputItems[0]).mMaterial.mMaterial == Materials.Ash ||
                         BW_Util.checkStackAndPrefix(this.mOutputItems[0]) && GT_OreDictUnificator.getAssociation(this.mOutputItems[0]).mMaterial.mMaterial == Materials.Snow ||
                         BW_Util.checkStackAndPrefix(this.mOutputItems[0]) && GT_OreDictUnificator.getAssociation(this.mOutputItems[0]).mMaterial.mMaterial == Materials.Stone ||
