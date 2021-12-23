@@ -5,84 +5,104 @@ import java.util.HashMap;
 import java.util.List;
 import net.minecraft.client.resources.I18n;
 
+import static pers.gwyog.gtneioreplugin.GTNEIOrePlugin.maxTooltipLines;
+
 public class DimensionHelper {
 
     public static String[] DimName =
             {
+                    // Non GC dimensions in progression order instead of alphabetical
+                    "Overworld",
+                    "Nether",
+                    "Twilight",
+                    "TheEnd",
+                    "Vanilla_EndAsteroids",
                     "EndAsteroid",
+                    // T1
                     "GalacticraftCore_Moon",
-                    "GalacticraftMars_Asteroids",
+                    // T2
+                    "GalaxySpace_Deimos",
                     "GalacticraftMars_Mars",
+                    "GalaxySpace_Phobos",
+                    // T3
+                    "GalacticraftMars_Asteroids",
+                    "GalaxySpace_Callisto",
+                    "GalaxySpace_Ceres",
+                    "GalaxySpace_Europa",
+                    "GalaxySpace_Ganymede",
+                    // T4
+                    "GalaxySpace_Io",
+                    "GalaxySpace_Mercury",
+                    "GalaxySpace_Venus",
+                    // T5
+                    "GalaxySpace_Enceladus",
+                    "GalaxySpace_Miranda",
+                    "GalaxySpace_Oberon",
+                    "GalaxySpace_Titan",
+                    // T6
+                    "GalaxySpace_Proteus",
+                    "GalaxySpace_Triton",
+                    // T7
+                    "GalaxySpace_Haumea",
+                    "GalaxySpace_Kuiperbelt",
+                    "GalaxySpace_MakeMake",
+                    "GalaxySpace_Pluto",
+                    // T8
                     "GalaxySpace_BarnardC",
                     "GalaxySpace_BarnardE",
                     "GalaxySpace_BarnardF",
-                    "GalaxySpace_Callisto",
                     "GalaxySpace_CentauriA",
-                    "GalaxySpace_Ceres",
-                    "GalaxySpace_Deimos",
-                    "GalaxySpace_Enceladus",
-                    "GalaxySpace_Europa",
-                    "GalaxySpace_Ganymede",
-                    "GalaxySpace_Haumea",
-                    "GalaxySpace_Io",
-                    "GalaxySpace_Kuiperbelt",
-                    "GalaxySpace_MakeMake",
-                    "GalaxySpace_Mercury",
-                    "GalaxySpace_Miranda",
-                    "GalaxySpace_Oberon",
-                    "GalaxySpace_Phobos",
-                    "GalaxySpace_Pluto",
-                    "GalaxySpace_Proteus",
                     "GalaxySpace_TcetiE",
-                    "GalaxySpace_Titan",
-                    "GalaxySpace_Triton",
+                    "Underdark",
                     "GalaxySpace_VegaB",
-                    "GalaxySpace_Venus",
-                    "Nether",
-                    "Overworld",
-                    "TheEnd",
-                    "Vanilla_EndAsteroids",
-                    "Twilight",
-                    "Underdark"
             };
 
     public static String[] DimNameDisplayed =
-            {// first 2 letters if one word else 1 letter of every word, execpt capital letter in name, then 1rst + capital Moon = Mo, BarnardC = BC, EndAsteroid = EA
-                    "EA",
-                    "Mo",
-                    "As",
-                    "Ma",
-                    "BC",
-                    "BE",
-                    "BF",
-                    "Ca",
-                    "CA",
-                    "Ce",
-                    "De",
-                    "En",
-                    "Eu",
-                    "Ga",
-                    "Ha",
-                    "Io",
-                    "KB",
-                    "MM",
-                    "Me",
-                    "Mi",
-                    "Ob",
-                    "Ph",
-                    "Pl",
-                    "Pr",
-                    "TE",
-                    "Ti",
-                    "Tr",
-                    "VB",
-                    "Ve",
-                    "Ne",
-                    "Ow",
-                    "EN",//End = EN bc En = Encalus
-                    "VA",
-                    "TF",
-                    "DD"
+            {// first 2 letters if one word else 1 letter of every word, except capital letter in name, then 1rst + capital Moon = Mo, BarnardC = BC, EndAsteroid = EA
+                    // Non GC dimensions in progression order instead of alphabetical
+                    "Ow", // Overworld
+                    "Ne", // Nether
+                    "TF", // Twilight
+                    "EN", // TheEnd because En = Encalus
+                    "VA", // Vanilla_EndAsteroids
+                    "EA", // EndAsteroid
+                    // T1
+                    "Mo", // GalacticraftCore_Moon
+                    // T2
+                    "De", // GalaxySpace_Deimos
+                    "Ma", // GalacticraftMars_Mars
+                    "Ph", // GalaxySpace_Phobos
+                    // T3
+                    "As", // GalacticraftMars_Asteroids
+                    "Ca", // GalaxySpace_Callisto
+                    "Ce", // GalaxySpace_Ceres
+                    "Eu", // GalaxySpace_Europa
+                    "Ga", // GalaxySpace_Ganymede
+                    // T4
+                    "Io", // GalaxySpace_Io
+                    "Me", // GalaxySpace_Mercury
+                    "Ve", // GalaxySpace_Venus
+                    // T5
+                    "En", // GalaxySpace_Enceladus
+                    "Mi", // GalaxySpace_Miranda
+                    "Ob", // GalaxySpace_Oberon
+                    "Ti", // GalaxySpace_Titan
+                    // T6
+                    "Pr", // GalaxySpace_Proteus
+                    "Tr", // GalaxySpace_Triton
+                    // T7
+                    "Ha", // GalaxySpace_Haumea
+                    "KB", // GalaxySpace_Kuiperbelt
+                    "MM", // GalaxySpace_MakeMake
+                    "Pl", // GalaxySpace_Pluto
+                    // T8
+                    "BC", // GalaxySpace_BarnardC
+                    "BE", // GalaxySpace_BarnardE
+                    "BF", // GalaxySpace_BarnardF
+                    "CB", // GalaxySpace_CentauriA is actually αCentauri Bb
+                    "TE", // GalaxySpace_TcetiE
+                    "DD", // Underdark
+                    "VB", // GalaxySpace_VegaB
             };
 
     private static HashMap<String, List<String>> tooltipBuffer = new HashMap<>();
@@ -99,49 +119,49 @@ public class DimensionHelper {
                     s = I18n.format("gtnop.world." + k);
                     switch (k) {
                         case "Moon":
-                            s = s + " (T1)";
+                            s = "T1: " + s;
                             break;
+                        case "Deimos":
                         case "Mars":
                         case "Phobos":
-                        case "Deimos":
-                            s = s + " (T2)";
+                            s = "T2: " + s;
                             break;
                         case "Asteroids":
+                        case "Callisto":
                         case "Ceres":
                         case "Europa":
                         case "Ganymede":
-                        case "Callisto":
-                            s = s + " (T3)";
+                            s = "T3: " + s;
                             break;
                         case "Io":
-                        case "Venus":
                         case "Mercury":
-                            s = s + " (T4)";
+                        case "Venus":
+                            s = "T4: " + s;
                             break;
                         case "Enceladus":
-                        case "Titan":
                         case "Miranda":
                         case "Oberon":
-                            s = s + " (T5)";
+                        case "Titan":
+                            s = "T5: " + s;
                             break;
                         case "Proteus":
                         case "Triton":
-                            s = s + " (T6)";
+                            s = "T6: " + s;
                             break;
-                        case "Pluto":
-                        case "Kuiperbelt":
                         case "Haumea":
+                        case "Kuiperbelt":
                         case "MakeMake":
-                            s = s + " (T7)";
+                        case "Pluto":
+                            s = "T7: " + s;
                             break;
-                        case "Underdark":
-                        case "CentauriA":
-                        case "VegaB":
                         case "BarnardC":
                         case "BarnardE":
                         case "BarnardF":
+                        case "CentauriA":
                         case "TcetiE":
-                            s = s + " (T8)";
+                        case "Underdark":
+                        case "VegaB":
+                            s = "T8: " + s;
                             break;
                     }
 
@@ -149,6 +169,12 @@ public class DimensionHelper {
                 }
             }
         }
+
+        if (dims.length > maxTooltipLines ) {
+            dims = StringPaddingHack.stringsToSpacedColumns(
+                dims, dims.length / maxTooltipLines + (dims.length % maxTooltipLines == 0 ? 0 : 1) , 2);
+        }
+
         return Arrays.asList(dims);
     }
 

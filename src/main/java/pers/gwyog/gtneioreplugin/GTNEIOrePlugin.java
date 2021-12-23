@@ -10,8 +10,6 @@ import org.apache.logging.log4j.Logger;
 import pers.gwyog.gtneioreplugin.util.GT5OreLayerHelper;
 import pers.gwyog.gtneioreplugin.util.GT5OreSmallHelper;
 
-import java.util.HashSet;
-
 @Mod(modid = GTNEIOrePlugin.MODID, name = GTNEIOrePlugin.NAME, version = GTNEIOrePlugin.VERSION, dependencies = "required-after:gregtech;required-after:NotEnoughItems")
 public class GTNEIOrePlugin {
     public static final String MODID = "GRADLETOKEN_MODID";
@@ -21,9 +19,8 @@ public class GTNEIOrePlugin {
     public static boolean csv = false;
     public static String CSVname;
     public static String CSVnameSmall;
-    public static HashSet OreV = new HashSet();
-    public static boolean hideBackground = true;
     public static boolean toolTips = true;
+    public static int maxTooltipLines = 11;
     @Mod.Instance(MODID)
     public static GTNEIOrePlugin instance;
 
@@ -33,8 +30,8 @@ public class GTNEIOrePlugin {
         csv = c.tConfig.getBoolean("print csv", "ALL", false, "princsv, you need apache commons collections to be injected in the minecraft jar.");
         CSVname = c.tConfig.getString("CSV_name", "ALL", event.getModConfigurationDirectory() + "/GTNH-Oresheet.csv", "rename the oresheet here, it will appear in /config");
         CSVnameSmall= c.tConfig.getString("CSV_name_for_Small_Ore_Sheet", "ALL", event.getModConfigurationDirectory() + "/GTNH-Small-Ores-Sheet.csv", "rename the oresheet here, it will appear in /config");
-        hideBackground = c.tConfig.getBoolean("Hide Background", "ALL", true, "Hides the Background when the tooltip for the Dimensions is rendered");
-        toolTips = c.tConfig.getBoolean("DimTooltip", "ALL", true, "Activates Dimensison Tooltips");
+        toolTips = c.tConfig.getBoolean("DimTooltip", "ALL", true, "Activates Dimension Tooltips");
+        maxTooltipLines = c.tConfig.getInt("MaxToolTipLines", "ALL", 11, 1, Integer.MAX_VALUE, "Maximum number of lines the dimension names tooltip can have before it wraps around.");
 
         c.save();
     }

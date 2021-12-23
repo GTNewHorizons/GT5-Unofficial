@@ -48,9 +48,9 @@ public class GT5CFGHelper {
                 rawboolsset.add(st);
             }
             rawbools = new ArrayList<String>(rawboolsset);
-            for (int i = 0; i < rawbools.size(); i++) {
-                st = rawbools.get(i);
-                for (int j = 0; j < DimensionHelper.DimName.length; j++) {
+            for (int j = 0; j < DimensionHelper.DimName.length; j++) {
+                for (int i = 0; i < rawbools.size(); i++) {
+                    st = rawbools.get(i);
                     if (st.contains(DimensionHelper.DimName[j]))
                         if (st.contains("=true"))
                             ret = (ret + DimensionHelper.DimNameDisplayed[j] + ",");
@@ -59,7 +59,7 @@ public class GT5CFGHelper {
         }
         ret = ret.trim();
         if (ret.equals("") || ret.equals(" "))
-            ret = "Not aviable in any Galactic Dim!";
+            ret = "Not available in any Galactic Dim!";
         return ret;
     }
 
@@ -73,7 +73,7 @@ public class GT5CFGHelper {
                 int buffer = (int) (0.1 * Runtime.getRuntime().freeMemory());
                 if (buffer > F.length())
                     buffer = (int) F.length();
-                //allocate 10% of free memory for read-in-buffer, if there is less than filesize memory aviable
+                //allocate 10% of free memory for read-in-buffer, if there is less than filesize memory available
                 //FMLLog.info("GT_CFG_found[0]");
                 FileReader in = new FileReader(F);
                 //FMLLog.info("FileReader created");
@@ -154,17 +154,17 @@ public class GT5CFGHelper {
 
                 HashSet<String> rawboolsset = new HashSet<String>();
                 if (!rawbools.isEmpty()) {
-                    //remove dublicats
+                    //remove dublicates
                     for (int i = 0; i < rawbools.size(); i++) {
                         st = rawbools.get(i).replace("B:", "").replace("_true", "").replace("_false", "").replaceAll(" ", "").replaceAll("\"", "");
                         rawboolsset.add(st);
                     }
                     rawbools = new ArrayList<String>(rawboolsset);
                     //filter for dims set to true
-                    for (int i = 0; i < rawbools.size(); i++) {
-                        st = rawbools.get(i);
+                    for (int j = 0; j < DimensionHelper.DimName.length; j++) {
                         //FMLLog.info("RawBools:"+st);
-                        for (int j = 0; j < DimensionHelper.DimName.length; j++) {
+                        for (int i = 0; i < rawbools.size(); i++) {
+                            st = rawbools.get(i);
                             if (st.contains(DimensionHelper.DimName[j]))
                                 if (st.contains("=true"))
                                     ret = (ret + DimensionHelper.DimNameDisplayed[j] + ",");
@@ -174,7 +174,7 @@ public class GT5CFGHelper {
                 ret = ret.trim();
                 //FMLLog.info("ret:"+ret);
                 if (ret.equals("") || ret.equals(" "))
-                    ret = "Not aviable in any Galactic Dim!";
+                    ret = "Not available in any Galactic Dim!";
                 return ret;
             } catch (IOException e) {
                 e.printStackTrace();
