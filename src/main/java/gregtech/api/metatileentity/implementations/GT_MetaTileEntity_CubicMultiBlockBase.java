@@ -48,7 +48,7 @@ public abstract class GT_MetaTileEntity_CubicMultiBlockBase<T extends GT_MetaTil
 					.build();
 		}
 	};
-	protected int mCasingAmount = 0;
+	private int mCasingAmount = 0;
 
 	protected GT_MetaTileEntity_CubicMultiBlockBase(int aID, String aName, String aNameRegional) {
 		super(aID, aName, aNameRegional);
