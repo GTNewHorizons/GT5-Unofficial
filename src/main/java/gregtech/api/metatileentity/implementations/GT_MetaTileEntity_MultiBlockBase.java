@@ -955,8 +955,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch && GT_ExoticEnergyInputHelper.isExoticEnergyInput(aMetaTileEntity)) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mExoticEnergyHatches.add((GT_MetaTileEntity_Hatch_Dynamo) aMetaTileEntity);
+            GT_MetaTileEntity_Hatch hatch = (GT_MetaTileEntity_Hatch) aMetaTileEntity;
+            hatch.updateTexture(aBaseCasingIndex);
+            return mExoticEnergyHatches.add(hatch);
         }
         return false;
     }
