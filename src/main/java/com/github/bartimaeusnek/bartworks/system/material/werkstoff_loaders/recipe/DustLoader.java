@@ -187,7 +187,7 @@ public class DustLoader implements IWerkstoffRunnable {
                     GT_Values.RA.addBlastRecipe(werkstoff.get(dust), GT_Utility.getIntegratedCircuit(1), null, null, werkstoff.getStats().getMeltingPoint() < 1750 ? werkstoff.get(ingot) : werkstoff.get(ingotHot), null, (int) Math.max(werkstoff.getStats().getMass() / 40L, 1L) * werkstoff.getStats().getMeltingPoint(), werkstoff.getStats().getMeltingVoltage(), werkstoff.getStats().getMeltingPoint());
                     if (werkstoff.getStats().getMeltingPoint() <= 1000) {
                         GT_Values.RA.addPrimitiveBlastRecipe(werkstoff.get(dust), null, 9, werkstoff.get(ingot), null, (int) Math.max(werkstoff.getStats().getMass() / 40L, 1L) * werkstoff.getStats().getMeltingPoint());
-                        GT_ModHandler.addRCBlastFurnaceRecipe(werkstoff.get(ingot), werkstoff.get(dust), werkstoff.getStats().getMeltingPoint());
+                        //GT_ModHandler.addRCBlastFurnaceRecipe(werkstoff.get(ingot), werkstoff.get(dust), werkstoff.getStats().getMeltingPoint());
                     }
                 }
             }
