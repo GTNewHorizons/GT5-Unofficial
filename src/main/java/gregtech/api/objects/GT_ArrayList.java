@@ -1,8 +1,11 @@
 package gregtech.api.objects;
 
+import com.google.common.collect.Collections2;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Objects;
 
 public class GT_ArrayList<E> extends ArrayList<E> {
     private static final long serialVersionUID = 1L;
@@ -46,15 +49,11 @@ public class GT_ArrayList<E> extends ArrayList<E> {
 
     @Override
     public boolean addAll(Collection<? extends E> aList) {
-        boolean rReturn = super.addAll(aList);
-        if (!mAllowNulls) {size_sS=size(); for (int i = 0; i < size_sS; i++) if (get(i) == null) {remove(i--);size_sS=size();}}
-        return rReturn;
+        return super.addAll(Collections2.filter(aList, Objects::nonNull));
     }
 
     @Override
     public boolean addAll(int aIndex, Collection<? extends E> aList) {
-        boolean rReturn = super.addAll(aIndex, aList);
-        if (!mAllowNulls) {size_sS=size(); for (int i = 0; i < size_sS; i++) if (get(i) == null) {remove(i--);size_sS=size();}}
-        return rReturn;
+        return super.addAll(aIndex, Collections2.filter(aList, Objects::nonNull));
     }
 }
