@@ -10,10 +10,8 @@ import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_CubicMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
+import gregtech.api.interfaces.tileentity.ITecTechEnergyHatchCompact;
+import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_ProcessingArray_Manager;
@@ -31,6 +29,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 
@@ -42,7 +41,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_AR
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_GLOW;
 import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine.isValidForLowGravity;
 
-public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_CubicMultiBlockBase<GT_MetaTileEntity_ProcessingArray> {
+public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_CubicMultiBlockBase<GT_MetaTileEntity_ProcessingArray> implements ITecTechEnergyHatchCompact {
 
     private GT_Recipe_Map mLastRecipeMap;
     private GT_Recipe mLastRecipe;
@@ -50,6 +49,8 @@ public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_CubicMu
     private int mMult = 0;
     private boolean mSeparate = false;
     private String mMachineName = "";
+
+    public ArrayList<GT_MetaTileEntity_Hatch> mAllEnergyHatches = new ArrayList<>();
 
     public GT_MetaTileEntity_ProcessingArray(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -87,6 +88,38 @@ public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_CubicMu
                 .addOutputHatch("Any casing", 1)
                 .toolTipFinisher("Gregtech");
         return tt;
+    }
+
+    @Override
+    public boolean addToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity == null) return false;
+        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity == null) return false;
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch) {
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+        }
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
+            ((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mRecipeMap = getRecipeMap();
+            return mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
+        }
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus) {
+            ((GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity).mRecipeMap = getRecipeMap();
+            return mInputBusses.add((GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity);
+        }
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output)
+            return mOutputHatches.add((GT_MetaTileEntity_Hatch_Output) aMetaTileEntity);
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus)
+            return mOutputBusses.add((GT_MetaTileEntity_Hatch_OutputBus) aMetaTileEntity);
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy)
+            return mAllEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy) aMetaTileEntity);
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance)
+            return mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance) aMetaTileEntity);
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler)
+            return mMufflerHatches.add((GT_MetaTileEntity_Hatch_Muffler) aMetaTileEntity);
+        if (isTecTechHatch(aMetaTileEntity) && aMetaTileEntity instanceof GT_MetaTileEntity_Hatch) {
+            return mAllEnergyHatches.add((GT_MetaTileEntity_Hatch) aMetaTileEntity);
+        }
+        return false;
     }
 
     @Override
@@ -419,12 +452,25 @@ public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_CubicMu
         return false;
     }
 
+    @Override
+    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        mCasingAmount = 0;
+        mAllEnergyHatches.clear();
+        return checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 0) &&
+                mCasingAmount >= getRequiredCasingCount() &&
+                checkHatches(aBaseMetaTileEntity, aStack);
+    }
+
+    @Override
+    public boolean drainEnergyInput(long aEU) {
+        return drainEnergy(aEU);
+    }
 
     @Override
     public String[] getInfoData() {
         long storedEnergy=0;
         long maxEnergy=0;
-        for(GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
+        for(GT_MetaTileEntity_Hatch tHatch : mAllEnergyHatches) {
             if (isValidMetaTileEntity(tHatch)) {
                 storedEnergy+=tHatch.getBaseMetaTileEntity().getStoredEU();
                 maxEnergy+=tHatch.getBaseMetaTileEntity().getEUCapacity();
@@ -441,9 +487,9 @@ public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_CubicMu
                 StatCollector.translateToLocal("GT5U.multiblock.usage") + ": " +
                         EnumChatFormatting.RED + GT_Utility.formatNumbers(-mEUt) + EnumChatFormatting.RESET + " EU/t",
                 StatCollector.translateToLocal("GT5U.multiblock.mei") + ": " +
-                        EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(getMaxInputVoltage()) + EnumChatFormatting.RESET + " EU/t(*2A) " +
+                        EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(getMaxInputVoltageMulti()) + EnumChatFormatting.RESET + " EU/t(*" + getMaxInputAmpsMulti() + "A) " +
                         StatCollector.translateToLocal("GT5U.machines.tier") + ": " +
-                        EnumChatFormatting.YELLOW + VN[GT_Utility.getTier(getMaxInputVoltage())] + EnumChatFormatting.RESET,
+                        EnumChatFormatting.YELLOW + VN[GT_Utility.getTier(getMaxInputVoltageMulti())] + EnumChatFormatting.RESET,
                 StatCollector.translateToLocal("GT5U.multiblock.problems") + ": " +
                         EnumChatFormatting.RED + (getIdealStatus() - getRepairStatus()) + EnumChatFormatting.RESET + " " +
                         StatCollector.translateToLocal("GT5U.multiblock.efficiency") + ": " +
@@ -457,4 +503,8 @@ public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_CubicMu
         };
     }
 
+    @Override
+    public List<GT_MetaTileEntity_Hatch> getAllEnergyHatchList() {
+        return mAllEnergyHatches;
+    }
 }
