@@ -536,8 +536,8 @@ public class GT_ModHandler {
 
     /**
      * RC-BlastFurnace Recipes
-     */
-    public static boolean addRCBlastFurnaceRecipe(ItemStack aInput, ItemStack aOutput, int aTime) {
+
+   public static boolean addRCBlastFurnaceRecipe(ItemStack aInput, ItemStack aOutput, int aTime) {
         aOutput = GT_OreDictUnificator.get(true, aOutput);
         if (aInput == null || aOutput == null || aTime <= 0) return false;
         if (!GregTech_API.sRecipeFile.get(ConfigCategories.Machines.rcblastfurnace, aInput, true)) return false;
@@ -550,7 +550,7 @@ public class GT_ModHandler {
         }
         return true;
     }
-
+*/
     public static boolean addPulverisationRecipe(ItemStack aInput, ItemStack aOutput1) {
         return addPulverisationRecipe(aInput, aOutput1, null, 0, false);
     }
