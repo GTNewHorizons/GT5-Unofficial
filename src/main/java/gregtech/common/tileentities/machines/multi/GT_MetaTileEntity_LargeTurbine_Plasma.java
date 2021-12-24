@@ -1,7 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -23,9 +22,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
 
-import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_TU_ACTIVE5;
-import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
-import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
+import static gregtech.api.enums.Textures.BlockIcons.*;
 
 public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_LargeTurbine {
 
@@ -39,7 +36,10 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        return new ITexture[]{MACHINE_CASINGS[1][aColorIndex + 1], aFacing == aSide ? aActive ? TextureFactory.builder().addIcon(LARGETURBINE_TU_ACTIVE5).extFacing().build() : TextureFactory.builder().addIcon(Textures.BlockIcons.LARGETURBINE_TU5).extFacing().build() : casingTexturePages[0][60]};
+        return new ITexture[]{MACHINE_CASINGS[1][aColorIndex + 1],
+                aFacing == aSide ?
+                        (aActive ? TextureFactory.builder().addIcon(LARGETURBINE_TU_ACTIVE5).extFacing().build() : hasTurbine() ? TextureFactory.builder().addIcon(LARGETURBINE_TU5).extFacing().build() : TextureFactory.builder().addIcon(LARGETURBINE_TU_EMPTY5).extFacing().build())
+                        : casingTexturePages[0][60]};
     }
 
     @Override

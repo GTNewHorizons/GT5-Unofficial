@@ -1145,7 +1145,47 @@ public class Textures {
         PIPE_RESTRICTOR_DR,
         PIPE_RESTRICTOR_LR,
 
-        OVERLAY_ME_HATCH;
+        OVERLAY_ME_HATCH,
+
+        LARGETURBINE_ST_EMPTY1,
+        LARGETURBINE_ST_EMPTY2,
+        LARGETURBINE_ST_EMPTY3,
+        LARGETURBINE_ST_EMPTY4,
+        LARGETURBINE_ST_EMPTY5,
+        LARGETURBINE_ST_EMPTY6,
+        LARGETURBINE_ST_EMPTY7,
+        LARGETURBINE_ST_EMPTY8,
+        LARGETURBINE_ST_EMPTY9,
+
+        LARGETURBINE_SS_EMPTY1,
+        LARGETURBINE_SS_EMPTY2,
+        LARGETURBINE_SS_EMPTY3,
+        LARGETURBINE_SS_EMPTY4,
+        LARGETURBINE_SS_EMPTY5,
+        LARGETURBINE_SS_EMPTY6,
+        LARGETURBINE_SS_EMPTY7,
+        LARGETURBINE_SS_EMPTY8,
+        LARGETURBINE_SS_EMPTY9,
+
+        LARGETURBINE_TI_EMPTY1,
+        LARGETURBINE_TI_EMPTY2,
+        LARGETURBINE_TI_EMPTY3,
+        LARGETURBINE_TI_EMPTY4,
+        LARGETURBINE_TI_EMPTY5,
+        LARGETURBINE_TI_EMPTY6,
+        LARGETURBINE_TI_EMPTY7,
+        LARGETURBINE_TI_EMPTY8,
+        LARGETURBINE_TI_EMPTY9,
+
+        LARGETURBINE_TU_EMPTY1,
+        LARGETURBINE_TU_EMPTY2,
+        LARGETURBINE_TU_EMPTY3,
+        LARGETURBINE_TU_EMPTY4,
+        LARGETURBINE_TU_EMPTY5,
+        LARGETURBINE_TU_EMPTY6,
+        LARGETURBINE_TU_EMPTY7,
+        LARGETURBINE_TU_EMPTY8,
+        LARGETURBINE_TU_EMPTY9;
 
         /**
          * Icon for Fresh CFoam
@@ -1310,6 +1350,17 @@ public class Textures {
                         LARGETURBINE_ST_ACTIVE8,
                         LARGETURBINE_ST_ACTIVE9
                 },
+                TURBINE_EMPTY = {
+                        LARGETURBINE_ST_EMPTY1,
+                        LARGETURBINE_ST_EMPTY2,
+                        LARGETURBINE_ST_EMPTY3,
+                        LARGETURBINE_ST_EMPTY4,
+                        LARGETURBINE_ST_EMPTY5,
+                        LARGETURBINE_ST_EMPTY6,
+                        LARGETURBINE_ST_EMPTY7,
+                        LARGETURBINE_ST_EMPTY8,
+                        LARGETURBINE_ST_EMPTY9
+                },
                 TURBINE1 = {
                         LARGETURBINE_SS1,
                         LARGETURBINE_SS2,
@@ -1331,6 +1382,17 @@ public class Textures {
                         LARGETURBINE_SS_ACTIVE7,
                         LARGETURBINE_SS_ACTIVE8,
                         LARGETURBINE_SS_ACTIVE9
+                },
+                TURBINE_EMPTY1 = {
+                        LARGETURBINE_SS_EMPTY1,
+                        LARGETURBINE_SS_EMPTY2,
+                        LARGETURBINE_SS_EMPTY3,
+                        LARGETURBINE_SS_EMPTY4,
+                        LARGETURBINE_SS_EMPTY5,
+                        LARGETURBINE_SS_EMPTY6,
+                        LARGETURBINE_SS_EMPTY7,
+                        LARGETURBINE_SS_EMPTY8,
+                        LARGETURBINE_SS_EMPTY9
                 },
                 TURBINE2 = {
                         LARGETURBINE_TI1,
@@ -1354,6 +1416,17 @@ public class Textures {
                         LARGETURBINE_TI_ACTIVE8,
                         LARGETURBINE_TI_ACTIVE9
                 },
+                TURBINE_EMPTY2 = {
+                        LARGETURBINE_TI_EMPTY1,
+                        LARGETURBINE_TI_EMPTY2,
+                        LARGETURBINE_TI_EMPTY3,
+                        LARGETURBINE_TI_EMPTY4,
+                        LARGETURBINE_TI_EMPTY5,
+                        LARGETURBINE_TI_EMPTY6,
+                        LARGETURBINE_TI_EMPTY7,
+                        LARGETURBINE_TI_EMPTY8,
+                        LARGETURBINE_TI_EMPTY9
+                },
                 TURBINE3 = {
                         LARGETURBINE_TU1,
                         LARGETURBINE_TU2,
@@ -1375,6 +1448,17 @@ public class Textures {
                         LARGETURBINE_TU_ACTIVE7,
                         LARGETURBINE_TU_ACTIVE8,
                         LARGETURBINE_TU_ACTIVE9
+                },
+                TURBINE_EMPTY3 = {
+                        LARGETURBINE_TU_EMPTY1,
+                        LARGETURBINE_TU_EMPTY2,
+                        LARGETURBINE_TU_EMPTY3,
+                        LARGETURBINE_TU_EMPTY4,
+                        LARGETURBINE_TU_EMPTY5,
+                        LARGETURBINE_TU_EMPTY6,
+                        LARGETURBINE_TU_EMPTY7,
+                        LARGETURBINE_TU_EMPTY8,
+                        LARGETURBINE_TU_EMPTY9
                 },
                 CONNECTED_HULLS = {
                         CONCRETE_DARK_STONE,
