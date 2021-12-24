@@ -431,7 +431,7 @@ public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_CubicMu
 
     @Override
     public boolean drainEnergyInput(long aEU) {
-        return GT_ExoticEnergyInputHelper.drainEnergy(aEU, getExoticEnergyHatchList());
+        return GT_ExoticEnergyInputHelper.drainEnergy(aEU, getExoticAndNormalEnergyHatchList());
     }
 
     @Override
@@ -455,9 +455,9 @@ public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_CubicMu
                 StatCollector.translateToLocal("GT5U.multiblock.usage") + ": " +
                         EnumChatFormatting.RED + GT_Utility.formatNumbers(-mEUt) + EnumChatFormatting.RESET + " EU/t",
                 StatCollector.translateToLocal("GT5U.multiblock.mei") + ": " +
-                        EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(GT_ExoticEnergyInputHelper.getMaxInputVoltageMulti(getExoticEnergyHatchList())) + EnumChatFormatting.RESET + " EU/t(*" + GT_ExoticEnergyInputHelper.getMaxInputAmpsMulti(getExoticEnergyHatchList()) + "A) " +
+                        EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(GT_ExoticEnergyInputHelper.getMaxInputVoltageMulti(getExoticAndNormalEnergyHatchList())) + EnumChatFormatting.RESET + " EU/t(*" + GT_ExoticEnergyInputHelper.getMaxInputAmpsMulti(getExoticAndNormalEnergyHatchList()) + "A) " +
                         StatCollector.translateToLocal("GT5U.machines.tier") + ": " +
-                        EnumChatFormatting.YELLOW + VN[GT_Utility.getTier(GT_ExoticEnergyInputHelper.getMaxInputVoltageMulti(getExoticEnergyHatchList()))] + EnumChatFormatting.RESET,
+                        EnumChatFormatting.YELLOW + VN[GT_Utility.getTier(GT_ExoticEnergyInputHelper.getMaxInputVoltageMulti(getExoticAndNormalEnergyHatchList()))] + EnumChatFormatting.RESET,
                 StatCollector.translateToLocal("GT5U.multiblock.problems") + ": " +
                         EnumChatFormatting.RED + (getIdealStatus() - getRepairStatus()) + EnumChatFormatting.RESET + " " +
                         StatCollector.translateToLocal("GT5U.multiblock.efficiency") + ": " +
@@ -471,7 +471,10 @@ public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_CubicMu
         };
     }
 
-    public List<GT_MetaTileEntity_Hatch> getExoticEnergyHatchList() {
-        return mExoticEnergyHatches;
+    public List<GT_MetaTileEntity_Hatch> getExoticAndNormalEnergyHatchList() {
+        List<GT_MetaTileEntity_Hatch> tHatches = new ArrayList<>();
+        tHatches.addAll(mExoticEnergyHatches);
+        tHatches.addAll(mEnergyHatches);
+        return tHatches;
     }
 }
