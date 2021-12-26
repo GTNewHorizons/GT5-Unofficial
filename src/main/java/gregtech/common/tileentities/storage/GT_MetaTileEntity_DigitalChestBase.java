@@ -28,6 +28,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SCHEST_GLOW;
 @Optional.Interface(iface = "appeng.api.storage.IMEMonitor", modid = "appliedenergistics2", striprefs = true)
 public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEntity_TieredMachineBlock implements appeng.api.storage.IMEMonitor<appeng.api.storage.data.IAEItemStack> {
     protected boolean mVoidOverflow = false;
+    public boolean voidBreak;
     private Map<appeng.api.storage.IMEMonitorHandlerReceiver<appeng.api.storage.data.IAEItemStack>, Object> listeners = null;
 
     public GT_MetaTileEntity_DigitalChestBase(int aID, String aName, String aNameRegional, int aTier) {
@@ -35,7 +36,8 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
                 "This Chest stores " + GT_Utility.formatNumbers(commonSizeCompute(aTier)) + " Blocks",
                 "Use a screwdriver to enable",
                 "voiding items on overflow",
-                "Can keep its contents when harvested"
+                "Can keep its contents when harvested",
+                "Sneak when harvesting to void its contents"
         });
     }
 
@@ -323,6 +325,12 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         if (!aBaseMetaTileEntity.isClientSide()) aBaseMetaTileEntity.openGUI(aPlayer);
         return true;
+    }
+
+    @Override
+    public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        voidBreak = aPlayer.isSneaking();
+        super.onLeftclick(aBaseMetaTileEntity, aPlayer);
     }
 
     @Override

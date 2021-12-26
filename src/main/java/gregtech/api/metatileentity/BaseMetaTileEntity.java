@@ -140,7 +140,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
             aNBT.setLong("mStoredSteam", mStoredSteam);
             aNBT.setLong("mStoredEnergy", mStoredEnergy);
             for (int i = 0; i < mCoverData.length; i++) {
-                if (mCoverData[i] != null)
+                if (mCoverSides[i] != 0 && mCoverData[i] != null)
                     aNBT.setTag(COVER_DATA_NBT_KEYS[i], mCoverData[i].saveDataToNBT());
             }
             aNBT.setIntArray("mCoverSides", mCoverSides);
@@ -693,14 +693,12 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
             createNewMetatileEntity(mID);
         }
 
-        mCoverSides[0] = aCover0;
-        mCoverSides[1] = aCover1;
-        mCoverSides[2] = aCover2;
-        mCoverSides[3] = aCover3;
-        mCoverSides[4] = aCover4;
-        mCoverSides[5] = aCover5;
-
-        for (byte i = 0; i < 6; i++) mCoverBehaviors[i] = GregTech_API.getCoverBehaviorNew(mCoverSides[i]);
+        setCoverIDAtSide((byte) 0, aCover0);
+        setCoverIDAtSide((byte) 1, aCover1);
+        setCoverIDAtSide((byte) 2, aCover2);
+        setCoverIDAtSide((byte) 3, aCover3);
+        setCoverIDAtSide((byte) 4, aCover4);
+        setCoverIDAtSide((byte) 5, aCover5);
 
         receiveClientEvent(ClientEvents.CHANGE_COMMON_DATA, aTextureData);
         receiveClientEvent(ClientEvents.CHANGE_CUSTOM_DATA, aUpdateData & 0x7F);
@@ -1439,14 +1437,16 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
         if (mColor > 0) tNBT.setByte("mColor", mColor);
         if (mOtherUpgrades > 0) tNBT.setByte("mOtherUpgrades", mOtherUpgrades);
         if (mStrongRedstone > 0) tNBT.setByte("mStrongRedstone", mStrongRedstone);
+        boolean hasCover = false;
         for (byte i = 0; i < mCoverSides.length; i++) {
             if (mCoverSides[i] != 0) {
                 if (mCoverData[i] != null) // this really shouldn't be null if a cover is there already, but whatever
                     tNBT.setTag(COVER_DATA_NBT_KEYS[i], mCoverData[i].saveDataToNBT());
-                tNBT.setIntArray("mCoverSides", mCoverSides);
-                break;
+                hasCover = true;
             }
         }
+        if (hasCover)
+            tNBT.setIntArray("mCoverSides", mCoverSides);
         if (hasValidMetaTileEntity()) mMetaTileEntity.setItemNBT(tNBT);
         if (!tNBT.hasNoTags()) rStack.setTagCompound(tNBT);
         return new ArrayList<ItemStack>(Arrays.asList(rStack));

@@ -16,10 +16,14 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_QTANK;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_QTANK_GLOW;
 
 public class GT_MetaTileEntity_QuantumTank extends GT_MetaTileEntity_BasicTank {
+
+    private boolean voidBreak;
+
     public GT_MetaTileEntity_QuantumTank(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 3, new String[]{
                 "Stores " + GT_Utility.formatNumbers(commonSizeCompute(aTier)) + "L of fluid",
-                "Can keep its contents when harvested"
+                "Can keep its contents when harvested",
+                "Sneak when harvesting to void its contents"
         });
     }
 
@@ -55,8 +59,10 @@ public class GT_MetaTileEntity_QuantumTank extends GT_MetaTileEntity_BasicTank {
 
     @Override
     public void setItemNBT(NBTTagCompound aNBT) {
-        if (mFluid != null && mFluid.amount > 0)
-            aNBT.setTag("mFluid", mFluid.writeToNBT(new NBTTagCompound()));
+        if (!voidBreak) {
+            if (mFluid != null && mFluid.amount > 0)
+                aNBT.setTag("mFluid", mFluid.writeToNBT(new NBTTagCompound()));
+        }
         super.setItemNBT(aNBT);
     }
 
@@ -114,6 +120,12 @@ public class GT_MetaTileEntity_QuantumTank extends GT_MetaTileEntity_BasicTank {
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         if (!aBaseMetaTileEntity.isClientSide()) aBaseMetaTileEntity.openGUI(aPlayer);
         return true;
+    }
+
+    @Override
+    public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        voidBreak = aPlayer.isSneaking();
+        super.onLeftclick(aBaseMetaTileEntity, aPlayer);
     }
 
     @Override

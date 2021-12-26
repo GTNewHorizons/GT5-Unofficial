@@ -48,6 +48,9 @@ public class Behaviour_DataStick extends Behaviour_None {
         	}
         	}
         }
+		long lastUpdate = GT_Utility.ItemNBT.getNBT(aStack).getLong("lastUpdate");
+		if (lastUpdate != 0)
+			aList.add(String.format("Last update at: %tc", lastUpdate));
        
         return aList;
     }

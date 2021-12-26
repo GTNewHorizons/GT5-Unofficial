@@ -10,6 +10,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.util.GT_ExoticEnergyInputHelper;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
@@ -55,6 +56,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
     public ArrayList<GT_MetaTileEntity_Hatch_Muffler> mMufflerHatches = new ArrayList<>();
     public ArrayList<GT_MetaTileEntity_Hatch_Energy> mEnergyHatches = new ArrayList<>();
     public ArrayList<GT_MetaTileEntity_Hatch_Maintenance> mMaintenanceHatches = new ArrayList<>();
+    protected final List<GT_MetaTileEntity_Hatch> mExoticEnergyHatches = new ArrayList<>();
 
     public GT_MetaTileEntity_MultiBlockBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 2);
@@ -724,7 +726,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
         		if (!tHatch.outputsLiquids()) {
         			continue;
         		}
-        		if (tHatch.isFluidLocked() && tHatch.getLockedFluidName() != null && !tHatch.getLockedFluidName().equals(copiedFluidStack.getUnlocalizedName())) {
+        		if (tHatch.isFluidLocked() && tHatch.getLockedFluidName() != null && !tHatch.getLockedFluidName().equals(copiedFluidStack.getFluid().getName())) {
         			continue;
         		}
         	}
@@ -885,6 +887,15 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
             if (isValidMetaTileEntity(tHatch)) tHatch.updateSlots();
     }
 
+    protected static <T extends GT_MetaTileEntity_Hatch> T identifyHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex, Class<T> clazz) {
+        if (aTileEntity == null) return null;
+        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+        if (!clazz.isInstance(aMetaTileEntity)) return null;
+        T hatch = clazz.cast(aMetaTileEntity);
+        hatch.updateTexture(aBaseCasingIndex);
+        return hatch;
+    }
+
     public boolean addToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
@@ -935,6 +946,18 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy) {
             ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return mEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy) aMetaTileEntity);
+        }
+        return false;
+    }
+
+    public boolean addExoticEnergyInputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity == null) return false;
+        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity == null) return false;
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch && GT_ExoticEnergyInputHelper.isExoticEnergyInput(aMetaTileEntity)) {
+            GT_MetaTileEntity_Hatch hatch = (GT_MetaTileEntity_Hatch) aMetaTileEntity;
+            hatch.updateTexture(aBaseCasingIndex);
+            return mExoticEnergyHatches.add(hatch);
         }
         return false;
     }

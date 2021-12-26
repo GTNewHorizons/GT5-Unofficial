@@ -17,6 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
+import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nonnull;
@@ -72,11 +73,11 @@ public class GT_AssemblyLineUtils {
 	 */
 	@Nonnull
 	public static LookupResult findAssemblyLineRecipeFromDataStick(ItemStack aDataStick, boolean aReturnBuiltRecipe) {
-		if (!isItemDataStick(aDataStick)) {
+		if (!isItemDataStick(aDataStick) || !doesDataStickHaveOutput(aDataStick)) {
 			return LookupResultType.INVALID_STICK.getResult();
 		}
 		List<ItemStack> aInputs = new ArrayList<>(15);
-		ItemStack aOutput = null;
+		ItemStack aOutput = getDataStickOutput(aDataStick);
 		List<List<ItemStack>> mOreDictAlt = new ArrayList<>(15);
 		List<FluidStack> aFluidInputs = new ArrayList<>(4);
 
@@ -88,9 +89,9 @@ public class GT_AssemblyLineUtils {
 		//Get From Cache
 		if (doesDataStickHaveRecipeHash(aDataStick)) {
 			GT_Recipe_AssemblyLine aRecipeFromCache = sRecipeCacheByRecipeHash.get(getHashFromDataStack(aDataStick));
-			if (aRecipeFromCache != null) {
+			if (aRecipeFromCache != null && GT_Utility.areStacksEqual(aOutput, aRecipeFromCache.mOutput)) {
 				return LookupResultType.VALID_STACK_AND_VALID_HASH.getResult(aRecipeFromCache);
-			}
+			} // else: no cache, or the old recipe run into a hash collision with a different new recipe
 		}
 
 		for (int i = 0; i < 15; i++) {
@@ -133,7 +134,6 @@ public class GT_AssemblyLineUtils {
 				GT_FML_LOGGER.info("Fluid " + i + " " + tLoaded.getUnlocalizedName());
 			}
 		}
-		aOutput = GT_Utility.loadItem(aTag, "output");
 		if (!aTag.hasKey("output") || !aTag.hasKey("time") || aTag.getInteger("time") <= 0 || !aTag.hasKey("eu") || !GT_Utility.isStackValid(aOutput)) {
 			return LookupResultType.INVALID_STICK.getResult();
 		}
@@ -227,14 +227,29 @@ public class GT_AssemblyLineUtils {
 	}
 
 	/**
+	 * @param aRecipe - The recipe to add to internal caches
+	 * @throws IllegalArgumentException if given recipe collide with any existing recipe in the cache
+	 */
+	public static void addRecipeToCache(GT_Recipe_AssemblyLine aRecipe) {
+		if (aRecipe != null) {
+			String aHash = "Hash." + aRecipe.getPersistentHash();
+			GT_Recipe_AssemblyLine existing = sRecipeCacheByOutput.put(new GT_ItemStack(aRecipe.mOutput), aRecipe);
+			if (existing != null)
+				throw new IllegalArgumentException("Duplicate assline recipe for " + aRecipe.mOutput);
+			existing = sRecipeCacheByRecipeHash.put(aHash, aRecipe);
+			if (existing != null && !existing.equals(aRecipe))
+				throw new IllegalArgumentException("Recipe hash collision for " + aRecipe + " and " + existing);
+		}
+	}
+
+	/**
 	 * @param aHash - Recipe hash String, may be null but will just be treated as invalid.
 	 * @return Is this Recipe Hash String valid?
 	 */
 	public static boolean isValidHash(String aHash) {
 		if (aHash != null && aHash.length() > 0) {
-			if (!aHash.equals("Invalid.Recipe.Hash") && aHash.contains("Hash.")) {
-				return true;
-			}
+			// persistent hash can never be 0
+			return !aHash.equals("Invalid.Recipe.Hash") && !aHash.equals("Hash.0");
 		}
 		return false;
 	}
@@ -283,7 +298,7 @@ public class GT_AssemblyLineUtils {
 	public static boolean doesDataStickHaveRecipeHash(ItemStack aDataStick) {
 		if (isItemDataStick(aDataStick) && aDataStick.hasTagCompound()) {
 			NBTTagCompound aNBT = aDataStick.getTagCompound();
-			if (aNBT.hasKey("Data.Recipe.Hash")) {
+			if (aNBT.hasKey("Data.Recipe.Hash") && !aNBT.getString("Data.Recipe.Hash").equals("Hash.0")) {
 				return true;
 			}
 		}
@@ -304,17 +319,18 @@ public class GT_AssemblyLineUtils {
 	}
 
 	/**
-	 * @param aDataStick - The Data Stick to procces.
+	 * @param aDataStick - The Data Stick to process.
 	 * @return The stored Recipe Hash String on the Data Stick, will return an invalid Hash if one is not found. <p>
-	 * Check with isValidHash(). <p> 
+	 * The hash will be guaranteed to pass isValidHash(). <p>
 	 * Will not return Null.
 	 */
 	public static String getHashFromDataStack(ItemStack aDataStick) {
 		if (isItemDataStick(aDataStick) && aDataStick.hasTagCompound()) {
 			NBTTagCompound aNBT = aDataStick.getTagCompound();
-			if (aNBT.hasKey("Data.Recipe.Hash")) {
-				return aNBT.getString("Data.Recipe.Hash");
-
+			if (aNBT.hasKey("Data.Recipe.Hash", NBT.TAG_STRING)) {
+				String hash = aNBT.getString("Data.Recipe.Hash");
+				if (isValidHash(hash))
+					return hash;
 			}
 		}
 		return "Invalid.Recipe.Hash";
@@ -358,9 +374,24 @@ public class GT_AssemblyLineUtils {
 				GT_FML_LOGGER.info("Updating data stick: "+aDataStick.getDisplayName()+" | Old Recipe Hash: "+generateRecipeHash(aOldRecipe)+", New Recipe Hash: "+aHash);
 			}
 
+			String author = "Assembling Line Recipe Generator";
+			String displayName = null;
+			if (aDataStick.hasTagCompound()) {
+				NBTTagCompound tag = aDataStick.getTagCompound();
+				if (tag.hasKey("author", NBT.TAG_STRING)) {
+					author = tag.getString("author");
+				}
+				if (tag.hasKey("display", NBT.TAG_COMPOUND)) {
+					NBTTagCompound displayTag = tag.getCompoundTag("display");
+					if (displayTag.hasKey("Name", NBT.TAG_STRING))
+						displayName = displayTag.getString("Name");
+				}
+			}
 
 			//remove possible old NBTTagCompound
 			aDataStick.setTagCompound(new NBTTagCompound());
+			if (displayName != null)
+				aDataStick.setStackDisplayName(displayName);
 			if (GT_Values.D1) {
 				GT_Utility.ItemNBT.setBookTitle(aDataStick, s + " Construction Data ("+aHash+")");				
 			}
@@ -390,7 +421,7 @@ public class GT_AssemblyLineUtils {
 			for (int i = 0; i < aNewRecipe.mFluidInputs.length; i++) {
 				tNBT.setTag("f" + i, aNewRecipe.mFluidInputs[i].writeToNBT(new NBTTagCompound()));
 			}
-			tNBT.setString("author", "Assembling Line Recipe Generator");
+			tNBT.setString("author", author);
 			NBTTagList tNBTList = new NBTTagList();
 			s = aNewRecipe.mOutput.getDisplayName();
 			if (FMLCommonHandler.instance().getEffectiveSide().isServer()) {
@@ -439,8 +470,9 @@ public class GT_AssemblyLineUtils {
 					tNBTList.appendTag(new NBTTagString("Input Hatch " + (i + 1) + ": " + aNewRecipe.mFluidInputs[i].amount + "L " + s));
 				}
 			}
-			tNBT.setTag("pages", tNBTList);		
-			aDataStick.setTagCompound(tNBT);	
+			tNBT.setTag("pages", tNBTList);
+			tNBT.setLong("lastUpdate", System.currentTimeMillis());
+			aDataStick.setTagCompound(tNBT);
 			// Set recipe hash
 			setRecipeHashOnDataStick(aDataStick, aHash);
 			return true;

@@ -1422,18 +1422,8 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.addFakeRecipe(false, new ItemStack[]{aResearchItem}, new ItemStack[]{aOutput}, new ItemStack[]{ItemList.Tool_DataStick.getWithName(1L, "Writes Research result", new Object[0])}, null, null, aResearchTime, 30, -201);
         GT_Recipe.GT_Recipe_Map.sAssemblylineVisualRecipes.addFakeRecipe(false, aInputs, new ItemStack[]{aOutput}, new ItemStack[]{ItemList.Tool_DataStick.getWithName(1L, "Reads Research result", new Object[0])}, aFluidInputs, null, aDuration, aEUt, 0,true);
         GT_Recipe_AssemblyLine tRecipe = new GT_Recipe_AssemblyLine(aResearchItem, aResearchTime, aInputs, aFluidInputs, aOutput, aDuration, aEUt);
-        int tPersistentHash = 1;
-        for (ItemStack tInput : aInputs)
-            tPersistentHash = tPersistentHash * 31 + GT_Utility.persistentHash(tInput, true, false);
-        tPersistentHash = tPersistentHash * 31 + GT_Utility.persistentHash(aResearchItem, true, false);
-        tPersistentHash = tPersistentHash * 31 + GT_Utility.persistentHash(aOutput, true, false);
-        for (FluidStack tFluidInput : aFluidInputs)
-            tPersistentHash = tPersistentHash * 31 + GT_Utility.persistentHash(tFluidInput, true, false);
-        tPersistentHash = tPersistentHash * 31 + aResearchTime;
-        tPersistentHash = tPersistentHash * 31 + aDuration;
-        tPersistentHash = tPersistentHash * 31 + aEUt;
-        tRecipe.setPersistentHash(tPersistentHash == 0 ? 1 : tPersistentHash);
         GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes.add(tRecipe);
+        GT_AssemblyLineUtils.addRecipeToCache(tRecipe);
         return true;
     }
 
@@ -1508,8 +1498,9 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.addFakeRecipe(false, new ItemStack[]{aResearchItem}, new ItemStack[]{aOutput}, new ItemStack[]{ItemList.Tool_DataStick.getWithName(1L, "Writes Research result", new Object[0])}, null, null, aResearchTime, 30, -201);
         GT_Recipe.GT_Recipe_Map.sAssemblylineVisualRecipes.addFakeRecipe(false,tInputs,new ItemStack[]{aOutput},new ItemStack[]{ItemList.Tool_DataStick.getWithName(1L, "Reads Research result", new Object[0])},aFluidInputs,null,aDuration,aEUt,0,tAlts,true);
         GT_Recipe_AssemblyLine tRecipe = new GT_Recipe_AssemblyLine(aResearchItem, aResearchTime, tInputs, aFluidInputs, aOutput, aDuration, aEUt, tAlts);
-        tRecipe.setPersistentHash(tPersistentHash == 0 ? 1 : tPersistentHash);
+        tRecipe.setPersistentHash(tPersistentHash);
         GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes.add(tRecipe);
+        GT_AssemblyLineUtils.addRecipeToCache(tRecipe);
         return true;
 	}
 

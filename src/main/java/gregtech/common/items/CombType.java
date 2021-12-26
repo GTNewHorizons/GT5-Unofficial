@@ -159,7 +159,10 @@ public enum CombType {
     ENDIUM("endium", true, Materials.HeeEndium, 50,0x2F5A6C, 0xa0ffff),
     RUNEI("rune1", true, Materials._NULL, 10,0x0104D9, 0xE31010),
     RUNEII("rune2", true, Materials._NULL, 10,0xE31010, 0x0104D9),
-    FIREESSENSE("fireessence", true, Materials._NULL, 30,0xFFA157, 0xD41238);
+    FIREESSENSE("fireessence", true, Materials._NULL, 30,0xFFA157, 0xD41238),
+
+    //New Combs to avoid meta id issues
+    CRYOLITE("cryolite", true, Materials.Cryolite, 90, 0xBFEFFF, 0x73B9D0);
 
     public boolean showInList;
     public Materials material;

@@ -417,7 +417,8 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                 Materials.GarnetYellow,
                 Materials.NetherStar,
                 Materials.Charcoal,
-                Materials.Blaze
+                Materials.Blaze,
+                Materials.Cryolite
         }, OrePrefixes.block, gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS11);
 
         GregTech_API.sBlockReinforced = new GT_Block_Reinforced("gt.blockreinforced");

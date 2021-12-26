@@ -33,24 +33,26 @@ public class GT_MetaTileEntity_QuantumChest extends GT_MetaTileEntity_DigitalChe
     @Override
     public void setItemNBT(NBTTagCompound aNBT) {
         mInvData = new NBTTagList();
-        for (int i = 0; i < 3; i++) {
-            if (mInventory[i] != null) {
-                NBTTagCompound tNBT = new NBTTagCompound();
-                tNBT.setByte("Count", (byte) mInventory[i].stackSize);
-                tNBT.setShort("Damage", (short) mInventory[i].getItemDamage());
-                tNBT.setShort("id", (short) Item.getIdFromItem(mInventory[i].getItem()));
-                tNBT.setInteger("IntSlot", i);
-                if (mInventory[i].hasTagCompound()) {
-                    tNBT.setTag("tag", mInventory[i].getTagCompound());
+        if (!voidBreak) {
+            for (int i = 0; i < 3; i++) {
+                if (mInventory[i] != null) {
+                    NBTTagCompound tNBT = new NBTTagCompound();
+                    tNBT.setByte("Count", (byte) mInventory[i].stackSize);
+                    tNBT.setShort("Damage", (short) mInventory[i].getItemDamage());
+                    tNBT.setShort("id", (short) Item.getIdFromItem(mInventory[i].getItem()));
+                    tNBT.setInteger("IntSlot", i);
+                    if (mInventory[i].hasTagCompound()) {
+                        tNBT.setTag("tag", mInventory[i].getTagCompound());
+                    }
+                    mInvData.appendTag(tNBT);
                 }
-                mInvData.appendTag(tNBT);
             }
+            if (mItemStack != null)
+                aNBT.setTag("mItemStack", getItemStack().writeToNBT(new NBTTagCompound()));
+            aNBT.setTag("Inventory", mInvData);
+            aNBT.setInteger("mItemCount", getItemCount());
+            aNBT.setBoolean("mVoidOverflow", mVoidOverflow);
         }
-        if (mItemStack != null)
-            aNBT.setTag("mItemStack", getItemStack().writeToNBT(new NBTTagCompound()));
-        aNBT.setTag("Inventory", mInvData);
-        aNBT.setInteger("mItemCount", getItemCount());
-        aNBT.setBoolean("mVoidOverflow", mVoidOverflow);
         super.setItemNBT(aNBT);
     }
 

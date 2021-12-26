@@ -92,11 +92,13 @@ public class GT_UndergroundOil {
                 // if XSTR_INSTANCE is < chance then subtract 1
                 chunkData.changeAmount(-decrease);//diminish amount, "randomly" adjusted to double value (averageDecrease)
             }
-        } else {//just get info
+        }
+        else {//just get info
             if (chunkData.amount <= DIVIDER) {
                 chunkData.setAmount(0);
             } else {
-                fluidInChunk.amount = chunkData.amount / DIVIDER;//give moderate extraction speed
+                //get the expected current output
+                fluidInChunk.amount = (int) Math.floor(chunkData.getAmount() * (double) -readOrDrainCoefficient / DIVIDER);
             }
         }
         return fluidInChunk;

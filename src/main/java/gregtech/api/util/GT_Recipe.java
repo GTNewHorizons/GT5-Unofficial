@@ -556,7 +556,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
 	public static class GT_Recipe_AssemblyLine{
         public static final ArrayList<GT_Recipe_AssemblyLine> sAssemblylineRecipes = new ArrayList<GT_Recipe_AssemblyLine>();
-        
+
         public ItemStack mResearchItem;
         public int mResearchTime;
         public ItemStack[] mInputs;
@@ -567,10 +567,31 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public ItemStack[][] mOreDictAlt;
         private int mPersistentHash;
 
+        /**
+         * THIS CONSTRUCTOR DOES SET THE PERSISTENT HASH.
+         *
+         * if you set one yourself, it will give you one of the RunetimeExceptions!
+         */
         public GT_Recipe_AssemblyLine(ItemStack aResearchItem, int aResearchTime, ItemStack[] aInputs, FluidStack[] aFluidInputs, ItemStack aOutput, int aDuration, int aEUt) {
         	this(aResearchItem, aResearchTime, aInputs, aFluidInputs, aOutput, aDuration, aEUt, new ItemStack[aInputs.length][]);
+            int tPersistentHash = 1;
+            for (ItemStack tInput : aInputs)
+                tPersistentHash = tPersistentHash * 31 + GT_Utility.persistentHash(tInput, true, false);
+            tPersistentHash = tPersistentHash * 31 + GT_Utility.persistentHash(aResearchItem, true, false);
+            tPersistentHash = tPersistentHash * 31 + GT_Utility.persistentHash(aOutput, true, false);
+            for (FluidStack tFluidInput : aFluidInputs)
+                tPersistentHash = tPersistentHash * 31 + GT_Utility.persistentHash(tFluidInput, true, false);
+            tPersistentHash = tPersistentHash * 31 + aResearchTime;
+            tPersistentHash = tPersistentHash * 31 + aDuration;
+            tPersistentHash = tPersistentHash * 31 + aEUt;
+            setPersistentHash(tPersistentHash);
         }
-        
+
+        /**
+         * THIS CONSTRUCTOR DOES <b>NOT</b> SET THE PERSISTENT HASH.
+         *
+         * if you don't set one yourself, it will break a lot of stuff!
+         */
         public GT_Recipe_AssemblyLine(ItemStack aResearchItem, int aResearchTime, ItemStack[] aInputs, FluidStack[] aFluidInputs, ItemStack aOutput, int aDuration, int aEUt, ItemStack[][] aAlt) {
         	mResearchItem = aResearchItem;
         	mResearchTime = aResearchTime;
@@ -661,9 +682,30 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 		}
 
         public int getPersistentHash() {
+            if (mPersistentHash == 0)
+                GT_Log.err.println("Assline recipe persistent hash has not been set! Recipe: " + mOutput);
             return mPersistentHash;
         }
 
+        @Override
+        public String toString() {
+            return "GT_Recipe_AssemblyLine{" +
+                    "mResearchItem=" + mResearchItem +
+                    ", mResearchTime=" + mResearchTime +
+                    ", mInputs=" + Arrays.toString(mInputs) +
+                    ", mFluidInputs=" + Arrays.toString(mFluidInputs) +
+                    ", mOutput=" + mOutput +
+                    ", mDuration=" + mDuration +
+                    ", mEUt=" + mEUt +
+                    ", mOreDictAlt=" + Arrays.toString(mOreDictAlt) +
+                    '}';
+        }
+
+        /**
+         * @param aPersistentHash the persistent hash. it should reflect the exact input used to generate this recipe
+         *                        If 0 is passed in, the actual persistent hash will be automatically remapped to 1 instead.
+         * @throws IllegalStateException if the persistent hash has been set already
+         */
         public void setPersistentHash(int aPersistentHash) {
             if (this.mPersistentHash != 0)
                 throw new IllegalStateException("Cannot set persistent hash twice!");
@@ -860,7 +902,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             aRecipe.mFakeRecipe = aFakeRecipe;
             if (aRecipe.mFluidInputs.length < mMinimalInputFluids && aRecipe.mInputs.length < mMinimalInputItems)
                 return null;
-            if (aCheckForCollisions && findRecipe(null, false, Long.MAX_VALUE, aRecipe.mFluidInputs, aRecipe.mInputs) != null)
+            if (aCheckForCollisions && findRecipe(null, false, true, Long.MAX_VALUE, aRecipe.mFluidInputs, aRecipe.mInputs) != null)
                 return null;
             return add(aRecipe);
         }
@@ -954,7 +996,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         }
 
         public GT_Recipe findRecipe(IHasWorldObjectAndCoords aTileEntity, GT_Recipe aRecipe, boolean aNotUnificated, long aVoltage, FluidStack[] aFluids, ItemStack aSpecialSlot, ItemStack... aInputs) {
-        	return findRecipe(aTileEntity, aRecipe, aNotUnificated, true, aVoltage, aFluids, aSpecialSlot, aInputs);
+        	return findRecipe(aTileEntity, aRecipe, aNotUnificated, false, aVoltage, aFluids, aSpecialSlot, aInputs);
         }	
         /**
          * finds a Recipe matching the aFluid and ItemStack Inputs.
