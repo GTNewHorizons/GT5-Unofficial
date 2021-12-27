@@ -35,22 +35,45 @@ public class GT_Network extends MessageToMessageCodec<FMLProxyPacket, GT_Packet>
     private final GT_Packet[] mSubChannels;
 
     public GT_Network() {
-        this.mChannel = NetworkRegistry.INSTANCE.newChannel("GregTech", this, new HandlerShared());
-        // last known packet id is 13
-        this.mSubChannels = new GT_Packet[]{new GT_Packet_TileEntity(), new GT_Packet_Sound(), new GT_Packet_Block_Event(), new GT_Packet_Ores(), new GT_Packet_Pollution(), new MessageSetFlaskCapacity(), new GT_Packet_TileEntityCover(), new GT_Packet_TileEntityCoverGUI(), new MessageUpdateFluidDisplayItem(), new GT_Packet_ClientPreference(), new GT_Packet_WirelessRedstoneCover(), new GT_Packet_TileEntityCoverNew(), new GT_Packet_SetConfigurationCircuit(), new GT_Packet_UpdateItem()};
+        this("GregTech", 
+             new GT_Packet_TileEntity(), 
+             new GT_Packet_Sound(), 
+             new GT_Packet_Block_Event(), 
+             new GT_Packet_Ores(), 
+             new GT_Packet_Pollution(), 
+             new MessageSetFlaskCapacity(), 
+             new GT_Packet_TileEntityCover(), 
+             new GT_Packet_TileEntityCoverGUI(), 
+             new MessageUpdateFluidDisplayItem(), 
+             new GT_Packet_ClientPreference(), 
+             new GT_Packet_WirelessRedstoneCover(), 
+             new GT_Packet_TileEntityCoverNew(), 
+             new GT_Packet_SetConfigurationCircuit(), 
+             new GT_Packet_UpdateItem()
+            );
     }
-
+    
+    public GT_Network(String channelName, GT_Packet... packetTypes) {
+        this.mChannel = NetworkRegistry.INSTANCE.newChannel(channelName, this, new HandlerShared());
+        this.mSubChannels = new GT_Packet[packetTypes.length];
+        for (GT_Packet packetType : packetTypes) {
+            final int pId = packetType.getPacketID();
+            if (this.mSubChannels[pId] == null)
+                this.mSubChannels[pId] = packetType;
+            else
+                throw new IllegalArgumentException("Duplicate Packet ID! " + pId);
+        }
+    }
+    
     @Override
-    protected void encode(ChannelHandlerContext aContext, GT_Packet aPacket, List<Object> aOutput)
-            throws Exception {
+    protected void encode(ChannelHandlerContext aContext, GT_Packet aPacket, List<Object> aOutput) throws Exception {
         ByteBuf tBuf = Unpooled.buffer().writeByte(aPacket.getPacketID());
         aPacket.encode(tBuf);
         aOutput.add(new FMLProxyPacket(tBuf, aContext.channel().attr(NetworkRegistry.FML_CHANNEL).get()));
     }
 
     @Override
-    protected void decode(ChannelHandlerContext aContext, FMLProxyPacket aPacket, List<Object> aOutput)
-            throws Exception {
+    protected void decode(ChannelHandlerContext aContext, FMLProxyPacket aPacket, List<Object> aOutput) throws Exception {
         ByteArrayDataInput aData = ByteStreams.newDataInput(aPacket.payload().array());
         GT_Packet tPacket = this.mSubChannels[aData.readByte()].decode(aData);
         tPacket.setINetHandler(aPacket.handler());
@@ -102,12 +125,11 @@ public class GT_Network extends MessageToMessageCodec<FMLProxyPacket, GT_Packet>
     }
 
     @ChannelHandler.Sharable
-    static final class HandlerShared
-            extends SimpleChannelInboundHandler<GT_Packet> {
+    static final class HandlerShared extends SimpleChannelInboundHandler<GT_Packet> {
         @Override
         protected void channelRead0(ChannelHandlerContext ctx, GT_Packet aPacket) {
-            EntityPlayer aPlayer = GT_Values.GT.getThePlayer();
-            aPacket.process(aPlayer == null ? null : GT_Values.GT.getThePlayer().worldObj);
+            final EntityPlayer aPlayer = GT_Values.GT.getThePlayer();
+            aPacket.process(aPlayer == null ? null : aPlayer.worldObj);
         }
     }
 }
