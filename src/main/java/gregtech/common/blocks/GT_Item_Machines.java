@@ -242,6 +242,10 @@ public class GT_Item_Machines extends ItemBlock implements IFluidContainerItem {
                 GregTech_API.METATILEENTITIES[tDamage] instanceof GT_MetaTileEntity_QuantumTank) {
             NBTTagCompound tNBT = aStack.stackTagCompound;
             if (tNBT == null) return;
+            if (tNBT.hasNoTags()) {
+                aStack.setTagCompound(null);
+                return;
+            }
             if ((tNBT.hasKey("mItemCount") && tNBT.getInteger("mItemCount") > 0) ||
                     (tNBT.hasKey("mFluid") && FluidStack.loadFluidStackFromNBT(tNBT.getCompoundTag("mFluid")).amount > 64000)) {
                 FluidStack tFluid = FluidStack.loadFluidStackFromNBT(tNBT.getCompoundTag("mFluid"));
@@ -318,21 +322,25 @@ public class GT_Item_Machines extends ItemBlock implements IFluidContainerItem {
 
     @Override
     public FluidStack drain(ItemStack container, int maxDrain, boolean doDrain) {
-        if (container != null) {
+        if (container != null && container.hasTagCompound()) {
             int tDamage = container.getItemDamage();
             IMetaTileEntity tMetaTile = GregTech_API.METATILEENTITIES[tDamage];
             if (!(tMetaTile instanceof GT_MetaTileEntity_QuantumTank || tMetaTile instanceof GT_MetaTileEntity_SuperTank)) {
                 return null;
             }
-            if (container.stackTagCompound == null) container.stackTagCompound = new NBTTagCompound();
             FluidStack tStoredFluid = getFluid(container);
             if (tStoredFluid != null) {
                 int tAmount = Math.min(maxDrain, tStoredFluid.amount);
                 FluidStack tNewFluid = new FluidStack(tStoredFluid, tStoredFluid.amount - tAmount);
                 FluidStack tOutputFluid = new FluidStack(tStoredFluid, tAmount);
                 if (doDrain) {
-                    if (tNewFluid.amount <= 0) container.stackTagCompound.removeTag("mFluid");
-                    else container.stackTagCompound.setTag("mFluid", tNewFluid.writeToNBT(new NBTTagCompound()));
+                    if (tNewFluid.amount <= 0) {
+                        container.stackTagCompound.removeTag("mFluid");
+                        if (container.stackTagCompound.hasNoTags())
+                            container.setTagCompound(null);
+                    } else {
+                        container.stackTagCompound.setTag("mFluid", tNewFluid.writeToNBT(new NBTTagCompound()));
+                    }
                 }
                 return tOutputFluid;
             }
