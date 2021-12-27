@@ -1414,7 +1414,7 @@ public class RECIPES_Machines {
 			
 			
 			RecipeUtils.addShapedGregtechRecipe(
-					CI.getPlate(6, 1), ItemList.Casing_Gearbox_Titanium, CI.getPlate(6, 1),
+					CI.getPlate(6, 1), ItemList.Casing_Gearbox_Titanium.get(1), CI.getPlate(6, 1),
 					CI.getPlate(6, 1), CI.getFluidRegulator(5, 1), CI.getPlate(6, 1),
 					CI.getTieredCircuit(6), ItemList.Hatch_Input_IV.get(1), CI.getTieredCircuit(6),
 					GregtechItemList.Hatch_Reservoir.get(1));
