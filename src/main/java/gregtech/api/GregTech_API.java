@@ -54,9 +54,8 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiFunction;
-import java.util.function.UnaryOperator;
-import java.util.stream.Collectors;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import static gregtech.api.enums.GT_Values.B;
 import static gregtech.api.enums.GT_Values.L;
@@ -333,7 +332,7 @@ public class GregTech_API {
             mOutputRF = false,
             mInputRF = false,
             meIOLoaded = false,
-            mRFExplosions = true,
+            mRFExplosions = false,
             mServerStarted = false,
             mIC2Classic = false,
             mMagneticraft = false,
