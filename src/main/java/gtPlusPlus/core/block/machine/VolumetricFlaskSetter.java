@@ -92,12 +92,7 @@ public class VolumetricFlaskSetter extends BasicTileBlockWithTooltip {
 
 	@Override
 	public int getRenderBlockPass() {
-		return 1;
-	}
-
-	@Override
-	public boolean isOpaqueCube() {
-		return false;
+		return 0;
 	}
 
 	@Override
