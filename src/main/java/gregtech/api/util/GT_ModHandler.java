@@ -535,21 +535,12 @@ public class GT_ModHandler {
 
     /**
      * RC-BlastFurnace Recipes
-
+     */
+   @Deprecated
    public static boolean addRCBlastFurnaceRecipe(ItemStack aInput, ItemStack aOutput, int aTime) {
-        aOutput = GT_OreDictUnificator.get(true, aOutput);
-        if (aInput == null || aOutput == null || aTime <= 0) return false;
-        if (!GregTech_API.sRecipeFile.get(ConfigCategories.Machines.rcblastfurnace, aInput, true)) return false;
-        aInput = GT_Utility.copyOrNull(aInput);
-        aOutput = GT_Utility.copyOrNull(aOutput);
-        try {
-            mods.railcraft.api.crafting.RailcraftCraftingManager.blastFurnace.addRecipe(aInput, true, false, aTime, aOutput);
-        } catch (Throwable e) {
-            return false;
-        }
         return true;
     }
-*/
+
     public static boolean addPulverisationRecipe(ItemStack aInput, ItemStack aOutput1) {
         return addPulverisationRecipe(aInput, aOutput1, null, 0, false);
     }

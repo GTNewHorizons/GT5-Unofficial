@@ -8,7 +8,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IColoredTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.BaseMetaTileEntity.ClientEvents;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.*;
 import gregtech.common.GT_Client;
@@ -303,19 +302,19 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
     @Override
     public final void sendSound(byte aIndex) {
         if (!getBaseMetaTileEntity().hasMufflerUpgrade())
-            getBaseMetaTileEntity().sendBlockEvent(ClientEvents.DO_SOUND, aIndex);
+            getBaseMetaTileEntity().sendBlockEvent(MetaTileClientEvents.DO_SOUND, aIndex);
     }
 
     @Override
     public final void sendLoopStart(byte aIndex) {
         if (!getBaseMetaTileEntity().hasMufflerUpgrade())
-            getBaseMetaTileEntity().sendBlockEvent(ClientEvents.START_SOUND_LOOP, aIndex);
+            getBaseMetaTileEntity().sendBlockEvent(MetaTileClientEvents.START_SOUND_LOOP, aIndex);
     }
 
     @Override
     public final void sendLoopEnd(byte aIndex) {
         if (!getBaseMetaTileEntity().hasMufflerUpgrade())
-            getBaseMetaTileEntity().sendBlockEvent(ClientEvents.STOP_SOUND_LOOP, aIndex);
+            getBaseMetaTileEntity().sendBlockEvent(MetaTileClientEvents.STOP_SOUND_LOOP, aIndex);
     }
 
     @Override
