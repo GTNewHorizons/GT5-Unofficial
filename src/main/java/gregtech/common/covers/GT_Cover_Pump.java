@@ -193,7 +193,7 @@ public class GT_Cover_Pump extends GT_CoverBehavior{
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
             this.fontRendererObj.drawString(trans("229","Import/Export" ),  startX + spaceX*3, 3+startY+spaceY*0, 0xFF555555);
-            this.fontRendererObj.drawString(trans("230","Redstone"),     startX + spaceX*3, 3+startY+spaceY*1, 0xFF555555);
+            this.fontRendererObj.drawString(trans("230","Conditional"),     startX + spaceX*3, 3+startY+spaceY*1, 0xFF555555);
             this.fontRendererObj.drawString(trans("231", "Enable Input"),   startX + spaceX*3, 3+startY+spaceY*2, 0xFF555555);
         }
 
