@@ -1,5 +1,7 @@
 package gregtech.api.gui;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
@@ -7,6 +9,7 @@ import net.minecraft.item.ItemStack;
 
 public class GT_Slot_Holo extends Slot {
     public final int mSlotIndex;
+    public boolean mEnabled = true;
     public boolean
             mCanInsertItem,
             mCanStackItem;
@@ -45,5 +48,31 @@ public class GT_Slot_Holo extends Slot {
     @Override
     public boolean canTakeStack(EntityPlayer par1EntityPlayer) {
         return false;
+    }
+
+    /**
+     * Whether this slot should be ignored in event processing,
+     * for example highlight the slot on mouseOver
+     * @param enabled
+     */
+    public void setEnabled(boolean enabled) {
+        mEnabled = enabled;
+    }
+
+    /**
+     * Use this value to determine whether to ignore this slot in event processing
+     */
+    public boolean isEnabled() {
+        return mEnabled;
+    }
+
+    /**
+     * This function controls whether to highlight the slot on mouseOver.
+     */
+    @Override
+    @SideOnly(Side.CLIENT)
+    public boolean func_111238_b()
+    {
+        return isEnabled();
     }
 }

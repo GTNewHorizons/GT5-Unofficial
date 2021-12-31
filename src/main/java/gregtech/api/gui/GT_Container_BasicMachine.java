@@ -6,6 +6,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
@@ -29,6 +30,13 @@ public class GT_Container_BasicMachine extends GT_Container_BasicTank {
             mStuttering = false;
 
     private Runnable circuitSlotClickCallback;
+
+    GT_Slot_Holo slotFluidTransferToggle;
+    GT_Slot_Holo slotItemTransferToggle;
+    GT_Slot_Holo slotFluidOutput;
+    GT_Slot_Holo slotFluidInput;
+    Slot slotBattery;
+    Slot slotSpecial;
     GT_Slot_Render slotCircuit;
 
     public GT_Container_BasicMachine(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
@@ -37,11 +45,17 @@ public class GT_Container_BasicMachine extends GT_Container_BasicTank {
 
     @Override
     public void addSlots(InventoryPlayer aInventoryPlayer) {
-        addSlotToContainer(new GT_Slot_Holo(mTileEntity, 0, 8, 63, false, true, 1));
-        addSlotToContainer(new GT_Slot_Holo(mTileEntity, 0, 26, 63, false, true, 1));
-        addSlotToContainer(new GT_Slot_Render(mTileEntity, 2, 107, 63));
-        GT_MetaTileEntity_BasicMachine machine = (GT_MetaTileEntity_BasicMachine) mTileEntity.getMetaTileEntity();
+        GT_MetaTileEntity_BasicMachine machine = getMachine();
+        GT_Recipe_Map recipes = machine.getRecipeList();
+
+        addSlotToContainer(slotFluidTransferToggle = new GT_Slot_Holo(mTileEntity, 0, 8, 63, false, true, 1));
+        slotFluidTransferToggle.setEnabled(!machine.isSteampowered());
+        addSlotToContainer(slotItemTransferToggle = new GT_Slot_Holo(mTileEntity, 0, 26, 63, false, true, 1));
+        slotItemTransferToggle.setEnabled(!machine.isSteampowered());
+        addSlotToContainer(slotFluidOutput = new GT_Slot_Render(mTileEntity, 2, 107, 63));
+        slotFluidOutput.setEnabled(recipes != null ? recipes.hasFluidOutputs() : false);
         addSlotToContainer(slotCircuit = new GT_Slot_Render(mTileEntity, machine.getCircuitSlot(), 153, 63));
+        slotCircuit.setEnabled(machine.allowSelectCircuit());
 
         int tStartIndex = machine.getInputSlot();
 
@@ -183,23 +197,29 @@ public class GT_Container_BasicMachine extends GT_Container_BasicTank {
                 break;
         }
 
-        addSlotToContainer(new Slot(mTileEntity, 1, 80, 63));
-        addSlotToContainer(new Slot(mTileEntity, 3, 125, 63));
-        addSlotToContainer(new GT_Slot_Render(mTileEntity, tStartIndex++, 53, 63));
+        addSlotToContainer(slotBattery = new Slot(mTileEntity, 1, 80, 63));
+        addSlotToContainer(slotSpecial = new Slot(mTileEntity, 3, 125, 63));
+        addSlotToContainer(slotFluidInput = new GT_Slot_Render(mTileEntity, tStartIndex++, 53, 63));
+        slotFluidInput.setEnabled(recipes != null
+            ? (recipes.hasFluidInputs())
+            : (machine.getCapacity() != 0));
     }
 
     @Override
-    public ItemStack slotClick(int aSlotIndex, int aMouseclick, int aShifthold, EntityPlayer aPlayer) {
+    public ItemStack slotClick(int aSlotNumber, int aMouseclick, int aShifthold, EntityPlayer aPlayer) {
         if (mTileEntity.getMetaTileEntity() == null) return null;
-        GT_MetaTileEntity_BasicMachine machine = (GT_MetaTileEntity_BasicMachine) mTileEntity.getMetaTileEntity();
+        GT_MetaTileEntity_BasicMachine machine = getMachine();
         if (machine == null) return null;
-        ItemStack tResultStack;
-        switch (aSlotIndex) {
+        switch (aSlotNumber) {
             case 0:
-                machine.mFluidTransfer = !machine.mFluidTransfer;
+                if (slotFluidTransferToggle.isEnabled()) {
+                    machine.mFluidTransfer = !machine.mFluidTransfer;
+                }
                 return null;
             case 1:
-                machine.mItemTransfer = !machine.mItemTransfer;
+                if (slotItemTransferToggle.isEnabled()) {
+                    machine.mItemTransfer = !machine.mItemTransfer;
+                }
                 return null;
             case 3:
                 if (machine.allowSelectCircuit() && aMouseclick < 2) {
@@ -236,7 +256,7 @@ public class GT_Container_BasicMachine extends GT_Container_BasicTank {
                 }
                 return null;
             default:
-                if (aSlotIndex == OTHER_SLOT_COUNT + 1 + machine.mInputSlotCount + machine.mOutputItems.length && aMouseclick < 2) {
+                if (aSlotNumber == OTHER_SLOT_COUNT + 1 + machine.mInputSlotCount + machine.mOutputItems.length && aMouseclick < 2) {
                     if (mTileEntity.isClientSide()) {
                         // see parent class slotClick for an explanation on why doing this
                         GT_MetaTileEntity_BasicTank tTank = (GT_MetaTileEntity_BasicTank) mTileEntity.getMetaTileEntity();
@@ -249,7 +269,7 @@ public class GT_Container_BasicMachine extends GT_Container_BasicTank {
                         mTileEntity.markInventoryBeenModified();
                     return tToken;
                 } else {
-                    return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
+                    return super.slotClick(aSlotNumber, aMouseclick, aShifthold, aPlayer);
                 }
         }
     }
@@ -259,9 +279,9 @@ public class GT_Container_BasicMachine extends GT_Container_BasicTank {
         super.detectAndSendChanges();
         if (mTileEntity.isClientSide() || mTileEntity.getMetaTileEntity() == null) return;
 
-        mFluidTransfer = ((GT_MetaTileEntity_BasicMachine) mTileEntity.getMetaTileEntity()).mFluidTransfer;
-        mItemTransfer = ((GT_MetaTileEntity_BasicMachine) mTileEntity.getMetaTileEntity()).mItemTransfer;
-        mStuttering = ((GT_MetaTileEntity_BasicMachine) mTileEntity.getMetaTileEntity()).mStuttering;
+        mFluidTransfer = getMachine().mFluidTransfer;
+        mItemTransfer = getMachine().mItemTransfer;
+        mStuttering = getMachine().mStuttering;
 
         for (Object crafter : this.crafters) {
             ICrafting var1 = (ICrafting) crafter;
@@ -305,12 +325,16 @@ public class GT_Container_BasicMachine extends GT_Container_BasicTank {
 
     @Override
     public int getSlotCount() {
-        return getShiftClickSlotCount() + ((GT_MetaTileEntity_BasicMachine) mTileEntity.getMetaTileEntity()).mOutputItems.length + 2;
+        return getShiftClickSlotCount() + getMachine().mOutputItems.length + 2;
     }
 
     @Override
     public int getShiftClickSlotCount() {
-        return ((GT_MetaTileEntity_BasicMachine) mTileEntity.getMetaTileEntity()).mInputSlotCount;
+        return getMachine().mInputSlotCount;
+    }
+
+    public GT_MetaTileEntity_BasicMachine getMachine() {
+        return (GT_MetaTileEntity_BasicMachine) mTileEntity.getMetaTileEntity();
     }
 
     public void setCircuitSlotClickCallback(Runnable circuitSlotClickCallback) {
