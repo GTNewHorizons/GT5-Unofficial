@@ -172,7 +172,7 @@ public class DreamCraftRecipeLoader implements Runnable {
 
         //infinite oil rig
         TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.OilDrill3.get(1),
-                1843200, 1024, 2000000, 4, new ItemStack[]{
+                16777216, 2048, 2000000, 4, new ItemStack[]{
                         ItemList.OilDrill3.get(1),
                         GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 4),
                         GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Infinite, 4),
@@ -185,7 +185,7 @@ public class DreamCraftRecipeLoader implements Runnable {
                 }, new FluidStack[]{
                         Materials.SolderingAlloy.getMolten(1296),
                         Materials.Neutronium.getMolten(576)
-                }, ItemList.OilDrillInfinite.get(1), 1200, 2000000);
+                }, ItemList.OilDrillInfinite.get(1), 6000, 2000000);
 
         //Tesla Base
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
