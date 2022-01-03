@@ -3,8 +3,11 @@ package gregtech.api.gui;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.Slot;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
+
+import static gregtech.GT_Mod.GT_FML_LOGGER;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -67,6 +70,18 @@ public class GT_GUIContainer extends GuiContainer {
     }
 
     protected void onMouseWheel(int mx, int my, int delta) {
+    }
+
+    public boolean isMouseOverSlot(int slotIndex, int mx, int my)
+    {
+        int size = inventorySlots.inventorySlots.size();
+        if (slotIndex < 0 || slotIndex >= size) {
+            // slot does not exist somehow. log and carry on
+            GT_FML_LOGGER.error("Slot {} required where only {} is present", slotIndex, size);
+            return false;
+        }
+        Slot slot = inventorySlots.getSlot(slotIndex);
+        return this.func_146978_c(slot.xDisplayPosition, slot.yDisplayPosition, 16, 16, mx, my);
     }
 
     /*
