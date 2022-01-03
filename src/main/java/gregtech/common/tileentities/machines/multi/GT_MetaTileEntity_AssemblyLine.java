@@ -212,7 +212,7 @@ public class GT_MetaTileEntity_AssemblyLine extends GT_MetaTileEntity_EnhancedMu
                 }
             }
             
-            // Check Fluid Inputs allign
+            // Check Fluid Inputs align
         	int aFluidCount = tRecipe.mFluidInputs.length;
             tFluids = new int[aFluidCount];
             for (int i = 0; i < aFluidCount; i++){
@@ -330,7 +330,7 @@ public class GT_MetaTileEntity_AssemblyLine extends GT_MetaTileEntity_EnhancedMu
     }
 
     private boolean checkMachine(boolean leftToRight) {
-        for (int i = 1; i < 16; i++) {
+        for (int i = 1; i <= 16; i++) {
             if (!checkPiece(i == 1 ? STRUCTURE_PIECE_SECOND : STRUCTURE_PIECE_LATER, leftToRight ? -i : i, 1, 0))
                 return false;
             if (!mOutputBusses.isEmpty())
