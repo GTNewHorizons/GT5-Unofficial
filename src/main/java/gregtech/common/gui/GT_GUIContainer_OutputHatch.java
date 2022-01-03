@@ -4,6 +4,7 @@ import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
 import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
@@ -25,7 +26,9 @@ public class GT_GUIContainer_OutputHatch extends GT_GUIContainerMetaTile_Machine
             fontRendererObj.drawString("Liquid Amount", 10, 20, 16448255);
             fontRendererObj.drawString(GT_Utility.parseNumberToString(((GT_Container_OutputHatch) mContainer).mContent), 10, 30, 16448255);
             fontRendererObj.drawString("Locked Fluid", 101, 20, 16448255);
-            fontRendererObj.drawString(((GT_Container_OutputHatch) mContainer).getFluidName(), 101, 30, 16448255);
+            ItemStack tLockedDisplayStack = (ItemStack) mContainer.getInventory().get(3);
+            String fluidName = tLockedDisplayStack == null ? "" : tLockedDisplayStack.getDisplayName();
+            fontRendererObj.drawString(fluidName, 101, 30, 16448255);
         }
     }
 
