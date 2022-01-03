@@ -27,7 +27,7 @@ public class GT_GUIContainer_OutputHatch extends GT_GUIContainerMetaTile_Machine
             fontRendererObj.drawString(GT_Utility.parseNumberToString(((GT_Container_OutputHatch) mContainer).mContent), 10, 30, 16448255);
             fontRendererObj.drawString("Locked Fluid", 101, 20, 16448255);
             ItemStack tLockedDisplayStack = (ItemStack) mContainer.getInventory().get(3);
-            String fluidName = tLockedDisplayStack == null ? "" : tLockedDisplayStack.getDisplayName();
+            String fluidName = tLockedDisplayStack == null ? "None" : tLockedDisplayStack.getDisplayName();
             fontRendererObj.drawString(fluidName, 101, 30, 16448255);
         }
     }
