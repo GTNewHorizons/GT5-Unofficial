@@ -52,6 +52,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -1261,7 +1262,7 @@ public class GT_ModHandler {
             if ((tRecipe instanceof IGT_CraftingRecipe) && !((IGT_CraftingRecipe) tRecipe).isRemovable()) return false;
             return toRemove.stream().anyMatch(aCrafting -> tRecipe.matches(aCrafting, DW));
         }).collect(Collectors.toSet());
-        
+
         tList.removeIf(tListToRemove::contains);
     }
 
@@ -1574,16 +1575,16 @@ public class GT_ModHandler {
                     }
             ).forEach(tRecipe -> stacks.add(tRecipe.getCraftingResult(aCrafting)));
             rList = stacks.stream().filter(tOutput -> tOutput.stackSize == 1 && tOutput.getMaxDamage() > 0 && tOutput.getMaxStackSize() == 1).collect(Collectors.toList());
-        } else for (int i = 0; i < aList.size(); i++) {
-            boolean temp = false;
+        } else for (Iterator<IRecipe> iterator = aList.iterator(); iterator.hasNext(); ) {
+            IRecipe tRecipe = iterator.next();
+            boolean matched = false;
 
             try {
-                temp = aList.get(i).matches(aCrafting, DW);
+                matched = tRecipe.matches(aCrafting, DW);
             } catch (Throwable e) {
                 e.printStackTrace(GT_Log.err);
             }
-            if (temp) {
-                IRecipe tRecipe = aList.get(i);
+            if (matched) {
                 ItemStack tOutput = tRecipe.getCraftingResult(aCrafting);
 
                 if (tOutput == null || tOutput.stackSize <= 0) {
@@ -1599,7 +1600,7 @@ public class GT_ModHandler {
                 if (tRecipe instanceof ShapelessOreRecipe) continue;
                 if (tRecipe instanceof IGT_CraftingRecipe) continue;
                 rList.add(GT_Utility.copyOrNull(tOutput));
-                aList.remove(i--);
+                iterator.remove();
             }
         }
         return rList;
