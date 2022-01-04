@@ -18,22 +18,23 @@ public class GT_Cover_ControlsWork extends GT_CoverBehavior {
     @Override
     public int doCoverThings(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
         if (aTileEntity instanceof IMachineProgress) {
+            IMachineProgress machine = (IMachineProgress) aTileEntity;
             if (aCoverVariable < 2) {
-                if ((aInputRedstone > 0) == (aCoverVariable == 0))
-                    ((IMachineProgress) aTileEntity).enableWorking();
-                else
-                    ((IMachineProgress) aTileEntity).disableWorking();
-                ((IMachineProgress) aTileEntity).setWorkDataValue(aInputRedstone);
-            }
-            else if (aCoverVariable == 2) {
-                ((IMachineProgress) aTileEntity).disableWorking();
+                if ((aInputRedstone > 0) == (aCoverVariable == 0)) {
+                    if (!machine.isAllowedToWork())
+                        machine.enableWorking();
+                } else if (machine.isAllowedToWork())
+                    machine.disableWorking();
+                machine.setWorkDataValue(aInputRedstone);
+            } else if (aCoverVariable == 2 && machine.isAllowedToWork()) {
+                machine.disableWorking();
             } else {
-                if (((IMachineProgress) aTileEntity).wasShutdown()) {
-                    ((IMachineProgress) aTileEntity).disableWorking();
-                    GT_Utility.sendChatToPlayer(lastPlayer, aTileEntity.getInventoryName() + " at " + String.format("(%d,%d,%d)", aTileEntity.getXCoord(), aTileEntity.getYCoord(), aTileEntity.getZCoord()) +  " shut down.");
+                if (machine.wasShutdown()) {
+                    machine.disableWorking();
+                    GT_Utility.sendChatToPlayer(lastPlayer, aTileEntity.getInventoryName() + "at " + String.format("(%d,%d,%d)", aTileEntity.getXCoord(), aTileEntity.getYCoord(), aTileEntity.getZCoord()) + " shut down.");
                     return 2;
                 } else {
-                    return 3 + doCoverThings(aSide,aInputRedstone, aCoverID, aCoverVariable - 3, aTileEntity, aTimer);
+                    return 3 + doCoverThings(aSide, aInputRedstone, aCoverID, aCoverVariable - 3, aTileEntity, aTimer);
                 }
             }
         }
