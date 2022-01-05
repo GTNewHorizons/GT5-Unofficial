@@ -135,7 +135,7 @@ public class COMPAT_HANDLER {
 			GregtechIndustrialCuttingFactory.run();
 			//GregtechMiniRaFusion.run();
 			GregtechComponentAssembler.run();
-			//GregtechTeslaTower.run();
+			GregtechTeslaTower.run();
 			GregtechSuperChests.run();
 			GregtechIndustrialFishPond.run();
 			GregtechTieredChunkloaders.run();
@@ -151,7 +151,7 @@ public class COMPAT_HANDLER {
 			GregtechCustomHatches.run();
 			//GregtechNaqReactor.run();
 			GregtechIndustrialArcFurnace.run();
-			//GregtechSolarTower.run();
+			GregtechSolarTower.run();
 			GregtechLargeTurbinesAndHeatExchanger.run();
 			GregtechPowerBreakers.run();
 			GregtechFluidReactor.run();
@@ -161,7 +161,7 @@ public class COMPAT_HANDLER {
 			GregtechSteamMultis.run();
 			GregtechIndustrialForgeHammer.run();
 			GregtechMolecularTransformer.run();
-			//GregtechIndustrialElementDuplicator.run();
+			GregtechIndustrialElementDuplicator.run();
 
 			//New Horizons Content
 			NewHorizonsAccelerator.run();

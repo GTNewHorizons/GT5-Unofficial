@@ -301,7 +301,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 
 
 	//Tesla Tower
-	/*TelsaTower,*/
+	TelsaTower,
 	Casing_TeslaTower, 
 
 
@@ -334,7 +334,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Machine_Adv_DistillationTower,
 
 	//Advanced Assembly Line
-	/*Machine_Adv_AssemblyLine,*/
+	Machine_Adv_AssemblyLine,
 	
 	//Advanced Vacuum Freezer
 	Industrial_Cryogenic_Freezer, 
@@ -363,7 +363,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Casing_Industrial_Arc_Furnace, 
 	
 	//Solar Tower
-	/*Industrial_Solar_Tower,*/
+	Industrial_Solar_Tower,
 	Casing_SolarTower_Structural, 
 	Casing_SolarTower_SaltContainment, 
 	Casing_SolarTower_HeatContainment, 
@@ -571,7 +571,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 	SimpleDustWasher_UV, 
 	
 	//Solar Tower Reflector
-	/*Solar_Tower_Reflector,*/
+	Solar_Tower_Reflector,
 
 	//Super Tier Chests
 	Super_Chest_LV, Super_Chest_MV, Super_Chest_HV, Super_Chest_EV, Super_Chest_IV, 

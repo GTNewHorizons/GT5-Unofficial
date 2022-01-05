@@ -1,7 +1,9 @@
-/*
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.advanced;
 
 import java.util.ArrayList;
+
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
@@ -14,12 +16,13 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_DataAccess;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.LangUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Naquadah;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -29,12 +32,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
-public class GregtechMetaTileEntity_Adv_AssemblyLine
-        extends GregtechMeta_MultiBlockBase {
+public class GregtechMetaTileEntity_Adv_AssemblyLine extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_Adv_AssemblyLine> {
 
-    public ArrayList<GT_MetaTileEntity_Hatch_DataAccess> mDataAccessHatches = new ArrayList<GT_MetaTileEntity_Hatch_DataAccess>();
-	
-    public static String[] mCasingName = new String[5];
+	public ArrayList<GT_MetaTileEntity_Hatch_DataAccess> mDataAccessHatches = new ArrayList<GT_MetaTileEntity_Hatch_DataAccess>();
+
+	public static String[] mCasingName = new String[5];
 	private final int CASING_TEXTURE_ID = TAE.getIndexFromPage(0, 13);
 	private final int META_BaseCasing = 0; //4
 	private final int META_ContainmentCasing = 15; //3
@@ -42,46 +44,67 @@ public class GregtechMetaTileEntity_Adv_AssemblyLine
 	private final int META_PipeCasing = 1; //4
 	private final int META_IntegralCasing = 6; //0
 	private final int META_ContainmentChamberCasing = 2; //4
-	
-	
-    public GregtechMetaTileEntity_Adv_AssemblyLine(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional);
+
+
+	public GregtechMetaTileEntity_Adv_AssemblyLine(int aID, String aName, String aNameRegional) {
+		super(aID, aName, aNameRegional);
 		mCasingName[0] = LangUtils.getLocalizedNameOfBlock(getCasing(4), 0);
 		mCasingName[1] = LangUtils.getLocalizedNameOfBlock(getCasing(4), 1);
 		mCasingName[2] = LangUtils.getLocalizedNameOfBlock(getCasing(4), 2);
 		mCasingName[3] = LangUtils.getLocalizedNameOfBlock(getCasing(3), 15);
 		mCasingName[4] = LangUtils.getLocalizedNameOfBlock(getCasing(1), 13);	
-    }
+	}
 
-    public GregtechMetaTileEntity_Adv_AssemblyLine(String aName) {
-        super(aName);
-    }
+	public GregtechMetaTileEntity_Adv_AssemblyLine(String aName) {
+		super(aName);
+	}
 
-    public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GregtechMetaTileEntity_Adv_AssemblyLine(this.mName);
-    }
+	public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+		return new GregtechMetaTileEntity_Adv_AssemblyLine(this.mName);
+	}
 
-    public String[] getTooltip() {
-		if (mCasingName[0].toLowerCase().contains(".name")) {
-			mCasingName[0] = LangUtils.getLocalizedNameOfBlock(getCasing(4), 0);
-		}
-		if (mCasingName[1].toLowerCase().contains(".name")) {
-			mCasingName[1] = LangUtils.getLocalizedNameOfBlock(getCasing(4), 1);
-		}
-		if (mCasingName[2].toLowerCase().contains(".name")) {
-			mCasingName[2] = LangUtils.getLocalizedNameOfBlock(getCasing(4), 2);
-		}
-		if (mCasingName[3].toLowerCase().contains(".name")) {
-			mCasingName[3] = LangUtils.getLocalizedNameOfBlock(getCasing(3), 15);
-		}
-		if (mCasingName[4].toLowerCase().contains(".name")) {
-			mCasingName[4] = LangUtils.getLocalizedNameOfBlock(getCasing(1), 13);
-		}
-        return new String[]{
-        		"Advanced Integrated Assembly Line"
-        };
-    }
-    
+	/*	public String[] getTooltip() {
+			if (mCasingName[0].toLowerCase().contains(".name")) {
+				mCasingName[0] = LangUtils.getLocalizedNameOfBlock(getCasing(4), 0);
+			}
+			if (mCasingName[1].toLowerCase().contains(".name")) {
+				mCasingName[1] = LangUtils.getLocalizedNameOfBlock(getCasing(4), 1);
+			}
+			if (mCasingName[2].toLowerCase().contains(".name")) {
+				mCasingName[2] = LangUtils.getLocalizedNameOfBlock(getCasing(4), 2);
+			}
+			if (mCasingName[3].toLowerCase().contains(".name")) {
+				mCasingName[3] = LangUtils.getLocalizedNameOfBlock(getCasing(3), 15);
+			}
+			if (mCasingName[4].toLowerCase().contains(".name")) {
+				mCasingName[4] = LangUtils.getLocalizedNameOfBlock(getCasing(1), 13);
+			}
+			return new String[]{
+					"Advanced Integrated Assembly Line"
+			};
+		}*/
+	
+	@Override
+	protected final GT_Multiblock_Tooltip_Builder createTooltip() {
+		GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+		tt.addMachineType(getMachineType())
+		.addInfo("Controller Block for the Tesla Defence Tower Mk3200")
+		.addInfo("This uses 5,000,000EU per blast.")
+		.addInfo("Can screwdriver to toggle mode between Players and all Entities.")
+		.addSeparator()
+		.beginStructureBlock(1, 7, 1, false)
+		.addController("Top Middle")
+		.addCasingInfo("Casing", 360)
+		.addOtherStructurePart("Rotor Assembly", "Any 1 dot hint", 1)
+		.addInputBus("Any 4 dot hint (min 1)", 4)
+		.addInputHatch("Any 4 dot hint(min 1)", 4)
+		.addOutputHatch("Any 4 dot hint(min 1)", 4)
+		.addEnergyHatch("Any 4 dot hint(min 1)", 4)
+		.addMaintenanceHatch("Any 4 dot hint(min 1)", 4)
+		.toolTipFinisher(CORE.GT_Tooltip_Builder);
+		return tt;
+	}
+
 	private Block getCasing(int casingID) {
 		if (casingID == 1) {
 			return ModBlocks.blockCasingsMisc;
@@ -100,155 +123,151 @@ public class GregtechMetaTileEntity_Adv_AssemblyLine
 		}
 	}
 
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        if (aSide == aFacing) {
-            return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(16), new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE)};
-        }
-        return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(16)};
-    }
+	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
+		if (aSide == aFacing) {
+			return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(16), new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE)};
+		}
+		return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(16)};
+	}
 
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "AssemblyLine.png");
-    }
+	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+		return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "AssemblyLine.png");
+	}
 
-    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-        return null;
-    }
+	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
+		return null;
+	}
 
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
+	public boolean isCorrectMachinePart(ItemStack aStack) {
+		return true;
+	}
 
-    public boolean isFacingValid(byte aFacing) {
-        return aFacing > 1;
-    }
+	public boolean checkRecipe(ItemStack aStack) {
+		if(GT_Values.D1)System.out.println("Start ALine recipe check");
+		ArrayList<ItemStack> tDataStickList = getDataItems(2);
+		if (tDataStickList.size() == 0) return false;
+		if(GT_Values.D1)System.out.println("Stick accepted, " + tDataStickList.size() + " Data Sticks found");
 
-    public boolean checkRecipe(ItemStack aStack) {
-    	if(GT_Values.D1)System.out.println("Start ALine recipe check");
-        ArrayList<ItemStack> tDataStickList = getDataItems(2);
-    	if (tDataStickList.size() == 0) return false;
-    	if(GT_Values.D1)System.out.println("Stick accepted, " + tDataStickList.size() + " Data Sticks found");
+		ItemStack tStack[] = new ItemStack[15];
+		FluidStack[] tFluids = new FluidStack[4];
+		boolean findRecipe = false;
+		nextDS:for (ItemStack tDataStick : tDataStickList){
+			NBTTagCompound tTag = tDataStick.getTagCompound();
+			if (tTag == null) continue;
+			for (int i = 0; i < 15; i++) {
+				int count = tTag.getInteger("a"+i);
+				if (!tTag.hasKey("" + i) && count <= 0) continue;
+				if (mInputBusses.get(i) == null) {
+					continue nextDS;
+				}
 
-        ItemStack tStack[] = new ItemStack[15];
-    	FluidStack[] tFluids = new FluidStack[4];
-    	boolean findRecipe = false;
-    	nextDS:for (ItemStack tDataStick : tDataStickList){
-    		NBTTagCompound tTag = tDataStick.getTagCompound();
-    		if (tTag == null) continue;
-    		for (int i = 0; i < 15; i++) {
-    			int count = tTag.getInteger("a"+i);
-                if (!tTag.hasKey("" + i) && count <= 0) continue;
-                if (mInputBusses.get(i) == null) {
-                	continue nextDS;
-                }
-                
-                ItemStack stackInSlot = mInputBusses.get(i).getBaseMetaTileEntity().getStackInSlot(0);
-                boolean flag = true;
-                if (count > 0) {
-            		for (int j = 0; j < count; j++) {
-            			tStack[i] = GT_Utility.loadItem(tTag, "a" + i + ":" + j);
-            			if (tStack[i] == null) continue;
-            			if(GT_Values.D1)System.out.println("Item "+i+" : "+tStack[i].getUnlocalizedName());
-            			if (GT_Utility.areStacksEqual(tStack[i], stackInSlot, true) && tStack[i].stackSize <= stackInSlot.stackSize) {
-            				flag = false;
-            				break;
-            			}
-            		}
-            	}
-                if (flag) {
-            		tStack[i] = GT_Utility.loadItem(tTag, "" + i);
-            		if (tStack[i] == null) {
-            			flag = false;
-            			continue;
-            		}
-            		if(GT_Values.D1)System.out.println("Item "+i+" : "+tStack[i].getUnlocalizedName());
-        			if (GT_Utility.areStacksEqual(tStack[i], stackInSlot, true) && tStack[i].stackSize <= stackInSlot.stackSize) {
-        				flag = false;
-        			}
-            	}
-                if(GT_Values.D1) System.out.println(i + (flag ? " not accepted" : " accepted"));
-                if (flag) continue nextDS;
-            }
-    		
-    		if(GT_Values.D1)System.out.println("All Items done, start fluid check");
-            for (int i = 0; i < 4; i++) {
-                if (!tTag.hasKey("f" + i)) continue;
-                tFluids[i] = GT_Utility.loadFluid(tTag, "f" + i);
-                if (tFluids[i] == null) continue;
-            	if(GT_Values.D1)System.out.println("Fluid "+i+" "+tFluids[i].getUnlocalizedName());
-                if (mInputHatches.get(i) == null) {
-                	continue nextDS;
-                }
-                FluidStack fluidInHatch = mInputHatches.get(i).mFluid;
-                if (fluidInHatch == null || !GT_Utility.areFluidsEqual(fluidInHatch, tFluids[i], true) || fluidInHatch.amount < tFluids[i].amount) {
-                	if(GT_Values.D1)System.out.println(i+" not accepted");
-                	continue nextDS;
-                }
-            	if(GT_Values.D1)System.out.println(i+" accepted");
-            }
-            
-            if(GT_Values.D1)System.out.println("Input accepted, check other values");
-            if (!tTag.hasKey("output")) continue;
-            mOutputItems = new ItemStack[]{GT_Utility.loadItem(tTag, "output")};
-            if (mOutputItems[0] == null || !GT_Utility.isStackValid(mOutputItems[0]))
-                continue;
-            
-            if (!tTag.hasKey("time")) continue;
-            mMaxProgresstime = tTag.getInteger("time");
-            if (mMaxProgresstime <= 0) continue;
-            
-            if (!tTag.hasKey("eu")) continue;
-            mEUt = tTag.getInteger("eu");
-            
-            if(GT_Values.D1)System.out.println("Find avaiable recipe");
-            findRecipe = true;
-            break;
-    	}
-    	if (!findRecipe) return false;
+				ItemStack stackInSlot = mInputBusses.get(i).getBaseMetaTileEntity().getStackInSlot(0);
+				boolean flag = true;
+				if (count > 0) {
+					for (int j = 0; j < count; j++) {
+						tStack[i] = GT_Utility.loadItem(tTag, "a" + i + ":" + j);
+						if (tStack[i] == null) continue;
+						if(GT_Values.D1)System.out.println("Item "+i+" : "+tStack[i].getUnlocalizedName());
+						if (GT_Utility.areStacksEqual(tStack[i], stackInSlot, true) && tStack[i].stackSize <= stackInSlot.stackSize) {
+							flag = false;
+							break;
+						}
+					}
+				}
+				if (flag) {
+					tStack[i] = GT_Utility.loadItem(tTag, "" + i);
+					if (tStack[i] == null) {
+						flag = false;
+						continue;
+					}
+					if(GT_Values.D1)System.out.println("Item "+i+" : "+tStack[i].getUnlocalizedName());
+					if (GT_Utility.areStacksEqual(tStack[i], stackInSlot, true) && tStack[i].stackSize <= stackInSlot.stackSize) {
+						flag = false;
+					}
+				}
+				if(GT_Values.D1) System.out.println(i + (flag ? " not accepted" : " accepted"));
+				if (flag) continue nextDS;
+			}
 
-    	if(GT_Values.D1)System.out.println("All checked start consuming inputs");
-        for (int i = 0; i < 15; i++) {
-            if (tStack[i] == null) continue;
-            ItemStack stackInSlot = mInputBusses.get(i).getBaseMetaTileEntity().getStackInSlot(0);
-            stackInSlot.stackSize -= tStack[i].stackSize;
-        }
+			if(GT_Values.D1)System.out.println("All Items done, start fluid check");
+			for (int i = 0; i < 4; i++) {
+				if (!tTag.hasKey("f" + i)) continue;
+				tFluids[i] = GT_Utility.loadFluid(tTag, "f" + i);
+				if (tFluids[i] == null) continue;
+				if(GT_Values.D1)System.out.println("Fluid "+i+" "+tFluids[i].getUnlocalizedName());
+				if (mInputHatches.get(i) == null) {
+					continue nextDS;
+				}
+				FluidStack fluidInHatch = mInputHatches.get(i).mFluid;
+				if (fluidInHatch == null || !GT_Utility.areFluidsEqual(fluidInHatch, tFluids[i], true) || fluidInHatch.amount < tFluids[i].amount) {
+					if(GT_Values.D1)System.out.println(i+" not accepted");
+					continue nextDS;
+				}
+				if(GT_Values.D1)System.out.println(i+" accepted");
+			}
 
-        for (int i = 0; i < 4; i++) {
-            if (tFluids[i] == null) continue;
-            mInputHatches.get(i).mFluid.amount -= tFluids[i].amount;
-            if (mInputHatches.get(i).mFluid.amount <= 0) {
-                mInputHatches.get(i).mFluid = null;
-            }
-        }
-    	if(GT_Values.D1)System.out.println("Check overclock");
+			if(GT_Values.D1)System.out.println("Input accepted, check other values");
+			if (!tTag.hasKey("output")) continue;
+			mOutputItems = new ItemStack[]{GT_Utility.loadItem(tTag, "output")};
+			if (mOutputItems[0] == null || !GT_Utility.isStackValid(mOutputItems[0]))
+				continue;
 
-        byte tTier = (byte) Math.max(1, GT_Utility.getTier(getMaxInputVoltage()));
-        this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-        this.mEfficiencyIncrease = 10000;
-        if (mEUt <= 16) {
-            this.mEUt = (mEUt * (1 << tTier - 1) * (1 << tTier - 1));
-            this.mMaxProgresstime = (mMaxProgresstime / (1 << tTier - 1));
-        } else {
-            while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
-                this.mEUt *= 4;
-                this.mMaxProgresstime /= 2;
-            }
-        }
-        if (this.mEUt > 0) {
-            this.mEUt = -this.mEUt;
-        }
-        this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-        updateSlots();
-    	if(GT_Values.D1)System.out.println("Recipe sucessfull");
-        return true;
-    }
+			if (!tTag.hasKey("time")) continue;
+			mMaxProgresstime = tTag.getInteger("time");
+			if (mMaxProgresstime <= 0) continue;
 
-    public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {
-        super.startSoundLoop(aIndex, aX, aY, aZ);
-        if (aIndex == 20) {
-            GT_Utility.doSoundAtClient(GregTech_API.sSoundList.get(212), 10, 1.0F, aX, aY, aZ);
-        }
-    }
+			if (!tTag.hasKey("eu")) continue;
+			mEUt = tTag.getInteger("eu");
+
+			if(GT_Values.D1)System.out.println("Find avaiable recipe");
+			findRecipe = true;
+			break;
+		}
+		if (!findRecipe) return false;
+
+		if(GT_Values.D1)System.out.println("All checked start consuming inputs");
+		for (int i = 0; i < 15; i++) {
+			if (tStack[i] == null) continue;
+			ItemStack stackInSlot = mInputBusses.get(i).getBaseMetaTileEntity().getStackInSlot(0);
+			stackInSlot.stackSize -= tStack[i].stackSize;
+		}
+
+		for (int i = 0; i < 4; i++) {
+			if (tFluids[i] == null) continue;
+			mInputHatches.get(i).mFluid.amount -= tFluids[i].amount;
+			if (mInputHatches.get(i).mFluid.amount <= 0) {
+				mInputHatches.get(i).mFluid = null;
+			}
+		}
+		if(GT_Values.D1)System.out.println("Check overclock");
+
+		byte tTier = (byte) Math.max(1, GT_Utility.getTier(getMaxInputVoltage()));
+		this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
+		this.mEfficiencyIncrease = 10000;
+		if (mEUt <= 16) {
+			this.mEUt = (mEUt * (1 << tTier - 1) * (1 << tTier - 1));
+			this.mMaxProgresstime = (mMaxProgresstime / (1 << tTier - 1));
+		} else {
+			while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
+				this.mEUt *= 4;
+				this.mMaxProgresstime /= 2;
+			}
+		}
+		if (this.mEUt > 0) {
+			this.mEUt = -this.mEUt;
+		}
+		this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
+		updateSlots();
+		if(GT_Values.D1)System.out.println("Recipe sucessfull");
+		return true;
+	}
+
+	public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {
+		super.startSoundLoop(aIndex, aX, aY, aZ);
+		if (aIndex == 20) {
+			GT_Utility.doSoundAtClient(GregTech_API.sSoundList.get(212), 10, 1.0F, aX, aY, aZ);
+		}
+	}
 
 	public boolean checkMultiblock(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
 		int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 4;
@@ -314,7 +333,7 @@ public class GregtechMetaTileEntity_Adv_AssemblyLine
 		if (aOwnerName != null && aOwnerName.length() > 0) {
 			aOwner = PlayerUtils.getPlayer(aOwnerName);
 		}
-		
+
 		if (aShieldingCount != 128) {
 			log("Not enough "+mCasingName[4]+"s, require 128.");
 			if (aOwner != null) {
@@ -365,18 +384,18 @@ public class GregtechMetaTileEntity_Adv_AssemblyLine
 	}
 
 	public boolean addNaquadahHatchToMachineInput(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null) {
-        	return false;
-        }
-        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity == null) {
-        	return false;
-        }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_DataAccess) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mDataAccessHatches.add((GT_MetaTileEntity_Hatch_DataAccess) aMetaTileEntity);
-        }
-        return false;
+		if (aTileEntity == null) {
+			return false;
+		}
+		IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+		if (aMetaTileEntity == null) {
+			return false;
+		}
+		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_DataAccess) {
+			((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+			return mDataAccessHatches.add((GT_MetaTileEntity_Hatch_DataAccess) aMetaTileEntity);
+		}
+		return false;
 	}	
 
 	public int checkEntireLayer(IGregTechTileEntity aBaseMetaTileEntity, Block aBlock, int aMeta, int aY, int xDir, int zDir) {
@@ -394,7 +413,7 @@ public class GregtechMetaTileEntity_Adv_AssemblyLine
 				if (aY == 0 && x == 0 && z == 0) {
 					continue;
 				}
-				
+
 				Block aCurrentBlock = aBaseMetaTileEntity.getBlockOffset(xDir + x, aY, zDir + z);
 				int aCurrentMeta = (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + x, aY, zDir + z);
 				if (aCurrentBlock == aBlock && aCurrentMeta == aMeta) {
@@ -485,7 +504,7 @@ public class GregtechMetaTileEntity_Adv_AssemblyLine
 		}
 		return aCasingCount;
 	}
-	
+
 	public int checkPipes(IGregTechTileEntity aBaseMetaTileEntity, Block aBlock, int aMeta, int aY, int xDir, int zDir) {
 		int aCasingCount = 0;
 		for (int x = -1; x < 2; x++) {
@@ -511,7 +530,7 @@ public class GregtechMetaTileEntity_Adv_AssemblyLine
 		}
 		return aCasingCount;
 	}
-	
+
 	public int checkContainmentRing(IGregTechTileEntity aBaseMetaTileEntity, Block aBlock, int aMeta, int aY, int xDir, int zDir) {
 		int aCasingCount = 0;
 		for (int x = -2; x < 3; x++) {
@@ -539,67 +558,65 @@ public class GregtechMetaTileEntity_Adv_AssemblyLine
 		}
 		return aCasingCount;
 	}
-        
-    */
-/**
-     * @param state using bitmask, 1 for IntegratedCircuit, 2 for DataStick, 4 for DataOrb
-     *//*
 
-    private boolean isCorrectDataItem(ItemStack aStack, int state){
-    	if ((state & 1) != 0 && ItemList.Circuit_Integrated.isStackEqual(aStack, true, true)) return true;
-    	if ((state & 2) != 0 && ItemList.Tool_DataStick.isStackEqual(aStack, false, true)) return true;
-    	if ((state & 4) != 0 && ItemList.Tool_DataOrb.isStackEqual(aStack, false, true)) return true;
-    	return false;
-    }
-    
-    */
-/**
-     * @param state using bitmask, 1 for IntegratedCircuit, 2 for DataStick, 4 for DataOrb
-     *//*
+	/**
+	 * @param state using bitmask, 1 for IntegratedCircuit, 2 for DataStick, 4 for DataOrb
+	 */
 
-    public ArrayList<ItemStack> getDataItems(int state) {
-        ArrayList<ItemStack> rList = new ArrayList<ItemStack>();
-        if (GT_Utility.isStackValid(mInventory[1]) && isCorrectDataItem(mInventory[1], state)) {
-        	rList.add(mInventory[1]);
-        }
-        for (GT_MetaTileEntity_Hatch_DataAccess tHatch : mDataAccessHatches) {
-            if (isValidMetaTileEntity(tHatch)) {
-                for (int i = 0; i < tHatch.getBaseMetaTileEntity().getSizeInventory(); i++) {
-                    if (tHatch.getBaseMetaTileEntity().getStackInSlot(i) != null
-                    		&& isCorrectDataItem(tHatch.getBaseMetaTileEntity().getStackInSlot(i), state))
-                        rList.add(tHatch.getBaseMetaTileEntity().getStackInSlot(i));
-                }
-            }
-        }
-        return rList;
-    }
+	private boolean isCorrectDataItem(ItemStack aStack, int state){
+		if ((state & 1) != 0 && ItemList.Circuit_Integrated.isStackEqual(aStack, true, true)) return true;
+		if ((state & 2) != 0 && ItemList.Tool_DataStick.isStackEqual(aStack, false, true)) return true;
+		if ((state & 4) != 0 && ItemList.Tool_DataOrb.isStackEqual(aStack, false, true)) return true;
+		return false;
+	}
 
-    public boolean addDataAccessToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null) return false;
-        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_DataAccess) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mDataAccessHatches.add((GT_MetaTileEntity_Hatch_DataAccess) aMetaTileEntity);
-        }
-        return false;
-    }
+	/**
+	 * @param state using bitmask, 1 for IntegratedCircuit, 2 for DataStick, 4 for DataOrb
+	 */
 
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
+	public ArrayList<ItemStack> getDataItems(int state) {
+		ArrayList<ItemStack> rList = new ArrayList<ItemStack>();
+		if (GT_Utility.isStackValid(mInventory[1]) && isCorrectDataItem(mInventory[1], state)) {
+			rList.add(mInventory[1]);
+		}
+		for (GT_MetaTileEntity_Hatch_DataAccess tHatch : mDataAccessHatches) {
+			if (isValidMetaTileEntity(tHatch)) {
+				for (int i = 0; i < tHatch.getBaseMetaTileEntity().getSizeInventory(); i++) {
+					if (tHatch.getBaseMetaTileEntity().getStackInSlot(i) != null
+							&& isCorrectDataItem(tHatch.getBaseMetaTileEntity().getStackInSlot(i), state))
+						rList.add(tHatch.getBaseMetaTileEntity().getStackInSlot(i));
+				}
+			}
+		}
+		return rList;
+	}
 
-    public int getPollutionPerTick(ItemStack aStack) {
-        return 0;
-    }
+	public boolean addDataAccessToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+		if (aTileEntity == null) return false;
+		IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+		if (aMetaTileEntity == null) return false;
+		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_DataAccess) {
+			((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+			return mDataAccessHatches.add((GT_MetaTileEntity_Hatch_DataAccess) aMetaTileEntity);
+		}
+		return false;
+	}
 
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
+	public int getMaxEfficiency(ItemStack aStack) {
+		return 10000;
+	}
 
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
-    }
+	public int getPollutionPerTick(ItemStack aStack) {
+		return 0;
+	}
+
+	public int getDamageToComponent(ItemStack aStack) {
+		return 0;
+	}
+
+	public boolean explodesOnComponentBreak(ItemStack aStack) {
+		return false;
+	}
 
 	@Override
 	public boolean hasSlotInGUI() {
@@ -625,5 +642,35 @@ public class GregtechMetaTileEntity_Adv_AssemblyLine
 	public int getEuDiscountForParallelism() {
 		return 0;
 	}
+	
+	@Override
+	public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+		super.onPreTick(aBaseMetaTileEntity, aTick);
+		// Fix GT bug
+		if (this.getBaseMetaTileEntity().getFrontFacing() != 1) {
+			log("Fixing Bad Facing. (GT Bug)");
+			this.getBaseMetaTileEntity().setFrontFacing((byte) 1); 
+		}
+	}
+
+	@Override
+	public void construct(ItemStack stackSize, boolean hintsOnly) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public IStructureDefinition getStructureDefinition() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean checkMachine(
+			IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack
+	) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }
-*/
+

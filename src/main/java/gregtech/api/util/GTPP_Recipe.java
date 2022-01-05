@@ -4,7 +4,11 @@ import static gregtech.api.enums.GT_Values.E;
 import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 import static gregtech.api.enums.GT_Values.W;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 
 import codechicken.nei.PositionedStack;
 import gregtech.api.GregTech_API;
@@ -14,7 +18,6 @@ import gregtech.api.objects.GT_ItemStack;
 import gtPlusPlus.api.interfaces.IComparableRecipe;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
-import gtPlusPlus.api.objects.minecraft.NoConflictGTRecipeMap;
 import gtPlusPlus.core.lib.CORE;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -338,7 +341,7 @@ public class GTPP_Recipe extends GT_Recipe  implements IComparableRecipe {
 		public static final GTPP_Recipe_Map_Internal sChemicalDehydratorRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(200), "gtpp.recipe.chemicaldehydrator", "Dehydrator", null, RES_PATH_GUI + "basicmachines/Dehydrator", 2, 9, 0, 0, 1, E, 1, E, true, true);
 		public static final GTPP_Recipe_Map_Internal sVacuumFurnaceRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(500), "gtpp.recipe.vacfurnace", "Vacuum Furnace", null, "gregtech:textures/gui/basicmachines/Default", 6, 6, 1, 0, 1, "Heat Capacity: ", 1, " K", false, true);
 		public static final GTPP_Recipe_Map_Internal sAlloyBlastSmelterRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(200), "gtpp.recipe.alloyblastsmelter", "Alloy Blast Smelter", null, RES_PATH_GUI + "basicmachines/BlastSmelter", 9, 9, 1, 0, 1, E, 1, E, true, true);
-		public static final GTPP_Recipe_Map_Internal sSteamTurbineFuels = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(10), "gtpp.recipe.steamturbinefuel", "GeoThermal Fuel", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 1000, " EU", true, true);
+		public static final GTPP_Recipe_Map_Internal sSteamTurbineFuels = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(10), "gtpp.recipe.steamturbinefuel", "GeoThermal Fuel", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 1000, " EU", true, false);
 
 		//LFTR recipes
 		public static final GTPP_Recipe_Map_Internal sLiquidFluorineThoriumReactorRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(50), "gtpp.recipe.lftr", "Liquid Fluoride Thorium Reactor", null, RES_PATH_GUI + "basicmachines/FissionFuel", 0, 0, 0, 2, 0, "Power: ", 1, " EU/t per Dynamo", true, true);
@@ -390,8 +393,13 @@ public class GTPP_Recipe extends GT_Recipe  implements IComparableRecipe {
 		//Thermal Boiler map
 		public static final GT_Recipe.GT_Recipe_Map_Fuel sThermalFuels = new GT_Recipe_Map_Fuel(new HashSet<GT_Recipe>(10), "gtpp.recipe.thermalgeneratorfuel",
 				"Thermal Generator Fuel", null, "gregtech:textures/gui/basicmachines/Default", 1, 1, 0, 0, 1,
-				"Fuel Value: ", 1000, " EU", true, false);
+				null, 1000, null, true, false);
 
+		//Solar Tower map
+		public static final GT_Recipe.GT_Recipe_Map_Fuel sSolarTowerRecipes = new GT_Recipe_Map_Fuel(new HashSet<GT_Recipe>(10), "gtpp.recipe.solartower",
+				"Solar Tower", null, "gregtech:textures/gui/basicmachines/Default", 1, 1, 0, 0, 1,
+				null, 1000, null, true, false);
+		
 		//Cyclotron recipe map
 		public static final GTPP_Recipe_Map_Internal sCyclotronRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(200), "gtpp.recipe.cyclotron", "COMET - Compact Cyclotron", null, RES_PATH_GUI + "basicmachines/BlastSmelter", 2, 16, 0, 0, 1, E, 1, E, true, true);
 

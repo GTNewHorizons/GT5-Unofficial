@@ -30,7 +30,7 @@ public class ItemAreaClear extends CoreItem {
 	public IIcon[] mIcon = new IIcon[1];
 
 	public ItemAreaClear() {
-		super("itemDebugClearing", AddToCreativeTab.tabMachines, 1, 100, new String[] {EnumChatFormatting.OBFUSCATED+"F A M C Y   N A M E"}, EnumRarity.rare,
+		super("itemDebugClearing", AddToCreativeTab.tabMachines, 1, 100, new String[] {EnumChatFormatting.OBFUSCATED+"F A N C Y   N A M E"}, EnumRarity.rare,
 				EnumChatFormatting.BOLD, false, null);
 	}
 
@@ -160,16 +160,16 @@ public class ItemAreaClear extends CoreItem {
 		int y1 = pos.yPos;
 		int z1 = pos.zPos;
 
-		int x2 = (x1-10);
+		int x2 = (x1-15);
 		int y2 = (y1-1);
-		int z2 = (z1-10);
+		int z2 = (z1-15);
 
 		fillBlockColumn(world, new BlockPos(x2, y2, z2, world));
 		return true;
 	}
 
 	public boolean fillBlockColumn(World world, BlockPos pos){
-		for (int i=0; i<21; i++){
+		for (int i=0; i<30; i++){
 			fillBlockRow(world, new BlockPos(pos.xPos, pos.yPos, pos.zPos+i, world));
 		}
 		return true;
@@ -177,9 +177,10 @@ public class ItemAreaClear extends CoreItem {
 
 	public boolean fillBlockRow(World world, BlockPos pos){
 		for (int j=0; j<2; j++){
-			for (int i=0; i<21; i++){
+			for (int i=0; i<30; i++){
 				if (world.getBlock(pos.xPos+i, pos.yPos+j, pos.zPos) != Blocks.bedrock){
-					world.setBlock(pos.xPos+i, pos.yPos+j, pos.zPos, Blocks.grass);
+					world.setBlock(pos.xPos+i, pos.yPos+j, pos.zPos, Blocks.dirt);
+					world.setBlockMetadataWithNotify(pos.xPos+i, pos.yPos+j, pos.zPos, 2, 2);
 				}
 			}
 		}

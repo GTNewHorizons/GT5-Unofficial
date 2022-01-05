@@ -17,6 +17,7 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.material.ELEMENT;
+import gtPlusPlus.core.material.MISC_MATERIALS;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.*;
 import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
@@ -28,6 +29,7 @@ import gtPlusPlus.xmod.gregtech.common.helpers.VolumetricFlaskHelper;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class RECIPES_General {
 
@@ -110,6 +112,25 @@ public class RECIPES_General {
 
 		}
 
+		if (OreDictionary.doesOreNameExist("dustPotassiumNitrade")) {
+			ItemStack aDustKNO3 = ItemUtils.getItemStackOfAmountFromOreDict("dustPotassiumNitrade", 1);
+			ItemStack aDustGtppKNO3 = MISC_MATERIALS.POTASSIUM_NITRATE.getDust(1);
+			if (RecipeUtils.addShapedRecipe(
+					null, null, null,
+					null, "dustPotassiumNitrade", null,
+					null, null, null,
+					ItemUtils.getSimpleStack(aDustGtppKNO3, 1))) {
+				Logger.INFO("Add conversion recipe (GT Potassium Nitrade -> GT++ Potassium Nitrate)");
+			}
+			if (RecipeUtils.addShapedRecipe(
+					null, null, null,
+					null, "dustPotassiumNitrate", null,
+					null, null, null,
+					ItemUtils.getSimpleStack(aDustKNO3, 1))) {
+				Logger.INFO("Add conversion recipe (GT++ Potassium Nitrate -> GT Potassium Nitrade)");
+			}
+		}
+		
 		//Rainforest oak Sapling
 		if (RecipeUtils.addShapedRecipe(
 				"stickWood", "stickWood", "stickWood",

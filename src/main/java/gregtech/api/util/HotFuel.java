@@ -22,7 +22,21 @@ public class HotFuel {
 		GTPP_Recipe.GTPP_Recipe_Map.sThermalFuels.addRecipe(x);
 	}
 	
-	
+	public static void addNewHotFuel(FluidStack aInput1, FluidStack aOutput1, FluidStack aOutput2, int aSpecialValue) {
+		GTPP_Recipe x = new GTPP_Recipe(
+				false,
+				null,
+				null,
+				null,
+				null,
+				new FluidStack[]{aInput1},
+				new FluidStack[]{aOutput1, aOutput2},
+				20, //1 Second
+				0, //No Eu produced
+				aSpecialValue //Magic Number
+		);
+		GTPP_Recipe.GTPP_Recipe_Map.sThermalFuels.addRecipe(x);
+	}
 	
 	
 }
