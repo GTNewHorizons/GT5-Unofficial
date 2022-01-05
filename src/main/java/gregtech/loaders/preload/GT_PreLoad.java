@@ -362,20 +362,8 @@ public class GT_PreLoad {
         GregTech_API.sDrinksAlwaysDrinkable = tMainConfig.get(GT_Mod.aTextGeneral, "drinks_always_drinkable", false).getBoolean(false);
         GregTech_API.sDoShowAllItemsInCreative = tMainConfig.get(GT_Mod.aTextGeneral, "show_all_metaitems_in_creative_and_NEI", false).getBoolean(false);
         GregTech_API.sMultiThreadedSounds = tMainConfig.get(GT_Mod.aTextGeneral, "sound_multi_threading", false).getBoolean(false);
-        String SBdye0 = "ColorModulation.";
-        Arrays.stream(Dyes.values()).filter(tDye -> (tDye != Dyes._NULL) && (tDye.mIndex < 0)).forEach(tDye -> {
-                    String SBdye1 = SBdye0 + tDye;
-                    tDye.mRGBa[0] = ((short) Math.min(255, Math.max(0, GregTech_API.sClientDataFile.get(SBdye1, "R", tDye.mRGBa[0]))));
-                    tDye.mRGBa[1] = ((short) Math.min(255, Math.max(0, GregTech_API.sClientDataFile.get(SBdye1, "G", tDye.mRGBa[1]))));
-                    tDye.mRGBa[2] = ((short) Math.min(255, Math.max(0, GregTech_API.sClientDataFile.get(SBdye1, "B", tDye.mRGBa[2]))));
-                }
-                                                                                                      );
-        GT_Mod.gregtechproxy.mRenderTileAmbientOcclusion = GregTech_API.sClientDataFile.get("render", "TileAmbientOcclusion", true);
-        GT_Mod.gregtechproxy.mRenderGlowTextures = GregTech_API.sClientDataFile.get("render", "GlowTextures", true);
-        GT_Mod.gregtechproxy.mRenderFlippedMachinesFlipped = GregTech_API.sClientDataFile.get("render", "RenderFlippedMachinesFlipped", true);
-        GT_Mod.gregtechproxy.mRenderIndicatorsOnHatch = GregTech_API.sClientDataFile.get("render", "RenderIndicatorsOnHatch", true);
-        GT_Mod.gregtechproxy.mRenderDirtParticles =  GregTech_API.sClientDataFile.get("render", "RenderDirtParticles", true);
-        GT_Mod.gregtechproxy.mRenderPollutionFog = GregTech_API.sClientDataFile.get("render", "RenderPollutionFog", true);
+
+        loadClientConfig();
 
         GT_Mod.gregtechproxy.mMaxEqualEntitiesAtOneSpot = tMainConfig.get(GT_Mod.aTextGeneral, "MaxEqualEntitiesAtOneSpot", 3).getInt(3);
         GT_Mod.gregtechproxy.mSkeletonsShootGTArrows = tMainConfig.get(GT_Mod.aTextGeneral, "SkeletonsShootGTArrows", 16).getInt(16);
@@ -523,5 +511,22 @@ public class GT_PreLoad {
                 tPrefix.mDefaultStackSize = ((byte) Math.min(64, Math.max(16, tMainConfig.get("features", "MaxOtherBlockStackSize", 64).getInt())));
             }
         }
+    }
+
+    public static void loadClientConfig() {
+        String SBdye0 = "ColorModulation.";
+        Arrays.stream(Dyes.values()).filter(tDye -> (tDye != Dyes._NULL) && (tDye.mIndex < 0)).forEach(tDye -> {
+                    String SBdye1 = SBdye0 + tDye;
+                    tDye.mRGBa[0] = ((short) Math.min(255, Math.max(0, GregTech_API.sClientDataFile.get(SBdye1, "R", tDye.mOriginalRGBa[0]))));
+                    tDye.mRGBa[1] = ((short) Math.min(255, Math.max(0, GregTech_API.sClientDataFile.get(SBdye1, "G", tDye.mOriginalRGBa[1]))));
+                    tDye.mRGBa[2] = ((short) Math.min(255, Math.max(0, GregTech_API.sClientDataFile.get(SBdye1, "B", tDye.mOriginalRGBa[2]))));
+                }
+                                                                                                      );
+        GT_Mod.gregtechproxy.mRenderTileAmbientOcclusion = GregTech_API.sClientDataFile.get("render", "TileAmbientOcclusion", true);
+        GT_Mod.gregtechproxy.mRenderGlowTextures = GregTech_API.sClientDataFile.get("render", "GlowTextures", true);
+        GT_Mod.gregtechproxy.mRenderFlippedMachinesFlipped = GregTech_API.sClientDataFile.get("render", "RenderFlippedMachinesFlipped", true);
+        GT_Mod.gregtechproxy.mRenderIndicatorsOnHatch = GregTech_API.sClientDataFile.get("render", "RenderIndicatorsOnHatch", true);
+        GT_Mod.gregtechproxy.mRenderDirtParticles =  GregTech_API.sClientDataFile.get("render", "RenderDirtParticles", true);
+        GT_Mod.gregtechproxy.mRenderPollutionFog = GregTech_API.sClientDataFile.get("render", "RenderPollutionFog", true);
     }
 }
