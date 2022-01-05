@@ -9,6 +9,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.objects.ItemData;
 import gregtech.common.blocks.GT_Block_Ores_Abstract;
 import gregtech.common.blocks.GT_TileEntity_Ores;
+import gregtech.common.blocks.GT_TileEntity_OresExtended;
 import ic2.api.crops.CropCard;
 import ic2.api.crops.Crops;
 import ic2.api.crops.ICropTile;
@@ -201,7 +202,17 @@ public class GT_BaseCrop extends CropCard implements ICropCardInfo {
             Block tBlock = aCrop.getWorld().getBlock(aCrop.getLocation().posX, aCrop.getLocation().posY - i, aCrop.getLocation().posZ);
             if ((tBlock instanceof GT_Block_Ores_Abstract)) {
                 TileEntity tTileEntity = aCrop.getWorld().getTileEntity(aCrop.getLocation().posX, aCrop.getLocation().posY - i, aCrop.getLocation().posZ);
-                if ((tTileEntity instanceof GT_TileEntity_Ores)) {
+                if ((tTileEntity instanceof GT_TileEntity_OresExtended)) {
+                    Materials tMaterial = GregTech_API.sGeneratedExtendedMaterials[(((GT_TileEntity_OresExtended) tTileEntity).mMetaData)];
+                    if ((tMaterial != null) && (tMaterial != Materials._NULL)) {
+                        if (tMaterial == mBlock) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+                }
+                else if ((tTileEntity instanceof GT_TileEntity_Ores)) {
                     Materials tMaterial = GregTech_API.sGeneratedMaterials[(((GT_TileEntity_Ores) tTileEntity).mMetaData % 1000)];
                     if ((tMaterial != null) && (tMaterial != Materials._NULL)) {
                         if (tMaterial == mBlock) {

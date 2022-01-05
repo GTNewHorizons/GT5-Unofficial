@@ -9,6 +9,7 @@ import gregtech.api.enums.*;
 import gregtech.api.items.GT_Block_LongDistancePipe;
 import gregtech.api.items.GT_Generic_Item;
 import gregtech.api.items.GT_RadioactiveCellIC_Item;
+import gregtech.api.items.extendedmaterials.GT_MetaGenerated_Item_ExtendedMaterials_Base;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.util.GT_Log;
@@ -70,7 +71,84 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         new GT_IntegratedCircuit_Item();
         new GT_MetaGenerated_Item_01();
         new GT_MetaGenerated_Item_02();
-        new GT_MetaGenerated_Item_03();
+        new GT_MetaGenerated_Item_03();      
+
+        OrePrefixes[] aExtendedMaterials = new OrePrefixes[] {
+        		// Meta 1
+        		OrePrefixes.dustTiny, 
+        		OrePrefixes.dustSmall,
+        		OrePrefixes.dust, 
+        		OrePrefixes.dustImpure, 
+        		OrePrefixes.dustPure, 
+        		OrePrefixes.crushed,
+        		OrePrefixes.crushedPurified, 
+        		OrePrefixes.crushedCentrifuged,
+        		OrePrefixes.gem, 
+        		OrePrefixes.nugget,
+        		OrePrefixes.ingot,
+        		OrePrefixes.ingotHot, 
+        		OrePrefixes.ingotDouble,
+        		OrePrefixes.ingotTriple,
+        		OrePrefixes.ingotQuadruple,
+        		OrePrefixes.ingotQuintuple,
+        		OrePrefixes.plate,
+        		OrePrefixes.plateDouble,
+        		OrePrefixes.plateTriple,
+        		OrePrefixes.plateQuadruple,
+        		OrePrefixes.plateQuintuple,
+        		OrePrefixes.plateDense,
+        		OrePrefixes.stick,
+        		OrePrefixes.lens,
+        		OrePrefixes.round,
+        		OrePrefixes.bolt,
+        		OrePrefixes.screw,
+        		OrePrefixes.ring,
+        		OrePrefixes.foil,
+        		OrePrefixes.cell,
+        		OrePrefixes.cellPlasma,
+        		// Meta 2
+        		OrePrefixes.toolHeadSword, 
+        		OrePrefixes.toolHeadPickaxe,
+        		OrePrefixes.toolHeadShovel,
+        		OrePrefixes.toolHeadAxe, 
+        		OrePrefixes.toolHeadHoe, 
+        		OrePrefixes.toolHeadHammer, 
+        		OrePrefixes.toolHeadFile, 
+        		OrePrefixes.toolHeadSaw,
+        		OrePrefixes.toolHeadDrill, 
+        		OrePrefixes.toolHeadChainsaw, 
+        		OrePrefixes.toolHeadWrench, 
+        		OrePrefixes.toolHeadUniversalSpade,
+        		OrePrefixes.toolHeadSense,
+        		OrePrefixes.toolHeadPlow,
+        		OrePrefixes.toolHeadArrow, 
+        		OrePrefixes.toolHeadBuzzSaw, 
+        		OrePrefixes.turbineBlade,
+        		OrePrefixes.itemCasing, 
+        		OrePrefixes.wireFine,
+        		OrePrefixes.gearGtSmall,
+        		OrePrefixes.rotor,
+        		OrePrefixes.stickLong, 
+        		OrePrefixes.springSmall, 
+        		OrePrefixes.spring, 
+        		OrePrefixes.arrowGtWood,
+        		OrePrefixes.arrowGtPlastic,
+        		OrePrefixes.gemChipped, 
+        		OrePrefixes.gemFlawed, 
+        		OrePrefixes.gemFlawless,
+        		OrePrefixes.gemExquisite,
+        		OrePrefixes.gearGt,        		
+        		// Meta 3
+        		OrePrefixes.crateGtDust, 
+        		OrePrefixes.crateGtIngot, 
+        		OrePrefixes.crateGtGem, 
+        		OrePrefixes.crateGtPlate        		
+        };
+        
+        for (OrePrefixes aPrefix : aExtendedMaterials) {
+        	new GT_MetaGenerated_Item_ExtendedMaterials_Base(aPrefix);
+        }
+        
         // GT_MetaGenerated_Item_98 is initialized in GT_Proxy.onPostLoad() because we need to wait for fluids to be registered.
         // Pre-initialization needs to happen before then, though, because the cell icons get deleted at some point between load and post-load.
         GT_MetaGenerated_Item_98.preInit();
@@ -221,6 +299,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         GregTech_API.sBlockConcretes = new GT_Block_Concretes();
         GregTech_API.sBlockStones = new GT_Block_Stones();
         GregTech_API.sBlockOres1 = new GT_Block_Ores();
+        GregTech_API.sBlockOresExtended = new GT_Block_OresExtended();
 
         GregTech_API.sBlockMetal1 = new GT_Block_Metal("gt.blockmetal1", new Materials[]{
                 Materials.Adamantium,

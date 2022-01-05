@@ -14,6 +14,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_UndergroundOil;
 import gregtech.common.blocks.GT_Block_Ores_Abstract;
 import gregtech.common.blocks.GT_TileEntity_Ores;
+import gregtech.common.blocks.GT_TileEntity_OresExtended;
 import ic2.core.Ic2Items;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -118,7 +119,18 @@ public class GT_MetaTileEntity_SeismicProspector extends GT_MetaTileEntity_Basic
                             Block tBlock = this.getBaseMetaTileEntity().getBlockOffset(f, -i, g);
                             if ((tBlock instanceof GT_Block_Ores_Abstract)) {
                                 TileEntity tTileEntity = getBaseMetaTileEntity().getWorld().getTileEntity(getBaseMetaTileEntity().getXCoord() + f, getBaseMetaTileEntity().getYCoord() + (-i), getBaseMetaTileEntity().getZCoord() + g);
-                                if ((tTileEntity instanceof GT_TileEntity_Ores)) {
+                                
+                                if ((tTileEntity instanceof GT_TileEntity_OresExtended)) {
+                                	if(((GT_TileEntity_OresExtended) tTileEntity).mMetaData < 16000){
+                                        Materials tMaterial = GregTech_API.sGeneratedExtendedMaterials[(((GT_TileEntity_OresExtended) tTileEntity).mMetaData)];
+                                        if ((tMaterial != null) && (tMaterial != Materials._NULL)) {
+                                            if (!tStringList.contains(tMaterial.mDefaultLocalName)) {
+                                                tStringList.add(tMaterial.mDefaultLocalName);
+                                            }
+                                        }
+                                      }
+                                    }
+                                else if ((tTileEntity instanceof GT_TileEntity_Ores)) {
                                 	if(((GT_TileEntity_Ores) tTileEntity).mMetaData < 16000){
                                     Materials tMaterial = GregTech_API.sGeneratedMaterials[(((GT_TileEntity_Ores) tTileEntity).mMetaData % 1000)];
                                     if ((tMaterial != null) && (tMaterial != Materials._NULL)) {
@@ -127,7 +139,7 @@ public class GT_MetaTileEntity_SeismicProspector extends GT_MetaTileEntity_Basic
                                         }
                                     }
                                   }
-                                }
+                                }                                
                             } else {
                                 int tMetaID = getBaseMetaTileEntity().getWorld().getBlockMetadata(getBaseMetaTileEntity().getXCoord() + f, getBaseMetaTileEntity().getYCoord() + (-i), getBaseMetaTileEntity().getZCoord() + g);
                                 ItemData tAssotiation = GT_OreDictUnificator.getAssociation(new ItemStack(tBlock, 1, tMetaID));

@@ -218,6 +218,12 @@ public class GregTech_API {
      * A List containing all the Materials, which are somehow in use by GT and therefor receive a specific Set of Items.
      */
     public static final Materials[] sGeneratedMaterials = new Materials[1000];
+    
+    /**
+     * A List containing all the Extended Materials, which are somehow in use by GT and therefor receive a specific Set of Items.
+     */
+    public static final Materials[] sGeneratedExtendedMaterials = new Materials[32000];
+    
     /**
      * This is the generic Cover behavior. Used for the default Covers, which have no Behavior.
      */
@@ -281,6 +287,7 @@ public class GregTech_API {
 
     public static Block
             sBlockOres1,
+            sBlockOresExtended,
             sBlockOresUb1,
             sBlockOresUb2,
             sBlockOresUb3,

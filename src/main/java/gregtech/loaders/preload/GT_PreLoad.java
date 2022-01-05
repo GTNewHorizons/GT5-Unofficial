@@ -166,6 +166,7 @@ public class GT_PreLoad {
         }
     }
 
+    // TODO
     public static void runMineTweakerCompat() {
         if (Loader.isModLoaded("MineTweaker3")) 
             return;

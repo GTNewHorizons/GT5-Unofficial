@@ -6,6 +6,7 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.world.GT_Worldgen_Ore;
 import gregtech.common.blocks.GT_Block_Ores_Abstract;
 import gregtech.common.blocks.GT_TileEntity_Ores;
+import gregtech.common.blocks.GT_TileEntity_OresExtended;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
@@ -197,7 +198,13 @@ public class GT_Worldgen_Stone extends GT_Worldgen_Ore {
                                 Block tTargetedBlock = aWorld.getBlock(iX, iY, iZ);
                                 if (tTargetedBlock instanceof GT_Block_Ores_Abstract) {
                                     TileEntity tTileEntity = aWorld.getTileEntity(iX, iY, iZ);
-                                    if ((tTileEntity instanceof GT_TileEntity_Ores)) {
+                                    if ((tTileEntity instanceof GT_TileEntity_OresExtended)) {
+                                        if (tTargetedBlock != GregTech_API.sBlockOresExtended) {
+                                            ((GT_TileEntity_Ores) tTileEntity).convertOreBlock(aWorld, iX, iY, iZ);
+                                        }
+                                        ((GT_TileEntity_Ores)tTileEntity).overrideOreBlockMaterial(this.mBlock, (byte) this.mBlockMeta);
+                                    }
+                                    else if ((tTileEntity instanceof GT_TileEntity_Ores)) {
                                         if (tTargetedBlock != GregTech_API.sBlockOres1) {
                                             ((GT_TileEntity_Ores) tTileEntity).convertOreBlock(aWorld, iX, iY, iZ);
                                         }

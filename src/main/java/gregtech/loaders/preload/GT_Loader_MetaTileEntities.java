@@ -1093,6 +1093,11 @@ public class GT_Loader_MetaTileEntities implements Runnable {//TODO CHECK CIRCUI
                 new GT_MetaPipeEntity_Frame(4096 + i, "GT_Frame_" + GregTech_API.sGeneratedMaterials[i], (GT_LanguageManager.i18nPlaceholder ? "%material" : GregTech_API.sGeneratedMaterials[i].mDefaultLocalName) + " Frame Box", GregTech_API.sGeneratedMaterials[i]);
             }
         }
+        for (int i = 0; i < GregTech_API.sGeneratedExtendedMaterials.length; i++) {
+            if (((GregTech_API.sGeneratedExtendedMaterials[i] != null) && ((GregTech_API.sGeneratedExtendedMaterials[i].mTypes & 0x2) != 0))) {
+                new GT_MetaPipeEntity_Frame(8196 + i, "GT_Frame_" + GregTech_API.sGeneratedExtendedMaterials[i], (GT_LanguageManager.i18nPlaceholder ? "%material" : GregTech_API.sGeneratedExtendedMaterials[i].mDefaultLocalName) + " Frame Box", GregTech_API.sGeneratedExtendedMaterials[i]);
+            }
+        }
         boolean bEC = !GT_Mod.gregtechproxy.mHardcoreCables;
 
         makeWires(Materials.RedAlloy, 2000, 0L, 1L, 1L, gregtech.api.enums.GT_Values.V[0], true, aBoolConst_0);

@@ -13,6 +13,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Block_Ores_Abstract;
 import gregtech.common.blocks.GT_TileEntity_Ores;
+import gregtech.common.blocks.GT_TileEntity_OresExtended;
 import ic2.core.Ic2Items;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -226,15 +227,21 @@ public class GT_MetaTileEntity_AdvSeismicProspector extends GT_MetaTileEntity_Ba
 
         if (tBlock instanceof GT_Block_Ores_Abstract) {
             TileEntity tTileEntity = getBaseMetaTileEntity().getWorld().getTileEntity(x, y, z);
-
-            if ((tTileEntity instanceof GT_TileEntity_Ores)
-                && (((GT_TileEntity_Ores) tTileEntity).mMetaData < 16000)) { // Filtering small ores
-                Materials tMaterial
-                    = GregTech_API.sGeneratedMaterials[((GT_TileEntity_Ores) tTileEntity).mMetaData % 1000];
-
-                if ((tMaterial != null) && (tMaterial != Materials._NULL))
-                    return tMaterial.mDefaultLocalName;
-            }
+            if ((tTileEntity instanceof GT_TileEntity_OresExtended)
+                    && (((GT_TileEntity_Ores) tTileEntity).mMetaData < 16000)) { // Filtering small ores
+                    Materials tMaterial
+                        = GregTech_API.sGeneratedExtendedMaterials[((GT_TileEntity_OresExtended) tTileEntity).mMetaData];
+                    if ((tMaterial != null) && (tMaterial != Materials._NULL))
+                        return tMaterial.mDefaultLocalName;
+                }            
+            else if ((tTileEntity instanceof GT_TileEntity_Ores)
+                    && (((GT_TileEntity_Ores) tTileEntity).mMetaData < 16000)) { // Filtering small ores
+                    Materials tMaterial
+                        = GregTech_API.sGeneratedMaterials[((GT_TileEntity_Ores) tTileEntity).mMetaData % 1000];
+                    if ((tMaterial != null) && (tMaterial != Materials._NULL))
+                        return tMaterial.mDefaultLocalName;
+                }
+            
         } else {
             int tMetaID = getBaseMetaTileEntity().getWorld().getBlockMetadata(x, y, z);
             ItemStack is = new ItemStack(tBlock, 1, tMetaID);
