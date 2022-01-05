@@ -829,36 +829,24 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (aSide == getBaseMetaTileEntity().getFrontFacing() || aSide == mMainFacing) {
             if (aPlayer.isSneaking()){
-                int tMode = mDisableFilter ? 0 : 2;
-                tMode += mDisableMultiStack ? 0 : 1;
-
-                switch (tMode) {
-                    case 0: mDisableFilter = true;
-                        mDisableMultiStack = false;
-                        GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.hatch.disableFilter." + mDisableFilter));
-                        GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.hatch.disableMultiStack." + mDisableMultiStack));
-                        break;
-                    case 1: mDisableFilter = false;
-                        mDisableMultiStack = true;
-                        GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.hatch.disableFilter." + mDisableFilter));
-                        GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.hatch.disableMultiStack." + mDisableMultiStack));
-                        break;
-                    case 2: mDisableFilter = false;
-                        mDisableMultiStack = false;
-                        GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.hatch.disableFilter." + mDisableFilter));
-                        GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.hatch.disableMultiStack." + mDisableMultiStack));
-                        break;
-                    case 3: mDisableFilter = true;
-                        mDisableMultiStack = true;
-                        GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.hatch.disableFilter." + mDisableFilter));
-                        GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.hatch.disableMultiStack." + mDisableMultiStack));
-                        break;
-                }
+                mDisableFilter = !mDisableFilter;
+                GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.hatch.disableFilter." + mDisableFilter));
             } else {
                 mAllowInputFromOutputSide = !mAllowInputFromOutputSide;
                 GT_Utility.sendChatToPlayer(aPlayer, mAllowInputFromOutputSide ? trans("095", "Input from Output Side allowed") : trans("096", "Input from Output Side forbidden"));
             }
         }
+    }
+
+    @Override
+    public boolean onSolderingToolRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        if(!aPlayer.isSneaking()) return false;
+        boolean click = super.onSolderingToolRightClick(aSide, aWrenchingSide, aPlayer, aX, aY, aZ);
+        if (click) return true;
+        if (aWrenchingSide != mMainFacing) return false;
+        mDisableMultiStack = !mDisableMultiStack;
+        GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.hatch.disableMultiStack." + mDisableMultiStack));
+        return true;
     }
 
     @Override
@@ -877,16 +865,17 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         if (aSide == mMainFacing || aIndex < getInputSlot() || aIndex >= getInputSlot() + mInputSlotCount || (!mAllowInputFromOutputSide && aSide == aBaseMetaTileEntity.getFrontFacing()))
             return false;
         for (int i = getInputSlot(), j = i + mInputSlotCount; i < j; i++)
-            if (GT_Utility.areStacksEqual(GT_OreDictUnificator.get(aStack), mInventory[i]) && (mDisableMultiStack || mInventory[i].stackSize + aStack.stackSize <= aStack.getMaxStackSize())) return i == aIndex;
+            if (GT_Utility.areStacksEqual(GT_OreDictUnificator.get(aStack), mInventory[i]) && mDisableMultiStack) return i == aIndex;
         return mDisableFilter || allowPutStackValidated(aBaseMetaTileEntity, aIndex, aSide, aStack);
     }
 
     /**
      * Test if given stack can be inserted into specified slot.
-     * Before execution of this method it is ensured there is no such kind of item inside any input slots already.
+     * If mDisableMultiStack is false, before execution of this method it is ensured there is no such kind of item inside any input slots already.
+     * Otherwise, you don't need to check for it anyway.
      */
     protected boolean allowPutStackValidated(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return mInventory[aIndex] == null;
+        return !mDisableMultiStack || mInventory[aIndex] == null;
     }
 
     public boolean allowSelectCircuit() {
