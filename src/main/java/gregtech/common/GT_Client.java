@@ -11,6 +11,7 @@ import codechicken.lib.vec.Transformation;
 import codechicken.lib.vec.Translation;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
+import cpw.mods.fml.client.event.ConfigChangedEvent;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
@@ -43,6 +44,7 @@ import gregtech.common.render.GT_MetaGenerated_Tool_Renderer;
 import gregtech.common.render.GT_PollutionRenderer;
 import gregtech.common.render.GT_Renderer_Block;
 import gregtech.common.render.GT_Renderer_Entity_Arrow;
+import gregtech.loaders.preload.GT_PreLoad;
 import ic2.api.tile.IWrenchable;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -564,6 +566,18 @@ public class GT_Client extends GT_Proxy
                     }
                 }
             }
+        }
+    }
+
+    @SubscribeEvent
+    public void onConfigChange(ConfigChangedEvent.OnConfigChangedEvent e) {
+        if ("gregtech".equals(e.modID) && "client".equals(e.configID)) {
+            GregTech_API.sClientDataFile.mConfig.save();
+            // refresh client preference and send to server, since it's the only config we allow changing at runtime.
+            mPreference = new GT_ClientPreference(GregTech_API.sClientDataFile);
+            GT_PreLoad.loadClientConfig();
+            if (e.isWorldRunning)
+                GT_Values.NW.sendToServer(new GT_Packet_ClientPreference(mPreference));
         }
     }
 
