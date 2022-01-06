@@ -40,7 +40,6 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEn
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Steam_BusInput;
-import gtPlusPlus.xmod.gregtech.api.objects.MultiblockRequirements;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -94,7 +93,6 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
 	private static final Method findRecipe09;
 
 	public GT_Recipe mLastRecipe;
-	private MultiblockRequirements mRequirements;
 	private boolean mInternalCircuit = false;
 	protected long mTotalRunTime = 0;
 	protected boolean mVoidExcess = false;
@@ -354,17 +352,6 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
 	public final static String TAG_HIDE_MAINT = "TAG_HIDE_MAINT";
 	public final static String TAG_HIDE_POLLUTION = "TAG_HIDE_POLLUTION";
 	public final static String TAG_HIDE_MACHINE_TYPE = "TAG_HIDE_MACHINE_TYPE";
-
-	public synchronized final MultiblockRequirements getRequirements() {
-		return mRequirements;
-	}
-
-	//public abstract MultiblockRequirements setRequirements();
-
-	public synchronized final void setRequirementsInternal() {
-		//this.mRequirements = setRequirements();
-		this.mRequirements = null;
-	}
 
 	public int getAmountOfOutputs() {
 		return 1;
@@ -970,7 +957,7 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
 		log("Running checkRecipeGeneric(0)");
 		
 		GT_Recipe tRecipe = findRecipe(
-				getBaseMetaTileEntity(), mLastRecipe, false,
+				getBaseMetaTileEntity(), mLastRecipe, false, false,
 				gregtech.api.enums.GT_Values.V[tTier], aFluidInputs, aItemInputs);		
 		
 		log("Running checkRecipeGeneric(1)");
@@ -1323,7 +1310,7 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
 		//Bad modify, let's just use the original recipe.
 		if (!mHasBoostedCurrentRecipe || mBoostedRecipe == null) {
 			tRecipe = aRecipe != null ? aRecipe : findRecipe(
-					getBaseMetaTileEntity(), mLastRecipe, false,
+					getBaseMetaTileEntity(), mLastRecipe, false, false,
 					gregtech.api.enums.GT_Values.V[tTier], aFluidInputs, aItemInputs);
 		}		
 
