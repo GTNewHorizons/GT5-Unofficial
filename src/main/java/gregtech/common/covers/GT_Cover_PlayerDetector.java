@@ -156,11 +156,11 @@ public class GT_Cover_PlayerDetector extends GT_CoverBehavior {
         @Override
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
-            this.fontRendererObj.drawString("Any player",
+            this.fontRendererObj.drawString(trans("319", "Any player"),
                     startX + spaceX*1, 4+startY+spaceY*0, 0xFF555555);
-            this.fontRendererObj.drawString("Other players",
+            this.fontRendererObj.drawString(trans("320", "Other players"),
                     startX + spaceX*1, 4+startY+spaceY*1, 0xFF555555);
-            this.fontRendererObj.drawString("Only owner",
+            this.fontRendererObj.drawString(trans("321", "Only owner"),
                     startX + spaceX*1, 4+startY+spaceY*2, 0xFF555555);
         }
 
