@@ -1,6 +1,7 @@
 package gtPlusPlus.xmod.gregtech.recipes;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
+import static gregtech.api.enums.GT_Values.RA;
 import static gtPlusPlus.core.lib.CORE.GTNH;
 
 import java.lang.reflect.InvocationTargetException;
@@ -1283,12 +1284,39 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 
 	@Override
 	public boolean addFluidExtractionRecipe(ItemStack input, FluidStack output, int aTime, int aEu) {
-		return MaterialGenerator.addFluidExtractionRecipe(GT_Values.NI, input, output, aTime, aEu);
+		
+		boolean aRecipe = RA.addFluidSmelterRecipe(
+				GT_Utility.copyAmount(1, input),
+				null,
+				output,
+				10000,
+				aTime,
+				aEu, 
+				false);
+		if (aRecipe) {
+			Logger.INFO("Added Fluid Extractor Recipe: " 
+					+ input.getDisplayName() + " and obtain " 
+					+ output.amount+"mb of "+output.getLocalizedName()
+					+". Time: "+aTime+", Voltage: "
+					+aEu);
+		}
+		return aRecipe;
+		
+		//return MaterialGenerator.addFluidExtractionRecipe(GT_Values.NI, input, output, aTime, aEu);
 	}
 
 	@Override
 	public boolean addFluidExtractionRecipe(ItemStack aEmpty, ItemStack aRemains, FluidStack aFluid, int aDuration, int aEU) {
-		return MaterialGenerator.addFluidExtractionRecipe(aEmpty, aRemains, aFluid, aDuration, aEU);
+		boolean aRecipe = RA.addFluidSmelterRecipe(
+				GT_Utility.copyAmount(1, aEmpty),
+				aRemains,
+				aFluid,
+				10000,
+				aDuration,
+				aEU, 
+				false);
+		return aRecipe;
+		//return MaterialGenerator.addFluidExtractionRecipe(aEmpty, aRemains, aFluid, aDuration, aEU);
 	}
 
 	@Override
