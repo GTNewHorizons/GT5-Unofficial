@@ -84,13 +84,13 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
             case INVERT_INPUT_ANY_OUTPUT:
                 return (trans("046", "Invert input, Permit any output"));
             case DENY_INPUT_FILTER_OUTPUT:
-                return (trans("219", "Deny input, Filter output"));
+                return (trans("307", "Deny input, Filter output"));
             case DENY_INPUT_INVERT_OUTPUT:
-                return (trans("220", "Deny input, Invert output"));
+                return (trans("308", "Deny input, Invert output"));
             case ANY_INPUT_FILTER_OUTPUT:
-                return (trans("221", "Permit any input, Filter output"));
+                return (trans("309", "Permit any input, Filter output"));
             case ANY_INPUT_INVERT_OUTPUT:
-                return (trans("222", "Permit any input, Invert output"));
+                return (trans("310", "Permit any input, Invert output"));
             default:
                 return ("UNKNOWN");
         }
@@ -287,14 +287,14 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
                     b.enabled = getClickable(b.id);
                     if (getClickable(1)) { //filtering input
                         if (b.id == 2)
-                            b.setTooltipText(trans("219", "Block Output"));
+                            b.setTooltipText(trans("311", "Block Output"));
                         else if (b.id == 3)
-                            b.setTooltipText(trans("220", "Allow Output"));
+                            b.setTooltipText(trans("312", "Allow Output"));
                     } else {
                         if (b.id == 2)
-                            b.setTooltipText(trans("221", "Block Input"));
+                            b.setTooltipText(trans("313", "Block Input"));
                         else if (b.id == 3)
-                            b.setTooltipText(trans("222", "Allow Input"));
+                            b.setTooltipText(trans("314", "Allow Input"));
                     }
                 }
             }
@@ -308,7 +308,7 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
                 }
             }
             fluidFilterButton.setItem(null);
-            fluidFilterName = trans("224", "Filter Empty");
+            fluidFilterName = trans("315", "Filter Empty");
         }
     }
 

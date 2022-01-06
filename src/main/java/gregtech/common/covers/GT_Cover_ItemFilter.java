@@ -75,7 +75,7 @@ public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilte
         ItemStack tStack = aPlayer.inventory.getCurrentItem();
         if (tStack != null) {
             aCoverVariable.mFilter = tStack;
-            GT_Utility.sendChatToPlayer(aPlayer, trans("301", "Item Filter: ") + tStack.getDisplayName());
+            GT_Utility.sendChatToPlayer(aPlayer, trans("299", "Item Filter: ") + tStack.getDisplayName());
         } else {
             aCoverVariable.mFilter = null;
             GT_Utility.sendChatToPlayer(aPlayer, trans("300", "Filter Cleared!"));
@@ -234,8 +234,8 @@ public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilte
         @Override
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
-            this.fontRendererObj.drawString(trans("303", "Filter: "),    startX + spaceX*0, 3+startY+spaceY*1, 0xFF555555);
-            this.fontRendererObj.drawString(trans("302", "Check Mode"),  startX + spaceX*2, 3+startY+spaceY*0, 0xFF555555);
+            this.fontRendererObj.drawString(trans("317", "Filter: "),    startX + spaceX*0, 3+startY+spaceY*1, 0xFF555555);
+            this.fontRendererObj.drawString(trans("318", "Check Mode"),  startX + spaceX*2, 3+startY+spaceY*0, 0xFF555555);
         }
 
         @Override
