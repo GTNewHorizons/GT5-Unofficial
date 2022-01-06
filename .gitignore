@@ -30,3 +30,4 @@ src/main/resources/mixins.*.json
 *.bat
 /src/main/generated/
 /src/test/generated/
+.DS_Store
