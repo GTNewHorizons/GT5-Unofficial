@@ -414,7 +414,9 @@ public enum GregtechItemList implements GregtechItemContainer {
 
 	// Molecular Transformer
 	Controller_MolecularTransformer,
-	Casing_MolecularTransformer,
+	Casing_Molecular_Transformer_1,
+	Casing_Molecular_Transformer_2,
+	Casing_Molecular_Transformer_3,
 	
 	// Big Steam Macerator
 	Controller_SteamMaceratorMulti,

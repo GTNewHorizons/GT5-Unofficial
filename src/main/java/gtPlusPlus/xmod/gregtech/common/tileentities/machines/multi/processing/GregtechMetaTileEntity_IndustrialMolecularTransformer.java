@@ -1,21 +1,21 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import gregtech.api.enums.TAE;
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
@@ -32,24 +32,20 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
 
 public class GregtechMetaTileEntity_IndustrialMolecularTransformer extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialMolecularTransformer> {
 
-	public static int CASING_TEXTURE_ID;
-	private int mCasing;
-	private IStructureDefinition<GregtechMetaTileEntity_IndustrialMolecularTransformer> STRUCTURE_DEFINITION = null;
-
+	private static final int CASING_TEXTURE_ID = 48;
+	private int mCasing = 0;
 
 	public GregtechMetaTileEntity_IndustrialMolecularTransformer(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
-		CASING_TEXTURE_ID = TAE.getIndexFromPage(2, 10);
 	}
 
 	public GregtechMetaTileEntity_IndustrialMolecularTransformer(final String aName) {
 		super(aName);
-		CASING_TEXTURE_ID = TAE.getIndexFromPage(2, 10);
 	}
 
 	public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
@@ -66,95 +62,149 @@ public class GregtechMetaTileEntity_IndustrialMolecularTransformer extends Gregt
 
 		GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
 		tt.addMachineType(getMachineType())
-				.addInfo("Factory Grade Advanced Vacuum Freezer")
-				.addInfo("Speed: 200% | Eu Usage: 100% | Parallel: 4")
+				.addInfo("Changes the structure of items to produce new ones")
+				.addInfo("Speed: 100% | Eu Usage: 100%")
+				.addInfo("This multiblock cannot be overclocked")
+				.addInfo("Maximum 1x of each bus/hatch.")
 				.addPollutionAmount(getPollutionPerSecond(null))
 				.addSeparator()
-				.beginStructureBlock(3, 3, 3, true)
-				.addController("Front Center")
-				.addCasingInfo("CASING", 10)
-				.addInputBus("Any Casing", 1)
-				.addOutputBus("Any Casing", 1)
-				.addInputHatch("Any Casing", 1)
-				.addOutputHatch("Any Casing", 1)
-				.addEnergyHatch("Any Casing", 1)
-				.addMaintenanceHatch("Any Casing", 1)
-				.addMufflerHatch("Any Casing", 1)
+				.beginStructureBlock(7, 7, 7, false)
+				.addController("Top Center")
+				.addCasingInfo("Robust Tungstensteel Machine Casing", 40)
+				.addCasingInfo("Tungstensteel Coils", 16)
+				.addCasingInfo("Molecular Containment Casing", 52)
+				.addCasingInfo("High Voltage Current Capacitor", 32)
+				.addCasingInfo("Particle Containment Casing", 4)
+				.addCasingInfo("Resonance Chamber I", 5)
+				.addCasingInfo("Modulator I", 4)
+				.addInputBus("Any Robust Tungstensteel Machine Casing", 1)
+				.addOutputBus("Any Robust Tungstensteel Machine Casing", 1)
+				.addEnergyHatch("Any Robust Tungstensteel Machine Casing", 1)
+				.addMaintenanceHatch("Any Robust Tungstensteel Machine Casing", 1)
+				.addMufflerHatch("Any Robust Tungstensteel Machine Casing", 1)
 				.toolTipFinisher(CORE.GT_Tooltip_Builder);
 		return tt;
 	}
+	
 
+	private static final String STRUCTURE_PIECE_MAIN = "main";
+	private IStructureDefinition<GregtechMetaTileEntity_IndustrialMolecularTransformer> STRUCTURE_DEFINITION = null;
+	
 	@Override
 	public IStructureDefinition<GregtechMetaTileEntity_IndustrialMolecularTransformer> getStructureDefinition() {
+		STRUCTURE_DEFINITION = null;
 		if (STRUCTURE_DEFINITION == null) {
 			STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialMolecularTransformer>builder()
-					.addShape(mName, transpose(new String[][]{
-							{"CCC", "CCC", "CCC"},
-							{"C~C", "C-C", "CCC"},
-							{"CCC", "CCC", "CCC"},
-					}))
-					.addElement(
-							'C',
-							ofChain(
-									ofHatchAdder(
-											GregtechMetaTileEntity_IndustrialMolecularTransformer::addIndustrialVacuumFreezerList, CASING_TEXTURE_ID, 1
-									),
-									onElementPass(
-											x -> ++x.mCasing,
-											ofBlock(
-													ModBlocks.blockCasings3Misc, 10
-											)
-									)
-							)
-					)
-					.build();
+					.addShape(STRUCTURE_PIECE_MAIN, (new String[][]{
+						{"       ", "       ", "  xxx  ", "  x~x  ", "  xxx  ", "       ", "       "},
+						{"       ", "  xxx  ", " xyyyx ", " xyzyx ", " xyyyx ", "  xxx  ", "       "},
+						{"       ", "  xxx  ", " xyyyx ", " xyzyx ", " xyyyx ", "  xxx  ", "       "},
+						{"       ", "  xxx  ", " xyyyx ", " xyzyx ", " xyyyx ", "  xxx  ", "       "},
+						{"   t   ", " ttxtt ", " tyyyt ", "txyzyxt", " tyyyt ", " ttxtt ", "   t   "},						
+						{"   c   ", " ccecc ", " cxfxc ", "cefefec", " cxfxc ", " ccecc ", "   c   "},						
+						{"   h   ", " hhhhh ", " hhhhh ", "hhhhhhh", " hhhhh ", " hhhhh ", "   h   "},
+					}))						
+
+					.addElement('x', ofBlock(getCasingBlock(), getCasingMeta()))
+					.addElement('y', ofBlock(getCasingBlock(), getCasingMeta2()))
+					.addElement('z', ofBlock(getCasingBlock(), getCasingMeta3()))
+					.addElement('e', ofBlock(getCasingBlock2(), 0))
+					.addElement('f', ofBlock(getCasingBlock2(), 4))
+					.addElement('c', ofBlock(getCoilBlock(), 3))
+					.addElement('t', lazy(t -> onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock3(), getTungstenCasingMeta()))))
+					.addElement('h', lazy(t -> ofChain(
+							ofHatchAdder(GregtechMetaTileEntity_IndustrialMolecularTransformer::addGenericHatch, getCasingTextureIndex(), 1),
+							onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock3(), getTungstenCasingMeta()))
+							)))
+					.build();	
 		}
 		return STRUCTURE_DEFINITION;
 	}
-
+	
 	@Override
 	public void construct(ItemStack stackSize, boolean hintsOnly) {
-		buildPiece(mName , stackSize, hintsOnly, 1, 1, 0);
+		buildPiece(STRUCTURE_PIECE_MAIN , stackSize, hintsOnly, 3, 3, 0);
 	}
 
 	@Override
 	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
 		mCasing = 0;
-		return checkPiece(mName, 1, 1, 0) && mCasing >= 10 && checkHatch();
+		boolean aDidBuild = checkPiece(STRUCTURE_PIECE_MAIN, 3, 3, 0);
+		if (this.mInputBusses.size() != 1 || this.mOutputBusses.size() != 1 || this.mEnergyHatches.size() != 1) {
+			return false;
+		}
+		return aDidBuild && mCasing >= 40 && checkHatch();
+	}	
+
+	protected static int getCasingTextureIndex() {
+		return CASING_TEXTURE_ID;
 	}
 
-	public final boolean addIndustrialVacuumFreezerList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+	protected static Block getCasingBlock() {
+		return ModBlocks.blockSpecialMultiCasings;
+	}
+	
+	protected static Block getCasingBlock2() {
+		return ModBlocks.blockSpecialMultiCasings2;
+	}
+	
+	protected static Block getCasingBlock3() {
+		return GregTech_API.sBlockCasings4;
+	}
+	
+	protected static Block getCoilBlock() {
+		return GregTech_API.sBlockCasings5;
+	}
+	
+	protected static int getCasingMeta() {
+		return 11;
+	}
+	
+	protected static int getCasingMeta2() {
+		return 12;
+	}
+	
+	protected static int getCasingMeta3() {
+		return 13;
+	}
+	
+	protected static int getTungstenCasingMeta() {
+		return 0;
+	}
+
+	public final boolean addGenericHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
 		if (aTileEntity == null) {
 			return false;
-		} else {
+		} 
+		else {
 			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus){
+			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance){
 				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance){
+			}
+			else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler) {
 				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy){
+			}
+			else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus) {
 				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus) {
+			}
+			else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus) {
 				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler) {
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
+			}
+			else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy) {
 				return addToMachineList(aTileEntity, aBaseCasingIndex);
 			}
 		}
+		log("Bad Hatch");
 		return false;
 	}
-
 
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
 			final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
 		if (aSide == aFacing) {
-			return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_ID),
+			return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(44),
 					new GT_RenderedTexture((IIconContainer) (aActive ? TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active : TexturesGtBlock.Overlay_Machine_Controller_Advanced))};
 		}
-		return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_ID)};
+		return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(44)};
 	}
 
 	@Override
@@ -182,65 +232,7 @@ public class GregtechMetaTileEntity_IndustrialMolecularTransformer extends Gregt
 
 	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
-		return this.checkRecipeGeneric(4, 100, 100);
-	}
-
-	@Override
-	public boolean checkRecipeGeneric(
-			ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
-			int aMaxParallelRecipes, int aEUPercent,
-			int aSpeedBonusPercent, int aOutputChanceRoll, GT_Recipe aRecipe, boolean isPerpectOC) {
-		// Based on the Processing Array. A bit overkill, but very flexible.		
-
-		// Reset outputs and progress stats
-		this.mEUt = 0;
-		this.mMaxProgresstime = 0;
-		this.mOutputItems = new ItemStack[]{};
-		this.mOutputFluids = new FluidStack[]{};
-
-		ItemStack[] tInputs = getCompactedInputs();
-        FluidStack[] tFluids = new FluidStack[] {};
-
-        if (tInputs.length <= 0) {
-        	log("Error 1");
-        	return false;
-        }
-
-        long tVoltage = getMaxInputVoltage();
-    	log("Voltage: "+tVoltage);
-        byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-    	log("Tier: "+tTier);
-        GT_Recipe tRecipe = getRecipeMap().findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
-
-        if (tRecipe == null || !tRecipe.isRecipeInputEqual(true, tFluids, tInputs)) {
-        	log("Error 2");
-        	return false;
-        }
-
-        this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-        this.mEfficiencyIncrease = 10000;
-        
-        calculateOverclockedNessMulti(tRecipe.mEUt*tRecipe.mSpecialValue, tRecipe.mDuration, 1, tVoltage);
-        //In case recipe is too OP for that machine
-        if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1) {        	
-        	log("Error 3");
-        	return false;
-        }
-        if (this.mEUt > 0) {
-        	this.mEUt = (-this.mEUt);
-        }
-        log("EU/t: "+this.mEUt);
-        this.mMaxProgresstime = Math.max(mMaxProgresstime/tRecipe.mSpecialValue, 1);
-        log("Total Time: "+this.mMaxProgresstime);
-        if (tRecipe.mOutputs.length > 0) {
-        	this.mOutputItems = tRecipe.mOutputs.clone();
-        }
-        updateSlots();
-		// Play sounds (GT++ addition - GT multiblocks play no sounds)
-		startProcess();
-
-		log("Running");
-		return true;
+		return checkRecipeGeneric(1, 100, 100);
 	}
 	
 	@Override
@@ -258,7 +250,7 @@ public class GregtechMetaTileEntity_IndustrialMolecularTransformer extends Gregt
 	}
 
 	public int getPollutionPerSecond(final ItemStack aStack) {
-		return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialVacuumFreezer;
+		return CORE.ConfigSwitches.pollutionPerSecondMultiMolecularTransformer;
 	}
 
 	public int getDamageToComponent(final ItemStack aStack) {
@@ -270,43 +262,12 @@ public class GregtechMetaTileEntity_IndustrialMolecularTransformer extends Gregt
 	}
 	
 	@Override
-    public boolean drainEnergyInput(long aEU) {
-        if (aEU <= 0) {
-        	return true;
-        }
-        for (GT_MetaTileEntity_Hatch tHatch : this.mAllEnergyHatches) {
-            if (isValidMetaTileEntity(tHatch)) {
-                if (tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(aEU, false)) {
-                	return true;
-                }
-            }
-        }
-        return false;
-    }
-
-	@Override
-    public long getMaxInputVoltage() {
-        long rVoltage = 0;
-        for (GT_MetaTileEntity_Hatch tHatch : mAllEnergyHatches) {
-        	if (isValidMetaTileEntity(tHatch)) {
-        		rVoltage += tHatch.getBaseMetaTileEntity().getInputVoltage();
-        	}
-        }
-        return rVoltage;
-    }
-	
-    /**
-     * Called every tick the Machine runs
-     */
-	@Override
-    public boolean onRunningTick(ItemStack aStack) {
-        if (mEUt < 0) {
-            if (!drainEnergyInput(((long) -mEUt * 10000) / Math.max(1000, mEfficiency))) {
-                criticalStopMachine();
-                return false;
-            }
-        }
-        return true;
-    }
+	public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+		super.onPreTick(aBaseMetaTileEntity, aTick);		
+		// Fix GT bug
+		if (this.getBaseMetaTileEntity().getFrontFacing() != 1) {
+			this.getBaseMetaTileEntity().setFrontFacing((byte) 1); 
+		}
+	}
 
 }

@@ -52,9 +52,9 @@ public class GregtechMetaSpecialMultiCasings extends GregtechMetaCasingBlocksAbs
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".8.name", "Thermally Insulated Casing");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".9.name", "Flotation Cell Casings");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".10.name", "Reinforced Engine Casing");
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".11.name", ""); // Unused
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".12.name", ""); // Unused
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".13.name", ""); // Unused
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".11.name", "Molecular Containment Casing");
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".12.name", "High Voltage Current Capacitor");
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".13.name", "Particle Containment Casing");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".14.name", ""); // Unused
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".15.name", ""); // Unused
 
@@ -69,6 +69,9 @@ public class GregtechMetaSpecialMultiCasings extends GregtechMetaCasingBlocksAbs
 		GregtechItemList.Casing_SolarTower_HeatContainment.set(new ItemStack(this, 1, 8));
 		GregtechItemList.Casing_Flotation_Cell.set(new ItemStack(this, 1, 9));
 		GregtechItemList.Casing_Reinforced_Engine_Casing.set(new ItemStack(this, 1, 10));
+		GregtechItemList.Casing_Molecular_Transformer_1.set(new ItemStack(this, 1, 11));
+		GregtechItemList.Casing_Molecular_Transformer_2.set(new ItemStack(this, 1, 12));
+		GregtechItemList.Casing_Molecular_Transformer_3.set(new ItemStack(this, 1, 13));
 	}	
 	
 	@Override
@@ -105,6 +108,12 @@ public class GregtechMetaSpecialMultiCasings extends GregtechMetaCasingBlocksAbs
 				return TexturesGtBlock.TEXTURE_CASING_FLOTATION.getIcon();
 			case 10:
 				return TexturesGtBlock.Casing_Material_Talonite.getIcon();
+			case 11:
+				return Textures.BlockIcons.MACHINE_CASING_RADIATIONPROOF.getIcon();
+			case 12:
+				return TexturesGtBlock.Casing_Redox_5.getIcon();
+			case 13:
+				return TexturesGtBlock.TEXTURE_MAGIC_PANEL_A.getIcon();
 
 		}
 		return Textures.BlockIcons.RENDERING_ERROR.getIcon();

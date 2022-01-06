@@ -300,6 +300,7 @@ public class CORE {
 		public static int pollutionPerSecondMultiFrothFlotationCell = 0;
 		public static int pollutionPerSecondMultiAutoCrafter = 500;
 		public static int pollutionPerSecondMultiThermalBoiler = 700;
+		public static int pollutionPerSecondMultiMolecularTransformer = 1000;
 		public static int pollutionPerSecondMultiAlgaePond = 0;
 		//pollution single blocks
 		public static int basePollutionPerSecondSemiFluidGenerator = 40;
