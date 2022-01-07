@@ -42,12 +42,12 @@ public class GT_MetaTileEntity_Hatch_ElementalDataOrbHolder extends GT_MetaTileE
 
 	@Override
 	public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-		return new ITexture[]{aBaseTexture, new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Cyber_Interface)};
+		return new ITexture[]{aBaseTexture, new GT_RenderedTexture(TexturesGtBlock.Overlay_Hatch_Data_Orb)};
 	}
 
 	@Override
 	public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-		return new ITexture[]{aBaseTexture, new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Cyber_Interface)};
+		return new ITexture[]{aBaseTexture, new GT_RenderedTexture(TexturesGtBlock.Overlay_Hatch_Data_Orb)};
 	}
 
 	@Override

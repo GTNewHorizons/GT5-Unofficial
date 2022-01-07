@@ -431,6 +431,8 @@ public class TexturesGtBlock {
 	// Catalyst Bus
 	private static final CustomIcon Internal_Overlay_Bus_Catalyst = new CustomIcon("iconsets/OVERLAY_CATALYSTS");
 	public static final CustomIcon Overlay_Bus_Catalyst = Internal_Overlay_Bus_Catalyst;	
+	// Data Orb Hatch
+	public static final CustomIcon Overlay_Hatch_Data_Orb = new CustomIcon("iconsets/Overlay_DataOrb");
 	// RTG Hatch
 	private static final CustomIcon Internal_Overlay_Hatch_RTG_Off = new CustomIcon("iconsets/OVERLAY_ENERGY_RTG_OFF");
 	public static final CustomIcon Overlay_Hatch_RTG_Off = Internal_Overlay_Hatch_RTG_Off;
