@@ -431,8 +431,20 @@ public class TexturesGtBlock {
 	// Catalyst Bus
 	private static final CustomIcon Internal_Overlay_Bus_Catalyst = new CustomIcon("iconsets/OVERLAY_CATALYSTS");
 	public static final CustomIcon Overlay_Bus_Catalyst = Internal_Overlay_Bus_Catalyst;	
+	
+	
+	public static final CustomIcon Overlay_Cobble = new CustomIcon("iconsets/OVERLAY_COBBLE");
+	public static final CustomIcon Overlay_Connector = new CustomIcon("iconsets/OVERLAY_CONNECTOR");
+	public static final CustomIcon Overlay_Fire = new CustomIcon("iconsets/OVERLAY_FIRE");
+	public static final CustomIcon Overlay_Grinder = new CustomIcon("iconsets/OVERLAY_GRINDER");
+	public static final CustomIcon Overlay_GT_Logo = new CustomIcon("iconsets/OVERLAY_GT");
+	public static final CustomIcon Overlay_Ice = new CustomIcon("iconsets/OVERLAY_ICE");
+	public static final CustomIcon Overlay_Implosion = new CustomIcon("iconsets/OVERLAY_IMPLOSION");
+	// Lapo Orb Hatch
+	public static final CustomIcon Overlay_Hatch_Lapo_Orb = new CustomIcon("iconsets/OVERLAY_LAPO");
 	// Data Orb Hatch
-	public static final CustomIcon Overlay_Hatch_Data_Orb = new CustomIcon("iconsets/Overlay_DataOrb");
+	public static final CustomIcon Overlay_Hatch_Data_Orb = new CustomIcon("iconsets/OVERYLAY_DATAORB");
+	
 	// RTG Hatch
 	private static final CustomIcon Internal_Overlay_Hatch_RTG_Off = new CustomIcon("iconsets/OVERLAY_ENERGY_RTG_OFF");
 	public static final CustomIcon Overlay_Hatch_RTG_Off = Internal_Overlay_Hatch_RTG_Off;
