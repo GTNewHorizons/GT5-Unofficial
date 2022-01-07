@@ -443,7 +443,7 @@ public class TexturesGtBlock {
 	// Lapo Orb Hatch
 	public static final CustomIcon Overlay_Hatch_Lapo_Orb = new CustomIcon("iconsets/OVERLAY_LAPO");
 	// Data Orb Hatch
-	public static final CustomIcon Overlay_Hatch_Data_Orb = new CustomIcon("iconsets/OVERYLAY_DATAORB");
+	public static final CustomIcon Overlay_Hatch_Data_Orb = new CustomIcon("iconsets/OVERYLAY_DATA_ORB");
 	
 	// RTG Hatch
 	private static final CustomIcon Internal_Overlay_Hatch_RTG_Off = new CustomIcon("iconsets/OVERLAY_ENERGY_RTG_OFF");
