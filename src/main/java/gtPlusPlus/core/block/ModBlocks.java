@@ -43,8 +43,6 @@ public final class ModBlocks {
 	public static Block blockFakeMiningHead;
 	
 	public static Block blockFishTrap;
-	public static Block blockWorkbench;
-	public static Block blockWorkbenchAdvanced;
 	public static Block blockDecayablesChest;
 	public static Block blockEggBox;
 	

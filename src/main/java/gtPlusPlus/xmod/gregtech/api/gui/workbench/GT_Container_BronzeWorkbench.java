@@ -4,6 +4,7 @@ import gregtech.api.gui.GT_ContainerMetaTile_Machine;
 import gregtech.api.gui.GT_Slot_Holo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.core.slots.SlotBlueprint;
 import gtPlusPlus.xmod.gregtech.common.tileentities.storage.GT_MetaTileEntity_BronzeCraftingTable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -53,7 +54,7 @@ public class GT_Container_BronzeWorkbench extends GT_ContainerMetaTile_Machine {
         addSlotToContainer(new Slot(mTileEntity, 33, 154, 28));
         addSlotToContainer(new Slot(mTileEntity, 34, 154, 64));
         
-        addSlotToContainer(new Slot(mTileEntity, 30, 136, 28));
+        addSlotToContainer(new SlotBlueprint(mTileEntity, 30, 136, 28));
         addSlotToContainer(new GT_Slot_Holo(mTileEntity, 31, 136, 64, false, false, 1));
         addSlotToContainer(new GT_Slot_Holo(mTileEntity, 32, 154, 46, false, false, 1));
         addSlotToContainer(new GT_Slot_Holo(mTileEntity, 32, 136, 46, false, false, 1));
