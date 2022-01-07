@@ -268,6 +268,16 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
      */
     public boolean mRenderPollutionFog = true;
 
+    /**
+     * This makes cover tabs visible on GregTech machines
+     */
+    public boolean mCoverTabsVisible = true;
+    
+    /**
+     * This controls whether cover tabs display on the left (default) or right side of the UI
+     */
+    public boolean mCoverTabsFlipped = false;
+
     public static final int GUI_ID_COVER_SIDE_BASE = 10; // Takes GUI ID 10 - 15
 
     public static Map<String, Integer> oreDictBurnTimes = new HashMap<>();
