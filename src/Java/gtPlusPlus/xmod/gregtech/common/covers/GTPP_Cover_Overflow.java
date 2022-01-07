@@ -76,7 +76,7 @@ public class GTPP_Cover_Overflow extends GT_CoverBehavior {
 		if (aCoverVariable <= 0) {
 			aCoverVariable = mMaxTransferRate;
 		}
-		GT_Utility.sendChatToPlayer(aPlayer, LangUtils.trans("322", "Overflow point: ") + aCoverVariable + trans("323", "L"));
+		GT_Utility.sendChatToPlayer(aPlayer, LangUtils.trans("009", "Overflow point: ") + aCoverVariable + trans("010", "L"));
 		return aCoverVariable;
 	}
 
@@ -95,7 +95,7 @@ public class GTPP_Cover_Overflow extends GT_CoverBehavior {
 		if (aCoverVariable <= 0) {
 			aCoverVariable = mMaxTransferRate;
 		}
-		GT_Utility.sendChatToPlayer(aPlayer, LangUtils.trans("322", "Overflow point: ") + aCoverVariable + trans("323", "L"));
+		GT_Utility.sendChatToPlayer(aPlayer, LangUtils.trans("009", "Overflow point: ") + aCoverVariable + trans("010", "L"));
 		aTileEntity.setCoverDataAtSide(aSide, aCoverVariable);
 		return true;
 	}
@@ -183,11 +183,11 @@ public class GTPP_Cover_Overflow extends GT_CoverBehavior {
 		@Override
 		public void drawExtras(int mouseX, int mouseY, float parTicks) {
 			super.drawExtras(mouseX, mouseY, parTicks);
-			this.getFontRenderer().drawString(trans("323", "L"), startX + spaceX * 4, 4 + startY + spaceY * 1 + 8, 0xFF555555);
+			this.getFontRenderer().drawString(trans("010", "L"), startX + spaceX * 4, 4 + startY + spaceY * 0 + 8, 0xFF555555);
 			if (warn)
-				this.getFontRenderer().drawString(trans("325","Max")+": "+coverVariable+"/"+mMaxTransferRate+" "+trans("323", "L"), startX + spaceX * 0, 4 + startY + spaceY * 2 + 6, 0xffff0000);
+				this.getFontRenderer().drawString(trans("011","Max")+": "+coverVariable+"/"+mMaxTransferRate+" "+trans("010", "L"), startX + spaceX * 0, 4 + startY + spaceY * 1 + 6, 0xffff0000);
 			else
-				this.getFontRenderer().drawString(trans("324","Now")+": "+coverVariable+"/"+mMaxTransferRate+" "+trans("323", "L"), startX + spaceX * 0, 4 + startY + spaceY * 2 + 6, 0xFF555555);
+				this.getFontRenderer().drawString(trans("011","Now")+": "+coverVariable+"/"+mMaxTransferRate+" "+trans("010", "L"), startX + spaceX * 0, 4 + startY + spaceY * 1 + 6, 0xFF555555);
 		}
 		@Override
 		public void onMouseWheel(int x, int y, int delta) {
