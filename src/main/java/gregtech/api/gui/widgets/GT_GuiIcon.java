@@ -1,10 +1,11 @@
 package gregtech.api.gui.widgets;
 
+import java.util.Arrays;
+
 import gregtech.api.interfaces.IGuiIcon;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.ResourceLocation;
-import scala.actors.threadpool.Arrays;
 
 public enum GT_GuiIcon implements IGuiIcon{
     BUTTON_NORMAL           (0, 0,     0),
