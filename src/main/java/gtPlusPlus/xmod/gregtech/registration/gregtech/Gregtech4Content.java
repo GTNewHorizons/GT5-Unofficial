@@ -8,7 +8,14 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.automation.GT_MetaTileEntity
 import gtPlusPlus.xmod.gregtech.common.tileentities.automation.GT_MetaTileEntity_TesseractTerminal;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.GT4Entity_AutoCrafter;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.GT4Entity_ThermalBoiler;
-import gtPlusPlus.xmod.gregtech.common.tileentities.storage.shelving.*;
+import gtPlusPlus.xmod.gregtech.common.tileentities.storage.GT_MetaTileEntity_AdvancedCraftingTable;
+import gtPlusPlus.xmod.gregtech.common.tileentities.storage.GT_MetaTileEntity_BronzeCraftingTable;
+import gtPlusPlus.xmod.gregtech.common.tileentities.storage.shelving.GT4Entity_Shelf;
+import gtPlusPlus.xmod.gregtech.common.tileentities.storage.shelving.GT4Entity_Shelf_Compartment;
+import gtPlusPlus.xmod.gregtech.common.tileentities.storage.shelving.GT4Entity_Shelf_Desk;
+import gtPlusPlus.xmod.gregtech.common.tileentities.storage.shelving.GT4Entity_Shelf_FileCabinet;
+import gtPlusPlus.xmod.gregtech.common.tileentities.storage.shelving.GT4Entity_Shelf_Iron;
+import gtPlusPlus.xmod.gregtech.common.tileentities.storage.shelving.GT4Entity_Shelf_Large;
 
 public class Gregtech4Content {
 
@@ -26,10 +33,10 @@ public class Gregtech4Content {
 
 	private static void workbenches() {
 		// Gregtech 4 Workbenches
-		//Utils.LOG_INFO("Gregtech 4 Content | Registering Workbenches.");
-		// Free //GregtechItemList.GT4_Workbench_Bronze.set(new
-		// GT_MetaTileEntity_BronzeCraftingTable(828, "workbench.bronze",
-		// "Bronze Workbench", 0).getStackForm(1L));
+		Logger.INFO("Gregtech 4 Content | Registering Workbenches.");		
+		GregtechItemList.GT4_Workbench_Bronze.set(new GT_MetaTileEntity_BronzeCraftingTable(29001, "workbench.basic", "Bronze Workbench", 0, "Stores 16000L of fluid").getStackForm(1L));
+		GregtechItemList.GT4_Workbench_Advanced.set(new GT_MetaTileEntity_AdvancedCraftingTable(29002, "workbench.advanced", "Advanced Workbench", 3, "Stores 64000L of fluid").getStackForm(1L));
+		
 	}
 
 	private static void tesseracts() {

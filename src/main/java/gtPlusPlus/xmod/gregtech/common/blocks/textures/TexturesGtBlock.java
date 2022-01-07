@@ -402,10 +402,17 @@ public class TexturesGtBlock {
 	public static final CustomIcon Overlay_FluidReactor_Top_Active = new CustomIcon("TileEntities/FluidReactor/OVERLAY_TOP_ACTIVE");	
 	
 	//Crafting Overlays
-	private static final CustomIcon Internal_Overlay_Crafting_Bronze = new CustomIcon("TileEntities/bronze_top_crafting");
-	public static final CustomIcon Overlay_Crafting_Bronze = Internal_Overlay_Crafting_Bronze;
-	private static final CustomIcon Internal_Overlay_Crafting_Steel = new CustomIcon("TileEntities/cover_crafting");
-	public static final CustomIcon Overlay_Crafting_Steel = Internal_Overlay_Crafting_Steel;
+	public static final CustomIcon Overlay_Crafting_Bronze = new CustomIcon("TileEntities/bronze_top_crafting");
+	public static final CustomIcon Overlay_Crafting_Steel = new CustomIcon("TileEntities/cover_crafting");
+
+	public static final CustomIcon Casing_Workbench_Crafting_Overlay = new CustomIcon("TileEntities/gt4/bronze_top_crafting");
+	public static final CustomIcon Casing_Workbench_Top = new CustomIcon("TileEntities/gt4/bronze_top");
+	public static final CustomIcon Casing_Workbench_Side = new CustomIcon("TileEntities/gt4/bronze_side");
+	public static final CustomIcon Casing_Workbench_Bottom = new CustomIcon("TileEntities/gt4/bronze_bottom");
+	public static final CustomIcon Casing_Adv_Workbench_Crafting_Overlay = new CustomIcon("TileEntities/gt4/machine_top_crafting");
+	public static final CustomIcon Casing_Adv_Workbench_Top = new CustomIcon("TileEntities/gt4/machine_top");
+	public static final CustomIcon Casing_Adv_Workbench_Side = new CustomIcon("TileEntities/gt4/machine_side");
+	public static final CustomIcon Casing_Adv_Workbench_Bottom = new CustomIcon("TileEntities/gt4/machine_bottom");
 	
 	//Covers
 	private static final CustomIcon Internal_Overlay_Overflow_Valve = new CustomIcon("iconsets/OVERLAY_OVERFLOW_VALVE");
@@ -443,7 +450,7 @@ public class TexturesGtBlock {
 	// Lapo Orb Hatch
 	public static final CustomIcon Overlay_Hatch_Lapo_Orb = new CustomIcon("iconsets/OVERLAY_LAPO");
 	// Data Orb Hatch
-	public static final CustomIcon Overlay_Hatch_Data_Orb = new CustomIcon("iconsets/OVERYLAY_DATA_ORB");
+	public static final CustomIcon Overlay_Hatch_Data_Orb = new CustomIcon("iconsets/OVERLAY_DATA_ORB");
 	
 	// RTG Hatch
 	private static final CustomIcon Internal_Overlay_Hatch_RTG_Off = new CustomIcon("iconsets/OVERLAY_ENERGY_RTG_OFF");
