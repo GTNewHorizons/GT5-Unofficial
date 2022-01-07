@@ -4,6 +4,7 @@ import java.awt.Rectangle;
 
 import org.lwjgl.opengl.GL11;
 
+import gregtech.api.interfaces.IGuiIcon;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.item.ItemStack;
@@ -16,11 +17,11 @@ public class GT_GuiTabLine {
      * Defines a set of textures a tab line can use to render it's tab backgrounds
      */
     public static class GT_GuiTabIconSet {
-        public GT_GuiIcon disabled;
-        public GT_GuiIcon normal;
-        public GT_GuiIcon highlight;
+        public IGuiIcon disabled;
+        public IGuiIcon normal;
+        public IGuiIcon highlight;
         
-        public GT_GuiTabIconSet(GT_GuiIcon normalIcon, GT_GuiIcon highlightIcon, GT_GuiIcon disabledIcon) {
+        public GT_GuiTabIconSet(IGuiIcon normalIcon, IGuiIcon highlightIcon, IGuiIcon disabledIcon) {
             this. normal = normalIcon;
             this. highlight = highlightIcon;
             this. disabled = disabledIcon;
@@ -128,7 +129,7 @@ public class GT_GuiTabLine {
      * @param overlay
      * @param text
      */
-    public void setTab(int tabId, ItemStack item, GT_GuiIcon overlay, String[] text) {
+    public void setTab(int tabId, ItemStack item, IGuiIcon overlay, String[] text) {
         mTabs[tabId] = new GT_GuiTab( this.gui, tabId, getBoundsForTab(tabId),
             this.tabBackground, item,  overlay, text, this.flipHorizontally);
     }

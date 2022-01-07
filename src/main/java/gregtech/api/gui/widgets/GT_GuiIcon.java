@@ -1,11 +1,12 @@
 package gregtech.api.gui.widgets;
 
+import gregtech.api.interfaces.IGuiIcon;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.ResourceLocation;
 import scala.actors.threadpool.Arrays;
 
-public enum GT_GuiIcon {
+public enum GT_GuiIcon implements IGuiIcon{
     BUTTON_NORMAL           (0, 0,     0),
     BUTTON_DOWN             (0, 32,    0),
     BUTTON_HIGHLIGHT        (0, 32*2,  0),
@@ -56,10 +57,10 @@ public enum GT_GuiIcon {
     };
 
     public final int x, y, width, height;
-    public final GT_GuiIcon overlay;
+    public final IGuiIcon overlay;
     private final int texID;
 
-    GT_GuiIcon(int texID, int x, int y, int width, int height, GT_GuiIcon overlay) {
+    GT_GuiIcon(int texID, int x, int y, int width, int height, IGuiIcon overlay) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -74,29 +75,29 @@ public enum GT_GuiIcon {
     GT_GuiIcon(int texID, int x, int y, int width, int height) {
         this(texID, x, y, width, height,null);
     }
-    public static void render(GT_GuiIcon icon, double x, double y, double width, double height, double zLevel,
+    public static void render(IGuiIcon icon, double x, double y, double width, double height, double zLevel,
             boolean doDraw) {
         render(icon, x, y, width, height, zLevel, doDraw, false);
     } 
 
-    public static void render(GT_GuiIcon icon, double x, double y, double width, double height, double zLevel,
+    public static void render(IGuiIcon icon, double x, double y, double width, double height, double zLevel,
             boolean doDraw, boolean flipHoritontally) {
         Tessellator tess = Tessellator.instance;
         if (doDraw) {
-            Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURES[icon.texID]);
+            Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURES[icon.getTexId()]);
             tess.startDrawingQuads();
         }
-        double minU = (double) (icon.x + (flipHoritontally ? icon.width : 0)) / T_SIZE;
-        double maxU = (double) (icon.x + (flipHoritontally ? 0: icon.width)) / T_SIZE;
-        double minV = (double) icon.y / T_SIZE;
-        double maxV = (double) (icon.y + icon.height) / T_SIZE;
+        double minU = (double) (icon.getX() + (flipHoritontally ? icon.getWidth() : 0)) / T_SIZE;
+        double maxU = (double) (icon.getX() + (flipHoritontally ? 0: icon.getWidth())) / T_SIZE;
+        double minV = (double) icon.getY() / T_SIZE;
+        double maxV = (double) (icon.getY() + icon.getHeight()) / T_SIZE;
         tess.addVertexWithUV(x, y + height, zLevel, minU, maxV);
         tess.addVertexWithUV(x + width, y + height, zLevel, maxU, maxV);
         tess.addVertexWithUV(x + width, y + 0, zLevel, maxU, minV);
         tess.addVertexWithUV(x, y + 0, zLevel, minU, minV);
 
-        if (icon.overlay != null)
-            render(icon.overlay, x, y, width, height, zLevel, false);
+        if (icon.getOverlay() != null)
+            render(icon.getOverlay(), x, y, width, height, zLevel, false);
 
         if (doDraw)
             tess.draw();
@@ -104,7 +105,7 @@ public enum GT_GuiIcon {
 
     /**
      * This is intended to enable addon mods to register additional textures. They can then add to this enum using
-     * EnumHelper.addEnum
+     * EnumHelper.addEnum or by creating your their enum that implements IGuiIcon (still requires adding a texture here)
      * 
      * @param location
      */
@@ -116,5 +117,35 @@ public enum GT_GuiIcon {
         for (int i = 0; i < location.length; i++) {
             TEXTURES[startIndex + i] = location[i];
         }
+    }
+
+    @Override
+    public int getX() {
+        return this.x;
+    }
+
+    @Override
+    public int getY() {
+        return this.y;
+    }
+
+    @Override
+    public int getWidth() {
+        return this.width;
+    }
+
+    @Override
+    public int getHeight() {
+        return this.height;
+    }
+
+    @Override
+    public int getTexId() {
+        return this.texID;
+    }
+
+    @Override
+    public IGuiIcon getOverlay() {
+        return this.overlay;
     }
 }

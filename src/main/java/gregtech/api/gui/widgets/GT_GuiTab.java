@@ -7,6 +7,7 @@ import org.lwjgl.opengl.GL12;
 
 import gregtech.api.gui.widgets.GT_GuiTabLine.GT_GuiTabIconSet;
 import gregtech.api.gui.widgets.GT_GuiTabLine.GT_ITabRenderer;
+import gregtech.api.interfaces.IGuiIcon;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -27,7 +28,7 @@ public class GT_GuiTab {
     private ItemStack item;
     private GT_ITabRenderer gui;
     private GT_GuiTooltip tooltip;
-    private GT_GuiIcon overlay;
+    private IGuiIcon overlay;
     private boolean flipHorizontally;
 
     /**
@@ -43,7 +44,7 @@ public class GT_GuiTab {
      * @param flipHorizontally whether to draw this tab on the right side of the IGregTechTileEntity
      */
     public GT_GuiTab( GT_ITabRenderer gui, int id, Rectangle bounds, GT_GuiTabIconSet tabBackground, ItemStack item,
-            GT_GuiIcon overlay, String[] tooltipText, boolean flipHorizontally) {
+    IGuiIcon overlay, String[] tooltipText, boolean flipHorizontally) {
         this.gui = gui;
         this.bounds = bounds;
         this.item = item;
@@ -139,7 +140,7 @@ public class GT_GuiTab {
     /**
      * @return the texture this tab should currently use as it's background
      */
-    protected GT_GuiIcon getBackgroundTexture() {
+    protected IGuiIcon getBackgroundTexture() {
         if (!enabled)
             return tabBackground.disabled;
 

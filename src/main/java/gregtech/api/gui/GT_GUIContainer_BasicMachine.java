@@ -113,7 +113,7 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
             if (mRenderAutoOutputSlots && x >= 25 && x <= 42) {
                 drawHoveringText(Collections.singletonList("Item Auto-Output"), x2, y2, fontRendererObj);
             }
-            if (getMachine().allowSelectCircuit() && getMachine().getStackInSlot(getMachine().getCircuitSlot()) == null && x >= 153 && x <= 180) {
+            if (getMachine().allowSelectCircuit() && getMachine().getStackInSlot(getMachine().getCircuitSlot()) == null && x >= 153 && x <= 171) {
                 drawHoveringText(GHOST_CIRCUIT_TOOLTIP.stream().map(StatCollector::translateToLocal).collect(Collectors.toList()), x2, y2, fontRendererObj);
             }
         }
