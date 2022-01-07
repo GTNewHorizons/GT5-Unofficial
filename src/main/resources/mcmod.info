@@ -1,0 +1,18 @@
+[
+{
+  "modid": "${modId}",
+  "name": "${modName}",
+  "description": "Adds over 100 new Multiblocks, Machines, etc to Gregtech.",
+  "credits": "",
+  "logoFile": "",
+  "version": "${modVersion}",
+  "mcversion": "${minecraftVersion}",
+  "url": "https://github.com/draknyte1/GTplusplus/wiki",
+  "updateUrl": "https://github.com/draknyte1/GTplusplus/releases/latest",
+  "authorList": [ "Alkalus/Draknyte1" ],
+  "screenshots": [ "" ],
+  "dependencies": [
+     "mod_MinecraftForge"
+  ]
+}
+]

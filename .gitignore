@@ -1,149 +1,29 @@
-# Windows image file caches
-Thumbs.db
-ehthumbs.db
-
-# Folder config file
-Desktop.ini
-
-# Recycle Bin used on file shares
-$RECYCLE.BIN/
-
-# Windows Installer files
-*.cab
-*.log
-*.log.gz
-*.msi
-*.msm
-*.msp
-*.json
-*.txt
-*.zip
-
-# Windows shortcuts
-*.lnk
-
-# =========================
-# Operating System Files
-# =========================
-
-# OSX
-# =========================
-
-.DS_Store
-.AppleDouble
-.LSOverride
-
-# Thumbnails
-._*
-
-# Files that might appear in the root of a volume
-.DocumentRevisions-V100
-.fseventsd
-.Spotlight-V100
-.TemporaryItems
-.Trashes
-.VolumeIcon.icns
-
-# Directories potentially created on remote AFP share
-.AppleDB
-.AppleDesktop
-Network Trash Folder
-Temporary Items
-.apdisk
-
-# Created by https://www.gitignore.io/api/eclipse
-
-### Eclipse ###
-
-.metadata
-tmp/
-*.tmp
-*.bak
-*.swp
-*~.nib
-local.properties
-.settings/
-.loadpath
-
-# Eclipse Core
-.project
-
-# External tool builders
-.externalToolBuilders/
-
-# Locally stored "Eclipse launch configurations"
-*.launch
-
-# PyDev specific (Python IDE for Eclipse)
-*.pydevproject
-
-# CDT-specific (C/C++ Development Tooling)
-.cproject
-
-# JDT-specific (Eclipse Java Development Tools)
+.gradle
+.settings
+/.idea/
+/run/
+/build/
+/eclipse/
 .classpath
-
-# Java annotation processor (APT)
-.factorypath
-
-# PDT-specific (PHP Development Tools)
-.buildpath
-
-# sbteclipse plugin
-.target
-
-# TeXlipse plugin
-.texlipse
-
-# STS (Spring Tool Suite)
-.springBeans
-
-# IDEA
-.idea/
+.project
+/bin/
+/config/
+/crash-reports/
+/logs/
+options.txt
+/saves/
+usernamecache.json
+banned-ips.json
+banned-players.json
+eula.txt
+ops.json
+server.properties
+servers.dat
+usercache.json
+whitelist.json
+/out/
 *.iml
 *.ipr
 *.iws
-
-# Other
-backups
-bin
-blueprints
-build
-config
-crash-reports
-gradle
-local
-logs
-modpack
-mods
-resourcepacks
-saves
-screenshots
-scripts
-.circleci
-.gradle
-.okhttpcache
-/src/Java/gtPlusPlus/preloader/asm/visitors/ob/sprinkler/Visitor_Field_Sprinkler.java
-/src/Java/gtPlusPlus/preloader/asm/visitors/ob/sprinkler/Visitor_Method_Sprinkler_GetInventory.java
-/src/Java/gtPlusPlus/preloader/asm/visitors/ob/sprinkler/Visitor_Method_Sprinkler_UpdateEntity.java
-/src/Java/gtPlusPlus/xmod/galacticraft/asm/EntityAutoRocket_ASM.java
-/src/Java/gtPlusPlus/xmod/galacticraft/asm/FluidUtil_ASM.java
-/src/Java/gtPlusPlus/xmod/galacticraft/asm/TileEntityFuelLoader_ASM.java
-/src/Java/gtPlusPlus/xmod/ob/TileEntitySprinkler_ASM.java
-/src/Java/gtPlusPlus/xmod/thermalfoundation/asm/OreDictionaryArbiter_ASM.java
-/GeneratedIcons
-/unused libs
-/world
-/server.properties
-/servers.dat
-/GregTech.cfg
-/GregTech.lang
-/GTPP.dat
-/PlayerCache.dat
-wip
+src/main/resources/mixins.*.json
 *.bat
-GT++.ipr
-GT++.iws
-
-
-out
