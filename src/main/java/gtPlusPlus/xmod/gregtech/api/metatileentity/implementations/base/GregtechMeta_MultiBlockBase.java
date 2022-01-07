@@ -224,28 +224,30 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
 			if (!this.mAllEnergyHatches.isEmpty()) {
 				long storedEnergy = getStoredEnergyInAllEnergyHatches();
 				long maxEnergy = getMaxEnergyStorageOfAllEnergyHatches();
-				mInfo.add(StatCollector.translateToLocal("GTPP.multiblock.energy")+": "+
-						EnumChatFormatting.GREEN + Long.toString(storedEnergy) + EnumChatFormatting.RESET +" EU / "+
-						EnumChatFormatting.YELLOW + Long.toString(maxEnergy) + EnumChatFormatting.RESET +" EU");
-				mInfo.add(StatCollector.translateToLocal("GTPP.multiblock.mei")+": "+
-						EnumChatFormatting.YELLOW+Long.toString(getMaxInputVoltage())+EnumChatFormatting.RESET+ " EU/t(*2A) "+StatCollector.translateToLocal("GTPP.machines.tier")+": "+
-						EnumChatFormatting.YELLOW+GT_Values.VN[GT_Utility.getTier(getMaxInputVoltage())]+ EnumChatFormatting.RESET);
+				mInfo.add(StatCollector.translateToLocal("GTPP.multiblock.energy")+":");
+				mInfo.add(StatCollector.translateToLocal(""+EnumChatFormatting.GREEN + Long.toString(storedEnergy) + EnumChatFormatting.RESET +" EU / "+
+						EnumChatFormatting.YELLOW + Long.toString(maxEnergy) + EnumChatFormatting.RESET +" EU"));
+				
+				mInfo.add(StatCollector.translateToLocal("GTPP.multiblock.mei")+":");
+				mInfo.add(StatCollector.translateToLocal(""+EnumChatFormatting.YELLOW+Long.toString(getMaxInputVoltage())+EnumChatFormatting.RESET+ " EU/t(*2A) "+StatCollector.translateToLocal("GTPP.machines.tier")+": "+
+						EnumChatFormatting.YELLOW+GT_Values.VN[GT_Utility.getTier(getMaxInputVoltage())]+ EnumChatFormatting.RESET));
+						;
 			}
 			if (!this.mAllDynamoHatches.isEmpty()) {
 				long storedEnergy = getStoredEnergyInAllDynamoHatches();
 				long maxEnergy = getMaxEnergyStorageOfAllDynamoHatches();
-				mInfo.add(StatCollector.translateToLocal("GTPP.multiblock.energy")+" In Dynamos: "+
-						EnumChatFormatting.GREEN + Long.toString(storedEnergy) + EnumChatFormatting.RESET +" EU / "+
-						EnumChatFormatting.YELLOW + Long.toString(maxEnergy) + EnumChatFormatting.RESET +" EU");
+				mInfo.add(StatCollector.translateToLocal("GTPP.multiblock.energy")+" In Dynamos:");
+				mInfo.add(StatCollector.translateToLocal(""+EnumChatFormatting.GREEN + Long.toString(storedEnergy) + EnumChatFormatting.RESET +" EU / "+
+						EnumChatFormatting.YELLOW + Long.toString(maxEnergy) + EnumChatFormatting.RESET +" EU"));
 			}			
 
 			if (-mEUt > 0) {
-				mInfo.add(StatCollector.translateToLocal("GTPP.multiblock.usage")+": "+
-						EnumChatFormatting.RED + Integer.toString(-mEUt) + EnumChatFormatting.RESET + " EU/t");
+				mInfo.add(StatCollector.translateToLocal("GTPP.multiblock.usage")+":");
+				mInfo.add(StatCollector.translateToLocal(""+EnumChatFormatting.RED + Integer.toString(-mEUt) + EnumChatFormatting.RESET + " EU/t"));
 			}
 			else {
-				mInfo.add(StatCollector.translateToLocal("GTPP.multiblock.generation")+": "+
-						EnumChatFormatting.GREEN + Integer.toString(mEUt) + EnumChatFormatting.RESET + " EU/t");
+				mInfo.add(StatCollector.translateToLocal("GTPP.multiblock.generation")+":");
+				mInfo.add(StatCollector.translateToLocal(""+EnumChatFormatting.GREEN + Integer.toString(mEUt) + EnumChatFormatting.RESET + " EU/t"));
 			}			
 
 			mInfo.add(StatCollector.translateToLocal("GTPP.multiblock.problems")+": "+
@@ -2452,7 +2454,7 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
 			}
 			else {
 				try {
-					return (GT_Recipe) findRecipe09.invoke(getRecipeMap(), aTileEntity, aRecipe, aNotUnificated, aDontCheckStackSizes, aVoltage,	aFluids, aSpecialSlot, aInputs);
+					return (GT_Recipe) findRecipe09.invoke(getRecipeMap(), aTileEntity, aRecipe, aNotUnificated, aDontCheckStackSizes, aVoltage, aFluids, aSpecialSlot, aInputs);
 				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 					e.printStackTrace();
 					return null;

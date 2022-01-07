@@ -364,6 +364,9 @@ public class GTPP_Recipe extends GT_Recipe  implements IComparableRecipe {
 		//Molecular Transformer Map
 		public static final GTPP_Recipe_Map_Internal sMolecularTransformerRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(3), "gtpp.recipe.moleculartransformer", "Molecular Transformer", null, RES_PATH_GUI + "basicmachines/Scanner", 1, 1, 0, 0, 1, E, 1, E, true, true);
 
+		//Elemental Duplicator Map
+		public static final GTPP_Recipe_Map_Internal sElementalDuplicatorRecipes = new GTPP_Recipe_Map_Internal(new HashSet<GT_Recipe>(3), "gtpp.recipe.elementaldupe", "Elemental Duplicator", null, RES_PATH_GUI + "basicmachines/Replicator", 1, 1, 0, 1, 1, E, 1, E, true, false);
+
 		
 		//public static final GT_Recipe_Map sSimpleWasherRecipes_FakeFuckBW = new GT_Recipe_Map(new HashSet<GT_Recipe>(3), "gtpp.recipe.simplewasher", "Fuck you Bart", null, RES_PATH_GUI + "basicmachines/PotionBrewer", 1, 1, 0, 0, 1, E, 1, E, true, false);
 		

@@ -703,14 +703,14 @@ public static int mInvalidID = 1;
 				CORE.crash("Bad Shaped Recipe.");				
 			}
 		}		
-		Logger.INFO("Using String: "+aFullString);
+		Logger.RECIPE("Using String: "+aFullString);
 		
 		String aRow1 = aFullString.substring(0, 3);
 		String aRow2 = aFullString.substring(3, 6);
 		String aRow3 = aFullString.substring(6, 9);	
-		Logger.INFO(""+aRow1);
-		Logger.INFO(""+aRow2);
-		Logger.INFO(""+aRow3);
+		Logger.RECIPE(""+aRow1);
+		Logger.RECIPE(""+aRow2);
+		Logger.RECIPE(""+aRow3);
 		
 		String[] aStringData = new String[] {aRow1, aRow2, aRow3};
 		Object[] aDataObject = new Object[19];
@@ -730,10 +730,10 @@ public static int mInvalidID = 1;
 			aIndex++;
 		}
 
-		Logger.INFO("Data Size: "+aDataObject.length);
+		Logger.RECIPE("Data Size: "+aDataObject.length);
 		aDataObject = ArrayUtils.removeNulls(aDataObject);
-		Logger.INFO("Clean Size: "+aDataObject.length);
-		Logger.INFO("ArrayData: "+Arrays.toString(aDataObject));
+		Logger.RECIPE("Clean Size: "+aDataObject.length);
+		Logger.RECIPE("ArrayData: "+Arrays.toString(aDataObject));
 		
 		ShapedOreRecipe aRecipe = new ShapedOreRecipe(aOutputStack, aDataObject);
 		
