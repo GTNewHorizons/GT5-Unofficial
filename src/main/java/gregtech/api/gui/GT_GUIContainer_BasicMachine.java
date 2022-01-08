@@ -1,20 +1,19 @@
 package gregtech.api.gui;
 
 import gregtech.api.enums.GT_Values;
+import gregtech.api.gui.widgets.GT_GuiSlotTooltip;
+import gregtech.api.gui.widgets.GT_GuiSmartTooltip;
+import gregtech.api.gui.widgets.GT_GuiSmartTooltip.TooltipVisibilityProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_Bronze;
 import gregtech.api.net.GT_Packet_SetConfigurationCircuit;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.awt.Rectangle;
 
 import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 
@@ -27,21 +26,29 @@ import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
  * which extend this class
  */
 public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machine {
+    private static final int NEEDS_STEAM_VENTING = 64;
 
-    private static final List<String> GHOST_CIRCUIT_TOOLTIP = Arrays.asList(
-            "GT5U.machines.select_circuit.tooltip",
-            "GT5U.machines.select_circuit.tooltip.1",
-            "GT5U.machines.select_circuit.tooltip.2",
-            "GT5U.machines.select_circuit.tooltip.3"
-    );
     public final String
             mName,
             mNEI;
     public final byte
             mProgressBarDirection,
             mProgressBarAmount;
-    public final boolean
-        mRenderAutoOutputSlots;
+
+    // Tooltip localization keys
+    private static final String
+        GHOST_CIRCUIT_TOOLTIP = "GT5U.machines.select_circuit.tooltip",
+        BATTERY_SLOT_TOOLTIP = "GT5U.machines.battery_slot.tooltip",
+        BATTERY_SLOT_TOOLTIP_ALT = "GT5U.machines.battery_slot.tooltip.alternative",
+        UNUSED_SLOT_TOOLTIP = "GT5U.machines.unused_slot.tooltip",
+        SPECIAL_SLOT_TOOLTIP = "GT5U.machines.special_slot.tooltip",
+        FLUID_INPUT_TOOLTIP = "GT5U.machines.fluid_input_slot.tooltip",
+        FLUID_OUTPUT_TOOLTIP = "GT5U.machines.fluid_output_slot.tooltip",
+        STALLED_STUTTERING_TOOLTIP = "GT5U.machines.stalled_stuttering.tooltip",
+        STALLED_VENT_TOOLTIP = "GT5U.machines.stalled_vent.tooltip",
+        FLUID_TRANSFER_TOOLTIP = "GT5U.machines.fluid_transfer.tooltip",
+        ITEM_TRANSFER_TOOLTIP = "GT5U.machines.item_transfer.tooltip",
+        POWER_SOURCE_KEY = "GT5U.machines.powersource.";
 
     public GT_GUIContainer_BasicMachine(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName,
             String aTextureFile, String aNEI) {
@@ -57,7 +64,71 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
         mProgressBarAmount = (byte) Math.max(1, aProgressBarAmount);
         mName = aName;
         mNEI = aNEI;
-        mRenderAutoOutputSlots = !(aTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_BasicMachine_Bronze);
+    }
+
+    /**
+     * Load data for and create appropriate tooltips for this machine
+     */
+    @Override
+    protected void setupTooltips() {
+        GT_MetaTileEntity_BasicMachine machine = getMachine();
+        GT_Recipe_Map recipes = machine.getRecipeList();
+        GT_Container_BasicMachine container = getContainer();
+        Rectangle tProblemArea = new Rectangle(this.guiLeft + 79, this.guiTop + 44, 18, 18);
+        String batterySlotTooltipKey;
+        Object[] batterySlotTooltipArgs;
+        if (machine.allowSelectCircuit()) {
+            addToolTip(new GT_GuiSlotTooltip(container.slotCircuit, mTooltipCache.getData(GHOST_CIRCUIT_TOOLTIP)));
+        }
+        if (machine.isSteampowered()) {
+            batterySlotTooltipKey = UNUSED_SLOT_TOOLTIP;
+            batterySlotTooltipArgs = new String[0];
+            addToolTip(new GT_GuiSmartTooltip(tProblemArea, new TooltipVisibilityProvider() {
+                    public boolean shouldShowTooltip() {
+                        return hasErrorCode(NEEDS_STEAM_VENTING);
+                    }
+                },  mTooltipCache.getData(STALLED_VENT_TOOLTIP)));
+        } else {
+            String pTier1 = powerTierName(machine.mTier);
+            if (machine.mTier == GT_Values.VN.length) {
+                batterySlotTooltipKey = BATTERY_SLOT_TOOLTIP_ALT;
+                batterySlotTooltipArgs = new String[] {pTier1};
+            } else {
+                batterySlotTooltipKey = BATTERY_SLOT_TOOLTIP;
+                batterySlotTooltipArgs = new String[] {pTier1, powerTierName((byte) (machine.mTier + 1))};
+            }
+            addToolTip(new GT_GuiSlotTooltip(   container.slotFluidTransferToggle,
+                                                mTooltipCache.getData(FLUID_TRANSFER_TOOLTIP)));
+            addToolTip(new GT_GuiSlotTooltip(   container.slotItemTransferToggle,
+                                                mTooltipCache.getData(ITEM_TRANSFER_TOOLTIP)));
+        }        
+        if (recipes != null && recipes.hasFluidInputs()) {
+            addToolTip(new GT_GuiSlotTooltip(container.slotFluidInput,
+                mTooltipCache.getData(FLUID_INPUT_TOOLTIP, machine.getCapacity())));
+        }
+        if (recipes != null && recipes.hasFluidOutputs()) {
+            addToolTip(new GT_GuiSlotTooltip(container.slotFluidOutput,
+                mTooltipCache.getData(FLUID_OUTPUT_TOOLTIP, machine.getCapacity())));
+        }
+        addToolTip( new GT_GuiSlotTooltip(getContainer().slotBattery,
+            mTooltipCache.getData(batterySlotTooltipKey, batterySlotTooltipArgs)));
+        addToolTip(new GT_GuiSlotTooltip(container.slotSpecial, mTooltipCache.getData(
+            recipes != null && recipes.usesSpecialSlot() ? SPECIAL_SLOT_TOOLTIP : UNUSED_SLOT_TOOLTIP)));
+        addToolTip(new GT_GuiSmartTooltip(tProblemArea, new TooltipVisibilityProvider() {
+                public boolean shouldShowTooltip() {
+                    return container.mStuttering && !hasErrorCode(NEEDS_STEAM_VENTING);
+                }
+            }, mTooltipCache.getData(STALLED_STUTTERING_TOOLTIP, StatCollector.translateToLocal(
+                POWER_SOURCE_KEY + (machine.isSteampowered() ?  "steam" : "power")))));
+    }
+
+    /**
+     * Apply proper coloration to a machine's power tier short name
+     * @param machineTier
+     * @return colored power tier short name
+     */
+    private String powerTierName(byte machineTier) {
+        return GT_Values.TIER_COLORS[machineTier] + GT_Values.VN[machineTier];
     }
 
     private void openSelectCircuitDialog() {
@@ -83,34 +154,9 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
     }
 
     @Override
-    public void drawScreen(int par1, int par2, float par3) {
-        super.drawScreen(par1, par2, par3);
-        if (mRenderAutoOutputSlots){
-            drawTooltip(par1, par2);
-        }
-    }
-
-    @Override
-    protected void drawGuiContainerForegroundLayer(int par1, int par2) {
+    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+        super.drawGuiContainerForegroundLayer(mouseX, mouseY);
         fontRendererObj.drawString(mName, 8, 4, 4210752);
-    }
-
-    private void drawTooltip(int x2, int y2) {
-        int xStart = (width - xSize) / 2;
-        int yStart = (height - ySize) / 2;
-        int x = x2 - xStart;
-        int y = y2 - yStart + 5;
-        if (y >= 67 && y <= 84) {
-            if (mRenderAutoOutputSlots && x >= 7 && x <= 24) {
-                drawHoveringText(Collections.singletonList("Fluid Auto-Output"), x2, y2, fontRendererObj);
-            }
-            if (mRenderAutoOutputSlots && x >= 25 && x <= 42) {
-                drawHoveringText(Collections.singletonList("Item Auto-Output"), x2, y2, fontRendererObj);
-            }
-            if (getMachine().allowSelectCircuit() && getMachine().getStackInSlot(getMachine().getCircuitSlot()) == null && x >= 153 && x <= 180) {
-                drawHoveringText(GHOST_CIRCUIT_TOOLTIP.stream().map(StatCollector::translateToLocal).collect(Collectors.toList()), x2, y2, fontRendererObj);
-            }
-        }
     }
 
     @Override
@@ -126,13 +172,13 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
-        super.drawGuiContainerBackgroundLayer(par1, par2, par3);
+    protected void drawGuiContainerBackgroundLayer(float parTicks, int mouseX, int mouseY) {
+        super.drawGuiContainerBackgroundLayer(parTicks, mouseX, mouseY);
         int x = (width - xSize) / 2;
         int y = (height - ySize) / 2;
         drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
         if (mContainer != null) {
-            if (mRenderAutoOutputSlots){
+            if (!getMachine().isSteampowered()) {
                 if (getContainer().mFluidTransfer)
                     drawTexturedModalRect(x + 7, y + 62, 176, 18, 18, 18);
                 if (getContainer().mItemTransfer)
@@ -179,6 +225,13 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
                 }
             }
         }
+    }
+
+    /**
+     * Whether the machine currently has this error code
+     */
+    private boolean hasErrorCode(int errorCode) {
+        return (getContainer().mDisplayErrorCode & errorCode) != 0;
     }
 
     private GT_Container_BasicMachine getContainer() {
