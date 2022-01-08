@@ -41,6 +41,8 @@ public class GT_GuiTooltipManager {
         mouseX -= render.getGuiLeft();
         mouseY -= render.getGuiTop();
         for (GT_GuiTooltip tip : tips) {
+            // Give the tooltip the opportunity to decide whether they should be enabled
+            tip.onTick();
             if (tip.enabled && (!tip.isDelayed() || mouseStopped > DELAY) && tip.getBounds().contains(mouseX, mouseY)) {
                 tip.updateText();
                 drawTooltip(tip, mouseX, mouseY, render);
