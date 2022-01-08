@@ -8,6 +8,7 @@ import thaumcraft.api.aspects.Aspect;
 import java.util.ArrayList;
 
 import static com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.ePrimalAspectDefinition.*;
+import static com.github.technus.tectech.thing.item.DebugElementalInstanceContainer_EM.STACKS_REGISTERED;
 
 /**
  * Created by Tec on 21.05.2017.
@@ -58,6 +59,8 @@ public final class AspectDefinitionCompatEnabled extends AspectDefinitionCompat 
                 }
             }
         }
+
+        STACKS_REGISTERED.addAll(defToAspect.keySet());
     }
 
     @Override
