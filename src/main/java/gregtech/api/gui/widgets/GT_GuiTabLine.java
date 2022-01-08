@@ -63,7 +63,7 @@ public class GT_GuiTabLine {
     }
 
     // The tabs are arranged according to their index in this array
-	protected final GT_GuiTab[] mTabs;
+    protected final GT_GuiTab[] mTabs;
 
     private int
         tabLineLeft,
@@ -219,7 +219,7 @@ public class GT_GuiTabLine {
      * @param mouseY
      * @param mouseButton
      */
-	public void onMouseClicked(int mouseX, int mouseY, int mouseButton) {
+    public void onMouseClicked(int mouseX, int mouseY, int mouseButton) {
         for(int tabId = 0; tabId < mTabs.length; tabId++) {
             if (mTabs[tabId] != null && mTabs[tabId].getBounds().contains(mouseX, mouseY)) {
                 tabClicked(tabId, mouseButton);
@@ -240,13 +240,13 @@ public class GT_GuiTabLine {
      * Reposition ourselves whenever the GT_ITabRenderer does so.
      * GT_ITabRenderer must call this method on Init.
      */
-	public void onInit() {
+    public void onInit() {
         for (int i = 0; i < mTabs.length; i++) {
             if (mTabs[i] != null) {
                 mTabs[i].setPosition(getTabX(i), getTabY(i));
             }
         }
-	}
+    }
 
     /**
      * Get the proper X position for a given tab

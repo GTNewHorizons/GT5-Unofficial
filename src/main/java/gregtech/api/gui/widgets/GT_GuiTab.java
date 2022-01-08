@@ -105,7 +105,7 @@ public class GT_GuiTab {
      * @param mouseY
      * @param parTicks
      */
-	public void drawOverlays(int mouseX, int mouseY, float parTicks) {
+    public void drawOverlays(int mouseX, int mouseY, float parTicks) {
         this.mousedOver = bounds.contains(mouseX, mouseY);
 
         if (this.tooltip != null) {
@@ -135,7 +135,7 @@ public class GT_GuiTab {
                 GL11.glPopAttrib();
             }
         }
-	}
+    }
 
     /**
      * @return the texture this tab should currently use as it's background

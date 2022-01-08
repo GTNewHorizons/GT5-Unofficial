@@ -31,7 +31,7 @@ public class GT_GUIContainerMetaTile_Machine extends GT_GUIContainer implements 
     public final GT_ContainerMetaTile_Machine mContainer;
 
     // IGuiScreen implementation      
-	protected GT_GuiTooltipManager mTooltipManager = new GT_GuiTooltipManager();
+    protected GT_GuiTooltipManager mTooltipManager = new GT_GuiTooltipManager();
 
     // Cover Tabs support. Subclasses can override display position, style and visuals by overriding setupCoverTabs
     public GT_GuiCoverTabLine coverTabs;
@@ -80,7 +80,7 @@ public class GT_GUIContainerMetaTile_Machine extends GT_GUIContainer implements 
             preferredDisplayStyle,
             getTabBackground(),
             getMachine().getBaseMetaTileEntity(),
-            this.getColorization());
+            getColorization());
     }
 
     @Override
@@ -143,12 +143,12 @@ public class GT_GUIContainerMetaTile_Machine extends GT_GUIContainer implements 
         coverTabs.onMouseClicked(mouseX, mouseY, mouseButton);
     }
     
-	@Override
-	public void initGui() {
-		super.initGui();
+    @Override
+    public void initGui() {
+        super.initGui();
         // Perform layout of tabs
-		coverTabs.onInit();
-	}
+        coverTabs.onInit();
+    }
 
     /**
      * @return the background textures used by this machine GUI's tabs
@@ -162,32 +162,32 @@ public class GT_GUIContainerMetaTile_Machine extends GT_GUIContainer implements 
     public void drawHoveringText(List text, int x, int y, FontRenderer font) {
         super.drawHoveringText(text, x, y, font);
     }
-	@Override
-	public int getGuiTop() {
-		return guiTop;
-	}
-	@Override
-	public int getGuiLeft() {
-		return guiLeft;
-	}
-	@Override
-	public int getXSize() {
-		return xSize;
-	}
-	@Override
-	public FontRenderer getFontRenderer() {
-		return fontRendererObj;
-	}    
-	@Override
-	public RenderItem getItemRenderer() {
-		return itemRender;
-	}
-	@Override
-	public void addToolTip(GT_GuiTooltip toolTip) {
-		mTooltipManager.addToolTip(toolTip);
-	}
-	@Override
-	public boolean removeToolTip(GT_GuiTooltip toolTip) {
-		return mTooltipManager.removeToolTip(toolTip);
-	}
+    @Override
+    public int getGuiTop() {
+        return guiTop;
+    }
+    @Override
+    public int getGuiLeft() {
+        return guiLeft;
+    }
+    @Override
+    public int getXSize() {
+        return xSize;
+    }
+    @Override
+    public FontRenderer getFontRenderer() {
+        return fontRendererObj;
+    }    
+    @Override
+    public RenderItem getItemRenderer() {
+        return itemRender;
+    }
+    @Override
+    public void addToolTip(GT_GuiTooltip toolTip) {
+        mTooltipManager.addToolTip(toolTip);
+    }
+    @Override
+    public boolean removeToolTip(GT_GuiTooltip toolTip) {
+        return mTooltipManager.removeToolTip(toolTip);
+    }
 }

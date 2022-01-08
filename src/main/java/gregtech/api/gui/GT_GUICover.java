@@ -33,10 +33,10 @@ public abstract class GT_GUICover extends GT_GUIScreen {
     }
     
 
-	@Override
-	public void closeScreen() {
+    @Override
+    public void closeScreen() {
         // If this cover was given a guiId, tell the server to open it for us when this GUI closes.
-		if (parentGuiId != -1 && tile.isUseableByPlayer(mc.thePlayer)) {
+        if (parentGuiId != -1 && tile.isUseableByPlayer(mc.thePlayer)) {
             GT_Values.NW.sendToServer(new GT_Packet_GtTileEntityGuiRequest(
                 tile.getXCoord(),
                 tile.getYCoord(),
@@ -48,5 +48,5 @@ public abstract class GT_GUICover extends GT_GUIScreen {
             this.mc.displayGuiScreen(null);
             this.mc.setIngameFocus();
         }
-	}
+    }
 }

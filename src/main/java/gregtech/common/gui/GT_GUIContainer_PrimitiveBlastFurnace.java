@@ -7,19 +7,19 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.InventoryPlayer;
 
 public class GT_GUIContainer_PrimitiveBlastFurnace extends GT_GUIContainerMetaTile_Machine { private String name;
-	public String mNEI;
+    public String mNEI;
     private final static GT_GuiTabIconSet TAB_ICONSET = new GT_GuiTabIconSet(
         GT_GuiIcon.TAB_NORMAL_BRICK,
         GT_GuiIcon.TAB_HIGHLIGHT_BRICK,
         GT_GuiIcon.TAB_DISABLED_BRICK);
-	
-	public GT_GUIContainer_PrimitiveBlastFurnace(InventoryPlayer inventoryPlayer, IGregTechTileEntity tileEntity,
+    
+    public GT_GUIContainer_PrimitiveBlastFurnace(InventoryPlayer inventoryPlayer, IGregTechTileEntity tileEntity,
             String name, String aNEI) {
-		super(new GT_Container_PrimitiveBlastFurnace(inventoryPlayer, tileEntity), 
-				String.format("gregtech:textures/gui/%s.png", name.replace(" ", "")));
-		this.name = name;
-		this.mNEI = aNEI;
-	}
+        super(new GT_Container_PrimitiveBlastFurnace(inventoryPlayer, tileEntity), 
+                String.format("gregtech:textures/gui/%s.png", name.replace(" ", "")));
+        this.name = name;
+        this.mNEI = aNEI;
+    }
 
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
