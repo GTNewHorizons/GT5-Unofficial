@@ -269,12 +269,12 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     public boolean mRenderPollutionFog = true;
 
     /**
-     * How wordy should tooltips be? 0: disabled, 1: one-line, 2: normal, 3+: wordy
+     * How verbose should tooltips be? 0: disabled, 1: one-line, 2: normal, 3+: extended
      */
     public int mTooltipVerbosity = 2;
 
     /**
-     * How wordy should tooltips be when LSHIFT is held? 0: disabled, 1: one-line, 2: normal, 3+: wordy
+     * How verbose should tooltips be when LSHIFT is held? 0: disabled, 1: one-line, 2: normal, 3+: extended
      */
     public int mTooltipShiftVerbosity = 3;
 

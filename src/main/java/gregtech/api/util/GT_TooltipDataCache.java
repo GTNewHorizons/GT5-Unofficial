@@ -48,7 +48,7 @@ public class GT_TooltipDataCache {
         List<String> lines = getAllLines(key, args);
         int normalLines = lines.size();
         if (Math.max(GT_Mod.gregtechproxy.mTooltipVerbosity, GT_Mod.gregtechproxy.mTooltipShiftVerbosity) >= 3) {
-            lines.addAll(getAllLines(key + ".wordy", args)); // Are wordy lines enabled? If so add them to the lines
+            lines.addAll(getAllLines(key + ".extended", args)); // Are extended lines enabled? If so add them to the lines
         }
         if (lines.size() == 0) {
             lines.add(key); // Fallback in case no lines could be found at all
