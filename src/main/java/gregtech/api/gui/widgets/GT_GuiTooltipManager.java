@@ -29,10 +29,11 @@ public class GT_GuiTooltipManager {
     }
 
     public final void onTick(GT_IToolTipRenderer render, int mouseX, int mouseY) {
-        if ((Math.abs(mouseX-lastMouseX) < 2 ) && (Math.abs(mouseY-lastMouseY) < 2 ))
+        if ((Math.abs(mouseX-lastMouseX) < 2 ) && (Math.abs(mouseY-lastMouseY) < 2 )) {
             mouseStopped = Math.min(mouseStopped+1, 50);
-        else
+        } else {
             mouseStopped = 0;
+        }
 
         lastMouseX = mouseX;
         lastMouseY = mouseY;

@@ -23,7 +23,8 @@ import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
  * <p/>
  * The GUI-Container I use for all my Basic Machines
  * <p/>
- * As the NEI-RecipeTransferRect Handler can't handle one GUI-Class for all GUIs I needed to produce some dummy-classes which extend this class
+ * As the NEI-RecipeTransferRect Handler can't handle one GUI-Class for all GUIs I needed to produce some dummy-classes
+ * which extend this class
  */
 public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machine {
 
@@ -42,12 +43,15 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
     public final boolean
         mRenderAutoOutputSlots;
 
-    public GT_GUIContainer_BasicMachine(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName, String aTextureFile, String aNEI) {
+    public GT_GUIContainer_BasicMachine(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName,
+            String aTextureFile, String aNEI) {
         this(aInventoryPlayer, aTileEntity, aName, aTextureFile, aNEI, (byte) 0, (byte) 1);
     }
 
-    public GT_GUIContainer_BasicMachine(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName, String aTextureFile, String aNEI, byte aProgressBarDirection, byte aProgressBarAmount) {
-        super(new GT_Container_BasicMachine(aInventoryPlayer, aTileEntity), RES_PATH_GUI + "basicmachines/" + aTextureFile);
+    public GT_GUIContainer_BasicMachine(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName,
+            String aTextureFile, String aNEI, byte aProgressBarDirection, byte aProgressBarAmount) {
+        super(new GT_Container_BasicMachine(aInventoryPlayer, aTileEntity),
+            RES_PATH_GUI + "basicmachines/" + aTextureFile);
         getContainer().setCircuitSlotClickCallback(this::openSelectCircuitDialog);
         mProgressBarDirection = aProgressBarDirection;
         mProgressBarAmount = (byte) Math.max(1, aProgressBarAmount);
@@ -63,7 +67,8 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
                 this,
                 this::onCircuitSelected,
                 getMachine().getConfigurationCircuits(),
-                GT_Utility.findMatchingStackInList(getMachine().getConfigurationCircuits(), getMachine().getStackInSlot(getMachine().getCircuitSlot()))));
+                GT_Utility.findMatchingStackInList(getMachine().getConfigurationCircuits(),
+                getMachine().getStackInSlot(getMachine().getCircuitSlot()))));
     }
 
     private void onCircuitSelected(ItemStack selected) {
@@ -111,7 +116,8 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
     @Override
     protected void onMouseWheel(int mx, int my, int delta) {
         GT_Slot_Render slotCircuit = getContainer().slotCircuit;
-        if (slotCircuit != null && func_146978_c(slotCircuit.xDisplayPosition, slotCircuit.yDisplayPosition, 16, 16, mx, my)) {
+        if (slotCircuit != null && func_146978_c(slotCircuit.xDisplayPosition,
+                slotCircuit.yDisplayPosition, 16, 16, mx, my)) {
             // emulate click
             handleMouseClick(slotCircuit, -1, delta > 0 ? 1 : 0, 0);
             return;
@@ -136,7 +142,10 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
                 drawTexturedModalRect(x + 79, y + 44, 176, 54, 18, 18);
 
             if (mContainer.mMaxProgressTime > 0) {
-                int tSize = mProgressBarDirection < 2 ? 20 : 18, tProgress = Math.max(1, Math.min(tSize * mProgressBarAmount, (mContainer.mProgressTime > 0 ? 1 : 0) + mContainer.mProgressTime * tSize * mProgressBarAmount / mContainer.mMaxProgressTime)) % (tSize + 1);
+                int tSize = mProgressBarDirection < 2 ? 20 : 18;
+                int tProgress = Math.max(1, Math.min(tSize * mProgressBarAmount, (mContainer.mProgressTime > 0 ? 1 : 0) 
+                    + mContainer.mProgressTime * tSize  * mProgressBarAmount / mContainer.mMaxProgressTime))
+                    % (tSize + 1);
 
                 switch (mProgressBarDirection) { // yes, my OCD was mad at me before I did the Tabs.
                     case 0:
