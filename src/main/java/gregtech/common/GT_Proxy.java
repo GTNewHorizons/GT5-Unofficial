@@ -268,6 +268,16 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
      */
     public boolean mRenderPollutionFog = true;
 
+    /**
+     * How wordy should tooltips be? 0: disabled, 1: one-line, 2: normal, 3+: wordy
+     */
+    public int mTooltipVerbosity = 2;
+
+    /**
+     * How wordy should tooltips be when LSHIFT is held? 0: disabled, 1: one-line, 2: normal, 3+: wordy
+     */
+    public int mTooltipShiftVerbosity = 3;
+
     public static final int GUI_ID_COVER_SIDE_BASE = 10; // Takes GUI ID 10 - 15
 
     public static Map<String, Integer> oreDictBurnTimes = new HashMap<>();
