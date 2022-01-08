@@ -11,7 +11,7 @@ import java.util.HashMap;
  */
 public class AspectDefinitionCompat {
     public static AspectDefinitionCompat aspectDefinitionCompat;
-    static final HashMap<cElementalDefinition,String> defToAspect = new HashMap<>();
+    public static final HashMap<cElementalDefinition,String> defToAspect = new HashMap<>();
     public static final HashMap<String,cElementalDefinition> aspectToDef = new HashMap<>();
 
     public void run(){}
