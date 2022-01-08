@@ -850,6 +850,11 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         private boolean mHasFluidOutputs = false;
 
         /**
+         * Whether this recipe map contains special slot inputs.
+         */
+        private boolean mUsesSpecialSlot = false;
+
+        /**
          * Initialises a new type of Recipe Handler.
          *
          * @param aRecipeList                a List you specify as Recipe List. Usually just an ArrayList with a pre-initialised Size.
@@ -954,6 +959,9 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             }
             if (aRecipe.mFluidOutputs.length != 0) {
                 this.mHasFluidOutputs = true;
+            }
+            if (aRecipe.mSpecialItems != null) {
+                this.mUsesSpecialSlot = true;
             }
             return addToItemMap(aRecipe);
         }
@@ -1099,6 +1107,13 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
          */
         public boolean hasFluidInputs() {
             return mRecipeFluidNameMap.size() != 0;
+        }
+
+        /**
+         * Whether this recipe map contains special slot inputs.
+         */
+        public boolean usesSpecialSlot() {
+            return mUsesSpecialSlot;
         }
     }
 
