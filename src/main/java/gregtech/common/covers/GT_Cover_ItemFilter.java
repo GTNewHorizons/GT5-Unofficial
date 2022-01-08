@@ -246,10 +246,8 @@ public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilte
         @Override
         public void buttonClicked(GuiButton btn) {
             if (btn == btnMode) {
-                if (coverVariable.mWhitelist != btnMode.isChecked()) {
-                    coverVariable.mWhitelist = btnMode.isChecked();
-                    GT_Values.NW.sendToServer(new GT_Packet_TileEntityCoverNew(side, coverID, coverVariable, tile));
-                }
+                coverVariable.mWhitelist = !coverVariable.mWhitelist;
+                GT_Values.NW.sendToServer(new GT_Packet_TileEntityCoverNew(side, coverID, coverVariable, tile));
             }
             updateButtons();
         }
