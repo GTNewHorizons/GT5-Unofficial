@@ -278,6 +278,16 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
      */
     public boolean mCoverTabsFlipped = false;
 
+    /**
+     * How verbose should tooltips be? 0: disabled, 1: one-line, 2: normal, 3+: extended
+     */
+    public int mTooltipVerbosity = 2;
+
+    /**
+     * How verbose should tooltips be when LSHIFT is held? 0: disabled, 1: one-line, 2: normal, 3+: extended
+     */
+    public int mTooltipShiftVerbosity = 3;
+
     public static final int GUI_ID_COVER_SIDE_BASE = 10; // Takes GUI ID 10 - 15
 
     public static Map<String, Integer> oreDictBurnTimes = new HashMap<>();

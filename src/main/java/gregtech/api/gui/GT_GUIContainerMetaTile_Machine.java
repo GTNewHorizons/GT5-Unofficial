@@ -15,6 +15,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.entity.RenderItem;
+import gregtech.api.util.GT_TooltipDataCache;
 import net.minecraft.entity.player.InventoryPlayer;
 
 import java.util.List;
@@ -29,9 +30,9 @@ import org.lwjgl.opengl.GL11;
 public class GT_GUIContainerMetaTile_Machine extends GT_GUIContainer implements GT_IToolTipRenderer, GT_ITabRenderer {
 
     public final GT_ContainerMetaTile_Machine mContainer;
-
-    // IGuiScreen implementation      
-    protected GT_GuiTooltipManager mTooltipManager = new GT_GuiTooltipManager();
+    
+	protected GT_GuiTooltipManager mTooltipManager = new GT_GuiTooltipManager();
+    protected GT_TooltipDataCache mTooltipCache = new GT_TooltipDataCache();
 
     // Cover Tabs support. Subclasses can override display position, style and visuals by overriding setupCoverTabs
     public GT_GuiCoverTabLine coverTabs;
@@ -57,6 +58,11 @@ public class GT_GUIContainerMetaTile_Machine extends GT_GUIContainer implements 
         ? (GT_Mod.gregtechproxy.mCoverTabsFlipped ? DisplayStyle.INVERSE : DisplayStyle.NORMAL)
         : DisplayStyle.NONE;
         setupCoverTabs(preferredDisplayStyle);
+
+        // Only setup tooltips if they're currently enabled.
+        if (GT_Mod.gregtechproxy.mTooltipVerbosity > 0 || GT_Mod.gregtechproxy.mTooltipShiftVerbosity > 0) {
+            setupTooltips();
+        }
     }
 
     public GT_GUIContainerMetaTile_Machine(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity,
@@ -156,6 +162,14 @@ public class GT_GUIContainerMetaTile_Machine extends GT_GUIContainer implements 
     protected GT_GuiTabIconSet getTabBackground() {
         return TAB_ICONSET;
     }
+
+    // Tooltips support
+
+    /**
+     * Load data for and create appropriate tooltips for this machine.
+     * Only called when one of regular or shift tooltips are enabled.
+     */
+    protected void setupTooltips() {    }
 
     // GT_IToolTipRenderer and GT_ITabRenderer implementations
     @Override
