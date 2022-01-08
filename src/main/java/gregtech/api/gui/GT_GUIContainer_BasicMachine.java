@@ -90,7 +90,7 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
                 },  mTooltipCache.getData(STALLED_VENT_TOOLTIP)));
         } else {
             String pTier1 = powerTierName(machine.mTier);
-            if (machine.mTier == GT_Values.VN.length) {
+            if (machine.mTier == GT_Values.VN.length - 1) {
                 batterySlotTooltipKey = BATTERY_SLOT_TOOLTIP_ALT;
                 batterySlotTooltipArgs = new String[] {pTier1};
             } else {
