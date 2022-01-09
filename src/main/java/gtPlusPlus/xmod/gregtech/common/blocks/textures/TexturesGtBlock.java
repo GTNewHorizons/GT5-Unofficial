@@ -415,6 +415,22 @@ public class TexturesGtBlock {
 	public static final CustomIcon Casing_Adv_Workbench_Bottom = new CustomIcon("TileEntities/gt4/machine_bottom");
 	
 
+	public static final CustomIcon Casing_Redstone_Top_Off = new CustomIcon("TileEntities/gt4/redstone/machine_top_redstone_off");
+	public static final CustomIcon Casing_Redstone_Top_Main_Off = new CustomIcon("TileEntities/gt4/redstone/machine_top_redstone_main_off");
+	public static final CustomIcon Casing_Redstone_Top_On = new CustomIcon("TileEntities/gt4/redstone/machine_top_redstone_on");
+	public static final CustomIcon Casing_Redstone_Top_Main_On = new CustomIcon("TileEntities/gt4/redstone/machine_top_redstone_main_on");
+	
+	public static final CustomIcon Casing_Redstone_Side_Off = new CustomIcon("TileEntities/gt4/redstone/machine_side_redstone_off");
+	public static final CustomIcon Casing_Redstone_Side_Main_Off = new CustomIcon("TileEntities/gt4/redstone/machine_side_redstone_main_off");
+	public static final CustomIcon Casing_Redstone_Side_On = new CustomIcon("TileEntities/gt4/redstone/machine_side_redstone_on");
+	public static final CustomIcon Casing_Redstone_Side_Main_On = new CustomIcon("TileEntities/gt4/redstone/machine_side_redstone_main_on");
+	
+	public static final CustomIcon Casing_Redstone_Bottom_Off = new CustomIcon("TileEntities/gt4/redstone/machine_bottom_redstone_off");
+	public static final CustomIcon Casing_Redstone_Bottom_Main_Off = new CustomIcon("TileEntities/gt4/redstone/machine_bottom_redstone_main_off");
+	public static final CustomIcon Casing_Redstone_Bottom_On = new CustomIcon("TileEntities/gt4/redstone/machine_bottom_redstone_on");
+	public static final CustomIcon Casing_Redstone_Bottom_Main_On = new CustomIcon("TileEntities/gt4/redstone/machine_bottom_redstone_main_on");
+	
+
 	public static final CustomIcon Casing_Electric_Auto_Workbench_Side = new CustomIcon("TileEntities/gt4/OVERLAY_SIDE_CABINET");
 
 	public static final CustomIcon Casing_CropHarvester_Cutter = new CustomIcon("TileEntities/gt4/OVERLAY_CROP");

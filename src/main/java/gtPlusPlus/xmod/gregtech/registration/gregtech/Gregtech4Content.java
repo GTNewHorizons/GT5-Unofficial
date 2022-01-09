@@ -12,6 +12,10 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.automation.GT_MetaTileEntity
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_CropHarvestor;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.GT4Entity_AutoCrafter;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.GT4Entity_ThermalBoiler;
+import gtPlusPlus.xmod.gregtech.common.tileentities.redstone.GT_MetaTileEntity_RedstoneButtonPanel;
+import gtPlusPlus.xmod.gregtech.common.tileentities.redstone.GT_MetaTileEntity_RedstoneLamp;
+import gtPlusPlus.xmod.gregtech.common.tileentities.redstone.GT_MetaTileEntity_RedstoneStrengthDisplay;
+import gtPlusPlus.xmod.gregtech.common.tileentities.redstone.GT_MetaTileEntity_RedstoneStrengthScale;
 import gtPlusPlus.xmod.gregtech.common.tileentities.storage.GT_MetaTileEntity_AdvancedCraftingTable;
 import gtPlusPlus.xmod.gregtech.common.tileentities.storage.GT_MetaTileEntity_BronzeCraftingTable;
 import gtPlusPlus.xmod.gregtech.common.tileentities.storage.shelving.GT4Entity_Shelf;
@@ -35,6 +39,7 @@ public class Gregtech4Content {
 			shelves();
 			basic();
 			automation();
+			redstone();
 		}
 	}
 
@@ -46,7 +51,17 @@ public class Gregtech4Content {
 		
 	}
 	
+	private static void redstone() {
+		Logger.INFO("Gregtech 4 Content | Registering Redstone Blocks.");		
+		GregtechItemList.GT4_Redstone_Lamp.set(new GT_MetaTileEntity_RedstoneLamp(31120).getStackForm(1L));
+		GregtechItemList.GT4_Redstone_Button_Panel.set(new GT_MetaTileEntity_RedstoneButtonPanel(31121).getStackForm(1L));
+		GregtechItemList.GT4_Redstone_Scale.set(new GT_MetaTileEntity_RedstoneStrengthScale(31122).getStackForm(1L));
+		GregtechItemList.GT4_Redstone_Display.set(new GT_MetaTileEntity_RedstoneStrengthDisplay(31123, "redstone.display.strength", "Redstone Display", "Displays Redstone Strength").getStackForm(1L));
+		
+	}
+	
 	private static void automation() {
+		Logger.INFO("Gregtech 4 Content | Registering Auto Workbenches.");		
 		GregtechItemList.GT4_Electric_Auto_Workbench_LV.set(new GT_MetaTileEntity_ElectricAutoWorkbench(31091, 1, "Automatic crafting machine").getStackForm(1L));
 		GregtechItemList.GT4_Electric_Auto_Workbench_MV.set(new GT_MetaTileEntity_ElectricAutoWorkbench(31092, 2, "Automatic crafting machine").getStackForm(1L));
 		GregtechItemList.GT4_Electric_Auto_Workbench_HV.set(new GT_MetaTileEntity_ElectricAutoWorkbench(31093, 3, "Automatic crafting machine").getStackForm(1L));
@@ -56,6 +71,7 @@ public class Gregtech4Content {
 		GregtechItemList.GT4_Electric_Auto_Workbench_ZPM.set(new GT_MetaTileEntity_ElectricAutoWorkbench(31097, 7, "Automatic crafting machine").getStackForm(1L));
 		GregtechItemList.GT4_Electric_Auto_Workbench_UV.set(new GT_MetaTileEntity_ElectricAutoWorkbench(31098, 8, "Automatic crafting machine").getStackForm(1L));
 
+		Logger.INFO("Gregtech 4 Content | Registering Inventory Managers.");		
 		GregtechItemList.GT4_Electric_Inventory_Manager_LV.set(new GT_MetaTileEntity_ElectricInventoryManager(31101, 1, "Manages your inventory and stuff").getStackForm(1L));
 		GregtechItemList.GT4_Electric_Inventory_Manager_MV.set(new GT_MetaTileEntity_ElectricInventoryManager(31102, 2, "Manages your inventory and stuff").getStackForm(1L));
 		GregtechItemList.GT4_Electric_Inventory_Manager_HV.set(new GT_MetaTileEntity_ElectricInventoryManager(31103, 3, "Manages your inventory and stuff").getStackForm(1L));
@@ -67,6 +83,7 @@ public class Gregtech4Content {
 	}
 	
 	private static void basic() {
+		Logger.INFO("Gregtech 4 Content | Registering Crop Managers.");		
 		GregtechItemList.GT4_Crop_Harvester_LV.set(new GT_MetaTileEntity_CropHarvestor(31111, 1, "Harvests the Cropsticks in front of it").getStackForm(1L));
 		GregtechItemList.GT4_Crop_Harvester_MV.set(new GT_MetaTileEntity_CropHarvestor(31112, 2, "Harvests the Cropsticks in front of it").getStackForm(1L));
 		GregtechItemList.GT4_Crop_Harvester_HV.set(new GT_MetaTileEntity_CropHarvestor(31113, 3, "Harvests the Cropsticks in front of it").getStackForm(1L));
