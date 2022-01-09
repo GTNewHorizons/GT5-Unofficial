@@ -264,4 +264,11 @@ public class GT_MetaTileEntity_Charcoal_Pit extends GT_MetaTileEntity_MultiBlock
         }
         return new ITexture[]{casingTexturePages[0][10]};
     }
+    
+    @Override
+    public boolean polluteEnvironment(int aPollutionLevel) {
+        // Do nothing and don't choke on pollution. This is fine because we add
+        // all the pollution at once when the recipe starts
+        return true;
+    }
 }
