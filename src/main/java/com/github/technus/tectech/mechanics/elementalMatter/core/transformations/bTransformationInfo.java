@@ -2,6 +2,7 @@ package com.github.technus.tectech.mechanics.elementalMatter.core.transformation
 
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.iHasElementalDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.core.templates.iElementalDefinition;
+import com.github.technus.tectech.util.DoubleCount;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import net.minecraft.item.ItemStack;
@@ -20,8 +21,12 @@ import static com.github.technus.tectech.thing.item.DebugElementalInstanceContai
  */
 public class bTransformationInfo {
     public static final double AVOGADRO_CONSTANT =6.02214076e23D;
-    public static final double AVOGADRO_CONSTANT_UNCERTAINTY =(144*1000)/6.02214076e23D;
+    public static final double AVOGADRO_CONSTANT_UNCERTAINTY =(144*1000)/AVOGADRO_CONSTANT;
+    public static final double AVOGADRO_CONSTANT_EPSILON = AVOGADRO_CONSTANT / (144 * 1000);
+    public static final double AVOGADRO_CONSTANT_KIND_OF_SMALLER =AVOGADRO_CONSTANT-AVOGADRO_CONSTANT_EPSILON;
+    public static final double AVOGADRO_CONSTANT_KIND_OF_BIGGER =AVOGADRO_CONSTANT+AVOGADRO_CONSTANT_EPSILON;
     public static final double AVOGADRO_CONSTANT_144 = AVOGADRO_CONSTANT *144D;
+    public static final double AVOGADRO_CONSTANT_1000 = AVOGADRO_CONSTANT *1000D;
 
     public static final Map<Integer,aFluidQuantizationInfo> fluidQuantization=new HashMap<>(32);
     public static final Map<aItemQuantizationInfo,aItemQuantizationInfo> itemQuantization=new HashMap<>(32);

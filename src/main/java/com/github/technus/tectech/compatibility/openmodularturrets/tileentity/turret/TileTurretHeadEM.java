@@ -1,8 +1,12 @@
 package com.github.technus.tectech.compatibility.openmodularturrets.tileentity.turret;
 
+import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.compatibility.openmodularturrets.entity.projectiles.projectileEM;
 import com.github.technus.tectech.compatibility.openmodularturrets.tileentity.turretbase.TileTurretBaseEM;
 import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
+import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.dHadronDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.eQuarkDefinition;
 import com.github.technus.tectech.thing.item.DebugElementalInstanceContainer_EM;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
@@ -12,6 +16,8 @@ import openmodularturrets.entity.projectiles.TurretProjectile;
 import openmodularturrets.handler.ConfigHandler;
 import openmodularturrets.tileentity.turrets.TurretHead;
 import openmodularturrets.util.TurretHeadUtil;
+
+import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.bTransformationInfo.*;
 
 /**
  * Created by Bass on 27/07/2017.
@@ -64,7 +70,18 @@ public class TileTurretHeadEM extends TurretHead{
 
     @Override
     public final TurretProjectile createProjectile(World world, Entity target, ItemStack ammo) {
-        return new projectileEM(world, TurretHeadUtil.getTurretBase(worldObj, xCoord, yCoord, zCoord), hatchContentPointer);
+        while(hatchContentPointer!=null && hatchContentPointer.hasStacks()) {
+            cElementalInstanceStack stack = hatchContentPointer.get(TecTech.RANDOM.nextInt(hatchContentPointer.size()));
+            if(stack.amount<AVOGADRO_CONSTANT_KIND_OF_SMALLER){
+                hatchContentPointer.remove(stack.definition);
+                continue;
+            }
+            hatchContentPointer.removeAmount(false, stack.definition.getStackForm(AVOGADRO_CONSTANT));
+            stack=stack.clone();
+            stack.amount = AVOGADRO_CONSTANT;
+            return new projectileEM(world, TurretHeadUtil.getTurretBase(worldObj, xCoord, yCoord, zCoord), stack);
+        }
+        return new projectileEM(world, TurretHeadUtil.getTurretBase(worldObj, xCoord, yCoord, zCoord), null);
     }
 
     @Override

@@ -18,6 +18,8 @@ import openmodularturrets.tileentity.turretbase.TurretBase;
 import openmodularturrets.util.PlayerUtil;
 import openmodularturrets.util.TurretHeadUtil;
 
+import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.bTransformationInfo.AVOGADRO_CONSTANT;
+
 
 /**
  * Created by Bass on 27/07/2017.
@@ -26,7 +28,7 @@ public class projectileEM extends LaserProjectile {
     public float gravity=0;
     private TurretBase turretBase;
 
-    private boolean exotic, antiMatter,isAmped;
+    private boolean strange, antiMatter,isAmped;
 
     private int ampLevel;
 
@@ -45,36 +47,23 @@ public class projectileEM extends LaserProjectile {
         }
     }
 
-    public projectileEM(World par1World, TurretBase turretBase, cElementalInstanceStackMap avalableEM) {
+    public projectileEM(World par1World, TurretBase turretBase, cElementalInstanceStack projectileContent) {
         super(par1World, turretBase);
         this.turretBase = turretBase;
-        boolean onlyQuarks=true;
-        if(avalableEM!=null && avalableEM.hasStacks()) {
-            for (cElementalInstanceStack stack : avalableEM.values()) {
-                if (!(stack.definition instanceof eQuarkDefinition)) {
-                    onlyQuarks = false;
-                }
+        if(projectileContent != null){
+            massFactor =(float) (projectileContent.definition.getMass()/ dHadronDefinition.hadron_n_.getMass());
+
+            if(projectileContent.definition.getType()>1 || projectileContent.definition.getType()<-1) {
+                strange = true;
             }
-            if (onlyQuarks) {
-                avalableEM.clear();
+            if(projectileContent.definition.getType()<0) {
+                antiMatter = true;
+            }
+
+            if (projectileContent.definition.getCharge() == 0) {
+                gravity = massFactor / 100f;
             } else {
-                cElementalInstanceStack consumeFromThis=avalableEM.get(TecTech.RANDOM.nextInt(avalableEM.size()));
-                massFactor =(float) (consumeFromThis.definition.getMass()/ dHadronDefinition.hadron_n_.getMass());
-
-                if(consumeFromThis.definition.getType()>1 || consumeFromThis.definition.getType()<-1) {
-                    exotic = true;
-                }
-                if(consumeFromThis.definition.getType()<0) {
-                    antiMatter = true;
-                }
-
-                if (consumeFromThis.definition.getCharge() == 0) {
-                    gravity = massFactor / 100f;
-                } else {
-                    gravity = Math.min(0.0025F / Math.abs(consumeFromThis.definition.getCharge()), massFactor / 100f);
-                }
-
-                avalableEM.removeAmount(false,consumeFromThis.definition.getStackForm(1));
+                gravity = Math.min(0.0025F / Math.abs(projectileContent.definition.getCharge()), massFactor / 100f);
             }
         }
         //todo make the recipe require some overflow hatches
@@ -97,7 +86,8 @@ public class projectileEM extends LaserProjectile {
                         worldObj.createExplosion(null,
                                 movingobjectposition.blockX + 0.5D,
                                 movingobjectposition.blockY + 0.5D,
-                                movingobjectposition.blockZ + 0.5D, (exotic?10:1) * TecTech.configTecTech.TURRET_EXPLOSION_FACTOR * massFactor * (isAmped? ampLevel*.1f +1:1) * (ticksExisted/250f), true);
+                                movingobjectposition.blockZ + 0.5D,
+                                (strange ?10:1) * TecTech.configTecTech.TURRET_EXPLOSION_FACTOR * massFactor * (isAmped? ampLevel*.1f +1:1) * (ticksExisted/250f), true);
                     } else {
                         return;
                     }
@@ -107,18 +97,18 @@ public class projectileEM extends LaserProjectile {
             if(movingobjectposition.entityHit != null && !worldObj.isRemote) {
                 worldObj.playSoundEffect(posX, posY, posZ, "openmodularturrets:laserHit", ConfigHandler.getTurretSoundVolume(), TecTech.RANDOM.nextFloat() + 0.5F);
                 if(movingobjectposition.entityHit != null && !worldObj.isRemote) {
-                    float damage = (exotic?10:1) * TecTech.configTecTech.TURRET_DAMAGE_FACTOR * massFactor * (isAmped? ampLevel*.1f +1:1);
+                    float damage = (strange ?10:1) * TecTech.configTecTech.TURRET_DAMAGE_FACTOR * massFactor * (isAmped? ampLevel*.1f +1:1);
 
                     if(movingobjectposition.entityHit instanceof EntityPlayer) {
                         if(canDamagePlayer((EntityPlayer)movingobjectposition.entityHit)) {
-                            movingobjectposition.entityHit.setFire((exotic?10:1)*2);
+                            movingobjectposition.entityHit.setFire((strange ?10:1)*2);
                             movingobjectposition.entityHit.attackEntityFrom(new NormalDamageSource("laser"), damage);
                             if(antiMatter) {
                                 movingobjectposition.entityHit.hurtResistantTime = 0;
                             }
                         }
                     } else {
-                        movingobjectposition.entityHit.setFire((exotic?10:1)*2);
+                        movingobjectposition.entityHit.setFire((strange ?10:1)*2);
                         movingobjectposition.entityHit.attackEntityFrom(new NormalDamageSource("laser"), damage);
                         if(antiMatter) {
                             movingobjectposition.entityHit.hurtResistantTime = 0;
@@ -133,7 +123,8 @@ public class projectileEM extends LaserProjectile {
                         worldObj.createExplosion(null,
                                 movingobjectposition.entityHit.posX,
                                 movingobjectposition.entityHit.posY,
-                                movingobjectposition.entityHit.posZ, (exotic?10:1) * TecTech.configTecTech.TURRET_EXPLOSION_FACTOR * massFactor * (isAmped? ampLevel*.1f +1:1) * (ticksExisted/250f), true);
+                                movingobjectposition.entityHit.posZ,
+                                (strange ?10:1) * TecTech.configTecTech.TURRET_EXPLOSION_FACTOR * massFactor * (isAmped? ampLevel*.1f +1:1) * (ticksExisted/250f), true);
                     }
                 }
             }
