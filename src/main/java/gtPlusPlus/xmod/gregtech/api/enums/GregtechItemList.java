@@ -532,6 +532,34 @@ public enum GregtechItemList implements GregtechItemContainer {
 	//Gt4 Workbenches
 	GT4_Workbench_Bronze,
 	GT4_Workbench_Advanced,
+	
+	//GT4 automation
+	GT4_Electric_Auto_Workbench_LV,
+	GT4_Electric_Auto_Workbench_MV,
+	GT4_Electric_Auto_Workbench_HV,
+	GT4_Electric_Auto_Workbench_EV,
+	GT4_Electric_Auto_Workbench_IV,
+	GT4_Electric_Auto_Workbench_LuV,
+	GT4_Electric_Auto_Workbench_ZPM,
+	GT4_Electric_Auto_Workbench_UV,
+	GT4_Electric_Inventory_Manager_LV,
+	GT4_Electric_Inventory_Manager_MV,
+	GT4_Electric_Inventory_Manager_HV,
+	GT4_Electric_Inventory_Manager_EV,
+	GT4_Electric_Inventory_Manager_IV,
+	GT4_Electric_Inventory_Manager_LuV,
+	GT4_Electric_Inventory_Manager_ZPM,
+	GT4_Electric_Inventory_Manager_UV,
+	
+	//GT4 Crop Harvester
+	GT4_Crop_Harvester_LV,
+	GT4_Crop_Harvester_MV,
+	GT4_Crop_Harvester_HV,
+	GT4_Crop_Harvester_EV,
+	GT4_Crop_Harvester_IV,
+	GT4_Crop_Harvester_LuV,
+	GT4_Crop_Harvester_ZPM,
+	GT4_Crop_Harvester_UV,
 
 
 	//Geothermal Engines

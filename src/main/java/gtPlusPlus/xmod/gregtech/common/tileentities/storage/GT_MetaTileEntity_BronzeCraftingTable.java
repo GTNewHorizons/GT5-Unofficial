@@ -72,14 +72,6 @@ public class GT_MetaTileEntity_BronzeCraftingTable extends GT_MetaTileEntity_Adv
     }
 	
 	@Override
-	public String[] getDescription() {
-		return new String[] { 
-				"For the smaller Projects",
-				this.mDescription, 
-				CORE.GT_Tooltip };
-	}
-	
-	@Override
 	public int getCapacity() {
 		return 16000;
 	}

@@ -414,6 +414,51 @@ public class TexturesGtBlock {
 	public static final CustomIcon Casing_Adv_Workbench_Side = new CustomIcon("TileEntities/gt4/machine_side");
 	public static final CustomIcon Casing_Adv_Workbench_Bottom = new CustomIcon("TileEntities/gt4/machine_bottom");
 	
+
+	public static final CustomIcon Casing_Electric_Auto_Workbench_Side = new CustomIcon("TileEntities/gt4/OVERLAY_SIDE_CABINET");
+
+	public static final CustomIcon Casing_CropHarvester_Cutter = new CustomIcon("TileEntities/gt4/OVERLAY_CROP");
+	public static final CustomIcon Casing_CropHarvester_Boxes = new CustomIcon("TileEntities/gt4/OVERLAY_BOXES");
+
+	public static final CustomIcon Casing_InventoryManagaer_Cyan = new CustomIcon("TileEntities/gt4/OVERLAY_CYAN");
+	public static final CustomIcon Casing_InventoryManagaer_Green = new CustomIcon("TileEntities/gt4/OVERLAY_GREEN");
+	public static final CustomIcon Casing_InventoryManagaer_Purple = new CustomIcon("TileEntities/gt4/OVERLAY_PURPLE");
+	public static final CustomIcon Casing_InventoryManagaer_Red = new CustomIcon("TileEntities/gt4/OVERLAY_RED");
+	public static final CustomIcon Casing_InventoryManagaer_Yellow = new CustomIcon("TileEntities/gt4/OVERLAY_YELLOW");
+	public static final CustomIcon Casing_InventoryManagaer_Blue = new CustomIcon("TileEntities/gt4/OVERLAY_BLUE");
+
+	public static final CustomIcon Casing_InventoryManagaer_Cyan_Redstone = new CustomIcon("TileEntities/gt4/OVERLAY_CYAN_REDSTONE");
+	public static final CustomIcon Casing_InventoryManagaer_Green_Redstone = new CustomIcon("TileEntities/gt4/OVERLAY_GREEN_REDSTONE");
+	public static final CustomIcon Casing_InventoryManagaer_Purple_Redstone = new CustomIcon("TileEntities/gt4/OVERLAY_PURPLE_REDSTONE");
+	public static final CustomIcon Casing_InventoryManagaer_Red_Redstone = new CustomIcon("TileEntities/gt4/OVERLAY_RED_REDSTONE");
+	public static final CustomIcon Casing_InventoryManagaer_Yellow_Redstone = new CustomIcon("TileEntities/gt4/OVERLAY_YELLOW_REDSTONE");
+	public static final CustomIcon Casing_InventoryManagaer_Blue_Redstone = new CustomIcon("TileEntities/gt4/OVERLAY_BLUE_REDSTONE");
+
+	private static final CustomIcon Casing_Test_1 = new CustomIcon("number/1");
+	private static final CustomIcon Casing_Test_2 = new CustomIcon("number/2");
+	private static final CustomIcon Casing_Test_3 = new CustomIcon("number/3");
+	private static final CustomIcon Casing_Test_4 = new CustomIcon("number/4");
+	private static final CustomIcon Casing_Test_5 = new CustomIcon("number/5");
+	private static final CustomIcon Casing_Test_6 = new CustomIcon("number/6");
+	private static final CustomIcon Casing_Test_7 = new CustomIcon("number/7");
+	private static final CustomIcon Casing_Test_8 = new CustomIcon("number/8");
+	private static final CustomIcon Casing_Test_9 = new CustomIcon("number/9");
+	private static final CustomIcon Casing_Test_10 = new CustomIcon("number/10");
+	private static final CustomIcon Casing_Test_11 = new CustomIcon("number/11");
+	private static final CustomIcon Casing_Test_12 = new CustomIcon("number/12");
+	private static final CustomIcon Casing_Test_13 = new CustomIcon("number/13");
+	private static final CustomIcon Casing_Test_14 = new CustomIcon("number/14");
+	private static final CustomIcon Casing_Test_15 = new CustomIcon("number/15");
+	private static final CustomIcon Casing_Test_16 = new CustomIcon("number/16");
+	
+	public static final CustomIcon[] TEST_NUMBER = new CustomIcon[] {
+			Casing_Test_1, Casing_Test_2, Casing_Test_3, Casing_Test_4,
+			Casing_Test_5, Casing_Test_6, Casing_Test_7, Casing_Test_8,
+			Casing_Test_9, Casing_Test_10, Casing_Test_11, Casing_Test_12,
+			Casing_Test_13, Casing_Test_14, Casing_Test_15, Casing_Test_16
+			
+	};
+	
 	//Covers
 	private static final CustomIcon Internal_Overlay_Overflow_Valve = new CustomIcon("iconsets/OVERLAY_OVERFLOW_VALVE");
 	public static final CustomIcon Overlay_Overflow_Valve = Internal_Overlay_Overflow_Valve;
