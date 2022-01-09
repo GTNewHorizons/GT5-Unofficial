@@ -88,14 +88,14 @@ public class YOTTankGUIContainer extends GT_Container_MultiMachineEM {
     private void sendStateUpdate(ICrafting clientHandle) {
         final int bytes = Integer.BYTES * 3 + Character.BYTES * (currentStore.length() + store.length() + fluidName.length());
         for (int i = 0; i < bytes; i++) {
-            clientHandle.sendProgressBarUpdate(this, i + 21, buffer.get(i));
+            clientHandle.sendProgressBarUpdate(this, i + 300, buffer.get(i));
         }
     }
 
     @SideOnly(Side.CLIENT)
     public void updateProgressBar(int index, int value) {
         super.updateProgressBar(index, value);
-        index = index - 21;
+        index = index - 300;
         if(index >= 0 && index < buffer.capacity()) {
             buffer.put(index, (byte) value);
         }

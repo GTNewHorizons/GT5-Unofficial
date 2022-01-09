@@ -91,10 +91,6 @@ repositories {
         url = "https://cursemaven.com"
     }
     maven {
-        name = "sponge"
-        url = "https://repo.spongepowered.org/repository/maven-public"
-    }
-    maven {
         name = "ic2"
         url = "http://maven.ic2.player.to/"
     }
@@ -104,19 +100,29 @@ repositories {
 }
 
 dependencies {
-    compile("com.enderio.core:EnderCore:1.7.10-0.1.0.25_beta:dev")
-    compile("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:master-SNAPSHOT:dev")
-    compile("com.github.GTNewHorizons:AppleCore:master-SNAPSHOT:dev")
     compile("com.github.GTNewHorizons:GT5-Unofficial:master-SNAPSHOT:dev")
+    compileOnly("com.github.GTNewHorizons:EnderCore:master-SNAPSHOT:dev") {
+        transitive = false
+    }
+    compileOnly("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:master-SNAPSHOT:dev") {
+        transitive = false
+    }
+    compileOnly("com.github.GTNewHorizons:bartworks:master-SNAPSHOT:dev") {
+        transitive = false
+    }
+    compileOnly("com.github.GTNewHorizons:GTplusplus:master-SNAPSHOT:dev") {
+        transitive = false
+    }
+    compileOnly("com.github.GTNewHorizons:AppleCore:master-SNAPSHOT:dev") {
+        transitive = false
+    }
+    compileOnly("com.github.GTNewHorizons:TecTech:master-SNAPSHOT:dev") {
+        transitive = false
+    }
 /*    compileOnly("com.github.GTNewHorizons:Avaritia:master-SNAPSHOT") {
         setChanging(true)
     }*/
-    compile files('GT-PlusPlus-1.7.09.GTNH.jar')
-    compile files('TecTech-1.7.10-4.10.7-b1bcea5f-dev.jar')
-    //compile files('bartworks-1.7.10-0.5.27-dev.jar')
-    compile("com.github.GTNewHorizons:bartworks:master-SNAPSHOT:dev")
-    compileOnly("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev")
-    runtime("eu.usrv:YAMCore:${minecraftVersion}-${yamcoreVersion}:deobf");
+    compile files('Thaumcraft-1.7.10-4.2.3.5.deobf.jar')
 }
 
 

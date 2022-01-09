@@ -1,5 +1,6 @@
 package goodgenerator.blocks.tileEntity;
 
+import goodgenerator.blocks.tileEntity.GTMetaTileEntity.YOTTAHatch;
 import goodgenerator.client.GUI.YOTTankGUIClient;
 import goodgenerator.common.container.YOTTankGUIContainer;
 import goodgenerator.loader.Loaders;
@@ -49,10 +50,11 @@ public class YottaFluidTank extends GT_MetaTileEntity_MultiblockBase_EM implemen
     private static final IIconContainer textureFontOff_Glow = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_QCHEST_GLOW");
 
     protected IStructureDefinition<YottaFluidTank> multiDefinition = null;
+    protected final ArrayList<YOTTAHatch> mYottaHatch = new ArrayList<>();
 
-    protected BigInteger mStorage = new BigInteger("0", 10);
-    protected BigInteger mStorageCurrent = new BigInteger("0", 10);
-    protected String mFluidName = "";
+    public BigInteger mStorage = new BigInteger("0", 10);
+    public BigInteger mStorageCurrent = new BigInteger("0", 10);
+    public String mFluidName = "";
     protected int glassMeta;
     protected int maxCell;
     protected final String YOTTANK_BOTTOM = mName + "buttom";
@@ -126,6 +128,17 @@ public class YottaFluidTank extends GT_MetaTileEntity_MultiblockBase_EM implemen
         }
     }
 
+    public boolean addFluid(int amount) {
+        BigInteger tmp = new BigInteger(amount + "");
+        if (mStorage.subtract(mStorageCurrent).compareTo(tmp) < 0) {
+            return false;
+        }
+        else {
+            mStorageCurrent = mStorageCurrent.add(tmp);
+            return true;
+        }
+    }
+
     private int calGlassTier(int meta) {
         if (meta >= 1 && meta <= 6) return meta;
         if (meta >= 7 && meta <= 12) return 1;
@@ -136,6 +149,7 @@ public class YottaFluidTank extends GT_MetaTileEntity_MultiblockBase_EM implemen
     public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mStorage = BigInteger.ZERO;
         glassMeta = 0;
+        mYottaHatch.clear();
         if (!structureCheck_EM(YOTTANK_BOTTOM, 2, 0, 0)) return false;
         int cnt = 0;
         while (structureCheck_EM(YOTTANK_MID, 2, cnt + 1, 0)) {
@@ -270,6 +284,10 @@ public class YottaFluidTank extends GT_MetaTileEntity_MultiblockBase_EM implemen
                 if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
                     ((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
                     return this.mOutputHatches.add((GT_MetaTileEntity_Hatch_Output)aMetaTileEntity);
+                } else if (aMetaTileEntity instanceof YOTTAHatch) {
+                    ((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+                    ((YOTTAHatch) aMetaTileEntity).setTank(this);
+                    return this.mYottaHatch.add((YOTTAHatch)aMetaTileEntity);
                 }
             }
         }

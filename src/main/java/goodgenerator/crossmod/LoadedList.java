@@ -7,11 +7,13 @@ public class LoadedList {
     public static boolean GTPP;
     public static boolean GTNH_CORE;
     public static boolean BOTDUSTRIES;
+    public static boolean EXTRA_CELLS;
 
     public static void init() {
         GTPP = Loader.isModLoaded("miscutils");
         GTNH_CORE = Loader.isModLoaded("dreamcraft");
         BOTDUSTRIES = Loader.isModLoaded("botdustries");
+        EXTRA_CELLS = Loader.isModLoaded("extracells");
     }
 
 }

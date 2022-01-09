@@ -452,7 +452,7 @@ public class LargeEssentiaGenerator extends GT_MetaTileEntity_MultiblockBase_EM 
             for (Aspect aspect: aspects.aspects.keySet()) {
                 if (!isValidEssentia(aspect) || getPerAspectEnergy(aspect) == 0) continue;
                 while (EUt <= (voltageLimit * ampLimit) && aspects.getAmount(aspect) > 0) {
-                    EUt += getPerAspectEnergy(aspect);
+                    EUt += getPerAspectEnergy(aspect) * mStableValue / 25;
                     aspects.reduce(aspect, 1);
                     if (aspects.getAmount(aspect) == 0)
                         aspects.remove(aspect);
@@ -460,7 +460,7 @@ public class LargeEssentiaGenerator extends GT_MetaTileEntity_MultiblockBase_EM 
             }
             if (EUt == 0 && aspects.size() != 0) {
                 if (!isValidEssentia(aspects.getAspects()[0]) || getPerAspectEnergy(aspects.getAspects()[0]) == 0) continue;
-                EUt += getPerAspectEnergy(aspects.getAspects()[0]);
+                EUt += getPerAspectEnergy(aspects.getAspects()[0]) * mStableValue / 25;
                 aspects.reduce(aspects.getAspects()[0], 1);
                 if (aspects.getAmount(aspects.getAspects()[0]) == 0)
                     aspects.remove(aspects.getAspects()[0]);

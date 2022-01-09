@@ -9,6 +9,7 @@ import goodgenerator.blocks.tileEntity.*;
 import goodgenerator.blocks.tileEntity.GTMetaTileEntity.DieselGenerator;
 import goodgenerator.blocks.tileEntity.GTMetaTileEntity.NeutronAccelerator;
 import goodgenerator.blocks.tileEntity.GTMetaTileEntity.NeutronSensor;
+import goodgenerator.blocks.tileEntity.GTMetaTileEntity.YOTTAHatch;
 import goodgenerator.crossmod.LoadedList;
 import goodgenerator.crossmod.nei.IMCForNEI;
 import goodgenerator.crossmod.nei.NEI_Config;
@@ -91,6 +92,7 @@ public class Loaders {
     public static ItemStack NS;
     public static ItemStack NA;
     public static ItemStack YFT;
+    public static ItemStack YFH;
 
     public static ItemStack[] NeutronAccelerators = new ItemStack[9];
     public static ItemStack[] Generator_Diesel = new ItemStack[2];
@@ -107,6 +109,7 @@ public class Loaders {
         Loaders.NS = new NeutronSensor(IDOffset + 11, "Neutron Sensor", "Neutron Sensor", 5).getStackForm(1L);
         Loaders.NA = new NeutronActivator(IDOffset + 12, "NeutronActivator", "Neutron Activator").getStackForm(1L);
         Loaders.YFT = new YottaFluidTank(IDOffset + 13, "YottaFluidTank", "YOTTank").getStackForm(1L);
+        Loaders.YFH = new YOTTAHatch(IDOffset + 14, "YottaFluidTankHatch", "YOTHatch", 5).getStackForm(1);
         Loaders.Generator_Diesel[0] = new DieselGenerator(1113, "basicgenerator.diesel.tier.04", "Turbo Supercharging Combustion Generator", 4).getStackForm(1);
         Loaders.Generator_Diesel[1] = new DieselGenerator(1114, "basicgenerator.diesel.tier.05", "Ultimate Chemical Energy Releaser", 5).getStackForm(1);
     }

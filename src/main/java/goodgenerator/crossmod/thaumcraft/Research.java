@@ -1,11 +1,11 @@
 package goodgenerator.crossmod.thaumcraft;
 
+import goodgenerator.crossmod.LoadedList;
 import goodgenerator.items.MyMaterial;
 import goodgenerator.util.DescTextLocalization;
 import goodgenerator.util.ItemRefer;
 import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
-import cpw.mods.fml.common.Loader;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -220,7 +220,7 @@ public class Research{
                 }
         );
         ItemStack broad = new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 6);
-        if (Loader.isModLoaded("dreamcraft")) broad = GT_ModHandler.getModItem("dreamcraft", "item.ArcaneSlate", 1);
+        if (LoadedList.GTNH_CORE) broad = GT_ModHandler.getModItem("dreamcraft", "item.ArcaneSlate", 1);
         GregTech_API.sThaumcraftCompat.addResearch(
                 "ESSENTIA_UPGRADE_BLANK",
                 "Upgrade your generator",
@@ -375,7 +375,7 @@ public class Research{
                 }
         );
         ItemStack meatDust = GT_OreDictUnificator.get(OrePrefixes.dust, Materials.MeatRaw, 1);
-        if (Loader.isModLoaded("dreamcraft")) meatDust = GT_ModHandler.getModItem("dreamcraft", "GTNHBioItems", 1, 2);
+        if (LoadedList.GTNH_CORE) meatDust = GT_ModHandler.getModItem("dreamcraft", "GTNHBioItems", 1, 2);
         GregTech_API.sThaumcraftCompat.addResearch(
                 "ESSENTIA_UPGRADE_VICTUS",
                 "Essentia: VICTUS",

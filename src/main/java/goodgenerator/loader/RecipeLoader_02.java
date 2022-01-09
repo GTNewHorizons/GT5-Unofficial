@@ -169,6 +169,21 @@ public class RecipeLoader_02 {
                 }
         );
 
+        if (LoadedList.EXTRA_CELLS) {
+            GT_Values.RA.addAssemblerRecipe(
+                    new ItemStack[]{
+                            ItemList.Hatch_Output_IV.get(1),
+                            GT_ModHandler.getModItem("extracells", "part.base", 1, 9),
+                            GT_OreDictUnificator.get(OrePrefixes.screw, Materials.CertusQuartz, 8),
+                            GT_Utility.getIntegratedCircuit(1)
+                    },
+                    Materials.Plastic.getMolten(144),
+                    Loaders.YFH,
+                    200,
+                    1920
+            );
+        }
+
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[]{
                         ItemList.Large_Fluid_Cell_Steel.get(12L),
