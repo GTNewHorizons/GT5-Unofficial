@@ -63,7 +63,7 @@ public abstract class GT_MetaTileEntity_RedstoneBase extends GT_MetaTileEntity_T
 
 	@Override
 	public boolean onRightclick(final IGregTechTileEntity aBaseMetaTileEntity, final EntityPlayer aPlayer) {
-		return true;
+		return false;
 	}
 
 	@Override
@@ -89,6 +89,9 @@ public abstract class GT_MetaTileEntity_RedstoneBase extends GT_MetaTileEntity_T
 	}
 	
 	public final boolean hasRedstoneSignal() {
+		if (getBaseMetaTileEntity().getStrongestRedstone() > 0) {
+			return true;
+		}
 		for (byte i=0;i<6;i++) {
 			if (getBaseMetaTileEntity().getOutputRedstoneSignal(i) > 0) {
 				return true;
