@@ -5,6 +5,7 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import gtPlusPlus.xmod.gregtech.common.computer.GT_ComputercubeDescription;
 import gtPlusPlus.xmod.gregtech.common.tileentities.automation.GT_MetaTileEntity_ElectricAutoWorkbench;
 import gtPlusPlus.xmod.gregtech.common.tileentities.automation.GT_MetaTileEntity_ElectricInventoryManager;
 import gtPlusPlus.xmod.gregtech.common.tileentities.automation.GT_MetaTileEntity_TesseractGenerator;
@@ -12,6 +13,7 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.automation.GT_MetaTileEntity
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_CropHarvestor;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.GT4Entity_AutoCrafter;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.GT4Entity_ThermalBoiler;
+import gtPlusPlus.xmod.gregtech.common.tileentities.misc.GT_TileEntity_ComputerCube;
 import gtPlusPlus.xmod.gregtech.common.tileentities.redstone.GT_MetaTileEntity_RedstoneButtonPanel;
 import gtPlusPlus.xmod.gregtech.common.tileentities.redstone.GT_MetaTileEntity_RedstoneLamp;
 import gtPlusPlus.xmod.gregtech.common.tileentities.redstone.GT_MetaTileEntity_RedstoneStrengthDisplay;
@@ -40,9 +42,16 @@ public class Gregtech4Content {
 			basic();
 			automation();
 			redstone();
+			computer();
 		}
 	}
 
+
+	private static void computer() {
+		Logger.INFO("Gregtech 4 Content | Registering Computer Cube.");	
+		GregtechItemList.Gregtech_Computer_Cube_Machine.set(new GT_TileEntity_ComputerCube(31130, "C-O-M-P-U-T-E-R").getStackForm(1L));
+	}
+	
 	private static void workbenches() {
 		// Gregtech 4 Workbenches
 		Logger.INFO("Gregtech 4 Content | Registering Workbenches.");		

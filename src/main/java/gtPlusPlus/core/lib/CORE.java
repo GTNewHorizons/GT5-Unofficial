@@ -333,28 +333,33 @@ public class CORE {
 	}
 	
 	public static final void crash(String aReason) {
-		Logger.INFO("==========================================================");
-		Logger.INFO("[GT++ CRASH]");
-		Logger.INFO("==========================================================");
-		Logger.INFO("Oooops...");
-		Logger.INFO("This should only happy in a development environment or when something really bad happens.");
-		Logger.INFO("Reason: "+aReason);
-		Logger.INFO("==========================================================");
-		Logger.INFO("Called from: "+ReflectionUtils.getMethodName(1));
-		Logger.INFO(ReflectionUtils.getMethodName(2));
-		Logger.INFO(ReflectionUtils.getMethodName(3));
-		Logger.INFO(ReflectionUtils.getMethodName(4));
-		Logger.INFO(ReflectionUtils.getMethodName(5));
-		Logger.INFO(ReflectionUtils.getMethodName(6));	
-		Logger.INFO(ReflectionUtils.getMethodName(7));	
-		Logger.INFO(ReflectionUtils.getMethodName(8));	
-		Logger.INFO(ReflectionUtils.getMethodName(9));	
-		Logger.INFO(ReflectionUtils.getMethodName(10));	
-		Logger.INFO(ReflectionUtils.getMethodName(11));	
-		Logger.INFO(ReflectionUtils.getMethodName(12));	
-		Logger.INFO(ReflectionUtils.getMethodName(13));	
-		Logger.INFO(ReflectionUtils.getMethodName(14));	
-		Logger.INFO(ReflectionUtils.getMethodName(15));		
+		try {
+			Logger.INFO("==========================================================");
+			Logger.INFO("[GT++ CRASH]");
+			Logger.INFO("==========================================================");
+			Logger.INFO("Oooops...");
+			Logger.INFO("This should only happy in a development environment or when something really bad happens.");
+			Logger.INFO("Reason: "+aReason);
+			Logger.INFO("==========================================================");
+			Logger.INFO("Called from: "+ReflectionUtils.getMethodName(1));
+			Logger.INFO(ReflectionUtils.getMethodName(2));
+			Logger.INFO(ReflectionUtils.getMethodName(3));
+			Logger.INFO(ReflectionUtils.getMethodName(4));
+			Logger.INFO(ReflectionUtils.getMethodName(5));
+			Logger.INFO(ReflectionUtils.getMethodName(6));	
+			Logger.INFO(ReflectionUtils.getMethodName(7));	
+			Logger.INFO(ReflectionUtils.getMethodName(8));	
+			Logger.INFO(ReflectionUtils.getMethodName(9));	
+			Logger.INFO(ReflectionUtils.getMethodName(10));	
+			Logger.INFO(ReflectionUtils.getMethodName(11));	
+			Logger.INFO(ReflectionUtils.getMethodName(12));	
+			Logger.INFO(ReflectionUtils.getMethodName(13));	
+			Logger.INFO(ReflectionUtils.getMethodName(14));	
+			Logger.INFO(ReflectionUtils.getMethodName(15));		
+		}
+		catch (Throwable t) {
+			t.printStackTrace();
+		}
 		FMLCommonHandler.instance().exitJava(0, true);
 	}
 	

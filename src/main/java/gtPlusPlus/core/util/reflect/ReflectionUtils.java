@@ -335,6 +335,9 @@ public class ReflectionUtils {
 	public static String getMethodName(final int depth) {
 		final StackTraceElement[] ste = new Throwable().getStackTrace();
 		//System. out.println(ste[ste.length-depth].getClassName()+"#"+ste[ste.length-depth].getMethodName());
+		if (ste.length < depth) {
+			return "No valid stack.";
+		}
 		return ste[depth+1].getMethodName();
 	}
 

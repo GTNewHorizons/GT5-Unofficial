@@ -1690,7 +1690,7 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
 	}
 
 	public boolean checkHatch() {
-		return mMaintenanceHatches.size() <= 1 && !mMufflerHatches.isEmpty();
+		return mMaintenanceHatches.size() <= 1 && (this.getPollutionPerSecond(null) > 0 ? !mMufflerHatches.isEmpty() : true);
 	}
 
 	public <E> boolean addToMachineListInternal(ArrayList<E> aList, final IGregTechTileEntity aTileEntity, final int aBaseCasingIndex) {	
