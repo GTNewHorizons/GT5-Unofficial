@@ -8,6 +8,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GT_AssemblyLineUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -121,5 +122,11 @@ public class GT_MetaTileEntity_Hatch_DataAccess extends GT_MetaTileEntity_Hatch 
     public void setActive(boolean mActive){
         getBaseMetaTileEntity().setActive(mActive);
         timeout=mActive?4:0;
+    }
+
+    @Override
+    public void setInventorySlotContents(int aIndex, ItemStack aStack) {
+        super.setInventorySlotContents(aIndex, aStack);
+        GT_AssemblyLineUtils.processDataStick(aStack);
     }
 }
