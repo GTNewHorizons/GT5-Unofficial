@@ -266,6 +266,7 @@ YOTTank.hint.6=3 - Output Hatch/YOTHatch
 largeessentiagenerator.chat= Installed!
 essentiahatch.chat.0=Successfully locked to %s.
 essentiahatch.chat.1=Cleared.
+yothatch.chat.0=Set storage priority to %s.
 
 #Achievement
 achievement.gt.blockmachines.nag=Large Naquadah Reactor

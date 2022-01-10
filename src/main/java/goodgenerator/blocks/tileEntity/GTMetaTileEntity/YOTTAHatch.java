@@ -1,6 +1,26 @@
 package goodgenerator.blocks.tileEntity.GTMetaTileEntity;
 
+import appeng.api.config.AccessRestriction;
+import appeng.api.config.Actionable;
+import appeng.api.networking.GridFlags;
+import appeng.api.networking.IGrid;
+import appeng.api.networking.IGridNode;
+import appeng.api.networking.events.MENetworkCellArrayUpdate;
+import appeng.api.networking.events.MENetworkStorageEvent;
+import appeng.api.networking.security.BaseActionSource;
+import appeng.api.networking.security.IActionHost;
+import appeng.api.networking.storage.IStorageGrid;
+import appeng.api.storage.*;
+import appeng.api.storage.data.IAEFluidStack;
+import appeng.api.storage.data.IItemList;
+import appeng.api.util.AECableType;
+import appeng.api.util.DimensionalCoord;
+import appeng.me.helpers.AENetworkProxy;
+import appeng.me.helpers.IGridProxyable;
+import cpw.mods.fml.common.Optional;
+import extracells.util.FluidUtil;
 import goodgenerator.blocks.tileEntity.YottaFluidTank;
+import goodgenerator.loader.Loaders;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -8,21 +28,40 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GT_Utility;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 
-public class YOTTAHatch extends GT_MetaTileEntity_Hatch {
+@Optional.InterfaceList(value = {
+        @Optional.Interface(iface = "appeng.api.networking.security.IActionHost", modid = "appliedenergistics2", striprefs = true),
+        @Optional.Interface(iface = "appeng.me.helpers.IGridProxyable", modid = "appliedenergistics2", striprefs = true),
+        @Optional.Interface(iface = "appeng.api.storage.IMEInventory", modid = "appliedenergistics2", striprefs = true),
+        @Optional.Interface(iface = "appeng.api.storage.IMEInventoryHandler", modid = "appliedenergistics2", striprefs = true),
+        @Optional.Interface(iface = "appeng.api.storage.ICellContainer", modid = "appliedenergistics2", striprefs = true),
+})
+public class YOTTAHatch extends GT_MetaTileEntity_Hatch implements IGridProxyable, IActionHost, ICellContainer,
+        IMEInventory<IAEFluidStack>, IMEInventoryHandler<IAEFluidStack> {
 
     private static final IIconContainer textureFont = new Textures.BlockIcons.CustomIcon("icons/YOTTAHatch");
 
     private YottaFluidTank host;
+    private AENetworkProxy gridProxy = null;
+    private int priority;
 
     public YOTTAHatch(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 0, "Special I/O port for EC2 Fluid Storage Bus.");
+        super(aID, aName, aNameRegional, aTier, 0,
+                new String[] {"Special I/O port for EC2.",
+                        "Directly connected YOTTank with AE fluid storage system.",
+                        "Use screwdriver/soldering iron to set storage priority"});
     }
 
     public YOTTAHatch(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -31,6 +70,151 @@ public class YOTTAHatch extends GT_MetaTileEntity_Hatch {
 
     public void setTank(YottaFluidTank te) {
         this.host = te;
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setInteger("mAEPriority", this.priority);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        this.priority = aNBT.getInteger("mAEPriority");
+    }
+
+    @Override
+    public boolean isFacingValid(byte aFacing) {
+        return true;
+    }
+
+    @Override
+    public boolean isAccessAllowed(EntityPlayer aPlayer) {
+        return true;
+    }
+
+    @Override
+    public final void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        if (aPlayer.isSneaking())
+            this.priority -= 10;
+        else
+            this.priority += 10;
+        GT_Utility.sendChatToPlayer(aPlayer, String.format(StatCollector.translateToLocal("yothatch.chat.0"), this.priority));
+    }
+
+    @Override
+    public boolean onSolderingToolRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        if (aPlayer.isSneaking())
+            this.priority -= 100;
+        else
+            this.priority += 100;
+        GT_Utility.sendChatToPlayer(aPlayer, String.format(StatCollector.translateToLocal("yothatch.chat.0"), this.priority));
+        return true;
+    }
+
+    @Optional.Method(modid = "appliedenergistics2")
+    public IGridNode getGridNode(ForgeDirection forgeDirection) {
+        AENetworkProxy gp = getProxy();
+        return gp != null ? gp.getNode() : null;
+    }
+
+    @Override
+    @Optional.Method(modid = "appliedenergistics2")
+    public AECableType getCableConnectionType(ForgeDirection forgeDirection) {
+        return AECableType.SMART;
+    }
+
+    @Optional.Method(modid = "appliedenergistics2")
+    public void securityBreak() {}
+
+    @Override
+    @Optional.Method(modid = "appliedenergistics2")
+    public AENetworkProxy getProxy() {
+        if (gridProxy == null) {
+            gridProxy = new AENetworkProxy(this, "proxy", Loaders.YFH, true);
+            gridProxy.onReady();
+            gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
+        }
+        return this.gridProxy;
+    }
+
+    @Override
+    @Optional.Method(modid = "appliedenergistics2")
+    public DimensionalCoord getLocation() {
+        IGregTechTileEntity gtm = this.getBaseMetaTileEntity();
+        return new DimensionalCoord(gtm.getWorld(), gtm.getXCoord(), gtm.getYCoord(), gtm.getZCoord());
+    }
+
+    @Override
+    @Optional.Method(modid = "appliedenergistics2")
+    public IItemList<IAEFluidStack> getAvailableItems(IItemList<IAEFluidStack> out) {
+        if (host == null || host.getBaseMetaTileEntity() == null || !host.getBaseMetaTileEntity().isActive())
+            return out;
+        if (host.mFluidName == null || host.mFluidName.equals("") || host.mStorageCurrent.compareTo(BigInteger.ZERO) <= 0)
+            return out;
+        int ready;
+        if (host.mStorageCurrent.compareTo(BigInteger.valueOf(Integer.MAX_VALUE)) > 0) {
+            ready = Integer.MAX_VALUE;
+        }
+        else ready = host.mStorageCurrent.intValue();
+        out.add(FluidUtil.createAEFluidStack(FluidRegistry.getFluid(host.mFluidName), ready));
+        return out;
+    }
+
+    @Override
+    @Optional.Method(modid = "appliedenergistics2")
+    public IAEFluidStack injectItems(IAEFluidStack input, Actionable type, BaseActionSource src) {
+        FluidStack rInput = input.getFluidStack();
+        int amt = fill(null, rInput, false);
+        if (amt == rInput.amount) {
+            if (type.equals(Actionable.MODULATE)) fill(null, rInput, true);
+            return null;
+        }
+        return input;
+    }
+
+    @Override
+    @Optional.Method(modid = "appliedenergistics2")
+    public IAEFluidStack extractItems(IAEFluidStack request, Actionable mode, BaseActionSource src) {
+        FluidStack ready = drain(null, request.getFluidStack(), false);
+        if (ready != null) {
+            if (mode.equals(Actionable.MODULATE)) drain(null, request.getFluidStack(), true);
+            return FluidUtil.createAEFluidStack(ready.getFluid(), ready.amount);
+        }
+        else return null;
+    }
+
+    @Override
+    @Optional.Method(modid = "appliedenergistics2")
+    public StorageChannel getChannel() {
+        return StorageChannel.FLUIDS;
+    }
+
+    @Override
+    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
+        super.onFirstTick(aBaseMetaTileEntity);
+        getProxy();
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        IGridNode node = getGridNode(null);
+        if (node != null) {
+            IGrid grid = node.getGrid();
+            if (grid != null) {
+                grid.postEvent(new MENetworkCellArrayUpdate());
+                IStorageGrid storageGrid = grid.getCache(IStorageGrid.class);
+                if (storageGrid == null) {
+                    node.getGrid().postEvent(new MENetworkStorageEvent(null, StorageChannel.FLUIDS));
+                }
+                else {
+                    node.getGrid().postEvent(new MENetworkStorageEvent(storageGrid.getFluidInventory(), StorageChannel.FLUIDS));
+                }
+                node.getGrid().postEvent(new MENetworkCellArrayUpdate());
+            }
+        }
+        super.onPostTick(aBaseMetaTileEntity, aTick);
     }
 
     @Override
@@ -137,5 +321,67 @@ public class YOTTAHatch extends GT_MetaTileEntity_Hatch {
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new YOTTAHatch(mName, mTier, mDescriptionArray, mTextures);
+    }
+
+    @Override
+    @Optional.Method(modid = "appliedenergistics2")
+    public IGridNode getActionableNode() {
+        AENetworkProxy gp = getProxy();
+        return gp != null ? gp.getNode() : null;
+    }
+
+    @Override
+    @Optional.Method(modid = "appliedenergistics2")
+    public AccessRestriction getAccess() {
+        return AccessRestriction.READ_WRITE;
+    }
+
+    @Override
+    @Optional.Method(modid = "appliedenergistics2")
+    public boolean isPrioritized(IAEFluidStack input) {
+        return true;
+    }
+
+    @Override
+    @Optional.Method(modid = "appliedenergistics2")
+    public boolean canAccept(IAEFluidStack input) {
+        FluidStack rInput = input.getFluidStack();
+        return fill(null, rInput, false) > 0;
+    }
+
+    @Override
+    @Optional.Method(modid = "appliedenergistics2")
+    public List<IMEInventoryHandler> getCellArray(StorageChannel channel) {
+        List<IMEInventoryHandler> list = new ArrayList<>();
+        if (channel == StorageChannel.FLUIDS) {
+            list.add(this);
+        }
+        return list;
+    }
+
+    @Override
+    @Optional.Method(modid = "appliedenergistics2")
+    public int getPriority() {
+        return this.priority;
+    }
+
+    @Override
+    @Optional.Method(modid = "appliedenergistics2")
+    public int getSlot() {
+        return 0;
+    }
+
+    @Override
+    @Optional.Method(modid = "appliedenergistics2")
+    public boolean validForPass(int i) {
+        return true;
+    }
+
+    @Override
+    public void blinkCell(int slot) { }
+
+    @Override
+    public void saveChanges(IMEInventory cellInventory) {
+        //This is handled by host itself.
     }
 }

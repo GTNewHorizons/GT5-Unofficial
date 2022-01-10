@@ -119,6 +119,9 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:TecTech:master-SNAPSHOT:dev") {
         transitive = false
     }
+    compileOnly("com.github.GTNewHorizons:ExtraCells2:master-SNAPSHOT:dev") {
+        transitive = false
+    }
 /*    compileOnly("com.github.GTNewHorizons:Avaritia:master-SNAPSHOT") {
         setChanging(true)
     }*/
