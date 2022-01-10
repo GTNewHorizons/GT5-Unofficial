@@ -226,6 +226,20 @@ public class NaquadahReworkRecipeLoader {
                 false
         );
 
+        if (LoadedList.GTNH_CORE) {
+            GT_Values.RA.addAutoclaveRecipe(
+                    GT_ModHandler.getModItem("dreamcraft", "item.PotassiumHydroxideDust", 5),
+                    null,
+                    enrichedNaquadahRichSolution.getFluidOrGas(5000),
+                    P507.getFluidOrGas(1250),
+                    concentratedEnrichedNaquadahSludge.get(OrePrefixes.dust, 4),
+                    10000,
+                    500,
+                    480,
+                    false
+            );
+        }
+
         MyRecipeAdder.instance.addNeutronActivatorRecipe(
                 null,
                 new ItemStack[]{

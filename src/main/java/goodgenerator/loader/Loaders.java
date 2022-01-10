@@ -173,13 +173,11 @@ public class Loaders {
         }
     }
 
-    public static void addOreDic(){
-        OreDictionary.registerOre("blockGlass", fieldRestrictingGlass);
-        OreDictionary.registerOre("blockGlassZPM", fieldRestrictingGlass);
+    public static void addOreDic() {
         OreDictionary.registerOre("dustAluminumNitride", aluminumNitride);
     }
 
-    public static void addTexturePage(){
+    public static void addTexturePage() {
         if (Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage] == null){
             Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage] = new ITexture[128];
             Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage][0] = TextureFactory.of(magicCasing);

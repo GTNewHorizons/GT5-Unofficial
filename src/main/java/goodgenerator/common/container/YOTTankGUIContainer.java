@@ -8,6 +8,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
+import net.minecraft.util.StatCollector;
 
 import java.nio.ByteBuffer;
 
@@ -128,6 +129,6 @@ public class YOTTankGUIContainer extends GT_Container_MultiMachineEM {
         for (int i = 0; i < buffer.getInt(Integer.BYTES * 2); ++i) {
             sb.append(buffer.getChar(startP + Character.BYTES * i));
         }
-        return sb.toString();
+        return StatCollector.translateToLocal(sb.toString());
     }
 }
