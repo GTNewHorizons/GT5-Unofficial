@@ -78,6 +78,7 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
     private final MagicalEnergyBB mMagicalEnergyBB = new MagicalEnergyBB(this, mTier, mTier + 2);
     private long mNextGenerateTickRate = 1;
     private int mNoGenerationTicks = 0;
+    private boolean mUsingEssentia = true;
 
     public GT_MetaTileEntity_MagicalEnergyAbsorber(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, "Feasts on magic close to it:");
@@ -303,7 +304,7 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
 
         long tGeneratedEU;
 
-        if (aTick % 100 == 0) mMagicalEnergyBB.update();
+        if (aTick % 100 == 0 && mUsingEssentia) mMagicalEnergyBB.update();
 
         // Adaptive EU Generation Ticking
         if (aTick % mNextGenerateTickRate == 0) {
@@ -365,10 +366,12 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
     private long generateEU() {
         long tEU;
 
+        mUsingEssentia = false;
         if ((tEU = absorbFromEgg()) > 0) return tEU;
         if ((tEU = absorbFromEnderCrystals()) > 0) return tEU;
         if ((tEU = absorbFromEnchantedItems()) > 0) return tEU;
         if ((tEU = absorbFromVisNet()) > 0) return tEU;
+        mUsingEssentia = true;
         if ((tEU = absorbFromEssentiaContainers()) > 0) return tEU;
         return 0;
     }
