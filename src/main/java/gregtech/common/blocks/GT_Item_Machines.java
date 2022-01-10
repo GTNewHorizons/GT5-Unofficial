@@ -15,10 +15,7 @@ import gregtech.api.util.GT_ItsNotMyFaultException;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.tileentities.storage.GT_MetaTileEntity_QuantumChest;
-import gregtech.common.tileentities.storage.GT_MetaTileEntity_QuantumTank;
-import gregtech.common.tileentities.storage.GT_MetaTileEntity_SuperChest;
-import gregtech.common.tileentities.storage.GT_MetaTileEntity_SuperTank;
+import gregtech.common.tileentities.storage.*;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -97,6 +94,16 @@ public class GT_Item_Machines extends ItemBlock implements IFluidContainerItem {
                         if (tContents != null && tContents.amount > 0) {
                             aList.add(GT_LanguageManager.addStringLocalization("TileEntity_TANK_INFO", "Contains Fluid: ", !GregTech_API.sPostloadFinished ) + EnumChatFormatting.YELLOW + tContents.getLocalizedName() + EnumChatFormatting.GRAY);
                             aList.add(GT_LanguageManager.addStringLocalization("TileEntity_TANK_AMOUNT", "Fluid Amount: ", !GregTech_API.sPostloadFinished ) + EnumChatFormatting.GREEN + GT_Utility.formatNumbers(tContents.amount) + " L" + EnumChatFormatting.GRAY);
+                        }
+                    }
+                }
+                if (GregTech_API.METATILEENTITIES[tDamage] instanceof GT_MetaTileEntity_DigitalChestBase) {
+                    if (aStack.hasTagCompound() && aStack.stackTagCompound.hasKey("mItemStack")) {
+                        ItemStack tContents = ItemStack.loadItemStackFromNBT(aStack.stackTagCompound.getCompoundTag("mItemStack"));
+                        int tSize = aStack.stackTagCompound.getInteger("mItemCount");
+                        if (tContents != null && tSize > 0) {
+                            aList.add(GT_LanguageManager.addStringLocalization("TileEntity_CHEST_INFO", "Contains Item: ", !GregTech_API.sPostloadFinished ) + EnumChatFormatting.YELLOW + tContents.getDisplayName() + EnumChatFormatting.GRAY);
+                            aList.add(GT_LanguageManager.addStringLocalization("TileEntity_CHEST_AMOUNT", "Item Amount: ", !GregTech_API.sPostloadFinished ) + EnumChatFormatting.GREEN + GT_Utility.formatNumbers(tSize) + EnumChatFormatting.GRAY);
                         }
                     }
                 }

@@ -10,6 +10,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockB
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.common.GT_Pollution;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -27,6 +28,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ROCK_BREAKER_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ROCK_BREAKER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ROCK_BREAKER_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
+
+import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 public class GT_MetaTileEntity_Charcoal_Pit extends GT_MetaTileEntity_MultiBlockBase {
 
@@ -270,5 +273,23 @@ public class GT_MetaTileEntity_Charcoal_Pit extends GT_MetaTileEntity_MultiBlock
         // Do nothing and don't choke on pollution. This is fine because we add
         // all the pollution at once when the recipe starts
         return true;
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
+        super.onPostTick(aBaseMetaTileEntity, aTimer);
+        if ((aBaseMetaTileEntity.isClientSide()) && (aBaseMetaTileEntity.isActive())) {
+
+            new WorldSpawnedEventBuilder.ParticleEventBuilder()
+                    .setMotion(0D,0.3D,0D)
+                    .setIdentifier("largesmoke")
+                    .setPosition(
+                            aBaseMetaTileEntity.getOffsetX((byte) 1, 1) + XSTR_INSTANCE.nextFloat(),
+                            aBaseMetaTileEntity.getOffsetY((byte) 1, 1),
+                            aBaseMetaTileEntity.getOffsetZ((byte) 1, 1) + XSTR_INSTANCE.nextFloat()
+                    )
+                    .setWorld(getBaseMetaTileEntity().getWorld())
+                    .run();
+        }
     }
 }
