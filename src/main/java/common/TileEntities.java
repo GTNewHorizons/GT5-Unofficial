@@ -23,7 +23,9 @@ public class TileEntities {
         //GameRegistry.registerTileEntity(TE_ItemProxySource.class, "kekztech_itemproxysource_tile");
         //GameRegistry.registerTileEntity(TE_ItemProxyEndpoint.class, "kekztech_itemproxyendpoint_tile");
         GameRegistry.registerTileEntity(TE_ThaumiumReinforcedJar.class, "kekztech_thaumiumreinforcedjar");
+        GameRegistry.registerTileEntity(TE_ThaumiumReinforcedVoidJar.class, "kekztech_thaumiumreinforcedvoidjar");
         GameRegistry.registerTileEntity(TE_IchorJar.class, "kekztech_ichorjar");
+        GameRegistry.registerTileEntity(TE_IchorVoidJar.class, "kekztech_ichorvoidjar");
         //GameRegistry.registerTileEntity(TE_SpaceElevatorCapacitor.class, "kekztech_secapacitor");
         //GameRegistry.registerTileEntity(TE_BeamTransmitter.class, "kekztech_beamtransmitter");
     }
