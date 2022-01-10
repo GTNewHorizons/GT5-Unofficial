@@ -1,9 +1,12 @@
 package gregtech.api.gui;
 
 import gregtech.api.enums.GT_Values;
+import gregtech.api.gui.widgets.GT_GuiIcon;
+import gregtech.api.gui.widgets.GT_GuiTabLine.GT_GuiTabIconSet;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_Bronze;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_Steel;
 import gregtech.api.net.GT_Packet_SetConfigurationCircuit;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -33,6 +36,14 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
             "GT5U.machines.select_circuit.tooltip.2",
             "GT5U.machines.select_circuit.tooltip.3"
     );
+    private final static GT_GuiTabIconSet TAB_ICONSET_BRONZE = new GT_GuiTabIconSet(
+        GT_GuiIcon.TAB_NORMAL_BRONZE,
+        GT_GuiIcon.TAB_HIGHLIGHT_BRONZE,
+        GT_GuiIcon.TAB_DISABLED_BRONZE);
+    private final static GT_GuiTabIconSet TAB_ICONSET_STEEL = new GT_GuiTabIconSet(
+        GT_GuiIcon.TAB_NORMAL_STEEL,
+        GT_GuiIcon.TAB_HIGHLIGHT_STEEL,
+        GT_GuiIcon.TAB_DISABLED_STEEL);
     public final String
             mName,
             mNEI;
@@ -102,7 +113,7 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
             if (mRenderAutoOutputSlots && x >= 25 && x <= 42) {
                 drawHoveringText(Collections.singletonList("Item Auto-Output"), x2, y2, fontRendererObj);
             }
-            if (getMachine().allowSelectCircuit() && getMachine().getStackInSlot(getMachine().getCircuitSlot()) == null && x >= 153 && x <= 180) {
+            if (getMachine().allowSelectCircuit() && getMachine().getStackInSlot(getMachine().getCircuitSlot()) == null && x >= 153 && x <= 171) {
                 drawHoveringText(GHOST_CIRCUIT_TOOLTIP.stream().map(StatCollector::translateToLocal).collect(Collectors.toList()), x2, y2, fontRendererObj);
             }
         }
@@ -170,6 +181,15 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
                 }
             }
         }
+    }
+
+    @Override
+    protected GT_GuiTabIconSet getTabBackground() {
+        if (getMachine().isSteampowered()) {
+            return getMachine() instanceof GT_MetaTileEntity_BasicMachine_Steel
+                ? TAB_ICONSET_STEEL : TAB_ICONSET_BRONZE;
+        }
+        return super.getTabBackground();
     }
 
     private GT_Container_BasicMachine getContainer() {

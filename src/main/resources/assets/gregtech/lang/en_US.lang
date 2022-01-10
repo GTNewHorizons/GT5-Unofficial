@@ -126,6 +126,11 @@ GT5U.config.colormodulation.machine_metal=Machine Metal (Default GUI color)
 GT5U.config.colormodulation.machine_metal.B=Blue
 GT5U.config.colormodulation.machine_metal.G=Green
 GT5U.config.colormodulation.machine_metal.R=Red
+GT5U.config.interface=Interface
+GT5U.config.interface.DisplayCoverTabs=Display Cover Tabs
+GT5U.config.interface.DisplayCoverTabs.tooltip=Displays Cover Tabs on  all Gregtech machines
+GT5U.config.interface.FlipCoverTabs=Flip Cover Tabs
+GT5U.config.interface.FlipCoverTabs.tooltip=Displays Cover Tabs on the right side instead of left
 GT5U.config.preference=Client Preference
 GT5U.config.preference.mInputBusInitialFilter=Input Bus Initial Input Filter Status
 GT5U.config.preference.mInputBusInitialFilter.tooltip=Whether Input busses enable the input filter upon placed\nDoes not affect busses placed by others\nDoes not affect existing busses
@@ -140,6 +145,14 @@ GT5U.config.render.RenderFlippedMachinesFlipped=Render flipped machines with fli
 GT5U.config.render.RenderIndicatorsOnHatch=Render indicator on hatch
 GT5U.config.render.RenderPollutionFog=Render pollution fog
 GT5U.config.render.TileAmbientOcclusion=Enable Ambient Occlusion
+
+// Cover tabs
+GT5U.interface.coverTabs.down=Bottom
+GT5U.interface.coverTabs.up=Top
+GT5U.interface.coverTabs.north=North
+GT5U.interface.coverTabs.south=South
+GT5U.interface.coverTabs.west=West
+GT5U.interface.coverTabs.east=East
 
 achievement.Naquadah=Find Naquadah Ore
 achievement.Naquadah.desc=Height: 10-90, Chance: 10, Asteroids/Venus/Titan/Oberon/Pluto/KuiperBelt/VegaB/BarnardE/BarnardF//

@@ -528,5 +528,7 @@ public class GT_PreLoad {
         GT_Mod.gregtechproxy.mRenderIndicatorsOnHatch = GregTech_API.sClientDataFile.get("render", "RenderIndicatorsOnHatch", true);
         GT_Mod.gregtechproxy.mRenderDirtParticles =  GregTech_API.sClientDataFile.get("render", "RenderDirtParticles", true);
         GT_Mod.gregtechproxy.mRenderPollutionFog = GregTech_API.sClientDataFile.get("render", "RenderPollutionFog", true);
+        GT_Mod.gregtechproxy.mCoverTabsVisible = GregTech_API.sClientDataFile.get("interface", "DisplayCoverTabs", true);
+        GT_Mod.gregtechproxy.mCoverTabsFlipped = GregTech_API.sClientDataFile.get("interface", "FlipCoverTabs", false);
     }
 }
