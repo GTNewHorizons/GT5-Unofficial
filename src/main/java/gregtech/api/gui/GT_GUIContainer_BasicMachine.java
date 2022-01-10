@@ -1,11 +1,14 @@
 package gregtech.api.gui;
 
 import gregtech.api.enums.GT_Values;
+import gregtech.api.gui.widgets.GT_GuiIcon;
+import gregtech.api.gui.widgets.GT_GuiTabLine.GT_GuiTabIconSet;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_Steel;
 import gregtech.api.gui.widgets.GT_GuiSlotTooltip;
 import gregtech.api.gui.widgets.GT_GuiSmartTooltip;
 import gregtech.api.gui.widgets.GT_GuiSmartTooltip.TooltipVisibilityProvider;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
 import gregtech.api.net.GT_Packet_SetConfigurationCircuit;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
@@ -27,7 +30,14 @@ import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
  */
 public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machine {
     private static final int NEEDS_STEAM_VENTING = 64;
-
+    private final static GT_GuiTabIconSet TAB_ICONSET_BRONZE = new GT_GuiTabIconSet(
+        GT_GuiIcon.TAB_NORMAL_BRONZE,
+        GT_GuiIcon.TAB_HIGHLIGHT_BRONZE,
+        GT_GuiIcon.TAB_DISABLED_BRONZE);
+    private final static GT_GuiTabIconSet TAB_ICONSET_STEEL = new GT_GuiTabIconSet(
+        GT_GuiIcon.TAB_NORMAL_STEEL,
+        GT_GuiIcon.TAB_HIGHLIGHT_STEEL,
+        GT_GuiIcon.TAB_DISABLED_STEEL);
     public final String
             mName,
             mNEI;
@@ -114,12 +124,12 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
             mTooltipCache.getData(batterySlotTooltipKey, batterySlotTooltipArgs)));
         addToolTip(new GT_GuiSlotTooltip(container.slotSpecial, mTooltipCache.getData(
             recipes != null && recipes.usesSpecialSlot() ? SPECIAL_SLOT_TOOLTIP : UNUSED_SLOT_TOOLTIP)));
-        addToolTip(new GT_GuiSmartTooltip(tProblemArea, new TooltipVisibilityProvider() {
-                public boolean shouldShowTooltip() {
-                    return container.mStuttering && !hasErrorCode(NEEDS_STEAM_VENTING);
-                }
-            }, mTooltipCache.getData(STALLED_STUTTERING_TOOLTIP, StatCollector.translateToLocal(
-                POWER_SOURCE_KEY + (machine.isSteampowered() ?  "steam" : "power")))));
+            addToolTip(new GT_GuiSmartTooltip(tProblemArea, new TooltipVisibilityProvider() {
+                    public boolean shouldShowTooltip() {
+                        return container.mStuttering && !hasErrorCode(NEEDS_STEAM_VENTING);
+                    }
+                }, mTooltipCache.getData(STALLED_STUTTERING_TOOLTIP, StatCollector.translateToLocal(
+                    POWER_SOURCE_KEY + (machine.isSteampowered() ?  "steam" : "power")))));
     }
 
     /**
@@ -225,6 +235,15 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
                 }
             }
         }
+    }
+
+    @Override
+    protected GT_GuiTabIconSet getTabBackground() {
+        if (getMachine().isSteampowered()) {
+            return getMachine() instanceof GT_MetaTileEntity_BasicMachine_Steel
+                ? TAB_ICONSET_STEEL : TAB_ICONSET_BRONZE;
+        }
+        return super.getTabBackground();
     }
 
     /**
