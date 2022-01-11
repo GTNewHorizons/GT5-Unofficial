@@ -28,6 +28,8 @@ yottaFluidTankCell.6.name=Fluid Cell Block T7
 yottaFluidTankCell.7.name=Fluid Cell Block T8
 yottaFluidTankCell.8.name=Fluid Cell Block T9
 yottaFluidTankCell.9.name=Fluid Cell Block T10
+supercriticalFluidTurbineCasing.0.name=SC Turbine Casing
+pressureResistantWalls.0.name=Pressure Resistant Wall
 
 #Items
 item.radiationProtectionPlate.name=Radiation Proof Plate

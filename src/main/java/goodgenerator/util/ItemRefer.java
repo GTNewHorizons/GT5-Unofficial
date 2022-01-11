@@ -94,6 +94,8 @@ public final class ItemRefer {
     public static ItemRefer YOTTank_Cell_T8 = getItemStack(yottaFluidTankCell, 7);
     public static ItemRefer YOTTank_Cell_T9 = getItemStack(yottaFluidTankCell, 8);
     public static ItemRefer YOTTank_Cell_T10 = getItemStack(yottaFluidTankCell, 9);
+    public static ItemRefer SC_Turbine_Casing = getItemStack(supercriticalFluidTurbineCasing);
+    public static ItemRefer Pressure_Resistant_Wall = getItemStack(pressureResistantWalls);
 
     public static ItemRefer Large_Naquadah_Reactor = getItemStack(MAR);
     public static ItemRefer Naquadah_Fuel_Refinery = getItemStack(FRF);
@@ -102,6 +104,7 @@ public final class ItemRefer {
     public static ItemRefer YOTTank = getItemStack(YFT);
     public static ItemRefer Combustion_Generator_EV = getItemStack(Generator_Diesel[0]);
     public static ItemRefer Combustion_Generator_IV = getItemStack(Generator_Diesel[1]);
+    public static ItemRefer SC_Fluid_Turbine = getItemStack(SCTurbine);
 
     private Item mItem = null;
     private Block mBlock = null;

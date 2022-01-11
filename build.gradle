@@ -119,6 +119,18 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:TecTech:master-SNAPSHOT:dev") {
         transitive = false
     }
+    compileOnly("com.github.GTNewHorizons:ForestryMC:master-SNAPSHOT:dev") {
+        transitive = false
+    }
+    compileOnly("com.github.GTNewHorizons:Railcraft:master-SNAPSHOT:dev") {
+        transitive = false
+    }
+    compileOnly("com.github.GTNewHorizons:EnderIO:master-SNAPSHOT:dev") {
+        transitive = false
+    }
+    compileOnly("com.mod-buildcraft:buildcraft:7.1.23:dev") {
+        transitive = false
+    }
     compileOnly("com.github.GTNewHorizons:ExtraCells2:master-SNAPSHOT:dev") {
         transitive = false
     }
