@@ -1,38 +1,115 @@
 package gregtech.api.gui.widgets;
 
-import java.awt.*;
+import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import org.lwjgl.input.Keyboard;
+
+import gregtech.api.util.GT_TooltipDataCache.TooltipData;
 public class GT_GuiTooltip {
 
     protected Rectangle bounds;
-    private List<String> text;
+    protected TooltipData data;
+    private List<String> displayedText;
     public boolean enabled = true;
 
+    /**
+     * Used to create a tooltip that will appear over the specified bounds.
+     * This will initially be a "static" tooltip that doesn't respect verbosity levels or respond to the shift key.
+     * 
+     * @param bounds
+     * @param text
+     */
     public GT_GuiTooltip(Rectangle bounds, String... text) {
         this.bounds = bounds;
         setToolTipText(text);
     }
 
+    /**
+     * Used to create a tooltip that will appear over the specified bounds.
+     * This will initially be a "dynamic" tooltip that respects verbosity levels and responds to the shift key.
+     * 
+     * @param bounds
+     * @param data
+     */
+    public GT_GuiTooltip(Rectangle bounds, TooltipData data) {
+        this.bounds = bounds;
+        // Trust that the tooltips have already been formatted and colored, just make sure it has no nulls
+        this.data = sanitizeTooltipData(data);
+    }
+
+    private TooltipData sanitizeTooltipData(TooltipData data) {
+        if (data.text == null){
+            data.text = Arrays.asList(new String[0]);
+        }
+        if (data.shiftText == null){
+            data.shiftText = Arrays.asList(new String[0]);
+        }
+        return data;
+    }
+
+    /**
+     * Called before the tooltip manager checks whether this tooltip is enabled
+     */
+    protected void onTick() {
+        // Switch which of our 2 stored texts we're displaying now.
+        this.displayedText = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ? this.data.shiftText : this.data.text;
+        // If this text is empty, let's not display a tooltip at all.
+        this.enabled = this.displayedText.size() != 0;
+    }
+
+    /**
+     * Called once this tooltip has been determined to be enabled
+     */
     protected void updateText() {
     }
 
+    /**
+     * Used to set a "static" tooltip that doesn't respect verbosity levels or respond to the shift key
+     * 
+     * @param text
+     */
     public void setToolTipText(String... text) {
-        if (text != null) {
-            this.text = new ArrayList<>(text.length);
-            for (int i = 0; i < text.length; i++) {
-                if (i == 0)
-                    this.text.add("\u00a7f" + text[i]);
-                else
-                    this.text.add("\u00a77" + text[i]);
-            }
-        } else
-            this.text = new ArrayList<>();
+        this.data = formatTooltip(text);
     }
 
+    /**
+     * Used to set a "dynamic" tooltip that respects verbosity levels and responds to the shift key
+     * 
+     * @param text
+     */
+    public void setToolTipText(TooltipData data) {
+        // Trust that the tooltips have already been formatted and colored, just make sure it has no nulls
+        this.data = sanitizeTooltipData(data);
+    }
+    
+    /**
+     * Apply tooltip colors in case the text doesn't contain them and return as tooltip data
+     * 
+     * @param text
+     * @return colored tooltip lines as list
+     */
+    protected TooltipData formatTooltip(String[] text) {
+        List<String> list;
+        if (text != null) {
+            list = new ArrayList<>(text.length);
+            for (int i = 0; i < text.length; i++) {
+                if (i == 0)
+                    list.add("\u00a7f" + text[i]);
+                else
+                    list.add("\u00a77" + text[i]);
+            }
+        } else {
+            list = Arrays.asList(new String[0]);
+        }
+        return new TooltipData(list, list) ;
+    }
+
+
     public List<String> getToolTipText() {
-        return text;
+        return this.displayedText;
     }
 
     public Rectangle getBounds() {

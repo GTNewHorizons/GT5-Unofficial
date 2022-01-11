@@ -530,5 +530,8 @@ public class GT_PreLoad {
         GT_Mod.gregtechproxy.mRenderPollutionFog = GregTech_API.sClientDataFile.get("render", "RenderPollutionFog", true);
         GT_Mod.gregtechproxy.mCoverTabsVisible = GregTech_API.sClientDataFile.get("interface", "DisplayCoverTabs", true);
         GT_Mod.gregtechproxy.mCoverTabsFlipped = GregTech_API.sClientDataFile.get("interface", "FlipCoverTabs", false);
+        GT_Mod.gregtechproxy.mTooltipVerbosity = GregTech_API.sClientDataFile.get("interface", "TooltipVerbosity", 2);
+        GT_Mod.gregtechproxy.mTooltipShiftVerbosity = GregTech_API.sClientDataFile.get("interface", "TooltipShiftVerbosity", 3);
+        
     }
 }
