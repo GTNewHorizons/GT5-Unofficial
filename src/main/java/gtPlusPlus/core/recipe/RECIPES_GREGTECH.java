@@ -1668,15 +1668,17 @@ public class RECIPES_GREGTECH {
 				10 * 20, 
 				60);
 
-		final FluidStack[] sulfurdioxideOutput = { 
-				FluidUtils.getFluidStack("oxygen", 2000) 
-				};
-		GT_Values.RA.addDistillationTowerRecipe(
-				FluidUtils.getFluidStack("sulfurdioxide", 144 * 3),
-				sulfurdioxideOutput,
-				ItemUtils.getItemStackOfAmountFromOreDict("dustSulfur", 1),
-				5 * 20, 
-				30);
+		if (!GTNH) {
+			final FluidStack[] sulfurdioxideOutput = {
+					FluidUtils.getFluidStack("oxygen", 2000)
+			};
+			GT_Values.RA.addDistillationTowerRecipe(
+					FluidUtils.getFluidStack("sulfurdioxide", 144 * 3),
+					sulfurdioxideOutput,
+					ItemUtils.getItemStackOfAmountFromOreDict("dustSulfur", 1),
+					5 * 20,
+					30);
+		}
 	}
 
 	private static void addFuels() {
