@@ -22,6 +22,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
@@ -86,26 +87,54 @@ public abstract class GT_MetaTileEntity_LargeBoiler extends GT_MetaTileEntity_En
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Boiler")
-                .addInfo("Controller block for the Large " + getCasingMaterial() + " Boiler")
-                .addInfo("Produces " + (getEUt() * 40) * (runtimeBoost(20) / 20f) + "L of Steam with 1 Coal at " + getEUt() * 40 + "L/s")//?
-                .addInfo("A programmed circuit in the main block throttles the boiler (-1000L/s per config)")
-                .addInfo(String.format("Diesel fuels have 1/4 efficiency - Takes %.2f seconds to heat up", 500.0 / getEfficiencyIncrease()))//? check semifluid again
-                .addPollutionAmount(getPollutionPerSecond(null))
-                .addSeparator()
-                .beginStructureBlock(3, 5, 3, false)
-                .addController("Front bottom")
-                .addCasingInfo(getCasingMaterial() + " " + getCasingBlockType() + " Casing", 24)//?
-                .addOtherStructurePart(getCasingMaterial() + " Fire Boxes", "Bottom layer, 3 minimum")
-                .addOtherStructurePart(getCasingMaterial() + " Pipe Casing Blocks", "Inner 3 blocks")
-                .addMaintenanceHatch("Any firebox", 1)
-                .addMufflerHatch("Any firebox", 1)
-                .addInputBus("Solid fuel, Any firebox", 1)
-                .addInputHatch("Liquid fuel, Any firebox", 1)
-                .addStructureInfo("You can use either, or both")
-                .addInputHatch("Water, Any firebox", 1)
-                .addOutputHatch("Steam, any casing", 2)
-                .toolTipFinisher("Gregtech");
+        if (isSuperheated()) {
+            tt.addMachineType("Boiler")
+                    .addInfo("Controller block for the Large " + getCasingMaterial() + " Boiler")
+                    .addInfo("Produces " + (getEUt() * 40) * ((runtimeBoost(20) / (20f)) / superToNormalSteam) + "L of Superheated Steam with 1 Coal at " + (getEUt() * 40) / superToNormalSteam + "L/s")//?
+                    .addInfo("A programmed circuit in the main block throttles the boiler (-1000L/s per config)")
+                    .addInfo("Solid Fuels with a burn value that is too high or too low will not work")
+                    .addInfo("Coal/Charcoal/Coal Coke and their compressed forms will not work here!")
+                    .addInfo(String.format("Diesel fuels have 1/4 efficiency - Takes %.2f seconds to heat up", 500.0 / getEfficiencyIncrease()))//? check semifluid again
+                    .addPollutionAmount(getPollutionPerSecond(null))
+                    .addSeparator()
+                    .beginStructureBlock(3, 5, 3, false)
+                    .addController("Front bottom")
+                    .addCasingInfo(getCasingMaterial() + " " + getCasingBlockType() + " Casing", 24)//?
+                    .addOtherStructurePart(getCasingMaterial() + " Fire Boxes", "Bottom layer, 3 minimum")
+                    .addOtherStructurePart(getCasingMaterial() + " Pipe Casing Blocks", "Inner 3 blocks")
+                    .addMaintenanceHatch("Any firebox", 1)
+                    .addMufflerHatch("Any firebox", 1)
+                    .addInputBus("Solid fuel, Any firebox", 1)
+                    .addInputHatch("Liquid fuel, Any firebox", 1)
+                    .addStructureInfo("You can use either, or both")
+                    .addInputHatch("Water, Any firebox", 1)
+                    .addOutputHatch("Steam, any casing", 2)
+                    .toolTipFinisher("Gregtech");
+        }
+        else {
+            tt.addMachineType("Boiler")
+                    .addInfo("Controller block for the Large " + getCasingMaterial() + " Boiler")
+                    .addInfo("Produces " + (getEUt() * 40) * (runtimeBoost(20) / 20f) + "L of Steam with 1 Coal at " + getEUt() * 40 + "L/s")//?
+                    .addInfo("A programmed circuit in the main block throttles the boiler (-1000L/s per config)")
+                    .addInfo("Solid Fuels with a burn value that is too high or too low will not work")
+                    .addInfo(String.format("Diesel fuels have 1/4 efficiency - Takes %.2f seconds to heat up", 500.0 / getEfficiencyIncrease()))//? check semifluid again
+                    .addPollutionAmount(getPollutionPerSecond(null))
+                    .addSeparator()
+                    .beginStructureBlock(3, 5, 3, false)
+                    .addController("Front bottom")
+                    .addCasingInfo(getCasingMaterial() + " " + getCasingBlockType() + " Casing", 24)//?
+                    .addOtherStructurePart(getCasingMaterial() + " Fire Boxes", "Bottom layer, 3 minimum")
+                    .addOtherStructurePart(getCasingMaterial() + " Pipe Casing Blocks", "Inner 3 blocks")
+                    .addMaintenanceHatch("Any firebox", 1)
+                    .addMufflerHatch("Any firebox", 1)
+                    .addInputBus("Solid fuel, Any firebox", 1)
+                    .addInputHatch("Liquid fuel, Any firebox", 1)
+                    .addStructureInfo("You can use either, or both")
+                    .addInputHatch("Water, Any firebox", 1)
+                    .addOutputHatch("Steam, any casing", 2)
+                    .toolTipFinisher("Gregtech");
+        }
+
         return tt;
     }
 
@@ -211,7 +240,7 @@ public abstract class GT_MetaTileEntity_LargeBoiler extends GT_MetaTileEntity_En
         if (!tInputList.isEmpty()) {
             for (ItemStack tInput : tInputList) {
                 if (tInput != GT_OreDictUnificator.get(OrePrefixes.bucket, Materials.Lava, 1)){
-                    if (GT_Utility.getFluidForFilledItem(tInput, true) == null && (this.mMaxProgresstime = GT_ModHandler.getFuelValue(tInput) / 80) > 0) {
+                    if (GT_Utility.getFluidForFilledItem(tInput, true) == null && (this.mMaxProgresstime = GT_ModHandler.getFuelValue(tInput) / 80) > 0 && (GT_ModHandler.getFuelValue(tInput) / this.getEUt()) > 1 && GT_ModHandler.getFuelValue(tInput) < 1000000) {
                         this.excessFuel += GT_ModHandler.getFuelValue(tInput) % 80;
                         this.mMaxProgresstime += this.excessFuel / 80;
                         this.excessFuel %= 80;
@@ -237,6 +266,10 @@ public abstract class GT_MetaTileEntity_LargeBoiler extends GT_MetaTileEntity_En
 
     abstract int runtimeBoost(int mTime);
 
+    abstract boolean isSuperheated();
+
+    final private int superToNormalSteam = 3;
+
     @Override
     public boolean onRunningTick(ItemStack aStack) {
         if (this.mEUt > 0) {
@@ -249,7 +282,12 @@ public abstract class GT_MetaTileEntity_LargeBoiler extends GT_MetaTileEntity_En
                 amount -= excessWater / STEAM_PER_WATER;
                 excessWater %= STEAM_PER_WATER;
                 if (depleteInput(Materials.Water.getFluid(amount)) || depleteInput(GT_ModHandler.getDistilledWater(amount))) {
-                    addOutput(GT_ModHandler.getSteam(tGeneratedEU));
+                    if (isSuperheated()) {
+                        addOutput(FluidRegistry.getFluidStack("ic2superheatedsteam", tGeneratedEU / superToNormalSteam));
+                    }
+                    else {
+                        addOutput(GT_ModHandler.getSteam(tGeneratedEU));
+                    }
                 } else {
                     GT_Log.exp.println("Boiler "+this.mName+" had no Water!");
                     explodeMultiblock();

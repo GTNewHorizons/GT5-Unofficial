@@ -75,7 +75,7 @@ public class GT_MetaTileEntity_LargeBoiler_Titanium extends GT_MetaTileEntity_La
 
     @Override
     public int getEUt() {
-        return 800;
+        return 6000;
     }
 
     @Override
@@ -85,6 +85,9 @@ public class GT_MetaTileEntity_LargeBoiler_Titanium extends GT_MetaTileEntity_La
 
     @Override
     int runtimeBoost(int mTime) {
-        return mTime * 130 / 100;
+        return mTime * 130 / 400;
     }
+
+    @Override
+    boolean isSuperheated() { return true; }
 }

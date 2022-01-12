@@ -88,4 +88,7 @@ public class GT_MetaTileEntity_LargeBoiler_Bronze extends GT_MetaTileEntity_Larg
     int runtimeBoost(int mTime) {
         return mTime * 2;
     }
+
+    @Override
+    boolean isSuperheated() { return false; }
 }
