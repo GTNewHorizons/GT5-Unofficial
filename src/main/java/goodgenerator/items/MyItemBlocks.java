@@ -83,7 +83,7 @@ public class MyItemBlocks extends ItemBlock {
         }
 
         if (Block.getBlockFromItem(p_77624_1_.getItem()).equals(essentiaCell)) {
-            p_77624_3_.add(StatCollector.translateToLocal("hatchTier.tooltip.0") + " " + tierName[p_77624_1_.getItemDamage() + 3]);
+            p_77624_3_.add(StatCollector.translateToLocal("hatchTier.tooltip.0") + " " + tierName[p_77624_1_.getItemDamage() + 4]);
         }
     }
 }

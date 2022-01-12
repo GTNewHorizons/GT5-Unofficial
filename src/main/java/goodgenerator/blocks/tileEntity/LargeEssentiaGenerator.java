@@ -166,25 +166,25 @@ public class LargeEssentiaGenerator extends GT_MetaTileEntity_MultiblockBase_EM 
                             'E',
                             ofChain(
                                     onElementPass(
-                                            x -> {++x.mStableValue; x.mTierLimit = Math.max(x.mTierLimit, 3);},
+                                            x -> {++x.mStableValue; x.mTierLimit = Math.max(x.mTierLimit, 4);},
                                             ofBlock(
                                                     Loaders.essentiaCell, 0
                                             )
                                     ),
                                     onElementPass(
-                                            x -> {x.mStableValue += 2; x.mTierLimit = Math.max(x.mTierLimit, 4);},
+                                            x -> {x.mStableValue += 2; x.mTierLimit = Math.max(x.mTierLimit, 5);},
                                             ofBlock(
                                                     Loaders.essentiaCell, 1
                                             )
                                     ),
                                     onElementPass(
-                                            x -> {x.mStableValue += 5; x.mTierLimit = Math.max(x.mTierLimit, 5);},
+                                            x -> {x.mStableValue += 5; x.mTierLimit = Math.max(x.mTierLimit, 6);},
                                             ofBlock(
                                                     Loaders.essentiaCell, 2
                                             )
                                     ),
                                     onElementPass(
-                                            x -> {x.mStableValue += 10; x.mTierLimit = Math.max(x.mTierLimit, 6);},
+                                            x -> {x.mStableValue += 10; x.mTierLimit = Math.max(x.mTierLimit, 7);},
                                             ofBlock(
                                                     Loaders.essentiaCell, 3
                                             )
