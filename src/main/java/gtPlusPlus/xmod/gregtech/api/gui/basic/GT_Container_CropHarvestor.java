@@ -5,19 +5,14 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.gui.GT_ContainerMetaTile_Machine;
 import gregtech.api.gui.GT_Slot_Holo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.util.GT_Utility;
-import gregtech.common.tileentities.boilers.GT_MetaTileEntity_Boiler;
 import gtPlusPlus.core.slots.SlotNoInput;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_CropHarvestor;
-import ic2.core.item.DamageHandler;
 import ic2.core.item.ItemIC2;
-import ic2.core.util.StackUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public class GT_Container_CropHarvestor extends GT_ContainerMetaTile_Machine {
@@ -75,28 +70,6 @@ public class GT_Container_CropHarvestor extends GT_ContainerMetaTile_Machine {
 		if (aSlotIndex == 0) {
 			machine.mModeAlternative = !machine.mModeAlternative;
 			return null;
-		}
-
-		Slot tSlot = (Slot)inventorySlots.get(aSlotIndex);
-		if (tSlot != null) {
-			/*if (mTileEntity.getMetaTileEntity() == null) return null;
-			GT_MetaTileEntity_ElectricBufferSmall mte = (GT_MetaTileEntity_ElectricBufferSmall)mTileEntity.getMetaTileEntity();
-			if (aSlotIndex == 1) {
-				mte.bOutput = !mte.bOutput;
-				if (aPlayer.worldObj.isRemote) 
-					GT_Utility.sendChatToPlayer(aPlayer, new ChatComponentTranslation("metatileentity.status.energy_out." + mte.bOutput));
-				return null;
-			} else if (aSlotIndex == 2) {
-				mte.bRedstoneIfFull = !mte.bRedstoneIfFull;
-				if (aPlayer.worldObj.isRemote) 
-					GT_Utility.sendChatToPlayer(aPlayer, new ChatComponentTranslation("metatileentity.status.redstone_if_full." + mte.bRedstoneIfFull));
-				return null;
-			} else if (aSlotIndex == 3) {
-				mte.bInvert = !mte.bInvert;
-				if (aPlayer.worldObj.isRemote) 
-					GT_Utility.sendChatToPlayer(aPlayer, new ChatComponentTranslation("metatileentity.status.redstone_invert." + mte.bInvert));
-				return null;
-			}*/
 		}
 
 		return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);

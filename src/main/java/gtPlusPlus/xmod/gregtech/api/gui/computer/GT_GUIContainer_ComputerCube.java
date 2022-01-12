@@ -15,6 +15,21 @@ public class GT_GUIContainer_ComputerCube extends GT_GUIContainerMetaTile_Machin
 		if (aID == 5)
 			this.xSize += 50;
 	}
+	
+
+    public static ResourceLocation[] mGUIbackground = new ResourceLocation[8];
+    
+    static {
+    	mGUIbackground[0] = new ResourceLocation(CORE.RES_PATH_GUI + "computer/0.png");
+    	mGUIbackground[1] = new ResourceLocation(CORE.RES_PATH_GUI + "computer/1.png");
+    	mGUIbackground[2] = new ResourceLocation(CORE.RES_PATH_GUI + "computer/2.png");
+    	mGUIbackground[3] = new ResourceLocation(CORE.RES_PATH_GUI + "computer/3.png");
+    	mGUIbackground[4] = new ResourceLocation(CORE.RES_PATH_GUI + "computer/4.png");
+    	mGUIbackground[5] = new ResourceLocation(CORE.RES_PATH_GUI + "computer/5.png");
+    	mGUIbackground[6] = new ResourceLocation(CORE.RES_PATH_GUI + "computer/6.png");
+    	mGUIbackground[7] = new ResourceLocation(CORE.RES_PATH_GUI + "computer/Redstone.png");
+    	
+    }
 
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
 		GT_Container_ComputerCube tContainer = (GT_Container_ComputerCube) this.mContainer;
@@ -83,23 +98,19 @@ public class GT_GUIContainer_ComputerCube extends GT_GUIContainerMetaTile_Machin
 	}
 
 	protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
-		super.drawGuiContainerBackgroundLayer(par1, par2, par3);
-		int x = (width - xSize) / 2;
-		int y = (height - ySize) / 2;
-		drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
-
 		if (mContainer != null) {
 			GT_Container_ComputerCube tContainer = (GT_Container_ComputerCube) this.mContainer;	
-			mGUIbackground = new ResourceLocation(mGUIbackgroundPath = CORE.RES_PATH_GUI + "computer/"+ ((GT_Container_ComputerCube) this.mContainer).mID + ".png");
-
+	        mc.renderEngine.bindTexture(mGUIbackground[((GT_Container_ComputerCube) this.mContainer).mID]);
+			int x = (width - xSize) / 2;
+			int y = (height - ySize) / 2;
+			drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
 			switch (tContainer.mID) {
 				case 5 :
 					if (tContainer.mExplosionStrength != 0)
 						drawTexturedModalRect(x + 152, y + 6, 0, 166, 50, 50);
 					break;
 			}
-		}
-		
+		}		
 	}
 
 	public String toNumber(int aNumber) {
