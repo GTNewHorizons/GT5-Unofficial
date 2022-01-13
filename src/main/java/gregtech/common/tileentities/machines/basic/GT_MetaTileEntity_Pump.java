@@ -65,6 +65,7 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_Hatch {
                         getEuUsagePerTier(aTier) + " EU/operation, " + GT_Utility.safeInt(160 / 20 / (long)Math.pow(2, aTier) ) + " sec per bucket, no stuttering",
                         "Maximum pumping area: " + (getMaxDistanceForTier( aTier) * 2 + 1) + "x" + (getMaxDistanceForTier( aTier) * 2 + 1),
                         "Use Screwdriver to regulate pumping area",
+                        "Use Soft Mallet to disable and retract the pipe",
                         "Disable itself upon hitting rocks",
                         "Disable the bottom pump to retract the pipe!"});
         radiusConfig = getMaxDistanceForTier(mTier);
