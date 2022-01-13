@@ -114,7 +114,7 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehavior {
 		int tTickRate = getTickRate(aCoverVariable);
 		if (Math.abs(tSpeed) > mTransferRate * tTickRate) {
 			tSpeed = mTransferRate * tTickRate * (tSpeed > 0 ? 1 : -1);
-			GT_Utility.sendChatToPlayer(aPlayer, trans("219", "Pump speed limit reached!"));
+			GT_Utility.sendChatToPlayer(aPlayer, trans("316", "Pump speed limit reached!"));
 		}
 		if (tTickRate == 1) {
 			GT_Utility.sendChatToPlayer(aPlayer,
@@ -267,7 +267,7 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehavior {
 		public void drawExtras(int mouseX, int mouseY, float parTicks) {
 			super.drawExtras(mouseX, mouseY, parTicks);
 			this.getFontRenderer().drawString(trans("229", "Import/Export"), startX + spaceX * 4, 4 + startY + spaceY * 0, 0xFF555555);
-			this.getFontRenderer().drawString(trans("200", " L"), startX + spaceX * 4, 4 + startY + spaceY * 1, 0xFF555555);
+			this.getFontRenderer().drawString(trans("208", " L"), startX + spaceX * 4, 4 + startY + spaceY * 1, 0xFF555555);
 			this.getFontRenderer().drawString(trans("209", " ticks"), startX + spaceX * 4, 4 + startY + spaceY * 2, 0xFF555555);
 			if (warn)
 				this.getFontRenderer().drawString(String.format(trans("210", "Average: %.2f L/sec"), speed * 20d / tickRate), startX + spaceX * 0, 4 + startY + spaceY * 3, 0xffff0000);

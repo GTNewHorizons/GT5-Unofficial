@@ -97,6 +97,6 @@ public class GT_Packet_SetConfigurationCircuit extends GT_Packet_New {
         machine.getConfigurationCircuits().stream()
                 .filter(stack -> GT_Utility.areStacksEqual(stack, circuit))
                 .findFirst()
-                .ifPresent(stack -> mte.setInventorySlotContents(machine.getCircuitSlot(), stack));
+                .ifPresent(stack -> ((IGregTechTileEntity) tile).setInventorySlotContents(machine.getCircuitSlot(), stack));
     }
 }

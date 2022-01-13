@@ -450,7 +450,7 @@ public class GT_Pollution {
 		}
 
 		public void changeAmount(int delta) {
-			this.amount = Math.max(amount + delta, 0);
+			this.amount = Math.max(GT_Utility.safeInt(amount + (long) delta, 0), 0);
 		}
 
 		@Override

@@ -329,15 +329,7 @@ public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity
                 checkRecipe(mInventory[1]);
             }
             if (--mUpdate == 0 || --mStartUpCheck == 0) {
-                mInputHatches.clear();
-                mInputBusses.clear();
-                mOutputHatches.clear();
-                mOutputBusses.clear();
-                mDynamoHatches.clear();
-                mEnergyHatches.clear();
-                mMufflerHatches.clear();
-                mMaintenanceHatches.clear();
-                mMachine = checkMachine(aBaseMetaTileEntity, mInventory[1]);
+                checkStructure(true, aBaseMetaTileEntity);
             }
             if (mStartUpCheck < 0) {
                 if (mMachine) {

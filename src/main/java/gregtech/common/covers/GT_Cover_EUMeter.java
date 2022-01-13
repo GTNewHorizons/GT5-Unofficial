@@ -218,17 +218,17 @@ public class GT_Cover_EUMeter extends GT_CoverBehavior {
                 s2 = trans("NORMAL","Normal");
             this.fontRendererObj.drawString(s2,  startX + spaceX*1, 8+startY+spaceY*3, 0xFF555555);
 
-            this.fontRendererObj.drawString("Universal",
+            this.fontRendererObj.drawString(trans("301", "Universal"),
                     startX + spaceX*1, 4+startY+spaceY*1, 0xFF555555);
-            this.fontRendererObj.drawString("Int. EU",
+            this.fontRendererObj.drawString(trans("302", "Int. EU"),
                     startX + spaceX*1, 4+startY+spaceY*0, 0xFF555555);
-            this.fontRendererObj.drawString("Steam",
+            this.fontRendererObj.drawString(trans("303", "Steam"),
                     startX + spaceX*1, 4+startY+spaceY*2, 0xFF555555);
-            this.fontRendererObj.drawString("Avg. Input",
+            this.fontRendererObj.drawString(trans("304", "Avg. Input"),
                     startX + spaceX*5, 4+startY+spaceY*1, 0xFF555555);
-            this.fontRendererObj.drawString("Avg. Output",
+            this.fontRendererObj.drawString(trans("305", "Avg. Output"),
                     startX + spaceX*5, 4+startY+spaceY*2, 0xFF555555);
-            this.fontRendererObj.drawString("EU stored",
+            this.fontRendererObj.drawString(trans("306", "EU stored"),
                     startX + spaceX*5, 4+startY+spaceY*0, 0xFF555555);
         }
 

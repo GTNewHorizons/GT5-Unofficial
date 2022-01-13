@@ -2,14 +2,15 @@ package gregtech.api.net;
 
 import com.google.common.io.ByteArrayDataInput;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.gui.GT_GUICover;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.ISerializableObject;
-import gregtech.common.GT_Proxy;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
@@ -27,11 +28,14 @@ public class GT_Packet_TileEntityCoverGUI extends GT_Packet_New {
     protected int coverID, dimID, playerID;
     protected ISerializableObject coverData;
 
+    protected int parentGuiId;
+
     public GT_Packet_TileEntityCoverGUI() {
         super(true);
     }
 
-    public GT_Packet_TileEntityCoverGUI(int mX, short mY, int mZ, byte coverSide, int coverID, int coverData, int dimID, int playerID) {
+    public GT_Packet_TileEntityCoverGUI(int mX, short mY, int mZ, byte coverSide, int coverID, int coverData, int dimID,
+            int playerID) {
         super(false);
         this.mX = mX;
         this.mY = mY;
@@ -43,9 +47,11 @@ public class GT_Packet_TileEntityCoverGUI extends GT_Packet_New {
 
         this.dimID = dimID;
         this.playerID = playerID;
+        this.parentGuiId = -1;
     }
 
-    public GT_Packet_TileEntityCoverGUI(int mX, short mY, int mZ, byte coverSide, int coverID, ISerializableObject coverData, int dimID, int playerID) {
+    public GT_Packet_TileEntityCoverGUI(int mX, short mY, int mZ, byte coverSide, int coverID,
+            ISerializableObject coverData, int dimID, int playerID) {
         super(false);
         this.mX = mX;
         this.mY = mY;
@@ -56,6 +62,22 @@ public class GT_Packet_TileEntityCoverGUI extends GT_Packet_New {
         this.coverData = coverData;
         this.dimID = dimID;
         this.playerID = playerID;
+        this.parentGuiId = -1;
+    }
+
+    public GT_Packet_TileEntityCoverGUI(int mX, short mY, int mZ, byte coverSide, int coverID,
+            ISerializableObject coverData, int dimID, int playerID, int parentGuiId) {
+        super(false);
+        this.mX = mX;
+        this.mY = mY;
+        this.mZ = mZ;
+
+        this.side = coverSide;
+        this.coverID = coverID;
+        this.coverData = coverData;
+        this.dimID = dimID;
+        this.playerID = playerID;
+        this.parentGuiId = parentGuiId;
     }
 
 
@@ -72,6 +94,7 @@ public class GT_Packet_TileEntityCoverGUI extends GT_Packet_New {
 
         this.dimID = tile.getWorld().provider.dimensionId;
         this.playerID = aPlayer.getEntityId();
+        this.parentGuiId = -1;
     }
 
     public GT_Packet_TileEntityCoverGUI(byte coverSide, int coverID, int coverData, IGregTechTileEntity tile) {
@@ -85,9 +108,11 @@ public class GT_Packet_TileEntityCoverGUI extends GT_Packet_New {
         this.coverData = new ISerializableObject.LegacyCoverData(coverData);
 
         this.dimID = tile.getWorld().provider.dimensionId;
+        this.parentGuiId = -1;
     }
 
-    public GT_Packet_TileEntityCoverGUI(byte side, int coverID, ISerializableObject coverData, ICoverable tile, EntityPlayerMP aPlayer) {
+    public GT_Packet_TileEntityCoverGUI(byte side, int coverID, ISerializableObject coverData, ICoverable tile,
+            EntityPlayerMP aPlayer) {
         super(false);
         this.mX = tile.getXCoord();
         this.mY = tile.getYCoord();
@@ -99,6 +124,7 @@ public class GT_Packet_TileEntityCoverGUI extends GT_Packet_New {
 
         this.dimID = tile.getWorld().provider.dimensionId;
         this.playerID = aPlayer.getEntityId();
+        this.parentGuiId = -1;
     }
 
     @Override
@@ -118,6 +144,8 @@ public class GT_Packet_TileEntityCoverGUI extends GT_Packet_New {
 
         aOut.writeInt(dimID);
         aOut.writeInt(playerID);
+
+        aOut.writeInt(parentGuiId);
     }
 
     @Override
@@ -133,19 +161,45 @@ public class GT_Packet_TileEntityCoverGUI extends GT_Packet_New {
                 GregTech_API.getCoverBehaviorNew(coverID).createDataObject().readFromPacket(aData, null),
 
                 aData.readInt(),
+                aData.readInt(),
+
                 aData.readInt());
     }
 
     @Override
     public void process(IBlockAccess aWorld) {
         if (aWorld instanceof World) {
-            EntityClientPlayerMP a = Minecraft.getMinecraft().thePlayer;
+            // Using EntityPlayer instead of EntityClientPlayerMP so both client and server can load this
+            EntityPlayer thePlayer = ((EntityPlayer) ((World)aWorld).getEntityByID(playerID));
             TileEntity tile = aWorld.getTileEntity(mX, mY, mZ);
             if (tile instanceof IGregTechTileEntity && !((IGregTechTileEntity) tile).isDead()) {
-
-                ((IGregTechTileEntity) tile).setCoverDataAtSide(side, coverData); //Set it client side to read later.
-                a.openGui(GT_Values.GT, GT_Proxy.GUI_ID_COVER_SIDE_BASE + side, a.worldObj, mX, mY, mZ);
+                IGregTechTileEntity gtTile = ((IGregTechTileEntity) tile);
+                gtTile.setCoverDataAtSide(side, coverData); //Set it client side to read later.
+                
+                GuiScreen gui = (GuiScreen) getCoverGUI(side, thePlayer, thePlayer.worldObj, gtTile);
+                // If it's one of this mod's covers, tell it to exit to the GUI with the specified ID (-1 is ignored)
+                if (gui instanceof GT_GUICover) {
+                    ((GT_GUICover) gui).setParentGuiId(parentGuiId);
+                }
+                Minecraft.getMinecraft().displayGuiScreen(gui);
             }
         }
+    }
+
+    /**
+     * Gets the specified cover's GUI object, if one exists
+     * @param aSide Block side (0 through 5)
+     * @param aPlayer Current player
+     * @param aWorld Current world
+     * @param aGtTile IGregTechTileEntity instance
+     * @return The specified cover's GUI, if one exists
+     */
+    private Object getCoverGUI(byte aSide, EntityPlayer aPlayer, World aWorld, IGregTechTileEntity aGtTile) {
+        GT_CoverBehaviorBase<?> cover = aGtTile.getCoverBehaviorAtSideNew(aSide);
+        if (cover.hasCoverGUI()) {
+            return cover.getClientGUI(
+                aSide, aGtTile.getCoverIDAtSide(aSide), aGtTile.getComplexCoverDataAtSide(aSide), aGtTile, aPlayer, aWorld);
+        }
+        return null;
     }
 }

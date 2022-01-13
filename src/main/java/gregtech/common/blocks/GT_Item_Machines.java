@@ -15,10 +15,7 @@ import gregtech.api.util.GT_ItsNotMyFaultException;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.tileentities.storage.GT_MetaTileEntity_QuantumChest;
-import gregtech.common.tileentities.storage.GT_MetaTileEntity_QuantumTank;
-import gregtech.common.tileentities.storage.GT_MetaTileEntity_SuperChest;
-import gregtech.common.tileentities.storage.GT_MetaTileEntity_SuperTank;
+import gregtech.common.tileentities.storage.*;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -97,6 +94,16 @@ public class GT_Item_Machines extends ItemBlock implements IFluidContainerItem {
                         if (tContents != null && tContents.amount > 0) {
                             aList.add(GT_LanguageManager.addStringLocalization("TileEntity_TANK_INFO", "Contains Fluid: ", !GregTech_API.sPostloadFinished ) + EnumChatFormatting.YELLOW + tContents.getLocalizedName() + EnumChatFormatting.GRAY);
                             aList.add(GT_LanguageManager.addStringLocalization("TileEntity_TANK_AMOUNT", "Fluid Amount: ", !GregTech_API.sPostloadFinished ) + EnumChatFormatting.GREEN + GT_Utility.formatNumbers(tContents.amount) + " L" + EnumChatFormatting.GRAY);
+                        }
+                    }
+                }
+                if (GregTech_API.METATILEENTITIES[tDamage] instanceof GT_MetaTileEntity_DigitalChestBase) {
+                    if (aStack.hasTagCompound() && aStack.stackTagCompound.hasKey("mItemStack")) {
+                        ItemStack tContents = ItemStack.loadItemStackFromNBT(aStack.stackTagCompound.getCompoundTag("mItemStack"));
+                        int tSize = aStack.stackTagCompound.getInteger("mItemCount");
+                        if (tContents != null && tSize > 0) {
+                            aList.add(GT_LanguageManager.addStringLocalization("TileEntity_CHEST_INFO", "Contains Item: ", !GregTech_API.sPostloadFinished ) + EnumChatFormatting.YELLOW + tContents.getDisplayName() + EnumChatFormatting.GRAY);
+                            aList.add(GT_LanguageManager.addStringLocalization("TileEntity_CHEST_AMOUNT", "Item Amount: ", !GregTech_API.sPostloadFinished ) + EnumChatFormatting.GREEN + GT_Utility.formatNumbers(tSize) + EnumChatFormatting.GRAY);
                         }
                     }
                 }
@@ -242,6 +249,10 @@ public class GT_Item_Machines extends ItemBlock implements IFluidContainerItem {
                 GregTech_API.METATILEENTITIES[tDamage] instanceof GT_MetaTileEntity_QuantumTank) {
             NBTTagCompound tNBT = aStack.stackTagCompound;
             if (tNBT == null) return;
+            if (tNBT.hasNoTags()) {
+                aStack.setTagCompound(null);
+                return;
+            }
             if ((tNBT.hasKey("mItemCount") && tNBT.getInteger("mItemCount") > 0) ||
                     (tNBT.hasKey("mFluid") && FluidStack.loadFluidStackFromNBT(tNBT.getCompoundTag("mFluid")).amount > 64000)) {
                 FluidStack tFluid = FluidStack.loadFluidStackFromNBT(tNBT.getCompoundTag("mFluid"));
@@ -318,21 +329,25 @@ public class GT_Item_Machines extends ItemBlock implements IFluidContainerItem {
 
     @Override
     public FluidStack drain(ItemStack container, int maxDrain, boolean doDrain) {
-        if (container != null) {
+        if (container != null && container.hasTagCompound()) {
             int tDamage = container.getItemDamage();
             IMetaTileEntity tMetaTile = GregTech_API.METATILEENTITIES[tDamage];
             if (!(tMetaTile instanceof GT_MetaTileEntity_QuantumTank || tMetaTile instanceof GT_MetaTileEntity_SuperTank)) {
                 return null;
             }
-            if (container.stackTagCompound == null) container.stackTagCompound = new NBTTagCompound();
             FluidStack tStoredFluid = getFluid(container);
             if (tStoredFluid != null) {
                 int tAmount = Math.min(maxDrain, tStoredFluid.amount);
                 FluidStack tNewFluid = new FluidStack(tStoredFluid, tStoredFluid.amount - tAmount);
                 FluidStack tOutputFluid = new FluidStack(tStoredFluid, tAmount);
                 if (doDrain) {
-                    if (tNewFluid.amount <= 0) container.stackTagCompound.removeTag("mFluid");
-                    else container.stackTagCompound.setTag("mFluid", tNewFluid.writeToNBT(new NBTTagCompound()));
+                    if (tNewFluid.amount <= 0) {
+                        container.stackTagCompound.removeTag("mFluid");
+                        if (container.stackTagCompound.hasNoTags())
+                            container.setTagCompound(null);
+                    } else {
+                        container.stackTagCompound.setTag("mFluid", tNewFluid.writeToNBT(new NBTTagCompound()));
+                    }
                 }
                 return tOutputFluid;
             }
