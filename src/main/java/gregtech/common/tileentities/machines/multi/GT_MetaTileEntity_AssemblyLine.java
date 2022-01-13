@@ -57,13 +57,13 @@ public class GT_MetaTileEntity_AssemblyLine extends GT_MetaTileEntity_EnhancedMu
             }))
             .addShape(STRUCTURE_PIECE_SECOND, transpose(new String[][]{
                     {" ", "e", " "},
-                    {"d", "l", "G"},
+                    {"d", "l", "d"},
                     {"g", "m", "g"},
                     {"b", "I", "b"},
             }))
             .addShape(STRUCTURE_PIECE_LATER, transpose(new String[][]{
                     {" ", "e", " "},
-                    {"G", "l", "G"},
+                    {"d", "l", "d"},
                     {"g", "m", "g"},
                     {"b", "I", "b"},
             }))
@@ -334,7 +334,8 @@ public class GT_MetaTileEntity_AssemblyLine extends GT_MetaTileEntity_EnhancedMu
             if (!checkPiece(i == 1 ? STRUCTURE_PIECE_SECOND : STRUCTURE_PIECE_LATER, leftToRight ? -i : i, 1, 0))
                 return false;
             if (!mOutputBusses.isEmpty())
-                return !mEnergyHatches.isEmpty() && mMaintenanceHatches.size() == 1;
+
+                return !mEnergyHatches.isEmpty() && mMaintenanceHatches.size() == 1 && mDataAccessHatch.size() <= 1;
         }
         return false;
     }
