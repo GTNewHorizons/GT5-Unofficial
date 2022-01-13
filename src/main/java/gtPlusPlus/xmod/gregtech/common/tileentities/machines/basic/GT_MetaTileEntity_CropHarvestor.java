@@ -182,6 +182,14 @@ public class GT_MetaTileEntity_CropHarvestor extends GT_MetaTileEntity_BasicTank
 		}
 		return false;
 	}
+	
+	public long powerUsage() {
+		return this.maxEUInput() / 8;
+	}
+	
+	public long powerUsageSecondary() {
+		return this.maxEUInput() / 32;
+	}
 
 	@Override
 	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
@@ -226,7 +234,7 @@ public class GT_MetaTileEntity_CropHarvestor extends GT_MetaTileEntity_BasicTank
 						if (aCrop != null) {
 							//Logger.INFO("Found "+aCrop.displayName()+" at offset "+x+", "+y+", "+z);
 							if (!aCrop.canGrow(tCrop) && aCrop.canBeHarvested(tCrop)) {
-								if (getBaseMetaTileEntity().decreaseStoredEnergyUnits(maxEUInput(), true)) {
+								if (getBaseMetaTileEntity().decreaseStoredEnergyUnits(powerUsage(), true)) {
 									ItemStack[] aHarvest = tCrop.harvest_automated(true);
 									if (aHarvest != null && aHarvest.length > 0) {								
 										for (ItemStack aStack : aHarvest) {
@@ -342,15 +350,15 @@ public class GT_MetaTileEntity_CropHarvestor extends GT_MetaTileEntity_BasicTank
 		if (!mModeAlternative) {
 			return;
 		}
-		if (hasFertilizer() && consumeFertilizer(true) && this.getBaseMetaTileEntity().getUniversalEnergyStored() >= getMinimumStoredEU() && getBaseMetaTileEntity().decreaseStoredEnergyUnits(maxEUInput(), true) && applyFertilizer(aCrop)) {
+		if (hasFertilizer() && consumeFertilizer(true) && this.getBaseMetaTileEntity().getUniversalEnergyStored() >= getMinimumStoredEU() && getBaseMetaTileEntity().decreaseStoredEnergyUnits(powerUsageSecondary(), true) && applyFertilizer(aCrop)) {
 			if (consumeFertilizer(false)) {
 				//Logger.INFO("Consumed Fert.");
 			}
 		}
-		if (this.getFluidAmount() > 0 && this.getBaseMetaTileEntity().getUniversalEnergyStored() >= getMinimumStoredEU() && getBaseMetaTileEntity().decreaseStoredEnergyUnits(maxEUInput(), true) && applyHydration(aCrop)) {
+		if (this.getFluidAmount() > 0 && this.getBaseMetaTileEntity().getUniversalEnergyStored() >= getMinimumStoredEU() && getBaseMetaTileEntity().decreaseStoredEnergyUnits(powerUsageSecondary(), true) && applyHydration(aCrop)) {
 			//Logger.INFO("Consumed Water.");
 		}
-		if (hasWeedEX() && consumeWeedEX(true) && this.getBaseMetaTileEntity().getUniversalEnergyStored() >= getMinimumStoredEU() && getBaseMetaTileEntity().decreaseStoredEnergyUnits(maxEUInput(), true) && applyWeedEx(aCrop)) {
+		if (hasWeedEX() && consumeWeedEX(true) && this.getBaseMetaTileEntity().getUniversalEnergyStored() >= getMinimumStoredEU() && getBaseMetaTileEntity().decreaseStoredEnergyUnits(powerUsageSecondary(), true) && applyWeedEx(aCrop)) {
 			if (consumeWeedEX(false)) {
 				//Logger.INFO("Consumed Weed-EX.");
 			}
@@ -507,7 +515,8 @@ public class GT_MetaTileEntity_CropHarvestor extends GT_MetaTileEntity_BasicTank
 		return new String[] {
 				this.mDescription, 
 				"Secondary mode can Hydrate/Fertilize/Weed-EX",
-				"Consumes "+maxEUInput()+"eu per harvest",
+				"Consumes "+powerUsage()+"eu per harvest",
+				"Consumes "+powerUsageSecondary()+"eu per secondary operation",
 				"Can harvest 2 blocks above",
 				"Radius: "+aSide+" each side ("+aRadius+"x3x"+aRadius+")",
 				"Has "+(mTier * 5)+"% chance for extra drops",
