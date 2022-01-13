@@ -76,6 +76,7 @@ public class GT_MetaTileEntity_AssemblyLine extends GT_MetaTileEntity_EnhancedMu
             .addElement('b', ofChain(
                     ofHatchAdder(GT_MetaTileEntity_AssemblyLine::addMaintenanceToMachineList, 16, 3),
                     ofHatchAdder(GT_MetaTileEntity_AssemblyLine::addInputHatchToMachineList, 16, 3),
+                    ofHatchAdder(GT_MetaTileEntity_AssemblyLine::addOutputToMachineList, 16,4),
                     ofBlock(GregTech_API.sBlockCasings2, 0)
             ))
             .addElement('I', ofChain(
@@ -120,7 +121,7 @@ public class GT_MetaTileEntity_AssemblyLine extends GT_MetaTileEntity_EnhancedMu
                 .addMaintenanceHatch("Any layer 1 casing", 3)
                 .addInputBus("As specified on layer 1", 4, 5)
                 .addInputHatch("Any layer 1 casing", 3)
-                .addOutputBus("Replaces Input Bus on final slice", 4)
+                .addOutputBus("Replaces Input Bus on final slice or on any solid steel casing on layer 1", 4)
                 .addOtherStructurePart("Data Access Hatch", "Optional, next to controller", 2)
                 .toolTipFinisher("Gregtech");
         return tt;
@@ -335,7 +336,7 @@ public class GT_MetaTileEntity_AssemblyLine extends GT_MetaTileEntity_EnhancedMu
                 return false;
             if (!mOutputBusses.isEmpty())
 
-                return !mEnergyHatches.isEmpty() && mMaintenanceHatches.size() == 1 && mDataAccessHatch.size() <= 1;
+                return !mEnergyHatches.isEmpty() && mMaintenanceHatches.size() == 1 && mDataAccessHatches.size() <= 1;
         }
         return false;
     }
