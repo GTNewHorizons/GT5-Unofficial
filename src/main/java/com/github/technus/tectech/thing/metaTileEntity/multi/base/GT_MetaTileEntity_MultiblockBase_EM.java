@@ -2094,13 +2094,13 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     @Override
     public void doExplosion(long aExplosionPower) {
-        explodeMultiblock();
         if (!TecTech.configTecTech.BOOM_ENABLE) {
             TecTech.proxy.broadcast("Multi DoExplosion BOOM! " + getBaseMetaTileEntity().getXCoord() + ' ' + getBaseMetaTileEntity().getYCoord() + ' ' + getBaseMetaTileEntity().getZCoord());
             StackTraceElement[] ste = Thread.currentThread().getStackTrace();
             TecTech.proxy.broadcast("Multi DoExplosion BOOM! " + ste[2].toString());
             return;
         }
+        explodeMultiblock();
         super.doExplosion(aExplosionPower);
     }//Redirecting to explodemultiblock
     //endregion

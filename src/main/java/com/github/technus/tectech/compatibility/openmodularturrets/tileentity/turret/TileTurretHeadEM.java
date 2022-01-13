@@ -5,8 +5,6 @@ import com.github.technus.tectech.compatibility.openmodularturrets.entity.projec
 import com.github.technus.tectech.compatibility.openmodularturrets.tileentity.turretbase.TileTurretBaseEM;
 import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
-import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.dHadronDefinition;
-import com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.eQuarkDefinition;
 import com.github.technus.tectech.thing.item.DebugElementalInstanceContainer_EM;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
@@ -17,7 +15,8 @@ import openmodularturrets.handler.ConfigHandler;
 import openmodularturrets.tileentity.turrets.TurretHead;
 import openmodularturrets.util.TurretHeadUtil;
 
-import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.bTransformationInfo.*;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.bTransformationInfo.AVOGADRO_CONSTANT;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.bTransformationInfo.AVOGADRO_CONSTANT_DIMINISHED;
 
 /**
  * Created by Bass on 27/07/2017.
@@ -72,8 +71,8 @@ public class TileTurretHeadEM extends TurretHead{
     public final TurretProjectile createProjectile(World world, Entity target, ItemStack ammo) {
         while(hatchContentPointer!=null && hatchContentPointer.hasStacks()) {
             cElementalInstanceStack stack = hatchContentPointer.get(TecTech.RANDOM.nextInt(hatchContentPointer.size()));
-            if(stack.amount<AVOGADRO_CONSTANT_KIND_OF_SMALLER){
-                hatchContentPointer.remove(stack.definition);
+            if(stack.amount<AVOGADRO_CONSTANT_DIMINISHED){
+                TecTech.anomalyHandler.addAnomaly(this,hatchContentPointer.remove(stack.definition).getMass());//todo reduce
                 continue;
             }
             hatchContentPointer.removeAmount(false, stack.definition.getStackForm(AVOGADRO_CONSTANT));
@@ -82,6 +81,8 @@ public class TileTurretHeadEM extends TurretHead{
             return new projectileEM(world, TurretHeadUtil.getTurretBase(worldObj, xCoord, yCoord, zCoord), stack);
         }
         return new projectileEM(world, TurretHeadUtil.getTurretBase(worldObj, xCoord, yCoord, zCoord), null);
+
+        //todo make the recipe require some overflow hatches
     }
 
     @Override

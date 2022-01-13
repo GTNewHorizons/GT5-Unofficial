@@ -1,7 +1,7 @@
-package com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions;
+package com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.transformations;
 
+import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.dComplexAspectDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.core.tElementalException;
-import com.github.technus.tectech.mechanics.elementalMatter.core.templates.cElementalDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.core.templates.iElementalDefinition;
 import thaumcraft.api.aspects.Aspect;
 
@@ -42,11 +42,12 @@ public final class AspectDefinitionCompatEnabled extends AspectDefinitionCompat 
                         try {
                             dComplexAspectDefinition newAspect;
                             if(content[0].getTag().equals(content[1].getTag())){
-                                newAspect = new dComplexAspectDefinition(aspectToDef.get(content[0].getTag()).getStackForm(2)
-                                );
+                                newAspect = new dComplexAspectDefinition(
+                                        aspectToDef.get(content[0].getTag()).getStackForm(2));
                             }else{
-                                newAspect = new dComplexAspectDefinition(aspectToDef.get(content[0].getTag()).getStackForm(1), aspectToDef.get(content[1].getTag()).getStackForm(1)
-                                );
+                                newAspect = new dComplexAspectDefinition(
+                                        aspectToDef.get(content[0].getTag()).getStackForm(1),
+                                        aspectToDef.get(content[1].getTag()).getStackForm(1));
                             }
                             aspectToDef.put(aspect.getTag(),newAspect);
                             defToAspect.put(newAspect,aspect.getTag());
@@ -64,18 +65,17 @@ public final class AspectDefinitionCompatEnabled extends AspectDefinitionCompat 
     }
 
     @Override
-    Aspect getAspect(cElementalDefinition definition) {
+    public Aspect getAspect(iElementalDefinition definition) {
         return Aspect.getAspect(defToAspect.get(definition));
     }
 
     @Override
-    String getAspectTag(cElementalDefinition definition) {
+    public String getAspectTag(iElementalDefinition definition) {
         return defToAspect.get(definition);
     }
 
     @Override
-    iElementalDefinition getDefinition(String aspect) {
+    public iElementalDefinition getDefinition(String aspect) {
         return aspectToDef.get(aspect);
     }
-
 }

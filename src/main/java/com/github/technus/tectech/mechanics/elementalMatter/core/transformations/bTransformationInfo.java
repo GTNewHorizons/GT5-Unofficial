@@ -2,7 +2,6 @@ package com.github.technus.tectech.mechanics.elementalMatter.core.transformation
 
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.iHasElementalDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.core.templates.iElementalDefinition;
-import com.github.technus.tectech.util.DoubleCount;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import net.minecraft.item.ItemStack;
@@ -10,36 +9,64 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 import static com.github.technus.tectech.thing.item.DebugElementalInstanceContainer_EM.STACKS_REGISTERED;
+import static java.lang.Math.pow;
 
 /**
  * Created by Tec on 26.05.2017.
  */
 public class bTransformationInfo {
+    /**
+     * Atom count per Mol
+     */
     public static final double AVOGADRO_CONSTANT =6.02214076e23D;
-    public static final double AVOGADRO_CONSTANT_UNCERTAINTY =(144*1000)/AVOGADRO_CONSTANT;
-    public static final double AVOGADRO_CONSTANT_EPSILON = AVOGADRO_CONSTANT / (144 * 1000);
-    public static final double AVOGADRO_CONSTANT_KIND_OF_SMALLER =AVOGADRO_CONSTANT-AVOGADRO_CONSTANT_EPSILON;
-    public static final double AVOGADRO_CONSTANT_KIND_OF_BIGGER =AVOGADRO_CONSTANT+AVOGADRO_CONSTANT_EPSILON;
+    /**
+     * Min. chance of existing
+     */
+    public static final double AVOGADRO_CONSTANT_UNCERTAINTY =(144*1000) / AVOGADRO_CONSTANT;
+    /**
+     * Quantity considered to be indifferent when computing stuff
+     */
+    public static final double AVOGADRO_CONSTANT_EPSILON = AVOGADRO_CONSTANT / pow(2,48);
+    public static final double AVOGADRO_CONSTANT_DIMINISHED = AVOGADRO_CONSTANT - AVOGADRO_CONSTANT_EPSILON;
     public static final double AVOGADRO_CONSTANT_144 = AVOGADRO_CONSTANT *144D;
+    public static final double AVOGADRO_CONSTANT_144_DIMINISHED = AVOGADRO_CONSTANT_144 - AVOGADRO_CONSTANT_EPSILON*144D;
     public static final double AVOGADRO_CONSTANT_1000 = AVOGADRO_CONSTANT *1000D;
+    public static final double AVOGADRO_CONSTANT_1000_DIMINISHED = AVOGADRO_CONSTANT_1000 - AVOGADRO_CONSTANT_EPSILON*1000D;
 
-    public static final Map<Integer,aFluidQuantizationInfo> fluidQuantization=new HashMap<>(32);
-    public static final Map<aItemQuantizationInfo,aItemQuantizationInfo> itemQuantization=new HashMap<>(32);
-    public static final Map<Integer,aOredictQuantizationInfo> oredictQuantization=new HashMap<>(32);
+    public static bTransformationInfo TRANSFORMATION_INFO = new bTransformationInfo();
+
+    public Map<Integer,aFluidQuantizationInfo> fluidQuantization;
+    public Map<aItemQuantizationInfo,aItemQuantizationInfo> itemQuantization;
+    public Map<Integer,aOredictQuantizationInfo> oredictQuantization;
 
     public Map<iElementalDefinition,aFluidDequantizationInfo> fluidDequantization;
     public Map<iElementalDefinition,aItemDequantizationInfo> itemDequantization;
     public Map<iElementalDefinition,aOredictDequantizationInfo> oredictDequantization;
 
-    public bTransformationInfo(int fluidCap,int itemCap, int oreCap){
-        fluidDequantization = fluidCap > 0 ? new HashMap<>(fluidCap) : Collections.emptyMap();
-        itemDequantization = itemCap > 0 ? new HashMap<>(itemCap) : Collections.emptyMap();
-        oredictDequantization = oreCap > 0 ? new HashMap<>(oreCap) : Collections.emptyMap();
+    private bTransformationInfo() {
+        this(
+                new HashMap<>(16), new HashMap<>(16), new HashMap<>(64),
+                new HashMap<>(16), new HashMap<>(16), new HashMap<>(64)
+        );
+    }
+
+    public bTransformationInfo(
+            Map<Integer, aFluidQuantizationInfo> fluidQuantization,
+            Map<aItemQuantizationInfo, aItemQuantizationInfo> itemQuantization,
+            Map<Integer, aOredictQuantizationInfo> oredictQuantization,
+            Map<iElementalDefinition, aFluidDequantizationInfo> fluidDequantization,
+            Map<iElementalDefinition, aItemDequantizationInfo> itemDequantization,
+            Map<iElementalDefinition, aOredictDequantizationInfo> oredictDequantization) {
+        this.fluidQuantization = fluidQuantization;
+        this.itemQuantization = itemQuantization;
+        this.oredictQuantization = oredictQuantization;
+        this.fluidDequantization = fluidDequantization;
+        this.itemDequantization = itemDequantization;
+        this.oredictDequantization = oredictDequantization;
     }
 
     public void addFluid(iHasElementalDefinition em, FluidStack fluidStack){

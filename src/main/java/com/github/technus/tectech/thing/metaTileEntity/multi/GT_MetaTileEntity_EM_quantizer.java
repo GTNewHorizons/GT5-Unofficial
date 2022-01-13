@@ -9,9 +9,8 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.iHasElem
 import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.aFluidQuantizationInfo;
 import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.aItemQuantizationInfo;
 import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.aOredictQuantizationInfo;
-import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.bTransformationInfo;
-import com.github.technus.tectech.mechanics.structure.adders.IHatchAdder;
 import com.github.technus.tectech.mechanics.structure.Structure;
+import com.github.technus.tectech.mechanics.structure.adders.IHatchAdder;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.github.technus.tectech.util.CommonValues;
@@ -32,6 +31,7 @@ import java.util.ArrayList;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.mechanics.elementalMatter.core.templates.iElementalDefinition.DEFAULT_ENERGY_LEVEL;
 import static com.github.technus.tectech.mechanics.elementalMatter.core.templates.iElementalDefinition.STABLE_RAW_LIFE_TIME;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.bTransformationInfo.TRANSFORMATION_INFO;
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.dAtomDefinition.refMass;
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.dAtomDefinition.refUnstableMass;
 import static com.github.technus.tectech.mechanics.structure.Structure.adders;
@@ -98,9 +98,9 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
             if (inI.length > 0) {
                 for (ItemStack is : inI) {
                     //ITEM STACK quantization
-                    aItemQuantizationInfo aIQI = bTransformationInfo.itemQuantization.get(new aItemQuantizationInfo(is, false, null));
+                    aItemQuantizationInfo aIQI = TRANSFORMATION_INFO.itemQuantization.get(new aItemQuantizationInfo(is, false, null));
                     if (aIQI == null) {
-                        aIQI = bTransformationInfo.itemQuantization.get(new aItemQuantizationInfo(is, true, null));//todo check if works?
+                        aIQI = TRANSFORMATION_INFO.itemQuantization.get(new aItemQuantizationInfo(is, true, null));//todo check if works?
                     }
                     if (aIQI == null) {
                         //ORE DICT quantization //todo fix for uranium?
@@ -109,7 +109,7 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
                             if (DEBUG_MODE) {
                                 TecTech.LOGGER.info("Quantifier-Ore-recipe " + is.getItem().getUnlocalizedName() + '.' + is.getItemDamage() + ' ' + OreDictionary.getOreName(ID));
                             }
-                            aOredictQuantizationInfo aOQI = bTransformationInfo.oredictQuantization.get(ID);
+                            aOredictQuantizationInfo aOQI = TRANSFORMATION_INFO.oredictQuantization.get(ID);
                             if (aOQI == null) {
                                 continue;
                             }
@@ -136,7 +136,7 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
             FluidStack[] inF = storedFluids.toArray(nullFluid);
             if (inF.length > 0) {
                 for (FluidStack fs : inF) {
-                    aFluidQuantizationInfo aFQI = bTransformationInfo.fluidQuantization.get(fs.getFluid().getID());
+                    aFluidQuantizationInfo aFQI = TRANSFORMATION_INFO.fluidQuantization.get(fs.getFluid().getID());
                     if (aFQI == null) {
                         continue;
                     }

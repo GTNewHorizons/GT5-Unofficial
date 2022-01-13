@@ -5,8 +5,9 @@ import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.defin
 import com.github.technus.tectech.mechanics.constructable.IConstructable;
 import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
-import com.github.technus.tectech.mechanics.structure.adders.IHatchAdder;
+import com.github.technus.tectech.mechanics.elementalMatter.core.templates.iElementalDefinition;
 import com.github.technus.tectech.mechanics.structure.Structure;
+import com.github.technus.tectech.mechanics.structure.adders.IHatchAdder;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.casing.TT_Container_Casings;
 import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_quantizer;
@@ -19,12 +20,12 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import static com.github.technus.tectech.compatibility.thaumcraft.thing.metaTileEntity.multi.EssentiaCompat.essentiaContainerCompat;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.bTransformationInfo.AVOGADRO_CONSTANT;
 import static com.github.technus.tectech.mechanics.structure.Structure.adders;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
@@ -83,16 +84,15 @@ public class GT_MetaTileEntity_EM_essentiaQuantizer extends GT_MetaTileEntity_Mu
 
     @Override
     public boolean checkRecipe_EM(ItemStack itemStack) {
-        TileEntity container = essentiaContainerCompat.getContainer(this);
-        cElementalInstanceStack newStack = essentiaContainerCompat.getFromContainer(container);
-        if (newStack != null) {
+        iElementalDefinition definition  = essentiaContainerCompat.getFromContainer(essentiaContainerCompat.getContainer(this));
+        if (definition != null) {
             mMaxProgresstime = 20;
             mEfficiencyIncrease = 10000;
             eAmpereFlow = 1;
             outputEM = new cElementalInstanceStackMap[]{
-                    new cElementalInstanceStackMap(newStack)
+                    new cElementalInstanceStackMap(new cElementalInstanceStack(definition,AVOGADRO_CONSTANT))
             };
-            if (newStack.definition instanceof ePrimalAspectDefinition) {
+            if (definition instanceof ePrimalAspectDefinition) {
                 mEUt = (int) -V[8];
             } else {
                 mEUt = (int) -V[10];

@@ -51,7 +51,7 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
     private static Textures.BlockIcons.CustomIcon ScreenON;
 
     public static final double URANIUM_INGOT_MASS_DIFF = 1.6114516E10* AVOGADRO_CONSTANT;
-    private static final double URANIUM_MASS_TO_EU_PARTIAL = ConfigUtil.getFloat(MainConfig.get(), "balance/energy/generator/nuclear") * 3_000_000.0 / URANIUM_INGOT_MASS_DIFF;
+    private static final double URANIUM_MASS_TO_EU_PARTIAL = ConfigUtil.getDouble(MainConfig.get(), "balance/energy/generator/nuclear") * 3_000_000.0 / URANIUM_INGOT_MASS_DIFF;
     public static final double URANIUM_MASS_TO_EU_INSTANT = URANIUM_MASS_TO_EU_PARTIAL * 20;
 
     private String clientLocale = "en_US";

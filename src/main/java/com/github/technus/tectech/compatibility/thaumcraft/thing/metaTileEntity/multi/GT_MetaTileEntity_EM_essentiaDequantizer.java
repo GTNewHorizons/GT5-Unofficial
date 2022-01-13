@@ -1,12 +1,11 @@
 package com.github.technus.tectech.compatibility.thaumcraft.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.ePrimalAspectDefinition;
 import com.github.technus.tectech.mechanics.constructable.IConstructable;
 import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
-import com.github.technus.tectech.mechanics.structure.adders.IHatchAdder;
 import com.github.technus.tectech.mechanics.structure.Structure;
+import com.github.technus.tectech.mechanics.structure.adders.IHatchAdder;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.casing.TT_Container_Casings;
 import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_quantizer;
@@ -19,12 +18,16 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
+import thaumcraft.api.aspects.Aspect;
 
 import static com.github.technus.tectech.compatibility.thaumcraft.thing.metaTileEntity.multi.EssentiaCompat.essentiaContainerCompat;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.bTransformationInfo.AVOGADRO_CONSTANT;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.bTransformationInfo.AVOGADRO_CONSTANT_DIMINISHED;
 import static com.github.technus.tectech.mechanics.structure.Structure.adders;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
@@ -61,6 +64,8 @@ public class GT_MetaTileEntity_EM_essentiaDequantizer extends GT_MetaTileEntity_
             translateToLocal("gt.blockmachines.multimachine.em.emtoessentia.hint.2"),//3 - Elemental Overflow Hatches or Elemental Casing
             translateToLocal("gt.blockmachines.multimachine.em.emtoessentia.hint.3"),//General - Some sort of Essentia Storage
     };
+
+    private String outputEssentiaName;
     //endregion
 
     public GT_MetaTileEntity_EM_essentiaDequantizer(int aID, String aName, String aNameRegional) {
@@ -88,24 +93,49 @@ public class GT_MetaTileEntity_EM_essentiaDequantizer extends GT_MetaTileEntity_
             stopMachine();
             return false;
         }
+
         cElementalInstanceStackMap inputHatchContainer = eInputHatches.get(0).getContainerHandler();
-        if (inputHatchContainer.hasStacks()) {
-            cElementalInstanceStack stack = inputHatchContainer.getFirst();
-            inputHatchContainer.removeAmount(false, new cElementalInstanceStack(stack.definition, 1));
-            if (!essentiaContainerCompat.putElementalInstanceStack(container, stack)) {
-                cleanStackEM_EM(stack);
-            }
-            mMaxProgresstime = 20;
-            mEfficiencyIncrease = 10000;
-            eAmpereFlow = 1;
-            if (stack.definition instanceof ePrimalAspectDefinition) {
-                mEUt = (int) -V[8];
-            } else {
-                mEUt = (int) -V[10];
-            }
-            return true;
+        if (inputHatchContainer == null || !inputHatchContainer.hasStacks()) {
+            return false;
         }
-        return false;
+
+        cElementalInstanceStack stack = inputHatchContainer.get(TecTech.RANDOM.nextInt(inputHatchContainer.size()));
+        if (stack.amount < AVOGADRO_CONSTANT_DIMINISHED) {
+            cleanStackEM_EM(inputHatchContainer.remove(stack.definition));
+            mEUt = (int) -V[6];
+        } else {
+            outputEssentiaName = essentiaContainerCompat.getEssentiaName(stack.definition);
+            Aspect aspect = Aspect.getAspect(outputEssentiaName);
+            if (aspect == null) {
+                outputEssentiaName = null;
+                cleanStackEM_EM(inputHatchContainer.remove(stack.definition));
+                mEUt = (int) -V[7];
+            } else {
+                inputHatchContainer.removeAmount(false, stack.definition.getStackForm(AVOGADRO_CONSTANT));
+                if (aspect.isPrimal()) {
+                    mEUt = (int) -V[8];
+                } else {
+                    mEUt = (int) -V[10];
+                }
+            }
+        }
+        mMaxProgresstime = 20;
+        mEfficiencyIncrease = 10000;
+        eAmpereFlow = 1;
+        return true;
+    }
+
+    @Override
+    public void outputAfterRecipe_EM() {
+        TileEntity container = essentiaContainerCompat.getContainer(this);
+        if (container == null) {
+            stopMachine();
+        }else{
+            if(!essentiaContainerCompat.putInContainer(container,outputEssentiaName)){
+                stopMachine();
+            }
+        }
+        outputEssentiaName=null;
     }
 
     @Override
@@ -146,5 +176,17 @@ public class GT_MetaTileEntity_EM_essentiaDequantizer extends GT_MetaTileEntity_
     @Override
     public String[] getStructureDescription(ItemStack stackSize) {
         return description;
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setString("eOutputEssentia",outputEssentiaName);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        outputEssentiaName=aNBT.getString("eOutputEssentia");
     }
 }

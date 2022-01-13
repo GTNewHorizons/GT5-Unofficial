@@ -1,6 +1,7 @@
 package com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions;
 
 import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.transformations.AspectDefinitionCompat;
 import com.github.technus.tectech.util.Util;
 import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalDecay;
 import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalDefinitionStackMap;
@@ -24,7 +25,7 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 /**
  * Created by Tec on 06.05.2017.
  */
-public final class dComplexAspectDefinition extends cElementalDefinition implements iElementalAspect {
+public final class dComplexAspectDefinition extends cElementalDefinition {
     private final int hash;
     public final double mass;
 
@@ -250,11 +251,6 @@ public final class dComplexAspectDefinition extends cElementalDefinition impleme
     @Override
     public aOredictDequantizationInfo someAmountIntoOredictStack() {
         return null;
-    }
-
-    @Override
-    public Object materializeIntoAspect() {
-        return AspectDefinitionCompat.aspectDefinitionCompat.getAspect(this);
     }
 
     @Override

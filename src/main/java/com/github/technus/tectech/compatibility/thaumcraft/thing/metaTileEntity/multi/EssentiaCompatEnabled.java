@@ -1,8 +1,6 @@
 package com.github.technus.tectech.compatibility.thaumcraft.thing.metaTileEntity.multi;
 
-import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.iElementalAspect;
-import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
-import com.github.technus.tectech.mechanics.elementalMatter.core.templates.cElementalDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.core.templates.iElementalDefinition;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import net.minecraft.tileentity.TileEntity;
 import thaumcraft.api.aspects.Aspect;
@@ -11,7 +9,7 @@ import thaumcraft.api.aspects.IAspectContainer;
 import thaumcraft.common.tiles.TileEssentiaReservoir;
 import thaumcraft.common.tiles.TileJarFillable;
 
-import static com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.AspectDefinitionCompat.aspectToDef;
+import static com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.transformations.AspectDefinitionCompat.aspectDefinitionCompat;
 
 /**
  * Created by Tec on 21.05.2017.
@@ -30,22 +28,28 @@ public class EssentiaCompatEnabled extends EssentiaCompat {
     }
 
     @Override
-    public boolean putElementalInstanceStack(TileEntity container,cElementalInstanceStack stack){
-        if(container==null || container.isInvalid()) {
+    public String getEssentiaName(iElementalDefinition stack) {
+        return aspectDefinitionCompat.defToAspect.get(stack);
+    }
+
+    @Override
+    public boolean putInContainer(TileEntity container, String aspectName) {
+        if (container == null || container.isInvalid() || aspectName == null || aspectName.isEmpty()) {
             return false;
         }
-        if(container instanceof IAspectContainer && stack.definition instanceof iElementalAspect){
-            Aspect aspect=(Aspect) ((iElementalAspect) stack.definition).materializeIntoAspect();
-            if(aspect!=null){
-                ((IAspectContainer) container).addToContainer(aspect,1);
-                return true;
+        if (container instanceof IAspectContainer) {
+            Aspect aspect = Aspect.getAspect(aspectName);
+            if(aspect==null){
+                return false;
             }
+            int remaining=((IAspectContainer) container).addToContainer(aspect, 1);
+            return remaining==0;
         }
         return false;
     }
 
     @Override
-    public cElementalInstanceStack getFromContainer(TileEntity container){
+    public iElementalDefinition getFromContainer(TileEntity container){
         if(container==null || container.isInvalid()) {
             return null;
         }
@@ -55,10 +59,7 @@ public class EssentiaCompatEnabled extends EssentiaCompat {
                 Aspect[] aspectsArr= aspects.getAspects();
                 if(aspectsArr!=null && aspectsArr[0]!=null){
                      if (((IAspectContainer) container).takeFromContainer(aspectsArr[0],1)){
-                         cElementalDefinition def=aspectToDef.get(aspectsArr[0].getTag());
-                         if(def!=null){
-                             return new cElementalInstanceStack(def,1);
-                         }
+                         return aspectDefinitionCompat.aspectToDef.get(aspectsArr[0].getTag());
                      }
                 }
             }
