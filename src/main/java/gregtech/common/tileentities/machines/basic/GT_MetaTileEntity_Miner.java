@@ -172,7 +172,7 @@ public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine {
 
         if (mProgresstime == SPEED[mTier] - 1) {
             if (drillY == 0 || oreBlockPositions.isEmpty()) {
-                movePipeDown(aBaseMetaTileEntity);
+                moveOneDown(aBaseMetaTileEntity);
             } else {
                 ChunkPosition oreBlockPos;
                 int x = 0, y = 0, z = 0;
@@ -286,7 +286,7 @@ public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine {
         return mTier == 1 ? 4096 : V[mTier] * 64;
     }
 
-    private void movePipeDown(IGregTechTileEntity aBaseMetaTileEntity) {
+    public boolean moveOneDown(IGregTechTileEntity aBaseMetaTileEntity) {
         int xCoord = aBaseMetaTileEntity.getXCoord();
         int zCoord = aBaseMetaTileEntity.getZCoord();
         int yCoord = aBaseMetaTileEntity.getYCoord();
@@ -307,7 +307,7 @@ public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine {
                     GT_Log.out.println("MINER: Unable to set mining pipe tip");
                 }
             }
-            return;
+            return false;
         }
         // Replace the tip onto pipe
         if (aBaseMetaTileEntity.getBlockOffset(0, drillY, 0) == MINING_PIPE_TIP_BLOCK) {
@@ -318,7 +318,7 @@ public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine {
         if (pipeInSlot == null) {
             // If there was nothing - wainting for the pipes (just for prevent unnecessary checks)
             waitMiningPipe = true;
-            return;
+            return false;
         }
         // If there is something - mine it (todo don't matter what? maybe some checks like in mining method?)
         Block block = aBaseMetaTileEntity.getBlockOffset(0, drillY - 1, 0);
@@ -329,6 +329,7 @@ public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine {
         aBaseMetaTileEntity.getWorld().setBlock(xCoord, yCoord + drillY - 1, zCoord, MINING_PIPE_TIP_BLOCK);
         drillY--;
         fillOreList(aBaseMetaTileEntity);
+        return true;
     }
 
     public void mineBlock(IGregTechTileEntity aBaseMetaTileEntity, Block block, int x, int y, int z) {
