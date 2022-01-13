@@ -1,6 +1,7 @@
 package com.github.technus.tectech.compatibility.gtpp;
 
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalDefinitionStack;
+import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.bTransformationInfo;
 import gregtech.api.enums.OrePrefixes;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -66,34 +67,34 @@ public class GtppAtomLoader implements Runnable{
         }
         //endregion
 
-        TRANSFORMATION_INFO.addFluid(new cElementalDefinitionStack(getFirstStableIsotope(10), AVOGADRO_CONSTANT_144), getFluid("NEON",144));
+        bTransformationInfo.TRANSFORMATION_INFO.addFluid(new cElementalDefinitionStack(getFirstStableIsotope(10), AVOGADRO_CONSTANT_144), getFluid("NEON",144));
         generate("GERMANIUM",true,true);
-        TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(32), AVOGADRO_CONSTANT_144), OrePrefixes.dust, getUnlocalizedName("GERMANIUM"),1);
-        TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(34), AVOGADRO_CONSTANT_144), OrePrefixes.dust, getUnlocalizedName("SELENIUM"),1);
-        TRANSFORMATION_INFO.addFluid(new cElementalDefinitionStack(getFirstStableIsotope(35), AVOGADRO_CONSTANT_144), getFluid("BROMINE",144));
-        TRANSFORMATION_INFO.addFluid(new cElementalDefinitionStack(getFirstStableIsotope(36), AVOGADRO_CONSTANT_144), getFluid("KRYPTON",144));
-        TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(40), AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("ZIRCONIUM"),1);
-        TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(43), AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("TECHNETIUM"),1);
-        TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(44), AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("RUTHENIUM"),1);
-        TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(45), AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("RHODIUM"),1);
-        TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(53), AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("IODINE"),1);
-        TRANSFORMATION_INFO.addFluid(new cElementalDefinitionStack(getFirstStableIsotope(54), AVOGADRO_CONSTANT_144),getFluid("XENON",144));
-        TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(72), AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("HAFNIUM"),1);
-        TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(75), AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("RHENIUM"),1);
-        TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(81), AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("THALLIUM"),1);
+        bTransformationInfo.TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(32), AVOGADRO_CONSTANT_144), OrePrefixes.dust, getUnlocalizedName("GERMANIUM"),1);
+        bTransformationInfo.TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(34), AVOGADRO_CONSTANT_144), OrePrefixes.dust, getUnlocalizedName("SELENIUM"),1);
+        bTransformationInfo.TRANSFORMATION_INFO.addFluid(new cElementalDefinitionStack(getFirstStableIsotope(35), AVOGADRO_CONSTANT_144), getFluid("BROMINE",144));
+        bTransformationInfo.TRANSFORMATION_INFO.addFluid(new cElementalDefinitionStack(getFirstStableIsotope(36), AVOGADRO_CONSTANT_144), getFluid("KRYPTON",144));
+        bTransformationInfo.TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(40), AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("ZIRCONIUM"),1);
+        bTransformationInfo.TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(43), AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("TECHNETIUM"),1);
+        bTransformationInfo.TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(44), AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("RUTHENIUM"),1);
+        bTransformationInfo.TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(45), AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("RHODIUM"),1);
+        bTransformationInfo.TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(53), AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("IODINE"),1);
+        bTransformationInfo.TRANSFORMATION_INFO.addFluid(new cElementalDefinitionStack(getFirstStableIsotope(54), AVOGADRO_CONSTANT_144),getFluid("XENON",144));
+        bTransformationInfo.TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(72), AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("HAFNIUM"),1);
+        bTransformationInfo.TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(75), AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("RHENIUM"),1);
+        bTransformationInfo.TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(81), AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("THALLIUM"),1);
 
-        TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(84), AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("POLONIUM"),1);
-        TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(85), AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("ASTATINE"),1);
-        TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(87), AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("FRANCIUM"),1);
-        TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(88), AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("RADIUM"),1);
-        TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(89), AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("ACTINIUM"),1);
-        TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(91), AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("PROTACTINIUM"),1);
-        TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(93), AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("NEPTUNIUM"),1);
+        bTransformationInfo.TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(84), AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("POLONIUM"),1);
+        bTransformationInfo.TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(85), AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("ASTATINE"),1);
+        bTransformationInfo.TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(87), AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("FRANCIUM"),1);
+        bTransformationInfo.TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(88), AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("RADIUM"),1);
+        bTransformationInfo.TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(89), AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("ACTINIUM"),1);
+        bTransformationInfo.TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(91), AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("PROTACTINIUM"),1);
+        bTransformationInfo.TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(93), AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("NEPTUNIUM"),1);
 
-        TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(96), AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("CURIUM"),1);
-        TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(97), AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("BERKELIUM"),1);
-        TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(98), AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("CALIFORNIUM"),1);
-        TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(99), AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("EINSTEINIUM"),1);
-        TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(100), AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("FERMIUM"),1);
+        bTransformationInfo.TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(96), AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("CURIUM"),1);
+        bTransformationInfo.TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(97), AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("BERKELIUM"),1);
+        bTransformationInfo.TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(98), AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("CALIFORNIUM"),1);
+        bTransformationInfo.TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(99), AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("EINSTEINIUM"),1);
+        bTransformationInfo.TRANSFORMATION_INFO.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(100), AVOGADRO_CONSTANT_144),OrePrefixes.dust, getUnlocalizedName("FERMIUM"),1);
     }
 }

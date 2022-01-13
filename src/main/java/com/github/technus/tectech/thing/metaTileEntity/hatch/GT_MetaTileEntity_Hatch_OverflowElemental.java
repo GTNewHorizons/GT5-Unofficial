@@ -1,7 +1,7 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
-import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.util.Util;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -29,9 +29,9 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.util.Locale;
 
+import static com.github.technus.tectech.loader.MainLoader.elementalPollution;
 import static com.github.technus.tectech.util.CommonValues.DISPERSE_AT;
 import static com.github.technus.tectech.util.CommonValues.V;
-import static com.github.technus.tectech.loader.MainLoader.elementalPollution;
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity;
 import static net.minecraft.util.StatCollector.translateToLocal;
@@ -149,10 +149,10 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
         if (aBaseMetaTileEntity.isServerSide() && aTick % 20 == DISPERSE_AT) {
             if (aBaseMetaTileEntity.isActive()) {
                 if (overflowMatter > overflowDisperse) {
-                    TecTech.anomalyHandler.addAnomaly(aBaseMetaTileEntity, overflowDisperse);
+                    TecTech.anomalyHandler.addAnomaly(aBaseMetaTileEntity, overflowDisperse/(Math.pow(2,mTier)));
                     overflowMatter -= overflowDisperse;
                 } else {
-                    TecTech.anomalyHandler.addAnomaly(aBaseMetaTileEntity, overflowMatter);
+                    TecTech.anomalyHandler.addAnomaly(aBaseMetaTileEntity, overflowMatter/(Math.pow(2,mTier)));
                     overflowMatter = 0;
                     aBaseMetaTileEntity.setActive(false);
                     aBaseMetaTileEntity.setLightValue((byte) 0);
@@ -227,7 +227,7 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
     @Override
     public void onRemoval() {
         if (isValidMetaTileEntity(this) && getBaseMetaTileEntity().isActive()) {
-            TecTech.anomalyHandler.addAnomaly(getBaseMetaTileEntity(), overflowMatter * 8D);
+            TecTech.anomalyHandler.addAnomaly(getBaseMetaTileEntity(), overflowMatter);
             if (TecTech.configTecTech.BOOM_ENABLE) {
                 getBaseMetaTileEntity().doExplosion(V[15]);
             } else {

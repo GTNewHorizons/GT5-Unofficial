@@ -1,10 +1,8 @@
 package com.github.technus.tectech.compatibility.openmodularturrets.entity.projectiles;
 
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.dHadronDefinition;
-import com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.eQuarkDefinition;
 import gregtech.api.GregTech_API;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
@@ -17,8 +15,6 @@ import openmodularturrets.handler.ConfigHandler;
 import openmodularturrets.tileentity.turretbase.TurretBase;
 import openmodularturrets.util.PlayerUtil;
 import openmodularturrets.util.TurretHeadUtil;
-
-import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.bTransformationInfo.AVOGADRO_CONSTANT;
 
 
 /**
@@ -33,6 +29,7 @@ public class projectileEM extends LaserProjectile {
     private int ampLevel;
 
     private float massFactor;
+    private double mass,charge;
 
     public projectileEM(World par1World) {
         super(par1World);
@@ -51,6 +48,8 @@ public class projectileEM extends LaserProjectile {
         super(par1World, turretBase);
         this.turretBase = turretBase;
         if(projectileContent != null){
+            mass=projectileContent.getMass();
+            charge=projectileContent.getCharge();
             massFactor =(float) (projectileContent.definition.getMass()/ dHadronDefinition.hadron_n_.getMass());
 
             if(projectileContent.definition.getType()>1 || projectileContent.definition.getType()<-1) {
@@ -66,66 +65,70 @@ public class projectileEM extends LaserProjectile {
                 gravity = Math.min(0.0025F / Math.abs(projectileContent.definition.getCharge()), massFactor / 100f);
             }
         }
-        //todo make the recipe require some overflow hatches
-
-        //todo add more subspace pollution
     }
 
     @Override
     protected void onImpact(MovingObjectPosition movingobjectposition) {
         if(ticksExisted > 1) {
-            if(movingobjectposition.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
-                Block hitBlock = worldObj.getBlock(movingobjectposition.blockX, movingobjectposition.blockY, movingobjectposition.blockZ);
-                if(hitBlock != null){
-                    if (hitBlock.getMaterial().isSolid() && TecTech.configTecTech.ENABLE_TURRET_EXPLOSIONS && antiMatter) {
-                        worldObj.playSoundEffect(posX, posY, posZ, "openmodularturrets:laserHit", ConfigHandler.getTurretSoundVolume(), TecTech.RANDOM.nextFloat() + 0.5F);
-                        GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(209), 1.0F, -1.0F,
-                                movingobjectposition.blockX,
-                                movingobjectposition.blockY,
-                                movingobjectposition.blockZ);
-                        worldObj.createExplosion(null,
-                                movingobjectposition.blockX + 0.5D,
-                                movingobjectposition.blockY + 0.5D,
-                                movingobjectposition.blockZ + 0.5D,
-                                (strange ?10:1) * TecTech.configTecTech.TURRET_EXPLOSION_FACTOR * massFactor * (isAmped? ampLevel*.1f +1:1) * (ticksExisted/250f), true);
-                    } else {
-                        return;
-                    }
-                }
-            }
-
-            if(movingobjectposition.entityHit != null && !worldObj.isRemote) {
+            if(!worldObj.isRemote){
                 worldObj.playSoundEffect(posX, posY, posZ, "openmodularturrets:laserHit", ConfigHandler.getTurretSoundVolume(), TecTech.RANDOM.nextFloat() + 0.5F);
-                if(movingobjectposition.entityHit != null && !worldObj.isRemote) {
-                    float damage = (strange ?10:1) * TecTech.configTecTech.TURRET_DAMAGE_FACTOR * massFactor * (isAmped? ampLevel*.1f +1:1);
+                switch (movingobjectposition.typeOfHit){
+                    case BLOCK:
+                        Block hitBlock = worldObj.getBlock(movingobjectposition.blockX, movingobjectposition.blockY, movingobjectposition.blockZ);
+                        if(hitBlock != null){
+                            if (TecTech.configTecTech.ENABLE_TURRET_EXPLOSIONS && antiMatter && hitBlock.getMaterial().isSolid()) {
+                                GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(209), 1.0F, -1.0F,
+                                        movingobjectposition.blockX,
+                                        movingobjectposition.blockY,
+                                        movingobjectposition.blockZ);
+                                worldObj.createExplosion(null,
+                                        movingobjectposition.blockX + 0.5D,
+                                        movingobjectposition.blockY + 0.5D,
+                                        movingobjectposition.blockZ + 0.5D,
+                                        TecTech.configTecTech.TURRET_EXPLOSION_FACTOR * (strange ? 10 : 1) * massFactor * (isAmped ? ampLevel * .1f + 1 : 1) * (ticksExisted / 250f), true);
+                            } else {
+                                return;
+                            }
+                        }
+                        break;
+                    case ENTITY:
+                        float damage = (strange ?10:1) * TecTech.configTecTech.TURRET_DAMAGE_FACTOR * massFactor * (isAmped? ampLevel*.1f +1:1);
 
-                    if(movingobjectposition.entityHit instanceof EntityPlayer) {
-                        if(canDamagePlayer((EntityPlayer)movingobjectposition.entityHit)) {
+                        if(movingobjectposition.entityHit instanceof EntityPlayer) {
+                            EntityPlayer player=(EntityPlayer)movingobjectposition.entityHit;
+                            if(canDamagePlayer(player)) {
+                                movingobjectposition.entityHit.setFire((strange ?10:1)*2);
+                                movingobjectposition.entityHit.attackEntityFrom(new NormalDamageSource("laser"), damage);
+                                if(antiMatter) {
+                                    movingobjectposition.entityHit.hurtResistantTime = 0;
+                                }
+                                if(strange){
+                                    TecTech.anomalyHandler.addCancer(player,mass);
+                                }
+                                if(charge!=0) {
+                                    TecTech.anomalyHandler.addCharge(player,charge);
+                                }
+                            }
+                        } else {
                             movingobjectposition.entityHit.setFire((strange ?10:1)*2);
                             movingobjectposition.entityHit.attackEntityFrom(new NormalDamageSource("laser"), damage);
                             if(antiMatter) {
                                 movingobjectposition.entityHit.hurtResistantTime = 0;
                             }
                         }
-                    } else {
-                        movingobjectposition.entityHit.setFire((strange ?10:1)*2);
-                        movingobjectposition.entityHit.attackEntityFrom(new NormalDamageSource("laser"), damage);
-                        if(antiMatter) {
-                            movingobjectposition.entityHit.hurtResistantTime = 0;
-                        }
-                    }
 
-                    if (TecTech.configTecTech.ENABLE_TURRET_EXPLOSIONS && antiMatter) {
-                        GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(209), 1.0F, -1.0F,
-                                (int)movingobjectposition.entityHit.posX,
-                                (int)movingobjectposition.entityHit.posY,
-                                (int)movingobjectposition.entityHit.posZ);
-                        worldObj.createExplosion(null,
-                                movingobjectposition.entityHit.posX,
-                                movingobjectposition.entityHit.posY,
-                                movingobjectposition.entityHit.posZ,
-                                (strange ?10:1) * TecTech.configTecTech.TURRET_EXPLOSION_FACTOR * massFactor * (isAmped? ampLevel*.1f +1:1) * (ticksExisted/250f), true);
-                    }
+                        if (TecTech.configTecTech.ENABLE_TURRET_EXPLOSIONS && antiMatter) {
+                            GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(209), 1.0F, -1.0F,
+                                    (int)movingobjectposition.entityHit.posX,
+                                    (int)movingobjectposition.entityHit.posY,
+                                    (int)movingobjectposition.entityHit.posZ);
+                            worldObj.createExplosion(null,
+                                    movingobjectposition.entityHit.posX,
+                                    movingobjectposition.entityHit.posY,
+                                    movingobjectposition.entityHit.posZ,
+                                    (strange ?10:1) * TecTech.configTecTech.TURRET_EXPLOSION_FACTOR * massFactor * (isAmped? ampLevel*.1f +1:1) * (ticksExisted/250f), true);
+                        }
+                        break;
                 }
             }
             setDead();

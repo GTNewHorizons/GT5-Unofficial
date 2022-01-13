@@ -25,7 +25,7 @@ import java.util.Map;
 import static com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.dComplexAspectDefinition.getNbtTagCompound;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.bTransformationInfo.AVOGADRO_CONSTANT_144;
-import static com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.dAtomDefinition.TRANSFORMATION_INFO;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.bTransformationInfo.TRANSFORMATION_INFO;
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.eBosonDefinition.boson_Y__;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_scanner.*;
 import static gregtech.api.enums.OrePrefixes.dust;
@@ -467,7 +467,7 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
         //Added to atom map, but should be in its own
         cElementalDefinitionStack neutrons=new cElementalDefinitionStack(hadron_n, 1000* AVOGADRO_CONSTANT_144);
         TRANSFORMATION_INFO.oredictDequantization.put(neutrons.definition,new aOredictDequantizationInfo(neutrons, dust, Materials.Neutronium,1));
-        bTransformationInfo.oredictQuantization.put(
+        TRANSFORMATION_INFO.oredictQuantization.put(
                 OreDictionary.getOreID(OrePrefixes.ingotHot.name()+Materials.Neutronium.mName),
                 new aOredictQuantizationInfo(OrePrefixes.ingotHot,Materials.Neutronium,1 ,neutrons)
         );

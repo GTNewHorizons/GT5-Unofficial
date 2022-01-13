@@ -2,8 +2,8 @@ package com.github.technus.tectech.loader;
 
 import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.AspectDefinitionCompat;
-import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.AspectDefinitionCompatEnabled;
+import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.transformations.AspectDefinitionCompat;
+import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.transformations.AspectDefinitionCompatEnabled;
 import com.github.technus.tectech.compatibility.thaumcraft.thing.metaTileEntity.multi.EssentiaCompat;
 import com.github.technus.tectech.compatibility.thaumcraft.thing.metaTileEntity.multi.EssentiaCompatEnabled;
 import com.github.technus.tectech.loader.gui.CreativeTabTecTech;
@@ -40,7 +40,7 @@ import java.util.HashSet;
 
 import static com.github.technus.tectech.util.CommonValues.*;
 import static com.github.technus.tectech.TecTech.*;
-import static com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.AspectDefinitionCompat.aspectDefinitionCompat;
+import static com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.transformations.AspectDefinitionCompat.aspectDefinitionCompat;
 import static com.github.technus.tectech.compatibility.thaumcraft.thing.metaTileEntity.multi.EssentiaCompat.essentiaContainerCompat;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.loader.gui.CreativeTabTecTech.creativeTabTecTech;

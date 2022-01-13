@@ -8,7 +8,7 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 /**
  * Created by Tec on 06.05.2017.
  */
-public final class ePrimalAspectDefinition extends cElementalPrimitive implements iElementalAspect {
+public final class ePrimalAspectDefinition extends cElementalPrimitive {
     public static final ePrimalAspectDefinition
             magic_air = new ePrimalAspectDefinition(translateToLocal("tt.keyword.Air"), "a`", 1e1D, 35),
             magic_earth = new ePrimalAspectDefinition(translateToLocal("tt.keyword.Earth"), "e`", 1e9D, 34),
@@ -33,11 +33,6 @@ public final class ePrimalAspectDefinition extends cElementalPrimitive implement
     @Override
     public String getName() {
         return translateToLocal("tt.keyword.Primal") + ": " + name;
-    }
-
-    @Override
-    public Object materializeIntoAspect() {
-        return AspectDefinitionCompat.aspectDefinitionCompat.getAspect(this);
     }
 
     @Override
