@@ -62,10 +62,11 @@ public class LoadedMods {
 	public static boolean CropsPlusPlus = false; //Barts Crop Mod
 	public static boolean Reliquary = false;
 	public static boolean SpiceOfLife = false;
-
-
+	public static boolean BartWorks = false;
+	public static boolean GoodGenerator = false;
 
 	private static int totalMods;
+	
 	@SuppressWarnings("deprecation")
 	public static void checkLoaded(){
 		Logger.INFO("Looking for optional mod prereqs.");
@@ -122,6 +123,16 @@ public class LoadedMods {
 		if (isModLoaded("AdvancedSolarPanel")){
 			AdvancedSolarPanel = true;
 			Logger.INFO("Components enabled for: Advanced Solar Panels");
+			totalMods++;
+		}
+		if (isModLoaded("GoodGenerator")) {
+			GoodGenerator = true;
+			Logger.INFO("Components enabled for: GoodGenerator");
+			totalMods++;
+		}
+		if (isModLoaded("bartworks")) {
+			BartWorks = true;
+			Logger.INFO("Components enabled for: BartWorks");
 			totalMods++;
 		}
 		if (isModLoaded("BuildCraft")){

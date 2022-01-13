@@ -3,6 +3,7 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.misc;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import Ic2ExpReactorPlanner.SimulationData;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.ITexture;
@@ -17,12 +18,16 @@ import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.xmod.bartworks.BW_Utils;
+import gtPlusPlus.xmod.goodgenerator.GG_Utils;
 import gtPlusPlus.xmod.gregtech.api.gui.computer.GT_Container_ComputerCube;
 import gtPlusPlus.xmod.gregtech.api.gui.computer.GT_GUIContainer_ComputerCube;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.computer.GT_ComputercubeDescription;
+import gtPlusPlus.xmod.gregtech.common.computer.GT_Computercube_Simulator;
 import ic2.api.reactor.IReactor;
 import ic2.api.reactor.IReactorComponent;
 import ic2.core.Ic2Items;
@@ -72,6 +77,8 @@ public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank impl
 	public float mHEM = 1.0F, mExplosionStrength = 0.0F;
 
 	private boolean mNeedsUpdate;
+	
+	private GT_Computercube_Simulator mSimulator;
 
 	public GT_TileEntity_ComputerCube(final int aID, final String aDescription) {
 		super(aID, "computer.cube", "Computer Cube", 5, 114, aDescription);
@@ -128,6 +135,14 @@ public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank impl
 		return true;
 	}
 	
+	public final GT_Computercube_Simulator getSimulator() {
+		return this.mSimulator;
+	}
+
+	public final void setSimulator(GT_Computercube_Simulator mSimulator) {
+		this.mSimulator = mSimulator;
+	}
+
 	@Override
 	public boolean isSimpleMachine() {
 		return true;
@@ -160,7 +175,7 @@ public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank impl
 
 	@Override
 	public boolean ownerControl() {
-		return true;
+		return false;
 	}
 
 	@Override
@@ -576,10 +591,12 @@ public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank impl
 		this.mStarted = true;
 		this.mHeat = 0;
 		this.mEU = 0;
+		mSimulator.simulate();
 	}
 
 	public void stopNuclearReactor() {
 		this.mStarted = false;
+		mSimulator.simulate();
 	}
 
 	public void storeAdditionalData(NBTTagCompound aNBT) {
@@ -612,44 +629,14 @@ public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank impl
 	@Override
 	public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
 		super.onFirstTick(aBaseMetaTileEntity);
-		if (sReactorList == null) {
-			sReactorList = new ArrayList<GT_ItemStack>();
-
-			String[] aIc2Items = new String[]{
-					"reactorUraniumSimple", "reactorUraniumDual", "reactorUraniumQuad", /*"reactorIsotopeCell",*/ "reactorReflector", "reactorReflectorThick", "reactorCoolantSimple",
-					"reactorCoolantTriple", "reactorCoolantSix", "reactorCondensator", "reactorCondensatorLap", "reactorPlating", "reactorPlatingHeat", "reactorPlatingExplosive", "reactorVent",
-					"reactorVentCore", "reactorVentGold", "reactorVentSpread", "reactorVentDiamond", "reactorHeatSwitch", "reactorHeatSwitchCore", "reactorHeatSwitchSpread",
-					"reactorHeatSwitchDiamond", /*"reactorHeatpack",*/
-			};
-
-			for (String aItem : aIc2Items) {
-				ItemStack aStack = GT_ModHandler.getIC2Item(aItem, 1);
-				if (!ItemUtils.checkForInvalidItems(aStack)) {
-					Logger.INFO("Unable to find IC2 Item: " + aItem);
-					CORE.crash("Unable to find IC2 Item: " + aItem);
-				}
-				else {
-					sReactorList.add(new GT_ItemStack(aStack.copy()));
-				}
-			}
-
-			ItemList[] aGtItems = new ItemList[]{
-					ItemList.Neutron_Reflector, ItemList.Moxcell_1, ItemList.Moxcell_2, ItemList.Moxcell_4, ItemList.Uraniumcell_1, ItemList.Uraniumcell_2, ItemList.Uraniumcell_4,
-					ItemList.NaquadahCell_1, ItemList.NaquadahCell_2, ItemList.NaquadahCell_4, ItemList.ThoriumCell_1, ItemList.ThoriumCell_2, ItemList.ThoriumCell_4, ItemList.Reactor_Coolant_He_1,
-					ItemList.Reactor_Coolant_He_3, ItemList.Reactor_Coolant_He_6, ItemList.Reactor_Coolant_NaK_1, ItemList.Reactor_Coolant_NaK_3, ItemList.Reactor_Coolant_NaK_6,
-			};
-
-			for (ItemList aItem : aGtItems) {
-				sReactorList.add(new GT_ItemStack(aItem.get(1)));
-			}
-
-		}
-
 	}
 
 	@Override
 	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
 		super.onPostTick(aBaseMetaTileEntity, aTick);
+		if (mSimulator == null) {
+			mSimulator = new GT_Computercube_Simulator(this); 
+		}
 		if(this.getBaseMetaTileEntity().isClientSide()) {
 			this.getWorld().markBlockForUpdate(this.getXCoord(), this.getYCoord(), this.getZCoord());
 			this.mNeedsUpdate = false;
@@ -694,7 +681,22 @@ public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank impl
 					}
 				}
 			}
-			if (this.mMode == 1 && mReactorplanner && this.mStarted && this.getBaseMetaTileEntity().decreaseStoredEnergyUnits(32, false))
+			
+			if (this.mMode == 1 && mReactorplanner && this.mSimulator != null && this.mSimulator.simulator != null && this.mSimulator.simulatedReactor != null) {
+				SimulationData aData = this.mSimulator.simulator.getData();
+				if (aData != null && aData.totalReactorTicks > 0 && this.mProgress != aData.totalReactorTicks) {
+					Logger.INFO("Updating Variables");
+					this.mEU = aData.avgEUoutput;
+					this.mEUOut = (aData.totalEUoutput / aData.totalReactorTicks);
+					this.mHeat = aData.avgHUoutput;
+					this.mMaxHeat = aData.maxHUoutput;
+					this.mExplosionStrength = aData.explosionPower;
+					this.mHEM = (float) aData.hullHeating;
+					this.mProgress = aData.totalReactorTicks;
+				}
+			}
+			
+			/*if (this.mMode == 1 && mReactorplanner && this.mStarted && this.getBaseMetaTileEntity().decreaseStoredEnergyUnits(32, false))
 				for (int i = 0; i < 25 && this.mStarted; i++) {
 					this.mEUOut = 0;
 					this.mMaxHeat = 10000;
@@ -737,7 +739,7 @@ public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank impl
 					this.mEULast3 = this.mEULast4;
 					this.mEULast4 = this.mEUOut;
 					this.mEUOut = (this.mEUOut + this.mEULast1 + this.mEULast2 + this.mEULast3 + tEU) / 5;
-				}
+				}*/
 			if (aTick % 20L == 0L) {
 				//this.getWorld().addBlockEvent(this.xCoord, this.yCoord, this.zCoord, (GregTech_API.sBlockList[1]).field_71990_ca, 10, this.mMode);
 				//this.getWorld().addBlockEvent(this.xCoord, this.yCoord, this.zCoord, (GregTech_API.sBlockList[1]).field_71990_ca, 11, this.mMaxHeat);

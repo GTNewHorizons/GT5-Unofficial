@@ -54,6 +54,7 @@ import gtPlusPlus.xmod.gregtech.api.world.GTPP_Worldgen;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 import gtPlusPlus.xmod.gregtech.common.blocks.fluid.GregtechFluidHandler;
+import gtPlusPlus.xmod.gregtech.common.computer.GT_ComputerCube_Setup;
 import gtPlusPlus.xmod.gregtech.common.computer.GT_ComputercubeDescription;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.GregtechMTE_ElementalDuplicator;
@@ -178,6 +179,7 @@ public class HANDLER_GT {
 		generateElementalDuplicatorRecipes();
 		Meta_GT_Proxy.fixIC2FluidNames();
 	    GT_ComputercubeDescription.addStandardDescriptions();
+	    GT_ComputerCube_Setup.init();
 		RecipeLoader_AlgaeFarm.generateRecipes();
 		if (LoadedMods.AdvancedSolarPanel) {
 			RecipeLoader_MolecularTransformer.run();

@@ -8,6 +8,7 @@ import gregtech.api.gui.GT_ContainerMetaTile_Machine;
 import gregtech.api.gui.GT_Slot_Holo;
 import gregtech.api.gui.GT_Slot_Output;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
@@ -151,11 +152,11 @@ public class GT_Container_ComputerCube extends GT_ContainerMetaTile_Machine {
 			return null;
 		}
 		Slot tSlot = (Slot) this.inventorySlots.get(aSlotIndex);
-		ItemStack tStack = tSlot.getStack();
 		if (tSlot == null) {
 			Logger.INFO("Null Slot?");
 		}
 		else {
+			ItemStack tStack = tSlot.getStack();
 			Logger.INFO("Good Slot!");
 			if (aSlotIndex == 0) {
 				Logger.INFO("Slot is 0");
@@ -224,21 +225,29 @@ public class GT_Container_ComputerCube extends GT_ContainerMetaTile_Machine {
 				else {
 					if (aShifthold == 1) {
 						tSlot.putStack(null);
+						((GT_TileEntity_ComputerCube) mTileEntity.getMetaTileEntity()).getSimulator().slotClick(aSlotIndex, null);
 						return null;
+					}
+
+					if (aMouseclick == 1) {
+						tSlot.putStack(null);
 					}
 					if (aMouseclick == 0) {
 						if (tStack == null) {
 							if (getSlot(58).getStack() != null && aSlotIndex != 58) {
 								tSlot.putStack(getSlot(58).getStack().copy());
+								((GT_TileEntity_ComputerCube) mTileEntity.getMetaTileEntity()).getSimulator().slotClick(aSlotIndex, new GT_ItemStack(getSlot(58).getStack().copy()));
 							}
 							else {
 								tSlot.putStack(new ItemStack(GT_TileEntity_ComputerCube.sReactorList.get(0).mItem, 1));
+								((GT_TileEntity_ComputerCube) mTileEntity.getMetaTileEntity()).getSimulator().slotClick(aSlotIndex, GT_TileEntity_ComputerCube.sReactorList.get(0));
 							}
 							return null;
 						}
 						for (int i = 1; i < GT_TileEntity_ComputerCube.sReactorList.size(); i++) {
 							if (GT_TileEntity_ComputerCube.sReactorList.get(i - 1).mItem == tStack.getItem()) {
 								tSlot.putStack(new ItemStack(GT_TileEntity_ComputerCube.sReactorList.get(i).mItem, 1, 0));
+								((GT_TileEntity_ComputerCube) mTileEntity.getMetaTileEntity()).getSimulator().slotClick(aSlotIndex, GT_TileEntity_ComputerCube.sReactorList.get(i));
 								/*if (tSlot.getStack() != null && tSlot.getStack().getItem() == GT_ModHandler.getIC2Item("reactorIsotopeCell", 1).getItem()) {
 									tSlot.getStack().setItemDamage(tSlot.getStack().getMaxDamage() - 1);
 								}*/
@@ -246,6 +255,7 @@ public class GT_Container_ComputerCube extends GT_ContainerMetaTile_Machine {
 							}
 						}
 						tSlot.putStack(null);
+						((GT_TileEntity_ComputerCube) mTileEntity.getMetaTileEntity()).getSimulator().slotClick(aSlotIndex, null);
 						return null;
 					}
 					if (tStack == null)

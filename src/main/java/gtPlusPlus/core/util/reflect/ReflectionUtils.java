@@ -22,7 +22,6 @@ import com.google.common.reflect.ClassPath;
 
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.data.StringUtils;
-import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 
 public class ReflectionUtils {
 
@@ -271,6 +270,21 @@ public class ReflectionUtils {
 		}
 	}
 
+	public static Field[] getAllFields(final Class<?> aClass) {
+		if (aClass == null) {
+			return null;
+		}		
+		Field[] aFields = aClass.getDeclaredFields();
+		for (Field f : aFields) {
+			CachedField y = mCachedFields.get(aClass.getName()+"."+f.getName());
+			if (y == null) {
+				makeFieldAccessible(f);
+				cacheField(aClass, f);
+			}			
+		}
+		return aFields;
+	}
+
 	/**
 	 * Returns a cached {@link Field} object.
 	 * @param aInstance - {@link Object} to get the field instance from.
@@ -435,7 +449,7 @@ public class ReflectionUtils {
 			t.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Allows to change the state of an immutable instance. Huh?!?
 	 */
@@ -523,7 +537,7 @@ public class ReflectionUtils {
 		Logger.REFLECTION("Invoke failed or did something wrong.");		
 		return false;
 	}
-	
+
 	public static boolean invokeVoid(Object objectInstance, Method method, Object[] values){		
 		if (method == null || values == null || (!ReflectionUtils.isStaticMethod(method)  && objectInstance == null)){
 			//Logger.REFLECTION("Null value when trying to Dynamically invoke "+methodName+" on an object of type: "+objectInstance.getClass().getName());
@@ -537,8 +551,8 @@ public class ReflectionUtils {
 			if (mInvokingMethod != null){
 				Logger.REFLECTION(methodName+" was not null.");
 				mInvokingMethod.invoke(objectInstance, values);
-					Logger.REFLECTION("Successfully invoked "+methodName+".");
-					return true;				
+				Logger.REFLECTION("Successfully invoked "+methodName+".");
+				return true;				
 			}
 		}
 		catch (SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
@@ -583,7 +597,7 @@ public class ReflectionUtils {
 		String classname = objectInstance != null ? objectInstance.getClass().getCanonicalName() : method.getDeclaringClass().getCanonicalName();
 		Logger.REFLECTION("Trying to invoke "+methodName+" on an instance of "+classname+".");
 		try {
-				return method.invoke(objectInstance, values);
+			return method.invoke(objectInstance, values);
 		}
 		catch (SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			Logger.REFLECTION("Failed to Dynamically invoke "+methodName+" on an object of type: "+classname);

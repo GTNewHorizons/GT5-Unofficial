@@ -46,7 +46,7 @@ public class GT_GUIContainer_ComputerCube extends GT_GUIContainerMetaTile_Machin
 					this.fontRendererObj.drawString("HEM: " + (tContainer.mHEM / 10000.0F), 7, 128, 16448255);
 					this.fontRendererObj.drawString(toNumber(tContainer.mHeat) + "/" + toNumber(tContainer.mMaxHeat) + "Heat", 7, 136, 16448255);
 					this.fontRendererObj.drawString("Explosionpower: " + (tContainer.mExplosionStrength / 100.0F), 7, 144, 16448255);
-					this.fontRendererObj.drawString("Runtime: " + ((tContainer.mEUOut > 0) ? ((tContainer.mEU / tContainer.mEUOut) / 20.0F) : 0.0F) + "secs", 7, 152, 16448255);
+					this.fontRendererObj.drawString("Runtime: " + ((tContainer.mProgress > 0) ? (/*(tContainer.mEU / tContainer.mEUOut)*/ tContainer.mProgress / 20) : 0) + "secs", 7, 152, 16448255);
 					break;
 				case 2 :
 					this.fontRendererObj.drawString("Scanner", 51, 7, 16448255);
