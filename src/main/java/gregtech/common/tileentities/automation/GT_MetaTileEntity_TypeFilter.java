@@ -49,6 +49,12 @@ public class GT_MetaTileEntity_TypeFilter extends GT_MetaTileEntity_SpecialFilte
 
     public void clickTypeIcon(boolean aRightClick, ItemStack aHandStack) {
         if (getBaseMetaTileEntity().isServerSide()) {
+            ItemData data = GT_OreDictUnificator.getAssociation(aHandStack);
+            if (data != null && data.hasValidPrefixData()) {
+                this.mPrefix = data.mPrefix;
+                this.mRotationIndex = -1;
+                return;
+            }
             for (int i = 0; i < OrePrefixes.values().length; i++) {
                 if (this.mPrefix == OrePrefixes.values()[i]) {
                     for (this.mPrefix = null; this.mPrefix == null; this.mPrefix = OrePrefixes.values()[i]) {

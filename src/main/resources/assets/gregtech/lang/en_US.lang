@@ -133,6 +133,8 @@ GT5U.machines.stalled_vent.tooltip.3=§7vent towards an empty space.
 GT5U.machines.stalled_vent.tooltip.extended=§7Progress was lost, but not
 GT5U.machines.stalled_vent.tooltip.extended.1=§7the recipe's output.
 
+GT5U.recipe_filter.representation_slot.tooltip=Click with a machine to set filter
+
 GT5U.gui.select.current=Current:
 
 GT5U.item.programmed_circuit.select.header=Reprogram Circuit

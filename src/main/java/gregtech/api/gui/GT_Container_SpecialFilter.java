@@ -9,6 +9,9 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 public class GT_Container_SpecialFilter extends GT_ContainerMetaTile_Machine {
+
+    private GT_Slot_Render mSpecialSlot;
+
     public GT_Container_SpecialFilter(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
         super(aInventoryPlayer, aTileEntity);
     }
@@ -25,7 +28,7 @@ public class GT_Container_SpecialFilter extends GT_ContainerMetaTile_Machine {
         addSlotToContainer(new Slot(this.mTileEntity, 7, 116, 41));
         addSlotToContainer(new Slot(this.mTileEntity, 8, 134, 41));
 
-        addSlotToContainer(new GT_Slot_Render(this.mTileEntity, 9, 35, 23));
+        addSlotToContainer(mSpecialSlot = new GT_Slot_Render(this.mTileEntity, 9, 35, 23));
 
         addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 10, 8, 63, false, true, 1));
         addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 10, 26, 63, false, true, 1));
@@ -105,5 +108,9 @@ public class GT_Container_SpecialFilter extends GT_ContainerMetaTile_Machine {
     @Override
     public int getShiftClickSlotCount() {
         return 9;
+    }
+
+    public GT_Slot_Render getSpecialSlot() {
+        return mSpecialSlot;
     }
 }

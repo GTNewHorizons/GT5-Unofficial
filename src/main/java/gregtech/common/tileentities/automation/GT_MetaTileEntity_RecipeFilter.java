@@ -8,6 +8,8 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_SpecialFilt
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Recipe;
 import gregtech.common.blocks.GT_Item_Machines;
+import gregtech.common.gui.GT_GUIContainer_RecipeFilter;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -30,6 +32,11 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
 
     public GT_MetaTileEntity_RecipeFilter(String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
+    }
+
+    @Override
+    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+        return new GT_GUIContainer_RecipeFilter(aPlayerInventory, aBaseMetaTileEntity);
     }
 
     @Override
