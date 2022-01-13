@@ -1,18 +1,15 @@
-package gregtech.common.gui;
+package gregtech.api.gui;
 
-import gregtech.api.gui.GT_ContainerMetaTile_Machine;
-import gregtech.api.gui.GT_Slot_Holo;
-import gregtech.api.gui.GT_Slot_Render;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_SpecialFilter;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.tileentities.automation.GT_MetaTileEntity_TypeFilter;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-public class GT_Container_TypeFilter extends GT_ContainerMetaTile_Machine {
-    public GT_Container_TypeFilter(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
+public class GT_Container_SpecialFilter extends GT_ContainerMetaTile_Machine {
+    public GT_Container_SpecialFilter(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
         super(aInventoryPlayer, aTileEntity);
     }
 
@@ -48,12 +45,12 @@ public class GT_Container_TypeFilter extends GT_ContainerMetaTile_Machine {
                 return null;
             }
             if (aSlotIndex == 9) {
-                ((GT_MetaTileEntity_TypeFilter) this.mTileEntity.getMetaTileEntity()).clickTypeIcon(aMouseclick != 0);
+                ((GT_MetaTileEntity_SpecialFilter) this.mTileEntity.getMetaTileEntity()).clickTypeIcon(aMouseclick != 0, aPlayer.inventory.getItemStack());
                 return null;
             }
             if (aSlotIndex == 10) {
-                ((GT_MetaTileEntity_TypeFilter) this.mTileEntity.getMetaTileEntity()).bOutput = (!((GT_MetaTileEntity_TypeFilter) this.mTileEntity.getMetaTileEntity()).bOutput);
-                if (((GT_MetaTileEntity_TypeFilter) this.mTileEntity.getMetaTileEntity()).bOutput) {
+                ((GT_MetaTileEntity_SpecialFilter) this.mTileEntity.getMetaTileEntity()).bOutput = (!((GT_MetaTileEntity_SpecialFilter) this.mTileEntity.getMetaTileEntity()).bOutput);
+                if (((GT_MetaTileEntity_SpecialFilter) this.mTileEntity.getMetaTileEntity()).bOutput) {
                     GT_Utility.sendChatToPlayer(aPlayer, trans("116","Emit Energy to Outputside"));
                 } else {
                     GT_Utility.sendChatToPlayer(aPlayer, trans("117","Don't emit Energy"));
@@ -61,8 +58,8 @@ public class GT_Container_TypeFilter extends GT_ContainerMetaTile_Machine {
                 return null;
             }
             if (aSlotIndex == 11) {
-                ((GT_MetaTileEntity_TypeFilter) this.mTileEntity.getMetaTileEntity()).bRedstoneIfFull = (!((GT_MetaTileEntity_TypeFilter) this.mTileEntity.getMetaTileEntity()).bRedstoneIfFull);
-                if (((GT_MetaTileEntity_TypeFilter) this.mTileEntity.getMetaTileEntity()).bRedstoneIfFull) {
+                ((GT_MetaTileEntity_SpecialFilter) this.mTileEntity.getMetaTileEntity()).bRedstoneIfFull = (!((GT_MetaTileEntity_SpecialFilter) this.mTileEntity.getMetaTileEntity()).bRedstoneIfFull);
+                if (((GT_MetaTileEntity_SpecialFilter) this.mTileEntity.getMetaTileEntity()).bRedstoneIfFull) {
                     GT_Utility.sendChatToPlayer(aPlayer, trans("122","Emit Redstone if slots contain something"));
                 } else {
                     GT_Utility.sendChatToPlayer(aPlayer, trans("123","Don't emit Redstone"));
@@ -70,8 +67,8 @@ public class GT_Container_TypeFilter extends GT_ContainerMetaTile_Machine {
                 return null;
             }
             if (aSlotIndex == 12) {
-                ((GT_MetaTileEntity_TypeFilter) this.mTileEntity.getMetaTileEntity()).bInvert = (!((GT_MetaTileEntity_TypeFilter) this.mTileEntity.getMetaTileEntity()).bInvert);
-                if (((GT_MetaTileEntity_TypeFilter) this.mTileEntity.getMetaTileEntity()).bInvert) {
+                ((GT_MetaTileEntity_SpecialFilter) this.mTileEntity.getMetaTileEntity()).bInvert = (!((GT_MetaTileEntity_SpecialFilter) this.mTileEntity.getMetaTileEntity()).bInvert);
+                if (((GT_MetaTileEntity_SpecialFilter) this.mTileEntity.getMetaTileEntity()).bInvert) {
                     GT_Utility.sendChatToPlayer(aPlayer, trans("120","Invert Redstone"));
                 } else {
                     GT_Utility.sendChatToPlayer(aPlayer, trans("121","Don't invert Redstone"));
@@ -79,8 +76,8 @@ public class GT_Container_TypeFilter extends GT_ContainerMetaTile_Machine {
                 return null;
             }
             if (aSlotIndex == 13) {
-                ((GT_MetaTileEntity_TypeFilter) this.mTileEntity.getMetaTileEntity()).bInvertFilter = (!((GT_MetaTileEntity_TypeFilter) this.mTileEntity.getMetaTileEntity()).bInvertFilter);
-                if (((GT_MetaTileEntity_TypeFilter) this.mTileEntity.getMetaTileEntity()).bInvertFilter) {
+                ((GT_MetaTileEntity_SpecialFilter) this.mTileEntity.getMetaTileEntity()).bInvertFilter = (!((GT_MetaTileEntity_SpecialFilter) this.mTileEntity.getMetaTileEntity()).bInvertFilter);
+                if (((GT_MetaTileEntity_SpecialFilter) this.mTileEntity.getMetaTileEntity()).bInvertFilter) {
                     GT_Utility.sendChatToPlayer(aPlayer, trans("124","Invert Filter"));
                 } else {
                     GT_Utility.sendChatToPlayer(aPlayer, trans("125","Don't invert Filter"));
@@ -88,8 +85,8 @@ public class GT_Container_TypeFilter extends GT_ContainerMetaTile_Machine {
                 return null;
             }
             if (aSlotIndex == 14) {
-                ((GT_MetaTileEntity_TypeFilter) this.mTileEntity.getMetaTileEntity()).bNBTAllowed = (!((GT_MetaTileEntity_TypeFilter) this.mTileEntity.getMetaTileEntity()).bNBTAllowed);
-                if (((GT_MetaTileEntity_TypeFilter) this.mTileEntity.getMetaTileEntity()).bNBTAllowed) {
+                ((GT_MetaTileEntity_SpecialFilter) this.mTileEntity.getMetaTileEntity()).bNBTAllowed = (!((GT_MetaTileEntity_SpecialFilter) this.mTileEntity.getMetaTileEntity()).bNBTAllowed);
+                if (((GT_MetaTileEntity_SpecialFilter) this.mTileEntity.getMetaTileEntity()).bNBTAllowed) {
                     GT_Utility.sendChatToPlayer(aPlayer, trans("126","Ignore NBT"));
                 } else {
                     GT_Utility.sendChatToPlayer(aPlayer, trans("127","NBT has to match"));
