@@ -342,7 +342,7 @@ public class GregtechMTE_FrothFlotationCell extends GregtechMeta_MultiBlockBase 
 		} else {
 			while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
 				this.mEUt *= 4;
-				this.mMaxProgresstime /= 2;
+				this.mMaxProgresstime /= 4;
 			}
 		}
 
