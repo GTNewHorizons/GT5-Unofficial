@@ -3,14 +3,17 @@ package com.github.technus.tectech.thing.metaTileEntity.multi;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.dComplexAspectDefinition;
 import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.ePrimalAspectDefinition;
-import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalDecayResult;
-import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
-import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalMutableDefinitionStackMap;
+import com.github.technus.tectech.mechanics.constructable.IConstructable;
+import com.github.technus.tectech.mechanics.elementalMatter.core.decay.cElementalDecayResult;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.cElementalInstanceStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.cElementalDefinitionStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.templates.cElementalPrimitive;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.dAtomDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.dHadronDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.eQuarkDefinition;
+import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
+import com.github.technus.tectech.mechanics.structure.StructureDefinition;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.casing.TT_Container_Casings;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputElemental;
@@ -20,9 +23,6 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.base.IStatusFunctio
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
 import com.github.technus.tectech.util.CommonValues;
-import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
-import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -39,13 +39,12 @@ import java.util.HashMap;
 
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.bTransformationInfo.AVOGADRO_CONSTANT;
+import static com.github.technus.tectech.mechanics.structure.StructureUtility.*;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.*;
 import static com.github.technus.tectech.util.DoubleCount.add;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
@@ -86,10 +85,10 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
             @Override
             public void collide(cElementalInstanceStack in1, cElementalInstanceStack in2, cElementalInstanceStackMap out) {
                 try {
-                    cElementalMutableDefinitionStackMap defs = new cElementalMutableDefinitionStackMap();
+                    cElementalDefinitionStackMap defs = new cElementalDefinitionStackMap();
                     defs.putUnifyAll(in1.definition.getSubParticles());
                     defs.putUnifyAll(in2.definition.getSubParticles());
-                    dAtomDefinition atom = new dAtomDefinition(defs.toImmutable_optimized_unsafeLeavesExposedElementalTree());
+                    dAtomDefinition atom = new dAtomDefinition(defs.toImmutable_optimized_unsafe_LeavesExposedElementalTree());
                     out.putUnify(new cElementalInstanceStack(atom, Math.min(in1.amount, in2.amount)));
                 } catch (Exception e) {
                     out.putUnifyAll(in1, in2);
@@ -115,10 +114,10 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
             @Override
             public void collide(cElementalInstanceStack in1, cElementalInstanceStack in2, cElementalInstanceStackMap out) {
                 try {
-                    cElementalMutableDefinitionStackMap defs = new cElementalMutableDefinitionStackMap();
+                    cElementalDefinitionStackMap defs = new cElementalDefinitionStackMap();
                     defs.putUnifyAll(in1.definition.getSubParticles());
                     defs.putUnifyAll(in2.definition.getSubParticles());
-                    dHadronDefinition hadron = new dHadronDefinition(defs.toImmutable_optimized_unsafeLeavesExposedElementalTree());
+                    dHadronDefinition hadron = new dHadronDefinition(defs.toImmutable_optimized_unsafe_LeavesExposedElementalTree());
                     out.putUnify(new cElementalInstanceStack(hadron, Math.min(in1.amount, in2.amount)));
                 } catch (Exception e) {
                     out.putUnifyAll(in1, in2);
@@ -140,10 +139,10 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
             @Override
             public void collide(cElementalInstanceStack in1, cElementalInstanceStack in2, cElementalInstanceStackMap out) {
                 try {
-                    cElementalMutableDefinitionStackMap defs = new cElementalMutableDefinitionStackMap();
+                    cElementalDefinitionStackMap defs = new cElementalDefinitionStackMap();
                     defs.putUnifyAll(in1.definition.getSubParticles());
                     defs.putUnify(in2.definition.getStackForm(1));
-                    dHadronDefinition hadron = new dHadronDefinition(defs.toImmutable_optimized_unsafeLeavesExposedElementalTree());
+                    dHadronDefinition hadron = new dHadronDefinition(defs.toImmutable_optimized_unsafe_LeavesExposedElementalTree());
                     out.putUnify(new cElementalInstanceStack(hadron, Math.min(in1.amount, in2.amount)));
                 } catch (Exception e) {
                     out.putUnifyAll(in1, in2);
@@ -184,10 +183,10 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
 
         PRIMITIVE_FUSE_HANDLERS.put(eQuarkDefinition.class.getName() + '\0' + eQuarkDefinition.class.getName(), (in1, in2, out) -> {
             try {
-                cElementalMutableDefinitionStackMap defs = new cElementalMutableDefinitionStackMap();
+                cElementalDefinitionStackMap defs = new cElementalDefinitionStackMap();
                 defs.putUnify(in1.definition.getStackForm(1));
                 defs.putUnify(in2.definition.getStackForm(1));
-                dHadronDefinition hadron = new dHadronDefinition(defs.toImmutable_optimized_unsafeLeavesExposedElementalTree());
+                dHadronDefinition hadron = new dHadronDefinition(defs.toImmutable_optimized_unsafe_LeavesExposedElementalTree());
                 out.putUnify(new cElementalInstanceStack(hadron, Math.min(in1.amount, in2.amount)));
             } catch (Exception e) {
                 out.putUnifyAll(in1, in2);
@@ -211,10 +210,10 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
 
     private static boolean fuseAspects(cElementalInstanceStack in1, cElementalInstanceStack in2, cElementalInstanceStackMap out) {
         try {
-            cElementalMutableDefinitionStackMap defs = new cElementalMutableDefinitionStackMap();
+            cElementalDefinitionStackMap defs = new cElementalDefinitionStackMap();
             defs.putUnify(in1.definition.getStackForm(1));
             defs.putUnify(in2.definition.getStackForm(1));
-            dComplexAspectDefinition aspect = new dComplexAspectDefinition(defs.toImmutable_optimized_unsafeLeavesExposedElementalTree());
+            dComplexAspectDefinition aspect = new dComplexAspectDefinition(defs.toImmutable_optimized_unsafe_LeavesExposedElementalTree());
             out.putUnify(new cElementalInstanceStack(aspect, Math.min(in1.amount, in2.amount)));
         } catch (Exception e) {
             out.putUnifyAll(in1, in2);
@@ -247,10 +246,10 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
             @Override
             public void collide(cElementalInstanceStack in1, cElementalInstanceStack in2, cElementalInstanceStackMap out) {
                 try {
-                    cElementalMutableDefinitionStackMap defs = new cElementalMutableDefinitionStackMap();
+                    cElementalDefinitionStackMap defs = new cElementalDefinitionStackMap();
                     defs.putUnifyAll(in1.definition.getSubParticles());
                     defs.putUnify(in2.definition.getStackForm(1));
-                    dAtomDefinition atom = new dAtomDefinition(defs.toImmutable_optimized_unsafeLeavesExposedElementalTree());
+                    dAtomDefinition atom = new dAtomDefinition(defs.toImmutable_optimized_unsafe_LeavesExposedElementalTree());
                     out.putUnify(new cElementalInstanceStack(atom, Math.min(in1.amount, in2.amount)));
                 } catch (Exception e) {
                     out.putUnifyAll(in1, in2);
@@ -303,6 +302,49 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
 
     //region structure
     //use multi A energy inputs, use less power the longer it runs
+    private static final IStructureDefinition<GT_MetaTileEntity_EM_collider> STRUCTURE_DEFINITION = StructureDefinition
+            .<GT_MetaTileEntity_EM_collider>builder()
+            .addShapeOldApi("main", new String[][]{
+                    {"I0A0A0", "I00000", "I0A0A0",},
+                    {"H0000000", "G001111100", "H0000000",},
+                    {"F22223332222", "F41155555114", "F22223332222",},
+                    {"E2000000000002", "E4155111115514", "E2000000000002",},
+                    {"D20000E00002", "D41511E11514", "D20000E00002",},
+                    {"C2000I0002", "C4151I1514", "C2000I0002",},
+                    {"B2000K0002", "B4151K1514", "B2000K0002",},
+                    {"B200M002", "A0151M1510", "B200M002",},
+                    {"A0200M0020", "A0151M1510", "A0200M0020",},
+                    {"0020O0200", "0151O1510", "0020O0200",},
+                    {"A030O030", "0151O1510", "A030O030",},
+                    {"0030O0300", "0151O1510", "0030O0300",},
+                    {"A030O030", "0151O1510", "A030O030",},
+                    {"0020O0200", "0151O1510", "0020O0200",},
+                    {"A0200M0020", "A0151M1510", "A0200M0020",},
+                    {"B200M002", "A0151M1510", "B200M002",},
+                    {"B2000K0002", "B4151K1514", "B2000K0002",},
+                    {"C2000I0002", "C4151I1514", "C2000I0002",},
+                    {"D200002&&&200002", "D415112&.&211514", "D200002&&&200002",},
+                    {"E20!!22222!!02", "E4155111115514", "E20!!22222!!02",},
+                    {"F2222#$#2222", "F41155555114", "F2222#$#2222",},
+            })
+            .addElement('0', ofBlock(sBlockCasingsTT, 4))
+            .addElement('1', ofBlock(sBlockCasingsTT, 7))
+            .addElement('2', defer(t -> (int) t.eTier, (t, item) -> 2 - (item.stackSize & 1),
+                    error(), ofBlock(sBlockCasingsTT, 4), ofBlock(sBlockCasingsTT, 5)))
+            .addElement('3', ofBlock(QuantumGlassBlock.INSTANCE, 0))
+            .addElement('4', defer(t -> (int) t.eTier, (t, item) -> 2 - (item.stackSize & 1),
+                    error(), ofBlock(sBlockCasingsTT, 4), ofBlock(sBlockCasingsTT, 6)))
+            .addElement('5', defer(t -> (int) t.eTier, (t, item) -> 2 - (item.stackSize & 1),
+                    error(), ofBlock(sBlockCasingsTT, 8), ofBlock(sBlockCasingsTT, 9)))
+            .addElement('&', ofHatchAdderOptional(GT_MetaTileEntity_EM_collider::addClassicToMachineList,
+                    textureOffset, 1, sBlockCasingsTT, 0))
+            .addElement('!', ofHatchAdderOptional(GT_MetaTileEntity_EM_collider::addElementalInputToMachineList,
+                    textureOffset + 4, 2, sBlockCasingsTT, 4))
+            .addElement('$', ofHatchAdderOptional(GT_MetaTileEntity_EM_collider::addElementalOutputToMachineList,
+                    textureOffset + 4, 3, sBlockCasingsTT, 4))
+            .addElement('#', ofHatchAdderOptional(GT_MetaTileEntity_EM_collider::addElementalMufflerToMachineList,
+                    textureOffset + 4, 4, sBlockCasingsTT, 4))
+            .build();
     private static final String[] description = new String[]{
             EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
             translateToLocal("gt.blockmachines.multimachine.em.collider.hint.0"),//1 - Classic Hatches or High Power Casing
@@ -312,27 +354,8 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
             translateToLocal("gt.blockmachines.multimachine.em.collider.hint.4"),//General - Another Controller facing opposite direction
     };
 
-    private static final IStructureDefinition<GT_MetaTileEntity_EM_collider> STRUCTURE_DEFINITION =
-            StructureDefinition.<GT_MetaTileEntity_EM_collider>builder()
-            .addShape("main", transpose(new String[][]{
-                    {"         A A A         ","        AAAAAAA        ","      BBBBIIIBBBB      ","     BAAAAAAAAAAAB     ","    BAAAA     AAAAB    ","   BAAA         AAAB   ","  BAAA           AAAB  ","  BAA             AAB  "," ABAA             AABA ","AABA               ABAA"," AIA               AIA ","AAIA               AIAA"," AIA               AIA ","AABA               ABAA"," ABAA             AABA ","  BAA             AAB  ","  BAAA           AAAB  ","   BAAA         AAAB   ","    BAAAABJJJBAAAAB    ","     BAHHBBBBBHHAB     ","      BBBBGFGBBBB      "},
-                    {"         AAAAA         ","       AADDDDDAA       ","      CDDEEEEEDDC      ","     CDEEDDDDDEEDC     ","    CDEDD     DDEDC    ","   CDED         DEDC   ","  CDED           DEDC  "," ADED             DEDA "," ADED             DEDA ","ADED               DEDA","ADED               DEDA","ADED               DEDA","ADED               DEDA","ADED               DEDA"," ADED             DEDA "," ADED             DEDA ","  CDED           DEDC  ","   CDED         DEDC   ","    CDEDDBJ~JBDDEDC    ","     CDEEDDDDDEEDC     ","      CDDEEEEEDDC      "},
-                    {"         A A A         ","        AAAAAAA        ","      BBBBIIIBBBB      ","     BAAAAAAAAAAAB     ","    BAAAA     AAAAB    ","   BAAA         AAAB   ","  BAAA           AAAB  ","  BAA             AAB  "," ABAA             AABA ","AABA               ABAA"," AIA               AIA ","AAIA               AIAA"," AIA               AIA ","AABA               ABAA"," ABAA             AABA ","  BAA             AAB  ","  BAAA           AAAB  ","   BAAA         AAAB   ","    BAAAABJJJBAAAAB    ","     BAHHBBBBBHHAB     ","      BBBBGFGBBBB      "}
-            }))
-            .addElement('A', ofBlock(sBlockCasingsTT, 4))
-            .addElement('B', defer(t -> (int) t.eTier, (t, item) -> 2 - (item.stackSize & 1), error(), ofBlock(sBlockCasingsTT, 4), ofBlock(sBlockCasingsTT, 5)))
-            .addElement('C', defer(t -> (int) t.eTier, (t, item) -> 2 - (item.stackSize & 1), error(), ofBlock(sBlockCasingsTT, 4), ofBlock(sBlockCasingsTT, 6)))
-            .addElement('D', ofBlock(sBlockCasingsTT, 7))
-            .addElement('E', defer(t -> (int) t.eTier, (t, item) -> 2 - (item.stackSize & 1), error(), ofBlock(sBlockCasingsTT, 8), ofBlock(sBlockCasingsTT, 9)))
-            .addElement('F', ofHatchAdderOptional(GT_MetaTileEntity_EM_collider::addElementalOutputToMachineList, textureOffset + 4, 3, sBlockCasingsTT, 4))
-            .addElement('G', ofHatchAdderOptional(GT_MetaTileEntity_EM_collider::addElementalMufflerToMachineList, textureOffset + 4, 4, sBlockCasingsTT, 4))
-            .addElement('H', ofHatchAdderOptional(GT_MetaTileEntity_EM_collider::addElementalInputToMachineList, textureOffset + 4, 2, sBlockCasingsTT, 4))
-            .addElement('I', ofBlock(QuantumGlassBlock.INSTANCE, 0))
-            .addElement('J', ofHatchAdderOptional(GT_MetaTileEntity_EM_collider::addClassicToMachineList, textureOffset, 1, sBlockCasingsTT, 0))
-            .build();
-
     @Override
-    public IStructureDefinition<GT_MetaTileEntity_EM_collider> getStructure_EM() {
+    public IStructureDefinition<? extends GT_MetaTileEntity_MultiblockBase_EM> getStructure_EM() {
         return STRUCTURE_DEFINITION;
     }
 
@@ -371,7 +394,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
                 colliderHandler = FUSE_HANDLERS.get((stack.definition.getClassType() << 16) | stack2.definition.getClassType());
                 if (handleRecipe(stack2, map, colliderHandler)) return 0;
             }
-            for (cElementalInstanceStack newStack : map.values()) {
+            for (cElementalInstanceStack newStack : map.valuesToArray()) {
                 check &= newStack.definition.fusionMakesEnergy(newStack.getEnergy());
             }
             //System.out.println("outputEM[0].getMass() = " + outputEM[0].getMass());
@@ -502,7 +525,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
         if (started) {
             if (stack == null) {
                 for (GT_MetaTileEntity_Hatch_InputElemental inputElemental : eInputHatches) {
-                    cElementalInstanceStackMap container = inputElemental.getContainerHandler();
+                    cElementalInstanceStackMap container = inputElemental.getContentHandler();
                     if (container.isEmpty()) {
                         continue;
                     }
@@ -567,7 +590,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
             if (outputEM != null) {
                 for (int i = 0, lim = Math.min(outputEM.length, eOutputHatches.size()); i < lim; i++) {
                     if (outputEM[i] != null) {
-                        eOutputHatches.get(i).getContainerHandler().putUnifyAll(outputEM[i]);
+                        eOutputHatches.get(i).getContentHandler().putUnifyAll(outputEM[i]);
                         outputEM[i] = null;
                     }
                 }

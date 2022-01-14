@@ -1,10 +1,10 @@
 package com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive;
 
-import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalDecay;
+import com.github.technus.tectech.mechanics.elementalMatter.core.decay.cElementalDecay;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalDefinitionStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.templates.cElementalPrimitive;
 
-import static com.github.technus.tectech.mechanics.elementalMatter.core.cElementalDecay.*;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.decay.cElementalDecay.*;
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.eLeptonDefinition.*;
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.eQuarkDefinition.*;
 

@@ -3,8 +3,8 @@ package com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.defi
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.transformations.AspectDefinitionCompat;
 import com.github.technus.tectech.util.Util;
-import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalDecay;
-import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalDefinitionStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.decay.cElementalDecay;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.cElementalConstantStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalDefinitionStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.tElementalException;
 import com.github.technus.tectech.mechanics.elementalMatter.core.templates.cElementalDefinition;
@@ -18,7 +18,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import java.util.ArrayList;
 
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
-import static com.github.technus.tectech.mechanics.elementalMatter.core.cElementalDecay.noDecay;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.decay.cElementalDecay.noDecay;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_scanner.*;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
@@ -31,37 +31,27 @@ public final class dComplexAspectDefinition extends cElementalDefinition {
 
     private static final byte nbtType = (byte) 'c';
 
-    private final cElementalDefinitionStackMap aspectStacks;
-
-    @Deprecated
-    public dComplexAspectDefinition(cElementalDefinition... aspects) throws tElementalException {
-        this(true, new cElementalDefinitionStackMap(aspects));
-    }
-
-    @Deprecated
-    private dComplexAspectDefinition(boolean check, cElementalDefinition... aspects) throws tElementalException {
-        this(check, new cElementalDefinitionStackMap(aspects));
-    }
+    private final cElementalConstantStackMap aspectStacks;
 
     public dComplexAspectDefinition(cElementalDefinitionStack... aspects) throws tElementalException {
-        this(true, new cElementalDefinitionStackMap(aspects));
+        this(true, new cElementalConstantStackMap(aspects));
     }
 
     private dComplexAspectDefinition(boolean check, cElementalDefinitionStack... aspects) throws tElementalException {
-        this(check, new cElementalDefinitionStackMap(aspects));
+        this(check, new cElementalConstantStackMap(aspects));
     }
 
-    public dComplexAspectDefinition(cElementalDefinitionStackMap aspects) throws tElementalException {
+    public dComplexAspectDefinition(cElementalConstantStackMap aspects) throws tElementalException {
         this(true, aspects);
     }
 
-    private dComplexAspectDefinition(boolean check, cElementalDefinitionStackMap aspects) throws tElementalException {
+    private dComplexAspectDefinition(boolean check, cElementalConstantStackMap aspects) throws tElementalException {
         if (check && !canTheyBeTogether(aspects)) {
             throw new tElementalException("Hadron Definition error");
         }
         aspectStacks = aspects;
         float mass = 0;
-        for (cElementalDefinitionStack stack : aspects.values()) {
+        for (cElementalDefinitionStack stack : aspects.valuesToArray()) {
             mass += stack.getMass();
         }
         this.mass = mass;
@@ -69,9 +59,9 @@ public final class dComplexAspectDefinition extends cElementalDefinition {
     }
 
     //public but u can just try{}catch(){} the constructor it still calls this method
-    private static boolean canTheyBeTogether(cElementalDefinitionStackMap stacks) {
+    private static boolean canTheyBeTogether(cElementalConstantStackMap stacks) {
         long amount = 0;
-        for (cElementalDefinitionStack aspects : stacks.values()) {
+        for (cElementalDefinitionStack aspects : stacks.valuesToArray()) {
             if (!(aspects.definition instanceof dComplexAspectDefinition) && !(aspects.definition instanceof ePrimalAspectDefinition)) {
                 return false;
             }
@@ -97,7 +87,7 @@ public final class dComplexAspectDefinition extends cElementalDefinition {
     @Override
     public String getSymbol() {
         StringBuilder symbol = new StringBuilder(8);
-        for (cElementalDefinitionStack aspect : aspectStacks.values()) {
+        for (cElementalDefinitionStack aspect : aspectStacks.valuesToArray()) {
             if (aspect.definition instanceof ePrimalAspectDefinition) {
                 for (int i = 0; i < aspect.amount; i++) {
                     symbol.append(aspect.definition.getSymbol());
@@ -116,7 +106,7 @@ public final class dComplexAspectDefinition extends cElementalDefinition {
     @Override
     public String getShortSymbol() {
         StringBuilder symbol = new StringBuilder(8);
-        for (cElementalDefinitionStack aspect : aspectStacks.values()) {
+        for (cElementalDefinitionStack aspect : aspectStacks.valuesToArray()) {
             if (aspect.definition instanceof ePrimalAspectDefinition) {
                 for (int i = 0; i < aspect.amount; i++) {
                     symbol.append(aspect.definition.getShortSymbol());
@@ -137,10 +127,10 @@ public final class dComplexAspectDefinition extends cElementalDefinition {
         return getNbtTagCompound(nbtType, aspectStacks);
     }
 
-    public static NBTTagCompound getNbtTagCompound(byte nbtType, cElementalDefinitionStackMap aspectStacks) {
+    public static NBTTagCompound getNbtTagCompound(byte nbtType, cElementalConstantStackMap aspectStacks) {
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.setByte("t", nbtType);
-        cElementalDefinitionStack[] quarkStacksValues = aspectStacks.values();
+        cElementalDefinitionStack[] quarkStacksValues = aspectStacks.valuesToArray();
         nbt.setInteger("i", quarkStacksValues.length);
         for (int i = 0; i < quarkStacksValues.length; i++) {
             nbt.setTag(Integer.toString(i), quarkStacksValues[i].toNBT());
@@ -189,7 +179,7 @@ public final class dComplexAspectDefinition extends cElementalDefinition {
     }
 
     @Override
-    public cElementalDefinitionStackMap getSubParticles() {
+    public cElementalConstantStackMap getSubParticles() {
         return aspectStacks;
     }
 

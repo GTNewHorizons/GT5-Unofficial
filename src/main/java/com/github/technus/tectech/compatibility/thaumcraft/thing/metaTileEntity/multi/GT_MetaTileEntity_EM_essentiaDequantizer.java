@@ -2,7 +2,7 @@ package com.github.technus.tectech.compatibility.thaumcraft.thing.metaTileEntity
 
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.mechanics.constructable.IConstructable;
-import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.cElementalInstanceStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
 import com.github.technus.tectech.mechanics.structure.Structure;
 import com.github.technus.tectech.mechanics.structure.adders.IHatchAdder;
@@ -94,12 +94,12 @@ public class GT_MetaTileEntity_EM_essentiaDequantizer extends GT_MetaTileEntity_
             return false;
         }
 
-        cElementalInstanceStackMap inputHatchContainer = eInputHatches.get(0).getContainerHandler();
+        cElementalInstanceStackMap inputHatchContainer = eInputHatches.get(0).getContentHandler();
         if (inputHatchContainer == null || !inputHatchContainer.hasStacks()) {
             return false;
         }
 
-        cElementalInstanceStack stack = inputHatchContainer.get(TecTech.RANDOM.nextInt(inputHatchContainer.size()));
+        cElementalInstanceStack stack = inputHatchContainer.getRandom();
         if (stack.amount < AVOGADRO_CONSTANT_DIMINISHED) {
             cleanStackEM_EM(inputHatchContainer.remove(stack.definition));
             mEUt = (int) -V[6];

@@ -1,6 +1,6 @@
 package com.github.technus.tectech.mechanics.elementalMatter.core.transformations;
 
-import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.iHasElementalDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.iElementalStack;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -9,22 +9,22 @@ import net.minecraft.item.ItemStack;
 /**
  * Created by Tec on 23.05.2017.
  */
-public class aItemDequantizationInfo implements iExchangeInfo<iHasElementalDefinition,ItemStack> {
-    private final iHasElementalDefinition in;
-    private final ItemStack out;
+public class aItemDequantizationInfo implements iExchangeInfo<iElementalStack,ItemStack> {
+    private final iElementalStack in;
+    private final ItemStack       out;
 
-    public aItemDequantizationInfo(iHasElementalDefinition emIn, ItemStack itemStackOut){
+    public aItemDequantizationInfo(iElementalStack emIn, ItemStack itemStackOut){
         in=emIn;
         out=itemStackOut;
     }
 
-    public aItemDequantizationInfo(iHasElementalDefinition emIn, OrePrefixes prefix, Materials material, int amount) {
+    public aItemDequantizationInfo(iElementalStack emIn, OrePrefixes prefix, Materials material, int amount) {
         in = emIn;
         out = GT_OreDictUnificator.get(prefix, material, amount);
     }
 
     @Override
-    public iHasElementalDefinition input() {
+    public iElementalStack input() {
         return in.clone();
     }
 

@@ -5,12 +5,11 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.templates.iElem
 import net.minecraft.nbt.NBTTagCompound;
 
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.cPrimitiveDefinition.null__;
-import static com.github.technus.tectech.util.DoubleCount.add;
 
 /**
  * Created by danie_000 on 20.11.2016.
  */
-public final class cElementalDefinitionStack implements iHasElementalDefinition {
+public final class cElementalDefinitionStack implements iElementalStack {
     public final iElementalDefinition definition;
     public final double amount;
 
@@ -22,6 +21,14 @@ public final class cElementalDefinitionStack implements iHasElementalDefinition 
     @Override
     public cElementalDefinitionStack clone() {
         return this;//IMMUTABLE
+    }
+
+    @Override
+    public cElementalDefinitionStack mutateAmount(double amount) {
+        if(this.amount==amount){
+            return this;
+        }
+        return new cElementalDefinitionStack(definition,amount);//IMMUTABLE
     }
 
     @Override
@@ -57,26 +64,8 @@ public final class cElementalDefinitionStack implements iHasElementalDefinition 
                 nbt.getLong("q")+nbt.getDouble("Q"));
     }
 
-    public cElementalDefinitionStack addAmountIntoNewInstance(double amount) {
-        if(amount==0) {
-            return this;
-        }
-        return new cElementalDefinitionStack(definition, add(amount,this.amount));
-    }
-
-    public cElementalDefinitionStack addAmountIntoNewInstance(cElementalDefinitionStack... other) {
-        if (other == null || other.length == 0) {
-            return this;
-        }
-        double l = 0;
-        for (cElementalDefinitionStack stack : other) {
-            l= add(l,stack.amount);
-        }
-        return addAmountIntoNewInstance(l);
-    }
-
     @Override
-    public int compareTo(iHasElementalDefinition o) {
+    public int compareTo(iElementalStack o) {
         return definition.compareTo(o.getDefinition());
     }
 
@@ -85,8 +74,8 @@ public final class cElementalDefinitionStack implements iHasElementalDefinition 
         if (obj instanceof iElementalDefinition) {
             return definition.compareTo((iElementalDefinition) obj) == 0;
         }
-        if (obj instanceof iHasElementalDefinition) {
-            return definition.compareTo(((iHasElementalDefinition) obj).getDefinition()) == 0;
+        if (obj instanceof iElementalStack) {
+            return definition.compareTo(((iElementalStack) obj).getDefinition()) == 0;
         }
         return false;
     }

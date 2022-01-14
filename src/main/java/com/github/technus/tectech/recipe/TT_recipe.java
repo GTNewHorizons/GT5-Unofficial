@@ -1,7 +1,7 @@
 package com.github.technus.tectech.recipe;
 
-import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalDefinitionStackMap;
-import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.cElementalConstantStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.cElementalInstanceStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.templates.cElementalDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.core.templates.iElementalDefinition;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -17,16 +17,16 @@ import java.util.HashSet;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 
 public class TT_recipe extends GT_Recipe {
-    public static final String E_RECIPE_ID = "eRecipeID";
-    public final cElementalDefinitionStackMap[] input;
-    public final cElementalDefinitionStackMap[] output;
-    public final cElementalDefinitionStackMap[] eCatalyst;
-    public final IAdditionalCheck additionalCheck;
+    public static final String                E_RECIPE_ID = "eRecipeID";
+    public final cElementalConstantStackMap[] input;
+    public final cElementalConstantStackMap[] output;
+    public final cElementalConstantStackMap[] eCatalyst;
+    public final IAdditionalCheck             additionalCheck;
 
     public TT_recipe(boolean aOptimize,
                      ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems, int[] aChances,
                      FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue,
-                     cElementalDefinitionStackMap[] in, cElementalDefinitionStackMap[] out, cElementalDefinitionStackMap[] catalyst, IAdditionalCheck check){
+                     cElementalConstantStackMap[] in, cElementalConstantStackMap[] out, cElementalConstantStackMap[] catalyst, IAdditionalCheck check){
         super(aOptimize,aInputs,aOutputs,aSpecialItems,aChances,aFluidInputs,aFluidOutputs,aDuration,aEUt,aSpecialValue);
         input=in;
         output=out;
@@ -110,7 +110,7 @@ public class TT_recipe extends GT_Recipe {
         }
         if (input != null) {
             if (in != null) {
-                for (cElementalDefinitionStackMap anInput : input) {
+                for (cElementalConstantStackMap anInput : input) {
                     if (anInput != null && anInput.hasStacks()) {
                         if (in.hasStacks()) {
                             if (!in.removeAllAmounts(consume, anInput)) {
@@ -181,7 +181,7 @@ public class TT_recipe extends GT_Recipe {
         public TT_assLineRecipe(boolean aOptimize, ItemStack researchItem,
                                 ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems,
                                 FluidStack[] aFluidInputs, int aDuration, int aEUt, int aSpecialValue,
-                                cElementalDefinitionStackMap[] in, cElementalDefinitionStackMap[] out, cElementalDefinitionStackMap[] catalyst, IAdditionalCheck check) {
+                                cElementalConstantStackMap[] in, cElementalConstantStackMap[] out, cElementalConstantStackMap[] catalyst, IAdditionalCheck check) {
             super(aOptimize, aInputs, aOutputs, aSpecialItems, null, aFluidInputs, null, aDuration, aEUt, aSpecialValue, in, out, catalyst, check);
             mResearchItem=researchItem;
         }
@@ -189,7 +189,7 @@ public class TT_recipe extends GT_Recipe {
         public TT_assLineRecipe(boolean aOptimize, ItemStack researchItem,
                                 ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems,
                                 FluidStack[] aFluidInputs, int aDuration, int aEUt, int aSpecialValue,
-                                cElementalDefinitionStackMap[] in) {
+                                cElementalConstantStackMap[] in) {
             this(aOptimize, researchItem, aInputs, aOutputs, aSpecialItems, aFluidInputs, aDuration, aEUt, aSpecialValue, in, null, null,null);
         }
     }
@@ -199,9 +199,9 @@ public class TT_recipe extends GT_Recipe {
         public final GT_Recipe scannerRecipe;
 
         public TT_EMRecipe(boolean aOptimize, GT_Recipe scannerRecipe, iElementalDefinition researchEM,
-                                ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems,
-                                FluidStack[] aFluidInputs, int aDuration, int aEUt, int aSpecialValue,
-                                cElementalDefinitionStackMap[] in, cElementalDefinitionStackMap[] out, cElementalDefinitionStackMap[] catalyst, IAdditionalCheck check) {
+                           ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems,
+                           FluidStack[] aFluidInputs, int aDuration, int aEUt, int aSpecialValue,
+                           cElementalConstantStackMap[] in, cElementalConstantStackMap[] out, cElementalConstantStackMap[] catalyst, IAdditionalCheck check) {
             super(aOptimize, aInputs, aOutputs, aSpecialItems, null, aFluidInputs, null, aDuration, aEUt, aSpecialValue, in, out, catalyst, check);
             mResearchEM=researchEM;
             this.scannerRecipe=scannerRecipe;
@@ -210,7 +210,7 @@ public class TT_recipe extends GT_Recipe {
         public TT_EMRecipe(boolean aOptimize, GT_Recipe scannerRecipe, iElementalDefinition researchEM,
                                 ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems,
                                 FluidStack[] aFluidInputs, int aDuration, int aEUt, int aSpecialValue,
-                                cElementalDefinitionStackMap[] in) {
+                                cElementalConstantStackMap[] in) {
             this(aOptimize, scannerRecipe, researchEM, aInputs, aOutputs, aSpecialItems, aFluidInputs, aDuration, aEUt, aSpecialValue, in, null, null,null);
         }
     }

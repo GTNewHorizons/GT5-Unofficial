@@ -2,26 +2,25 @@ package com.github.technus.tectech.thing.metaTileEntity.multi.base;
 
 import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.TecTech;
-
-import com.github.technus.tectech.mechanics.structure.Structure;
-import com.gtnewhorizon.structurelib.StructureLibAPI;
-import com.gtnewhorizon.structurelib.alignment.IAlignment;
-import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
-import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
-import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
-import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
-import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
-import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.util.Vec3Impl;
-import cpw.mods.fml.common.network.NetworkRegistry;
-
-import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
+import com.github.technus.tectech.loader.NetworkDispatcher;
+import com.github.technus.tectech.mechanics.alignment.AlignmentLimits;
+import com.github.technus.tectech.mechanics.alignment.AlignmentMessage;
+import com.github.technus.tectech.mechanics.alignment.IAlignment;
+import com.github.technus.tectech.mechanics.alignment.IAlignmentLimits;
+import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
+import com.github.technus.tectech.mechanics.alignment.enumerable.Flip;
+import com.github.technus.tectech.mechanics.alignment.enumerable.Rotation;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.cElementalInstanceStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalDefinitionStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.tElementalException;
+import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
+import com.github.technus.tectech.mechanics.structure.Structure;
+import com.github.technus.tectech.mechanics.structure.adders.IHatchAdder;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.*;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
 import com.github.technus.tectech.util.Util;
+import com.github.technus.tectech.util.Vec3Impl;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -33,7 +32,6 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gregtech.api.util.IGT_HatchAdder;
 import gregtech.common.GT_Pollution;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -146,7 +144,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     private boolean explodedThisTick = false;
 
     //front rotation val
-    private IAlignmentLimits alignmentLimits = IAlignmentLimits.UNLIMITED;
+    private IAlignmentLimits alignmentLimits = AlignmentLimits.UNLIMITED;
     private ExtendedFacing extendedFacing = ExtendedFacing.DEFAULT;
     //endregion
 
@@ -177,12 +175,9 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
             IGregTechTileEntity base = getBaseMetaTileEntity();
             mMachine = false;
             if (getBaseMetaTileEntity().isServerSide()) {
-                //NetworkDispatcher.INSTANCE.sendToAllAround(new AlignmentMessage.AlignmentData(this),
-                //        base.getWorld().provider.dimensionId,
-                //        base.getXCoord(), base.getYCoord(), base.getZCoord(), 512);
-                StructureLibAPI.sendAlignment((IAlignmentProvider) base,
-                        new NetworkRegistry.TargetPoint(base.getWorld().provider.dimensionId,
-                                base.getXCoord(), base.getYCoord(), base.getZCoord(), 512));
+                NetworkDispatcher.INSTANCE.sendToAllAround(new AlignmentMessage.AlignmentData(this),
+                        base.getWorld().provider.dimensionId,
+                        base.getXCoord(), base.getYCoord(), base.getZCoord(), 512);
             }else{
                 base.issueTextureUpdate();
             }
@@ -192,6 +187,11 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     @Override
     public IAlignmentLimits getAlignmentLimits() {
         return alignmentLimits;
+    }
+
+    @Override
+    public void setAlignmentLimits(IAlignmentLimits limits) {
+        alignmentLimits=limits;
     }
 
     @Override
@@ -237,7 +237,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
             String[][] structure,//0-9 casing, +- air no air, a-z ignore
             Block[] blockType,//use numbers 0-9 for casing types
             byte[] blockMeta,//use numbers 0-9 for casing types
-            IGT_HatchAdder<T>[] addingMethods,
+            IHatchAdder<T>[] addingMethods,
             short[] casingTextures,
             Block[] blockTypeFallback,//use numbers 0-9 for casing types
             byte[] blockMetaFallback,//use numbers 0-9 for casing types
@@ -387,23 +387,21 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
         return new String[]{
                 "Progress:",
-                EnumChatFormatting.GREEN + GT_Utility.formatNumbers(mProgresstime / 20) + EnumChatFormatting.RESET + " s / " +
-                        EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(mMaxProgresstime / 20) + EnumChatFormatting.RESET + " s",
+                EnumChatFormatting.GREEN + Integer.toString(mProgresstime / 20) + EnumChatFormatting.RESET + " s / " +
+                        EnumChatFormatting.YELLOW + mMaxProgresstime / 20 + EnumChatFormatting.RESET + " s",
                 "Energy Hatches:",
-                EnumChatFormatting.GREEN + GT_Utility.formatNumbers(storedEnergy) + EnumChatFormatting.RESET + " EU / " +
-                        EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(maxEnergy) + EnumChatFormatting.RESET + " EU",
+                EnumChatFormatting.GREEN + Long.toString(storedEnergy) + EnumChatFormatting.RESET + " EU / " +
+                        EnumChatFormatting.YELLOW + maxEnergy + EnumChatFormatting.RESET + " EU",
                 (mEUt * eAmpereFlow <= 0 ? "Probably uses: " : "Probably makes: ") +
-                        EnumChatFormatting.RED + GT_Utility.formatNumbers(Math.abs(mEUt)) + EnumChatFormatting.RESET + " EU/t at " +
-                        EnumChatFormatting.RED + GT_Utility.formatNumbers(eAmpereFlow) + EnumChatFormatting.RESET + " A",
-                "Tier Rating: " + EnumChatFormatting.YELLOW + VN[getMaxEnergyInputTier_EM()] + EnumChatFormatting.RESET + " / " +
-                        EnumChatFormatting.GREEN + VN[getMinEnergyInputTier_EM()] + EnumChatFormatting.RESET +
-                        " Amp Rating: " + EnumChatFormatting.GREEN + GT_Utility.formatNumbers(eMaxAmpereFlow) + EnumChatFormatting.RESET + " A",
+                        EnumChatFormatting.RED + Math.abs(mEUt) + EnumChatFormatting.RESET + " EU/t at " +
+                        EnumChatFormatting.RED + eAmpereFlow + EnumChatFormatting.RESET + " A",
+                "Tier Rating: " + EnumChatFormatting.YELLOW + VN[getMaxEnergyInputTier_EM()] + EnumChatFormatting.RESET + " / " + EnumChatFormatting.GREEN + VN[getMinEnergyInputTier_EM()] + EnumChatFormatting.RESET +
+                        " Amp Rating: " + EnumChatFormatting.GREEN + eMaxAmpereFlow + EnumChatFormatting.RESET + " A",
                 "Problems: " + EnumChatFormatting.RED + (getIdealStatus() - getRepairStatus()) + EnumChatFormatting.RESET +
                         " Efficiency: " + EnumChatFormatting.YELLOW + mEfficiency / 100.0F + EnumChatFormatting.RESET + " %",
                 "PowerPass: " + EnumChatFormatting.BLUE + ePowerPass + EnumChatFormatting.RESET +
                         " SafeVoid: " + EnumChatFormatting.BLUE + eSafeVoid,
-                "Computation: " + EnumChatFormatting.GREEN + GT_Utility.formatNumbers(eAvailableData) + EnumChatFormatting.RESET + " / " +
-                        EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(eRequiredData) + EnumChatFormatting.RESET
+                "Computation: " + EnumChatFormatting.GREEN + eAvailableData + EnumChatFormatting.RESET + " / " + EnumChatFormatting.YELLOW + eRequiredData + EnumChatFormatting.RESET
         };
     }
 
@@ -650,9 +648,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
      */
     protected long getAvailableData_EM() {
         long result = 0;
-        Vec3Impl pos = new Vec3Impl(getBaseMetaTileEntity().getXCoord(),
-                                    getBaseMetaTileEntity().getYCoord(),
-                                    getBaseMetaTileEntity().getZCoord());
+        Vec3Impl pos = new Vec3Impl(getBaseMetaTileEntity());
         for (GT_MetaTileEntity_Hatch_InputData in : eInputData) {
             if (in.q != null) {
                 Long value = in.q.contentIfNotInTrace(pos);
@@ -1099,7 +1095,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     public final void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         isFacingValid(aBaseMetaTileEntity.getFrontFacing());
         if (getBaseMetaTileEntity().isClientSide()) {
-            StructureLibAPI.queryAlignment((IAlignmentProvider) aBaseMetaTileEntity);
+            NetworkDispatcher.INSTANCE.sendToServer(new AlignmentMessage.AlignmentQuery(this));
         }
         onFirstTick_EM(aBaseMetaTileEntity);
     }
@@ -1301,26 +1297,26 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
             }
             double remaining = voider.overflowMax - voider.getOverflowMatter();
             for (GT_MetaTileEntity_Hatch_InputElemental in : eInputHatches) {
-                for (cElementalInstanceStack instance : in.getContainerHandler().values()) {
+                for (cElementalInstanceStack instance : in.getContentHandler().valuesToArray()) {
                     double qty = div(remaining,instance.definition.getMass());
                     if (qty > 0) {
                         qty = min(qty, instance.amount);
                         if (voider.addOverflowMatter(instance.definition.getMass() * qty)) {
                             voider.setOverflowMatter(voider.overflowMax);
                         }
-                        in.getContainerHandler().removeAmount(false, new cElementalDefinitionStack(instance.definition, qty));
+                        in.getContentHandler().removeAmount(false, new cElementalDefinitionStack(instance.definition, qty));
                     }
                 }
             }
             for (GT_MetaTileEntity_Hatch_OutputElemental out : eOutputHatches) {
-                for (cElementalInstanceStack instance : out.getContainerHandler().values()) {
+                for (cElementalInstanceStack instance : out.getContentHandler().valuesToArray()) {
                     double qty = div(remaining,instance.definition.getMass());
                     if (qty > 0) {
                         qty = min(qty, instance.amount);
                         if (voider.addOverflowMatter(instance.definition.getMass() * qty)) {
                             voider.setOverflowMatter(voider.overflowMax);
                         }
-                        out.getContainerHandler().removeAmount(false, new cElementalDefinitionStack(instance.definition, qty));
+                        out.getContentHandler().removeAmount(false, new cElementalDefinitionStack(instance.definition, qty));
                     }
                 }
             }
@@ -1679,7 +1675,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
             addEnergyOutput_EM((long) mEUt * (long) mEfficiency / getMaxEfficiency(aStack), eAmpereFlow);
         } else if (euFlow < 0) {
             if (!drainEnergyInput_EM(mEUt, (long) mEUt * getMaxEfficiency(aStack) / Math.max(1000L, mEfficiency), eAmpereFlow)) {
-                criticalStopMachine();
+                stopMachine();
                 return false;
             }
         }
@@ -1692,7 +1688,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
             addEnergyOutput_EM((long) mEUt * (long) mEfficiency / getMaxEfficiency(aStack), eAmpereFlow);
         } else if (euFlow < 0) {
             if (!drainEnergyInput((long) mEUt * getMaxEfficiency(aStack) / Math.max(1000L, mEfficiency), eAmpereFlow)) {
-                criticalStopMachine();
+                stopMachine();
                 return false;
             }
         }
@@ -1936,7 +1932,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     public final cElementalInstanceStackMap getInputsClone_EM() {
         cElementalInstanceStackMap in = new cElementalInstanceStackMap();
         for (GT_MetaTileEntity_Hatch_ElementalContainer hatch : eInputHatches) {
-            in.putUnifyAll(hatch.getContainerHandler());
+            in.putUnifyAll(hatch.getContentHandler());
         }
         return in.hasStacks() ? in : null;
     }
@@ -1945,7 +1941,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     public final cElementalInstanceStackMap getOutputsClone_EM() {
         cElementalInstanceStackMap out = new cElementalInstanceStackMap();
         for (GT_MetaTileEntity_Hatch_ElementalContainer hatch : eOutputHatches) {
-            out.putUnifyAll(hatch.getContainerHandler());
+            out.putUnifyAll(hatch.getContentHandler());
         }
         return out.hasStacks() ? out : null;
     }
@@ -1975,7 +1971,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         if (target == null) {
             return;
         }
-        cleanMassEM_EM(target.getContainerHandler().getMass());
+        cleanMassEM_EM(target.getContentHandler().getMass());
     }
 
     public void cleanStackEM_EM(cElementalInstanceStack target) {

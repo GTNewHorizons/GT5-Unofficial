@@ -2,7 +2,7 @@ package com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.defi
 
 import com.github.technus.tectech.mechanics.elementalMatter.core.templates.cElementalPrimitive;
 
-import static com.github.technus.tectech.mechanics.elementalMatter.core.cElementalDecay.noDecay;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.decay.cElementalDecay.noDecay;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**

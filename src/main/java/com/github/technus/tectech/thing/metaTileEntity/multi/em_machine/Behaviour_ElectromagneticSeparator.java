@@ -1,7 +1,7 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi.em_machine;
 
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.cElementalInstanceStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.dAtomDefinition;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.INameFunction;
@@ -147,7 +147,7 @@ public class Behaviour_ElectromagneticSeparator implements GT_MetaTileEntity_EM_
         cElementalInstanceStackMap input = inputs[0];
         if (input == null || input.isEmpty()) return null;//nothing in only valid input
 
-        cElementalInstanceStack[] stacks = input.values();
+        cElementalInstanceStack[] stacks = input.valuesToArray();
 
         double inputMass = 0;
         for (cElementalInstanceStack stack : stacks) {
@@ -185,7 +185,7 @@ public class Behaviour_ElectromagneticSeparator implements GT_MetaTileEntity_EM_
         double levelsCountPlus1=precisionFullIn-precisionMinimalIn+1;
 
         //take all from hatch handler and put into new map - this takes from hatch to inner data storage
-        stacks = input.takeAllToNewMap().values();//cleanup stacks
+        stacks = input.takeAll().valuesToArray();//cleanup stacks
         for(cElementalInstanceStack stack:stacks){
             double charge=stack.definition.getCharge()-offsetIn;
             if(charge<precisionMinimalIn && charge>-precisionMinimalIn){

@@ -3,9 +3,9 @@ package com.github.technus.tectech.thing.metaTileEntity.multi;
 import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.mechanics.constructable.IConstructable;
-import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.cElementalInstanceStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
-import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.iHasElementalDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.iElementalStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.aFluidQuantizationInfo;
 import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.aItemQuantizationInfo;
 import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.aOredictQuantizationInfo;
@@ -113,7 +113,7 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
                             if (aOQI == null) {
                                 continue;
                             }
-                            iHasElementalDefinition into = aOQI.output();
+                            iElementalStack into = aOQI.output();
                             if (into != null && isInputEqual(true, false, nullFluid, new ItemStack[]{new ItemStack(is.getItem(), aOQI.amount, is.getItemDamage())}, null, inI)) {
                                 startRecipe(into);
                                 return true;
@@ -124,7 +124,7 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
                         if (DEBUG_MODE) {
                             TecTech.LOGGER.info("Quantifier-Item-recipe " + is.getItem().getUnlocalizedName() + '.' + is.getItemDamage());
                         }
-                        iHasElementalDefinition into = aIQI.output();
+                        iElementalStack into = aIQI.output();
                         if (into != null && isInputEqual(true, false, nullFluid, new ItemStack[]{new ItemStack(is.getItem(), aIQI.input().stackSize, is.getItemDamage())}, null, inI)) {
                             startRecipe(into);
                             return true;
@@ -140,7 +140,7 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
                     if (aFQI == null) {
                         continue;
                     }
-                    iHasElementalDefinition into = aFQI.output();
+                    iElementalStack into = aFQI.output();
                     if (into != null && fs.amount >= aFQI.input().amount && isInputEqual(true, false,
                             new FluidStack[]{aFQI.input()}, nullItem, inF, (ItemStack[]) null)) {
                         startRecipe(into);
@@ -152,7 +152,7 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
         return false;
     }
 
-    private void startRecipe(iHasElementalDefinition into) {
+    private void startRecipe(iElementalStack into) {
         mMaxProgresstime = 20;
         mEfficiencyIncrease = 10000;
         double mass = into.getMass();
@@ -176,7 +176,7 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
             stopMachine();
             return;
         }
-        eOutputHatches.get(0).getContainerHandler().putUnifyAll(outputEM[0]);
+        eOutputHatches.get(0).getContentHandler().putUnifyAll(outputEM[0]);
         outputEM = null;
     }
 
