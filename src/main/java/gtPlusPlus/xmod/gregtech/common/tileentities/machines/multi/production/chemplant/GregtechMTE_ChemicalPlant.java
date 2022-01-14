@@ -577,7 +577,7 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
 	public boolean checkRecipeGeneric(
 			ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
 			int aMaxParallelRecipes, int aEUPercent,
-			int aSpeedBonusPercent, int aOutputChanceRoll, GT_Recipe aRecipe, boolean isOC) {
+			int aSpeedBonusPercent, int aOutputChanceRoll, GT_Recipe aRecipe) {
 
 		// Based on the Processing Array. A bit overkill, but very flexible.		
 

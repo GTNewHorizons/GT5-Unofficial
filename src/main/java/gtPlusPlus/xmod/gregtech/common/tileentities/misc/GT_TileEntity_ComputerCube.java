@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import Ic2ExpReactorPlanner.SimulationData;
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.ITexture;
@@ -12,37 +13,26 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.xmod.bartworks.BW_Utils;
-import gtPlusPlus.xmod.goodgenerator.GG_Utils;
 import gtPlusPlus.xmod.gregtech.api.gui.computer.GT_Container_ComputerCube;
 import gtPlusPlus.xmod.gregtech.api.gui.computer.GT_GUIContainer_ComputerCube;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import gtPlusPlus.xmod.gregtech.common.computer.GT_ComputercubeDescription;
+import gtPlusPlus.xmod.gregtech.common.computer.GT_Computercube_Description;
 import gtPlusPlus.xmod.gregtech.common.computer.GT_Computercube_Simulator;
-import ic2.api.reactor.IReactor;
-import ic2.api.reactor.IReactorComponent;
 import ic2.core.Ic2Items;
-import ic2.core.init.MainConfig;
-import ic2.core.util.ConfigUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 
-public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank implements IReactor {
+public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank {
 
 	public static boolean mSeedscanner = true;
 
@@ -56,11 +46,11 @@ public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank impl
 
 	public int mHeat = 0;
 
-	public int mEUOut = 0;
+	public long mEUOut = 0;
 
 	public int mMaxHeat = 10000;
 
-	public int mEU = 0;
+	public long mEU = 0;
 
 	public int mProgress = 0;
 
@@ -90,24 +80,14 @@ public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank impl
 
 	@Override
 	public Object getServerGUI(final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
-		try {
-			return new GT_Container_ComputerCube(aPlayerInventory, aBaseMetaTileEntity, mMode);
-		}
-		catch (Throwable t) {
-			t.printStackTrace();
-			return null;
-		}
+		Logger.INFO("CC-Sever ID: "+aID);
+		return new GT_Container_ComputerCube(aPlayerInventory, aBaseMetaTileEntity, mMode);
 	}
 
 	@Override
 	public Object getClientGUI(final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
-		try {
-			return new GT_GUIContainer_ComputerCube(aPlayerInventory, aBaseMetaTileEntity, mMode);
-		}
-		catch (Throwable t) {
-			t.printStackTrace();
-			return null;
-		}
+		Logger.INFO("CC-Client ID: "+aID);
+		return new GT_GUIContainer_ComputerCube(aPlayerInventory, aBaseMetaTileEntity, mMode);
 	}
 
 	@Override
@@ -115,9 +95,7 @@ public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank impl
 		if (aBaseMetaTileEntity.isClientSide()) {
 			return true;
 		}
-		Logger.INFO("Did rmb.");
-		boolean aDidOpen = aBaseMetaTileEntity.openGUI(aPlayer);
-		Logger.INFO("Did open? "+aDidOpen);
+		aBaseMetaTileEntity.openGUI(aPlayer, mMode);
 		return true;
 	}
 
@@ -284,123 +262,123 @@ public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank impl
 		if (this.mMode == 6) {
 			showElectrolyzerRecipe(0);
 		}
-		//this.getWorld().addBlockEvent(this.getXCoord(), this.getYCoord(), this.getZCoord(), (GregTech_API.sBlockList[1]), 10, this.mMode);
-		//this.getWorld().addBlockEvent(this.getXCoord(), this.getYCoord(), this.getZCoord(), (GregTech_API.sBlockList[1]), 11, this.mMaxHeat);
+		this.getWorld().addBlockEvent(this.getXCoord(), this.getYCoord(), this.getZCoord(), GregTech_API.sBlockMachines, 10, this.mMode);
+		this.getWorld().addBlockEvent(this.getXCoord(), this.getYCoord(), this.getZCoord(), GregTech_API.sBlockMachines, 11, this.mMaxHeat);
 	}
 
 	public void showDescription(int aIndex) {
 		this.mExplosionStrength = 0.0F;
-		if (GT_ComputercubeDescription.sDescriptions.isEmpty()) {
+		if (GT_Computercube_Description.sDescriptions.isEmpty()) {
 			return;
 		}
-		if (aIndex >= GT_ComputercubeDescription.sDescriptions.size() || aIndex < 0)
+		if (aIndex >= GT_Computercube_Description.sDescriptions.size() || aIndex < 0)
 			aIndex = 0;
-		if (((GT_ComputercubeDescription) GT_ComputercubeDescription.sDescriptions.get(aIndex)).mStacks[0] == null) {
+		if (((GT_Computercube_Description) GT_Computercube_Description.sDescriptions.get(aIndex)).mStacks[0] == null) {
 			this.mInventory[59] = null;
 		}
 		else {
-			this.mInventory[59] = ((GT_ComputercubeDescription) GT_ComputercubeDescription.sDescriptions.get(aIndex)).mStacks[0].copy();
+			this.mInventory[59] = ((GT_Computercube_Description) GT_Computercube_Description.sDescriptions.get(aIndex)).mStacks[0].copy();
 		}
-		if (((GT_ComputercubeDescription) GT_ComputercubeDescription.sDescriptions.get(aIndex)).mStacks[1] == null) {
+		if (((GT_Computercube_Description) GT_Computercube_Description.sDescriptions.get(aIndex)).mStacks[1] == null) {
 			this.mInventory[60] = null;
 		}
 		else {
-			this.mInventory[60] = ((GT_ComputercubeDescription) GT_ComputercubeDescription.sDescriptions.get(aIndex)).mStacks[1].copy();
+			this.mInventory[60] = ((GT_Computercube_Description) GT_Computercube_Description.sDescriptions.get(aIndex)).mStacks[1].copy();
 		}
-		if (((GT_ComputercubeDescription) GT_ComputercubeDescription.sDescriptions.get(aIndex)).mStacks[2] == null) {
+		if (((GT_Computercube_Description) GT_Computercube_Description.sDescriptions.get(aIndex)).mStacks[2] == null) {
 			this.mInventory[61] = null;
 		}
 		else {
-			this.mInventory[61] = ((GT_ComputercubeDescription) GT_ComputercubeDescription.sDescriptions.get(aIndex)).mStacks[2].copy();
+			this.mInventory[61] = ((GT_Computercube_Description) GT_Computercube_Description.sDescriptions.get(aIndex)).mStacks[2].copy();
 		}
-		if (((GT_ComputercubeDescription) GT_ComputercubeDescription.sDescriptions.get(aIndex)).mStacks[3] == null) {
+		if (((GT_Computercube_Description) GT_Computercube_Description.sDescriptions.get(aIndex)).mStacks[3] == null) {
 			this.mInventory[62] = null;
 		}
 		else {
-			this.mInventory[62] = ((GT_ComputercubeDescription) GT_ComputercubeDescription.sDescriptions.get(aIndex)).mStacks[3].copy();
+			this.mInventory[62] = ((GT_Computercube_Description) GT_Computercube_Description.sDescriptions.get(aIndex)).mStacks[3].copy();
 		}
-		if (((GT_ComputercubeDescription) GT_ComputercubeDescription.sDescriptions.get(aIndex)).mStacks[4] == null) {
+		if (((GT_Computercube_Description) GT_Computercube_Description.sDescriptions.get(aIndex)).mStacks[4] == null) {
 			this.mInventory[63] = null;
 		}
 		else {
-			this.mInventory[63] = ((GT_ComputercubeDescription) GT_ComputercubeDescription.sDescriptions.get(aIndex)).mStacks[4].copy();
+			this.mInventory[63] = ((GT_Computercube_Description) GT_Computercube_Description.sDescriptions.get(aIndex)).mStacks[4].copy();
 		}
-		if (((GT_ComputercubeDescription) GT_ComputercubeDescription.sDescriptions.get(aIndex)).mStacks[5] == null) {
+		if (((GT_Computercube_Description) GT_Computercube_Description.sDescriptions.get(aIndex)).mStacks[5] == null) {
 			this.mInventory[64] = null;
 		}
 		else {
-			this.mInventory[64] = ((GT_ComputercubeDescription) GT_ComputercubeDescription.sDescriptions.get(aIndex)).mStacks[5].copy();
+			this.mInventory[64] = ((GT_Computercube_Description) GT_Computercube_Description.sDescriptions.get(aIndex)).mStacks[5].copy();
 			this.mExplosionStrength = 100.0F;
 		}
-		if (((GT_ComputercubeDescription) GT_ComputercubeDescription.sDescriptions.get(aIndex)).mStacks[6] == null) {
+		if (((GT_Computercube_Description) GT_Computercube_Description.sDescriptions.get(aIndex)).mStacks[6] == null) {
 			this.mInventory[65] = null;
 		}
 		else {
-			this.mInventory[65] = ((GT_ComputercubeDescription) GT_ComputercubeDescription.sDescriptions.get(aIndex)).mStacks[6].copy();
+			this.mInventory[65] = ((GT_Computercube_Description) GT_Computercube_Description.sDescriptions.get(aIndex)).mStacks[6].copy();
 			this.mExplosionStrength = 100.0F;
 		}
-		if (((GT_ComputercubeDescription) GT_ComputercubeDescription.sDescriptions.get(aIndex)).mStacks[7] == null) {
+		if (((GT_Computercube_Description) GT_Computercube_Description.sDescriptions.get(aIndex)).mStacks[7] == null) {
 			this.mInventory[66] = null;
 		}
 		else {
-			this.mInventory[66] = ((GT_ComputercubeDescription) GT_ComputercubeDescription.sDescriptions.get(aIndex)).mStacks[7].copy();
+			this.mInventory[66] = ((GT_Computercube_Description) GT_Computercube_Description.sDescriptions.get(aIndex)).mStacks[7].copy();
 			this.mExplosionStrength = 100.0F;
 		}
-		if (((GT_ComputercubeDescription) GT_ComputercubeDescription.sDescriptions.get(aIndex)).mStacks[8] == null) {
+		if (((GT_Computercube_Description) GT_Computercube_Description.sDescriptions.get(aIndex)).mStacks[8] == null) {
 			this.mInventory[67] = null;
 		}
 		else {
-			this.mInventory[67] = ((GT_ComputercubeDescription) GT_ComputercubeDescription.sDescriptions.get(aIndex)).mStacks[8].copy();
+			this.mInventory[67] = ((GT_Computercube_Description) GT_Computercube_Description.sDescriptions.get(aIndex)).mStacks[8].copy();
 			this.mExplosionStrength = 100.0F;
 		}
-		if (((GT_ComputercubeDescription) GT_ComputercubeDescription.sDescriptions.get(aIndex)).mStacks[9] == null) {
+		if (((GT_Computercube_Description) GT_Computercube_Description.sDescriptions.get(aIndex)).mStacks[9] == null) {
 			this.mInventory[68] = null;
 		}
 		else {
-			this.mInventory[68] = ((GT_ComputercubeDescription) GT_ComputercubeDescription.sDescriptions.get(aIndex)).mStacks[9].copy();
+			this.mInventory[68] = ((GT_Computercube_Description) GT_Computercube_Description.sDescriptions.get(aIndex)).mStacks[9].copy();
 			this.mExplosionStrength = 100.0F;
 		}
-		if (((GT_ComputercubeDescription) GT_ComputercubeDescription.sDescriptions.get(aIndex)).mStacks[10] == null) {
+		if (((GT_Computercube_Description) GT_Computercube_Description.sDescriptions.get(aIndex)).mStacks[10] == null) {
 			this.mInventory[69] = null;
 		}
 		else {
-			this.mInventory[69] = ((GT_ComputercubeDescription) GT_ComputercubeDescription.sDescriptions.get(aIndex)).mStacks[10].copy();
+			this.mInventory[69] = ((GT_Computercube_Description) GT_Computercube_Description.sDescriptions.get(aIndex)).mStacks[10].copy();
 			this.mExplosionStrength = 100.0F;
 		}
-		if (((GT_ComputercubeDescription) GT_ComputercubeDescription.sDescriptions.get(aIndex)).mStacks[11] == null) {
+		if (((GT_Computercube_Description) GT_Computercube_Description.sDescriptions.get(aIndex)).mStacks[11] == null) {
 			this.mInventory[70] = null;
 		}
 		else {
-			this.mInventory[70] = ((GT_ComputercubeDescription) GT_ComputercubeDescription.sDescriptions.get(aIndex)).mStacks[11].copy();
+			this.mInventory[70] = ((GT_Computercube_Description) GT_Computercube_Description.sDescriptions.get(aIndex)).mStacks[11].copy();
 			this.mExplosionStrength = 100.0F;
 		}
-		if (((GT_ComputercubeDescription) GT_ComputercubeDescription.sDescriptions.get(aIndex)).mStacks[12] == null) {
+		if (((GT_Computercube_Description) GT_Computercube_Description.sDescriptions.get(aIndex)).mStacks[12] == null) {
 			this.mInventory[71] = null;
 		}
 		else {
-			this.mInventory[71] = ((GT_ComputercubeDescription) GT_ComputercubeDescription.sDescriptions.get(aIndex)).mStacks[12].copy();
+			this.mInventory[71] = ((GT_Computercube_Description) GT_Computercube_Description.sDescriptions.get(aIndex)).mStacks[12].copy();
 			this.mExplosionStrength = 100.0F;
 		}
-		if (((GT_ComputercubeDescription) GT_ComputercubeDescription.sDescriptions.get(aIndex)).mStacks[13] == null) {
+		if (((GT_Computercube_Description) GT_Computercube_Description.sDescriptions.get(aIndex)).mStacks[13] == null) {
 			this.mInventory[72] = null;
 		}
 		else {
-			this.mInventory[72] = ((GT_ComputercubeDescription) GT_ComputercubeDescription.sDescriptions.get(aIndex)).mStacks[13].copy();
+			this.mInventory[72] = ((GT_Computercube_Description) GT_Computercube_Description.sDescriptions.get(aIndex)).mStacks[13].copy();
 			this.mExplosionStrength = 100.0F;
 		}
 		this.mMaxHeat = aIndex;
-		//this.getWorld().addBlockEvent(this.getXCoord(), this.getYCoord(), this.getZCoord(), GregTech_API.sBlockList[1], 11, this.mMaxHeat);
+		this.getWorld().addBlockEvent(this.getXCoord(), this.getYCoord(), this.getZCoord(), GregTech_API.sBlockMachines, 11, this.mMaxHeat);
 	}
 
 	public void switchDescriptionPageForward() {
-		if (++this.mMaxHeat >= GT_ComputercubeDescription.sDescriptions.size())
+		if (++this.mMaxHeat >= GT_Computercube_Description.sDescriptions.size())
 			this.mMaxHeat = 0;
 		showDescription(this.mMaxHeat);
 	}
 
 	public void switchDescriptionPageBackward() {
 		if (--this.mMaxHeat < 0)
-			this.mMaxHeat = GT_ComputercubeDescription.sDescriptions.size() - 1;
+			this.mMaxHeat = GT_Computercube_Description.sDescriptions.size() - 1;
 		showDescription(this.mMaxHeat);
 	}
 
@@ -563,7 +541,7 @@ public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank impl
 			this.mHeat = tRecipe.mDuration;
 			this.mMaxHeat = aIndex;
 		}
-		//this.getWorld().addBlockEvent(this.getXCoord(), this.getYCoord(), this.getZCoord(), GregTech_API.sBlockList[1], 11, this.mMaxHeat);
+		this.getWorld().addBlockEvent(this.getXCoord(), this.getYCoord(), this.getZCoord(), GregTech_API.sBlockMachines, 11, this.mMaxHeat);
 	}
 
 	public void switchFusionPageForward() {
@@ -599,31 +577,40 @@ public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank impl
 		mSimulator.simulate();
 	}
 
-	public void storeAdditionalData(NBTTagCompound aNBT) {
+	@Override
+	public void saveNBTData(NBTTagCompound aNBT) {
+		super.saveNBTData(aNBT);
 		aNBT.setInteger("mMode", this.mMode);
 		aNBT.setInteger("mProgress", this.mProgress);
 		aNBT.setBoolean("mStarted", this.mStarted);
-		aNBT.setInteger("mEU", this.mEU);
+		int[] aSplitLong1 = MathUtils.splitLongIntoTwoIntegers(mEU);
+		aNBT.setInteger("mEU1", aSplitLong1[0]);
+		aNBT.setInteger("mEU2", aSplitLong1[1]);
 		aNBT.setInteger("mHeat", this.mHeat);
-		aNBT.setInteger("mEUOut", this.mEUOut);
+		int[] aSplitLong2 = MathUtils.splitLongIntoTwoIntegers(mEUOut);
+		aNBT.setInteger("mEUOut1", aSplitLong2[0]);
+		aNBT.setInteger("mEUOut2", aSplitLong2[1]);
 		aNBT.setInteger("mMaxHeat", this.mMaxHeat);
 		aNBT.setFloat("mHEM", this.mHEM);
 		aNBT.setFloat("mExplosionStrength", this.mExplosionStrength);
 	}
 
-	public void getAdditionalData(NBTTagCompound aNBT) {
+	@Override
+	public void loadNBTData(NBTTagCompound aNBT) {
+		super.loadNBTData(aNBT);
 		this.mMode = aNBT.getInteger("mMode");
 		this.mProgress = aNBT.getInteger("mProgress");
 		this.mStarted = aNBT.getBoolean("mStarted");
-		this.mEU = aNBT.getInteger("mEU");
+		int partA = aNBT.getInteger("mEU1");
+		int partB = aNBT.getInteger("mEU2");
+		this.mEU = MathUtils.combineTwoIntegersToLong(partA, partB);
 		this.mHeat = aNBT.getInteger("mHeat");
-		this.mEUOut = aNBT.getInteger("mEUOut");
+		partA = aNBT.getInteger("mEUOut1");
+		partB = aNBT.getInteger("mEUOut2");
+		this.mEUOut = MathUtils.combineTwoIntegersToLong(partA, partB);
 		this.mMaxHeat = aNBT.getInteger("mMaxHeat");
 		this.mHEM = aNBT.getFloat("mHEM");
 		this.mExplosionStrength = aNBT.getFloat("mExplosionStrength");
-	}
-
-	public void onFirstTickUpdate() {
 	}
 
 	@Override
@@ -634,6 +621,7 @@ public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank impl
 	@Override
 	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
 		super.onPostTick(aBaseMetaTileEntity, aTick);
+		
 		if (mSimulator == null) {
 			mSimulator = new GT_Computercube_Simulator(this); 
 		}
@@ -741,14 +729,10 @@ public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank impl
 					this.mEUOut = (this.mEUOut + this.mEULast1 + this.mEULast2 + this.mEULast3 + tEU) / 5;
 				}*/
 			if (aTick % 20L == 0L) {
-				//this.getWorld().addBlockEvent(this.xCoord, this.yCoord, this.zCoord, (GregTech_API.sBlockList[1]).field_71990_ca, 10, this.mMode);
-				//this.getWorld().addBlockEvent(this.xCoord, this.yCoord, this.zCoord, (GregTech_API.sBlockList[1]).field_71990_ca, 11, this.mMaxHeat);
+				this.getWorld().addBlockEvent(this.getXCoord(), this.getYCoord(), this.getZCoord(), GregTech_API.sBlockMachines, 10, this.mMode);
+				this.getWorld().addBlockEvent(this.getXCoord(), this.getYCoord(), this.getZCoord(), GregTech_API.sBlockMachines, 11, this.mMaxHeat);
 			}
 		}
-	}
-
-	private int getReactorEUOutput() {
-		return MathUtils.roundToClosestInt(getReactorEnergyOutput() * 5.0F * ConfigUtil.getFloat(MainConfig.get(), "balance/energy/generator/nuclear"));
 	}
 
 	@Override
@@ -779,149 +763,19 @@ public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank impl
 		this.mNeedsUpdate = true;
 	}
 
+	@Override
 	public boolean canInsertItem(int i, ItemStack itemstack, int j) {
 		return (this.mMode == 2) ? ((i == 54 || i == 55)) : false;
 	}
 
+	@Override
 	public boolean canExtractItem(int i, ItemStack itemstack, int j) {
 		return (this.mMode == 2) ? ((i == 56 || i == 57)) : false;
 	}
 
-	public String getInvName() {
-		return "GregTech_Computercube";
-	}
-
-	public int getTexture(int aSide, int aMeta) {
-		switch (this.mMode) {
-			case 0 :
-				return 8;
-			case 1 :
-				return 46;
-			case 2 :
-				return 45;
-		}
-		return 48;
-	}
-
-	@Override
-	public ChunkCoordinates getPosition() {
-		return new ChunkCoordinates(this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(), this.getBaseMetaTileEntity().getZCoord());
-	}
-
-	@Override
-	public int getHeat() {
-		return this.mHeat;
-	}
-
-	@Override
-	public void setHeat(int aHeat) {
-		this.mHeat = aHeat;
-	}
-
-	@Override
-	public int addHeat(int aAmount) {
-		this.mHeat += aAmount;
-		return this.mHeat;
-	}
-
-	@Override
-	public int getMaxHeat() {
-		return this.mMaxHeat;
-	}
-
-	@Override
-	public void setMaxHeat(int aMaxHeat) {
-		this.mMaxHeat = aMaxHeat;
-	}
-
-	@Override
-	public float getHeatEffectModifier() {
-		return this.mHEM;
-	}
-
-	@Override
-	public void setHeatEffectModifier(float aHEM) {
-		this.mHEM = aHEM;
-	}
-
-
-	public int addOutput(int aEnergy) {
-		this.mEUOut += aEnergy;
-		return this.mEUOut;
-	}
-
-	@Override
-	public ItemStack getItemAt(int x, int y) {
-		if (x < 0 || x > 8 || y < 0 || y > 5)
-			return null;
-		return getStackInSlot(x + y * 9);
-	}
-
-	@Override
-	public void setItemAt(int x, int y, ItemStack aStack) {
-		setInventorySlotContents(x + y * 9, aStack);
-	}
-
-	@Override
-	public void explode() {
-		stopNuclearReactor();
-	}
-
-	@Override
-	public int getTickRate() {
-		return 1;
-	}
-
-	@Override
-	public boolean produceEnergy() {
-		return true;
-	}
-
-	public int getProgress() {
-		return this.mProgress;
-	}
-
-	public int getMaxProgress() {
-		return (this.mProgress > 0) ? 100 : 0;
-	}
-
-	@Override
-	public float addOutput(float aEnergy) {
-		this.mEUOut = (int) (this.mEUOut + aEnergy);
-		return this.mEUOut;
-	}
-
-	@Override
 	public World getWorld() {
 		return this.getBaseMetaTileEntity().getWorld();
 	}
-
-	@Override
-	public void addEmitHeat(int heat) {
-
-	}
-
-	@Override
-	public float getReactorEnergyOutput() {
-		return this.mEUOut;
-	}
-
-	@Override
-	public double getReactorEUEnergyOutput() {
-		return 0;
-	}
-
-	@Override
-	public void setRedstoneSignal(boolean redstone) {
-
-	}
-
-	@Override
-	public boolean isFluidCooled() {
-		return false;
-	}
-
-
 
 	@Override
 	public boolean doesFillContainers() {

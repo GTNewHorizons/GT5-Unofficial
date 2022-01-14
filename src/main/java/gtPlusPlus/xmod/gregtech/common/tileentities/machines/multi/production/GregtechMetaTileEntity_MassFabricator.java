@@ -1,10 +1,17 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -13,10 +20,21 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.*;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.*;
+import gregtech.api.util.GTPP_Recipe;
+import gregtech.api.util.GT_Config;
+import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
@@ -30,10 +48,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
-
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
 public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlockBase {
 
@@ -353,13 +367,18 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 				return true;
 			}
 			
-			return super.checkRecipeGeneric(c, getMaxParallelRecipes(), getEuDiscountForParallelism(), aSpeedBonusPercent, aOutputChanceRoll, true);
+			return super.checkRecipeGeneric(c, getMaxParallelRecipes(), getEuDiscountForParallelism(), aSpeedBonusPercent, aOutputChanceRoll);
 		}
 		
 		//Return normal Recipe handling
-		return super.checkRecipeGeneric(aItemInputs, aFluidInputs, getMaxParallelRecipes(), getEuDiscountForParallelism(), aSpeedBonusPercent, aOutputChanceRoll, true);
+		return super.checkRecipeGeneric(aItemInputs, aFluidInputs, getMaxParallelRecipes(), getEuDiscountForParallelism(), aSpeedBonusPercent, aOutputChanceRoll);
 		}	
 	
+	@Override
+	public boolean hasPerfectOverclock() {
+		return true;
+	}
+
 	@Override
 	public int getMaxParallelRecipes() {
 		return this.mMode == MODE_SCRAP ? 32 : 2 * (Math.max(1, GT_Utility.getTier(getMaxInputVoltage())));

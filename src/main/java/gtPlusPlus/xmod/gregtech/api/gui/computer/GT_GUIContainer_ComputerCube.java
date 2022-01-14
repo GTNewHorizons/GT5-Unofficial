@@ -3,8 +3,9 @@ package gtPlusPlus.xmod.gregtech.api.gui.computer;
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.xmod.gregtech.common.computer.GT_ComputercubeDescription;
+import gtPlusPlus.xmod.gregtech.common.computer.GT_Computercube_Description;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
@@ -12,8 +13,12 @@ import net.minecraft.util.StatCollector;
 public class GT_GUIContainer_ComputerCube extends GT_GUIContainerMetaTile_Machine {
 	public GT_GUIContainer_ComputerCube(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aBaseMetaTileEntity, int aID) {
 		super(new GT_Container_ComputerCube(aInventoryPlayer, aBaseMetaTileEntity, aID), CORE.RES_PATH_GUI + "computer/"+aID+".png");
-		if (aID == 5)
+		GT_Container_ComputerCube tContainer = (GT_Container_ComputerCube) this.mContainer;
+		Logger.INFO("1 GUI Mode: "+aID);
+		Logger.INFO("2 GUI Mode: "+tContainer.mID);
+		if (tContainer.mID == 5) {
 			this.xSize += 50;
+		}
 	}
 	
 
@@ -33,6 +38,7 @@ public class GT_GUIContainer_ComputerCube extends GT_GUIContainerMetaTile_Machin
 
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
 		GT_Container_ComputerCube tContainer = (GT_Container_ComputerCube) this.mContainer;
+		//Logger.INFO("3 GUI Mode: "+xSize);
 		//GT_TileEntity_ComputerCube tTileEntity = (GT_TileEntity_ComputerCube) tContainer.mTileEntity;
 		if (tContainer != null)
 			switch (tContainer.mID) {
@@ -78,13 +84,16 @@ public class GT_GUIContainer_ComputerCube extends GT_GUIContainerMetaTile_Machin
 					this.fontRendererObj.drawString("OUT: " + toNumber(tContainer.mEUOut * tContainer.mHeat) + "EU", 7, 55, 16448255);
 					break;
 				case 5 :
-					if (tContainer.mMaxHeat >= 0 && tContainer.mMaxHeat < GT_ComputercubeDescription.sDescriptions.size())
-						for (int i = 0; i < ((GT_ComputercubeDescription) GT_ComputercubeDescription.sDescriptions.get(tContainer.mMaxHeat)).mDescription.length; i++) {
+					if (tContainer.mID == 5 && this.xSize == 176) {
+						this.xSize += 50;
+					}
+					if (tContainer.mMaxHeat >= 0 && tContainer.mMaxHeat < GT_Computercube_Description.sDescriptions.size())
+						for (int i = 0; i < ((GT_Computercube_Description) GT_Computercube_Description.sDescriptions.get(tContainer.mMaxHeat)).mDescription.length; i++) {
 							if (i == 0) {
-								this.fontRendererObj.drawString(((GT_ComputercubeDescription) GT_ComputercubeDescription.sDescriptions.get(tContainer.mMaxHeat)).mDescription[i], 7, 7, 16448255);
+								this.fontRendererObj.drawString(((GT_Computercube_Description) GT_Computercube_Description.sDescriptions.get(tContainer.mMaxHeat)).mDescription[i], 7, 7, 16448255);
 							}
 							else {
-								this.fontRendererObj.drawString(((GT_ComputercubeDescription) GT_ComputercubeDescription.sDescriptions.get(tContainer.mMaxHeat)).mDescription[i], 7, 7
+								this.fontRendererObj.drawString(((GT_Computercube_Description) GT_Computercube_Description.sDescriptions.get(tContainer.mMaxHeat)).mDescription[i], 7, 7
 										+ 8 * i, 16448255);
 							}
 						}
@@ -113,16 +122,16 @@ public class GT_GUIContainer_ComputerCube extends GT_GUIContainerMetaTile_Machin
 		}		
 	}
 
-	public String toNumber(int aNumber) {
+	public String toNumber(long mEU) {
 		String tString = "";
 		boolean temp = true, negative = false;
-		if (aNumber < 0) {
-			aNumber *= -1;
+		if (mEU < 0) {
+			mEU *= -1;
 			negative = true;
 		}
 		int i;
 		for (i = 1000000000; i > 0; i /= 10) {
-			int tDigit = aNumber / i % 10;
+			long tDigit = mEU / i % 10;
 			if (temp && tDigit != 0)
 				temp = false;
 			if (!temp) {

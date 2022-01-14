@@ -753,26 +753,6 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
 		return checkRecipeGeneric(tItemInputs, tFluidInputs, aMaxParallelRecipes, aEUPercent, aSpeedBonusPercent, aOutputChanceRoll);
 	}
 
-	public boolean checkRecipeGeneric(GT_Recipe aRecipe,
-									  int aMaxParallelRecipes, int aEUPercent,
-									  int aSpeedBonusPercent, int aOutputChanceRoll, boolean isPerfectOC) {
-		if (aRecipe == null) {
-			return false;
-		}
-		ArrayList<ItemStack> tItems = getStoredInputs();
-		ArrayList<FluidStack> tFluids = getStoredFluids();
-		ItemStack[] tItemInputs = tItems.toArray(new ItemStack[tItems.size()]);
-		FluidStack[] tFluidInputs = tFluids.toArray(new FluidStack[tFluids.size()]);
-		return checkRecipeGeneric(tItemInputs, tFluidInputs, aMaxParallelRecipes, aEUPercent, aSpeedBonusPercent, aOutputChanceRoll, aRecipe, isPerfectOC);
-	}
-
-	public boolean checkRecipeGeneric(
-			ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
-			int aMaxParallelRecipes, int aEUPercent,
-			int aSpeedBonusPercent, int aOutputChanceRoll) {
-		return checkRecipeGeneric(aItemInputs, aFluidInputs, aMaxParallelRecipes, aEUPercent, aSpeedBonusPercent, aOutputChanceRoll, null, false);
-	}
-
 	public boolean checkRecipeGeneric(GT_Recipe aRecipe, 
 			int aMaxParallelRecipes, int aEUPercent,
 			int aSpeedBonusPercent, int aOutputChanceRoll) {		
@@ -783,14 +763,14 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
 		ArrayList<FluidStack> tFluids = getStoredFluids();
 		ItemStack[] tItemInputs = tItems.toArray(new ItemStack[tItems.size()]);
 		FluidStack[] tFluidInputs = tFluids.toArray(new FluidStack[tFluids.size()]);
-		return checkRecipeGeneric(tItemInputs, tFluidInputs, aMaxParallelRecipes, aEUPercent, aSpeedBonusPercent, aOutputChanceRoll, aRecipe, false);
+		return checkRecipeGeneric(tItemInputs, tFluidInputs, aMaxParallelRecipes, aEUPercent, aSpeedBonusPercent, aOutputChanceRoll, aRecipe);
 	}
 
 	public boolean checkRecipeGeneric(
 			ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
 			int aMaxParallelRecipes, int aEUPercent,
-			int aSpeedBonusPercent, int aOutputChanceRoll, boolean isPerfectOC) {
-		return checkRecipeGeneric(aItemInputs, aFluidInputs, aMaxParallelRecipes, aEUPercent, aSpeedBonusPercent, aOutputChanceRoll, null, isPerfectOC);
+			int aSpeedBonusPercent, int aOutputChanceRoll) {
+		return checkRecipeGeneric(aItemInputs, aFluidInputs, aMaxParallelRecipes, aEUPercent, aSpeedBonusPercent, aOutputChanceRoll, null);
 	}
 
 
@@ -941,10 +921,14 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
         return rEnergy;
 	}
 
+	public boolean hasPerfectOverclock() {
+		return false;
+	}
+	
 	public boolean checkRecipeGeneric(
 			ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
 			int aMaxParallelRecipes, int aEUPercent,
-			int aSpeedBonusPercent, int aOutputChanceRoll, GT_Recipe aRecipe, boolean isPerpectOC) {
+			int aSpeedBonusPercent, int aOutputChanceRoll, GT_Recipe aRecipe) {
 		// Based on the Processing Array. A bit overkill, but very flexible.		
 
 		// Reset outputs and progress stats
@@ -1069,8 +1053,12 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
 		} else {
 			while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
 				this.mEUt *= 4;
-				if (isPerpectOC) this.mMaxProgresstime /= 4;
-				else this.mMaxProgresstime /= 2;
+				if (hasPerfectOverclock()) {
+					this.mMaxProgresstime /= 4;
+				}
+				else {
+					this.mMaxProgresstime /= 2;
+				}
 			}
 		}
 
