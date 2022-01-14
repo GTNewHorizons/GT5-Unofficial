@@ -10,7 +10,7 @@ import com.github.technus.tectech.mechanics.alignment.IAlignmentLimits;
 import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
 import com.github.technus.tectech.mechanics.alignment.enumerable.Flip;
 import com.github.technus.tectech.mechanics.alignment.enumerable.Rotation;
-import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.cElementalInstanceStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalDefinitionStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.tElementalException;
@@ -1297,26 +1297,26 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
             }
             double remaining = voider.overflowMax - voider.getOverflowMatter();
             for (GT_MetaTileEntity_Hatch_InputElemental in : eInputHatches) {
-                for (cElementalInstanceStack instance : in.getContainerHandler().values()) {
+                for (cElementalInstanceStack instance : in.getContentHandler().valuesToArray()) {
                     double qty = div(remaining,instance.definition.getMass());
                     if (qty > 0) {
                         qty = min(qty, instance.amount);
                         if (voider.addOverflowMatter(instance.definition.getMass() * qty)) {
                             voider.setOverflowMatter(voider.overflowMax);
                         }
-                        in.getContainerHandler().removeAmount(false, new cElementalDefinitionStack(instance.definition, qty));
+                        in.getContentHandler().removeAmount(false, new cElementalDefinitionStack(instance.definition, qty));
                     }
                 }
             }
             for (GT_MetaTileEntity_Hatch_OutputElemental out : eOutputHatches) {
-                for (cElementalInstanceStack instance : out.getContainerHandler().values()) {
+                for (cElementalInstanceStack instance : out.getContentHandler().valuesToArray()) {
                     double qty = div(remaining,instance.definition.getMass());
                     if (qty > 0) {
                         qty = min(qty, instance.amount);
                         if (voider.addOverflowMatter(instance.definition.getMass() * qty)) {
                             voider.setOverflowMatter(voider.overflowMax);
                         }
-                        out.getContainerHandler().removeAmount(false, new cElementalDefinitionStack(instance.definition, qty));
+                        out.getContentHandler().removeAmount(false, new cElementalDefinitionStack(instance.definition, qty));
                     }
                 }
             }
@@ -1932,7 +1932,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     public final cElementalInstanceStackMap getInputsClone_EM() {
         cElementalInstanceStackMap in = new cElementalInstanceStackMap();
         for (GT_MetaTileEntity_Hatch_ElementalContainer hatch : eInputHatches) {
-            in.putUnifyAll(hatch.getContainerHandler());
+            in.putUnifyAll(hatch.getContentHandler());
         }
         return in.hasStacks() ? in : null;
     }
@@ -1941,7 +1941,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     public final cElementalInstanceStackMap getOutputsClone_EM() {
         cElementalInstanceStackMap out = new cElementalInstanceStackMap();
         for (GT_MetaTileEntity_Hatch_ElementalContainer hatch : eOutputHatches) {
-            out.putUnifyAll(hatch.getContainerHandler());
+            out.putUnifyAll(hatch.getContentHandler());
         }
         return out.hasStacks() ? out : null;
     }
@@ -1971,7 +1971,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         if (target == null) {
             return;
         }
-        cleanMassEM_EM(target.getContainerHandler().getMass());
+        cleanMassEM_EM(target.getContentHandler().getMass());
     }
 
     public void cleanStackEM_EM(cElementalInstanceStack target) {

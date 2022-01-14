@@ -3,9 +3,9 @@ package com.github.technus.tectech.mechanics.elementalMatter.definitions.complex
 import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.compatibility.gtpp.GtppAtomLoader;
-import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalDecay;
-import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalDefinitionStackMap;
-import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalMutableDefinitionStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.decay.cElementalDecay;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.cElementalConstantStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.cElementalDefinitionStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalDefinitionStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.tElementalException;
 import com.github.technus.tectech.mechanics.elementalMatter.core.templates.cElementalDefinition;
@@ -83,33 +83,23 @@ public final class dAtomDefinition extends cElementalDefinition {
 
     private final boolean iaeaDefinitionExistsAndHasEnergyLevels;
 
-    private final cElementalDefinitionStackMap elementalStacks;
+    private final cElementalConstantStackMap elementalStacks;
 
     //stable is rawLifeTime>=10^9
 
-    @Deprecated
-    public dAtomDefinition(iElementalDefinition... things) throws tElementalException {
-        this(true, new cElementalDefinitionStackMap(things));
-    }
-
-    @Deprecated
-    private dAtomDefinition(boolean check, iElementalDefinition... things) throws tElementalException {
-        this(check, new cElementalDefinitionStackMap(things));
-    }
-
     public dAtomDefinition(cElementalDefinitionStack... things) throws tElementalException {
-        this(true, new cElementalDefinitionStackMap(things));
+        this(true, new cElementalConstantStackMap(things));
     }
 
     private dAtomDefinition(boolean check, cElementalDefinitionStack... things) throws tElementalException {
-        this(check, new cElementalDefinitionStackMap(things));
+        this(check, new cElementalConstantStackMap(things));
     }
 
-    public dAtomDefinition(cElementalDefinitionStackMap things) throws tElementalException {
+    public dAtomDefinition(cElementalConstantStackMap things) throws tElementalException {
         this(true, things);
     }
 
-    private dAtomDefinition(boolean check, cElementalDefinitionStackMap things) throws tElementalException {
+    private dAtomDefinition(boolean check, cElementalConstantStackMap things) throws tElementalException {
         if (check && !canTheyBeTogether(things)) {
             throw new tElementalException("Atom Definition error");
         }
@@ -121,7 +111,7 @@ public final class dAtomDefinition extends cElementalDefinition {
         int neutralCount = 0, element = 0;
         int type = 0;
         boolean containsAnti = false;
-        for (cElementalDefinitionStack stack : elementalStacks.values()) {
+        for (cElementalDefinitionStack stack : elementalStacks.valuesToArray()) {
             iElementalDefinition def = stack.definition;
             int amount = (int)stack.amount;
             if((int)stack.amount!=stack.amount){
@@ -274,10 +264,10 @@ public final class dAtomDefinition extends cElementalDefinition {
         return rawLifeTime;
     }
 
-    private static boolean canTheyBeTogether(cElementalDefinitionStackMap stacks) {
+    private static boolean canTheyBeTogether(cElementalConstantStackMap stacks) {
         boolean nuclei = false;
         long qty=0;
-        for (cElementalDefinitionStack stack : stacks.values()) {
+        for (cElementalDefinitionStack stack : stacks.valuesToArray()) {
             if (stack.definition instanceof dHadronDefinition) {
                 if (((dHadronDefinition) stack.definition).amount != 3) {
                     return false;
@@ -407,7 +397,7 @@ public final class dAtomDefinition extends cElementalDefinition {
     }
 
     @Override
-    public cElementalDefinitionStackMap getSubParticles() {
+    public cElementalConstantStackMap getSubParticles() {
         return elementalStacks.clone();
     }
 
@@ -484,33 +474,33 @@ public final class dAtomDefinition extends cElementalDefinition {
     }
 
     private boolean getDecayFromIaea(ArrayList<cElementalDecay> decaysList, iaeaNuclide.iaeaDecay decay, long energy){
-        cElementalMutableDefinitionStackMap withThis=elementalStacks.toMutable(),newStuff=new cElementalMutableDefinitionStackMap();
+        cElementalDefinitionStackMap withThis =elementalStacks.toMutable(), newStuff =new cElementalDefinitionStackMap();
         switch (decay.decayName){
             case "D": {
                 if (withThis.removeAllAmounts(false, deuterium.definition.getSubParticles())){
                     withThis.putReplace(deuterium);
-                    decaysList.add(new cElementalDecay(decay.chance,withThis.toImmutable_optimized_unsafeLeavesExposedElementalTree()));
+                    decaysList.add(new cElementalDecay(decay.chance,withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
                     return true;
                 }
             } break;
             case "3H": {
                 if (withThis.removeAllAmounts(false, tritium.definition.getSubParticles())){
                     withThis.putReplace(tritium);
-                    decaysList.add(new cElementalDecay(decay.chance,withThis.toImmutable_optimized_unsafeLeavesExposedElementalTree()));
+                    decaysList.add(new cElementalDecay(decay.chance,withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
                     return true;
                 }
             } break;
             case "3HE": {
                 if (withThis.removeAllAmounts(false, helium_3.definition.getSubParticles())){
                     withThis.putReplace(helium_3);
-                    decaysList.add(new cElementalDecay(decay.chance,withThis.toImmutable_optimized_unsafeLeavesExposedElementalTree()));
+                    decaysList.add(new cElementalDecay(decay.chance,withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
                     return true;
                 }
             } break;
             case "8BE": {
                 if (withThis.removeAllAmounts(false, beryllium_8.definition.getSubParticles())){
                     withThis.putReplace(beryllium_8);
-                    decaysList.add(new cElementalDecay(decay.chance,withThis.toImmutable_optimized_unsafeLeavesExposedElementalTree()));
+                    decaysList.add(new cElementalDecay(decay.chance,withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
                     return true;
                 }
             } break;
@@ -518,8 +508,8 @@ public final class dAtomDefinition extends cElementalDefinition {
                 if (withThis.removeAllAmounts(false, carbon_14.definition.getSubParticles())){
                     newStuff.putReplace(carbon_14);
                     try{
-                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_optimized_unsafeLeavesExposedElementalTree()).getStackForm(1));
-                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_optimized_unsafeLeavesExposedElementalTree()));
+                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree()).getStackForm(1));
+                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
                         return true;
                     }catch (Exception e){
                         if(DEBUG_MODE) {
@@ -532,8 +522,8 @@ public final class dAtomDefinition extends cElementalDefinition {
                 if (withThis.removeAllAmounts(false, neon_24.definition.getSubParticles())){
                     newStuff.putReplace(neon_24);
                     try{
-                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_optimized_unsafeLeavesExposedElementalTree()).getStackForm(1));
-                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_optimized_unsafeLeavesExposedElementalTree()));
+                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree()).getStackForm(1));
+                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
                         return true;
                     }catch (Exception e){
                         if(DEBUG_MODE) {
@@ -546,8 +536,8 @@ public final class dAtomDefinition extends cElementalDefinition {
                 if (withThis.removeAllAmounts(false, silicon_34.definition.getSubParticles())){
                     newStuff.putReplace(silicon_34);
                     try{
-                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_optimized_unsafeLeavesExposedElementalTree()).getStackForm(1));
-                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_optimized_unsafeLeavesExposedElementalTree()));
+                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree()).getStackForm(1));
+                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
                         return true;
                     }catch (Exception e){
                         if(DEBUG_MODE) {
@@ -560,8 +550,8 @@ public final class dAtomDefinition extends cElementalDefinition {
                 if (withThis.removeAllAmounts(false, dHadronDefinition.hadron_n2,dHadronDefinition.hadron_p2)){
                     newStuff.putReplace(alpha);
                     try{
-                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_optimized_unsafeLeavesExposedElementalTree()).getStackForm(1));
-                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_optimized_unsafeLeavesExposedElementalTree()));
+                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree()).getStackForm(1));
+                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
                         return true;
                     }catch (Exception e){
                         if(DEBUG_MODE) {
@@ -576,8 +566,8 @@ public final class dAtomDefinition extends cElementalDefinition {
                     newStuff.putReplace(eLeptonDefinition.lepton_e_1);
                     newStuff.putReplace(eNeutrinoDefinition.lepton_Ve1);
                     try{
-                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_optimized_unsafeLeavesExposedElementalTree()).getStackForm(1));
-                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_optimized_unsafeLeavesExposedElementalTree()));
+                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree()).getStackForm(1));
+                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
                         return true;
                     }catch (Exception e){
                         if(DEBUG_MODE) {
@@ -592,8 +582,8 @@ public final class dAtomDefinition extends cElementalDefinition {
                     newStuff.putReplace(eLeptonDefinition.lepton_e_2);
                     newStuff.putReplace(eNeutrinoDefinition.lepton_Ve2);
                     try{
-                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_optimized_unsafeLeavesExposedElementalTree()).getStackForm(1));
-                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_optimized_unsafeLeavesExposedElementalTree()));
+                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree()).getStackForm(1));
+                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
                         return true;
                     }catch (Exception e){
                         if(DEBUG_MODE) {
@@ -608,8 +598,8 @@ public final class dAtomDefinition extends cElementalDefinition {
                     newStuff.putReplace(eLeptonDefinition.lepton_e1);
                     newStuff.putReplace(eNeutrinoDefinition.lepton_Ve_1);
                     try{
-                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_optimized_unsafeLeavesExposedElementalTree()).getStackForm(1));
-                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_optimized_unsafeLeavesExposedElementalTree()));
+                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree()).getStackForm(1));
+                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
                         return true;
                     }catch (Exception e){
                         if(DEBUG_MODE) {
@@ -624,8 +614,8 @@ public final class dAtomDefinition extends cElementalDefinition {
                     newStuff.putReplace(eLeptonDefinition.lepton_e2);
                     newStuff.putReplace(eNeutrinoDefinition.lepton_Ve_2);
                     try{
-                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_optimized_unsafeLeavesExposedElementalTree()).getStackForm(1));
-                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_optimized_unsafeLeavesExposedElementalTree()));
+                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree()).getStackForm(1));
+                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
                         return true;
                     }catch (Exception e){
                         if(DEBUG_MODE) {
@@ -639,8 +629,8 @@ public final class dAtomDefinition extends cElementalDefinition {
                     withThis.putUnify(dHadronDefinition.hadron_n1);
                     newStuff.putReplace(eNeutrinoDefinition.lepton_Ve1);
                     try{
-                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_optimized_unsafeLeavesExposedElementalTree()).getStackForm(1));
-                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_optimized_unsafeLeavesExposedElementalTree()));
+                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree()).getStackForm(1));
+                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
                         return true;
                     }catch (Exception e){
                         if(DEBUG_MODE) {
@@ -654,8 +644,8 @@ public final class dAtomDefinition extends cElementalDefinition {
                     withThis.putUnify(dHadronDefinition.hadron_n2);
                     newStuff.putReplace(eNeutrinoDefinition.lepton_Ve2);
                     try{
-                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_optimized_unsafeLeavesExposedElementalTree()).getStackForm(1));
-                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_optimized_unsafeLeavesExposedElementalTree()));
+                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree()).getStackForm(1));
+                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
                         return true;
                     }catch (Exception e){
                         if(DEBUG_MODE) {
@@ -670,8 +660,8 @@ public final class dAtomDefinition extends cElementalDefinition {
                     newStuff.putReplace(eLeptonDefinition.lepton_e_1);
                     newStuff.putReplace(eNeutrinoDefinition.lepton_Ve2);
                     try{
-                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_optimized_unsafeLeavesExposedElementalTree()).getStackForm(1));
-                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_optimized_unsafeLeavesExposedElementalTree()));
+                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree()).getStackForm(1));
+                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
                         return true;
                     }catch (Exception e){
                         if(DEBUG_MODE) {
@@ -686,8 +676,8 @@ public final class dAtomDefinition extends cElementalDefinition {
                     newStuff.putReplace(eNeutrinoDefinition.lepton_Ve1);
                     newStuff.putReplace(alpha);
                     try{
-                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_optimized_unsafeLeavesExposedElementalTree()).getStackForm(1));
-                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_optimized_unsafeLeavesExposedElementalTree()));
+                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree()).getStackForm(1));
+                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
                         return true;
                     }catch (Exception e){
                         if(DEBUG_MODE) {
@@ -703,8 +693,8 @@ public final class dAtomDefinition extends cElementalDefinition {
                     newStuff.putReplace(eNeutrinoDefinition.lepton_Ve1);
                     newStuff.putReplace(dHadronDefinition.hadron_p1);
                     try{
-                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_optimized_unsafeLeavesExposedElementalTree()).getStackForm(1));
-                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_optimized_unsafeLeavesExposedElementalTree()));
+                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree()).getStackForm(1));
+                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
                         return true;
                     }catch (Exception e){
                         if(DEBUG_MODE) {
@@ -720,8 +710,8 @@ public final class dAtomDefinition extends cElementalDefinition {
                     newStuff.putReplace(eNeutrinoDefinition.lepton_Ve1);
                     newStuff.putReplace(dHadronDefinition.hadron_p2);
                     try{
-                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_optimized_unsafeLeavesExposedElementalTree()).getStackForm(1));
-                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_optimized_unsafeLeavesExposedElementalTree()));
+                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree()).getStackForm(1));
+                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
                         return true;
                     }catch (Exception e){
                         if(DEBUG_MODE) {
@@ -736,8 +726,8 @@ public final class dAtomDefinition extends cElementalDefinition {
                     newStuff.putReplace(eNeutrinoDefinition.lepton_Ve_1);
                     newStuff.putReplace(alpha);
                     try{
-                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_optimized_unsafeLeavesExposedElementalTree()).getStackForm(1));
-                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_optimized_unsafeLeavesExposedElementalTree()));
+                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree()).getStackForm(1));
+                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
                         return true;
                     }catch (Exception e){
                         if(DEBUG_MODE) {
@@ -753,8 +743,8 @@ public final class dAtomDefinition extends cElementalDefinition {
                     newStuff.putReplace(eNeutrinoDefinition.lepton_Ve_1);
                     newStuff.putReplace(dHadronDefinition.hadron_n1);
                     try{
-                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_optimized_unsafeLeavesExposedElementalTree()).getStackForm(1));
-                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_optimized_unsafeLeavesExposedElementalTree()));
+                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree()).getStackForm(1));
+                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
                         return true;
                     }catch (Exception e){
                         if(DEBUG_MODE) {
@@ -770,8 +760,8 @@ public final class dAtomDefinition extends cElementalDefinition {
                     newStuff.putReplace(eNeutrinoDefinition.lepton_Ve_1);
                     newStuff.putReplace(dHadronDefinition.hadron_n2);
                     try{
-                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_optimized_unsafeLeavesExposedElementalTree()).getStackForm(1));
-                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_optimized_unsafeLeavesExposedElementalTree()));
+                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree()).getStackForm(1));
+                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
                         return true;
                     }catch (Exception e){
                         if(DEBUG_MODE) {
@@ -786,8 +776,8 @@ public final class dAtomDefinition extends cElementalDefinition {
                     newStuff.putReplace(eNeutrinoDefinition.lepton_Ve_1);
                     newStuff.putReplace(dHadronDefinition.hadron_p1);
                     try{
-                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_optimized_unsafeLeavesExposedElementalTree()).getStackForm(1));
-                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_optimized_unsafeLeavesExposedElementalTree()));
+                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree()).getStackForm(1));
+                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
                         return true;
                     }catch (Exception e){
                         if(DEBUG_MODE) {
@@ -801,8 +791,8 @@ public final class dAtomDefinition extends cElementalDefinition {
                     newStuff.putReplace(eNeutrinoDefinition.lepton_Ve1);
                     newStuff.putReplace(alpha);
                     try{
-                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_optimized_unsafeLeavesExposedElementalTree()).getStackForm(1));
-                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_optimized_unsafeLeavesExposedElementalTree()));
+                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree()).getStackForm(1));
+                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
                         return true;
                     }catch (Exception e){
                         if(DEBUG_MODE) {
@@ -817,8 +807,8 @@ public final class dAtomDefinition extends cElementalDefinition {
                     newStuff.putReplace(eNeutrinoDefinition.lepton_Ve1);
                     newStuff.putReplace(dHadronDefinition.hadron_p1);
                     try{
-                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_optimized_unsafeLeavesExposedElementalTree()).getStackForm(1));
-                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_optimized_unsafeLeavesExposedElementalTree()));
+                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree()).getStackForm(1));
+                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
                         return true;
                     }catch (Exception e){
                         if(DEBUG_MODE) {
@@ -833,8 +823,8 @@ public final class dAtomDefinition extends cElementalDefinition {
                     newStuff.putReplace(eNeutrinoDefinition.lepton_Ve1);
                     newStuff.putReplace(dHadronDefinition.hadron_p2);
                     try{
-                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_optimized_unsafeLeavesExposedElementalTree()).getStackForm(1));
-                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_optimized_unsafeLeavesExposedElementalTree()));
+                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree()).getStackForm(1));
+                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
                         return true;
                     }catch (Exception e){
                         if(DEBUG_MODE) {
@@ -849,8 +839,8 @@ public final class dAtomDefinition extends cElementalDefinition {
                     newStuff.putReplace(eNeutrinoDefinition.lepton_Ve2);
                     newStuff.putReplace(dHadronDefinition.hadron_p3);
                     try{
-                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_optimized_unsafeLeavesExposedElementalTree()).getStackForm(1));
-                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_optimized_unsafeLeavesExposedElementalTree()));
+                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree()).getStackForm(1));
+                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
                         return true;
                     }catch (Exception e){
                         if(DEBUG_MODE) {
@@ -863,8 +853,8 @@ public final class dAtomDefinition extends cElementalDefinition {
                 if (withThis.removeAllAmounts(false, dHadronDefinition.hadron_n1)){
                     newStuff.putReplace(dHadronDefinition.hadron_n1);
                     try{
-                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_optimized_unsafeLeavesExposedElementalTree()).getStackForm(1));
-                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_optimized_unsafeLeavesExposedElementalTree()));
+                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree()).getStackForm(1));
+                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
                         return true;
                     }catch (Exception e){
                         if(DEBUG_MODE) {
@@ -877,8 +867,8 @@ public final class dAtomDefinition extends cElementalDefinition {
                 if (withThis.removeAllAmounts(false, dHadronDefinition.hadron_n2)){
                     newStuff.putReplace(dHadronDefinition.hadron_n2);
                     try{
-                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_optimized_unsafeLeavesExposedElementalTree()).getStackForm(1));
-                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_optimized_unsafeLeavesExposedElementalTree()));
+                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree()).getStackForm(1));
+                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
                         return true;
                     }catch (Exception e){
                         if(DEBUG_MODE) {
@@ -891,8 +881,8 @@ public final class dAtomDefinition extends cElementalDefinition {
                 if (withThis.removeAllAmounts(false, dHadronDefinition.hadron_p1)){
                     newStuff.putReplace(dHadronDefinition.hadron_p1);
                     try{
-                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_optimized_unsafeLeavesExposedElementalTree()).getStackForm(1));
-                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_optimized_unsafeLeavesExposedElementalTree()));
+                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree()).getStackForm(1));
+                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
                         return true;
                     }catch (Exception e){
                         if(DEBUG_MODE) {
@@ -905,8 +895,8 @@ public final class dAtomDefinition extends cElementalDefinition {
                 if (withThis.removeAllAmounts(false, dHadronDefinition.hadron_p2)){
                     newStuff.putReplace(dHadronDefinition.hadron_p2);
                     try{
-                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_optimized_unsafeLeavesExposedElementalTree()).getStackForm(1));
-                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_optimized_unsafeLeavesExposedElementalTree()));
+                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree()).getStackForm(1));
+                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
                         return true;
                     }catch (Exception e){
                         if(DEBUG_MODE) {
@@ -1001,8 +991,8 @@ public final class dAtomDefinition extends cElementalDefinition {
                     newStuff.putReplace(eNeutrinoDefinition.lepton_Ve2);
                     newStuff.putReplace(eBosonDefinition.boson_Y__1);
                     try{
-                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_optimized_unsafeLeavesExposedElementalTree()).getStackForm(1));
-                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_optimized_unsafeLeavesExposedElementalTree()));
+                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_optimized_unsafe_LeavesExposedElementalTree()).getStackForm(1));
+                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
                         return true;
                     }catch (Exception e){
                         if(DEBUG_MODE) {
@@ -1023,10 +1013,10 @@ public final class dAtomDefinition extends cElementalDefinition {
     }
 
     private boolean Emmision(ArrayList<cElementalDecay> decaysList, cElementalDefinitionStack emit) {
-        cElementalMutableDefinitionStackMap tree = elementalStacks.toMutable();
+        cElementalDefinitionStackMap tree = elementalStacks.toMutable();
         if (tree.removeAmount(false, emit)) {
             try {
-                decaysList.add(new cElementalDecay(1, new cElementalDefinitionStack(new dAtomDefinition(tree.toImmutable_optimized_unsafeLeavesExposedElementalTree()), 1), emit));
+                decaysList.add(new cElementalDecay(1, new cElementalDefinitionStack(new dAtomDefinition(tree.toImmutable_optimized_unsafe_LeavesExposedElementalTree()), 1), emit));
                 return true;
             } catch (Exception e) {
                 if (DEBUG_MODE) {
@@ -1038,10 +1028,10 @@ public final class dAtomDefinition extends cElementalDefinition {
     }
 
     private boolean alphaDecay(ArrayList<cElementalDecay> decaysList) {
-        cElementalMutableDefinitionStackMap tree = elementalStacks.toMutable();
+        cElementalDefinitionStackMap tree = elementalStacks.toMutable();
         if (tree.removeAllAmounts(false, alpha.definition.getSubParticles())) {
             try {
-                decaysList.add(new cElementalDecay(1, new cElementalDefinitionStack(new dAtomDefinition(tree.toImmutable_optimized_unsafeLeavesExposedElementalTree()), 1), alpha));
+                decaysList.add(new cElementalDecay(1, new cElementalDefinitionStack(new dAtomDefinition(tree.toImmutable_optimized_unsafe_LeavesExposedElementalTree()), 1), alpha));
                 return true;
             } catch (Exception e) {
                 if (DEBUG_MODE) {
@@ -1053,11 +1043,11 @@ public final class dAtomDefinition extends cElementalDefinition {
     }
 
     private boolean MbetaDecay(ArrayList<cElementalDecay> decaysList) {
-        cElementalMutableDefinitionStackMap tree = elementalStacks.toMutable();
+        cElementalDefinitionStackMap tree = elementalStacks.toMutable();
         if (tree.removeAmount(false, dHadronDefinition.hadron_n1)) {
             try {
                 tree.putUnify(dHadronDefinition.hadron_p1);
-                decaysList.add(new cElementalDecay(1, new cElementalDefinitionStack(new dAtomDefinition(tree.toImmutable_optimized_unsafeLeavesExposedElementalTree()), 1), eLeptonDefinition.lepton_e1, eNeutrinoDefinition.lepton_Ve_1));
+                decaysList.add(new cElementalDecay(1, new cElementalDefinitionStack(new dAtomDefinition(tree.toImmutable_optimized_unsafe_LeavesExposedElementalTree()), 1), eLeptonDefinition.lepton_e1, eNeutrinoDefinition.lepton_Ve_1));
                 return true;
             } catch (Exception e) {
                 if (DEBUG_MODE) {
@@ -1069,11 +1059,11 @@ public final class dAtomDefinition extends cElementalDefinition {
     }
 
     private boolean PbetaDecay(ArrayList<cElementalDecay> decaysList) {
-        cElementalMutableDefinitionStackMap tree = elementalStacks.toMutable();
+        cElementalDefinitionStackMap tree = elementalStacks.toMutable();
         if (tree.removeAmount(false, dHadronDefinition.hadron_p1)) {
             try {
                 tree.putUnify(dHadronDefinition.hadron_n1);
-                decaysList.add(new cElementalDecay(1, new cElementalDefinitionStack(new dAtomDefinition(tree.toImmutable_optimized_unsafeLeavesExposedElementalTree()), 1), eLeptonDefinition.lepton_e_1, eNeutrinoDefinition.lepton_Ve1));
+                decaysList.add(new cElementalDecay(1, new cElementalDefinitionStack(new dAtomDefinition(tree.toImmutable_optimized_unsafe_LeavesExposedElementalTree()), 1), eLeptonDefinition.lepton_e_1, eNeutrinoDefinition.lepton_Ve1));
                 return true;
             } catch (Exception e) {
                 if (DEBUG_MODE) {
@@ -1085,11 +1075,11 @@ public final class dAtomDefinition extends cElementalDefinition {
     }
 
     private boolean ElectronCapture(ArrayList<cElementalDecay> decaysList) {
-        cElementalMutableDefinitionStackMap tree = elementalStacks.toMutable();
+        cElementalDefinitionStackMap tree = elementalStacks.toMutable();
         if (tree.removeAllAmounts(false, dHadronDefinition.hadron_p1,eLeptonDefinition.lepton_e1)) {
             try {
                 tree.putUnify(dHadronDefinition.hadron_n1);
-                decaysList.add(new cElementalDecay(1, new cElementalDefinitionStack(new dAtomDefinition(tree.toImmutable_optimized_unsafeLeavesExposedElementalTree()), 1), eNeutrinoDefinition.lepton_Ve1));
+                decaysList.add(new cElementalDecay(1, new cElementalDefinitionStack(new dAtomDefinition(tree.toImmutable_optimized_unsafe_LeavesExposedElementalTree()), 1), eNeutrinoDefinition.lepton_Ve1));
                 return true;
             } catch (Exception e) {
                 if (DEBUG_MODE) {
@@ -1100,11 +1090,11 @@ public final class dAtomDefinition extends cElementalDefinition {
         return false;
     }
 
-    private boolean Fission(ArrayList<cElementalDecay> decaysList, cElementalMutableDefinitionStackMap fissile, cElementalMutableDefinitionStackMap particles,double probability,boolean spontaneousCheck) {
-        cElementalMutableDefinitionStackMap heavy = new cElementalMutableDefinitionStackMap();
-        double[] liquidDrop= liquidDropFunction(Math.abs(element)<=97);
+    private boolean Fission(ArrayList<cElementalDecay> decaysList, cElementalDefinitionStackMap fissile, cElementalDefinitionStackMap particles, double probability, boolean spontaneousCheck) {
+        cElementalDefinitionStackMap heavy      = new cElementalDefinitionStackMap();
+        double[]                     liquidDrop = liquidDropFunction(Math.abs(element)<=97);
 
-        for(cElementalDefinitionStack stack: fissile.values()){
+        for(cElementalDefinitionStack stack: fissile.valuesToArray()){
             if(spontaneousCheck && stack.definition instanceof dHadronDefinition &&
                     (stack.amount<=80 || stack.amount<90 && XSTR_INSTANCE.nextInt(10)<stack.amount-80)) {
                 return false;
@@ -1138,9 +1128,9 @@ public final class dAtomDefinition extends cElementalDefinition {
         }
 
         try {
-            particles.putReplace(new cElementalDefinitionStack(new dAtomDefinition(fissile.toImmutable_optimized_unsafeLeavesExposedElementalTree()),1));
-            particles.putReplace(new cElementalDefinitionStack(new dAtomDefinition(heavy.toImmutable_optimized_unsafeLeavesExposedElementalTree()),1));
-            decaysList.add(new cElementalDecay(probability, particles.toImmutable_optimized_unsafeLeavesExposedElementalTree()));
+            particles.putReplace(new cElementalDefinitionStack(new dAtomDefinition(fissile.toImmutable_optimized_unsafe_LeavesExposedElementalTree()),1));
+            particles.putReplace(new cElementalDefinitionStack(new dAtomDefinition(heavy.toImmutable_optimized_unsafe_LeavesExposedElementalTree()),1));
+            decaysList.add(new cElementalDecay(probability, particles.toImmutable_optimized_unsafe_LeavesExposedElementalTree()));
             return true;
         } catch (Exception e) {
             if(DEBUG_MODE) {
@@ -1273,7 +1263,7 @@ public final class dAtomDefinition extends cElementalDefinition {
     public cElementalDecay[] getNaturalDecayInstant() {
         //disembody
         ArrayList<cElementalDefinitionStack> decaysInto = new ArrayList<>();
-        for (cElementalDefinitionStack elementalStack : elementalStacks.values()) {
+        for (cElementalDefinitionStack elementalStack : elementalStacks.valuesToArray()) {
             if (elementalStack.definition.getType() == 1 || elementalStack.definition.getType() == -1) {
                 //covers both quarks and antiquarks
                 decaysInto.add(elementalStack);
@@ -1302,12 +1292,12 @@ public final class dAtomDefinition extends cElementalDefinition {
 
     @Override
     public dAtomDefinition getAnti() {
-        cElementalMutableDefinitionStackMap anti = new cElementalMutableDefinitionStackMap();
-        for (cElementalDefinitionStack stack : elementalStacks.values()) {
+        cElementalDefinitionStackMap anti = new cElementalDefinitionStackMap();
+        for (cElementalDefinitionStack stack : elementalStacks.valuesToArray()) {
             anti.putReplace(new cElementalDefinitionStack(stack.definition.getAnti(), stack.amount));
         }
         try {
-            return new dAtomDefinition(anti.toImmutable_optimized_unsafeLeavesExposedElementalTree());
+            return new dAtomDefinition(anti.toImmutable_optimized_unsafe_LeavesExposedElementalTree());
         } catch (tElementalException e) {
             if (DEBUG_MODE) {
                 e.printStackTrace();

@@ -3,8 +3,8 @@ package com.github.technus.tectech.thing.item;
 import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.util.Util;
 import com.github.technus.tectech.font.TecTechFontRender;
-import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
-import com.github.technus.tectech.mechanics.elementalMatter.core.iElementalInstanceContainer;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.cElementalInstanceStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.iElementalContainer;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.tElementalException;
 import com.github.technus.tectech.mechanics.elementalMatter.core.templates.iElementalDefinition;
@@ -58,8 +58,8 @@ public final class DebugElementalInstanceContainer_EM extends Item implements IE
             aStack.stackSize = 1;
             if (tTileEntity instanceof IGregTechTileEntity) {
                 IMetaTileEntity metaTE = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
-                if (metaTE instanceof iElementalInstanceContainer) {
-                    cElementalInstanceStackMap content = ((iElementalInstanceContainer) metaTE).getContainerHandler();
+                if (metaTE instanceof iElementalContainer) {
+                    cElementalInstanceStackMap content = ((iElementalContainer) metaTE).getContentHandler();
                     if (tNBT.hasKey("content")) {
                         try {
                             content.putUnifyAll(cElementalInstanceStackMap.fromNBT(tNBT.getCompoundTag("content")));
@@ -69,12 +69,12 @@ public final class DebugElementalInstanceContainer_EM extends Item implements IE
                             }
                             return true;
                         }
-                        ((iElementalInstanceContainer) metaTE).purgeOverflow();
+                        ((iElementalContainer) metaTE).purgeOverflow();
                         tNBT.removeTag("content");
                         tNBT.removeTag("symbols");
                         tNBT.removeTag("info");
                     } else if (content.hasStacks()) {
-                        ((iElementalInstanceContainer) metaTE).purgeOverflow();
+                        ((iElementalContainer) metaTE).purgeOverflow();
                         tNBT.setTag("info", content.getInfoNBT());
                         tNBT.setTag("content", content.toNBT());
                         tNBT.setTag("symbols", content.getShortSymbolsNBT());

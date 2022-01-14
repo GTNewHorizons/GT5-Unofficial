@@ -3,7 +3,7 @@ package com.github.technus.tectech.compatibility.thaumcraft.thing.metaTileEntity
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.ePrimalAspectDefinition;
 import com.github.technus.tectech.mechanics.constructable.IConstructable;
-import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.cElementalInstanceStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.templates.iElementalDefinition;
 import com.github.technus.tectech.mechanics.structure.Structure;
@@ -108,7 +108,7 @@ public class GT_MetaTileEntity_EM_essentiaQuantizer extends GT_MetaTileEntity_Mu
             stopMachine();
             return;
         }
-        eOutputHatches.get(0).getContainerHandler().putUnifyAll(outputEM[0]);
+        eOutputHatches.get(0).getContentHandler().putUnifyAll(outputEM[0]);
         outputEM = null;
     }
 

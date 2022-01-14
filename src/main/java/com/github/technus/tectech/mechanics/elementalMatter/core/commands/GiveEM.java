@@ -1,8 +1,8 @@
 package com.github.technus.tectech.mechanics.elementalMatter.core.commands;
 
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
-import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalMutableDefinitionStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.cElementalInstanceStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.cElementalDefinitionStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalDefinitionStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.templates.cElementalDefinition;
@@ -83,7 +83,7 @@ public class GiveEM implements ICommand {
             byte clazz = (byte) args.remove(0).charAt(0);
             Method constructor = cElementalDefinition.getBindsComplex().get(clazz);
 
-            cElementalMutableDefinitionStackMap stacks=new cElementalMutableDefinitionStackMap();
+            cElementalDefinitionStackMap stacks =new cElementalDefinitionStackMap();
             while(args.size()>0){
                 cElementalDefinitionStack tempStack=getDefinitionStack(args);
                 if(tempStack==null) {

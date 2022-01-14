@@ -116,7 +116,7 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
     @Override
     public boolean checkRecipe_EM(ItemStack itemStack) {
         for (GT_MetaTileEntity_Hatch_InputElemental in : eInputHatches) {
-            if (in.getContainerHandler().hasStacks()) {
+            if (in.getContentHandler().hasStacks()) {
                 mEUt = -(int) V[8];
                 eAmpereFlow = 1 + (eInputHatches.size() + eOutputHatches.size() >> 1);
                 mMaxProgresstime = 20;
@@ -149,8 +149,8 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
                     continue;
                 }
                 GT_MetaTileEntity_Hatch_OutputElemental out = eOutputHatches.get(outIndex);
-                out.getContainerHandler().putUnifyAll(in.getContainerHandler());
-                in.getContainerHandler().clear();
+                out.getContentHandler().putUnifyAll(in.getContentHandler());
+                in.getContentHandler().clear();
             }
         }
     }

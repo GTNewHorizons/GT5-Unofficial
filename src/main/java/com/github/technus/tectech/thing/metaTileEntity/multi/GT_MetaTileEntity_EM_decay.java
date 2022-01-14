@@ -1,7 +1,7 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.mechanics.constructable.IConstructable;
-import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.cElementalInstanceStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
 import com.github.technus.tectech.mechanics.structure.adders.IHatchAdder;
 import com.github.technus.tectech.mechanics.structure.Structure;
@@ -118,7 +118,7 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
         cElementalInstanceStackMap map = getInputsClone_EM();
         if (map != null && map.hasStacks()) {
             for (GT_MetaTileEntity_Hatch_InputElemental i : eInputHatches) {
-                i.getContainerHandler().clear();
+                i.getContentHandler().clear();
             }
             return startRecipe(map);
         }
@@ -132,7 +132,7 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
         outputEM[0] = input;
         outputEM[1] = new cElementalInstanceStackMap();
 
-        for (cElementalInstanceStack stack : outputEM[0].values()) {
+        for (cElementalInstanceStack stack : outputEM[0].valuesToArray()) {
             if (stack.getEnergy() == 0 && stack.definition.decayMakesEnergy(1) &&
                     getBaseMetaTileEntity().decreaseStoredEnergyUnits(
                             (long) (stack.getEnergySettingCost(1) * URANIUM_MASS_TO_EU_INSTANT), false)) {
@@ -156,7 +156,7 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
     @Override
     public void outputAfterRecipe_EM() {
         for (int i = 0; i < 2 && i < eOutputHatches.size(); i++) {
-            eOutputHatches.get(i).getContainerHandler().putUnifyAll(outputEM[i]);
+            eOutputHatches.get(i).getContentHandler().putUnifyAll(outputEM[i]);
             outputEM[i] = null;
         }
     }

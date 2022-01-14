@@ -1,7 +1,7 @@
 package com.github.technus.tectech.mechanics.elementalMatter.core.templates;
 
-import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalDecay;
-import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalDefinitionStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.decay.cElementalDecay;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.cElementalConstantStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalDefinitionStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.aFluidDequantizationInfo;
 import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.aItemDequantizationInfo;
@@ -64,7 +64,7 @@ public abstract class iElementalDefinition implements Comparable<iElementalDefin
 
     public abstract boolean isTimeSpanHalfLife();
 
-    public abstract cElementalDefinitionStackMap getSubParticles();//contents... null if none
+    public abstract cElementalConstantStackMap getSubParticles();//contents... null if none
 
     public abstract aFluidDequantizationInfo someAmountIntoFluidStack();
 

@@ -1,22 +1,22 @@
 package com.github.technus.tectech.mechanics.elementalMatter.core.transformations;
 
-import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.iHasElementalDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.iElementalStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 /**
  * Created by Tec on 23.05.2017.
  */
-public class aFluidQuantizationInfo implements iExchangeInfo<FluidStack,iHasElementalDefinition> {
-    private final FluidStack in;
-    private final iHasElementalDefinition out;
+public class aFluidQuantizationInfo implements iExchangeInfo<FluidStack, iElementalStack> {
+    private final FluidStack      in;
+    private final iElementalStack out;
 
-    public aFluidQuantizationInfo(FluidStack fluidStackIn, iHasElementalDefinition emOut){
+    public aFluidQuantizationInfo(FluidStack fluidStackIn, iElementalStack emOut){
         in=fluidStackIn;
         out=emOut;
     }
 
-    public aFluidQuantizationInfo(Fluid fluid, int fluidAmount, iHasElementalDefinition emOut){
+    public aFluidQuantizationInfo(Fluid fluid, int fluidAmount, iElementalStack emOut){
         in=new FluidStack(fluid,fluidAmount);
         out=emOut;
     }
@@ -27,7 +27,7 @@ public class aFluidQuantizationInfo implements iExchangeInfo<FluidStack,iHasElem
     }
 
     @Override
-    public iHasElementalDefinition output() {
+    public iElementalStack output() {
         return out.clone();
     }
 

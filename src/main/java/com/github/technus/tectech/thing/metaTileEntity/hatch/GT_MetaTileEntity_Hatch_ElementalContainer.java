@@ -1,8 +1,8 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
-import com.github.technus.tectech.mechanics.elementalMatter.core.iElementalInstanceContainer;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.cElementalInstanceStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.iElementalContainer;
 import com.github.technus.tectech.mechanics.elementalMatter.core.tElementalException;
 import com.github.technus.tectech.mechanics.pipe.IConnectsToElementalPipe;
 import com.github.technus.tectech.util.Util;
@@ -34,7 +34,7 @@ import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 /**
  * Created by danie_000 on 11.12.2016.
  */
-public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_MetaTileEntity_Hatch implements iElementalInstanceContainer, IConnectsToElementalPipe {
+public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_MetaTileEntity_Hatch implements iElementalContainer, IConnectsToElementalPipe {
     private static Textures.BlockIcons.CustomIcon EM_T_SIDES;
     private static Textures.BlockIcons.CustomIcon EM_T_ACTIVE;
     private static Textures.BlockIcons.CustomIcon EM_T_CONN;
@@ -165,7 +165,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
     }
 
     @Override
-    public cElementalInstanceStackMap getContainerHandler() {
+    public cElementalInstanceStackMap getContentHandler() {
         return content;
     }
 

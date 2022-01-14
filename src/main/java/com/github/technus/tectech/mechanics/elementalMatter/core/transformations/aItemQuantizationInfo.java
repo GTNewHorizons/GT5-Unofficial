@@ -1,6 +1,6 @@
 package com.github.technus.tectech.mechanics.elementalMatter.core.transformations;
 
-import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.iHasElementalDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.iElementalStack;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -11,18 +11,18 @@ import net.minecraftforge.oredict.OreDictionary;
 /**
  * Created by Tec on 23.05.2017.
  */
-public class aItemQuantizationInfo implements iExchangeInfo<ItemStack,iHasElementalDefinition> {
-    private final ItemStack in;
-    private final boolean skipNBT;
-    private final iHasElementalDefinition out;
+public class aItemQuantizationInfo implements iExchangeInfo<ItemStack, iElementalStack> {
+    private final ItemStack       in;
+    private final boolean         skipNBT;
+    private final iElementalStack out;
 
-    public aItemQuantizationInfo(ItemStack itemStackIn, boolean skipNBT, iHasElementalDefinition emOut) {
+    public aItemQuantizationInfo(ItemStack itemStackIn, boolean skipNBT, iElementalStack emOut) {
         in = itemStackIn;
         out = emOut;
         this.skipNBT = skipNBT;
     }
 
-    public aItemQuantizationInfo(OrePrefixes prefix, Materials material, int amount, boolean skipNBT, iHasElementalDefinition emOut) {
+    public aItemQuantizationInfo(OrePrefixes prefix, Materials material, int amount, boolean skipNBT, iElementalStack emOut) {
         in = GT_OreDictUnificator.get(prefix, material, amount);
         out = emOut;
         this.skipNBT = skipNBT;
@@ -34,7 +34,7 @@ public class aItemQuantizationInfo implements iExchangeInfo<ItemStack,iHasElemen
     }
 
     @Override
-    public iHasElementalDefinition output() {
+    public iElementalStack output() {
         return out.clone();
     }
 

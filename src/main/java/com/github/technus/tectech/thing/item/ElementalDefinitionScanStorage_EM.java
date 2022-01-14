@@ -5,7 +5,7 @@ import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.util.Util;
 import com.github.technus.tectech.font.TecTechFontRender;
 import com.github.technus.tectech.loader.gui.ModGuiHandler;
-import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.cElementalInstanceStackMap;
 import com.github.technus.tectech.thing.CustomItemList;
 import com.github.technus.tectech.thing.item.renderElemental.IElementalItem;
 import cpw.mods.fml.common.registry.GameRegistry;

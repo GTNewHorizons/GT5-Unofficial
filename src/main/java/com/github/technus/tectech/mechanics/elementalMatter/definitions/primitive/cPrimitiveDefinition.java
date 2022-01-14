@@ -2,7 +2,7 @@ package com.github.technus.tectech.mechanics.elementalMatter.definitions.primiti
 
 import com.github.technus.tectech.mechanics.elementalMatter.core.templates.cElementalPrimitive;
 
-import static com.github.technus.tectech.mechanics.elementalMatter.core.cElementalDecay.noDecay;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.decay.cElementalDecay.noDecay;
 
 /**
  * Created by danie_000 on 22.10.2016.

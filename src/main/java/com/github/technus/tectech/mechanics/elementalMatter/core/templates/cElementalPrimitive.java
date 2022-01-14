@@ -1,8 +1,8 @@
 package com.github.technus.tectech.mechanics.elementalMatter.core.templates;
 
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalDecay;
-import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalDefinitionStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.decay.cElementalDecay;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.cElementalConstantStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.tElementalException;
 import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.aFluidDequantizationInfo;
 import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.aItemDequantizationInfo;
@@ -169,7 +169,7 @@ public abstract class cElementalPrimitive extends cElementalDefinition {
     }
 
     @Override
-    public final cElementalDefinitionStackMap getSubParticles() {
+    public final cElementalConstantStackMap getSubParticles() {
         return null;
     }
 

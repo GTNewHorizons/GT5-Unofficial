@@ -1,5 +1,6 @@
-package com.github.technus.tectech.mechanics.elementalMatter.core;
+package com.github.technus.tectech.mechanics.elementalMatter.core.recipes;
 
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.cElementalConstantStackMap;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -7,17 +8,17 @@ import net.minecraftforge.fluids.FluidStack;
  * Created by Tec on 02.03.2017.
  */
 public class rElementalRecipe implements Comparable<rElementalRecipe> {
-    public final short ID;
-    public final cElementalDefinitionStackMap inEM;
-    public final cElementalDefinitionStackMap outEM;
-    public final ItemStack[] outItems;
+    public final short                      ID;
+    public final cElementalConstantStackMap inEM;
+    public final cElementalConstantStackMap outEM;
+    public final ItemStack[]                outItems;
     public final FluidStack[] outFluids;
     public Object[] extension;
 
     public rElementalRecipe(
-            cElementalDefinitionStackMap inEM,//not null plz
+            cElementalConstantStackMap inEM,//not null plz
             short id,
-            cElementalDefinitionStackMap outEM,
+            cElementalConstantStackMap outEM,
             ItemStack[] outItems,
             FluidStack[] outFluids) {
         this.inEM = inEM;

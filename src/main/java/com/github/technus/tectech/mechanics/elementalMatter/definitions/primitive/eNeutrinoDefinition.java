@@ -1,6 +1,6 @@
 package com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive;
 
-import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalDecay;
+import com.github.technus.tectech.mechanics.elementalMatter.core.decay.cElementalDecay;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalDefinitionStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.templates.cElementalPrimitive;
 

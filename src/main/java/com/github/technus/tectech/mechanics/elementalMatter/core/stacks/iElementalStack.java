@@ -1,11 +1,12 @@
 package com.github.technus.tectech.mechanics.elementalMatter.core.stacks;
 
 import com.github.technus.tectech.mechanics.elementalMatter.core.templates.iElementalDefinition;
+import net.minecraft.nbt.NBTTagCompound;
 
 /**
  * Created by danie_000 on 30.01.2017.
  */
-public interface iHasElementalDefinition extends Comparable<iHasElementalDefinition>,Cloneable {
+public interface iElementalStack extends Comparable<iElementalStack>,Cloneable {
     iElementalDefinition getDefinition();
 
     double getAmount();
@@ -14,5 +15,9 @@ public interface iHasElementalDefinition extends Comparable<iHasElementalDefinit
 
     double getMass();
 
-    iHasElementalDefinition clone();
+    iElementalStack clone();
+
+    iElementalStack mutateAmount(double amount);
+
+    NBTTagCompound toNBT();
 }

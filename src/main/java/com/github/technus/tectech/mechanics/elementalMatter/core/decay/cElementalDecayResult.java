@@ -1,9 +1,11 @@
-package com.github.technus.tectech.mechanics.elementalMatter.core;
+package com.github.technus.tectech.mechanics.elementalMatter.core.decay;
+
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.cElementalInstanceStackMap;
 
 public class cElementalDecayResult {
     private final cElementalInstanceStackMap output;
-    private double massAffected;
-    private double massDiff;
+    private       double                     massAffected;
+    private       double                     massDiff;
 
     public cElementalDecayResult(cElementalInstanceStackMap output, double massAffected, double massDiff) {
         this.output = output;

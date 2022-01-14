@@ -1,4 +1,7 @@
-package com.github.technus.tectech.mechanics.elementalMatter.core;
+package com.github.technus.tectech.mechanics.elementalMatter.core.recipes;
+
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.*;
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalDefinitionStack;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,7 +11,7 @@ import java.util.Map;
  */
 public class rElementalRecipeMap {//TODO FIX
     //Multimap for multiple recipes from the same thing - you know parameters might differ the output
-    private final HashMap<cElementalDefinitionStackMap, HashMap<Short, rElementalRecipe>> recipes;
+    private final HashMap<cElementalConstantStackMap, HashMap<Short, rElementalRecipe>> recipes;
 
     public rElementalRecipeMap() {
         recipes = new HashMap<>();
@@ -26,11 +29,11 @@ public class rElementalRecipeMap {//TODO FIX
         }
     }
 
-    public rElementalRecipe remove(cElementalStackMap map, short id) {
+    public rElementalRecipe remove(iElementalMapR<cElementalDefinitionStack> map, short id) {
         return recipes.get(map).remove(id);//suspicious but ok, equals and hashcode methods are adjusted for that
     }
 
-    public HashMap<Short, rElementalRecipe> remove(cElementalStackMap map) {
+    public HashMap<Short, rElementalRecipe> remove(iElementalMapR<cElementalDefinitionStack> map) {
         return recipes.remove(map);//suspicious but ok, equals and hashcode methods are adjusted for that
     }
 
@@ -41,15 +44,15 @@ public class rElementalRecipeMap {//TODO FIX
     //Recipe founding should not check amounts - this checks if the types of matter in map are equal to any recipe!
     //Return a recipeShortMap when the content of input is equal (ignoring amounts and instance data)
     @Deprecated
-    public HashMap<Short, rElementalRecipe> findExact(cElementalStackMap in) {
+    public HashMap<Short, rElementalRecipe> findExact(iElementalMapR<cElementalDefinitionStack> in) {
         return recipes.get(in);//suspicious but ok, equals and hashcode methods are adjusted for that
     }
 
     //this does check if the map contains all the requirements for any recipe, and the required amounts
     //Return a recipeShortMap when the content of input matches the recipe input - does not ignore amounts but ignores instance data!
     @Deprecated
-    public HashMap<Short, rElementalRecipe> findMatch(cElementalMutableDefinitionStackMap in, boolean testOnlyTruePreferred) {
-        for (Map.Entry<cElementalDefinitionStackMap, HashMap<Short, rElementalRecipe>> cElementalDefinitionStackMapHashMapEntry : recipes.entrySet()) {
+    public HashMap<Short, rElementalRecipe> findMatch(cElementalDefinitionStackMap in, boolean testOnlyTruePreferred) {
+        for (Map.Entry<cElementalConstantStackMap, HashMap<Short, rElementalRecipe>> cElementalDefinitionStackMapHashMapEntry : recipes.entrySet()) {
             if (in.removeAllAmounts(testOnlyTruePreferred, cElementalDefinitionStackMapHashMapEntry.getKey())) {
                 return cElementalDefinitionStackMapHashMapEntry.getValue();
             }
@@ -58,7 +61,7 @@ public class rElementalRecipeMap {//TODO FIX
     }
 
     public HashMap<Short, rElementalRecipe> findMatch(cElementalInstanceStackMap in, boolean testOnly) {
-        for (Map.Entry<cElementalDefinitionStackMap, HashMap<Short, rElementalRecipe>> cElementalDefinitionStackMapHashMapEntry : recipes.entrySet()) {
+        for (Map.Entry<cElementalConstantStackMap, HashMap<Short, rElementalRecipe>> cElementalDefinitionStackMapHashMapEntry : recipes.entrySet()) {
             if (in.removeAllAmounts(testOnly, cElementalDefinitionStackMapHashMapEntry.getKey())) {
                 return cElementalDefinitionStackMapHashMapEntry.getValue();
             }

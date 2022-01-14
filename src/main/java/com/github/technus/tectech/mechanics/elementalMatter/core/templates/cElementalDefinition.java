@@ -1,7 +1,7 @@
 package com.github.technus.tectech.mechanics.elementalMatter.core.templates;
 
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalDefinitionStack;
-import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.iHasElementalDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.iElementalStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 import java.lang.reflect.Method;
@@ -62,7 +62,7 @@ public abstract class cElementalDefinition extends iElementalDefinition {
         //only of the internal def stacks!!!
         //that allows neat check if the same thing and
         //top hierarchy amount can be used to store amount info
-        return compareInnerContentsWithAmounts(getSubParticles().values(), o.getSubParticles().values());
+        return compareInnerContentsWithAmounts(getSubParticles().valuesToArray(), o.getSubParticles().valuesToArray());
     }
 
     //use only for nested operations!
@@ -112,8 +112,8 @@ public abstract class cElementalDefinition extends iElementalDefinition {
         if (obj instanceof iElementalDefinition) {
             return compareTo((iElementalDefinition) obj) == 0;
         }
-        if (obj instanceof iHasElementalDefinition) {
-            return compareTo(((iHasElementalDefinition) obj).getDefinition()) == 0;
+        if (obj instanceof iElementalStack) {
+            return compareTo(((iElementalStack) obj).getDefinition()) == 0;
         }
         return false;
     }
@@ -121,7 +121,7 @@ public abstract class cElementalDefinition extends iElementalDefinition {
     @Override
     public int hashCode() {//Internal amounts should be also hashed
         int hash = -(getSubParticles().size() << 4);
-        for (cElementalDefinitionStack stack : getSubParticles().values()) {
+        for (cElementalDefinitionStack stack : getSubParticles().valuesToArray()) {
             int amount=(int)stack.amount;
             hash += ((amount & 0x1) == 0 ? -amount : amount) + stack.definition.hashCode();
         }

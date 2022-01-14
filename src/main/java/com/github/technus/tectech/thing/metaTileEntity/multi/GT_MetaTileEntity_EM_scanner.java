@@ -2,7 +2,7 @@ package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.mechanics.constructable.IConstructable;
-import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.cElementalInstanceStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalDefinitionStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.tElementalException;
@@ -218,11 +218,11 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
     @Override
     public boolean checkRecipe_EM(ItemStack itemStack) {
         eRecipe = null;
-        if (!eInputHatches.isEmpty() && eInputHatches.get(0).getContainerHandler().hasStacks() && !eOutputHatches.isEmpty()) {
-            cElementalInstanceStackMap researchEM = eInputHatches.get(0).getContainerHandler();
+        if (!eInputHatches.isEmpty() && eInputHatches.get(0).getContentHandler().hasStacks() && !eOutputHatches.isEmpty()) {
+            cElementalInstanceStackMap researchEM = eInputHatches.get(0).getContentHandler();
             if (ItemList.Tool_DataOrb.isStackEqual(itemStack, false, true)) {
                 GT_Recipe scannerRecipe = null;
-                for (cElementalInstanceStack stackEM : researchEM.values()) {
+                for (cElementalInstanceStack stackEM : researchEM.valuesToArray()) {
                     objectsScanned = null;
                     eRecipe = TT_recipe.TT_Recipe_Map_EM.sMachineRecipesEM.findRecipe(stackEM.definition);
                     if (eRecipe != null) {
@@ -258,7 +258,7 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
             } else if (CustomItemList.scanContainer.isStackEqual(itemStack, false, true)) {
                 eRecipe = null;
                 if (researchEM.hasStacks()) {
-                    objectsScanned = researchEM.takeAllToNewMap();
+                    objectsScanned = researchEM.takeAll();
                     cleanMassEM_EM(objectsScanned.getMass());
 
                     computationRequired = 0;

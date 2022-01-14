@@ -1,7 +1,7 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi.em_machine;
 
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.cElementalInstanceStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.dAtomDefinition;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.INameFunction;
@@ -116,7 +116,7 @@ public class Behaviour_Centrifuge implements GT_MetaTileEntity_EM_machine.IBehav
         cElementalInstanceStackMap input = inputs[0];
         if (input == null || input.isEmpty()) return null;//nothing in only valid input
 
-        cElementalInstanceStack[] stacks = input.values();
+        cElementalInstanceStack[] stacks = input.valuesToArray();
 
         double inputMass = 0;
         for (cElementalInstanceStack stack : stacks) {
@@ -129,7 +129,7 @@ public class Behaviour_Centrifuge implements GT_MetaTileEntity_EM_machine.IBehav
             randomStack.amount= sub(randomStack.amount,amountToRemove);//mutates the parent InstanceStackMap
             if (randomStack.amount <= 0) {
                 input.remove(randomStack.definition);
-                stacks = input.values();
+                stacks = input.valuesToArray();
             }
             double mass = Math.abs(randomStack.getDefinition().getMass()) * amountToRemove;
             excessMass += mass;
@@ -162,7 +162,7 @@ public class Behaviour_Centrifuge implements GT_MetaTileEntity_EM_machine.IBehav
 
 
         //take all from hatch handler and put into new map - this takes from hatch to inner data storage
-        stacks = input.takeAllToNewMap().values();//cleanup stacks
+        stacks = input.takeAll().valuesToArray();//cleanup stacks
         if (stacks.length > 1) {
             Arrays.sort(stacks, (o1, o2) -> {
                 double m1 = o1.definition.getMass();

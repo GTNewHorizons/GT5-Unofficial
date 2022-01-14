@@ -1,9 +1,9 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.mechanics.constructable.IConstructable;
-import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.cElementalInstanceStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
-import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.iHasElementalDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.iElementalStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.aFluidDequantizationInfo;
 import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.aItemDequantizationInfo;
 import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.aOredictDequantizationInfo;
@@ -72,7 +72,7 @@ public class GT_MetaTileEntity_EM_dequantizer extends GT_MetaTileEntity_Multiblo
         super(aName);
     }
 
-    private void startRecipe(iHasElementalDefinition from, long energy) {
+    private void startRecipe(iElementalStack from, long energy) {
         mMaxProgresstime = 20;
         mEfficiencyIncrease = 10000;
         double mass = from.getMass();
@@ -98,8 +98,8 @@ public class GT_MetaTileEntity_EM_dequantizer extends GT_MetaTileEntity_Multiblo
     @Override
     public boolean checkRecipe_EM(ItemStack itemStack) {
         for (GT_MetaTileEntity_Hatch_InputElemental in : eInputHatches) {
-            cElementalInstanceStackMap map = in.getContainerHandler();
-            for (cElementalInstanceStack stack : map.values()) {
+            cElementalInstanceStackMap map = in.getContentHandler();
+            for (cElementalInstanceStack stack : map.valuesToArray()) {
                 {
                     aFluidDequantizationInfo info = stack.getDefinition().someAmountIntoFluidStack();
                     if (info != null) {

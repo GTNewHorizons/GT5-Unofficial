@@ -62,7 +62,7 @@ public class GT_MetaTileEntity_Hatch_OutputElemental extends GT_MetaTileEntity_H
                 if (aMetaTileEntity != null) {
                     if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputElemental &&
                             opposite == tGTTileEntity.getFrontFacing()) {
-                        ((GT_MetaTileEntity_Hatch_InputElemental) aMetaTileEntity).getContainerHandler().putUnifyAll(content);
+                        ((GT_MetaTileEntity_Hatch_InputElemental) aMetaTileEntity).getContentHandler().putUnifyAll(content);
                         ((GT_MetaTileEntity_Hatch_InputElemental) aMetaTileEntity).updateSlots();
                         content.clear();
                         return;

@@ -1,10 +1,10 @@
 package com.github.technus.tectech.mechanics.elementalMatter.core.stacks;
 
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalDecay;
-import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalDecayResult;
-import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalDefinitionStackMap;
-import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.decay.cElementalDecay;
+import com.github.technus.tectech.mechanics.elementalMatter.core.decay.cElementalDecayResult;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.cElementalConstantStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.cElementalInstanceStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.templates.cElementalDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.core.templates.iElementalDefinition;
 import com.github.technus.tectech.util.Util;
@@ -24,7 +24,7 @@ import static java.lang.Math.*;
 /**
  * Created by danie_000 on 22.10.2016.
  */
-public final class cElementalInstanceStack implements iHasElementalDefinition {
+public final class cElementalInstanceStack implements iElementalStack {
     public static int MIN_MULTIPLE_DECAY_CALLS=4,MAX_MULTIPLE_DECAY_CALLS=16;
     public static double DECAY_CALL_PER=AVOGADRO_CONSTANT;//todo
 
@@ -79,6 +79,12 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
     @Override
     public cElementalInstanceStack clone() {
         return new cElementalInstanceStack(this);
+    }
+
+    @Override
+    public cElementalInstanceStack mutateAmount(double amount) {
+        this.amount = amount;
+        return this;
     }
 
     @Override
@@ -170,7 +176,7 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
         if (newInstances == null) {
             nextColor();
         } else {
-            for (cElementalInstanceStack newInstance : newInstances.getOutput().values()) {
+            for (cElementalInstanceStack newInstance : newInstances.getOutput().valuesToArray()) {
                 newInstance.nextColor();
             }
         }
@@ -290,20 +296,20 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
             cElementalInstanceStackMap output = decays[0].getResults(lifeTimeMult, newProductsAge, newEnergyLevel, amount);
             if(newProductsAge<0){
                 if(output.size()==1) {
-                    if(output.size()==1 && output.get(0).definition.equals(definition)) {
-                        output.get(0).setEnergy(energy);
-                        output.get(0).age=age;
+                    if(output.size()==1 && output.getFirst().definition.equals(definition)) {
+                        output.getFirst().setEnergy(energy);
+                        output.getFirst().age=age;
                     }
                 }else {
-                    for (cElementalInstanceStack stack : output.values()) {
+                    for (cElementalInstanceStack stack : output.valuesToArray()) {
                         if (stack.definition.equals(definition)) {
                             stack.age = age;
                         }
                     }
                 }
             }else{
-                if(output.size()==1 && output.get(0).definition.equals(definition)) {
-                    output.get(0).setEnergy(energy);
+                if(output.size()==1 && output.getFirst().definition.equals(definition)) {
+                    output.getFirst().setEnergy(energy);
                 }
             }
             if(energy <= 0 && output.getMass() > mass){
@@ -390,20 +396,20 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
             }
 
             if(newProductsAge<0) {
-                if (output.size() == 1 && output.get(0).definition.equals(definition)) {
-                    output.get(0).setEnergy(energy);
-                    output.get(0).age = age;
+                if (output.size() == 1 && output.getFirst().definition.equals(definition)) {
+                    output.getFirst().setEnergy(energy);
+                    output.getFirst().age = age;
                 } else {
-                    for (cElementalInstanceStack stack : output.values()) {
+                    for (cElementalInstanceStack stack : output.valuesToArray()) {
                         if (stack.definition.equals(definition)) {
                             stack.age = age;
                         }
                     }
                 }
             }else{
-                if(output.size()==1 && output.get(0).definition.equals(definition)) {
-                    output.get(0).setEnergy(energy);
-                    output.get(0).age=age;
+                if(output.size()==1 && output.getFirst().definition.equals(definition)) {
+                    output.getFirst().setEnergy(energy);
+                    output.getFirst().age=age;
                 }
             }
             if(energy <= 0 && output.getMass() > getMass()){
@@ -491,10 +497,10 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
         scanContents(lines,definition.getSubParticles(),1,detailsOnDepthLevels);
     }
 
-    private void scanContents(ArrayList<String> lines, cElementalDefinitionStackMap definitions, int depth, int[] detailsOnDepthLevels){
+    private void scanContents(ArrayList<String> lines, cElementalConstantStackMap definitions, int depth, int[] detailsOnDepthLevels){
         if(definitions!=null && depth<detailsOnDepthLevels.length){
             int deeper=depth+1;
-            for(cElementalDefinitionStack definitionStack:definitions.values()) {
+            for(cElementalDefinitionStack definitionStack:definitions.valuesToArray()) {
                 lines.add("");//def separator
                 if(Util.areBitsSet(SCAN_GET_DEPTH_LEVEL,detailsOnDepthLevels[depth])) {
                     lines.add("DEPTH = " + depth);
@@ -532,7 +538,7 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
     }
 
     @Override
-    public int compareTo(iHasElementalDefinition o) {//use for unification
+    public int compareTo(iElementalStack o) {//use for unification
         return definition.compareTo(o.getDefinition());
     }
 
@@ -541,8 +547,8 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
         if (obj instanceof iElementalDefinition) {
             return definition.compareTo((iElementalDefinition) obj) == 0;
         }
-        if (obj instanceof iHasElementalDefinition) {
-            return definition.compareTo(((iHasElementalDefinition) obj).getDefinition()) == 0;
+        if (obj instanceof iElementalStack) {
+            return definition.compareTo(((iElementalStack) obj).getDefinition()) == 0;
         }
         return false;
     }
