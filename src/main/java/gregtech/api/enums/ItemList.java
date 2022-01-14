@@ -926,6 +926,17 @@ public enum ItemList implements IItemContainer {
     Automation_ItemDistributor_UV,
     Automation_ItemDistributor_MAX,
 
+    Automation_RecipeFilter_ULV,
+    Automation_RecipeFilter_LV,
+    Automation_RecipeFilter_MV,
+    Automation_RecipeFilter_HV,
+    Automation_RecipeFilter_EV,
+    Automation_RecipeFilter_IV,
+    Automation_RecipeFilter_LuV,
+    Automation_RecipeFilter_ZPM,
+    Automation_RecipeFilter_UV,
+    Automation_RecipeFilter_MAX,
+
     Hatch_Dynamo_ULV,
     Hatch_Dynamo_LV,
     Hatch_Dynamo_MV,
