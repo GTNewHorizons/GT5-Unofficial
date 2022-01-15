@@ -439,27 +439,8 @@ public final class ModItems {
 
 
 		try{
-
-			/**
-			 * Try generate dusts for missing rare earth materials if they don't exist
-			 */
-
-			if (!ItemUtils.checkForInvalidItems(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustGadolinium", 1))){
-				ItemUtils.generateSpecialUseDusts("Gadolinium", "Gadolinium", Materials.Gadolinium.mElement.name(), Utils.rgbtoHexValue(226, 172, 9));
-			}
-			if (!ItemUtils.checkForInvalidItems(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustYtterbium", 1))){
-				ItemUtils.generateSpecialUseDusts("Ytterbium", "Ytterbium", Materials.Ytterbium.mElement.name(), Utils.rgbtoHexValue(Materials.Yttrium.mRGBa[0]-60, Materials.Yttrium.mRGBa[1]-60, Materials.Yttrium.mRGBa[2]-60));
-			}
-			if (!ItemUtils.checkForInvalidItems(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustSamarium", 1))){
-				ItemUtils.generateSpecialUseDusts("Samarium", "Samarium", Materials.Samarium.mElement.name(), Utils.rgbtoHexValue(161, 168, 114));
-			}
-			if (!ItemUtils.checkForInvalidItems(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustLanthanum", 1))){
-				ItemUtils.generateSpecialUseDusts("Lanthanum", "Lanthanum", Materials.Lanthanum.mElement.name(), Utils.rgbtoHexValue(106, 127, 163));
-			}
-			if (!ItemUtils.checkForInvalidItems(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustGermanium", 1))){
-		    	ItemUtils.generateSpecialUseDusts("Germanium", "Germanium", "Ge", ELEMENT.getInstance().GERMANIUM.getRgbAsHex());
-			}
-
+			
+			registerCustomMaterialComponents();
 
 			//Elements generate first so they can be used in compounds.
 			//Missing Elements
@@ -843,36 +824,6 @@ public final class ModItems {
 		if (!FluidRegistry.isFluidRegistered("xpjuice")){
 			FluidUtils.generateFluidNoPrefix("xpjuice", "xpjuice", 0, new short[]{50, 150, 50, 100});
 		}
-
-		//Just an unusual plate needed for some black magic.		
-		if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateClay", 1) == null){
-			itemPlateClay = new BaseItemPlate(NONMATERIAL.CLAY);
-		}
-		if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateDoubleClay", 1) == null){
-			itemDoublePlateClay = new BaseItemPlateDouble(NONMATERIAL.CLAY);
-		}
-
-		//Need this for Mutagenic Frames
-		if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("foilUranium235", 1) == null){
-			itemFoilUranium235 = new BaseItemFoil(ELEMENT.getInstance().URANIUM235);
-		}
-
-		//A small gear needed for wizardry.
-		if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("gearGtSmallWroughtIron", 1) == null){
-			itemSmallWroughtIronGear = new BaseItemSmallGear(NONMATERIAL.WROUGHT_IRON);
-		}
-		//Krypton Processing
-		if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("ingotHotTitanium", 1) == null){
-			itemHotTitaniumIngot = ItemUtils.getSimpleStack(new BaseItemIngot(ELEMENT.getInstance().TITANIUM, ComponentTypes.HOTINGOT));
-		}
-		else {
-			itemHotTitaniumIngot = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("ingotHotTitanium", 1);
-		}
-
-		//Need this for Laurenium
-		if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustIndium", 1) == null){
-			itemDustIndium = new BaseItemDust(ELEMENT.getInstance().INDIUM);
-		}
 		
 		//Industrial Diamonds
 		itemExquisiteIndustrialDiamond = new CoreItem("IndustrialDiamondExquisite", "High Quality Industrial Diamond", tabMisc);
@@ -882,97 +833,7 @@ public final class ModItems {
 		ItemUtils.addItemToOreDictionary(tempStack, "gemExquisiteDiamond");
 		ItemUtils.addItemToOreDictionary(tempStack, "craftingExquisiteIndustrialDiamond");
 		
-		//Custom GT++ Crafting Components
 
-		//Springs
-		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.SPRING, ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN);
-		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.SPRING, ELEMENT.STANDALONE.WHITE_METAL);
-		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.SPRING, ALLOY.NITINOL_60);
-		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.SPRING, ALLOY.AQUATIC_STEEL);
-		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.SPRING, ALLOY.EGLIN_STEEL);
-
-		//Small Springs
-		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.SMALLSPRING, ALLOY.MARAGING250);
-		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.SMALLSPRING, ALLOY.NICHROME);
-		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.SMALLSPRING, ALLOY.STABALLOY);
-		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.SMALLSPRING, ALLOY.STEEL_BLACK);
-		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.SMALLSPRING, ALLOY.BLACK_TITANIUM);
-
-		//Fine Wire
-		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, ELEMENT.STANDALONE.WHITE_METAL);
-		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, ELEMENT.getInstance().PALLADIUM);
-		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, ELEMENT.getInstance().ZIRCONIUM);
-		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, ALLOY.LEAGRISIUM);
-		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, ALLOY.BABBIT_ALLOY);
-		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, ALLOY.KOBOLDITE);
-		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, ALLOY.HG1223);
-		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, ALLOY.QUANTUM);
-		
-		//Dense Plates
-		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ALLOY.POTIN);
-		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ALLOY.AQUATIC_STEEL);
-		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ALLOY.BRONZE);
-		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ALLOY.OSMIRIDIUM);
-		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ALLOY.QUANTUM);
-		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ALLOY.STEEL_BLACK);
-		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ALLOY.STAINLESS_STEEL);
-		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ALLOY.EGLIN_STEEL);
-		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ALLOY.MARAGING300);
-		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ALLOY.TALONITE);
-		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ELEMENT.STANDALONE.HYPOGEN);
-		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ELEMENT.STANDALONE.RHUGNOR);
-		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ELEMENT.STANDALONE.ADVANCED_NITINOL);
-		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ELEMENT.STANDALONE.ASTRAL_TITANIUM);
-		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN);
-		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ELEMENT.STANDALONE.WHITE_METAL);
-		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ELEMENT.STANDALONE.BLACK_METAL);
-		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ELEMENT.STANDALONE.GRANITE);		
-		
-		
-		
-		
-		//Special Sillyness
-		if (true) {
-			
-			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateSodium", 1) == null){
-				new BaseItemPlate(ELEMENT.getInstance().SODIUM);
-			}
-			
-			Material meatRaw = NONMATERIAL.MEAT;
-			// A plate of Meat.
-			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateMeatRaw", 1) == null){
-				itemPlateRawMeat = new BaseItemPlate(meatRaw);
-				ItemUtils.registerFuel(ItemUtils.getSimpleStack(itemPlateRawMeat), 100);
-			}
-			// A Block of Meat.
-			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("blockMeatRaw", 1) == null){
-				blockRawMeat  = new BlockBaseModular(meatRaw, BlockTypes.STANDARD);
-				ItemUtils.registerFuel(ItemUtils.getSimpleStack(blockRawMeat), 900);
-			}
-		}
-		
-
-		// A plate of Vanadium.
-		if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateVanadium", 1) == null){
-			itemPlateVanadium = new BaseItemPlate(ELEMENT.getInstance().VANADIUM);
-		}
-
-		//A plate of Lithium.
-		if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateLithium", 1) == null){
-			itemPlateLithium = new BaseItemPlate(ELEMENT.getInstance().LITHIUM);
-		}
-
-		//A plate of Europium.
-		if ((ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateEuropium", 1) == null) && CORE.ConfigSwitches.enableCustom_Pipes){
-			itemPlateEuropium = new BaseItemPlate(ELEMENT.getInstance().EUROPIUM);
-		}
-		if ((ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateDoubleEuropium", 1) == null) && CORE.ConfigSwitches.enableCustom_Pipes){
-			itemDoublePlateEuropium = new BaseItemPlateDouble(ELEMENT.getInstance().EUROPIUM);
-		}
-		
-		//Tumbaga Mix (For Simple Crafting)
-		dustTumbagaMix = ItemUtils.generateSpecialUseDusts("MixTumbaga", "Tumbaga Mix", "Au2Cu", Utils.rgbtoHexValue(255, 150, 80))[0];
-		
 		/*
 		 * Decayable Materials
 		 */
@@ -1228,5 +1089,149 @@ public final class ModItems {
 		itemGenericToken.register(2, "Hand Pump Trade Token II", 1, "Craft into a Tier II Hand pump");
 		itemGenericToken.register(3, "Hand Pump Trade Token III", 1, "Craft into a Tier III Hand pump");
 		itemGenericToken.register(4, "Hand Pump Trade Token IV", 1, "Craft into a Tier IV Hand pump");
+	}
+	
+	public static void registerCustomMaterialComponents() {
+		//Custom GT++ Crafting Components
+		
+		/**
+		 * Try generate dusts for missing rare earth materials if they don't exist
+		 */
+
+		if (!ItemUtils.checkForInvalidItems(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustGadolinium", 1))){
+			ItemUtils.generateSpecialUseDusts("Gadolinium", "Gadolinium", Materials.Gadolinium.mElement.name(), Utils.rgbtoHexValue(226, 172, 9));
+		}
+		if (!ItemUtils.checkForInvalidItems(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustYtterbium", 1))){
+			ItemUtils.generateSpecialUseDusts("Ytterbium", "Ytterbium", Materials.Ytterbium.mElement.name(), Utils.rgbtoHexValue(Materials.Yttrium.mRGBa[0]-60, Materials.Yttrium.mRGBa[1]-60, Materials.Yttrium.mRGBa[2]-60));
+		}
+		if (!ItemUtils.checkForInvalidItems(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustSamarium", 1))){
+			ItemUtils.generateSpecialUseDusts("Samarium", "Samarium", Materials.Samarium.mElement.name(), Utils.rgbtoHexValue(161, 168, 114));
+		}
+		if (!ItemUtils.checkForInvalidItems(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustLanthanum", 1))){
+			ItemUtils.generateSpecialUseDusts("Lanthanum", "Lanthanum", Materials.Lanthanum.mElement.name(), Utils.rgbtoHexValue(106, 127, 163));
+		}
+		if (!ItemUtils.checkForInvalidItems(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustGermanium", 1))){
+	    	ItemUtils.generateSpecialUseDusts("Germanium", "Germanium", "Ge", ELEMENT.getInstance().GERMANIUM.getRgbAsHex());
+		}
+		
+		//Just an unusual plate needed for some black magic.		
+		if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateClay", 1) == null){
+			itemPlateClay = new BaseItemPlate(NONMATERIAL.CLAY);
+		}
+		if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateDoubleClay", 1) == null){
+			itemDoublePlateClay = new BaseItemPlateDouble(NONMATERIAL.CLAY);
+		}
+
+		//Need this for Mutagenic Frames
+		if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("foilUranium235", 1) == null){
+			itemFoilUranium235 = new BaseItemFoil(ELEMENT.getInstance().URANIUM235);
+		}
+
+		//A small gear needed for wizardry.
+		if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("gearGtSmallWroughtIron", 1) == null){
+			itemSmallWroughtIronGear = new BaseItemSmallGear(NONMATERIAL.WROUGHT_IRON);
+		}
+		//Krypton Processing
+		if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("ingotHotTitanium", 1) == null){
+			itemHotTitaniumIngot = ItemUtils.getSimpleStack(new BaseItemIngot(ELEMENT.getInstance().TITANIUM, ComponentTypes.HOTINGOT));
+		}
+		else {
+			itemHotTitaniumIngot = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("ingotHotTitanium", 1);
+		}
+
+		//Need this for Laurenium
+		if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustIndium", 1) == null){
+			itemDustIndium = new BaseItemDust(ELEMENT.getInstance().INDIUM);
+		}
+
+		//Springs
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.SPRING, ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.SPRING, ELEMENT.STANDALONE.WHITE_METAL);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.SPRING, ALLOY.NITINOL_60);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.SPRING, ALLOY.AQUATIC_STEEL);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.SPRING, ALLOY.EGLIN_STEEL);
+
+		//Small Springs
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.SMALLSPRING, ALLOY.MARAGING250);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.SMALLSPRING, ALLOY.NICHROME);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.SMALLSPRING, ALLOY.STABALLOY);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.SMALLSPRING, ALLOY.STEEL_BLACK);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.SMALLSPRING, ALLOY.BLACK_TITANIUM);
+
+		//Fine Wire
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, ELEMENT.STANDALONE.WHITE_METAL);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, ELEMENT.getInstance().PALLADIUM);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, ELEMENT.getInstance().ZIRCONIUM);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, ALLOY.LEAGRISIUM);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, ALLOY.BABBIT_ALLOY);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, ALLOY.KOBOLDITE);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, ALLOY.HG1223);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, ALLOY.QUANTUM);
+		
+		//Dense Plates
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ALLOY.POTIN);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ALLOY.AQUATIC_STEEL);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ALLOY.BRONZE);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ALLOY.OSMIRIDIUM);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ALLOY.QUANTUM);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ALLOY.STEEL_BLACK);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ALLOY.STAINLESS_STEEL);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ALLOY.EGLIN_STEEL);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ALLOY.MARAGING300);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ALLOY.TALONITE);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ELEMENT.STANDALONE.HYPOGEN);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ELEMENT.STANDALONE.RHUGNOR);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ELEMENT.STANDALONE.ADVANCED_NITINOL);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ELEMENT.STANDALONE.ASTRAL_TITANIUM);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ELEMENT.STANDALONE.WHITE_METAL);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ELEMENT.STANDALONE.BLACK_METAL);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ELEMENT.STANDALONE.GRANITE);		
+		
+		
+		
+		
+		//Special Sillyness
+		if (true) {
+			
+			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateSodium", 1) == null){
+				new BaseItemPlate(ELEMENT.getInstance().SODIUM);
+			}
+			
+			Material meatRaw = NONMATERIAL.MEAT;
+			// A plate of Meat.
+			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateMeatRaw", 1) == null){
+				itemPlateRawMeat = new BaseItemPlate(meatRaw);
+				ItemUtils.registerFuel(ItemUtils.getSimpleStack(itemPlateRawMeat), 100);
+			}
+			// A Block of Meat.
+			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("blockMeatRaw", 1) == null){
+				blockRawMeat  = new BlockBaseModular(meatRaw, BlockTypes.STANDARD);
+				ItemUtils.registerFuel(ItemUtils.getSimpleStack(blockRawMeat), 900);
+			}
+		}
+		
+
+		// A plate of Vanadium.
+		if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateVanadium", 1) == null){
+			itemPlateVanadium = new BaseItemPlate(ELEMENT.getInstance().VANADIUM);
+		}
+
+		//A plate of Lithium.
+		if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateLithium", 1) == null){
+			itemPlateLithium = new BaseItemPlate(ELEMENT.getInstance().LITHIUM);
+		}
+
+		//A plate of Europium.
+		if ((ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateEuropium", 1) == null) && CORE.ConfigSwitches.enableCustom_Pipes){
+			itemPlateEuropium = new BaseItemPlate(ELEMENT.getInstance().EUROPIUM);
+		}
+		if ((ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateDoubleEuropium", 1) == null) && CORE.ConfigSwitches.enableCustom_Pipes){
+			itemDoublePlateEuropium = new BaseItemPlateDouble(ELEMENT.getInstance().EUROPIUM);
+		}
+		
+		//Tumbaga Mix (For Simple Crafting)
+		dustTumbagaMix = ItemUtils.generateSpecialUseDusts("MixTumbaga", "Tumbaga Mix", "Au2Cu", Utils.rgbtoHexValue(255, 150, 80))[0];
+		
 	}
 }

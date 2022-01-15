@@ -5,6 +5,8 @@ import java.util.Set;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
@@ -15,8 +17,10 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 public class RecipeGen_Fluids extends RecipeGen_Base {
 
 	public final static Set<RunnableWithInfo<Material>> mRecipeGenMap = new HashSet<RunnableWithInfo<Material>>();
+	private static boolean mRotorShapeEnabled = false;
 	static {
 		MaterialGenerator.mRecipeMapsToGenerate.put(mRecipeGenMap);
+		mRotorShapeEnabled = ItemUtils.doesItemListEntryExist("Shape_Extruder_Rotor");
 	}
 
 	public RecipeGen_Fluids(final Material M) {
@@ -136,6 +140,7 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 				ItemList mold_Bolt = ItemUtils.getValueOfItemList("Shape_Mold_Bolt", null);
 				ItemList mold_Screw = ItemUtils.getValueOfItemList("Shape_Mold_Screw", null);
 				ItemList mold_Ring = ItemUtils.getValueOfItemList("Shape_Mold_Ring", null);
+				ItemList mold_Rotor = ItemUtils.getValueOfItemList("Shape_Mold_Rotor", null);
 
 				// Rod
 				if (ItemUtils.checkForInvalidItems(material.getRod(1)))
@@ -212,7 +217,23 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 						Logger.WARNING((144 * 9) + "l fluid molder from 1 ring Recipe: " + material.getLocalizedName()
 								+ " - Failed");
 					}
+				
+				// Rotor
+				if (ItemUtils.checkForInvalidItems(material.getRotor(1)))
+					if (mold_Rotor != null && GT_Values.RA.addFluidSolidifierRecipe(mold_Rotor.get(0), // Item Shape
+							material.getFluidStack(612), // Fluid Input
+							material.getRotor(1), // output
+							100, // Duration
+							material.vVoltageMultiplier // Eu Tick
+					)) {
+						Logger.WARNING((144 * 9) + "l fluid molder from 1 rotor Recipe: " + material.getLocalizedName()
+								+ " - Success");
+					} else {
+						Logger.WARNING((144 * 9) + "l fluid molder from 1 rotor Recipe: " + material.getLocalizedName()
+								+ " - Failed");
+					}				
 
+	            
 			}
 		}
 	}

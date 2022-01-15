@@ -25,6 +25,7 @@ import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.CustomOrePrefix;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits;
 import gtPlusPlus.xmod.thaumcraft.objects.wrapper.aspect.TC_Aspect_Wrapper;
 import gtPlusPlus.xmod.tinkers.material.BaseTinkersMaterial;
 import net.minecraft.block.Block;
@@ -50,7 +51,7 @@ public class Material {
 	private TextureSet textureSet;
 
 	private Fluid mFluid;
-	private Fluid vPlasma;
+	private Fluid mPlasma;
 
 	private boolean vGenerateCells;
 
@@ -493,11 +494,14 @@ public class Material {
 						mFluid = generateFluid();						
 					}					
 				}
-				this.vPlasma = this.generatePlasma();
+				// Don't generate plasma for composites
+				if (this.getComposites().isEmpty()) {
+					this.mPlasma = this.generatePlasma();
+				}
 			}
 			else {
 				this.mFluid = null;
-				this.vPlasma = null;
+				this.mPlasma = null;
 			}
 			String ratio = "";
 			if (this.vSmallestRatio != null) {
@@ -869,6 +873,14 @@ public class Material {
 	public final ItemStack getScrew(final int stacksize){
 		return getComponentByPrefix(OrePrefixes.screw, stacksize);
 	}
+	
+	public final ItemStack getFineWire(final int stacksize){
+		return getComponentByPrefix(OrePrefixes.wireFine, stacksize);
+	}
+
+	public final ItemStack getFoil(final int stacksize){
+		return getComponentByPrefix(OrePrefixes.foil, stacksize);
+	}
 
 	public final ItemStack getRing(final int stacksize){
 		return getComponentByPrefix(OrePrefixes.ring, stacksize);
@@ -892,6 +904,59 @@ public class Material {
 
 	public final ItemStack getNugget(final int stacksize){
 		return getComponentByPrefix(OrePrefixes.nugget, stacksize);
+	}
+	
+	public final ItemStack getWire01(final int stacksize) {
+		return getComponentByPrefix(OrePrefixes.wireGt01, stacksize);
+	}
+	
+	public final ItemStack getWire02(final int stacksize) {
+		return getComponentByPrefix(OrePrefixes.wireGt02, stacksize);
+	}
+	
+	public final ItemStack getWire04(final int stacksize) {
+		return getComponentByPrefix(OrePrefixes.wireGt04, stacksize);
+	}
+	
+	public final ItemStack getWire08(final int stacksize) {
+		return getComponentByPrefix(OrePrefixes.wireGt08, stacksize);
+	}
+	
+	public final ItemStack getWire12(final int stacksize) {
+		return getComponentByPrefix(OrePrefixes.wireGt12, stacksize);
+	}
+	
+	public final ItemStack getWire16(final int stacksize) {
+		return getComponentByPrefix(OrePrefixes.wireGt16, stacksize);
+	}
+	
+	public final ItemStack getCable01(final int stacksize) {
+		return getComponentByPrefix(OrePrefixes.cableGt01, stacksize);
+	}
+	
+	public final ItemStack getCable02(final int stacksize) {
+		return getComponentByPrefix(OrePrefixes.cableGt02, stacksize);
+	}
+	
+	public final ItemStack getCable04(final int stacksize) {
+		return getComponentByPrefix(OrePrefixes.cableGt04, stacksize);
+	}
+	
+	public final ItemStack getCable08(final int stacksize) {
+		return getComponentByPrefix(OrePrefixes.cableGt08, stacksize);
+	}
+	
+	public final ItemStack getCable12(final int stacksize) {
+		return getComponentByPrefix(OrePrefixes.cableGt12, stacksize);
+	}
+	
+	public final ItemStack getCable16(final int stacksize) {
+		if (GregtechConduits.cableGt16 != null) {
+			return getComponentByPrefix(GregtechConduits.cableGt16, stacksize);
+		}
+		else {
+			return ItemUtils.getErrorStack(stacksize);
+		}
 	}
 
 	/**
@@ -1280,6 +1345,10 @@ public class Material {
 
 	public Fluid getFluid() {
 		return mFluid;
+	}
+	
+	public Fluid getPlasma() {
+		return mPlasma;
 	}
 
 	final public FluidStack getFluidStack(final int fluidAmount) {
