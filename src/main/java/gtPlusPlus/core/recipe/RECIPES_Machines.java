@@ -536,6 +536,72 @@ public class RECIPES_Machines {
 
 	private static void multiSolarTower() {
 		
+		CORE.RA.addSixSlotAssemblingRecipe(
+				new ItemStack[] {
+						CI.getNumberedAdvancedCircuit(17),
+						CI.getTieredGTPPMachineCasing(4, 1),
+						ALLOY.MARAGING250.getPlate(8),
+						ALLOY.MARAGING250.getBolt(8),
+						ALLOY.MARAGING250.getScrew(8),
+						CI.getCircuit(5, 8)
+				}, 
+				CI.getTieredFluid(4, 144 * 8),
+				GregtechItemList.Industrial_Solar_Tower.get(1), 
+				20 * 30,
+				MaterialUtils.getVoltageForTier(4));
+		
+		CORE.RA.addSixSlotAssemblingRecipe(
+				new ItemStack[] {
+						CI.getNumberedAdvancedCircuit(17),
+						ALLOY.MARAGING350.getFrameBox(1),
+						ALLOY.STAINLESS_STEEL.getPlate(4),
+						ALLOY.MARAGING350.getScrew(8)
+				}, 
+				CI.getTieredFluid(3, 144 * 4),
+				GregtechItemList.Casing_SolarTower_Structural.get(1), 
+				20 * 30,
+				MaterialUtils.getVoltageForTier(3));
+		
+		CORE.RA.addSixSlotAssemblingRecipe(
+				new ItemStack[] {
+						CI.getNumberedAdvancedCircuit(17),
+						ALLOY.MARAGING250.getFrameBox(1),
+						ALLOY.STAINLESS_STEEL.getPlate(4),
+						ALLOY.MARAGING250.getBolt(16),
+						ELEMENT.getInstance().ALUMINIUM.getScrew(8)
+				}, 
+				CI.getTieredFluid(3, 144 * 4),
+				GregtechItemList.Casing_SolarTower_SaltContainment.get(1), 
+				20 * 30,
+				MaterialUtils.getVoltageForTier(3));
+		
+		CORE.RA.addSixSlotAssemblingRecipe(
+				new ItemStack[] {
+						CI.getNumberedAdvancedCircuit(17),
+						ALLOY.MARAGING250.getFrameBox(1),
+						ALLOY.STEEL_BLACK.getPlate(4),
+						ALLOY.MARAGING250.getScrew(8)
+				}, 
+				CI.getAlternativeTieredFluid(3, 144 * 4),
+				GregtechItemList.Casing_SolarTower_HeatContainment.get(1), 
+				20 * 30,
+				MaterialUtils.getVoltageForTier(3));
+		
+		CORE.RA.addSixSlotAssemblingRecipe(
+				new ItemStack[] {
+						CI.getNumberedAdvancedCircuit(17),
+						CI.getTieredGTPPMachineCasing(2, 1),
+						CI.getPlate(4, 2),
+						CI.getGear(3, 4),
+						CI.getElectricMotor(3, 2),
+						CI.getCircuit(3, 4)
+						
+				}, 
+				CI.getTertiaryTieredFluid(3, 144 * 4),
+				GregtechItemList.Solar_Tower_Reflector.get(1), 
+				20 * 60,
+				MaterialUtils.getVoltageForTier(3));
+		
 	}
 
 	private static void multiElementalDuplicator() {

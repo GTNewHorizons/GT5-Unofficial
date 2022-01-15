@@ -1,9 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
 import java.util.ArrayList;
@@ -17,14 +14,10 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.MISC_MATERIALS;
@@ -78,8 +71,8 @@ public class GregtechMetaTileEntity_SolarTower extends GregtechMeta_MultiBlockBa
 		GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
 		tt.addMachineType(getMachineType())
 		.addInfo("Contributing Green Energy towards the future")
-		.addInfo("Input: "+MISC_MATERIALS.SOLAR_SALT_COLD.getFluid().getLocalizedName())
-		.addInfo("Output: "+MISC_MATERIALS.SOLAR_SALT_HOT.getFluid().getLocalizedName())
+		.addInfo("Input: "+MISC_MATERIALS.SOLAR_SALT_COLD.getLocalizedName())
+		.addInfo("Output: "+MISC_MATERIALS.SOLAR_SALT_HOT.getLocalizedName())
 		.addInfo("Surround with rings of Solar Heaters")
 		.addInfo("Each ring increases tier")
 		.addInfo("1 = 1, 2 = 2, 3 = 4, 4 = 8, 5 = 16")
@@ -354,11 +347,21 @@ public class GregtechMetaTileEntity_SolarTower extends GregtechMeta_MultiBlockBa
 		buildPiece(STRUCTURE_PIECE_BASE, stackSize, hintsOnly, 5, 5, -22);
 
 		//Solar Heaters
-		buildPiece(SOLAR_HEATER_RING_1, stackSize, hintsOnly, 7, 7, -27);
-		buildPiece(SOLAR_HEATER_RING_2, stackSize, hintsOnly, 9, 9, -27);
-		buildPiece(SOLAR_HEATER_RING_3, stackSize, hintsOnly, 11, 11, -27);
-		buildPiece(SOLAR_HEATER_RING_4, stackSize, hintsOnly, 13, 13, -27);
-		buildPiece(SOLAR_HEATER_RING_5, stackSize, hintsOnly, 15, 15, -27);
+		if (stackSize.stackSize >= 1) {
+			buildPiece(SOLAR_HEATER_RING_1, stackSize, hintsOnly, 7, 7, -27);
+			if (stackSize.stackSize >= 2) {
+				buildPiece(SOLAR_HEATER_RING_2, stackSize, hintsOnly, 9, 9, -27);
+				if (stackSize.stackSize >= 3) {
+					buildPiece(SOLAR_HEATER_RING_3, stackSize, hintsOnly, 11, 11, -27);
+					if (stackSize.stackSize >= 4) {
+						buildPiece(SOLAR_HEATER_RING_4, stackSize, hintsOnly, 13, 13, -27);
+						if (stackSize.stackSize >= 5) {
+							buildPiece(SOLAR_HEATER_RING_5, stackSize, hintsOnly, 15, 15, -27);							
+						}	
+					}	
+				}	
+			}	
+		}
 	}
 
 	@Override

@@ -683,6 +683,10 @@ public class CI {
 	public static ItemStack getScrew(int aTier, int aAmount) {
 		return getTieredComponent(OrePrefixes.screw, aTier, aAmount);
 	}
+	
+	public static ItemStack getCircuit(int aTier, int aAmount) {
+		return getTieredComponent(OrePrefixes.circuit, aTier, aAmount);
+	}
 
 	public static ItemStack getTieredComponent(OrePrefixes aPrefix, int aTier, int aAmount) {
 		aTier = Math.max(0, aTier);		
