@@ -6,6 +6,9 @@ dependencies {
 
     compile("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
 
+    compile("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:master-SNAPSHOT:dev") {
+        transitive = false
+    }
     compileOnly("com.github.GTNewHorizons:EnderCore:master-SNAPSHOT:dev") {
         transitive = false
     }
@@ -22,9 +25,6 @@ dependencies {
         transitive = false
     }
     compileOnly("com.github.GTNewHorizons:TinkersConstruct:master-SNAPSHOT:dev") {
-        transitive = false
-    }
-    compileOnly("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:master-SNAPSHOT:dev") {
         transitive = false
     }
     compileOnly("com.github.GTNewHorizons:EnderIO:master-SNAPSHOT:dev") {
