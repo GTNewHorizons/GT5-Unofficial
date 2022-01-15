@@ -27,6 +27,9 @@ public class Behaviour_Cover_Tool extends Behaviour_None  {
 
     @Override
     public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
+        if (aWorld.isRemote) {
+            return false;
+        }
         NBTTagCompound tNBT = aStack.getTagCompound();
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         boolean isCopyMode = aPlayer.isSneaking();
