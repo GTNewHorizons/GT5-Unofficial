@@ -19,6 +19,7 @@ import cpw.mods.fml.common.network.FMLNetworkEvent;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.IHasFluidDisplayItem;
 import gregtech.api.interfaces.tileentity.ICoverable;
@@ -616,6 +617,11 @@ public class GT_Client extends GT_Proxy
         }
 
         if (GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sCovers.keySet())) {
+            if (((ICoverable) aTileEntity).getCoverIDAtSide((byte) aEvent.target.sideHit) == 0)
+                drawGrid(aEvent, true, false, aEvent.player.isSneaking());
+        }
+
+        if (GT_Utility.areStacksEqual(ItemList.Tool_Cover_Copy_Paste.get(1), aEvent.currentItem, true)) {
             if (((ICoverable) aTileEntity).getCoverIDAtSide((byte) aEvent.target.sideHit) == 0)
                 drawGrid(aEvent, true, false, aEvent.player.isSneaking());
         }

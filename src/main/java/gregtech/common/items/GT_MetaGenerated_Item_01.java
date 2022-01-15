@@ -23,16 +23,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.covers.*;
-import gregtech.common.items.behaviors.Behaviour_Arrow_Potion;
-import gregtech.common.items.behaviors.Behaviour_DataOrb;
-import gregtech.common.items.behaviors.Behaviour_DataStick;
-import gregtech.common.items.behaviors.Behaviour_Lighter;
-import gregtech.common.items.behaviors.Behaviour_PrintedPages;
-import gregtech.common.items.behaviors.Behaviour_Scanner;
-import gregtech.common.items.behaviors.Behaviour_SensorKit;
-import gregtech.common.items.behaviors.Behaviour_Sonictron;
-import gregtech.common.items.behaviors.Behaviour_Spray_Color;
-import gregtech.common.items.behaviors.Behaviour_WrittenBook;
+import gregtech.common.items.behaviors.*;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.item.EntityItem;
@@ -751,6 +742,8 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         GT_ModHandler.addShapelessCraftingRecipe(ItemList.Tool_DataOrb.get(1L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{ItemList.Tool_DataOrb.get(1L)});
         ItemList.Tool_DataStick.set(addItem(tLastID = 708, "Data Stick", "A Low Capacity Data Storage", SubTag.NO_UNIFICATION, new Behaviour_DataStick()));
         GT_ModHandler.addShapelessCraftingRecipe(ItemList.Tool_DataStick.get(1L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{ItemList.Tool_DataStick.get(1L)});
+        ItemList.Tool_Cover_Copy_Paste.set(addItem(tLastID = 709, "Cover Copy/Paste tool", "Set Cover Massively.", Behaviour_Cover_Tool.INSTANCE, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 6L), new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 6L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 6L)));
+        setElectricStats(32000 + tLastID, 400000L, GT_Values.V[2], 2L, -1L, false);
 
         ItemList.Circuit_Board_Basic.set(addItem(tLastID = 710, "Coated Circuit Board", "A Basic Board")); ItemList.Circuit_Board_Coated.set(ItemList.Circuit_Board_Basic.get(1));
         ItemList.Circuit_Board_Advanced.set(addItem(tLastID = 711, "Epoxy Circuit Board", "An Advanced Board")); ItemList.Circuit_Board_Epoxy.set(ItemList.Circuit_Board_Advanced.get(1));
@@ -888,6 +881,8 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate,Materials.Tin,2L), ItemList.Component_Filter.get(1L), ItemList.Conveyor_Module_LV.get(1L), GT_Utility.getIntegratedCircuit(1)}, null, ItemList.ItemFilter_Export.get(1L), 100, 30);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate,Materials.Tin,2L), ItemList.Component_Filter.get(1L), ItemList.Conveyor_Module_LV.get(1L), GT_Utility.getIntegratedCircuit(2)}, null, ItemList.ItemFilter_Import.get(1L), 100, 30);
+
+        GT_ModHandler.addCraftingRecipe(ItemList.Tool_Cover_Copy_Paste.get(1L), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"PSP", "PCP", "PBP", 'P', OrePrefixes.plate.get(Materials.Aluminium), 'S', ItemList.Tool_DataStick.get(1L), 'C', ItemList.Cover_Screen.get(1L), 'B', ItemList.Battery_RE_MV_Lithium.get(1L)});
     }
 
     private static final Map<Materials,Materials> cauldronRemap =new HashMap<>();
