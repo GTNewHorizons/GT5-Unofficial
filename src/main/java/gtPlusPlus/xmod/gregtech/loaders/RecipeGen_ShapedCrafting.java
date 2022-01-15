@@ -192,6 +192,20 @@ public class RecipeGen_ShapedCrafting extends RecipeGen_Base {
 				Logger.WARNING("Fine Wire Recipe: "+material.getLocalizedName()+" - Failed");
 			}
 		}
+		
+		//Shaped Recipe - Foil
+		if (ItemUtils.checkForInvalidItems(material.getFoil(1)) && ItemUtils.checkForInvalidItems(material.getPlate(1))) {
+			if (RecipeUtils.addShapedRecipe(
+					CI.craftingToolHammer_Hard, material.getPlate(1), null,
+					null, null, null,
+					null, null, null,
+					material.getFoil(2))){
+				Logger.WARNING("Foil Recipe: "+material.getLocalizedName()+" - Success");
+			}
+			else {
+				Logger.WARNING("Foil Recipe: "+material.getLocalizedName()+" - Failed");
+			}
+		}
 
 
 		//Shaped Recipe - Ingot to Rod

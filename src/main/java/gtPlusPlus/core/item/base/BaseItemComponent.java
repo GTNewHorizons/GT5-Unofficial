@@ -7,15 +7,16 @@ import java.util.Map;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
+import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.data.StringUtils;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -117,6 +118,12 @@ public class BaseItemComponent extends Item{
 			aMap.put(aKey, ItemUtils.getSimpleStack(this));
 			Logger.MATERIALS("Registering a material component. Item: ["+componentMaterial.getUnlocalizedName()+"] Map: ["+aKey+"]");
 			Material.mComponentMap.put(componentMaterial.getUnlocalizedName(), aMap);
+			if (componentType == ComponentTypes.PLATE) {
+		        GregTech_API.registerCover(componentMaterial.getPlate(1), new GT_RenderedTexture(componentMaterial.getTextureSet().mTextures[71], componentMaterial.getRGBA(), false), null);			
+			}
+			else if (componentType == ComponentTypes.PLATEDOUBLE) {
+		        GregTech_API.registerCover(componentMaterial.getPlateDouble(1), new GT_RenderedTexture(componentMaterial.getTextureSet().mTextures[72], componentMaterial.getRGBA(), false), null);			
+			}
 			return true;
 		}
 		else {
