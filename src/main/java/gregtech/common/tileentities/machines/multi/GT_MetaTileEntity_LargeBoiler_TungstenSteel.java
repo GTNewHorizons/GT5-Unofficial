@@ -75,7 +75,7 @@ public class GT_MetaTileEntity_LargeBoiler_TungstenSteel extends GT_MetaTileEnti
 
     @Override
     public int getEUt() {
-        return 18750;
+        return 16000;
     }
 
     @Override
