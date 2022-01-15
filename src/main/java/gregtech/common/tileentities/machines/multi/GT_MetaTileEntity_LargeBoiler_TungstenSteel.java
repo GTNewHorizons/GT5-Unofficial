@@ -75,7 +75,7 @@ public class GT_MetaTileEntity_LargeBoiler_TungstenSteel extends GT_MetaTileEnti
 
     @Override
     public int getEUt() {
-        return 1000;
+        return 16000;
     }
 
     @Override
@@ -84,8 +84,8 @@ public class GT_MetaTileEntity_LargeBoiler_TungstenSteel extends GT_MetaTileEnti
     }
 
     @Override
-    int runtimeBoost(int mTime) {
-        return mTime * 120 / 100;
-    }
+    int runtimeBoost(int mTime) { return mTime * 120 / 750; }
 
+    @Override
+    boolean isSuperheated() { return true; }
 }
