@@ -74,7 +74,7 @@ public class Gregtech4Content {
 		GregtechItemList.GT4_Electric_Auto_Workbench_LV.set(new GT_MetaTileEntity_ElectricAutoWorkbench(31091, 1, "Automatic crafting machine").getStackForm(1L));
 		GregtechItemList.GT4_Electric_Auto_Workbench_MV.set(new GT_MetaTileEntity_ElectricAutoWorkbench(31092, 2, "Automatic crafting machine").getStackForm(1L));
 		GregtechItemList.GT4_Electric_Auto_Workbench_HV.set(new GT_MetaTileEntity_ElectricAutoWorkbench(31093, 3, "Automatic crafting machine").getStackForm(1L));
-		GregtechItemList.GT4_Electric_Auto_Workbench_LV.set(new GT_MetaTileEntity_ElectricAutoWorkbench(31094, 4, "Automatic crafting machine").getStackForm(1L));
+		GregtechItemList.GT4_Electric_Auto_Workbench_EV.set(new GT_MetaTileEntity_ElectricAutoWorkbench(31094, 4, "Automatic crafting machine").getStackForm(1L));
 		GregtechItemList.GT4_Electric_Auto_Workbench_IV.set(new GT_MetaTileEntity_ElectricAutoWorkbench(31095, 5, "Automatic crafting machine").getStackForm(1L));
 		GregtechItemList.GT4_Electric_Auto_Workbench_LuV.set(new GT_MetaTileEntity_ElectricAutoWorkbench(31096, 6, "Automatic crafting machine").getStackForm(1L));
 		GregtechItemList.GT4_Electric_Auto_Workbench_ZPM.set(new GT_MetaTileEntity_ElectricAutoWorkbench(31097, 7, "Automatic crafting machine").getStackForm(1L));

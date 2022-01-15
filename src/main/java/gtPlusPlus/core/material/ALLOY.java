@@ -22,10 +22,10 @@ public final class ALLOY {
 			"Energy Crystal", //Material Name
 			MaterialState.SOLID, //State
 			new short[]{228, 255, 0, 0}, //Material Colour
-			5660, //Melting Point in C
-			7735, //Boiling Point in C
-			150, //Protons
-			80, //Neutrons
+			4660, //Melting Point in C
+			5735, //Boiling Point in C
+			90, //Protons
+			40, //Neutrons
 			true, //Uses Blast furnace?
 			"⬟ ⯂ ⬢ ⬣ ⯃ ⯄",
 			//Material Stacks with Percentage of required elements.

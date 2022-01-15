@@ -1,9 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
 import java.util.ArrayList;
@@ -18,15 +15,9 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
+import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.*;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
@@ -37,9 +28,10 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-public class GregtechMetaTileEntity_IndustrialForgeHammer extends GregtechMeta_MultiBlockBase {
+public class GregtechMetaTileEntity_IndustrialForgeHammer extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialForgeHammer> {
 
 	private int mCasing;
+	private int mAnvil;
 	private IStructureDefinition<GregtechMetaTileEntity_IndustrialForgeHammer> STRUCTURE_DEFINITION = null;
 
 	public GregtechMetaTileEntity_IndustrialForgeHammer(final int aID, final String aName, final String aNameRegional) {
@@ -106,7 +98,14 @@ public class GregtechMetaTileEntity_IndustrialForgeHammer extends GregtechMeta_M
 											)
 									)
 							)
-
+					.addElement('A', ofChain(
+							onElementPass(x -> ++x.mAnvil,	ofBlock(sAnvil, 1)),
+							onElementPass(x -> ++x.mAnvil,	ofBlock(sSteelAnvil, 1)),
+							onElementPass(x -> ++x.mAnvil,	ofBlock(sDarkSteelAnvil, 1)),
+							onElementPass(x -> ++x.mAnvil,	ofBlock(sThaumiumAnvil, 1)),
+							onElementPass(x -> ++x.mAnvil,	ofBlock(sVoidAnvil, 1))
+							)
+					)
 		            //.addElement('A', ofBlockAdder(GregtechMetaTileEntity_IndustrialForgeHammer::isBlockAnvil, Blocks.anvil, 1))
 							
 					.build();
@@ -188,7 +187,7 @@ public class GregtechMetaTileEntity_IndustrialForgeHammer extends GregtechMeta_M
 								tBusItems.add(tBus.getBaseMetaTileEntity().getStackInSlot(i));
 						}
 					}
-					if (checkRecipeGeneric(tBusItems.toArray(new ItemStack[]{}), new FluidStack[]{}, getMaxParallelRecipes(), 100, 100 * aAnvilTier, 10000)) {
+					if (checkRecipeGeneric(tBusItems.toArray(new ItemStack[]{}), new FluidStack[]{}, getMaxParallelRecipes() * aAnvilTier, 100, 100, 10000)) {
 						return true;
 					}
 				}

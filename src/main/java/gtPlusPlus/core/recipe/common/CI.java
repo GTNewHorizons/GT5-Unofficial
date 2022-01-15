@@ -181,6 +181,13 @@ public class CI {
 	public static ItemStack explosiveTNT;
 	public static ItemStack explosiveITNT;
 
+	public static Materials[] tieredMaterials = new Materials[] {
+				Materials.Iron, Materials.Steel, Materials.Aluminium, 
+				Materials.StainlessSteel, Materials.Titanium, Materials.TungstenSteel, 
+				Materials.Chrome, Materials.Iridium, Materials.Osmium,
+				Materials.Neutronium
+		};;
+
 	public static void preInit(){
 
 		//Tiered Components
@@ -671,6 +678,10 @@ public class CI {
 
 	public static ItemStack getBolt(int aTier, int aAmount) {
 		return getTieredComponent(OrePrefixes.bolt, aTier, aAmount);
+	}
+	
+	public static ItemStack getScrew(int aTier, int aAmount) {
+		return getTieredComponent(OrePrefixes.screw, aTier, aAmount);
 	}
 
 	public static ItemStack getTieredComponent(OrePrefixes aPrefix, int aTier, int aAmount) {
