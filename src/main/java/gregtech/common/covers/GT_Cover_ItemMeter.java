@@ -1,6 +1,8 @@
 package gregtech.common.covers;
 
 import com.google.common.io.ByteArrayDataInput;
+
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.GT_GUICover;
 import gregtech.api.gui.widgets.GT_GuiFakeItemButton;
@@ -78,7 +80,7 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
             ItemStack[] inv = dc.getStoredItemData();
             if (inv != null && inv.length > 1 && inv[1] != null)
                 tUsed = inv[1].stackSize;
-        } else if (mte instanceof GT_MetaTileEntity_Hatch_OutputBus_ME) {
+        } else if (GregTech_API.mAE2 && mte instanceof GT_MetaTileEntity_Hatch_OutputBus_ME) {
             if (((GT_MetaTileEntity_Hatch_OutputBus_ME) mte).isLastOutputFailed()) {
                 tMax = 64;
                 tUsed = 64;
