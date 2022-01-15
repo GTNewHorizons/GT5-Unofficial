@@ -43,6 +43,16 @@ public class GT_Item_Machines extends ItemBlock implements IFluidContainerItem {
         setCreativeTab(GregTech_API.TAB_GREGTECH);
     }
 
+	public static IMetaTileEntity getMetaTileEntity(ItemStack aStack) {
+		if (GT_Utility.isStackInvalid(aStack))
+			return null;
+		if (!(aStack.getItem() instanceof GT_Item_Machines))
+			return null;
+		if (aStack.getItemDamage() < 0 || aStack.getItemDamage() > GregTech_API.METATILEENTITIES.length)
+			return null;
+		return GregTech_API.METATILEENTITIES[aStack.getItemDamage()];
+	}
+
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean par4) {
         try {

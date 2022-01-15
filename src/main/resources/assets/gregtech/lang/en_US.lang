@@ -133,6 +133,8 @@ GT5U.machines.stalled_vent.tooltip.3=§7vent towards an empty space.
 GT5U.machines.stalled_vent.tooltip.extended=§7Progress was lost, but not
 GT5U.machines.stalled_vent.tooltip.extended.1=§7the recipe's output.
 
+GT5U.recipe_filter.representation_slot.tooltip=Click with a machine to set filter
+
 GT5U.gui.select.current=Current:
 
 GT5U.item.programmed_circuit.select.header=Reprogram Circuit
@@ -151,6 +153,8 @@ GT5U.hatch.disableSort.true=Sorting mode: OFF
 GT5U.hatch.disableSort.false=Sorting mode: ON
 GT5U.hatch.disableLimited.true=Limiting mode: OFF
 GT5U.hatch.disableLimited.false=Limiting mode: ON
+GT5U.hatch.infiniteCache.true=ME Output bus will infinitely cache item, until you connect it to ME
+GT5U.hatch.infiniteCache.false=ME Output bus will stop accepting items when offline for more than 2 seconds
 
 GT5U.multiblock.pollution=Pollution reduced to
 GT5U.multiblock.energy=Stored Energy

@@ -48,7 +48,7 @@ public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContain
         super(unlocalized, english, null);
         this.maxCapacity = maxCapacity;
         unlocalFlaskName = unlocalized;
-        setMaxStackSize(16);
+        setMaxStackSize(64);
         setNoRepair();
     }
 

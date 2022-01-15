@@ -1350,6 +1350,27 @@ public class GT_Loader_MetaTileEntities implements Runnable {//TODO CHECK CIRCUI
         GT_ModHandler.addCraftingRecipe(ItemList.Automation_ItemDistributor_UV.get(1L), bitsd, new Object[]{"XCX", "VMV", " V ", 'M', ItemList.Hull_UV, 'V', ItemList.Conveyor_Module_UV, 'C', OreDictNames.craftingChest, 'X', OrePrefixes.circuit.get(Materials.Basic)});
         GT_ModHandler.addCraftingRecipe(ItemList.Automation_ItemDistributor_MAX.get(1L), bitsd, new Object[]{"XCX", "VMV", " V ", 'M', ItemList.Hull_MAX, 'V', ItemList.Conveyor_Module_UHV, 'C', OreDictNames.craftingChest, 'X', OrePrefixes.circuit.get(Materials.Basic)});
 
+        ItemList.Automation_RecipeFilter_ULV.set(new GT_MetaTileEntity_RecipeFilter(9330, "automation.recipefilter.tier.00", "Ultra Low Voltage Recipe Filter", 0).getStackForm(1L));
+        ItemList.Automation_RecipeFilter_LV.set(new GT_MetaTileEntity_RecipeFilter(9331, "automation.recipefilter.tier.01", "Low Voltage Recipe Filter", 1).getStackForm(1L));
+        ItemList.Automation_RecipeFilter_MV.set(new GT_MetaTileEntity_RecipeFilter(9332, "automation.recipefilter.tier.02", "Medium Voltage Recipe Filter", 2).getStackForm(1L));
+        ItemList.Automation_RecipeFilter_HV.set(new GT_MetaTileEntity_RecipeFilter(9333, "automation.recipefilter.tier.03", "High Voltage Recipe Filter", 3).getStackForm(1L));
+        ItemList.Automation_RecipeFilter_EV.set(new GT_MetaTileEntity_RecipeFilter(9334, "automation.recipefilter.tier.04", "Extreme Voltage Recipe Filter", 4).getStackForm(1L));
+        ItemList.Automation_RecipeFilter_IV.set(new GT_MetaTileEntity_RecipeFilter(9335, "automation.recipefilter.tier.05", "Insane Voltage Recipe Filter", 5).getStackForm(1L));
+        ItemList.Automation_RecipeFilter_LuV.set(new GT_MetaTileEntity_RecipeFilter(9336, "automation.recipefilter.tier.06", "Ludicrous Voltage Recipe Filter", 6).getStackForm(1L));
+        ItemList.Automation_RecipeFilter_ZPM.set(new GT_MetaTileEntity_RecipeFilter(9337, "automation.recipefilter.tier.07", "ZPM Voltage Recipe Filter", 7).getStackForm(1L));
+        ItemList.Automation_RecipeFilter_UV.set(new GT_MetaTileEntity_RecipeFilter(9338, "automation.recipefilter.tier.08", "Ultimate Voltage Recipe Filter", 8).getStackForm(1L));
+        ItemList.Automation_RecipeFilter_MAX.set(new GT_MetaTileEntity_RecipeFilter(9339, "automation.recipefilter.tier.09", "Highly Ultimate Voltage Recipe Filter", 9).getStackForm(1L));
+
+        GT_ModHandler.addCraftingRecipe(ItemList.Automation_RecipeFilter_ULV.get(1L), bitsd, new Object[]{" F ", "VMC", " X ", 'M', ItemList.Hull_ULV, 'V', ItemList.Robot_Arm_LV, 'C', OreDictNames.craftingChest, 'F', OreDictNames.craftingFilter, 'X', OrePrefixes.circuit.get(Materials.Basic)});
+        GT_ModHandler.addCraftingRecipe(ItemList.Automation_RecipeFilter_LV.get(1L), bitsd, new Object[]{" F ", "VMC", " X ", 'M', ItemList.Hull_LV, 'V', ItemList.Robot_Arm_LV, 'C', OreDictNames.craftingChest, 'F', OreDictNames.craftingFilter, 'X', OrePrefixes.circuit.get(Materials.Basic)});
+        GT_ModHandler.addCraftingRecipe(ItemList.Automation_RecipeFilter_MV.get(1L), bitsd, new Object[]{" F ", "VMC", " X ", 'M', ItemList.Hull_MV, 'V', ItemList.Robot_Arm_MV, 'C', OreDictNames.craftingChest, 'F', OreDictNames.craftingFilter, 'X', OrePrefixes.circuit.get(Materials.Basic)});
+        GT_ModHandler.addCraftingRecipe(ItemList.Automation_RecipeFilter_HV.get(1L), bitsd, new Object[]{" F ", "VMC", " X ", 'M', ItemList.Hull_HV, 'V', ItemList.Robot_Arm_HV, 'C', OreDictNames.craftingChest, 'F', OreDictNames.craftingFilter, 'X', OrePrefixes.circuit.get(Materials.Basic)});
+        GT_ModHandler.addCraftingRecipe(ItemList.Automation_RecipeFilter_EV.get(1L), bitsd, new Object[]{" F ", "VMC", " X ", 'M', ItemList.Hull_EV, 'V', ItemList.Robot_Arm_EV, 'C', OreDictNames.craftingChest, 'F', OreDictNames.craftingFilter, 'X', OrePrefixes.circuit.get(Materials.Basic)});
+        GT_ModHandler.addCraftingRecipe(ItemList.Automation_RecipeFilter_IV.get(1L), bitsd, new Object[]{" F ", "VMC", " X ", 'M', ItemList.Hull_IV, 'V', ItemList.Robot_Arm_IV, 'C', OreDictNames.craftingChest, 'F', OreDictNames.craftingFilter, 'X', OrePrefixes.circuit.get(Materials.Basic)});
+        GT_ModHandler.addCraftingRecipe(ItemList.Automation_RecipeFilter_LuV.get(1L), bitsd, new Object[]{" F ", "VMC", " X ", 'M', ItemList.Hull_LuV, 'V', ItemList.Robot_Arm_LuV, 'C', OreDictNames.craftingChest, 'F', OreDictNames.craftingFilter, 'X', OrePrefixes.circuit.get(Materials.Basic)});
+        GT_ModHandler.addCraftingRecipe(ItemList.Automation_RecipeFilter_ZPM.get(1L), bitsd, new Object[]{" F ", "VMC", " X ", 'M', ItemList.Hull_ZPM, 'V', ItemList.Robot_Arm_ZPM, 'C', OreDictNames.craftingChest, 'F', OreDictNames.craftingFilter, 'X', OrePrefixes.circuit.get(Materials.Basic)});
+        GT_ModHandler.addCraftingRecipe(ItemList.Automation_RecipeFilter_UV.get(1L), bitsd, new Object[]{" F ", "VMC", " X ", 'M', ItemList.Hull_UV, 'V', ItemList.Robot_Arm_UV, 'C', OreDictNames.craftingChest, 'F', OreDictNames.craftingFilter, 'X', OrePrefixes.circuit.get(Materials.Basic)});
+        GT_ModHandler.addCraftingRecipe(ItemList.Automation_RecipeFilter_MAX.get(1L), bitsd, new Object[]{" F ", "VMC", " X ", 'M', ItemList.Hull_MAX, 'V', ItemList.Robot_Arm_UHV, 'C', OreDictNames.craftingChest, 'F', OreDictNames.craftingFilter, 'X', OrePrefixes.circuit.get(Materials.Basic)});
     }
 
     private static void makeWires(Materials aMaterial, int aStartID, long aLossInsulated, long aLoss, long aAmperage, long aVoltage, boolean aInsulatable, boolean aAutoInsulated) {

@@ -57,13 +57,13 @@ public class GT_MetaTileEntity_AssemblyLine extends GT_MetaTileEntity_EnhancedMu
             }))
             .addShape(STRUCTURE_PIECE_SECOND, transpose(new String[][]{
                     {" ", "e", " "},
-                    {"d", "l", "G"},
+                    {"d", "l", "d"},
                     {"g", "m", "g"},
                     {"b", "I", "b"},
             }))
             .addShape(STRUCTURE_PIECE_LATER, transpose(new String[][]{
                     {" ", "e", " "},
-                    {"G", "l", "G"},
+                    {"d", "l", "d"},
                     {"g", "m", "g"},
                     {"b", "I", "b"},
             }))
@@ -76,6 +76,7 @@ public class GT_MetaTileEntity_AssemblyLine extends GT_MetaTileEntity_EnhancedMu
             .addElement('b', ofChain(
                     ofHatchAdder(GT_MetaTileEntity_AssemblyLine::addMaintenanceToMachineList, 16, 3),
                     ofHatchAdder(GT_MetaTileEntity_AssemblyLine::addInputHatchToMachineList, 16, 3),
+                    ofHatchAdder(GT_MetaTileEntity_AssemblyLine::addOutputToMachineList, 16,4),
                     ofBlock(GregTech_API.sBlockCasings2, 0)
             ))
             .addElement('I', ofChain(
@@ -120,7 +121,7 @@ public class GT_MetaTileEntity_AssemblyLine extends GT_MetaTileEntity_EnhancedMu
                 .addMaintenanceHatch("Any layer 1 casing", 3)
                 .addInputBus("As specified on layer 1", 4, 5)
                 .addInputHatch("Any layer 1 casing", 3)
-                .addOutputBus("Replaces Input Bus on final slice", 4)
+                .addOutputBus("Replaces Input Bus on final slice or on any solid steel casing on layer 1", 4)
                 .addOtherStructurePart("Data Access Hatch", "Optional, next to controller", 2)
                 .toolTipFinisher("Gregtech");
         return tt;
@@ -334,7 +335,8 @@ public class GT_MetaTileEntity_AssemblyLine extends GT_MetaTileEntity_EnhancedMu
             if (!checkPiece(i == 1 ? STRUCTURE_PIECE_SECOND : STRUCTURE_PIECE_LATER, leftToRight ? -i : i, 1, 0))
                 return false;
             if (!mOutputBusses.isEmpty())
-                return !mEnergyHatches.isEmpty() && mMaintenanceHatches.size() == 1;
+
+                return !mEnergyHatches.isEmpty() && mMaintenanceHatches.size() == 1 && mDataAccessHatches.size() <= 1;
         }
         return false;
     }
