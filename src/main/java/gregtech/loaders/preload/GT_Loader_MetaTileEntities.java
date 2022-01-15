@@ -266,7 +266,8 @@ public class GT_Loader_MetaTileEntities implements Runnable {//TODO CHECK CIRCUI
         ItemList.Long_Distance_Pipeline_Fluid.set(new GT_MetaTileEntity_LongDistancePipelineFluid(2700, "long.distance.pipeline.fluid", "Long Distance Fluid Pipeline", 1).getStackForm(1L));
         ItemList.Long_Distance_Pipeline_Item.set(new GT_MetaTileEntity_LongDistancePipelineItem(2701, "long.distance.pipeline.item", "Long Distance Item Pipeline", 1).getStackForm(1L));
 
-        ItemList.Hatch_Output_Bus_ME.set(new GT_MetaTileEntity_Hatch_OutputBus_ME(2710, "hatch.output_bus.me", "Output Bus (ME)").getStackForm(1L));
+        if (GregTech_API.mAE2)
+            ItemList.Hatch_Output_Bus_ME.set(new GT_MetaTileEntity_Hatch_OutputBus_ME(2710, "hatch.output_bus.me", "Output Bus (ME)").getStackForm(1L));
 
         ItemList.Hatch_Input_Bus_ULV.set(new GT_MetaTileEntity_Hatch_InputBus(70, "hatch.input_bus.tier.00", "Input Bus (ULV)", 0).getStackForm(1L));
         ItemList.Hatch_Input_Bus_LV.set(new GT_MetaTileEntity_Hatch_InputBus(71, "hatch.input_bus.tier.01", "Input Bus (LV)", 1).getStackForm(1L));
