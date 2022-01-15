@@ -532,6 +532,112 @@ public class RECIPES_Machines {
 
 	private static void multiXlTurbines() {
 		
+		
+		// Steam
+		CORE.RA.addSixSlotAssemblingRecipe(
+				new ItemStack[] {
+						CI.getNumberedAdvancedCircuit(18),
+						ItemList.Casing_Turbine.get(1),
+						CI.getPlate(3, 4),
+						CI.getScrew(3, 8),
+				}, 
+				CI.tieredMaterials[2].getMolten(144 * 2),
+				GregtechItemList.Casing_Turbine_LP.get(1), 
+				20 * 5,
+				MaterialUtils.getVoltageForTier(3));
+		CORE.RA.addSixSlotAssemblingRecipe(
+				new ItemStack[] {
+						CI.getNumberedAdvancedCircuit(18),
+						ItemList.LargeSteamTurbine.get(1),
+						CI.getPlate(4, 8),
+						CI.getScrew(4, 16),
+						CI.getGear(4, 4),
+						CI.getCircuit(4, 8)
+				}, 
+				CI.tieredMaterials[4].getMolten(144 * 8),
+				GregtechItemList.Large_Steam_Turbine.get(1), 
+				20 * 60,
+				MaterialUtils.getVoltageForTier(4));
+		
+		// Gas
+		CORE.RA.addSixSlotAssemblingRecipe(
+				new ItemStack[] {
+						CI.getNumberedAdvancedCircuit(18),
+						ItemList.Casing_Turbine1.get(1),
+						CI.getPlate(4, 4),
+						CI.getScrew(4, 8),
+				}, 
+				CI.tieredMaterials[3].getMolten(144 * 2),
+				GregtechItemList.Casing_Turbine_Gas.get(1), 
+				20 * 5,
+				MaterialUtils.getVoltageForTier(4));
+		CORE.RA.addSixSlotAssemblingRecipe(
+				new ItemStack[] {
+						CI.getNumberedAdvancedCircuit(18),
+						ItemList.LargeGasTurbine.get(1),
+						CI.getPlate(5, 8),
+						CI.getScrew(5, 16),
+						CI.getGear(5, 4),
+						CI.getCircuit(5, 8)
+				}, 
+				CI.tieredMaterials[5].getMolten(144 * 8),
+				GregtechItemList.Large_Gas_Turbine.get(1), 
+				20 * 60,
+				MaterialUtils.getVoltageForTier(5));
+		
+		// HP Steam
+		CORE.RA.addSixSlotAssemblingRecipe(
+				new ItemStack[] {
+						CI.getNumberedAdvancedCircuit(18),
+						ItemList.Casing_Turbine2.get(1),
+						CI.getPlate(5, 4),
+						CI.getScrew(5, 8),
+				}, 
+				CI.tieredMaterials[4].getMolten(144 * 2),
+				GregtechItemList.Casing_Turbine_HP.get(1), 
+				20 * 5,
+				MaterialUtils.getVoltageForTier(5));
+		CORE.RA.addSixSlotAssemblingRecipe(
+				new ItemStack[] {
+						CI.getNumberedAdvancedCircuit(18),
+						ItemList.LargeHPSteamTurbine.get(1),
+						CI.getPlate(6, 8),
+						CI.getScrew(6, 16),
+						CI.getGear(6, 4),
+						CI.getCircuit(6, 8)
+				}, 
+				CI.tieredMaterials[6].getMolten(144 * 8),
+				GregtechItemList.Large_HPSteam_Turbine.get(1), 
+				20 * 60,
+				MaterialUtils.getVoltageForTier(6));
+		
+		// Plasma
+		CORE.RA.addSixSlotAssemblingRecipe(
+				new ItemStack[] {
+						CI.getNumberedAdvancedCircuit(18),
+						ItemList.Casing_Turbine3.get(1),
+						CI.getPlate(6, 4),
+						CI.getScrew(6, 8),
+				}, 
+				CI.tieredMaterials[5].getMolten(144 * 2),
+				GregtechItemList.Casing_Turbine_Plasma.get(1), 
+				20 * 5,
+				MaterialUtils.getVoltageForTier(6));
+		CORE.RA.addSixSlotAssemblingRecipe(
+				new ItemStack[] {
+						CI.getNumberedAdvancedCircuit(18),
+						ItemList.LargePlasmaTurbine.get(1),
+						CI.getPlate(7, 8),
+						CI.getScrew(7, 16),
+						CI.getGear(7, 4),
+						CI.getCircuit(7, 8)
+				}, 
+				CI.tieredMaterials[7].getMolten(144 * 8),
+				GregtechItemList.Large_Plasma_Turbine.get(1), 
+				20 * 60,
+				MaterialUtils.getVoltageForTier(7));
+		
+		
 	}
 
 	private static void multiSolarTower() {
@@ -539,13 +645,13 @@ public class RECIPES_Machines {
 		CORE.RA.addSixSlotAssemblingRecipe(
 				new ItemStack[] {
 						CI.getNumberedAdvancedCircuit(17),
-						CI.getTieredGTPPMachineCasing(4, 1),
+						CI.getTieredGTPPMachineCasing(3, 4),
 						ALLOY.MARAGING250.getPlate(8),
 						ALLOY.MARAGING250.getBolt(8),
 						ALLOY.MARAGING250.getScrew(8),
 						CI.getCircuit(5, 8)
 				}, 
-				CI.getTieredFluid(4, 144 * 8),
+				CI.getTieredFluid(3, 144 * 16),
 				GregtechItemList.Industrial_Solar_Tower.get(1), 
 				20 * 30,
 				MaterialUtils.getVoltageForTier(4));
@@ -591,7 +697,7 @@ public class RECIPES_Machines {
 				new ItemStack[] {
 						CI.getNumberedAdvancedCircuit(17),
 						CI.getTieredGTPPMachineCasing(2, 1),
-						CI.getPlate(4, 2),
+						CI.getPlate(3, 2),
 						CI.getGear(3, 4),
 						CI.getElectricMotor(3, 2),
 						CI.getCircuit(3, 4)
@@ -639,7 +745,7 @@ public class RECIPES_Machines {
 				new ItemStack[] {
 						CI.getNumberedAdvancedCircuit(6),
 						CI.getTieredMachineHull(4),
-						ItemList.Machine_EV_AlloySmelter.get(1),
+						ItemList.Machine_IV_AlloySmelter.get(1),
 						CI.getGear(3, 16),
 						CI.getBolt(3, 64),
 						CI.getPlate(4, 16)

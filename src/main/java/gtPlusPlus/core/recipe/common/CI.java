@@ -570,7 +570,7 @@ public class CI {
 			ELEMENT.getInstance().LEAD,
 			ELEMENT.getInstance().ALUMINIUM,
 			ELEMENT.STANDALONE.BLACK_METAL,
-			ELEMENT.getInstance().TUNGSTEN,
+			ELEMENT.getInstance().TITANIUM,
 			ALLOY.HASTELLOY_N,
 			ALLOY.ENERGYCRYSTAL,				
 			ALLOY.TRINIUM_NAQUADAH_CARBON,				
@@ -700,12 +700,12 @@ public class CI {
 		}
 
 		if (aPrefix == OrePrefixes.circuit) {	
-			if (aTier == 4) {
+			/*if (aTier == 4) {
 				return ItemUtils.getSimpleStack(CI.getDataStick(), aAmount);
 			}
 			else if (aTier == 5) {
 				return ItemUtils.getSimpleStack(CI.getDataOrb(), aAmount);
-			}			
+			}*/			
 			return ItemUtils.getOrePrefixStack(OrePrefixes.circuit, aMaterial_Circuits[aTier], aAmount); 
 		}
 
