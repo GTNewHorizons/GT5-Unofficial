@@ -167,7 +167,7 @@ public class GT_PreLoad {
     }
 
     public static void runMineTweakerCompat() {
-        if (Loader.isModLoaded("MineTweaker3")) 
+        if (!Loader.isModLoaded("MineTweaker3")) 
             return;
 
         GT_FML_LOGGER.info("preReader");
