@@ -5,10 +5,7 @@
  */
 package Ic2ExpReactorPlanner.components;
 
-import Ic2ExpReactorPlanner.MaterialsList;
 import gregtech.api.objects.GT_ItemStack;
-
-import java.awt.Image;
 
 /**
  * Represents a neutron reflector in a reactor.

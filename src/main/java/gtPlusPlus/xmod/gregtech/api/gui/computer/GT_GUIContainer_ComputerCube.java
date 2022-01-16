@@ -2,21 +2,25 @@ package gtPlusPlus.xmod.gregtech.api.gui.computer;
 
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.common.computer.GT_Computercube_Description;
+import gtPlusPlus.xmod.gregtech.common.tileentities.misc.GT_TileEntity_ComputerCube;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
 public class GT_GUIContainer_ComputerCube extends GT_GUIContainerMetaTile_Machine {
+	
+	public final GT_Container_ComputerCube mPowerContainer;
+	
 	public GT_GUIContainer_ComputerCube(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aBaseMetaTileEntity, int aID) {
 		super(new GT_Container_ComputerCube(aInventoryPlayer, aBaseMetaTileEntity, aID), CORE.RES_PATH_GUI + "computer/"+aID+".png");
-		GT_Container_ComputerCube tContainer = (GT_Container_ComputerCube) this.mContainer;
-		Logger.INFO("1 GUI Mode: "+aID);
-		Logger.INFO("2 GUI Mode: "+tContainer.mID);
-		if (tContainer.mID == 5) {
+		mPowerContainer = (GT_Container_ComputerCube) mContainer;
+		if (mPowerContainer.mID == 5) {
 			this.xSize += 50;
 		}
 	}
@@ -43,8 +47,8 @@ public class GT_GUIContainer_ComputerCube extends GT_GUIContainerMetaTile_Machin
 		if (tContainer != null)
 			switch (tContainer.mID) {
 				case 0 :
-					this.fontRendererObj.drawString("G.L.A.D.-OS", 64, 61, 16448255);
-					this.fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
+					this.fontRendererObj.drawString("Solaris 1.7.10", 56, 70, Utils.rgbtoHexValue(100, 190, 255));
+					//this.fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 					break;
 				case 1 :
 					this.fontRendererObj.drawString("Reactorstats:", 7, 108, 16448255);
@@ -58,11 +62,13 @@ public class GT_GUIContainer_ComputerCube extends GT_GUIContainerMetaTile_Machin
 					this.fontRendererObj.drawString("Scanner", 51, 7, 16448255);
 					if (tContainer.mProgress == 0) {
 						this.fontRendererObj.drawString("Can be used to", 51, 24, 16448255);
-						this.fontRendererObj.drawString("scan Seedbags", 51, 32, 16448255);
+						this.fontRendererObj.drawString("scan things", 51, 32, 16448255);
+						this.fontRendererObj.drawString("Currently", 51, 48, Utils.rgbtoHexValue(200, 20, 20));
+						this.fontRendererObj.drawString("Disabled", 51, 56, Utils.rgbtoHexValue(200, 20, 20));
 					}
 					else {
 						this.fontRendererObj.drawString("Progress:", 51, 24, 16448255);
-						this.fontRendererObj.drawString(tContainer.mProgress + "%", 51, 32, 16448255);
+						this.fontRendererObj.drawString(MathUtils.findPercentage(tContainer.mProgress, tContainer.mMaxProgressTime) + " %", 51, 32, 16448255);
 					}
 					this.fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 					break;
@@ -73,15 +79,17 @@ public class GT_GUIContainer_ComputerCube extends GT_GUIContainerMetaTile_Machin
 					break;
 				case 4 :
 					this.fontRendererObj.drawString("Fusionreactor", 7, 7, 16448255);
-					this.fontRendererObj.drawString("Recipe: " + (tContainer.mMaxHeat + 1) + "/" + GT_Recipe_Map.sFusionRecipes.mRecipeList.size(), 7, 23, 16448255);
-					this.fontRendererObj.drawString("Start: " + toNumber(tContainer.mEU) + "EU", 7, 31, 16448255);
-					this.fontRendererObj.drawString("EU/t: " + toNumber(tContainer.mEUOut), 7, 39, 16448255);
-					this.fontRendererObj.drawString(toNumber(tContainer.mHeat) + " Ticks", 7, 47, 16448255);
+					this.fontRendererObj.drawString("Recipe: " + (tContainer.mMaxHeat + 1) + "/" + GT_TileEntity_ComputerCube.sFusionReactorRecipes.size(), 7, 15, 16448255);
+					this.fontRendererObj.drawString("Start: " + toNumber(tContainer.mEU) + "EU", 7, 23, 16448255);
+					this.fontRendererObj.drawString("EU/t: " + toNumber(tContainer.mEUOut), 7, 31, 16448255);
+					this.fontRendererObj.drawString(toNumber(tContainer.mHeat) + " Ticks", 7, 39, 16448255);
+					GT_Recipe tRecipe = GT_TileEntity_ComputerCube.sFusionReactorRecipes.get(tContainer.mMaxHeat);
+					this.fontRendererObj.drawString(""+tRecipe.mFluidOutputs[0].getLocalizedName(), 7, 55, 16448255);
 					if (tContainer.mEUOut < 0) {
-						this.fontRendererObj.drawString("IN: " + toNumber(-tContainer.mEUOut * tContainer.mHeat) + "EU", 7, 55, 16448255);
+						this.fontRendererObj.drawString("IN: " + toNumber(-tContainer.mEUOut * tContainer.mHeat) + "EU", 7, 47, 16448255);
 						break;
 					}
-					this.fontRendererObj.drawString("OUT: " + toNumber(tContainer.mEUOut * tContainer.mHeat) + "EU", 7, 55, 16448255);
+					this.fontRendererObj.drawString("OUT: " + toNumber(tContainer.mEUOut * tContainer.mHeat) + "EU", 7, 47, 16448255);
 					break;
 				case 5 :
 					if (tContainer.mID == 5 && this.xSize == 176) {
@@ -114,6 +122,17 @@ public class GT_GUIContainer_ComputerCube extends GT_GUIContainerMetaTile_Machin
 			int y = (height - ySize) / 2;
 			drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
 			switch (tContainer.mID) {
+				case 0 :
+					if (this.mPowerContainer.mStoredEU > 0 && this.mPowerContainer.mMaxStoredEU > 0) {
+						final double tScale = MathUtils.findPercentage(this.mPowerContainer.mStoredEU, this.mPowerContainer.mMaxStoredEU);
+						this.drawTexturedModalRect(x + 44, y + 8, 0, 166, Math.min(MathUtils.roundToClosestInt(tScale), 95), 5);
+					}
+					else {
+						//
+						//Logger.INFO("1 No Power? "+tContainer.mProgressTime+" | "+tContainer.mTileEntity.getEUCapacity());
+						//Logger.INFO("2 No Power? "+aComp.getEUVar()+" | "+aComp.maxEUStore());
+					}
+					break;
 				case 5 :
 					if (tContainer.mExplosionStrength != 0)
 						drawTexturedModalRect(x + 152, y + 6, 0, 166, 50, 50);

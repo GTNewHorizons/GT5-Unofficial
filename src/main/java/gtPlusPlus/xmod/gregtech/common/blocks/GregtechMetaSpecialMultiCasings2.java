@@ -7,6 +7,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.common.blocks.GT_Material_Casings;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -59,7 +60,14 @@ public class GregtechMetaSpecialMultiCasings2 extends GregtechMetaCasingBlocksAb
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".14.name", ""); // Unused
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".15.name", ""); // Unused
 
-		//GregtechItemList.Casing_Turbine_Shaft.set(new ItemStack(this, 1, 0));
+		GregtechItemList.ResonanceChamber_I.set(new ItemStack(this, 1, 0));
+		GregtechItemList.ResonanceChamber_II.set(new ItemStack(this, 1, 1));
+		GregtechItemList.ResonanceChamber_III.set(new ItemStack(this, 1, 2));
+		GregtechItemList.ResonanceChamber_IV.set(new ItemStack(this, 1, 3));
+		GregtechItemList.Modulator_I.set(new ItemStack(this, 1, 4));
+		GregtechItemList.Modulator_II.set(new ItemStack(this, 1, 5));
+		GregtechItemList.Modulator_III.set(new ItemStack(this, 1, 6));
+		GregtechItemList.Modulator_IV.set(new ItemStack(this, 1, 7));
 	}	
 	
 	@Override

@@ -76,6 +76,4 @@ public class SimulationData {
     public double ventCooling = 0;
     public double ventCoolingCapacity = 0;
     
-    // Automation details
-    public MaterialsList replacedItems = new MaterialsList();
 }

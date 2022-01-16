@@ -1,39 +1,50 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.misc;
 
+import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
 import Ic2ExpReactorPlanner.SimulationData;
+import cpw.mods.fml.common.FMLCommonHandler;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.ItemList;
+import gregtech.api.enums.*;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
-import gregtech.api.objects.GT_ItemStack;
-import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.objects.*;
+import gregtech.api.util.*;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
-import gregtech.api.util.GT_Utility;
+import gregtech.common.items.behaviors.Behaviour_DataOrb;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.computer.GT_Container_ComputerCube;
 import gtPlusPlus.xmod.gregtech.api.gui.computer.GT_GUIContainer_ComputerCube;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.computer.GT_Computercube_Description;
 import gtPlusPlus.xmod.gregtech.common.computer.GT_Computercube_Simulator;
-import ic2.core.Ic2Items;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
 public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank {
 
+	public static int MODE_MAIN = 0;
+	public static int MODE_REACTOR_PLANNER = 1;
+	public static int MODE_SCANNER = 2;
+	public static int MODE_CENTRIFUGE = 3;
+	public static int MODE_FUSION = 4;
+	public static int MODE_INFO = 5;
+	public static int MODE_ELECTROLYZER = 6;
+	
 	public static boolean mSeedscanner = true;
 
 	public static boolean mReactorplanner = true;
@@ -48,11 +59,12 @@ public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank {
 
 	public long mEUOut = 0;
 
-	public int mMaxHeat = 10000;
+	public int mMaxHeat = 1;
 
 	public long mEU = 0;
 
 	public int mProgress = 0;
+	public int mMaxProgress = 0;
 
 	public int mEUTimer = 0;
 
@@ -65,13 +77,15 @@ public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank {
 	public int mEULast4 = 0;
 
 	public float mHEM = 1.0F, mExplosionStrength = 0.0F;
+	
+	public String mFusionOutput = "";
 
 	private boolean mNeedsUpdate;
 	
 	private GT_Computercube_Simulator mSimulator;
 
 	public GT_TileEntity_ComputerCube(final int aID, final String aDescription) {
-		super(aID, "computer.cube", "Computer Cube", 5, 114, aDescription);
+		super(aID, "computer.cube", "Computer Cube MKII", 5, 114, aDescription);
 	}
 
 	public GT_TileEntity_ComputerCube(final String aName, final String aDescription, final ITexture[][][] aTextures) {
@@ -88,6 +102,17 @@ public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank {
 	public Object getClientGUI(final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
 		Logger.INFO("CC-Client ID: "+aID);
 		return new GT_GUIContainer_ComputerCube(aPlayerInventory, aBaseMetaTileEntity, mMode);
+	}
+
+	@Override
+	public String[] getDescription() {
+		return new String[]{
+				this.mDescription,
+				"Built in Reactor Planner",
+				"Built in Scanner", 
+				"Built in Info-Bank",
+				"Displays Fusion Recipes",
+				CORE.GT_Tooltip};
 	}
 
 	@Override
@@ -143,7 +168,7 @@ public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank {
 
 	@Override
 	public long maxEUInput() {
-		return GT_Values.V[2];
+		return GT_Values.V[4];
 	}
 	
 	@Override
@@ -213,6 +238,8 @@ public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank {
 		this.mHEM = 1.0F;
 		this.mExplosionStrength = 0.0F;
 		this.mProgress = 0;
+		this.mMaxProgress = 0;
+		this.mFusionOutput = "";
 		this.mInventory[113] = null;
 		int i;
 		for (i = 0; i < 54; i++) {
@@ -229,37 +256,51 @@ public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank {
 	}
 
 	public void switchModeForward() {
-		this.mMode = (this.mMode + 1) % 7;
+		int aTempMode = mMode;
+		aTempMode++;
+		if (aTempMode == MODE_ELECTROLYZER ||aTempMode == MODE_CENTRIFUGE) {
+			aTempMode++;			
+		}
+		if (aTempMode >= 7) {
+			aTempMode = 0;
+		}
+		mMode = aTempMode;
 		switchMode();
 	}
 
 	public void switchModeBackward() {
-		this.mMode--;
-		if (this.mMode < 0)
-			this.mMode = 6;
+		int aTempMode = mMode;
+		aTempMode--;
+		if (aTempMode == MODE_ELECTROLYZER ||aTempMode == MODE_CENTRIFUGE) {
+			aTempMode--;			
+		}
+		if (aTempMode < 0) {
+			aTempMode = 6;
+		}
+		mMode = aTempMode;	
 		switchMode();
 	}
 
 	private void switchMode() {
 		reset();
-		if (this.mMode == 1 && !mReactorplanner) {
+		if (this.mMode == MODE_REACTOR_PLANNER && !mReactorplanner) {
 			switchMode();
 			return;
 		}
-		if (this.mMode == 2 && !mSeedscanner) {
+		if (this.mMode == MODE_SCANNER && !mSeedscanner) {
 			switchMode();
 			return;
 		}
-		if (this.mMode == 3) {
+		if (this.mMode == MODE_CENTRIFUGE) {
 			showCentrifugeRecipe(0);
 		}
-		if (this.mMode == 4) {
+		if (this.mMode == MODE_FUSION) {
 			showFusionRecipe(0);
 		}
-		if (this.mMode == 5) {
+		if (this.mMode == MODE_INFO) {
 			showDescription(0);
 		}
-		if (this.mMode == 6) {
+		if (this.mMode == MODE_ELECTROLYZER) {
 			showElectrolyzerRecipe(0);
 		}
 		this.getWorld().addBlockEvent(this.getXCoord(), this.getYCoord(), this.getZCoord(), GregTech_API.sBlockMachines, 10, this.mMode);
@@ -540,6 +581,7 @@ public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank {
 			this.mEUOut = tRecipe.mEUt;
 			this.mHeat = tRecipe.mDuration;
 			this.mMaxHeat = aIndex;
+			this.mFusionOutput = tRecipe.mFluidOutputs[0].getLocalizedName();
 		}
 		this.getWorld().addBlockEvent(this.getXCoord(), this.getYCoord(), this.getZCoord(), GregTech_API.sBlockMachines, 11, this.mMaxHeat);
 	}
@@ -582,6 +624,7 @@ public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank {
 		super.saveNBTData(aNBT);
 		aNBT.setInteger("mMode", this.mMode);
 		aNBT.setInteger("mProgress", this.mProgress);
+		aNBT.setInteger("mMaxProgress", this.mMaxProgress);
 		aNBT.setBoolean("mStarted", this.mStarted);
 		int[] aSplitLong1 = MathUtils.splitLongIntoTwoIntegers(mEU);
 		aNBT.setInteger("mEU1", aSplitLong1[0]);
@@ -593,6 +636,7 @@ public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank {
 		aNBT.setInteger("mMaxHeat", this.mMaxHeat);
 		aNBT.setFloat("mHEM", this.mHEM);
 		aNBT.setFloat("mExplosionStrength", this.mExplosionStrength);
+		aNBT.setString("mFusionOutput", this.mFusionOutput);
 	}
 
 	@Override
@@ -600,6 +644,7 @@ public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank {
 		super.loadNBTData(aNBT);
 		this.mMode = aNBT.getInteger("mMode");
 		this.mProgress = aNBT.getInteger("mProgress");
+		this.mMaxProgress = aNBT.getInteger("mMaxProgress");
 		this.mStarted = aNBT.getBoolean("mStarted");
 		int partA = aNBT.getInteger("mEU1");
 		int partB = aNBT.getInteger("mEU2");
@@ -611,6 +656,7 @@ public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank {
 		this.mMaxHeat = aNBT.getInteger("mMaxHeat");
 		this.mHEM = aNBT.getFloat("mHEM");
 		this.mExplosionStrength = aNBT.getFloat("mExplosionStrength");
+		this.mFusionOutput = aNBT.getString("mFusionOutput");
 	}
 
 	@Override
@@ -633,17 +679,32 @@ public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank {
 			this.mNeedsUpdate = false;
 		}
 		if (this.getBaseMetaTileEntity().isServerSide()) {
-			if (this.mMode == 2) {
-				if (this.mInventory[55] == null) {
+			if (this.mMode == MODE_SCANNER) {
+				/*if (this.mInventory[55] == null) {
 					this.mInventory[55] = this.mInventory[54];
 					this.mInventory[54] = null;
-				}
+				}*/
 				if (this.mInventory[57] == null) {
 					this.mInventory[57] = this.mInventory[56];
 					this.mInventory[56] = null;
 				}
 
-				if (mSeedscanner && this.mInventory[55] != null && GT_Utility.areStacksEqual(this.mInventory[55], Ic2Items.cropSeed, true) && this.mInventory[55].getTagCompound() != null) {
+				// 54 - 55 || 56 - 57
+				// Do scanny bits
+				if (mSeedscanner && this.mMode == MODE_SCANNER) {					
+					/*if (doScan(this.mInventory[55]) == 4) {
+					    if ((this.mInventory[57] != null) && (this.mInventory[57].getUnlocalizedName().equals("gt.metaitem.01.32707"))) {
+					        GT_Mod.instance.achievements.issueAchievement(aBaseMetaTileEntity.getWorld().getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()), "scanning");
+					    }
+					}*/
+					/*if (this.mEU > 0) {
+						if (!this.getBaseMetaTileEntity().decreaseStoredEnergyUnits(this.mEU, false)) {
+							this.mProgress = 0;
+						}
+					}*/
+				}
+				
+				/*if (mSeedscanner && this.mInventory[55] != null && GT_Utility.areStacksEqual(this.mInventory[55], Ic2Items.cropSeed, true) && this.mInventory[55].getTagCompound() != null) {
 					if (this.mInventory[55].getTagCompound().getByte("scan") < 4) {
 						if (this.mProgress >= 100) {
 							this.mInventory[55].getTagCompound().setByte("scan", (byte) 4);
@@ -667,10 +728,10 @@ public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank {
 						this.mInventory[56] = this.mInventory[55];
 						this.mInventory[55] = null;
 					}
-				}
+				}*/
 			}
 			
-			if (this.mMode == 1 && mReactorplanner && this.mSimulator != null && this.mSimulator.simulator != null && this.mSimulator.simulatedReactor != null) {
+			if (this.mMode == MODE_REACTOR_PLANNER && mReactorplanner && this.mSimulator != null && this.mSimulator.simulator != null && this.mSimulator.simulatedReactor != null) {
 				SimulationData aData = this.mSimulator.simulator.getData();
 				if (aData != null && aData.totalReactorTicks > 0 && this.mProgress != aData.totalReactorTicks) {
 					Logger.INFO("Updating Variables");
@@ -684,50 +745,6 @@ public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank {
 				}
 			}
 			
-			/*if (this.mMode == 1 && mReactorplanner && this.mStarted && this.getBaseMetaTileEntity().decreaseStoredEnergyUnits(32, false))
-				for (int i = 0; i < 25 && this.mStarted; i++) {
-					this.mEUOut = 0;
-					this.mMaxHeat = 10000;
-					this.mHEM = 1.0F;
-					this.mExplosionStrength = 10.0F;
-					float tMultiplier = 1.0F;
-					for (int y = 0; y < 6; y++) {
-						for (int x = 0; x < 9; x++) {
-							ItemStack tStack = getStackInSlot(x + y * 9);
-							if (tStack != null)
-								if (tStack.getItem() instanceof IReactorComponent) {
-									IReactorComponent tComponent = (IReactorComponent) tStack.getItem();
-									tComponent.processChamber(this, tStack, x, y, false); //TODO
-									float tInfluence = ((IReactorComponent) tStack.getItem()).influenceExplosion(this, tStack);
-									if (tInfluence > 0.0F && tInfluence < 1.0F) {
-										tMultiplier *= tInfluence;
-									}
-									else {
-										this.mExplosionStrength += tInfluence;
-									}
-								}
-								else if (tStack.isItemEqual(GT_ModHandler.getIC2Item("nearDepletedUraniumCell", 1)) || tStack.isItemEqual(GT_ModHandler.getIC2Item("reEnrichedUraniumCell", 1))) {
-									stopNuclearReactor();
-								}
-								else {
-									setInventorySlotContents(x + y * 9, (ItemStack) null);
-								}
-						}
-					}
-					this.mEUOut *= getReactorEUOutput();
-					if ((this.mEUOut == 0 && this.mEUTimer++ > 20) || this.mHeat >= this.mMaxHeat)
-						stopNuclearReactor();
-					if (this.mEUOut != 0)
-						this.mEUTimer = 0;
-					this.mExplosionStrength *= this.mHEM * tMultiplier;
-					this.mEU += this.mEUOut * 20;
-					int tEU = this.mEULast1;
-					this.mEULast1 = this.mEULast2;
-					this.mEULast2 = this.mEULast3;
-					this.mEULast3 = this.mEULast4;
-					this.mEULast4 = this.mEUOut;
-					this.mEUOut = (this.mEUOut + this.mEULast1 + this.mEULast2 + this.mEULast3 + tEU) / 5;
-				}*/
 			if (aTick % 20L == 0L) {
 				this.getWorld().addBlockEvent(this.getXCoord(), this.getYCoord(), this.getZCoord(), GregTech_API.sBlockMachines, 10, this.mMode);
 				this.getWorld().addBlockEvent(this.getXCoord(), this.getYCoord(), this.getZCoord(), GregTech_API.sBlockMachines, 11, this.mMaxHeat);
@@ -765,12 +782,12 @@ public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank {
 
 	@Override
 	public boolean canInsertItem(int i, ItemStack itemstack, int j) {
-		return (this.mMode == 2) ? ((i == 54 || i == 55)) : false;
+		return (this.mMode == MODE_SCANNER) ? ((i == 54 || i == 55)) : false;
 	}
 
 	@Override
 	public boolean canExtractItem(int i, ItemStack itemstack, int j) {
-		return (this.mMode == 2) ? ((i == 56 || i == 57)) : false;
+		return (this.mMode == MODE_SCANNER) ? ((i == 56 || i == 57)) : false;
 	}
 
 	public World getWorld() {
@@ -838,5 +855,198 @@ public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank {
 	public ITexture[] getSides(final byte aColor) {
 		return new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Computer_Cube)};
 	}
+	
+    protected static final int
+    DID_NOT_FIND_RECIPE = 0,
+    FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS = 1,
+    FOUND_AND_SUCCESSFULLY_USED_RECIPE = 2;
+    
+    /**
+     * Calcualtes overclocked ness using long integers
+     * @param aEUt          - recipe EUt
+     * @param aDuration     - recipe Duration
+     */
+    protected void calculateOverclockedNess(int aEUt, int aDuration) {
+        if(mTier==0){
+            //Long time calculation
+            long xMaxProgresstime = ((long)aDuration)<<1;
+            if(xMaxProgresstime>Integer.MAX_VALUE-1){
+                //make impossible if too long
+                mEU=Integer.MAX_VALUE-1;
+                mMaxProgress=Integer.MAX_VALUE-1;
+            }else{
+                mEU=aEUt>>2;
+                mMaxProgress=(int)xMaxProgresstime;
+            }
+        }else{
+            //Long EUt calculation
+            long xEUt=aEUt;
+            //Isnt too low EUt check?
+            long tempEUt = Math.max(xEUt, V[1]);
+
+            mMaxProgress = aDuration;
+
+            while (tempEUt <= V[mTier -1] * (long)this.maxAmperesIn()) {
+                tempEUt<<=2;//this actually controls overclocking
+                //xEUt *= 4;//this is effect of everclocking
+                mMaxProgress>>=1;//this is effect of overclocking
+                xEUt = mMaxProgress==0 ? xEUt>>1 : xEUt<<2;//U know, if the time is less than 1 tick make the machine use 2x less power
+            }
+            if(xEUt>Integer.MAX_VALUE-1){
+                mEU = Integer.MAX_VALUE-1;
+                mMaxProgress = Integer.MAX_VALUE-1;
+            }else{
+                mEU = (int)xEUt;
+                if(mEU==0)
+                    mEU = 1;
+                if(mMaxProgress==0)
+                    mMaxProgress = 1;//set time to 1 tick
+            }
+        }
+    }
+	
+    public int doScan(ItemStack aInput) {
+    	if (this.mMode != MODE_SCANNER) {
+    		return DID_NOT_FIND_RECIPE;
+    	}    	
+        ItemStack aStack = aInput;
+        if (this.mInventory[56] != null) {
+            return DID_NOT_FIND_RECIPE;
+        } else if ((GT_Utility.isStackValid(aStack)) && (aStack.stackSize > 0)) {
+            
+        	
+            if (ItemList.IC2_Crop_Seeds.isStackEqual(aStack, true, true)) {
+                NBTTagCompound tNBT = aStack.getTagCompound();
+                if (tNBT == null) {
+                    tNBT = new NBTTagCompound();
+                }
+                if (tNBT.getByte("scan") < 4) {
+                    tNBT.setByte("scan", (byte) 4);
+                    calculateOverclockedNess(8, 160);
+                    //In case recipe is too OP for that machine
+                    if (mMaxProgress == Integer.MAX_VALUE - 1 && mEU == Integer.MAX_VALUE - 1)
+                        return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
+                } else {
+                    this.mMaxProgress = 1;
+                    this.mEU = 1;
+                }
+                aStack.stackSize -= 1;
+                this.mInventory[57] = GT_Utility.copyAmount(1L, aStack);
+                this.mInventory[57].setTagCompound(tNBT);
+                return 2;
+            }
+            
+            
+            if (ItemList.Tool_DataOrb.isStackEqual(getSpecialSlot(), false, true)) {
+                if (ItemList.Tool_DataOrb.isStackEqual(aStack, false, true)) {
+                    aStack.stackSize -= 1;
+                    this.mInventory[57] = GT_Utility.copyAmount(1L, getSpecialSlot());
+                    calculateOverclockedNess(30, 512);
+                    //In case recipe is too OP for that machine
+                    if (mMaxProgress == Integer.MAX_VALUE - 1 && mEU == Integer.MAX_VALUE - 1)
+                        return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
+                    return 2;
+                }
+                ItemData tData = GT_OreDictUnificator.getAssociation(aStack);
+                if ((tData != null) && ((tData.mPrefix == OrePrefixes.dust) || (tData.mPrefix == OrePrefixes.cell)) && (tData.mMaterial.mMaterial.mElement != null) && (!tData.mMaterial.mMaterial.mElement.mIsIsotope) && (tData.mMaterial.mMaterial != Materials.Magic) && (tData.mMaterial.mMaterial.getMass() > 0L)) {
+                    getSpecialSlot().stackSize -= 1;
+                    aStack.stackSize -= 1;
+
+                    this.mInventory[57] = ItemList.Tool_DataOrb.get(1L);
+                    Behaviour_DataOrb.setDataTitle(this.mInventory[57], "Elemental-Scan");
+                    Behaviour_DataOrb.setDataName(this.mInventory[57], tData.mMaterial.mMaterial.mElement.name());
+                    calculateOverclockedNess(30, GT_Utility.safeInt(tData.mMaterial.mMaterial.getMass() * 8192L));
+                    //In case recipe is too OP for that machine
+                    if (mMaxProgress == Integer.MAX_VALUE - 1 && mEU == Integer.MAX_VALUE - 1)
+                        return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
+                    return 2;
+                }
+            }
+            
+            
+            if (ItemList.Tool_DataStick.isStackEqual(getSpecialSlot(), false, true)) {
+                if (ItemList.Tool_DataStick.isStackEqual(aStack, false, true)) {
+                    aStack.stackSize -= 1;
+                    this.mInventory[57] = GT_Utility.copyAmount(1L, getSpecialSlot());
+                    calculateOverclockedNess(30, 128);
+                    //In case recipe is too OP for that machine
+                    if (mMaxProgress == Integer.MAX_VALUE - 1 && mEU == Integer.MAX_VALUE - 1)
+                        return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
+                    return 2;
+                }
+                if (aStack.getItem() == Items.written_book) {
+                    getSpecialSlot().stackSize -= 1;
+                    aStack.stackSize -= 1;
+
+                    this.mInventory[57] = GT_Utility.copyAmount(1L, getSpecialSlot());
+                    this.mInventory[57].setTagCompound(aStack.getTagCompound());
+                    calculateOverclockedNess(30, 128);
+                    //In case recipe is too OP for that machine
+                    if (mMaxProgress == Integer.MAX_VALUE - 1 && mEU == Integer.MAX_VALUE - 1)
+                        return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
+                    return 2;
+                }
+                if (aStack.getItem() == Items.filled_map) {
+                    getSpecialSlot().stackSize -= 1;
+                    aStack.stackSize -= 1;
+
+                    this.mInventory[57] = GT_Utility.copyAmount(1L, getSpecialSlot());
+                    this.mInventory[57].setTagCompound(GT_Utility.getNBTContainingShort(new NBTTagCompound(), "map_id", (short) aStack.getItemDamage()));
+                    calculateOverclockedNess(30, 128);
+                    //In case recipe is too OP for that machine
+                    if (mMaxProgress == Integer.MAX_VALUE - 1 && mEU == Integer.MAX_VALUE - 1)
+                        return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
+                    return 2;
+                }
+
+            }         
+            
+            if (ItemList.Tool_DataStick.isStackEqual(getSpecialSlot(), false, true) && aStack != null) {
+                for (GT_Recipe.GT_Recipe_AssemblyLine tRecipe : GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes) {
+                    if (GT_Utility.areStacksEqual(tRecipe.mResearchItem, aStack, true)) {
+                        boolean failScanner = true;
+                        for (GT_Recipe scannerRecipe : sScannerFakeRecipes.mRecipeList) {
+                            if (GT_Utility.areStacksEqual(scannerRecipe.mInputs[0], aStack, true)) {
+                                failScanner = false;
+                                break;
+                            }
+                        }
+                        if (failScanner) {
+                            return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
+                        }
+                        
+
+                        String s = tRecipe.mOutput.getDisplayName();
+                        if (FMLCommonHandler.instance().getEffectiveSide().isServer()) {
+                            s = GT_Assemblyline_Server.lServerNames.get(tRecipe.mOutput.getDisplayName());
+                            if (s == null)
+                                s = tRecipe.mOutput.getDisplayName();
+                        }
+                        this.mInventory[57] = GT_Utility.copyAmount(1L, getSpecialSlot());
+                        
+
+                        // Use Assline Utils
+                        if (GT_AssemblyLineUtils.setAssemblyLineRecipeOnDataStick(this.mInventory[57], tRecipe)) {
+                        	aStack.stackSize -= 1;
+                            calculateOverclockedNess(30, tRecipe.mResearchTime);
+                            //In case recipe is too OP for that machine
+                            if (mMaxProgress == Integer.MAX_VALUE - 1 && mEU == Integer.MAX_VALUE - 1)
+                                return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
+                            getSpecialSlot().stackSize -= 1;
+                            return 2;
+                        }
+                        
+                    }
+                }
+            }
+
+        }
+        return 0;
+    }
+
+	private ItemStack getSpecialSlot() {
+		return this.mInventory[54];
+	}
+
 
 }

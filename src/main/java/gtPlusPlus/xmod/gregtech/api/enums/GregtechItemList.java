@@ -501,12 +501,25 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Hatch_SuperBus_Output_MAX,  
 	
 
-
-
 	//----------------------------------------------------------------------------
 
 
+	/**
+	 * Blocks
+	 */
+	
+	
+	ResonanceChamber_I,
+	ResonanceChamber_II,
+	ResonanceChamber_III,
+	ResonanceChamber_IV,
 
+	Modulator_I,
+	Modulator_II,
+	Modulator_III,
+	Modulator_IV,
+
+	//----------------------------------------------------------------------------
 
 
 	/**

@@ -266,10 +266,30 @@ public class RECIPES_Machines {
 		multiSolarTower();
 		multiElementalDuplicator();
 		
+		computerCube();
+		
 		resonanceChambers();
 		modulators();
 		
 
+	}
+	
+	private static void computerCube() {
+		
+		CORE.RA.addSixSlotAssemblingRecipe(
+				new ItemStack[] {
+						CI.getNumberedAdvancedCircuit(20),
+						CI.getTieredGTPPMachineCasing(4, 1),
+						CI.getCircuit(4, 8),
+						CI.getFieldGenerator(2, 4),
+						CI.getDoublePlate(4, 8),
+						CI.getRobotArm(4, 8)
+				}, 
+				Materials.Redstone.getMolten(144 * 32), 
+				GregtechItemList.Gregtech_Computer_Cube_Machine.get(1), 
+				20 * 60 * 10, 
+				MaterialUtils.getVoltageForTier(4));
+		
 	}
 
 
@@ -532,6 +552,25 @@ public class RECIPES_Machines {
 
 	private static void multiXlTurbines() {
 		
+		RecipeUtils.addShapedRecipe(
+				CI.getDoublePlate(4, 1), CI.getElectricMotor(3, 1), CI.getDoublePlate(4, 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("cellLubricant", 1), ItemList.Casing_Gearbox_Titanium.get(1), ItemUtils.getItemStackOfAmountFromOreDict("cellLubricant", 1),
+				CI.getDoublePlate(4, 1), CI.getElectricMotor(3, 1), CI.getDoublePlate(4, 1),
+				GregtechItemList.Casing_Turbine_Shaft.get(1));
+		
+		CORE.RA.addSixSlotAssemblingRecipe(
+				new ItemStack[] {
+						CI.getNumberedAdvancedCircuit(18),
+						ItemList.Casing_Turbine.get(1),
+						CI.getPlate(4, 4),
+						CI.getScrew(4, 8),
+						CI.getCircuit(4, 4),
+						CI.getGear(3, 8)
+				}, 
+				CI.tieredMaterials[3].getMolten(144 * 8),
+				GregtechItemList.Hatch_Turbine_Rotor.get(1), 
+				20 * 60,
+				MaterialUtils.getVoltageForTier(4));
 		
 		// Steam
 		CORE.RA.addSixSlotAssemblingRecipe(
@@ -711,6 +750,84 @@ public class RECIPES_Machines {
 	}
 
 	private static void multiElementalDuplicator() {
+		
+		CORE.RA.addAssemblylineRecipe(
+				ItemList.Machine_IV_Replicator.get(1), 
+				20 * 60 * 60 * 12,
+				new Object[] {
+						CI.getTieredMachineHull(7, 4),
+						CI.getFieldGenerator(5, GTNH ? 32 : 16),
+						CI.getElectricMotor(7, GTNH ? 32 : 16),
+						CI.getElectricPiston(7, GTNH ? 16 : 4),
+						CI.getEnergyCore(6, GTNH ? 8 : 2),
+						CI.getPlate(7, GTNH ? 32 : 16),
+						CI.getScrew(7, GTNH ? 64 : 32),
+						CI.getBolt(6, GTNH ? 64 : 32),
+						CI.getTieredComponent(OrePrefixes.rod, 6, GTNH ? 20 : 10),
+						new Object[] {CI.getTieredCircuitOreDictName(7), 20},
+						ItemList.Tool_DataOrb.get(32),
+						GregtechItemList.Laser_Lens_Special.get(1)
+				}, 
+				new FluidStack[] {
+						CI.getTieredFluid(7, 144 * 32),
+						CI.getAlternativeTieredFluid(6, 144 * 16),
+						CI.getTertiaryTieredFluid(6, 144 * 16),
+						ALLOY.BABBIT_ALLOY.getFluidStack(128 * 144),
+
+				},
+				GregtechItemList.Controller_ElementalDuplicator.get(1), 
+				20 * 60 * 60 * (GTNH ? 2 : 1),
+				(int) MaterialUtils.getVoltageForTier(7));
+		
+		CORE.RA.addAssemblylineRecipe(
+				GregtechItemList.Modulator_III.get(1), 
+				20 * 60 * 60 * 4,
+				new Object[] {
+						CI.getTieredGTPPMachineCasing(7, 2),
+						CI.getFieldGenerator(4, GTNH ? 8 : 4),
+						CI.getEnergyCore(4, GTNH ? 8 : 2),
+						CI.getPlate(7, GTNH ? 16 : 8),
+						CI.getScrew(6, GTNH ? 32 : 16),
+						CI.getBolt(6, GTNH ? 32 : 16),
+						CI.getTieredComponent(OrePrefixes.rod, 5, GTNH ? 32 : 16),
+						new Object[] {CI.getTieredCircuitOreDictName(6), 32},
+						ItemList.Tool_DataOrb.get(32),
+				}, 
+				new FluidStack[] {
+						CI.getTieredFluid(6, 144 * 16),
+						CI.getAlternativeTieredFluid(5, 144 * 8),
+						CI.getTertiaryTieredFluid(5, 144 * 8),
+						ALLOY.BABBIT_ALLOY.getFluidStack(64 * 144),
+
+				},
+				GregtechItemList.Hatch_Input_Elemental_Duplicator.get(1), 
+				20 * 60 * 60 * (GTNH ? 4 : 2),
+				(int) MaterialUtils.getVoltageForTier(6));
+		
+		CORE.RA.addAssemblylineRecipe(
+				GregtechItemList.ResonanceChamber_III.get(1), 
+				20 * 60 * 60 * 2,
+				new Object[] {
+						CI.getTieredMachineHull(6, 5),
+						CI.getFieldGenerator(3, GTNH ? 32 : 16),
+						CI.getEnergyCore(2, GTNH ? 8 : 2),
+						CI.getPlate(7, GTNH ? 8 : 4),
+						CI.getScrew(7, GTNH ? 8 : 4),
+						CI.getBolt(6, GTNH ? 16 : 8),
+						CI.getTieredComponent(OrePrefixes.rod, 5, GTNH ? 8 : 4),
+						new Object[] {CI.getTieredCircuitOreDictName(5), 4},
+						ItemList.Tool_DataStick.get(4),
+				}, 
+				new FluidStack[] {
+						CI.getTieredFluid(5, 144 * 16),
+						CI.getAlternativeTieredFluid(4, 144 * 8),
+						CI.getTertiaryTieredFluid(4, 144 * 8),
+						ALLOY.BABBIT_ALLOY.getFluidStack(16 * 144),
+
+				},
+				GregtechItemList.Casing_ElementalDuplicator.get(1), 
+				20 * 60 * (GTNH ? 20 : 10),
+				(int) MaterialUtils.getVoltageForTier(6));
 		
 	}
 

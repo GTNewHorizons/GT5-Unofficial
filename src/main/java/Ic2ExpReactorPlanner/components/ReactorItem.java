@@ -176,8 +176,6 @@ public class ReactorItem {
 
 	protected double explosionPowerMultiplier = 1;
 
-	protected static final ResourceBundle BUNDLE = ResourceBundle.getBundle("Ic2ExpReactorPlanner/Bundle");
-
 	protected ReactorItem(final int id, final String baseName, GT_ItemStack aItem, final double maxDamage, final double maxHeat, String sourceMod) {
 		this.id = id;
 		this.baseName = baseName;
@@ -223,7 +221,7 @@ public class ReactorItem {
 	public String toString() {
 		String result = name;
 		if (initialHeat > 0) {
-			result += String.format(BUNDLE.getString("UI.InitialHeatDisplay"), (int) initialHeat);
+			result += String.format("\u0020(initial heat: %,d)", (int) initialHeat);
 		}
 		return result;
 	}
