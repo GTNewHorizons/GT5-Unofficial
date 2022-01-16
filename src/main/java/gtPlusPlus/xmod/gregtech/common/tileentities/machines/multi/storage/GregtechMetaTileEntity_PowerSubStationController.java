@@ -519,8 +519,8 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 
 	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
-		this.mProgresstime = 1;
-		this.mMaxProgresstime = 1;
+		this.mProgresstime = 0;
+		this.mMaxProgresstime = 200;
 		this.mEUt = 0;
 		this.mEfficiencyIncrease = 10000;
 		this.fixAllMaintenanceIssue();
@@ -625,6 +625,8 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 		for (GT_MetaTileEntity_Hatch tHatch : this.mAllDynamoHatches) {
 			aOutputAverage += addEnergyToHatch(tHatch);
 		}
+		// reset progress time
+		mProgresstime = 0;
 
 		this.mAverageEuAdded = aInputAverage;
 		this.mAverageEuConsumed = aOutputAverage;
