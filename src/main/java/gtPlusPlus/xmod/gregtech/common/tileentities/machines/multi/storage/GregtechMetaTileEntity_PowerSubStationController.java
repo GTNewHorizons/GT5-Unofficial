@@ -537,34 +537,43 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 		return 0;
 	}
 
-	private void drawEnergyFromHatch(MetaTileEntity aHatch)  {
-		if (!isValidMetaTileEntity(aHatch)) return;
+	private long drawEnergyFromHatch(MetaTileEntity aHatch)  {
+		if (!isValidMetaTileEntity(aHatch)) {
+			return 0;
+		}
 
 		long stored = aHatch.getEUVar();
 		long voltage = aHatch.maxEUInput() * aHatch.maxAmperesIn();
 
 		if (voltage > stored) {
-			return;
+			return 0;
 		}
 
 		if (this.getBaseMetaTileEntity().increaseStoredEnergyUnits(voltage, false)) {
 			aHatch.setEUVar((stored - voltage));
 			this.mTotalEnergyAdded += voltage;
+			return voltage;
 		}
+		return 0;
 	}
 
-	private void addEnergyToHatch(MetaTileEntity aHatch) {
-		if (!isValidMetaTileEntity(aHatch)) return;
+	private long addEnergyToHatch(MetaTileEntity aHatch) {
+		if (!isValidMetaTileEntity(aHatch)) {
+			return 0;
+		}
 
 		long voltage = aHatch.maxEUOutput() * aHatch.maxAmperesOut();
 
-		if (aHatch.getEUVar() > aHatch.maxEUStore() - voltage) return;
+		if (aHatch.getEUVar() > aHatch.maxEUStore() - voltage) {
+			return 0;
+		}
 
 		if (this.getBaseMetaTileEntity().decreaseStoredEnergyUnits(voltage, false)) {
 			aHatch.getBaseMetaTileEntity().increaseStoredEnergyUnits(voltage, false);
 			this.mTotalEnergyConsumed+=voltage;
+			return voltage;
 		}
-
+		return 0;
 	}
 
 	private long computeEnergyTax() {
@@ -611,12 +620,10 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 		// Output Power
 		for (Object THatch : this.mChargeHatches) {
 			GT_MetaTileEntity_Hatch_InputBattery tHatch = (GT_MetaTileEntity_Hatch_InputBattery) THatch;
-			addEnergyToHatch(tHatch);
-			aOutputAverage += tHatch.maxEUOutput() * tHatch.maxAmperesOut();
+			aOutputAverage += addEnergyToHatch(tHatch);
 		}
 		for (GT_MetaTileEntity_Hatch tHatch : this.mAllDynamoHatches) {
-			addEnergyToHatch(tHatch);
-			aOutputAverage += tHatch.maxEUOutput() * tHatch.maxAmperesOut();
+			aOutputAverage += addEnergyToHatch(tHatch);
 		}
 
 		this.mAverageEuAdded = aInputAverage;
