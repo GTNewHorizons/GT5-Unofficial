@@ -1,33 +1,36 @@
-// Add your dependencies here
+// NOTE: Using explicit tags now instead of master-SNAPSHOT. (READ: Don't use master-SNAPSHOT anymore!!!)
+// That means if you are depending on a change in a dependency, you need to tag the dependency
+// and update the pinned tag here.  This _should_ allow for more reproducible historical builds, while
+// also being more explicit about what is depended on.
 
 dependencies {
-    compile("com.github.GTNewHorizons:StructureLib:master-SNAPSHOT:dev")
-    compile("com.github.GTNewHorizons:NotEnoughItems:master-SNAPSHOT:dev")
-
+    compile("com.github.GTNewHorizons:StructureLib:1.0.14:dev")
+    compile("com.github.GTNewHorizons:NotEnoughItems:2.1.21-GTNH:dev")
+    
     compile("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
 
-    compileOnly("com.github.GTNewHorizons:EnderCore:master-SNAPSHOT:dev") {
+    compileOnly("com.github.GTNewHorizons:EnderCore:0.2.5:dev") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:ForestryMC:master-SNAPSHOT:dev") {
+    compileOnly("com.github.GTNewHorizons:ForestryMC:4.4.3:dev") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:Railcraft:master-SNAPSHOT:dev") {
+    compileOnly("com.github.GTNewHorizons:Railcraft:9.13.4:dev") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:Galacticraft:master-SNAPSHOT:dev") {
+    compileOnly("com.github.GTNewHorizons:Galacticraft:3.0.35-GTNH:dev") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:AppleCore:master-SNAPSHOT:dev") {
+    compileOnly("com.github.GTNewHorizons:AppleCore:3.1.5:dev") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:TinkersConstruct:master-SNAPSHOT:dev") {
+    compileOnly("com.github.GTNewHorizons:TinkersConstruct:1.9.0.8-GTNH:dev") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:master-SNAPSHOT:dev") {
+    compileOnly("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-66-GTNH:dev") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:EnderIO:master-SNAPSHOT:dev") {
+    compileOnly("com.github.GTNewHorizons:EnderIO:2.3.1.25:dev") {
         transitive = false
     }
     compileOnly("com.mod-buildcraft:buildcraft:7.1.23:dev") {
@@ -36,13 +39,13 @@ dependencies {
     compileOnly("commons-io:commons-io:2.4") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:Translocators:master-SNAPSHOT:dev") {
+    compileOnly("com.github.GTNewHorizons:Translocators:1.1.2.18:dev") {
         transitive = false
     }
     compileOnly("curse.maven:cofh-core-69162:2388751") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:Nuclear-Control:master-SNAPSHOT:dev") {
+    compileOnly("com.github.GTNewHorizons:Nuclear-Control:2.4.7:dev") {
         transitive = false
     }
     compileOnly("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev") {
