@@ -524,7 +524,7 @@ public class Reactor {
                 } else if (codeRevision == 2) {
                     componentId = storage.extract(44);
                 } else {
-                    componentId = storage.extract(58);
+                    componentId = storage.extract(ComponentFactory.MAX_COMPONENT_ID);
                 }
                 if (componentId != 0) {
                     ReactorItem component = ComponentFactory.createComponent(componentId);
@@ -590,9 +590,9 @@ public class Reactor {
                     } else {
                         storage.store(0, 1);
                     }
-                    storage.store(id, 58);
+                    storage.store(id, ComponentFactory.MAX_COMPONENT_ID);
                 } else {
-                    storage.store(0, 58);
+                    storage.store(0, ComponentFactory.MAX_COMPONENT_ID);
                 }
             }
         }

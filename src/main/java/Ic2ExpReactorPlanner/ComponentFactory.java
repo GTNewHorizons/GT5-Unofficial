@@ -22,6 +22,7 @@ import Ic2ExpReactorPlanner.components.Vent;
 import gregtech.api.enums.ItemList;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_ModHandler;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.xmod.bartworks.BW_Utils;
 import gtPlusPlus.xmod.bartworks.BW_Utils.NonMeta_MaterialItem;
@@ -33,6 +34,8 @@ import gtPlusPlus.xmod.goodgenerator.GG_Utils.GG_Fuel_Rod;
  * @author Brian McCloud
  */
 public class ComponentFactory {
+	
+	public static int MAX_COMPONENT_ID = 64;
 
 	static ItemList[] aGtItems = new ItemList[]{
 			ItemList.Neutron_Reflector, 
@@ -171,9 +174,11 @@ public class ComponentFactory {
 	 * @return the component with the specified id, or null if the id is out of range.
 	 */
 	public static ReactorItem getDefaultComponent(int id) {
-		if (id >= 0 && id < ITEM_LIST.size()) {
-			return ITEM_LIST.get(id);
+		ReactorItem aItem = ITEM_LIST.get(id);
+		if (aItem != null) {
+			return aItem;
 		}
+		Logger.INFO("Tried to get default component with ID "+id+". This is invalid.");
 		return null;
 	}
 
@@ -195,9 +200,11 @@ public class ComponentFactory {
 	 * @return a new instance of the specified component, or null if the id is out of range.
 	 */
 	public static ReactorItem createComponent(int id) {
-		if (id >= 0 && id < ITEM_LIST.size()) {
-			return copy(ITEM_LIST.get(id));
+		ReactorItem aItem = ITEM_LIST.get(id);
+		if (aItem != null) {
+			return copy(aItem);
 		}
+		Logger.INFO("Tried to create component with ID "+id+". This is invalid.");
 		return null;
 	}
 

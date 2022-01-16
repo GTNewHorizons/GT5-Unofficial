@@ -14,8 +14,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import gregtech.api.enums.TAE;
-import gregtech.api.enums.Textures;
+import gregtech.api.enums.*;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -57,6 +56,8 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 	}
 
 	protected long mAverageEuUsage = 0;
+	protected long mAverageEuAdded = 0;
+	protected long mAverageEuConsumed = 0;
 	protected long mTotalEnergyAdded = 0;
 	protected long mTotalEnergyConsumed = 0;
 	protected long mTotalEnergyLost = 0;
@@ -128,7 +129,7 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 
 	@Override
 	public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-		if (mBatteryCapacity <= 0) return false;
+		//if (mBatteryCapacity <= 0) return false;
 		if (!aBaseMetaTileEntity.isClientSide()) {
 			aBaseMetaTileEntity.openGUI(aPlayer);
 		}
@@ -194,7 +195,7 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 	public static int getMaxHatchTier(int aCellTier) {
 		switch(aCellTier) {
 			case 9:
-				return CORE.GTNH ? 15 : 9;
+				return GT_Values.VOLTAGE_NAMES[9].equals("Ultimate High Voltage") ? 15 : 9;
 			default:
 				if (aCellTier < 4) {
 					return 0;
@@ -476,6 +477,8 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 	@Override
 	public void saveNBTData(NBTTagCompound aNBT) {
 		aNBT.setLong("mAverageEuUsage", this.mAverageEuUsage);
+		aNBT.setLong("mAverageEuAdded", this.mAverageEuAdded);
+		aNBT.setLong("mAverageEuConsumed", this.mAverageEuConsumed);
 
 		//Usage Stats
 		aNBT.setLong("mTotalEnergyAdded", this.mTotalEnergyAdded);
@@ -493,7 +496,13 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 		// Best not to get a long if the Tag Map is holding an int
 		if (aNBT.hasKey("mAverageEuUsage")) {
 			this.mAverageEuUsage = aNBT.getLong("mAverageEuUsage");
-		}		
+		}	
+		if (aNBT.hasKey("mAverageEuAdded")) {
+			this.mAverageEuAdded = aNBT.getLong("mAverageEuAdded");
+		}
+		if (aNBT.hasKey("mAverageEuConsumed")) {
+			this.mAverageEuConsumed = aNBT.getLong("mAverageEuConsumed");
+		}
 
 		//Usage Stats
 		this.mTotalEnergyAdded = aNBT.getLong("mTotalEnergyAdded");
@@ -586,23 +595,32 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 		this.mTotalEnergyLost += Math.min(mDecrease, this.getEUVar());
 		this.setEUVar(Math.max(0, this.getEUVar() - mDecrease));
 
+		long aInputAverage = 0;
+		long aOutputAverage = 0;
 		// Input Power
 		for (Object THatch : this.mDischargeHatches) {
 			GT_MetaTileEntity_Hatch_OutputBattery tHatch = (GT_MetaTileEntity_Hatch_OutputBattery) THatch;
 			drawEnergyFromHatch(tHatch);
+			aInputAverage += tHatch.maxEUInput() * tHatch.maxAmperesIn();
 		}
 		for (GT_MetaTileEntity_Hatch tHatch : this.mAllEnergyHatches) {
 			drawEnergyFromHatch(tHatch);
+			aInputAverage += tHatch.maxEUInput() * tHatch.maxAmperesIn();
 		}
 
 		// Output Power
 		for (Object THatch : this.mChargeHatches) {
 			GT_MetaTileEntity_Hatch_InputBattery tHatch = (GT_MetaTileEntity_Hatch_InputBattery) THatch;
 			addEnergyToHatch(tHatch);
+			aOutputAverage += tHatch.maxEUOutput() * tHatch.maxAmperesOut();
 		}
 		for (GT_MetaTileEntity_Hatch tHatch : this.mAllDynamoHatches) {
 			addEnergyToHatch(tHatch);
+			aOutputAverage += tHatch.maxEUOutput() * tHatch.maxAmperesOut();
 		}
+
+		this.mAverageEuAdded = aInputAverage;
+		this.mAverageEuConsumed = aOutputAverage;
 
 		return true;
 
@@ -658,6 +676,8 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 				"Requires Maintenance: " + (!mMaint ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)+ mMaint + EnumChatFormatting.RESET +" | Code: ["+(!mMaint ? EnumChatFormatting.GREEN : EnumChatFormatting.RED) + errorCode + EnumChatFormatting.RESET +"]",
 				"----------------------",
 				"Stats for Nerds",
+				"Average Input: " + EnumChatFormatting.BLUE + GT_Utility.formatNumbers(this.mAverageEuAdded) + EnumChatFormatting.RESET + " EU",
+				"Average Output: " + EnumChatFormatting.GOLD + GT_Utility.formatNumbers(this.mAverageEuConsumed) + EnumChatFormatting.RESET + " EU",
 				"Total Input: " + EnumChatFormatting.BLUE + GT_Utility.formatNumbers(this.mTotalEnergyAdded) + EnumChatFormatting.RESET + " EU",
 				"Total Output: " + EnumChatFormatting.GOLD + GT_Utility.formatNumbers(this.mTotalEnergyConsumed) + EnumChatFormatting.RESET + " EU",
 				"Total Costs: " + EnumChatFormatting.RED + GT_Utility.formatNumbers(this.mTotalEnergyLost) + EnumChatFormatting.RESET + " EU",
@@ -724,6 +744,14 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 	@Override
 	public long maxEUOutput() {
 		return 32768;
+	}
+
+	public final long getAverageEuAdded() {
+		return this.mAverageEuAdded;
+	}
+
+	public final long getAverageEuConsumed() {
+		return this.mAverageEuConsumed;
 	}
 
 	@Override
