@@ -28,6 +28,6 @@ public class DetravProspector extends DetravToolElectricProspectorBase {
 	    }
 	    
 	    public void onStatsAddedToTool(GT_MetaGenerated_Tool aItem, int aID) {
-	        aItem.addItemBehavior(aID, new BehaviourDetravToolProspector(100));
+	        aItem.addItemBehavior(aID, new BehaviourDetravToolProspector(15));
 	    }
 }
