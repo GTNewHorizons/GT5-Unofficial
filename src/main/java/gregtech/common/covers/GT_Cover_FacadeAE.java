@@ -8,14 +8,16 @@ import net.minecraft.item.ItemStack;
 public class GT_Cover_FacadeAE extends GT_Cover_FacadeBase {
 	@Override
 	protected Block getTargetBlock(ItemStack aFacadeStack) {
-		Item item = aFacadeStack.getItem();
+		if(aFacadeStack == null) return null;
+		final Item item = aFacadeStack.getItem();
 		if (!(item instanceof IFacadeItem)) return null;
 		return ((IFacadeItem) item).getBlock(aFacadeStack);
 	}
 
 	@Override
 	protected int getTargetMeta(ItemStack aFacadeStack) {
-		Item item = aFacadeStack.getItem();
+		if(aFacadeStack == null) return 0;
+		final Item item = aFacadeStack.getItem();
 		if (!(item instanceof IFacadeItem)) return 0;
 		return ((IFacadeItem) item).getMeta(aFacadeStack);
 	}

@@ -94,8 +94,7 @@ public abstract class GT_Cover_FacadeBase extends GT_CoverBehaviorBase<GT_Cover_
 
     @Override
     public void placeCover(byte aSide, ItemStack aCover, ICoverable aTileEntity) {
-        aTileEntity.setCoverIDAtSide(aSide, GT_Utility.stackToInt(aCover));
-        aTileEntity.setCoverDataAtSide(aSide, new FacadeData(GT_Utility.copyAmount(1, aCover), 0));
+        aTileEntity.setCoverIdAndDataAtSide(aSide, GT_Utility.stackToInt(aCover), new FacadeData(GT_Utility.copyAmount(1, aCover), 0));
         if (aTileEntity.isClientSide())
             GT_RenderingWorld.getInstance().register(aTileEntity.getXCoord(), aTileEntity.getYCoord(), aTileEntity.getZCoord(), getTargetBlock(aCover), getTargetMeta(aCover));
     }

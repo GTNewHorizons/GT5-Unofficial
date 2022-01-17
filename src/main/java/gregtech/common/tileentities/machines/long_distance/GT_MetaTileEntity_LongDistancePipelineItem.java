@@ -22,6 +22,7 @@
 
 package gregtech.common.tileentities.machines.long_distance;
 
+import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -39,8 +40,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPELINE_ITEM_SIDE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPELINE_ITEM_SIDE_GLOW;
 
 public class GT_MetaTileEntity_LongDistancePipelineItem extends GT_MetaTileEntity_LongDistancePipelineBase {
-    static final int[] emptyIntArray = new int[0];
-    
     public GT_MetaTileEntity_LongDistancePipelineItem(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, "Sends Items over long distances");
     }
@@ -154,7 +153,7 @@ public class GT_MetaTileEntity_LongDistancePipelineItem extends GT_MetaTileEntit
             }
         }
         
-        return emptyIntArray;
+        return GT_Values.emptyIntArray;
     }
 
     @Override

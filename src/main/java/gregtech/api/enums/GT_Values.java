@@ -195,6 +195,78 @@ public class GT_Values {
             RES_PATH_ASPECTS = MOD_ID + ":" + TEX_DIR_ASPECTS,
             RES_PATH_IC2 = MOD_ID_IC2.toLowerCase(Locale.ENGLISH) + ":",
             RES_PATH_MODEL = MOD_ID + ":" + TEX_DIR + "models/";
+
+    /**
+     * NBT String Keys
+     */
+    public static final String
+        NBT_HIDDEN              = "gt.hidden",               // Boolean
+        NBT_MATERIAL            = "gt.material",             // String containing the Material Name.
+        NBT_COLOR               = "gt.color",                // Integer
+        NBT_MTE_REG             = "gt.mte.reg",              // Containing the MTE Registry ID
+        NBT_MTE_ID              = "gt.mte.id",               // Containing the MTE ID
+        NBT_DISPAY              = "gt.display",
+        NBT_FACING              = "gt.facing",
+        NBT_OWNER               = "gt.owner",
+        NBT_OWNER_UUID          = "gt.ownerUuid",
+        NBT_LOCK_UPGRADE        = "gt.locked",
+        NBT_CUSTOM_NAME         = "name",
+
+        // MultiBlock
+        NBT_STRUCTURE_OK        = "gt.structure.ok",
+        NBT_ROTATION            = "gt.eRotation",
+        NBT_FLIP                = "gt.eFlip"
+
+   ;
+
+    public static final int UNCOLORED = 0x00ffffff;
+
+    /**
+     * Sides
+     */
+    public static final byte
+        SIDE_BOTTOM    = 0, SIDE_DOWN      = 0,
+        SIDE_TOP       = 1, SIDE_UP        = 1,
+        SIDE_NORTH     = 2, // Also a Side with a stupidly mirrored Texture
+        SIDE_SOUTH     = 3,
+        SIDE_WEST      = 4,
+        SIDE_EAST      = 5, // Also a Side with a stupidly mirrored Texture
+        SIDE_ANY    = 6, SIDE_UNKNOWN   = 6, SIDE_INVALID = 6, SIDE_INSIDE = 6, SIDE_UNDEFINED = 6;
+
+    /** Compass alike Array for the proper ordering of North, East, South and West. */
+    public static final byte[] COMPASS_DIRECTIONS = {SIDE_NORTH, SIDE_EAST, SIDE_SOUTH, SIDE_WEST};
+
+
+    /**
+     * An Array containing all Sides which follow the Condition, in order to iterate over them for example.
+     */
+    public static final byte[]
+        ALL_SIDES                    =  {0,1,2,3,4,5,6},
+        ALL_VALID_SIDES              =  {0,1,2,3,4,5  };
+
+    /**
+     * For Facing Checks.
+     */
+
+    public static final boolean[]
+        INVALID_SIDES           = { false, false, false, false, false, false, true  },
+        VALID_SIDES             = { true,  true,  true,  true,  true,  true,  false };
+
+
+    /**
+     *  Side->Offset Mappings.
+     */
+    public static final byte[]
+        OFFX = { 0, 0, 0, 0,-1,+1, 0},
+        OFFY = {-1,+1, 0, 0, 0, 0, 0},
+        OFFZ = { 0, 0,-1,+1, 0, 0, 0};
+
+    /**
+     *  Side->Opposite Mappings.
+     **/
+    public static final byte[]
+        OPOS = { 1, 0, 3, 2, 5, 4, 6};
+
     /**
      * The Mod Object itself. That is the GT_Mod-Object. It's needed to open GUI's and similar.
      */
@@ -316,4 +388,6 @@ public class GT_Values {
     public static boolean disableDigitalChestsExternalAccess = false;
     public static boolean lateConfigSave = true;
     public static boolean worldTickHappened = false;
+
+    public static final int[] emptyIntArray = new int[0];
 }

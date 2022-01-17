@@ -305,19 +305,28 @@ public class GT_Utility {
     }
 
     public static Object callConstructor(String aClass, int aConstructorIndex, Object aReplacementObject, boolean aLogErrors, Object... aParameters) {
+        try { 
+            return callConstructor(Class.forName(aClass), aConstructorIndex, aReplacementObject, aLogErrors, aParameters);
+        } catch (Throwable e) {
+            if (aLogErrors) e.printStackTrace(GT_Log.err);
+        }
+        return aReplacementObject;
+    }
+    
+    public static Object callConstructor(Class<?> aClass, int aConstructorIndex, Object aReplacementObject, boolean aLogErrors, Object... aParameters) {
         if (aConstructorIndex < 0) {
             try {
-                for (Constructor tConstructor : Class.forName(aClass).getConstructors()) {
+                for (Constructor<?> tConstructor : aClass.getConstructors()) {
                     try {
                         return tConstructor.newInstance(aParameters);
-                    } catch (Throwable e) {/*Do nothing*/}
+                    } catch (Throwable ignored) {}
                 }
             } catch (Throwable e) {
                 if (aLogErrors) e.printStackTrace(GT_Log.err);
             }
         } else {
             try {
-                return Class.forName(aClass).getConstructors()[aConstructorIndex].newInstance(aParameters);
+                return aClass.getConstructors()[aConstructorIndex].newInstance(aParameters);
             } catch (Throwable e) {
                 if (aLogErrors) e.printStackTrace(GT_Log.err);
             }
@@ -1435,7 +1444,11 @@ public class GT_Utility {
 
     public static int stackToInt(ItemStack aStack) {
         if (isStackInvalid(aStack)) return 0;
-        return Item.getIdFromItem(aStack.getItem()) | (Items.feather.getDamage(aStack) << 16);
+        return itemToInt(aStack.getItem(), Items.feather.getDamage(aStack));
+    }
+    
+    public static int itemToInt(Item aItem, int aMeta) {
+        return Item.getIdFromItem(aItem) | (aMeta << 16);
     }
 
     public static int stackToWildcard(ItemStack aStack) {
@@ -2028,20 +2041,6 @@ public class GT_Utility {
         if(aDimensionID<=1 && aDimensionID>=-1 && !GregTech_API.sDimensionalList.contains(aDimensionID)) return true;
         return !GregTech_API.sDimensionalList.contains(aDimensionID) && DimensionManager.isDimensionRegistered(aDimensionID);
     }
-
-    //public static boolean isRealDimension(int aDimensionID) {
-    //    try {
-    //        if (DimensionManager.getProvider(aDimensionID).getClass().getName().contains("com.xcompwiz.mystcraft"))
-    //            return true;
-    //    } catch (Throwable e) {/*Do nothing*/}
-    //    try {
-    //        if (DimensionManager.getProvider(aDimensionID).getClass().getName().contains("TwilightForest")) return true;
-    //    } catch (Throwable e) {/*Do nothing*/}
-    //    try {
-    //        if (DimensionManager.getProvider(aDimensionID).getClass().getName().contains("galacticraft")) return true;
-    //    } catch (Throwable e) {/*Do nothing*/}
-    //    return GregTech_API.sDimensionalList.contains(aDimensionID);
-    //}
 
     public static boolean moveEntityToDimensionAtCoords(Entity entity, int aDimension, double aX, double aY, double aZ) {
         //Credit goes to BrandonCore Author :!:
@@ -3045,35 +3044,9 @@ public class GT_Utility {
 
     public static Optional<GT_Recipe> reverseShapedRecipe(ItemStack output, Object... aRecipe) {
         if (output == null) {
-//            System.out.println("Null Recipe detected!");
             return Optional.empty();
         }
-//        System.out.println("Registering Reverse Recipe for: " + GT_LanguageManager.getTranslation(GT_LanguageManager.getTranslateableItemStackName(output) + "|" + output.getUnlocalizedName()));
-//        for (Object o : aRecipe) {
-//            String toPrint;
-//            if (o instanceof String) {
-//                toPrint = (String) o;
-//                toPrint += " String";
-//            } else if (o instanceof ItemStack) {
-//                toPrint = GT_LanguageManager.getTranslation(GT_LanguageManager.getTranslateableItemStackName((ItemStack) o));
-//                toPrint += " ItemStack";
-//            } else if (o instanceof List) {
-//                toPrint = String.join(", ", ((List<String>) o));
-//                toPrint += " List<String>";
-//            } else if (o instanceof Item) {
-//                toPrint = GT_LanguageManager.getTranslation(GT_LanguageManager.getTranslateableItemStackName(new ItemStack((Item) o)));
-//                toPrint += " Item";
-//            } else if (o instanceof Block) {
-//                toPrint = GT_LanguageManager.getTranslation(GT_LanguageManager.getTranslateableItemStackName(new ItemStack((Block) o)));
-//                toPrint += " Block";
-//            } else if (o != null) {
-//                toPrint = o.toString();
-//                toPrint += " Other";
-//            } else {
-//                toPrint = "NULL";
-//            }
-//            System.out.println(toPrint);
-//        }
+
         Map<Object, Integer> recipeAsMap = new HashMap<>();
         Map<Character, Object> ingridients = new HashMap<>();
         Map<Character, Integer> amounts = new HashMap<>();
@@ -3105,7 +3078,6 @@ public class GT_Utility {
                 toAdd.stackSize = amount;
                 inputs.add(toAdd);
             } else if (o.getKey() instanceof String) {
-//                System.out.println("Found OreDictEntry: "+o.getKey());
                 final String dictName = (String) o.getKey();
                 // Do not register tools dictName in inputs
                 if (ToolDictNames.contains(dictName)) continue;
@@ -3119,8 +3091,6 @@ public class GT_Utility {
                         copy.stackSize = amount;
                         inputs.add(copy);
                     }
-//                    else
-//                        System.out.println("OreDict Entry "+o.getKey()+" couldn't be found!");
                 } else {
                     ItemStack copy = stack.copy();
                     copy.stackSize = amount;

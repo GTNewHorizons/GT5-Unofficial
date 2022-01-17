@@ -104,6 +104,34 @@ public abstract class GT_MetaTileEntity_EnhancedMultiBlockBase<T extends GT_Meta
 
 	protected abstract GT_Multiblock_Tooltip_Builder createTooltip();
 
+    @Override
+    public String[] getDescription() {
+        return getCurrentDescription();
+    }
+
+    @Override
+    public boolean isDisplaySecondaryDescription() {
+        return Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
+    }
+
+    public String[] getPrimaryDescription() {
+        return getTooltip().getInformation();
+    }
+
+    public String[] getSecondaryDescription() {
+        return getTooltip().getStructureInformation();
+    }
+
+	protected GT_Multiblock_Tooltip_Builder getTooltip() {
+		final int tId = getBaseMetaTileEntity().getMetaTileID();
+		GT_Multiblock_Tooltip_Builder tooltip = tooltips.get(tId);
+		if (tooltip == null) {
+			tooltip = createTooltip();
+			tooltips.set(tId, tooltip);
+		}
+		return tooltip;
+	}
+
 	@Override
 	public String[] getStructureDescription(ItemStack stackSize) {
 		return getTooltip().getStructureHint();
