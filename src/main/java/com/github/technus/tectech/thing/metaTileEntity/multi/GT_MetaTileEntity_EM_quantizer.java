@@ -3,12 +3,12 @@ package com.github.technus.tectech.thing.metaTileEntity.multi;
 import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.mechanics.constructable.IConstructable;
-import com.github.technus.tectech.mechanics.elementalMatter.core.maps.cElementalInstanceStackMap;
-import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
-import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.iElementalStack;
-import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.aFluidQuantizationInfo;
-import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.aItemQuantizationInfo;
-import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.aOredictQuantizationInfo;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMInstanceStack;
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.IEMStack;
+import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMFluidQuantizationInfo;
+import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMItemQuantizationInfo;
+import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMOredictQuantizationInfo;
 import com.github.technus.tectech.mechanics.structure.Structure;
 import com.github.technus.tectech.mechanics.structure.adders.IHatchAdder;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
@@ -29,11 +29,11 @@ import net.minecraftforge.oredict.OreDictionary;
 import java.util.ArrayList;
 
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
-import static com.github.technus.tectech.mechanics.elementalMatter.core.templates.iElementalDefinition.DEFAULT_ENERGY_LEVEL;
-import static com.github.technus.tectech.mechanics.elementalMatter.core.templates.iElementalDefinition.STABLE_RAW_LIFE_TIME;
-import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.bTransformationInfo.TRANSFORMATION_INFO;
-import static com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.dAtomDefinition.refMass;
-import static com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.dAtomDefinition.refUnstableMass;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.templates.IEMDefinition.DEFAULT_ENERGY_LEVEL;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.templates.IEMDefinition.STABLE_RAW_LIFE_TIME;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationInfo.TRANSFORMATION_INFO;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.EMAtomDefinition.refMass;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.EMAtomDefinition.refUnstableMass;
 import static com.github.technus.tectech.mechanics.structure.Structure.adders;
 import static com.github.technus.tectech.recipe.TT_recipeAdder.nullFluid;
 import static com.github.technus.tectech.recipe.TT_recipeAdder.nullItem;
@@ -98,9 +98,9 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
             if (inI.length > 0) {
                 for (ItemStack is : inI) {
                     //ITEM STACK quantization
-                    aItemQuantizationInfo aIQI = TRANSFORMATION_INFO.itemQuantization.get(new aItemQuantizationInfo(is, false, null));
+                    EMItemQuantizationInfo aIQI = TRANSFORMATION_INFO.getItemQuantization().get(new EMItemQuantizationInfo(is, false, null));
                     if (aIQI == null) {
-                        aIQI = TRANSFORMATION_INFO.itemQuantization.get(new aItemQuantizationInfo(is, true, null));//todo check if works?
+                        aIQI = TRANSFORMATION_INFO.getItemQuantization().get(new EMItemQuantizationInfo(is, true, null));//todo check if works?
                     }
                     if (aIQI == null) {
                         //ORE DICT quantization //todo fix for uranium?
@@ -109,12 +109,12 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
                             if (DEBUG_MODE) {
                                 TecTech.LOGGER.info("Quantifier-Ore-recipe " + is.getItem().getUnlocalizedName() + '.' + is.getItemDamage() + ' ' + OreDictionary.getOreName(ID));
                             }
-                            aOredictQuantizationInfo aOQI = TRANSFORMATION_INFO.oredictQuantization.get(ID);
+                            EMOredictQuantizationInfo aOQI = TRANSFORMATION_INFO.getOredictQuantization().get(ID);
                             if (aOQI == null) {
                                 continue;
                             }
-                            iElementalStack into = aOQI.output();
-                            if (into != null && isInputEqual(true, false, nullFluid, new ItemStack[]{new ItemStack(is.getItem(), aOQI.amount, is.getItemDamage())}, null, inI)) {
+                            IEMStack into = aOQI.output();
+                            if (into != null && isInputEqual(true, false, nullFluid, new ItemStack[]{new ItemStack(is.getItem(), aOQI.getAmount(), is.getItemDamage())}, null, inI)) {
                                 startRecipe(into);
                                 return true;
                             }
@@ -124,7 +124,7 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
                         if (DEBUG_MODE) {
                             TecTech.LOGGER.info("Quantifier-Item-recipe " + is.getItem().getUnlocalizedName() + '.' + is.getItemDamage());
                         }
-                        iElementalStack into = aIQI.output();
+                        IEMStack into = aIQI.output();
                         if (into != null && isInputEqual(true, false, nullFluid, new ItemStack[]{new ItemStack(is.getItem(), aIQI.input().stackSize, is.getItemDamage())}, null, inI)) {
                             startRecipe(into);
                             return true;
@@ -136,11 +136,11 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
             FluidStack[] inF = storedFluids.toArray(nullFluid);
             if (inF.length > 0) {
                 for (FluidStack fs : inF) {
-                    aFluidQuantizationInfo aFQI = TRANSFORMATION_INFO.fluidQuantization.get(fs.getFluid().getID());
+                    EMFluidQuantizationInfo aFQI = TRANSFORMATION_INFO.getFluidQuantization().get(fs.getFluid().getID());
                     if (aFQI == null) {
                         continue;
                     }
-                    iElementalStack into = aFQI.output();
+                    IEMStack into = aFQI.output();
                     if (into != null && fs.amount >= aFQI.input().amount && isInputEqual(true, false,
                             new FluidStack[]{aFQI.input()}, nullItem, inF, (ItemStack[]) null)) {
                         startRecipe(into);
@@ -152,7 +152,7 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
         return false;
     }
 
-    private void startRecipe(iElementalStack into) {
+    private void startRecipe(IEMStack into) {
         mMaxProgresstime = 20;
         mEfficiencyIncrease = 10000;
         double mass = into.getMass();
@@ -163,10 +163,10 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
         } else {
             mEUt = (int) -V[6];
         }
-        outputEM = new cElementalInstanceStackMap[]{
-                into instanceof cElementalInstanceStack ?
-                        new cElementalInstanceStackMap((cElementalInstanceStack) into) :
-                        new cElementalInstanceStackMap(new cElementalInstanceStack(into.getDefinition(), into.getAmount()))
+        outputEM = new EMInstanceStackMap[]{
+                into instanceof EMInstanceStack ?
+                        new EMInstanceStackMap((EMInstanceStack) into) :
+                        new EMInstanceStackMap(new EMInstanceStack(into.getDefinition(), into.getAmount()))
         };
     }
 

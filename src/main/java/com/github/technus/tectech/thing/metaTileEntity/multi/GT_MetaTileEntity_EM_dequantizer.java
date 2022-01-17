@@ -1,12 +1,12 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.mechanics.constructable.IConstructable;
-import com.github.technus.tectech.mechanics.elementalMatter.core.maps.cElementalInstanceStackMap;
-import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
-import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.iElementalStack;
-import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.aFluidDequantizationInfo;
-import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.aItemDequantizationInfo;
-import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.aOredictDequantizationInfo;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMInstanceStack;
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.IEMStack;
+import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMFluidDequantizationInfo;
+import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMItemDequantizationInfo;
+import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMOredictDequantizationInfo;
 import com.github.technus.tectech.mechanics.structure.Structure;
 import com.github.technus.tectech.mechanics.structure.adders.IHatchAdder;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
@@ -26,9 +26,9 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
 
-import static com.github.technus.tectech.mechanics.elementalMatter.core.templates.iElementalDefinition.STABLE_RAW_LIFE_TIME;
-import static com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.dAtomDefinition.refMass;
-import static com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.dAtomDefinition.refUnstableMass;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.templates.IEMDefinition.STABLE_RAW_LIFE_TIME;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.EMAtomDefinition.refMass;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.EMAtomDefinition.refUnstableMass;
 import static com.github.technus.tectech.mechanics.structure.Structure.adders;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
@@ -72,7 +72,7 @@ public class GT_MetaTileEntity_EM_dequantizer extends GT_MetaTileEntity_Multiblo
         super(aName);
     }
 
-    private void startRecipe(iElementalStack from, long energy) {
+    private void startRecipe(IEMStack from, long energy) {
         mMaxProgresstime = 20;
         mEfficiencyIncrease = 10000;
         double mass = from.getMass();
@@ -98,12 +98,12 @@ public class GT_MetaTileEntity_EM_dequantizer extends GT_MetaTileEntity_Multiblo
     @Override
     public boolean checkRecipe_EM(ItemStack itemStack) {
         for (GT_MetaTileEntity_Hatch_InputElemental in : eInputHatches) {
-            cElementalInstanceStackMap map = in.getContentHandler();
-            for (cElementalInstanceStack stack : map.valuesToArray()) {
+            EMInstanceStackMap map = in.getContentHandler();
+            for (EMInstanceStack stack : map.valuesToArray()) {
                 {
-                    aFluidDequantizationInfo info = stack.getDefinition().someAmountIntoFluidStack();
+                    EMFluidDequantizationInfo info = stack.getDefinition().someAmountIntoFluidStack();
                     if (info != null) {
-                        if (map.removeAllAmounts(false, info.input())) {
+                        if (map.removeAllAmounts(info.input())) {
                             mOutputFluids = new FluidStack[]{info.output()};
                             startRecipe(info.input(), stack.getEnergy());
                             return true;
@@ -111,9 +111,9 @@ public class GT_MetaTileEntity_EM_dequantizer extends GT_MetaTileEntity_Multiblo
                     }
                 }
                 {
-                    aItemDequantizationInfo info = stack.getDefinition().someAmountIntoItemsStack();
+                    EMItemDequantizationInfo info = stack.getDefinition().someAmountIntoItemsStack();
                     if (info != null) {
-                        if (map.removeAllAmounts(false, info.input())) {
+                        if (map.removeAllAmounts(info.input())) {
                             mOutputItems = new ItemStack[]{info.output()};
                             startRecipe(info.input(), stack.getEnergy());
                             return true;
@@ -121,10 +121,10 @@ public class GT_MetaTileEntity_EM_dequantizer extends GT_MetaTileEntity_Multiblo
                     }
                 }
                 {
-                    aOredictDequantizationInfo info = stack.getDefinition().someAmountIntoOredictStack();
+                    EMOredictDequantizationInfo info = stack.getDefinition().someAmountIntoOredictStack();
                     if (info != null) {
-                        if (map.removeAllAmounts(false, info.input())) {
-                            ArrayList<ItemStack> items = OreDictionary.getOres(info.out);
+                        if (map.removeAllAmounts(info.input())) {
+                            ArrayList<ItemStack> items = OreDictionary.getOres(info.getOut());
                             if (items != null && !items.isEmpty()) {
                                 mOutputItems = new ItemStack[]{items.get(0)};
                                 startRecipe(info.input(), stack.getEnergy());

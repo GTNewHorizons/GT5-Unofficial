@@ -1,15 +1,16 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi.em_machine;
 
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.mechanics.elementalMatter.core.maps.cElementalInstanceStackMap;
-import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
-import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.dAtomDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMInstanceStack;
+import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.EMAtomDefinition;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.INameFunction;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.IStatusFunction;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.MultiblockControl;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
 
-import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.bTransformationInfo.AVOGADRO_CONSTANT_144;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationInfo.AVOGADRO_CONSTANT_144;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationInfo.AVOGADRO_CONSTANT_UNCERTAINTY;
 import static com.github.technus.tectech.util.CommonValues.V;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.*;
 import static com.github.technus.tectech.util.DoubleCount.mul;
@@ -88,7 +89,7 @@ public class Behaviour_ElectromagneticSeparator implements GT_MetaTileEntity_EM_
     public Behaviour_ElectromagneticSeparator(int desiredTier){
         tier=(byte) desiredTier;
         ticks =Math.max(20,(1<<(12-desiredTier))*20);
-        maxCapacity= dAtomDefinition.getSomethingHeavy().getMass()*(2<<tier)* AVOGADRO_CONSTANT_144;
+        maxCapacity= EMAtomDefinition.getSomethingHeavy().getMass()*(2<<tier)* AVOGADRO_CONSTANT_144;
         maxCharge=144D*(1<<(tier-5));
         switch (tier){
             case 12:
@@ -143,23 +144,23 @@ public class Behaviour_ElectromagneticSeparator implements GT_MetaTileEntity_EM_
     }
 
     @Override
-    public MultiblockControl<cElementalInstanceStackMap[]> process(cElementalInstanceStackMap[] inputs, GT_MetaTileEntity_EM_machine te, Parameters parameters) {
-        cElementalInstanceStackMap input = inputs[0];
+    public MultiblockControl<EMInstanceStackMap[]> process(EMInstanceStackMap[] inputs, GT_MetaTileEntity_EM_machine te, Parameters parameters) {
+        EMInstanceStackMap input = inputs[0];
         if (input == null || input.isEmpty()) return null;//nothing in only valid input
 
-        cElementalInstanceStack[] stacks = input.valuesToArray();
+        EMInstanceStack[] stacks = input.valuesToArray();
 
         double inputMass = 0;
-        for (cElementalInstanceStack stack : stacks) {
+        for (EMInstanceStack stack : stacks) {
             inputMass += Math.abs(stack.getMass());
         }
         float excessMass = 0;
         while (inputMass > maxCapacity) {
-            cElementalInstanceStack randomStack = stacks[TecTech.RANDOM.nextInt(stacks.length)];
-            double amountToRemove = TecTech.RANDOM.nextDouble()/10D * randomStack.getAmount();
-            randomStack.amount= sub(randomStack.amount,amountToRemove);//mutates the parent InstanceStackMap
-            if (randomStack.amount <= 0) {
-                input.remove(randomStack.definition);
+            EMInstanceStack randomStack    = stacks[TecTech.RANDOM.nextInt(stacks.length)];
+            double          amountToRemove = TecTech.RANDOM.nextDouble()/10D * randomStack.getAmount();
+            randomStack.setAmount(sub(randomStack.getAmount(),amountToRemove));//mutates the parent InstanceStackMap
+            if (randomStack.getAmount() < AVOGADRO_CONSTANT_UNCERTAINTY) {
+                input.removeKey(randomStack.getDefinition());
             }
             double mass = Math.abs(randomStack.getDefinition().getMass()) * amountToRemove;
             excessMass += mass;
@@ -174,9 +175,9 @@ public class Behaviour_ElectromagneticSeparator implements GT_MetaTileEntity_EM_
         int mTicks=(int)(ticks*(inputMass/maxCapacity));
         mTicks=Math.max(mTicks,20);
 
-        cElementalInstanceStackMap[] outputs = new cElementalInstanceStackMap[3];
+        EMInstanceStackMap[] outputs = new EMInstanceStackMap[3];
         for (int i = 0; i < 3; i++) {
-            outputs[i] = new cElementalInstanceStackMap();
+            outputs[i] = new EMInstanceStackMap();
         }
 
         double offsetIn=offsetSetting.get();
@@ -186,8 +187,8 @@ public class Behaviour_ElectromagneticSeparator implements GT_MetaTileEntity_EM_
 
         //take all from hatch handler and put into new map - this takes from hatch to inner data storage
         stacks = input.takeAll().valuesToArray();//cleanup stacks
-        for(cElementalInstanceStack stack:stacks){
-            double charge=stack.definition.getCharge()-offsetIn;
+        for(EMInstanceStack stack:stacks){
+            double charge= stack.getDefinition().getCharge()-offsetIn;
             if(charge<precisionMinimalIn && charge>-precisionMinimalIn){
                 outputs[1].putReplace(stack);
             }else if(charge>=precisionFullIn){
@@ -195,13 +196,13 @@ public class Behaviour_ElectromagneticSeparator implements GT_MetaTileEntity_EM_
             }else if(charge<=-precisionFullIn){
                 outputs[0].putReplace(stack);
             }else{
-                double amount=mul(stack.amount,(Math.abs(charge)-precisionMinimalIn+1D)/levelsCountPlus1);//todo check
-                if (amount < stack.amount) {
-                    cElementalInstanceStack clone = stack.clone();
-                    clone.amount = sub(clone.amount, amount);
+                double amount=mul(stack.getAmount(),(Math.abs(charge)-precisionMinimalIn+1D)/levelsCountPlus1);//todo check
+                if (amount < stack.getAmount()) {
+                    EMInstanceStack clone = stack.clone();
+                    clone.setAmount(sub(clone.getAmount(), amount));
                     outputs[1].putReplace(clone);
 
-                    stack.amount = amount;
+                    stack.setAmount(amount);
                 }
                 if(charge>0){
                     outputs[2].putReplace(stack);

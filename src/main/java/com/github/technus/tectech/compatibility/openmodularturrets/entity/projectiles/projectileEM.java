@@ -1,8 +1,8 @@
 package com.github.technus.tectech.compatibility.openmodularturrets.entity.projectiles;
 
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
-import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.dHadronDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMInstanceStack;
+import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.EMHadronDefinition;
 import gregtech.api.GregTech_API;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
@@ -44,25 +44,25 @@ public class projectileEM extends LaserProjectile {
         }
     }
 
-    public projectileEM(World par1World, TurretBase turretBase, cElementalInstanceStack projectileContent) {
+    public projectileEM(World par1World, TurretBase turretBase, EMInstanceStack projectileContent) {
         super(par1World, turretBase);
         this.turretBase = turretBase;
         if(projectileContent != null){
             mass=projectileContent.getMass();
             charge=projectileContent.getCharge();
-            massFactor =(float) (projectileContent.definition.getMass()/ dHadronDefinition.hadron_n_.getMass());
+            massFactor =(float) (projectileContent.getDefinition().getMass()/ EMHadronDefinition.hadron_n_.getMass());
 
-            if(projectileContent.definition.getType()>1 || projectileContent.definition.getType()<-1) {
+            if(projectileContent.getDefinition().getType()>1 || projectileContent.getDefinition().getType()<-1) {
                 strange = true;
             }
-            if(projectileContent.definition.getType()<0) {
+            if(projectileContent.getDefinition().getType()<0) {
                 antiMatter = true;
             }
 
-            if (projectileContent.definition.getCharge() == 0) {
+            if (projectileContent.getDefinition().getCharge() == 0) {
                 gravity = massFactor / 100f;
             } else {
-                gravity = Math.min(0.0025F / Math.abs(projectileContent.definition.getCharge()), massFactor / 100f);
+                gravity = Math.min(0.0025F / Math.abs(projectileContent.getDefinition().getCharge()), massFactor / 100f);
             }
         }
     }

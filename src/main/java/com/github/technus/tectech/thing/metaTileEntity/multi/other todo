@@ -23,16 +23,16 @@ BlockFakeLight.java
 for turrets:
 floodlightb
 
+mega - projects
+
 
 
 fix eu/t checks if needs maintenance!!!
 
 make microwave grinder cap autosmelting based on power
 
-
 iterative halflife formula:
 
 =prev qty* 2^(-t diff / t half)
-
 
 actual ion cannons

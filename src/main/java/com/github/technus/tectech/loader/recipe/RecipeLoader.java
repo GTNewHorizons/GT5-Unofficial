@@ -3,8 +3,8 @@ package com.github.technus.tectech.loader.recipe;
 import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.compatibility.dreamcraft.DreamCraftRecipeLoader;
 import com.github.technus.tectech.compatibility.spartakcore.SpartakCoreRecipeLoader;
-import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.dAtomDefinition;
-import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.dHadronDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.EMAtomDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.EMHadronDefinition;
 import com.github.technus.tectech.thing.CustomItemList;
 import com.github.technus.tectech.thing.casing.TT_Container_Casings;
 import com.github.technus.tectech.thing.item.ConstructableTriggerItem;
@@ -35,8 +35,8 @@ public class RecipeLoader implements Runnable {
 
     @Override
     public void run() {
-        dAtomDefinition.setTransformation();
-        dHadronDefinition.setTransformations();
+        EMAtomDefinition.setTransformation();
+        EMHadronDefinition.setTransformations();
 
         // ===================================================================================================
         // Recipes init - common goes here rest goes into methods below

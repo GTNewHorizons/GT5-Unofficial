@@ -3,8 +3,8 @@ package com.github.technus.tectech.thing.item;
 import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.util.Util;
 import com.github.technus.tectech.font.TecTechFontRender;
-import com.github.technus.tectech.mechanics.elementalMatter.core.maps.cElementalConstantStackMap;
-import com.github.technus.tectech.mechanics.elementalMatter.core.tElementalException;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMConstantStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.EMException;
 import com.github.technus.tectech.thing.item.renderElemental.IElementalItem;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -38,18 +38,18 @@ public final class ElementalDefinitionContainer_EM extends Item implements IElem
     }
 
     //return previous thing
-    public static cElementalConstantStackMap setContent(ItemStack containerItem, cElementalConstantStackMap definitions){
+    public static EMConstantStackMap setContent(ItemStack containerItem, EMConstantStackMap definitions){
         if(containerItem.getItem() instanceof ElementalDefinitionContainer_EM) {
             NBTTagCompound tNBT = containerItem.stackTagCompound;
             if (tNBT == null) {
                 tNBT = containerItem.stackTagCompound = new NBTTagCompound();
             }
 
-            cElementalConstantStackMap oldMap =null;
+            EMConstantStackMap oldMap =null;
             if (tNBT.hasKey("content")) {
                 try {
-                    oldMap= cElementalConstantStackMap.fromNBT(tNBT.getCompoundTag("content"));
-                } catch (tElementalException e) {
+                    oldMap= EMConstantStackMap.fromNBT(tNBT.getCompoundTag("content"));
+                } catch (EMException e) {
                     if (DEBUG_MODE) {
                         e.printStackTrace();
                     }
@@ -63,7 +63,7 @@ public final class ElementalDefinitionContainer_EM extends Item implements IElem
         return null;
     }
 
-    public static cElementalConstantStackMap getContent(ItemStack containerItem){
+    public static EMConstantStackMap getContent(ItemStack containerItem){
         if(containerItem.getItem() instanceof ElementalDefinitionContainer_EM){
             NBTTagCompound tNBT = containerItem.stackTagCompound;
 
@@ -71,8 +71,8 @@ public final class ElementalDefinitionContainer_EM extends Item implements IElem
                 return null;
             }
             try {
-                return cElementalConstantStackMap.fromNBT(tNBT.getCompoundTag("content"));
-            } catch (tElementalException e) {
+                return EMConstantStackMap.fromNBT(tNBT.getCompoundTag("content"));
+            } catch (EMException e) {
                 if (DEBUG_MODE) {
                     e.printStackTrace();
                 }
@@ -81,18 +81,18 @@ public final class ElementalDefinitionContainer_EM extends Item implements IElem
         return null;
     }
 
-    public static cElementalConstantStackMap clearContent(ItemStack containerItem){
+    public static EMConstantStackMap clearContent(ItemStack containerItem){
         if(containerItem.getItem() instanceof ElementalDefinitionContainer_EM){
             NBTTagCompound tNBT = containerItem.stackTagCompound;
             if (tNBT == null) {
                 return null;
             }
 
-            cElementalConstantStackMap oldMap =null;
+            EMConstantStackMap oldMap =null;
             if (tNBT.hasKey("content")) {
                 try {
-                    oldMap= cElementalConstantStackMap.fromNBT(tNBT.getCompoundTag("content"));
-                } catch (tElementalException e) {
+                    oldMap= EMConstantStackMap.fromNBT(tNBT.getCompoundTag("content"));
+                } catch (EMException e) {
                     if (DEBUG_MODE) {
                         e.printStackTrace();
                     }

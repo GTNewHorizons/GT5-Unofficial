@@ -1,6 +1,6 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi.em_machine;
 
-import com.github.technus.tectech.mechanics.elementalMatter.core.maps.cElementalInstanceStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.MultiblockControl;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
 
@@ -26,9 +26,9 @@ public class Behaviour_Recycler implements GT_MetaTileEntity_EM_machine.IBehavio
     }
 
     @Override
-    public MultiblockControl<cElementalInstanceStackMap[]> process(cElementalInstanceStackMap[] inputs, GT_MetaTileEntity_EM_machine te, Parameters parameters) {
+    public MultiblockControl<EMInstanceStackMap[]> process(EMInstanceStackMap[] inputs, GT_MetaTileEntity_EM_machine te, Parameters parameters) {
         double mass=0;
-        for (cElementalInstanceStackMap input : inputs) {
+        for (EMInstanceStackMap input : inputs) {
             if (input != null) {
                 mass += input.getMass();
             }

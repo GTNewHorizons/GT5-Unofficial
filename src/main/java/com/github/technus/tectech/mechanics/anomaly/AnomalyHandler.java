@@ -7,7 +7,7 @@ import com.github.technus.tectech.mechanics.data.ChunkDataHandler;
 import com.github.technus.tectech.mechanics.data.ChunkDataMessage;
 import com.github.technus.tectech.mechanics.data.IChunkMetaDataHandler;
 import com.github.technus.tectech.mechanics.data.PlayerDataMessage;
-import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.dAtomDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.EMAtomDefinition;
 import com.github.technus.tectech.util.Util;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import gregtech.api.GregTech_API;
@@ -31,11 +31,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.bTransformationInfo.AVOGADRO_CONSTANT;
-import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.bTransformationInfo.AVOGADRO_CONSTANT_144;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationInfo.AVOGADRO_CONSTANT;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationInfo.AVOGADRO_CONSTANT_144;
 
 public class AnomalyHandler implements IChunkMetaDataHandler {
-    private static final double SWAP_THRESHOLD = dAtomDefinition.getSomethingHeavy().getMass() * 1000D * AVOGADRO_CONSTANT_144;//can be const as it is computed later...
+    private static final double SWAP_THRESHOLD = EMAtomDefinition.getSomethingHeavy().getMass() * 1000D * AVOGADRO_CONSTANT_144;//can be const as it is computed later...
     private static final int COUNT_DIV=32;
     private static final double PER_PARTICLE=SWAP_THRESHOLD/COUNT_DIV;
     private static final String INTENSITY = "intensity",SPACE_CANCER="space_cancer", SPACE_CHARGE ="space_charge";

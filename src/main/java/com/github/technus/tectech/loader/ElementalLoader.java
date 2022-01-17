@@ -1,11 +1,11 @@
 package com.github.technus.tectech.loader;
 
-import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.dComplexAspectDefinition;
-import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.ePrimalAspectDefinition;
-import com.github.technus.tectech.mechanics.elementalMatter.core.templates.cElementalPrimitive;
-import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.dAtomDefinition;
-import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.dHadronDefinition;
-import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.iaeaNuclide;
+import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.EMComplexAspectDefinition;
+import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.EMPrimalAspectDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.core.templates.EMPrimitive;
+import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.EMAtomDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.EMHadronDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.EMNuclideIAEA;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.*;
 
 /**
@@ -18,23 +18,23 @@ public class ElementalLoader implements Runnable {
         // Definition init
         // ===================================================================================================
 
-        cElementalPrimitive.run();
+        EMPrimitive.run();
 
-        cPrimitiveDefinition.run();
+        EMPrimitiveDefinition.run();
 
-        eQuarkDefinition.run();
-        eLeptonDefinition.run();
-        eNeutrinoDefinition.run();
-        eBosonDefinition.run();
+        EMQuarkDefinition.run();
+        EMLeptonDefinition.run();
+        EMNeutrinoDefinition.run();
+        EMBosonDefinition.run();
 
-        dHadronDefinition.run();
+        EMHadronDefinition.run();
 
-        iaeaNuclide.run();
+        EMNuclideIAEA.run();
 
-        dAtomDefinition.run();
+        EMAtomDefinition.run();
 
-        ePrimalAspectDefinition.run();
+        EMPrimalAspectDefinition.run();
 
-        dComplexAspectDefinition.run();
+        EMComplexAspectDefinition.run();
     }
 }

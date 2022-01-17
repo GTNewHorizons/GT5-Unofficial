@@ -1,8 +1,8 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.mechanics.constructable.IConstructable;
-import com.github.technus.tectech.mechanics.elementalMatter.core.maps.cElementalInstanceStackMap;
-import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMInstanceStack;
 import com.github.technus.tectech.mechanics.structure.adders.IHatchAdder;
 import com.github.technus.tectech.mechanics.structure.Structure;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
@@ -31,7 +31,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
-import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.bTransformationInfo.AVOGADRO_CONSTANT;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationInfo.AVOGADRO_CONSTANT;
 import static com.github.technus.tectech.mechanics.structure.Structure.adders;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
@@ -115,7 +115,7 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
 
     @Override
     public boolean checkRecipe_EM(ItemStack itemStack) {
-        cElementalInstanceStackMap map = getInputsClone_EM();
+        EMInstanceStackMap map = getInputsClone_EM();
         if (map != null && map.hasStacks()) {
             for (GT_MetaTileEntity_Hatch_InputElemental i : eInputHatches) {
                 i.getContentHandler().clear();
@@ -125,20 +125,20 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
         return false;
     }
 
-    private boolean startRecipe(cElementalInstanceStackMap input) {
+    private boolean startRecipe(EMInstanceStackMap input) {
         mMaxProgresstime = 20;
         mEfficiencyIncrease = 10000;
-        outputEM = new cElementalInstanceStackMap[2];
+        outputEM = new EMInstanceStackMap[2];
         outputEM[0] = input;
-        outputEM[1] = new cElementalInstanceStackMap();
+        outputEM[1] = new EMInstanceStackMap();
 
-        for (cElementalInstanceStack stack : outputEM[0].valuesToArray()) {
-            if (stack.getEnergy() == 0 && stack.definition.decayMakesEnergy(1) &&
+        for (EMInstanceStack stack : outputEM[0].valuesToArray()) {
+            if (stack.getEnergy() == 0 && stack.getDefinition().decayMakesEnergy(1) &&
                     getBaseMetaTileEntity().decreaseStoredEnergyUnits(
                             (long) (stack.getEnergySettingCost(1) * URANIUM_MASS_TO_EU_INSTANT), false)) {
                 stack.setEnergy(1);
-            } else if (!stack.definition.decayMakesEnergy(stack.getEnergy())) {
-                outputEM[0].remove(stack.definition);
+            } else if (!stack.getDefinition().decayMakesEnergy(stack.getEnergy())) {
+                outputEM[0].removeKey(stack.getDefinition());
                 outputEM[1].putReplace(stack);
             }
         }
