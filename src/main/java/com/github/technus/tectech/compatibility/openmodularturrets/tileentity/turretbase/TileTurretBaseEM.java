@@ -1,6 +1,6 @@
 package com.github.technus.tectech.compatibility.openmodularturrets.tileentity.turretbase;
 
-import com.github.technus.tectech.mechanics.elementalMatter.core.maps.cElementalInstanceStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputElemental;
 import cpw.mods.fml.common.Optional;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -25,7 +25,7 @@ public class TileTurretBaseEM extends TurretBaseTierFiveTileEntity {
         return "turretBaseEM";
     }
 
-    public final cElementalInstanceStackMap getContainerHandler() {
+    public final EMInstanceStackMap getContainerHandler() {
         World worldIn = getWorldObj();
         TileEntity te;
         if ((te = worldIn.getTileEntity(xCoord + 1, yCoord, zCoord)) instanceof IGregTechTileEntity &&
@@ -61,7 +61,7 @@ public class TileTurretBaseEM extends TurretBaseTierFiveTileEntity {
         return null;
     }
 
-    private cElementalInstanceStackMap getFromHatch(GT_MetaTileEntity_Hatch_InputElemental hatch) {
+    private EMInstanceStackMap getFromHatch(GT_MetaTileEntity_Hatch_InputElemental hatch) {
         hatch.updateTexture((byte) 8,(byte) 4);
         return hatch.getContentHandler();
     }

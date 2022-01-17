@@ -1,11 +1,11 @@
 package com.github.technus.tectech.compatibility.thaumcraft.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.ePrimalAspectDefinition;
+import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.EMPrimalAspectDefinition;
 import com.github.technus.tectech.mechanics.constructable.IConstructable;
-import com.github.technus.tectech.mechanics.elementalMatter.core.maps.cElementalInstanceStackMap;
-import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
-import com.github.technus.tectech.mechanics.elementalMatter.core.templates.iElementalDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMInstanceStack;
+import com.github.technus.tectech.mechanics.elementalMatter.core.templates.IEMDefinition;
 import com.github.technus.tectech.mechanics.structure.Structure;
 import com.github.technus.tectech.mechanics.structure.adders.IHatchAdder;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
@@ -25,7 +25,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import static com.github.technus.tectech.compatibility.thaumcraft.thing.metaTileEntity.multi.EssentiaCompat.essentiaContainerCompat;
-import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.bTransformationInfo.AVOGADRO_CONSTANT;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationInfo.AVOGADRO_CONSTANT;
 import static com.github.technus.tectech.mechanics.structure.Structure.adders;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
@@ -84,15 +84,15 @@ public class GT_MetaTileEntity_EM_essentiaQuantizer extends GT_MetaTileEntity_Mu
 
     @Override
     public boolean checkRecipe_EM(ItemStack itemStack) {
-        iElementalDefinition definition  = essentiaContainerCompat.getFromContainer(essentiaContainerCompat.getContainer(this));
+        IEMDefinition definition = essentiaContainerCompat.getFromContainer(essentiaContainerCompat.getContainer(this));
         if (definition != null) {
             mMaxProgresstime = 20;
             mEfficiencyIncrease = 10000;
             eAmpereFlow = 1;
-            outputEM = new cElementalInstanceStackMap[]{
-                    new cElementalInstanceStackMap(new cElementalInstanceStack(definition,AVOGADRO_CONSTANT))
+            outputEM = new EMInstanceStackMap[]{
+                    new EMInstanceStackMap(new EMInstanceStack(definition,AVOGADRO_CONSTANT))
             };
-            if (definition instanceof ePrimalAspectDefinition) {
+            if (definition instanceof EMPrimalAspectDefinition) {
                 mEUt = (int) -V[8];
             } else {
                 mEUt = (int) -V[10];

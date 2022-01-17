@@ -1,9 +1,9 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.mechanics.elementalMatter.core.maps.cElementalInstanceStackMap;
-import com.github.technus.tectech.mechanics.elementalMatter.core.iElementalContainer;
-import com.github.technus.tectech.mechanics.elementalMatter.core.tElementalException;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.IEMContainer;
+import com.github.technus.tectech.mechanics.elementalMatter.core.EMException;
 import com.github.technus.tectech.mechanics.pipe.IConnectsToElementalPipe;
 import com.github.technus.tectech.util.Util;
 import cpw.mods.fml.relauncher.Side;
@@ -24,7 +24,7 @@ import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
-import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.bTransformationInfo.AVOGADRO_CONSTANT_144;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationInfo.AVOGADRO_CONSTANT_144;
 import static com.github.technus.tectech.util.CommonValues.*;
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity;
@@ -34,16 +34,16 @@ import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 /**
  * Created by danie_000 on 11.12.2016.
  */
-public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_MetaTileEntity_Hatch implements iElementalContainer, IConnectsToElementalPipe {
+public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_MetaTileEntity_Hatch implements IEMContainer, IConnectsToElementalPipe {
     private static Textures.BlockIcons.CustomIcon EM_T_SIDES;
     private static Textures.BlockIcons.CustomIcon EM_T_ACTIVE;
     private static Textures.BlockIcons.CustomIcon EM_T_CONN;
 
     private String clientLocale = "en_US";
 
-    protected cElementalInstanceStackMap content = new cElementalInstanceStackMap();
+    protected EMInstanceStackMap content      = new EMInstanceStackMap();
     //float lifeTimeMult=1f;
-    public int postEnergize = 0;
+    public    int                postEnergize = 0;
     public double overflowMatter = 0f;
     public short id = -1;
     private byte deathDelay = 2;
@@ -95,13 +95,13 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
         overflowMatter = aNBT.getFloat("overflowMatter")+aNBT.getDouble("OverflowMatter");
         id = aNBT.getShort("eID");
         try {
-            content = cElementalInstanceStackMap.fromNBT(aNBT.getCompoundTag("eM_Stacks"));
-        } catch (tElementalException e) {
+            content = EMInstanceStackMap.fromNBT(aNBT.getCompoundTag("eM_Stacks"));
+        } catch (EMException e) {
             if (DEBUG_MODE) {
                 e.printStackTrace();
             }
             if (content == null) {
-                content = new cElementalInstanceStackMap();
+                content = new EMInstanceStackMap();
             }
         }
     }
@@ -165,7 +165,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
     }
 
     @Override
-    public cElementalInstanceStackMap getContentHandler() {
+    public EMInstanceStackMap getContentHandler() {
         return content;
     }
 

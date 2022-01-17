@@ -10,10 +10,10 @@ import com.github.technus.tectech.mechanics.alignment.IAlignmentLimits;
 import com.github.technus.tectech.mechanics.alignment.enumerable.ExtendedFacing;
 import com.github.technus.tectech.mechanics.alignment.enumerable.Flip;
 import com.github.technus.tectech.mechanics.alignment.enumerable.Rotation;
-import com.github.technus.tectech.mechanics.elementalMatter.core.maps.cElementalInstanceStackMap;
-import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalDefinitionStack;
-import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
-import com.github.technus.tectech.mechanics.elementalMatter.core.tElementalException;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMDefinitionStack;
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMInstanceStack;
+import com.github.technus.tectech.mechanics.elementalMatter.core.EMException;
 import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
 import com.github.technus.tectech.mechanics.structure.Structure;
 import com.github.technus.tectech.mechanics.structure.adders.IHatchAdder;
@@ -109,7 +109,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     //storage for output EM that will be auto handled in case of failure to finish recipe
     //if you succed to use a recipe - be sure to output EM from outputEM to hatches in the output method
-    protected cElementalInstanceStackMap[] outputEM;
+    protected EMInstanceStackMap[] outputEM;
 
     //are parameters correct - change in check recipe/output/update params etc. (maintenance status boolean)
     protected boolean eParameters = true;
@@ -842,13 +842,13 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
         int outputLen = aNBT.getInteger("eOutputStackCount");
         if (outputLen > 0) {
-            outputEM = new cElementalInstanceStackMap[outputLen];
+            outputEM = new EMInstanceStackMap[outputLen];
             NBTTagCompound compound = aNBT.getCompoundTag("outputEM");
             for (int i = 0; i < outputEM.length; i++) {
                 if (compound.hasKey(Integer.toString(i))) {
                     try {
-                        outputEM[i] = cElementalInstanceStackMap.fromNBT(compound.getCompoundTag(Integer.toString(i)));
-                    } catch (tElementalException e) {
+                        outputEM[i] = EMInstanceStackMap.fromNBT(compound.getCompoundTag(Integer.toString(i)));
+                    } catch (EMException e) {
                         if (DEBUG_MODE) {
                             e.printStackTrace();
                         }
@@ -966,7 +966,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     private void cleanOrExplode() {
         if (outputEM != null) {
             float mass = 0;
-            for (cElementalInstanceStackMap tree : outputEM) {
+            for (EMInstanceStackMap tree : outputEM) {
                 if (tree != null) {
                     mass += tree.getMass();
                 }
@@ -1155,7 +1155,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                         explodeMultiblock();
                     }
                     if (outputEM != null) {
-                        for (cElementalInstanceStackMap tree : outputEM) {
+                        for (EMInstanceStackMap tree : outputEM) {
                             if (tree != null && tree.hasStacks()) {
                                 explodeMultiblock();
                             }
@@ -1297,26 +1297,26 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
             }
             double remaining = voider.overflowMax - voider.getOverflowMatter();
             for (GT_MetaTileEntity_Hatch_InputElemental in : eInputHatches) {
-                for (cElementalInstanceStack instance : in.getContentHandler().valuesToArray()) {
-                    double qty = div(remaining,instance.definition.getMass());
+                for (EMInstanceStack instance : in.getContentHandler().valuesToArray()) {
+                    double qty = div(remaining, instance.getDefinition().getMass());
                     if (qty > 0) {
-                        qty = min(qty, instance.amount);
-                        if (voider.addOverflowMatter(instance.definition.getMass() * qty)) {
+                        qty = min(qty, instance.getAmount());
+                        if (voider.addOverflowMatter(instance.getDefinition().getMass() * qty)) {
                             voider.setOverflowMatter(voider.overflowMax);
                         }
-                        in.getContentHandler().removeAmount(false, new cElementalDefinitionStack(instance.definition, qty));
+                        in.getContentHandler().removeAmount(new EMDefinitionStack(instance.getDefinition(), qty));
                     }
                 }
             }
             for (GT_MetaTileEntity_Hatch_OutputElemental out : eOutputHatches) {
-                for (cElementalInstanceStack instance : out.getContentHandler().valuesToArray()) {
-                    double qty = div(remaining,instance.definition.getMass());
+                for (EMInstanceStack instance : out.getContentHandler().valuesToArray()) {
+                    double qty = div(remaining, instance.getDefinition().getMass());
                     if (qty > 0) {
-                        qty = min(qty, instance.amount);
-                        if (voider.addOverflowMatter(instance.definition.getMass() * qty)) {
+                        qty = min(qty, instance.getAmount());
+                        if (voider.addOverflowMatter(instance.getDefinition().getMass() * qty)) {
                             voider.setOverflowMatter(voider.overflowMax);
                         }
-                        out.getContentHandler().removeAmount(false, new cElementalDefinitionStack(instance.definition, qty));
+                        out.getContentHandler().removeAmount(new EMDefinitionStack(instance.getDefinition(), qty));
                     }
                 }
             }
@@ -1929,8 +1929,8 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     //region convenience copies input and output EM
     //new Method
-    public final cElementalInstanceStackMap getInputsClone_EM() {
-        cElementalInstanceStackMap in = new cElementalInstanceStackMap();
+    public final EMInstanceStackMap getInputsClone_EM() {
+        EMInstanceStackMap in = new EMInstanceStackMap();
         for (GT_MetaTileEntity_Hatch_ElementalContainer hatch : eInputHatches) {
             in.putUnifyAll(hatch.getContentHandler());
         }
@@ -1938,8 +1938,8 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     }
 
     //new Method
-    public final cElementalInstanceStackMap getOutputsClone_EM() {
-        cElementalInstanceStackMap out = new cElementalInstanceStackMap();
+    public final EMInstanceStackMap getOutputsClone_EM() {
+        EMInstanceStackMap out = new EMInstanceStackMap();
         for (GT_MetaTileEntity_Hatch_ElementalContainer hatch : eOutputHatches) {
             out.putUnifyAll(hatch.getContentHandler());
         }
@@ -1974,7 +1974,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         cleanMassEM_EM(target.getContentHandler().getMass());
     }
 
-    public void cleanStackEM_EM(cElementalInstanceStack target) {
+    public void cleanStackEM_EM(EMInstanceStack target) {
         if (target == null) {
             return;
         }
@@ -2006,7 +2006,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
             return;
         }
         float mass = 0;
-        for (cElementalInstanceStackMap map : outputEM) {
+        for (EMInstanceStackMap map : outputEM) {
             if (map != null) {
                 mass += map.getMass();
             }

@@ -2,7 +2,7 @@ package com.github.technus.tectech.thing.metaTileEntity.multi.em_machine;
 
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.mechanics.constructable.IConstructable;
-import com.github.technus.tectech.mechanics.elementalMatter.core.maps.cElementalInstanceStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
 import com.github.technus.tectech.mechanics.structure.adders.IHatchAdder;
 import com.github.technus.tectech.mechanics.structure.Structure;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
@@ -161,7 +161,7 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
          * @param parameters array passed from previous method!
          * @return null if recipe should not start, control object to set machine state and start recipe
          */
-        MultiblockControl<cElementalInstanceStackMap[]> process(cElementalInstanceStackMap[] inputs, GT_MetaTileEntity_EM_machine te, Parameters parameters);
+        MultiblockControl<EMInstanceStackMap[]> process(EMInstanceStackMap[] inputs, GT_MetaTileEntity_EM_machine te, Parameters parameters);
     }
 
     private void quantumStuff(boolean shouldIExist) {
@@ -254,7 +254,7 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
             return false;
         }
 
-        cElementalInstanceStackMap[] handles = new cElementalInstanceStackMap[6];
+        EMInstanceStackMap[] handles = new EMInstanceStackMap[6];
         for (int i = 0; i < 6; i++) {
             int pointer = (int) inputMux[i].get();
             if (pointer >= 0 && pointer < eInputHatches.size()) {
@@ -272,7 +272,7 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
             }
         }
 
-        MultiblockControl<cElementalInstanceStackMap[]> control = currentBehaviour.process(handles, this, parametrization);
+        MultiblockControl<EMInstanceStackMap[]> control = currentBehaviour.process(handles, this, parametrization);
         if (control == null) {
             return false;
         }
@@ -311,7 +311,7 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
             return;
         }
 
-        cElementalInstanceStackMap[] handles = new cElementalInstanceStackMap[6];
+        EMInstanceStackMap[] handles = new EMInstanceStackMap[6];
         for (int i = 0; i < 6; i++) {
             int pointer = (int) outputMux[i].get();
             if (pointer >= 0 && pointer < eOutputHatches.size()) {

@@ -1,6 +1,6 @@
 package com.github.technus.tectech.compatibility.thaumcraft.thing.metaTileEntity.multi;
 
-import com.github.technus.tectech.mechanics.elementalMatter.core.templates.iElementalDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.core.templates.IEMDefinition;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import net.minecraft.tileentity.TileEntity;
 import thaumcraft.api.aspects.Aspect;
@@ -28,8 +28,8 @@ public class EssentiaCompatEnabled extends EssentiaCompat {
     }
 
     @Override
-    public String getEssentiaName(iElementalDefinition stack) {
-        return aspectDefinitionCompat.defToAspect.get(stack);
+    public String getEssentiaName(IEMDefinition stack) {
+        return aspectDefinitionCompat.getDefToAspect().get(stack);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class EssentiaCompatEnabled extends EssentiaCompat {
     }
 
     @Override
-    public iElementalDefinition getFromContainer(TileEntity container){
+    public IEMDefinition getFromContainer(TileEntity container){
         if(container==null || container.isInvalid()) {
             return null;
         }
@@ -59,7 +59,7 @@ public class EssentiaCompatEnabled extends EssentiaCompat {
                 Aspect[] aspectsArr= aspects.getAspects();
                 if(aspectsArr!=null && aspectsArr[0]!=null){
                      if (((IAspectContainer) container).takeFromContainer(aspectsArr[0],1)){
-                         return aspectDefinitionCompat.aspectToDef.get(aspectsArr[0].getTag());
+                         return aspectDefinitionCompat.getAspectToDef().get(aspectsArr[0].getTag());
                      }
                 }
             }

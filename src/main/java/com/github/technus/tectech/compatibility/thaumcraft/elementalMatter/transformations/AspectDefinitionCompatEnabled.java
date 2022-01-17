@@ -1,13 +1,13 @@
 package com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.transformations;
 
-import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.dComplexAspectDefinition;
-import com.github.technus.tectech.mechanics.elementalMatter.core.tElementalException;
-import com.github.technus.tectech.mechanics.elementalMatter.core.templates.iElementalDefinition;
+import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.EMComplexAspectDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.core.EMException;
+import com.github.technus.tectech.mechanics.elementalMatter.core.templates.IEMDefinition;
 import thaumcraft.api.aspects.Aspect;
 
 import java.util.ArrayList;
 
-import static com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.ePrimalAspectDefinition.*;
+import static com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.EMPrimalAspectDefinition.*;
 import static com.github.technus.tectech.thing.item.DebugElementalInstanceContainer_EM.STACKS_REGISTERED;
 
 /**
@@ -16,19 +16,19 @@ import static com.github.technus.tectech.thing.item.DebugElementalInstanceContai
 public final class AspectDefinitionCompatEnabled extends AspectDefinitionCompat {
     @Override
     public void run(){
-        defToAspect.put(magic_air,"aer");
-        defToAspect.put(magic_earth,"terra");
-        defToAspect.put(magic_fire,"ignis");
-        defToAspect.put(magic_water,"aqua");
-        defToAspect.put(magic_order,"ordo");
-        defToAspect.put(magic_entropy,"perditio");
+        getDefToAspect().put(magic_air,"aer");
+        getDefToAspect().put(magic_earth,"terra");
+        getDefToAspect().put(magic_fire,"ignis");
+        getDefToAspect().put(magic_water,"aqua");
+        getDefToAspect().put(magic_order,"ordo");
+        getDefToAspect().put(magic_entropy,"perditio");
 
-        aspectToDef.put("aer",magic_air);
-        aspectToDef.put("terra",magic_earth);
-        aspectToDef.put("ignis",magic_fire);
-        aspectToDef.put("aqua",magic_water);
-        aspectToDef.put("ordo",magic_order);
-        aspectToDef.put("perditio",magic_entropy);
+        getAspectToDef().put("aer",magic_air);
+        getAspectToDef().put("terra",magic_earth);
+        getAspectToDef().put("ignis",magic_fire);
+        getAspectToDef().put("aqua",magic_water);
+        getAspectToDef().put("ordo",magic_order);
+        getAspectToDef().put("perditio",magic_entropy);
 
         ArrayList<Aspect> list=Aspect.getCompoundAspects();
         Aspect[] array= list.toArray(new Aspect[0]);
@@ -38,20 +38,20 @@ public final class AspectDefinitionCompatEnabled extends AspectDefinitionCompat 
                     Aspect[] content = aspect.getComponents();
                     if (content.length != 2) {
                         list.remove(aspect);
-                    }else if(aspectToDef.containsKey(content[0].getTag()) && aspectToDef.containsKey(content[1].getTag())){
+                    }else if(getAspectToDef().containsKey(content[0].getTag()) && getAspectToDef().containsKey(content[1].getTag())){
                         try {
-                            dComplexAspectDefinition newAspect;
+                            EMComplexAspectDefinition newAspect;
                             if(content[0].getTag().equals(content[1].getTag())){
-                                newAspect = new dComplexAspectDefinition(
-                                        aspectToDef.get(content[0].getTag()).getStackForm(2));
+                                newAspect = new EMComplexAspectDefinition(
+                                        getAspectToDef().get(content[0].getTag()).getStackForm(2));
                             }else{
-                                newAspect = new dComplexAspectDefinition(
-                                        aspectToDef.get(content[0].getTag()).getStackForm(1),
-                                        aspectToDef.get(content[1].getTag()).getStackForm(1));
+                                newAspect = new EMComplexAspectDefinition(
+                                        getAspectToDef().get(content[0].getTag()).getStackForm(1),
+                                        getAspectToDef().get(content[1].getTag()).getStackForm(1));
                             }
-                            aspectToDef.put(aspect.getTag(),newAspect);
-                            defToAspect.put(newAspect,aspect.getTag());
-                        }catch (tElementalException e) {
+                            getAspectToDef().put(aspect.getTag(),newAspect);
+                            getDefToAspect().put(newAspect,aspect.getTag());
+                        }catch (EMException e) {
                             /**/
                         }finally {
                             list.remove(aspect);
@@ -60,22 +60,16 @@ public final class AspectDefinitionCompatEnabled extends AspectDefinitionCompat 
                 }
             }
         }
-
-        STACKS_REGISTERED.addAll(defToAspect.keySet());
+        STACKS_REGISTERED.addAll(getDefToAspect().keySet());
     }
 
     @Override
-    public Aspect getAspect(iElementalDefinition definition) {
-        return Aspect.getAspect(defToAspect.get(definition));
+    public String getAspectTag(IEMDefinition definition) {
+        return getDefToAspect().get(definition);
     }
 
     @Override
-    public String getAspectTag(iElementalDefinition definition) {
-        return defToAspect.get(definition);
-    }
-
-    @Override
-    public iElementalDefinition getDefinition(String aspect) {
-        return aspectToDef.get(aspect);
+    public IEMDefinition getDefinition(String aspect) {
+        return getAspectToDef().get(aspect);
     }
 }

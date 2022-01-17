@@ -5,7 +5,7 @@ import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.util.Util;
 import com.github.technus.tectech.font.TecTechFontRender;
 import com.github.technus.tectech.loader.gui.ModGuiHandler;
-import com.github.technus.tectech.mechanics.elementalMatter.core.maps.cElementalInstanceStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
 import com.github.technus.tectech.thing.CustomItemList;
 import com.github.technus.tectech.thing.item.renderElemental.IElementalItem;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -44,7 +44,7 @@ public final class ElementalDefinitionScanStorage_EM extends Item implements IEl
     }
 
     //return previous thing
-    public static void setContent(ItemStack containerItem, cElementalInstanceStackMap definitions, int[] detailsOnDepthLevels){
+    public static void setContent(ItemStack containerItem, EMInstanceStackMap definitions, int[] detailsOnDepthLevels){
         if(containerItem.getItem() instanceof ElementalDefinitionScanStorage_EM) {
             if (containerItem.stackTagCompound == null) {
                 containerItem.stackTagCompound = new NBTTagCompound();

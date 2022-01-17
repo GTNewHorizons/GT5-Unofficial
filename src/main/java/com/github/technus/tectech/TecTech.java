@@ -9,8 +9,8 @@ import com.github.technus.tectech.mechanics.commands.ConvertFloat;
 import com.github.technus.tectech.mechanics.commands.ConvertInteger;
 import com.github.technus.tectech.mechanics.data.ChunkDataHandler;
 import com.github.technus.tectech.mechanics.data.PlayerPersistence;
-import com.github.technus.tectech.mechanics.elementalMatter.core.commands.GiveEM;
-import com.github.technus.tectech.mechanics.elementalMatter.core.commands.ListEM;
+import com.github.technus.tectech.mechanics.elementalMatter.core.commands.EMGive;
+import com.github.technus.tectech.mechanics.elementalMatter.core.commands.EMList;
 import com.github.technus.tectech.proxy.CommonProxy;
 import com.github.technus.tectech.util.XSTR;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -203,9 +203,9 @@ public class TecTech {
     public void serverLoad(FMLServerStartingEvent pEvent) {
         pEvent.registerServerCommand(new ConvertInteger());
         pEvent.registerServerCommand(new ConvertFloat());
-        pEvent.registerServerCommand(new ListEM());
+        pEvent.registerServerCommand(new EMList());
         if(DEBUG_MODE) {
-            pEvent.registerServerCommand(new GiveEM());
+            pEvent.registerServerCommand(new EMGive());
             pEvent.registerServerCommand(new CancerCommand());
             pEvent.registerServerCommand(new ChargeCommand());
         }

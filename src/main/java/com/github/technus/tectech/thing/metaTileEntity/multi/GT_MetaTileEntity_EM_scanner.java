@@ -2,10 +2,10 @@ package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.mechanics.constructable.IConstructable;
-import com.github.technus.tectech.mechanics.elementalMatter.core.maps.cElementalInstanceStackMap;
-import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalDefinitionStack;
-import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
-import com.github.technus.tectech.mechanics.elementalMatter.core.tElementalException;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMDefinitionStack;
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMInstanceStack;
+import com.github.technus.tectech.mechanics.elementalMatter.core.EMException;
 import com.github.technus.tectech.mechanics.structure.adders.IHatchAdder;
 import com.github.technus.tectech.mechanics.structure.Structure;
 import com.github.technus.tectech.recipe.TT_recipe;
@@ -35,7 +35,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
-import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.cPrimitiveDefinition.nbtE__;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMPrimitiveDefinition.nbtE__;
 import static com.github.technus.tectech.mechanics.structure.Structure.adders;
 import static com.github.technus.tectech.recipe.TT_recipe.E_RECIPE_ID;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
@@ -59,9 +59,9 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
             SCAN_GET_COLOR = 256, SCAN_GET_AGE = 512, SCAN_GET_TIMESPAN_MULT = 1024, SCAN_GET_CLASS_TYPE = 2048;
 
     private TT_recipe.TT_EMRecipe.TT_EMRecipe eRecipe;
-    private cElementalDefinitionStack objectResearched;
-    private cElementalInstanceStackMap objectsScanned;
-    private String machineType;
+    private EMDefinitionStack                 objectResearched;
+    private EMInstanceStackMap                objectsScanned;
+    private String                    machineType;
     private long computationRemaining, computationRequired;
     private int[] scanComplexity;
 
@@ -219,31 +219,31 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
     public boolean checkRecipe_EM(ItemStack itemStack) {
         eRecipe = null;
         if (!eInputHatches.isEmpty() && eInputHatches.get(0).getContentHandler().hasStacks() && !eOutputHatches.isEmpty()) {
-            cElementalInstanceStackMap researchEM = eInputHatches.get(0).getContentHandler();
+            EMInstanceStackMap researchEM = eInputHatches.get(0).getContentHandler();
             if (ItemList.Tool_DataOrb.isStackEqual(itemStack, false, true)) {
                 GT_Recipe scannerRecipe = null;
-                for (cElementalInstanceStack stackEM : researchEM.valuesToArray()) {
+                for (EMInstanceStack stackEM : researchEM.valuesToArray()) {
                     objectsScanned = null;
-                    eRecipe = TT_recipe.TT_Recipe_Map_EM.sMachineRecipesEM.findRecipe(stackEM.definition);
+                    eRecipe = TT_recipe.TT_Recipe_Map_EM.sMachineRecipesEM.findRecipe(stackEM.getDefinition());
                     if (eRecipe != null) {
                         scannerRecipe = eRecipe.scannerRecipe;
                         machineType = machine;
-                        objectResearched = new cElementalDefinitionStack(stackEM.definition, 1);
+                        objectResearched = new EMDefinitionStack(stackEM.getDefinition(), 1);
                         //cleanMassEM_EM(objectResearched.getMass());
-                        researchEM.remove(objectResearched.definition);
+                        researchEM.removeKey(objectResearched.getDefinition());
                         break;
                     }
-                    eRecipe = TT_recipe.TT_Recipe_Map_EM.sCrafterRecipesEM.findRecipe(stackEM.definition);
+                    eRecipe = TT_recipe.TT_Recipe_Map_EM.sCrafterRecipesEM.findRecipe(stackEM.getDefinition());
                     if (eRecipe != null) {
                         scannerRecipe = eRecipe.scannerRecipe;
                         machineType = crafter;
-                        objectResearched = new cElementalDefinitionStack(stackEM.definition, 1);
+                        objectResearched = new EMDefinitionStack(stackEM.getDefinition(), 1);
                         //cleanMassEM_EM(objectResearched.getMass());
-                        researchEM.remove(objectResearched.definition);
+                        researchEM.removeKey(objectResearched.getDefinition());
                         break;
                     }
                     cleanStackEM_EM(stackEM);
-                    researchEM.remove(stackEM.definition);
+                    researchEM.removeKey(stackEM.getDefinition());
                 }
                 if (eRecipe != null && scannerRecipe != null) {//todo make sure it werks
                     computationRequired = computationRemaining = scannerRecipe.mDuration * 20L;
@@ -409,8 +409,8 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
         computationRemaining = aNBT.getLong("eComputationRemaining");
         computationRequired = aNBT.getLong("eComputationRequired");
         if (aNBT.hasKey("eObject")) {
-            objectResearched = cElementalDefinitionStack.fromNBT(aNBT.getCompoundTag("eObject"));
-            if (objectResearched.definition == nbtE__) {
+            objectResearched = EMDefinitionStack.fromNBT(aNBT.getCompoundTag("eObject"));
+            if (objectResearched.getDefinition() == nbtE__) {
                 objectResearched = null;
             }
         } else {
@@ -423,10 +423,10 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
         }
         try {
             if (aNBT.hasKey("eScanObjects")) {
-                objectsScanned = cElementalInstanceStackMap.fromNBT(aNBT.getCompoundTag("eScanObjects"));
+                objectsScanned = EMInstanceStackMap.fromNBT(aNBT.getCompoundTag("eScanObjects"));
             }
-        } catch (tElementalException e) {
-            objectsScanned = new cElementalInstanceStackMap();
+        } catch (EMException e) {
+            objectsScanned = new EMInstanceStackMap();
         }
     }
 
@@ -445,11 +445,11 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
             if (computationRemaining > 0 && objectResearched != null) {
                 eRecipe = null;
                 if (ItemList.Tool_DataOrb.isStackEqual(mInventory[1], false, true)) {
-                    eRecipe = TT_recipe.TT_Recipe_Map_EM.sMachineRecipesEM.findRecipe(objectResearched.definition);
+                    eRecipe = TT_recipe.TT_Recipe_Map_EM.sMachineRecipesEM.findRecipe(objectResearched.getDefinition());
                     if (eRecipe != null) {
                         machineType = machine;
                     } else {
-                        eRecipe = TT_recipe.TT_Recipe_Map_EM.sCrafterRecipesEM.findRecipe(objectResearched.definition);
+                        eRecipe = TT_recipe.TT_Recipe_Map_EM.sCrafterRecipesEM.findRecipe(objectResearched.getDefinition());
                         if (eRecipe != null) {
                             machineType = crafter;
                         }
