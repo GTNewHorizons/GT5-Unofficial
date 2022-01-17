@@ -7,7 +7,7 @@ import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.interfaces.metatileentity.IConnectable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.CoverableGregTechTileEntity;
+import gregtech.api.metatileentity.CoverableTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Cable;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Fluid;
@@ -36,10 +36,11 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 
 import java.util.List;
 
+import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
+import static gregtech.api.util.GT_LanguageManager.FACES;
+import static gregtech.api.util.GT_LanguageManager.getTranslation;
+
 public class GT_Item_Machines extends ItemBlock implements IFluidContainerItem {
-
-    private static final String[] directionNames = {"Bottom", "Top", "North", "South", "West", "East"};
-
     public GT_Item_Machines(Block par1) {
         super(par1);
         setMaxDamage(0);
@@ -58,6 +59,7 @@ public class GT_Item_Machines extends ItemBlock implements IFluidContainerItem {
 	}
 
     @Override
+    @SuppressWarnings("unchecked")
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean par4) {
         try {
             int tDamage = getDamage(aStack);
@@ -159,30 +161,10 @@ public class GT_Item_Machines extends ItemBlock implements IFluidContainerItem {
                     aList.add(tAmount + " " + GT_LanguageManager.addStringLocalization("GT_TileEntity_STEAMTANKS", "Steam Tank Upgrades", !GregTech_API.sPostloadFinished ));
                 }
 
-                addInstalledCoversInformation(aNBT, aList);
+                CoverableTileEntity.addInstalledCoversInformation(aNBT, aList);
             }
         } catch (Throwable e) {
-            e.printStackTrace(GT_Log.err);
-        }
-    }
-
-    private void addInstalledCoversInformation(NBTTagCompound aNBT, List<String> aList) {
-        if (aNBT.hasKey("mCoverSides")){
-            int[] mCoverSides = aNBT.getIntArray("mCoverSides");
-            if (mCoverSides != null && mCoverSides.length == 6) {
-                for (byte i = 0; i < 6; i++) {
-                    int coverId = mCoverSides[i];
-                    if (coverId == 0) continue;
-                    GT_CoverBehaviorBase<?> behavior = GregTech_API.getCoverBehaviorNew(coverId);
-                    if (behavior == null || behavior == GregTech_API.sNoBehavior) continue;
-                    if (!aNBT.hasKey(CoverableGregTechTileEntity.COVER_DATA_NBT_KEYS[i])) continue;
-                    ISerializableObject dataObject = behavior.createDataObject(aNBT.getTag(CoverableGregTechTileEntity.COVER_DATA_NBT_KEYS[i]));
-                    ItemStack itemStack = behavior.getDisplayStack(coverId, dataObject);
-                    if (itemStack != null) {
-                        aList.add(String.format("Cover on %s side: %s", directionNames[i], itemStack.getDisplayName()));
-                    }
-                }
-            }
+            GT_FML_LOGGER.error("addInformation", e);
         }
     }
 

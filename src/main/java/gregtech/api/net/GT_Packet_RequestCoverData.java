@@ -4,6 +4,7 @@ import com.google.common.io.ByteArrayDataInput;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.CoverableTileEntity;
 import gregtech.api.util.ISerializableObject;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -90,9 +91,9 @@ public class GT_Packet_RequestCoverData extends GT_Packet_New {
             return;
         World world = DimensionManager.getWorld(mPlayer.dimension);
         if (world != null) {
-            TileEntity tile = world.getTileEntity(mX, mY, mZ);
-            if (tile instanceof IGregTechTileEntity) {
-                IGregTechTileEntity te = (IGregTechTileEntity) tile;
+            final TileEntity tile = world.getTileEntity(mX, mY, mZ);
+            if (tile instanceof CoverableTileEntity) {
+                final CoverableTileEntity te = (CoverableTileEntity) tile;
                 if (!te.isDead() && te.getCoverIDAtSide(side) == coverID) {
                     te.issueCoverUpdate(side);
                 }

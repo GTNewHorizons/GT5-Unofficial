@@ -578,8 +578,7 @@ public class GT_Client extends GT_Proxy
         Block aBlock = aEvent.player.worldObj.getBlock(aEvent.target.blockX, aEvent.target.blockY, aEvent.target.blockZ);
         TileEntity aTileEntity = aEvent.player.worldObj.getTileEntity(aEvent.target.blockX, aEvent.target.blockY, aEvent.target.blockZ);
 
-        if (GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sWrenchList))
-        {
+        if (GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sWrenchList)) {
             if (aTileEntity instanceof ITurnable || ROTATABLE_VANILLA_BLOCKS.contains(aBlock) || aTileEntity instanceof IWrenchable)
                 drawGrid(aEvent, false, true, aEvent.player.isSneaking());
             return;
