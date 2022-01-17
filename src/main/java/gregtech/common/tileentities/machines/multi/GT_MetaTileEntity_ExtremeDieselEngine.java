@@ -41,10 +41,10 @@ public class GT_MetaTileEntity_ExtremeDieselEngine extends GT_MetaTileEntity_Die
         tt.addMachineType("Combustion Generator")
                 .addInfo("Controller block for the Extreme Combustion Engine")
                 .addInfo("Supply High Octane Gasoline and 8000L of Lubricant per hour to run")
-                .addInfo("Supply 320L/s of Liquid Oxygen to boost output (optional)")
-                .addInfo("Default: Produces 8192EU/t at 100% fuel efficiency")
-                .addInfo("Boosted: Produces 32768EU/t at 400% fuel efficiency")
-                .addInfo("You need to wait for it to reach 400% to output full power")
+                .addInfo("Supply 80L/s of Liquid Oxygen to boost output (optional)")
+                .addInfo("Default: Produces 10900EU/t at 100% fuel efficiency")
+                .addInfo("Boosted: Produces 32700EU/t at 150% fuel efficiency")
+                .addInfo("You need to wait for it to reach 300% to output full power")
                 .addPollutionAmount(getPollutionPerSecond(null))
                 .addSeparator()
                 .beginStructureBlock(3, 3, 4, false)
@@ -130,13 +130,11 @@ public class GT_MetaTileEntity_ExtremeDieselEngine extends GT_MetaTileEntity_Die
 
     @Override
     protected int getNominalOutput() {
-        return 8192;
+        return 10900;
     }
 
     @Override
-    protected int getBoostFactor() {
-        return 4;
-    }
+    protected int getBoostFactor() { return 2; }
 
     @Override
     protected Materials getBooster() {
@@ -145,7 +143,7 @@ public class GT_MetaTileEntity_ExtremeDieselEngine extends GT_MetaTileEntity_Die
 
     @Override
     protected int getAdditiveFactor() {
-        return 8;
+        return 2;
     }
 
     @Override
@@ -155,7 +153,7 @@ public class GT_MetaTileEntity_ExtremeDieselEngine extends GT_MetaTileEntity_Die
 
     @Override
     public int getMaxEfficiency(ItemStack aStack) {
-        return boostEu ? 40000 : 10000;
+        return boostEu ? 30000 : 10000;
     }
 
     @Override

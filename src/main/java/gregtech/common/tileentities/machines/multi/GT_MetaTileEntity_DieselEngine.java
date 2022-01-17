@@ -183,6 +183,8 @@ public class GT_MetaTileEntity_DieselEngine extends GT_MetaTileEntity_EnhancedMu
                     return false;
 
                 fuelValue = tRecipe.mSpecialValue;
+                //Check to prevent burning HOG without consuming it, if not boosted
+                if (!boostEu && fuelValue > getNominalOutput()) { return false; }
                 fuelRemaining = tFluid.amount; //Record available fuel
                 this.mEUt = mEfficiency < 2000 ? 0 : getNominalOutput(); //Output 0 if startup is less than 20%
                 this.mProgresstime = 1;
