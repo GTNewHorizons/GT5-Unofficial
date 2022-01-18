@@ -1,7 +1,7 @@
 package com.github.technus.tectech.mechanics.elementalMatter.core.commands;
 
-import com.github.technus.tectech.mechanics.elementalMatter.core.templates.EMComplex;
-import com.github.technus.tectech.mechanics.elementalMatter.core.templates.EMPrimitive;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.EMPrimitiveTemplate;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
@@ -27,15 +27,15 @@ public class EMList implements ICommand {
         if (!sender.getEntityWorld().isRemote) {
             if(args.length == 0) {
                 sender.addChatMessage(new ChatComponentText("    Available Classes: tag - name"));
-                Map<Byte,Method> binds= EMComplex.getBindsComplex();
+                Map<Byte,Method> binds= IEMDefinition.getBindsComplex();
                 for (Map.Entry<Byte,Method> e:binds.entrySet()) {
                     sender.addChatMessage(new ChatComponentText((char) e.getKey().byteValue() +" - "+e.getValue().getReturnType().getSimpleName()));
                 }
             }else if(args.length==1){
                 sender.addChatMessage(new ChatComponentText("    Available Primitives: symbol - name"));
-                if(args[0].equals(String.valueOf((char) EMPrimitive.nbtType))){
-                    Map<Integer, EMPrimitive> bindsBO = EMPrimitive.getBindsPrimitive();
-                    for (Map.Entry<Integer, EMPrimitive> e:bindsBO.entrySet()) {
+                if(args[0].equals(String.valueOf((char) EMPrimitiveTemplate.nbtType))){
+                    Map<Integer, EMPrimitiveTemplate> bindsBO = IEMDefinition.getBindsPrimitive();
+                    for (Map.Entry<Integer, EMPrimitiveTemplate> e:bindsBO.entrySet()) {
                         sender.addChatMessage(new ChatComponentText(e.getKey() + " - "+e.getValue().getLocalizedName()));
                     }
                 }else{
@@ -65,7 +65,7 @@ public class EMList implements ICommand {
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] args) {
         if(args.length==0){
-            Map<Byte,Method> binds= EMComplex.getBindsComplex();
+            Map<Byte,Method> binds= IEMDefinition.getBindsComplex();
             ArrayList<String> strings=new ArrayList<>(binds.size());
             for (Map.Entry<Byte,Method> e:binds.entrySet()) {
                 strings.add(String.valueOf((char)e.getKey().byteValue())+' '+e.getValue().getReturnType().getSimpleName());

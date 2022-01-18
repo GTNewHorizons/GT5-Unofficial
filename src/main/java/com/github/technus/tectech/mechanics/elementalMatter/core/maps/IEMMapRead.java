@@ -2,7 +2,7 @@ package com.github.technus.tectech.mechanics.elementalMatter.core.maps;
 
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.IEMStack;
-import com.github.technus.tectech.mechanics.elementalMatter.core.templates.IEMDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
@@ -136,8 +136,8 @@ public interface IEMMapRead<T extends IEMStack> extends Comparable<IEMMapRead<?>
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.setInteger("i", size());
         int i = 0;
-        for (T stack : values()) {
-            nbt.setTag(Integer.toString(i++), stack.toNBT());
+        for (Map.Entry<IEMDefinition, T> entry : entrySet()) {
+            nbt.setTag(Integer.toString(i++), entry.getValue().toNBT());
         }
         return nbt;
     }
@@ -154,6 +154,39 @@ public interface IEMMapRead<T extends IEMStack> extends Comparable<IEMMapRead<?>
 
         while (iterator.hasNext()) {
             int result = iterator.next().compareTo(iteratorO.next());
+            if (result != 0) {
+                return result;
+            }
+        }
+        return 0;
+    }
+
+    /**
+     * use only for nested operations!
+     * @param o
+     * @return
+     */
+    default int compareWithAmountsInternal(IEMMapRead<? extends IEMStack> o) {
+        if (o == null) {
+            return 1;
+        }
+
+        int lenDiff = size() - o.size();
+        if (lenDiff != 0) {
+            return lenDiff;
+        }
+
+        Iterator<Map.Entry<IEMDefinition, T>>                            iterator  = entrySet().iterator();
+        Iterator<? extends Map.Entry<IEMDefinition, ? extends IEMStack>> iteratorO = o.entrySet().iterator();
+
+        while (iterator.hasNext()) {
+            T        first  = iterator.next().getValue();
+            IEMStack second = iteratorO.next().getValue();
+            int      result = first.compareTo(second);
+            if (result != 0) {
+                return result;
+            }
+            result=Double.compare(first.getAmount(),second.getAmount());
             if (result != 0) {
                 return result;
             }

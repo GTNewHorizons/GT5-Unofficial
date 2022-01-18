@@ -1,7 +1,7 @@
 package com.github.technus.tectech.mechanics.elementalMatter.core.stacks;
 
-import com.github.technus.tectech.mechanics.elementalMatter.core.templates.EMComplex;
-import com.github.technus.tectech.mechanics.elementalMatter.core.templates.IEMDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.EMDefinitionsRegistry;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
 import net.minecraft.nbt.NBTTagCompound;
 
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMPrimitiveDefinition.null__;
@@ -50,7 +50,7 @@ public final class EMDefinitionStack implements IEMStack {
 
     public static EMDefinitionStack fromNBT(NBTTagCompound nbt) {
         return new EMDefinitionStack(
-                EMComplex.fromNBT(nbt.getCompoundTag("d")),
+                EMDefinitionsRegistry.fromNBT(nbt.getCompoundTag("d")),
                 nbt.getLong("q")+nbt.getDouble("Q"));
     }
 

@@ -1,7 +1,8 @@
 package com.github.technus.tectech.mechanics.elementalMatter.core.transformations;
 
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.EMDefinitionsRegistry;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.IEMStack;
-import com.github.technus.tectech.mechanics.elementalMatter.core.templates.IEMDefinition;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import net.minecraft.item.ItemStack;
@@ -12,7 +13,6 @@ import net.minecraftforge.oredict.OreDictionary;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.github.technus.tectech.thing.item.DebugElementalInstanceContainer_EM.STACKS_REGISTERED;
 import static java.lang.Math.pow;
 
 /**
@@ -72,15 +72,13 @@ public class EMTransformationInfo {
     public void addFluid(IEMStack em, FluidStack fluidStack){
         getFluidQuantization().put(fluidStack.getFluidID(),new EMFluidQuantizationInfo(fluidStack,em));
         getFluidDequantization().put(em.getDefinition(),new EMFluidDequantizationInfo(em,fluidStack));
-        STACKS_REGISTERED.add(em.getDefinition());
-        STACKS_REGISTERED.add(em.getDefinition().getAnti());
+        EMDefinitionsRegistry.registerForDisplay(em.getDefinition());
     }
 
     public void addFluid(IEMStack em, Fluid fluid, int fluidAmount){
         getFluidQuantization().put(fluid.getID(),new EMFluidQuantizationInfo(fluid,fluidAmount,em));
         getFluidDequantization().put(em.getDefinition(),new EMFluidDequantizationInfo(em,fluid,fluidAmount));
-        STACKS_REGISTERED.add(em.getDefinition());
-        STACKS_REGISTERED.add(em.getDefinition().getAnti());
+        EMDefinitionsRegistry.registerForDisplay(em.getDefinition());
     }
 
     private void addItemQuantization(EMItemQuantizationInfo aIQI){
@@ -90,36 +88,31 @@ public class EMTransformationInfo {
     public void addItem(IEMStack em, ItemStack itemStack, boolean skipNBT){
         addItemQuantization(new EMItemQuantizationInfo(itemStack,skipNBT,em));
         getItemDequantization().put(em.getDefinition(),new EMItemDequantizationInfo(em,itemStack));
-        STACKS_REGISTERED.add(em.getDefinition());
-        STACKS_REGISTERED.add(em.getDefinition().getAnti());
+        EMDefinitionsRegistry.registerForDisplay(em.getDefinition());
     }
 
     public void addItem(IEMStack em, OrePrefixes prefix, Materials material, int amount, boolean skipNBT){
         addItemQuantization(new EMItemQuantizationInfo(prefix,material,amount,skipNBT,em));
         getItemDequantization().put(em.getDefinition(),new EMItemDequantizationInfo(em,prefix,material,amount));
-        STACKS_REGISTERED.add(em.getDefinition());
-        STACKS_REGISTERED.add(em.getDefinition().getAnti());
+        EMDefinitionsRegistry.registerForDisplay(em.getDefinition());
     }
 
     public void addOredict(IEMStack em, String name, int qty){
         getOredictQuantization().put(OreDictionary.getOreID(name),new EMOredictQuantizationInfo(name,qty,em));
         getOredictDequantization().put(em.getDefinition(),new EMOredictDequantizationInfo(em,name,qty));
-        STACKS_REGISTERED.add(em.getDefinition());
-        STACKS_REGISTERED.add(em.getDefinition().getAnti());
+        EMDefinitionsRegistry.registerForDisplay(em.getDefinition());
     }
 
     public void addOredict(IEMStack em, OrePrefixes prefix, Materials material, int qty){
         getOredictQuantization().put(OreDictionary.getOreID(prefix.name() + material.mName),new EMOredictQuantizationInfo(prefix,material,qty,em));
         getOredictDequantization().put(em.getDefinition(),new EMOredictDequantizationInfo(em,prefix,material,qty));
-        STACKS_REGISTERED.add(em.getDefinition());
-        STACKS_REGISTERED.add(em.getDefinition().getAnti());
+        EMDefinitionsRegistry.registerForDisplay(em.getDefinition());
     }
 
     public void addOredict(IEMStack em, OrePrefixes prefix, String materialName, int qty){
         getOredictQuantization().put(OreDictionary.getOreID(prefix.name() + materialName),new EMOredictQuantizationInfo(prefix,materialName,qty,em));
         getOredictDequantization().put(em.getDefinition(),new EMOredictDequantizationInfo(em,prefix,materialName,qty));
-        STACKS_REGISTERED.add(em.getDefinition());
-        STACKS_REGISTERED.add(em.getDefinition().getAnti());
+        EMDefinitionsRegistry.registerForDisplay(em.getDefinition());
     }
 
     public Map<Integer, EMFluidQuantizationInfo> getFluidQuantization() {

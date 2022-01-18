@@ -2,7 +2,7 @@ package com.github.technus.tectech.mechanics.elementalMatter.definitions.primiti
 
 import com.github.technus.tectech.mechanics.elementalMatter.core.decay.EMDecay;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMDefinitionStack;
-import com.github.technus.tectech.mechanics.elementalMatter.core.templates.EMPrimitive;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.EMPrimitiveTemplate;
 
 import static com.github.technus.tectech.mechanics.elementalMatter.core.decay.EMDecay.*;
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMLeptonDefinition.*;
@@ -11,7 +11,7 @@ import static com.github.technus.tectech.mechanics.elementalMatter.definitions.p
 /**
  * Created by danie_000 on 22.10.2016.
  */
-public final class EMBosonDefinition extends EMPrimitive {
+public final class EMBosonDefinition extends EMPrimitiveTemplate {
     public static final EMBosonDefinition
             boson_Y__ = new EMBosonDefinition("Photon", "\u03b3", 1e-18D, -1, 27),
             boson_H__ = new EMBosonDefinition("Higgs", "\u0397", 126.09e9D, -2, 28);

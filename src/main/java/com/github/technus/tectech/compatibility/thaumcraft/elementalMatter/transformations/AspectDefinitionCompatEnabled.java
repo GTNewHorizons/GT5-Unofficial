@@ -2,13 +2,13 @@ package com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.tran
 
 import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.EMComplexAspectDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.core.EMException;
-import com.github.technus.tectech.mechanics.elementalMatter.core.templates.IEMDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
 import thaumcraft.api.aspects.Aspect;
 
 import java.util.ArrayList;
 
 import static com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.EMPrimalAspectDefinition.*;
-import static com.github.technus.tectech.thing.item.DebugElementalInstanceContainer_EM.STACKS_REGISTERED;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.definitions.EMDefinitionsRegistry.STACKS_REGISTERED;
 
 /**
  * Created by Tec on 21.05.2017.

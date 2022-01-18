@@ -1,7 +1,7 @@
 package com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive;
 
 import com.github.technus.tectech.mechanics.elementalMatter.core.decay.EMDecay;
-import com.github.technus.tectech.mechanics.elementalMatter.core.templates.EMPrimitive;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.EMPrimitiveTemplate;
 
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMLeptonDefinition.*;
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMNeutrinoDefinition.*;
@@ -9,7 +9,7 @@ import static com.github.technus.tectech.mechanics.elementalMatter.definitions.p
 /**
  * Created by danie_000 on 22.10.2016.
  */
-public final class EMQuarkDefinition extends EMPrimitive {
+public final class EMQuarkDefinition extends EMPrimitiveTemplate {
     public static final EMQuarkDefinition
             quark_u = new EMQuarkDefinition("Up", "u", 1, 2.3e6D, 2, 3),
             quark_c = new EMQuarkDefinition("Charm", "c", 2, 1.29e9D, 2, 9),

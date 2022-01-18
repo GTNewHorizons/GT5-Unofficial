@@ -1,17 +1,17 @@
 package com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive;
 
-import com.github.technus.tectech.mechanics.elementalMatter.core.templates.EMPrimitive;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.EMPrimitiveTemplate;
 
 import static com.github.technus.tectech.mechanics.elementalMatter.core.decay.EMDecay.NO_DECAY;
 
 /**
  * Created by danie_000 on 22.10.2016.
  */
-public final class EMPrimitiveDefinition extends EMPrimitive {
+public final class EMPrimitiveDefinition extends EMPrimitiveTemplate {
     public static final EMPrimitiveDefinition
-            nbtE__ = new EMPrimitiveDefinition("NBT ERROR", "!", 0, 0D, Integer.MIN_VALUE, Integer.MIN_VALUE+10_000),
-            null__ = new EMPrimitiveDefinition("NULL POINTER", ".", 0, 0D, -3, Integer.MAX_VALUE-10_000),
-            space__ = new EMPrimitiveDefinition("Space", "_", 0, 0D, -4, 0),
+            nbtE__ = new EMPrimitiveDefinition("NBT ERROR", "!", 0, 0D, Integer.MIN_VALUE, 0),
+            null__ = new EMPrimitiveDefinition("NULL POINTER", ".", 0, 0D, -3, Integer.MIN_VALUE),
+            space__ = new EMPrimitiveDefinition("Space", "_", 0, 0D, -4, Integer.MIN_VALUE+1),
             magic = new EMPrimitiveDefinition("Magic", "Ma", 4, 1e5D, 0, 1),
             magic_ = new EMPrimitiveDefinition("Antimagic", "~Ma", -4, 1e5D, 0, 2);
 

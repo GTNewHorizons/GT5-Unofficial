@@ -1,17 +1,20 @@
 package com.github.technus.tectech.mechanics.elementalMatter.definitions.complex;
 
 import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.mechanics.elementalMatter.core.EMException;
 import com.github.technus.tectech.mechanics.elementalMatter.core.decay.EMDecay;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.EMComplexTemplate;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.EMDefinitionsRegistry;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMConstantStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMDefinitionStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMDefinitionStack;
-import com.github.technus.tectech.mechanics.elementalMatter.core.EMException;
-import com.github.technus.tectech.mechanics.elementalMatter.core.templates.EMComplex;
-import com.github.technus.tectech.mechanics.elementalMatter.core.templates.IEMDefinition;
-import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.*;
+import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMFluidDequantizationInfo;
+import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMItemDequantizationInfo;
+import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMOredictDequantizationInfo;
+import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMOredictQuantizationInfo;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMBosonDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMQuarkDefinition;
-import com.github.technus.tectech.thing.item.DebugElementalInstanceContainer_EM;
 import com.github.technus.tectech.util.Util;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -22,7 +25,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.EMComplexAspectDefinition.getNbtTagCompound;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationInfo.AVOGADRO_CONSTANT_144;
 import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationInfo.TRANSFORMATION_INFO;
@@ -33,7 +35,7 @@ import static gregtech.api.enums.OrePrefixes.dust;
 /**
  * Created by danie_000 on 17.11.2016.
  */
-public final class EMHadronDefinition extends EMComplex {//TODO Optimize map i/o
+public final class EMHadronDefinition extends EMComplexTemplate {//TODO Optimize map i/o
     private final int hash;
 
     private static final byte                           nbtType    = (byte) 'h';
@@ -90,8 +92,8 @@ public final class EMHadronDefinition extends EMComplex {//TODO Optimize map i/o
             }
             mass += quarkStack.getMass();
             charge += quarkStack.getCharge();
-            type = Math.max(Math.abs(quarkStack.getDefinition().getType()), type);
-            if (quarkStack.getDefinition().getType() < 0) {
+            type = Math.max(Math.abs(quarkStack.getDefinition().getMatterType()), type);
+            if (quarkStack.getDefinition().getMatterType() < 0) {
                 containsAnti = true;
             }
         }
@@ -212,12 +214,12 @@ public final class EMHadronDefinition extends EMComplex {//TODO Optimize map i/o
     @Override
     public EMDecay[] getNaturalDecayInstant() {
         EMDefinitionStack[] quarkStacks = this.quarkStacks.valuesToArray();
-        if (getAmount() == 2 && quarkStacks.length == 2 && quarkStacks[0].getDefinition().getMass() == quarkStacks[1].getDefinition().getMass() && quarkStacks[0].getDefinition().getType() == -quarkStacks[1].getDefinition().getType()) {
+        if (getAmount() == 2 && quarkStacks.length == 2 && quarkStacks[0].getDefinition().getMass() == quarkStacks[1].getDefinition().getMass() && quarkStacks[0].getDefinition().getMatterType() == -quarkStacks[1].getDefinition().getMatterType()) {
             return EMDecay.NO_PRODUCT;
         }
         ArrayList<EMDefinitionStack> decaysInto = new ArrayList<>();
         for (EMDefinitionStack quarks : quarkStacks) {
-            if (quarks.getDefinition().getType() == 1 || quarks.getDefinition().getType() == -1) {
+            if (quarks.getDefinition().getMatterType() == 1 || quarks.getDefinition().getMatterType() == -1) {
                 //covers both quarks and antiquarks
                 decaysInto.add(quarks);
             } else {
@@ -234,7 +236,7 @@ public final class EMHadronDefinition extends EMComplex {//TODO Optimize map i/o
     @Override
     public EMDecay[] getEnergyInducedDecay(long energyLevel) {
         EMDefinitionStack[] quarkStacks = this.quarkStacks.valuesToArray();
-        if (getAmount() == 2 && quarkStacks.length == 2 && quarkStacks[0].getDefinition().getMass() == quarkStacks[1].getDefinition().getMass() && quarkStacks[0].getDefinition().getType() == -quarkStacks[1].getDefinition().getType()) {
+        if (getAmount() == 2 && quarkStacks.length == 2 && quarkStacks[0].getDefinition().getMass() == quarkStacks[1].getDefinition().getMass() && quarkStacks[0].getDefinition().getMatterType() == -quarkStacks[1].getDefinition().getMatterType()) {
             return EMDecay.NO_PRODUCT;
         }
         return new EMDecay[]{new EMDecay(0.75D, quarkStacks), EMBosonDefinition.deadEnd}; //decay into quarks
@@ -270,7 +272,7 @@ public final class EMHadronDefinition extends EMComplex {//TODO Optimize map i/o
         EMDefinitionStack[] quarkStacks = this.quarkStacks.valuesToArray();
         if (getAmount() == 2 && quarkStacks.length == 2 &&
                 quarkStacks[0].getDefinition().getMass() == quarkStacks[1].getDefinition().getMass() &&
-                quarkStacks[0].getDefinition().getType() == -quarkStacks[1].getDefinition().getType()) {
+                quarkStacks[0].getDefinition().getMatterType() == -quarkStacks[1].getDefinition().getMatterType()) {
             return EMDecay.NO_PRODUCT;
         } else if (getAmount() != 3) {
             return new EMDecay[]{new EMDecay(0.95D, quarkStacks), EMBosonDefinition.deadEnd}; //decay into quarks
@@ -286,7 +288,7 @@ public final class EMHadronDefinition extends EMComplex {//TODO Optimize map i/o
             EMQuarkDefinition lastQuark = newBaryon.remove(2);
 
             EMDefinitionStack[] decay;
-            if (Math.abs(lastQuark.getType()) > 1) {
+            if (Math.abs(lastQuark.getMatterType()) > 1) {
                 decay = lastQuark.getDecayArray()[1].getOutputStacks().valuesToArray();
             } else {
                 decay = lastQuark.getDecayArray()[2].getOutputStacks().valuesToArray();
@@ -334,7 +336,7 @@ public final class EMHadronDefinition extends EMComplex {//TODO Optimize map i/o
     }
 
     @Override
-    public byte getType() {
+    public byte getMatterType() {
         return type;
     }
 
@@ -385,8 +387,8 @@ public final class EMHadronDefinition extends EMComplex {//TODO Optimize map i/o
     }
 
     @Override
-    public NBTTagCompound toNBT() {
-        return getNbtTagCompound(nbtType, quarkStacks);
+    protected int getIndirectTagValue() {
+        return nbtType;
     }
 
     public static EMHadronDefinition fromNBT(NBTTagCompound nbt) {
@@ -412,22 +414,22 @@ public final class EMHadronDefinition extends EMComplex {//TODO Optimize map i/o
             hadron_p = new EMHadronDefinition(new EMConstantStackMap(EMQuarkDefinition.quark_u.getStackForm(2), EMQuarkDefinition.quark_d.getStackForm(1)));
             SYMBOL_MAP.put(hadron_p,"p");
             NAME_MAP.put(hadron_p,"Proton");
-            DebugElementalInstanceContainer_EM.STACKS_REGISTERED.add(hadron_p);
+            EMDefinitionsRegistry.getStacksRegisteredForDisplay().add(hadron_p);
             hadron_p_ = (EMHadronDefinition) hadron_p.getAnti();
             SYMBOL_MAP.put(hadron_p_,"~p");
             NAME_MAP.put(hadron_p_,"Anti Proton");
-            DebugElementalInstanceContainer_EM.STACKS_REGISTERED.add(hadron_p_);
+            EMDefinitionsRegistry.getStacksRegisteredForDisplay().add(hadron_p_);
             hadron_n = new EMHadronDefinition(new EMConstantStackMap(EMQuarkDefinition.quark_u.getStackForm(1), EMQuarkDefinition.quark_d.getStackForm(2)));
             neutronMass = hadron_n.getMass();
             //redefine the neutron with proper lifetime (the lifetime is based on mass comparison)
             hadron_n = new EMHadronDefinition(new EMConstantStackMap(EMQuarkDefinition.quark_u.getStackForm(1), EMQuarkDefinition.quark_d.getStackForm(2)));
             SYMBOL_MAP.put(hadron_n, "n");
             NAME_MAP.put(hadron_n, "Neutron");
-            DebugElementalInstanceContainer_EM.STACKS_REGISTERED.add(hadron_n);
+            EMDefinitionsRegistry.getStacksRegisteredForDisplay().add(hadron_n);
             hadron_n_ = (EMHadronDefinition) hadron_n.getAnti();
             SYMBOL_MAP.put(hadron_n_,"~n");
             NAME_MAP.put(hadron_n_,"Anti Neutron");
-            DebugElementalInstanceContainer_EM.STACKS_REGISTERED.add(hadron_n_);
+            EMDefinitionsRegistry.getStacksRegisteredForDisplay().add(hadron_n_);
         } catch (EMException e) {
             if (DEBUG_MODE) {
                 e.printStackTrace();
@@ -444,14 +446,14 @@ public final class EMHadronDefinition extends EMComplex {//TODO Optimize map i/o
         hadron_p5 = new EMDefinitionStack(hadron_p, 5D);
 
         try {
-            EMComplex.addCreatorFromNBT(nbtType, EMHadronDefinition.class.getMethod("fromNBT", NBTTagCompound.class),(byte)-64);
+            EMDefinitionsRegistry.registerDefinitionClass(nbtType, EMHadronDefinition::fromNBT,EMHadronDefinition.class,getClassTypeStatic());
         } catch (Exception e) {
             if (DEBUG_MODE) {
                 e.printStackTrace();
             }
         }
         if(DEBUG_MODE) {
-            TecTech.LOGGER.info("Registered Elemental Matter Class: Hadron " + nbtType + ' ' + -64);
+            TecTech.LOGGER.info("Registered Elemental Matter Class: Hadron " + nbtType + ' ' + getClassTypeStatic());
         }
     }
 
@@ -467,7 +469,7 @@ public final class EMHadronDefinition extends EMComplex {//TODO Optimize map i/o
 
     @Override
     public byte getClassType() {
-        return -64;
+        return getClassTypeStatic();
     }
 
     public static byte getClassTypeStatic(){

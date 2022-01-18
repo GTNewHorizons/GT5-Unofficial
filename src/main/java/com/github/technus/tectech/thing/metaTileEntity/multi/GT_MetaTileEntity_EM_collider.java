@@ -8,7 +8,7 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.decay.EMDecayRe
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMDefinitionStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMInstanceStack;
-import com.github.technus.tectech.mechanics.elementalMatter.core.templates.EMPrimitive;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.EMPrimitiveTemplate;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.EMAtomDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.EMHadronDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMQuarkDefinition;
@@ -108,7 +108,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
         });
         registerSimpleAtomFuse(EMHadronDefinition.getClassTypeStatic());
         registerSimpleAtomFuse(EMComplexAspectDefinition.getClassTypeStatic());
-        registerSimpleAtomFuse(EMPrimitive.getClassTypeStatic());
+        registerSimpleAtomFuse(EMPrimitiveTemplate.getClassTypeStatic());
 
         FUSE_HANDLERS.put((EMHadronDefinition.getClassTypeStatic() << 16) | EMHadronDefinition.getClassTypeStatic(), new IColliderHandler() {
             @Override
@@ -135,7 +135,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
                 return 2;
             }
         });
-        FUSE_HANDLERS.put((EMHadronDefinition.getClassTypeStatic() << 16) | EMPrimitive.getClassTypeStatic(), new IColliderHandler() {
+        FUSE_HANDLERS.put((EMHadronDefinition.getClassTypeStatic() << 16) | EMPrimitiveTemplate.getClassTypeStatic(), new IColliderHandler() {
             @Override
             public void collide(EMInstanceStack in1, EMInstanceStack in2, EMInstanceStackMap out) {
                 try {
@@ -162,9 +162,9 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
         });
 
         registerSimpleAspectFuse(EMComplexAspectDefinition.getClassTypeStatic());
-        registerSimpleAspectFuse(EMPrimitive.getClassTypeStatic());
+        registerSimpleAspectFuse(EMPrimitiveTemplate.getClassTypeStatic());
 
-        FUSE_HANDLERS.put((EMPrimitive.getClassTypeStatic() << 16) | EMPrimitive.getClassTypeStatic(), new IColliderHandler() {
+        FUSE_HANDLERS.put((EMPrimitiveTemplate.getClassTypeStatic() << 16) | EMPrimitiveTemplate.getClassTypeStatic(), new IColliderHandler() {
             @Override
             public void collide(EMInstanceStack in1, EMInstanceStack in2, EMInstanceStackMap out) {
                 IPrimitiveColliderHandler collisionHandler = PRIMITIVE_FUSE_HANDLERS.get(in1.getDefinition().getClass().getName() + '\0' + in2.getDefinition().getClass().getName());
