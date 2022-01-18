@@ -2,6 +2,10 @@
 
 repositories {
     maven {
+        name = "GTNH"
+        url = "http://jenkins.usrv.eu:8081/nexus/content/groups/public/"
+    }
+    maven {
         name = "ic2"
         url = "https://maven.ic2.player.to/"
         metadataSources {
@@ -9,26 +13,6 @@ repositories {
             artifact()
         }
     }
-    maven {
-        name = "chickenbones"
-        url = "https://nexus.covers1624.net/repository/maven-hosted/"
-        metadataSources {
-            mavenPom()
-            artifact()
-        }
-    }
-    maven { // EnderIO & EnderCore
-        name = 'tterrag Repo'
-        url = "https://maven.tterrag.com"
-    }
-    ivy {  // For appeng:appliedenergistics2 only
-        name = 'gtnh_download_source'
-        artifactPattern("http://downloads.gtnewhorizons.com/Mods_for_Jenkins/[module]-[revision].[ext]")
-        metadataSources {
-            artifact()
-        }
-    }
-
     maven {
         url "https://cursemaven.com"
     }

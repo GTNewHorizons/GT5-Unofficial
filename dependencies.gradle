@@ -5,29 +5,30 @@
 
 dependencies {
     compile("com.github.GTNewHorizons:StructureLib:1.0.14:dev")
-    compile("com.github.GTNewHorizons:NotEnoughItems:2.1.21-GTNH:dev")
+    compile("com.github.GTNewHorizons:NotEnoughItems:2.1.22-GTNH:dev")
+    compile("com.github.GTNewHorizons:CodeChickenLib:1.1.5.1:dev")
     
     compile("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
 
-    compileOnly("com.github.GTNewHorizons:EnderCore:0.2.5:dev") {
+    compileOnly("com.github.GTNewHorizons:EnderCore:0.2.6:dev") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:ForestryMC:4.4.3:dev") {
+    compileOnly("com.github.GTNewHorizons:ForestryMC:4.4.4:dev") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:Railcraft:9.13.4:dev") {
+    compileOnly("com.github.GTNewHorizons:Railcraft:9.13.5:dev") {
         transitive = false
     }
     compileOnly("com.github.GTNewHorizons:Galacticraft:3.0.35-GTNH:dev") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:AppleCore:3.1.5:dev") {
+    compileOnly("com.github.GTNewHorizons:AppleCore:3.1.6:dev") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:TinkersConstruct:1.9.0.8-GTNH:dev") {
+    compileOnly("com.github.GTNewHorizons:TinkersConstruct:1.9.0.9-GTNH:dev") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-66-GTNH:dev") {
+    compileOnly("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-70-GTNH:dev") {
         transitive = false
     }
     compileOnly("com.github.GTNewHorizons:EnderIO:2.3.1.25:dev") {
