@@ -48,7 +48,7 @@ public final class EMComplexAspectDefinition extends EMComplexTemplate {
 
     private EMComplexAspectDefinition(boolean check, EMConstantStackMap aspects) throws EMException {
         if (check && !canTheyBeTogether(aspects)) {
-            throw new EMException("Hadron Definition error");
+            throw new EMException("Complex Aspect Definition error");
         }
         aspectStacks = aspects;
         float mass = 0;
