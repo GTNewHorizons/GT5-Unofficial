@@ -72,7 +72,7 @@ public final class EMAtomDefinition extends EMComplexTemplate {
     private final int    charge;
     //int -electric charge in 1/3rds of electron charge for optimization
     private final int    chargeLeptons;
-    private       double rawLifeTime;
+    private final double rawLifeTime;
     //generation max present inside - minus if contains any anti quark
     private final byte   type;
 

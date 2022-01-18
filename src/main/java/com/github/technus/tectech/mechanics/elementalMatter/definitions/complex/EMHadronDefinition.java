@@ -101,7 +101,7 @@ public final class EMHadronDefinition extends EMComplexTemplate {//TODO Optimize
         this.amount = amount;
         this.charge = charge;
         this.type = containsAnti ? (byte) -type : (byte) type;
-        long mult = this.getAmount() * this.getAmount() * (this.getAmount() - 1);
+        long mult = (long) this.getAmount() * this.getAmount() * (this.getAmount() - 1);
         mass = mass * 5.543D * mult;//yes it becomes heavier
 
         if (mass == protonMass && this.getAmount() == 3) {
