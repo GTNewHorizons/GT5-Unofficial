@@ -33,6 +33,7 @@ import static com.github.technus.tectech.mechanics.elementalMatter.definitions.p
 import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_scanner.*;
 import static com.github.technus.tectech.util.XSTR.XSTR_INSTANCE;
 import static gregtech.api.enums.OrePrefixes.dust;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
  * Created by danie_000 on 18.11.2016.
@@ -348,7 +349,7 @@ public final class EMAtomDefinition extends EMComplexTemplate {
             if (DEBUG_MODE) {
                 e.printStackTrace();
             }
-            return (negative ? "Element: ~" : "Element: ") + element;
+            return translateToLocal("tt.keyword.Element")+(negative ? ": ~" : ": ") + element;
         }
     }
 
@@ -1476,7 +1477,7 @@ public final class EMAtomDefinition extends EMComplexTemplate {
         }
     }
 
-    public static void setTransformation(){
+    public static void setTransformations(){
         /*----STABLE ATOMS----**/
         refMass = getFirstStableIsotope(1).getMass() * AVOGADRO_CONSTANT_144;
 
@@ -1666,7 +1667,7 @@ public final class EMAtomDefinition extends EMComplexTemplate {
     @Override
     public void addScanResults(ArrayList<String> lines, int capabilities, long energyLevel) {
         if(Util.areBitsSet(SCAN_GET_CLASS_TYPE, capabilities)) {
-            lines.add("CLASS = " + nbtType + ' ' + getClassType());
+            lines.add("CLASS = " + getIndirectTagValue() + ' ' + getClassType());
         }
         if(Util.areBitsSet(SCAN_GET_NOMENCLATURE|SCAN_GET_CHARGE|SCAN_GET_MASS|SCAN_GET_TIMESPAN_INFO, capabilities)) {
             lines.add("NAME = "+ getLocalizedName());

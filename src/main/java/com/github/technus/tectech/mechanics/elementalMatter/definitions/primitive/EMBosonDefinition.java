@@ -7,6 +7,7 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.EMP
 import static com.github.technus.tectech.mechanics.elementalMatter.core.decay.EMDecay.*;
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMLeptonDefinition.*;
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMQuarkDefinition.*;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
  * Created by danie_000 on 22.10.2016.
@@ -35,7 +36,7 @@ public final class EMBosonDefinition extends EMPrimitiveTemplate {
 
     @Override
     public String getLocalizedName() {
-        return "Boson: " + getName();
+        return translateToLocal("tt.keyword.Boson")+": " + getName();
     }
 
     @Override

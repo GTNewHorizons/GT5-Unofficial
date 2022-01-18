@@ -5,6 +5,7 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.EMP
 
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMLeptonDefinition.*;
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMNeutrinoDefinition.*;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
  * Created by danie_000 on 22.10.2016.
@@ -96,7 +97,7 @@ public final class EMQuarkDefinition extends EMPrimitiveTemplate {
 
     @Override
     public String getLocalizedName() {
-        return "Quark: " + getName();
+        return translateToLocal("tt.keyword.Quark")+": " + getName();
     }
 
     @Override

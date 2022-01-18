@@ -31,6 +31,7 @@ import static com.github.technus.tectech.mechanics.elementalMatter.core.transfor
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMBosonDefinition.boson_Y__;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_scanner.*;
 import static gregtech.api.enums.OrePrefixes.dust;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
  * Created by danie_000 on 17.11.2016.
@@ -141,7 +142,7 @@ public final class EMHadronDefinition extends EMComplexTemplate {//TODO Optimize
     public String getLocalizedName() {
         StringBuilder name= new StringBuilder(getSimpleName());
         name.append(':');
-        String sym= NAME_MAP.get(this);
+        String sym= translateToLocal(NAME_MAP.get(this));
         if(sym!=null){
             name.append(' ').append(sym);
         }else {
@@ -155,17 +156,17 @@ public final class EMHadronDefinition extends EMComplexTemplate {//TODO Optimize
     private String getSimpleName() {
         switch (getAmount()) {
             case 2:
-                return "Meson";
+                return translateToLocal("tt.keyword.Meson");
             case 3:
-                return "Baryon";
+                return translateToLocal("tt.keyword.Baryon");
             case 4:
-                return "Tetraquark";
+                return translateToLocal("tt.keyword.Tetraquark");
             case 5:
-                return "Pentaquark";
+                return translateToLocal("tt.keyword.Pentaquark");
             case 6:
-                return "Hexaquark";
+                return translateToLocal("tt.keyword.Hexaquark");
             default:
-                return "Hadron";
+                return translateToLocal("tt.keyword.Hadron");
         }
     }
 
@@ -413,22 +414,22 @@ public final class EMHadronDefinition extends EMComplexTemplate {//TODO Optimize
             //redefine the proton with proper lifetime (the lifetime is based on mass comparison)
             hadron_p = new EMHadronDefinition(new EMConstantStackMap(EMQuarkDefinition.quark_u.getStackForm(2), EMQuarkDefinition.quark_d.getStackForm(1)));
             SYMBOL_MAP.put(hadron_p,"p");
-            NAME_MAP.put(hadron_p,"Proton");
+            NAME_MAP.put(hadron_p,translateToLocal("tt.keyword.Proton"));
             EMDefinitionsRegistry.getStacksRegisteredForDisplay().add(hadron_p);
             hadron_p_ = (EMHadronDefinition) hadron_p.getAnti();
             SYMBOL_MAP.put(hadron_p_,"~p");
-            NAME_MAP.put(hadron_p_,"Anti Proton");
+            NAME_MAP.put(hadron_p_,translateToLocal("tt.keyword.AntiProton"));
             EMDefinitionsRegistry.getStacksRegisteredForDisplay().add(hadron_p_);
             hadron_n = new EMHadronDefinition(new EMConstantStackMap(EMQuarkDefinition.quark_u.getStackForm(1), EMQuarkDefinition.quark_d.getStackForm(2)));
             neutronMass = hadron_n.getMass();
             //redefine the neutron with proper lifetime (the lifetime is based on mass comparison)
             hadron_n = new EMHadronDefinition(new EMConstantStackMap(EMQuarkDefinition.quark_u.getStackForm(1), EMQuarkDefinition.quark_d.getStackForm(2)));
             SYMBOL_MAP.put(hadron_n, "n");
-            NAME_MAP.put(hadron_n, "Neutron");
+            NAME_MAP.put(hadron_n,translateToLocal("tt.keyword.Neutron"));
             EMDefinitionsRegistry.getStacksRegisteredForDisplay().add(hadron_n);
             hadron_n_ = (EMHadronDefinition) hadron_n.getAnti();
             SYMBOL_MAP.put(hadron_n_,"~n");
-            NAME_MAP.put(hadron_n_,"Anti Neutron");
+            NAME_MAP.put(hadron_n_,translateToLocal("tt.keyword.AntiNeutron"));
             EMDefinitionsRegistry.getStacksRegisteredForDisplay().add(hadron_n_);
         } catch (EMException e) {
             if (DEBUG_MODE) {
@@ -491,7 +492,7 @@ public final class EMHadronDefinition extends EMComplexTemplate {//TODO Optimize
     @Override
     public void addScanResults(ArrayList<String> lines, int capabilities, long energyLevel) {
         if(Util.areBitsSet(SCAN_GET_CLASS_TYPE, capabilities)) {
-            lines.add("CLASS = " + nbtType + ' ' + getClassType());
+            lines.add("CLASS = " + getIndirectTagValue() + ' ' + getClassType());
         }
         if(Util.areBitsSet(SCAN_GET_NOMENCLATURE|SCAN_GET_CHARGE|SCAN_GET_MASS|SCAN_GET_TIMESPAN_INFO, capabilities)) {
             lines.add("NAME = "+getSimpleName());

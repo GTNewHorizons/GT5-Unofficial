@@ -1,5 +1,6 @@
 package com.github.technus.tectech.mechanics.elementalMatter.core.definitions;
 
+import com.github.technus.tectech.mechanics.elementalMatter.core.EMException;
 import com.github.technus.tectech.mechanics.elementalMatter.core.decay.EMDecay;
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMConstantStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMFluidDequantizationInfo;
@@ -59,11 +60,6 @@ public abstract class EMPrimitiveTemplate extends EMComplexTemplate {
         energeticDecayInstant = (byte) energeticInstant;
         elementalDecays =elementalDecaysArray;
         EMDefinitionsRegistry.registerForDisplay(this);
-    }
-
-    @Override
-    public String getLocalizedName() {
-        return "Undefined: " + getName();
     }
 
     @Override
@@ -181,6 +177,11 @@ public abstract class EMPrimitiveTemplate extends EMComplexTemplate {
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.setInteger(EMDefinitionsRegistry.getDirectTagName(), ID);
         return nbt;
+    }
+
+    @Override
+    protected final int getIndirectTagValue() {
+        throw new EMException("This class should only be used directly!");
     }
 
     @Override

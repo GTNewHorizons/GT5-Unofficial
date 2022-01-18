@@ -35,7 +35,7 @@ public class RecipeLoader implements Runnable {
 
     @Override
     public void run() {
-        EMAtomDefinition.setTransformation();
+        EMAtomDefinition.setTransformations();
         EMHadronDefinition.setTransformations();
 
         // ===================================================================================================
