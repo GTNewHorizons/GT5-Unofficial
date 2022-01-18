@@ -3,13 +3,14 @@ package com.github.technus.tectech.mechanics.elementalMatter.definitions.complex
 import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.compatibility.gtpp.GtppAtomLoader;
+import com.github.technus.tectech.mechanics.elementalMatter.core.EMException;
 import com.github.technus.tectech.mechanics.elementalMatter.core.decay.EMDecay;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.EMComplexTemplate;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.EMDefinitionsRegistry;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMConstantStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMDefinitionStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMDefinitionStack;
-import com.github.technus.tectech.mechanics.elementalMatter.core.EMException;
-import com.github.technus.tectech.mechanics.elementalMatter.core.templates.EMComplex;
-import com.github.technus.tectech.mechanics.elementalMatter.core.templates.IEMDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMFluidDequantizationInfo;
 import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMItemDequantizationInfo;
 import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMOredictDequantizationInfo;
@@ -25,7 +26,6 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.*;
 
-import static com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.EMComplexAspectDefinition.getNbtTagCompound;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationInfo.AVOGADRO_CONSTANT_144;
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMBosonDefinition.boson_Y__;
@@ -37,7 +37,7 @@ import static gregtech.api.enums.OrePrefixes.dust;
 /**
  * Created by danie_000 on 18.11.2016.
  */
-public final class EMAtomDefinition extends EMComplex {
+public final class EMAtomDefinition extends EMComplexTemplate {
     public static final long ATOM_COMPLEXITY_LIMIT=65536L;
     private static final byte BYTE_OFFSET=32;
 
@@ -118,10 +118,10 @@ public final class EMAtomDefinition extends EMComplex {
                 throw new ArithmeticException("Amount cannot be safely converted to int!");
             }
             mass += stack.getMass();
-            if (def.getType() < 0) {
+            if (def.getMatterType() < 0) {
                 containsAnti = true;
             }
-            type = Math.max(type, Math.abs(def.getType()));
+            type = Math.max(type, Math.abs(def.getMatterType()));
 
             if (def instanceof EMLeptonDefinition) {
                 cLeptons += stack.getCharge();
@@ -307,7 +307,7 @@ public final class EMAtomDefinition extends EMComplex {
     }
 
     @Override
-    public byte getType() {
+    public byte getMatterType() {
         return type;
     }
 
@@ -340,7 +340,7 @@ public final class EMAtomDefinition extends EMComplex {
         int element = Math.abs(this.getElement());
         boolean negative = this.getElement() < 0;
         try {
-            if (Math.abs(getType()) != 1) {
+            if (Math.abs(getMatterType()) != 1) {
                 return (negative ? "~? " : "? ") + Nomenclature.NAME[element];
             }
             return negative ? '~' + Nomenclature.NAME[element] : Nomenclature.NAME[element];
@@ -408,7 +408,7 @@ public final class EMAtomDefinition extends EMComplex {
     }
 
     private EMDecay[] getDecayArray(ArrayList<EMDecay> decaysList, int decayMode, boolean tryAnti) {//todo?
-        if (getType() == 1) {
+        if (getMatterType() == 1) {
             switch (decayMode) {
                 case -2:
                     if(TecTech.RANDOM.nextBoolean() && ElectronCapture(decaysList)) {
@@ -446,7 +446,7 @@ public final class EMAtomDefinition extends EMComplex {
                     }
             }
             return EMDecay.NO_DECAY;
-        }else if(getType() ==-1){
+        }else if(getMatterType() ==-1){
             EMAtomDefinition anti =getAnti();
             if(anti!=null) {
                 return anti.getDecayArray(decaysList, decayMode, false);
@@ -1264,7 +1264,7 @@ public final class EMAtomDefinition extends EMComplex {
         //disembody
         ArrayList<EMDefinitionStack> decaysInto = new ArrayList<>();
         for (EMDefinitionStack elementalStack : elementalStacks.valuesToArray()) {
-            if (elementalStack.getDefinition().getType() == 1 || elementalStack.getDefinition().getType() == -1) {
+            if (elementalStack.getDefinition().getMatterType() == 1 || elementalStack.getDefinition().getMatterType() == -1) {
                 //covers both quarks and antiquarks
                 decaysInto.add(elementalStack);
             } else {
@@ -1344,8 +1344,8 @@ public final class EMAtomDefinition extends EMComplex {
     }
 
     @Override
-    public NBTTagCompound toNBT() {
-        return getNbtTagCompound(nbtType, elementalStacks);
+    protected int getIndirectTagValue() {
+        return nbtType;
     }
 
     public static EMAtomDefinition fromNBT(NBTTagCompound nbt) {
@@ -1465,14 +1465,14 @@ public final class EMAtomDefinition extends EMComplex {
         }
 
         try {
-            EMComplex.addCreatorFromNBT(nbtType, EMAtomDefinition.class.getMethod("fromNBT", NBTTagCompound.class),(byte)64);
+            EMDefinitionsRegistry.registerDefinitionClass(nbtType, EMAtomDefinition::fromNBT,EMAtomDefinition.class,getClassTypeStatic());
         } catch (Exception e) {
             if (DEBUG_MODE) {
                 e.printStackTrace();
             }
         }
         if(DEBUG_MODE) {
-            TecTech.LOGGER.info("Registered Elemental Matter Class: Atom " + nbtType + ' ' + 64);
+            TecTech.LOGGER.info("Registered Elemental Matter Class: Atom " + nbtType + ' ' + getClassTypeStatic());
         }
     }
 
@@ -1644,7 +1644,7 @@ public final class EMAtomDefinition extends EMComplex {
 
     @Override
     public byte getClassType() {
-        return 64;
+        return getClassTypeStatic();
     }
 
     public static byte getClassTypeStatic(){

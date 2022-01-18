@@ -1,5 +1,6 @@
 package com.github.technus.tectech.thing.item;
 
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.EMDefinitionsRegistry;
 import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.util.Util;
 import com.github.technus.tectech.font.TecTechFontRender;
@@ -7,7 +8,7 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstance
 import com.github.technus.tectech.mechanics.elementalMatter.core.IEMContainer;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMInstanceStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.EMException;
-import com.github.technus.tectech.mechanics.elementalMatter.core.templates.IEMDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
 import com.github.technus.tectech.thing.item.renderElemental.IElementalItem;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -26,7 +27,6 @@ import net.minecraft.world.World;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.TreeSet;
 
 import static com.github.technus.tectech.Reference.MODID;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
@@ -39,7 +39,6 @@ import static net.minecraft.util.StatCollector.translateToLocal;
  * Created by Tec on 15.03.2017.
  */
 public final class DebugElementalInstanceContainer_EM extends Item implements IElementalItem {
-    public static final TreeSet<IEMDefinition> STACKS_REGISTERED =new TreeSet<>();
 
     public static DebugElementalInstanceContainer_EM INSTANCE;
 
@@ -141,7 +140,7 @@ public final class DebugElementalInstanceContainer_EM extends Item implements IE
         ItemStack that = new ItemStack(this, 1);
         that.setTagCompound(new NBTTagCompound());
         list.add(that);
-        for(IEMDefinition definition: STACKS_REGISTERED){
+        for(IEMDefinition definition: EMDefinitionsRegistry.getStacksRegisteredForDisplay()){
             list.add(setContent(new ItemStack(this).setStackDisplayName(definition.getLocalizedName()+" 1 mol"),new EMInstanceStackMap(new EMInstanceStack(definition, AVOGADRO_CONSTANT))));
             list.add(setContent(new ItemStack(this).setStackDisplayName(definition.getLocalizedName()+" 144 mol"),new EMInstanceStackMap(new EMInstanceStack(definition, AVOGADRO_CONSTANT_144))));
             list.add(setContent(new ItemStack(this).setStackDisplayName(definition.getLocalizedName()+" 1000 mol"),new EMInstanceStackMap(new EMInstanceStack(definition, AVOGADRO_CONSTANT_1000))));

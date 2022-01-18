@@ -5,9 +5,8 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstance
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMDefinitionStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMDefinitionStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMInstanceStack;
-import com.github.technus.tectech.mechanics.elementalMatter.core.templates.EMComplex;
-import com.github.technus.tectech.mechanics.elementalMatter.core.templates.EMPrimitive;
-import com.github.technus.tectech.mechanics.elementalMatter.core.templates.IEMDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.EMPrimitiveTemplate;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
 import com.github.technus.tectech.thing.item.DebugElementalInstanceContainer_EM;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
@@ -77,11 +76,11 @@ public class EMGive implements ICommand {
         try{
             int id=Integer.parseInt(args.get(0));
             args.remove(0);
-            IEMDefinition primitive = EMPrimitive.getBindsPrimitive().get(id);
+            IEMDefinition primitive = IEMDefinition.getBindsPrimitive().get(id);
             return new EMDefinitionStack(primitive,amount);
         }catch (NumberFormatException e){
             byte clazz = (byte) args.remove(0).charAt(0);
-            Method constructor = EMComplex.getBindsComplex().get(clazz);
+            Method constructor = IEMDefinition.getBindsComplex().get(clazz);
 
             EMDefinitionStackMap stacks =new EMDefinitionStackMap();
             while(args.size()>0){
@@ -129,12 +128,12 @@ public class EMGive implements ICommand {
 
     private List<String> completionsForClassOrID(){
         ArrayList<String> strings=new ArrayList<>(8);
-        Map<Byte,Method> binds= EMComplex.getBindsComplex();
+        Map<Byte,Method> binds= IEMDefinition.getBindsComplex();
         for (Map.Entry<Byte,Method> e:binds.entrySet()) {
             strings.add(String.valueOf((char)e.getKey().byteValue()));
         }
-        Map<Integer, EMPrimitive> bindsBO = EMPrimitive.getBindsPrimitive();
-        for (Map.Entry<Integer, EMPrimitive> e:bindsBO.entrySet()) {
+        Map<Integer, EMPrimitiveTemplate> bindsBO = IEMDefinition.getBindsPrimitive();
+        for (Map.Entry<Integer, EMPrimitiveTemplate> e:bindsBO.entrySet()) {
             strings.add(String.valueOf(e.getKey().byteValue()));
         }
         return strings;

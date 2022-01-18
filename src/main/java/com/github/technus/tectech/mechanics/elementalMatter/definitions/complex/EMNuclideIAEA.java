@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.TreeMap;
 
-import static com.github.technus.tectech.mechanics.elementalMatter.core.templates.IEMDefinition.STABLE_RAW_LIFE_TIME;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition.STABLE_RAW_LIFE_TIME;
 import static com.github.technus.tectech.util.Util.splitButDifferent;
 
 public final class EMNuclideIAEA {

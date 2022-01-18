@@ -2,14 +2,14 @@ package com.github.technus.tectech.mechanics.elementalMatter.definitions.primiti
 
 import com.github.technus.tectech.mechanics.elementalMatter.core.decay.EMDecay;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMDefinitionStack;
-import com.github.technus.tectech.mechanics.elementalMatter.core.templates.EMPrimitive;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.EMPrimitiveTemplate;
 
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMBosonDefinition.*;
 
 /**
  * Created by danie_000 on 22.10.2016.
  */
-public final class EMNeutrinoDefinition extends EMPrimitive {
+public final class EMNeutrinoDefinition extends EMPrimitiveTemplate {
     public static final EMNeutrinoDefinition
             lepton_Ve = new EMNeutrinoDefinition("Electron neutrino", "\u03bd\u03b2", 1, 2e0D, 21),
             lepton_Vm = new EMNeutrinoDefinition("Muon neutrino", "\u03bd\u03bc", 2, 0.15e6D, 23),

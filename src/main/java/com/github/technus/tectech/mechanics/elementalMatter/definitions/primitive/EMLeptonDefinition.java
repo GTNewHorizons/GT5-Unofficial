@@ -2,7 +2,7 @@ package com.github.technus.tectech.mechanics.elementalMatter.definitions.primiti
 
 import com.github.technus.tectech.mechanics.elementalMatter.core.decay.EMDecay;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMDefinitionStack;
-import com.github.technus.tectech.mechanics.elementalMatter.core.templates.EMPrimitive;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.EMPrimitiveTemplate;
 
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMBosonDefinition.*;
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMBosonDefinition.boson_Y__;
@@ -11,7 +11,7 @@ import static com.github.technus.tectech.mechanics.elementalMatter.definitions.p
 /**
  * Created by danie_000 on 22.10.2016.
  */
-public final class EMLeptonDefinition extends EMPrimitive {
+public final class EMLeptonDefinition extends EMPrimitiveTemplate {
     public static final EMLeptonDefinition
             lepton_e = new EMLeptonDefinition("Electron", "\u03b2-", 1, 0.511e6D, -3, 15),
             lepton_m = new EMLeptonDefinition("Muon", "\u03bc-", 2, 105.658e6D, -3, 17),

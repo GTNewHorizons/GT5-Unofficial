@@ -1,12 +1,12 @@
 package com.github.technus.tectech.mechanics.elementalMatter.core.stacks;
 
 import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.EMDefinitionsRegistry;
 import com.github.technus.tectech.mechanics.elementalMatter.core.decay.EMDecay;
 import com.github.technus.tectech.mechanics.elementalMatter.core.decay.EMDecayResult;
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMConstantStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
-import com.github.technus.tectech.mechanics.elementalMatter.core.templates.EMComplex;
-import com.github.technus.tectech.mechanics.elementalMatter.core.templates.IEMDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
 import com.github.technus.tectech.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.crash.CrashReport;
@@ -558,9 +558,8 @@ public final class EMInstanceStack implements IEMStack {
     }
 
     public static EMInstanceStack fromNBT(NBTTagCompound nbt) {
-        NBTTagCompound definition = nbt.getCompoundTag("d");
         EMInstanceStack instance = new EMInstanceStack(
-                EMComplex.fromNBT(definition),
+                EMDefinitionsRegistry.fromNBT(nbt.getCompoundTag("d")),
                 nbt.getLong("q") + nbt.getDouble("Q"),
                 nbt.getFloat("m") + nbt.getDouble("M"),
                 nbt.getLong("a") + nbt.getDouble("A"),

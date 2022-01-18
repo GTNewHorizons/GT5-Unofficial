@@ -1,6 +1,6 @@
 package com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions;
 
-import com.github.technus.tectech.mechanics.elementalMatter.core.templates.EMPrimitive;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.EMPrimitiveTemplate;
 
 import static com.github.technus.tectech.mechanics.elementalMatter.core.decay.EMDecay.NO_DECAY;
 import static net.minecraft.util.StatCollector.translateToLocal;
@@ -8,7 +8,7 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 /**
  * Created by Tec on 06.05.2017.
  */
-public final class EMPrimalAspectDefinition extends EMPrimitive {
+public final class EMPrimalAspectDefinition extends EMPrimitiveTemplate {
     public static final EMPrimalAspectDefinition
             magic_air = new EMPrimalAspectDefinition(translateToLocal("tt.keyword.Air"), "a`", 1e1D, 35),
             magic_earth = new EMPrimalAspectDefinition(translateToLocal("tt.keyword.Earth"), "e`", 1e9D, 34),

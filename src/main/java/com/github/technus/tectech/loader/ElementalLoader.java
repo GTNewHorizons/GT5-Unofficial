@@ -2,7 +2,6 @@ package com.github.technus.tectech.loader;
 
 import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.EMComplexAspectDefinition;
 import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.EMPrimalAspectDefinition;
-import com.github.technus.tectech.mechanics.elementalMatter.core.templates.EMPrimitive;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.EMAtomDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.EMHadronDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.EMNuclideIAEA;
@@ -17,8 +16,6 @@ public class ElementalLoader implements Runnable {
         // ===================================================================================================
         // Definition init
         // ===================================================================================================
-
-        EMPrimitive.run();
 
         EMPrimitiveDefinition.run();
 

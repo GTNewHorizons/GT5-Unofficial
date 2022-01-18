@@ -1,6 +1,6 @@
 package com.github.technus.tectech.mechanics.elementalMatter.core.stacks;
 
-import com.github.technus.tectech.mechanics.elementalMatter.core.templates.IEMDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
 import net.minecraft.nbt.NBTTagCompound;
 
 /**

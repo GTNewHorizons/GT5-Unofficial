@@ -1,7 +1,7 @@
 package com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.transformations;
 
 
-import com.github.technus.tectech.mechanics.elementalMatter.core.templates.IEMDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
 
 import java.util.HashMap;
 

@@ -2,13 +2,14 @@ package com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.defi
 
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.transformations.AspectDefinitionCompat;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.EMDefinitionsRegistry;
 import com.github.technus.tectech.util.Util;
 import com.github.technus.tectech.mechanics.elementalMatter.core.decay.EMDecay;
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMConstantStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMDefinitionStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.EMException;
-import com.github.technus.tectech.mechanics.elementalMatter.core.templates.EMComplex;
-import com.github.technus.tectech.mechanics.elementalMatter.core.templates.IEMDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.EMComplexTemplate;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMFluidDequantizationInfo;
 import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMItemDequantizationInfo;
 import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMOredictDequantizationInfo;
@@ -25,7 +26,7 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 /**
  * Created by Tec on 06.05.2017.
  */
-public final class EMComplexAspectDefinition extends EMComplex {
+public final class EMComplexAspectDefinition extends EMComplexTemplate {
     private final int    hash;
     private final double mass;
 
@@ -123,19 +124,8 @@ public final class EMComplexAspectDefinition extends EMComplex {
     }
 
     @Override
-    public NBTTagCompound toNBT() {
-        return getNbtTagCompound(nbtType, aspectStacks);
-    }
-
-    public static NBTTagCompound getNbtTagCompound(byte nbtType, EMConstantStackMap aspectStacks) {
-        NBTTagCompound nbt = new NBTTagCompound();
-        nbt.setByte("t", nbtType);
-        EMDefinitionStack[] quarkStacksValues = aspectStacks.valuesToArray();
-        nbt.setInteger("i", quarkStacksValues.length);
-        for (int i = 0; i < quarkStacksValues.length; i++) {
-            nbt.setTag(Integer.toString(i), quarkStacksValues[i].toNBT());
-        }
-        return nbt;
+    protected int getIndirectTagValue() {
+        return nbtType;
     }
 
     public static EMComplexAspectDefinition fromNBT(NBTTagCompound nbt) {
@@ -169,7 +159,7 @@ public final class EMComplexAspectDefinition extends EMComplex {
     }
 
     @Override
-    public byte getType() {
+    public byte getMatterType() {
         return 0;
     }
 
@@ -250,20 +240,20 @@ public final class EMComplexAspectDefinition extends EMComplex {
 
     public static void run() {
         try {
-            EMComplex.addCreatorFromNBT(nbtType, EMComplexAspectDefinition.class.getMethod("fromNBT", NBTTagCompound.class), (byte) -96);
+            EMDefinitionsRegistry.registerDefinitionClass(nbtType, EMComplexAspectDefinition::fromNBT,EMComplexAspectDefinition.class, getClassTypeStatic());
         } catch (Exception e) {
             if (DEBUG_MODE) {
                 e.printStackTrace();
             }
         }
         if (DEBUG_MODE) {
-            TecTech.LOGGER.info("Registered Elemental Matter Class: ComplexAspect " + nbtType + ' ' + -96);
+            TecTech.LOGGER.info("Registered Elemental Matter Class: ComplexAspect " + nbtType + ' ' + getClassTypeStatic());
         }
     }
 
     @Override
     public byte getClassType() {
-        return -96;
+        return getClassTypeStatic();
     }
 
     public static byte getClassTypeStatic() {
