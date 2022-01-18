@@ -3,6 +3,7 @@ package com.github.technus.tectech.mechanics.elementalMatter.definitions.primiti
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.EMPrimitiveTemplate;
 
 import static com.github.technus.tectech.mechanics.elementalMatter.core.decay.EMDecay.NO_DECAY;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
  * Created by danie_000 on 22.10.2016.
@@ -29,7 +30,7 @@ public final class EMPrimitiveDefinition extends EMPrimitiveTemplate {
 
     @Override
     public String getLocalizedName() {
-        return "Primitive: " + getName();
+        return translateToLocal("tt.keyword.Primitive")+": " + getName();
     }
 
     @Override

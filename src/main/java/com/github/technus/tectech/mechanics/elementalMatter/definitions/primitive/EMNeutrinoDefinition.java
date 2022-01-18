@@ -5,6 +5,7 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMDefini
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.EMPrimitiveTemplate;
 
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMBosonDefinition.*;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
  * Created by danie_000 on 22.10.2016.
@@ -49,7 +50,7 @@ public final class EMNeutrinoDefinition extends EMPrimitiveTemplate {
 
     @Override
     public String getLocalizedName() {
-        return "Lepton: " + getName();
+        return translateToLocal("tt.keyword.Neutrino")+": " + getName();
     }
 
     @Override
