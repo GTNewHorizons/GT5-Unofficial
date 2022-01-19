@@ -364,7 +364,17 @@ public class RECIPES_Machines {
 				GregtechItemList.GT4_Redstone_Button_Panel.get(1), 
 				800,
 				4);
-		
+
+		RecipeUtils.addShapedRecipe(
+				"plateIron", ItemUtils.getSimpleStack(Items.repeater), "plateIron",
+				ItemUtils.getSimpleStack(Items.comparator), CI.getTieredCircuitOreDictName(1), ItemUtils.getSimpleStack(Items.comparator),
+				"plateIron", ItemUtils.getSimpleStack(Items.repeater), "plateIron",
+				GregtechItemList.GT4_Redstone_Circuit.get(1));
+		RecipeUtils.addShapedRecipe(
+				"plateAluminium", ItemUtils.getSimpleStack(Items.repeater), "plateAluminium",
+				ItemUtils.getSimpleStack(Items.comparator), CI.getTieredCircuitOreDictName(1), ItemUtils.getSimpleStack(Items.comparator),
+				"plateAluminium", ItemUtils.getSimpleStack(Items.repeater), "plateAluminium",
+				GregtechItemList.GT4_Redstone_Circuit.get(2));		
 		
 	}
 
