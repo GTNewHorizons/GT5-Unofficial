@@ -3,7 +3,9 @@ package gregtech.api.gui.widgets;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import org.lwjgl.input.Keyboard;
 
@@ -78,7 +80,7 @@ public class GT_GuiTooltip {
     /**
      * Used to set a "dynamic" tooltip that respects verbosity levels and responds to the shift key
      * 
-     * @param text
+     * @param data
      */
     public void setToolTipText(TooltipData data) {
         // Trust that the tooltips have already been formatted and colored, just make sure it has no nulls
@@ -96,13 +98,14 @@ public class GT_GuiTooltip {
         if (text != null) {
             list = new ArrayList<>(text.length);
             for (int i = 0; i < text.length; i++) {
-                if (i == 0)
+                if (text[i] == null) continue;
+                if (list.isEmpty())
                     list.add("\u00a7f" + text[i]);
                 else
                     list.add("\u00a77" + text[i]);
             }
         } else {
-            list = Arrays.asList(new String[0]);
+            list = Collections.emptyList();
         }
         return new TooltipData(list, list) ;
     }

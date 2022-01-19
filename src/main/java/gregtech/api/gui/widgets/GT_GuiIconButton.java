@@ -13,7 +13,6 @@ public class GT_GuiIconButton extends GuiButton implements IGuiScreen.IGuiElemen
     protected GT_GuiIcon icon;
     private int x0, y0;
     protected IGuiScreen gui;
-    private String[] tooltipText;
 
     private GT_GuiTooltip tooltip;
 
@@ -107,7 +106,6 @@ public class GT_GuiIconButton extends GuiButton implements IGuiScreen.IGuiElemen
             tooltip = new GT_GuiTooltip(getBounds(), text);
         else
             tooltip.setToolTipText(text);
-        this.tooltipText = text;
         return this;
     }
 
