@@ -1,24 +1,37 @@
 // Add your dependencies here
 
 dependencies {
-    compile("com.github.GTNewHorizons:TecTech:master-SNAPSHOT:dev")
-    compile("com.github.GTNewHorizons:GalacticGregGT5:master-SNAPSHOT:dev") {
+    compile("com.github.GTNewHorizons:GT5-Unofficial:5.09.40.18:dev")
+    compile("com.github.GTNewHorizons:StructureLib:1.0.14:dev")
+    compile("com.github.GTNewHorizons:TecTech:4.10.15:dev")
+    compile("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
+    compile("com.github.GTNewHorizons:NotEnoughItems:2.1.22-GTNH:dev")
+    compile("com.github.GTNewHorizons:TinkersConstruct:1.9.0.10-GTNH:dev")
+    compile("com.github.GTNewHorizons:CodeChickenLib:1.1.5.1:dev")
+    compile("com.github.GTNewHorizons:CodeChickenCore:1.1.3:dev")
+    compile("com.github.GTNewHorizons:Galacticraft:3.0.36-GTNH:dev")
+
+    compile("com.github.GTNewHorizons:GalacticGregGT5:1.0.6:dev") {
         exclude group:"com.github.GTNewHorizons", module:"bartworks"
     }
+    
+    compileOnly("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-70-GTNH:dev") {
+        transitive = false
+    }
 
-    compileOnly("com.github.GTNewHorizons:AppleCore:master-SNAPSHOT:dev") {
+    compileOnly("com.github.GTNewHorizons:AppleCore:3.1.6:dev") {
         transitive = false
     }
     compileOnly("com.github.GTNewHorizons:TinkersGregworks:master-SNAPSHOT:dev") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:ForestryMC:master-SNAPSHOT:api") {
+    compileOnly("com.github.GTNewHorizons:ForestryMC:4.4.4:api") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:Railcraft:master-SNAPSHOT:api") {
+    compileOnly("com.github.GTNewHorizons:Railcraft:9.13.5:api") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:EnderIO:master-SNAPSHOT:api") {
+    compileOnly("com.github.GTNewHorizons:EnderIO:2.3.1.27:api") {
         transitive = false
     }
 
