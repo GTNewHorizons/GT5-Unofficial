@@ -1,11 +1,15 @@
 package gtPlusPlus.xmod.gregtech.api.gui.computer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_CircuitryBehavior;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.lib.CORE;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.player.InventoryPlayer;
 
 public class GT_GUIContainer_RedstoneCircuitBlock extends GT_GUIContainerMetaTile_Machine {
@@ -36,6 +40,7 @@ public class GT_GUIContainer_RedstoneCircuitBlock extends GT_GUIContainerMetaTil
 			tString = tCircuit.getDataDisplay(((GT_Container_RedstoneCircuitBlock) mContainer).mData, 3);
 			this.fontRendererObj.drawString(tString == null ? GT_Utility.parseNumberToString(((GT_Container_RedstoneCircuitBlock) mContainer).mData[3]) : tString, 99, 66, 16448255);
 		}
+		this.drawTooltip(par1, par2);
 	}
 
 	@Override
@@ -58,5 +63,33 @@ public class GT_GUIContainer_RedstoneCircuitBlock extends GT_GUIContainerMetaTil
 			else
 				drawTexturedModalRect(x + 140, y + 9, 201, 0, 7, 7);
 		}
+	}
+
+	private void drawTooltip(final int x2, final int y2) {
+		final int xStart = (this.width - this.xSize) / 2;
+		final int yStart = (this.height - this.ySize) / 2;
+		final int x3 = x2 - xStart;
+		final int y3 = y2 - yStart + 5;
+		final List<String> list = new ArrayList<String>();
+
+		int y = 10;
+		if (x3 >= 151 && x3 <= 168) {
+			if (y3 >= y && y3 <= (y + 17)) {
+				list.add("Toggle EU Output");
+			}
+			if (y3 >= (y + 18) && y3 <= (y + 35)) {
+				list.add("Toggle Active State");
+			}
+			if (y3 >= (y + 36) && y3 <= (y + 53)) {
+				list.add("Change Redstone Circuit");
+			}
+		}
+
+		if (!list.isEmpty()) {
+	        //RenderHelper.enableGUIStandardItemLighting();
+			this.drawHoveringText(list, x3, y3, this.fontRendererObj);
+	        RenderHelper.enableGUIStandardItemLighting();
+		}
+        //RenderHelper.enableStandardItemLighting();
 	}
 }

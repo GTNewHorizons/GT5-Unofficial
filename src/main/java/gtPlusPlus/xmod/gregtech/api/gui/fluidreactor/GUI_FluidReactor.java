@@ -7,6 +7,8 @@ import gtPlusPlus.core.lib.CORE;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.player.InventoryPlayer;
 
 public class GUI_FluidReactor extends GT_GUIContainerMetaTile_Machine {
@@ -54,6 +56,7 @@ public class GUI_FluidReactor extends GT_GUIContainerMetaTile_Machine {
 
 		if (!list.isEmpty()) {
 			this.drawHoveringText(list, x, y, this.fontRendererObj);
+	        RenderHelper.enableGUIStandardItemLighting();
 		}
 
 	}

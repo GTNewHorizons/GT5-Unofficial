@@ -8,6 +8,7 @@ import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.sys.KeyboardUtils;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.player.InventoryPlayer;
 
 public class GT_GUIContainer_AdvancedWorkbench extends GT_GUIContainerMetaTile_Machine {
@@ -71,6 +72,7 @@ public class GT_GUIContainer_AdvancedWorkbench extends GT_GUIContainerMetaTile_M
 		}
 		if (!list.isEmpty()) {
 			this.drawHoveringText(list, x3, y3, this.fontRendererObj);
+	        RenderHelper.enableGUIStandardItemLighting();
 		}
 	}
 	

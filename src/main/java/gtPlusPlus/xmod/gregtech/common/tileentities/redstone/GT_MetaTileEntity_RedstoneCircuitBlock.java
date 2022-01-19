@@ -3,15 +3,18 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.redstone;
 import java.util.*;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.IRedstoneCircuitBlock;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.*;
 import gtPlusPlus.xmod.gregtech.api.gui.computer.GT_Container_RedstoneCircuitBlock;
 import gtPlusPlus.xmod.gregtech.api.gui.computer.GT_GUIContainer_RedstoneCircuitBlock;
+import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -25,18 +28,18 @@ public class GT_MetaTileEntity_RedstoneCircuitBlock extends GT_MetaTileEntity_Re
 	public boolean bOutput = true;
 
 	public GT_MetaTileEntity_RedstoneCircuitBlock(int aID) {
-		super(aID, "redstone.circuit", "Redstone Circuit Block", 0, 0, "Computes Redstone");
+		super(aID, "redstone.circuit", "Redstone Circuit Block", 1, 5, "Computes Redstone");
 	}
 
 	public GT_MetaTileEntity_RedstoneCircuitBlock(final String aName, String aDescription, final ITexture[][][] aTextures) {
-		super(aName, 0, 0, aDescription, aTextures);
+		super(aName, 1, 5, aDescription, aTextures);
 	}
 
 	@Override
 	public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
 		return new GT_MetaTileEntity_RedstoneCircuitBlock(this.mName, mDescription, this.mTextures);
 	}
-	
+
 	@Override
 	public Object getServerGUI(final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
 		return new GT_Container_RedstoneCircuitBlock(aPlayerInventory, aBaseMetaTileEntity);
@@ -51,50 +54,75 @@ public class GT_MetaTileEntity_RedstoneCircuitBlock extends GT_MetaTileEntity_Re
 	public boolean hasSidedRedstoneOutputBehavior() {
 		return true;
 	}
-	
+
 	@Override
 	public boolean isEnetInput() {
 		return true;
 	}
-	
+
 	@Override
 	public boolean isEnetOutput() {
 		return true;
 	}
-	
+
 	@Override
 	public boolean isInputFacing(byte aSide) {
-		return !isOutputFacing(aSide);
+		return true;
 	}
-	
+
+	@Override
+	public boolean isElectric() {
+		return true;
+	}
+
+	@Override
+	public boolean isPneumatic() {
+		return false;
+	}
+
+	@Override
+	public boolean isSteampowered() {
+		return false;
+	}
+
 	@Override
 	public boolean isOutputFacing(byte aSide) {
-		return getBaseMetaTileEntity().getBackFacing() == aSide;
+		return true;
 	}
-	
+
 	@Override
 	public long getMinimumStoredEU() {
-		return 500;
+		return 512;
 	}
-	
+
 	@Override
 	public long maxEUInput() {
-		return 32;
+		return GT_Values.V[1];
 	}
-	
+
 	@Override
 	public long maxEUOutput() {
-		return bOutput ? 32 : 0;
+		return bOutput ? GT_Values.V[1] : 0;
 	}
-	
+
+	@Override
+	public long maxAmperesIn() {
+		return 2;
+	}
+
+	@Override
+	public long maxAmperesOut() {
+		return 1;
+	}
+
 	@Override
 	public int getSizeInventory() {
 		return 5;
 	}
-	
+
 	@Override
 	public long maxEUStore() {
-		return 1000;
+		return GT_Values.V[3] * 1024;
 	}
 
 	@Override
@@ -105,7 +133,6 @@ public class GT_MetaTileEntity_RedstoneCircuitBlock extends GT_MetaTileEntity_Re
 		aBaseMetaTileEntity.openGUI(aPlayer, 147);
 		return true;
 	}
-
 
 	@Override
 	public void saveNBTData(NBTTagCompound aNBT) {
@@ -202,9 +229,9 @@ public class GT_MetaTileEntity_RedstoneCircuitBlock extends GT_MetaTileEntity_Re
 			try {
 				tBehaviour.initParameters(mGateData, this);
 			}
-		catch (Throwable e) {
-			GT_Log.err.print(e);
-		}
+			catch (Throwable e) {
+				GT_Log.err.print(e);
+			}
 		validateGateData();
 	}
 
@@ -214,9 +241,9 @@ public class GT_MetaTileEntity_RedstoneCircuitBlock extends GT_MetaTileEntity_Re
 			try {
 				tBehaviour.validateParameters(mGateData, this);
 			}
-		catch (Throwable e) {
-			GT_Log.err.print(e);
-		}
+			catch (Throwable e) {
+				GT_Log.err.print(e);
+			}
 	}
 
 	@Override
@@ -232,7 +259,7 @@ public class GT_MetaTileEntity_RedstoneCircuitBlock extends GT_MetaTileEntity_Re
 		getBaseMetaTileEntity().setGenericRedstoneOutput(true);
 		if (getBaseMetaTileEntity().isAllowedToWork() && getBaseMetaTileEntity().isServerSide()) {
 			mInventory[0] = mInventory[1] = mInventory[2] = mInventory[3] = mInventory[4] = null;
-			if (getBaseMetaTileEntity().getUniversalEnergyStored() > 400) {
+			if (getBaseMetaTileEntity().getUniversalEnergyStored() >= getMinimumStoredEU()) {
 				if (getBaseMetaTileEntity().isActive()) {
 					GT_CircuitryBehavior tBehaviour = GregTech_API.sCircuitryBehaviors.get(mGate);
 					if (tBehaviour != null) {
@@ -257,29 +284,28 @@ public class GT_MetaTileEntity_RedstoneCircuitBlock extends GT_MetaTileEntity_Re
 			else {
 				getBaseMetaTileEntity().setErrorDisplayID(1);
 			}
-		}	
+		}
 	}
-	
 
 	/** The Item List for Covers */
 	public static final Map<Integer, ItemStack> sCoversItems = new HashMap<Integer, ItemStack>();
-	
+
 	private static void initCovers() {
 		for (GT_ItemStack aKey : GregTech_API.sCovers.keySet()) {
 			ItemStack aStack = aKey.toStack().copy();
 			if (aStack != null) {
-				sCoversItems.put(GT_Utility.stackToInt(aStack), aStack);				
+				sCoversItems.put(GT_Utility.stackToInt(aStack), aStack);
 			}
 		}
 	}
-	
+
 	public static ItemStack getCoverByID(int aStack) {
 		if (sCoversItems.isEmpty()) {
 			initCovers();
 		}
 		return sCoversItems.get(Integer.valueOf(aStack));
 	}
-	
+
 	@Override
 	public byte getOutputFacing() {
 		return getBaseMetaTileEntity().getBackFacing();
@@ -378,14 +404,55 @@ public class GT_MetaTileEntity_RedstoneCircuitBlock extends GT_MetaTileEntity_Re
 	}
 
 	@Override
-	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-		// TODO Auto-generated method stub
-		return null;
+	public ITexture[][][] getTextureSet(final ITexture[] aTextures) {
+		final ITexture[][][] rTextures = new ITexture[10][17][];
+		for (byte i = -1; i < 16; i++) {
+			rTextures[0][i + 1] = this.getSides(i);
+			rTextures[1][i + 1] = this.getSides(i);
+			rTextures[2][i + 1] = this.getBottom(i);
+			rTextures[3][i + 1] = this.getTop(i);
+			rTextures[4][i + 1] = this.getSides(i);
+			rTextures[5][i + 1] = this.getSidesActive(i);
+			rTextures[6][i + 1] = this.getSidesActive(i);
+			rTextures[7][i + 1] = this.getBottomActive(i);
+			rTextures[8][i + 1] = this.getTopActive(i);
+			rTextures[9][i + 1] = this.getSidesActive(i);
+		}
+		return rTextures;
 	}
 
 	@Override
-	public ITexture[][][] getTextureSet(ITexture[] aTextures) {
-		// TODO Auto-generated method stub
-		return null;
+	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
+		return this.mTextures[(aActive || hasRedstoneSignal() ? 5 : 0) + (aSide == aFacing ? 0 : aSide == GT_Utility.getOppositeSide(aFacing) ? 1 : aSide == 0 ? 2 : aSide == 1 ? 3 : 4)][aColorIndex
+				+ 1];
 	}
+
+	private GT_RenderedTexture getBase() {
+		return new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top);
+	}
+
+	public ITexture[] getTop(final byte aColor) {
+		return new ITexture[]{getBase(), new GT_RenderedTexture(TexturesGtBlock.Casing_Redstone_Top_Off)};
+	}
+
+	public ITexture[] getTopActive(final byte aColor) {
+		return new ITexture[]{getBase(), new GT_RenderedTexture(TexturesGtBlock.Casing_Redstone_Top_On)};
+	}
+
+	public ITexture[] getBottom(final byte aColor) {
+		return new ITexture[]{getBase(), new GT_RenderedTexture(TexturesGtBlock.Casing_Redstone_Bottom_Off)};
+	}
+
+	public ITexture[] getBottomActive(final byte aColor) {
+		return new ITexture[]{getBase(), new GT_RenderedTexture(TexturesGtBlock.Casing_Redstone_Bottom_On)};
+	}
+
+	public ITexture[] getSides(final byte aColor) {
+		return new ITexture[]{getBase(), new GT_RenderedTexture(TexturesGtBlock.Casing_Redstone_Side_Off)};
+	}
+
+	public ITexture[] getSidesActive(final byte aColor) {
+		return new ITexture[]{getBase(), new GT_RenderedTexture(TexturesGtBlock.Casing_Redstone_Side_On)};
+	}
+
 }

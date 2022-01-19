@@ -7,6 +7,7 @@ import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.common.gui.GT_Container_Boiler;
 import gtPlusPlus.core.lib.CORE;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.player.InventoryPlayer;
 
 public class GT_GUIContainer_CropHarvestor extends GT_GUIContainerMetaTile_Machine {
@@ -65,8 +66,10 @@ public class GT_GUIContainer_CropHarvestor extends GT_GUIContainerMetaTile_Machi
 				list.add("Water: "+aWater+"L / "+((GT_Container_CropHarvestor) mContainer).mTileEntity.getMetaTileEntity().getCapacity()+"L");
 			}
 		}
-		if (!list.isEmpty())
+		if (!list.isEmpty()) {
 			drawHoveringText(list, x, y, fontRendererObj);
+	        RenderHelper.enableGUIStandardItemLighting();
+		}
 	}
 
 }

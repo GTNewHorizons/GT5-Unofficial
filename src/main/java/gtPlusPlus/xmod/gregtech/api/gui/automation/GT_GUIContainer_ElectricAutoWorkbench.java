@@ -7,6 +7,7 @@ import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.gui.basic.GT_Container_CropHarvestor;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.player.InventoryPlayer;
 
 public class GT_GUIContainer_ElectricAutoWorkbench extends GT_GUIContainerMetaTile_Machine {
@@ -53,7 +54,9 @@ public class GT_GUIContainer_ElectricAutoWorkbench extends GT_GUIContainerMetaTi
 				}*/
 			}
 		}
-		if (!list.isEmpty())
+		if (!list.isEmpty()) {
 			drawHoveringText(list, x3, y3, fontRendererObj);
+	        RenderHelper.enableGUIStandardItemLighting();
+		}
 	}
 }
