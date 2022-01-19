@@ -5,6 +5,7 @@ dependencies {
     compile("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-70-GTNH:dev")
     compile("com.github.GTNewHorizons:Galacticraft:3.0.36-GTNH:dev")
     runtime("com.github.GTNewHorizons:StructureLib:1.0.14:dev")
+    runtime("com.github.GTNewHorizons:ironchest:6.0.68:dev")
     runtime("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
     compile files("dependencies/bartworks[1.7.10]-0.5.2_pre25-dev.jar")
 }
