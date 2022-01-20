@@ -1,0 +1,31 @@
+// Add any additional repositories for your dependencies here
+
+repositories {
+    maven {
+        name = "GTNH Maven"
+        url = "http://jenkins.usrv.eu:8081/nexus/content/groups/public/"
+    }
+        mavenCentral()
+		maven {
+			name = "gt"
+			url = "https://gregtech.overminddl1.com/"
+        }
+        maven {
+            name = "jitpack"
+            url = "https://jitpack.io"
+        }
+        maven {
+            name = "sonatype"
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
+		
+    maven {
+        name = "cofhCore"
+        url = "https://cursemaven.com"
+    }
+    maven {
+        url = "http://www.ryanliptak.com/maven/"
+    }
+	
+
+}

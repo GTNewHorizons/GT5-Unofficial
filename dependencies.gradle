@@ -1,0 +1,46 @@
+// Add your dependencies here
+
+dependencies {
+    compile("com.github.GTNewHorizons:GT5-Unofficial:5.09.40.18:dev")
+    compile("com.github.GTNewHorizons:StructureLib:1.0.14:dev")
+    compile("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
+
+    compile("com.github.GTNewHorizons:NotEnoughItems:2.1.22-GTNH:dev")
+    compileOnly("com.github.GTNewHorizons:EnderCore:0.2.6:dev") {
+        transitive = false
+    }
+    compileOnly("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-70-GTNH:dev") {
+        transitive = false
+    }
+    compileOnly("com.github.GTNewHorizons:bartworks:0.5.34:dev") {
+        transitive = false
+    }
+    compileOnly("com.github.GTNewHorizons:GTplusplus:1.7.24:dev") {
+        transitive = false
+    }
+    compileOnly("com.github.GTNewHorizons:AppleCore:3.1.6:dev") {
+        transitive = false
+    }
+    compileOnly("com.github.GTNewHorizons:TecTech:4.10.15:dev") {
+        transitive = false
+    }
+    compileOnly("com.github.GTNewHorizons:ForestryMC:4.4.4:dev") {
+        transitive = false
+    }
+    compileOnly("com.github.GTNewHorizons:Railcraft:9.13.5:dev") {
+        transitive = false
+    }
+    compileOnly("com.github.GTNewHorizons:EnderIO:2.3.1.27:dev") {
+        transitive = false
+    }
+    compileOnly("com.mod-buildcraft:buildcraft:7.1.23:dev") {
+        transitive = false
+    }
+    compileOnly("com.github.GTNewHorizons:ExtraCells2:2.5.4:dev") {
+        transitive = false
+    }
+/*    compileOnly("com.github.GTNewHorizons:Avaritia:1.22) {
+        setChanging(true)
+    }*/
+    compile files('Thaumcraft-1.7.10-4.2.3.5.deobf.jar')
+}

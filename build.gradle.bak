@@ -14,27 +14,25 @@ import java.util.concurrent.TimeUnit
 
 buildscript {
     repositories {
-    maven {
-        name = "GTNH Maven"
-        url = "http://jenkins.usrv.eu:8081/nexus/content/groups/public/"
-    }
-        mavenCentral()
-		maven {
-			name = "gt"
-			url = "https://gregtech.overminddl1.com/"
-        }
         maven {
-            name = "jitpack"
-            url = "https://jitpack.io"
+            name = "forge"
+            url = "https://maven.minecraftforge.net"
         }
         maven {
             name = "sonatype"
             url = "https://oss.sonatype.org/content/repositories/snapshots/"
         }
+        maven {
+            name = "Scala CI dependencies"
+            url = "https://repo1.maven.org/maven2/"
+        }
+        maven {
+            name = "jitpack"
+            url = "https://jitpack.io"
+        }
     }
     dependencies {
-        //Defaults to Java 8 & UTF-8 encoding
-        classpath "com.github.GTNewHorizons:ForgeGradle:1.2.4"
+        classpath 'com.github.GTNewHorizons:ForgeGradle:1.2.5'
     }
 }
 
