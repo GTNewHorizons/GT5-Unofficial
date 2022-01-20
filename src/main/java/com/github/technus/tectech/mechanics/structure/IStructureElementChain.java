@@ -6,6 +6,7 @@ import net.minecraft.world.World;
 /**
  * Use StructureUtility to instantiate
  */
+@Deprecated
 public interface IStructureElementChain<T> extends IStructureElement<T> {
     IStructureElement<T>[] fallbacks();
 

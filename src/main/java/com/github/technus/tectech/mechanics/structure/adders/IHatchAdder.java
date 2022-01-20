@@ -3,6 +3,7 @@ package com.github.technus.tectech.mechanics.structure.adders;
 
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
+@Deprecated
 public interface IHatchAdder<T> {
     /**
      * Callback to add hatch, needs to check if hatch is valid (and add it)

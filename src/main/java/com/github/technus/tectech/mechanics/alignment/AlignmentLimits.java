@@ -12,6 +12,7 @@ import java.util.function.Function;
 
 import static com.github.technus.tectech.mechanics.alignment.IAlignment.STATES_COUNT;
 
+@Deprecated
 public class AlignmentLimits implements IAlignmentLimits {
 
     protected final boolean[] validStates=new boolean[STATES_COUNT];

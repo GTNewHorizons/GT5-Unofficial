@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 /**
  * Created by Tec on 24.03.2017.
  */
+@Deprecated
 public interface IConstructable {
     void construct(ItemStack stackSize, boolean hintsOnly);
 

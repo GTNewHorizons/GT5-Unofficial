@@ -6,6 +6,7 @@ import net.minecraft.world.World;
 /**
  * Use StructureUtility to instantiate
  */
+@Deprecated
 interface IStructureNavigate<T> extends IStructureElement<T> {
     @Override
     default boolean check(T t, World world, int x, int y, int z){

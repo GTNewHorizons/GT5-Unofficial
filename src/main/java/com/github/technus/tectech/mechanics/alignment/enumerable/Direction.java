@@ -3,6 +3,7 @@ package com.github.technus.tectech.mechanics.alignment.enumerable;
 import com.github.technus.tectech.util.Vec3Impl;
 import net.minecraftforge.common.util.ForgeDirection;
 
+@Deprecated
 public enum Direction {
     DOWN(ForgeDirection.DOWN),
     UP(ForgeDirection.UP),

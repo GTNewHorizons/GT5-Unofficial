@@ -9,6 +9,7 @@ import static java.lang.Math.abs;
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.toMap;
 
+@Deprecated
 public enum Flip {
     NONE(3, "none"),
     HORIZONTAL(2, "horizontal"),
@@ -19,6 +20,7 @@ public enum Flip {
     private final String name;
 
     public static final Flip[] VALUES = values();
+    public static final int COUNT = VALUES.length;
     private static final Map<String, Flip> NAME_LOOKUP = stream(VALUES).collect(toMap(Flip::getName2, (flip) -> flip));
 
     Flip(int oppositeIn, String nameIn) {

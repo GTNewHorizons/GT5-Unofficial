@@ -1,8 +1,5 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
-import com.github.technus.tectech.mechanics.constructable.IConstructable;
-import com.github.technus.tectech.mechanics.structure.adders.IHatchAdder;
-import com.github.technus.tectech.mechanics.structure.Structure;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputElemental;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_OutputElemental;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
@@ -10,19 +7,21 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.base.INameFunction;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.IStatusFunction;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
 import com.github.technus.tectech.util.CommonValues;
+import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
-import static com.github.technus.tectech.mechanics.structure.Structure.adders;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.*;
 import static com.github.technus.tectech.util.CommonValues.V;
-import static gregtech.api.enums.GT_Values.E;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
@@ -31,32 +30,32 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
     //region structure
     //use multi A energy inputs, use less power the longer it runs
-    private static final String[][] shape = new String[][]{
-            {"   ", " . ", "   ",},
-            {"000", "000", "000",},
-            {"!!!", "!0!", "!!!",},
-            {"!!!", "!!!", "!!!",},
-    };
-    private static final String[][] shapeBig = new String[][]{
-            {E, "A   ", "A . ", "A   ",},
-            {"A!!!", "!000!", "!010!", "!000!", "A!!!",},
-            {"!!!!!", "!000!", "!000!", "!000!", "!!!!!",},
-            {"A!!!", "!000!", "!000!", "!000!", "A!!!",},
-            {"A!!!", "!!!!!", "!!!!!", "!!!!!", "A!!!",},
-    };
-    private static final Block[] blockType = new Block[]{sBlockCasingsTT, sBlockCasingsTT};
-    private static final byte[] blockMeta = new byte[]{4, 5};
-    private static final IHatchAdder<GT_MetaTileEntity_EM_junction>[] addingMethods = adders(
-            GT_MetaTileEntity_EM_junction::addClassicToMachineList,
-            GT_MetaTileEntity_EM_junction::addElementalToMachineList);
-    private static final short[] casingTextures = new short[]{textureOffset, textureOffset + 4};
-    private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT};
-    private static final byte[] blockMetaFallback = new byte[]{0, 4};
     private static final String[] description = new String[]{
             EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
             translateToLocal("gt.blockmachines.multimachine.em.junction.hint.0"),//1 - Classic Hatches or High Power Casing
             translateToLocal("gt.blockmachines.multimachine.em.junction.hint.1"),//2 - Elemental Hatches or Molecular Casing
     };
+
+    private static final IStructureDefinition<GT_MetaTileEntity_EM_junction> STRUCTURE_DEFINITION =
+            StructureDefinition.<GT_MetaTileEntity_EM_junction>builder()
+            .addShape("main", new String[][]{
+                    {"CCC", "C~C", "CCC"},
+                    {"AAA", "AAA", "AAA"},
+                    {"DDD", "DAD", "DDD"},
+                    {"DDD", "DDD", "DDD"}
+            })
+            .addShape("mainBig", new String[][]{
+                    {"     ", " CCC ", " C~C ", " CCC ", "     "},
+                    {" DDD ", "DAAAD", "DABAD", "DAAAD", " DDD "},
+                    {"DDDDD", "DAAAD", "DAAAD", "DAAAD", "DDDDD"},
+                    {" DDD ", "DAAAD", "DAAAD", "DAAAD", " DDD "},
+                    {" DDD ", "DDDDD", "DDDDD", "DDDDD", " DDD "}
+            })
+            .addElement('A', ofBlock(sBlockCasingsTT, 4))
+            .addElement('B', ofBlock(sBlockCasingsTT, 5))
+            .addElement('C', ofHatchAdderOptional(GT_MetaTileEntity_EM_junction::addClassicToMachineList, textureOffset, 1, sBlockCasingsTT, 0))
+            .addElement('D', ofHatchAdderOptional(GT_MetaTileEntity_EM_junction::addElementalToMachineList, textureOffset + 4, 2, sBlockCasingsTT, 4))
+            .build();
     //endregion
 
     //region parameters
@@ -106,9 +105,9 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
         int meta = iGregTechTileEntity.getMetaIDAtSide(GT_Utility.getOppositeSide(iGregTechTileEntity.getFrontFacing()));
         if (meta == 4) {
-            return structureCheck_EM(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 1, 0);
+            return structureCheck_EM("main", 1, 1, 0);
         } else if (meta == 5) {
-            return structureCheck_EM(shapeBig, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 2, 2, 0);
+            return structureCheck_EM("mainBig", 2, 2, 0);
         }
         return false;
     }
@@ -177,7 +176,16 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        Structure.builder(shape, blockType, blockMeta, 1, 1, 0, getBaseMetaTileEntity(), getExtendedFacing(), hintsOnly);
+        if ((stackSize.stackSize & 1) == 1) {
+            structureBuild_EM("main", 1, 1, 0, hintsOnly, stackSize);
+        } else {
+            structureBuild_EM("mainBig", 2, 2, 0, hintsOnly, stackSize);
+        }
+    }
+
+    @Override
+    public IStructureDefinition<GT_MetaTileEntity_EM_junction> getStructure_EM() {
+        return STRUCTURE_DEFINITION;
     }
 
     @Override

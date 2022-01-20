@@ -9,6 +9,7 @@ import static java.lang.Math.abs;
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.toMap;
 
+@Deprecated
 public enum Rotation {
     NORMAL(2, "normal"),
     CLOCKWISE(3, "clockwise"),
@@ -19,6 +20,7 @@ public enum Rotation {
     private final String name;
 
     public static final Rotation[] VALUES = values();
+    public static final int COUNT = VALUES.length;
     private static final Map<String, Rotation> NAME_LOOKUP = stream(VALUES).collect(toMap(Rotation::getName2, (rotation) -> rotation));
 
     Rotation(int oppositeIn, String nameIn) {

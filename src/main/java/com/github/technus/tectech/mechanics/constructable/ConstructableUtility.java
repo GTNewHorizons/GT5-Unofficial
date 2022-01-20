@@ -13,6 +13,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 
+@Deprecated
 public class ConstructableUtility {
     private ConstructableUtility(){
 

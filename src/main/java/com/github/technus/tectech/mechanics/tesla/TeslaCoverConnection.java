@@ -1,7 +1,7 @@
 package com.github.technus.tectech.mechanics.tesla;
 
-import com.github.technus.tectech.util.Vec3Impl;
 import com.google.common.base.Objects;
+import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
 import static com.github.technus.tectech.mechanics.tesla.ITeslaConnectable.TeslaUtil.teslaSimpleNodeSetAdd;
@@ -14,7 +14,10 @@ public class TeslaCoverConnection implements ITeslaConnectableSimple {
 
     public TeslaCoverConnection(IGregTechTileEntity IGT, byte teslaReceptionCapability) {
         this.IGT = IGT;
-        this.pos = new Vec3Impl(IGT);
+        this.pos = new Vec3Impl(IGT.getXCoord(),
+                                IGT.getYCoord(),
+                                IGT.getZCoord());
+
         this.teslaReceptionCapability = teslaReceptionCapability;
     }
 
