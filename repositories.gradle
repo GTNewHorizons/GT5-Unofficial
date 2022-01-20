@@ -17,9 +17,6 @@ repositories {
     }
 
     maven {
-        url = "https://jitpack.io"
-    }
-    maven {
         name = "gt"
         url = "https://gregtech.overminddl1.com/"
     }
@@ -29,5 +26,8 @@ repositories {
     }
     maven {
         url = "http://www.ryanliptak.com/maven/"
+    }
+    maven {
+        url = "https://jitpack.io"
     }
 }
