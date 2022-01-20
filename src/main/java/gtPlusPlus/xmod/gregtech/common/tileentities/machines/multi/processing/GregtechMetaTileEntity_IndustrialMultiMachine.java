@@ -35,8 +35,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 
-public class GregtechMetaTileEntity_IndustrialMultiMachine
-extends GregtechMeta_MultiBlockBase {
+public class GregtechMetaTileEntity_IndustrialMultiMachine extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialMultiMachine> {
 
 	protected int mInternalMode = 0;
 	protected GT_Recipe[] mLastRecipeExtended = new GT_Recipe[9];
@@ -56,7 +55,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	static {
 		for (int id = 0; id < 9; id++) {
-			String aNEI = GT_LanguageManager.getTranslation(getRecipeMap(id).mUnlocalizedName);
+			String aNEI = getRecipeMap(id).mNEIName;
 			aToolTipNames[id] = aNEI != null ? aNEI : "BAD NEI NAME (Report to Github)";			
 		}
 	}

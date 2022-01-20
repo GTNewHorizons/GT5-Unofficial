@@ -88,7 +88,6 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 	protected GT_Multiblock_Tooltip_Builder createTooltip() {
 		GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
 		tt.addMachineType(getMachineType())
-		.addInfo("[BUG] GUI does not work until structure is assembled correctly. (Do Not Report issue)")
 		.addInfo("Consumes " + this.ENERGY_TAX + "% of the average voltage of all energy type hatches")
 		.addInfo("Does not require maintenance")
 		.addInfo("Can be built with variable height between " + (CELL_HEIGHT_MIN + 2) + "-" + (CELL_HEIGHT_MAX + 2) + "")

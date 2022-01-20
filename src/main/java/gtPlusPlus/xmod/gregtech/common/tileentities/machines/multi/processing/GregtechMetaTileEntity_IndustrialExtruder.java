@@ -27,8 +27,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
-public class GregtechMetaTileEntity_IndustrialExtruder
-extends GregtechMeta_MultiBlockBase {
+public class GregtechMetaTileEntity_IndustrialExtruder extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialExtruder> {
 
 	private int mCasing;
 	private IStructureDefinition<GregtechMetaTileEntity_IndustrialExtruder> STRUCTURE_DEFINITION = null;

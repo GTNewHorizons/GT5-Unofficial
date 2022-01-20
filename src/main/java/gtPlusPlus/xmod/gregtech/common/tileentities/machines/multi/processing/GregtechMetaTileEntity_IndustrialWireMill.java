@@ -24,8 +24,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
-public class GregtechMetaTileEntity_IndustrialWireMill
-extends GregtechMeta_MultiBlockBase {
+public class GregtechMetaTileEntity_IndustrialWireMill extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialWireMill> {
 
 	private int mCasing;
 	private IStructureDefinition<GregtechMetaTileEntity_IndustrialWireMill> STRUCTURE_DEFINITION = null;

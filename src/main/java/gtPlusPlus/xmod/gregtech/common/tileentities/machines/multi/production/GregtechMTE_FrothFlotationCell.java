@@ -39,7 +39,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 
-public class GregtechMTE_FrothFlotationCell extends GregtechMeta_MultiBlockBase {
+public class GregtechMTE_FrothFlotationCell extends GregtechMeta_MultiBlockBase<GregtechMTE_FrothFlotationCell> {
 
 	private int mCasing;
 	private IStructureDefinition<GregtechMTE_FrothFlotationCell> STRUCTURE_DEFINITION = null;
@@ -72,7 +72,7 @@ public class GregtechMTE_FrothFlotationCell extends GregtechMeta_MultiBlockBase 
 				.beginStructureBlock(3, 3, 3, true)
 				.addController("Front Center")
 				.addCasingInfo("Inconel Reinforced Casing", 68)
-				.addCasingInfo("Flotation Casings", 52)
+				.addCasingInfo("Flotation Casing", 52)
 				.addInputBus("Bottom Casing", 1)
 				.addInputHatch("Bottom Casing", 1)
 				.addOutputHatch("Bottom Casing", 1)

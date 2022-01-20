@@ -31,9 +31,8 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
-public class GT4Entity_ThermalBoiler
-extends GregtechMeta_MultiBlockBase
-{
+public class GT4Entity_ThermalBoiler extends GregtechMeta_MultiBlockBase<GT4Entity_ThermalBoiler> {
+	
 	private int mCasing;
 	private IStructureDefinition<GT4Entity_ThermalBoiler> STRUCTURE_DEFINITION = null;
 	private int mSuperEfficencyIncrease = 0;

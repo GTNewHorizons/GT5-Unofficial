@@ -49,7 +49,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 
-public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlockBase {
+public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_MassFabricator> {
 
 	public static int sUUAperUUM = 1;
 	public static int sUUASpeedBonus = 4;
@@ -87,16 +87,10 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 
 	public GregtechMetaTileEntity_MassFabricator(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
-		mCasingName1 = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasingsMisc, 9);
-		mCasingName2 = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings3Misc, 15);
-		mCasingName3 = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasingsMisc, 8);
 	}
 
 	public GregtechMetaTileEntity_MassFabricator(final String aName) {
 		super(aName);
-		mCasingName1 = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasingsMisc, 9);
-		mCasingName2 = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings3Misc, 15);
-		mCasingName3 = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasingsMisc, 8);
 	}
 
 	@Override
@@ -106,21 +100,13 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 
 	@Override
 	protected GT_Multiblock_Tooltip_Builder createTooltip() {
-
-		if (mCasingName1.toLowerCase().contains(".name")) {
-			mCasingName1 = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasingsMisc, 9);
-		}
-		if (mCasingName2.toLowerCase().contains(".name")) {
-			mCasingName2 = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings3Misc, 15);
-		}
-		if (mCasingName3.toLowerCase().contains(".name")) {
-			mCasingName3 = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasingsMisc, 8);
-		}
-
 		GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
 		tt.addMachineType(getMachineType())
 				.addInfo("Controller Block for the Matter Fabricator")
+				.addInfo("Speed: 100% | Eu Usage: 80%")
+				.addInfo("Parallel: Scrap = 64 | UU = 8 * Tier")
 				.addInfo("Produces UU-A, UU-M & Scrap")
+				.addInfo("Change mode with screwdriver")
 				.addPollutionAmount(getPollutionPerSecond(null))
 				.addSeparator()
 				.beginStructureBlock(5, 4, 5, true)
@@ -192,7 +178,7 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 		ArrayList<FluidStack> tFluids = getStoredFluids();
 		ItemStack[] tItemInputs = tItems.toArray(new ItemStack[tItems.size()]);
 		FluidStack[] tFluidInputs = tFluids.toArray(new FluidStack[tFluids.size()]);
-		return checkRecipeGeneric(tItemInputs, tFluidInputs, 4, 80, 00, 100);
+		return checkRecipeGeneric(tItemInputs, tFluidInputs, getMaxParallelRecipes(), 80, 100, 100);
 	}
 
 	@Override
@@ -381,7 +367,7 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 
 	@Override
 	public int getMaxParallelRecipes() {
-		return this.mMode == MODE_SCRAP ? 32 : 2 * (Math.max(1, GT_Utility.getTier(getMaxInputVoltage())));
+		return this.mMode == MODE_SCRAP ? 64 : 8 * (Math.max(1, GT_Utility.getTier(getMaxInputVoltage())));
 	}
 
 	@Override

@@ -76,22 +76,6 @@ public class GregtechMetaTileEntity_LargeRocketEngine extends GregtechMeta_Multi
 
 	@Override
 	protected GT_Multiblock_Tooltip_Builder createTooltip() {
-		if (mCasingName.toLowerCase().contains(".name")) {
-			mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings4Misc, 11);
-		}
-		if (mIntakeHatchName.toLowerCase().contains(".name")) {
-			mIntakeHatchName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings4Misc, 11);
-		}
-		if (mGearboxName.toLowerCase().contains(".name")) {
-			mGearboxName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings3Misc, 1);
-		}
-		if (mLubricantName.toLowerCase().contains(".")) {
-			mLubricantName = FluidUtils.getFluidStack("carbondioxide", 1).getLocalizedName();
-		}
-		if (mCoolantName.toLowerCase().contains(".")) {
-			mCoolantName = FluidUtils.getFluidStack("liquidhydrogen", 1).getLocalizedName();
-		}
-
 		GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
 		tt.addMachineType(getMachineType())
 				.addInfo("Controller Block for the Large Rocket Engine")

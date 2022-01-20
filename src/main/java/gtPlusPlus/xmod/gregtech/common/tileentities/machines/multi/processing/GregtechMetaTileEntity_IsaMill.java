@@ -50,7 +50,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fluids.FluidStack;
 
-public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase {
+public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IsaMill> {
 
 	protected boolean boostEu = false;
 	private int mCasing;

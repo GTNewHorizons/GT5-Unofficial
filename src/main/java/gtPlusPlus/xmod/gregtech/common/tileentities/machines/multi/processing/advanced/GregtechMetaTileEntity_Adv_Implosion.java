@@ -1,43 +1,36 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.advanced;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static gregtech.api.GregTech_API.sBlockCasings4;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
+
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.*;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.item.ItemStack;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static gregtech.api.GregTech_API.sBlockCasings4;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
+public class GregtechMetaTileEntity_Adv_Implosion extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_Adv_Implosion> {
 
-public class GregtechMetaTileEntity_Adv_Implosion
-extends GregtechMeta_MultiBlockBase {
-
-	private String mCasingName;
 	private int mCasing;
 	private IStructureDefinition<GregtechMetaTileEntity_Adv_Implosion> STRUCTURE_DEFINITION = null;
 
 	public GregtechMetaTileEntity_Adv_Implosion(int aID, String aName, String aNameRegional) {
 		super(aID, aName, aNameRegional);
-		mCasingName = ItemList.Casing_RobustTungstenSteel.get(1).getDisplayName();
 	}
 
 	public GregtechMetaTileEntity_Adv_Implosion(String aName) {
 		super(aName);
-		mCasingName = ItemList.Casing_RobustTungstenSteel.get(1).getDisplayName();
 	}
 
 	public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
@@ -51,9 +44,6 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	protected GT_Multiblock_Tooltip_Builder createTooltip() {
-		if (mCasingName.contains("gt.blockcasings")) {
-			mCasingName = ItemList.Casing_RobustTungstenSteel.get(1).getDisplayName();
-		}
 		GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
 		tt.addMachineType(getMachineType())
 				.addInfo("Factory Grade Advanced Implosion Compressor")
@@ -63,7 +53,7 @@ extends GregtechMeta_MultiBlockBase {
 				.addSeparator()
 				.beginStructureBlock(3, 3, 3, true)
 				.addController("Front center")
-				.addCasingInfo(mCasingName, 10)
+				.addCasingInfo("Robust TungstenSteel Casing", 10)
 				.addInputBus("Any casing", 1)
 				.addOutputBus("Any casing", 1)
 				.addEnergyHatch("Any casing", 1)

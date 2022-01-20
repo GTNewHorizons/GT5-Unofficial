@@ -80,6 +80,7 @@ public class GregtechMTE_ElementalDuplicator extends GregtechMeta_MultiBlockBase
 		GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
 		tt.addMachineType(getMachineType())
 		.addInfo("Produces Elemental Material from UU Matter")
+		.addInfo("Speed: 100% | Eu Usage: 100% | Parallel: 8 * Tier")
 		.addInfo("This multiblock cannot be overclocked")
 		.addInfo("Maximum 1x of each bus/hatch.")
 		.addInfo("Does not require both Output Hatch & Bus")
@@ -296,10 +297,11 @@ public class GregtechMTE_ElementalDuplicator extends GregtechMeta_MultiBlockBase
 	}
 
 
+	@Override
 	public boolean checkRecipeGeneric(
 			ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
 			int aMaxParallelRecipes, int aEUPercent,
-			int aSpeedBonusPercent, int aOutputChanceRoll, GT_Recipe aRecipe, boolean isPerpectOC) {
+			int aSpeedBonusPercent, int aOutputChanceRoll, GT_Recipe aRecipe) {
 		// Based on the Processing Array. A bit overkill, but very flexible.		
 
 		// Reset outputs and progress stats
@@ -425,8 +427,7 @@ public class GregtechMTE_ElementalDuplicator extends GregtechMeta_MultiBlockBase
 		} else {
 			while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
 				this.mEUt *= 4;
-				if (isPerpectOC) this.mMaxProgresstime /= 4;
-				else this.mMaxProgresstime /= 2;
+				this.mMaxProgresstime /= 4;
 			}
 		}
 

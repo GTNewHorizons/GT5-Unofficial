@@ -55,7 +55,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
-public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase {
+public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<GregtechMTE_ChemicalPlant> {
 
 	private int mSolidCasingTier = 0;
 	private int mMachineCasingTier = 0;

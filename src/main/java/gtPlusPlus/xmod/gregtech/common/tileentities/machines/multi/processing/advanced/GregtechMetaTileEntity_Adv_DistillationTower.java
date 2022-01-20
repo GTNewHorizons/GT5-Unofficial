@@ -34,7 +34,7 @@ import net.minecraftforge.fluids.FluidStack;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 
-public class GregtechMetaTileEntity_Adv_DistillationTower extends GregtechMeta_MultiBlockBase {
+public class GregtechMetaTileEntity_Adv_DistillationTower extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_Adv_DistillationTower> {
 
 	private short mControllerY = 0;    
 	private byte mMode = 0;

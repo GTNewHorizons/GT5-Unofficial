@@ -88,19 +88,6 @@ public class GregtechMetaTileEntity_Adv_AssemblyLine extends GregtechMeta_MultiB
 	protected final GT_Multiblock_Tooltip_Builder createTooltip() {
 		GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
 		tt.addMachineType(getMachineType())
-		.addInfo("Controller Block for the Tesla Defence Tower Mk3200")
-		.addInfo("This uses 5,000,000EU per blast.")
-		.addInfo("Can screwdriver to toggle mode between Players and all Entities.")
-		.addSeparator()
-		.beginStructureBlock(1, 7, 1, false)
-		.addController("Top Middle")
-		.addCasingInfo("Casing", 360)
-		.addOtherStructurePart("Rotor Assembly", "Any 1 dot hint", 1)
-		.addInputBus("Any 4 dot hint (min 1)", 4)
-		.addInputHatch("Any 4 dot hint(min 1)", 4)
-		.addOutputHatch("Any 4 dot hint(min 1)", 4)
-		.addEnergyHatch("Any 4 dot hint(min 1)", 4)
-		.addMaintenanceHatch("Any 4 dot hint(min 1)", 4)
 		.toolTipFinisher(CORE.GT_Tooltip_Builder);
 		return tt;
 	}
