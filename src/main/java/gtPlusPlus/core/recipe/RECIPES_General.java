@@ -381,11 +381,12 @@ public class RECIPES_General {
 
 	private static boolean addCompressedObsidian(){
 		//Invert Obsidian
+		ItemStack aInvertedObsidian = ItemUtils.simpleMetaStack(ModBlocks.blockCompressedObsidian, 5, 1);
 		if (RecipeUtils.addShapedRecipe(
 				getSimpleStack(Items.redstone), getSimpleStack(Items.glowstone_dust), getSimpleStack(Items.redstone),
 				getSimpleStack(Items.glowstone_dust), ItemUtils.simpleMetaStack(ModBlocks.blockCompressedObsidian, 1, 1), getSimpleStack(Items.glowstone_dust),
 				getSimpleStack(Items.redstone), getSimpleStack(Items.glowstone_dust), getSimpleStack(Items.redstone),
-				ItemUtils.simpleMetaStack(ModBlocks.blockCompressedObsidian, 5, 1))){
+				aInvertedObsidian)){
 			Logger.INFO("Added a recipe for Inverted Obsidian.");
 		}
 
@@ -393,6 +394,12 @@ public class RECIPES_General {
 		mItems[0] = ItemUtils.getSimpleStack(Blocks.obsidian);
 		for (int r=0;r<5;r++){
 			mItems[r+1] = ItemUtils.simpleMetaStack(ModBlocks.blockCompressedObsidian, r, 1);
+		}
+		
+		final ItemStack[] mItems2 = new ItemStack[6];
+		mItems2[0] = ItemUtils.getSimpleStack(Blocks.glowstone);
+		for (int r=0;r<5;r++){
+			mItems2[r+1] = ItemUtils.simpleMetaStack(ModBlocks.blockCompressedObsidian, 6+r, 1);
 		}
 
 		//Compressed Obsidian 1-5
@@ -411,6 +418,26 @@ public class RECIPES_General {
 
 			if (RecipeUtils.addShapelessGregtechRecipe(new ItemStack[]{output}, ItemUtils.getSimpleStack(input, 9))){
 				Logger.INFO("Added a shapeless recipe for Compressed Obsidian ["+r+"]");
+			}
+
+		}
+		
+		//Compressed Glowstone 1-5
+		for (int r=0;r<5;r++){
+
+			final ItemStack input = mItems2[r];
+			final ItemStack output = mItems2[r+1];
+
+			if (RecipeUtils.addShapedRecipe(
+					input, input, input,
+					input, aInvertedObsidian, input,
+					input, input, input,
+					output)){
+				Logger.INFO("Added a recipe for Compressed Glowstone ["+r+"]");
+			}
+
+			if (RecipeUtils.addShapelessGregtechRecipe(new ItemStack[]{output}, ItemUtils.getSimpleStack(input, 9))){
+				Logger.INFO("Added a shapeless recipe for Compressed Glowstone ["+r+"]");
 			}
 
 		}

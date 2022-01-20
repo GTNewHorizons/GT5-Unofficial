@@ -76,7 +76,7 @@ public class Preloader_FMLLoadingPlugin implements IFMLLoadingPlugin  {
         CORE_Preloader.DEV_ENVIRONMENT = (Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
         CORE_Preloader.DEBUG_MODE = AsmConfig.debugMode;
         Preloader_Logger.INFO("Running on "+gtPlusPlus.preloader.CORE_Preloader.JAVA_VERSION+" | Development Environment: "+CORE_Preloader.DEV_ENVIRONMENT);
-        Preloader_Logger.INFO("Is Client? "+Utils.isClient()+" | Is Server? "+Utils.isServer());
+        //Preloader_Logger.INFO("Is Client? "+Utils.isClient()+" | Is Server? "+Utils.isServer());
         Locale aDefaultLocale = Locale.getDefault();
         NumberFormat aFormat = NumberFormat.getInstance();
         Locale aDisplayLocale = (Locale) ReflectionUtils.getFieldValue(ReflectionUtils.getField(Locale.class, "defaultDisplayLocale"));

@@ -23,7 +23,7 @@ import gtPlusPlus.core.lib.CORE;
 
 public class BlockCompressedObsidian extends BlockObsidian {
 
-	private final IIcon textureArray[] = new IIcon[6];
+	private final IIcon textureArray[] = new IIcon[11];
 
 	public BlockCompressedObsidian() {
 		this.setBlockName("blockCompressedObsidian");
@@ -36,8 +36,11 @@ public class BlockCompressedObsidian extends BlockObsidian {
 
 	@Override
 	public MapColor getMapColor(final int meta) {
-		if (meta != 5) {
+		if (meta < 5) {
 			return MapColor.obsidianColor;
+		}
+		if (meta > 5) {
+			return MapColor.goldColor;
 		}
 		else {
 			return MapColor.sandColor;
@@ -53,6 +56,11 @@ public class BlockCompressedObsidian extends BlockObsidian {
 		this.textureArray[3] = iicon.registerIcon(CORE.MODID + ":" + "compressed/" + "obsidian4");
 		this.textureArray[4] = iicon.registerIcon(CORE.MODID + ":" + "compressed/" + "obsidian5");
 		this.textureArray[5] = iicon.registerIcon(CORE.MODID + ":" + "compressed/" + "obsidian_invert");
+		this.textureArray[6] = iicon.registerIcon(CORE.MODID + ":" + "compressed/" + "glowstone1");
+		this.textureArray[7] = iicon.registerIcon(CORE.MODID + ":" + "compressed/" + "glowstone2");
+		this.textureArray[8] = iicon.registerIcon(CORE.MODID + ":" + "compressed/" + "glowstone3");
+		this.textureArray[9] = iicon.registerIcon(CORE.MODID + ":" + "compressed/" + "glowstone4");
+		this.textureArray[10] = iicon.registerIcon(CORE.MODID + ":" + "compressed/" + "glowstone5");
 	}
 
 	/**
@@ -71,7 +79,7 @@ public class BlockCompressedObsidian extends BlockObsidian {
 
 	@Override
 	public void getSubBlocks(final Item item, final CreativeTabs tab, final List list) {
-		for (int i = 0; i < 6; i++) {
+		for (int i = 0; i < 11; i++) {
 			list.add(new ItemStack(item, 1, i));
 		}
 	}

@@ -305,6 +305,8 @@ public final class ModItems {
 	public static ItemGenericToken itemGenericToken;
 
 	public static Item itemControlCore;
+	
+	public static Item itemSunnariumBit;
 
 	public static ItemStack itemHotTitaniumIngot;
 
@@ -867,6 +869,8 @@ public final class ModItems {
 		itemDragonJar = new ItemEntityCatcher();
 		
 		itemControlCore = new ItemControlCore();
+		
+		itemSunnariumBit = new ItemSunnariumBit();
 
 		//Chemistry
 		new CoalTar();
