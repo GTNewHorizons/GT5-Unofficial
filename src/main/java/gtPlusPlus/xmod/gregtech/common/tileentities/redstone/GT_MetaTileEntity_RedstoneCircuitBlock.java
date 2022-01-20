@@ -4,6 +4,8 @@ import java.util.*;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.Textures;
+import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.IRedstoneCircuitBlock;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
@@ -67,7 +69,7 @@ public class GT_MetaTileEntity_RedstoneCircuitBlock extends GT_MetaTileEntity_Re
 
 	@Override
 	public boolean isInputFacing(byte aSide) {
-		return true;
+		return !this.isOutputFacing(aSide);
 	}
 
 	@Override
@@ -87,7 +89,7 @@ public class GT_MetaTileEntity_RedstoneCircuitBlock extends GT_MetaTileEntity_Re
 
 	@Override
 	public boolean isOutputFacing(byte aSide) {
-		return true;
+		return aSide == this.getOutputFacing();
 	}
 
 	@Override
@@ -286,6 +288,36 @@ public class GT_MetaTileEntity_RedstoneCircuitBlock extends GT_MetaTileEntity_Re
 			}
 		}
 	}
+	
+	@Override
+	public void onPostTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTick) {
+		super.onPostTick(aBaseMetaTileEntity, aTick);		
+		//Only Calc server-side
+		if (!this.getBaseMetaTileEntity().isServerSide()) {
+			return;
+		}		
+		//Emit Redstone		
+		for (byte i=0;i<6;i++) {
+			byte aRedstone = getBaseMetaTileEntity().getOutputRedstoneSignal(i);
+			this.getBaseMetaTileEntity().setInternalOutputRedstoneSignal(i, aRedstone);
+		}
+		
+	}
+
+	@Override
+	public final boolean hasRedstoneSignal() {
+		for (byte i=0;i<6;i++) {
+			if (getBaseMetaTileEntity().getOutputRedstoneSignal(i) > 0) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public boolean allowGeneralRedstoneOutput() {
+		return true;
+	}
 
 	/** The Item List for Covers */
 	public static final Map<Integer, ItemStack> sCoversItems = new HashMap<Integer, ItemStack>();
@@ -408,12 +440,12 @@ public class GT_MetaTileEntity_RedstoneCircuitBlock extends GT_MetaTileEntity_Re
 		final ITexture[][][] rTextures = new ITexture[10][17][];
 		for (byte i = -1; i < 16; i++) {
 			rTextures[0][i + 1] = this.getSides(i);
-			rTextures[1][i + 1] = this.getSides(i);
+			rTextures[1][i + 1] = this.getBack(i);
 			rTextures[2][i + 1] = this.getBottom(i);
 			rTextures[3][i + 1] = this.getTop(i);
 			rTextures[4][i + 1] = this.getSides(i);
 			rTextures[5][i + 1] = this.getSidesActive(i);
-			rTextures[6][i + 1] = this.getSidesActive(i);
+			rTextures[6][i + 1] = this.getBackActive(i);
 			rTextures[7][i + 1] = this.getBottomActive(i);
 			rTextures[8][i + 1] = this.getTopActive(i);
 			rTextures[9][i + 1] = this.getSidesActive(i);
@@ -437,6 +469,14 @@ public class GT_MetaTileEntity_RedstoneCircuitBlock extends GT_MetaTileEntity_Re
 
 	public ITexture[] getTopActive(final byte aColor) {
 		return new ITexture[]{getBase(), new GT_RenderedTexture(TexturesGtBlock.Casing_Redstone_Top_On)};
+	}
+	
+	public ITexture[] getBack(final byte aColor) {
+		return new ITexture[] {getBase(), new GT_RenderedTexture(TexturesGtBlock.Casing_Redstone_Side_Off), new GT_RenderedTexture(TexturesGtBlock.Casing_InventoryManagaer_Red)};
+	}
+	
+	public ITexture[] getBackActive(final byte aColor) {
+		return new ITexture[] {getBase(), new GT_RenderedTexture(TexturesGtBlock.Casing_Redstone_Side_On), new GT_RenderedTexture(TexturesGtBlock.Casing_InventoryManagaer_Red_Redstone)};
 	}
 
 	public ITexture[] getBottom(final byte aColor) {

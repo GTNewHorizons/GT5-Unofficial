@@ -90,8 +90,8 @@ public class Meta_GT_Proxy {
 
 		GT_Log.out.println("GT++ Mod: Testing BaseMetaTileEntity.");
 		if (tBaseMetaTileEntity == null || tBaseMetaTileEntity2 == null) {
-			GT_Log.out.println("GT++ Mod: Fatal Error ocurred while initializing TileEntities, crashing Minecraft.");
-			throw new RuntimeException("");
+			GT_Log.err.println("GT++ Mod: Fatal Error ocurred while initializing custom BaseMetaTileEntities, crashing Minecraft.");
+			CORE.crash("GT++ Mod: Fatal Error ocurred while initializing custom BaseMetaTileEntities, crashing Minecraft.");
 		}
 
 		//Gotta set it here so that we don't try call gregtech too early.        
@@ -104,7 +104,7 @@ public class Meta_GT_Proxy {
 			StaticFields59.mGT6StylePipes = false;        	
 		}       
 
-		GT_Log.out.println("GT++ Mod: Registering the BaseMetaTileEntity.");
+		GT_Log.out.println("GT++ Mod: Registering custom BaseMetaTileEntities.");
 		GameRegistry.registerTileEntity(tBaseMetaTileEntity.getClass(), "BaseMetaTileEntity_GTPP");
 		GameRegistry.registerTileEntity(tBaseMetaTileEntity2.getClass(), "BaseMetaTileEntity_GTPP2");
 		CoverManager.generateCustomCovers();
@@ -361,6 +361,7 @@ public class Meta_GT_Proxy {
 				GT_Log.err
 				.println("GT++ Mod: Fatal Error ocurred while initializing TileEntities, crashing Minecraft.");
 				e.printStackTrace(GT_Log.err);
+				CORE.crash("GT++ Mod: Fatal Error ocurred while initializing custom BaseMetaTileEntities, crashing Minecraft.");
 				throw new RuntimeException(e);
 			}
 		}
@@ -396,6 +397,7 @@ public class Meta_GT_Proxy {
 				GT_Log.err
 				.println("GT++ Mod: Fatal Error ocurred while initializing TileEntities, crashing Minecraft.");
 				e.printStackTrace(GT_Log.err);
+				CORE.crash("GT++ Mod: Fatal Error ocurred while initializing custom BaseMetaTileEntities, crashing Minecraft.");
 				throw new RuntimeException(e);
 			}
 		}

@@ -383,23 +383,24 @@ public class ClassTransformer_GT_Client {
 	 * GT_Client's onPostLoad
 	 */
 	
-    public static void onPostLoad() {
-    	try {
-    		for (int i = 0; i < GregTech_API.METATILEENTITIES.length; i++) {    			
-    			try {    			
-    			if (GregTech_API.METATILEENTITIES[i] != null) {
-    				GregTech_API.METATILEENTITIES[i].getStackForm(1L).getTooltip((EntityPlayer) null, true);
-    			}    			
-    			}
-    			catch (Throwable t) {
-    				GT_Log.err.println("Error in MetaTileEntity with ID of "+i);
-    	    		t.printStackTrace(GT_Log.err);    				
-    			}
-    		}
-    	} catch (Throwable var2) {
-    		var2.printStackTrace();
-    	}
-    }
+	public static void onPostLoad() {
+		try {
+			for (int i = 0; i < GregTech_API.METATILEENTITIES.length; i++) {
+				try {
+					if (GregTech_API.METATILEENTITIES[i] != null) {
+						GregTech_API.METATILEENTITIES[i].getStackForm(1L).getTooltip((EntityPlayer) null, true);
+					}
+				}
+				catch (Throwable t) {
+					GT_Log.err.println("Error in MetaTileEntity with ID of " + i);
+					t.printStackTrace(GT_Log.err);
+				}
+			}
+		}
+		catch (Throwable var2) {
+			var2.printStackTrace();
+		}
+	}
 
 
 

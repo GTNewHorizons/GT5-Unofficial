@@ -250,7 +250,7 @@ public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
 		return true;
 	}
 
-	private void showEnergy(final World worldIn, final EntityPlayer playerIn){
+	protected void showEnergy(final World worldIn, final EntityPlayer playerIn){
 		final long tempStorage = this.getBaseMetaTileEntity().getStoredEU();
 		final double c = ((double) tempStorage / this.maxEUStore()) * 100;
 		final double roundOff = Math.round(c * 100.00) / 100.00;

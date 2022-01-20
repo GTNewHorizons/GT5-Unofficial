@@ -3,7 +3,7 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
-import java.util.ArrayList;
+import java.util.*;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
@@ -44,6 +44,7 @@ public class GregtechMetaTileEntity_IndustrialForgeHammer extends GregtechMeta_M
 
 	@Override
 	public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
+		setAnvilBlocks();
 		return new GregtechMetaTileEntity_IndustrialForgeHammer(this.mName);
 	}
 
@@ -85,7 +86,19 @@ public class GregtechMetaTileEntity_IndustrialForgeHammer extends GregtechMeta_M
 
 	@Override
 	public IStructureDefinition<GregtechMetaTileEntity_IndustrialForgeHammer> getStructureDefinition() {
-		if (STRUCTURE_DEFINITION == null) {
+		if (STRUCTURE_DEFINITION == null) {			
+			Map<Block, Integer> aBlockMap = new HashMap<Block, Integer>();
+			aBlockMap.put(sAnvil, 0);
+			if (LoadedMods.Railcraft) {
+				aBlockMap.put(sSteelAnvil, 0);
+			}
+			if (LoadedMods.EnderIO) {
+				aBlockMap.put(sDarkSteelAnvil, 0);
+			}
+			if (LoadedMods.ThaumicBases) {
+				aBlockMap.put(sThaumiumAnvil, 0);
+				aBlockMap.put(sVoidAnvil, 0);
+			}
 			STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialForgeHammer>builder()
 					.addShape(mName, transpose(new String[][]{
 						{"CCC", "CCC", "CCC"},
@@ -93,21 +106,12 @@ public class GregtechMetaTileEntity_IndustrialForgeHammer extends GregtechMeta_M
 						{"CCC", "CCC", "CCC"},
 					}))
 					.addElement('C', ofChain(
-									ofHatchAdder(GregtechMetaTileEntity_IndustrialForgeHammer::addIndustrialForgeHammerList, TAE.getIndexFromPage(1, 11), 1	),
-									onElementPass(x -> ++x.mCasing,	ofBlock(ModBlocks.blockCasings5Misc, 6)
-											)
+							ofHatchAdder(GregtechMetaTileEntity_IndustrialForgeHammer::addIndustrialForgeHammerList, TAE.getIndexFromPage(1, 11), 1	),
+							onElementPass(x -> ++x.mCasing,	ofBlock(ModBlocks.blockCasings5Misc, 6)
 									)
 							)
-					.addElement('A', ofChain(
-							onElementPass(x -> ++x.mAnvil,	ofBlock(sAnvil, 1)),
-							onElementPass(x -> ++x.mAnvil,	ofBlock(sSteelAnvil, 1)),
-							onElementPass(x -> ++x.mAnvil,	ofBlock(sDarkSteelAnvil, 1)),
-							onElementPass(x -> ++x.mAnvil,	ofBlock(sThaumiumAnvil, 1)),
-							onElementPass(x -> ++x.mAnvil,	ofBlock(sVoidAnvil, 1))
 							)
-					)
-		            //.addElement('A', ofBlockAdder(GregtechMetaTileEntity_IndustrialForgeHammer::isBlockAnvil, Blocks.anvil, 1))
-							
+					.addElement('A', onElementPass(x -> ++x.mAnvil,	ofBlocksFlat(aBlockMap, sAnvil, 0)))							
 					.build();
 		}
 		return STRUCTURE_DEFINITION;
@@ -115,11 +119,13 @@ public class GregtechMetaTileEntity_IndustrialForgeHammer extends GregtechMeta_M
 
 	@Override
 	public void construct(ItemStack stackSize, boolean hintsOnly) {
+		setAnvilBlocks();
 		buildPiece(mName , stackSize, hintsOnly, 1, 1, 0);
 	}
 
 	@Override
 	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+		setAnvilBlocks();
 		mCasing = 0;
 		return checkPiece(mName, 1, 1, 0) && mCasing >= 10 && checkHatch();
 	}
@@ -137,7 +143,8 @@ public class GregtechMetaTileEntity_IndustrialForgeHammer extends GregtechMeta_M
 				return addToMachineList(aTileEntity, aBaseCasingIndex);
 			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus) {
 				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler) {
+			}
+			else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler) {
 				return addToMachineList(aTileEntity, aBaseCasingIndex);
 			}
 		}
@@ -301,6 +308,12 @@ public class GregtechMetaTileEntity_IndustrialForgeHammer extends GregtechMeta_M
 			}
 		}
 		return 0;
+	}
+
+	@Override
+	public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
+		setAnvilBlocks();
+		super.onFirstTick(aBaseMetaTileEntity);
 	}
 
 }

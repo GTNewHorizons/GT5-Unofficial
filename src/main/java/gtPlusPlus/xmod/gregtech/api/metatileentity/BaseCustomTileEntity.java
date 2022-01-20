@@ -15,6 +15,7 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
+import gtPlusPlus.xmod.gregtech.api.interfaces.IBaseCustomMetaTileEntity;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 import ic2.api.Direction;
@@ -22,7 +23,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-public class BaseCustomTileEntity extends BaseMetaTileEntity {
+public class BaseCustomTileEntity extends BaseMetaTileEntity implements IBaseCustomMetaTileEntity {
 		
 	protected NBTTagCompound mRecipeStuff2;
 	private static final Field ENTITY_ITEM_HEALTH_FIELD_2;
@@ -49,6 +50,10 @@ public class BaseCustomTileEntity extends BaseMetaTileEntity {
 		super();
 		Logger.MACHINE_INFO("Created new BaseCustomTileEntity");
 	}
+	
+	public boolean doesExplode() {
+		return true;
+	}
 
 	public void writeToNBT(NBTTagCompound aNBT) {
 		try {
@@ -70,6 +75,10 @@ public class BaseCustomTileEntity extends BaseMetaTileEntity {
 	}
 
 	public void doEnergyExplosion() {
+		if (!doesExplode()) {
+			Logger.INFO("Machine tried to explode, let's stop that. xo [doEnergyExplosion]");
+			return;
+		}
 		if (this.getUniversalEnergyCapacity() > 0L
 				&& this.getUniversalEnergyStored() >= this.getUniversalEnergyCapacity() / 5L) {
 			this.doExplosion(
@@ -83,6 +92,12 @@ public class BaseCustomTileEntity extends BaseMetaTileEntity {
 	}
 
 	public void doExplosion(long aAmount) {
+		
+		if (!doesExplode()) {
+			Logger.INFO("Machine tried to explode, let's stop that. xo [doExplosion]");
+			return;
+		}
+		
 		if (this.canAccessData()) {
 			if (GregTech_API.sMachineWireFire && this.mMetaTileEntity.isElectric()) {
 				try {

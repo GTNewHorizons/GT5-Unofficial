@@ -11,6 +11,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -25,6 +26,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -59,13 +61,13 @@ public class GregtechMetaCreativeEnergyBuffer extends GregtechMetaEnergyBuffer {
 		CustomIcon h = TexturesGtBlock.Casing_Material_RedSteel;
 		CustomIcon g = TexturesGtBlock.Casing_Material_Grisium;
 		CustomIcon k;
-		boolean j = MathUtils.isNumberEven(this.mTier);
+		boolean j = MathUtils.isNumberEven(this.mVoltageTier);
 		final ITexture[][][] rTextures = new ITexture[2][17][];
 		k = j ? g : h;
 		for (byte i = -1; i < 16; i++) {
 			rTextures[0][i + 1] = new ITexture[]{new GT_RenderedTexture(k)};
 			rTextures[1][i
-					+ 1] = new ITexture[]{new GT_RenderedTexture(k), this.mInventory.length > 4 ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[this.mTier] : Textures.BlockIcons.OVERLAYS_ENERGY_OUT[this.mTier]};
+					+ 1] = new ITexture[]{new GT_RenderedTexture(k), this.mInventory.length > 4 ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[this.mVoltageTier] : Textures.BlockIcons.OVERLAYS_ENERGY_OUT[this.mVoltageTier]};
 		}
 		return rTextures;
 	}
@@ -73,6 +75,16 @@ public class GregtechMetaCreativeEnergyBuffer extends GregtechMetaEnergyBuffer {
 	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
 		return this.mTextures[aSide == aFacing ? 1 : 0][aColorIndex + 1];
+	}
+
+	@Override
+	protected void showEnergy(final World worldIn, final EntityPlayer playerIn){
+		final long tempStorage = this.getBaseMetaTileEntity().getStoredEU();
+		final double c = ((double) tempStorage / this.maxEUStore()) * 100;
+		final double roundOff = Math.round(c * 100.00) / 100.00;
+		PlayerUtils.messagePlayer(playerIn, "Energy: " + GT_Utility.formatNumbers(tempStorage) + " EU at "+V[this.mVoltageTier]+"v ("+roundOff+"%)");
+		PlayerUtils.messagePlayer(playerIn, "Amperage: " + GT_Utility.formatNumbers(maxAmperesOut())+"A");
+
 	}
 
 	@Override
@@ -153,7 +165,7 @@ public class GregtechMetaCreativeEnergyBuffer extends GregtechMetaEnergyBuffer {
 	@Override
 	public String[] getInfoData() {
 		String[] infoData = super.getInfoData();
-		return new String[]{infoData[0], "THIS IS A CREATIVE ITEM - FOR TESTING | Tier: " + this.mTier, infoData[1], infoData[2]};
+		return new String[]{infoData[0], "THIS IS A CREATIVE ITEM - FOR TESTING | Tier: " + this.mVoltageTier, infoData[1], infoData[2]};
 	}
 
 	@Override
@@ -214,7 +226,7 @@ public class GregtechMetaCreativeEnergyBuffer extends GregtechMetaEnergyBuffer {
 				t.printStackTrace();
 				Logger.REFLECTION("Bad mTextures setter.");
 			}
-			PlayerUtils.messagePlayer(aPlayer, "Now running at " + GT_Values.VOLTAGE_NAMES[this.mTier] + ".");
+			PlayerUtils.messagePlayer(aPlayer, "Now running at " + GT_Values.VOLTAGE_NAMES[this.mVoltageTier] + ".");
 		}
 
 	}

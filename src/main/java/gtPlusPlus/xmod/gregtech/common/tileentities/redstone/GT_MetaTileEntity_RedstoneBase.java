@@ -88,7 +88,7 @@ public abstract class GT_MetaTileEntity_RedstoneBase extends GT_MetaTileEntity_T
 		mOpenerCount--;
 	}
 	
-	public final boolean hasRedstoneSignal() {
+	public boolean hasRedstoneSignal() {
 		if (getBaseMetaTileEntity().getStrongestRedstone() > 0) {
 			return true;
 		}

@@ -2,20 +2,52 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base;
 
 import java.util.Locale;
 
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GT_LanguageManager;
-import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.xmod.gregtech.api.interfaces.IBaseCustomMetaTileEntity;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import net.minecraft.item.ItemStack;
 
 public abstract class CustomMetaTileBase extends MetaTileEntity {
 
+
+	private IBaseCustomMetaTileEntity mBaseCustomMetaTileEntity2;
+	
+    /**
+     * accessibility to this Field is no longer given, see below
+     */
+    private IGregTechTileEntity mBaseCustomMetaTileEntity;
+	
 	public CustomMetaTileBase(int aID, String aBasicName, String aRegionalName, int aInvSlotCount) {
 		super(aID, aBasicName, aRegionalName, aInvSlotCount);
         GT_LanguageManager.addStringLocalization("gtpp.blockmachines." + aBasicName.replaceAll(" ", "_").toLowerCase(Locale.ENGLISH) + ".name", aRegionalName);
 		this.setBaseMetaTileEntity(Meta_GT_Proxy.constructBaseMetaTileEntity());
-		this.getBaseMetaTileEntity().setMetaTileID((short) aID);				
+		this.getBaseMetaTileEntity().setMetaTileID((short) aID);	
+		mBaseCustomMetaTileEntity2 = (IBaseCustomMetaTileEntity) getBaseMetaTileEntity();
 	}
+	
+    @Override
+    public IGregTechTileEntity getBaseMetaTileEntity() {
+        return mBaseCustomMetaTileEntity;
+    }
+    
+    public IBaseCustomMetaTileEntity getBaseCustomMetaTileEntity() {
+        return mBaseCustomMetaTileEntity2;
+    }
+
+    @Override
+    public void setBaseMetaTileEntity(IGregTechTileEntity aBaseMetaTileEntity) {
+    	super.setBaseMetaTileEntity(aBaseMetaTileEntity);
+        if (mBaseCustomMetaTileEntity != null && aBaseMetaTileEntity == null) {
+        	mBaseCustomMetaTileEntity.getMetaTileEntity().inValidate();
+        	mBaseCustomMetaTileEntity.setMetaTileEntity(null);
+        }
+        mBaseCustomMetaTileEntity = aBaseMetaTileEntity;
+        if (mBaseCustomMetaTileEntity != null) {
+        	mBaseCustomMetaTileEntity.setMetaTileEntity(this);
+        }
+    }
 
 	public CustomMetaTileBase(String aName, int aInvSlotCount) {
 		super(aName, aInvSlotCount);
