@@ -1255,7 +1255,7 @@ public class DreamCraftRecipeLoader implements Runnable {
         TT_recipeAdder.addResearchableAssemblylineRecipe(getItemContainer("PikoCircuit").get(1L),
                 720000, 2048, 8000000, 128, new ItemStack[]{
                         GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 16),
-                        getItemContainer("PikoCircuit").get(8L),
+                        getItemContainer("PikoCircuit").get(2L),
                         ItemList.Circuit_Parts_CapacitorASMD.get(64L),
                         ItemList.Circuit_Parts_DiodeASMD.get(64L),
                         ItemList.Circuit_Parts_TransistorASMD.get(64L),
