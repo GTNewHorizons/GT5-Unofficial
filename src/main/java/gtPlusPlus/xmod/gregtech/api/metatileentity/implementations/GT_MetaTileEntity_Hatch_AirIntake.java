@@ -1,165 +1,65 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
-import java.lang.reflect.Field;
-
-import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.objects.GT_RenderedTexture;
-import gtPlusPlus.api.objects.random.XSTR;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
 
-public class GT_MetaTileEntity_Hatch_AirIntake extends GT_MetaTileEntity_Hatch_Input {
-	
-	private static XSTR floatGen;
-    public int mProgresstime = 0, mMaxProgresstime = 0;
+public class GT_MetaTileEntity_Hatch_AirIntake extends GT_MetaTileEntity_Hatch_FluidGenerator {
 
-	public GT_MetaTileEntity_Hatch_AirIntake(final int aID, final String aName, final String aNameRegional,
-			final int aTier) {
+	public GT_MetaTileEntity_Hatch_AirIntake(final int aID, final String aName, final String aNameRegional,	final int aTier) {
 		super(aID, aName, aNameRegional, aTier);
 	}
 
-	public GT_MetaTileEntity_Hatch_AirIntake(final String aName, final int aTier, final String aDescription,
-			final ITexture[][][] aTextures) {
+	public GT_MetaTileEntity_Hatch_AirIntake(final String aName, final int aTier, final String aDescription, final ITexture[][][] aTextures) {
 		super(aName, aTier, aDescription, aTextures);
 	}
 
-	/*public GT_MetaTileEntity_Hatch_AirIntake(final String aName, final int aTier, final String[] aDescription,
-			final ITexture[][][] aTextures) {
-		super(aName, aTier, aDescription, aTextures);
-	}*/
-
-	private static String[] S;
-	private static Field F;
-
-	public synchronized String[] getDescription() {
-		try {
-			if (F == null || S == null) {
-				Field t = ReflectionUtils.getField(this.getClass(), "mDescriptionArray");
-				if (t != null) {
-					F = t;
-				}
-				else {
-					F = ReflectionUtils.getField(this.getClass(), "mDescription");
-				}
-				if (S == null && F != null) {
-					Object o = F.get(this);
-					if (o instanceof String[]) {
-						S = (String[]) o;
-					}
-					else if (o instanceof String) {
-						S = new String[] {(String) o};
-					}
-				}
-
-			}
-		}
-		catch (Throwable t) {
-
-		}
-		if (S != null) {
-			final String[] desc = new String[S.length + 4];
-			System.arraycopy(S, 0, desc, 0, S.length);
-			desc[S.length] = "DO NOT OBSTRUCT THE INPUT!";
-			desc[S.length + 1] = "Draws in Air from the surrounding environment";
-			desc[S.length + 2] = "Creates 1000L of Air every 4 ticks";
-			desc[S.length + 3] = CORE.GT_Tooltip;
-			return desc;
-		}
-		else {
-			return new String[] {"DO NOT OBSTRUCT THE INPUT!", "Draws in Air from the surrounding environment", "Creates 1000L of Air every 4 ticks", CORE.GT_Tooltip};
-		}
-
-
-	}
-
-	public ITexture[] getTexturesActive(final ITexture aBaseTexture) {
-		return new ITexture[]{aBaseTexture,
-				new GT_RenderedTexture((IIconContainer) Textures.BlockIcons.OVERLAY_MUFFLER)};
-	}
-
-	public ITexture[] getTexturesInactive(final ITexture aBaseTexture) {
-		return new ITexture[]{aBaseTexture,
-				new GT_RenderedTexture((IIconContainer) Textures.BlockIcons.OVERLAY_MUFFLER)};
-	}
-
-	public boolean isSimpleMachine() {
-		return true;
-	}
-
-	public boolean isFacingValid(final byte aFacing) {
-		return true;
-	}
-
-	public boolean isAccessAllowed(final EntityPlayer aPlayer) {
-		return true;
-	}
-
-	public boolean isValidSlot(final int aIndex) {
-		return false;
-	}
 
 	public MetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
 		return new GT_MetaTileEntity_Hatch_AirIntake(this.mName, this.mTier, this.mDescription, this.mTextures);
 	}
 
-	public boolean allowPullStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
-			final ItemStack aStack) {
-		return false;
+	@Override
+	public String[] getCustomTooltip() {
+		String[] aTooltip = new String[3];
+		aTooltip[0] = "DO NOT OBSTRUCT THE INPUT!";
+		aTooltip[1] = "Draws in Air from the surrounding environment";
+		aTooltip[2] = "Creates "+getAmountOfFluidToGenerate()+"L of Air every "+getMaxTickTime()+" ticks";
+		return aTooltip;
 	}
 
-	public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
-			final ItemStack aStack) {
-		return false;
+	@Override
+	public Fluid getFluidToGenerate() {
+		return FluidUtils.getAir(1).getFluid();
 	}
 
-	public void onPostTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTick) {
-		super.onPostTick(aBaseMetaTileEntity, aTick);	
-		
-		if (!aBaseMetaTileEntity.isAllowedToWork()) {
-            aBaseMetaTileEntity.setActive(false);	
-            mProgresstime = 0;
-            mMaxProgresstime = 0;		
-		}
-		else {
-			aBaseMetaTileEntity.setActive(true);
-			mMaxProgresstime = 4;
-			if (++mProgresstime >= mMaxProgresstime) {
-				addAirToHatch(aTick);
-				mProgresstime = 0;
-			}
-		}
+	@Override
+	public int getAmountOfFluidToGenerate() {
+		return 1000;
 	}
-	
-    @Override
-    public int getProgresstime() {
-        return mProgresstime;
-    }
 
-    @Override
-    public int maxProgresstime() {
-        return mMaxProgresstime;
-    }
+	@Override
+	public int getMaxTickTime() {
+		return 4;
+	}
 
-    @Override
-    public int increaseProgress(int aProgress) {
-        mProgresstime += aProgress;
-        return mMaxProgresstime - mProgresstime;
-    }
+	@Override
+	public int getCapacity() {
+		return 128000;
+	}
 
-	public void pollutionParticles(final World aWorld, final String name) {
+	@Override
+	public boolean doesHatchMeetConditionsToGenerate() {
+		return this.getBaseMetaTileEntity().getAirAtSide(this.getBaseMetaTileEntity().getFrontFacing());
+	}
+
+	@Override
+	public void generateParticles(World aWorld, String name) {
 		if (this.getBaseMetaTileEntity().isServerSide()) {
 			return;
 		}		
@@ -207,97 +107,4 @@ public class GT_MetaTileEntity_Hatch_AirIntake extends GT_MetaTileEntity_Hatch_I
 				(double) -ySpd, (double) zSpd);		
 	}
 
-	static {
-		GT_MetaTileEntity_Hatch_AirIntake.floatGen = new XSTR();
-	}
-
-	public int getTankPressure() {
-		return 100;
-	}
-
-	public int getCapacity() {
-		return 128000;
-	}
-
-	@Override
-	public boolean canTankBeEmptied() {
-		return true;
-	}
-	
-	private static Fluid AIR;
-	
-	public boolean isAirInHatch() {		
-		if (this.mFluid != null) {
-			if (AIR == null) {
-				AIR = FluidUtils.getAir(1).getFluid();
-			}
-			if (AIR == this.mFluid.getFluid()) {
-				return true;
-			}
-		}		
-		return false;
-	}
-
-	public boolean addAirToHatch(long aTick) {		
-		if (!this.getBaseMetaTileEntity().getAirAtSide(this.getBaseMetaTileEntity().getFrontFacing())) {
-			return false;
-		}		
-		boolean didFill = this.fill(FluidUtils.getAir(1000), true) > 0;
-        if (didFill) {					
-			this.pollutionParticles(this.getBaseMetaTileEntity().getWorld(), "cloud");
-		}
-		return didFill;	
-	}
-
-	@Override
-	public boolean canTankBeFilled() {
-		if (this.mFluid == null || (this.mFluid != null && (this.mFluid.amount <= this.getCapacity()))) {
-			return true;
-		}
-		return false;
-	}
-
-	@Override
-	public boolean doesEmptyContainers() {
-		return false;
-	}
-
-	@Override
-	public boolean doesFillContainers() {
-		return true;
-	}
-
-	@Override
-	public int fill(FluidStack aFluid, boolean doFill) {
-		return super.fill(aFluid, doFill);
-	}
-
-	@Override
-	public boolean canFill(ForgeDirection aSide, Fluid aFluid) {
-		return false;
-	}
-
-	@Override
-	public int fill(ForgeDirection arg0, FluidStack arg1, boolean arg2) {
-		return 0;
-	}
-
-	@Override
-	public int fill_default(ForgeDirection aSide, FluidStack aFluid, boolean doFill) {
-		return 0;
-	}
-	
-	@Override
-	public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setInteger("mProgresstime", mProgresstime);
-        aNBT.setInteger("mMaxProgresstime", mMaxProgresstime);
-		super.saveNBTData(aNBT);
-	}
-
-	@Override
-	public void loadNBTData(NBTTagCompound aNBT) {
-        mProgresstime = aNBT.getInteger("mProgresstime");
-        mMaxProgresstime = aNBT.getInteger("mMaxProgresstime");
-		super.loadNBTData(aNBT);
-	}
 }

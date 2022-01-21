@@ -62,11 +62,11 @@ public class LoadedMods {
 	public static boolean CropsPlusPlus = false; //Barts Crop Mod
 	public static boolean Reliquary = false;
 	public static boolean SpiceOfLife = false;
+	public static boolean RemoteIO = false;
 	public static boolean BartWorks = false;
 	public static boolean GoodGenerator = false;
 
 	private static int totalMods;
-	
 	@SuppressWarnings("deprecation")
 	public static void checkLoaded(){
 		Logger.INFO("Looking for optional mod prereqs.");
@@ -179,7 +179,7 @@ public class LoadedMods {
 			OpenBlocks = true;
 			Logger.INFO("Components enabled for: OpenBlocks");
 			totalMods++;
-		}		
+		}
 		if (isModLoaded("Thaumcraft")){
 			Thaumcraft = true;
 			Logger.INFO("Components enabled for: Thaumcraft");
@@ -344,6 +344,11 @@ public class LoadedMods {
 		if (isModLoaded("witchery")){
 			Witchery  = true;
 			Logger.INFO("Components enabled for: Witchery");
+			totalMods++;
+		}	
+		if (isModLoaded("RIO")){
+			RemoteIO  = true;
+			Logger.INFO("Components enabled for: RemoteIO");
 			totalMods++;
 		}		
 

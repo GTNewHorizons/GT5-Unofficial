@@ -3371,5 +3371,9 @@ item.itemCellPraseodymium.name=Praseodymium Cell
 item.milledMonazite.name=Milled Monazite
 item.FrothMonaziteflotation.name=Monazite Flotation Froth Cell
 
+//Added 18/12/21
+item.BasicGenericChemItem.13.name=Formaldehyde Catalyst
+item.hydrogenchloridemix.name=Hydrogen Chlorine Mix
+
 //Added 19/01/22
 item.SunnariumBit.name=Sunnarium Bit

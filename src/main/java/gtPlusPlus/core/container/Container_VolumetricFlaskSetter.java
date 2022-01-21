@@ -4,6 +4,7 @@ import java.util.Iterator;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.inventories.Inventory_VolumetricFlaskSetter;
 import gtPlusPlus.core.slots.SlotNoInput;
@@ -24,8 +25,8 @@ public class Container_VolumetricFlaskSetter extends Container {
 	public final Inventory_VolumetricFlaskSetter inventoryChest;
 
 
-	public short mCustomValue;
-	private short oCustomValue; 
+	public int mCustomValue;
+	private int oCustomValue; 
 	private int mTimer;
 
 
@@ -180,6 +181,10 @@ public class Container_VolumetricFlaskSetter extends Container {
 				mCustomValue = (short) par2;
 				break;
 		}
+	}
+	
+	public void log(String aString) {
+		Logger.INFO("[Flask-Container] "+aString);
 	}
 
 }

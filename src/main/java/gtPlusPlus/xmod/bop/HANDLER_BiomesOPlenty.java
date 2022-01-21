@@ -91,7 +91,7 @@ public class HANDLER_BiomesOPlenty {
 		Field aBopColouredSapling = ReflectionUtils.getField(ReflectionUtils.getClass("biomesoplenty.api.content.BOPCBlocks"), "colorizedSaplings");
 		
 		if (aBopMiscItem != null) {
-			Item aMiscItem = (Item) ReflectionUtils.getFieldValue(aBopMiscItem);
+			Item aMiscItem = ReflectionUtils.getFieldValue(aBopMiscItem);
 			if (aMiscItem != null) {
 				mPineCone = aMiscItem;				
 			}
@@ -99,25 +99,25 @@ public class HANDLER_BiomesOPlenty {
 		
 
 		if (aBopBlock1 != null) {
-			Block aBlock = (Block) ReflectionUtils.getFieldValue(aBopBlock1);
+			Block aBlock = ReflectionUtils.getFieldValue(aBopBlock1);
 			if (aBlock != null) {
 				logs1 = aBlock;					
 			}
 		}
 		if (aBopBlock2 != null) {
-			Block aBlock = (Block) ReflectionUtils.getFieldValue(aBopBlock2);
+			Block aBlock = ReflectionUtils.getFieldValue(aBopBlock2);
 			if (aBlock != null) {
 				logs2 = aBlock;					
 			}
 		}
 		if (aBopBlock3 != null) {
-			Block aBlock = (Block) ReflectionUtils.getFieldValue(aBopBlock3);
+			Block aBlock = ReflectionUtils.getFieldValue(aBopBlock3);
 			if (aBlock != null) {
 				logs3 = aBlock;					
 			}
 		}
 		if (aBopBlock4 != null) {
-			Block aBlock = (Block) ReflectionUtils.getFieldValue(aBopBlock4);
+			Block aBlock = ReflectionUtils.getFieldValue(aBopBlock4);
 			if (aBlock != null) {
 				logs4 = aBlock;					
 			}
@@ -125,25 +125,25 @@ public class HANDLER_BiomesOPlenty {
 		
 
 		if (aBopLeaves1 != null) {
-			Block aBlock = (Block) ReflectionUtils.getFieldValue(aBopLeaves1);
+			Block aBlock = ReflectionUtils.getFieldValue(aBopLeaves1);
 			if (aBlock != null) {
 				leaves1 = aBlock;						
 			}
 		}
 		if (aBopLeaves2 != null) {
-			Block aBlock = (Block) ReflectionUtils.getFieldValue(aBopLeaves2);
+			Block aBlock = ReflectionUtils.getFieldValue(aBopLeaves2);
 			if (aBlock != null) {
 				leaves2 = aBlock;						
 			}
 		}
 		if (aBopLeaves3 != null) {
-			Block aBlock = (Block) ReflectionUtils.getFieldValue(aBopLeaves3);
+			Block aBlock = ReflectionUtils.getFieldValue(aBopLeaves3);
 			if (aBlock != null) {
 				leaves3 = aBlock;						
 			}
 		}
 		if (aBopLeaves4 != null) {
-			Block aBlock = (Block) ReflectionUtils.getFieldValue(aBopLeaves4);
+			Block aBlock = ReflectionUtils.getFieldValue(aBopLeaves4);
 			if (aBlock != null) {
 				leaves4 = aBlock;						
 			}
@@ -151,13 +151,13 @@ public class HANDLER_BiomesOPlenty {
 		
 		
 		if (aBopColouredLeaves1 != null) {
-			Block aBlock = (Block) ReflectionUtils.getFieldValue(aBopColouredLeaves1);
+			Block aBlock = ReflectionUtils.getFieldValue(aBopColouredLeaves1);
 			if (aBlock != null) {
 				colorizedLeaves1 = aBlock;						
 			}
 		}
 		if (aBopColouredLeaves2 != null) {
-			Block aBlock = (Block) ReflectionUtils.getFieldValue(aBopColouredLeaves2);
+			Block aBlock = ReflectionUtils.getFieldValue(aBopColouredLeaves2);
 			if (aBlock != null) {
 				colorizedLeaves2 = aBlock;						
 			}
@@ -165,13 +165,13 @@ public class HANDLER_BiomesOPlenty {
 		
 
 		if (aBopSapling != null) {
-			Block aBlock = (Block) ReflectionUtils.getFieldValue(aBopSapling);
+			Block aBlock = ReflectionUtils.getFieldValue(aBopSapling);
 			if (aBlock != null) {
 				saplings = aBlock;						
 			}
 		}
 		if (aBopColouredSapling != null) {
-			Block aBlock = (Block) ReflectionUtils.getFieldValue(aBopColouredSapling);
+			Block aBlock = ReflectionUtils.getFieldValue(aBopColouredSapling);
 			if (aBlock != null) {
 				colorizedSaplings = aBlock;						
 			}

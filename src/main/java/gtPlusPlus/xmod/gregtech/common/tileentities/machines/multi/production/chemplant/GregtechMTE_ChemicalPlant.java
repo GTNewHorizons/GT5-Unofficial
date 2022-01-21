@@ -568,10 +568,18 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<Gregt
 	}
 
 	@Override
-	public boolean checkRecipe(final ItemStack aStack) {		
+	public boolean checkRecipe(final ItemStack aStack) {
 		return checkRecipeGeneric(getMaxParallelRecipes(), getEuDiscountForParallelism(), getSpeedBonus());
 	}
 
+	@Override
+	public boolean checkRecipeGeneric(int aMaxParallelRecipes, int aEUPercent, int aSpeedBonusPercent, int aOutputChanceRoll) {
+		ArrayList<ItemStack> tItems = getStoredInputs();
+		ArrayList<FluidStack> tFluids = getStoredFluids();
+		ItemStack[] tItemInputs = tItems.toArray(new ItemStack[tItems.size()]);
+		FluidStack[] tFluidInputs = tFluids.toArray(new FluidStack[tFluids.size()]);
+		return checkRecipeGeneric(tItemInputs, tFluidInputs, aMaxParallelRecipes, aEUPercent, aSpeedBonusPercent, aOutputChanceRoll);
+	}
 
 	@Override
 	public boolean checkRecipeGeneric(
@@ -586,7 +594,7 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<Gregt
 		this.mMaxProgresstime = 0;
 		this.mOutputItems = new ItemStack[]{};
 		this.mOutputFluids = new FluidStack[]{};
-
+		
 		long tVoltage = getMaxInputVoltage();
 		byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
 		long tEnergy = getMaxInputEnergy();
@@ -1040,12 +1048,18 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<Gregt
 	@Override
 	public ArrayList<ItemStack> getStoredInputs() {
 		ArrayList<ItemStack> tItems = super.getStoredInputs();
+		if (this.hasSlotInGUI() && this.getGUIItemStack() != null) {
+			tItems.add(this.getGUIItemStack());
+		}
 		for (GT_MetaTileEntity_Hatch_Catalysts tHatch : mCatalystBuses) {
 			tHatch.mRecipeMap = getRecipeMap();
-			if (isValidMetaTileEntity(tHatch)) {                
-				tItems.addAll(tHatch.getContentUsageSlots());            	
+			if (isValidMetaTileEntity(tHatch)) {
+				AutoMap<ItemStack> aHatchContent = tHatch.getContentUsageSlots();
+				if (!aHatchContent.isEmpty()) {
+					tItems.addAll(aHatchContent);
+				}
 			}
-		}		
+		}
 		return tItems;
 	}
 }

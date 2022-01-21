@@ -538,6 +538,8 @@ public class TexturesGtBlock {
 	
 	private static final CustomIcon Internal_Overlay_Oil = new CustomIcon("TileEntities/adv_machine_oil");
 	public static final CustomIcon Overlay_Oil = Internal_Overlay_Oil;
+	private static final CustomIcon Internal_Overlay_Water = new CustomIcon("TileEntities/adv_machine_water");
+	public static final CustomIcon Overlay_Water = Internal_Overlay_Water;
 	private static final CustomIcon Internal_Overlay_UU_Matter = new CustomIcon("TileEntities/adv_machine_uum");
 	public static final CustomIcon Overlay_UU_Matter = Internal_Overlay_UU_Matter;
 

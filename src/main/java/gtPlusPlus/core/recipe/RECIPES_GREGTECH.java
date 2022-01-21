@@ -91,6 +91,7 @@ public class RECIPES_GREGTECH {
 		fluidheaterRecipes();
 		chemplantRecipes();
 		packagerRecipes();
+		alloySmelterRecipes();
 		implosionRecipes();
 
 
@@ -107,7 +108,15 @@ public class RECIPES_GREGTECH {
 
 		addFuels();
 	}
-
+	private static void alloySmelterRecipes() {
+		
+		//Wood's Glass Laser Lens
+		GT_Values.RA.addAlloySmelterRecipe(
+				MISC_MATERIALS.WOODS_GLASS.getDust(5),
+				ItemList.Shape_Mold_Ball.get(0),
+				GregtechItemList.Laser_Lens_WoodsGlass.get(1),
+				20 * 300, 
+				MaterialUtils.getVoltageForTier(3));
 
 
 	private static void packagerRecipes() {
@@ -367,7 +376,7 @@ public class RECIPES_GREGTECH {
 						CI.getTertiaryTieredFluid(aLaureniumTier-2, 6 * 144)
 				},
 				new ItemStack[] {
-						GregtechItemList.Casing_Machine_Custom_3.get(1)
+					GregtechItemList.Casing_Machine_Custom_3.get(1)
 				},
 				new FluidStack[] {
 
@@ -375,7 +384,7 @@ public class RECIPES_GREGTECH {
 				20 * 20,
 				MaterialUtils.getVoltageForTier(aLaureniumTier-2),
 				5);
-
+		
 		int aBotmiumTier = ALLOY.BOTMIUM.vTier;
 		// Adding Recipes for Casings
 		CORE.RA.addChemicalPlantRecipe(
@@ -391,7 +400,7 @@ public class RECIPES_GREGTECH {
 						CI.getTertiaryTieredFluid(aBotmiumTier-2, 6 * 144)
 				},
 				new ItemStack[] {
-						GregtechItemList.Casing_Machine_Custom_4.get(1)
+					GregtechItemList.Casing_Machine_Custom_4.get(1)
 				},
 				new FluidStack[] {
 
@@ -399,7 +408,7 @@ public class RECIPES_GREGTECH {
 				20 * 20,
 				MaterialUtils.getVoltageForTier(aBotmiumTier-2),
 				6);
-
+		
 
 		//Refine GT HF into GT++ HF
 		if (FluidUtils.doesHydrofluoricAcidGtExist()) {			
@@ -1136,29 +1145,6 @@ public class RECIPES_GREGTECH {
 				20 * 120,
 				480*4);
 
-
-		//Wood's Glass Laser Lens
-		CORE.RA.addBlastSmelterRecipe(
-				new ItemStack[] { 
-						ItemUtils.getGregtechCircuit(5),
-						ItemList.Shape_Mold_Ball.get(0),
-						ELEMENT.getInstance().BARIUM.getDust(1),
-						ELEMENT.getInstance().SODIUM.getDust(1),
-						ELEMENT.getInstance().SILICON.getDust(2),
-						ELEMENT.getInstance().NICKEL.getDust(1),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustGlass", 5)
-				},
-				FluidUtils.getUUM(1000),
-				null,
-				new ItemStack[] { 
-						GregtechItemList.Laser_Lens_WoodsGlass.get(1)
-				},
-				new int[] {10000},
-				20 * 300,
-				(int) GT_Values.V[3]);
-
-
-
 	}
 
 	private static void fluidcannerRecipes() {
@@ -1694,15 +1680,17 @@ public class RECIPES_GREGTECH {
 				10 * 20, 
 				60);
 
-		final FluidStack[] sulfurdioxideOutput = { 
-				FluidUtils.getFluidStack("oxygen", 2000) 
-		};
-		GT_Values.RA.addDistillationTowerRecipe(
-				FluidUtils.getFluidStack("sulfurdioxide", 144 * 3),
-				sulfurdioxideOutput,
-				ItemUtils.getItemStackOfAmountFromOreDict("dustSulfur", 1),
-				5 * 20, 
-				30);
+		if (!GTNH) {
+			final FluidStack[] sulfurdioxideOutput = {
+					FluidUtils.getFluidStack("oxygen", 2000)
+			};
+			GT_Values.RA.addDistillationTowerRecipe(
+					FluidUtils.getFluidStack("sulfurdioxide", 144 * 3),
+					sulfurdioxideOutput,
+					ItemUtils.getItemStackOfAmountFromOreDict("dustSulfur", 1),
+					5 * 20,
+					30);
+		}
 	}
 
 	private static void addFuels() {
@@ -1765,11 +1753,11 @@ public class RECIPES_GREGTECH {
 	}
 
 	private static void fluidExtractorRecipes() {
-
+		
 	}
 
 	private static void chemicalBathRecipes() {
-
+		
 	}
 
 	private static void centrifugeRecipes() {
@@ -1792,7 +1780,7 @@ public class RECIPES_GREGTECH {
 	}
 
 	private static void mixerRecipes() {
-
+		
 		GT_Values.RA.addMixerRecipe(
 				ItemUtils.getItemStackOfAmountFromOreDict("dustSulfur", 1),
 				null, 
@@ -1820,7 +1808,7 @@ public class RECIPES_GREGTECH {
 	}
 
 	private static void chemicalReactorRecipes() {
-
+		
 		//Bombs
 		GT_Values.RA.addChemicalRecipe(
 				ItemUtils.getSimpleStack(ModItems.itemBombCasing, 4),
@@ -1837,7 +1825,7 @@ public class RECIPES_GREGTECH {
 				null,
 				ItemUtils.getSimpleStack(ModItems.itemBomb, 4),
 				10 * 20);	
-
+		
 		GT_Values.RA.addChemicalRecipe(
 				CI.getNumberedAdvancedCircuit(21),
 				ItemUtils.getItemStackOfAmountFromOreDict("dustApatite", 32),
@@ -1917,7 +1905,7 @@ public class RECIPES_GREGTECH {
 	}
 
 	private static void autoclaveRecipes() {
-
+		
 	}
 
 	private static void benderRecipes() {
@@ -1940,7 +1928,7 @@ public class RECIPES_GREGTECH {
 	}
 
 	private static void macerationRecipes() {
-
+		
 		GT_ModHandler.addPulverisationRecipe(ItemUtils.getItemStackOfAmountFromOreDict("blockMeatRaw", 1),
 				ItemUtils.getItemStackOfAmountFromOreDict("dustMeatRaw", 9));
 
@@ -2280,11 +2268,11 @@ public class RECIPES_GREGTECH {
 	}
 
 	private static void sifterRecipes() {
-
+		
 	}
 
 	private static void electroMagneticSeperatorRecipes() {
-
+		
 		if (!GTNH) {		
 			// Trinium
 			GT_Values.RA.addElectromagneticSeparatorRecipe(

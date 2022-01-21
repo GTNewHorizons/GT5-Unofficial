@@ -18,7 +18,8 @@ import net.minecraft.world.IBlockAccess;
 public class GregtechMetaCasingBlocks5
 extends GregtechMetaCasingBlocksAbstract {
 
-	//Free Indexes within TAE: 90, 91, 92, 94, 114, 116, 117, 118, 119, 120, 121, 124, 125, 126, 127
+	// Free Indexes within TAE: 91, 92, 94, 100, 101, 102, 103, 104, 114, 116, 117, 118, 119, 120, 121, 124, 125, 126, 127
+	// 19 Free Indexes
 	private static final TexturesGrinderMultiblock mGrinderOverlayHandler = new TexturesGrinderMultiblock();
 	
 	public GregtechMetaCasingBlocks5() {
@@ -31,7 +32,8 @@ extends GregtechMetaCasingBlocksAbstract {
 		TAE.registerTexture(0, 3, new GT_CopiedBlockTexture(this, 6, 3));
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".4.name", "Sparge Tower Exterior Casing"); // Sparge Tower Casing
 		TAE.registerTexture(0, 4, new GT_CopiedBlockTexture(this, 6, 4));
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".5.name", ""); // Unused
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".5.name", "Sturdy Printer Casing"); // Unused
+		TAE.registerTexture(1, 10, new GT_CopiedBlockTexture(this, 6, 5));
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".6.name", "Forge Casing"); // Forge Hammer Casing
 		TAE.registerTexture(1, 11, new GT_CopiedBlockTexture(this, 6, 6));
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".7.name", ""); // Unused
@@ -49,6 +51,7 @@ extends GregtechMetaCasingBlocksAbstract {
 		GregtechItemList.Casing_IsaMill_Gearbox.set(new ItemStack(this, 1, 2));
 		GregtechItemList.Casing_ElementalDuplicator.set(new ItemStack(this, 1, 3));
 		GregtechItemList.Casing_Sparge_Tower_Exterior.set(new ItemStack(this, 1, 4));
+		GregtechItemList.Casing_IndustrialAutoChisel.set(new ItemStack(this, 1, 5));
 		GregtechItemList.Casing_IndustrialForgeHammer.set(new ItemStack(this, 1, 6));
 	}
 	
@@ -71,6 +74,8 @@ extends GregtechMetaCasingBlocksAbstract {
 					return TexturesGtBlock.TEXTURE_TECH_PANEL_D.getIcon();
 				case 4:
 					return TexturesGtBlock.Casing_Machine_Metal_Sheet_H.getIcon();
+				case 5:
+					return TexturesGtBlock.Casing_Machine_Metal_Sheet_I.getIcon();
 				case 6:
 					return TexturesGtBlock.TEXTURE_TECH_PANEL_H.getIcon();
 			}

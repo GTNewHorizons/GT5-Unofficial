@@ -68,7 +68,12 @@ public class GregtechCustomHatches {
 
 		// Multiblock Air Intake Hatch
 		GregtechItemList.Hatch_Air_Intake.set(new GT_MetaTileEntity_Hatch_AirIntake(861, "hatch.air.intake.tier.00", "Air Intake Hatch", 5).getStackForm(1L));
+		GregtechItemList.Hatch_Air_Intake_Extreme.set(new GT_MetaTileEntity_Hatch_AirIntake_Extreme(31070, "hatch.air.intake.tier.01", "Extreme Air Intake Hatch", 6).getStackForm(1L));
 
+		// Multiblock Reservoir Hatch
+		GregtechItemList.Hatch_Reservoir.set(new GT_MetaTileEntity_Hatch_Reservoir(31071, "hatch.water.intake.tier.00", "Reservoir Hatch", 6).getStackForm(1L));
+
+		
 		// Steam Hatch
 		GregtechItemList.Hatch_Input_Steam
 		.set(new GT_MetaTileEntity_Hatch_CustomFluidBase(FluidUtils.getSteam(1).getFluid(), // Fluid

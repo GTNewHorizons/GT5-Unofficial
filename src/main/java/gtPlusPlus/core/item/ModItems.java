@@ -14,6 +14,7 @@ import gtPlusPlus.core.common.compat.COMPAT_Baubles;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.*;
 import gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes;
+import gtPlusPlus.core.item.base.cell.BaseItemCell;
 import gtPlusPlus.core.item.base.dusts.BaseItemDust;
 import gtPlusPlus.core.item.base.foil.BaseItemFoil;
 import gtPlusPlus.core.item.base.foods.BaseItemFood;
@@ -203,6 +204,8 @@ public final class ModItems {
 	public static Item dustIgnis;
 	public static Item dustTerra;
 	public static Item dustAqua;
+	
+	public static Item cellHydrogenChlorideMix;
 
 	public static BaseEuItem metaItem2;
 
@@ -695,7 +698,10 @@ public final class ModItems {
 		dustAer = ItemUtils.generateSpecialUseDusts(ELEMENT.getInstance().AER, true)[0];
 		dustIgnis = ItemUtils.generateSpecialUseDusts(ELEMENT.getInstance().IGNIS, true)[0];
 		dustTerra = ItemUtils.generateSpecialUseDusts(ELEMENT.getInstance().TERRA, true)[0];
-		dustAqua = ItemUtils.generateSpecialUseDusts(ELEMENT.getInstance().AQUA, true)[0];
+		dustAqua = ItemUtils.generateSpecialUseDusts(ELEMENT.getInstance().AQUA, true)[0];		
+		
+		ItemUtils.generateSpecialUseDusts(MISC_MATERIALS.WOODS_GLASS, false);
+		cellHydrogenChlorideMix = new BaseItemCell("hydrogenchloridemix", "Hydrogen Chloride Mix", MISC_MATERIALS.HYDROGEN_CHLORIDE.getRGB());
 
 		//Nuclear Fuel Dusts
 		dustLithiumCarbonate = ItemUtils.generateSpecialUseDusts("LithiumCarbonate", "Lithium Carbonate", "Li2CO3", Utils.rgbtoHexValue(240, 240, 240))[0]; //https://en.wikipedia.org/wiki/Lithium_carbonate

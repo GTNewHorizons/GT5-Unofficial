@@ -46,6 +46,10 @@ extends GregtechMetaCasingBlocksAbstract {
 	public GregtechMetaCasingBlocks3() {
 		super(GregtechMetaCasingItemBlocks3.class, "gtplusplus.blockcasings.3", GT_Material_Casings.INSTANCE);
 		for (byte i = 0; i < 16; i = (byte) (i + 1)) {
+			// Free up Redox casing in TAE
+			if (i >= 4 && i <= 8) {
+				continue;
+			}
 			TAE.registerTexture(2, i, new GT_CopiedBlockTexture(this, 6, i));
 		}
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".0.name", "Aquatic Casing");

@@ -26,22 +26,22 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
 	public int locationY;
 	public int locationZ;
 	private int aCurrentMode = 0;
-	private short aCustomValue = 1000;
+	private int aCustomValue = 1000;
 
 	public TileEntityVolumetricFlaskSetter() {
 		this.inventoryContents = new Inventory_VolumetricFlaskSetter();
 		this.setTileLocation();
 	}
 	
-	public short getCustomValue() {
+	public int getCustomValue() {
 		//Logger.INFO("Value: "+this.aCustomValue);
 		return this.aCustomValue;
 	}
 	
 	public void setCustomValue(int aVal) {
-		Logger.INFO("Old Value: "+this.aCustomValue);
+		log("Old Value: "+this.aCustomValue);
 		this.aCustomValue = (short) MathUtils.balance(aVal, 0, Short.MAX_VALUE);
-		Logger.INFO("New Value: "+this.aCustomValue);
+		log("New Value: "+this.aCustomValue);
 		markDirty();
 	}
 
@@ -141,7 +141,7 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
 			
 			// Skip slot 7 (Custom) unless it has a value > 0
 			if (e == 7 && getCustomValue() <= 0) {
-				Logger.INFO("Skipping Custom slot as value <= 0");
+				log("Skipping Custom slot as value <= 0");
 				continue;
 			}
 			if (e == Container_VolumetricFlaskSetter.SLOT_OUTPUT) {
@@ -168,8 +168,8 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
 					// Check that the Circuit in the Output slot is not null and the same type as the circuit input.
 					if (aTypeInCheckedSlot > 0 && (aTypeInSlot == aTypeInCheckedSlot) && f != null) {
 						if (g.getItem() == f.getItem() && VolumetricFlaskHelper.getFlaskCapacity(f) == getCapacityForSlot(e) && ((aInputFluidStack == null && aFluidInCheckedSlot == null) || aInputFluidStack.isFluidEqual(aFluidInCheckedSlot))) {
-							Logger.INFO("Input Slot Flask Contains: "+(aInputFluidStack != null ? aInputFluidStack.getLocalizedName() : "Empty"));
-							Logger.INFO("Output Slot Flask Contains: "+(aFluidInCheckedSlot != null ? aFluidInCheckedSlot.getLocalizedName() : "Empty"));
+							log("Input Slot Flask Contains: "+(aInputFluidStack != null ? aInputFluidStack.getLocalizedName() : "Empty"));
+							log("Output Slot Flask Contains: "+(aFluidInCheckedSlot != null ? aFluidInCheckedSlot.getLocalizedName() : "Empty"));
 							aSize = f.stackSize + g.stackSize;							
 							if (aSize > 16) {
 								aInputStack = g.copy();
@@ -253,7 +253,7 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
 		final NBTTagCompound chestData = new NBTTagCompound();
 		this.inventoryContents.writeToNBT(chestData);
 		nbt.setTag("ContentsChest", chestData);
-		nbt.setShort("aCustomValue", aCustomValue);
+		nbt.setInteger("aCustomValue", aCustomValue);
 		if (this.hasCustomInventoryName()) {
 			nbt.setString("CustomName", this.getCustomName());
 		}
@@ -265,7 +265,7 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
 		super.readFromNBT(nbt);
 		// Utils.LOG_WARNING("Trying to read NBT data from TE.");
 		this.inventoryContents.readFromNBT(nbt.getCompoundTag("ContentsChest"));
-		this.aCustomValue = nbt.getShort("aCustomValue");
+		this.aCustomValue = nbt.getInteger("aCustomValue");
 		if (nbt.hasKey("CustomName", 8)) {
 			this.setCustomName(nbt.getString("CustomName"));
 		}
@@ -398,6 +398,10 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
 		catch (Throwable t) {
 			return false;
 		}		
+	}
+	
+	public void log(String aString) {
+		Logger.INFO("[Flask-Tile] "+aString);
 	}
 
 }

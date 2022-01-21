@@ -302,6 +302,8 @@ public class CORE {
 		public static int pollutionPerSecondMultiThermalBoiler = 700;
 		public static int pollutionPerSecondMultiMolecularTransformer = 1000;
 		public static int pollutionPerSecondMultiAlgaePond = 0;
+		public static int pollutionPerSecondMultiIndustrialRockBreaker = 100;
+		public static int pollutionPerSecondMultiIndustrialChisel = 50;
 		//pollution single blocks
 		public static int basePollutionPerSecondSemiFluidGenerator = 40;
 		public static double[] pollutionReleasedByTierSemiFluidGenerator = new double[]{0,2.0,4.0,8.0};

@@ -303,8 +303,8 @@ public interface IGregtech_RecipeAdder {
 
 	public boolean addVacuumFurnaceRecipe(ItemStack[] aInputs, FluidStack[] aFluidInputs, ItemStack[] aOutputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aLevel);
 
-	public boolean addUvLaserRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aOutput, int time, long eu);
-	public boolean addIrLaserRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aOutput, int time, long eu);
+	public boolean addUvLaserRecipe(ItemStack aInput1, ItemStack aOutput, int time, long eu);
+	public boolean addIrLaserRecipe(ItemStack aInput1, ItemStack aOutput, int time, long eu);
 
 	public boolean addChemicalPlantRecipe(ItemStack[] aInputs, FluidStack[] aInputFluids, ItemStack[] aOutputs, FluidStack[] aFluidOutputs, int time, long eu, int aTier);
 	public boolean addChemicalPlantRecipe(ItemStack[] aInputs, FluidStack[] aInputFluids, ItemStack[] aOutputs, FluidStack[] aFluidOutputs, int[] aChances, int time, long eu, int aTier);

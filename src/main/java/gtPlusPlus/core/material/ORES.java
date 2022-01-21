@@ -486,10 +486,11 @@ public final class ORES {
 			-1, //Radiation
 			new MaterialStack[]{
 					new MaterialStack(ELEMENT.getInstance().CALCIUM, 1),
+					new MaterialStack(ELEMENT.getInstance().YTTERBIUM, 3),
 					new MaterialStack(ELEMENT.getInstance().GADOLINIUM, 2),
 					new MaterialStack(ELEMENT.getInstance().DYSPROSIUM, 2),
 					new MaterialStack(ELEMENT.getInstance().URANIUM235, 2),
-					new MaterialStack(ELEMENT.getInstance().OXYGEN,32),
+					new MaterialStack(ELEMENT.getInstance().OXYGEN,29),
 					new MaterialStack(ELEMENT.getInstance().HYDROGEN, 24)
 			});
 	

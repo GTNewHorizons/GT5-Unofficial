@@ -36,7 +36,6 @@ import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 
 public class GregtechMetaTileEntity_Adv_DistillationTower extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_Adv_DistillationTower> {
 
-	private short mControllerY = 0;    
 	private byte mMode = 0;
 	private boolean mUpgraded = false;
 	private IStructureDefinition<GregtechMetaTileEntity_Adv_DistillationTower> STRUCTURE_DEFINITION = null;
@@ -157,7 +156,7 @@ public class GregtechMetaTileEntity_Adv_DistillationTower extends GregtechMeta_M
 				.addMaintenanceHatch("Bottom Casing", 1)
 				.addEnergyHatch("Bottom Casing", 1)
 				.addOutputHatch("One per layer except bottom", 2)
-				.addMufflerHatch("Top Center Casing", 3)
+				.addMufflerHatch("Top Casing", 3)
 				.toolTipFinisher(CORE.GT_Tooltip_Builder);
 		return tt;
 	}
@@ -259,13 +258,17 @@ public class GregtechMetaTileEntity_Adv_DistillationTower extends GregtechMeta_M
 		return false;
 	}
 
+	private short getControllerY() {
+		return getBaseMetaTileEntity().getYCoord();
+	}
+
 	@Override
 	public boolean addOutput(FluidStack aLiquid) {
 		if (aLiquid == null) return false;
 		FluidStack tLiquid = aLiquid.copy();
 		for (GT_MetaTileEntity_Hatch_Output tHatch : mOutputHatches) {
 			if (isValidMetaTileEntity(tHatch) && GT_ModHandler.isSteam(aLiquid) ? tHatch.outputsSteam() : tHatch.outputsLiquids()) {
-				if (tHatch.getBaseMetaTileEntity().getYCoord() == this.mControllerY + 1) {
+				if (tHatch.getBaseMetaTileEntity().getYCoord() == getControllerY() + 1) {
 					int tAmount = tHatch.fill(tLiquid, false);
 					if (tAmount >= tLiquid.amount) {
 						return tHatch.fill(tLiquid, true) >= tLiquid.amount;
@@ -282,7 +285,7 @@ public class GregtechMetaTileEntity_Adv_DistillationTower extends GregtechMeta_M
 	protected void addFluidOutputs(FluidStack[] mOutputFluids2) {
 		for (int i = 0; i < mOutputFluids2.length; i++) {
 			if (mOutputHatches.size() > i && mOutputHatches.get(i) != null && mOutputFluids2[i] != null && isValidMetaTileEntity(mOutputHatches.get(i))) {
-				if (mOutputHatches.get(i).getBaseMetaTileEntity().getYCoord() == this.mControllerY + 1 + i) {
+				if (mOutputHatches.get(i).getBaseMetaTileEntity().getYCoord() == getControllerY() + 1 + i) {
 					mOutputHatches.get(i).fill(mOutputFluids2[i], true);
 				}
 			}
@@ -477,5 +480,4 @@ public class GregtechMetaTileEntity_Adv_DistillationTower extends GregtechMeta_M
 		aNBT.setBoolean("mUpgraded", mUpgraded);
 		super.setItemNBT(aNBT);
 	}
-
 }

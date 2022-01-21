@@ -236,13 +236,14 @@ public final class ELEMENT {
 				0,
 				false,
 				new MaterialStack[]{
-						new MaterialStack(getInstance().OXYGEN, 30),
-						new MaterialStack(getInstance().IRON, 20),
-						new MaterialStack(getInstance().SILICONDIOXIDE, 20),
-						new MaterialStack(getInstance().ALUMINIUMOXIDE, 10),
-						new MaterialStack(getInstance().POTASSIUM, 10),
-						new MaterialStack(getInstance().CALCIUM, 5),
-						new MaterialStack(getInstance().SODIUM, 5)
+						new MaterialStack(getInstance().OXYGEN, 16),
+						new MaterialStack(getInstance().IRON, 10),
+						new MaterialStack(getInstance().SILICONDIOXIDE, 10),
+						new MaterialStack(getInstance().ALUMINIUMOXIDE, 6),
+						new MaterialStack(getInstance().POTASSIUM, 6),
+						new MaterialStack(getInstance().CALCIUM, 4),
+						new MaterialStack(getInstance().SODIUM, 4),
+						new MaterialStack(getInstance().YTTERBIUM, 2)
 						});//Not a GT Inherited Material
 		
 		public static final Material RUNITE = new Material("Runite", MaterialState.SOLID, TextureSet.SET_FINE, new short[] {60, 200, 190}, 6750, 11550, 73, 87, true, "§", 0);//Not a GT Inherited Material

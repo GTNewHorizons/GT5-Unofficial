@@ -254,7 +254,7 @@ public class HazmatUtils {
 			aItemFields.add(ReflectionUtils.getField(aItemsGravisuite, "graviChestPlate"));			
 			AutoMap<ItemStack> aGravisuite = new AutoMap<ItemStack>();
 			for (Field aItemField : aItemFields) {
-				Item aItemObject = (Item) ReflectionUtils.getFieldValue(aItemField);
+				Item aItemObject = ReflectionUtils.getFieldValue(aItemField);
 				if (aItemObject != null) {
 					aGravisuite.add(ItemUtils.getSimpleStack(aItemObject));
 				}
@@ -274,7 +274,7 @@ public class HazmatUtils {
 			aItemFields.add(ReflectionUtils.getField(aItemsEMT, "ultimateSolarHelmet"));			
 			AutoMap<ItemStack> aASP = new AutoMap<ItemStack>();
 			for (Field aItemField : aItemFields) {
-				Item aItemObject = (Item) ReflectionUtils.getFieldValue(aItemField);
+				Item aItemObject = ReflectionUtils.getFieldValue(aItemField);
 				if (aItemObject != null) {
 					aASP.add(ItemUtils.getSimpleStack(aItemObject));
 				}
