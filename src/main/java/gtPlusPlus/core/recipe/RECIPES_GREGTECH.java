@@ -101,13 +101,9 @@ public class RECIPES_GREGTECH {
 		RECIPES_SeleniumProcessing.init();
 		RECIPES_RareEarthProcessing.init();
 
-
-
-
-
-
 		addFuels();
 	}
+	
 	private static void alloySmelterRecipes() {
 		
 		//Wood's Glass Laser Lens
@@ -117,6 +113,8 @@ public class RECIPES_GREGTECH {
 				GregtechItemList.Laser_Lens_WoodsGlass.get(1),
 				20 * 300, 
 				MaterialUtils.getVoltageForTier(3));
+		
+	}
 
 
 	private static void packagerRecipes() {
