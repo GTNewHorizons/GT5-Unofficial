@@ -477,21 +477,21 @@ public class RECIPES_GREGTECH {
 
 		//Hypogen Creation
 		GT_Values.RA.addFusionReactorRecipe(
-				Materials.Neutronium.getMolten(128),
-				ALLOY.QUANTUM.getFluidStack(256),
-				ELEMENT.STANDALONE.HYPOGEN.getFluidStack(4),
+				ELEMENT.STANDALONE.DRAGON_METAL.getFluidStack(144),
+				ELEMENT.STANDALONE.RHUGNOR.getFluidStack(288),
+				ELEMENT.STANDALONE.HYPOGEN.getFluidStack(36),
 				2048 * 4,
-				(int) MaterialUtils.getVoltageForTier(9),
+				MaterialUtils.getVoltageForTier(9),
 				600000000 * 2);
 
 		//Rhugnor
 		GT_Values.RA.addFusionReactorRecipe(
-				GenericChem.TEFLON.getFluidStack(64),
-				ALLOY.PIKYONIUM.getFluidStack(128),
-				ELEMENT.STANDALONE.RHUGNOR.getFluidStack(8),
-				2048 * 4,
-				(int) MaterialUtils.getVoltageForTier(7),
-				150000000 * 2);
+				MaterialUtils.getMaterial("Infinity", "Neutronium").getMolten(144),
+				ALLOY.QUANTUM.getFluidStack(288),
+				ELEMENT.STANDALONE.RHUGNOR.getFluidStack(144),
+				512,
+				MaterialUtils.getVoltageForTier(8),
+				2000000000);
 
 	}
 

@@ -430,7 +430,7 @@ public class RECIPES_General {
 
 			if (RecipeUtils.addShapedRecipe(
 					input, input, input,
-					input, aInvertedObsidian, input,
+					input, r == 2 ? aInvertedObsidian : input, input,
 					input, input, input,
 					output)){
 				Logger.INFO("Added a recipe for Compressed Glowstone ["+r+"]");

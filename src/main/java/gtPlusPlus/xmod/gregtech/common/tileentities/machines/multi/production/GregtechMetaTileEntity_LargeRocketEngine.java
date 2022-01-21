@@ -1,28 +1,28 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.TAE;
-import gregtech.api.enums.Textures;
+
+import gregtech.api.enums.*;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GTPP_Recipe;
+import gregtech.api.util.*;
+import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.chemistry.RocketFuels;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.MISC_MATERIALS;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_AirIntake;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler_Adv;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
@@ -31,11 +31,8 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
-
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
 public class GregtechMetaTileEntity_LargeRocketEngine extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_LargeRocketEngine>
 {
@@ -52,6 +49,9 @@ public class GregtechMetaTileEntity_LargeRocketEngine extends GregtechMeta_Multi
 	public static String mCasingName = "Turbodyne Casing";
 	public static String mIntakeHatchName = "Tungstensteel Turbine Casing";
 	public static String mGearboxName = "Inconel Reinforced Casing";
+	
+	private static Fluid sAirFluid = null;
+	private static FluidStack sAirFluidStack = null;
 
 	private int mCasing;
 	private IStructureDefinition<GregtechMetaTileEntity_LargeRocketEngine> STRUCTURE_DEFINITION = null;
@@ -64,6 +64,7 @@ public class GregtechMetaTileEntity_LargeRocketEngine extends GregtechMeta_Multi
 		this.fuelValue = 0;
 		this.fuelRemaining = 0;
 		this.boostEu = false;
+		setAir();
 	}
 
 	public GregtechMetaTileEntity_LargeRocketEngine(final String aName) {
@@ -72,6 +73,7 @@ public class GregtechMetaTileEntity_LargeRocketEngine extends GregtechMeta_Multi
 		this.fuelValue = 0;
 		this.fuelRemaining = 0;
 		this.boostEu = false;
+		setAir();
 	}
 
 	@Override
@@ -95,7 +97,7 @@ public class GregtechMetaTileEntity_LargeRocketEngine extends GregtechMeta_Multi
 				.addStructureHint("Air Intake Hatch", 1)
 				.addInputBus("Side center line", 1)
 				.addInputHatch("Side center line", 1)
-				.addMaintenanceHatch("Side center line", 1)
+				.addMaintenanceHatch("Any Block Touching Inconel Reinforced Casing", 1)
 				.addDynamoHatch("Top center line", 2)
 				.addMufflerHatch("Back Center", 3)
 				.toolTipFinisher(CORE.GT_Tooltip_Builder);
@@ -107,7 +109,7 @@ public class GregtechMetaTileEntity_LargeRocketEngine extends GregtechMeta_Multi
 		if (STRUCTURE_DEFINITION == null) {
 			STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_LargeRocketEngine>builder()
 					.addShape(mName, transpose(new String[][]{
-							{"CCC", "CTC", "CTC", "CTC", "CTC", "CTC", "CTC", "CTC", "CTC", "CCC"},
+							{"CTC", "CTC", "CTC", "CTC", "CTC", "CTC", "CTC", "CTC", "CTC", "CTC"},
 							{"C~C", "SIS", "SIS", "SIS", "SIS", "SIS", "SIS", "SIS", "SIS", "CMC"},
 							{"CCC", "CSC", "CSC", "CSC", "CSC", "CSC", "CSC", "CSC", "CSC", "CCC"},
 					}))
@@ -179,13 +181,19 @@ public class GregtechMetaTileEntity_LargeRocketEngine extends GregtechMeta_Multi
 	public final boolean addLargeRocketEngineTopList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
 		if (aTileEntity == null) {
 			return false;
-		} else {
+		}
+		else {
 			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance){
+			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance) {
 				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Dynamo) {
+			}
+			else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_AirIntake) {
 				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} if (LoadedMods.TecTech) {
+			}
+			else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Dynamo) {
+				return addToMachineList(aTileEntity, aBaseCasingIndex);
+			}
+			if (LoadedMods.TecTech) {
 				if (isThisHatchMultiDynamo(aMetaTileEntity)) {
 					return addToMachineList(aTileEntity, aBaseCasingIndex);
 				}
@@ -197,15 +205,19 @@ public class GregtechMetaTileEntity_LargeRocketEngine extends GregtechMeta_Multi
 	public final boolean addLargeRocketEngineSideList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
 		if (aTileEntity == null) {
 			return false;
-		} else {
+		}
+		else {
 			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance){
+			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance) {
 				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_AirIntake) {
+			}
+			else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_AirIntake) {
 				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
+			}
+			else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
 				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus) {
+			}
+			else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus) {
 				return addToMachineList(aTileEntity, aBaseCasingIndex);
 			}
 		}
@@ -241,19 +253,28 @@ public class GregtechMetaTileEntity_LargeRocketEngine extends GregtechMeta_Multi
 	public Object getClientGUI(final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
 		return super.getClientGUI(aID, aPlayerInventory, aBaseMetaTileEntity);
 	}
+	
+	public static void setAir() {
+		if (sAirFluidStack == null) {
+			sAirFluidStack = FluidUtils.getFluidStack("air", 1);
+		}
+		if (sAirFluid == null && sAirFluidStack != null) {
+			sAirFluid = sAirFluidStack.getFluid();
+		}
+	}
 
 	public int getAir() {
+		setAir();
 		if (this.mAirIntakes.isEmpty() || this.mAirIntakes.size() <= 0) {
 			return 0;
 		}
 		else {
 			int totalAir = 0;
-			FluidStack airstack = FluidUtils.getFluidStack("air", 1);
 			for (GT_MetaTileEntity_Hatch_AirIntake u : this.mAirIntakes) {
 				if (u != null && u.mFluid != null) {
 					// had this trow errors cousing the machine to stop probebly fixed
 					FluidStack f = u.mFluid;
-					if (f.isFluidEqual(airstack)) {
+					if (f.isFluidEqual(sAirFluidStack)) {
 						totalAir += f.amount;
 					}
 				}
@@ -263,9 +284,13 @@ public class GregtechMetaTileEntity_LargeRocketEngine extends GregtechMeta_Multi
 	}
 
 	@Override
+	public GT_Recipe_Map getRecipeMap() {
+		return GTPP_Recipe.GTPP_Recipe_Map.sRocketFuels;
+	}
+	
+	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
 		final ArrayList<FluidStack> tFluids = this.getStoredFluids();
-		FluidStack air = FluidUtils.getFluidStack("air", 1);
 
 		int aircount = getAir() ;
 		if (aircount <  euProduction/100) {
@@ -273,7 +298,7 @@ public class GregtechMetaTileEntity_LargeRocketEngine extends GregtechMeta_Multi
 			return false;
 		}
 		else {		
-			boolean hasIntakeAir = this.depleteInput(FluidUtils.getFluidStack(air, euProduction/100));
+			boolean hasIntakeAir = this.depleteInput(FluidUtils.getFluidStack(sAirFluid, euProduction/100));
 			if (!hasIntakeAir) {
 				//log("Could not consume Air to run "+aircount);
 				freeFuelTicks = 0;
@@ -286,10 +311,9 @@ public class GregtechMetaTileEntity_LargeRocketEngine extends GregtechMeta_Multi
 		
 		//log("Running "+aircount);
 		log("looking at hatch");
-		final Collection<GT_Recipe> tRecipeList = GTPP_Recipe.GTPP_Recipe_Map.sRocketFuels.mRecipeList;
 		
 		
-		if (tFluids.size() > 0 && tRecipeList != null) {
+		if (tFluids.size() > 0 && getRecipeMap() != null) {
 			
 			if (tFluids.contains(MISC_MATERIALS.CARBON_DIOXIDE.getFluidStack(this.boostEu ? 3 : 1)) || tFluids.contains(FluidUtils.getFluidStack("carbondioxide", (this.boostEu ? 3 : 1)))) {
 				if (this.mRuntime % 72 == 0 || this.mRuntime == 0) {
@@ -308,12 +332,12 @@ public class GregtechMetaTileEntity_LargeRocketEngine extends GregtechMeta_Multi
 				this.boostEu = consumeLOH();
 			
 			for (final FluidStack hatchFluid1 : tFluids) {
-				if (hatchFluid1.isFluidEqual(air)) {
+				if (hatchFluid1.isFluidEqual(sAirFluidStack)) {
 					continue;
 				}
 				
 				if (freeFuelTicks == 0) {
-					for (final GT_Recipe aFuel : tRecipeList) {
+					for (final GT_Recipe aFuel : getRecipeMap().mRecipeList) {
 						final FluidStack tLiquid;
 						tLiquid = aFuel.mFluidInputs[0];
 						if (hatchFluid1.isFluidEqual(tLiquid)) {

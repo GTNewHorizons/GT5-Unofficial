@@ -81,7 +81,7 @@ public class GregtechMetaTileEntity_IndustrialExtruder extends GregtechMeta_Mult
 			STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialExtruder>builder()
 					.addShape(mName, transpose(new String[][]{
 							{"CCC", "CCC", "CCC", "CCC", "CCC"},
-							{"C~C", "C-C", "C-C", "C-C", "CMC"},
+							{"C~C", "C-C", "C-C", "C-C", "CCC"},
 							{"CCC", "CCC", "CCC", "CCC", "CCC"},
 					}))
 					.addElement(
@@ -96,12 +96,6 @@ public class GregtechMetaTileEntity_IndustrialExtruder extends GregtechMeta_Mult
 													getCasingBlock(), getCasingMeta()
 											)
 									)
-							)
-					)
-					.addElement(
-							'M',
-							ofHatchAdder(
-									GregtechMetaTileEntity_IndustrialExtruder::addIndustrialExtruderMufflerList, getCasingTextureIndex(), 2
 							)
 					)
 					.build();
@@ -135,19 +129,6 @@ public class GregtechMetaTileEntity_IndustrialExtruder extends GregtechMeta_Mult
 				return addToMachineList(aTileEntity, aBaseCasingIndex);
 			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler) {
 				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			}
-		}
-		return false;
-	}
-
-	public final boolean addIndustrialExtruderMufflerList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-		if (aTileEntity == null) {
-			return false;
-		} else {
-			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler) {
-				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-				return this.mMufflerHatches.add((GT_MetaTileEntity_Hatch_Muffler) aMetaTileEntity);
 			}
 		}
 		return false;

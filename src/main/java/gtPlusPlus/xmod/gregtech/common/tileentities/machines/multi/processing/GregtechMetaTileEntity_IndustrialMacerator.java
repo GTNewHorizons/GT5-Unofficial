@@ -145,13 +145,16 @@ public class GregtechMetaTileEntity_IndustrialMacerator extends GregtechMeta_Mul
 	public final boolean addIndustrialMaceratorBottomList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
 		if (aTileEntity == null) {
 			return false;
-		} else {
+		}
+		else {
 			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus){
+			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus) {
 				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance){
+			}
+			else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance) {
 				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy){
+			}
+			else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy) {
 				return addToMachineList(aTileEntity, aBaseCasingIndex);
 			}
 		}
@@ -161,11 +164,19 @@ public class GregtechMetaTileEntity_IndustrialMacerator extends GregtechMeta_Mul
 	public final boolean addIndustrialMaceratorMidList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
 		if (aTileEntity == null) {
 			return false;
-		} else {
+		}
+		else {
 			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
 			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus) {
 				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler) {
+			}
+			else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler) {
+				return addToMachineList(aTileEntity, aBaseCasingIndex);
+			}
+			else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance) {
+				return addToMachineList(aTileEntity, aBaseCasingIndex);
+			}
+			else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy) {
 				return addToMachineList(aTileEntity, aBaseCasingIndex);
 			}
 		}

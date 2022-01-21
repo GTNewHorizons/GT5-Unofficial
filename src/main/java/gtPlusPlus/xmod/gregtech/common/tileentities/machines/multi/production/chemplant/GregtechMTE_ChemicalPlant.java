@@ -601,7 +601,7 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<Gregt
 		}		
 
 		// checks if it has a catalyst
-		ItemStack tCatalystRecipe = findCatalyst(aItemInputs);
+		ItemStack tCatalystRecipe = null;
 		boolean aDoesRecipeNeedCatalyst = false;
 		for (ItemStack aInputItem : tRecipe.mInputs) {
 			if (ItemUtils.isCatalyst(aInputItem)) {
@@ -610,6 +610,7 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<Gregt
 			}
 		}
 		if (aDoesRecipeNeedCatalyst) {
+			tCatalystRecipe = findCatalyst(aItemInputs, tRecipe.mInputs);
 			if (tCatalystRecipe == null) {
 				log("does not have catalyst");
 				return false;
@@ -951,12 +952,16 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<Gregt
 		return allowedParallel;
 	}
 
-	private ItemStack findCatalyst(ItemStack[] aItemInputs) {
+	private ItemStack findCatalyst(ItemStack[] aItemInputs, ItemStack[] aRecipeInputs) {
 		if (aItemInputs != null) {
 			for (final ItemStack aInput : aItemInputs) {
 				if (aInput != null) {
 					if (ItemUtils.isCatalyst(aInput)) {
-						return aInput;
+						for (ItemStack aRecipeInput : aRecipeInputs) {
+							if (GT_Utility.areStacksEqual(aRecipeInput, aInput, true)) {
+								return aInput;
+							}
+						}
 					}
 				}
 			}
