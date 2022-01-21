@@ -9,7 +9,7 @@ import net.minecraft.util.EnumChatFormatting;
 public class ItemSunnariumBit extends CoreItem {
 
 	public ItemSunnariumBit() {
-		super("item.SunnariumBit", "Sunnarium Bit", AddToCreativeTab.tabMisc, 64, 0, new String[] {}, EnumRarity.uncommon, EnumChatFormatting.GOLD, false, null);
+		super("SunnariumBit", "Sunnarium Bit", AddToCreativeTab.tabMisc, 64, 0, new String[] {}, EnumRarity.uncommon, EnumChatFormatting.GOLD, false, null);
 		this.setTextureName(CORE.MODID+":"+"itemSunnariumBit");
 	}
 

@@ -3370,3 +3370,6 @@ item.itemGearPraseodymium.name=Praseodymium Gear
 item.itemCellPraseodymium.name=Praseodymium Cell
 item.milledMonazite.name=Milled Monazite
 item.FrothMonaziteflotation.name=Monazite Flotation Froth Cell
+
+//Added 19/01/22
+item.SunnariumBit.name=Sunnarium Bit
