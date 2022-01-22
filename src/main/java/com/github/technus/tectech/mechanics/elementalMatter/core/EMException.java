@@ -19,7 +19,4 @@ public final class EMException extends RuntimeException {
     public EMException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
-
-    public EMException() {
-    }
 }

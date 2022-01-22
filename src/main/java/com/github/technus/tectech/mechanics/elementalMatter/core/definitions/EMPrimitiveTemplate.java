@@ -2,10 +2,8 @@ package com.github.technus.tectech.mechanics.elementalMatter.core.definitions;
 
 import com.github.technus.tectech.mechanics.elementalMatter.core.EMException;
 import com.github.technus.tectech.mechanics.elementalMatter.core.decay.EMDecay;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry.EMDefinitionsRegistry;
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMConstantStackMap;
-import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMFluidDequantizationInfo;
-import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMItemDequantizationInfo;
-import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMOredictDequantizationInfo;
 import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.ArrayList;
@@ -25,41 +23,43 @@ public abstract class EMPrimitiveTemplate extends EMComplexTemplate {
     //int -electric charge in 1/3rds of electron charge for optimization
     private final int    charge;
     //byte color; 0=Red 1=Green 2=Blue 0=Cyan 1=Magenta 2=Yellow, else ignored (-1 - uncolorable)
-    private final byte   color;
+    private final int color;
     //-1/-2/-3 anti matter generations, +1/+2/+3 matter generations, 0 self anti
-    private final byte type;
+    private final int generation;
 
-    private EMPrimitiveTemplate anti;//IMMUTABLE
+    private IEMDefinition anti;//IMMUTABLE
     private EMDecay[]           elementalDecays;
     private byte                naturalDecayInstant;
     private byte energeticDecayInstant;
     private double rawLifeTime;
 
     private final int ID;
+    private final String bind;
 
     //no _ at end - normal particle
     //   _ at end - anti particle
     //  __ at end - self is antiparticle
 
-    protected EMPrimitiveTemplate(String name, String symbol, int type, double mass, int charge, int color, int ID) {
+    protected EMPrimitiveTemplate(String name, String symbol, int generation, double mass, int charge, int color, int ID, String bind) {
         this.name = name;
         this.symbol = symbol;
-        this.type = (byte) type;
+        this.generation = generation;
         this.mass = mass;
         this.charge = charge;
-        this.color = (byte) color;
+        this.color = color;
         this.ID = ID;
-        EMDefinitionsRegistry.registerDirectDefinition(this,ID);
+        this.bind=bind;
     }
 
     //
-    protected void init(EMPrimitiveTemplate antiParticle, double rawLifeTime, int naturalInstant, int energeticInstant, EMDecay... elementalDecaysArray) {
+    protected void init(EMDefinitionsRegistry registry,IEMDefinition antiParticle, double rawLifeTime, int naturalInstant, int energeticInstant, EMDecay... elementalDecaysArray) {
         anti = antiParticle;
         this.rawLifeTime = rawLifeTime;
         naturalDecayInstant = (byte) naturalInstant;
         energeticDecayInstant = (byte) energeticInstant;
         elementalDecays =elementalDecaysArray;
-        EMDefinitionsRegistry.registerForDisplay(this);
+        registry.registerForDisplay(this);
+        registry.registerDirectDefinition(bind,this);
     }
 
     @Override
@@ -83,7 +83,7 @@ public abstract class EMPrimitiveTemplate extends EMComplexTemplate {
     }
 
     @Override
-    public byte getColor() {
+    public int getMaxColors() {
         return color;
     }
 
@@ -153,44 +153,27 @@ public abstract class EMPrimitiveTemplate extends EMComplexTemplate {
     }
 
     @Override
-    public EMFluidDequantizationInfo someAmountIntoFluidStack() {
-        return null;
+    public int getGeneration() {
+        return generation;
     }
 
     @Override
-    public EMItemDequantizationInfo someAmountIntoItemsStack() {
-        return null;
+    public final NBTTagCompound toNBT(EMDefinitionsRegistry registry) {
+        return registry.directToNBT(bind);
     }
 
     @Override
-    public EMOredictDequantizationInfo someAmountIntoOredictStack() {
-        return null;
-    }
-
-    @Override
-    public byte getMatterType() {
-        return type;
-    }
-
-    @Override
-    public final NBTTagCompound toNBT() {
-        NBTTagCompound nbt = new NBTTagCompound();
-        nbt.setInteger(EMDefinitionsRegistry.getDirectTagName(), ID);
-        return nbt;
-    }
-
-    @Override
-    protected final int getIndirectTagValue() {
+    protected final String getIndirectTagValue() {
         throw new EMException("This class should only be used directly!");
     }
 
     @Override
-    public final byte getClassType() {
+    public final int getMatterMassType() {
         return getClassTypeStatic();
     }
 
-    public static byte getClassTypeStatic(){
-        return -128;
+    public static int getClassTypeStatic(){
+        return Short.MIN_VALUE;
     }
 
     @Override
@@ -203,7 +186,7 @@ public abstract class EMPrimitiveTemplate extends EMComplexTemplate {
     @Override
     public void addScanResults(ArrayList<String> lines, int capabilities, long energyLevel) {
         if(areBitsSet(SCAN_GET_CLASS_TYPE, capabilities)) {
-            lines.add("CLASS = " + EMDefinitionsRegistry.getDirectTagName() + ' ' + getClassType());
+            lines.add("DIRECT = " + bind + ' ' + getMatterMassType());
         }
         if(areBitsSet(SCAN_GET_NOMENCLATURE|SCAN_GET_CHARGE|SCAN_GET_MASS|SCAN_GET_TIMESPAN_INFO, capabilities)) {
             lines.add("NAME = "+ getLocalizedName());
@@ -213,7 +196,7 @@ public abstract class EMPrimitiveTemplate extends EMComplexTemplate {
             lines.add("CHARGE = " + getCharge() / 3D + " e");
         }
         if(areBitsSet(SCAN_GET_COLOR,capabilities)) {
-            lines.add(getColor() < 0 ? "COLORLESS" : "CARRIES COLOR");
+            lines.add(hasColor() ? "COLORLESS" : "CARRIES COLOR");
         }
         if(areBitsSet(SCAN_GET_MASS,capabilities)) {
             lines.add("MASS = " + getMass() + " eV/c\u00b2");
@@ -226,7 +209,7 @@ public abstract class EMPrimitiveTemplate extends EMComplexTemplate {
 
     @Override
     public final int compareTo(IEMDefinition o) {
-        if (getClassType() == o.getClassType()) {
+        if (getMatterMassType() == o.getMatterMassType()) {
             int oID = ((EMPrimitiveTemplate) o).ID;
             return Integer.compare(ID, oID);
         }
@@ -238,7 +221,7 @@ public abstract class EMPrimitiveTemplate extends EMComplexTemplate {
         return ID;
     }
 
-    public String getName() {
+    public String getUnlocalizedName() {
         return name;
     }
 }

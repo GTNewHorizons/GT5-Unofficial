@@ -24,7 +24,7 @@ import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
-import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationInfo.AVOGADRO_CONSTANT_144;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry.EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED;
 import static com.github.technus.tectech.util.CommonValues.*;
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity;
@@ -83,7 +83,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
         //aNBT.setFloat("lifeTimeMult",lifeTimeMult);
         aNBT.setDouble("OverflowMatter", overflowMatter);
         content.cleanUp();
-        aNBT.setTag("eM_Stacks", content.toNBT());
+        aNBT.setTag("eM_Stacks", content.toNBT(TecTech.definitionsRegistry));
         aNBT.setShort("eID", id);
     }
 
@@ -95,7 +95,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
         overflowMatter = aNBT.getFloat("overflowMatter")+aNBT.getDouble("OverflowMatter");
         id = aNBT.getShort("eID");
         try {
-            content = EMInstanceStackMap.fromNBT(aNBT.getCompoundTag("eM_Stacks"));
+            content = EMInstanceStackMap.fromNBT(TecTech.definitionsRegistry,aNBT.getCompoundTag("eM_Stacks"));
         } catch (EMException e) {
             if (DEBUG_MODE) {
                 e.printStackTrace();
@@ -210,7 +210,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
     }
 
     public double getMaxStackSize() {
-        return mTier * (mTier - 7) * 64D * AVOGADRO_CONSTANT_144;
+        return mTier * (mTier - 7) * 64D * EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED;
     }
 
     @Override

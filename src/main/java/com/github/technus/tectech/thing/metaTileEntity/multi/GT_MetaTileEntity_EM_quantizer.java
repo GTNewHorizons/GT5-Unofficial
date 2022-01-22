@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition.DEFAULT_ENERGY_LEVEL;
 import static com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition.STABLE_RAW_LIFE_TIME;
-import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationInfo.TRANSFORMATION_INFO;
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.EMAtomDefinition.refMass;
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.EMAtomDefinition.refUnstableMass;
 import static com.github.technus.tectech.mechanics.structure.Structure.adders;
@@ -98,9 +97,9 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
             if (inI.length > 0) {
                 for (ItemStack is : inI) {
                     //ITEM STACK quantization
-                    EMItemQuantizationInfo aIQI = TRANSFORMATION_INFO.getItemQuantization().get(new EMItemQuantizationInfo(is, false, null));
+                    EMItemQuantizationInfo aIQI = TecTech.transformationInfo.getItemQuantization().get(new EMItemQuantizationInfo(is, false, null));
                     if (aIQI == null) {
-                        aIQI = TRANSFORMATION_INFO.getItemQuantization().get(new EMItemQuantizationInfo(is, true, null));//todo check if works?
+                        aIQI = TecTech.transformationInfo.getItemQuantization().get(new EMItemQuantizationInfo(is, true, null));//todo check if works?
                     }
                     if (aIQI == null) {
                         //ORE DICT quantization //todo fix for uranium?
@@ -109,11 +108,11 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
                             if (DEBUG_MODE) {
                                 TecTech.LOGGER.info("Quantifier-Ore-recipe " + is.getItem().getUnlocalizedName() + '.' + is.getItemDamage() + ' ' + OreDictionary.getOreName(ID));
                             }
-                            EMOredictQuantizationInfo aOQI = TRANSFORMATION_INFO.getOredictQuantization().get(ID);
+                            EMOredictQuantizationInfo aOQI = TecTech.transformationInfo.getOredictQuantization().get(ID);
                             if (aOQI == null) {
                                 continue;
                             }
-                            IEMStack into = aOQI.output();
+                            IEMStack into = aOQI.getOut();
                             if (into != null && isInputEqual(true, false, nullFluid, new ItemStack[]{new ItemStack(is.getItem(), aOQI.getAmount(), is.getItemDamage())}, null, inI)) {
                                 startRecipe(into);
                                 return true;
@@ -136,7 +135,7 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
             FluidStack[] inF = storedFluids.toArray(nullFluid);
             if (inF.length > 0) {
                 for (FluidStack fs : inF) {
-                    EMFluidQuantizationInfo aFQI = TRANSFORMATION_INFO.getFluidQuantization().get(fs.getFluid().getID());
+                    EMFluidQuantizationInfo aFQI = TecTech.transformationInfo.getFluidQuantization().get(fs.getFluid().getID());
                     if (aFQI == null) {
                         continue;
                     }

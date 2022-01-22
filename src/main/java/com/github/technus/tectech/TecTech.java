@@ -2,6 +2,7 @@ package com.github.technus.tectech;
 
 import com.github.technus.tectech.loader.MainLoader;
 import com.github.technus.tectech.loader.TecTechConfig;
+import com.github.technus.tectech.loader.gui.CreativeTabTecTech;
 import com.github.technus.tectech.mechanics.anomaly.AnomalyHandler;
 import com.github.technus.tectech.mechanics.anomaly.CancerCommand;
 import com.github.technus.tectech.mechanics.anomaly.ChargeCommand;
@@ -11,6 +12,8 @@ import com.github.technus.tectech.mechanics.data.ChunkDataHandler;
 import com.github.technus.tectech.mechanics.data.PlayerPersistence;
 import com.github.technus.tectech.mechanics.elementalMatter.core.commands.EMGive;
 import com.github.technus.tectech.mechanics.elementalMatter.core.commands.EMList;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry.EMDefinitionsRegistry;
+import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry;
 import com.github.technus.tectech.proxy.CommonProxy;
 import com.github.technus.tectech.util.XSTR;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -41,7 +44,8 @@ public class TecTech {
     public static TecTech instance;
 
     public static final XSTR RANDOM = XSTR.XSTR_INSTANCE;
-    public static final LogHelper LOGGER = new LogHelper(Reference.MODID);
+    public static final LogHelper          LOGGER = new LogHelper(Reference.MODID);
+    public static       CreativeTabTecTech creativeTabTecTech;
 
     private static IngameErrorLog moduleAdminErrorLogs;
     public static TecTechConfig configTecTech;
@@ -49,6 +53,9 @@ public class TecTech {
     public static ChunkDataHandler chunkDataHandler;
     public static AnomalyHandler anomalyHandler;
     public static PlayerPersistence playerPersistence;
+
+    public static final EMDefinitionsRegistry    definitionsRegistry =new EMDefinitionsRegistry();
+    public static final EMTransformationRegistry transformationInfo  =new EMTransformationRegistry();
 
     /**
      * For Loader.isModLoaded checks during the runtime
@@ -106,7 +113,7 @@ public class TecTech {
                 Field field= GT_Proxy.class.getDeclaredField("mEvents");
                 field.setAccessible(true);
                 modifiersField.setInt( field, field.getModifiers() & ~Modifier.FINAL );
-                field.set(GT_Mod.gregtechproxy, new Collection() {
+                field.set(GT_Mod.gregtechproxy, new Collection<Object>() {
                     @Override
                     public int size() {
                         return 0;
@@ -123,8 +130,8 @@ public class TecTech {
                     }
 
                     @Override
-                    public Iterator iterator() {
-                        return new Iterator() {
+                    public Iterator<Object> iterator() {
+                        return new Iterator<Object>() {
                             @Override
                             public boolean hasNext() {
                                 return false;
@@ -188,13 +195,13 @@ public class TecTech {
 
         }
 
-        MainLoader.load();
+        MainLoader.load(definitionsRegistry);
         MainLoader.addAfterGregTechPostLoadRunner();
     }
 
     @Mod.EventHandler
     public void PostLoad(FMLPostInitializationEvent PostEvent) {
-        MainLoader.postLoad();
+        MainLoader.postLoad(definitionsRegistry,transformationInfo);
 
         chunkDataHandler.registerChunkMetaDataHandler(anomalyHandler=new AnomalyHandler());
     }

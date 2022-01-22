@@ -2,7 +2,9 @@ package com.github.technus.tectech.loader.recipe;
 
 import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.compatibility.dreamcraft.DreamCraftRecipeLoader;
+import com.github.technus.tectech.compatibility.gtpp.GtppAtomLoader;
 import com.github.technus.tectech.compatibility.spartakcore.SpartakCoreRecipeLoader;
+import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.EMAtomDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.EMHadronDefinition;
 import com.github.technus.tectech.thing.CustomItemList;
@@ -27,16 +29,18 @@ import static gregtech.api.enums.GT_Values.RA;
 /**
  * Created by danie_000 on 16.11.2016.
  */
-public class RecipeLoader implements Runnable {
+public class BaseRecipeLoader {
     public static Materials getOrDefault(String name,Materials def){
         Materials mat=Materials.get(name);
         return mat == Materials._NULL || mat == null ? def : mat;
     }
 
-    @Override
-    public void run() {
-        EMAtomDefinition.setTransformations();
-        EMHadronDefinition.setTransformations();
+    public void run(EMTransformationRegistry transformationInfo) {
+        EMAtomDefinition.setTransformations(transformationInfo);
+        EMHadronDefinition.setTransformations(transformationInfo);
+        if (Loader.isModLoaded(Reference.GTPLUSPLUS)) {
+            new GtppAtomLoader().setTransformations(transformationInfo);
+        }
 
         // ===================================================================================================
         // Recipes init - common goes here rest goes into methods below
@@ -110,11 +114,11 @@ public class RecipeLoader implements Runnable {
         RA.addAssemblerRecipe(ItemList.Hatch_DataAccess_EV.get(1), CustomItemList.dataOut_Hatch.get(1), CustomItemList.dataOutAss_Hatch.get(1), 2048, 12000);
 
         if (Loader.isModLoaded(Reference.DREAMCRAFT)) {
-            new DreamCraftRecipeLoader().run();//init recipes for GTNH version
+            new DreamCraftRecipeLoader().run(transformationInfo);//init recipes for GTNH version
         } else if (Loader.isModLoaded(Reference.SPARTAKCORE)) {
-        	new SpartakCoreRecipeLoader().run();//init recipes for SpartakCore version
+        	new SpartakCoreRecipeLoader().run(transformationInfo);//init recipes for SpartakCore version
         } else {
-            new BloodyRecipeLoader().run();//init recipes for NON-GTNH version
+            new BloodyRecipeLoader().run(transformationInfo);//init recipes for NON-GTNH version
         }
     }
 }

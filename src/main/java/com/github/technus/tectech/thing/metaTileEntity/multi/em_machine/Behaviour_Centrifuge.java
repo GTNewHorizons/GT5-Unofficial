@@ -12,8 +12,7 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
 import java.util.Arrays;
 
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
-import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationInfo.AVOGADRO_CONSTANT_144;
-import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationInfo.AVOGADRO_CONSTANT_UNCERTAINTY;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry.EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.*;
 import static com.github.technus.tectech.util.CommonValues.V;
 import static com.github.technus.tectech.util.DoubleCount.*;
@@ -77,7 +76,7 @@ public class Behaviour_Centrifuge implements GT_MetaTileEntity_EM_machine.IBehav
         maxRPM = Math.sqrt(maxRCF / (0.001118D * radius));
         double maxSafeMass = EMAtomDefinition.getSomethingHeavy().getMass() * (1 << tier);
         maxForce = maxSafeMass * maxRCF;// (eV/c^2 * m/s) / g
-        maxCapacity = maxSafeMass * AVOGADRO_CONSTANT_144 * radius;// eV/c^2
+        maxCapacity = maxSafeMass * EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED * radius;// eV/c^2
     }
 
     private double getRCF(double RPM) {
@@ -128,7 +127,7 @@ public class Behaviour_Centrifuge implements GT_MetaTileEntity_EM_machine.IBehav
             EMInstanceStack randomStack    = stacks[TecTech.RANDOM.nextInt(stacks.length)];
             double          amountToRemove = TecTech.RANDOM.nextDouble()/10D * randomStack.getAmount();
             randomStack.setAmount(sub(randomStack.getAmount(),amountToRemove));//mutates the parent InstanceStackMap
-            if (randomStack.getAmount() < AVOGADRO_CONSTANT_UNCERTAINTY) {
+            if (randomStack.isInvalidAmount()) {
                 input.removeKey(randomStack.getDefinition());
                 stacks = input.valuesToArray();
             }

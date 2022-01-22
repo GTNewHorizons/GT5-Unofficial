@@ -1,12 +1,12 @@
 package com.github.technus.tectech.mechanics.elementalMatter.core.stacks;
 
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.EMDefinitionsRegistry;
 import com.github.technus.tectech.mechanics.elementalMatter.core.decay.EMDecay;
 import com.github.technus.tectech.mechanics.elementalMatter.core.decay.EMDecayResult;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry.EMDefinitionsRegistry;
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMConstantStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
-import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
 import com.github.technus.tectech.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.crash.CrashReport;
@@ -14,19 +14,22 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.ArrayList;
 
-import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationInfo.AVOGADRO_CONSTANT;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry.AVOGADRO_CONSTANT;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry.EM_COUNT_PER_MATERIAL_AMOUNT;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMGaugeBosonDefinition.deadEnd;
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMPrimitiveDefinition.null__;
-import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMBosonDefinition.deadEnd;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_scanner.*;
 import static com.github.technus.tectech.util.DoubleCount.*;
-import static java.lang.Math.*;
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
  * Created by danie_000 on 22.10.2016.
  */
 public final class EMInstanceStack implements IEMStack {
     public static int MIN_MULTIPLE_DECAY_CALLS = 4, MAX_MULTIPLE_DECAY_CALLS = 16;
-    public static double DECAY_CALL_PER = AVOGADRO_CONSTANT;//todo
+    public static double DECAY_CALL_PER = EM_COUNT_PER_MATERIAL_AMOUNT;//todo
 
     private final IEMDefinition definition;
     private       double        amount;
@@ -35,7 +38,7 @@ public final class EMInstanceStack implements IEMStack {
     //energy - if positive then particle should try to decay
     private long   energy;
     //byte color; 0=Red 1=Green 2=Blue 0=Cyan 1=Magenta 2=Yellow, else ignored (-1 - uncolorable)
-    private byte   color;
+    private int   color;
     private double lifeTime;
     private double lifeTimeMult;
 
@@ -53,11 +56,10 @@ public final class EMInstanceStack implements IEMStack {
 
     public EMInstanceStack(IEMDefinition defSafe, double amount, double lifeTimeMult, double age, long energy) {
         definition = defSafe == null ? null__ : defSafe;
-        byte bColor = getDefinition().getColor();
-        if (bColor < 0 || bColor > 2) {//transforms colorable??? into proper color
-            this.color = bColor;
-        } else {
-            this.color = (byte) TecTech.RANDOM.nextInt(3);
+        if (getDefinition().hasColor()) {
+            this.color = (byte) TecTech.RANDOM.nextInt(getDefinition().getMaxColors());
+        } else {//transforms colorable??? into proper color
+            this.color = getDefinition().getMaxColors();
         }
         this.lifeTimeMult = lifeTimeMult;
         lifeTime = getDefinition().getRawTimeSpan(energy) * this.lifeTimeMult;
@@ -119,11 +121,11 @@ public final class EMInstanceStack implements IEMStack {
         return definition;
     }
 
-    public byte getColor() {
+    public int getColor() {
         return color;
     }
 
-    public void setColor(byte color) {//does not allow changing magic element
+    public void setColor(int color) {//does not allow changing magic element
         if (this.color < 0 || this.color > 2 || color < 0 || color >= 3) {
             return;
         }
@@ -131,10 +133,9 @@ public final class EMInstanceStack implements IEMStack {
     }
 
     public void nextColor() {//does not allow changing magic element
-        if (color < 0 || color > 2) {
-            return;
+        if (definition.hasColor()) {
+            color = (byte) TecTech.RANDOM.nextInt(definition.getMaxColors());
         }
-        color = (byte) TecTech.RANDOM.nextInt(3);
     }
 
     public double getLifeTime() {
@@ -524,7 +525,7 @@ public final class EMInstanceStack implements IEMStack {
             lines.add("ENERGY = " + energy);
         }
         if (Util.areBitsSet(SCAN_GET_AMOUNT, capabilities)) {
-            lines.add("AMOUNT = " + getAmount() / AVOGADRO_CONSTANT + " mol");
+            lines.add("AMOUNT = " + getAmount() /AVOGADRO_CONSTANT + " "+translateToLocal("tt.keyword.mol"));
         }
         scanContents(lines, getDefinition().getSubParticles(), 1, detailsOnDepthLevels);
     }
@@ -546,25 +547,25 @@ public final class EMInstanceStack implements IEMStack {
         }
     }
 
-    public NBTTagCompound toNBT() {
+    public NBTTagCompound toNBT(EMDefinitionsRegistry registry) {
         NBTTagCompound nbt = new NBTTagCompound();
-        nbt.setTag("d", getDefinition().toNBT());
+        nbt.setTag("d", getDefinition().toNBT(registry));
         nbt.setDouble("Q", getAmount());
-        nbt.setLong("e", energy);
-        nbt.setByte("c", color);
-        nbt.setDouble("A", getAge());
         nbt.setDouble("M", lifeTimeMult);
+        nbt.setDouble("A", getAge());
+        nbt.setLong("e", energy);
+        nbt.setInteger("c", color);
         return nbt;
     }
 
-    public static EMInstanceStack fromNBT(NBTTagCompound nbt) {
+    public static EMInstanceStack fromNBT(EMDefinitionsRegistry registry, NBTTagCompound nbt) {
         EMInstanceStack instance = new EMInstanceStack(
-                EMDefinitionsRegistry.fromNBT(nbt.getCompoundTag("d")),
-                nbt.getLong("q") + nbt.getDouble("Q"),
-                nbt.getFloat("m") + nbt.getDouble("M"),
-                nbt.getLong("a") + nbt.getDouble("A"),
+                registry.fromNBT(nbt.getCompoundTag("d")),
+                nbt.getDouble("Q"),
+                nbt.getDouble("M"),
+                nbt.getDouble("A"),
                 nbt.getLong("e"));
-        instance.setColor(nbt.getByte("c"));
+        instance.setColor(nbt.getInteger("c"));
         return instance;
     }
 
@@ -587,7 +588,7 @@ public final class EMInstanceStack implements IEMStack {
 
     @Override
     public String toString() {
-        return getDefinition().toString() + '\n' + getAmount() / AVOGADRO_CONSTANT + " mol\n" + getMass();
+        return getDefinition().toString() + ' ' + getAmount() /AVOGADRO_CONSTANT + " "+translateToLocal("tt.keyword.mol")+" " + getMass()+" eV/c^2";
     }
 
     public void setAmount(double amount) {

@@ -1,11 +1,10 @@
 package com.github.technus.tectech.recipe;
 
-import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.EMDefinitionsRegistry;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMConstantStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.IEMMapRead;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.IEMStack;
-import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.util.GT_Recipe;
 import net.minecraft.item.ItemStack;
@@ -15,8 +14,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-
-import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 
 public class TT_recipe extends GT_Recipe {
     public static final String        E_RECIPE_ID = "eRecipeID";
@@ -255,20 +252,6 @@ public class TT_recipe extends GT_Recipe {
 
         public T findRecipe(IEMDefinition stack){
             return mRecipeMap.get(stack);
-        }
-
-        public T findRecipe(ItemStack dataHandler){
-            if(dataHandler==null || dataHandler.stackTagCompound==null) {
-                return null;
-            }
-            try {
-                return mRecipeMap.get(EMDefinitionsRegistry.fromNBT(dataHandler.stackTagCompound.getCompoundTag(E_RECIPE_ID)));
-            }catch (Exception e){
-                if (DEBUG_MODE) {
-                    e.printStackTrace();
-                }
-                return null;
-            }
         }
 
         public void add(T recipe){

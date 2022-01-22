@@ -798,20 +798,17 @@ gt.blockmachines.debug.tt.writer.desc.2=ABC axises aligned to machine front
 tt.keyword.ID=ID
 #Example: 32EU at 1A
 tt.keyword.at=at
-#These are Thaumcraft aspects
-tt.keyword.Air=Air
-tt.keyword.Earth=Earth
-tt.keyword.Fire=Fire
-tt.keyword.Water=Water
-tt.keyword.Order=Order
-tt.keyword.Entropy=Entropy
-tt.keyword.Primal=Primal
-tt.keyword.Aspect=Aspect
+#EM scan result
 tt.keyword.CLASS=CLASS
 tt.keyword.NAME=NAME
 tt.keyword.CHARGE=CHARGE
 tt.keyword.COLORLESS=COLORLESS
 tt.keyword.MASS=MASS
+tt.keyphrase.LIFE_TIME=LIFE TIME
+tt.keyphrase.CARRIES_COLOR=CARRIES COLOR
+tt.keyphrase.Hint_Details=Hint Details
+tt.keyphrase.At_current_energy_level=At current energy level
+#debug boom
 tt.keyword.BOOM=BOOM!
 tt.keyword.Destination=Destination
 tt.keyword.Weight=Weight
@@ -834,10 +831,6 @@ tt.keyword.Status=Status
 tt.keyword.Content=Content
 tt.keyword.PacketHistory=PacketHistory
 
-tt.keyphrase.LIFE_TIME=LIFE TIME
-tt.keyphrase.CARRIES_COLOR=CARRIES COLOR
-tt.keyphrase.Hint_Details=Hint Details
-tt.keyphrase.At_current_energy_level=At current energy level
 #Used when 0 Elemental Matter Stacks
 tt.keyphrase.No_Stacks=No Stacks
 tt.keyphrase.Contains_EM=Contains EM
@@ -875,3 +868,87 @@ tt.keyphrase.Side_capabilities=Side capabilities
 #OpenTurrets compatibility
 tile.turretHeadEM.name=Elemental Matter Turret
 tile.turretBaseEM.name=Elemental Turret Base
+
+tt.keyword.mol=mol
+tt.keyword.itemMols=items
+tt.keyword.mbMols=mb
+#EM types
+tt.keyword.Primitive=Primitive
+tt.keyword.Element=Element
+tt.keyword.Atom=Atom
+tt.keyword.Isotope=Isotope
+tt.keyword.Boson=Boson
+tt.keyword.Fermion=Fermion
+tt.keyword.GaugeBoson=Gauge boson
+tt.keyword.Meson=Meson
+tt.keyword.Baryon=Baryon
+tt.keyword.Tetraquark=Tetraquark
+tt.keyword.Pentaquark=Pentaquark
+tt.keyword.Hexaquark=Hexaquark
+tt.keyword.Hadron=Hadron
+tt.keyword.Neutrino=Neutrino
+tt.keyword.Quark=Quark
+tt.keyword.ScalarBoson=Scalar boson
+#em definitions
+tt.keyword.PrimitiveNBTERROR=NBT ERROR
+tt.keyword.PrimitiveNULLPOINTER=NULL POINTER
+tt.keyword.PrimitiveSpace=Space
+tt.keyword.PrimitivePresence=Presence
+tt.keyword.PrimitiveMass=Mass
+tt.keyword.PrimitiveDarkMass=DarkMass
+tt.keyword.PrimitiveEnergy=Energy
+tt.keyword.PrimitiveDarkEnergy=DarkEnergy
+tt.keyword.PrimitiveMagic=Magic
+tt.keyword.PrimitiveAntimagic=Antimagic
+tt.keyword.Gluon=Gluon
+tt.keyword.Photon=Photon
+tt.keyword.Weak0=Weak
+tt.keyword.WeakPlus=Weak+
+tt.keyword.WeakMinus=Weak-
+tt.keyword.Proton=Proton
+tt.keyword.AntiProton=Antiproton
+tt.keyword.Neutron=Neutron
+tt.keyword.AntiNeutron=Antineutron
+tt.keyword.Lepton=Lepton
+tt.keyword.Electron=Electron
+tt.keyword.Muon=Muon
+tt.keyword.Tauon=Tauon
+tt.keyword.Positron=Positron
+tt.keyword.Antimuon=Antimuon
+tt.keyword.Antitauon=Antitauon
+tt.keyword.ElectronNeutrino=Electron neutrino
+tt.keyword.MuonNeutrino=Muon neutrino
+tt.keyword.TauonNeutrino=Tauon neutrino
+tt.keyword.PositronNeutrino=Positron neutrino
+tt.keyword.AntimuonNeutrino=Antimuon neutrino
+tt.keyword.AntitauonNeutrino=Antitauon neutrino
+tt.keyword.QuarkUp=Up
+tt.keyword.QuarkCharm=Charm
+tt.keyword.QuarkTop=Top
+tt.keyword.QuarkDown=Down
+tt.keyword.QuarkStrange=Strange
+tt.keyword.QuarkBottom=Bottom
+tt.keyword.QuarkAntiUp=Antiup
+tt.keyword.QuarkAntiCharm=Anticharm
+tt.keyword.QuarkAntiTop=Antitop
+tt.keyword.QuarkAntiDown=Antidown
+tt.keyword.QuarkAntiStrange=Antistrange
+tt.keyword.QuarkAntiBottom=Antibottom
+tt.keyword.Higgs=Higgs
+#These are Thaumcraft aspects
+tt.keyword.Air=Air
+tt.keyword.Earth=Earth
+tt.keyword.Fire=Fire
+tt.keyword.Water=Water
+tt.keyword.Order=Order
+tt.keyword.Entropy=Entropy
+tt.keyword.Chaos=Chaos
+
+tt.keyword.Primal=Primal
+tt.keyword.Aspect=Aspect
+
+
+
+
+
+

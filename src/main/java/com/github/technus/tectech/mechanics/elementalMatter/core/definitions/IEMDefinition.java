@@ -1,11 +1,9 @@
 package com.github.technus.tectech.mechanics.elementalMatter.core.definitions;
 
 import com.github.technus.tectech.mechanics.elementalMatter.core.decay.EMDecay;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry.EMDefinitionsRegistry;
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMConstantStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMDefinitionStack;
-import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMFluidDequantizationInfo;
-import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMItemDequantizationInfo;
-import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMOredictDequantizationInfo;
 import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.ArrayList;
@@ -31,9 +29,9 @@ public interface IEMDefinition extends Comparable<IEMDefinition>,Cloneable {//IM
 
     void addScanResults(ArrayList<String> lines, int capabilities, long energyLevel);
 
-    byte getMatterType();
+    int getMatterMassType();//bigger number means bigger things usually, but it is just used to differentiate between classes of iED
 
-    byte getClassType();//bigger number means bigger things usually, but it is just used to differentiate between classes of iED
+    int getGeneration();
 
     //Not dynamically changing stuff
     IEMDefinition getAnti();//gives new anti particle def
@@ -59,7 +57,11 @@ public interface IEMDefinition extends Comparable<IEMDefinition>,Cloneable {//IM
     int getCharge();//charge 1/3 electron charge
 
     //dynamically changing stuff
-    byte getColor();//-1 nope cannot 0 it can but undefined
+    int getMaxColors();
+
+    default boolean hasColor(){
+        return getMaxColors()>0;
+    }
 
     double getRawTimeSpan(long currentEnergy);//defined in static fields or generated
 
@@ -67,19 +69,17 @@ public interface IEMDefinition extends Comparable<IEMDefinition>,Cloneable {//IM
 
     EMConstantStackMap getSubParticles();//contents... null if none
 
-    EMFluidDequantizationInfo someAmountIntoFluidStack();
+    NBTTagCompound toNBT(EMDefinitionsRegistry registry);
 
-    EMItemDequantizationInfo someAmountIntoItemsStack();
+    default EMDefinitionStack getStackForm(double amount){
+        return new EMDefinitionStack(this,amount);
+    }
 
-    EMOredictDequantizationInfo someAmountIntoOredictStack();
-
-    NBTTagCompound toNBT();
-
-    EMDefinitionStack getStackForm(double amount);
-
-    IEMDefinition clone();
+    default IEMDefinition clone(){
+        return this;
+    }
 
     default int compareClassID(IEMDefinition obj) {
-        return (int) getClassType() - obj.getClassType();
+        return getMatterMassType() - obj.getMatterMassType();
     }
 }

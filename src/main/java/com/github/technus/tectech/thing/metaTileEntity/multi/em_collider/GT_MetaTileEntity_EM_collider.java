@@ -1,4 +1,4 @@
-package com.github.technus.tectech.thing.metaTileEntity.multi;
+package com.github.technus.tectech.thing.metaTileEntity.multi.em_collider;
 
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.EMComplexAspectDefinition;
@@ -38,7 +38,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import java.util.HashMap;
 
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
-import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationInfo.AVOGADRO_CONSTANT;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry.EM_COUNT_PER_MATERIAL_AMOUNT;
 import static com.github.technus.tectech.mechanics.structure.StructureUtility.*;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
@@ -69,19 +69,11 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     //endregion
 
     //region collision handlers
-    public static final HashMap<Integer, IColliderHandler> FUSE_HANDLERS = new HashMap<>();
+    public static final HashMap<Long, IColliderHandler> FUSE_HANDLERS = new HashMap<>();
     public static final HashMap<String, IPrimitiveColliderHandler> PRIMITIVE_FUSE_HANDLERS = new HashMap<>();
 
-    public interface IPrimitiveColliderHandler {
-        void collide(EMInstanceStack in1, EMInstanceStack in2, EMInstanceStackMap out);
-    }
-
-    public interface IColliderHandler extends IPrimitiveColliderHandler {
-        byte getRequiredTier();
-    }
-
     static {
-        FUSE_HANDLERS.put((EMAtomDefinition.getClassTypeStatic() << 16) | EMAtomDefinition.getClassTypeStatic(), new IColliderHandler() {
+        FUSE_HANDLERS.put(((long) EMAtomDefinition.getClassTypeStatic() << 16) | EMAtomDefinition.getClassTypeStatic(), new IColliderHandler() {
             @Override
             public void collide(EMInstanceStack in1, EMInstanceStack in2, EMInstanceStackMap out) {
                 try {
@@ -110,7 +102,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
         registerSimpleAtomFuse(EMComplexAspectDefinition.getClassTypeStatic());
         registerSimpleAtomFuse(EMPrimitiveTemplate.getClassTypeStatic());
 
-        FUSE_HANDLERS.put((EMHadronDefinition.getClassTypeStatic() << 16) | EMHadronDefinition.getClassTypeStatic(), new IColliderHandler() {
+        FUSE_HANDLERS.put(((long) EMHadronDefinition.getClassTypeStatic() << 16) | EMHadronDefinition.getClassTypeStatic(), new IColliderHandler() {
             @Override
             public void collide(EMInstanceStack in1, EMInstanceStack in2, EMInstanceStackMap out) {
                 try {
@@ -135,7 +127,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
                 return 2;
             }
         });
-        FUSE_HANDLERS.put((EMHadronDefinition.getClassTypeStatic() << 16) | EMPrimitiveTemplate.getClassTypeStatic(), new IColliderHandler() {
+        FUSE_HANDLERS.put(((long) EMHadronDefinition.getClassTypeStatic() << 16) | EMPrimitiveTemplate.getClassTypeStatic(), new IColliderHandler() {
             @Override
             public void collide(EMInstanceStack in1, EMInstanceStack in2, EMInstanceStackMap out) {
                 try {
@@ -164,7 +156,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
         registerSimpleAspectFuse(EMComplexAspectDefinition.getClassTypeStatic());
         registerSimpleAspectFuse(EMPrimitiveTemplate.getClassTypeStatic());
 
-        FUSE_HANDLERS.put((EMPrimitiveTemplate.getClassTypeStatic() << 16) | EMPrimitiveTemplate.getClassTypeStatic(), new IColliderHandler() {
+        FUSE_HANDLERS.put(((long) EMPrimitiveTemplate.getClassTypeStatic() << 16) | EMPrimitiveTemplate.getClassTypeStatic(), new IColliderHandler() {
             @Override
             public void collide(EMInstanceStack in1, EMInstanceStack in2, EMInstanceStackMap out) {
                 IPrimitiveColliderHandler collisionHandler = PRIMITIVE_FUSE_HANDLERS.get(in1.getDefinition().getClass().getName() + '\0' + in2.getDefinition().getClass().getName());
@@ -222,8 +214,8 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
         return false;
     }
 
-    private static void registerSimpleAspectFuse(byte classTypeStatic) {
-        FUSE_HANDLERS.put((EMComplexAspectDefinition.getClassTypeStatic() << 16) | classTypeStatic, new IColliderHandler() {
+    private static void registerSimpleAspectFuse(int classTypeStatic) {
+        FUSE_HANDLERS.put(((long) EMComplexAspectDefinition.getClassTypeStatic() << 16) | classTypeStatic, new IColliderHandler() {
             @Override
             public void collide(EMInstanceStack in1, EMInstanceStack in2, EMInstanceStackMap out) {
                 if (fuseAspects(in1, in2, out)) return;
@@ -241,8 +233,8 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
         });
     }
 
-    private static void registerSimpleAtomFuse(byte classTypeStatic) {
-        FUSE_HANDLERS.put((EMAtomDefinition.getClassTypeStatic() << 16) | classTypeStatic, new IColliderHandler() {
+    private static void registerSimpleAtomFuse(int classTypeStatic) {
+        FUSE_HANDLERS.put(((long) EMAtomDefinition.getClassTypeStatic() << 16) | classTypeStatic, new IColliderHandler() {
             @Override
             public void collide(EMInstanceStack in1, EMInstanceStack in2, EMInstanceStackMap out) {
                 try {
@@ -370,7 +362,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     }
 
     public static void setValues(int heliumPlasmaValue) {
-        double MASS_TO_EU_PARTIAL = heliumPlasmaValue / (1.75893000478707E07* AVOGADRO_CONSTANT);//mass diff
+        double MASS_TO_EU_PARTIAL = heliumPlasmaValue / (1.75893000478707E07* EM_COUNT_PER_MATERIAL_AMOUNT);//mass diff
         MASS_TO_EU_INSTANT = MASS_TO_EU_PARTIAL * 20;
         STARTUP_COST = -heliumPlasmaValue * 10000;
         KEEPUP_COST = -heliumPlasmaValue;
@@ -387,11 +379,11 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
 
             EMInstanceStackMap map = new EMInstanceStackMap();
             IColliderHandler   colliderHandler;
-            if (stack2.getDefinition().getClassType() > stack.getDefinition().getClassType()) {//always bigger first
-                colliderHandler = FUSE_HANDLERS.get((stack2.getDefinition().getClassType() << 16) | stack.getDefinition().getClassType());
+            if (stack2.getDefinition().getMatterMassType() > stack.getDefinition().getMatterMassType()) {//always bigger first
+                colliderHandler = FUSE_HANDLERS.get((stack2.getDefinition().getMatterMassType() << 16) | stack.getDefinition().getMatterMassType());
                 if (handleRecipe(stack2, map, colliderHandler)) return 0;
             } else {
-                colliderHandler = FUSE_HANDLERS.get((stack.getDefinition().getClassType() << 16) | stack2.getDefinition().getClassType());
+                colliderHandler = FUSE_HANDLERS.get((stack.getDefinition().getMatterMassType() << 16) | stack2.getDefinition().getMatterMassType());
                 if (handleRecipe(stack2, map, colliderHandler)) return 0;
             }
             for (EMInstanceStack newStack : map.valuesToArray()) {
@@ -416,11 +408,11 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
 
             EMInstanceStackMap map = new EMInstanceStackMap();
             IColliderHandler   colliderHandler;
-            if (stack2.getDefinition().getClassType() > stack.getDefinition().getClassType()) {//always bigger first
-                colliderHandler = FUSE_HANDLERS.get((stack2.getDefinition().getClassType() << 16) | stack.getDefinition().getClassType());
+            if (stack2.getDefinition().getMatterMassType() > stack.getDefinition().getMatterMassType()) {//always bigger first
+                colliderHandler = FUSE_HANDLERS.get((stack2.getDefinition().getMatterMassType() << 16) | stack.getDefinition().getMatterMassType());
                 if (handleRecipe(stack2, map, colliderHandler)) return 0;
             } else {
-                colliderHandler = FUSE_HANDLERS.get((stack.getDefinition().getClassType() << 16) | stack2.getDefinition().getClassType());
+                colliderHandler = FUSE_HANDLERS.get((stack.getDefinition().getMatterMassType() << 16) | stack2.getDefinition().getMatterMassType());
                 if (handleRecipe(stack2, map, colliderHandler)) return 0;
             }
             //System.out.println("outputEM[0].getMass() = " + outputEM[0].getMass());
@@ -649,7 +641,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
         aNBT.setByte("eTier", eTier);//collider tier
         aNBT.setBoolean("eStarted", started);
         if (stack != null) {
-            aNBT.setTag("eStack", stack.toNBT());
+            aNBT.setTag("eStack", stack.toNBT(TecTech.definitionsRegistry));
         }
         aNBT.setLong("ePlasmaEnergy", plasmaEnergy);
     }
@@ -660,7 +652,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
         eTier = aNBT.getByte("eTier");//collider tier
         started = aNBT.getBoolean("eStarted");
         if (aNBT.hasKey("eStack")) {
-            stack = EMInstanceStack.fromNBT(aNBT.getCompoundTag("eStack"));
+            stack = EMInstanceStack.fromNBT(TecTech.definitionsRegistry,aNBT.getCompoundTag("eStack"));
         }
         plasmaEnergy = aNBT.getLong("ePlasmaEnergy");
     }

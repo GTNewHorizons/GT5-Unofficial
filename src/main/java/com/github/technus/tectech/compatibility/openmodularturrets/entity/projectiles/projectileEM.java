@@ -52,10 +52,10 @@ public class projectileEM extends LaserProjectile {
             charge=projectileContent.getCharge();
             massFactor =(float) (projectileContent.getDefinition().getMass()/ EMHadronDefinition.hadron_n_.getMass());
 
-            if(projectileContent.getDefinition().getMatterType()>1 || projectileContent.getDefinition().getMatterType()<-1) {
+            if(projectileContent.getDefinition().getGeneration()>1 || projectileContent.getDefinition().getGeneration()<-1) {
                 strange = true;
             }
-            if(projectileContent.getDefinition().getMatterType()<0) {
+            if(projectileContent.getDefinition().getGeneration()<0) {
                 antiMatter = true;
             }
 

@@ -11,8 +11,6 @@ import net.minecraft.item.Item;
 import java.util.List;
 
 public class CreativeTabTecTech extends CreativeTabs {
-    public static CreativeTabTecTech creativeTabTecTech;
-
     public CreativeTabTecTech(String name) {
         super(name);
     }

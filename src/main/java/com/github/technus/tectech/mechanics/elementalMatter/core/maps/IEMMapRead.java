@@ -1,6 +1,7 @@
 package com.github.technus.tectech.mechanics.elementalMatter.core.maps;
 
 import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry.EMDefinitionsRegistry;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.IEMStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
 import net.minecraft.nbt.NBTTagCompound;
@@ -9,18 +10,11 @@ import net.minecraft.util.EnumChatFormatting;
 import java.lang.reflect.Array;
 import java.util.*;
 
-import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationInfo.*;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry.*;
 import static com.github.technus.tectech.util.DoubleCount.ulpSigned;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 public interface IEMMapRead<T extends IEMStack> extends Comparable<IEMMapRead<?>>, Cloneable {
-    static boolean isValidAmount(double amount){
-        return amount>=AVOGADRO_CONSTANT_UNCERTAINTY;
-    }
-
-    static boolean isInvalidAmount(double amount){
-        return amount<AVOGADRO_CONSTANT_UNCERTAINTY;
-    }
-
     NavigableMap<IEMDefinition,T> getBackingMap();
 
     IEMMapRead<T> clone();
@@ -105,7 +99,7 @@ public interface IEMMapRead<T extends IEMStack> extends Comparable<IEMMapRead<?>
         for (T defStack : values()) {
             info[i] = EnumChatFormatting.BLUE + defStack.getDefinition().getLocalizedName();
             info[i + 1] = EnumChatFormatting.AQUA + defStack.getDefinition().getSymbol();
-            info[i + 2] = "Amount " + EnumChatFormatting.GREEN + defStack.getAmount()/AVOGADRO_CONSTANT;
+            info[i + 2] = "Amount " + EnumChatFormatting.GREEN + defStack.getAmount()/AVOGADRO_CONSTANT+" "+translateToLocal("tt.keyword.mol");
             i += 3;
         }
         return info;
@@ -132,12 +126,12 @@ public interface IEMMapRead<T extends IEMStack> extends Comparable<IEMMapRead<?>
         return nbt;
     }
 
-    default NBTTagCompound toNBT() {
+    default NBTTagCompound toNBT(EMDefinitionsRegistry registry) {
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.setInteger("i", size());
         int i = 0;
         for (Map.Entry<IEMDefinition, T> entry : entrySet()) {
-            nbt.setTag(Integer.toString(i++), entry.getValue().toNBT());
+            nbt.setTag(Integer.toString(i++), entry.getValue().toNBT(registry));
         }
         return nbt;
     }
@@ -265,7 +259,7 @@ public interface IEMMapRead<T extends IEMStack> extends Comparable<IEMMapRead<?>
     }
 
     default boolean containsAmount(IEMDefinition def, double amountToConsume) {
-        double amountRequired=amountToConsume-AVOGADRO_CONSTANT_EPSILON;
+        double amountRequired=amountToConsume- EM_COUNT_EPSILON;
         if(amountRequired==amountToConsume){
             amountRequired-=ulpSigned(amountRequired);
         }

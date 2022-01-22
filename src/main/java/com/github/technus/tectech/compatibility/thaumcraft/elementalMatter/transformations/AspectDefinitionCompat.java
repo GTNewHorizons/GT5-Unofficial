@@ -2,6 +2,7 @@ package com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.tran
 
 
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry.EMDefinitionsRegistry;
 
 import java.util.HashMap;
 
@@ -13,9 +14,13 @@ public class AspectDefinitionCompat {
     private final HashMap<IEMDefinition,String>  defToAspect = new HashMap<>();
     private final HashMap<String, IEMDefinition> aspectToDef = new HashMap<>();
 
-    public void run(){}
+    public void run(EMDefinitionsRegistry registry){}
 
     public String getAspectTag(IEMDefinition definition){
+        return null;
+    }
+
+    public String getAspectLocalizedName(IEMDefinition definition){
         return null;
     }
 

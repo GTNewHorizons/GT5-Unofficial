@@ -1,12 +1,12 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
+import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.mechanics.constructable.IConstructable;
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMInstanceStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.IEMStack;
-import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMFluidDequantizationInfo;
-import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMItemDequantizationInfo;
-import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMOredictDequantizationInfo;
+import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMDequantizationInfo;
+import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.OreDictionaryStack;
 import com.github.technus.tectech.mechanics.structure.Structure;
 import com.github.technus.tectech.mechanics.structure.adders.IHatchAdder;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
@@ -100,38 +100,21 @@ public class GT_MetaTileEntity_EM_dequantizer extends GT_MetaTileEntity_Multiblo
         for (GT_MetaTileEntity_Hatch_InputElemental in : eInputHatches) {
             EMInstanceStackMap map = in.getContentHandler();
             for (EMInstanceStack stack : map.valuesToArray()) {
-                {
-                    EMFluidDequantizationInfo info = stack.getDefinition().someAmountIntoFluidStack();
-                    if (info != null) {
-                        if (map.removeAllAmounts(info.input())) {
-                            mOutputFluids = new FluidStack[]{info.output()};
-                            startRecipe(info.input(), stack.getEnergy());
-                            return true;
+                EMDequantizationInfo emDequantizationInfo = TecTech.transformationInfo.getInfoMap().get(stack.getDefinition());
+                if(emDequantizationInfo!=null && emDequantizationInfo.getStack()!=null && map.removeAllAmounts(emDequantizationInfo.getInput())){
+                    Object out=emDequantizationInfo.getStack();
+                    if(out instanceof ItemStack){
+                        mOutputItems=new ItemStack[]{emDequantizationInfo.getItem()};
+                    }else if(out instanceof FluidStack){
+                        mOutputFluids=new FluidStack[]{emDequantizationInfo.getFluid()};
+                    }else if(out instanceof OreDictionaryStack){
+                        ArrayList<ItemStack> items = OreDictionary.getOres(OreDictionary.getOreName(emDequantizationInfo.getOre().getOreId()));
+                        if (items != null && !items.isEmpty()) {
+                            mOutputItems = new ItemStack[]{items.get(0)};
                         }
                     }
-                }
-                {
-                    EMItemDequantizationInfo info = stack.getDefinition().someAmountIntoItemsStack();
-                    if (info != null) {
-                        if (map.removeAllAmounts(info.input())) {
-                            mOutputItems = new ItemStack[]{info.output()};
-                            startRecipe(info.input(), stack.getEnergy());
-                            return true;
-                        }
-                    }
-                }
-                {
-                    EMOredictDequantizationInfo info = stack.getDefinition().someAmountIntoOredictStack();
-                    if (info != null) {
-                        if (map.removeAllAmounts(info.input())) {
-                            ArrayList<ItemStack> items = OreDictionary.getOres(info.getOut());
-                            if (items != null && !items.isEmpty()) {
-                                mOutputItems = new ItemStack[]{items.get(0)};
-                                startRecipe(info.input(), stack.getEnergy());
-                                return true;
-                            }
-                        }
-                    }
+                    startRecipe(emDequantizationInfo.getInput(), stack.getEnergy());
+                    return true;
                 }
             }
         }

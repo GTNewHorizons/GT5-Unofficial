@@ -31,18 +31,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationInfo.AVOGADRO_CONSTANT;
-import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationInfo.AVOGADRO_CONSTANT_144;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry.EM_COUNT_PER_MATERIAL_AMOUNT;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry.EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED;
 
 public class AnomalyHandler implements IChunkMetaDataHandler {
-    private static final double SWAP_THRESHOLD = EMAtomDefinition.getSomethingHeavy().getMass() * 1000D * AVOGADRO_CONSTANT_144;//can be const as it is computed later...
+    private static final double SWAP_THRESHOLD = EMAtomDefinition.getSomethingHeavy().getMass() * 1000D * EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED;//can be const as it is computed later...
     private static final int COUNT_DIV=32;
     private static final double PER_PARTICLE=SWAP_THRESHOLD/COUNT_DIV;
     private static final String INTENSITY = "intensity",SPACE_CANCER="space_cancer", SPACE_CHARGE ="space_charge";
     private static final int MEAN_DELAY =50;
-    private static final double CANCER_EFFECTIVENESS = 1/AVOGADRO_CONSTANT;
-    private static final double CHARGE_EFFECTIVENESS = 10/AVOGADRO_CONSTANT;
-    private static final double CHARGE_EXPLOSIVENESS = 5/AVOGADRO_CONSTANT;
+    private static final double CANCER_EFFECTIVENESS = 1/ EM_COUNT_PER_MATERIAL_AMOUNT;
+    private static final double CHARGE_EFFECTIVENESS = 10/ EM_COUNT_PER_MATERIAL_AMOUNT;
+    private static final double CHARGE_EXPLOSIVENESS = 5/ EM_COUNT_PER_MATERIAL_AMOUNT;
 
     private boolean fixMe=false;
     private final ArrayList<EntityPlayer> playersWithCharge = new ArrayList<>();
@@ -133,7 +133,7 @@ public class AnomalyHandler implements IChunkMetaDataHandler {
     }
 
     private void swapSomething(Chunk a,Chunk b,double mass) {
-        float explosionPower=(float) Math.log(mass/AVOGADRO_CONSTANT);
+        float explosionPower=(float) Math.log(mass/ EM_COUNT_PER_MATERIAL_AMOUNT);
         for (int i = 0; i < Math.min((int)explosionPower,64); i++) {
             int x = TecTech.RANDOM.nextInt(16);
             int y = TecTech.RANDOM.nextInt(a.worldObj.getActualHeight());

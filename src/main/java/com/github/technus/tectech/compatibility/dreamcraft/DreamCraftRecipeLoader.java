@@ -1,5 +1,6 @@
 package com.github.technus.tectech.compatibility.dreamcraft;
 
+import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry;
 import com.github.technus.tectech.recipe.TT_recipeAdder;
 import com.github.technus.tectech.thing.CustomItemList;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
@@ -23,12 +24,12 @@ import net.minecraftforge.fluids.FluidStack;
 
 import java.lang.reflect.Method;
 
-import static com.github.technus.tectech.loader.recipe.RecipeLoader.getOrDefault;
+import static com.github.technus.tectech.loader.recipe.BaseRecipeLoader.getOrDefault;
 
 /**
  * Created by Tec on 06.08.2017.
  */
-public class DreamCraftRecipeLoader implements Runnable {
+public class DreamCraftRecipeLoader {
     //region reflect a bit
     @SuppressWarnings("rawtypes")
     private Class CUSTOM_ITEM_LIST;
@@ -48,8 +49,7 @@ public class DreamCraftRecipeLoader implements Runnable {
     }
     //endregion
 
-    @Override
-    public void run() {
+    public void run(EMTransformationRegistry transformationInfo) {
         //region reflect a bit
         try {
             CUSTOM_ITEM_LIST = Class.forName("com.dreammaster.gthandler.CustomItemList");

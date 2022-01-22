@@ -7,7 +7,7 @@ import net.minecraftforge.fluids.FluidStack;
 /**
  * Created by Tec on 23.05.2017.
  */
-public class EMFluidQuantizationInfo implements IEMExchangeInfo<FluidStack, IEMStack> {
+public class EMFluidQuantizationInfo {
     private final FluidStack in;
     private final IEMStack   out;
 
@@ -21,12 +21,10 @@ public class EMFluidQuantizationInfo implements IEMExchangeInfo<FluidStack, IEMS
         out=emOut;
     }
 
-    @Override
     public FluidStack input() {
         return in.copy();
     }
 
-    @Override
     public IEMStack output() {
         return out.clone();
     }
