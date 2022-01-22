@@ -798,6 +798,95 @@ public class RecipeLoader_02 {
                 }
         );
 
+        GT_Values.RA.addFluidCannerRecipe(
+                ItemRefer.Advanced_Fuel_Rod.get(1),
+                ItemRefer.Fuel_Rod_LU_1.get(1),
+                MyMaterial.uraniumBasedLiquidFuelExcited.getFluidOrGas(250),
+                null,
+                100,
+                1920
+        );
+
+        GT_Values.RA.addFluidCannerRecipe(
+                ItemRefer.Advanced_Fuel_Rod.get(1),
+                ItemRefer.Fuel_Rod_LPu_1.get(1),
+                MyMaterial.plutoniumBasedLiquidFuelExcited.getFluidOrGas(250),
+                null,
+                100,
+                1920
+        );
+
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] {
+                        ItemRefer.Fuel_Rod_LPu_1.get(2),
+                        MyMaterial.zircaloy2.get(OrePrefixes.stick, 4),
+                        GT_Utility.getIntegratedCircuit(2)
+                },
+                null,
+                ItemRefer.Fuel_Rod_LPu_2.get(1),
+                200,
+                7680
+        );
+
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] {
+                        ItemRefer.Fuel_Rod_LPu_2.get(2),
+                        MyMaterial.zircaloy2.get(OrePrefixes.stick, 4),
+                        GT_Utility.getIntegratedCircuit(5)
+                },
+                null,
+                ItemRefer.Fuel_Rod_LPu_4.get(1),
+                200,
+                7680
+        );
+
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] {
+                        ItemRefer.Fuel_Rod_LPu_1.get(4),
+                        MyMaterial.zircaloy2.get(OrePrefixes.stickLong, 6),
+                        GT_Utility.getIntegratedCircuit(4)
+                },
+                null,
+                ItemRefer.Fuel_Rod_LPu_4.get(1),
+                220,
+                7680
+        );
+
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] {
+                        ItemRefer.Fuel_Rod_LU_1.get(2),
+                        MyMaterial.zircaloy2.get(OrePrefixes.stick, 4),
+                        GT_Utility.getIntegratedCircuit(2)
+                },
+                null,
+                ItemRefer.Fuel_Rod_LU_2.get(1),
+                200,
+                7680
+        );
+
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] {
+                        ItemRefer.Fuel_Rod_LU_2.get(2),
+                        MyMaterial.zircaloy2.get(OrePrefixes.stick, 4),
+                        GT_Utility.getIntegratedCircuit(5)
+                },
+                null,
+                ItemRefer.Fuel_Rod_LU_4.get(1),
+                200,
+                7680
+        );
+
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] {
+                        ItemRefer.Fuel_Rod_LU_1.get(4),
+                        MyMaterial.zircaloy2.get(OrePrefixes.stickLong, 6),
+                        GT_Utility.getIntegratedCircuit(4)
+                },
+                null,
+                ItemRefer.Fuel_Rod_LU_4.get(1),
+                220,
+                7680
+        );
     }
 
     public static void InitLoadRecipe() {
@@ -895,6 +984,72 @@ public class RecipeLoader_02 {
                 new int[]{10000, 10000, 10000, 9000, 5000, 3000},
                 200,
                 1920
+        );
+
+        GT_Values.RA.addCentrifugeRecipe(
+                ItemRefer.Fuel_Rod_LPu_Depleted_1.get(1),
+                null,
+                null,
+                MyMaterial.plutoniumBasedLiquidFuelDepleted.getFluidOrGas(250),
+                ItemRefer.Advanced_Fuel_Rod.get(1), null, null, null, null, null,
+                new int[]{10000},
+                200,
+                7680
+        );
+
+        GT_Values.RA.addCentrifugeRecipe(
+                ItemRefer.Fuel_Rod_LPu_Depleted_2.get(1),
+                null,
+                null,
+                MyMaterial.plutoniumBasedLiquidFuelDepleted.getFluidOrGas(500),
+                ItemRefer.Advanced_Fuel_Rod.get(2), null, null, null, null, null,
+                new int[]{10000},
+                200,
+                7680
+        );
+
+        GT_Values.RA.addCentrifugeRecipe(
+                ItemRefer.Fuel_Rod_LPu_Depleted_4.get(1),
+                null,
+                null,
+                MyMaterial.plutoniumBasedLiquidFuelDepleted.getFluidOrGas(1000),
+                ItemRefer.Advanced_Fuel_Rod.get(4), null, null, null, null, null,
+                new int[]{10000},
+                200,
+                7680
+        );
+
+        GT_Values.RA.addCentrifugeRecipe(
+                ItemRefer.Fuel_Rod_LU_Depleted_1.get(1),
+                null,
+                null,
+                MyMaterial.uraniumBasedLiquidFuelDepleted.getFluidOrGas(250),
+                ItemRefer.Advanced_Fuel_Rod.get(1), null, null, null, null, null,
+                new int[]{10000},
+                200,
+                7680
+        );
+
+        GT_Values.RA.addCentrifugeRecipe(
+                ItemRefer.Fuel_Rod_LU_Depleted_2.get(1),
+                null,
+                null,
+                MyMaterial.uraniumBasedLiquidFuelDepleted.getFluidOrGas(500),
+                ItemRefer.Advanced_Fuel_Rod.get(2), null, null, null, null, null,
+                new int[]{10000},
+                200,
+                7680
+        );
+
+        GT_Values.RA.addCentrifugeRecipe(
+                ItemRefer.Fuel_Rod_LU_Depleted_4.get(1),
+                null,
+                null,
+                MyMaterial.uraniumBasedLiquidFuelDepleted.getFluidOrGas(1000),
+                ItemRefer.Advanced_Fuel_Rod.get(4), null, null, null, null, null,
+                new int[]{10000},
+                200,
+                7680
         );
     }
 }
