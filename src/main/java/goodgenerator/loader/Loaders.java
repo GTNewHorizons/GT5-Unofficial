@@ -94,6 +94,7 @@ public class Loaders {
     public static ItemStack YFT;
     public static ItemStack YFH;
     public static ItemStack SCTurbine;
+    public static ItemStack XHE;
 
     public static ItemStack[] NeutronAccelerators = new ItemStack[9];
     public static ItemStack[] Generator_Diesel = new ItemStack[2];
@@ -112,6 +113,7 @@ public class Loaders {
         Loaders.YFT = new YottaFluidTank(IDOffset + 13, "YottaFluidTank", "YOTTank").getStackForm(1L);
         Loaders.YFH = new YOTTAHatch(IDOffset + 14, "YottaFluidTankHatch", "YOTHatch", 5).getStackForm(1L);
         Loaders.SCTurbine = new SupercriticalFluidTurbine(IDOffset + 15, "SupercriticalFluidTurbine", "SC Fluid Turbine").getStackForm(1L);
+        Loaders.XHE = new ExtremeHeatExchanger(IDOffset + 16, "ExtremeHeatExchanger", "Extreme Heat Exchanger").getStackForm(1L);
         Loaders.Generator_Diesel[0] = new DieselGenerator(1113, "basicgenerator.diesel.tier.04", "Turbo Supercharging Combustion Generator", 4).getStackForm(1L);
         Loaders.Generator_Diesel[1] = new DieselGenerator(1114, "basicgenerator.diesel.tier.05", "Ultimate Chemical Energy Releaser", 5).getStackForm(1L);
     }
@@ -174,6 +176,7 @@ public class Loaders {
             GameRegistry.registerBlock(magicCasing, MyItemBlocks.class, "magicCasing");
             GameRegistry.registerBlock(essentiaCell, MyItemBlocks.class, "essentiaCell");
             GameRegistry.registerBlock(essentiaHatch, MyItemBlocks.class, "essentiaHatch");
+            Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage][0] = TextureFactory.of(magicCasing);
         }
     }
 
@@ -184,7 +187,6 @@ public class Loaders {
     public static void addTexturePage() {
         if (Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage] == null){
             Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage] = new ITexture[128];
-            Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage][0] = TextureFactory.of(magicCasing);
             Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage][1] = TextureFactory.of(yottaFluidTankCasing);
             Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage][2] = TextureFactory.of(supercriticalFluidTurbineCasing);
         }

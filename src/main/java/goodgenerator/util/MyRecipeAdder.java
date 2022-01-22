@@ -1,10 +1,13 @@
 package goodgenerator.util;
 
+import codechicken.nei.PositionedStack;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -47,6 +50,18 @@ public class MyRecipeAdder {
             null,
             "goodgenerator:textures/gui/neutron_activator",
             6, 6, 0, 0, 0,
+            null, 0, null,
+            false,
+            false
+    );
+
+    public final ExtremeHeatExchangerMapper XHE = new ExtremeHeatExchangerMapper(
+            new HashSet<>(50),
+            "gg.recipe.extreme_heat_exchanger",
+            StatCollector.translateToLocal("tile.extreme_heat_exchanger"),
+            null,
+            "goodgenerator:textures/gui/extreme_heat_exchanger",
+            0, 0, 0, 0, 0,
             null, 0, null,
             false,
             false
@@ -96,5 +111,42 @@ public class MyRecipeAdder {
         if (minNKE < 0) minNKE = 0;
         if (minNKE >= maxNKE) minNKE = maxNKE - 1;
         NA.addNARecipe(input1, input2, output1, output2, ticks, maxNKE * 10000 + minNKE);
+    }
+
+    public static class ExtremeHeatExchangerMapper extends GT_Recipe.GT_Recipe_Map {
+        public ExtremeHeatExchangerMapper(Collection<GT_Recipe> aRecipeList, String aUnlocalizedName, String aLocalName, String aNEIName, String aNEIGUIPath, int aUsualInputCount, int aUsualOutputCount, int aMinimalInputItems, int aMinimalInputFluids, int aAmperage, String aNEISpecialValuePre, int aNEISpecialValueMultiplier, String aNEISpecialValuePost, boolean aShowVoltageAmperageInNEI, boolean aNEIAllowed){
+            super(aRecipeList, aUnlocalizedName, aLocalName, aNEIName, aNEIGUIPath, aUsualInputCount, aUsualOutputCount, aMinimalInputItems, aMinimalInputFluids, aAmperage, aNEISpecialValuePre, aNEISpecialValueMultiplier, aNEISpecialValuePost, aShowVoltageAmperageInNEI, aNEIAllowed);
+        }
+
+        @Override
+        public GT_Recipe addRecipe(boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecial, int[] aOutputChances, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
+            return addRecipe(new ExtremeHeatExchangerRecipe(aFluidInputs, aFluidOutputs, aSpecialValue));
+        }
+    }
+
+    public static class ExtremeHeatExchangerRecipe extends GT_Recipe {
+
+        public ExtremeHeatExchangerRecipe(FluidStack[] input, FluidStack[] output, int special) {
+            super(false, null, null, null, null, input, output, 0, 0, special);
+        }
+
+        @Override
+        public ArrayList<PositionedStack> getInputPositionedStacks() {
+            ArrayList<PositionedStack> inputStacks = new ArrayList<>();
+            if (this.mFluidInputs != null && this.mFluidInputs.length == 2) {
+                inputStacks.add(new PositionedStack(GT_Utility.getFluidDisplayStack(this.mFluidInputs[0], true), 22, 3));
+                inputStacks.add(new PositionedStack(GT_Utility.getFluidDisplayStack(this.mFluidInputs[1], true), 22, 27));
+            }
+            if (this.mFluidOutputs != null && this.mFluidOutputs.length == 3) {
+                inputStacks.add(new PositionedStack(GT_Utility.getFluidDisplayStack(this.mFluidOutputs[0], true), 124, 3));
+                inputStacks.add(new PositionedStack(GT_Utility.getFluidDisplayStack(this.mFluidOutputs[1], true), 124, 21));
+                inputStacks.add(new PositionedStack(GT_Utility.getFluidDisplayStack(this.mFluidOutputs[2], true), 124, 44));
+            }
+            return inputStacks;
+        }
+    }
+
+    public void addExtremeHeatExchangerRecipe(FluidStack HotFluid, FluidStack ColdFluid, FluidStack WorkFluid, FluidStack HeatedWorkFluid, FluidStack OverHeatedWorkFluid, int Threshold) {
+        XHE.addRecipe(false, null, null, null, null, new FluidStack[]{HotFluid, WorkFluid}, new FluidStack[]{HeatedWorkFluid, OverHeatedWorkFluid, ColdFluid}, 0, 0, Threshold);
     }
 }

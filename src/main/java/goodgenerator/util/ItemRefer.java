@@ -1,5 +1,6 @@
 package goodgenerator.util;
 
+import goodgenerator.blocks.tileEntity.ExtremeHeatExchanger;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -105,6 +106,7 @@ public final class ItemRefer {
     public static ItemRefer Combustion_Generator_EV = getItemStack(Generator_Diesel[0]);
     public static ItemRefer Combustion_Generator_IV = getItemStack(Generator_Diesel[1]);
     public static ItemRefer SC_Fluid_Turbine = getItemStack(SCTurbine);
+    public static ItemRefer Extreme_Heat_Exchanger = getItemStack(XHE);
 
     private Item mItem = null;
     private Block mBlock = null;
