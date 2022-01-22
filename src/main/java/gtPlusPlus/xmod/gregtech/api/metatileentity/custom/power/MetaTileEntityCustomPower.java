@@ -4,7 +4,6 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.CustomMetaTileBase;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import net.minecraft.entity.Entity;
@@ -16,6 +15,7 @@ public abstract class MetaTileEntityCustomPower extends CustomMetaTileBase {
 	public MetaTileEntityCustomPower(int aID, String aBasicName, String aRegionalName, int aInvSlotCount) {
 		super(aID, aBasicName, aRegionalName, aInvSlotCount);
 		this.setBaseMetaTileEntity(Meta_GT_Proxy.constructBaseMetaTileEntityCustomPower());
+		this.getBaseMetaTileEntity().setMetaTileID((short) aID);
 	}
 	
 	public MetaTileEntityCustomPower(String aStack, int aInvSlotCount) {
@@ -25,11 +25,17 @@ public abstract class MetaTileEntityCustomPower extends CustomMetaTileBase {
 	public long getMinimumStoredEU() {
 		return 0L;
 	}
+	
+	public boolean doesExplode() {
+		return this.getBaseCustomMetaTileEntity().doesExplode();
+	}
+	
+	
 
 	public void doExplosion(long aExplosionPower) {
 		
-		if (MathUtils.randInt(1, 10) > 0) {
-			//Logger.INFO("Machine tried to explode, let's stop that. xo");
+		if (!doesExplode()) {
+			Logger.INFO("Machine tried to explode, let's stop that. xo [doExplosion]");
 			return;
 		}
 		
@@ -68,12 +74,10 @@ public abstract class MetaTileEntityCustomPower extends CustomMetaTileBase {
 
 	@Override
 	public void onExplosion() {
-		
-		if (MathUtils.randInt(1, 10) > 0) {
-			//Logger.INFO("Machine tried to explode, let's stop that. xo");
+		if (!doesExplode()) {
+			Logger.INFO("Machine tried to explode, let's stop that. xo [onExplosion]");
 			return;
 		}
-		// TODO Auto-generated method stub
 		super.onExplosion();
 	}
 
@@ -84,7 +88,6 @@ public abstract class MetaTileEntityCustomPower extends CustomMetaTileBase {
 
 	@Override
 	public long getEUVar() {
-		// TODO Auto-generated method stub
 		return super.getEUVar();
 	}
 

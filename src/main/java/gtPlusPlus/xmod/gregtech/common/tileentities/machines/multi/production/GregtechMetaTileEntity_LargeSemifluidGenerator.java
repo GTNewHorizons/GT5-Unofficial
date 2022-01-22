@@ -28,7 +28,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
-public class GregtechMetaTileEntity_LargeSemifluidGenerator extends GregtechMeta_MultiBlockBase {
+public class GregtechMetaTileEntity_LargeSemifluidGenerator extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_LargeSemifluidGenerator> {
 
 	private int mCasing;
 	private IStructureDefinition<GregtechMetaTileEntity_LargeSemifluidGenerator> STRUCTURE_DEFINITION = null;

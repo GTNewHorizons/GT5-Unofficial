@@ -50,12 +50,10 @@ public class GregtechMetaTileEntity_IndustrialArcFurnace extends GregtechMeta_Mu
 
 	public GregtechMetaTileEntity_IndustrialArcFurnace(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
-		mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings4Misc, 3);
 	}
 
 	public GregtechMetaTileEntity_IndustrialArcFurnace(final String aName) {
 		super(aName);
-		mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings4Misc, 3);
 	}
 
 	@Override
@@ -70,9 +68,6 @@ public class GregtechMetaTileEntity_IndustrialArcFurnace extends GregtechMeta_Mu
 
 	@Override
 	protected GT_Multiblock_Tooltip_Builder createTooltip() {
-		if (mCasingName.toLowerCase().contains(".name")) {
-			mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings4Misc, 3);
-		}
 		GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
 		tt.addMachineType(getMachineType())
 				.addInfo("Controller Block for Industrial Arc Furnace")

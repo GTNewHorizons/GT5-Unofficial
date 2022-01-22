@@ -177,6 +177,8 @@ public class RecipeGen_FluidCanning implements Runnable {
 
 	private final boolean addFluidExtractionRecipe(GT_Recipe aRecipe) {
 		boolean result = false;	
+		CORE.crash();
+		Logger.INFO("[FE-Debug] "+aRecipe.mFluidOutputs[0].amount+"L of "+aRecipe.mFluidOutputs[0].getLocalizedName()+" fluid extractor from 1 " + aRecipe.mInputs[0].getDisplayName() + " - Success. Time: "+aRecipe.mDuration+", Voltage: "+aRecipe.mEUt);
 		int aCount1 = GT_Recipe_Map.sFluidExtractionRecipes.mRecipeList.size();
 		int aCount2 = aCount1;
 		GT_Recipe_Map.sFluidExtractionRecipes.addRecipe(aRecipe);
@@ -187,7 +189,7 @@ public class RecipeGen_FluidCanning implements Runnable {
 		}
 		else {
 			Logger.INFO("[ERROR] Failed adding Extraction recipe for "+ItemUtils.getArrayStackNames(aRecipe.mInputs)+", "+ItemUtils.getArrayStackNames(aRecipe.mOutputs)+", "+ItemUtils.getArrayStackNames(aRecipe.mFluidInputs)+", "+ItemUtils.getArrayStackNames(aRecipe.mFluidOutputs));
-			//dumpStack();
+			dumpStack();
 		}
 		return result;
 	}
@@ -204,7 +206,7 @@ public class RecipeGen_FluidCanning implements Runnable {
 		}
 		else {
 			Logger.INFO("[ERROR] Failed adding Canning recipe for "+ItemUtils.getArrayStackNames(aRecipe.mInputs)+", "+ItemUtils.getArrayStackNames(aRecipe.mOutputs)+", "+ItemUtils.getArrayStackNames(aRecipe.mFluidInputs)+", "+ItemUtils.getArrayStackNames(aRecipe.mFluidOutputs));
-			//dumpStack();
+			dumpStack();
 		}
 		return result;
 	}

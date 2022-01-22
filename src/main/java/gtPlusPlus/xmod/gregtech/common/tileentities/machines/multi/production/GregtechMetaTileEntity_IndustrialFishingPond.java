@@ -39,7 +39,7 @@ import net.minecraft.util.WeightedRandomFishable;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
-public class GregtechMetaTileEntity_IndustrialFishingPond extends GregtechMeta_MultiBlockBase {
+public class GregtechMetaTileEntity_IndustrialFishingPond extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialFishingPond> {
 
 	private boolean isUsingControllerCircuit = false;
 	private static final Item circuit = CI.getNumberedCircuit(0).getItem();

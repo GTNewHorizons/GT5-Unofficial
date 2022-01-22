@@ -107,6 +107,11 @@ tile.blockCompressedObsidian.2.name=Triple Compressed Obsidian (729)
 tile.blockCompressedObsidian.3.name=Quadruple Compressed Obsidian (6561)
 tile.blockCompressedObsidian.4.name=Quintuple Compressed Obsidian (59049)
 tile.blockCompressedObsidian.5.name=Inverted Obsidian
+tile.blockCompressedObsidian.6.name=Compressed Glowstone (9)
+tile.blockCompressedObsidian.7.name=Double Compressed Glowstone (81)
+tile.blockCompressedObsidian.8.name=Triple Compressed Glowstone (729)
+tile.blockCompressedObsidian.9.name=Quadruple Compressed Glowstone (6561)
+tile.blockCompressedObsidian.10.name=Quintuple Compressed Glowstone (59049)
 tile.blockNet.name=Net
 
 
@@ -3369,3 +3374,6 @@ item.FrothMonaziteflotation.name=Monazite Flotation Froth Cell
 //Added 18/12/21
 item.BasicGenericChemItem.13.name=Formaldehyde Catalyst
 item.hydrogenchloridemix.name=Hydrogen Chlorine Mix
+
+//Added 19/01/22
+item.SunnariumBit.name=Sunnarium Bit

@@ -8,10 +8,12 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -124,9 +126,9 @@ public class RecipeGen_BlastSmelterGT_GTNH {
 				FluidStack[] inputsF;
 				int voltage, time, special;
 				boolean enabled;
-				inputs = x.mInputs;
-				outputs = x.mOutputs;
-				inputsF = x.mFluidInputs;
+				inputs = x.mInputs.clone();
+				outputs = x.mOutputs.clone();
+				inputsF = x.mFluidInputs.clone();
 				voltage = x.mEUt;
 				time = x.mDuration;
 				enabled = x.mEnabled;
@@ -157,6 +159,13 @@ public class RecipeGen_BlastSmelterGT_GTNH {
 					//If this recipe is enabled and we have a valid molten fluidstack, let's try add this recipe.
 					if (enabled && isValid(inputs, outputs, inputsF, mMoltenStack)) {						
 						//Build correct input stack
+						ArrayList<ItemStack> aTempList = new ArrayList<ItemStack>();
+						for (ItemStack aPossibleCircuit : inputs) {
+							if (!ItemUtils.isControlCircuit(aPossibleCircuit)) {
+								aTempList.add(aPossibleCircuit);
+							}
+						}
+						inputs = aTempList.toArray(new ItemStack[aTempList.size()]);						
 						ItemStack[] newInput = new ItemStack[inputs.length+1];						
 						int l = 1;
 						for (ItemStack y : inputs) {

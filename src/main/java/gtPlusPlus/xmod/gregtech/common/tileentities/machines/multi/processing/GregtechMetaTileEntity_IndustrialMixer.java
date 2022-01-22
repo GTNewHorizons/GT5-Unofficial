@@ -27,12 +27,11 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
-public class GregtechMetaTileEntity_IndustrialMixer
-extends GregtechMeta_MultiBlockBase {
+public class GregtechMetaTileEntity_IndustrialMixer extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialMixer> {
 
 	public static int CASING_TEXTURE_ID;
-	public static String mCasingName = "Advanced Blast Furnace Casing";
-	public static String mCasingName2 = "Advanced Blast Furnace Casing";
+	public static String mCasingName = "Multi-Use Casing";
+	public static String mCasingName2 = "Titanium Turbine Casing";
 	private int mCasing;
 	private IStructureDefinition<GregtechMetaTileEntity_IndustrialMixer> STRUCTURE_DEFINITION = null;
 
@@ -40,15 +39,11 @@ extends GregtechMeta_MultiBlockBase {
 	public GregtechMetaTileEntity_IndustrialMixer(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
 		CASING_TEXTURE_ID = TAE.getIndexFromPage(2, 2);
-		mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings3Misc, 2);
-		mCasingName2 = ItemUtils.getLocalizedNameOfBlock(GregTech_API.sBlockCasings4, 11);
 	}
 
 	public GregtechMetaTileEntity_IndustrialMixer(final String aName) {
 		super(aName);
 		CASING_TEXTURE_ID = TAE.getIndexFromPage(2, 2);
-		mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings3Misc, 2);
-		mCasingName2 = ItemUtils.getLocalizedNameOfBlock(GregTech_API.sBlockCasings4, 11);
 	}
 
 	@Override
@@ -63,14 +58,6 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	protected GT_Multiblock_Tooltip_Builder createTooltip() {
-
-		if (mCasingName.toLowerCase().contains(".name")) {
-			mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings3Misc, 2);
-		}
-		if (mCasingName2.toLowerCase().contains(".name")) {
-			mCasingName2 = ItemUtils.getLocalizedNameOfBlock(GregTech_API.sBlockCasings4, 11);
-		}
-
 		GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
 		tt.addMachineType(getMachineType())
 				.addInfo("Controller Block for the Industrial Mixer")

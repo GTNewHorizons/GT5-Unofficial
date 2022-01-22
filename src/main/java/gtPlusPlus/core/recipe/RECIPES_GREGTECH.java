@@ -4,15 +4,13 @@ import static gtPlusPlus.core.lib.CORE.GTNH;
 
 import java.util.ArrayList;
 
+import advsolar.common.AdvancedSolarPanel;
 import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.HotFuel;
-import gregtech.api.util.ThermalFuel;
+import gregtech.api.util.*;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
@@ -94,6 +92,7 @@ public class RECIPES_GREGTECH {
 		chemplantRecipes();
 		packagerRecipes();
 		alloySmelterRecipes();
+		implosionRecipes();
 
 
 		/**
@@ -102,14 +101,9 @@ public class RECIPES_GREGTECH {
 		RECIPES_SeleniumProcessing.init();
 		RECIPES_RareEarthProcessing.init();
 
-
-
-
-
-
 		addFuels();
 	}
-
+	
 	private static void alloySmelterRecipes() {
 		
 		//Wood's Glass Laser Lens
@@ -119,12 +113,23 @@ public class RECIPES_GREGTECH {
 				GregtechItemList.Laser_Lens_WoodsGlass.get(1),
 				20 * 300, 
 				MaterialUtils.getVoltageForTier(3));
+		
+	}
+
+
+	private static void packagerRecipes() {
+
 
 	}
 
-	private static void packagerRecipes() {
-		
-		
+	private static void implosionRecipes() {
+
+        GT_Values.RA.addImplosionRecipe(
+        		ItemUtils.getSimpleStack(ModItems.itemSunnariumBit, 9),
+        		16, 
+        		ItemUtils.getSimpleStack(AdvancedSolarPanel.itemSunnariumPart, 1),
+        		GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glowstone, 8));
+
 	}
 
 	private static void chemplantRecipes() {
@@ -479,21 +484,21 @@ public class RECIPES_GREGTECH {
 
 		//Hypogen Creation
 		GT_Values.RA.addFusionReactorRecipe(
-				Materials.Neutronium.getMolten(128),
-				ALLOY.QUANTUM.getFluidStack(256),
-				ELEMENT.STANDALONE.HYPOGEN.getFluidStack(4),
+				ELEMENT.STANDALONE.DRAGON_METAL.getFluidStack(144),
+				ELEMENT.STANDALONE.RHUGNOR.getFluidStack(288),
+				ELEMENT.STANDALONE.HYPOGEN.getFluidStack(36),
 				2048 * 4,
-				(int) MaterialUtils.getVoltageForTier(9),
+				MaterialUtils.getVoltageForTier(9),
 				600000000 * 2);
 
 		//Rhugnor
 		GT_Values.RA.addFusionReactorRecipe(
-				GenericChem.TEFLON.getFluidStack(64),
-				ALLOY.PIKYONIUM.getFluidStack(128),
-				ELEMENT.STANDALONE.RHUGNOR.getFluidStack(8),
-				2048 * 4,
-				(int) MaterialUtils.getVoltageForTier(7),
-				150000000 * 2);
+				MaterialUtils.getMaterial("Infinity", "Neutronium").getMolten(144),
+				ALLOY.QUANTUM.getFluidStack(288),
+				ELEMENT.STANDALONE.RHUGNOR.getFluidStack(144),
+				512,
+				MaterialUtils.getVoltageForTier(8),
+				2000000000);
 
 	}
 
@@ -884,7 +889,12 @@ public class RECIPES_GREGTECH {
 				20 * 60 * 5,
 				MaterialUtils.getVoltageForTier(5));
 
-
+		GT_Values.RA.addLaserEngraverRecipe(
+				GregtechItemList.Laser_Lens_WoodsGlass.get(0),
+				ItemUtils.simpleMetaStack(ModBlocks.blockCompressedObsidian, 8, 1),
+				ItemUtils.getSimpleStack(ModItems.itemSunnariumBit, 3),
+				20 * 60 * 5,
+				MaterialUtils.getVoltageForTier(3));
 
 
 	}
@@ -1690,7 +1700,7 @@ public class RECIPES_GREGTECH {
 			GT_Values.RA.addFuel(ItemUtils.simpleMetaStack("EnderIO:bucketHootch", 0, 1), null, 36, 0);
 		}
 
-		HotFuel.addNewHotFuel(GT_ModHandler.getLava(83), GT_Values.NF,
+		HotFuel.addNewHotFuel(FluidUtils.getLava(83), FluidUtils.getPahoehoeLava(83),
 				new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("nuggetCopper", 1),
 						ItemUtils.getItemStackOfAmountFromOreDict("nuggetTin", 1),
 						ItemUtils.getItemStackOfAmountFromOreDict("nuggetGold", 1),
@@ -1700,7 +1710,7 @@ public class RECIPES_GREGTECH {
 						ItemUtils.getSimpleStack(Blocks.obsidian) },
 				new int[] { 2000, 1000, 250, 250, 250, 250, 500 }, 0);
 
-		HotFuel.addNewHotFuel(FluidUtils.getFluidStack("ic2pahoehoelava", 83), GT_Values.NF,
+		HotFuel.addNewHotFuel(FluidUtils.getPahoehoeLava(83), GT_Values.NF,
 				new ItemStack[] { 
 						ItemUtils.getItemStackOfAmountFromOreDict("nuggetBronze", 1),
 						ItemUtils.getItemStackOfAmountFromOreDict("nuggetElectrum", 1),
@@ -1708,6 +1718,12 @@ public class RECIPES_GREGTECH {
 						ItemUtils.getItemStackOfAmountFromOreDict("dustSmallTungstate", 1),
 						ItemUtils.getSimpleStack(Blocks.obsidian) },
 				new int[] { 750, 250, 250, 250, 1850 }, 0);
+
+		HotFuel.addNewHotFuel(
+				MISC_MATERIALS.SOLAR_SALT_HOT.getFluidStack(1000),
+				MISC_MATERIALS.SOLAR_SALT_COLD.getFluidStack(1000), 
+				FluidUtils.getSuperHeatedSteam(10000),
+				0);
 
 		/*
 		 * HotFuel.addNewHotFuel( FluidUtils.getFluidStack("ic2hotcoolant",
@@ -1743,7 +1759,22 @@ public class RECIPES_GREGTECH {
 	}
 
 	private static void centrifugeRecipes() {
-		
+
+		GT_Values.RA.addCentrifugeRecipe(
+				CI.getNumberedAdvancedCircuit(2),
+				MISC_MATERIALS.SOLAR_SALT_COLD.getCell(10), 
+				null,
+				null,
+				MISC_MATERIALS.SODIUM_NITRATE.getDust(6),
+				MISC_MATERIALS.POTASSIUM_NITRATE.getDust(4),
+				CI.emptyCells(10), 
+				null, 
+				null, 
+				null, 
+				null,
+				20 * 30, 
+				120);
+
 	}
 
 	private static void mixerRecipes() {
@@ -1758,7 +1789,20 @@ public class RECIPES_GREGTECH {
 				null,
 				600, 
 				60);
-		
+
+		GT_Values.RA.addMixerRecipe(
+				CI.getNumberedAdvancedCircuit(2),
+				CI.emptyCells(10),
+				MISC_MATERIALS.SODIUM_NITRATE.getDust(6), 
+				MISC_MATERIALS.POTASSIUM_NITRATE.getDust(4),
+				null, 
+				null,
+				MISC_MATERIALS.SOLAR_SALT_COLD.getCell(10),
+				20 * 10, 
+				120);
+
+
+
 	}
 
 	private static void chemicalReactorRecipes() {
@@ -1786,7 +1830,26 @@ public class RECIPES_GREGTECH {
 				FluidUtils.getFluidStack("sulfuricacid", 4000),
 				FluidUtils.getFluidStack("sulfuricapatite", 8000),
 				ItemUtils.getItemStackOfAmountFromOreDict("dustSmallSulfur", 8), 
-				20 * 20);
+				20 * 20);		
+
+		GT_Values.RA.addChemicalRecipe(
+				Materials.Potassium.getDust(1),
+				CI.getNumberedAdvancedCircuit(1), 
+				Materials.NitricAcid.getFluid(1000),
+				GT_Values.NF, 
+				MISC_MATERIALS.POTASSIUM_NITRATE.getDust(1), 
+				100, 
+				30);    	
+
+		GT_Values.RA.addChemicalRecipe(
+				ItemUtils.getSimpleStack(AgriculturalChem.mSodiumCarbonate, 1),
+				CI.getNumberedAdvancedCircuit(1), 
+				Materials.NitricAcid.getFluid(1000),
+				GT_Values.NF, 
+				MISC_MATERIALS.SODIUM_NITRATE.getDust(1), 
+				100, 
+				30);
+
 
 	}
 

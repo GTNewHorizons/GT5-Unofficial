@@ -112,18 +112,32 @@ public class GUI_MultiMachine extends GT_GUIContainerMetaTile_Machine {
 				mInfo.add(StatCollector.translateToLocal("GTPP.machines.output")+" "+StatCollector.translateToLocal("GTPP.machines.tier")+": "+ EnumChatFormatting.GREEN +GT_Values.VOLTAGE_NAMES[aOutputTier]);
 			}			
 
+			
+			
+			
 			mInfo.add(StatCollector.translateToLocal("GTPP.multiblock.progress")+": "+
 					EnumChatFormatting.GREEN + Integer.toString(((CONTAINER_MultiMachine) this.mContainer).mProgressTime/20) + EnumChatFormatting.RESET +" s / "+
 					EnumChatFormatting.YELLOW + Integer.toString(((CONTAINER_MultiMachine) this.mContainer).mMaxProgressTime/20) + EnumChatFormatting.RESET +" s");
 
 
-			mInfo.add(StatCollector.translateToLocal("GTPP.multiblock.energy")+": "+
-					EnumChatFormatting.GREEN + Long.toString(aStoredEnergy) + EnumChatFormatting.RESET +" "+EU+" / "+
-					EnumChatFormatting.YELLOW + Long.toString(aMaxEnergy) + EnumChatFormatting.RESET +" "+EU+"");
+					
+
+				
+			
+			
+			mInfo.add(StatCollector.translateToLocal("GTPP.multiblock.energy")+":");
+			mInfo.add(StatCollector.translateToLocal(""+EnumChatFormatting.GREEN + Long.toString(aStoredEnergy) + EnumChatFormatting.RESET +" EU / "+
+					EnumChatFormatting.YELLOW + Long.toString(aMaxEnergy) + EnumChatFormatting.RESET +" EU"));
 
 			if (aRecipeEU != 0 && aRecipeDuration > 0) {
-				mInfo.add(StatCollector.translateToLocal("GTPP.multiblock.usage")+": "+
-						EnumChatFormatting.RED + Integer.toString(-aRecipeEU) + EnumChatFormatting.RESET + " "+EU+"/t");			
+				if (aRecipeEU > 0) {
+					mInfo.add(StatCollector.translateToLocal("GTPP.multiblock.usage")+":");
+					mInfo.add(StatCollector.translateToLocal(""+EnumChatFormatting.RED + Integer.toString(-aRecipeEU) + EnumChatFormatting.RESET + " EU/t/parallel"));
+				}
+				else {
+					mInfo.add(StatCollector.translateToLocal("GTPP.multiblock.generation")+":");
+					mInfo.add(StatCollector.translateToLocal(""+EnumChatFormatting.GREEN + Integer.toString(aRecipeEU) + EnumChatFormatting.RESET + " EU/t/parallel"));
+				}			
 				mInfo.add(StatCollector.translateToLocal("GTPP.multiblock.duration")+": "+
 						EnumChatFormatting.RED + Integer.toString(aRecipeDuration) + EnumChatFormatting.RESET + " ticks");
 				if (aRecipeSpecial > 0) {
@@ -132,18 +146,16 @@ public class GUI_MultiMachine extends GT_GUIContainerMetaTile_Machine {
 				}	
 			}		
 
-			mInfo.add(StatCollector.translateToLocal("GTPP.multiblock.mei")+": "+
-					EnumChatFormatting.YELLOW+Long.toString(aMaxInputVoltage)+EnumChatFormatting.RESET+ " "+EU+"/t"+EnumChatFormatting.RESET);
-
-			mInfo.add(StatCollector.translateToLocal(StatCollector.translateToLocal("GTPP.machines.tier")+": "+
-					EnumChatFormatting.YELLOW+GT_Values.VN[GT_Utility.getTier(aMaxInputVoltage)]+ EnumChatFormatting.RESET));
+			mInfo.add(StatCollector.translateToLocal("GTPP.multiblock.mei")+":");
+			mInfo.add(StatCollector.translateToLocal(""+EnumChatFormatting.YELLOW+Long.toString(aMaxInputVoltage)+EnumChatFormatting.RESET+ " EU/t(*2A) "+StatCollector.translateToLocal("GTPP.machines.tier")+": "+
+					EnumChatFormatting.YELLOW+GT_Values.VN[GT_Utility.getTier(aMaxInputVoltage)]+ EnumChatFormatting.RESET));			
 
 			mInfo.add(StatCollector.translateToLocal("GTPP.multiblock.efficiency")+": "+ EnumChatFormatting.YELLOW+Float.toString(aEfficiency / 100.0F)+EnumChatFormatting.RESET + " %");
 
 			mInfo.add(StatCollector.translateToLocal("GTPP.multiblock.pollution")+": "+ EnumChatFormatting.RED + (aPollutionTick*20)+ EnumChatFormatting.RESET+"/sec");
 			mInfo.add(StatCollector.translateToLocal("GTPP.multiblock.pollutionreduced")+": "+ EnumChatFormatting.GREEN + aPollutionReduction + EnumChatFormatting.RESET+" %");
 
-			mInfo.add(StatCollector.translateToLocal("GTPP.CC.parallel")+": "+EnumChatFormatting.GREEN+(aMaxParallel)+EnumChatFormatting.RESET);
+			//mInfo.add(StatCollector.translateToLocal("GTPP.CC.parallel")+": "+EnumChatFormatting.GREEN+(aMaxParallel)+EnumChatFormatting.RESET);
 
 			mInfo.add("Total Time Since Built: ");
 			mInfo.add("" + EnumChatFormatting.DARK_GREEN + Integer.toString(weeks)+EnumChatFormatting.RESET+" Weeks,");

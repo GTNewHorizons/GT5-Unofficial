@@ -5,6 +5,7 @@ import java.util.HashMap;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.WeightedCollection;
 import gtPlusPlus.api.objects.minecraft.multi.SpecialMultiBehaviour;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy_RTG;
 import gtPlusPlus.xmod.gregtech.api.util.SpecialBehaviourTooltipHandler;
@@ -12,6 +13,15 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
 public class GregtechPlusPlus_API {
+	
+	
+	public static class MolecularTransformer_API {
+		
+		public static boolean addRecipe(ItemStack aInput, ItemStack aOutput, int aDuration, int aEU) {
+			return CORE.RA.addMolecularTransformerRecipe(aInput, aOutput, aDuration, aEU, 1);
+		}
+		
+	}
 
 	public static class Multiblock_API {
 

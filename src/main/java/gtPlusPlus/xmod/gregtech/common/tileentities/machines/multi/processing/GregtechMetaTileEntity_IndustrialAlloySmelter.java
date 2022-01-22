@@ -34,7 +34,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-public class GregtechMetaTileEntity_IndustrialAlloySmelter extends GregtechMeta_MultiBlockBase {
+public class GregtechMetaTileEntity_IndustrialAlloySmelter extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialAlloySmelter> {
 
 	public static int CASING_TEXTURE_ID;
 	private HeatingCoilLevel mHeatingCapacity;

@@ -10,34 +10,38 @@ public class BaseCustomPower_MTE extends BaseCustomTileEntity {
 
 	public BaseCustomPower_MTE() {
 		super();
-		Logger.MACHINE_INFO("Created new BaseCustomPower_MTE");
+		Logger.INFO("Created new BaseCustomPower_MTE");
+	}
+	
+	public boolean doesExplode() {
+		return false;
 	}
 
 	public long injectEnergyUnits(byte aSide, long aVoltage, long aAmperage) {		
 		if (mMetaTileEntity == null) {
-			Logger.MACHINE_INFO("Bad Tile");			
+			Logger.INFO("Bad Tile");			
 		}		
 		if (this.canAccessData() && this.mMetaTileEntity.isElectric() && this.inputEnergyFrom(aSide) && aAmperage > 0L
 				&& aVoltage > 0L && this.getStoredEU() < this.getEUCapacity()
 				&& this.mMetaTileEntity.maxAmperesIn() >= this.getInputAmperage()) {
-			Logger.MACHINE_INFO("Injecting Energy Units");			
+			Logger.INFO("Injecting Energy Units");			
 			return super.injectEnergyUnits(aSide, aVoltage, aAmperage);			
 		} else {
-			Logger.MACHINE_INFO("canAccessData(): "+canAccessData());
-			Logger.MACHINE_INFO("isElectric(): "+this.mMetaTileEntity.isElectric());
-			Logger.MACHINE_INFO("InputEnergyFromSide("+aSide+"): "+this.inputEnergyFrom(aSide));
-			Logger.MACHINE_INFO("aAmperage: "+aAmperage);
-			Logger.MACHINE_INFO("aVoltage: "+aVoltage);
-			Logger.MACHINE_INFO("this.getStoredEU() < this.getEUCapacity(): "+(this.getStoredEU() < this.getEUCapacity()));
-			Logger.MACHINE_INFO("this.mMetaTileEntity.maxAmperesIn() >= this.mAcceptedAmperes: "+(this.mMetaTileEntity.maxAmperesIn() >= this.getInputAmperage()));
-			Logger.MACHINE_INFO("this.mMetaTileEntity.maxAmperesIn(): "+(this.mMetaTileEntity.maxAmperesIn()));
-			Logger.MACHINE_INFO("this.mAcceptedAmperes: "+(this.getInputAmperage()));
+			Logger.INFO("canAccessData(): "+canAccessData());
+			Logger.INFO("isElectric(): "+this.mMetaTileEntity.isElectric());
+			Logger.INFO("InputEnergyFromSide("+aSide+"): "+this.inputEnergyFrom(aSide));
+			Logger.INFO("aAmperage: "+aAmperage);
+			Logger.INFO("aVoltage: "+aVoltage);
+			Logger.INFO("this.getStoredEU() < this.getEUCapacity(): "+(this.getStoredEU() < this.getEUCapacity()));
+			Logger.INFO("this.mMetaTileEntity.maxAmperesIn() >= this.mAcceptedAmperes: "+(this.mMetaTileEntity.maxAmperesIn() >= this.getInputAmperage()));
+			Logger.INFO("this.mMetaTileEntity.maxAmperesIn(): "+(this.mMetaTileEntity.maxAmperesIn()));
+			Logger.INFO("this.mAcceptedAmperes: "+(this.getInputAmperage()));
 			return 0L;
 		}
 	}
 
 	public boolean drainEnergyUnits(byte aSide, long aVoltage, long aAmperage) {
-		Logger.MACHINE_INFO("Draining Energy Units 4");
+		Logger.INFO("Draining Energy Units 4");
 		if (this.canAccessData() && this.mMetaTileEntity.isElectric() && this.outputsEnergyTo(aSide)
 				&& this.getStoredEU() - aVoltage * aAmperage >= this.mMetaTileEntity.getMinimumStoredEU()) {
 			if (this.decreaseStoredEU(aVoltage * aAmperage, false)) {
@@ -54,7 +58,7 @@ public class BaseCustomPower_MTE extends BaseCustomTileEntity {
 
 	@Override
 	public boolean decreaseStoredEnergyUnits(long aEnergy, boolean aIgnoreTooLessEnergy) {
-		Logger.MACHINE_INFO("Draining Energy Units 3");
+		Logger.INFO("Draining Energy Units 3");
 		// TODO Auto-generated method stub
 		return super.decreaseStoredEnergyUnits(aEnergy, aIgnoreTooLessEnergy);
 	}
@@ -73,7 +77,7 @@ public class BaseCustomPower_MTE extends BaseCustomTileEntity {
 
 	@Override
 	public boolean outputsEnergyTo(byte aSide) {
-		Logger.MACHINE_INFO("Draining Energy Units 2");
+		Logger.INFO("Draining Energy Units 2");
 		// TODO Auto-generated method stub
 		return super.outputsEnergyTo(aSide);
 	}
@@ -134,7 +138,7 @@ public class BaseCustomPower_MTE extends BaseCustomTileEntity {
 
 	@Override
 	public boolean decreaseStoredEU(long aEnergy, boolean aIgnoreTooLessEnergy) {
-		Logger.MACHINE_INFO("Draining Energy Units 1");
+		Logger.INFO("Draining Energy Units 1");
 		// TODO Auto-generated method stub
 		return super.decreaseStoredEU(aEnergy, aIgnoreTooLessEnergy);
 	}

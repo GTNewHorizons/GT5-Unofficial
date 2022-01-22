@@ -1,15 +1,28 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
+
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.*;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.GTPP_Recipe.GTPP_Recipe_Map;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -31,14 +44,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
+public class GregtechMetaTileEntity_IndustrialWashPlant extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialWashPlant> {
 
-public class GregtechMetaTileEntity_IndustrialWashPlant
-extends GregtechMeta_MultiBlockBase {
-
-	private boolean mChemicalMode = false;
+	private int mMode = 0;
 	private int mCasing;
 	private IStructureDefinition<GregtechMetaTileEntity_IndustrialWashPlant> STRUCTURE_DEFINITION = null;
 
@@ -57,15 +65,15 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public String getMachineType() {
-		return "Ore Washer, Chemical Bath";
+		return "Ore Washer, Simple Washer, Chemical Bath";
 	}
 
 	@Override
 	protected GT_Multiblock_Tooltip_Builder createTooltip() {
 		GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
 		tt.addMachineType(getMachineType())
-				.addInfo("Controller Block for the Industrial Ore Washing Plant")
-				.addInfo("Can be configured with a screwdriver to also process Chemical Bathing")
+				.addInfo("Controller Block for the Industrial Wash Plant")
+				.addInfo("Can be configured with a screwdriver to also do Simple Washer and process Chemical Bathing")
 				.addInfo("400% faster than using single block machines of the same voltage")
 				.addInfo("Processes four item per voltage tier")
 				.addInfo("Always requires an Input Hatch full of water to refill structure")
@@ -171,7 +179,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-		return mChemicalMode ?  GT_Recipe.GT_Recipe_Map.sChemicalBathRecipes : GT_Recipe.GT_Recipe_Map.sOreWasherRecipes;
+		return mMode == 0 ?  GT_Recipe.GT_Recipe_Map.sOreWasherRecipes : mMode == 1 ? GTPP_Recipe_Map.sSimpleWasherRecipes : GT_Recipe.GT_Recipe_Map.sChemicalBathRecipes;
 	}
 
 	@Override
@@ -199,7 +207,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public int getPollutionPerSecond(final ItemStack aStack) {
-		if (this.mChemicalMode) return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialWashPlant_ModeChemBath;
+		if (mMode == 2) return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialWashPlant_ModeChemBath;
 		return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialWashPlant_ModeWasher;
 	}
 
@@ -311,24 +319,42 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public void saveNBTData(NBTTagCompound aNBT) {
-		aNBT.setBoolean("mChemicalMode", mChemicalMode);
+		aNBT.setInteger("mMode", mMode);
 		super.saveNBTData(aNBT);
 	}
 
 	@Override
 	public void loadNBTData(NBTTagCompound aNBT) {
-		mChemicalMode = aNBT.getBoolean("mChemicalMode");
+		if (aNBT.hasKey("mChemicalMode")) {
+			boolean aTempMode = aNBT.getBoolean("mChemicalMode");
+			if (aTempMode) {
+				mMode = 2;
+			}
+			else {
+				mMode = 0;
+			}
+			aNBT.removeTag("mChemicalMode");
+		}
+		if (aNBT.hasKey("mMode")) {
+			mMode = aNBT.getInteger("mMode");			
+		}
 		super.loadNBTData(aNBT);
 	}
 
 	@Override
 	public void onModeChangeByScrewdriver(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-		mChemicalMode = Utils.invertBoolean(mChemicalMode);		
-		if (mChemicalMode){
-			PlayerUtils.messagePlayer(aPlayer, "Wash Plant is now running in Chemical Bath Mode.");
+		mMode++;
+		if (mMode > 2) {
+			mMode = 0;
+		}
+		if (mMode == 0){
+			PlayerUtils.messagePlayer(aPlayer, "Wash Plant is now running in Ore Washer Mode.");
+		}
+		else if (mMode == 1){
+			PlayerUtils.messagePlayer(aPlayer, "Wash Plant is now running in Simple Washer Mode.");
 		}
 		else {
-			PlayerUtils.messagePlayer(aPlayer, "Wash Plant is now running in Ore Washer Mode.");
+			PlayerUtils.messagePlayer(aPlayer, "Wash Plant is now running in Chemical Bath Mode.");
 		}		
 	}
 

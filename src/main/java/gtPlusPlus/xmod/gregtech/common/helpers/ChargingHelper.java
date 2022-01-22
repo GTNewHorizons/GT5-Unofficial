@@ -6,17 +6,11 @@ import java.util.UUID;
 
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
-
 import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.common.items.GT_MetaGenerated_Item_01;
 import gregtech.common.items.GT_MetaGenerated_Item_02;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
-
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
@@ -25,14 +19,16 @@ import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.NBTUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GregtechMetaWirelessCharger;
-import ic2.api.info.Info;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 
 public class ChargingHelper {
 
-	private static Map<EntityPlayer, Pair<GregtechMetaWirelessCharger, Byte>> mValidPlayers = new HashMap<EntityPlayer, Pair<GregtechMetaWirelessCharger, Byte>>();
+	private static Map<String, Pair<GregtechMetaWirelessCharger, Byte>> mValidPlayers = new HashMap<String, Pair<GregtechMetaWirelessCharger, Byte>>();
 	protected static Map<BlockPos, GregtechMetaWirelessCharger> mChargerMap = new HashMap<BlockPos, GregtechMetaWirelessCharger>();
 	private int mTickTimer = 0;
 	private final int mTickMultiplier = 20;
@@ -58,7 +54,7 @@ public class ChargingHelper {
 								long mVoltage = 0;
 								long mEuStored = 0;
 
-								if (!mChargerMap.isEmpty() && mValidPlayers.containsKey(mPlayerMan)){
+								if (!mChargerMap.isEmpty() && mValidPlayers.containsKey(mPlayerMan.getDisplayName())){
 									InventoryPlayer mPlayerInventory = mPlayerMan.inventory;
 									ItemStack[] mArmourContents = mPlayerInventory.armorInventory.clone();
 									ItemStack[] mInventoryContents = mPlayerInventory.mainInventory.clone();
@@ -70,30 +66,30 @@ public class ChargingHelper {
 												mEuStored = mEntityTemp.getEUVar();
 												if (mVoltage > 0 && mEuStored >= mVoltage){								
 
-													Map<EntityPlayer, UUID> LR = mEntityTemp.getLongRangeMap();
-													Map<UUID, EntityPlayer> LO = mEntityTemp.getLocalMap();
+													Map<String, UUID> LR = mEntityTemp.getLongRangeMap();
+													Map<String, UUID> LO = mEntityTemp.getLocalMap();
 
 													long mStartingEu = mEntityTemp.getEUVar();
 													long mCurrentEu = mEntityTemp.getEUVar();
 													long mEuUsed = 0;
 													if (mEntityTemp.getMode() == 0){
-														if (!LR.isEmpty() && LR.containsKey(mPlayerMan)){
+														if (!LR.isEmpty() && LR.containsKey(mPlayerMan.getDisplayName())){
 															mCurrentEu = chargeItems(mEntityTemp, mArmourContents, mPlayerMan);
 															mCurrentEu = chargeItems(mEntityTemp, mInventoryContents, mPlayerMan);
 														}
 													}
 													else if (mEntityTemp.getMode() == 1){
-														if (!LO.isEmpty() && LO.containsValue(mPlayerMan)){
+														if (!LO.isEmpty() && LO.containsKey(mPlayerMan.getDisplayName())){
 															mCurrentEu = chargeItems(mEntityTemp, mArmourContents, mPlayerMan);
 															mCurrentEu = chargeItems(mEntityTemp, mInventoryContents, mPlayerMan);
 														}
 													}
 													else {
-														if (!LR.isEmpty() && LR.containsKey(mPlayerMan)){
+														if (!LR.isEmpty() && LR.containsKey(mPlayerMan.getDisplayName())){
 															mCurrentEu = chargeItems(mEntityTemp, mArmourContents, mPlayerMan);
 															mCurrentEu = chargeItems(mEntityTemp, mInventoryContents, mPlayerMan);
 														}
-														if (!LO.isEmpty() && LO.containsValue(mPlayerMan)){
+														if (!LO.isEmpty() && LO.containsKey(mPlayerMan.getDisplayName())){
 															mCurrentEu = chargeItems(mEntityTemp, mArmourContents, mPlayerMan);
 															mCurrentEu = chargeItems(mEntityTemp, mInventoryContents, mPlayerMan);
 														}
@@ -136,13 +132,13 @@ public class ChargingHelper {
 
 		catch (Throwable t){
 			//Utils.LOG_WARNING("State of Wireless Charger changed in an invalid way, this prevented a crash.");
-
-			if (!mChargerMap.isEmpty()){				
-				for (GregtechMetaWirelessCharger r : mChargerMap.values()){
-					if (r == null){
-						mChargerMap.remove(r);
+			if (!mChargerMap.isEmpty()){		
+				for (BlockPos aPos : mChargerMap.keySet()) {
+					GregtechMetaWirelessCharger r = mChargerMap.get(aPos);
+					if (r == null || r.getBaseMetaTileEntity().isInvalidTileEntity()){
+						mChargerMap.remove(aPos);
 					}
-				}				
+				}			
 			}			
 			//t.printStackTrace();
 		}
@@ -163,7 +159,7 @@ public class ChargingHelper {
 			}
 		}
 		else {
-			return false;
+			return true;
 		}
 	}
 
@@ -189,14 +185,14 @@ public class ChargingHelper {
 			return false;
 		}
 		Logger.WARNING("trying to map new player");
-		if (mValidPlayers.containsKey(mPlayer)){
+		if (mValidPlayers.containsKey(mPlayer.getDisplayName())){
 			Logger.WARNING("Key contains player already?");
 			return false;
 		}
 		else {
 			Logger.WARNING("key not found, adding");
 			Pair<GregtechMetaWirelessCharger, Byte> mEntry = new Pair<GregtechMetaWirelessCharger, Byte>(mEntity, (byte) mEntity.getMode());
-			if (mValidPlayers.put(mPlayer, mEntry) == null){
+			if (mValidPlayers.put(mPlayer.getDisplayName(), mEntry) == null){
 				Logger.WARNING("Added a Player to the Tick Map.");
 				return true;
 			}
@@ -212,7 +208,7 @@ public class ChargingHelper {
 			return false;
 		}
 		Logger.WARNING("trying to remove player from map");
-		if (mValidPlayers.containsKey(mPlayer)){
+		if (mValidPlayers.containsKey(mPlayer.getDisplayName())){
 			Logger.WARNING("key found, removing");
 			Pair<GregtechMetaWirelessCharger, Byte> mEntry = new Pair<GregtechMetaWirelessCharger, Byte>(mEntity, (byte) mEntity.getMode());
 			if (mValidPlayers.remove(mPlayer, mEntry)){

@@ -28,7 +28,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
-public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends GregtechMeta_MultiBlockBase {
+public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialVacuumFreezer> {
 
 	public static int CASING_TEXTURE_ID;
 	public static String mCryoFuelName = "Gelid Cryotheum";
@@ -44,18 +44,12 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends GregtechMeta
 		super(aID, aName, aNameRegional);
 		mFuelStack = FluidUtils.getFluidStack("cryotheum", 1);
 		CASING_TEXTURE_ID = TAE.getIndexFromPage(2, 10);
-		mCryoFuelName = mFuelStack.getLocalizedName();
-		mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings3Misc, 10);
-		mHatchName = ItemUtils.getLocalizedNameOfBlock(GregTech_API.sBlockMachines, 967);
 	}
 
 	public GregtechMetaTileEntity_IndustrialVacuumFreezer(final String aName) {
 		super(aName);
 		mFuelStack = FluidUtils.getFluidStack("cryotheum", 1);
 		CASING_TEXTURE_ID = TAE.getIndexFromPage(2, 10);
-		mCryoFuelName = mFuelStack.getLocalizedName();
-		mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings3Misc, 10);
-		mHatchName = ItemUtils.getLocalizedNameOfBlock(GregTech_API.sBlockMachines, 967);
 	}
 
 	public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
@@ -69,17 +63,6 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends GregtechMeta
 
 	@Override
 	protected GT_Multiblock_Tooltip_Builder createTooltip() {
-
-		if (mCasingName.toLowerCase().contains(".name")) {
-			mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings3Misc, 10);
-		}
-		if (mCryoFuelName.toLowerCase().contains(".")) {
-			mCryoFuelName = FluidUtils.getFluidStack("cryotheum", 1).getLocalizedName();
-		}
-		if (mHatchName.toLowerCase().contains(".name")) {
-			mHatchName = ItemUtils.getLocalizedNameOfBlock(GregTech_API.sBlockMachines, 967);
-		}
-
 		GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
 		tt.addMachineType(getMachineType())
 				.addInfo("Factory Grade Advanced Vacuum Freezer")

@@ -15,6 +15,7 @@ GTPP.multiblock.efficiency=Efficiency
 GTPP.multiblock.problems=Problems
 GTPP.multiblock.mei=Max Energy Income
 GTPP.multiblock.usage=Probably uses
+GTPP.multiblock.generation=Probably generates
 GTPP.multiblock.specialvalue=Special Value
 GTPP.multiblock.duration=Duration
 
@@ -22,7 +23,7 @@ GTPP.multiblock.duration=Duration
 
 GTPP.CC.machinetier=Control Core Tier
 GTPP.CC.discount=EU Discount
-GTPP.CC.parallel=Maximum Parallel Processing
+GTPP.CC.parallel=Maximum Parallel
 
 //Tooltips for the Charger Packs
 GTPP.battpack.tooltip.1=Worn as a Belt within Baubles

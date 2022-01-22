@@ -33,7 +33,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
-public class GregtechMetaTileEntityGeneratorArray extends GregtechMeta_MultiBlockBase {
+public class GregtechMetaTileEntityGeneratorArray extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntityGeneratorArray> {
 
 	private int mCasing;
 	private IStructureDefinition<GregtechMetaTileEntityGeneratorArray> STRUCTURE_DEFINITION = null;

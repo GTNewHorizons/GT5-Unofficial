@@ -29,10 +29,10 @@ import net.minecraft.item.ItemStack;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
-public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase {
+public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntityTreeFarm> {
 
 	public static int CASING_TEXTURE_ID;
-	public static String mCasingName = "Advanced Cryogenic Casing";
+	public static String mCasingName = "Sterile Farm Casing";
 	public static TreeGenerator mTreeData;
 	private int mCasing;
 	private IStructureDefinition<GregtechMetaTileEntityTreeFarm> STRUCTURE_DEFINITION = null;
@@ -51,13 +51,11 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 	public GregtechMetaTileEntityTreeFarm(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
 		CASING_TEXTURE_ID = TAE.getIndexFromPage(1, 15);
-		mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings2Misc, 15);
 	}
 
 	public GregtechMetaTileEntityTreeFarm(final String aName) {
 		super(aName);
 		CASING_TEXTURE_ID = TAE.getIndexFromPage(1, 15);
-		mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings2Misc, 15);
 	}
 
 	public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
@@ -71,9 +69,6 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 
 	@Override
 	protected GT_Multiblock_Tooltip_Builder createTooltip() {
-		if (mCasingName.toLowerCase().contains(".name")) {
-			mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings2Misc, 15);
-		}
 		GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
 		tt.addMachineType(getMachineType())
 				.addInfo("Converts EU to Oak Logs")

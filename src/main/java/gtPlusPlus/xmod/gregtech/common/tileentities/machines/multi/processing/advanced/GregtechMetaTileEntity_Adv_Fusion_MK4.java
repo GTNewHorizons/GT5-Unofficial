@@ -98,6 +98,11 @@ public class GregtechMetaTileEntity_Adv_Fusion_MK4 extends GT_MetaTileEntity_Fus
 	}
 
 	@Override
+    public int overclock(int mStartEnergy) {
+        return (mStartEnergy < 160000000) ? 16 : ((mStartEnergy < 320000000) ? 8 : (mStartEnergy < 640000000) ? 4 : 1);
+    }
+
+	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
 			final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
 		ITexture[] sTexture;
@@ -150,4 +155,24 @@ public class GregtechMetaTileEntity_Adv_Fusion_MK4 extends GT_MetaTileEntity_Fus
 		}
 		return true;
 	}
+	
+    @Override
+    public String[] getInfoData() {
+        String tier = "IV";
+        float plasmaOut = 0;
+        int powerRequired = 0;
+        if (this.mLastRecipe != null) {
+            powerRequired = this.mLastRecipe.mEUt;
+            if (this.mLastRecipe.getFluidOutput(0) != null) {
+                plasmaOut = (float)this.mLastRecipe.getFluidOutput(0).amount / (float)this.mLastRecipe.mDuration;
+            }
+        }
+
+        return new String[]{
+                "Fusion Reactor MK "+tier,
+                "EU Required: "+powerRequired+"EU/t",
+                "Stored EU: "+mEUStore+" / "+maxEUStore(),
+                "Plasma Output: "+plasmaOut+"L/t"};
+    }
+    
 }

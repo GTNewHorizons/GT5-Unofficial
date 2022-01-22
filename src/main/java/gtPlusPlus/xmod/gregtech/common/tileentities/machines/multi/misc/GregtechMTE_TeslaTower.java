@@ -1,18 +1,13 @@
-/*
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.misc;
 
-import static gregtech.api.enums.GT_Values.*;
+import static gregtech.api.enums.GT_Values.W;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
@@ -23,21 +18,28 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
-
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.entity.EntityTeslaTowerLightning;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
+import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class GregtechMTE_TeslaTower extends GregtechMeta_MultiBlockBase {
+public class GregtechMTE_TeslaTower extends GregtechMeta_MultiBlockBase<GregtechMTE_TeslaTower> {
 
 	private Block casingBlock;
 	private int casingMeta;
@@ -49,12 +51,12 @@ public class GregtechMTE_TeslaTower extends GregtechMeta_MultiBlockBase {
 	private int xLoc, yLoc, zLoc;
 
 	protected int mRange;
-	*/
-/**
+
+	/**
 	 * Machine Mode, 
 	 * {@value false} Attacks all entities, 
 	 * {@value true} Only attacks players. 
-	 *//*
+	 */
 
 	protected volatile boolean mMode = false;
 
@@ -88,7 +90,7 @@ public class GregtechMTE_TeslaTower extends GregtechMeta_MultiBlockBase {
 		return null;
 	}	
 
-	@Override
+	/*@Override
 	public String[] getTooltip() {
 		String casings = getCasingBlockItem().get(0).getDisplayName();
 		return new String[]{
@@ -102,13 +104,33 @@ public class GregtechMTE_TeslaTower extends GregtechMeta_MultiBlockBase {
 				"1x3x1 " + MaterialUtils.getMaterialName(getFrameMaterial()) + " Frame Boxes (Each pillar side and on top)",
 				"1x Maintenance Hatch (One of base casings)",
 				"1x " + VN[getMinTier()] + "+ Energy Hatch (Any bottom layer casing)"};
+	}*/
+	
+	@Override
+	protected final GT_Multiblock_Tooltip_Builder createTooltip() {
+		GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+		tt.addMachineType(getMachineType())
+		.addInfo("Controller Block for the Tesla Defence Tower Mk3200")
+		.addInfo("Enemies within "+this.mRange+"m are blasted with a high energy plasma.")
+		.addInfo("This uses 5,000,000EU per blast.")
+		.addInfo("Can screwdriver to toggle mode between Players and all Entities.")
+		.addSeparator()
+		.beginStructureBlock(1, 7, 1, false)
+		.addController("Top Middle")
+		.addCasingInfo("Casing", 360)
+		.addOtherStructurePart("Rotor Assembly", "Any 1 dot hint", 1)
+		.addInputBus("Any 4 dot hint (min 1)", 4)
+		.addInputHatch("Any 4 dot hint(min 1)", 4)
+		.addOutputHatch("Any 4 dot hint(min 1)", 4)
+		.addEnergyHatch("Any 4 dot hint(min 1)", 4)
+		.addMaintenanceHatch("Any 4 dot hint(min 1)", 4)
+		.toolTipFinisher(CORE.GT_Tooltip_Builder);
+		return tt;
 	}
 
 	private final void initFields() {
 		casingBlock = ModBlocks.blockCasings2Misc;
 		casingMeta = getCasingBlockItem().get(0).getItemDamage();
-		int frameId = 4096 + getFrameMaterial().mMetaItemSubID;
-		frameMeta = GregTech_API.METATILEENTITIES[frameId] != null ? GregTech_API.METATILEENTITIES[frameId].getTileEntityBaseType() : W;
 		casingTextureIndex = getCasingTextureIndex();
 		mRange = 50;
 	}
@@ -144,26 +166,24 @@ public class GregtechMTE_TeslaTower extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public boolean checkRecipe(ItemStack aStack) {
-		*/
-/*if (!isEnergyEnough()) {
+
+		if (!isEnergyEnough()) {
 			this.mProgresstime = 0;
 			this.mMaxProgresstime = 20;
 			this.getBaseMetaTileEntity().setActive(false);
 			stopMachine();
 		}
-		else {*//*
-*/
-/*
+		else {
 			this.mProgresstime = 1;
 			this.mMaxProgresstime = 100;
-			this.getBaseMetaTileEntity().setActive(true);*//*
+			this.getBaseMetaTileEntity().setActive(true);
 
-		//}
+		}
 		return false;
 	}
 
 	@Override
-	public boolean checkMultiblock(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
 		updateCoordinates();
 		//check base layer
 		for (int xOff = -1 + back.offsetX; xOff <= 1 + back.offsetX; xOff++) {
@@ -414,16 +434,6 @@ public class GregtechMTE_TeslaTower extends GregtechMeta_MultiBlockBase {
 		return GregtechItemList.Casing_TeslaTower;
 	}
 
-	protected Materials getFrameMaterial() {		
-		*/
-/*casingBlock = getCasingBlockItem().getBlock();
-		casingMeta = getCasingBlockItem().get(0).getItemDamage();
-		int frameId = 4096 + getFrameMaterial().mMetaItemSubID;
-		frameMeta = GregTech_API.METATILEENTITIES[frameId] != null ? GregTech_API.METATILEENTITIES[frameId].getTileEntityBaseType() : W;		
-		 *//*
-return Materials.get("TungstenCarbide");
-	}
-
 	protected int getCasingTextureIndex() {
 		return TAE.GTPP_INDEX(30);
 	}
@@ -474,6 +484,17 @@ return Materials.get("TungstenCarbide");
 		return 0;
 	}
 
+	@Override
+	public void construct(ItemStack stackSize, boolean hintsOnly) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public IStructureDefinition getStructureDefinition() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 }
-*/

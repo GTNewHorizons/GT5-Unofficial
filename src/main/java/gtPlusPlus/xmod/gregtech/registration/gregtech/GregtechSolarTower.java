@@ -1,10 +1,12 @@
-/*
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
+import gregtech.api.util.GTPP_Recipe;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.material.MISC_MATERIALS;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.GregtechMetaTileEntity_SolarTower;
 import gtPlusPlus.xmod.gregtech.common.tileentities.misc.TileEntitySolarHeater;
+import net.minecraftforge.fluids.FluidStack;
 
 public class GregtechSolarTower {
 
@@ -28,5 +30,20 @@ public class GregtechSolarTower {
 						"Part of the Clean Green energy movement",
 						0).getStackForm(1L));
 		
+		// NEI recipe
+		GTPP_Recipe aRecipe = new GTPP_Recipe(
+				false,
+				null, 
+				null, 
+				null,
+				null, 
+				new FluidStack[] {MISC_MATERIALS.SOLAR_SALT_COLD.getFluidStack(1000)},
+				new FluidStack[] {MISC_MATERIALS.SOLAR_SALT_HOT.getFluidStack(1000)},
+				0, 
+				0, 
+				0);
+		GTPP_Recipe.GTPP_Recipe_Map.sSolarTowerRecipes.add(aRecipe);
+		
+		
 	}
-}*/
+}

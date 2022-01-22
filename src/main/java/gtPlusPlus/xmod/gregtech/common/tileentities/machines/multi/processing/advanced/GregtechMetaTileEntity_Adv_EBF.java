@@ -40,7 +40,7 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase {
+public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_Adv_EBF> {
 
 	public static int CASING_TEXTURE_ID;
 	public static String mHotFuelName = "Blazing Pyrotheum";
@@ -56,17 +56,11 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 	public GregtechMetaTileEntity_Adv_EBF(int aID, String aName, String aNameRegional) {
 		super(aID, aName, aNameRegional);
 		CASING_TEXTURE_ID = TAE.getIndexFromPage(2, 11);
-		mHotFuelName = FluidUtils.getFluidStack("pyrotheum", 1).getLocalizedName();
-		mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings3Misc, 11);
-		mHatchName = ItemUtils.getLocalizedNameOfBlock(GregTech_API.sBlockMachines, 968);
 	}
 
 	public GregtechMetaTileEntity_Adv_EBF(String aName) {
 		super(aName);
 		CASING_TEXTURE_ID = TAE.getIndexFromPage(2, 11);
-		mHotFuelName = FluidUtils.getFluidStack("pyrotheum", 1).getLocalizedName();
-		mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings3Misc, 11);
-		mHatchName = ItemUtils.getLocalizedNameOfBlock(GregTech_API.sBlockMachines, 968);
 	}
 
 	@Override
@@ -80,34 +74,25 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 
 	@Override
 	protected GT_Multiblock_Tooltip_Builder createTooltip() {
-		if (mCasingName.toLowerCase().contains(".name")) {
-			mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings3Misc, 11);
-		}
-		if (mHotFuelName.toLowerCase().contains(".")) {
-			mHotFuelName = FluidUtils.getFluidStack("pyrotheum", 1).getLocalizedName();
-		}
-		if (mHatchName.toLowerCase().contains(".name")) {
-			mHatchName = ItemUtils.getLocalizedNameOfBlock(GregTech_API.sBlockMachines, 968);
-		}
 		GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
 		tt.addMachineType(getMachineType())
-				.addInfo("Factory Grade Advanced Blast Furnace")
-				.addInfo("Speed: 120% | Eu Usage: 90% | Parallel: 8")
-				.addInfo("Consumes 10L of " + mHotFuelName + " per second during operation")
-				.addInfo("Constructed exactly the same as a normal EBF")
-				.addPollutionAmount(getPollutionPerSecond(null))
-				.addSeparator()
-				.addController("Bottom center")
-				.addCasingInfo(mCasingName, 9)
-				.addInputHatch("Any Casing", 1)
-				.addInputBus("Any Casing", 1)
-				.addOutputBus("Any Casing", 1)
-				.addOutputHatch("Any Casing", 1)
-				.addStructureHint(mHatchName, 1)
-				.addEnergyHatch("Any Casing", 1)
-				.addMufflerHatch("Any Casing", 1)
-				.addMaintenanceHatch("Any Casing", 1)
-				.toolTipFinisher(CORE.GT_Tooltip_Builder);
+		.addInfo("Factory Grade Advanced Blast Furnace")
+		.addInfo("Speed: 120% | Eu Usage: 90% | Parallel: 8")
+		.addInfo("Consumes 10L of " + mHotFuelName + " per second during operation")
+		.addInfo("Constructed exactly the same as a normal EBF")
+		.addPollutionAmount(getPollutionPerSecond(null))
+		.addSeparator()
+		.addController("Bottom center")
+		.addCasingInfo(mCasingName, 9)
+		.addInputHatch("Any Casing", 1)
+		.addInputBus("Any Casing", 1)
+		.addOutputBus("Any Casing", 1)
+		.addOutputHatch("Any Casing", 1)
+		.addStructureHint(mHatchName, 1)
+		.addEnergyHatch("Any Casing", 1)
+		.addMufflerHatch("Any Casing", 1)
+		.addMaintenanceHatch("Any Casing", 1)
+		.toolTipFinisher(CORE.GT_Tooltip_Builder);
 		return tt;
 	}
 
@@ -116,31 +101,31 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 		if (STRUCTURE_DEFINITION == null) {
 			STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_Adv_EBF>builder()
 					.addShape(mName, transpose(new String[][]{
-							{"CCC", "CCC", "CCC"},
-							{"HHH", "H-H", "HHH"},
-							{"HHH", "H-H", "HHH"},
-							{"C~C", "CCC", "CCC"},
+						{"CCC", "CCC", "CCC"},
+						{"HHH", "H-H", "HHH"},
+						{"HHH", "H-H", "HHH"},
+						{"C~C", "CCC", "CCC"},
 					}))
 					.addElement(
 							'C',
 							ofChain(
 									ofHatchAdder(
 											GregtechMetaTileEntity_Adv_EBF::addAdvEBFList, CASING_TEXTURE_ID, 1
-									),
+											),
 									onElementPass(
 											x -> ++x.mCasing,
 											ofBlock(
 													ModBlocks.blockCasings3Misc, 11
+													)
 											)
 									)
 							)
-					)
 					.addElement(
 							'H',
 							ofCoil(
 									GregtechMetaTileEntity_Adv_EBF::setCoilLevel, GregtechMetaTileEntity_Adv_EBF::getCoilLevel
+									)
 							)
-					)
 					.build();
 		}
 		return STRUCTURE_DEFINITION;
@@ -298,7 +283,7 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 		float tRecipeEUt = (tRecipe.mEUt * aEUPercent) / 100.0f;
 		int tHeatCapacityDivTiers = (int) (mHeatingCapacity.getHeat() - tRecipe.mSpecialValue) / 900;
 		if (tHeatCapacityDivTiers > 0)
-		tRecipeEUt = (int) (tRecipeEUt * (Math.pow(0.95, tHeatCapacityDivTiers)));
+			tRecipeEUt = (int) (tRecipeEUt * (Math.pow(0.95, tHeatCapacityDivTiers)));
 		float tTotalEUt = 0.0f;
 
 		int parallelRecipes = 0;
@@ -443,7 +428,7 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 				}			
 			}
 		}
-		
+
 	}
 
 	@Override

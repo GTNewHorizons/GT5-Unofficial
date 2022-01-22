@@ -39,7 +39,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 
-public class GregtechMetaTileEntity_IndustrialDehydrator extends GregtechMeta_MultiBlockBase {
+public class GregtechMetaTileEntity_IndustrialDehydrator extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialDehydrator> {
 	
 	private static int CASING_TEXTURE_ID;
 	private static String mCasingName = "Vacuum Casing";	
@@ -51,13 +51,11 @@ public class GregtechMetaTileEntity_IndustrialDehydrator extends GregtechMeta_Mu
 	public GregtechMetaTileEntity_IndustrialDehydrator(int aID, String aName, String aNameRegional) {
 		super(aID, aName, aNameRegional);
 		CASING_TEXTURE_ID = TAE.getIndexFromPage(3, 10);
-		mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings4Misc, 10);
 	}
 
 	public GregtechMetaTileEntity_IndustrialDehydrator(String aName) {
 		super(aName);
 		CASING_TEXTURE_ID = TAE.getIndexFromPage(3, 10);
-		mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings4Misc, 10);
 	}
 
 	public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
@@ -66,9 +64,6 @@ public class GregtechMetaTileEntity_IndustrialDehydrator extends GregtechMeta_Mu
 
 	@Override
 	protected GT_Multiblock_Tooltip_Builder createTooltip() {
-		if (mCasingName.toLowerCase().contains(".name")) {
-			mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings4Misc, 10);
-		}
 		GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
 		tt.addMachineType(getMachineType())
 				.addInfo("Factory Grade Vacuum Furnace")

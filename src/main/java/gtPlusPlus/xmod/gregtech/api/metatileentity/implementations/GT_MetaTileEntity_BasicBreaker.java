@@ -9,8 +9,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Utility;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.custom.power.GTPP_MTE_TieredMachineBlock;
 import ic2.api.item.ElectricItem;
@@ -19,9 +17,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 
 public class GT_MetaTileEntity_BasicBreaker extends GTPP_MTE_TieredMachineBlock {
-	
+
 	public boolean mCharge = false;
 	public boolean mDecharge = false;
 	public int mBatteryCount = 0;
@@ -30,53 +29,50 @@ public class GT_MetaTileEntity_BasicBreaker extends GTPP_MTE_TieredMachineBlock 
 	private long mStored = 0L;
 	private long mMax = 0L;
 
-	public GT_MetaTileEntity_BasicBreaker(int aID, String aName, String aNameRegional, int aTier,
-			String aDescription, int aSlotCount) {
+	public GT_MetaTileEntity_BasicBreaker(int aID, String aName, String aNameRegional, int aTier, String aDescription, int aSlotCount) {
 		super(aID, aName, aNameRegional, aTier, aSlotCount, aDescription, new ITexture[0]);
 	}
 
-	public GT_MetaTileEntity_BasicBreaker(String aName, int aTier, String aDescription, ITexture[][][] aTextures,
-			int aSlotCount) {
+	public GT_MetaTileEntity_BasicBreaker(String aName, int aTier, String aDescription, ITexture[][][] aTextures, int aSlotCount) {
 		super(aName, aTier, aSlotCount, aDescription, aTextures);
 	}
 
-	public GT_MetaTileEntity_BasicBreaker(String aName, int aTier, String[] aDescription,
-			ITexture[][][] aTextures, int aSlotCount) {
+	public GT_MetaTileEntity_BasicBreaker(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures, int aSlotCount) {
 		super(aName, aTier, aSlotCount, aDescription, aTextures);
 	}
 
 	public String[] getDescription() {
-		String []s1 = super.getDescription();		
-		s1 = new String[0];
-		return s1;
+		final String[] desc = new String[6];
+		int tTier = this.mTier;
+		desc[0] = "" + EnumChatFormatting.BOLD + "16 Fuse Slots";
+		desc[1] = "Per each fuse, you may insert " + EnumChatFormatting.YELLOW + (GT_Values.V[tTier]) + EnumChatFormatting.GRAY + " EU/t";
+		desc[2] = "However this " + EnumChatFormatting.ITALIC + EnumChatFormatting.RED + "MUST" + EnumChatFormatting.GRAY + " be in a single Amp";
+		desc[3] = "This machine can accept upto a single amp of " + GT_Values.VN[Math.min(tTier + 2, 15)] + " as a result";
+		desc[4] = "Breaker Loss: " + EnumChatFormatting.RED + "" + (GT_Values.V[tTier] / 16) + EnumChatFormatting.GRAY + " EU/t";
+		desc[5] = CORE.GT_Tooltip;
+		return desc;
 	}
 
 	public ITexture[][][] getTextureSet(ITexture[] aTextures) {
 		ITexture[][][] rTextures = new ITexture[2][17][];
 
 		for (byte i = -1; i < 16; ++i) {
-			rTextures[0][i + 1] = new ITexture[]{BlockIcons.MACHINE_CASINGS[this.mTier][i + 1],
-					this.mInventory.length > 4
-							? BlockIcons.OVERLAYS_ENERGY_IN_MULTI[Math.min(12, mTier)]
-							: BlockIcons.OVERLAYS_ENERGY_IN[Math.min(12, mTier)]};
-			
-			rTextures[1][i + 1] = new ITexture[]{BlockIcons.MACHINE_CASINGS[this.mTier][i + 1],
-					this.mInventory.length > 4
-							? BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[this.mTier]
-							: BlockIcons.OVERLAYS_ENERGY_OUT[this.mTier]};
+			rTextures[0][i + 1] = new ITexture[]{BlockIcons.MACHINE_CASINGS[this.mTier][i
+					+ 1], this.mInventory.length > 4 ? BlockIcons.OVERLAYS_ENERGY_IN_MULTI[Math.min(12, mTier)] : BlockIcons.OVERLAYS_ENERGY_IN[Math.min(12, mTier)]};
+
+			rTextures[1][i + 1] = new ITexture[]{BlockIcons.MACHINE_CASINGS[this.mTier][i
+					+ 1], this.mInventory.length > 4 ? BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[this.mTier] : BlockIcons.OVERLAYS_ENERGY_OUT[this.mTier]};
 		}
 
 		return rTextures;
 	}
 
-	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-			boolean aActive, boolean aRedstone) {
+	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
 		return this.mTextures[aSide == aFacing ? 1 : 0][aColorIndex + 1];
 	}
 
 	public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-		return new GT_MetaTileEntity_BasicBreaker(this.mName, this.mTier, this.mDescriptionArray, this.mTextures,
-				this.mInventory.length);
+		return new GT_MetaTileEntity_BasicBreaker(this.mName, this.mTier, this.mDescriptionArray, this.mTextures, this.mInventory.length);
 	}
 
 	public boolean isSimpleMachine() {
@@ -132,11 +128,11 @@ public class GT_MetaTileEntity_BasicBreaker extends GTPP_MTE_TieredMachineBlock 
 	}
 
 	public long maxAmperesIn() {
-		return (long) (1);
+		return 16;
 	}
 
 	public long maxAmperesOut() {
-		return (long) 16;
+		return 16;
 	}
 
 	public int rechargerSlotStartIndex() {
@@ -176,7 +172,8 @@ public class GT_MetaTileEntity_BasicBreaker extends GTPP_MTE_TieredMachineBlock 
 	public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
 		if (aBaseMetaTileEntity.isClientSide()) {
 			return true;
-		} else {
+		}
+		else {
 			aBaseMetaTileEntity.openGUI(aPlayer);
 			return true;
 		}
@@ -199,14 +196,14 @@ public class GT_MetaTileEntity_BasicBreaker extends GTPP_MTE_TieredMachineBlock 
 			this.mChargeableCount = 0;
 			ItemStack[] arg3 = this.mInventory;
 			int arg4 = arg3.length;
-
+			
 			for (int arg5 = 0; arg5 < arg4; ++arg5) {
 				ItemStack tStack = arg3[arg5];
 				if (GT_ModHandler.isElectricItem(tStack, this.mTier)) {
 					if (GT_ModHandler.isChargerItem(tStack)) {
 						++this.mBatteryCount;
 					}
-
+			
 					++this.mChargeableCount;
 				}
 			}*/
@@ -254,7 +251,8 @@ public class GT_MetaTileEntity_BasicBreaker extends GTPP_MTE_TieredMachineBlock 
 
 							tStored += tStep;
 						}
-					} else if (aStack.getItem() instanceof IElectricItem) {
+					}
+					else if (aStack.getItem() instanceof IElectricItem) {
 						tStored += (long) ElectricItem.manager.getCharge(aStack);
 						tScale += (long) ((IElectricItem) aStack.getItem()).getMaxCharge(aStack);
 					}
@@ -273,11 +271,15 @@ public class GT_MetaTileEntity_BasicBreaker extends GTPP_MTE_TieredMachineBlock 
 		return new long[]{tStored, tScale};
 	}
 
-	public String[] getInfoData() {		
-		return new String[]{};
+	public String[] getInfoData() {
+		return new String[]{"Tile Type: " + this.getTileEntityBaseType()};
 	}
 
 	public boolean isGivingInformation() {
+		return true;
+	}
+
+	public boolean doesExplode() {
 		return true;
 	}
 }

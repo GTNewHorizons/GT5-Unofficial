@@ -71,7 +71,7 @@ public class ItemBlueprint extends Item implements IItemBlueprint{
 
 	@Override
 	public String getItemStackDisplayName(final ItemStack p_77653_1_) {
-		return "Blueprint [I am useless]";
+		return "Blueprint";
 	}
 
 	@Override
@@ -103,7 +103,7 @@ public class ItemBlueprint extends Item implements IItemBlueprint{
 		ItemStack[] blueprint = new ItemStack[9];
 		if (itemStack.hasTagCompound()){
 			final NBTTagCompound nbt = itemStack.getTagCompound();
-			final NBTTagList list = nbt.getTagList("Items", 10);
+			final NBTTagList list = nbt.getTagList("Inventory", 10);
 			blueprint = new ItemStack[INV_SIZE];
 			for(int i = 0;i<list.tagCount();i++)
 			{
@@ -135,7 +135,7 @@ public class ItemBlueprint extends Item implements IItemBlueprint{
 					list.appendTag(data);
 				}
 			}
-			nbt.setTag("Items", list);
+			nbt.setTag("Inventory", list);
 			itemStack.setTagCompound(nbt);
 			return itemStack;
 		}

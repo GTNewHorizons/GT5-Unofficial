@@ -16,20 +16,23 @@ import gregtech.api.util.*;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.general.ItemLavaFilter;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.material.MISC_MATERIALS;
+import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
-public class GT4Entity_ThermalBoiler
-extends GregtechMeta_MultiBlockBase
-{
+public class GT4Entity_ThermalBoiler extends GregtechMeta_MultiBlockBase<GT4Entity_ThermalBoiler> {
+	
 	private int mCasing;
 	private IStructureDefinition<GT4Entity_ThermalBoiler> STRUCTURE_DEFINITION = null;
 	private int mSuperEfficencyIncrease = 0;
@@ -72,6 +75,9 @@ extends GregtechMeta_MultiBlockBase
 	}
 	
 	private static Item mLavaFilter;
+	private static Fluid mLava = null;
+	private static Fluid mPahoehoe = null;
+	private static Fluid mSolarSaltHot = null;
 
 	@Override
 	public boolean checkRecipe(ItemStack aStack) {
@@ -80,6 +86,17 @@ extends GregtechMeta_MultiBlockBase
 		if (mLavaFilter == null) {
 			mLavaFilter = ItemList.Component_LavaFilter.getItem();
 		}
+		if (mLava == null) {
+			mLava = FluidRegistry.LAVA;
+		}
+		if (mPahoehoe == null) {
+			mPahoehoe = FluidUtils.getPahoehoeLava(1).getFluid();
+		}
+		if (mSolarSaltHot == null) {
+			mSolarSaltHot = MISC_MATERIALS.SOLAR_SALT_HOT.getFluid();
+		}
+		
+		
 		
 		//Try reload new Lava Filter
 		if (aStack == null) {
@@ -94,43 +111,51 @@ extends GregtechMeta_MultiBlockBase
 		for (GT_Recipe tRecipe : GTPP_Recipe.GTPP_Recipe_Map.sThermalFuels.mRecipeList) {
 			FluidStack tFluid = tRecipe.mFluidInputs[0];
 			if (tFluid != null) {
-				if (depleteInput(tFluid)) {
-					this.mMaxProgresstime = Math.max(1, runtimeBoost(tRecipe.mSpecialValue * 2));
-					this.mEUt = getEUt();
-					this.mEfficiencyIncrease = (this.mMaxProgresstime * getEfficiencyIncrease());
+				
+				if (tFluid.getFluid() == mLava || tFluid.getFluid() == mPahoehoe) {
+					if (depleteInput(tFluid)) {
+						this.mMaxProgresstime = Math.max(1, runtimeBoost(tRecipe.mSpecialValue * 2));
+						this.mEfficiencyIncrease = (this.mMaxProgresstime * getEfficiencyIncrease());
 
-					int loot_MAXCHANCE = 100000;
-					if (mLavaFilter.getClass().isInstance(aStack.getItem())) {
-
-						if ((tRecipe.getOutput(0) != null) && (getBaseMetaTileEntity().getRandomNumber(loot_MAXCHANCE) < tRecipe.getOutputChance(0))) {
-							this.mOutputItems = new ItemStack[] { GT_Utility.copy(new Object[] { tRecipe.getOutput(0) }) };
-						} 
-						if ((tRecipe.getOutput(1) != null) && (getBaseMetaTileEntity().getRandomNumber(loot_MAXCHANCE) < tRecipe.getOutputChance(1))) {
-							this.mOutputItems = new ItemStack[] { GT_Utility.copy(new Object[] { tRecipe.getOutput(1) }) };
-						} 
-						if ((tRecipe.getOutput(2) != null) && (getBaseMetaTileEntity().getRandomNumber(loot_MAXCHANCE) < tRecipe.getOutputChance(2))) {
-							this.mOutputItems = new ItemStack[] { GT_Utility.copy(new Object[] { tRecipe.getOutput(2) }) };
-						} 
-						if ((tRecipe.getOutput(3) != null) && (getBaseMetaTileEntity().getRandomNumber(loot_MAXCHANCE) < tRecipe.getOutputChance(3))) {
-							this.mOutputItems = new ItemStack[] { GT_Utility.copy(new Object[] { tRecipe.getOutput(3) }) };
-						} 
-						if ((tRecipe.getOutput(4) != null) && (getBaseMetaTileEntity().getRandomNumber(loot_MAXCHANCE) < tRecipe.getOutputChance(4))) {
-							this.mOutputItems = new ItemStack[] { GT_Utility.copy(new Object[] { tRecipe.getOutput(4) }) };
-						} 
-						if ((tRecipe.getOutput(5) != null) && (getBaseMetaTileEntity().getRandomNumber(loot_MAXCHANCE) < tRecipe.getOutputChance(5))) {
-							this.mOutputItems = new ItemStack[] { GT_Utility.copy(new Object[] { tRecipe.getOutput(5) }) };
-						} 
-
-					}
-					//Give Obsidian without Lava Filter
-					if (tFluid.isFluidEqual(GT_ModHandler.getLava(86))){
-						if ((tRecipe.getOutput(6) != null) && (getBaseMetaTileEntity().getRandomNumber(loot_MAXCHANCE) < tRecipe.getOutputChance(6))) {
-							this.mOutputItems = new ItemStack[] { GT_Utility.copy(new Object[] { tRecipe.getOutput(6) }) };
+						int loot_MAXCHANCE = 100000;
+						if (mLavaFilter.getClass().isInstance(aStack.getItem())) {
+							if ((tRecipe.getOutput(0) != null) && (getBaseMetaTileEntity().getRandomNumber(loot_MAXCHANCE) < tRecipe.getOutputChance(0))) {
+								this.mOutputItems = new ItemStack[] { GT_Utility.copy(new Object[] { tRecipe.getOutput(0) }) };
+							} 
+							if ((tRecipe.getOutput(1) != null) && (getBaseMetaTileEntity().getRandomNumber(loot_MAXCHANCE) < tRecipe.getOutputChance(1))) {
+								this.mOutputItems = new ItemStack[] { GT_Utility.copy(new Object[] { tRecipe.getOutput(1) }) };
+							} 
+							if ((tRecipe.getOutput(2) != null) && (getBaseMetaTileEntity().getRandomNumber(loot_MAXCHANCE) < tRecipe.getOutputChance(2))) {
+								this.mOutputItems = new ItemStack[] { GT_Utility.copy(new Object[] { tRecipe.getOutput(2) }) };
+							} 
+							if ((tRecipe.getOutput(3) != null) && (getBaseMetaTileEntity().getRandomNumber(loot_MAXCHANCE) < tRecipe.getOutputChance(3))) {
+								this.mOutputItems = new ItemStack[] { GT_Utility.copy(new Object[] { tRecipe.getOutput(3) }) };
+							} 
+							if ((tRecipe.getOutput(4) != null) && (getBaseMetaTileEntity().getRandomNumber(loot_MAXCHANCE) < tRecipe.getOutputChance(4))) {
+								this.mOutputItems = new ItemStack[] { GT_Utility.copy(new Object[] { tRecipe.getOutput(4) }) };
+							} 
+							if ((tRecipe.getOutput(5) != null) && (getBaseMetaTileEntity().getRandomNumber(loot_MAXCHANCE) < tRecipe.getOutputChance(5))) {
+								this.mOutputItems = new ItemStack[] { GT_Utility.copy(new Object[] { tRecipe.getOutput(5) }) };
+							}
 						}
+						//Give Obsidian without Lava Filter
+						if (tFluid.getFluid() == mLava){
+							if ((tRecipe.getOutput(6) != null) && (getBaseMetaTileEntity().getRandomNumber(loot_MAXCHANCE) < tRecipe.getOutputChance(6))) {
+								this.mOutputItems = new ItemStack[] { GT_Utility.copy(new Object[] { tRecipe.getOutput(6) }) };
+							}
+						}
+						return true;
 					}
-
-
-					return true;
+				}
+				else if (tFluid.getFluid() == mSolarSaltHot) {
+					if (depleteInput(tFluid)) {
+						this.mMaxProgresstime = tRecipe.mDuration;
+						this.mEfficiency = 10000;						
+						for (FluidStack aOutput : tRecipe.mFluidOutputs) {
+							this.addOutput(FluidUtils.getFluidStack(aOutput, aOutput.amount));
+						}
+						return true;
+					}
 				}
 			}
 		}
