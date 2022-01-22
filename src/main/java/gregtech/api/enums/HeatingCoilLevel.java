@@ -16,13 +16,13 @@ public enum HeatingCoilLevel {
         UHV,  //TRINIUM             9001
         UEV,  //ELECTRUMFLUX        9901
         UIV,  //AWAKENEDDRACONIUM  10801
-        //Not Implemented yet
-        UMV,
-        UXV,
-        OpV,
-        MAX,
+        UMV,  //INFINITY		   11701
+        UXV,  //QUANTUM			   12601
+        OpV,  //RHUGNOR			   13501
+        MAX,  //ETERNAL			   14401
         ;
 
+	
         private static final HeatingCoilLevel[] VALUES = values();
 
         /**

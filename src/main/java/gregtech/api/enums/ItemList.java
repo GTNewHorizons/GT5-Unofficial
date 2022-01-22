@@ -1519,6 +1519,11 @@ public enum ItemList implements IItemContainer {
     Casing_Coil_NaquadahAlloy,
     Casing_Coil_ElectrumFlux,
     Casing_Coil_AwakenedDraconium,
+    Casing_Coil_CosmicNeutronium,
+    Casing_Coil_Infinity,
+    Casing_Coil_Quantum,
+    Casing_Coil_Rhugnor,
+    Casing_Coil_Eternal,
 
     Casing_Tank_1,
     Casing_Tank_2,

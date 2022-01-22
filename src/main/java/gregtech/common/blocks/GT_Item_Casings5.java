@@ -2,15 +2,21 @@ package gregtech.common.blocks;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import fox.spiteful.avaritia.render.ICosmicRenderItem;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.util.GT_LanguageManager;
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 
 import java.util.List;
 
-public class GT_Item_Casings5 extends GT_Item_Casings_Abstract {
+public class GT_Item_Casings5 extends GT_Item_Casings_Abstract implements ICosmicRenderItem {
+	
+    public IIcon cosmicMask;
+	
     public GT_Item_Casings5(Block par1) {
         super(par1);
     }
@@ -28,4 +34,25 @@ public class GT_Item_Casings5 extends GT_Item_Casings_Abstract {
         aList.add(mCoilHeatTooltip + coilLevel.getHeat() + mCoilUnitTooltip);
         aList.add(mCoilTierTooltip + coilLevel.getTierName());
     }
+    
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void registerIcons(IIconRegister ir) {
+        super.registerIcons(ir);
+        this.cosmicMask = ir.registerIcon("avaritia:mattercluster_full_mask");
+    }
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public IIcon getMaskTexture(ItemStack stack, EntityPlayer player) {
+		return this.cosmicMask;
+	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public float getMaskMultiplier(ItemStack stack, EntityPlayer player) {
+		return 1.0f;
+	}
+	
+	
 }
