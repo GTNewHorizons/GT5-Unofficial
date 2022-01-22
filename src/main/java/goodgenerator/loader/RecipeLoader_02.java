@@ -257,40 +257,79 @@ public class RecipeLoader_02 {
                 7680
         );
 
-        GT_Values.RA.addAssemblylineRecipe(
-                ItemRefer.Fluid_Storage_Core_T1.get(1),
-                10000,
-                new Object[]{
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[]{
                         ItemRefer.Fluid_Storage_Core_T1.get(32),
                         ItemRefer.Fluid_Storage_Core_T1.get(32),
-                        GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Polytetrafluoroethylene,16),
-                        GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Polytetrafluoroethylene,16),
-                        GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.BlackSteel,4),
-                        GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.BlackSteel,4),
-                        GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.BlackSteel,4)
+                        GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.BlackSteel,16),
+                        GT_Utility.getIntegratedCircuit(10)
                 },
-                new FluidStack[]{
-                        Materials.SolderingAlloy.getMolten(288),
-                        Materials.Lubricant.getFluid(1000)
-                },
+                Materials.Polytetrafluoroethylene.getMolten(2304),
                 ItemRefer.Fluid_Storage_Core_T2.get(1),
                 200,
                 7680
+        );
+
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[]{
+                        ItemRefer.Fluid_Storage_Core_T2.get(32),
+                        ItemRefer.Fluid_Storage_Core_T2.get(32),
+                        GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Iridium,2),
+                        GT_Utility.getIntegratedCircuit(10)
+                },
+                Materials.Polytetrafluoroethylene.getMolten(2304),
+                ItemRefer.Fluid_Storage_Core_T3.get(1),
+                800,
+                30720
+        );
+
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[]{
+                        ItemRefer.Fluid_Storage_Core_T3.get(32),
+                        ItemRefer.Fluid_Storage_Core_T3.get(32),
+                        GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Osmium,2),
+                        GT_Utility.getIntegratedCircuit(10)
+                },
+                Materials.Polybenzimidazole.getMolten(2304),
+                ItemRefer.Fluid_Storage_Core_T4.get(1),
+                3200,
+                491520
+        );
+
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[]{
+                        ItemRefer.Fluid_Storage_Core_T4.get(32),
+                        ItemRefer.Fluid_Storage_Core_T4.get(32),
+                        GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Neutronium,2),
+                        GT_Utility.getIntegratedCircuit(10)
+                },
+                Materials.Polybenzimidazole.getMolten(2304),
+                ItemRefer.Fluid_Storage_Core_T5.get(1),
+                6400,
+                980290
+        );
+
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[]{
+                        ItemRefer.Fluid_Storage_Core_T5.get(32),
+                        ItemRefer.Fluid_Storage_Core_T5.get(32),
+                        GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.DraconiumAwakened,2),
+                        GT_Utility.getIntegratedCircuit(10)
+                },
+                Materials.Polybenzimidazole.getMolten(2304),
+                ItemRefer.Fluid_Storage_Core_T6.get(1),
+                12800,
+                1960580
         );
 
         GT_Values.RA.addAssemblylineRecipe(
                 ItemRefer.Fluid_Storage_Core_T2.get(1),
                 20000,
                 new Object[]{
-                        ItemRefer.Fluid_Storage_Core_T2.get(48),
-                        ItemRefer.Fluid_Storage_Core_T2.get(48),
+                        ItemList.Super_Tank_IV.get(2L),
                         GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Polytetrafluoroethylene,16),
                         GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Polytetrafluoroethylene,16),
-                        GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Polytetrafluoroethylene,16),
-                        GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Polytetrafluoroethylene,16),
-                        GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Iridium,4),
-                        GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Iridium,4),
-                        GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Iridium,4)
+                        GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Iridium,32)
                 },
                 new FluidStack[]{
                         Materials.SolderingAlloy.getMolten(2304),
@@ -305,16 +344,10 @@ public class RecipeLoader_02 {
                 ItemRefer.Fluid_Storage_Core_T3.get(1),
                 40000,
                 new Object[]{
-                        ItemRefer.Fluid_Storage_Core_T3.get(48),
-                        ItemRefer.Fluid_Storage_Core_T3.get(48),
+                        ItemList.Quantum_Tank_MV.get(3L),
                         GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Polybenzimidazole,16),
                         GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Polybenzimidazole,16),
-                        GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Polybenzimidazole,16),
-                        GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Polybenzimidazole,16),
-                        GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Osmium,4),
-                        GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Osmium,4),
-                        GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Osmium,4),
-                        GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Osmium,4)
+                        GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Osmium,32)
                 },
                 new FluidStack[]{
                         Materials.SolderingAlloy.getMolten(18432),
@@ -329,16 +362,10 @@ public class RecipeLoader_02 {
                 ItemRefer.Fluid_Storage_Core_T4.get(1),
                 80000,
                 new Object[]{
-                        ItemRefer.Fluid_Storage_Core_T4.get(48),
-                        ItemRefer.Fluid_Storage_Core_T4.get(48),
+                        ItemList.Quantum_Tank_EV.get(32L),
                         GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Polybenzimidazole,32),
                         GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Polybenzimidazole,32),
-                        GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Polybenzimidazole,32),
-                        GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Polybenzimidazole,32),
-                        GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Neutronium,4),
-                        GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Neutronium,4),
-                        GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Neutronium,4),
-                        GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Neutronium,4)
+                        GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Neutronium,32),
                 },
                 new FluidStack[]{
                         Materials.Draconium.getMolten(2304),
@@ -348,31 +375,6 @@ public class RecipeLoader_02 {
                 ItemRefer.Fluid_Storage_Core_T5.get(1),
                 6400,
                 3921160
-        );
-
-        GT_Values.RA.addAssemblylineRecipe(
-                ItemRefer.Fluid_Storage_Core_T5.get(1),
-                160000,
-                new Object[]{
-                        ItemRefer.Fluid_Storage_Core_T5.get(48),
-                        ItemRefer.Fluid_Storage_Core_T5.get(48),
-                        GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Polybenzimidazole,32),
-                        GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Polybenzimidazole,32),
-                        GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Polybenzimidazole,32),
-                        GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Polybenzimidazole,32),
-                        GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.DraconiumAwakened,4),
-                        GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.DraconiumAwakened,4),
-                        GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.DraconiumAwakened,4),
-                        GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.DraconiumAwakened,4)
-                },
-                new FluidStack[]{
-                        Materials.Draconium.getMolten(9216),
-                        Materials.TungstenSteel.getMolten(4608),
-                        Materials.Lubricant.getFluid(128000)
-                },
-                ItemRefer.Fluid_Storage_Core_T6.get(1),
-                12800,
-                7842320
         );
 
         GT_Values.RA.addAssemblerRecipe(
