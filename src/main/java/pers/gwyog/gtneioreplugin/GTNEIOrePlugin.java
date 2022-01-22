@@ -9,6 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pers.gwyog.gtneioreplugin.util.GT5OreLayerHelper;
 import pers.gwyog.gtneioreplugin.util.GT5OreSmallHelper;
+import pers.gwyog.gtneioreplugin.util.GuiRecipeHelper;
 
 @Mod(modid = GTNEIOrePlugin.MODID, name = GTNEIOrePlugin.NAME, version = GTNEIOrePlugin.VERSION, dependencies = "required-after:gregtech;required-after:NotEnoughItems")
 public class GTNEIOrePlugin {
@@ -41,6 +42,7 @@ public class GTNEIOrePlugin {
         if (event.getSide() == Side.CLIENT) {
             new GT5OreLayerHelper();
             new GT5OreSmallHelper();
+            new GuiRecipeHelper();
             if (csv) {
                 new pers.gwyog.gtneioreplugin.util.CSVMaker().run();
             }

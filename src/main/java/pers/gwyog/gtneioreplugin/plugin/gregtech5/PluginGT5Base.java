@@ -10,6 +10,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.util.EnumChatFormatting;
 import pers.gwyog.gtneioreplugin.plugin.PluginBase;
 import pers.gwyog.gtneioreplugin.util.DimensionHelper;
+import pers.gwyog.gtneioreplugin.util.GuiRecipeHelper;
 
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -87,9 +88,12 @@ public abstract class PluginGT5Base extends PluginBase {
      * @return Rectangle area of dimension names
      */
     protected Rectangle getDimensionNamesRect(GuiRecipe gui, int recipe, String dimNames) {
-        int height = dimNames.length() > 70 ? 30 : (dimNames.length() > 36 ? 20 : 10);        
+        int dimNamesHeight = dimNames.length() > 70 ? 30 : (dimNames.length() > 36 ? 20 : 10);        
         Point offset = gui.getRecipePosition(recipe);
-        return new Rectangle(gui.guiLeft + offset.x + 2, gui.guiTop + offset.y + 110, gui.xSize - 9, height );
+        return new Rectangle(GuiRecipeHelper.getGuiLeft(gui) + offset.x + 2,
+                             GuiRecipeHelper.getGuiTop(gui) + offset.y + 110,
+                             GuiRecipeHelper.getXSize(gui) - 9,
+                             dimNamesHeight );
     }
 
     protected int getMaximumMaterialIndex(short meta, boolean smallOre) {
