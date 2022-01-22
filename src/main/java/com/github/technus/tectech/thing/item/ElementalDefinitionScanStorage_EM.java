@@ -25,7 +25,7 @@ import net.minecraft.world.World;
 import java.util.List;
 
 import static com.github.technus.tectech.Reference.MODID;
-import static com.github.technus.tectech.loader.gui.CreativeTabTecTech.creativeTabTecTech;
+import static com.github.technus.tectech.TecTech.creativeTabTecTech;
 import static cpw.mods.fml.relauncher.Side.CLIENT;
 import static net.minecraft.util.StatCollector.translateToLocal;
 

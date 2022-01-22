@@ -26,8 +26,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.api.aspects.Aspect;
 
 import static com.github.technus.tectech.compatibility.thaumcraft.thing.metaTileEntity.multi.EssentiaCompat.essentiaContainerCompat;
-import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationInfo.AVOGADRO_CONSTANT;
-import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationInfo.AVOGADRO_CONSTANT_DIMINISHED;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry.EM_COUNT_PER_MATERIAL_AMOUNT;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry.EM_COUNT_PER_ITEM_DIMINISHED;
 import static com.github.technus.tectech.mechanics.structure.Structure.adders;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
@@ -100,7 +100,7 @@ public class GT_MetaTileEntity_EM_essentiaDequantizer extends GT_MetaTileEntity_
         }
 
         EMInstanceStack stack = inputHatchContainer.getRandom();
-        if (stack.getAmount() < AVOGADRO_CONSTANT_DIMINISHED) {
+        if (stack.getAmount() < EM_COUNT_PER_ITEM_DIMINISHED) {
             cleanStackEM_EM(inputHatchContainer.removeKey(stack.getDefinition()));
             mEUt = (int) -V[6];
         } else {
@@ -111,7 +111,7 @@ public class GT_MetaTileEntity_EM_essentiaDequantizer extends GT_MetaTileEntity_
                 cleanStackEM_EM(inputHatchContainer.removeKey(stack.getDefinition()));
                 mEUt = (int) -V[7];
             } else {
-                inputHatchContainer.removeAmount(stack.getDefinition().getStackForm(AVOGADRO_CONSTANT));
+                inputHatchContainer.removeAmount(stack.getDefinition().getStackForm(EM_COUNT_PER_MATERIAL_AMOUNT));
                 if (aspect.isPrimal()) {
                     mEUt = (int) -V[8];
                 } else {

@@ -1,5 +1,6 @@
 package com.github.technus.tectech.mechanics.elementalMatter.core.definitions;
 
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry.EMDefinitionsRegistry;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMDefinitionStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.IEMStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -30,11 +31,6 @@ public abstract class EMComplexTemplate implements IEMDefinition {
     }
 
     @Override
-    public final EMDefinitionStack getStackForm(double amount) {
-        return new EMDefinitionStack(this, amount);
-    }
-
-    @Override
     public final boolean equals(Object obj) {
         if(this==obj) {
             return true;
@@ -50,24 +46,22 @@ public abstract class EMComplexTemplate implements IEMDefinition {
 
     @Override
     public int hashCode() {//Internal amounts should be also hashed
-        int hash = -(getSubParticles().size() << 4);
+        int hash = -(getSubParticles().size() << 16);
         for (EMDefinitionStack stack : getSubParticles().valuesToArray()) {
             int amount=(int) stack.getAmount();
-            hash += ((amount & 0x1) == 0 ? -amount : amount) + stack.getDefinition().hashCode();
+            hash += ((amount & 0x1) == 0 ? -amount : amount) * (stack.getDefinition().hashCode()<<4);
         }
         return hash;
     }
 
     @Override
     public String toString() {
-        return getLocalizedName()+ '\n' + getSymbol();
+        return getLocalizedName()+ " " + getSymbol();
     }
 
-    public NBTTagCompound toNBT() {
-        NBTTagCompound nbtTagCompound = getSubParticles().toNBT();
-        nbtTagCompound.setInteger(EMDefinitionsRegistry.getIndirectTagName(), getIndirectTagValue());
-        return nbtTagCompound;
+    public NBTTagCompound toNBT(EMDefinitionsRegistry registry) {
+        return registry.indirectToNBT(getIndirectTagValue(),getSubParticles());
     }
 
-    protected abstract int getIndirectTagValue();
+    protected abstract String getIndirectTagValue();
 }

@@ -1,5 +1,6 @@
 package com.github.technus.tectech.mechanics.elementalMatter.core.maps;
 
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry.EMDefinitionsRegistry;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMDefinitionStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.EMException;
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
@@ -43,10 +44,10 @@ public final class EMDefinitionStackMap extends EMStackMap<EMDefinitionStack> im
         return new EMConstantStackMap(getBackingMap());
     }
 
-    public static EMDefinitionStackMap fromNBT(NBTTagCompound nbt) throws EMException {
+    public static EMDefinitionStackMap fromNBT(EMDefinitionsRegistry registry, NBTTagCompound nbt) throws EMException {
         EMDefinitionStack[] defStacks = new EMDefinitionStack[nbt.getInteger("i")];
         for (int i = 0; i < defStacks.length; i++) {
-            defStacks[i] = EMDefinitionStack.fromNBT(nbt.getCompoundTag(Integer.toString(i)));
+            defStacks[i] = EMDefinitionStack.fromNBT(registry,nbt.getCompoundTag(Integer.toString(i)));
             if (defStacks[i].getDefinition().equals(nbtE__)) {
                 throw new EMException("Something went Wrong");
             }

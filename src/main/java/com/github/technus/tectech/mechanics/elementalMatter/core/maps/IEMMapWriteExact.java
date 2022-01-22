@@ -7,7 +7,7 @@ import java.util.Map;
 
 public interface IEMMapWriteExact<T extends IEMStack> extends IEMMapRead<T> {
     default void cleanUp(){
-        entrySet().removeIf(entry -> IEMMapRead.isInvalidAmount(entry.getValue().getAmount()));
+        entrySet().removeIf(entry -> entry.getValue().isInvalidAmount());
     }
 
     default void clear() {
@@ -95,7 +95,7 @@ public interface IEMMapWriteExact<T extends IEMStack> extends IEMMapRead<T> {
         if(current!=null){
             double newAmount=current.getAmount()-amountToConsume;
             if(newAmount>=0){
-                if(IEMMapRead.isValidAmount(current.getAmount())){
+                if(current.isValidAmount()){
                     current=(T)current.mutateAmount(newAmount);
                     getBackingMap().put(current.getDefinition(),current);
                 } else {
@@ -142,7 +142,7 @@ public interface IEMMapWriteExact<T extends IEMStack> extends IEMMapRead<T> {
             return stack;
         }
         double newAmount = target.getAmount()+stack.getAmount();
-        if (IEMMapRead.isValidAmount(newAmount)) {
+        if (IEMStack.isValidAmount(newAmount)) {
             stack=(T) target.mutateAmount(newAmount);
             putReplace(stack);
             return stack;

@@ -757,7 +757,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
             NBTTagCompound output = new NBTTagCompound();
             for (int i = 0; i < outputEM.length; i++) {
                 if (outputEM[i] != null) {
-                    output.setTag(Integer.toString(i), outputEM[i].toNBT());
+                    output.setTag(Integer.toString(i), outputEM[i].toNBT(TecTech.definitionsRegistry));
                 }
             }
             aNBT.setTag("outputEM", output);
@@ -847,7 +847,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
             for (int i = 0; i < outputEM.length; i++) {
                 if (compound.hasKey(Integer.toString(i))) {
                     try {
-                        outputEM[i] = EMInstanceStackMap.fromNBT(compound.getCompoundTag(Integer.toString(i)));
+                        outputEM[i] = EMInstanceStackMap.fromNBT(TecTech.definitionsRegistry,compound.getCompoundTag(Integer.toString(i)));
                     } catch (EMException e) {
                         if (DEBUG_MODE) {
                             e.printStackTrace();

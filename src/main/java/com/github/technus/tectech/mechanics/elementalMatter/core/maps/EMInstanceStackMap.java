@@ -1,10 +1,12 @@
 package com.github.technus.tectech.mechanics.elementalMatter.core.maps;
 
+import com.github.technus.tectech.mechanics.elementalMatter.core.EMException;
 import com.github.technus.tectech.mechanics.elementalMatter.core.decay.EMDecayResult;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry.EMDefinitionsRegistry;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMDefinitionStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMInstanceStack;
-import com.github.technus.tectech.mechanics.elementalMatter.core.EMException;
-import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.IEMStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
@@ -13,9 +15,10 @@ import java.util.Map;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 
-import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationInfo.AVOGADRO_CONSTANT;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry.AVOGADRO_CONSTANT;
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMPrimitiveDefinition.nbtE__;
 import static com.github.technus.tectech.util.DoubleCount.add;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
  * Created by danie_000 on 22.01.2017.
@@ -91,7 +94,7 @@ public final class EMInstanceStackMap extends EMStackMap<EMInstanceStack> implem
         for (EMInstanceStack instance : getBackingMap().values()) {
             info[i++] = EnumChatFormatting.BLUE + instance.getDefinition().getLocalizedName()+
                     " "+ EnumChatFormatting.AQUA + instance.getDefinition().getSymbol()+ EnumChatFormatting.RESET+
-                    " #: " + EnumChatFormatting.GREEN + String.format("%.3E", instance.getAmount() / AVOGADRO_CONSTANT) +" mol"+ EnumChatFormatting.RESET+
+                    " #: " + EnumChatFormatting.GREEN + String.format("%.3E", instance.getAmount() /AVOGADRO_CONSTANT) +" "+translateToLocal("tt.keyword.mol")+ EnumChatFormatting.RESET+
                     " E: " + EnumChatFormatting.GREEN + instance.getEnergy() + EnumChatFormatting.RESET+
                     " T: " + EnumChatFormatting.GREEN + (instance.getLifeTime()<0?"STABLE":String.format("%.3E",instance.getLifeTime()));
         }
@@ -120,16 +123,15 @@ public final class EMInstanceStackMap extends EMStackMap<EMInstanceStack> implem
     }
 
     public double tickContent(double lifeTimeMult, int postEnergize, double seconds){
-        cleanUp();
+        //cleanUp();
         double diff=0;
-        for (EMInstanceStack instance : valuesToArray()) {
+        for (EMInstanceStack instance : takeAllToArray()) {
             instance.setAge(instance.getAge() + seconds);
             EMDecayResult newInstances = instance.decay(lifeTimeMult, instance.getAge(), postEnergize);
             if (newInstances == null) {
-                instance.nextColor();
+                putUnify(instance);
             } else {
                 diff=add(diff,newInstances.getMassDiff());
-                removeAmount(instance);//todo check maybe this should be removeKey
                 putUnifyAll(newInstances.getOutput());
             }
         }
@@ -157,10 +159,10 @@ public final class EMInstanceStackMap extends EMStackMap<EMInstanceStack> implem
         return nbt;
     }
 
-    public static EMInstanceStackMap fromNBT(NBTTagCompound nbt) throws EMException {
+    public static EMInstanceStackMap fromNBT(EMDefinitionsRegistry registry, NBTTagCompound nbt) throws EMException {
         EMInstanceStack[] instances = new EMInstanceStack[nbt.getInteger("i")];
         for (int i = 0; i < instances.length; i++) {
-            instances[i] = EMInstanceStack.fromNBT(nbt.getCompoundTag(Integer.toString(i)));
+            instances[i] = EMInstanceStack.fromNBT(registry,nbt.getCompoundTag(Integer.toString(i)));
             if (instances[i].getDefinition().equals(nbtE__)) {
                 throw new EMException("Something went Wrong");
             }
@@ -188,6 +190,12 @@ public final class EMInstanceStackMap extends EMStackMap<EMInstanceStack> implem
         return build.toString();
     }
 
+    public EMInstanceStack[] takeAllToArray(){
+        EMInstanceStack[] newStack = valuesToArray();//just in case to uncouple The map
+        this.getBackingMap().clear();
+        return newStack;
+    }
+
     public EMInstanceStackMap takeAll(){
         EMInstanceStackMap newStack =new EMInstanceStackMap(false,new TreeMap<>(this.getBackingMap()));//just in case to uncouple The map
         this.getBackingMap().clear();
@@ -212,7 +220,7 @@ public final class EMInstanceStackMap extends EMStackMap<EMInstanceStack> implem
             return stack;
         }
         double newAmount = add(target.getAmount(), stack.getAmount());
-        if (IEMMapRead.isValidAmount(newAmount)) {
+        if (IEMStack.isValidAmount(newAmount)) {
             stack=target.unifyIntoThis(stack);
             putReplace(stack);
             return stack;
@@ -230,7 +238,7 @@ public final class EMInstanceStackMap extends EMStackMap<EMInstanceStack> implem
             return stack;
         }
         double newAmount = target.getAmount()+stack.getAmount();
-        if (IEMMapRead.isValidAmount(newAmount)) {
+        if (IEMStack.isValidAmount(newAmount)) {
             stack=target.unifyIntoThis(stack);
             putReplace(stack);
             return stack;

@@ -2,36 +2,33 @@ package com.github.technus.tectech.loader;
 
 import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.EMComplexAspectDefinition;
 import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.EMPrimalAspectDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry.EMDefinitionsRegistry;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.EMAtomDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.EMHadronDefinition;
-import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.EMNuclideIAEA;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.*;
 
 /**
  * Created by danie_000 on 16.11.2016.
  */
-public class ElementalLoader implements Runnable {
-    @Override
-    public void run() {
+public class ElementalLoader {
+    public void run(EMDefinitionsRegistry registry) {
         // ===================================================================================================
         // Definition init
         // ===================================================================================================
 
-        EMPrimitiveDefinition.run();
+        EMPrimitiveDefinition.run(registry);
 
-        EMQuarkDefinition.run();
-        EMLeptonDefinition.run();
-        EMNeutrinoDefinition.run();
-        EMBosonDefinition.run();
+        EMQuarkDefinition.run(registry);
+        EMLeptonDefinition.run(registry);
+        EMNeutrinoDefinition.run(registry);
+        EMGaugeBosonDefinition.run(registry);
+        EMScalarBosonDefinition.run(registry);
 
-        EMHadronDefinition.run();
+        EMHadronDefinition.run(registry);
 
-        EMNuclideIAEA.run();
+        EMAtomDefinition.run(registry);
 
-        EMAtomDefinition.run();
-
-        EMPrimalAspectDefinition.run();
-
-        EMComplexAspectDefinition.run();
+        EMPrimalAspectDefinition.run(registry);
+        EMComplexAspectDefinition.run(registry);
     }
 }

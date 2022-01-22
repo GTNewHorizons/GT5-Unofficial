@@ -14,7 +14,7 @@ import openmodularturrets.handler.ConfigHandler;
 import openmodularturrets.tileentity.turrets.TurretHead;
 import openmodularturrets.util.TurretHeadUtil;
 
-import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationInfo.AVOGADRO_CONSTANT;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry.EM_COUNT_PER_MATERIAL_AMOUNT;
 
 /**
  * Created by Bass on 27/07/2017.
@@ -71,8 +71,8 @@ public class TileTurretHeadEM extends TurretHead{
             return new projectileEM(world, TurretHeadUtil.getTurretBase(worldObj, xCoord, yCoord, zCoord), null);
         }
         EMInstanceStack stack  = hatchContentPointer.getRandom();
-        double          amount = Math.min(AVOGADRO_CONSTANT, stack.getAmount());
-        hatchContentPointer.removeAmount(stack.getDefinition(),AVOGADRO_CONSTANT);
+        double          amount = Math.min(EM_COUNT_PER_MATERIAL_AMOUNT, stack.getAmount());
+        hatchContentPointer.removeAmount(stack.getDefinition(), EM_COUNT_PER_MATERIAL_AMOUNT);
         stack=stack.clone();
         stack.setAmount(amount);
         return new projectileEM(world, TurretHeadUtil.getTurretBase(worldObj, xCoord, yCoord, zCoord), stack);

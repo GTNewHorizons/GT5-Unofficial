@@ -1,5 +1,6 @@
 package com.github.technus.tectech.thing.item;
 
+import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.util.Util;
 import com.github.technus.tectech.font.TecTechFontRender;
@@ -20,7 +21,7 @@ import java.util.List;
 
 import static com.github.technus.tectech.Reference.MODID;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
-import static com.github.technus.tectech.loader.gui.CreativeTabTecTech.creativeTabTecTech;
+import static com.github.technus.tectech.TecTech.creativeTabTecTech;
 import static cpw.mods.fml.relauncher.Side.CLIENT;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
@@ -48,7 +49,7 @@ public final class ElementalDefinitionContainer_EM extends Item implements IElem
             EMConstantStackMap oldMap =null;
             if (tNBT.hasKey("content")) {
                 try {
-                    oldMap= EMConstantStackMap.fromNBT(tNBT.getCompoundTag("content"));
+                    oldMap= EMConstantStackMap.fromNBT(TecTech.definitionsRegistry,tNBT.getCompoundTag("content"));
                 } catch (EMException e) {
                     if (DEBUG_MODE) {
                         e.printStackTrace();
@@ -56,7 +57,7 @@ public final class ElementalDefinitionContainer_EM extends Item implements IElem
                 }
             }
             tNBT.setTag("info", definitions.getInfoNBT());
-            tNBT.setTag("content", definitions.toNBT());
+            tNBT.setTag("content", definitions.toNBT(TecTech.definitionsRegistry));
             tNBT.setTag("symbols",definitions.getShortSymbolsNBT());
             return oldMap;
         }
@@ -71,7 +72,7 @@ public final class ElementalDefinitionContainer_EM extends Item implements IElem
                 return null;
             }
             try {
-                return EMConstantStackMap.fromNBT(tNBT.getCompoundTag("content"));
+                return EMConstantStackMap.fromNBT(TecTech.definitionsRegistry,tNBT.getCompoundTag("content"));
             } catch (EMException e) {
                 if (DEBUG_MODE) {
                     e.printStackTrace();
@@ -91,7 +92,7 @@ public final class ElementalDefinitionContainer_EM extends Item implements IElem
             EMConstantStackMap oldMap =null;
             if (tNBT.hasKey("content")) {
                 try {
-                    oldMap= EMConstantStackMap.fromNBT(tNBT.getCompoundTag("content"));
+                    oldMap= EMConstantStackMap.fromNBT(TecTech.definitionsRegistry,tNBT.getCompoundTag("content"));
                 } catch (EMException e) {
                     if (DEBUG_MODE) {
                         e.printStackTrace();

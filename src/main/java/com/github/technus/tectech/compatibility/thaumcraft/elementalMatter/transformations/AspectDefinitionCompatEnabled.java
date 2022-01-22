@@ -2,20 +2,20 @@ package com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.tran
 
 import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.EMComplexAspectDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.core.EMException;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry.EMDefinitionsRegistry;
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
 import thaumcraft.api.aspects.Aspect;
 
 import java.util.ArrayList;
 
 import static com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.EMPrimalAspectDefinition.*;
-import static com.github.technus.tectech.mechanics.elementalMatter.core.definitions.EMDefinitionsRegistry.STACKS_REGISTERED;
 
 /**
  * Created by Tec on 21.05.2017.
  */
 public final class AspectDefinitionCompatEnabled extends AspectDefinitionCompat {
     @Override
-    public void run(){
+    public void run(EMDefinitionsRegistry registry){
         getDefToAspect().put(magic_air,"aer");
         getDefToAspect().put(magic_earth,"terra");
         getDefToAspect().put(magic_fire,"ignis");
@@ -51,6 +51,7 @@ public final class AspectDefinitionCompatEnabled extends AspectDefinitionCompat 
                             }
                             getAspectToDef().put(aspect.getTag(),newAspect);
                             getDefToAspect().put(newAspect,aspect.getTag());
+                            registry.registerForDisplay(newAspect);
                         }catch (EMException e) {
                             /**/
                         }finally {
@@ -60,12 +61,16 @@ public final class AspectDefinitionCompatEnabled extends AspectDefinitionCompat 
                 }
             }
         }
-        STACKS_REGISTERED.addAll(getDefToAspect().keySet());
     }
 
     @Override
     public String getAspectTag(IEMDefinition definition) {
         return getDefToAspect().get(definition);
+    }
+
+    public String getAspectLocalizedName(IEMDefinition definition){
+        Aspect aspect = Aspect.aspects.get(getAspectTag(definition));
+        return aspect != null ? aspect.getName() : null;
     }
 
     @Override

@@ -1,15 +1,15 @@
 package com.github.technus.tectech.thing.item;
 
-import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.EMDefinitionsRegistry;
+import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.font.TecTechFontRender;
+import com.github.technus.tectech.mechanics.elementalMatter.core.EMException;
+import com.github.technus.tectech.mechanics.elementalMatter.core.IEMContainer;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMInstanceStack;
+import com.github.technus.tectech.thing.item.renderElemental.IElementalItem;
 import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.util.Util;
-import com.github.technus.tectech.font.TecTechFontRender;
-import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
-import com.github.technus.tectech.mechanics.elementalMatter.core.IEMContainer;
-import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMInstanceStack;
-import com.github.technus.tectech.mechanics.elementalMatter.core.EMException;
-import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
-import com.github.technus.tectech.thing.item.renderElemental.IElementalItem;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -30,8 +30,8 @@ import java.util.List;
 
 import static com.github.technus.tectech.Reference.MODID;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
-import static com.github.technus.tectech.loader.gui.CreativeTabTecTech.creativeTabTecTech;
-import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationInfo.*;
+import static com.github.technus.tectech.TecTech.creativeTabTecTech;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry.*;
 import static cpw.mods.fml.relauncher.Side.CLIENT;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
@@ -61,7 +61,7 @@ public final class DebugElementalInstanceContainer_EM extends Item implements IE
                     EMInstanceStackMap content = ((IEMContainer) metaTE).getContentHandler();
                     if (tNBT.hasKey("content")) {
                         try {
-                            content.putUnifyAll(EMInstanceStackMap.fromNBT(tNBT.getCompoundTag("content")));
+                            content.putUnifyAll(EMInstanceStackMap.fromNBT(TecTech.definitionsRegistry,tNBT.getCompoundTag("content")));
                         } catch (EMException e) {
                             if (DEBUG_MODE) {
                                 e.printStackTrace();
@@ -75,7 +75,7 @@ public final class DebugElementalInstanceContainer_EM extends Item implements IE
                     } else if (content.hasStacks()) {
                         ((IEMContainer) metaTE).purgeOverflow();
                         tNBT.setTag("info", content.getInfoNBT());
-                        tNBT.setTag("content", content.toNBT());
+                        tNBT.setTag("content", content.toNBT(TecTech.definitionsRegistry));
                         tNBT.setTag("symbols", content.getShortSymbolsNBT());
                         content.clear();
                     }
@@ -94,7 +94,7 @@ public final class DebugElementalInstanceContainer_EM extends Item implements IE
         }
         if (tNBT.hasKey("content")) {
             try {
-                content.putUnifyAll(EMInstanceStackMap.fromNBT(tNBT.getCompoundTag("content")));
+                content.putUnifyAll(EMInstanceStackMap.fromNBT(TecTech.definitionsRegistry,tNBT.getCompoundTag("content")));
             } catch (EMException e) {
                 if (DEBUG_MODE) {
                     e.printStackTrace();
@@ -106,7 +106,7 @@ public final class DebugElementalInstanceContainer_EM extends Item implements IE
             tNBT.removeTag("symbols");
         } else if (content.hasStacks()) {
             tNBT.setTag("info", content.getInfoNBT());
-            tNBT.setTag("content", content.toNBT());
+            tNBT.setTag("content", content.toNBT(TecTech.definitionsRegistry));
             tNBT.setTag("symbols", content.getShortSymbolsNBT());
             content.clear();
         }
@@ -140,10 +140,10 @@ public final class DebugElementalInstanceContainer_EM extends Item implements IE
         ItemStack that = new ItemStack(this, 1);
         that.setTagCompound(new NBTTagCompound());
         list.add(that);
-        for(IEMDefinition definition: EMDefinitionsRegistry.getStacksRegisteredForDisplay()){
-            list.add(setContent(new ItemStack(this).setStackDisplayName(definition.getLocalizedName()+" 1 mol"),new EMInstanceStackMap(new EMInstanceStack(definition, AVOGADRO_CONSTANT))));
-            list.add(setContent(new ItemStack(this).setStackDisplayName(definition.getLocalizedName()+" 144 mol"),new EMInstanceStackMap(new EMInstanceStack(definition, AVOGADRO_CONSTANT_144))));
-            list.add(setContent(new ItemStack(this).setStackDisplayName(definition.getLocalizedName()+" 1000 mol"),new EMInstanceStackMap(new EMInstanceStack(definition, AVOGADRO_CONSTANT_1000))));
+        for(IEMDefinition definition: TecTech.definitionsRegistry.getStacksRegisteredForDisplay()){
+            list.add(setContent(new ItemStack(this).setStackDisplayName(definition.getLocalizedName()+" "+1+" "+translateToLocal("tt.keyword.mbMols")),new EMInstanceStackMap(new EMInstanceStack(definition, EM_COUNT_PER_MATERIAL_AMOUNT))));
+            list.add(setContent(new ItemStack(this).setStackDisplayName(definition.getLocalizedName()+" "+1+" "+translateToLocal("tt.keyword.itemMols")),new EMInstanceStackMap(new EMInstanceStack(definition, EM_COUNT_PER_ITEM))));
+            list.add(setContent(new ItemStack(this).setStackDisplayName(definition.getLocalizedName()+" "+1000+" "+translateToLocal("tt.keyword.mbMols")),new EMInstanceStackMap(new EMInstanceStack(definition, EM_COUNT_PER_1k))));
         }
     }
 

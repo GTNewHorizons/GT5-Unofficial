@@ -11,7 +11,7 @@ import net.minecraftforge.oredict.OreDictionary;
 /**
  * Created by Tec on 23.05.2017.
  */
-public class EMItemQuantizationInfo implements IEMExchangeInfo<ItemStack, IEMStack> {
+public class EMItemQuantizationInfo {
     private final ItemStack in;
     private final boolean   skipNBT;
     private final IEMStack  out;
@@ -28,12 +28,10 @@ public class EMItemQuantizationInfo implements IEMExchangeInfo<ItemStack, IEMSta
         this.skipNBT = skipNBT;
     }
 
-    @Override
     public ItemStack input() {
         return in.copy();
     }
 
-    @Override
     public IEMStack output() {
         return out.clone();
     }

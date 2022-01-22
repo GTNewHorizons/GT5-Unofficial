@@ -102,6 +102,9 @@ public class DoubleCount {
             return count - value;
         } else {
             double result = count - value;
+            if(result==count||result==value){
+                return result;
+            }
             return result - ulpSigned(result);
         }
     }
@@ -111,6 +114,9 @@ public class DoubleCount {
             return count + value;
         } else {
             double result = count + value;
+            if(result==count||result==value){
+                return result;
+            }
             return result - ulpSigned(result);
         }
     }

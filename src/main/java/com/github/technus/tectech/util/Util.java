@@ -561,4 +561,16 @@ public final class Util {
         int z=chunk.zPosition<<4;
         return AxisAlignedBB.getBoundingBox(x,-128,z,x+16,512,z+16);
     }
+
+    public static String getConcated(String[] strings,String separator){
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String string : strings) {
+            stringBuilder.append(string).append(separator);
+        }
+        int length = stringBuilder.length();
+        if(length >=separator.length()){
+            stringBuilder.setLength(length -separator.length());
+        }
+        return stringBuilder.toString();
+    }
 }

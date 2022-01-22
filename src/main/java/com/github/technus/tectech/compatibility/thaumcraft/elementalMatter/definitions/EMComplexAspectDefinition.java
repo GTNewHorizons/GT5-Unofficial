@@ -2,24 +2,21 @@ package com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.defi
 
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.transformations.AspectDefinitionCompat;
-import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.EMDefinitionsRegistry;
-import com.github.technus.tectech.util.Util;
-import com.github.technus.tectech.mechanics.elementalMatter.core.decay.EMDecay;
-import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMConstantStackMap;
-import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMDefinitionStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.EMException;
+import com.github.technus.tectech.mechanics.elementalMatter.core.decay.EMDecay;
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.EMComplexTemplate;
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
-import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMFluidDequantizationInfo;
-import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMItemDequantizationInfo;
-import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMOredictDequantizationInfo;
-import com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMBosonDefinition;
-import net.minecraft.nbt.NBTTagCompound;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry.EMIndirectType;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry.EMDefinitionsRegistry;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMConstantStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMDefinitionStack;
+import com.github.technus.tectech.util.Util;
 
 import java.util.ArrayList;
 
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.mechanics.elementalMatter.core.decay.EMDecay.NO_DECAY;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMGaugeBosonDefinition.deadEnd;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_scanner.*;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
@@ -30,7 +27,7 @@ public final class EMComplexAspectDefinition extends EMComplexTemplate {
     private final int    hash;
     private final double mass;
 
-    private static final byte nbtType = (byte) 'c';
+    private static final String nbtType = "`";
 
     private final EMConstantStackMap aspectStacks;
 
@@ -76,7 +73,7 @@ public final class EMComplexAspectDefinition extends EMComplexTemplate {
 
     @Override
     public String getLocalizedName() {
-        String name = AspectDefinitionCompat.aspectDefinitionCompat.getAspectTag(this);
+        String name = AspectDefinitionCompat.aspectDefinitionCompat.getAspectLocalizedName(this);
         if (name != null) {
             name = name.substring(0, 1).toUpperCase() + name.substring(1);
         } else {
@@ -124,23 +121,8 @@ public final class EMComplexAspectDefinition extends EMComplexTemplate {
     }
 
     @Override
-    protected int getIndirectTagValue() {
+    protected String getIndirectTagValue() {
         return nbtType;
-    }
-
-    public static EMComplexAspectDefinition fromNBT(NBTTagCompound nbt) {
-        EMDefinitionStack[] stacks = new EMDefinitionStack[nbt.getInteger("i")];
-        for (int i = 0; i < stacks.length; i++) {
-            stacks[i] = EMDefinitionStack.fromNBT(nbt.getCompoundTag(Integer.toString(i)));
-        }
-        try {
-            return new EMComplexAspectDefinition(stacks);
-        } catch (EMException e) {
-            if (DEBUG_MODE) {
-                e.printStackTrace();
-            }
-            return null;
-        }
     }
 
     @Override
@@ -159,12 +141,12 @@ public final class EMComplexAspectDefinition extends EMComplexTemplate {
     }
 
     @Override
-    public byte getMatterType() {
+    public int getGeneration() {
         return 0;
     }
 
     @Override
-    public byte getColor() {
+    public int getMaxColors() {
         return -1;
     }
 
@@ -175,7 +157,7 @@ public final class EMComplexAspectDefinition extends EMComplexTemplate {
 
     @Override
     public EMDecay[] getEnergyInducedDecay(long energyLevel) {
-        return new EMDecay[]{new EMDecay(0.75F, aspectStacks), EMBosonDefinition.deadEnd};
+        return new EMDecay[]{new EMDecay(0.75F, aspectStacks), deadEnd};
     }
 
     @Override
@@ -219,44 +201,24 @@ public final class EMComplexAspectDefinition extends EMComplexTemplate {
     }
 
     @Override
-    public EMFluidDequantizationInfo someAmountIntoFluidStack() {
-        return null;
-    }
-
-    @Override
-    public EMItemDequantizationInfo someAmountIntoItemsStack() {
-        return null;
-    }
-
-    @Override
-    public EMOredictDequantizationInfo someAmountIntoOredictStack() {
-        return null;
-    }
-
-    @Override
     public IEMDefinition getAnti() {
         return null;
     }
 
-    public static void run() {
-        try {
-            EMDefinitionsRegistry.registerDefinitionClass(nbtType, EMComplexAspectDefinition::fromNBT,EMComplexAspectDefinition.class, getClassTypeStatic());
-        } catch (Exception e) {
-            if (DEBUG_MODE) {
-                e.printStackTrace();
-            }
-        }
+    public static void run(EMDefinitionsRegistry registry) {
+        registry.registerDefinitionClass(nbtType, new EMIndirectType((definitionsRegistry, nbt)->
+                new EMComplexAspectDefinition(EMConstantStackMap.fromNBT(definitionsRegistry,nbt)), EMComplexAspectDefinition.class, "tt.keyword.Aspect"));
         if (DEBUG_MODE) {
             TecTech.LOGGER.info("Registered Elemental Matter Class: ComplexAspect " + nbtType + ' ' + getClassTypeStatic());
         }
     }
 
     @Override
-    public byte getClassType() {
+    public int getMatterMassType() {
         return getClassTypeStatic();
     }
 
-    public static byte getClassTypeStatic() {
+    public static int getClassTypeStatic() {
         return -96;
     }
 
@@ -275,7 +237,7 @@ public final class EMComplexAspectDefinition extends EMComplexTemplate {
     @Override
     public void addScanResults(ArrayList<String> lines, int capabilities, long energyLevel) {
         if (Util.areBitsSet(SCAN_GET_CLASS_TYPE, capabilities)) {
-            lines.add(translateToLocal("tt.keyword.CLASS") + " = " + nbtType + ' ' + getClassType());
+            lines.add(translateToLocal("tt.keyword.CLASS") + " = " + nbtType + ' ' + getMatterMassType());
         }
         if (Util.areBitsSet(SCAN_GET_NOMENCLATURE | SCAN_GET_CHARGE | SCAN_GET_MASS, capabilities)) {
             lines.add(translateToLocal("tt.keyword.NAME") + " = " + getLocalizedName());
@@ -285,7 +247,7 @@ public final class EMComplexAspectDefinition extends EMComplexTemplate {
             lines.add(translateToLocal("tt.keyword.CHARGE") + " = " + getCharge() / 3f + " e");
         }
         if (Util.areBitsSet(SCAN_GET_COLOR, capabilities)) {
-            lines.add(getColor() < 0 ? translateToLocal("tt.keyword.COLORLESS") : translateToLocal("tt.keyphrase.CARRIES_COLOR"));
+            lines.add(hasColor() ? translateToLocal("tt.keyword.COLORLESS") : translateToLocal("tt.keyphrase.CARRIES_COLOR"));
         }
         if (Util.areBitsSet(SCAN_GET_MASS, capabilities)) {
             lines.add(translateToLocal("tt.keyword.MASS") + " = " + getMass() + " eV/c\u00b2");

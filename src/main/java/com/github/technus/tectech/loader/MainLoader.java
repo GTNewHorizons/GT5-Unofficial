@@ -8,14 +8,16 @@ import com.github.technus.tectech.compatibility.thaumcraft.thing.metaTileEntity.
 import com.github.technus.tectech.compatibility.thaumcraft.thing.metaTileEntity.multi.EssentiaCompatEnabled;
 import com.github.technus.tectech.loader.gui.CreativeTabTecTech;
 import com.github.technus.tectech.loader.gui.ModGuiHandler;
-import com.github.technus.tectech.loader.recipe.RecipeLoader;
+import com.github.technus.tectech.loader.recipe.BaseRecipeLoader;
 import com.github.technus.tectech.loader.thing.ComponentLoader;
 import com.github.technus.tectech.loader.thing.CoverLoader;
 import com.github.technus.tectech.loader.thing.MachineLoader;
 import com.github.technus.tectech.loader.thing.ThingsLoader;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry.EMDefinitionsRegistry;
+import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry;
 import com.github.technus.tectech.thing.casing.TT_Container_Casings;
 import com.github.technus.tectech.thing.metaTileEntity.Textures;
-import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_collider;
+import com.github.technus.tectech.thing.metaTileEntity.multi.em_collider.GT_MetaTileEntity_EM_collider;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ProgressManager;
 import cpw.mods.fml.common.network.NetworkRegistry;
@@ -43,7 +45,7 @@ import static com.github.technus.tectech.TecTech.*;
 import static com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.transformations.AspectDefinitionCompat.aspectDefinitionCompat;
 import static com.github.technus.tectech.compatibility.thaumcraft.thing.metaTileEntity.multi.EssentiaCompat.essentiaContainerCompat;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
-import static com.github.technus.tectech.loader.gui.CreativeTabTecTech.creativeTabTecTech;
+import static com.github.technus.tectech.TecTech.creativeTabTecTech;
 import static gregtech.api.enums.GT_Values.W;
 
 public final class MainLoader {
@@ -65,17 +67,17 @@ public final class MainLoader {
 
         //set expanded texture arrays for tiers
         try {
-            new Textures();
+            Textures.run();
         }catch (Throwable t){
             LOGGER.error("Loading textures...",t);
         }
     }
 
-    public static void load() {
+    public static void load(EMDefinitionsRegistry registry) {
         ProgressManager.ProgressBar progressBarLoad = ProgressManager.push("TecTech Loader", 9);
 
         progressBarLoad.step("Elemental Things");
-        new ElementalLoader().run();
+        new ElementalLoader().run(registry);
         LOGGER.info("Elemental Init Done");
 
         progressBarLoad.step("Thaumcraft Compatibility");
@@ -120,8 +122,8 @@ public final class MainLoader {
         ProgressManager.pop(progressBarLoad);
     }
 
-    public static void postLoad() {
-        ProgressManager.ProgressBar progressBarPostLoad = ProgressManager.push("TecTech Post Loader", 5);
+    public static void postLoad(EMDefinitionsRegistry registry, EMTransformationRegistry transformationInfo) {
+        ProgressManager.ProgressBar progressBarPostLoad = ProgressManager.push("TecTech Post Loader", 6);
 
         progressBarPostLoad.step("Dreamcraft Compatibility");
         if(Loader.isModLoaded(Reference.DREAMCRAFT)){
@@ -138,21 +140,16 @@ public final class MainLoader {
         }
 
         progressBarPostLoad.step("Thaumcraft Compatibility");
-        if (Loader.isModLoaded(Reference.THAUMCRAFT)) {
-            aspectDefinitionCompat = new AspectDefinitionCompatEnabled();
-            aspectDefinitionCompat.run();
-        } else {
-            aspectDefinitionCompat = new AspectDefinitionCompat();
-        }
+        aspectDefinitionCompat = Loader.isModLoaded(Reference.THAUMCRAFT) ? new AspectDefinitionCompatEnabled() : new AspectDefinitionCompat();
+        aspectDefinitionCompat.run(registry);
 
         progressBarPostLoad.step("Recipes");
-        new RecipeLoader().run();
+        new BaseRecipeLoader().run(transformationInfo);
         TecTech.LOGGER.info("Recipe Init Done");
 
-        //Hazmat moved to GT5U
-        //progressBarPostLoad.step("Register Extra Hazmat Suits");
-        //registerExtraHazmats();
-        //TecTech.LOGGER.info("Hazmat additions done");
+        progressBarPostLoad.step("Register Extra Hazmat Suits");
+        registerExtraHazmats();
+        TecTech.LOGGER.info("Hazmat additions done");
 
         if (!configTecTech.DISABLE_BLOCK_HARDNESS_NERF) {
             progressBarPostLoad.step("Nerf blocks blast resistance");
@@ -170,7 +167,7 @@ public final class MainLoader {
         ProgressManager.pop(progressBarPostLoad);
     }
 
-    private static void registerExtraHazmats() { //Hazmat moved to GT5U
+    private static void registerExtraHazmats() {
         ItemStack EMT_iqC=GT_ModHandler.getModItem("EMT","itemArmorQuantumChestplate",1,W);
         ItemStack GRAVI_gC=GT_ModHandler.getModItem("GraviSuite","graviChestPlate",1,W);
         ItemStack GRAVI_anC=GT_ModHandler.getModItem("GraviSuite", "advNanoChestPlate", 1, W);

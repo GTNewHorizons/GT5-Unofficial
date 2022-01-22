@@ -2,11 +2,11 @@ package com.github.technus.tectech.mechanics.elementalMatter.core.maps;
 
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.IEMStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
-import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationInfo;
+import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry;
 
 import java.util.Map;
 
-import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationInfo.AVOGADRO_CONSTANT_EPSILON;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry.EM_COUNT_EPSILON;
 import static com.github.technus.tectech.util.DoubleCount.*;
 
 public interface IEMMapWrite<T extends IEMStack> extends IEMMapWriteExact<T> {
@@ -15,11 +15,11 @@ public interface IEMMapWrite<T extends IEMStack> extends IEMMapWriteExact<T> {
     /**
      * Consumes amount from map
      * @param def def to consume
-     * @param amountToConsume should be comparable to {@link EMTransformationInfo#AVOGADRO_CONSTANT}
+     * @param amountToConsume should be comparable to {@link EMTransformationRegistry#EM_COUNT_PER_MATERIAL_AMOUNT}
      * @return consumed successfully
      */
     default boolean removeAmount(IEMDefinition def, double amountToConsume){
-        double amountRequired=amountToConsume-AVOGADRO_CONSTANT_EPSILON;
+        double amountRequired=amountToConsume- EM_COUNT_EPSILON;
         if(amountRequired==amountToConsume){
             amountRequired-=ulpSigned(amountRequired);
         }
@@ -31,7 +31,7 @@ public interface IEMMapWrite<T extends IEMStack> extends IEMMapWriteExact<T> {
         if(current!=null){
             if(current.getAmount()>=amountRequired){
                 double newAmount=sub(current.getAmount(),amountToConsume);
-                if(IEMMapRead.isValidAmount(current.getAmount())){
+                if(IEMStack.isValidAmount(newAmount)){
                     current=(T)current.mutateAmount(newAmount);
                     getBackingMap().put(current.getDefinition(),current);
                 }else {
@@ -88,7 +88,7 @@ public interface IEMMapWrite<T extends IEMStack> extends IEMMapWriteExact<T> {
             return stack;
         }
         double newAmount = add(target.getAmount(), stack.getAmount());
-        if (IEMMapRead.isValidAmount(newAmount)) {
+        if (IEMStack.isValidAmount(newAmount)) {
             stack=(T) target.mutateAmount(newAmount);
             putReplace(stack);
             return stack;

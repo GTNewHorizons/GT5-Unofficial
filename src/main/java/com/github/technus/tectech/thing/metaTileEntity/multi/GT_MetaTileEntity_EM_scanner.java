@@ -309,7 +309,7 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
             NBTTagCompound tNBT = mInventory[1].getTagCompound();//code above makes it not null
 
             tNBT.setString("eMachineType", machineType);
-            tNBT.setTag(E_RECIPE_ID, objectResearched.toNBT());
+            tNBT.setTag(E_RECIPE_ID, objectResearched.toNBT(TecTech.definitionsRegistry));
             tNBT.setString("author", EnumChatFormatting.BLUE + "Tec" + EnumChatFormatting.DARK_BLUE + "Tech" + EnumChatFormatting.WHITE + ' ' + machineType + " EM Recipe Generator");
         } else if (objectsScanned != null && CustomItemList.scanContainer.isStackEqual(mInventory[1], false, true)) {
             ElementalDefinitionScanStorage_EM.setContent(mInventory[1], objectsScanned, scanComplexity);
@@ -387,7 +387,7 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
         aNBT.setLong("eComputationRemaining", computationRemaining);
         aNBT.setLong("eComputationRequired", computationRequired);
         if (objectResearched != null) {
-            aNBT.setTag("eObject", objectResearched.toNBT());
+            aNBT.setTag("eObject", objectResearched.toNBT(TecTech.definitionsRegistry));
         } else {
             aNBT.removeTag("eObject");
         }
@@ -397,7 +397,7 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
             aNBT.removeTag("eScanComplexity");
         }
         if (objectsScanned != null) {
-            aNBT.setTag("eScanObjects", objectsScanned.toNBT());
+            aNBT.setTag("eScanObjects", objectsScanned.toNBT(TecTech.definitionsRegistry));
         } else {
             aNBT.removeTag("eScanObjects");
         }
@@ -409,7 +409,7 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
         computationRemaining = aNBT.getLong("eComputationRemaining");
         computationRequired = aNBT.getLong("eComputationRequired");
         if (aNBT.hasKey("eObject")) {
-            objectResearched = EMDefinitionStack.fromNBT(aNBT.getCompoundTag("eObject"));
+            objectResearched = EMDefinitionStack.fromNBT(TecTech.definitionsRegistry,aNBT.getCompoundTag("eObject"));
             if (objectResearched.getDefinition() == nbtE__) {
                 objectResearched = null;
             }
@@ -423,7 +423,7 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
         }
         try {
             if (aNBT.hasKey("eScanObjects")) {
-                objectsScanned = EMInstanceStackMap.fromNBT(aNBT.getCompoundTag("eScanObjects"));
+                objectsScanned = EMInstanceStackMap.fromNBT(TecTech.definitionsRegistry,aNBT.getCompoundTag("eScanObjects"));
             }
         } catch (EMException e) {
             objectsScanned = new EMInstanceStackMap();

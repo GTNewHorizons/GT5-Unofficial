@@ -9,10 +9,9 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.base.IStatusFunctio
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.MultiblockControl;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
 
-import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationInfo.AVOGADRO_CONSTANT_144;
-import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationInfo.AVOGADRO_CONSTANT_UNCERTAINTY;
-import static com.github.technus.tectech.util.CommonValues.V;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry.EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.*;
+import static com.github.technus.tectech.util.CommonValues.V;
 import static com.github.technus.tectech.util.DoubleCount.mul;
 import static com.github.technus.tectech.util.DoubleCount.sub;
 
@@ -89,7 +88,7 @@ public class Behaviour_ElectromagneticSeparator implements GT_MetaTileEntity_EM_
     public Behaviour_ElectromagneticSeparator(int desiredTier){
         tier=(byte) desiredTier;
         ticks =Math.max(20,(1<<(12-desiredTier))*20);
-        maxCapacity= EMAtomDefinition.getSomethingHeavy().getMass()*(2<<tier)* AVOGADRO_CONSTANT_144;
+        maxCapacity= EMAtomDefinition.getSomethingHeavy().getMass()*(2<<tier)* EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED;
         maxCharge=144D*(1<<(tier-5));
         switch (tier){
             case 12:
@@ -159,7 +158,7 @@ public class Behaviour_ElectromagneticSeparator implements GT_MetaTileEntity_EM_
             EMInstanceStack randomStack    = stacks[TecTech.RANDOM.nextInt(stacks.length)];
             double          amountToRemove = TecTech.RANDOM.nextDouble()/10D * randomStack.getAmount();
             randomStack.setAmount(sub(randomStack.getAmount(),amountToRemove));//mutates the parent InstanceStackMap
-            if (randomStack.getAmount() < AVOGADRO_CONSTANT_UNCERTAINTY) {
+            if (randomStack.isInvalidAmount()) {
                 input.removeKey(randomStack.getDefinition());
             }
             double mass = Math.abs(randomStack.getDefinition().getMass()) * amountToRemove;

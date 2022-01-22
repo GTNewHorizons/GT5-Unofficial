@@ -3,46 +3,41 @@ package com.github.technus.tectech.mechanics.elementalMatter.core.transformation
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.IEMStack;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import net.minecraftforge.oredict.OreDictionary;
 
 /**
  * Created by Tec on 23.05.2017.
  */
-public class EMOredictQuantizationInfo implements IEMExchangeInfo<String, IEMStack> {
-    private final String   in;
+public class EMOredictQuantizationInfo {
+    private final int      id;
     private final int      amount;
     private final IEMStack out;
 
-    public EMOredictQuantizationInfo(String name, int qty, IEMStack emOut){
-        in=name;
-        amount=qty;
-        out=emOut;
+    public EMOredictQuantizationInfo(int id, int amount, IEMStack out) {
+        this.id = id;
+        this.amount = amount;
+        this.out = out;
     }
 
-    public EMOredictQuantizationInfo(OrePrefixes prefix, Materials material, int qty, IEMStack emOut){
-        in=prefix.name() + material.mName;
-        amount=qty;
-        out=emOut;
+    public EMOredictQuantizationInfo(String name, int qty, IEMStack emOut) {
+        this(OreDictionary.getOreID(name),qty,emOut);
     }
 
-    public EMOredictQuantizationInfo(OrePrefixes prefix, String materialName, int qty, IEMStack emOut){
-        in=prefix.name() + materialName;
-        amount=qty;
-        out=emOut;
+    public EMOredictQuantizationInfo(OrePrefixes prefix, Materials material, int qty, IEMStack emOut) {
+        this(prefix, material.mName, qty,emOut);
     }
 
-    @Override
-    public String input() {
-        return getIn();
+    public EMOredictQuantizationInfo(OrePrefixes prefix, String materialName, int qty, IEMStack emOut) {
+        this(OreDictionary.getOreID(prefix.name() + materialName),qty,emOut);
     }
 
-    @Override
-    public IEMStack output() {
-        return out.clone();
+    public IEMStack getOut() {
+        return out;
     }
 
     @Override
     public int hashCode() {
-        return getIn().hashCode();
+        return getId();
     }
 
     @Override
@@ -50,8 +45,8 @@ public class EMOredictQuantizationInfo implements IEMExchangeInfo<String, IEMSta
         return obj instanceof EMOredictQuantizationInfo && hashCode() == obj.hashCode();
     }
 
-    public String getIn() {
-        return in;
+    public int getId() {
+        return id;
     }
 
     public int getAmount() {
