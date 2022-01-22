@@ -12,6 +12,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,7 @@ public class FuelRod extends RadioactiveItem implements IReactorComponent, IBoxa
         this.Power = (float)aEUt / 25.0F;
         this.result = aResult;
         this.Heat = aHeat;
+        setMaxDamage(100);
     }
 
     public FuelRod(String aName, int aCells, int aEUt, int aHeat, int aRads, int aDuration, float aHeatBonus, ItemStack aResult, CreativeTabs Tab) {
@@ -45,6 +47,7 @@ public class FuelRod extends RadioactiveItem implements IReactorComponent, IBoxa
         this.result = aResult;
         this.Heat = aHeat;
         this.HeatBonus = aHeatBonus;
+        setMaxDamage(100);
     }
 
     public void processChamber(IReactor reactor, ItemStack stack, int x, int y, boolean heatRun) {
@@ -175,9 +178,18 @@ public class FuelRod extends RadioactiveItem implements IReactorComponent, IBoxa
     }
 
     @SideOnly(Side.CLIENT)
+    @SuppressWarnings("unchecked")
     @Override
     public void addInformation(ItemStack item, EntityPlayer player, List tooltip, boolean p_77624_4_) {
         super.addInformation(item, player, tooltip, p_77624_4_);
         tooltip.add(String.format(addText("fuelrod.tooltip", 1)[0], getMaxCustomDamage(item) - getCustomDamage(item), getMaxCustomDamage(item)));
+        double tMut = this.Heat / 4.0;
+        if (this.Heat == 4) {
+            tooltip.add(StatCollector.translateToLocal("fuelrodheat.tooltip.0"));
+        } else {
+            tooltip.add(String.format(StatCollector.translateToLocal("fuelrodheat.tooltip.1"), tMut));
+        }
+        if (this.HeatBonus != 0)
+            tooltip.add(StatCollector.translateToLocal("fuelrodheat.tooltip.2"));
     }
 }
