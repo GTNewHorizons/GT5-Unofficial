@@ -2796,7 +2796,8 @@ public class RECIPES_Machines {
 			}
 		}
 		for (int a=0;a<5;a++) {
-			for (int i = 0;i<16;i++) {	    	
+			for (int i = 0;i<16;i++) {
+				if (GTNH) continue;
 				ItemStack aInput = aInputs[a][i];
 				ItemStack aOutput = aOutputs[a][i];	    	
 				if (GT_Values.RA.addCutterRecipe(
