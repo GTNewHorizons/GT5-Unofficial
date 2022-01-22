@@ -108,7 +108,7 @@ public class RecipeGen_Recycling implements Runnable {
 			for (final Pair<OrePrefixes, ItemStack> validPrefix : mValidPairs) {
 				try {
 					
-					if (material == null || validPrefix == null || material.getState() != MaterialState.SOLID || validPrefix.getKey() == OrePrefixes.ingotHot) {
+					if (material == null || validPrefix == null || (material.getState() != MaterialState.SOLID && material.getState() != MaterialState.LIQUID) || validPrefix.getKey() == OrePrefixes.ingotHot) {
 						continue;
 					}
 					
