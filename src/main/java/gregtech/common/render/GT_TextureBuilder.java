@@ -1,6 +1,8 @@
 package gregtech.common.render;
 
+import gregtech.GT_Mod;
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.ITextureBuilder;
@@ -23,6 +25,7 @@ public class GT_TextureBuilder implements ITextureBuilder {
     private boolean stdOrient;
     private boolean extFacing;
     private boolean glow;
+    private Boolean worldCoord = null;
 
     public GT_TextureBuilder() {
         textureLayers = new ArrayList<>();
@@ -78,6 +81,20 @@ public class GT_TextureBuilder implements ITextureBuilder {
     }
 
     @Override
+    public ITextureBuilder useWorldCoord() {
+        if (fromBlock == null) throw new IllegalStateException("no from block");
+        this.worldCoord = true;
+        return this;
+    }
+
+    @Override
+    public ITextureBuilder noWorldCoord() {
+        if (fromBlock == null) throw new IllegalStateException("no from block");
+        this.worldCoord = false;
+        return this;
+    }
+
+    @Override
     public ITextureBuilder extFacing() {
         this.extFacing = true;
         return this;
@@ -91,7 +108,12 @@ public class GT_TextureBuilder implements ITextureBuilder {
 
     @Override
     public ITexture build() {
-        if (fromBlock != null) return new GT_CopiedBlockTexture(fromBlock, fromSide.ordinal(), fromMeta, rgba, allowAlpha);
+        if (fromBlock != null) {
+            if (worldCoord == Boolean.TRUE || worldCoord == null && isCTMBlock(fromBlock, fromMeta))
+                return new GT_CopiedCTMBlockTexture(fromBlock, fromSide.ordinal(), fromMeta, rgba, allowAlpha);
+            else
+                return new GT_CopiedBlockTexture(fromBlock, fromSide.ordinal(), fromMeta, rgba, allowAlpha);
+        }
         if (!textureLayers.isEmpty()) return new GT_MultiTexture(textureLayers.toArray(new ITexture[0]));
         switch (iconContainerList.size()) {
             case 1:
@@ -108,5 +130,20 @@ public class GT_TextureBuilder implements ITextureBuilder {
             default:
                 throw new IllegalStateException("Invalid sideIconContainer count");
         }
+    }
+
+    private boolean isCTMBlock(Block fromBlock, int fromMeta) {
+        return GT_Mod.gregtechproxy.mCTMBlockCache.computeIfAbsent(fromBlock, (byte) fromMeta, GT_TextureBuilder::apply);
+    }
+
+    private static Boolean apply(Block b, Byte m) {
+        Class<?> clazz = b.getClass();
+        while (clazz != Block.class) {
+            String className = clazz.getName();
+            if (GT_Values.mCTMDisabledBlock.contains(className)) return false;
+            if (GT_Values.mCTMEnabledBlock.contains(className)) return true;
+            clazz = clazz.getSuperclass();
+        }
+        return false;
     }
 }
