@@ -31,7 +31,7 @@ public class MyMaterial implements Runnable {
     public static final Werkstoff uraniumBasedLiquidFuel = new Werkstoff(
             new short[]{0x00,0xff,0x00},
             "Uranium Based Liquid Fuel",
-            subscriptNumbers("U36Rb8Qt4Rn"),
+            subscriptNumbers("U36K8Qt4Rn"),
             new Werkstoff.Stats().setRadioactive(true),
             Werkstoff.Types.COMPOUND,
             new Werkstoff.GenerationFeatures().disable().addCells(),
@@ -42,7 +42,7 @@ public class MyMaterial implements Runnable {
     public static final Werkstoff uraniumBasedLiquidFuelExcited = new Werkstoff(
             new short[]{0x00,0xff,0x00},
             "Uranium Based Liquid Fuel (Excited State)",
-            subscriptNumbers("*(U36Rb8Qt4Rn)*"),
+            subscriptNumbers("*(U36K8Qt4Rn)*"),
             new Werkstoff.Stats().setRadioactive(true),
             Werkstoff.Types.COMPOUND,
             new Werkstoff.GenerationFeatures().disable().addCells(),
@@ -125,7 +125,7 @@ public class MyMaterial implements Runnable {
     public static final Werkstoff plutoniumBasedLiquidFuel = new Werkstoff(
             new short[]{0xef,0x15,0x15},
             "Plutonium Based Liquid Fuel",
-            subscriptNumbers("Pu45Nt8Cs16Am2"),
+            subscriptNumbers("Pu45Nt8Cs16Nq2"),
             new Werkstoff.Stats().setRadioactive(true),
             Werkstoff.Types.COMPOUND,
             new Werkstoff.GenerationFeatures().disable().addCells(),
@@ -136,7 +136,7 @@ public class MyMaterial implements Runnable {
     public static final Werkstoff plutoniumBasedLiquidFuelExcited = new Werkstoff(
             new short[]{0xef,0x15,0x15},
             "Plutonium Based Liquid Fuel (Excited State)",
-            subscriptNumbers("*(Pu45Nt8Cs16Am2)*"),
+            subscriptNumbers("*(Pu45Nt8Cs16Nq2)*"),
             new Werkstoff.Stats().setRadioactive(true),
             Werkstoff.Types.COMPOUND,
             new Werkstoff.GenerationFeatures().disable().addCells(),

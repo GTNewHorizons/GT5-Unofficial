@@ -111,7 +111,7 @@ public class RecipeLoader {
 
         GT_Values.RA.addMixerRecipe(
                 ItemRefer.High_Density_Uranium.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Rubidium,8),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Potassium,8),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Quantium,4),
                 GT_Utility.getIntegratedCircuit(1),
                 Materials.Radon.getGas(1000L),
@@ -211,7 +211,7 @@ public class RecipeLoader {
                 ItemRefer.High_Density_Plutonium.get(1),
                 GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Neutronium,8),
                 GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Caesium,16),
-                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Americium,2),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Naquadah,2),
                 GT_Utility.getIntegratedCircuit(1),
                 null,null,
                 MyMaterial.plutoniumBasedLiquidFuel.getFluidOrGas(1000),
