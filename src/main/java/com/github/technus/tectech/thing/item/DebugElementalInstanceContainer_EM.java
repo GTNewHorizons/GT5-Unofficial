@@ -29,8 +29,8 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.github.technus.tectech.Reference.MODID;
+import static com.github.technus.tectech.TecTech.creativeTabEM;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
-import static com.github.technus.tectech.TecTech.creativeTabTecTech;
 import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry.*;
 import static cpw.mods.fml.relauncher.Side.CLIENT;
 import static net.minecraft.util.StatCollector.translateToLocal;
@@ -46,7 +46,7 @@ public final class DebugElementalInstanceContainer_EM extends Item implements IE
         setMaxStackSize(1);
         setUnlocalizedName("em.debugContainer");
         setTextureName(MODID + ":itemDebugContainer");
-        setCreativeTab(creativeTabTecTech);
+        setCreativeTab(creativeTabEM);
     }
 
     @Override
