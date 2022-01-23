@@ -39,6 +39,10 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
 	private int mCasing;
 	private IStructureDefinition<GregtechMetaTileEntityTreeFarm> STRUCTURE_DEFINITION = null;
 
+	private ItemStack currSapling;
+	private int currSlot = 0;
+	private GT_MetaTileEntity_Hatch_InputBus currInputBus;
+
 	static {
 		new Thread("GTPP-TreeDataWorker") {
 			@Override
@@ -188,6 +192,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
 			} catch (Throwable t) {
 				t.printStackTrace(GT_Log.err);
 		 */
+		getWoodFromSapling();
 		try {
 			int outputAmount = ((2 * (tTier * tTier)) - (2 * tTier) + 5)*(mMaxProgresstime/20);
 			int lastStack = outputAmount % 64;
@@ -292,24 +297,31 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
 		return false;
 	}
 
-	public void getWoodBasedOnSapling() {
+	public void getWoodFromSapling() {
+		if(this.currSapling != null && this.currInputBus != null){
+			ItemStack uStack = this.currInputBus.mInventory[this.currSlot];
+			if(uStack == this.currSapling)
+				return;
+		}
 		for (GT_MetaTileEntity_Hatch_InputBus mInputBus : this.mInputBusses) {
 			for (int i = 0; i < mInputBus.mInventory.length; i++) {
 				ItemStack uStack = mInputBus.mInventory[i];
-				ItemStack aWood = woodMapper(uStack);
-					if(aWood != null) {
+				if(uStack != null) {
+					ItemStack aWood = mapWoodFromSapling(uStack);
+					if (aWood != null) {
+						this.currSapling = uStack;
+						this.currInputBus = mInputBus;
+						this.currSlot = i;
 						this.mTreeType = aWood;
 						return;
 					}
+				}
 			}
-			this.mTreeType = new ItemStack(Blocks.log, 0); //default to oak wood
+			this.mTreeType = new ItemStack(Blocks.log, 1,0); //default to oak wood
 		}
 	}
 
-	public ItemStack woodMapper(ItemStack aStack){
-		if(aStack == null){
-			return null;
-		}
+	public ItemStack mapWoodFromSapling(ItemStack aStack){
 		String registryName = Item.itemRegistry.getNameForObject(aStack.getItem());
 		switch(registryName){
 			case "minecraft:sapling":
@@ -423,7 +435,6 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
 	@Override
 	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
 		super.onPostTick(aBaseMetaTileEntity, aTick);
-		getWoodBasedOnSapling();
 		replaceTool();
 	}
 
