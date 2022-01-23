@@ -1,12 +1,12 @@
 package com.github.technus.tectech.thing.item;
 
 import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.font.TecTechFontRender;
+import com.github.technus.tectech.mechanics.elementalMatter.core.EMException;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMConstantStackMap;
+import com.github.technus.tectech.thing.item.renderElemental.IElementalItem;
 import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.util.Util;
-import com.github.technus.tectech.font.TecTechFontRender;
-import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMConstantStackMap;
-import com.github.technus.tectech.mechanics.elementalMatter.core.EMException;
-import com.github.technus.tectech.thing.item.renderElemental.IElementalItem;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.gui.FontRenderer;
@@ -20,8 +20,8 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.github.technus.tectech.Reference.MODID;
+import static com.github.technus.tectech.TecTech.creativeTabEM;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
-import static com.github.technus.tectech.TecTech.creativeTabTecTech;
 import static cpw.mods.fml.relauncher.Side.CLIENT;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
@@ -35,7 +35,7 @@ public final class ElementalDefinitionContainer_EM extends Item implements IElem
         setMaxStackSize(1);
         setUnlocalizedName("em.definitionContainer");
         setTextureName(MODID + ":itemDefinitionContainer");
-        setCreativeTab(creativeTabTecTech);
+        setCreativeTab(creativeTabEM);
     }
 
     //return previous thing

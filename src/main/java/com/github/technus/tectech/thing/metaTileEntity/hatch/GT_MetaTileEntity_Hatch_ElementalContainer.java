@@ -112,7 +112,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
             byte Tick = (byte) (aTick % 20);
             if (DECAY_AT == Tick) {
                 purgeOverflow();
-                content.tickContentByOneSecond(1, postEnergize);//Hatches don't life time mult things
+                content.tickContent(1, postEnergize,1);//Hatches don't life time mult things
                 purgeOverflow();
             } else if (OVERFLOW_AT == Tick) {
                 if (overflowMatter <= 0) {
@@ -206,7 +206,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
     }
 
     public int getMaxStacksCount() {
-        return mTier * 128;
+        return mTier * mTier >> 4;
     }
 
     public double getMaxStackSize() {

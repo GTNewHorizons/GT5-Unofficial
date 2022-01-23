@@ -117,11 +117,6 @@ public final class EMInstanceStackMap extends EMStackMap<EMInstanceStack> implem
         return list;
     }
 
-    //Tick Content
-    public double tickContentByOneSecond(double lifeTimeMult, int postEnergize) {
-        return tickContent(lifeTimeMult,postEnergize,1D);
-    }
-
     public double tickContent(double lifeTimeMult, int postEnergize, double seconds){
         //cleanUp();
         double diff=0;

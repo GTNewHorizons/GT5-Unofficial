@@ -7,6 +7,7 @@ import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.trans
 import com.github.technus.tectech.compatibility.thaumcraft.thing.metaTileEntity.multi.EssentiaCompat;
 import com.github.technus.tectech.compatibility.thaumcraft.thing.metaTileEntity.multi.EssentiaCompatEnabled;
 import com.github.technus.tectech.loader.gui.CreativeTabTecTech;
+import com.github.technus.tectech.loader.gui.CreativeTabEM;
 import com.github.technus.tectech.loader.gui.ModGuiHandler;
 import com.github.technus.tectech.loader.recipe.BaseRecipeLoader;
 import com.github.technus.tectech.loader.thing.ComponentLoader;
@@ -64,6 +65,7 @@ public final class MainLoader {
 
     public static void preLoad(){
         creativeTabTecTech =new CreativeTabTecTech("TecTech");
+        creativeTabEM =new CreativeTabEM("EM");
 
         //set expanded texture arrays for tiers
         try {

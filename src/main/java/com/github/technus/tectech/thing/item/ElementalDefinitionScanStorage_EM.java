@@ -1,13 +1,13 @@
 package com.github.technus.tectech.thing.item;
 
-import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.util.Util;
 import com.github.technus.tectech.font.TecTechFontRender;
 import com.github.technus.tectech.loader.gui.ModGuiHandler;
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
 import com.github.technus.tectech.thing.CustomItemList;
 import com.github.technus.tectech.thing.item.renderElemental.IElementalItem;
+import com.github.technus.tectech.util.CommonValues;
+import com.github.technus.tectech.util.Util;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
