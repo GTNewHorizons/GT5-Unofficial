@@ -4,14 +4,13 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import cpw.mods.fml.common.Optional;
-
-import net.minecraft.block.Block;
-import net.minecraft.world.World;
-
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.forestry.bees.items.FR_ItemRegistry;
 import gtPlusPlus.xmod.forestry.bees.recipe.FR_Gregtech_Recipes;
+import gtPlusPlus.xmod.forestry.bees.registry.GTPP_Bees;
+import net.minecraft.block.Block;
+import net.minecraft.world.World;
 
 public class HANDLER_FR {
 
@@ -23,7 +22,7 @@ public class HANDLER_FR {
 
 	public static void Init(){
 		if (LoadedMods.Forestry){
-			//new GTPP_Bees(); TODO- Will Investigate this properly later.
+	            new GTPP_Bees();
 		}
 	}
 
