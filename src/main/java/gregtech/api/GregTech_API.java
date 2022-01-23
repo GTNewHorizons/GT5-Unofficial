@@ -767,9 +767,10 @@ public class GregTech_API {
         if (aStack == null || aStack.getItem() == null)
             return sNoBehavior;
         GT_CoverBehaviorBase<?> rCover = sCoverBehaviors.get(new GT_ItemStack(aStack));
-        if (rCover == null)
-            return sDefaultBehavior;
-        return rCover;
+        if (rCover != null) return rCover;
+        rCover = sCoverBehaviors.get(new GT_ItemStack(aStack, true));
+        if (rCover != null) return rCover;
+        return sDefaultBehavior;
     }
 
     /**

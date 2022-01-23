@@ -511,6 +511,9 @@ public class GT_PreLoad {
                 tPrefix.mDefaultStackSize = ((byte) Math.min(64, Math.max(16, tMainConfig.get("features", "MaxOtherBlockStackSize", 64).getInt())));
             }
         }
+
+        GT_Values.mCTMEnabledBlock.addAll(Arrays.asList(tMainConfig.get("general", "ctm_block_whitelist", new String[]{"team.chisel.block.BlockCarvable", "team.chisel.block.BlockCarvableGlass"}).getStringList()));
+        GT_Values.mCTMDisabledBlock.addAll(Arrays.asList(tMainConfig.get("general", "ctm_block_blacklist", new String[]{"team.chisel.block.BlockRoadLine"}).getStringList()));
     }
 
     public static void loadClientConfig() {

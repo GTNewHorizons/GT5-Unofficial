@@ -140,7 +140,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
             "arditeRod", "manyullynRod", "bronzeRod", "boneRod", "slimeRod", "redalloyBundled", "bluestoneBundled", "infusedteslatiteInsulated",
             "redalloyInsulated", "infusedteslatiteBundled"));
     private final DateFormat mDateFormat = DateFormat.getInstance();
-    public ArrayList<String> mBufferedPlayerActivity = new ArrayList();
+    public ArrayList<String> mBufferedPlayerActivity = new ArrayList<>();
+    public final GT_BlockMap<Boolean> mCTMBlockCache = new GT_BlockMap<>();
     public boolean mHardcoreCables = false;
     public boolean mDisableVanillaOres = true;
     public boolean mHardMachineCasings = true;

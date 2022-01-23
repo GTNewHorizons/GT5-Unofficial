@@ -1,5 +1,6 @@
 package gregtech;
 
+import appeng.api.AEApi;
 import com.google.common.base.Stopwatch;
 import cpw.mods.fml.common.*;
 import cpw.mods.fml.common.event.*;
@@ -20,6 +21,7 @@ import gregtech.common.GT_DummyWorld;
 import gregtech.common.GT_Network;
 import gregtech.common.GT_Proxy;
 import gregtech.common.GT_RecipeAdder;
+import gregtech.common.covers.GT_Cover_FacadeAE;
 import gregtech.common.entities.GT_Entity_Arrow;
 import gregtech.common.entities.GT_Entity_Arrow_Potion;
 import gregtech.common.misc.GT_Command;
@@ -343,8 +345,15 @@ public class GT_Mod implements IGT_Mod {
             GT_Forestry_Compat.transferCentrifugeRecipes();
             GT_Forestry_Compat.transferSqueezerRecipes();
         }
-        if (GregTech_API.mAE2)
+        if (GregTech_API.mAE2) {
             GT_MetaTileEntity_DigitalChestBase.registerAEIntegration();
+            ItemStack facade = AEApi.instance().definitions().items().facade().maybeItem()
+                    .transform(i -> new ItemStack(i, 1, GT_Values.W))
+                    .orNull();
+            if (facade != null) {
+                GregTech_API.registerCover(facade, null, new GT_Cover_FacadeAE());
+            }
+        }
 
 
         Arrays.stream(new String[]{

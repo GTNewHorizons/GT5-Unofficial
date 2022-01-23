@@ -39,7 +39,8 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
     public boolean mMachine = false, mWrench = false, mScrewdriver = false, mSoftHammer = false, mHardHammer = false, mSolderingTool = false, mCrowbar = false, mRunningOnLoad = false;
     public boolean mStructureChanged = false;
     public int mPollution = 0, mProgresstime = 0, mMaxProgresstime = 0, mEUt = 0, mEfficiencyIncrease = 0, mStartUpCheck = 100, mRuntime = 0, mEfficiency = 0;
-    public volatile int mUpdate = 0; //TODO: Replace with AtomicInteger
+    public volatile boolean mUpdated = false;
+    public int mUpdate = 0;
     public ItemStack[] mOutputItems = null;
     public FluidStack[] mOutputFluids = null;
     public String mNEI;
@@ -243,7 +244,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
     
     @Override
     public void onMachineBlockUpdate() {
-        mUpdate = 50;
+        mUpdated = true;
     }
 
     /**
@@ -280,6 +281,10 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
             if (mEfficiency < 0) mEfficiency = 0;
+            if (mUpdated) {
+                mUpdate = 50;
+                mUpdated = false;
+            }
             if (--mUpdate == 0 || --mStartUpCheck == 0) {
                 checkStructure(true, aBaseMetaTileEntity);
             }

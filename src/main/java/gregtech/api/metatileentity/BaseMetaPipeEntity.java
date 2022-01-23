@@ -8,10 +8,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
-import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.graphs.Node;
 import gregtech.api.graphs.paths.NodePath;
 import gregtech.api.interfaces.ITexture;
@@ -25,12 +23,9 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import gregtech.api.util.ISerializableObject;
-import gregtech.common.GT_Client;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -147,6 +142,9 @@ public class BaseMetaPipeEntity extends CoverableGregTechTileEntity implements I
                     oZ = zCoord;
                     if (isServerSide())
                         checkDropCover();
+                    else {
+                        requestCoverDataIfNeeded();
+                    }
                     worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
                     mMetaTileEntity.onFirstTick(this);
                     if (!hasValidMetaTileEntity()) return;
@@ -247,6 +245,7 @@ public class BaseMetaPipeEntity extends CoverableGregTechTileEntity implements I
             );
             mSendClientData = false;
         }
+        sendCoverDataIfNeeded();
     }
 
     @Override
@@ -371,19 +370,8 @@ public class BaseMetaPipeEntity extends CoverableGregTechTileEntity implements I
 
     @Override
     public void issueCoverUpdate(byte aSide) {
+        super.issueCoverUpdate(aSide);
         issueClientUpdate();
-    }
-
-    @Override
-    public void receiveCoverData(byte coverSide, int coverID, int coverData) {
-        if ((coverSide >= 0 && coverSide < 6) && (mCoverSides[coverSide] == coverID))
-            setCoverDataAtSide(coverSide, coverData);
-    }
-
-    @Override
-    public void receiveCoverData(byte aCoverSide, int aCoverID, ISerializableObject aCoverData, EntityPlayerMP aPlayer) {
-        if ((aCoverSide >= 0 && aCoverSide < 6) && (mCoverSides[aCoverSide] == aCoverID))
-            setCoverDataAtSide(aCoverSide, aCoverData);
     }
 
     @Override
@@ -399,14 +387,6 @@ public class BaseMetaPipeEntity extends CoverableGregTechTileEntity implements I
     @Override
     public boolean getRedstone(byte aSide) {
         return getInternalInputRedstoneSignal(aSide) > 0;
-    }
-
-    public ITexture getCoverTexture(byte aSide) {
-        if (getCoverIDAtSide(aSide) == 0) return null;
-        if (GT_Mod.instance.isClientSide() && (GT_Client.hideValue & 0x1) != 0) {
-            return BlockIcons.HIDDEN_TEXTURE[0]; // See through
-        }
-        return GregTech_API.sCovers.get(new GT_ItemStack(getCoverIDAtSide(aSide)));
     }
 
     @Override
@@ -860,8 +840,8 @@ public class BaseMetaPipeEntity extends CoverableGregTechTileEntity implements I
                 if (getCoverIDAtSide(aSide) == 0) coverSide = tSide;
 
                 if (getCoverIDAtSide(coverSide) == 0) {
-                    if (GregTech_API.sCovers.containsKey(new GT_ItemStack(tCurrentItem))) {
-                        if (GregTech_API.getCoverBehaviorNew(tCurrentItem).isCoverPlaceable(coverSide, new GT_ItemStack(tCurrentItem), this) &&
+                    if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sCovers.keySet())) {
+                        if (GregTech_API.getCoverBehaviorNew(tCurrentItem).isCoverPlaceable(coverSide, tCurrentItem, this) &&
                             mMetaTileEntity.allowCoverOnSide(coverSide, new GT_ItemStack(tCurrentItem)))
                         {
                             setCoverItemAtSide(coverSide, tCurrentItem);

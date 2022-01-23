@@ -1,5 +1,7 @@
 package gregtech.common.blocks;
 
+import com.cricketcraft.chisel.api.IFacade;
+import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
@@ -27,6 +29,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -47,7 +50,8 @@ import java.util.List;
 import static gregtech.GT_Mod.GT_FML_LOGGER;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
-public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlock, ITileEntityProvider {
+@Optional.Interface(iface = "com.cricketcraft.chisel.api.IFacade", modid = "ChiselAPI")
+public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlock, ITileEntityProvider, IFacade {
     private static final ThreadLocal<IGregTechTileEntity> mTemporaryTileEntity = new ThreadLocal<>();
     private boolean renderAsNormalBlock;
 
@@ -647,5 +651,52 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
             return true;
         }
         return false;
+    }
+
+    @Override
+    public Block getFacade(IBlockAccess aWorld, int aX, int aY, int aZ, int side) {
+        TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
+        if (tTileEntity instanceof IGregTechTileEntity) {
+            byte aSide = (byte) side;
+            IGregTechTileEntity tile = (IGregTechTileEntity) tTileEntity;
+            if (side != -1) {
+                Block facadeBlock = tile.getCoverBehaviorAtSideNew(aSide).getFacadeBlock(aSide, tile.getCoverIDAtSide(aSide), tile.getComplexCoverDataAtSide(aSide), tile);
+                if (facadeBlock != null) return facadeBlock;
+            } else {
+                // we do not allow more than one type of facade per block, so no need to check every side
+                // see comment in gregtech.common.covers.GT_Cover_FacadeBase.isCoverPlaceable
+                for (byte i = 0; i < 6; i++) {
+                    Block facadeBlock = tile.getCoverBehaviorAtSideNew(i).getFacadeBlock(i, tile.getCoverIDAtSide(i), tile.getComplexCoverDataAtSide(i), tile);
+                    if (facadeBlock != null) {
+                        return facadeBlock;
+                    }
+                }
+            }
+        }
+        return Blocks.air;
+    }
+
+    @Override
+    public int getFacadeMetadata(IBlockAccess aWorld, int aX, int aY, int aZ, int side) {
+        TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
+        if (tTileEntity instanceof IGregTechTileEntity) {
+            byte aSide = (byte) side;
+            IGregTechTileEntity tile = (IGregTechTileEntity) tTileEntity;
+            if (side != -1) {
+                Block facadeBlock = tile.getCoverBehaviorAtSideNew(aSide).getFacadeBlock(aSide, tile.getCoverIDAtSide(aSide), tile.getComplexCoverDataAtSide(aSide), tile);
+                if (facadeBlock != null)
+                    return tile.getCoverBehaviorAtSideNew(aSide).getFacadeMeta(aSide, tile.getCoverIDAtSide(aSide), tile.getComplexCoverDataAtSide(aSide), tile);
+            } else {
+                // we do not allow more than one type of facade per block, so no need to check every side
+                // see comment in gregtech.common.covers.GT_Cover_FacadeBase.isCoverPlaceable
+                for (byte i = 0; i < 6; i++) {
+                    Block facadeBlock = tile.getCoverBehaviorAtSideNew(i).getFacadeBlock(i, tile.getCoverIDAtSide(i), tile.getComplexCoverDataAtSide(i), tile);
+                    if (facadeBlock != null) {
+                        return tile.getCoverBehaviorAtSideNew(i).getFacadeMeta(i, tile.getCoverIDAtSide(i), tile.getComplexCoverDataAtSide(i), tile);
+                    }
+                }
+            }
+        }
+        return 0;
     }
 }

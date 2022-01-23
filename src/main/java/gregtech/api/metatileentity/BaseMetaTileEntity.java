@@ -19,7 +19,6 @@ import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.graphs.GenerateNodeMap;
 import gregtech.api.graphs.GenerateNodeMapPower;
 import gregtech.api.graphs.Node;
@@ -32,7 +31,6 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.net.GT_Packet_TileEntity;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.*;
-import gregtech.common.GT_Client;
 import gregtech.common.GT_Pollution;
 import ic2.api.Direction;
 import net.minecraft.block.Block;
@@ -40,7 +38,6 @@ import net.minecraft.block.BlockFire;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -271,6 +268,8 @@ public class BaseMetaTileEntity extends CoverableGregTechTileEntity implements I
                     oZ = zCoord;
                     if (aSideServer) {
                         checkDropCover();
+                    } else {
+                        requestCoverDataIfNeeded();
                     }
                     worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
                     mMetaTileEntity.onFirstTick(this);
@@ -552,6 +551,7 @@ public class BaseMetaTileEntity extends CoverableGregTechTileEntity implements I
             );
             mSendClientData = false;
         }
+        sendCoverDataIfNeeded();
     }
 
     @Override
@@ -706,19 +706,8 @@ public class BaseMetaTileEntity extends CoverableGregTechTileEntity implements I
 
     @Override
     public void issueCoverUpdate(byte aSide) {
+        super.issueCoverUpdate(aSide);
         issueClientUpdate();
-    }
-
-    @Override
-    public void receiveCoverData(byte coverSide, int coverID, int coverData) {
-        if ((coverSide >= 0 && coverSide < 6) && (mCoverSides[coverSide] == coverID))
-            setCoverDataAtSide(coverSide, coverData);
-    }
-
-    @Override
-    public void receiveCoverData(byte aCoverSide, int aCoverID, ISerializableObject aCoverData, EntityPlayerMP aPlayer) {
-        if ((aCoverSide >= 0 && aCoverSide < 6) && (mCoverSides[aCoverSide] == aCoverID))
-            setCoverDataAtSide(aCoverSide, aCoverData);
     }
 
     @Override
@@ -734,14 +723,6 @@ public class BaseMetaTileEntity extends CoverableGregTechTileEntity implements I
     @Override
     public boolean getRedstone(byte aSide) {
         return getInternalInputRedstoneSignal(aSide) > 0;
-    }
-
-    public ITexture getCoverTexture(byte aSide) {
-        if (getCoverIDAtSide(aSide) == 0) return null;
-        if (GT_Mod.instance.isClientSide() && (GT_Client.hideValue & 0x1) != 0) {
-            return BlockIcons.HIDDEN_TEXTURE[0]; // See through
-        }
-        return GregTech_API.sCovers.get(new GT_ItemStack(getCoverIDAtSide(aSide)));
     }
 
     @Override
@@ -1403,8 +1384,8 @@ public class BaseMetaTileEntity extends CoverableGregTechTileEntity implements I
                     if (getCoverIDAtSide(aSide) == 0) coverSide = GT_Utility.determineWrenchingSide(aSide, aX, aY, aZ);
 
                     if (getCoverIDAtSide(coverSide) == 0) {
-                        if (GregTech_API.sCovers.containsKey(new GT_ItemStack(tCurrentItem))) {
-                            if (GregTech_API.getCoverBehaviorNew(tCurrentItem).isCoverPlaceable(coverSide, new GT_ItemStack(tCurrentItem), this) &&
+                        if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sCovers.keySet())) {
+                            if (GregTech_API.getCoverBehaviorNew(tCurrentItem).isCoverPlaceable(coverSide, tCurrentItem, this) &&
                                 mMetaTileEntity.allowCoverOnSide(coverSide, new GT_ItemStack(tCurrentItem)))
                             {
                                 setCoverItemAtSide(coverSide, tCurrentItem);
