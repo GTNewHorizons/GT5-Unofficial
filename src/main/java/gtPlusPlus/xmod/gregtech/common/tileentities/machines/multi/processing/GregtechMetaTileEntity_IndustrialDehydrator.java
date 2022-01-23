@@ -75,7 +75,7 @@ public class GregtechMetaTileEntity_IndustrialDehydrator extends GregtechMeta_Mu
 				.addInfo("Upgraded overclocks reduce recipe time to 25% and increase EU/t to 400%")
 				.addPollutionAmount(getPollutionPerSecond(null))
 				.addSeparator()
-				.beginStructureBlock(3, 4, 3, true)
+				.beginStructureBlock(3, 5, 3, true)
 				.addController("Bottom Center")
 				.addCasingInfo(mCasingName, 10)
 				.addInputBus("Any Casing", 1)
