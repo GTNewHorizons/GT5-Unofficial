@@ -97,11 +97,7 @@ public class Logger {
 	 * Special Logger for Bee related content
 	 */
 	public static void BEES(final String s) {
-		if (enabled) {
-			if (CORE_Preloader.DEV_ENVIRONMENT || CORE_Preloader.DEBUG_MODE) {
-				modLogger.info("[Bees] "+s);
-			}
-		}
+		modLogger.info("[Bees] "+s);
 	}
 	/**
 	 * Special Logger for Debugging Bee related content

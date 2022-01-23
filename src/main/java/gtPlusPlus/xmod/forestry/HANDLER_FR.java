@@ -28,7 +28,7 @@ public class HANDLER_FR {
 	public static void postInit(){
 		if (LoadedMods.Forestry){
 			FR_Gregtech_Recipes.registerItems();
-            new GTPP_Bees();
+			new GTPP_Bees();
 		}
 	}
 

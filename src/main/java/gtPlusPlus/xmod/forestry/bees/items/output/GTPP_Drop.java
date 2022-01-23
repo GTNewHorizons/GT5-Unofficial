@@ -7,9 +7,10 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import forestry.api.core.Tabs;
 import gregtech.api.enums.GT_Values;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.material.ELEMENT.STANDALONE;
 import gtPlusPlus.xmod.forestry.bees.handler.GTPP_DropType;
+import gtPlusPlus.xmod.forestry.bees.registry.GTPP_Bees;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -87,23 +88,26 @@ public class GTPP_Drop extends Item {
 	public String getItemStackDisplayName(ItemStack stack) {
 		return GTPP_DropType.get(stack.getItemDamage()).getName();
 	}
-	public void initDropsRecipes() {
+	
+	private static final int[] sFluidOutputs = new int[] {
+			144, 136, 128, 120, 112, 104, 96, 88, 80, 72, 64, 48, 32, 16, 8, 4
+	};
+	
+	public static void initDropsRecipes() {
 		ItemStack tDrop;
-
-		tDrop = getStackForType(GTPP_DropType.DRAGONBLOOD);
-		addProcessHV(tDrop, new FluidStack(STANDALONE.DRAGON_METAL.getFluid(), 4), GT_Values.NI, 1000);
+		Logger.BEES("Processing recipes for "+GTPP_Bees.sDropMappings.size()+" Drops.");
+		for (GTPP_DropType aDrop : GTPP_Bees.sDropMappings.values()) {
+			tDrop = aDrop.getStackForType(1);
+			if (addProcess(tDrop, new FluidStack(aDrop.mMaterial.getFluid(), sFluidOutputs[aDrop.mMaterial.vTier]), aDrop.mMaterial.vTier * 20 * 30, aDrop.mMaterial.vVoltageMultiplier)) {
+				Logger.BEES("Added Drop extraction recipe for: "+aDrop.getName());
+			}
+			else {
+				Logger.BEES("Failed to add Drop extraction recipe for: "+aDrop.getName());
+			}
+		}		
 	}
 
-	public void addProcessLV(ItemStack tDrop, FluidStack aOutput, ItemStack aOutput2, int aChance, int aEUt) {
-		GT_Values.RA.addFluidExtractionRecipe(tDrop, aOutput2, aOutput, aChance, 32, aEUt);
-	}
-	public void addProcessLV(ItemStack tDrop, FluidStack aOutput, ItemStack aOutput2, int aChance, int aDuration, int aEUt) {
-		GT_Values.RA.addFluidExtractionRecipe(tDrop, aOutput2, aOutput, aChance, aDuration, aEUt);
-	}
-	public void addProcessMV(ItemStack tDrop, FluidStack aOutput, ItemStack aOutput2, int aChance, int aEUt) {
-		GT_Values.RA.addFluidExtractionRecipe(tDrop, aOutput2, aOutput, aChance, 128, aEUt);
-	}
-	public void addProcessHV(ItemStack tDrop, FluidStack aOutput, ItemStack aOutput2, int aChance) {
-		GT_Values.RA.addFluidExtractionRecipe(tDrop, aOutput2, aOutput, aChance, 480, 480);
+	public static boolean addProcess(ItemStack tDrop, FluidStack aOutput, int aDuration, int aEUt) {
+		return GT_Values.RA.addFluidExtractionRecipe(tDrop, null, aOutput, 10000, aDuration, aEUt);
 	}
 }

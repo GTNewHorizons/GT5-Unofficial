@@ -20,22 +20,23 @@ import forestry.core.genetics.alleles.AlleleHelper;
 import forestry.core.genetics.alleles.EnumAllele.Lifespan;
 import forestry.core.genetics.alleles.EnumAllele.Tolerance;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.common.items.CombType;
 import gregtech.loaders.misc.GT_Bees;
 import gtPlusPlus.core.material.ELEMENT.STANDALONE;
+import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.forestry.bees.handler.GTPP_CombType;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.BiomeDictionary.Type;
 
-
-
 public enum GTPP_BeeDefinition implements IBeeDefinition {
 	
-    DRAGONBLOOD(GTPP_BranchDefinition.LEGENDARY, "Dragon Blood", true, Utils.rgbtoHexValue(220, 20, 20), Utils.rgbtoHexValue(20, 20, 20),
+    DRAGONBLOOD(GTPP_BranchDefinition.LEGENDARY, "Dragon Blood", STANDALONE.DRAGON_METAL, true, Utils.rgbtoHexValue(220, 20, 20), Utils.rgbtoHexValue(20, 20, 20),
             beeSpecies -> {
                 beeSpecies.addProduct(GT_ModHandler.getModItem(GT_Values.MOD_ID_FR, "beeCombs", 1, 8), 0.30f);
                 beeSpecies.addSpecialty(GTPP_Bees.combs.getStackForType(GTPP_CombType.DRAGONBLOOD), 0.10f);
@@ -56,7 +57,7 @@ public enum GTPP_BeeDefinition implements IBeeDefinition {
                 tMutation.addMutationCondition(new GT_Bees.DimensionMutationCondition(1, "End"));//End Dim
             }
     ),
-    FORCE(GTPP_BranchDefinition.LEGENDARY, "Force", true, Utils.rgbtoHexValue(250, 250, 20), Utils.rgbtoHexValue(200, 200, 5),
+    FORCE(GTPP_BranchDefinition.LEGENDARY, "Force", STANDALONE.FORCE, true, Utils.rgbtoHexValue(250, 250, 20), Utils.rgbtoHexValue(200, 200, 5),
             beeSpecies -> {
                 beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.STONE), 0.30f);
                 beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SALT), 0.15f);
@@ -79,223 +80,215 @@ public enum GTPP_BeeDefinition implements IBeeDefinition {
     ),
     
     ;
-    private final GTPP_BranchDefinition branch;
-    private final GTPP_AlleleBeeSpecies species;
-    private final Consumer<GTPP_AlleleBeeSpecies> mSpeciesProperties;
-    private final Consumer<IAllele[]> mAlleles;
-    private final Consumer<GTPP_BeeDefinition> mMutations;
-    private IAllele[] template;
-    private IBeeGenome genome;
+	private final GTPP_BranchDefinition branch;
+	private final GTPP_AlleleBeeSpecies species;
+	private final Consumer<GTPP_AlleleBeeSpecies> mSpeciesProperties;
+	private final Consumer<IAllele[]> mAlleles;
+	private final Consumer<GTPP_BeeDefinition> mMutations;
+	private IAllele[] template;
+	private IBeeGenome genome;
 
-    GTPP_BeeDefinition(GTPP_BranchDefinition branch,
-                     String binomial,
-                     boolean dominant,
-                     int primary,
-                     int secondary,
-                     Consumer<GTPP_AlleleBeeSpecies> aSpeciesProperties,
-                     Consumer<IAllele[]> aAlleles,
-                     Consumer<GTPP_BeeDefinition> aMutations
-    ) {
-        this.mAlleles = aAlleles;
-        this.mMutations = aMutations;
-        this.mSpeciesProperties = aSpeciesProperties;
-        String lowercaseName = this.toString().toLowerCase(Locale.ENGLISH);
-        String species = WordUtils.capitalize(binomial);
+	GTPP_BeeDefinition(GTPP_BranchDefinition branch, String binomial, Materials aMat, boolean dominant, int primary, int secondary, Consumer<GTPP_AlleleBeeSpecies> aSpeciesProperties, Consumer<IAllele[]> aAlleles, Consumer<GTPP_BeeDefinition> aMutations) {
+		this(branch, binomial, MaterialUtils.generateMaterialFromGtENUM(aMat), dominant, primary, secondary, aSpeciesProperties, aAlleles, aMutations);
+	}
+	
+	GTPP_BeeDefinition(GTPP_BranchDefinition branch, String binomial, Material aMat, boolean dominant, int primary, int secondary, Consumer<GTPP_AlleleBeeSpecies> aSpeciesProperties, Consumer<IAllele[]> aAlleles, Consumer<GTPP_BeeDefinition> aMutations) {
+		this.mAlleles = aAlleles;
+		this.mMutations = aMutations;
+		this.mSpeciesProperties = aSpeciesProperties;
+		String lowercaseName = this.toString().toLowerCase(Locale.ENGLISH);
+		String species = WordUtils.capitalize(binomial);
+		String uid = "gtpp.bee.species" + species;
+		String description = "for.description." + species;
+		String name = "for.bees.species." + lowercaseName;
+		GT_LanguageManager.addStringLocalization("for.bees.species." + lowercaseName, species, true);
+		GTPP_Bees.sMaterialMappings.put(binomial.toLowerCase().replaceAll(" ", ""), aMat);
+		this.branch = branch;
+		this.species = new GTPP_AlleleBeeSpecies(uid, dominant, name, "GT++", description, branch.getBranch(), binomial, primary, secondary);
+	}
 
-        String uid = "gtpp.bee.species" + species;
-        String description = "for.description." + species;
-        String name = "for.bees.species." + lowercaseName;
-        GT_LanguageManager.addStringLocalization("for.bees.species." + lowercaseName, species, true);
+	public static void initBees() {
+		for (GTPP_BeeDefinition bee : values()) { bee.init(); }
+		for (GTPP_BeeDefinition bee : values()) { bee.registerMutations(); }
+	}
 
-        this.branch = branch;
-        this.species = new GTPP_AlleleBeeSpecies(uid, dominant, name, "GT++", description, branch.getBranch(), binomial, primary, secondary);
-    }
+	protected static IAlleleBeeEffect getEffect(byte modid, String name) {
+		String s;
+		switch (modid) {
+			case GTPP_Bees.EXTRABEES :
+				s = "extrabees.effect." + name;
+				break;
+			case GTPP_Bees.GENDUSTRY :
+				s = "gendustry.effect." + name;
+				break;
+			case GTPP_Bees.MAGICBEES :
+				s = "magicbees.effect" + name;
+				break;
+			case GTPP_Bees.GREGTECH :
+				s = "gregtech.effect" + name;
+				break;
+			default :
+				s = "forestry.effect" + name;
+				break;
 
-    public static void initBees() {
-        for (GTPP_BeeDefinition bee : values()) {
-            bee.init();
-        }
-        for (GTPP_BeeDefinition bee : values()) {
-            bee.registerMutations();
-        }
-    }
+		}
+		return (IAlleleBeeEffect) AlleleManager.alleleRegistry.getAllele(s);
+	}
 
-    protected static IAlleleBeeEffect getEffect(byte modid, String name) {
-        String s;
-        switch (modid) {
-            case GTPP_Bees.EXTRABEES:
-                s = "extrabees.effect." + name;
-                break;
-            case GTPP_Bees.GENDUSTRY:
-                s = "gendustry.effect." + name;
-                break;
-            case GTPP_Bees.MAGICBEES:
-                s = "magicbees.effect" + name;
-                break;
-            case GTPP_Bees.GREGTECH:
-                s = "gregtech.effect" + name;
-                break;
-            default:
-                s = "forestry.effect" + name;
-                break;
+	protected static IAlleleFlowers getFlowers(byte modid, String name) {
+		String s;
+		switch (modid) {
+			case GTPP_Bees.EXTRABEES :
+				s = "extrabees.flower." + name;
+				break;
+			case GTPP_Bees.GENDUSTRY :
+				s = "gendustry.flower." + name;
+				break;
+			case GTPP_Bees.MAGICBEES :
+				s = "magicbees.flower" + name;
+				break;
+			case GTPP_Bees.GREGTECH :
+				s = "gregtech.flower" + name;
+				break;
+			default :
+				s = "forestry.flowers" + name;
+				break;
 
-        }
-        return (IAlleleBeeEffect) AlleleManager.alleleRegistry.getAllele(s);
-    }
+		}
+		return (IAlleleFlowers) AlleleManager.alleleRegistry.getAllele(s);
+	}
 
-    protected static IAlleleFlowers getFlowers(byte modid, String name) {
-        String s;
-        switch (modid) {
-            case GTPP_Bees.EXTRABEES:
-                s = "extrabees.flower." + name;
-                break;
-            case GTPP_Bees.GENDUSTRY:
-                s = "gendustry.flower." + name;
-                break;
-            case GTPP_Bees.MAGICBEES:
-                s = "magicbees.flower" + name;
-                break;
-            case GTPP_Bees.GREGTECH:
-                s = "gregtech.flower" + name;
-                break;
-            default:
-                s = "forestry.flowers" + name;
-                break;
+	protected static IAlleleBeeSpecies getSpecies(byte modid, String name) {
+		String s;
+		switch (modid) {
+			case GTPP_Bees.EXTRABEES :
+				s = "extrabees.species." + name;
+				break;
+			case GTPP_Bees.GENDUSTRY :
+				s = "gendustry.bee." + name;
+				break;
+			case GTPP_Bees.MAGICBEES :
+				s = "magicbees.species" + name;
+				break;
+			case GTPP_Bees.GREGTECH :
+				s = "gregtech.species" + name;
+				break;
+			default :
+				s = "forestry.species" + name;
+				break;
 
-        }
-        return (IAlleleFlowers) AlleleManager.alleleRegistry.getAllele(s);
-    }
+		}
+		IAlleleBeeSpecies ret = (IAlleleBeeSpecies) AlleleManager.alleleRegistry.getAllele(s);
+		return ret;
+	}
 
-    protected static IAlleleBeeSpecies getSpecies(byte modid, String name) {
-        String s;
-        switch (modid) {
-            case GTPP_Bees.EXTRABEES:
-                s = "extrabees.species." + name;
-                break;
-            case GTPP_Bees.GENDUSTRY:
-                s = "gendustry.bee." + name;
-                break;
-            case GTPP_Bees.MAGICBEES:
-                s = "magicbees.species" + name;
-                break;
-            case GTPP_Bees.GREGTECH:
-                s = "gregtech.species" + name;
-                break;
-            default:
-                s = "forestry.species" + name;
-                break;
+	protected final void setSpeciesProperties(GTPP_AlleleBeeSpecies species2) {
+		this.mSpeciesProperties.accept(species2);
+	}
 
-        }
-        IAlleleBeeSpecies ret = (IAlleleBeeSpecies) AlleleManager.alleleRegistry.getAllele(s);
-        return ret;
-    }
+	protected final void setAlleles(IAllele[] template) {
+		this.mAlleles.accept(template);
+	}
 
+	protected final void registerMutations() {
+		this.mMutations.accept(this);
+	}
 
-    protected final void setSpeciesProperties(GTPP_AlleleBeeSpecies species2) {
-        this.mSpeciesProperties.accept(species2);
-    }
+	private void init() {
+		setSpeciesProperties(species);
 
-    protected final void setAlleles(IAllele[] template) {
-        this.mAlleles.accept(template);
-    }
+		template = branch.getTemplate();
+		AlleleHelper.instance.set(template, SPECIES, species);
+		setAlleles(template);
 
-    protected final void registerMutations() {
-        this.mMutations.accept(this);
-    }
+		genome = BeeManager.beeRoot.templateAsGenome(template);
 
-    private void init() {
-        setSpeciesProperties(species);
+		BeeManager.beeRoot.registerTemplate(template);
+	}
 
-        template = branch.getTemplate();
-        AlleleHelper.instance.set(template, SPECIES, species);
-        setAlleles(template);
+	protected final IBeeMutationCustom registerMutation(IAlleleBeeSpecies parent1, IAlleleBeeSpecies parent2, int chance) {
+		return registerMutation(parent1, parent2, chance, 1f);
+	}
 
-        genome = BeeManager.beeRoot.templateAsGenome(template);
+	protected final IBeeMutationCustom registerMutation(GTPP_BeeDefinition parent1, IAlleleBeeSpecies parent2, int chance) {
+		return registerMutation(parent1, parent2, chance, 1f);
+	}
 
-        BeeManager.beeRoot.registerTemplate(template);
-    }
+	protected final IBeeMutationCustom registerMutation(IAlleleBeeSpecies parent1, GTPP_BeeDefinition parent2, int chance) {
+		return registerMutation(parent1, parent2, chance, 1f);
+	}
 
-    protected final IBeeMutationCustom registerMutation(IAlleleBeeSpecies parent1, IAlleleBeeSpecies parent2, int chance) {
-        return registerMutation(parent1, parent2, chance, 1f);
-    }
+	protected final IBeeMutationCustom registerMutation(GTPP_BeeDefinition parent1, GTPP_BeeDefinition parent2, int chance) {
+		return registerMutation(parent1, parent2, chance, 1f);
+	}
 
-    protected final IBeeMutationCustom registerMutation(GTPP_BeeDefinition parent1, IAlleleBeeSpecies parent2, int chance) {
-        return registerMutation(parent1, parent2, chance, 1f);
-    }
+	protected final IBeeMutationCustom registerMutation(String parent1, String parent2, int chance) {
+		return registerMutation(getGregtechBeeType(parent1), getGregtechBeeType(parent2), chance, 1f);
+	}
 
-    protected final IBeeMutationCustom registerMutation(IAlleleBeeSpecies parent1, GTPP_BeeDefinition parent2, int chance) {
-        return registerMutation(parent1, parent2, chance, 1f);
-    }
+	/**
+	 * Diese neue Funtion erlaubt Mutationsraten unter 1%. Setze dazu die
+	 * Mutationsrate als Bruch mit chance / chancedivider This new function
+	 * allows Mutation percentages under 1%. Set them as a fraction with chance
+	 * / chancedivider
+	 */
+	protected final IBeeMutationCustom registerMutation(IAlleleBeeSpecies parent1, IAlleleBeeSpecies parent2, int chance, float chancedivider) {
+		return new GTPP_Bee_Mutation(parent1, parent2, this.getTemplate(), chance, chancedivider);
+	}
 
-    protected final IBeeMutationCustom registerMutation(GTPP_BeeDefinition parent1, GTPP_BeeDefinition parent2, int chance) {
-        return registerMutation(parent1, parent2, chance, 1f);
-    }
-    
-    protected final IBeeMutationCustom registerMutation(String parent1, String parent2, int chance) {
-        return registerMutation(getGregtechBeeType(parent1), getGregtechBeeType(parent2), chance, 1f);
-    }
+	protected final IBeeMutationCustom registerMutation(GTPP_BeeDefinition parent1, IAlleleBeeSpecies parent2, int chance, float chancedivider) {
+		return registerMutation(parent1.species, parent2, chance, chancedivider);
+	}
 
-    /**
-     * Diese neue Funtion erlaubt Mutationsraten unter 1%. Setze dazu die Mutationsrate als Bruch mit chance / chancedivider
-     * This new function allows Mutation percentages under 1%. Set them as a fraction with chance / chancedivider
-     */
-    protected final IBeeMutationCustom registerMutation(IAlleleBeeSpecies parent1, IAlleleBeeSpecies parent2, int chance, float chancedivider) {
-        return new GTPP_Bee_Mutation(parent1, parent2, this.getTemplate(), chance, chancedivider);
-    }
+	protected final IBeeMutationCustom registerMutation(IAlleleBeeSpecies parent1, GTPP_BeeDefinition parent2, int chance, float chancedivider) {
+		return registerMutation(parent1, parent2.species, chance, chancedivider);
+	}
 
-    protected final IBeeMutationCustom registerMutation(GTPP_BeeDefinition parent1, IAlleleBeeSpecies parent2, int chance, float chancedivider) {
-        return registerMutation(parent1.species, parent2, chance, chancedivider);
-    }
+	protected final IBeeMutationCustom registerMutation(GTPP_BeeDefinition parent1, GTPP_BeeDefinition parent2, int chance, float chancedivider) {
+		return registerMutation(parent1.species, parent2, chance, chancedivider);
+	}
 
-    protected final IBeeMutationCustom registerMutation(IAlleleBeeSpecies parent1, GTPP_BeeDefinition parent2, int chance, float chancedivider) {
-        return registerMutation(parent1, parent2.species, chance, chancedivider);
-    }
+	protected final IBeeMutationCustom registerMutation(String parent1, String parent2, int chance, float chancedivider) {
+		return registerMutation(getGregtechBeeType(parent1), getGregtechBeeType(parent2), chance, chancedivider);
+	}
 
-    protected final IBeeMutationCustom registerMutation(GTPP_BeeDefinition parent1, GTPP_BeeDefinition parent2, int chance, float chancedivider) {
-        return registerMutation(parent1.species, parent2, chance, chancedivider);
-    }
+	@Override
+	public final IAllele[] getTemplate() {
+		return Arrays.copyOf(template, template.length);
+	}
 
-    protected final IBeeMutationCustom registerMutation(String parent1, String parent2, int chance, float chancedivider) {
-        return registerMutation(getGregtechBeeType(parent1), getGregtechBeeType(parent2), chance, chancedivider);
-    }
+	@Override
+	public final IBeeGenome getGenome() {
+		return genome;
+	}
 
-    @Override
-    public final IAllele[] getTemplate() {
-        return Arrays.copyOf(template, template.length);
-    }
+	@Override
+	public final IBee getIndividual() {
+		return new Bee(genome);
+	}
 
-    @Override
-    public final IBeeGenome getGenome() {
-        return genome;
-    }
+	@Override
+	public final ItemStack getMemberStack(EnumBeeType beeType) {
+		return BeeManager.beeRoot.getMemberStack(getIndividual(), beeType.ordinal());
+	}
 
-    @Override
-    public final IBee getIndividual() {
-        return new Bee(genome);
-    }
+	public final IBeeDefinition getRainResist() {
+		return new BeeVariation.RainResist(this);
+	}
 
-    @Override
-    public final ItemStack getMemberStack(EnumBeeType beeType) {
-        return BeeManager.beeRoot.getMemberStack(getIndividual(), beeType.ordinal());
-    }
+	private static final Class sGtBees = ReflectionUtils.getClass("gregtech.loaders.misc.GT_BeeDefinition");
 
-    public final IBeeDefinition getRainResist() {
-        return new BeeVariation.RainResist(this);
-    }
-    
-    private static final Class sGtBees = ReflectionUtils.getClass("gregtech.loaders.misc.GT_BeeDefinition");
-    
-	public static IAlleleBeeSpecies getGregtechBeeType(String name){
+	public static IAlleleBeeSpecies getGregtechBeeType(String name) {
 		try {
 			Enum aBeeObject = ReflectionUtils.getEnum(sGtBees, name);
 			Field gtBeesField = ReflectionUtils.getField(sGtBees, "species");
-			IAlleleBeeSpecies beeType = ReflectionUtils.getFieldValue(gtBeesField, aBeeObject);    		    	
+			IAlleleBeeSpecies beeType = ReflectionUtils.getFieldValue(gtBeesField, aBeeObject);
 			return beeType != null ? beeType : null;
 		}
 		catch (Throwable t) {
 			t.printStackTrace();
 			return null;
 		}
-		  
+
 	}
 }

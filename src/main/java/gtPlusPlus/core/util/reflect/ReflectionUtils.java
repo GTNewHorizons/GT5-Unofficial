@@ -362,6 +362,15 @@ public class ReflectionUtils {
 
 		return loaded > 0;
 	}
+	
+	public static void loadClass(String aClassName) {
+		try {
+			Class.forName(aClassName, true, ReflectionUtils.class.getClassLoader());
+		}
+		catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
 
 
 

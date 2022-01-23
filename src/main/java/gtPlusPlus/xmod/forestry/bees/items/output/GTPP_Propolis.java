@@ -7,15 +7,15 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import forestry.api.core.Tabs;
 import gregtech.api.enums.GT_Values;
-import gregtech.api.util.GT_ModHandler;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.forestry.bees.handler.GTPP_PropolisType;
+import gtPlusPlus.xmod.forestry.bees.registry.GTPP_Bees;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraftforge.fluids.FluidRegistry;
 
 public class GTPP_Propolis extends Item {
 	
@@ -70,24 +70,22 @@ public class GTPP_Propolis extends Item {
 	public String getItemStackDisplayName(ItemStack stack) {
 		return GTPP_PropolisType.get(stack.getItemDamage()).getName();
 	}
-	
-	public void initPropolisRecipes() {
-		ItemStack tPropolis;
 
-		
-		tPropolis = getStackForType(GTPP_PropolisType.DRAGONBLOOD);
-		addProcessIV(tPropolis, GT_ModHandler.getModItem("HardcoreEnderExpansion", "essence", 16, 0));
-
-		//addRecipe(tDrop, aOutput, aOutput2, aChance, aDuration, aEUt);
+	public static void initPropolisRecipes() {
+		ItemStack tDrop;
+		Logger.BEES("Processing recipes for "+GTPP_Bees.sPropolisMappings.size()+" Propolis.");
+		for (GTPP_PropolisType aProp : GTPP_Bees.sPropolisMappings.values()) {
+			tDrop = aProp.getStackForType(1);
+			if (addProcess(tDrop, aProp.mMaterial.getDust(1), (int) Math.min(Math.max(10000-(aProp.mMaterial.vTier*625), 100) / 10, 10000), aProp.mMaterial.vTier * 20 * 15, aProp.mMaterial.vVoltageMultiplier)) {
+				Logger.BEES("Added Propolis extraction recipe for: "+aProp.getName());
+			}
+			else {
+				Logger.BEES("Failed to add Propolis extraction recipe for: "+aProp.getName());
+			}
+		}		
 	}
 
-	public void addProcessHV(ItemStack tPropolis, ItemStack aOutput2) {
-		GT_Values.RA.addFluidExtractionRecipe(tPropolis, aOutput2, FluidRegistry.getFluidStack("endergoo",100), 5000, 50, 480);
-	}
-	public void addProcessEV(ItemStack tPropolis, ItemStack aOutput2) {
-		GT_Values.RA.addFluidExtractionRecipe(tPropolis, aOutput2, FluidRegistry.getFluidStack("endergoo",200), 2500, 100, 1920);
-	}
-	public void addProcessIV(ItemStack tPropolis, ItemStack aOutput2) {
-		GT_Values.RA.addFluidExtractionRecipe(tPropolis, aOutput2, FluidRegistry.getFluidStack("endergoo",300), 1500, 150, 7680);
+	public static boolean addProcess(ItemStack tDrop, ItemStack aOutput, int aChance, int aDuration, int aEUt) {
+		return CORE.RA.addExtractorRecipe(tDrop, aOutput, aChance, aDuration, aEUt);
 	}
 }

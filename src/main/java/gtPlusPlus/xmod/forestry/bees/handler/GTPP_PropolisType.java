@@ -1,16 +1,18 @@
 package gtPlusPlus.xmod.forestry.bees.handler;
 
-import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_LanguageManager;
+import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.forestry.bees.registry.GTPP_Bees;
+import net.minecraft.item.ItemStack;
 
 public enum GTPP_PropolisType {
 
-    DRAGONBLOOD(0, "Dragon Blood", true, Utils.rgbtoHexValue(220, 20, 20));
+    DRAGONBLOOD(0, "Dragon Blood", true, Utils.rgbtoHexValue(220, 20, 20)),
+    FORCE(1, "Force", true, Utils.rgbtoHexValue(250, 250, 20));
 
 	public boolean mShowInList;
-	public Materials mMaterial;
+	public Material mMaterial;
 	public int mChance;
 	public int mID;
 
@@ -33,6 +35,7 @@ public enum GTPP_PropolisType {
         this.mShowInList = aShow;
         this.mColour = aColour;
 		map(aID, this);
+		this.mMaterial = GTPP_Bees.sMaterialMappings.get(aName.toLowerCase().replaceAll(" ", ""));
     }
 
     public void setHidden() {
@@ -46,4 +49,8 @@ public enum GTPP_PropolisType {
     public int getColours() {
         return mColour;
     }
+
+	public ItemStack getStackForType(int count) {
+		return new ItemStack(GTPP_Bees.propolis, count, mID);
+	}
 }
