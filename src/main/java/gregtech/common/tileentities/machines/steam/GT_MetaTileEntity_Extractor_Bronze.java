@@ -15,7 +15,7 @@ import static gregtech.api.enums.Textures.BlockIcons.*;
 
 public class GT_MetaTileEntity_Extractor_Bronze extends GT_MetaTileEntity_BasicMachine_Bronze {
     public GT_MetaTileEntity_Extractor_Bronze(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, "Extracting your first Rubber", 1, 1, false);
+        super(aID, aName, aNameRegional, "Extracting your first Rubber", 1, 1, false, "gt.recipe.extractor");
     }
 
     public GT_MetaTileEntity_Extractor_Bronze(String aName, String aDescription, ITexture[][][] aTextures) {

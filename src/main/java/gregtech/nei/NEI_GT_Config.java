@@ -63,6 +63,8 @@ public class NEI_GT_Config implements IConfigureNEI {
 
             codechicken.nei.api.API.addItemListEntry(ItemList.VOLUMETRIC_FLASK.get(1));
             codechicken.nei.api.API.registerNEIGuiHandler(new GT_NEI_GuiAdapter());
+
+            GT_NEI_RecipeCatalyst.registerManual();
         }
         sIsAdded = true;
     }

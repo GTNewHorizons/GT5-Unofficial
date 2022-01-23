@@ -16,7 +16,7 @@ import static gregtech.api.enums.Textures.BlockIcons.*;
 
 public class GT_MetaTileEntity_Furnace_Steel extends GT_MetaTileEntity_BasicMachine_Steel {
     public GT_MetaTileEntity_Furnace_Steel(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, "Smelting things with compressed Steam", 1, 1, true);
+        super(aID, aName, aNameRegional, "Smelting things with compressed Steam", 1, 1, true, "smelting");
     }
 
     public GT_MetaTileEntity_Furnace_Steel(String aName, String aDescription, ITexture[][][] aTextures) {

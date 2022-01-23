@@ -75,7 +75,7 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_EnhancedMult
     protected int mCasingAmount;
 
     public GT_MetaTileEntity_OilCracker(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional);
+        super(aID, aName, aNameRegional, "gt.recipe.craker");
     }
 
     public GT_MetaTileEntity_OilCracker(String aName) {

@@ -19,7 +19,7 @@ public class GT_MetaTileEntity_PlasmaGenerator extends GT_MetaTileEntity_BasicGe
     public int mEfficiency;
 
     public GT_MetaTileEntity_PlasmaGenerator(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, "Plasma into energy");
+        super(aID, aName, aNameRegional, aTier, "Plasma into energy", "gt.recipe.plasmageneratorfuels");
         onConfigLoad();
     }
 

@@ -54,6 +54,10 @@ public abstract class GT_MetaTileEntity_CubicMultiBlockBase<T extends GT_MetaTil
 		super(aID, aName, aNameRegional);
 	}
 
+	protected GT_MetaTileEntity_CubicMultiBlockBase(int aID, String aName, String aNameRegional, String aNEIName) {
+		super(aID, aName, aNameRegional, aNEIName);
+	}
+
 	protected GT_MetaTileEntity_CubicMultiBlockBase(String aName) {
 		super(aName);
 	}

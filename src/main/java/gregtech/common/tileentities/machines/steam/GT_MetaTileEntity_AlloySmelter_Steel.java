@@ -15,7 +15,7 @@ import static gregtech.api.enums.Textures.BlockIcons.*;
 
 public class GT_MetaTileEntity_AlloySmelter_Steel extends GT_MetaTileEntity_BasicMachine_Steel {
     public GT_MetaTileEntity_AlloySmelter_Steel(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, "Combination Smelter", 2, 1, true);
+        super(aID, aName, aNameRegional, "Combination Smelter", 2, 1, true, "gt.recipe.alloysmelter");
     }
 
     public GT_MetaTileEntity_AlloySmelter_Steel(String aName, String aDescription, ITexture[][][] aTextures) {

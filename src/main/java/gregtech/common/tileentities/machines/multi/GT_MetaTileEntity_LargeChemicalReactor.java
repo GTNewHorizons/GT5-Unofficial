@@ -61,7 +61,7 @@ public class GT_MetaTileEntity_LargeChemicalReactor extends GT_MetaTileEntity_En
     private int mCoilAmount;
 
     public GT_MetaTileEntity_LargeChemicalReactor(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional);
+        super(aID, aName, aNameRegional, "gt.recipe.largechemicalreactor");
     }
 
     public GT_MetaTileEntity_LargeChemicalReactor(String aName) {

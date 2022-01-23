@@ -17,7 +17,7 @@ import static gregtech.api.enums.Textures.BlockIcons.*;
 
 public class GT_MetaTileEntity_RockBreaker extends GT_MetaTileEntity_BasicMachine {
     public GT_MetaTileEntity_RockBreaker(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 1, "Put Lava and Water adjacent", 1, 1, "RockBreaker.png", "",
+        super(aID, aName, aNameRegional, aTier, 1, "Put Lava and Water adjacent", 1, 1, "RockBreaker.png", "gt.recipe.rockbreaker",
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_SIDE_ROCK_BREAKER_ACTIVE),
                         TextureFactory.builder().addIcon(OVERLAY_SIDE_ROCK_BREAKER_ACTIVE_GLOW).glow().build()),

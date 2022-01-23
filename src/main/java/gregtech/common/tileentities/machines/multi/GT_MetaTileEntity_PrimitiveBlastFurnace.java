@@ -11,6 +11,7 @@ import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.common.GT_Pollution;
 import gregtech.common.gui.GT_Container_PrimitiveBlastFurnace;
 import gregtech.common.gui.GT_GUIContainer_PrimitiveBlastFurnace;
+import gregtech.nei.GT_NEI_RecipeCatalyst;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -40,6 +41,7 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
 
     public GT_MetaTileEntity_PrimitiveBlastFurnace(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, INPUT_SLOTS + OUTPUT_SLOTS);
+        GT_NEI_RecipeCatalyst.registerGTCatalyst(this.getStackForm(1), "gt.recipe.primitiveblastfurnace");
     }
 
     public GT_MetaTileEntity_PrimitiveBlastFurnace(String aName) {

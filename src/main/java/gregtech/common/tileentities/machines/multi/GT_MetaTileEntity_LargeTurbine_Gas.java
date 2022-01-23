@@ -21,7 +21,7 @@ import static gregtech.api.enums.Textures.BlockIcons.*;
 public class GT_MetaTileEntity_LargeTurbine_Gas extends GT_MetaTileEntity_LargeTurbine {
 
     public GT_MetaTileEntity_LargeTurbine_Gas(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional);
+        super(aID, aName, aNameRegional, "gt.recipe.gasturbinefuel");
     }
 
     public GT_MetaTileEntity_LargeTurbine_Gas(String aName) {

@@ -63,6 +63,10 @@ public abstract class GT_MetaTileEntity_LargeTurbine extends GT_MetaTileEntity_E
         super(aID, aName, aNameRegional);
     }
 
+    public GT_MetaTileEntity_LargeTurbine(int aID, String aName, String aNameRegional, String aNEIName) {
+        super(aID, aName, aNameRegional, aNEIName);
+    }
+
     public GT_MetaTileEntity_LargeTurbine(String aName) {
         super(aName);
     }

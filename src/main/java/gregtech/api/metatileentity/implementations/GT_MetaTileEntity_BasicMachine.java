@@ -18,6 +18,7 @@ import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.GT_ClientPreference;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Cleanroom;
+import gregtech.nei.GT_NEI_RecipeCatalyst;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -97,6 +98,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         mAmperage = aAmperage;
         mGUIName = aGUIName;
         mNEIName = aNEIName;
+        GT_NEI_RecipeCatalyst.registerGTCatalyst(this.getStackForm(1), mNEIName);
     }
     public GT_MetaTileEntity_BasicMachine(int aID, String aName, String aNameRegional, int aTier, int aAmperage, String[] aDescription, int aInputSlotCount, int aOutputSlotCount, String aGUIName, String aNEIName, ITexture... aOverlays) {
         super(aID, aName, aNameRegional, aTier, OTHER_SLOT_COUNT + aInputSlotCount + aOutputSlotCount + 1, aDescription, aOverlays);
@@ -105,6 +107,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         mAmperage = aAmperage;
         mGUIName = aGUIName;
         mNEIName = aNEIName;
+        GT_NEI_RecipeCatalyst.registerGTCatalyst(this.getStackForm(1), mNEIName);
     }
     public GT_MetaTileEntity_BasicMachine(String aName, int aTier, int aAmperage, String aDescription, ITexture[][][] aTextures, int aInputSlotCount, int aOutputSlotCount, String aGUIName, String aNEIName) {
         super(aName, aTier, OTHER_SLOT_COUNT + aInputSlotCount + aOutputSlotCount + 1, aDescription, aTextures);
@@ -113,6 +116,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         mAmperage = aAmperage;
         mGUIName = aGUIName;
         mNEIName = aNEIName;
+        GT_NEI_RecipeCatalyst.registerGTCatalyst(this.getStackForm(1), mNEIName);
     }
     
     public GT_MetaTileEntity_BasicMachine(String aName, int aTier, int aAmperage, String[] aDescription, ITexture[][][] aTextures, int aInputSlotCount, int aOutputSlotCount, String aGUIName, String aNEIName) {
@@ -122,6 +126,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         mAmperage = aAmperage;
         mGUIName = aGUIName;
         mNEIName = aNEIName;
+        GT_NEI_RecipeCatalyst.registerGTCatalyst(this.getStackForm(1), mNEIName);
     }
 
     protected boolean isValidMainFacing(byte aSide) {

@@ -35,7 +35,7 @@ import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes;
 public class GT_MetaTileEntity_Scanner extends GT_MetaTileEntity_BasicMachine {
 
     public GT_MetaTileEntity_Scanner(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 1, "Scans Crops and other things.", 1, 1, "Scanner.png", "",
+        super(aID, aName, aNameRegional, aTier, 1, "Scans Crops and other things.", 1, 1, "Scanner.png", "gt.recipe.scanner",
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_SIDE_SCANNER_ACTIVE),
                         TextureFactory.builder().addIcon(OVERLAY_SIDE_SCANNER_ACTIVE_GLOW).glow().build()),

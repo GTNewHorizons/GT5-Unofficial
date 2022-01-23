@@ -28,7 +28,7 @@ import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 public class GT_MetaTileEntity_ExtremeDieselEngine extends GT_MetaTileEntity_DieselEngine {
 
     public GT_MetaTileEntity_ExtremeDieselEngine(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional);
+        super(aID, aName, aNameRegional, "gt.recipe.extremedieselgeneratorfuel");
     }
     
     public GT_MetaTileEntity_ExtremeDieselEngine(String aName) {

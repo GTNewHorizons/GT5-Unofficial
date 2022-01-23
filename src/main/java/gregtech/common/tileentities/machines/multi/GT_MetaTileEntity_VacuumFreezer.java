@@ -24,7 +24,7 @@ import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 
 public class GT_MetaTileEntity_VacuumFreezer extends GT_MetaTileEntity_CubicMultiBlockBase<GT_MetaTileEntity_VacuumFreezer> {
     public GT_MetaTileEntity_VacuumFreezer(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional);
+        super(aID, aName, aNameRegional, "gt.recipe.vacuumfreezer");
     }
 
     public GT_MetaTileEntity_VacuumFreezer(String aName) {

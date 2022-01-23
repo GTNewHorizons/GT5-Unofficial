@@ -38,7 +38,7 @@ public class GT_MetaTileEntity_Replicator
     }
 
     public GT_MetaTileEntity_Replicator(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 1, "Producing Elemental Matter", 1, 1, "Replicator.png", "",
+        super(aID, aName, aNameRegional, aTier, 1, "Producing Elemental Matter", 1, 1, "Replicator.png", "gt.recipe.replicator",
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_SIDE_REPLICATOR_ACTIVE),
                         TextureFactory.builder().addIcon(OVERLAY_SIDE_REPLICATOR_ACTIVE_GLOW).glow().build()),

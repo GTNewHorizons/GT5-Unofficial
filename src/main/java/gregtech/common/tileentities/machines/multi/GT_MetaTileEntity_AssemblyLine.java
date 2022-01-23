@@ -88,7 +88,7 @@ public class GT_MetaTileEntity_AssemblyLine extends GT_MetaTileEntity_EnhancedMu
             .build();
 
     public GT_MetaTileEntity_AssemblyLine(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional);
+        super(aID, aName, aNameRegional, "gt.recipe.fakeAssemblylineProcess");
     }
 
     public GT_MetaTileEntity_AssemblyLine(String aName) {

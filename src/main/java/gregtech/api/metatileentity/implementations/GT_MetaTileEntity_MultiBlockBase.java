@@ -18,6 +18,7 @@ import gregtech.api.util.GT_Single_Recipe_Check;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Pollution;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import gregtech.nei.GT_NEI_RecipeCatalyst;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -65,6 +66,15 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
         this.damageFactorLow = GregTech_API.sMachineFile.get(ConfigCategories.machineconfig, "MultiBlockMachines.damageFactorLow", 5);
         this.damageFactorHigh = (float) GregTech_API.sMachineFile.get(ConfigCategories.machineconfig, "MultiBlockMachines.damageFactorHigh", 0.6f);
         this.mNEI = "";
+    }
+
+    public GT_MetaTileEntity_MultiBlockBase(int aID, String aName, String aNameRegional, String aNEIName) {
+        super(aID, aName, aNameRegional, 2);
+        GT_MetaTileEntity_MultiBlockBase.disableMaintenance = GregTech_API.sMachineFile.get(ConfigCategories.machineconfig, "MultiBlockMachines.disableMaintenance", false);
+        this.damageFactorLow = GregTech_API.sMachineFile.get(ConfigCategories.machineconfig, "MultiBlockMachines.damageFactorLow", 5);
+        this.damageFactorHigh = (float) GregTech_API.sMachineFile.get(ConfigCategories.machineconfig, "MultiBlockMachines.damageFactorHigh", 0.6f);
+        this.mNEI = aNEIName;
+        GT_NEI_RecipeCatalyst.registerGTCatalyst(this.getStackForm(1), mNEI);
     }
 
     public GT_MetaTileEntity_MultiBlockBase(String aName) {

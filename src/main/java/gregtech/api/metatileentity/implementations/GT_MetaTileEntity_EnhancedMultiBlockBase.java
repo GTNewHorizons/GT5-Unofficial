@@ -38,6 +38,10 @@ public abstract class GT_MetaTileEntity_EnhancedMultiBlockBase<T extends GT_Meta
 		super(aID, aName, aNameRegional);
 	}
 
+	protected GT_MetaTileEntity_EnhancedMultiBlockBase(int aID, String aName, String aNameRegional, String aNEIName) {
+		super(aID, aName, aNameRegional, aNEIName);
+	}
+
 	protected GT_MetaTileEntity_EnhancedMultiBlockBase(String aName) {
 		super(aName);
 	}

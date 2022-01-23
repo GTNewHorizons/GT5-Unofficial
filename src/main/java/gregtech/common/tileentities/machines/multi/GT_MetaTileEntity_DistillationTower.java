@@ -85,7 +85,7 @@ public class GT_MetaTileEntity_DistillationTower extends GT_MetaTileEntity_Enhan
     protected boolean mTopLayerFound;
 
     public GT_MetaTileEntity_DistillationTower(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional);
+        super(aID, aName, aNameRegional, "gt.recipe.distillationtower");
     }
 
     public GT_MetaTileEntity_DistillationTower(String aName) {

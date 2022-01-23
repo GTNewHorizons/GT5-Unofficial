@@ -15,7 +15,7 @@ import static gregtech.api.enums.Textures.BlockIcons.*;
 
 public class GT_MetaTileEntity_ForgeHammer_Bronze extends GT_MetaTileEntity_BasicMachine_Bronze {
     public GT_MetaTileEntity_ForgeHammer_Bronze(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, "Forge Hammer", 1, 1, false);
+        super(aID, aName, aNameRegional, "Forge Hammer", 1, 1, false, "gt.recipe.hammer");
     }
 
     public GT_MetaTileEntity_ForgeHammer_Bronze(String aName, String aDescription, ITexture[][][] aTextures) {

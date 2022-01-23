@@ -66,7 +66,7 @@ public class GT_MetaTileEntity_ElectricBlastFurnace extends GT_MetaTileEntity_Ab
             .build();
 
     public GT_MetaTileEntity_ElectricBlastFurnace(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional);
+        super(aID, aName, aNameRegional, "gt.recipe.blastfurnace");
     }
 
     public GT_MetaTileEntity_ElectricBlastFurnace(String aName) {

@@ -23,7 +23,7 @@ public class GT_MetaTileEntity_MagicEnergyConverter extends GT_MetaTileEntity_Ba
     public int mEfficiency;
 
     public GT_MetaTileEntity_MagicEnergyConverter(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, "Put your strange stuff in here");
+        super(aID, aName, aNameRegional, aTier, "Put your strange stuff in here", "gt.recipe.magicfuels");
         onConfigLoad();
     }
 

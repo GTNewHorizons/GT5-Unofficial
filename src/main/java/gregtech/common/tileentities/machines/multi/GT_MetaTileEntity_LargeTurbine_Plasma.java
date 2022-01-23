@@ -27,7 +27,7 @@ import static gregtech.api.enums.Textures.BlockIcons.*;
 public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_LargeTurbine {
 
     public GT_MetaTileEntity_LargeTurbine_Plasma(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional);
+        super(aID, aName, aNameRegional, "gt.recipe.plasmageneratorfuels");
     }
 
     public GT_MetaTileEntity_LargeTurbine_Plasma(String aName) {

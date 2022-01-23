@@ -62,7 +62,11 @@ public class GT_MetaTileEntity_DieselEngine extends GT_MetaTileEntity_EnhancedMu
     protected boolean boostEu = false;
 
     public GT_MetaTileEntity_DieselEngine(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional);
+        super(aID, aName, aNameRegional, "gt.recipe.dieselgeneratorfuel");
+    }
+
+    public GT_MetaTileEntity_DieselEngine(int aID, String aName, String aNameRegional, String aNEIName) {
+        super(aID, aName, aNameRegional, aNEIName);
     }
 
     public GT_MetaTileEntity_DieselEngine(String aName) {

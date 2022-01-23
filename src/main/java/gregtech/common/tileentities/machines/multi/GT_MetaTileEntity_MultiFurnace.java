@@ -56,7 +56,7 @@ public class GT_MetaTileEntity_MultiFurnace extends GT_MetaTileEntity_AbstractMu
             .build();
 
     public GT_MetaTileEntity_MultiFurnace(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional);
+        super(aID, aName, aNameRegional, "smelting");
     }
 
     public GT_MetaTileEntity_MultiFurnace(String aName) {

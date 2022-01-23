@@ -28,7 +28,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_IMPLOSION_COM
 
 public class GT_MetaTileEntity_ImplosionCompressor extends GT_MetaTileEntity_CubicMultiBlockBase<GT_MetaTileEntity_ImplosionCompressor> {
     public GT_MetaTileEntity_ImplosionCompressor(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional);
+        super(aID, aName, aNameRegional, "gt.recipe.implosioncompressor");
     }
 
     public GT_MetaTileEntity_ImplosionCompressor(String aName) {

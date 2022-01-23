@@ -13,6 +13,10 @@ public abstract class GT_MetaTileEntity_AbstractMultiFurnace<T extends GT_MetaTi
         super(aID, aName, aNameRegional);
     }
 
+    protected GT_MetaTileEntity_AbstractMultiFurnace(int aID, String aName, String aNameRegional, String aNEIName) {
+        super(aID, aName, aNameRegional, aNEIName);
+    }
+
     protected GT_MetaTileEntity_AbstractMultiFurnace(String aName) {
         super(aName);
     }

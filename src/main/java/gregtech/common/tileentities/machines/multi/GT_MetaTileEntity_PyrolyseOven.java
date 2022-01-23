@@ -76,7 +76,7 @@ public class GT_MetaTileEntity_PyrolyseOven extends GT_MetaTileEntity_EnhancedMu
     private int mCasingAmount;
 
     public GT_MetaTileEntity_PyrolyseOven(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional);
+        super(aID, aName, aNameRegional, "gt.recipe.pyro");
     }
 
     public GT_MetaTileEntity_PyrolyseOven(String aName) {

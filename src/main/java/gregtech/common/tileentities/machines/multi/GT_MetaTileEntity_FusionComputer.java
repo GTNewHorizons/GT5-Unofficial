@@ -117,7 +117,7 @@ public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity
     }
 
     public GT_MetaTileEntity_FusionComputer(int aID, String aName, String aNameRegional, int tier) {
-        super(aID, aName, aNameRegional);
+        super(aID, aName, aNameRegional, "gt.recipe.fusionreactor");
     }
 
     public GT_MetaTileEntity_FusionComputer(String aName) {

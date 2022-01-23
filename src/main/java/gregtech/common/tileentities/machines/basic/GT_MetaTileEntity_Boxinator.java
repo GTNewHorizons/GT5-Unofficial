@@ -19,7 +19,7 @@ public class GT_MetaTileEntity_Boxinator extends GT_MetaTileEntity_BasicMachine 
     int aTypeCache = 0;
 
     public GT_MetaTileEntity_Boxinator(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 1, "Puts things into Boxes", 2, 1, "Packager.png", "",
+        super(aID, aName, aNameRegional, aTier, 1, "Puts things into Boxes", 2, 1, "Packager.png", "gt.recipe.packager",
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_SIDE_BOXINATOR_ACTIVE),
                         TextureFactory.builder().addIcon(OVERLAY_SIDE_BOXINATOR_ACTIVE_GLOW).glow().build()),

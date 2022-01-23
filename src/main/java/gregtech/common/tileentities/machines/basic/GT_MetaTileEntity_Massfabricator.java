@@ -22,7 +22,7 @@ public class GT_MetaTileEntity_Massfabricator extends GT_MetaTileEntity_BasicMac
     public static boolean sRequiresUUA = false;
 
     public GT_MetaTileEntity_Massfabricator(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 1, "UUM = Matter * Fabrication Squared", 1, 1, "Massfabricator.png", "",
+        super(aID, aName, aNameRegional, aTier, 1, "UUM = Matter * Fabrication Squared", 1, 1, "Massfabricator.png", "gt.recipe.massfab",
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_SIDE_MASSFAB_ACTIVE),
                         TextureFactory.builder().addIcon(OVERLAY_SIDE_MASSFAB_ACTIVE_GLOW).glow().build()),

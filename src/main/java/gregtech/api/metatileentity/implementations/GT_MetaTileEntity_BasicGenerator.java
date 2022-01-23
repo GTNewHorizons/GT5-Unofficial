@@ -11,6 +11,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Pollution;
+import gregtech.nei.GT_NEI_RecipeCatalyst;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -25,8 +26,18 @@ public abstract class GT_MetaTileEntity_BasicGenerator extends GT_MetaTileEntity
         super(aID, aName, aNameRegional, aTier, 3, aDescription, aTextures);
     }
 
+    public GT_MetaTileEntity_BasicGenerator(int aID, String aName, String aNameRegional, int aTier, String aDescription, String aNEIName, ITexture... aTextures) {
+        super(aID, aName, aNameRegional, aTier, 3, aDescription, aTextures);
+        GT_NEI_RecipeCatalyst.registerGTCatalyst(this.getStackForm(1), aNEIName);
+    }
+
     public GT_MetaTileEntity_BasicGenerator(int aID, String aName, String aNameRegional, int aTier, String[] aDescription, ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, 3, aDescription, aTextures);
+    }
+
+    public GT_MetaTileEntity_BasicGenerator(int aID, String aName, String aNameRegional, int aTier, String[] aDescription, String aNEIName, ITexture... aTextures) {
+        super(aID, aName, aNameRegional, aTier, 3, aDescription, aTextures);
+        GT_NEI_RecipeCatalyst.registerGTCatalyst(this.getStackForm(1), aNEIName);
     }
 
     public GT_MetaTileEntity_BasicGenerator(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {

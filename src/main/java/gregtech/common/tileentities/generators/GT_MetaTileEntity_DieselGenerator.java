@@ -27,7 +27,8 @@ public class GT_MetaTileEntity_DieselGenerator extends GT_MetaTileEntity_BasicGe
     public GT_MetaTileEntity_DieselGenerator(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, new String[]{
                 "Requires liquid Fuel",
-                "Causes " + (int) (GT_Mod.gregtechproxy.mPollutionBaseDieselGeneratorPerSecond * GT_Mod.gregtechproxy.mPollutionDieselGeneratorReleasedByTier[aTier]) + " Pollution per second"});
+                "Causes " + (int) (GT_Mod.gregtechproxy.mPollutionBaseDieselGeneratorPerSecond * GT_Mod.gregtechproxy.mPollutionDieselGeneratorReleasedByTier[aTier]) + " Pollution per second"},
+                "gt.recipe.dieselgeneratorfuel");
         onConfigLoad();
     }
 
