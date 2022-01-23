@@ -24,6 +24,7 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.helpers.TreeFarmHelper;
 import gtPlusPlus.xmod.gregtech.common.helpers.treefarm.TreeGenerator;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
@@ -34,6 +35,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
 	public static int CASING_TEXTURE_ID;
 	public static String mCasingName = "Sterile Farm Casing";
 	public static TreeGenerator mTreeData;
+	private ItemStack mTreeType;
 	private int mCasing;
 	private IStructureDefinition<GregtechMetaTileEntityTreeFarm> STRUCTURE_DEFINITION = null;
 
@@ -122,78 +124,53 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
 	}
 
 	public boolean checkRecipe(final ItemStack aStack) {
-		if (mTreeData == null)
-			// not finished somehow
-			return false;
+
 		if (aStack == null && !replaceTool())
 			// no tool
 			return false;
 		if (!isCorrectMachinePart(aStack))
 			// not a tool
 			return false;
-		if (mTreeData != null) {
 
-			long tVoltage = getMaxInputVoltage();
-			byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
+		long tVoltage = getMaxInputVoltage();
+		byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
 
-			this.mMaxProgresstime = 100;
-			this.mEUt = (int) tVoltage;
+		this.mMaxProgresstime = 100;
+		this.mEUt = (int) tVoltage;
 
-			this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-			this.mEfficiencyIncrease = 10000;
+		this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
+		this.mEfficiencyIncrease = 10000;
 
-			// Overclock
-			if (this.mEUt <= 16) {
-				this.mEUt = (this.mEUt * (1 << tTier - 1) * (1 << tTier - 1));
-				this.mMaxProgresstime = (this.mMaxProgresstime / (1 << tTier - 1));
-			} else {
-				while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
-					this.mEUt *= 4;
-					this.mMaxProgresstime /= 2;
-				}
-			}
-
-			if (this.mEUt > 0) {
-				this.mEUt = (-this.mEUt);
-			}
-
-
-			int aChance = MathUtils.randInt(0, 10);
-
-			try {
-				if (aChance < 8) {
-					ItemStackMap<Integer> allOutputs = new ItemStackMap<>();
-					if (aLeaves == null)
-						aLeaves = ItemUtils.getSimpleStack(Blocks.leaves);
-					//1% Chance per Tick				
-					for (int u = 0; u < (Math.max(4, (MathUtils.randInt((3 * tTier), 100) * tTier * tTier) / 14)); u++) {
-						AutoMap<ItemStack> aOutputs = mTreeData.generateOutput(0);
-						if (aOutputs.size() > 0) {
-							for (ItemStack aOutputItemStack : aOutputs) {
-								if (!GT_Utility.areStacksEqual(aLeaves, aOutputItemStack)) {
-									Integer oldStackSize = allOutputs.get(aOutputItemStack);
-									int oldStackSizeUnboxed = oldStackSize == null ? 0 : oldStackSize;
-									allOutputs.put(aOutputItemStack, oldStackSizeUnboxed + aOutputItemStack.stackSize);
-								}
-							}
-						}
-					}
-
-					mOutputItems = allOutputs.entries().stream()
-							.map(e -> {
-								e.key.stackSize = e.value;
-								return e.key;
-							}).toArray(ItemStack[]::new);
-				}
-			} catch (Throwable t) {
-				t.printStackTrace(GT_Log.err);
-			}
-			return true;
+		// Overclock
+		if (this.mEUt <= 16) {
+			this.mEUt = (this.mEUt * (1 << tTier - 1) * (1 << tTier - 1));
+			this.mMaxProgresstime = (this.mMaxProgresstime / (1 << tTier - 1));
 		} else {
-			return false;
+			while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
+				this.mEUt *= 4;
+				this.mMaxProgresstime /= 2;
+			}
 		}
-	}
 
+		if (this.mEUt > 0) {
+			this.mEUt = (-this.mEUt);
+		}
+
+		try {
+			int outputAmount = (2 * tTier ^ 2) - (2 * tTier) + 5;
+			int lastStack = outputAmount % 64;
+			mTreeType.stackSize = 64;
+			for (int i = 0; i < (outputAmount - lastStack) / 64; i++) {
+				this.addOutput(mTreeType);
+			}
+			mTreeType.stackSize = lastStack;
+			this.addOutput(mTreeType);
+			this.updateSlots();
+		} catch (Throwable t) {
+			t.printStackTrace(GT_Log.err);
+		}
+		return true;
+	}
 	@Override
 	public boolean checkHatch() {
 		return super.checkHatch() && mEnergyHatches.size() == 1;
@@ -283,6 +260,31 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
 		return false;
 	}
 
+	public boolean getWoodBasedOnSapling() {
+		for (GT_MetaTileEntity_Hatch_InputBus mInputBus : this.mInputBusses) {
+			for (int i = 0; i < mInputBus.mInventory.length; i++) {
+				ItemStack uStack = mInputBus.mInventory[i];
+				if (uStack != null) {
+					ItemStack aWood = woodMapper(uStack);
+					if(aWood != null) {
+						this.mTreeType = aWood;
+						return true;
+					} else{
+						this.mTreeType = new ItemStack(Blocks.log, 0);
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	public ItemStack woodMapper(ItemStack aStack){
+		String b = aStack.getUnlocalizedName();
+		String registryName = Item.itemRegistry.getNameForObject(aStack.getItem());
+		String modID = registryName.substring(0, registryName.indexOf(":"));
+		return null;
+	}
+
 	public boolean tryDamageTool(ItemStack invItem) {
 		if (invItem != null && invItem.getItem() instanceof GT_MetaGenerated_Tool) {
 			long aDmg = GT_MetaGenerated_Tool.getToolDamage(invItem);
@@ -317,6 +319,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
 	@Override
 	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
 		super.onPostTick(aBaseMetaTileEntity, aTick);
+		getWoodBasedOnSapling();
 		replaceTool();
 	}
 
