@@ -29,7 +29,7 @@ import static gregtech.GT_Mod.GT_FML_LOGGER;
 import static gregtech.api.enums.GT_Values.NW;
 
 public abstract class CoverableGregTechTileEntity extends BaseTileEntity implements IGregTechTileEntity {
-    static final String[] COVER_DATA_NBT_KEYS = Arrays.stream(ForgeDirection.VALID_DIRECTIONS).mapToInt(Enum::ordinal).mapToObj(i -> "mCoverData" + i).toArray(String[]::new);
+    public static final String[] COVER_DATA_NBT_KEYS = Arrays.stream(ForgeDirection.VALID_DIRECTIONS).mapToInt(Enum::ordinal).mapToObj(i -> "mCoverData" + i).toArray(String[]::new);
     protected final GT_CoverBehaviorBase<?>[] mCoverBehaviors = new GT_CoverBehaviorBase<?>[]{GregTech_API.sNoBehavior, GregTech_API.sNoBehavior, GregTech_API.sNoBehavior, GregTech_API.sNoBehavior, GregTech_API.sNoBehavior, GregTech_API.sNoBehavior};
 
     protected int[] mCoverSides = new int[]{0, 0, 0, 0, 0, 0};
@@ -123,6 +123,8 @@ public abstract class CoverableGregTechTileEntity extends BaseTileEntity impleme
                     mCoverData[i] = mCoverBehaviors[i].createDataObject(aNBT.getTag(COVER_DATA_NBT_KEYS[i]));
                 else
                     mCoverData[i] = mCoverBehaviors[i].createDataObject();
+                if (mCoverBehaviors[i].isDataNeededOnClient(i, mCoverSides[i], mCoverData[i], this))
+                    issueCoverUpdate(i);
             }
         }
     }
@@ -224,7 +226,7 @@ public abstract class CoverableGregTechTileEntity extends BaseTileEntity impleme
 
     @Override
     public ItemStack getCoverItemAtSide(byte aSide) {
-        return GT_Utility.intToStack(getCoverIDAtSide(aSide));
+        return getCoverBehaviorAtSideNew(aSide).getDisplayStack(getCoverIDAtSide(aSide), getComplexCoverDataAtSide(aSide));
     }
 
     @Override

@@ -80,10 +80,10 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
     }
 
     /**
-     * Get the display name when in machine is in item form. Return null if one should use the ItemStack name instead.
+     * Get the display stack. Default to {@code int2Stack(aCoverID)}
      */
-    public final String getDisplayName(int aCoverID, ISerializableObject aCoverVariable) {
-        return getDisplayNameImpl(aCoverID,forceCast(aCoverVariable));
+    public final ItemStack getDisplayStack(int aCoverID, ISerializableObject aCoverVariable) {
+        return getDisplayStackImpl(aCoverID,forceCast(aCoverVariable));
     }
 
     /**
@@ -319,8 +319,8 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
         return 0;
     }
 
-    protected String getDisplayNameImpl(int aCoverID, T aCoverVariable) {
-        return null;
+    protected ItemStack getDisplayStackImpl(int aCoverID, T aCoverVariable) {
+        return GT_Utility.intToStack(aCoverID);
     }
 
     protected ITexture getSpecialCoverTextureImpl(byte aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {

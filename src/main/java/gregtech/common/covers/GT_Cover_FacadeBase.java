@@ -148,7 +148,9 @@ public abstract class GT_Cover_FacadeBase extends GT_CoverBehaviorBase<GT_Cover_
                 // since we do not allow multiple type of facade per block, this check would be enough.
                 if (aTileEntity.getCoverBehaviorAtSideNew(i) instanceof GT_Cover_FacadeBase) return;
             }
-            GT_RenderingWorld.getInstance().unregister(aTileEntity.getXCoord(), aTileEntity.getYCoord(), aTileEntity.getZCoord(), getTargetBlock(aCoverVariable.mStack), getTargetMeta(aCoverVariable.mStack));
+            if (aCoverVariable.mStack != null)
+                // mStack == null -> cover removed before data reach client
+                GT_RenderingWorld.getInstance().unregister(aTileEntity.getXCoord(), aTileEntity.getYCoord(), aTileEntity.getZCoord(), getTargetBlock(aCoverVariable.mStack), getTargetMeta(aCoverVariable.mStack));
         }
     }
 

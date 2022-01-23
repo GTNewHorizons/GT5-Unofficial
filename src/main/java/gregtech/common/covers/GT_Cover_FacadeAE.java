@@ -21,11 +21,7 @@ public class GT_Cover_FacadeAE extends GT_Cover_FacadeBase {
 	}
 
 	@Override
-	protected String getDisplayNameImpl(int aCoverID, FacadeData aCoverVariable) {
-		try {
-			return aCoverVariable.mStack.getDisplayName();
-		} catch (Throwable e) {
-			return "Unknown AE2 Cable Facade";
-		}
+	protected ItemStack getDisplayStackImpl(int aCoverID, FacadeData aCoverVariable) {
+		return aCoverVariable.mStack;
 	}
 }

@@ -6,15 +6,18 @@ import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IConnectable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.CoverableGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Cable;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Fluid;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Frame;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Item;
+import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.GT_ItsNotMyFaultException;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.ISerializableObject;
 import gregtech.common.tileentities.storage.*;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -144,9 +147,14 @@ public class GT_Item_Machines extends ItemBlock implements IFluidContainerItem {
             if (mCoverSides != null && mCoverSides.length == 6) {
                 for (byte i = 0; i < 6; i++) {
                     int coverId = mCoverSides[i];
-                    ItemStack coverStack = GT_Utility.intToStack(coverId);
-                    if (coverStack != null) {
-                        aList.add(String.format("Cover on %s side: %s", directionNames[i], coverStack.getDisplayName()));
+                    if (coverId == 0) continue;
+                    GT_CoverBehaviorBase<?> behavior = GregTech_API.getCoverBehaviorNew(coverId);
+                    if (behavior == null || behavior == GregTech_API.sNoBehavior) continue;
+                    if (!aNBT.hasKey(CoverableGregTechTileEntity.COVER_DATA_NBT_KEYS[i])) continue;
+                    ISerializableObject dataObject = behavior.createDataObject(aNBT.getTag(CoverableGregTechTileEntity.COVER_DATA_NBT_KEYS[i]));
+                    ItemStack itemStack = behavior.getDisplayStack(coverId, dataObject);
+                    if (itemStack != null) {
+                        aList.add(String.format("Cover on %s side: %s", directionNames[i], itemStack.getDisplayName()));
                     }
                 }
             }
