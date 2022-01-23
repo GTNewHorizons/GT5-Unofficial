@@ -28,15 +28,16 @@ public class EMList implements ICommand {
             if(args.length == 0) {
                 listClasses(sender);
             }else {
-                listDefinitions(sender, Util.getConcated(args," "));
+                String concated = Util.getConcated(args, " ");
+                listDefinitions(sender,concated, concated.replaceAll(" ","_"),concated.replaceAll("_"," "));
             }
         }
     }
 
-    private void listDefinitions(ICommandSender sender, String arg) {
+    private void listDefinitions(ICommandSender sender,String raw, String unlocalized,String localized) {
         sender.addChatMessage(new ChatComponentText("    Available Direct: tag - name symbol"));
         for (EMType directType : TecTech.definitionsRegistry.getDirectTypes().values()) {
-            if ("*".equals(arg) || arg.equalsIgnoreCase(directType.getLocalizedName())) {
+            if ("*".equals(raw) || localized.equalsIgnoreCase(directType.getLocalizedName()) || unlocalized.equalsIgnoreCase(directType.getUnlocalizedName())) {
                 directType.getDefinitions().forEach((bind, definition) ->
                         sender.addChatMessage(new ChatComponentText(bind + " - " + definition.getLocalizedName() + " " + definition.getSymbol())));
             }
@@ -44,7 +45,7 @@ public class EMList implements ICommand {
     }
 
     private void listClasses(ICommandSender sender) {
-        sender.addChatMessage(new ChatComponentText("    Available Direct: name (use name as parameter to learn more"));
+        sender.addChatMessage(new ChatComponentText("    Available Direct: name (use as parameter to learn more"));
         TecTech.definitionsRegistry.getDirectTypes().forEach((aClass, emDirectType) ->
                 sender.addChatMessage(new ChatComponentText(emDirectType.getLocalizedName())));
         sender.addChatMessage(new ChatComponentText("    Available Indirect: tag - name"));
@@ -69,8 +70,8 @@ public class EMList implements ICommand {
 
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] args) {
-        if(args.length==0){
-            return TecTech.definitionsRegistry.getDirectTypes().values().stream().map(EMType::getLocalizedName).collect(Collectors.toList());
+        if(args.length==1){
+            return TecTech.definitionsRegistry.getDirectTypes().values().stream().map(EMType::getLocalizedName).map(s->s.replaceAll(" ","_")).collect(Collectors.toList());
         }
         return null;
     }
