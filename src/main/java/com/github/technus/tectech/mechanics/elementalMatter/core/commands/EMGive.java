@@ -117,7 +117,7 @@ public class EMGive implements ICommand {
 
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] args) {
-        if (args.length > 1 && args.length % 2 == 0) {
+        if (args.length > 2 && args.length % 2 == 1) {
             return new ArrayList<>(TecTech.definitionsRegistry.getBinds().keySet());
         }
         return null;
