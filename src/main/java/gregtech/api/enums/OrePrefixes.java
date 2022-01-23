@@ -691,7 +691,7 @@ public enum OrePrefixes {
             {
                 //aMaterial.mTypes = 1|2|4|8|16|32|64|128;
                 //aMaterial.mTypes = 0;
-                aMaterial.mTypes = 2|4|64;
+                //aMaterial.mTypes = 2|4|64;
 
                 // yeah, all of these ifs are "if it should not be used, disable it", I don't like the double negation
                 // but I've already spent the last 12h on this and I can't be bothered anymore (not) LMAO
