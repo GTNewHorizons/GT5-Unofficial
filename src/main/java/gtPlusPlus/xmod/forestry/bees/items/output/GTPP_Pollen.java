@@ -28,18 +28,18 @@ public class GTPP_Pollen extends Item {
 	}
 
 	public ItemStack getStackForType(GTPP_PollenType type) {
-		return new ItemStack(this, 1, type.ordinal());
+		return new ItemStack(this, 1, type.mID);
 	}
 
 	public ItemStack getStackForType(GTPP_PollenType type, int count) {
-		return new ItemStack(this, count, type.ordinal());
+		return new ItemStack(this, count, type.mID);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(Item item, CreativeTabs tabs, List list) {
 		for (GTPP_PollenType type : GTPP_PollenType.values()) {
-			if (type.showInList) {
+			if (type.mShowInList) {
 				list.add(this.getStackForType(type));
 			}
 		}
@@ -71,11 +71,10 @@ public class GTPP_Pollen extends Item {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public int getColorFromItemStack(ItemStack stack, int pass) {
-		int meta = Math.max(0, Math.min(GTPP_PollenType.values().length - 1, stack.getItemDamage()));
-		int colour = GTPP_PollenType.values()[meta].getColours()[0];
+		int colour = GTPP_PollenType.get(stack.getItemDamage()).getColours()[0];
 
 		if (pass >= 1) {
-			colour = GTPP_PollenType.values()[meta].getColours()[1];
+			colour = GTPP_PollenType.get(stack.getItemDamage()).getColours()[1];
 		}
 
 		return colour;
@@ -83,7 +82,7 @@ public class GTPP_Pollen extends Item {
 
 	@Override
 	public String getItemStackDisplayName(ItemStack stack) {
-		return GTPP_PollenType.values()[stack.getItemDamage()].getName();
+		return GTPP_PollenType.get(stack.getItemDamage()).getName();
 	}
 
 

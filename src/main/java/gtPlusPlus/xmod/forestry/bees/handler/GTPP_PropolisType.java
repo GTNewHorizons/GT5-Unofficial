@@ -2,51 +2,48 @@ package gtPlusPlus.xmod.forestry.bees.handler;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_LanguageManager;
+import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.xmod.forestry.bees.registry.GTPP_Bees;
 
 public enum GTPP_PropolisType {
 
-	End("End",true),
-    Ectoplasma("Ectoplasma",true),
-    Arcaneshard("Arcaneshard",true),
-    Stardust("Stardust",true),
-    Dragonessence("Dragonessence",true),
-    Enderman("Enderman",true),
-	Silverfish("Silverfish", true),
-    Endium("Endium", true),
-    Fireessence("Fireessence",true);
+    DRAGONBLOOD(0, "Dragon Blood", true, Utils.rgbtoHexValue(220, 20, 20));
 
-    private static int[] colours = new int[]{
-        0xCC00FA,
-        0xDCB0E5,
-        0x9010AD,
-        0xFFFF00,
-        0x911ECE,
-        0x161616,
-        0xEE053D,
-        0xa0ffff,
-        0xD41238
-    };
+	public boolean mShowInList;
+	public Materials mMaterial;
+	public int mChance;
+	public int mID;
 
-    public boolean showInList;
-    public Materials material;
-    public int chance;
-    private String name;
-    
-    private GTPP_PropolisType(String pName, boolean show) {
-        this.name = pName;
-        this.showInList = show;
+	private String mName;
+	private String mNameUnlocal;
+	private int mColour;
+
+	private static void map(int aId, GTPP_PropolisType aType) {
+		GTPP_Bees.sPropolisMappings.put(aId, aType);
+	}
+	
+	public static GTPP_PropolisType get(int aID) {
+		return GTPP_Bees.sPropolisMappings.get(aID);
+	}
+
+    private GTPP_PropolisType(int aID, String aName, boolean aShow, int aColour) {
+    	this.mID = aID;
+        this.mName = aName;
+		this.mNameUnlocal = aName.toLowerCase().replaceAll(" ", "");
+        this.mShowInList = aShow;
+        this.mColour = aColour;
+		map(aID, this);
     }
 
     public void setHidden() {
-        this.showInList = false;
+        this.mShowInList = false;
     }
 
     public String getName() {
-//		return "gt.comb."+this.name;
-        return GT_LanguageManager.addStringLocalization("propolis." + this.name, this.name.substring(0, 1).toUpperCase() + this.name.substring(1) + " Propolis");
+        return GT_LanguageManager.addStringLocalization("propolis." + this.mNameUnlocal, this.mName + " Propolis");
     }
 
     public int getColours() {
-        return colours[this.ordinal()];
+        return mColour;
     }
 }

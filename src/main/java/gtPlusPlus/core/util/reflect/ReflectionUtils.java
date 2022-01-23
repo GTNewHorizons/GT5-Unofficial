@@ -1086,5 +1086,17 @@ public class ReflectionUtils {
 		return null;
 	}
 
+	public static Enum getEnum(Class<Enum> sgtbees, String name) {		
+		if (sgtbees.isEnum()) {
+			Object[] aValues = sgtbees.getEnumConstants();
+			for (Object o : aValues) {
+				if (o.toString().toLowerCase().equals(name.toLowerCase())) {
+					return (Enum) o;
+				}
+			}
+		}		
+		return null;
+	}
+
 
 }

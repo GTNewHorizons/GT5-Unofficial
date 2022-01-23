@@ -1,53 +1,40 @@
 package gtPlusPlus.xmod.forestry.bees.registry;
 
+import static forestry.api.apiculture.EnumBeeChromosome.*;
+
+import java.util.Arrays;
+import java.util.function.Consumer;
+
 import forestry.api.apiculture.BeeManager;
 import forestry.api.apiculture.EnumBeeChromosome;
 import forestry.api.genetics.IAllele;
 import forestry.api.genetics.IClassification;
 import forestry.apiculture.genetics.alleles.AlleleEffect;
 import forestry.core.genetics.alleles.AlleleHelper;
-
-import java.util.Arrays;
-import java.util.function.Consumer;
-
-import static forestry.api.apiculture.EnumBeeChromosome.*;
-import static forestry.core.genetics.alleles.EnumAllele.*;
-import static gtPlusPlus.xmod.forestry.bees.registry.GTPP_BeeDefinition.getEffect;
-import static gtPlusPlus.xmod.forestry.bees.registry.GTPP_BeeDefinition.getFlowers;
-import static gtPlusPlus.xmod.forestry.bees.registry.GTPP_Bees.EXTRABEES;
+import forestry.core.genetics.alleles.EnumAllele.*;
 
 public enum GTPP_BranchDefinition {
 
-    HEE("Finis Expansiones", alleles -> {
+    LEGENDARY("gtpp.legendary", "Summa Potestas", alleles -> {
         AlleleHelper.instance.set(alleles, TEMPERATURE_TOLERANCE, Tolerance.BOTH_2);
         AlleleHelper.instance.set(alleles, HUMIDITY_TOLERANCE, Tolerance.BOTH_2);
+        AlleleHelper.instance.set(alleles, TOLERANT_FLYER, true);
         AlleleHelper.instance.set(alleles, NOCTURNAL, true);
-        AlleleHelper.instance.set(alleles, FLOWER_PROVIDER, getFlowers(EXTRABEES, "book"));
+        AlleleHelper.instance.set(alleles, FLOWER_PROVIDER, Flowers.END);
         AlleleHelper.instance.set(alleles, LIFESPAN, Lifespan.SHORT);
         AlleleHelper.instance.set(alleles, FLOWERING, Flowering.SLOW);
         AlleleHelper.instance.set(alleles, SPEED, Speed.FASTEST);
         AlleleHelper.instance.set(alleles, TERRITORY, Territory.LARGER);
     }
-    ),
-    SPACE("Cosmicis", alleles -> {
-        AlleleHelper.instance.set(alleles, TEMPERATURE_TOLERANCE, Tolerance.DOWN_2);
-        AlleleHelper.instance.set(alleles, TOLERANT_FLYER, true);
-        AlleleHelper.instance.set(alleles, NOCTURNAL, true);
-        AlleleHelper.instance.set(alleles, FLOWER_PROVIDER, getFlowers(EXTRABEES, "rock"));
-        AlleleHelper.instance.set(alleles, FLOWERING, Flowering.FASTEST);
-        AlleleHelper.instance.set(alleles, LIFESPAN, Lifespan.LONGEST);
-        AlleleHelper.instance.set(alleles, SPEED, Speed.FAST);
-        AlleleHelper.instance.set(alleles, TERRITORY, Territory.LARGEST);
-    }
-    ),
+    )
     ;
 
     private static IAllele[] defaultTemplate;
     private final IClassification branch;
     private final Consumer<IAllele[]> mBranchProperties;
 
-    GTPP_BranchDefinition(String scientific, Consumer<IAllele[]> aBranchProperties) {
-        this.branch = BeeManager.beeFactory.createBranch(this.name().toLowerCase(), scientific);
+    GTPP_BranchDefinition(String internal, String scientific, Consumer<IAllele[]> aBranchProperties) {
+        this.branch = BeeManager.beeFactory.createBranch(internal.toLowerCase(), scientific);
         this.mBranchProperties = aBranchProperties;
     }
 

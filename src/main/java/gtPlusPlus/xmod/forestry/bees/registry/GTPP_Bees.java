@@ -2,8 +2,13 @@ package gtPlusPlus.xmod.forestry.bees.registry;
 
 import static gregtech.api.enums.GT_Values.MOD_ID_FR;
 
+import java.util.HashMap;
+
 import cpw.mods.fml.common.Loader;
 import gregtech.GT_Mod;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
+import gtPlusPlus.xmod.forestry.bees.handler.*;
 import gtPlusPlus.xmod.forestry.bees.items.output.*;
 
 public class GTPP_Bees {
@@ -18,9 +23,18 @@ public class GTPP_Bees {
     public static GTPP_Pollen pollen;
     public static GTPP_Drop drop;
     public static GTPP_Comb combs;
+    
+	public static HashMap<Integer, GTPP_PropolisType> sPropolisMappings = new HashMap<Integer, GTPP_PropolisType>();
+	public static HashMap<Integer, GTPP_PollenType> sPollenMappings = new HashMap<Integer, GTPP_PollenType>();
+	public static HashMap<Integer, GTPP_DropType> sDropMappings = new HashMap<Integer, GTPP_DropType>();
+	public static HashMap<Integer, GTPP_CombType> sCombMappings = new HashMap<Integer, GTPP_CombType>();
 
     public GTPP_Bees() {
         if (Loader.isModLoaded(MOD_ID_FR) && GT_Mod.gregtechproxy.mGTBees) {
+        	
+        	if (!ReflectionUtils.doesClassExist("gregtech.loaders.misc.GT_BeeDefinition")) {
+        		CORE.crash("Missing gregtech.loaders.misc.GT_BeeDefinition.");
+        	}
             propolis = new GTPP_Propolis();
             pollen = new GTPP_Pollen();
             drop = new GTPP_Drop();

@@ -1,30 +1,24 @@
 package gtPlusPlus.xmod.forestry.bees.items.output;
 
-import static gregtech.api.enums.GT_Values.MOD_ID_DC;
-
 import java.util.List;
 
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import forestry.api.core.Tabs;
-import forestry.api.recipes.RecipeManagers;
 import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.Materials;
-import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.material.ELEMENT.STANDALONE;
 import gtPlusPlus.xmod.forestry.bees.handler.GTPP_DropType;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 public class GTPP_Drop extends Item {
-	
+
 	@SideOnly(Side.CLIENT)
 	private IIcon secondIcon;
 
@@ -37,18 +31,18 @@ public class GTPP_Drop extends Item {
 	}
 
 	public ItemStack getStackForType(GTPP_DropType type) {
-		return new ItemStack(this, 1, type.ordinal());
+		return new ItemStack(this, 1, type.mID);
 	}
 
 	public ItemStack getStackForType(GTPP_DropType type, int count) {
-		return new ItemStack(this, count, type.ordinal());
+		return new ItemStack(this, count, type.mID);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(Item item, CreativeTabs tabs, List list) {
 		for (GTPP_DropType type : GTPP_DropType.values()) {
-			if (type.showInList) {
+			if (type.mShowInList) {
 				list.add(this.getStackForType(type));
 			}
 		}
@@ -66,7 +60,7 @@ public class GTPP_Drop extends Item {
 	}
 
 	@Override
-    @SideOnly(Side.CLIENT)
+	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister par1IconRegister) {
 		this.itemIcon = par1IconRegister.registerIcon("forestry:honeyDrop.0");
 		this.secondIcon = par1IconRegister.registerIcon("forestry:honeyDrop.1");
@@ -80,11 +74,10 @@ public class GTPP_Drop extends Item {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public int getColorFromItemStack(ItemStack stack, int pass) {
-		int meta = Math.max(0, Math.min(GTPP_DropType.values().length - 1, stack.getItemDamage()));
-		int colour = GTPP_DropType.values()[meta].getColours()[0];
+		int colour = GTPP_DropType.get(stack.getItemDamage()).getColours()[0];
 
 		if (pass >= 1) {
-			colour = GTPP_DropType.values()[meta].getColours()[1];
+			colour = GTPP_DropType.get(stack.getItemDamage()).getColours()[1];
 		}
 
 		return colour;
@@ -92,33 +85,13 @@ public class GTPP_Drop extends Item {
 
 	@Override
 	public String getItemStackDisplayName(ItemStack stack) {
-		return GTPP_DropType.values()[stack.getItemDamage()].getName();
+		return GTPP_DropType.get(stack.getItemDamage()).getName();
 	}
 	public void initDropsRecipes() {
 		ItemStack tDrop;
 
-		tDrop = getStackForType(GTPP_DropType.OIL);
-		addProcessLV(tDrop, Materials.OilHeavy.getFluid(100L), GT_ModHandler.getModItem("Forestry", "propolis", 1L, 0), 3000, 8);
-		RecipeManagers.squeezerManager.addRecipe(40, new ItemStack[]{tDrop}, Materials.OilHeavy.getFluid(100L), GT_ModHandler.getModItem("Forestry", "propolis", 1L, 0), 30);
-		tDrop = getStackForType(GTPP_DropType.COOLANT);
-		addProcessLV(tDrop, new FluidStack(FluidRegistry.getFluid("ic2coolant"), 100), GT_ModHandler.getModItem("MagicBees", "propolis", 1L, 0), 3000, 8);
-		RecipeManagers.squeezerManager.addRecipe(40, new ItemStack[]{tDrop}, new FluidStack(FluidRegistry.getFluid("ic2coolant"), 100), GT_ModHandler.getModItem("MagicBees", "propolis", 1L, 0), 30);
-		tDrop = getStackForType(GTPP_DropType.HOT_COOLANT);
-		addProcessLV(tDrop, new FluidStack(FluidRegistry.getFluid("ic2hotcoolant"), 100), GT_ModHandler.getModItem("MagicBees", "propolis", 1L, 2), 3000, 8);
-		RecipeManagers.squeezerManager.addRecipe(40, new ItemStack[]{tDrop}, new FluidStack(FluidRegistry.getFluid("ic2hotcoolant"), 100), GT_ModHandler.getModItem("MagicBees", "propolis", 1L, 2), 30);
-		tDrop = getStackForType(GTPP_DropType.SNOW_QUEEN);
-		addProcessMV(tDrop, Materials.FierySteel.getFluid(200L), GT_ModHandler.getModItem(MOD_ID_DC, "SnowQueenBloodDrop", 1L, 0), 1500, 48);
-		tDrop = getStackForType(GTPP_DropType.LAPIS);
-		addProcessLV(tDrop,new FluidStack(FluidRegistry.getFluid("ic2coolant"), 200), GT_ModHandler.getModItem("MagicBees", "propolis", 1L, 3), 5000, 1200,2);
-		RecipeManagers.squeezerManager.addRecipe(400, new ItemStack[]{tDrop}, new FluidStack(FluidRegistry.getFluid("ic2coolant"), 100), GT_ModHandler.getModItem("MagicBees", "propolis", 1L, 3), 30);
-		tDrop = getStackForType(GTPP_DropType.HYDRA);
-		addProcessMV(tDrop, Materials.FierySteel.getFluid(50L), GT_ModHandler.getModItem("MagicBees", "propolis", 1L, 2), 3000, 8);
-		tDrop = getStackForType(GTPP_DropType.OXYGEN);
-		addProcessLV(tDrop, new FluidStack(FluidRegistry.getFluid("liquidoxygen"), 100), GT_ModHandler.getModItem("ExtraBees", "propolis", 1L, 2), 250, 1200,8);
-		RecipeManagers.squeezerManager.addRecipe(400, new ItemStack[]{tDrop}, new FluidStack(FluidRegistry.getFluid("ic2coolant"), 100), GT_ModHandler.getModItem("ExtraBees", "propolis", 1L, 2), 30);
-		tDrop = getStackForType(GTPP_DropType.ENDERGOO);
-		if ( Loader.isModLoaded("HardcoreEnderExpansion"))
-		addProcessHV(tDrop, new FluidStack(FluidRegistry.getFluid("endergoo"), 500), GT_Values.NI ,1000);
+		tDrop = getStackForType(GTPP_DropType.DRAGONBLOOD);
+		addProcessHV(tDrop, new FluidStack(STANDALONE.DRAGON_METAL.getFluid(), 4), GT_Values.NI, 1000);
 	}
 
 	public void addProcessLV(ItemStack tDrop, FluidStack aOutput, ItemStack aOutput2, int aChance, int aEUt) {

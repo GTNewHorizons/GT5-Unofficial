@@ -22,13 +22,13 @@ public class HANDLER_FR {
 
 	public static void Init(){
 		if (LoadedMods.Forestry){
-	            new GTPP_Bees();
 		}
 	}
 
 	public static void postInit(){
 		if (LoadedMods.Forestry){
 			FR_Gregtech_Recipes.registerItems();
+            new GTPP_Bees();
 		}
 	}
 
