@@ -6,6 +6,7 @@
 dependencies {
     compile("com.github.GTNewHorizons:StructureLib:1.0.14:dev")
     compile("com.github.GTNewHorizons:NotEnoughItems:2.2.1-GTNH:dev")
+    compile("com.github.GTNewHorizons:CodeChickenCore:1.1.3:dev")
     compile("com.github.GTNewHorizons:CodeChickenLib:1.1.5.1:dev")
     
     compile("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
