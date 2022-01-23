@@ -112,7 +112,7 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
     }
 
     /**
-     * Called upon cover being removed. Only called on server side ever.
+     * Called upon cover being removed. Called on both server and client.
      */
     public final void onDropped(byte aSide, int aCoverID, ISerializableObject aCoverVariable, ICoverable aTileEntity) {
         onDroppedImpl(aSide, aCoverID, forceCast(aCoverVariable), aTileEntity);

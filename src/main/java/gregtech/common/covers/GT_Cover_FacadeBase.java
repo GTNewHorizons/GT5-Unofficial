@@ -3,10 +3,8 @@ package gregtech.common.covers;
 import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.net.GT_Packet_ClearRenderingWorld;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.GT_RenderingWorld;
@@ -144,7 +142,14 @@ public abstract class GT_Cover_FacadeBase extends GT_CoverBehaviorBase<GT_Cover_
 
     @Override
     protected void onDroppedImpl(byte aSide, int aCoverID, FacadeData aCoverVariable, ICoverable aTileEntity) {
-        GT_Values.NW.sendPacketToAllPlayersInRange(aTileEntity.getWorld(), new GT_Packet_ClearRenderingWorld(getTargetBlock(aCoverVariable.mStack), (byte) getTargetMeta(aCoverVariable.mStack), aTileEntity), aTileEntity.getXCoord(), aTileEntity.getZCoord());
+        if (aTileEntity.isClientSide()) {
+            for (byte i = 0; i < 6; i++) {
+                if (i == aSide) continue;
+                // since we do not allow multiple type of facade per block, this check would be enough.
+                if (aTileEntity.getCoverBehaviorAtSideNew(i) instanceof GT_Cover_FacadeBase) return;
+            }
+            GT_RenderingWorld.getInstance().unregister(aTileEntity.getXCoord(), aTileEntity.getYCoord(), aTileEntity.getZCoord(), getTargetBlock(aCoverVariable.mStack), getTargetMeta(aCoverVariable.mStack));
+        }
     }
 
     @Override

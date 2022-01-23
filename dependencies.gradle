@@ -29,10 +29,10 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:TinkersConstruct:1.9.0.10-GTNH:dev") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-70-GTNH:dev") {
+    compile("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-70-GTNH:dev") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:Chisel:2.10.6-GTNH:dev") {
+    compile("com.github.GTNewHorizons:Chisel:2.10.6-GTNH:dev") {
         transitive = false
     }
     compileOnly("com.github.GTNewHorizons:EnderIO:2.3.1.27:dev") {

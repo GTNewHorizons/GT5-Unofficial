@@ -53,8 +53,7 @@ public class GT_Network extends MessageToMessageCodec<FMLProxyPacket, GT_Packet>
              new GT_Packet_SetLockedFluid(),
              new GT_Packet_GtTileEntityGuiRequest(),
              new GT_Packet_SendCoverData(),
-             new GT_Packet_RequestCoverData(),
-             new GT_Packet_ClearRenderingWorld()
+             new GT_Packet_RequestCoverData()
             );
     }
     

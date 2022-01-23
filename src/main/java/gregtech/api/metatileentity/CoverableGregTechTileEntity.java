@@ -193,6 +193,8 @@ public abstract class CoverableGregTechTileEntity extends BaseTileEntity impleme
     @Override
     public void setCoverIDAtSide(byte aSide, int aID) {
         if (aSide >= 0 && aSide < 6 && mCoverSides[aSide] != aID) {
+            if (aID == 0 && isClientSide())
+                mCoverBehaviors[aSide].onDropped(aSide, mCoverSides[aSide], mCoverData[aSide], this);
             mCoverSides[aSide] = aID;
             mCoverBehaviors[aSide] = GregTech_API.getCoverBehaviorNew(aID);
             mCoverData[aSide] = mCoverBehaviors[aSide].createDataObject();
