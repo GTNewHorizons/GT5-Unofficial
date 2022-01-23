@@ -112,7 +112,7 @@ public abstract class GT_Cover_FacadeBase extends GT_CoverBehaviorBase<GT_Cover_
         if (GT_Utility.isStackInvalid(aCoverVariable.mStack)) return null;
         Block block = getTargetBlock(aCoverVariable.mStack);
         if (block == null) return null;
-        return TextureFactory.builder().setFromBlock(block, getTargetMeta(aCoverVariable.mStack)).setFromSide(ForgeDirection.getOrientation(aSide)).build();
+        return TextureFactory.builder().setFromBlock(block, getTargetMeta(aCoverVariable.mStack)).useWorldCoord().setFromSide(ForgeDirection.getOrientation(aSide)).build();
     }
 
     @Override

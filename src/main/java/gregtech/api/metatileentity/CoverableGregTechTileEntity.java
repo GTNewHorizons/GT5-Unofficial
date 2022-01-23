@@ -165,7 +165,7 @@ public abstract class CoverableGregTechTileEntity extends BaseTileEntity impleme
 			return Textures.BlockIcons.HIDDEN_TEXTURE[0]; // See through
 		}
         ITexture coverTexture = getCoverBehaviorAtSideNew(aSide).getSpecialCoverTexture(aSide, getCoverIDAtSide(aSide), getComplexCoverDataAtSide(aSide), this);
-       return coverTexture != null ? coverTexture : GregTech_API.sCovers.get(new GT_ItemStack(getCoverIDAtSide(aSide)));
+        return coverTexture != null ? coverTexture : GregTech_API.sCovers.get(new GT_ItemStack(getCoverIDAtSide(aSide)));
     }
 
     protected void requestCoverDataIfNeeded() {
