@@ -15,7 +15,7 @@ import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
 import gregtech.loaders.materialprocessing.ProcessingModSupport;
-import javafx.scene.paint.Material;
+import gregtech.api.enums.Materials;
 import net.minecraft.item.ItemStack;
 
 import java.util.*;
