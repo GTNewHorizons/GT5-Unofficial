@@ -5,12 +5,12 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class IMCForNEI {
     public static void IMCSender() {
-        NBTTagCompound info = new NBTTagCompound();
-        setNBTInfo(info, "goodgenerator.crossmod.nei.NeutronActivatorHandler", "gregtech:gt.blockmachines:32013");
-        FMLInterModComms.sendMessage("NotEnoughItems", "registerHandlerInfo", info);
+        setNBTAndSend("goodgenerator.crossmod.nei.NeutronActivatorHandler", "gregtech:gt.blockmachines:32013");
+        setNBTAndSend("goodgenerator.crossmod.nei.ExtremeHeatExchangerHandler", "gregtech:gt.blockmachines:32017");
     }
 
-    private static void setNBTInfo(NBTTagCompound aNBT, String aName, String aBlock) {
+    private static void setNBTAndSend(String aName, String aBlock) {
+        NBTTagCompound aNBT = new NBTTagCompound();
         aNBT.setString("handler", aName);
         aNBT.setString("modName", "Good Generator");
         aNBT.setString("modId", "GoodGenerator");
@@ -20,5 +20,6 @@ public class IMCForNEI {
         aNBT.setInteger("handlerWidth", 166);
         aNBT.setInteger("maxRecipesPerPage", 1);
         aNBT.setInteger("yShift", 6);
+        FMLInterModComms.sendMessage("NotEnoughItems", "registerHandlerInfo", aNBT);
     }
 }
