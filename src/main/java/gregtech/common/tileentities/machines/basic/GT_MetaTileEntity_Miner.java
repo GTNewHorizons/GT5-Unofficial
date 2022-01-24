@@ -292,7 +292,7 @@ public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine {
         int yCoord = aBaseMetaTileEntity.getYCoord();
         boolean isHitsTheVoid = yCoord + drillY - 1 < 0;
         boolean isHitsBedrock = GT_Utility.getBlockHardnessAt(aBaseMetaTileEntity.getWorld(), xCoord, yCoord + drillY - 1, zCoord) < 0;
-        boolean isFakePlayerAllowed = !GT_Utility.setBlockByFakePlayer(getFakePlayer(aBaseMetaTileEntity), xCoord, yCoord + drillY - 1, zCoord, MINING_PIPE_TIP_BLOCK, 0, true);
+        boolean isFakePlayerAllowed = GT_Utility.setBlockByFakePlayer(getFakePlayer(aBaseMetaTileEntity), xCoord, yCoord + drillY - 1, zCoord, MINING_PIPE_TIP_BLOCK, 0, true);
 
         if (isHitsTheVoid || isHitsBedrock || !isFakePlayerAllowed) {
             aBaseMetaTileEntity.disableWorking();
