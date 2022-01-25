@@ -1696,6 +1696,11 @@ public enum ItemList implements IItemContainer {
     Circuit_Parts_TransistorASMD,
     Circuit_Parts_CapacitorASMD,
 
+    Circuit_Parts_ResistorXSMD,
+    Circuit_Parts_DiodeXSMD,
+    Circuit_Parts_TransistorXSMD,
+    Circuit_Parts_CapacitorXSMD,
+
     Circuit_Silicon_Ingot,
     Circuit_Silicon_Ingot2,
     Circuit_Silicon_Ingot3,
