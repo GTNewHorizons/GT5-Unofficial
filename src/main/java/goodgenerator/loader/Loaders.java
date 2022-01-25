@@ -112,7 +112,7 @@ public class Loaders {
         Loaders.NA = new NeutronActivator(IDOffset + 12, "NeutronActivator", "Neutron Activator").getStackForm(1L);
         Loaders.YFT = new YottaFluidTank(IDOffset + 13, "YottaFluidTank", "YOTTank").getStackForm(1L);
         Loaders.YFH = new YOTTAHatch(IDOffset + 14, "YottaFluidTankHatch", "YOTHatch", 5).getStackForm(1L);
-        Loaders.SCTurbine = new SupercriticalFluidTurbine(IDOffset + 15, "SupercriticalFluidTurbine", "SC Fluid Turbine").getStackForm(1L);
+        Loaders.SCTurbine = new SupercriticalFluidTurbine(IDOffset + 15, "SupercriticalSteamTurbine", "SC Steam Turbine").getStackForm(1L);
         Loaders.XHE = new ExtremeHeatExchanger(IDOffset + 16, "ExtremeHeatExchanger", "Extreme Heat Exchanger").getStackForm(1L);
         Loaders.Generator_Diesel[0] = new DieselGenerator(1113, "basicgenerator.diesel.tier.04", "Turbo Supercharging Combustion Generator", 4).getStackForm(1L);
         Loaders.Generator_Diesel[1] = new DieselGenerator(1114, "basicgenerator.diesel.tier.05", "Ultimate Chemical Energy Releaser", 5).getStackForm(1L);
