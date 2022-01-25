@@ -5,13 +5,12 @@ import goodgenerator.items.MyMaterial;
 import goodgenerator.util.CrackRecipeAdder;
 import goodgenerator.util.ItemRefer;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
+import goodgenerator.util.MyRecipeAdder;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.*;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -887,6 +886,24 @@ public class RecipeLoader_02 {
                 220,
                 7680
         );
+
+        MyRecipeAdder.instance.addExtremeHeatExchangerRecipe(
+                FluidRegistry.getFluidStack("lava", 20000),
+                FluidRegistry.getFluidStack("ic2pahoehoelava", 20000),
+                FluidRegistry.getFluidStack("ic2distilledwater", 20000),
+                FluidRegistry.getFluidStack("steam", 3200000),
+                FluidRegistry.getFluidStack("ic2superheatedsteam", 1600000),
+                10000
+        );
+
+        MyRecipeAdder.instance.addExtremeHeatExchangerRecipe(
+                FluidRegistry.getFluidStack("ic2hotcoolant", 16000),
+                FluidRegistry.getFluidStack("ic2coolant", 16000),
+                FluidRegistry.getFluidStack("ic2distilledwater", 20000),
+                FluidRegistry.getFluidStack("ic2superheatedsteam", 3200000),
+                FluidRegistry.getFluidStack("supercriticalsteam", 32000),
+                8000
+        );
     }
 
     public static void InitLoadRecipe() {
@@ -1051,5 +1068,33 @@ public class RecipeLoader_02 {
                 200,
                 7680
         );
+    }
+
+    public static void FinishLoadRecipe() {
+        for (GT_Recipe plasmaFuel : GT_Recipe.GT_Recipe_Map.sPlasmaFuels.mRecipeList) {
+            FluidStack tPlasma = GT_Utility.getFluidForFilledItem(plasmaFuel.mInputs[0], true);
+            if (tPlasma == null) {
+                continue;
+            }
+            tPlasma.amount = 100;
+            String tPlasmaName = FluidRegistry.getFluidName(tPlasma);
+            int tUnit = plasmaFuel.mSpecialValue;
+            if (tPlasmaName.split("\\.", 2).length == 2) {
+                String tOutName = tPlasmaName.split("\\.", 2)[1];
+                FluidStack output = FluidRegistry.getFluidStack(tOutName, tPlasma.amount);
+                if (output == null)
+                    output = FluidRegistry.getFluidStack("molten." + tOutName, tPlasma.amount);
+                if (output != null) {
+                    MyRecipeAdder.instance.addExtremeHeatExchangerRecipe(
+                            tPlasma,
+                            output,
+                            FluidRegistry.getFluidStack("ic2distilledwater", tUnit * 100),
+                            FluidRegistry.getFluidStack("ic2superheatedsteam", tUnit * 100),
+                            FluidRegistry.getFluidStack("supercriticalsteam", tUnit),
+                            1
+                    );
+                }
+            }
+        }
     }
 }

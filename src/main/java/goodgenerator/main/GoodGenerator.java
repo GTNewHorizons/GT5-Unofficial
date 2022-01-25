@@ -65,6 +65,7 @@ public final class GoodGenerator {
     public void onLoadComplete(FMLLoadCompleteEvent event) {
         //NaquadahReworkRecipeLoader.SmallRecipeChange();
         NaquadahReworkRecipeLoader.Remover();
+        Loaders.completeLoad();
     }
 
     public static void crossMod() {

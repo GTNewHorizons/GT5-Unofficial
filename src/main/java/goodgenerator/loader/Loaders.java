@@ -213,6 +213,10 @@ public class Loaders {
         postInitLoadRecipes();
     }
 
+    public static void completeLoad(){
+        RecipeLoader_02.FinishLoadRecipe();
+    }
+
     public static void initLoadRecipes(){
         RecipeLoader.InitLoadRecipe();
         RecipeLoader_02.InitLoadRecipe();

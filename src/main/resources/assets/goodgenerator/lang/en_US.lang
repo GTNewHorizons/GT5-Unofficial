@@ -130,6 +130,7 @@ fluid.moderatelyCrackedNaquadahAsphalt=Moderately Cracked Naquadah Asphalt
 fluid.heavilyCrackedNaquadahAsphalt=Severely Cracked Naquadah Asphalt
 fluid.combustionPromotor=Combustion Promoter
 fluid.fluid.coalTar=Coal Tar
+fluid.supercriticalSteam=Supercritical Steam
 fluid.Naquadah Based Liquid Fuel MkI (Depleted)=Naquadah Based Liquid Fuel MkI (Depleted)
 fluid.Acid Naquadah Emulsion=Acid Naquadah Emulsion
 fluid.Antimony Pentafluoride=Antimony Pentafluoride
@@ -196,6 +197,7 @@ tile.moderatelyCrackedNaquadahAsphalt.name=Moderately Cracked Naquadah Asphalt
 tile.heavilyCrackedNaquadahAsphalt.name=Severely Cracked Naquadah Asphalt
 tile.combustionPromotor.name=Combustion Promoter
 tile.coalTar.name=Coal Tar
+tile.supercriticalSteam.name=Supercritical Steam
 
 #Tab Name
 itemGroup.Good Generator=Good Generator
@@ -207,6 +209,8 @@ scanner.info.NA=Current Neutron Kinetic Energy:
 scanner.info.YOTTank.0=Current Capacity:
 scanner.info.YOTTank.1=Fluid Name:
 scanner.info.YOTTank.2=Current Used:
+scanner.info.XHE.0=Steam Output is equal to
+scanner.info.XHE.1=Overheated Threshold:
 
 #GUI Info
 gui.NeutronSensor.0=Input the value of Neutron Kinetic Energy.
@@ -231,9 +235,9 @@ value.neutron_activator.0=Minimum Neutron Kinetic Energy:
 value.neutron_activator.1=Maximum Neutron Kinetic Energy:
 value.neutron_activator.2= MeV
 value.extreme_heat_exchanger.0=Max Hot Fluid Input:
-value.extreme_heat_exchanger.1=Max Working Fluid Input:
-value.extreme_heat_exchanger.2=Max Heated Working Fluid Output:
-value.extreme_heat_exchanger.3=Max Overheated Working Fluid Output:
+value.extreme_heat_exchanger.1=Max Distilled Water Input:
+value.extreme_heat_exchanger.2=Max Heated Fluid Output:
+value.extreme_heat_exchanger.3=Max Overheated Fluid Output:
 value.extreme_heat_exchanger.4=Threshold:
 
 #TecTech Structure Info
@@ -285,8 +289,8 @@ YOTTank.hint.4=1 - Input Hatch/YOTTank Casing
 YOTTank.hint.5=2 - Maintenance Hatch/YOTTank Casing
 YOTTank.hint.6=3 - Output Hatch/YOTHatch
 ExtremeHeatExchanger.hint.0=At least 25x Robust Tungstensteel Machine Casings
-ExtremeHeatExchanger.hint.1=1 - Input hatch for distilled water or other working fluid
-ExtremeHeatExchanger.hint.2=2 - Output hatch for SC Steam/SH Steam/Steam or other heated working fluid
+ExtremeHeatExchanger.hint.1=1 - Input hatch for distilled water
+ExtremeHeatExchanger.hint.2=2 - Output hatch for SC Steam/SH Steam/Steam
 ExtremeHeatExchanger.hint.3=3 - Input hatch for hot fluid
 ExtremeHeatExchanger.hint.4=4 - Output hatch for cold fluid
 ExtremeHeatExchanger.hint.5=Any Casing - Maintenance Hatch

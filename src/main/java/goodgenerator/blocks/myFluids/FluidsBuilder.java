@@ -24,6 +24,7 @@ public class FluidsBuilder {
         crackedNaquadahAsphalt_Heavily();
         combustionPromotor();
         coalTar();
+        supercriticalSteam();
     }
 
     public static void crackedNaquadahGas_Lightly(){
@@ -184,6 +185,18 @@ public class FluidsBuilder {
         tmp2.SetTexture("coalTar");
         tmp2.setBlockTextureName("coalTar");
         GameRegistry.registerBlock(tmp2,"coalTar");
+        NEI_Config.hide(tmp2);
+    }
+
+    public static void supercriticalSteam(){
+        Fluid tmp = BaseFluid.BuildFluid("supercriticalSteam");
+        tmp.setGaseous(true)
+                .setTemperature(648)
+                .setUnlocalizedName("supercriticalSteam");
+        BaseFluid tmp2 = new BaseFluid(tmp, Material.water);
+        tmp2.SetTexture("supercriticalSteam");
+        tmp2.setBlockTextureName("supercriticalSteam");
+        GameRegistry.registerBlock(tmp2,"supercriticalSteam");
         NEI_Config.hide(tmp2);
     }
 }

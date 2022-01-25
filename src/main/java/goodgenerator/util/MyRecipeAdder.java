@@ -5,10 +5,12 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 
 public class MyRecipeAdder {
@@ -113,6 +115,8 @@ public class MyRecipeAdder {
         NA.addNARecipe(input1, input2, output1, output2, ticks, maxNKE * 10000 + minNKE);
     }
 
+    public static HashMap<Fluid, ExtremeHeatExchangerRecipe> mXHeatExchangerFuelMap = new HashMap<>();
+
     public static class ExtremeHeatExchangerMapper extends GT_Recipe.GT_Recipe_Map {
         public ExtremeHeatExchangerMapper(Collection<GT_Recipe> aRecipeList, String aUnlocalizedName, String aLocalName, String aNEIName, String aNEIGUIPath, int aUsualInputCount, int aUsualOutputCount, int aMinimalInputItems, int aMinimalInputFluids, int aAmperage, String aNEISpecialValuePre, int aNEISpecialValueMultiplier, String aNEISpecialValuePost, boolean aShowVoltageAmperageInNEI, boolean aNEIAllowed){
             super(aRecipeList, aUnlocalizedName, aLocalName, aNEIName, aNEIGUIPath, aUsualInputCount, aUsualOutputCount, aMinimalInputItems, aMinimalInputFluids, aAmperage, aNEISpecialValuePre, aNEISpecialValueMultiplier, aNEISpecialValuePost, aShowVoltageAmperageInNEI, aNEIAllowed);
@@ -120,7 +124,9 @@ public class MyRecipeAdder {
 
         @Override
         public GT_Recipe addRecipe(boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecial, int[] aOutputChances, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
-            return addRecipe(new ExtremeHeatExchangerRecipe(aFluidInputs, aFluidOutputs, aSpecialValue));
+            ExtremeHeatExchangerRecipe tRecipe = new ExtremeHeatExchangerRecipe(aFluidInputs, aFluidOutputs, aSpecialValue);
+            mXHeatExchangerFuelMap.put(aFluidInputs[0].getFluid(), tRecipe);
+            return addRecipe(tRecipe);
         }
     }
 
@@ -137,12 +143,70 @@ public class MyRecipeAdder {
                 inputStacks.add(new PositionedStack(GT_Utility.getFluidDisplayStack(this.mFluidInputs[0], true), 22, 3));
                 inputStacks.add(new PositionedStack(GT_Utility.getFluidDisplayStack(this.mFluidInputs[1], true), 22, 27));
             }
-            if (this.mFluidOutputs != null && this.mFluidOutputs.length == 3) {
-                inputStacks.add(new PositionedStack(GT_Utility.getFluidDisplayStack(this.mFluidOutputs[0], true), 124, 3));
-                inputStacks.add(new PositionedStack(GT_Utility.getFluidDisplayStack(this.mFluidOutputs[1], true), 124, 21));
-                inputStacks.add(new PositionedStack(GT_Utility.getFluidDisplayStack(this.mFluidOutputs[2], true), 124, 44));
-            }
             return inputStacks;
+        }
+
+        @Override
+        public ArrayList<PositionedStack> getOutputPositionedStacks() {
+            ArrayList<PositionedStack> outputStacks = new ArrayList<>();
+            if (this.mFluidOutputs != null && this.mFluidOutputs.length == 3) {
+                outputStacks.add(new PositionedStack(GT_Utility.getFluidDisplayStack(this.mFluidOutputs[0], true), 124, 3));
+                outputStacks.add(new PositionedStack(GT_Utility.getFluidDisplayStack(this.mFluidOutputs[1], true), 124, 21));
+                outputStacks.add(new PositionedStack(GT_Utility.getFluidDisplayStack(this.mFluidOutputs[2], true), 124, 44));
+            }
+            return outputStacks;
+        }
+
+        public int getMaxHotFluidConsume() {
+            if (this.mFluidInputs != null) {
+                return this.mFluidInputs[0].amount;
+            }
+            return 0;
+        }
+
+        public Fluid getNormalSteam() {
+            if (this.mFluidOutputs != null) {
+                return this.mFluidOutputs[0].getFluid();
+            }
+            return null;
+        }
+
+        public Fluid getHeatedSteam() {
+            if (this.mFluidOutputs != null) {
+                return this.mFluidOutputs[1].getFluid();
+            }
+            return null;
+        }
+
+        public Fluid getCooledFluid() {
+            if (this.mFluidOutputs != null) {
+                return this.mFluidOutputs[2].getFluid();
+            }
+            return null;
+        }
+
+        public int getEUt() {
+            if (getNormalSteam() != null) {
+                switch (getNormalSteam().getName()) {
+                    case "steam": {
+                        int tVal = this.mFluidInputs[1].amount * 4;
+                        if (tVal < 0) tVal = -tVal;
+                        return tVal;
+                    }
+                    case "ic2superheatedsteam": {
+                        int tVal = this.mFluidInputs[1].amount * 8;
+                        if (tVal < 0) tVal = -tVal;
+                        return tVal;
+                    }
+                    case "supercriticalsteam": {
+                        int tVal = this.mFluidInputs[1].amount * 800;
+                        if (tVal < 0) tVal = -tVal;
+                        return tVal;
+                    }
+                    default: return 0;
+                }
+            }
+            return 0;
         }
     }
 
