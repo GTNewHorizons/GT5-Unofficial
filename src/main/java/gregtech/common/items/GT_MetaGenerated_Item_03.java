@@ -229,10 +229,10 @@ public class GT_MetaGenerated_Item_03
         ItemList.Circuit_CosmicComputer.set(addItem(tLastID = 172, "Cosmic Computer", "A Cosmic Circuit", OrePrefixes.circuit.get(Materials.Cosmic), SubTag.NO_UNIFICATION));
         ItemList.Circuit_CosmicMainframe.set(addItem(tLastID = 173, "Cosmic Mainframe", "A Cosmic Circuit", OrePrefixes.circuit.get(Materials.Cosmic), SubTag.NO_UNIFICATION));
 
-        ItemList.Circuit_TranscendentProcessor.set(addItem(tLastID = 174, "Temporally Transcendent Processor", "A circuit operating outside of known spacetime", OrePrefixes.circuit.get(Materials.Bio), SubTag.NO_UNIFICATION));
-        ItemList.Circuit_TranscendentAssembly.set(addItem(tLastID = 175, "Temporally Transcendent Assembly", "A circuit operating outside of known spacetime", OrePrefixes.circuit.get(Materials.Bio), SubTag.NO_UNIFICATION));
-        ItemList.Circuit_TranscendentComputer.set(addItem(tLastID = 176, "Temporally Transcendent Computer", "A circuit operating outside of known spacetime", OrePrefixes.circuit.get(Materials.Bio), SubTag.NO_UNIFICATION));
-        ItemList.Circuit_TranscendentMainframe.set(addItem(tLastID = 177, "Temporally Transcendent Mainframe", "A circuit operating outside of known spacetime", OrePrefixes.circuit.get(Materials.Bio), SubTag.NO_UNIFICATION));
+        ItemList.Circuit_TranscendentProcessor.set(addItem(tLastID = 174, "Temporally Transcendent Processor", "A circuit operating outside of known spacetime", OrePrefixes.circuit.get(Materials.Transcendental), SubTag.NO_UNIFICATION));
+        ItemList.Circuit_TranscendentAssembly.set(addItem(tLastID = 175, "Temporally Transcendent Assembly", "A circuit operating outside of known spacetime", OrePrefixes.circuit.get(Materials.Transcendental), SubTag.NO_UNIFICATION));
+        ItemList.Circuit_TranscendentComputer.set(addItem(tLastID = 176, "Temporally Transcendent Computer", "A circuit operating outside of known spacetime", OrePrefixes.circuit.get(Materials.Transcendental), SubTag.NO_UNIFICATION));
+        ItemList.Circuit_TranscendentMainframe.set(addItem(tLastID = 177, "Temporally Transcendent Mainframe", "A circuit operating outside of known spacetime", OrePrefixes.circuit.get(Materials.Transcendental), SubTag.NO_UNIFICATION));
 
 
         ItemList.Tube_Wires.set(addItem(tLastID = 110, "Tube Wires", "For the Vacuum Tubes", o));
