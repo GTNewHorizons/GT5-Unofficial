@@ -30,7 +30,7 @@ public class DieselGenerator extends GT_MetaTileEntity_BasicGenerator {
 
     public DieselGenerator(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
-        mEfficiency = 100 - aTier * 5;
+        mEfficiency = 100 - aTier * 10;
     }
 
     @Override
