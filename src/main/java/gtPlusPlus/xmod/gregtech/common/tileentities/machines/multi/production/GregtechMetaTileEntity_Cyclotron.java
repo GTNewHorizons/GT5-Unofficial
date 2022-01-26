@@ -203,6 +203,8 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
 			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus && ((GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity).mTier >= 5){
 				return addToMachineList(aTileEntity, aBaseCasingIndex);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output && ((GT_MetaTileEntity_Hatch_Output) aMetaTileEntity).mTier >= 5) {
+				return addToMachineList(aTileEntity, aBaseCasingIndex);
 			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance){
 				return addToMachineList(aTileEntity, aBaseCasingIndex);
 			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy && ((GT_MetaTileEntity_Hatch_Energy) aMetaTileEntity).mTier >= 5){
