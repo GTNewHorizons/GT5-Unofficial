@@ -12,7 +12,7 @@ import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 
-public class TurbineCasing extends Casing {
+public class TurbineCasing extends Casing implements ITextureBlock{
 
     public static IIconContainer[][] turbineShape = new IIconContainer[3][9];
     public IIconContainer base;
@@ -47,12 +47,14 @@ public class TurbineCasing extends Casing {
         };
     }
 
+    @Override
     public ITexture[] getTexture(Block aBlock, byte aSide) {
         return new ITexture[] {
                 TextureFactory.of(base)
         };
     }
 
+    @Override
     public ITexture[] getTexture(Block aBlock, byte aSide, IBlockAccess aWorld, int xCoord, int yCoord, int zCoord) {
         int tInvertLeftRightMod = aSide % 2 * 2 - 1;
         switch (aSide / 2) {

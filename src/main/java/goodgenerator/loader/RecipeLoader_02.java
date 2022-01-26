@@ -11,6 +11,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.*;
+import ic2.core.Ic2Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -40,6 +41,8 @@ public class RecipeLoader_02 {
         CrackRecipeAdder.reAddBlastRecipe(MyMaterial.zircaloy4, 513, 480, 2800, false);
         CrackRecipeAdder.reAddBlastRecipe(MyMaterial.incoloy903, 2400, 1920, 3700, true);
         CrackRecipeAdder.reAddBlastRecipe(MyMaterial.adamantiumAlloy, 2500, 1920, 5500, true);
+        CrackRecipeAdder.reAddBlastRecipe(MyMaterial.marM200, 200, 7680, 5000, true);
+        CrackRecipeAdder.reAddBlastRecipe(MyMaterial.marM200, 220, 7680, 5000, false);
 
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
@@ -903,6 +906,104 @@ public class RecipeLoader_02 {
                 FluidRegistry.getFluidStack("ic2superheatedsteam", 3200000),
                 FluidRegistry.getFluidStack("supercriticalsteam", 32000),
                 8000
+        );
+
+        GT_Values.RA.addChemicalBathRecipe(
+                GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Lepidolite, 1),
+                Materials.HydrochloricAcid.getFluid(1000),
+                Materials.RockSalt.getDust(1),
+                MyMaterial.lithiumChloride.get(OrePrefixes.dust, 3),
+                Materials.Cryolite.getDust(4),
+                new int[]{8000, 8000, 8000},
+                140,
+                120
+        );
+
+        GT_Values.RA.addBlastRecipe(
+                MyMaterial.marM200.get(OrePrefixes.ingot, 18),
+                Materials.Cerium.getIngots(1),
+                MyMaterial.lithiumChloride.getMolten(144),
+                null,
+                MyMaterial.marCeM200.get(OrePrefixes.ingotHot, 19),
+                null,
+                5700,
+                1920,
+                4500
+        );
+
+        GT_ModHandler.addCraftingRecipe(
+                ItemRefer.SC_Turbine_Casing.get(1),
+                GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
+                new Object[] {
+                        "PhP","GCG","PwP",
+                        'G', MyMaterial.marM200.get(OrePrefixes.gearGt, 1),
+                        'C', ItemList.Casing_Turbine.get(1),
+                        'P', MyMaterial.marCeM200.get(OrePrefixes.plate, 1),
+                }
+        );
+
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] {
+                        MyMaterial.marM200.get(OrePrefixes.gearGt, 2),
+                        MyMaterial.marCeM200.get(OrePrefixes.plate, 4),
+                        ItemList.Casing_Turbine.get(1)
+                },
+                null,
+                ItemRefer.SC_Turbine_Casing.get(1),
+                300,
+                480
+        );
+
+        GT_ModHandler.addCraftingRecipe(
+                ItemRefer.SC_Fluid_Turbine.get(1),
+                GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
+                new Object[] {
+                        "NPN","GHG","IPI",
+                        'N', "circuitMaster",
+                        'P', MyMaterial.marM200.get(OrePrefixes.plate, 1),
+                        'H', ItemList.Hull_IV.get(1),
+                        'G', MyMaterial.marCeM200.get(OrePrefixes.gearGt, 1),
+                        'I', MyMaterial.incoloy903.get(OrePrefixes.pipeLarge, 1)
+                }
+        );
+
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] {
+                        MyMaterial.marM200.get(OrePrefixes.plate, 2),
+                        MyMaterial.marCeM200.get(OrePrefixes.gearGt, 2),
+                        MyMaterial.incoloy903.get(OrePrefixes.pipeLarge, 2),
+                        GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 2),
+                        ItemList.Hull_IV.get(1)
+                },
+                null,
+                ItemRefer.SC_Fluid_Turbine.get(1),
+                300,
+                480
+        );
+
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] {
+                        MyMaterial.incoloy903.get(OrePrefixes.plate, 4),
+                        MyMaterial.marCeM200.get(OrePrefixes.plate, 4),
+                        GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.NiobiumTitanium, 1),
+                        GT_Utility.getIntegratedCircuit(8)
+                },
+                null,
+                ItemRefer.Pressure_Resistant_Wall.get(1),
+                1000,
+                480
+        );
+
+        GT_ModHandler.addCraftingRecipe(
+                ItemRefer.Extreme_Heat_Exchanger.get(1),
+                GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
+                new Object[] {
+                        "EPE","PHP","SPS",
+                        'P', GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.TungstenSteel, 1),
+                        'H', ItemList.Hull_IV.get(1),
+                        'S', MyMaterial.marM200.get(OrePrefixes.plate, 1),
+                        'E', Ic2Items.reactorHeatSwitchDiamond
+                }
         );
     }
 

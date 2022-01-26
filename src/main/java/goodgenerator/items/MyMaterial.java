@@ -1114,6 +1114,47 @@ public class MyMaterial implements Runnable {
             TextureSet.SET_FLUID
     );
 
+    public static final Werkstoff marM200 = new Werkstoff(
+            new short[]{0x51,0x51,0x51},
+            "MAR-M200 Steel",
+            new Werkstoff.Stats().setCentrifuge(true).setBlastFurnace(true).setMeltingPoint(5000),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().onlyDust().addMolten().addMetalItems().addCraftingMetalWorkingItems().addSimpleMetalWorkingItems().addMultipleIngotMetalWorkingItems().addMixerRecipes((short) 7),
+            OffsetID + 95,
+            TextureSet.SET_SHINY,
+            new Pair<>(Niobium, 2),
+            new Pair<>(Chrome, 9),
+            new Pair<>(Aluminium, 5),
+            new Pair<>(Titanium, 2),
+            new Pair<>(Cobalt, 10),
+            new Pair<>(Tungsten, 13),
+            new Pair<>(Nickel, 18)
+    );
+
+    public static final Werkstoff marCeM200 = new Werkstoff(
+            new short[]{0x38,0x30,0x30},
+            "MAR-Ce-M200 Steel",
+            new Werkstoff.Stats().setCentrifuge(true).setBlastFurnace(true).setMeltingPoint(5000).setMass(1200).setProtons(1000).setSpeedOverride(150F).setDurOverride(204800),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().onlyDust().addMolten().addMetalItems().addCraftingMetalWorkingItems().addSimpleMetalWorkingItems().addMultipleIngotMetalWorkingItems(),
+            OffsetID + 96,
+            TextureSet.SET_METALLIC,
+            new Pair<>(marM200, 18),
+            new Pair<>(Cerium, 1)
+    );
+
+    public static final Werkstoff lithiumChloride = new Werkstoff(
+            new short[]{0xb7,0xe2,0xce},
+            "Lithium Chloride",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().onlyDust().addMolten().addMetalItems().enforceUnification(),
+            OffsetID + 97,
+            TextureSet.SET_DULL,
+            new Pair<>(Lithium, 1),
+            new Pair<>(Chlorine, 1)
+    );
+
     @Override
     public void run() { }
 }

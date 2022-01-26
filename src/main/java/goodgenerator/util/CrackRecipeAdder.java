@@ -2,8 +2,11 @@ package goodgenerator.util;
 
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Fluid;
+import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -74,5 +77,25 @@ public class CrackRecipeAdder {
     public static FluidStack copyFluidWithAmount(FluidStack fluid, int amount) {
         if (fluid == null || amount <= 0) return null;
         return new FluidStack(fluid.getFluid(), amount);
+    }
+
+    public static void registerPipe(int ID, Werkstoff material, int flow, int temp, boolean gas) {
+        String unName = material.getDefaultName().replace(" ", "_");
+        String Name = material.getDefaultName();
+        GT_OreDictUnificator.registerOre(OrePrefixes.pipeTiny.get(material.getBridgeMaterial()), new GT_MetaPipeEntity_Fluid(ID, "GT_Pipe_" + unName + "_Tiny", "Tiny " + Name + " Fluid Pipe", 0.25F, 	material.getBridgeMaterial(), flow / 6, temp, gas).getStackForm(1L));
+        GT_OreDictUnificator.registerOre(OrePrefixes.pipeSmall.get(material.getBridgeMaterial()), new GT_MetaPipeEntity_Fluid(ID + 1, "GT_Pipe_" + unName + "_Small", "Small " + Name + " Fluid Pipe", 0.375F, material.getBridgeMaterial(), flow / 3, temp, gas).getStackForm(1L));
+        GT_OreDictUnificator.registerOre(OrePrefixes.pipeMedium.get(material.getBridgeMaterial()), new GT_MetaPipeEntity_Fluid(ID + 2, "GT_Pipe_" + unName, Name + " Fluid Pipe", 0.5F, material.getBridgeMaterial(), flow, temp, gas).getStackForm(1L));
+        GT_OreDictUnificator.registerOre(OrePrefixes.pipeLarge.get(material.getBridgeMaterial()), new GT_MetaPipeEntity_Fluid(ID + 3, "GT_Pipe_" + unName + "_Large", "Large " + Name + " Fluid Pipe", 0.75F, material.getBridgeMaterial(), flow * 2, temp, gas).getStackForm(1L));
+        GT_OreDictUnificator.registerOre(OrePrefixes.pipeHuge.get(material.getBridgeMaterial()), new GT_MetaPipeEntity_Fluid(ID + 4, "GT_Pipe_" + unName + "_Huge", "Huge " + Name + " Fluid Pipe", 0.875F, material.getBridgeMaterial(), flow * 4, temp, gas).getStackForm(1L));
+        GT_Values.RA.addExtruderRecipe(material.get(OrePrefixes.ingot, 1), ItemList.Shape_Extruder_Pipe_Tiny.get(0), material.get(OrePrefixes.pipeTiny, 2), (int) material.getStats().getMass(), 120);
+        GT_Values.RA.addExtruderRecipe(material.get(OrePrefixes.ingot, 1), ItemList.Shape_Extruder_Pipe_Small.get(0), material.get(OrePrefixes.pipeSmall, 1), (int) material.getStats().getMass() * 2, 120);
+        GT_Values.RA.addExtruderRecipe(material.get(OrePrefixes.ingot, 3), ItemList.Shape_Extruder_Pipe_Medium.get(0), material.get(OrePrefixes.pipeMedium, 1), (int) material.getStats().getMass() * 6, 120);
+        GT_Values.RA.addExtruderRecipe(material.get(OrePrefixes.ingot, 6), ItemList.Shape_Extruder_Pipe_Large.get(0), material.get(OrePrefixes.pipeLarge, 1), (int) material.getStats().getMass() * 12, 120);
+        GT_Values.RA.addExtruderRecipe(material.get(OrePrefixes.ingot, 12), ItemList.Shape_Extruder_Pipe_Huge.get(0), material.get(OrePrefixes.pipeHuge, 1), (int) material.getStats().getMass() * 24, 120);
+        GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Pipe_Tiny.get(0), material.getMolten(72), material.get(OrePrefixes.pipeTiny, 1), (int) material.getStats().getMass(), 30);
+        GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Pipe_Small.get(0), material.getMolten(144), material.get(OrePrefixes.pipeSmall, 1), (int) material.getStats().getMass() * 2, 30);
+        GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Pipe_Medium.get(0), material.getMolten(432), material.get(OrePrefixes.pipeMedium, 1), (int) material.getStats().getMass() * 6, 30);
+        GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Pipe_Large.get(0), material.getMolten(864), material.get(OrePrefixes.pipeLarge, 1), (int) material.getStats().getMass() * 12, 30);
+        GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Pipe_Huge.get(0), material.getMolten(1728), material.get(OrePrefixes.pipeHuge, 1), (int) material.getStats().getMass() * 24, 30);
     }
 }

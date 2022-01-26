@@ -2,7 +2,7 @@ package goodgenerator.client.render;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
-import goodgenerator.blocks.regularBlock.TurbineCasing;
+import goodgenerator.blocks.regularBlock.ITextureBlock;
 import gregtech.GT_Mod;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -36,8 +36,8 @@ public class BlockRenderHandler implements ISimpleBlockRenderingHandler {
         GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 
-        if (aBlock instanceof TurbineCasing) {
-            TurbineCasing tc = (TurbineCasing) aBlock;
+        if (aBlock instanceof ITextureBlock) {
+            ITextureBlock tc = (ITextureBlock) aBlock;
             aBlock.setBlockBoundsForItemRender();
             aRenderer.setRenderBoundsFromBlock(aBlock);
             Tessellator.instance.startDrawingQuads();
@@ -77,10 +77,10 @@ public class BlockRenderHandler implements ISimpleBlockRenderingHandler {
     public boolean renderWorldBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, int aModelID, RenderBlocks aRenderer) {
         aRenderer.enableAO = Minecraft.isAmbientOcclusionEnabled() && GT_Mod.gregtechproxy.mRenderTileAmbientOcclusion;
         aRenderer.useInventoryTint = false;
-        if (aBlock instanceof TurbineCasing) {
+        if (aBlock instanceof ITextureBlock) {
             aBlock.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, blockMax);
             aRenderer.setRenderBoundsFromBlock(aBlock);
-            TurbineCasing tc = (TurbineCasing) aBlock;
+            ITextureBlock tc = (ITextureBlock) aBlock;
             renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tc.getTexture(aBlock, (byte) DOWN.ordinal(), aWorld, aX, aY, aZ), true);
             renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tc.getTexture(aBlock, (byte) UP.ordinal(), aWorld, aX, aY, aZ), true);
             renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tc.getTexture(aBlock, (byte) NORTH.ordinal(), aWorld, aX, aY, aZ), true);

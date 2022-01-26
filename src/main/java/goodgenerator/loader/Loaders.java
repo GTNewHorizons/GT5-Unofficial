@@ -14,10 +14,12 @@ import goodgenerator.crossmod.nei.NEI_Config;
 import goodgenerator.crossmod.thaumcraft.LargeEssentiaEnergyData;
 import goodgenerator.items.MyItemBlocks;
 import goodgenerator.items.MyItems;
+import goodgenerator.items.MyMaterial;
 import goodgenerator.items.RadioactiveItem;
 import goodgenerator.main.GoodGenerator;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
+import goodgenerator.util.CrackRecipeAdder;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -116,6 +118,7 @@ public class Loaders {
         Loaders.XHE = new ExtremeHeatExchanger(IDOffset + 16, "ExtremeHeatExchanger", "Extreme Heat Exchanger").getStackForm(1L);
         Loaders.Generator_Diesel[0] = new DieselGenerator(1113, "basicgenerator.diesel.tier.04", "Turbo Supercharging Combustion Generator", 4).getStackForm(1L);
         Loaders.Generator_Diesel[1] = new DieselGenerator(1114, "basicgenerator.diesel.tier.05", "Ultimate Chemical Energy Releaser", 5).getStackForm(1L);
+        CrackRecipeAdder.registerPipe(30995, MyMaterial.incoloy903, 15000, 8000, true);
     }
 
     public static void Register() {
