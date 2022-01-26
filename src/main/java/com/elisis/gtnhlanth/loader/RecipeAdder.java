@@ -81,9 +81,9 @@ public class RecipeAdder {
 								aNEISpecialValuePost, aShowVoltageAmperageInNEI, aNEIAllowed);
 		
 				}
-		
-		public void addDissolutionTankRecipe(FluidStack[] fluidInputs, ItemStack[] itemInputs, FluidStack fluidOutput, ItemStack[] itemOutputs, int EUt, int ticks) {
-			super.addRecipe(false, itemInputs, itemOutputs, null, fluidInputs, new FluidStack[] {fluidOutput}, ticks, EUt, ticks);
+		/** Higher part input fluid first, always **/
+		public void addDissolutionTankRecipe(FluidStack[] fluidInputs, ItemStack[] itemInputs, FluidStack fluidOutput, ItemStack[] itemOutputs, int EUt, int ticks, int ratio) {
+			super.addRecipe(false, itemInputs, itemOutputs, null, fluidInputs, new FluidStack[] {fluidOutput}, ticks, EUt, ratio);
 		}
 		
 	}

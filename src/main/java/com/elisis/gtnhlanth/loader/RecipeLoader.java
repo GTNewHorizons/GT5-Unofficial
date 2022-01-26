@@ -136,6 +136,16 @@ public class RecipeLoader {
                 1920
             );
         
+        //Ammonium Nitrate
+        GT_Values.RA.addChemicalRecipe(
+        		GT_Utility.getIntegratedCircuit(12), 
+        		Materials.NitricAcid.getCells(1), 
+        		Materials.Ammonium.getFluid(1000),
+        		null, 
+        		null, 
+        		400
+        	);
+        
         
         
     }
@@ -248,27 +258,30 @@ public class RecipeLoader {
         		new ItemStack[] {GT_OreDictUnificator.get(OrePrefixes.crushed, Materials.Monazite, 1)},
         		WerkstoffMaterialPool.MuddyRareEarthSolution.getFluidOrGas(200), 
         		new ItemStack[] {
-        			WerkstoffMaterialPool.HafniaZirconiaBlend.get(OrePrefixes.dustTiny, 4),
-        			Materials.SiliconDioxide.getDustSmall(2),
-        			WerkstoffLoader.Thorianit.get(OrePrefixes.dust, 1)
+        			Materials.SiliconDioxide.getDustSmall(2)
         		},
         		1920, 
         		200, 
         		2700
         	);
         
-        /*RecipeAdder.instance.DissolutionTankRecipes.addDissolutionTankRecipe(
+        RecipeAdder.instance.DissolutionTankRecipes.addDissolutionTankRecipe(
         		new FluidStack[] {
         				Materials.Water.getFluid(10000), 
         				WerkstoffMaterialPool.MuddyRareEarthSolution.getFluidOrGas(1000)
         		},
         		null,
         		WerkstoffMaterialPool.DilutedRareEarthMud.getFluidOrGas(11000), 
-        		null, 
+        		new ItemStack[] {
+            			WerkstoffMaterialPool.HafniaZirconiaBlend.get(OrePrefixes.dustTiny, 4),
+            			WerkstoffLoader.Thorianit.get(OrePrefixes.dust, 1),
+            			Materials.Monazite.getDustTiny(2)
+            	}, 
         		480, 
-        		900
+        		900, 
+        		0
         	);
-        */
+        
         GT_Recipe.GT_Recipe_Map.sSifterRecipes.addRecipe(
         		false, 
         		null, 
@@ -281,7 +294,7 @@ public class RecipeLoader {
         		}, 
         		null, 
         		new int[] {
-        				7500, 1000, 500, 2000
+        				8000, 7500, 1000, 500, 2000
         		}, 
         		new FluidStack[] {
         				WerkstoffMaterialPool.DilutedRareEarthMud.getFluidOrGas(1000)
@@ -291,6 +304,79 @@ public class RecipeLoader {
         		240, 
         		0
         	);
+        
+        GT_Values.RA.addMixerRecipe(
+        		WerkstoffMaterialPool.MonaziteSulfate.get(OrePrefixes.dust, 1), 
+        		null, null, null, null, null, 
+        		Materials.Water.getFluid(6000), 
+        		WerkstoffMaterialPool.DilutedMonaziteSulfate.getFluidOrGas(7000), 
+        		null, 
+        		480, 
+        		400
+        	);
+        
+        GT_Values.RA.addMultiblockChemicalRecipe(
+        		new ItemStack[] {
+        				GT_Utility.getIntegratedCircuit(13)
+        		},
+        		new FluidStack[] {
+        				WerkstoffMaterialPool.DilutedMonaziteSulfate.getFluidOrGas(1000),
+        				WerkstoffMaterialPool.AmmoniumNitrate.getFluidOrGas(200)
+        		}, 
+        		null, 
+        		new ItemStack[] {
+        				WerkstoffMaterialPool.AcidicMonazitePowder.get(OrePrefixes.dustTiny, 3), 
+        		},
+        		480, 
+        		480
+        	);
+        
+        GT_Values.RA.addSifterRecipe(
+        		WerkstoffMaterialPool.AcidicMonazitePowder.get(OrePrefixes.dust, 1), 
+        		new ItemStack[] {
+        				WerkstoffMaterialPool.RareEarthFiltrate.get(OrePrefixes.dust, 1),
+        				WerkstoffMaterialPool.ThoriumPhosphateCake.get(OrePrefixes.dust, 1)			
+        		}, 
+        		new int[] {9000, 7000}, 
+        		600, 
+        		256
+        	);
+        
+        GT_Values.RA.addBlastRecipe(
+        		WerkstoffMaterialPool.ThoriumPhosphateCake.get(OrePrefixes.dust, 1), 
+        		null, 
+        		null,
+        		null,
+        		WerkstoffMaterialPool.ThoriumPhosphateConcentrate.get(OrePrefixes.dust, 1), 
+        		null, 
+        		300, 
+        		128, 
+        		1500
+        	);
+        
+        GT_Values.RA.addChemicalBathRecipe(
+        		WerkstoffMaterialPool.RareEarthFiltrate.get(OrePrefixes.dust, 1), 
+        		WerkstoffMaterialPool.AmmoniumNitrate.getFluidOrGas(320), 
+        		WerkstoffMaterialPool.NeutralizedRareEarthFiltrate.get(OrePrefixes.dust, 1), 
+        		null, 
+        		null, 
+        		new int[] {10000}, 
+        		120, 
+        		240
+        	);
+        
+        GT_Values.RA.addSifterRecipe(
+        		WerkstoffMaterialPool.NeutralizedRareEarthFiltrate.get(OrePrefixes.dust, 1),
+        		new ItemStack[] {
+        				WerkstoffMaterialPool.RareEarthHydroxideConcentrate.get(OrePrefixes.dust, 1),
+        				WerkstoffMaterialPool.UraniumFiltrate.get(OrePrefixes.dust, 1),
+        				WerkstoffMaterialPool.UraniumFiltrate.get(OrePrefixes.dust, 1)
+        		},
+        		new int[] {9000, 5000, 4000},
+        		800,
+        		480
+        	);
+        
         
         
         

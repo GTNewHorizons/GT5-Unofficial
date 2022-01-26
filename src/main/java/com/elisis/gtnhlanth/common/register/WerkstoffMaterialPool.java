@@ -393,6 +393,7 @@ public class WerkstoffMaterialPool implements Runnable {
     
     public static final Werkstoff MonaziteResidue = new Werkstoff(
     		new short[] {64, 69, 62},
+    		"Monazite Residue",
     		subscriptNumbers("??ZrHfTh??"),
     		new Werkstoff.Stats(),
     		Werkstoff.Types.MIXTURE,
@@ -400,6 +401,62 @@ public class WerkstoffMaterialPool implements Runnable {
     		offsetID + 35,
     		TextureSet.SET_DULL
     	);
+    		
+    public static final Werkstoff AmmoniumNitrate = new Werkstoff(
+    		new short[] {255, 255, 255},
+    		"Ammonium Nitrate",
+    		subscriptNumbers("NH4NO3"),
+    		new Werkstoff.Stats(),
+    		Werkstoff.Types.COMPOUND,
+    		new Werkstoff.GenerationFeatures().disable().addCells(),
+    		offsetID + 36,
+    		TextureSet.SET_FLUID
+    	);
+    
+    public static final Werkstoff ThoriumPhosphateCake = new Werkstoff(
+    		new short[] {188, 143, 143},
+    		"Thorium-Phosphate Cake",
+    		subscriptNumbers("??ThP??"),
+    		new Werkstoff.Stats(),
+    		Werkstoff.Types.MIXTURE,
+    		new Werkstoff.GenerationFeatures().disable().onlyDust(),
+    		offsetID + 37,
+    		TextureSet.SET_DULL
+    	);
+    
+    public static final Werkstoff ThoriumPhosphateConcentrate = new Werkstoff(
+    		new short[] {217, 144, 88},
+    		"Thorium-Phosphate Concentrate",
+    		subscriptNumbers("??ThP??"),
+    		new Werkstoff.Stats(),
+    		Werkstoff.Types.MIXTURE,
+    		new Werkstoff.GenerationFeatures().disable().onlyDust(),
+    		offsetID + 38,
+    		TextureSet.SET_DULL
+    	);
+    
+    public static final Werkstoff UraniumFiltrate = new Werkstoff(
+    		new short[] {190, 240, 94},
+    		"UraniumFiltrate",
+    		subscriptNumbers("??U??"),
+    		new Werkstoff.Stats(),
+    		Werkstoff.Types.MIXTURE,
+    		new Werkstoff.GenerationFeatures().disable().onlyDust(),
+    		offsetID + 39,
+    		TextureSet.SET_DULL
+    	);
+    
+    public static final Werkstoff NeutralizedUraniumFiltrate = new Werkstoff(
+    		new short[] {217, 120, 88},
+    		"Neutralized Uranium Filtrate",
+    		subscriptNumbers("??U??"),
+    		new Werkstoff.Stats(),
+    		Werkstoff.Types.MIXTURE,
+    		new Werkstoff.GenerationFeatures().disable().onlyDust(),
+    		offsetID + 40,
+    		TextureSet.SET_DULL
+    	);
+    
     		
     		
     
