@@ -25,7 +25,7 @@ public class DieselGenerator extends GT_MetaTileEntity_BasicGenerator {
         super(aID, aName, aNameRegional, aTier, new String[]{
                 "Requires liquid Fuel",
                 "Causes " + (int) (GT_Mod.gregtechproxy.mPollutionBaseDieselGeneratorPerSecond * (1.1 - aTier * 0.1)) + " Pollution per second"});
-        mEfficiency = 100 - aTier * 15;
+        mEfficiency = 100 - aTier * 10;
     }
 
     public DieselGenerator(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
