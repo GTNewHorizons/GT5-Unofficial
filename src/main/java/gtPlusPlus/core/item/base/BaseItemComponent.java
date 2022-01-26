@@ -541,7 +541,7 @@ public class BaseItemComponent extends Item{
 		DUSTSMALL("DustSmall", "Small Pile of@Dust", "dustSmall", OrePrefixes.dustSmall),
 		DUSTTINY("DustTiny", "Tiny Pile of@Dust", "dustTiny", OrePrefixes.dustTiny),
 		INGOT("Ingot", " Ingot", "ingot", OrePrefixes.ingot),
-		HOTINGOT("HotIngot", " Hot@Ingot", "ingotHot", OrePrefixes.ingotHot),
+		HOTINGOT("HotIngot", "Hot@Ingot", "ingotHot", OrePrefixes.ingotHot),
 		PLATE("Plate", " Plate", "plate", OrePrefixes.plate),
 		PLATEDOUBLE("PlateDouble", " Double Plate", "plateDouble", OrePrefixes.plateDouble),
 		ROD("Rod", " Rod", "stick", OrePrefixes.stick),

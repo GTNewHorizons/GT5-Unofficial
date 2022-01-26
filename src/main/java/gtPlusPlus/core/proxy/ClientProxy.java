@@ -1,5 +1,7 @@
 package gtPlusPlus.core.proxy;
 
+import java.util.ArrayList;
+
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -12,9 +14,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.Pair;
-import gtPlusPlus.australia.entity.model.ModelBoar;
-import gtPlusPlus.australia.entity.model.ModelDingo;
-import gtPlusPlus.australia.entity.model.ModelOctopus;
+import gtPlusPlus.australia.entity.model.*;
 import gtPlusPlus.australia.entity.render.*;
 import gtPlusPlus.australia.entity.type.*;
 import gtPlusPlus.core.client.model.ModelGiantChicken;
@@ -27,15 +27,15 @@ import gtPlusPlus.core.entity.monster.*;
 import gtPlusPlus.core.entity.projectile.*;
 import gtPlusPlus.core.handler.render.FirepitRender;
 import gtPlusPlus.core.item.ModItems;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.CORE.ConfigSwitches;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.tileentities.general.TileEntityDecayablesChest;
 import gtPlusPlus.core.tileentities.general.TileEntityFirepit;
 import gtPlusPlus.core.util.minecraft.particles.EntityParticleFXMysterious;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
-import gtPlusPlus.xmod.gregtech.common.render.GTPP_CapeRenderer;
-import gtPlusPlus.xmod.gregtech.common.render.GTPP_FlaskRenderer;
-import gtPlusPlus.xmod.gregtech.common.render.GTPP_Render_MachineBlock;
+import gtPlusPlus.xmod.gregtech.common.render.*;
+import ic2.core.item.ItemFluidCell;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.entity.RenderFireball;
@@ -43,9 +43,11 @@ import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.fluids.*;
 
 public class ClientProxy extends CommonProxy implements Runnable{
 
@@ -97,9 +99,9 @@ public class ClientProxy extends CommonProxy implements Runnable{
 		new GTPP_Render_MachineBlock();	
 
 		if (Meta_GT_Proxy.sDoesVolumetricFlaskExist) {
-	        new GTPP_FlaskRenderer();
+			new GTPP_FlaskRenderer();
 		}
-		
+
 		super.init(e);
 	}
 
@@ -255,17 +257,33 @@ public class ClientProxy extends CommonProxy implements Runnable{
 	@Override
 	public void onLoadComplete(FMLLoadCompleteEvent event) {
 		GTplusplus.tryPatchTurbineTextures();
+		if (CORE.ConfigSwitches.hideUniversalCells) {
+			hideUniversalCells();
+		}
 		super.onLoadComplete(event);
 	}
 
+	public void hideUniversalCells() {
+		ArrayList<ItemStack> itemList = new ArrayList<ItemStack>();
+		for (Fluid fluid : FluidRegistry.getRegisteredFluids().values()) {
+			if (fluid == null) {
+				continue; 
+			}
+			itemList.add(ItemFluidCell.getUniversalFluidCell(new FluidStack(fluid, 2147483647)));
+		} 
+		for (ItemStack aCell : itemList) {
+			codechicken.nei.api.API.hideItem(aCell);		
+		}		
+	}
+	
 	@Override
 	public World getClientWorld() {
 		return FMLClientHandler.instance().getClient().theWorld;
 	}
-	
+
 	@Override
 	public EntityPlayer getPlayerEntity(MessageContext ctx) {
-	 return (ctx.side.isClient() ? Minecraft.getMinecraft().thePlayer : super.getPlayerEntity(ctx));
+		return (ctx.side.isClient() ? Minecraft.getMinecraft().thePlayer : super.getPlayerEntity(ctx));
 	}
 
 }
