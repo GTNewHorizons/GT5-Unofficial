@@ -1,7 +1,11 @@
 package com.elisis.gtnhlanth;
 
+import java.util.logging.Logger;
+
 import com.elisis.gtnhlanth.common.CommonProxy;
+import com.elisis.gtnhlanth.common.register.ItemList;
 import com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool;
+import com.elisis.gtnhlanth.loader.RecipeLoader;
 import com.github.bartimaeusnek.bartworks.API.WerkstoffAdderRegistry;
 
 import cpw.mods.fml.common.Mod;
@@ -13,8 +17,12 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
 @Mod(modid = Tags.MODID, version = Tags.VERSION, name = Tags.MODNAME, 
     dependencies = "required-after:IC2; " + "required-after:gregtech; "
+            + "required-after:bartworks; " 
+            + "required-after:GoodGenerator; "
         )
 public class GTNHLanthanides {
+    
+    public static Logger LOG = Logger.getLogger("GTNH:Lanthanides");
     
     @Mod.Instance
     public static GTNHLanthanides instance;
@@ -25,6 +33,7 @@ public class GTNHLanthanides {
     @EventHandler
     public static void preInit(FMLPreInitializationEvent e) {
         WerkstoffAdderRegistry.addWerkstoffAdder(new WerkstoffMaterialPool());
+        ItemList.register();
         proxy.preInit(e);
     }
     
@@ -35,6 +44,8 @@ public class GTNHLanthanides {
     
     @EventHandler
     public static void postInit(FMLPostInitializationEvent e) {
+        RecipeLoader.loadGeneral();
+        RecipeLoader.loadLanthanideRecipes();
         proxy.postInit(e);
     }
     
