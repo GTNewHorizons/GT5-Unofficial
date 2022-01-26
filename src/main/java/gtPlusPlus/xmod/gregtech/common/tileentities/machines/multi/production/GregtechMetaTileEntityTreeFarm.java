@@ -1,7 +1,6 @@
 
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
-import codechicken.nei.ItemStackMap;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.enums.Materials;
@@ -14,11 +13,9 @@ import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.*;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.helpers.TreeFarmHelper;
@@ -314,7 +311,6 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
 				ItemStack uStack = mInputBus.mInventory[i];
 				if(uStack != null) {
 					String registryName = Item.itemRegistry.getNameForObject(uStack.getItem());
-					int a = uStack.getItemDamage();
 					ItemStack aWood = sLogCache.get(registryName + ":" + uStack.getItemDamage());
 					if (aWood != null) {
 						this.currSapling = uStack;
