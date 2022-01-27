@@ -10,7 +10,7 @@ public abstract class EMBosonDefinition extends EMPrimitiveTemplate {
     }
 
     @Override
-    public String getLocalizedName() {
-        return translateToLocal("tt.keyword.Boson")+": " + translateToLocal(getUnlocalizedName());
+    public String getLocalizedTypeName() {
+        return translateToLocal("tt.keyword.Boson");
     }
 }

@@ -338,9 +338,14 @@ public class EMAtomDefinition extends EMComplexTemplate {
     }
 
     @Override
-    public String getLocalizedName() {
-        int     element  = abs(this.getElement());
-        boolean anti = this.getElement() < 0;
+    public String getLocalizedTypeName() {
+        return translateToLocal("tt.keyword.Element");
+    }
+
+    @Override
+    public String getShortLocalizedName() {
+        int     element  = abs(getElement());
+        boolean anti = getElement() < 0;
         boolean weird = abs(getGeneration()) != 1;
         if(element>=NAME.length){
             StringBuilder s = new StringBuilder();
@@ -357,7 +362,9 @@ public class EMAtomDefinition extends EMComplexTemplate {
                 }
                 s.append(translateToLocal("tt.IUPAC."+SYMBOL_IUPAC[element + 10]));
             }
-            s.append(weird?translateToLocal("tt.keyword.Weird"):"");
+            if(weird){
+                s.append(translateToLocal("tt.keyword.Weird"));
+            }
             return s.toString();
         }
         return translateToLocal("tt.element."+(anti?"Anti":"")+NAME[element])+(weird?translateToLocal("tt.keyword.Weird"):"");
@@ -365,13 +372,13 @@ public class EMAtomDefinition extends EMComplexTemplate {
 
     @Override
     public String getSymbol() {
-        return getShortSymbol() + " N:" + getNeutralCount() + " I:" + (getNeutralCount() + element) + " C:" + getCharge();
+        return getShortSymbol() + " N:" + getNeutralCount() + " I:" + (getNeutralCount() + getElement()) + " C:" + getCharge();
     }
 
     @Override
     public String getShortSymbol() {
-        int     element  = abs(this.getElement());
-        boolean anti = this.getElement() < 0;
+        int     element  = abs(getElement());
+        boolean anti = getElement() < 0;
         boolean weird = abs(getGeneration()) != 1;
         if(element>=SYMBOL.length){
             StringBuilder s = new StringBuilder(anti?"~":"");
@@ -380,7 +387,9 @@ public class EMAtomDefinition extends EMComplexTemplate {
                 element = element / 10;
             }
             s.append(SYMBOL_IUPAC[element + 10]);
-            s.append(weird?translateToLocal("tt.keyword.Weird"):"");
+            if(weird){
+                s.append(translateToLocal("tt.keyword.Weird"));
+            }
             return s.toString();
         }
         return (anti?"~":"")+SYMBOL[element]+(weird?translateToLocal("tt.keyword.Weird"):"");

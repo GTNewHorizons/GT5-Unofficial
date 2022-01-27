@@ -19,11 +19,17 @@ public interface IEMDefinition extends Comparable<IEMDefinition>,Cloneable {//IM
     //add text based creators for recipe formula input?
 
     //Nomenclature
-    String getLocalizedName();
+    String getLocalizedTypeName();
 
-    String getSymbol();
+    String getShortLocalizedName();
+
+    default String getLocalizedName(){
+        return getLocalizedTypeName()+": "+getShortLocalizedName();
+    }
 
     String getShortSymbol();
+
+    String getSymbol();
 
     void addScanShortSymbols(ArrayList<String> lines, int capabilities, long energyLevel);
 

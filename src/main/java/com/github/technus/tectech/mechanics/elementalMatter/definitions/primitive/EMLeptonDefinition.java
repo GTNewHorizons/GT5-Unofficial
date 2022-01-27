@@ -63,7 +63,7 @@ public class EMLeptonDefinition extends EMFermionDefinition {
 
     @Override
     public String getLocalizedName() {
-        return translateToLocal("tt.keyword.Lepton")+": " + translateToLocal(getUnlocalizedName());
+        return translateToLocal("tt.keyword.Lepton")+": " + getShortLocalizedName();
     }
 
     @Override

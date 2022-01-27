@@ -35,8 +35,8 @@ public class EMScalarBosonDefinition extends EMBosonDefinition {
     }
 
     @Override
-    public String getLocalizedName() {
-        return translateToLocal("tt.keyword.ScalarBoson")+": " + translateToLocal(getUnlocalizedName());
+    public String getLocalizedTypeName() {
+        return translateToLocal("tt.keyword.ScalarBoson");
     }
 
     @Override

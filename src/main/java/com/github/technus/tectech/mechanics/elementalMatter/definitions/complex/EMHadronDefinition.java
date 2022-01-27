@@ -137,9 +137,8 @@ public class EMHadronDefinition extends EMComplexTemplate {//TODO Optimize map i
     }
 
     @Override
-    public String getLocalizedName() {
-        StringBuilder name = new StringBuilder(getSimpleName());
-        name.append(':');
+    public String getShortLocalizedName() {
+        StringBuilder name = new StringBuilder();
         String sym = translateToLocal(UNLOCALIZED_NAME_MAP.get(this));
         if (sym != null) {
             name.append(' ').append(sym);
@@ -151,7 +150,8 @@ public class EMHadronDefinition extends EMComplexTemplate {//TODO Optimize map i
         return name.toString();
     }
 
-    private String getSimpleName() {
+    @Override
+    public String getLocalizedTypeName() {
         switch (getAmount()) {
             case 2:
                 return translateToLocal("tt.keyword.Meson");
@@ -472,7 +472,7 @@ public class EMHadronDefinition extends EMComplexTemplate {//TODO Optimize map i
             lines.add("CLASS = " + getIndirectTagValue() + ' ' + getMatterMassType());
         }
         if (Util.areBitsSet(SCAN_GET_NOMENCLATURE | SCAN_GET_CHARGE | SCAN_GET_MASS | SCAN_GET_TIMESPAN_INFO, capabilities)) {
-            lines.add("NAME = " + getSimpleName());
+            lines.add("NAME = " + getLocalizedTypeName());
             //lines.add("SYMBOL = "+getSymbol());
         }
         if (Util.areBitsSet(SCAN_GET_CHARGE, capabilities)) {

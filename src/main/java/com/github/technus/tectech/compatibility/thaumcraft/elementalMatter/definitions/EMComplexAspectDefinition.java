@@ -72,14 +72,18 @@ public final class EMComplexAspectDefinition extends EMComplexTemplate {
     }
 
     @Override
-    public String getLocalizedName() {
+    public String getLocalizedTypeName() {
+        return translateToLocal("tt.keyword.Aspect");
+    }
+
+    @Override
+    public String getShortLocalizedName() {
         String name = AspectDefinitionCompat.aspectDefinitionCompat.getAspectLocalizedName(this);
         if (name != null) {
-            name = name.substring(0, 1).toUpperCase() + name.substring(1);
+            return name.substring(0, 1).toUpperCase() + name.substring(1);
         } else {
-            name = getSymbol();
+            return getSymbol();
         }
-        return translateToLocal("tt.keyword.Aspect") + ": " + name;
     }
 
     @Override

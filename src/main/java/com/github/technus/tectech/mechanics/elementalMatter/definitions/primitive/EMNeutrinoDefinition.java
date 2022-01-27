@@ -52,8 +52,8 @@ public class EMNeutrinoDefinition extends EMLeptonDefinition {
     }
 
     @Override
-    public String getLocalizedName() {
-        return translateToLocal("tt.keyword.Neutrino")+": " + translateToLocal(getUnlocalizedName());
+    public String getLocalizedTypeName() {
+        return translateToLocal("tt.keyword.Neutrino");
     }
 
     @Override
