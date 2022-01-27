@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_scanner.*;
 import static com.github.technus.tectech.util.Util.areBitsSet;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
  * Created by danie_000 on 22.10.2016.
@@ -70,6 +71,11 @@ public abstract class EMPrimitiveTemplate extends EMComplexTemplate {
     @Override
     public String getShortSymbol() {
         return getSymbol();
+    }
+
+    @Override
+    public String getShortLocalizedName() {
+        return translateToLocal(getUnlocalizedName());
     }
 
     @Override

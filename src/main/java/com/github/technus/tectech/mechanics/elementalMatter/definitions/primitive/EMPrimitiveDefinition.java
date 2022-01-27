@@ -47,8 +47,8 @@ public class EMPrimitiveDefinition extends EMPrimitiveTemplate {
     }
 
     @Override
-    public String getLocalizedName() {
-        return translateToLocal("tt.keyword.Primitive") + ": " + translateToLocal(getUnlocalizedName());
+    public String getLocalizedTypeName() {
+        return translateToLocal("tt.keyword.Primitive");
     }
 
     @Override

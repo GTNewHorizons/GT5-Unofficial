@@ -99,8 +99,8 @@ public class EMQuarkDefinition extends EMFermionDefinition {
     }
 
     @Override
-    public String getLocalizedName() {
-        return translateToLocal("tt.keyword.Quark")+": " + translateToLocal(getUnlocalizedName());
+    public String getLocalizedTypeName() {
+        return translateToLocal("tt.keyword.Quark");
     }
 
     @Override

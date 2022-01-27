@@ -10,7 +10,7 @@ public abstract class EMFermionDefinition extends EMPrimitiveTemplate {
     }
 
     @Override
-    public String getLocalizedName() {
-        return translateToLocal("tt.keyword.Fermion")+": " + translateToLocal(getUnlocalizedName());
+    public String getLocalizedTypeName() {
+        return translateToLocal("tt.keyword.Fermion");
     }
 }

@@ -72,8 +72,8 @@ public class EMGaugeBosonDefinition extends EMBosonDefinition {
     }
 
     @Override
-    public String getLocalizedName() {
-        return translateToLocal("tt.keyword.GaugeBoson") + ": " + translateToLocal(getUnlocalizedName());
+    public String getLocalizedTypeName() {
+        return translateToLocal("tt.keyword.GaugeBoson");
     }
 
     @Override
