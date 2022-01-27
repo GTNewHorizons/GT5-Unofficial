@@ -357,7 +357,9 @@ public class EMAtomDefinition extends EMComplexTemplate {
                 }
                 s.append(translateToLocal("tt.IUPAC."+SYMBOL_IUPAC[element + 10]));
             }
-            s.append(weird?translateToLocal("tt.keyword.Weird"):"");
+            if(weird){
+                s.append(translateToLocal("tt.keyword.Weird"));
+            }
             return s.toString();
         }
         return translateToLocal("tt.element."+(anti?"Anti":"")+NAME[element])+(weird?translateToLocal("tt.keyword.Weird"):"");
@@ -380,7 +382,9 @@ public class EMAtomDefinition extends EMComplexTemplate {
                 element = element / 10;
             }
             s.append(SYMBOL_IUPAC[element + 10]);
-            s.append(weird?translateToLocal("tt.keyword.Weird"):"");
+            if(weird){
+                s.append(translateToLocal("tt.keyword.Weird"));
+            }
             return s.toString();
         }
         return (anti?"~":"")+SYMBOL[element]+(weird?translateToLocal("tt.keyword.Weird"):"");
