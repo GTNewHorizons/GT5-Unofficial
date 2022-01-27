@@ -5,8 +5,8 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.EMException;
 import com.github.technus.tectech.mechanics.elementalMatter.core.decay.EMDecay;
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.EMComplexTemplate;
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
-import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry.EMIndirectType;
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry.EMDefinitionsRegistry;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry.EMIndirectType;
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMConstantStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMDefinitionStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMDefinitionStack;
@@ -27,12 +27,17 @@ import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileE
 import static com.github.technus.tectech.util.XSTR.XSTR_INSTANCE;
 import static gregtech.api.enums.Materials.*;
 import static gregtech.api.enums.OrePrefixes.dust;
+import static java.lang.Math.abs;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
  * Created by danie_000 on 18.11.2016.
  */
 public class EMAtomDefinition extends EMComplexTemplate {
+    private static final String[] SYMBOL       = new String[]{"Nt", "H", "He", "Li", "Be", "B", "C", "N", "O", "F", "Ne", "Na", "Mg", "Al", "Si", "P", "S", "Cl", "Ar", "K", "Ca", "Sc", "Ti", "V", "Cr", "Mn", "Fe", "Co", "Ni", "Cu", "Zn", "Ga", "Ge", "As", "Se", "Br", "Kr", "Rb", "Sr", "Y", "Zr", "Nb", "Mo", "Tc", "Ru", "Rh", "Pd", "Ag", "Cd", "In", "Sn", "Sb", "Te", "I", "Xe", "Cs", "Ba", "La", "Ce", "Pr", "Nd", "Pm", "Sm", "Eu", "Gd", "Tb", "Dy", "Ho", "Er", "Tm", "Yb", "Lu", "Hf", "Ta", "W", "Re", "Os", "Ir", "Pt", "Au", "Hg", "Tl", "Pb", "Bi", "Po", "At", "Rn", "Fr", "Ra", "Ac", "Th", "Pa", "U", "Np", "Pu", "Am", "Cm", "Bk", "Cf", "Es", "Fm", "Md", "No", "Lr", "Rf", "Db", "Sg", "Bh", "Hs", "Mt", "Ds", "Rg", "Cn", "Nh", "Fl", "Mc", "Lv", "Ts", "Og"};
+    private static final String[] NAME         = new String[]{"Neutronium", "Hydrogen", "Helium", "Lithium", "Beryllium", "Boron", "Carbon", "Nitrogen", "Oxygen", "Fluorine", "Neon", "Sodium", "Magnesium", "Aluminium", "Silicon", "Phosphorus", "Sulfur", "Chlorine", "Argon", "Potassium", "Calcium", "Scandium", "Titanium", "Vanadium", "Chromium", "Manganese", "Iron", "Cobalt", "Nickel", "Copper", "Zinc", "Gallium", "Germanium", "Arsenic", "Selenium", "Bromine", "Krypton", "Rubidium", "Strontium", "Yttrium", "Zirconium", "Niobium", "Molybdenum", "Technetium", "Ruthenium", "Rhodium", "Palladium", "Silver", "Cadmium", "Indium", "Tin", "Antimony", "Tellurium", "Iodine", "Xenon", "Caesium", "Barium", "Lanthanum", "Cerium", "Praseodymium", "Neodymium", "Promethium", "Samarium", "Europium", "Gadolinium", "Terbium", "Dysprosium", "Holmium", "Erbium", "Thulium", "Ytterbium", "Lutetium", "Hafnium", "Tantalum", "Tungsten", "Rhenium", "Osmium", "Iridium", "Platinum", "Gold", "Mercury", "Thallium", "Lead", "Bismuth", "Polonium", "Astatine", "Radon", "Francium", "Radium", "Actinium", "Thorium", "Protactinium", "Uranium", "Neptunium", "Plutonium", "Americium", "Curium", "Berkelium", "Californium", "Einsteinium", "Fermium", "Mendelevium", "Nobelium", "Lawrencium", "Rutherfordium", "Dubnium", "Seaborgium", "Bohrium", "Hassium", "Meitnerium", "Darmstadtium", "Roentgenium", "Copernicium", "Nihonium", "Flerovium", "Moscovium", "Livermorium", "Tennessine", "Oganesson"};
+    private static final String[] SYMBOL_IUPAC = new String[]{"n", "u", "b", "t", "q", "p", "h", "s", "o", "e", "N", "U", "B", "T", "Q", "P", "H", "S", "O", "E"};
+
     public static final  long ATOM_COMPLEXITY_LIMIT = 65536L;
     private static final byte BYTE_OFFSET           = 32;
 
@@ -118,7 +123,7 @@ public class EMAtomDefinition extends EMComplexTemplate {
             if (def.getGeneration() < 0) {
                 containsAnti = true;
             }
-            type = Math.max(type, Math.abs(def.getGeneration()));
+            type = Math.max(type, abs(def.getGeneration()));
 
             if (def instanceof EMLeptonDefinition) {
                 cLeptons += stack.getCharge();
@@ -140,12 +145,12 @@ public class EMAtomDefinition extends EMComplexTemplate {
         this.neutralCount = neutralCount;
         this.element = element;
 
-        element = Math.abs(element);
+        element = abs(element);
 
         //stability curve
         int StableIsotope = stableIzoCurve(element);
         int izoDiff       = neutralCount - StableIsotope;
-        int izoDiffAbs    = Math.abs(izoDiff);
+        int izoDiffAbs    = abs(izoDiff);
 
         xstr.setSeed((element + 1L) * (neutralCount + 100L));
         iaea = EMNuclideIAEA.get(element, neutralCount);
@@ -215,7 +220,7 @@ public class EMAtomDefinition extends EMComplexTemplate {
             if (element == 0) {
                 return 1e-35D;
             } else if (element == 1) {
-                unstabilityEXP = 1.743D - Math.abs(izoDiff - 1) * 9.743D;
+                unstabilityEXP = 1.743D - abs(izoDiff - 1) * 9.743D;
             } else if (element == 2) {
                 switch (isotope) {
                     case 4:
@@ -234,9 +239,9 @@ public class EMAtomDefinition extends EMComplexTemplate {
             } else if (element <= 83 || isotope <= 127 && element <= 120) {
                 double elementPow4 = Math.pow(element, 4);
 
-                unstabilityEXP = Math.min(element / 2.4D, 6 + ((element + 1) % 2) * 3e6D / elementPow4) + -izoDiff * elementPow4 / 1e8D - Math.abs(izoDiff - 1 + element / 60D) * (3D - element / 12.5D + element * element / 1500D);
+                unstabilityEXP = Math.min(element / 2.4D, 6 + ((element + 1) % 2) * 3e6D / elementPow4) + -izoDiff * elementPow4 / 1e8D - abs(izoDiff - 1 + element / 60D) * (3D - element / 12.5D + element * element / 1500D);
             } else if (element < 180) {
-                unstabilityEXP = Math.min((element - 85) * 2, 16 + ((isotope + 1) % 2) * 2.5D - (element - 85) / 3D) - Math.abs(izoDiff) * (3D - element / 13D + element * element / 1600D);
+                unstabilityEXP = Math.min((element - 85) * 2, 16 + ((isotope + 1) % 2) * 2.5D - (element - 85) / 3D) - abs(izoDiff) * (3D - element / 13D + element * element / 1600D);
             } else {
                 return -1;
             }
@@ -334,63 +339,51 @@ public class EMAtomDefinition extends EMComplexTemplate {
 
     @Override
     public String getLocalizedName() {
-        int     element  = Math.abs(this.getElement());
-        boolean negative = this.getElement() < 0;
-        try {
-            if (Math.abs(getGeneration()) != 1) {
-                return (negative ? "~? " : "? ") + Nomenclature.NAME[element];
+        int     element  = abs(this.getElement());
+        boolean anti = this.getElement() < 0;
+        boolean weird = abs(getGeneration()) != 1;
+        if(element>=NAME.length){
+            StringBuilder s = new StringBuilder();
+            if(anti){
+                s.append(translateToLocal("tt.IUPAC.Anti"));
+                do {
+                    s.append(translateToLocal("tt.IUPAC."+SYMBOL_IUPAC[element % 10]));
+                    element = element / 10;
+                } while (element > 0);
+            }else {
+                while (element >= 10) {
+                    s.append(translateToLocal("tt.IUPAC."+SYMBOL_IUPAC[element % 10]));
+                    element = element / 10;
+                }
+                s.append(translateToLocal("tt.IUPAC."+SYMBOL_IUPAC[element + 10]));
             }
-            return negative ? '~' + Nomenclature.NAME[element] : Nomenclature.NAME[element];
-        } catch (Exception e) {
-            if (DEBUG_MODE) {
-                e.printStackTrace();
-            }
-            return translateToLocal("tt.keyword.Element") + (negative ? ": ~" : ": ") + element;
+            s.append(weird?translateToLocal("tt.keyword.Weird"):"");
+            return s.toString();
         }
+        return translateToLocal("tt.element."+(anti?"Anti":"")+NAME[element])+(weird?translateToLocal("tt.keyword.Weird"):"");
     }
 
     @Override
     public String getSymbol() {
-        int     element  = Math.abs(this.getElement());
-        boolean negative = this.getElement() < 0;
-        try {
-            return (negative ? "~" : "") + Nomenclature.SYMBOL[element] + " N:" + getNeutralCount() + " I:" + (getNeutralCount() + element) + " C:" + getCharge();
-        } catch (Exception e) {
-            if (DEBUG_MODE) {
-                e.printStackTrace();
-            }
-            try {
-                int s100 = element / 100, s1 = element / 10 % 10, s10 = element % 10;
-                return (negative ? "~" : "") + Nomenclature.SYMBOL_IUPAC[10 + s100] + Nomenclature.SYMBOL_IUPAC[s10] + Nomenclature.SYMBOL_IUPAC[s1] + " N:" + getNeutralCount() + " I:" + (getNeutralCount() + element) + " C:" + getCharge();
-            } catch (Exception E) {
-                if (DEBUG_MODE) {
-                    e.printStackTrace();
-                }
-                return (negative ? "~" : "") + "? N:" + getNeutralCount() + " I:" + (getNeutralCount() + element) + " C:" + getCharge();
-            }
-        }
+        return getShortSymbol() + " N:" + getNeutralCount() + " I:" + (getNeutralCount() + element) + " C:" + getCharge();
     }
 
     @Override
     public String getShortSymbol() {
-        int     element  = Math.abs(this.getElement());
-        boolean negative = this.getElement() < 0;
-        try {
-            return (negative ? "~" : "") + Nomenclature.SYMBOL[element];
-        } catch (Exception e) {
-            if (DEBUG_MODE) {
-                e.printStackTrace();
+        int     element  = abs(this.getElement());
+        boolean anti = this.getElement() < 0;
+        boolean weird = abs(getGeneration()) != 1;
+        if(element>=SYMBOL.length){
+            StringBuilder s = new StringBuilder(anti?"~":"");
+            while (element >= 10) {
+                s.append(SYMBOL_IUPAC[element % 10]);
+                element = element / 10;
             }
-            try {
-                int s100 = element / 100, s1 = element / 10 % 10, s10 = element % 10;
-                return (negative ? "~" : "") + Nomenclature.SYMBOL_IUPAC[10 + s100] + Nomenclature.SYMBOL_IUPAC[s10] + Nomenclature.SYMBOL_IUPAC[s1];
-            } catch (Exception E) {
-                if (DEBUG_MODE) {
-                    e.printStackTrace();
-                }
-                return (negative ? "~" : "") + "?";
-            }
+            s.append(SYMBOL_IUPAC[element + 10]);
+            s.append(weird?translateToLocal("tt.keyword.Weird"):"");
+            return s.toString();
         }
+        return (anti?"~":"")+SYMBOL[element]+(weird?translateToLocal("tt.keyword.Weird"):"");
     }
 
     @Override
@@ -1133,7 +1126,7 @@ public class EMAtomDefinition extends EMComplexTemplate {
 
     private boolean Fission(ArrayList<EMDecay> decaysList, EMDefinitionStackMap fissile, EMDefinitionStackMap particles, double probability, boolean spontaneousCheck) {
         EMDefinitionStackMap heavy      = new EMDefinitionStackMap();
-        double[]             liquidDrop = liquidDropFunction(Math.abs(getElement()) <= 97);
+        double[]             liquidDrop = liquidDropFunction(abs(getElement()) <= 97);
 
         for (EMDefinitionStack stack : fissile.valuesToArray()) {
             if (spontaneousCheck && stack.getDefinition() instanceof EMHadronDefinition &&
@@ -1226,7 +1219,7 @@ public class EMAtomDefinition extends EMComplexTemplate {
                 return decays.toArray(EMDecay.NO_PRODUCT);
             }
         }
-        if (energyLevel < Math.abs(getCharge()) / 3 + getNeutralCount()) {
+        if (energyLevel < abs(getCharge()) / 3 + getNeutralCount()) {
             return new EMDecay[]{new EMDecay(1, this, boson_Y__)};
         }
         return getNaturalDecayInstant();
@@ -1363,12 +1356,6 @@ public class EMAtomDefinition extends EMComplexTemplate {
         return element;
     }
 
-    private static final class Nomenclature {
-        private static final String[] SYMBOL       = new String[]{"Nt", "H", "He", "Li", "Be", "B", "C", "N", "O", "F", "Ne", "Na", "Mg", "Al", "Si", "P", "S", "Cl", "Ar", "K", "Ca", "Sc", "Ti", "V", "Cr", "Mn", "Fe", "Co", "Ni", "Cu", "Zn", "Ga", "Ge", "As", "Se", "Br", "Kr", "Rb", "Sr", "Y", "Zr", "Nb", "Mo", "Tc", "Ru", "Rh", "Pd", "Ag", "Cd", "In", "Sn", "Sb", "Te", "I", "Xe", "Cs", "Ba", "La", "Ce", "Pr", "Nd", "Pm", "Sm", "Eu", "Gd", "Tb", "Dy", "Ho", "Er", "Tm", "Yb", "Lu", "Hf", "Ta", "W", "Re", "Os", "Ir", "Pt", "Au", "Hg", "Tl", "Pb", "Bi", "Po", "At", "Rn", "Fr", "Ra", "Ac", "Th", "Pa", "U", "Np", "Pu", "Am", "Cm", "Bk", "Cf", "Es", "Fm", "Md", "No", "Lr", "Rf", "Db", "Sg", "Bh", "Hs", "Mt", "Ds", "Rg", "Cn", "Nh", "Fl", "Mc", "Lv", "Ts", "Og"};
-        private static final String[] NAME         = new String[]{"Neutronium", "Hydrogen", "Helium", "Lithium", "Beryllium", "Boron", "Carbon", "Nitrogen", "Oxygen", "Fluorine", "Neon", "Sodium", "Magnesium", "Aluminium", "Silicon", "Phosphorus", "Sulfur", "Chlorine", "Argon", "Potassium", "Calcium", "Scandium", "Titanium", "Vanadium", "Chromium", "Manganese", "Iron", "Cobalt", "Nickel", "Copper", "Zinc", "Gallium", "Germanium", "Arsenic", "Selenium", "Bromine", "Krypton", "Rubidium", "Strontium", "Yttrium", "Zirconium", "Niobium", "Molybdenum", "Technetium", "Ruthenium", "Rhodium", "Palladium", "Silver", "Cadmium", "Indium", "Tin", "Antimony", "Tellurium", "Iodine", "Xenon", "Caesium", "Barium", "Lanthanum", "Cerium", "Praseodymium", "Neodymium", "Promethium", "Samarium", "Europium", "Gadolinium", "Terbium", "Dysprosium", "Holmium", "Erbium", "Thulium", "Ytterbium", "Lutetium", "Hafnium", "Tantalum", "Tungsten", "Rhenium", "Osmium", "Iridium", "Platinum", "Gold", "Mercury", "Thallium", "Lead", "Bismuth", "Polonium", "Astatine", "Radon", "Francium", "Radium", "Actinium", "Thorium", "Protactinium", "Uranium", "Neptunium", "Plutonium", "Americium", "Curium", "Berkelium", "Californium", "Einsteinium", "Fermium", "Mendelevium", "Nobelium", "Lawrencium", "Rutherfordium", "Dubnium", "Seaborgium", "Bohrium", "Hassium", "Meitnerium", "Darmstadtium", "Roentgenium", "Copernicium", "Nihonium", "Flerovium", "Moscovium", "Livermorium", "Tennessine", "Oganesson"};
-        private static final String[] SYMBOL_IUPAC = new String[]{"n", "u", "b", "t", "q", "p", "h", "s", "o", "e", "N", "U", "B", "T", "Q", "P", "H", "S", "O", "E"};
-    }
-
     @Override
     protected String getIndirectTagValue() {
         return nbtType;
@@ -1398,7 +1385,7 @@ public class EMAtomDefinition extends EMComplexTemplate {
                 //stability curve
                 int           StableIsotope = stableIzoCurve(element);
                 int           izoDiff       = isotope - StableIsotope;
-                int           izoDiffAbs    = Math.abs(izoDiff);
+                int           izoDiffAbs    = abs(izoDiff);
                 double        rawLifeTime   = calculateLifeTime(izoDiff, izoDiffAbs, element, isotope, false);
                 EMNuclideIAEA nuclide       = EMNuclideIAEA.get(element, isotope);
                 if (rawLifeTime >= STABLE_RAW_LIFE_TIME || nuclide != null && nuclide.getHalfTime() >= STABLE_RAW_LIFE_TIME) {
@@ -1415,7 +1402,7 @@ public class EMAtomDefinition extends EMComplexTemplate {
                 //stability curve
                 int                      Isotope     = stableIzoCurve(element);
                 int                      izoDiff     = isotope - Isotope;
-                int                      izoDiffAbs  = Math.abs(izoDiff);
+                int                      izoDiffAbs  = abs(izoDiff);
                 double                   rawLifeTime = calculateLifeTime(izoDiff, izoDiffAbs, element, isotope, false);
                 TreeMap<Double, Integer> isotopes    = mostStableUnstableIsotopes.computeIfAbsent(element, k -> new TreeMap<>());
                 isotopes.put(rawLifeTime, isotope);//todo dont add stable ones
