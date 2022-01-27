@@ -8,6 +8,8 @@ import java.util.function.Supplier;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -17,23 +19,48 @@ import net.minecraftforge.oredict.OreDictionary;
 public class GT_TooltipEventHandler {
 	
 	private static final Map<String, Supplier<String>[]> tooltipMap = new HashMap<>();
+
+
 	
 	public static void init() {
-		addOredictTooltip("circuitPrimitive", formattedText("ULV-Tier", RED));
-		addOredictTooltip("circuitBasic", formattedText("LV-Tier", DARK_BLUE));
-		addOredictTooltip("circuitGood", formattedText("MV-Tier", GRAY));
-		addOredictTooltip("circuitAdvanced", formattedText("HV-Tier", GOLD));
-		addOredictTooltip("circuitData", formattedText("EV-Tier", DARK_PURPLE));
-		addOredictTooltip("circuitElite", formattedText("IV-Tier", DARK_BLUE));
+
+		// Circuits
+		addOredictTooltip("circuitPrimitive", formattedText("ULV-Tier", WHITE));
+		addOredictTooltip("circuitBasic" , formattedText("LV-Tier", GRAY));
+		addOredictTooltip("circuitGood" , formattedText("MV-Tier", GOLD));
+		addOredictTooltip("circuitAdvanced" , formattedText("HV-Tier", YELLOW));
+		addOredictTooltip("circuitData" , formattedText("EV-Tier", DARK_GRAY));
+		addOredictTooltip("circuitElite" , formattedText("IV-Tier", GREEN));
 		addOredictTooltip("circuitMaster", formattedText("LuV-Tier", LIGHT_PURPLE));
-		addOredictTooltip("circuitUltimate", formattedText("ZPM-Tier", WHITE));
-		addOredictTooltip("circuitSuperconductor", formattedText("UV-Tier", AQUA));
+		addOredictTooltip("circuitUltimate", formattedText("ZPM-Tier", AQUA));
+		addOredictTooltip("circuitSuperconductor" , formattedText("UV-Tier", DARK_GREEN));
 		addOredictTooltip("circuitInfinite", formattedText("UHV-Tier", DARK_RED));
-		addOredictTooltip("circuitBio", formattedText("UEV-Tier", GREEN));
-		//addOredictTooltip("circuitOptical", formattedText("UIV-Tier", DARK_GREEN));
-		//addOredictTooltip("circuitExotic", formattedText("UV-Tier", DARK_AQUA));
-		//addOredictTooltip("circuitCosmic", animatedString("UXV-Tier", 8, 500, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, WHITE, WHITE, WHITE, WHITE, WHITE, WHITE, WHITE, WHITE));
-		//addOredictTooltip("circuitTranscendental", animatedString("MAX-Tier", 1, 80, RED, GOLD, YELLOW, GREEN, AQUA, BLUE, LIGHT_PURPLE));
+		addOredictTooltip("circuitBio", formattedText("UEV-Tier", DARK_PURPLE));
+		addOredictTooltip("circuitUIV", formattedText("UIV-Tier", DARK_BLUE));
+		addOredictTooltip("circuitUMV", formattedText("UMV-Tier", RED));
+		addOredictTooltip("circuitUXV", animatedString("UXV-Tier", 1, 80, DARK_PURPLE, DARK_RED));
+		addOredictTooltip("circuitMAX", animatedString("MAX-Tier", 1, 80, RED, GOLD, YELLOW, GREEN, AQUA, BLUE, LIGHT_PURPLE));
+
+		// Batteries
+		addOredictTooltip("batteryULV", formattedText("ULV-Tier", WHITE));
+		addOredictTooltip("calclavia:ADVANCED_BATTERY" , formattedText("LV-Tier", GRAY));
+		addOredictTooltip("batteryMV" , formattedText("MV-Tier", GOLD));
+		addOredictTooltip("batteryHV" , formattedText("HV-Tier", YELLOW));
+		addOredictTooltip("batteryElite" , formattedText("HV-Tier", YELLOW)); // Because of energy crystal
+		addOredictTooltip("batteryEV" , formattedText("EV-Tier", DARK_GRAY));
+		addOredictTooltip("batteryMaster" , formattedText("EV-Tier", DARK_GRAY)); // Because of lapotron crystal
+		addOredictTooltip("batteryIV" , formattedText("IV-Tier", GREEN));
+		addOredictTooltip("batteryLuV", formattedText("LuV-Tier", LIGHT_PURPLE));
+		addOredictTooltip("batteryZPM", formattedText("ZPM-Tier", AQUA));
+		addOredictTooltip("batteryUV" , formattedText("UV-Tier", DARK_GREEN));
+		addOredictTooltip("batteryUHV", formattedText("UHV-Tier", DARK_RED));
+		addOredictTooltip("batteryUEV", formattedText("UEV-Tier", DARK_PURPLE));
+		addOredictTooltip("batteryUIV", formattedText("UIV-Tier", DARK_BLUE));
+		addOredictTooltip("batteryUMV", formattedText("UMV-Tier", RED));
+		addOredictTooltip("batteryUXV", animatedString("UXV-Tier", 1, 80, DARK_PURPLE, DARK_RED));
+		addOredictTooltip("batteryMAX", animatedString("MAX-Tier", 1, 80, RED, GOLD, YELLOW, GREEN, AQUA, BLUE, LIGHT_PURPLE));
+
+
 	}
 	
 	@SubscribeEvent
@@ -80,14 +107,7 @@ public class GT_TooltipEventHandler {
 			addItemTooltip(item, tooltips);
 		}
 	}
-	
-	@SafeVarargs
-	private static void addItemTooltip(String modID, String registryName, int meta, Supplier<String>... tooltips) {
-		Item item = GameRegistry.findItem(modID, registryName);
-		if(item == null || meta < 0 || meta >= OreDictionary.WILDCARD_VALUE || tooltips == null) return;
-		tooltipMap.put(item.getUnlocalizedName() + "@" + meta, tooltips);
-	}
-	
+
 	@SafeVarargs
 	private static void addItemTooltip(ItemStack item, Supplier<String>... tooltips) {
 		if(item == null || tooltips == null) return;

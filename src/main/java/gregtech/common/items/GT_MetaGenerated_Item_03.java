@@ -214,26 +214,25 @@ public class GT_MetaGenerated_Item_03
         ItemList.Circuit_Board_Bio_Ultra.set(addItem(tLastID = 107, "Ultra Bio Mutated Circuit Board", "Bio genetic mutated Board", o));
         ItemList.Circuit_Biomainframe.set(addItem(tLastID = 120, "Bio Mainframe", "A Bio Circuit", OrePrefixes.circuit.get(Materials.Bio), SubTag.NO_UNIFICATION));
 
-        ItemList.Circuit_OpticalProcessor.set(addItem(tLastID = 154, "Optical Processor", "An Optical Circuit", OrePrefixes.circuit.get(Materials.Optical), SubTag.NO_UNIFICATION));
-        ItemList.Circuit_OpticalAssembly.set(addItem(tLastID = 155, "Optical Assembly", "An Optical Circuit", OrePrefixes.circuit.get(Materials.Optical), SubTag.NO_UNIFICATION));
-        ItemList.Circuit_OpticalComputer.set(addItem(tLastID = 156, "Optical Computer", "An Optical Circuit", OrePrefixes.circuit.get(Materials.Optical), SubTag.NO_UNIFICATION));
-        ItemList.Circuit_OpticalMainframe.set(addItem(tLastID = 157, "Optical Mainframe", "An Optical Circuit", OrePrefixes.circuit.get(Materials.Optical), SubTag.NO_UNIFICATION));
+        ItemList.Circuit_OpticalProcessor.set(addItem(tLastID = 154, "Optical Processor", "An Optical Circuit", OrePrefixes.circuit.get(Materials.Ultimate), SubTag.NO_UNIFICATION));
+        ItemList.Circuit_OpticalAssembly.set(addItem(tLastID = 155, "Optical Assembly", "An Optical Circuit", OrePrefixes.circuit.get(Materials.Infinite), SubTag.NO_UNIFICATION));
+        ItemList.Circuit_OpticalComputer.set(addItem(tLastID = 156, "Optical Computer", "An Optical Circuit", OrePrefixes.circuit.get(Materials.Bio), SubTag.NO_UNIFICATION));
+        ItemList.Circuit_OpticalMainframe.set(addItem(tLastID = 157, "Optical Mainframe", "An Optical Circuit", OrePrefixes.circuit.get(Materials.UIV), SubTag.NO_UNIFICATION));
 
-        ItemList.Circuit_ExoticProcessor.set(addItem(tLastID = 166, "Exotic Processor", "An Exotic Circuit", OrePrefixes.circuit.get(Materials.Exotic), SubTag.NO_UNIFICATION));
-        ItemList.Circuit_ExoticAssembly.set(addItem(tLastID = 167, "Exotic Assembly", "An Exotic Circuit", OrePrefixes.circuit.get(Materials.Exotic), SubTag.NO_UNIFICATION));
-        ItemList.Circuit_ExoticComputer.set(addItem(tLastID = 168, "Exotic Computer", "An Exotic Circuit", OrePrefixes.circuit.get(Materials.Exotic), SubTag.NO_UNIFICATION));
-        ItemList.Circuit_ExoticMainframe.set(addItem(tLastID = 169, "Exotic Mainframe", "An Exotic Circuit", OrePrefixes.circuit.get(Materials.Exotic), SubTag.NO_UNIFICATION));
+        ItemList.Circuit_ExoticProcessor.set(addItem(tLastID = 166, "Exotic Processor", "An Exotic Circuit", OrePrefixes.circuit.get(Materials.Infinite), SubTag.NO_UNIFICATION));
+        ItemList.Circuit_ExoticAssembly.set(addItem(tLastID = 167, "Exotic Assembly", "An Exotic Circuit", OrePrefixes.circuit.get(Materials.Bio), SubTag.NO_UNIFICATION));
+        ItemList.Circuit_ExoticComputer.set(addItem(tLastID = 168, "Exotic Computer", "An Exotic Circuit", OrePrefixes.circuit.get(Materials.UIV), SubTag.NO_UNIFICATION));
+        ItemList.Circuit_ExoticMainframe.set(addItem(tLastID = 169, "Exotic Mainframe", "An Exotic Circuit", OrePrefixes.circuit.get(Materials.UMV), SubTag.NO_UNIFICATION));
 
-        ItemList.Circuit_CosmicProcessor.set(addItem(tLastID = 170, "Cosmic Processor", "A Cosmic Circuit", OrePrefixes.circuit.get(Materials.Cosmic), SubTag.NO_UNIFICATION));
-        ItemList.Circuit_CosmicAssembly.set(addItem(tLastID = 171, "Cosmic Assembly", "A Cosmic Circuit", OrePrefixes.circuit.get(Materials.Cosmic), SubTag.NO_UNIFICATION));
-        ItemList.Circuit_CosmicComputer.set(addItem(tLastID = 172, "Cosmic Computer", "A Cosmic Circuit", OrePrefixes.circuit.get(Materials.Cosmic), SubTag.NO_UNIFICATION));
-        ItemList.Circuit_CosmicMainframe.set(addItem(tLastID = 173, "Cosmic Mainframe", "A Cosmic Circuit", OrePrefixes.circuit.get(Materials.Cosmic), SubTag.NO_UNIFICATION));
+        ItemList.Circuit_CosmicProcessor.set(addItem(tLastID = 170, "Cosmic Processor", "A Cosmic Circuit", OrePrefixes.circuit.get(Materials.Bio), SubTag.NO_UNIFICATION));
+        ItemList.Circuit_CosmicAssembly.set(addItem(tLastID = 171, "Cosmic Assembly", "A Cosmic Circuit", OrePrefixes.circuit.get(Materials.UIV), SubTag.NO_UNIFICATION));
+        ItemList.Circuit_CosmicComputer.set(addItem(tLastID = 172, "Cosmic Computer", "A Cosmic Circuit", OrePrefixes.circuit.get(Materials.UMV), SubTag.NO_UNIFICATION));
+        ItemList.Circuit_CosmicMainframe.set(addItem(tLastID = 173, "Cosmic Mainframe", "A Cosmic Circuit", OrePrefixes.circuit.get(Materials.UXV), SubTag.NO_UNIFICATION));
 
-        ItemList.Circuit_TranscendentProcessor.set(addItem(tLastID = 174, "Temporally Transcendent Processor", "A circuit operating outside of known spacetime", OrePrefixes.circuit.get(Materials.Transcendental), SubTag.NO_UNIFICATION));
-        ItemList.Circuit_TranscendentAssembly.set(addItem(tLastID = 175, "Temporally Transcendent Assembly", "A circuit operating outside of known spacetime", OrePrefixes.circuit.get(Materials.Transcendental), SubTag.NO_UNIFICATION));
-        ItemList.Circuit_TranscendentComputer.set(addItem(tLastID = 176, "Temporally Transcendent Computer", "A circuit operating outside of known spacetime", OrePrefixes.circuit.get(Materials.Transcendental), SubTag.NO_UNIFICATION));
-        ItemList.Circuit_TranscendentMainframe.set(addItem(tLastID = 177, "Temporally Transcendent Mainframe", "A circuit operating outside of known spacetime", OrePrefixes.circuit.get(Materials.Transcendental), SubTag.NO_UNIFICATION));
-
+        ItemList.Circuit_TranscendentProcessor.set(addItem(tLastID = 174, "Temporally Transcendent Processor", "A circuit operating outside of known spacetime", OrePrefixes.circuit.get(Materials.UIV), SubTag.NO_UNIFICATION));
+        ItemList.Circuit_TranscendentAssembly.set(addItem(tLastID = 175, "Temporally Transcendent Assembly", "A circuit operating outside of known spacetime", OrePrefixes.circuit.get(Materials.UMV), SubTag.NO_UNIFICATION));
+        ItemList.Circuit_TranscendentComputer.set(addItem(tLastID = 176, "Temporally Transcendent Computer", "A circuit operating outside of known spacetime", OrePrefixes.circuit.get(Materials.UXV), SubTag.NO_UNIFICATION));
+        ItemList.Circuit_TranscendentMainframe.set(addItem(tLastID = 177, "Temporally Transcendent Mainframe", "A circuit operating outside of known spacetime", OrePrefixes.circuit.get(Materials.MAX), SubTag.NO_UNIFICATION));
 
         ItemList.Tube_Wires.set(addItem(tLastID = 110, "Tube Wires", "For the Vacuum Tubes", o));
 
