@@ -5,6 +5,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Buffer;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GT_Utility;
 import gregtech.common.gui.GT_Container_ChestBuffer;
 import gregtech.common.gui.GT_GUIContainer_ChestBuffer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -83,47 +84,12 @@ public class GT_MetaTileEntity_ChestBuffer extends GT_MetaTileEntity_Buffer {
         }
     }
 
-// Implementation using Java built in sort algorithm
-// Uses terribad string comparison to sort against.  Would be better if we did something else?
-    protected void sortStacks() {
-        Arrays.sort(this.mInventory, new Comparator<ItemStack>() {
-                @Override
-                // Taken from https://gist.github.com/Choonster/876acc3217229e172e46
-                public int compare(ItemStack o1, ItemStack o2) {
-                    if( o2 == null )
-                        return -1;
-                    if( o1 == null )
-                        return 1;
-                    Item item1 = o1.getItem();
-                    Item item2 = o2.getItem();
-
-                    if(item1 instanceof ItemBlock) {
-                        if (!(item2 instanceof ItemBlock))
-                            return -1; // If item1 is a block and item2 isn't, sort item1 before item2
-                    } else if (item2 instanceof ItemBlock)
-                        return 1; // If item2 is a block and item1 isn't, sort item1 after item2
-
-                    int id1 = Item.getIdFromItem( item1 );
-                    int id2 = Item.getIdFromItem( item2 );
-                    if ( id1 < id2 ) {
-                        return -1;
-                    }
-                    if ( id1 > id2 ) {
-                        return 1;
-                    }
-
-                    id1 = o1.getItemDamage();
-                    id2 = o2.getItemDamage();
-
-                    return Integer.compare(id1, id2);
-                }
-            });
-    }
-
     @Override
-    protected void fillStacksIntoFirstSlots() {
-        sortStacks();
-        super.fillStacksIntoFirstSlots();
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
+        if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.hasInventoryBeenModified()) {
+            fillStacksIntoFirstSlots();
+        }
+        super.onPostTick(aBaseMetaTileEntity, aTimer);
     }
 
     @Override
