@@ -62,10 +62,10 @@ public class GT_MetaGenerated_Item_03
         ItemList.Circuit_Parts_TransistorASMD.set(addItem(tLastID = 26, "Advanced SMD Transistor", "Advanced Electronic Component", o));
         ItemList.Circuit_Parts_CapacitorASMD.set(addItem(tLastID = 27, "Advanced SMD Capacitor", "Advanced Electronic Component", o));
 
-        ItemList.Circuit_Parts_ResistorXSMD.set(addItem(tLastID = 166, "Optical SMD Resistor", "Highly Advanced Electronic Component", o));
-        ItemList.Circuit_Parts_DiodeXSMD.set(addItem(tLastID = 167, "Optical SMD Diode", "Highly Advanced Electronic Component", o));
-        ItemList.Circuit_Parts_TransistorXSMD.set(addItem(tLastID = 168, "Optical SMD Transistor", "Highly Advanced Electronic Component", o));
-        ItemList.Circuit_Parts_CapacitorXSMD.set(addItem(tLastID = 169, "Optical SMD Capacitor", "Highly Advanced Electronic Component", o));
+        ItemList.Circuit_Parts_ResistorXSMD.set(addItem(tLastID = 178, "Optical SMD Resistor", "Highly Advanced Electronic Component", o));
+        ItemList.Circuit_Parts_DiodeXSMD.set(addItem(tLastID = 179, "Optical SMD Diode", "Highly Advanced Electronic Component", o));
+        ItemList.Circuit_Parts_TransistorXSMD.set(addItem(tLastID = 180, "Optical SMD Transistor", "Highly Advanced Electronic Component", o));
+        ItemList.Circuit_Parts_CapacitorXSMD.set(addItem(tLastID = 181, "Optical SMD Capacitor", "Highly Advanced Electronic Component", o));
 
 
         /**
