@@ -11,14 +11,27 @@ Builds can be found on the [GTNH Jenkins Server](http://jenkins.usrv.eu:8080/job
 
 ## Installation
 
-GT5U requires IndustrialCraft2-experimental. Version 2.2.780-experimental or newer is recommended.
-Forge versions 1428-1480 are known to break multiplayer. 1481 or newer are recommended.
-Place the downloaded jar file into your mods/ folder.
+GT5U requires IndustrialCraft2-experimental. Version 2:2.2.828-experimental is recommended.
+Forge versions 1428-1480 are known to break multiplayer. 1614 is recommended.
+Place the downloaded jar file into your mods/ folder. A number of other mods may be required, see dependencies.gradle
 
 ## Issues
 
-Please report any issues you to find the issue tracker on this repository. Include as much information as possible including as version and steps to reproduce.
+Please report any issues you to find to the main GTNH issue tracker. Include as much information as possible including as version and steps to reproduce.
 
 ## Contribution
 
-Please do! However, please take a note of current issues and what is currently being worked on.
+Please do! However, please take a note of [current issues](https://github.com/GTNewHorizons/GT-New-Horizons-Modpack/issues) and what is currently being worked on.
+
+## License
+
+GT5-Unofficial is free software: you can redistribute it and/or modify it under the terms of the 
+GNU Lesser General Public License as published by the Free Software Foundation, either version 3 
+of the License, or (at your option) any later version.
+
+GT5-Unofficial is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+See the GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License along with GT5-Unofficial. 
+If not, see <http://www.gnu.org/licenses/>.
