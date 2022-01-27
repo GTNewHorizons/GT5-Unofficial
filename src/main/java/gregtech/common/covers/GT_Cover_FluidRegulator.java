@@ -273,7 +273,7 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
 			this(0);
 		}
 		public FluidRegulatorData(int legacy) {
-			this(getTickRate(legacy), Math.abs(getSpeed(legacy)), Conditional.Always);
+			this(getTickRate(legacy), getSpeed(legacy), Conditional.Always);
 		}
 
 		public FluidRegulatorData(int tickRate, int speed, Conditional condition) {
