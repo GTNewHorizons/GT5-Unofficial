@@ -141,9 +141,12 @@ public final class DebugElementalInstanceContainer_EM extends Item implements IE
         that.setTagCompound(new NBTTagCompound());
         list.add(that);
         for(IEMDefinition definition: TecTech.definitionsRegistry.getStacksRegisteredForDisplay()){
-            list.add(setContent(new ItemStack(this).setStackDisplayName(definition.getLocalizedName()+" "+1+" "+translateToLocal("tt.keyword.mbMols")),new EMInstanceStackMap(new EMInstanceStack(definition, EM_COUNT_PER_MATERIAL_AMOUNT))));
-            list.add(setContent(new ItemStack(this).setStackDisplayName(definition.getLocalizedName()+" "+1+" "+translateToLocal("tt.keyword.itemMols")),new EMInstanceStackMap(new EMInstanceStack(definition, EM_COUNT_PER_ITEM))));
-            list.add(setContent(new ItemStack(this).setStackDisplayName(definition.getLocalizedName()+" "+1000+" "+translateToLocal("tt.keyword.mbMols")),new EMInstanceStackMap(new EMInstanceStack(definition, EM_COUNT_PER_1k))));
+            list.add(setContent(new ItemStack(this).setStackDisplayName(definition.getLocalizedName()+" "+1+" "+translateToLocal("tt.keyword.mbMols")),
+                    new EMInstanceStackMap(new EMInstanceStack(definition, EM_COUNT_PER_MATERIAL_AMOUNT))));
+            list.add(setContent(new ItemStack(this).setStackDisplayName(definition.getLocalizedName()+" "+1+" "+translateToLocal("tt.keyword.itemMols")),
+                    new EMInstanceStackMap(new EMInstanceStack(definition, EM_COUNT_PER_ITEM))));
+            list.add(setContent(new ItemStack(this).setStackDisplayName(definition.getLocalizedName()+" "+1000+" "+translateToLocal("tt.keyword.mbMols")),
+                    new EMInstanceStackMap(new EMInstanceStack(definition, EM_COUNT_PER_1k))));
         }
     }
 
