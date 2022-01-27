@@ -17,6 +17,7 @@ import gregtech.api.objects.ReverseShapelessRecipe;
 import gregtech.api.objects.XSTR;
 import gregtech.api.threads.GT_Runnable_MachineBlockUpdate;
 import gregtech.api.util.*;
+import gregtech.client.GT_TooltipEventHandler;
 import gregtech.common.GT_DummyWorld;
 import gregtech.common.GT_Network;
 import gregtech.common.GT_Proxy;
@@ -366,6 +367,8 @@ public class GT_Mod implements IGT_Mod {
 
         GT_PostLoad.nerfVanillaTools();
         new GT_ExtremeDieselFuelLoader().run();
+        GT_TooltipEventHandler.init();
+        MinecraftForge.EVENT_BUS.register(new GT_TooltipEventHandler());
         
         
         /* 

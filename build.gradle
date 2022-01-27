@@ -1,4 +1,4 @@
-//version: 1642484596
+//version: 1642964305
 /*
 DO NOT CHANGE THIS FILE!
 
@@ -32,16 +32,18 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.github.GTNewHorizons:ForgeGradle:1.2.5'
+        classpath 'com.github.GTNewHorizons:ForgeGradle:1.2.6'
     }
 }
 
 plugins {
     id 'idea'
+    id 'eclipse'
     id 'scala'
     id("org.ajoberstar.grgit") version("3.1.1")
     id("com.github.johnrengelman.shadow") version("4.0.4")
     id("com.palantir.git-version") version("0.12.3")
+    id('de.undercouch.download') version('4.1.2')
     id("maven-publish")
 }
 
@@ -320,38 +322,29 @@ afterEvaluate {
         }
     }
 }
+def arguments = []
+def jvmArguments = []
+if(usesMixins.toBoolean()) {
+    arguments += [
+            "--tweakClass org.spongepowered.asm.launch.MixinTweaker"
+    ]
+    jvmArguments += [
+            "-Dmixin.debug=true", "-Dmixin.debug.countInjections=true", "-Dmixin.debug.verbose=true", "-Dmixin.debug.export=true"
+    ]
+}
 
 runClient {
-    def arguments = []
-
-    if(usesMixins.toBoolean()) {
-        arguments += [
-                "--mods=../build/libs/$modId-${version}.jar",
-                "--tweakClass org.spongepowered.asm.launch.MixinTweaker"
-        ]
-    }
-
     if(developmentEnvironmentUserName) {
-        arguments += [
-                "--username",
-                developmentEnvironmentUserName
-        ]
+        arguments += [ "--username", developmentEnvironmentUserName ]
     }
 
     args(arguments)
+    jvmArgs(jvmArguments)
 }
 
 runServer {
-    def arguments = []
-
-    if (usesMixins.toBoolean()) {
-        arguments += [
-                "--mods=../build/libs/$modId-${version}.jar",
-                "--tweakClass org.spongepowered.asm.launch.MixinTweaker"
-        ]
-    }
-
     args(arguments)
+    jvmArgs(jvmArguments)
 }
 
 tasks.withType(JavaExec).configureEach {
@@ -494,11 +487,21 @@ artifacts {
     }
 }
 
+// The gradle metadata includes all of the additional deps that we disabled from POM generation (including forgeBin with no groupID), 
+// and isn't strictly needed with the POM so just disable it.
+tasks.withType(GenerateModuleMetadata) {
+    enabled = false
+}
+
+
 // publishing
 publishing {
     publications {
         maven(MavenPublication) {
-            artifact source: usesShadowedDependencies.toBoolean() ? shadowJar : jar, classifier: ""
+            from components.java
+            if(usesShadowedDependencies.toBoolean()) {
+                artifact source: shadowJar, classifier: ""
+            }
             if(!noPublishedSources) {
                 artifact source: sourcesJar, classifier: "src"
             }
@@ -511,6 +514,18 @@ publishing {
             artifactId = System.getenv("ARTIFACT_ID") ?: project.name
             // Using the identified version, not project.version as it has the prepended 1.7.10
             version = System.getenv("RELEASE_VERSION") ?: identifiedVersion
+            
+            // Remove all non GTNH deps here.
+            // Original intention was to remove an invalid forgeBin being generated without a groupId (mandatory), but
+            // it also removes all of the MC deps
+            pom.withXml {
+                Node pomNode = asNode()
+                pomNode.dependencies.'*'.findAll() {
+                    it.groupId.text() != 'com.github.GTNewHorizons'
+                }.each() {
+                    it.parent().remove(it)
+                }
+            }
         }
     }
 
@@ -579,6 +594,41 @@ static String getVersionHash(String buildScriptContent) {
 configure(updateBuildScript) {
     group = 'forgegradle'
     description = 'Updates the build script to the latest version'
+}
+
+// Deobfuscation
+
+def deobf(String sourceURL, String fileName) {
+    def bon2File  = "$projectDir/deobf/BON2-2.5.0.jar"
+    def cacheFile = "$projectDir/deobf/out/" + fileName + ".jar"
+    def deobfFile = "$projectDir/deobf/out/" + fileName + "-deobf.jar"
+
+    if(file(deobfFile).exists()) {
+        return files(deobfFile)
+    }
+
+    download {
+        src 'https://github.com/GTNewHorizons/BON2/releases/download/2.5.0/BON2-2.5.0.CUSTOM-all.jar'
+        dest bon2File
+        quiet true
+        overwrite false
+    }
+
+    download {
+        src sourceURL
+        dest cacheFile
+        quiet true
+        overwrite false
+    }
+
+    exec {
+        commandLine 'java', '-jar', bon2File, '--inputJar', cacheFile, '--outputJar', deobfFile, '--mcVer', '1.7.10', '--mappingsVer', 'stable_12', '--notch'
+        workingDir "$projectDir/deobf"
+        standardOutput = new ByteArrayOutputStream()
+    }
+
+    delete(cacheFile)
+    return files(deobfFile)
 }
 
 // Helper methods
