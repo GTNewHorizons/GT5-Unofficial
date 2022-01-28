@@ -265,7 +265,7 @@ public class GT_MetaGenerated_Item_03
 
 
         // Exotic circuits
-        ItemList.Circuit_ExoticProcessor.set(addItem(tLastID = 166, "Exotic Processor", "An Exotic Circuit", OrePrefixes.circuit.get(Materials.Infinite), "test", SubTag.NO_UNIFICATION));
+        ItemList.Circuit_ExoticProcessor.set(addItem(tLastID = 166, "Exotic Processor", "An Exotic Circuit", OrePrefixes.circuit.get(Materials.Infinite), SubTag.NO_UNIFICATION));
         OreDictionary.registerOre("UHV", ItemList.Circuit_ExoticProcessor.get(1));
         ItemList.Circuit_ExoticAssembly.set(addItem(tLastID = 167, "Exotic Assembly", "An Exotic Circuit", OrePrefixes.circuit.get(Materials.Bio), SubTag.NO_UNIFICATION));
         OreDictionary.registerOre("UEV", ItemList.Circuit_ExoticAssembly.get(1));
