@@ -23,10 +23,11 @@ public class GT_SpawnEventHandler {
 
     @SubscribeEvent
     public void denyMobSpawn(CheckSpawn event) {
-        if (event.getResult() == Event.Result.ALLOW) {
+        if (event.getResult() == Event.Result.ALLOW && !(event.entityLiving instanceof EntitySlime)) {
             return;
         }
-        if (event.entityLiving.isCreatureType(EnumCreatureType.monster, false) || event.entityLiving instanceof EntitySlime) {
+
+        if (event.entityLiving.isCreatureType(EnumCreatureType.monster, false)) {
             for (int[] rep : mobReps) {
                 if (rep[3] == event.entity.worldObj.provider.dimensionId) {
                     TileEntity tTile = event.entity.worldObj.getTileEntity(rep[0], rep[1], rep[2]);
@@ -37,6 +38,7 @@ public class GT_SpawnEventHandler {
                         double dz = rep[2] + 0.5F - event.entity.posZ;
                         if ((dx * dx + dz * dz + dy * dy) <= Math.pow(r, 2)) {
                             event.setResult(Event.Result.DENY);
+                            event.entityLiving.isDead = true;
                         }
                     }
                 }
