@@ -403,44 +403,76 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         GT_ModHandler.addCraftingRecipe(ItemList.Battery_Hull_LV.get(1L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"Cf ", "Ph ", "Ps ", 'P', OrePrefixes.plate.get(Materials.BatteryAlloy), 'C', OreDictNames.craftingWireTin});
         //GT_ModHandler.addCraftingRecipe(ItemList.Battery_Hull_MV.get(1L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"C C", "PPP", "PPP", 'P', OrePrefixes.plate.get(Materials.BatteryAlloy), 'C', OreDictNames.craftingWireCopper});
 
-        ItemList.Battery_RE_ULV_Tantalum.set(addItem(tLastID = 499, "Tantalum Capacitor", "Reusable", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 1L)));
+        // ULV Batteries
+        ItemList.Battery_RE_ULV_Tantalum.set(addItem(tLastID = 499, "Tantalum Capacitor", "Reusable", "batteryULV", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 1L)));
         setElectricStats(32000 + tLastID, 1000L, GT_Values.V[0], 0L, -3L, false);
+        OreDictionary.registerOre("ULV", ItemList.Battery_RE_ULV_Tantalum.get(1));
 
-        ItemList.Battery_SU_LV_SulfuricAcid.set(addItem(tLastID = 510, "Small Acid Battery", "Single Use", "batteryULV", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 2L)));
+        // LV Batteries
+        ItemList.Battery_SU_LV_SulfuricAcid.set(addItem(tLastID = 510, "Small Acid Battery", "Single Use", "batteryLV", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 2L)));
         setElectricStats(32000 + tLastID, 18000L, GT_Values.V[1], 1L, -2L, true);
+        OreDictionary.registerOre("LV", ItemList.Battery_SU_LV_SulfuricAcid.get(1));
+
         ItemList.Battery_SU_LV_Mercury.set(addItem(tLastID = 511, "Small Mercury Battery", "Single Use", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 2L)));
         setElectricStats(32000 + tLastID, 32000L, GT_Values.V[1], 1L, -2L, true);
+        OreDictionary.registerOre("LV", ItemList.Battery_SU_LV_Mercury.get(1));
 
-        ItemList.Battery_RE_LV_Cadmium.set(addItem(tLastID = 517, "Small Cadmium Battery", "Reusable", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 1L), "calclavia:ADVANCED_BATTERY"));
+        ItemList.Battery_RE_LV_Cadmium.set(addItem(tLastID = 517, "Small Cadmium Battery", "Reusable", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 1L), "batteryLV"));
         setElectricStats(32000 + tLastID, 75000L, GT_Values.V[1], 1L, -3L, true);
-        ItemList.Battery_RE_LV_Lithium.set(addItem(tLastID = 518, "Small Lithium Battery", "Reusable", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 1L), "calclavia:ADVANCED_BATTERY"));
+        OreDictionary.registerOre("LV", ItemList.Battery_RE_LV_Cadmium.get(1));
+        OreDictionary.registerOre("calclavia:ADVANCED_BATTERY", ItemList.Battery_RE_LV_Cadmium.get(1)); // Annoying backwards compat
+
+        ItemList.Battery_RE_LV_Lithium.set(addItem(tLastID = 518, "Small Lithium Battery", "Reusable", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 1L), "batteryLV"));
         setElectricStats(32000 + tLastID, 100000L, GT_Values.V[1], 1L, -3L, true);
+        OreDictionary.registerOre("LV", ItemList.Battery_RE_LV_Lithium.get(1));
+        OreDictionary.registerOre("calclavia:ADVANCED_BATTERY", ItemList.Battery_RE_LV_Lithium.get(1)); // Annoying backwards compat
+
         ItemList.Battery_RE_LV_Sodium.set(addItem(tLastID = 519, "Small Sodium Battery", "Reusable", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 1L), "calclavia:ADVANCED_BATTERY"));
         setElectricStats(32000 + tLastID, 50000L, GT_Values.V[1], 1L, -3L, true);
+        OreDictionary.registerOre("LV", ItemList.Battery_RE_LV_Sodium.get(1));
+        OreDictionary.registerOre("calclavia:ADVANCED_BATTERY", ItemList.Battery_RE_LV_Sodium.get(1)); // Annoying backwards compat
 
+        // MV Batteries
         ItemList.Battery_SU_MV_SulfuricAcid.set(addItem(tLastID = 520, "Medium Acid Battery", "Single Use", "batteryMV", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 4L)));
         setElectricStats(32000 + tLastID, 72000L, GT_Values.V[2], 2L, -2L, true);
+        OreDictionary.registerOre("MV", ItemList.Battery_SU_MV_SulfuricAcid.get(1));
+
         ItemList.Battery_SU_MV_Mercury.set(addItem(tLastID = 521, "Medium Mercury Battery", "Single Use", "batteryMV", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 4L)));
         setElectricStats(32000 + tLastID, 128000L, GT_Values.V[2], 2L, -2L, true);
+        OreDictionary.registerOre("MV", ItemList.Battery_SU_MV_Mercury.get(1));
 
         ItemList.Battery_RE_MV_Cadmium.set(addItem(tLastID = 527, "Medium Cadmium Battery", "Reusable", "batteryMV", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 2L)));
         setElectricStats(32000 + tLastID, 300000L, GT_Values.V[2], 2L, -3L, true);
+        OreDictionary.registerOre("MV", ItemList.Battery_RE_MV_Cadmium.get(1));
+
         ItemList.Battery_RE_MV_Lithium.set(addItem(tLastID = 528, "Medium Lithium Battery", "Reusable", "batteryMV", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 2L)));
         setElectricStats(32000 + tLastID, 400000L, GT_Values.V[2], 2L, -3L, true);
+        OreDictionary.registerOre("MV", ItemList.Battery_RE_MV_Lithium.get(1));
+
         ItemList.Battery_RE_MV_Sodium.set(addItem(tLastID = 529, "Medium Sodium Battery", "Reusable", "batteryMV", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 2L)));
         setElectricStats(32000 + tLastID, 200000L, GT_Values.V[2], 2L, -3L, true);
+        OreDictionary.registerOre("MV", ItemList.Battery_RE_MV_Sodium.get(1));
 
+        // HV Batteries
         ItemList.Battery_SU_HV_SulfuricAcid.set(addItem(tLastID = 530, "Large Acid Battery", "Single Use", "batteryHV", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 8L)));
         setElectricStats(32000 + tLastID, 288000L, GT_Values.V[3], 3L, -2L, true);
+        OreDictionary.registerOre("HV", ItemList.Battery_SU_HV_SulfuricAcid.get(1));
+
         ItemList.Battery_SU_HV_Mercury.set(addItem(tLastID = 531, "Large Mercury Battery", "Single Use", "batteryHV", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 8L)));
         setElectricStats(32000 + tLastID, 512000L, GT_Values.V[3], 3L, -2L, true);
+        OreDictionary.registerOre("HV", ItemList.Battery_SU_HV_Mercury.get(1));
 
         ItemList.Battery_RE_HV_Cadmium.set(addItem(tLastID = 537, "Large Cadmium Battery", "Reusable", "batteryHV", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 4L)));
         setElectricStats(32000 + tLastID, 1200000L, GT_Values.V[3], 3L, -3L, true);
+        OreDictionary.registerOre("HV", ItemList.Battery_RE_HV_Cadmium.get(1));
+
         ItemList.Battery_RE_HV_Lithium.set(addItem(tLastID = 538, "Large Lithium Battery", "Reusable", "batteryHV", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 4L)));
         setElectricStats(32000 + tLastID, 1600000L, GT_Values.V[3], 3L, -3L, true);
+        OreDictionary.registerOre("HV", ItemList.Battery_RE_HV_Lithium.get(1));
+
         ItemList.Battery_RE_HV_Sodium.set(addItem(tLastID = 539, "Large Sodium Battery", "Reusable", "batteryHV", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 4L)));
         setElectricStats(32000 + tLastID, 800000L, GT_Values.V[3], 3L, -3L, true);
+        OreDictionary.registerOre("HV", ItemList.Battery_RE_HV_Sodium.get(1));
 
         GT_ModHandler.addExtractionRecipe(ItemList.Battery_SU_LV_SulfuricAcid.get(1L), ItemList.Battery_Hull_LV.get(1L));
         GT_ModHandler.addExtractionRecipe(ItemList.Battery_SU_LV_Mercury.get(1L), ItemList.Battery_Hull_LV.get(1L));
@@ -468,26 +500,40 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         GT_Values.RA.addCannerRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lithium, 32L), ItemList.Battery_Hull_HV.get(1L), ItemList.Battery_RE_HV_Lithium.get(1L), null, 1600, 2);
         GT_Values.RA.addCannerRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 32L), ItemList.Battery_Hull_HV.get(1L), ItemList.Battery_RE_HV_Sodium.get(1L), null, 1600, 2);
 
+        // EV Battery
         ItemList.Energy_LapotronicOrb.set(addItem(tLastID = 597, "Lapotronic Energy Orb", "Reusable battery", "batteryIV", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 16L), OrePrefixes.battery.get(Materials.Ultimate)));
         setElectricStats(32000 + tLastID, 100000000L, GT_Values.V[5], 5L, -3L, true);
+        OreDictionary.registerOre("EV", ItemList.Energy_LapotronicOrb.get(1));
 
+        // ZPM Module
         ItemList.ZPM.set(addItem(tLastID = 598, "Zero Point Module", "Single use battery", "batteryZPM", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 64L), new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 64L)));
         setElectricStats(32000 + tLastID, 2000000000000L, GT_Values.V[7], 7L, -2L, true);
+        OreDictionary.registerOre("ZPM", ItemList.ZPM.get(1));
 
+        // LuV Lapotron orb cluster battery
         ItemList.Energy_LapotronicOrb2.set(addItem(tLastID = 599, "Lapotronic Energy Orb Cluster", "Reusable battery", "batteryLuV", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 16L), OrePrefixes.battery.get(Materials.Ultimate)));
         setElectricStats(32000 + tLastID, 1000000000L, GT_Values.V[6], 6L, -3L, true);
+        OreDictionary.registerOre("LuV", ItemList.Energy_LapotronicOrb2.get(1));
 
+        // UV Battery
         ItemList.ZPM2.set(addItem(tLastID = 605, "Ultimate Battery", "Fill this to win minecraft", "batteryUV", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 64L), new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 64L)));
         setElectricStats(32000 + tLastID, Long.MAX_VALUE, GT_Values.V[8], 8L, -3L, true);
+        OreDictionary.registerOre("UV", ItemList.ZPM2.get(1));
 
+        // UMV Battery
         ItemList.ZPM3.set(addItem(tLastID = 609, "Really Ultimate Battery", "Fill this to be way older", "batteryUMV", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 64L), new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 64L)));
         setElectricStats(32000 + tLastID, Long.MAX_VALUE, GT_Values.V[12], 12L, -3L, true);
+        OreDictionary.registerOre("UMV", ItemList.ZPM3.get(1));
 
+        // ZPM Cluster
         ItemList.Energy_Module.set(addItem(tLastID = 736, "Energy Module", "Reusable battery", "batteryZPM", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 16L), OrePrefixes.battery.get(Materials.Ultimate)));
         setElectricStats(32000 + tLastID, 10000000000L, GT_Values.V[7], 7L, -3L, true);
+        OreDictionary.registerOre("ZPM", ItemList.Energy_Module.get(1));
 
+        // UV Cluster
         ItemList.Energy_Cluster.set(addItem(tLastID = 737, "Energy Cluster", "Reusable battery", "batteryUV", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 64L), new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 64L)));
         setElectricStats(32000 + tLastID, 100000000000L, GT_Values.V[8], 8L, -3L, true);
+        OreDictionary.registerOre("UV", ItemList.Energy_Cluster.get(1));
 
         // UIV, UMV, UXV and MAX component textures backported from gregicality.
         ItemList.Electric_Motor_LV.set(addItem(600, "Electric Motor (LV)", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 1L)));
