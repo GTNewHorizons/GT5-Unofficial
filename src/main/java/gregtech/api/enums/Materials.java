@@ -9,7 +9,6 @@ import gregtech.api.interfaces.IMaterialHandler;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.objects.GT_FluidStack;
 import gregtech.api.objects.MaterialStack;
-import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.loaders.materialprocessing.ProcessingConfig;
@@ -337,10 +336,12 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Nano                    = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Nano"                    ,   "Bio"                           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 11)));
     public static Materials Piko                    = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Piko"                    ,   "Bio"                           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 12)));
     public static Materials Quantum                 = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Quantum"                 ,   "Bio"                           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 13)));
-    public static Materials Optical                 = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Optical"                 ,   "Optical"                           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 14)));
-    public static Materials Exotic                  = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Exotic"                  ,   "Exotic"                           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 13)));
-    public static Materials Cosmic                  = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Cosmic"                  ,   "Cosmic"                           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 14)));
-    public static Materials Transcendental          = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Transcendental"          ,   "Transcendental"                           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 15)));
+    public static Materials Optical                 = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Optical"                 ,   "Optical"                       ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 13)));
+    public static Materials Exotic                  = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Exotic"                  ,   "Exotic"                        ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 14)));
+    public static Materials Cosmic                  = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Cosmic"                  ,   "Cosmic"                        ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 15)));
+    public static Materials Transcendent            = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Transcendent"            ,   "Transcendent"                  ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 16)));
+
+
     /**
      * Not possible to determine exact Components
      */
