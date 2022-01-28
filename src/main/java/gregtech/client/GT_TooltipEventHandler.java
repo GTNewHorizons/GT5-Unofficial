@@ -43,7 +43,7 @@ public class GT_TooltipEventHandler {
 	 */
 	public static void init() {
 
-		// Tooltip tiers for ALL items given the appropriate tier tag.
+		// Tooltip tiers for ALL items given the appropriate tier oredict tag.
 		addOredictTooltip("ULV", text(WHITE + "ULV-Tier"));
 		addOredictTooltip("LV" , text(GRAY + "LV-Tier"));
 		addOredictTooltip("MV" , text(GOLD + "MV-Tier"));
@@ -63,28 +63,6 @@ public class GT_TooltipEventHandler {
 				animatedText("MAX-Tier", 1, 100, RED + BOLD + UNDERLINE, GOLD + BOLD + UNDERLINE, YELLOW + BOLD + UNDERLINE, GREEN + BOLD + UNDERLINE, AQUA + BOLD + UNDERLINE, BLUE + BOLD + UNDERLINE, LIGHT_PURPLE + BOLD + UNDERLINE),
 				animatedText("X", 1, 100, GOLD + OBFUSCATED + BOLD + UNDERLINE, YELLOW + OBFUSCATED + BOLD + UNDERLINE, GREEN + OBFUSCATED + BOLD + UNDERLINE, AQUA + OBFUSCATED + BOLD + UNDERLINE, BLUE + OBFUSCATED + BOLD + UNDERLINE, LIGHT_PURPLE + OBFUSCATED + BOLD + UNDERLINE, RED + OBFUSCATED + BOLD + UNDERLINE)
 		));
-
-
-
-		// Batteries
-//		addOredictTooltip("batteryULV", formattedText("ULV-Tier", WHITE));
-//		addOredictTooltip("calclavia:ADVANCED_BATTERY" , formattedText("LV-Tier", GRAY));
-//		addOredictTooltip("batteryMV" , formattedText("MV-Tier", GOLD));
-//		addOredictTooltip("batteryHV" , formattedText("HV-Tier", YELLOW));
-//		addOredictTooltip("batteryElite" , formattedText("HV-Tier", YELLOW)); // Because of energy crystal
-//		addOredictTooltip("batteryEV" , formattedText("EV-Tier", DARK_GRAY));
-//		addOredictTooltip("batteryMaster" , formattedText("EV-Tier", DARK_GRAY)); // Because of lapotron crystal
-//		addOredictTooltip("batteryIV" , formattedText("IV-Tier", GREEN));
-//		addOredictTooltip("batteryLuV", formattedText("LuV-Tier", LIGHT_PURPLE));
-//		addOredictTooltip("batteryZPM", formattedText("ZPM-Tier", AQUA));
-//		addOredictTooltip("batteryUV" , formattedText("UV-Tier", DARK_GREEN));
-//		addOredictTooltip("batteryUHV", formattedText("UHV-Tier", DARK_RED));
-//		addOredictTooltip("batteryUEV", formattedText("UEV-Tier", DARK_PURPLE));
-//		addOredictTooltip("batteryUIV", formattedText("UIV-Tier", DARK_BLUE));
-//		addOredictTooltip("batteryUMV", formattedText("UMV-Tier", RED));
-//		addOredictTooltip("batteryUXV", animatedString("UXV-Tier", 1, 80, DARK_PURPLE, DARK_RED));
-//		addOredictTooltip("batteryMAX", animatedString("MAX-Tier", 1, 80, RED, GOLD, YELLOW, GREEN, AQUA, BLUE, LIGHT_PURPLE));
-
 
 	}
 
