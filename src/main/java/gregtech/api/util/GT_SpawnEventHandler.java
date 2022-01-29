@@ -23,12 +23,13 @@ public class GT_SpawnEventHandler {
 
     @SubscribeEvent
     public void denyMobSpawn(CheckSpawn event) {
-        if (event.getResult() == Event.Result.ALLOW && !(event.entityLiving instanceof EntitySlime)) {
-            return;
+        if (event.entityLiving instanceof EntitySlime && !(((EntitySlime) event.entityLiving).getCustomNameTag().length() > 0)) {
+            ((EntitySlime) event.entityLiving).setCustomNameTag("DoNotSpawnSlimes");
+            if(event.getResult() == Event.Result.ALLOW) event.setResult(Event.Result.DEFAULT);
         }
 
-        if(event.entityLiving instanceof EntitySlime) {
-            ((EntitySlime) event.entityLiving).setCustomNameTag("BlockedSlimeSpawn");
+        if (event.getResult() == Event.Result.ALLOW) {
+            return;
         }
 
         if (event.entityLiving.isCreatureType(EnumCreatureType.monster, false)) {
@@ -42,7 +43,6 @@ public class GT_SpawnEventHandler {
                         double dz = rep[2] + 0.5F - event.entity.posZ;
                         if ((dx * dx + dz * dz + dy * dy) <= Math.pow(r, 2)) {
                             event.setResult(Event.Result.DENY);
-                            event.entityLiving.isDead = true;
                         }
                     }
                 }
