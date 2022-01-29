@@ -9,22 +9,19 @@ import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
 import java.util.ArrayList;
 
-import org.lwjgl.input.Keyboard;
-
 import com.elisis.gtnhlanth.loader.RecipeAdder;
 import com.elisis.gtnhlanth.util.DescTextLocalization;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_GUIContainer_MultiMachineEM;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.HeatingCoilLevel;
-import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.gui.GT_GUIContainer_MultiMachine;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -32,14 +29,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 
-public class Digester extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
+public class Digester extends GT_MetaTileEntity_EnhancedMultiBlockBase<Digester> implements IConstructable {
 	
     protected int casingAmount = 0;
     protected int height = 0;
     
     private HeatingCoilLevel heatLevel;
     
-    @SuppressWarnings("deprecation")
 	private IStructureDefinition<Digester> multiDefinition = StructureDefinition.<Digester>builder()
     		.addShape(mName, transpose(new String[][] {
     			{"-------", "-ttttt-", "-t---t-", "-t---t-", "-t---t-", "-ttttt-", "-------"},
@@ -77,16 +73,10 @@ public class Digester extends GT_MetaTileEntity_MultiblockBase_EM implements ICo
 	public Digester(int id, String name, String nameRegional) {
 		super(id, name, nameRegional);
 	}
-
 	
 	@Override
-    public IStructureDefinition<Digester> getStructure_EM(){	
-		return multiDefinition;
-	}
-	
-	@Override
-    public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return structureCheck_EM(mName, 3, 3, 0);
+    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        return checkPiece(mName, 3, 3, 0);
     }
 	
 	@Override
@@ -103,7 +93,7 @@ public class Digester extends GT_MetaTileEntity_MultiblockBase_EM implements ICo
 	}
 	
 	@Override
-	public boolean checkRecipe_EM(ItemStack itemStack) {
+	public boolean checkRecipe(ItemStack itemStack) {
 		
 		ArrayList<FluidStack> tFluidInputs = this.getStoredFluids();
 		FluidStack[] tFluidInputArray = tFluidInputs.toArray(new FluidStack[0]);
@@ -157,12 +147,35 @@ public class Digester extends GT_MetaTileEntity_MultiblockBase_EM implements ICo
 	
 	@Override
     public Object getClientGUI(int id, InventoryPlayer playerInventory, IGregTechTileEntity metaTileEntity) {
-        return new GT_GUIContainer_MultiMachineEM(playerInventory, metaTileEntity, getLocalName(), "Digester.png");
+        return new GT_GUIContainer_MultiMachine(playerInventory, metaTileEntity, getLocalName(), "Digester.png");
     }
 	
 	@Override
-    public String[] getDescription() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+	public IMetaTileEntity newMetaEntity(IGregTechTileEntity arg0) {
+		return new Digester(this.mName);
+	}
+
+	@Override
+	public void construct(ItemStack itemStack, boolean b) {
+		buildPiece(mName,itemStack, b, 3, 3, 0);
+		
+	}
+
+	@Override
+	public String[] getStructureDescription(ItemStack arg0) {
+		return DescTextLocalization.addText("UniversalChemicalFuelEngine.hint", 11);
+	}
+
+	@Override
+	public ITexture[] getTexture(IGregTechTileEntity arg0, byte arg1, byte arg2, byte arg3, boolean arg4,
+			boolean arg5) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected GT_Multiblock_Tooltip_Builder createTooltip() {
+		final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Digester")
                 .addInfo("Controller block for the Digester")
                 .addInfo("Input ores and fluid, output water.")
@@ -180,27 +193,24 @@ public class Digester extends GT_MetaTileEntity_MultiblockBase_EM implements ICo
                 .addOtherStructurePart("Neutron Sensor", "Hint block with dot 2")
                 .addCasingInfo("Clean Stainless Steel Machine Casing", 7)
                 .toolTipFinisher("GTNH: Lanthanides");
-        if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-            return tt.getInformation();
-        } else {
-            return tt.getStructureInformation();
-        }
-    }
-	
-	@Override
-	public IMetaTileEntity newMetaEntity(IGregTechTileEntity arg0) {
-		return new Digester(this.mName);
+        return tt;
 	}
 
 	@Override
-	public void construct(ItemStack itemStack, boolean b) {
-		structureBuild_EM(mName, 3, 3, 0, b, itemStack);
-		
+	public IStructureDefinition<Digester> getStructureDefinition() {
+		return multiDefinition;
 	}
 
 	@Override
-	public String[] getStructureDescription(ItemStack arg0) {
-		return DescTextLocalization.addText("UniversalChemicalFuelEngine.hint", 11);
+	public boolean explodesOnComponentBreak(ItemStack arg0) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public int getDamageToComponent(ItemStack arg0) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

@@ -11,6 +11,20 @@ import gregtech.api.enums.TextureSet;
 public class WerkstoffMaterialPool implements Runnable {
     
     private static final int offsetID = 11_000;
+    private static final int offsetID2 = 11_046;
+    private static final int offsetID3 = 11_300;
+    
+    /*
+     * public static final Werkstoff __ = new Werkstoff(
+    		new short[] {_, _, _},
+    		"__",
+    		new Werkstoff.Stats(),
+    		Werkstoff.Types.MIXTURE,
+    		new Werkstoff.GenerationFeatures().disable(),
+    		offsetID_,
+    		TextureSet.SET_DULL
+    	);
+     */
     
     //Misc.
     public static final Werkstoff Hafnium = new Werkstoff(
@@ -153,16 +167,16 @@ public class WerkstoffMaterialPool implements Runnable {
             subscriptNumbers("I"),
             new Werkstoff.Stats(),
             Werkstoff.Types.COMPOUND,
-            new Werkstoff.GenerationFeatures().disable().addCells().enforceUnification(),
+            new Werkstoff.GenerationFeatures().disable().onlyDust().addCells().enforceUnification(),
             offsetID + 12,
             TextureSet.SET_FLUID
         );
     
     
     //Lanthanide Line
-    public static final Werkstoff MuddyRareEarthSolution = new Werkstoff(
+    public static final Werkstoff MuddyRareEarthMonaziteSolution = new Werkstoff(
             new short[] {111, 78, 55},
-            "Muddy Rare Earth Solution",
+            "Muddy Monazite Rare Earth Solution",
             subscriptNumbers("??LaNdZr??"),
             new Werkstoff.Stats(),     
             Werkstoff.Types.MIXTURE,
@@ -171,9 +185,9 @@ public class WerkstoffMaterialPool implements Runnable {
             TextureSet.SET_FLUID
         );
     
-    public static final Werkstoff DilutedRareEarthMud = new Werkstoff(
+    public static final Werkstoff DilutedRareEarthMonaziteMud = new Werkstoff(
             new short[] {160, 120, 90},
-            "Diluted Rare Earth Mud",
+            "Diluted Monazite Rare Earth Mud",
             subscriptNumbers("??LaNdHf??"),
             new Werkstoff.Stats(),
             Werkstoff.Types.MIXTURE,
@@ -193,9 +207,9 @@ public class WerkstoffMaterialPool implements Runnable {
             TextureSet.SET_FLUID
         );
     
-    public static final Werkstoff NitratedRareEarthConcentrate = new Werkstoff(
+    public static final Werkstoff NitratedRareEarthMonaziteConcentrate = new Werkstoff(
             new short[] {250, 223, 173},
-            "Nitrated Rare Earth Concentrate",
+            "Nitrated Monazite Rare Earth Concentrate",
             subscriptNumbers("??LaNd??"),
             new Werkstoff.Stats(),
             Werkstoff.Types.MIXTURE,
@@ -204,9 +218,9 @@ public class WerkstoffMaterialPool implements Runnable {
             TextureSet.SET_FLUID
         );
     
-    public static final Werkstoff NitricLeachedConcentrate = new Werkstoff(
+    public static final Werkstoff NitricMonaziteLeachedConcentrate = new Werkstoff(
             new short[] {244, 202, 22},
-            "Nitric Leached Concentrate",
+            "Nitric Monazite Leached Concentrate",
             subscriptNumbers("??LaNd??"),
             new Werkstoff.Stats(),
             Werkstoff.Types.MIXTURE,
@@ -237,9 +251,9 @@ public class WerkstoffMaterialPool implements Runnable {
             TextureSet.SET_DULL
         );
     
-    public static final Werkstoff RareEarthFiltrate = new Werkstoff(
+    public static final Werkstoff MonaziteRareEarthFiltrate = new Werkstoff(
             new short[] {72, 60, 50},
-            "Rare Earth Filtrate",
+            "Monazite Rare Earth Filtrate",
             subscriptNumbers("????"),
             new Werkstoff.Stats(),
             Werkstoff.Types.MIXTURE,
@@ -248,9 +262,9 @@ public class WerkstoffMaterialPool implements Runnable {
             TextureSet.SET_DULL
         );
     
-    public static final Werkstoff NeutralizedRareEarthFiltrate = new Werkstoff(
+    public static final Werkstoff NeutralizedMonaziteRareEarthFiltrate = new Werkstoff(
             new short[] {50, 23, 77},
-            "Neutralized Rare Earth Filtrate",
+            "Neutralized Monazite Rare Earth Filtrate",
             subscriptNumbers("????"),
             new Werkstoff.Stats(),
             Werkstoff.Types.MIXTURE,
@@ -259,9 +273,9 @@ public class WerkstoffMaterialPool implements Runnable {
             TextureSet.SET_DULL
         );
     
-    public static final Werkstoff RareEarthHydroxideConcentrate = new Werkstoff(
+    public static final Werkstoff MonaziteRareEarthHydroxideConcentrate = new Werkstoff(
             new short[] {193, 154, 107},
-            "Rare Earth Hydroxide Concentrate",
+            "Monazite Rare Earth Hydroxide Concentrate",
             subscriptNumbers("????"),
             new Werkstoff.Stats(),
             Werkstoff.Types.MIXTURE,
@@ -270,9 +284,9 @@ public class WerkstoffMaterialPool implements Runnable {
             TextureSet.SET_DULL
         );
     
-    public static final Werkstoff DriedRareEarthConcentrate = new Werkstoff(
+    public static final Werkstoff DriedMonaziteRareEarthConcentrate = new Werkstoff(
             new short[] {250, 214, 165},
-            "Dried Rare Earth Concentrate",
+            "Dried Monazite Rare Earth Concentrate",
             subscriptNumbers("????"),
             new Werkstoff.Stats(),
             Werkstoff.Types.MIXTURE,
@@ -336,9 +350,9 @@ public class WerkstoffMaterialPool implements Runnable {
     		TextureSet.SET_DULL	
     	);
     
-    public static final Werkstoff CooledRareEarthConcentrate = new Werkstoff(
+    public static final Werkstoff CooledMonaziteRareEarthConcentrate = new Werkstoff(
             new short[] {250, 214, 165},
-            "Cooled Rare Earth Concentrate",
+            "Cooled Monazite Rare Earth Concentrate",
             subscriptNumbers("????"),
             new Werkstoff.Stats(),
             Werkstoff.Types.MIXTURE,
@@ -347,9 +361,9 @@ public class WerkstoffMaterialPool implements Runnable {
             TextureSet.SET_DULL
         );
     
-    public static final Werkstoff RarerEarthSediment = new Werkstoff(
+    public static final Werkstoff MonaziteRarerEarthSediment = new Werkstoff(
             new short[] {250, 214, 165},
-            "Rarer Earth Sediment",
+            "MonaziteRarer Earth Sediment",
             subscriptNumbers("????"),
             new Werkstoff.Stats(),
             Werkstoff.Types.MIXTURE,
@@ -358,9 +372,9 @@ public class WerkstoffMaterialPool implements Runnable {
             TextureSet.SET_DULL
         );
     
-    public static final Werkstoff HeterogenousHalogenicRareEarthMixture = new Werkstoff(
+    public static final Werkstoff MonaziteHeterogenousHalogenicRareEarthMixture = new Werkstoff(
             new short[] {250, 214, 165},
-            "Heterogenous Halogenic Rare Earth Mixture",
+            "Heterogenous Halogenic Monazite Rare Earth Mixture",
             subscriptNumbers("????"),
             new Werkstoff.Stats(),
             Werkstoff.Types.MIXTURE,
@@ -369,9 +383,9 @@ public class WerkstoffMaterialPool implements Runnable {
             TextureSet.SET_DULL
         );
     
-    public static final Werkstoff SaturatedRareEarthMixture = new Werkstoff(
+    public static final Werkstoff SaturatedMonaziteRareEarthMixture = new Werkstoff(
             new short[] {250, 214, 165},
-            "Saturated Rare Earth Mixture",
+            "Saturated Monazite Rare Earth Mixture",
             subscriptNumbers("????"),
             new Werkstoff.Stats(),
             Werkstoff.Types.MIXTURE,
@@ -404,7 +418,7 @@ public class WerkstoffMaterialPool implements Runnable {
     		
     public static final Werkstoff AmmoniumNitrate = new Werkstoff(
     		new short[] {255, 255, 255},
-    		"Ammonium Nitrate",
+    		"Ammonium Nitrate Solution",
     		subscriptNumbers("NH4NO3"),
     		new Werkstoff.Stats(),
     		Werkstoff.Types.COMPOUND,
@@ -457,8 +471,355 @@ public class WerkstoffMaterialPool implements Runnable {
     		TextureSet.SET_DULL
     	);
     
-    		
-    		
+    public static final Werkstoff SeaweedAsh = new Werkstoff(
+    		new short[] {70, 75, 71},
+    		"Seaweed Ash",
+    		new Werkstoff.Stats(),
+    		Werkstoff.Types.BIOLOGICAL,
+    		new Werkstoff.GenerationFeatures().disable().onlyDust(),
+    		offsetID + 41,
+    		TextureSet.SET_DULL
+    	);
+    
+    public static final Werkstoff SeaweedConcentrate = new Werkstoff(
+    		new short[] {70, 100, 71},
+    		"Seaweed Concentrate",
+    		subscriptNumbers("??I??"),
+    		new Werkstoff.Stats(),
+    		Werkstoff.Types.BIOLOGICAL,
+    		new Werkstoff.GenerationFeatures().disable().addCells(),
+    		offsetID + 42,
+    		TextureSet.SET_FLUID
+    	);
+    
+    public static final Werkstoff PotassiumPermanganate = new Werkstoff(
+    		new short[] {165, 50, 138},
+    		"Potassium Permanganate",
+    		subscriptNumbers("KMnO4"),
+    		new Werkstoff.Stats(),
+    		Werkstoff.Types.COMPOUND,
+    		new Werkstoff.GenerationFeatures().disable().addCells(),
+    		offsetID + 43,
+    		TextureSet.SET_FLUID
+    	);
+    
+    public static final Werkstoff SeaweedByproducts = new Werkstoff(
+    		new short[] {125, 50, 138},
+    		"Seaweed Byproducts",
+    		new Werkstoff.Stats(),
+    		Werkstoff.Types.MIXTURE,
+    		new Werkstoff.GenerationFeatures().disable().addCells(),
+    		offsetID + 44,
+    		TextureSet.SET_FLUID
+    	);
+    
+    public static final Werkstoff NitricLeachedMonaziteMixture = new Werkstoff(
+    		new short[] {125, 50, 138},
+    		"Nitric-Leached Monazite Mixture",
+    		new Werkstoff.Stats(),
+    		Werkstoff.Types.MIXTURE,
+    		new Werkstoff.GenerationFeatures().disable().addCells(),
+    		offsetID + 45,
+    		TextureSet.SET_FLUID
+    	);
+    
+    
+    
+    
+    
+    // BASTNASITE
+    public static final Werkstoff MuddyRareEarthBastnasiteSolution = new Werkstoff(
+    		new short[] {205, 133, 63},
+    		"Muddy Bastnasite Rare Earth Solution",
+    		subscriptNumbers("??LaCeY??"),
+    		new Werkstoff.Stats(),
+    		Werkstoff.Types.MIXTURE,
+    		new Werkstoff.GenerationFeatures().disable().addCells(),
+    		offsetID2,
+    		TextureSet.SET_FLUID
+    	);
+    
+    public static final Werkstoff FluorosilicicAcid = new Werkstoff(
+    		new short[] {205, 133, 63},
+    		"Hexafluorosilicic Acid",
+    		subscriptNumbers("H2SiF6"),
+    		new Werkstoff.Stats(),
+    		Werkstoff.Types.COMPOUND,
+    		new Werkstoff.GenerationFeatures().disable().addCells(),
+    		offsetID2 + 1,
+    		TextureSet.SET_FLUID
+    	);
+    
+    public static final Werkstoff SodiumFluorosilicate = new Werkstoff(
+    		new short[] {205, 133, 63},
+    		"Sodiumfluorosilicate",
+    		subscriptNumbers("Na2SiF6"),
+    		new Werkstoff.Stats(),
+    		Werkstoff.Types.COMPOUND,
+    		new Werkstoff.GenerationFeatures().disable().addCells(),
+    		offsetID2 + 2,
+    		TextureSet.SET_FLUID
+    	);
+    
+    public static final Werkstoff SteamCrackedBasnasiteSolution = new Werkstoff(
+    		new short[] {205, 133, 63},
+    		"Steam-Cracked Bastnasite Mud",
+    		subscriptNumbers("??LaCeY??"),
+    		new Werkstoff.Stats(),
+    		Werkstoff.Types.MIXTURE,
+    		new Werkstoff.GenerationFeatures().disable().addCells(),
+    		offsetID2 + 3,
+    		TextureSet.SET_FLUID
+    	);
+    
+    public static final Werkstoff ConditionedBastnasiteMud = new Werkstoff(
+    		new short[] {205, 133, 63},
+    		"Conditioned Bastnasite Mud",
+    		subscriptNumbers("??LaCeY??"),
+    		new Werkstoff.Stats(),
+    		Werkstoff.Types.MIXTURE,
+    		new Werkstoff.GenerationFeatures().disable().addCells(),
+    		offsetID2 + 4,
+    		TextureSet.SET_FLUID
+    	);
+    
+    public static final Werkstoff DiltedRareEarthBastnasiteMud = new Werkstoff(
+    		new short[] {205, 133, 63},
+    		"Diluted Bastnasite Mud",
+    		subscriptNumbers("??LaCeY??"),
+    		new Werkstoff.Stats(),
+    		Werkstoff.Types.MIXTURE,
+    		new Werkstoff.GenerationFeatures().disable().addCells(),
+    		offsetID2 + 5,
+    		TextureSet.SET_FLUID
+    	);
+    
+    public static final Werkstoff FilteredBastnasiteMud = new Werkstoff(
+    		new short[] {205, 133, 63},
+    		"Filtered Bastnasite Mud",
+    		subscriptNumbers("??LaCeY??"),
+    		new Werkstoff.Stats(),
+    		Werkstoff.Types.MIXTURE,
+    		new Werkstoff.GenerationFeatures().disable().addCells(),
+    		offsetID2 + 6,
+    		TextureSet.SET_FLUID
+    	);
+    
+    public static final Werkstoff BastnasiteRareEarthOxidePowder = new Werkstoff(
+    		new short[] {205, 133, 63},
+    		"Bastnasite Rare Earth Oxides",
+    		subscriptNumbers("??LaCeY??"),
+    		new Werkstoff.Stats(),
+    		Werkstoff.Types.MIXTURE,
+    		new Werkstoff.GenerationFeatures().disable().onlyDust(),
+    		offsetID2 + 7,
+    		TextureSet.SET_DULL
+    	);
+    
+    public static final Werkstoff LeachedBastnasiteRareEarthOxides = new Werkstoff(
+    		new short[] {205, 133, 63},
+    		"Acid-Leached Bastnasite Rare Earth Oxides",
+    		subscriptNumbers("??LaCeY??"),
+    		new Werkstoff.Stats(),
+    		Werkstoff.Types.MIXTURE,
+    		new Werkstoff.GenerationFeatures().disable().onlyDust(),
+    		offsetID2 + 8,
+    		TextureSet.SET_DULL
+    	);
+    
+    public static final Werkstoff Gangue = new Werkstoff(
+    		new short[] {0, 0, 0},
+    		"Gangue",
+    		new Werkstoff.Stats(),
+    		Werkstoff.Types.MIXTURE,
+    		new Werkstoff.GenerationFeatures().disable().onlyDust(),
+    		offsetID2 + 9,
+    		TextureSet.SET_DULL
+    	);
+    
+    public static final Werkstoff RoastedRareEarthOxides = new Werkstoff(
+    		new short[] {160, 82, 45},
+    		"Roasted Rare Earth Oxides",
+    		new Werkstoff.Stats(),
+    		Werkstoff.Types.MIXTURE,
+    		new Werkstoff.GenerationFeatures().disable().onlyDust(),
+    		offsetID2 + 10,
+    		TextureSet.SET_DULL
+    	);
+    
+    public static final Werkstoff WetRareEarthOxides = new Werkstoff(
+    		new short[] {160, 82, 49},
+    		"Wet Rare Earth Oxides",
+    		new Werkstoff.Stats(),
+    		Werkstoff.Types.MIXTURE,
+    		new Werkstoff.GenerationFeatures().disable().onlyDust(),
+    		offsetID2 + 11,
+    		TextureSet.SET_DULL
+    	);
+    
+    public static final Werkstoff CeriumOxidisedRareEarthOxides = new Werkstoff(
+    		new short[] {160, 82, 49},
+    		"Cerium-Oxidised Rare Earth Oxides",
+    		new Werkstoff.Stats(),
+    		Werkstoff.Types.MIXTURE,
+    		new Werkstoff.GenerationFeatures().disable().onlyDust(),
+    		offsetID2 + 12,
+    		TextureSet.SET_DULL
+    	);
+    
+    
+    
+    
+    
+    
+    
+    // Weird/Exciting Chemicals		
+    public static final Werkstoff Tetrahydrofuran = new Werkstoff(
+    		new short[] {255, 255, 255}, //TODO
+    		"Tetrahydrofuran",
+    		subscriptNumbers("(CH2)4O"),
+    		new Werkstoff.Stats(),
+    		Werkstoff.Types.COMPOUND,
+    		new Werkstoff.GenerationFeatures().disable().addCells(),
+    		offsetID3,
+    		TextureSet.SET_FLUID
+    	);
+    
+    //1,4-Butanediol
+    public static final Werkstoff Butanediol = new Werkstoff(
+    		new short[] {255, 255, 255}, //TODO
+    		"1,4-Butanediol",
+    		subscriptNumbers("HO(CH2)4OH"),
+    		new Werkstoff.Stats(),
+    		Werkstoff.Types.COMPOUND,
+    		new Werkstoff.GenerationFeatures().disable().addCells(),
+    		offsetID3 + 1,
+    		TextureSet.SET_FLUID
+    	);
+    
+    //Acidicised 1,4-Butanediol
+    public static final Werkstoff AcidicButanediol = new Werkstoff(
+    		new short[] {255, 239, 213},
+    		"Acidicised 1,4-Butanediol",
+    		new Werkstoff.Stats(),
+    		Werkstoff.Types.MIXTURE,
+    		new Werkstoff.GenerationFeatures().disable().addCells(),
+    		offsetID3 + 2,
+    		TextureSet.SET_FLUID
+    	);
+    
+    //Tellurium-Molybdenum-Oxide Catalyst
+    public static final Werkstoff MoTeOCatalyst= new Werkstoff(
+    		new short[] {238, 131, 238},
+    		"Tellurium-Molybdenum-Oxide Catalyst",
+    		new Werkstoff.Stats(),
+    		Werkstoff.Types.MIXTURE,
+    		new Werkstoff.GenerationFeatures().disable().onlyDust(),
+    		offsetID3 + 3,
+    		TextureSet.SET_DULL
+    	);
+    
+    //Tellurium Oxide
+    public static final Werkstoff TelluriumIVOxide = new Werkstoff(
+    		new short[] {229, 199, 187},
+    		"Tellurium (IV) Oxide",
+    		subscriptNumbers("TeO2"),
+    		new Werkstoff.Stats(),
+    		Werkstoff.Types.COMPOUND,
+    		new Werkstoff.GenerationFeatures().disable().onlyDust(),
+    		offsetID3 + 4,
+    		TextureSet.SET_DULL
+    	);
+    
+    public static final Werkstoff MolybdenumIVOxide = new Werkstoff(
+    		new short[] {52, 53, 57},
+    		"Molybdenum (IV) Oxide",
+    		subscriptNumbers("MoO2"),
+    		new Werkstoff.Stats(),
+    		Werkstoff.Types.COMPOUND,
+    		new Werkstoff.GenerationFeatures().disable().onlyDust(),
+    		offsetID3 + 5,
+    		TextureSet.SET_DULL
+    	);
+    
+    public static final Werkstoff Polytetrahydrofuran = new Werkstoff(
+    		new short[] {255, 255, 255},
+    		"Polytetrahydrofuran",
+    		subscriptNumbers("(C4H8O)OH2"),
+    		new Werkstoff.Stats(),
+    		Werkstoff.Types.COMPOUND,
+    		new Werkstoff.GenerationFeatures().disable().onlyDust().addCells(),
+    		offsetID3 + 6,
+    		TextureSet.SET_DULL
+    	);
+    
+    public static final Werkstoff TungstophosphoricAcid = new Werkstoff(
+    		new short[] {255, 255, 255},
+    		"Tungstophosphoric Acid",
+    		subscriptNumbers("H3PW12O40"),
+    		new Werkstoff.Stats(),
+    		Werkstoff.Types.COMPOUND,
+    		new Werkstoff.GenerationFeatures().disable().addCells(),
+    		offsetID3 + 7,
+    		TextureSet.SET_FLUID
+    	);
+    
+    public static final Werkstoff TolueneDiisocyanate = new Werkstoff(
+    		new short[] {255, 255, 102},
+    		"Toluene Diisocyanate",
+    		subscriptNumbers("CH3C6H3(NCO)2"),
+    		new Werkstoff.Stats(),
+    		Werkstoff.Types.COMPOUND,
+    		new Werkstoff.GenerationFeatures().disable().addCells(),
+    		offsetID3 + 8,
+    		TextureSet.SET_FLUID
+    	);
+    
+    public static final Werkstoff Dinitrotoluene = new Werkstoff(
+    		new short[] {255, 255, 255},
+    		"Dinitrotoluene",
+    		subscriptNumbers("C7H6N2O4"),
+    		new Werkstoff.Stats(),
+    		Werkstoff.Types.COMPOUND,
+    		new Werkstoff.GenerationFeatures().disable().addCells(),
+    		offsetID3 + 9,
+    		TextureSet.SET_FLUID
+    	);
+    
+    public static final Werkstoff Diaminotoluene = new Werkstoff(
+    		new short[] {255, 255, 255},
+    		"Diaminotoluene",
+    		new Werkstoff.Stats(),
+    		Werkstoff.Types.COMPOUND,
+    		new Werkstoff.GenerationFeatures().disable().addCells(),
+    		offsetID3 + 10,
+    		TextureSet.SET_FLUID
+    	);
+    
+    public static final Werkstoff TolueneTetramethylDiisocyanate = new Werkstoff(
+    		new short[] {255, 255, 255},
+    		"Toluene Tetramethyl Diisocyanate",
+    		subscriptNumbers("(CONH)2(C6H4)2CH2(C4O)"),
+    		new Werkstoff.Stats(),
+    		Werkstoff.Types.COMPOUND,
+    		new Werkstoff.GenerationFeatures().disable().addCells(),
+    		offsetID3 + 11,
+    		TextureSet.SET_FLUID
+    	);
+    
+    public static final Werkstoff PTMEGElastomer = new Werkstoff(
+    		new short[] {255, 255, 255},
+    		"PTMEG Elastomer",
+    		subscriptNumbers("(CONH)2(C6H4)2CH2(C4O)"),
+    		new Werkstoff.Stats(),
+    		Werkstoff.Types.COMPOUND,
+    		new Werkstoff.GenerationFeatures().disable().addCells(),
+    		offsetID3 + 12,
+    		TextureSet.SET_FLUID
+    		);
+    
+    
+    
     
     
     		

@@ -2,6 +2,8 @@ package com.elisis.gtnhlanth.common.tileentity;
 
 import static com.elisis.gtnhlanth.util.DescTextLocalization.BLUEPRINT_INFO;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
 import java.util.ArrayList;
@@ -10,31 +12,24 @@ import org.lwjgl.input.Keyboard;
 
 import com.elisis.gtnhlanth.loader.RecipeAdder;
 import com.elisis.gtnhlanth.util.DescTextLocalization;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_GUIContainer_MultiMachineEM;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import static com.elisis.gtnhlanth.util.DescTextLocalization.BLUEPRINT_INFO;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.util.GT_StructureUtility.ofCoil;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
-
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.Materials;
+import gregtech.api.gui.GT_GUIContainer_MultiMachine;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-public class DissolutionTank extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
-	
+public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<DissolutionTank> implements IConstructable {
+    
 	@SuppressWarnings("deprecation")
 	private IStructureDefinition<DissolutionTank> multiDefinition = StructureDefinition.<DissolutionTank>builder()
 		.addShape(mName, transpose(new String[][] {
@@ -76,13 +71,13 @@ public class DissolutionTank extends GT_MetaTileEntity_MultiblockBase_EM impleme
 
 	
 	@Override
-    public IStructureDefinition<DissolutionTank> getStructure_EM(){	
-		return null;
+    public IStructureDefinition<DissolutionTank> getStructureDefinition(){	
+		return multiDefinition;
 	}
 	
 	@Override
-    public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return structureCheck_EM(mName, 3, 3, 0);
+    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        return checkPiece(mName, 3, 3, 0);
     }
 	
 	@Override
@@ -91,7 +86,7 @@ public class DissolutionTank extends GT_MetaTileEntity_MultiblockBase_EM impleme
     }
 	
 	@Override
-	public boolean checkRecipe_EM(ItemStack itemStack) {
+	public boolean checkRecipe(ItemStack itemStack) {
 		
 		ArrayList<FluidStack> tFluidInputs = this.getStoredFluids();
 		FluidStack[] tFluidInputArray = tFluidInputs.toArray(new FluidStack[0]);
@@ -188,12 +183,63 @@ public class DissolutionTank extends GT_MetaTileEntity_MultiblockBase_EM impleme
 	
 	@Override
     public Object getClientGUI(int id, InventoryPlayer playerInventory, IGregTechTileEntity metaTileEntity) {
-        return new GT_GUIContainer_MultiMachineEM(playerInventory, metaTileEntity, getLocalName(), "DissolutionTank.png");
+        return new GT_GUIContainer_MultiMachine(playerInventory, metaTileEntity, getLocalName(), "DissolutionTank.png");
     }
 	
 	@Override
     public String[] getDescription() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+		final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        tt.addMachineType("Heat Exchanger")
+                .addInfo("Controller Block for the Large Heat Exchanger")
+                .addInfo("More complicated than a Fusion Reactor. Seriously")
+                .addInfo("Inputs are Hot Coolant or Lava")
+                .addInfo("Outputs Coolant or Pahoehoe Lava and SH Steam/Steam")
+                .addInfo("Read the wiki article to understand how it works")
+                .addInfo("Then go to the Discord to understand the wiki")
+                .addSeparator()
+                .beginStructureBlock(3, 4, 3, false)
+                .addController("Front bottom")
+                .addCasingInfo("Stable Titanium Machine Casing", 20)
+                .addOtherStructurePart("Titanium Pipe Casing", "Center 2 blocks")
+                .addMaintenanceHatch("Any casing", 1)
+                .addInputHatch("Hot fluid, bottom center", 2)
+                .addInputHatch("Distilled water, any casing", 1)
+                .addOutputHatch("Cold fluid, top center", 3)
+                .addOutputHatch("Steam/SH Steam, any casing", 1)
+                .toolTipFinisher("Gregtech");
+		if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+	        return tt.getInformation();
+	    } else {
+	        return tt.getStructureInformation();
+	    }
+    }
+	
+	@Override
+	public IMetaTileEntity newMetaEntity(IGregTechTileEntity arg0) {
+		return new DissolutionTank(this.mName);
+	}
+	
+	@Override
+	public void construct(ItemStack itemStack, boolean b) {
+		buildPiece(mName, itemStack, b, 3, 3, 0);
+		
+	}
+	
+	@Override
+	public String[] getStructureDescription(ItemStack arg0) {
+		return DescTextLocalization.addText("DissolutionTank.hint", 11);
+	}
+
+	@Override
+	public ITexture[] getTexture(IGregTechTileEntity arg0, byte arg1, byte arg2, byte arg3, boolean arg4,
+			boolean arg5) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected GT_Multiblock_Tooltip_Builder createTooltip() {
+		final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Dissolution Tank")
                 .addInfo("Controller block for the Dissolution Tank")
                 .addInfo(BLUEPRINT_INFO)
@@ -205,27 +251,18 @@ public class DissolutionTank extends GT_MetaTileEntity_MultiblockBase_EM impleme
                 .addOutputBus("Hint block with dot 2")
                 .addMaintenanceHatch("Hint block with dot 2")
                 .toolTipFinisher("GTNH: Lanthanides");
-        if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-            return tt.getInformation();
-        } else {
-            return tt.getStructureInformation();
-        }
-    }
-	
-	@Override
-	public IMetaTileEntity newMetaEntity(IGregTechTileEntity arg0) {
-		return new DissolutionTank(this.mName);
+        
+        return tt;
 	}
-	
+
 	@Override
-	public void construct(ItemStack itemStack, boolean b) {
-		structureBuild_EM(mName, 3, 3, 0, b, itemStack);
-		
+	public boolean explodesOnComponentBreak(ItemStack arg0) {
+		return false;
 	}
-	
+
 	@Override
-	public String[] getStructureDescription(ItemStack arg0) {
-		return DescTextLocalization.addText("DissolutionTank.hint", 11);
+	public int getDamageToComponent(ItemStack arg0) {
+		return 0;
 	}
 
 	    
