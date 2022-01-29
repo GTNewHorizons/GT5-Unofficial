@@ -58,6 +58,7 @@ public class CONTAINER_PollutionCleaner extends GT_Container_BasicTank {
 		super.detectAndSendChanges();
 		if (mTileEntity.isClientSide() || mTileEntity.getMetaTileEntity() == null) return;
 
+		Logger.INFO("TEST");
 		mReduction = ((GregtechMetaAtmosphericReconditioner) mTileEntity.getMetaTileEntity()).mPollutionReduction;
 
 		Iterator var2 = this.crafters.iterator();
