@@ -224,22 +224,22 @@ public class GT_Cover_TM_EnderFluidLink extends GT_CoverBehavior {
             resetColorField();
             //Public/Private Buttons
             newButtonWithSpacing(PUBLIC_BUTTON_ID, 0, 2, GT_GuiIcon.WHITELIST)
-                    .setTooltipText("Public");
+                    .setTooltipText(trans("326", "Public"));
             newButtonWithSpacing(PRIVATE_BUTTON_ID, 1, 2, GT_GuiIcon.BLACKLIST)
-                    .setTooltipText("Private");
+                    .setTooltipText(trans("327", "Private"));
             //Import/Export Buttons
             newButtonWithSpacing(IMPORT_BUTTON_ID, 0, 3, GT_GuiIcon.IMPORT)
                     .setTooltipText(trans("007", "Import"));
             newButtonWithSpacing(EXPORT_BUTTON_ID, 1, 3, GT_GuiIcon.EXPORT)
-                    .setTooltipText(trans("007", "Export"));
+                    .setTooltipText(trans("006", "Export"));
         }
 
         @Override
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
             drawColorSquare(0, 0);
-            drawNewString("Color Value", 2, 0);
-            drawNewString("Public/Private", 2, 2);
+            drawNewString(trans("328", "Color Value"), 2, 0);
+            drawNewString(trans("329", "Public/Private"), 2, 2);
             drawNewString(trans("229", "Import/Export"), 2, 3);
         }
 
