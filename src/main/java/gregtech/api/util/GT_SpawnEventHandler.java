@@ -27,6 +27,10 @@ public class GT_SpawnEventHandler {
             return;
         }
 
+        if(event.entityLiving instanceof EntitySlime) {
+            ((EntitySlime) event.entityLiving).setCustomNameTag("BlockedSlimeSpawn");
+        }
+
         if (event.entityLiving.isCreatureType(EnumCreatureType.monster, false)) {
             for (int[] rep : mobReps) {
                 if (rep[3] == event.entity.worldObj.provider.dimensionId) {
