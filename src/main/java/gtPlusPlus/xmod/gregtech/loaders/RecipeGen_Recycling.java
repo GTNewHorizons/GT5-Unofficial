@@ -1,6 +1,8 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
+import static gregtech.api.enums.GT_Values.L;
 import static gregtech.api.enums.GT_Values.M;
+import static gregtech.api.enums.GT_Values.RA;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -9,6 +11,7 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SubTag;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
@@ -105,7 +108,7 @@ public class RecipeGen_Recycling implements Runnable {
 			for (final Pair<OrePrefixes, ItemStack> validPrefix : mValidPairs) {
 				try {
 					
-					if (material == null || validPrefix == null || material.getState() != MaterialState.SOLID || validPrefix.getKey() == OrePrefixes.ingotHot) {
+					if (material == null || validPrefix == null || (material.getState() != MaterialState.SOLID && material.getState() != MaterialState.LIQUID) || validPrefix.getKey() == OrePrefixes.ingotHot) {
 						continue;
 					}
 					
@@ -137,9 +140,13 @@ public class RecipeGen_Recycling implements Runnable {
 					//Fluid Extractor
 					if (ItemUtils.checkForInvalidItems(tempStack)) {
 						// mValidItems[mSlotIndex++] = tempStack;
-						if ((mDust != null) && CORE.RA.addFluidExtractionRecipe(tempStack, material.getFluidStack(mFluidAmount), 30, material.vVoltageMultiplier)) {
+						
+						int aFluidAmount = (int) ((L * validPrefix.getKey().mMaterialAmount) / (M * tempStack.stackSize));
+						int aDuration = (int) Math.max(1, (24 * validPrefix.getKey().mMaterialAmount) / M);
+						boolean aGenFluidExtraction = CORE.RA.addFluidExtractionRecipe(tempStack, material.getFluidStack(aFluidAmount), aDuration, material.vVoltageMultiplier);
+						if (aGenFluidExtraction/*(mDust != null) && CORE.RA.addFluidExtractionRecipe(tempStack, material.getFluidStack(mFluidAmount), 30, material.vVoltageMultiplier)*/) {
 							Logger.WARNING("Fluid Recycle Recipe: " + material.getLocalizedName() + " - Success - Recycle "
-									+ tempStack.getDisplayName() + " and obtain " + mFluidAmount+"mb of "+material.getFluidStack(1).getLocalizedName()+".");
+									+ tempStack.getDisplayName() + " and obtain " + aFluidAmount+"mb of "+material.getFluidStack(1).getLocalizedName()+". Time: "+aDuration+", Voltage: "+material.vVoltageMultiplier);
 						}
 						else {
 							Logger.WARNING("Fluid Recycle Recipe: " + material.getLocalizedName() + " - Failed");

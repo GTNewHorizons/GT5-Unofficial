@@ -5,6 +5,8 @@ import java.util.Set;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
@@ -15,8 +17,10 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 public class RecipeGen_Fluids extends RecipeGen_Base {
 
 	public final static Set<RunnableWithInfo<Material>> mRecipeGenMap = new HashSet<RunnableWithInfo<Material>>();
+	private static boolean mRotorShapeEnabled = false;
 	static {
 		MaterialGenerator.mRecipeMapsToGenerate.put(mRecipeGenMap);
+		mRotorShapeEnabled = ItemUtils.doesItemListEntryExist("Shape_Extruder_Rotor");
 	}
 
 	public RecipeGen_Fluids(final Material M) {
@@ -43,85 +47,6 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 		// Melting Shapes to fluid
 		if (material.getFluidStack(1) != null
 				&& !material.getFluidStack(1).getUnlocalizedName().toLowerCase().contains("plasma")) {
-
-			if (!material.requiresBlastFurnace()) {
-
-				// Ingot
-				if (ItemUtils.checkForInvalidItems(material.getIngot(1)))
-					if (CORE.RA.addFluidExtractionRecipe(
-							material.getIngot(1), // Input
-							material.getFluidStack(144), // Fluid Output
-							1 * 20, // Duration
-							material.vVoltageMultiplier // Eu Tick
-					)) {
-						Logger.WARNING("144l fluid extractor from 1 ingot Recipe: " + material.getLocalizedName()
-								+ " - Success");
-					} else {
-						Logger.WARNING("144l fluid extractor from 1 ingot Recipe: " + material.getLocalizedName()
-								+ " - Failed");
-					}
-
-				// Plate
-				if (ItemUtils.checkForInvalidItems(material.getPlate(1)))
-					if (CORE.RA.addFluidExtractionRecipe(
-							material.getPlate(1), // Input
-							material.getFluidStack(144), // Fluid Output
-							1 * 20, // Duration
-							material.vVoltageMultiplier // Eu Tick
-					)) {
-						Logger.WARNING("144l fluid extractor from 1 plate Recipe: " + material.getLocalizedName()
-								+ " - Success");
-					} else {
-						Logger.WARNING("144l fluid extractor from 1 plate Recipe: " + material.getLocalizedName()
-								+ " - Failed");
-					}
-
-				// Double Plate
-				if (ItemUtils.checkForInvalidItems(material.getPlateDouble(1)))
-					if (CORE.RA.addFluidExtractionRecipe(
-							material.getPlateDouble(1), // Input
-							material.getFluidStack(288), // Fluid Output
-							1 * 20, // Duration
-							material.vVoltageMultiplier // Eu Tick
-					)) {
-						Logger.WARNING("144l fluid extractor from 1 double plate Recipe: " + material.getLocalizedName()
-								+ " - Success");
-					} else {
-						Logger.WARNING("144l fluid extractor from 1 double plate Recipe: " + material.getLocalizedName()
-								+ " - Failed");
-					}
-
-				// Nugget
-				if (ItemUtils.checkForInvalidItems(material.getNugget(1)))
-					if (CORE.RA.addFluidExtractionRecipe(
-							material.getNugget(1), // Input
-							material.getFluidStack(16), // Fluid Output
-							16, // Duration
-							material.vVoltageMultiplier // Eu Tick
-					)) {
-						Logger.WARNING("16l fluid extractor from 1 nugget Recipe: " + material.getLocalizedName()
-								+ " - Success");
-					} else {
-						Logger.WARNING("16l fluid extractor from 1 nugget Recipe: " + material.getLocalizedName()
-								+ " - Failed");
-					}
-
-				// Block
-				if (ItemUtils.checkForInvalidItems(material.getBlock(1)))
-					if (CORE.RA.addFluidExtractionRecipe(
-							material.getBlock(1), // Input
-							material.getFluidStack(144 * 9), // Fluid Output
-							288, // Duration
-							material.vVoltageMultiplier // Eu Tick
-					)) {
-						Logger.WARNING((144 * 9) + "l fluid extractor from 1 block Recipe: "
-								+ material.getLocalizedName() + " - Success");
-					} else {
-						Logger.WARNING((144 * 9) + "l fluid extractor from 1 block Recipe: "
-								+ material.getLocalizedName() + " - Failed");
-					}
-
-			}
 
 			// Making Shapes from fluid
 
@@ -215,6 +140,7 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 				ItemList mold_Bolt = ItemUtils.getValueOfItemList("Shape_Mold_Bolt", null);
 				ItemList mold_Screw = ItemUtils.getValueOfItemList("Shape_Mold_Screw", null);
 				ItemList mold_Ring = ItemUtils.getValueOfItemList("Shape_Mold_Ring", null);
+				ItemList mold_Rotor = ItemUtils.getValueOfItemList("Shape_Mold_Rotor", null);
 
 				// Rod
 				if (ItemUtils.checkForInvalidItems(material.getRod(1)))
@@ -291,7 +217,23 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 						Logger.WARNING((144 * 9) + "l fluid molder from 1 ring Recipe: " + material.getLocalizedName()
 								+ " - Failed");
 					}
+				
+				// Rotor
+				if (ItemUtils.checkForInvalidItems(material.getRotor(1)))
+					if (mold_Rotor != null && GT_Values.RA.addFluidSolidifierRecipe(mold_Rotor.get(0), // Item Shape
+							material.getFluidStack(612), // Fluid Input
+							material.getRotor(1), // output
+							100, // Duration
+							material.vVoltageMultiplier // Eu Tick
+					)) {
+						Logger.WARNING((144 * 9) + "l fluid molder from 1 rotor Recipe: " + material.getLocalizedName()
+								+ " - Success");
+					} else {
+						Logger.WARNING((144 * 9) + "l fluid molder from 1 rotor Recipe: " + material.getLocalizedName()
+								+ " - Failed");
+					}				
 
+	            
 			}
 		}
 	}

@@ -66,11 +66,11 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 		return this.mCurrentDimension;
 	}
 
-	public Map<UUID, EntityPlayer> getLocalMap(){
+	public Map<String, UUID> getLocalMap(){
 		return this.mLocalChargingMap;
 	}
 
-	public Map<EntityPlayer, UUID> getLongRangeMap(){
+	public Map<String, UUID> getLongRangeMap(){
 		return this.mWirelessChargingMap;
 	}
 
@@ -372,9 +372,8 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 		super.onFirstTick(aBaseMetaTileEntity);
 	}
 
-
-	private Map<EntityPlayer, UUID> mWirelessChargingMap = new HashMap<EntityPlayer, UUID>();
-	private Map<UUID, EntityPlayer> mLocalChargingMap = new HashMap<UUID, EntityPlayer>();
+	private Map<String, UUID> mWirelessChargingMap = new HashMap<String, UUID>();
+	private Map<String, UUID> mLocalChargingMap = new HashMap<String, UUID>();
 	
 	private boolean isValidPlayer(EntityPlayer aPlayer) {
 		BaseMetaTileEntity aTile = (BaseMetaTileEntity) this.getBaseMetaTileEntity();
@@ -412,7 +411,7 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 								int tempRange = (this.mMode == 1 ? this.mTier*20 : this.mTier*10);
 								if (getDistanceBetweenTwoPositions(getTileEntityPosition(), getPositionOfEntity(mTemp)) < tempRange){
 									if (isValidPlayer(mTemp) && !mLocalChargingMap.containsKey(mTemp.getPersistentID())){
-										mLocalChargingMap.put(mTemp.getPersistentID(), mTemp);
+										mLocalChargingMap.put(mTemp.getDisplayName(), mTemp.getPersistentID());
 										ChargingHelper.addValidPlayer(mTemp, this);
 										//PlayerUtils.messagePlayer(mTemp, "You have entered charging range. ["+tempRange+"m - Local].");
 									}
@@ -430,8 +429,8 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 								int tempRange = (int) (this.mMode == 0 ? 4*GT_Values.V[this.mTier] : 2*GT_Values.V[this.mTier]);
 								if (getDistanceBetweenTwoPositions(getTileEntityPosition(), getPositionOfEntity(mTemp)) <= tempRange){
 									if (!mWirelessChargingMap.containsKey(mTemp)){
-										if (mTemp.getDisplayName().equalsIgnoreCase(this.getBaseMetaTileEntity().getOwnerName())) {
-											mWirelessChargingMap.put(mTemp, mTemp.getPersistentID());
+										if (isValidPlayer(mTemp)) {
+											mWirelessChargingMap.put(mTemp.getDisplayName(), mTemp.getPersistentID());
 											ChargingHelper.addValidPlayer(mTemp, this);
 											PlayerUtils.messagePlayer(mTemp, "You have entered charging range. ["+tempRange+"m - Long-Range].");											
 										}
@@ -538,15 +537,29 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 		}
 
 		if (this.mMode == 2){
-			PlayerUtils.messagePlayer(aPlayer, "Mixed Mode | Local: "+this.mTier*10+"m | Long: "+tempRange+"m");	
+			PlayerUtils.messagePlayer(aPlayer, "Mixed Mode | Local: "+this.mTier*10+"m | Long: "+tempRange+"m");
+			PlayerUtils.messagePlayer(aPlayer, "Players with access:");
+			for (String name : this.getLocalMap().keySet()) {
+				PlayerUtils.messagePlayer(aPlayer, "Local: "+name);
+			}
+			for (String name : this.getLongRangeMap().keySet()) {
+				PlayerUtils.messagePlayer(aPlayer, "Long: "+name);
+			}
 		}
 		else if (this.mMode == 1){
 			PlayerUtils.messagePlayer(aPlayer, "Local Mode: "+this.mTier*20+"m");	
+			PlayerUtils.messagePlayer(aPlayer, "Players with access:");
+			for (String name : this.getLocalMap().keySet()) {
+				PlayerUtils.messagePlayer(aPlayer, ""+name);
+			}
 
 		}
 		else {
 			PlayerUtils.messagePlayer(aPlayer, "Long-range Mode: "+tempRange+"m");	
-
+			PlayerUtils.messagePlayer(aPlayer, "Players with access:");
+			for (String name : this.getLongRangeMap().keySet()) {
+				PlayerUtils.messagePlayer(aPlayer, ""+name);
+			}
 		}
 
 		return super.onRightclick(aBaseMetaTileEntity, aPlayer, aSide, aX, aY, aZ);

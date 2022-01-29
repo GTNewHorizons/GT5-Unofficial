@@ -25,8 +25,8 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
-public class GregtechMetaTileEntity_IndustrialMacerator
-extends GregtechMeta_MultiBlockBase {
+public class GregtechMetaTileEntity_IndustrialMacerator extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialMacerator> {
+	
 	private int mCasing;
 	private int mPerLayer;
 	private IStructureDefinition<GregtechMetaTileEntity_IndustrialMacerator> STRUCTURE_DEFINITION = null;
@@ -145,13 +145,16 @@ extends GregtechMeta_MultiBlockBase {
 	public final boolean addIndustrialMaceratorBottomList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
 		if (aTileEntity == null) {
 			return false;
-		} else {
+		}
+		else {
 			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus){
+			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus) {
 				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance){
+			}
+			else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance) {
 				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy){
+			}
+			else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy) {
 				return addToMachineList(aTileEntity, aBaseCasingIndex);
 			}
 		}
@@ -161,11 +164,19 @@ extends GregtechMeta_MultiBlockBase {
 	public final boolean addIndustrialMaceratorMidList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
 		if (aTileEntity == null) {
 			return false;
-		} else {
+		}
+		else {
 			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
 			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus) {
 				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler) {
+			}
+			else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler) {
+				return addToMachineList(aTileEntity, aBaseCasingIndex);
+			}
+			else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance) {
+				return addToMachineList(aTileEntity, aBaseCasingIndex);
+			}
+			else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy) {
 				return addToMachineList(aTileEntity, aBaseCasingIndex);
 			}
 		}

@@ -5,7 +5,19 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.machine.Machine_SuperJukebox.TileEntitySuperJukebox;
-import gtPlusPlus.core.container.*;
+import gtPlusPlus.core.container.Container_BackpackBase;
+import gtPlusPlus.core.container.Container_CircuitProgrammer;
+import gtPlusPlus.core.container.Container_DecayablesChest;
+import gtPlusPlus.core.container.Container_EggBox;
+import gtPlusPlus.core.container.Container_FishTrap;
+import gtPlusPlus.core.container.Container_Grindle;
+import gtPlusPlus.core.container.Container_ModularityTable;
+import gtPlusPlus.core.container.Container_PestKiller;
+import gtPlusPlus.core.container.Container_ProjectTable;
+import gtPlusPlus.core.container.Container_RoundRobinator;
+import gtPlusPlus.core.container.Container_SuperJukebox;
+import gtPlusPlus.core.container.Container_TradeTable;
+import gtPlusPlus.core.container.Container_VolumetricFlaskSetter;
 import gtPlusPlus.core.container.box.LunchBoxContainer;
 import gtPlusPlus.core.container.box.MagicBagContainer;
 import gtPlusPlus.core.container.box.ToolBoxContainer;
@@ -16,7 +28,17 @@ import gtPlusPlus.core.gui.item.GuiBaseGrindle;
 import gtPlusPlus.core.gui.item.box.LunchBoxGui;
 import gtPlusPlus.core.gui.item.box.MagicBagGui;
 import gtPlusPlus.core.gui.item.box.ToolBoxGui;
-import gtPlusPlus.core.gui.machine.*;
+import gtPlusPlus.core.gui.machine.GUI_CircuitProgrammer;
+import gtPlusPlus.core.gui.machine.GUI_DecayablesChest;
+import gtPlusPlus.core.gui.machine.GUI_EggBox;
+import gtPlusPlus.core.gui.machine.GUI_FishTrap;
+import gtPlusPlus.core.gui.machine.GUI_ModularityTable;
+import gtPlusPlus.core.gui.machine.GUI_PestKiller;
+import gtPlusPlus.core.gui.machine.GUI_ProjectTable;
+import gtPlusPlus.core.gui.machine.GUI_RoundRobinator;
+import gtPlusPlus.core.gui.machine.GUI_SuperJukebox;
+import gtPlusPlus.core.gui.machine.GUI_TradeTable;
+import gtPlusPlus.core.gui.machine.GUI_VolumetricFlaskSetter;
 import gtPlusPlus.core.interfaces.IGuiManager;
 import gtPlusPlus.core.inventories.BaseInventoryBackpack;
 import gtPlusPlus.core.inventories.BaseInventoryGrindle;
@@ -24,14 +46,16 @@ import gtPlusPlus.core.inventories.box.LunchBoxInventory;
 import gtPlusPlus.core.inventories.box.MagicBagInventory;
 import gtPlusPlus.core.inventories.box.ToolBoxInventory;
 import gtPlusPlus.core.tileentities.base.TileEntityBase;
-import gtPlusPlus.core.tileentities.general.*;
+import gtPlusPlus.core.tileentities.general.TileEntityCircuitProgrammer;
+import gtPlusPlus.core.tileentities.general.TileEntityDecayablesChest;
+import gtPlusPlus.core.tileentities.general.TileEntityEggBox;
+import gtPlusPlus.core.tileentities.general.TileEntityFishTrap;
+import gtPlusPlus.core.tileentities.general.TileEntityVolumetricFlaskSetter;
 import gtPlusPlus.core.tileentities.machines.TileEntityModularityTable;
 import gtPlusPlus.core.tileentities.machines.TileEntityPestKiller;
 import gtPlusPlus.core.tileentities.machines.TileEntityProjectTable;
 import gtPlusPlus.core.tileentities.machines.TileEntityRoundRobinator;
 import gtPlusPlus.core.tileentities.machines.TileEntityTradeTable;
-import gtPlusPlus.core.tileentities.machines.TileEntityWorkbench;
-import gtPlusPlus.core.tileentities.machines.TileEntityWorkbenchAdvanced;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
@@ -88,11 +112,10 @@ public class GuiHandler implements IGuiHandler {
 
 		if (te != null) {
 			if (ID == GUI4) {
-				return new Container_Workbench(player.inventory, (TileEntityWorkbench) te);
+				//return new Container_Workbench(player.inventory, (TileEntityWorkbench) te);
 			} else if (ID == GUI5) {
 				Logger.INFO("sad");
-				return new Container_WorkbenchAdvanced(player.inventory, (TileEntityWorkbenchAdvanced) te);
-
+				//return new Container_WorkbenchAdvanced(player.inventory, (TileEntityWorkbenchAdvanced) te);
 			} else if (ID == GUI6) {
 				return new Container_FishTrap(player.inventory, (TileEntityFishTrap) te);
 			} else if (ID == GUI7) {
@@ -154,10 +177,10 @@ public class GuiHandler implements IGuiHandler {
 
 		if (te != null) {
 			if (ID == GUI4) {
-				return new GUI_Workbench(player.inventory, (TileEntityWorkbench) te);
+				//return new GUI_Workbench(player.inventory, (TileEntityWorkbench) te);
 			} else if (ID == GUI5) {
 				Logger.INFO("sad");
-				return new GUI_WorkbenchAdvanced(player.inventory, (TileEntityWorkbenchAdvanced) te);
+				//return new GUI_WorkbenchAdvanced(player.inventory, (TileEntityWorkbenchAdvanced) te);
 			} else if (ID == GUI6) {
 				return new GUI_FishTrap(player.inventory, (TileEntityFishTrap) te);
 			} else if (ID == GUI7) {

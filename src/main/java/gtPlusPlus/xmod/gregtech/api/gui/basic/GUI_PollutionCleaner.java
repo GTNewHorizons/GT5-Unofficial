@@ -6,6 +6,7 @@ import java.util.List;
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gtPlusPlus.core.lib.CORE;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.player.InventoryPlayer;
 
 public class GUI_PollutionCleaner extends GT_GUIContainerMetaTile_Machine {
@@ -52,6 +53,7 @@ public class GUI_PollutionCleaner extends GT_GUIContainerMetaTile_Machine {
 		}
 		if (!list.isEmpty()) {
 			this.drawHoveringText(list, x3, y3, this.fontRendererObj);
+	        RenderHelper.enableGUIStandardItemLighting();
 		}
 	}
 

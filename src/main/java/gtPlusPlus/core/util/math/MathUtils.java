@@ -16,12 +16,12 @@ public class MathUtils {
 
 	final static Random rand = CORE.RANDOM;
 
-    /** Formats a number with group separator and at most 2 fraction digits. */
-    private static final NumberFormat sNumberFormat = NumberFormat.getInstance();
-    
-    static {
-        sNumberFormat.setMaximumFractionDigits(2);
-    }
+	/** Formats a number with group separator and at most 2 fraction digits. */
+	private static final NumberFormat sNumberFormat = NumberFormat.getInstance();
+
+	static {
+		sNumberFormat.setMaximumFractionDigits(2);
+	}
 
 	/**
 	 * Returns a psuedo-random number between min and max, inclusive.
@@ -567,7 +567,7 @@ public class MathUtils {
 			return 0;
 		}
 	}
-	
+
 	public static <V> V safeCast(Object aNumberType) {
 		long a1;
 		double a2;
@@ -586,7 +586,7 @@ public class MathUtils {
 				String s = ""+a1;
 				Short s1 = Short.valueOf(s);
 				return (V) s1;
-				
+
 			}
 		}
 		else if ((aNumberType.getClass() == int.class) || (aNumberType instanceof Integer)){
@@ -594,7 +594,7 @@ public class MathUtils {
 				String s = ""+a1;
 				Integer s1 = Integer.valueOf(s);
 				return (V) s1;
-				
+
 			}
 		}
 		else if ((aNumberType.getClass() == long.class) || (aNumberType instanceof Long)){
@@ -609,7 +609,7 @@ public class MathUtils {
 				String s = ""+a1;
 				Float s1 = Float.valueOf(s);
 				return (V) s1;
-				
+
 			}
 		}
 		else if ((aNumberType.getClass() == double.class) || (aNumberType instanceof Double)){
@@ -617,40 +617,40 @@ public class MathUtils {
 				String s = ""+a1;
 				Double s1 = Double.valueOf(s);
 				return (V) s1;
-				
+
 			}
 		}
-		
+
 		Integer o = 0;
 		return (V) o;	
-		
+
 	}
-	
+
 	public static byte getSafeByte(Byte b) {
 		Byte a = safeCast(b);
 		return a.byteValue();	
 	}
-	
+
 	public static short getSafeShort(Short b) {
 		Short a = safeCast(b);
 		return a.shortValue();		
 	}
-	
+
 	public static int getSafeInt(Integer b) {
 		Integer a = safeCast(b);
 		return a.intValue();	
 	}
-	
+
 	public static long getSafeLong(Long b) {
 		Long a = safeCast(b);
 		return a.longValue();		
 	}
-	
+
 	public static float getSafeFloat(Float b) {
 		Float a = safeCast(b);
 		return a.floatValue();		
 	}
-	
+
 	public static double getSafeDouble(Double b) {
 		Double a = safeCast(b);
 		return a.doubleValue();		
@@ -712,7 +712,7 @@ public class MathUtils {
 	public static int balance(int aInput, int aMin, int aMax) {		
 		return Math.max(Math.min(aInput, aMax), aMin);
 	}
-	
+
 	/**
 	 * Balances a number within a range.
 	 * @param aInput - The number to balance
@@ -723,7 +723,7 @@ public class MathUtils {
 	public static Number balance(Number aInput, Number aMin, Number aMax) {		
 		return max(min(aInput, aMax), aMin);
 	}
-	
+
 	/**
 	 * Balances a number within a range.
 	 * @param aInput - The number to balance
@@ -734,7 +734,7 @@ public class MathUtils {
 	public static int balanceInt(Number aInput, Number aMin, Number aMax) {		
 		return MathUtils.safeCast_LongToInt((long) balance(max(min(aInput, aMax), aMin), Integer.MIN_VALUE, Integer.MAX_VALUE));
 	}
-	
+
 	/**
 	 * Balances a number within a range.
 	 * @param aInput - The number to balance
@@ -750,51 +750,62 @@ public class MathUtils {
 		int aAmount = Math.max(Math.min(i, aMax), aMin);
 		return aAmount;
 	}
-	
+
 	public static Pair<Integer, Integer> splitLongIntoIntegers(long aLong){
 		int aIntMaxInLong = (int) Math.min(Integer.MAX_VALUE, Math.floor(aLong/Integer.MAX_VALUE));
 		int aRemainder = (int) (aLong - (aIntMaxInLong * Integer.MAX_VALUE));
 		return new Pair<Integer, Integer>(aIntMaxInLong, aRemainder);		
 	}
+
+
+
+
+	/**
+	 * Returns the smaller of two {@code Number}s. That is,
+	 * the result the argument closer to the value of
+	 * {@link Long#MIN_VALUE}.  If the arguments have the same
+	 * value, the result is that same value.
+	 *
+	 * @param   a   an argument.
+	 * @param   b   another argument.
+	 * @return  the smaller of {@code a} and {@code b}.
+	 */
+	public static Number min(Number a, Number b) {
+		return (a.longValue() <= b.longValue()) ? a : b;
+	}
+
+	/**
+	 * Returns the greater of two {@code Number}s. That is, the
+	 * result is the argument closer to the value of
+	 * {@link Long#MAX_VALUE}. If the arguments have the same value,
+	 * the result is that same value.
+	 *
+	 * @param   a   an argument.
+	 * @param   b   another argument.
+	 * @return  the larger of {@code a} and {@code b}.
+	 */
+	public static Number max(Number a, Number b) {
+		return (a.longValue() >= b.longValue()) ? a : b;
+	}
+
+	public static long combineTwoIntegersToLong(int a, int b) {
+		long val = (((long) a) << 32) | (b & 0xffffffffL);
+		return val;
+	}
 	
-	
+	public static int[] splitLongIntoTwoIntegers(long aNum) {
+		int a = (int) (aNum >> 32);
+		int b = (int) aNum;
+		return new int[] {a, b};
+	}
 
+	public static String formatNumbers(long aNumber) {
+		return sNumberFormat.format(aNumber);
+	}
 
-    /**
-     * Returns the smaller of two {@code Number}s. That is,
-     * the result the argument closer to the value of
-     * {@link Long#MIN_VALUE}.  If the arguments have the same
-     * value, the result is that same value.
-     *
-     * @param   a   an argument.
-     * @param   b   another argument.
-     * @return  the smaller of {@code a} and {@code b}.
-     */
-    public static Number min(Number a, Number b) {
-        return (a.longValue() <= b.longValue()) ? a : b;
-    }
+	public static String formatNumbers(double aNumber) {
+		return sNumberFormat.format(aNumber);
+	}
 
-    /**
-     * Returns the greater of two {@code Number}s. That is, the
-     * result is the argument closer to the value of
-     * {@link Long#MAX_VALUE}. If the arguments have the same value,
-     * the result is that same value.
-     *
-     * @param   a   an argument.
-     * @param   b   another argument.
-     * @return  the larger of {@code a} and {@code b}.
-     */
-    public static Number max(Number a, Number b) {
-        return (a.longValue() >= b.longValue()) ? a : b;
-    }
-    
-    public static String formatNumbers(long aNumber) {
-        return sNumberFormat.format(aNumber);
-    }
-
-    public static String formatNumbers(double aNumber) {
-        return sNumberFormat.format(aNumber);
-    }
-	
 
 }

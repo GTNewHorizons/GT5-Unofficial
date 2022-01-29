@@ -18,6 +18,7 @@ import gtPlusPlus.core.client.CustomTextureSet.TextureSets;
 import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes;
 import gtPlusPlus.core.item.base.plates.BaseItemPlateHeavy;
+import gtPlusPlus.core.item.base.wire.BaseItemFineWire;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialStack;
@@ -456,6 +457,9 @@ public class MaterialUtils {
 		Item aGC;
 		if (aType == ComponentTypes.PLATEHEAVY) {
 			aGC = new BaseItemPlateHeavy(aMaterial);
+		}
+		else if (aType == ComponentTypes.FINEWIRE) {
+			aGC = new BaseItemFineWire(aMaterial);
 		}
 		else {
 			aGC = new BaseItemComponent(aMaterial, aType);			

@@ -1,11 +1,8 @@
 package gtPlusPlus.xmod.gregtech.api.interfaces.internal;
 
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
-import gregtech.api.util.GT_Recipe;
 import gtPlusPlus.core.material.Material;
 import net.minecraft.item.ItemStack;
-
 import net.minecraftforge.fluids.FluidStack;
 
 public interface IGregtech_RecipeAdder {
@@ -341,5 +338,7 @@ public interface IGregtech_RecipeAdder {
     public boolean addFluidHeaterRecipe(ItemStack aCircuit, FluidStack aInput, FluidStack aOutput, int aDuration, int aEUt);
 
 	public boolean addVacuumFreezerRecipe(ItemStack aInput, ItemStack aOutput, int aDuration, int aEU);
+	
+	public boolean addMolecularTransformerRecipe(ItemStack aInput, ItemStack aOutput, int aDuration, int aEU, int aAmps);
 
 }

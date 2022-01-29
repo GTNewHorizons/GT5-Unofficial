@@ -15,11 +15,82 @@ public final class MISC_MATERIALS {
 	 */
 
 	public static void run() {
+		MaterialUtils.generateSpecialDustAndAssignToAMaterial(POTASSIUM_NITRATE, false);
+		MaterialUtils.generateSpecialDustAndAssignToAMaterial(SODIUM_NITRATE, false);
 		MaterialUtils.generateSpecialDustAndAssignToAMaterial(STRONTIUM_OXIDE, false);
 		MaterialUtils.generateSpecialDustAndAssignToAMaterial(STRONTIUM_HYDROXIDE, false);
 		WATER.registerComponentForMaterial(FluidUtils.getWater(1000));
 	}
 
+	public static final Material POTASSIUM_NITRATE = new Material(
+			"Potassium Nitrate", 
+			MaterialState.SOLID, //State
+			null,
+			null,
+			-1,
+			-1,
+			-1,
+			-1, 
+			false, 
+			"KNO3",
+			0, 
+			false,
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.getInstance().POTASSIUM, 1),
+					new MaterialStack(ELEMENT.getInstance().NITROGEN, 1),
+					new MaterialStack(ELEMENT.getInstance().OXYGEN, 3)
+			});
+	public static final Material SODIUM_NITRATE = new Material(
+			"Sodium Nitrate", 
+			MaterialState.SOLID, //State
+			null,
+			null,
+			-1,
+			-1,
+			-1,
+			-1, 
+			false, 
+			"NaNO3",
+			0, 
+			false,
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.getInstance().SODIUM, 1),
+					new MaterialStack(ELEMENT.getInstance().NITROGEN, 1),
+					new MaterialStack(ELEMENT.getInstance().OXYGEN, 3)
+			});	
+
+	public static final Material SOLAR_SALT_COLD = new Material(
+			"Solar Salt (Cold)",
+			MaterialState.PURE_LIQUID, //State
+			null, //Material Colour
+			-1, //Melting Point in C
+			-1, //Boiling Point in C
+			-1, //Protons
+			-1,
+			false, //Uses Blast furnace?
+			//Material Stacks with Percentage of required elements.
+			new MaterialStack[]{
+					new MaterialStack(POTASSIUM_NITRATE, 4),
+					new MaterialStack(SODIUM_NITRATE, 6)
+			});
+	
+	public static final Material SOLAR_SALT_HOT = new Material(
+			"Solar Salt (Hot)",
+			MaterialState.PURE_LIQUID, //State
+			new short[] {200, 25, 25}, //Material Colour
+			1200, //Melting Point in C
+			3300, //Boiling Point in C
+			-1, //Protons
+			-1,
+			false, //Uses Blast furnace?
+			//Material Stacks with Percentage of required elements.
+			new MaterialStack[]{
+					new MaterialStack(POTASSIUM_NITRATE, 4),
+					new MaterialStack(SODIUM_NITRATE, 6)
+			});
+	
+	
+	
 	public static final Material STRONTIUM_OXIDE = new Material(
 			"Strontium Oxide", 
 			MaterialState.SOLID, 

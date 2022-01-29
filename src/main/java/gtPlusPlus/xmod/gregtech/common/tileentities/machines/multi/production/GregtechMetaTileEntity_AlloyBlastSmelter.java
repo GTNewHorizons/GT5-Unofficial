@@ -33,8 +33,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
-public class GregtechMetaTileEntity_AlloyBlastSmelter
-extends GregtechMeta_MultiBlockBase {
+public class GregtechMetaTileEntity_AlloyBlastSmelter extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_AlloyBlastSmelter> {
 
 	private int mMode = 0;
 	private boolean isUsingControllerCircuit = false;
@@ -68,6 +67,7 @@ extends GregtechMeta_MultiBlockBase {
 				.addInfo("Controller Block for the Alloy Blast Smelter")
 				.addInfo("20% Faster than the Electric Blast Furnace")
 				.addInfo("Allows Complex GT++ alloys to be created")
+				.addInfo("This multiblock cannot be overclocked")
 				.addInfo("Circuit for recipe goes in the Input Bus or GUI slot")
 				.addPollutionAmount(getPollutionPerSecond(null))
 				.addSeparator()

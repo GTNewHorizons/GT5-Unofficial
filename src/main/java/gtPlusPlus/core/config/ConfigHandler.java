@@ -108,7 +108,7 @@ public class ConfigHandler {
 		disableZombieReinforcement = config.getBoolean("disableZombieReinforcement", "features", false, "Disables Zombie Reinforcement on hard difficutly.");
 		enableWatchdogBGM = config.getInt("enableWatchdogBGM", "features", 0, 0, Short.MAX_VALUE, "Set to a value greater than 0 to reduce the ticks taken to delay between BGM tracks. Acceptable Values are 1-32767, where 0 is disabled. Vanilla Uses 12,000 & 24,000. 200 is 10s.");
 		hideUniversalCells = config.getBoolean("hideUniversalCells", "features", true, "Hides every filled IC2 Universal Cell from NEI.");
-		
+
 		// Biomes
 		EVERGLADES_ID = config.getInt("darkworld_ID", "worldgen", 227, 1, 254, "The ID of the Dark Dimension.");
 		EVERGLADESBIOME_ID = config.getInt("darkbiome_ID", "worldgen", 238, 1, 254, "The biome within the Dark Dimension.");
@@ -134,6 +134,7 @@ public class ConfigHandler {
 		pollutionPerSecondMultiIndustrialMultiMachine_ModeMisc = config.get("pollution", "pollutionPerSecondMultiIndustrialMultiMachine_ModeMisc", pollutionPerSecondMultiIndustrialMultiMachine_ModeMisc, "pollution rate in gibbl/s for the Large processing factory in misc mode").getInt(pollutionPerSecondMultiIndustrialMultiMachine_ModeMisc);
 		pollutionPerSecondMultiIndustrialPlatePress_ModeForming = config.get("pollution", "pollutionPerSecondMultiIndustrialPlatePress_ModeForming", pollutionPerSecondMultiIndustrialPlatePress_ModeForming, "pollution rate in gibbl/s for the Industrial material press in forming mode").getInt(pollutionPerSecondMultiIndustrialPlatePress_ModeForming);
 		pollutionPerSecondMultiIndustrialPlatePress_ModeBending = config.get("pollution", "pollutionPerSecondMultiIndustrialPlatePress_ModeBending", pollutionPerSecondMultiIndustrialPlatePress_ModeBending, "pollution rate in gibbl/s for the Industrial material press in bending mode").getInt(pollutionPerSecondMultiIndustrialPlatePress_ModeBending);
+		pollutionPerSecondMultiIndustrialForgeHammer = config.get("pollution", "pollutionPerSecondMultiIndustrialForgeHammer", pollutionPerSecondMultiIndustrialForgeHammer, "pollution rate in gibbl/s for the Industrial Forge Hammer").getInt(pollutionPerSecondMultiIndustrialForgeHammer);
 		pollutionPerSecondMultiIndustrialSifter = config.get("pollution", "pollutionPerSecondMultiIndustrialSifter", pollutionPerSecondMultiIndustrialSifter, "pollution rate in gibbl/s for the Large Sifter").getInt(pollutionPerSecondMultiIndustrialSifter);
 		pollutionPerSecondMultiIndustrialThermalCentrifuge = config.get("pollution", "pollutionPerSecondMultiIndustrialThermalCentrifuge", pollutionPerSecondMultiIndustrialThermalCentrifuge, "pollution rate in gibbl/s for the Large thermal refinery").getInt(pollutionPerSecondMultiIndustrialThermalCentrifuge);
 		pollutionPerSecondMultiIndustrialVacuumFreezer = config.get("pollution", "pollutionPerSecondMultiIndustrialVacuumFreezer", pollutionPerSecondMultiIndustrialVacuumFreezer, "pollution rate in gibbl/s for the Cryogenic freezer").getInt(pollutionPerSecondMultiIndustrialVacuumFreezer);
@@ -158,6 +159,7 @@ public class ConfigHandler {
 		pollutionPerSecondMultiTreeFarm = config.get("pollution", "pollutionPerSecondMultiTreeFarm", pollutionPerSecondMultiTreeFarm, "pollution rate in gibbl/s for the Tree growth simulator").getInt(pollutionPerSecondMultiTreeFarm);
 		pollutionPerSecondMultiFrothFlotationCell = config.get("pollution", "pollutionPerSecondMultiFrothFlotationCell", pollutionPerSecondMultiFrothFlotationCell, "pollution rate in gibbl/s for the Flotation cell regulator").getInt(pollutionPerSecondMultiFrothFlotationCell);
 		pollutionPerSecondMultiAutoCrafter = config.get("pollution", "pollutionPerSecondMultiAutoCrafter", pollutionPerSecondMultiAutoCrafter, "pollution rate in gibbl/s for the Large-Scale auto assembler v1.01").getInt(pollutionPerSecondMultiAutoCrafter);
+		pollutionPerSecondMultiMolecularTransformer = config.get("pollution", "pollutionPerSecondMultiMolecularTransformer", pollutionPerSecondMultiMolecularTransformer, "pollution rate in gibbl/s for the Multiblock Molecular Transformer").getInt(pollutionPerSecondMultiMolecularTransformer);
 		pollutionPerSecondMultiThermalBoiler = config.get("pollution", "pollutionPerSecondMultiThermalBoiler", pollutionPerSecondMultiThermalBoiler, "pollution rate in gibbl/s for the Thermal boiler").getInt(pollutionPerSecondMultiThermalBoiler);
 		pollutionPerSecondMultiAlgaePond = config.get("pollution", "pollutionPerSecondMultiAlgaePond", pollutionPerSecondMultiAlgaePond, "pollution rate in gibbl/s for the Algae farm").getInt(pollutionPerSecondMultiAlgaePond);
 		basePollutionPerSecondSemiFluidGenerator = config.get("pollution", "basePollutionPerSecondSemiFluidGenerator", basePollutionPerSecondSemiFluidGenerator, "base pollution rate in gibbl/s for the single block semi fluid generators").getInt(basePollutionPerSecondSemiFluidGenerator);

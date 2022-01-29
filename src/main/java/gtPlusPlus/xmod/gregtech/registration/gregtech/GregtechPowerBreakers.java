@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
+import gregtech.api.enums.GT_Values;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicBreaker;
@@ -26,7 +27,7 @@ public class GregtechPowerBreakers {
 		GregtechItemList.BreakerBox_HV.set((new GT_MetaTileEntity_BasicBreaker(aStartID++, "breaker.tier.03",
 				"High Voltage Breaker Box", 3, "", 16)).getStackForm(1L));
 		GregtechItemList.BreakerBox_EV.set((new GT_MetaTileEntity_BasicBreaker(aStartID++, "breaker.tier.04",
-				"Extreme Voltage Breaker Box", 16, "", 16)).getStackForm(1L));
+				"Extreme Voltage Breaker Box", 4, "", 16)).getStackForm(1L));
 		GregtechItemList.BreakerBox_IV.set((new GT_MetaTileEntity_BasicBreaker(aStartID++, "breaker.tier.05",
 				"Insane Voltage Breaker Box", 5, "", 16)).getStackForm(1L));
 		GregtechItemList.BreakerBox_LuV.set((new GT_MetaTileEntity_BasicBreaker(aStartID++, "breaker.tier.06",
@@ -36,7 +37,7 @@ public class GregtechPowerBreakers {
 		GregtechItemList.BreakerBox_UV.set((new GT_MetaTileEntity_BasicBreaker(aStartID++, "breaker.tier.08",
 				"Ultimate Voltage Breaker Box", 8, "", 16)).getStackForm(1L));
 		GregtechItemList.BreakerBox_MAX.set((new GT_MetaTileEntity_BasicBreaker(aStartID++, "breaker.tier.09",
-				"MAX Voltage Breaker Box", 9, "", 16)).getStackForm(1L));
+				GT_Values.VN[9]+" Breaker Box", 9, "", 16)).getStackForm(1L));
 
 	}
 }

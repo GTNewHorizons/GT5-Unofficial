@@ -2,8 +2,6 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
 import java.util.ArrayList;
 
-import gregtech.api.gui.GT_Container_4by4;
-import gregtech.api.gui.GT_GUIContainer_4by4;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -11,7 +9,11 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_DataHatch;
+import gtPlusPlus.xmod.gregtech.api.gui.GUI_DataHatch;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -22,28 +24,30 @@ public class GT_MetaTileEntity_Hatch_ElementalDataOrbHolder extends GT_MetaTileE
 	public GT_Recipe_Map mRecipeMap = null;
 
 	public GT_MetaTileEntity_Hatch_ElementalDataOrbHolder(int aID, String aName, String aNameRegional, int aTier) {
-		super(aID, aName, aNameRegional, aTier, 16, new String[]{
+		super(aID, aName, aNameRegional, aTier, 17, new String[]{
 				"Holds Data Orbs for the Elemental Duplicator",
+				"Can insert/extract the circuit slot",
+				"Use Circuit to select a slot (1-16)",
 				CORE.GT_Tooltip
 		});
 	}
 
 	public GT_MetaTileEntity_Hatch_ElementalDataOrbHolder(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-		super(aName, aTier, 16, aDescription, aTextures);
+		super(aName, aTier, 17, aDescription, aTextures);
 	}
 
 	public GT_MetaTileEntity_Hatch_ElementalDataOrbHolder(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
-		super(aName, aTier, 16, aDescription, aTextures);
+		super(aName, aTier, 17, aDescription, aTextures);
 	}
 
 	@Override
 	public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-		return new ITexture[]{aBaseTexture, new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Cyber_Interface)};
+		return new ITexture[]{aBaseTexture, new GT_RenderedTexture(TexturesGtBlock.Overlay_Hatch_Data_Orb)};
 	}
 
 	@Override
 	public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-		return new ITexture[]{aBaseTexture, new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Cyber_Interface)};
+		return new ITexture[]{aBaseTexture, new GT_RenderedTexture(TexturesGtBlock.Overlay_Hatch_Data_Orb)};
 	}
 
 	@Override
@@ -80,12 +84,12 @@ public class GT_MetaTileEntity_Hatch_ElementalDataOrbHolder extends GT_MetaTileE
 
 	@Override
 	public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GT_Container_4by4(aPlayerInventory, aBaseMetaTileEntity);
+		return new CONTAINER_DataHatch(aPlayerInventory, aBaseMetaTileEntity);
 	}
 
 	@Override
 	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GT_GUIContainer_4by4(aPlayerInventory, aBaseMetaTileEntity, "Data Orb Repository");
+		return new GUI_DataHatch(aPlayerInventory, aBaseMetaTileEntity, "Data Orb Repository");
 	}
 
 	@Override
@@ -96,13 +100,13 @@ public class GT_MetaTileEntity_Hatch_ElementalDataOrbHolder extends GT_MetaTileE
 	}
 
 	public void updateSlots() {
-		for (int i = 0; i < mInventory.length; i++)
+		for (int i = 0; i < mInventory.length-1; i++)
 			if (mInventory[i] != null && mInventory[i].stackSize <= 0) mInventory[i] = null;
 		fillStacksIntoFirstSlots();
 	}
 
 	protected void fillStacksIntoFirstSlots() {
-		for (int i = 0; i < mInventory.length; i++) {
+		for (int i = 0; i < mInventory.length-1; i++) {
 			if (mInventory[i] != null && mInventory[i].stackSize <= 0) {
 				mInventory[i] = null;				
 			}
@@ -130,20 +134,47 @@ public class GT_MetaTileEntity_Hatch_ElementalDataOrbHolder extends GT_MetaTileE
 
 	@Override
 	public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-		return true;
+		Logger.INFO("Checking if we can pull "+aStack.getDisplayName()+" from slot "+aIndex);
+		if (aIndex == mInventory.length-1 && ItemUtils.isControlCircuit(aStack) && aSide == getBaseMetaTileEntity().getFrontFacing()) {
+			return true;
+		}
+		return false;
 	}
 
 	@Override
 	public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-		return aSide == getBaseMetaTileEntity().getFrontFacing() && (mRecipeMap == null || mRecipeMap.containsInput(aStack));
+		Logger.INFO("Checking if we can put "+aStack.getDisplayName()+" into slot "+aIndex);
+		if (aIndex == mInventory.length-1 && ItemUtils.isControlCircuit(aStack) && aSide == getBaseMetaTileEntity().getFrontFacing()) {
+		return true;
+	}
+	return false;
 	}
 	
 	public ArrayList<ItemStack> getInventory(){
 		ArrayList<ItemStack> aContents = new ArrayList<ItemStack>();
-		for (int i=0;i<this.getSizeInventory();i++) {
-			aContents.add(this.getStackInSlot(i));
-		}
+		for (int i = getBaseMetaTileEntity().getSizeInventory() - 2; i >= 0; i--) {
+            if (getBaseMetaTileEntity().getStackInSlot(i) != null)
+            	aContents.add(getBaseMetaTileEntity().getStackInSlot(i));
+        } 
 		return aContents;
+	}
+
+	@Override
+	public boolean canInsertItem(int aIndex, ItemStack aStack, int aSide) {
+		if (aIndex == mInventory.length-1 && ItemUtils.isControlCircuit(aStack) && aSide == getBaseMetaTileEntity().getFrontFacing()) {
+			Logger.INFO("Putting "+aStack.getDisplayName()+" into slot "+aIndex);
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean canExtractItem(int aIndex, ItemStack aStack, int aSide) {
+		if (aIndex == mInventory.length-1 && ItemUtils.isControlCircuit(aStack)) {
+			Logger.INFO("Pulling "+aStack.getDisplayName()+" from slot "+aIndex);
+			return true;
+		}
+		return false;
 	}
 
 }

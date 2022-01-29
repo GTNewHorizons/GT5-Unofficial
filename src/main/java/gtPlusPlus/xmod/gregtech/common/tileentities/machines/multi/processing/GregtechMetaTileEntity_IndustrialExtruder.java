@@ -27,8 +27,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
-public class GregtechMetaTileEntity_IndustrialExtruder
-extends GregtechMeta_MultiBlockBase {
+public class GregtechMetaTileEntity_IndustrialExtruder extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialExtruder> {
 
 	private int mCasing;
 	private IStructureDefinition<GregtechMetaTileEntity_IndustrialExtruder> STRUCTURE_DEFINITION = null;
@@ -82,7 +81,7 @@ extends GregtechMeta_MultiBlockBase {
 			STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialExtruder>builder()
 					.addShape(mName, transpose(new String[][]{
 							{"CCC", "CCC", "CCC", "CCC", "CCC"},
-							{"C~C", "C-C", "C-C", "C-C", "CMC"},
+							{"C~C", "C-C", "C-C", "C-C", "CCC"},
 							{"CCC", "CCC", "CCC", "CCC", "CCC"},
 					}))
 					.addElement(
@@ -97,12 +96,6 @@ extends GregtechMeta_MultiBlockBase {
 													getCasingBlock(), getCasingMeta()
 											)
 									)
-							)
-					)
-					.addElement(
-							'M',
-							ofHatchAdder(
-									GregtechMetaTileEntity_IndustrialExtruder::addIndustrialExtruderMufflerList, getCasingTextureIndex(), 2
 							)
 					)
 					.build();
@@ -136,19 +129,6 @@ extends GregtechMeta_MultiBlockBase {
 				return addToMachineList(aTileEntity, aBaseCasingIndex);
 			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler) {
 				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			}
-		}
-		return false;
-	}
-
-	public final boolean addIndustrialExtruderMufflerList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-		if (aTileEntity == null) {
-			return false;
-		} else {
-			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler) {
-				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-				return this.mMufflerHatches.add((GT_MetaTileEntity_Hatch_Muffler) aMetaTileEntity);
 			}
 		}
 		return false;

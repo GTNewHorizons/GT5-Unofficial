@@ -105,6 +105,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 
 	//Computer Cube
 	Gregtech_Computer_Cube, 
+	Gregtech_Computer_Cube_Machine, 
 
 	//Casings for batteries
 	Battery_Casing_Gem_1, Battery_Casing_Gem_2,
@@ -301,7 +302,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 
 
 	//Tesla Tower
-	/*TelsaTower,*/
+	TelsaTower,
 	Casing_TeslaTower, 
 
 
@@ -334,7 +335,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Machine_Adv_DistillationTower,
 
 	//Advanced Assembly Line
-	/*Machine_Adv_AssemblyLine,*/
+	Machine_Adv_AssemblyLine,
 	
 	//Advanced Vacuum Freezer
 	Industrial_Cryogenic_Freezer, 
@@ -363,13 +364,14 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Casing_Industrial_Arc_Furnace, 
 	
 	//Solar Tower
-	/*Industrial_Solar_Tower,*/
+	Industrial_Solar_Tower,
 	Casing_SolarTower_Structural, 
 	Casing_SolarTower_SaltContainment, 
 	Casing_SolarTower_HeatContainment, 
 	
 	//Larger Turbines
-	/*Large_Steam_Turbine, Large_HPSteam_Turbine, */
+	Large_Steam_Turbine, Large_HPSteam_Turbine,
+	Large_Gas_Turbine, Large_Plasma_Turbine,
 	Casing_Turbine_Shaft, 
 	Casing_Turbine_LP, Casing_Turbine_HP,
 	Casing_Turbine_Gas, Casing_Turbine_Plasma,
@@ -406,6 +408,16 @@ public enum GregtechItemList implements GregtechItemContainer {
 	// Elemental Duplicator
 	Controller_ElementalDuplicator,
 	Casing_ElementalDuplicator,
+	
+	// Forge Hammer
+	Controller_IndustrialForgeHammer,
+	Casing_IndustrialForgeHammer,
+
+	// Molecular Transformer
+	Controller_MolecularTransformer,
+	Casing_Molecular_Transformer_1,
+	Casing_Molecular_Transformer_2,
+	Casing_Molecular_Transformer_3,
 	
 	// Big Steam Macerator
 	Controller_SteamMaceratorMulti,
@@ -444,7 +456,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Hatch_Reservoir,
 	
 	//XL Turbine Rotor Hatch
-	/*Hatch_Turbine_Rotor,*/
+	Hatch_Turbine_Rotor,
 	
 	//Standard Turbine Rotor Hatch
 	Hatch_Input_TurbineHousing,
@@ -500,12 +512,25 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Hatch_SuperBus_Output_MAX,  
 	
 
-
-
 	//----------------------------------------------------------------------------
 
 
+	/**
+	 * Blocks
+	 */
+	
+	
+	ResonanceChamber_I,
+	ResonanceChamber_II,
+	ResonanceChamber_III,
+	ResonanceChamber_IV,
 
+	Modulator_I,
+	Modulator_II,
+	Modulator_III,
+	Modulator_IV,
+
+	//----------------------------------------------------------------------------
 
 
 	/**
@@ -528,10 +553,44 @@ public enum GregtechItemList implements GregtechItemContainer {
 	//infinite Items
 	Infinite_Item_Chest, 
 
+	//GT4 Redstone
+	GT4_Redstone_Lamp,
+	GT4_Redstone_Button_Panel,
+	GT4_Redstone_Scale,
+	GT4_Redstone_Display,
+	GT4_Redstone_Circuit,
 
 	//Gt4 Workbenches
 	GT4_Workbench_Bronze,
 	GT4_Workbench_Advanced,
+	
+	//GT4 automation
+	GT4_Electric_Auto_Workbench_LV,
+	GT4_Electric_Auto_Workbench_MV,
+	GT4_Electric_Auto_Workbench_HV,
+	GT4_Electric_Auto_Workbench_EV,
+	GT4_Electric_Auto_Workbench_IV,
+	GT4_Electric_Auto_Workbench_LuV,
+	GT4_Electric_Auto_Workbench_ZPM,
+	GT4_Electric_Auto_Workbench_UV,
+	GT4_Electric_Inventory_Manager_LV,
+	GT4_Electric_Inventory_Manager_MV,
+	GT4_Electric_Inventory_Manager_HV,
+	GT4_Electric_Inventory_Manager_EV,
+	GT4_Electric_Inventory_Manager_IV,
+	GT4_Electric_Inventory_Manager_LuV,
+	GT4_Electric_Inventory_Manager_ZPM,
+	GT4_Electric_Inventory_Manager_UV,
+	
+	//GT4 Crop Harvester
+	GT4_Crop_Harvester_LV,
+	GT4_Crop_Harvester_MV,
+	GT4_Crop_Harvester_HV,
+	GT4_Crop_Harvester_EV,
+	GT4_Crop_Harvester_IV,
+	GT4_Crop_Harvester_LuV,
+	GT4_Crop_Harvester_ZPM,
+	GT4_Crop_Harvester_UV,
 
 
 	//Geothermal Engines
@@ -573,7 +632,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 	SimpleDustWasher_UV, 
 	
 	//Solar Tower Reflector
-	/*Solar_Tower_Reflector,*/
+	Solar_Tower_Reflector,
 
 	//Super Tier Chests
 	Super_Chest_LV, Super_Chest_MV, Super_Chest_HV, Super_Chest_EV, Super_Chest_IV, 

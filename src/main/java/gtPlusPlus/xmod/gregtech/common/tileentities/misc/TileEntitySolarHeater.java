@@ -1,4 +1,3 @@
-/*
 package gtPlusPlus.xmod.gregtech.common.tileentities.misc;
 
 import gregtech.api.enums.Textures;
@@ -13,16 +12,18 @@ import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.GregtechMetaTileEntity_SolarTower;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 
 public class TileEntitySolarHeater extends GT_MetaTileEntity_TieredMachineBlock {
 
-	public String mSolarTower;
 	public boolean mHasTower = false;
-	
-	private Integer mTX, mTY, mTZ;
+	private GregtechMetaTileEntity_SolarTower mTower = null;
+
+	private int mTX, mTY, mTZ;
 	private Byte mRequiredFacing;
 
 	public TileEntitySolarHeater(final int aID, final String aName, final String aNameRegional, final int aTier,
@@ -88,7 +89,8 @@ public class TileEntitySolarHeater extends GT_MetaTileEntity_TieredMachineBlock 
 	}
 
 	public ITexture[] getSides(final byte aColor) {
-		return new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top) };
+		return new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top),
+				new GT_RenderedTexture(Textures.BlockIcons.SOLARPANEL_IV) };
 	}
 
 	public ITexture[] getFrontActive(final byte aColor) {
@@ -110,7 +112,8 @@ public class TileEntitySolarHeater extends GT_MetaTileEntity_TieredMachineBlock 
 	}
 
 	public ITexture[] getSidesActive(final byte aColor) {
-		return new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top) };
+		return new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top),
+				new GT_RenderedTexture(Textures.BlockIcons.SOLARPANEL_IV) };
 	}
 
 	@Override
@@ -223,7 +226,7 @@ public class TileEntitySolarHeater extends GT_MetaTileEntity_TieredMachineBlock 
 	@Override
 	public void saveNBTData(NBTTagCompound aNBT) {
 		aNBT.setBoolean("mHasTower", mHasTower);
-		if (mHasTower && mTX != null && mTY != null && mTZ != null) {
+		if (mHasTower) {
 			aNBT.setInteger("mTX", mTX);
 			aNBT.setInteger("mTY", mTY);
 			aNBT.setInteger("mTZ", mTZ);
@@ -262,57 +265,55 @@ public class TileEntitySolarHeater extends GT_MetaTileEntity_TieredMachineBlock 
 	public void onExplosion() {
 
 	}
-	
+
+	public boolean hasSolarTower() {
+		return mHasTower;
+	}
+
 	public GregtechMetaTileEntity_SolarTower getSolarTower() {
-		if (this.mHasTower && this.mSolarTower != null && this.mSolarTower.length() > 0) {
-		BlockPos p = BlockPos.generateBlockPos(mSolarTower);
-		if (p != null) {
-			IGregTechTileEntity tTileEntity = getBaseMetaTileEntity().getIGregTechTileEntity(p.xPos, p.yPos, p.zPos);
-			if (tTileEntity != null && tTileEntity instanceof GregtechMetaTileEntity_SolarTower) {
-				return (GregtechMetaTileEntity_SolarTower) tTileEntity;
-			}
-		}
+		if (this.mHasTower) {
+			return mTower;			
 		}
 		return null;
 	}
 	
+	public boolean canSeeSky() {		
+		if (this.getBaseMetaTileEntity().getWorld().canBlockSeeTheSky(this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(), this.getBaseMetaTileEntity().getZCoord())) {
+			return true;
+		}		
+		return false;
+	}
 
-	public boolean setSolarTower(BlockPos aTowerPos) {
-		if (!this.mHasTower && setSolarTowerInternal(aTowerPos.getUniqueIdentifier())) {			
-			IGregTechTileEntity tTileEntity = getBaseMetaTileEntity().getIGregTechTileEntity(aTowerPos.xPos, aTowerPos.yPos, aTowerPos.zPos);
-			if (tTileEntity != null && tTileEntity instanceof GregtechMetaTileEntity_SolarTower) {
-				this.mTX = tTileEntity.getXCoord();
-				this.mTY = (int) tTileEntity.getYCoord();
-				this.mTZ = tTileEntity.getZCoord();
-				this.mHasTower = true;
-				return true;
-			}			
-		}
+
+	public boolean setSolarTower(GregtechMetaTileEntity_SolarTower aTowerTile) {
+		if (!hasSolarTower()) {
+			this.mTX = aTowerTile.getBaseMetaTileEntity().getXCoord();
+			this.mTY = (int) aTowerTile.getBaseMetaTileEntity().getYCoord();
+			this.mTZ = aTowerTile.getBaseMetaTileEntity().getZCoord();
+			this.mHasTower = true;
+			this.mTower = aTowerTile;			
+			return true;
+		}		
 		return false;
 	}	
-	
-	private boolean clearSolarTower() {
-			if (mHasTower || mTX != null || mTY != null || mTZ != null || mRequiredFacing != null || this.mSolarTower != null) {
-				this.mTX = null;
-				this.mTY = null;
-				this.mTZ = null;
-				this.mRequiredFacing = null;
-				this.mSolarTower = null;
-				this.mHasTower = false;
-				return true;
-			}
-			return false;			
-	}
-	
-	private final boolean setSolarTowerInternal(String aTowerPos) {
-		this.mSolarTower = aTowerPos;
-		return this.mSolarTower != null && this.mSolarTower.length() > 0;
+
+	public boolean clearSolarTower() {
+		if (mHasTower || mRequiredFacing != null || this.mTower != null) {
+			this.mTX = 0;
+			this.mTY = 0;
+			this.mTZ = 0;
+			this.mRequiredFacing = null;
+			this.mTower = null;
+			this.mHasTower = false;
+			return true;
+		}
+		return false;			
 	}
 
 	@Override
 	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
 		super.onPostTick(aBaseMetaTileEntity, aTick);		
-			
+
 	}
 
 	@Override
@@ -345,4 +346,3 @@ public class TileEntitySolarHeater extends GT_MetaTileEntity_TieredMachineBlock 
 
 	}
 }
-*/

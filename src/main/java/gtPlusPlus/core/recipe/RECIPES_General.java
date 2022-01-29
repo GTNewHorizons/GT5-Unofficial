@@ -17,6 +17,7 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.material.ELEMENT;
+import gtPlusPlus.core.material.MISC_MATERIALS;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.*;
 import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
@@ -28,6 +29,7 @@ import gtPlusPlus.xmod.gregtech.common.helpers.VolumetricFlaskHelper;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class RECIPES_General {
 
@@ -40,8 +42,10 @@ public class RECIPES_General {
 	static ItemStack OUTPUT_Blueprint;
 	static ItemStack RECIPE_CraftingTable;
 	static String RECIPE_BronzePlate = "plateBronze";
+	static String RECIPE_StainlessPlate = "plateStainlessSteel";
 	static ItemStack RECIPE_BasicCasingIC2;
 	static ItemStack OUTPUT_Workbench_Bronze;
+	static ItemStack OUTPUT_Workbench_Advanced;
 	static ItemStack RECIPE_HydrogenDust;
 
 	public static void loadRecipes(){		
@@ -53,8 +57,9 @@ public class RECIPES_General {
 			RECIPE_CraftingTable = ItemUtils.getSimpleStack(Blocks.crafting_table);
 			RECIPE_HydrogenDust = ItemUtils.getSimpleStack(ModItems.itemHydrogenBlob);	
 			RECIPE_BasicCasingIC2 = ItemUtils.getItemStackFromFQRN("IC2:blockMachine", 1);			
-			OUTPUT_Workbench_Bronze = ItemUtils.getSimpleStack(ModBlocks.blockWorkbench);
-			OUTPUT_Blueprint = ItemUtils.getSimpleStack(ModItems.itemBlueprintBase);	
+			OUTPUT_Workbench_Bronze = GregtechItemList.GT4_Workbench_Bronze.get(1);	
+			OUTPUT_Workbench_Advanced = GregtechItemList.GT4_Workbench_Advanced.get(1);	
+			OUTPUT_Blueprint = ItemUtils.getSimpleStack(ModItems.itemBlueprintBase, 2);	
 			run();
 			addCompressedObsidian();
 			migratedRecipes();
@@ -63,18 +68,24 @@ public class RECIPES_General {
 
 	private static void run() {
 		//Workbench Blueprint
-		/*RecipeUtils.addShapedRecipe(
+		RecipeUtils.addShapedRecipe(
 				RECIPE_Paper, RECIPE_LapisDust, NULL,
 				RECIPE_Paper, RECIPE_LapisDust, NULL,
 				RECIPE_LapisDust, RECIPE_LapisDust, NULL,
-				OUTPUT_Blueprint);*/
+				OUTPUT_Blueprint);
 
 		//Bronze Workbench
-		/*RecipeUtils.addShapedRecipe(
+		RecipeUtils.addShapedRecipe(
 				RECIPE_BronzePlate, RECIPE_CraftingTable, RECIPE_BronzePlate,
 				RECIPE_BronzePlate, RECIPE_BasicCasingIC2, RECIPE_BronzePlate,
-				RECIPE_BronzePlate, RECIPE_BronzePlate, RECIPE_BronzePlate,
-				OUTPUT_Workbench_Bronze);*/
+				RECIPE_BronzePlate, CI.getTieredCircuitOreDictName(0), RECIPE_BronzePlate,
+				OUTPUT_Workbench_Bronze);
+		
+		RecipeUtils.addShapedRecipe(
+				RECIPE_StainlessPlate, CI.getTieredCircuitOreDictName(3), RECIPE_StainlessPlate,
+				RECIPE_StainlessPlate, OUTPUT_Workbench_Bronze, RECIPE_StainlessPlate,
+				RECIPE_StainlessPlate, CI.getTieredCircuitOreDictName(3), RECIPE_StainlessPlate,
+				OUTPUT_Workbench_Advanced);
 
 		//Generates recipes for the Dull shard when TC is not installed.
 		if (!LoadedMods.Thaumcraft) {
@@ -110,6 +121,25 @@ public class RECIPES_General {
 
 		}
 
+		if (OreDictionary.doesOreNameExist("dustPotassiumNitrade")) {
+			ItemStack aDustKNO3 = ItemUtils.getItemStackOfAmountFromOreDict("dustPotassiumNitrade", 1);
+			ItemStack aDustGtppKNO3 = MISC_MATERIALS.POTASSIUM_NITRATE.getDust(1);
+			if (RecipeUtils.addShapedRecipe(
+					null, null, null,
+					null, "dustPotassiumNitrade", null,
+					null, null, null,
+					ItemUtils.getSimpleStack(aDustGtppKNO3, 1))) {
+				Logger.INFO("Add conversion recipe (GT Potassium Nitrade -> GT++ Potassium Nitrate)");
+			}
+			if (RecipeUtils.addShapedRecipe(
+					null, null, null,
+					null, "dustPotassiumNitrate", null,
+					null, null, null,
+					ItemUtils.getSimpleStack(aDustKNO3, 1))) {
+				Logger.INFO("Add conversion recipe (GT++ Potassium Nitrate -> GT Potassium Nitrade)");
+			}
+		}
+		
 		//Rainforest oak Sapling
 		if (RecipeUtils.addShapedRecipe(
 				"stickWood", "stickWood", "stickWood",
@@ -366,11 +396,12 @@ public class RECIPES_General {
 
 	private static boolean addCompressedObsidian(){
 		//Invert Obsidian
+		ItemStack aInvertedObsidian = ItemUtils.simpleMetaStack(ModBlocks.blockCompressedObsidian, 5, 1);
 		if (RecipeUtils.addShapedRecipe(
 				getSimpleStack(Items.redstone), getSimpleStack(Items.glowstone_dust), getSimpleStack(Items.redstone),
 				getSimpleStack(Items.glowstone_dust), ItemUtils.simpleMetaStack(ModBlocks.blockCompressedObsidian, 1, 1), getSimpleStack(Items.glowstone_dust),
 				getSimpleStack(Items.redstone), getSimpleStack(Items.glowstone_dust), getSimpleStack(Items.redstone),
-				ItemUtils.simpleMetaStack(ModBlocks.blockCompressedObsidian, 5, 1))){
+				aInvertedObsidian)){
 			Logger.INFO("Added a recipe for Inverted Obsidian.");
 		}
 
@@ -378,6 +409,12 @@ public class RECIPES_General {
 		mItems[0] = ItemUtils.getSimpleStack(Blocks.obsidian);
 		for (int r=0;r<5;r++){
 			mItems[r+1] = ItemUtils.simpleMetaStack(ModBlocks.blockCompressedObsidian, r, 1);
+		}
+		
+		final ItemStack[] mItems2 = new ItemStack[6];
+		mItems2[0] = ItemUtils.getSimpleStack(Blocks.glowstone);
+		for (int r=0;r<5;r++){
+			mItems2[r+1] = ItemUtils.simpleMetaStack(ModBlocks.blockCompressedObsidian, 6+r, 1);
 		}
 
 		//Compressed Obsidian 1-5
@@ -396,6 +433,26 @@ public class RECIPES_General {
 
 			if (RecipeUtils.addShapelessGregtechRecipe(new ItemStack[]{output}, ItemUtils.getSimpleStack(input, 9))){
 				Logger.INFO("Added a shapeless recipe for Compressed Obsidian ["+r+"]");
+			}
+
+		}
+		
+		//Compressed Glowstone 1-5
+		for (int r=0;r<5;r++){
+
+			final ItemStack input = mItems2[r];
+			final ItemStack output = mItems2[r+1];
+
+			if (RecipeUtils.addShapedRecipe(
+					input, input, input,
+					input, r == 2 ? aInvertedObsidian : input, input,
+					input, input, input,
+					output)){
+				Logger.INFO("Added a recipe for Compressed Glowstone ["+r+"]");
+			}
+
+			if (RecipeUtils.addShapelessGregtechRecipe(new ItemStack[]{output}, ItemUtils.getSimpleStack(input, 9))){
+				Logger.INFO("Added a shapeless recipe for Compressed Glowstone ["+r+"]");
 			}
 
 		}

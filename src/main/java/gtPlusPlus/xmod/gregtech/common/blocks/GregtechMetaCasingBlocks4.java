@@ -21,7 +21,7 @@ extends GregtechMetaCasingBlocksAbstract {
 	public GregtechMetaCasingBlocks4() {
 		super(GregtechMetaCasingItems.class, "gtplusplus.blockcasings.4", GT_Material_Casings.INSTANCE);
 		for (byte i = 0; i < 16; i = (byte) (i + 1)) {
-			if (i == 2 || i == 4 || i == 5 || i == 6 || i == 7 || i == 8 || i == 9 || i == 12 || i == 13 || i == 14 || i == 15) {
+			if (i == 2 || i == 4 || i == 5 || i == 6 || i == 7 || i == 8 || i == 12 || i == 13 || i == 14 || i == 15) {
 				continue;
 			}
 			TAE.registerTexture(3, i, new GT_CopiedBlockTexture(this, 6, i));
@@ -87,7 +87,7 @@ extends GregtechMetaCasingBlocksAbstract {
 				case 8:
 					return Textures.BlockIcons.RENDERING_ERROR.getIcon();
 				case 9:
-					return Textures.BlockIcons.RENDERING_ERROR.getIcon();	
+					return TexturesGtBlock.Casing_Material_MaragingSteel.getIcon();
 				case 10:					
 					if (aSide <2) {
 						return TexturesGtBlock.TEXTURE_STONE_RED_B.getIcon();					

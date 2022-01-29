@@ -1,6 +1,7 @@
 package gtPlusPlus.nei;
 
 import cpw.mods.fml.common.event.FMLInterModComms;
+import gtPlusPlus.core.lib.LoadedMods;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class NEI_IMC_Sender {
@@ -23,11 +24,16 @@ public class NEI_IMC_Sender {
         setNBTInfoAndSendIt("gtpp.recipe.multielectro", "gregtech:gt.blockmachines:796", 1);
         setNBTInfoAndSendIt("gtpp.recipe.simplewasher", "gregtech:gt.blockmachines:767");
         setNBTInfoAndSendIt("gtpp.recipe.vacfurnace", "gregtech:gt.blockmachines:995", 1);
+        setNBTInfoAndSendIt("gtpp.recipe.thermalgeneratorfuel", "gregtech:gt.blockmachines:875", 1);
+        setNBTInfoAndSendIt("gtpp.recipe.solartower", "gregtech:gt.blockmachines:863", 1);
         setNBTInfoAndSendIt("gtpp.recipe.fissionfuel", "gregtech:gt.blockmachines:835", 1);
         setNBTInfoAndSendIt("gtpp.recipe.lftr", "gregtech:gt.blockmachines:751", 1);
         setNBTInfoAndSendIt("gtpp.recipe.lftr.sparging", "gregtech:gt.blockmachines:31035", 1);
         setNBTInfoAndSendIt("gtpp.recipe.coldtrap", "gregtech:gt.blockmachines:31034");
         setNBTInfoAndSendIt("gtpp.recipe.reactorprocessingunit", "gregtech:gt.blockmachines:31032");
+        if (LoadedMods.AdvancedSolarPanel) {
+        	setNBTInfoAndSendIt("gtpp.recipe.moleculartransformer", "AdvancedSolarPanel:BlockMolecularTransformer");
+        }
     }
 
 

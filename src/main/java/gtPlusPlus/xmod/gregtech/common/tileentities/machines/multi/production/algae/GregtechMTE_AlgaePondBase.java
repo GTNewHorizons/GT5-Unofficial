@@ -42,7 +42,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
-public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase {
+public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase<GregtechMTE_AlgaePondBase> {
 
 	private int mLevel = -1;
 	private int mCasing;

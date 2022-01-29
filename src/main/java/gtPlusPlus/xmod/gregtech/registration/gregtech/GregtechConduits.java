@@ -40,7 +40,7 @@ public class GregtechConduits {
 	 *
 	 */
 
-	private static OrePrefixes cableGt16;
+	public static OrePrefixes cableGt16;
 	static{
 		if(GTNH) {
 			try {
@@ -52,7 +52,7 @@ public class GregtechConduits {
 	}
 
 	//30000-30999
-	
+
 	private static int BaseWireID = 30600;
 	private static int BasePipeID = 30700;
 	private static int BasePipeHexadecupleID = 30100;
@@ -74,7 +74,7 @@ public class GregtechConduits {
 	}
 
 	private static void run3() {
-		
+
 		if (Utils.getGregtechVersionAsInt() >= 50930) {
 			try {
 				Class<GT_MetaPipeEntity_Fluid> aPipeEntity = GT_MetaPipeEntity_Fluid.class;
@@ -103,17 +103,17 @@ public class GregtechConduits {
 				e.printStackTrace();
 			}		
 		}	
-		
-		
+
+
 		//Generate Heat Pipes
 		//GregtechItemList.HeatPipe_Tier_1.set(new GT_MetaPipeEntity_Heat(31021,	"gtpp.pipe.heat.basic.01", "Lead Heat Pipe (500C)", Materials.Lead, 500).getStackForm(1L));
 		//GregtechItemList.HeatPipe_Tier_2.set(new GT_MetaPipeEntity_Heat(31022,	"gtpp.pipe.heat.basic.02", "Iron Heat Pipe (500C)", Materials.Iron, 500).getStackForm(1L));
 		//GregtechItemList.HeatPipe_Tier_3.set(new GT_MetaPipeEntity_Heat(31023,	"gtpp.pipe.heat.basic.03", "Silver Heat Pipe (1500C)", Materials.Silver, 1500).getStackForm(1L));
-		
-		
-		
+
+
+
 	}
-	
+
 	private static void generateFluidMultiPipes(Constructor<GT_MetaPipeEntity_Fluid> aClazz, Materials aMaterial, String name, String displayName, int startID, int baseCapacity, int heatCapacity, boolean gasProof){
 		GT_MetaPipeEntity_Fluid aPipe;
 		try {
@@ -453,245 +453,165 @@ public class GregtechConduits {
 		return true;
 	}
 
-	public static boolean generateWireRecipes(Material aMaterial){
+	public static boolean generateWireRecipes(Material aMaterial) {
 
-		//Adds manual crafting recipe
-		RecipeUtils.addShapedRecipe(
-				Utils.sanitizeString("plate"+aMaterial.getLocalizedName()), CI.craftingToolWireCutter, null,
-				null, null, null,
-				null, null, null,
-				ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt01"+aMaterial.getLocalizedName()), 1));
+		ItemStack aPlate = aMaterial.getPlate(1);
+		ItemStack aIngot = aMaterial.getIngot(1);
+		ItemStack aWire01 = aMaterial.getWire01(1);
+		ItemStack aWire02 = aMaterial.getWire02(1);
+		ItemStack aWire04 = aMaterial.getWire04(1);
+		ItemStack aWire08 = aMaterial.getWire08(1);
+		ItemStack aWire12 = aMaterial.getWire12(1);
+		ItemStack aWire16 = aMaterial.getWire16(1);
+		ItemStack aCable01 = aMaterial.getCable01(1);
+		ItemStack aCable02 = aMaterial.getCable02(1);
+		ItemStack aCable04 = aMaterial.getCable04(1);
+		ItemStack aCable08 = aMaterial.getCable08(1);
+		ItemStack aCable12 = aMaterial.getCable12(1);
+		ItemStack aCable16 = aMaterial.getCable16(1);
 
-		//Wire mill
-		GT_Values.RA.addWiremillRecipe(
-				ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("ingot"+aMaterial.getLocalizedName()), 1),
-				ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt01"+aMaterial.getLocalizedName()), 2),
-				5*20,
-				4);
-
-		//Extruder
-		GT_Values.RA.addExtruderRecipe(
-				ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("ingot"+aMaterial.getLocalizedName()), 1),
-				ItemList.Shape_Extruder_Wire.get(0),
-				ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt01"+aMaterial.getLocalizedName()), 2),
-				196,
-				96);
-
-		GT_Values.RA.addUnboxingRecipe(
-				ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("cableGt01"+aMaterial.getLocalizedName()), 1),
-				ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt01"+aMaterial.getLocalizedName()), 1),
-				null,
-				100,
-				8);
-
-		//Shapeless Down-Crafting
-		//2x
-		RecipeUtils.addShapelessGregtechRecipe(
-				new ItemStack[]{ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt02"+aMaterial.getLocalizedName()), 1)},
-				ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt01"+aMaterial.getLocalizedName()), 2)
-				);
-		//4x
-		RecipeUtils.addShapelessGregtechRecipe(
-				new ItemStack[]{ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt04"+aMaterial.getLocalizedName()), 1)},
-				ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt01"+aMaterial.getLocalizedName()), 4)
-				);
-		//8x
-		RecipeUtils.addShapelessGregtechRecipe(
-				new ItemStack[]{ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt08"+aMaterial.getLocalizedName()), 1)},
-				ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt01"+aMaterial.getLocalizedName()), 8)
-				);
-		//12x
-		RecipeUtils.addShapelessGregtechRecipe(
-				new ItemStack[]{ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt12"+aMaterial.getLocalizedName()), 1)},
-				ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt01"+aMaterial.getLocalizedName()), 12)
-				);
-		//16x
-		RecipeUtils.addShapelessGregtechRecipe(
-				new ItemStack[]{ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt16"+aMaterial.getLocalizedName()), 1)},
-				ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt01"+aMaterial.getLocalizedName()), 16)
-				);
-
-
-		//1x -> 2x
-		RecipeUtils.addShapelessGregtechRecipe(
-				new ItemStack[]{
-						ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt01"+aMaterial.getLocalizedName()), 1),
-						ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt01"+aMaterial.getLocalizedName()), 1)
-				},
-				ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt02"+aMaterial.getLocalizedName()), 1)
-				);
-
-		//2x -> 4x
-		RecipeUtils.addShapelessGregtechRecipe(
-				new ItemStack[]{
-						ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt02"+aMaterial.getLocalizedName()), 1),
-						ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt02"+aMaterial.getLocalizedName()), 1)
-				},
-				ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt04"+aMaterial.getLocalizedName()), 1)
-				);
-
-		//4x -> 8x
-		RecipeUtils.addShapelessGregtechRecipe(
-				new ItemStack[]{
-						ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt04"+aMaterial.getLocalizedName()), 1),
-						ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt04"+aMaterial.getLocalizedName()), 1)
-				},
-				ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt08"+aMaterial.getLocalizedName()), 1)
-				);
-
-		//8x -> 12x
-		RecipeUtils.addShapelessGregtechRecipe(
-				new ItemStack[]{
-						ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt04"+aMaterial.getLocalizedName()), 1),
-						ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt08"+aMaterial.getLocalizedName()), 1)
-				},
-				ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt12"+aMaterial.getLocalizedName()), 1)
-				);
-
-		//12x -> 16x
-		RecipeUtils.addShapelessGregtechRecipe(
-				new ItemStack[]{
-						ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt04"+aMaterial.getLocalizedName()), 1),
-						ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt12"+aMaterial.getLocalizedName()), 1)
-				},
-				ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt16"+aMaterial.getLocalizedName()), 1)
-				);
-
-		//8x -> 16x
-		RecipeUtils.addShapelessGregtechRecipe(
-				new ItemStack[]{
-						ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt08"+aMaterial.getLocalizedName()), 1),
-						ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt08"+aMaterial.getLocalizedName()), 1)
-				},
-				ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt16"+aMaterial.getLocalizedName()), 1)
-				);
-
-		//1x -> 4x
-		RecipeUtils.addShapelessGregtechRecipe(
-				new ItemStack[]{
-						ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt01"+aMaterial.getLocalizedName()), 1),
-						ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt01"+aMaterial.getLocalizedName()), 1),
-						ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt01"+aMaterial.getLocalizedName()), 1),
-						ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt01"+aMaterial.getLocalizedName()), 1)
-				},
-				ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt04"+aMaterial.getLocalizedName()), 1)
-				);
-
-		//1x -> 8x
-		RecipeUtils.addShapelessGregtechRecipe(
-				new ItemStack[]{
-						ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt01"+aMaterial.getLocalizedName()), 1),
-						ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt01"+aMaterial.getLocalizedName()), 1),
-						ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt01"+aMaterial.getLocalizedName()), 1),
-						ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt01"+aMaterial.getLocalizedName()), 1),
-						ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt01"+aMaterial.getLocalizedName()), 1),
-						ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt01"+aMaterial.getLocalizedName()), 1),
-						ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt01"+aMaterial.getLocalizedName()), 1),
-						ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt01"+aMaterial.getLocalizedName()), 1)
-				},
-				ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt08"+aMaterial.getLocalizedName()), 1)
-				);
-
-
-		//Wire to Cable
-		//1x
-		GT_Values.RA.addAssemblerRecipe(
-				ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt01"+aMaterial.getLocalizedName()), 1),
-				CI.getNumberedCircuit(24),
-				FluidUtils.getFluidStack("molten.rubber", 144),
-				ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("cableGt01"+aMaterial.getLocalizedName()), 1),
-				100,
-				8);
-		//2x
-		GT_Values.RA.addAssemblerRecipe(
-				ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt02"+aMaterial.getLocalizedName()), 1),
-				CI.getNumberedCircuit(24),
-				FluidUtils.getFluidStack("molten.rubber", 144),
-				ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("cableGt02"+aMaterial.getLocalizedName()), 1),
-				100,
-				8);
-		//4x
-		GT_Values.RA.addAssemblerRecipe(
-				ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt04"+aMaterial.getLocalizedName()), 1),
-				CI.getNumberedCircuit(24),
-				FluidUtils.getFluidStack("molten.rubber", 288),
-				ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("cableGt04"+aMaterial.getLocalizedName()), 1),
-				100,
-				8);
-		//8x
-		GT_Values.RA.addAssemblerRecipe(
-				ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt08"+aMaterial.getLocalizedName()), 1),
-				CI.getNumberedCircuit(24),
-				FluidUtils.getFluidStack("molten.rubber", 432),
-				ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("cableGt08"+aMaterial.getLocalizedName()), 1),
-				100,
-				8);
-		//12x
-		GT_Values.RA.addAssemblerRecipe(
-				ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt12"+aMaterial.getLocalizedName()), 1),
-				CI.getNumberedCircuit(24),
-				FluidUtils.getFluidStack("molten.rubber", 576),
-				ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("cableGt12"+aMaterial.getLocalizedName()), 1),
-				100,
-				8);
-
-		if(GTNH){
-			//16x
-			GT_Values.RA.addAssemblerRecipe(
-					ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt16"+aMaterial.getLocalizedName()), 1),
-					CI.getNumberedCircuit(24),
-					FluidUtils.getFluidStack("molten.rubber", 720),
-					ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("cableGt16"+aMaterial.getLocalizedName()), 1),
-					100,
-					8);
+		// Adds manual crafting recipe
+		if (ItemUtils.checkForInvalidItems(new ItemStack[]{aPlate, aWire01})) {
+			RecipeUtils.addShapedRecipe(aPlate, CI.craftingToolWireCutter, null, null, null, null, null, null, null, aWire01);
 		}
 
-		//Assemble small wires into bigger wires
+		// Wire mill
+		if (ItemUtils.checkForInvalidItems(new ItemStack[]{aIngot, aWire01})) {
+			GT_Values.RA.addWiremillRecipe(aIngot, aMaterial.getWire01(2), 5 * 20, 4);
+		}
 
-		//2x
-		GT_Values.RA.addAssemblerRecipe(
-				ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt01"+aMaterial.getLocalizedName()), 2),
-				CI.getNumberedCircuit(2),
-				null,
-				ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt02"+aMaterial.getLocalizedName()), 1),
-				100,
-				8);
+		// Extruder
+		if (ItemUtils.checkForInvalidItems(new ItemStack[]{aIngot, aWire01})) {
+			GT_Values.RA.addExtruderRecipe(aIngot, ItemList.Shape_Extruder_Wire.get(0), aMaterial.getWire01(2), 196, 96);
+		}
 
-		//4x
-		GT_Values.RA.addAssemblerRecipe(
-				ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt01"+aMaterial.getLocalizedName()), 2),
-				CI.getNumberedCircuit(4),
-				null,
-				ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt04"+aMaterial.getLocalizedName()), 1),
-				100,
-				8);
+		if (ItemUtils.checkForInvalidItems(new ItemStack[]{aCable01, aWire01})) {
+			GT_Values.RA.addUnboxingRecipe(aCable01, aWire01, null, 100, 8);
+		}
 
-		//8x
-		GT_Values.RA.addAssemblerRecipe(
-				ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt01"+aMaterial.getLocalizedName()), 2),
-				CI.getNumberedCircuit(8),
-				null,
-				ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt08"+aMaterial.getLocalizedName()), 1),
-				100,
-				8);
+		// Shapeless Down-Crafting
+		// 2x
+		if (ItemUtils.checkForInvalidItems(new ItemStack[]{aWire01, aWire02})) {
+			RecipeUtils.addShapelessGregtechRecipe(new ItemStack[]{aWire02}, aMaterial.getWire01(2));
+		}
 
-		//12x
-		GT_Values.RA.addAssemblerRecipe(
-				ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt01"+aMaterial.getLocalizedName()), 2),
-				CI.getNumberedCircuit(12),
-				null,
-				ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt12"+aMaterial.getLocalizedName()), 1),
-				100,
-				8);
+		// 4x
+		if (ItemUtils.checkForInvalidItems(new ItemStack[]{aWire01, aWire04})) {
+			RecipeUtils.addShapelessGregtechRecipe(new ItemStack[]{aWire04}, aMaterial.getWire01(4));
+		}
 
-		//16x
-		GT_Values.RA.addAssemblerRecipe(
-				ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt01"+aMaterial.getLocalizedName()), 2),
-				CI.getNumberedCircuit(16),
-				null,
-				ItemUtils.getItemStackOfAmountFromOreDict(Utils.sanitizeString("wireGt16"+aMaterial.getLocalizedName()), 1),
-				100,
-				8);
+		// 8x
+		if (ItemUtils.checkForInvalidItems(new ItemStack[]{aWire01, aWire08})) {
+			RecipeUtils.addShapelessGregtechRecipe(new ItemStack[]{aWire08}, aMaterial.getWire01(8));
+		}
+
+		// 12x
+		if (ItemUtils.checkForInvalidItems(new ItemStack[]{aWire01, aWire12})) {
+			RecipeUtils.addShapelessGregtechRecipe(new ItemStack[]{aWire12}, aMaterial.getWire01(12));
+		}
+
+		// 16x
+		if (ItemUtils.checkForInvalidItems(new ItemStack[]{aWire01, aWire16})) {
+			RecipeUtils.addShapelessGregtechRecipe(new ItemStack[]{aWire16}, aMaterial.getWire01(16));
+		}
+
+		// 1x -> 2x
+		if (ItemUtils.checkForInvalidItems(new ItemStack[]{aWire01, aWire02})) {
+			RecipeUtils.addShapelessGregtechRecipe(new ItemStack[]{aWire01, aWire01}, aWire02);
+		}
+
+		// 2x -> 4x
+		if (ItemUtils.checkForInvalidItems(new ItemStack[]{aWire02, aWire04})) {
+			RecipeUtils.addShapelessGregtechRecipe(new ItemStack[]{aWire02, aWire02}, aWire04);
+		}
+
+		// 4x -> 8x
+		if (ItemUtils.checkForInvalidItems(new ItemStack[]{aWire04, aWire08})) {
+			RecipeUtils.addShapelessGregtechRecipe(new ItemStack[]{aWire04, aWire04}, aWire08);
+		}
+
+		// 8x -> 12x
+		if (ItemUtils.checkForInvalidItems(new ItemStack[]{aWire04, aWire08, aWire12})) {
+			RecipeUtils.addShapelessGregtechRecipe(new ItemStack[]{aWire04, aWire08}, aWire12);
+		}
+
+		// 12x -> 16x
+		if (ItemUtils.checkForInvalidItems(new ItemStack[]{aWire04, aWire12, aWire16})) {
+			RecipeUtils.addShapelessGregtechRecipe(new ItemStack[]{aWire04, aWire12}, aWire16);
+		}
+
+		// 8x -> 16x
+		if (ItemUtils.checkForInvalidItems(new ItemStack[]{aWire08, aWire16})) {
+			RecipeUtils.addShapelessGregtechRecipe(new ItemStack[]{aWire08, aWire08}, aWire16);
+		}
+
+		// 1x -> 4x
+		if (ItemUtils.checkForInvalidItems(new ItemStack[]{aWire01, aWire04})) {
+			RecipeUtils.addShapelessGregtechRecipe(new ItemStack[]{aWire01, aWire01, aWire01, aWire01}, aWire04);
+		}
+
+		// 1x -> 8x
+		if (ItemUtils.checkForInvalidItems(new ItemStack[]{aWire01, aWire08})) {
+			RecipeUtils.addShapelessGregtechRecipe(new ItemStack[]{aWire01, aWire01, aWire01, aWire01, aWire01, aWire01, aWire01, aWire01}, aWire08);
+		}
+
+		// Wire to Cable
+		// 1x
+		if (ItemUtils.checkForInvalidItems(new ItemStack[]{aWire01, aCable01})) {
+			GT_Values.RA.addAssemblerRecipe(aWire01, CI.getNumberedCircuit(24), FluidUtils.getFluidStack("molten.rubber", 144), aCable01, 100, 8);
+		}
+
+		// 2x
+		if (ItemUtils.checkForInvalidItems(new ItemStack[]{aWire02, aCable02})) {
+			GT_Values.RA.addAssemblerRecipe(aWire02, CI.getNumberedCircuit(24), FluidUtils.getFluidStack("molten.rubber", 144), aCable02, 100, 8);
+		}
+
+		// 4x
+		if (ItemUtils.checkForInvalidItems(new ItemStack[]{aWire04, aCable04})) {
+			GT_Values.RA.addAssemblerRecipe(aWire04, CI.getNumberedCircuit(24), FluidUtils.getFluidStack("molten.rubber", 288), aCable04, 100, 8);
+		}
+
+		// 8x
+		if (ItemUtils.checkForInvalidItems(new ItemStack[]{aWire08, aCable08})) {
+			GT_Values.RA.addAssemblerRecipe(aWire08, CI.getNumberedCircuit(24), FluidUtils.getFluidStack("molten.rubber", 432), aCable08, 100, 8);
+		}
+
+		// 12x
+		if (ItemUtils.checkForInvalidItems(new ItemStack[]{aWire12, aCable12})) {
+			GT_Values.RA.addAssemblerRecipe(aWire12, CI.getNumberedCircuit(24), FluidUtils.getFluidStack("molten.rubber", 576), aCable12, 100, 8);
+		}
+
+		// 16x
+		if (ItemUtils.checkForInvalidItems(new ItemStack[]{aWire16, aCable16})) {
+			GT_Values.RA.addAssemblerRecipe(aWire16, CI.getNumberedCircuit(24), FluidUtils.getFluidStack("molten.rubber", 720), aCable16, 100, 8);
+		}
+
+		// Assemble small wires into bigger wires
+
+		// 2x
+		if (ItemUtils.checkForInvalidItems(new ItemStack[]{aWire01, aWire02})) {
+			GT_Values.RA.addAssemblerRecipe(aMaterial.getWire01(2), CI.getNumberedCircuit(2), null, aWire02, 100, 8);
+		}
+
+		// 4x
+		if (ItemUtils.checkForInvalidItems(new ItemStack[]{aWire01, aWire02})) {
+			GT_Values.RA.addAssemblerRecipe(aMaterial.getWire01(4), CI.getNumberedCircuit(4), null, aWire04, 100, 8);
+		}
+
+		// 8x
+		if (ItemUtils.checkForInvalidItems(new ItemStack[]{aWire01, aWire02})) {
+			GT_Values.RA.addAssemblerRecipe(aMaterial.getWire01(8), CI.getNumberedCircuit(8), null, aWire08, 100, 8);
+		}
+
+		// 12x
+		if (ItemUtils.checkForInvalidItems(new ItemStack[]{aWire01, aWire02})) {
+			GT_Values.RA.addAssemblerRecipe(aMaterial.getWire01(12), CI.getNumberedCircuit(12), null, aWire12, 100, 8);
+		}
+
+		// 16x
+		if (ItemUtils.checkForInvalidItems(new ItemStack[]{aWire01, aWire02})) {
+			GT_Values.RA.addAssemblerRecipe(aMaterial.getWire01(16), CI.getNumberedCircuit(16), null, aWire16, 100, 8);
+		}
 
 		return true;
 	}

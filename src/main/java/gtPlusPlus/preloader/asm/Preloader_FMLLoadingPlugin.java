@@ -8,6 +8,8 @@ import java.util.Map;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.SortingIndex;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.preloader.CORE_Preloader;
 import gtPlusPlus.preloader.Preloader_Logger;
@@ -74,6 +76,7 @@ public class Preloader_FMLLoadingPlugin implements IFMLLoadingPlugin  {
         CORE_Preloader.DEV_ENVIRONMENT = (Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
         CORE_Preloader.DEBUG_MODE = AsmConfig.debugMode;
         Preloader_Logger.INFO("Running on "+gtPlusPlus.preloader.CORE_Preloader.JAVA_VERSION+" | Development Environment: "+CORE_Preloader.DEV_ENVIRONMENT);
+        //Preloader_Logger.INFO("Is Client? "+Utils.isClient()+" | Is Server? "+Utils.isServer());
         Locale aDefaultLocale = Locale.getDefault();
         NumberFormat aFormat = NumberFormat.getInstance();
         Locale aDisplayLocale = ReflectionUtils.getFieldValue(ReflectionUtils.getField(Locale.class, "defaultDisplayLocale"));

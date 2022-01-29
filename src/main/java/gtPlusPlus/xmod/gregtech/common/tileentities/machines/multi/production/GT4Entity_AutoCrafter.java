@@ -36,7 +36,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
-public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase {
+public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase<GT4Entity_AutoCrafter> {
 
 	private MODE mMachineMode = MODE.ASSEMBLY;
 	private byte mTier = 1;

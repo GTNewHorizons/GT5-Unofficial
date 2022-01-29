@@ -1,4 +1,3 @@
-/*
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines;
 
 import static gtPlusPlus.core.lib.CORE.RANDOM;
@@ -6,19 +5,19 @@ import static gtPlusPlus.core.lib.CORE.RANDOM;
 import java.util.ArrayList;
 
 import gregtech.GT_Mod;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
-import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 
+@SuppressWarnings("deprecation")
 public class GT_MTE_LargeTurbine_Steam extends GregtechMetaTileEntity_LargerTurbineBase {
 
     private float water;
@@ -34,36 +33,14 @@ public class GT_MTE_LargeTurbine_Steam extends GregtechMetaTileEntity_LargerTurb
         super(aName);
     }
 
-    public String[] getTooltip() {
-		if (mCasingName.toLowerCase().contains(".name")) {
-			mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings4Misc, 8);
-		}    	
-        return new String[]{
-                "Controller Block for the XL Steam Turbine",
-                "Size(WxHxD): 3x3x4 (Hollow), Controller (Front centered)",
-                "1x Steam Input Hatch (Side centered)",
-                "1x Maintenance Hatch (Side centered)",
-                "1x Dynamo Hatch (Back centered)",
-                "1x Output Hatch for Distilled Water (Side centered)",
-                mCasingName+"s for the rest (24 at least!)",
-                "Needs a Turbine Item (Inside controller GUI)",
-                "Output depending on Rotor and fitting",
-                "Use screwdriver to adjust fitting of turbine"};
-    }
-
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MTE_LargeTurbine_Steam(mName);
     }
 
     @Override
-    public Block getCasingBlock() {
-		return ModBlocks.blockCasings4Misc;
-    }
-
-    @Override
-    public byte getCasingMeta() {
-        return 8;
+    public int getCasingMeta() {
+        return 1;
     }
 
     @Override
@@ -71,8 +48,13 @@ public class GT_MTE_LargeTurbine_Steam extends GregtechMetaTileEntity_LargerTurb
         return 16;
     }
 
+	@Override
+	protected boolean requiresOutputHatch() {
+		return true;
+	}
+
     @Override
-    public int getPollutionPerTick(ItemStack aStack) {
+    public int getPollutionPerSecond(ItemStack aStack) {
         return 0;
     }
 
@@ -81,6 +63,10 @@ public class GT_MTE_LargeTurbine_Steam extends GregtechMetaTileEntity_LargerTurb
         int usage = (int) water;
         water = water - usage;
         return usage;
+    }
+    
+    public int getFuelValue(FluidStack aLiquid) {
+        return 0;
     }
 
     @Override
@@ -149,13 +135,10 @@ public class GT_MTE_LargeTurbine_Steam extends GregtechMetaTileEntity_LargerTurb
     public int getDamageToComponent(ItemStack aStack) {
         return (looseFit && RANDOM.nextInt(4)==0)?0:1;
     }
-
- 
-    @Override
-    public String[] getExtraInfoData() {
-    	super.looseFit = looseFit;
-    	return super.getInfoData();
-    }
+    
+    public boolean isLooseMode() {
+		return looseFit;
+	}
  
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
@@ -170,12 +153,6 @@ public class GT_MTE_LargeTurbine_Steam extends GregtechMetaTileEntity_LargerTurb
     }
 
 	@Override
-	public boolean hasSlotInGUI() {
-		return true;
-	}
-
-
-	@Override
 	public String getCustomGUIResourceName() {
 		return null;
 	}
@@ -185,5 +162,24 @@ public class GT_MTE_LargeTurbine_Steam extends GregtechMetaTileEntity_LargerTurb
 		return "Large Steam Turbine";
 	}
 
+	@Override
+	protected String getTurbineType() {
+		return "Steam";
+	}
+
+	@Override
+	protected String getCasingName() {
+		return "Reinforced Steam Turbine Casing";
+	}
+
+	@Override
+	protected ITexture getTextureFrontFace() {
+		return new GT_RenderedTexture(gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_ST5);
+	}
+
+	@Override
+	protected ITexture getTextureFrontFaceActive() {
+		return new GT_RenderedTexture(gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_ST_ACTIVE5);
+	}
+
 }
-*/

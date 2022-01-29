@@ -4,6 +4,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import gtPlusPlus.xmod.advsolar.HANDLER_AdvSolar;
 import gtPlusPlus.xmod.bartcrops.HANDLER_CropsPlusPlus;
 import gtPlusPlus.xmod.bop.HANDLER_BiomesOPlenty;
 import gtPlusPlus.xmod.computronics.HANDLER_Computronics;
@@ -81,6 +82,7 @@ public class COMPAT_IntermodStaging {
 		HANDLER_Reliquary.postInit();
 		HANDLER_OpenBlocks.postInit();
 		HANDLER_SpiceOfLife.postInit();
+		HANDLER_AdvSolar.postInit();
 	}
 
 	public static void onLoadComplete(FMLLoadCompleteEvent event) {

@@ -24,6 +24,7 @@ public class LoadedMods {
 	public static boolean Simply_Jetpacks = false;
 	public static boolean RFTools = false;
 	public static boolean Thaumcraft = false;
+	public static boolean ThaumicBases = false;
 	public static boolean Baubles = false;
 	public static boolean Extra_Utils = false;
 	public static boolean PneumaticCraft = false;
@@ -41,6 +42,7 @@ public class LoadedMods {
 	public static boolean MiscUtils = true; //Dummy For MetaData Lookups in MT Wrapper
 	public static boolean ThermalFoundation = false;
 	public static boolean IHL = false;
+	public static boolean AdvancedSolarPanel = false;
 	public static boolean OpenComputers = false; //OpenComputers
 	public static boolean OpenBlocks = false;
 	public static boolean Computronics = false; //computronics
@@ -61,8 +63,8 @@ public class LoadedMods {
 	public static boolean Reliquary = false;
 	public static boolean SpiceOfLife = false;
 	public static boolean RemoteIO = false;
-
-
+	public static boolean BartWorks = false;
+	public static boolean GoodGenerator = false;
 
 	private static int totalMods;
 	@SuppressWarnings("deprecation")
@@ -118,6 +120,21 @@ public class LoadedMods {
 			Logger.INFO("Components enabled for: Tinkers Construct");
 			totalMods++;
 		}
+		if (isModLoaded("AdvancedSolarPanel")){
+			AdvancedSolarPanel = true;
+			Logger.INFO("Components enabled for: Advanced Solar Panels");
+			totalMods++;
+		}
+		if (isModLoaded("GoodGenerator")) {
+			GoodGenerator = true;
+			Logger.INFO("Components enabled for: GoodGenerator");
+			totalMods++;
+		}
+		if (isModLoaded("bartworks")) {
+			BartWorks = true;
+			Logger.INFO("Components enabled for: BartWorks");
+			totalMods++;
+		}
 		if (isModLoaded("BuildCraft")){
 			BuildCraft = true;
 			Logger.INFO("Components enabled for: BuildCraft");
@@ -166,6 +183,11 @@ public class LoadedMods {
 		if (isModLoaded("Thaumcraft")){
 			Thaumcraft = true;
 			Logger.INFO("Components enabled for: Thaumcraft");
+			totalMods++;
+		}
+		if (isModLoaded("thaumicbases")){
+			ThaumicBases = true;
+			Logger.INFO("Components enabled for: Thaumic Bases");
 			totalMods++;
 		}
 		if (isModLoaded("BiomesOPlenty")){

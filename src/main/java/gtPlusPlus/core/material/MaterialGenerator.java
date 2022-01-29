@@ -67,26 +67,6 @@ public class MaterialGenerator {
 	private static volatile Item temp;
 	@SuppressWarnings("unused")
 	private static volatile Block tempBlock;
-	
-
-	public static boolean addFluidExtractionRecipe(ItemStack aEmpty, ItemStack aRemains, FluidStack aFluid) {
-		return addFluidExtractionRecipe(aEmpty, aRemains, aFluid, null, null);
-	}
-	
-	/**
-	 * Called Reflectively from CORE.RA.addFluidExtractionRecipe
-	 * @param aSpecial 
-	 * @return 
-	 */
-	public static boolean addFluidExtractionRecipe(ItemStack aEmpty, ItemStack aRemains, FluidStack aFluid, Integer aDuration, Integer aEU) {
-		RecipeGen_FluidCanning g = new RecipeGen_FluidCanning(true, aEmpty, aRemains, aFluid, aDuration, aEU);
-		if (g != null && g.valid()) {
-			//Logger.INFO("[FIND] Adding Extraction recipe for "+ItemUtils.getItemName(aEmpty)+", "+ItemUtils.getItemName(aRemains)+", "+ItemUtils.getFluidName(aFluid));
-			return true;
-		}
-		Logger.INFO("[ERROR] FAILED adding Extraction recipe for "+ItemUtils.getItemName(aEmpty)+", "+ItemUtils.getItemName(aRemains)+", "+ItemUtils.getFluidName(aFluid));
-		return false;
-	}
 
 
 	public static boolean addFluidCannerRecipe(ItemStack aEmpty, ItemStack aFullContainer, FluidStack aFluidIn, FluidStack rFluidOut) {	

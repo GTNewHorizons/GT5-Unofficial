@@ -190,6 +190,13 @@ public class CI {
 	public static ItemStack explosiveTNT;
 	public static ItemStack explosiveITNT;
 
+	public static Materials[] tieredMaterials = new Materials[] {
+				Materials.Iron, Materials.Steel, Materials.Aluminium, 
+				Materials.StainlessSteel, Materials.Titanium, Materials.TungstenSteel, 
+				Materials.Chrome, Materials.Iridium, Materials.Osmium,
+				Materials.Neutronium
+		};;
+
 	public static void preInit(){
 
 		//Tiered Components
@@ -543,7 +550,7 @@ public class CI {
 			ALLOY.TUMBAGA,				
 			ALLOY.EGLIN_STEEL,				
 			ALLOY.INCONEL_792,				
-			ALLOY.TUNGSTEN_TITANIUM_CARBIDE,				
+			ALLOY.INCOLOY_MA956,				
 			ALLOY.NITINOL_60,				
 			ALLOY.ZERON_100,				
 			ALLOY.PIKYONIUM,				
@@ -572,7 +579,7 @@ public class CI {
 			ELEMENT.getInstance().LEAD,
 			ELEMENT.getInstance().ALUMINIUM,
 			ELEMENT.STANDALONE.BLACK_METAL,
-			ELEMENT.getInstance().TUNGSTEN,
+			ELEMENT.getInstance().TITANIUM,
 			ALLOY.HASTELLOY_N,
 			ALLOY.ENERGYCRYSTAL,				
 			ALLOY.TRINIUM_NAQUADAH_CARBON,				
@@ -681,6 +688,14 @@ public class CI {
 	public static ItemStack getBolt(int aTier, int aAmount) {
 		return getTieredComponent(OrePrefixes.bolt, aTier, aAmount);
 	}
+	
+	public static ItemStack getScrew(int aTier, int aAmount) {
+		return getTieredComponent(OrePrefixes.screw, aTier, aAmount);
+	}
+	
+	public static ItemStack getCircuit(int aTier, int aAmount) {
+		return getTieredComponent(OrePrefixes.circuit, aTier, aAmount);
+	}
 
 	public static ItemStack getTieredComponent(OrePrefixes aPrefix, int aTier, int aAmount) {
 		aTier = Math.max(0, aTier);		
@@ -694,12 +709,12 @@ public class CI {
 		}
 
 		if (aPrefix == OrePrefixes.circuit) {	
-			if (aTier == 4) {
+			/*if (aTier == 4) {
 				return ItemUtils.getSimpleStack(CI.getDataStick(), aAmount);
 			}
 			else if (aTier == 5) {
 				return ItemUtils.getSimpleStack(CI.getDataOrb(), aAmount);
-			}			
+			}*/			
 			return ItemUtils.getOrePrefixStack(OrePrefixes.circuit, aMaterial_Circuits[aTier], aAmount); 
 		}
 

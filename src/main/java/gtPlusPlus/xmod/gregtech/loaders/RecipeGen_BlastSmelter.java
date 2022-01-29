@@ -134,12 +134,12 @@ public class RecipeGen_BlastSmelter extends RecipeGen_Base {
 					if (CORE.RA.addBlastSmelterRecipe(tItemStackTest, M.getFluidStack(fluidAmount), 100, (duration/(mTotalPartsCounter > 0 ? mTotalPartsCounter : 1)), (int) aVoltage)){
 						Logger.WARNING("[BAS] Success.");
 						Logger.WARNING("[BAS] Success, Also added a Fluid solidifier recipe.");
-						if (GT_Values.RA.addFluidExtractionRecipe(M.getIngot(1), null, M.getFluidStack(144), 100, duration, 120)){
+						/*if (GT_Values.RA.addFluidExtractionRecipe(M.getIngot(1), null, M.getFluidStack(144), 100, duration, 120)){
 							Logger.WARNING("[BAS] Success, Also added a Fluid Extractor recipe.");
 						}
 						if (GT_Values.RA.addFluidExtractionRecipe(M.getNugget(1), null, M.getFluidStack(16), 100, duration/9, 120)){
 							Logger.WARNING("[BAS] Success, Also added a Fluid Extractor recipe.");
-						}
+						}*/
 						/*if (GT_Values.RA.addFluidExtractionRecipe(M.getSmallDust(1), null, M.getFluid(36), 100, duration/4, 120)){
 							Logger.WARNING("[BAS] Success, Also added a Fluid Extractor recipe.");
 						}
@@ -157,12 +157,12 @@ public class RecipeGen_BlastSmelter extends RecipeGen_Base {
 					Logger.WARNING("[BAS] Success.");
 					if (GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Ingot.get(0), M.getFluidStack(144), M.getIngot(1), duration/2, 60)){
 						Logger.WARNING("[BAS] Success, Also added a Fluid solidifier recipe.");
-						if (GT_Values.RA.addFluidExtractionRecipe(M.getIngot(1), null, M.getFluidStack(144), 100, duration/2, 60)){
+						/*if (GT_Values.RA.addFluidExtractionRecipe(M.getIngot(1), null, M.getFluidStack(144), 100, duration/2, 60)){
 							Logger.WARNING("[BAS] Success, Also added a Fluid Extractor recipe.");
 						}
 						if (GT_Values.RA.addFluidExtractionRecipe(M.getNugget(1), null, M.getFluidStack(16), 100, duration/2/9, 60)){
 							Logger.WARNING("[BAS] Success, Also added a Fluid Extractor recipe.");
-						}
+						}*/
 						/*if (GT_Values.RA.addFluidExtractionRecipe(M.getSmallDust(1), null, M.getFluid(36), 100, duration/2/4, 60)){
 							Logger.WARNING("[BAS] Success, Also added a Fluid Extractor recipe.");
 						}
