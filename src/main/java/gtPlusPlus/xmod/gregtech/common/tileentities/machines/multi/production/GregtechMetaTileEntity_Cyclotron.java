@@ -362,6 +362,7 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 				
 				this.mOutputItems = outputs;
 				this.mOutputFluids = new FluidStack[] {tRecipe.getFluidOutput(0)};
+				this.updateSlots();
 				return true;
 			}
 		}		
