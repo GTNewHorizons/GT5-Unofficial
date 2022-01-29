@@ -1,7 +1,5 @@
 package gtPlusPlus.core.handler.events;
 
-import cpw.mods.fml.common.eventhandler.Event.Result;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.*;
@@ -14,7 +12,6 @@ import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ChatComponentTranslation;

@@ -126,6 +126,8 @@ public class CommonProxy {
 		Utils.registerEvent(new HandlerTooltip_GC());
 		// Handles Sleep Benefits
 		PlayerSleepEventHandler.init();
+		// Handles Magic Feather
+		Utils.registerEvent(ModItems.itemMagicFeather);
 
 		if (CORE.DEVENV) {
 			Utils.registerEvent(new StopAnnoyingFuckingAchievements());
