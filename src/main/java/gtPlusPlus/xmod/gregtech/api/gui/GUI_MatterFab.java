@@ -74,11 +74,11 @@ public class GUI_MatterFab extends GT_GUIContainerMetaTile_Machine {
 					
 					this.fontRendererObj.drawString("Running perfectly.", 10, 16, 16448255);
 					
-					this.fontRendererObj.drawString("Scrap Produced: "+this.mScrapProduced, 10, 32, 16448255);
+					this.fontRendererObj.drawString("Scrap Made: "+this.mScrapProduced, 10, 32, 16448255);
 					this.fontRendererObj.drawString("Scrap Used: "+this.mScrapUsed, 10, 40, 16448255);
-					this.fontRendererObj.drawString("UU-Amplifier Produced: "+this.mAmplifierProduced, 10, 48, 16448255);
-					this.fontRendererObj.drawString("UU-Amplifier Used: "+this.mAmplifierUsed, 10, 56, 16448255);
-					this.fontRendererObj.drawString("UU-Matter Fabricated: "+this.mMatterProduced, 10, 64, 16448255);
+					this.fontRendererObj.drawString("UUA Made: "+this.mAmplifierProduced, 10, 48, 16448255);
+					this.fontRendererObj.drawString("UUA Used: "+this.mAmplifierUsed, 10, 56, 16448255);
+					this.fontRendererObj.drawString("UUM Made: "+this.mMatterProduced, 10, 64, 16448255);
 				}
 			}
 		}

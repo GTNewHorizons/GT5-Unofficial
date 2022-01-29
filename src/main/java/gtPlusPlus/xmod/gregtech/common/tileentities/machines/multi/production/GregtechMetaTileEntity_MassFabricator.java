@@ -1,41 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
-import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import gregtech.api.enums.ConfigCategories;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.TAE;
-import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.*;
-import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.*;
-import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
-import gtPlusPlus.api.helpers.GregtechPlusPlus_API.Multiblock_API;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.minecraft.multi.SpecialMultiBehaviour;
-import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.minecraft.*;
-import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_MatterFab;
-import gtPlusPlus.xmod.gregtech.api.gui.GUI_MatterFab;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
-import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import ic2.core.Ic2Items;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.FluidStack;
-
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 import static gtPlusPlus.core.util.data.ArrayUtils.removeNulls;
 
@@ -43,7 +8,32 @@ import java.util.*;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlockBase {
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
+import gregtech.api.enums.*;
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.*;
+import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.*;
+import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.minecraft.*;
+import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_MatterFab;
+import gtPlusPlus.xmod.gregtech.api.gui.GUI_MatterFab;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
+import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fluids.FluidStack;
+
+public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_MassFabricator> {
 
 	public static int sUUAperUUM = 1;
 	public static int sUUASpeedBonus = 4;
@@ -307,7 +297,7 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 	@Override
 	public boolean checkRecipeGeneric(ItemStack[] aItemInputs, FluidStack[] aFluidInputs, int aMaxParallelRecipes, int aEUPercent, int aSpeedBonusPercent, int aOutputChanceRoll) {
 		if (this.mMode == MODE_SCRAP) {
-			return checkRecipeScrap(aItemInputs, aFluidInputs, getMaxParallelRecipes(), aEUPercent, aSpeedBonusPercent, aOutputChanceRoll);
+			return checkRecipeScrap(aItemInputs, aFluidInputs, getMaxParallelRecipes(), getEuDiscountForParallelism(), aSpeedBonusPercent, aOutputChanceRoll);
 		}
 		else {
 			return checkRecipeUU(aItemInputs, aFluidInputs, getMaxParallelRecipes(), getEuDiscountForParallelism(), aSpeedBonusPercent, aOutputChanceRoll);
@@ -425,7 +415,6 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 			updateSlots();
 			// Play sounds (GT++ addition - GT multiblocks play no sounds)
 			startProcess();
-			log("" + mScrapProduced);
 			return true;
 		}
 		return false;
@@ -483,13 +472,13 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 		// Count recipes to do in parallel, consuming input items and fluids and considering input voltage limits
 		for (; parallelRecipes < aMaxParallelRecipes && tTotalEUt < (tEnergy - tRecipeEUt); parallelRecipes++) {
 			if (!tRecipe.isRecipeInputEqual(true, true, aFluidInputs, aItemInputs)) {
-				log("Broke at "+parallelRecipes+".");
 				break;
 			}
 			log("Bumped EU from "+tTotalEUt+" to "+(tTotalEUt+tRecipeEUt)+".");
 			tTotalEUt += tRecipeEUt;
 		}
 
+		log("Broke at "+parallelRecipes+".");
 		if (parallelRecipes == 0) {
 			log("BAD RETURN - 3");
 			return false;
