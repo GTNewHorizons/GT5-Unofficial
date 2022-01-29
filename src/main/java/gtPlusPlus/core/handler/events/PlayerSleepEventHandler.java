@@ -17,6 +17,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
 
@@ -49,45 +50,62 @@ public class PlayerSleepEventHandler {
 
 	@SubscribeEvent
 	public void sleep(PlayerSleepInBedEvent event) {
-		event.setResult(Result.ALLOW);
+		
 	}
 
 	@SubscribeEvent
 	public void wake(PlayerWakeUpEvent event) {
 		EntityPlayer aPlayer = event.entityPlayer;
-		if (aPlayer != null && !aPlayer.worldObj.isRemote) {
-			// Try Heal
-			float aCurrentHP = aPlayer.getHealth();
-			float aMaxHP = aPlayer.getMaxHealth();
-			if (aCurrentHP < aMaxHP) {
-				float aDamage = aMaxHP - aCurrentHP;
-				float aToHeal = MathUtils.randFloat(1, aDamage);
-				if (aToHeal > 0) {
-					aPlayer.heal(aToHeal);
-					PlayerUtils.messagePlayer(aPlayer, "You slept well and now feel " + (aToHeal >= aDamage / 2 ? "much" : "a little") + " better.");
-				}
-			}
-			// Already healed, try give a buff
-			else {
-				int aRandomBuff = MathUtils.randInt(0, sPositiveEffects.size() - 1);
-				Potion aPotionToApply = sPositiveEffects.get(aRandomBuff);
-				if (aPotionToApply != null) {
-					aPlayer.addPotionEffect(new GtPotionEffect(aPotionToApply.id, MathUtils.randInt(60, 180), MathUtils.randInt(0, 2)));
-					PlayerUtils.messagePlayer(aPlayer, "You feel really well rested.");
-				}
-			}
+		if (aPlayer != null && !aPlayer.worldObj.isRemote) {			
 			boolean aRemovedBad = false;
-			/*for (Potion aBadPotion : sNegativeEffects) {
-				if (curePotionEffect(aPlayer, aBadPotion)) {
-					aRemovedBad = true;
+			try {
+				Collection<PotionEffect> aActive = aPlayer.getActivePotionEffects();
+				for (PotionEffect aEffect : aActive) {
+					for (Potion aBadPotion : sNegativeEffects) {
+						if (aEffect.getPotionID() == aBadPotion.getId()) {
+							ReflectionUtils.setField(aEffect, sEffectDuration, 1);
+							aRemovedBad = true;
+							Logger.INFO("Set duration of " + aEffect.getEffectName() + " to 1 tick");
+						}
+					}
 				}
-			}*/
-			if (aRemovedBad) {
-				PlayerUtils.messagePlayer(aPlayer, "The downsides of life no longer effect you.");
 			}
+			catch (Throwable t) {
+				t.printStackTrace();
+			}
+			if (aRemovedBad) {
+				messagePlayer(aPlayer, "sleep.event.downsides");
+			}
+			else {
+				// Try Heal
+				float aCurrentHP = aPlayer.getHealth();
+				float aMaxHP = aPlayer.getMaxHealth();
+				if (aCurrentHP < aMaxHP) {
+					float aDamage = aMaxHP - aCurrentHP;
+					float aToHeal = MathUtils.randFloat(1, aDamage);
+					if (aToHeal > 0) {
+						aPlayer.heal(aToHeal);
+						messagePlayer(aPlayer, (aToHeal >= aDamage / 2 ? "sleep.event.good" : "sleep.event.okay"));
+					}
+				}
+				// Already healed, try give a buff
+				else {
+					int aRandomBuff = MathUtils.randInt(0, sPositiveEffects.size() - 1);
+					Potion aPotionToApply = sPositiveEffects.get(aRandomBuff);
+					if (aPotionToApply != null) {
+						aPlayer.addPotionEffect(new GtPotionEffect(aPotionToApply.id, MathUtils.randInt(60, 180), MathUtils.randInt(0, 2)));
+						messagePlayer(aPlayer, "sleep.event.wellrested");
+					}
+				}
+			}			
 		}
 	}
+	
+	private static void messagePlayer(EntityPlayer aPlayer, String aChatKey) {
+		PlayerUtils.messagePlayer(aPlayer, new ChatComponentTranslation(aChatKey, new Object[0]));
+	}
 
+	private static Field sEffectDuration = ReflectionUtils.getField(PotionEffect.class, "duration");
 	private static Field sActivePotionEffects = ReflectionUtils.getField(EntityPlayer.class, "activePotionsMap");
 	private static Method sOnFinishedPotionEffect = ReflectionUtils.getMethod(EntityPlayer.class, "onFinishedPotionEffect", PotionEffect.class);
 	
