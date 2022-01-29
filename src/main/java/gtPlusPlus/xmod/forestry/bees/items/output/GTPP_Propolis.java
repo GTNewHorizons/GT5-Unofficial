@@ -76,7 +76,7 @@ public class GTPP_Propolis extends Item {
 		Logger.BEES("Processing recipes for "+GTPP_Bees.sPropolisMappings.size()+" Propolis.");
 		for (GTPP_PropolisType aProp : GTPP_Bees.sPropolisMappings.values()) {
 			tDrop = aProp.getStackForType(1);
-			if (addProcess(tDrop, aProp.mMaterial.getDust(1), (int) Math.min(Math.max(10000-(aProp.mMaterial.vTier*625), 100) / 10, 10000), aProp.mMaterial.vTier * 20 * 15, aProp.mMaterial.vVoltageMultiplier)) {
+			if (addProcess(tDrop, aProp.mMaterial.getDust(1), Math.min(Math.max(10000-(aProp.mMaterial.vTier*625), 100), 10000), aProp.mMaterial.vTier * 20 * 15, aProp.mMaterial.vVoltageMultiplier)) {
 				Logger.BEES("Added Propolis extraction recipe for: "+aProp.getName());
 			}
 			else {

@@ -76,10 +76,12 @@ import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
 import net.minecraft.item.*;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 public final class ModItems {
+
 
 	public static ToolMaterial STABALLOY = EnumHelper.addToolMaterial("Staballoy", 3, 2500, 7, 1.0F, 18);
 	
@@ -355,6 +357,8 @@ public final class ModItems {
 	public static CoreItem itemExquisiteIndustrialDiamond;
 
 	public static BaseItemMetaFood itemMetaFood;
+	
+	public static ItemMagicFeather itemMagicFeather;
 
 	static {
 		Logger.INFO("Items!");
@@ -365,8 +369,9 @@ public final class ModItems {
 
 	public static final void init(){
 		
-		itemDebugScanner = new DebugScanner();
-		
+		itemDebugScanner = new DebugScanner();		
+		itemMagicFeather = new ItemMagicFeather();
+
 		itemAlkalusDisk = new BaseItemDamageable("itemAlkalusDisk", AddToCreativeTab.tabMisc, 1, 0, "Unknown Use", EnumRarity.rare, EnumChatFormatting.AQUA, false, null);
 		itemBigEgg = new ItemGiantEgg();
 		itemGenericToken = new ItemGenericToken();

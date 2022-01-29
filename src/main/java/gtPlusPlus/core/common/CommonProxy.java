@@ -124,6 +124,8 @@ public class CommonProxy {
 		Utils.registerEvent(new HandlerTooltip_EIO());
 		// Handles Custom Tooltips for GC
 		Utils.registerEvent(new HandlerTooltip_GC());
+		// Handles Sleep Benefits
+		PlayerSleepEventHandler.init();
 
 		if (CORE.DEVENV) {
 			Utils.registerEvent(new StopAnnoyingFuckingAchievements());
