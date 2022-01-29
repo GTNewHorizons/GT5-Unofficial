@@ -410,15 +410,15 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 							if (this.mMode == 1 || this.mMode == 2){
 								int tempRange = (this.mMode == 1 ? this.mTier*20 : this.mTier*10);
 								if (getDistanceBetweenTwoPositions(getTileEntityPosition(), getPositionOfEntity(mTemp)) < tempRange){
-									if (isValidPlayer(mTemp) && !mLocalChargingMap.containsKey(mTemp.getPersistentID())){
+									if (isValidPlayer(mTemp) && !mLocalChargingMap.containsKey(mTemp.getDisplayName())){
 										mLocalChargingMap.put(mTemp.getDisplayName(), mTemp.getPersistentID());
 										ChargingHelper.addValidPlayer(mTemp, this);
 										//PlayerUtils.messagePlayer(mTemp, "You have entered charging range. ["+tempRange+"m - Local].");
 									}
 								}
 								else {
-									if (mLocalChargingMap.containsKey(mTemp.getPersistentID())){
-										if (mLocalChargingMap.remove(mTemp.getPersistentID()) != null){
+									if (mLocalChargingMap.containsKey(mTemp.getDisplayName())){
+										if (mLocalChargingMap.remove(mTemp.getDisplayName()) != null){
 											//PlayerUtils.messagePlayer(mTemp, "You have left charging range. ["+tempRange+"m - Local].");
 											ChargingHelper.removeValidPlayer(mTemp, this);	
 										}
@@ -428,7 +428,7 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 							if (this.mMode == 0 || this.mMode == 2){
 								int tempRange = (int) (this.mMode == 0 ? 4*GT_Values.V[this.mTier] : 2*GT_Values.V[this.mTier]);
 								if (getDistanceBetweenTwoPositions(getTileEntityPosition(), getPositionOfEntity(mTemp)) <= tempRange){
-									if (!mWirelessChargingMap.containsKey(mTemp)){
+									if (!mWirelessChargingMap.containsKey(mTemp.getDisplayName())){
 										if (isValidPlayer(mTemp)) {
 											mWirelessChargingMap.put(mTemp.getDisplayName(), mTemp.getPersistentID());
 											ChargingHelper.addValidPlayer(mTemp, this);
@@ -437,15 +437,15 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 									}
 								}
 								else {
-									if (mWirelessChargingMap.containsKey(mTemp)){
-										if (mWirelessChargingMap.remove(mTemp) != null){
+									if (mWirelessChargingMap.containsKey(mTemp.getDisplayName())){
+										if (mWirelessChargingMap.remove(mTemp.getDisplayName()) != null){
 											PlayerUtils.messagePlayer(mTemp, "You have left charging range. ["+tempRange+"m - Long Range].");
 											ChargingHelper.removeValidPlayer(mTemp, this);	
 										}
 									}
 								}
-								if (mWirelessChargingMap.containsKey(mTemp) && !mTemp.getDisplayName().equalsIgnoreCase(this.getBaseMetaTileEntity().getOwnerName())){
-									if (mWirelessChargingMap.remove(mTemp) != null){
+								if (mWirelessChargingMap.containsKey(mTemp.getDisplayName())){
+									if (mWirelessChargingMap.remove(mTemp.getDisplayName()) != null){
 										ChargingHelper.removeValidPlayer(mTemp, this);	
 									}
 								}

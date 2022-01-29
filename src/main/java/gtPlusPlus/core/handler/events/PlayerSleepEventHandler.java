@@ -1,8 +1,8 @@
 package gtPlusPlus.core.handler.events;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gtPlusPlus.api.objects.Logger;
@@ -20,6 +20,7 @@ import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
 
 public class PlayerSleepEventHandler {
 
+	private static Field sEffectDuration = ReflectionUtils.getField(PotionEffect.class, "duration");
 	private static ArrayList<Potion> sPositiveEffects = new ArrayList<Potion>();
 	private static ArrayList<Potion> sNegativeEffects = new ArrayList<Potion>();
 
@@ -102,38 +103,4 @@ public class PlayerSleepEventHandler {
 		PlayerUtils.messagePlayer(aPlayer, new ChatComponentTranslation(aChatKey, new Object[0]));
 	}
 
-	private static Field sEffectDuration = ReflectionUtils.getField(PotionEffect.class, "duration");
-	private static Field sActivePotionEffects = ReflectionUtils.getField(EntityPlayer.class, "activePotionsMap");
-	private static Method sOnFinishedPotionEffect = ReflectionUtils.getMethod(EntityPlayer.class, "onFinishedPotionEffect", PotionEffect.class);
-	
-	public boolean curePotionEffect(EntityPlayer aPlayer, Potion aPotion) {
-		HashMap activePotionsMap = new HashMap();
-		try {
-			activePotionsMap = ReflectionUtils.getFieldValue(sActivePotionEffects, aPlayer);
-		}
-		catch (Throwable t) {
-			t.printStackTrace();
-		}
-		if (aPlayer != null && aPotion != null && activePotionsMap != null && activePotionsMap.size() > 0) {
-			Iterator<Integer> potionKey = activePotionsMap.keySet().iterator();
-			if (!aPlayer.worldObj.isRemote) {
-				while (potionKey.hasNext()) {				
-					try {
-						Integer key = potionKey.next();
-						PotionEffect effect = (PotionEffect) activePotionsMap.get(key);
-						if (effect.getPotionID() == aPotion.getId()) {
-							potionKey.remove();
-							ReflectionUtils.invokeVoid(aPlayer, sOnFinishedPotionEffect, new Object[]{effect});
-							return true;
-						}
-					}
-					catch (ConcurrentModificationException e) {
-						e.printStackTrace();
-					}
-				}
-			}			
-		}
-		return false;
-	}
-	
 }
