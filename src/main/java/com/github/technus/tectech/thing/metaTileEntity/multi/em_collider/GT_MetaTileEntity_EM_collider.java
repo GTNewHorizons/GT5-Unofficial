@@ -3,19 +3,15 @@ package com.github.technus.tectech.thing.metaTileEntity.multi.em_collider;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.EMComplexAspectDefinition;
 import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.EMPrimalAspectDefinition;
-import com.github.technus.tectech.mechanics.constructable.IConstructable;
 import com.github.technus.tectech.mechanics.elementalMatter.core.decay.EMDecayResult;
-import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
-import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMDefinitionStackMap;
-import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMInstanceStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.EMPrimitiveTemplate;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMDefinitionStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMInstanceStack;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.EMAtomDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.EMHadronDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMQuarkDefinition;
-import com.github.technus.tectech.mechanics.structure.IStructureDefinition;
-import com.github.technus.tectech.mechanics.structure.StructureDefinition;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
-import com.github.technus.tectech.thing.casing.TT_Container_Casings;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputElemental;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.INameFunction;
@@ -23,6 +19,9 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.base.IStatusFunctio
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
 import com.github.technus.tectech.util.CommonValues;
+import com.gtnewhorizon.structurelib.StructureLibAPI;
+import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -39,12 +38,13 @@ import java.util.HashMap;
 
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry.EM_COUNT_PER_MATERIAL_AMOUNT;
-import static com.github.technus.tectech.mechanics.structure.StructureUtility.*;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.*;
 import static com.github.technus.tectech.util.DoubleCount.add;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
@@ -59,7 +59,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
 
     protected static final byte FUSE_MODE = 0, COLLIDE_MODE = 1;
     private static double MASS_TO_EU_INSTANT;
-    private static int STARTUP_COST, KEEPUP_COST;
+    private static int    STARTUP_COST, KEEPUP_COST;
 
     protected byte            eTier = 0;
     protected EMInstanceStack stack;
@@ -69,7 +69,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     //endregion
 
     //region collision handlers
-    public static final HashMap<Long, IColliderHandler> FUSE_HANDLERS = new HashMap<>();
+    public static final HashMap<Long, IColliderHandler>            FUSE_HANDLERS           = new HashMap<>();
     public static final HashMap<String, IPrimitiveColliderHandler> PRIMITIVE_FUSE_HANDLERS = new HashMap<>();
 
     static {
@@ -263,7 +263,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     //endregion
 
     //region parameters
-    protected Parameters.Group.ParameterIn mode;
+    protected            Parameters.Group.ParameterIn                   mode;
     private static final IStatusFunction<GT_MetaTileEntity_EM_collider> MODE_STATUS = (base_EM, p) -> {
         if (base_EM.isMaster()) {
             double mode = p.get();
@@ -278,7 +278,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
         }
         return STATUS_OK;
     };
-    private static final INameFunction<GT_MetaTileEntity_EM_collider> MODE_NAME = (base_EM, p) -> {
+    private static final INameFunction<GT_MetaTileEntity_EM_collider>   MODE_NAME   = (base_EM, p) -> {
         if (base_EM.isMaster()) {
             double mode = p.get();
             if (mode == FUSE_MODE) {
@@ -294,30 +294,30 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
 
     //region structure
     //use multi A energy inputs, use less power the longer it runs
-    private static final IStructureDefinition<GT_MetaTileEntity_EM_collider> STRUCTURE_DEFINITION = StructureDefinition
+    private static final IStructureDefinition<GT_MetaTileEntity_EM_collider> STRUCTURE_DEFINITION = IStructureDefinition
             .<GT_MetaTileEntity_EM_collider>builder()
-            .addShapeOldApi("main", new String[][]{
-                    {"I0A0A0", "I00000", "I0A0A0",},
-                    {"H0000000", "G001111100", "H0000000",},
-                    {"F22223332222", "F41155555114", "F22223332222",},
-                    {"E2000000000002", "E4155111115514", "E2000000000002",},
-                    {"D20000E00002", "D41511E11514", "D20000E00002",},
-                    {"C2000I0002", "C4151I1514", "C2000I0002",},
-                    {"B2000K0002", "B4151K1514", "B2000K0002",},
-                    {"B200M002", "A0151M1510", "B200M002",},
-                    {"A0200M0020", "A0151M1510", "A0200M0020",},
-                    {"0020O0200", "0151O1510", "0020O0200",},
-                    {"A030O030", "0151O1510", "A030O030",},
-                    {"0030O0300", "0151O1510", "0030O0300",},
-                    {"A030O030", "0151O1510", "A030O030",},
-                    {"0020O0200", "0151O1510", "0020O0200",},
-                    {"A0200M0020", "A0151M1510", "A0200M0020",},
-                    {"B200M002", "A0151M1510", "B200M002",},
-                    {"B2000K0002", "B4151K1514", "B2000K0002",},
-                    {"C2000I0002", "C4151I1514", "C2000I0002",},
-                    {"D200002&&&200002", "D415112&.&211514", "D200002&&&200002",},
-                    {"E20!!22222!!02", "E4155111115514", "E20!!22222!!02",},
-                    {"F2222#$#2222", "F41155555114", "F2222#$#2222",},
+            .addShape("main", new String[][]{
+                    {"         0 0 0         ", "         00000         ", "         0 0 0         ",},
+                    {"        0000000        ", "       001111100       ", "        0000000        ",},
+                    {"      22223332222      ", "      41155555114      ", "      22223332222      ",},
+                    {"     2000000000002     ", "     4155111115514     ", "     2000000000002     ",},
+                    {"    20000     00002    ", "    41511     11514    ", "    20000     00002    ",},
+                    {"   2000         0002   ", "   4151         1514   ", "   2000         0002   ",},
+                    {"  2000           0002  ", "  4151           1514  ", "  2000           0002  ",},
+                    {"  200             002  ", " 0151             1510 ", "  200             002  ",},
+                    {" 0200             0020 ", " 0151             1510 ", " 0200             0020 ",},
+                    {"0020               0200", "0151               1510", "0020               0200",},
+                    {" 030               030 ", "0151               1510", " 030               030 ",},
+                    {"0030               0300", "0151               1510", "0030               0300",},
+                    {" 030               030 ", "0151               1510", " 030               030 ",},
+                    {"0020               0200", "0151               1510", "0020               0200",},
+                    {" 0200             0020 ", " 0151             1510 ", " 0200             0020 ",},
+                    {"  200             002  ", " 0151             1510 ", "  200             002  ",},
+                    {"  2000           0002  ", "  4151           1514  ", "  2000           0002  ",},
+                    {"   2000         0002   ", "   4151         1514   ", "   2000         0002   ",},
+                    {"    200002&&&200002    ", "    415112&~&211514    ", "    200002&&&200002    ",},
+                    {"     20!!22222!!02     ", "     4155111115514     ", "     20!!22222!!02     ",},
+                    {"      2222#$#2222      ", "      41155555114      ", "      2222#$#2222      ",},
             })
             .addElement('0', ofBlock(sBlockCasingsTT, 4))
             .addElement('1', ofBlock(sBlockCasingsTT, 7))
@@ -337,7 +337,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
             .addElement('#', ofHatchAdderOptional(GT_MetaTileEntity_EM_collider::addElementalMufflerToMachineList,
                     textureOffset + 4, 4, sBlockCasingsTT, 4))
             .build();
-    private static final String[] description = new String[]{
+    private static final String[]                                            description          = new String[]{
             EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
             translateToLocal("gt.blockmachines.multimachine.em.collider.hint.0"),//1 - Classic Hatches or High Power Casing
             translateToLocal("gt.blockmachines.multimachine.em.collider.hint.1"),//2 - Elemental Input Hatches or Molecular Casing
@@ -362,7 +362,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     }
 
     public static void setValues(int heliumPlasmaValue) {
-        double MASS_TO_EU_PARTIAL = heliumPlasmaValue / (1.75893000478707E07* EM_COUNT_PER_MATERIAL_AMOUNT);//mass diff
+        double MASS_TO_EU_PARTIAL = heliumPlasmaValue / (1.75893000478707E07 * EM_COUNT_PER_MATERIAL_AMOUNT);//mass diff
         MASS_TO_EU_INSTANT = MASS_TO_EU_PARTIAL * 20;
         STARTUP_COST = -heliumPlasmaValue * 10000;
         KEEPUP_COST = -heliumPlasmaValue;
@@ -374,7 +374,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
                     partner.stack.getDefinition().fusionMakesEnergy(partner.stack.getEnergy());
 
             EMInstanceStack stack2  = partner.stack;
-            double          preMass = add(stack2.getMass(),stack.getMass());
+            double          preMass = add(stack2.getMass(), stack.getMass());
             //System.out.println("preMass = " + preMass);
 
             EMInstanceStackMap map = new EMInstanceStackMap();
@@ -438,10 +438,10 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     }
 
     protected GT_MetaTileEntity_EM_collider getPartner() {
-        IGregTechTileEntity iGregTechTileEntity = getBaseMetaTileEntity();
-        int xDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetX * 4;
-        int yDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetY * 4;
-        int zDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetZ * 4;
+        IGregTechTileEntity iGregTechTileEntity    = getBaseMetaTileEntity();
+        int                 xDir                   = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetX * 4;
+        int                 yDir                   = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetY * 4;
+        int                 zDir                   = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetZ * 4;
         IGregTechTileEntity gregTechBaseTileEntity = iGregTechTileEntity.getIGregTechTileEntityOffset(xDir, yDir, zDir);
         if (gregTechBaseTileEntity != null) {
             IMetaTileEntity gregTechMetaTileEntity = gregTechBaseTileEntity.getMetaTileEntity();
@@ -652,7 +652,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
         eTier = aNBT.getByte("eTier");//collider tier
         started = aNBT.getBoolean("eStarted");
         if (aNBT.hasKey("eStack")) {
-            stack = EMInstanceStack.fromNBT(TecTech.definitionsRegistry,aNBT.getCompoundTag("eStack"));
+            stack = EMInstanceStack.fromNBT(TecTech.definitionsRegistry, aNBT.getCompoundTag("eStack"));
         }
         plasmaEnergy = aNBT.getLong("ePlasmaEnergy");
     }
@@ -689,17 +689,17 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         IGregTechTileEntity iGregTechTileEntity = getBaseMetaTileEntity();
-        int xDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetX * 4;
-        int yDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetY * 4;
-        int zDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetZ * 4;
+        int                 xDir                = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetX * 4;
+        int                 yDir                = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetY * 4;
+        int                 zDir                = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetZ * 4;
         if (hintsOnly) {
             TecTech.proxy.hint_particle(iGregTechTileEntity.getWorld(),
                     iGregTechTileEntity.getXCoord() + xDir,
                     iGregTechTileEntity.getYCoord() + yDir,
                     iGregTechTileEntity.getZCoord() + zDir,
-                    TT_Container_Casings.sHintCasingsTT, 12);
+                    StructureLibAPI.getBlockHint(), 12);
         }
-        structureBuild_EM("main", 11, 1, 18, hintsOnly, stackSize);
+        structureBuild_EM("main", 11, 1, 18, stackSize, hintsOnly);
     }
 
     @Override

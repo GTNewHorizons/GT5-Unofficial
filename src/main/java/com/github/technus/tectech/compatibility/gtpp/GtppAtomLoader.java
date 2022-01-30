@@ -50,7 +50,11 @@ public class GtppAtomLoader {
 
             Class<?> clazz=Class.forName("gtPlusPlus.core.material.Material");
             getUnlocalizedName=clazz.getMethod("getUnlocalizedName");
-            getFluid=clazz.getMethod("getFluid", int.class);
+            try{
+                getFluid=clazz.getMethod("getFluidStack", int.class);
+            }catch (Exception e){
+                getFluid=clazz.getMethod("getFluid", int.class);
+            }
 
             clazz=Class.forName("gtPlusPlus.core.material.MaterialGenerator");
             generate=clazz.getMethod("generate", Class.forName("gtPlusPlus.core.material.Material"), boolean.class, boolean.class);

@@ -2,24 +2,22 @@ package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.mechanics.constructable.IConstructable;
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMInstanceStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.IEMStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMFluidQuantizationInfo;
 import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMItemQuantizationInfo;
 import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMOredictQuantizationInfo;
-import com.github.technus.tectech.mechanics.structure.Structure;
-import com.github.technus.tectech.mechanics.structure.adders.IHatchAdder;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.github.technus.tectech.util.CommonValues;
+import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
@@ -33,13 +31,16 @@ import static com.github.technus.tectech.mechanics.elementalMatter.core.definiti
 import static com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition.STABLE_RAW_LIFE_TIME;
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.EMAtomDefinition.refMass;
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.EMAtomDefinition.refUnstableMass;
-import static com.github.technus.tectech.mechanics.structure.Structure.adders;
 import static com.github.technus.tectech.recipe.TT_recipeAdder.nullFluid;
 import static com.github.technus.tectech.recipe.TT_recipeAdder.nullItem;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
 import static com.github.technus.tectech.util.CommonValues.V;
 import static com.github.technus.tectech.util.Util.isInputEqual;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
@@ -48,22 +49,23 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
     //region structure
     //use multi A energy inputs, use less power the longer it runs
-    private static final String[][] shape = new String[][]{
-            {"   ", " . ", "   ",},
-            {"010", "101", "010",},
-            {"\"\"\"", "\"0\"", "\"\"\"",},
-            {"202", "0!0", "202",},
-    };
-    private static final Block[] blockType = new Block[]{sBlockCasingsTT, sBlockCasingsTT, QuantumGlassBlock.INSTANCE};
-    private static final byte[] blockMeta = new byte[]{4, 0, 0};
-    private static final IHatchAdder<GT_MetaTileEntity_EM_quantizer>[] addingMethods = adders(
-            GT_MetaTileEntity_EM_quantizer::addClassicToMachineList,
-            GT_MetaTileEntity_EM_quantizer::addElementalOutputToMachineList,
-            GT_MetaTileEntity_EM_quantizer::addElementalMufflerToMachineList);
-    private static final short[] casingTextures = new short[]{textureOffset, textureOffset + 4, textureOffset + 4};
-    private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT};
-    private static final byte[] blockMetaFallback = new byte[]{0, 4, 4};
-    private static final String[] description = new String[]{
+    private static final IStructureDefinition<GT_MetaTileEntity_EM_quantizer> STRUCTURE_DEFINITION = IStructureDefinition
+            .<GT_MetaTileEntity_EM_quantizer>builder()
+            .addShape("main", new String[][]{
+                    {"&&&", "&~&", "&&&",},
+                    {"010", "101", "010",},
+                    {"$$$", "$0$", "$$$",},
+                    {"202", "0!0", "202",},
+            })
+            .addElement('0', ofBlock(sBlockCasingsTT, 4))
+            .addElement('1', ofBlock(sBlockCasingsTT, 0))
+            .addElement('2', ofBlockAnyMeta(QuantumGlassBlock.INSTANCE))
+            .addElement('&', ofHatchAdderOptional(GT_MetaTileEntity_EM_quantizer::addClassicToMachineList, textureOffset, 1, sBlockCasingsTT, 0))
+            .addElement('!', ofHatchAdder(GT_MetaTileEntity_EM_quantizer::addElementalOutputToMachineList, textureOffset + 4, 2))
+            .addElement('$', ofHatchAdderOptional(GT_MetaTileEntity_EM_quantizer::addElementalMufflerToMachineList, textureOffset + 4, 3,sBlockCasingsTT,4))
+            .build();
+
+    private static final String[]                                      description       = new String[]{
             EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
             translateToLocal("gt.blockmachines.multimachine.em.mattertoem.hint.0"),//1 - Classic Hatches or High Power Casing
             translateToLocal("gt.blockmachines.multimachine.em.mattertoem.hint.1"),//2 - Elemental Output Hatch
@@ -86,14 +88,14 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        return structureCheck_EM(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 1, 0);
+        return structureCheck_EM("main", 1, 1, 0);
     }
 
     @Override
     public boolean checkRecipe_EM(ItemStack itemStack) {//TODO implement instance quantization
         if (GregTech_API.sPostloadFinished) {
             ArrayList<ItemStack> storedInputs = getStoredInputs();
-            ItemStack[] inI = storedInputs.toArray(nullItem);
+            ItemStack[]          inI          = storedInputs.toArray(nullItem);
             if (inI.length > 0) {
                 for (ItemStack is : inI) {
                     //ITEM STACK quantization
@@ -132,7 +134,7 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
                 }
             }
             ArrayList<FluidStack> storedFluids = getStoredFluids();
-            FluidStack[] inF = storedFluids.toArray(nullFluid);
+            FluidStack[]          inF          = storedFluids.toArray(nullFluid);
             if (inF.length > 0) {
                 for (FluidStack fs : inF) {
                     EMFluidQuantizationInfo aFQI = TecTech.transformationInfo.getFluidQuantization().get(fs.getFluid().getID());
@@ -154,7 +156,7 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
     private void startRecipe(IEMStack into) {
         mMaxProgresstime = 20;
         mEfficiencyIncrease = 10000;
-        double mass = into.getMass();
+        double mass   = into.getMass();
         double euMult = Math.abs(mass / refMass);
         eAmpereFlow = (int) Math.ceil(Math.sqrt(Math.sqrt(euMult)));
         if (mass > refUnstableMass || into.getDefinition().getRawTimeSpan(DEFAULT_ENERGY_LEVEL) < STABLE_RAW_LIFE_TIME) {
@@ -198,7 +200,7 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        Structure.builder(shape, blockType, blockMeta, 1, 1, 0, getBaseMetaTileEntity(), getExtendedFacing(), hintsOnly);
+        structureBuild_EM("main", 1, 1, 0, stackSize, hintsOnly);
     }
 
     @Override

@@ -1,10 +1,7 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
-import com.github.technus.tectech.mechanics.constructable.IConstructable;
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMInstanceStack;
-import com.github.technus.tectech.mechanics.structure.adders.IHatchAdder;
-import com.github.technus.tectech.mechanics.structure.Structure;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputElemental;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
@@ -13,6 +10,8 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.base.IStatusFunctio
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
 import com.github.technus.tectech.util.CommonValues;
+import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -23,7 +22,6 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energ
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import ic2.core.init.MainConfig;
 import ic2.core.util.ConfigUtil;
-import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -32,13 +30,14 @@ import net.minecraft.util.EnumChatFormatting;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry.EM_COUNT_PER_MATERIAL_AMOUNT;
-import static com.github.technus.tectech.mechanics.structure.Structure.adders;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.STATUS_OK;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.STATUS_TOO_LOW;
 import static com.github.technus.tectech.util.CommonValues.VN;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
@@ -58,25 +57,27 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
     //endregion
 
     //region structure
-    private static final String[][] shape = new String[][]{
-            {"0C0", "A   ", "A . ", "A   ", "0C0",},
-            {"00000", "00000", "00000", "00000", "00000",},
-            {"0C0", "A!!!", "A!0!", "A!!!", "0C0",},
-            {"01110", "12221", "12221", "12221", "01110",},
-            {"01310", "12221", "32223", "12221", "01310",},
-            {"01110", "12221", "12221", "12221", "01110",},
-            {"0C0", "A!!!", "A!0!", "A!!!", "0C0",},
-            {"00000", "00000", "00000", "00000", "00000",},
-            {"0C0", "A   ", "A   ", "A   ", "0C0",},
-    };
-    private static final Block[] blockType = new Block[]{sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT};
-    private static final byte[] blockMeta = new byte[]{4, 5, 8, 6};
-    private static final IHatchAdder<GT_MetaTileEntity_EM_decay>[] addingMethods = adders(
-            GT_MetaTileEntity_EM_decay::addClassicToMachineList,
-            GT_MetaTileEntity_EM_decay::addElementalToMachineList);
-    private static final short[] casingTextures = new short[]{textureOffset, textureOffset + 4};
-    private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT};
-    private static final byte[] blockMetaFallback = new byte[]{0, 4};
+    public static final IStructureDefinition<GT_MetaTileEntity_EM_decay> STRUCTURE_DEFINITION=IStructureDefinition
+            .<GT_MetaTileEntity_EM_decay>builder()
+            .addShape("main",new String[][]{
+                    {"0   0", " &&& ", " &~& ", " &&& ", "0   0",},
+                    {"00000", "00000", "00000", "00000", "00000",},
+                    {"0   0", " !!! ", " !0! ", " !!! ", "0   0",},
+                    {"01110", "12221", "12221", "12221", "01110",},
+                    {"01310", "12221", "32223", "12221", "01310",},
+                    {"01110", "12221", "12221", "12221", "01110",},
+                    {"0   0", " !!! ", " !0! ", " !!! ", "0   0",},
+                    {"00000", "00000", "00000", "00000", "00000",},
+                    {"0   0", " &&& ", " &&& ", " &&& ", "0   0",},
+            })
+            .addElement('0', ofBlock(sBlockCasingsTT,4))
+            .addElement('1', ofBlock(sBlockCasingsTT,5))
+            .addElement('2',ofBlock(sBlockCasingsTT,8))
+            .addElement('3',ofBlock(sBlockCasingsTT,6))
+            .addElement('&', ofHatchAdderOptional(GT_MetaTileEntity_EM_decay::addClassicToMachineList,textureOffset,1,sBlockCasingsTT,0))
+            .addElement('!', ofHatchAdderOptional(GT_MetaTileEntity_EM_decay::addElementalToMachineList,textureOffset+4,2,sBlockCasingsTT,4))
+            .build();
+
     private static final String[] description = new String[]{
             EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
             translateToLocal("gt.blockmachines.multimachine.em.decay.hint.0"),//1 - Classic Hatches or High Power Casing
@@ -110,7 +111,7 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        return structureCheck_EM(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 2, 2, 0);
+        return structureCheck_EM("main", 2, 2, 0);
     }
 
     @Override
@@ -248,7 +249,7 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        Structure.builder(shape, blockType, blockMeta, 2, 2, 0, getBaseMetaTileEntity(), getExtendedFacing(), hintsOnly);
+        structureBuild_EM("main", 2, 2, 0, stackSize, hintsOnly);
     }
 
     @Override

@@ -1,21 +1,19 @@
 package com.github.technus.tectech.compatibility.thaumcraft.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.mechanics.constructable.IConstructable;
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMInstanceStack;
-import com.github.technus.tectech.mechanics.structure.Structure;
-import com.github.technus.tectech.mechanics.structure.adders.IHatchAdder;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
-import com.github.technus.tectech.thing.casing.TT_Container_Casings;
 import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_quantizer;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.github.technus.tectech.util.CommonValues;
+import com.gtnewhorizon.structurelib.StructureLibAPI;
+import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -26,13 +24,13 @@ import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.api.aspects.Aspect;
 
 import static com.github.technus.tectech.compatibility.thaumcraft.thing.metaTileEntity.multi.EssentiaCompat.essentiaContainerCompat;
-import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry.EM_COUNT_PER_MATERIAL_AMOUNT;
 import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry.EM_COUNT_PER_ITEM_DIMINISHED;
-import static com.github.technus.tectech.mechanics.structure.Structure.adders;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry.EM_COUNT_PER_MATERIAL_AMOUNT;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
 import static com.github.technus.tectech.util.CommonValues.V;
-import static gregtech.api.enums.GT_Values.E;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
@@ -41,22 +39,24 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 public class GT_MetaTileEntity_EM_essentiaDequantizer extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
     //region structure
     //use multi A energy inputs, use less power the longer it runs
-    private static final String[][] shape = new String[][]{
-            {"   ", " . ", "   ",},
-            {"0A0", E, "0A0",},
-            {"121", "232", "121",},
-            {"\"\"\"", "\"2\"", "\"\"\"",},
-            {"202", "0!0", "202",},
-    };
-    private static final Block[] blockType = new Block[]{QuantumGlassBlock.INSTANCE, sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT};
-    private static final byte[] blockMeta = new byte[]{0, 0, 4, 8};
-    private static final IHatchAdder<GT_MetaTileEntity_EM_essentiaDequantizer>[] addingMethods = adders(
-            GT_MetaTileEntity_EM_essentiaDequantizer::addClassicToMachineList,
-            GT_MetaTileEntity_EM_essentiaDequantizer::addElementalInputToMachineList,
-            GT_MetaTileEntity_EM_essentiaDequantizer::addElementalMufflerToMachineList);
-    private static final short[] casingTextures = new short[]{textureOffset, textureOffset + 4, textureOffset + 4};
-    private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT};
-    private static final byte[] blockMetaFallback = new byte[]{0, 4, 4};
+    private static final IStructureDefinition<GT_MetaTileEntity_EM_essentiaDequantizer> STRUCTURE_DEFINITION = IStructureDefinition
+            .<GT_MetaTileEntity_EM_essentiaDequantizer>builder()
+            .addShape("main", new String[][]{
+                    {"&&&", "&~&", "&&&",},
+                    {"0 0", " * ", "0 0",},
+                    {"121", "232", "121",},
+                    {"$$$", "$2$", "$$$",},
+                    {"202", "0!0", "202",},})
+            .addElement('0', ofBlockAnyMeta(QuantumGlassBlock.INSTANCE))
+            .addElement('1', ofBlock(sBlockCasingsTT, 0))
+            .addElement('2', ofBlock(sBlockCasingsTT, 4))
+            .addElement('3', ofBlock(sBlockCasingsTT, 8))
+            .addElement('&', ofHatchAdderOptional(GT_MetaTileEntity_EM_essentiaDequantizer::addClassicToMachineList, textureOffset, 1, sBlockCasingsTT, 0))
+            .addElement('!', ofHatchAdderOptional(GT_MetaTileEntity_EM_essentiaDequantizer::addElementalInputToMachineList, textureOffset + 4, 2, sBlockCasingsTT, 4))
+            .addElement('$', ofHatchAdderOptional(GT_MetaTileEntity_EM_essentiaDequantizer::addElementalMufflerToMachineList, textureOffset + 4, 2, sBlockCasingsTT, 4))
+            .addElement('*', ofTileAdder(essentiaContainerCompat::check, StructureLibAPI.getBlockHint(),12))
+            .build();
+
     private static final String[] description = new String[]{
             EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
             translateToLocal("gt.blockmachines.multimachine.em.emtoessentia.hint.0"),//1 - Classic Hatches or High Power Casing
@@ -83,7 +83,7 @@ public class GT_MetaTileEntity_EM_essentiaDequantizer extends GT_MetaTileEntity_
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        return essentiaContainerCompat.check(this) && structureCheck_EM(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 1, 0);
+        return structureCheck_EM("main", 1, 1, 0);
     }
 
     @Override
@@ -130,12 +130,12 @@ public class GT_MetaTileEntity_EM_essentiaDequantizer extends GT_MetaTileEntity_
         TileEntity container = essentiaContainerCompat.getContainer(this);
         if (container == null) {
             stopMachine();
-        }else{
-            if(!essentiaContainerCompat.putInContainer(container,outputEssentiaName)){
+        } else {
+            if (!essentiaContainerCompat.putInContainer(container, outputEssentiaName)) {
                 stopMachine();
             }
         }
-        outputEssentiaName=null;
+        outputEssentiaName = null;
     }
 
     @Override
@@ -156,21 +156,25 @@ public class GT_MetaTileEntity_EM_essentiaDequantizer extends GT_MetaTileEntity_
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         IGregTechTileEntity iGregTechTileEntity = getBaseMetaTileEntity();
-        int xDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetX;
-        int yDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetY;
-        int zDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetZ;
+        int                 xDir                = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetX;
+        int                 yDir                = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetY;
+        int                 zDir                = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetZ;
         if (hintsOnly) {
             TecTech.proxy.hint_particle(iGregTechTileEntity.getWorld(),
                     iGregTechTileEntity.getXCoord() + xDir,
                     iGregTechTileEntity.getYCoord() + yDir,
                     iGregTechTileEntity.getZCoord() + zDir,
-                    TT_Container_Casings.sHintCasingsTT, 12);
+                    StructureLibAPI.getBlockHint(), 12);
         } else {
             if (iGregTechTileEntity.getBlockOffset(xDir, 0, zDir).getMaterial() == Material.air) {
-                iGregTechTileEntity.getWorld().setBlock(iGregTechTileEntity.getXCoord() + xDir, iGregTechTileEntity.getYCoord() + yDir, iGregTechTileEntity.getZCoord() + zDir, TT_Container_Casings.sHintCasingsTT, 12, 2);
+                iGregTechTileEntity.getWorld().setBlock(
+                        iGregTechTileEntity.getXCoord() + xDir,
+                        iGregTechTileEntity.getYCoord() + yDir,
+                        iGregTechTileEntity.getZCoord() + zDir,
+                        StructureLibAPI.getBlockHint(), 12, 2);
             }
         }
-        Structure.builder(shape, blockType, blockMeta, 1, 1, 0, iGregTechTileEntity, getExtendedFacing(), hintsOnly);
+        structureBuild_EM("main", 1, 1, 0, stackSize, hintsOnly);
     }
 
     @Override
@@ -181,12 +185,12 @@ public class GT_MetaTileEntity_EM_essentiaDequantizer extends GT_MetaTileEntity_
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setString("eOutputEssentia",outputEssentiaName);
+        aNBT.setString("eOutputEssentia", outputEssentiaName);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        outputEssentiaName=aNBT.getString("eOutputEssentia");
+        outputEssentiaName = aNBT.getString("eOutputEssentia");
     }
 }

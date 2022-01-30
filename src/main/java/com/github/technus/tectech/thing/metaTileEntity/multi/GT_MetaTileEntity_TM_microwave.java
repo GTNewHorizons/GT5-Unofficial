@@ -1,20 +1,19 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.Reference;
-import com.github.technus.tectech.mechanics.constructable.IConstructable;
-import com.github.technus.tectech.mechanics.structure.adders.IHatchAdder;
-import com.github.technus.tectech.mechanics.structure.Structure;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.*;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
 import com.github.technus.tectech.util.CommonValues;
-import com.github.technus.tectech.util.Vec3Impl;
+import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -27,10 +26,12 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 import static com.github.technus.tectech.loader.MainLoader.microwaving;
-import static com.github.technus.tectech.mechanics.structure.Structure.adders;
 import static com.github.technus.tectech.recipe.TT_recipeAdder.nullItem;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.GregTech_API.sBlockCasings4;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 import static net.minecraft.util.AxisAlignedBB.getBoundingBox;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
@@ -44,26 +45,23 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
 
     //region structure
     //use multi A energy inputs, use less power the longer it runs
-    private static final String[][] shape = new String[][]{
-            {"00000", "00000", "00.00", "0   0",},
-            {"0---0", "0---0", "0---0", " 000 ",},
-            {"0---0", "0---0", "0---0", " 000 ",},
-            {"0---0", "0---0", "0---0", " 000 ",},
-            {"00000", "00000", "00000", "0   0",},
-    };
-    private static final Block[] blockType = new Block[]{sBlockCasings4};
-    private static final byte[] blockMeta = new byte[]{1};
-
-    private static final IHatchAdder<GT_MetaTileEntity_TM_microwave>[] addingMethods = adders(
-            GT_MetaTileEntity_TM_microwave::addClassicToMachineList);
-    private static final short[] casingTextures = new short[]{49};
-    private static final Block[] blockTypeFallback = new Block[]{sBlockCasings4};
-    private static final byte[] blockMetaFallback = new byte[]{1};
     private static final String[] description = new String[]{
             EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
             translateToLocal("gt.blockmachines.multimachine.tm.microwave.hint.0"),//1 - Classic Hatches or Clean Stainless Steel Casing
             translateToLocal("gt.blockmachines.multimachine.tm.microwave.hint.1"),//Also acts like a hopper so give it an Output Bus
     };
+
+    private static final IStructureDefinition<GT_MetaTileEntity_TM_microwave> STRUCTURE_DEFINITION =
+            StructureDefinition.<GT_MetaTileEntity_TM_microwave>builder()
+            .addShape("main", transpose(new String[][]{
+                    {"AAAAA","A---A","A---A","A---A","AAAAA"},
+                    {"AAAAA","A---A","A---A","A---A","AAAAA"},
+                    {"AA~AA","A---A","A---A","A---A","AAAAA"},
+                    {"ABBBA","BAAAB","BAAAB","BAAAB","ABBBA"}
+            }))
+            .addElement('A', ofBlock(sBlockCasings4, 1))
+            .addElement('B', ofHatchAdderOptional(GT_MetaTileEntity_TM_microwave::addClassicToMachineList, 49, 1, sBlockCasings4, 1))
+            .build();
     //endregion
 
     //region parameters
@@ -101,7 +99,7 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        return structureCheck_EM(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 2, 2, 0);
+        return  structureCheck_EM("main", 2, 2, 0);
     }
 
     @Override
@@ -249,7 +247,12 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        Structure.builder(shape, blockType, blockMeta, 2, 2, 0, getBaseMetaTileEntity(), getExtendedFacing(), hintsOnly);
+        structureBuild_EM("main", 2, 2, 0, stackSize, hintsOnly);
+    }
+
+    @Override
+    public IStructureDefinition<GT_MetaTileEntity_TM_microwave> getStructure_EM() {
+        return STRUCTURE_DEFINITION;
     }
 
     @Override

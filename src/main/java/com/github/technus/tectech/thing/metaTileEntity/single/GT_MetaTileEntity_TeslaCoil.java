@@ -8,10 +8,10 @@ import com.github.technus.tectech.loader.NetworkDispatcher;
 import com.github.technus.tectech.mechanics.spark.RendererMessage;
 import com.github.technus.tectech.mechanics.spark.ThaumSpark;
 import com.github.technus.tectech.util.Util;
-import com.github.technus.tectech.util.Vec3Impl;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.MultimapBuilder;
+import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import eu.usrv.yamcore.auxiliary.PlayerChatHelper;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -333,7 +333,9 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
 
     @Override
     public Vec3Impl getTeslaPosition() {
-        return new Vec3Impl(this.getBaseMetaTileEntity());
+        return new Vec3Impl(this.getBaseMetaTileEntity().getXCoord(),
+                            this.getBaseMetaTileEntity().getYCoord(),
+                            this.getBaseMetaTileEntity().getZCoord());
     }
 
     @Override

@@ -33,8 +33,6 @@ public class ThingsLoader implements Runnable {
         TecTech.LOGGER.info("Elemental Casing registered");
         TT_Container_Casings.sBlockCasingsBA0 = new GT_Block_CasingsBA0();
         TecTech.LOGGER.info("Nikolai's Casing registered");
-        TT_Container_Casings.sHintCasingsTT = new GT_Block_HintTT();
-        TecTech.LOGGER.info("Hint Blocks registered");
 
         QuantumGlassBlock.run();
         TecTech.LOGGER.info("Quantum Glass registered");
@@ -52,8 +50,6 @@ public class ThingsLoader implements Runnable {
         ReactorSimBlock.run();
         TecTech.LOGGER.info("Reactor Simulator registered");
 
-        ConstructableTriggerItem.run();
-        FrontRotationTriggerItem.run();
         ParametrizerMemoryCard.run();
         ElementalDefinitionScanStorage_EM.run();
         EuMeterGT.run();

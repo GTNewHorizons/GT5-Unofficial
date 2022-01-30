@@ -160,7 +160,10 @@ public abstract class GT_MetaTileEntity_Hatch_DataConnector<T extends DataPacket
     @Override
     public String[] getInfoData() {
         if (id > 0) {
-            return new String[]{translateToLocalFormatted("tt.keyword.ID", clientLocale) + ": " + EnumChatFormatting.AQUA + id, translateToLocalFormatted("tt.keyword.Content", clientLocale) + ": " + EnumChatFormatting.AQUA + (q != null ? q.getContentString() : 0), translateToLocalFormatted("tt.keyword.PacketHistory", clientLocale) + ": " + EnumChatFormatting.RED + (q != null ? q.getTraceSize() : 0),};
+            return new String[]{
+                    translateToLocalFormatted("tt.keyword.ID", clientLocale) + ": " + EnumChatFormatting.AQUA + id,
+                    translateToLocalFormatted("tt.keyword.Content", clientLocale) + ": " + EnumChatFormatting.AQUA + (q != null ? q.getContentString() : 0),
+                    translateToLocalFormatted("tt.keyword.PacketHistory", clientLocale) + ": " + EnumChatFormatting.RED + (q != null ? q.getTraceSize() : 0),};
         }
         return new String[]{
                 translateToLocalFormatted("tt.keyword.Content", clientLocale) + ": " + EnumChatFormatting.AQUA + (q != null ? q.getContentString() : 0),

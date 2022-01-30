@@ -1,10 +1,7 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.mechanics.constructable.IConstructable;
 import com.github.technus.tectech.mechanics.dataTransport.QuantumDataPacket;
-import com.github.technus.tectech.mechanics.structure.adders.IHatchAdder;
-import com.github.technus.tectech.mechanics.structure.Structure;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputData;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_OutputData;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Rack;
@@ -12,7 +9,10 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.base.*;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
 import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.util.Util;
-import com.github.technus.tectech.util.Vec3Impl;
+import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -22,7 +22,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
-import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -30,13 +29,15 @@ import net.minecraft.util.ResourceLocation;
 
 import java.util.ArrayList;
 
-import static com.github.technus.tectech.mechanics.structure.Structure.adders;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.*;
 import static com.github.technus.tectech.util.CommonValues.MULTI_CHECK_AT;
 import static com.github.technus.tectech.util.CommonValues.V;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
@@ -51,23 +52,44 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     //endregion
 
     //region structure
-    private static final String[][] front = new String[][]{{"A  ", "A  ", "A. ", "A  ",},};
-    private static final String[][] terminator = new String[][]{{"A  ", "A  ", "A  ", "A  ",},};
-    private static final String[][] cap = new String[][]{{"-01", "A22", "A22", "-01",},};
-    private static final String[][] slice = new String[][]{{"-01", "A!2", "A!2", "-01",},};
-    private static final Block[] blockType = new Block[]{sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT};
-    private static final byte[] blockMeta = new byte[]{2, 1, 3};
-    private static final IHatchAdder<GT_MetaTileEntity_EM_computer>[] addingMethods = adders(
-            GT_MetaTileEntity_EM_computer::addToMachineList,
-            GT_MetaTileEntity_EM_computer::addRackToMachineList);
-    private static final short[] casingTextures = new short[]{textureOffset + 1, textureOffset + 3};
-    private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT};
-    private static final byte[] blockMetaFallback = new byte[]{1, 3};
     private static final String[] description = new String[]{
             EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
             translateToLocal("gt.blockmachines.multimachine.em.computer.hint.0"),//1 - Classic/Data Hatches or Computer casing
             translateToLocal("gt.blockmachines.multimachine.em.computer.hint.1"),//2 - Rack Hatches or Advanced computer casing
     };
+
+    private static final IStructureDefinition<GT_MetaTileEntity_EM_computer> STRUCTURE_DEFINITION =
+            StructureDefinition.<GT_MetaTileEntity_EM_computer>builder()
+            .addShape("front", transpose(new String[][]{
+                    {" AA"},
+                    {" AA"},
+                    {" ~A"},
+                    {" AA"}
+            }))
+            .addShape("cap", transpose(new String[][]{
+                    {"-CB"},
+                    {" DD"},
+                    {" DD"},
+                    {"-CB"}
+            }))
+            .addShape("slice", transpose(new String[][]{
+                    {"-CB"},
+                    {" ED"},
+                    {" ED"},
+                    {"-CB"}
+            }))
+            .addShape("back", transpose(new String[][]{
+                    {" AA"},
+                    {" AA"},
+                    {" AA"},
+                    {" AA"}
+            }))
+            .addElement('A', ofHatchAdderOptional(GT_MetaTileEntity_EM_computer::addToMachineList, textureOffset + 1, 1, sBlockCasingsTT, 1))
+            .addElement('B', ofBlock(sBlockCasingsTT, 1))
+            .addElement('C', ofBlock(sBlockCasingsTT, 2))
+            .addElement('D', ofBlock(sBlockCasingsTT, 3))
+            .addElement('E', ofHatchAdderOptional(GT_MetaTileEntity_EM_computer::addRackToMachineList, textureOffset + 3, 2, sBlockCasingsTT, 3))
+            .build();
     //endregion
 
     //region parameters
@@ -129,15 +151,15 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
             }
         }
         eRacks.clear();
-        if (!structureCheck_EM(front, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 2, 0)) {
+        if (!structureCheck_EM("front", 1, 2, 0)) {
             return false;
         }
-        if (!structureCheck_EM(cap, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 2, -1)) {
+        if (!structureCheck_EM("cap", 1, 2, -1)) {
             return false;
         }
         byte offset = -2, totalLen = 4;
         while (offset > -16) {
-            if (!structureCheck_EM(slice, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 2, offset)) {
+            if (!structureCheck_EM("slice", 1, 2, offset)) {
                 break;
             }
             totalLen++;
@@ -146,10 +168,10 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
         if (totalLen > 17) {
             return false;
         }
-        if (!structureCheck_EM(cap, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 2, ++offset)) {
+        if (!structureCheck_EM("cap", 1, 2, ++offset)) {
             return false;
         }
-        if (!structureCheck_EM(terminator, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 2, --offset)) {
+        if (!structureCheck_EM("back", 1, 2, --offset)) {
             return false;
         }
         eCertainMode = (byte) Math.min(totalLen / 3, 5);
@@ -246,7 +268,10 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     @Override
     public void outputAfterRecipe_EM() {
         if (!eOutputData.isEmpty()) {
-            Vec3Impl pos = new Vec3Impl(getBaseMetaTileEntity());
+            Vec3Impl pos = new Vec3Impl(getBaseMetaTileEntity().getXCoord(),
+                                        getBaseMetaTileEntity().getYCoord(),
+                                        getBaseMetaTileEntity().getZCoord());
+
             QuantumDataPacket pack = new QuantumDataPacket(eAvailableData / eOutputData.size()).unifyTraceWith(pos);
             if (pack == null) {
                 return;
@@ -359,16 +384,21 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         IGregTechTileEntity igt = getBaseMetaTileEntity();
-        Structure.builder(front, blockType, blockMeta, 1, 2, 0, igt, getExtendedFacing(), hintsOnly);
-        Structure.builder(cap, blockType, blockMeta, 1, 2, -1, igt, getExtendedFacing(), hintsOnly);
+        structureBuild_EM("front", 1, 2, 0, stackSize, hintsOnly);
+        structureBuild_EM("cap", 1, 2, -1, stackSize, hintsOnly);
 
         byte offset = -2;
         for (int rackSlices = Math.min(stackSize.stackSize, 12); rackSlices > 0; rackSlices--) {
-            Structure.builder(slice, blockType, blockMeta, 1, 2, offset--, igt, getExtendedFacing(), hintsOnly);
+            structureBuild_EM("slice", 1 , 2, offset--, stackSize, hintsOnly);
         }
 
-        Structure.builder(cap, blockType, blockMeta, 1, 2, offset--, igt, getExtendedFacing(), hintsOnly);
-        Structure.builder(terminator, blockType, blockMeta, 1, 2, offset, igt, getExtendedFacing(), hintsOnly);
+        structureBuild_EM("cap", 1, 2, offset--, stackSize, hintsOnly);
+        structureBuild_EM("back", 1, 2, offset, stackSize, hintsOnly);
+    }
+
+    @Override
+    public IStructureDefinition<GT_MetaTileEntity_EM_computer> getStructure_EM() {
+        return STRUCTURE_DEFINITION;
     }
 
     @Override

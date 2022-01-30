@@ -16,13 +16,12 @@ import static com.github.technus.tectech.compatibility.thaumcraft.elementalMatte
  */
 public class EssentiaCompatEnabled extends EssentiaCompat {
     @Override
-    public boolean check(GT_MetaTileEntity_MultiblockBase_EM meta) {
-        TileEntity tile =meta.getBaseMetaTileEntity().getTileEntityAtSide(meta.getBaseMetaTileEntity().getBackFacing());
-        return tile instanceof TileEssentiaReservoir || tile instanceof TileJarFillable;
+    public <T extends GT_MetaTileEntity_MultiblockBase_EM> boolean check(T meta,TileEntity te) {
+        return te instanceof TileEssentiaReservoir || te instanceof TileJarFillable;
     }
 
     @Override
-    public TileEntity getContainer(GT_MetaTileEntity_MultiblockBase_EM meta) {
+    public <T extends GT_MetaTileEntity_MultiblockBase_EM> TileEntity getContainer(T meta) {
         TileEntity tile =meta.getBaseMetaTileEntity().getTileEntityAtSide(meta.getBaseMetaTileEntity().getBackFacing());
         return tile!=null && !tile.isInvalid() && tile instanceof TileEssentiaReservoir || tile instanceof TileJarFillable ?tile:null;
     }

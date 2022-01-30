@@ -1,9 +1,7 @@
 package com.github.technus.tectech.proxy;
 
 import com.github.technus.tectech.Reference;
-import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.compatibility.openmodularturrets.TT_turret_loader;
-import com.github.technus.tectech.entity.fx.BlockHint;
 import com.github.technus.tectech.entity.fx.WeightlessParticleFX;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.block.QuantumGlassRender;
@@ -16,7 +14,6 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.Loader;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.gui.GuiNewChat;
@@ -24,7 +21,6 @@ import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -46,42 +42,6 @@ public class ClientProxy extends CommonProxy {
         if(Loader.isModLoaded("openmodularturrets")) {
             new TT_turret_loader().run();
         }
-    }
-
-    @Override
-    public void hint_particle_tinted(World w,int x, int y, int z, IIcon[] icons,short[] RGBa) {
-        Minecraft.getMinecraft().effectRenderer.addEffect(new BlockHint(w,x,y,z,icons).withColorTint(RGBa));
-
-        EntityFX particle = new WeightlessParticleFX(w, x + RANDOM.nextFloat() * 0.5F, y + RANDOM.nextFloat() * 0.5F, z + RANDOM.nextFloat() * 0.5F, 0, 0, 0);
-        particle.setRBGColorF(0, 0.6F * RANDOM.nextFloat(), 0.8f);
-        Minecraft.getMinecraft().effectRenderer.addEffect(particle);
-    }
-
-    @Override
-    public void hint_particle_tinted(World w,int x, int y, int z, Block block, int meta,short[] RGBa) {
-        Minecraft.getMinecraft().effectRenderer.addEffect(new BlockHint(w,x,y,z,block,meta).withColorTint(RGBa));
-
-        EntityFX particle = new WeightlessParticleFX(w, x + RANDOM.nextFloat() * 0.5F, y + RANDOM.nextFloat() * 0.5F, z + RANDOM.nextFloat() * 0.5F, 0, 0, 0);
-        particle.setRBGColorF(0, 0.6F * RANDOM.nextFloat(), 0.8f);
-        Minecraft.getMinecraft().effectRenderer.addEffect(particle);
-    }
-
-    @Override
-    public void hint_particle(World w,int x, int y, int z, IIcon[] icons) {
-        Minecraft.getMinecraft().effectRenderer.addEffect(new BlockHint(w,x,y,z,icons));
-
-        EntityFX particle = new WeightlessParticleFX(w, x + RANDOM.nextFloat() * 0.5F, y + RANDOM.nextFloat() * 0.5F, z + RANDOM.nextFloat() * 0.5F, 0, 0, 0);
-        particle.setRBGColorF(0, 0.6F * RANDOM.nextFloat(), 0.8f);
-        Minecraft.getMinecraft().effectRenderer.addEffect(particle);
-    }
-
-    @Override
-    public void hint_particle(World w,int x, int y, int z, Block block, int meta) {
-        Minecraft.getMinecraft().effectRenderer.addEffect(new BlockHint(w,x,y,z,block,meta));
-
-        EntityFX particle = new WeightlessParticleFX(w, x + RANDOM.nextFloat() * 0.5F, y + RANDOM.nextFloat() * 0.5F, z + RANDOM.nextFloat() * 0.5F, 0, 0, 0);
-        particle.setRBGColorF(0, 0.6F * RANDOM.nextFloat(), 0.8f);
-        Minecraft.getMinecraft().effectRenderer.addEffect(particle);
     }
 
     @Override

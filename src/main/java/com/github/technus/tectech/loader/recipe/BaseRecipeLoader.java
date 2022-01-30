@@ -8,10 +8,8 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.transformations
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.EMAtomDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.EMHadronDefinition;
 import com.github.technus.tectech.thing.CustomItemList;
-import com.github.technus.tectech.thing.casing.TT_Container_Casings;
-import com.github.technus.tectech.thing.item.ConstructableTriggerItem;
 import com.github.technus.tectech.thing.item.EuMeterGT;
-import com.github.technus.tectech.thing.item.FrontRotationTriggerItem;
+import com.gtnewhorizon.structurelib.StructureLibAPI;
 import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ItemList;
@@ -47,21 +45,11 @@ public class BaseRecipeLoader {
         // ===================================================================================================
 
         for(int i=0;i<=15;i++) {
-            RA.addAssemblerRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(i), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cobalt, 1)}, Materials.Aluminium.getMolten(864), new ItemStack(TT_Container_Casings.sHintCasingsTT, 1, i), 32, 120);
+            RA.addAssemblerRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(i),
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cobalt, 1)},
+                    Materials.Aluminium.getMolten(864),
+                    new ItemStack(StructureLibAPI.getBlockHint(), 1, i), 32, 120);
         }
-
-        //Scrench
-        GT_ModHandler.addCraftingRecipe(new ItemStack(FrontRotationTriggerItem.INSTANCE,1),
-                GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[]{"fPR", " RP", "S h",
-                        'P', OrePrefixes.plate.get(Materials.Cobalt),
-                        'R', OrePrefixes.stick.get(Materials.Cobalt),
-                        'S', OrePrefixes.stick.get(Materials.Wood),});
-
-        //BLUEprint
-        GT_ModHandler.addShapelessCraftingRecipe(new ItemStack(ConstructableTriggerItem.INSTANCE, 1),
-                GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[]{Dyes.dyeBlue, OrePrefixes.plate.get(Materials.Paper), Dyes.dyeBlue, Dyes.dyeWhite});
 
         //GT EU reader
         GT_ModHandler.addCraftingRecipe(new ItemStack(EuMeterGT.INSTANCE,1),
@@ -95,16 +83,15 @@ public class BaseRecipeLoader {
                         'E', ItemList.Hull_IV});
 
         //Data Bank
-        RA.addAssemblylineRecipe(ItemList.Hatch_DataAccess_EV.get(1), 20000, new ItemStack[]{
+        RA.addAssemblylineRecipe(ItemList.Hatch_DataAccess_EV.get(1), 20000, new Object[]{
                 CustomItemList.Machine_Multi_Switch.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 2),
+                new Object[]{OrePrefixes.circuit.get(Materials.Master), 2},
                 ItemList.Tool_DataOrb.get(1),
                 ItemList.Cover_Screen.get(1),
         }, new FluidStack[]{
                 new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000),
                 Materials.Hydrogen.getGas(1000),
         }, CustomItemList.Machine_Multi_DataBank.get(1), 12000, 14000);
-        //CustomItemList.Machine_Multi_DataBank
 
         //Bucks
         //RA.addAssemblerRecipe(CustomItemList.)
