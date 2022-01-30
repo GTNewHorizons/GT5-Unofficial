@@ -1,6 +1,7 @@
 package com.github.technus.tectech.mechanics.spark;
 
-import com.github.technus.tectech.util.Vec3Impl;
+
+import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
 import java.io.Serializable;
 import java.util.Objects;

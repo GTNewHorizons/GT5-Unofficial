@@ -12,6 +12,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.GT_Utility;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -90,8 +91,8 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
         return new String[]{
                 CommonValues.TEC_MARK_EM,
                 mDescription,
-                translateToLocal("gt.blockmachines.hatch.emmuffler.desc.1") + ": " + EnumChatFormatting.AQUA + String.format(Locale.ENGLISH, "%+.2E", overflowMax) + " eV/c\u00b2",
-                translateToLocal("gt.blockmachines.hatch.emmuffler.desc.2") + ": " + EnumChatFormatting.AQUA + String.format(Locale.ENGLISH, "%+.2E", overflowDisperse) + " (eV/c\u00b2)/s",
+                translateToLocal("gt.blockmachines.hatch.emmuffler.desc.1") + ": " + EnumChatFormatting.AQUA + GT_Utility.formatNumbers(overflowMax) + " eV/c\u00b2",
+                translateToLocal("gt.blockmachines.hatch.emmuffler.desc.2") + ": " + EnumChatFormatting.AQUA + GT_Utility.formatNumbers(overflowDisperse) + " (eV/c\u00b2)/s",
                 translateToLocal("gt.blockmachines.hatch.emmuffler.desc.3")
         };
     }
@@ -216,9 +217,10 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
     public String[] getInfoData() {
         return new String[]{
                 translateToLocalFormatted("tt.keyphrase.Contained_mass", clientLocale) + ":",
-                EnumChatFormatting.RED + Double.toString(overflowMatter) + EnumChatFormatting.RESET + " eV/c\u00b2 /",
-                EnumChatFormatting.GREEN + Double.toString(overflowMax) + EnumChatFormatting.RESET + " eV/c\u00b2",
-                translateToLocalFormatted("tt.keyphrase.Mass_Disposal_speed", clientLocale) + ": " + EnumChatFormatting.BLUE + overflowDisperse + EnumChatFormatting.RESET + " (eV/c\u00b2)/s"
+                EnumChatFormatting.RED + GT_Utility.formatNumbers(overflowMatter) + EnumChatFormatting.RESET + " eV/c\u00b2 /",
+                EnumChatFormatting.GREEN + GT_Utility.formatNumbers(overflowMax) + EnumChatFormatting.RESET + " eV/c\u00b2",
+                translateToLocalFormatted("tt.keyphrase.Mass_Disposal_speed", clientLocale) + ": " +
+                        EnumChatFormatting.BLUE + GT_Utility.formatNumbers(overflowDisperse) + EnumChatFormatting.RESET + " (eV/c\u00b2)/s"
         };
     }
 

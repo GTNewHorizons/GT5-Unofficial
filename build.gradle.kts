@@ -6,8 +6,9 @@ import java.io.*
 buildscript {
     repositories {
         mavenCentral()
-        maven("http://files.minecraftforge.net/maven")
+        maven("https://gregtech.overminddl1.com/")
         maven("https://jitpack.io")
+        
     }
     dependencies {
         classpath("com.github.GTNH2:ForgeGradle:FG_1.2-SNAPSHOT"){
@@ -170,6 +171,7 @@ dependencies {
 
     //Hard Dependencies
     compile("net.industrial-craft:industrialcraft-2:$ic2Version:dev")
+    compile("com.github.GTNewHorizons:StructureLib:1.0.9:deobf")
     compile("com.github.GTNewHorizons:GT5-Unofficial:$gt5uVersion:dev"){
         exclude("net.industrial-craft", "industrialcraft-2")
         isChanging = true

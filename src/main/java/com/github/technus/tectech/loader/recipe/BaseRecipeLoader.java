@@ -9,9 +9,7 @@ import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.EMHadronDefinition;
 import com.github.technus.tectech.thing.CustomItemList;
 import com.github.technus.tectech.thing.casing.TT_Container_Casings;
-import com.github.technus.tectech.thing.item.ConstructableTriggerItem;
 import com.github.technus.tectech.thing.item.EuMeterGT;
-import com.github.technus.tectech.thing.item.FrontRotationTriggerItem;
 import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ItemList;
@@ -30,8 +28,8 @@ import static gregtech.api.enums.GT_Values.RA;
  * Created by danie_000 on 16.11.2016.
  */
 public class BaseRecipeLoader {
-    public static Materials getOrDefault(String name,Materials def){
-        Materials mat=Materials.get(name);
+    public static Materials getOrDefault(String name, Materials def) {
+        Materials mat = Materials.get(name);
         return mat == Materials._NULL || mat == null ? def : mat;
     }
 
@@ -46,25 +44,26 @@ public class BaseRecipeLoader {
         // Recipes init - common goes here rest goes into methods below
         // ===================================================================================================
 
-        for(int i=0;i<=15;i++) {
+        for (int i = 0; i <= 15; i++) {
             RA.addAssemblerRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(i), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cobalt, 1)}, Materials.Aluminium.getMolten(864), new ItemStack(TT_Container_Casings.sHintCasingsTT, 1, i), 32, 120);
         }
 
         //Scrench
-        GT_ModHandler.addCraftingRecipe(new ItemStack(FrontRotationTriggerItem.INSTANCE,1),
-                GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[]{"fPR", " RP", "S h",
-                        'P', OrePrefixes.plate.get(Materials.Cobalt),
-                        'R', OrePrefixes.stick.get(Materials.Cobalt),
-                        'S', OrePrefixes.stick.get(Materials.Wood),});
+//        GT_ModHandler.addCraftingRecipe(new ItemStack(FrontRotationTriggerItem.INSTANCE,1),
+//                GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
+//                new Object[]{"fPR", " RP", "S h",
+//                        'P', OrePrefixes.plate.get(Materials.Cobalt),
+//                        'R', OrePrefixes.stick.get(Materials.Cobalt),
+//                        'S', OrePrefixes.stick.get(Materials.Wood),});
 
         //BLUEprint
-        GT_ModHandler.addShapelessCraftingRecipe(new ItemStack(ConstructableTriggerItem.INSTANCE, 1),
-                GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[]{Dyes.dyeBlue, OrePrefixes.plate.get(Materials.Paper), Dyes.dyeBlue, Dyes.dyeWhite});
+//        GT_ModHandler.addShapelessCraftingRecipe(new ItemStack(ConstructableTriggerItem.INSTANCE, 1),
+//                GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
+//                new Object[]{Dyes.dyeBlue, OrePrefixes.plate.get(Materials.Paper), Dyes.dyeBlue, Dyes.dyeWhite});
+
 
         //GT EU reader
-        GT_ModHandler.addCraftingRecipe(new ItemStack(EuMeterGT.INSTANCE,1),
+        GT_ModHandler.addCraftingRecipe(new ItemStack(EuMeterGT.INSTANCE, 1),
                 GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
                 new Object[]{"PGW", "SCW", "BRN",
                         'P', OrePrefixes.plateDouble.get(Materials.Steel),
@@ -79,7 +78,7 @@ public class BaseRecipeLoader {
         //Owner detector
         GT_ModHandler.addCraftingRecipe(CustomItemList.Machine_OwnerDetector.get(1),
                 GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[]{"PPP","GEG","PPP",
+                new Object[]{"PPP", "GEG", "PPP",
                         'P', OrePrefixes.plate.get(Materials.IronMagnetic),
                         'G', OrePrefixes.plate.get(Materials.Glass),
                         'E', OrePrefixes.gem.get(Materials.EnderPearl)});
@@ -87,7 +86,7 @@ public class BaseRecipeLoader {
         //Data reader
         GT_ModHandler.addCraftingRecipe(CustomItemList.Machine_DataReader.get(1),
                 GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[]{"BdB","GES","PwP",
+                new Object[]{"BdB", "GES", "PwP",
                         'B', OrePrefixes.screw.get(Materials.Iridium),
                         'P', OrePrefixes.plate.get(Materials.Iridium),
                         'G', ItemList.Cover_Screen,
@@ -95,16 +94,15 @@ public class BaseRecipeLoader {
                         'E', ItemList.Hull_IV});
 
         //Data Bank
-        RA.addAssemblylineRecipe(ItemList.Hatch_DataAccess_EV.get(1), 20000, new ItemStack[]{
+        RA.addAssemblylineRecipe(ItemList.Hatch_DataAccess_EV.get(1), 20000, new Object[]{
                 CustomItemList.Machine_Multi_Switch.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 2),
+                new Object[]{OrePrefixes.circuit.get(Materials.Master), 2},
                 ItemList.Tool_DataOrb.get(1),
                 ItemList.Cover_Screen.get(1),
         }, new FluidStack[]{
                 new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000),
                 Materials.Hydrogen.getGas(1000),
         }, CustomItemList.Machine_Multi_DataBank.get(1), 12000, 14000);
-        //CustomItemList.Machine_Multi_DataBank
 
         //Bucks
         //RA.addAssemblerRecipe(CustomItemList.)
@@ -116,7 +114,7 @@ public class BaseRecipeLoader {
         if (Loader.isModLoaded(Reference.DREAMCRAFT)) {
             new DreamCraftRecipeLoader().run(transformationInfo);//init recipes for GTNH version
         } else if (Loader.isModLoaded(Reference.SPARTAKCORE)) {
-        	new SpartakCoreRecipeLoader().run(transformationInfo);//init recipes for SpartakCore version
+            new SpartakCoreRecipeLoader().run(transformationInfo);//init recipes for SpartakCore version
         } else {
             new BloodyRecipeLoader().run(transformationInfo);//init recipes for NON-GTNH version
         }
