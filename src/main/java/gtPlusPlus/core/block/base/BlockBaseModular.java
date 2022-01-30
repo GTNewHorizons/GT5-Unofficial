@@ -6,28 +6,27 @@ import java.util.Map;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.IBlockAccess;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
+import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockGtBlock;
-import gtPlusPlus.core.item.base.itemblock.ItemBlockGtFrameBox;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.IBlockAccess;
 
 public class BlockBaseModular extends BasicBlock {
 
 	protected Material blockMaterial;
 
 	protected int blockColour;
-	protected BlockTypes thisBlock;
+	public BlockTypes thisBlock;
 	protected String thisBlockMaterial;
 	protected final String thisBlockType;
 
@@ -42,7 +41,7 @@ public class BlockBaseModular extends BasicBlock {
 		registerComponent();
 	}
 
-	protected BlockBaseModular(final String unlocalizedName, final String blockMaterial,
+	protected BlockBaseModular(final String unlocalizedName, final String blockMaterialString,
 			final net.minecraft.block.material.Material vanillaMaterial, final BlockTypes blockType, final int colour,
 			final int miningLevel) {
 		super(blockType, unlocalizedName, vanillaMaterial, miningLevel);	
@@ -50,33 +49,20 @@ public class BlockBaseModular extends BasicBlock {
 		this.setBlockTextureName(CORE.MODID + ":" + blockType.getTexture());
 		this.blockColour = colour;
 		this.thisBlock = blockType;
-		this.thisBlockMaterial = blockMaterial;
+		this.thisBlockMaterial = blockMaterialString;
 		this.thisBlockType = blockType.name().toUpperCase();
 		this.setBlockName(this.GetProperName());
 		int fx = getBlockTypeMeta();
+		//ItemBlockGtBlock.sNameCache.put("block."+blockMaterial.getUnlocalizedName()+"."+this.thisBlock.name().toLowerCase(), GetProperName());
+		GameRegistry.registerBlock(this, ItemBlockGtBlock.class, Utils.sanitizeString(blockType.getTexture() + unlocalizedName));
 		if (fx == 0) {
-			GameRegistry.registerBlock(this, ItemBlockGtBlock.class,
-					Utils.sanitizeString(blockType.getTexture() + unlocalizedName));
-			GT_OreDictUnificator.registerOre(
-					"block" + getUnlocalizedName().replace("tile.block", "").replace("tile.", "").replace("of", "")
-							.replace("Of", "").replace("Block", "").replace("-", "").replace("_", "").replace(" ", ""),
-					ItemUtils.getSimpleStack(this));
+			GT_OreDictUnificator.registerOre("block" + thisBlockMaterial.replace(" ", ""), ItemUtils.getSimpleStack(this));
 		}
 		else if (fx == 1) {
-			GameRegistry.registerBlock(this, ItemBlockGtBlock.class,
-					Utils.sanitizeString(blockType.getTexture() + unlocalizedName));
-			GT_OreDictUnificator.registerOre(
-					"frameGt" + getUnlocalizedName().replace("tile.", "").replace("tile.BlockGtFrame", "")
-							.replace("-", "").replace("_", "").replace(" ", "").replace("FrameBox", ""),
-					ItemUtils.getSimpleStack(this));
+			GT_OreDictUnificator.registerOre("frameGt" + thisBlockMaterial.replace(" ", ""), ItemUtils.getSimpleStack(this));
 		}
 		else if (fx == 2) {
-			GameRegistry.registerBlock(this, ItemBlockGtBlock.class,
-					Utils.sanitizeString(blockType.getTexture() + unlocalizedName));
-			GT_OreDictUnificator.registerOre(
-					"block" + getUnlocalizedName().replace("tile.block", "").replace("tile.", "").replace("of", "")
-							.replace("Of", "").replace("Block", "").replace("-", "").replace("_", "").replace(" ", ""),
-					ItemUtils.getSimpleStack(this));
+			GT_OreDictUnificator.registerOre("frameGt" + thisBlockMaterial.replace(" ", ""), ItemUtils.getSimpleStack(this));
 		}
 	}
 	
@@ -135,7 +121,7 @@ public class BlockBaseModular extends BasicBlock {
 	}
 
 	public String GetProperName() {
-		String tempIngot;
+		String tempIngot = null;
 		if (this.thisBlock == BlockTypes.STANDARD) {
 			tempIngot = "Block of " + this.thisBlockMaterial;
 		}
@@ -145,11 +131,18 @@ public class BlockBaseModular extends BasicBlock {
 		else if (this.thisBlock == BlockTypes.ORE) {
 			tempIngot = this.thisBlockMaterial + " Ore [Old]";
 		}
-		else {
-
-			tempIngot = this.getUnlocalizedName().replace("tile.blockGt", "ingot");
-		}
 		return tempIngot;
+	}
+
+	@Override
+	public String getLocalizedName() {
+		String aFormattedLangName = GetProperName();
+		return GT_LanguageManager.addStringLocalization("block."+blockMaterial.getUnlocalizedName()+"."+this.thisBlock.name().toLowerCase()+".name", aFormattedLangName);
+	}
+
+	@Override
+	public String getUnlocalizedName() {
+		return "block."+blockMaterial.getUnlocalizedName()+"."+this.thisBlock.name().toLowerCase();
 	}
 
 	@Override

@@ -140,7 +140,7 @@ public class CoreItem extends Item
 		this.setMaxDamage(maxDmg);
 		this.rarity = regRarity;
 		this.itemDescription = description;
-		this.descColour = colour;
+		this.descColour = colour != null ? colour : EnumChatFormatting.RESET;
 		this.hasEffect = Effect;
 		this.turnsInto = OverrideItem;
 		GameRegistry.registerItem(this, unlocalizedName);
@@ -160,7 +160,7 @@ public class CoreItem extends Item
 		this.setMaxDamage(maxDmg);
 		this.rarity = regRarity;
 		this.itemDescription = description;
-		this.descColour = colour;
+		this.descColour = colour != null ? colour : EnumChatFormatting.RESET;
 		this.hasEffect = Effect;
 		this.turnsInto = OverrideItem;
 		GameRegistry.registerItem(this, unlocalizedName);

@@ -6,16 +6,13 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_Utility;
 import gregtech.api.util.extensions.ArrayExt;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class GT_MetaTileEntity_SuperBus_Input extends GT_MetaTileEntity_Hatch_InputBus {
 	public GT_MetaTileEntity_SuperBus_Input(int aID, String aName, String aNameRegional, int aTier) {
@@ -72,52 +69,8 @@ public class GT_MetaTileEntity_SuperBus_Input extends GT_MetaTileEntity_Hatch_In
 		return null;
 	}
 
-	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
-		if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.hasInventoryBeenModified()) {
-			this.fillStacksIntoFirstSlots();
-		}
-
-	}
-
-	public void updateSlots() {
-		for (int i = 0; i < this.mInventory.length; ++i) {
-			if (this.mInventory[i] != null && this.mInventory[i].stackSize <= 0) {
-				this.mInventory[i] = null;
-			}
-		}
-
-		this.fillStacksIntoFirstSlots();
-	}
-
-	protected void fillStacksIntoFirstSlots() {
-		for (int i = 0; i < this.mInventory.length; ++i) {
-			for (int j = i + 1; j < this.mInventory.length; ++j) {
-				if (this.mInventory[j] != null && (this.mInventory[i] == null
-						|| GT_Utility.areStacksEqual(this.mInventory[i], this.mInventory[j]))) {
-					GT_Utility.moveStackFromSlotAToSlotB((IInventory) this.getBaseMetaTileEntity(), (IInventory) this.getBaseMetaTileEntity(), j, i, (byte) 64, (byte) 1, (byte) 64, (byte) 1);
-				}
-			}
-		}
-
-	}
-
 	public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
 		return aSide == this.getBaseMetaTileEntity().getFrontFacing();
-	}
-
-	public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-		return aSide == this.getBaseMetaTileEntity().getFrontFacing()
-				&& (this.mRecipeMap == null || this.mRecipeMap.containsInput(aStack));
-	}
-
-	@Override
-	public void saveNBTData(NBTTagCompound aNBT) {
-		super.saveNBTData(aNBT);
-	}
-
-	@Override
-	public void loadNBTData(NBTTagCompound aNBT) {
-		super.loadNBTData(aNBT);
 	}
 
 	@Override
@@ -192,39 +145,4 @@ public class GT_MetaTileEntity_SuperBus_Input extends GT_MetaTileEntity_Hatch_In
 				
 	}
 
-	@Override
-	public int getMaxItemCount() {
-		// TODO Auto-generated method stub
-		return super.getMaxItemCount();
-	}
-
-	@Override
-	public int getSizeInventory() {
-		// TODO Auto-generated method stub
-		return super.getSizeInventory();
-	}
-
-	@Override
-	public ItemStack getStackInSlot(int aIndex) {
-		// TODO Auto-generated method stub
-		return super.getStackInSlot(aIndex);
-	}
-
-	@Override
-	public boolean canInsertItem(int aIndex, ItemStack aStack, int aSide) {
-		// TODO Auto-generated method stub
-		return super.canInsertItem(aIndex, aStack, aSide);
-	}
-
-	@Override
-	public boolean canExtractItem(int aIndex, ItemStack aStack, int aSide) {
-		// TODO Auto-generated method stub
-		return super.canExtractItem(aIndex, aStack, aSide);
-	}
-
-	@Override
-	public ItemStack[] getRealInventory() {
-		// TODO Auto-generated method stub
-		return super.getRealInventory();
-	}
 }

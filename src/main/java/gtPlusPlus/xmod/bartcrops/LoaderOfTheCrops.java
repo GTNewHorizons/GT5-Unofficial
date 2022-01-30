@@ -5,6 +5,7 @@ import java.util.List;
 
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.xmod.bartcrops.crops.Crop_Force;
 import gtPlusPlus.xmod.bartcrops.crops.Crop_Hemp;
 import ic2.api.crops.CropCard;
 import ic2.api.crops.Crops;
@@ -48,6 +49,7 @@ public class LoaderOfTheCrops {
 		List<LoaderOfTheCrops> p = new ArrayList<LoaderOfTheCrops>();		
 
 		p.add(new LoaderOfTheCrops(new Crop_Hemp(), new ItemStack(Item.getItemById(111), 3)));
+		p.add(new LoaderOfTheCrops(new Crop_Force(), new ItemStack(Item.getItemById(111), 3)));
 		
 		return p;
 	}

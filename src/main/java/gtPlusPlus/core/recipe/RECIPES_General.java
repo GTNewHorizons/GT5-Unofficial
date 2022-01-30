@@ -359,6 +359,21 @@ public class RECIPES_General {
 				ItemUtils.getItemStackFromFQRN("miscutils:SlowBuildingRing", 1), // Output
 				20 * 30, // Dur
 				16); // Eu
+		
+		// Magic Feather
+		CORE.RA.addSixSlotAssemblingRecipe(
+				new ItemStack[] { 
+						ItemUtils.getSimpleStack(Items.feather, 64),
+						ItemUtils.getSimpleStack(Blocks.emerald_block, 32),
+						ItemUtils.getSimpleStack(Blocks.diamond_block, 32),
+						Materials.Ruby.getBlocks(32),
+						Materials.Sapphire.getBlocks(32),
+						ItemUtils.getSimpleStack(Blocks.gold_block, 32),
+					},
+				Materials.Silver.getMolten(32 * 144), // Fluid
+				ItemUtils.getSimpleStack(ModItems.itemMagicFeather, 1), // Output
+				20 * 120, // Dur
+				MaterialUtils.getVoltageForTier(4)); // Eu
 
 		// Pest Killer
 		CORE.RA.addSixSlotAssemblingRecipe(

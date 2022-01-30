@@ -14,6 +14,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
 
@@ -33,6 +34,10 @@ public class PlayerUtils {
 
 	public static void messagePlayer(final EntityPlayer P, final String S){
 		gregtech.api.util.GT_Utility.sendChatToPlayer(P, S);
+	}
+	
+	public static void messagePlayer(final EntityPlayer P, final IChatComponent S){
+		P.addChatComponentMessage(S);
 	}
 
 	public static EntityPlayer getPlayer(final String name){

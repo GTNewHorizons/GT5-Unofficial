@@ -27,6 +27,8 @@ whitelist.json
 *.iws
 src/main/resources/mixins.*.json
 *.bat
-asm
+*.bak
 /screenshots
 /world
+/saves
+/asm

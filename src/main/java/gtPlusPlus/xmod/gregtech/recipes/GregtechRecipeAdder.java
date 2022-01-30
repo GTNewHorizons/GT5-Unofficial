@@ -1578,15 +1578,32 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 
 	@Override
 	public boolean addExtractorRecipe(ItemStack aInput, ItemStack aOutput, int aDuration, int aEUt) {
+		return addExtractorRecipe(aInput, aOutput, 10000, aDuration, aEUt);
+	}
+	
+	@Override
+	public boolean addExtractorRecipe(ItemStack aInput, ItemStack aOutput, int aChance, int aDuration, int aEUt) {
 		if (aInput != null && aOutput != null) {
-			if ((aDuration = GregTech_API.sRecipeFile.get("extractor", aInput, aDuration)) <= 0) {
-				return false;
-			} else {
-				GT_Recipe_Map.sExtractorRecipes.addRecipe(true, new ItemStack[]{aInput}, new ItemStack[]{aOutput},
-						(Object) null, (FluidStack[]) null, (FluidStack[]) null, aDuration, aEUt, 0);
-				return true;
-			}
-		} else {
+			GT_Recipe aRecipe = new GTPP_Recipe(
+					false,
+					new ItemStack[] {
+							aInput.copy()
+					},
+					new ItemStack[] {
+							aOutput.copy()
+					},
+					null,
+					new int[] {aChance},
+					null,
+					null,
+					aDuration,
+					aEUt,
+					0); 
+			int aSize = GT_Recipe_Map.sExtractorRecipes.mRecipeList.size();
+			GT_Recipe_Map.sExtractorRecipes.add(aRecipe);
+			return GT_Recipe_Map.sExtractorRecipes.mRecipeList.size() > aSize;
+		}
+		else {
 			return false;
 		}
 	}

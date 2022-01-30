@@ -379,6 +379,15 @@ public class ReflectionUtils {
 
 		return loaded > 0;
 	}
+	
+	public static void loadClass(String aClassName) {
+		try {
+			Class.forName(aClassName, true, ReflectionUtils.class.getClassLoader());
+		}
+		catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
 
 
 
@@ -1100,6 +1109,18 @@ public class ReflectionUtils {
 		catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			e.printStackTrace();
 		}
+		return null;
+	}
+
+	public static Enum getEnum(Class<Enum> sgtbees, String name) {		
+		if (sgtbees.isEnum()) {
+			Object[] aValues = sgtbees.getEnumConstants();
+			for (Object o : aValues) {
+				if (o.toString().toLowerCase().equals(name.toLowerCase())) {
+					return (Enum) o;
+				}
+			}
+		}		
 		return null;
 	}
 

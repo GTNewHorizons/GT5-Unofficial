@@ -1,23 +1,15 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import java.util.*;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
@@ -25,12 +17,18 @@ import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMetaTileEntity;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.helpers.ChargingHelper;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 
 	private boolean mHasBeenMapped = false;
 	private int mCurrentDimension = 0;
 	public int mMode = 0;
+	public boolean mLocked = true;
 
 	public GregtechMetaWirelessCharger(final int aID, final String aName, final String aNameRegional, final int aTier, final String aDescription, final int aSlotCount) {
 		super(aID, aName, aNameRegional, aTier, aSlotCount, aDescription);
@@ -43,6 +41,9 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 	@Override
 	public String[] getDescription() {
 		return new String[] {this.mDescription,
+				"Can be locked to the owner by sneaking with a screwdriver",
+				"Can also be locked with a lock upgrade",
+				"",
 				"3 Modes, Long-Range, Local and Mixed.", 
 				"Long-Range: Can supply 2A of power to a single player up to "+(GT_Values.V[this.mTier]*4)+"m away.",
 				"Local: Can supply several Amps to each player within "+this.mTier*20+"m.",
@@ -151,6 +152,11 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 		mWirelessChargingMap.clear();
 		mLocalChargingMap.clear();
 
+		if (aPlayer.isSneaking()) {
+			mLocked = !mLocked;
+			PlayerUtils.messagePlayer(aPlayer, mLocked ? "Locked to owner." : "Unlocked.");	
+		}
+		
 		if (!this.getBaseMetaTileEntity().getWorld().playerEntities.isEmpty()){
 			for (Object mTempPlayer : this.getBaseMetaTileEntity().getWorld().playerEntities){
 				if (mTempPlayer instanceof EntityPlayer || mTempPlayer instanceof EntityPlayerMP){
@@ -349,12 +355,14 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 
 	@Override
 	public void saveNBTData(final NBTTagCompound aNBT) {
+		aNBT.setBoolean("mLocked", this.mLocked);
 		aNBT.setInteger("mMode", this.mMode);
 		aNBT.setInteger("mCurrentDimension", this.mCurrentDimension);
 	}
 
 	@Override
 	public void loadNBTData(final NBTTagCompound aNBT) {
+		this.mLocked = aNBT.getBoolean("mLocked");
 		this.mMode = aNBT.getInteger("mMode");
 		this.mCurrentDimension = aNBT.getInteger("mCurrentDimension");
 	}
@@ -364,9 +372,21 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 		super.onFirstTick(aBaseMetaTileEntity);
 	}
 
-
 	private Map<String, UUID> mWirelessChargingMap = new HashMap<String, UUID>();
 	private Map<String, UUID> mLocalChargingMap = new HashMap<String, UUID>();
+	
+	private boolean isValidPlayer(EntityPlayer aPlayer) {
+		BaseMetaTileEntity aTile = (BaseMetaTileEntity) this.getBaseMetaTileEntity();
+		if (mLocked || ( aTile != null && aTile.privateAccess())) {
+			if (aPlayer.getUniqueID().equals(getBaseMetaTileEntity().getOwnerUuid())){
+				return true;
+			}
+			else {
+				return false;
+			}
+		}		
+		return true;
+	}
 
 	@Override
 	public void onPostTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTick) {
@@ -380,7 +400,7 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 			if (!mHasBeenMapped && ChargingHelper.addEntry(getTileEntityPosition(), this)){
 				mHasBeenMapped = true;
 			}
-			
+
 			if (aTick % 20 == 0 && mHasBeenMapped){
 				if (!aBaseMetaTileEntity.getWorld().playerEntities.isEmpty()){
 					for (Object mTempPlayer : aBaseMetaTileEntity.getWorld().playerEntities){
@@ -390,7 +410,7 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 							if (this.mMode == 1 || this.mMode == 2){
 								int tempRange = (this.mMode == 1 ? this.mTier*20 : this.mTier*10);
 								if (getDistanceBetweenTwoPositions(getTileEntityPosition(), getPositionOfEntity(mTemp)) < tempRange){
-									if (!mLocalChargingMap.containsKey(mTemp.getDisplayName())){
+									if (isValidPlayer(mTemp) && !mLocalChargingMap.containsKey(mTemp.getDisplayName())){
 										mLocalChargingMap.put(mTemp.getDisplayName(), mTemp.getPersistentID());
 										ChargingHelper.addValidPlayer(mTemp, this);
 										//PlayerUtils.messagePlayer(mTemp, "You have entered charging range. ["+tempRange+"m - Local].");
@@ -409,7 +429,7 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 								int tempRange = (int) (this.mMode == 0 ? 4*GT_Values.V[this.mTier] : 2*GT_Values.V[this.mTier]);
 								if (getDistanceBetweenTwoPositions(getTileEntityPosition(), getPositionOfEntity(mTemp)) <= tempRange){
 									if (!mWirelessChargingMap.containsKey(mTemp.getDisplayName())){
-										if (mTemp.getDisplayName().equalsIgnoreCase(this.getBaseMetaTileEntity().getOwnerName())) {
+										if (isValidPlayer(mTemp)) {
 											mWirelessChargingMap.put(mTemp.getDisplayName(), mTemp.getPersistentID());
 											ChargingHelper.addValidPlayer(mTemp, this);
 											PlayerUtils.messagePlayer(mTemp, "You have entered charging range. ["+tempRange+"m - Long-Range].");											
@@ -424,7 +444,7 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 										}
 									}
 								}
-								if (mWirelessChargingMap.containsKey(mTemp.getDisplayName()) && !mTemp.getDisplayName().equalsIgnoreCase(this.getBaseMetaTileEntity().getOwnerName())){
+								if (mWirelessChargingMap.containsKey(mTemp.getDisplayName())){
 									if (mWirelessChargingMap.remove(mTemp.getDisplayName()) != null){
 										ChargingHelper.removeValidPlayer(mTemp, this);	
 									}

@@ -5,7 +5,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 
 /**
@@ -18,8 +18,11 @@ import gtPlusPlus.core.lib.CORE;
 public class GUI_MatterFab extends GT_GUIContainerMetaTile_Machine {
 
 	String mName = "";
-	int uuaUsed = 0;
-	int uumMade = 0;
+	public int mMatterProduced = 0;
+	public int mScrapProduced = 0;
+	public int mAmplifierProduced = 0;
+	public int mScrapUsed = 0;
+	public int mAmplifierUsed = 0;
 
 	public GUI_MatterFab(final InventoryPlayer aInventoryPlayer, final IGregTechTileEntity aTileEntity, final String aName, final String aTextureFile) {
 		super(new CONTAINER_MatterFab(aInventoryPlayer, aTileEntity), CORE.RES_PATH_GUI + (aTextureFile == null ? "MultiblockDisplay" : aTextureFile));
@@ -61,11 +64,21 @@ public class GUI_MatterFab extends GT_GUIContainerMetaTile_Machine {
 					this.fontRendererObj.drawString("to (re-)start the Machine", 10, 24, 16448255);
 					this.fontRendererObj.drawString("if it doesn't start.", 10, 32, 16448255);
 				} else {
-					this.uuaUsed = ((CONTAINER_MatterFab) this.mContainer).mUUA_USED;
-					this.uumMade = ((CONTAINER_MatterFab) this.mContainer).mUUM_MADE;
+					CONTAINER_MatterFab aContainer = (CONTAINER_MatterFab) this.mContainer;
+					
+					this.mMatterProduced = aContainer.mMatterProduced;
+					this.mAmplifierProduced = aContainer.mAmplifierProduced;
+					this.mAmplifierUsed = aContainer.mAmplifierUsed;
+					this.mScrapProduced = aContainer.mScrapProduced;
+					this.mScrapUsed = aContainer.mScrapUsed;	
+					
 					this.fontRendererObj.drawString("Running perfectly.", 10, 16, 16448255);
-					this.fontRendererObj.drawString("UU-Amplifier Used: "+this.uuaUsed, 10, 24, 16448255);
-					this.fontRendererObj.drawString("UU-Matter Fabricated: "+this.uumMade, 10, 32, 16448255);
+					
+					this.fontRendererObj.drawString("Scrap Made: "+this.mScrapProduced, 10, 32, 16448255);
+					this.fontRendererObj.drawString("Scrap Used: "+this.mScrapUsed, 10, 40, 16448255);
+					this.fontRendererObj.drawString("UUA Made: "+this.mAmplifierProduced, 10, 48, 16448255);
+					this.fontRendererObj.drawString("UUA Used: "+this.mAmplifierUsed, 10, 56, 16448255);
+					this.fontRendererObj.drawString("UUM Made: "+this.mMatterProduced, 10, 64, 16448255);
 				}
 			}
 		}

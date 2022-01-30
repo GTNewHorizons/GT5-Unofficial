@@ -1,15 +1,15 @@
 package gtPlusPlus.core.item.base;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
+import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
@@ -17,6 +17,7 @@ import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.Material;
+import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.data.StringUtils;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -65,6 +66,9 @@ public class BaseItemComponent extends Item{
 		//if (componentType != ComponentTypes.DUST)
 
 		GT_OreDictUnificator.registerOre(componentType.getOreDictName()+material.getUnlocalizedName(), ItemUtils.getSimpleStack(this));
+		if (componentType == ComponentTypes.GEAR) {
+			GT_OreDictUnificator.registerOre("gear"+material.getUnlocalizedName(), ItemUtils.getSimpleStack(this));
+		}
 		if (LoadedMods.Thaumcraft) {
 			//ThaumcraftUtils.addAspectToItem(ItemUtils.getSimpleStack(this), TC_Aspect_Wrapper.generate(TC_Aspects.METALLUM.mAspect), 1);
 			if (componentMaterial.isRadioactive) {
@@ -167,6 +171,34 @@ public class BaseItemComponent extends Item{
 
 	public final String getMaterialName() {
 		return this.materialName;
+	}
+	
+	@Override
+	public String getItemStackDisplayName(ItemStack stack) {
+		if (componentMaterial == null) {
+			String aFormattedLangName = componentType.getName();
+			if (!aFormattedLangName.startsWith(" ")) {
+				if (aFormattedLangName.contains("@")) {
+					String[] aSplit = aFormattedLangName.split("@");
+					aFormattedLangName = aSplit[0] + " " + getMaterialName() + " " + aSplit[1];
+				}
+			}
+			if (aFormattedLangName.equals(componentType.getName())) {
+				aFormattedLangName = getMaterialName() + aFormattedLangName;
+			}		
+			return GT_LanguageManager.addStringLocalization(unlocalName, aFormattedLangName);
+		}
+		String aFormattedLangName = componentType.getName();
+		if (!aFormattedLangName.startsWith(" ")) {
+			if (aFormattedLangName.contains("@")) {
+				String[] aSplit = aFormattedLangName.split("@");
+				aFormattedLangName = aSplit[0] + " " + componentMaterial.getLocalizedName() + " " + aSplit[1];
+			}
+		}
+		if (aFormattedLangName.equals(componentType.getName())) {
+			aFormattedLangName = componentMaterial.getLocalizedName() + aFormattedLangName;
+		}		
+		return GT_LanguageManager.addStringLocalization(unlocalName, aFormattedLangName);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -345,6 +377,7 @@ public class BaseItemComponent extends Item{
 						((Map<Integer, Short[]>) extraData).put((int) Short.MAX_VALUE-2, new Short[] {(short) (((Map<Integer, Short[]>) extraData).size()-1)});
 					}
 					if (extraData != null) {
+
 						Short aCurrentFrame = ((Map<Integer, Short[]>) extraData).get((int) Short.MAX_VALUE)[0];
 						Short aSize = (short) (((Map<Integer, Short[]>) extraData).size() - 3);				
 						short nextFrame = (short) ((aCurrentFrame < aSize) ? (aCurrentFrame+1) : 0);
@@ -966,10 +999,10 @@ public class BaseItemComponent extends Item{
 
 	public static enum ComponentTypes {
 		DUST("Dust", " Dust", "dust", OrePrefixes.dust),
-		DUSTSMALL("DustSmall", " Dust", "dustSmall", OrePrefixes.dustSmall),
-		DUSTTINY("DustTiny", " Dust", "dustTiny", OrePrefixes.dustTiny),
+		DUSTSMALL("DustSmall", "Small Pile of@Dust", "dustSmall", OrePrefixes.dustSmall),
+		DUSTTINY("DustTiny", "Tiny Pile of@Dust", "dustTiny", OrePrefixes.dustTiny),
 		INGOT("Ingot", " Ingot", "ingot", OrePrefixes.ingot),
-		HOTINGOT("HotIngot", " Hot Ingot", "ingotHot", OrePrefixes.ingotHot),
+		HOTINGOT("HotIngot", "Hot@Ingot", "ingotHot", OrePrefixes.ingotHot),
 		PLATE("Plate", " Plate", "plate", OrePrefixes.plate),
 		PLATEDOUBLE("PlateDouble", " Double Plate", "plateDouble", OrePrefixes.plateDouble),
 		ROD("Rod", " Rod", "stick", OrePrefixes.stick),

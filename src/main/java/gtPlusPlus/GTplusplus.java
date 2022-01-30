@@ -28,8 +28,7 @@ import gtPlusPlus.core.commands.CommandEnableDebugWhileRunning;
 import gtPlusPlus.core.commands.CommandMath;
 import gtPlusPlus.core.common.CommonProxy;
 import gtPlusPlus.core.config.ConfigHandler;
-import gtPlusPlus.core.handler.BookHandler;
-import gtPlusPlus.core.handler.PacketHandler;
+import gtPlusPlus.core.handler.*;
 import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
 import gtPlusPlus.core.handler.events.BlockEventHandler;
 import gtPlusPlus.core.handler.events.LoginEventHandler;
@@ -174,6 +173,7 @@ public class GTplusplus implements ActionListener {
 
 		Utils.registerEvent(new LoginEventHandler());
 		Utils.registerEvent(new MissingMappingsEvent());
+		Utils.registerEvent(new MobMentality());
 		Logger.INFO("Login Handler Initialized");
 
 		proxy.preInit(event);

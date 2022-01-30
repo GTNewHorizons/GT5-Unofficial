@@ -216,6 +216,7 @@ public final class ELEMENT {
 		public static final Material ADVANCED_NITINOL = new Material("Advanced Nitinol", MaterialState.SOLID, TextureSets.ENRICHED.get(), ALLOY.NITINOL_60.getRGB(), 8400, 14377, 40, 51, true, "⚷⚙⚷ Ni4Ti6", 0);//Not a GT Inherited Material
 		public static final Material HYPOGEN = new Material("Hypogen", MaterialState.SOLID, TextureSets.NUCLEAR.get(), new short[]{220, 120, 75, 2}, 12255, 19377, 240, 251, true, "Hy⚶", 0);//Not a GT Inherited Material
 		public static final Material RHUGNOR = new Material("Rhugnor", MaterialState.SOLID, TextureSets.ENRICHED.get(), new short[]{190, 0, 255, 0}, 8750, 14757, 184, 142, true, "Fs⚶", 0);//Not a GT Inherited Material //funeris
+		public static final Material FORCE = new Material("Force", MaterialState.SOLID, TextureSets.ENRICHED.get(), new short[]{250, 250, 20, 0}, 4550, 6830, 63, 81, true, "Fc⚙", 0);//Not a GT Inherited Material
 		
 		
 		//Runescape materials
