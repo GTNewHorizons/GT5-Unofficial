@@ -28,19 +28,21 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.opengl.GL11;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.awt.*;
 import java.lang.ref.SoftReference;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
 
 public class GT_NEI_DefaultHandler extends RecipeMapHandler {
     public static final int sOffsetX = 5;
     public static final int sOffsetY = 11;
-    private int mCachedRecipesVersion = -1;
-    private SoftReference<List<CachedDefaultRecipe>> mCachedRecipes = null;
+    private static final ConcurrentMap<GT_Recipe.GT_Recipe_Map, SortedRecipeListCache> CACHE = new ConcurrentHashMap<>();
 
     static {
         GuiContainerManager.addInputHandler(new GT_RectHandler());
@@ -60,8 +62,9 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
     }
 
     public List<CachedDefaultRecipe> getCache() {
+        SortedRecipeListCache cacheHolder = CACHE.computeIfAbsent(mRecipeMap, m -> new SortedRecipeListCache());
         List<CachedDefaultRecipe> cache;
-        if (mCachedRecipesVersion == GT_Mod.gregtechproxy.getReloadCount() || mCachedRecipes == null || (cache = mCachedRecipes.get()) == null) {
+        if (cacheHolder.getCachedRecipesVersion() != GT_Mod.gregtechproxy.getReloadCount() || (cache = cacheHolder.getCachedRecipes()) == null) {
             cache = mRecipeMap.mRecipeList.stream()  // do not use parallel stream. This is already parallelized by NEI
                     .filter(r -> !r.mHidden)
                     .sorted()
@@ -69,7 +72,9 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                     .collect(Collectors.toList());
             // while the NEI parallelize handlers, for each individual handler it still uses sequential execution model
             // so we do not need any synchronization here
-            mCachedRecipes = new SoftReference<>(cache);
+            // even if it does break, at worst case it's just recreating the cache multiple times, which should be fine
+            cacheHolder.setCachedRecipes(cache);
+            cacheHolder.setCachedRecipesVersion(GT_Mod.gregtechproxy.getReloadCount());
         }
         return cache;
     }
@@ -881,5 +886,28 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
 
     public String trans(String aKey, String aEnglish){
         return GT_LanguageManager.addStringLocalization("Interaction_DESCRIPTION_Index_"+aKey, aEnglish, false);
+    }
+
+    private static class SortedRecipeListCache {
+        private int mCachedRecipesVersion = -1;
+        @Nullable
+        private SoftReference<List<CachedDefaultRecipe>> mCachedRecipes;
+
+        public int getCachedRecipesVersion() {
+            return mCachedRecipesVersion;
+        }
+
+        public void setCachedRecipesVersion(int aCachedRecipesVersion) {
+            this.mCachedRecipesVersion = aCachedRecipesVersion;
+        }
+
+        @Nullable
+        public List<CachedDefaultRecipe> getCachedRecipes() {
+            return mCachedRecipes == null ? null : mCachedRecipes.get();
+        }
+
+        public void setCachedRecipes(@Nonnull List<CachedDefaultRecipe> aCachedRecipes) {
+            this.mCachedRecipes = new SoftReference<>(aCachedRecipes);
+        }
     }
 }
