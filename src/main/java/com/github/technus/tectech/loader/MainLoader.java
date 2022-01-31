@@ -7,6 +7,7 @@ import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.trans
 import com.github.technus.tectech.compatibility.thaumcraft.thing.metaTileEntity.multi.EssentiaCompat;
 import com.github.technus.tectech.compatibility.thaumcraft.thing.metaTileEntity.multi.EssentiaCompatEnabled;
 import com.github.technus.tectech.loader.gui.CreativeTabTecTech;
+import com.github.technus.tectech.loader.gui.CreativeTabEM;
 import com.github.technus.tectech.loader.gui.ModGuiHandler;
 import com.github.technus.tectech.loader.recipe.BaseRecipeLoader;
 import com.github.technus.tectech.loader.thing.ComponentLoader;
@@ -40,11 +41,12 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import static com.github.technus.tectech.util.CommonValues.*;
 import static com.github.technus.tectech.TecTech.*;
 import static com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.transformations.AspectDefinitionCompat.aspectDefinitionCompat;
 import static com.github.technus.tectech.compatibility.thaumcraft.thing.metaTileEntity.multi.EssentiaCompat.essentiaContainerCompat;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
-import static com.github.technus.tectech.util.CommonValues.*;
+import static com.github.technus.tectech.TecTech.creativeTabTecTech;
 import static gregtech.api.enums.GT_Values.W;
 
 public final class MainLoader {
@@ -63,10 +65,11 @@ public final class MainLoader {
 
     public static void preLoad(){
         creativeTabTecTech =new CreativeTabTecTech("TecTech");
+        creativeTabEM =new CreativeTabEM("EM");
 
         //set expanded texture arrays for tiers
         try {
-            new Textures();
+            Textures.run();
         }catch (Throwable t){
             LOGGER.error("Loading textures...",t);
         }
@@ -167,7 +170,7 @@ public final class MainLoader {
         ProgressManager.pop(progressBarPostLoad);
     }
 
-    private static void registerExtraHazmats() { //Hazmat moved to GT5U
+    private static void registerExtraHazmats() {
         ItemStack EMT_iqC=GT_ModHandler.getModItem("EMT","itemArmorQuantumChestplate",1,W);
         ItemStack GRAVI_gC=GT_ModHandler.getModItem("GraviSuite","graviChestPlate",1,W);
         ItemStack GRAVI_anC=GT_ModHandler.getModItem("GraviSuite", "advNanoChestPlate", 1, W);

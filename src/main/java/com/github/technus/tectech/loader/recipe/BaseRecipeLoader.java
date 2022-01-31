@@ -63,7 +63,7 @@ public class BaseRecipeLoader {
 
 
         //GT EU reader
-        GT_ModHandler.addCraftingRecipe(new ItemStack(EuMeterGT.INSTANCE, 1),
+        GT_ModHandler.addCraftingRecipe(new ItemStack(EuMeterGT.INSTANCE,1),
                 GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
                 new Object[]{"PGW", "SCW", "BRN",
                         'P', OrePrefixes.plateDouble.get(Materials.Steel),
@@ -78,7 +78,7 @@ public class BaseRecipeLoader {
         //Owner detector
         GT_ModHandler.addCraftingRecipe(CustomItemList.Machine_OwnerDetector.get(1),
                 GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[]{"PPP", "GEG", "PPP",
+                new Object[]{"PPP","GEG","PPP",
                         'P', OrePrefixes.plate.get(Materials.IronMagnetic),
                         'G', OrePrefixes.plate.get(Materials.Glass),
                         'E', OrePrefixes.gem.get(Materials.EnderPearl)});
@@ -86,7 +86,7 @@ public class BaseRecipeLoader {
         //Data reader
         GT_ModHandler.addCraftingRecipe(CustomItemList.Machine_DataReader.get(1),
                 GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[]{"BdB", "GES", "PwP",
+                new Object[]{"BdB","GES","PwP",
                         'B', OrePrefixes.screw.get(Materials.Iridium),
                         'P', OrePrefixes.plate.get(Materials.Iridium),
                         'G', ItemList.Cover_Screen,

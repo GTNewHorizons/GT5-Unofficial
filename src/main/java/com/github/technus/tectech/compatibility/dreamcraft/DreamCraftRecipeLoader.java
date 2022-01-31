@@ -170,6 +170,23 @@ public class DreamCraftRecipeLoader {
                         getOrDefault("Trinium", Materials.Osmium).getMolten(1296),
                 }, CustomItemList.eM_Coil.get(4), 800, 2000000);
 
+        //infinite oil rig
+        TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.OilDrill3.get(1),
+                16777216, 2048, 2000000, 4, new ItemStack[]{
+                        ItemList.OilDrill3.get(1),
+                        GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 4),
+                        GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Infinite, 4),
+                        ItemList.Electric_Motor_UHV.get(4),
+                        ItemList.Electric_Pump_UHV.get(4),
+                        GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.Neutronium, 4),
+                        ItemList.Sensor_UHV.get(3),
+                        ItemList.Field_Generator_UHV.get(3),
+                        GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Neutronium, 12)
+                }, new FluidStack[]{
+                        Materials.SolderingAlloy.getMolten(1296),
+                        Materials.Neutronium.getMolten(576)
+                }, ItemList.OilDrillInfinite.get(1), 6000, 2000000);
+
         //Tesla Base
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.NickelZincFerrite, 6),
@@ -1094,7 +1111,7 @@ public class DreamCraftRecipeLoader {
         				getItemContainer("Hull_UMV").get(1L),
                         GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUHV, 16L),
                         ItemList.Circuit_Chip_QPIC.get(4L),
-                        getItemContainer("PikoCircuit").get(2),
+                        getItemContainer("QuantumCircuit").get(2),
                         ItemList.UHV_Coil.get(16L),
                         ItemList.Reactor_Coolant_Sp_6.get(1L),
                         ItemList.Reactor_Coolant_Sp_6.get(1L),
@@ -1117,7 +1134,7 @@ public class DreamCraftRecipeLoader {
         				getItemContainer("Hull_UMV").get(1L),
                         GT_OreDictUnificator.get(OrePrefixes.spring, Materials.Longasssuperconductornameforuhvwire, 64L),
                         ItemList.Circuit_Chip_QPIC.get(4L),
-                        getItemContainer("PikoCircuit").get(2),
+                        getItemContainer("QuantumCircuit").get(2),
                         ItemList.UHV_Coil.get(16L),
                         ItemList.Reactor_Coolant_Sp_6.get(1L),
                         ItemList.Reactor_Coolant_Sp_6.get(1L),
@@ -1238,7 +1255,7 @@ public class DreamCraftRecipeLoader {
         TT_recipeAdder.addResearchableAssemblylineRecipe(getItemContainer("PikoCircuit").get(1L),
                 720000, 2048, 8000000, 128, new ItemStack[]{
                         GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 16),
-                        getItemContainer("PikoCircuit").get(8L),
+                        getItemContainer("PikoCircuit").get(2L),
                         ItemList.Circuit_Parts_CapacitorASMD.get(64L),
                         ItemList.Circuit_Parts_DiodeASMD.get(64L),
                         ItemList.Circuit_Parts_TransistorASMD.get(64L),
@@ -1257,28 +1274,28 @@ public class DreamCraftRecipeLoader {
         //Stargate Recipes
         if (Loader.isModLoaded("eternalsingularity") && Loader.isModLoaded("SGCraft")) {
             TT_recipeAdder.addResearchableAssemblylineRecipe(GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Infinity, 1L),
-                    192000, 512, 2000000, 32, new ItemStack[]{
+                    32000000, 8192, 128000000, 1, new ItemStack[]{
                             GT_ModHandler.getModItem("eternalsingularity", "eternal_singularity", 1L),
-                            ItemList.Sensor_UV.get(16L),
+                            ItemList.Sensor_UEV.get(16L),
                             GT_OreDictUnificator.get(OrePrefixes.block, Materials.Infinity, 16L),
                             GT_OreDictUnificator.get(OrePrefixes.block, Materials.CosmicNeutronium, 16L),
                             GT_OreDictUnificator.get(OrePrefixes.block, Materials.NaquadahAlloy, 64L),
                             GT_OreDictUnificator.get(OrePrefixes.block, Materials.NaquadahAlloy, 64L),
                             GT_OreDictUnificator.get(OrePrefixes.block, Materials.NaquadahAlloy, 64L),
-                            getItemContainer("NanoCircuit").get(1L).splitStack(16)
+                            getItemContainer("QuantumCircuit").get(1L).splitStack(16)
                     },
                     new FluidStack[]{
                             Materials.Neutronium.getMolten(36864L),
                             Materials.Tritanium.getMolten(36864L),
-                            Materials.Tetranaquadahdiindiumhexaplatiumosminid.getMolten(36864L),
+                            Materials.Longasssuperconductornameforuhvwire.getMolten(36864L),
                             Materials.Silver.getPlasma(36864L)
                     },
-                    getItemContainer("StargateShieldingFoil").get(1L), 72000, 2000000);
+                    getItemContainer("StargateShieldingFoil").get(1L), 72000, 500000000);
 
             TT_recipeAdder.addResearchableAssemblylineRecipe(getItemContainer("StargateShieldingFoil").get(1L),
-                    192000, 512, 2000000, 32, new ItemStack[]{
-                            ItemList.Electric_Piston_UV.get(16L),
-                            ItemList.Electric_Motor_UV.get(64L),
+                    32000000, 8192, 128000000, 1, new ItemStack[]{
+                            ItemList.Electric_Piston_UEV.get(16L),
+                            ItemList.Electric_Motor_UEV.get(64L),
                             GT_OreDictUnificator.get(OrePrefixes.block, Materials.Infinity, 16L),
                             GT_OreDictUnificator.get(OrePrefixes.block, Materials.NaquadahAlloy, 64L),
                             GT_OreDictUnificator.get(OrePrefixes.block, Materials.NetherStar, 64L),
@@ -1287,18 +1304,18 @@ public class DreamCraftRecipeLoader {
                             GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Ardite, 8L),
                             GT_OreDictUnificator.get(OrePrefixes.gemExquisite, Materials.Ruby, 16L),
                             GT_OreDictUnificator.get(OrePrefixes.gemExquisite, Materials.Jasper, 16L),
-                            getItemContainer("NanoCircuit").get(1L).splitStack(32)
+                            getItemContainer("QuantumCircuit").get(1L).splitStack(32)
                     },
                     new FluidStack[]{
                             Materials.Neutronium.getMolten(9216L),
                             Materials.Tritanium.getMolten(9216L),
-                            Materials.Tetranaquadahdiindiumhexaplatiumosminid.getMolten(9216L),
+                            Materials.Longasssuperconductornameforuhvwire.getMolten(9216L),
                             Materials.Silver.getPlasma(9216L)
                     },
-                    getItemContainer("StargateChevron").get(1L), 72000, 2000000);
+                    getItemContainer("StargateChevron").get(1L), 72000, 500000000);
 
             TT_recipeAdder.addResearchableAssemblylineRecipe(GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 1L),
-                    192000, 512, 2000000, 32, new ItemStack[]{
+                    32000000, 8192, 128000000, 1, new ItemStack[]{
                             GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Infinity, 64L),
                             GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.NaquadahAlloy, 64L),
                             GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.CosmicNeutronium, 64L),
@@ -1310,7 +1327,7 @@ public class DreamCraftRecipeLoader {
                             Materials.Tritanium.getMolten(73728L),
                             Materials.Concrete.getMolten(73728L)
                     },
-                    getItemContainer("StargateFramePart").get(1L), 72000, 2000000);
+                    getItemContainer("StargateFramePart").get(1L), 72000, 500000000);
         }
         //endregion
         
@@ -1384,7 +1401,7 @@ public class DreamCraftRecipeLoader {
                 ItemList.Circuit_Parts_DiodeASMD.get(64),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorUHV, 64),
         }, new FluidStack[]{
-                Materials.SolderingAlloy.getMolten(3760),
+                Materials.SolderingAlloy.getMolten(4608),
                 Materials.Naquadria.getMolten(9216),
                 new FluidStack(FluidRegistry.getFluid("ic2coolant"), 32000)
         }, ItemList.ZPM3.get(1), 4000, 1600000);

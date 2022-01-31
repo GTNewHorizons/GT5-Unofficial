@@ -190,6 +190,11 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     }
 
     @Override
+    public void setAlignmentLimits(IAlignmentLimits limits) {
+        alignmentLimits=limits;
+    }
+
+    @Override
     public boolean isFacingValid(byte aFacing) {
         return canSetToDirectionAny(ForgeDirection.getOrientation(aFacing));
     }
