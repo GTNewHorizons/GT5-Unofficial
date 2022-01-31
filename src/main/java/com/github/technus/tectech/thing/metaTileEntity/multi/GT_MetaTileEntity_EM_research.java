@@ -53,13 +53,13 @@ import static net.minecraft.util.StatCollector.translateToLocalFormatted;
  */
 public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
     //region variables
-    private final ArrayList<GT_MetaTileEntity_Hatch_Holder> eHolders = new ArrayList<>();
-    private GT_Recipe.GT_Recipe_AssemblyLine tRecipe;
-    private TT_recipe.TT_assLineRecipe aRecipe;
-    private String machineType;
-    private static final String assembly="Assembly line";
-    private ItemStack holdItem;
-    private long computationRemaining, computationRequired;
+    private final        ArrayList<GT_MetaTileEntity_Hatch_Holder> eHolders = new ArrayList<>();
+    private              GT_Recipe.GT_Recipe_AssemblyLine          tRecipe;
+    private              TT_recipe.TT_assLineRecipe                aRecipe;
+    private              String                                    machineType;
+    private static final String                                    assembly = "Assembly line";
+    private              ItemStack                                 holdItem;
+    private              long                                      computationRemaining, computationRequired;
 
     private static LinkedHashMap<String, String> lServerNames;
 
@@ -73,23 +73,23 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     //endregion
 
     //region structure
-    private static final IStructureDefinition<GT_MetaTileEntity_EM_research> STRUCTURE_DEFINITION =
-            IStructureDefinition.<GT_MetaTileEntity_EM_research>builder()
-                    .addShape("main", transpose(new String[][]{
-                            {"   ", " A ", " A ", "AAA", "AAA", "AAA", "AAA"},
-                            {"AAA", "ACA", "ACA", "ACA", "BCB", "BCB", "BBB"},
-                            {"   ", " C ", "   ", "   ", "ACA", "CCC", "DDD"},
-                            {"   ", " E ", "   ", "   ", "A~A", "CCC", "DDD"},
-                            {"   ", " C ", "   ", "   ", "ACA", "CCC", "DDD"},
-                            {"AAA", "ACA", "ACA", "ACA", "BCB", "BCB", "BBB"},
-                            {"   ", " A ", " A ", "AAA", "AAA", "AAA", "AAA"}
-                    }))
-                    .addElement('A', ofBlock(sBlockCasingsTT, 1))
-                    .addElement('B', ofBlock(sBlockCasingsTT, 2))
-                    .addElement('C', ofBlock(sBlockCasingsTT, 3))
-                    .addElement('D', ofHatchAdderOptional(GT_MetaTileEntity_EM_research::addClassicToMachineList, textureOffset + 1,1, sBlockCasingsTT,1))
-                    .addElement('E', ofHatchAdder(GT_MetaTileEntity_EM_research::addHolderToMachineList, 3, 2))
-                    .build();
+    private static final IStructureDefinition<GT_MetaTileEntity_EM_research> STRUCTURE_DEFINITION = IStructureDefinition
+            .<GT_MetaTileEntity_EM_research>builder()
+            .addShape("main", transpose(new String[][]{
+                    {"   ", " A ", " A ", "AAA", "AAA", "AAA", "AAA"},
+                    {"AAA", "ACA", "ACA", "ACA", "BCB", "BCB", "BBB"},
+                    {"   ", " C ", "   ", "   ", "ACA", "CCC", "DDD"},
+                    {"   ", " E ", "   ", "   ", "A~A", "CCC", "DDD"},
+                    {"   ", " C ", "   ", "   ", "ACA", "CCC", "DDD"},
+                    {"AAA", "ACA", "ACA", "ACA", "BCB", "BCB", "BBB"},
+                    {"   ", " A ", " A ", "AAA", "AAA", "AAA", "AAA"}
+            }))
+            .addElement('A', ofBlock(sBlockCasingsTT, 1))
+            .addElement('B', ofBlock(sBlockCasingsTT, 2))
+            .addElement('C', ofBlock(sBlockCasingsTT, 3))
+            .addElement('D', ofHatchAdderOptional(GT_MetaTileEntity_EM_research::addClassicToMachineList, textureOffset + 1, 1, sBlockCasingsTT, 1))
+            .addElement('E', ofHatchAdder(GT_MetaTileEntity_EM_research::addHolderToMachineList, 3, 2))
+            .build();
     //endregion
 
     public GT_MetaTileEntity_EM_research(int aID, String aName, String aNameRegional) {
@@ -143,12 +143,12 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     private void makeStick2() {
         String s = tRecipe.mOutput.getDisplayName();
         if (getBaseMetaTileEntity().isServerSide()) {
-            if(lServerNames != null) {
+            if (lServerNames != null) {
                 s = lServerNames.get(tRecipe.mOutput.getDisplayName());
                 if (s == null) {
                     s = tRecipe.mOutput.getDisplayName();
                 }
-            }else{
+            } else {
                 s = tRecipe.mOutput.getDisplayName();
             }
         }
@@ -187,7 +187,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
         tNBTList.appendTag(new NBTTagString("Construction plan for " + tRecipe.mOutput.stackSize + " " + s + ". Needed EU/t: " + tRecipe.mEUt + " Production time: " + (tRecipe.mDuration / 20)));
         for (int i = 0; i < tRecipe.mInputs.length; i++) {
             if (tRecipe.mOreDictAlt[i] != null) {
-                int count = 0;
+                int           count    = 0;
                 StringBuilder tBuilder = new StringBuilder("Input Bus " + (i + 1) + ": ");
                 for (ItemStack tStack : tRecipe.mOreDictAlt[i]) {
                     if (tStack != null) {
@@ -240,7 +240,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
                 mEfficiencyIncrease = 10000;
                 eRequiredData = (short) (ttRecipe.mSpecialValue >>> 16);
                 eAmpereFlow = (short) (ttRecipe.mSpecialValue & 0xFFFF);
-                mEUt = Math.min(ttRecipe.mEUt,-ttRecipe.mEUt);
+                mEUt = Math.min(ttRecipe.mEUt, -ttRecipe.mEUt);
                 eHolders.get(0).getBaseMetaTileEntity().setActive(true);
                 return true;
             }
@@ -362,7 +362,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     @Override
     public String[] getInfoData() {
         long storedEnergy = 0;
-        long maxEnergy = 0;
+        long maxEnergy    = 0;
         for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
             if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
                 storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();

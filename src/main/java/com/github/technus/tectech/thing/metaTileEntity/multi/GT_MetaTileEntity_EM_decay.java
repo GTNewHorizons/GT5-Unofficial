@@ -65,8 +65,8 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
             translateToLocal("gt.blockmachines.multimachine.em.decay.hint.1"),//2 - Elemental Hatches or Molecular Casing
     };
 
-    private static final IStructureDefinition<GT_MetaTileEntity_EM_decay> STRUCTURE_DEFINITION =
-            IStructureDefinition.<GT_MetaTileEntity_EM_decay>builder()
+    private static final IStructureDefinition<GT_MetaTileEntity_EM_decay> STRUCTURE_DEFINITION = IStructureDefinition
+            .<GT_MetaTileEntity_EM_decay>builder()
             .addShape("main",transpose(new String[][]{
                     {"A   A","AAAAA","A   A","ABBBA","ABCBA","ABBBA","A   A","AAAAA","A   A"},
                     {" FFF ","AAAAA"," EEE ","BDDDB","BDDDB","BDDDB"," EEE ","AAAAA"," FFF "},
@@ -78,8 +78,8 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
             .addElement('B', ofBlock(sBlockCasingsTT, 5))
             .addElement('C', ofBlock(sBlockCasingsTT, 6))
             .addElement('D', ofBlock(sBlockCasingsTT, 8))
-            .addElement('E', ofHatchAdderOptional(GT_MetaTileEntity_EM_decay::addElementalToMachineList, textureOffset + 4, 2, sBlockCasingsTT, 4))
             .addElement('F', ofHatchAdderOptional(GT_MetaTileEntity_EM_decay::addClassicToMachineList, textureOffset, 1, sBlockCasingsTT, 0))
+            .addElement('E', ofHatchAdderOptional(GT_MetaTileEntity_EM_decay::addElementalToMachineList, textureOffset + 4, 2, sBlockCasingsTT, 4))
             .build();
     //endregion
 

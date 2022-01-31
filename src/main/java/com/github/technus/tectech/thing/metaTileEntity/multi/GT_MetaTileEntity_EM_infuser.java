@@ -40,14 +40,14 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
             translateToLocal("gt.blockmachines.multimachine.em.infuser.hint"),//1 - Classic Hatches or High Power Casing
     };
 
-    private static final IStructureDefinition<GT_MetaTileEntity_EM_infuser> STRUCTURE_DEFINITION =
-            IStructureDefinition.<GT_MetaTileEntity_EM_infuser>builder()
+    private static final IStructureDefinition<GT_MetaTileEntity_EM_infuser> STRUCTURE_DEFINITION = IStructureDefinition
+            .<GT_MetaTileEntity_EM_infuser>builder()
             .addShape("main", transpose(new String[][]{
-                    {"CCC","CCC","CCC"},
-                    {"BBB","BAB","BBB"},
-                    {"A~A","AAA","AAA"},
-                    {"BBB","BAB","BBB"},
-                    {"CCC","CCC","CCC"}
+                    {"CCC", "CCC", "CCC"},
+                    {"BBB", "BAB", "BBB"},
+                    {"A~A", "AAA", "AAA"},
+                    {"BBB", "BAB", "BBB"},
+                    {"CCC", "CCC", "CCC"}
             }))
             .addElement('A', ofBlock(sBlockCasingsTT, 4))
             .addElement('B', ofBlock(sBlockCasingsTT, 7))
@@ -169,12 +169,12 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
 
     @Override
     public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity,true,  false, true);
+        return new GT_Container_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, true, false, true);
     }
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "EMDisplay.png",true,  false, true);
+        return new GT_GUIContainer_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "EMDisplay.png", true, false, true);
     }
 
     public final static ResourceLocation activitySound = new ResourceLocation(Reference.MODID + ":fx_whooum");

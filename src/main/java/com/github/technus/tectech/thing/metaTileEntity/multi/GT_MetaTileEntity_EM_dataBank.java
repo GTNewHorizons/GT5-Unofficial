@@ -39,7 +39,7 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 public class GT_MetaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
     //region variables
     private final ArrayList<GT_MetaTileEntity_Hatch_OutputDataItems> eStacksDataOutputs = new ArrayList<>();
-    private final ArrayList<GT_MetaTileEntity_Hatch_DataAccess> eDataAccessHatches = new ArrayList<>();
+    private final ArrayList<GT_MetaTileEntity_Hatch_DataAccess>      eDataAccessHatches = new ArrayList<>();
     //endregion
 
     //region structure
@@ -49,12 +49,12 @@ public class GT_MetaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockB
             translateToLocal("gt.blockmachines.multimachine.em.databank.hint.1"),//2 - Data Access/Data Bank Master Hatches or computer casing
     };
 
-    private static final IStructureDefinition<GT_MetaTileEntity_EM_dataBank> STRUCTURE_DEFINITION =
-            IStructureDefinition.<GT_MetaTileEntity_EM_dataBank>builder()
+    private static final IStructureDefinition<GT_MetaTileEntity_EM_dataBank> STRUCTURE_DEFINITION = IStructureDefinition
+            .<GT_MetaTileEntity_EM_dataBank>builder()
             .addShape("main", transpose(new String[][]{
-                    {"BCCCB","BDDDB","BDDDB"},
-                    {"BC~CB","BAAAB","BDDDB"},
-                    {"BCCCB","BDDDB","BDDDB"}
+                    {"BCCCB", "BDDDB", "BDDDB"},
+                    {"BC~CB", "BAAAB", "BDDDB"},
+                    {"BCCCB", "BDDDB", "BDDDB"}
             }))
             .addElement('A', ofBlock(sBlockCasingsTT, 1))
             .addElement('B', ofBlock(sBlockCasingsTT, 2))
@@ -130,12 +130,12 @@ public class GT_MetaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockB
 
     @Override
     public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity,true,  false, true);
+        return new GT_Container_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, true, false, true);
     }
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "EMDisplay.png",true, false, true);//todo texture
+        return new GT_GUIContainer_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "EMDisplay.png", true, false, true);//todo texture
     }
 
     @Override

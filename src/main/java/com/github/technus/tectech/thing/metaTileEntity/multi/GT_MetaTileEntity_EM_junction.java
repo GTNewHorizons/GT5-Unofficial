@@ -35,8 +35,8 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
             translateToLocal("gt.blockmachines.multimachine.em.junction.hint.1"),//2 - Elemental Hatches or Molecular Casing
     };
 
-    private static final IStructureDefinition<GT_MetaTileEntity_EM_junction> STRUCTURE_DEFINITION =
-            IStructureDefinition.<GT_MetaTileEntity_EM_junction>builder()
+    private static final IStructureDefinition<GT_MetaTileEntity_EM_junction> STRUCTURE_DEFINITION = IStructureDefinition
+            .<GT_MetaTileEntity_EM_junction>builder()
             .addShape("main", new String[][]{
                     {"CCC", "C~C", "CCC"},
                     {"AAA", "AAA", "AAA"},
@@ -58,7 +58,7 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
     //endregion
 
     //region parameters
-    private static final INameFunction<GT_MetaTileEntity_EM_junction> ROUTE_NAME =
+    private static final INameFunction<GT_MetaTileEntity_EM_junction>   ROUTE_NAME =
             (base, p) -> (p.parameterId() == 0 ? translateToLocal("tt.keyword.Source") + " " : translateToLocal("tt.keyword.Destination") + " ") + p.hatchId();
     private static final IStatusFunction<GT_MetaTileEntity_EM_junction> SRC_STATUS =
             (base, p) -> {
@@ -83,8 +83,8 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
                 }
                 return STATUS_NEUTRAL;
             };
-    protected Parameters.Group.ParameterIn[] src;
-    protected Parameters.Group.ParameterIn[] dst;
+    protected            Parameters.Group.ParameterIn[]                 src;
+    protected            Parameters.Group.ParameterIn[]                 dst;
     //endregion
 
     public GT_MetaTileEntity_EM_junction(int aID, String aName, String aNameRegional) {
@@ -138,8 +138,8 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
             if (inIndex < 0 || inIndex >= eInputHatches.size()) {
                 continue;
             }
-            int outIndex = (int) dst - 1;
-            GT_MetaTileEntity_Hatch_InputElemental in = eInputHatches.get(inIndex);
+            int                                    outIndex = (int) dst - 1;
+            GT_MetaTileEntity_Hatch_InputElemental in       = eInputHatches.get(inIndex);
             if (outIndex == -1) {//param==0 -> null the content
                 cleanHatchContentEM_EM(in);
             } else {

@@ -42,23 +42,23 @@ public class GT_MetaTileEntity_EM_crafting extends GT_MetaTileEntity_MultiblockB
             translateToLocal("gt.blockmachines.multimachine.em.crafter.hint.1"),//2 - Elemental Hatches or Molecular Casing
     };
 
-    private static final IStructureDefinition<GT_MetaTileEntity_EM_crafting> STRUCTURE_DEFINITION=
-            IStructureDefinition.<GT_MetaTileEntity_EM_crafting>builder()
+    private static final IStructureDefinition<GT_MetaTileEntity_EM_crafting> STRUCTURE_DEFINITION = IStructureDefinition
+            .<GT_MetaTileEntity_EM_crafting>builder()
             .addShape("main", transpose(new String[][]{
-                    {" AAA ","AAAAA","A   A","BBBBB","BGCGB","BGGGB","BGCGB","BBBBB","A   A","AAAAA"," AAA "},
-                    {"AHHHA","AAAAA"," FFF ","BBBBB","GGGGG","GGGGG","GGGGG","BBBBB"," FFF ","AAAAA","AHHHA"},
-                    {"AH~HA","AAAAA"," FEF ","BBEBB","CGEGC","GGDGG","CGEGC","BBEBB"," FEF ","AAAAA","AHHHA"},
-                    {"AHHHA","AAAAA"," FFF ","BBBBB","GGGGG","GGGGG","GGGGG","BBBBB"," FFF ","AAAAA","AHHHA"},
-                    {" AAA ","AAAAA","A   A","BBBBB","BGCGB","BGGGB","BGCGB","BBBBB","A   A","AAAAA"," AAA "}
+                    {" AAA ", "AAAAA", "A   A", "BBBBB", "BGCGB", "BGGGB", "BGCGB", "BBBBB", "A   A", "AAAAA", " AAA "},
+                    {"AHHHA", "AAAAA", " FFF ", "BBBBB", "GGGGG", "GGGGG", "GGGGG", "BBBBB", " FFF ", "AAAAA", "AHHHA"},
+                    {"AH~HA", "AAAAA", " FEF ", "BBEBB", "CGEGC", "GGDGG", "CGEGC", "BBEBB", " FEF ", "AAAAA", "AHHHA"},
+                    {"AHHHA", "AAAAA", " FFF ", "BBBBB", "GGGGG", "GGGGG", "GGGGG", "BBBBB", " FFF ", "AAAAA", "AHHHA"},
+                    {" AAA ", "AAAAA", "A   A", "BBBBB", "BGCGB", "BGGGB", "BGCGB", "BBBBB", "A   A", "AAAAA", " AAA "}
             }))
             .addElement('A', ofBlock(sBlockCasingsTT, 4))
             .addElement('B', ofBlock(sBlockCasingsTT, 5))
             .addElement('C', ofBlock(sBlockCasingsTT, 6))
             .addElement('D', ofBlock(sBlockCasingsTT, 9))
             .addElement('E', ofBlock(sBlockCasingsTT, 10))
-            .addElement('F', ofHatchAdderOptional(GT_MetaTileEntity_EM_crafting::addElementalToMachineList, textureOffset + 4, 2, sBlockCasingsTT, 4))
             .addElement('G', ofBlock(QuantumGlassBlock.INSTANCE, 0))
             .addElement('H', ofHatchAdderOptional(GT_MetaTileEntity_EM_crafting::addClassicToMachineList, textureOffset, 1, sBlockCasingsTT, 0))
+            .addElement('F', ofHatchAdderOptional(GT_MetaTileEntity_EM_crafting::addElementalToMachineList, textureOffset + 4, 2, sBlockCasingsTT, 4))
             .build();
     //endregion
 

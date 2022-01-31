@@ -59,7 +59,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
 
     protected static final byte FUSE_MODE = 0, COLLIDE_MODE = 1;
     private static double MASS_TO_EU_INSTANT;
-    private static int STARTUP_COST, KEEPUP_COST;
+    private static int    STARTUP_COST, KEEPUP_COST;
 
     protected byte            eTier = 0;
     protected EMInstanceStack stack;
@@ -69,7 +69,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     //endregion
 
     //region collision handlers
-    public static final HashMap<Long, IColliderHandler> FUSE_HANDLERS = new HashMap<>();
+    public static final HashMap<Long, IColliderHandler>            FUSE_HANDLERS           = new HashMap<>();
     public static final HashMap<String, IPrimitiveColliderHandler> PRIMITIVE_FUSE_HANDLERS = new HashMap<>();
 
     static {
@@ -263,7 +263,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     //endregion
 
     //region parameters
-    protected Parameters.Group.ParameterIn mode;
+    protected            Parameters.Group.ParameterIn                   mode;
     private static final IStatusFunction<GT_MetaTileEntity_EM_collider> MODE_STATUS = (base_EM, p) -> {
         if (base_EM.isMaster()) {
             double mode = p.get();
@@ -278,7 +278,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
         }
         return STATUS_OK;
     };
-    private static final INameFunction<GT_MetaTileEntity_EM_collider> MODE_NAME = (base_EM, p) -> {
+    private static final INameFunction<GT_MetaTileEntity_EM_collider>   MODE_NAME   = (base_EM, p) -> {
         if (base_EM.isMaster()) {
             double mode = p.get();
             if (mode == FUSE_MODE) {
@@ -303,23 +303,31 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
             translateToLocal("gt.blockmachines.multimachine.em.collider.hint.4"),//General - Another Controller facing opposite direction
     };
 
-    private static final IStructureDefinition<GT_MetaTileEntity_EM_collider> STRUCTURE_DEFINITION =
-            IStructureDefinition.<GT_MetaTileEntity_EM_collider>builder()
-            .addShape("main", transpose(new String[][]{
-                    {"         A A A         ","        AAAAAAA        ","      BBBBIIIBBBB      ","     BAAAAAAAAAAAB     ","    BAAAA     AAAAB    ","   BAAA         AAAB   ","  BAAA           AAAB  ","  BAA             AAB  "," ABAA             AABA ","AABA               ABAA"," AIA               AIA ","AAIA               AIAA"," AIA               AIA ","AABA               ABAA"," ABAA             AABA ","  BAA             AAB  ","  BAAA           AAAB  ","   BAAA         AAAB   ","    BAAAABJJJBAAAAB    ","     BAHHBBBBBHHAB     ","      BBBBGFGBBBB      "},
-                    {"         AAAAA         ","       AADDDDDAA       ","      CDDEEEEEDDC      ","     CDEEDDDDDEEDC     ","    CDEDD     DDEDC    ","   CDED         DEDC   ","  CDED           DEDC  "," ADED             DEDA "," ADED             DEDA ","ADED               DEDA","ADED               DEDA","ADED               DEDA","ADED               DEDA","ADED               DEDA"," ADED             DEDA "," ADED             DEDA ","  CDED           DEDC  ","   CDED         DEDC   ","    CDEDDBJ~JBDDEDC    ","     CDEEDDDDDEEDC     ","      CDDEEEEEDDC      "},
-                    {"         A A A         ","        AAAAAAA        ","      BBBBIIIBBBB      ","     BAAAAAAAAAAAB     ","    BAAAA     AAAAB    ","   BAAA         AAAB   ","  BAAA           AAAB  ","  BAA             AAB  "," ABAA             AABA ","AABA               ABAA"," AIA               AIA ","AAIA               AIAA"," AIA               AIA ","AABA               ABAA"," ABAA             AABA ","  BAA             AAB  ","  BAAA           AAAB  ","   BAAA         AAAB   ","    BAAAABJJJBAAAAB    ","     BAHHBBBBBHHAB     ","      BBBBGFGBBBB      "}
+    private static final IStructureDefinition<GT_MetaTileEntity_EM_collider> STRUCTURE_DEFINITION = IStructureDefinition
+            .<GT_MetaTileEntity_EM_collider>builder()
+            .addShape("tier1", transpose(new String[][]{
+                    {"         A A A         ", "        AAAAAAA        ", "      bbbbIIIbbbb      ", "     bAAAAAAAAAAAb     ", "    bAAAA     AAAAb    ", "   bAAA         AAAb   ", "  bAAA           AAAb  ", "  bAA             AAb  ", " AbAA             AAbA ", "AAbA               AbAA", " AIA               AIA ", "AAIA               AIAA", " AIA               AIA ", "AAbA               AbAA", " AbAA             AAbA ", "  bAA             AAb  ", "  bAAA           AAAb  ", "   bAAA         AAAb   ", "    bAAAAbJJJbAAAAb    ", "     bAHHbbbbbHHAb     ", "      bbbbGFGbbbb      "},
+                    {"         AAAAA         ", "       AADDDDDAA       ", "      cDDeeeeeDDc      ", "     cDeeDDDDDeeDc     ", "    cDeDD     DDeDc    ", "   cDeD         DeDc   ", "  cDeD           DeDc  ", " ADeD             DeDA ", " ADeD             DeDA ", "ADeD               DeDA", "ADeD               DeDA", "ADeD               DeDA", "ADeD               DeDA", "ADeD               DeDA", " ADeD             DeDA ", " ADeD             DeDA ", "  cDeD           DeDc  ", "   cDeD         DeDc   ", "    cDeDDbJ~JbDDeDc    ", "     cDeeDDDDDeeDc     ", "      cDDeeeeeDDc      "},
+                    {"         A A A         ", "        AAAAAAA        ", "      bbbbIIIbbbb      ", "     bAAAAAAAAAAAb     ", "    bAAAA     AAAAb    ", "   bAAA         AAAb   ", "  bAAA           AAAb  ", "  bAA             AAb  ", " AbAA             AAbA ", "AAbA               AbAA", " AIA               AIA ", "AAIA               AIAA", " AIA               AIA ", "AAbA               AbAA", " AbAA             AAbA ", "  bAA             AAb  ", "  bAAA           AAAb  ", "   bAAA         AAAb   ", "    bAAAAbJJJbAAAAb    ", "     bAHHbbbbbHHAb     ", "      bbbbGFGbbbb      "}
+            }))
+            .addShape("tier2", transpose(new String[][]{
+                    {"         A A A         ", "        AAAAAAA        ", "      BBBBIIIBBBB      ", "     BAAAAAAAAAAAB     ", "    BAAAA     AAAAB    ", "   BAAA         AAAB   ", "  BAAA           AAAB  ", "  BAA             AAB  ", " ABAA             AABA ", "AABA               ABAA", " AIA               AIA ", "AAIA               AIAA", " AIA               AIA ", "AABA               ABAA", " ABAA             AABA ", "  BAA             AAB  ", "  BAAA           AAAB  ", "   BAAA         AAAB   ", "    BAAAABJJJBAAAAB    ", "     BAHHBBBBBHHAB     ", "      BBBBGFGBBBB      "},
+                    {"         AAAAA         ", "       AADDDDDAA       ", "      CDDEEEEEDDC      ", "     CDEEDDDDDEEDC     ", "    CDEDD     DDEDC    ", "   CDED         DEDC   ", "  CDED           DEDC  ", " ADED             DEDA ", " ADED             DEDA ", "ADED               DEDA", "ADED               DEDA", "ADED               DEDA", "ADED               DEDA", "ADED               DEDA", " ADED             DEDA ", " ADED             DEDA ", "  CDED           DEDC  ", "   CDED         DEDC   ", "    CDEDDBJ~JBDDEDC    ", "     CDEEDDDDDEEDC     ", "      CDDEEEEEDDC      "},
+                    {"         A A A         ", "        AAAAAAA        ", "      BBBBIIIBBBB      ", "     BAAAAAAAAAAAB     ", "    BAAAA     AAAAB    ", "   BAAA         AAAB   ", "  BAAA           AAAB  ", "  BAA             AAB  ", " ABAA             AABA ", "AABA               ABAA", " AIA               AIA ", "AAIA               AIAA", " AIA               AIA ", "AABA               ABAA", " ABAA             AABA ", "  BAA             AAB  ", "  BAAA           AAAB  ", "   BAAA         AAAB   ", "    BAAAABJJJBAAAAB    ", "     BAHHBBBBBHHAB     ", "      BBBBGFGBBBB      "}
             }))
             .addElement('A', ofBlock(sBlockCasingsTT, 4))
-            .addElement('B', defer(t -> (int) t.eTier, (t, item) -> 2 - (item.stackSize & 1), error(), ofBlock(sBlockCasingsTT, 4), ofBlock(sBlockCasingsTT, 5)))
-            .addElement('C', defer(t -> (int) t.eTier, (t, item) -> 2 - (item.stackSize & 1), error(), ofBlock(sBlockCasingsTT, 4), ofBlock(sBlockCasingsTT, 6)))
+            .addElement('b', ofBlock(sBlockCasingsTT, 4))
+            .addElement('B', ofBlock(sBlockCasingsTT, 5))
+            .addElement('c', ofBlock(sBlockCasingsTT, 4))
+            .addElement('C', ofBlock(sBlockCasingsTT, 6))
             .addElement('D', ofBlock(sBlockCasingsTT, 7))
-            .addElement('E', defer(t -> (int) t.eTier, (t, item) -> 2 - (item.stackSize & 1), error(), ofBlock(sBlockCasingsTT, 8), ofBlock(sBlockCasingsTT, 9)))
-            .addElement('F', ofHatchAdderOptional(GT_MetaTileEntity_EM_collider::addElementalOutputToMachineList, textureOffset + 4, 3, sBlockCasingsTT, 4))
-            .addElement('G', ofHatchAdderOptional(GT_MetaTileEntity_EM_collider::addElementalMufflerToMachineList, textureOffset + 4, 4, sBlockCasingsTT, 4))
-            .addElement('H', ofHatchAdderOptional(GT_MetaTileEntity_EM_collider::addElementalInputToMachineList, textureOffset + 4, 2, sBlockCasingsTT, 4))
+            .addElement('e', ofBlock(sBlockCasingsTT, 8))
+            .addElement('E', ofBlock(sBlockCasingsTT, 9))
             .addElement('I', ofBlock(QuantumGlassBlock.INSTANCE, 0))
             .addElement('J', ofHatchAdderOptional(GT_MetaTileEntity_EM_collider::addClassicToMachineList, textureOffset, 1, sBlockCasingsTT, 0))
+            .addElement('H', ofHatchAdderOptional(GT_MetaTileEntity_EM_collider::addElementalInputToMachineList, textureOffset + 4, 2, sBlockCasingsTT, 4))
+            .addElement('F', ofHatchAdderOptional(GT_MetaTileEntity_EM_collider::addElementalOutputToMachineList, textureOffset + 4, 3, sBlockCasingsTT, 4))
+            .addElement('G', ofHatchAdderOptional(GT_MetaTileEntity_EM_collider::addElementalMufflerToMachineList, textureOffset + 4, 4, sBlockCasingsTT, 4))
             .build();
 
     @Override
@@ -338,7 +346,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     }
 
     public static void setValues(int heliumPlasmaValue) {
-        double MASS_TO_EU_PARTIAL = heliumPlasmaValue / (1.75893000478707E07* EM_COUNT_PER_MATERIAL_AMOUNT);//mass diff
+        double MASS_TO_EU_PARTIAL = heliumPlasmaValue / (1.75893000478707E07 * EM_COUNT_PER_MATERIAL_AMOUNT);//mass diff
         MASS_TO_EU_INSTANT = MASS_TO_EU_PARTIAL * 20;
         STARTUP_COST = -heliumPlasmaValue * 10000;
         KEEPUP_COST = -heliumPlasmaValue;
@@ -350,7 +358,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
                     partner.stack.getDefinition().fusionMakesEnergy(partner.stack.getEnergy());
 
             EMInstanceStack stack2  = partner.stack;
-            double          preMass = add(stack2.getMass(),stack.getMass());
+            double          preMass = add(stack2.getMass(), stack.getMass());
             //System.out.println("preMass = " + preMass);
 
             EMInstanceStackMap map = new EMInstanceStackMap();
@@ -414,10 +422,10 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     }
 
     protected GT_MetaTileEntity_EM_collider getPartner() {
-        IGregTechTileEntity iGregTechTileEntity = getBaseMetaTileEntity();
-        int xDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetX * 4;
-        int yDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetY * 4;
-        int zDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetZ * 4;
+        IGregTechTileEntity iGregTechTileEntity    = getBaseMetaTileEntity();
+        int                 xDir                   = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetX * 4;
+        int                 yDir                   = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetY * 4;
+        int                 zDir                   = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetZ * 4;
         IGregTechTileEntity gregTechBaseTileEntity = iGregTechTileEntity.getIGregTechTileEntityOffset(xDir, yDir, zDir);
         if (gregTechBaseTileEntity != null) {
             IMetaTileEntity gregTechMetaTileEntity = gregTechBaseTileEntity.getMetaTileEntity();
@@ -477,7 +485,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
             eTier = 0;
             return false;
         }
-        if (structureCheck_EM("main", 11, 1, 18)) {
+        if (structureCheck_EM("tier"+eTier, 11, 1, 18)) {
             return true;
         }
         eTier = 0;
@@ -628,7 +636,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
         eTier = aNBT.getByte("eTier");//collider tier
         started = aNBT.getBoolean("eStarted");
         if (aNBT.hasKey("eStack")) {
-            stack = EMInstanceStack.fromNBT(TecTech.definitionsRegistry,aNBT.getCompoundTag("eStack"));
+            stack = EMInstanceStack.fromNBT(TecTech.definitionsRegistry, aNBT.getCompoundTag("eStack"));
         }
         plasmaEnergy = aNBT.getLong("ePlasmaEnergy");
     }
@@ -663,11 +671,11 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    public void construct(ItemStack stackSize, boolean hintsOnly) {
+    public void construct(ItemStack trigger, boolean hintsOnly) {
         IGregTechTileEntity iGregTechTileEntity = getBaseMetaTileEntity();
-        int xDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetX * 4;
-        int yDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetY * 4;
-        int zDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetZ * 4;
+        int                 xDir                = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetX * 4;
+        int                 yDir                = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetY * 4;
+        int                 zDir                = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetZ * 4;
         if (hintsOnly) {
             StructureLibAPI.hintParticle(iGregTechTileEntity.getWorld(),
                     iGregTechTileEntity.getXCoord() + xDir,
@@ -675,7 +683,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
                     iGregTechTileEntity.getZCoord() + zDir,
                     StructureLibAPI.getBlockHint(), 12);
         }
-        structureBuild_EM("main", 11, 1, 18, stackSize, hintsOnly);
+        structureBuild_EM("tier"+((trigger.stackSize%2)+1), 11, 1, 18, trigger, hintsOnly);
     }
 
     @Override

@@ -49,19 +49,19 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
     //region structure
     //use multi A energy inputs, use less power the longer it runs
-    private static final IStructureDefinition<GT_MetaTileEntity_EM_quantizer> STRUCTURE_DEFINITION =
-            IStructureDefinition.<GT_MetaTileEntity_EM_quantizer>builder()
+    private static final IStructureDefinition<GT_MetaTileEntity_EM_quantizer> STRUCTURE_DEFINITION = IStructureDefinition
+            .<GT_MetaTileEntity_EM_quantizer>builder()
             .addShape("main", transpose(new String[][]{
-                    {"CCC","BAB","EEE","DBD"},
-                    {"C~C","ABA","EBE","BFB"},
-                    {"CCC","BAB","EEE","DBD"}
+                    {"CCC", "BAB", "EEE", "DBD"},
+                    {"C~C", "ABA", "EBE", "BFB"},
+                    {"CCC", "BAB", "EEE", "DBD"}
             }))
             .addElement('A', ofBlock(sBlockCasingsTT, 0))
             .addElement('B', ofBlock(sBlockCasingsTT, 4))
-            .addElement('C', ofHatchAdderOptional(GT_MetaTileEntity_EM_quantizer::addClassicToMachineList, textureOffset, 1, sBlockCasingsTT, 0))
             .addElement('D', ofBlock(QuantumGlassBlock.INSTANCE, 0))
+            .addElement('C', ofHatchAdderOptional(GT_MetaTileEntity_EM_quantizer::addClassicToMachineList, textureOffset, 1, sBlockCasingsTT, 0))
+            .addElement('F', ofHatchAdder(GT_MetaTileEntity_EM_quantizer::addElementalOutputToMachineList, textureOffset + 4, 2))
             .addElement('E', ofHatchAdderOptional(GT_MetaTileEntity_EM_quantizer::addElementalMufflerToMachineList, textureOffset + 4, 3, sBlockCasingsTT, 4))
-            .addElement('F', ofHatchAdder(GT_MetaTileEntity_EM_quantizer::addElementalOutputToMachineList,textureOffset + 4, 2))
             .build();
 
     private static final String[] description = new String[]{
@@ -94,7 +94,7 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
     public boolean checkRecipe_EM(ItemStack itemStack) {//TODO implement instance quantization
         if (GregTech_API.sPostloadFinished) {
             ArrayList<ItemStack> storedInputs = getStoredInputs();
-            ItemStack[] inI = storedInputs.toArray(nullItem);
+            ItemStack[]          inI          = storedInputs.toArray(nullItem);
             if (inI.length > 0) {
                 for (ItemStack is : inI) {
                     //ITEM STACK quantization
@@ -133,7 +133,7 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
                 }
             }
             ArrayList<FluidStack> storedFluids = getStoredFluids();
-            FluidStack[] inF = storedFluids.toArray(nullFluid);
+            FluidStack[]          inF          = storedFluids.toArray(nullFluid);
             if (inF.length > 0) {
                 for (FluidStack fs : inF) {
                     EMFluidQuantizationInfo aFQI = TecTech.transformationInfo.getFluidQuantization().get(fs.getFluid().getID());
@@ -155,7 +155,7 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
     private void startRecipe(IEMStack into) {
         mMaxProgresstime = 20;
         mEfficiencyIncrease = 10000;
-        double mass = into.getMass();
+        double mass   = into.getMass();
         double euMult = Math.abs(mass / refMass);
         eAmpereFlow = (int) Math.ceil(Math.sqrt(Math.sqrt(euMult)));
         if (mass > refUnstableMass || into.getDefinition().getRawTimeSpan(DEFAULT_ENERGY_LEVEL) < STABLE_RAW_LIFE_TIME) {

@@ -43,20 +43,20 @@ public class GT_MetaTileEntity_EM_dequantizer extends GT_MetaTileEntity_Multiblo
     //region structure
     //use multi A energy inputs, use less power the longer it runs
 
-    private static final IStructureDefinition<GT_MetaTileEntity_EM_dequantizer> STRUCTURE_DEFINITION =
-            IStructureDefinition.<GT_MetaTileEntity_EM_dequantizer>builder()
-                    .addShape("main", transpose(new String[][]{
-                            {"CCC", "ABA", "EEE", "BDB"},
-                            {"C~C", "BBB", "EBE", "DFD"},
-                            {"CCC", "ABA", "EEE", "BDB"}
-                    }))
-                    .addElement('A', ofBlock(sBlockCasingsTT, 0))
-                    .addElement('B', ofBlock(sBlockCasingsTT, 4))
-                    .addElement('D', ofBlock(QuantumGlassBlock.INSTANCE, 0))
-                    .addElement('C', ofHatchAdderOptional(GT_MetaTileEntity_EM_dequantizer::addClassicToMachineList, textureOffset, 1, sBlockCasingsTT, 0))
-                    .addElement('F', ofHatchAdder(GT_MetaTileEntity_EM_dequantizer::addElementalInputToMachineList, textureOffset + 4, 2))
-                    .addElement('E', ofHatchAdderOptional(GT_MetaTileEntity_EM_dequantizer::addElementalMufflerToMachineList, textureOffset + 4, 3, sBlockCasingsTT, 4))
-                    .build();
+    private static final IStructureDefinition<GT_MetaTileEntity_EM_dequantizer> STRUCTURE_DEFINITION = IStructureDefinition
+            .<GT_MetaTileEntity_EM_dequantizer>builder()
+            .addShape("main", transpose(new String[][]{
+                    {"CCC", "ABA", "EEE", "BDB"},
+                    {"C~C", "BBB", "EBE", "DFD"},
+                    {"CCC", "ABA", "EEE", "BDB"}
+            }))
+            .addElement('A', ofBlock(sBlockCasingsTT, 0))
+            .addElement('B', ofBlock(sBlockCasingsTT, 4))
+            .addElement('D', ofBlock(QuantumGlassBlock.INSTANCE, 0))
+            .addElement('C', ofHatchAdderOptional(GT_MetaTileEntity_EM_dequantizer::addClassicToMachineList, textureOffset, 1, sBlockCasingsTT, 0))
+            .addElement('F', ofHatchAdder(GT_MetaTileEntity_EM_dequantizer::addElementalInputToMachineList, textureOffset + 4, 2))
+            .addElement('E', ofHatchAdderOptional(GT_MetaTileEntity_EM_dequantizer::addElementalMufflerToMachineList, textureOffset + 4, 3, sBlockCasingsTT, 4))
+            .build();
 
     private static final String[] description = new String[]{
             EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",

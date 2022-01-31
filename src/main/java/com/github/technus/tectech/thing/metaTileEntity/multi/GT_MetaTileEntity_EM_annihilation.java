@@ -29,9 +29,9 @@ import static net.minecraft.util.StatCollector.translateToLocal;
  */
 public class GT_MetaTileEntity_EM_annihilation extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
     //region variables
-    private static Textures.BlockIcons.CustomIcon ScreenOFF;
-    private static Textures.BlockIcons.CustomIcon ScreenON;
-    private static final String[] description = new String[]{
+    private static       Textures.BlockIcons.CustomIcon ScreenOFF;
+    private static       Textures.BlockIcons.CustomIcon ScreenON;
+    private static final String[]                       description = new String[]{
             EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
             translateToLocal("gt.blockmachines.multimachine.em.annihilation.hint.0"),//1 - Classic Hatches or High Power Casing
             translateToLocal("gt.blockmachines.multimachine.em.annihilation.hint.1"),//2 - Elemental Hatches or Molecular Casing
@@ -39,30 +39,30 @@ public class GT_MetaTileEntity_EM_annihilation extends GT_MetaTileEntity_Multibl
     //endregion
 
     //region structure
-    private static final IStructureDefinition<GT_MetaTileEntity_EM_annihilation> STRUCTURE_DEFINITION =
-            IStructureDefinition.<GT_MetaTileEntity_EM_annihilation>builder()
-                    .addShape("main", transpose(new String[][]{
-                            {"           ","   AB BA   ","   AB BA   ","    BBB    "," A   A   A ","AA   F   AA"," A   A   A ","    BBB    ","   AB BA   ","   AB BA   ","           "},
-                            {"           ","   AB BA   "," EECEEECEE "," EGGEEEGGE ","ACGGGEGGGCA","AEGGGDGGGEA","ACGGGEGGGCA"," EGGEEEGGE "," EECEEECEE ","   AB BA   ","           "},
-                            {"           ","    B B    "," EGGEGEGGE "," G       G "," G       G "," G       G "," G       G "," G       G "," EGGEGEGGE ","    B B    ","           "},
-                            {"    AAA    ","AA  BAB  AA","ACGGEGEGGCA"," G       G "," G       G "," G       G "," G       G "," G       G ","ACGGEGEGGCA","AA  BAB  AA","    AAA    "},
-                            {"   AHHHA   ","BBBBBBBBBBB","BEEEDEDEEEB","BE       EB"," G       G "," G       G "," G       G ","BE       EB","BEEEDEDEEEB","BBBBBBBBBBB","   AHHHA   "},
-                            {"   AH~HA   ","   ABBBA   "," EGGEEEGGE ","BE       EB","AE       EA","FD       DF","AE       EA","BE       EB"," EGGEEEGGE ","   ABBBA   ","   AHHHA   "},
-                            {"   AHHHA   ","BBBBBBBBBBB","BEEEDEDEEEB","BE       EB"," G       G "," G       G "," G       G ","BE       EB","BEEEDEDEEEB","BBBBBBBBBBB","   AHHHA   "},
-                            {"    AAA    ","AA  BAB  AA","ACGGEGEGGCA"," G       G "," G       G "," G       G "," G       G "," G       G ","ACGGEGEGGCA","AA  BAB  AA","    AAA    "},
-                            {"           ","    B B    "," EGGEGEGGE "," G       G "," G       G "," G       G "," G       G "," G       G "," EGGEGEGGE ","    B B    ","           "},
-                            {"           ","   AB BA   "," EECEEECEE "," EGGEEEGGE ","ACGGGEGGGCA","AEGGGDGGGEA","ACGGGEGGGCA"," EGGEEEGGE "," EECEEECEE ","   AB BA   ","           "},
-                            {"           ","   AB BA   ","   AB BA   ","    BBB    "," A   A   A ","AA   F   AA"," A   A   A ","    BBB    ","   AB BA   ","   AB BA   ","           "}
-                    }))
-                    .addElement('A', ofBlock(sBlockCasingsTT, 4))
-                    .addElement('B', ofBlock(sBlockCasingsTT, 5))
-                    .addElement('C', ofBlock(sBlockCasingsTT, 6))
-                    .addElement('D', ofBlock(sBlockCasingsTT, 10))
-                    .addElement('E', ofBlock(sBlockCasingsTT, 12))
-                    .addElement('F', ofHatchAdderOptional(GT_MetaTileEntity_EM_annihilation::addElementalToMachineList, textureOffset + 4,2, sBlockCasingsTT, 4))
-                    .addElement('G', ofBlock(QuantumGlassBlock.INSTANCE, 0))
-                    .addElement('H', ofHatchAdderOptional(GT_MetaTileEntity_EM_annihilation::addClassicToMachineList, textureOffset, 1, sBlockCasingsTT, 0))
-                    .build();
+    private static final IStructureDefinition<GT_MetaTileEntity_EM_annihilation> STRUCTURE_DEFINITION = IStructureDefinition
+            .<GT_MetaTileEntity_EM_annihilation>builder()
+            .addShape("main", transpose(new String[][]{
+                    {"           ", "   AB BA   ", "   AB BA   ", "    BBB    ", " A   A   A ", "AA   F   AA", " A   A   A ", "    BBB    ", "   AB BA   ", "   AB BA   ", "           "},
+                    {"           ", "   AB BA   ", " EECEEECEE ", " EGGEEEGGE ", "ACGGGEGGGCA", "AEGGGDGGGEA", "ACGGGEGGGCA", " EGGEEEGGE ", " EECEEECEE ", "   AB BA   ", "           "},
+                    {"           ", "    B B    ", " EGGEGEGGE ", " G       G ", " G       G ", " G       G ", " G       G ", " G       G ", " EGGEGEGGE ", "    B B    ", "           "},
+                    {"    AAA    ", "AA  BAB  AA", "ACGGEGEGGCA", " G       G ", " G       G ", " G       G ", " G       G ", " G       G ", "ACGGEGEGGCA", "AA  BAB  AA", "    AAA    "},
+                    {"   AHHHA   ", "BBBBBBBBBBB", "BEEEDEDEEEB", "BE       EB", " G       G ", " G       G ", " G       G ", "BE       EB", "BEEEDEDEEEB", "BBBBBBBBBBB", "   AHHHA   "},
+                    {"   AH~HA   ", "   ABBBA   ", " EGGEEEGGE ", "BE       EB", "AE       EA", "FD       DF", "AE       EA", "BE       EB", " EGGEEEGGE ", "   ABBBA   ", "   AHHHA   "},
+                    {"   AHHHA   ", "BBBBBBBBBBB", "BEEEDEDEEEB", "BE       EB", " G       G ", " G       G ", " G       G ", "BE       EB", "BEEEDEDEEEB", "BBBBBBBBBBB", "   AHHHA   "},
+                    {"    AAA    ", "AA  BAB  AA", "ACGGEGEGGCA", " G       G ", " G       G ", " G       G ", " G       G ", " G       G ", "ACGGEGEGGCA", "AA  BAB  AA", "    AAA    "},
+                    {"           ", "    B B    ", " EGGEGEGGE ", " G       G ", " G       G ", " G       G ", " G       G ", " G       G ", " EGGEGEGGE ", "    B B    ", "           "},
+                    {"           ", "   AB BA   ", " EECEEECEE ", " EGGEEEGGE ", "ACGGGEGGGCA", "AEGGGDGGGEA", "ACGGGEGGGCA", " EGGEEEGGE ", " EECEEECEE ", "   AB BA   ", "           "},
+                    {"           ", "   AB BA   ", "   AB BA   ", "    BBB    ", " A   A   A ", "AA   F   AA", " A   A   A ", "    BBB    ", "   AB BA   ", "   AB BA   ", "           "}
+            }))
+            .addElement('A', ofBlock(sBlockCasingsTT, 4))
+            .addElement('B', ofBlock(sBlockCasingsTT, 5))
+            .addElement('C', ofBlock(sBlockCasingsTT, 6))
+            .addElement('D', ofBlock(sBlockCasingsTT, 10))
+            .addElement('E', ofBlock(sBlockCasingsTT, 12))
+            .addElement('G', ofBlock(QuantumGlassBlock.INSTANCE, 0))
+            .addElement('H', ofHatchAdderOptional(GT_MetaTileEntity_EM_annihilation::addClassicToMachineList, textureOffset, 1, sBlockCasingsTT, 0))
+            .addElement('F', ofHatchAdderOptional(GT_MetaTileEntity_EM_annihilation::addElementalToMachineList, textureOffset + 4, 2, sBlockCasingsTT, 4))
+            .build();
     //endregion
 
     public GT_MetaTileEntity_EM_annihilation(int aID, String aName, String aNameRegional) {

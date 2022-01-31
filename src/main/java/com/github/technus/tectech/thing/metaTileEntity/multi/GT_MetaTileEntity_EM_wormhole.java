@@ -40,25 +40,25 @@ public class GT_MetaTileEntity_EM_wormhole extends GT_MetaTileEntity_MultiblockB
             translateToLocal("gt.blockmachines.multimachine.em.wormhole.hint.1"),//2 - Elemental Hatches or Molecular Casing
     };
 
-    private static final IStructureDefinition<GT_MetaTileEntity_EM_wormhole> STRUCTURE_DEFINITION =
-            IStructureDefinition.<GT_MetaTileEntity_EM_wormhole>builder()
+    private static final IStructureDefinition<GT_MetaTileEntity_EM_wormhole> STRUCTURE_DEFINITION = IStructureDefinition
+            .<GT_MetaTileEntity_EM_wormhole>builder()
             .addShape("main", transpose(new String[][]{
-                    {"         ","         ","         ","         ","         ","    D    ","  DDDDD  ","  DGGGD  ","  DGGGD  ","  DGGGD  ","  DDDDD  "},
-                    {"         ","         ","         ","    D    ","    D    ","    D    "," DDAAADD "," EABBBAE "," EABBBAE "," EABBBAE "," DDAAADD "},
-                    {"         ","    D    ","    D    ","    D    ","         ","         ","DDA   ADD","DABFFFBAD","DABCCCBAD","DABFFFBAD","DDA   ADD"},
-                    {"   EEE   ","   DDD   ","   F F   ","         ","         ","         ","DA     AD","GBF   FBG","GBC   CBG","GBF   FBG","DA     AD"},
-                    {"   E~E   ","  DDBDD  ","  D   D  "," DD   DD "," D     D ","DD     DD","DA     AD","GBF   FBG","GBC   CBG","GBF   FBG","DA     AD"},
-                    {"   EEE   ","   DDD   ","   F F   ","         ","         ","         ","DA     AD","GBF   FBG","GBC   CBG","GBF   FBG","DA     AD"},
-                    {"         ","    D    ","    D    ","    D    ","         ","         ","DDA   ADD","DABFFFBAD","DABCCCBAD","DABFFFBAD","DDA   ADD"},
-                    {"         ","         ","         ","    D    ","    D    ","    D    "," DDAAADD "," EABBBAE "," EABBBAE "," EABBBAE "," DDAAADD "},
-                    {"         ","         ","         ","         ","         ","    D    ","  DDDDD  ","  DGGGD  ","  DGGGD  ","  DGGGD  ","  DDDDD  "}
+                    {"         ", "         ", "         ", "         ", "         ", "    D    ", "  DDDDD  ", "  DGGGD  ", "  DGGGD  ", "  DGGGD  ", "  DDDDD  "},
+                    {"         ", "         ", "         ", "    D    ", "    D    ", "    D    ", " DDAAADD ", " EABBBAE ", " EABBBAE ", " EABBBAE ", " DDAAADD "},
+                    {"         ", "    D    ", "    D    ", "    D    ", "         ", "         ", "DDA   ADD", "DABFFFBAD", "DABCCCBAD", "DABFFFBAD", "DDA   ADD"},
+                    {"   EEE   ", "   DDD   ", "   F F   ", "         ", "         ", "         ", "DA     AD", "GBF   FBG", "GBC   CBG", "GBF   FBG", "DA     AD"},
+                    {"   E~E   ", "  DDBDD  ", "  D   D  ", " DD   DD ", " D     D ", "DD     DD", "DA     AD", "GBF   FBG", "GBC   CBG", "GBF   FBG", "DA     AD"},
+                    {"   EEE   ", "   DDD   ", "   F F   ", "         ", "         ", "         ", "DA     AD", "GBF   FBG", "GBC   CBG", "GBF   FBG", "DA     AD"},
+                    {"         ", "    D    ", "    D    ", "    D    ", "         ", "         ", "DDA   ADD", "DABFFFBAD", "DABCCCBAD", "DABFFFBAD", "DDA   ADD"},
+                    {"         ", "         ", "         ", "    D    ", "    D    ", "    D    ", " DDAAADD ", " EABBBAE ", " EABBBAE ", " EABBBAE ", " DDAAADD "},
+                    {"         ", "         ", "         ", "         ", "         ", "    D    ", "  DDDDD  ", "  DGGGD  ", "  DGGGD  ", "  DGGGD  ", "  DDDDD  "}
             }))
             .addElement('A', ofBlock(sBlockCasingsTT, 5))
             .addElement('B', ofBlock(sBlockCasingsTT, 10))
             .addElement('C', ofBlock(sBlockCasingsTT, 11))
             .addElement('D', ofBlock(sBlockCasingsTT, 12))
-            .addElement('E', ofHatchAdderOptional(GT_MetaTileEntity_EM_wormhole::addClassicToMachineList, textureOffset, 1, sBlockCasingsTT, 0))
             .addElement('F', ofBlock(QuantumGlassBlock.INSTANCE, 0))
+            .addElement('E', ofHatchAdderOptional(GT_MetaTileEntity_EM_wormhole::addClassicToMachineList, textureOffset, 1, sBlockCasingsTT, 0))
             .addElement('G', ofHatchAdderOptional(GT_MetaTileEntity_EM_wormhole::addElementalToMachineList, textureOffset + 4, 2, sBlockCasingsTT, 4))
             .build();
     //endregion
