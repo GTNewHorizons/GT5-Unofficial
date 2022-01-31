@@ -11,7 +11,6 @@ import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.util.Util;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -59,7 +58,7 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     };
 
     private static final IStructureDefinition<GT_MetaTileEntity_EM_computer> STRUCTURE_DEFINITION =
-            StructureDefinition.<GT_MetaTileEntity_EM_computer>builder()
+            IStructureDefinition.<GT_MetaTileEntity_EM_computer>builder()
             .addShape("front", transpose(new String[][]{
                     {" AA"},
                     {" AA"},
@@ -384,16 +383,16 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         IGregTechTileEntity igt = getBaseMetaTileEntity();
-        structureBuild_EM("front", 1, 2, 0, hintsOnly, stackSize);
-        structureBuild_EM("cap", 1, 2, -1, hintsOnly, stackSize);
+        structureBuild_EM("front", 1, 2, 0, stackSize, hintsOnly);
+        structureBuild_EM("cap", 1, 2, -1, stackSize, hintsOnly);
 
         byte offset = -2;
         for (int rackSlices = Math.min(stackSize.stackSize, 12); rackSlices > 0; rackSlices--) {
-            structureBuild_EM("slice", 1 , 2, offset--, hintsOnly, stackSize);
+            structureBuild_EM("slice", 1 , 2, offset--, stackSize, hintsOnly);
         }
 
-        structureBuild_EM("cap", 1, 2, offset--, hintsOnly, stackSize);
-        structureBuild_EM("back", 1, 2, offset, hintsOnly, stackSize);
+        structureBuild_EM("cap", 1, 2, offset--, stackSize, hintsOnly);
+        structureBuild_EM("back", 1, 2, offset, stackSize, hintsOnly);
     }
 
     @Override

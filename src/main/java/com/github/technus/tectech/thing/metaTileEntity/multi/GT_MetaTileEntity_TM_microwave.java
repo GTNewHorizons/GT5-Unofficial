@@ -6,7 +6,6 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_Rend
 import com.github.technus.tectech.util.CommonValues;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -52,7 +51,7 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
     };
 
     private static final IStructureDefinition<GT_MetaTileEntity_TM_microwave> STRUCTURE_DEFINITION =
-            StructureDefinition.<GT_MetaTileEntity_TM_microwave>builder()
+            IStructureDefinition.<GT_MetaTileEntity_TM_microwave>builder()
             .addShape("main", transpose(new String[][]{
                     {"AAAAA","A---A","A---A","A---A","AAAAA"},
                     {"AAAAA","A---A","A---A","A---A","AAAAA"},
@@ -247,7 +246,7 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM("main", 2, 2, 0, hintsOnly, stackSize);
+        structureBuild_EM("main", 2, 2, 0, stackSize, hintsOnly);
     }
 
     @Override

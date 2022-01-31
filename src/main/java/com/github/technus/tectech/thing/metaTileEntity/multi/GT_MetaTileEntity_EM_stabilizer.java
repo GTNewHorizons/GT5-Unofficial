@@ -5,7 +5,6 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEnt
 import com.github.technus.tectech.util.CommonValues;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.item.ItemStack;
@@ -30,7 +29,7 @@ public class GT_MetaTileEntity_EM_stabilizer extends GT_MetaTileEntity_Multibloc
     };
 
     private static final IStructureDefinition<GT_MetaTileEntity_EM_stabilizer> STRUCTURE_DEFINITION =
-            StructureDefinition.<GT_MetaTileEntity_EM_stabilizer>builder()
+            IStructureDefinition.<GT_MetaTileEntity_EM_stabilizer>builder()
             .addShape("main", transpose(new String[][]{
                     {" AFA ","BCBCB","FBGBF","BCBCB"," AFA "},
                     {"AEEEA","CBBBC","BBDBB","CBBBC","AEEEA"},
@@ -77,7 +76,7 @@ public class GT_MetaTileEntity_EM_stabilizer extends GT_MetaTileEntity_Multibloc
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM("main", 2, 2, 0, hintsOnly, stackSize);
+        structureBuild_EM("main", 2, 2, 0, stackSize, hintsOnly);
     }
 
     @Override

@@ -9,7 +9,6 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
 import com.github.technus.tectech.util.CommonValues;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Utility;
@@ -37,7 +36,7 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
     };
 
     private static final IStructureDefinition<GT_MetaTileEntity_EM_junction> STRUCTURE_DEFINITION =
-            StructureDefinition.<GT_MetaTileEntity_EM_junction>builder()
+            IStructureDefinition.<GT_MetaTileEntity_EM_junction>builder()
             .addShape("main", new String[][]{
                     {"CCC", "C~C", "CCC"},
                     {"AAA", "AAA", "AAA"},
@@ -177,9 +176,9 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         if ((stackSize.stackSize & 1) == 1) {
-            structureBuild_EM("main", 1, 1, 0, hintsOnly, stackSize);
+            structureBuild_EM("main", 1, 1, 0, stackSize, hintsOnly);
         } else {
-            structureBuild_EM("mainBig", 2, 2, 0, hintsOnly, stackSize);
+            structureBuild_EM("mainBig", 2, 2, 0, stackSize, hintsOnly);
         }
     }
 

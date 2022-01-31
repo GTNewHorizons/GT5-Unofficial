@@ -20,7 +20,6 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.MultimapBuilder;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -103,11 +102,10 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     private static final String[] description = new String[]{
             EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
             translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.hint.0"),//1 - Classic Hatches, Capacitor Hatches or Tesla Base Casing
-            translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.hint.1"),//2 - Titanium Frames
     };
 
     private static final IStructureDefinition<GT_MetaTileEntity_TM_teslaCoil> STRUCTURE_DEFINITION =
-            StructureDefinition.<GT_MetaTileEntity_TM_teslaCoil>builder()
+            IStructureDefinition.<GT_MetaTileEntity_TM_teslaCoil>builder()
             .addShape("main", transpose(new String[][]{
                     {"       ","       ","  BBB  ","  BBB  ","  BBB  ","       ","       "},
                     {"       ","  BBB  "," BBBBB "," BBBBB "," BBBBB ","  BBB  ","       "},
@@ -701,7 +699,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM("main", 3, 16, 0, hintsOnly, stackSize);
+        structureBuild_EM("main", 3, 16, 0, stackSize, hintsOnly);
     }
 
     @Override

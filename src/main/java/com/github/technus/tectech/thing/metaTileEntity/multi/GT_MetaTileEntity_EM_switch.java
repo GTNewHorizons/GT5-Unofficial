@@ -12,7 +12,6 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_Rend
 import com.github.technus.tectech.util.CommonValues;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -45,7 +44,7 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
     };
 
     private static final IStructureDefinition<GT_MetaTileEntity_EM_switch> STRUCTURE_DEFINITION =
-            StructureDefinition.<GT_MetaTileEntity_EM_switch>builder()
+            IStructureDefinition.<GT_MetaTileEntity_EM_switch>builder()
             .addShape("main", transpose(new String[][]{
                     {"BBB","BBB","BBB"},
                     {"B~B","BAB","BBB"},
@@ -226,7 +225,7 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM("main", 1, 1, 0, hintsOnly, stackSize);
+        structureBuild_EM("main", 1, 1, 0, stackSize, hintsOnly);
     }
 
     @Override

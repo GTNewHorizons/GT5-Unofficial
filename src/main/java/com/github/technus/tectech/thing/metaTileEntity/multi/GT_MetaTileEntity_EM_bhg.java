@@ -6,7 +6,6 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_Rend
 import com.github.technus.tectech.util.CommonValues;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -50,7 +49,7 @@ public class GT_MetaTileEntity_EM_bhg extends GT_MetaTileEntity_MultiblockBase_E
 
     //region structure actual
     private static final IStructureDefinition<GT_MetaTileEntity_EM_bhg> STRUCTURE_DEFINITION=
-            StructureDefinition.<GT_MetaTileEntity_EM_bhg>builder()
+            IStructureDefinition.<GT_MetaTileEntity_EM_bhg>builder()
             .addShape("main_t1", transpose(new String[][]{
                     {"                                 ","                                 ","                                 ","                                 ","                                 ","                                 ","                                 ","                                 ","                                 ","                                 ","                                 ","                                 ","               C C               ","               C C               ","               C C               ","            CCCCCCCCC            ","               C C               ","            CCCCCCCCC            ","               C C               ","               C C               ","               C C               ","                                 ","                                 ","                                 ","                                 ","                                 ","                                 ","                                 ","                                 ","                                 ","                                 ","                                 ","                                 "},
                     {"                                 ","                                 ","                                 ","                                 ","                                 ","                                 ","                                 ","                                 ","                                 ","               C C               ","               C C               ","               C C               ","               C C               ","              DDDDD              ","             DDCDCDD             ","         CCCCDCCDCCDCCCC         ","             DDDDDDD             ","         CCCCDCCDCCDCCCC         ","             DDCDCDD             ","              DDDDD              ","               C C               ","               C C               ","               C C               ","               C C               ","                                 ","                                 ","                                 ","                                 ","                                 ","                                 ","                                 ","                                 ","                                 "},
@@ -307,7 +306,7 @@ public class GT_MetaTileEntity_EM_bhg extends GT_MetaTileEntity_MultiblockBase_E
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         try {
-            structureBuild_EM((stackSize.stackSize & 1) == 1 ? "main_t1" : "main_t2", 16, 16, 0, hintsOnly, stackSize);
+            structureBuild_EM((stackSize.stackSize & 1) == 1 ? "main_t1" : "main_t2", 16, 16, 0, stackSize, hintsOnly);
         }
         catch (Exception e) {
             e.printStackTrace();

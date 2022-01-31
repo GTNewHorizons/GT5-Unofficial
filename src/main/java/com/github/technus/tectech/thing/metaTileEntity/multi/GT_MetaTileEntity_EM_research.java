@@ -8,7 +8,6 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_Rend
 import com.github.technus.tectech.util.CommonValues;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
@@ -75,7 +74,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
 
     //region structure
     private static final IStructureDefinition<GT_MetaTileEntity_EM_research> STRUCTURE_DEFINITION =
-            StructureDefinition.<GT_MetaTileEntity_EM_research>builder()
+            IStructureDefinition.<GT_MetaTileEntity_EM_research>builder()
                     .addShape("main", transpose(new String[][]{
                             {"   ", " A ", " A ", "AAA", "AAA", "AAA", "AAA"},
                             {"AAA", "ACA", "ACA", "ACA", "BCB", "BCB", "BBB"},
@@ -570,7 +569,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM("main", 1, 3, 4, hintsOnly, stackSize);
+        structureBuild_EM("main", 1, 3, 4, stackSize, hintsOnly);
     }
 
     @Override

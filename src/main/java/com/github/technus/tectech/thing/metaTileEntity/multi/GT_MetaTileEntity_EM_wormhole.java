@@ -6,7 +6,6 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_Rend
 import com.github.technus.tectech.util.CommonValues;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -42,7 +41,7 @@ public class GT_MetaTileEntity_EM_wormhole extends GT_MetaTileEntity_MultiblockB
     };
 
     private static final IStructureDefinition<GT_MetaTileEntity_EM_wormhole> STRUCTURE_DEFINITION =
-            StructureDefinition.<GT_MetaTileEntity_EM_wormhole>builder()
+            IStructureDefinition.<GT_MetaTileEntity_EM_wormhole>builder()
             .addShape("main", transpose(new String[][]{
                     {"         ","         ","         ","         ","         ","    D    ","  DDDDD  ","  DGGGD  ","  DGGGD  ","  DGGGD  ","  DDDDD  "},
                     {"         ","         ","         ","    D    ","    D    ","    D    "," DDAAADD "," EABBBAE "," EABBBAE "," EABBBAE "," DDAAADD "},
@@ -109,7 +108,7 @@ public class GT_MetaTileEntity_EM_wormhole extends GT_MetaTileEntity_MultiblockB
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM("main", 4, 4, 0, hintsOnly, stackSize);
+        structureBuild_EM("main", 4, 4, 0, stackSize, hintsOnly);
     }
 
     @Override

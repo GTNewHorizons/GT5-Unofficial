@@ -1,18 +1,17 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi.em_collider;
 
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.dComplexAspectDefinition;
-import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.ePrimalAspectDefinition;
-import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalDecayResult;
-import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
-import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalMutableDefinitionStackMap;
-import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
-import com.github.technus.tectech.mechanics.elementalMatter.core.templates.cElementalPrimitive;
-import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.dAtomDefinition;
-import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.dHadronDefinition;
-import com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.eQuarkDefinition;
+import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.EMComplexAspectDefinition;
+import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.EMPrimalAspectDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.core.decay.EMDecayResult;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.EMPrimitiveTemplate;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMDefinitionStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMInstanceStack;
+import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.EMAtomDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.EMHadronDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMQuarkDefinition;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
-import com.github.technus.tectech.thing.casing.TT_Container_Casings;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputElemental;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.INameFunction;
@@ -20,9 +19,9 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.base.IStatusFunctio
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
 import com.github.technus.tectech.util.CommonValues;
+import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -38,12 +37,14 @@ import net.minecraftforge.common.util.ForgeDirection;
 import java.util.HashMap;
 
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
-import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.bTransformationInfo.AVOGADRO_CONSTANT;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry.EM_COUNT_PER_MATERIAL_AMOUNT;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.*;
 import static com.github.technus.tectech.util.DoubleCount.add;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
@@ -303,7 +304,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     };
 
     private static final IStructureDefinition<GT_MetaTileEntity_EM_collider> STRUCTURE_DEFINITION =
-            StructureDefinition.<GT_MetaTileEntity_EM_collider>builder()
+            IStructureDefinition.<GT_MetaTileEntity_EM_collider>builder()
             .addShape("main", transpose(new String[][]{
                     {"         A A A         ","        AAAAAAA        ","      BBBBIIIBBBB      ","     BAAAAAAAAAAAB     ","    BAAAA     AAAAB    ","   BAAA         AAAB   ","  BAAA           AAAB  ","  BAA             AAB  "," ABAA             AABA ","AABA               ABAA"," AIA               AIA ","AAIA               AIAA"," AIA               AIA ","AABA               ABAA"," ABAA             AABA ","  BAA             AAB  ","  BAAA           AAAB  ","   BAAA         AAAB   ","    BAAAABJJJBAAAAB    ","     BAHHBBBBBHHAB     ","      BBBBGFGBBBB      "},
                     {"         AAAAA         ","       AADDDDDAA       ","      CDDEEEEEDDC      ","     CDEEDDDDDEEDC     ","    CDEDD     DDEDC    ","   CDED         DEDC   ","  CDED           DEDC  "," ADED             DEDA "," ADED             DEDA ","ADED               DEDA","ADED               DEDA","ADED               DEDA","ADED               DEDA","ADED               DEDA"," ADED             DEDA "," ADED             DEDA ","  CDED           DEDC  ","   CDED         DEDC   ","    CDEDDBJ~JBDDEDC    ","     CDEEDDDDDEEDC     ","      CDDEEEEEDDC      "},
@@ -672,9 +673,9 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
                     iGregTechTileEntity.getXCoord() + xDir,
                     iGregTechTileEntity.getYCoord() + yDir,
                     iGregTechTileEntity.getZCoord() + zDir,
-                    TT_Container_Casings.sHintCasingsTT, 12);
+                    StructureLibAPI.getBlockHint(), 12);
         }
-        structureBuild_EM("main", 11, 1, 18, hintsOnly, stackSize);
+        structureBuild_EM("main", 11, 1, 18, stackSize, hintsOnly);
     }
 
     @Override

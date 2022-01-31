@@ -2,22 +2,22 @@ package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
-import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
-import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.iHasElementalDefinition;
-import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.aFluidQuantizationInfo;
-import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.aItemQuantizationInfo;
-import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.aOredictQuantizationInfo;
-import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.bTransformationInfo;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMInstanceStack;
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.IEMStack;
+import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMFluidQuantizationInfo;
+import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMItemQuantizationInfo;
+import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMOredictQuantizationInfo;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.github.technus.tectech.util.CommonValues;
+import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
@@ -27,16 +27,20 @@ import net.minecraftforge.oredict.OreDictionary;
 import java.util.ArrayList;
 
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
-import static com.github.technus.tectech.mechanics.elementalMatter.core.templates.iElementalDefinition.DEFAULT_ENERGY_LEVEL;
-import static com.github.technus.tectech.mechanics.elementalMatter.core.templates.iElementalDefinition.STABLE_RAW_LIFE_TIME;
-import static com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.dAtomDefinition.refMass;
-import static com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.dAtomDefinition.refUnstableMass;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition.DEFAULT_ENERGY_LEVEL;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition.STABLE_RAW_LIFE_TIME;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.EMAtomDefinition.refMass;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.EMAtomDefinition.refUnstableMass;
 import static com.github.technus.tectech.recipe.TT_recipeAdder.nullFluid;
 import static com.github.technus.tectech.recipe.TT_recipeAdder.nullItem;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
 import static com.github.technus.tectech.util.CommonValues.V;
 import static com.github.technus.tectech.util.Util.isInputEqual;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
@@ -46,7 +50,7 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
     //region structure
     //use multi A energy inputs, use less power the longer it runs
     private static final IStructureDefinition<GT_MetaTileEntity_EM_quantizer> STRUCTURE_DEFINITION =
-            StructureDefinition.<GT_MetaTileEntity_EM_quantizer>builder()
+            IStructureDefinition.<GT_MetaTileEntity_EM_quantizer>builder()
             .addShape("main", transpose(new String[][]{
                     {"CCC","BAB","EEE","DBD"},
                     {"C~C","ABA","EBE","BFB"},
@@ -195,7 +199,7 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM("main", 1, 1, 0, hintsOnly, stackSize);
+        structureBuild_EM("main", 1, 1, 0, stackSize, hintsOnly);
     }
 
     @Override

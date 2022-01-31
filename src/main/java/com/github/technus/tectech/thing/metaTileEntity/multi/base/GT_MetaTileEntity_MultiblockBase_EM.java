@@ -161,6 +161,11 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     //region SUPER STRUCT
     @Override
+    public IAlignmentLimits getAlignmentLimits() {
+        return alignmentLimits;
+    }
+
+    @Override
     public ExtendedFacing getExtendedFacing() {
         return extendedFacing;
     }
@@ -185,16 +190,6 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     }
 
     @Override
-    public IAlignmentLimits getAlignmentLimits() {
-        return alignmentLimits;
-    }
-
-    @Override
-    public void setAlignmentLimits(IAlignmentLimits limits) {
-        alignmentLimits=limits;
-    }
-
-    @Override
     public boolean isFacingValid(byte aFacing) {
         return canSetToDirectionAny(ForgeDirection.getOrientation(aFacing));
     }
@@ -208,9 +203,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
      * Gets structure
      * @return STATIC INSTANCE OF STRUCTURE
      */
-    public IStructureDefinition<? extends GT_MetaTileEntity_MultiblockBase_EM> getStructure_EM(){
-        throw new NoSuchMethodError("Implement it as STATIC INSTANCE");
-    }
+    public abstract IStructureDefinition<? extends GT_MetaTileEntity_MultiblockBase_EM> getStructure_EM();
 
     @SuppressWarnings("unchecked")
     private IStructureDefinition<GT_MetaTileEntity_MultiblockBase_EM> getStructure_EM_Internal(){
@@ -224,7 +217,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                 horizontalOffset,verticalOffset,depthOffset,!mMachine);
     }
 
-    public final boolean structureBuild_EM(String piece,int horizontalOffset, int verticalOffset, int depthOffset,boolean hintsOnly,ItemStack trigger) {
+    public final boolean structureBuild_EM(String piece, int horizontalOffset, int verticalOffset, int depthOffset, ItemStack trigger, boolean hintsOnly) {
         IGregTechTileEntity baseMetaTileEntity = getBaseMetaTileEntity();
         return getStructure_EM_Internal().buildOrHints(this, trigger, piece, baseMetaTileEntity.getWorld(),
                 getExtendedFacing(), baseMetaTileEntity.getXCoord(), baseMetaTileEntity.getYCoord(),
@@ -634,9 +627,8 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
      */
     protected long getAvailableData_EM() {
         long result = 0;
-        Vec3Impl pos = new Vec3Impl(getBaseMetaTileEntity().getXCoord(),
-                                    getBaseMetaTileEntity().getYCoord(),
-                                    getBaseMetaTileEntity().getZCoord());
+        IGregTechTileEntity baseMetaTileEntity = getBaseMetaTileEntity();
+        Vec3Impl            pos                = new Vec3Impl(baseMetaTileEntity.getXCoord(),baseMetaTileEntity.getYCoord(),baseMetaTileEntity.getZCoord());
         for (GT_MetaTileEntity_Hatch_InputData in : eInputData) {
             if (in.q != null) {
                 Long value = in.q.contentIfNotInTrace(pos);

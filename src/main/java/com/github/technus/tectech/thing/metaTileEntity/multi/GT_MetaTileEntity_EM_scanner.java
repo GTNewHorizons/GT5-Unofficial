@@ -1,10 +1,11 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
-import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalDefinitionStack;
-import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
-import com.github.technus.tectech.mechanics.elementalMatter.core.tElementalException;
+import com.github.technus.tectech.mechanics.elementalMatter.core.EMException;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMDefinitionStack;
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMInstanceStack;
+import com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMPrimitiveDefinition;
 import com.github.technus.tectech.recipe.TT_recipe;
 import com.github.technus.tectech.thing.CustomItemList;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
@@ -13,6 +14,8 @@ import com.github.technus.tectech.thing.item.ElementalDefinitionScanStorage_EM;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.*;
 import com.github.technus.tectech.util.CommonValues;
+import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -20,6 +23,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energ
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
@@ -32,7 +36,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
-import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.cPrimitiveDefinition.nbtE__;
 import static com.github.technus.tectech.recipe.TT_recipe.E_RECIPE_ID;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
@@ -41,6 +44,10 @@ import static com.github.technus.tectech.thing.metaTileEntity.multi.em_machine.G
 import static com.github.technus.tectech.util.CommonValues.V;
 import static com.github.technus.tectech.util.CommonValues.VN;
 import static com.github.technus.tectech.util.Util.areBitsSet;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
@@ -57,7 +64,7 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
     private TT_recipe.TT_EMRecipe.TT_EMRecipe eRecipe;
     private EMDefinitionStack                 objectResearched;
     private EMInstanceStackMap                objectsScanned;
-    private String             machineType;
+    private String                    machineType;
     private long computationRemaining, computationRequired;
     private int[] scanComplexity;
 
@@ -74,7 +81,7 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
     };
 
     private static final IStructureDefinition<GT_MetaTileEntity_EM_scanner> STRUCTURE_DEFINITION =
-            StructureDefinition.<GT_MetaTileEntity_EM_scanner>builder()
+            IStructureDefinition.<GT_MetaTileEntity_EM_scanner>builder()
             .addShape("main", transpose(new String[][]{
                     {"CCCCC","BBBBB","BBDBB","BDDDB","BDDDB","BDDDB","BBDBB","EEEEE"},
                     {"CAAAC","BBBBB","BDDDB","D---D","D---D","D---D","BDDDB","EBBBE"},
@@ -102,12 +109,9 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
                     return LedStatus.STATUS_WRONG;
                 }
                 v = (int) v;
-                if (v == 0)
-                    return LedStatus.STATUS_NEUTRAL;
-                if (v >= SCAN_GET_CLASS_TYPE)
-                    return LedStatus.STATUS_TOO_HIGH;
-                if (v < 0)
-                    return LedStatus.STATUS_TOO_LOW;
+                if (v == 0) return LedStatus.STATUS_NEUTRAL;
+                if (v >= SCAN_GET_CLASS_TYPE) return LedStatus.STATUS_TOO_HIGH;
+                if (v < 0) return LedStatus.STATUS_TOO_LOW;
                 return LedStatus.STATUS_OK;
             };
     protected Parameters.Group.ParameterIn[] scanConfiguration;
@@ -522,8 +526,8 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
     }
 
     @Override
-    public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM("main", 2, 2, 0, hintsOnly, stackSize);
+    public void construct(ItemStack trigger, boolean hintsOnly) {
+        structureBuild_EM("main", 2, 2, 0, trigger, hintsOnly);
     }
 
     @Override

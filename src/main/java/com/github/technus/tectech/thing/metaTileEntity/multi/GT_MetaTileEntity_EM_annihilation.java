@@ -6,7 +6,6 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_Rend
 import com.github.technus.tectech.util.CommonValues;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -41,7 +40,7 @@ public class GT_MetaTileEntity_EM_annihilation extends GT_MetaTileEntity_Multibl
 
     //region structure
     private static final IStructureDefinition<GT_MetaTileEntity_EM_annihilation> STRUCTURE_DEFINITION =
-            StructureDefinition.<GT_MetaTileEntity_EM_annihilation>builder()
+            IStructureDefinition.<GT_MetaTileEntity_EM_annihilation>builder()
                     .addShape("main", transpose(new String[][]{
                             {"           ","   AB BA   ","   AB BA   ","    BBB    "," A   A   A ","AA   F   AA"," A   A   A ","    BBB    ","   AB BA   ","   AB BA   ","           "},
                             {"           ","   AB BA   "," EECEEECEE "," EGGEEEGGE ","ACGGGEGGGCA","AEGGGDGGGEA","ACGGGEGGGCA"," EGGEEEGGE "," EECEEECEE ","   AB BA   ","           "},
@@ -111,7 +110,7 @@ public class GT_MetaTileEntity_EM_annihilation extends GT_MetaTileEntity_Multibl
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM("main", 5, 5, 0, hintsOnly, stackSize);
+        structureBuild_EM("main", 5, 5, 0, stackSize, hintsOnly);
     }
 
     @Override

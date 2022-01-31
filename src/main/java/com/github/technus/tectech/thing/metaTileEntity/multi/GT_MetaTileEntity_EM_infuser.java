@@ -9,7 +9,6 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEnt
 import com.github.technus.tectech.util.CommonValues;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -42,7 +41,7 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
     };
 
     private static final IStructureDefinition<GT_MetaTileEntity_EM_infuser> STRUCTURE_DEFINITION =
-            StructureDefinition.<GT_MetaTileEntity_EM_infuser>builder()
+            IStructureDefinition.<GT_MetaTileEntity_EM_infuser>builder()
             .addShape("main", transpose(new String[][]{
                     {"CCC","CCC","CCC"},
                     {"BBB","BAB","BBB"},
@@ -188,7 +187,7 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM("main", 1, 2, 0, hintsOnly, stackSize);
+        structureBuild_EM("main", 1, 2, 0, stackSize, hintsOnly);
     }
 
     @Override

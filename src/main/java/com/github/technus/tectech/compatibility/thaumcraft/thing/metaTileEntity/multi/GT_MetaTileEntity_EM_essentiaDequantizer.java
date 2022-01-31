@@ -3,7 +3,6 @@ package com.github.technus.tectech.compatibility.thaumcraft.thing.metaTileEntity
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMInstanceStack;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
-import com.github.technus.tectech.thing.casing.TT_Container_Casings;
 import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_quantizer;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.github.technus.tectech.util.CommonValues;
@@ -14,7 +13,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -30,7 +28,10 @@ import static com.github.technus.tectech.mechanics.elementalMatter.core.transfor
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
 import static com.github.technus.tectech.util.CommonValues.V;
-import static gregtech.api.enums.GT_Values.E;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofTileAdder;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
@@ -51,7 +52,7 @@ public class GT_MetaTileEntity_EM_essentiaDequantizer extends GT_MetaTileEntity_
             IStructureDefinition.<GT_MetaTileEntity_EM_essentiaDequantizer>builder()
                     .addShape("main", new String[][]{
                             {"DDD", "D~D", "DDD"},
-                            {"E E", "   ", "E E"},
+                            {"E E", " * ", "E E"},
                             {"ABA", "BCB", "ABA"},
                             {"FFF", "FBF", "FFF"},
                             {"BEB", "EGE", "BEB"}
@@ -63,10 +64,10 @@ public class GT_MetaTileEntity_EM_essentiaDequantizer extends GT_MetaTileEntity_
                     .addElement('E', ofBlock(QuantumGlassBlock.INSTANCE, 0))
                     .addElement('F', ofHatchAdderOptional(GT_MetaTileEntity_EM_essentiaDequantizer::addElementalMufflerToMachineList, textureOffset + 4, 3, sBlockCasingsTT, 4))
                     .addElement('G', ofHatchAdder(GT_MetaTileEntity_EM_essentiaDequantizer::addElementalInputToMachineList, textureOffset + 4, 2))
+                    .addElement('*', ofTileAdder(essentiaContainerCompat::check, StructureLibAPI.getBlockHint(),12))                    
                     .build();
 
     private String outputEssentiaName;
-
     //endregion
 
     public GT_MetaTileEntity_EM_essentiaDequantizer(int aID, String aName, String aNameRegional) {
@@ -84,7 +85,7 @@ public class GT_MetaTileEntity_EM_essentiaDequantizer extends GT_MetaTileEntity_
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        return essentiaContainerCompat.check(this) && structureCheck_EM(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 1, 0);
+        return structureCheck_EM("main", 1, 1, 0);
     }
 
     @Override
@@ -131,8 +132,8 @@ public class GT_MetaTileEntity_EM_essentiaDequantizer extends GT_MetaTileEntity_
         TileEntity container = essentiaContainerCompat.getContainer(this);
         if (container == null) {
             stopMachine();
-        } else {
-            if (!essentiaContainerCompat.putInContainer(container, outputEssentiaName)) {
+        }else{
+            if(!essentiaContainerCompat.putInContainer(container,outputEssentiaName)){
                 stopMachine();
             }
         }
@@ -157,21 +158,25 @@ public class GT_MetaTileEntity_EM_essentiaDequantizer extends GT_MetaTileEntity_
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         IGregTechTileEntity iGregTechTileEntity = getBaseMetaTileEntity();
-        int                 xDir                = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetX;
-        int                 yDir                = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetY;
-        int                 zDir                = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetZ;
+        int xDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetX;
+        int yDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetY;
+        int zDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetZ;
         if (hintsOnly) {
             StructureLibAPI.hintParticle(iGregTechTileEntity.getWorld(),
                     iGregTechTileEntity.getXCoord() + xDir,
                     iGregTechTileEntity.getYCoord() + yDir,
                     iGregTechTileEntity.getZCoord() + zDir,
-                    TT_Container_Casings.sHintCasingsTT, 12);
+                    StructureLibAPI.getBlockHint(), 12);
         } else {
             if (iGregTechTileEntity.getBlockOffset(xDir, 0, zDir).getMaterial() == Material.air) {
-                iGregTechTileEntity.getWorld().setBlock(iGregTechTileEntity.getXCoord() + xDir, iGregTechTileEntity.getYCoord() + yDir, iGregTechTileEntity.getZCoord() + zDir, TT_Container_Casings.sHintCasingsTT, 12, 2);
+                iGregTechTileEntity.getWorld().setBlock(
+                        iGregTechTileEntity.getXCoord() + xDir,
+                        iGregTechTileEntity.getYCoord() + yDir,
+                        iGregTechTileEntity.getZCoord() + zDir,
+                        StructureLibAPI.getBlockHint(), 12, 2);
             }
         }
-        Structure.builder(shape, blockType, blockMeta, 1, 1, 0, iGregTechTileEntity, getExtendedFacing(), hintsOnly);
+        structureBuild_EM("main", 1, 1, 0, stackSize, hintsOnly);
     }
 
     @Override
@@ -189,5 +194,10 @@ public class GT_MetaTileEntity_EM_essentiaDequantizer extends GT_MetaTileEntity_
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         outputEssentiaName = aNBT.getString("eOutputEssentia");
+    }
+
+    @Override
+    public IStructureDefinition<? extends GT_MetaTileEntity_MultiblockBase_EM> getStructure_EM() {
+        return STRUCTURE_DEFINITION;
     }
 }

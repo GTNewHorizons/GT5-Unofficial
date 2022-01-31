@@ -8,8 +8,8 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.transformations
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.EMAtomDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.EMHadronDefinition;
 import com.github.technus.tectech.thing.CustomItemList;
-import com.github.technus.tectech.thing.casing.TT_Container_Casings;
 import com.github.technus.tectech.thing.item.EuMeterGT;
+import com.gtnewhorizon.structurelib.StructureLibAPI;
 import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ItemList;
@@ -44,8 +44,11 @@ public class BaseRecipeLoader {
         // Recipes init - common goes here rest goes into methods below
         // ===================================================================================================
 
-        for (int i = 0; i <= 15; i++) {
-            RA.addAssemblerRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(i), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cobalt, 1)}, Materials.Aluminium.getMolten(864), new ItemStack(TT_Container_Casings.sHintCasingsTT, 1, i), 32, 120);
+        for(int i=0;i<=15;i++) {
+            RA.addAssemblerRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(i),
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cobalt, 1)},
+                    Materials.Aluminium.getMolten(864),
+                    new ItemStack(StructureLibAPI.getBlockHint(), 1, i), 32, 120);
         }
 
         //Scrench
@@ -114,7 +117,7 @@ public class BaseRecipeLoader {
         if (Loader.isModLoaded(Reference.DREAMCRAFT)) {
             new DreamCraftRecipeLoader().run(transformationInfo);//init recipes for GTNH version
         } else if (Loader.isModLoaded(Reference.SPARTAKCORE)) {
-            new SpartakCoreRecipeLoader().run(transformationInfo);//init recipes for SpartakCore version
+        	new SpartakCoreRecipeLoader().run(transformationInfo);//init recipes for SpartakCore version
         } else {
             new BloodyRecipeLoader().run(transformationInfo);//init recipes for NON-GTNH version
         }

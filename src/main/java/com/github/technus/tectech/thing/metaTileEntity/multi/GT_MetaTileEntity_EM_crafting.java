@@ -6,7 +6,6 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_Rend
 import com.github.technus.tectech.util.CommonValues;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -43,8 +42,8 @@ public class GT_MetaTileEntity_EM_crafting extends GT_MetaTileEntity_MultiblockB
             translateToLocal("gt.blockmachines.multimachine.em.crafter.hint.1"),//2 - Elemental Hatches or Molecular Casing
     };
 
-    private static final IStructureDefinition<GT_MetaTileEntity_EM_crafting> STRUCTURE_DEFINITION= StructureDefinition
-            .<GT_MetaTileEntity_EM_crafting>builder()
+    private static final IStructureDefinition<GT_MetaTileEntity_EM_crafting> STRUCTURE_DEFINITION=
+            IStructureDefinition.<GT_MetaTileEntity_EM_crafting>builder()
             .addShape("main", transpose(new String[][]{
                     {" AAA ","AAAAA","A   A","BBBBB","BGCGB","BGGGB","BGCGB","BBBBB","A   A","AAAAA"," AAA "},
                     {"AHHHA","AAAAA"," FFF ","BBBBB","GGGGG","GGGGG","GGGGG","BBBBB"," FFF ","AAAAA","AHHHA"},
@@ -108,7 +107,7 @@ public class GT_MetaTileEntity_EM_crafting extends GT_MetaTileEntity_MultiblockB
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM("main", 2, 2, 0, hintsOnly, stackSize);
+        structureBuild_EM("main", 2, 2, 0, stackSize, hintsOnly);
     }
 
     @Override
