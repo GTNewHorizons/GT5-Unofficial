@@ -35,7 +35,7 @@ public class  TT_recipeAdder extends GT_RecipeAdder {
         if(aFluidInputs==null) {
             aFluidInputs = nullFluid;
         }
-        if (aResearchItem==null || totalComputationRequired<=0 || aOutput == null || aInputs.length>15) {
+        if (aResearchItem==null || totalComputationRequired<=0 || aOutput == null || aInputs.length>16) {
             return false;
         }
         for(ItemStack tItem : aInputs){
@@ -59,7 +59,7 @@ public class  TT_recipeAdder extends GT_RecipeAdder {
         if(aFluidInputs==null) {
             aFluidInputs = nullFluid;
         }
-        if (aResearchItem==null || totalComputationRequired<=0 || aOutput == null || aInputs.length>15 || aFluidInputs.length>4 || assDuration<=0 || assEUt<=0) {
+        if (aResearchItem==null || totalComputationRequired<=0 || aOutput == null || aInputs.length>16 || aFluidInputs.length>4 || assDuration<=0 || assEUt<=0) {
             return false;
         }
 
