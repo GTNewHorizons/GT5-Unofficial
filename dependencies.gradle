@@ -1,0 +1,43 @@
+// Add your dependencies here
+
+dependencies {
+    shadowImplementation("com.github.GTNewHorizons:AVRcore:master-SNAPSHOT")
+
+    compile("com.github.GTNewHorizons:GT5-Unofficial:master-SNAPSHOT:dev")
+    compile("com.github.GTNewHorizons:Yamcl:master-SNAPSHOT:dev")
+
+    /*compile("com.github.GTNewHorizons:NotEnoughItems:master-SNAPSHOT:dev") {  // Transitive by GT5-Unofficial
+        transitive = false
+    }
+    compile("com.github.GTNewHorizons:CodeChickenLib:master-SNAPSHOT:dev") {  // Transitive by GT5-Unofficial
+        transitive = false
+    }
+    compile("com.github.GTNewHorizons:StructureLib:master-SNAPSHOT:dev") {  // Transitive by GT5-Unofficial
+        transitive = false
+    }
+    compile("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev") {  // Transitive by GT5-Unofficial
+        transitive = false
+    }*/
+
+    compileOnly("com.github.GTNewHorizons:GTplusplus:master-SNAPSHOT:dev") {
+        transitive = false
+    }
+    compileOnly("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:master-SNAPSHOT:dev") {
+        transitive = false
+    }
+
+    compileOnly("dan200.computercraft:ComputerCraft:1.75") {
+        transitive = false
+    }
+    compileOnly("li.cil.oc:OpenComputers:MC1.7.10-1.7.5.1356:dev") {
+        transitive = false
+    }
+    compileOnly("curse.maven:cofh-core-69162:2388751") {
+        transitive = false
+    }
+    compileOnly("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev") {
+        transitive = false
+    }
+
+    compileOnly files("dependencies/OpenModularTurrets-1.7.10-2.2.10-237-deobf.jar")
+}
