@@ -15,11 +15,9 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import static com.github.technus.tectech.compatibility.thaumcraft.thing.metaTileEntity.multi.EssentiaCompat.essentiaContainerCompat;
 import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry.EM_COUNT_PER_MATERIAL_AMOUNT;
@@ -131,25 +129,6 @@ public class GT_MetaTileEntity_EM_essentiaQuantizer extends GT_MetaTileEntity_Mu
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        IGregTechTileEntity iGregTechTileEntity = getBaseMetaTileEntity();
-        int xDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetX;
-        int yDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetY;
-        int zDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetZ;
-        if (hintsOnly) {
-            StructureLibAPI.hintParticle(iGregTechTileEntity.getWorld(),
-                    iGregTechTileEntity.getXCoord() + xDir,
-                    iGregTechTileEntity.getYCoord() + yDir,
-                    iGregTechTileEntity.getZCoord() + zDir,
-                    StructureLibAPI.getBlockHint(), 12);
-        } else {
-            if (iGregTechTileEntity.getBlockOffset(xDir, 0, zDir).getMaterial() == Material.air) {
-                iGregTechTileEntity.getWorld().setBlock(
-                        iGregTechTileEntity.getXCoord() + xDir,
-                        iGregTechTileEntity.getYCoord() + yDir,
-                        iGregTechTileEntity.getZCoord() + zDir,
-                        StructureLibAPI.getBlockHint(), 12, 2);
-            }
-        }
         structureBuild_EM("main", 1, 1, 0, stackSize, hintsOnly);
     }
 

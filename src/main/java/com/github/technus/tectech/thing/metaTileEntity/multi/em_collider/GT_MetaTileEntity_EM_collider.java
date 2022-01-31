@@ -683,7 +683,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
                     iGregTechTileEntity.getZCoord() + zDir,
                     StructureLibAPI.getBlockHint(), 12);
         }
-        structureBuild_EM("tier"+((trigger.stackSize%2)+1), 11, 1, 18, trigger, hintsOnly);
+        structureBuild_EM("tier"+(((trigger.stackSize-1)%2)+1), 11, 1, 18, trigger, hintsOnly);
     }
 
     @Override

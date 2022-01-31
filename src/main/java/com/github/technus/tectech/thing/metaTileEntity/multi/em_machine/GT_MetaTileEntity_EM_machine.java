@@ -26,6 +26,7 @@ import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texture
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.*;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
@@ -49,13 +50,13 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
 
     private static final IStructureDefinition<GT_MetaTileEntity_EM_machine> STRUCTURE_DEFINITION = IStructureDefinition
             .<GT_MetaTileEntity_EM_machine>builder()
-            .addShape("main", new String[][]{
+            .addShape("main", transpose(new String[][]{
                     {"  A  ", " AAA ", " EBE ", " ECE ", " EBE ", " AAA ", "  A  "},
                     {" DDD ", "AAAAA", "E---E", "E---E", "E---E", "AAAAA", " FFF "},
-                    {"AD-DA", "AA~AA", "B---B", "C---C", "B---B", "AA-AA", "AFFFA"},
+                    {"AD-DA", "AA~AA", "B---B", "C- -C", "B---B", "AA-AA", "AFFFA"},
                     {" DDD ", "AAAAA", "E---E", "E---E", "E---E", "AAAAA", " FFF "},
                     {"  A  ", " AAA ", " EBE ", " ECE ", " EBE ", " AAA ", "  A  "}
-            })
+            }))
             .addElement('A', ofBlock(sBlockCasingsTT, 4))
             .addElement('B', ofBlock(sBlockCasingsTT, 5))
             .addElement('C', ofBlock(sBlockCasingsTT, 6))

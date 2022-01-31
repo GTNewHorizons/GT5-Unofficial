@@ -44,11 +44,11 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
                     {"DDD", "DDD", "DDD"}
             })
             .addShape("mainBig", new String[][]{
-                    {"     ", " CCC ", " C~C ", " CCC ", "     "},
-                    {" DDD ", "DAAAD", "DABAD", "DAAAD", " DDD "},
-                    {"DDDDD", "DAAAD", "DAAAD", "DAAAD", "DDDDD"},
+                    {"  A  ", " CCC ", "AC~CA", " CCC ", "  A  "},
                     {" DDD ", "DAAAD", "DAAAD", "DAAAD", " DDD "},
-                    {" DDD ", "DDDDD", "DDDDD", "DDDDD", " DDD "}
+                    {"ADDDA", "DAAAD", "DABAD", "DAAAD", "ADDDA"},
+                    {" DDD ", "DAAAD", "DAAAD", "DAAAD", " DDD "},
+                    {"  A  ", "DDDDD", "ADDDA", "DDDDD", "  A  "}
             })
             .addElement('A', ofBlock(sBlockCasingsTT, 4))
             .addElement('B', ofBlock(sBlockCasingsTT, 5))
@@ -102,7 +102,7 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        int meta = iGregTechTileEntity.getMetaIDAtSide(GT_Utility.getOppositeSide(iGregTechTileEntity.getFrontFacing()));
+        int meta = iGregTechTileEntity.getMetaIDAtSideAndDistance(GT_Utility.getOppositeSide(iGregTechTileEntity.getFrontFacing()),2);
         if (meta == 4) {
             return structureCheck_EM("main", 1, 1, 0);
         } else if (meta == 5) {

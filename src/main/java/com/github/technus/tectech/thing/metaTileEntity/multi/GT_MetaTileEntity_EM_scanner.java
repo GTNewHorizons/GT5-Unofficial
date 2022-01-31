@@ -85,7 +85,7 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
             .addShape("main", transpose(new String[][]{
                     {"CCCCC", "BBBBB", "BBDBB", "BDDDB", "BDDDB", "BDDDB", "BBDBB", "EEEEE"},
                     {"CAAAC", "BBBBB", "BDDDB", "D---D", "D---D", "D---D", "BDDDB", "EBBBE"},
-                    {"CA~AC", "BBBBB", "DDDDD", "D---D", "D---D", "D---D", "DDGDD", "EBFBE"},
+                    {"CA~AC", "BBBBB", "DDDDD", "D---D", "D- -D", "D---D", "DDGDD", "EBFBE"},
                     {"CAAAC", "BBBBB", "BDDDB", "D---D", "D---D", "D---D", "BDDDB", "EBBBE"},
                     {"CCCCC", "BBBBB", "BBDBB", "BDDDB", "BDDDB", "BDDDB", "BBDBB", "EEEEE"}
             }))
