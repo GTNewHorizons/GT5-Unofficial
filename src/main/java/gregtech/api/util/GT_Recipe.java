@@ -1816,7 +1816,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
     }
 
     public static class GT_Recipe_Map_LargeBoilerFakeFuels extends GT_Recipe_Map {
-    	
+
         public GT_Recipe_Map_LargeBoilerFakeFuels() {
             super(new HashSet<>(55), "gt.recipe.largeboilerfakefuels", "Large Boiler", null, RES_PATH_GUI + "basicmachines/Default", 1, 0, 1, 0, 1, E, 1, E, true, true);
             GT_Recipe explanatoryRecipe = new GT_Recipe(true, new ItemStack[]{}, new ItemStack[]{}, null, null, null, null, 1, 1, 1);
@@ -1825,11 +1825,11 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         }
 
         public GT_Recipe addDenseLiquidRecipe(GT_Recipe recipe) {
-            return addRecipe(recipe, ((double) recipe.mSpecialValue) / 10);
+            return addRecipe(recipe, ((double) recipe.mSpecialValue) / 10, false);
         }
 
         public GT_Recipe addDieselRecipe(GT_Recipe recipe) {
-            return addRecipe(recipe, ((double) recipe.mSpecialValue) / 40);
+            return addRecipe(recipe, ((double) recipe.mSpecialValue) / 40, false);
         }
 
         public void addSolidRecipes(ItemStack... itemStacks) {
@@ -1839,28 +1839,45 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         }
 
         public GT_Recipe addSolidRecipe(ItemStack fuelItemStack) {
-            return addRecipe(new GT_Recipe(true, new ItemStack[]{fuelItemStack}, new ItemStack[]{}, null, null, null, null, 1, 0, GT_ModHandler.getFuelValue(fuelItemStack) / 1600), ((double) GT_ModHandler.getFuelValue(fuelItemStack)) / 1600);
+            boolean allowedFuel = false;
+            if (fuelItemStack != null) {
+                if (fuelItemStack.getDisplayName().equals("gt.blockreinforced.6.name") || fuelItemStack.getDisplayName().equals("gt.blockreinforced.7.name")) {
+                    allowedFuel = true;
+                }
+            }
+            return addRecipe(new GT_Recipe(true, new ItemStack[]{fuelItemStack}, new ItemStack[]{}, null, null, null, null, 1, 0, GT_ModHandler.getFuelValue(fuelItemStack) / 1600), ((double) GT_ModHandler.getFuelValue(fuelItemStack)) / 1600, allowedFuel);
         }
 
-        private GT_Recipe addRecipe(GT_Recipe recipe, double baseBurnTime) {
+        private GT_Recipe addRecipe(GT_Recipe recipe, double baseBurnTime, boolean allowedFuel) {
 			recipe = new GT_Recipe(recipe);
 			//Some recipes will have a burn time like 15.9999999 and % always rounds down
 			double floatErrorCorrection = 0.0001;
 			
     		double bronzeBurnTime = baseBurnTime * 2 + floatErrorCorrection;
     		bronzeBurnTime -= bronzeBurnTime % 0.05;
-    		double steelBurnTime = baseBurnTime * 1.5 + floatErrorCorrection;
+    		double steelBurnTime = baseBurnTime + floatErrorCorrection;
     		steelBurnTime -= steelBurnTime % 0.05;
-    		double titaniumBurnTime = baseBurnTime * 1.3 + floatErrorCorrection;
+    		double titaniumBurnTime = baseBurnTime * 0.3 + floatErrorCorrection;
     		titaniumBurnTime -= titaniumBurnTime % 0.05;
-    		double tungstensteelBurnTime = baseBurnTime * 1.2 + floatErrorCorrection;
+    		double tungstensteelBurnTime = baseBurnTime * 0.15 + floatErrorCorrection;
     		tungstensteelBurnTime -= tungstensteelBurnTime % 0.05;
-    		
-    		recipe.setNeiDesc("Burn time in seconds:", 
-    				String.format("Bronze Boiler: %.4f", bronzeBurnTime), 
-    				String.format("Steel Boiler: %.4f", steelBurnTime), 
-    				String.format("Titanium Boiler: %.4f", titaniumBurnTime), 
-    				String.format("Tungstensteel Boiler: %.4f", tungstensteelBurnTime));
+
+            if (allowedFuel) {
+                recipe.setNeiDesc("Burn time in seconds:",
+                        String.format("Bronze Boiler: %.4f", bronzeBurnTime),
+                        String.format("Steel Boiler: %.4f", steelBurnTime),
+                        String.format("Titanium Boiler: %.4f", titaniumBurnTime),
+                        String.format("Tungstensteel Boiler: %.4f", tungstensteelBurnTime));
+            }
+
+            else {
+                recipe.setNeiDesc("Burn time in seconds:",
+                        String.format("Bronze Boiler: %.4f", bronzeBurnTime),
+                        String.format("Steel Boiler: %.4f", steelBurnTime),
+                        "Titanium Boiler: Not allowed",
+                        "Tungstensteel Boiler: Not allowed");
+            }
+
     		return super.addRecipe(recipe);
     	}
     	
