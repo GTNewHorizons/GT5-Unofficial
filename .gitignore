@@ -1,6 +1,7 @@
 .gradle
 .settings
 /.idea/
+.shelf
 /run/
 /build/
 /eclipse/
