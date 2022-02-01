@@ -175,7 +175,7 @@ public class YottaFluidTank extends GT_MetaTileEntity_MultiblockBase_EM implemen
                     .<YottaFluidTank>builder()
                     .addShape(YOTTANK_BOTTOM, transpose(new String[][]{
                             {"MM~MM","MCCCM","MCCCM","MCCCM","MMMMM"},
-                            {"     "," CCC "," COC "," CCC ","     "}
+                            {"     "," OOO "," OOO "," OOO ","     "}
                     }))
                     .addShape(YOTTANK_MID, transpose(new String[][]{
                             {"GGGGG","GRRRG","GRRRG","GRRRG","GGGGG"}
@@ -228,10 +228,12 @@ public class YottaFluidTank extends GT_MetaTileEntity_MultiblockBase_EM implemen
                     )
                     .addElement(
                             'O',
-                            ofHatchAdder(
+                            ofHatchAdderOptional(
                                     YottaFluidTank::addOutput,
                                     1537,
-                                    3
+                                    3,
+                                    Loaders.yottaFluidTankCasing,
+                                    0
                             )
                     )
                     .build();
@@ -285,6 +287,9 @@ public class YottaFluidTank extends GT_MetaTileEntity_MultiblockBase_EM implemen
                     ((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
                     return this.mOutputHatches.add((GT_MetaTileEntity_Hatch_Output)aMetaTileEntity);
                 } else if (aMetaTileEntity instanceof YOTTAHatch) {
+                    //only one yothatch allowed
+                    if(!this.mYottaHatch.isEmpty())
+                        return false;
                     ((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
                     ((YOTTAHatch) aMetaTileEntity).setTank(this);
                     return this.mYottaHatch.add((YOTTAHatch)aMetaTileEntity);
@@ -374,11 +379,11 @@ public class YottaFluidTank extends GT_MetaTileEntity_MultiblockBase_EM implemen
             if (mStorageCurrent.compareTo(BigInteger.ZERO) <= 0) mFluidName = "";
 
             if (mFluidName != null && !mFluidName.equals("")) {
-                if (mOutputHatches.size() > 0) {
-                    FluidStack tHatchFluid = mOutputHatches.get(0).mFluid;
+                for (GT_MetaTileEntity_Hatch outputHatch : mOutputHatches) {
+                    FluidStack tHatchFluid = outputHatch.mFluid;
                     FluidStack tOutput = FluidRegistry.getFluidStack(mFluidName, outputAmount.intValue());
                     if (tHatchFluid != null && tHatchFluid.isFluidEqual(tOutput)) {
-                        int leftSpace = mOutputHatches.get(0).getCapacity() - tHatchFluid.amount;
+                        int leftSpace = outputHatch.getCapacity() - tHatchFluid.amount;
                         if (leftSpace < tOutput.amount) {
                             if (reduceFluid(leftSpace)) tHatchFluid.amount += leftSpace;
                         }
@@ -387,12 +392,12 @@ public class YottaFluidTank extends GT_MetaTileEntity_MultiblockBase_EM implemen
                         }
                     }
                     else if (tHatchFluid == null) {
-                        int leftSpace = mOutputHatches.get(0).getCapacity();
+                        int leftSpace = outputHatch.getCapacity();
                         if (leftSpace < tOutput.amount) {
-                            if (reduceFluid(leftSpace)) mOutputHatches.get(0).fill(FluidRegistry.getFluidStack(mFluidName, leftSpace), true);
+                            if (reduceFluid(leftSpace)) outputHatch.fill(FluidRegistry.getFluidStack(mFluidName, leftSpace), true);
                         }
                         else {
-                            if (reduceFluid(tOutput.amount)) mOutputHatches.get(0).fill(tOutput, true);
+                            if (reduceFluid(tOutput.amount)) outputHatch.fill(tOutput, true);
                         }
                     }
                 }
@@ -415,7 +420,7 @@ public class YottaFluidTank extends GT_MetaTileEntity_MultiblockBase_EM implemen
 
     @Override
     public String[] getStructureDescription(ItemStack stackSize) {
-        return DescTextLocalization.addText("YOTTank.hint", 7);
+        return DescTextLocalization.addText("YOTTank.hint", 8);
     }
 
     @Override
