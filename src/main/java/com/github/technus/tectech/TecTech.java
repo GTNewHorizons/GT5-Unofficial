@@ -35,8 +35,12 @@ import java.util.Iterator;
 
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 
-@Mod(modid = Reference.MODID, name = Reference.NAME, version = Reference.VERSION, dependencies = "required-after:Forge@[10.13.4.1614,);"
-        + "required-after:YAMCore@[0.5.70,);" + "required-after:gregtech;" + "after:CoFHCore;" + "after:Thaumcraft;" + "after:dreamcraft;" + "required-after:structurelib;")
+@Mod(modid = Reference.MODID, name = Reference.NAME, version = Reference.VERSION,
+        dependencies = "required-after:Forge@[10.13.4.1614,);" +
+                "required-after:YAMCore@[0.5.70,);" + "required-after:structurelib;" +
+                "after:ComputerCraft;" + "after:OpenComputers;" +
+                "required-after:gregtech;" + "after:dreamcraft;" +
+                "after:appliedenergistics2;" + "after:CoFHCore;" + "after:Thaumcraft;")
 public class TecTech {
     @SidedProxy(clientSide = Reference.CLIENTSIDE, serverSide = Reference.SERVERSIDE)
     public static CommonProxy proxy;
@@ -44,27 +48,27 @@ public class TecTech {
     @Mod.Instance(Reference.MODID)
     public static TecTech instance;
 
-    public static final XSTR RANDOM = XSTR.XSTR_INSTANCE;
+    public static final XSTR               RANDOM = XSTR.XSTR_INSTANCE;
     public static final LogHelper          LOGGER = new LogHelper(Reference.MODID);
-    public static CreativeTabTecTech creativeTabTecTech;
-    public static CreativeTabEM      creativeTabEM;
+    public static       CreativeTabTecTech creativeTabTecTech;
+    public static       CreativeTabEM      creativeTabEM;
 
     private static IngameErrorLog moduleAdminErrorLogs;
-    public static TecTechConfig configTecTech;
+    public static  TecTechConfig  configTecTech;
 
-    public static ChunkDataHandler chunkDataHandler;
-    public static AnomalyHandler anomalyHandler;
+    public static ChunkDataHandler  chunkDataHandler;
+    public static AnomalyHandler    anomalyHandler;
     public static PlayerPersistence playerPersistence;
 
-    public static final EMDefinitionsRegistry    definitionsRegistry =new EMDefinitionsRegistry();
-    public static final EMTransformationRegistry transformationInfo  =new EMTransformationRegistry();
+    public static final EMDefinitionsRegistry    definitionsRegistry = new EMDefinitionsRegistry();
+    public static final EMTransformationRegistry transformationInfo  = new EMTransformationRegistry();
 
     /**
      * For Loader.isModLoaded checks during the runtime
      */
     public static boolean hasCOFH = false;
 
-    public static final byte tectechTexturePage1=8;
+    public static final byte tectechTexturePage1 = 8;
 
     public static void AddLoginError(String pMessage) {
         if (moduleAdminErrorLogs != null) {
@@ -93,11 +97,11 @@ public class TecTech {
             moduleAdminErrorLogs = new IngameErrorLog();
         }
 
-        playerPersistence=new PlayerPersistence("tec");
+        playerPersistence = new PlayerPersistence("tec");
         FMLCommonHandler.instance().bus().register(playerPersistence);
         MinecraftForge.EVENT_BUS.register(playerPersistence);
 
-        chunkDataHandler=new  ChunkDataHandler();
+        chunkDataHandler = new ChunkDataHandler();
         FMLCommonHandler.instance().bus().register(chunkDataHandler);
         MinecraftForge.EVENT_BUS.register(chunkDataHandler);
 
@@ -108,13 +112,13 @@ public class TecTech {
     public void Load(FMLInitializationEvent event) {
         hasCOFH = Loader.isModLoaded(Reference.COFHCORE);
 
-        if(configTecTech.DISABLE_MATERIAL_LOADING_FFS){
+        if (configTecTech.DISABLE_MATERIAL_LOADING_FFS) {
             try {
-                Field modifiersField = Field.class.getDeclaredField( "modifiers" );
-                modifiersField.setAccessible( true );
-                Field field= GT_Proxy.class.getDeclaredField("mEvents");
+                Field modifiersField = Field.class.getDeclaredField("modifiers");
+                modifiersField.setAccessible(true);
+                Field field = GT_Proxy.class.getDeclaredField("mEvents");
                 field.setAccessible(true);
-                modifiersField.setInt( field, field.getModifiers() & ~Modifier.FINAL );
+                modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
                 field.set(GT_Mod.gregtechproxy, new Collection<Object>() {
                     @Override
                     public int size() {
@@ -203,9 +207,9 @@ public class TecTech {
 
     @Mod.EventHandler
     public void PostLoad(FMLPostInitializationEvent PostEvent) {
-        MainLoader.postLoad(definitionsRegistry,transformationInfo);
+        MainLoader.postLoad(definitionsRegistry, transformationInfo);
 
-        chunkDataHandler.registerChunkMetaDataHandler(anomalyHandler=new AnomalyHandler());
+        chunkDataHandler.registerChunkMetaDataHandler(anomalyHandler = new AnomalyHandler());
     }
 
     @Mod.EventHandler
@@ -213,7 +217,7 @@ public class TecTech {
         pEvent.registerServerCommand(new ConvertInteger());
         pEvent.registerServerCommand(new ConvertFloat());
         pEvent.registerServerCommand(new EMList());
-        if(DEBUG_MODE) {
+        if (DEBUG_MODE) {
             pEvent.registerServerCommand(new EMGive());
             pEvent.registerServerCommand(new CancerCommand());
             pEvent.registerServerCommand(new ChargeCommand());

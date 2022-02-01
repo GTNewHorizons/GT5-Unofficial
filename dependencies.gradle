@@ -44,4 +44,5 @@ dependencies {
 
     compile files("dependencies/OpenModularTurrets-1.7.10-2.2.10-237-deobf.jar")
     compile files("dependencies/AdvancedSolarPanel_1.7.10_Edition.jar")
+    compile files("dependencies/worldedit-forge-mc1.7.10-6.1.1-dist.jar")
 }
