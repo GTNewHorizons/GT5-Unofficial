@@ -56,12 +56,15 @@ public class YOTTAHatch extends GT_MetaTileEntity_Hatch implements IGridProxyabl
     private YottaFluidTank host;
     private AENetworkProxy gridProxy = null;
     private int priority;
+    private AccessRestriction readMode = AccessRestriction.READ_WRITE;
+    private final AccessRestriction[] AEModes = new AccessRestriction[]{AccessRestriction.NO_ACCESS, AccessRestriction.READ, AccessRestriction.WRITE, AccessRestriction.READ_WRITE};
 
     public YOTTAHatch(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0,
                 new String[] {"Special I/O port for EC2.",
                         "Directly connected YOTTank with AE fluid storage system.",
-                        "Use screwdriver/soldering iron to set storage priority"});
+                        "Use screwdriver to set storage priority",
+                        "Use soldering iron to set read/write mode"});
     }
 
     public YOTTAHatch(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -76,12 +79,14 @@ public class YOTTAHatch extends GT_MetaTileEntity_Hatch implements IGridProxyabl
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setInteger("mAEPriority", this.priority);
+        aNBT.setInteger("mAEMode", this.readMode.ordinal());
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         this.priority = aNBT.getInteger("mAEPriority");
+        this.readMode = AEModes[aNBT.getInteger("mAEMode")];
     }
 
     @Override
@@ -105,11 +110,8 @@ public class YOTTAHatch extends GT_MetaTileEntity_Hatch implements IGridProxyabl
 
     @Override
     public boolean onSolderingToolRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (aPlayer.isSneaking())
-            this.priority -= 100;
-        else
-            this.priority += 100;
-        GT_Utility.sendChatToPlayer(aPlayer, String.format(StatCollector.translateToLocal("yothatch.chat.0"), this.priority));
+        this.readMode = AEModes[(readMode.ordinal() + 1) % 4];
+        GT_Utility.sendChatToPlayer(aPlayer, String.format(StatCollector.translateToLocal("yothatch.chat.1"), this.readMode));
         return true;
     }
 
@@ -333,7 +335,7 @@ public class YOTTAHatch extends GT_MetaTileEntity_Hatch implements IGridProxyabl
     @Override
     @Optional.Method(modid = "appliedenergistics2")
     public AccessRestriction getAccess() {
-        return AccessRestriction.READ_WRITE;
+        return this.readMode;
     }
 
     @Override

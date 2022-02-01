@@ -301,6 +301,9 @@ largeessentiagenerator.chat= Installed!
 essentiahatch.chat.0=Successfully locked to %s.
 essentiahatch.chat.1=Cleared.
 yothatch.chat.0=Set storage priority to %s.
+yothatch.chat.1=Set to %s mode
+yottank.chat.0=Clear the lock filter
+yottank.chat.1=Lock to %s
 
 #Achievement
 achievement.gt.blockmachines.nag=Large Naquadah Reactor
