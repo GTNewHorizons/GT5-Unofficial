@@ -1875,7 +1875,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                         String.format("Bronze Boiler: %.4f", bronzeBurnTime),
                         String.format("Steel Boiler: %.4f", steelBurnTime),
                         "Titanium Boiler: Not allowed",
-                        "Tungstensteel Boiler: Not allowed");
+                        "Tungstenst. Boiler: Not allowed");
             }
 
     		return super.addRecipe(recipe);
@@ -1895,7 +1895,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     String.format("Bronze Boiler: %.4f", bronzeBurnTime),
                     String.format("Steel Boiler: %.4f", steelBurnTime),
                     "Titanium Boiler: Not allowed",
-                    "Tungstensteel Boiler: Not allowed");
+                    "Tungstenst. Boiler: Not allowed");
 
             return super.addRecipe(recipe);
         }
