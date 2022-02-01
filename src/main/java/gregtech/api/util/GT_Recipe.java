@@ -1890,10 +1890,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             bronzeBurnTime -= bronzeBurnTime % 0.05;
             double steelBurnTime = baseBurnTime + floatErrorCorrection;
             steelBurnTime -= steelBurnTime % 0.05;
-            double titaniumBurnTime = baseBurnTime * 0.3 + floatErrorCorrection;
-            titaniumBurnTime -= titaniumBurnTime % 0.05;
-            double tungstensteelBurnTime = baseBurnTime * 0.15 + floatErrorCorrection;
-            tungstensteelBurnTime -= tungstensteelBurnTime % 0.05;
 
             recipe.setNeiDesc("Burn time in seconds:",
                     String.format("Bronze Boiler: %.4f", bronzeBurnTime),
