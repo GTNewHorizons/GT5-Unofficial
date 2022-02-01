@@ -1,8 +1,8 @@
 package gregtech.api.enums;
 
-import gregtech.api.util.GT_Utility;
-
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This is some kind of Periodic Table, which I use to determine Properties of the Materials.
@@ -300,13 +300,11 @@ public enum Element {
         mDecayTo = aDecayTo;
         mName = aName;
         mIsIsotope = aIsIsotope;
+        Companion.VALUES.put(name(), this);
     }
 
     public static Element get(String aMaterialName) {
-        Object tObject = GT_Utility.getFieldContent(Element.class, aMaterialName, false, false);
-        if (tObject instanceof Element)
-            return (Element) tObject;
-        return _NULL;
+        return Companion.VALUES.getOrDefault(aMaterialName, _NULL);
     }
 
     public long getProtons() {
@@ -319,5 +317,16 @@ public enum Element {
 
     public long getMass() {
         return mProtons + mNeutrons + mAdditionalMass;
+    }
+
+    /**
+     * A companion object to workaround java limitations
+     */
+    private static final class Companion {
+        /**
+         * Why is this a separate map and populated by enum constructor instead of a Map prepoluated with values()?
+         * Because apparently there are people hacking into this enum via EnumHelper.
+         */
+        private static final Map<String, Element> VALUES = new HashMap<>();
     }
 }
