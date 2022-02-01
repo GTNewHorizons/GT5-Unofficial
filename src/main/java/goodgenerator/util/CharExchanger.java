@@ -114,7 +114,7 @@ public class CharExchanger {
                     sb.append(exp.charAt(prt));
                     prt ++;
                     cnt --;
-                    if (cnt % 3 == 0 && cnt != 0) sb.append(" ");
+                    if (cnt % 3 == 0 && cnt != 0) sb.append(",");
                 }
             }
             if (i < exp.length()) sb.append(exp.charAt(i));
