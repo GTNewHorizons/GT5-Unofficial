@@ -2,16 +2,21 @@ package com.elisis.gtnhlanth.common.register;
 
 import static com.github.bartimaeusnek.bartworks.util.BW_Util.subscriptNumbers;
 
-import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
-import com.github.bartimaeusnek.bartworks.system.material.Werkstoff.GenerationFeatures;
+import java.util.Arrays;
 
+import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
+import com.github.bartimaeusnek.bartworks.util.EnumUtils;
+import com.github.bartimaeusnek.bartworks.util.Pair;
+
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TextureSet;
 
 @SuppressWarnings({"unchecked"})
 public class WerkstoffMaterialPool implements Runnable {
     
     private static final int offsetID = 11_000;
-    private static final int offsetID2 = 11_046;
+    private static final int offsetID2 = 11_100;
     private static final int offsetID3 = 11_300;
     
     /*
@@ -165,8 +170,8 @@ public class WerkstoffMaterialPool implements Runnable {
             new short[] {171, 40, 175},
             "Iodine",
             subscriptNumbers("I"),
-            new Werkstoff.Stats(),
-            Werkstoff.Types.COMPOUND,
+            new Werkstoff.Stats().setProtons(53).setMass(127).setSublimation(true).setBoilingPoint(484).setGas(true),
+            Werkstoff.Types.ELEMENT,
             new Werkstoff.GenerationFeatures().disable().onlyDust().addCells().enforceUnification(),
             offsetID + 12,
             TextureSet.SET_FLUID
@@ -332,11 +337,14 @@ public class WerkstoffMaterialPool implements Runnable {
             new short[] {255, 255, 102},
             "Cerium (III) Oxide",
             subscriptNumbers("Ce2O3"),
-            new Werkstoff.Stats(),
+            new Werkstoff.Stats().setElektrolysis(true),
             Werkstoff.Types.COMPOUND,
             new Werkstoff.GenerationFeatures().disable().onlyDust(),
             offsetID + 28,
-            TextureSet.SET_DULL
+            TextureSet.SET_DULL,
+            Arrays.asList(Materials.Cerium, Materials.Oxygen),
+            new Pair<>(Materials.Cerium, 2),
+            new Pair<>(Materials.Oxygen, 3)      
         );
     
     public static final Werkstoff CeriumRichMixture = new Werkstoff(
@@ -523,6 +531,43 @@ public class WerkstoffMaterialPool implements Runnable {
     		TextureSet.SET_FLUID
     	);
     
+    public static final Werkstoff EuropiumOxide = new Werkstoff(
+    		new short[] {255, 255, 255},
+    		"Europium Oxide",
+    		subscriptNumbers("EuO"),
+    		new Werkstoff.Stats(),
+    		Werkstoff.Types.COMPOUND,
+    		new Werkstoff.GenerationFeatures().disable().onlyDust(),
+    		offsetID + 46,
+    		TextureSet.SET_DULL
+    	);
+    
+    public static final Werkstoff EuropiumSulfide = new Werkstoff(
+    		new short[] {5, 0, 5},
+    		"Europium Sulfide",
+    		subscriptNumbers("EuS"),
+    		new Werkstoff.Stats(),
+    		Werkstoff.Types.COMPOUND,
+    		new Werkstoff.GenerationFeatures().disable().onlyDust(),
+    		offsetID + 47,
+    		TextureSet.SET_DULL
+    	);
+    
+    public static final Werkstoff UnknownBlend = new Werkstoff(
+    		new short[] {0, 0, 5},
+    		"UnknownBlend",
+    		subscriptNumbers("?????"),
+    		new Werkstoff.Stats(),
+    		Werkstoff.Types.MIXTURE,
+    		new Werkstoff.GenerationFeatures().disable().onlyDust(),
+    		offsetID + 48,
+    		TextureSet.SET_DULL
+    	);
+    
+    
+    
+    
+    // TODO
     
     
     
@@ -673,6 +718,8 @@ public class WerkstoffMaterialPool implements Runnable {
     
     
     
+    
+    
     // Weird/Exciting Chemicals		
     public static final Werkstoff Tetrahydrofuran = new Werkstoff(
     		new short[] {255, 255, 255}, //TODO
@@ -789,6 +836,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff Diaminotoluene = new Werkstoff(
     		new short[] {255, 255, 255},
     		"Diaminotoluene",
+    		subscriptNumbers("C6H3(NH2)2CH3"),
     		new Werkstoff.Stats(),
     		Werkstoff.Types.COMPOUND,
     		new Werkstoff.GenerationFeatures().disable().addCells(),
@@ -810,16 +858,30 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff PTMEGElastomer = new Werkstoff(
     		new short[] {255, 255, 255},
     		"PTMEG Elastomer",
-    		subscriptNumbers("(CONH)2(C6H4)2CH2(C4O)"),
-    		new Werkstoff.Stats(),
+    		new Werkstoff.Stats().setMeltingPoint(200),
     		Werkstoff.Types.COMPOUND,
-    		new Werkstoff.GenerationFeatures().disable().addCells(),
+    		new Werkstoff.GenerationFeatures().disable()
+    				.onlyDust()
+    				.addMetalItems()
+    				.addMolten()
+    				.addSimpleMetalWorkingItems()
+    				,
     		offsetID3 + 12,
-    		TextureSet.SET_FLUID
-    		);
+    		TextureSet.SET_METALLIC
+    	);
     
     
+    public static void runInit() {
+    	
+    	addSubTags();
+    	
+    }
     
+    private static void addSubTags() {
+    	
+    	WerkstoffMaterialPool.PTMEGElastomer.add(SubTag.BOUNCY, SubTag.STRETCHY);
+    	
+    }
     
     
     		

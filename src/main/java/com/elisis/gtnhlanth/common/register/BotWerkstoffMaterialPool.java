@@ -7,6 +7,8 @@ import static gregtech.api.enums.Materials.*;
 import static gregtech.api.enums.TextureSet.*;
 
 import static com.github.bartimaeusnek.bartworks.system.material.Werkstoff.Types.*;
+import static com.github.bartimaeusnek.bartworks.util.BW_Util.subscriptNumbers;
+
 
 @SuppressWarnings("unchecked")
 public class BotWerkstoffMaterialPool implements Runnable {
@@ -62,6 +64,7 @@ public class BotWerkstoffMaterialPool implements Runnable {
     public static final Werkstoff SodiumTungstate = new Werkstoff(
             new short[]{0xc, 0xed, 0xd7,0},
             "Sodium Tungstate",
+            subscriptNumbers("Na2WO4"),
             new Werkstoff.Stats(),
             COMPOUND,
             new Werkstoff.GenerationFeatures().disable().addCells(),
@@ -71,6 +74,7 @@ public class BotWerkstoffMaterialPool implements Runnable {
     public static final Werkstoff Phosgene = new Werkstoff(
             new short[]{0x15,0xa1,0x1a},
             "Phosgene",
+            subscriptNumbers("COCl2"),
             new Werkstoff.Stats(),
             COMPOUND,
             new Werkstoff.GenerationFeatures().disable().addCells(),
@@ -80,6 +84,7 @@ public class BotWerkstoffMaterialPool implements Runnable {
     public static final Werkstoff Ethylchloroformate = new Werkstoff(
             new short[]{0x0a,0xc2,0xcc},
             "Ethyl Chloroformate",
+            subscriptNumbers("C3H5ClO2"),
             new Werkstoff.Stats(),
             COMPOUND,
             new Werkstoff.GenerationFeatures().disable().addCells(),
@@ -89,6 +94,7 @@ public class BotWerkstoffMaterialPool implements Runnable {
     public static final Werkstoff Ethylcarbamate = new Werkstoff(
             new short[]{0x0d,0xa9,0xb8},
             "Ethyl Carbamate",
+            subscriptNumbers("CH3CH2OCNH2"),
             new Werkstoff.Stats(),
             COMPOUND,
             new Werkstoff.GenerationFeatures().disable().addCells(),
@@ -98,6 +104,7 @@ public class BotWerkstoffMaterialPool implements Runnable {
     public static final Werkstoff EthylNnitrocarbamate = new Werkstoff(
             new short[]{0x0d,0x85,0xb8},
             "Ethyl N-nitrocarbamate",
+            subscriptNumbers("C3H6N2O4"),
             new Werkstoff.Stats(),
             COMPOUND,
             new Werkstoff.GenerationFeatures().disable().addCells(),
@@ -107,6 +114,7 @@ public class BotWerkstoffMaterialPool implements Runnable {
     public static final Werkstoff AmmoniumNnitrourethane = new Werkstoff(
             new short[]{0x0d,0x54,0xb8},
             "Ammonium N-nitrourethane",
+            subscriptNumbers("C3H10N3O4"),
             new Werkstoff.Stats(),
             COMPOUND,
             new Werkstoff.GenerationFeatures().disable().addCells(),
@@ -116,6 +124,7 @@ public class BotWerkstoffMaterialPool implements Runnable {
     public static final Werkstoff EthylDinitrocarbamate = new Werkstoff(
             new short[]{0x39,0x08,0xc2},
             "Ethyl Dinitrocarbamate",
+            subscriptNumbers("C3H5N3O6"),
             new Werkstoff.Stats(),
             COMPOUND,
             new Werkstoff.GenerationFeatures().disable().addCells(),
@@ -125,6 +134,7 @@ public class BotWerkstoffMaterialPool implements Runnable {
     public static final Werkstoff DinitrogenPentoxide = new Werkstoff(
             new short[]{0xcf,0xeb,0x34},
             "Dinitrogen Pentoxide",
+            subscriptNumbers("N2O5"),
             new Werkstoff.Stats(),
             COMPOUND,
             new Werkstoff.GenerationFeatures().onlyDust(),

@@ -15,6 +15,7 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import gregtech.api.util.GT_Log;
@@ -48,6 +49,7 @@ public class GTNHLanthanides {
     @EventHandler
     public static void init(FMLInitializationEvent e) {
         proxy.init(e);
+        WerkstoffMaterialPool.runInit();
     }
     
     @EventHandler
@@ -64,13 +66,19 @@ public class GTNHLanthanides {
         GT_Log.out.print(Arrays.toString(Werkstoff.werkstoffNameHashMap.keySet().toArray()));
         GT_Log.out.print(Arrays.toString(Werkstoff.werkstoffHashMap.keySet().toArray()));
         
+        
+        
     }
     
     @EventHandler
-    public static void onModLoadingComplete() {
+    public static void onModLoadingComplete(FMLLoadCompleteEvent e) {
     	GT_Log.out.print("AAAAAAAAAAAAAA");
-    	GT_Log.out.print(FluidRegistry.getFluid("Sodium Tungstate").getName());
+    	RecipeLoader.removeCeriumSources();
+    	GT_Log.out.print("We are done loading");
     	BotRecipes.removeRecipes();
+    	
+    	
+    	
     }
     
 
