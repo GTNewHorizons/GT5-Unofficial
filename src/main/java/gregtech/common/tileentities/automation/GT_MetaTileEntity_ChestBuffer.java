@@ -5,7 +5,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Buffer;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Utility;
 import gregtech.common.gui.GT_Container_ChestBuffer;
 import gregtech.common.gui.GT_GUIContainer_ChestBuffer;
 import net.minecraft.entity.player.InventoryPlayer;
