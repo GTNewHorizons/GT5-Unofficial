@@ -1820,16 +1820,16 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public GT_Recipe_Map_LargeBoilerFakeFuels() {
             super(new HashSet<>(55), "gt.recipe.largeboilerfakefuels", "Large Boiler", null, RES_PATH_GUI + "basicmachines/Default", 1, 0, 1, 0, 1, E, 1, E, true, true);
             GT_Recipe explanatoryRecipe = new GT_Recipe(true, new ItemStack[]{}, new ItemStack[]{}, null, null, null, null, 1, 1, 1);
-            explanatoryRecipe.setNeiDesc("Not all solid fuels are listed.", "Any item that burns in a", "vanilla furnace will burn in", "a Large Boiler.");
+            explanatoryRecipe.setNeiDesc("Not all solid fuels are listed.", "Any item that burns in a", "vanilla furnace will burn in", "a Large Bronze or Steel Boiler.");
             addRecipe(explanatoryRecipe);
         }
 
         public GT_Recipe addDenseLiquidRecipe(GT_Recipe recipe) {
-            return addRecipe(recipe, ((double) recipe.mSpecialValue) / 10, false);
+            return addRecipe(recipe, ((double) recipe.mSpecialValue) / 10);
         }
 
         public GT_Recipe addDieselRecipe(GT_Recipe recipe) {
-            return addRecipe(recipe, ((double) recipe.mSpecialValue) / 40, false);
+            return addRecipe(recipe, ((double) recipe.mSpecialValue) / 40);
         }
 
         public void addSolidRecipes(ItemStack... itemStacks) {
@@ -1848,7 +1848,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             return addRecipe(new GT_Recipe(true, new ItemStack[]{fuelItemStack}, new ItemStack[]{}, null, null, null, null, 1, 0, GT_ModHandler.getFuelValue(fuelItemStack) / 1600), ((double) GT_ModHandler.getFuelValue(fuelItemStack)) / 1600, allowedFuel);
         }
 
-        private GT_Recipe addRecipe(GT_Recipe recipe, double baseBurnTime, boolean allowedFuel) {
+        private GT_Recipe addRecipe(GT_Recipe recipe, double baseBurnTime, boolean isAllowedFuel) {
 			recipe = new GT_Recipe(recipe);
 			//Some recipes will have a burn time like 15.9999999 and % always rounds down
 			double floatErrorCorrection = 0.0001;
@@ -1862,7 +1862,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
     		double tungstensteelBurnTime = baseBurnTime * 0.15 + floatErrorCorrection;
     		tungstensteelBurnTime -= tungstensteelBurnTime % 0.05;
 
-            if (allowedFuel) {
+            if (isAllowedFuel) {
                 recipe.setNeiDesc("Burn time in seconds:",
                         String.format("Bronze Boiler: %.4f", bronzeBurnTime),
                         String.format("Steel Boiler: %.4f", steelBurnTime),
@@ -1880,6 +1880,29 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
     		return super.addRecipe(recipe);
     	}
+
+        private GT_Recipe addRecipe(GT_Recipe recipe, double baseBurnTime) {
+            recipe = new GT_Recipe(recipe);
+            //Some recipes will have a burn time like 15.9999999 and % always rounds down
+            double floatErrorCorrection = 0.0001;
+
+            double bronzeBurnTime = baseBurnTime * 2 + floatErrorCorrection;
+            bronzeBurnTime -= bronzeBurnTime % 0.05;
+            double steelBurnTime = baseBurnTime + floatErrorCorrection;
+            steelBurnTime -= steelBurnTime % 0.05;
+            double titaniumBurnTime = baseBurnTime * 0.3 + floatErrorCorrection;
+            titaniumBurnTime -= titaniumBurnTime % 0.05;
+            double tungstensteelBurnTime = baseBurnTime * 0.15 + floatErrorCorrection;
+            tungstensteelBurnTime -= tungstensteelBurnTime % 0.05;
+
+            recipe.setNeiDesc("Burn time in seconds:",
+                    String.format("Bronze Boiler: %.4f", bronzeBurnTime),
+                    String.format("Steel Boiler: %.4f", steelBurnTime),
+                    "Titanium Boiler: Not allowed",
+                    "Tungstensteel Boiler: Not allowed");
+
+            return super.addRecipe(recipe);
+        }
     	
     }
 

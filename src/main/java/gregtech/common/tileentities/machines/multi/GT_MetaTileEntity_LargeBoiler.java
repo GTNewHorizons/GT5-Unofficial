@@ -196,30 +196,33 @@ public abstract class GT_MetaTileEntity_LargeBoiler extends GT_MetaTileEntity_En
         }
 
         this.mSuperEfficencyIncrease = 0;
-        for (GT_Recipe tRecipe : GT_Recipe.GT_Recipe_Map.sDieselFuels.mRecipeList) {
-            FluidStack tFluid = GT_Utility.getFluidForFilledItem(tRecipe.getRepresentativeInput(0), true);
-            if (tFluid != null && tRecipe.mSpecialValue > 1) {
-                tFluid.amount = 1000;
-                if (depleteInput(tFluid)) {
-                    this.mMaxProgresstime = adjustBurnTimeForConfig(runtimeBoost(tRecipe.mSpecialValue / 2));
-                    this.mEUt = adjustEUtForConfig(getEUt());
-                    this.mEfficiencyIncrease = this.mMaxProgresstime * getEfficiencyIncrease() * 4;
-                    return true;
+        if (!isSuperheated()) {
+            for (GT_Recipe tRecipe : GT_Recipe.GT_Recipe_Map.sDieselFuels.mRecipeList) {
+                FluidStack tFluid = GT_Utility.getFluidForFilledItem(tRecipe.getRepresentativeInput(0), true);
+                if (tFluid != null && tRecipe.mSpecialValue > 1) {
+                    tFluid.amount = 1000;
+                    if (depleteInput(tFluid)) {
+                        this.mMaxProgresstime = adjustBurnTimeForConfig(runtimeBoost(tRecipe.mSpecialValue / 2));
+                        this.mEUt = adjustEUtForConfig(getEUt());
+                        this.mEfficiencyIncrease = this.mMaxProgresstime * getEfficiencyIncrease() * 4;
+                        return true;
+                    }
+                }
+            }
+            for (GT_Recipe tRecipe : GT_Recipe.GT_Recipe_Map.sDenseLiquidFuels.mRecipeList) {
+                FluidStack tFluid = GT_Utility.getFluidForFilledItem(tRecipe.getRepresentativeInput(0), true);
+                if (tFluid != null) {
+                    tFluid.amount = 1000;
+                    if (depleteInput(tFluid)) {
+                        this.mMaxProgresstime = adjustBurnTimeForConfig(Math.max(1, runtimeBoost(tRecipe.mSpecialValue * 2)));
+                        this.mEUt = adjustEUtForConfig(getEUt());
+                        this.mEfficiencyIncrease = this.mMaxProgresstime * getEfficiencyIncrease();
+                        return true;
+                    }
                 }
             }
         }
-        for (GT_Recipe tRecipe : GT_Recipe.GT_Recipe_Map.sDenseLiquidFuels.mRecipeList) {
-            FluidStack tFluid = GT_Utility.getFluidForFilledItem(tRecipe.getRepresentativeInput(0), true);
-            if (tFluid != null) {
-                tFluid.amount = 1000;
-                if (depleteInput(tFluid)) {
-                    this.mMaxProgresstime = adjustBurnTimeForConfig(Math.max(1, runtimeBoost(tRecipe.mSpecialValue * 2)));
-                    this.mEUt = adjustEUtForConfig(getEUt());
-                    this.mEfficiencyIncrease = this.mMaxProgresstime * getEfficiencyIncrease();
-                    return true;
-                }
-            }
-        }
+
         ArrayList<ItemStack> tInputList = getStoredInputs();
         if (!tInputList.isEmpty()) {
             if (isSuperheated()) {
