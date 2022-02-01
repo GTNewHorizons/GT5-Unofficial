@@ -18,9 +18,12 @@ repositories {
         }
     }
     maven {
-        url "https://cursemaven.com"
+        url = "https://cursemaven.com"
     }
     maven {
         url = "https://jitpack.io"
+    }
+    maven {
+        url = "http://jenkins.usrv.eu:8081/nexus/content/groups/public"
     }
 }
