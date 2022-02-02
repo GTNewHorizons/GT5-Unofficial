@@ -162,10 +162,9 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
     }
 
     private List<CachedDefaultRecipe> getTieredRecipes(byte lowerTier, byte upperTier) {
-        SortedRecipeListCache cacheHolder = getCacheHolder();
-        List<CachedDefaultRecipe> recipes = cacheHolder.getCachedRecipes();
+        List<CachedDefaultRecipe> recipes = getCache();
         if ( recipes.size() > 0 ) {
-            Range<Integer> indexRange = cacheHolder.getIndexRangeForTiers(lowerTier, upperTier);
+            Range<Integer> indexRange = getCacheHolder().getIndexRangeForTiers(lowerTier, upperTier);
             recipes = recipes.subList(indexRange.getMinimum(), indexRange.getMaximum() + 1);
         }
         return recipes;
