@@ -38,14 +38,15 @@ public class AnomalyHandler implements IChunkMetaDataHandler {
     private static final double SWAP_THRESHOLD = EMAtomDefinition.getSomethingHeavy().getMass() * 1000D * EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED;//can be const as it is computed later...
     private static final int COUNT_DIV=32;
     private static final double PER_PARTICLE=SWAP_THRESHOLD/COUNT_DIV;
-    private static final String INTENSITY = "intensity",SPACE_CANCER="space_cancer", SPACE_CHARGE ="space_charge";
+    private static final String INTENSITY = "intensity",SPACE_CANCER="space_cancer", SPACE_CHARGE ="space_charge", SPACE_MASS="space_mass";
     private static final int MEAN_DELAY =50;
     private static final double CANCER_EFFECTIVENESS = 1/ EM_COUNT_PER_MATERIAL_AMOUNT;
+    private static final double GRAVITY_EFFECTIVENESS =1;
     private static final double CHARGE_EFFECTIVENESS = 10/ EM_COUNT_PER_MATERIAL_AMOUNT;
     private static final double CHARGE_EXPLOSIVENESS = 5/ EM_COUNT_PER_MATERIAL_AMOUNT;
 
     private boolean fixMe=false;
-    private final ArrayList<EntityPlayer> playersWithCharge = new ArrayList<>();
+    private final List<EntityPlayer> playersWithCharge = new ArrayList<>();
     private final ArrayList<Chunk> worldDataArrayList = new ArrayList<>(512);
 
     @Override
@@ -306,12 +307,39 @@ public class AnomalyHandler implements IChunkMetaDataHandler {
                                         double dY = player.posY - otherPlayer.posY;
                                         double dZ = player.posZ - otherPlayer.posZ;
                                         player.addVelocity(effect * dX, effect * dY, effect * dZ);
-                                        otherPlayer.addVelocity(-effect * dX, -effect * dY, -effect * dZ);
+                                        effect=-effect;
+                                        otherPlayer.addVelocity(effect * dX, effect * dY, effect * dZ);
                                     }
                                 }
                             }
                         }
                     }
+                }
+
+                float mass=TecTech.playerPersistence.getDataOrSetToNewTag(player).getFloat(SPACE_MASS);
+                if(mass!=0) {
+                    for (Object o : player.worldObj.playerEntities) {
+                        if (o instanceof EntityPlayer && !((EntityPlayer) o).capabilities.isCreativeMode) {
+                            EntityPlayer otherPlayer=(EntityPlayer)o;
+                            float massOther = TecTech.playerPersistence.getDataOrSetToNewTag(otherPlayer).getFloat(SPACE_MASS);
+                            if (massOther != 0 && player != o) {
+                                float reaction = massOther * mass;
+                                if (reaction !=0) {
+                                    double distanceSq = otherPlayer.getDistanceSqToEntity(player);
+                                    if (distanceSq >= 1) {
+                                        double effect = GRAVITY_EFFECTIVENESS * reaction / (distanceSq * distanceSq * distanceSq);
+                                        double dX = player.posX - otherPlayer.posX;
+                                        double dY = player.posY - otherPlayer.posY;
+                                        double dZ = player.posZ - otherPlayer.posZ;
+                                        otherPlayer.addVelocity(effect * dX, effect * dY, effect * dZ);
+                                        effect=-effect;
+                                        player.addVelocity(effect * dX, effect * dY, effect * dZ);
+                                    }
+                                }
+                            }
+                        }
+                    }
+
                 }
             }
             if (fixMe){
