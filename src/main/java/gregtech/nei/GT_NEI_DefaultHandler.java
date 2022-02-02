@@ -20,6 +20,9 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.power.EUPower;
+import gregtech.common.power.Power;
+import gregtech.common.power.UnspecifiedEUPower;
 import gregtech.common.gui.GT_GUIContainer_FusionReactor;
 import gregtech.common.gui.GT_GUIContainer_PrimitiveBlastFurnace;
 import net.minecraft.client.Minecraft;
@@ -47,6 +50,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
     public static final int sOffsetY = 11;
     private static final ConcurrentMap<GT_Recipe.GT_Recipe_Map, SortedRecipeListCache> CACHE = new ConcurrentHashMap<>();
 
+    private Power mPower;
     static {
         GuiContainerManager.addInputHandler(new GT_RectHandler());
         GuiContainerManager.addTooltipHandler(new GT_RectHandler());
@@ -203,6 +207,17 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
             }
         }
         return currenttip;
+    }
+
+    private Power getPowerFromRecipeMap() {
+        // By default, assume generic EU LV power with no overclocks
+        Power power;
+        if (this.mRecipeMap.mShowVoltageAmperageInNEI) {
+            power = new EUPower((byte) 1, this.mRecipeMap.mAmperage);
+        } else {
+            power = new UnspecifiedEUPower((byte) 1, this.mRecipeMap.mAmperage);
+        }
+        return power;
     }
 
     @Override
