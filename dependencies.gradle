@@ -19,30 +19,25 @@ dependencies {
         transitive = false
     }*/
 
-    compile("com.github.GTNewHorizons:GTplusplus:master-SNAPSHOT:dev") {
+    compileOnly("com.github.GTNewHorizons:GTplusplus:master-SNAPSHOT:dev") {
         transitive = false
     }
     compileOnly("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:master-SNAPSHOT:dev") {
         transitive = false
     }
 
-    compile("dan200.computercraft:ComputerCraft:1.75") {
+    compileOnly("dan200.computercraft:ComputerCraft:1.75") {
         transitive = false
     }
-    compile("li.cil.oc:OpenComputers:MC1.7.10-1.7.5.1356:dev") {
+    compileOnly("li.cil.oc:OpenComputers:MC1.7.10-1.7.5.1356:dev") {
         transitive = false
     }
-    compile("curse.maven:cofh-core-69162:2388751") {
+    compileOnly("curse.maven:cofh-core-69162:2388751") {
         transitive = false
     }
-    compile("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev") {
-        transitive = false
-    }
-    compile("com.azanor.baubles:Baubles:1.0.1.10:deobf") {
+    compileOnly("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev") {
         transitive = false
     }
 
-    compile files("dependencies/OpenModularTurrets-1.7.10-2.2.10-237-deobf.jar")
-    compile files("dependencies/AdvancedSolarPanel_1.7.10_Edition.jar")
-    compile files("dependencies/worldedit-forge-mc1.7.10-6.1.1-dist.jar")
+    compileOnly files("dependencies/OpenModularTurrets-1.7.10-2.2.10-237-deobf.jar")
 }
