@@ -1,8 +1,12 @@
 package gregtech.common.power;
 
+import gregtech.api.util.GT_Utility;
+
 import static gregtech.api.enums.GT_Values.V;
 
 public class BasicMachineEUPower extends EUPower{
+    private static final String OC = " (OC)";
+    private boolean wasOverclocked;
 
     public BasicMachineEUPower(byte tier, int amperage) {
         super(tier, amperage);
@@ -10,6 +14,7 @@ public class BasicMachineEUPower extends EUPower{
 
     @Override
     public void computePowerUsageAndDuration(int euPerTick, int duration) {
+        super.computePowerUsageAndDuration(euPerTick, duration);
         if (tier == 0) {
             //Long time calculation
             long xMaxProgresstime = ((long) duration) << 1;
@@ -46,5 +51,22 @@ public class BasicMachineEUPower extends EUPower{
                     recipeDuration = 1;//set time to 1 tick
             }
         }
+        wasOverclocked = checkIfOverclocked();
+    }
+
+    @Override
+    public String getPowerUsageString() {
+        return decorateWithOverclockLabel(super.getPowerUsageString());
+    }
+
+    private String decorateWithOverclockLabel(String s) {
+        if (wasOverclocked) {
+            s += OC;
+        }
+        return s;
+    }
+
+    private boolean checkIfOverclocked() {
+        return originalVoltage != computeVoltageForEuRate(recipeEuPerTick);
     }
 }
