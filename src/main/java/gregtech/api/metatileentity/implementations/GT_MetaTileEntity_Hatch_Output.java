@@ -5,7 +5,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.gui.GT_Container_OutputHatch;
 import gregtech.common.gui.GT_GUIContainer_OutputHatch;
@@ -214,58 +213,58 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch {
         String inBrackets;
         switch (mMode) {
             case 0:
-                GT_Utility.sendChatToPlayer(aPlayer, trans("108","Outputs misc. Fluids, Steam and Items"));
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("108","Outputs misc. Fluids, Steam and Items"));
                 this.setLockedFluidName(null);
                 break;
             case 1:
-                GT_Utility.sendChatToPlayer(aPlayer, trans("109","Outputs Steam and Items"));
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("109","Outputs Steam and Items"));
                 this.setLockedFluidName(null);
                 break;
             case 2:
-                GT_Utility.sendChatToPlayer(aPlayer, trans("110","Outputs Steam and misc. Fluids"));
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("110","Outputs Steam and misc. Fluids"));
                 this.setLockedFluidName(null);
                 break;
             case 3:
-                GT_Utility.sendChatToPlayer(aPlayer, trans("111","Outputs Steam"));
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("111","Outputs Steam"));
                 this.setLockedFluidName(null);
                 break;
             case 4:
-                GT_Utility.sendChatToPlayer(aPlayer, trans("112","Outputs misc. Fluids and Items"));
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("112","Outputs misc. Fluids and Items"));
                 this.setLockedFluidName(null);
                 break;
             case 5:
-                GT_Utility.sendChatToPlayer(aPlayer, trans("113","Outputs only Items"));
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("113","Outputs only Items"));
                 this.setLockedFluidName(null);
                 break;
             case 6:
-                GT_Utility.sendChatToPlayer(aPlayer, trans("114","Outputs only misc. Fluids"));
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("114","Outputs only misc. Fluids"));
                 this.setLockedFluidName(null);
                 break;
             case 7:
-                GT_Utility.sendChatToPlayer(aPlayer, trans("115","Outputs nothing"));
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("115","Outputs nothing"));
                 this.setLockedFluidName(null);
                 break;
             case 8:
                 playerThatLockedfluid = aPlayer;
                 if (mFluid == null) {
                     this.setLockedFluidName(null);
-                    inBrackets = trans("115.3","currently none, will be locked to the next that is put in (or use fluid cell to lock)");
+                    inBrackets = GT_Utility.trans("115.3","currently none, will be locked to the next that is put in (or use fluid cell to lock)");
                 } else {
                     this.setLockedFluidName(this.getDrainableStack().getFluid().getName());
                     inBrackets = this.getDrainableStack().getLocalizedName();
                 }
-                GT_Utility.sendChatToPlayer(aPlayer, String.format("%s (%s)", trans("151.1", "Outputs items and 1 specific Fluid"), inBrackets));
+                GT_Utility.sendChatToPlayer(aPlayer, String.format("%s (%s)", GT_Utility.trans("151.1", "Outputs items and 1 specific Fluid"), inBrackets));
                 break;
             case 9:
                 playerThatLockedfluid = aPlayer;
                 if (mFluid == null) {
                     this.setLockedFluidName(null);
-                    inBrackets = trans("115.3","currently none, will be locked to the next that is put in (or use fluid cell to lock)");
+                    inBrackets = GT_Utility.trans("115.3","currently none, will be locked to the next that is put in (or use fluid cell to lock)");
                 } else {
                     this.setLockedFluidName(this.getDrainableStack().getFluid().getName());
                     inBrackets = this.getDrainableStack().getLocalizedName();
                 }
-                GT_Utility.sendChatToPlayer(aPlayer, String.format("%s (%s)", trans("151.2", "Outputs 1 specific Fluid"), inBrackets));
+                GT_Utility.sendChatToPlayer(aPlayer, String.format("%s (%s)", GT_Utility.trans("151.2", "Outputs 1 specific Fluid"), inBrackets));
                 break;
         }
     }
@@ -283,16 +282,16 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch {
             tFluid = ((IFluidContainerItem)tCurrentItem.getItem()).getFluid(tCurrentItem);
         if (tFluid != null) {
             if (getLockedFluidName() != null && !getLockedFluidName().equals(tFluid.getFluid().getName())) {
-                GT_Utility.sendChatToPlayer(aPlayer, String.format("%s %s", trans("151.3",
+                GT_Utility.sendChatToPlayer(aPlayer, String.format("%s %s", GT_Utility.trans("151.3",
                         "Hatch is locked to a different fluid. To change the locking, empty it and made it locked to the next fluid with a screwdriver. Currently locked to")
                         , StatCollector.translateToLocal(tFluid.getUnlocalizedName())));
             }
             else {
                 setLockedFluidName(tFluid.getFluid().getName());
                 if (mMode == 8)
-                    GT_Utility.sendChatToPlayer(aPlayer, String.format("%s (%s)", trans("151.1", "Outputs items and 1 specific Fluid"), tFluid.getLocalizedName()));
+                    GT_Utility.sendChatToPlayer(aPlayer, String.format("%s (%s)", GT_Utility.trans("151.1", "Outputs items and 1 specific Fluid"), tFluid.getLocalizedName()));
                 else
-                    GT_Utility.sendChatToPlayer(aPlayer, String.format("%s (%s)", trans("151.2", "Outputs 1 specific Fluid"), tFluid.getLocalizedName()));
+                    GT_Utility.sendChatToPlayer(aPlayer, String.format("%s (%s)", GT_Utility.trans("151.2", "Outputs 1 specific Fluid"), tFluid.getLocalizedName()));
             }
             return true;
         }
@@ -308,11 +307,6 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch {
         if (tryToLockHatch(aPlayer, aSide))
             return true;
         return super.onRightclick(aBaseMetaTileEntity, aPlayer, aSide, aX, aY, aZ);
-    }
-
-    @Override
-    public String trans(String aKey, String aEnglish){
-        return GT_LanguageManager.addStringLocalization("Interaction_DESCRIPTION_Index_"+aKey, aEnglish, false);
     }
 
     public boolean outputsSteam() {
@@ -348,7 +342,7 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch {
     protected void onEmptyingContainerWhenEmpty() {
         if (this.lockedFluidName == null && this.mFluid != null) {
             this.setLockedFluidName(this.mFluid.getFluid().getName());
-            GT_Utility.sendChatToPlayer(playerThatLockedfluid, String.format(trans("151.4","Sucessfully locked Fluid to %s"), mFluid.getLocalizedName()));
+            GT_Utility.sendChatToPlayer(playerThatLockedfluid, String.format(GT_Utility.trans("151.4","Sucessfully locked Fluid to %s"), mFluid.getLocalizedName()));
         }
     }
 

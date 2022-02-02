@@ -107,9 +107,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
         if (supportsSingleRecipeLocking()) {
             mLockedToSingleRecipe = !mLockedToSingleRecipe;
             if (mLockedToSingleRecipe) {
-                GT_Utility.sendChatToPlayer(aPlayer, trans("219","Single recipe locking enabled. Will lock to next recipe."));
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("219","Single recipe locking enabled. Will lock to next recipe."));
             } else {
-                GT_Utility.sendChatToPlayer(aPlayer, trans("220","Single recipe locking disabled."));
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("220","Single recipe locking disabled."));
                 mSingleRecipeCheck = null;
             }
         }

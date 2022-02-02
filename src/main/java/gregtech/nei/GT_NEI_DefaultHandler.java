@@ -191,7 +191,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                     if ((!(tStack instanceof FixedPositionedStack)) || (((FixedPositionedStack) tStack).mChance <= 0) || (((FixedPositionedStack) tStack).mChance == 10000)) {
                         break;
                     }
-                    currenttip.add(trans("150","Chance: ") + ((FixedPositionedStack) tStack).mChance / 100 + "." + (((FixedPositionedStack) tStack).mChance % 100 < 10 ? "0" + ((FixedPositionedStack) tStack).mChance % 100 : Integer.valueOf(((FixedPositionedStack) tStack).mChance % 100)) + "%");
+                    currenttip.add(GT_Utility.trans("150", "Chance: ") + ((FixedPositionedStack) tStack).mChance / 100 + "." + (((FixedPositionedStack) tStack).mChance % 100 < 10 ? "0" + ((FixedPositionedStack) tStack).mChance % 100 : Integer.valueOf(((FixedPositionedStack) tStack).mChance % 100)) + "%");
                     break;
                 }
             }
@@ -201,7 +201,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                             (tStack.item.stackSize != 0)) {
                         break;
                     }
-                    currenttip.add(trans("151","Does not get consumed in the process"));
+                    currenttip.add(GT_Utility.trans("151", "Does not get consumed in the process"));
                     break;
                 }
             }
@@ -884,8 +884,9 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         }
     }
 
-    public String trans(String aKey, String aEnglish){
-        return GT_LanguageManager.addStringLocalization("Interaction_DESCRIPTION_Index_"+aKey, aEnglish, false);
+    @Deprecated
+    public String trans(String aKey, String aEnglish) {
+        return GT_Utility.trans(aKey, aEnglish);
     }
 
     private static class SortedRecipeListCache {

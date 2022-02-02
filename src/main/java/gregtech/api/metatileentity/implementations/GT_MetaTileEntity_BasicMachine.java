@@ -843,7 +843,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
                 GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.hatch.disableFilter." + mDisableFilter));
             } else {
                 mAllowInputFromOutputSide = !mAllowInputFromOutputSide;
-                GT_Utility.sendChatToPlayer(aPlayer, mAllowInputFromOutputSide ? trans("095", "Input from Output Side allowed") : trans("096", "Input from Output Side forbidden"));
+                GT_Utility.sendChatToPlayer(aPlayer, mAllowInputFromOutputSide ? GT_Utility.trans("095", "Input from Output Side allowed") : GT_Utility.trans("096", "Input from Output Side forbidden"));
             }
         }
     }

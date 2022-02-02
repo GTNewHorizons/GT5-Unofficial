@@ -757,8 +757,9 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
 		return "";
 	}
 
+    @Deprecated
 	public String trans(String aKey, String aEnglish){
-    	return GT_LanguageManager.addStringLocalization("Interaction_DESCRIPTION_Index_"+aKey, aEnglish, false);
+    	return GT_Utility.trans(aKey, aEnglish);
     }
 
     private boolean connectableColor(TileEntity tTileEntity) {

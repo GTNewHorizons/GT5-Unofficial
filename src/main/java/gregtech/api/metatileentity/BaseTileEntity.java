@@ -468,9 +468,10 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     
     @Override 
     public void markDirty() {/* Do not do the super Function */} 
-    
+
+    @Deprecated
     public String trans(String aKey, String aEnglish){
-    	return GT_LanguageManager.addStringLocalization("Interaction_DESCRIPTION_Index_"+aKey, aEnglish, false);
+    	return GT_Utility.trans(aKey, aEnglish);
     }
 
     /*

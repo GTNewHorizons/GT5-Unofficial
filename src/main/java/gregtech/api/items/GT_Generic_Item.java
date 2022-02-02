@@ -143,7 +143,8 @@ public class GT_Generic_Item extends Item implements IProjectileItem {
     public boolean hasContainerItem(ItemStack aStack) {
         return getContainerItem(aStack) != null;
     }
-    
+
+    @Deprecated
     public String trans(String aKey, String aEnglish){
     	return GT_LanguageManager.addStringLocalization("Item_DESCRIPTION_Index_"+aKey, aEnglish, false);
     }

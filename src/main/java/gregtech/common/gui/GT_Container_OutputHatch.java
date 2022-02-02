@@ -35,12 +35,12 @@ public class GT_Container_OutputHatch extends GT_Container_BasicTank {
             // If player click the locker slot with empty or the same fluid cell, clear the lock fluid
             if (tReadyLockFluid == null || (tMode >= 8 && tReadyLockFluid.getFluid().getName().equals(tHatch.getLockedFluidName()))) {
                 tHatch.setLockedFluidName(null);
-                GT_Utility.sendChatToPlayer(aPlayer, trans("300", "Fluid Lock Cleared."));
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("300", "Fluid Lock Cleared."));
                 tHatch.mMode = 0;
             }
             else {
                 tHatch.setLockedFluidName(tReadyLockFluid.getFluid().getName());
-                GT_Utility.sendChatToPlayer(aPlayer, String.format(trans("151.4", "Sucessfully locked Fluid to %s"), tReadyLockFluid.getLocalizedName()));
+                GT_Utility.sendChatToPlayer(aPlayer, String.format(GT_Utility.trans("151.4", "Sucessfully locked Fluid to %s"), tReadyLockFluid.getLocalizedName()));
                 tHatch.mMode = 9;
             }
         }
