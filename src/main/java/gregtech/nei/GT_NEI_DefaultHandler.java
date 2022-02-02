@@ -8,12 +8,17 @@ import codechicken.nei.guihook.IContainerTooltipHandler;
 import codechicken.nei.recipe.GuiCraftingRecipe;
 import codechicken.nei.recipe.GuiRecipe;
 import codechicken.nei.recipe.GuiUsageRecipe;
+import codechicken.nei.recipe.ICraftingHandler;
+import codechicken.nei.recipe.IUsageHandler;
+import codechicken.nei.recipe.RecipeCatalysts;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.gui.GT_GUIContainer;
 import gregtech.api.gui.GT_GUIContainer_BasicMachine;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
@@ -23,6 +28,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.power.EUPower;
 import gregtech.common.power.Power;
 import gregtech.common.power.UnspecifiedEUPower;
+import gregtech.common.blocks.GT_Item_Machines;
 import gregtech.common.gui.GT_GUIContainer_FusionReactor;
 import gregtech.common.gui.GT_GUIContainer_PrimitiveBlastFurnace;
 import net.minecraft.client.Minecraft;
@@ -31,6 +37,7 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+import org.apache.commons.lang3.Range;
 import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nonnull;
@@ -39,6 +46,7 @@ import java.awt.*;
 import java.lang.ref.SoftReference;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -73,8 +81,12 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         return result;
     }
 
+    private SortedRecipeListCache getCacheHolder() {
+        return CACHE.computeIfAbsent(mRecipeMap, m -> new SortedRecipeListCache());
+    }
+
     public List<CachedDefaultRecipe> getCache() {
-        SortedRecipeListCache cacheHolder = CACHE.computeIfAbsent(mRecipeMap, m -> new SortedRecipeListCache());
+        SortedRecipeListCache cacheHolder = getCacheHolder();
         List<CachedDefaultRecipe> cache;
         if (cacheHolder.getCachedRecipesVersion() != GT_Mod.gregtechproxy.getReloadCount() || (cache = cacheHolder.getCachedRecipes()) == null) {
             cache = mRecipeMap.mRecipeList.stream()  // do not use parallel stream. This is already parallelized by NEI
@@ -103,7 +115,12 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
     @Override
     public void loadCraftingRecipes(String outputId, Object... results) {
         if (outputId.equals(getOverlayIdentifier())) {
-            arecipes.addAll(getCache());
+            if (results.length > 0 && results[0] instanceof Power) {
+                mPower = (Power) results[0];
+                loadTieredCraftingRecipesUpTo(mPower.getTier());
+            } else {
+                arecipes.addAll(getCache());
+            }
         } else {
             super.loadCraftingRecipes(outputId, results);
         }
@@ -139,6 +156,19 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
             tResults.addAll(GT_Utility.getContainersFromFluid(tFluidStack));
         }
     }
+
+    private void loadTieredCraftingRecipesUpTo(byte upperTier) {
+        arecipes.addAll(getTieredRecipes((byte) 0, upperTier));
+    }
+
+    private List<CachedDefaultRecipe> getTieredRecipes(byte lowerTier, byte upperTier) {
+        SortedRecipeListCache cacheHolder = getCacheHolder();
+        List<CachedDefaultRecipe> recipes = cacheHolder.getCachedRecipes();
+        if ( recipes.size() > 0 ) {
+            Range<Integer> indexRange = cacheHolder.getIndexRangeForTiers(lowerTier, upperTier);
+            recipes = recipes.subList(indexRange.getMinimum(), indexRange.getMaximum() + 1);
+        }
+        return recipes;
     }
 
     @Override
@@ -157,6 +187,32 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
             if (tInputs.stream().anyMatch(stack -> recipe.contains(recipe.mInputs, stack)))
                 arecipes.add(recipe);
         }
+    }
+
+    @Override
+    public IUsageHandler getUsageAndCatalystHandler(String inputId, Object... ingredients) {
+        if (inputId.equals("item")) {
+            ItemStack candidate = (ItemStack) ingredients[0];
+            GT_NEI_DefaultHandler handler = (GT_NEI_DefaultHandler) newInstance();
+            if (RecipeCatalysts.containsCatalyst(handler, candidate)) {
+                IMetaTileEntity gtTileEntity = GT_Item_Machines.getMetaTileEntity(candidate);
+                if (gtTileEntity instanceof GT_MetaTileEntity_BasicMachine) {
+                    Power power = ((GT_MetaTileEntity_BasicMachine) gtTileEntity).getPower();
+                    handler.loadCraftingRecipes(getOverlayIdentifier(), power);
+                    return handler;
+                }
+            }
+        }
+        return this.getUsageHandler(inputId, ingredients);
+    }
+
+    @Override
+    public ICraftingHandler getRecipeHandler(String outputId, Object... results) {
+        GT_NEI_DefaultHandler handler = (GT_NEI_DefaultHandler) super.getRecipeHandler(outputId, results);
+        if (results.length > 0 && results[0] instanceof Power) {
+            handler.mPower = (Power) results[0];
+        }
+        return handler;
     }
 
     @Override
@@ -993,6 +1049,8 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         private int mCachedRecipesVersion = -1;
         @Nullable
         private SoftReference<List<CachedDefaultRecipe>> mCachedRecipes;
+        private Range<Integer>[] mTierIndexes;
+        private Range<Byte> mTierRange;
 
         public int getCachedRecipesVersion() {
             return mCachedRecipesVersion;
@@ -1009,6 +1067,59 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
 
         public void setCachedRecipes(@Nonnull List<CachedDefaultRecipe> aCachedRecipes) {
             this.mCachedRecipes = new SoftReference<>(aCachedRecipes);
+        }
+
+        public Range<Integer> getIndexRangeForTiers(byte lowerTier, byte upperTier) {
+            if (mTierIndexes == null) {
+                computeTierIndexes();
+            }
+            return Range.between(getLowIndexForTier(lowerTier), getHighIndexForTier(upperTier));
+        }
+
+        private void computeTierIndexes() {
+            mTierIndexes = new Range[GT_Values.V.length];
+            Iterator<CachedDefaultRecipe> iterator = mCachedRecipes.get().iterator();
+
+            int index = 0;
+            int minIndex = 0;
+            int maxIndex = -1;
+            byte previousTier = -1;
+            byte lowestTier = 0;
+            while(iterator.hasNext()) {
+                CachedDefaultRecipe recipe = iterator.next();
+                byte recipeTier = GT_Utility.getTier(recipe.mRecipe.mEUt);
+                if (recipeTier != previousTier) {
+                    if ( maxIndex != -1) {
+                        mTierIndexes[previousTier] = Range.between(minIndex, maxIndex);
+                    } else {
+                        lowestTier = recipeTier;
+                    }
+                    minIndex = index;
+                    previousTier = recipeTier;
+                }
+                maxIndex = index;
+                index++;
+                if (!iterator.hasNext()) {
+                    mTierIndexes[recipeTier] = Range.between(minIndex, maxIndex);
+                    mTierRange = Range.between(lowestTier, recipeTier);
+                }
+            }
+        }
+
+        private int getLowIndexForTier(byte lowerTier) {
+            byte lowTier = (byte) Math.max(mTierRange.getMinimum(), lowerTier);
+            while (mTierIndexes[lowTier] == null) {
+                lowTier++;
+            }
+            return mTierIndexes[lowTier].getMinimum();
+        }
+
+        private int getHighIndexForTier(byte upperTier) {
+            byte highTier = (byte) Math.min(mTierRange.getMaximum(), upperTier);
+            while (mTierIndexes[highTier] == null) {
+                highTier--;
+            }
+            return mTierIndexes[highTier].getMaximum();
         }
     }
 }
