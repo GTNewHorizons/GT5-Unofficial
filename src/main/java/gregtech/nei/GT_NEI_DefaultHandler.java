@@ -271,52 +271,87 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
 
     @Override
     public void drawExtras(int aRecipeIndex) {
-        int tEUt = ((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mEUt;
-        int tDuration = ((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mDuration;
-        String[] recipeDesc = ((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.getNeiDesc();
+        GT_Recipe recipe = ((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe;
+        String[] recipeDesc = recipe.getNeiDesc();
         if (recipeDesc == null) {
-            if (tEUt != 0) {
-                drawText(10, 73, trans("152","Total: ") + GT_Utility.formatNumbers((long) tDuration * tEUt) + " EU", 0xFF000000);
-                drawText(10, 83, trans("153","Usage: ") + GT_Utility.formatNumbers(tEUt) + " EU/t", 0xFF000000);
-                if (this.mRecipeMap.mShowVoltageAmperageInNEI) {
-                    int voltage = tEUt / this.mRecipeMap.mAmperage;
-                    byte tier = GT_Utility.getTier(voltage);
-                    if (tier < 0 || tier >= 16) {
-                        drawText(10, 93, trans("154","Voltage: ") + GT_Utility.formatNumbers(voltage) + " EU", 0xFFFF0000);
-//add here gt logger
-                    } else {
-                        drawText(10, 93, trans("154","Voltage: ") + GT_Utility.formatNumbers(voltage) + " EU (" + GT_Values.VN[tier] + ")", 0xFF000000);
-                    }
-                    drawText(10, 103, trans("155","Amperage: ") + GT_Utility.formatNumbers(this.mRecipeMap.mAmperage), 0xFF000000);
-                } else {
-                    drawText(10, 93, trans("156","Voltage: unspecified"), 0xFF000000);
-                    drawText(10, 103, trans("157","Amperage: unspecified"), 0xFF000000);
-                }
-            }
-            if (tDuration > 0) {
-                drawText(10, 113, trans("158","Time: ") + GT_Utility.formatNumbers(0.05d * tDuration) + trans("161"," secs"), 0xFF000000);
-            }
-            int tSpecial = ((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mSpecialValue;
-            if (tSpecial == -100 && GT_Mod.gregtechproxy.mLowGravProcessing) {
-                drawText(10, 123, trans("159","Needs Low Gravity"), 0xFF000000);
-            } else if (tSpecial == -200 && GT_Mod.gregtechproxy.mEnableCleanroom) {
-                drawText(10, 123, trans("160","Needs Cleanroom"), 0xFF000000);
-            } else if (tSpecial == -201) {
-                drawText(10, 123, trans("206","Scan for Assembly Line"), 0xFF000000);
-            } else if (tSpecial == -300 && GT_Mod.gregtechproxy.mEnableCleanroom) {
-                drawText(10, 123, trans("160","Needs Cleanroom & LowGrav"), 0xFF000000);
-            } else if (tSpecial == -400) {
-                drawText(10, 123, trans("216","Deprecated Recipe"), 0xFF000000);
-            } else if ((GT_Utility.isStringValid(this.mRecipeMap.mNEISpecialValuePre)) || (GT_Utility.isStringValid(this.mRecipeMap.mNEISpecialValuePost))) {
-                drawText(10, 123, this.mRecipeMap.mNEISpecialValuePre + GT_Utility.formatNumbers(tSpecial * this.mRecipeMap.mNEISpecialValueMultiplier) + this.mRecipeMap.mNEISpecialValuePost, 0xFF000000);
-            }
+            drawDescription(recipe);
         } else {
-            int i = 0;
-            for (String descLine : recipeDesc) {
-                drawText(10, 73 + 10 * i, descLine, 0xFF000000);
-                i++;
+            drawOverrideDescription(recipeDesc);
+        }
+    }
+
+    private void drawDescription(GT_Recipe recipe) {
+        if (mPower == null) {
+            mPower = getPowerFromRecipeMap();
+        }
+        mPower.computePowerUsageAndDuration(recipe.mEUt, recipe.mDuration);
+        if (mPower.getEuPerTick() > 0) {
+            drawPowerUsageLines();
+        }
+        if (mPower.getDurationTicks() > 0) {
+            drawLine(4, GT_Utility.trans("158", "Time: ") + mPower.getDurationString());
+        }
+        drawOptionalLine(5, getSpecialInfo(recipe.mSpecialValue));
+    }
+
+    private void drawPowerUsageLines() {
+        drawLine(0, GT_Utility.trans("152", "Total: ") + mPower.getTotalPowerString());
+        drawLine(1, GT_Utility.trans("153", "Usage: ") + mPower.getPowerUsageString());
+        drawOptionalLine(2, mPower.getVoltageString(), GT_Utility.trans("154", "Voltage: "));
+        drawOptionalLine(3, mPower.getAmperageString(), GT_Utility.trans("155", "Amperage: "));
+    }
+
+    private void drawOverrideDescription(String[] recipeDesc) {
+        for (int i = 0; i < recipeDesc.length; i++) {
+            if (recipeDesc[i] != null) {
+                drawLine(i, recipeDesc[i]);
             }
         }
+    }
+
+    private String getSpecialInfo(int specialValue) {
+        String specialInfo = null;
+        if (specialValue == -100 && GT_Mod.gregtechproxy.mLowGravProcessing) {
+            specialInfo = GT_Utility.trans("159", "Needs Low Gravity");
+        } else if (specialValue == -200 && GT_Mod.gregtechproxy.mEnableCleanroom) {
+            specialInfo = GT_Utility.trans("160", "Needs Cleanroom");
+        } else if (specialValue == -201) {
+            specialInfo = GT_Utility.trans("206", "Scan for Assembly Line");
+        } else if (specialValue == -300 && GT_Mod.gregtechproxy.mEnableCleanroom) {
+            specialInfo = GT_Utility.trans("160", "Needs Cleanroom & LowGrav");
+        } else if (specialValue == -400) {
+            specialInfo = GT_Utility.trans("216", "Deprecated Recipe");
+        } else if (hasSpecialValueFormat()) {
+            specialInfo = formatSpecialValue(specialValue);
+        }
+        return specialInfo;
+    }
+
+    private boolean hasSpecialValueFormat() {
+        return (GT_Utility.isStringValid(this.mRecipeMap.mNEISpecialValuePre))
+                || (GT_Utility.isStringValid(this.mRecipeMap.mNEISpecialValuePost));
+    }
+
+    private String formatSpecialValue(int SpecialValue) {
+        return this.mRecipeMap.mNEISpecialValuePre + GT_Utility.formatNumbers(
+                (long) SpecialValue * this.mRecipeMap.mNEISpecialValueMultiplier)
+                + this.mRecipeMap.mNEISpecialValuePost;
+    }
+
+    private void drawOptionalLine(int lineNumber, String line, String prefix) {
+        if (line != null) {
+            drawLine(lineNumber, prefix + line);
+        }
+    }
+
+    private void drawOptionalLine(int lineNumber, String line) {
+        if (line != null) {
+            drawLine(lineNumber, line);
+        }
+    }
+
+    private void drawLine(int lineNumber, String line) {
+        drawText(10, 73 + lineNumber * 10, line, 0xFF000000);
     }
 
     public static class GT_RectHandler
