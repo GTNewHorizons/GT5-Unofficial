@@ -22,20 +22,16 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
  * Extend this class to make a simple Machine
  */
 public abstract class GT_MetaTileEntity_BasicMachine_Steel extends GT_MetaTileEntity_BasicMachine_Bronze {
-    public GT_MetaTileEntity_BasicMachine_Steel(int aID, String aName, String aNameRegional, String aDescription, int aInputSlotCount, int aOutputSlotCount,  @Deprecated boolean aBricked) {
-        super(aID, aName, aNameRegional, aDescription, aInputSlotCount, aOutputSlotCount, aBricked);
+    public GT_MetaTileEntity_BasicMachine_Steel(int aID, String aName, String aNameRegional, String aDescription, int aInputSlotCount, int aOutputSlotCount, boolean aHighPressure) {
+        super(aID, aName, aNameRegional, aDescription, aInputSlotCount, aOutputSlotCount, aHighPressure);
     }
 
-    public GT_MetaTileEntity_BasicMachine_Steel(String aName, String aDescription, ITexture[][][] aTextures, int aInputSlotCount, int aOutputSlotCount,  @Deprecated boolean aBricked) {
-        super(aName, aDescription, aTextures, aInputSlotCount, aOutputSlotCount, aBricked);
+    public GT_MetaTileEntity_BasicMachine_Steel(String aName, String aDescription, ITexture[][][] aTextures, int aInputSlotCount, int aOutputSlotCount, boolean aHighPressure) {
+        super(aName, aDescription, aTextures, aInputSlotCount, aOutputSlotCount, aHighPressure);
     }
     
-    public GT_MetaTileEntity_BasicMachine_Steel(String aName, String[] aDescription, ITexture[][][] aTextures, int aInputSlotCount, int aOutputSlotCount,  @Deprecated boolean aBricked) {
-        super(aName, aDescription, aTextures, aInputSlotCount, aOutputSlotCount, aBricked);
-    }
-
-    protected static byte getSteamTier() {
-        return 2;
+    public GT_MetaTileEntity_BasicMachine_Steel(String aName, String[] aDescription, ITexture[][][] aTextures, int aInputSlotCount, int aOutputSlotCount, boolean aHighPressure) {
+        super(aName, aDescription, aTextures, aInputSlotCount, aOutputSlotCount, aHighPressure);
     }
 
     @Override

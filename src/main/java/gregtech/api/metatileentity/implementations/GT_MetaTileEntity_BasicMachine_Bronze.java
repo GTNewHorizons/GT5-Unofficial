@@ -39,23 +39,16 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
     private static final int NEEDS_STEAM_VENTING = 64;
     public boolean mNeedsSteamVenting = false;
 
-    public GT_MetaTileEntity_BasicMachine_Bronze(int aID, String aName, String aNameRegional, String aDescription, int aInputSlotCount, int aOutputSlotCount, @Deprecated boolean aBricked) {
-        super(aID, aName, aNameRegional, getSteamTier(), 0, aDescription, aInputSlotCount, aOutputSlotCount, "", "");
+    public GT_MetaTileEntity_BasicMachine_Bronze(int aID, String aName, String aNameRegional, String aDescription, int aInputSlotCount, int aOutputSlotCount, boolean aHighPressure) {
+        super(aID, aName, aNameRegional, aHighPressure ? 2 : 1, 0, aDescription, aInputSlotCount, aOutputSlotCount, "", "");
     }
 
-    public GT_MetaTileEntity_BasicMachine_Bronze(String aName, String aDescription, ITexture[][][] aTextures, int aInputSlotCount, int aOutputSlotCount,  @Deprecated boolean aBricked) {
-        super(aName, getSteamTier(), 0, aDescription, aTextures, aInputSlotCount, aOutputSlotCount, "", "");
+    public GT_MetaTileEntity_BasicMachine_Bronze(String aName, String aDescription, ITexture[][][] aTextures, int aInputSlotCount, int aOutputSlotCount,  boolean aHighPressure) {
+        super(aName, aHighPressure ? 2 : 1, 0, aDescription, aTextures, aInputSlotCount, aOutputSlotCount, "", "");
     }
 
-    public GT_MetaTileEntity_BasicMachine_Bronze(String aName, String[] aDescription, ITexture[][][] aTextures, int aInputSlotCount, int aOutputSlotCount, @Deprecated boolean aBricked) {
-        super(aName, getSteamTier(), 0, aDescription, aTextures, aInputSlotCount, aOutputSlotCount, "", "");
-    }
-
-    /**
-     * To be called by the constructor to define the tier of machines of this type
-     */
-    protected static byte getSteamTier() {
-        return 1;
+    public GT_MetaTileEntity_BasicMachine_Bronze(String aName, String[] aDescription, ITexture[][][] aTextures, int aInputSlotCount, int aOutputSlotCount, boolean aHighPressure) {
+        super(aName, aHighPressure ? 2 : 1, 0, aDescription, aTextures, aInputSlotCount, aOutputSlotCount, "", "");
     }
 
     protected boolean isBricked() {

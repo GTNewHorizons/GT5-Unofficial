@@ -15,15 +15,15 @@ import static gregtech.api.enums.Textures.BlockIcons.*;
 
 public class GT_MetaTileEntity_AlloySmelter_Bronze extends GT_MetaTileEntity_BasicMachine_Bronze {
     public GT_MetaTileEntity_AlloySmelter_Bronze(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, "Combination Smelter", 2, 1, true);
+        super(aID, aName, aNameRegional, "Combination Smelter", 2, 1, false);
     }
 
     public GT_MetaTileEntity_AlloySmelter_Bronze(String aName, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aDescription, aTextures, 2, 1, true);
+        super(aName, aDescription, aTextures, 2, 1, false);
     }
 
     public GT_MetaTileEntity_AlloySmelter_Bronze(String aName, String[] aDescription, ITexture[][][] aTextures) {
-        super(aName, aDescription, aTextures, 2, 1, true);
+        super(aName, aDescription, aTextures, 2, 1, false);
     }
 
     @Override

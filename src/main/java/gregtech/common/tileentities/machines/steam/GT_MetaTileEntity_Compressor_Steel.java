@@ -15,15 +15,15 @@ import static gregtech.api.enums.Textures.BlockIcons.*;
 
 public class GT_MetaTileEntity_Compressor_Steel extends GT_MetaTileEntity_BasicMachine_Steel {
     public GT_MetaTileEntity_Compressor_Steel(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, "Compressing Items", 1, 1, false);
+        super(aID, aName, aNameRegional, "Compressing Items", 1, 1, true);
     }
 
     public GT_MetaTileEntity_Compressor_Steel(String aName, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aDescription, aTextures, 1, 1, false);
+        super(aName, aDescription, aTextures, 1, 1, true);
     }
 
     public GT_MetaTileEntity_Compressor_Steel(String aName, String[] aDescription, ITexture[][][] aTextures) {
-        super(aName, aDescription, aTextures, 1, 1, false);
+        super(aName, aDescription, aTextures, 1, 1, true);
     }
 
     @Override
