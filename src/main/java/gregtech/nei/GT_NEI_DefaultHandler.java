@@ -26,6 +26,7 @@ import gregtech.common.power.UnspecifiedEUPower;
 import gregtech.common.gui.GT_GUIContainer_FusionReactor;
 import gregtech.common.gui.GT_GUIContainer_PrimitiveBlastFurnace;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -51,6 +52,10 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
     private static final ConcurrentMap<GT_Recipe.GT_Recipe_Map, SortedRecipeListCache> CACHE = new ConcurrentHashMap<>();
 
     private Power mPower;
+    private String mRecipeName; // Name of the handler displayed on top
+    private NEIHandlerAbsoluteTooltip mRecipeNameTooltip;
+    private static final int RECIPE_NAME_WIDTH = 140;
+
     static {
         GuiContainerManager.addInputHandler(new GT_RectHandler());
         GuiContainerManager.addTooltipHandler(new GT_RectHandler());
@@ -173,6 +178,46 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
 
     @Override
     public String getRecipeName() {
+        if (mRecipeName == null) {
+            mRecipeName = computeRecipeName();
+        }
+        return mRecipeName;
+    }
+
+    private String computeRecipeName() {
+        String recipeName = GT_LanguageManager.getTranslation(this.mRecipeMap.mUnlocalizedName);
+        if (mPower != null) {
+            recipeName = addSuffixToRecipeName(recipeName, " (", mPower.getTierString() + ")");
+        }
+        return recipeName;
+    }
+
+    private String addSuffixToRecipeName(String recipeName, String separator, String suffix) {
+        FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+        int recipeNameWidth = fontRenderer.getStringWidth(recipeName);
+        int targetWidth = RECIPE_NAME_WIDTH - fontRenderer.getStringWidth(suffix);
+        if (recipeNameWidth + fontRenderer.getStringWidth(separator) > targetWidth) {
+            setupRecipeNameTooltip(recipeName + separator + suffix);
+            separator = "...(";
+            recipeName = shrinkRecipeName(recipeName, targetWidth - fontRenderer.getStringWidth(separator));
+        }
+        return recipeName + separator + suffix;
+    }
+
+    private String shrinkRecipeName(String recipeName, int targetWidth) {
+        FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+        do {
+            recipeName = recipeName.substring(0, recipeName.length() - 2);
+        } while (fontRenderer.getStringWidth(recipeName)  > targetWidth);
+        return recipeName;
+    }
+
+    private void setupRecipeNameTooltip(String tooltip) {
+        mRecipeNameTooltip = new NEIHandlerAbsoluteTooltip(tooltip, new Rectangle(13, -34, RECIPE_NAME_WIDTH - 1, 11));
+    }
+
+    @Override
+    public String getRecipeTabName() {
         return GT_LanguageManager.getTranslation(this.mRecipeMap.mUnlocalizedName);
     }
 
@@ -205,6 +250,10 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                     break;
                 }
             }
+        }
+
+        if (mRecipeNameTooltip != null) {
+            mRecipeNameTooltip.handleTooltip(currenttip, aRecipeIndex);
         }
         return currenttip;
     }
