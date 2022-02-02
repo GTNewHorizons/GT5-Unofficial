@@ -27,6 +27,11 @@ public class GT_MetaTileEntity_AlloySmelter_Bronze extends GT_MetaTileEntity_Bas
     }
 
     @Override
+    protected boolean isBricked() {
+        return true;
+    }
+
+    @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_AlloySmelter_Bronze(mName, mDescriptionArray, mTextures);
     }
@@ -37,15 +42,8 @@ public class GT_MetaTileEntity_AlloySmelter_Bronze extends GT_MetaTileEntity_Bas
     }
 
     @Override
-    public int checkRecipe() {
-        GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sAlloySmelterRecipes.findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[1], null, getAllInputs());
-        if ((tRecipe != null) && (canOutput(tRecipe.mOutputs)) && (tRecipe.isRecipeInputEqual(true, null, getAllInputs()))) {
-            mOutputItems[0] = tRecipe.getOutput(0);
-            mEUt = tRecipe.mEUt;
-            mMaxProgresstime = (tRecipe.mDuration * 2);
-            return 2;
-        }
-        return 0;
+    public GT_Recipe.GT_Recipe_Map getRecipeList() {
+        return GT_Recipe.GT_Recipe_Map.sAlloySmelterRecipes;
     }
 
     @Override

@@ -37,15 +37,8 @@ public class GT_MetaTileEntity_Extractor_Steel extends GT_MetaTileEntity_BasicMa
     }
 
     @Override
-    public int checkRecipe() {
-        GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sExtractorRecipes.findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[2], null, getAllInputs());
-        if ((tRecipe != null) && (canOutput(tRecipe.mOutputs)) && (tRecipe.isRecipeInputEqual(true, null, getAllInputs()))) {
-            this.mOutputItems[0] = tRecipe.getOutput(0);
-            this.mEUt = (tRecipe.mEUt * 2);
-            this.mMaxProgresstime = tRecipe.mDuration;
-            return 2;
-        }
-        return 0;
+    public GT_Recipe.GT_Recipe_Map getRecipeList() {
+        return GT_Recipe.GT_Recipe_Map.sExtractorRecipes;
     }
 
     @Override
