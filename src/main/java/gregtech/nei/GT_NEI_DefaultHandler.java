@@ -112,26 +112,29 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                 tResults.add(GT_OreDictUnificator.get(tPrefix, tPrefixMaterial.mMaterial.mMaterial, 1L));
             }
         }
-        FluidStack tFluid = GT_Utility.getFluidForFilledItem(aResult, true);
-        FluidStack tFluidStack;
-        if (tFluid != null) {
-            tFluidStack = tFluid;
-            tResults.add(GT_Utility.getFluidDisplayStack(tFluid, false));
-        }
-        else tFluidStack = GT_Utility.getFluidFromDisplayStack(aResult);
-        if (tFluidStack != null) {
-            tResults.addAll(GT_Utility.getContainersFromFluid(tFluidStack));
-        }
+        addFluidStacks(aResult, tResults);
         for (CachedDefaultRecipe recipe : getCache()) {
             if (tResults.stream().anyMatch(stack -> recipe.contains(recipe.mOutputs, stack)))
                 arecipes.add(recipe);
         }
     }
 
+    private void addFluidStacks(ItemStack aStack, ArrayList<ItemStack> tResults) {
+        FluidStack tFluid = GT_Utility.getFluidForFilledItem(aStack, true);
+        FluidStack tFluidStack;
+        if (tFluid != null) {
+            tFluidStack = tFluid;
+            tResults.add(GT_Utility.getFluidDisplayStack(tFluid, false));
+        } else tFluidStack = GT_Utility.getFluidFromDisplayStack(aStack);
+        if (tFluidStack != null) {
+            tResults.addAll(GT_Utility.getContainersFromFluid(tFluidStack));
+        }
+    }
+    }
+
     @Override
     public void loadUsageRecipes(ItemStack aInput) {
         ItemData tPrefixMaterial = GT_OreDictUnificator.getAssociation(aInput);
-
         ArrayList<ItemStack> tInputs = new ArrayList<>();
         tInputs.add(aInput);
         tInputs.add(GT_OreDictUnificator.get(false, aInput));
@@ -140,16 +143,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                 tInputs.add(GT_OreDictUnificator.get(tPrefix, tPrefixMaterial.mMaterial.mMaterial, 1L));
             }
         }
-        FluidStack tFluid = GT_Utility.getFluidForFilledItem(aInput, true);
-        FluidStack tFluidStack;
-        if (tFluid != null) {
-            tFluidStack = tFluid;
-            tInputs.add(GT_Utility.getFluidDisplayStack(tFluid, false));
-        }
-        else tFluidStack = GT_Utility.getFluidFromDisplayStack(aInput);
-        if (tFluidStack != null) {
-            tInputs.addAll(GT_Utility.getContainersFromFluid(tFluidStack));
-        }
+        addFluidStacks(aInput, tInputs);
         for (CachedDefaultRecipe recipe : getCache()) {
             if (tInputs.stream().anyMatch(stack -> recipe.contains(recipe.mInputs, stack)))
                 arecipes.add(recipe);
@@ -180,13 +174,12 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
 
     @Override
     public String getGuiTexture() {
-//    return "gregtech:textures/gui/" + this.mRecipeMap.mUnlocalizedName + ".png";
         return this.mRecipeMap.mNEIGUIPath;
     }
 
     @Override
     public List<String> handleItemTooltip(GuiRecipe gui, ItemStack aStack, List<String> currenttip, int aRecipeIndex) {
-        TemplateRecipeHandler.CachedRecipe tObject = (TemplateRecipeHandler.CachedRecipe) this.arecipes.get(aRecipeIndex);
+        CachedRecipe tObject = this.arecipes.get(aRecipeIndex);
         if ((tObject instanceof CachedDefaultRecipe)) {
             CachedDefaultRecipe tRecipe = (CachedDefaultRecipe) tObject;
             for (PositionedStack tStack : tRecipe.mOutputs) {
@@ -420,7 +413,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
 
             try {
                 maybeIn = aRecipe.getInputPositionedStacks();
-            } catch(NullPointerException npe) {
+            } catch (NullPointerException npe) {
                 maybeIn = null;
                 GT_Log.err.println("CachedDefaultRecipe - Invalid InputPositionedStacks " + aRecipe);
                 npe.printStackTrace(GT_Log.err);
@@ -433,7 +426,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                 npe.printStackTrace(GT_Log.err);
             }
 
-            if ( maybeIn != null && maybeOut != null) {
+            if (maybeIn != null && maybeOut != null) {
                 mInputs = maybeIn;
                 mOutputs = maybeOut;
                 return;
