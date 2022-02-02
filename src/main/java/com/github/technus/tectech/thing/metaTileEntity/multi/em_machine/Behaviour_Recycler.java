@@ -1,20 +1,20 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi.em_machine;
 
-import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.MultiblockControl;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
 
-import static com.github.technus.tectech.CommonValues.V;
+import static com.github.technus.tectech.util.CommonValues.V;
 
 /**
  * Created by danie_000 on 24.12.2017.
  */
 public class Behaviour_Recycler implements GT_MetaTileEntity_EM_machine.IBehaviour {
     private final int tier;
-    private final float coeff;
+    private final double coeff;
     public Behaviour_Recycler(int tier){
         this.tier=tier;
-        coeff=(float)(1/Math.pow(2,tier-4));
+        coeff=(1D/Math.pow(2D,tier-4));
     }
 
     @Override
@@ -26,9 +26,9 @@ public class Behaviour_Recycler implements GT_MetaTileEntity_EM_machine.IBehavio
     }
 
     @Override
-    public MultiblockControl<cElementalInstanceStackMap[]> process(cElementalInstanceStackMap[] inputs, GT_MetaTileEntity_EM_machine te, Parameters parameters) {
-        float mass=0;
-        for (cElementalInstanceStackMap input : inputs) {
+    public MultiblockControl<EMInstanceStackMap[]> process(EMInstanceStackMap[] inputs, GT_MetaTileEntity_EM_machine te, Parameters parameters) {
+        double mass=0;
+        for (EMInstanceStackMap input : inputs) {
             if (input != null) {
                 mass += input.getMass();
             }

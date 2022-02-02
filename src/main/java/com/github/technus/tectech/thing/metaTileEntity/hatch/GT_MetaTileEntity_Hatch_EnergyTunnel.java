@@ -1,18 +1,18 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
-import com.github.technus.tectech.CommonValues;
-import com.github.technus.tectech.Util;
-import com.github.technus.tectech.thing.metaTileEntity.pipe.IConnectsToEnergyTunnel;
+import com.github.technus.tectech.util.CommonValues;
+import com.github.technus.tectech.util.Util;
+import com.github.technus.tectech.mechanics.pipe.IConnectsToEnergyTunnel;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
-import static com.github.technus.tectech.CommonValues.TRANSFER_AT;
-import static com.github.technus.tectech.CommonValues.V;
+import static com.github.technus.tectech.util.CommonValues.TRANSFER_AT;
+import static com.github.technus.tectech.util.CommonValues.V;
 import static com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_IN_LASER_TT;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
@@ -37,16 +37,6 @@ public class GT_MetaTileEntity_Hatch_EnergyTunnel extends GT_MetaTileEntity_Hatc
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
         return new ITexture[]{aBaseTexture, OVERLAYS_ENERGY_IN_LASER_TT[mTier]};
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
-    }
-
-    @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        super.saveNBTData(aNBT);
     }
 
     @Override
@@ -86,12 +76,17 @@ public class GT_MetaTileEntity_Hatch_EnergyTunnel extends GT_MetaTileEntity_Hatc
 
     @Override
     public long maxEUStore() {
-        return 512L + V[mTier] * 4L * Amperes;
+        return V[mTier] * 24L * Amperes;
     }
 
     @Override
-    public long maxAmperesIn() {
-        return 0;
+    public boolean isEnetOutput() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnetInput() {
+        return false;
     }
 
     @Override
@@ -114,7 +109,8 @@ public class GT_MetaTileEntity_Hatch_EnergyTunnel extends GT_MetaTileEntity_Hatc
         return new String[]{
                 CommonValues.TEC_MARK_GENERAL,
                 mDescription,
-                translateToLocal("gt.blockmachines.hatch.energytunnel.desc.1") + ": " + EnumChatFormatting.YELLOW + (Amperes * maxEUInput()) + EnumChatFormatting.RESET + " EU/t"//Throughput
+                translateToLocal("gt.blockmachines.hatch.energytunnel.desc.1") + ": "
+                        + EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(Amperes * maxEUInput()) + EnumChatFormatting.RESET + " EU/t"//Throughput
         };
     }
 

@@ -1,6 +1,6 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
-import com.github.technus.tectech.Util;
+import com.github.technus.tectech.util.Util;
 import com.github.technus.tectech.thing.metaTileEntity.pipe.GT_MetaTileEntity_Pipe_EM;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -62,7 +62,7 @@ public class GT_MetaTileEntity_Hatch_OutputElemental extends GT_MetaTileEntity_H
                 if (aMetaTileEntity != null) {
                     if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputElemental &&
                             opposite == tGTTileEntity.getFrontFacing()) {
-                        ((GT_MetaTileEntity_Hatch_InputElemental) aMetaTileEntity).getContainerHandler().putUnifyAll(content);
+                        ((GT_MetaTileEntity_Hatch_InputElemental) aMetaTileEntity).getContentHandler().putUnifyAll(content);
                         ((GT_MetaTileEntity_Hatch_InputElemental) aMetaTileEntity).updateSlots();
                         content.clear();
                         return;

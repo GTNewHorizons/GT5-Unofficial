@@ -1,13 +1,14 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi.em_machine;
 
-import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.Util;
-import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.block.QuantumStuffBlock;
-import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.*;
+import com.github.technus.tectech.util.CommonValues;
+import com.github.technus.tectech.util.Util;
+import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.block.Block;
@@ -21,10 +22,12 @@ import net.minecraftforge.common.util.ForgeDirection;
 import java.util.HashMap;
 import java.util.function.Supplier;
 
-import static com.github.technus.tectech.Util.StructureBuilderExtreme;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
@@ -34,34 +37,38 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
     //region variables
     public static final String machine = "EM Machinery";
 
-    private ItemStack loadedMachine;
+    private ItemStack  loadedMachine;
     private IBehaviour currentBehaviour;
     //endregion
 
     //region structure
-    private static final String[][] shape = new String[][]{
-            {"B0", "A   ", "0 - 0", "A   ", "B0",},
-            {"A000", "00000", "00.00", "00000", "A000",},
-            {"A121", "1---1", "2---2", "1---1", "A121",},
-            {"A131", "1---1", "3-A-3", "1---1", "A131",},
-            {"A121", "1---1", "2---2", "1---1", "A121",},
-            {"A000", "00000", "00-00", "00000", "A000",},
-            {"B0", "A!!!", "0!!!0", "A!!!", "B0",},};
-    private static final Block[] blockType = new Block[]{sBlockCasingsTT, QuantumGlassBlock.INSTANCE, sBlockCasingsTT, sBlockCasingsTT};
-    private static final byte[] blockMeta = new byte[]{4, 0, 5, 6};
-    private final IHatchAdder[] addingMethods = new IHatchAdder[]{this::addClassicToMachineList, this::addElementalToMachineList};
-    private static final short[] casingTextures = new short[]{textureOffset, textureOffset + 4};
-    private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT};
-    private static final byte[] blockMetaFallback = new byte[]{0, 4};
     private static final String[] description = new String[]{
             EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
             translateToLocal("gt.blockmachines.multimachine.em.processing.hint.0"),//1 - Classic Hatches or High Power Casing
-            translateToLocal("gt.blockmachines.multimachine.em.processing.hint.1"),};//2 - Elemental Hatches or Molecular Casing
+            translateToLocal("gt.blockmachines.multimachine.em.processing.hint.1"),//2 - Elemental Hatches or Molecular Casing
+    };
+
+    private static final IStructureDefinition<GT_MetaTileEntity_EM_machine> STRUCTURE_DEFINITION = IStructureDefinition
+            .<GT_MetaTileEntity_EM_machine>builder()
+            .addShape("main", transpose(new String[][]{
+                    {"  A  ", " AAA ", " EBE ", " ECE ", " EBE ", " AAA ", "  A  "},
+                    {" DDD ", "AAAAA", "E---E", "E---E", "E---E", "AAAAA", " FFF "},
+                    {"AD-DA", "AA~AA", "B---B", "C- -C", "B---B", "AA-AA", "AFFFA"},
+                    {" DDD ", "AAAAA", "E---E", "E---E", "E---E", "AAAAA", " FFF "},
+                    {"  A  ", " AAA ", " EBE ", " ECE ", " EBE ", " AAA ", "  A  "}
+            }))
+            .addElement('A', ofBlock(sBlockCasingsTT, 4))
+            .addElement('B', ofBlock(sBlockCasingsTT, 5))
+            .addElement('C', ofBlock(sBlockCasingsTT, 6))
+            .addElement('E', ofBlock(QuantumGlassBlock.INSTANCE, 0))
+            .addElement('D', ofHatchAdderOptional(GT_MetaTileEntity_EM_machine::addClassicToMachineList, textureOffset, 1, sBlockCasingsTT, 0))
+            .addElement('F', ofHatchAdderOptional(GT_MetaTileEntity_EM_machine::addElementalToMachineList, textureOffset + 4, 2, sBlockCasingsTT, 4))
+            .build();
     //endregion
 
     //region parameters
-    protected Parameters.Group.ParameterIn[] inputMux;
-    protected Parameters.Group.ParameterIn[] outputMux;
+    protected            Parameters.Group.ParameterIn[]                inputMux;
+    protected            Parameters.Group.ParameterIn[]                outputMux;
     private static final IStatusFunction<GT_MetaTileEntity_EM_machine> SRC_STATUS =
             (base, p) -> {
                 double v = p.get();
@@ -85,7 +92,7 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
                 }
                 return STATUS_NEUTRAL;
             };
-    private static final INameFunction<GT_MetaTileEntity_EM_machine> ROUTE_NAME =
+    private static final INameFunction<GT_MetaTileEntity_EM_machine>   ROUTE_NAME =
             (base, p) -> (p.parameterId() == 0 ? translateToLocal("tt.keyword.Source") + " " : translateToLocal("tt.keyword.Destination") + " ") + p.hatchId();
     //endregion
 
@@ -157,15 +164,15 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
          * @param parameters array passed from previous method!
          * @return null if recipe should not start, control object to set machine state and start recipe
          */
-        MultiblockControl<cElementalInstanceStackMap[]> process(cElementalInstanceStackMap[] inputs, GT_MetaTileEntity_EM_machine te, Parameters parameters);
+        MultiblockControl<EMInstanceStackMap[]> process(EMInstanceStackMap[] inputs, GT_MetaTileEntity_EM_machine te, Parameters parameters);
     }
 
     private void quantumStuff(boolean shouldIExist) {
         IGregTechTileEntity base = getBaseMetaTileEntity();
         if (base != null && base.getWorld() != null) {
-            int xDir = ForgeDirection.getOrientation(base.getBackFacing()).offsetX * 2 + base.getXCoord();
-            int yDir = ForgeDirection.getOrientation(base.getBackFacing()).offsetY * 2 + base.getYCoord();
-            int zDir = ForgeDirection.getOrientation(base.getBackFacing()).offsetZ * 2 + base.getZCoord();
+            int   xDir  = ForgeDirection.getOrientation(base.getBackFacing()).offsetX * 2 + base.getXCoord();
+            int   yDir  = ForgeDirection.getOrientation(base.getBackFacing()).offsetY * 2 + base.getYCoord();
+            int   zDir  = ForgeDirection.getOrientation(base.getBackFacing()).offsetZ * 2 + base.getZCoord();
             Block block = base.getWorld().getBlock(xDir, yDir, zDir);
             if (shouldIExist) {
                 if (block != null && block.getMaterial() == Material.air) {
@@ -186,7 +193,7 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        return structureCheck_EM(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 2, 2, 1);
+        return structureCheck_EM("main", 2, 2, 1);
     }
 
     @Override
@@ -250,11 +257,11 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
             return false;
         }
 
-        cElementalInstanceStackMap[] handles = new cElementalInstanceStackMap[6];
+        EMInstanceStackMap[] handles = new EMInstanceStackMap[6];
         for (int i = 0; i < 6; i++) {
             int pointer = (int) inputMux[i].get();
             if (pointer >= 0 && pointer < eInputHatches.size()) {
-                handles[i] = eInputHatches.get(pointer).getContainerHandler();
+                handles[i] = eInputHatches.get(pointer).getContentHandler();
             }
         }
 
@@ -268,7 +275,7 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
             }
         }
 
-        MultiblockControl<cElementalInstanceStackMap[]> control = currentBehaviour.process(handles, this, parametrization);
+        MultiblockControl<EMInstanceStackMap[]> control = currentBehaviour.process(handles, this, parametrization);
         if (control == null) {
             return false;
         }
@@ -307,11 +314,11 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
             return;
         }
 
-        cElementalInstanceStackMap[] handles = new cElementalInstanceStackMap[6];
+        EMInstanceStackMap[] handles = new EMInstanceStackMap[6];
         for (int i = 0; i < 6; i++) {
             int pointer = (int) outputMux[i].get();
             if (pointer >= 0 && pointer < eOutputHatches.size()) {
-                handles[i] = eOutputHatches.get(pointer).getContainerHandler();
+                handles[i] = eOutputHatches.get(pointer).getContentHandler();
             }
         }
         //output
@@ -349,12 +356,17 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
     }
 
     @Override
-    public void construct(int stackSize, boolean hintsOnly) {
-        StructureBuilderExtreme(shape, blockType, blockMeta, 2, 2, 1, getBaseMetaTileEntity(), this, hintsOnly);
+    public void construct(ItemStack stackSize, boolean hintsOnly) {
+        structureBuild_EM("main", 2, 2, 1, stackSize, hintsOnly);
     }
 
     @Override
-    public String[] getStructureDescription(int stackSize) {
+    public IStructureDefinition<GT_MetaTileEntity_EM_machine> getStructure_EM() {
+        return STRUCTURE_DEFINITION;
+    }
+
+    @Override
+    public String[] getStructureDescription(ItemStack stackSize) {
         return description;
     }
 }

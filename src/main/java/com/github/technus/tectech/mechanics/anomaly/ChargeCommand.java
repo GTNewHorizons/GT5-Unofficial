@@ -1,18 +1,13 @@
 package com.github.technus.tectech.mechanics.anomaly;
 
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.loader.NetworkDispatcher;
-import com.github.technus.tectech.mechanics.data.PlayerDataMessage;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.github.technus.tectech.mechanics.anomaly.AnomalyHandler.SPACE_CHARGE;
 
 public class ChargeCommand implements ICommand {
     ArrayList<String> aliases=new ArrayList<>();
@@ -33,13 +28,10 @@ public class ChargeCommand implements ICommand {
                 return;
             }
             EntityPlayerMP player=(EntityPlayerMP)sender;
-            NBTTagCompound playerTag = TecTech.playerPersistence.getDataOrSetToNewTag(player);
             if(player.capabilities.isCreativeMode){
                 sender.addChatMessage(new ChatComponentText("Doesn't really work in creative mode!"));
             }else {
-                playerTag.setDouble(SPACE_CHARGE, amount);
-                TecTech.playerPersistence.saveData(player);
-                NetworkDispatcher.INSTANCE.sendToAll(new PlayerDataMessage.PlayerDataData(player));
+                TecTech.anomalyHandler.setCharge(player,amount);
                 sender.addChatMessage(new ChatComponentText("Charge set to: "+amount));
             }
         }

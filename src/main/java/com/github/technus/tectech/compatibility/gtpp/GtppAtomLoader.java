@@ -1,16 +1,19 @@
 package com.github.technus.tectech.compatibility.gtpp;
 
-import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalDefinitionStack;
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMDefinitionStack;
+import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry;
 import gregtech.api.enums.OrePrefixes;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.lang.reflect.Method;
 
-import static com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.dAtomDefinition.*;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry.EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.EMAtomDefinition.getBestUnstableIsotope;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.EMAtomDefinition.getFirstStableIsotope;
 
-public class GtppAtomLoader implements Runnable{
+public class GtppAtomLoader {
     //region reflect a bit
-    private Class ELEMENT;
+    private Class<?> ELEMENT;
     private Object ELEMENT_INSTANCE;
     private Method getUnlocalizedName,getFluid,generate;
 
@@ -39,16 +42,19 @@ public class GtppAtomLoader implements Runnable{
     }
     //endregion
 
-    @Override
-    public void run() {
+    public void setTransformations(EMTransformationRegistry transformationInfo) {
         //region reflect a bit
         try{
             ELEMENT=Class.forName("gtPlusPlus.core.material.ELEMENT");
             ELEMENT_INSTANCE=ELEMENT.getMethod("getInstance").invoke(null);
 
-            Class clazz=Class.forName("gtPlusPlus.core.material.Material");
+            Class<?> clazz=Class.forName("gtPlusPlus.core.material.Material");
             getUnlocalizedName=clazz.getMethod("getUnlocalizedName");
-            getFluid=clazz.getMethod("getFluid", int.class);
+            try{
+                getFluid=clazz.getMethod("getFluidStack", int.class);
+            }catch (Exception e){
+                getFluid=clazz.getMethod("getFluid", int.class);
+            }
 
             clazz=Class.forName("gtPlusPlus.core.material.MaterialGenerator");
             generate=clazz.getMethod("generate", Class.forName("gtPlusPlus.core.material.Material"), boolean.class, boolean.class);
@@ -57,34 +63,34 @@ public class GtppAtomLoader implements Runnable{
         }
         //endregion
 
-        transformation.addFluid(new cElementalDefinitionStack(getFirstStableIsotope(10), 144), getFluid("NEON",144));
+        transformationInfo.addFluid(new EMDefinitionStack(getFirstStableIsotope(10), EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED), getFluid("NEON",144));
         generate("GERMANIUM",true,true);
-        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(32), 144), OrePrefixes.dust, getUnlocalizedName("GERMANIUM"),1);
-        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(34), 144), OrePrefixes.dust, getUnlocalizedName("SELENIUM"),1);
-        transformation.addFluid(new cElementalDefinitionStack(getFirstStableIsotope(35), 144), getFluid("BROMINE",144));
-        transformation.addFluid(new cElementalDefinitionStack(getFirstStableIsotope(36), 144), getFluid("KRYPTON",144));
-        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(40), 144),OrePrefixes.dust, getUnlocalizedName("ZIRCONIUM"),1);
-        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(43), 144),OrePrefixes.dust, getUnlocalizedName("TECHNETIUM"),1);
-        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(44), 144),OrePrefixes.dust, getUnlocalizedName("RUTHENIUM"),1);
-        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(45), 144),OrePrefixes.dust, getUnlocalizedName("RHODIUM"),1);
-        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(53), 144),OrePrefixes.dust, getUnlocalizedName("IODINE"),1);
-        transformation.addFluid(new cElementalDefinitionStack(getFirstStableIsotope(54), 144),getFluid("XENON",144));
-        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(72), 144),OrePrefixes.dust, getUnlocalizedName("HAFNIUM"),1);
-        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(75), 144),OrePrefixes.dust, getUnlocalizedName("RHENIUM"),1);
-        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(81), 144),OrePrefixes.dust, getUnlocalizedName("THALLIUM"),1);
+        transformationInfo.addOredict(new EMDefinitionStack(getFirstStableIsotope(32), EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED), OrePrefixes.dust, getUnlocalizedName("GERMANIUM"),1);
+        transformationInfo.addOredict(new EMDefinitionStack(getFirstStableIsotope(34), EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED), OrePrefixes.dust, getUnlocalizedName("SELENIUM"),1);
+        transformationInfo.addFluid(new EMDefinitionStack(getFirstStableIsotope(35), EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED), getFluid("BROMINE",144));
+        transformationInfo.addFluid(new EMDefinitionStack(getFirstStableIsotope(36), EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED), getFluid("KRYPTON",144));
+        transformationInfo.addOredict(new EMDefinitionStack(getFirstStableIsotope(40), EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED),OrePrefixes.dust, getUnlocalizedName("ZIRCONIUM"),1);
+        transformationInfo.addOredict(new EMDefinitionStack(getFirstStableIsotope(43), EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED),OrePrefixes.dust, getUnlocalizedName("TECHNETIUM"),1);
+        transformationInfo.addOredict(new EMDefinitionStack(getFirstStableIsotope(44), EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED),OrePrefixes.dust, getUnlocalizedName("RUTHENIUM"),1);
+        transformationInfo.addOredict(new EMDefinitionStack(getFirstStableIsotope(45), EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED),OrePrefixes.dust, getUnlocalizedName("RHODIUM"),1);
+        transformationInfo.addOredict(new EMDefinitionStack(getFirstStableIsotope(53), EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED),OrePrefixes.dust, getUnlocalizedName("IODINE"),1);
+        transformationInfo.addFluid(new EMDefinitionStack(getFirstStableIsotope(54), EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED),getFluid("XENON",144));
+        transformationInfo.addOredict(new EMDefinitionStack(getFirstStableIsotope(72), EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED),OrePrefixes.dust, getUnlocalizedName("HAFNIUM"),1);
+        transformationInfo.addOredict(new EMDefinitionStack(getFirstStableIsotope(75), EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED),OrePrefixes.dust, getUnlocalizedName("RHENIUM"),1);
+        transformationInfo.addOredict(new EMDefinitionStack(getFirstStableIsotope(81), EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED),OrePrefixes.dust, getUnlocalizedName("THALLIUM"),1);
 
-        transformation.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(84),144),OrePrefixes.dust, getUnlocalizedName("POLONIUM"),1);
-        transformation.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(85),144),OrePrefixes.dust, getUnlocalizedName("ASTATINE"),1);
-        transformation.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(87),144),OrePrefixes.dust, getUnlocalizedName("FRANCIUM"),1);
-        transformation.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(88),144),OrePrefixes.dust, getUnlocalizedName("RADIUM"),1);
-        transformation.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(89),144),OrePrefixes.dust, getUnlocalizedName("ACTINIUM"),1);
-        transformation.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(91),144),OrePrefixes.dust, getUnlocalizedName("PROTACTINIUM"),1);
-        transformation.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(93),144),OrePrefixes.dust, getUnlocalizedName("NEPTUNIUM"),1);
+        transformationInfo.addOredict(new EMDefinitionStack(getBestUnstableIsotope(84), EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED),OrePrefixes.dust, getUnlocalizedName("POLONIUM"),1);
+        transformationInfo.addOredict(new EMDefinitionStack(getBestUnstableIsotope(85), EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED),OrePrefixes.dust, getUnlocalizedName("ASTATINE"),1);
+        transformationInfo.addOredict(new EMDefinitionStack(getBestUnstableIsotope(87), EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED),OrePrefixes.dust, getUnlocalizedName("FRANCIUM"),1);
+        transformationInfo.addOredict(new EMDefinitionStack(getBestUnstableIsotope(88), EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED),OrePrefixes.dust, getUnlocalizedName("RADIUM"),1);
+        transformationInfo.addOredict(new EMDefinitionStack(getBestUnstableIsotope(89), EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED),OrePrefixes.dust, getUnlocalizedName("ACTINIUM"),1);
+        transformationInfo.addOredict(new EMDefinitionStack(getBestUnstableIsotope(91), EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED),OrePrefixes.dust, getUnlocalizedName("PROTACTINIUM"),1);
+        transformationInfo.addOredict(new EMDefinitionStack(getBestUnstableIsotope(93), EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED),OrePrefixes.dust, getUnlocalizedName("NEPTUNIUM"),1);
 
-        transformation.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(96),144),OrePrefixes.dust, getUnlocalizedName("CURIUM"),1);
-        transformation.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(97),144),OrePrefixes.dust, getUnlocalizedName("BERKELIUM"),1);
-        transformation.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(98),144),OrePrefixes.dust, getUnlocalizedName("CALIFORNIUM"),1);
-        transformation.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(99),144),OrePrefixes.dust, getUnlocalizedName("EINSTEINIUM"),1);
-        transformation.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(100),144),OrePrefixes.dust, getUnlocalizedName("FERMIUM"),1);
+        transformationInfo.addOredict(new EMDefinitionStack(getBestUnstableIsotope(96), EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED),OrePrefixes.dust, getUnlocalizedName("CURIUM"),1);
+        transformationInfo.addOredict(new EMDefinitionStack(getBestUnstableIsotope(97), EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED),OrePrefixes.dust, getUnlocalizedName("BERKELIUM"),1);
+        transformationInfo.addOredict(new EMDefinitionStack(getBestUnstableIsotope(98), EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED),OrePrefixes.dust, getUnlocalizedName("CALIFORNIUM"),1);
+        transformationInfo.addOredict(new EMDefinitionStack(getBestUnstableIsotope(99), EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED),OrePrefixes.dust, getUnlocalizedName("EINSTEINIUM"),1);
+        transformationInfo.addOredict(new EMDefinitionStack(getBestUnstableIsotope(100), EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED),OrePrefixes.dust, getUnlocalizedName("FERMIUM"),1);
     }
 }

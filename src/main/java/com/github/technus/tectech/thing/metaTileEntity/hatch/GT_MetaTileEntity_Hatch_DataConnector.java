@@ -1,9 +1,9 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
-import com.github.technus.tectech.CommonValues;
-import com.github.technus.tectech.Util;
+import com.github.technus.tectech.util.CommonValues;
+import com.github.technus.tectech.util.Util;
 import com.github.technus.tectech.mechanics.dataTransport.DataPacket;
-import com.github.technus.tectech.thing.metaTileEntity.pipe.IConnectsToDataPipe;
+import com.github.technus.tectech.mechanics.pipe.IConnectsToDataPipe;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Dyes;
@@ -14,13 +14,16 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
+import org.apache.commons.lang3.reflect.FieldUtils;
 
-import static com.github.technus.tectech.CommonValues.MOVE_AT;
+import static com.github.technus.tectech.util.CommonValues.MOVE_AT;
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 /**
  * Created by danie_000 on 11.12.2016.
@@ -29,6 +32,8 @@ public abstract class GT_MetaTileEntity_Hatch_DataConnector<T extends DataPacket
     public static Textures.BlockIcons.CustomIcon EM_D_SIDES;
     public static Textures.BlockIcons.CustomIcon EM_D_ACTIVE;
     public static Textures.BlockIcons.CustomIcon EM_D_CONN;
+
+    private String clientLocale = "en_US";
 
     public T q;
 
@@ -100,6 +105,15 @@ public abstract class GT_MetaTileEntity_Hatch_DataConnector<T extends DataPacket
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        if (aBaseMetaTileEntity.isClientSide()) {
+            return true;
+        }
+        try {
+            EntityPlayerMP player = (EntityPlayerMP) aPlayer;
+            clientLocale = (String) FieldUtils.readField(player, "translator", true);
+        } catch (Exception e) {
+            clientLocale = "en_US";
+        }
         return true;
     }
 
@@ -146,11 +160,14 @@ public abstract class GT_MetaTileEntity_Hatch_DataConnector<T extends DataPacket
     @Override
     public String[] getInfoData() {
         if (id > 0) {
-            return new String[]{"ID: " + EnumChatFormatting.AQUA + id, "Content: " + EnumChatFormatting.AQUA + (q != null ? q.getContentString() : 0), "PacketHistory: " + EnumChatFormatting.RED + (q != null ? q.getTraceSize() : 0),};
+            return new String[]{
+                    translateToLocalFormatted("tt.keyword.ID", clientLocale) + ": " + EnumChatFormatting.AQUA + id,
+                    translateToLocalFormatted("tt.keyword.Content", clientLocale) + ": " + EnumChatFormatting.AQUA + (q != null ? q.getContentString() : 0),
+                    translateToLocalFormatted("tt.keyword.PacketHistory", clientLocale) + ": " + EnumChatFormatting.RED + (q != null ? q.getTraceSize() : 0),};
         }
         return new String[]{
-                "Content: " + EnumChatFormatting.AQUA + (q != null ? q.getContentString() : 0),
-                "PacketHistory: " + EnumChatFormatting.RED + (q != null ? q.getTraceSize() : 0),
+                translateToLocalFormatted("tt.keyword.Content", clientLocale) + ": " + EnumChatFormatting.AQUA + (q != null ? q.getContentString() : 0),
+                translateToLocalFormatted("tt.keyword.PacketHistory", clientLocale) + ": " + EnumChatFormatting.RED + (q != null ? q.getTraceSize() : 0),
         };
     }
 
@@ -158,7 +175,7 @@ public abstract class GT_MetaTileEntity_Hatch_DataConnector<T extends DataPacket
     public String[] getDescription() {
         return new String[]{
                 CommonValues.TEC_MARK_EM,
-                mDescription,
+                "Text description shouldn't be seen, report to Tec",
                 "High speed fibre optics connector.",
                 EnumChatFormatting.AQUA + "Must be painted to work"
         };

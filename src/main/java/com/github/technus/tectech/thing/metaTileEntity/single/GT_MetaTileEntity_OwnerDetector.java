@@ -1,8 +1,8 @@
 package com.github.technus.tectech.thing.metaTileEntity.single;
 
-import com.github.technus.tectech.CommonValues;
+import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.Util;
+import com.github.technus.tectech.util.Util;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -14,12 +14,17 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import org.apache.commons.lang3.reflect.FieldUtils;
 
-import static com.github.technus.tectech.CommonValues.RECIPE_AT;
+import static com.github.technus.tectech.util.CommonValues.RECIPE_AT;
+import static com.github.technus.tectech.thing.metaTileEntity.Textures.MACHINE_CASINGS_TT;
+import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 /**
  * Created by Tec on 23.03.2017.
@@ -30,7 +35,7 @@ public class GT_MetaTileEntity_OwnerDetector extends GT_MetaTileEntity_TieredMac
     private boolean interdimensional=true;
 
     public GT_MetaTileEntity_OwnerDetector(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 0, "Screwdrive to change mode");
+        super(aID, aName, aNameRegional, aTier, 0, "");
         Util.setTier(aTier,this);
     }
 
@@ -54,7 +59,7 @@ public class GT_MetaTileEntity_OwnerDetector extends GT_MetaTileEntity_TieredMac
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1], aActive ? OWNER_ONLINE : OWNER_OFFLINE};
+        return new ITexture[]{MACHINE_CASINGS_TT[mTier][aColorIndex + 1], aActive ? OWNER_ONLINE : OWNER_OFFLINE};
     }
 
     @Override
@@ -126,8 +131,15 @@ public class GT_MetaTileEntity_OwnerDetector extends GT_MetaTileEntity_TieredMac
 
     @Override
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        interdimensional^=true;
-        GT_Utility.sendChatToPlayer(aPlayer,interdimensional?"Running interdimensional scan":"Running local dimension scan");
+        String clientLocale;
+        try {
+            EntityPlayerMP player = (EntityPlayerMP) aPlayer;
+            clientLocale = (String) FieldUtils.readField(player, "translator", true);
+        } catch (Exception e) {
+            clientLocale = "en_US";
+        }
+        interdimensional ^= true;
+        GT_Utility.sendChatToPlayer(aPlayer, interdimensional ? translateToLocalFormatted("tt.keyphrase.Running_interdimensional_scan", clientLocale) : translateToLocalFormatted("tt.keyphrase.Running_local_dimension_scan", clientLocale));
     }
 
     @Override
@@ -143,9 +155,10 @@ public class GT_MetaTileEntity_OwnerDetector extends GT_MetaTileEntity_TieredMac
     @Override
     public String[] getDescription() {
         return new String[]{
-                CommonValues.TEC_MARK_GENERAL, mDescription,
-                EnumChatFormatting.BLUE + "Looks for his pa",
-                EnumChatFormatting.BLUE + "Emits signal when happy"
+                CommonValues.TEC_MARK_GENERAL,
+                translateToLocal("gt.blockmachines.machine.tt.ownerdetector.desc.0"),//Screwdrive to change mode
+                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.machine.tt.ownerdetector.desc.1"),//Looks for his pa
+                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.machine.tt.ownerdetector.desc.2")//Emits signal when happy
         };
     }
 

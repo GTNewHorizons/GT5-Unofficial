@@ -1,5 +1,6 @@
 package com.github.technus.tectech.compatibility.spartakcore;
 
+import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry;
 import com.github.technus.tectech.recipe.TT_recipeAdder;
 import com.github.technus.tectech.thing.CustomItemList;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
@@ -7,13 +8,10 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.em_machine.Behaviou
 import com.github.technus.tectech.thing.metaTileEntity.multi.em_machine.Behaviour_ElectromagneticSeparator;
 import com.github.technus.tectech.thing.metaTileEntity.multi.em_machine.Behaviour_Recycler;
 import com.github.technus.tectech.thing.metaTileEntity.multi.em_machine.GT_MetaTileEntity_EM_machine;
-
-import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
@@ -22,17 +20,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import java.lang.reflect.Method;
-
-import static com.github.technus.tectech.loader.recipe.RecipeLoader.getOrDefault;
+import static com.github.technus.tectech.loader.recipe.BaseRecipeLoader.getOrDefault;
 
 /**
  * Created by Spartak1997 on 28.07.2019.
  */
-public class SpartakCoreRecipeLoader implements Runnable {
-    
-    @Override
-    public void run() {
+public class SpartakCoreRecipeLoader {
+    public void run(EMTransformationRegistry transformationInfo) {
         
       //Quantum Glass
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{

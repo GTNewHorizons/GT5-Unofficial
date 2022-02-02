@@ -13,7 +13,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import static com.github.technus.tectech.Reference.MODID;
-import static com.github.technus.tectech.loader.gui.CreativeTabTecTech.creativeTabTecTech;
+import static com.github.technus.tectech.TecTech.creativeTabTecTech;
 
 /**
  * Created by danie_000 on 17.12.2016.

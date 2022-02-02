@@ -1,7 +1,7 @@
 package com.github.technus.tectech.thing.metaTileEntity.single;
 
-import com.github.technus.tectech.CommonValues;
-import com.github.technus.tectech.Util;
+import com.github.technus.tectech.util.CommonValues;
+import com.github.technus.tectech.util.Util;
 import com.github.technus.tectech.thing.metaTileEntity.single.gui.GT_Container_DataReader;
 import com.github.technus.tectech.thing.metaTileEntity.single.gui.GT_GUIContainer_DataReader;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -26,13 +26,13 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
-import static com.github.technus.tectech.CommonValues.V;
 import static com.github.technus.tectech.Reference.MODID;
 import static com.github.technus.tectech.recipe.TT_recipeAdder.nullItem;
+import static com.github.technus.tectech.thing.metaTileEntity.Textures.MACHINE_CASINGS_TT;
+import static com.github.technus.tectech.util.CommonValues.V;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
  * Created by Tec on 23.03.2017.
@@ -42,7 +42,7 @@ public class GT_MetaTileEntity_DataReader extends GT_MetaTileEntity_BasicMachine
     public static GT_RenderedTexture READER_ONLINE, READER_OFFLINE;
 
     public GT_MetaTileEntity_DataReader(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID,aName,aNameRegional,aTier,1,"Reads Data Sticks and Orbs",1,1,"dataReader.png","");
+        super(aID,aName,aNameRegional,aTier,1,"",1,1,"dataReader.png","");
         Util.setTier(aTier,this);
     }
 
@@ -68,16 +68,16 @@ public class GT_MetaTileEntity_DataReader extends GT_MetaTileEntity_BasicMachine
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         if(aBaseMetaTileEntity.getWorld()==null){
             if(aSide==aFacing){
-                return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1], aActive ? READER_ONLINE : READER_OFFLINE};
+                return new ITexture[]{MACHINE_CASINGS_TT[mTier][aColorIndex + 1], aActive ? READER_ONLINE : READER_OFFLINE};
             }
-            return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1]};
+            return new ITexture[]{MACHINE_CASINGS_TT[mTier][aColorIndex + 1]};
         }
         if(aSide==mMainFacing){
-            return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1], aActive ? READER_ONLINE : READER_OFFLINE};
+            return new ITexture[]{MACHINE_CASINGS_TT[mTier][aColorIndex + 1], aActive ? READER_ONLINE : READER_OFFLINE};
         }else if(aSide==aFacing){
-            return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT)};
+            return new ITexture[]{MACHINE_CASINGS_TT[mTier][aColorIndex + 1], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT)};
         }
-        return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1]};
+        return new ITexture[]{MACHINE_CASINGS_TT[mTier][aColorIndex + 1]};
     }
 
     @Override
@@ -91,8 +91,7 @@ public class GT_MetaTileEntity_DataReader extends GT_MetaTileEntity_BasicMachine
             return DID_NOT_FIND_RECIPE;
         }
         ItemStack input=getInputAt(0);
-        ArrayList<IDataRender> renders=getRenders(new Util.ItemStack_NoNBT(input));
-        for(IDataRender render:renders){
+        for(IDataRender render:getRenders(new Util.ItemStack_NoNBT(input))){
             if(render.canRender(input,mTier)){
                 mOutputItems[0]=input.copy();
                 input.stackSize-=1;
@@ -134,9 +133,10 @@ public class GT_MetaTileEntity_DataReader extends GT_MetaTileEntity_BasicMachine
     @Override
     public String[] getDescription() {
         return new String[]{
-                CommonValues.TEC_MARK_GENERAL, mDescription,
-                EnumChatFormatting.BLUE + "Power it up and",
-                EnumChatFormatting.BLUE + "Put the data storage in"
+                CommonValues.TEC_MARK_GENERAL,
+                translateToLocal("gt.blockmachines.machine.tt.datareader.desc.0"),//Reads Data Sticks and Orbs
+                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.machine.tt.datareader.desc.1"),//Power it up and
+                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.machine.tt.datareader.desc.2")//Put the data storage in
         };
     }
 
@@ -183,8 +183,9 @@ public class GT_MetaTileEntity_DataReader extends GT_MetaTileEntity_BasicMachine
         renders.add(render);
     }
 
-    public static ArrayList<IDataRender> getRenders(Util.ItemStack_NoNBT stack){
-        return RENDER_REGISTRY.get(stack);
+    public static List<IDataRender> getRenders(Util.ItemStack_NoNBT stack){
+        ArrayList<IDataRender> iDataRenders = RENDER_REGISTRY.get(stack);
+        return iDataRenders==null?Collections.emptyList():iDataRenders;
     }
 
     public interface IDataRender {
@@ -271,11 +272,11 @@ public class GT_MetaTileEntity_DataReader extends GT_MetaTileEntity_BasicMachine
                 int time=itemStack.stackTagCompound.getInteger("time");
                 int EUt=itemStack.stackTagCompound.getInteger("eu");
                 font.drawString("Assembly Line Recipe", 7, 8, 0x80a0ff);
-                font.drawString(GT_Utility.trans("152","Total: ") + ((long)time * EUt) + " EU",7,93, 0x80a0ff);
-                font.drawString(GT_Utility.trans("153","Usage: ") + EUt + " EU/t",7,103, 0x80a0ff);
-                font.drawString(GT_Utility.trans("154","Voltage: ") + EUt + " EU",7,113, 0x80a0ff);
+                font.drawString(GT_Utility.trans("152","Total: ") + GT_Utility.formatNumbers((long)time * EUt) + " EU",7,93, 0x80a0ff);
+                font.drawString(GT_Utility.trans("153","Usage: ") + GT_Utility.formatNumbers(EUt) + " EU/t",7,103, 0x80a0ff);
+                font.drawString(GT_Utility.trans("154","Voltage: ") + GT_Utility.formatNumbers(EUt) + " EU",7,113, 0x80a0ff);
                 font.drawString(GT_Utility.trans("155","Amperage: ") + 1 ,7,123, 0x80a0ff);
-                font.drawString( GT_Utility.trans("158","Time: ")+String.format("%.2f " + GT_Utility.trans("161"," secs"), 0.05F * time), 7,133, 0x80a0ff);
+                font.drawString( GT_Utility.trans("158","Time: ") + GT_Utility.formatNumbers(0.05d * time) + GT_Utility.trans("161"," secs"), 7,133, 0x80a0ff);
 
                 for(Map.Entry<GT_Slot_Holo,ItemStack> entry:slots.entrySet()){
                     gui.renderItemSimple(entry.getKey(),entry.getValue());

@@ -1,11 +1,11 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.Util;
-import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
-import com.github.technus.tectech.mechanics.elementalMatter.core.iElementalInstanceContainer;
-import com.github.technus.tectech.mechanics.elementalMatter.core.tElementalException;
-import com.github.technus.tectech.thing.metaTileEntity.pipe.IConnectsToElementalPipe;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.IEMContainer;
+import com.github.technus.tectech.mechanics.elementalMatter.core.EMException;
+import com.github.technus.tectech.mechanics.pipe.IConnectsToElementalPipe;
+import com.github.technus.tectech.util.Util;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Dyes;
@@ -23,8 +23,9 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
-import static com.github.technus.tectech.CommonValues.*;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry.EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED;
+import static com.github.technus.tectech.util.CommonValues.*;
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity;
 import static net.minecraft.util.StatCollector.translateToLocal;
@@ -33,17 +34,17 @@ import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 /**
  * Created by danie_000 on 11.12.2016.
  */
-public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_MetaTileEntity_Hatch implements iElementalInstanceContainer, IConnectsToElementalPipe {
+public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_MetaTileEntity_Hatch implements IEMContainer, IConnectsToElementalPipe {
     private static Textures.BlockIcons.CustomIcon EM_T_SIDES;
     private static Textures.BlockIcons.CustomIcon EM_T_ACTIVE;
     private static Textures.BlockIcons.CustomIcon EM_T_CONN;
 
     private String clientLocale = "en_US";
 
-    protected cElementalInstanceStackMap content = new cElementalInstanceStackMap();
+    protected EMInstanceStackMap content      = new EMInstanceStackMap();
     //float lifeTimeMult=1f;
-    public int postEnergize = 0;
-    public float overflowMatter = 0f;
+    public    int                postEnergize = 0;
+    public double overflowMatter = 0f;
     public short id = -1;
     private byte deathDelay = 2;
 
@@ -80,8 +81,9 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
         super.saveNBTData(aNBT);
         aNBT.setInteger("postEnergize", postEnergize);
         //aNBT.setFloat("lifeTimeMult",lifeTimeMult);
-        aNBT.setFloat("overflowMatter", overflowMatter);
-        aNBT.setTag("eM_Stacks", content.toNBT());
+        aNBT.setDouble("OverflowMatter", overflowMatter);
+        content.cleanUp();
+        aNBT.setTag("eM_Stacks", content.toNBT(TecTech.definitionsRegistry));
         aNBT.setShort("eID", id);
     }
 
@@ -90,16 +92,16 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
         super.loadNBTData(aNBT);
         postEnergize = aNBT.getInteger("postEnergize");
         //lifeTimeMult=aNBT.getFloat("lifeTimeMult");
-        overflowMatter = aNBT.getFloat("overflowMatter");
+        overflowMatter = aNBT.getFloat("overflowMatter")+aNBT.getDouble("OverflowMatter");
         id = aNBT.getShort("eID");
         try {
-            content = cElementalInstanceStackMap.fromNBT(aNBT.getCompoundTag("eM_Stacks"));
-        } catch (tElementalException e) {
+            content = EMInstanceStackMap.fromNBT(TecTech.definitionsRegistry,aNBT.getCompoundTag("eM_Stacks"));
+        } catch (EMException e) {
             if (DEBUG_MODE) {
                 e.printStackTrace();
             }
             if (content == null) {
-                content = new cElementalInstanceStackMap();
+                content = new EMInstanceStackMap();
             }
         }
     }
@@ -110,7 +112,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
             byte Tick = (byte) (aTick % 20);
             if (DECAY_AT == Tick) {
                 purgeOverflow();
-                content.tickContentByOneSecond(1, postEnergize);//Hatches don't life time mult things
+                content.tickContent(1, postEnergize,1);//Hatches don't life time mult things
                 purgeOverflow();
             } else if (OVERFLOW_AT == Tick) {
                 if (overflowMatter <= 0) {
@@ -151,6 +153,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
                 }
             } else if (MOVE_AT == Tick) {
                 if (content.hasStacks()) {
+                    content.cleanUp();
                     moveAround(aBaseMetaTileEntity);
                 }
                 getBaseMetaTileEntity().setActive(content.hasStacks());
@@ -162,7 +165,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
     }
 
     @Override
-    public cElementalInstanceStackMap getContainerHandler() {
+    public EMInstanceStackMap getContentHandler() {
         return content;
     }
 
@@ -203,11 +206,11 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
     }
 
     public int getMaxStacksCount() {
-        return mTier * 2;
+        return mTier * mTier >> 4;
     }
 
-    public int getMaxStackSize() {
-        return mTier * (mTier - 7) * 1000;
+    public double getMaxStackSize() {
+        return mTier * (mTier - 7) * 64D * EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED;
     }
 
     @Override
@@ -229,7 +232,6 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
         } else {
             return true;
         }
-        System.out.println(clientLocale);
         return true;
     }
 
@@ -240,7 +242,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
 
     @Override
     public String[] getInfoData() {
-        if (TecTech.configTecTech.EASY_SCAN) {
+        if (TecTech.configTecTech.EASY_SCAN || DEBUG_MODE) {
             if (id > 0) {
                 if (content == null || content.size() == 0) {
                     return new String[]{translateToLocalFormatted("tt.keyword.ID", clientLocale) + ": " + EnumChatFormatting.AQUA + id, translateToLocalFormatted("tt.keyphrase.No_Stacks", clientLocale)};

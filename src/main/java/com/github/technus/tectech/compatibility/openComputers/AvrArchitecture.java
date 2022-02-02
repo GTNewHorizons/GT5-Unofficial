@@ -8,7 +8,7 @@ import com.github.technus.avrClone.instructions.exceptions.DelayEvent;
 import com.github.technus.avrClone.memory.EepromMemory;
 import com.github.technus.avrClone.memory.RemovableMemory;
 import com.github.technus.avrClone.memory.program.ProgramMemory;
-import com.github.technus.tectech.Converter;
+import com.github.technus.tectech.util.Converter;
 import com.github.technus.tectech.TecTech;
 import li.cil.oc.Settings;
 import li.cil.oc.api.Driver;
@@ -21,7 +21,7 @@ import li.cil.oc.api.machine.Signal;
 import li.cil.oc.common.SaveHandler;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import org.apache.commons.io.IOUtils;
+import org.apache.commons.compress.utils.IOUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

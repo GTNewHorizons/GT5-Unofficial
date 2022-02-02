@@ -1,13 +1,17 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
-import com.github.technus.tectech.CommonValues;
-import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
-import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
-import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMInstanceStack;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputElemental;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.*;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedTexture;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.INameFunction;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.IStatusFunction;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
+import com.github.technus.tectech.util.CommonValues;
+import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -16,9 +20,9 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
+import gregtech.api.util.GT_Utility;
 import ic2.core.init.MainConfig;
 import ic2.core.util.ConfigUtil;
-import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -26,13 +30,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
-import static com.github.technus.tectech.CommonValues.VN;
-import static com.github.technus.tectech.Util.StructureBuilderExtreme;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry.EM_COUNT_PER_MATERIAL_AMOUNT;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.STATUS_OK;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.STATUS_TOO_LOW;
+import static com.github.technus.tectech.util.CommonValues.VN;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
@@ -44,36 +51,36 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
     private static Textures.BlockIcons.CustomIcon ScreenON;
 
-    public static final double URANIUM_INGOT_MASS_DIFF = 1.6114516E10;
-    private static final double URANIUM_MASS_TO_EU_PARTIAL = ConfigUtil.getFloat(MainConfig.get(), "balance/energy/generator/nuclear") * 3_000_000.0 / URANIUM_INGOT_MASS_DIFF;
+    public static final double URANIUM_INGOT_MASS_DIFF = 1.6114516E10* EM_COUNT_PER_MATERIAL_AMOUNT;
+    private static final double URANIUM_MASS_TO_EU_PARTIAL = ConfigUtil.getDouble(MainConfig.get(), "balance/energy/generator/nuclear") * 3_000_000.0 / URANIUM_INGOT_MASS_DIFF;
     public static final double URANIUM_MASS_TO_EU_INSTANT = URANIUM_MASS_TO_EU_PARTIAL * 20;
 
     private String clientLocale = "en_US";
     //endregion
 
     //region structure
-    private static final String[][] shape = new String[][]{
-            {"0C0", "A   ", "A . ", "A   ", "0C0",},
-            {"00000", "00000", "00000", "00000", "00000",},
-            {"0C0", "A!!!", "A!0!", "A!!!", "0C0",},
-            {"01110", "12221", "12221", "12221", "01110",},
-            {"01310", "12221", "32223", "12221", "01310",},
-            {"01110", "12221", "12221", "12221", "01110",},
-            {"0C0", "A!!!", "A!0!", "A!!!", "0C0",},
-            {"00000", "00000", "00000", "00000", "00000",},
-            {"0C0", "A   ", "A   ", "A   ", "0C0",},
-    };
-    private static final Block[] blockType = new Block[]{sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT};
-    private static final byte[] blockMeta = new byte[]{4, 5, 8, 6};
-    private final IHatchAdder[] addingMethods = new IHatchAdder[]{this::addClassicToMachineList, this::addElementalToMachineList};
-    private static final short[] casingTextures = new short[]{textureOffset, textureOffset + 4};
-    private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT};
-    private static final byte[] blockMetaFallback = new byte[]{0, 4};
     private static final String[] description = new String[]{
             EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
             translateToLocal("gt.blockmachines.multimachine.em.decay.hint.0"),//1 - Classic Hatches or High Power Casing
             translateToLocal("gt.blockmachines.multimachine.em.decay.hint.1"),//2 - Elemental Hatches or Molecular Casing
     };
+
+    private static final IStructureDefinition<GT_MetaTileEntity_EM_decay> STRUCTURE_DEFINITION = IStructureDefinition
+            .<GT_MetaTileEntity_EM_decay>builder()
+            .addShape("main",transpose(new String[][]{
+                    {"A   A","AAAAA","A   A","ABBBA","ABCBA","ABBBA","A   A","AAAAA","A   A"},
+                    {" FFF ","AAAAA"," EEE ","BDDDB","BDDDB","BDDDB"," EEE ","AAAAA"," FFF "},
+                    {" F~F ","AAAAA"," EAE ","BDDDB","CDDDC","BDDDB"," EAE ","AAAAA"," FFF "},
+                    {" FFF ","AAAAA"," EEE ","BDDDB","BDDDB","BDDDB"," EEE ","AAAAA"," FFF "},
+                    {"A   A","AAAAA","A   A","ABBBA","ABCBA","ABBBA","A   A","AAAAA","A   A"}
+            }))
+            .addElement('A', ofBlock(sBlockCasingsTT, 4))
+            .addElement('B', ofBlock(sBlockCasingsTT, 5))
+            .addElement('C', ofBlock(sBlockCasingsTT, 6))
+            .addElement('D', ofBlock(sBlockCasingsTT, 8))
+            .addElement('F', ofHatchAdderOptional(GT_MetaTileEntity_EM_decay::addClassicToMachineList, textureOffset, 1, sBlockCasingsTT, 0))
+            .addElement('E', ofHatchAdderOptional(GT_MetaTileEntity_EM_decay::addElementalToMachineList, textureOffset + 4, 2, sBlockCasingsTT, 4))
+            .build();
     //endregion
 
     //region parameters
@@ -102,57 +109,53 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        return structureCheck_EM(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 2, 2, 0);
+        return structureCheck_EM("main", 2, 2, 0);
     }
 
     @Override
     public boolean checkRecipe_EM(ItemStack itemStack) {
-        cElementalInstanceStackMap map = getInputsClone_EM();
+        EMInstanceStackMap map = getInputsClone_EM();
         if (map != null && map.hasStacks()) {
             for (GT_MetaTileEntity_Hatch_InputElemental i : eInputHatches) {
-                i.getContainerHandler().clear();
+                i.getContentHandler().clear();
             }
             return startRecipe(map);
         }
         return false;
     }
 
-    private boolean startRecipe(cElementalInstanceStackMap input) {
+    private boolean startRecipe(EMInstanceStackMap input) {
         mMaxProgresstime = 20;
         mEfficiencyIncrease = 10000;
-        outputEM = new cElementalInstanceStackMap[2];
+        outputEM = new EMInstanceStackMap[2];
         outputEM[0] = input;
-        outputEM[1] = new cElementalInstanceStackMap();
+        outputEM[1] = new EMInstanceStackMap();
 
-
-        for (cElementalInstanceStack stack : outputEM[0].values()) {
-            if (stack.getEnergy() == 0 && stack.definition.decayMakesEnergy(1)
-                    && getBaseMetaTileEntity().decreaseStoredEnergyUnits(
-                    (long) (stack.getEnergySettingCost(1) * URANIUM_MASS_TO_EU_INSTANT), false)) {
+        for (EMInstanceStack stack : outputEM[0].valuesToArray()) {
+            if (stack.getEnergy() == 0 && stack.getDefinition().decayMakesEnergy(1) &&
+                    getBaseMetaTileEntity().decreaseStoredEnergyUnits(
+                            (long) (stack.getEnergySettingCost(1) * URANIUM_MASS_TO_EU_INSTANT), false)) {
                 stack.setEnergy(1);
-            } else if (!stack.definition.decayMakesEnergy(stack.getEnergy())) {
-                outputEM[0].remove(stack.definition);
+            } else if (!stack.getDefinition().decayMakesEnergy(stack.getEnergy())) {
+                outputEM[0].removeKey(stack.getDefinition());
                 outputEM[1].putReplace(stack);
             }
-            //System.out.println(stack.definition.getSymbol()+" "+stack.amount);
         }
 
-        float preMass = outputEM[0].getMass();
-        outputEM[0].tickContent(1, 0, 1);
-        double energyDose = ((preMass - outputEM[0].getMass()) * URANIUM_MASS_TO_EU_PARTIAL);
         eAmpereFlow = (long) ampereFlow.get();
         if (eAmpereFlow <= 0) {
             mEUt = 0;
             return false;
         }
-        mEUt = (int) (energyDose / eAmpereFlow);
+        double energyDose = -outputEM[0].tickContent(1, 0, 1) * URANIUM_MASS_TO_EU_PARTIAL;
+        mEUt = (int) ( energyDose / eAmpereFlow);
         return outputEM[0].hasStacks();
     }
 
     @Override
     public void outputAfterRecipe_EM() {
         for (int i = 0; i < 2 && i < eOutputHatches.size(); i++) {
-            eOutputHatches.get(i).getContainerHandler().putUnifyAll(outputEM[i]);
+            eOutputHatches.get(i).getContentHandler().putUnifyAll(outputEM[i]);
             outputEM[i] = null;
         }
     }
@@ -185,21 +188,30 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
 
         return new String[]{
                 translateToLocalFormatted("tt.keyword.Progress", clientLocale) + ":",
-                EnumChatFormatting.GREEN + Integer.toString(mProgresstime / 20) + EnumChatFormatting.RESET + " s / " +
-                        EnumChatFormatting.YELLOW + mMaxProgresstime / 20 + EnumChatFormatting.RESET + " s",
+                EnumChatFormatting.GREEN + GT_Utility.formatNumbers(mProgresstime / 20) + EnumChatFormatting.RESET + " s / " +
+                        EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(mMaxProgresstime / 20) + EnumChatFormatting.RESET + " s",
                 translateToLocalFormatted("tt.keyphrase.Energy_Hatches", clientLocale) + ":",
-                EnumChatFormatting.GREEN + Long.toString(storedEnergy) + EnumChatFormatting.RESET + " EU / " +
-                        EnumChatFormatting.YELLOW + maxEnergy + EnumChatFormatting.RESET + " EU",
+                EnumChatFormatting.GREEN + GT_Utility.formatNumbers(storedEnergy) + EnumChatFormatting.RESET + " EU / " +
+                        EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(maxEnergy) + EnumChatFormatting.RESET + " EU",
                 (mEUt <= 0 ? translateToLocalFormatted("tt.keyphrase.Probably_uses", clientLocale) + ": " : translateToLocalFormatted("tt.keyphrase.Probably_makes", clientLocale) + ": ") +
-                        EnumChatFormatting.RED + Math.abs(mEUt) + EnumChatFormatting.RESET + " EU/t at " +
-                        EnumChatFormatting.RED + eAmpereFlow + EnumChatFormatting.RESET + " A",
-                translateToLocalFormatted("tt.keyphrase.Tier_Rating", clientLocale) + ": " + EnumChatFormatting.YELLOW + VN[getMaxEnergyInputTier_EM()] + EnumChatFormatting.RESET + " / " + EnumChatFormatting.GREEN + VN[getMinEnergyInputTier_EM()] + EnumChatFormatting.RESET +
-                        " " + translateToLocalFormatted("tt.keyphrase.Amp_Rating", clientLocale) + ": " + EnumChatFormatting.GREEN + eMaxAmpereFlow + EnumChatFormatting.RESET + " A",
-                translateToLocalFormatted("tt.keyword.Problems", clientLocale) + ": " + EnumChatFormatting.RED + (getIdealStatus() - getRepairStatus()) + EnumChatFormatting.RESET +
-                        " " + translateToLocalFormatted("tt.keyword.Efficiency", clientLocale) + ": " + EnumChatFormatting.YELLOW + mEfficiency / 100.0F + EnumChatFormatting.RESET + " %",
-                translateToLocalFormatted("tt.keyword.PowerPass", clientLocale) + ": " + EnumChatFormatting.BLUE + ePowerPass + EnumChatFormatting.RESET +
-                        " " + translateToLocalFormatted("tt.keyword.SafeVoid", clientLocale) + ": " + EnumChatFormatting.BLUE + eSafeVoid,
-                translateToLocalFormatted("tt.keyword.Computation", clientLocale) + ": " + EnumChatFormatting.GREEN + eAvailableData + EnumChatFormatting.RESET + " / " + EnumChatFormatting.YELLOW + eRequiredData + EnumChatFormatting.RESET,
+                        EnumChatFormatting.RED + GT_Utility.formatNumbers(Math.abs(mEUt)) + EnumChatFormatting.RESET + " EU/t at " +
+                        EnumChatFormatting.RED + GT_Utility.formatNumbers(eAmpereFlow) + EnumChatFormatting.RESET + " A",
+                translateToLocalFormatted("tt.keyphrase.Tier_Rating", clientLocale) + ": " +
+                        EnumChatFormatting.YELLOW + VN[getMaxEnergyInputTier_EM()] + EnumChatFormatting.RESET + " / " +
+                        EnumChatFormatting.GREEN + VN[getMinEnergyInputTier_EM()] + EnumChatFormatting.RESET + " " +
+                        translateToLocalFormatted("tt.keyphrase.Amp_Rating", clientLocale) + ": " +
+                        EnumChatFormatting.GREEN + GT_Utility.formatNumbers(eMaxAmpereFlow) + EnumChatFormatting.RESET + " A",
+                translateToLocalFormatted("tt.keyword.Problems", clientLocale) + ": " +
+                        EnumChatFormatting.RED + (getIdealStatus() - getRepairStatus()) + EnumChatFormatting.RESET + " " +
+                        translateToLocalFormatted("tt.keyword.Efficiency", clientLocale) + ": " +
+                        EnumChatFormatting.YELLOW + mEfficiency / 100.0F + EnumChatFormatting.RESET + " %",
+                translateToLocalFormatted("tt.keyword.PowerPass", clientLocale) + ": " +
+                        EnumChatFormatting.BLUE + ePowerPass + EnumChatFormatting.RESET + " " +
+                        translateToLocalFormatted("tt.keyword.SafeVoid", clientLocale) + ": " +
+                        EnumChatFormatting.BLUE + eSafeVoid,
+                translateToLocalFormatted("tt.keyword.Computation", clientLocale) + ": " +
+                        EnumChatFormatting.GREEN + GT_Utility.formatNumbers(eAvailableData) + EnumChatFormatting.RESET + " / " +
+                        EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(eRequiredData) + EnumChatFormatting.RESET,
         };
     }
 
@@ -214,7 +226,7 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
-            return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][12], new TT_RenderedTexture(aActive ? ScreenON : ScreenOFF)};
+            return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][12], new TT_RenderedExtendedFacingTexture(aActive ? ScreenON : ScreenOFF)};
         }
         return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][12]};
     }
@@ -239,17 +251,21 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
         } else {
             return true;
         }
-        System.out.println(clientLocale);
         return true;
     }
 
     @Override
-    public void construct(int stackSize, boolean hintsOnly) {
-        StructureBuilderExtreme(shape, blockType, blockMeta, 2, 2, 0, getBaseMetaTileEntity(), this, hintsOnly);
+    public void construct(ItemStack stackSize, boolean hintsOnly) {
+        structureBuild_EM("main", 2, 2, 0, stackSize, hintsOnly);
     }
 
     @Override
-    public String[] getStructureDescription(int stackSize) {
+    public IStructureDefinition<GT_MetaTileEntity_EM_decay> getStructure_EM() {
+        return STRUCTURE_DEFINITION;
+    }
+
+    @Override
+    public String[] getStructureDescription(ItemStack stackSize) {
         return description;
     }
 }

@@ -1,6 +1,6 @@
 package com.github.technus.tectech.thing.metaTileEntity.single.gui;
 
-import com.github.technus.tectech.Util;
+import com.github.technus.tectech.util.Util;
 import com.github.technus.tectech.thing.metaTileEntity.single.GT_MetaTileEntity_DataReader;
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
 import gregtech.api.gui.GT_Slot_Holo;
@@ -115,8 +115,8 @@ public class GT_GUIContainer_DataReader extends GT_GUIContainerMetaTile_Machine 
 
     private void renderDataBG(ItemStack thing, int mouseX, int mouseY, int x, int y, byte mTier) {
         if (thing != null) {
-            ArrayList<GT_MetaTileEntity_DataReader.IDataRender> renders = GT_MetaTileEntity_DataReader.getRenders(new Util.ItemStack_NoNBT(thing));
-            for (GT_MetaTileEntity_DataReader.IDataRender render : renders) {
+            for (GT_MetaTileEntity_DataReader.IDataRender render :
+                    GT_MetaTileEntity_DataReader.getRenders(new Util.ItemStack_NoNBT(thing))) {
                 if (render.canRender(thing, mTier)) {
                     if (!GT_Utility.areStacksEqual(stack, thing, false)) {
                         render.initRender(thing);
@@ -133,8 +133,8 @@ public class GT_GUIContainer_DataReader extends GT_GUIContainerMetaTile_Machine 
         if(stack==null){
             return false;
         }
-        ArrayList<GT_MetaTileEntity_DataReader.IDataRender> renders = GT_MetaTileEntity_DataReader.getRenders(new Util.ItemStack_NoNBT(stack));
-        for (GT_MetaTileEntity_DataReader.IDataRender render : renders) {
+        for (GT_MetaTileEntity_DataReader.IDataRender render :
+                GT_MetaTileEntity_DataReader.getRenders(new Util.ItemStack_NoNBT(stack))) {
             if (render.canRender(stack, mTier)) {
                 render.renderForeground(stack, mouseX, mouseY, this, fontRendererObj);
                 return true;
@@ -147,8 +147,8 @@ public class GT_GUIContainer_DataReader extends GT_GUIContainerMetaTile_Machine 
         if(stack==null){
             return false;
         }
-        ArrayList<GT_MetaTileEntity_DataReader.IDataRender> renders = GT_MetaTileEntity_DataReader.getRenders(new Util.ItemStack_NoNBT(stack));
-        for (GT_MetaTileEntity_DataReader.IDataRender render : renders) {
+        for (GT_MetaTileEntity_DataReader.IDataRender render :
+                GT_MetaTileEntity_DataReader.getRenders(new Util.ItemStack_NoNBT(stack))) {
             if (render.canRender(stack, mTier)) {
                 render.renderTooltips(stack, mouseX, mouseY, this);
                 return true;

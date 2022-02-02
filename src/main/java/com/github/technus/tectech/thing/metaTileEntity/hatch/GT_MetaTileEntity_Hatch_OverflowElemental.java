@@ -1,8 +1,8 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
-import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.Util;
+import com.github.technus.tectech.util.CommonValues;
+import com.github.technus.tectech.util.Util;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Dyes;
@@ -12,6 +12,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.GT_Utility;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,9 +29,9 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.util.Locale;
 
-import static com.github.technus.tectech.CommonValues.DISPERSE_AT;
-import static com.github.technus.tectech.CommonValues.V;
 import static com.github.technus.tectech.loader.MainLoader.elementalPollution;
+import static com.github.technus.tectech.util.CommonValues.DISPERSE_AT;
+import static com.github.technus.tectech.util.CommonValues.V;
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity;
 import static net.minecraft.util.StatCollector.translateToLocal;
@@ -44,13 +45,13 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
     private static Textures.BlockIcons.CustomIcon EM_T_ACTIVE;
     public static Textures.BlockIcons.CustomIcon MufflerEM;
     public static Textures.BlockIcons.CustomIcon MufflerEMidle;
-    private float overflowMatter;
-    public final float overflowMax;
-    private final float overflowDisperse;
+    private double overflowMatter;
+    public final double overflowMax;
+    private final double overflowDisperse;
 
     private String clientLocale = "en_US";
 
-    public GT_MetaTileEntity_Hatch_OverflowElemental(int aID, String aName, String aNameRegional, int aTier, float max) {
+    public GT_MetaTileEntity_Hatch_OverflowElemental(int aID, String aName, String aNameRegional, int aTier, double max) {
         super(aID, aName, aNameRegional, aTier, 0, translateToLocal("gt.blockmachines.hatch.emmuffler.desc.0"));//Disposes excess elemental Matter
         overflowMatter = max / 2;
         overflowMax = max;
@@ -58,7 +59,7 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
         Util.setTier(aTier, this);
     }
 
-    public GT_MetaTileEntity_Hatch_OverflowElemental(String aName, int aTier, float max, String aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Hatch_OverflowElemental(String aName, int aTier, double max, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
         overflowMatter = max / 2;
         overflowMax = max;
@@ -90,8 +91,8 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
         return new String[]{
                 CommonValues.TEC_MARK_EM,
                 mDescription,
-                translateToLocal("gt.blockmachines.hatch.emmuffler.desc.1") + ": " + EnumChatFormatting.AQUA + String.format(Locale.ENGLISH, "%+.2E", overflowMax) + " eV/c\u00b2",
-                translateToLocal("gt.blockmachines.hatch.emmuffler.desc.2") + ": " + EnumChatFormatting.AQUA + String.format(Locale.ENGLISH, "%+.2E", overflowDisperse) + " (eV/c\u00b2)/s",
+                translateToLocal("gt.blockmachines.hatch.emmuffler.desc.1") + ": " + EnumChatFormatting.AQUA + GT_Utility.formatNumbers(overflowMax) + " eV/c\u00b2",
+                translateToLocal("gt.blockmachines.hatch.emmuffler.desc.2") + ": " + EnumChatFormatting.AQUA + GT_Utility.formatNumbers(overflowDisperse) + " (eV/c\u00b2)/s",
                 translateToLocal("gt.blockmachines.hatch.emmuffler.desc.3")
         };
     }
@@ -124,13 +125,13 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setFloat("overflowMatter", overflowMatter);
+        aNBT.setDouble("OverflowMatter", overflowMatter);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        overflowMatter = aNBT.getFloat("overflowMatter");
+        overflowMatter = aNBT.getFloat("overflowMatter")+aNBT.getDouble("OverflowMatter");
     }
 
     @Override
@@ -148,10 +149,10 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
         if (aBaseMetaTileEntity.isServerSide() && aTick % 20 == DISPERSE_AT) {
             if (aBaseMetaTileEntity.isActive()) {
                 if (overflowMatter > overflowDisperse) {
-                    TecTech.anomalyHandler.addAnomaly(aBaseMetaTileEntity, overflowDisperse);
+                    TecTech.anomalyHandler.addAnomaly(aBaseMetaTileEntity, overflowDisperse/(Math.pow(2,mTier)));
                     overflowMatter -= overflowDisperse;
                 } else {
-                    TecTech.anomalyHandler.addAnomaly(aBaseMetaTileEntity, overflowMatter);
+                    TecTech.anomalyHandler.addAnomaly(aBaseMetaTileEntity, overflowMatter/(Math.pow(2,mTier)));
                     overflowMatter = 0;
                     aBaseMetaTileEntity.setActive(false);
                     aBaseMetaTileEntity.setLightValue((byte) 0);
@@ -204,7 +205,6 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
         } else {
             return true;
         }
-        System.out.println(clientLocale);
         return true;
     }
 
@@ -217,16 +217,17 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
     public String[] getInfoData() {
         return new String[]{
                 translateToLocalFormatted("tt.keyphrase.Contained_mass", clientLocale) + ":",
-                EnumChatFormatting.RED + Double.toString(overflowMatter) + EnumChatFormatting.RESET + " eV/c\u00b2 /",
-                EnumChatFormatting.GREEN + Double.toString(overflowMax) + EnumChatFormatting.RESET + " eV/c\u00b2",
-                translateToLocalFormatted("tt.keyphrase.Mass_Disposal_speed", clientLocale) + ": " + EnumChatFormatting.BLUE + overflowDisperse + EnumChatFormatting.RESET + " (eV/c\u00b2)/s"
+                EnumChatFormatting.RED + GT_Utility.formatNumbers(overflowMatter) + EnumChatFormatting.RESET + " eV/c\u00b2 /",
+                EnumChatFormatting.GREEN + GT_Utility.formatNumbers(overflowMax) + EnumChatFormatting.RESET + " eV/c\u00b2",
+                translateToLocalFormatted("tt.keyphrase.Mass_Disposal_speed", clientLocale) + ": " +
+                        EnumChatFormatting.BLUE + GT_Utility.formatNumbers(overflowDisperse) + EnumChatFormatting.RESET + " (eV/c\u00b2)/s"
         };
     }
 
     @Override
     public void onRemoval() {
         if (isValidMetaTileEntity(this) && getBaseMetaTileEntity().isActive()) {
-            TecTech.anomalyHandler.addAnomaly(getBaseMetaTileEntity(), overflowMatter * 8D);
+            TecTech.anomalyHandler.addAnomaly(getBaseMetaTileEntity(), overflowMatter);
             if (TecTech.configTecTech.BOOM_ENABLE) {
                 getBaseMetaTileEntity().doExplosion(V[15]);
             } else {
@@ -236,17 +237,17 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
     }
 
     //Return - Should Explode
-    public boolean addOverflowMatter(float matter) {
+    public boolean addOverflowMatter(double matter) {
         overflowMatter += matter;
         return overflowMatter > overflowMax;
     }
 
-    public float getOverflowMatter() {
+    public double getOverflowMatter() {
         return overflowMatter;
     }
 
     //Return - Should Explode
-    public boolean setOverflowMatter(float overflowMatter) {
+    public boolean setOverflowMatter(double overflowMatter) {
         this.overflowMatter = overflowMatter;
         return overflowMatter > overflowMax;
     }

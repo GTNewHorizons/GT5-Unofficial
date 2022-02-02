@@ -1,32 +1,33 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import cofh.api.energy.IEnergyContainerItem;
-import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_Container_MultiMachineEM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_GUIContainer_MultiMachineEM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.IHatchAdder;
+import com.github.technus.tectech.util.CommonValues;
+import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 
-import static com.github.technus.tectech.Util.StructureBuilderExtreme;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.GregTech_API.mEUtoRF;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
@@ -34,21 +35,24 @@ import static net.minecraft.util.StatCollector.translateToLocal;
  */
 public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
     //region structure
-    private static final String[][] shape = new String[][]{
-            {"   ", "000", "1.1", "000", "   ",},
-            {"   ", "010", "111", "010", "   ",},
-            {"   ", "000", "111", "000", "   ",},
-    };
-    private static final Block[] blockType = new Block[]{sBlockCasingsTT, sBlockCasingsTT};
-    private static final byte[] blockMeta = new byte[]{7, 4};
-    private final IHatchAdder[] addingMethods = new IHatchAdder[]{this::addClassicToMachineList};
-    private static final short[] casingTextures = new short[]{textureOffset};
-    private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT};
-    private static final byte[] blockMetaFallback = new byte[]{0};
     private static final String[] description = new String[]{
             EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
             translateToLocal("gt.blockmachines.multimachine.em.infuser.hint"),//1 - Classic Hatches or High Power Casing
     };
+
+    private static final IStructureDefinition<GT_MetaTileEntity_EM_infuser> STRUCTURE_DEFINITION = IStructureDefinition
+            .<GT_MetaTileEntity_EM_infuser>builder()
+            .addShape("main", transpose(new String[][]{
+                    {"CCC", "CCC", "CCC"},
+                    {"BBB", "BAB", "BBB"},
+                    {"A~A", "AAA", "AAA"},
+                    {"BBB", "BAB", "BBB"},
+                    {"CCC", "CCC", "CCC"}
+            }))
+            .addElement('A', ofBlock(sBlockCasingsTT, 4))
+            .addElement('B', ofBlock(sBlockCasingsTT, 7))
+            .addElement('C', ofHatchAdderOptional(GT_MetaTileEntity_EM_infuser::addClassicToMachineList, textureOffset, 1, sBlockCasingsTT, 0))
+            .build();
     //endregion
 
     public GT_MetaTileEntity_EM_infuser(int aID, String aName, String aNameRegional) {
@@ -112,7 +116,7 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        return structureCheck_EM(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 2, 0);
+        return structureCheck_EM("main", 1, 2, 0);
     }
 
     @Override
@@ -182,12 +186,17 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
     }
 
     @Override
-    public void construct(int stackSize, boolean hintsOnly) {
-        StructureBuilderExtreme(shape, blockType, blockMeta, 1, 2, 0, getBaseMetaTileEntity(), this, hintsOnly);
+    public void construct(ItemStack stackSize, boolean hintsOnly) {
+        structureBuild_EM("main", 1, 2, 0, stackSize, hintsOnly);
     }
 
     @Override
-    public String[] getStructureDescription(int stackSize) {
+    public IStructureDefinition<GT_MetaTileEntity_EM_infuser> getStructure_EM() {
+        return STRUCTURE_DEFINITION;
+    }
+
+    @Override
+    public String[] getStructureDescription(ItemStack stackSize) {
         return description;
     }
 }

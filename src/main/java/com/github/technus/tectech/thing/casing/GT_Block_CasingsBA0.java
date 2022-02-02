@@ -18,14 +18,12 @@ import net.minecraft.world.IBlockAccess;
 import java.util.List;
 
 import static com.github.technus.tectech.TecTech.tectechTexturePage1;
+import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 
 /**
  * Created by danie_000 on 03.10.2016.
  */
 public class GT_Block_CasingsBA0 extends GT_Block_Casings_Abstract {
-    public static final byte texturePage=tectechTexturePage1;
-    public static final short textureOffset = (texturePage << 7)+16;//Start of PAGE 8 (which is the 9th page)  (8*128)+16
-
     private static IIcon[] tM0 = new IIcon[2];
     private static IIcon[] tM1 = new IIcon[2];
     private static IIcon[] tM2 = new IIcon[2];
@@ -35,11 +33,14 @@ public class GT_Block_CasingsBA0 extends GT_Block_Casings_Abstract {
     private static IIcon[] tM6 = new IIcon[2];
     private static IIcon tM7;
     private static IIcon[] tM8 = new IIcon[2];
+    private static IIcon[] tM9 = new IIcon[2];
+
+    private static final byte START_INDEX = 16;
 
     public GT_Block_CasingsBA0() {
         super(GT_Item_CasingsBA0.class, "gt.blockcasingsBA0", GT_Material_Casings.INSTANCE);
         for (byte b = 0; b < 16; b = (byte) (b + 1)) {
-            Textures.BlockIcons.casingTexturePages[texturePage][b+16] = new GT_CopiedBlockTexture(this, 6, b);
+            Textures.BlockIcons.casingTexturePages[texturePage][b + START_INDEX] = new GT_CopiedBlockTexture(this, 6, b);
             /*IMPORTANT for block recoloring**/
         }
 
@@ -49,6 +50,7 @@ public class GT_Block_CasingsBA0 extends GT_Block_Casings_Abstract {
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "EV Superconductor Primary Tesla Windings");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "IV Superconductor Primary Tesla Windings");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "LuV Superconductor Primary Tesla Windings");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "ZPM Superconductor Primary Tesla Windings");
 
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Tesla Base Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Tesla Toroid Casing");
@@ -60,6 +62,7 @@ public class GT_Block_CasingsBA0 extends GT_Block_Casings_Abstract {
         CustomItemList.tM_TeslaPrimary_3.set(new ItemStack(this, 1, 3));
         CustomItemList.tM_TeslaPrimary_4.set(new ItemStack(this, 1, 4));
         CustomItemList.tM_TeslaPrimary_5.set(new ItemStack(this, 1, 5));
+        CustomItemList.tM_TeslaPrimary_6.set(new ItemStack(this, 1, 9));
 
         CustomItemList.tM_TeslaBase.set(new ItemStack(this, 1, 6));
         CustomItemList.tM_TeslaToroid.set(new ItemStack(this, 1, 7));
@@ -80,6 +83,8 @@ public class GT_Block_CasingsBA0 extends GT_Block_Casings_Abstract {
         tM4[1] = aIconRegister.registerIcon("gregtech:iconsets/TM_TESLA_WINDING_PRIMARY_SIDES_4");
         tM5[0] = aIconRegister.registerIcon("gregtech:iconsets/TM_TESLA_WINDING_PRIMARY_TOP_BOTTOM_5");
         tM5[1] = aIconRegister.registerIcon("gregtech:iconsets/TM_TESLA_WINDING_PRIMARY_SIDES_5");
+        tM9[0] = aIconRegister.registerIcon("gregtech:iconsets/TM_TESLA_WINDING_PRIMARY_TOP_BOTTOM_6");
+        tM9[1] = aIconRegister.registerIcon("gregtech:iconsets/TM_TESLA_WINDING_PRIMARY_SIDES_6");
 
         tM6[0] = aIconRegister.registerIcon("gregtech:iconsets/TM_TESLA_BASE_TOP_BOTTOM");
         tM6[1] = aIconRegister.registerIcon("gregtech:iconsets/TM_TESLA_BASE_SIDES");
@@ -92,7 +97,7 @@ public class GT_Block_CasingsBA0 extends GT_Block_Casings_Abstract {
     public IIcon getIcon(int aSide, int aMeta) {
         switch (aMeta) {
             case 0:
-                switch (aSide){
+                switch (aSide) {
                     case 0:
                     case 1:
                         return tM0[0];
@@ -100,7 +105,7 @@ public class GT_Block_CasingsBA0 extends GT_Block_Casings_Abstract {
                         return tM0[1];
                 }
             case 1:
-                switch (aSide){
+                switch (aSide) {
                     case 0:
                     case 1:
                         return tM1[0];
@@ -108,7 +113,7 @@ public class GT_Block_CasingsBA0 extends GT_Block_Casings_Abstract {
                         return tM1[1];
                 }
             case 2:
-                switch (aSide){
+                switch (aSide) {
                     case 0:
                     case 1:
                         return tM2[0];
@@ -116,7 +121,7 @@ public class GT_Block_CasingsBA0 extends GT_Block_Casings_Abstract {
                         return tM2[1];
                 }
             case 3:
-                switch (aSide){
+                switch (aSide) {
                     case 0:
                     case 1:
                         return tM3[0];
@@ -124,7 +129,7 @@ public class GT_Block_CasingsBA0 extends GT_Block_Casings_Abstract {
                         return tM3[1];
                 }
             case 4:
-                switch (aSide){
+                switch (aSide) {
                     case 0:
                     case 1:
                         return tM4[0];
@@ -132,7 +137,7 @@ public class GT_Block_CasingsBA0 extends GT_Block_Casings_Abstract {
                         return tM4[1];
                 }
             case 5:
-                switch (aSide){
+                switch (aSide) {
                     case 0:
                     case 1:
                         return tM5[0];
@@ -140,7 +145,7 @@ public class GT_Block_CasingsBA0 extends GT_Block_Casings_Abstract {
                         return tM5[1];
                 }
             case 6:
-                switch (aSide){
+                switch (aSide) {
                     case 0:
                     case 1:
                         return tM6[0];
@@ -150,12 +155,20 @@ public class GT_Block_CasingsBA0 extends GT_Block_Casings_Abstract {
             case 7:
                 return tM7;
             case 8:
-                switch (aSide){
+                switch (aSide) {
                     case 0:
                     case 1:
                         return tM8[0];
                     default:
                         return tM8[1];
+                }
+            case 9:
+                switch (aSide) {
+                    case 0:
+                    case 1:
+                        return tM9[0];
+                    default:
+                        return tM9[1];
                 }
             default:
                 return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
@@ -171,7 +184,7 @@ public class GT_Block_CasingsBA0 extends GT_Block_Casings_Abstract {
 
     @Override
     public void getSubBlocks(Item aItem, CreativeTabs par2CreativeTabs, List aList) {
-        for (int i = 0; i <= 8; i++) {
+        for (int i = 0; i <= 9; i++) {
             aList.add(new ItemStack(aItem, 1, i));
         }
     }

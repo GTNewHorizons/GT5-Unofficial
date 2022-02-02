@@ -1,31 +1,36 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
-import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.Reference;
-import com.github.technus.tectech.Vec3pos;
 import com.github.technus.tectech.mechanics.dataTransport.QuantumDataPacket;
-import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputData;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_OutputData;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.*;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedTexture;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.INameFunction;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.IStatusFunction;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
+import com.github.technus.tectech.util.CommonValues;
+import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 
-import static com.github.technus.tectech.CommonValues.V;
-import static com.github.technus.tectech.Util.StructureBuilderExtreme;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.*;
+import static com.github.technus.tectech.util.CommonValues.V;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
@@ -33,25 +38,25 @@ import static net.minecraft.util.StatCollector.translateToLocal;
  */
 public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
     //region structure
-    private static final String[][] shape = new String[][]{
-            {"   ", " . ", "   ",},
-            {"   ", " 0 ", "   ",},
-            {"   ", "   ", "   ",},
-    };
-    private static final Block[] blockType = new Block[]{sBlockCasingsTT};
-    private static final byte[] blockMeta = new byte[]{3};
-    private final IHatchAdder[] addingMethods = new IHatchAdder[]{this::addClassicToMachineList};
-    private static final short[] casingTextures = new short[]{textureOffset + 1};
-    private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT};
-    private static final byte[] blockMetaFallback = new byte[]{1};
     private static final String[] description = new String[]{
             EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
             "1 - Classic/Data Hatches or Computer casing",//1 - Classic/Data Hatches or Computer casing
     };
+
+    private static final IStructureDefinition<GT_MetaTileEntity_EM_switch> STRUCTURE_DEFINITION = IStructureDefinition
+            .<GT_MetaTileEntity_EM_switch>builder()
+            .addShape("main", transpose(new String[][]{
+                    {"BBB", "BBB", "BBB"},
+                    {"B~B", "BAB", "BBB"},
+                    {"BBB", "BBB", "BBB"}
+            }))
+            .addElement('A', ofBlock(sBlockCasingsTT, 3))
+            .addElement('B', ofHatchAdderOptional(GT_MetaTileEntity_EM_switch::addClassicToMachineList, textureOffset + 1, 1, sBlockCasingsTT, 1))
+            .build();
     //endregion
 
     //region parameters
-    private static final INameFunction<GT_MetaTileEntity_EM_switch> ROUTE_NAME =
+    private static final INameFunction<GT_MetaTileEntity_EM_switch>   ROUTE_NAME =
             (base, p) -> (p.parameterId() == 0 ? translateToLocal("tt.keyword.Destination") + " " : translateToLocal("tt.keyword.Weight") + " ") + p.hatchId();
     private static final IStatusFunction<GT_MetaTileEntity_EM_switch> WEI_STATUS =
             (base, p) -> {
@@ -74,8 +79,8 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
                 }
                 return STATUS_NEUTRAL;
             };
-    protected Parameters.Group.ParameterIn[] dst;
-    protected Parameters.Group.ParameterIn[] weight;
+    protected            Parameters.Group.ParameterIn[]               dst;
+    protected            Parameters.Group.ParameterIn[]               weight;
     //endregion
 
     public GT_MetaTileEntity_EM_switch(int aID, String aName, String aNameRegional) {
@@ -93,7 +98,7 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        return structureCheck_EM(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 1, 0);
+        return structureCheck_EM("main", 1, 1, 0);
     }
 
     @Override
@@ -128,7 +133,10 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
                 }
             }
 
-            Vec3pos pos = new Vec3pos(getBaseMetaTileEntity());
+            Vec3Impl pos = new Vec3Impl(getBaseMetaTileEntity().getXCoord(),
+                    getBaseMetaTileEntity().getYCoord(),
+                    getBaseMetaTileEntity().getZCoord());
+
             QuantumDataPacket pack = new QuantumDataPacket(0L).unifyTraceWith(pos);
             if (pack == null) {
                 return;
@@ -191,7 +199,7 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
-            return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][1], new TT_RenderedTexture(aActive ? GT_MetaTileEntity_MultiblockBase_EM.ScreenON : GT_MetaTileEntity_MultiblockBase_EM.ScreenOFF)};
+            return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][1], new TT_RenderedExtendedFacingTexture(aActive ? GT_MetaTileEntity_MultiblockBase_EM.ScreenON : GT_MetaTileEntity_MultiblockBase_EM.ScreenOFF)};
         }
         return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][1]};
     }
@@ -216,12 +224,17 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
     }
 
     @Override
-    public void construct(int stackSize, boolean hintsOnly) {
-        StructureBuilderExtreme(shape, blockType, blockMeta, 1, 1, 0, getBaseMetaTileEntity(), this, hintsOnly);
+    public void construct(ItemStack stackSize, boolean hintsOnly) {
+        structureBuild_EM("main", 1, 1, 0, stackSize, hintsOnly);
     }
 
     @Override
-    public String[] getStructureDescription(int stackSize) {
+    public IStructureDefinition<GT_MetaTileEntity_EM_switch> getStructure_EM() {
+        return STRUCTURE_DEFINITION;
+    }
+
+    @Override
+    public String[] getStructureDescription(ItemStack stackSize) {
         return description;
     }
 }

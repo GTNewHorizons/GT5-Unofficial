@@ -1,11 +1,12 @@
 package com.github.technus.tectech.thing.item;
 
-import com.github.technus.tectech.CommonValues;
+import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.font.TecTechFontRender;
-import com.github.technus.tectech.Util;
-import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalDefinitionStackMap;
-import com.github.technus.tectech.mechanics.elementalMatter.core.tElementalException;
+import com.github.technus.tectech.mechanics.elementalMatter.core.EMException;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMConstantStackMap;
 import com.github.technus.tectech.thing.item.renderElemental.IElementalItem;
+import com.github.technus.tectech.util.CommonValues;
+import com.github.technus.tectech.util.Util;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.gui.FontRenderer;
@@ -19,9 +20,10 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.github.technus.tectech.Reference.MODID;
+import static com.github.technus.tectech.TecTech.creativeTabEM;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
-import static com.github.technus.tectech.loader.gui.CreativeTabTecTech.creativeTabTecTech;
 import static cpw.mods.fml.relauncher.Side.CLIENT;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
  * Created by Tec on 15.03.2017.
@@ -33,36 +35,36 @@ public final class ElementalDefinitionContainer_EM extends Item implements IElem
         setMaxStackSize(1);
         setUnlocalizedName("em.definitionContainer");
         setTextureName(MODID + ":itemDefinitionContainer");
-        setCreativeTab(creativeTabTecTech);
+        setCreativeTab(creativeTabEM);
     }
 
     //return previous thing
-    public static cElementalDefinitionStackMap setContent(ItemStack containerItem, cElementalDefinitionStackMap definitions){
+    public static EMConstantStackMap setContent(ItemStack containerItem, EMConstantStackMap definitions){
         if(containerItem.getItem() instanceof ElementalDefinitionContainer_EM) {
             NBTTagCompound tNBT = containerItem.stackTagCompound;
             if (tNBT == null) {
                 tNBT = containerItem.stackTagCompound = new NBTTagCompound();
             }
 
-            cElementalDefinitionStackMap oldMap=null;
+            EMConstantStackMap oldMap =null;
             if (tNBT.hasKey("content")) {
                 try {
-                    oldMap=cElementalDefinitionStackMap.fromNBT(tNBT.getCompoundTag("content"));
-                } catch (tElementalException e) {
+                    oldMap= EMConstantStackMap.fromNBT(TecTech.definitionsRegistry,tNBT.getCompoundTag("content"));
+                } catch (EMException e) {
                     if (DEBUG_MODE) {
                         e.printStackTrace();
                     }
                 }
             }
             tNBT.setTag("info", definitions.getInfoNBT());
-            tNBT.setTag("content", definitions.toNBT());
+            tNBT.setTag("content", definitions.toNBT(TecTech.definitionsRegistry));
             tNBT.setTag("symbols",definitions.getShortSymbolsNBT());
             return oldMap;
         }
         return null;
     }
 
-    public static cElementalDefinitionStackMap getContent(ItemStack containerItem){
+    public static EMConstantStackMap getContent(ItemStack containerItem){
         if(containerItem.getItem() instanceof ElementalDefinitionContainer_EM){
             NBTTagCompound tNBT = containerItem.stackTagCompound;
 
@@ -70,8 +72,8 @@ public final class ElementalDefinitionContainer_EM extends Item implements IElem
                 return null;
             }
             try {
-                return cElementalDefinitionStackMap.fromNBT(tNBT.getCompoundTag("content"));
-            } catch (tElementalException e) {
+                return EMConstantStackMap.fromNBT(TecTech.definitionsRegistry,tNBT.getCompoundTag("content"));
+            } catch (EMException e) {
                 if (DEBUG_MODE) {
                     e.printStackTrace();
                 }
@@ -80,18 +82,18 @@ public final class ElementalDefinitionContainer_EM extends Item implements IElem
         return null;
     }
 
-    public static cElementalDefinitionStackMap clearContent(ItemStack containerItem){
+    public static EMConstantStackMap clearContent(ItemStack containerItem){
         if(containerItem.getItem() instanceof ElementalDefinitionContainer_EM){
             NBTTagCompound tNBT = containerItem.stackTagCompound;
             if (tNBT == null) {
                 return null;
             }
 
-            cElementalDefinitionStackMap oldMap=null;
+            EMConstantStackMap oldMap =null;
             if (tNBT.hasKey("content")) {
                 try {
-                    oldMap=cElementalDefinitionStackMap.fromNBT(tNBT.getCompoundTag("content"));
-                } catch (tElementalException e) {
+                    oldMap= EMConstantStackMap.fromNBT(TecTech.definitionsRegistry,tNBT.getCompoundTag("content"));
+                } catch (EMException e) {
                     if (DEBUG_MODE) {
                         e.printStackTrace();
                     }
@@ -111,13 +113,13 @@ public final class ElementalDefinitionContainer_EM extends Item implements IElem
         try {
             NBTTagCompound tNBT = aStack.getTagCompound();
             if (tNBT != null && tNBT.hasKey("info")) {
-                aList.add("Should Contain:");
+                aList.add(translateToLocal("item.em.definitionContainer.desc.0") + ": ");//Should Contain
                 Collections.addAll(aList, Util.infoFromNBT(tNBT.getCompoundTag("info")));
             } else {
-                aList.add("Recipe Hint");
+                aList.add(translateToLocal("item.em.definitionContainer.desc.1"));//Recipe Hint
             }
         } catch (Exception e) {
-            aList.add("---Unexpected Termination---");
+            aList.add(translateToLocal("item.em.definitionContainer.desc.2"));//---Unexpected Termination---
         }
     }
 

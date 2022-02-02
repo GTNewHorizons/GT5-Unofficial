@@ -1,6 +1,6 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch.gui;
 
-import com.github.technus.tectech.Util;
+import com.github.technus.tectech.util.Util;
 import com.github.technus.tectech.font.TecTechFontRender;
 import com.github.technus.tectech.loader.NetworkDispatcher;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_ParamText;

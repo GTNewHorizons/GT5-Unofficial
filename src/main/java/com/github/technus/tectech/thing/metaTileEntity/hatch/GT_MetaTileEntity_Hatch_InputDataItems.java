@@ -1,9 +1,9 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
-import com.github.technus.tectech.CommonValues;
-import com.github.technus.tectech.Util;
+import com.github.technus.tectech.util.CommonValues;
+import com.github.technus.tectech.util.Util;
 import com.github.technus.tectech.mechanics.dataTransport.InventoryDataPacket;
-import com.github.technus.tectech.thing.metaTileEntity.pipe.IConnectsToDataPipe;
+import com.github.technus.tectech.mechanics.pipe.IConnectsToDataPipe;
 import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -11,32 +11,35 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_DataAccess;
 import gregtech.api.objects.GT_RenderedTexture;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.util.ArrayList;
 
-import static com.github.technus.tectech.CommonValues.MOVE_AT;
+import static com.github.technus.tectech.util.CommonValues.MOVE_AT;
 import static com.github.technus.tectech.recipe.TT_recipeAdder.nullItem;
 import static com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DataConnector.*;
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
+import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 public class GT_MetaTileEntity_Hatch_InputDataItems extends GT_MetaTileEntity_Hatch_DataAccess implements IConnectsToDataPipe {
-    private final String mDescription;
     public boolean delDelay = true;
     private ItemStack[] stacks;
+
+    private String clientLocale = "en_US";
 
     public GT_MetaTileEntity_Hatch_InputDataItems(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);
         Util.setTier(aTier,this);
-        mDescription="ItemStack Data Input for Multiblocks";
     }
 
     public GT_MetaTileEntity_Hatch_InputDataItems(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
-        mDescription=aDescription;
     }
 
     @Override
@@ -68,10 +71,15 @@ public class GT_MetaTileEntity_Hatch_InputDataItems extends GT_MetaTileEntity_Ha
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         if (aBaseMetaTileEntity.isClientSide()) {
             return true;
-        } else {
-            aBaseMetaTileEntity.openGUI(aPlayer);
-            return true;
         }
+        try {
+            EntityPlayerMP player = (EntityPlayerMP) aPlayer;
+            clientLocale = (String) FieldUtils.readField(player, "translator", true);
+        } catch (Exception e) {
+            clientLocale = "en_US";
+        }
+        aBaseMetaTileEntity.openGUI(aPlayer);
+        return true;
     }
 
     @Override
@@ -158,7 +166,7 @@ public class GT_MetaTileEntity_Hatch_InputDataItems extends GT_MetaTileEntity_Ha
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        NBTTagCompound stacksTag=new NBTTagCompound();
+        NBTTagCompound stacksTag= aNBT.getCompoundTag("data_stacks");
         int count=stacksTag.getInteger("count");
         if(count>0){
             ArrayList<ItemStack> stacks=new ArrayList<>();
@@ -205,9 +213,9 @@ public class GT_MetaTileEntity_Hatch_InputDataItems extends GT_MetaTileEntity_Ha
     public String[] getDescription() {
         return new String[]{
                 CommonValues.TEC_MARK_EM,
-                mDescription,
-                "High speed fibre optics connector.",
-                EnumChatFormatting.AQUA + "Must be painted to work"
+                translateToLocal("gt.blockmachines.hatch.datainass.desc.0"),//ItemStack Data Input for Multiblocks
+                translateToLocal("gt.blockmachines.hatch.datainass.desc.1"),//High speed fibre optics connector.
+                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.datainass.desc.2")//Must be painted to work
         };
     }
 
@@ -219,7 +227,7 @@ public class GT_MetaTileEntity_Hatch_InputDataItems extends GT_MetaTileEntity_Ha
     @Override
     public String[] getInfoData() {
         return new String[]{
-                "Content: Stack Count: "+(stacks==null?0:stacks.length)
+                translateToLocalFormatted("tt.keyphrase.Content_Stack_Count", clientLocale) + ": "+(stacks==null?0:stacks.length)
         };
     }
 

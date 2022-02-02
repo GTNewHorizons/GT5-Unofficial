@@ -1,11 +1,11 @@
 package com.github.technus.tectech.thing.metaTileEntity.single;
 
-import com.github.technus.tectech.CommonValues;
+import com.github.technus.tectech.util.CommonValues;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
-import static com.github.technus.tectech.CommonValues.V;
+import static com.github.technus.tectech.util.CommonValues.V;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 public class GT_MetaTileEntity_WetTransformer extends GT_MetaTileEntity_TT_Transformer {

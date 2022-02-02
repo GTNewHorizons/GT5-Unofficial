@@ -1,6 +1,9 @@
 package com.github.technus.tectech.thing.metaTileEntity.pipe;
 
-import com.github.technus.tectech.CommonValues;
+import com.github.technus.tectech.mechanics.pipe.IActivePipe;
+import com.github.technus.tectech.mechanics.pipe.IConnectsToElementalPipe;
+import com.github.technus.tectech.mechanics.pipe.PipeActivityMessage;
+import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.loader.NetworkDispatcher;
 import cpw.mods.fml.relauncher.Side;
@@ -27,11 +30,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
  * Created by Tec on 26.02.2017.
  */
-public class GT_MetaTileEntity_Pipe_EM extends MetaPipeEntity implements IConnectsToElementalPipe,IActivePipe {
+public class GT_MetaTileEntity_Pipe_EM extends MetaPipeEntity implements IConnectsToElementalPipe, IActivePipe {
     private static Textures.BlockIcons.CustomIcon EMpipe;
     static Textures.BlockIcons.CustomIcon EMcandy,EMCandyActive;
     public byte connectionCount = 0;
@@ -99,10 +103,10 @@ public class GT_MetaTileEntity_Pipe_EM extends MetaPipeEntity implements IConnec
     public String[] getDescription() {
         return new String[]{
                 CommonValues.TEC_MARK_EM,
-                "Quantum tunneling device.",
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Not a portal!!!",
-                EnumChatFormatting.AQUA + "Must be painted to work",
-                EnumChatFormatting.AQUA + "Do not cross,split or turn"
+                translateToLocal("gt.blockmachines.pipe.elementalmatter.desc.0"),//Quantum tunneling device.
+                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.pipe.elementalmatter.desc.1"),//Not a portal!!!
+                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.pipe.elementalmatter.desc.2"),//Must be painted to work
+                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.pipe.elementalmatter.desc.3")//Do not cross, split or turn
         };
     }
 
@@ -118,25 +122,16 @@ public class GT_MetaTileEntity_Pipe_EM extends MetaPipeEntity implements IConnec
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
             if ((aTick & 31) == 31) {
+                if(TecTech.RANDOM.nextInt(15)==0) {
+                    NetworkDispatcher.INSTANCE.sendToAllAround(new PipeActivityMessage.PipeActivityData(this),
+                            aBaseMetaTileEntity.getWorld().provider.dimensionId,
+                            aBaseMetaTileEntity.getXCoord(),
+                            aBaseMetaTileEntity.getYCoord(),
+                            aBaseMetaTileEntity.getZCoord(),
+                            256);
+                }
                 if(active){
-                    if(TecTech.RANDOM.nextInt(7)==0) {
-                        NetworkDispatcher.INSTANCE.sendToAllAround(new PipeActivityMessage.PipeActivityData(this),
-                                aBaseMetaTileEntity.getWorld().provider.dimensionId,
-                                aBaseMetaTileEntity.getXCoord(),
-                                aBaseMetaTileEntity.getYCoord(),
-                                aBaseMetaTileEntity.getZCoord(),
-                                256);
-                    }
                     active=false;
-                }else if(getActive()){
-                    if(TecTech.RANDOM.nextInt(7)==0) {
-                        NetworkDispatcher.INSTANCE.sendToAllAround(new PipeActivityMessage.PipeActivityData(this),
-                                aBaseMetaTileEntity.getWorld().provider.dimensionId,
-                                aBaseMetaTileEntity.getXCoord(),
-                                aBaseMetaTileEntity.getYCoord(),
-                                aBaseMetaTileEntity.getZCoord(),
-                                256);
-                    }
                 }
                 mConnections = 0;
                 connectionCount = 0;
@@ -239,9 +234,11 @@ public class GT_MetaTileEntity_Pipe_EM extends MetaPipeEntity implements IConnec
     }
 
     @Override
-    public void setActive(boolean active) {
-        this.active=active;
-        getBaseMetaTileEntity().issueTextureUpdate();
+    public void setActive(boolean state) {
+        if(state!=active) {
+            active = state;
+            getBaseMetaTileEntity().issueTextureUpdate();
+        }
     }
 
     @Override

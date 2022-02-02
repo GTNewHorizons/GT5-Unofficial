@@ -1,6 +1,9 @@
 package com.github.technus.tectech.thing.metaTileEntity.pipe;
 
-import com.github.technus.tectech.CommonValues;
+import com.github.technus.tectech.mechanics.pipe.IActivePipe;
+import com.github.technus.tectech.mechanics.pipe.IConnectsToEnergyTunnel;
+import com.github.technus.tectech.mechanics.pipe.PipeActivityMessage;
+import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.loader.NetworkDispatcher;
 import cpw.mods.fml.relauncher.Side;
@@ -29,12 +32,13 @@ import net.minecraftforge.common.util.ForgeDirection;
 import static com.github.technus.tectech.thing.metaTileEntity.pipe.GT_MetaTileEntity_Pipe_EM.EMCandyActive;
 import static com.github.technus.tectech.thing.metaTileEntity.pipe.GT_MetaTileEntity_Pipe_EM.EMcandy;
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
-public class GT_MetaTileEntity_Pipe_Energy extends MetaPipeEntity implements IConnectsToEnergyTunnel,IActivePipe {
+public class GT_MetaTileEntity_Pipe_Energy extends MetaPipeEntity implements IConnectsToEnergyTunnel, IActivePipe {
     private static Textures.BlockIcons.CustomIcon EMpipe;
     public byte connectionCount = 0;
 
-    private boolean active;
+    private boolean active,lastActive;
 
     public GT_MetaTileEntity_Pipe_Energy(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 0);
@@ -95,10 +99,10 @@ public class GT_MetaTileEntity_Pipe_Energy extends MetaPipeEntity implements ICo
     public String[] getDescription() {
         return new String[]{
                 CommonValues.TEC_MARK_EM,
-                "Laser tunneling device.",
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Bright Vacuum!!!",
-                EnumChatFormatting.AQUA + "Must be painted to work",
-                EnumChatFormatting.AQUA + "Do not split or turn"
+                translateToLocal("gt.blockmachines.pipe.energystream.desc.0"),//Laser tunneling device.
+                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.pipe.energystream.desc.1"),//Bright Vacuum!!!
+                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.pipe.energystream.desc.2"),//Must be painted to work
+                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.pipe.energystream.desc.3")//Do not split or turn
         };
     }
 
@@ -114,25 +118,16 @@ public class GT_MetaTileEntity_Pipe_Energy extends MetaPipeEntity implements ICo
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
             if ((aTick & 31) == 31) {
+                if(TecTech.RANDOM.nextInt(15)==0) {
+                    NetworkDispatcher.INSTANCE.sendToAllAround(new PipeActivityMessage.PipeActivityData(this),
+                            aBaseMetaTileEntity.getWorld().provider.dimensionId,
+                            aBaseMetaTileEntity.getXCoord(),
+                            aBaseMetaTileEntity.getYCoord(),
+                            aBaseMetaTileEntity.getZCoord(),
+                            256);
+                }
                 if(active){
-                    if(TecTech.RANDOM.nextInt(31)==0) {
-                        NetworkDispatcher.INSTANCE.sendToAllAround(new PipeActivityMessage.PipeActivityData(this),
-                                aBaseMetaTileEntity.getWorld().provider.dimensionId,
-                                aBaseMetaTileEntity.getXCoord(),
-                                aBaseMetaTileEntity.getYCoord(),
-                                aBaseMetaTileEntity.getZCoord(),
-                                256);
-                    }
                     active=false;
-                }else if(getActive()){
-                    if(TecTech.RANDOM.nextInt(31)==0) {
-                        NetworkDispatcher.INSTANCE.sendToAllAround(new PipeActivityMessage.PipeActivityData(this),
-                                aBaseMetaTileEntity.getWorld().provider.dimensionId,
-                                aBaseMetaTileEntity.getXCoord(),
-                                aBaseMetaTileEntity.getYCoord(),
-                                aBaseMetaTileEntity.getZCoord(),
-                                256);
-                    }
                 }
                 mConnections = 0;
                 connectionCount = 0;
@@ -179,8 +174,10 @@ public class GT_MetaTileEntity_Pipe_Energy extends MetaPipeEntity implements ICo
 
     @Override
     public void setActive(boolean state){
-        this.active=state;
-        getBaseMetaTileEntity().issueTextureUpdate();
+        if(state!=active) {
+            active = state;
+            getBaseMetaTileEntity().issueTextureUpdate();
+        }
     }
 
     @Override

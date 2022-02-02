@@ -1,7 +1,7 @@
 package com.github.technus.tectech.thing.metaTileEntity.single;
 
-import com.github.technus.tectech.CommonValues;
-import com.github.technus.tectech.Util;
+import com.github.technus.tectech.util.CommonValues;
+import com.github.technus.tectech.util.Util;
 import com.github.technus.tectech.thing.metaTileEntity.single.gui.GT_Container_DebugPowerGenerator;
 import com.github.technus.tectech.thing.metaTileEntity.single.gui.GT_GUIContainer_DebugPowerGenerator;
 import cpw.mods.fml.relauncher.Side;
@@ -19,9 +19,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
-import static com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_IN_POWER_TT;
-import static com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_OUT_POWER_TT;
-import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
+import static com.github.technus.tectech.thing.metaTileEntity.Textures.*;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
  * Created by Tec on 23.03.2017.
@@ -32,7 +31,7 @@ public class GT_MetaTileEntity_DebugPowerGenerator extends GT_MetaTileEntity_Tie
     public boolean producing=true;
 
     public GT_MetaTileEntity_DebugPowerGenerator(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 0, "Power from nothing");
+        super(aID, aName, aNameRegional, aTier, 0, "");
         Util.setTier(aTier,this);
     }
 
@@ -55,7 +54,7 @@ public class GT_MetaTileEntity_DebugPowerGenerator extends GT_MetaTileEntity_Tie
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        return new ITexture[]{MACHINE_CASINGS[mTier][aColorIndex + 1], aSide != aFacing ? aActive? OVERLAYS_ENERGY_OUT_POWER_TT[mTier]: OVERLAYS_ENERGY_IN_POWER_TT[mTier] : GENNY};
+        return new ITexture[]{MACHINE_CASINGS_TT[mTier][aColorIndex + 1], aSide != aFacing ? aActive? OVERLAYS_ENERGY_OUT_POWER_TT[mTier]: OVERLAYS_ENERGY_IN_POWER_TT[mTier] : GENNY};
     }
 
     @Override
@@ -136,9 +135,10 @@ public class GT_MetaTileEntity_DebugPowerGenerator extends GT_MetaTileEntity_Tie
     @Override
     public String[] getDescription() {
         return new String[]{
-                CommonValues.TEC_MARK_GENERAL, mDescription,
-                EnumChatFormatting.BLUE + "Infinite Producer/Consumer",
-                EnumChatFormatting.BLUE + "Since i wanted one..."
+                CommonValues.TEC_MARK_GENERAL,
+                translateToLocal("gt.blockmachines.debug.tt.genny.desc.0"),//Power from nothing
+                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.debug.tt.genny.desc.1"),//Infinite Producer/Consumer
+                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.debug.tt.genny.desc.2")//Since i wanted one...
         };
     }
 

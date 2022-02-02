@@ -2,20 +2,23 @@ package com.github.technus.tectech.loader;
 
 import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.AspectDefinitionCompat;
-import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.AspectDefinitionCompatEnabled;
+import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.transformations.AspectDefinitionCompat;
+import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.transformations.AspectDefinitionCompatEnabled;
 import com.github.technus.tectech.compatibility.thaumcraft.thing.metaTileEntity.multi.EssentiaCompat;
 import com.github.technus.tectech.compatibility.thaumcraft.thing.metaTileEntity.multi.EssentiaCompatEnabled;
 import com.github.technus.tectech.loader.gui.CreativeTabTecTech;
+import com.github.technus.tectech.loader.gui.CreativeTabEM;
 import com.github.technus.tectech.loader.gui.ModGuiHandler;
-import com.github.technus.tectech.loader.recipe.RecipeLoader;
+import com.github.technus.tectech.loader.recipe.BaseRecipeLoader;
 import com.github.technus.tectech.loader.thing.ComponentLoader;
 import com.github.technus.tectech.loader.thing.CoverLoader;
 import com.github.technus.tectech.loader.thing.MachineLoader;
 import com.github.technus.tectech.loader.thing.ThingsLoader;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry.EMDefinitionsRegistry;
+import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry;
 import com.github.technus.tectech.thing.casing.TT_Container_Casings;
 import com.github.technus.tectech.thing.metaTileEntity.Textures;
-import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_collider;
+import com.github.technus.tectech.thing.metaTileEntity.multi.em_collider.GT_MetaTileEntity_EM_collider;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ProgressManager;
 import cpw.mods.fml.common.network.NetworkRegistry;
@@ -38,12 +41,12 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import static com.github.technus.tectech.CommonValues.*;
+import static com.github.technus.tectech.util.CommonValues.*;
 import static com.github.technus.tectech.TecTech.*;
-import static com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.AspectDefinitionCompat.aspectDefinitionCompat;
+import static com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.transformations.AspectDefinitionCompat.aspectDefinitionCompat;
 import static com.github.technus.tectech.compatibility.thaumcraft.thing.metaTileEntity.multi.EssentiaCompat.essentiaContainerCompat;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
-import static com.github.technus.tectech.loader.gui.CreativeTabTecTech.creativeTabTecTech;
+import static com.github.technus.tectech.TecTech.creativeTabTecTech;
 import static gregtech.api.enums.GT_Values.W;
 
 public final class MainLoader {
@@ -62,20 +65,21 @@ public final class MainLoader {
 
     public static void preLoad(){
         creativeTabTecTech =new CreativeTabTecTech("TecTech");
+        creativeTabEM =new CreativeTabEM("EM");
 
         //set expanded texture arrays for tiers
         try {
-            new Textures();
+            Textures.run();
         }catch (Throwable t){
             LOGGER.error("Loading textures...",t);
         }
     }
 
-    public static void load() {
+    public static void load(EMDefinitionsRegistry definitionsRegistry) {
         ProgressManager.ProgressBar progressBarLoad = ProgressManager.push("TecTech Loader", 9);
 
         progressBarLoad.step("Elemental Things");
-        new ElementalLoader().run();
+        new ElementalLoader().run(definitionsRegistry);
         LOGGER.info("Elemental Init Done");
 
         progressBarLoad.step("Thaumcraft Compatibility");
@@ -120,13 +124,13 @@ public final class MainLoader {
         ProgressManager.pop(progressBarLoad);
     }
 
-    public static void postLoad() {
-        ProgressManager.ProgressBar progressBarPostLoad = ProgressManager.push("TecTech Post Loader", 5);
+    public static void postLoad(EMDefinitionsRegistry definitionsRegistry, EMTransformationRegistry transformationInfo) {
+        ProgressManager.ProgressBar progressBarPostLoad = ProgressManager.push("TecTech Post Loader", 4);
 
         progressBarPostLoad.step("Dreamcraft Compatibility");
         if(Loader.isModLoaded(Reference.DREAMCRAFT)){
             try {
-                Class clazz = Class.forName("com.dreammaster.gthandler.casings.GT_Container_CasingsNH");
+                Class<?> clazz = Class.forName("com.dreammaster.gthandler.casings.GT_Container_CasingsNH");
                 TT_Container_Casings.sBlockCasingsNH = (Block)clazz.getField("sBlockCasingsNH").get(null);
 
                 if(TT_Container_Casings.sBlockCasingsNH==null){
@@ -140,22 +144,28 @@ public final class MainLoader {
         progressBarPostLoad.step("Thaumcraft Compatibility");
         if (Loader.isModLoaded(Reference.THAUMCRAFT)) {
             aspectDefinitionCompat = new AspectDefinitionCompatEnabled();
-            aspectDefinitionCompat.run();
+            aspectDefinitionCompat.run(definitionsRegistry);
         } else {
             aspectDefinitionCompat = new AspectDefinitionCompat();
         }
 
         progressBarPostLoad.step("Recipes");
-        new RecipeLoader().run();
+        new BaseRecipeLoader().run(transformationInfo);
         TecTech.LOGGER.info("Recipe Init Done");
 
-        progressBarPostLoad.step("Register Extra Hazmat Suits");
-        registerExtraHazmats();
-        TecTech.LOGGER.info("Hazmat additions done");
+        //Hazmat moved to GT5U
+        //progressBarPostLoad.step("Register Extra Hazmat Suits");
+        //registerExtraHazmats();
+        //TecTech.LOGGER.info("Hazmat additions done");
 
-        progressBarPostLoad.step("Nerf blocks blast resistance");
-        fixBlocks();
-        TecTech.LOGGER.info("Blocks nerf done");
+        if (!configTecTech.DISABLE_BLOCK_HARDNESS_NERF) {
+            progressBarPostLoad.step("Nerf blocks blast resistance");
+            fixBlocks();
+            TecTech.LOGGER.info("Blocks nerf done");
+        } else {
+            progressBarPostLoad.step("Do not nerf blocks blast resistance");
+            TecTech.LOGGER.info("Blocks were not nerfed");
+        }
 
         ProgressManager.pop(progressBarPostLoad);
     }
@@ -323,6 +333,7 @@ public final class MainLoader {
                 "DraconicEvolution",
                 "IC2NuclearControl",
                 "IronChest",
+                "irontank",
                 "opensecurity",
                 "openmodularturrets",
                 "Railcraft",
@@ -338,23 +349,23 @@ public final class MainLoader {
         for(Block block : GameData.getBlockRegistry().typeSafeIterable()) {
             GameRegistry.UniqueIdentifier uniqueIdentifier=GameRegistry.findUniqueIdentifierFor(block);
             if (uniqueIdentifier != null) {
-                if (modIDs.contains(uniqueIdentifier.modId)) {//Full Whitelisted Mods
+                if (block.blockHardness < 0 || modIDs.contains(uniqueIdentifier.modId)) {
                     continue;
                 } else if ("OpenBlocks".equals(uniqueIdentifier.modId)) {
                     if ("grave".equals(uniqueIdentifier.name)) {
                         continue;
                     }
-                } else if ("TwilightForest".equals(uniqueIdentifier.modId)){
-                    if ("tile.TFShield".equals(uniqueIdentifier.name)){
+                } else if ("TwilightForest".equals(uniqueIdentifier.modId)) {
+                    if ("tile.TFShield".equals(uniqueIdentifier.name)) {
                         block.setResistance(30);
                         continue;
-                    }else if ("tile.TFThorns".equals(uniqueIdentifier.name)){
+                    } else if ("tile.TFThorns".equals(uniqueIdentifier.name)) {
                         block.setResistance(10);
                         continue;
-                    }else if ("tile.TFTowerTranslucent".equals(uniqueIdentifier.name)){
+                    } else if ("tile.TFTowerTranslucent".equals(uniqueIdentifier.name)) {
                         block.setResistance(30);
                         continue;
-                    }else if ("tile.TFDeadrock".equals(uniqueIdentifier.name)) {
+                    } else if ("tile.TFDeadrock".equals(uniqueIdentifier.name)) {
                         block.setResistance(5);
                         continue;
                     } else {

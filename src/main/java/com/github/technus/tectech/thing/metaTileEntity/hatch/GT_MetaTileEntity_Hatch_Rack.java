@@ -1,9 +1,9 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
-import com.github.technus.tectech.CommonValues;
+import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.Util;
+import com.github.technus.tectech.util.Util;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_Container_Rack;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_GUIContainer_Rack;
 import cpw.mods.fml.common.Loader;
@@ -18,17 +18,21 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.github.technus.tectech.CommonValues.MULTI_CHECK_AT;
-import static com.github.technus.tectech.Util.getUniqueIdentifier;
+import static com.github.technus.tectech.util.CommonValues.MULTI_CHECK_AT;
+import static com.github.technus.tectech.util.Util.getUniqueIdentifier;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
+import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 /**
  * Created by Tec on 03.04.2017.
@@ -40,8 +44,10 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch {
     private float overClock = 1, overVolt = 1;
     private static Map<String, RackComponent> componentBinds = new HashMap<>();
 
-    public GT_MetaTileEntity_Hatch_Rack(int aID, String aName, String aNameRegional, int aTier, String descr) {
-        super(aID, aName, aNameRegional, aTier, 4, descr);
+    private String clientLocale = "en_US";
+
+    public GT_MetaTileEntity_Hatch_Rack(int aID, String aName, String aNameRegional, int aTier) {
+        super(aID, aName, aNameRegional, aTier, 4, "");
         Util.setTier(aTier,this);
     }
 
@@ -131,13 +137,19 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch {
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_Rack(aPlayerInventory, aBaseMetaTileEntity, "Computer Rack");
+        return new GT_GUIContainer_Rack(aPlayerInventory, aBaseMetaTileEntity, translateToLocal("gt.blockmachines.hatch.rack.tier.08.name"));//Computer Rack
     }
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         if (aBaseMetaTileEntity.isClientSide()) {
             return true;
+        }
+        try {
+            EntityPlayerMP player = (EntityPlayerMP) aPlayer;
+            clientLocale = (String) FieldUtils.readField(player, "translator", true);
+        } catch (Exception e) {
+            clientLocale = "en_US";
         }
         //if(aBaseMetaTileEntity.isActive())
         //    aPlayer.addChatComponentMessage(new ChatComponentText("It is still active..."));
@@ -249,8 +261,8 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch {
     public String[] getDescription() {
         return new String[]{
                 CommonValues.TEC_MARK_EM,
-                mDescription,
-                EnumChatFormatting.AQUA + "Holds Computer Components"
+                translateToLocal("gt.blockmachines.hatch.rack.desc.0"),//4 Slot Rack
+                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.rack.desc.1")//Holds Computer Components
         };
     }
 
@@ -262,9 +274,10 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch {
     @Override
     public String[] getInfoData() {
         return new String[]{
-                "Base computation: " + EnumChatFormatting.AQUA + getComputationPower(1, 0, false),
-                "After overclocking: " + EnumChatFormatting.AQUA + getComputationPower(overClock, 0, false),
-                "Heat Accumulated: " + EnumChatFormatting.RED + (heat + 99) / 100 + EnumChatFormatting.RESET + " %"};
+                translateToLocalFormatted("tt.keyphrase.Base_computation", clientLocale) + ": " + EnumChatFormatting.AQUA + getComputationPower(1, 0, false),
+                translateToLocalFormatted("tt.keyphrase.After_overclocking", clientLocale) + ": " + EnumChatFormatting.AQUA + getComputationPower(overClock, 0, false),
+                translateToLocalFormatted("tt.keyphrase.Heat_Accumulated", clientLocale) + ": " + EnumChatFormatting.RED + (heat + 99) / 100 + EnumChatFormatting.RESET + " %"
+        };
         //heat==0? --> ((heat+9)/10) = 0
         //Heat==1-10? -->  1
     }
@@ -329,28 +342,28 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch {
         }
         
         if (Loader.isModLoaded("OpenComputers")) {
-            new RackComponent("OpenComputers:item.23", 0, 1, 0f, 100, true);//Transistor
-            new RackComponent("OpenComputers:item.24", 7, 12, -.05f, 1500, true);//chip t1
-            new RackComponent("OpenComputers:item.25", 18, 20, -.1f, 3000, true);//chip t2
-            new RackComponent("OpenComputers:item.26", 25, 22, -.15f, 4500, true);//chip t3
-            new RackComponent("OpenComputers:item.27", 10, 15, -.05f, 3000, true);//alu
-            new RackComponent("OpenComputers:item.28", 25, 18, -.05f, 1500, true);//cu
+            new RackComponent("OpenComputers:item.oc.Transistor", 0, 1, 0f, 100, true);//Transistor
+            new RackComponent("OpenComputers:item.oc.Microchip0", 7, 12, -.05f, 1500, true);//chip t1
+            new RackComponent("OpenComputers:item.oc.Microchip1", 18, 20, -.1f, 3000, true);//chip t2
+            new RackComponent("OpenComputers:item.oc.Microchip2", 25, 22, -.15f, 4500, true);//chip t3
+            new RackComponent("OpenComputers:item.oc.ALU", 10, 15, -.05f, 3000, true);//alu
+            new RackComponent("OpenComputers:item.oc.ControlUnit", 25, 18, -.05f, 1500, true);//cu
 
-            new RackComponent("OpenComputers:item.70", 42, 30, -.05f, 1500, true);//bus t1
-            new RackComponent("OpenComputers:item.71", 70, 50, -.1f, 3000, true);//bus t2
-            new RackComponent("OpenComputers:item.72", 105, 72, -.15f, 4500, true);//bus t3
+            new RackComponent("OpenComputers:item.oc.ComponentBus0", 42, 30, -.05f, 1500, true);//bus t1
+            new RackComponent("OpenComputers:item.oc.ComponentBus1", 70, 50, -.1f, 3000, true);//bus t2
+            new RackComponent("OpenComputers:item.oc.ComponentBus2", 105, 72, -.15f, 4500, true);//bus t3
 
-            new RackComponent("OpenComputers:item.29", 106, 73, -.1f, 1500, true);//cpu t1
-            new RackComponent("OpenComputers:item.42", 226, 153, -.15f, 3000, true);//cpu t2
-            new RackComponent("OpenComputers:item.43", 374, 241, -.2f, 4500, true);//cpu t3
+            new RackComponent("OpenComputers:item.oc.CPU0", 106, 73, -.1f, 1500, true);//cpu t1
+            new RackComponent("OpenComputers:item.oc.CPU1", 226, 153, -.15f, 3000, true);//cpu t2
+            new RackComponent("OpenComputers:item.oc.CPU2", 374, 241, -.2f, 4500, true);//cpu t3
 
-            new RackComponent("OpenComputers:item.8", 20, 27, -.1f, 1500, true);//gpu t1
-            new RackComponent("OpenComputers:item.9", 62, 67, -.2f, 3000, true);//gpu t2
-            new RackComponent("OpenComputers:item.10", 130, 111, -.3f, 4500, true);//gpu t3
+            new RackComponent("OpenComputers:item.oc.GraphicsCard0", 20, 27, -.1f, 1500, true);//gpu t1
+            new RackComponent("OpenComputers:item.oc.GraphicsCard1", 62, 67, -.2f, 3000, true);//gpu t2
+            new RackComponent("OpenComputers:item.oc.GraphicsCard2", 130, 111, -.3f, 4500, true);//gpu t3
 
-            new RackComponent("OpenComputers:item.101", 350, 234, -.1f, 1500, true);//apu t1
-            new RackComponent("OpenComputers:item.102", 606, 398, -.2f, 4500, true);//apu t2
-            new RackComponent("OpenComputers:item.103", 1590, 1006, -.3f, 9000, true);//apu tC
+            new RackComponent("OpenComputers:item.oc.APU0", 350, 234, -.1f, 1500, true);//apu t2
+            new RackComponent("OpenComputers:item.oc.APU1", 606, 398, -.2f, 4500, true);//apu t3
+            new RackComponent("OpenComputers:item.oc.APU2", 1590, 1006, -.3f, 9000, true);//apu tC
         }
     }
 

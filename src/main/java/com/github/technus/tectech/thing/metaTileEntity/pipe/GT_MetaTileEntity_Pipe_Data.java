@@ -1,6 +1,9 @@
 package com.github.technus.tectech.thing.metaTileEntity.pipe;
 
-import com.github.technus.tectech.CommonValues;
+import com.github.technus.tectech.mechanics.pipe.IActivePipe;
+import com.github.technus.tectech.mechanics.pipe.IConnectsToDataPipe;
+import com.github.technus.tectech.mechanics.pipe.PipeActivityMessage;
+import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.loader.NetworkDispatcher;
 import cpw.mods.fml.relauncher.Side;
@@ -26,11 +29,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
  * Created by Tec on 26.02.2017.
  */
-public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements IConnectsToDataPipe,IActivePipe {
+public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements IConnectsToDataPipe, IActivePipe {
     private static Textures.BlockIcons.CustomIcon EMpipe;
     private static Textures.BlockIcons.CustomIcon EMbar,EMbarActive;
     public byte connectionCount = 0;
@@ -98,10 +102,10 @@ public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements IConn
     public String[] getDescription() {
         return new String[]{
                 CommonValues.TEC_MARK_EM,
-                "Advanced data transmission",
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Don't stare at the beam!",
-                EnumChatFormatting.AQUA + "Must be painted to work",
-                EnumChatFormatting.AQUA + "Do not cross or split"
+                translateToLocal("gt.blockmachines.pipe.datastream.desc.0"),//Advanced data transmission
+                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.pipe.datastream.desc.1"),//Don't stare at the beam!
+                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.pipe.datastream.desc.2"),//Must be painted to work
+                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.pipe.datastream.desc.3")//Do not cross or split
         };
     }
 
@@ -117,25 +121,16 @@ public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements IConn
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
             if ((aTick & 31) == 31) {
+                if(TecTech.RANDOM.nextInt(15)==0) {
+                    NetworkDispatcher.INSTANCE.sendToAllAround(new PipeActivityMessage.PipeActivityData(this),
+                            aBaseMetaTileEntity.getWorld().provider.dimensionId,
+                            aBaseMetaTileEntity.getXCoord(),
+                            aBaseMetaTileEntity.getYCoord(),
+                            aBaseMetaTileEntity.getZCoord(),
+                            256);
+                }
                 if(active){
-                    if(TecTech.RANDOM.nextInt(15)==0) {
-                        NetworkDispatcher.INSTANCE.sendToAllAround(new PipeActivityMessage.PipeActivityData(this),
-                                aBaseMetaTileEntity.getWorld().provider.dimensionId,
-                                aBaseMetaTileEntity.getXCoord(),
-                                aBaseMetaTileEntity.getYCoord(),
-                                aBaseMetaTileEntity.getZCoord(),
-                                256);
-                    }
                     active=false;
-                }else if(getActive()){
-                    if(TecTech.RANDOM.nextInt(15)==0) {
-                        NetworkDispatcher.INSTANCE.sendToAllAround(new PipeActivityMessage.PipeActivityData(this),
-                                aBaseMetaTileEntity.getWorld().provider.dimensionId,
-                                aBaseMetaTileEntity.getXCoord(),
-                                aBaseMetaTileEntity.getYCoord(),
-                                aBaseMetaTileEntity.getZCoord(),
-                                256);
-                    }
                 }
                 mConnections = 0;
                 connectionCount = 0;
@@ -199,6 +194,7 @@ public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements IConn
                 if (meta instanceof IConnectsToDataPipe && meta != source) {
                     if (meta instanceof GT_MetaTileEntity_Pipe_Data &&
                             ((GT_MetaTileEntity_Pipe_Data) meta).connectionCount == 2) {
+                        ((GT_MetaTileEntity_Pipe_Data) meta).markUsed();
                         return (IConnectsToDataPipe) meta;
                     }
                     if (((IConnectsToDataPipe) meta).isDataInputFacing(GT_Utility.getOppositeSide(b))) {
@@ -274,9 +270,11 @@ public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements IConn
     }
 
     @Override
-    public void setActive(boolean active) {
-        this.active=active;
-        getBaseMetaTileEntity().issueTextureUpdate();
+    public void setActive(boolean state) {
+        if(state!=active) {
+            active = state;
+            getBaseMetaTileEntity().issueTextureUpdate();
+        }
     }
 
     @Override

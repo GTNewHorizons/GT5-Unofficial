@@ -1,17 +1,18 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
-import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.Reference;
-import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.*;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedTexture;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
+import com.github.technus.tectech.util.CommonValues;
+import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -23,11 +24,14 @@ import net.minecraft.util.EnumChatFormatting;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import static com.github.technus.tectech.Util.StructureBuilderExtreme;
 import static com.github.technus.tectech.loader.MainLoader.microwaving;
 import static com.github.technus.tectech.recipe.TT_recipeAdder.nullItem;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.GregTech_API.sBlockCasings4;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
+import static net.minecraft.util.AxisAlignedBB.getBoundingBox;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
@@ -40,25 +44,23 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
 
     //region structure
     //use multi A energy inputs, use less power the longer it runs
-    private static final String[][] shape = new String[][]{
-            {"00000", "00000", "00.00", "0   0",},
-            {"0---0", "0---0", "0---0", " 000 ",},
-            {"0---0", "0---0", "0---0", " 000 ",},
-            {"0---0", "0---0", "0---0", " 000 ",},
-            {"00000", "00000", "00000", "0   0",},
-    };
-    private static final Block[] blockType = new Block[]{sBlockCasings4};
-    private static final byte[] blockMeta = new byte[]{1};
-
-    private final IHatchAdder[] addingMethods = new IHatchAdder[]{this::addClassicToMachineList};
-    private static final short[] casingTextures = new short[]{49};
-    private static final Block[] blockTypeFallback = new Block[]{sBlockCasings4};
-    private static final byte[] blockMetaFallback = new byte[]{1};
     private static final String[] description = new String[]{
             EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
             translateToLocal("gt.blockmachines.multimachine.tm.microwave.hint.0"),//1 - Classic Hatches or Clean Stainless Steel Casing
             translateToLocal("gt.blockmachines.multimachine.tm.microwave.hint.1"),//Also acts like a hopper so give it an Output Bus
     };
+
+    private static final IStructureDefinition<GT_MetaTileEntity_TM_microwave> STRUCTURE_DEFINITION = IStructureDefinition
+            .<GT_MetaTileEntity_TM_microwave>builder()
+            .addShape("main", transpose(new String[][]{
+                    {"AAAAA", "A---A", "A---A", "A---A", "AAAAA"},
+                    {"AAAAA", "A---A", "A---A", "A---A", "AAAAA"},
+                    {"AA~AA", "A---A", "A---A", "A---A", "AAAAA"},
+                    {"ABBBA", "BAAAB", "BAAAB", "BAAAB", "ABBBA"}
+            }))
+            .addElement('A', ofBlock(sBlockCasings4, 1))
+            .addElement('B', ofHatchAdderOptional(GT_MetaTileEntity_TM_microwave::addClassicToMachineList, 49, 1, sBlockCasings4, 1))
+            .build();
     //endregion
 
     //region parameters
@@ -67,11 +69,11 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
     private static final INameFunction<GT_MetaTileEntity_TM_microwave> POWER_SETTING_NAME = (base, p) -> translateToLocal("gt.blockmachines.multimachine.tm.microwave.cfgi.0");//Power setting
     private static final INameFunction<GT_MetaTileEntity_TM_microwave> TIMER_SETTING_NAME = (base, p) -> translateToLocal("gt.blockmachines.multimachine.tm.microwave.cfgi.1");//Timer setting
 
-    private static final INameFunction<GT_MetaTileEntity_TM_microwave> TIMER_VALUE_NAME = (base, p) -> translateToLocal("gt.blockmachines.multimachine.tm.microwave.cfgo.0");//Timer value
-    private static final INameFunction<GT_MetaTileEntity_TM_microwave> TIMER_REMAINING_NAME = (base, p) -> translateToLocal("gt.blockmachines.multimachine.tm.microwave.cfgo.1");//Timer remaining
-    private static final IStatusFunction<GT_MetaTileEntity_TM_microwave> POWER_STATUS =
+    private static final INameFunction<GT_MetaTileEntity_TM_microwave>   TIMER_VALUE_NAME     = (base, p) -> translateToLocal("gt.blockmachines.multimachine.tm.microwave.cfgo.0");//Timer value
+    private static final INameFunction<GT_MetaTileEntity_TM_microwave>   TIMER_REMAINING_NAME = (base, p) -> translateToLocal("gt.blockmachines.multimachine.tm.microwave.cfgo.1");//Timer remaining
+    private static final IStatusFunction<GT_MetaTileEntity_TM_microwave> POWER_STATUS         =
             (base, p) -> LedStatus.fromLimitsInclusiveOuterBoundary(p.get(), 300, 1000, 1000, Double.POSITIVE_INFINITY);
-    private static final IStatusFunction<GT_MetaTileEntity_TM_microwave> TIMER_STATUS = (base, p) -> {
+    private static final IStatusFunction<GT_MetaTileEntity_TM_microwave> TIMER_STATUS         = (base, p) -> {
         double value = p.get();
         if (Double.isNaN(value)) return STATUS_WRONG;
         value = (int) value;
@@ -96,7 +98,7 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        return structureCheck_EM(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 2, 2, 0);
+        return structureCheck_EM("main", 2, 2, 0);
     }
 
     @Override
@@ -123,18 +125,16 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
         }
         timerValue.set(timerValue.get() + 1);
         remainingTime.set(timerSetting.get() - timerValue.get());
-        IGregTechTileEntity mte = getBaseMetaTileEntity();
-        int[] xyzOffsets = getTranslatedOffsets(0, -1, 2);
-        double xPos = mte.getXCoord() + 0.5f + xyzOffsets[0];
-        double yPos = mte.getYCoord() + 0.5f + xyzOffsets[1];
-        double zPos = mte.getZCoord() + 0.5f + xyzOffsets[2];
-        AxisAlignedBB aabb = getBoundingBox(-2, -2, -2, 2, 2, 2).offset(xPos, yPos, zPos);
-        xyzOffsets = getTranslatedOffsets(0, -4, 0);
-        double[] xyzExpansion = getTranslatedOffsets(1.5, 0, 1.5);
-        for (int i = 0; i < 3; i++) {//gets ABS from translated to get expansion values
-            if (xyzExpansion[i] < 0) xyzExpansion[i] = -xyzExpansion[i];
-        }
-        int power = (int) powerSetting.get();
+        IGregTechTileEntity mte        = getBaseMetaTileEntity();
+        Vec3Impl            xyzOffsets = getExtendedFacing().getWorldOffset(new Vec3Impl(0, -1, 2));
+        double              xPos       = mte.getXCoord() + 0.5f + xyzOffsets.get0();
+        double              yPos       = mte.getYCoord() + 0.5f + xyzOffsets.get1();
+        double              zPos       = mte.getZCoord() + 0.5f + xyzOffsets.get2();
+        AxisAlignedBB aabb = getBoundingBox(-2, -2, -2, 2, 2, 2)
+                .offset(xPos, yPos, zPos);
+        xyzOffsets = getExtendedFacing().getWorldOffset(new Vec3Impl(0, -4, 0));
+        Vec3Impl xyzExpansion = getExtendedFacing().getWorldOffset(new Vec3Impl(1, 0, 1)).abs();
+        int      power        = (int) powerSetting.get();
         int damagingFactor =
                 Math.min(power >> 6, 8) +
                         Math.min(power >> 8, 24) +
@@ -142,7 +142,7 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
                         (power >> 18);
 
         ArrayList<ItemStack> itemsToOutput = new ArrayList<>();
-        HashSet<Entity> tickedStuff = new HashSet<>();
+        HashSet<Entity>      tickedStuff   = new HashSet<>();
 
         boolean inside = true;
         do {
@@ -169,8 +169,8 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
                     }
                 }
             }
-            aabb.offset(xyzOffsets[0], xyzOffsets[1], xyzOffsets[2]);
-            aabb = aabb.expand(xyzExpansion[0], xyzExpansion[1], xyzExpansion[2]);
+            aabb.offset(xyzOffsets.get0(), xyzOffsets.get1(), xyzOffsets.get2());
+            aabb = aabb.expand(xyzExpansion.get0() * 1.5, xyzExpansion.get1() * 1.5, xyzExpansion.get2() * 1.5);
             inside = false;
             damagingFactor >>= 1;
         } while (damagingFactor > 0);
@@ -195,22 +195,22 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
 
     @Override
     public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, false, true, true);
+        return new GT_Container_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, true, false, true);
     }
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "EMDisplay.png", false, true, true);//todo texture
+        return new GT_GUIContainer_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "EMDisplay.png", true, false, true);//todo texture
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
-            return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[49], new TT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE)};
+            return new ITexture[]{Textures.BlockIcons.casingTexturePages[0][49], new TT_RenderedExtendedFacingTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE)};
         } else if (aSide == GT_Utility.getOppositeSide(aFacing)) {
-            return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[49], aActive ? Textures.BlockIcons.CASING_BLOCKS[52] : Textures.BlockIcons.CASING_BLOCKS[53]};
+            return new ITexture[]{Textures.BlockIcons.casingTexturePages[0][49], aActive ? Textures.BlockIcons.casingTexturePages[0][52] : Textures.BlockIcons.casingTexturePages[0][53]};
         }
-        return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[49]};
+        return new ITexture[]{Textures.BlockIcons.casingTexturePages[0][49]};
     }
 
     @Override
@@ -245,12 +245,17 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
     }
 
     @Override
-    public void construct(int stackSize, boolean hintsOnly) {
-        StructureBuilderExtreme(shape, blockType, blockMeta, 2, 2, 0, getBaseMetaTileEntity(), this, hintsOnly);
+    public void construct(ItemStack stackSize, boolean hintsOnly) {
+        structureBuild_EM("main", 2, 2, 0, stackSize, hintsOnly);
     }
 
     @Override
-    public String[] getStructureDescription(int stackSize) {
+    public IStructureDefinition<GT_MetaTileEntity_TM_microwave> getStructure_EM() {
+        return STRUCTURE_DEFINITION;
+    }
+
+    @Override
+    public String[] getStructureDescription(ItemStack stackSize) {
         return description;
     }
 }

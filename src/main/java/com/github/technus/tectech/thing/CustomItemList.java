@@ -78,7 +78,7 @@ public enum CustomItemList implements IItemContainer {
     eM_Containment, eM_Containment_Field, eM_Containment_Advanced, eM_Coil, eM_Teleportation, eM_Dimensional, eM_Ultimate_Containment, eM_Ultimate_Containment_Advanced, eM_Ultimate_Containment_Field, eM_Spacetime, eM_Computer_Casing, eM_Computer_Bus, eM_Computer_Vent, eM_Hollow, eM_Power,
     debugBlock,
 
-    tM_TeslaBase, tM_TeslaToroid, tM_TeslaSecondary, tM_TeslaPrimary_0, tM_TeslaPrimary_1, tM_TeslaPrimary_2, tM_TeslaPrimary_3, tM_TeslaPrimary_4, tM_TeslaPrimary_5,
+    tM_TeslaBase, tM_TeslaToroid, tM_TeslaSecondary, tM_TeslaPrimary_0, tM_TeslaPrimary_1, tM_TeslaPrimary_2, tM_TeslaPrimary_3, tM_TeslaPrimary_4, tM_TeslaPrimary_5, tM_TeslaPrimary_6,
 
     Machine_Multi_Microwave, Machine_Multi_TeslaCoil,
     Machine_Multi_Transformer,
@@ -94,7 +94,7 @@ public enum CustomItemList implements IItemContainer {
 
     eM_avr_HV, eM_avr_EV, eM_avr_IV, eM_avr_LuV, eM_avr_ZPM, eM_avr_UV, eM_avr_UHV, eM_avr_UEV, eM_avr_UIV, eM_avr_UMV,
 
-    scanContainer, parametrizerMemory, teslaCapacitor, teslaCover, teslaComponent, teslaStaff,
+    scanContainer, parametrizerMemory, teslaCapacitor, teslaCover, teslaComponent, teslaStaff, enderLinkFluidCover, powerPassUpgradeCover,
 
     Machine_TeslaCoil_1by1_LV, Machine_TeslaCoil_1by1_MV, Machine_TeslaCoil_1by1_HV, Machine_TeslaCoil_1by1_EV, Machine_TeslaCoil_1by1_IV,
     Machine_TeslaCoil_2by2_LV, Machine_TeslaCoil_2by2_MV, Machine_TeslaCoil_2by2_HV, Machine_TeslaCoil_2by2_EV, Machine_TeslaCoil_2by2_IV,
