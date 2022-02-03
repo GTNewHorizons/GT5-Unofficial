@@ -8,10 +8,10 @@ import net.minecraft.client.renderer.RenderBlocks;
  * <p>Lets Multiple ITextures Render overlay over each other.<</p>
  * <p>I should have done this much earlier...</p>
  */
-class GT_MultiTexture implements ITexture {
+public class GT_MultiTexture extends GT_TextureBase implements ITexture {
     protected final ITexture[] mTextures;
 
-    GT_MultiTexture(ITexture... aTextures) {
+    protected GT_MultiTexture(ITexture... aTextures) {
         mTextures = aTextures;
     }
 
