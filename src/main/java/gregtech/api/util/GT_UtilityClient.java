@@ -12,7 +12,7 @@ import java.lang.reflect.Field;
 import java.util.List;
 
 public class GT_UtilityClient {
-	private static final Field isDrawingField = ReflectionHelper.findField(Tessellator.class, "isDrawing");
+	private static final Field isDrawingField = ReflectionHelper.findField(Tessellator.class, "isDrawing", "field_78415_z");
 
 	public static boolean isDrawing(Tessellator tess) {
 		try {
