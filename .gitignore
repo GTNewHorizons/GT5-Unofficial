@@ -32,3 +32,4 @@ src/main/resources/mixins.*.json
 /src/main/generated/
 /src/test/generated/
 .DS_Store
+classes
