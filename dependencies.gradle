@@ -1,17 +1,17 @@
 // Add your dependencies here
 
 dependencies {
-    compile("com.github.GTNewHorizons:GT5-Unofficial:5.09.40.18:dev")
-    compile("com.github.GTNewHorizons:StructureLib:1.0.14:dev")
-    compile("com.github.GTNewHorizons:TecTech:4.10.15:dev")
+    compile("com.github.GTNewHorizons:GT5-Unofficial:5.09.40.19:dev")
+    compile("com.github.GTNewHorizons:StructureLib:1.0.15:dev")
+    compile("com.github.GTNewHorizons:TecTech:4.10.16:dev")
     compile("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
-    compile("com.github.GTNewHorizons:NotEnoughItems:2.1.22-GTNH:dev")
-    compile("com.github.GTNewHorizons:TinkersConstruct:1.9.0.10-GTNH:dev")
-    compile("com.github.GTNewHorizons:CodeChickenLib:1.1.5.1:dev")
+    compile("com.github.GTNewHorizons:NotEnoughItems:2.2.3-GTNH:dev")
+    compile("com.github.GTNewHorizons:TinkersConstruct:1.9.0.12-GTNH:dev")
+    compile("com.github.GTNewHorizons:CodeChickenLib:1.1.5.2:dev")
     compile("com.github.GTNewHorizons:CodeChickenCore:1.1.3:dev")
-    compile("com.github.GTNewHorizons:Galacticraft:3.0.36-GTNH:dev")
+    compile("com.github.GTNewHorizons:Galacticraft:3.0.37-GTNH:dev")
 
-    compile("com.github.GTNewHorizons:GalacticGregGT5:1.0.6:dev") {
+    compile("com.github.GTNewHorizons:GalacticGregGT5:1.0.7:dev") {
         exclude group:"com.github.GTNewHorizons", module:"bartworks"
     }
     
@@ -19,13 +19,13 @@ dependencies {
         transitive = false
     }
 
-    compileOnly("com.github.GTNewHorizons:AppleCore:3.1.6:dev") {
+    compileOnly("com.github.GTNewHorizons:AppleCore:3.1.7:dev") {
         transitive = false
     }
     compileOnly("com.github.GTNewHorizons:TinkersGregworks:master-SNAPSHOT:dev") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:ForestryMC:4.4.4:api") {
+    compileOnly("com.github.GTNewHorizons:ForestryMC:4.4.5:api") {
         transitive = false
     }
     compileOnly("com.github.GTNewHorizons:Railcraft:9.13.5:api") {
@@ -41,4 +41,6 @@ dependencies {
     compileOnly("com.mod-buildcraft:buildcraft:7.1.23:dev") {
         transitive = false
     }
+    runtime("com.github.GTNewHorizons:Yamcl:0.5.82:dev")
+    runtime("com.github.GTNewHorizons:ironchest:6.0.68:dev") //needed for Galacticraft
 }
