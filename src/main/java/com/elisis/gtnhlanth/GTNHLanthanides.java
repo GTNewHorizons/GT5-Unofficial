@@ -1,5 +1,6 @@
 package com.elisis.gtnhlanth;
 
+import java.util.Arrays;
 import java.util.logging.Logger;
 
 import com.elisis.gtnhlanth.common.CommonProxy;
@@ -19,8 +20,6 @@ import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import gregtech.api.util.GT_Log;
-import net.minecraftforge.fluids.FluidRegistry;
-import scala.actors.threadpool.Arrays;
 
 @Mod(modid = Tags.MODID, version = Tags.VERSION, name = Tags.MODNAME, 
     dependencies = "required-after:IC2; " + "required-after:gregtech; "

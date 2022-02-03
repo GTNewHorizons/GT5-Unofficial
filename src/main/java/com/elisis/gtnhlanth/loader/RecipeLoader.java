@@ -1,13 +1,10 @@
 package com.elisis.gtnhlanth.loader;
 
-import static goodgenerator.items.MyMaterial.naquadahEarth;
-
 import java.util.HashSet;
 
 import com.elisis.gtnhlanth.Tags;
 import com.elisis.gtnhlanth.common.register.BotWerkstoffMaterialPool;
 import com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool;
-import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 
 import goodgenerator.crossmod.LoadedList;
@@ -21,14 +18,11 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.items.CombType;
-import gregtech.loaders.misc.GT_Bees;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_MultisUsingFluidInsteadOfCells;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
-import scala.actors.threadpool.Arrays;
 
 public class RecipeLoader {
 
