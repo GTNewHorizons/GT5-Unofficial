@@ -1,7 +1,6 @@
 package com.elisis.gtnhlanth.common.register;
 
 import com.elisis.gtnhlanth.common.tileentity.Digester;
-import com.elisis.gtnhlanth.common.tileentity.DissolutionTank;
 
 import net.minecraft.item.ItemStack;
 
