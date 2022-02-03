@@ -1354,7 +1354,7 @@ public class BaseMetaTileEntity extends CoverableGregTechTileEntity implements I
                         if (GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
                             mInputDisabled = !mInputDisabled;
                             if (mInputDisabled) mOutputDisabled = !mOutputDisabled;
-                            GT_Utility.sendChatToPlayer(aPlayer, trans("086","Auto-Input: ") + (mInputDisabled ? trans("087","Disabled") : trans("088","Enabled") + trans("089","  Auto-Output: ") + (mOutputDisabled ? trans("087","Disabled") : trans("088","Enabled"))));
+                            GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("086","Auto-Input: ") + (mInputDisabled ? GT_Utility.trans("087","Disabled") : GT_Utility.trans("088","Enabled") + GT_Utility.trans("089","  Auto-Output: ") + (mOutputDisabled ? GT_Utility.trans("087","Disabled") : GT_Utility.trans("088","Enabled"))));
                             GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(1), 1.0F, -1, xCoord, yCoord, zCoord);
                         }
                         return true;
@@ -1365,7 +1365,7 @@ public class BaseMetaTileEntity extends CoverableGregTechTileEntity implements I
                             if (mWorks) disableWorking();
                             else enableWorking();
                             {
-                                String tChat = trans("090", "Machine Processing: ") + (isAllowedToWork() ? trans("088", "Enabled") : trans("087", "Disabled"));
+                                String tChat = GT_Utility.trans("090", "Machine Processing: ") + (isAllowedToWork() ? GT_Utility.trans("088", "Enabled") : GT_Utility.trans("087", "Disabled"));
                                 if (getMetaTileEntity() != null && getMetaTileEntity().hasAlternativeModeText())
                                     tChat = getMetaTileEntity().getAlternativeModeText();
                                 GT_Utility.sendChatToPlayer(aPlayer, tChat);
@@ -1382,7 +1382,7 @@ public class BaseMetaTileEntity extends CoverableGregTechTileEntity implements I
                             GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(103), 1.0F, -1, xCoord, yCoord, zCoord);
                         } else if (GT_ModHandler.useSolderingIron(tCurrentItem, aPlayer)) {
                             mStrongRedstone ^= (1 << tSide);
-                            GT_Utility.sendChatToPlayer(aPlayer, trans("091","Redstone Output at Side ") + tSide + trans("092"," set to: ") + ((mStrongRedstone & (1 << tSide)) != 0 ? trans("093","Strong") : trans("094","Weak")));
+                            GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("091","Redstone Output at Side ") + tSide + GT_Utility.trans("092"," set to: ") + ((mStrongRedstone & (1 << tSide)) != 0 ? GT_Utility.trans("093","Strong") : GT_Utility.trans("094","Weak")));
                             GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(103), 3.0F, -1, xCoord, yCoord, zCoord);
                             issueBlockUpdate();
                         }

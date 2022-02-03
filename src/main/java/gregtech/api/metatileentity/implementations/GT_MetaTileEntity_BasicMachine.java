@@ -11,8 +11,10 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_CoverBehaviorBase;
+import gregtech.common.power.BasicMachineEUPower;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.common.power.Power;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
@@ -67,6 +69,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     public int mMainFacing = -1, mProgresstime = 0, mMaxProgresstime = 0, mEUt = 0, mOutputBlocked = 0;
     public FluidStack mOutputFluid;
     public String mGUIName, mNEIName;
+    private final Power mPower;
 
 
     @Deprecated
@@ -101,7 +104,9 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         mAmperage = aAmperage;
         mGUIName = aGUIName;
         mNEIName = aNEIName;
+        mPower = buildPower();
     }
+
     public GT_MetaTileEntity_BasicMachine(int aID, String aName, String aNameRegional, int aTier, int aAmperage, String[] aDescription, int aInputSlotCount, int aOutputSlotCount, String aGUIName, String aNEIName, ITexture... aOverlays) {
         super(aID, aName, aNameRegional, aTier, OTHER_SLOT_COUNT + aInputSlotCount + aOutputSlotCount + 1, aDescription, aOverlays);
         mInputSlotCount = Math.max(0, aInputSlotCount);
@@ -109,6 +114,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         mAmperage = aAmperage;
         mGUIName = aGUIName;
         mNEIName = aNEIName;
+        mPower = buildPower();
     }
     public GT_MetaTileEntity_BasicMachine(String aName, int aTier, int aAmperage, String aDescription, ITexture[][][] aTextures, int aInputSlotCount, int aOutputSlotCount, String aGUIName, String aNEIName) {
         super(aName, aTier, OTHER_SLOT_COUNT + aInputSlotCount + aOutputSlotCount + 1, aDescription, aTextures);
@@ -117,6 +123,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         mAmperage = aAmperage;
         mGUIName = aGUIName;
         mNEIName = aNEIName;
+        mPower = buildPower();
     }
     
     public GT_MetaTileEntity_BasicMachine(String aName, int aTier, int aAmperage, String[] aDescription, ITexture[][][] aTextures, int aInputSlotCount, int aOutputSlotCount, String aGUIName, String aNEIName) {
@@ -126,6 +133,14 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         mAmperage = aAmperage;
         mGUIName = aGUIName;
         mNEIName = aNEIName;
+        mPower = buildPower();
+    }
+
+    /**
+     * To be called by the constructor to initialize this instance's Power
+     */
+    protected Power buildPower() {
+        return new BasicMachineEUPower(mTier, mAmperage);
     }
 
     protected boolean isValidMainFacing(byte aSide) {
@@ -546,7 +561,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
             if (doesAutoOutput() && !isOutputEmpty() && aBaseMetaTileEntity.getFrontFacing() != mMainFacing && (tSucceeded || mOutputBlocked % 300 == 1 || aBaseMetaTileEntity.hasInventoryBeenModified() || aTick % 600 == 0)) {
                 TileEntity tTileEntity2 = aBaseMetaTileEntity.getTileEntityAtSide(aBaseMetaTileEntity.getFrontFacing());
                 long tStoredEnergy = aBaseMetaTileEntity.getUniversalEnergyStored();
-                int tMaxStacks = (int)(tStoredEnergy/64l);
+                int tMaxStacks = (int)(tStoredEnergy/64L);
                 if (tMaxStacks > mOutputItems.length)
                     tMaxStacks = mOutputItems.length;
 
@@ -641,42 +656,9 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
      * @param aDuration     - recipe Duration
      */
     protected void calculateOverclockedNess(int aEUt, int aDuration) {
-        if(mTier==0){
-            //Long time calculation
-            long xMaxProgresstime = ((long)aDuration)<<1;
-            if(xMaxProgresstime>Integer.MAX_VALUE-1){
-                //make impossible if too long
-                mEUt=Integer.MAX_VALUE-1;
-                mMaxProgresstime=Integer.MAX_VALUE-1;
-            }else{
-                mEUt=aEUt>>2;
-                mMaxProgresstime=(int)xMaxProgresstime;
-            }
-        }else{
-            //Long EUt calculation
-            long xEUt=aEUt;
-            //Isnt too low EUt check?
-            long tempEUt = Math.max(xEUt, V[1]);
-
-            mMaxProgresstime = aDuration;
-
-            while (tempEUt <= V[mTier -1] * (long)mAmperage) {
-                tempEUt<<=2;//this actually controls overclocking
-                //xEUt *= 4;//this is effect of everclocking
-                mMaxProgresstime>>=1;//this is effect of overclocking
-                xEUt = mMaxProgresstime==0 ? xEUt>>1 : xEUt<<2;//U know, if the time is less than 1 tick make the machine use 2x less power
-            }
-            if(xEUt>Integer.MAX_VALUE-1){
-                mEUt = Integer.MAX_VALUE-1;
-                mMaxProgresstime = Integer.MAX_VALUE-1;
-            }else{
-                mEUt = (int)xEUt;
-                if(mEUt==0)
-                    mEUt = 1;
-                if(mMaxProgresstime==0)
-                    mMaxProgresstime = 1;//set time to 1 tick
-            }
-        }
+        mPower.computePowerUsageAndDuration(aEUt, aDuration);
+        mEUt = mPower.getEuPerTick();
+        mMaxProgresstime = mPower.getDurationTicks();
     }
 
     protected ItemStack getSpecialSlot() {
@@ -843,7 +825,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
                 GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.hatch.disableFilter." + mDisableFilter));
             } else {
                 mAllowInputFromOutputSide = !mAllowInputFromOutputSide;
-                GT_Utility.sendChatToPlayer(aPlayer, mAllowInputFromOutputSide ? trans("095", "Input from Output Side allowed") : trans("096", "Input from Output Side forbidden"));
+                GT_Utility.sendChatToPlayer(aPlayer, mAllowInputFromOutputSide ? GT_Utility.trans("095", "Input from Output Side allowed") : GT_Utility.trans("096", "Input from Output Side forbidden"));
             }
         }
     }
@@ -1059,7 +1041,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
         final NBTTagCompound tag = accessor.getNBTData();
-        
+
         currenttip.add(String.format("Progress: %d s / %d s", tag.getInteger("progressSingleBlock"), tag.getInteger("maxProgressSingleBlock")));
         super.getWailaBody(itemStack, currenttip, accessor, config);
     }
@@ -1070,5 +1052,9 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
 
         tag.setInteger("progressSingleBlock", mProgresstime / 20);
         tag.setInteger("maxProgressSingleBlock",  mMaxProgresstime / 20);
+    }
+
+    public Power getPower() {
+        return mPower;
     }
 }

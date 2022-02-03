@@ -197,10 +197,10 @@ public class GT_MetaPipeEntity_Item extends MetaPipeEntity implements IMetaTileE
             byte tSide = GT_Utility.determineWrenchingSide(aSide, aX, aY, aZ);
             if (isConnectedAtSide(tSide)) {
                 disconnect(tSide);
-                GT_Utility.sendChatToPlayer(aPlayer, trans("215", "Disconnected"));
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("215", "Disconnected"));
             } else {
                 if (connect(tSide) > 0)
-                    GT_Utility.sendChatToPlayer(aPlayer, trans("214", "Connected"));
+                    GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("214", "Connected"));
             }
             return true;
         }
