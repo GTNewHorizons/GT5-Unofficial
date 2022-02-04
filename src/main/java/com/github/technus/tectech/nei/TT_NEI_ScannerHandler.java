@@ -37,10 +37,6 @@ import static com.github.technus.tectech.recipe.TT_recipeAdder.nullItem;
 import static gregtech.api.enums.ItemList.Display_Fluid;
 
 public class TT_NEI_ScannerHandler extends TemplateRecipeHandler {
-    static {
-        GuiContainerManager.addInputHandler(new GT_RectHandler());
-        GuiContainerManager.addTooltipHandler(new GT_RectHandler());
-    }
 
     protected final TT_recipe.GT_Recipe_MapTT mRecipeMap;
 
@@ -236,18 +232,11 @@ public class TT_NEI_ScannerHandler extends TemplateRecipeHandler {
 		}
 	}
 
+    @Deprecated // Unnecessary copy of a class base GT5U uses to manage NEI transfer rects
     public static class GT_RectHandler
             implements IContainerInputHandler, IContainerTooltipHandler {
         @Override
         public boolean mouseClicked(GuiContainer gui, int mousex, int mousey, int button) {
-            if (canHandle(gui)) {
-                if (button == 0) {
-                    return transferRect(gui, false);
-                }
-                if (button == 1) {
-                    return transferRect(gui, true);
-                }
-            }
             return false;
         }
 
@@ -257,29 +246,12 @@ public class TT_NEI_ScannerHandler extends TemplateRecipeHandler {
         }
 
         public boolean canHandle(GuiContainer gui) {
-            return gui instanceof GT_GUIContainer_BasicMachine && GT_Utility.isStringValid(((GT_GUIContainer_BasicMachine) gui).mNEI) || gui instanceof GT_GUIContainer_FusionReactor && GT_Utility.isStringValid(((GT_GUIContainer_FusionReactor) gui).mNEI);
+            return false;
         }
 
         @Override
         public List<String> handleTooltip(GuiContainer gui, int mousex, int mousey, List<String> currenttip) {
-            if (canHandle(gui) && currenttip.isEmpty()) {
-                if (gui instanceof GT_GUIContainer_BasicMachine && new Rectangle(65, 13, 36, 18).contains(new Point(GuiDraw.getMousePosition().x - ((GT_GUIContainer_BasicMachine) gui).getLeft() - RecipeInfo.getGuiOffset(gui)[0], GuiDraw.getMousePosition().y - ((GT_GUIContainer_BasicMachine) gui).getTop() - RecipeInfo.getGuiOffset(gui)[1]))) {
-                    currenttip.add("Recipes");
-                } else if (gui instanceof GT_GUIContainer_FusionReactor && new Rectangle(145, 0, 24, 24).contains(new Point(GuiDraw.getMousePosition().x - ((GT_GUIContainer_FusionReactor) gui).getLeft() - RecipeInfo.getGuiOffset(gui)[0], GuiDraw.getMousePosition().y - ((GT_GUIContainer_FusionReactor) gui).getTop() - RecipeInfo.getGuiOffset(gui)[1]))) {
-                    currenttip.add("Recipes");
-                }
-
-            }
             return currenttip;
-        }
-
-        private boolean transferRect(GuiContainer gui, boolean usage) {
-            if (gui instanceof GT_GUIContainer_BasicMachine) {
-                return canHandle(gui) && new Rectangle(65, 13, 36, 18).contains(new Point(GuiDraw.getMousePosition().x - ((GT_GUIContainer_BasicMachine) gui).getLeft() - RecipeInfo.getGuiOffset(gui)[0], GuiDraw.getMousePosition().y - ((GT_GUIContainer_BasicMachine) gui).getTop() - RecipeInfo.getGuiOffset(gui)[1])) && (usage ? GuiUsageRecipe.openRecipeGui(((GT_GUIContainer_BasicMachine) gui).mNEI) : GuiCraftingRecipe.openRecipeGui(((GT_GUIContainer_BasicMachine) gui).mNEI));
-            } else if (gui instanceof GT_GUIContainer_FusionReactor) {
-                return canHandle(gui) && new Rectangle(145, 0, 24, 24).contains(new Point(GuiDraw.getMousePosition().x - ((GT_GUIContainer_FusionReactor) gui).getLeft() - RecipeInfo.getGuiOffset(gui)[0], GuiDraw.getMousePosition().y - ((GT_GUIContainer_FusionReactor) gui).getTop() - RecipeInfo.getGuiOffset(gui)[1])) && (usage ? GuiUsageRecipe.openRecipeGui(((GT_GUIContainer_FusionReactor) gui).mNEI) : GuiCraftingRecipe.openRecipeGui(((GT_GUIContainer_FusionReactor) gui).mNEI));
-            }
-            return false;
         }
 
         @Override
