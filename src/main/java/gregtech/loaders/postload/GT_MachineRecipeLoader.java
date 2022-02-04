@@ -1196,7 +1196,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addDistillationTowerRecipe(Materials.SeedOil.getFluid(1400L), new FluidStack[]{Materials.Lubricant.getFluid(500L)}, null, 400, 120);
         GT_Values.RA.addDistillationTowerRecipe(Materials.FishOil.getFluid(1200L), new FluidStack[]{Materials.Lubricant.getFluid(500L)}, null, 400, 120);
         GT_Values.RA.addDistillationTowerRecipe(Materials.Biomass.getFluid(1000L), new FluidStack[]{Materials.Ethanol.getFluid(600L), Materials.Water.getFluid(300L)}, GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 2L), 32, 400);
-        GT_Values.RA.addDistillationTowerRecipe(Materials.Water.getFluid(1000L), new FluidStack[]{GT_ModHandler.getDistilledWater(1000L)}, null, 32, 128);
+        GT_Values.RA.addDistillationTowerRecipe(Materials.Water.getFluid(1000L), new FluidStack[]{GT_ModHandler.getDistilledWater(1000L)}, null, 32, 120);
 
         if(!GregTech_API.mIC2Classic){
             GT_Values.RA.addDistillationTowerRecipe(new FluidStack(FluidRegistry.getFluid("ic2biomass"), 3000), new FluidStack[]{new FluidStack(FluidRegistry.getFluid("ic2biogas"), 8000), Materials.Water.getFluid(125L)}, ItemList.IC2_Fertilizer.get(1), 250, 480);
