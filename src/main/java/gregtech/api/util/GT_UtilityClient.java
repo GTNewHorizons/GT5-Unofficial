@@ -1,14 +1,28 @@
 package gregtech.api.util;
 
 import com.google.common.collect.Lists;
+import cpw.mods.fml.relauncher.ReflectionHelper;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
+import java.lang.reflect.Field;
 import java.util.List;
 
 public class GT_UtilityClient {
+	private static final Field isDrawingField = ReflectionHelper.findField(Tessellator.class, "isDrawing", "field_78415_z");
+
+	public static boolean isDrawing(Tessellator tess) {
+		try {
+			return isDrawingField.getBoolean(tess);
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
 
 	@SuppressWarnings("unchecked")
 	public static List<String> getTooltip(ItemStack aStack, boolean aGuiStyle) {
