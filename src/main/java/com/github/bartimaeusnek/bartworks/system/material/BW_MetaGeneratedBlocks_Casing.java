@@ -40,8 +40,7 @@ import net.minecraft.world.World;
 import java.util.List;
 import java.util.Optional;
 
-public class BW_MetaGeneratedBlocks_Casing extends BW_MetaGenerated_Blocks implements com.github.technus.tectech.mechanics.structure.ICustomBlockSetting, 
-                                                                                      com.gtnewhorizon.structurelib.structure.ICustomBlockSetting
+public class BW_MetaGeneratedBlocks_Casing extends BW_MetaGenerated_Blocks implements com.gtnewhorizon.structurelib.structure.ICustomBlockSetting
 {
 
     public BW_MetaGeneratedBlocks_Casing(Material p_i45386_1_, Class<? extends TileEntity> tileEntity, String blockName, OrePrefixes prefixes) {

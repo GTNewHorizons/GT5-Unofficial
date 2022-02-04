@@ -68,6 +68,7 @@ import static gregtech.api.enums.GT_Values.VN;
         dependencies = "required-after:IC2; "
                 + "required-after:gregtech; "
                 + "after:berriespp; "
+                + "after:tectech; "
                 + "after:GalacticraftMars; "
                 + "after:GalacticraftCore; "
                 + "after:Forestry; "
