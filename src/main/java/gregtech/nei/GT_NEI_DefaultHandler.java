@@ -16,7 +16,6 @@ import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.gui.GT_GUIContainer;
-import gregtech.api.gui.GT_GUIContainer_BasicMachine;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
 import gregtech.api.objects.ItemData;
@@ -29,8 +28,6 @@ import gregtech.common.power.EUPower;
 import gregtech.common.power.Power;
 import gregtech.common.power.UnspecifiedEUPower;
 import gregtech.common.blocks.GT_Item_Machines;
-import gregtech.common.gui.GT_GUIContainer_FusionReactor;
-import gregtech.common.gui.GT_GUIContainer_PrimitiveBlastFurnace;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -450,9 +447,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         }
 
         public boolean canHandle(GuiContainer gui) {
-            return (gui instanceof GT_GUIContainer_BasicMachine && GT_Utility.isStringValid(((GT_GUIContainer_BasicMachine) gui).mNEI))
-                    || (gui instanceof GT_GUIContainer_FusionReactor && GT_Utility.isStringValid(((GT_GUIContainer_FusionReactor) gui).mNEI))
-                    || (gui instanceof GT_GUIContainer_PrimitiveBlastFurnace && GT_Utility.isStringValid(((GT_GUIContainer_PrimitiveBlastFurnace) gui).mNEI));
+            return gui instanceof NEI_TransferRectHost && GT_Utility.isStringValid(((NEI_TransferRectHost) gui).getNeiTransferRectString());
         }
 
         @Override
