@@ -132,9 +132,9 @@ public class GT_Cover_Arm extends GT_CoverBehavior {
 
     private void sendMessageToPlayer(EntityPlayer aPlayer, int var) {
         if ((var & EXPORT_MASK) != 0)
-            GT_Utility.sendChatToPlayer(aPlayer, trans("001","Puts out into adjacent Slot #") + (((var >> 14) & SLOT_ID_MASK) - 1));
+            GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("001", "Puts out into adjacent Slot #") + (((var >> 14) & SLOT_ID_MASK) - 1));
         else
-            GT_Utility.sendChatToPlayer(aPlayer, trans("002","Grabs in for own Slot #") + ((var & SLOT_ID_MASK) - 1));
+            GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("002", "Grabs in for own Slot #") + ((var & SLOT_ID_MASK) - 1));
     }
 
     private int getNewVar(int var, int step) {
@@ -239,7 +239,7 @@ public class GT_Cover_Arm extends GT_CoverBehavior {
         private static final int spaceX = 18;
         private static final int spaceY = 18;
 
-        private final String ANY_TEXT = trans("ANY", "Any");
+        private final String ANY_TEXT = GT_Utility.trans("ANY", "Any");
 
         private boolean export;
         private int internalSlotID, adjacentSlotID;
@@ -256,8 +256,8 @@ public class GT_Cover_Arm extends GT_CoverBehavior {
             internalSlotID = (coverVariable & SLOT_ID_MASK);
             adjacentSlotID = (coverVariable >> 14) & SLOT_ID_MASK;
 
-            new GT_GuiIconButton(this, 0, startX + spaceX * 0, startY + spaceY * 0, GT_GuiIcon.EXPORT).setTooltipText(trans("006", "Export"));
-            new GT_GuiIconButton(this, 1, startX + spaceX * 1, startY + spaceY * 0, GT_GuiIcon.IMPORT).setTooltipText(trans("007", "Import"));
+            new GT_GuiIconButton(this, 0, startX + spaceX * 0, startY + spaceY * 0, GT_GuiIcon.EXPORT).setTooltipText(GT_Utility.trans("006", "Export"));
+            new GT_GuiIconButton(this, 1, startX + spaceX * 1, startY + spaceY * 0, GT_GuiIcon.IMPORT).setTooltipText(GT_Utility.trans("007", "Import"));
 
             intSlot = new GT_GuiIntegerTextBox(this, 2, startX + spaceX * 0, startY + spaceY * 1 + 2, spaceX * 2+5, 12);
             setBoxText(intSlot, internalSlotID-1);
@@ -288,12 +288,12 @@ public class GT_Cover_Arm extends GT_CoverBehavior {
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
             if (export)
-                this.getFontRenderer().drawString(trans("006", "Export"),  startX + spaceX*3, 4+startY+spaceY*0, 0xFF555555);
+                this.getFontRenderer().drawString(GT_Utility.trans("006", "Export"),  startX + spaceX*3, 4+startY+spaceY*0, 0xFF555555);
             else
-                this.getFontRenderer().drawString(trans("007", "Import"),  startX + spaceX*3, 4+startY+spaceY*0, 0xFF555555);
+                this.getFontRenderer().drawString(GT_Utility.trans("007", "Import"),  startX + spaceX*3, 4+startY+spaceY*0, 0xFF555555);
 
-            this.getFontRenderer().drawString(trans("254", "Internal slot#"),     startX + spaceX*3, 4+startY+spaceY*1, 0xFF555555);
-            this.getFontRenderer().drawString(trans("255", "Adjacent slot#"),  startX + spaceX*3, 4+startY+spaceY*2, 0xFF555555);
+            this.getFontRenderer().drawString(GT_Utility.trans("254", "Internal slot#"),     startX + spaceX*3, 4+startY+spaceY*1, 0xFF555555);
+            this.getFontRenderer().drawString(GT_Utility.trans("255", "Adjacent slot#"),  startX + spaceX*3, 4+startY+spaceY*2, 0xFF555555);
         }
 
         @Override

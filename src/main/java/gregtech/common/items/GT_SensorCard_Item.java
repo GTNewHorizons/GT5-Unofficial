@@ -36,9 +36,9 @@ public class GT_SensorCard_Item extends GT_Generic_Item implements IRemoteSensor
         if (aStack != null) {
             NBTTagCompound tNBT = aStack.getTagCompound();
             if (tNBT == null) {
-            	aList.add(trans("014", "Missing Coodinates!"));
+                aList.add(transItem("014", "Missing Coodinates!"));
             } else {
-            	aList.add(trans("015", "Device at:"));
+                aList.add(transItem("015", "Device at:"));
                 aList.add(String.format("x: %d, y: %d, z: %d", tNBT.getInteger("x"), tNBT.getInteger("y"), tNBT.getInteger("z")));
             }
         }

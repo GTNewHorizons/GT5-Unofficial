@@ -48,7 +48,7 @@ public abstract class GT_Cover_FacadeBase extends GT_CoverBehaviorBase<GT_Cover_
     @Override
     protected FacadeData onCoverScrewdriverClickImpl(byte aSide, int aCoverID, FacadeData aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         aCoverVariable.mFlags = ((aCoverVariable.mFlags + 1) & 15);
-        GT_Utility.sendChatToPlayer(aPlayer, ((aCoverVariable.mFlags & 1) != 0 ? trans("128", "Redstone ") : "") + ((aCoverVariable.mFlags & 2) != 0 ? trans("129", "Energy ") : "") + ((aCoverVariable.mFlags & 4) != 0 ? trans("130", "Fluids ") : "") + ((aCoverVariable.mFlags & 8) != 0 ? trans("131", "Items ") : ""));
+        GT_Utility.sendChatToPlayer(aPlayer, ((aCoverVariable.mFlags & 1) != 0 ? GT_Utility.trans("128", "Redstone ") : "") + ((aCoverVariable.mFlags & 2) != 0 ? GT_Utility.trans("129", "Energy ") : "") + ((aCoverVariable.mFlags & 4) != 0 ? GT_Utility.trans("130", "Fluids ") : "") + ((aCoverVariable.mFlags & 8) != 0 ? GT_Utility.trans("131", "Items ") : ""));
         return aCoverVariable;
     }
 

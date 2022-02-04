@@ -123,14 +123,14 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
 		int tTickRate = aCoverVariable.tickRate;
 		if (Math.abs(tSpeed) > mTransferRate * tTickRate) {
 			tSpeed = mTransferRate * tTickRate * (tSpeed > 0 ? 1 : -1);
-			GT_Utility.sendChatToPlayer(aPlayer, trans("316", "Pump speed limit reached!"));
+			GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("316", "Pump speed limit reached!"));
 		}
 		if (tTickRate == 1) {
 			GT_Utility.sendChatToPlayer(aPlayer,
-					trans("048", "Pump speed: ") + tSpeed + trans("049", "L/tick ") + tSpeed * 20 + trans("050", "L/sec"));
+					GT_Utility.trans("048", "Pump speed: ") + tSpeed + GT_Utility.trans("049", "L/tick ") + tSpeed * 20 + GT_Utility.trans("050", "L/sec"));
 		} else {
 			GT_Utility.sendChatToPlayer(aPlayer,
-					String.format(trans("207", "Pump speed: %dL every %d ticks, %.2f L/sec on average"), tSpeed, tTickRate, tSpeed * 20d / tTickRate));
+					String.format(GT_Utility.trans("207", "Pump speed: %dL every %d ticks, %.2f L/sec on average"), tSpeed, tTickRate, tSpeed * 20d / tTickRate));
 		}
 	}
 
@@ -362,11 +362,11 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
 			this.coverID = aCoverID;
 			this.coverVariable = aCoverVariable;
 
-			new GT_GuiIconButton(this, 0, startX + spaceX * 0, startY + spaceY * 0, GT_GuiIcon.EXPORT).setTooltipText(trans("006", "Export"));
-			new GT_GuiIconButton(this, 1, startX + spaceX * 1, startY + spaceY * 0, GT_GuiIcon.IMPORT).setTooltipText(trans("007", "Import"));
-			new GT_GuiIconButton(this, 2, startX + spaceX * 0, startY + spaceY * 1, GT_GuiIcon.CHECKMARK).setTooltipText(trans("224","Always On"));
-			new GT_GuiIconButton(this, 3, startX + spaceX * 1, startY + spaceY * 1, GT_GuiIcon.REDSTONE_ON).setTooltipText(trans("225","Active with Redstone Signal"));
-			new GT_GuiIconButton(this, 4, startX + spaceX * 2, startY + spaceY * 1, GT_GuiIcon.REDSTONE_OFF).setTooltipText(trans("226","Inactive with Redstone Signal"));
+			new GT_GuiIconButton(this, 0, startX + spaceX * 0, startY + spaceY * 0, GT_GuiIcon.EXPORT).setTooltipText(GT_Utility.trans("006", "Export"));
+			new GT_GuiIconButton(this, 1, startX + spaceX * 1, startY + spaceY * 0, GT_GuiIcon.IMPORT).setTooltipText(GT_Utility.trans("007", "Import"));
+			new GT_GuiIconButton(this, 2, startX + spaceX * 0, startY + spaceY * 1, GT_GuiIcon.CHECKMARK).setTooltipText(GT_Utility.trans("224", "Always On"));
+			new GT_GuiIconButton(this, 3, startX + spaceX * 1, startY + spaceY * 1, GT_GuiIcon.REDSTONE_ON).setTooltipText(GT_Utility.trans("225", "Active with Redstone Signal"));
+			new GT_GuiIconButton(this, 4, startX + spaceX * 2, startY + spaceY * 1, GT_GuiIcon.REDSTONE_OFF).setTooltipText(GT_Utility.trans("226", "Inactive with Redstone Signal"));
 
 			tBox = new GT_GuiIntegerTextBox(this, 2, startX + spaceX * 0, startY + spaceY * 2 + 2, spaceX * 4 - 3, 12);
 			tBox.setText(String.valueOf(this.coverVariable.speed));
@@ -380,11 +380,11 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
 		@Override
 		public void drawExtras(int mouseX, int mouseY, float parTicks) {
 			super.drawExtras(mouseX, mouseY, parTicks);
-			this.getFontRenderer().drawString(trans("229", "Import/Export"), startX + spaceX * 4, 4 + startY + spaceY * 0, 0xFF555555);
-			this.getFontRenderer().drawString(trans("229", "Conditional"), startX + spaceX * 4, 4 + startY + spaceY * 1, 0xFF555555);
-			this.getFontRenderer().drawString(trans("208", " L"), startX + spaceX * 4, 4 + startY + spaceY * 2, 0xFF555555);
-			this.getFontRenderer().drawString(trans("209", " ticks"), startX + spaceX * 7, 4 + startY + spaceY * 2, 0xFF555555);
-			this.getFontRenderer().drawString(String.format(trans("210", "Average: %.2f L/sec"), coverVariable.tickRate == 0 ? 0 : coverVariable.speed * 20d / coverVariable.tickRate), startX + spaceX * 0, 4 + startY + spaceY * 3, warn ? 0xffff0000 : 0xff555555);
+			this.getFontRenderer().drawString(GT_Utility.trans("229", "Import/Export"), startX + spaceX * 4, 4 + startY + spaceY * 0, 0xFF555555);
+			this.getFontRenderer().drawString(GT_Utility.trans("229", "Conditional"), startX + spaceX * 4, 4 + startY + spaceY * 1, 0xFF555555);
+			this.getFontRenderer().drawString(GT_Utility.trans("208", " L"), startX + spaceX * 4, 4 + startY + spaceY * 2, 0xFF555555);
+			this.getFontRenderer().drawString(GT_Utility.trans("209", " ticks"), startX + spaceX * 7, 4 + startY + spaceY * 2, 0xFF555555);
+			this.getFontRenderer().drawString(String.format(GT_Utility.trans("210", "Average: %.2f L/sec"), coverVariable.tickRate == 0 ? 0 : coverVariable.speed * 20d / coverVariable.tickRate), startX + spaceX * 0, 4 + startY + spaceY * 3, warn ? 0xffff0000 : 0xff555555);
 		}
 
 		@Override

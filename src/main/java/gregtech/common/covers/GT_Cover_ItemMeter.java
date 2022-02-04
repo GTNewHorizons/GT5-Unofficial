@@ -133,11 +133,11 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
         if (aPlayer.isSneaking()) {
             if (aCoverVariable.inverted) {
                 aCoverVariable.inverted = false;
-                GT_Utility.sendChatToPlayer(aPlayer, trans("055","Normal"));
+				GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("055", "Normal"));
             }
             else {
                 aCoverVariable.inverted = true;
-                GT_Utility.sendChatToPlayer(aPlayer, trans("054","Inverted"));
+				GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("054", "Inverted"));
             }
         } else {
             aCoverVariable.slot++;
@@ -145,9 +145,9 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
                 aCoverVariable.slot = -1;
 
             if (aCoverVariable.slot == -1)
-                GT_Utility.sendChatToPlayer(aPlayer, trans("053", "Slot: ") + trans("ALL", "All"));
+				GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("053", "Slot: ") + GT_Utility.trans("ALL", "All"));
             else
-                GT_Utility.sendChatToPlayer(aPlayer, trans("053", "Slot: ") + aCoverVariable.slot);
+				GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("053", "Slot: ") + aCoverVariable.slot);
         }
 
         return aCoverVariable;
@@ -283,11 +283,11 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
         private static final int spaceX = 18;
         private static final int spaceY = 18;
 
-        private final String ALL = trans("ALL", "All");
-        private final String INVERTED = trans("INVERTED","Inverted");
-        private final String NORMAL = trans("NORMAL","Normal");
+        private final String ALL = GT_Utility.trans("ALL", "All");
+		private final String INVERTED = GT_Utility.trans("INVERTED", "Inverted");
+		private final String NORMAL = GT_Utility.trans("NORMAL", "Normal");
 
-        public GUI(byte aSide, int aCoverID, ItemMeterData aCoverVariable, ICoverable aTileEntity) {
+		public GUI(byte aSide, int aCoverID, ItemMeterData aCoverVariable, ICoverable aTileEntity) {
             super(aTileEntity, 176, 107, GT_Utility.intToStack(aCoverID));
             this.side = aSide;
             this.coverID = aCoverID;
@@ -318,8 +318,8 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
             this.getFontRenderer().drawString(coverVariable.inverted ? INVERTED : NORMAL, startX + spaceX * 3, 4 + startY, 0xFF555555);
-            this.getFontRenderer().drawString(trans("254", "Detect slot#"), startX + spaceX * 3, 4 + startY + spaceY, 0xFF555555);
-            this.getFontRenderer().drawString(trans("221", "Item threshold"), startX + spaceX * 3, startY + spaceY * 2 + 4, 0xFF555555);
+			this.getFontRenderer().drawString(GT_Utility.trans("254", "Detect slot#"), startX + spaceX * 3, 4 + startY + spaceY, 0xFF555555);
+			this.getFontRenderer().drawString(GT_Utility.trans("221", "Item threshold"), startX + spaceX * 3, startY + spaceY * 2 + 4, 0xFF555555);
         }
 
         @Override
