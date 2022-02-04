@@ -579,8 +579,9 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
         aTileEntity.setCoverIDAtSide(aSide, GT_Utility.stackToInt(aCover));
     }
 
+    @Deprecated
     public String trans(String aNr, String aEnglish) {
-        return GT_LanguageManager.addStringLocalization("Interaction_DESCRIPTION_Index_" + aNr, aEnglish, false);
+        return GT_Utility.trans(aNr, aEnglish);
     }
     // endregion
 }

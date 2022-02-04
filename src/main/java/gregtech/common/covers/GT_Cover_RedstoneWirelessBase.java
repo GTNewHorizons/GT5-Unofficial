@@ -8,7 +8,6 @@ import gregtech.api.gui.widgets.GT_GuiIconCheckButton;
 import gregtech.api.gui.widgets.GT_GuiIntegerTextBox;
 import gregtech.api.interfaces.IGuiScreen;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.net.GT_Packet_TileEntityCover;
 import gregtech.api.net.GT_Packet_WirelessRedstoneCover;
 import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_Utility;
@@ -35,7 +34,7 @@ public abstract class GT_Cover_RedstoneWirelessBase extends GT_CoverBehavior {
         if (((aX > 0.375D) && (aX < 0.625D)) || ((aSide > 3) && ((aY > 0.375D) && (aY < 0.625D)))) {
             GregTech_API.sWirelessRedstone.put(aCoverVariable.get(), (byte) 0);
             aCoverVariable.set((aCoverVariable.get() & (PRIVATE_MASK | CHECKBOX_MASK)) | (((Integer)GT_Utility.stackToInt(aPlayer.inventory.getCurrentItem())).hashCode() & PUBLIC_MASK));
-            GT_Utility.sendChatToPlayer(aPlayer, trans("081", "Frequency: ") + aCoverVariable);
+            GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("081", "Frequency: ") + aCoverVariable);
             return true;
         }
         return false;
@@ -52,7 +51,7 @@ public abstract class GT_Cover_RedstoneWirelessBase extends GT_CoverBehavior {
             aCoverVariable = (aCoverVariable & (PRIVATE_MASK | CHECKBOX_MASK)) | (val & PUBLIC_MASK);
 
             aTileEntity.setCoverDataAtSide(aSide, aCoverVariable);
-            GT_Utility.sendChatToPlayer(aPlayer, trans("081", "Frequency: ") + (aCoverVariable & PUBLIC_MASK));
+            GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("081", "Frequency: ") + (aCoverVariable & PUBLIC_MASK));
             return true;
         }
         return false;
@@ -92,7 +91,7 @@ public abstract class GT_Cover_RedstoneWirelessBase extends GT_CoverBehavior {
                 aCoverVariable = (aCoverVariable & (PRIVATE_MASK | CHECKBOX_MASK)) | tPublicChannel;
             }
         }
-        GT_Utility.sendChatToPlayer(aPlayer, trans("081", "Frequency: ") + (aCoverVariable & PUBLIC_MASK));
+        GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("081", "Frequency: ") + (aCoverVariable & PUBLIC_MASK));
         return aCoverVariable;
     }
 
@@ -128,7 +127,7 @@ public abstract class GT_Cover_RedstoneWirelessBase extends GT_CoverBehavior {
 
     @Override
     public String getDescription(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
-        return trans("081", "Frequency: ") + aCoverVariable;
+        return GT_Utility.trans("081", "Frequency: ") + aCoverVariable;
     }
 
     @Override
@@ -178,8 +177,8 @@ public abstract class GT_Cover_RedstoneWirelessBase extends GT_CoverBehavior {
         @Override
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
-            this.getFontRenderer().drawString(trans("246","Frequency" ),  startX + spaceX*4, 4+startY+spaceY*0, 0xFF555555);
-            this.getFontRenderer().drawString(trans("601", "Use Private Frequency"), startX + spaceX * 1, startY + spaceY * 2 + 4, 0xFF555555);
+            this.getFontRenderer().drawString(GT_Utility.trans("246", "Frequency"),  startX + spaceX*4, 4+startY+spaceY*0, 0xFF555555);
+            this.getFontRenderer().drawString(GT_Utility.trans("601", "Use Private Frequency"), startX + spaceX * 1, startY + spaceY * 2 + 4, 0xFF555555);
         }
 
         @Override

@@ -101,10 +101,10 @@ public class GT_Cover_LiquidMeter extends GT_CoverBehaviorBase<GT_Cover_LiquidMe
     protected LiquidMeterData onCoverScrewdriverClickImpl(byte aSide, int aCoverID, LiquidMeterData aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (aCoverVariable.inverted) {
             aCoverVariable.inverted = false;
-            GT_Utility.sendChatToPlayer(aPlayer, trans("055","Normal"));
+            GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("055", "Normal"));
         } else {
             aCoverVariable.inverted = true;
-            GT_Utility.sendChatToPlayer(aPlayer, trans("054","Inverted"));
+            GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("054", "Inverted"));
         }
         return aCoverVariable;
     }
@@ -228,8 +228,8 @@ public class GT_Cover_LiquidMeter extends GT_CoverBehaviorBase<GT_Cover_LiquidMe
         private static final int spaceX = 18;
         private static final int spaceY = 18;
 
-        private final String INVERTED = trans("INVERTED", "Inverted");
-        private final String NORMAL = trans("NORMAL", "Normal");
+        private final String INVERTED = GT_Utility.trans("INVERTED", "Inverted");
+        private final String NORMAL = GT_Utility.trans("NORMAL", "Normal");
 
         public GUI(byte aSide, int aCoverID, LiquidMeterData aCoverVariable, ICoverable aTileEntity) {
             super(aTileEntity, 176, 107, GT_Utility.intToStack(aCoverID));
@@ -255,7 +255,7 @@ public class GT_Cover_LiquidMeter extends GT_CoverBehaviorBase<GT_Cover_LiquidMe
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
             this.fontRendererObj.drawString(coverVariable.inverted ? INVERTED : NORMAL, startX + spaceX * 1, 4 + startY + spaceY * 0, 0xFF555555);
-            this.getFontRenderer().drawString(trans("222", "Fluid threshold"), startX + spaceX * 5 - 10, startY + spaceY * 1 + 4, 0xFF555555);
+            this.getFontRenderer().drawString(GT_Utility.trans("222", "Fluid threshold"), startX + spaceX * 5 - 10, startY + spaceY * 1 + 4, 0xFF555555);
         }
 
         @Override

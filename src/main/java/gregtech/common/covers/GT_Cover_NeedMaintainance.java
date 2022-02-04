@@ -76,46 +76,46 @@ public class GT_Cover_NeedMaintainance extends GT_CoverBehavior {
         }
         switch (aCoverVariable) {
             case 0:
-                GT_Utility.sendChatToPlayer(aPlayer, trans("056", "Emit if 1 Maintenance Needed"));
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("056", "Emit if 1 Maintenance Needed"));
                 break;
             case 1:
-                GT_Utility.sendChatToPlayer(aPlayer, trans("057", "Emit if 1 Maintenance Needed(inverted)"));
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("057", "Emit if 1 Maintenance Needed(inverted)"));
                 break;
             case 2:
-                GT_Utility.sendChatToPlayer(aPlayer, trans("058", "Emit if 2 Maintenance Needed"));
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("058", "Emit if 2 Maintenance Needed"));
                 break;
             case 3:
-                GT_Utility.sendChatToPlayer(aPlayer, trans("059", "Emit if 2 Maintenance Needed(inverted)"));
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("059", "Emit if 2 Maintenance Needed(inverted)"));
                 break;
             case 4:
-                GT_Utility.sendChatToPlayer(aPlayer, trans("060", "Emit if 3 Maintenance Needed"));
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("060", "Emit if 3 Maintenance Needed"));
                 break;
             case 5:
-                GT_Utility.sendChatToPlayer(aPlayer, trans("061", "Emit if 3 Maintenance Needed(inverted)"));
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("061", "Emit if 3 Maintenance Needed(inverted)"));
                 break;
             case 6:
-                GT_Utility.sendChatToPlayer(aPlayer, trans("062", "Emit if 4 Maintenance Needed"));
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("062", "Emit if 4 Maintenance Needed"));
                 break;
             case 7:
-                GT_Utility.sendChatToPlayer(aPlayer, trans("063", "Emit if 4 Maintenance Needed(inverted)"));
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("063", "Emit if 4 Maintenance Needed(inverted)"));
                 break;
             case 8:
-                GT_Utility.sendChatToPlayer(aPlayer, trans("064", "Emit if 5 Maintenance Needed"));
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("064", "Emit if 5 Maintenance Needed"));
                 break;
             case 9:
-                GT_Utility.sendChatToPlayer(aPlayer, trans("065", "Emit if 5 Maintenance Needed(inverted)"));
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("065", "Emit if 5 Maintenance Needed(inverted)"));
                 break;
             case 10:
-                GT_Utility.sendChatToPlayer(aPlayer, trans("066", "Emit if rotor needs maintenance low accuracy mod"));
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("066", "Emit if rotor needs maintenance low accuracy mod"));
                 break;
             case 11:
-                GT_Utility.sendChatToPlayer(aPlayer, trans("067", "Emit if rotor needs maintenance low accuracy mod(inverted)"));
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("067", "Emit if rotor needs maintenance low accuracy mod(inverted)"));
                 break;
             case 12:
-                GT_Utility.sendChatToPlayer(aPlayer, trans("068", "Emit if rotor needs maintenance high accuracy mod"));
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("068", "Emit if rotor needs maintenance high accuracy mod"));
                 break;
             case 13:
-                GT_Utility.sendChatToPlayer(aPlayer, trans("069", "Emit if rotor needs maintenance high accuracy mod(inverted)"));
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("069", "Emit if rotor needs maintenance high accuracy mod(inverted)"));
                 break;
         }
         return aCoverVariable;
@@ -180,26 +180,26 @@ public class GT_Cover_NeedMaintainance extends GT_CoverBehavior {
         private int coverVariable;
 
         private final String[] tooltiptext = {
-                trans("056", "Emit if 1 Maintenance Needed"),
-                trans("058", "Emit if 2 Maintenance Needed"),
-                trans("060", "Emit if 3 Maintenance Needed"),
-                trans("062", "Emit if 4 Maintenance Needed"),
-                trans("064", "Emit if 5 Maintenance Needed"),
-                trans("066", "Emit if rotor needs maintenance low accuracy mod"),
-                trans("068", "Emit if rotor needs maintenance high accuracy mod"),
+                GT_Utility.trans("056", "Emit if 1 Maintenance Needed"),
+                GT_Utility.trans("058", "Emit if 2 Maintenance Needed"),
+                GT_Utility.trans("060", "Emit if 3 Maintenance Needed"),
+                GT_Utility.trans("062", "Emit if 4 Maintenance Needed"),
+                GT_Utility.trans("064", "Emit if 5 Maintenance Needed"),
+                GT_Utility.trans("066", "Emit if rotor needs maintenance low accuracy mod"),
+                GT_Utility.trans("068", "Emit if rotor needs maintenance high accuracy mod"),
         };
 
         private final String[] buttontext = {
-                trans("247", "1 Issue"),
-                trans("248", "2 Issues"),
-                trans("249", "3 Issues"),
-                trans("250", "4 Issues"),
-                trans("251", "5 Issues"),
-                trans("252", "Rotor < 80%"),
-                trans("253", "Rotor < 100%"),
+                GT_Utility.trans("247", "1 Issue"),
+                GT_Utility.trans("248", "2 Issues"),
+                GT_Utility.trans("249", "3 Issues"),
+                GT_Utility.trans("250", "4 Issues"),
+                GT_Utility.trans("251", "5 Issues"),
+                GT_Utility.trans("252", "Rotor < 80%"),
+                GT_Utility.trans("253", "Rotor < 100%"),
 
-                trans("INVERTED","Inverted"),
-                trans("NORMAL","Normal"),
+                GT_Utility.trans("INVERTED", "Inverted"),
+                GT_Utility.trans("NORMAL", "Normal"),
         };
 
         private static final int startX = 10;
