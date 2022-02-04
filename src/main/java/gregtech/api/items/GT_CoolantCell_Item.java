@@ -1,7 +1,6 @@
 package gregtech.api.items;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.util.GT_Utility;
 import ic2.core.util.StackUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -67,7 +66,7 @@ public class GT_CoolantCell_Item
         case 8: color = EnumChatFormatting.RED; break;
         default: color = EnumChatFormatting.DARK_RED; break;
         }
-        aList.add(EnumChatFormatting.WHITE + String.format(GT_Utility.trans("000", "Stored Heat: %s"), "" + color + getHeatOfStack(aStack)));
+        aList.add(EnumChatFormatting.WHITE + String.format(trans("000", "Stored Heat: %s"), "" + color + getHeatOfStack(aStack)));
         switch (getControlTagOfStack(aStack)) {
             case 1:
                 aList.add(StatCollector.translateToLocal("ic2.reactoritem.heatwarning.line1"));
