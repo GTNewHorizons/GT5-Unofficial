@@ -1,6 +1,5 @@
 package gregtech.api.items;
 
-import gregtech.api.util.GT_Utility;
 import gregtech.common.items.GT_DepletetCell_Item;
 import ic2.api.item.IBoxable;
 import ic2.core.util.StackUtil;
@@ -155,7 +154,7 @@ public class GT_RadioactiveCell_Item
         default: color2 = EnumChatFormatting.DARK_GRAY; break;
         }
         EnumChatFormatting color1 = this instanceof GT_DepletetCell_Item ? color2 = EnumChatFormatting.DARK_GRAY : EnumChatFormatting.WHITE;
-        aList.add(color1 + String.format(GT_Utility.trans("001", "Durability: %s/%s"), "" + color2 + (this.maxDmg - getDurabilityOfStack(aStack)) + color1, "" + this.maxDmg));
+        aList.add(color1 + String.format(trans("001", "Durability: %s/%s"), "" + color2 + (this.maxDmg - getDurabilityOfStack(aStack)) + color1, "" + this.maxDmg));
     }
 
 	@Override

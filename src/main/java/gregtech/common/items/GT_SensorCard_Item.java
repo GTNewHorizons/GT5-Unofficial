@@ -5,7 +5,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.items.GT_Generic_Item;
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_Utility;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -37,9 +36,9 @@ public class GT_SensorCard_Item extends GT_Generic_Item implements IRemoteSensor
         if (aStack != null) {
             NBTTagCompound tNBT = aStack.getTagCompound();
             if (tNBT == null) {
-            	aList.add(GT_Utility.trans("014", "Missing Coodinates!"));
+            	aList.add(trans("014", "Missing Coodinates!"));
             } else {
-            	aList.add(GT_Utility.trans("015", "Device at:"));
+            	aList.add(trans("015", "Device at:"));
                 aList.add(String.format("x: %d, y: %d, z: %d", tNBT.getInteger("x"), tNBT.getInteger("y"), tNBT.getInteger("z")));
             }
         }
