@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
 
-class GT_CopiedCTMBlockTexture implements ITexture, IBlockContainer {
+class GT_CopiedCTMBlockTexture extends GT_TextureBase implements ITexture, IBlockContainer {
     private final Block mBlock;
     private final byte mSide, mMeta;
 
@@ -20,6 +20,11 @@ class GT_CopiedCTMBlockTexture implements ITexture, IBlockContainer {
         mMeta = (byte) aMeta;
     }
 
+    @Override
+    public boolean isOldTexture() {
+        return false;
+    }
+    
     private IIcon getIcon(int aSide, int aX, int aY, int aZ, RenderBlocks aRenderer) {
         int tSide = mSide == 6 ? aSide : mSide;
         return mBlock.getIcon(getBlockAccess(aRenderer), aX, aY, aZ, tSide);
@@ -33,81 +38,69 @@ class GT_CopiedCTMBlockTexture implements ITexture, IBlockContainer {
     public void renderXPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
         IIcon aIcon = getIcon(ForgeDirection.EAST.ordinal(), aX, aY, aZ, aRenderer);
         aRenderer.field_152631_f = true;
-        // TODO: Uncomment this once all addons have migrated to the new Texture API
-        //startDrawingQuads(aRenderer, 1.0f, 0.0f, 0.0f);
+        startDrawingQuads(aRenderer, 1.0f, 0.0f, 0.0f);
         new LightingHelper(aRenderer)
                 .setupLightingXPos(aBlock, aX, aY, aZ)
                 .setupColor(ForgeDirection.EAST.ordinal(), mBlock.colorMultiplier(getBlockAccess(aRenderer), aX, aY, aZ));
         aRenderer.renderFaceXPos(aBlock, aX, aY, aZ, aIcon);
-        // TODO: Uncomment this once all addons have migrated to the new Texture API
-        //draw(aRenderer);
+        draw(aRenderer);
         aRenderer.field_152631_f = false;
     }
 
     @Override
     public void renderXNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
-        // TODO: Uncomment this once all addons have migrated to the new Texture API
-        //startDrawingQuads(aRenderer, -1.0f, 0.0f, 0.0f);
+        startDrawingQuads(aRenderer, -1.0f, 0.0f, 0.0f);
         IIcon aIcon = getIcon(ForgeDirection.WEST.ordinal(), aX, aY, aZ, aRenderer);
         new LightingHelper(aRenderer)
                 .setupLightingXNeg(aBlock, aX, aY, aZ)
                 .setupColor(ForgeDirection.WEST.ordinal(), mBlock.colorMultiplier(getBlockAccess(aRenderer), aX, aY, aZ));
         aRenderer.renderFaceXNeg(aBlock, aX, aY, aZ, aIcon);
-        // TODO: Uncomment this once all addons have migrated to the new Texture API
-        //draw(aRenderer);
+        draw(aRenderer);
     }
 
     @Override
     public void renderYPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
-        // TODO: Uncomment this once all addons have migrated to the new Texture API
-        //startDrawingQuads(aRenderer, 0.0f, 1.0f, 0.0f);
+        startDrawingQuads(aRenderer, 0.0f, 1.0f, 0.0f);
         IIcon aIcon = getIcon(ForgeDirection.UP.ordinal(), aX, aY, aZ, aRenderer);
         new LightingHelper(aRenderer)
                 .setupLightingYPos(aBlock, aX, aY, aZ)
                 .setupColor(ForgeDirection.UP.ordinal(), mBlock.colorMultiplier(getBlockAccess(aRenderer), aX, aY, aZ));
         aRenderer.renderFaceYPos(aBlock, aX, aY, aZ, aIcon);
-        // TODO: Uncomment this once all addons have migrated to the new Texture API
-        //draw(aRenderer);
+        draw(aRenderer);
     }
 
     @Override
     public void renderYNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
-        // TODO: Uncomment this once all addons have migrated to the new Texture API
-        //startDrawingQuads(aRenderer, 0.0f, -1.0f, 0.0f);
+        startDrawingQuads(aRenderer, 0.0f, -1.0f, 0.0f);
         IIcon aIcon = getIcon(ForgeDirection.DOWN.ordinal(), aX, aY, aZ, aRenderer);
         new LightingHelper(aRenderer)
                 .setupLightingYNeg(aBlock, aX, aY, aZ)
                 .setupColor(ForgeDirection.DOWN.ordinal(), mBlock.colorMultiplier(getBlockAccess(aRenderer), aX, aY, aZ));
         aRenderer.renderFaceYNeg(aBlock, aX, aY, aZ, aIcon);
-        // TODO: Uncomment this once all addons have migrated to the new Texture API
-        //draw(aRenderer);
+        draw(aRenderer);
     }
 
     @Override
     public void renderZPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
-        // TODO: Uncomment this once all addons have migrated to the new Texture API
-        //startDrawingQuads(aRenderer, 0.0f, 0.0f, 1.0f);
+        startDrawingQuads(aRenderer, 0.0f, 0.0f, 1.0f);
         IIcon aIcon = getIcon(ForgeDirection.SOUTH.ordinal(), aX, aY, aZ, aRenderer);
         new LightingHelper(aRenderer)
                 .setupLightingZPos(aBlock, aX, aY, aZ)
                 .setupColor(ForgeDirection.SOUTH.ordinal(), mBlock.colorMultiplier(getBlockAccess(aRenderer), aX, aY, aZ));
         aRenderer.renderFaceZPos(aBlock, aX, aY, aZ, aIcon);
-        // TODO: Uncomment this once all addons have migrated to the new Texture API
-        //draw(aRenderer);
+        draw(aRenderer);
     }
 
     @Override
     public void renderZNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
-        // TODO: Uncomment this once all addons have migrated to the new Texture API
-        //startDrawingQuads(aRenderer, 0.0f, 0.0f, -1.0f);
+        startDrawingQuads(aRenderer, 0.0f, 0.0f, -1.0f);
         IIcon aIcon = getIcon(ForgeDirection.NORTH.ordinal(), aX, aY, aZ, aRenderer);
         aRenderer.field_152631_f = true;
         new LightingHelper(aRenderer)
                 .setupLightingZNeg(aBlock, aX, aY, aZ)
                 .setupColor(ForgeDirection.NORTH.ordinal(), mBlock.colorMultiplier(getBlockAccess(aRenderer), aX, aY, aZ));
         aRenderer.renderFaceZNeg(aBlock, aX, aY, aZ, aIcon);
-        // TODO: Uncomment this once all addons have migrated to the new Texture API
-        //draw(aRenderer);
+        draw(aRenderer);
         aRenderer.field_152631_f = false;
     }
 

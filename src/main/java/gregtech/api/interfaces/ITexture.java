@@ -18,12 +18,12 @@ public interface ITexture {
     void renderZNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ);
 
     boolean isValidTexture();
-
+    
     /**
      * @return {@code true} if this texture is from the old package
      */
     default boolean isOldTexture() {
-        return getClass().toString().startsWith("gregtech.api.objects");
+        return true;
     }
 
     /**
@@ -34,7 +34,7 @@ public interface ITexture {
      * @param aNormalZ The Z Normal for current Quad Face
      */
     default void startDrawingQuads(RenderBlocks aRenderer, float aNormalX, float aNormalY, float aNormalZ) {
-        if (aRenderer.useInventoryTint) {
+        if (aRenderer.useInventoryTint && !isOldTexture()) {
             Tessellator.instance.startDrawingQuads();
             Tessellator.instance.setNormal(aNormalX, aNormalY, aNormalZ);
         }
@@ -45,7 +45,7 @@ public interface ITexture {
      * @param aRenderer The {@link RenderBlocks} Renderer
      */
     default void draw(RenderBlocks aRenderer) {
-        if (aRenderer.useInventoryTint) {
+        if (aRenderer.useInventoryTint && !isOldTexture()) {
             Tessellator.instance.draw();
         }
     }
