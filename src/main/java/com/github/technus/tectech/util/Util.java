@@ -573,4 +573,24 @@ public final class Util {
         }
         return stringBuilder.toString();
     }
+
+    public static double getMagnitude3D(double in[])
+    {
+        return Math.sqrt(in[0]*in[0]+in[1]*in[1]+in[2]*in[2]);
+    }
+
+    public static void normalize3D(double in[], double out[])
+    {
+        double mag=getMagnitude3D(in);
+        out[0]=in[0]/mag;
+        out[1]=in[1]/mag;
+        out[2]=in[2]/mag;
+    }
+
+    public static void crossProduct3D(double inA[], double inB[], double out[])
+    {
+        out[0] = inA[1] * inB[2] - inA[2] * inB[1];
+        out[1] = inA[2] * inB[0] - inA[0] * inB[2];
+        out[2] = inA[0] * inB[1] - inA[1] * inB[0];
+    }
 }

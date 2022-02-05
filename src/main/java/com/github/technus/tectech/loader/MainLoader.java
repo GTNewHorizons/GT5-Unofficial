@@ -50,28 +50,29 @@ import static com.github.technus.tectech.TecTech.creativeTabTecTech;
 import static gregtech.api.enums.GT_Values.W;
 
 public final class MainLoader {
-    public static DamageSource microwaving, elementalPollution,subspace;
+    public static DamageSource microwaving, elementalPollution, subspace;
 
-    private MainLoader(){}
+    private MainLoader() {
+    }
 
-    public static void staticLoad(){
-        for(int i=0;i<16;i++){
-            GT_Values.V[i]=V[i];
-            GT_Values.VN[i]=VN[i];
-            GT_Values.VOLTAGE_NAMES[i]=VOLTAGE_NAMES[i];
+    public static void staticLoad() {
+        for (int i = 0; i < 16; i++) {
+            GT_Values.V[i] = V[i];
+            GT_Values.VN[i] = VN[i];
+            GT_Values.VOLTAGE_NAMES[i] = VOLTAGE_NAMES[i];
         }
         new ComponentLoader();
     }
 
-    public static void preLoad(){
-        creativeTabTecTech =new CreativeTabTecTech("TecTech");
-        creativeTabEM =new CreativeTabEM("EM");
+    public static void preLoad() {
+        creativeTabTecTech = new CreativeTabTecTech("TecTech");
+        creativeTabEM = new CreativeTabEM("EM");
 
         //set expanded texture arrays for tiers
         try {
             Textures.run();
-        }catch (Throwable t){
-            LOGGER.error("Loading textures...",t);
+        } catch (Throwable t) {
+            LOGGER.error("Loading textures...", t);
         }
     }
 
@@ -107,9 +108,9 @@ public final class MainLoader {
         LOGGER.info("Entities registered");
 
         progressBarLoad.step("Add damage types");
-        microwaving =new DamageSource("microwaving").setDamageBypassesArmor();
-        elementalPollution =new DamageSource("elementalPollution").setDamageBypassesArmor();
-        subspace =new DamageSource("subspace").setDamageBypassesArmor().setDamageIsAbsolute();
+        microwaving = new DamageSource("microwaving").setDamageBypassesArmor();
+        elementalPollution = new DamageSource("elementalPollution").setDamageBypassesArmor();
+        subspace = new DamageSource("subspace").setDamageBypassesArmor().setDamageIsAbsolute();
         LOGGER.info("Damage types addition Done");
 
         progressBarLoad.step("Register Packet Dispatcher");
@@ -128,16 +129,16 @@ public final class MainLoader {
         ProgressManager.ProgressBar progressBarPostLoad = ProgressManager.push("TecTech Post Loader", 4);
 
         progressBarPostLoad.step("Dreamcraft Compatibility");
-        if(Loader.isModLoaded(Reference.DREAMCRAFT)){
+        if (Loader.isModLoaded(Reference.DREAMCRAFT)) {
             try {
                 Class<?> clazz = Class.forName("com.dreammaster.gthandler.casings.GT_Container_CasingsNH");
-                TT_Container_Casings.sBlockCasingsNH = (Block)clazz.getField("sBlockCasingsNH").get(null);
+                TT_Container_Casings.sBlockCasingsNH = (Block) clazz.getField("sBlockCasingsNH").get(null);
 
-                if(TT_Container_Casings.sBlockCasingsNH==null){
+                if (TT_Container_Casings.sBlockCasingsNH == null) {
                     throw new NullPointerException("sBlockCasingsNH Is not set at this time");
                 }
-            }catch (Exception e){
-                throw new Error("Unable to get NH casings",e);
+            } catch (Exception e) {
+                throw new Error("Unable to get NH casings", e);
             }
         }
 
@@ -171,19 +172,19 @@ public final class MainLoader {
     }
 
     private static void registerExtraHazmats() {
-        ItemStack EMT_iqC=GT_ModHandler.getModItem("EMT","itemArmorQuantumChestplate",1,W);
-        ItemStack GRAVI_gC=GT_ModHandler.getModItem("GraviSuite","graviChestPlate",1,W);
-        ItemStack GRAVI_anC=GT_ModHandler.getModItem("GraviSuite", "advNanoChestPlate", 1, W);
+        ItemStack EMT_iqC   = GT_ModHandler.getModItem("EMT", "itemArmorQuantumChestplate", 1, W);
+        ItemStack GRAVI_gC  = GT_ModHandler.getModItem("GraviSuite", "graviChestPlate", 1, W);
+        ItemStack GRAVI_anC = GT_ModHandler.getModItem("GraviSuite", "advNanoChestPlate", 1, W);
 
-        ItemStack IC2_qH=GT_ModHandler.getIC2Item("quantumHelmet", 1L, W);
-        ItemStack IC2_qC=GT_ModHandler.getIC2Item("quantumBodyarmor", 1L, W);
-        ItemStack IC2_qL=GT_ModHandler.getIC2Item("quantumLeggings", 1L, W);
-        ItemStack IC2_qB=GT_ModHandler.getIC2Item("quantumBoots", 1L, W);
+        ItemStack IC2_qH = GT_ModHandler.getIC2Item("quantumHelmet", 1L, W);
+        ItemStack IC2_qC = GT_ModHandler.getIC2Item("quantumBodyarmor", 1L, W);
+        ItemStack IC2_qL = GT_ModHandler.getIC2Item("quantumLeggings", 1L, W);
+        ItemStack IC2_qB = GT_ModHandler.getIC2Item("quantumBoots", 1L, W);
 
-        ItemStack IC2_nH=GT_ModHandler.getIC2Item("nanoHelmet", 1L, W);
-        ItemStack IC2_nC=GT_ModHandler.getIC2Item("nanoBodyarmor", 1L, W);
-        ItemStack IC2_nL=GT_ModHandler.getIC2Item("nanoLeggings", 1L, W);
-        ItemStack IC2_nB=GT_ModHandler.getIC2Item("nanoBoots", 1L, W);
+        ItemStack IC2_nH = GT_ModHandler.getIC2Item("nanoHelmet", 1L, W);
+        ItemStack IC2_nC = GT_ModHandler.getIC2Item("nanoBodyarmor", 1L, W);
+        ItemStack IC2_nL = GT_ModHandler.getIC2Item("nanoLeggings", 1L, W);
+        ItemStack IC2_nB = GT_ModHandler.getIC2Item("nanoBoots", 1L, W);
 
         GregTech_API.sFrostHazmatList.add(EMT_iqC);
         GregTech_API.sFrostHazmatList.add(GRAVI_gC);
@@ -205,7 +206,7 @@ public final class MainLoader {
         GregTech_API.sBioHazmatList.add(IC2_qC);
         GregTech_API.sBioHazmatList.add(IC2_qL);
         GregTech_API.sBioHazmatList.add(IC2_qB);
-        
+
         GregTech_API.sBioHazmatList.add(GRAVI_anC);
         GregTech_API.sBioHazmatList.add(IC2_nH);
         GregTech_API.sBioHazmatList.add(IC2_nC);
@@ -218,7 +219,7 @@ public final class MainLoader {
         GregTech_API.sGasHazmatList.add(IC2_qC);
         GregTech_API.sGasHazmatList.add(IC2_qL);
         GregTech_API.sGasHazmatList.add(IC2_qB);
-        
+
         GregTech_API.sGasHazmatList.add(GRAVI_anC);
         GregTech_API.sGasHazmatList.add(IC2_nH);
         GregTech_API.sGasHazmatList.add(IC2_nC);
@@ -238,13 +239,13 @@ public final class MainLoader {
         GregTech_API.sElectroHazmatList.add(IC2_qC);
         GregTech_API.sElectroHazmatList.add(IC2_qL);
         GregTech_API.sElectroHazmatList.add(IC2_qB);
-        
+
         //todo add GC GS stuff
     }
 
     public static void addAfterGregTechPostLoadRunner() {
         GregTech_API.sAfterGTPostload.add(() -> {
-            if(TecTech.configTecTech.NERF_FUSION) {
+            if (TecTech.configTecTech.NERF_FUSION) {
                 FixBrokenFusionRecipes();
             }
             GT_MetaTileEntity_EM_collider.setValues(getFuelValue(Materials.Helium.getPlasma(125)));
@@ -306,7 +307,7 @@ public final class MainLoader {
 
     public static int getFuelValue(FluidStack aLiquid) {
         if (aLiquid == null || GT_Recipe.GT_Recipe_Map.sTurbineFuels == null) return 0;
-        FluidStack tLiquid;
+        FluidStack            tLiquid;
         Collection<GT_Recipe> tRecipeList = GT_Recipe.GT_Recipe_Map.sPlasmaFuels.mRecipeList;
         if (tRecipeList != null) for (GT_Recipe tFuel : tRecipeList)
             if ((tLiquid = GT_Utility.getFluidForFilledItem(tFuel.getRepresentativeInput(0), true)) != null)
@@ -314,8 +315,8 @@ public final class MainLoader {
         return 0;
     }
 
-    private static void fixBlocks(){
-        HashSet<String> modIDs=new HashSet<>(Arrays.asList(
+    private static void fixBlocks() {
+        HashSet<String> modIDs = new HashSet<>(Arrays.asList(
                 "minecraft",
                 "IC2",
                 "gregtech",
@@ -346,8 +347,8 @@ public final class MainLoader {
                 "utilityworlds",
                 Reference.MODID
         ));
-        for(Block block : GameData.getBlockRegistry().typeSafeIterable()) {
-            GameRegistry.UniqueIdentifier uniqueIdentifier=GameRegistry.findUniqueIdentifierFor(block);
+        for (Block block : GameData.getBlockRegistry().typeSafeIterable()) {
+            GameRegistry.UniqueIdentifier uniqueIdentifier = GameRegistry.findUniqueIdentifierFor(block);
             if (uniqueIdentifier != null) {
                 if (block.blockHardness < 0 || modIDs.contains(uniqueIdentifier.modId)) {
                     continue;

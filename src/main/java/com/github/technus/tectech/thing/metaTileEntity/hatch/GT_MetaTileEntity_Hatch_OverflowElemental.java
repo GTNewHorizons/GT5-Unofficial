@@ -27,8 +27,6 @@ import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
-import java.util.Locale;
-
 import static com.github.technus.tectech.loader.MainLoader.elementalPollution;
 import static com.github.technus.tectech.util.CommonValues.DISPERSE_AT;
 import static com.github.technus.tectech.util.CommonValues.V;
@@ -188,6 +186,9 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
             ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(Potion.confusion.id, 1, (int) (damagingFactor * 20)));
             ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(Potion.wither.id, 2, (int) (damagingFactor * 15)));
             ((EntityLivingBase) entity).attackEntityFrom(elementalPollution, damagingFactor);
+            if(entity instanceof EntityPlayer) {
+                TecTech.anomalyHandler.addMass((EntityPlayer) entity,overflowDisperse);
+            }
         }
     }
 

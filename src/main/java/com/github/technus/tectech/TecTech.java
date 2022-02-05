@@ -7,6 +7,7 @@ import com.github.technus.tectech.loader.gui.CreativeTabEM;
 import com.github.technus.tectech.mechanics.anomaly.AnomalyHandler;
 import com.github.technus.tectech.mechanics.anomaly.CancerCommand;
 import com.github.technus.tectech.mechanics.anomaly.ChargeCommand;
+import com.github.technus.tectech.mechanics.anomaly.MassCommand;
 import com.github.technus.tectech.mechanics.commands.ConvertFloat;
 import com.github.technus.tectech.mechanics.commands.ConvertInteger;
 import com.github.technus.tectech.mechanics.data.ChunkDataHandler;
@@ -221,6 +222,7 @@ public class TecTech {
             pEvent.registerServerCommand(new EMGive());
             pEvent.registerServerCommand(new CancerCommand());
             pEvent.registerServerCommand(new ChargeCommand());
+            pEvent.registerServerCommand(new MassCommand());
         }
     }
 
