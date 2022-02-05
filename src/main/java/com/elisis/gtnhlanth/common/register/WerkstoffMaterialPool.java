@@ -675,13 +675,14 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff Gangue = new Werkstoff(
     		new short[] {0, 0, 0},
     		"Gangue",
+    		subscriptNumbers("Useless..."),
     		new Werkstoff.Stats(),
     		Werkstoff.Types.MIXTURE,
     		new Werkstoff.GenerationFeatures().disable().onlyDust(),
     		offsetID2 + 9,
     		TextureSet.SET_DULL
     	);
-    
+    //TODO: Deal with colouring
     public static final Werkstoff RoastedRareEarthOxides = new Werkstoff(
     		new short[] {160, 82, 45},
     		"Roasted Rare Earth Oxides",
@@ -712,10 +713,121 @@ public class WerkstoffMaterialPool implements Runnable {
     		TextureSet.SET_DULL
     	);
     
+    public static final Werkstoff BastnasiteRarerEarthOxides = new Werkstoff(
+    		new short[] {160, 82, 49},
+    		"Bastnasite Rarer Earth Oxides",
+    		new Werkstoff.Stats(),
+    		Werkstoff.Types.MIXTURE,
+    		new Werkstoff.GenerationFeatures().disable().onlyDust(),
+    		offsetID2 + 13,
+    		TextureSet.SET_DULL
+    	);
     
+    public static final Werkstoff NitratedBastnasiteRarerEarthOxides = new Werkstoff(
+    		new short[] {160, 90, 60},
+    		"Nitrated Bastnasite Rarer Earth Oxides",
+    		new Werkstoff.Stats(),
+    		Werkstoff.Types.MIXTURE,
+    		new Werkstoff.GenerationFeatures().disable().addCells(),
+    		offsetID2 + 14,
+    		TextureSet.SET_DULL
+    	);
     
+    public static final Werkstoff SaturatedBastnasiteRarerEarthOxides = new Werkstoff(
+    		new short[] {170, 90, 60},
+    		"Saturated Bastnasite Rarer Earth Oxides",
+    		new Werkstoff.Stats(),
+    		Werkstoff.Types.MIXTURE,
+    		new Werkstoff.GenerationFeatures().disable().addCells(),
+    		offsetID2 + 15,
+    		TextureSet.SET_DULL
+    	);
     
+    public static final Werkstoff SamaricRareEarthConcentrate = new Werkstoff(
+    		new short[] {170, 90, 60},
+    		"Samaric Rare Earth Concentrate",
+    		subscriptNumbers("??SmHoTb??"),
+    		new Werkstoff.Stats(),
+    		Werkstoff.Types.MIXTURE,
+    		new Werkstoff.GenerationFeatures().disable().onlyDust(),
+    		offsetID2 + 16,
+    		TextureSet.SET_DULL
+    	);
     
+    public static final Werkstoff NeodymicRareEarthConcentrate = new Werkstoff(
+    		new short[] {170, 90, 60},
+    		"Neodymium Rare Earth Concentrate",
+    		subscriptNumbers("??LaNdPr??"),
+    		new Werkstoff.Stats(),
+    		Werkstoff.Types.MIXTURE,
+    		new Werkstoff.GenerationFeatures().disable().onlyDust(),
+    		offsetID2 + 17,
+    		TextureSet.SET_DULL
+    	);
+    
+    public static final Werkstoff FluorinatedNeodymicRareEarths = new Werkstoff(
+    		new short[] {170, 90, 60},
+    		"Fluorinated Neodymium Rare Earths",
+    		subscriptNumbers("??LaNdPr??"),
+    		new Werkstoff.Stats(),
+    		Werkstoff.Types.MIXTURE,
+    		new Werkstoff.GenerationFeatures().disable().onlyDust(),
+    		offsetID2 + 18,
+    		TextureSet.SET_DULL
+    	);
+    
+    public static final Werkstoff PraseodymiumTetrafluoride = new Werkstoff(
+    		new short[] {82, 112, 102},
+    		"Praseodymium Tetrafluoride",
+    		subscriptNumbers("PrF4"),
+    		new Werkstoff.Stats().setElektrolysis(true),
+    		Werkstoff.Types.COMPOUND,
+    		new Werkstoff.GenerationFeatures().disable().onlyDust(),
+    		offsetID2 + 19,
+    		TextureSet.SET_DULL,
+    		Arrays.asList(Materials.Praseodymium, Materials.Fluorine),
+            new Pair<>(Materials.Praseodymium, 1),
+            new Pair<>(Materials.Fluorine, 4) 
+    	);
+    
+    public static final Werkstoff RareEarthTrifluorides = new Werkstoff(
+    		new short[] {82, 112, 102},
+    		"Rare Earth Trifluorides",
+    		subscriptNumbers("??LaNd??"),
+    		new Werkstoff.Stats(),
+    		Werkstoff.Types.MIXTURE,
+    		new Werkstoff.GenerationFeatures().disable().onlyDust(),
+    		offsetID2 + 20,
+    		TextureSet.SET_DULL
+    	);
+    
+    public static final Werkstoff LanthaniumChloride = new Werkstoff(
+    		new short[] {82, 112, 102},
+    		"Lanthanium Chloride",
+    		subscriptNumbers("LaCl3"),
+    		new Werkstoff.Stats().setElektrolysis(true),
+    		Werkstoff.Types.COMPOUND,
+    		new Werkstoff.GenerationFeatures().disable().onlyDust(),
+    		offsetID2 + 21,
+    		TextureSet.SET_DULL,
+    		Arrays.asList(Materials.Lanthanum, Materials.Chlorine),
+    		new Pair<>(Materials.Lanthanum, 1),
+    		new Pair<>(Materials.Chlorine, 3)
+    	);
+    
+    public static final Werkstoff NeodymiumOxide = new Werkstoff(
+    		new short[] {82, 112, 102},
+    		"Neodymium Oxide",
+    		subscriptNumbers("Nd2O3"),
+    		new Werkstoff.Stats().setElektrolysis(true),
+    		Werkstoff.Types.COMPOUND,
+    		new Werkstoff.GenerationFeatures().disable().onlyDust(),
+    		offsetID2 + 22,
+    		TextureSet.SET_DULL,
+    		Arrays.asList(Materials.Neodymium, Materials.Oxygen),
+    		new Pair<>(Materials.Neodymium, 2),
+    		new Pair<>(Materials.Oxygen, 3)
+    	);
     
     
     
