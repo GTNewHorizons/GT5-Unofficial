@@ -284,8 +284,8 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_MultiblockBas
                 consumeAllLiquid(tFuel);
                 consumeAllLiquid(getPromoter());
 
-                this.mEUt = (int)(FuelAmount * recipe.mSpecialValue / 20.0D);
-                this.lEUt = (long)(FuelAmount * recipe.mSpecialValue / 20.0D);
+                this.mEUt = (int)(FuelAmount * recipe.mSpecialValue * 3 / 20.0D);
+                this.lEUt = (long)(FuelAmount * recipe.mSpecialValue * 3 / 20.0D);
                 this.mMaxProgresstime = 20;
                 this.updateSlots();
                 return true;
