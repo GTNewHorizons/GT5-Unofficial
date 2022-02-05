@@ -33,20 +33,23 @@ import java.util.Map;
 
 import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry.EM_COUNT_PER_MATERIAL_AMOUNT;
 import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry.EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED;
+import static com.github.technus.tectech.util.Util.crossProduct3D;
+import static com.github.technus.tectech.util.Util.normalize3D;
 
 public class AnomalyHandler implements IChunkMetaDataHandler {
     private static final double SWAP_THRESHOLD = EMAtomDefinition.getSomethingHeavy().getMass() * 1000D * EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED;//can be const as it is computed later...
-    private static final int COUNT_DIV=32;
-    private static final double PER_PARTICLE=SWAP_THRESHOLD/COUNT_DIV;
-    private static final String INTENSITY = "intensity",SPACE_CANCER="space_cancer", SPACE_CHARGE ="space_charge";
-    private static final int MEAN_DELAY =50;
-    private static final double CANCER_EFFECTIVENESS = 1/ EM_COUNT_PER_MATERIAL_AMOUNT;
-    private static final double CHARGE_EFFECTIVENESS = 10/ EM_COUNT_PER_MATERIAL_AMOUNT;
-    private static final double CHARGE_EXPLOSIVENESS = 5/ EM_COUNT_PER_MATERIAL_AMOUNT;
+    private static final int    COUNT_DIV      = 32;
+    private static final double PER_PARTICLE   = SWAP_THRESHOLD / COUNT_DIV;
+    private static final String INTENSITY      = "intensity", SPACE_CANCER = "space_cancer", SPACE_CHARGE = "space_charge", SPACE_MASS = "space_mass";
+    private static final int    MEAN_DELAY           = 50;
+    private static final double CANCER_EFFECTIVENESS = 1 / EM_COUNT_PER_MATERIAL_AMOUNT;
+    private static final double MASS_EFFECTIVENESS   = 1 / EM_COUNT_PER_MATERIAL_AMOUNT;
+    private static final double CHARGE_EFFECTIVENESS = 10 / EM_COUNT_PER_MATERIAL_AMOUNT;
+    private static final double CHARGE_EXPLOSIVENESS = 5 / EM_COUNT_PER_MATERIAL_AMOUNT;
 
-    private boolean fixMe=false;
-    private final ArrayList<EntityPlayer> playersWithCharge = new ArrayList<>();
-    private final ArrayList<Chunk> worldDataArrayList = new ArrayList<>(512);
+    private       boolean            fixMe              = false;
+    private final List<EntityPlayer> playersWithCharge  = new ArrayList<>();
+    private final ArrayList<Chunk>   worldDataArrayList = new ArrayList<>(512);
 
     @Override
     public String getTagName() {
@@ -67,7 +70,7 @@ public class AnomalyHandler implements IChunkMetaDataHandler {
     @Override
     public void tickWorld(HashMap<Integer, ChunkDataHandler.ChunkHashMap> data, TickEvent.WorldTickEvent aEvent) {
         if (TecTech.RANDOM.nextInt(MEAN_DELAY) == 0) {
-            int dim = aEvent.world.provider.dimensionId;
+            int                           dim          = aEvent.world.provider.dimensionId;
             ChunkDataHandler.ChunkHashMap chunkHashMap = data.get(dim);
             chunkHashMap.forEach((chunkCoordIntPair, compound) -> {
                 if (compound.getDouble(INTENSITY) > SWAP_THRESHOLD) {
@@ -78,17 +81,17 @@ public class AnomalyHandler implements IChunkMetaDataHandler {
                 }
             });
             if (worldDataArrayList.size() >= 2) {
-                Chunk a = worldDataArrayList.remove(TecTech.RANDOM.nextInt(worldDataArrayList.size()));
-                Chunk b = worldDataArrayList.get(TecTech.RANDOM.nextInt(worldDataArrayList.size()));
+                Chunk             a       = worldDataArrayList.remove(TecTech.RANDOM.nextInt(worldDataArrayList.size()));
+                Chunk             b       = worldDataArrayList.get(TecTech.RANDOM.nextInt(worldDataArrayList.size()));
                 ChunkCoordIntPair aCoords = a.getChunkCoordIntPair();
                 ChunkCoordIntPair bCoords = b.getChunkCoordIntPair();
 
                 double newValue = (chunkHashMap.get(aCoords).getDouble(INTENSITY) +
-                        chunkHashMap.get(bCoords).getDouble(INTENSITY))/2-SWAP_THRESHOLD/8;
-                float split=TecTech.RANDOM.nextFloat();
+                        chunkHashMap.get(bCoords).getDouble(INTENSITY)) / 2 - SWAP_THRESHOLD / 8;
+                float split = TecTech.RANDOM.nextFloat();
 
                 chunkHashMap.get(aCoords).setDouble(INTENSITY, newValue * split);
-                chunkHashMap.get(bCoords).setDouble(INTENSITY, newValue * (1-split));
+                chunkHashMap.get(bCoords).setDouble(INTENSITY, newValue * (1 - split));
                 chunkHashMap.markForTransmissionToClient(aCoords);
                 chunkHashMap.markForTransmissionToClient(bCoords);
                 swapSomething(a, b, newValue);
@@ -110,20 +113,20 @@ public class AnomalyHandler implements IChunkMetaDataHandler {
                     if (other == player) {
                         continue outer;
                     }
-                    double field = getCharge(player);
+                    double field         = getCharge(player);
                     double absDifference = Math.abs(field - fieldOther);
                     if (absDifference != 0) {
                         if (player.getDistanceSqToEntity(other) < 1) {
                             double avg = (fieldOther + field) / 2;
                             //addAnomaly(other.worldObj.provider.dimensionId, new ChunkCoordIntPair(other.chunkCoordX, other.chunkCoordZ), Math.min(SWAP_THRESHOLD, PER_PARTICLE * absDifference));
-                            if(TecTech.configTecTech.BOOM_ENABLE){
-                                other.worldObj.createExplosion(other, other.posX, other.posY, other.posZ,(float) Math.min(CHARGE_EXPLOSIVENESS * absDifference, 25), true);
+                            if (TecTech.configTecTech.BOOM_ENABLE) {
+                                other.worldObj.createExplosion(other, other.posX, other.posY, other.posZ, (float) Math.min(CHARGE_EXPLOSIVENESS * absDifference, 25), true);
                                 player.worldObj.createExplosion(player, player.posX, player.posY, player.posZ, (float) Math.min(CHARGE_EXPLOSIVENESS * absDifference, 25), true);
                             }
-                            GT_Utility.sendSoundToPlayers(other.worldObj, GregTech_API.sSoundList.get(209), 1.0F, -1, (int)other.posX, (int)other.posY, (int)other.posZ);
-                            GT_Utility.sendSoundToPlayers(player.worldObj, GregTech_API.sSoundList.get(209), 1.0F, -1, (int)player.posX, (int)player.posY, (int)player.posZ);
-                            setCharge(player,avg);
-                            setCharge(other,avg);
+                            GT_Utility.sendSoundToPlayers(other.worldObj, GregTech_API.sSoundList.get(209), 1.0F, -1, (int) other.posX, (int) other.posY, (int) other.posZ);
+                            GT_Utility.sendSoundToPlayers(player.worldObj, GregTech_API.sSoundList.get(209), 1.0F, -1, (int) player.posX, (int) player.posY, (int) player.posZ);
+                            setCharge(player, avg);
+                            setCharge(other, avg);
                         }
                     }
                 }
@@ -132,16 +135,16 @@ public class AnomalyHandler implements IChunkMetaDataHandler {
         }
     }
 
-    private void swapSomething(Chunk a,Chunk b,double mass) {
-        float explosionPower=(float) Math.log(mass/ EM_COUNT_PER_MATERIAL_AMOUNT);
-        for (int i = 0; i < Math.min((int)explosionPower,64); i++) {
-            int x = TecTech.RANDOM.nextInt(16);
-            int y = TecTech.RANDOM.nextInt(a.worldObj.getActualHeight());
-            int z = TecTech.RANDOM.nextInt(16);
+    private void swapSomething(Chunk a, Chunk b, double mass) {
+        float explosionPower = (float) Math.log(mass / EM_COUNT_PER_MATERIAL_AMOUNT);
+        for (int i = 0; i < Math.min((int) explosionPower, 64); i++) {
+            int   x      = TecTech.RANDOM.nextInt(16);
+            int   y      = TecTech.RANDOM.nextInt(a.worldObj.getActualHeight());
+            int   z      = TecTech.RANDOM.nextInt(16);
             Block aBlock = a.getBlock(x, y, z);
             Block bBlock = a.getBlock(x, y, z);
-            int aMeta = a.getBlockMetadata(x, y, z);
-            int bMeta = a.getBlockMetadata(x, y, z);
+            int   aMeta  = a.getBlockMetadata(x, y, z);
+            int   bMeta  = a.getBlockMetadata(x, y, z);
             if (a.getTileEntityUnsafe(x, y, z) == null && b.getTileEntityUnsafe(x, y, z) == null) {
                 a.worldObj.setBlock((a.xPosition << 4) + x, y, (a.zPosition << 4) + z, bBlock, bMeta, 3);
                 b.worldObj.setBlock((b.xPosition << 4) + x, y, (b.zPosition << 4) + z, aBlock, aMeta, 3);
@@ -155,19 +158,19 @@ public class AnomalyHandler implements IChunkMetaDataHandler {
                 a.worldObj.setBlockToAir((a.xPosition << 4) + x, y, (a.zPosition << 4) + z);
                 b.worldObj.setBlockToAir((b.xPosition << 4) + x, y, (b.zPosition << 4) + z);
             }
-            if(TecTech.configTecTech.BOOM_ENABLE){
+            if (TecTech.configTecTech.BOOM_ENABLE) {
                 if (TecTech.RANDOM.nextBoolean()) {
-                    a.worldObj.createExplosion(null, (a.xPosition << 4) + x + .5, y + .5, (a.zPosition << 4) + z + .5, explosionPower*TecTech.RANDOM.nextFloat(), true);
+                    a.worldObj.createExplosion(null, (a.xPosition << 4) + x + .5, y + .5, (a.zPosition << 4) + z + .5, explosionPower * TecTech.RANDOM.nextFloat(), true);
                 }
                 GT_Utility.sendSoundToPlayers(a.worldObj, GregTech_API.sSoundList.get(209), 1.0F, -1, (a.xPosition << 4) + x, y, (a.zPosition << 4) + z);
                 if (TecTech.RANDOM.nextBoolean()) {
-                    b.worldObj.createExplosion(null, (b.xPosition << 4) + x + .5, y + .5, (b.zPosition << 4) + z + .5, explosionPower*TecTech.RANDOM.nextFloat(), true);
+                    b.worldObj.createExplosion(null, (b.xPosition << 4) + x + .5, y + .5, (b.zPosition << 4) + z + .5, explosionPower * TecTech.RANDOM.nextFloat(), true);
                 }
                 GT_Utility.sendSoundToPlayers(b.worldObj, GregTech_API.sSoundList.get(209), 1.0F, -1, (b.xPosition << 4) + x, y, (b.zPosition << 4) + z);
             }
         }
-        int x = (b.xPosition - a.xPosition) << 4;
-        int z = (b.xPosition - a.xPosition) << 4;
+        int                    x  = (b.xPosition - a.xPosition) << 4;
+        int                    z  = (b.xPosition - a.xPosition) << 4;
         List<EntityLivingBase> aE = a.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, Util.fromChunk(a));
         List<EntityLivingBase> bE = b.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, Util.fromChunk(b));
         for (EntityLivingBase entityLivingBase : aE) {
@@ -219,9 +222,9 @@ public class AnomalyHandler implements IChunkMetaDataHandler {
     @Override
     public void tickPlayer(HashMap<Integer, ChunkDataHandler.ChunkHashMap> data, TickEvent.PlayerTickEvent aEvent) {
         if (aEvent.side.isClient()) {
-            EntityPlayer player = TecTech.proxy.getPlayer();
-            ChunkCoordIntPair pair = new ChunkCoordIntPair(player.chunkCoordX, player.chunkCoordZ);
-            NBTTagCompound compound = data.get(player.worldObj.provider.dimensionId).get(pair);
+            EntityPlayer      player   = TecTech.proxy.getPlayer();
+            ChunkCoordIntPair pair     = new ChunkCoordIntPair(player.chunkCoordX, player.chunkCoordZ);
+            NBTTagCompound    compound = data.get(player.worldObj.provider.dimensionId).get(pair);
             if (compound != null) {
                 for (int i = 0, badness = (int) Math.min(COUNT_DIV, compound.getDouble(INTENSITY) / PER_PARTICLE); i < badness; i++) {
                     TecTech.proxy.em_particle(player.worldObj,
@@ -244,18 +247,18 @@ public class AnomalyHandler implements IChunkMetaDataHandler {
                 }
             }
         } else if (TecTech.RANDOM.nextInt(50) == 0) {
-            EntityPlayer player = aEvent.player;
-            ChunkCoordIntPair pair = new ChunkCoordIntPair(player.chunkCoordX, player.chunkCoordZ);
-            NBTTagCompound compound = data.get(player.worldObj.provider.dimensionId).get(pair);
-            NBTTagCompound playerTag = TecTech.playerPersistence.getDataOrSetToNewTag(player);
-            boolean saveRequired = false;
+            EntityPlayer      player       = aEvent.player;
+            ChunkCoordIntPair pair         = new ChunkCoordIntPair(player.chunkCoordX, player.chunkCoordZ);
+            NBTTagCompound    compound     = data.get(player.worldObj.provider.dimensionId).get(pair);
+            NBTTagCompound    playerTag    = TecTech.playerPersistence.getDataOrSetToNewTag(player);
+            boolean           saveRequired = false;
             if (!player.capabilities.isCreativeMode) {
-                double cancer=getCancer(player);
+                double cancer = getCancer(player);
                 if (compound != null) {
                     int badness = (int) Math.min(COUNT_DIV, compound.getDouble(INTENSITY) / PER_PARTICLE);
                     if (badness > 0) {
                         playerTag.setDouble(SPACE_CANCER, Math.min(2, cancer + 9.765625E-4f * badness));
-                        player.attackEntityFrom(MainLoader.subspace,Math.max(1,badness/8f));
+                        player.attackEntityFrom(MainLoader.subspace, Math.max(1, badness / 8f));
                         saveRequired = true;
                     }
                 } else if (playerTag.getDouble(SPACE_CANCER) > 0 && !player.isDead) {
@@ -275,14 +278,14 @@ public class AnomalyHandler implements IChunkMetaDataHandler {
 
     @Override
     public void tickRender(HashMap<Integer, ChunkDataHandler.ChunkHashMap> data, TickEvent.RenderTickEvent aEvent) {
-        EntityPlayer player=TecTech.proxy.getPlayer();
-        if(player!=null) {
-            if(!player.capabilities.isCreativeMode) {
-                double cancer = getCancer(player)*CANCER_EFFECTIVENESS;
+        EntityPlayer player = TecTech.proxy.getPlayer();
+        if (player != null) {
+            if (!player.capabilities.isCreativeMode) {
+                double cancer = getCancer(player) * CANCER_EFFECTIVENESS;
                 if (cancer > 0) {
                     player.setInvisible(fixMe = TecTech.RANDOM.nextFloat() * 2 < cancer);
                     player.setAngles((TecTech.RANDOM.nextFloat() - .5F) * 36 * (float) cancer, (TecTech.RANDOM.nextFloat() - .5F) * 36 * (float) cancer);
-                    cancer*=cancer/2F;
+                    cancer *= cancer / 2F;
                     if (cancer > 1.75f) {
                         player.setVelocity((TecTech.RANDOM.nextFloat() - .5F) * cancer, (TecTech.RANDOM.nextFloat() - .5F) * cancer, (TecTech.RANDOM.nextFloat() - .5F) * cancer);
                     } else {
@@ -291,22 +294,51 @@ public class AnomalyHandler implements IChunkMetaDataHandler {
                 }
 
                 double charge = getCharge(player);
-                if(charge!=0) {
+                if (charge != 0) {
                     for (Object o : player.worldObj.playerEntities) {
                         if (o instanceof EntityPlayer && !((EntityPlayer) o).capabilities.isCreativeMode) {
-                            EntityPlayer otherPlayer=(EntityPlayer)o;
-                            double chargeOther = getCharge(otherPlayer);
+                            EntityPlayer otherPlayer = (EntityPlayer) o;
+                            double       chargeOther = getCharge(otherPlayer);
                             if (chargeOther != 0 && player != o) {
                                 double reaction = chargeOther * charge;
-                                if (reaction !=0) {
+                                if (reaction != 0) {
                                     double distanceSq = otherPlayer.getDistanceSqToEntity(player);
                                     if (distanceSq >= 1) {
                                         double effect = CHARGE_EFFECTIVENESS * reaction / (distanceSq * distanceSq * distanceSq);
-                                        double dX = player.posX - otherPlayer.posX;
-                                        double dY = player.posY - otherPlayer.posY;
-                                        double dZ = player.posZ - otherPlayer.posZ;
-                                        player.addVelocity(effect * dX, effect * dY, effect * dZ);
-                                        otherPlayer.addVelocity(-effect * dX, -effect * dY, -effect * dZ);
+                                        double dX     = (player.posX - otherPlayer.posX) * effect;
+                                        double dY     = (player.posY - otherPlayer.posY) * effect;
+                                        double dZ     = (player.posZ - otherPlayer.posZ) * effect;
+                                        player.addVelocity(dX, dY, dZ);
+                                        otherPlayer.addVelocity(-dX, -dY, -dZ);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                double mass = getMass(player);
+                if (mass != 0) {
+                    for (Object o : player.worldObj.playerEntities) {
+                        if (o instanceof EntityPlayer && !((EntityPlayer) o).capabilities.isCreativeMode) {
+                            EntityPlayer otherPlayer = (EntityPlayer) o;
+                            double       massOther   = getMass(otherPlayer);
+                            if (massOther != 0 && player != o) {
+                                double reaction = massOther * mass;
+                                if (reaction != 0) {
+                                    double distanceSq = otherPlayer.getDistanceSqToEntity(player);
+                                    if (distanceSq >= 1) {
+                                        double   effect  = MASS_EFFECTIVENESS * reaction / (distanceSq * distanceSq * distanceSq);
+                                        double   effect1 = effect / mass;
+                                        double   effect2 = effect / massOther;
+                                        double[] dPos    = new double[]{player.posX - otherPlayer.posX, player.posY - otherPlayer.posY, player.posZ - otherPlayer.posZ};
+                                        double[] vel     = new double[]{player.motionX, player.motionY, player.motionZ};
+                                        double[] out     = new double[3];
+                                        crossProduct3D(dPos, vel, out);
+                                        crossProduct3D(out, dPos, vel);
+                                        normalize3D(vel,out);
+                                        player.addVelocity(effect1 * out[0], effect1 * out[1], effect1 * out[2]);
+                                        otherPlayer.addVelocity(effect2 * -out[0], effect2 * -out[1], effect2 * -out[2]);
                                     }
                                 }
                             }
@@ -314,9 +346,9 @@ public class AnomalyHandler implements IChunkMetaDataHandler {
                     }
                 }
             }
-            if (fixMe){
+            if (fixMe) {
                 player.setInvisible(false);
-                fixMe=false;
+                fixMe = false;
             }
         }
     }
@@ -337,14 +369,14 @@ public class AnomalyHandler implements IChunkMetaDataHandler {
     }
 
     public void addAnomaly(IGregTechTileEntity gtTile, double amount) {
-        addAnomaly(gtTile.getWorld(),gtTile.getXCoord(),gtTile.getZCoord(),amount);
+        addAnomaly(gtTile.getWorld(), gtTile.getXCoord(), gtTile.getZCoord(), amount);
     }
 
     public void addAnomaly(TileEntity tileEntity, double amount) {
-        addAnomaly(tileEntity.getWorldObj(),tileEntity.xCoord,tileEntity.zCoord,amount);
+        addAnomaly(tileEntity.getWorldObj(), tileEntity.xCoord, tileEntity.zCoord, amount);
     }
 
-    public void addAnomaly(World w,int x,int z, double amount) {
+    public void addAnomaly(World w, int x, int z, double amount) {
         if (!w.isRemote) {
             addAnomaly(w.provider.dimensionId,
                     new ChunkCoordIntPair(
@@ -366,43 +398,55 @@ public class AnomalyHandler implements IChunkMetaDataHandler {
         TecTech.chunkDataHandler.getChunkData(this, world).markForTransmissionToClient(chunk);
     }
 
-    public double getCharge(EntityPlayer player){
-        return getDouble(player,SPACE_CHARGE);
+    public double getCharge(EntityPlayer player) {
+        return getDouble(player, SPACE_CHARGE);
     }
 
-    public void setCharge(EntityPlayer player, double amount){
-        setDouble(player,SPACE_CHARGE,amount);
+    public void setCharge(EntityPlayer player, double amount) {
+        setDouble(player, SPACE_CHARGE, amount);
     }
 
-    public void addCharge(EntityPlayer player, double amount){
-        addDouble(player,SPACE_CHARGE,amount);
+    public void addCharge(EntityPlayer player, double amount) {
+        addDouble(player, SPACE_CHARGE, amount);
     }
 
-    public double getCancer(EntityPlayer player){
-        return getDouble(player,SPACE_CANCER);
+    public double getMass(EntityPlayer player) {
+        return getDouble(player, SPACE_MASS);
     }
 
-    public void setCancer(EntityPlayer player, double amount){
-        setDouble(player,SPACE_CANCER,amount);
+    public void setMass(EntityPlayer player, double amount) {
+        setDouble(player, SPACE_MASS, amount);
     }
 
-    public void addCancer(EntityPlayer player, double amount){
-        addDouble(player,SPACE_CANCER,amount);
+    public void addMass(EntityPlayer player, double amount) {
+        addDouble(player, SPACE_MASS, amount);
     }
 
-    public double getDouble(EntityPlayer player,String name){
+    public double getCancer(EntityPlayer player) {
+        return getDouble(player, SPACE_CANCER);
+    }
+
+    public void setCancer(EntityPlayer player, double amount) {
+        setDouble(player, SPACE_CANCER, amount);
+    }
+
+    public void addCancer(EntityPlayer player, double amount) {
+        addDouble(player, SPACE_CANCER, amount);
+    }
+
+    public double getDouble(EntityPlayer player, String name) {
         return TecTech.playerPersistence.getDataOrSetToNewTag(player).getDouble(name);
     }
 
-    public void setDouble(EntityPlayer player,String name, double amount){
+    public void setDouble(EntityPlayer player, String name, double amount) {
         TecTech.playerPersistence.getDataOrSetToNewTag(player).setDouble(name, amount);
         TecTech.playerPersistence.saveData(player);
         NetworkDispatcher.INSTANCE.sendToAll(new PlayerDataMessage.PlayerDataData(player));
     }
 
-    public void addDouble(EntityPlayer player,String name, double amount){
+    public void addDouble(EntityPlayer player, String name, double amount) {
         NBTTagCompound data = TecTech.playerPersistence.getDataOrSetToNewTag(player);
-        data.setDouble(name, amount+data.getDouble(name));
+        data.setDouble(name, amount + data.getDouble(name));
         TecTech.playerPersistence.saveData(player);
         NetworkDispatcher.INSTANCE.sendToAll(new PlayerDataMessage.PlayerDataData(player));
     }
