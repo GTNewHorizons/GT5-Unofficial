@@ -384,10 +384,10 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_EnhancedMultiBlockBase
         public static void registerTHR_Recipes(){
             GT_Values.RA.addCentrifugeRecipe(
                     Materials.Thorium.getDust(1),GT_Values.NI,GT_Values.NF,GT_Values.NF,
-                    Materials.Thorium.getDustSmall(2),Materials.Thorium.getDustSmall(1),
-                    WerkstoffLoader.Thorium232.get(OrePrefixes.dustTiny,1),WerkstoffLoader.Thorium232.get(OrePrefixes.dustTiny,1),
-                    WerkstoffLoader.Thorium232.get(OrePrefixes.dustTiny,1),GT_Values.NI,
-                    new int[]{1600,1500,200,200,50},
+                    Materials.Thorium.getDust(1),Materials.Thorium.getDust(1),
+                    WerkstoffLoader.Thorium232.get(OrePrefixes.dust,1),WerkstoffLoader.Thorium232.get(OrePrefixes.dust,1),
+                    WerkstoffLoader.Thorium232.get(OrePrefixes.dust,1),GT_Values.NI,
+                    new int[]{800,375,22,22,5},
                     10000, BW_Util.getMachineVoltageFromTier(4));
             GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                     GT_OreDictUnificator.get(OrePrefixes.plateDense,Materials.Lead,6),
