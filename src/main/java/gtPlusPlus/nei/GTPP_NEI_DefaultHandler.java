@@ -1,6 +1,5 @@
 package gtPlusPlus.nei;
 
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.lang.ref.SoftReference;
 import java.util.ArrayList;
@@ -14,7 +13,6 @@ import org.lwjgl.opengl.GL11;
 
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
-import codechicken.nei.guihook.GuiContainerManager;
 import codechicken.nei.guihook.IContainerInputHandler;
 import codechicken.nei.guihook.IContainerTooltipHandler;
 import codechicken.nei.recipe.GuiCraftingRecipe;
@@ -24,7 +22,6 @@ import codechicken.nei.recipe.TemplateRecipeHandler;
 import cpw.mods.fml.common.event.FMLInterModComms;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.gui.GT_GUIContainer_BasicMachine;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -50,8 +47,6 @@ public class GTPP_NEI_DefaultHandler extends TemplateRecipeHandler {
 	private static final HashMap<Integer, Pair<Integer, Integer>> mOutputSlotMap = new HashMap<Integer, Pair<Integer, Integer>>();
 
 	static {
-		GuiContainerManager.addInputHandler(new GT_RectHandler());
-		GuiContainerManager.addTooltipHandler(new GT_RectHandler());
 		int[] aSlotX = new int[] {12, 30, 48};
 		int[] aSlotY = new int[] {5, 23, 41, 64};	
 		// Input slots
@@ -258,18 +253,11 @@ public class GTPP_NEI_DefaultHandler extends TemplateRecipeHandler {
 		}
 	}
 
+	@Deprecated
 	public static class GT_RectHandler
 	implements IContainerInputHandler, IContainerTooltipHandler {
 		@Override
 		public boolean mouseClicked(final GuiContainer gui, final int mousex, final int mousey, final int button) {
-			if (this.canHandle(gui)) {
-				if (button == 0) {
-					return this.transferRect(gui, false);
-				}
-				if (button == 1) {
-					return this.transferRect(gui, true);
-				}
-			}
 			return false;
 		}
 
@@ -279,23 +267,15 @@ public class GTPP_NEI_DefaultHandler extends TemplateRecipeHandler {
 		}
 
 		public boolean canHandle(final GuiContainer gui) {
-			return (((gui instanceof GT_GUIContainer_BasicMachine)) && (GT_Utility.isStringValid(((GT_GUIContainer_BasicMachine) gui).mNEI)));
+			return false;
 		}
 
 		@Override
 		public List<String> handleTooltip(final GuiContainer gui, final int mousex, final int mousey, final List<String> currenttip) {
-			if ((this.canHandle(gui)) && (currenttip.isEmpty())) {
-				if ((gui instanceof GT_GUIContainer_BasicMachine) && new Rectangle(65, 13, 36, 18).contains(new Point(GuiDraw.getMousePosition().x - ((GT_GUIContainer_BasicMachine) gui).getLeft() - codechicken.nei.recipe.RecipeInfo.getGuiOffset(gui)[0], GuiDraw.getMousePosition().y - ((GT_GUIContainer_BasicMachine) gui).getTop() - codechicken.nei.recipe.RecipeInfo.getGuiOffset(gui)[1]))) {
-					currenttip.add("Recipes");
-				}
-			}
 			return currenttip;
 		}
 
 		private boolean transferRect(final GuiContainer gui, final boolean usage) {
-			if (gui instanceof GT_GUIContainer_BasicMachine) {
-				return (this.canHandle(gui)) && (new Rectangle(65, 13, 36, 18).contains(new Point(GuiDraw.getMousePosition().x - ((GT_GUIContainer_BasicMachine) gui).getLeft() - codechicken.nei.recipe.RecipeInfo.getGuiOffset(gui)[0], GuiDraw.getMousePosition().y - ((GT_GUIContainer_BasicMachine) gui).getTop() - codechicken.nei.recipe.RecipeInfo.getGuiOffset(gui)[1]))) && (usage ? GuiUsageRecipe.openRecipeGui(((GT_GUIContainer_BasicMachine) gui).mNEI, new Object[0]) : GuiCraftingRecipe.openRecipeGui(((GT_GUIContainer_BasicMachine) gui).mNEI, new Object[0]));
-			}
 			return false;
 		}
 
