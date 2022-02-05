@@ -644,7 +644,7 @@ public class RecipeLoader {
         		null,
         		null,
         		null,
-        		FluidRegistry.getFluidStack("Kerosene", 1000),
+        		Materials.Acetone.getFluid(1000),
         		null,
         		WerkstoffMaterialPool.SaturatedMonaziteRareEarthMixture.get(OrePrefixes.dust, 1),
         		200,
@@ -814,7 +814,99 @@ public class RecipeLoader {
         		480
         	);
         
+        GT_Values.RA.addCentrifugeRecipe(
+        		WerkstoffMaterialPool.CeriumOxidisedRareEarthOxides.get(OrePrefixes.dust, 1),
+        		null,
+        		null,
+        		null,
+        		WerkstoffMaterialPool.BastnasiteRarerEarthOxides.get(OrePrefixes.dust, 1),
+        		WerkstoffMaterialPool.CeriumDioxide.get(OrePrefixes.dust, 1),
+        		null,
+        		null,
+        		null,
+        		null,
+        		new int[] {
+        				10000, 9000
+        		}, 
+        		600,
+        		480
+        	);
         
+        GT_Values.RA.addMixerRecipe(
+        		WerkstoffMaterialPool.BastnasiteRarerEarthOxides.get(OrePrefixes.dust, 1),
+        		null,
+        		null,
+        		null,
+        		Materials.NitricAcid.getFluid(400),
+        		WerkstoffMaterialPool.NitratedBastnasiteRarerEarthOxides.getFluidOrGas(1000),
+        		null,
+        		300,
+        		480
+        	);
+        
+        GT_Values.RA.addChemicalRecipe(
+        		WerkstoffMaterialPool.NitratedBastnasiteRarerEarthOxides.get(OrePrefixes.cell, 1),
+        		null,
+        		Materials.Acetone.getFluid(1000),
+        		WerkstoffMaterialPool.SaturatedBastnasiteRarerEarthOxides.getFluidOrGas(1000),
+        		null,
+        		700,
+        		480
+        	);
+        
+        GT_Values.RA.addCentrifugeRecipe(
+        		null,
+        		null,
+        		WerkstoffMaterialPool.SaturatedBastnasiteRarerEarthOxides.getFluidOrGas(1000),
+        		null,
+        		WerkstoffMaterialPool.NeodymicRareEarthConcentrate.get(OrePrefixes.dust, 1),
+        		WerkstoffMaterialPool.SamaricRareEarthConcentrate.get(OrePrefixes.dust, 1),
+        		null,
+        		null,
+        		null,
+        		null,
+        		new int[] {
+        				8000, 5000
+        		},
+        		900,
+        		480	
+        	);
+        
+        
+        //Nd RE
+        GT_Values.RA.addChemicalRecipe(
+        		WerkstoffMaterialPool.NeodymicRareEarthConcentrate.get(OrePrefixes.dust, 1),
+        		null,
+        		Materials.Fluorine.getGas(4000),
+        		null,
+        		WerkstoffMaterialPool.FluorinatedNeodymicRareEarths.get(OrePrefixes.dust, 1),
+        		null,
+        		450,
+        		800
+        	);
+        
+        GT_Values.RA.addBlastRecipe(
+        		WerkstoffMaterialPool.FluorinatedNeodymicRareEarths.get(OrePrefixes.dust, 8),
+        		null,
+        		null,
+        		null,
+        		WerkstoffMaterialPool.PraseodymiumTetrafluoride.get(OrePrefixes.dust, 1),
+        		WerkstoffMaterialPool.RareEarthTrifluorides.get(OrePrefixes.dust, 7),
+        		100,
+        		480,
+        		800
+        	);
+        
+        GT_Values.RA.addChemicalRecipe(
+        		WerkstoffMaterialPool.RareEarthTrifluorides.get(OrePrefixes.dust, 1),
+        		null,
+        		Materials.HydrochloricAcid.getFluid(1000),
+        		null,
+        		WerkstoffMaterialPool.LanthaniumChloride.get(OrePrefixes.dustSmall, 2),
+        		WerkstoffMaterialPool.NeodymiumOxide.get(OrePrefixes.dustSmall, 2),
+        		450,
+        		800	
+        	);
         
         
         
