@@ -8,6 +8,7 @@ import static gregtech.api.util.GT_StructureUtility.ofCoil;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import com.elisis.gtnhlanth.loader.RecipeAdder;
 import com.elisis.gtnhlanth.util.DescTextLocalization;
@@ -22,6 +23,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
+import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -94,41 +96,46 @@ public class Digester extends GT_MetaTileEntity_EnhancedMultiBlockBase<Digester>
 	
 	@Override
 	public boolean checkRecipe(ItemStack itemStack) {
+		GT_Log.out.print("in checkRecipe\n");
 		
 		ArrayList<FluidStack> tFluidInputs = this.getStoredFluids();
 		FluidStack[] tFluidInputArray = tFluidInputs.toArray(new FluidStack[0]);
-		ArrayList<ItemStack> tItems = this.getStoredInputs();
+		ItemStack[] tItems = this.getStoredInputs().toArray(new ItemStack[0]);
 		long tVoltage = this.getMaxInputVoltage();
+		
+		GT_Log.out.print(Arrays.toString(mInventory));
 		
 		//Collection<GT_Recipe> tRecipes = RecipeAdder.instance.DigesterRecipes.mRecipeList;
 		GT_Recipe tRecipe = RecipeAdder.instance.DigesterRecipes.findRecipe(
 				this.getBaseMetaTileEntity(), 
 				this.doTickProfilingInThisTick, 
 				tVoltage, 
-				this.mOutputFluids,
-				this.mInventory
+				tFluidInputArray,
+				tItems
 			);
 		
 		if (tRecipe == null)
 			return false;
-		
-		if (tRecipe.isRecipeInputEqual(true, tFluidInputArray, mInventory[1])) {
-			
+		GT_Log.out.print("Recipe not null\n");
+		if (tRecipe.isRecipeInputEqual(true, tFluidInputArray, tItems)) {
+			GT_Log.out.print("in isRecipeInputEqual\n");
 			this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
 			this.mEfficiencyIncrease = 10000;
 			this.calculateOverclockedNessMulti(tRecipe.mEUt, tRecipe.mDuration, 1, tVoltage);
 			
 			if (mMaxProgresstime == Integer.MAX_VALUE - 1 && this.mEUt == Integer.MAX_VALUE - 1)
 				return false;
+			GT_Log.out.print("valid values");
 			
 			if (tRecipe.mSpecialValue > this.getCoilLevel().getHeat())
 				return false;
-			
-			if (this.mEUt > 0)
-				this.mEUt = (-this.mEUt);
-			
+			GT_Log.out.print("Coils good");
 			this.mOutputFluids = new FluidStack[] {
 					tRecipe.getFluidOutput(0)
+			};
+			
+			this.mOutputItems = new ItemStack[] {
+					tRecipe.getOutput(0)
 			};
 			return true;
 		}
