@@ -2,22 +2,16 @@ package com.github.technus.tectech.proxy;
 
 import cpw.mods.fml.common.network.IGuiHandler;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 
 public class CommonProxy implements IGuiHandler {
     public void registerRenderInfo() {}
 
-    public void hint_particle_tinted(World w,int x, int y, int z, IIcon[] icons,short[] RGBa){}
-    public void hint_particle_tinted(World w,int x, int y, int z, Block block, int meta,short[] RGBa){}
-    public void hint_particle(World w,int x, int y, int z, IIcon[] icons){}
-    public void hint_particle(World w,int x, int y, int z, Block block, int meta){}
     public void em_particle(IGregTechTileEntity aMuffler, byte facing) {}//CUTE!
     public void pollutor_particle(IGregTechTileEntity aPollutor, byte facing) {}//CUTE!
     public void em_particle(World w,double x, double y, double z){}

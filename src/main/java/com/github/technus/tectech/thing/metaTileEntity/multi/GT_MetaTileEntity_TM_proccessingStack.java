@@ -1,7 +1,8 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
-import com.github.technus.tectech.mechanics.constructable.IConstructable;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
+import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.item.ItemStack;
@@ -10,6 +11,11 @@ import net.minecraft.item.ItemStack;
 public class GT_MetaTileEntity_TM_proccessingStack extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
     protected GT_MetaTileEntity_TM_proccessingStack(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
+    }
+
+    @Override
+    public IStructureDefinition<? extends GT_MetaTileEntity_MultiblockBase_EM> getStructure_EM() {
+        return null;
     }
 
     @Override

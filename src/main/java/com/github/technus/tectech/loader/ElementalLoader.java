@@ -1,40 +1,34 @@
 package com.github.technus.tectech.loader;
 
-import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.dComplexAspectDefinition;
-import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.ePrimalAspectDefinition;
-import com.github.technus.tectech.mechanics.elementalMatter.core.templates.cElementalPrimitive;
-import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.dAtomDefinition;
-import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.dHadronDefinition;
-import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.iaeaNuclide;
+import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.EMComplexAspectDefinition;
+import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.EMPrimalAspectDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry.EMDefinitionsRegistry;
+import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.EMAtomDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.EMHadronDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.*;
 
 /**
  * Created by danie_000 on 16.11.2016.
  */
-public class ElementalLoader implements Runnable {
-    @Override
-    public void run() {
+public class ElementalLoader {
+    public void run(EMDefinitionsRegistry registry) {
         // ===================================================================================================
         // Definition init
         // ===================================================================================================
 
-        cElementalPrimitive.run();
+        EMPrimitiveDefinition.run(registry);
 
-        cPrimitiveDefinition.run();
+        EMQuarkDefinition.run(registry);
+        EMLeptonDefinition.run(registry);
+        EMNeutrinoDefinition.run(registry);
+        EMGaugeBosonDefinition.run(registry);
+        EMScalarBosonDefinition.run(registry);
 
-        eQuarkDefinition.run();
-        eLeptonDefinition.run();
-        eNeutrinoDefinition.run();
-        eBosonDefinition.run();
+        EMHadronDefinition.run(registry);
 
-        dHadronDefinition.run();
+        EMAtomDefinition.run(registry);
 
-        iaeaNuclide.run();
-
-        dAtomDefinition.run();
-
-        ePrimalAspectDefinition.run();
-
-        dComplexAspectDefinition.run();
+        EMPrimalAspectDefinition.run(registry);
+        EMComplexAspectDefinition.run(registry);
     }
 }

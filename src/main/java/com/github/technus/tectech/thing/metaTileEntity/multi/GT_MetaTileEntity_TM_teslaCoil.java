@@ -20,7 +20,6 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.MultimapBuilder;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -46,45 +45,46 @@ import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBloc
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.*;
 import static com.github.technus.tectech.util.CommonValues.V;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static gregtech.api.util.GT_StructureUtility.*;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 import static java.lang.Math.min;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable, ITeslaConnectable {
     //Interface fields
     private final Multimap<Integer, ITeslaConnectableSimple> teslaNodeMap = MultimapBuilder.treeKeys().linkedListValues().build();
-    private final HashSet<ThaumSpark> sparkList = new HashSet<>();
-    private int sparkCount = 10;
+    private final HashSet<ThaumSpark>                        sparkList    = new HashSet<>();
+    private       int                                        sparkCount   = 10;
 
     //region variables
-    private static final int transferRadiusTowerFromConfig = TecTech.configTecTech.TESLA_MULTI_RANGE_TOWER;//Default is 32
-    private static final int transferRadiusTransceiverFromConfig = TecTech.configTecTech.TESLA_MULTI_RANGE_TRANSCEIVER;//Default is 16
-    private static final int transferRadiusCoverUltimateFromConfig = TecTech.configTecTech.TESLA_MULTI_RANGE_COVER;//Default is 16
-    private static final int plasmaRangeMultiT1 = TecTech.configTecTech.TESLA_MULTI_RANGE_COEFFICIENT_PLASMA_T1;//Default is 2
-    private static final int plasmaRangeMultiT2 = TecTech.configTecTech.TESLA_MULTI_RANGE_COEFFICIENT_PLASMA_T2;//Default is 4
-    private static final int heliumUse = TecTech.configTecTech.TESLA_MULTI_PLASMA_PER_SECOND_T1_HELIUM;//Default is 100
-    private static final int nitrogenUse = TecTech.configTecTech.TESLA_MULTI_PLASMA_PER_SECOND_T1_NITROGEN;//Default is 50
-    private static final int radonUse = TecTech.configTecTech.TESLA_MULTI_PLASMA_PER_SECOND_T2_RADON;//Default is 50
+    private static final int     transferRadiusTowerFromConfig         = TecTech.configTecTech.TESLA_MULTI_RANGE_TOWER;//Default is 32
+    private static final int     transferRadiusTransceiverFromConfig   = TecTech.configTecTech.TESLA_MULTI_RANGE_TRANSCEIVER;//Default is 16
+    private static final int     transferRadiusCoverUltimateFromConfig = TecTech.configTecTech.TESLA_MULTI_RANGE_COVER;//Default is 16
+    private static final int     plasmaRangeMultiT1                    = TecTech.configTecTech.TESLA_MULTI_RANGE_COEFFICIENT_PLASMA_T1;//Default is 2
+    private static final int     plasmaRangeMultiT2                    = TecTech.configTecTech.TESLA_MULTI_RANGE_COEFFICIENT_PLASMA_T2;//Default is 4
+    private static final int     heliumUse                             = TecTech.configTecTech.TESLA_MULTI_PLASMA_PER_SECOND_T1_HELIUM;//Default is 100
+    private static final int     nitrogenUse                           = TecTech.configTecTech.TESLA_MULTI_PLASMA_PER_SECOND_T1_NITROGEN;//Default is 50
+    private static final int     radonUse                              = TecTech.configTecTech.TESLA_MULTI_PLASMA_PER_SECOND_T2_RADON;//Default is 50
     //Default is {1, 1, 1}
-    private static final int[] plasmaTierLoss = new int[]{TecTech.configTecTech.TESLA_MULTI_LOSS_PER_BLOCK_T0,
+    private static final int[]   plasmaTierLoss                        = new int[]{TecTech.configTecTech.TESLA_MULTI_LOSS_PER_BLOCK_T0,
             TecTech.configTecTech.TESLA_MULTI_LOSS_PER_BLOCK_T1, TecTech.configTecTech.TESLA_MULTI_LOSS_PER_BLOCK_T2};
-    private static final float overDriveLoss = TecTech.configTecTech.TESLA_MULTI_LOSS_FACTOR_OVERDRIVE;//Default is 0.25F;
-    private static final boolean doFluidOutput = TecTech.configTecTech.TESLA_MULTI_GAS_OUTPUT; //Default is false
+    private static final float   overDriveLoss                         = TecTech.configTecTech.TESLA_MULTI_LOSS_FACTOR_OVERDRIVE;//Default is 0.25F;
+    private static final boolean doFluidOutput                         = TecTech.configTecTech.TESLA_MULTI_GAS_OUTPUT; //Default is false
 
     //Face icons
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
     private static Textures.BlockIcons.CustomIcon ScreenON;
 
-    private int mTier = 0; //Determines max voltage (LV to ZPM)
+    private int mTier      = 0; //Determines max voltage (LV to ZPM)
     private int plasmaTier = 0; //0 is None, 1 is Helium or Nitrogen, 2 is Radon (Does not match actual plasma tiers)
 
     private FluidStack[] mOutputFluidsQueue; //Used to buffer the fluid outputs, so the tesla takes a second to 'cool' any plasma it would output as a gas
 
     private final ArrayList<GT_MetaTileEntity_Hatch_Capacitor> eCapacitorHatches = new ArrayList<>(); //Capacitor hatches which determine the max voltage tier and count of amps
 
-    private long energyCapacity = 0; //Total energy storage limited by capacitors
+    private long energyCapacity   = 0; //Total energy storage limited by capacitors
     private long outputVoltageMax = 0; //Tesla voltage output limited by capacitors
-    private int vTier = -1; //Tesla voltage tier limited by capacitors
+    private int  vTier            = -1; //Tesla voltage tier limited by capacitors
     private long outputCurrentMax = 0; //Tesla current output limited by capacitors
 
     //outputVoltage and current after settings
@@ -92,45 +92,46 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     private long outputCurrent;
 
     //Prevents unnecessary offset calculation, saving on lag
-    private byte oldRotation = -1;
-    private byte oldOrientation = -1;
+    private byte     oldRotation    = -1;
+    private byte     oldOrientation = -1;
     //Location of the center of the sphere on top of the tower, used as the Thaumcraft lightning and origin
-    public Vec3Impl posTop = Vec3Impl.NULL_VECTOR;
+    public  Vec3Impl posTop         = Vec3Impl.NULL_VECTOR;
     //endregion
 
     //region structure
     private static final String[] description = new String[]{
             EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
             translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.hint.0"),//1 - Classic Hatches, Capacitor Hatches or Tesla Base Casing
+            translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.hint.1"),//2 - ""Titanium frames""
     };
 
-    private static final IStructureDefinition<GT_MetaTileEntity_TM_teslaCoil> STRUCTURE_DEFINITION =
-            StructureDefinition.<GT_MetaTileEntity_TM_teslaCoil>builder()
+    private static final IStructureDefinition<GT_MetaTileEntity_TM_teslaCoil> STRUCTURE_DEFINITION = IStructureDefinition
+            .<GT_MetaTileEntity_TM_teslaCoil>builder()
             .addShape("main", transpose(new String[][]{
-                    {"       ","       ","  BBB  ","  BBB  ","  BBB  ","       ","       "},
-                    {"       ","  BBB  "," BBBBB "," BBBBB "," BBBBB ","  BBB  ","       "},
-                    {"       ","  BBB  "," BBBBB "," BBBBB "," BBBBB ","  BBB  ","       "},
-                    {"       ","  BBB  "," BBBBB "," BBBBB "," BBBBB ","  BBB  ","       "},
-                    {"       ","       ","  BBB  ","  BCB  ","  BBB  ","       ","       "},
-                    {"       ","       ","       ","   C   ","       ","       ","       "},
-                    {"       ","  BBB  "," B F B "," BFCFB "," B F B ","  BBB  ","       "},
-                    {"       ","       ","       ","   C   ","       ","       ","       "},
-                    {"       ","  BBB  "," B F B "," BFCFB "," B F B ","  BBB  ","       "},
-                    {"       ","       ","       ","   C   ","       ","       ","       "},
-                    {"       ","  BBB  "," B F B "," BFCFB "," B F B ","  BBB  ","       "},
-                    {"       ","       ","       ","   C   ","       ","       ","       "},
-                    {"       ","  BBB  "," B F B "," BFCFB "," B F B ","  BBB  ","       "},
-                    {"       ","       ","       ","   C   ","       ","       ","       "},
-                    {"       ","       ","       ","   C   ","       ","       ","       "},
-                    {"       ","  DDD  "," D   D "," D C D "," D   D ","  DDD  ","       "},
-                    {" EE~EE ","EAAAAAE","EADDDAE","EADADAE","EADDDAE"," AAAAAE"," EEEEE "}
+                    {"       ", "       ", "  BBB  ", "  BBB  ", "  BBB  ", "       ", "       "},
+                    {"       ", "  BBB  ", " BBBBB ", " BBBBB ", " BBBBB ", "  BBB  ", "       "},
+                    {"       ", "  BBB  ", " BBBBB ", " BBBBB ", " BBBBB ", "  BBB  ", "       "},
+                    {"       ", "  BBB  ", " BBBBB ", " BBBBB ", " BBBBB ", "  BBB  ", "       "},
+                    {"       ", "       ", "  BBB  ", "  BCB  ", "  BBB  ", "       ", "       "},
+                    {"       ", "       ", "       ", "   C   ", "       ", "       ", "       "},
+                    {"       ", "  BBB  ", " B F B ", " BFCFB ", " B F B ", "  BBB  ", "       "},
+                    {"       ", "       ", "       ", "   C   ", "       ", "       ", "       "},
+                    {"       ", "  BBB  ", " B F B ", " BFCFB ", " B F B ", "  BBB  ", "       "},
+                    {"       ", "       ", "       ", "   C   ", "       ", "       ", "       "},
+                    {"       ", "  BBB  ", " B F B ", " BFCFB ", " B F B ", "  BBB  ", "       "},
+                    {"       ", "       ", "       ", "   C   ", "       ", "       ", "       "},
+                    {"       ", "  BBB  ", " B F B ", " BFCFB ", " B F B ", "  BBB  ", "       "},
+                    {"       ", "       ", "       ", "   C   ", "       ", "       ", "       "},
+                    {"       ", "       ", "       ", "   C   ", "       ", "       ", "       "},
+                    {"       ", "  DDD  ", " D   D ", " D C D ", " D   D ", "  DDD  ", "       "},
+                    {" EE~EE ", "EAAAAAE", "EADDDAE", "EADADAE", "EADDDAE", " AAAAAE", " EEEEE "}
             }))
             .addElement('A', ofBlock(sBlockCasingsBA0, 6))
             .addElement('B', ofBlock(sBlockCasingsBA0, 7))
             .addElement('C', ofBlock(sBlockCasingsBA0, 8))
             .addElement('D', defer(t -> ofBlock(sBlockCasingsBA0, t.getCoilWindingMeta())))
             .addElement('E', ofHatchAdderOptional(GT_MetaTileEntity_TM_teslaCoil::addCapacitorToMachineList, textureOffset + 16 + 6, 1, sBlockCasingsBA0, 6))
-            .addElement('F', ofFrame(Materials.get("Titanium")))
+            .addElement('F', ofHatchAdder(GT_MetaTileEntity_TM_teslaCoil::addFrameToMachineList, 0, 2))
             .build();
 
     public int getCoilWindingMeta() {
@@ -143,28 +144,28 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     protected Parameters.Group.ParameterIn popogaSetting, histLowSetting, histHighSetting, transferRadiusTowerSetting, transferRadiusTransceiverSetting, transferRadiusCoverUltimateSetting, outputVoltageSetting, outputCurrentSetting, sortTimeMinSetting, overDriveSetting;
     protected Parameters.Group.ParameterOut popogaDisplay, transferRadiusTowerDisplay, transferRadiusTransceiverDisplay, transferRadiusCoverUltimateDisplay, outputVoltageDisplay, outputCurrentDisplay, energyCapacityDisplay, energyStoredDisplay, energyFractionDisplay, sortTimeDisplay;
 
-    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> HYSTERESIS_LOW_SETTING_NAME = (base, p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgi.0");//Hysteresis low setting
-    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> HYSTERESIS_HIGH_SETTING_NAME = (base, p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgi.1");//Hysteresis high setting
-    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_TOWER_SETTING_NAME = (base, p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgi.2");//Tesla Towers transfer radius setting
-    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_TRANSCEIVER_SETTING_NAME = (base, p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgi.3");//Tesla Transceiver transfer radius setting
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> HYSTERESIS_LOW_SETTING_NAME                 = (base, p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgi.0");//Hysteresis low setting
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> HYSTERESIS_HIGH_SETTING_NAME                = (base, p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgi.1");//Hysteresis high setting
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_TOWER_SETTING_NAME          = (base, p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgi.2");//Tesla Towers transfer radius setting
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_TRANSCEIVER_SETTING_NAME    = (base, p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgi.3");//Tesla Transceiver transfer radius setting
     private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_COVER_ULTIMATE_SETTING_NAME = (base, p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgi.4");//Tesla Ultimate Cover transfer radius setting
-    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> OUTPUT_VOLTAGE_SETTING_NAME = (base, p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgi.5");//Output voltage setting
-    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> OUTPUT_CURRENT_SETTING_NAME = (base, p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgi.6");//Output current setting
-    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> SCAN_TIME_MIN_SETTING_NAME = (base, p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgi.7");//Scan time Min setting
-    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> OVERDRIVE_SETTING_NAME = (base, p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgi.8");//Overdrive setting
-    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> POPOGA_NAME = (base, p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgi.9");//Unused
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> OUTPUT_VOLTAGE_SETTING_NAME                 = (base, p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgi.5");//Output voltage setting
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> OUTPUT_CURRENT_SETTING_NAME                 = (base, p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgi.6");//Output current setting
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> SCAN_TIME_MIN_SETTING_NAME                  = (base, p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgi.7");//Scan time Min setting
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> OVERDRIVE_SETTING_NAME                      = (base, p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgi.8");//Overdrive setting
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> POPOGA_NAME                                 = (base, p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgi.9");//Unused
 
-    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_TOWER_DISPLAY_NAME = (base, p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgo.0");//Tesla Towers transfer radius display
-    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_TRANSCEIVER_DISPLAY_NAME = (base, p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgo.1");//Tesla Transceiver transfer radius display
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_TOWER_DISPLAY_NAME          = (base, p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgo.0");//Tesla Towers transfer radius display
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_TRANSCEIVER_DISPLAY_NAME    = (base, p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgo.1");//Tesla Transceiver transfer radius display
     private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_COVER_ULTIMATE_DISPLAY_NAME = (base, p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgo.2");//Tesla Ultimate Cover transfer radius display
-    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> OUTPUT_VOLTAGE_DISPLAY_NAME = (base, p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgo.3");//Output voltage display
-    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> OUTPUT_CURRENT_DISPLAY_NAME = (base, p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgo.4");//Output current display
-    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> ENERGY_CAPACITY_DISPLAY_NAME = (base, p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgo.5");//Energy Capacity display
-    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> ENERGY_STORED_DISPLAY_NAME = (base, p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgo.6");//Energy Stored display
-    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> ENERGY_FRACTION_DISPLAY_NAME = (base, p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgo.7");//Energy Fraction display
-    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> SCAN_TIME_DISPLAY_NAME = (base, p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgo.8");//Scan time display
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> OUTPUT_VOLTAGE_DISPLAY_NAME                 = (base, p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgo.3");//Output voltage display
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> OUTPUT_CURRENT_DISPLAY_NAME                 = (base, p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgo.4");//Output current display
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> ENERGY_CAPACITY_DISPLAY_NAME                = (base, p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgo.5");//Energy Capacity display
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> ENERGY_STORED_DISPLAY_NAME                  = (base, p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgo.6");//Energy Stored display
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> ENERGY_FRACTION_DISPLAY_NAME                = (base, p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgo.7");//Energy Fraction display
+    private static final INameFunction<GT_MetaTileEntity_TM_teslaCoil> SCAN_TIME_DISPLAY_NAME                      = (base, p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgo.8");//Scan time display
 
-    private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> HYSTERESIS_LOW_STATUS = (base, p) -> {
+    private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> HYSTERESIS_LOW_STATUS                 = (base, p) -> {
         double value = p.get();
         if (Double.isNaN(value)) {
             return STATUS_WRONG;
@@ -173,14 +174,14 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         if (value > base.histHighSetting.get()) return STATUS_TOO_HIGH;
         return STATUS_OK;
     };
-    private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> HYSTERESIS_HIGH_STATUS = (base, p) -> {
+    private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> HYSTERESIS_HIGH_STATUS                = (base, p) -> {
         double value = p.get();
         if (Double.isNaN(value)) return STATUS_WRONG;
         if (value <= base.histLowSetting.get()) return STATUS_TOO_LOW;
         if (value > 0.95) return STATUS_TOO_HIGH;
         return STATUS_OK;
     };
-    private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_TOWER_STATUS = (base, p) -> {
+    private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_TOWER_STATUS          = (base, p) -> {
         double value = p.get();
         if (Double.isNaN(value)) return STATUS_WRONG;
         value = (int) value;
@@ -189,7 +190,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         if (value < transferRadiusTowerFromConfig) return STATUS_LOW;
         return STATUS_OK;
     };
-    private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_TRANSCEIVER_STATUS = (base, p) -> {
+    private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> TRANSFER_RADIUS_TRANSCEIVER_STATUS    = (base, p) -> {
         double value = p.get();
         if (Double.isNaN(value)) return STATUS_WRONG;
         value = (int) value;
@@ -207,7 +208,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         if (value < transferRadiusCoverUltimateFromConfig) return STATUS_LOW;
         return STATUS_OK;
     };
-    private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> OUTPUT_VOLTAGE_OR_CURRENT_STATUS = (base, p) -> {
+    private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> OUTPUT_VOLTAGE_OR_CURRENT_STATUS      = (base, p) -> {
         double value = p.get();
         if (Double.isNaN(value)) return STATUS_WRONG;
         value = (long) value;
@@ -215,7 +216,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         if (value <= 0) return STATUS_TOO_LOW;
         return STATUS_OK;
     };
-    private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> SCAN_TIME_MIN_STATUS = (base, p) -> {
+    private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> SCAN_TIME_MIN_STATUS                  = (base, p) -> {
         double value = p.get();
         if (Double.isNaN(value)) return STATUS_WRONG;
         value = (int) value;
@@ -223,7 +224,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         if (value == 100) return STATUS_OK;
         return STATUS_HIGH;
     };
-    private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> OVERDRIVE_STATUS = (base, p) -> {
+    private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> OVERDRIVE_STATUS                      = (base, p) -> {
         double value = p.get();
         if (Double.isNaN(value)) return STATUS_WRONG;
         value = (int) value;
@@ -231,20 +232,20 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         if (value == 0) return STATUS_LOW;
         return STATUS_HIGH;
     };
-    private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> POPOGA_STATUS = (base, p) -> {
+    private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> POPOGA_STATUS                         = (base, p) -> {
         if (base.getBaseMetaTileEntity().getWorld().isThundering()) {
             return STATUS_WTF;
         }
         return STATUS_NEUTRAL;
     };
-    private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> SCAN_TIME_STATUS = (base, p) -> {
+    private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> SCAN_TIME_STATUS                      = (base, p) -> {
         double value = p.get();
         if (Double.isNaN(value)) return STATUS_WRONG;
         value = (int) value;
         if (value == 0) return STATUS_HIGH;
         return STATUS_LOW;
     };
-    private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> POWER_STATUS = (base, p) -> {
+    private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> POWER_STATUS                          = (base, p) -> {
         double value = p.get();
         if (Double.isNaN(value)) return STATUS_WRONG;
         value = (long) value;
@@ -254,7 +255,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
             return STATUS_LOW;
         }
     };
-    private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> ENERGY_STATUS = (base, p) -> {
+    private static final IStatusFunction<GT_MetaTileEntity_TM_teslaCoil> ENERGY_STATUS                         = (base, p) -> {
         double value = p.get();
         if (Double.isNaN(value)) return STATUS_WRONG;
         if (base.energyFractionDisplay.get() > base.histHighSetting.get()) {
@@ -369,8 +370,8 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
                 oldOrientation = iGregTechTileEntity.getFrontFacing();
 
                 Vec3Impl posBMTE = new Vec3Impl(getBaseMetaTileEntity().getXCoord(),
-                                                getBaseMetaTileEntity().getYCoord(),
-                                                getBaseMetaTileEntity().getZCoord());
+                        getBaseMetaTileEntity().getYCoord(),
+                        getBaseMetaTileEntity().getZCoord());
 
                 //Calculate coordinates of the middle bottom
                 posTop = getExtendedFacing().getWorldOffset(new Vec3Impl(0, 0, 2)).add(posBMTE);
@@ -612,10 +613,10 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
 
         //TODO Encapsulate the spark sender
         sparkCount--;
-        if (sparkCount == 0){
+        if (sparkCount == 0) {
             IGregTechTileEntity mte = getBaseMetaTileEntity();
             sparkCount = 10;
-            if(!sparkList.isEmpty()){
+            if (!sparkList.isEmpty()) {
                 NetworkDispatcher.INSTANCE.sendToAllAround(new RendererMessage.RendererData(sparkList),
                         mte.getWorld().provider.dimensionId,
                         mte.getXCoord(),
@@ -699,7 +700,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM("main", 3, 16, 0, hintsOnly, stackSize);
+        structureBuild_EM("main", 3, 16, 0, stackSize, hintsOnly);
     }
 
     @Override

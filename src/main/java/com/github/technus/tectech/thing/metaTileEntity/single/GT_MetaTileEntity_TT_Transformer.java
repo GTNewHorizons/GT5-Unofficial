@@ -1,7 +1,7 @@
 package com.github.technus.tectech.thing.metaTileEntity.single;
 
 import com.github.technus.tectech.util.CommonValues;
-import com.github.technus.tectech.util.Util;
+import com.github.technus.tectech.util.TT_Utility;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -13,12 +13,12 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 public class GT_MetaTileEntity_TT_Transformer extends GT_MetaTileEntity_Transformer {
     public GT_MetaTileEntity_TT_Transformer(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, "");
-        Util.setTier(aTier, this);
+        TT_Utility.setTier(aTier, this);
     }
 
     public GT_MetaTileEntity_TT_Transformer(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
-        Util.setTier(aTier, this);
+        TT_Utility.setTier(aTier, this);
     }
 
     @Override

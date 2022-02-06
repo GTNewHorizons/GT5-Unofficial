@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
-import static com.github.technus.tectech.loader.gui.CreativeTabTecTech.creativeTabTecTech;
+import static com.github.technus.tectech.TecTech.creativeTabTecTech;
 import static com.github.technus.tectech.thing.metaTileEntity.Textures.*;
 
 /**

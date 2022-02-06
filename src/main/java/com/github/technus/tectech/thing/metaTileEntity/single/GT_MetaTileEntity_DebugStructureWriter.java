@@ -4,7 +4,7 @@ import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.thing.metaTileEntity.single.gui.GT_Container_DebugStructureWriter;
 import com.github.technus.tectech.thing.metaTileEntity.single.gui.GT_GUIContainer_DebugStructureWriter;
 import com.github.technus.tectech.util.CommonValues;
-import com.github.technus.tectech.util.Util;
+import com.github.technus.tectech.util.TT_Utility;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import cpw.mods.fml.relauncher.Side;
@@ -20,12 +20,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import java.util.Comparator;
-import java.util.function.Function;
 
 import static com.github.technus.tectech.thing.metaTileEntity.Textures.MACHINE_CASINGS_TT;
 import static net.minecraft.util.StatCollector.translateToLocal;
@@ -41,12 +37,12 @@ public class GT_MetaTileEntity_DebugStructureWriter extends GT_MetaTileEntity_Ti
 
     public GT_MetaTileEntity_DebugStructureWriter(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "");
-        Util.setTier(aTier,this);
+        TT_Utility.setTier(aTier,this);
     }
 
     public GT_MetaTileEntity_DebugStructureWriter(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
-        Util.setTier(aTier,this);
+        TT_Utility.setTier(aTier,this);
     }
 
     @Override

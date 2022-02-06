@@ -2,10 +2,6 @@
 
 repositories {
     maven {
-        name = "GTNH Maven"
-        url = "http://jenkins.usrv.eu:8081/nexus/content/groups/public/"
-    }
-    maven {
         name "OpenComputers Repo"
         url = "http://maven.cil.li/"
     }
@@ -22,9 +18,12 @@ repositories {
         }
     }
     maven {
-        url "https://cursemaven.com"
+        url = "https://cursemaven.com"
     }
     maven {
         url = "https://jitpack.io"
+    }
+    maven {
+        url = "http://jenkins.usrv.eu:8081/nexus/content/groups/public"
     }
 }

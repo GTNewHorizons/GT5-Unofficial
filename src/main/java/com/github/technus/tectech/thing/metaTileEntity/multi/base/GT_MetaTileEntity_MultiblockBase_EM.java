@@ -2,8 +2,13 @@ package com.github.technus.tectech.thing.metaTileEntity.multi.base;
 
 import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.TecTech;
-
-import com.github.technus.tectech.mechanics.structure.Structure;
+import com.github.technus.tectech.mechanics.elementalMatter.core.EMException;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMDefinitionStack;
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMInstanceStack;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.*;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
+import com.github.technus.tectech.util.TT_Utility;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
@@ -14,14 +19,6 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import cpw.mods.fml.common.network.NetworkRegistry;
-
-import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
-import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalDefinitionStack;
-import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
-import com.github.technus.tectech.mechanics.elementalMatter.core.tElementalException;
-import com.github.technus.tectech.thing.metaTileEntity.hatch.*;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
-import com.github.technus.tectech.util.Util;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -33,9 +30,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gregtech.api.util.IGT_HatchAdder;
 import gregtech.common.GT_Pollution;
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -52,7 +47,7 @@ import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.util.CommonValues.*;
 import static com.github.technus.tectech.util.DoubleCount.div;
-import static com.github.technus.tectech.util.Util.getTier;
+import static com.github.technus.tectech.util.TT_Utility.getTier;
 import static java.lang.Math.min;
 
 /**
@@ -111,7 +106,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     //storage for output EM that will be auto handled in case of failure to finish recipe
     //if you succed to use a recipe - be sure to output EM from outputEM to hatches in the output method
-    protected cElementalInstanceStackMap[] outputEM;
+    protected EMInstanceStackMap[] outputEM;
 
     //are parameters correct - change in check recipe/output/update params etc. (maintenance status boolean)
     protected boolean eParameters = true;
@@ -166,6 +161,11 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     //region SUPER STRUCT
     @Override
+    public IAlignmentLimits getAlignmentLimits() {
+        return alignmentLimits;
+    }
+
+    @Override
     public ExtendedFacing getExtendedFacing() {
         return extendedFacing;
     }
@@ -190,11 +190,6 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     }
 
     @Override
-    public IAlignmentLimits getAlignmentLimits() {
-        return alignmentLimits;
-    }
-
-    @Override
     public boolean isFacingValid(byte aFacing) {
         return canSetToDirectionAny(ForgeDirection.getOrientation(aFacing));
     }
@@ -208,9 +203,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
      * Gets structure
      * @return STATIC INSTANCE OF STRUCTURE
      */
-    public IStructureDefinition<? extends GT_MetaTileEntity_MultiblockBase_EM> getStructure_EM(){
-        throw new NoSuchMethodError("Implement it as STATIC INSTANCE");
-    }
+    public abstract IStructureDefinition<? extends GT_MetaTileEntity_MultiblockBase_EM> getStructure_EM();
 
     @SuppressWarnings("unchecked")
     private IStructureDefinition<GT_MetaTileEntity_MultiblockBase_EM> getStructure_EM_Internal(){
@@ -224,28 +217,12 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                 horizontalOffset,verticalOffset,depthOffset,!mMachine);
     }
 
-    public final boolean structureBuild_EM(String piece,int horizontalOffset, int verticalOffset, int depthOffset,boolean hintsOnly,ItemStack trigger) {
+    public final boolean structureBuild_EM(String piece, int horizontalOffset, int verticalOffset, int depthOffset, ItemStack trigger, boolean hintsOnly) {
         IGregTechTileEntity baseMetaTileEntity = getBaseMetaTileEntity();
         return getStructure_EM_Internal().buildOrHints(this, trigger, piece, baseMetaTileEntity.getWorld(),
                 getExtendedFacing(), baseMetaTileEntity.getXCoord(), baseMetaTileEntity.getYCoord(),
                 baseMetaTileEntity.getZCoord(), horizontalOffset, verticalOffset, depthOffset, hintsOnly);
     }
-
-    @Deprecated
-    @SuppressWarnings("unchecked")
-    public final <T extends GT_MetaTileEntity_MultiblockBase_EM> boolean structureCheck_EM(
-            String[][] structure,//0-9 casing, +- air no air, a-z ignore
-            Block[] blockType,//use numbers 0-9 for casing types
-            byte[] blockMeta,//use numbers 0-9 for casing types
-            IGT_HatchAdder<T>[] addingMethods,
-            short[] casingTextures,
-            Block[] blockTypeFallback,//use numbers 0-9 for casing types
-            byte[] blockMetaFallback,//use numbers 0-9 for casing types
-            int horizontalOffset, int verticalOffset, int depthOffset) {
-        return Structure.checker(structure, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback,
-                horizontalOffset, verticalOffset, depthOffset, (T)this, getExtendedFacing(), !mMachine);
-    }
-
     //endregion
 
     //region METHODS TO OVERRIDE - general functionality, recipe check, output
@@ -318,7 +295,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                 EnumChatFormatting.YELLOW + ":" +
                 EnumChatFormatting.AQUA + "I  " + parametrization.getStatusIn(hatchNo, paramID).name.get());
         list.add(EnumChatFormatting.WHITE + "Value: " +
-                EnumChatFormatting.AQUA + Util.doubleToString(parametrization.getIn(hatchNo, paramID)));
+                EnumChatFormatting.AQUA + TT_Utility.doubleToString(parametrization.getIn(hatchNo, paramID)));
         try {
             list.add(parametrization.groups[hatchNo].parameterIn[paramID].getBrief());
         } catch (NullPointerException | IndexOutOfBoundsException e) {
@@ -341,7 +318,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                 EnumChatFormatting.YELLOW + ":" +
                 EnumChatFormatting.AQUA + "O " + parametrization.getStatusOut(hatchNo, paramID).name.get());
         list.add(EnumChatFormatting.WHITE + "Value: " +
-                EnumChatFormatting.AQUA + Util.doubleToString(parametrization.getOut(hatchNo, paramID)));
+                EnumChatFormatting.AQUA + TT_Utility.doubleToString(parametrization.getOut(hatchNo, paramID)));
         try {
             list.add(parametrization.groups[hatchNo].parameterOut[paramID].getBrief());
         } catch (NullPointerException | IndexOutOfBoundsException e) {
@@ -650,9 +627,8 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
      */
     protected long getAvailableData_EM() {
         long result = 0;
-        Vec3Impl pos = new Vec3Impl(getBaseMetaTileEntity().getXCoord(),
-                                    getBaseMetaTileEntity().getYCoord(),
-                                    getBaseMetaTileEntity().getZCoord());
+        IGregTechTileEntity baseMetaTileEntity = getBaseMetaTileEntity();
+        Vec3Impl            pos                = new Vec3Impl(baseMetaTileEntity.getXCoord(),baseMetaTileEntity.getYCoord(),baseMetaTileEntity.getZCoord());
         for (GT_MetaTileEntity_Hatch_InputData in : eInputData) {
             if (in.q != null) {
                 Long value = in.q.contentIfNotInTrace(pos);
@@ -761,7 +737,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
             NBTTagCompound output = new NBTTagCompound();
             for (int i = 0; i < outputEM.length; i++) {
                 if (outputEM[i] != null) {
-                    output.setTag(Integer.toString(i), outputEM[i].toNBT());
+                    output.setTag(Integer.toString(i), outputEM[i].toNBT(TecTech.definitionsRegistry));
                 }
             }
             aNBT.setTag("outputEM", output);
@@ -846,13 +822,13 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
         int outputLen = aNBT.getInteger("eOutputStackCount");
         if (outputLen > 0) {
-            outputEM = new cElementalInstanceStackMap[outputLen];
+            outputEM = new EMInstanceStackMap[outputLen];
             NBTTagCompound compound = aNBT.getCompoundTag("outputEM");
             for (int i = 0; i < outputEM.length; i++) {
                 if (compound.hasKey(Integer.toString(i))) {
                     try {
-                        outputEM[i] = cElementalInstanceStackMap.fromNBT(compound.getCompoundTag(Integer.toString(i)));
-                    } catch (tElementalException e) {
+                        outputEM[i] = EMInstanceStackMap.fromNBT(TecTech.definitionsRegistry,compound.getCompoundTag(Integer.toString(i)));
+                    } catch (EMException e) {
                         if (DEBUG_MODE) {
                             e.printStackTrace();
                         }
@@ -970,7 +946,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     private void cleanOrExplode() {
         if (outputEM != null) {
             float mass = 0;
-            for (cElementalInstanceStackMap tree : outputEM) {
+            for (EMInstanceStackMap tree : outputEM) {
                 if (tree != null) {
                     mass += tree.getMass();
                 }
@@ -1159,7 +1135,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                         explodeMultiblock();
                     }
                     if (outputEM != null) {
-                        for (cElementalInstanceStackMap tree : outputEM) {
+                        for (EMInstanceStackMap tree : outputEM) {
                             if (tree != null && tree.hasStacks()) {
                                 explodeMultiblock();
                             }
@@ -1301,26 +1277,26 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
             }
             double remaining = voider.overflowMax - voider.getOverflowMatter();
             for (GT_MetaTileEntity_Hatch_InputElemental in : eInputHatches) {
-                for (cElementalInstanceStack instance : in.getContainerHandler().values()) {
-                    double qty = div(remaining,instance.definition.getMass());
+                for (EMInstanceStack instance : in.getContentHandler().valuesToArray()) {
+                    double qty = div(remaining, instance.getDefinition().getMass());
                     if (qty > 0) {
-                        qty = min(qty, instance.amount);
-                        if (voider.addOverflowMatter(instance.definition.getMass() * qty)) {
+                        qty = min(qty, instance.getAmount());
+                        if (voider.addOverflowMatter(instance.getDefinition().getMass() * qty)) {
                             voider.setOverflowMatter(voider.overflowMax);
                         }
-                        in.getContainerHandler().removeAmount(false, new cElementalDefinitionStack(instance.definition, qty));
+                        in.getContentHandler().removeAmount(new EMDefinitionStack(instance.getDefinition(), qty));
                     }
                 }
             }
             for (GT_MetaTileEntity_Hatch_OutputElemental out : eOutputHatches) {
-                for (cElementalInstanceStack instance : out.getContainerHandler().values()) {
-                    double qty = div(remaining,instance.definition.getMass());
+                for (EMInstanceStack instance : out.getContentHandler().valuesToArray()) {
+                    double qty = div(remaining, instance.getDefinition().getMass());
                     if (qty > 0) {
-                        qty = min(qty, instance.amount);
-                        if (voider.addOverflowMatter(instance.definition.getMass() * qty)) {
+                        qty = min(qty, instance.getAmount());
+                        if (voider.addOverflowMatter(instance.getDefinition().getMass() * qty)) {
                             voider.setOverflowMatter(voider.overflowMax);
                         }
-                        out.getContainerHandler().removeAmount(false, new cElementalDefinitionStack(instance.definition, qty));
+                        out.getContentHandler().removeAmount(new EMDefinitionStack(instance.getDefinition(), qty));
                     }
                 }
             }
@@ -1933,19 +1909,19 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     //region convenience copies input and output EM
     //new Method
-    public final cElementalInstanceStackMap getInputsClone_EM() {
-        cElementalInstanceStackMap in = new cElementalInstanceStackMap();
+    public final EMInstanceStackMap getInputsClone_EM() {
+        EMInstanceStackMap in = new EMInstanceStackMap();
         for (GT_MetaTileEntity_Hatch_ElementalContainer hatch : eInputHatches) {
-            in.putUnifyAll(hatch.getContainerHandler());
+            in.putUnifyAll(hatch.getContentHandler());
         }
         return in.hasStacks() ? in : null;
     }
 
     //new Method
-    public final cElementalInstanceStackMap getOutputsClone_EM() {
-        cElementalInstanceStackMap out = new cElementalInstanceStackMap();
+    public final EMInstanceStackMap getOutputsClone_EM() {
+        EMInstanceStackMap out = new EMInstanceStackMap();
         for (GT_MetaTileEntity_Hatch_ElementalContainer hatch : eOutputHatches) {
-            out.putUnifyAll(hatch.getContainerHandler());
+            out.putUnifyAll(hatch.getContentHandler());
         }
         return out.hasStacks() ? out : null;
     }
@@ -1975,10 +1951,10 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         if (target == null) {
             return;
         }
-        cleanMassEM_EM(target.getContainerHandler().getMass());
+        cleanMassEM_EM(target.getContentHandler().getMass());
     }
 
-    public void cleanStackEM_EM(cElementalInstanceStack target) {
+    public void cleanStackEM_EM(EMInstanceStack target) {
         if (target == null) {
             return;
         }
@@ -2010,7 +1986,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
             return;
         }
         float mass = 0;
-        for (cElementalInstanceStackMap map : outputEM) {
+        for (EMInstanceStackMap map : outputEM) {
             if (map != null) {
                 mass += map.getMass();
             }
@@ -2098,13 +2074,13 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     @Override
     public void doExplosion(long aExplosionPower) {
-        explodeMultiblock();
         if (!TecTech.configTecTech.BOOM_ENABLE) {
             TecTech.proxy.broadcast("Multi DoExplosion BOOM! " + getBaseMetaTileEntity().getXCoord() + ' ' + getBaseMetaTileEntity().getYCoord() + ' ' + getBaseMetaTileEntity().getZCoord());
             StackTraceElement[] ste = Thread.currentThread().getStackTrace();
             TecTech.proxy.broadcast("Multi DoExplosion BOOM! " + ste[2].toString());
             return;
         }
+        explodeMultiblock();
         super.doExplosion(aExplosionPower);
     }//Redirecting to explodemultiblock
     //endregion

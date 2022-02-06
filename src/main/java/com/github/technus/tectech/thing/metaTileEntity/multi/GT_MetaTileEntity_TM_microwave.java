@@ -6,7 +6,6 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_Rend
 import com.github.technus.tectech.util.CommonValues;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -51,13 +50,13 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
             translateToLocal("gt.blockmachines.multimachine.tm.microwave.hint.1"),//Also acts like a hopper so give it an Output Bus
     };
 
-    private static final IStructureDefinition<GT_MetaTileEntity_TM_microwave> STRUCTURE_DEFINITION =
-            StructureDefinition.<GT_MetaTileEntity_TM_microwave>builder()
+    private static final IStructureDefinition<GT_MetaTileEntity_TM_microwave> STRUCTURE_DEFINITION = IStructureDefinition
+            .<GT_MetaTileEntity_TM_microwave>builder()
             .addShape("main", transpose(new String[][]{
-                    {"AAAAA","A---A","A---A","A---A","AAAAA"},
-                    {"AAAAA","A---A","A---A","A---A","AAAAA"},
-                    {"AA~AA","A---A","A---A","A---A","AAAAA"},
-                    {"ABBBA","BAAAB","BAAAB","BAAAB","ABBBA"}
+                    {"AAAAA", "A---A", "A---A", "A---A", "AAAAA"},
+                    {"AAAAA", "A---A", "A---A", "A---A", "AAAAA"},
+                    {"AA~AA", "A---A", "A---A", "A---A", "AAAAA"},
+                    {"ABBBA", "BAAAB", "BAAAB", "BAAAB", "ABBBA"}
             }))
             .addElement('A', ofBlock(sBlockCasings4, 1))
             .addElement('B', ofHatchAdderOptional(GT_MetaTileEntity_TM_microwave::addClassicToMachineList, 49, 1, sBlockCasings4, 1))
@@ -70,11 +69,11 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
     private static final INameFunction<GT_MetaTileEntity_TM_microwave> POWER_SETTING_NAME = (base, p) -> translateToLocal("gt.blockmachines.multimachine.tm.microwave.cfgi.0");//Power setting
     private static final INameFunction<GT_MetaTileEntity_TM_microwave> TIMER_SETTING_NAME = (base, p) -> translateToLocal("gt.blockmachines.multimachine.tm.microwave.cfgi.1");//Timer setting
 
-    private static final INameFunction<GT_MetaTileEntity_TM_microwave> TIMER_VALUE_NAME = (base, p) -> translateToLocal("gt.blockmachines.multimachine.tm.microwave.cfgo.0");//Timer value
-    private static final INameFunction<GT_MetaTileEntity_TM_microwave> TIMER_REMAINING_NAME = (base, p) -> translateToLocal("gt.blockmachines.multimachine.tm.microwave.cfgo.1");//Timer remaining
-    private static final IStatusFunction<GT_MetaTileEntity_TM_microwave> POWER_STATUS =
+    private static final INameFunction<GT_MetaTileEntity_TM_microwave>   TIMER_VALUE_NAME     = (base, p) -> translateToLocal("gt.blockmachines.multimachine.tm.microwave.cfgo.0");//Timer value
+    private static final INameFunction<GT_MetaTileEntity_TM_microwave>   TIMER_REMAINING_NAME = (base, p) -> translateToLocal("gt.blockmachines.multimachine.tm.microwave.cfgo.1");//Timer remaining
+    private static final IStatusFunction<GT_MetaTileEntity_TM_microwave> POWER_STATUS         =
             (base, p) -> LedStatus.fromLimitsInclusiveOuterBoundary(p.get(), 300, 1000, 1000, Double.POSITIVE_INFINITY);
-    private static final IStatusFunction<GT_MetaTileEntity_TM_microwave> TIMER_STATUS = (base, p) -> {
+    private static final IStatusFunction<GT_MetaTileEntity_TM_microwave> TIMER_STATUS         = (base, p) -> {
         double value = p.get();
         if (Double.isNaN(value)) return STATUS_WRONG;
         value = (int) value;
@@ -99,7 +98,7 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        return  structureCheck_EM("main", 2, 2, 0);
+        return structureCheck_EM("main", 2, 2, 0);
     }
 
     @Override
@@ -126,16 +125,16 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
         }
         timerValue.set(timerValue.get() + 1);
         remainingTime.set(timerSetting.get() - timerValue.get());
-        IGregTechTileEntity mte = getBaseMetaTileEntity();
-        Vec3Impl xyzOffsets = getExtendedFacing().getWorldOffset(new Vec3Impl(0, -1, 2));
-        double xPos = mte.getXCoord() + 0.5f + xyzOffsets.get0();
-        double yPos = mte.getYCoord() + 0.5f + xyzOffsets.get1();
-        double zPos = mte.getZCoord() + 0.5f + xyzOffsets.get2();
+        IGregTechTileEntity mte        = getBaseMetaTileEntity();
+        Vec3Impl            xyzOffsets = getExtendedFacing().getWorldOffset(new Vec3Impl(0, -1, 2));
+        double              xPos       = mte.getXCoord() + 0.5f + xyzOffsets.get0();
+        double              yPos       = mte.getYCoord() + 0.5f + xyzOffsets.get1();
+        double              zPos       = mte.getZCoord() + 0.5f + xyzOffsets.get2();
         AxisAlignedBB aabb = getBoundingBox(-2, -2, -2, 2, 2, 2)
                 .offset(xPos, yPos, zPos);
         xyzOffsets = getExtendedFacing().getWorldOffset(new Vec3Impl(0, -4, 0));
         Vec3Impl xyzExpansion = getExtendedFacing().getWorldOffset(new Vec3Impl(1, 0, 1)).abs();
-        int power = (int) powerSetting.get();
+        int      power        = (int) powerSetting.get();
         int damagingFactor =
                 Math.min(power >> 6, 8) +
                         Math.min(power >> 8, 24) +
@@ -143,7 +142,7 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
                         (power >> 18);
 
         ArrayList<ItemStack> itemsToOutput = new ArrayList<>();
-        HashSet<Entity> tickedStuff = new HashSet<>();
+        HashSet<Entity>      tickedStuff   = new HashSet<>();
 
         boolean inside = true;
         do {
@@ -171,7 +170,7 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
                 }
             }
             aabb.offset(xyzOffsets.get0(), xyzOffsets.get1(), xyzOffsets.get2());
-            aabb = aabb.expand(xyzExpansion.get0()*1.5, xyzExpansion.get1()*1.5, xyzExpansion.get2()*1.5);
+            aabb = aabb.expand(xyzExpansion.get0() * 1.5, xyzExpansion.get1() * 1.5, xyzExpansion.get2() * 1.5);
             inside = false;
             damagingFactor >>= 1;
         } while (damagingFactor > 0);
@@ -196,12 +195,12 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
 
     @Override
     public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity,true, false, true);
+        return new GT_Container_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, true, false, true);
     }
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "EMDisplay.png",true, false, true);//todo texture
+        return new GT_GUIContainer_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "EMDisplay.png", true, false, true);//todo texture
     }
 
     @Override
@@ -247,7 +246,7 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM("main", 2, 2, 0, hintsOnly, stackSize);
+        structureBuild_EM("main", 2, 2, 0, stackSize, hintsOnly);
     }
 
     @Override

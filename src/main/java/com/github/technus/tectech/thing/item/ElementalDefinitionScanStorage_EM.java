@@ -1,13 +1,13 @@
 package com.github.technus.tectech.thing.item;
 
-import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.util.Util;
 import com.github.technus.tectech.font.TecTechFontRender;
 import com.github.technus.tectech.loader.gui.ModGuiHandler;
-import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
 import com.github.technus.tectech.thing.CustomItemList;
 import com.github.technus.tectech.thing.item.renderElemental.IElementalItem;
+import com.github.technus.tectech.util.CommonValues;
+import com.github.technus.tectech.util.TT_Utility;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -25,7 +25,7 @@ import net.minecraft.world.World;
 import java.util.List;
 
 import static com.github.technus.tectech.Reference.MODID;
-import static com.github.technus.tectech.loader.gui.CreativeTabTecTech.creativeTabTecTech;
+import static com.github.technus.tectech.TecTech.creativeTabTecTech;
 import static cpw.mods.fml.relauncher.Side.CLIENT;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
@@ -44,7 +44,7 @@ public final class ElementalDefinitionScanStorage_EM extends Item implements IEl
     }
 
     //return previous thing
-    public static void setContent(ItemStack containerItem, cElementalInstanceStackMap definitions, int[] detailsOnDepthLevels){
+    public static void setContent(ItemStack containerItem, EMInstanceStackMap definitions, int[] detailsOnDepthLevels){
         if(containerItem.getItem() instanceof ElementalDefinitionScanStorage_EM) {
             if (containerItem.stackTagCompound == null) {
                 containerItem.stackTagCompound = new NBTTagCompound();
@@ -65,7 +65,7 @@ public final class ElementalDefinitionScanStorage_EM extends Item implements IEl
 
     public static String[] getLines(ItemStack containerItem){
         if(containerItem.stackTagCompound!=null && containerItem.stackTagCompound.hasKey("elementalInfo")) {
-            return Util.infoFromNBT(containerItem.stackTagCompound.getCompoundTag("elementalInfo"));
+            return TT_Utility.infoFromNBT(containerItem.stackTagCompound.getCompoundTag("elementalInfo"));
         }
         return null;
     }
@@ -142,7 +142,7 @@ public final class ElementalDefinitionScanStorage_EM extends Item implements IEl
         try {
             NBTTagCompound tNBT = aStack.getTagCompound();
             if (tNBT != null && tNBT.hasKey("symbols")) {
-                String[] strings=Util.infoFromNBT(tNBT.getCompoundTag("symbols"));
+                String[] strings= TT_Utility.infoFromNBT(tNBT.getCompoundTag("symbols"));
                 return strings[index%strings.length];
             } else {
                 return null;

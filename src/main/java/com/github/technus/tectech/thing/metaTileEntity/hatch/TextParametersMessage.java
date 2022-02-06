@@ -1,7 +1,7 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
 
-import com.github.technus.tectech.util.Util;
+import com.github.technus.tectech.util.TT_Utility;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_GUIContainer_ParamText;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
@@ -149,8 +149,8 @@ public class TextParametersMessage implements IMessage {
                     if(meta instanceof GT_MetaTileEntity_Hatch_ParamText){
                         ((GT_MetaTileEntity_Hatch_ParamText) meta).value0s =pMessage.mVal0;
                         ((GT_MetaTileEntity_Hatch_ParamText) meta).value1s =pMessage.mVal1;
-                        ((GT_MetaTileEntity_Hatch_ParamText) meta).value0D=Util.getValue(pMessage.mVal0);
-                        ((GT_MetaTileEntity_Hatch_ParamText) meta).value1D=Util.getValue(pMessage.mVal1);
+                        ((GT_MetaTileEntity_Hatch_ParamText) meta).value0D= TT_Utility.getValue(pMessage.mVal0);
+                        ((GT_MetaTileEntity_Hatch_ParamText) meta).value1D= TT_Utility.getValue(pMessage.mVal1);
                     }
                 }
             }

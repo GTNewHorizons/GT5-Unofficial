@@ -42,3 +42,6 @@ Trees:
  InstanceStack - inst stack
  |||||multiple to 1
  InstanceStackTree - inst container - real things go here
+
+ Preset for world:
+ 2;7,16x22,16x35:11,16x35:3,16x35;0;

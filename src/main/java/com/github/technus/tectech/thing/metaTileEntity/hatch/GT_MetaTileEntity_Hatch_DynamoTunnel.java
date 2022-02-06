@@ -1,7 +1,7 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
 import com.github.technus.tectech.util.CommonValues;
-import com.github.technus.tectech.util.Util;
+import com.github.technus.tectech.util.TT_Utility;
 import com.github.technus.tectech.thing.metaTileEntity.pipe.GT_MetaTileEntity_Pipe_Energy;
 import com.github.technus.tectech.mechanics.pipe.IConnectsToEnergyTunnel;
 import gregtech.api.interfaces.ITexture;
@@ -24,7 +24,7 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 public class GT_MetaTileEntity_Hatch_DynamoTunnel extends GT_MetaTileEntity_Hatch_DynamoMulti implements IConnectsToEnergyTunnel {
     public GT_MetaTileEntity_Hatch_DynamoTunnel(int aID, String aName, String aNameRegional, int aTier, int aAmp) {
         super(aID, aName, aNameRegional, aTier, 0, translateToLocal("gt.blockmachines.hatch.dynamotunnel.desc.0"), aAmp);//Energy extracting terminal for Multiblocks
-        Util.setTier(aTier, this);
+        TT_Utility.setTier(aTier, this);
     }
 
     public GT_MetaTileEntity_Hatch_DynamoTunnel(String aName, int aTier, int aAmp, String aDescription, ITexture[][][] aTextures) {

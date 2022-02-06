@@ -1,5 +1,6 @@
 package com.github.technus.tectech.loader.recipe;
 
+import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry;
 import com.github.technus.tectech.recipe.TT_recipeAdder;
 import com.github.technus.tectech.thing.CustomItemList;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
@@ -22,9 +23,8 @@ import net.minecraftforge.fluids.FluidStack;
 /**
  * Created by Tec on 06.08.2017.
  */
-public class BloodyRecipeLoader implements Runnable {
-    @Override
-    public void run() {
+public class BloodyRecipeLoader {
+    public void run(EMTransformationRegistry transformationInfo) {
         //Quantum Glass
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                 CustomItemList.eM_Containment.get(1),

@@ -21,7 +21,7 @@ import li.cil.oc.api.machine.Signal;
 import li.cil.oc.common.SaveHandler;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import org.apache.commons.io.IOUtils;
+import org.apache.commons.compress.utils.IOUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

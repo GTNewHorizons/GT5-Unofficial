@@ -3,18 +3,26 @@
 dependencies {
     shadowImplementation("com.github.GTNewHorizons:AVRcore:master-SNAPSHOT")
 
-    compile("com.github.GTNewHorizons:GT5-Unofficial:5.09.40.18:dev")
-    compile("com.github.GTNewHorizons:Yamcl:0.5.82:dev")
-    compile("com.github.GTNewHorizons:NotEnoughItems:2.1.22-GTNH:dev")
-    compile("com.github.GTNewHorizons:CodeChickenLib:1.1.5.1:dev")
-    compile("com.github.GTNewHorizons:CodeChickenCore:1.1.3:dev")
-    compile("com.github.GTNewHorizons:StructureLib:1.0.14:dev")
-    compile("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
+    compile("com.github.GTNewHorizons:GT5-Unofficial:master-SNAPSHOT:dev")
+    compile("com.github.GTNewHorizons:Yamcl:master-SNAPSHOT:dev")
 
-    compileOnly("com.github.GTNewHorizons:GTplusplus:1.7.24:dev") {
+    /*compile("com.github.GTNewHorizons:NotEnoughItems:master-SNAPSHOT:dev") {  // Transitive by GT5-Unofficial
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-70-GTNH:dev") {
+    compile("com.github.GTNewHorizons:CodeChickenLib:master-SNAPSHOT:dev") {  // Transitive by GT5-Unofficial
+        transitive = false
+    }
+    compile("com.github.GTNewHorizons:StructureLib:master-SNAPSHOT:dev") {  // Transitive by GT5-Unofficial
+        transitive = false
+    }
+    compile("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev") {  // Transitive by GT5-Unofficial
+        transitive = false
+    }*/
+
+    compileOnly("com.github.GTNewHorizons:GTplusplus:master-SNAPSHOT:dev") {
+        transitive = false
+    }
+    compileOnly("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:master-SNAPSHOT:dev") {
         transitive = false
     }
 

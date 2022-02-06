@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.github.technus.tectech.Reference.MODID;
-import static com.github.technus.tectech.loader.gui.CreativeTabTecTech.creativeTabTecTech;
+import static com.github.technus.tectech.TecTech.creativeTabTecTech;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 

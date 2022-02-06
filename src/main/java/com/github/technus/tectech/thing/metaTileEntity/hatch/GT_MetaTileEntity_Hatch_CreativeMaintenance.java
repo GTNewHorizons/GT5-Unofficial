@@ -1,7 +1,7 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
 import com.github.technus.tectech.util.CommonValues;
-import com.github.technus.tectech.util.Util;
+import com.github.technus.tectech.util.TT_Utility;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -22,7 +22,7 @@ public class GT_MetaTileEntity_Hatch_CreativeMaintenance extends GT_MetaTileEnti
 
     public GT_MetaTileEntity_Hatch_CreativeMaintenance(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);
-        Util.setTier(aTier,this);
+        TT_Utility.setTier(aTier,this);
     }
 
     public GT_MetaTileEntity_Hatch_CreativeMaintenance(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {

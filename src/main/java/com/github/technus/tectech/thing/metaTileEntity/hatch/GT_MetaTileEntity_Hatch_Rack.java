@@ -3,7 +3,7 @@ package com.github.technus.tectech.thing.metaTileEntity.hatch;
 import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.util.Util;
+import com.github.technus.tectech.util.TT_Utility;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_Container_Rack;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_GUIContainer_Rack;
 import cpw.mods.fml.common.Loader;
@@ -29,7 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.github.technus.tectech.util.CommonValues.MULTI_CHECK_AT;
-import static com.github.technus.tectech.util.Util.getUniqueIdentifier;
+import static com.github.technus.tectech.util.TT_Utility.getUniqueIdentifier;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
@@ -48,7 +48,7 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch {
 
     public GT_MetaTileEntity_Hatch_Rack(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 4, "");
-        Util.setTier(aTier,this);
+        TT_Utility.setTier(aTier,this);
     }
 
     public GT_MetaTileEntity_Hatch_Rack(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {

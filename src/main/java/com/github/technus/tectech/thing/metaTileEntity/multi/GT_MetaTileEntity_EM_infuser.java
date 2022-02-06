@@ -9,7 +9,6 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEnt
 import com.github.technus.tectech.util.CommonValues;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -41,14 +40,14 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
             translateToLocal("gt.blockmachines.multimachine.em.infuser.hint"),//1 - Classic Hatches or High Power Casing
     };
 
-    private static final IStructureDefinition<GT_MetaTileEntity_EM_infuser> STRUCTURE_DEFINITION =
-            StructureDefinition.<GT_MetaTileEntity_EM_infuser>builder()
+    private static final IStructureDefinition<GT_MetaTileEntity_EM_infuser> STRUCTURE_DEFINITION = IStructureDefinition
+            .<GT_MetaTileEntity_EM_infuser>builder()
             .addShape("main", transpose(new String[][]{
-                    {"CCC","CCC","CCC"},
-                    {"BBB","BAB","BBB"},
-                    {"A~A","AAA","AAA"},
-                    {"BBB","BAB","BBB"},
-                    {"CCC","CCC","CCC"}
+                    {"CCC", "CCC", "CCC"},
+                    {"BBB", "BAB", "BBB"},
+                    {"A~A", "AAA", "AAA"},
+                    {"BBB", "BAB", "BBB"},
+                    {"CCC", "CCC", "CCC"}
             }))
             .addElement('A', ofBlock(sBlockCasingsTT, 4))
             .addElement('B', ofBlock(sBlockCasingsTT, 7))
@@ -170,12 +169,12 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
 
     @Override
     public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity,true,  false, true);
+        return new GT_Container_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, true, false, true);
     }
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "EMDisplay.png",true,  false, true);
+        return new GT_GUIContainer_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "EMDisplay.png", true, false, true);
     }
 
     public final static ResourceLocation activitySound = new ResourceLocation(Reference.MODID + ":fx_whooum");
@@ -188,7 +187,7 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM("main", 1, 2, 0, hintsOnly, stackSize);
+        structureBuild_EM("main", 1, 2, 0, stackSize, hintsOnly);
     }
 
     @Override

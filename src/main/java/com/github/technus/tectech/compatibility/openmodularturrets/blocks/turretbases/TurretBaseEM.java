@@ -10,7 +10,7 @@ import net.minecraft.world.World;
 import openmodularturrets.blocks.turretbases.BlockAbstractTurretBase;
 import openmodularturrets.handler.ConfigHandler;
 
-import static com.github.technus.tectech.loader.gui.CreativeTabTecTech.creativeTabTecTech;
+import static com.github.technus.tectech.TecTech.creativeTabTecTech;
 
 /**
  * Created by Tec on 27/07/2017.

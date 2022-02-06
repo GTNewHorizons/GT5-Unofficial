@@ -1,6 +1,6 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi.em_machine;
 
-import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.MultiblockControl;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
 
@@ -24,7 +24,7 @@ public class Behaviour_PrecisionLaser implements GT_MetaTileEntity_EM_machine.IB
     }
 
     @Override
-    public MultiblockControl<cElementalInstanceStackMap[]> process(cElementalInstanceStackMap[] inputs, GT_MetaTileEntity_EM_machine te, Parameters parameters) {
+    public MultiblockControl<EMInstanceStackMap[]> process(EMInstanceStackMap[] inputs, GT_MetaTileEntity_EM_machine te, Parameters parameters) {
         return null;
     }
 }

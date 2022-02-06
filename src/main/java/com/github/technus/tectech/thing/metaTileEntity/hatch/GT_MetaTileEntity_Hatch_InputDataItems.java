@@ -1,7 +1,7 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
 import com.github.technus.tectech.util.CommonValues;
-import com.github.technus.tectech.util.Util;
+import com.github.technus.tectech.util.TT_Utility;
 import com.github.technus.tectech.mechanics.dataTransport.InventoryDataPacket;
 import com.github.technus.tectech.mechanics.pipe.IConnectsToDataPipe;
 import gregtech.api.enums.Dyes;
@@ -35,7 +35,7 @@ public class GT_MetaTileEntity_Hatch_InputDataItems extends GT_MetaTileEntity_Ha
 
     public GT_MetaTileEntity_Hatch_InputDataItems(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);
-        Util.setTier(aTier,this);
+        TT_Utility.setTier(aTier,this);
     }
 
     public GT_MetaTileEntity_Hatch_InputDataItems(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
