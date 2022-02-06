@@ -10,6 +10,11 @@ import static com.github.bartimaeusnek.bartworks.system.material.Werkstoff.Types
 import static com.github.bartimaeusnek.bartworks.util.BW_Util.subscriptNumbers;
 
 
+/*
+ * 
+ * Originally authored by botn365 under the MIT License. See BotdustriesLICENSE
+ *
+ */
 @SuppressWarnings("unchecked")
 public class BotWerkstoffMaterialPool implements Runnable {
 	
