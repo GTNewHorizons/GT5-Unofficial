@@ -6,7 +6,7 @@ import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.block.QuantumStuffBlock;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.*;
 import com.github.technus.tectech.util.CommonValues;
-import com.github.technus.tectech.util.Util;
+import com.github.technus.tectech.util.TT_Utility;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -110,7 +110,7 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
             return false;
         }
         loadedMachine = newMachine;
-        Supplier<IBehaviour> behaviourSupplier = GT_MetaTileEntity_EM_machine.BEHAVIOUR_MAP.get(new Util.ItemStack_NoNBT(newMachine));
+        Supplier<IBehaviour> behaviourSupplier = GT_MetaTileEntity_EM_machine.BEHAVIOUR_MAP.get(new TT_Utility.ItemStack_NoNBT(newMachine));
         if (currentBehaviour == null && behaviourSupplier == null) {
             return false;
         }
@@ -132,11 +132,11 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
         return true;
     }
 
-    private static final HashMap<Util.ItemStack_NoNBT, Supplier<IBehaviour>> BEHAVIOUR_MAP = new HashMap<>();
+    private static final HashMap<TT_Utility.ItemStack_NoNBT, Supplier<IBehaviour>> BEHAVIOUR_MAP = new HashMap<>();
 
     public static void registerBehaviour(Supplier<IBehaviour> behaviour, ItemStack is) {
-        BEHAVIOUR_MAP.put(new Util.ItemStack_NoNBT(is), behaviour);
-        TecTech.LOGGER.info("Registered EM machine behaviour " + behaviour.get().getClass().getSimpleName() + ' ' + new Util.ItemStack_NoNBT(is).toString());
+        BEHAVIOUR_MAP.put(new TT_Utility.ItemStack_NoNBT(is), behaviour);
+        TecTech.LOGGER.info("Registered EM machine behaviour " + behaviour.get().getClass().getSimpleName() + ' ' + new TT_Utility.ItemStack_NoNBT(is).toString());
     }
 
     public interface IBehaviour {

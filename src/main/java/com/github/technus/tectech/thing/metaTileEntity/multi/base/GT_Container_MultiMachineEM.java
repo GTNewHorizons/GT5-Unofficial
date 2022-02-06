@@ -1,7 +1,7 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi.base;
 
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.util.Util;
+import com.github.technus.tectech.util.TT_Utility;
 import gregtech.api.gui.GT_ContainerMetaTile_Machine;
 import gregtech.api.gui.GT_Slot_Holo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -134,8 +134,8 @@ public class GT_Container_MultiMachineEM extends GT_ContainerMetaTile_Machine {
             var1.sendProgressBarUpdate(this, 120, eCertainMode | (eCertainStatus << 8));
             var1.sendProgressBarUpdate(this, 121, (ePowerPass ? 1 : 0) + (eSafeVoid ? 2 : 0) + (allowedToWork ? 4 : 0) + (ePowerPassButton?8:0));
             for(int i=128,k=208,j=0;j<20;j++,i+=4,k+=4) {
-                Util.sendDouble(eParamsOut[j], this, var1, i);
-                Util.sendDouble(eParamsIn[j], this, var1, k);
+                TT_Utility.sendDouble(eParamsOut[j], this, var1, i);
+                TT_Utility.sendDouble(eParamsIn[j], this, var1, k);
             }
         }
     }
@@ -159,10 +159,10 @@ public class GT_Container_MultiMachineEM extends GT_ContainerMetaTile_Machine {
             ePowerPassCover = (par2 & 8) == 8;
         } else if(par1>=128 && par1<208){
             int pos=(par1-128)>>2;
-            eParamsOut[pos]=Double.longBitsToDouble(eParamsOutl[pos]=Util.receiveLong(eParamsOutl[pos],par1&0xFFFFFFFC,par1,par2));
+            eParamsOut[pos]=Double.longBitsToDouble(eParamsOutl[pos]= TT_Utility.receiveLong(eParamsOutl[pos],par1&0xFFFFFFFC,par1,par2));
         }else if(par1>=208 && par1<288){
             int pos=(par1-208)>>2;
-            eParamsIn[pos]=Double.longBitsToDouble(eParamsInl[pos]=Util.receiveLong(eParamsInl[pos],par1&0xFFFFFFFC,par1,par2));
+            eParamsIn[pos]=Double.longBitsToDouble(eParamsInl[pos]= TT_Utility.receiveLong(eParamsInl[pos],par1&0xFFFFFFFC,par1,par2));
         }
     }
 

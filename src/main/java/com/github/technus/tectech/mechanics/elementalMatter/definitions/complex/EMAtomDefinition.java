@@ -14,7 +14,7 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.transformations
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMGaugeBosonDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMLeptonDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMNeutrinoDefinition;
-import com.github.technus.tectech.util.Util;
+import com.github.technus.tectech.util.TT_Utility;
 import com.github.technus.tectech.util.XSTR;
 
 import java.util.*;
@@ -1676,35 +1676,35 @@ public class EMAtomDefinition extends EMComplexTemplate {
 
     @Override
     public void addScanShortSymbols(ArrayList<String> lines, int capabilities, long energyLevel) {
-        if (Util.areBitsSet(SCAN_GET_NOMENCLATURE | SCAN_GET_CHARGE | SCAN_GET_MASS | SCAN_GET_TIMESPAN_INFO, capabilities)) {
+        if (TT_Utility.areBitsSet(SCAN_GET_NOMENCLATURE | SCAN_GET_CHARGE | SCAN_GET_MASS | SCAN_GET_TIMESPAN_INFO, capabilities)) {
             lines.add(getShortSymbol());
         }
     }
 
     @Override
     public void addScanResults(ArrayList<String> lines, int capabilities, long energyLevel) {
-        if (Util.areBitsSet(SCAN_GET_CLASS_TYPE, capabilities)) {
+        if (TT_Utility.areBitsSet(SCAN_GET_CLASS_TYPE, capabilities)) {
             lines.add("CLASS = " + getIndirectTagValue() + ' ' + getMatterMassType());
         }
-        if (Util.areBitsSet(SCAN_GET_NOMENCLATURE | SCAN_GET_CHARGE | SCAN_GET_MASS | SCAN_GET_TIMESPAN_INFO, capabilities)) {
+        if (TT_Utility.areBitsSet(SCAN_GET_NOMENCLATURE | SCAN_GET_CHARGE | SCAN_GET_MASS | SCAN_GET_TIMESPAN_INFO, capabilities)) {
             lines.add("NAME = " + getLocalizedName());
             lines.add("SYMBOL = " + getSymbol());
         }
-        if (Util.areBitsSet(SCAN_GET_CHARGE, capabilities)) {
+        if (TT_Utility.areBitsSet(SCAN_GET_CHARGE, capabilities)) {
             lines.add("CHARGE = " + getCharge() / 3D + " e");
         }
-        if (Util.areBitsSet(SCAN_GET_COLOR, capabilities)) {
+        if (TT_Utility.areBitsSet(SCAN_GET_COLOR, capabilities)) {
             lines.add(hasColor() ? "COLORLESS" : "CARRIES COLOR");
         }
-        if (Util.areBitsSet(SCAN_GET_MASS, capabilities)) {
+        if (TT_Utility.areBitsSet(SCAN_GET_MASS, capabilities)) {
             lines.add("MASS = " + getMass() + " eV/c\u00b2");
         }
-        if (iaeaDefinitionExistsAndHasEnergyLevels && Util.areBitsSet(SCAN_GET_ENERGY_STATES, capabilities)) {
+        if (iaeaDefinitionExistsAndHasEnergyLevels && TT_Utility.areBitsSet(SCAN_GET_ENERGY_STATES, capabilities)) {
             for (int i = 1; i < getIaea().getEnergeticStatesArray().length; i++) {
                 lines.add("E LEVEL " + i + " = " + getIaea().getEnergeticStatesArray()[i].energy + " eV");
             }
         }
-        if (Util.areBitsSet(SCAN_GET_TIMESPAN_INFO, capabilities)) {
+        if (TT_Utility.areBitsSet(SCAN_GET_TIMESPAN_INFO, capabilities)) {
             lines.add("HALF LIFE = " + getRawTimeSpan(energyLevel) + " s");
             lines.add("    At current energy level");
         }

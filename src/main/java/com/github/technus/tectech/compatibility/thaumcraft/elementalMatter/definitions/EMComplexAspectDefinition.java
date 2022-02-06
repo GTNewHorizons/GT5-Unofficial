@@ -10,7 +10,7 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.reg
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry.EMDefinitionsRegistry;
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMConstantStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMDefinitionStack;
-import com.github.technus.tectech.util.Util;
+import com.github.technus.tectech.util.TT_Utility;
 
 import java.util.ArrayList;
 
@@ -233,30 +233,30 @@ public final class EMComplexAspectDefinition extends EMComplexTemplate {
 
     @Override
     public void addScanShortSymbols(ArrayList<String> lines, int capabilities, long energyLevel) {
-        if (Util.areBitsSet(SCAN_GET_NOMENCLATURE | SCAN_GET_CHARGE | SCAN_GET_MASS, capabilities)) {
+        if (TT_Utility.areBitsSet(SCAN_GET_NOMENCLATURE | SCAN_GET_CHARGE | SCAN_GET_MASS, capabilities)) {
             lines.add(getShortSymbol());
         }
     }
 
     @Override
     public void addScanResults(ArrayList<String> lines, int capabilities, long energyLevel) {
-        if (Util.areBitsSet(SCAN_GET_CLASS_TYPE, capabilities)) {
+        if (TT_Utility.areBitsSet(SCAN_GET_CLASS_TYPE, capabilities)) {
             lines.add(translateToLocal("tt.keyword.CLASS") + " = " + nbtType + ' ' + getMatterMassType());
         }
-        if (Util.areBitsSet(SCAN_GET_NOMENCLATURE | SCAN_GET_CHARGE | SCAN_GET_MASS, capabilities)) {
+        if (TT_Utility.areBitsSet(SCAN_GET_NOMENCLATURE | SCAN_GET_CHARGE | SCAN_GET_MASS, capabilities)) {
             lines.add(translateToLocal("tt.keyword.NAME") + " = " + getLocalizedName());
             //lines.add("SYMBOL = "+getSymbol());
         }
-        if (Util.areBitsSet(SCAN_GET_CHARGE, capabilities)) {
+        if (TT_Utility.areBitsSet(SCAN_GET_CHARGE, capabilities)) {
             lines.add(translateToLocal("tt.keyword.CHARGE") + " = " + getCharge() / 3f + " e");
         }
-        if (Util.areBitsSet(SCAN_GET_COLOR, capabilities)) {
+        if (TT_Utility.areBitsSet(SCAN_GET_COLOR, capabilities)) {
             lines.add(hasColor() ? translateToLocal("tt.keyword.COLORLESS") : translateToLocal("tt.keyphrase.CARRIES_COLOR"));
         }
-        if (Util.areBitsSet(SCAN_GET_MASS, capabilities)) {
+        if (TT_Utility.areBitsSet(SCAN_GET_MASS, capabilities)) {
             lines.add(translateToLocal("tt.keyword.MASS") + " = " + getMass() + " eV/c\u00b2");
         }
-        if (Util.areBitsSet(SCAN_GET_TIMESPAN_INFO, capabilities)) {
+        if (TT_Utility.areBitsSet(SCAN_GET_TIMESPAN_INFO, capabilities)) {
             lines.add(translateToLocal("tt.keyphrase.LIFE_TIME") + " = " + getRawTimeSpan(energyLevel) + " s");
             lines.add("    " + translateToLocal("tt.keyphrase.At_current_energy_level"));
         }

@@ -1,7 +1,7 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch.gui;
 
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.util.Util;
+import com.github.technus.tectech.util.TT_Utility;
 import com.github.technus.tectech.loader.NetworkDispatcher;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_ParamText;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.TextParametersMessage;
@@ -95,11 +95,11 @@ public class GT_Container_ParamText extends GT_ContainerMetaTile_Machine {
         input1d = ((GT_MetaTileEntity_Hatch_ParamText) mTileEntity.getMetaTileEntity()).input1D;
         for (Object crafter : crafters) {
             ICrafting var1 = (ICrafting) crafter;
-            Util.sendInteger(param,this,var1,100);
-            Util.sendDouble(value0d,this,var1,102);
-            Util.sendDouble(value1d,this,var1, 106);
-            Util.sendDouble(input0d,this,var1, 110);
-            Util.sendDouble(input1d,this,var1, 114);
+            TT_Utility.sendInteger(param,this,var1,100);
+            TT_Utility.sendDouble(value0d,this,var1,102);
+            TT_Utility.sendDouble(value1d,this,var1, 106);
+            TT_Utility.sendDouble(input0d,this,var1, 110);
+            TT_Utility.sendDouble(input1d,this,var1, 114);
         }
         if(!Objects.equals(value0s,((GT_MetaTileEntity_Hatch_ParamText) mTileEntity.getMetaTileEntity()).value0s) ||
                 !Objects.equals(value0s,((GT_MetaTileEntity_Hatch_ParamText) mTileEntity.getMetaTileEntity()).value0s)){
@@ -123,31 +123,31 @@ public class GT_Container_ParamText extends GT_ContainerMetaTile_Machine {
         switch (par1) {
             case 100:
             case 101:
-                param=Util.receiveInteger(param,100,par1,par2);
+                param= TT_Utility.receiveInteger(param,100,par1,par2);
                 return;
             case 102:
             case 103:
             case 104:
             case 105:
-                value0d =Double.longBitsToDouble(value0l=Util.receiveLong(value0l,102,par1,par2));
+                value0d =Double.longBitsToDouble(value0l= TT_Utility.receiveLong(value0l,102,par1,par2));
                 return;
             case 106:
             case 107:
             case 108:
             case 109:
-                value1d =Double.longBitsToDouble(value1l=Util.receiveLong(value1l,106,par1,par2));
+                value1d =Double.longBitsToDouble(value1l= TT_Utility.receiveLong(value1l,106,par1,par2));
                 return;
             case 110:
             case 111:
             case 112:
             case 113:
-                input0d =Double.longBitsToDouble(input0l=Util.receiveLong(input0l,110,par1,par2));
+                input0d =Double.longBitsToDouble(input0l= TT_Utility.receiveLong(input0l,110,par1,par2));
                 return;
             case 114:
             case 115:
             case 116:
             case 117:
-                input1d =Double.longBitsToDouble(input1l=Util.receiveLong(input1l,114,par1,par2));
+                input1d =Double.longBitsToDouble(input1l= TT_Utility.receiveLong(input1l,114,par1,par2));
                 return;
             default:
         }

@@ -8,7 +8,7 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMDefini
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMInstanceStack;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.*;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
-import com.github.technus.tectech.util.Util;
+import com.github.technus.tectech.util.TT_Utility;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
@@ -47,7 +47,7 @@ import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.util.CommonValues.*;
 import static com.github.technus.tectech.util.DoubleCount.div;
-import static com.github.technus.tectech.util.Util.getTier;
+import static com.github.technus.tectech.util.TT_Utility.getTier;
 import static java.lang.Math.min;
 
 /**
@@ -295,7 +295,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                 EnumChatFormatting.YELLOW + ":" +
                 EnumChatFormatting.AQUA + "I  " + parametrization.getStatusIn(hatchNo, paramID).name.get());
         list.add(EnumChatFormatting.WHITE + "Value: " +
-                EnumChatFormatting.AQUA + Util.doubleToString(parametrization.getIn(hatchNo, paramID)));
+                EnumChatFormatting.AQUA + TT_Utility.doubleToString(parametrization.getIn(hatchNo, paramID)));
         try {
             list.add(parametrization.groups[hatchNo].parameterIn[paramID].getBrief());
         } catch (NullPointerException | IndexOutOfBoundsException e) {
@@ -318,7 +318,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                 EnumChatFormatting.YELLOW + ":" +
                 EnumChatFormatting.AQUA + "O " + parametrization.getStatusOut(hatchNo, paramID).name.get());
         list.add(EnumChatFormatting.WHITE + "Value: " +
-                EnumChatFormatting.AQUA + Util.doubleToString(parametrization.getOut(hatchNo, paramID)));
+                EnumChatFormatting.AQUA + TT_Utility.doubleToString(parametrization.getOut(hatchNo, paramID)));
         try {
             list.add(parametrization.groups[hatchNo].parameterOut[paramID].getBrief());
         } catch (NullPointerException | IndexOutOfBoundsException e) {

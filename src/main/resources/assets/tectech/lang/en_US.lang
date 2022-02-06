@@ -865,6 +865,7 @@ tt.keyphrase.Average_IO_(max)=Voltage I/O (max)
 tt.keyphrase.Average_IO_max=Voltage I/O max
 tt.keyphrase.Amperage_IO_(max)=Amperage I/O (max)
 tt.keyphrase.Side_capabilities=Side capabilities
+tt.keyphrase.Ass_line_recipe=Assembly Line Recipe
 
 #OpenTurrets compatibility
 tile.turretHeadEM.name=Elemental Matter Turret
@@ -873,6 +874,8 @@ tile.turretBaseEM.name=Elemental Turret Base
 tt.keyword.mol=mol
 tt.keyword.itemMols=items
 tt.keyword.mbMols=mb
+#that the thing wont decay
+tt.keyword.stable=STABLE
 #EM types
 tt.keyword.Primitive=Primitive
 tt.keyword.Element=Element

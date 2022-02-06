@@ -1,6 +1,6 @@
 package com.github.technus.tectech.thing.metaTileEntity.single.gui;
 
-import com.github.technus.tectech.util.Util;
+import com.github.technus.tectech.util.TT_Utility;
 import com.github.technus.tectech.thing.metaTileEntity.single.GT_MetaTileEntity_DebugPollutor;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -129,8 +129,8 @@ public class GT_Container_DebugPollutor
 
         for (Object crafter : crafters) {
             ICrafting var1 = (ICrafting) crafter;
-            Util.sendInteger(pollution,this,var1,100);
-            Util.sendFloat(anomaly,this,var1,102);
+            TT_Utility.sendInteger(pollution,this,var1,100);
+            TT_Utility.sendFloat(anomaly,this,var1,102);
         }
     }
 
@@ -141,11 +141,11 @@ public class GT_Container_DebugPollutor
         switch (par1) {
             case 100:
             case 101:
-                pollution = Util.receiveInteger(pollution,100,par1,par2);
+                pollution = TT_Utility.receiveInteger(pollution,100,par1,par2);
                 break;
             case 102:
             case 103:
-                anomaly = Float.intBitsToFloat(anomalyInt=Util.receiveInteger(anomalyInt,102,par1,par2));
+                anomaly = Float.intBitsToFloat(anomalyInt= TT_Utility.receiveInteger(anomalyInt,102,par1,par2));
                 break;
         }
     }

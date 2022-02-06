@@ -7,7 +7,7 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEM
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry.EMDefinitionsRegistry;
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMConstantStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
-import com.github.technus.tectech.util.Util;
+import com.github.technus.tectech.util.TT_Utility;
 import net.minecraft.client.Minecraft;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.nbt.NBTTagCompound;
@@ -505,26 +505,26 @@ public final class EMInstanceStack implements IEMStack {
 
     public void addScanResults(ArrayList<String> lines, int[] detailsOnDepthLevels) {
         int capabilities = detailsOnDepthLevels[0];
-        if (Util.areBitsSet(SCAN_GET_DEPTH_LEVEL, capabilities)) {
+        if (TT_Utility.areBitsSet(SCAN_GET_DEPTH_LEVEL, capabilities)) {
             lines.add("DEPTH = " + 0);
         }
         getDefinition().addScanResults(lines, capabilities, energy);
-        if (Util.areBitsSet(SCAN_GET_TIMESPAN_MULT, capabilities)) {
+        if (TT_Utility.areBitsSet(SCAN_GET_TIMESPAN_MULT, capabilities)) {
             lines.add("TIME MULT = " + lifeTimeMult);
-            if (Util.areBitsSet(SCAN_GET_TIMESPAN_INFO, capabilities)) {
+            if (TT_Utility.areBitsSet(SCAN_GET_TIMESPAN_INFO, capabilities)) {
                 lines.add("TIME SPAN = " + lifeTime + " s");
             }
         }
-        if (Util.areBitsSet(SCAN_GET_AGE, capabilities)) {
+        if (TT_Utility.areBitsSet(SCAN_GET_AGE, capabilities)) {
             lines.add("AGE = " + getAge() + " s");
         }
-        if (Util.areBitsSet(SCAN_GET_COLOR, capabilities)) {
+        if (TT_Utility.areBitsSet(SCAN_GET_COLOR, capabilities)) {
             lines.add("COLOR = " + color + " RGB or CMY");
         }
-        if (Util.areBitsSet(SCAN_GET_ENERGY_LEVEL, capabilities)) {
+        if (TT_Utility.areBitsSet(SCAN_GET_ENERGY_LEVEL, capabilities)) {
             lines.add("ENERGY = " + energy);
         }
-        if (Util.areBitsSet(SCAN_GET_AMOUNT, capabilities)) {
+        if (TT_Utility.areBitsSet(SCAN_GET_AMOUNT, capabilities)) {
             lines.add("AMOUNT = " + getAmount() /AVOGADRO_CONSTANT + " "+translateToLocal("tt.keyword.mol"));
         }
         scanContents(lines, getDefinition().getSubParticles(), 1, detailsOnDepthLevels);
@@ -535,11 +535,11 @@ public final class EMInstanceStack implements IEMStack {
             int deeper = depth + 1;
             for (EMDefinitionStack definitionStack : definitions.valuesToArray()) {
                 lines.add("");//def separator
-                if (Util.areBitsSet(SCAN_GET_DEPTH_LEVEL, detailsOnDepthLevels[depth])) {
+                if (TT_Utility.areBitsSet(SCAN_GET_DEPTH_LEVEL, detailsOnDepthLevels[depth])) {
                     lines.add("DEPTH = " + depth);
                 }
                 getDefinition().addScanResults(lines, detailsOnDepthLevels[depth], energy);
-                if (Util.areBitsSet(SCAN_GET_AMOUNT, detailsOnDepthLevels[depth])) {
+                if (TT_Utility.areBitsSet(SCAN_GET_AMOUNT, detailsOnDepthLevels[depth])) {
                     lines.add("AMOUNT = " + definitionStack.getAmount());
                 }
                 scanContents(lines, definitionStack.getDefinition().getSubParticles(), deeper, detailsOnDepthLevels);

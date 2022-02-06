@@ -10,7 +10,7 @@ import com.github.technus.avrClone.memory.EepromMemory;
 import com.github.technus.avrClone.memory.RemovableMemory;
 import com.github.technus.avrClone.memory.program.ProgramMemory;
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.util.Util;
+import com.github.technus.tectech.util.TT_Utility;
 import com.github.technus.tectech.mechanics.avr.SidedRedstone;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -41,12 +41,12 @@ public class GT_MetaTileEntity_MicroController extends GT_MetaTileEntity_TieredM
 
     public GT_MetaTileEntity_MicroController(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "AVR Micro-controller");
-        Util.setTier(aTier,this);
+        TT_Utility.setTier(aTier,this);
     }
 
     public GT_MetaTileEntity_MicroController(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
-        Util.setTier(aTier,this);
+        TT_Utility.setTier(aTier,this);
         core=new AvrCore();
         core.setUsingImmersiveOperands(false);
         core.setInstructionRegistry(InstructionRegistry.INSTRUCTION_REGISTRY_OP);
