@@ -51,8 +51,8 @@ public final class DebugElementalInstanceContainer_EM extends Item implements IE
 
     @Override
     public boolean onItemUseFirst(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
-        NBTTagCompound tNBT = aStack.getTagCompound();
-        TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
+        NBTTagCompound tNBT        = aStack.getTagCompound();
+        TileEntity     tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (aPlayer instanceof EntityPlayerMP) {
             aStack.stackSize = 1;
             if (tTileEntity instanceof IGregTechTileEntity) {
@@ -61,7 +61,7 @@ public final class DebugElementalInstanceContainer_EM extends Item implements IE
                     EMInstanceStackMap content = ((IEMContainer) metaTE).getContentHandler();
                     if (tNBT.hasKey("content")) {
                         try {
-                            content.putUnifyAll(EMInstanceStackMap.fromNBT(TecTech.definitionsRegistry,tNBT.getCompoundTag("content")));
+                            content.putUnifyAll(EMInstanceStackMap.fromNBT(TecTech.definitionsRegistry, tNBT.getCompoundTag("content")));
                         } catch (EMException e) {
                             if (DEBUG_MODE) {
                                 e.printStackTrace();
@@ -71,12 +71,10 @@ public final class DebugElementalInstanceContainer_EM extends Item implements IE
                         ((IEMContainer) metaTE).purgeOverflow();
                         tNBT.removeTag("content");
                         tNBT.removeTag("symbols");
-                        tNBT.removeTag("info");
                     } else if (content.hasStacks()) {
                         ((IEMContainer) metaTE).purgeOverflow();
-                        tNBT.setTag("info", content.getInfoNBT());
                         tNBT.setTag("content", content.toNBT(TecTech.definitionsRegistry));
-                        tNBT.setTag("symbols", content.getShortSymbolsNBT());
+                        tNBT.setTag("symbols", TT_Utility.packStrings(content.getShortSymbolsInfo()));
                         content.clear();
                     }
                     return true;
@@ -86,30 +84,14 @@ public final class DebugElementalInstanceContainer_EM extends Item implements IE
         return aPlayer instanceof EntityPlayerMP;
     }
 
-    public ItemStack setContent(ItemStack aStack, EMInstanceStackMap content){
+    public ItemStack setContent(ItemStack aStack, EMInstanceStackMap content) {
         NBTTagCompound tNBT = aStack.getTagCompound();
-        if(tNBT==null){
-            tNBT=new NBTTagCompound();
+        if (tNBT == null) {
+            tNBT = new NBTTagCompound();
             aStack.setTagCompound(tNBT);
         }
-        if (tNBT.hasKey("content")) {
-            try {
-                content.putUnifyAll(EMInstanceStackMap.fromNBT(TecTech.definitionsRegistry,tNBT.getCompoundTag("content")));
-            } catch (EMException e) {
-                if (DEBUG_MODE) {
-                    e.printStackTrace();
-                }
-                return aStack;
-            }
-            tNBT.removeTag("content");
-            tNBT.removeTag("info");
-            tNBT.removeTag("symbols");
-        } else if (content.hasStacks()) {
-            tNBT.setTag("info", content.getInfoNBT());
-            tNBT.setTag("content", content.toNBT(TecTech.definitionsRegistry));
-            tNBT.setTag("symbols", content.getShortSymbolsNBT());
-            content.clear();
-        }
+        tNBT.setTag("content", content.toNBT(TecTech.definitionsRegistry));
+        tNBT.setTag("symbols", TT_Utility.packStrings(content.getShortSymbolsInfo()));
         return aStack;
     }
 
@@ -118,14 +100,18 @@ public final class DebugElementalInstanceContainer_EM extends Item implements IE
         aList.add(CommonValues.TEC_MARK_EM);
         try {
             NBTTagCompound tNBT = aStack.getTagCompound();
-            if (tNBT != null && tNBT.hasKey("info")) {
+            if (tNBT != null && tNBT.hasKey("content")) {
                 aList.add(translateToLocal("item.em.debugContainer.desc.0") + ": ");//Contains
-                Collections.addAll(aList, TT_Utility.infoFromNBT(tNBT.getCompoundTag("info")));
+                EMInstanceStackMap content = EMInstanceStackMap.fromNBT(TecTech.definitionsRegistry, tNBT.getCompoundTag("content"));
+                Collections.addAll(aList, content.getElementalInfo());
             } else {
                 aList.add(translateToLocal("item.em.debugContainer.desc.1"));//Container for elemental matter
-                aList.add(EnumChatFormatting.BLUE + translateToLocal("item.em.debugContainer.desc.2"));//Right click on elemental hatches
             }
+            aList.add(EnumChatFormatting.BLUE + translateToLocal("item.em.debugContainer.desc.2"));//Right click on elemental hatches
         } catch (Exception e) {
+            if (DEBUG_MODE) {
+                e.printStackTrace();
+            }
             aList.add(translateToLocal("item.em.debugContainer.desc.3"));//---Unexpected Termination---
         }
     }
@@ -140,28 +126,13 @@ public final class DebugElementalInstanceContainer_EM extends Item implements IE
         ItemStack that = new ItemStack(this, 1);
         that.setTagCompound(new NBTTagCompound());
         list.add(that);
-        for(IEMDefinition definition: TecTech.definitionsRegistry.getStacksRegisteredForDisplay()){
-            list.add(setContent(new ItemStack(this).setStackDisplayName(definition.getLocalizedName()+" "+1+" "+translateToLocal("tt.keyword.mbMols")),
+        for (IEMDefinition definition : TecTech.definitionsRegistry.getStacksRegisteredForDisplay()) {
+            list.add(setContent(new ItemStack(this).setStackDisplayName(definition.getLocalizedName() + " " + 1 + " " + translateToLocal("tt.keyword.unit.mbMols")),
                     new EMInstanceStackMap(new EMInstanceStack(definition, EM_COUNT_PER_MATERIAL_AMOUNT))));
-            list.add(setContent(new ItemStack(this).setStackDisplayName(definition.getLocalizedName()+" "+1+" "+translateToLocal("tt.keyword.itemMols")),
+            list.add(setContent(new ItemStack(this).setStackDisplayName(definition.getLocalizedName() + " " + 1 + " " + translateToLocal("tt.keyword.unit.itemMols")),
                     new EMInstanceStackMap(new EMInstanceStack(definition, EM_COUNT_PER_ITEM))));
-            list.add(setContent(new ItemStack(this).setStackDisplayName(definition.getLocalizedName()+" "+1000+" "+translateToLocal("tt.keyword.mbMols")),
+            list.add(setContent(new ItemStack(this).setStackDisplayName(definition.getLocalizedName() + " " + 1000 + " " + translateToLocal("tt.keyword.unit.mbMols")),
                     new EMInstanceStackMap(new EMInstanceStack(definition, EM_COUNT_PER_1k))));
-        }
-    }
-
-    @Override
-    public String getSymbol(ItemStack aStack, int index) {
-        try {
-            NBTTagCompound tNBT = aStack.getTagCompound();
-            if (tNBT != null && tNBT.hasKey("symbols")) {
-                String[] strings= TT_Utility.infoFromNBT(tNBT.getCompoundTag("symbols"));
-                return strings[index%strings.length];
-            } else {
-                return null;
-            }
-        } catch (Exception e) {
-            return "#!";
         }
     }
 

@@ -60,8 +60,8 @@ public abstract class EMComplexTemplate implements IEMDefinition {
     }
 
     public NBTTagCompound toNBT(EMDefinitionsRegistry registry) {
-        return registry.indirectToNBT(getIndirectTagValue(),getSubParticles());
+        return registry.indirectToNBT(getTagValue(),getSubParticles());
     }
 
-    protected abstract String getIndirectTagValue();
+    protected abstract String getTagValue();
 }

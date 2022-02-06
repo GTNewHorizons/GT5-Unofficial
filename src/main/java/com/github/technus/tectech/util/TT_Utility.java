@@ -29,9 +29,11 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.function.Function;
 
 /**
  * Created by Tec on 21.03.2017.
@@ -39,10 +41,12 @@ import java.util.*;
 public final class TT_Utility {
     private TT_Utility() {
     }
-    private static final Map<Locale, Formatter> formaters=new HashMap<>();
+    private static final StringBuilder          STRING_BUILDER =new StringBuilder();
+    private static final Map<Locale, Formatter> FORMATTER_MAP  =new HashMap<>();
 
     private static Formatter getFormatter(){
-        return formaters.computeIfAbsent(Locale.getDefault(Locale.Category.FORMAT), Formatter::new);
+        STRING_BUILDER.setLength(0);
+        return FORMATTER_MAP.computeIfAbsent(Locale.getDefault(Locale.Category.FORMAT), locale -> new Formatter(STRING_BUILDER,locale));
     }
 
     public static String formatNumberShortExp(double value){
@@ -305,12 +309,43 @@ public final class TT_Utility {
         return strings;
     }
 
-    public static String[] infoFromNBT(NBTTagCompound nbt) {
+    public static String[] unpackStrings(NBTTagCompound nbt) {
         String[] strings = new String[nbt.getInteger("i")];
         for (int i = 0; i < strings.length; i++) {
             strings[i] = nbt.getString(Integer.toString(i));
         }
         return strings;
+    }
+
+    public static String getSomeString(NBTTagCompound nbt,int index) {
+        return nbt.getString(Integer.toString(index%nbt.getInteger("i")));
+    }
+
+    public static NBTTagCompound packStrings(String... info) {
+        NBTTagCompound nbt = new NBTTagCompound();
+        nbt.setInteger("i", info.length);
+        for (int i = 0; i < info.length; i++) {
+            nbt.setString(Integer.toString(i), info[i]);
+        }
+        return nbt;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T> T[] unpackNBT(Class<T> tClass, Function<NBTTagCompound,T> converter, NBTTagCompound nbt) {
+        T[] objects = (T[])Array.newInstance(tClass,nbt.getInteger("i"));
+        for (int i = 0; i < objects.length; i++) {
+            objects[i] = converter.apply(nbt.getCompoundTag(Integer.toString(i)));
+        }
+        return objects;
+    }
+
+    public static <T> NBTTagCompound packNBT(Function<T,NBTTagCompound> converter, T... info) {
+        NBTTagCompound nbt = new NBTTagCompound();
+        nbt.setInteger("i", info.length);
+        for (int i = 0; i < info.length; i++) {
+            nbt.setTag(Integer.toString(i), converter.apply(info[i]));
+        }
+        return nbt;
     }
 
     public static boolean areBitsSet(int setBits, int testedValue) {

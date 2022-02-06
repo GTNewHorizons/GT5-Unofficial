@@ -88,8 +88,8 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
         return new String[]{
                 CommonValues.TEC_MARK_EM,
                 mDescription,
-                translateToLocal("gt.blockmachines.hatch.emmuffler.desc.1") + ": " + EnumChatFormatting.AQUA + TT_Utility.formatNumberShortExp(overflowMax) + " eV/c\u00b2",
-                translateToLocal("gt.blockmachines.hatch.emmuffler.desc.2") + ": " + EnumChatFormatting.AQUA + TT_Utility.formatNumberShortExp(overflowDisperse) + " (eV/c\u00b2)/s",
+                translateToLocal("gt.blockmachines.hatch.emmuffler.desc.1") + ": " + EnumChatFormatting.AQUA + TT_Utility.formatNumberShortExp(overflowMax) + " "+translateToLocal("tt.keyword.unit.mass"),
+                translateToLocal("gt.blockmachines.hatch.emmuffler.desc.2") + ": " + EnumChatFormatting.AQUA + TT_Utility.formatNumberShortExp(overflowDisperse) + " "+translateToLocal("tt.keyword.unit.massFlux"),
                 translateToLocal("gt.blockmachines.hatch.emmuffler.desc.3")
         };
     }
@@ -217,10 +217,10 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
     public String[] getInfoData() {
         return new String[]{
                 translateToLocalFormatted("tt.keyphrase.Contained_mass", clientLocale) + ":",
-                EnumChatFormatting.RED + TT_Utility.formatNumberExp(overflowMatter) + EnumChatFormatting.RESET + " eV/c\u00b2 /",
-                EnumChatFormatting.GREEN + TT_Utility.formatNumberShortExp(overflowMax) + EnumChatFormatting.RESET + " eV/c\u00b2",
+                EnumChatFormatting.RED + TT_Utility.formatNumberExp(overflowMatter) + EnumChatFormatting.RESET + " "+translateToLocal("tt.keyword.unit.mass")+ " / ",
+                EnumChatFormatting.GREEN + TT_Utility.formatNumberShortExp(overflowMax) + EnumChatFormatting.RESET + " "+translateToLocal("tt.keyword.unit.mass"),
                 translateToLocalFormatted("tt.keyphrase.Mass_Disposal_speed", clientLocale) + ": " +
-                        EnumChatFormatting.BLUE + TT_Utility.formatNumberShortExp(overflowDisperse) + EnumChatFormatting.RESET + " (eV/c\u00b2)/s"
+                        EnumChatFormatting.BLUE + TT_Utility.formatNumberShortExp(overflowDisperse) + EnumChatFormatting.RESET + " "+translateToLocal("tt.keyword.unit.massFlux")
         };
     }
 

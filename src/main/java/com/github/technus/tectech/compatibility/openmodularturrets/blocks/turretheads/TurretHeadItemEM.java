@@ -37,7 +37,7 @@ public class TurretHeadItemEM extends ItemBlock {
         list.add(EnumChatFormatting.DARK_PURPLE + "--" + translateToLocal("tooltip.damage.label") + "--");
         list.add(translateToLocal("tooltip.damage.stat") + ": " + EnumChatFormatting.WHITE + (float)ConfigHandler.getLaserTurretSettings().getDamage() / 2.0F + ' ' + translateToLocal("tooltip.health"));
         list.add(translateToLocal("tooltip.aoe") + ": " + EnumChatFormatting.WHITE + '0');
-        list.add(translateToLocal("tooltip.firerate") + ": " + EnumChatFormatting.WHITE + df.format((double)(20.0F / (float)ConfigHandler.getLaserTurretSettings().getFireRate())));
+        list.add(translateToLocal("tooltip.firerate") + ": " + EnumChatFormatting.WHITE + df.format(20.0F / (float)ConfigHandler.getLaserTurretSettings().getFireRate()));
         list.add(translateToLocal("tooltip.energy.stat") + ": " + EnumChatFormatting.WHITE + ConfigHandler.getLaserTurretSettings().getPowerUsage() + " RF");
         list.add("");
         list.add(EnumChatFormatting.DARK_GRAY + translateToLocal("flavour.turret.4"));

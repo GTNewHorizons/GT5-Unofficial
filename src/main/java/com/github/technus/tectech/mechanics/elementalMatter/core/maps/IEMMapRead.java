@@ -1,17 +1,20 @@
 package com.github.technus.tectech.mechanics.elementalMatter.core.maps;
 
 import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry.EMDefinitionsRegistry;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.IEMStack;
-import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
+import com.github.technus.tectech.util.TT_Utility;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
 import java.lang.reflect.Array;
 import java.util.*;
 
-import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry.*;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry.AVOGADRO_CONSTANT;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry.EM_COUNT_EPSILON;
 import static com.github.technus.tectech.util.DoubleCount.ulpSigned;
+import static com.github.technus.tectech.util.TT_Utility.packNBT;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 public interface IEMMapRead<T extends IEMStack> extends Comparable<IEMMapRead<? extends IEMStack>>, Cloneable {
@@ -87,53 +90,27 @@ public interface IEMMapRead<T extends IEMStack> extends Comparable<IEMMapRead<? 
     default String[] getShortSymbolsInfo() {
         String[] info = new String[size()];
         int i = 0;
-        for (T instance : values()) {
-            info[i++] = instance.getDefinition().getShortSymbol();
+        for (Map.Entry<IEMDefinition, T> instance : entrySet()) {
+            info[i++] = instance.getValue().getDefinition().getShortSymbol();
         }
         return info;
     }
 
     default String[] getElementalInfo() {
-        String[] info = new String[size() * 3];
-        int i = 0;
-        for (T defStack : values()) {
-            info[i] = EnumChatFormatting.BLUE + defStack.getDefinition().getLocalizedName();
-            info[i + 1] = EnumChatFormatting.AQUA + defStack.getDefinition().getSymbol();
-            info[i + 2] = "Amount " + EnumChatFormatting.GREEN + defStack.getAmount()/AVOGADRO_CONSTANT+" "+translateToLocal("tt.keyword.mol");
-            i += 3;
+        String[] info = new String[size()];
+        int      i    = 0;
+        for (Map.Entry<IEMDefinition, T> entry : entrySet()) {
+            T instance = entry.getValue();
+            info[i++] = EnumChatFormatting.BLUE + instance.getDefinition().getLocalizedName() + " " + EnumChatFormatting.AQUA + instance.getDefinition().getSymbol() + EnumChatFormatting.RESET +
+                    " " + translateToLocal("tt.keyword.short.amount") + ": " + EnumChatFormatting.GREEN + TT_Utility.formatNumberExp(instance.getAmount() / AVOGADRO_CONSTANT) + " " + translateToLocal("tt.keyword.unit.mol") + EnumChatFormatting.RESET +
+                    " " + translateToLocal("tt.keyword.short.charge") + ": " + EnumChatFormatting.GREEN + TT_Utility.formatNumberExp(instance.getCharge()) + " " + translateToLocal("tt.keyword.unit.charge") + EnumChatFormatting.RESET;
         }
         return info;
     }
 
     //NBT
-    default NBTTagCompound getShortSymbolsNBT() {
-        NBTTagCompound nbt = new NBTTagCompound();
-        String[] info = getShortSymbolsInfo();
-        nbt.setInteger("i", info.length);
-        for (int i = 0; i < info.length; i++) {
-            nbt.setString(Integer.toString(i), info[i]);
-        }
-        return nbt;
-    }
-
-    default NBTTagCompound getInfoNBT() {
-        NBTTagCompound nbt = new NBTTagCompound();
-        String[] info = getElementalInfo();
-        nbt.setInteger("i", info.length);
-        for (int i = 0; i < info.length; i++) {
-            nbt.setString(Integer.toString(i), info[i]);
-        }
-        return nbt;
-    }
-
     default NBTTagCompound toNBT(EMDefinitionsRegistry registry) {
-        NBTTagCompound nbt = new NBTTagCompound();
-        nbt.setInteger("i", size());
-        int i = 0;
-        for (Map.Entry<IEMDefinition, T> entry : entrySet()) {
-            nbt.setTag(Integer.toString(i++), entry.getValue().toNBT(registry));
-        }
-        return nbt;
+        return packNBT(t -> t.toNBT(registry),valuesToArray());
     }
 
     @Override
@@ -143,11 +120,11 @@ public interface IEMMapRead<T extends IEMStack> extends Comparable<IEMMapRead<? 
             return sizeDiff;
         }
 
-        Iterator<T>                  iterator  = values().iterator();
-        Iterator<? extends IEMStack> iteratorO = o.values().iterator();
+        Iterator<Map.Entry<IEMDefinition, T>>                            iterator  = entrySet().iterator();
+        Iterator<? extends Map.Entry<IEMDefinition, ? extends IEMStack>> iteratorO = o.entrySet().iterator();
 
         while (iterator.hasNext()) {
-            int result = iterator.next().compareTo(iteratorO.next());
+            int result = iterator.next().getValue().compareTo(iteratorO.next().getValue());
             if (result != 0) {
                 return result;
             }
@@ -232,7 +209,7 @@ public interface IEMMapRead<T extends IEMStack> extends Comparable<IEMMapRead<? 
     }
 
     default boolean containsAmountExact(IEMDefinition def, double amount) {
-        T target = getBackingMap().get(def);
+        T target = get(def);
         return target != null && target.getAmount() >= amount;
     }
 
