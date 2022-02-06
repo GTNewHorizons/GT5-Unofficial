@@ -12,17 +12,18 @@ GTPP.multiblock.pollution=污染
 GTPP.multiblock.energy=能量存储
 GTPP.multiblock.progress=进程
 GTPP.multiblock.efficiency=效率
-GTPP.multiblock.problems=为每桶
+GTPP.multiblock.problems=维护问题
 GTPP.multiblock.mei=最大能量输入
-GTPP.multiblock.usage=大概能用来
+GTPP.multiblock.usage=NEI功率
+GTPP.multiblock.generation=可能生成
 GTPP.multiblock.specialvalue=特殊值
-GTPP.multiblock.duration=持续时间
+GTPP.multiblock.duration=NEI时间
 
 
 
 GTPP.CC.machinetier=控制核心等级
 GTPP.CC.discount=EU损耗
-GTPP.CC.parallel=最大并行处理进程
+GTPP.CC.parallel=最大并行
 
 //Tooltips for the Charger Packs
 GTPP.battpack.tooltip.1=在Baubles的腰带栏内使用
@@ -41,12 +42,12 @@ GTPP.nanohealer.hidden=隐藏信息?
 //10/4/19
 //Tooltips for the Mob Killing Baubles
 GTPP.monsterkiller.tooltip.1=在Baubles的护身符栏内使用
-GTPP.monsterkiller.tooltip.2=排泄
-GTPP.monsterkiller.tooltip.3=每击杀
+GTPP.monsterkiller.tooltip.2=产生
+GTPP.monsterkiller.tooltip.3=每击杀一个指定怪物
 GTPP.monsterkiller.tooltip.4=目标类型:
 
 //17/08/19
-GTPP.container.decaychest.name=衰变的
+GTPP.container.decaychest.name=可衰变
 
 
 
@@ -65,22 +66,22 @@ GTPP.nei.eutick=Eu/t
 GTPP.nei.timetaken=耗时
 GTPP.nei.output=输出
 GTPP.nei.input=输入
-GTPP.nei.result=结果
+GTPP.nei.result=产物
 GTPP.nei.radioation=辐射等级
 
 //Some Generic Words
 GTPP.info.eu=EU
 GTPP.info.euInfo=EU信息
 GTPP.info.inputLimit=输入限制
-GTPP.info.currentPower=当前功率
+GTPP.info.currentPower=当前能量
 GTPP.info.hidden=隐藏
 
 //Some Time Words
-GTPP.time.ticks=刻
+GTPP.time.ticks=t
 GTPP.time.seconds=秒
 GTPP.time.minutes=分
-GTPP.time.hours=时
-GTPP.time.days=日
+GTPP.time.hours=小时
+GTPP.time.days=天
 GTPP.time.weeks=周
 GTPP.time.months=月
 
@@ -102,14 +103,14 @@ achievement.gt.blockmachines.fusioncomputer.tier.09=聚变计算机MK IV
 achievement.gtplusplus.blockcasings.3.12=聚变框架MK III
 achievement.gtplusplus.blockcasings.3.13=进阶磁力遏制!
 achievement.gtplusplus.blockcasings.3.15=量子遏制!
-achievement.gt.blockmachines.fusioncomputer.tier.09.desc=[AL]捡起这个物品以在NEI内查看配方
-achievement.gtplusplus.blockcasings.3.12.desc=[AL]捡起这个物品以在NEI内查看配方
-achievement.gtplusplus.blockcasings.3.13.desc=[AL]捡起这个物品以在NEI内查看配方
-achievement.gtplusplus.blockcasings.3.15.desc=[AL]捡起这个物品以在NEI内查看配方
+achievement.gt.blockmachines.fusioncomputer.tier.09.desc=[AL]捡起这个物品以在NEI内查看合成表
+achievement.gtplusplus.blockcasings.3.12.desc=[AL]捡起这个物品以在NEI内查看合成表
+achievement.gtplusplus.blockcasings.3.13.desc=[AL]捡起这个物品以在NEI内查看合成表
+achievement.gtplusplus.blockcasings.3.15.desc=[AL]捡起这个物品以在NEI内查看合成表
 achievement.gt.blockmachines.gtplusplus.fusion.single=可控聚变
 achievement.gt.blockmachines.gtplusplus.tank.plasma=等离子存储
-achievement.gt.blockmachines.gtplusplus.fusion.single.desc=[AL]捡起这个物品以在NEI内查看配方
-achievement.gt.blockmachines.gtplusplus.tank.plasma.desc=[AL]捡起这个物品以在NEI内查看配方
+achievement.gt.blockmachines.gtplusplus.fusion.single.desc=[AL]捡起这个物品以在NEI内查看合成表
+achievement.gt.blockmachines.gtplusplus.tank.plasma.desc=[AL]捡起这个物品以在NEI内查看合成表
 
 
 //5/2/19
@@ -117,28 +118,28 @@ achievement.MU-metaitem.01.32106=初级物理学家
 achievement.MU-metaitem.01.32107=研究生物理学家
 achievement.MU-metaitem.01.32108=学术物理学家
 achievement.MU-metaitem.01.32109=物理学硕士
-achievement.MU-metaitem.01.32106.desc=[AL]捡起这个物品以在NEI内查看配方
-achievement.MU-metaitem.01.32107.desc=[AL]捡起这个物品以在NEI内查看配方
-achievement.MU-metaitem.01.32108.desc=[AL]捡起这个物品以在NEI内查看配方
-achievement.MU-metaitem.01.32109.desc=[AL]捡起这个物品以在NEI内查看配方
+achievement.MU-metaitem.01.32106.desc=[AL]捡起这个物品以在NEI内查看合成表
+achievement.MU-metaitem.01.32107.desc=[AL]捡起这个物品以在NEI内查看合成表
+achievement.MU-metaitem.01.32108.desc=[AL]捡起这个物品以在NEI内查看合成表
+achievement.MU-metaitem.01.32109.desc=[AL]捡起这个物品以在NEI内查看合成表
 achievement.MU-metaitem.01.32066=质子遏制
 achievement.MU-metaitem.01.32068=电子遏制
 achievement.MU-metaitem.01.32070=夸克遏制
 achievement.MU-metaitem.01.32110=引力遏制
-achievement.MU-metaitem.01.32066.desc=[AL]捡起这个物品以在NEI内查看配方
-achievement.MU-metaitem.01.32068.desc=[AL]捡起这个物品以在NEI内查看配方
-achievement.MU-metaitem.01.32070.desc=[AL]捡起这个物品以在NEI内查看配方
-achievement.MU-metaitem.01.32110.desc=[AL]捡起这个物品以在NEI内查看配方
+achievement.MU-metaitem.01.32066.desc=[AL]捡起这个物品以在NEI内查看合成表
+achievement.MU-metaitem.01.32068.desc=[AL]捡起这个物品以在NEI内查看合成表
+achievement.MU-metaitem.01.32070.desc=[AL]捡起这个物品以在NEI内查看合成表
+achievement.MU-metaitem.01.32110.desc=[AL]捡起这个物品以在NEI内查看合成表
 achievement.item.personalHealingDevice=食物是为了笨蛋
 achievement.item.personalHealingDevice.desc=[AL]你已经升级到纳米，未来就是你的
 achievement.item.GTPP.BattPack.06.name=充电工具包Mk I
 achievement.item.GTPP.BattPack.07.name=充电工具包Mk II
 achievement.item.GTPP.BattPack.08.name=充电工具包Mk III
 achievement.item.GTPP.BattPack.09.name=充电工具包Mk IV
-achievement.item.GTPP.BattPack.06.name.desc=[AL]捡起这个物品以在NEI内查看配方
-achievement.item.GTPP.BattPack.07.name.desc=[AL]捡起这个物品以在NEI内查看配方
-achievement.item.GTPP.BattPack.08.name.desc=[AL]捡起这个物品以在NEI内查看配方
-achievement.item.GTPP.BattPack.09.name.desc=[AL]捡起这个物品以在NEI内查看配方
+achievement.item.GTPP.BattPack.06.name.desc=[AL]捡起这个物品以在NEI内查看合成表
+achievement.item.GTPP.BattPack.07.name.desc=[AL]捡起这个物品以在NEI内查看合成表
+achievement.item.GTPP.BattPack.08.name.desc=[AL]捡起这个物品以在NEI内查看合成表
+achievement.item.GTPP.BattPack.09.name.desc=[AL]捡起这个物品以在NEI内查看合成表
 
 
 
@@ -147,11 +148,11 @@ achievement.gtpp.start=Gregtech++
 achievement.gtpp.start.desc=所以,你认为你已经得到了它?
 achievement.hatch.control=这是你放置控制核心的地方
 achievement.hatch.control.desc=所有GT++的多方块都需要特殊的填充.
-achievement.hatch.dynamo.buffered=缓冲后的发电机填充物
-achievement.hatch.dynamo.buffered.desc=不要在大型涡轮机上使用这些.
+achievement.hatch.dynamo.buffered=缓冲后的发电机动力仓
+achievement.hatch.dynamo.buffered.desc=可以在大型涡轮机上使用这些.
 achievement.multi.abs=合金冶炼炉[ABS]
 achievement.multi.abs.desc=用于制造大多数后期合金.
-achievement.dust.potin=粗青铜合金!
+achievement.dust.potin=铜锌锡合金!
 achievement.dust.potin.desc=好吧,你得从某个地方开始...
 achievement.dust.eglin=埃格林钢铁!
 achievement.dust.eglin.desc=进展虽然缓慢...
@@ -210,30 +211,14 @@ achievement.decay.technetium99m.desc=回旋加速器产品
 achievement.decay.technetium99=锝99
 achievement.decay.technetium99.desc=回旋加速器产品
 
-
-
 //24/11/19
-achievement.gt.blockmachines.hatch.turbine.input.tier.00=涡轮框架
-achievement.gt.blockmachines.hatch.turbine.input.tier.00.desc=[AL]捡起这个物品以在NEI内查看配方
+achievement.gt.blockmachines.hatch.turbine.input.tier.00=涡轮仓
+achievement.gt.blockmachines.hatch.turbine.input.tier.00.desc=[AL]捡起这个物品以在NEI内查看合成表
+
+//Added 6/12/21
+achievement.gt.blockmachines.gtpp.multimachine.flotationcell=工业浮选机
+achievement.gt.blockmachines.gtpp.multimachine.flotationcell.desc=[AL]捡起这个物品以在NEI内查看合成表
+achievement.gt.blockmachines.gtpp.multimachine.isamill=艾萨研磨机
+achievement.gt.blockmachines.gtpp.multimachine.isamill.desc=[AL]捡起这个物品以在NEI内查看合成表
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//This zh_CN.lang is translated by huajijam for GregTech++ (3/1/20)
