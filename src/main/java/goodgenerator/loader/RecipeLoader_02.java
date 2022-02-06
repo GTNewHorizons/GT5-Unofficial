@@ -43,6 +43,8 @@ public class RecipeLoader_02 {
         CrackRecipeAdder.reAddBlastRecipe(MyMaterial.adamantiumAlloy, 2500, 1920, 5500, true);
         CrackRecipeAdder.reAddBlastRecipe(MyMaterial.marM200, 200, 7680, 5000, true);
         CrackRecipeAdder.reAddBlastRecipe(MyMaterial.marM200, 220, 7680, 5000, false);
+        CrackRecipeAdder.reAddBlastRecipe(MyMaterial.signalium, 1600, 30720, 4000, true);
+        CrackRecipeAdder.reAddBlastRecipe(MyMaterial.lumiium, 1600, 30720, 4000, true);
 
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
@@ -1168,6 +1170,50 @@ public class RecipeLoader_02 {
                 new int[]{10000},
                 200,
                 7680
+        );
+
+        GT_Values.RA.addMixerRecipe(
+                Materials.Glowstone.getDust(4),
+                Materials.Redstone.getDust(2),
+                Materials.Aluminium.getDust(1),
+                GT_Utility.getIntegratedCircuit(3),
+                null,
+                null,
+                ItemRefer.High_Energy_Mixture.get(4),
+                240,
+                120
+        );
+
+        GT_Values.RA.addFluidSolidifierRecipe(
+                ItemRefer.High_Energy_Mixture.get(2),
+                Materials.PhosphoricAcid.getFluid(4000),
+                MyMaterial.lumiinessence.get(OrePrefixes.dust, 1),
+                600,
+                240
+        );
+
+        GT_Values.RA.addMixerRecipe(
+                Materials.AnnealedCopper.getDust(4),
+                Materials.Ardite.getDust(2),
+                Materials.RedAlloy.getDust(2),
+                GT_Utility.getIntegratedCircuit(4),
+                Materials.Redstone.getMolten(288),
+                null,
+                MyMaterial.signalium.get(OrePrefixes.dust, 1),
+                240,
+                120
+        );
+
+        GT_Values.RA.addMixerRecipe(
+                Materials.TinAlloy.getDust(4),
+                Materials.SterlingSilver.getDust(2),
+                MyMaterial.lumiinessence.get(OrePrefixes.dust, 2),
+                GT_Utility.getIntegratedCircuit(4),
+                Materials.Glowstone.getMolten(288),
+                null,
+                MyMaterial.lumiium.get(OrePrefixes.dust, 1),
+                240,
+                120
         );
     }
 

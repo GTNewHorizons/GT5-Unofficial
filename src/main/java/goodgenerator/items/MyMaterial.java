@@ -605,7 +605,7 @@ public class MyMaterial implements Runnable {
             subscriptNumbers("ZnTh"),
             new Werkstoff.Stats(),
             Werkstoff.Types.COMPOUND,
-            new Werkstoff.GenerationFeatures().disable().onlyDust().addMolten().addMetalItems().addMultipleIngotMetalWorkingItems(),
+            new Werkstoff.GenerationFeatures().disable().onlyDust().addMolten().addMetalItems(),
             OffsetID + 52,
             TextureSet.SET_SHINY,
             new Pair<>(Zinc, 1),
@@ -954,7 +954,7 @@ public class MyMaterial implements Runnable {
             subscriptNumbers("Zr34Sn5Fe2Cr"),
             new Werkstoff.Stats().setCentrifuge(true).setBlastFurnace(true).setMeltingPoint(2800),
             Werkstoff.Types.MIXTURE,
-            new Werkstoff.GenerationFeatures().onlyDust().addMolten().addMetalItems().addCraftingMetalWorkingItems().addSimpleMetalWorkingItems().addMultipleIngotMetalWorkingItems().addMixerRecipes((short) 4),
+            new Werkstoff.GenerationFeatures().onlyDust().addMolten().addMetalItems().addCraftingMetalWorkingItems().addMixerRecipes((short) 4),
             OffsetID + 81,
             TextureSet.SET_METALLIC,
             new Pair<>(WerkstoffLoader.Zirconium, 34),
@@ -969,7 +969,7 @@ public class MyMaterial implements Runnable {
             subscriptNumbers("Zr34Sn4FeCrNi"),
             new Werkstoff.Stats().setCentrifuge(true).setBlastFurnace(true).setMeltingPoint(2800),
             Werkstoff.Types.MIXTURE,
-            new Werkstoff.GenerationFeatures().onlyDust().addMolten().addMetalItems().addCraftingMetalWorkingItems().addSimpleMetalWorkingItems().addMultipleIngotMetalWorkingItems().addMixerRecipes((short) 2),
+            new Werkstoff.GenerationFeatures().onlyDust().addMolten().addMetalItems().addCraftingMetalWorkingItems().addMixerRecipes((short) 2),
             OffsetID + 82,
             TextureSet.SET_METALLIC,
             new Pair<>(WerkstoffLoader.Zirconium, 34),
@@ -985,7 +985,7 @@ public class MyMaterial implements Runnable {
             subscriptNumbers("Fe12Ni10Co8Ti4Mo2Al"),
             new Werkstoff.Stats().setCentrifuge(true).setBlastFurnace(true).setMeltingPoint(3700),
             Werkstoff.Types.MIXTURE,
-            new Werkstoff.GenerationFeatures().onlyDust().addMolten().addMetalItems().addCraftingMetalWorkingItems().addSimpleMetalWorkingItems().addMultipleIngotMetalWorkingItems().addMixerRecipes((short) 6),
+            new Werkstoff.GenerationFeatures().onlyDust().addMolten().addMetalItems().addCraftingMetalWorkingItems().addSimpleMetalWorkingItems().addMixerRecipes((short) 6),
             OffsetID + 83,
             TextureSet.SET_METALLIC,
             new Pair<>(Iron, 12),
@@ -1153,6 +1153,43 @@ public class MyMaterial implements Runnable {
             TextureSet.SET_DULL,
             new Pair<>(Lithium, 1),
             new Pair<>(Chlorine, 1)
+    );
+
+    public static final Werkstoff signalium = new Werkstoff(
+            new short[]{0xd4,0x40,0x00},
+            "Signalium",
+            new Werkstoff.Stats().setBlastFurnace(true).setMeltingPoint(4000),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().onlyDust().addMolten().addMetalItems().addCraftingMetalWorkingItems(),
+            OffsetID + 98,
+            TextureSet.SET_SHINY,
+            new Pair<>(AnnealedCopper, 4),
+            new Pair<>(Ardite, 2),
+            new Pair<>(RedAlloy, 2)
+    );
+
+    public static final Werkstoff lumiinessence = new Werkstoff(
+            new short[]{0xe8,0xf2,0x24},
+            "Lumiinessence",
+            subscriptNumbers("(Al??)2(PO4)4"),
+            new Werkstoff.Stats(),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().onlyDust(),
+            OffsetID + 99,
+            TextureSet.SET_DULL
+    );
+
+    public static final Werkstoff lumiium = new Werkstoff(
+            new short[]{0xe8,0xf2,0x24},
+            "Lumiium",
+            new Werkstoff.Stats().setBlastFurnace(true).setMeltingPoint(4000),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().onlyDust().addMolten().addMetalItems().addCraftingMetalWorkingItems(),
+            OffsetID + 100,
+            TextureSet.SET_SHINY,
+            new Pair<>(TinAlloy, 4),
+            new Pair<>(SterlingSilver, 2),
+            new Pair<>(lumiinessence, 2)
     );
 
     @Override

@@ -79,6 +79,7 @@ public final class ItemRefer {
     public static ItemRefer Essentia_Upgrade_Spirit = getItemStack(upgradeEssentia, 7);
     public static ItemRefer Essentia_Upgrade_Radiation = getItemStack(upgradeEssentia, 8);
     public static ItemRefer Essentia_Upgrade_Electric = getItemStack(upgradeEssentia, 9);
+    public static ItemRefer High_Energy_Mixture = getItemStack(highEnergyMixture);
 
     public static ItemRefer Field_Restriction_Casing = getItemStack(MAR_Casing);
     public static ItemRefer Naquadah_Fuel_Refinery_Casing = getItemStack(FRF_Casings);
