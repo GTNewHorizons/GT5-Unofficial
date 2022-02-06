@@ -326,7 +326,7 @@ public class RecipeLoader {
         		},
         		1920, 
         		200, 
-        		2700
+        		800
         	);
         
         RecipeAdder.instance.DissolutionTankRecipes.addDissolutionTankRecipe(
@@ -694,7 +694,7 @@ public class RecipeLoader {
         		},
         		1920, 
         		200, 
-        		2700
+        		800
         	);
         
         GT_Values.RA.addCrackingRecipe(
