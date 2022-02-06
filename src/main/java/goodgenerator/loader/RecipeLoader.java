@@ -689,10 +689,10 @@ public class RecipeLoader {
 
         GT_Values.RA.addFuel(MyMaterial.ether.get(OrePrefixes.cell), null, 537, 0);
         GT_Values.RA.addFuel(MyMaterial.ether.get(OrePrefixes.cell), null, 537, 1);
-        GT_Values.RA.addFuel(MyMaterial.ethanolGasoline.get(OrePrefixes.cell), null, 750, 0);
+        GT_Values.RA.addFuel(MyMaterial.ethanolGasoline.get(OrePrefixes.cell), null, 1100, 0);
         GT_Values.RA.addFuel(MyMaterial.cyclopentadiene.get(OrePrefixes.cell), null, 70, 1);
-        GT_Values.RA.addFuel(MyMaterial.ironedFuel.get(OrePrefixes.cell), null, 2048, 0);
-        GT_Values.RA.addFuel(MyMaterial.ironedKerosene.get(OrePrefixes.cell), null, 1324, 0);
+        GT_Values.RA.addFuel(MyMaterial.ironedFuel.get(OrePrefixes.cell), null, 2248, 0);
+        GT_Values.RA.addFuel(MyMaterial.ironedKerosene.get(OrePrefixes.cell), null, 1824, 0);
 
         GT_Values.RA.addMultiblockChemicalRecipe(
                 new ItemStack[]{
