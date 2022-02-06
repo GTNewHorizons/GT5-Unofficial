@@ -15,15 +15,20 @@ import static gregtech.api.enums.Textures.BlockIcons.*;
 
 public class GT_MetaTileEntity_AlloySmelter_Bronze extends GT_MetaTileEntity_BasicMachine_Bronze {
     public GT_MetaTileEntity_AlloySmelter_Bronze(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, "Combination Smelter", 2, 1, true);
+        super(aID, aName, aNameRegional, "Combination Smelter", 2, 1, false);
     }
 
     public GT_MetaTileEntity_AlloySmelter_Bronze(String aName, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aDescription, aTextures, 2, 1, true);
+        super(aName, aDescription, aTextures, 2, 1, false);
     }
 
     public GT_MetaTileEntity_AlloySmelter_Bronze(String aName, String[] aDescription, ITexture[][][] aTextures) {
-        super(aName, aDescription, aTextures, 2, 1, true);
+        super(aName, aDescription, aTextures, 2, 1, false);
+    }
+
+    @Override
+    protected boolean isBricked() {
+        return true;
     }
 
     @Override
@@ -37,15 +42,8 @@ public class GT_MetaTileEntity_AlloySmelter_Bronze extends GT_MetaTileEntity_Bas
     }
 
     @Override
-    public int checkRecipe() {
-        GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sAlloySmelterRecipes.findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[1], null, getAllInputs());
-        if ((tRecipe != null) && (canOutput(tRecipe.mOutputs)) && (tRecipe.isRecipeInputEqual(true, null, getAllInputs()))) {
-            mOutputItems[0] = tRecipe.getOutput(0);
-            mEUt = tRecipe.mEUt;
-            mMaxProgresstime = (tRecipe.mDuration * 2);
-            return 2;
-        }
-        return 0;
+    public GT_Recipe.GT_Recipe_Map getRecipeList() {
+        return GT_Recipe.GT_Recipe_Map.sAlloySmelterRecipes;
     }
 
     @Override

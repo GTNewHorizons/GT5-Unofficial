@@ -335,10 +335,11 @@ public class GT_LanguageManager {
 		addStringLocalization("Interaction_DESCRIPTION_Index_216", "Deprecated Recipe");
 		addStringLocalization("Interaction_DESCRIPTION_Index_217", "Stocking mode. Keeps this many items in destination input slots. This mode can be server unfriendly.");
 		addStringLocalization("Interaction_DESCRIPTION_Index_218", "Transfer size mode. Add exactly this many items in destination input slots as long as there is room.");
-		addStringLocalization("Interaction_DESCRIPTION_Index_219", "Single recipe locking enabled. Will lock to next recipe.");
+		addStringLocalization("Interaction_DESCRIPTION_Index_219", "Extended Facing:");
 		addStringLocalization("Interaction_DESCRIPTION_Index_220", "Single recipe locking disabled.");
 		addStringLocalization("Interaction_DESCRIPTION_Index_221", "Item threshold");
 		addStringLocalization("Interaction_DESCRIPTION_Index_222", "Fluid threshold");
+		addStringLocalization("Interaction_DESCRIPTION_Index_223", "Single recipe locking enabled. Will lock to next recipe.");
 		addStringLocalization("Interaction_DESCRIPTION_Index_500", "Fitting: Loose - More Flow");
 		addStringLocalization("Interaction_DESCRIPTION_Index_501", "Fitting: Tight - More Efficiency");
 

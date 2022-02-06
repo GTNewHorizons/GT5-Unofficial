@@ -11,6 +11,7 @@ import codechicken.lib.vec.Transformation;
 import codechicken.lib.vec.Translation;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
+import cpw.mods.fml.client.event.ConfigChangedEvent;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
@@ -18,6 +19,7 @@ import cpw.mods.fml.common.network.FMLNetworkEvent;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.IHasFluidDisplayItem;
 import gregtech.api.interfaces.tileentity.ICoverable;
@@ -43,6 +45,7 @@ import gregtech.common.render.GT_MetaGenerated_Tool_Renderer;
 import gregtech.common.render.GT_PollutionRenderer;
 import gregtech.common.render.GT_Renderer_Block;
 import gregtech.common.render.GT_Renderer_Entity_Arrow;
+import gregtech.loaders.preload.GT_PreLoad;
 import ic2.api.tile.IWrenchable;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -568,6 +571,18 @@ public class GT_Client extends GT_Proxy
     }
 
     @SubscribeEvent
+    public void onConfigChange(ConfigChangedEvent.OnConfigChangedEvent e) {
+        if ("gregtech".equals(e.modID) && "client".equals(e.configID)) {
+            GregTech_API.sClientDataFile.mConfig.save();
+            // refresh client preference and send to server, since it's the only config we allow changing at runtime.
+            mPreference = new GT_ClientPreference(GregTech_API.sClientDataFile);
+            GT_PreLoad.loadClientConfig();
+            if (e.isWorldRunning)
+                GT_Values.NW.sendToServer(new GT_Packet_ClientPreference(mPreference));
+        }
+    }
+
+    @SubscribeEvent
     public void onDrawBlockHighlight(DrawBlockHighlightEvent aEvent) {
         Block aBlock = aEvent.player.worldObj.getBlock(aEvent.target.blockX, aEvent.target.blockY, aEvent.target.blockZ);
         TileEntity aTileEntity = aEvent.player.worldObj.getTileEntity(aEvent.target.blockX, aEvent.target.blockY, aEvent.target.blockZ);
@@ -602,6 +617,11 @@ public class GT_Client extends GT_Proxy
         }
 
         if (GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sCovers.keySet())) {
+            if (((ICoverable) aTileEntity).getCoverIDAtSide((byte) aEvent.target.sideHit) == 0)
+                drawGrid(aEvent, true, false, aEvent.player.isSneaking());
+        }
+
+        if (GT_Utility.areStacksEqual(ItemList.Tool_Cover_Copy_Paste.get(1), aEvent.currentItem, true)) {
             if (((ICoverable) aTileEntity).getCoverIDAtSide((byte) aEvent.target.sideHit) == 0)
                 drawGrid(aEvent, true, false, aEvent.player.isSneaking());
         }

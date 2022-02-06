@@ -69,9 +69,12 @@ public class GT_Cover_PlayerDetector extends GT_CoverBehavior {
         aCoverVariable = (aCoverVariable + (aPlayer.isSneaking()? -1 : 1)) % 3;
         if(aCoverVariable <0){aCoverVariable = 2;}
         switch(aCoverVariable) {
-            case 0: GT_Utility.sendChatToPlayer(aPlayer, trans("068", "Emit if any Player is close")); break;
-            case 1: GT_Utility.sendChatToPlayer(aPlayer, trans("069", "Emit if other Player is close")); break;
-            case 2: GT_Utility.sendChatToPlayer(aPlayer, trans("070", "Emit if you are close")); break;
+            case 0:
+				GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("068", "Emit if any Player is close")); break;
+            case 1:
+				GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("069", "Emit if other Player is close")); break;
+            case 2:
+				GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("070", "Emit if you are close")); break;
         }
         return aCoverVariable;
     }
@@ -145,22 +148,22 @@ public class GT_Cover_PlayerDetector extends GT_CoverBehavior {
             this.coverID = aCoverID;
             this.coverVariable = aCoverVariable;
 
-            new GT_GuiIconCheckButton(this, 0, startX + spaceX*0, startY+spaceY*0, GT_GuiIcon.CHECKMARK, null)
-                    .setTooltipText(trans("068", "Emit if any Player is close"));
-            new GT_GuiIconCheckButton(this, 1, startX + spaceX*0, startY+spaceY*1, GT_GuiIcon.CHECKMARK, null)
-                    .setTooltipText(trans("069", "Emit if other Player is close"));
-            new GT_GuiIconCheckButton(this, 2, startX + spaceX*0, startY+spaceY*2, GT_GuiIcon.CHECKMARK, null)
-                    .setTooltipText(trans("070", "Emit if you are close"));
+			new GT_GuiIconCheckButton(this, 0, startX + spaceX*0, startY+spaceY*0, GT_GuiIcon.CHECKMARK, null)
+                    .setTooltipText(GT_Utility.trans("068", "Emit if any Player is close"));
+			new GT_GuiIconCheckButton(this, 1, startX + spaceX*0, startY+spaceY*1, GT_GuiIcon.CHECKMARK, null)
+                    .setTooltipText(GT_Utility.trans("069", "Emit if other Player is close"));
+			new GT_GuiIconCheckButton(this, 2, startX + spaceX*0, startY+spaceY*2, GT_GuiIcon.CHECKMARK, null)
+                    .setTooltipText(GT_Utility.trans("070", "Emit if you are close"));
         }
 
         @Override
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
-            this.fontRendererObj.drawString("Any player",
+			this.fontRendererObj.drawString(GT_Utility.trans("319", "Any player"),
                     startX + spaceX*1, 4+startY+spaceY*0, 0xFF555555);
-            this.fontRendererObj.drawString("Other players",
+			this.fontRendererObj.drawString(GT_Utility.trans("320", "Other players"),
                     startX + spaceX*1, 4+startY+spaceY*1, 0xFF555555);
-            this.fontRendererObj.drawString("Only owner",
+			this.fontRendererObj.drawString(GT_Utility.trans("321", "Only owner"),
                     startX + spaceX*1, 4+startY+spaceY*2, 0xFF555555);
         }
 

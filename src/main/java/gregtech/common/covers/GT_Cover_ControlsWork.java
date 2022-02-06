@@ -84,19 +84,19 @@ public class GT_Cover_ControlsWork extends GT_CoverBehavior {
         aCoverVariable = (aCoverVariable + (aPlayer.isSneaking()? -1 : 1)) % 5;
         if(aCoverVariable <0){aCoverVariable = 2;}
         if (aCoverVariable == 0) {
-            GT_Utility.sendChatToPlayer(aPlayer, trans("003", "Enable with Signal"));
+            GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("003", "Enable with Signal"));
         }
         if (aCoverVariable == 1) {
-            GT_Utility.sendChatToPlayer(aPlayer, trans("004", "Disable with Signal"));
+            GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("004", "Disable with Signal"));
         }
         if (aCoverVariable == 2) {
-            GT_Utility.sendChatToPlayer(aPlayer, trans("005", "Disabled"));
+            GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("005", "Disabled"));
         }
         if (aCoverVariable == 3) {
-            GT_Utility.sendChatToPlayer(aPlayer, trans("505", "Enable with Signal (Safe)"));
+            GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("505", "Enable with Signal (Safe)"));
         }
         if (aCoverVariable == 4) {
-            GT_Utility.sendChatToPlayer(aPlayer, trans("506", "Disable with Signal (Safe)"));
+            GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("506", "Disable with Signal (Safe)"));
         }
         // TODO: Set lastPlayer
         return aCoverVariable;
@@ -147,10 +147,10 @@ public class GT_Cover_ControlsWork extends GT_CoverBehavior {
         @Override
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
-            this.fontRendererObj.drawString(trans("243", "Enable with Redstone"), 3+startX + spaceX*1, 4+startY+spaceY*0, 0xFF555555);
-            this.fontRendererObj.drawString(trans("244", "Disable with Redstone"),3+startX + spaceX*1, 4+startY+spaceY*1, 0xFF555555);
-            this.fontRendererObj.drawString(trans("245", "Disable machine"),              3+startX + spaceX*1, 4+startY+spaceY*2, 0xFF555555);
-            this.fontRendererObj.drawString(trans("507", "Safe Mode"), 3+startX + spaceX*1, 4+startY+spaceY*3, 0xFF555555);
+            this.fontRendererObj.drawString(GT_Utility.trans("243", "Enable with Redstone"), 3+startX + spaceX*1, 4+startY+spaceY*0, 0xFF555555);
+            this.fontRendererObj.drawString(GT_Utility.trans("244", "Disable with Redstone"),3+startX + spaceX*1, 4+startY+spaceY*1, 0xFF555555);
+            this.fontRendererObj.drawString(GT_Utility.trans("245", "Disable machine"),              3+startX + spaceX*1, 4+startY+spaceY*2, 0xFF555555);
+            this.fontRendererObj.drawString(GT_Utility.trans("507", "Safe Mode"), 3+startX + spaceX*1, 4+startY+spaceY*3, 0xFF555555);
         }
 
         @Override

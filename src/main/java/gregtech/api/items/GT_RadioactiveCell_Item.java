@@ -154,7 +154,7 @@ public class GT_RadioactiveCell_Item
         default: color2 = EnumChatFormatting.DARK_GRAY; break;
         }
         EnumChatFormatting color1 = this instanceof GT_DepletetCell_Item ? color2 = EnumChatFormatting.DARK_GRAY : EnumChatFormatting.WHITE;
-        aList.add(color1 + String.format(trans("001", "Durability: %s/%s"), "" + color2 + (this.maxDmg - getDurabilityOfStack(aStack)) + color1, "" + this.maxDmg));
+		aList.add(color1 + String.format(transItem("001", "Durability: %s/%s"), "" + color2 + (this.maxDmg - getDurabilityOfStack(aStack)) + color1, "" + this.maxDmg));
     }
 
 	@Override

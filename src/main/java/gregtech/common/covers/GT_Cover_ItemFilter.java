@@ -75,10 +75,10 @@ public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilte
         ItemStack tStack = aPlayer.inventory.getCurrentItem();
         if (tStack != null) {
             aCoverVariable.mFilter = tStack;
-            GT_Utility.sendChatToPlayer(aPlayer, trans("301", "Item Filter: ") + tStack.getDisplayName());
+            GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("299", "Item Filter: ") + tStack.getDisplayName());
         } else {
             aCoverVariable.mFilter = null;
-            GT_Utility.sendChatToPlayer(aPlayer, trans("300", "Filter Cleared!"));
+            GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("300", "Filter Cleared!"));
         }
         return true;
     }
@@ -86,7 +86,7 @@ public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilte
     @Override
     protected ItemFilterData onCoverScrewdriverClickImpl(byte aSide, int aCoverID, ItemFilterData aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         aCoverVariable.mWhitelist = !aCoverVariable.mWhitelist;
-        GT_Utility.sendChatToPlayer(aPlayer, aCoverVariable.mWhitelist ? trans("125", "Whitelist Mode") : trans("124", "Blacklist Mode"));
+        GT_Utility.sendChatToPlayer(aPlayer, aCoverVariable.mWhitelist ? GT_Utility.trans("125", "Whitelist Mode") : GT_Utility.trans("124", "Blacklist Mode"));
         return aCoverVariable;
     }
 
@@ -225,7 +225,7 @@ public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilte
             this.coverID = aCoverID;
             this.coverVariable = aCoverVariable;
 
-            btnMode = new GT_GuiIconCheckButton(this, 0, startX + spaceX * 0, startY + spaceY * 0, GT_GuiIcon.WHITELIST, GT_GuiIcon.BLACKLIST, trans("125", "Whitelist Mode"), trans("124", "Blacklist Mode"));
+            btnMode = new GT_GuiIconCheckButton(this, 0, startX + spaceX * 0, startY + spaceY * 0, GT_GuiIcon.WHITELIST, GT_GuiIcon.BLACKLIST, GT_Utility.trans("125", "Whitelist Mode"), GT_Utility.trans("124", "Blacklist Mode"));
 
             itemFilterButtons = new GT_GuiFakeItemButton(this, startX + spaceX * 0, startY + spaceY * 2, GT_GuiIcon.SLOT_GRAY);
             itemFilterButtons.setMimicSlot(true);
@@ -234,8 +234,8 @@ public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilte
         @Override
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
-            this.fontRendererObj.drawString(trans("303", "Filter: "),    startX + spaceX*0, 3+startY+spaceY*1, 0xFF555555);
-            this.fontRendererObj.drawString(trans("302", "Check Mode"),  startX + spaceX*2, 3+startY+spaceY*0, 0xFF555555);
+            this.fontRendererObj.drawString(GT_Utility.trans("317", "Filter: "),    startX + spaceX*0, 3+startY+spaceY*1, 0xFF555555);
+            this.fontRendererObj.drawString(GT_Utility.trans("318", "Check Mode"),  startX + spaceX*2, 3+startY+spaceY*0, 0xFF555555);
         }
 
         @Override
@@ -246,10 +246,8 @@ public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilte
         @Override
         public void buttonClicked(GuiButton btn) {
             if (btn == btnMode) {
-                if (coverVariable.mWhitelist != btnMode.isChecked()) {
-                    coverVariable.mWhitelist = btnMode.isChecked();
-                    GT_Values.NW.sendToServer(new GT_Packet_TileEntityCoverNew(side, coverID, coverVariable, tile));
-                }
+                coverVariable.mWhitelist = !coverVariable.mWhitelist;
+                GT_Values.NW.sendToServer(new GT_Packet_TileEntityCoverNew(side, coverID, coverVariable, tile));
             }
             updateButtons();
         }

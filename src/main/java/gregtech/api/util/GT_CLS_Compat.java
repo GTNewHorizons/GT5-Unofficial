@@ -4,6 +4,7 @@ import cpw.mods.fml.common.ProgressManager;
 import gregtech.GT_Mod;
 import gregtech.api.enums.Materials;
 import gregtech.common.GT_Proxy;
+import gregtech.loaders.postload.GT_PostLoad;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -137,7 +138,7 @@ public class GT_CLS_Compat {
         }
         registerAndReportProgression("Vanilla materials", replacedVanillaItemsSet, progressBar,
             m -> m.mDefaultLocalName,
-            m -> GT_Mod.doActualRegistration(m)
+            m -> GT_PostLoad.doActualRegistration(m)
         );
     }
 

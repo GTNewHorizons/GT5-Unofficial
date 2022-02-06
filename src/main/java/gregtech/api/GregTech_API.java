@@ -54,9 +54,8 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiFunction;
-import java.util.function.UnaryOperator;
-import java.util.stream.Collectors;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import static gregtech.api.enums.GT_Values.B;
 import static gregtech.api.enums.GT_Values.L;
@@ -124,7 +123,9 @@ public class GregTech_API {
      * 12501 - 13000 are reserved for bartimaeusnek.
      * 13001 - 13100 are reserved for Techlone
      * 13101 - 13500 are reserved for kekzdealer
-     * 13501 - 14999 are currently free.
+     * 13501 - 14000 are reserved for glee8e.
+     * 14001 - 14100 are reserved for glowredman
+     * 14101 - 14999 are currently free.
      * 15000 - 16999 are reserved for TecTech.
      * 17000 - 29999 are currently free.
      * 30000 - 31999 are reserved for Alkalus.
@@ -333,7 +334,7 @@ public class GregTech_API {
             mOutputRF = false,
             mInputRF = false,
             meIOLoaded = false,
-            mRFExplosions = true,
+            mRFExplosions = false,
             mServerStarted = false,
             mIC2Classic = false,
             mMagneticraft = false,
@@ -768,9 +769,10 @@ public class GregTech_API {
         if (aStack == null || aStack.getItem() == null)
             return sNoBehavior;
         GT_CoverBehaviorBase<?> rCover = sCoverBehaviors.get(new GT_ItemStack(aStack));
-        if (rCover == null)
-            return sDefaultBehavior;
-        return rCover;
+        if (rCover != null) return rCover;
+        rCover = sCoverBehaviors.get(new GT_ItemStack(aStack, true));
+        if (rCover != null) return rCover;
+        return sDefaultBehavior;
     }
 
     /**

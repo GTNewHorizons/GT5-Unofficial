@@ -1,6 +1,8 @@
 package gregtech.common.covers;
 
 import com.google.common.io.ByteArrayDataInput;
+
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.GT_GUICover;
 import gregtech.api.gui.widgets.GT_GuiFakeItemButton;
@@ -78,7 +80,7 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
             ItemStack[] inv = dc.getStoredItemData();
             if (inv != null && inv.length > 1 && inv[1] != null)
                 tUsed = inv[1].stackSize;
-        } else if (mte instanceof GT_MetaTileEntity_Hatch_OutputBus_ME) {
+        } else if (GregTech_API.mAE2 && mte instanceof GT_MetaTileEntity_Hatch_OutputBus_ME) {
             if (((GT_MetaTileEntity_Hatch_OutputBus_ME) mte).isLastOutputFailed()) {
                 tMax = 64;
                 tUsed = 64;
@@ -131,11 +133,11 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
         if (aPlayer.isSneaking()) {
             if (aCoverVariable.inverted) {
                 aCoverVariable.inverted = false;
-                GT_Utility.sendChatToPlayer(aPlayer, trans("055","Normal"));
+				GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("055", "Normal"));
             }
             else {
                 aCoverVariable.inverted = true;
-                GT_Utility.sendChatToPlayer(aPlayer, trans("054","Inverted"));
+				GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("054", "Inverted"));
             }
         } else {
             aCoverVariable.slot++;
@@ -143,9 +145,9 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
                 aCoverVariable.slot = -1;
 
             if (aCoverVariable.slot == -1)
-                GT_Utility.sendChatToPlayer(aPlayer, trans("053", "Slot: ") + trans("ALL", "All"));
+				GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("053", "Slot: ") + GT_Utility.trans("ALL", "All"));
             else
-                GT_Utility.sendChatToPlayer(aPlayer, trans("053", "Slot: ") + aCoverVariable.slot);
+				GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("053", "Slot: ") + aCoverVariable.slot);
         }
 
         return aCoverVariable;
@@ -281,43 +283,43 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
         private static final int spaceX = 18;
         private static final int spaceY = 18;
 
-        private final String ALL = trans("ALL", "All");
-        private final String INVERTED = trans("INVERTED","Inverted");
-        private final String NORMAL = trans("NORMAL","Normal");
+        private final String ALL = GT_Utility.trans("ALL", "All");
+		private final String INVERTED = GT_Utility.trans("INVERTED", "Inverted");
+		private final String NORMAL = GT_Utility.trans("NORMAL", "Normal");
 
-        public GUI(byte aSide, int aCoverID, ItemMeterData aCoverVariable, ICoverable aTileEntity) {
+		public GUI(byte aSide, int aCoverID, ItemMeterData aCoverVariable, ICoverable aTileEntity) {
             super(aTileEntity, 176, 107, GT_Utility.intToStack(aCoverID));
             this.side = aSide;
             this.coverID = aCoverID;
             this.coverVariable = aCoverVariable;
 
-            invertedButton = new GT_GuiIconCheckButton(this, 0, startX + spaceX*0, startY+spaceY*0, GT_GuiIcon.REDSTONE_ON, GT_GuiIcon.REDSTONE_OFF, INVERTED, NORMAL);
+            invertedButton = new GT_GuiIconCheckButton(this, 0, startX, startY, GT_GuiIcon.REDSTONE_ON, GT_GuiIcon.REDSTONE_OFF, INVERTED, NORMAL);
 
-            intSlot = new GT_GuiIntegerTextBox(this, 1, startX + spaceX * 0, startY + spaceY * 1 + 2, spaceX * 2+5, 12);
+            intSlot = new GT_GuiIntegerTextBox(this, 1, startX, startY + spaceY + 2, spaceX * 2 + 5, 12);
             intSlot.setMaxStringLength(6);
 
             //only shows if opened gui of block sadly, should've used container.
-            intSlotIcon = new GT_GuiFakeItemButton(this, startX + spaceX * 8-4, startY + spaceY * 1, GT_GuiIcon.SLOT_GRAY);
+            intSlotIcon = new GT_GuiFakeItemButton(this, startX + spaceX * 8 - 4, startY + spaceY, GT_GuiIcon.SLOT_GRAY);
             intSlotIcon.setMimicSlot(true);
 
-            if (tile instanceof TileEntity && !super.tile.isDead())
+            if (tile instanceof TileEntity && !super.tile.isDead() && tile instanceof IGregTechTileEntity
+                && !(((IGregTechTileEntity) tile).getMetaTileEntity() instanceof GT_MetaTileEntity_DigitalChestBase))
                 maxSlot = Math.min(tile.getSizeInventory() - 1, SLOT_MASK-1);
             else
                 maxSlot = -1;
 
-            if (maxSlot == -1 || tile instanceof GT_MetaTileEntity_DigitalChestBase)
-                intSlot.setEnabled(false);
+            intSlot.setEnabled(maxSlot >= 0);
 
-            thresholdSlot = new GT_GuiIntegerTextBox(this, 2, startX + spaceX * 0, startY + spaceY * 2 + 2, spaceX * 2 + 5, 12);
+            thresholdSlot = new GT_GuiIntegerTextBox(this, 2, startX, startY + spaceY * 2 + 2, spaceX * 2 + 5, 12);
             thresholdSlot.setMaxStringLength(6);
         }
 
         @Override
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
-            this.getFontRenderer().drawString(coverVariable.inverted ? INVERTED : NORMAL, startX + spaceX*3, 4+startY+spaceY*0, 0xFF555555);
-            this.getFontRenderer().drawString(trans("254", "Detect slot#"), startX + spaceX*3, 4+startY+spaceY*1, 0xFF555555);
-            this.getFontRenderer().drawString(trans("221", "Item threshold"), startX + spaceX * 3, startY + spaceY * 2 + 4, 0xFF555555);
+            this.getFontRenderer().drawString(coverVariable.inverted ? INVERTED : NORMAL, startX + spaceX * 3, 4 + startY, 0xFF555555);
+			this.getFontRenderer().drawString(GT_Utility.trans("254", "Detect slot#"), startX + spaceX * 3, 4 + startY + spaceY, 0xFF555555);
+			this.getFontRenderer().drawString(GT_Utility.trans("221", "Item threshold"), startX + spaceX * 3, startY + spaceY * 2 + 4, 0xFF555555);
         }
 
         @Override
@@ -365,8 +367,7 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
 
                 val += step * Integer.signum(delta);
 
-                int upperBound = maxSlot > 0 ? maxSlot * 64 : 999_999;
-                val = GT_Utility.clamp(val, 0, upperBound);
+                val = GT_Utility.clamp(val, 0, getUpperBound());
                 thresholdSlot.setText(Integer.toString(val));
             }
         }
@@ -448,11 +449,14 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
                     return 0;
                 }
 
-                int upperBound = maxSlot > 0 ? maxSlot * 64 : 999_999;
-                return GT_Utility.clamp(val, 0, upperBound);
+                return GT_Utility.clamp(val, 0, getUpperBound());
             }
 
             throw new UnsupportedOperationException("Unknown text box: " + box);
+        }
+
+        private int getUpperBound() {
+            return maxSlot > 0 ? maxSlot * 64 : 999_999;
         }
     }
 }

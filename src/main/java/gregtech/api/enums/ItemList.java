@@ -622,6 +622,7 @@ public enum ItemList implements IItemContainer {
     Paper_Punch_Card_Empty,
     Paper_Punch_Card_Encoded,
     McGuffium_239,
+    Tool_Cover_Copy_Paste,
     NC_SensorCard,
     NC_SensorKit,
     Tool_Matches,
@@ -925,6 +926,17 @@ public enum ItemList implements IItemContainer {
     Automation_ItemDistributor_ZPM,
     Automation_ItemDistributor_UV,
     Automation_ItemDistributor_MAX,
+
+    Automation_RecipeFilter_ULV,
+    Automation_RecipeFilter_LV,
+    Automation_RecipeFilter_MV,
+    Automation_RecipeFilter_HV,
+    Automation_RecipeFilter_EV,
+    Automation_RecipeFilter_IV,
+    Automation_RecipeFilter_LuV,
+    Automation_RecipeFilter_ZPM,
+    Automation_RecipeFilter_UV,
+    Automation_RecipeFilter_MAX,
 
     Hatch_Dynamo_ULV,
     Hatch_Dynamo_LV,
@@ -1684,6 +1696,11 @@ public enum ItemList implements IItemContainer {
     Circuit_Parts_TransistorASMD,
     Circuit_Parts_CapacitorASMD,
 
+    Circuit_Parts_ResistorXSMD,
+    Circuit_Parts_DiodeXSMD,
+    Circuit_Parts_TransistorXSMD,
+    Circuit_Parts_CapacitorXSMD,
+
     Circuit_Silicon_Ingot,
     Circuit_Silicon_Ingot2,
     Circuit_Silicon_Ingot3,
@@ -1766,6 +1783,26 @@ public enum ItemList implements IItemContainer {
     Circuit_Parts_RawCrystalChip,
     Circuit_Bioprocessor,
     Circuit_Biomainframe,
+
+    Circuit_OpticalProcessor,
+    Circuit_OpticalAssembly,
+    Circuit_OpticalComputer,
+    Circuit_OpticalMainframe,
+
+    Circuit_ExoticProcessor,
+    Circuit_ExoticAssembly,
+    Circuit_ExoticComputer,
+    Circuit_ExoticMainframe,
+
+    Circuit_CosmicProcessor,
+    Circuit_CosmicAssembly,
+    Circuit_CosmicComputer,
+    Circuit_CosmicMainframe,
+
+    Circuit_TranscendentProcessor,
+    Circuit_TranscendentAssembly,
+    Circuit_TranscendentComputer,
+    Circuit_TranscendentMainframe,
 
     Machine_LV_CircuitAssembler,
     Machine_MV_CircuitAssembler,

@@ -392,20 +392,20 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
             if (aPlayer.isSneaking()) {
                 if (isInputDisabledAtSide(tSide)) {
                     mDisableInput &= ~tMask;
-                    GT_Utility.sendChatToPlayer(aPlayer, trans("212", "Input enabled"));
+                    GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("212", "Input enabled"));
                     if (!isConnectedAtSide(tSide))
                         connect(tSide);
                 } else {
                     mDisableInput |= tMask;
-                    GT_Utility.sendChatToPlayer(aPlayer, trans("213", "Input disabled"));
+                    GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("213", "Input disabled"));
                 }
             } else {
                 if (!isConnectedAtSide(tSide)) {
                     if (connect(tSide) > 0)
-                        GT_Utility.sendChatToPlayer(aPlayer, trans("214", "Connected"));
+                        GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("214", "Connected"));
                 } else {
                     disconnect(tSide);
-                    GT_Utility.sendChatToPlayer(aPlayer, trans("215", "Disconnected"));
+                    GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("215", "Disconnected"));
                 }
             }
             return true;

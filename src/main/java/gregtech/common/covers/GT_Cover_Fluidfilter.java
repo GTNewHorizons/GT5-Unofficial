@@ -76,21 +76,21 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
     public String getFilterMode(int aFilterMode) {
         switch (aFilterMode) {
             case FILTER_INPUT_DENY_OUTPUT:
-                return (trans("043", "Filter input, Deny output"));
+                return GT_Utility.trans("043", "Filter input, Deny output");
             case INVERT_INPUT_DENY_OUTPUT:
-                return (trans("044", "Invert input, Deny output"));
+                return GT_Utility.trans("044", "Invert input, Deny output");
             case FILTER_INPUT_ANY_OUTPUT:
-                return (trans("045", "Filter input, Permit any output"));
+                return GT_Utility.trans("045", "Filter input, Permit any output");
             case INVERT_INPUT_ANY_OUTPUT:
-                return (trans("046", "Invert input, Permit any output"));
+                return GT_Utility.trans("046", "Invert input, Permit any output");
             case DENY_INPUT_FILTER_OUTPUT:
-                return (trans("219", "Deny input, Filter output"));
+                return GT_Utility.trans("307", "Deny input, Filter output");
             case DENY_INPUT_INVERT_OUTPUT:
-                return (trans("220", "Deny input, Invert output"));
+                return GT_Utility.trans("308", "Deny input, Invert output");
             case ANY_INPUT_FILTER_OUTPUT:
-                return (trans("221", "Permit any input, Filter output"));
+                return GT_Utility.trans("309", "Permit any input, Filter output");
             case ANY_INPUT_INVERT_OUTPUT:
-                return (trans("222", "Permit any input, Invert output"));
+                return GT_Utility.trans("310", "Permit any input, Invert output");
             default:
                 return ("UNKNOWN");
         }
@@ -127,7 +127,7 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
                 aCoverVariable.mFluidID = aFluid;
                 aTileEntity.setCoverDataAtSide(aSide, aCoverVariable);
                 FluidStack sFluid = new FluidStack(FluidRegistry.getFluid(aFluid), 1000);
-                GT_Utility.sendChatToPlayer(aPlayer, trans("047", "Filter Fluid: ") + sFluid.getLocalizedName());
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("047", "Filter Fluid: ") + sFluid.getLocalizedName());
             }
             return true;
         }
@@ -211,12 +211,12 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
             this.coverVariable = aCoverVariable;
 
             GT_GuiIconButton b;
-            b = new GT_GuiIconButton(this, 0, startX + spaceX*0, startY+spaceY*0, GT_GuiIcon.IMPORT).setTooltipText(trans("232","Filter Input"));
-            b = new GT_GuiIconButton(this, 1, startX + spaceX*1, startY+spaceY*0, GT_GuiIcon.EXPORT).setTooltipText(trans("233","Filter Output"));
-            b = new GT_GuiIconButton(this, 2, startX + spaceX*0, startY+spaceY*2, GT_GuiIcon.BLOCK_INPUT).setTooltipText(trans("234", "Block Output"));
-            b = new GT_GuiIconButton(this, 3, startX + spaceX*1, startY+spaceY*2, GT_GuiIcon.ALLOW_INPUT).setTooltipText(trans("235", "Allow Output"));
-            b = new GT_GuiIconButton(this, 4, startX + spaceX*0, startY+spaceY*1, GT_GuiIcon.WHITELIST).setTooltipText(trans("236","Whitelist Fluid"));
-            b = new GT_GuiIconButton(this, 5, startX + spaceX*1, startY+spaceY*1, GT_GuiIcon.BLACKLIST).setTooltipText(trans("237","Blacklist Fluid"));
+            b = new GT_GuiIconButton(this, 0, startX + spaceX*0, startY+spaceY*0, GT_GuiIcon.IMPORT).setTooltipText(GT_Utility.trans("232", "Filter Input"));
+            b = new GT_GuiIconButton(this, 1, startX + spaceX*1, startY+spaceY*0, GT_GuiIcon.EXPORT).setTooltipText(GT_Utility.trans("233", "Filter Output"));
+            b = new GT_GuiIconButton(this, 2, startX + spaceX*0, startY+spaceY*2, GT_GuiIcon.BLOCK_INPUT).setTooltipText(GT_Utility.trans("234", "Block Output"));
+            b = new GT_GuiIconButton(this, 3, startX + spaceX*1, startY+spaceY*2, GT_GuiIcon.ALLOW_INPUT).setTooltipText(GT_Utility.trans("235", "Allow Output"));
+            b = new GT_GuiIconButton(this, 4, startX + spaceX*0, startY+spaceY*1, GT_GuiIcon.WHITELIST).setTooltipText(GT_Utility.trans("236", "Whitelist Fluid"));
+            b = new GT_GuiIconButton(this, 5, startX + spaceX*1, startY+spaceY*1, GT_GuiIcon.BLACKLIST).setTooltipText(GT_Utility.trans("237", "Blacklist Fluid"));
 
             fluidFilterButton = new GT_GuiFakeItemButton(this, startX, startY + spaceY * 3 + 2, GT_GuiIcon.SLOT_DARKGRAY);
             fluidFilterButton.setMimicSlot(true);
@@ -259,9 +259,9 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
         @Override
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
-            this.fontRendererObj.drawString(trans("238","Filter Direction" ),   startX + spaceX*2, 3+startY+spaceY*0, 0xFF555555);
-            this.fontRendererObj.drawString(trans("239", "Filter Type"),        startX + spaceX*2, 3+startY+spaceY*1, 0xFF555555);
-            this.fontRendererObj.drawString(trans("240","Block Flow"),          startX + spaceX*2, 3+startY+spaceY*2, 0xFF555555);
+            this.fontRendererObj.drawString(GT_Utility.trans("238", "Filter Direction"),   startX + spaceX*2, 3+startY+spaceY*0, 0xFF555555);
+            this.fontRendererObj.drawString(GT_Utility.trans("239", "Filter Type"),        startX + spaceX*2, 3+startY+spaceY*1, 0xFF555555);
+            this.fontRendererObj.drawString(GT_Utility.trans("240", "Block Flow"),          startX + spaceX*2, 3+startY+spaceY*2, 0xFF555555);
             this.fontRendererObj.drawSplitString(fluidFilterName,                                startX + spaceX+3, 4+startY+spaceY*3, gui_width-40 , 0xFF222222);
         }
 
@@ -287,14 +287,14 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
                     b.enabled = getClickable(b.id);
                     if (getClickable(1)) { //filtering input
                         if (b.id == 2)
-                            b.setTooltipText(trans("219", "Block Output"));
+                            b.setTooltipText(GT_Utility.trans("311", "Block Output"));
                         else if (b.id == 3)
-                            b.setTooltipText(trans("220", "Allow Output"));
+                            b.setTooltipText(GT_Utility.trans("312", "Allow Output"));
                     } else {
                         if (b.id == 2)
-                            b.setTooltipText(trans("221", "Block Input"));
+                            b.setTooltipText(GT_Utility.trans("313", "Block Input"));
                         else if (b.id == 3)
-                            b.setTooltipText(trans("222", "Allow Input"));
+                            b.setTooltipText(GT_Utility.trans("314", "Allow Input"));
                     }
                 }
             }
@@ -308,7 +308,7 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
                 }
             }
             fluidFilterButton.setItem(null);
-            fluidFilterName = trans("224", "Filter Empty");
+            fluidFilterName = GT_Utility.trans("315", "Filter Empty");
         }
     }
 
@@ -346,7 +346,7 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
         public void loadDataFromNBT(NBTBase aNBT) {
             if (aNBT instanceof NBTTagCompound) {
                 NBTTagCompound tNBT = (NBTTagCompound) aNBT;
-                mFilterMode = tNBT.getByte("mFilterMod");
+                mFilterMode = tNBT.getInteger("mFilterMode");
                 if (tNBT.hasKey("mFluid", NBT.TAG_STRING))
                     mFluidID = FluidRegistry.getFluidID(tNBT.getString("mFluid"));
                 else

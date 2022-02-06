@@ -406,7 +406,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addFluidExtractionRecipe(new ItemStack(Items.fish, 1, 2), GT_Values.NI, Materials.FishOil.getFluid(70L), 10000, 16, 4);
         GT_Values.RA.addFluidExtractionRecipe(new ItemStack(Items.fish, 1, 3), GT_Values.NI, Materials.FishOil.getFluid(30L), 10000, 16, 4);
 
-        GT_Values.RA.addFluidExtractionRecipe(new ItemStack(Items.coal, 1, 1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 1L), Materials.WoodTar.getFluid(100L), 1000, 128, 4);
+        GT_Values.RA.addFluidExtractionRecipe(new ItemStack(Items.coal, 1, 1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 1L), Materials.WoodTar.getFluid(100L), 1000, 30, 16);
         GT_Values.RA.addFluidExtractionRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L), ItemList.IC2_Plantball.get(1L), Materials.Creosote.getFluid(5L), 100, 16, 4);
         GT_Values.RA.addFluidExtractionRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.HydratedCoal, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 1L), Materials.Water.getFluid(100L), 10000, 32, 4);
         GT_Values.RA.addFluidExtractionRecipe(GT_ModHandler.getModItem("Thaumcraft", "ItemResource", 1, 3), GT_Values.NI, Materials.Mercury.getFluid(1000L), 10000, 128, 4);
@@ -531,6 +531,8 @@ public class GT_MachineRecipeLoader implements Runnable {
             GT_Values.RA.addAssemblerRecipe(flask500, GT_Utility.getIntegratedCircuit(24), flask, 10, 30);
         }
 
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_LV.get(1L), GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Bronze, 1L), GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Bronze, 1L), ItemList.Electric_Motor_LV.get(1L), GT_Utility.getIntegratedCircuit(3)}, GT_Values.NF, ItemList.Hatch_Muffler_LV.get(1L), 200, 30);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_MV.get(1L), GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Steel, 1L), GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Steel, 1L), ItemList.Electric_Motor_MV.get(1L), GT_Utility.getIntegratedCircuit(3)}, GT_Values.NF, ItemList.Hatch_Muffler_MV.get(1L), 200, 120);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_HV.get(1L), GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.StainlessSteel, 1L), GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.StainlessSteel, 1L), ItemList.Electric_Motor_HV.get(1L), GT_Utility.getIntegratedCircuit(3)}, GT_Values.NF, ItemList.Hatch_Muffler_HV.get(1L), 200, 480);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_EV.get(1L), GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Titanium, 1L), ItemList.Electric_Motor_EV.get(1L), GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Titanium, 1L), GT_Utility.getIntegratedCircuit(3)}, GT_Values.NF, ItemList.Hatch_Muffler_EV.get(1L), 200, 1920);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_IV.get(1L), GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.TungstenSteel, 1L), ItemList.Electric_Motor_IV.get(1L), GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.TungstenSteel, 1L), GT_Utility.getIntegratedCircuit(3)}, GT_Values.NF, ItemList.Hatch_Muffler_IV.get(1L), 200, 7680);
@@ -1070,6 +1072,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_ModHandler.addPulverisationRecipe(GT_ModHandler.getModItem(GT_MachineRecipeLoader.aTextAE, "tile.BlockSkyStone", 1L, 32767), GT_ModHandler.getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 1L, 45), GT_Values.NI, 0, false);
         GT_ModHandler.addPulverisationRecipe(GT_ModHandler.getModItem(GT_MachineRecipeLoader.aTextAE, "tile.BlockSkyChest", 1L, 32767), GT_ModHandler.getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 8L, 45), GT_Values.NI, 0, false);
         GT_ModHandler.addPulverisationRecipe(new ItemStack(Items.blaze_rod, 1), new ItemStack(Items.blaze_powder, 3), new ItemStack(Items.blaze_powder, 1), 50, false);
+        GT_ModHandler.addPulverisationRecipe(new ItemStack(Blocks.web, 1, 0), new ItemStack(Items.string, 1), new ItemStack(Items.string, 1), 50, false);
         GT_ModHandler.addPulverisationRecipe(new ItemStack(Blocks.red_mushroom, 1, 32767), ItemList.IC2_Grin_Powder.get(1L));
         GT_ModHandler.addPulverisationRecipe(new ItemStack(Items.item_frame, 1, 32767), new ItemStack(Items.leather, 1), GT_OreDictUnificator.getDust(Materials.Wood, OrePrefixes.stick.mMaterialAmount * 4L), 95, false);
         GT_ModHandler.addPulverisationRecipe(new ItemStack(Items.bow, 1, 0), new ItemStack(Items.string, 3), GT_OreDictUnificator.getDust(Materials.Wood, OrePrefixes.stick.mMaterialAmount * 3L), 95, false);
@@ -1193,7 +1196,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addDistillationTowerRecipe(Materials.SeedOil.getFluid(1400L), new FluidStack[]{Materials.Lubricant.getFluid(500L)}, null, 400, 120);
         GT_Values.RA.addDistillationTowerRecipe(Materials.FishOil.getFluid(1200L), new FluidStack[]{Materials.Lubricant.getFluid(500L)}, null, 400, 120);
         GT_Values.RA.addDistillationTowerRecipe(Materials.Biomass.getFluid(1000L), new FluidStack[]{Materials.Ethanol.getFluid(600L), Materials.Water.getFluid(300L)}, GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 2L), 32, 400);
-        GT_Values.RA.addDistillationTowerRecipe(Materials.Water.getFluid(288L), new FluidStack[]{GT_ModHandler.getDistilledWater(260L)}, null, 16, 64);
+        GT_Values.RA.addDistillationTowerRecipe(Materials.Water.getFluid(1000L), new FluidStack[]{GT_ModHandler.getDistilledWater(1000L)}, null, 32, 120);
 
         if(!GregTech_API.mIC2Classic){
             GT_Values.RA.addDistillationTowerRecipe(new FluidStack(FluidRegistry.getFluid("ic2biomass"), 3000), new FluidStack[]{new FluidStack(FluidRegistry.getFluid("ic2biogas"), 8000), Materials.Water.getFluid(125L)}, ItemList.IC2_Fertilizer.get(1), 250, 480);
@@ -2527,6 +2530,20 @@ public class GT_MachineRecipeLoader implements Runnable {
                 GregTech_API.sThaumcraftCompat.addResearch(tKey, "Aluminium Transmutation", "Transformation of metals into aluminium", new String[]{"GT_ADVANCEDMETALLURGY"}, "ALCHEMY", GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Aluminium, 1L), 4, 0, 19, 14, Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 5L), new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 3L), new TC_Aspects.TC_AspectStack(TC_Aspects.VOLATUS, 3L), new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 3L), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 3L)), null, new Object[]{GT_MachineRecipeLoader.aTextTCGTPage + tKey, 
                 		GregTech_API.sThaumcraftCompat.addCrucibleRecipe(tKey, OrePrefixes.nugget.get(Materials.Aluminium), GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Aluminium, 3L), Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.VOLATUS, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)))});
 
+                if (Loader.isModLoaded("appliedenergistics2")) {
+                    tKey = "GT_TRANSSKYSTONE";
+                    GT_LanguageManager.addStringLocalization(GT_MachineRecipeLoader.aTextTCGTPage + tKey, "You have discovered a way to convert obsidian to skystone.<BR><BR>Not sure why you'd want to do this, unless skystone is somehow unavailable in your world.");
+                    GregTech_API.sThaumcraftCompat.addResearch(tKey, "Skystone Transmutation", "Transformation of obsidian into skystone", new String[]{"GT_ADVANCEDMETALLURGY"}, "ALCHEMY", GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockSkyStone", 1), 4, 0, 19, 15, Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 5L), new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 3L), new TC_Aspects.TC_AspectStack(TC_Aspects.VOLATUS, 3L), new TC_Aspects.TC_AspectStack(TC_Aspects.ALIENIS, 3L), new TC_Aspects.TC_AspectStack(TC_Aspects.TERRA, 3L)), null, new Object[]{GT_MachineRecipeLoader.aTextTCGTPage + tKey,
+                            GregTech_API.sThaumcraftCompat.addCrucibleRecipe(tKey, new ItemStack(Blocks.obsidian), GT_ModHandler.getModItem("appliedenergistics2", "tile.BlockSkyStone", 1), Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.VOLATUS, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.TERRA, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.ALIENIS, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.TENEBRAE, 1L)))});
+                }
+
+                tKey = "GT_TRANSMINERAL";
+                GT_LanguageManager.addStringLocalization(GT_MachineRecipeLoader.aTextTCGTPage + tKey, "You have discovered a way to convert basaltic mineral sand to granitic mineral sand and vice versa.<BR><BR>Handy for people living in the sky who can't access it normally, or if you really want one or the other.");
+                GregTech_API.sThaumcraftCompat.addResearch(tKey, "Basaltic Mineral Transmutation", "Transformation of mineral sands", new String[]{"GT_ADVANCEDMETALLURGY"}, "ALCHEMY", GT_OreDictUnificator.get(OrePrefixes.dust, Materials.GraniticMineralSand, 1L), 4, 0, 19, 16, Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 5L), new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 3L), new TC_Aspects.TC_AspectStack(TC_Aspects.VOLATUS, 3L), new TC_Aspects.TC_AspectStack(TC_Aspects.MAGNETO, 3L), new TC_Aspects.TC_AspectStack(TC_Aspects.TERRA, 3L)), null, new Object[]{GT_MachineRecipeLoader.aTextTCGTPage + tKey,
+                        GregTech_API.sThaumcraftCompat.addCrucibleRecipe(tKey, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.BasalticMineralSand, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.GraniticMineralSand, 1L), Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.MAGNETO, 1L))),
+                        GregTech_API.sThaumcraftCompat.addCrucibleRecipe(tKey, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.GraniticMineralSand, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.BasalticMineralSand, 1L), Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.MAGNETO, 1L)))
+                });
+
                 tKey = "GT_CRYSTALLISATION";
                 GT_LanguageManager.addStringLocalization(GT_MachineRecipeLoader.aTextTCGTPage + tKey, "Sometimes when processing your Crystal Shards they become a pile of Dust instead of the mostly required Shard.<BR><BR>You have finally found a way to reverse this Process by using Vitreus Essentia for recrystallising the Shards.");
                 GregTech_API.sThaumcraftCompat.addResearch(tKey, "Shard Recrystallisation", "Fixing your precious crystals", new String[]{"ALCHEMICALMANUFACTURE"}, "ALCHEMY", GT_OreDictUnificator.get(OrePrefixes.gem, Materials.InfusedOrder, 1L), 3, 0, -11, -3, Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 5L), new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 3L), new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 3L)), null, new Object[]{GT_MachineRecipeLoader.aTextTCGTPage + tKey, 
@@ -2772,8 +2789,8 @@ public class GT_MachineRecipeLoader implements Runnable {
 
         GT_Values.RA.addChemicalRecipe(Materials.Potassium.getDust(1), GT_Utility.getIntegratedCircuit(2), Materials.NitricAcid.getFluid(1000), GT_Values.NF, Materials.Saltpeter.getDust(1), 100, 30);
 
-		GT_Values.RA.addMixerRecipe(Materials.Salt.getDust(2), GT_Values.NI, GT_Values.NI, GT_Values.NI, Materials.Water.getFluid(1000), Materials.SaltWater.getFluid(2000), GT_Values.NI, 40, 8);
-		GT_Values.RA.addDistilleryRecipe(1, Materials.SaltWater.getFluid(2000), GT_ModHandler.getDistilledWater(1000), Materials.Salt.getDust(1), 3200, 16, false);
+		GT_Values.RA.addMixerRecipe(Materials.Salt.getDust(1), GT_Values.NI, GT_Values.NI, GT_Values.NI, Materials.Water.getFluid(1000), Materials.SaltWater.getFluid(1000), GT_Values.NI, 100, 8);
+		GT_Values.RA.addDistilleryRecipe(1, Materials.SaltWater.getFluid(1000), GT_ModHandler.getDistilledWater(1000), Materials.Salt.getDust(1), 1600, 30, false);
 
         GT_Values.RA.addUniversalDistillationRecipe(FluidRegistry.getFluidStack("potion.vinegar", 40), new FluidStack[]{Materials.AceticAcid.getFluid(5), Materials.Water.getFluid(35)}, GT_Values.NI, 20, 64);
         GT_Values.RA.addMixerRecipe(Materials.Calcite.getDust(1),        GT_Utility.getIntegratedCircuit(1),  GT_Values.NI, GT_Values.NI, Materials.AceticAcid.getFluid(2000), Materials.CalciumAcetateSolution.getFluid(1000), GT_Values.NI, 240, 16);
@@ -2885,7 +2902,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 new FluidStack[]{Materials.AceticAcid.getFluid(100), Materials.Water.getFluid(500), Materials.Ethanol.getFluid(10), Materials.Methanol.getFluid(300), Materials.Acetone.getFluid(50), Materials.MethylAcetate.getFluid(10)},
                 GT_Values.NI,  40, 256);
         GT_Values.RA.addUniversalDistillationRecipe(Materials.WoodTar.getFluid(1000),
-                new FluidStack[]{Materials.Creosote.getFluid(300), Materials.Phenol.getFluid(75), Materials.Benzene.getFluid(350), Materials.Toluene.getFluid(75), Materials.Dimethylbenzene.getFluid(200)},
+                new FluidStack[]{Materials.Creosote.getFluid(250), Materials.Phenol.getFluid(100), Materials.Benzene.getFluid(400), Materials.Toluene.getFluid(100), Materials.Dimethylbenzene.getFluid(150)},
                 GT_Values.NI,  40, 256);
 
         GT_Values.RA.addChemicalRecipe(Materials.Ethylene.getCells(1), 	Materials.AceticAcid.getCells(1), 	Materials.Oxygen.getGas(1000), 			Materials.VinylAcetate.getFluid(1000),Materials.Water.getCells(1), Materials.Empty.getCells(1), 180);
@@ -3140,7 +3157,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addChemicalRecipe(Materials.Ethenone.getCells(1),   Materials.NitricAcid.getCells(8),    GT_Values.NF,                        Materials.Tetranitromethane.getFluid(2000), Materials.Water.getCells(9), 480, 120);
 
         GT_Values.RA.addMixerRecipe(Materials.Fuel.getCells(1),      GT_Values.NI, GT_Values.NI, GT_Values.NI, Materials.Tetranitromethane.getFluid(20), Materials.NitroFuel.getFluid(1000), Materials.Empty.getCells(1), 20, 480);
-        GT_Values.RA.addMixerRecipe(Materials.BioDiesel.getCells(1), GT_Values.NI, GT_Values.NI, GT_Values.NI, Materials.Tetranitromethane.getFluid(40), Materials.NitroFuel.getFluid(750), Materials.Empty.getCells(1), 20, 480);
+        GT_Values.RA.addMixerRecipe(Materials.BioDiesel.getCells(1), GT_Values.NI, GT_Values.NI, GT_Values.NI, Materials.Tetranitromethane.getFluid(40), Materials.NitroFuel.getFluid(900), Materials.Empty.getCells(1), 20, 480);
 
         GT_Values.RA.addChemicalRecipe(Materials.Propene.getCells(1),  Materials.Empty.getCells(1),         Materials.Ethylene.getGas(1000), Materials.Isoprene.getFluid(1000), Materials.Hydrogen.getCells(2), 120);
         GT_Values.RA.addChemicalRecipe(Materials.Ethylene.getCells(1), Materials.Empty.getCells(1),         Materials.Propene.getGas(1000),  Materials.Isoprene.getFluid(1000), Materials.Hydrogen.getCells(2), 120);
@@ -3245,7 +3262,7 @@ public class GT_MachineRecipeLoader implements Runnable {
 
         GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(24)}, new FluidStack[]{Materials.LightFuel.getFluid(20000), Materials.HeavyFuel.getFluid(4000)}, new FluidStack[]{Materials.Fuel.getFluid(24000)}, null, 100, 480);
         GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(24)}, new FluidStack[]{Materials.Fuel.getFluid(10000), Materials.Tetranitromethane.getFluid(200)}, new FluidStack[]{Materials.NitroFuel.getFluid(10000)}, null, 120, 480);
-        GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(24)}, new FluidStack[]{Materials.BioDiesel.getFluid(10000), Materials.Tetranitromethane.getFluid(400)}, new FluidStack[]{Materials.NitroFuel.getFluid(7500)}, null, 120, 480);
+        GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(24)}, new FluidStack[]{Materials.BioDiesel.getFluid(10000), Materials.Tetranitromethane.getFluid(400)}, new FluidStack[]{Materials.NitroFuel.getFluid(9000)}, null, 120, 480);
         GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(11)}, new FluidStack[]{Materials.Methane.getGas(5000),  Materials.Water.getFluid(15000)}, new FluidStack[]{Materials.CarbonDioxide.getGas(5000), Materials.Hydrogen.getGas(15000)}, null, 175, 480);
 
 
@@ -3342,7 +3359,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addMixerRecipe(Materials.Naphtha.getCells(16), Materials.Gas.getCells(2), Materials.Methanol.getCells(1), Materials.Acetone.getCells(1), GT_Values.NF, GT_Values.NF, Materials.GasolineRaw.getCells(20), 100, 480);
         GT_Values.RA.addChemicalRecipe(Materials.GasolineRaw.getCells(10), Materials.Toluene.getCells(1), GT_Values.NF, GT_Values.NF, Materials.GasolineRegular.getCells(11), 10, 480);
         GT_Values.RA.addMixerRecipe(Materials.GasolineRegular.getCells(20), Materials.Octane.getCells(2), Materials.NitrousOxide.getCells(6), Materials.Toluene.getCells(1), Materials.AntiKnock.getFluid(3000L), Materials.GasolinePremium.getFluid(32000L), Materials.Empty.getCells(29), 50, 1920);
-        GT_Values.RA.addDistillationTowerRecipe(Materials.MTBEMixture.getGas(2000L), new FluidStack[]{Materials.AntiKnock.getFluid(200L), Materials.Methanol.getFluid(900L), Materials.Butene.getGas(900L)}, null, 80, 480);
+        GT_Values.RA.addDistillationTowerRecipe(Materials.MTBEMixture.getGas(2000L), new FluidStack[]{Materials.AntiKnock.getFluid(400L), Materials.Methanol.getFluid(900L), Materials.Butene.getGas(900L)}, null, 40, 240);
 
         GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(24)}, new FluidStack[]{Materials.Naphtha.getFluid(16000), Materials.Gas.getGas(2000), Materials.Methanol.getFluid(1000), Materials.Acetone.getFluid(1000)}, new FluidStack[]{ Materials.GasolineRaw.getFluid(20000)}, null, 100, 480);
         GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(24)}, new FluidStack[]{Materials.GasolineRaw.getFluid(10000), Materials.Toluene.getFluid(1000)}, new FluidStack[]{ Materials.GasolineRegular.getFluid(11000)}, null, 10, 480);
@@ -3467,7 +3484,7 @@ public class GT_MachineRecipeLoader implements Runnable {
             	GT_Values.RA.addChemicalRecipe(Materials.NitrationMixture.getCells(1), GT_Utility.getIntegratedCircuit(11), Materials.Chlorobenzene.getFluid(1000), Materials.Nitrochlorobenzene.getFluid(1000), Materials.DilutedSulfuricAcid.getCells(1), 100, 480);
 
             	//Dimethylbenzene
-            	GT_Values.RA.addDistilleryRecipe(5, Materials.WoodTar.getFluid(200), Materials.Dimethylbenzene.getFluid(40), 100, 120, false);
+            	GT_Values.RA.addDistilleryRecipe(5, Materials.WoodTar.getFluid(200), Materials.Dimethylbenzene.getFluid(30), 100, 120, false);
             	GT_Values.RA.addDistilleryRecipe(5, Materials.CharcoalByproducts.getGas(200), Materials.Dimethylbenzene.getFluid(20), 100, 120, false);
 
             	GT_Values.RA.addChemicalRecipe(Materials.Methane.getCells(1), GT_Utility.getIntegratedCircuit(11), Materials.Benzene.getFluid(1000), GT_Values.NF,Materials.Dimethylbenzene.getCells(1), 4000, 120);
@@ -4009,8 +4026,8 @@ public class GT_MachineRecipeLoader implements Runnable {
         //recycling Tanks
         GT_Values.RA.addPulveriserRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.beta", 1L, 0), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 2L)}, new int[]{10000}, 300, 2);
         GT_Values.RA.addPulveriserRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.beta", 1L, 13), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Steel, 2L)}, new int[]{10000}, 300, 2);
-        GT_Values.RA.addPulveriserRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.beta", 1L, 1), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 2L), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3L)}, new int[]{10000, 10000}, 300, 2);
-        GT_Values.RA.addPulveriserRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.beta", 1L, 14), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Steel, 2L), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3L)}, new int[]{10000, 10000}, 300, 2);
+        GT_Values.RA.addPulveriserRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.beta", 1L, 1), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 1L), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3L)}, new int[]{10000, 10000}, 300, 2);
+        GT_Values.RA.addPulveriserRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.beta", 1L, 14), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Steel, 1L), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3L)}, new int[]{10000, 10000}, 300, 2);
 
         GT_Values.RA.addPyrolyseRecipe(GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 16), GT_Values.NF, 1, RailcraftToolItems.getCoalCoke(16), Materials.Creosote.getFluid(8000), 640, 64);
         GT_Values.RA.addPyrolyseRecipe(GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 16), Materials.Nitrogen.getGas(1000), 2, RailcraftToolItems.getCoalCoke(16), Materials.Creosote.getFluid(8000), 320, 96);

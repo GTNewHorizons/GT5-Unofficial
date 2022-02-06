@@ -1,9 +1,11 @@
 .gradle
 .settings
 /.idea/
+.shelf
 /run/
 /build/
 /eclipse/
+.vscode
 .classpath
 .project
 /bin/
@@ -29,3 +31,5 @@ src/main/resources/mixins.*.json
 *.bat
 /src/main/generated/
 /src/test/generated/
+.DS_Store
+classes

@@ -55,6 +55,7 @@ public abstract class GT_MetaTileEntity_EnhancedMultiBlockBase<T extends GT_Meta
 			mExtendedFacing = newExtendedFacing;
 			IGregTechTileEntity base = getBaseMetaTileEntity();
 			mMachine = false;
+			mUpdated = false;
 			mUpdate = 100;
 			if (getBaseMetaTileEntity().isServerSide()) {
 				StructureLibAPI.sendAlignment((IAlignmentProvider) base,

@@ -10,16 +10,18 @@ import gnu.trove.list.array.TIntArrayList;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.BaseMetaTileEntity.ClientEvents;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Cable;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.*;
 import gregtech.common.GT_Client;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -276,20 +278,20 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
     @Override
     public final void sendSound(byte aIndex) {
         if (!getBaseMetaTileEntity().hasMufflerUpgrade())
-            getBaseMetaTileEntity().sendBlockEvent(ClientEvents.DO_SOUND, aIndex);
+            getBaseMetaTileEntity().sendBlockEvent(MetaTileClientEvents.DO_SOUND, aIndex);
     }
 
     @Override
     public final void sendLoopStart(byte aIndex) {
         if (!getBaseMetaTileEntity().hasMufflerUpgrade())
-            getBaseMetaTileEntity().sendBlockEvent(ClientEvents.START_SOUND_LOOP, aIndex);
+            getBaseMetaTileEntity().sendBlockEvent(MetaTileClientEvents.START_SOUND_LOOP, aIndex);
         mSoundRequests++;
     }
 
     @Override
     public final void sendLoopEnd(byte aIndex) {
         if (!getBaseMetaTileEntity().hasMufflerUpgrade())
-            getBaseMetaTileEntity().sendBlockEvent(ClientEvents.STOP_SOUND_LOOP, aIndex);
+            getBaseMetaTileEntity().sendBlockEvent(MetaTileClientEvents.STOP_SOUND_LOOP, aIndex);
     }
 
     /**
@@ -714,15 +716,13 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
 
     @Override
     public int[] getAccessibleSlotsFromSide(int aSide) {
-        ArrayList<Integer> tList = new ArrayList<Integer>();
+        TIntList tList = new TIntArrayList();
         IGregTechTileEntity tTileEntity = getBaseMetaTileEntity();
         boolean tSkip = tTileEntity.getCoverBehaviorAtSideNew((byte) aSide).letsItemsIn((byte) aSide, tTileEntity.getCoverIDAtSide((byte) aSide), tTileEntity.getComplexCoverDataAtSide((byte) aSide), -2, tTileEntity) || tTileEntity.getCoverBehaviorAtSideNew((byte) aSide).letsItemsOut((byte) aSide, tTileEntity.getCoverIDAtSide((byte) aSide), tTileEntity.getComplexCoverDataAtSide((byte) aSide), -2, tTileEntity);
         for (int i = 0; i < getSizeInventory(); i++)
             if (isValidSlot(i) && (tSkip || tTileEntity.getCoverBehaviorAtSideNew((byte) aSide).letsItemsOut((byte) aSide, tTileEntity.getCoverIDAtSide((byte) aSide), tTileEntity.getComplexCoverDataAtSide((byte) aSide), i, tTileEntity) || tTileEntity.getCoverBehaviorAtSideNew((byte) aSide).letsItemsIn((byte) aSide, tTileEntity.getCoverIDAtSide((byte) aSide), tTileEntity.getComplexCoverDataAtSide((byte) aSide), i, tTileEntity)))
                 tList.add(i);
-        int[] rArray = new int[tList.size()];
-        for (int i = 0; i < rArray.length; i++) rArray[i] = tList.get(i);
-        return rArray;
+        return tList.toArray();
     }
 
     @Override
@@ -946,9 +946,10 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
     public boolean allowGeneralRedstoneOutput(){
     	return false;
     }
-    
+
+    @Deprecated
     public String trans(String aKey, String aEnglish){
-    	return GT_LanguageManager.addStringLocalization("Interaction_DESCRIPTION_Index_"+aKey, aEnglish, false);
+    	return GT_Utility.trans(aKey, aEnglish);
     }
     
     @Override
@@ -978,4 +979,15 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
 
     @Optional.Method(modid = "appliedenergistics2")
     public void gridChanged() {}
+    
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        currenttip.add(String.format("Facing: %s", ForgeDirection.getOrientation(mBaseMetaTileEntity.getFrontFacing()).name()));
+    }
+    
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y, int z) {
+        /* Empty */        
+    }
+
 }

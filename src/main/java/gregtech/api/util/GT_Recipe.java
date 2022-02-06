@@ -754,7 +754,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map sPolarizerRecipes = new GT_Recipe_Map(new HashSet<>(300), "gt.recipe.polarizer", "Electromagnetic Polarizer", null, RES_PATH_GUI + "basicmachines/Polarizer", 1, 1, 1, 0, 1, E, 1, E, true, true);
         public static final GT_Recipe_Map sMaceratorRecipes = new GT_Recipe_Map_Macerator(new HashSet<>(16600), "gt.recipe.macerator", "Pulverization", null, RES_PATH_GUI + "basicmachines/Macerator4", 1, 4, 1, 0, 1, E, 1, E, true, true);
         public static final GT_Recipe_Map sChemicalBathRecipes = new GT_Recipe_Map(new HashSet<>(2550), "gt.recipe.chemicalbath", "Chemical Bath", null, RES_PATH_GUI + "basicmachines/ChemicalBath", 1, 3, 1, 1, 1, E, 1, E, true, true);
-        public static final GT_Recipe_Map sFluidCannerRecipes = new GT_Recipe_Map_FluidCanner(new HashSet<>(2100), "gt.recipe.fluidcanner", "Fluid Canning Machine", null, RES_PATH_GUI + "basicmachines/FluidCannerNEI", 1, 1, 1, 0, 1, E, 1, E, true, true);
+        public static final GT_Recipe_Map sFluidCannerRecipes = new GT_Recipe_Map_FluidCanner(new HashSet<>(2100), "gt.recipe.fluidcanner", "Fluid Canning Machine", null, RES_PATH_GUI + "basicmachines/FluidCanner", 1, 1, 1, 0, 1, E, 1, E, true, true);
         public static final GT_Recipe_Map sBrewingRecipes = new GT_Recipe_Map(new HashSet<>(450), "gt.recipe.brewer", "Brewing Machine", null, RES_PATH_GUI + "basicmachines/PotionBrewer", 1, 0, 1, 1, 1, E, 1, E, true, true);
         public static final GT_Recipe_Map sFluidHeaterRecipes = new GT_Recipe_Map(new HashSet<>(10), "gt.recipe.fluidheater", "Fluid Heater", null, RES_PATH_GUI + "basicmachines/FluidHeater", 1, 0, 1, 1, 1, E, 1, E, true, true);
         public static final GT_Recipe_Map sDistilleryRecipes = new GT_Recipe_Map(new HashSet<>(400), "gt.recipe.distillery", "Distillery", null, RES_PATH_GUI + "basicmachines/Distillery", 1, 1, 1, 1, 1, E, 1, E, true, true);
@@ -843,6 +843,16 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
          * See constructor for details.
          */
         public final String mUniqueIdentifier;
+
+        /**
+         * Whether this recipe map contains any fluid outputs.
+         */
+        private boolean mHasFluidOutputs = false;
+
+        /**
+         * Whether this recipe map contains special slot inputs.
+         */
+        private boolean mUsesSpecialSlot = false;
 
         /**
          * Initialises a new type of Recipe Handler.
@@ -940,12 +950,19 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         public GT_Recipe add(GT_Recipe aRecipe) {
             mRecipeList.add(aRecipe);
-            for (FluidStack aFluid : aRecipe.mFluidInputs)
+            for (FluidStack aFluid : aRecipe.mFluidInputs) {
                 if (aFluid != null) {
                     Collection<GT_Recipe> tList = mRecipeFluidMap.computeIfAbsent(aFluid.getFluid(), k -> new HashSet<>(1));
                     tList.add(aRecipe);
                     mRecipeFluidNameMap.add(aFluid.getFluid().getName());
                 }
+            }
+            if (aRecipe.mFluidOutputs.length != 0) {
+                this.mHasFluidOutputs = true;
+            }
+            if (aRecipe.mSpecialItems != null) {
+                this.mUsesSpecialSlot = true;
+            }
             return addToItemMap(aRecipe);
         }
 
@@ -1076,6 +1093,27 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     tList.add(aRecipe);
                 }
             return aRecipe;
+        }
+
+        /**
+         * Whether this recipe map contains any fluid outputs.
+         */
+        public boolean hasFluidOutputs() {
+            return mHasFluidOutputs;
+        }
+
+        /**
+         * Whether this recipe map contains any fluid inputs.
+         */
+        public boolean hasFluidInputs() {
+            return mRecipeFluidNameMap.size() != 0;
+        }
+
+        /**
+         * Whether this recipe map contains special slot inputs.
+         */
+        public boolean usesSpecialSlot() {
+            return mUsesSpecialSlot;
         }
     }
 

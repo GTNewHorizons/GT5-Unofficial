@@ -238,6 +238,10 @@ public abstract class GT_MetaTileEntity_LargeTurbine extends GT_MetaTileEntity_E
 
     }
 
+    public boolean hasTurbine() {
+        return this.getMaxEfficiency(mInventory[1]) > 0;
+    }
+
     @Override
     public boolean isGivingInformation() {
         return true;

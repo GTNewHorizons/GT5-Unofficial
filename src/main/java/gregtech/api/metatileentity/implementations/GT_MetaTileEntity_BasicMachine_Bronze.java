@@ -3,9 +3,13 @@ package gregtech.api.metatileentity.implementations;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Log;
+import gregtech.common.power.Power;
+import gregtech.api.util.GT_Recipe;
+import gregtech.common.power.SteamPower;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
 import net.minecraft.entity.EntityLivingBase;
@@ -32,24 +36,28 @@ import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
  * Extend this class to make a simple Machine
  */
 public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileEntity_BasicMachine {
-    /*
-    @Override
-    public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_BasicMachine_Bronze(mTier, mDescription, mTextures);
-    }
-    */
+    private static final int NEEDS_STEAM_VENTING = 64;
     public boolean mNeedsSteamVenting = false;
 
-    public GT_MetaTileEntity_BasicMachine_Bronze(int aID, String aName, String aNameRegional, String aDescription, int aInputSlotCount, int aOutputSlotCount, boolean aBricked) {
-        super(aID, aName, aNameRegional, aBricked ? 1 : 0, 0, aDescription, aInputSlotCount, aOutputSlotCount, "", "");
+    public GT_MetaTileEntity_BasicMachine_Bronze(int aID, String aName, String aNameRegional, String aDescription, int aInputSlotCount, int aOutputSlotCount, boolean aHighPressure) {
+        super(aID, aName, aNameRegional, aHighPressure ? 2 : 1, 0, aDescription, aInputSlotCount, aOutputSlotCount, "", "");
     }
 
-    public GT_MetaTileEntity_BasicMachine_Bronze(String aName, String aDescription, ITexture[][][] aTextures, int aInputSlotCount, int aOutputSlotCount, boolean aBricked) {
-        super(aName, aBricked ? 1 : 0, 0, aDescription, aTextures, aInputSlotCount, aOutputSlotCount, "", "");
+    public GT_MetaTileEntity_BasicMachine_Bronze(String aName, String aDescription, ITexture[][][] aTextures, int aInputSlotCount, int aOutputSlotCount,  boolean aHighPressure) {
+        super(aName, aHighPressure ? 2 : 1, 0, aDescription, aTextures, aInputSlotCount, aOutputSlotCount, "", "");
     }
 
-    public GT_MetaTileEntity_BasicMachine_Bronze(String aName, String[] aDescription, ITexture[][][] aTextures, int aInputSlotCount, int aOutputSlotCount, boolean aBricked) {
-        super(aName, aBricked ? 1 : 0, 0, aDescription, aTextures, aInputSlotCount, aOutputSlotCount, "", "");
+    public GT_MetaTileEntity_BasicMachine_Bronze(String aName, String[] aDescription, ITexture[][][] aTextures, int aInputSlotCount, int aOutputSlotCount, boolean aHighPressure) {
+        super(aName, aHighPressure ? 2 : 1, 0, aDescription, aTextures, aInputSlotCount, aOutputSlotCount, "", "");
+    }
+
+    protected boolean isBricked() {
+        return false;
+    }
+
+    @Override
+    public Power buildPower() {
+        return new SteamPower(mTier, 1, 2);
     }
 
     @Override
@@ -151,6 +159,24 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
     }
 
     @Override
+    public int checkRecipe() {
+        GT_Recipe tRecipe = getRecipeList().findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[mTier], null, getAllInputs());
+        if ((tRecipe != null) && (canOutput(tRecipe.mOutputs)) && (tRecipe.isRecipeInputEqual(true, null, getAllInputs()))) {
+            this.mOutputItems[0] = tRecipe.getOutput(0);
+            calculateOverclockedNess(tRecipe);
+            return 2;
+        }
+        return 0;
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+        // Super already zeroed out setErrorDisplayID, add additional error codes here.
+        aBaseMetaTileEntity.setErrorDisplayID(aBaseMetaTileEntity.getErrorDisplayID() | (mNeedsSteamVenting ? 64 : 0));
+    }
+
+    @Override
     public void endProcess() {
         if (isSteampowered()) mNeedsSteamVenting = true;
     }
@@ -190,76 +216,76 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
     }
 
     public float getSteamDamage() {
-        return 6.0F;
+        return 6.0F * mTier;
     }
 
     @Override
     public ITexture[] getSideFacingActive(byte aColor) {
-        return new ITexture[]{TextureFactory.of(mTier == 1 ? MACHINE_BRONZEBRICKS_SIDE : MACHINE_BRONZE_SIDE, Dyes.getModulation(aColor, Dyes._NULL.mRGBa))};
+        return new ITexture[]{TextureFactory.of(isBricked() ? MACHINE_BRONZEBRICKS_SIDE : MACHINE_BRONZE_SIDE, Dyes.getModulation(aColor, Dyes._NULL.mRGBa))};
     }
 
     @Override
     public ITexture[] getSideFacingInactive(byte aColor) {
-        return new ITexture[]{TextureFactory.of(mTier == 1 ? MACHINE_BRONZEBRICKS_SIDE : MACHINE_BRONZE_SIDE, Dyes.getModulation(aColor, Dyes._NULL.mRGBa))};
+        return new ITexture[]{TextureFactory.of(isBricked() ? MACHINE_BRONZEBRICKS_SIDE : MACHINE_BRONZE_SIDE, Dyes.getModulation(aColor, Dyes._NULL.mRGBa))};
     }
 
     @Override
     public ITexture[] getFrontFacingActive(byte aColor) {
-        return new ITexture[]{TextureFactory.of(mTier == 1 ? MACHINE_BRONZEBRICKS_SIDE : MACHINE_BRONZE_SIDE, Dyes.getModulation(aColor, Dyes._NULL.mRGBa))};
+        return new ITexture[]{TextureFactory.of(isBricked() ? MACHINE_BRONZEBRICKS_SIDE : MACHINE_BRONZE_SIDE, Dyes.getModulation(aColor, Dyes._NULL.mRGBa))};
     }
 
     @Override
     public ITexture[] getFrontFacingInactive(byte aColor) {
-        return new ITexture[]{TextureFactory.of(mTier == 1 ? MACHINE_BRONZEBRICKS_SIDE : MACHINE_BRONZE_SIDE, Dyes.getModulation(aColor, Dyes._NULL.mRGBa))};
+        return new ITexture[]{TextureFactory.of(isBricked() ? MACHINE_BRONZEBRICKS_SIDE : MACHINE_BRONZE_SIDE, Dyes.getModulation(aColor, Dyes._NULL.mRGBa))};
     }
 
     @Override
     public ITexture[] getTopFacingActive(byte aColor) {
-        return new ITexture[]{TextureFactory.of(mTier == 1 ? MACHINE_BRONZEBRICKS_TOP : MACHINE_BRONZE_TOP, Dyes.getModulation(aColor, Dyes._NULL.mRGBa))};
+        return new ITexture[]{TextureFactory.of(isBricked() ? MACHINE_BRONZEBRICKS_TOP : MACHINE_BRONZE_TOP, Dyes.getModulation(aColor, Dyes._NULL.mRGBa))};
     }
 
     @Override
     public ITexture[] getTopFacingInactive(byte aColor) {
-        return new ITexture[]{TextureFactory.of(mTier == 1 ? MACHINE_BRONZEBRICKS_TOP : MACHINE_BRONZE_TOP, Dyes.getModulation(aColor, Dyes._NULL.mRGBa))};
+        return new ITexture[]{TextureFactory.of(isBricked() ? MACHINE_BRONZEBRICKS_TOP : MACHINE_BRONZE_TOP, Dyes.getModulation(aColor, Dyes._NULL.mRGBa))};
     }
 
     @Override
     public ITexture[] getBottomFacingActive(byte aColor) {
-        return new ITexture[]{TextureFactory.of(mTier == 1 ? MACHINE_BRONZEBRICKS_BOTTOM : MACHINE_BRONZE_BOTTOM, Dyes.getModulation(aColor, Dyes._NULL.mRGBa))};
+        return new ITexture[]{TextureFactory.of(isBricked() ? MACHINE_BRONZEBRICKS_BOTTOM : MACHINE_BRONZE_BOTTOM, Dyes.getModulation(aColor, Dyes._NULL.mRGBa))};
     }
 
     @Override
     public ITexture[] getBottomFacingInactive(byte aColor) {
-        return new ITexture[]{TextureFactory.of(mTier == 1 ? MACHINE_BRONZEBRICKS_BOTTOM : MACHINE_BRONZE_BOTTOM, Dyes.getModulation(aColor, Dyes._NULL.mRGBa))};
+        return new ITexture[]{TextureFactory.of(isBricked() ? MACHINE_BRONZEBRICKS_BOTTOM : MACHINE_BRONZE_BOTTOM, Dyes.getModulation(aColor, Dyes._NULL.mRGBa))};
     }
 
     @Override
     public ITexture[] getBottomFacingPipeActive(byte aColor) {
-        return new ITexture[]{TextureFactory.of(mTier == 1 ? MACHINE_BRONZEBRICKS_BOTTOM : MACHINE_BRONZE_BOTTOM, Dyes.getModulation(aColor, Dyes._NULL.mRGBa)), TextureFactory.of(OVERLAY_PIPE_OUT)};
+        return new ITexture[]{TextureFactory.of(isBricked() ? MACHINE_BRONZEBRICKS_BOTTOM : MACHINE_BRONZE_BOTTOM, Dyes.getModulation(aColor, Dyes._NULL.mRGBa)), TextureFactory.of(OVERLAY_PIPE_OUT)};
     }
 
     @Override
     public ITexture[] getBottomFacingPipeInactive(byte aColor) {
-        return new ITexture[]{TextureFactory.of(mTier == 1 ? MACHINE_BRONZEBRICKS_BOTTOM : MACHINE_BRONZE_BOTTOM, Dyes.getModulation(aColor, Dyes._NULL.mRGBa)), TextureFactory.of(OVERLAY_PIPE_OUT)};
+        return new ITexture[]{TextureFactory.of(isBricked() ? MACHINE_BRONZEBRICKS_BOTTOM : MACHINE_BRONZE_BOTTOM, Dyes.getModulation(aColor, Dyes._NULL.mRGBa)), TextureFactory.of(OVERLAY_PIPE_OUT)};
     }
 
     @Override
     public ITexture[] getTopFacingPipeActive(byte aColor) {
-        return new ITexture[]{TextureFactory.of(mTier == 1 ? MACHINE_BRONZEBRICKS_TOP : MACHINE_BRONZE_TOP, Dyes.getModulation(aColor, Dyes._NULL.mRGBa)), TextureFactory.of(OVERLAY_PIPE_OUT)};
+        return new ITexture[]{TextureFactory.of(isBricked() ? MACHINE_BRONZEBRICKS_TOP : MACHINE_BRONZE_TOP, Dyes.getModulation(aColor, Dyes._NULL.mRGBa)), TextureFactory.of(OVERLAY_PIPE_OUT)};
     }
 
     @Override
     public ITexture[] getTopFacingPipeInactive(byte aColor) {
-        return new ITexture[]{TextureFactory.of(mTier == 1 ? MACHINE_BRONZEBRICKS_TOP : MACHINE_BRONZE_TOP, Dyes.getModulation(aColor, Dyes._NULL.mRGBa)), TextureFactory.of(OVERLAY_PIPE_OUT)};
+        return new ITexture[]{TextureFactory.of(isBricked() ? MACHINE_BRONZEBRICKS_TOP : MACHINE_BRONZE_TOP, Dyes.getModulation(aColor, Dyes._NULL.mRGBa)), TextureFactory.of(OVERLAY_PIPE_OUT)};
     }
 
     @Override
     public ITexture[] getSideFacingPipeActive(byte aColor) {
-        return new ITexture[]{TextureFactory.of(mTier == 1 ? MACHINE_BRONZEBRICKS_SIDE : MACHINE_BRONZE_SIDE, Dyes.getModulation(aColor, Dyes._NULL.mRGBa)), TextureFactory.of(OVERLAY_PIPE_OUT)};
+        return new ITexture[]{TextureFactory.of(isBricked() ? MACHINE_BRONZEBRICKS_SIDE : MACHINE_BRONZE_SIDE, Dyes.getModulation(aColor, Dyes._NULL.mRGBa)), TextureFactory.of(OVERLAY_PIPE_OUT)};
     }
 
     @Override
     public ITexture[] getSideFacingPipeInactive(byte aColor) {
-        return new ITexture[]{TextureFactory.of(mTier == 1 ? MACHINE_BRONZEBRICKS_SIDE : MACHINE_BRONZE_SIDE, Dyes.getModulation(aColor, Dyes._NULL.mRGBa)), TextureFactory.of(OVERLAY_PIPE_OUT)};
+        return new ITexture[]{TextureFactory.of(isBricked() ? MACHINE_BRONZEBRICKS_SIDE : MACHINE_BRONZE_SIDE, Dyes.getModulation(aColor, Dyes._NULL.mRGBa)), TextureFactory.of(OVERLAY_PIPE_OUT)};
     }
 }

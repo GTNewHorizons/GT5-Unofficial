@@ -114,12 +114,16 @@ public class GT_UndergroundOil {
         if (dimension == null) return null;
         // prepare RNG
         final XSTR tVeinRNG = new XSTR(world.getSeed() + dimensionId * 2L + (chunkX >> 3) + 8267L * (chunkZ >> 3));
-        final XSTR tChunkRNG = new XSTR(world.getSeed() + dimensionId * 2L + chunkX + 8267L * chunkZ);
         GT_UO_Fluid uoFluid = dimension.getRandomFluid(tVeinRNG);
         // nothing here :(
         if (uoFluid == null || uoFluid.getFluid() == null) return null;
         // offset each chunk's fluid amount by +-25%
-        int amount = (int) ((float) uoFluid.getRandomAmount(tVeinRNG) * (0.75f + (tChunkRNG.nextFloat() / 2f)));
+        // discard random values not for current chunk
+        int veinAverage = uoFluid.getRandomAmount(tVeinRNG);
+        for (int i = 0; i < (((chunkX & 0x7) << 3) | chunkZ & 0x7); i++) {
+            tVeinRNG.next(24);
+        }
+        int amount = (int) ((float) veinAverage * (0.75f + (tVeinRNG.nextFloat() / 2f)));
         return Pair.of(uoFluid, amount);
     }
 

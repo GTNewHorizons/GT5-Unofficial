@@ -41,36 +41,36 @@ public class GT_Container_ChestBuffer extends GT_ContainerMetaTile_Machine {
             if (aSlotIndex == 27) {
                 ((GT_MetaTileEntity_ChestBuffer) this.mTileEntity.getMetaTileEntity()).bOutput = (!((GT_MetaTileEntity_ChestBuffer) this.mTileEntity.getMetaTileEntity()).bOutput);
                 if (((GT_MetaTileEntity_ChestBuffer) this.mTileEntity.getMetaTileEntity()).bOutput) {
-                    GT_Utility.sendChatToPlayer(aPlayer, trans("116","Emit Energy to Outputside"));
+                    GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("116","Emit Energy to Outputside"));
                 } else {
-                    GT_Utility.sendChatToPlayer(aPlayer, trans("117","Don't emit Energy"));
+                    GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("117","Don't emit Energy"));
                 }
                 return null;
             }
             if (aSlotIndex == 28) {
                 ((GT_MetaTileEntity_ChestBuffer) this.mTileEntity.getMetaTileEntity()).bRedstoneIfFull = (!((GT_MetaTileEntity_ChestBuffer) this.mTileEntity.getMetaTileEntity()).bRedstoneIfFull);
                 if (((GT_MetaTileEntity_ChestBuffer) this.mTileEntity.getMetaTileEntity()).bRedstoneIfFull) {
-                    GT_Utility.sendChatToPlayer(aPlayer, trans("118","Emit Redstone if no Slot is free"));
+                    GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("118","Emit Redstone if no Slot is free"));
                 } else {
-                    GT_Utility.sendChatToPlayer(aPlayer, trans("119","Don't emit Redstone"));
+                    GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("119","Don't emit Redstone"));
                 }
                 return null;
             }
             if (aSlotIndex == 29) {
                 ((GT_MetaTileEntity_ChestBuffer) this.mTileEntity.getMetaTileEntity()).bInvert = (!((GT_MetaTileEntity_ChestBuffer) this.mTileEntity.getMetaTileEntity()).bInvert);
                 if (((GT_MetaTileEntity_ChestBuffer) this.mTileEntity.getMetaTileEntity()).bInvert) {
-                    GT_Utility.sendChatToPlayer(aPlayer, trans("120","Invert Redstone"));
+                    GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("120","Invert Redstone"));
                 } else {
-                    GT_Utility.sendChatToPlayer(aPlayer, trans("121","Don't invert Redstone"));
+                    GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("121","Don't invert Redstone"));
                 }
                 return null;
             }
             if (aSlotIndex == 30) {
                 ((GT_MetaTileEntity_ChestBuffer) this.mTileEntity.getMetaTileEntity()).bStockingMode = (!((GT_MetaTileEntity_ChestBuffer) this.mTileEntity.getMetaTileEntity()).bStockingMode);
                 if (((GT_MetaTileEntity_ChestBuffer) this.mTileEntity.getMetaTileEntity()).bStockingMode) {
-                    GT_Utility.sendChatToPlayer(aPlayer, trans("217","Stocking mode. Keeps this many items in destination input slots. This mode can be server unfriendly."));
+                    GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("217","Stocking mode. Keeps this many items in destination input slots. This mode can be server unfriendly."));
                 } else {
-                    GT_Utility.sendChatToPlayer(aPlayer, trans("218", "Transfer size mode. Add exactly this many items in destination input slots as long as there is room."));
+                    GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("218", "Transfer size mode. Add exactly this many items in destination input slots as long as there is room."));
                 }
                 return null;
             }

@@ -5,6 +5,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_MonsterRepellent;
 import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent.CheckSpawn;
@@ -25,7 +26,7 @@ public class GT_SpawnEventHandler {
         if (event.getResult() == Event.Result.ALLOW) {
             return;
         }
-        if (event.entityLiving.isCreatureType(EnumCreatureType.monster, false)) {
+        if (event.entityLiving.isCreatureType(EnumCreatureType.monster, false) || event.entityLiving instanceof EntitySlime) {
             for (int[] rep : mobReps) {
                 if (rep[3] == event.entity.worldObj.provider.dimensionId) {
                     TileEntity tTile = event.entity.worldObj.getTileEntity(rep[0], rep[1], rep[2]);

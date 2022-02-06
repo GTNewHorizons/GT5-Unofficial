@@ -2,13 +2,14 @@ package gregtech.api.metatileentity;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gnu.trove.list.TIntList;
+import gnu.trove.list.array.TIntArrayList;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.metatileentity.IConnectable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IColoredTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.BaseMetaTileEntity.ClientEvents;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.*;
 import gregtech.common.GT_Client;
@@ -303,19 +304,19 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
     @Override
     public final void sendSound(byte aIndex) {
         if (!getBaseMetaTileEntity().hasMufflerUpgrade())
-            getBaseMetaTileEntity().sendBlockEvent(ClientEvents.DO_SOUND, aIndex);
+            getBaseMetaTileEntity().sendBlockEvent(MetaTileClientEvents.DO_SOUND, aIndex);
     }
 
     @Override
     public final void sendLoopStart(byte aIndex) {
         if (!getBaseMetaTileEntity().hasMufflerUpgrade())
-            getBaseMetaTileEntity().sendBlockEvent(ClientEvents.START_SOUND_LOOP, aIndex);
+            getBaseMetaTileEntity().sendBlockEvent(MetaTileClientEvents.START_SOUND_LOOP, aIndex);
     }
 
     @Override
     public final void sendLoopEnd(byte aIndex) {
         if (!getBaseMetaTileEntity().hasMufflerUpgrade())
-            getBaseMetaTileEntity().sendBlockEvent(ClientEvents.STOP_SOUND_LOOP, aIndex);
+            getBaseMetaTileEntity().sendBlockEvent(MetaTileClientEvents.STOP_SOUND_LOOP, aIndex);
     }
 
     @Override
@@ -519,15 +520,13 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
 
     @Override
     public int[] getAccessibleSlotsFromSide(int aSide) {
-        ArrayList<Integer> tList = new ArrayList<Integer>();
+        TIntList tList = new TIntArrayList();
         IGregTechTileEntity tTileEntity = getBaseMetaTileEntity();
         boolean tSkip = tTileEntity.getCoverBehaviorAtSideNew((byte) aSide).letsItemsIn((byte) aSide, tTileEntity.getCoverIDAtSide((byte) aSide), tTileEntity.getComplexCoverDataAtSide((byte) aSide), -2, tTileEntity) || tTileEntity.getCoverBehaviorAtSideNew((byte) aSide).letsItemsOut((byte) aSide, tTileEntity.getCoverIDAtSide((byte) aSide), tTileEntity.getComplexCoverDataAtSide((byte) aSide), -2, tTileEntity);
         for (int i = 0; i < getSizeInventory(); i++)
             if (isValidSlot(i) && (tSkip || tTileEntity.getCoverBehaviorAtSideNew((byte) aSide).letsItemsOut((byte) aSide, tTileEntity.getCoverIDAtSide((byte) aSide), tTileEntity.getComplexCoverDataAtSide((byte) aSide), i, tTileEntity) || tTileEntity.getCoverBehaviorAtSideNew((byte) aSide).letsItemsIn((byte) aSide, tTileEntity.getCoverIDAtSide((byte) aSide), tTileEntity.getComplexCoverDataAtSide((byte) aSide), i, tTileEntity)))
                 tList.add(i);
-        int[] rArray = new int[tList.size()];
-        for (int i = 0; i < rArray.length; i++) rArray[i] = tList.get(i);
-        return rArray;
+        return tList.toArray();
     }
 
     @Override
@@ -758,8 +757,9 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
 		return "";
 	}
 
+    @Deprecated
 	public String trans(String aKey, String aEnglish){
-    	return GT_LanguageManager.addStringLocalization("Interaction_DESCRIPTION_Index_"+aKey, aEnglish, false);
+    	return GT_Utility.trans(aKey, aEnglish);
     }
 
     private boolean connectableColor(TileEntity tTileEntity) {

@@ -23,16 +23,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.covers.*;
-import gregtech.common.items.behaviors.Behaviour_Arrow_Potion;
-import gregtech.common.items.behaviors.Behaviour_DataOrb;
-import gregtech.common.items.behaviors.Behaviour_DataStick;
-import gregtech.common.items.behaviors.Behaviour_Lighter;
-import gregtech.common.items.behaviors.Behaviour_PrintedPages;
-import gregtech.common.items.behaviors.Behaviour_Scanner;
-import gregtech.common.items.behaviors.Behaviour_SensorKit;
-import gregtech.common.items.behaviors.Behaviour_Sonictron;
-import gregtech.common.items.behaviors.Behaviour_Spray_Color;
-import gregtech.common.items.behaviors.Behaviour_WrittenBook;
+import gregtech.common.items.behaviors.*;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.item.EntityItem;
@@ -43,6 +34,7 @@ import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.MathHelper;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -411,44 +403,76 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         GT_ModHandler.addCraftingRecipe(ItemList.Battery_Hull_LV.get(1L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"Cf ", "Ph ", "Ps ", 'P', OrePrefixes.plate.get(Materials.BatteryAlloy), 'C', OreDictNames.craftingWireTin});
         //GT_ModHandler.addCraftingRecipe(ItemList.Battery_Hull_MV.get(1L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"C C", "PPP", "PPP", 'P', OrePrefixes.plate.get(Materials.BatteryAlloy), 'C', OreDictNames.craftingWireCopper});
 
-        ItemList.Battery_RE_ULV_Tantalum.set(addItem(tLastID = 499, "Tantalum Capacitor", "Reusable", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 1L)));
+        // ULV Batteries
+        ItemList.Battery_RE_ULV_Tantalum.set(addItem(tLastID = 499, "Tantalum Capacitor", "Reusable", "batteryULV", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 1L)));
         setElectricStats(32000 + tLastID, 1000L, GT_Values.V[0], 0L, -3L, false);
+        OreDictionary.registerOre("ULV", ItemList.Battery_RE_ULV_Tantalum.get(1));
 
-        ItemList.Battery_SU_LV_SulfuricAcid.set(addItem(tLastID = 510, "Small Acid Battery", "Single Use", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 2L)));
+        // LV Batteries
+        ItemList.Battery_SU_LV_SulfuricAcid.set(addItem(tLastID = 510, "Small Acid Battery", "Single Use", "batteryLV", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 2L)));
         setElectricStats(32000 + tLastID, 18000L, GT_Values.V[1], 1L, -2L, true);
+        OreDictionary.registerOre("LV", ItemList.Battery_SU_LV_SulfuricAcid.get(1));
+
         ItemList.Battery_SU_LV_Mercury.set(addItem(tLastID = 511, "Small Mercury Battery", "Single Use", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 2L)));
         setElectricStats(32000 + tLastID, 32000L, GT_Values.V[1], 1L, -2L, true);
+        OreDictionary.registerOre("LV", ItemList.Battery_SU_LV_Mercury.get(1));
 
-        ItemList.Battery_RE_LV_Cadmium.set(addItem(tLastID = 517, "Small Cadmium Battery", "Reusable", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 1L), "calclavia:ADVANCED_BATTERY"));
+        ItemList.Battery_RE_LV_Cadmium.set(addItem(tLastID = 517, "Small Cadmium Battery", "Reusable", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 1L), "batteryLV"));
         setElectricStats(32000 + tLastID, 75000L, GT_Values.V[1], 1L, -3L, true);
-        ItemList.Battery_RE_LV_Lithium.set(addItem(tLastID = 518, "Small Lithium Battery", "Reusable", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 1L), "calclavia:ADVANCED_BATTERY"));
+        OreDictionary.registerOre("LV", ItemList.Battery_RE_LV_Cadmium.get(1));
+        OreDictionary.registerOre("calclavia:ADVANCED_BATTERY", ItemList.Battery_RE_LV_Cadmium.get(1)); // Annoying backwards compat
+
+        ItemList.Battery_RE_LV_Lithium.set(addItem(tLastID = 518, "Small Lithium Battery", "Reusable", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 1L), "batteryLV"));
         setElectricStats(32000 + tLastID, 100000L, GT_Values.V[1], 1L, -3L, true);
+        OreDictionary.registerOre("LV", ItemList.Battery_RE_LV_Lithium.get(1));
+        OreDictionary.registerOre("calclavia:ADVANCED_BATTERY", ItemList.Battery_RE_LV_Lithium.get(1)); // Annoying backwards compat
+
         ItemList.Battery_RE_LV_Sodium.set(addItem(tLastID = 519, "Small Sodium Battery", "Reusable", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 1L), "calclavia:ADVANCED_BATTERY"));
         setElectricStats(32000 + tLastID, 50000L, GT_Values.V[1], 1L, -3L, true);
+        OreDictionary.registerOre("LV", ItemList.Battery_RE_LV_Sodium.get(1));
+        OreDictionary.registerOre("calclavia:ADVANCED_BATTERY", ItemList.Battery_RE_LV_Sodium.get(1)); // Annoying backwards compat
 
-        ItemList.Battery_SU_MV_SulfuricAcid.set(addItem(tLastID = 520, "Medium Acid Battery", "Single Use", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 4L)));
+        // MV Batteries
+        ItemList.Battery_SU_MV_SulfuricAcid.set(addItem(tLastID = 520, "Medium Acid Battery", "Single Use", "batteryMV", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 4L)));
         setElectricStats(32000 + tLastID, 72000L, GT_Values.V[2], 2L, -2L, true);
-        ItemList.Battery_SU_MV_Mercury.set(addItem(tLastID = 521, "Medium Mercury Battery", "Single Use", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 4L)));
+        OreDictionary.registerOre("MV", ItemList.Battery_SU_MV_SulfuricAcid.get(1));
+
+        ItemList.Battery_SU_MV_Mercury.set(addItem(tLastID = 521, "Medium Mercury Battery", "Single Use", "batteryMV", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 4L)));
         setElectricStats(32000 + tLastID, 128000L, GT_Values.V[2], 2L, -2L, true);
+        OreDictionary.registerOre("MV", ItemList.Battery_SU_MV_Mercury.get(1));
 
-        ItemList.Battery_RE_MV_Cadmium.set(addItem(tLastID = 527, "Medium Cadmium Battery", "Reusable", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 2L)));
+        ItemList.Battery_RE_MV_Cadmium.set(addItem(tLastID = 527, "Medium Cadmium Battery", "Reusable", "batteryMV", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 2L)));
         setElectricStats(32000 + tLastID, 300000L, GT_Values.V[2], 2L, -3L, true);
-        ItemList.Battery_RE_MV_Lithium.set(addItem(tLastID = 528, "Medium Lithium Battery", "Reusable", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 2L)));
+        OreDictionary.registerOre("MV", ItemList.Battery_RE_MV_Cadmium.get(1));
+
+        ItemList.Battery_RE_MV_Lithium.set(addItem(tLastID = 528, "Medium Lithium Battery", "Reusable", "batteryMV", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 2L)));
         setElectricStats(32000 + tLastID, 400000L, GT_Values.V[2], 2L, -3L, true);
-        ItemList.Battery_RE_MV_Sodium.set(addItem(tLastID = 529, "Medium Sodium Battery", "Reusable", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 2L)));
+        OreDictionary.registerOre("MV", ItemList.Battery_RE_MV_Lithium.get(1));
+
+        ItemList.Battery_RE_MV_Sodium.set(addItem(tLastID = 529, "Medium Sodium Battery", "Reusable", "batteryMV", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 2L)));
         setElectricStats(32000 + tLastID, 200000L, GT_Values.V[2], 2L, -3L, true);
+        OreDictionary.registerOre("MV", ItemList.Battery_RE_MV_Sodium.get(1));
 
-        ItemList.Battery_SU_HV_SulfuricAcid.set(addItem(tLastID = 530, "Large Acid Battery", "Single Use", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 8L)));
+        // HV Batteries
+        ItemList.Battery_SU_HV_SulfuricAcid.set(addItem(tLastID = 530, "Large Acid Battery", "Single Use", "batteryHV", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 8L)));
         setElectricStats(32000 + tLastID, 288000L, GT_Values.V[3], 3L, -2L, true);
-        ItemList.Battery_SU_HV_Mercury.set(addItem(tLastID = 531, "Large Mercury Battery", "Single Use", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 8L)));
-        setElectricStats(32000 + tLastID, 512000L, GT_Values.V[3], 3L, -2L, true);
+        OreDictionary.registerOre("HV", ItemList.Battery_SU_HV_SulfuricAcid.get(1));
 
-        ItemList.Battery_RE_HV_Cadmium.set(addItem(tLastID = 537, "Large Cadmium Battery", "Reusable", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 4L)));
+        ItemList.Battery_SU_HV_Mercury.set(addItem(tLastID = 531, "Large Mercury Battery", "Single Use", "batteryHV", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 8L)));
+        setElectricStats(32000 + tLastID, 512000L, GT_Values.V[3], 3L, -2L, true);
+        OreDictionary.registerOre("HV", ItemList.Battery_SU_HV_Mercury.get(1));
+
+        ItemList.Battery_RE_HV_Cadmium.set(addItem(tLastID = 537, "Large Cadmium Battery", "Reusable", "batteryHV", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 4L)));
         setElectricStats(32000 + tLastID, 1200000L, GT_Values.V[3], 3L, -3L, true);
-        ItemList.Battery_RE_HV_Lithium.set(addItem(tLastID = 538, "Large Lithium Battery", "Reusable", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 4L)));
+        OreDictionary.registerOre("HV", ItemList.Battery_RE_HV_Cadmium.get(1));
+
+        ItemList.Battery_RE_HV_Lithium.set(addItem(tLastID = 538, "Large Lithium Battery", "Reusable", "batteryHV", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 4L)));
         setElectricStats(32000 + tLastID, 1600000L, GT_Values.V[3], 3L, -3L, true);
-        ItemList.Battery_RE_HV_Sodium.set(addItem(tLastID = 539, "Large Sodium Battery", "Reusable", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 4L)));
+        OreDictionary.registerOre("HV", ItemList.Battery_RE_HV_Lithium.get(1));
+
+        ItemList.Battery_RE_HV_Sodium.set(addItem(tLastID = 539, "Large Sodium Battery", "Reusable", "batteryHV", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 4L)));
         setElectricStats(32000 + tLastID, 800000L, GT_Values.V[3], 3L, -3L, true);
+        OreDictionary.registerOre("HV", ItemList.Battery_RE_HV_Sodium.get(1));
 
         GT_ModHandler.addExtractionRecipe(ItemList.Battery_SU_LV_SulfuricAcid.get(1L), ItemList.Battery_Hull_LV.get(1L));
         GT_ModHandler.addExtractionRecipe(ItemList.Battery_SU_LV_Mercury.get(1L), ItemList.Battery_Hull_LV.get(1L));
@@ -476,27 +500,42 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         GT_Values.RA.addCannerRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lithium, 32L), ItemList.Battery_Hull_HV.get(1L), ItemList.Battery_RE_HV_Lithium.get(1L), null, 1600, 2);
         GT_Values.RA.addCannerRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 32L), ItemList.Battery_Hull_HV.get(1L), ItemList.Battery_RE_HV_Sodium.get(1L), null, 1600, 2);
 
-        ItemList.Energy_LapotronicOrb.set(addItem(tLastID = 597, "Lapotronic Energy Orb", "Reusable battery", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 16L), OrePrefixes.battery.get(Materials.Ultimate)));
+        // EV Battery
+        ItemList.Energy_LapotronicOrb.set(addItem(tLastID = 597, "Lapotronic Energy Orb", "Reusable battery", "batteryIV", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 16L), OrePrefixes.battery.get(Materials.Ultimate)));
         setElectricStats(32000 + tLastID, 100000000L, GT_Values.V[5], 5L, -3L, true);
+        OreDictionary.registerOre("EV", ItemList.Energy_LapotronicOrb.get(1));
 
-        ItemList.ZPM.set(addItem(tLastID = 598, "Zero Point Module", "Single use battery", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 64L), new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 64L)));
+        // ZPM Module
+        ItemList.ZPM.set(addItem(tLastID = 598, "Zero Point Module", "Single use battery", "batteryZPM", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 64L), new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 64L)));
         setElectricStats(32000 + tLastID, 2000000000000L, GT_Values.V[7], 7L, -2L, true);
+        OreDictionary.registerOre("ZPM", ItemList.ZPM.get(1));
 
-        ItemList.Energy_LapotronicOrb2.set(addItem(tLastID = 599, "Lapotronic Energy Orb Cluster", "Reusable battery", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 16L), OrePrefixes.battery.get(Materials.Ultimate)));
+        // LuV Lapotron orb cluster battery
+        ItemList.Energy_LapotronicOrb2.set(addItem(tLastID = 599, "Lapotronic Energy Orb Cluster", "Reusable battery", "batteryLuV", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 16L), OrePrefixes.battery.get(Materials.Ultimate)));
         setElectricStats(32000 + tLastID, 1000000000L, GT_Values.V[6], 6L, -3L, true);
+        OreDictionary.registerOre("LuV", ItemList.Energy_LapotronicOrb2.get(1));
 
-        ItemList.ZPM2.set(addItem(tLastID = 605, "Ultimate Battery", "Fill this to win minecraft", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 64L), new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 64L)));
+        // UV Battery
+        ItemList.ZPM2.set(addItem(tLastID = 605, "Ultimate Battery", "Fill this to win minecraft", "batteryUV", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 64L), new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 64L)));
         setElectricStats(32000 + tLastID, Long.MAX_VALUE, GT_Values.V[8], 8L, -3L, true);
+        OreDictionary.registerOre("UV", ItemList.ZPM2.get(1));
 
-        ItemList.ZPM3.set(addItem(tLastID = 609, "Really Ultimate Battery", "Fill this to be way older", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 64L), new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 64L)));
+        // UMV Battery
+        ItemList.ZPM3.set(addItem(tLastID = 609, "Really Ultimate Battery", "Fill this to be way older", "batteryUMV", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 64L), new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 64L)));
         setElectricStats(32000 + tLastID, Long.MAX_VALUE, GT_Values.V[12], 12L, -3L, true);
+        OreDictionary.registerOre("UMV", ItemList.ZPM3.get(1));
 
-        ItemList.Energy_Module.set(addItem(tLastID = 736, "Energy Module", "Reusable battery", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 16L), OrePrefixes.battery.get(Materials.Ultimate)));
+        // ZPM Cluster
+        ItemList.Energy_Module.set(addItem(tLastID = 736, "Energy Module", "Reusable battery", "batteryZPM", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 16L), OrePrefixes.battery.get(Materials.Ultimate)));
         setElectricStats(32000 + tLastID, 10000000000L, GT_Values.V[7], 7L, -3L, true);
+        OreDictionary.registerOre("ZPM", ItemList.Energy_Module.get(1));
 
-        ItemList.Energy_Cluster.set(addItem(tLastID = 737, "Energy Cluster", "Reusable battery", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 64L), new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 64L)));
+        // UV Cluster
+        ItemList.Energy_Cluster.set(addItem(tLastID = 737, "Energy Cluster", "Reusable battery", "batteryUV", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 64L), new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 64L)));
         setElectricStats(32000 + tLastID, 100000000000L, GT_Values.V[8], 8L, -3L, true);
+        OreDictionary.registerOre("UV", ItemList.Energy_Cluster.get(1));
 
+        // UIV, UMV, UXV and MAX component textures backported from gregicality.
         ItemList.Electric_Motor_LV.set(addItem(600, "Electric Motor (LV)", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 1L)));
         ItemList.Electric_Motor_MV.set(addItem(601, "Electric Motor (MV)", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 2L)));
         ItemList.Electric_Motor_HV.set(addItem(602, "Electric Motor (HV)", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 4L), new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 4L)));
@@ -510,8 +549,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         ItemList.Electric_Motor_UIV.set(addItem(17, "Electric Motor (UIV)", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 512L)));
         ItemList.Electric_Motor_UMV.set(addItem(18, "Electric Motor (UMV)", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 512L)));
         ItemList.Electric_Motor_UXV.set(addItem(19, "Electric Motor (UXV)", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 512L)));
-        ItemList.Electric_Motor_OpV.set(addItem(20, "Electric Motor (OpV)", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 512L)));
-        ItemList.Electric_Motor_MAX.set(addItem(21, "Electric Motor (MAX)", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 512L)));    
+        ItemList.Electric_Motor_MAX.set(addItem(20, "Electric Motor (MAX)", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 512L)));
 
         GT_ModHandler.addCraftingRecipe(ItemList.Electric_Motor_LV.get(1L), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"CWR", "WIW", "RWC", 'I', OrePrefixes.stick.get(Materials.IronMagnetic), 'R', OrePrefixes.stick.get(Materials.AnyIron), 'W', OrePrefixes.wireGt01.get(Materials.AnyCopper), 'C', OrePrefixes.cableGt01.get(Materials.Tin)});
         GT_ModHandler.addCraftingRecipe(ItemList.Electric_Motor_LV.get(1L), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"CWR", "WIW", "RWC", 'I', OrePrefixes.stick.get(Materials.SteelMagnetic), 'R', OrePrefixes.stick.get(Materials.Steel), 'W', OrePrefixes.wireGt01.get(Materials.AnyCopper), 'C', OrePrefixes.cableGt01.get(Materials.Tin)});
@@ -530,11 +568,10 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         ItemList.Electric_Piston_UV.set(addItem(647, "Electric Piston (UV)", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 128L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 128L), new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 128L)));
         ItemList.Electric_Piston_UHV.set(addItem(648, "Electric Piston (UHV)", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 256L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 256L), new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 256L)));
         ItemList.Electric_Piston_UEV.set(addItem(649, "Electric Piston (UEV)", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 512L)));
-        ItemList.Electric_Piston_UIV.set(addItem(22, "Electric Piston (UIV)", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 512L)));
-        ItemList.Electric_Piston_UMV.set(addItem(23, "Electric Piston (UMV)", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 512L)));
-        ItemList.Electric_Piston_UXV.set(addItem(24, "Electric Piston (UXV)", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 512L)));
-        ItemList.Electric_Piston_OpV.set(addItem(25, "Electric Piston (OpV)", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 512L)));
-        ItemList.Electric_Piston_MAX.set(addItem(26, "Electric Piston (MAX)", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 512L)));
+        ItemList.Electric_Piston_UIV.set(addItem(21, "Electric Piston (UIV)", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 512L)));
+        ItemList.Electric_Piston_UMV.set(addItem(22, "Electric Piston (UMV)", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 512L)));
+        ItemList.Electric_Piston_UXV.set(addItem(23, "Electric Piston (UXV)", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 512L)));
+        ItemList.Electric_Piston_MAX.set(addItem(24, "Electric Piston (MAX)", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 512L)));
 
         GT_ModHandler.addCraftingRecipe(ItemList.Electric_Piston_LV.get(1L), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"PPP", "CSS", "CMG", 'P', OrePrefixes.plate.get(Materials.Steel), 'S', OrePrefixes.stick.get(Materials.Steel), 'G', OrePrefixes.gearGtSmall.get(Materials.Steel), 'M', ItemList.Electric_Motor_LV, 'C', OrePrefixes.cableGt01.get(Materials.Tin)});
         GT_ModHandler.addCraftingRecipe(ItemList.Electric_Piston_MV.get(1L), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"PPP", "CSS", "CMG", 'P', OrePrefixes.plate.get(Materials.Aluminium), 'S', OrePrefixes.stick.get(Materials.Aluminium), 'G', OrePrefixes.gearGtSmall.get(Materials.Aluminium), 'M', ItemList.Electric_Motor_MV, 'C', OrePrefixes.cableGt01.get(Materials.AnyCopper)});
@@ -552,11 +589,10 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         ItemList.Electric_Pump_UV.set(addItem(617, "Electric Pump (UV)", GT_Utility.formatNumbers(524288) + PartCoverText + GT_Utility.formatNumbers(524288 * 20) + PartCoverText2, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 128L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 128L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 128L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 128L)));
         ItemList.Electric_Pump_UHV.set(addItem(618, "Electric Pump (UHV)", GT_Utility.formatNumbers(1048576) + PartCoverText + GT_Utility.formatNumbers(1048576 * 20) + PartCoverText2, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 256L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 256L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 256L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 256L)));
         ItemList.Electric_Pump_UEV.set(addItem(619, "Electric Pump (UEV)", GT_Utility.formatNumbers(2097152) + PartCoverText + GT_Utility.formatNumbers(2097152 * 20) + PartCoverText2, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 512L)));
-        ItemList.Electric_Pump_UIV.set(addItem(27, "Electric Pump (UIV)", PartNotCoverText, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 512L)));
-        ItemList.Electric_Pump_UMV.set(addItem(28, "Electric Pump (UMV)", PartNotCoverText, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 512L)));
-        ItemList.Electric_Pump_UXV.set(addItem(29, "Electric Pump (UXV)", PartNotCoverText, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 512L)));
-        ItemList.Electric_Pump_OpV.set(addItem(30, "Electric Pump (OpV)", PartNotCoverText, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 512L)));
-        ItemList.Electric_Pump_MAX.set(addItem(31, "Electric Pump (MAX)", PartNotCoverText, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 512L)));
+        ItemList.Electric_Pump_UIV.set(addItem(25, "Electric Pump (UIV)", PartNotCoverText, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 512L)));
+        ItemList.Electric_Pump_UMV.set(addItem(26, "Electric Pump (UMV)", PartNotCoverText, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 512L)));
+        ItemList.Electric_Pump_UXV.set(addItem(27, "Electric Pump (UXV)", PartNotCoverText, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 512L)));
+        ItemList.Electric_Pump_MAX.set(addItem(28, "Electric Pump (MAX)", PartNotCoverText, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 512L)));
         
         GregTech_API.registerCover(ItemList.Electric_Pump_LV.get(1L), TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(OVERLAY_PUMP)), new GT_Cover_Pump(32));
         GregTech_API.registerCover(ItemList.Electric_Pump_MV.get(1L), TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_PUMP)), new GT_Cover_Pump(128));
@@ -622,11 +658,10 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         ItemList.Conveyor_Module_UV.set(addItem(637, "Conveyor Module (UV)", "8 stacks every 1/20 sec (as Cover)", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 128L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 128L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 128L)));
         ItemList.Conveyor_Module_UHV.set(addItem(638, "Conveyor Module (UHV)", "16 stacks every 1/20 sec (as Cover)", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 256L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 256L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 256L)));
         ItemList.Conveyor_Module_UEV.set(addItem(639, "Conveyor Module (UEV)", "32 stacks every 1/20 sec (as Cover)", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 512L)));
-        ItemList.Conveyor_Module_UIV.set(addItem(32, "Conveyor Module (UIV)", PartNotCoverText, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 512L)));
-        ItemList.Conveyor_Module_UMV.set(addItem(33, "Conveyor Module (UMV)", PartNotCoverText, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 512L)));
-        ItemList.Conveyor_Module_UXV.set(addItem(34, "Conveyor Module (UXV)", PartNotCoverText, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 512L)));
-        ItemList.Conveyor_Module_OpV.set(addItem(35, "Conveyor Module (OpV)", PartNotCoverText, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 512L)));
-        ItemList.Conveyor_Module_MAX.set(addItem(36, "Conveyor Module (MAX)", PartNotCoverText, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 512L)));
+        ItemList.Conveyor_Module_UIV.set(addItem(29, "Conveyor Module (UIV)", PartNotCoverText, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 512L)));
+        ItemList.Conveyor_Module_UMV.set(addItem(30, "Conveyor Module (UMV)", PartNotCoverText, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 512L)));
+        ItemList.Conveyor_Module_UXV.set(addItem(31, "Conveyor Module (UXV)", PartNotCoverText, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 512L)));
+        ItemList.Conveyor_Module_MAX.set(addItem(32, "Conveyor Module (MAX)", PartNotCoverText, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 512L)));
 
         GT_ModHandler.addCraftingRecipe(ItemList.Conveyor_Module_LV.get(1L), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"RRR", "MCM", "RRR", 'M', ItemList.Electric_Motor_LV, 'C', OrePrefixes.cableGt01.get(Materials.Tin), 'R', OrePrefixes.plate.get(Materials.AnyRubber)});
         GT_ModHandler.addCraftingRecipe(ItemList.Conveyor_Module_MV.get(1L), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"RRR", "MCM", "RRR", 'M', ItemList.Electric_Motor_MV, 'C', OrePrefixes.cableGt01.get(Materials.AnyCopper), 'R', OrePrefixes.plate.get(Materials.AnyRubber)});
@@ -655,11 +690,10 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         ItemList.Robot_Arm_UV.set(addItem(657, "Robot Arm (UV)", PartNotCoverText, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 128L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 256L), new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 128L), new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 128L)));
         ItemList.Robot_Arm_UHV.set(addItem(658, "Robot Arm (UHV)", PartNotCoverText, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 256L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 256L), new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 256L)));
         ItemList.Robot_Arm_UEV.set(addItem(659, "Robot Arm (UEV)", PartNotCoverText, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1024L), new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 512L)));
-        ItemList.Robot_Arm_UIV.set(addItem(37, "Robot Arm (UIV)", PartNotCoverText, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1024L), new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 512L)));
-        ItemList.Robot_Arm_UMV.set(addItem(38, "Robot Arm (UMV)", PartNotCoverText, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1024L), new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 512L)));
-        ItemList.Robot_Arm_UXV.set(addItem(39, "Robot Arm (UXV)", PartNotCoverText, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1024L), new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 512L)));
-        ItemList.Robot_Arm_OpV.set(addItem(40, "Robot Arm (OpV)", PartNotCoverText, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1024L), new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 512L)));
-        ItemList.Robot_Arm_MAX.set(addItem(41, "Robot Arm (MAX)", PartNotCoverText, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1024L), new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 512L)));
+        ItemList.Robot_Arm_UIV.set(addItem(33, "Robot Arm (UIV)", PartNotCoverText, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1024L), new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 512L)));
+        ItemList.Robot_Arm_UMV.set(addItem(34, "Robot Arm (UMV)", PartNotCoverText, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1024L), new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 512L)));
+        ItemList.Robot_Arm_UXV.set(addItem(35, "Robot Arm (UXV)", PartNotCoverText, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1024L), new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 512L)));
+        ItemList.Robot_Arm_MAX.set(addItem(36, "Robot Arm (MAX)", PartNotCoverText, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1024L), new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 512L)));
 
         GT_ModHandler.addCraftingRecipe(ItemList.Robot_Arm_LV.get(1L), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"CCC", "MSM", "PES", 'S', OrePrefixes.stick.get(Materials.Steel), 'M', ItemList.Electric_Motor_LV, 'P', ItemList.Electric_Piston_LV, 'E', OrePrefixes.circuit.get(Materials.Basic), 'C', OrePrefixes.cableGt01.get(Materials.Tin)});
         GT_ModHandler.addCraftingRecipe(ItemList.Robot_Arm_MV.get(1L), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"CCC", "MSM", "PES", 'S', OrePrefixes.stick.get(Materials.Aluminium), 'M', ItemList.Electric_Motor_MV, 'P', ItemList.Electric_Piston_MV, 'E', OrePrefixes.circuit.get(Materials.Good), 'C', OrePrefixes.cableGt01.get(Materials.AnyCopper)});
@@ -687,11 +721,10 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         ItemList.Emitter_UV.set(addItem(687, "Emitter (UV)", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 128L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 128L), new TC_Aspects.TC_AspectStack(TC_Aspects.LUX, 128L)));
         ItemList.Emitter_UHV.set(addItem(688, "Emitter (UHV)", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 256L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 256L), new TC_Aspects.TC_AspectStack(TC_Aspects.LUX, 256L)));
         ItemList.Emitter_UEV.set(addItem(689, "Emitter (UEV)", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.LUX, 512L)));
-        ItemList.Emitter_UIV.set(addItem(42, "Emitter (UIV)", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.LUX, 512L)));
-        ItemList.Emitter_UMV.set(addItem(43, "Emitter (UMV)", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.LUX, 512L)));
-        ItemList.Emitter_UXV.set(addItem(44, "Emitter (UXV)", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.LUX, 512L)));
-        ItemList.Emitter_OpV.set(addItem(45, "Emitter (OpV)", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.LUX, 512L)));
-        ItemList.Emitter_MAX.set(addItem(46, "Emitter (MAX)", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.LUX, 512L)));
+        ItemList.Emitter_UIV.set(addItem(37, "Emitter (UIV)", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.LUX, 512L)));
+        ItemList.Emitter_UMV.set(addItem(38, "Emitter (UMV)", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.LUX, 512L)));
+        ItemList.Emitter_UXV.set(addItem(39, "Emitter (UXV)", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.LUX, 512L)));
+        ItemList.Emitter_MAX.set(addItem(40, "Emitter (MAX)", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.LUX, 512L)));
 
         GT_ModHandler.addCraftingRecipe(ItemList.Emitter_LV.get(1L), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"SSC", "WQS", "CWS", 'Q', OrePrefixes.gem.get(Materials.CertusQuartz), 'S', OrePrefixes.stick.get(Materials.Brass), 'C', OrePrefixes.circuit.get(Materials.Basic), 'W', OrePrefixes.cableGt01.get(Materials.Tin)});
         GT_ModHandler.addCraftingRecipe(ItemList.Emitter_MV.get(1L), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"SSC", "WQS", "CWS", 'Q', OrePrefixes.gem.get(Materials.EnderPearl), 'S', OrePrefixes.stick.get(Materials.Electrum), 'C', OrePrefixes.circuit.get(Materials.Good), 'W', OrePrefixes.cableGt01.get(Materials.AnyCopper)});
@@ -709,11 +742,10 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         ItemList.Sensor_UV.set(addItem(697, "Sensor (UV)", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 128L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 128L), new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 128L)));
         ItemList.Sensor_UHV.set(addItem(698, "Sensor (UHV)", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 256L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 256L), new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 256L)));
         ItemList.Sensor_UEV.set(addItem(699, "Sensor (UEV)", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 512L)));
-        ItemList.Sensor_UIV.set(addItem(47, "Sensor (UIV)", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 512L)));
-        ItemList.Sensor_UMV.set(addItem(48, "Sensor (UMV)", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 512L)));
-        ItemList.Sensor_UXV.set(addItem(49, "Sensor (UXV)", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 512L)));
-        ItemList.Sensor_OpV.set(addItem(50, "Sensor (OpV)", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 512L)));
-        ItemList.Sensor_MAX.set(addItem(51, "Sensor (MAX)", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 512L)));
+        ItemList.Sensor_UIV.set(addItem(41, "Sensor (UIV)", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 512L)));
+        ItemList.Sensor_UMV.set(addItem(42, "Sensor (UMV)", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 512L)));
+        ItemList.Sensor_UXV.set(addItem(43, "Sensor (UXV)", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 512L)));
+        ItemList.Sensor_MAX.set(addItem(44, "Sensor (MAX)", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 512L)));
 
         GT_ModHandler.addCraftingRecipe(ItemList.Sensor_LV.get(1L), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"P Q", "PS ", "CPP", 'Q', OrePrefixes.gem.get(Materials.CertusQuartz), 'S', OrePrefixes.stick.get(Materials.Brass), 'P', OrePrefixes.plate.get(Materials.Steel), 'C', OrePrefixes.circuit.get(Materials.Basic)});
         GT_ModHandler.addCraftingRecipe(ItemList.Sensor_MV.get(1L), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"P Q", "PS ", "CPP", 'Q', OrePrefixes.gemFlawless.get(Materials.Emerald), 'S', OrePrefixes.stick.get(Materials.Electrum), 'P', OrePrefixes.plate.get(Materials.Aluminium), 'C', OrePrefixes.circuit.get(Materials.Good)});
@@ -731,26 +763,37 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         ItemList.Field_Generator_UV.set(addItem(677, "Field Generator (UV)", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 256L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 128L), new TC_Aspects.TC_AspectStack(TC_Aspects.TUTAMEN, 128L)));
         ItemList.Field_Generator_UHV.set(addItem(678, "Field Generator (UHV)", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 256L), new TC_Aspects.TC_AspectStack(TC_Aspects.TUTAMEN, 256L)));
         ItemList.Field_Generator_UEV.set(addItem(679, "Field Generator (UEV)", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1024L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.TUTAMEN, 512L)));
-        ItemList.Field_Generator_UIV.set(addItem(52, "Field Generator (UIV)", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1024L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.TUTAMEN, 512L)));
-        ItemList.Field_Generator_UMV.set(addItem(53, "Field Generator (UMV)", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1024L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.TUTAMEN, 512L)));
-        ItemList.Field_Generator_UXV.set(addItem(54, "Field Generator (UXV)", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1024L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.TUTAMEN, 512L)));
-        ItemList.Field_Generator_OpV.set(addItem(55, "Field Generator (OpV)", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1024L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.TUTAMEN, 512L)));
-        ItemList.Field_Generator_MAX.set(addItem(56, "Field Generator (MAX)", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1024L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.TUTAMEN, 512L)));
-        
+        ItemList.Field_Generator_UIV.set(addItem(45, "Field Generator (UIV)", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1024L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.TUTAMEN, 512L)));
+        ItemList.Field_Generator_UMV.set(addItem(46, "Field Generator (UMV)", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1024L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.TUTAMEN, 512L)));
+        ItemList.Field_Generator_UXV.set(addItem(47, "Field Generator (UXV)", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1024L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.TUTAMEN, 512L)));
+        ItemList.Field_Generator_MAX.set(addItem(48, "Field Generator (MAX)", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1024L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 512L), new TC_Aspects.TC_AspectStack(TC_Aspects.TUTAMEN, 512L)));
+
+        // Circuits ULV - LuV.
         ItemList.Circuit_Primitive.set(addItem(tLastID = 700, "Vacuum Tube", "A very simple Circuit", OrePrefixes.circuit.get(Materials.Primitive), SubTag.NO_UNIFICATION));
-        ItemList.Circuit_Parts_Vacuum_Tube.set(ItemList.Circuit_Primitive.get(1));
+        OreDictionary.registerOre("ULV" , ItemList.Circuit_Primitive.get(1));
         ItemList.Circuit_Basic.set(addItem(tLastID = 701, "Integrated Logic Circuit", "A Basic Circuit", OrePrefixes.circuit.get(Materials.Basic), SubTag.NO_UNIFICATION));
+        OreDictionary.registerOre("LV" , ItemList.Circuit_Basic.get(1));
         ItemList.Circuit_Good.set(addItem(tLastID = 702, "Good Electronic Circuit", "A Good Circuit", OrePrefixes.circuit.get(Materials.Good), SubTag.NO_UNIFICATION));
+        OreDictionary.registerOre("MV" , ItemList.Circuit_Good.get(1));
         ItemList.Circuit_Advanced.set(addItem(tLastID = 703, "Processor Assembly", "An Advanced Circuit", OrePrefixes.circuit.get(Materials.Advanced), SubTag.NO_UNIFICATION));
-        ItemList.Circuit_Computer.set(ItemList.Circuit_Advanced.get(1));
+        OreDictionary.registerOre("HV" , ItemList.Circuit_Advanced.get(1));
         ItemList.Circuit_Data.set(addItem(tLastID = 704, "Workstation", "An Extreme Circuit", OrePrefixes.circuit.get(Materials.Data), SubTag.NO_UNIFICATION));
+        OreDictionary.registerOre("EV" , ItemList.Circuit_Data.get(1));
         ItemList.Circuit_Elite.set(addItem(tLastID = 705, "Mainframe", "An Elite Circuit", OrePrefixes.circuit.get(Materials.Elite), SubTag.NO_UNIFICATION));
+        OreDictionary.registerOre("IV" , ItemList.Circuit_Elite.get(1));
         ItemList.Circuit_Master.set(addItem(tLastID = 706, "Nanoprocessor Mainframe", "A Master Circuit", OrePrefixes.circuit.get(Materials.Master), SubTag.NO_UNIFICATION));
+        OreDictionary.registerOre("LuV" , ItemList.Circuit_Master.get(1));
+
+        // Backwards compatibility.
+        ItemList.Circuit_Parts_Vacuum_Tube.set(ItemList.Circuit_Primitive.get(1));
+        ItemList.Circuit_Computer.set(ItemList.Circuit_Advanced.get(1));
+
         ItemList.Tool_DataOrb.set(addItem(tLastID = 707, "Data Orb", "A High Capacity Data Storage", SubTag.NO_UNIFICATION, new Behaviour_DataOrb()));
-        //ItemList.Circuit_Ultimate.set(ItemList.Tool_DataOrb.get(1L, new Object[0]));
         GT_ModHandler.addShapelessCraftingRecipe(ItemList.Tool_DataOrb.get(1L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{ItemList.Tool_DataOrb.get(1L)});
         ItemList.Tool_DataStick.set(addItem(tLastID = 708, "Data Stick", "A Low Capacity Data Storage", SubTag.NO_UNIFICATION, new Behaviour_DataStick()));
         GT_ModHandler.addShapelessCraftingRecipe(ItemList.Tool_DataStick.get(1L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{ItemList.Tool_DataStick.get(1L)});
+        ItemList.Tool_Cover_Copy_Paste.set(addItem(tLastID = 709, "Cover Copy/Paste tool", "Set Cover Massively.", Behaviour_Cover_Tool.INSTANCE, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 6L), new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 6L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 6L)));
+        setElectricStats(32000 + tLastID, 400000L, GT_Values.V[2], 2L, -1L, false);
 
         ItemList.Circuit_Board_Basic.set(addItem(tLastID = 710, "Coated Circuit Board", "A Basic Board")); ItemList.Circuit_Board_Coated.set(ItemList.Circuit_Board_Basic.get(1));
         ItemList.Circuit_Board_Advanced.set(addItem(tLastID = 711, "Epoxy Circuit Board", "An Advanced Board")); ItemList.Circuit_Board_Epoxy.set(ItemList.Circuit_Board_Advanced.get(1));
@@ -888,6 +931,8 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate,Materials.Tin,2L), ItemList.Component_Filter.get(1L), ItemList.Conveyor_Module_LV.get(1L), GT_Utility.getIntegratedCircuit(1)}, null, ItemList.ItemFilter_Export.get(1L), 100, 30);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate,Materials.Tin,2L), ItemList.Component_Filter.get(1L), ItemList.Conveyor_Module_LV.get(1L), GT_Utility.getIntegratedCircuit(2)}, null, ItemList.ItemFilter_Import.get(1L), 100, 30);
+
+        GT_ModHandler.addCraftingRecipe(ItemList.Tool_Cover_Copy_Paste.get(1L), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"PSP", "PCP", "PBP", 'P', OrePrefixes.plate.get(Materials.Aluminium), 'S', ItemList.Tool_DataStick.get(1L), 'C', ItemList.Cover_Screen.get(1L), 'B', ItemList.Battery_RE_MV_Lithium.get(1L)});
     }
 
     private static final Map<Materials,Materials> cauldronRemap =new HashMap<>();

@@ -7,7 +7,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import org.lwjgl.input.Keyboard;
 
 public class GT_MetaTileEntity_QuantumChest extends GT_MetaTileEntity_DigitalChestBase {
     public int mItemCount = 0;
@@ -34,7 +33,7 @@ public class GT_MetaTileEntity_QuantumChest extends GT_MetaTileEntity_DigitalChe
     @Override
     public void setItemNBT(NBTTagCompound aNBT) {
         mInvData = new NBTTagList();
-        if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+        if (!voidBreak) {
             for (int i = 0; i < 3; i++) {
                 if (mInventory[i] != null) {
                     NBTTagCompound tNBT = new NBTTagCompound();

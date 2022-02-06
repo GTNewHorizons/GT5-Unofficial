@@ -1,6 +1,5 @@
 package gregtech.api.enums;
 
-import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.TC_Aspects.TC_AspectStack;
@@ -8,9 +7,11 @@ import gregtech.api.interfaces.ICondition;
 import gregtech.api.interfaces.IMaterialHandler;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.interfaces.ISubTagContainer;
+import gregtech.api.objects.GT_ArrayList;
+import gregtech.api.objects.GT_HashSet;
+import gregtech.api.objects.GT_ItemStack2;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
-import gregtech.api.objects.ObjMap;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
 import gregtech.loaders.materialprocessing.ProcessingModSupport;
@@ -569,7 +570,7 @@ public enum OrePrefixes {
         bulletGtLarge.mSecondaryMaterial = new MaterialStack(Materials.Brass, ingot.mMaterialAmount / 3);
     }
 
-    public final ArrayList<ItemStack> mPrefixedItems = new ArrayList<ItemStack>();
+    public final ArrayList<ItemStack> mPrefixedItems = new GT_ArrayList<>(false, 16);
     public final short mTextureIndex;
     public final String mRegularLocalName, mLocalizedMaterialPre, mLocalizedMaterialPost;
     public final boolean mIsUsedForOreProcessing, mIsEnchantable, mIsUnificatable, mIsMaterialBased, mIsSelfReferencing, mIsContainer, mDontUnificateActively, mIsUsedForBlocks, mAllowNormalRecycling, mGenerateDefaultItem;
@@ -590,6 +591,7 @@ public enum OrePrefixes {
     public MaterialStack mSecondaryMaterial = null;
     public OrePrefixes mPrefixInto = this;
     public float mHeatDamage = 0.0F; // Negative for Frost Damage
+    private final GT_HashSet<GT_ItemStack2> mContainsTestCache = new GT_HashSet<>(512, 0.5f);
     public static List<OrePrefixes> mPreventableComponents = new LinkedList<>(Arrays.asList(OrePrefixes.gem, OrePrefixes.ingotHot, OrePrefixes.ingotDouble, OrePrefixes.ingotTriple, OrePrefixes.ingotQuadruple, OrePrefixes.ingotQuintuple, OrePrefixes.plate, OrePrefixes.plateDouble, OrePrefixes.plateTriple, OrePrefixes.plateQuadruple, OrePrefixes.plateQuintuple, OrePrefixes.plateDense, OrePrefixes.stick, OrePrefixes.round, OrePrefixes.bolt, OrePrefixes.screw, OrePrefixes.ring, OrePrefixes.foil, OrePrefixes.toolHeadSword, OrePrefixes.toolHeadPickaxe, OrePrefixes.toolHeadShovel, OrePrefixes.toolHeadAxe, OrePrefixes.toolHeadHoe, OrePrefixes.toolHeadHammer, OrePrefixes.toolHeadFile, OrePrefixes.toolHeadSaw, OrePrefixes.toolHeadDrill, OrePrefixes.toolHeadChainsaw, OrePrefixes.toolHeadWrench, OrePrefixes.toolHeadUniversalSpade, OrePrefixes.toolHeadSense, OrePrefixes.toolHeadPlow, OrePrefixes.toolHeadArrow, OrePrefixes.toolHeadBuzzSaw, OrePrefixes.turbineBlade, OrePrefixes.wireFine, OrePrefixes.gearGtSmall, OrePrefixes.rotor, OrePrefixes.stickLong, OrePrefixes.springSmall, OrePrefixes.spring, OrePrefixes.arrowGtWood, OrePrefixes.arrowGtPlastic, OrePrefixes.gemChipped, OrePrefixes.gemFlawed, OrePrefixes.gemFlawless, OrePrefixes.gemExquisite, OrePrefixes.gearGt, OrePrefixes.crateGtDust, OrePrefixes.crateGtIngot, OrePrefixes.crateGtGem, OrePrefixes.crateGtPlate, OrePrefixes.itemCasing));
     /**
      * Yes this Value can be changed to add Bits for the MetaGenerated-Item-Check.
@@ -898,37 +900,13 @@ public enum OrePrefixes {
         if (!contains(aStack)) {
             mPrefixedItems.add(aStack);
             // It's now in there... so update the cache
-            getSet(this.toString().toUpperCase()).put(Objects.hashCode(aStack.getItem(), aStack.getItemDamage()), true);
+            mContainsTestCache.add(new GT_ItemStack2(aStack));
         }
-        while (mPrefixedItems.contains(null)) mPrefixedItems.remove(null);
         return true;
     }
 
-    private static final LinkedHashMap<String, ObjMap<Integer, Boolean>>mCachedResults = new LinkedHashMap<String, ObjMap<Integer, Boolean>>();
-
-    private ObjMap<Integer, Boolean> getSet(final String prefix) {
-        ObjMap<Integer, Boolean> foundSet = mCachedResults.get(prefix);
-        if (foundSet == null){
-            foundSet = new ObjMap<Integer, Boolean>(512, 0.5f);
-            mCachedResults.put(prefix, foundSet);
-        }
-
-        return foundSet;
-    }
-
     public boolean contains(ItemStack aStack) {
-        if (aStack == null) {
-            return false;
-        }
-
-        final ObjMap<Integer, Boolean> aCurrentSet = getSet(this.toString().toUpperCase());
-        final Boolean result = aCurrentSet.get(Objects.hashCode(aStack.getItem(), aStack.getItemDamage()));
-
-        if (result != null) {
-            return result;
-        }
-
-        return false;
+        return !GT_Utility.isStackInvalid(aStack) && mContainsTestCache.contains(new GT_ItemStack2(aStack));
     }
 
     public boolean containsUnCached(ItemStack aStack) {

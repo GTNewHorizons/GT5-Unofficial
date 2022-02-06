@@ -1,9 +1,11 @@
 package gregtech.api.util;
 
 import gregtech.api.enums.GT_Values;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.net.GT_Packet_TileEntityCoverGUI;
 import gregtech.api.objects.GT_ItemStack;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -58,6 +60,63 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
     }
 
     // region facade
+
+    /**
+     * Get target facade block. Does not affect rendering of **this** block. It is only used as a hint for other block
+     * in case of CTM
+     * @return null if none, otherwise return facade target block
+     */
+    public final Block getFacadeBlock(byte aSide, int aCoverID, ISerializableObject aCoverVariable, ICoverable aTileEntity) {
+        return getFacadeBlockImpl(aSide, aCoverID, forceCast(aCoverVariable), aTileEntity);
+    }
+
+    /**
+     * Get target facade block. Does not affect rendering of **this** block. It is only used as a hint for other block
+     * in case of CTM
+     * @return 0 if none, otherwise return facade target meta
+     */
+    public final int getFacadeMeta(byte aSide, int aCoverID, ISerializableObject aCoverVariable, ICoverable aTileEntity) {
+        return getFacadeMetaImpl(aSide, aCoverID, forceCast(aCoverVariable), aTileEntity);
+    }
+
+    /**
+     * Get the display stack. Default to {@code int2Stack(aCoverID)}
+     */
+    public final ItemStack getDisplayStack(int aCoverID, ISerializableObject aCoverVariable) {
+        return getDisplayStackImpl(aCoverID,forceCast(aCoverVariable));
+    }
+
+    /**
+     * Get the special cover texture associated with this cover. Return null if one should use the texture passed to
+     * {@link gregtech.api.GregTech_API#registerCover(ItemStack, ITexture, GT_CoverBehaviorBase)} or its overloads.
+     */
+    public final ITexture getSpecialCoverTexture(byte aSide, int aCoverID, ISerializableObject aCoverVariable, ICoverable aTileEntity) {
+        return getSpecialCoverTextureImpl(aSide, aCoverID, forceCast(aCoverVariable), aTileEntity);
+    }
+
+    /**
+     * Return whether cover data needs to be synced to client upon tile entity creation or cover placement.
+     *
+     * Note if you want to sync the data afterwards you will have to manually do it by calling {@link ICoverable#issueCoverUpdate(byte)}
+     * This option only affects the initial sync.
+     */
+    public final boolean isDataNeededOnClient(byte aSide, int aCoverID, ISerializableObject aCoverVariable, ICoverable aTileEntity) {
+        return isDataNeededOnClientImpl(aSide, aCoverID, forceCast(aCoverVariable), aTileEntity);
+    }
+
+    /**
+     * Called upon receiving data from network. Use {@link ICoverable#isClientSide()} to determine the side.
+     */
+    public final void onDataChanged(byte aSide, int aCoverID, ISerializableObject aCoverVariable, ICoverable aTileEntity) {
+        onDataChangedImpl(aSide, aCoverID, forceCast(aCoverVariable), aTileEntity);
+    }
+
+    /**
+     * Called upon cover being removed. Called on both server and client.
+     */
+    public final void onDropped(byte aSide, int aCoverID, ISerializableObject aCoverVariable, ICoverable aTileEntity) {
+        onDroppedImpl(aSide, aCoverID, forceCast(aCoverVariable), aTileEntity);
+    }
 
     public final boolean isRedstoneSensitive(byte aSide, int aCoverID, ISerializableObject aCoverVariable, ICoverable aTileEntity, long aTimer) {
         return isRedstoneSensitiveImpl(aSide, aCoverID, forceCast(aCoverVariable), aTileEntity, aTimer);
@@ -251,6 +310,33 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
     // endregion
 
     // region impl
+
+    protected Block getFacadeBlockImpl(byte aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {
+        return null;
+    }
+
+    protected int getFacadeMetaImpl(byte aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {
+        return 0;
+    }
+
+    protected ItemStack getDisplayStackImpl(int aCoverID, T aCoverVariable) {
+        return GT_Utility.intToStack(aCoverID);
+    }
+
+    protected ITexture getSpecialCoverTextureImpl(byte aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {
+        return null;
+    }
+
+    protected boolean isDataNeededOnClientImpl(byte aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {
+        return false;
+    }
+
+    protected void onDataChangedImpl(byte aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {
+    }
+
+
+    protected void onDroppedImpl(byte aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {
+    }
 
     protected boolean isRedstoneSensitiveImpl(byte aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity, long aTimer) {
         return true;
@@ -454,6 +540,14 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
     /**
      * Checks if the Cover can be placed on this.
      */
+    public boolean isCoverPlaceable(byte aSide, ItemStack aStack, ICoverable aTileEntity) {
+        return isCoverPlaceable(aSide, new GT_ItemStack(aStack), aTileEntity);
+    }
+
+    /**
+     * Checks if the Cover can be placed on this. You will probably want to call {@link #isCoverPlaceable(byte, ItemStack, ICoverable)} instead.
+     */
+    @Deprecated
     public boolean isCoverPlaceable(byte aSide, GT_ItemStack aStack, ICoverable aTileEntity) {
         return true;
     }
@@ -485,8 +579,9 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
         aTileEntity.setCoverIDAtSide(aSide, GT_Utility.stackToInt(aCover));
     }
 
+    @Deprecated
     public String trans(String aNr, String aEnglish) {
-        return GT_LanguageManager.addStringLocalization("Interaction_DESCRIPTION_Index_" + aNr, aEnglish, false);
+        return GT_Utility.trans(aNr, aEnglish);
     }
     // endregion
 }

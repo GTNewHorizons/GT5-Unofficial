@@ -17,10 +17,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
 
-import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_TI5;
-import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_TI_ACTIVE5;
-import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
-import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
+import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 public class GT_MetaTileEntity_LargeTurbine_HPSteam extends GT_MetaTileEntity_LargeTurbine {
@@ -38,7 +35,10 @@ public class GT_MetaTileEntity_LargeTurbine_HPSteam extends GT_MetaTileEntity_La
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        return new ITexture[]{MACHINE_CASINGS[1][aColorIndex + 1], aFacing == aSide ? aActive ? TextureFactory.builder().addIcon(LARGETURBINE_TI_ACTIVE5).extFacing().build() : TextureFactory.builder().addIcon(LARGETURBINE_TI5).extFacing().build() : casingTexturePages[0][59]};
+        return new ITexture[]{MACHINE_CASINGS[1][aColorIndex + 1],
+                aFacing == aSide ?
+                        (aActive ? TextureFactory.builder().addIcon(LARGETURBINE_TI_ACTIVE5).extFacing().build() : hasTurbine() ? TextureFactory.builder().addIcon(LARGETURBINE_TI5).extFacing().build() : TextureFactory.builder().addIcon(LARGETURBINE_TI_EMPTY5).extFacing().build())
+                        : casingTexturePages[0][59]};
     }
 
     @Override
@@ -141,7 +141,7 @@ public class GT_MetaTileEntity_LargeTurbine_HPSteam extends GT_MetaTileEntity_La
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
             looseFit ^= true;
-            GT_Utility.sendChatToPlayer(aPlayer, looseFit ? trans("500", "Fitting: Loose - More Flow") : trans("501", "Fitting: Tight - More Efficiency"));
+            GT_Utility.sendChatToPlayer(aPlayer, looseFit ? GT_Utility.trans("500", "Fitting: Loose - More Flow") : GT_Utility.trans("501", "Fitting: Tight - More Efficiency"));
         }
     }
 

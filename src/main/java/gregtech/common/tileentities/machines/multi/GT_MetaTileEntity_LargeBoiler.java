@@ -22,6 +22,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
@@ -86,11 +87,22 @@ public abstract class GT_MetaTileEntity_LargeBoiler extends GT_MetaTileEntity_En
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+
         tt.addMachineType("Boiler")
-                .addInfo("Controller block for the Large " + getCasingMaterial() + " Boiler")
-                .addInfo("Produces " + (getEUt() * 40) * (runtimeBoost(20) / 20f) + "L of Steam with 1 Coal at " + getEUt() * 40 + "L/s")//?
-                .addInfo("A programmed circuit in the main block throttles the boiler (-1000L/s per config)")
-                .addInfo(String.format("Diesel fuels have 1/4 efficiency - Takes %.2f seconds to heat up", 500.0 / getEfficiencyIncrease()))//? check semifluid again
+                .addInfo("Controller block for the Large " + getCasingMaterial() + " Boiler");
+                // Tooltip differs between the boilers that output Superheated Steam (Titanium and Tungstensteel) and the ones that do not (Bronze and Steel)
+                if (isSuperheated()) {
+                    tt.addInfo("Produces " + (getEUt() * 40) * ((runtimeBoost(20) / (20f)) / superToNormalSteam) + "L of Superheated Steam with 1 Coal at " + (getEUt() * 40) / superToNormalSteam + "L/s")//?
+                    .addInfo("A programmed circuit in the main block throttles the boiler (-1000L/s per config)")
+                    .addInfo("Solid Fuels with a burn value that is too high or too low will not work")
+                    .addInfo("Coal/Charcoal/Coal Coke and their compressed forms will not work here!");
+                }
+                else {
+                    tt.addInfo("Produces " + (getEUt() * 40) * (runtimeBoost(20) / 20f) + "L of Steam with 1 Coal at " + getEUt() * 40 + "L/s")//?
+                    .addInfo("A programmed circuit in the main block throttles the boiler (-1000L/s per config)")
+                    .addInfo("Solid Fuels with a burn value that is too high or too low will not work");
+                }
+                tt.addInfo(String.format("Diesel fuels have 1/4 efficiency - Takes %.2f seconds to heat up", 500.0 / getEfficiencyIncrease()))//? check semifluid again
                 .addPollutionAmount(getPollutionPerSecond(null))
                 .addSeparator()
                 .beginStructureBlock(3, 5, 3, false)
@@ -106,6 +118,7 @@ public abstract class GT_MetaTileEntity_LargeBoiler extends GT_MetaTileEntity_En
                 .addInputHatch("Water, Any firebox", 1)
                 .addOutputHatch("Steam, any casing", 2)
                 .toolTipFinisher("Gregtech");
+
         return tt;
     }
 
@@ -209,26 +222,55 @@ public abstract class GT_MetaTileEntity_LargeBoiler extends GT_MetaTileEntity_En
         }
         ArrayList<ItemStack> tInputList = getStoredInputs();
         if (!tInputList.isEmpty()) {
-            for (ItemStack tInput : tInputList) {
-                if (tInput != GT_OreDictUnificator.get(OrePrefixes.bucket, Materials.Lava, 1)){
-                    if (GT_Utility.getFluidForFilledItem(tInput, true) == null && (this.mMaxProgresstime = GT_ModHandler.getFuelValue(tInput) / 80) > 0) {
-                        this.excessFuel += GT_ModHandler.getFuelValue(tInput) % 80;
-                        this.mMaxProgresstime += this.excessFuel / 80;
-                        this.excessFuel %= 80;
-                        this.mMaxProgresstime = adjustBurnTimeForConfig(runtimeBoost(this.mMaxProgresstime));
-                        this.mEUt = adjustEUtForConfig(getEUt());
-                        this.mEfficiencyIncrease = this.mMaxProgresstime * getEfficiencyIncrease();
-                        this.mOutputItems = new ItemStack[]{GT_Utility.getContainerItem(tInput, true)};
-                        tInput.stackSize -= 1;
-                        updateSlots();
-                        if (this.mEfficiencyIncrease > 5000) {
-                            this.mEfficiencyIncrease = 0;
-                            this.mSuperEfficencyIncrease = 20;
+            if (isSuperheated()) {
+                for (ItemStack tInput : tInputList) {
+                    // Checking for Solid Super Fuel and Magic Solid Super Fuel with their burn values. This needs to be replaced with a whitelist configurable in the config file.
+                    if (GT_ModHandler.getFuelValue(tInput) == 100000 || GT_ModHandler.getFuelValue(tInput) == 150000) {
+                        if (tInput != GT_OreDictUnificator.get(OrePrefixes.bucket, Materials.Lava, 1)){
+                            if (GT_Utility.getFluidForFilledItem(tInput, true) == null && (this.mMaxProgresstime = GT_ModHandler.getFuelValue(tInput) / 80) > 0) {
+                                this.excessFuel += GT_ModHandler.getFuelValue(tInput) % 80;
+                                this.mMaxProgresstime += this.excessFuel / 80;
+                                this.excessFuel %= 80;
+                                this.mMaxProgresstime = adjustBurnTimeForConfig(runtimeBoost(this.mMaxProgresstime));
+                                this.mEUt = adjustEUtForConfig(getEUt());
+                                this.mEfficiencyIncrease = this.mMaxProgresstime * getEfficiencyIncrease();
+                                this.mOutputItems = new ItemStack[]{GT_Utility.getContainerItem(tInput, true)};
+                                tInput.stackSize -= 1;
+                                updateSlots();
+                                if (this.mEfficiencyIncrease > 5000) {
+                                    this.mEfficiencyIncrease = 0;
+                                    this.mSuperEfficencyIncrease = 20;
+                                }
+                                return true;
+                            }
                         }
-                        return true;
                     }
                 }
             }
+            else {
+                for (ItemStack tInput : tInputList) {
+                    if (tInput != GT_OreDictUnificator.get(OrePrefixes.bucket, Materials.Lava, 1)){
+                        // Solid fuels with burn values below getEUt are ignored (mostly items like sticks), and also those with very high fuel values that would cause an overflow error.
+                        if (GT_Utility.getFluidForFilledItem(tInput, true) == null && (this.mMaxProgresstime = GT_ModHandler.getFuelValue(tInput) / 80) > 0 && (GT_ModHandler.getFuelValue(tInput) / this.getEUt()) > 1 && GT_ModHandler.getFuelValue(tInput) < 100000000) {
+                            this.excessFuel += GT_ModHandler.getFuelValue(tInput) % 80;
+                            this.mMaxProgresstime += this.excessFuel / 80;
+                            this.excessFuel %= 80;
+                            this.mMaxProgresstime = adjustBurnTimeForConfig(runtimeBoost(this.mMaxProgresstime));
+                            this.mEUt = adjustEUtForConfig(getEUt());
+                            this.mEfficiencyIncrease = this.mMaxProgresstime * getEfficiencyIncrease();
+                            this.mOutputItems = new ItemStack[]{GT_Utility.getContainerItem(tInput, true)};
+                            tInput.stackSize -= 1;
+                            updateSlots();
+                            if (this.mEfficiencyIncrease > 5000) {
+                                this.mEfficiencyIncrease = 0;
+                                this.mSuperEfficencyIncrease = 20;
+                            }
+                            return true;
+                        }
+                    }
+                }
+            }
+
         }
         this.mMaxProgresstime = 0;
         this.mEUt = 0;
@@ -236,6 +278,10 @@ public abstract class GT_MetaTileEntity_LargeBoiler extends GT_MetaTileEntity_En
     }
 
     abstract int runtimeBoost(int mTime);
+
+    abstract boolean isSuperheated();
+
+    final private int superToNormalSteam = 3;
 
     @Override
     public boolean onRunningTick(ItemStack aStack) {
@@ -248,11 +294,25 @@ public abstract class GT_MetaTileEntity_LargeBoiler extends GT_MetaTileEntity_En
                 excessWater += amount * STEAM_PER_WATER - tGeneratedEU;
                 amount -= excessWater / STEAM_PER_WATER;
                 excessWater %= STEAM_PER_WATER;
-                if (depleteInput(Materials.Water.getFluid(amount)) || depleteInput(GT_ModHandler.getDistilledWater(amount))) {
-                    addOutput(GT_ModHandler.getSteam(tGeneratedEU));
-                } else {
-                    GT_Log.exp.println("Boiler "+this.mName+" had no Water!");
-                    explodeMultiblock();
+                if (isSuperheated()) {
+                    // Consumes only one third of the water if producing Superheated Steam, to maintain water in the chain.
+                    if (depleteInput(Materials.Water.getFluid(amount / superToNormalSteam)) || depleteInput(GT_ModHandler.getDistilledWater(amount / superToNormalSteam))) {
+                        // Outputs Superheated Steam instead of Steam, at one third of the amount (equivalent in power output to the normal Steam amount).
+                        addOutput(FluidRegistry.getFluidStack("ic2superheatedsteam", tGeneratedEU / superToNormalSteam));
+                    } else {
+                        GT_Log.exp.println("Boiler " + this.mName + " had no Water!");
+                        explodeMultiblock();
+                    }
+                }
+
+                else {
+                    if (depleteInput(Materials.Water.getFluid(amount)) || depleteInput(GT_ModHandler.getDistilledWater(amount))) {
+                        addOutput(GT_ModHandler.getSteam(tGeneratedEU));
+                    } else {
+                        GT_Log.exp.println("Boiler " + this.mName + " had no Water!");
+                        explodeMultiblock();
+                    }
+
                 }
             }
             return true;

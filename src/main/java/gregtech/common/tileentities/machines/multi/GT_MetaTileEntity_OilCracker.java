@@ -89,13 +89,17 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_EnhancedMult
                 .addInfo("Controller block for the Oil Cracking Unit")
                 .addInfo("Thermally cracks heavy hydrocarbons into lighter fractions")
                 .addInfo("More efficient than the Chemical Reactor")
+                .addInfo("Gives different benefits whether it hydro or steam-cracks:")
+                .addInfo("Hydro - Consumes 20% less Hydrogen and outputs 25% more cracked fluid")
+                .addInfo("Steam - Outputs 50% more cracked fluid")
+                .addInfo("(Values compared to cracking in the Chemical Reactor)")
                 .addInfo("Place the appropriate circuit in the controller")
                 .addSeparator()
                 .beginStructureBlock(5, 3, 3, true)
                 .addController("Front center")
                 .addCasingInfo("Clean Stainless Steel Machine Casing", 18)
                 .addOtherStructurePart("2 Rings of 8 Coils", "Each side of the controller")
-                .addInfo("Gets 5% EU/t reduction per coil tier")
+                .addInfo("Gets 10% EU/t reduction per coil tier, up to a maximum of 50%")
                 .addEnergyHatch("Any casing", 1)
                 .addMaintenanceHatch("Any casing", 1)
                 .addInputHatch("Steam/Hydrogen ONLY, Any middle ring casing", 1)
@@ -156,7 +160,13 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_EnhancedMult
             if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
                 return false;
 
-            this.mEUt *= Math.pow(0.95D, this.heatLevel.getTier());
+            // heatLevel.getTier() starts at 0
+            if (this.heatLevel.getTier() < 5) {
+                this.mEUt *= 1 - (0.1D * (this.heatLevel.getTier() + 1));
+            }
+            else {
+                this.mEUt *= 0.5;
+            }
 
             if (this.mEUt > 0)
                 this.mEUt = (-this.mEUt);

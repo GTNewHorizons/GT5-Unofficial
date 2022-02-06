@@ -2,11 +2,13 @@ package gregtech.common.blocks;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.GT_Mod;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GT_RenderingWorld;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -67,6 +69,9 @@ public class GT_Block_Casings4 extends GT_Block_Casings_Abstract {
         ItemList.Casing_EngineIntake.set(new ItemStack(this, 1, 13));
         ItemList.Casing_MiningOsmiridium.set(new ItemStack(this, 1, 14));
         ItemList.Casing_Firebricks.set(new ItemStack(this, 1, 15));
+
+        GT_Mod.gregtechproxy.mCTMBlockCache.put(this, (byte) 6, true);
+        GT_Mod.gregtechproxy.mCTMBlockCache.put(this, (byte) 8, true);
     }
 
     @Override
@@ -107,6 +112,7 @@ public class GT_Block_Casings4 extends GT_Block_Casings_Abstract {
         return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
     }
 
+    @Deprecated
     public IIcon getTurbineCasing(int meta, int iconIndex, boolean active) {
         switch (meta) {
             case 10:
@@ -120,18 +126,34 @@ public class GT_Block_Casings4 extends GT_Block_Casings_Abstract {
         }
     }
 
+    public IIcon getTurbineCasing(int meta, int iconIndex, boolean active, boolean hasTurbine) {
+        switch (meta) {
+            case 10:
+                return active ? Textures.BlockIcons.TURBINE_ACTIVE1[iconIndex].getIcon() : hasTurbine ? Textures.BlockIcons.TURBINE1[iconIndex].getIcon() : Textures.BlockIcons.TURBINE_EMPTY1[iconIndex].getIcon();
+            case 11:
+                return active ? Textures.BlockIcons.TURBINE_ACTIVE2[iconIndex].getIcon() : hasTurbine ? Textures.BlockIcons.TURBINE2[iconIndex].getIcon() : Textures.BlockIcons.TURBINE_EMPTY2[iconIndex].getIcon();
+            case 12:
+                return active ? Textures.BlockIcons.TURBINE_ACTIVE3[iconIndex].getIcon() : hasTurbine ? Textures.BlockIcons.TURBINE3[iconIndex].getIcon() : Textures.BlockIcons.TURBINE_EMPTY3[iconIndex].getIcon();
+            default:
+                return active ? Textures.BlockIcons.TURBINE_ACTIVE[iconIndex].getIcon() : hasTurbine ? Textures.BlockIcons.TURBINE[iconIndex].getIcon() : Textures.BlockIcons.TURBINE_EMPTY[iconIndex].getIcon();
+        }
+    }
+
     private static int isTurbineControllerWithSide(IBlockAccess aWorld, int aX, int aY, int aZ, int aSide) {
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (!(tTileEntity instanceof IGregTechTileEntity)) return 0;
         IGregTechTileEntity tTile = (IGregTechTileEntity) tTileEntity;
-        if (tTile.getMetaTileEntity() instanceof GT_MetaTileEntity_LargeTurbine && tTile.getFrontFacing() == aSide)
-            return tTile.isActive() ? 1 : 2;
+        if (tTile.getMetaTileEntity() instanceof GT_MetaTileEntity_LargeTurbine && tTile.getFrontFacing() == aSide) {
+            if (tTile.isActive()) return 1;
+            return ((GT_MetaTileEntity_LargeTurbine) tTile.getMetaTileEntity()).hasTurbine() ? 2 : 3;
+        }
         return 0;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(IBlockAccess aWorld, int xCoord, int yCoord, int zCoord, int aSide) {
+        aWorld = GT_RenderingWorld.getInstance(aWorld);
         int tMeta = aWorld.getBlockMetadata(xCoord, yCoord, zCoord);
         if (tMeta != 6 && tMeta != 8 && tMeta != 9 && tMeta != 10 && tMeta != 11 && tMeta != 12 || !mConnectedMachineTextures) {
             return getIcon(aSide, tMeta);
@@ -146,7 +168,7 @@ public class GT_Block_Casings4 extends GT_Block_Casings_Abstract {
                                 continue;
                             int tState;
                             if ((tState = isTurbineControllerWithSide(aWorld, xCoord + j, yCoord, zCoord + i, aSide)) != 0) {
-                                return getTurbineCasing(tMeta, 4 - i * 3 - j, tState == 1);
+                                return getTurbineCasing(tMeta, 4 - i * 3 - j, tState == 1, tState == 2);
                             }
                         }
                     }
@@ -158,7 +180,7 @@ public class GT_Block_Casings4 extends GT_Block_Casings_Abstract {
                                 continue;
                             int tState;
                             if ((tState = isTurbineControllerWithSide(aWorld, xCoord + j, yCoord + i, zCoord, aSide)) != 0) {
-                                return getTurbineCasing(tMeta, 4 + i * 3 - j * tInvertLeftRightMod, tState == 1);
+                                return getTurbineCasing(tMeta, 4 + i * 3 - j * tInvertLeftRightMod, tState == 1, tState == 2);
                             }
                         }
                     }
@@ -170,7 +192,7 @@ public class GT_Block_Casings4 extends GT_Block_Casings_Abstract {
                                 continue;
                             int tState;
                             if ((tState = isTurbineControllerWithSide(aWorld, xCoord, yCoord + i, zCoord + j, aSide)) != 0) {
-                                return getTurbineCasing(tMeta, 4 + i * 3 + j * tInvertLeftRightMod, tState == 1);
+                                return getTurbineCasing(tMeta, 4 + i * 3 + j * tInvertLeftRightMod, tState == 1, tState == 2);
                             }
                         }
                     }
