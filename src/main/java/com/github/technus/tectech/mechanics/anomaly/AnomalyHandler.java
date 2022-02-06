@@ -8,7 +8,7 @@ import com.github.technus.tectech.mechanics.data.ChunkDataMessage;
 import com.github.technus.tectech.mechanics.data.IChunkMetaDataHandler;
 import com.github.technus.tectech.mechanics.data.PlayerDataMessage;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.EMAtomDefinition;
-import com.github.technus.tectech.util.Util;
+import com.github.technus.tectech.util.TT_Utility;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -33,8 +33,8 @@ import java.util.Map;
 
 import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry.EM_COUNT_PER_MATERIAL_AMOUNT;
 import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry.EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED;
-import static com.github.technus.tectech.util.Util.crossProduct3D;
-import static com.github.technus.tectech.util.Util.normalize3D;
+import static com.github.technus.tectech.util.TT_Utility.crossProduct3D;
+import static com.github.technus.tectech.util.TT_Utility.normalize3D;
 
 public class AnomalyHandler implements IChunkMetaDataHandler {
     private static final double SWAP_THRESHOLD = EMAtomDefinition.getSomethingHeavy().getMass() * 1000D * EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED;//can be const as it is computed later...
@@ -171,8 +171,8 @@ public class AnomalyHandler implements IChunkMetaDataHandler {
         }
         int                    x  = (b.xPosition - a.xPosition) << 4;
         int                    z  = (b.xPosition - a.xPosition) << 4;
-        List<EntityLivingBase> aE = a.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, Util.fromChunk(a));
-        List<EntityLivingBase> bE = b.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, Util.fromChunk(b));
+        List<EntityLivingBase> aE = a.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, TT_Utility.fromChunk(a));
+        List<EntityLivingBase> bE = b.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, TT_Utility.fromChunk(b));
         for (EntityLivingBase entityLivingBase : aE) {
             if (TecTech.RANDOM.nextBoolean()) {
                 if (entityLivingBase instanceof EntityPlayer) {

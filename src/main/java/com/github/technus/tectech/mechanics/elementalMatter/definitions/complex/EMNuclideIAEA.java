@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.TreeMap;
 
 import static com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition.STABLE_RAW_LIFE_TIME;
-import static com.github.technus.tectech.util.Util.splitButDifferent;
+import static com.github.technus.tectech.util.TT_Utility.splitButDifferent;
 
 public final class EMNuclideIAEA {
     public static final double AMU_TO_EV_DIV_C_C=9.31494061E08D,MICRO_AMU_TO_EV_DIV_C_C=9.31494061E02D;

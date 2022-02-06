@@ -1,6 +1,6 @@
 package com.github.technus.tectech.mechanics.commands;
 
-import com.github.technus.tectech.util.Util;
+import com.github.technus.tectech.util.TT_Utility;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
@@ -25,7 +25,7 @@ public class ConvertInteger implements ICommand {
                     int value=Integer.parseInt(args[0]);
                     sender.addChatMessage(new ChatComponentText(
                             EnumChatFormatting.AQUA.toString()+ EnumChatFormatting.BOLD +
-                                    Util.intBitsToShortString(value)+" "+
+                                    TT_Utility.intBitsToShortString(value)+" "+
                                     EnumChatFormatting.RESET+EnumChatFormatting.BLUE +value));
                 }catch (Exception e){
                     sender.addChatMessage(new ChatComponentText(EnumChatFormatting.RED+"Invalid Integer "+args[0]));

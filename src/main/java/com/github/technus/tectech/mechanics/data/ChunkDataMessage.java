@@ -1,7 +1,7 @@
 package com.github.technus.tectech.mechanics.data;
 
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.util.Util;
+import com.github.technus.tectech.util.TT_Utility;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
@@ -80,7 +80,7 @@ public class ChunkDataMessage implements IMessage {
     public static class ClientHandler extends AbstractClientMessageHandler<ChunkDataData> {
         @Override
         public IMessage handleClientMessage(EntityPlayer pPlayer, ChunkDataData pMessage, MessageContext pCtx) {
-            if(Util.checkChunkExist(pPlayer.worldObj,pMessage.chunk)){
+            if(TT_Utility.checkChunkExist(pPlayer.worldObj,pMessage.chunk)){
                 TecTech.chunkDataHandler.putChunkData(pMessage.handler, pMessage.worldId,pMessage.chunk, pMessage.data);
             }
             return null;

@@ -2,7 +2,7 @@ package com.github.technus.tectech.compatibility.dreamcraft;
 
 import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.util.Util;
+import com.github.technus.tectech.util.TT_Utility;
 import com.github.technus.tectech.thing.CustomItemList;
 import com.github.technus.tectech.thing.metaTileEntity.single.GT_MetaTileEntity_TT_Transformer;
 import com.github.technus.tectech.thing.metaTileEntity.single.GT_MetaTileEntity_WetTransformer;
@@ -105,7 +105,7 @@ public class NoDreamCraftMachineLoader implements Runnable {
             temp = new GT_MetaTileEntity_BasicHull(
                     11230, "hull.tier.10", "UEV Machine Hull", 10,
                     imagination);
-            Util.setTier(10, temp);
+            TT_Utility.setTier(10, temp);
             if (GT_Values.GT.isClientSide()) {
                 field.set(temp, method.invoke(temp, iTexture));
             }
@@ -114,7 +114,7 @@ public class NoDreamCraftMachineLoader implements Runnable {
             temp = new GT_MetaTileEntity_BasicHull(
                     11231, "hull.tier.11", "UIV Machine Hull", 11,
                     imagination);
-            Util.setTier(11, temp);
+            TT_Utility.setTier(11, temp);
             if (GT_Values.GT.isClientSide()) {
                 field.set(temp, method.invoke(temp, iTexture));
             }
@@ -123,7 +123,7 @@ public class NoDreamCraftMachineLoader implements Runnable {
             temp = new GT_MetaTileEntity_BasicHull(
                     11232, "hull.tier.12", "UMV Machine Hull", 12,
                     imagination);
-            Util.setTier(12, temp);
+            TT_Utility.setTier(12, temp);
             if (GT_Values.GT.isClientSide()) {
                 field.set(temp, method.invoke(temp, iTexture));
             }
@@ -132,7 +132,7 @@ public class NoDreamCraftMachineLoader implements Runnable {
             temp = new GT_MetaTileEntity_BasicHull(
                     11233, "hull.tier.13", "UXV Machine Hull", 13,
                     imagination);
-            Util.setTier(13, temp);
+            TT_Utility.setTier(13, temp);
             if (GT_Values.GT.isClientSide()) {
                 field.set(temp, method.invoke(temp, iTexture));
             }
@@ -141,7 +141,7 @@ public class NoDreamCraftMachineLoader implements Runnable {
             temp = new GT_MetaTileEntity_BasicHull(
                     11234, "hull.tier.14", "OPV Machine Hull", 14,
                     imagination);
-            Util.setTier(14, temp);
+            TT_Utility.setTier(14, temp);
             if (GT_Values.GT.isClientSide()) {
                 field.set(temp, method.invoke(temp, iTexture));
             }
@@ -150,7 +150,7 @@ public class NoDreamCraftMachineLoader implements Runnable {
             temp = new GT_MetaTileEntity_BasicHull(
                     11235, "hull.tier.15", "MAX Machine Hull", 15,
                     imagination);
-            Util.setTier(15, temp);
+            TT_Utility.setTier(15, temp);
             if (GT_Values.GT.isClientSide()) {
                 field.set(temp, method.invoke(temp, iTexture));
             }
@@ -162,7 +162,7 @@ public class NoDreamCraftMachineLoader implements Runnable {
 
             temp = new GT_MetaTileEntity_TT_Transformer(
                     11221, "tt.transformer.tier.10", "Extremely Ultimate Transformer", 10);//UIV -> UEV (Use Soft Mallet to invert)
-            Util.setTier(10, temp);
+            TT_Utility.setTier(10, temp);
             if (GT_Values.GT.isClientSide()) {
                 field.set(temp, method.invoke(temp, iTexture));
             }
@@ -170,7 +170,7 @@ public class NoDreamCraftMachineLoader implements Runnable {
 
             temp = new GT_MetaTileEntity_TT_Transformer(
                     11222, "tt.transformer.tier.11", "Insanely Ultimate Transformer", 11);//UMV -> UIV (Use Soft Mallet to invert)
-            Util.setTier(11, temp);
+            TT_Utility.setTier(11, temp);
             if (GT_Values.GT.isClientSide()) {
                 field.set(temp, method.invoke(temp, iTexture));
             }
@@ -178,7 +178,7 @@ public class NoDreamCraftMachineLoader implements Runnable {
 
             temp = new GT_MetaTileEntity_TT_Transformer(
                     11223, "tt.transformer.tier.12", "Mega Ultimate Transformer", 12);//UXV -> UMV (Use Soft Mallet to invert)
-            Util.setTier(12, temp);
+            TT_Utility.setTier(12, temp);
             if (GT_Values.GT.isClientSide()) {
                 field.set(temp, method.invoke(temp, iTexture));
             }
@@ -186,7 +186,7 @@ public class NoDreamCraftMachineLoader implements Runnable {
 
             temp = new GT_MetaTileEntity_TT_Transformer(
                     11224, "tt.transformer.tier.13", "Extended Mega Ultimate Transformer", 13);//OPV -> UXV (Use Soft Mallet to invert)
-            Util.setTier(13, temp);
+            TT_Utility.setTier(13, temp);
             if (GT_Values.GT.isClientSide()) {
                 field.set(temp, method.invoke(temp, iTexture));
             }
@@ -194,7 +194,7 @@ public class NoDreamCraftMachineLoader implements Runnable {
 
             temp = new GT_MetaTileEntity_TT_Transformer(
                     11225, "tt.transformer.tier.14", "Overpowered Transformer", 14);//MAX -> OPV (Use Soft Mallet to invert)
-            Util.setTier(14, temp);
+            TT_Utility.setTier(14, temp);
             if (GT_Values.GT.isClientSide()) {
                 field.set(temp, method.invoke(temp, iTexture));
             }
@@ -215,7 +215,7 @@ public class NoDreamCraftMachineLoader implements Runnable {
                         11910, "transformer.ha.tier.10", "Extremely Ultimate Hi-Amp Transformer", 10,
                         //UIV -> UEV (Use Soft Mallet to invert)
                         translateToLocal("gt.blockmachines.transformer.ha.tier.10.desc"));
-                Util.setTier(10, temp);
+                TT_Utility.setTier(10, temp);
                 if (GT_Values.GT.isClientSide()) {
                     field.set(temp, method.invoke(temp, iTexture));
                 }
@@ -225,7 +225,7 @@ public class NoDreamCraftMachineLoader implements Runnable {
                         11911, "transformer.ha.tier.11", "Insanely Ultimate Hi-Amp Transformer", 11,
                         //UMV -> UIV (Use Soft Mallet to invert)
                         translateToLocal("gt.blockmachines.transformer.ha.tier.11.desc"));
-                Util.setTier(11, temp);
+                TT_Utility.setTier(11, temp);
                 if (GT_Values.GT.isClientSide()) {
                     field.set(temp, method.invoke(temp, iTexture));
                 }
@@ -235,7 +235,7 @@ public class NoDreamCraftMachineLoader implements Runnable {
                         11912, "transformer.ha.tier.12", "Mega Ultimate Hi-Amp Transformer", 12,
                         //UXV -> UMV (Use Soft Mallet to invert)
                         translateToLocal("gt.blockmachines.transformer.ha.tier.12.desc"));
-                Util.setTier(12, temp);
+                TT_Utility.setTier(12, temp);
                 if (GT_Values.GT.isClientSide()) {
                     field.set(temp, method.invoke(temp, iTexture));
                 }
@@ -245,7 +245,7 @@ public class NoDreamCraftMachineLoader implements Runnable {
                         11913, "transformer.ha.tier.13", "Extended Mega Ultimate Hi-Amp Transformer", 13,
                         //OPV -> UXV (Use Soft Mallet to invert)
                         translateToLocal("gt.blockmachines.transformer.ha.tier.13.desc"));
-                Util.setTier(13, temp);
+                TT_Utility.setTier(13, temp);
                 if (GT_Values.GT.isClientSide()) {
                     field.set(temp, method.invoke(temp, iTexture));
                 }
@@ -255,7 +255,7 @@ public class NoDreamCraftMachineLoader implements Runnable {
                         11914, "transformer.ha.tier.14", "Overpowered Hi-Amp Transformer", 14,
                         //MAX -> OPV (Use Soft Mallet to invert)
                         translateToLocal("gt.blockmachines.transformer.ha.tier.14.desc"));
-                Util.setTier(14, temp);
+                TT_Utility.setTier(14, temp);
                 if (GT_Values.GT.isClientSide()) {
                     field.set(temp, method.invoke(temp, iTexture));
                 }

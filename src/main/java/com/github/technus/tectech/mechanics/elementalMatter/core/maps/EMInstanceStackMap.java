@@ -7,6 +7,8 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.reg
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMDefinitionStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMInstanceStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.IEMStack;
+import com.github.technus.tectech.util.TT_Utility;
+import gregtech.api.util.GT_Utility;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
@@ -94,9 +96,9 @@ public final class EMInstanceStackMap extends EMStackMap<EMInstanceStack> implem
         for (EMInstanceStack instance : getBackingMap().values()) {
             info[i++] = EnumChatFormatting.BLUE + instance.getDefinition().getLocalizedName()+
                     " "+ EnumChatFormatting.AQUA + instance.getDefinition().getSymbol()+ EnumChatFormatting.RESET+
-                    " #: " + EnumChatFormatting.GREEN + String.format("%.3E", instance.getAmount() /AVOGADRO_CONSTANT) +" "+translateToLocal("tt.keyword.mol")+ EnumChatFormatting.RESET+
-                    " E: " + EnumChatFormatting.GREEN + instance.getEnergy() + EnumChatFormatting.RESET+
-                    " T: " + EnumChatFormatting.GREEN + (instance.getLifeTime()<0?"STABLE":String.format("%.3E",instance.getLifeTime()));
+                    " #: " + EnumChatFormatting.GREEN + TT_Utility.formatNumberExp(instance.getAmount() /AVOGADRO_CONSTANT) +" "+translateToLocal("tt.keyword.mol")+ EnumChatFormatting.RESET+
+                    " E: " + EnumChatFormatting.GREEN + GT_Utility.formatNumbers(instance.getEnergy()) + EnumChatFormatting.RESET+
+                    " T: " + EnumChatFormatting.GREEN + (instance.getLifeTime()<0?translateToLocal("tt.keyword.stable"):TT_Utility.formatNumberShortExp(instance.getLifeTime()));
         }
         return info;
     }
@@ -166,17 +168,6 @@ public final class EMInstanceStackMap extends EMStackMap<EMInstanceStack> implem
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof EMInstanceStackMap) {
-            return compareTo((EMInstanceStackMap) obj) == 0;
-        }
-        if (obj instanceof EMStackMap) {
-            return toDefinitionMapForComparison().compareTo((EMStackMap<?>) obj) == 0;
-        }
-        return false;
-    }
-
-    @Override
     public String toString() {
         StringBuilder build=new StringBuilder("Instance Stack Map\n");
         for(EMInstanceStack stack: getBackingMap().values()){
@@ -197,6 +188,7 @@ public final class EMInstanceStackMap extends EMStackMap<EMInstanceStack> implem
         return newStack;
     }
 
+    @Deprecated
     public EMDefinitionStackMap toDefinitionMapForComparison() {
         EMDefinitionStack[] list = new EMDefinitionStack[size()];
         int                 i    = 0;

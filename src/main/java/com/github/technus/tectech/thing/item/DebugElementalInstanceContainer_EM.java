@@ -9,7 +9,7 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstance
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMInstanceStack;
 import com.github.technus.tectech.thing.item.renderElemental.IElementalItem;
 import com.github.technus.tectech.util.CommonValues;
-import com.github.technus.tectech.util.Util;
+import com.github.technus.tectech.util.TT_Utility;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -120,7 +120,7 @@ public final class DebugElementalInstanceContainer_EM extends Item implements IE
             NBTTagCompound tNBT = aStack.getTagCompound();
             if (tNBT != null && tNBT.hasKey("info")) {
                 aList.add(translateToLocal("item.em.debugContainer.desc.0") + ": ");//Contains
-                Collections.addAll(aList, Util.infoFromNBT(tNBT.getCompoundTag("info")));
+                Collections.addAll(aList, TT_Utility.infoFromNBT(tNBT.getCompoundTag("info")));
             } else {
                 aList.add(translateToLocal("item.em.debugContainer.desc.1"));//Container for elemental matter
                 aList.add(EnumChatFormatting.BLUE + translateToLocal("item.em.debugContainer.desc.2"));//Right click on elemental hatches
@@ -155,7 +155,7 @@ public final class DebugElementalInstanceContainer_EM extends Item implements IE
         try {
             NBTTagCompound tNBT = aStack.getTagCompound();
             if (tNBT != null && tNBT.hasKey("symbols")) {
-                String[] strings=Util.infoFromNBT(tNBT.getCompoundTag("symbols"));
+                String[] strings= TT_Utility.infoFromNBT(tNBT.getCompoundTag("symbols"));
                 return strings[index%strings.length];
             } else {
                 return null;

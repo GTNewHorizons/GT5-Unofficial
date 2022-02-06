@@ -1,6 +1,6 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
-import com.github.technus.tectech.util.Util;
+import com.github.technus.tectech.util.TT_Utility;
 import com.github.technus.tectech.thing.metaTileEntity.pipe.GT_MetaTileEntity_Pipe_EM;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -16,7 +16,7 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 public class GT_MetaTileEntity_Hatch_OutputElemental extends GT_MetaTileEntity_Hatch_ElementalContainer {
     public GT_MetaTileEntity_Hatch_OutputElemental(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, translateToLocal("gt.blockmachines.emout.desc"));//Elemental Output for Multiblocks
-        Util.setTier(aTier, this);
+        TT_Utility.setTier(aTier, this);
     }
 
     //public GT_MetaTileEntity_Hatch_OutputElemental(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {

@@ -14,7 +14,7 @@ import static com.github.technus.tectech.mechanics.elementalMatter.core.transfor
 import static com.github.technus.tectech.util.DoubleCount.ulpSigned;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
-public interface IEMMapRead<T extends IEMStack> extends Comparable<IEMMapRead<?>>, Cloneable {
+public interface IEMMapRead<T extends IEMStack> extends Comparable<IEMMapRead<? extends IEMStack>>, Cloneable {
     NavigableMap<IEMDefinition,T> getBackingMap();
 
     IEMMapRead<T> clone();

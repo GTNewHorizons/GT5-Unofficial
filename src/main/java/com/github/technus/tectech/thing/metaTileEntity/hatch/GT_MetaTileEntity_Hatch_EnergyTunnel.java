@@ -1,8 +1,8 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
-import com.github.technus.tectech.util.CommonValues;
-import com.github.technus.tectech.util.Util;
 import com.github.technus.tectech.mechanics.pipe.IConnectsToEnergyTunnel;
+import com.github.technus.tectech.util.CommonValues;
+import com.github.technus.tectech.util.TT_Utility;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -11,9 +11,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
+import static com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_IN_LASER_TT;
 import static com.github.technus.tectech.util.CommonValues.TRANSFER_AT;
 import static com.github.technus.tectech.util.CommonValues.V;
-import static com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_IN_LASER_TT;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
@@ -22,7 +22,7 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 public class GT_MetaTileEntity_Hatch_EnergyTunnel extends GT_MetaTileEntity_Hatch_EnergyMulti implements IConnectsToEnergyTunnel {
     public GT_MetaTileEntity_Hatch_EnergyTunnel(int aID, String aName, String aNameRegional, int aTier, int aAmp) {
         super(aID, aName, aNameRegional, aTier, 0, translateToLocal("gt.blockmachines.hatch.energytunnel.desc.0"), aAmp);//Energy injecting terminal for Multiblocks
-        Util.setTier(aTier, this);
+        TT_Utility.setTier(aTier, this);
     }
 
     public GT_MetaTileEntity_Hatch_EnergyTunnel(String aName, int aTier, int aAmp, String aDescription, ITexture[][][] aTextures) {

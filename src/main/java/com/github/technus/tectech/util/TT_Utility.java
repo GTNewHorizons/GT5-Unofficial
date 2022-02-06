@@ -36,8 +36,25 @@ import java.util.*;
 /**
  * Created by Tec on 21.03.2017.
  */
-public final class Util {
-    private Util() {
+public final class TT_Utility {
+    private TT_Utility() {
+    }
+    private static final Map<Locale, Formatter> formaters=new HashMap<>();
+
+    private static Formatter getFormatter(){
+        return formaters.computeIfAbsent(Locale.getDefault(Locale.Category.FORMAT), Formatter::new);
+    }
+
+    public static String formatNumberShortExp(double value){
+        return getFormatter().format("%.3E", value).toString();
+    }
+
+    public static String formatNumberExp(double value){
+        return getFormatter().format("%+.5E", value).toString();
+    }
+
+    public static String formatNumberIntHex(int value){
+        return getFormatter().format("%08X", value).toString();
     }
 
     @SuppressWarnings("ComparatorMethodParameterNotUsed")
@@ -85,12 +102,12 @@ public final class Util {
         try {
             if (str.contains("b")) {
                 String[] split = str.split("b");
-                val = Util.bitStringToInt(split[0].replaceAll("[^-]", "") + split[1].replaceAll("_", ""));
+                val = TT_Utility.bitStringToInt(split[0].replaceAll("[^-]", "") + split[1].replaceAll("_", ""));
             } else if (str.contains("x")) {
                 String[] split = str.split("x");
-                val = Util.hexStringToInt(split[0].replaceAll("[^-]", "") + split[1].replaceAll("_", ""));
+                val = TT_Utility.hexStringToInt(split[0].replaceAll("[^-]", "") + split[1].replaceAll("_", ""));
             } else {
-                val = Util.stringToDouble(str);
+                val = TT_Utility.stringToDouble(str);
             }
             return val;
         } catch (Exception e) {
@@ -390,7 +407,7 @@ public final class Util {
                 break;
             case 1:
                 previousValue&=0xFFFF_FFFF_0000_FFFFL;
-                previousValue|=value<<16;
+                previousValue|=(long)value<<16;
                 break;
             case 2:
                 previousValue&=0xFFFF_0000_FFFF_FFFFL;
@@ -574,12 +591,12 @@ public final class Util {
         return stringBuilder.toString();
     }
 
-    public static double getMagnitude3D(double in[])
+    public static double getMagnitude3D(double[] in)
     {
         return Math.sqrt(in[0]*in[0]+in[1]*in[1]+in[2]*in[2]);
     }
 
-    public static void normalize3D(double in[], double out[])
+    public static void normalize3D(double[] in, double[] out)
     {
         double mag=getMagnitude3D(in);
         out[0]=in[0]/mag;
@@ -587,7 +604,7 @@ public final class Util {
         out[2]=in[2]/mag;
     }
 
-    public static void crossProduct3D(double inA[], double inB[], double out[])
+    public static void crossProduct3D(double[] inA, double[] inB, double[] out)
     {
         out[0] = inA[1] * inB[2] - inA[2] * inB[1];
         out[1] = inA[2] * inB[0] - inA[0] * inB[2];

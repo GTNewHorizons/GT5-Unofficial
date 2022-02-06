@@ -2,7 +2,7 @@ package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.util.CommonValues;
-import com.github.technus.tectech.util.Util;
+import com.github.technus.tectech.util.TT_Utility;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Dyes;
@@ -12,7 +12,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_Utility;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -54,7 +53,7 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
         overflowMatter = max / 2;
         overflowMax = max;
         overflowDisperse = overflowMax / (float) (30 - aTier);
-        Util.setTier(aTier, this);
+        TT_Utility.setTier(aTier, this);
     }
 
     public GT_MetaTileEntity_Hatch_OverflowElemental(String aName, int aTier, double max, String aDescription, ITexture[][][] aTextures) {
@@ -89,8 +88,8 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
         return new String[]{
                 CommonValues.TEC_MARK_EM,
                 mDescription,
-                translateToLocal("gt.blockmachines.hatch.emmuffler.desc.1") + ": " + EnumChatFormatting.AQUA + GT_Utility.formatNumbers(overflowMax) + " eV/c\u00b2",
-                translateToLocal("gt.blockmachines.hatch.emmuffler.desc.2") + ": " + EnumChatFormatting.AQUA + GT_Utility.formatNumbers(overflowDisperse) + " (eV/c\u00b2)/s",
+                translateToLocal("gt.blockmachines.hatch.emmuffler.desc.1") + ": " + EnumChatFormatting.AQUA + TT_Utility.formatNumberShortExp(overflowMax) + " eV/c\u00b2",
+                translateToLocal("gt.blockmachines.hatch.emmuffler.desc.2") + ": " + EnumChatFormatting.AQUA + TT_Utility.formatNumberShortExp(overflowDisperse) + " (eV/c\u00b2)/s",
                 translateToLocal("gt.blockmachines.hatch.emmuffler.desc.3")
         };
     }
@@ -218,10 +217,10 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
     public String[] getInfoData() {
         return new String[]{
                 translateToLocalFormatted("tt.keyphrase.Contained_mass", clientLocale) + ":",
-                EnumChatFormatting.RED + GT_Utility.formatNumbers(overflowMatter) + EnumChatFormatting.RESET + " eV/c\u00b2 /",
-                EnumChatFormatting.GREEN + GT_Utility.formatNumbers(overflowMax) + EnumChatFormatting.RESET + " eV/c\u00b2",
+                EnumChatFormatting.RED + TT_Utility.formatNumberExp(overflowMatter) + EnumChatFormatting.RESET + " eV/c\u00b2 /",
+                EnumChatFormatting.GREEN + TT_Utility.formatNumberShortExp(overflowMax) + EnumChatFormatting.RESET + " eV/c\u00b2",
                 translateToLocalFormatted("tt.keyphrase.Mass_Disposal_speed", clientLocale) + ": " +
-                        EnumChatFormatting.BLUE + GT_Utility.formatNumbers(overflowDisperse) + EnumChatFormatting.RESET + " (eV/c\u00b2)/s"
+                        EnumChatFormatting.BLUE + TT_Utility.formatNumberShortExp(overflowDisperse) + EnumChatFormatting.RESET + " (eV/c\u00b2)/s"
         };
     }
 

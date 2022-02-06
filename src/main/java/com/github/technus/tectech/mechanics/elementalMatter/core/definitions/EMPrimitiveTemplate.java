@@ -9,7 +9,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import java.util.ArrayList;
 
 import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_scanner.*;
-import static com.github.technus.tectech.util.Util.areBitsSet;
+import static com.github.technus.tectech.util.TT_Utility.areBitsSet;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**

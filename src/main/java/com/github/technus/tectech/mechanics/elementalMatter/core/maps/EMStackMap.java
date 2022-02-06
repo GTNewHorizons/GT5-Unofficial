@@ -30,11 +30,11 @@ abstract class EMStackMap<T extends IEMStack> implements IEMMapRead<T> {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof EMInstanceStackMap) {
-            return compareTo(((EMInstanceStackMap) obj).toDefinitionMapForComparison()) == 0;
+        if(this == obj){
+            return true;
         }
-        if (obj instanceof EMStackMap) {
-            return compareTo((EMStackMap) obj) == 0;
+        if (obj instanceof IEMMapRead) {
+            return compareTo((IEMMapRead<? extends IEMStack>) obj) == 0;
         }
         return false;
     }
@@ -46,5 +46,10 @@ abstract class EMStackMap<T extends IEMStack> implements IEMMapRead<T> {
             hash += stack.getDefinition().hashCode();
         }
         return hash;
+    }
+
+    @Override
+    public int compareTo(IEMMapRead<? extends IEMStack> o) {
+        return IEMMapRead.super.compareTo(o);
     }
 }

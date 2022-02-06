@@ -6,7 +6,7 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.EMException;
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMConstantStackMap;
 import com.github.technus.tectech.thing.item.renderElemental.IElementalItem;
 import com.github.technus.tectech.util.CommonValues;
-import com.github.technus.tectech.util.Util;
+import com.github.technus.tectech.util.TT_Utility;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.gui.FontRenderer;
@@ -114,7 +114,7 @@ public final class ElementalDefinitionContainer_EM extends Item implements IElem
             NBTTagCompound tNBT = aStack.getTagCompound();
             if (tNBT != null && tNBT.hasKey("info")) {
                 aList.add(translateToLocal("item.em.definitionContainer.desc.0") + ": ");//Should Contain
-                Collections.addAll(aList, Util.infoFromNBT(tNBT.getCompoundTag("info")));
+                Collections.addAll(aList, TT_Utility.infoFromNBT(tNBT.getCompoundTag("info")));
             } else {
                 aList.add(translateToLocal("item.em.definitionContainer.desc.1"));//Recipe Hint
             }
@@ -140,7 +140,7 @@ public final class ElementalDefinitionContainer_EM extends Item implements IElem
         try {
             NBTTagCompound tNBT = aStack.getTagCompound();
             if (tNBT != null && tNBT.hasKey("symbols")) {
-                String[] strings=Util.infoFromNBT(tNBT.getCompoundTag("symbols"));
+                String[] strings= TT_Utility.infoFromNBT(tNBT.getCompoundTag("symbols"));
                 return strings[index%strings.length];
             } else {
                 return null;

@@ -2,7 +2,7 @@ package com.github.technus.tectech.mechanics.elementalMatter.core.commands;
 
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry.EMType;
-import com.github.technus.tectech.util.Util;
+import com.github.technus.tectech.util.TT_Utility;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
@@ -28,7 +28,7 @@ public class EMList implements ICommand {
             if(args.length == 0) {
                 listClasses(sender);
             }else {
-                String concated = Util.getConcated(args, " ");
+                String concated = TT_Utility.getConcated(args, " ");
                 listDefinitions(sender,concated, concated.replaceAll(" ","_"),concated.replaceAll("_"," "));
             }
         }
