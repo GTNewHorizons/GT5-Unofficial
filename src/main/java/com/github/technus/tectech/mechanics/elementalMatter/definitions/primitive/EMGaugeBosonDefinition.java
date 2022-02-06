@@ -4,6 +4,7 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.decay.EMDecay;
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry.EMDefinitionsRegistry;
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry.EMType;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMDefinitionStack;
+import com.github.technus.tectech.util.TT_Utility;
 
 import static com.github.technus.tectech.mechanics.elementalMatter.core.decay.EMDecay.NO_DECAY;
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMLeptonDefinition.*;
@@ -27,7 +28,7 @@ public class EMGaugeBosonDefinition extends EMBosonDefinition {
     public static final EMDecay           deadEndHalf = new EMDecay(boson_Y__1);
 
     protected EMGaugeBosonDefinition(String name, String symbol, double mass, int charge, int color, int ID, String bind) {
-        super(name, symbol, 0, mass, charge, color, ID, bind);
+        super(name, TT_Utility.toSuperscript(symbol), 0, mass, charge, color, ID, bind);
     }
 
     public static void run(EMDefinitionsRegistry registry) {

@@ -15,7 +15,9 @@ public class CancerCommand implements ICommand {
     public CancerCommand(){
         aliases.add("cancer_EM");
         aliases.add("cancer");
+        aliases.add("sanser_EM");
         aliases.add("sanser");
+        aliases.add("sancer_EM");
         aliases.add("sancer");
     }
 

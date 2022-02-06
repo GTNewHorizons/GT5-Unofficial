@@ -799,16 +799,9 @@ gt.blockmachines.debug.tt.writer.desc.2=ABC axises aligned to machine front
 tt.keyword.ID=ID
 #Example: 32EU at 1A
 tt.keyword.at=at
-#EM scan result
-tt.keyword.CLASS=CLASS
-tt.keyword.NAME=NAME
-tt.keyword.CHARGE=CHARGE
-tt.keyword.COLORLESS=COLORLESS
-tt.keyword.MASS=MASS
-tt.keyphrase.LIFE_TIME=LIFE TIME
-tt.keyphrase.CARRIES_COLOR=CARRIES COLOR
+
 tt.keyphrase.Hint_Details=Hint Details
-tt.keyphrase.At_current_energy_level=At current energy level
+
 #debug boom
 tt.keyword.BOOM=BOOM!
 tt.keyword.Destination=Destination
@@ -871,11 +864,48 @@ tt.keyphrase.Ass_line_recipe=Assembly Line Recipe
 tile.turretHeadEM.name=Elemental Matter Turret
 tile.turretBaseEM.name=Elemental Turret Base
 
-tt.keyword.mol=mol
-tt.keyword.itemMols=items
-tt.keyword.mbMols=mb
+#EM scan result
+tt.keyword.scan.depth=Depth
+tt.keyword.scan.class=Class
+tt.keyword.scan.name=Name
+tt.keyword.scan.symbol=Symbol
+
+tt.keyword.scan.mass=Mass
+tt.keyword.scan.count=Count
+tt.keyword.scan.amount=Amount
+tt.keyword.scan.energy=Energy
+tt.keyword.scan.energyLevel=Energy Level
+tt.keyword.scan.charge=Charge
+tt.keyword.scan.life_mult=Life multiplier
+tt.keyword.scan.half_life=Half life
+tt.keyword.scan.life_time=Life time
+tt.keyword.scan.age=Age
+tt.keyphrase.scan.at_current_energy_level=At current energy level
+tt.keyword.scan.color=Colorless
+tt.keyword.scan.colorless=Colorless
+tt.keyword.scan.colored=Colored
+
+tt.keyword.short.mass=M
+tt.keyword.short.count=Qty
+tt.keyword.short.amount=Qty
+tt.keyword.short.energy=E
+tt.keyword.short.energyLevel=EL
+tt.keyword.short.charge=C
+tt.keyword.short.time=T
+
+tt.keyword.unit.mass=eV/c²
+tt.keyword.unit.massFlux=eV/c²s
+tt.keyword.unit.count=
+tt.keyword.unit.mol=mol
+tt.keyword.unit.itemMols=item(s)
+tt.keyword.unit.mbMols=mb
+tt.keyword.unit.energy=eV
+tt.keyword.unit.charge=e
+tt.keyword.unit.time=s
+tt.keyword.unit.tick=t
 #that the thing wont decay
 tt.keyword.stable=STABLE
+
 #EM types
 tt.keyword.Primitive=Primitive
 tt.keyword.Element=Element

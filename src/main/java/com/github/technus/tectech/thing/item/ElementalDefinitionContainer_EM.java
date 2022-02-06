@@ -4,6 +4,7 @@ import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.font.TecTechFontRender;
 import com.github.technus.tectech.mechanics.elementalMatter.core.EMException;
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMConstantStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMDefinitionStackMap;
 import com.github.technus.tectech.thing.item.renderElemental.IElementalItem;
 import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.util.TT_Utility;
@@ -38,30 +39,14 @@ public final class ElementalDefinitionContainer_EM extends Item implements IElem
         setCreativeTab(creativeTabEM);
     }
 
-    //return previous thing
-    public static EMConstantStackMap setContent(ItemStack containerItem, EMConstantStackMap definitions){
-        if(containerItem.getItem() instanceof ElementalDefinitionContainer_EM) {
-            NBTTagCompound tNBT = containerItem.stackTagCompound;
-            if (tNBT == null) {
-                tNBT = containerItem.stackTagCompound = new NBTTagCompound();
-            }
-
-            EMConstantStackMap oldMap =null;
-            if (tNBT.hasKey("content")) {
-                try {
-                    oldMap= EMConstantStackMap.fromNBT(TecTech.definitionsRegistry,tNBT.getCompoundTag("content"));
-                } catch (EMException e) {
-                    if (DEBUG_MODE) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-            tNBT.setTag("info", definitions.getInfoNBT());
-            tNBT.setTag("content", definitions.toNBT(TecTech.definitionsRegistry));
-            tNBT.setTag("symbols",definitions.getShortSymbolsNBT());
-            return oldMap;
+    public static void setContent(ItemStack aStack, EMConstantStackMap definitions){
+        NBTTagCompound tNBT = aStack.getTagCompound();
+        if (tNBT == null) {
+            tNBT = new NBTTagCompound();
+            aStack.setTagCompound(tNBT);
         }
-        return null;
+        tNBT.setTag("content", definitions.toNBT(TecTech.definitionsRegistry));
+        tNBT.setTag("symbols", TT_Utility.packStrings(definitions.getShortSymbolsInfo()));
     }
 
     public static EMConstantStackMap getContent(ItemStack containerItem){
@@ -99,7 +84,6 @@ public final class ElementalDefinitionContainer_EM extends Item implements IElem
                     }
                 }
             }
-            tNBT.removeTag("info");
             tNBT.removeTag("content");
             tNBT.removeTag("symbols");
             return oldMap;
@@ -112,9 +96,10 @@ public final class ElementalDefinitionContainer_EM extends Item implements IElem
         aList.add(CommonValues.TEC_MARK_EM);
         try {
             NBTTagCompound tNBT = aStack.getTagCompound();
-            if (tNBT != null && tNBT.hasKey("info")) {
+            if (tNBT != null && tNBT.hasKey("content")) {
                 aList.add(translateToLocal("item.em.definitionContainer.desc.0") + ": ");//Should Contain
-                Collections.addAll(aList, TT_Utility.infoFromNBT(tNBT.getCompoundTag("info")));
+                EMDefinitionStackMap content = EMDefinitionStackMap.fromNBT(TecTech.definitionsRegistry, tNBT.getCompoundTag("content"));
+                Collections.addAll(aList, content.getElementalInfo());
             } else {
                 aList.add(translateToLocal("item.em.definitionContainer.desc.1"));//Recipe Hint
             }
@@ -133,21 +118,6 @@ public final class ElementalDefinitionContainer_EM extends Item implements IElem
         ItemStack that = new ItemStack(this, 1);
         that.setTagCompound(new NBTTagCompound());
         list.add(that);
-    }
-
-    @Override
-    public String getSymbol(ItemStack aStack, int index) {
-        try {
-            NBTTagCompound tNBT = aStack.getTagCompound();
-            if (tNBT != null && tNBT.hasKey("symbols")) {
-                String[] strings= TT_Utility.infoFromNBT(tNBT.getCompoundTag("symbols"));
-                return strings[index%strings.length];
-            } else {
-                return null;
-            }
-        } catch (Exception e) {
-            return "#!";
-        }
     }
 
     @Override

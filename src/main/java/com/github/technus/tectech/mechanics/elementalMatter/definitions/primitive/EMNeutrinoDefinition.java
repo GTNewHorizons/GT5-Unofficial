@@ -14,12 +14,12 @@ import static net.minecraft.util.StatCollector.translateToLocal;
  */
 public class EMNeutrinoDefinition extends EMLeptonDefinition {
     public static final EMNeutrinoDefinition
-            lepton_Ve = new EMNeutrinoDefinition("tt.keyword.ElectronNeutrino", "\u03bd\u03b2", 1, 2e0D, 21,"Ve-"),
-            lepton_Vm = new EMNeutrinoDefinition("tt.keyword.MuonNeutrino", "\u03bd\u03bc", 2, 0.15e6D, 23,"Vm-"),
-            lepton_Vt = new EMNeutrinoDefinition("tt.keyword.TauonNeutrino", "\u03bd\u03c4", 3, 15e6D, 25,"Vt-"),
-            lepton_Ve_ = new EMNeutrinoDefinition("tt.keyword.PositronNeutrino", "~\u03bd\u03b2", -1, 2e0D, 22,"Ve+"),
-            lepton_Vm_ = new EMNeutrinoDefinition("tt.keyword.AntimuonNeutrino", "~\u03bd\u03bc", -2, 0.15e6D, 24,"Vm+"),
-            lepton_Vt_ = new EMNeutrinoDefinition("tt.keyword.AntitauonNeutrino", "~\u03bd\u03c4", -3, 15e6D, 26,"Vt+");
+            lepton_Ve = new EMNeutrinoDefinition("tt.keyword.ElectronNeutrino", "\u03bd\u03b2", 1, 2e0D, 21,"Ve"),
+            lepton_Vm = new EMNeutrinoDefinition("tt.keyword.MuonNeutrino", "\u03bd\u03bc", 2, 0.15e6D, 23,"Vm"),
+            lepton_Vt = new EMNeutrinoDefinition("tt.keyword.TauonNeutrino", "\u03bd\u03c4", 3, 15e6D, 25,"Vt"),
+            lepton_Ve_ = new EMNeutrinoDefinition("tt.keyword.PositronNeutrino", "~\u03bd\u03b2", -1, 2e0D, 22,"~Ve"),
+            lepton_Vm_ = new EMNeutrinoDefinition("tt.keyword.AntimuonNeutrino", "~\u03bd\u03bc", -2, 0.15e6D, 24,"~Vm"),
+            lepton_Vt_ = new EMNeutrinoDefinition("tt.keyword.AntitauonNeutrino", "~\u03bd\u03c4", -3, 15e6D, 26,"~Vt");
 
     public static final EMDefinitionStack lepton_Ve1  = new EMDefinitionStack(lepton_Ve, 1);
     public static final EMDefinitionStack lepton_Ve2  = new EMDefinitionStack(lepton_Ve, 2);

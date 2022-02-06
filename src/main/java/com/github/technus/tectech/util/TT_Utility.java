@@ -29,9 +29,11 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.function.Function;
 
 /**
  * Created by Tec on 21.03.2017.
@@ -39,21 +41,24 @@ import java.util.*;
 public final class TT_Utility {
     private TT_Utility() {
     }
-    private static final Map<Locale, Formatter> formaters=new HashMap<>();
 
-    private static Formatter getFormatter(){
-        return formaters.computeIfAbsent(Locale.getDefault(Locale.Category.FORMAT), Formatter::new);
+    private static final StringBuilder          STRING_BUILDER = new StringBuilder();
+    private static final Map<Locale, Formatter> FORMATTER_MAP  = new HashMap<>();
+
+    private static Formatter getFormatter() {
+        STRING_BUILDER.setLength(0);
+        return FORMATTER_MAP.computeIfAbsent(Locale.getDefault(Locale.Category.FORMAT), locale -> new Formatter(STRING_BUILDER, locale));
     }
 
-    public static String formatNumberShortExp(double value){
+    public static String formatNumberShortExp(double value) {
         return getFormatter().format("%.3E", value).toString();
     }
 
-    public static String formatNumberExp(double value){
+    public static String formatNumberExp(double value) {
         return getFormatter().format("%+.5E", value).toString();
     }
 
-    public static String formatNumberIntHex(int value){
+    public static String formatNumberIntHex(int value) {
         return getFormatter().format("%08X", value).toString();
     }
 
@@ -69,32 +74,62 @@ public final class TT_Utility {
         return sortedEntries;
     }
 
-    public static int bitStringToInt(String bits){
-        if(bits==null){
+    public static int bitStringToInt(String bits) {
+        if (bits == null) {
             return 0;
         }
-        if(bits.length() > 32){
+        if (bits.length() > 32) {
             throw new NumberFormatException("Too long!");
         }
-        return Integer.parseInt(bits,2);
+        return Integer.parseInt(bits, 2);
     }
 
-    public static int hexStringToInt(String hex){
-        if(hex==null){
+    public static int hexStringToInt(String hex) {
+        if (hex == null) {
             return 0;
         }
-        if(hex.length()>8){
+        if (hex.length() > 8) {
             throw new NumberFormatException("Too long!");
         }
-        return Integer.parseInt(hex,16);
+        return Integer.parseInt(hex, 16);
     }
 
-    public static double stringToDouble(String str){
-        if(str==null){
+    public static double stringToDouble(String str) {
+        if (str == null) {
             return 0;
         }
         return Double.parseDouble(str);
     }
+
+    private static final String SUPER_SCRIPT = "\u207D\u207E*\u207A,\u207B./\u2070\u00B9\u00B2\u00B3\u2074\u2075\u2076\u2077\u2078\u2079:;<\u207C";
+    private static final String SUB_SCRIPT   = "\u208D\u208E*\u208A,\u208B./\u2080\u2081\u2082\u2083\u2084\u2085\u2086\u2087\u2088\u2089:;<\u208C";
+
+    public static String toSubscript(String s) {
+        STRING_BUILDER.setLength(0);
+        for (int i = 0; i <s.length(); i++) {
+            char c=s.charAt(i);
+            if(c>='('&&c<='='){
+                STRING_BUILDER.append(SUB_SCRIPT.charAt(c-'('));
+            }else {
+                STRING_BUILDER.append(c);
+            }
+        }
+        return STRING_BUILDER.toString();
+    }
+
+    public static String toSuperscript(String s) {
+        STRING_BUILDER.setLength(0);
+        for (int i = 0; i <s.length(); i++) {
+            char c=s.charAt(i);
+            if(c>='('&&c<='='){
+                STRING_BUILDER.append(SUPER_SCRIPT.charAt(c-'('));
+            }else {
+                STRING_BUILDER.append(c);
+            }
+        }
+        return STRING_BUILDER.toString();
+    }
+
 
     public static double getValue(String in1) {
         String str = in1.toLowerCase();
@@ -295,7 +330,7 @@ public final class TT_Utility {
 
     public static String[] splitButDifferent(String string, String delimiter) {
         String[] strings = new String[StringUtils.countMatches(string, delimiter) + 1];
-        int lastEnd = 0;
+        int      lastEnd = 0;
         for (int i = 0; i < strings.length - 1; i++) {
             int nextEnd = string.indexOf(delimiter, lastEnd);
             strings[i] = string.substring(lastEnd, nextEnd);
@@ -305,12 +340,43 @@ public final class TT_Utility {
         return strings;
     }
 
-    public static String[] infoFromNBT(NBTTagCompound nbt) {
+    public static String[] unpackStrings(NBTTagCompound nbt) {
         String[] strings = new String[nbt.getInteger("i")];
         for (int i = 0; i < strings.length; i++) {
             strings[i] = nbt.getString(Integer.toString(i));
         }
         return strings;
+    }
+
+    public static String getSomeString(NBTTagCompound nbt, int index) {
+        return nbt.getString(Integer.toString(index % nbt.getInteger("i")));
+    }
+
+    public static NBTTagCompound packStrings(String... info) {
+        NBTTagCompound nbt = new NBTTagCompound();
+        nbt.setInteger("i", info.length);
+        for (int i = 0; i < info.length; i++) {
+            nbt.setString(Integer.toString(i), info[i]);
+        }
+        return nbt;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T> T[] unpackNBT(Class<T> tClass, Function<NBTTagCompound, T> converter, NBTTagCompound nbt) {
+        T[] objects = (T[]) Array.newInstance(tClass, nbt.getInteger("i"));
+        for (int i = 0; i < objects.length; i++) {
+            objects[i] = converter.apply(nbt.getCompoundTag(Integer.toString(i)));
+        }
+        return objects;
+    }
+
+    public static <T> NBTTagCompound packNBT(Function<T, NBTTagCompound> converter, T... info) {
+        NBTTagCompound nbt = new NBTTagCompound();
+        nbt.setInteger("i", info.length);
+        for (int i = 0; i < info.length; i++) {
+            nbt.setTag(Integer.toString(i), converter.apply(info[i]));
+        }
+        return nbt;
     }
 
     public static boolean areBitsSet(int setBits, int testedValue) {
@@ -319,8 +385,8 @@ public final class TT_Utility {
 
     public static class ItemStack_NoNBT implements Comparable<ItemStack_NoNBT> {
         public final Item mItem;
-        public final int mStackSize;
-        public final int mMetaData;
+        public final int  mStackSize;
+        public final int  mMetaData;
 
         public ItemStack_NoNBT(Item aItem, long aStackSize, long aMetaData) {
             this.mItem = aItem;
@@ -372,240 +438,239 @@ public final class TT_Utility {
         }
     }
 
-    public static void setTier(int tier,Object me){
-        try{
-            Field field=GT_MetaTileEntity_TieredMachineBlock.class.getField("mTier");
+    public static void setTier(int tier, Object me) {
+        try {
+            Field field = GT_MetaTileEntity_TieredMachineBlock.class.getField("mTier");
             field.setAccessible(true);
-            field.set(me,(byte)tier);
-        }catch (Exception e){
+            field.set(me, (byte) tier);
+        } catch (Exception e) {
             //e.printStackTrace();
         }
     }
 
-    public static StringBuilder receiveString(StringBuilder previousValue, int startIndex, int index, int value){
-        int sizeReq=index-startIndex;
-        if(value==0){
-            previousValue.setLength(Math.min(previousValue.length(),sizeReq));
-        }else {
-            previousValue.setLength(Math.max(previousValue.length(),sizeReq));
-            previousValue.setCharAt(sizeReq,(char)value);
+    public static StringBuilder receiveString(StringBuilder previousValue, int startIndex, int index, int value) {
+        int sizeReq = index - startIndex;
+        if (value == 0) {
+            previousValue.setLength(Math.min(previousValue.length(), sizeReq));
+        } else {
+            previousValue.setLength(Math.max(previousValue.length(), sizeReq));
+            previousValue.setCharAt(sizeReq, (char) value);
         }
         return previousValue;
     }
 
     @Deprecated
-    public static double receiveDouble(double previousValue, int startIndex, int index, int value){
-        return Double.longBitsToDouble(receiveLong(Double.doubleToLongBits(previousValue),startIndex,index,value));
+    public static double receiveDouble(double previousValue, int startIndex, int index, int value) {
+        return Double.longBitsToDouble(receiveLong(Double.doubleToLongBits(previousValue), startIndex, index, value));
     }
 
-    public static long receiveLong(long previousValue, int startIndex, int index, int value){
-        value &=0xFFFF;
-        switch (index-startIndex){
+    public static long receiveLong(long previousValue, int startIndex, int index, int value) {
+        value &= 0xFFFF;
+        switch (index - startIndex) {
             case 0:
-                previousValue&= 0xFFFF_FFFF_FFFF_0000L;
-                previousValue|=value;
+                previousValue &= 0xFFFF_FFFF_FFFF_0000L;
+                previousValue |= value;
                 break;
             case 1:
-                previousValue&=0xFFFF_FFFF_0000_FFFFL;
-                previousValue|=(long)value<<16;
+                previousValue &= 0xFFFF_FFFF_0000_FFFFL;
+                previousValue |= (long) value << 16;
                 break;
             case 2:
-                previousValue&=0xFFFF_0000_FFFF_FFFFL;
-                previousValue|=(long)value<<32;
+                previousValue &= 0xFFFF_0000_FFFF_FFFFL;
+                previousValue |= (long) value << 32;
                 break;
             case 3:
-                previousValue&=0x0000_FFFF_FFFF_FFFFL;
-                previousValue|=(long)value<<48;
+                previousValue &= 0x0000_FFFF_FFFF_FFFFL;
+                previousValue |= (long) value << 48;
                 break;
         }
         return previousValue;
     }
 
-    public static void sendString(StringBuilder string,Container container, ICrafting crafter,int startIndex){
+    public static void sendString(StringBuilder string, Container container, ICrafting crafter, int startIndex) {
         for (int i = 0; i < string.length(); i++) {
-            crafter.sendProgressBarUpdate(container,startIndex++,string.charAt(i));
+            crafter.sendProgressBarUpdate(container, startIndex++, string.charAt(i));
         }
-        crafter.sendProgressBarUpdate(container,startIndex,0);
+        crafter.sendProgressBarUpdate(container, startIndex, 0);
     }
 
-    public static void sendDouble(double value,Container container, ICrafting crafter,int startIndex){
-        sendLong(Double.doubleToLongBits(value),container,crafter,startIndex);
+    public static void sendDouble(double value, Container container, ICrafting crafter, int startIndex) {
+        sendLong(Double.doubleToLongBits(value), container, crafter, startIndex);
     }
 
-    public static void sendLong(long value,Container container, ICrafting crafter,int startIndex){
-        crafter.sendProgressBarUpdate(container, startIndex++, (int)(value & 0xFFFFL));
-        crafter.sendProgressBarUpdate(container, startIndex++, (int)((value & 0xFFFF0000L)>>>16));
-        crafter.sendProgressBarUpdate(container, startIndex++, (int)((value & 0xFFFF00000000L)>>>32));
-        crafter.sendProgressBarUpdate(container, startIndex,   (int)((value & 0xFFFF000000000000L)>>>48));
+    public static void sendLong(long value, Container container, ICrafting crafter, int startIndex) {
+        crafter.sendProgressBarUpdate(container, startIndex++, (int) (value & 0xFFFFL));
+        crafter.sendProgressBarUpdate(container, startIndex++, (int) ((value & 0xFFFF0000L) >>> 16));
+        crafter.sendProgressBarUpdate(container, startIndex++, (int) ((value & 0xFFFF00000000L) >>> 32));
+        crafter.sendProgressBarUpdate(container, startIndex, (int) ((value & 0xFFFF000000000000L) >>> 48));
     }
 
     @Deprecated
-    public static float receiveFloat(float previousValue, int startIndex, int index, int value){
-        return Float.intBitsToFloat(receiveInteger(Float.floatToIntBits(previousValue),startIndex,index,value));
+    public static float receiveFloat(float previousValue, int startIndex, int index, int value) {
+        return Float.intBitsToFloat(receiveInteger(Float.floatToIntBits(previousValue), startIndex, index, value));
     }
 
-    public static int receiveInteger(int previousValue, int startIndex, int index, int value){
-        value &=0xFFFF;
-        switch (index-startIndex){
+    public static int receiveInteger(int previousValue, int startIndex, int index, int value) {
+        value &= 0xFFFF;
+        switch (index - startIndex) {
             case 0:
-                previousValue&= 0xFFFF_0000;
-                previousValue|=value;
+                previousValue &= 0xFFFF_0000;
+                previousValue |= value;
                 break;
             case 1:
-                previousValue&=0x0000_FFFF;
-                previousValue|=value<<16;
+                previousValue &= 0x0000_FFFF;
+                previousValue |= value << 16;
                 break;
         }
         return previousValue;
     }
 
-    public static void sendFloat(float value,Container container, ICrafting crafter,int startIndex){
-        sendInteger(Float.floatToIntBits(value),container,crafter,startIndex);
+    public static void sendFloat(float value, Container container, ICrafting crafter, int startIndex) {
+        sendInteger(Float.floatToIntBits(value), container, crafter, startIndex);
     }
 
-    public static void sendInteger(int value,Container container, ICrafting crafter,int startIndex){
-        crafter.sendProgressBarUpdate(container, startIndex++, (int)(value & 0xFFFFL));
-        crafter.sendProgressBarUpdate(container, startIndex, (value & 0xFFFF0000)>>>16);
+    public static void sendInteger(int value, Container container, ICrafting crafter, int startIndex) {
+        crafter.sendProgressBarUpdate(container, startIndex++, (int) (value & 0xFFFFL));
+        crafter.sendProgressBarUpdate(container, startIndex, (value & 0xFFFF0000) >>> 16);
     }
 
-    public static String doubleToString(double value){
-        if(value==(long)value){
-            return Long.toString((long)value);
+    public static String doubleToString(double value) {
+        if (value == (long) value) {
+            return Long.toString((long) value);
         }
         return Double.toString(value);
     }
 
-    public static boolean checkChunkExist(World world, ChunkCoordIntPair chunk){
-        int x=chunk.getCenterXPos();
-        int z=chunk.getCenterZPosition();
+    public static boolean checkChunkExist(World world, ChunkCoordIntPair chunk) {
+        int x = chunk.getCenterXPos();
+        int z = chunk.getCenterZPosition();
         return world.checkChunksExist(x, 0, z, x, 0, z);
     }
 
-    public static NBTTagCompound getPlayerData(UUID uuid1,UUID uuid2,String extension) {
+    public static NBTTagCompound getPlayerData(UUID uuid1, UUID uuid2, String extension) {
         try {
             if (FMLCommonHandler.instance().getEffectiveSide().isServer()) {
-                if (uuid1 != null && uuid2!=null) {
+                if (uuid1 != null && uuid2 != null) {
                     IPlayerFileData playerNBTManagerObj = MinecraftServer.getServer().worldServerForDimension(0).getSaveHandler().getSaveHandler();
-                    SaveHandler sh = (SaveHandler)playerNBTManagerObj;
-                    File dir = ObfuscationReflectionHelper.getPrivateValue(SaveHandler.class, sh, new String[]{"playersDirectory", "field_75771_c"});
-                    String id1=uuid1.toString();
-                    NBTTagCompound tagCompound=read(new File(dir, id1 + "."+extension));
-                    if(tagCompound!=null){
+                    SaveHandler     sh                  = (SaveHandler) playerNBTManagerObj;
+                    File            dir                 = ObfuscationReflectionHelper.getPrivateValue(SaveHandler.class, sh, new String[]{"playersDirectory", "field_75771_c"});
+                    String          id1                 = uuid1.toString();
+                    NBTTagCompound  tagCompound         = read(new File(dir, id1 + "." + extension));
+                    if (tagCompound != null) {
                         return tagCompound;
                     }
-                    tagCompound=readBackup(new File(dir, id1 + "."+extension+"_bak"));
-                    if(tagCompound!=null){
+                    tagCompound = readBackup(new File(dir, id1 + "." + extension + "_bak"));
+                    if (tagCompound != null) {
                         return tagCompound;
                     }
-                    String id2=uuid2.toString();
-                    tagCompound=read(new File(dir, id2 + "."+extension));
-                    if(tagCompound!=null){
+                    String id2 = uuid2.toString();
+                    tagCompound = read(new File(dir, id2 + "." + extension));
+                    if (tagCompound != null) {
                         return tagCompound;
                     }
-                    tagCompound=readBackup(new File(dir, id2 + "."+extension+"_bak"));
-                    if(tagCompound!=null){
+                    tagCompound = readBackup(new File(dir, id2 + "." + extension + "_bak"));
+                    if (tagCompound != null) {
                         return tagCompound;
                     }
                 }
             }
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
         return new NBTTagCompound();
     }
 
-    public static void savePlayerFile(EntityPlayer player,String extension, NBTTagCompound data) {
+    public static void savePlayerFile(EntityPlayer player, String extension, NBTTagCompound data) {
         try {
             if (FMLCommonHandler.instance().getEffectiveSide().isServer()) {
                 if (player != null) {
                     IPlayerFileData playerNBTManagerObj = MinecraftServer.getServer().worldServerForDimension(0).getSaveHandler().getSaveHandler();
-                    SaveHandler sh = (SaveHandler)playerNBTManagerObj;
-                    File dir = ObfuscationReflectionHelper.getPrivateValue(SaveHandler.class, sh, new String[]{"playersDirectory", "field_75771_c"});
-                    String id1=player.getUniqueID().toString();
-                    write(new File(dir, id1 + "."+extension),data);
-                    write(new File(dir, id1 + "."+extension+"_bak"),data);
-                    String id2=UUID.nameUUIDFromBytes(player.getCommandSenderName().getBytes(StandardCharsets.UTF_8)).toString();
-                    write(new File(dir, id2 + "."+extension),data);
-                    write(new File(dir, id2 + "."+extension+"_bak"),data);
+                    SaveHandler     sh                  = (SaveHandler) playerNBTManagerObj;
+                    File            dir                 = ObfuscationReflectionHelper.getPrivateValue(SaveHandler.class, sh, new String[]{"playersDirectory", "field_75771_c"});
+                    String          id1                 = player.getUniqueID().toString();
+                    write(new File(dir, id1 + "." + extension), data);
+                    write(new File(dir, id1 + "." + extension + "_bak"), data);
+                    String id2 = UUID.nameUUIDFromBytes(player.getCommandSenderName().getBytes(StandardCharsets.UTF_8)).toString();
+                    write(new File(dir, id2 + "." + extension), data);
+                    write(new File(dir, id2 + "." + extension + "_bak"), data);
                 }
             }
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
     }
 
-    private static NBTTagCompound read(File file){
+    private static NBTTagCompound read(File file) {
         if (file != null && file.exists()) {
-            try(FileInputStream fileInputStream= new FileInputStream(file)) {
+            try (FileInputStream fileInputStream = new FileInputStream(file)) {
                 return CompressedStreamTools.readCompressed(fileInputStream);
             } catch (Exception var9) {
-                TecTech.LOGGER.error("Cannot read NBT File: "+file.getAbsolutePath());
+                TecTech.LOGGER.error("Cannot read NBT File: " + file.getAbsolutePath());
             }
         }
         return null;
     }
 
-    private static NBTTagCompound readBackup(File file){
+    private static NBTTagCompound readBackup(File file) {
         if (file != null && file.exists()) {
-            try(FileInputStream fileInputStream= new FileInputStream(file)) {
+            try (FileInputStream fileInputStream = new FileInputStream(file)) {
                 return CompressedStreamTools.readCompressed(fileInputStream);
             } catch (Exception var9) {
-                TecTech.LOGGER.error("Cannot read NBT File: "+file.getAbsolutePath());
+                TecTech.LOGGER.error("Cannot read NBT File: " + file.getAbsolutePath());
                 return new NBTTagCompound();
             }
         }
         return null;
     }
 
-    private static void write(File file,NBTTagCompound tagCompound){
+    private static void write(File file, NBTTagCompound tagCompound) {
         if (file != null) {
-            if(tagCompound==null){
-                if(file.exists()) file.delete();
-            }else {
-                try(FileOutputStream fileOutputStream= new FileOutputStream(file)) {
-                    CompressedStreamTools.writeCompressed(tagCompound,fileOutputStream);
+            if (tagCompound == null) {
+                if (file.exists()) file.delete();
+            } else {
+                try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
+                    CompressedStreamTools.writeCompressed(tagCompound, fileOutputStream);
                 } catch (Exception var9) {
-                    TecTech.LOGGER.error("Cannot write NBT File: "+file.getAbsolutePath());
+                    TecTech.LOGGER.error("Cannot write NBT File: " + file.getAbsolutePath());
                 }
             }
         }
     }
 
-    public static AxisAlignedBB fromChunkCoordIntPair(ChunkCoordIntPair chunkCoordIntPair){
-        int x=chunkCoordIntPair.chunkXPos<<4;
-        int z=chunkCoordIntPair.chunkZPos<<4;
-        return AxisAlignedBB.getBoundingBox(x,-128,z,x+16,512,z+16);
+    public static AxisAlignedBB fromChunkCoordIntPair(ChunkCoordIntPair chunkCoordIntPair) {
+        int x = chunkCoordIntPair.chunkXPos << 4;
+        int z = chunkCoordIntPair.chunkZPos << 4;
+        return AxisAlignedBB.getBoundingBox(x, -128, z, x + 16, 512, z + 16);
     }
 
-    public static AxisAlignedBB fromChunk(Chunk chunk){
-        int x=chunk.xPosition<<4;
-        int z=chunk.zPosition<<4;
-        return AxisAlignedBB.getBoundingBox(x,-128,z,x+16,512,z+16);
+    public static AxisAlignedBB fromChunk(Chunk chunk) {
+        int x = chunk.xPosition << 4;
+        int z = chunk.zPosition << 4;
+        return AxisAlignedBB.getBoundingBox(x, -128, z, x + 16, 512, z + 16);
     }
 
-    public static String getConcated(String[] strings,String separator){
+    public static String getConcated(String[] strings, String separator) {
         StringBuilder stringBuilder = new StringBuilder();
         for (String string : strings) {
             stringBuilder.append(string).append(separator);
         }
         int length = stringBuilder.length();
-        if(length >=separator.length()){
-            stringBuilder.setLength(length -separator.length());
+        if (length >= separator.length()) {
+            stringBuilder.setLength(length - separator.length());
         }
         return stringBuilder.toString();
     }
 
-    public static double getMagnitude3D(double[] in)
-    {
-        return Math.sqrt(in[0]*in[0]+in[1]*in[1]+in[2]*in[2]);
+    public static double getMagnitude3D(double[] in) {
+        return Math.sqrt(in[0] * in[0] + in[1] * in[1] + in[2] * in[2]);
     }
 
-    public static void normalize3D(double[] in, double[] out)
-    {
-        double mag=getMagnitude3D(in);
-        out[0]=in[0]/mag;
-        out[1]=in[1]/mag;
-        out[2]=in[2]/mag;
+    public static void normalize3D(double[] in, double[] out) {
+        double mag = getMagnitude3D(in);
+        out[0] = in[0] / mag;
+        out[1] = in[1] / mag;
+        out[2] = in[2] / mag;
     }
 
-    public static void crossProduct3D(double[] inA, double[] inB, double[] out)
-    {
+    public static void crossProduct3D(double[] inA, double[] inB, double[] out) {
         out[0] = inA[1] * inB[2] - inA[2] * inB[1];
         out[1] = inA[2] * inB[0] - inA[0] * inB[2];
         out[2] = inA[0] * inB[1] - inA[1] * inB[0];
