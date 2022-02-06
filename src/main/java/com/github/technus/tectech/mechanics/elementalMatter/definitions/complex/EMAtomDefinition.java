@@ -14,6 +14,7 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.transformations
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMGaugeBosonDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMLeptonDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMNeutrinoDefinition;
+import com.github.technus.tectech.util.TT_Utility;
 import com.github.technus.tectech.util.XSTR;
 
 import java.util.*;
@@ -370,7 +371,14 @@ public class EMAtomDefinition extends EMComplexTemplate {
 
     @Override
     public String getSymbol() {
-        return getShortSymbol() + " N:" + getNeutralCount() + " I:" + (getNeutralCount() + getElement()) + " C:" + getCharge();
+        String ionName  = "";
+        int ionization = getCharge() / 3;
+        if(ionization>0){
+            ionName = ionization == 1 ? TT_Utility.toSuperscript("+") : TT_Utility.toSuperscript(ionization + "+");
+        }else if(ionization<0) {
+            ionName = ionization == -1 ? TT_Utility.toSuperscript("-") : TT_Utility.toSuperscript(-ionization + "-");
+        }
+        return TT_Utility.toSuperscript(Long.toString(getNeutralCount() + (long)getElement())) +getShortSymbol()+ ionName;
     }
 
     @Override
