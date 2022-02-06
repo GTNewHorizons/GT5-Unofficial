@@ -105,7 +105,9 @@ import javax.annotation.Nullable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.text.NumberFormat;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -115,6 +117,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
@@ -143,7 +146,7 @@ import static gregtech.common.GT_UndergroundOil.undergroundOilReadInformation;
  */
 public class GT_Utility {
     /** Formats a number with group separator and at most 2 fraction digits. */
-    private static final NumberFormat numberFormat = NumberFormat.getInstance();
+    private static final Map<Locale, DecimalFormat> decimalFormatters=new HashMap<>();
 
     /**
      * Forge screwed the Fluid Registry up again, so I make my own, which is also much more efficient than the stupid Stuff over there.
@@ -162,8 +165,6 @@ public class GT_Utility {
     public static UUID defaultUuid = null; // maybe default non-null? UUID.fromString("00000000-0000-0000-0000-000000000000");
 
     static {
-        numberFormat.setMaximumFractionDigits(2);
-
         GregTech_API.sItemStackMappings.add(sFilledContainerToData);
         GregTech_API.sItemStackMappings.add(sEmptyContainerToFluidToData);
 
@@ -2377,13 +2378,26 @@ public class GT_Utility {
         }
         return -1;
     }
+	
+    private static DecimalFormat getDecimalFormat(){
+        return decimalFormatters.computeIfAbsent(Locale.getDefault(Locale.Category.FORMAT), locale -> {
+            DecimalFormat numberFormat =new DecimalFormat();//uses the necessary locale inside anyway
+            numberFormat.setGroupingUsed(true);
+            numberFormat.setMaximumFractionDigits(2);
+            numberFormat.setRoundingMode(RoundingMode.HALF_UP);
+            DecimalFormatSymbols decimalFormatSymbols = numberFormat.getDecimalFormatSymbols();
+	    decimalFormatSymbols.setGroupingSeparator(' ');//use international separator for best clarity, should also fix locales using NBSP
+	    numberFormat.setDecimalFormatSymbols(decimalFormatSymbols);
+            return numberFormat;
+        });
+    }
 
     public static String formatNumbers(long aNumber) {
-        return numberFormat.format(aNumber);
+        return getDecimalFormat().format(aNumber);
     }
 
     public static String formatNumbers(double aNumber) {
-        return numberFormat.format(aNumber);
+        return getDecimalFormat().format(aNumber);
     }
 
     /*
