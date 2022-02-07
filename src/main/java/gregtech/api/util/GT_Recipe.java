@@ -15,6 +15,7 @@ import gregtech.nei.GT_NEI_DefaultHandler.FixedPositionedStack;
 import ic2.core.Ic2Items;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityFurnace;
@@ -1816,12 +1817,34 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
     }
 
     public static class GT_Recipe_Map_LargeBoilerFakeFuels extends GT_Recipe_Map {
+    	
+    	private static final List<String> ALLOWED_SOLID_FUELS = Arrays.asList(GregTech_API.sMachineFile.mConfig.getStringList(
+    			"LargeBoiler.allowedFuels",
+    			ConfigCategories.machineconfig.toString(),
+    			new String[] {"gregtech:gt.blockreinforced:6", "gregtech:gt.blockreinforced:7"},
+    			"Allowed fuels for the Large Titanium Boiler and Large Tungstensteel Boiler"));
 
         public GT_Recipe_Map_LargeBoilerFakeFuels() {
             super(new HashSet<>(55), "gt.recipe.largeboilerfakefuels", "Large Boiler", null, RES_PATH_GUI + "basicmachines/Default", 1, 0, 1, 0, 1, E, 1, E, true, true);
             GT_Recipe explanatoryRecipe = new GT_Recipe(true, new ItemStack[]{}, new ItemStack[]{}, null, null, null, null, 1, 1, 1);
             explanatoryRecipe.setNeiDesc("Not all solid fuels are listed.", "Any item that burns in a", "vanilla furnace will burn in", "a Large Bronze or Steel Boiler.");
             addRecipe(explanatoryRecipe);
+        }
+        
+        public static boolean isAllowedSolidFuel(ItemStack stack) {
+        	return isAllowedSolidFuel(Item.itemRegistry.getNameForObject(stack.getItem()), stack.getItemDamage());
+        }
+        
+        public static boolean isAllowedSolidFuel(String itemRegistryName, int meta) {
+        	return ALLOWED_SOLID_FUELS.contains(itemRegistryName + ":" + meta);
+        }
+        
+        public static boolean addAllowedSolidFuel(ItemStack stack) {
+        	return addAllowedSolidFuel(Item.itemRegistry.getNameForObject(stack.getItem()), stack.getItemDamage());
+        }
+        
+        public static boolean addAllowedSolidFuel(String itemregistryName, int meta) {
+        	return ALLOWED_SOLID_FUELS.add(itemregistryName + ":" + meta);
         }
 
         public GT_Recipe addDenseLiquidRecipe(GT_Recipe recipe) {
@@ -1841,9 +1864,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public GT_Recipe addSolidRecipe(ItemStack fuelItemStack) {
             boolean allowedFuel = false;
             if (fuelItemStack != null) {
-                if (fuelItemStack.getDisplayName().equals("gt.blockreinforced.6.name") || fuelItemStack.getDisplayName().equals("gt.blockreinforced.7.name")) {
-                    allowedFuel = true;
-                }
+            	String registryName = Item.itemRegistry.getNameForObject(fuelItemStack.getItem());
+            	allowedFuel = ALLOWED_SOLID_FUELS.contains(registryName + ":" + fuelItemStack.getItemDamage());
             }
             return addRecipe(new GT_Recipe(true, new ItemStack[]{fuelItemStack}, new ItemStack[]{}, null, null, null, null, 1, 0, GT_ModHandler.getFuelValue(fuelItemStack) / 1600), ((double) GT_ModHandler.getFuelValue(fuelItemStack)) / 1600, allowedFuel);
         }
