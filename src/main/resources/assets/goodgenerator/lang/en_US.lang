@@ -100,6 +100,10 @@ item.upgradeEssentia.7.name=§6Essentia Generator: Spirit§r
 item.upgradeEssentia.8.name=§aEssentia Generator: Radiation§r
 item.upgradeEssentia.9.name=§3Essentia Generator: Electric§r
 item.highEnergyMixture.0.name=High Energy Mixture
+item.saltyRoot.0.name=Salty Root
+
+#Crops
+crops.saltroot=Salty Root
 
 #Tooltip
 inverter.tooltip.0=Turn DC into AC.

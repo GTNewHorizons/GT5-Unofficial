@@ -9,6 +9,7 @@ import goodgenerator.blocks.tileEntity.GTMetaTileEntity.NeutronAccelerator;
 import goodgenerator.blocks.tileEntity.GTMetaTileEntity.NeutronSensor;
 import goodgenerator.blocks.tileEntity.GTMetaTileEntity.YOTTAHatch;
 import goodgenerator.crossmod.LoadedList;
+import goodgenerator.crossmod.ic2.CropsLoader;
 import goodgenerator.crossmod.nei.IMCForNEI;
 import goodgenerator.crossmod.nei.NEI_Config;
 import goodgenerator.crossmod.thaumcraft.LargeEssentiaEnergyData;
@@ -67,6 +68,7 @@ public class Loaders {
     public static final Item fluidCore = new MyItems("fluidCore", GoodGenerator.GG, new String[]{GoodGenerator.MOD_ID+":fluidCore/1", GoodGenerator.MOD_ID+":fluidCore/2", GoodGenerator.MOD_ID+":fluidCore/3", GoodGenerator.MOD_ID+":fluidCore/4", GoodGenerator.MOD_ID+":fluidCore/5", GoodGenerator.MOD_ID+":fluidCore/6"});
     public static final Item upgradeEssentia = new MyItems("upgradeEssentia", GoodGenerator.GG, new String[]{GoodGenerator.MOD_ID+":upgradeEssentia/null", GoodGenerator.MOD_ID+":upgradeEssentia/air", GoodGenerator.MOD_ID+":upgradeEssentia/thermal", GoodGenerator.MOD_ID+":upgradeEssentia/unstable", GoodGenerator.MOD_ID+":upgradeEssentia/victus", GoodGenerator.MOD_ID+":upgradeEssentia/tainted", GoodGenerator.MOD_ID+":upgradeEssentia/mechanics", GoodGenerator.MOD_ID+":upgradeEssentia/spirit", GoodGenerator.MOD_ID+":upgradeEssentia/radiation", GoodGenerator.MOD_ID+":upgradeEssentia/electric"});
     public static final Item highEnergyMixture = new MyItems("highEnergyMixture", GoodGenerator.GG, new String[]{GoodGenerator.MOD_ID+":highEnergyMixture"});
+    public static final Item saltyRoot = new MyItems("saltyRoot", GoodGenerator.GG, new String[]{GoodGenerator.MOD_ID+":saltyRoot"});
 
     public static final Block MAR_Casing = new Casing("MAR_Casing", new String[]{GoodGenerator.MOD_ID+":MAR_Casing"});
     public static final Block FRF_Casings = new Casing("FRF_Casing", new String[]{"gregtech:iconsets/MACHINE_CASING_MINING_BLACKPLUTONIUM"});
@@ -171,6 +173,7 @@ public class Loaders {
         GameRegistry.registerItem(advancedFuelRod, "advancedFuelRod", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(fluidCore, "fluidCore", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(highEnergyMixture, "highEnergyMixture", GoodGenerator.MOD_ID);
+        GameRegistry.registerItem(saltyRoot, "saltyRoot", GoodGenerator.MOD_ID);
     }
 
     public static void compactMod() {
@@ -214,6 +217,7 @@ public class Loaders {
         GTMetaTileRegister();
         initLoadRecipes();
         IMCForNEI.IMCSender();
+        CropsLoader.registerCrops();
     }
 
     public static void postInitLoad(){

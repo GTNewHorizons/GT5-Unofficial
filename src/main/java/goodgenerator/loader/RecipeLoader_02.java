@@ -1007,6 +1007,17 @@ public class RecipeLoader_02 {
                         'E', Ic2Items.reactorHeatSwitchDiamond
                 }
         );
+
+        GT_Values.RA.addChemicalBathRecipe(
+                ItemRefer.Salty_Root.get(1),
+                GT_ModHandler.getWater(100),
+                Materials.Salt.getDust(1),
+                Materials.RockSalt.getDust(1),
+                Materials.Saltpeter.getDust(1),
+                new int[]{9500, 8000, 5000},
+                100,
+                30
+        );
     }
 
     public static void InitLoadRecipe() {
