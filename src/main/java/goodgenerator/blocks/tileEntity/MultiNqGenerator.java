@@ -392,11 +392,11 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
                       .addOutputHatch("Any bottom layer casing")
                       .addMaintenanceHatch("Any bottom layer casing")
                       .toolTipFinisher("Good Generator");
-               if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-                   return tt.getInformation();
-               } else {
-                   return tt.getStructureInformation();
-               }
+        if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+            return tt.getInformation();
+        } else {
+            return tt.getStructureInformation();
+        }
     }
 
     @Override

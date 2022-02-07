@@ -87,6 +87,7 @@ public class Loaders {
     public static final Block yottaFluidTankCasing = new ComplexTextureCasing("yottaFluidTankCasing", new String[]{GoodGenerator.MOD_ID+":yottaFluidTankCasing_SIDE"}, new String[]{GoodGenerator.MOD_ID+":yottaFluidTankCasing_TOP"});
     public static final Block supercriticalFluidTurbineCasing = new TurbineCasing("supercriticalFluidTurbineCasing", "supercriticalFluidTurbineCasing");
     public static final Block pressureResistantWalls = new Casing("pressureResistantWalls", new String[]{GoodGenerator.MOD_ID+":pressureResistantWalls"});
+    public static final Block preciseUnitCasing = new Casing("preciseUnitCasing", new String[]{GoodGenerator.MOD_ID+":preciseUnitCasing/1", GoodGenerator.MOD_ID+":preciseUnitCasing/2", GoodGenerator.MOD_ID+":preciseUnitCasing/3"});
 
     public static Block essentiaHatch;
 
@@ -100,6 +101,7 @@ public class Loaders {
     public static ItemStack YFH;
     public static ItemStack SCTurbine;
     public static ItemStack XHE;
+    public static ItemStack PA;
 
     public static ItemStack[] NeutronAccelerators = new ItemStack[9];
     public static ItemStack[] Generator_Diesel = new ItemStack[2];
@@ -119,6 +121,7 @@ public class Loaders {
         Loaders.YFH = new YOTTAHatch(IDOffset + 14, "YottaFluidTankHatch", "YOTHatch", 5).getStackForm(1L);
         Loaders.SCTurbine = new SupercriticalFluidTurbine(IDOffset + 15, "SupercriticalSteamTurbine", "SC Steam Turbine").getStackForm(1L);
         Loaders.XHE = new ExtremeHeatExchanger(IDOffset + 16, "ExtremeHeatExchanger", "Extreme Heat Exchanger").getStackForm(1L);
+        Loaders.PA = new PreciseAssembler(IDOffset + 17, "PreciseAssembler", "Precise Auto-Assembler MT-3662").getStackForm(1L);
         Loaders.Generator_Diesel[0] = new DieselGenerator(1113, "basicgenerator.diesel.tier.04", "Turbo Supercharging Combustion Generator", 4).getStackForm(1L);
         Loaders.Generator_Diesel[1] = new DieselGenerator(1114, "basicgenerator.diesel.tier.05", "Ultimate Chemical Energy Releaser", 5).getStackForm(1L);
         CrackRecipeAdder.registerPipe(30995, MyMaterial.incoloy903, 15000, 8000, true);
@@ -145,6 +148,7 @@ public class Loaders {
         GameRegistry.registerBlock(yottaFluidTankCasing, MyItemBlocks.class, "yottaFluidTankCasing");
         GameRegistry.registerBlock(supercriticalFluidTurbineCasing, MyItemBlocks.class, "supercriticalFluidTurbineCasing");
         GameRegistry.registerBlock(pressureResistantWalls, MyItemBlocks.class, "pressureResistantWalls");
+        GameRegistry.registerBlock(preciseUnitCasing, MyItemBlocks.class, "preciseUnitCasing");
         GameRegistry.registerItem(radiationProtectionPlate, "radiationProtectionPlate", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(wrappedUraniumIngot, "wrappedUraniumIngot", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(highDensityUraniumNugget, "highDensityUraniumNugget", GoodGenerator.MOD_ID);
@@ -199,6 +203,9 @@ public class Loaders {
             Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage] = new ITexture[128];
             Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage][1] = TextureFactory.of(yottaFluidTankCasing);
             Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage][2] = TextureFactory.of(supercriticalFluidTurbineCasing);
+            Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage][3] = TextureFactory.of(preciseUnitCasing, 0);
+            Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage][4] = TextureFactory.of(preciseUnitCasing, 1);
+            Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage][5] = TextureFactory.of(preciseUnitCasing, 2);
         }
     }
 

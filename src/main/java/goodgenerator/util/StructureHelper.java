@@ -102,7 +102,7 @@ public class StructureHelper {
             }
 
             private int getMeta(ItemStack trigger) {
-                int meta = trigger.stackSize;
+                int meta = trigger.stackSize - 1;
                 if (meta <= 0) meta = 0;
                 if (meta >= maxMeta) meta = maxMeta - 1;
                 return meta;
