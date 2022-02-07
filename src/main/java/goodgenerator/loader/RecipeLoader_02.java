@@ -1018,6 +1018,17 @@ public class RecipeLoader_02 {
                 100,
                 30
         );
+
+        MyRecipeAdder.instance.addPreciseAssemblerRecipe(
+                new ItemStack[] {
+                        Materials.Glowstone.getDust(1)
+                },
+                new FluidStack[]{
+                        Materials.Glowstone.getMolten(1)
+                },
+                Materials.Iron.getDust(1),
+                12, 112, 1
+        );
     }
 
     public static void InitLoadRecipe() {

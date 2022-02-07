@@ -69,6 +69,20 @@ public class MyRecipeAdder {
             false
     );
 
+    public final PreciseAssemblerMapper PA = new PreciseAssemblerMapper(
+            new HashSet<>(120),
+            "gg.recipe.precise_assembler",
+            StatCollector.translateToLocal("tile.precise_assembler"),
+            null,
+            "goodgenerator:textures/gui/precise_assembler",
+            4, 1, 1, 0, 1,
+            StatCollector.translateToLocal("value.precise_assembler.0"),
+            1,
+            StatCollector.translateToLocal("value.precise_assembler.1"),
+            true,
+            true
+    );
+
     public static class liquidMentalFuelMapper extends GT_Recipe.GT_Recipe_Map_Fuel{
         public liquidMentalFuelMapper(Collection<GT_Recipe> aRecipeList, String aUnlocalizedName, String aLocalName, String aNEIName, String aNEIGUIPath, int aUsualInputCount, int aUsualOutputCount, int aMinimalInputItems, int aMinimalInputFluids, int aAmperage, String aNEISpecialValuePre, int aNEISpecialValueMultiplier, String aNEISpecialValuePost, boolean aShowVoltageAmperageInNEI, boolean aNEIAllowed){
             super(aRecipeList, aUnlocalizedName, aLocalName, aNEIName, aNEIGUIPath, aUsualInputCount, aUsualOutputCount, aMinimalInputItems, aMinimalInputFluids, aAmperage, aNEISpecialValuePre, aNEISpecialValueMultiplier, aNEISpecialValuePost, aShowVoltageAmperageInNEI, aNEIAllowed);
@@ -212,5 +226,55 @@ public class MyRecipeAdder {
 
     public void addExtremeHeatExchangerRecipe(FluidStack HotFluid, FluidStack ColdFluid, FluidStack WorkFluid, FluidStack HeatedWorkFluid, FluidStack OverHeatedWorkFluid, int Threshold) {
         XHE.addRecipe(false, null, null, null, null, new FluidStack[]{HotFluid, WorkFluid}, new FluidStack[]{HeatedWorkFluid, OverHeatedWorkFluid, ColdFluid}, 0, 0, Threshold);
+    }
+
+    public static class PreciseAssemblerMapper extends GT_Recipe.GT_Recipe_Map {
+        public PreciseAssemblerMapper(Collection<GT_Recipe> aRecipeList, String aUnlocalizedName, String aLocalName, String aNEIName, String aNEIGUIPath, int aUsualInputCount, int aUsualOutputCount, int aMinimalInputItems, int aMinimalInputFluids, int aAmperage, String aNEISpecialValuePre, int aNEISpecialValueMultiplier, String aNEISpecialValuePost, boolean aShowVoltageAmperageInNEI, boolean aNEIAllowed){
+            super(aRecipeList, aUnlocalizedName, aLocalName, aNEIName, aNEIGUIPath, aUsualInputCount, aUsualOutputCount, aMinimalInputItems, aMinimalInputFluids, aAmperage, aNEISpecialValuePre, aNEISpecialValueMultiplier, aNEISpecialValuePost, aShowVoltageAmperageInNEI, aNEIAllowed);
+        }
+
+        @Override
+        public GT_Recipe addRecipe(boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecial, int[] aOutputChances, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
+            PreciseAssemblerRecipe tRecipe = new PreciseAssemblerRecipe(aInputs, aFluidInputs, aOutputs[0], aEUt, aDuration, aSpecialValue);
+            return addRecipe(tRecipe);
+        }
+    }
+
+    public static class PreciseAssemblerRecipe extends GT_Recipe {
+        public PreciseAssemblerRecipe(ItemStack[] input1, FluidStack[] input2, ItemStack output, int EUt, int ticks, int tier) {
+            super(false, input1, new ItemStack[]{output}, null, null, input2, null, ticks, EUt, tier);
+        }
+
+        @Override
+        public ArrayList<PositionedStack> getInputPositionedStacks() {
+            ArrayList<PositionedStack> inputStacks = new ArrayList<>();
+            if (this.mFluidInputs != null) {
+                int index = 0;
+                for (FluidStack inFluid : mFluidInputs) {
+                    inputStacks.add(new PositionedStack(GT_Utility.getFluidDisplayStack(inFluid, true), 4 + index * 18, 38));
+                    index ++;
+                }
+            }
+            if (this.mInputs != null) {
+                int index = 0;
+                for (ItemStack inItem : mInputs) {
+                    inputStacks.add(new PositionedStack(inItem, 4 + index * 18, 3));
+                    index ++;
+                }
+            }
+            return inputStacks;
+        }
+
+        @Override
+        public ArrayList<PositionedStack> getOutputPositionedStacks() {
+            ArrayList<PositionedStack> outputStacks = new ArrayList<>();
+            if (this.mOutputs != null && this.mOutputs.length > 0)
+                outputStacks.add(new PositionedStack(this.mOutputs[0], 111, 20));
+            return outputStacks;
+        }
+    }
+
+    public void addPreciseAssemblerRecipe(ItemStack[] aItemInputs, FluidStack[] aFluidInputs, ItemStack aOutput, int aEUt, int aDuration, int aTier) {
+        PA.addRecipe(false, aItemInputs, new ItemStack[]{aOutput}, null, null, aFluidInputs, null, aDuration, aEUt, aTier);
     }
 }

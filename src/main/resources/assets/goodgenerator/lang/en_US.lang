@@ -236,6 +236,7 @@ tile.recipe.naquadah_reactor=Large Naquadah Reactor
 tile.naquadah_fuel_refine_factory=Naquadah Fuel Refine Factory
 tile.neutron_activator=Neutron Activator
 tile.extreme_heat_exchanger=Extreme Heat Exchanger
+tile.precise_assembler=Precise Assembler
 value.naquadah_reactor=Basic Output Voltage:
 value.naquadah_fuel_refine_factory.0=Need Tier
 value.naquadah_fuel_refine_factory.1= Coil
@@ -247,6 +248,8 @@ value.extreme_heat_exchanger.1=Max Distilled Water Input:
 value.extreme_heat_exchanger.2=Max Heated Fluid Output:
 value.extreme_heat_exchanger.3=Max Overheated Fluid Output:
 value.extreme_heat_exchanger.4=Threshold:
+value.precise_assembler.0=Need MK-
+value.precise_assembler.1= Casing
 
 #TecTech Structure Info
 FuelRefineFactory.hint.0=8x Field Restriction Glasses
