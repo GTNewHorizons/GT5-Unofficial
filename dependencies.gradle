@@ -19,7 +19,7 @@ dependencies {
         transitive = false
     }*/
 
-    compile("com.github.GTNewHorizons:GTplusplus:master-SNAPSHOT:dev") {
+    compile("com.github.GTNewHorizons:GTplusplus:1.7.27:dev") {
         transitive = false
     }
     compileOnly("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:master-SNAPSHOT:dev") {
