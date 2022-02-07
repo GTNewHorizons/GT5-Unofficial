@@ -38,7 +38,7 @@ public final class EMInstanceStack implements IEMStack {
     //energy - if positive then particle should try to decay
     private long   energy;
     //byte color; 0=Red 1=Green 2=Blue 0=Cyan 1=Magenta 2=Yellow, else ignored (-1 - uncolorable)
-    private int   color;
+    private int    color;
     private double lifeTime;
     private double lifeTimeMult;
 
@@ -487,46 +487,32 @@ public final class EMInstanceStack implements IEMStack {
         return this;
     }
 
-    public void addScanShortSymbols(ArrayList<String> lines, int[] detailsOnDepthLevels) {
-        int capabilities = detailsOnDepthLevels[0];
-        getDefinition().addScanShortSymbols(lines, capabilities, energy);
-        //scanShortSymbolsContents(lines,definition.getSubParticles(),1,detailsOnDepthLevels);
-    }
-
-    //private void scanShortSymbolsContents(ArrayList<String> lines, cElementalDefinitionStackMap definitions, int depth, int[] detailsOnDepthLevels){
-    //    if(definitions!=null && depth<detailsOnDepthLevels.length){
-    //        int deeper=depth+1;
-    //        for(cElementalDefinitionStack definitionStack:definitions.values()) {
-    //            definition.addScanShortSymbols(lines,detailsOnDepthLevels[depth],energy);
-    //            scanSymbolsContents(lines,definitionStack.definition.getSubParticles(),deeper,detailsOnDepthLevels);
-    //        }
-    //    }
-    //}
-
     public void addScanResults(ArrayList<String> lines, int[] detailsOnDepthLevels) {
         int capabilities = detailsOnDepthLevels[0];
         if (TT_Utility.areBitsSet(SCAN_GET_DEPTH_LEVEL, capabilities)) {
-            lines.add("DEPTH = " + 0);
+            lines.add(translateToLocal("tt.keyword.scan.depth") + " = " + 0);
         }
-        getDefinition().addScanResults(lines, capabilities, energy);
+        getDefinition().addScanResults(lines, capabilities, energy, TecTech.definitionsRegistry);
+
         if (TT_Utility.areBitsSet(SCAN_GET_TIMESPAN_MULT, capabilities)) {
-            lines.add("TIME MULT = " + lifeTimeMult);
-            if (TT_Utility.areBitsSet(SCAN_GET_TIMESPAN_INFO, capabilities)) {
-                lines.add("TIME SPAN = " + lifeTime + " s");
-            }
+            lines.add(translateToLocal("tt.keyword.scan.life_mult") + " = " + lifeTimeMult);
         }
         if (TT_Utility.areBitsSet(SCAN_GET_AGE, capabilities)) {
-            lines.add("AGE = " + getAge() + " s");
+            lines.add(translateToLocal("tt.keyword.scan.age") + " = " + getAge() + " " + translateToLocal("tt.keyword.unit.time"));
         }
-        if (TT_Utility.areBitsSet(SCAN_GET_COLOR, capabilities)) {
-            lines.add("COLOR = " + color + " RGB or CMY");
+        if (TT_Utility.areBitsSet(SCAN_GET_COLOR_VALUE, capabilities)) {
+            lines.add(translateToLocal("tt.keyword.scan.color") + " = " + color);
+        }
+        if (TT_Utility.areBitsSet(SCAN_GET_ENERGY, capabilities)) {
+            lines.add(translateToLocal("tt.keyword.scan.energy") + " = " + getDefinition().getEnergyDiffBetweenStates(0, energy) + " " + translateToLocal("tt.keyword.unit.energy"));
         }
         if (TT_Utility.areBitsSet(SCAN_GET_ENERGY_LEVEL, capabilities)) {
-            lines.add("ENERGY = " + energy);
+            lines.add(translateToLocal("tt.keyword.scan.energyLevel") + " = " + energy);
         }
         if (TT_Utility.areBitsSet(SCAN_GET_AMOUNT, capabilities)) {
-            lines.add("AMOUNT = " + getAmount() /AVOGADRO_CONSTANT + " "+translateToLocal("tt.keyword.mol"));
+            lines.add(translateToLocal("tt.keyword.scan.amount") + " = " + getAmount() / AVOGADRO_CONSTANT + " " + translateToLocal("tt.keyword.unit.mol"));
         }
+
         scanContents(lines, getDefinition().getSubParticles(), 1, detailsOnDepthLevels);
     }
 
@@ -536,11 +522,11 @@ public final class EMInstanceStack implements IEMStack {
             for (EMDefinitionStack definitionStack : definitions.valuesToArray()) {
                 lines.add("");//def separator
                 if (TT_Utility.areBitsSet(SCAN_GET_DEPTH_LEVEL, detailsOnDepthLevels[depth])) {
-                    lines.add("DEPTH = " + depth);
+                    lines.add(translateToLocal("tt.keyword.scan.depth") +" = " + depth);
                 }
-                getDefinition().addScanResults(lines, detailsOnDepthLevels[depth], energy);
+                getDefinition().addScanResults(lines, detailsOnDepthLevels[depth], energy, TecTech.definitionsRegistry);
                 if (TT_Utility.areBitsSet(SCAN_GET_AMOUNT, detailsOnDepthLevels[depth])) {
-                    lines.add("AMOUNT = " + definitionStack.getAmount());
+                    lines.add(translateToLocal("tt.keyword.scan.count")+" = " + definitionStack.getAmount());
                 }
                 scanContents(lines, definitionStack.getDefinition().getSubParticles(), deeper, detailsOnDepthLevels);
             }
@@ -551,10 +537,10 @@ public final class EMInstanceStack implements IEMStack {
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.setTag("d", getDefinition().toNBT(registry));
         nbt.setDouble("Q", getAmount());
-        nbt.setDouble("M", lifeTimeMult);
+        nbt.setDouble("M", getLifeTimeMultiplier());
         nbt.setDouble("A", getAge());
-        nbt.setLong("e", energy);
-        nbt.setInteger("c", color);
+        nbt.setLong("e", getEnergy());
+        nbt.setInteger("c", getColor());
         return nbt;
     }
 
@@ -588,7 +574,7 @@ public final class EMInstanceStack implements IEMStack {
 
     @Override
     public String toString() {
-        return getDefinition().toString() + ' ' + getAmount() /AVOGADRO_CONSTANT + " "+translateToLocal("tt.keyword.mol")+" " + getMass()+" eV/c^2";
+        return getDefinition().toString() + ' ' + getAmount() / AVOGADRO_CONSTANT + " " + translateToLocal("tt.keyword.unit.mol") + " " + getMass() + " "+translateToLocal("tt.keyword.unit.mass");
     }
 
     public void setAmount(double amount) {

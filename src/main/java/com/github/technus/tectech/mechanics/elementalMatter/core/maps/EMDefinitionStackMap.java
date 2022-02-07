@@ -1,15 +1,15 @@
 package com.github.technus.tectech.mechanics.elementalMatter.core.maps;
 
-import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry.EMDefinitionsRegistry;
-import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMDefinitionStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.EMException;
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry.EMDefinitionsRegistry;
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMDefinitionStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.NavigableMap;
 import java.util.TreeMap;
 
-import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMPrimitiveDefinition.nbtE__;
+import static com.github.technus.tectech.util.TT_Utility.unpackNBT;
 
 /**
  * Created by danie_000 on 22.01.2017.
@@ -45,13 +45,6 @@ public final class EMDefinitionStackMap extends EMStackMap<EMDefinitionStack> im
     }
 
     public static EMDefinitionStackMap fromNBT(EMDefinitionsRegistry registry, NBTTagCompound nbt) throws EMException {
-        EMDefinitionStack[] defStacks = new EMDefinitionStack[nbt.getInteger("i")];
-        for (int i = 0; i < defStacks.length; i++) {
-            defStacks[i] = EMDefinitionStack.fromNBT(registry,nbt.getCompoundTag(Integer.toString(i)));
-            if (defStacks[i].getDefinition().equals(nbtE__)) {
-                throw new EMException("Something went Wrong");
-            }
-        }
-        return new EMDefinitionStackMap(defStacks);
+        return new EMDefinitionStackMap(unpackNBT(EMDefinitionStack.class,inner -> EMDefinitionStack.fromNBT(registry, inner),nbt));
     }
 }

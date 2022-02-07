@@ -32,10 +32,10 @@ public class RenderElementalName implements IItemRenderer {
         for (int i = 0; i < item.getRenderPasses(itemStack.getItemDamage()); i++) {
             IIcon icon = item.getIcon(itemStack, i);
             tessellator.startDrawingQuads();
-            tessellator.addVertexWithUV(0.0, 0.0, 0.0, (double)icon.getMinU(), (double)icon.getMinV());
-            tessellator.addVertexWithUV(0.0, 16, 0.0, (double)icon.getMinU(), (double)icon.getMaxV());
-            tessellator.addVertexWithUV(16, 16, 0.0, (double)icon.getMaxU(), (double)icon.getMaxV());
-            tessellator.addVertexWithUV(16, 0.0, 0.0, (double)icon.getMaxU(), (double)icon.getMinV());
+            tessellator.addVertexWithUV(0.0, 0.0, 0.0, icon.getMinU(), icon.getMinV());
+            tessellator.addVertexWithUV(0.0, 16, 0.0, icon.getMinU(), icon.getMaxV());
+            tessellator.addVertexWithUV(16, 16, 0.0, icon.getMaxU(), icon.getMaxV());
+            tessellator.addVertexWithUV(16, 0.0, 0.0, icon.getMaxU(), icon.getMinV());
             tessellator.draw();
             //ItemRenderer.renderItemIn2D(Tessellator.instance, icon.getMaxU(), icon.getMinV(), icon.getMinU(), icon.getMaxV(), icon.getIconWidth(), icon.getIconHeight(), 0.0625f);
         }

@@ -1,15 +1,10 @@
 package com.github.technus.tectech.mechanics.elementalMatter.core.definitions;
 
-import com.github.technus.tectech.mechanics.elementalMatter.core.EMException;
 import com.github.technus.tectech.mechanics.elementalMatter.core.decay.EMDecay;
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry.EMDefinitionsRegistry;
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMConstantStackMap;
 import net.minecraft.nbt.NBTTagCompound;
 
-import java.util.ArrayList;
-
-import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_scanner.*;
-import static com.github.technus.tectech.util.TT_Utility.areBitsSet;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 /**
@@ -169,8 +164,8 @@ public abstract class EMPrimitiveTemplate extends EMComplexTemplate {
     }
 
     @Override
-    protected final String getIndirectTagValue() {
-        throw new EMException("This class should only be used directly!");
+    protected final String getTagValue() {
+        return bind;
     }
 
     @Override
@@ -180,37 +175,6 @@ public abstract class EMPrimitiveTemplate extends EMComplexTemplate {
 
     public static int getClassTypeStatic(){
         return Short.MIN_VALUE;
-    }
-
-    @Override
-    public void addScanShortSymbols(ArrayList<String> lines, int capabilities, long energyLevel) {
-        if(areBitsSet(SCAN_GET_NOMENCLATURE|SCAN_GET_CHARGE|SCAN_GET_MASS|SCAN_GET_TIMESPAN_INFO, capabilities)) {
-            lines.add(getShortSymbol());
-        }
-    }
-
-    @Override
-    public void addScanResults(ArrayList<String> lines, int capabilities, long energyLevel) {
-        if(areBitsSet(SCAN_GET_CLASS_TYPE, capabilities)) {
-            lines.add("DIRECT = " + bind + ' ' + getMatterMassType());
-        }
-        if(areBitsSet(SCAN_GET_NOMENCLATURE|SCAN_GET_CHARGE|SCAN_GET_MASS|SCAN_GET_TIMESPAN_INFO, capabilities)) {
-            lines.add("NAME = "+ getLocalizedName());
-            lines.add("SYMBOL = "+getSymbol());
-        }
-        if(areBitsSet(SCAN_GET_CHARGE,capabilities)) {
-            lines.add("CHARGE = " + getCharge() / 3D + " e");
-        }
-        if(areBitsSet(SCAN_GET_COLOR,capabilities)) {
-            lines.add(hasColor() ? "COLORLESS" : "CARRIES COLOR");
-        }
-        if(areBitsSet(SCAN_GET_MASS,capabilities)) {
-            lines.add("MASS = " + getMass() + " eV/c\u00b2");
-        }
-        if(areBitsSet(SCAN_GET_TIMESPAN_INFO, capabilities)){
-            lines.add((isTimeSpanHalfLife()?"HALF LIFE = ":"LIFE TIME = ")+getRawTimeSpan(energyLevel)+ " s");
-            lines.add("    "+"At current energy level");
-        }
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.decay.EMDecay;
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry.EMDefinitionsRegistry;
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry.EMType;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMDefinitionStack;
+import com.github.technus.tectech.util.TT_Utility;
 
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMGaugeBosonDefinition.boson_Y__;
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMGaugeBosonDefinition.deadEnd;
@@ -29,7 +30,7 @@ public class EMLeptonDefinition extends EMFermionDefinition {
     public static final EMDefinitionStack lepton_e_2 = new EMDefinitionStack(lepton_e_, 2);
 
     protected EMLeptonDefinition(String name, String symbol, int type, double mass, int charge, int ID,String bind) {
-        super(name, symbol, type, mass, charge, -1, ID,bind);
+        super(name, TT_Utility.toSuperscript(symbol), type, mass, charge, -1, ID,bind);
         //this.itemThing=null;
         //this.fluidThing=null;
     }
