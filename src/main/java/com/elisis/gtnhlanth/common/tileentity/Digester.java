@@ -170,7 +170,7 @@ public class Digester extends GT_MetaTileEntity_EnhancedMultiBlockBase<Digester>
 
 	@Override
 	public String[] getStructureDescription(ItemStack arg0) {
-		return DescTextLocalization.addText("UniversalChemicalFuelEngine.hint", 11);
+		return DescTextLocalization.addText("Digester.hint", 5);
 	}
 
 	@Override
@@ -186,19 +186,15 @@ public class Digester extends GT_MetaTileEntity_EnhancedMultiBlockBase<Digester>
         tt.addMachineType("Digester")
                 .addInfo("Controller block for the Digester")
                 .addInfo("Input ores and fluid, output water.")
-                .addInfo("You will need to balance the heat provided")
-                .addInfo("to be able to complete the recipe.")
                 .addInfo(BLUEPRINT_INFO)
                 .addSeparator()
                 .addController("Front bottom")
                 .addInputHatch("Hint block with dot 1")
                 .addInputBus("Hint block with dot 1")
-                .addOutputHatch("Hint block with dot 2")
-                .addOutputBus("Hint block with dot 2")
-                .addMaintenanceHatch("Hint block with dot 2")
-                .addOtherStructurePart("Neutron Accelerator", "Hint block with dot 2")
-                .addOtherStructurePart("Neutron Sensor", "Hint block with dot 2")
-                .addCasingInfo("Clean Stainless Steel Machine Casing", 7)
+                .addOutputHatch("Hint block with dot 1")
+                .addOutputBus("Hint block with dot 1")
+                .addMaintenanceHatch("Hint block with dot 1")
+                .addMufflerHatch("Hint block with dot 1")
                 .toolTipFinisher("GTNH: Lanthanides");
         return tt;
 	}

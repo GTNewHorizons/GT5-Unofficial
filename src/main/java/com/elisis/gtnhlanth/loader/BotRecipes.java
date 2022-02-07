@@ -61,6 +61,11 @@ import ic2.core.Ic2Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
+/*
+ * 
+ * Originally Authored by Bot under the MIT License 
+ *
+ */
 
 public class BotRecipes {
 
