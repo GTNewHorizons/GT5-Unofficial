@@ -1,11 +1,9 @@
 package gtPlusPlus.core.item;
-import static gtPlusPlus.core.creative.AddToCreativeTab.tabMachines;
-import static gtPlusPlus.core.creative.AddToCreativeTab.tabMisc;
+import static gtPlusPlus.core.creative.AddToCreativeTab.*;
 import static gtPlusPlus.core.lib.CORE.LOAD_ALL_CONTENT;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.*;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
@@ -17,15 +15,12 @@ import gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes;
 import gtPlusPlus.core.item.base.cell.BaseItemCell;
 import gtPlusPlus.core.item.base.dusts.BaseItemDust;
 import gtPlusPlus.core.item.base.foil.BaseItemFoil;
-import gtPlusPlus.core.item.base.foods.BaseItemFood;
-import gtPlusPlus.core.item.base.foods.BaseItemHotFood;
+import gtPlusPlus.core.item.base.foods.*;
 import gtPlusPlus.core.item.base.gears.BaseItemSmallGear;
-import gtPlusPlus.core.item.base.ingots.BaseItemIngot;
-import gtPlusPlus.core.item.base.ingots.BaseItemIngot_OLD;
+import gtPlusPlus.core.item.base.ingots.*;
 import gtPlusPlus.core.item.base.misc.BaseItemMisc;
 import gtPlusPlus.core.item.base.misc.BaseItemMisc.MiscTypes;
-import gtPlusPlus.core.item.base.plates.BaseItemPlate;
-import gtPlusPlus.core.item.base.plates.BaseItemPlateDouble;
+import gtPlusPlus.core.item.base.plates.*;
 import gtPlusPlus.core.item.bauble.*;
 import gtPlusPlus.core.item.chemistry.*;
 import gtPlusPlus.core.item.crafting.ItemDummyResearch;
@@ -34,36 +29,24 @@ import gtPlusPlus.core.item.food.BaseItemMetaFood;
 import gtPlusPlus.core.item.general.*;
 import gtPlusPlus.core.item.general.books.ItemBaseBook;
 import gtPlusPlus.core.item.general.capture.ItemEntityCatcher;
-import gtPlusPlus.core.item.general.chassis.ItemBoilerChassis;
-import gtPlusPlus.core.item.general.chassis.ItemDehydratorCoil;
-import gtPlusPlus.core.item.general.chassis.ItemDehydratorCoilWire;
+import gtPlusPlus.core.item.general.chassis.*;
 import gtPlusPlus.core.item.general.spawn.ItemCustomSpawnEgg;
-import gtPlusPlus.core.item.general.throwables.ItemHydrofluoricAcidPotion;
-import gtPlusPlus.core.item.general.throwables.ItemSulfuricAcidPotion;
-import gtPlusPlus.core.item.general.throwables.ItemThrowableBomb;
+import gtPlusPlus.core.item.general.throwables.*;
 import gtPlusPlus.core.item.init.ItemsFoods;
 import gtPlusPlus.core.item.materials.DustDecayable;
-import gtPlusPlus.core.item.tool.misc.DebugScanner;
-import gtPlusPlus.core.item.tool.misc.GregtechPump;
-import gtPlusPlus.core.item.tool.misc.SandstoneHammer;
-import gtPlusPlus.core.item.tool.misc.box.AutoLunchBox;
-import gtPlusPlus.core.item.tool.misc.box.MagicToolBag;
-import gtPlusPlus.core.item.tool.misc.box.UniversalToolBox;
+import gtPlusPlus.core.item.tool.misc.*;
+import gtPlusPlus.core.item.tool.misc.box.*;
 import gtPlusPlus.core.item.tool.staballoy.*;
 import gtPlusPlus.core.item.wearable.WearableLoader;
-import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.lib.*;
 import gtPlusPlus.core.lib.CORE.ConfigSwitches;
-import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.*;
-import gtPlusPlus.core.material.nuclear.FLUORIDES;
-import gtPlusPlus.core.material.nuclear.NUCLIDE;
+import gtPlusPlus.core.material.nuclear.*;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.data.StringUtils;
 import gtPlusPlus.core.util.debug.DEBUG_INIT;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.minecraft.MaterialUtils;
+import gtPlusPlus.core.util.minecraft.*;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.everglades.GTplusplus_Everglades;
 import gtPlusPlus.preloader.CORE_Preloader;
@@ -76,15 +59,13 @@ import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
 import net.minecraft.item.*;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.EnumHelper;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.*;
 public final class ModItems {
 
 
 	public static ToolMaterial STABALLOY = EnumHelper.addToolMaterial("Staballoy", 3, 2500, 7, 1.0F, 18);
-	
+
 	public static Item ZZZ_Empty;
 	public static Item AAA_Broken;
 
@@ -199,14 +180,14 @@ public final class ModItems {
 	public static Item dustCalciumCarbonate;
 	public static Item dustLi2CO3CaOH2;
 	public static Item dustLi2BeF4;
-	
+
 	public static Item dustTumbagaMix;
 
 	public static Item dustAer;
 	public static Item dustIgnis;
 	public static Item dustTerra;
 	public static Item dustAqua;
-	
+
 	public static Item cellHydrogenChlorideMix;
 
 	public static BaseEuItem metaItem2;
@@ -264,7 +245,7 @@ public final class ModItems {
 	public static Item itemFoilUranium235;
 	public static Item itemDustIndium;
 	public static BlockBaseModular blockRawMeat;
-	
+
 	public static Item itemBoilerChassis;
 	public static Item itemDehydratorCoilWire;
 	public static Item itemDehydratorCoil;
@@ -302,7 +283,7 @@ public final class ModItems {
 	public static Item dustDecayedRadium226;
 	public static Item dustRadium226;
 	public static Item dustProtactinium233;
-	
+
 	public static ItemGiantEgg itemBigEgg;
 
 	public static GregtechPump toolGregtechPump;
@@ -310,7 +291,7 @@ public final class ModItems {
 	public static ItemGenericToken itemGenericToken;
 
 	public static Item itemControlCore;
-	
+
 	public static Item itemSunnariumBit;
 
 	public static ItemStack itemHotTitaniumIngot;
@@ -352,14 +333,14 @@ public final class ModItems {
 	public static MonsterKillerBaseBauble itemAmuletMonsterKiller_Spider;
 	public static MonsterKillerBaseBauble itemAmuletMonsterKiller_Creeper;
 	public static MonsterKillerBaseBauble itemAmuletMonsterKiller_Enderman;
-	
+
 	public static MonsterKillerBaseBauble itemAmuletMonsterKiller_Nether;
 	public static MonsterKillerBaseBauble itemAmuletMonsterKiller_Infernal;
 
 	public static CoreItem itemExquisiteIndustrialDiamond;
 
 	public static BaseItemMetaFood itemMetaFood;
-	
+
 	public static ItemMagicFeather itemMagicFeather;
 
 	static {
@@ -370,8 +351,8 @@ public final class ModItems {
 	}
 
 	public static final void init(){
-		
-		itemDebugScanner = new DebugScanner();		
+
+		itemDebugScanner = new DebugScanner();
 		itemMagicFeather = new ItemMagicFeather();
 
 		itemAlkalusDisk = new BaseItemDamageable("itemAlkalusDisk", AddToCreativeTab.tabMisc, 1, 0, "Unknown Use", EnumRarity.rare, EnumChatFormatting.AQUA, false, null);
@@ -379,7 +360,7 @@ public final class ModItems {
 		itemGenericToken = new ItemGenericToken();
 		itemDummyResearch = new ItemDummyResearch();
 		itemCustomSpawnEgg = new ItemCustomSpawnEgg();
-		
+
 		//Debug Loading
 		if (CORE_Preloader.DEBUG_MODE){
 			DEBUG_INIT.registerItems();
@@ -393,8 +374,8 @@ public final class ModItems {
 		//Some Simple forms of materials
 		itemStickyRubber = new Item().setUnlocalizedName("itemStickyRubber").setCreativeTab(tabMachines).setTextureName(CORE.MODID + ":itemStickyRubber");
 		GameRegistry.registerItem(itemStickyRubber, "itemStickyRubber");
-		GT_OreDictUnificator.registerOre("ingotRubber", ItemUtils.getItemStackFromFQRN(CORE.MODID+":itemStickyRubber", 1));		
-		
+		GT_OreDictUnificator.registerOre("ingotRubber", ItemUtils.getItemStackFromFQRN(CORE.MODID+":itemStickyRubber", 1));
+
 		//Register Hydrogen Blobs first, so we can replace old helium blobs.
 		itemHydrogenBlob = new CoreItem("itemHydrogenBlob", "Mysterious Hydrogen Blob", tabMisc).setTextureName(CORE.MODID + ":itemHeliumBlob");
 		//Register Old Helium Blob, this will be replaced when held by a player.
@@ -406,7 +387,7 @@ public final class ModItems {
 		//Register Rope
 		itemFiber = new CoreItem("itemFiber", "Plant Fiber", tabMisc);
 		itemRope = new CoreItem("itemRope", "Rope", tabMisc);
-		
+
 		//Load Wearable Items
 		WearableLoader.run();
 
@@ -431,8 +412,8 @@ public final class ModItems {
 		backpack_Gray = new BaseItemBackpack("backpackGray", Utils.rgbtoHexValue(128, 128, 128));
 		backpack_Black = new BaseItemBackpack("backpackBlack", Utils.rgbtoHexValue(20, 20, 20));
 		backpack_White = new BaseItemBackpack("backpackWhite", Utils.rgbtoHexValue(240, 240, 240));
-		
-		
+
+
 		//Load Custom Box/bags
 		boxTools = new UniversalToolBox("Tool Box");
 		boxFood = new AutoLunchBox("Eatotron-9000");
@@ -449,7 +430,7 @@ public final class ModItems {
 
 
 		try{
-			
+
 			registerCustomMaterialComponents();
 
 			//Elements generate first so they can be used in compounds.
@@ -513,11 +494,11 @@ public final class ModItems {
 			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().STRONTIUM90, false);
 			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().POLONIUM210, false);
 			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().AMERICIUM241, false);
-			
+
 			if (!CORE.GTNH) {
-				MaterialGenerator.generateOreMaterialWithAllExcessComponents(ELEMENT.getInstance().TRINIUM);				
+				MaterialGenerator.generateOreMaterialWithAllExcessComponents(ELEMENT.getInstance().TRINIUM);
 			}
-			
+
 			//Custom Materials that will have standalone refinery processes
 			MaterialGenerator.generate(ELEMENT.STANDALONE.ADVANCED_NITINOL, false);
 			MaterialGenerator.generate(ELEMENT.STANDALONE.ASTRAL_TITANIUM);
@@ -525,16 +506,16 @@ public final class ModItems {
 			MaterialGenerator.generate(ELEMENT.STANDALONE.HYPOGEN);
 			MaterialGenerator.generate(ELEMENT.STANDALONE.CHRONOMATIC_GLASS);
 			MaterialGenerator.generate(ELEMENT.STANDALONE.FORCE);
-			
+
 			//Custom Materials that are from Runescape
 			MaterialGenerator.generate(ELEMENT.STANDALONE.BLACK_METAL);
 			MaterialGenerator.generate(ELEMENT.STANDALONE.WHITE_METAL);
 			MaterialGenerator.generateOreMaterialWithAllExcessComponents(ELEMENT.STANDALONE.GRANITE);
 			MaterialGenerator.generateOreMaterialWithAllExcessComponents(ELEMENT.STANDALONE.RUNITE);
 			MaterialGenerator.generate(ELEMENT.STANDALONE.DRAGON_METAL, false);
-			
+
 			MISC_MATERIALS.run();
-			
+
 
 			//Carbides - Tungsten Carbide exists in .09 so don't generate it. - Should still come before alloys though
 			if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
@@ -636,7 +617,7 @@ public final class ModItems {
 			MaterialGenerator.generate(ALLOY.TRINIUM_NAQUADAH, false);
 			MaterialGenerator.generate(ALLOY.TRINIUM_NAQUADAH_CARBON);
 			MaterialGenerator.generate(ALLOY.TRINIUM_REINFORCED_STEEL);
-			
+
 			//Top Tier Alloys
 			MaterialGenerator.generate(ALLOY.HELICOPTER);
 			MaterialGenerator.generate(ALLOY.LAFIUM);
@@ -646,25 +627,25 @@ public final class ModItems {
 			MaterialGenerator.generate(ALLOY.LAURENIUM);
 			MaterialGenerator.generate(ALLOY.BOTMIUM);
 			MaterialGenerator.generate(ALLOY.HS188A);
-			
+
 
 			MaterialGenerator.generate(ALLOY.TITANSTEEL);
 			MaterialGenerator.generate(ALLOY.ARCANITE);
-			MaterialGenerator.generate(ALLOY.OCTIRON);			
+			MaterialGenerator.generate(ALLOY.OCTIRON);
 
 			MaterialGenerator.generate(ALLOY.BABBIT_ALLOY, false);
 			MaterialGenerator.generate(ALLOY.BLACK_TITANIUM, false);
 
 			// High Level Bioplastic
 			MaterialGenerator.generate(ELEMENT.STANDALONE.RHUGNOR, false, false);
-			
-			
-			
-			
-			
-			
-			
-			
+
+
+
+
+
+
+
+
 			//Must be the final Alloy to Generate
 			MaterialGenerator.generate(ALLOY.QUANTUM);
 
@@ -704,8 +685,8 @@ public final class ModItems {
 		dustAer = ItemUtils.generateSpecialUseDusts(ELEMENT.getInstance().AER, true)[0];
 		dustIgnis = ItemUtils.generateSpecialUseDusts(ELEMENT.getInstance().IGNIS, true)[0];
 		dustTerra = ItemUtils.generateSpecialUseDusts(ELEMENT.getInstance().TERRA, true)[0];
-		dustAqua = ItemUtils.generateSpecialUseDusts(ELEMENT.getInstance().AQUA, true)[0];		
-		
+		dustAqua = ItemUtils.generateSpecialUseDusts(ELEMENT.getInstance().AQUA, true)[0];
+
 		ItemUtils.generateSpecialUseDusts(MISC_MATERIALS.WOODS_GLASS, false);
 		cellHydrogenChlorideMix = new BaseItemCell("hydrogenchloridemix", "Hydrogen Chloride Mix", MISC_MATERIALS.HYDROGEN_CHLORIDE.getRGB());
 
@@ -734,7 +715,7 @@ public final class ModItems {
 		//fluidFLiBeSalt = ("Li2BeF4", "Li2BeF4", 7430, new short[]{255, 255, 255, 100}, 0);
 		//fluidFLiBeSalt = FluidUtils.addGTFluidNoPrefix("Li2BeF4", "Lithium Tetrafluoroberyllate", new short[]{255, 255, 255, 100}, 0, 743, null, CI.emptyCells(1), 1000, true);
 		//fluidFLiBeSaltBurnt = FluidUtils.addGTFluidNoPrefix("Li2BeF2UF4", "Li2BeF2UF4", new short[]{50, 255, 50, 100}, 0, 743, null, CI.emptyCells(1), 1000, true);
-		
+
 		// LFTR Core Fluid Processing
 		//fluidLftrCore1 = FluidUtils.addGTFluidNoPrefix("LiBeF2UF4FP", "LiBeF2UF4FP", new short[]{110, 255, 110, 100}, 0, 800, null, CI.emptyCells(1), 1000, true);
 		//fluidLftrCore2 = FluidUtils.addGTFluidNoPrefix("UF6F2FP", "UF6F2FP", new short[]{150, 255, 150, 100}, 0, 800, null, CI.emptyCells(1), 1000, true);
@@ -745,8 +726,8 @@ public final class ModItems {
 		//fluidLftrBlanket2 = FluidUtils.addGTFluidNoPrefix("LiFBeF2ThF4", "LiFBeF2ThF4", new short[]{100, 150, 100, 100}, 0, 500, null, CI.emptyCells(1), 1000, true);
 		//fluidLftrBlanket3 = FluidUtils.addGTFluidNoPrefix("UF6F2", "UF6F2", new short[]{10, 150, 10, 100}, 0, 500, null, CI.emptyCells(1), 1000, true);
 		fluidNuclearWaste = FluidUtils.addGTFluidNoPrefix("nuclear.waste", "Nuclear Waste", new short[]{10, 250, 10, 100}, 0, 1000, null, CI.emptyCells(1), 1000, true);
-		
-		
+
+
 		//LFTR Control Circuit
 		itemCircuitLFTR = new CoreItem("itemCircuitLFTR", ""+EnumChatFormatting.GREEN+"Control Circuit", AddToCreativeTab.tabMisc, 1, 0,  new String[] {"Keeps Multiblocks Stable"}, EnumRarity.epic, EnumChatFormatting.DARK_GREEN, false, null);
 
@@ -760,8 +741,8 @@ public final class ModItems {
 		GT_OreDictUnificator.registerOre("pelletZirconium", new ItemStack(itemZirconiumChlorideCinterPellet));
 		//Zirconium Chloride
 		dustZrCl4 = ItemUtils.generateSpecialUseDusts("ZrCl4", "ZrCl4", "ZrCl4", Utils.rgbtoHexValue(180, 180, 180))[0]; //http://www.iaea.org/inis/collection/NCLCollectionStore/_Public/39/036/39036750.pdf
-		dustCookedZrCl4 = ItemUtils.generateSpecialUseDusts("CookedZrCl4", "Cooked ZrCl4", "ZrCl4", Utils.rgbtoHexValue(180, 180, 180))[0]; //http://www.iaea.org/inis/collection/NCLCollectionStore/_Public/39/036/39036750.pdf		
-		
+		dustCookedZrCl4 = ItemUtils.generateSpecialUseDusts("CookedZrCl4", "Cooked ZrCl4", "ZrCl4", Utils.rgbtoHexValue(180, 180, 180))[0]; //http://www.iaea.org/inis/collection/NCLCollectionStore/_Public/39/036/39036750.pdf
+
 		//Zirconium Tetrafluoride
 		/*GT_OreDictUnificator.registerOre("cellZrF4", ItemUtils.getItemStackOfAmountFromOreDict("cellZirconiumTetrafluoride", 1));
 		GT_OreDictUnificator.registerOre("dustZrF4", ItemUtils.getItemStackOfAmountFromOreDict("dustZirconiumTetrafluoride", 1));*/
@@ -769,7 +750,7 @@ public final class ModItems {
 		//GT_OreDictUnificator.registerOre("dustZrF4", ItemUtils.getItemStackOfAmountFromOreDict("dustZirconiumTetrafluoride", 1));
 		fluidZrF4 = FluidUtils.generateFluidNoPrefix("ZirconiumTetrafluoride", "Zirconium Tetrafluoride", 500, new short[]{170, 170, 140, 100}); //https://en.wikipedia.org/wiki/Zirconium_tetrafluoride
 		FLUORIDES.ZIRCONIUM_TETRAFLUORIDE.setFluid(fluidZrF4);
-		
+
 		//Coolant Salt
 		//NaBF4 - NaF - 621C
 		//dustNaBF4NaF = ItemUtils.generateSpecialUseDusts("NaBF4NaF", "NaBF4NaF", Utils.rgbtoHexValue(45, 45, 90))[0]; //https://en.wikipedia.org/wiki/Zirconium_tetrafluoride
@@ -821,13 +802,13 @@ public final class ModItems {
 		metaItem2.registerItem(3, "Test Item 3", 1000765000, 4, "I Hold EU 3.", 32000);
 		metaItem2.registerItem(4, "Whirlygig", 1043644000, (short) 5, "Spin me right round.", EnumRarity.rare, EnumChatFormatting.DARK_GREEN, true);
 		metaItem2.registerItem(5, "Whirlygig 2", 2124867000, (short) 7, "Spin me right round.", EnumRarity.uncommon, EnumChatFormatting.RED, true);
-		
+
 		toolGregtechPump = new GregtechPump();
 		toolGregtechPump.registerPumpType(0, "Simple Hand Pump", 0, 0);
 		toolGregtechPump.registerPumpType(1, "Advanced Hand Pump", 32000, 1);
 		toolGregtechPump.registerPumpType(2, "Super Hand Pump", 128000, 2);
 		toolGregtechPump.registerPumpType(3, "Ultimate Hand Pump", 512000, 3);
-		
+
 		//Create Multi-tools
 		//ItemsMultiTools.load();
 
@@ -838,7 +819,7 @@ public final class ModItems {
 		if (!FluidRegistry.isFluidRegistered("xpjuice")){
 			FluidUtils.generateFluidNoPrefix("xpjuice", "xpjuice", 0, new short[]{50, 150, 50, 100});
 		}
-		
+
 		//Industrial Diamonds
 		itemExquisiteIndustrialDiamond = new CoreItem("IndustrialDiamondExquisite", "High Quality Industrial Diamond", tabMisc);
 		ItemStack tempStack = itemExquisiteIndustrialDiamond.getStack();
@@ -846,12 +827,12 @@ public final class ModItems {
 		ItemUtils.addItemToOreDictionary(tempStack, "craftingIndustrialDiamond");
 		ItemUtils.addItemToOreDictionary(tempStack, "gemExquisiteDiamond");
 		ItemUtils.addItemToOreDictionary(tempStack, "craftingExquisiteIndustrialDiamond");
-		
+
 
 		/*
 		 * Decayable Materials
 		 */
-		
+
 		dustNeptunium238 = new DustDecayable("dustNeptunium238", Utils.rgbtoHexValue(175, 240, 75), 50640, new String[] {""+StringUtils.superscript("238Np"), "Result: Plutonium 238 ("+StringUtils.superscript("238Pu")+")"}, ELEMENT.getInstance().PLUTONIUM238.getDust(1).getItem(), 5);
 		dustDecayedRadium226 = ItemUtils.generateSpecialUseDusts("DecayedRadium226", "Decayed Radium-226", "Contains Radon ("+StringUtils.superscript("222Rn")+")", ELEMENT.getInstance().RADIUM.getRgbAsHex())[0];
 		dustRadium226 = new DustDecayable("dustRadium226", ELEMENT.getInstance().RADIUM.getRgbAsHex(), 90000, new String[] {""+StringUtils.superscript("226Ra"), "Result: Radon ("+StringUtils.superscript("222Rn")+")"}, ItemUtils.getSimpleStack(dustDecayedRadium226).getItem(), 5);
@@ -859,17 +840,17 @@ public final class ModItems {
 		dustTechnetium99 = new DustDecayable("dustTechnetium99", ELEMENT.getInstance().TECHNETIUM.getRgbAsHex(), 164500, new String[] {""+StringUtils.superscript("99Mo"), "Result: Ruthenium 99("+StringUtils.superscript("99Ru")+")"}, ELEMENT.getInstance().RUTHENIUM.getDust(1).getItem(), 4);
 		dustTechnetium99M = new DustDecayable("dustTechnetium99M", ELEMENT.getInstance().TECHNETIUM.getRgbAsHex(), 8570, new String[] {""+StringUtils.superscript("99ᵐTc"), "Result: Technicium 99 ("+StringUtils.superscript("99Tc")+")"}, dustTechnetium99, 4);
 		dustMolybdenum99 = new DustDecayable("dustMolybdenum99", ELEMENT.getInstance().MOLYBDENUM.getRgbAsHex(), 16450, new String[] {""+StringUtils.superscript("99Mo"), "Result: Technicium 99ᵐ ("+StringUtils.superscript("99ᵐTc")+")"}, dustTechnetium99M, 4);
-		
+
 		itemIonParticleBase = new IonParticles();
 		itemStandarParticleBase = new StandardBaseParticles();
-		
+
 		if (Meta_GT_Proxy.sDoesVolumetricFlaskExist) {
 			Item a8kFlask = VolumetricFlaskHelper.generateNewFlask("Volumetric_Flask_8k", "Large Volumetric Flask", 8000);
 			Item a64kFlask = VolumetricFlaskHelper.generateNewFlask("Volumetric_Flask_32k", "Gigantic Volumetric Flask", 32000);
-	        GregtechItemList.VOLUMETRIC_FLASK_8k.set(a8kFlask);
-	        GregtechItemList.VOLUMETRIC_FLASK_32k.set(a64kFlask);
-		}	
-		
+			GregtechItemList.VOLUMETRIC_FLASK_8k.set(a8kFlask);
+			GregtechItemList.VOLUMETRIC_FLASK_32k.set(a64kFlask);
+		}
+
 		itemBoilerChassis = new ItemBoilerChassis();
 		itemDehydratorCoilWire = new ItemDehydratorCoilWire();
 		itemDehydratorCoil = new ItemDehydratorCoil();
@@ -879,36 +860,36 @@ public final class ModItems {
 
 		itemGrindleTablet = new BaseItemGrindle();
 		itemDragonJar = new ItemEntityCatcher();
-		
+
 		itemControlCore = new ItemControlCore();
-		
+
 		itemSunnariumBit = new ItemSunnariumBit();
 
 		//Chemistry
 		new CoalTar();
 		new RocketFuels();
-		
+
 		//Nuclear Processing
 		new NuclearChem();
-		
+
 		//Farm Animal Fun
 		new AgriculturalChem();
-		
+
 		//General Chemistry
 		new GenericChem();
-		
+
 		// Milled Ore Processing
 		new MilledOreProcessing();
-		
+
 		//Bombs
 		itemBombCasing = new CoreItem("itemBombCasing", "Bomb Casing", tabMisc);
-		itemBombCasing.setTextureName(CORE.MODID + ":bomb_casing");		
+		itemBombCasing.setTextureName(CORE.MODID + ":bomb_casing");
 		itemBombUnf = new CoreItem("itemBombUnf", "Bomb (unf)", tabMisc);
-		itemBombUnf.setTextureName(CORE.MODID + ":bomb_casing");		
+		itemBombUnf.setTextureName(CORE.MODID + ":bomb_casing");
 		itemDetCable = new CoreItem("itemDetCable", "Det. Cable", tabMisc);
-		itemDetCable.setTextureName("string");		
+		itemDetCable.setTextureName("string");
 		itemBomb = new ItemThrowableBomb();
-		
+
 		//Only used for debugging.
 		/*if (CORE.DEVENV) {
 			new ConnectedBlockFinder();
@@ -954,13 +935,13 @@ public final class ModItems {
 			GT_OreDictUnificator.registerOre("platePhasedGold", ItemUtils.getSimpleStack(itemPlateVibrantAlloy));
 			GT_OreDictUnificator.registerOre("dustPhasedIron", ItemUtils.getSimpleStack(itemDustPulsatingIron));
 			GT_OreDictUnificator.registerOre("platePhasedIron", ItemUtils.getSimpleStack(itemPlatePulsatingIron));
-			GT_OreDictUnificator.registerOre("blockVibrantAlloy", ItemUtils.getItemStackOfAmountFromOreDict("blockPhasedGold", 1));			
+			GT_OreDictUnificator.registerOre("blockVibrantAlloy", ItemUtils.getItemStackOfAmountFromOreDict("blockPhasedGold", 1));
 
 			CORE.RA.addFluidExtractionRecipe(MaterialEIO.REDSTONE_ALLOY.getPlate(1), MaterialEIO.REDSTONE_ALLOY.getFluidStack(144), 16, 4*9);
 			CORE.RA.addFluidExtractionRecipe(MaterialEIO.REDSTONE_ALLOY.getIngot(1), MaterialEIO.REDSTONE_ALLOY.getFluidStack(144), 16, 4*9);
 			CORE.RA.addFluidExtractionRecipe(MaterialEIO.REDSTONE_ALLOY.getNugget(1), MaterialEIO.REDSTONE_ALLOY.getFluidStack(16), 16, 4);
 			CORE.RA.addFluidExtractionRecipe(MaterialEIO.REDSTONE_ALLOY.getBlock(1), MaterialEIO.REDSTONE_ALLOY.getFluidStack(1294), 16, 4*9*9);
-			
+
 		}
 		else {
 			/*Logger.WARNING("EnderIO not Found - Generating our own Resources.");
@@ -970,7 +951,7 @@ public final class ModItems {
 			MaterialGenerator.generate(MaterialEIO.SOULARIUM);
 			MaterialGenerator.generate(MaterialEIO.ELECTRICAL_STEEL);
 			MaterialGenerator.generate(MaterialEIO.ENERGETIC_ALLOY);
-			MaterialGenerator.generate(MaterialEIO.VIBRANT_ALLOY);	*/	
+			MaterialGenerator.generate(MaterialEIO.VIBRANT_ALLOY);	*/
 		}
 
 		//Big Reactors
@@ -1035,7 +1016,7 @@ public final class ModItems {
 		//IC2 Exp
 		if (LoadedMods.IndustrialCraft2|| LOAD_ALL_CONTENT){
 			Logger.INFO("IndustrialCraft2 Found - Loading Resources.");
-			
+
 			//Baubles Mod Test
 			try {
 				final Class<?> baublesTest = ReflectionUtils.getClass("baubles.api.IBauble");
@@ -1098,7 +1079,7 @@ public final class ModItems {
 		itemCustomBook = new ItemBaseBook();
 		registerCustomTokens();
 	}
-	
+
 	public static void registerCustomTokens() {
 		itemGenericToken.register(0, "BitCoin", 16, "Can be used on the dark web");
 		itemGenericToken.register(1, "Hand Pump Trade Token I", 1, "Craft into a Tier I Hand pump");
@@ -1106,10 +1087,10 @@ public final class ModItems {
 		itemGenericToken.register(3, "Hand Pump Trade Token III", 1, "Craft into a Tier III Hand pump");
 		itemGenericToken.register(4, "Hand Pump Trade Token IV", 1, "Craft into a Tier IV Hand pump");
 	}
-	
+
 	public static void registerCustomMaterialComponents() {
 		//Custom GT++ Crafting Components
-		
+
 		/**
 		 * Try generate dusts for missing rare earth materials if they don't exist
 		 */
@@ -1127,10 +1108,10 @@ public final class ModItems {
 			ItemUtils.generateSpecialUseDusts("Lanthanum", "Lanthanum", Materials.Lanthanum.mElement.name(), Utils.rgbtoHexValue(106, 127, 163));
 		}
 		if (!ItemUtils.checkForInvalidItems(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustGermanium", 1))){
-	    	ItemUtils.generateSpecialUseDusts("Germanium", "Germanium", "Ge", ELEMENT.getInstance().GERMANIUM.getRgbAsHex());
+			ItemUtils.generateSpecialUseDusts("Germanium", "Germanium", "Ge", ELEMENT.getInstance().GERMANIUM.getRgbAsHex());
 		}
-		
-		//Just an unusual plate needed for some black magic.		
+
+		//Just an unusual plate needed for some black magic.
 		if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateClay", 1) == null){
 			itemPlateClay = new BaseItemPlate(NONMATERIAL.CLAY);
 		}
@@ -1183,7 +1164,13 @@ public final class ModItems {
 		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, ALLOY.KOBOLDITE);
 		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, ALLOY.HG1223);
 		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, ALLOY.QUANTUM);
-		
+
+		//Foil
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FOIL, ALLOY.PIKYONIUM);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FOIL, ALLOY.CINOBITE);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FOIL, ALLOY.LAFIUM);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FOIL, ALLOY.TRINIUM_REINFORCED_STEEL);
+
 		//Dense Plates
 		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ALLOY.POTIN);
 		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ALLOY.AQUATIC_STEEL);
@@ -1202,18 +1189,18 @@ public final class ModItems {
 		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN);
 		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ELEMENT.STANDALONE.WHITE_METAL);
 		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ELEMENT.STANDALONE.BLACK_METAL);
-		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ELEMENT.STANDALONE.GRANITE);		
-		
-		
-		
-		
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ELEMENT.STANDALONE.GRANITE);
+
+
+
+
 		//Special Sillyness
 		if (true) {
-			
+
 			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateSodium", 1) == null){
 				new BaseItemPlate(ELEMENT.getInstance().SODIUM);
 			}
-			
+
 			Material meatRaw = NONMATERIAL.MEAT;
 			// A plate of Meat.
 			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateMeatRaw", 1) == null){
@@ -1226,7 +1213,7 @@ public final class ModItems {
 				ItemUtils.registerFuel(ItemUtils.getSimpleStack(blockRawMeat), 900);
 			}
 		}
-		
+
 
 		// A plate of Vanadium.
 		if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateVanadium", 1) == null){
@@ -1245,9 +1232,9 @@ public final class ModItems {
 		if ((ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateDoubleEuropium", 1) == null) && CORE.ConfigSwitches.enableCustom_Pipes){
 			itemDoublePlateEuropium = new BaseItemPlateDouble(ELEMENT.getInstance().EUROPIUM);
 		}
-		
+
 		//Tumbaga Mix (For Simple Crafting)
 		dustTumbagaMix = ItemUtils.generateSpecialUseDusts("MixTumbaga", "Tumbaga Mix", "Au2Cu", Utils.rgbtoHexValue(255, 150, 80))[0];
-		
+
 	}
 }

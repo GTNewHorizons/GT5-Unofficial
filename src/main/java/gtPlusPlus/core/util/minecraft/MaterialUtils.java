@@ -1,35 +1,25 @@
 package gtPlusPlus.core.util.minecraft;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-import gregtech.api.enums.Dyes;
-import gregtech.api.enums.Element;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.TextureSet;
+import gregtech.api.enums.*;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
-import gtPlusPlus.api.objects.data.TypeCounter;
+import gtPlusPlus.api.objects.data.*;
 import gtPlusPlus.core.client.CustomTextureSet.TextureSets;
 import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes;
+import gtPlusPlus.core.item.base.foil.BaseItemFoil;
 import gtPlusPlus.core.item.base.plates.BaseItemPlateHeavy;
 import gtPlusPlus.core.item.base.wire.BaseItemFineWire;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.material.MaterialStack;
+import gtPlusPlus.core.material.*;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.data.EnumUtils;
-import gtPlusPlus.core.util.data.StringUtils;
+import gtPlusPlus.core.util.data.*;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class MaterialUtils {
@@ -89,7 +79,7 @@ public class MaterialUtils {
 				radioactivity = aDustStack != null ? GT_Utility.getRadioactivityLevel(aDustStack) : 0;
 				if (radioactivity == 0) {
 					long aProtons = material.getProtons();
-					radioactivity = (int) Math.min(Math.max((aProtons / 30), 1), 9);				
+					radioactivity = (int) Math.min(Math.max((aProtons / 30), 1), 9);
 				}
 			}
 			Logger.MATERIALS("[Debug] Calculated Radiation level to be "+radioactivity.intValue()+".");
@@ -165,7 +155,7 @@ public class MaterialUtils {
 			if (hasValidRGBA(rgba) || (element == Element.H) || ((material == Materials.InfusedAir) || (material == Materials.InfusedFire) || (material == Materials.InfusedEarth) || (material == Materials.InfusedWater))){
 				//ModItems.itemBaseDecidust = UtilsItems.generateDecidust(material);
 				//ModItems.itemBaseCentidust = UtilsItems.generateCentidust(material);
-				Material M = new Material(name, materialState,iconSet, durability, rgba, melting, boiling, protons, neutrons, blastFurnace, chemicalFormula, radioactivity.intValue(), mGenerateCell, mGenerateFluid);
+				Material M = new Material(name, materialState,iconSet, durability, rgba, melting, boiling, protons, neutrons, blastFurnace, chemicalFormula, radioactivity, mGenerateCell, mGenerateFluid);
 				mGeneratedMaterialMap.put(aMaterialKey, M);
 				return M;
 			}
@@ -173,8 +163,8 @@ public class MaterialUtils {
 				Logger.DEBUG_MATERIALS("Failed to generate GT++ material instance for "+material.name() +" | Valid RGB? "+(hasValidRGBA(rgba)));
 			}
 		}
-		catch (Throwable t) {	
-			Logger.DEBUG_MATERIALS("Failed to generate GT++ material instance for "+material.name());		
+		catch (Throwable t) {
+			Logger.DEBUG_MATERIALS("Failed to generate GT++ material instance for "+material.name());
 			t.printStackTrace();
 		}
 		return null;
@@ -253,38 +243,38 @@ public class MaterialUtils {
 		//aTier += 1; - Probably some logic to this, idk.
 
 		switch(aTier){
-			case 0:
-				return 16;
-			case 1:
-				return 30;
-			case 2:
-				return 120;
-			case 3:
-				return 480;
-			case 4:
-				return 1920;
-			case 5:
-				return 7680;
-			case 6:
-				return 30720;
-			case 7:
-				return 122880;
-			case 8:
-				return 491520;
-			case 9:
-				return 1966080;
-			case 10:
-				return 7864320;
-			case 11:
-				return 31457280;
-			case 12:
-				return 125829120;
-			case 13:
-				return 503316480;
-			case 14:
-				return 2013265920;
-			default: 
-				return Integer.MAX_VALUE;
+		case 0:
+			return 16;
+		case 1:
+			return 30;
+		case 2:
+			return 120;
+		case 3:
+			return 480;
+		case 4:
+			return 1920;
+		case 5:
+			return 7680;
+		case 6:
+			return 30720;
+		case 7:
+			return 122880;
+		case 8:
+			return 491520;
+		case 9:
+			return 1966080;
+		case 10:
+			return 7864320;
+		case 11:
+			return 31457280;
+		case 12:
+			return 125829120;
+		case 13:
+			return 503316480;
+		case 14:
+			return 2013265920;
+		default:
+			return Integer.MAX_VALUE;
 		}
 
 		/*else {
@@ -329,7 +319,7 @@ public class MaterialUtils {
 		return mName;
 	}
 
-	public static TextureSet getMostCommonTextureSet(List<Material> list) {		
+	public static TextureSet getMostCommonTextureSet(List<Material> list) {
 		TypeCounter<TextureSet> aCounter = new TypeCounter<TextureSet>(TextureSet.class);
 		for (Material m : list) {
 			TextureSet t = m.getTextureSet();
@@ -338,7 +328,7 @@ public class MaterialUtils {
 			}
 			if (t != null) {
 				aCounter.add(t, t.mSetName);
-			}			
+			}
 		}
 		return aCounter.getResults();
 		/*Optional<TextureSet> r = list.stream().map(Material::getTextureSet).collect(Collectors.groupingBy(Function.identity(), Collectors.counting())).entrySet().stream().max(Map.Entry.comparingByValue()).map(Map.Entry::getKey);
@@ -358,7 +348,7 @@ public class MaterialUtils {
 			CORE.crash();
 			//g = Materials._NULL;
 		}
-		return g;		
+		return g;
 	}
 
 	public static Materials getMaterial(String aMaterialName) {
@@ -373,10 +363,10 @@ public class MaterialUtils {
 		return m;
 	}
 
-	public static AutoMap<Material> getCompoundMaterialsRecursively(Material aMat){		
-		return getCompoundMaterialsRecursively_Speiger(aMat);		
+	public static AutoMap<Material> getCompoundMaterialsRecursively(Material aMat){
+		return getCompoundMaterialsRecursively_Speiger(aMat);
 		/*
-		AutoMap<Material> aDataSet = new AutoMap<Material>();	
+		AutoMap<Material> aDataSet = new AutoMap<Material>();
 		final int HARD_LIMIT = 1000;
 		int mLoopCounter = 0;
 		if (aMat.getComposites().size() > 0) {
@@ -389,8 +379,8 @@ public class MaterialUtils {
 					aDataSet.put(aMat);
 					return aDataSet;
 				}
-				ListIterator<Material> listIterator = xList.listIterator();			
-				while(listIterator.hasNext()){				
+				ListIterator<Material> listIterator = xList.listIterator();
+				while(listIterator.hasNext()){
 					Material e = listIterator.next();
 					listIterator.remove();
 					if (mLoopCounter > HARD_LIMIT) {
@@ -402,8 +392,8 @@ public class MaterialUtils {
 					}
 					else {
 						for (MaterialStack x : e.getComposites()) {
-							listIterator.add(x.getStackMaterial());		
-						}				
+							listIterator.add(x.getStackMaterial());
+						}
 					}
 					mLoopCounter++;
 
@@ -418,7 +408,7 @@ public class MaterialUtils {
 			aDataSet.put(aMat);
 			return aDataSet;
 		}
-		return aDataSet;	
+		return aDataSet;
 		 */}
 
 	public static AutoMap<Material> getCompoundMaterialsRecursively_Speiger(Material toSearch) {
@@ -431,7 +421,7 @@ public class MaterialUtils {
 
 		// Could be a Deque but i dont use the interface
 		// enough to use it as default.
-		LinkedList<Material> toCheck = new LinkedList<Material>(); 		
+		LinkedList<Material> toCheck = new LinkedList<Material>();
 
 		toCheck.add(toSearch);
 		int processed = 0;
@@ -453,7 +443,7 @@ public class MaterialUtils {
 		generateComponentAndAssignToAMaterial(aType, aMaterial, true);
 	}
 
-	public static void generateComponentAndAssignToAMaterial(ComponentTypes aType, Material aMaterial, boolean generateRecipes) {		
+	public static void generateComponentAndAssignToAMaterial(ComponentTypes aType, Material aMaterial, boolean generateRecipes) {
 		Item aGC;
 		if (aType == ComponentTypes.PLATEHEAVY) {
 			aGC = new BaseItemPlateHeavy(aMaterial);
@@ -461,8 +451,11 @@ public class MaterialUtils {
 		else if (aType == ComponentTypes.FINEWIRE) {
 			aGC = new BaseItemFineWire(aMaterial);
 		}
+		else if (aType == ComponentTypes.FOIL) {
+			aGC = new BaseItemFoil(aMaterial);
+		}
 		else {
-			aGC = new BaseItemComponent(aMaterial, aType);			
+			aGC = new BaseItemComponent(aMaterial, aType);
 		}
 		if (aGC != null) {
 			String aFormattedLangName = aType.getName();
@@ -482,8 +475,8 @@ public class MaterialUtils {
 
 
 			Logger.MATERIALS("[Lang] "+aGC.getUnlocalizedName()+".name="+aFormattedLangName);
-			aMaterial.registerComponentForMaterial(aType, ItemUtils.getSimpleStack(aGC));			
-		}				
+			aMaterial.registerComponentForMaterial(aType, ItemUtils.getSimpleStack(aGC));
+		}
 	}
 
 
@@ -513,7 +506,7 @@ public class MaterialUtils {
 				return true;
 			}
 		}
-		return false;		
+		return false;
 	}
 
 	public static boolean isNullGregtechMaterial(Materials aGregtechMaterial) {

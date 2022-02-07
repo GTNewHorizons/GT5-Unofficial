@@ -1,32 +1,25 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
+import java.util.*;
 
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.Textures;
+import gregtech.api.enums.*;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
-import gregtech.api.objects.GT_ItemStack;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.objects.*;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.xmod.gregtech.api.gui.basic.GT_Container_CropHarvestor;
-import gtPlusPlus.xmod.gregtech.api.gui.basic.GT_GUIContainer_CropHarvestor;
+import gtPlusPlus.xmod.gregtech.api.gui.basic.*;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import ic2.api.crops.CropCard;
-import ic2.api.crops.ICropTile;
+import ic2.api.crops.*;
 import ic2.core.item.DamageHandler;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.entity.player.*;
+import net.minecraft.item.*;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
@@ -44,12 +37,12 @@ public class GT_MetaTileEntity_CropHarvestor extends GT_MetaTileEntity_BasicTank
 
 	public GT_MetaTileEntity_CropHarvestor(final int aID, final int aTier, final String aDescription) {
 		super(aID, "basicmachine.cropharvester.0"+aTier, "Crop Manager ("+GT_Values.VN[aTier]+")", aTier, 21, aDescription);
-		mLocalName = "Crop Manager ("+GT_Values.VN[aTier]+")";
+		this.mLocalName = "Crop Manager ("+GT_Values.VN[aTier]+")";
 	}
 
 	public GT_MetaTileEntity_CropHarvestor(final String aName, final int aTier, final String aDescription, final ITexture[][][] aTextures) {
 		super(aName, aTier, 21, aDescription, aTextures);
-		mLocalName = "Crop Manager ("+GT_Values.VN[aTier]+")";
+		this.mLocalName = "Crop Manager ("+GT_Values.VN[aTier]+")";
 	}
 
 	@Override
@@ -59,7 +52,7 @@ public class GT_MetaTileEntity_CropHarvestor extends GT_MetaTileEntity_BasicTank
 
 	@Override
 	public Object getClientGUI(final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GT_GUIContainer_CropHarvestor(aPlayerInventory, aBaseMetaTileEntity, mLocalName);
+		return new GT_GUIContainer_CropHarvestor(aPlayerInventory, aBaseMetaTileEntity, this.mLocalName);
 	}
 
 	@Override
@@ -75,7 +68,7 @@ public class GT_MetaTileEntity_CropHarvestor extends GT_MetaTileEntity_BasicTank
 	@Override
 	public boolean isSimpleMachine() {
 		return true;
-	}	
+	}
 
 	@Override
 	public boolean isAccessAllowed(EntityPlayer aPlayer) {
@@ -114,12 +107,12 @@ public class GT_MetaTileEntity_CropHarvestor extends GT_MetaTileEntity_BasicTank
 
 	@Override
 	public long maxEUInput() {
-		return GT_Values.V[mTier];
+		return GT_Values.V[this.mTier];
 	}
 
 	@Override
 	public int getCapacity() {
-		return 32000 * mTier;
+		return 32000 * this.mTier;
 	}
 
 	@Override
@@ -148,26 +141,26 @@ public class GT_MetaTileEntity_CropHarvestor extends GT_MetaTileEntity_BasicTank
 
 	private static final int getRange(int aTier) {
 		switch(aTier) {
-			case 1:
-				return 1;
-			case 2:
-				return 5;
-			case 3:
-				return 9;
-			case 4:
-				return 13;
-			case 5:
-				return 17;
-			case 6:
-				return 21;
-			case 7:
-				return 25;
-			case 8:
-				return 29;
-			case 9:
-				return 33;
-			default:
-				return 0;
+		case 1:
+			return 1;
+		case 2:
+			return 5;
+		case 3:
+			return 9;
+		case 4:
+			return 13;
+		case 5:
+			return 17;
+		case 6:
+			return 21;
+		case 7:
+			return 25;
+		case 8:
+			return 29;
+		case 9:
+			return 33;
+		default:
+			return 0;
 		}
 	}
 
@@ -182,13 +175,43 @@ public class GT_MetaTileEntity_CropHarvestor extends GT_MetaTileEntity_BasicTank
 		}
 		return false;
 	}
-	
+
 	public long powerUsage() {
 		return this.maxEUInput() / 8;
 	}
-	
+
 	public long powerUsageSecondary() {
 		return this.maxEUInput() / 32;
+	}
+
+
+	public static AutoMap<ItemStack> splitOutputStacks(ItemStack aOutput) {
+		return splitOutputStacks(new ItemStack[] {aOutput});
+	}
+
+	public static AutoMap<ItemStack> splitOutputStacks(ItemStack[] aOutputs) {
+		AutoMap<ItemStack> aOutputMap = new AutoMap<ItemStack>();
+		for (ItemStack aStack : aOutputs) {
+			if (aStack != null) {
+				if (aStack.stackSize <= 64) {
+					aOutputMap.add(aStack);
+				} else {
+					int aStacks = 0;
+					int aExcess = 0;
+					int aOriginalSize = aStack.stackSize;
+					while (aOriginalSize >= 64) {
+						aStacks += 1;
+						aOriginalSize -= 64;
+					}
+					aExcess = aOriginalSize;
+					for (int i = 0; i < aStacks; i++) {
+						aOutputMap.add(ItemUtils.getSimpleStack(aStack, 64));
+					}
+					aOutputMap.add(ItemUtils.getSimpleStack(aStack, aExcess));
+				}
+			}
+		}
+		return aOutputMap;
 	}
 
 	@Override
@@ -201,33 +224,33 @@ public class GT_MetaTileEntity_CropHarvestor extends GT_MetaTileEntity_BasicTank
 				int aTileY = this.getBaseMetaTileEntity().getXCoord();
 				int aTileZ = this.getBaseMetaTileEntity().getXCoord();
 
-				int aRadius = 10 + getRange(mTier);
-				int aSide = (aRadius-1)/2;				
-				ArrayList<ItemStack> aAllDrops = new ArrayList<ItemStack>();	
+				int aRadius = 10 + getRange(this.mTier);
+				int aSide = (aRadius-1)/2;
+				ArrayList<ItemStack> aAllDrops = new ArrayList<ItemStack>();
 
-				if (mCropCache.isEmpty() || aTick % 1200 == 0 || mInvalidCache) {
-					if (!mCropCache.isEmpty()) {
-						mCropCache.clear();
+				if (this.mCropCache.isEmpty() || aTick % 1200 == 0 || this.mInvalidCache) {
+					if (!this.mCropCache.isEmpty()) {
+						this.mCropCache.clear();
 					}
 					//Logger.INFO("Looking for crops.");
-					for (int y = 0; y <= 2; y++) {				
+					for (int y = 0; y <= 2; y++) {
 						for (int x = (-aSide); x <= aSide; x++) {
 							for (int z = (-aSide); z <= aSide; z++) {
 								TileEntity tTileEntity = getBaseMetaTileEntity().getTileEntityOffset(x, y, z);
 								if (tTileEntity != null && tTileEntity instanceof ICropTile) {
 									ICropTile tCrop = (ICropTile) tTileEntity;
-									mCropCache.add(tCrop);									
+									this.mCropCache.add(tCrop);
 								}
-							}	
-						}	
+							}
+						}
 					}
 				}
 
-				//Process Cache		
+				//Process Cache
 				if (doesInventoryHaveSpace()) {
-					for (ICropTile tCrop : mCropCache) {
+					for (ICropTile tCrop : this.mCropCache) {
 						if (tCrop == null) {
-							mInvalidCache = true;
+							this.mInvalidCache = true;
 							break;
 						}
 						CropCard aCrop = tCrop.getCrop();
@@ -236,16 +259,16 @@ public class GT_MetaTileEntity_CropHarvestor extends GT_MetaTileEntity_BasicTank
 							if (!aCrop.canGrow(tCrop) && aCrop.canBeHarvested(tCrop)) {
 								if (getBaseMetaTileEntity().decreaseStoredEnergyUnits(powerUsage(), true)) {
 									ItemStack[] aHarvest = tCrop.harvest_automated(true);
-									if (aHarvest != null && aHarvest.length > 0) {								
+									if (aHarvest != null && aHarvest.length > 0) {
 										for (ItemStack aStack : aHarvest) {
 											if (aStack.stackSize > 0) {
-												if (mTier * 5 > MathUtils.randInt(1, 100)) {
+												if (this.mTier * 5 > MathUtils.randInt(1, 100)) {
 													aStack.stackSize += Math.floor(tCrop.getGain()/10);
 													Logger.INFO("Bonus output given for "+aCrop.displayName());
 												}
 												Logger.INFO("Harvested "+aCrop.displayName());
-												aAllDrops.add(aStack);
-											}													
+												aAllDrops.addAll(splitOutputStacks(aStack));
+											}
 										}
 									}
 								}
@@ -254,32 +277,32 @@ public class GT_MetaTileEntity_CropHarvestor extends GT_MetaTileEntity_BasicTank
 								processSecondaryFunctions(tCrop);
 							}
 						}
-					}				
+					}
 
 					if (!aAllDrops.isEmpty()) {
 						Logger.INFO("Handling "+aAllDrops.size()+" Harvests");
 						Iterator<ItemStack> iter = aAllDrops.iterator();
 						while (iter.hasNext()) {
-							ItemStack aDrop = iter.next();						
+							ItemStack aDrop = iter.next();
 							if (ItemUtils.checkForInvalidItems(aDrop)) {
 
 								for (int i = SLOT_OUTPUT_START; i < this.getSizeInventory(); i++) {
 									if (this.mInventory[i] != null) {
 										//Logger.INFO("Slot "+i+" contains "+this.mInventory[i].getDisplayName());
-										if (GT_Utility.areStacksEqual(aDrop, mInventory[i], false)) {
+										if (GT_Utility.areStacksEqual(aDrop, this.mInventory[i], false)) {
 											//Same
-											if (mInventory[i].stackSize < 64 && (mInventory[i].stackSize + aDrop.stackSize <= 64)) {
+											if (this.mInventory[i].stackSize < 64 && (this.mInventory[i].stackSize + aDrop.stackSize <= 64)) {
 												//can merge
 												//Logger.INFO("Slot "+i+" size: "+mInventory[i].stackSize+" + Drop Size: "+aDrop.stackSize+" = "+(mInventory[i].stackSize + aDrop.stackSize));
-												mInventory[i].stackSize += aDrop.stackSize;
+												this.mInventory[i].stackSize += aDrop.stackSize;
 												break;
 											}
-											else if (mInventory[i].stackSize < 64 && (mInventory[i].stackSize + aDrop.stackSize > 64)) {
+											else if (this.mInventory[i].stackSize < 64 && (this.mInventory[i].stackSize + aDrop.stackSize > 64)) {
 												//can merge
 												//Logger.INFO("Slot "+i+" size: "+mInventory[i].stackSize+" + Drop Size: "+aDrop.stackSize+" = "+(mInventory[i].stackSize + aDrop.stackSize));
-												int aRemainder = mInventory[i].stackSize + aDrop.stackSize - 64;
+												int aRemainder = this.mInventory[i].stackSize + aDrop.stackSize - 64;
 												Logger.INFO("Remainder: "+aRemainder+", Continuing.");
-												mInventory[i].stackSize = 64;
+												this.mInventory[i].stackSize = 64;
 												aDrop.stackSize = aRemainder;
 												continue;
 											}
@@ -335,7 +358,7 @@ public class GT_MetaTileEntity_CropHarvestor extends GT_MetaTileEntity_BasicTank
 	}
 
 	public boolean consumeWeedEX(boolean aSimulate) {
-		if (hasWeedEX()) {			
+		if (hasWeedEX()) {
 			for (int i = SLOT_WEEDEX_1; i <= SLOT_WEEDEX_2; i++) {
 				if (this.mInventory[i] != null) {
 					damage(i, 1, aSimulate);
@@ -347,7 +370,7 @@ public class GT_MetaTileEntity_CropHarvestor extends GT_MetaTileEntity_BasicTank
 	}
 
 	public void processSecondaryFunctions(ICropTile aCrop) {
-		if (!mModeAlternative) {
+		if (!this.mModeAlternative) {
 			return;
 		}
 		if (hasFertilizer() && consumeFertilizer(true) && this.getBaseMetaTileEntity().getUniversalEnergyStored() >= getMinimumStoredEU() && getBaseMetaTileEntity().decreaseStoredEnergyUnits(powerUsageSecondary(), true) && applyFertilizer(aCrop)) {
@@ -373,18 +396,18 @@ public class GT_MetaTileEntity_CropHarvestor extends GT_MetaTileEntity_BasicTank
 			triggerDecline = aCrop.getWorld().rand.nextInt(3) == 0;
 			if (aCrop.getCrop() != null && aCrop.getCrop().isWeed(aCrop) && aCrop.getWeedExStorage() >= 75 && triggerDecline) {
 				switch (aCrop.getWorld().rand.nextInt(5)) {
-					case 0 :
-						if (aCrop.getGrowth() > 0) {
-							aCrop.setGrowth((byte) (aCrop.getGrowth() - 1));
-						}
-					case 1 :
-						if (aCrop.getGain() > 0) {
-							aCrop.setGain((byte) (aCrop.getGain() - 1));
-						}
-					default :
-						if (aCrop.getResistance() > 0) {
-							aCrop.setResistance((byte) (aCrop.getResistance() - 1));
-						}
+				case 0 :
+					if (aCrop.getGrowth() > 0) {
+						aCrop.setGrowth((byte) (aCrop.getGrowth() - 1));
+					}
+				case 1 :
+					if (aCrop.getGain() > 0) {
+						aCrop.setGain((byte) (aCrop.getGain() - 1));
+					}
+				default :
+					if (aCrop.getResistance() > 0) {
+						aCrop.setResistance((byte) (aCrop.getResistance() - 1));
+					}
 				}
 			}
 			return true;
@@ -422,7 +445,7 @@ public class GT_MetaTileEntity_CropHarvestor extends GT_MetaTileEntity_BasicTank
 					this.mFluid = null;
 				}
 				//Logger.INFO("Did Hydrate");
-				aCrop.setHydrationStorage(aCrop.getHydrationStorage() + drain);	
+				aCrop.setHydrationStorage(aCrop.getHydrationStorage() + drain);
 				return true;
 			}
 			else {
@@ -433,23 +456,23 @@ public class GT_MetaTileEntity_CropHarvestor extends GT_MetaTileEntity_BasicTank
 	}
 
 	public boolean consume(int aSlot, int amount, boolean simulate) {
-		ItemStack stack = this.mInventory[aSlot];		
-		if (stack != null && stack.stackSize >= amount) {            	
-            	int currentAmount = Math.min(amount, stack.stackSize);
-    			amount -= currentAmount;
-    			if (!simulate) {
-    				if (stack.stackSize == currentAmount) {
-    					this.mInventory[aSlot] = null;
-    				} else {
-    					stack.stackSize -= currentAmount;
-    				}
-    			}
-    			else {
-    				return amount >= 0;
-    			}
-                return true;          
-        }
-        return false;
+		ItemStack stack = this.mInventory[aSlot];
+		if (stack != null && stack.stackSize >= amount) {
+			int currentAmount = Math.min(amount, stack.stackSize);
+			amount -= currentAmount;
+			if (!simulate) {
+				if (stack.stackSize == currentAmount) {
+					this.mInventory[aSlot] = null;
+				} else {
+					stack.stackSize -= currentAmount;
+				}
+			}
+			else {
+				return amount >= 0;
+			}
+			return true;
+		}
+		return false;
 	}
 
 	public ItemStack damage(int aSlot, int amount, boolean simulate) {
@@ -480,7 +503,7 @@ public class GT_MetaTileEntity_CropHarvestor extends GT_MetaTileEntity_BasicTank
 			if (stack.stackSize == 0 && !simulate) {
 				this.mInventory[aSlot] = null;
 			}
-		}    		
+		}
 
 		if (ret != null) {
 			int i = DamageHandler.getMaxDamage(ret);
@@ -489,39 +512,39 @@ public class GT_MetaTileEntity_CropHarvestor extends GT_MetaTileEntity_BasicTank
 		}
 		return ret;
 	}
-	
-    @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return aStack != null && aIndex >= SLOT_OUTPUT_START && aIndex < this.getSizeInventory();
-    }
 
-    @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-    	if (aStack != null) {
-    		if (aStack.getItem().getUnlocalizedName().equals("ic2.itemFertilizer")) {
-    	        return aIndex >= SLOT_FERT_1 && aIndex <= SLOT_FERT_4;    			
-    		}
-    		else if (aStack.getItem().getUnlocalizedName().equals("ic2.itemWeedEx")) {
-    	        return aIndex >= SLOT_WEEDEX_1 && aIndex <= SLOT_WEEDEX_2;    			
-    		}
-    	}
-        return false;
-    }
+	@Override
+	public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+		return aStack != null && aIndex >= SLOT_OUTPUT_START && aIndex < this.getSizeInventory();
+	}
+
+	@Override
+	public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+		if (aStack != null) {
+			if (aStack.getItem().getUnlocalizedName().equals("ic2.itemFertilizer")) {
+				return aIndex >= SLOT_FERT_1 && aIndex <= SLOT_FERT_4;
+			}
+			else if (aStack.getItem().getUnlocalizedName().equals("ic2.itemWeedEx")) {
+				return aIndex >= SLOT_WEEDEX_1 && aIndex <= SLOT_WEEDEX_2;
+			}
+		}
+		return false;
+	}
 
 	@Override
 	public String[] getDescription() {
-		int aRadius = 10 + getRange(mTier);
-		int aSide = (aRadius-1)/2;	
+		int aRadius = 10 + getRange(this.mTier);
+		int aSide = (aRadius-1)/2;
 		return new String[] {
-				this.mDescription, 
+				this.mDescription,
 				"Secondary mode can Hydrate/Fertilize/Weed-EX",
 				"Consumes "+powerUsage()+"eu per harvest",
 				"Consumes "+powerUsageSecondary()+"eu per secondary operation",
 				"Can harvest 2 blocks above",
 				"Radius: "+aSide+" each side ("+aRadius+"x3x"+aRadius+")",
-				"Has "+(mTier * 5)+"% chance for extra drops",
+				"Has "+(this.mTier * 5)+"% chance for extra drops",
 				"Holds "+this.getCapacity()+"L of Water",
-				CORE.GT_Tooltip 
+				CORE.GT_Tooltip
 		};
 	}
 
@@ -592,36 +615,36 @@ public class GT_MetaTileEntity_CropHarvestor extends GT_MetaTileEntity_BasicTank
 
 	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
-			final byte aColorIndex, final boolean aActive, final boolean aRedstone) {		
+			final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
 		if (aSide == 0 || aSide == 1) {
 			return this.mTextures[3][aColorIndex + 1];
 		}
 		else {
-			return this.mTextures[4][aColorIndex + 1];			
-		}		
+			return this.mTextures[4][aColorIndex + 1];
+		}
 		/*return this.mTextures[(aActive ? 5 : 0) + (aSide == aFacing ? 0
 				: aSide == GT_Utility.getOppositeSide(aFacing) ? 1 : aSide == 0 ? 2 : aSide == 1 ? 3 : 4)][aColorIndex
 				                                                                                           + 1];*/
 	}
 
 	public ITexture[] getFront(final byte aColor) {
-		return new ITexture[] {Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Casing_CropHarvester_Cutter)};
+		return new ITexture[] {Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Casing_CropHarvester_Cutter)};
 	}
 
 	public ITexture[] getBack(final byte aColor) {
-		return new ITexture[] {Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Casing_CropHarvester_Cutter)};
+		return new ITexture[] {Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Casing_CropHarvester_Cutter)};
 	}
 
 	public ITexture[] getBottom(final byte aColor) {
-		return new ITexture[] {Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Casing_CropHarvester_Boxes)};
+		return new ITexture[] {Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Casing_CropHarvester_Boxes)};
 	}
 
 	public ITexture[] getTop(final byte aColor) {
-		return new ITexture[] {Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Casing_CropHarvester_Boxes)};
+		return new ITexture[] {Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Casing_CropHarvester_Boxes)};
 	}
 
 	public ITexture[] getSides(final byte aColor) {
-		return new ITexture[] {Textures.BlockIcons.MACHINE_CASINGS[mTier][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Casing_CropHarvester_Cutter)};
+		return new ITexture[] {Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Casing_CropHarvester_Cutter)};
 	}
 
 	@Override
@@ -657,13 +680,13 @@ public class GT_MetaTileEntity_CropHarvestor extends GT_MetaTileEntity_BasicTank
 	@Override
 	public void saveNBTData(NBTTagCompound aNBT) {
 		super.saveNBTData(aNBT);
-		aNBT.setBoolean("mModeAlternative", mModeAlternative);
+		aNBT.setBoolean("mModeAlternative", this.mModeAlternative);
 	}
 
 	@Override
 	public void loadNBTData(NBTTagCompound aNBT) {
 		super.loadNBTData(aNBT);
-		mModeAlternative = aNBT.getBoolean("mModeAlternative");
+		this.mModeAlternative = aNBT.getBoolean("mModeAlternative");
 	}
 
 }
