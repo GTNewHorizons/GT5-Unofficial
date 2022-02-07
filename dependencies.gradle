@@ -2,8 +2,9 @@
 
 dependencies {
 	
-    compile("com.github.GTNewHorizons:GT5-Unofficial:5.09.40.30:dev")
-    compile("com.github.GTNewHorizons:StructureLib:1.0.15:dev")
+    compile("com.github.GTNewHorizons:GT5-Unofficial:5.09.40.31:dev")
+    compile("com.github.GTNewHorizons:StructureLib:1.0.14:dev")
+
     compile("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
 
     compile("com.github.GTNewHorizons:NotEnoughItems:2.2.5-GTNH:dev")

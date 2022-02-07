@@ -63,7 +63,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 /*
  * 
- * Originally Authored by Bot under the MIT License 
+ * Originally authored by botn365 under the MIT License. See BotdustriesLICENSE
  *
  */
 
