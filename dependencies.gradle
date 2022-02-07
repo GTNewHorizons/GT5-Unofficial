@@ -3,33 +3,23 @@
 dependencies {
     shadowImplementation("com.github.GTNewHorizons:AVRcore:master-SNAPSHOT")
 
-    compile("com.github.GTNewHorizons:GT5-Unofficial:master-SNAPSHOT:dev")
-    compile("com.github.GTNewHorizons:Yamcl:master-SNAPSHOT:dev")
+    compile("com.github.GTNewHorizons:GT5-Unofficial:5.09.40.31:dev")
+    compile("com.github.GTNewHorizons:Yamcl:0.5.82:dev")
+    compile('net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev') {
+        transitive = false
+    }
 
-    /*compile("com.github.GTNewHorizons:NotEnoughItems:master-SNAPSHOT:dev") {  // Transitive by GT5-Unofficial
+    compileOnly("com.github.GTNewHorizons:OpenComputers:1.7.5.21-GTNH:dev") {
         transitive = false
     }
-    compile("com.github.GTNewHorizons:CodeChickenLib:master-SNAPSHOT:dev") {  // Transitive by GT5-Unofficial
+    compileOnly("com.github.GTNewHorizons:GTplusplus:1.7.27:dev") {
         transitive = false
     }
-    compile("com.github.GTNewHorizons:StructureLib:master-SNAPSHOT:dev") {  // Transitive by GT5-Unofficial
-        transitive = false
-    }
-    compile("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev") {  // Transitive by GT5-Unofficial
-        transitive = false
-    }*/
-
-    compileOnly("com.github.GTNewHorizons:GTplusplus:master-SNAPSHOT:dev") {
-        transitive = false
-    }
-    compileOnly("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:master-SNAPSHOT:dev") {
+    compileOnly("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-75-GTNH:dev") {
         transitive = false
     }
 
     compileOnly("dan200.computercraft:ComputerCraft:1.75") {
-        transitive = false
-    }
-    compileOnly("li.cil.oc:OpenComputers:MC1.7.10-1.7.5.1356:dev") {
         transitive = false
     }
     compileOnly("curse.maven:cofh-core-69162:2388751") {
