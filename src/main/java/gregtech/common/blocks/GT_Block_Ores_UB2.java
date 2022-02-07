@@ -9,6 +9,7 @@ import gregtech.api.render.TextureFactory;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.IIcon;
 
 public class GT_Block_Ores_UB2 extends GT_Block_Ores_Abstract {
     Block aUBBlock = GameRegistry.findBlock("UndergroundBiomes", "metamorphicStone");
@@ -26,6 +27,30 @@ public class GT_Block_Ores_UB2 extends GT_Block_Ores_Abstract {
     @Override
     public OrePrefixes[] getProcessingPrefix() { //Must have 8 entries; an entry can be null to disable automatic recipes.
         return new OrePrefixes[]{OrePrefixes.ore, OrePrefixes.ore, OrePrefixes.oreMarble, OrePrefixes.ore, OrePrefixes.ore, OrePrefixes.ore, OrePrefixes.ore, OrePrefixes.ore};
+    }
+    
+    @Override
+    public IIcon getIcon(int side, int meta) {
+        int index = ((meta / 1000) % 16);
+        IIcon[] icons = new IIcon[] {
+        		aUBBlock.getIcon(0, 0),
+        		aUBBlock.getIcon(0, 1),
+        		aUBBlock.getIcon(0, 2),
+        		aUBBlock.getIcon(0, 3),
+        		aUBBlock.getIcon(0, 4),
+        		aUBBlock.getIcon(0, 5),
+        		aUBBlock.getIcon(0, 6),
+        		aUBBlock.getIcon(0, 7),
+        		aUBBlock.getIcon(0, 0),
+        		aUBBlock.getIcon(0, 1),
+        		aUBBlock.getIcon(0, 2),
+        		aUBBlock.getIcon(0, 3),
+        		aUBBlock.getIcon(0, 4),
+        		aUBBlock.getIcon(0, 5),
+        		aUBBlock.getIcon(0, 6),
+        		aUBBlock.getIcon(0, 7)
+        };
+        return icons[index < 0 || index >= icons.length ? 0 : index];
     }
 
     @Override

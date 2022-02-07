@@ -16,6 +16,7 @@ import static gregtech.api.enums.Textures.BlockIcons.BASALT_STONE;
 import static gregtech.api.enums.Textures.BlockIcons.GRANITE_BLACK_STONE;
 import static gregtech.api.enums.Textures.BlockIcons.GRANITE_RED_STONE;
 import static gregtech.api.enums.Textures.BlockIcons.MARBLE_STONE;
+import net.minecraft.util.IIcon;
 
 public class GT_Block_Ores extends GT_Block_Ores_Abstract {
     public GT_Block_Ores() {
@@ -30,6 +31,20 @@ public class GT_Block_Ores extends GT_Block_Ores_Abstract {
     @Override
     public OrePrefixes[] getProcessingPrefix() { //Must have 8 entries; an entry can be null to disable automatic recipes.
         return new OrePrefixes[]{OrePrefixes.ore, OrePrefixes.oreNetherrack, OrePrefixes.oreEndstone, OrePrefixes.oreBlackgranite, OrePrefixes.oreRedgranite, OrePrefixes.oreMarble, OrePrefixes.oreBasalt, null};
+    }
+
+    @Override
+    public IIcon getIcon(int side, int meta) {
+        int index = ((meta / 1000) % 16);
+        IIcon[] icons = new IIcon[] {
+        		Blocks.stone.getIcon(0, 0),
+        		Blocks.netherrack.getIcon(0, 0),
+        		Blocks.end_stone.getIcon(0, 0),
+        		GRANITE_BLACK_STONE.getIcon(),
+        		GRANITE_RED_STONE.getIcon(),
+        		MARBLE_STONE.getIcon(),
+        		BASALT_STONE.getIcon()};
+        return icons[index < 0 || index >= icons.length ? 0 : index];
     }
 
     @Override
