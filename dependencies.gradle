@@ -18,7 +18,7 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:ForestryMC:4.4.5:dev") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:Railcraft:9.13.5:dev") {
+    compileOnly("com.github.GTNewHorizons:Railcraft:9.13.6:dev") {
         transitive = false
     }
     compileOnly("com.github.GTNewHorizons:Galacticraft:3.0.38-GTNH:dev") {
@@ -39,10 +39,10 @@ dependencies {
     compile("com.github.GTNewHorizons:Chisel:2.10.8-GTNH:dev") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:EnderIO:2.3.1.28:dev") {
+    compileOnly("com.github.GTNewHorizons:EnderIO:2.3.1.29:dev") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:BuildCraft:7.1.25:dev") {
+    compileOnly("com.github.GTNewHorizons:BuildCraft:7.1.26:dev") {
         transitive = false
     }
     compileOnly("commons-io:commons-io:2.4") {
