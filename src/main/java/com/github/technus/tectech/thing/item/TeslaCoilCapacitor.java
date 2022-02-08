@@ -14,9 +14,9 @@ import net.minecraft.util.IIcon;
 
 import java.util.List;
 
-import static com.github.technus.tectech.util.CommonValues.V;
 import static com.github.technus.tectech.Reference.MODID;
 import static com.github.technus.tectech.thing.CustomItemList.teslaCapacitor;
+import static com.github.technus.tectech.util.CommonValues.V;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 

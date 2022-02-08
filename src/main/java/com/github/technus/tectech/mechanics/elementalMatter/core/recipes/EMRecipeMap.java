@@ -1,6 +1,7 @@
 package com.github.technus.tectech.mechanics.elementalMatter.core.recipes;
 
-import com.github.technus.tectech.mechanics.elementalMatter.core.maps.*;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMConstantStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.IEMMapRead;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMDefinitionStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.IEMStack;
 

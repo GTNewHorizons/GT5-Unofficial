@@ -1,7 +1,7 @@
 package com.github.technus.tectech.thing.metaTileEntity.single.gui;
 
-import com.github.technus.tectech.util.TT_Utility;
 import com.github.technus.tectech.thing.metaTileEntity.single.GT_MetaTileEntity_DataReader;
+import com.github.technus.tectech.util.TT_Utility;
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
 import gregtech.api.gui.GT_Slot_Holo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
