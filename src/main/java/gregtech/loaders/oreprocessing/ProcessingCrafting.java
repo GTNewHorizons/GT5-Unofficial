@@ -67,7 +67,7 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                 GT_Values.RA.addLaserEngraverRecipe(ItemList.Circuit_Silicon_Wafer2.get(1), GT_Utility.copyAmount(0L, aStack), ItemList.Circuit_Wafer_ILC.get(4), 900, 480, true);
                 GT_Values.RA.addLaserEngraverRecipe(ItemList.Circuit_Silicon_Wafer3.get(1), GT_Utility.copyAmount(0L, aStack), ItemList.Circuit_Wafer_ILC.get(8), 600, 1920, true);
                 GT_Values.RA.addLaserEngraverRecipe(ItemList.Circuit_Silicon_Wafer4.get(1), GT_Utility.copyAmount(0L, aStack), ItemList.Circuit_Wafer_NPIC.get(1), 1800, 30720, true);
-                GT_Values.RA.addLaserEngraverRecipe(ItemList.Circuit_Silicon_Wafer5.get(1), GT_Utility.copyAmount(0L, aStack), ItemList.Circuit_Wafer_NPIC.get(4), 1800, 122880, true);
+                GT_Values.RA.addLaserEngraverRecipe(ItemList.Circuit_Silicon_Wafer5.get(1), GT_Utility.copyAmount(0L, aStack), ItemList.Circuit_Wafer_NPIC.get(4), 1500, 122880, true);
                 break;
             case "craftingLensGreen":
                 GT_Values.RA.addLaserEngraverRecipe(ItemList.Circuit_Parts_Crystal_Chip_Elite.get(1L), GT_Utility.copyAmount(0L, aStack), ItemList.Circuit_Chip_CrystalCPU.get(1), 600, 10000, true);
