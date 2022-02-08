@@ -23,7 +23,6 @@ import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry.EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED;
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMGaugeBosonDefinition.boson_Y__;
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMGaugeBosonDefinition.deadEnd;
-import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_scanner.*;
 import static com.github.technus.tectech.util.XSTR.XSTR_INSTANCE;
 import static gregtech.api.enums.Materials.*;
 import static gregtech.api.enums.OrePrefixes.dust;
@@ -372,7 +371,14 @@ public class EMAtomDefinition extends EMComplexTemplate {
 
     @Override
     public String getSymbol() {
-        return getShortSymbol() + " N:" + getNeutralCount() + " I:" + (getNeutralCount() + getElement()) + " C:" + getCharge();
+        String ionName  = "";
+        int ionization = getCharge() / 3;
+        if(ionization>0){
+            ionName = ionization == 1 ? TT_Utility.toSuperscript("+") : TT_Utility.toSuperscript(ionization + "+");
+        }else if(ionization<0) {
+            ionName = ionization == -1 ? TT_Utility.toSuperscript("-") : TT_Utility.toSuperscript(-ionization + "-");
+        }
+        return TT_Utility.toSuperscript(Long.toString(getNeutralCount() + (long)getElement())) +getShortSymbol()+ ionName;
     }
 
     @Override
@@ -1366,7 +1372,7 @@ public class EMAtomDefinition extends EMComplexTemplate {
     }
 
     @Override
-    protected String getIndirectTagValue() {
+    protected String getTagValue() {
         return nbtType;
     }
 
@@ -1672,41 +1678,5 @@ public class EMAtomDefinition extends EMComplexTemplate {
     @Override
     public int hashCode() {
         return hash;
-    }
-
-    @Override
-    public void addScanShortSymbols(ArrayList<String> lines, int capabilities, long energyLevel) {
-        if (TT_Utility.areBitsSet(SCAN_GET_NOMENCLATURE | SCAN_GET_CHARGE | SCAN_GET_MASS | SCAN_GET_TIMESPAN_INFO, capabilities)) {
-            lines.add(getShortSymbol());
-        }
-    }
-
-    @Override
-    public void addScanResults(ArrayList<String> lines, int capabilities, long energyLevel) {
-        if (TT_Utility.areBitsSet(SCAN_GET_CLASS_TYPE, capabilities)) {
-            lines.add("CLASS = " + getIndirectTagValue() + ' ' + getMatterMassType());
-        }
-        if (TT_Utility.areBitsSet(SCAN_GET_NOMENCLATURE | SCAN_GET_CHARGE | SCAN_GET_MASS | SCAN_GET_TIMESPAN_INFO, capabilities)) {
-            lines.add("NAME = " + getLocalizedName());
-            lines.add("SYMBOL = " + getSymbol());
-        }
-        if (TT_Utility.areBitsSet(SCAN_GET_CHARGE, capabilities)) {
-            lines.add("CHARGE = " + getCharge() / 3D + " e");
-        }
-        if (TT_Utility.areBitsSet(SCAN_GET_COLOR, capabilities)) {
-            lines.add(hasColor() ? "COLORLESS" : "CARRIES COLOR");
-        }
-        if (TT_Utility.areBitsSet(SCAN_GET_MASS, capabilities)) {
-            lines.add("MASS = " + getMass() + " eV/c\u00b2");
-        }
-        if (iaeaDefinitionExistsAndHasEnergyLevels && TT_Utility.areBitsSet(SCAN_GET_ENERGY_STATES, capabilities)) {
-            for (int i = 1; i < getIaea().getEnergeticStatesArray().length; i++) {
-                lines.add("E LEVEL " + i + " = " + getIaea().getEnergeticStatesArray()[i].energy + " eV");
-            }
-        }
-        if (TT_Utility.areBitsSet(SCAN_GET_TIMESPAN_INFO, capabilities)) {
-            lines.add("HALF LIFE = " + getRawTimeSpan(energyLevel) + " s");
-            lines.add("    At current energy level");
-        }
     }
 }

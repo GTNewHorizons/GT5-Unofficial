@@ -2,7 +2,8 @@ package com.github.technus.tectech.util;
 
 import java.util.Arrays;
 
-import static java.lang.Math.*;
+import static java.lang.Math.abs;
+import static java.lang.Math.ulp;
 
 public class DoubleCount {
     /**

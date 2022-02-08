@@ -1,13 +1,13 @@
 package com.github.technus.tectech.mechanics.elementalMatter.core.commands;
 
 import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry.EMDefinitionsRegistry;
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry.EMIndirectType;
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMDefinitionStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMDefinitionStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMInstanceStack;
-import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
 import com.github.technus.tectech.thing.item.DebugElementalInstanceContainer_EM;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;

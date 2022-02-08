@@ -15,13 +15,20 @@ public class CancerCommand implements ICommand {
     public CancerCommand(){
         aliases.add("cancer_EM");
         aliases.add("cancer");
+        aliases.add("sanser_EM");
         aliases.add("sanser");
+        aliases.add("sancer_EM");
         aliases.add("sancer");
     }
 
     @Override
     public void processCommand(ICommandSender sender, String[] args) {
         if (sender instanceof EntityPlayerMP && !sender.getEntityWorld().isRemote) {
+            EntityPlayerMP player=(EntityPlayerMP)sender;
+            if(args==null || args.length==0){
+                sender.addChatMessage(new ChatComponentText("Cancer amount: "+TecTech.anomalyHandler.getCancer(player)));
+                return;
+            }
             double amount;
             try {
                 amount = Double.parseDouble(args[0]);
@@ -29,11 +36,6 @@ public class CancerCommand implements ICommand {
                 sender.addChatMessage(new ChatComponentText("Cannot parse amount!"));
                 return;
             }
-            if(amount<0||amount>2){
-                sender.addChatMessage(new ChatComponentText("Invalid amount provided!"));
-                return;
-            }
-            EntityPlayerMP player=(EntityPlayerMP)sender;
             if(player.capabilities.isCreativeMode){
                 sender.addChatMessage(new ChatComponentText("Doesn't really work in creative mode!"));
             }else {
@@ -65,7 +67,7 @@ public class CancerCommand implements ICommand {
 
     @Override
     public String getCommandUsage(ICommandSender p_71518_1_) {
-        return "cancer_EM [Amount 0.0-2.0]";
+        return "cancer_EM [Amount]";
     }
 
     @Override

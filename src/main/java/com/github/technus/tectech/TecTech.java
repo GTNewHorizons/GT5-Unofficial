@@ -2,8 +2,8 @@ package com.github.technus.tectech;
 
 import com.github.technus.tectech.loader.MainLoader;
 import com.github.technus.tectech.loader.TecTechConfig;
-import com.github.technus.tectech.loader.gui.CreativeTabTecTech;
 import com.github.technus.tectech.loader.gui.CreativeTabEM;
+import com.github.technus.tectech.loader.gui.CreativeTabTecTech;
 import com.github.technus.tectech.mechanics.anomaly.AnomalyHandler;
 import com.github.technus.tectech.mechanics.anomaly.CancerCommand;
 import com.github.technus.tectech.mechanics.anomaly.ChargeCommand;

@@ -35,14 +35,12 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
-import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.recipe.TT_recipe.E_RECIPE_ID;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_crafting.crafter;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.em_machine.GT_MetaTileEntity_EM_machine.machine;
-import static com.github.technus.tectech.util.CommonValues.V;
-import static com.github.technus.tectech.util.CommonValues.VN;
+import static com.github.technus.tectech.util.CommonValues.*;
 import static com.github.technus.tectech.util.TT_Utility.areBitsSet;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
@@ -56,10 +54,23 @@ import static net.minecraft.util.StatCollector.translateToLocalFormatted;
  */
 public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
     //region variables
-    public static final int SCAN_DO_NOTHING = 0,
-            SCAN_GET_NOMENCLATURE           = 1, SCAN_GET_DEPTH_LEVEL = 2, SCAN_GET_AMOUNT = 4, SCAN_GET_CHARGE = 8,
-            SCAN_GET_MASS                   = 16, SCAN_GET_ENERGY_LEVEL = 32, SCAN_GET_TIMESPAN_INFO = 64, SCAN_GET_ENERGY_STATES = 128,
-            SCAN_GET_COLOR                  = 256, SCAN_GET_AGE = 512, SCAN_GET_TIMESPAN_MULT = 1024, SCAN_GET_CLASS_TYPE = 2048;
+    public static final int
+            SCAN_DO_NOTHING        = 0,
+            SCAN_GET_NOMENCLATURE  = 1<<0,
+            SCAN_GET_DEPTH_LEVEL   = 1<<1,
+            SCAN_GET_AMOUNT        = 1<<2,
+            SCAN_GET_CHARGE        = 1<<3,
+            SCAN_GET_MASS          = 1<<4,
+            SCAN_GET_ENERGY        = 1<<5,
+            SCAN_GET_ENERGY_LEVEL  = 1<<6,
+            SCAN_GET_TIMESPAN_INFO = 1<<7,
+            SCAN_GET_ENERGY_STATES = 1<<8,
+            SCAN_GET_COLORABLE     = 1<<9,
+            SCAN_GET_COLOR_VALUE   = 1<<10,
+            SCAN_GET_AGE           = 1<<11,
+            SCAN_GET_TIMESPAN_MULT = 1<<12,
+            SCAN_GET_CLASS_TYPE    = 1<<13,
+            SCAN_GET_TOO_BIG       = 1<<14;//should be the sum of all flags +1
 
     private TT_recipe.TT_EMRecipe.TT_EMRecipe eRecipe;
     private EMDefinitionStack                 objectResearched;
@@ -110,7 +121,7 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
                 }
                 v = (int) v;
                 if (v == 0) return LedStatus.STATUS_NEUTRAL;
-                if (v >= SCAN_GET_CLASS_TYPE) return LedStatus.STATUS_TOO_HIGH;
+                if (v >= SCAN_GET_TOO_BIG) return LedStatus.STATUS_TOO_HIGH;
                 if (v < 0) return LedStatus.STATUS_TOO_LOW;
                 return LedStatus.STATUS_OK;
             };
@@ -148,58 +159,60 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
 
     private void addComputationRequirements(int depthPlus, int capabilities) {
         if (areBitsSet(SCAN_GET_NOMENCLATURE, capabilities)) {
-            computationRequired += depthPlus * 5L;
+            computationRequired += depthPlus * 3L;
             eRequiredData += depthPlus;
         }
         if (areBitsSet(SCAN_GET_DEPTH_LEVEL, capabilities)) {
             computationRequired += depthPlus * 10L;
             eRequiredData += depthPlus;
-
         }
         if (areBitsSet(SCAN_GET_AMOUNT, capabilities)) {
             computationRequired += depthPlus * 64L;
             eRequiredData += depthPlus * 8L;
-
         }
         if (areBitsSet(SCAN_GET_CHARGE, capabilities)) {
             computationRequired += depthPlus * 128L;
             eRequiredData += depthPlus * 4L;
-
         }
         if (areBitsSet(SCAN_GET_MASS, capabilities)) {
             computationRequired += depthPlus * 256L;
             eRequiredData += depthPlus * 4L;
-
+        }
+        if (areBitsSet(SCAN_GET_ENERGY, capabilities)) {
+            computationRequired += depthPlus * 256L;
+            eRequiredData += depthPlus * 16L;
         }
         if (areBitsSet(SCAN_GET_ENERGY_LEVEL, capabilities)) {
-            computationRequired += depthPlus * 512L;
+            computationRequired += depthPlus * 256L;
             eRequiredData += depthPlus * 16L;
-
         }
         if (areBitsSet(SCAN_GET_TIMESPAN_INFO, capabilities)) {
             computationRequired += depthPlus * 1024L;
             eRequiredData += depthPlus * 32L;
-
         }
         if (areBitsSet(SCAN_GET_ENERGY_STATES, capabilities)) {
             computationRequired += depthPlus * 2048L;
             eRequiredData += depthPlus * 32L;
-
         }
-        if (areBitsSet(SCAN_GET_COLOR, capabilities)) {
+        if (areBitsSet(SCAN_GET_COLORABLE, capabilities)) {
+            computationRequired += depthPlus * 512L;
+            eRequiredData += depthPlus * 48L;
+        }
+        if (areBitsSet(SCAN_GET_COLOR_VALUE, capabilities)) {
             computationRequired += depthPlus * 1024L;
             eRequiredData += depthPlus * 48L;
-
         }
         if (areBitsSet(SCAN_GET_AGE, capabilities)) {
             computationRequired += depthPlus * 2048L;
             eRequiredData += depthPlus * 64L;
-
         }
         if (areBitsSet(SCAN_GET_TIMESPAN_MULT, capabilities)) {
             computationRequired += depthPlus * 2048L;
             eRequiredData += depthPlus * 64L;
-
+        }
+        if (areBitsSet(SCAN_GET_CLASS_TYPE, capabilities)) {
+            computationRequired += depthPlus * 2L;
+            eRequiredData += depthPlus;
         }
     }
 
@@ -277,9 +290,6 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
                         for (int i = 0; i < 20; i++) {
                             if (scanComplexityTemp[i] != SCAN_DO_NOTHING) {
                                 maxDepth = i;
-                                if (!DEBUG_MODE) {
-                                    scanComplexityTemp[i] &= ~SCAN_GET_CLASS_TYPE;
-                                }
                                 addComputationRequirements(i + 1, scanComplexityTemp[i]);
                             }
                         }
@@ -311,7 +321,7 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
 
             tNBT.setString("eMachineType", machineType);
             tNBT.setTag(E_RECIPE_ID, objectResearched.toNBT(TecTech.definitionsRegistry));
-            tNBT.setString("author", EnumChatFormatting.BLUE + "Tec" + EnumChatFormatting.DARK_BLUE + "Tech" + EnumChatFormatting.WHITE + ' ' + machineType + " EM Recipe Generator");
+            tNBT.setString("author", TEC_MARK_SHORT + EnumChatFormatting.WHITE + ' ' + machineType + " EM Recipe Generator");
         } else if (objectsScanned != null && CustomItemList.scanContainer.isStackEqual(mInventory[1], false, true)) {
             ElementalDefinitionScanStorage_EM.setContent(mInventory[1], objectsScanned, scanComplexity);
         }

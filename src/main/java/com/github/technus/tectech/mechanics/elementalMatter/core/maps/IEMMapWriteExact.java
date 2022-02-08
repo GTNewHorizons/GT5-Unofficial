@@ -1,7 +1,7 @@
 package com.github.technus.tectech.mechanics.elementalMatter.core.maps;
 
-import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.IEMStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.IEMStack;
 
 import java.util.Map;
 
@@ -21,10 +21,6 @@ public interface IEMMapWriteExact<T extends IEMStack> extends IEMMapRead<T> {
         return getBackingMap().remove(def);
     }
 
-    default T removeKey(IEMStack has) {
-        return removeKey(has.getDefinition());
-    }
-
     default boolean removeKeys(IEMDefinition... definitions) {
         boolean hadAll=true;
         for (IEMDefinition def : definitions) {
@@ -36,7 +32,7 @@ public interface IEMMapWriteExact<T extends IEMStack> extends IEMMapRead<T> {
     default boolean removeKeys(IEMStack... hasElementalDefinition) {
         boolean hadAll=true;
         for (IEMStack has : hasElementalDefinition) {
-            hadAll&=removeKey(has)!=null;
+            hadAll&=removeKey(has.getDefinition())!=null;
         }
         return hadAll;
     }
@@ -55,7 +51,7 @@ public interface IEMMapWriteExact<T extends IEMStack> extends IEMMapRead<T> {
         boolean hadAll=containsAllKeys(hasElementalDefinition);
         if(hadAll){
             for (IEMStack stack : hasElementalDefinition) {
-                removeKey(stack);
+                removeKey(stack.getDefinition());
             }
         }
         return hadAll;
@@ -91,15 +87,15 @@ public interface IEMMapWriteExact<T extends IEMStack> extends IEMMapRead<T> {
      * @return
      */
     default boolean removeAmountExact(IEMDefinition def, double amountToConsume){
-        T current=getBackingMap().get(def);
+        T current=get(def);
         if(current!=null){
             double newAmount=current.getAmount()-amountToConsume;
             if(newAmount>=0){
                 if(current.isValidAmount()){
                     current=(T)current.mutateAmount(newAmount);
-                    getBackingMap().put(current.getDefinition(),current);
+                    putReplace(current);
                 } else {
-                    getBackingMap().remove(current.getDefinition());
+                    removeKey(current.getDefinition());
                 }
                 return true;
             }
@@ -136,7 +132,7 @@ public interface IEMMapWriteExact<T extends IEMStack> extends IEMMapRead<T> {
     }
 
     default T putUnifyExact(T stack) {
-        T target=getBackingMap().get(stack.getDefinition());
+        T target=get(stack.getDefinition());
         if(target==null) {
             putReplace(stack);
             return stack;
@@ -147,7 +143,7 @@ public interface IEMMapWriteExact<T extends IEMStack> extends IEMMapRead<T> {
             putReplace(stack);
             return stack;
         }else {
-            removeKey(stack);
+            removeKey(stack.getDefinition());
             return null;
         }
     }
@@ -159,8 +155,8 @@ public interface IEMMapWriteExact<T extends IEMStack> extends IEMMapRead<T> {
     }
 
     default void putUnifyAllExact(IEMMapRead<T> inTreeUnsafe) {
-        for (T in : inTreeUnsafe.values()) {
-            putUnifyExact(in);
+        for (Map.Entry<IEMDefinition, T> in : inTreeUnsafe.entrySet()) {
+            putUnifyExact(in.getValue());
         }
     }
 }

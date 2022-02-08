@@ -17,7 +17,6 @@ import net.minecraft.world.IBlockAccess;
 
 import java.util.List;
 
-import static com.github.technus.tectech.TecTech.tectechTexturePage1;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 
 /**

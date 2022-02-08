@@ -20,6 +20,11 @@ public class ChargeCommand implements ICommand {
     @Override
     public void processCommand(ICommandSender sender, String[] args) {
         if (sender instanceof EntityPlayerMP && !sender.getEntityWorld().isRemote) {
+            EntityPlayerMP player=(EntityPlayerMP)sender;
+            if(args==null || args.length==0){
+                sender.addChatMessage(new ChatComponentText("Charge amount: "+TecTech.anomalyHandler.getCharge(player)));
+                return;
+            }
             double amount;
             try {
                 amount = Double.parseDouble(args[0]);
@@ -27,7 +32,6 @@ public class ChargeCommand implements ICommand {
                 sender.addChatMessage(new ChatComponentText("Cannot parse amount!"));
                 return;
             }
-            EntityPlayerMP player=(EntityPlayerMP)sender;
             if(player.capabilities.isCreativeMode){
                 sender.addChatMessage(new ChatComponentText("Doesn't really work in creative mode!"));
             }else {

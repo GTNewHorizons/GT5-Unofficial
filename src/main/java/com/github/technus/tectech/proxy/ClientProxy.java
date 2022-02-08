@@ -38,6 +38,7 @@ public class ClientProxy extends CommonProxy {
 
         MinecraftForgeClient.registerItemRenderer(ElementalDefinitionContainer_EM.INSTANCE, RenderElementalName.INSTANCE);
         MinecraftForgeClient.registerItemRenderer(DebugElementalInstanceContainer_EM.INSTANCE, RenderElementalName.INSTANCE);
+        //MinecraftForgeClient.registerItemRenderer(ElementalDefinitionScanStorage_EM.INSTANCE, RenderElementalName.INSTANCE);
 
         if(Loader.isModLoaded("openmodularturrets")) {
             new TT_turret_loader().run();

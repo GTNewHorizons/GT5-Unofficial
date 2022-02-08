@@ -65,7 +65,7 @@ public class GT_MetaTileEntity_EM_essentiaDequantizer extends GT_MetaTileEntity_
                     .addElement('*', ofTileAdder(essentiaContainerCompat::check, StructureLibAPI.getBlockHint(),12))                    
                     .build();
 
-    private String outputEssentiaName;
+    private String outputEssentiaName= "";
     //endregion
 
     public GT_MetaTileEntity_EM_essentiaDequantizer(int aID, String aName, String aNameRegional) {
@@ -107,7 +107,7 @@ public class GT_MetaTileEntity_EM_essentiaDequantizer extends GT_MetaTileEntity_
             outputEssentiaName = essentiaContainerCompat.getEssentiaName(stack.getDefinition());
             Aspect aspect = Aspect.getAspect(outputEssentiaName);
             if (aspect == null) {
-                outputEssentiaName = null;
+                outputEssentiaName = "";
                 cleanStackEM_EM(inputHatchContainer.removeKey(stack.getDefinition()));
                 mEUt = (int) -V[7];
             } else {
@@ -135,7 +135,7 @@ public class GT_MetaTileEntity_EM_essentiaDequantizer extends GT_MetaTileEntity_
                 stopMachine();
             }
         }
-        outputEssentiaName = null;
+        outputEssentiaName = "";
     }
 
     @Override
@@ -166,7 +166,7 @@ public class GT_MetaTileEntity_EM_essentiaDequantizer extends GT_MetaTileEntity_
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setString("eOutputEssentia",outputEssentiaName);
+        aNBT.setString("eOutputEssentia", outputEssentiaName);
     }
 
     @Override

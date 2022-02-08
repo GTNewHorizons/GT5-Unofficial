@@ -10,7 +10,6 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
-import net.minecraftforge.common.DimensionManager;
 import thaumcraft.client.fx.bolt.FXLightningBolt;
 
 import java.io.*;

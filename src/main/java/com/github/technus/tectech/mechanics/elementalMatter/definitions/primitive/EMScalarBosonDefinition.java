@@ -3,6 +3,7 @@ package com.github.technus.tectech.mechanics.elementalMatter.definitions.primiti
 import com.github.technus.tectech.mechanics.elementalMatter.core.decay.EMDecay;
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry.EMDefinitionsRegistry;
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry.EMType;
+import com.github.technus.tectech.util.TT_Utility;
 
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMGaugeBosonDefinition.*;
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMLeptonDefinition.*;
@@ -17,7 +18,7 @@ public class EMScalarBosonDefinition extends EMBosonDefinition {
             boson_H__ = new EMScalarBosonDefinition("tt.keyword.Higgs", "H0", 125.09e9D, -2, 32,"H0");
 
     private EMScalarBosonDefinition(String name, String symbol, double mass, int color, int ID,String bind) {
-        super(name, symbol, 0, mass, 0, color, ID,bind);
+        super(name,TT_Utility.toSuperscript(symbol), 0, mass, 0, color, ID,bind);
     }
 
     public static void run(EMDefinitionsRegistry registry) {

@@ -1,7 +1,7 @@
 package com.github.technus.tectech.mechanics.elementalMatter.core.maps;
 
-import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.IEMStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.IEMStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry;
 
 import java.util.Map;
@@ -27,15 +27,15 @@ public interface IEMMapWrite<T extends IEMStack> extends IEMMapWriteExact<T> {
     }
 
     default boolean removeAmount(IEMDefinition def, double amountToConsume, double amountRequired){
-        T current=getBackingMap().get(def);
+        T current=get(def);
         if(current!=null){
             if(current.getAmount()>=amountRequired){
                 double newAmount=sub(current.getAmount(),amountToConsume);
                 if(IEMStack.isValidAmount(newAmount)){
                     current=(T)current.mutateAmount(newAmount);
-                    getBackingMap().put(current.getDefinition(),current);
+                    putReplace(current);
                 }else {
-                    getBackingMap().remove(current.getDefinition());
+                    removeKey(current.getDefinition());
                 }
                 return true;
             }
@@ -82,7 +82,7 @@ public interface IEMMapWrite<T extends IEMStack> extends IEMMapWriteExact<T> {
      * @return new mapping or null if merging actually removed stuff
      */
     default T putUnify(T stack) {
-        T target=getBackingMap().get(stack.getDefinition());
+        T target=get(stack.getDefinition());
         if(target==null) {
             putReplace(stack);
             return stack;
@@ -93,7 +93,7 @@ public interface IEMMapWrite<T extends IEMStack> extends IEMMapWriteExact<T> {
             putReplace(stack);
             return stack;
         }else {
-            removeKey(stack);
+            removeKey(stack.getDefinition());
             return null;
         }
     }
@@ -105,8 +105,8 @@ public interface IEMMapWrite<T extends IEMStack> extends IEMMapWriteExact<T> {
     }
 
     default void putUnifyAll(IEMMapRead<T> inTreeUnsafe) {
-        for (T in : inTreeUnsafe.values()) {
-            putUnify(in);
+        for (Map.Entry<IEMDefinition, T> in : inTreeUnsafe.entrySet()) {
+            putUnify(in.getValue());
         }
     }
 }

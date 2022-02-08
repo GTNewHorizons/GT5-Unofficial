@@ -26,7 +26,8 @@ import net.minecraftforge.fluids.IFluidHandler;
 import java.awt.*;
 import java.util.UUID;
 
-import static com.github.technus.tectech.mechanics.enderStorage.EnderWorldSavedData.*;
+import static com.github.technus.tectech.mechanics.enderStorage.EnderWorldSavedData.getEnderFluidContainer;
+import static com.github.technus.tectech.mechanics.enderStorage.EnderWorldSavedData.getEnderLinkTag;
 
 public class GT_Cover_TM_EnderFluidLink extends GT_CoverBehavior {
     private static final int L_PER_TICK = 8000;
