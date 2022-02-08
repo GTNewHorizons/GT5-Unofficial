@@ -20,8 +20,9 @@ public class MyItems extends Item {
         protected IIcon[] texture;
         private String tex;
         private String[] textureNames;
-        private String Name;
+        private final String Name;
         private List<String> tooltips = new ArrayList<>();
+        private List<String> tooltipses = new ArrayList<>();
 
         public MyItems(String name, CreativeTabs Tab){
                 this.setUnlocalizedName(name);
@@ -36,6 +37,15 @@ public class MyItems extends Item {
                 this.setHasSubtypes(true);
                 this.textureNames = textures;
                 this.Name = name;
+        }
+
+        public MyItems(String name, String[] tooltip, CreativeTabs Tab, String[] textures){
+                this.setUnlocalizedName(name);
+                this.setCreativeTab(Tab);
+                this.setHasSubtypes(true);
+                this.textureNames = textures;
+                this.Name = name;
+                this.tooltipses = Arrays.asList(tooltip);
         }
 
         public MyItems(String name, String tooltip, CreativeTabs Tab) {
@@ -107,6 +117,11 @@ public class MyItems extends Item {
         public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List p_77624_3_, boolean p_77624_4_) {
                 if (tooltips.size() > 0) {
                         p_77624_3_.addAll(tooltips);
+                }
+                if (tooltipses.size() > 0) {
+                        int meta = p_77624_1_.getItemDamage();
+                        if (tooltipses.size() - 1 < meta) meta = tooltipses.size() - 1;
+                        p_77624_3_.add(tooltipses.get(meta));
                 }
         }
 }

@@ -6,6 +6,7 @@ import goodgenerator.util.CrackRecipeAdder;
 import goodgenerator.util.ItemRefer;
 import goodgenerator.util.MaterialFix;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
+import goodgenerator.util.MyRecipeAdder;
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -1015,7 +1016,7 @@ public class RecipeLoader {
                             GT_OreDictUnificator.get(OrePrefixes.wireFine,Materials.Gallium,32),
                             GT_OreDictUnificator.get(OrePrefixes.spring,Materials.Indium,16),
                             GT_OreDictUnificator.get(OrePrefixes.gearGt,Materials.Osmiridium,16),
-                            new ItemStack(Ic2Items.iridiumPlate.getItem(),32),
+                            ItemRefer.IC2_Ir_Plate.get(32),
                             GT_OreDictUnificator.get(OrePrefixes.foil,Materials.CrystallineAlloy,64),
                             GT_OreDictUnificator.get(OrePrefixes.foil,Materials.CrystallineAlloy,64),
                             GT_OreDictUnificator.get(OrePrefixes.foil,Materials.CrystallineAlloy,64),
@@ -1396,18 +1397,21 @@ public class RecipeLoader {
                 }
         );
 
-        GT_ModHandler.addCraftingRecipe(
+        MyRecipeAdder.instance.addPreciseAssemblerRecipe(
+                new ItemStack[]{
+                        ItemList.Circuit_Board_Coated_Basic.get(1),
+                        ItemList.Circuit_Chip_ULPIC.get(1),
+                        ItemList.ULV_Coil.get(2),
+                        ItemList.Battery_RE_ULV_Tantalum.get(1)
+                },
+                new FluidStack[]{
+                        Materials.RedAlloy.getMolten(144),
+                        Materials.Aluminium.getMolten(144)
+                },
                 ItemRefer.Micro_Heater.get(1),
-                GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-                new Object[]{
-                        "PIP","UBU","CTC",
-                        'P', "plateQuintuplePaper",
-                        'I', ItemList.Circuit_Chip_ULPIC,
-                        'U', "circuitPrimitive",
-                        'B', ItemList.Circuit_Board_Coated_Basic,
-                        'C', ItemList.ULV_Coil,
-                        'T', ItemList.Battery_RE_ULV_Tantalum
-                }
+                120,
+                40,
+                1
         );
 
         GT_Values.RA.addAutoclaveRecipe(
@@ -1426,26 +1430,27 @@ public class RecipeLoader {
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sodium,4),
                 FluidRegistry.getFluidStack("ic2distilledwater", 1000),
                 ItemRefer.Quartz_Wafer.get(1),
-                3333,
+                10000,
                 1500,
                 30,
                 true
         );
 
-        CrackRecipeAdder.addUniversalCircuitAssemblerRecipe(
+        MyRecipeAdder.instance.addPreciseAssemblerRecipe(
                 new ItemStack[]{
                         ItemRefer.Quartz_Wafer.get(1),
                         ItemRefer.Special_Ceramics_Plate.get(2),
                         ItemRefer.Micro_Heater.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.EnergeticAlloy,4),
-                        ItemList.Circuit_Chip_ILC.get(4),
-                        GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Silver,2),
+                        ItemList.Circuit_Chip_ILC.get(4)
+                },
+                new FluidStack[]{
+                        Materials.EnergeticAlloy.getMolten(72),
+                        Materials.Silver.getMolten(18)
                 },
                 ItemRefer.Quartz_Crystal_Resonator.get(1),
-                36,
-                100,
-                120,
-                true
+                480,
+                40,
+                1
         );
 
         CrackRecipeAdder.addUniversalAssemblerRecipe(
@@ -1647,16 +1652,20 @@ public class RecipeLoader {
                 }
         );
 
-        GT_ModHandler.addCraftingRecipe(
+        MyRecipeAdder.instance.addPreciseAssemblerRecipe(
+                new ItemStack[] {
+                        ItemRefer.HiC_T2.get(2),
+                        ItemList.Emitter_EV.get(2),
+                        ItemRefer.Neutron_Source.get(1)
+                },
+                new FluidStack[] {
+                        Materials.StainlessSteel.getMolten(576),
+                        Materials.TungstenCarbide.getMolten(144)
+                },
                 Loaders.NA.copy(),
-                GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-                new Object[]{
-                        "PCP","ESE","PCP",
-                        'C', "circuitMaster",
-                        'P', GT_OreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel,1),
-                        'E', ItemList.Emitter_EV.get(1),
-                        'S', ItemRefer.Neutron_Source.get(1),
-                }
+                7680,
+                100,
+                1
         );
     }
 

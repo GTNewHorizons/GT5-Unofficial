@@ -69,6 +69,7 @@ public class Loaders {
     public static final Item upgradeEssentia = new MyItems("upgradeEssentia", GoodGenerator.GG, new String[]{GoodGenerator.MOD_ID+":upgradeEssentia/null", GoodGenerator.MOD_ID+":upgradeEssentia/air", GoodGenerator.MOD_ID+":upgradeEssentia/thermal", GoodGenerator.MOD_ID+":upgradeEssentia/unstable", GoodGenerator.MOD_ID+":upgradeEssentia/victus", GoodGenerator.MOD_ID+":upgradeEssentia/tainted", GoodGenerator.MOD_ID+":upgradeEssentia/mechanics", GoodGenerator.MOD_ID+":upgradeEssentia/spirit", GoodGenerator.MOD_ID+":upgradeEssentia/radiation", GoodGenerator.MOD_ID+":upgradeEssentia/electric"});
     public static final Item highEnergyMixture = new MyItems("highEnergyMixture", GoodGenerator.GG, new String[]{GoodGenerator.MOD_ID+":highEnergyMixture"});
     public static final Item saltyRoot = new MyItems("saltyRoot", GoodGenerator.GG, new String[]{GoodGenerator.MOD_ID+":saltyRoot"});
+    public static final Item huiCircuit = new MyItems("huiCircuit", addText("huiCircuit.tooltip", 5), GoodGenerator.GG, new String[]{GoodGenerator.MOD_ID+":ciruits/1", GoodGenerator.MOD_ID+":ciruits/2", GoodGenerator.MOD_ID+":ciruits/3", GoodGenerator.MOD_ID+":ciruits/4", GoodGenerator.MOD_ID+":ciruits/5"});
 
     public static final Block MAR_Casing = new Casing("MAR_Casing", new String[]{GoodGenerator.MOD_ID+":MAR_Casing"});
     public static final Block FRF_Casings = new Casing("FRF_Casing", new String[]{"gregtech:iconsets/MACHINE_CASING_MINING_BLACKPLUTONIUM"});
@@ -178,6 +179,7 @@ public class Loaders {
         GameRegistry.registerItem(fluidCore, "fluidCore", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(highEnergyMixture, "highEnergyMixture", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(saltyRoot, "saltyRoot", GoodGenerator.MOD_ID);
+        GameRegistry.registerItem(huiCircuit, "huiCircuit", GoodGenerator.MOD_ID);
     }
 
     public static void compactMod() {

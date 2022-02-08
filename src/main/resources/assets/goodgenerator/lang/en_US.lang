@@ -104,6 +104,11 @@ item.upgradeEssentia.8.name=§aEssentia Generator: Radiation§r
 item.upgradeEssentia.9.name=§3Essentia Generator: Electric§r
 item.highEnergyMixture.0.name=High Energy Mixture
 item.saltyRoot.0.name=Salty Root
+item.huiCircuit.0.name=Hi-Computation Station MK-I
+item.huiCircuit.1.name=Hi-Computation Station MK-II
+item.huiCircuit.2.name=Hi-Computation Station MK-III
+item.huiCircuit.3.name=Hi-Computation Station MK-IV Prototype
+item.huiCircuit.4.name=Hi-Computation Station MK-V Finaltype
 
 #Crops
 crops.saltroot=Salty Root
@@ -122,6 +127,11 @@ fuelrodheat.tooltip.2=Has Mox Behaviour
 depletedfuelrod.tooltip.0=Depleted
 YOTTankCell.tooltip.0=Capacity:
 hatchTier.tooltip.0=Hatch Tier:
+huiCircuit.tooltip.0=§b93015 TFlop/s§r
+huiCircuit.tooltip.1=§e76M Processor Units§r
+huiCircuit.tooltip.2=§aInvalidate RSA§r
+huiCircuit.tooltip.3=§c56th Mersenne Prime§r
+huiCircuit.tooltip.4=§5Paradox§r
 
 #Fluids
 fluid.lightlyCrackedNaquadahGas=Lightly Cracked Naquadah Gas

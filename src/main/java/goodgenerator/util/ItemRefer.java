@@ -2,6 +2,7 @@ package goodgenerator.util;
 
 import goodgenerator.blocks.tileEntity.ExtremeHeatExchanger;
 import gregtech.api.util.GT_Utility;
+import ic2.core.Ic2Items;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -81,6 +82,13 @@ public final class ItemRefer {
     public static ItemRefer Essentia_Upgrade_Electric = getItemStack(upgradeEssentia, 9);
     public static ItemRefer High_Energy_Mixture = getItemStack(highEnergyMixture);
     public static ItemRefer Salty_Root = getItemStack(saltyRoot);
+    public static ItemRefer HiC_T1 = getItemStack(huiCircuit, 0);
+    public static ItemRefer HiC_T2 = getItemStack(huiCircuit, 1);
+    public static ItemRefer HiC_T3 = getItemStack(huiCircuit, 2);
+    public static ItemRefer HiC_T4 = getItemStack(huiCircuit, 3);
+    public static ItemRefer HiC_T5 = getItemStack(huiCircuit, 4);
+    public static ItemRefer IC2_Ir_Plate = getItemStack(Ic2Items.iridiumPlate);
+    public static ItemRefer IC2_Glass = getItemStack(Ic2Items.reinforcedGlass);
 
     public static ItemRefer Field_Restriction_Casing = getItemStack(MAR_Casing);
     public static ItemRefer Naquadah_Fuel_Refinery_Casing = getItemStack(FRF_Casings);

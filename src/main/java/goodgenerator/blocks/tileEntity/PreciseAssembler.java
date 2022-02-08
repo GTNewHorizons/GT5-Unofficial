@@ -362,7 +362,7 @@ public class PreciseAssembler extends GT_MetaTileEntity_MultiblockBase_EM implem
 
     @Override
     public int getPollutionPerSecond(ItemStack aStack){
-        return 120;
+        return 780;
     }
 
     @Override

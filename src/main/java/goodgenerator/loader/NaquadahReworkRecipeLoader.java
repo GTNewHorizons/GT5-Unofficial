@@ -1,6 +1,7 @@
 package goodgenerator.loader;
 
 import goodgenerator.crossmod.LoadedList;
+import goodgenerator.items.MyMaterial;
 import goodgenerator.main.GoodGenerator;
 import goodgenerator.util.ItemRefer;
 import goodgenerator.util.MyRecipeAdder;
@@ -38,6 +39,15 @@ public class NaquadahReworkRecipeLoader {
     public static void RecipeLoad(){
 
         if (!EnableNaquadahRework) return;
+
+        //Fix shit
+        GT_Values.RA.addPulveriserRecipe(
+                lowQualityNaquadriaSolution.get(OrePrefixes.cell, 1),
+                new ItemStack[]{Materials.Tin.getDust(2)},
+                new int[]{10000},
+                334,
+                4
+        );
 
         //Naquadah Rework Line
         GT_Values.RA.addBlastRecipe(

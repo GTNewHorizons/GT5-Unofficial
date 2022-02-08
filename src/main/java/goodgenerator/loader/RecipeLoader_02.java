@@ -45,6 +45,9 @@ public class RecipeLoader_02 {
         CrackRecipeAdder.reAddBlastRecipe(MyMaterial.marM200, 220, 7680, 5000, false);
         CrackRecipeAdder.reAddBlastRecipe(MyMaterial.signalium, 1600, 30720, 4000, true);
         CrackRecipeAdder.reAddBlastRecipe(MyMaterial.lumiium, 1600, 30720, 4000, true);
+        CrackRecipeAdder.reAddBlastRecipe(MyMaterial.artheriumSn, 500, 122880, 6500, true);
+        CrackRecipeAdder.reAddBlastRecipe(MyMaterial.titaniumBetaC, 400, 7680, 5300, true);
+        CrackRecipeAdder.reAddBlastRecipe(MyMaterial.dalisenite, 800, 491520, 8700, true);
 
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
@@ -1018,6 +1021,169 @@ public class RecipeLoader_02 {
                 100,
                 30
         );
+
+        if (LoadedList.GTNH_CORE) {
+            CrackRecipeAdder.addUniversalAssemblerRecipe(
+                    new ItemStack[]{
+                            ItemList.Circuit_Board_Multifiberglass_Elite.get(1),
+                            GT_ModHandler.getModItem("dreamcraft", "item.EngravedGoldChip", 16),
+                            ItemList.Circuit_Chip_SoC2.get(8),
+                            ItemList.Circuit_Chip_NOR.get(32),
+                            MyMaterial.signalium.get(OrePrefixes.bolt, 32),
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Aluminium, 8),
+                            Ic2Items.reactorVent
+                    },
+                    ItemRefer.HiC_T1.get(1),
+                    288,
+                    1200,
+                    7680,
+                    false
+            );
+
+            GT_Values.RA.addAssemblerRecipe(
+                    new ItemStack[] {
+                            ItemList.Robot_Arm_IV.get(4),
+                            ItemRefer.HiC_T1.get(4),
+                            ItemList.Tool_DataOrb.get(3),
+                            GT_OreDictUnificator.get(OrePrefixes.cableGt08, Materials.Titanium, 4),
+                            MyMaterial.adamantiumAlloy.get(OrePrefixes.gearGt, 4),
+                            MyMaterial.marM200.get(OrePrefixes.plateDouble, 2),
+                            ItemRefer.IC2_Ir_Plate.get(2),
+                            MyMaterial.lumiium.get(OrePrefixes.bolt, 48),
+                    },
+                    Materials.Palladium.getMolten(1152),
+                    ItemRefer.Precise_Assembler.get(1),
+                    1800,
+                    7680,
+                    false
+            );
+
+            GT_Values.RA.addAssemblerRecipe(
+                    new ItemStack[] {
+                            ItemList.Casing_ZPM.get(3),
+                            ItemList.Robot_Arm_EV.get(2),
+                            GT_OreDictUnificator.get(OrePrefixes.cableGt04, MyMaterial.lumiium.getBridgeMaterial(), 2),
+                            MyMaterial.marCeM200.get(OrePrefixes.plateDouble, 2),
+                            ItemRefer.HiC_T1.get(1),
+                            GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Draconium, 32),
+                            MyMaterial.titaniumBetaC.get(OrePrefixes.gearGtSmall, 8)
+                    },
+                    Materials.BlackSteel.getMolten(576),
+                    ItemRefer.Precise_Electronic_Unit_T1.get(2),
+                    800,
+                    7680,
+                    false
+            );
+
+            MyRecipeAdder.instance.addPreciseAssemblerRecipe(
+                    new ItemStack[] {
+                            ItemRefer.HiC_T1.get(2),
+                            GT_ModHandler.getModItem("dreamcraft", "item.EngravedDiamondCrystalChip", 8),
+                            ItemList.Circuit_Chip_NAND.get(16),
+                            Ic2Items.reactorVentCore
+                    },
+                    new FluidStack[] {
+                            Materials.Plastic.getMolten(288),
+                            MyMaterial.signalium.getMolten(144),
+                            MyMaterial.lumiium.getMolten(72),
+                            Materials.Enderium.getMolten(72)
+                    },
+                    ItemRefer.HiC_T2.get(1),
+                    30720,
+                    100,
+                    1
+            );
+
+            MyRecipeAdder.instance.addPreciseAssemblerRecipe(
+                    new ItemStack[] {
+                            ItemRefer.HiC_T2.get(2),
+                            ItemList.Circuit_Parts_Crystal_Chip_Master.get(8),
+                            ItemList.Circuit_Chip_CrystalSoC2.get(1),
+                            Ic2Items.reactorVentDiamond
+                    },
+                    new FluidStack[] {
+                            MyMaterial.adamantiumAlloy.getMolten(576),
+                            MyMaterial.signalium.getMolten(288),
+                            MyMaterial.lumiium.getMolten(144),
+                            Materials.TungstenCarbide.getMolten(72)
+                    },
+                    ItemRefer.HiC_T3.get(1),
+                    122880,
+                    100,
+                    2
+            );
+
+            MyRecipeAdder.instance.addPreciseAssemblerRecipe(
+                    new ItemStack[] {
+                            ItemRefer.HiC_T3.get(2),
+                            GT_ModHandler.getModItem("dreamcraft", "item.EngravedEnergyChip", 8),
+                            ItemList.Circuit_Chip_QuantumCPU.get(16),
+                            Ic2Items.reactorVentGold
+                    },
+                    new FluidStack[] {
+                            MyMaterial.marM200.getMolten(1152),
+                            MyMaterial.signalium.getMolten(576),
+                            MyMaterial.lumiium.getMolten(288),
+                            MyMaterial.artheriumSn.getMolten(144)
+                    },
+                    ItemRefer.HiC_T4.get(1),
+                    491520,
+                    100,
+                    3
+            );
+
+            MyRecipeAdder.instance.addPreciseAssemblerRecipe(
+                    new ItemStack[] {
+                            ItemRefer.HiC_T4.get(2),
+                            GT_ModHandler.getModItem("dreamcraft", "item.EngravedManyullynCrystalChip", 8),
+                            ItemList.Circuit_Chip_BioCPU.get(1),
+                            Ic2Items.reactorVentSpread
+                    },
+                    new FluidStack[] {
+                            MyMaterial.titaniumBetaC.getMolten(1728),
+                            MyMaterial.signalium.getMolten(1152),
+                            MyMaterial.lumiium.getMolten(576),
+                            MyMaterial.dalisenite.getMolten(288)
+                    },
+                    ItemRefer.HiC_T5.get(1),
+                    1966080,
+                    100,
+                    3
+            );
+
+            GT_Values.RA.addAssemblerRecipe(
+                    new ItemStack[]{
+                            GT_ModHandler.getModItem("dreamcraft", "gt.blockcasingsNH", 3, 12),
+                            ItemList.Robot_Arm_LuV.get(2),
+                            GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.ElectrumFlux, 4),
+                            ItemRefer.HiC_T2.get(1),
+                            ItemRefer.Precise_Electronic_Unit_T1.get(1),
+                            MyMaterial.marCeM200.get(OrePrefixes.bolt, 32),
+                            MyMaterial.artheriumSn.get(OrePrefixes.gearGtSmall, 8),
+                    },
+                    MyMaterial.adamantiumAlloy.getMolten(1152),
+                    ItemRefer.Precise_Electronic_Unit_T2.get(4),
+                    4800,
+                    122880
+            );
+
+            GT_Values.RA.addAssemblerRecipe(
+                    new ItemStack[]{
+                            ItemList.Casing_MAX.get(3),
+                            ItemList.Field_Generator_ZPM.get(2),
+                            GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.Bedrockium, 4),
+                            ItemRefer.HiC_T3.get(1),
+                            ItemRefer.Precise_Electronic_Unit_T2.get(1),
+                            MyMaterial.titaniumBetaC.get(OrePrefixes.bolt, 32),
+                            MyMaterial.dalisenite.get(OrePrefixes.gearGtSmall, 8),
+                    },
+                    MyMaterial.artheriumSn.getMolten(1152),
+                    ItemRefer.Precise_Electronic_Unit_T3.get(4),
+                    4800,
+                    491520
+            );
+        }
+
     }
 
     public static void InitLoadRecipe() {

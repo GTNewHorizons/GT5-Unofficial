@@ -1192,6 +1192,53 @@ public class MyMaterial implements Runnable {
             new Pair<>(lumiinessence, 2)
     );
 
+    public static final Werkstoff artheriumSn = new Werkstoff(
+            new short[]{0x60,0x36,0xf7},
+            "Artherium-Sn",
+            new Werkstoff.Stats().setBlastFurnace(true).setMeltingPoint(6500).setCentrifuge(true),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().onlyDust().addMolten().addMetalItems().addCraftingMetalWorkingItems().addMixerRecipes((short) 6),
+            OffsetID + 101,
+            TextureSet.SET_SHINY,
+            new Pair<>(adamantiumAlloy, 12),
+            new Pair<>(orundum, 9),
+            new Pair<>(Tin, 8),
+            new Pair<>(Arsenic, 7),
+            new Pair<>(Caesium, 4),
+            new Pair<>(Osmiridium, 3)
+    );
+
+    public static final Werkstoff titaniumBetaC = new Werkstoff(
+            new short[]{0xc7,0x2f,0xcc},
+            "Tanmolyium Beta-C",
+            new Werkstoff.Stats().setBlastFurnace(true).setMeltingPoint(5300).setCentrifuge(true),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().onlyDust().addMolten().addMetalItems().addCraftingMetalWorkingItems().addMixerRecipes((short) 5),
+            OffsetID + 102,
+            TextureSet.SET_METALLIC,
+            new Pair<>(Titanium, 5),
+            new Pair<>(Molybdenum, 5),
+            new Pair<>(Vanadium, 2),
+            new Pair<>(Chrome, 3),
+            new Pair<>(Aluminium, 1)
+    );
+
+    public static final Werkstoff dalisenite = new Werkstoff(
+            new short[]{0xb0,0xb8,0x12},
+            "Dalisenite",
+            new Werkstoff.Stats().setBlastFurnace(true).setMeltingPoint(8700).setCentrifuge(true),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().onlyDust().addMolten().addMetalItems().addCraftingMetalWorkingItems().addMixerRecipes((short) 6),
+            OffsetID + 103,
+            TextureSet.SET_SHINY,
+            new Pair<>(titaniumBetaC, 14),
+            new Pair<>(Tungsten, 10),
+            new Pair<>(NiobiumTitanium, 9),
+            new Pair<>(WerkstoffLoader.LuVTierMaterial, 8),
+            new Pair<>(Quantium, 7),
+            new Pair<>(Erbium, 3)
+    );
+
     @Override
     public void run() { }
 }
