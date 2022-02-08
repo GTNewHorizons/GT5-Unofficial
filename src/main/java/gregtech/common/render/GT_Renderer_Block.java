@@ -477,9 +477,9 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
         for (int iX = 0; iX < 4; ++iX) {
             for (int iY = 0; iY < 4; ++iY) {
                 for (int iZ = 0; iZ < 4; ++iZ) {
-                    double bX = x + (iX + 0.5D) / 4.0;
-                    double bY = y + (iY + 0.5D) / 4.0;
-                    double bZ = z + (iZ + 0.5D) / 4.0;
+                    double bX = x + (iX + 0.5) / 4.0;
+                    double bY = y + (iY + 0.5) / 4.0;
+                    double bZ = z + (iZ + 0.5) / 4.0;
                     effectRenderer.addEffect((new EntityDiggingFX(world, bX, bY, bZ, bX - x - 0.5, bY - y - 0.5, bZ - z - 0.5, block, block.getDamageValue(world, x, y, z))).applyColourMultiplier(x, y, z));
                 }
             }

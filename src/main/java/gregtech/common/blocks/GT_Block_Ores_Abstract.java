@@ -106,7 +106,7 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
     }
 
     public String getLocalizedNameFormat(Materials aMaterial) {
-    	switch (aMaterial.mName) {
+        switch (aMaterial.mName) {
         case "InfusedAir":
         case "InfusedDull":
         case "InfusedEarth":
@@ -131,7 +131,7 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
             return "%material";
         default:
             return "%material" + OrePrefixes.ore.mLocalizedMaterialPost;
-    	}
+        }
     }
 
     public String getLocalizedName(Materials aMaterial) {
@@ -243,7 +243,7 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
     }
 
     @Override
-    public IIcon getIcon(int side, int meta) {
+    public IIcon getIcon(int aSide, int aMeta) {
         return Blocks.stone.getIcon(0, 0);
     }
 
@@ -255,15 +255,15 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
     @Override
     @SideOnly(Side.CLIENT)
     public boolean addHitEffects(World worldObj, MovingObjectPosition target, EffectRenderer effectRenderer) {
-    	GT_Renderer_Block.addHitEffects(effectRenderer, this, worldObj, target.blockX, target.blockY, target.blockZ, target.sideHit);
-    	return true;
+        GT_Renderer_Block.addHitEffects(effectRenderer, this, worldObj, target.blockX, target.blockY, target.blockZ, target.sideHit);
+        return true;
     }
     
     @Override
     @SideOnly(Side.CLIENT)
     public boolean addDestroyEffects(World world, int x, int y, int z, int meta, EffectRenderer effectRenderer) {
-    	GT_Renderer_Block.addDestroyEffects(effectRenderer, this, world, x, y, z);
-    	return true;
+        GT_Renderer_Block.addDestroyEffects(effectRenderer, this, world, x, y, z);
+        return true;
     }
 
     @Override
@@ -310,7 +310,7 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
     public abstract ITexture[] getTextureSet(); //Must have 16 entries.
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-	@Override
+    @Override
     public void getSubBlocks(Item aItem, CreativeTabs aTab, List aList) {
         for (int i = 0; i < GregTech_API.sGeneratedMaterials.length; i++) {
             Materials tMaterial = GregTech_API.sGeneratedMaterials[i];
