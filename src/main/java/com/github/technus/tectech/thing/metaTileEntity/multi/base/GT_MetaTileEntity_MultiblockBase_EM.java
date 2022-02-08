@@ -44,6 +44,7 @@ import net.minecraftforge.fluids.FluidStack;
 import java.util.ArrayList;
 
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
+import static com.github.technus.tectech.loader.TecTechConfig.POWERLESS_MODE;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.util.CommonValues.*;
 import static com.github.technus.tectech.util.DoubleCount.div;
@@ -64,7 +65,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     //Sound resource - same as with screen but override getActivitySound
     public final static ResourceLocation activitySound = new ResourceLocation(Reference.MODID + ":fx_lo_freq");
     @SideOnly(Side.CLIENT)
-    private SoundLoop activitySoundLoop;
+    private             SoundLoop        activitySoundLoop;
     //endregion
 
     //region HATCHES ARRAYS - they hold info about found hatches, add hatches to them... (auto structure magic does it tho)
@@ -72,19 +73,19 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     //HATCHES!!!, should be added and removed in check machine
 
     //EM in/out
-    protected ArrayList<GT_MetaTileEntity_Hatch_InputElemental> eInputHatches = new ArrayList<>();
-    protected ArrayList<GT_MetaTileEntity_Hatch_OutputElemental> eOutputHatches = new ArrayList<>();
+    protected ArrayList<GT_MetaTileEntity_Hatch_InputElemental>    eInputHatches     = new ArrayList<>();
+    protected ArrayList<GT_MetaTileEntity_Hatch_OutputElemental>   eOutputHatches    = new ArrayList<>();
     //EM overflow output
-    protected ArrayList<GT_MetaTileEntity_Hatch_OverflowElemental> eMufflerHatches = new ArrayList<>();
+    protected ArrayList<GT_MetaTileEntity_Hatch_OverflowElemental> eMufflerHatches   = new ArrayList<>();
     //extra hatches
-    protected ArrayList<GT_MetaTileEntity_Hatch_Param> eParamHatches = new ArrayList<>();
-    protected ArrayList<GT_MetaTileEntity_Hatch_Uncertainty> eUncertainHatches = new ArrayList<>();
+    protected ArrayList<GT_MetaTileEntity_Hatch_Param>             eParamHatches     = new ArrayList<>();
+    protected ArrayList<GT_MetaTileEntity_Hatch_Uncertainty>       eUncertainHatches = new ArrayList<>();
     //multi amp hatches in/out
-    protected ArrayList<GT_MetaTileEntity_Hatch_EnergyMulti> eEnergyMulti = new ArrayList<>();
-    protected ArrayList<GT_MetaTileEntity_Hatch_DynamoMulti> eDynamoMulti = new ArrayList<>();
+    protected ArrayList<GT_MetaTileEntity_Hatch_EnergyMulti>       eEnergyMulti      = new ArrayList<>();
+    protected ArrayList<GT_MetaTileEntity_Hatch_DynamoMulti>       eDynamoMulti      = new ArrayList<>();
     //data hatches
-    protected ArrayList<GT_MetaTileEntity_Hatch_InputData> eInputData = new ArrayList<>();
-    protected ArrayList<GT_MetaTileEntity_Hatch_OutputData> eOutputData = new ArrayList<>();
+    protected ArrayList<GT_MetaTileEntity_Hatch_InputData>         eInputData        = new ArrayList<>();
+    protected ArrayList<GT_MetaTileEntity_Hatch_OutputData>        eOutputData       = new ArrayList<>();
 
     //endregion
 
@@ -142,7 +143,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     //front rotation val
     private IAlignmentLimits alignmentLimits = IAlignmentLimits.UNLIMITED;
-    private ExtendedFacing extendedFacing = ExtendedFacing.DEFAULT;
+    private ExtendedFacing   extendedFacing  = ExtendedFacing.DEFAULT;
     //endregion
 
     protected GT_MetaTileEntity_MultiblockBase_EM(int aID, String aName, String aNameRegional) {
@@ -172,8 +173,8 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     @Override
     public void setExtendedFacing(ExtendedFacing newExtendedFacing) {
-        if(extendedFacing!=newExtendedFacing){
-            extendedFacing=newExtendedFacing;
+        if (extendedFacing != newExtendedFacing) {
+            extendedFacing = newExtendedFacing;
             IGregTechTileEntity base = getBaseMetaTileEntity();
             mMachine = false;
             if (getBaseMetaTileEntity().isServerSide()) {
@@ -183,7 +184,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                 StructureLibAPI.sendAlignment((IAlignmentProvider) base,
                         new NetworkRegistry.TargetPoint(base.getWorld().provider.dimensionId,
                                 base.getXCoord(), base.getYCoord(), base.getZCoord(), 512));
-            }else{
+            } else {
                 base.issueTextureUpdate();
             }
         }
@@ -201,20 +202,21 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     /**
      * Gets structure
+     *
      * @return STATIC INSTANCE OF STRUCTURE
      */
     public abstract IStructureDefinition<? extends GT_MetaTileEntity_MultiblockBase_EM> getStructure_EM();
 
     @SuppressWarnings("unchecked")
-    private IStructureDefinition<GT_MetaTileEntity_MultiblockBase_EM> getStructure_EM_Internal(){
-        return (IStructureDefinition<GT_MetaTileEntity_MultiblockBase_EM>)getStructure_EM();
+    private IStructureDefinition<GT_MetaTileEntity_MultiblockBase_EM> getStructure_EM_Internal() {
+        return (IStructureDefinition<GT_MetaTileEntity_MultiblockBase_EM>) getStructure_EM();
     }
 
-    public final boolean structureCheck_EM(String piece,int horizontalOffset, int verticalOffset, int depthOffset) {
+    public final boolean structureCheck_EM(String piece, int horizontalOffset, int verticalOffset, int depthOffset) {
         IGregTechTileEntity baseMetaTileEntity = getBaseMetaTileEntity();
-        return getStructure_EM_Internal().check(this,piece, baseMetaTileEntity.getWorld(),getExtendedFacing(),
-                baseMetaTileEntity.getXCoord(),baseMetaTileEntity.getYCoord(),baseMetaTileEntity.getZCoord(),
-                horizontalOffset,verticalOffset,depthOffset,!mMachine);
+        return getStructure_EM_Internal().check(this, piece, baseMetaTileEntity.getWorld(), getExtendedFacing(),
+                baseMetaTileEntity.getXCoord(), baseMetaTileEntity.getYCoord(), baseMetaTileEntity.getZCoord(),
+                horizontalOffset, verticalOffset, depthOffset, !mMachine);
     }
 
     public final boolean structureBuild_EM(String piece, int horizontalOffset, int verticalOffset, int depthOffset, ItemStack trigger, boolean hintsOnly) {
@@ -348,7 +350,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     @Override
     public String[] getInfoData() {//TODO Do it
         long storedEnergy = 0;
-        long maxEnergy = 0;
+        long maxEnergy    = 0;
         for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
             if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
                 storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
@@ -626,9 +628,9 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
      * @return available data
      */
     protected long getAvailableData_EM() {
-        long result = 0;
+        long                result             = 0;
         IGregTechTileEntity baseMetaTileEntity = getBaseMetaTileEntity();
-        Vec3Impl            pos                = new Vec3Impl(baseMetaTileEntity.getXCoord(),baseMetaTileEntity.getYCoord(),baseMetaTileEntity.getZCoord());
+        Vec3Impl            pos                = new Vec3Impl(baseMetaTileEntity.getXCoord(), baseMetaTileEntity.getYCoord(), baseMetaTileEntity.getZCoord());
         for (GT_MetaTileEntity_Hatch_InputData in : eInputData) {
             if (in.q != null) {
                 Long value = in.q.contentIfNotInTrace(pos);
@@ -700,8 +702,8 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         aNBT.setByte("eCertainM", eCertainMode);
         aNBT.setByte("eCertainS", eCertainStatus);
         aNBT.setByte("eMinRepair", minRepairStatus);
-        aNBT.setByte("eRotation", (byte)extendedFacing.getRotation().getIndex());
-        aNBT.setByte("eFlip", (byte)extendedFacing.getFlip().getIndex());
+        aNBT.setByte("eRotation", (byte) extendedFacing.getRotation().getIndex());
+        aNBT.setByte("eFlip", (byte) extendedFacing.getFlip().getIndex());
         aNBT.setBoolean("eParam", eParameters);
         aNBT.setBoolean("ePass", ePowerPass);
         aNBT.setBoolean("ePowerPassCover", ePowerPassCover);
@@ -784,14 +786,14 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         eMaxAmpereGen = aNBT.getLong("eGenRating");
         maxEUinputMin = aNBT.getLong("eMaxEUmin");
         maxEUinputMax = aNBT.getLong("eMaxEUmax");
-        eAmpereFlow = aNBT.hasKey("eRating")?aNBT.getLong("eRating"):1;
+        eAmpereFlow = aNBT.hasKey("eRating") ? aNBT.getLong("eRating") : 1;
         eMaxAmpereFlow = aNBT.getLong("eMaxA");
         eRequiredData = aNBT.getLong("eDataR");
         eAvailableData = aNBT.getLong("eDataA");
         eCertainMode = aNBT.getByte("eCertainM");
         eCertainStatus = aNBT.getByte("eCertainS");
-        minRepairStatus = aNBT.hasKey("eMinRepair")?aNBT.getByte("eMinRepair"):3;
-        extendedFacing=ExtendedFacing.of(
+        minRepairStatus = aNBT.hasKey("eMinRepair") ? aNBT.getByte("eMinRepair") : 3;
+        extendedFacing = ExtendedFacing.of(
                 ForgeDirection.getOrientation(getBaseMetaTileEntity().getFrontFacing()),
                 Rotation.byIndex(aNBT.getByte("eRotation")),
                 Flip.byIndex(aNBT.getByte("eFlip")));
@@ -827,7 +829,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
             for (int i = 0; i < outputEM.length; i++) {
                 if (compound.hasKey(Integer.toString(i))) {
                     try {
-                        outputEM[i] = EMInstanceStackMap.fromNBT(TecTech.definitionsRegistry,compound.getCompoundTag(Integer.toString(i)));
+                        outputEM[i] = EMInstanceStackMap.fromNBT(TecTech.definitionsRegistry, compound.getCompoundTag(Integer.toString(i)));
                     } catch (EMException e) {
                         if (DEBUG_MODE) {
                             e.printStackTrace();
@@ -1202,7 +1204,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                                     mProgresstime = 0;
                                     mMaxProgresstime = 0;
                                     mEfficiencyIncrease = 0;
-                                    
+
                                     if (aBaseMetaTileEntity.isAllowedToWork()) {
                                         if (checkRecipe(mInventory[1])) {
                                             mEfficiency = Math.max(0, min(mEfficiency + mEfficiencyIncrease, getMaxEfficiency(mInventory[1]) - (getIdealStatus() - getRepairStatus()) * 1000));
@@ -1304,16 +1306,16 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     }
 
     protected void maintenance_EM() {
-        for (GT_MetaTileEntity_Hatch_Maintenance tHatch : mMaintenanceHatches) {
-            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
-                if (GT_MetaTileEntity_MultiBlockBase.disableMaintenance) {
-                    mWrench = true;
-                    mScrewdriver = true;
-                    mSoftHammer = true;
-                    mHardHammer = true;
-                    mSolderingTool = true;
-                    mCrowbar = true;
-                } else {
+        if (GT_MetaTileEntity_MultiBlockBase.disableMaintenance) {
+            mWrench = true;
+            mScrewdriver = true;
+            mSoftHammer = true;
+            mHardHammer = true;
+            mSolderingTool = true;
+            mCrowbar = true;
+        } else {
+            for (GT_MetaTileEntity_Hatch_Maintenance tHatch : mMaintenanceHatches) {
+                if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
                     if (tHatch.mAuto && !(mWrench && mScrewdriver && mSoftHammer && mHardHammer && mSolderingTool && mCrowbar)) {
                         tHatch.autoMaintainance();
                     }
@@ -1520,7 +1522,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     }
 
     protected void dischargeController_EM(IGregTechTileEntity aBaseMetaTileEntity) {
-        if(ePowerPass && getEUVar() > getMinimumStoredEU()){
+        if (ePowerPass && getEUVar() > getMinimumStoredEU()) {
             powerPass(aBaseMetaTileEntity);
         }
     }
@@ -1580,7 +1582,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                 break;
             }
             if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
-                euVar = Math.min(tHatch.maxEUInput() * tHatch.maxAmperesIn(),tHatch.getEUVar());
+                euVar = Math.min(tHatch.maxEUInput() * tHatch.maxAmperesIn(), tHatch.getEUVar());
                 if (tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(euVar, false)) {
                     setEUVar(getEUVar() + euVar);
                 }
@@ -1591,7 +1593,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                 break;
             }
             if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
-                euVar = Math.min(tHatch.maxEUInput() * tHatch.maxAmperesIn(),tHatch.getEUVar());
+                euVar = Math.min(tHatch.maxEUInput() * tHatch.maxAmperesIn(), tHatch.getEUVar());
                 if (tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(euVar, false)) {
                     setEUVar(getEUVar() + euVar);
                 }
@@ -1654,6 +1656,9 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         if (allowProduction && euFlow > 0) {
             addEnergyOutput_EM((long) mEUt * (long) mEfficiency / getMaxEfficiency(aStack), eAmpereFlow);
         } else if (euFlow < 0) {
+            if (POWERLESS_MODE) {
+                return true;
+            }
             if (!drainEnergyInput_EM(mEUt, (long) mEUt * getMaxEfficiency(aStack) / Math.max(1000L, mEfficiency), eAmpereFlow)) {
                 criticalStopMachine();
                 return false;
@@ -1667,6 +1672,9 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         if (allowProduction && euFlow > 0) {
             addEnergyOutput_EM((long) mEUt * (long) mEfficiency / getMaxEfficiency(aStack), eAmpereFlow);
         } else if (euFlow < 0) {
+            if (POWERLESS_MODE) {
+                return true;
+            }
             if (!drainEnergyInput((long) mEUt * getMaxEfficiency(aStack) / Math.max(1000L, mEfficiency), eAmpereFlow)) {
                 criticalStopMachine();
                 return false;
@@ -1711,7 +1719,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     @Deprecated
     @Override
     public final boolean addEnergyOutput(long eu) {
-        return addEnergyOutput_EM(eu,1);
+        return addEnergyOutput_EM(eu, 1);
     }
 
     public boolean addEnergyOutput_EM(long EU, long Amperes) {
@@ -1764,24 +1772,24 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     @Deprecated
     @Override
     public final boolean drainEnergyInput(long eu) {
-        return drainEnergyInput_EM(0,eu,1);
+        return drainEnergyInput_EM(0, eu, 1);
     }
 
     public boolean drainEnergyInput_EM(long EUtTierVoltage, long EUtEffective, long Amperes) {
         long EUuse = EUtEffective * Amperes;
-        if(EUuse==0){
+        if (EUuse == 0) {
             return true;
         }
-        if(maxEUinputMin==0){
+        if (maxEUinputMin == 0) {
             return false;
         }
         if (EUuse < 0) {
             EUuse = -EUuse;
         }
         if (EUuse > getEUVar() || //not enough power
-                (EUtTierVoltage==0? EUuse> getMaxInputEnergy():
+                (EUtTierVoltage == 0 ? EUuse > getMaxInputEnergy() :
                         (EUtTierVoltage > maxEUinputMax) || //TIER IS BASED ON BEST HATCH! not total EUtEffective input
-                        (EUtTierVoltage * Amperes - 1) / maxEUinputMin + 1 > eMaxAmpereFlow)) {// EUuse==0? --> (EUuse - 1) / maxEUinputMin + 1 = 1! //if not too much A
+                                (EUtTierVoltage * Amperes - 1) / maxEUinputMin + 1 > eMaxAmpereFlow)) {// EUuse==0? --> (EUuse - 1) / maxEUinputMin + 1 = 1! //if not too much A
             if (DEBUG_MODE) {
                 TecTech.LOGGER.debug("L1 " + EUuse + ' ' + getEUVar() + ' ' + (EUuse > getEUVar()));
                 TecTech.LOGGER.debug("L2 " + EUtEffective + ' ' + maxEUinputMax + ' ' + (EUtEffective > maxEUinputMax));
@@ -1797,10 +1805,10 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     public boolean drainEnergyInput(long EUtEffective, long Amperes) {
         long EUuse = EUtEffective * Amperes;
-        if(EUuse==0){
+        if (EUuse == 0) {
             return true;
         }
-        if(maxEUinputMin==0){
+        if (maxEUinputMin == 0) {
             return false;
         }
         if (EUuse < 0) {
@@ -1822,7 +1830,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
             mMaxProgresstime = time;
             return true;
         }
-        long tempEUt = Math.max(EU, V[1]);
+        long tempEUt  = Math.max(EU, V[1]);
         long tempTier = maxEUinputMax >> 2;
         while (tempEUt < tempTier) {
             tempEUt <<= 2;
@@ -1865,12 +1873,12 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         long energy = 0;
         for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
             if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
-                energy += tHatch.maxEUInput()*tHatch.maxAmperesIn();
+                energy += tHatch.maxEUInput() * tHatch.maxAmperesIn();
             }
         }
         for (GT_MetaTileEntity_Hatch_EnergyMulti tHatch : eEnergyMulti) {
             if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
-                energy += tHatch.maxEUInput()*tHatch.maxAmperesIn();
+                energy += tHatch.maxEUInput() * tHatch.maxAmperesIn();
             }
         }
         return energy;
@@ -1885,7 +1893,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         }
         for (GT_MetaTileEntity_Hatch_EnergyMulti tHatch : eEnergyMulti) {
             if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
-                energy += tHatch.maxEUInput()*tHatch.Amperes;
+                energy += tHatch.maxEUInput() * tHatch.Amperes;
             }
         }
         return energy;
