@@ -17,8 +17,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
 import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry.EM_COUNT_PER_MATERIAL_AMOUNT;
-import static com.github.technus.tectech.util.CommonValues.V;
 import static com.github.technus.tectech.thing.CustomItemList.*;
+import static com.github.technus.tectech.util.CommonValues.V;
 
 /**
  * Created by danie_000 on 16.11.2016.

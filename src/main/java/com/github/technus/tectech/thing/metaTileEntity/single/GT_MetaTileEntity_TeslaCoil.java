@@ -1,12 +1,12 @@
 package com.github.technus.tectech.thing.metaTileEntity.single;
 
-import com.github.technus.tectech.mechanics.tesla.ITeslaConnectable;
-import com.github.technus.tectech.mechanics.tesla.ITeslaConnectableSimple;
-import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.loader.NetworkDispatcher;
 import com.github.technus.tectech.mechanics.spark.RendererMessage;
 import com.github.technus.tectech.mechanics.spark.ThaumSpark;
+import com.github.technus.tectech.mechanics.tesla.ITeslaConnectable;
+import com.github.technus.tectech.mechanics.tesla.ITeslaConnectableSimple;
+import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.util.TT_Utility;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.MultimapBuilder;
@@ -27,8 +27,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 import static com.github.technus.tectech.mechanics.tesla.ITeslaConnectable.TeslaUtil.*;
-import static com.github.technus.tectech.util.CommonValues.V;
 import static com.github.technus.tectech.thing.metaTileEntity.Textures.*;
+import static com.github.technus.tectech.util.CommonValues.V;
 import static java.lang.Math.round;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;

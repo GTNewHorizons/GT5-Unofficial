@@ -1,10 +1,10 @@
 package com.github.technus.tectech.thing.item;
 
-import com.github.technus.tectech.util.CommonValues;
-import com.github.technus.tectech.util.TT_Utility;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Param;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_ParamText;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
+import com.github.technus.tectech.util.CommonValues;
+import com.github.technus.tectech.util.TT_Utility;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -33,8 +33,8 @@ import static net.minecraft.util.StatCollector.translateToLocal;
  * Created by Tec on 15.03.2017.
  */
 public final class ParametrizerMemoryCard extends Item {
-    public static ParametrizerMemoryCard INSTANCE;
-    private static IIcon locked, unlocked;
+    public static  ParametrizerMemoryCard INSTANCE;
+    private static IIcon                  locked, unlocked;
 
     private ParametrizerMemoryCard() {
         setMaxStackSize(1);
@@ -142,20 +142,16 @@ public final class ParametrizerMemoryCard extends Item {
         aList.add(EnumChatFormatting.BLUE + translateToLocal("item.em.parametrizerMemoryCard.desc.3"));//Sneak right click to lock/unlock
 
         double temp;
-        if(tNBT!=null && tNBT.hasKey("param")) {
-            aList.add("Hatch ID: "+EnumChatFormatting.AQUA + tNBT.getInteger("param"));
-            temp=tNBT.getInteger("value0D");
-            aList.add("Value 0D: "+EnumChatFormatting.AQUA + temp);
-            aList.add("Value 0B: "+EnumChatFormatting.AQUA + TT_Utility.longBitsToShortString(Double.doubleToLongBits(temp)));
-            if(tNBT.hasKey("value0s")) {
-                aList.add("Value 0s: " + EnumChatFormatting.AQUA + tNBT.getString("value0s"));
-            }
-            temp=tNBT.getInteger("value1D");
-            aList.add("Value 1D: "+EnumChatFormatting.AQUA + temp);
-            aList.add("Value 1B: "+EnumChatFormatting.AQUA + TT_Utility.longBitsToShortString(Double.doubleToLongBits(temp)));
-            if(tNBT.hasKey("value1s")) {
-                aList.add("Value 1s: " + EnumChatFormatting.AQUA + tNBT.getString("value1s"));
-            }
+        if (tNBT != null && tNBT.hasKey("param")) {
+            aList.add("Hatch ID: " + EnumChatFormatting.AQUA + tNBT.getInteger("param"));
+            temp = tNBT.getInteger("value0D");
+            aList.add("Value 0D: " + EnumChatFormatting.AQUA + temp);
+            aList.add("Value 0B: " + EnumChatFormatting.AQUA + TT_Utility.longBitsToShortString(Double.doubleToLongBits(temp)));
+            aList.add("Value 0s: " + EnumChatFormatting.AQUA + tNBT.getString("value0s"));
+            temp = tNBT.getInteger("value1D");
+            aList.add("Value 1D: " + EnumChatFormatting.AQUA + temp);
+            aList.add("Value 1B: " + EnumChatFormatting.AQUA + TT_Utility.longBitsToShortString(Double.doubleToLongBits(temp)));
+            aList.add("Value 1s: " + EnumChatFormatting.AQUA + tNBT.getString("value1s"));
         }
 
     }

@@ -1,8 +1,8 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch.gui;
 
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.util.TT_Utility;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Param;
+import com.github.technus.tectech.util.TT_Utility;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.gui.GT_ContainerMetaTile_Machine;

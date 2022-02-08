@@ -6,7 +6,7 @@ import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
 
-import static com.github.technus.tectech.mechanics.tesla.ITeslaConnectable.TeslaUtil.*;
+import static com.github.technus.tectech.mechanics.tesla.ITeslaConnectable.TeslaUtil.teslaSimpleNodeSetAdd;
 import static ic2.api.info.Info.DMG_ELECTRIC;
 
 public class GT_Cover_TM_TeslaCoil extends GT_CoverBehavior {

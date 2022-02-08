@@ -1,8 +1,8 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
 
-import com.github.technus.tectech.util.TT_Utility;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_GUIContainer_ParamText;
+import com.github.technus.tectech.util.TT_Utility;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
@@ -23,8 +23,8 @@ public class TextParametersMessage implements IMessage {
     int mPosY;
     int mPosZ;
     int mPosD;
-    String mVal0;
-    String mVal1;
+    String mVal0="";
+    String mVal1="";
 
     public TextParametersMessage() {}
 
@@ -36,13 +36,7 @@ public class TextParametersMessage implements IMessage {
         mPosZ = tTag.getInteger("posz");
         mPosD = tTag.getInteger("posd");
         mVal0 = tTag.getString("value0s");
-        if(mVal0==null) {
-            mVal0="";
-        }
         mVal1 = tTag.getString("value1s");
-        if(mVal1==null) {
-            mVal1="";
-        }
     }
 
     @Override

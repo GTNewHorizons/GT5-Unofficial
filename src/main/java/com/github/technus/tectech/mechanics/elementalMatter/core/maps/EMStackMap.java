@@ -1,7 +1,7 @@
 package com.github.technus.tectech.mechanics.elementalMatter.core.maps;
 
-import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.IEMStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.IEMStack;
 
 import java.util.Map;
 import java.util.NavigableMap;
