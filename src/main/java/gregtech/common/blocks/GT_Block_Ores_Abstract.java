@@ -243,7 +243,7 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
     }
 
     @Override
-    public IIcon getIcon(int aSide, int aMeta) {
+    public IIcon getIcon(int side, int meta) {
         return Blocks.stone.getIcon(0, 0);
     }
 

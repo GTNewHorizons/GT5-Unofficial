@@ -36,15 +36,24 @@ public class GT_Block_Ores extends GT_Block_Ores_Abstract {
     @Override
     public IIcon getIcon(int side, int meta) {
         int index = ((meta / 1000) % 16);
-        IIcon[] icons = new IIcon[] {
-        		Blocks.stone.getIcon(0, 0),
-        		Blocks.netherrack.getIcon(0, 0),
-        		Blocks.end_stone.getIcon(0, 0),
-        		GRANITE_BLACK_STONE.getIcon(),
-        		GRANITE_RED_STONE.getIcon(),
-        		MARBLE_STONE.getIcon(),
-        		BASALT_STONE.getIcon()};
-        return icons[index < 0 || index >= icons.length ? 0 : index];
+        switch (index) {
+		case 0:
+			return Blocks.stone.getIcon(side, 0);
+		case 1:
+			return Blocks.netherrack.getIcon(side, 0);
+		case 2:
+			return Blocks.end_stone.getIcon(side, 0);
+		case 3:
+			return GRANITE_BLACK_STONE.getIcon();
+		case 4:
+			return GRANITE_RED_STONE.getIcon();
+		case 5:
+			return MARBLE_STONE.getIcon();
+		case 6:
+			return BASALT_STONE.getIcon();
+		default:
+			return Blocks.stone.getIcon(side, 0);
+		}
     }
 
     @Override

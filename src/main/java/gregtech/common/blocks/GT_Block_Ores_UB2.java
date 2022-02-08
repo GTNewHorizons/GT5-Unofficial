@@ -31,26 +31,7 @@ public class GT_Block_Ores_UB2 extends GT_Block_Ores_Abstract {
     
     @Override
     public IIcon getIcon(int side, int meta) {
-        int index = ((meta / 1000) % 16);
-        IIcon[] icons = new IIcon[] {
-        		aUBBlock.getIcon(0, 0),
-        		aUBBlock.getIcon(0, 1),
-        		aUBBlock.getIcon(0, 2),
-        		aUBBlock.getIcon(0, 3),
-        		aUBBlock.getIcon(0, 4),
-        		aUBBlock.getIcon(0, 5),
-        		aUBBlock.getIcon(0, 6),
-        		aUBBlock.getIcon(0, 7),
-        		aUBBlock.getIcon(0, 0),
-        		aUBBlock.getIcon(0, 1),
-        		aUBBlock.getIcon(0, 2),
-        		aUBBlock.getIcon(0, 3),
-        		aUBBlock.getIcon(0, 4),
-        		aUBBlock.getIcon(0, 5),
-        		aUBBlock.getIcon(0, 6),
-        		aUBBlock.getIcon(0, 7)
-        };
-        return icons[index < 0 || index >= icons.length ? 0 : index];
+        return aUBBlock.getIcon(side, (meta / 1000) % 8);
     }
 
     @Override
