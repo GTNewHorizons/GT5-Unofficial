@@ -1172,7 +1172,7 @@ public class DreamCraftRecipeLoader implements Runnable {
                 }, ItemList.Circuit_Wetwaremainframe.get(1L), 2000, 300000);
 
         //UHV Circuit xSMD
-        TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Circuit_Wetwaresupercomputer.get(1L),
+        TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Circuit_Parts_TransistorXSMD.get(1L),
                 24000, 64, 50000, 4, new Object[]{
                         GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Tritanium, 2),
                         ItemList.Circuit_Wetwaresupercomputer.get(2L),
@@ -1213,7 +1213,7 @@ public class DreamCraftRecipeLoader implements Runnable {
 
 
         //Bio Chips xSMD
-        TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Circuit_Biowarecomputer.get(1L),
+        TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Circuit_Parts_ResistorXSMD.get(1L),
                 48000, 128, 500000, 8, new Object[]{
                         ItemList.Circuit_Board_Bio_Ultra.get(2L),
                         ItemList.Circuit_Biowarecomputer.get(2L),
@@ -1254,7 +1254,7 @@ public class DreamCraftRecipeLoader implements Runnable {
 
 
         // Bio xSMD
-        TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Circuit_Biowaresupercomputer.get(1L),
+        TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Circuit_Parts_CapacitorXSMD.get(1L),
                 96000, 256, 1000000, 16, new Object[]{
                         GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Tritanium, 4L),
                         ItemList.Circuit_Biowaresupercomputer.get(2L),
