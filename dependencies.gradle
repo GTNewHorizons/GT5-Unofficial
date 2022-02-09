@@ -11,7 +11,7 @@ dependencies {
     compile('com.github.GTNewHorizons:StructureLib:1.0.15:dev')
     compile('net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev')
 
-    compileOnly('com.github.GTNewHorizons:OpenModularTurrets:2.2.11-246:dev') {transitive=false}
+    compileOnly('com.github.GTNewHorizons:OpenModularTurrets:2.2.11-247:dev') {transitive=false}
     compileOnly('com.github.GTNewHorizons:OpenComputers:1.7.5.23-GTNH:dev') {transitive=false}
     compileOnly('com.github.GTNewHorizons:GTplusplus:1.7.27:dev') {transitive=false}
     compileOnly('com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-76-GTNH:dev') {transitive=false}
