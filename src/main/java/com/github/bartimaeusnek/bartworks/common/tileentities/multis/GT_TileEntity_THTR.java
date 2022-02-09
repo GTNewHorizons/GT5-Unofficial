@@ -55,9 +55,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 
@@ -83,14 +81,26 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_EnhancedMultiBlockBase
                     {"  ccccccc  "," c-------c ","c---------c","c---------c","c---------c","c---------c","c---------c","c---------c","c---------c"," c-------c ","  ccccccc  "},
                     {"  bbb~bbb  "," bbbbbbbbb ","bbbbbbbbbbb","bbbbbbbbbbb","bbbbbbbbbbb","bbbbbbbbbbb","bbbbbbbbbbb","bbbbbbbbbbb","bbbbbbbbbbb"," bbbbbbbbb ","  bbbbbbb  "},
             }))
-            .addElement('c', ofBlock(GregTech_API.sBlockCasings3, 12))
+            .addElement('c',
+                    onElementPass(
+                            x -> x.mCasing++,
+                            ofBlock(GregTech_API.sBlockCasings3, 12))
+            )
             .addElement('b', ofChain(
                     ofHatchAdder(GT_TileEntity_THTR::addOutputToMachineList, BASECASINGINDEX, 1),
                     ofHatchAdder(GT_TileEntity_THTR::addMaintenanceToMachineList, BASECASINGINDEX, 1),
                     ofHatchAdder(GT_TileEntity_THTR::addEnergyInputToMachineList, BASECASINGINDEX, 1),
-                    ofBlock(GregTech_API.sBlockCasings3, 12)
+                    onElementPass(
+                            x -> x.mCasing++,
+                            ofBlock(GregTech_API.sBlockCasings3, 12))
             ))
-            .addElement('B', ofHatchAdderOptional(GT_TileEntity_THTR::addInputToMachineList, BASECASINGINDEX, 2, GregTech_API.sBlockCasings3, 12))
+            .addElement('B', ofChain(
+                    ofHatchAdder(GT_TileEntity_THTR::addInputToMachineList, BASECASINGINDEX, 2),
+                    onElementPass(
+                            x -> x.mCasing++,
+                            ofBlock(GregTech_API.sBlockCasings3, 12))
+            ))
+                    //ofHatchAdderOptional(GT_TileEntity_THTR::addInputToMachineList, BASECASINGINDEX, 2, GregTech_API.sBlockCasings3, 12))
             .build();
 
 
@@ -104,6 +114,7 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_EnhancedMultiBlockBase
     private int fuelsupply;
     private boolean empty;
     private int coolanttaking = 0;
+    private int mCasing = 0;
 
     public GT_TileEntity_THTR(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -138,7 +149,7 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_EnhancedMultiBlockBase
                 .addSeparator()
                 .beginStructureBlock(11, 12, 11, true)
                 .addController("Front bottom center")
-                .addCasingInfo("Radiation Proof Casings", 0)
+                .addCasingInfo("Radiation Proof Casings", 500)
                 .addStructureInfo("Corners and the 2 touching blocks are air (cylindric)")
                 .addInputBus("Any top layer casing", 2)
                 .addInputHatch("Any top layer casing", 2)
@@ -162,8 +173,10 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_EnhancedMultiBlockBase
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack) {
+        this.mCasing = 0;
         return (
             checkPiece(STRUCTURE_PIECE_MAIN, 5, 11, 0) &&
+            this.mCasing >= 500 &&
             this.mMaintenanceHatches.size() == 1 &&
             this.mInputHatches.size() > 0 &&
             this.mOutputHatches.size() > 0 &&
