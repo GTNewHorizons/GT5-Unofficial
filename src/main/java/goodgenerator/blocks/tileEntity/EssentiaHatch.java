@@ -122,14 +122,23 @@ public class EssentiaHatch extends TileEntity implements IAspectContainer, IEsse
 
     @Override
     public boolean doesContainerAccept(Aspect aspect) {
-        return mLocked == null || mLocked.equals(aspect);
+        int type = LargeEssentiaEnergyData.getAspectTypeIndex(aspect);
+        if (type != -1 && (mState & (1 << type)) == 0) return false;
+        return (mLocked == null || mLocked.equals(aspect)) && getEssentiaAmount(null) <= 1000;
     }
 
     @Override
     public int addToContainer(Aspect aspect, int i) {
-        current.add(aspect, i);
+        int type = LargeEssentiaEnergyData.getAspectTypeIndex(aspect);
+        if (type != -1 && (mState & (1 << type)) == 0) return i;
+        int ready = Math.min(1000 - getEssentiaAmount(null), i);
+        if ((mLocked == null || mLocked.equals(aspect)) && ready > 0) {
+            current.add(aspect, ready);
+            this.markDirty();
+            return i - ready;
+        }
         this.markDirty();
-        return 0;
+        return i;
     }
 
     @Override
@@ -195,12 +204,12 @@ public class EssentiaHatch extends TileEntity implements IAspectContainer, IEsse
 
     @Override
     public int addEssentia(Aspect aspect, int i, ForgeDirection forgeDirection) {
-        current.add(aspect, i);
-        return 0;
+        return i - addToContainer(aspect, i);
     }
 
     @Override
     public Aspect getEssentiaType(ForgeDirection forgeDirection) {
+        if (current == null || current.size() < 1) return null;
         return current.getAspects()[0];
     }
 
