@@ -26,10 +26,11 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:ForestryMC:4.4.5:api") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:Railcraft:9.13.5:api") {
+    compileOnly("com.github.GTNewHorizons:Railcraft:9.13.6:api") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:EnderIO:2.3.1.28:api") {
+
+    compileOnly("com.github.GTNewHorizons:EnderIO:2.3.1.29:api") {
         transitive = false
     }
 
