@@ -42,6 +42,8 @@ import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEnti
 import com.github.bartimaeusnek.bartworks.common.tileentities.multis.mega.GT_TileEntity_MegaBlastFurnace;
 import com.github.bartimaeusnek.bartworks.common.tileentities.multis.mega.GT_TileEntity_MegaDistillTower;
 import com.github.bartimaeusnek.bartworks.common.tileentities.multis.mega.GT_TileEntity_MegaVacuumFreezer;
+import com.github.bartimaeusnek.bartworks.common.tileentities.multis.mega.GT_TileEntity_MegaChemicalReactor;
+import com.github.bartimaeusnek.bartworks.common.tileentities.multis.mega.GT_TileEntity_MegaOilCracker;
 import com.github.bartimaeusnek.bartworks.common.tileentities.tiered.*;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.bartimaeusnek.crossmod.galacticgreg.GT_TileEntity_VoidMiners;
@@ -142,7 +144,7 @@ public class ItemRegistry {
     public static ItemStack[] energyDistributor = new ItemStack[GT_Values.VN.length];
     public static ItemStack[] acidGens = new ItemStack[3];
     public static ItemStack acidGensLV;
-    public static ItemStack[] megaMachines = new ItemStack[3];
+    public static ItemStack[] megaMachines = new ItemStack[5];
     public static ItemStack dehp;
     public static ItemStack[] voidminer = new ItemStack[3];
     public static ItemStack THTR;
@@ -215,6 +217,9 @@ public class ItemRegistry {
             ItemRegistry.compressedHatch = new GT_MetaTileEntity_CompressedFluidHatch(ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 8, "CompressedFluidHatch", "Liquid Air Fluid Hatch").getStackForm(1L);
             ItemRegistry.giantOutputHatch = new GT_MetaTileEntity_GiantOutputHatch(ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 9, "GiantOutputHatch", "Giant Output Hatch").getStackForm(1L);
             ItemRegistry.megaMachines[2] = new GT_TileEntity_MegaDistillTower(ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 10, "MegaDistillationTower", "Mega Distillation Tower").getStackForm(1L);
+            ItemRegistry.megaMachines[3] = new GT_TileEntity_MegaChemicalReactor(ConfigHandler.IDOffset+GT_Values.VN.length * 8 + 638, "MegaChemicalReactor", "Mega Chemical Reactor").getStackForm(1L);
+            ItemRegistry.megaMachines[4] = new GT_TileEntity_MegaOilCracker(ConfigHandler.IDOffset+GT_Values.VN.length * 8 + 639, "MegaOilCracker", "Mega Oil Cracker").getStackForm(1L);
+
 
             if (LoaderReference.galacticgreg && WerkstoffLoader.gtnhGT) {
                 ItemRegistry.voidminer[2] = new GT_TileEntity_VoidMiners.VMUV(ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 11, "VoidMiner3", "Void Miner III").getStackForm(1L);
