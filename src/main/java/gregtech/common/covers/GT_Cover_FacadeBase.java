@@ -163,12 +163,11 @@ public abstract class GT_Cover_FacadeBase extends GT_CoverBehaviorBase<GT_Cover_
 
     @Override
     public boolean isCoverPlaceable(byte aSide, ItemStack aStack, ICoverable aTileEntity) {
-        // blocks that are not rendered in pass 0 are rejected for now.
-        // to implement it require changing GT_Block_Machine to render in both pass, which is not really a good idea...
+        // blocks that are not rendered in pass 0 are now accepted but rendered awkwardly
+        // to render it correctly require changing GT_Block_Machine to render in both pass, which is not really a good idea...
         if (!super.isCoverPlaceable(aSide, aStack, aTileEntity)) return false;
         Block targetBlock = getTargetBlock(aStack);
         if (targetBlock == null) return false;
-        if (targetBlock.getRenderBlockPass() != GregTech_API.sBlockMachines.getRenderBlockPass()) return false;
         // we allow one single type of facade on the same block for now
         // otherwise it's not clear which block this block should impersonate
         // this restriction can be lifted later by specifying a certain facade as dominate one as an extension to this class
