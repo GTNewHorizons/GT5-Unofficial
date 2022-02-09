@@ -19,6 +19,9 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerAboutToStartEvent;
+import cpw.mods.fml.common.event.FMLServerStartedEvent;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import gregtech.api.util.GT_Log;
 
 @Mod(modid = Tags.MODID, version = Tags.VERSION, name = Tags.MODNAME, 
@@ -67,17 +70,29 @@ public class GTNHLanthanides {
         
         
         
+        
     }
     
     @EventHandler
     public static void onModLoadingComplete(FMLLoadCompleteEvent e) {
     	GT_Log.out.print("AAAAAAAAAAAAAA");
-    	RecipeLoader.removeCeriumSources();
+    	//
     	GT_Log.out.print("We are done loading");
     	BotRecipes.removeRecipes();
     	
     	
     	
+    }
+    
+    // This is horrifying and I'm sorry
+    @EventHandler
+    public static void onServerAboutToStart(FMLServerAboutToStartEvent e) {
+    	//RecipeLoader.removeCeriumSources();
+    }
+    
+    @EventHandler
+    public static void onServerStart(FMLServerStartedEvent e) {
+    	RecipeLoader.removeCeriumSources();
     }
     
 
