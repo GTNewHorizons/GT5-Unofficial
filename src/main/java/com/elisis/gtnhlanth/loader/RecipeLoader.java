@@ -1,5 +1,6 @@
 package com.elisis.gtnhlanth.loader;
 
+import java.util.Arrays;
 import java.util.HashSet;
 
 import com.elisis.gtnhlanth.Tags;
@@ -1293,7 +1294,8 @@ public class RecipeLoader {
 
         GT_Log.out.print("Electrolyzer done!\n");
         
-
+        /*
+        //TODO: This entire block is highly questionable because GT++ doesn't always load predictably
         if (LoadedList.GTPP) {
             //For Multi Centrifuge
             //Blame alk. She made some shit in it, NEI will break down if anyone modify the hash list directly.
@@ -1338,7 +1340,10 @@ public class RecipeLoader {
             
             //Dehydrator
             for (GT_Recipe recipe : GTPP_Recipe.GTPP_Recipe_Map.sChemicalDehydratorRecipes.mRecipeList) {
+            	GT_Log.out.print(Arrays.toString(recipe.mInputs));
             	ItemStack input = recipe.mInputs[0];
+            	
+            	
             	if (GT_Utility.isStackValid(input)) {
             		GT_Recipe tRecipe = recipe.copy();
             		for (int i = 0; i < tRecipe.mOutputs.length; i++) {
@@ -1353,10 +1358,12 @@ public class RecipeLoader {
                     }
                     break;
             	}         	
+            	
             }
+            
             GTPP_Recipe.GTPP_Recipe_Map.sChemicalDehydratorRecipes.mRecipeList.removeAll(remove);
-            GTPP_Recipe.GTPP_Recipe_Map.sSimpleWasherRecipes.mRecipeList.addAll(reAdd);
-            GTPP_Recipe.GTPP_Recipe_Map.sSimpleWasherRecipes.reInit();
+            GTPP_Recipe.GTPP_Recipe_Map.sChemicalDehydratorRecipes.mRecipeList.addAll(reAdd);
+            GTPP_Recipe.GTPP_Recipe_Map.sChemicalDehydratorRecipes.reInit();
             
             GT_Log.out.print(Tags.MODID + ": Replace " + remove.size() + "! ");
             
@@ -1368,6 +1375,7 @@ public class RecipeLoader {
             
             
         }
+        */
 
         //For ByProduct List
         for (GT_Recipe recipe : GT_Recipe.GT_Recipe_Map.sByProductList.mRecipeList) {
