@@ -2386,7 +2386,7 @@ public class GT_Utility {
             numberFormat.setMaximumFractionDigits(2);
             numberFormat.setRoundingMode(RoundingMode.HALF_UP);
             DecimalFormatSymbols decimalFormatSymbols = numberFormat.getDecimalFormatSymbols();
-	    decimalFormatSymbols.setGroupingSeparator(' ');//use international separator for best clarity, should also fix locales using NBSP
+	    decimalFormatSymbols.setGroupingSeparator(',');// Use sensible separator for best clarity.
 	    numberFormat.setDecimalFormatSymbols(decimalFormatSymbols);
             return numberFormat;
         });
