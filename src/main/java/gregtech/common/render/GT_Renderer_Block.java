@@ -9,15 +9,20 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IPipeRenderedTileEntity;
 import gregtech.api.interfaces.tileentity.ITexturedTileEntity;
+import gregtech.api.objects.XSTR;
 import gregtech.common.blocks.GT_Block_Machines;
 import gregtech.common.blocks.GT_Block_Ores_Abstract;
 import gregtech.common.blocks.GT_TileEntity_Ores;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.EffectRenderer;
+import net.minecraft.client.particle.EntityDiggingFX;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+
 import org.lwjgl.opengl.GL11;
 
 import static gregtech.api.interfaces.metatileentity.IConnectable.CONNECTED_DOWN;
@@ -446,6 +451,39 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
         aRenderer.setRenderBoundsFromBlock(aBlock);
 
         return true;
+    }
+    
+    public static void addHitEffects(EffectRenderer effectRenderer, Block block, World world, int x, int y, int z, int side) {
+        double rX = x + XSTR.XSTR_INSTANCE.nextDouble() * 0.8 + 0.1;
+        double rY = y + XSTR.XSTR_INSTANCE.nextDouble() * 0.8 + 0.1;
+        double rZ = z + XSTR.XSTR_INSTANCE.nextDouble() * 0.8 + 0.1;
+        if (side == 0) {
+            rY = y - 0.1;
+        } else if (side == 1) {
+            rY = y + 1.1;
+        } else if (side == 2) {
+            rZ = z - 0.1;
+        } else if (side == 3) {
+            rZ = z + 1.1;
+        } else if (side == 4) {
+            rX = x - 0.1;
+        } else if (side == 5) {
+            rX = x + 1.1;
+        }
+        effectRenderer.addEffect((new EntityDiggingFX(world, rX, rY, rZ, 0.0, 0.0, 0.0, block, block.getDamageValue(world, x, y, z), side)).applyColourMultiplier(x, y, z).multiplyVelocity(0.2F).multipleParticleScaleBy(0.6F));
+    }
+    
+    public static void addDestroyEffects(EffectRenderer effectRenderer, Block block, World world, int x, int y, int z) {
+        for (int iX = 0; iX < 4; ++iX) {
+            for (int iY = 0; iY < 4; ++iY) {
+                for (int iZ = 0; iZ < 4; ++iZ) {
+                    double bX = x + (iX + 0.5) / 4.0;
+                    double bY = y + (iY + 0.5) / 4.0;
+                    double bZ = z + (iZ + 0.5) / 4.0;
+                    effectRenderer.addEffect((new EntityDiggingFX(world, bX, bY, bZ, bX - x - 0.5, bY - y - 0.5, bZ - z - 0.5, block, block.getDamageValue(world, x, y, z))).applyColourMultiplier(x, y, z));
+                }
+            }
+        }
     }
 
     @Override

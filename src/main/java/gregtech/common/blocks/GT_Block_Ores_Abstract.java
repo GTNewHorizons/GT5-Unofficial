@@ -17,6 +17,7 @@ import gregtech.common.render.GT_Renderer_Block;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -27,6 +28,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -37,12 +39,12 @@ import java.util.List;
 import java.util.Set;
 
 public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements ITileEntityProvider {
-    public static ThreadLocal<GT_TileEntity_Ores> mTemporaryTileEntity = new ThreadLocal();
+    public static ThreadLocal<GT_TileEntity_Ores> mTemporaryTileEntity = new ThreadLocal<>();
     public static boolean FUCKING_LOCK = false;
     public static boolean tHideOres;
     private final String aTextName = ".name";
     private final String aTextSmall = "Small ";
-    public static Set aBlockedOres = new HashSet<Materials>();
+    public static Set<Materials> aBlockedOres = new HashSet<Materials>();
 
     protected GT_Block_Ores_Abstract(String aUnlocalizedName, int aOreMetaCount, boolean aHideFirstMeta, Material aMaterial) {
         super(GT_Item_Ores.class, aUnlocalizedName, aMaterial);
@@ -104,7 +106,7 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
     }
 
     public String getLocalizedNameFormat(Materials aMaterial) {
-    	switch (aMaterial.mName) {
+        switch (aMaterial.mName) {
         case "InfusedAir":
         case "InfusedDull":
         case "InfusedEarth":
@@ -129,7 +131,7 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
             return "%material";
         default:
             return "%material" + OrePrefixes.ore.mLocalizedMaterialPost;
-    	}
+        }
     }
 
     public String getLocalizedName(Materials aMaterial) {
@@ -249,6 +251,20 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister aIconRegister) {
     }
+    
+    @Override
+    @SideOnly(Side.CLIENT)
+    public boolean addHitEffects(World worldObj, MovingObjectPosition target, EffectRenderer effectRenderer) {
+        GT_Renderer_Block.addHitEffects(effectRenderer, this, worldObj, target.blockX, target.blockY, target.blockZ, target.sideHit);
+        return true;
+    }
+    
+    @Override
+    @SideOnly(Side.CLIENT)
+    public boolean addDestroyEffects(World world, int x, int y, int z, int meta, EffectRenderer effectRenderer) {
+        GT_Renderer_Block.addDestroyEffects(effectRenderer, this, world, x, y, z);
+        return true;
+    }
 
     @Override
     public int getDamageValue(World aWorld, int aX, int aY, int aZ) {
@@ -283,7 +299,7 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
         if ((tTileEntity instanceof GT_TileEntity_Ores)) {
             return ((GT_TileEntity_Ores) tTileEntity).getDrops(getDroppedBlock(), aFortune);
         }
-        return mTemporaryTileEntity.get() == null ? new ArrayList() : ((GT_TileEntity_Ores) mTemporaryTileEntity.get()).getDrops(getDroppedBlock(), aFortune);
+        return mTemporaryTileEntity.get() == null ? new ArrayList<>() : ((GT_TileEntity_Ores) mTemporaryTileEntity.get()).getDrops(getDroppedBlock(), aFortune);
     }
 
     @Override
@@ -293,6 +309,7 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
 
     public abstract ITexture[] getTextureSet(); //Must have 16 entries.
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void getSubBlocks(Item aItem, CreativeTabs aTab, List aList) {
         for (int i = 0; i < GregTech_API.sGeneratedMaterials.length; i++) {
