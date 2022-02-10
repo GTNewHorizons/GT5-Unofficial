@@ -23,10 +23,16 @@ public class GT_SpawnEventHandler {
 
     @SubscribeEvent
     public void denyMobSpawn(CheckSpawn event) {
+        if (event.entityLiving instanceof EntitySlime && !(((EntitySlime) event.entityLiving).getCustomNameTag().length() > 0)) {
+            ((EntitySlime) event.entityLiving).setCustomNameTag("DoNotSpawnSlimes");
+            if(event.getResult() == Event.Result.ALLOW) event.setResult(Event.Result.DEFAULT);
+        }
+
         if (event.getResult() == Event.Result.ALLOW) {
             return;
         }
-        if (event.entityLiving.isCreatureType(EnumCreatureType.monster, false) || event.entityLiving instanceof EntitySlime) {
+
+        if (event.entityLiving.isCreatureType(EnumCreatureType.monster, false)) {
             for (int[] rep : mobReps) {
                 if (rep[3] == event.entity.worldObj.provider.dimensionId) {
                     TileEntity tTile = event.entity.worldObj.getTileEntity(rep[0], rep[1], rep[2]);
