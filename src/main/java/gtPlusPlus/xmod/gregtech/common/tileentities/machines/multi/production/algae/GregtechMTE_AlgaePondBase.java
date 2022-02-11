@@ -269,7 +269,7 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase<Gregt
 			}
 		}
 
-		boolean isValidWater = tAmount >= 60;
+		boolean isValidWater = tAmount >= 49;
 
 		if (isValidWater) {
 			Logger.INFO("Filled structure.");
