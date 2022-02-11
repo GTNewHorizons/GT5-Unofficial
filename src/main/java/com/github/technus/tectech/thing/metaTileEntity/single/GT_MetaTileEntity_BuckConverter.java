@@ -1,9 +1,9 @@
 package com.github.technus.tectech.thing.metaTileEntity.single;
 
-import com.github.technus.tectech.util.CommonValues;
-import com.github.technus.tectech.util.Util;
 import com.github.technus.tectech.thing.metaTileEntity.single.gui.GT_Container_BuckConverter;
 import com.github.technus.tectech.thing.metaTileEntity.single.gui.GT_GUIContainer_BuckConverter;
+import com.github.technus.tectech.util.CommonValues;
+import com.github.technus.tectech.util.TT_Utility;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -29,12 +29,12 @@ public class GT_MetaTileEntity_BuckConverter extends GT_MetaTileEntity_TieredMac
 
     public GT_MetaTileEntity_BuckConverter(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "");
-        Util.setTier(aTier,this);
+        TT_Utility.setTier(aTier,this);
     }
 
     public GT_MetaTileEntity_BuckConverter(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
-        Util.setTier(aTier,this);
+        TT_Utility.setTier(aTier,this);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.github.technus.tectech.compatibility.spartakcore;
 
+import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry;
 import com.github.technus.tectech.recipe.TT_recipeAdder;
 import com.github.technus.tectech.thing.CustomItemList;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
@@ -19,15 +20,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import static com.github.technus.tectech.loader.recipe.RecipeLoader.getOrDefault;
+import static com.github.technus.tectech.loader.recipe.BaseRecipeLoader.getOrDefault;
 
 /**
  * Created by Spartak1997 on 28.07.2019.
  */
-public class SpartakCoreRecipeLoader implements Runnable {
-    
-    @Override
-    public void run() {
+public class SpartakCoreRecipeLoader {
+    public void run(EMTransformationRegistry transformationInfo) {
         
       //Quantum Glass
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{

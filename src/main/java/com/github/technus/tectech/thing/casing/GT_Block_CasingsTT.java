@@ -17,8 +17,8 @@ import net.minecraft.world.IBlockAccess;
 
 import java.util.List;
 
+import static com.github.technus.tectech.TecTech.creativeTabTecTech;
 import static com.github.technus.tectech.TecTech.tectechTexturePage1;
-import static com.github.technus.tectech.loader.gui.CreativeTabTecTech.creativeTabTecTech;
 
 /**
  * Created by danie_000 on 03.10.2016.

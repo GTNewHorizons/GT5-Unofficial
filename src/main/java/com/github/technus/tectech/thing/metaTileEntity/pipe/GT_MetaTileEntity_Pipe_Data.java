@@ -1,11 +1,11 @@
 package com.github.technus.tectech.thing.metaTileEntity.pipe;
 
+import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.loader.NetworkDispatcher;
 import com.github.technus.tectech.mechanics.pipe.IActivePipe;
 import com.github.technus.tectech.mechanics.pipe.IConnectsToDataPipe;
 import com.github.technus.tectech.mechanics.pipe.PipeActivityMessage;
 import com.github.technus.tectech.util.CommonValues;
-import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.loader.NetworkDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GT_Mod;

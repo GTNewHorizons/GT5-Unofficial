@@ -1,9 +1,9 @@
 package com.github.technus.tectech.thing.metaTileEntity.single;
 
-import com.github.technus.tectech.util.CommonValues;
-import com.github.technus.tectech.util.Util;
 import com.github.technus.tectech.thing.metaTileEntity.single.gui.GT_Container_DataReader;
 import com.github.technus.tectech.thing.metaTileEntity.single.gui.GT_GUIContainer_DataReader;
+import com.github.technus.tectech.util.CommonValues;
+import com.github.technus.tectech.util.TT_Utility;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -38,17 +38,17 @@ import static net.minecraft.util.StatCollector.translateToLocal;
  * Created by Tec on 23.03.2017.
  */
 public class GT_MetaTileEntity_DataReader extends GT_MetaTileEntity_BasicMachine {
-    private static final HashMap<Util.ItemStack_NoNBT,ArrayList<IDataRender>> RENDER_REGISTRY =new HashMap<>();
-    public static GT_RenderedTexture READER_ONLINE, READER_OFFLINE;
+    private static final HashMap<TT_Utility.ItemStack_NoNBT,ArrayList<IDataRender>> RENDER_REGISTRY =new HashMap<>();
+    public static GT_RenderedTexture                                                READER_ONLINE, READER_OFFLINE;
 
     public GT_MetaTileEntity_DataReader(int aID, String aName, String aNameRegional, int aTier) {
         super(aID,aName,aNameRegional,aTier,1,"",1,1,"dataReader.png","");
-        Util.setTier(aTier,this);
+        TT_Utility.setTier(aTier,this);
     }
 
     public GT_MetaTileEntity_DataReader(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
         super(aName,aTier,1,aDescription,aTextures,1,1,"dataReader.png","");
-        Util.setTier(aTier,this);
+        TT_Utility.setTier(aTier,this);
     }
 
     @Override
@@ -91,7 +91,7 @@ public class GT_MetaTileEntity_DataReader extends GT_MetaTileEntity_BasicMachine
             return DID_NOT_FIND_RECIPE;
         }
         ItemStack input=getInputAt(0);
-        for(IDataRender render:getRenders(new Util.ItemStack_NoNBT(input))){
+        for(IDataRender render:getRenders(new TT_Utility.ItemStack_NoNBT(input))){
             if(render.canRender(input,mTier)){
                 mOutputItems[0]=input.copy();
                 input.stackSize-=1;
@@ -175,7 +175,7 @@ public class GT_MetaTileEntity_DataReader extends GT_MetaTileEntity_BasicMachine
         return maxEUInput()*4L;
     }
 
-    public static void addDataRender(Util.ItemStack_NoNBT stack, IDataRender render){
+    public static void addDataRender(TT_Utility.ItemStack_NoNBT stack, IDataRender render){
         ArrayList<IDataRender> renders = RENDER_REGISTRY.computeIfAbsent(stack, k -> new ArrayList<>());
         if(FMLCommonHandler.instance().getEffectiveSide().isClient()) {
             render.loadResources();
@@ -183,7 +183,7 @@ public class GT_MetaTileEntity_DataReader extends GT_MetaTileEntity_BasicMachine
         renders.add(render);
     }
 
-    public static List<IDataRender> getRenders(Util.ItemStack_NoNBT stack){
+    public static List<IDataRender> getRenders(TT_Utility.ItemStack_NoNBT stack){
         ArrayList<IDataRender> iDataRenders = RENDER_REGISTRY.get(stack);
         return iDataRenders==null?Collections.emptyList():iDataRenders;
     }
@@ -205,7 +205,7 @@ public class GT_MetaTileEntity_DataReader extends GT_MetaTileEntity_BasicMachine
     }
 
     public static void run(){
-        addDataRender(new Util.ItemStack_NoNBT(ItemList.Tool_DataStick.get(1)),new IDataRender() {
+        addDataRender(new TT_Utility.ItemStack_NoNBT(ItemList.Tool_DataStick.get(1)),new IDataRender() {
             @SideOnly(Side.CLIENT)
             private ResourceLocation bg;
             @SideOnly(Side.CLIENT)
@@ -271,8 +271,8 @@ public class GT_MetaTileEntity_DataReader extends GT_MetaTileEntity_BasicMachine
             public void renderForeground(ItemStack itemStack, int mouseX, int mouseY, GT_GUIContainer_DataReader gui, FontRenderer font) {
                 int time=itemStack.stackTagCompound.getInteger("time");
                 int EUt=itemStack.stackTagCompound.getInteger("eu");
-                font.drawString("Assembly Line Recipe", 7, 8, 0x80a0ff);
-                font.drawString(GT_Utility.trans("152","Total: ") + GT_Utility.formatNumbers((long)time * EUt) + " EU",7,93, 0x80a0ff);
+                font.drawString(translateToLocal("tt.keyphrase.Ass_line_recipe"), 7, 8, 0x80a0ff);
+                font.drawString(GT_Utility.trans("152","Total: ") + GT_Utility.formatNumbers((long) time * EUt) + " EU",7,93, 0x80a0ff);
                 font.drawString(GT_Utility.trans("153","Usage: ") + GT_Utility.formatNumbers(EUt) + " EU/t",7,103, 0x80a0ff);
                 font.drawString(GT_Utility.trans("154","Voltage: ") + GT_Utility.formatNumbers(EUt) + " EU",7,113, 0x80a0ff);
                 font.drawString(GT_Utility.trans("155","Amperage: ") + 1 ,7,123, 0x80a0ff);

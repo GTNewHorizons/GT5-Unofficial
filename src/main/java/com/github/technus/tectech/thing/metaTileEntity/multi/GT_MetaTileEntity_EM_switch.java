@@ -12,7 +12,6 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_Rend
 import com.github.technus.tectech.util.CommonValues;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -44,12 +43,12 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
             "1 - Classic/Data Hatches or Computer casing",//1 - Classic/Data Hatches or Computer casing
     };
 
-    private static final IStructureDefinition<GT_MetaTileEntity_EM_switch> STRUCTURE_DEFINITION =
-            StructureDefinition.<GT_MetaTileEntity_EM_switch>builder()
+    private static final IStructureDefinition<GT_MetaTileEntity_EM_switch> STRUCTURE_DEFINITION = IStructureDefinition
+            .<GT_MetaTileEntity_EM_switch>builder()
             .addShape("main", transpose(new String[][]{
-                    {"BBB","BBB","BBB"},
-                    {"B~B","BAB","BBB"},
-                    {"BBB","BBB","BBB"}
+                    {"BBB", "BBB", "BBB"},
+                    {"B~B", "BAB", "BBB"},
+                    {"BBB", "BBB", "BBB"}
             }))
             .addElement('A', ofBlock(sBlockCasingsTT, 3))
             .addElement('B', ofHatchAdderOptional(GT_MetaTileEntity_EM_switch::addClassicToMachineList, textureOffset + 1, 1, sBlockCasingsTT, 1))
@@ -57,7 +56,7 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
     //endregion
 
     //region parameters
-    private static final INameFunction<GT_MetaTileEntity_EM_switch> ROUTE_NAME =
+    private static final INameFunction<GT_MetaTileEntity_EM_switch>   ROUTE_NAME =
             (base, p) -> (p.parameterId() == 0 ? translateToLocal("tt.keyword.Destination") + " " : translateToLocal("tt.keyword.Weight") + " ") + p.hatchId();
     private static final IStatusFunction<GT_MetaTileEntity_EM_switch> WEI_STATUS =
             (base, p) -> {
@@ -80,8 +79,8 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
                 }
                 return STATUS_NEUTRAL;
             };
-    protected Parameters.Group.ParameterIn[] dst;
-    protected Parameters.Group.ParameterIn[] weight;
+    protected            Parameters.Group.ParameterIn[]               dst;
+    protected            Parameters.Group.ParameterIn[]               weight;
     //endregion
 
     public GT_MetaTileEntity_EM_switch(int aID, String aName, String aNameRegional) {
@@ -135,8 +134,8 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
             }
 
             Vec3Impl pos = new Vec3Impl(getBaseMetaTileEntity().getXCoord(),
-                                        getBaseMetaTileEntity().getYCoord(),
-                                        getBaseMetaTileEntity().getZCoord());
+                    getBaseMetaTileEntity().getYCoord(),
+                    getBaseMetaTileEntity().getZCoord());
 
             QuantumDataPacket pack = new QuantumDataPacket(0L).unifyTraceWith(pos);
             if (pack == null) {
@@ -226,7 +225,7 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM("main", 1, 1, 0, hintsOnly, stackSize);
+        structureBuild_EM("main", 1, 1, 0, stackSize, hintsOnly);
     }
 
     @Override

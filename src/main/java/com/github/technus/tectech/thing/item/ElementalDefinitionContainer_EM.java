@@ -1,11 +1,13 @@
 package com.github.technus.tectech.thing.item;
 
-import com.github.technus.tectech.util.CommonValues;
-import com.github.technus.tectech.util.Util;
+import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.font.TecTechFontRender;
-import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalDefinitionStackMap;
-import com.github.technus.tectech.mechanics.elementalMatter.core.tElementalException;
+import com.github.technus.tectech.mechanics.elementalMatter.core.EMException;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMConstantStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMDefinitionStackMap;
 import com.github.technus.tectech.thing.item.renderElemental.IElementalItem;
+import com.github.technus.tectech.util.CommonValues;
+import com.github.technus.tectech.util.TT_Utility;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.gui.FontRenderer;
@@ -19,8 +21,8 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.github.technus.tectech.Reference.MODID;
+import static com.github.technus.tectech.TecTech.creativeTabEM;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
-import static com.github.technus.tectech.loader.gui.CreativeTabTecTech.creativeTabTecTech;
 import static cpw.mods.fml.relauncher.Side.CLIENT;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
@@ -34,36 +36,20 @@ public final class ElementalDefinitionContainer_EM extends Item implements IElem
         setMaxStackSize(1);
         setUnlocalizedName("em.definitionContainer");
         setTextureName(MODID + ":itemDefinitionContainer");
-        setCreativeTab(creativeTabTecTech);
+        setCreativeTab(creativeTabEM);
     }
 
-    //return previous thing
-    public static cElementalDefinitionStackMap setContent(ItemStack containerItem, cElementalDefinitionStackMap definitions){
-        if(containerItem.getItem() instanceof ElementalDefinitionContainer_EM) {
-            NBTTagCompound tNBT = containerItem.stackTagCompound;
-            if (tNBT == null) {
-                tNBT = containerItem.stackTagCompound = new NBTTagCompound();
-            }
-
-            cElementalDefinitionStackMap oldMap=null;
-            if (tNBT.hasKey("content")) {
-                try {
-                    oldMap=cElementalDefinitionStackMap.fromNBT(tNBT.getCompoundTag("content"));
-                } catch (tElementalException e) {
-                    if (DEBUG_MODE) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-            tNBT.setTag("info", definitions.getInfoNBT());
-            tNBT.setTag("content", definitions.toNBT());
-            tNBT.setTag("symbols",definitions.getShortSymbolsNBT());
-            return oldMap;
+    public static void setContent(ItemStack aStack, EMConstantStackMap definitions){
+        NBTTagCompound tNBT = aStack.getTagCompound();
+        if (tNBT == null) {
+            tNBT = new NBTTagCompound();
+            aStack.setTagCompound(tNBT);
         }
-        return null;
+        tNBT.setTag("content", definitions.toNBT(TecTech.definitionsRegistry));
+        tNBT.setTag("symbols", TT_Utility.packStrings(definitions.getShortSymbolsInfo()));
     }
 
-    public static cElementalDefinitionStackMap getContent(ItemStack containerItem){
+    public static EMConstantStackMap getContent(ItemStack containerItem){
         if(containerItem.getItem() instanceof ElementalDefinitionContainer_EM){
             NBTTagCompound tNBT = containerItem.stackTagCompound;
 
@@ -71,8 +57,8 @@ public final class ElementalDefinitionContainer_EM extends Item implements IElem
                 return null;
             }
             try {
-                return cElementalDefinitionStackMap.fromNBT(tNBT.getCompoundTag("content"));
-            } catch (tElementalException e) {
+                return EMConstantStackMap.fromNBT(TecTech.definitionsRegistry,tNBT.getCompoundTag("content"));
+            } catch (EMException e) {
                 if (DEBUG_MODE) {
                     e.printStackTrace();
                 }
@@ -81,24 +67,23 @@ public final class ElementalDefinitionContainer_EM extends Item implements IElem
         return null;
     }
 
-    public static cElementalDefinitionStackMap clearContent(ItemStack containerItem){
+    public static EMConstantStackMap clearContent(ItemStack containerItem){
         if(containerItem.getItem() instanceof ElementalDefinitionContainer_EM){
             NBTTagCompound tNBT = containerItem.stackTagCompound;
             if (tNBT == null) {
                 return null;
             }
 
-            cElementalDefinitionStackMap oldMap=null;
+            EMConstantStackMap oldMap =null;
             if (tNBT.hasKey("content")) {
                 try {
-                    oldMap=cElementalDefinitionStackMap.fromNBT(tNBT.getCompoundTag("content"));
-                } catch (tElementalException e) {
+                    oldMap= EMConstantStackMap.fromNBT(TecTech.definitionsRegistry,tNBT.getCompoundTag("content"));
+                } catch (EMException e) {
                     if (DEBUG_MODE) {
                         e.printStackTrace();
                     }
                 }
             }
-            tNBT.removeTag("info");
             tNBT.removeTag("content");
             tNBT.removeTag("symbols");
             return oldMap;
@@ -111,9 +96,10 @@ public final class ElementalDefinitionContainer_EM extends Item implements IElem
         aList.add(CommonValues.TEC_MARK_EM);
         try {
             NBTTagCompound tNBT = aStack.getTagCompound();
-            if (tNBT != null && tNBT.hasKey("info")) {
+            if (tNBT != null && tNBT.hasKey("content")) {
                 aList.add(translateToLocal("item.em.definitionContainer.desc.0") + ": ");//Should Contain
-                Collections.addAll(aList, Util.infoFromNBT(tNBT.getCompoundTag("info")));
+                EMDefinitionStackMap content = EMDefinitionStackMap.fromNBT(TecTech.definitionsRegistry, tNBT.getCompoundTag("content"));
+                Collections.addAll(aList, content.getElementalInfo());
             } else {
                 aList.add(translateToLocal("item.em.definitionContainer.desc.1"));//Recipe Hint
             }
@@ -132,21 +118,6 @@ public final class ElementalDefinitionContainer_EM extends Item implements IElem
         ItemStack that = new ItemStack(this, 1);
         that.setTagCompound(new NBTTagCompound());
         list.add(that);
-    }
-
-    @Override
-    public String getSymbol(ItemStack aStack, int index) {
-        try {
-            NBTTagCompound tNBT = aStack.getTagCompound();
-            if (tNBT != null && tNBT.hasKey("symbols")) {
-                String[] strings=Util.infoFromNBT(tNBT.getCompoundTag("symbols"));
-                return strings[index%strings.length];
-            } else {
-                return null;
-            }
-        } catch (Exception e) {
-            return "#!";
-        }
     }
 
     @Override

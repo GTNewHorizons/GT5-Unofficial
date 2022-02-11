@@ -89,7 +89,7 @@ public class ReactorSimTileEntity extends TileEntityNuclearReactorElectric {
 
     @Override
     public double getReactorEUEnergyOutput() {
-        return (double)(getReactorEnergyOutput() * 5.0F * ConfigUtil.getFloat(MainConfig.get(), "balance/energy/generator/nuclear"));
+        return getReactorEnergyOutput() * 5.0F * ConfigUtil.getDouble(MainConfig.get(), "balance/energy/generator/nuclear");
     }
 
     //public List<TileEntity> getSubTiles() {

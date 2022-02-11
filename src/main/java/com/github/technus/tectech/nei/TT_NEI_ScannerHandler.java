@@ -211,8 +211,8 @@ public class TT_NEI_ScannerHandler extends TemplateRecipeHandler {
             int tSpecial = ((CachedDefaultRecipe) arecipes.get(aRecipeIndex)).mRecipe.mSpecialValue;
             short ampere=(short) (tSpecial & 0xFFFF),minComputationPerSec=(short)(tSpecial>>>16);
 			if (tEUt != 0) {
-                drawText(10, 73, trans("152","Max Total: ") + GT_Utility.formatNumbers((1+ (computation-minComputationPerSec) /minComputationPerSec) * (long)tEUt * ampere * 20) + " EU", -16777216);
-                drawText(10, 83, trans("153","Usage: ") + GT_Utility.formatNumbers((long)tEUt*ampere) + " EU/t", -16777216);
+                drawText(10, 73, trans("152","Max Total: ") + GT_Utility.formatNumbers((1 + (computation - minComputationPerSec) / minComputationPerSec) * (long) tEUt * ampere * 20) + " EU", -16777216);
+                drawText(10, 83, trans("153","Usage: ") + GT_Utility.formatNumbers((long) tEUt * ampere) + " EU/t", -16777216);
 				if (mRecipeMap.mShowVoltageAmperageInNEI) {
                     drawText(10, 93, trans("154","Voltage: ") + GT_Utility.formatNumbers(tEUt) + " EU", -16777216);
                     drawText(10, 103, trans("155","Amperage: ") + GT_Utility.formatNumbers(ampere), -16777216);

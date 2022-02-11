@@ -1,11 +1,11 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
-import com.github.technus.tectech.mechanics.elementalMatter.core.iElementalInstanceContainer;
-import com.github.technus.tectech.mechanics.elementalMatter.core.tElementalException;
+import com.github.technus.tectech.mechanics.elementalMatter.core.EMException;
+import com.github.technus.tectech.mechanics.elementalMatter.core.IEMContainer;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
 import com.github.technus.tectech.mechanics.pipe.IConnectsToElementalPipe;
-import com.github.technus.tectech.util.Util;
+import com.github.technus.tectech.util.TT_Utility;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Dyes;
@@ -14,6 +14,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.GT_Utility;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -24,7 +25,7 @@ import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
-import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.bTransformationInfo.AVOGADRO_CONSTANT_144;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry.EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED;
 import static com.github.technus.tectech.util.CommonValues.*;
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity;
@@ -34,23 +35,23 @@ import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 /**
  * Created by danie_000 on 11.12.2016.
  */
-public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_MetaTileEntity_Hatch implements iElementalInstanceContainer, IConnectsToElementalPipe {
+public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_MetaTileEntity_Hatch implements IEMContainer, IConnectsToElementalPipe {
     private static Textures.BlockIcons.CustomIcon EM_T_SIDES;
     private static Textures.BlockIcons.CustomIcon EM_T_ACTIVE;
     private static Textures.BlockIcons.CustomIcon EM_T_CONN;
 
     private String clientLocale = "en_US";
 
-    protected cElementalInstanceStackMap content = new cElementalInstanceStackMap();
+    protected EMInstanceStackMap content      = new EMInstanceStackMap();
     //float lifeTimeMult=1f;
-    public int postEnergize = 0;
+    public    int                postEnergize = 0;
     public double overflowMatter = 0f;
     public short id = -1;
     private byte deathDelay = 2;
 
     protected GT_MetaTileEntity_Hatch_ElementalContainer(int aID, String aName, String aNameRegional, int aTier, String descr) {
         super(aID, aName, aNameRegional, aTier, 0, descr);
-        Util.setTier(aTier, this);
+        TT_Utility.setTier(aTier, this);
     }
 
     protected GT_MetaTileEntity_Hatch_ElementalContainer(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
@@ -83,7 +84,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
         //aNBT.setFloat("lifeTimeMult",lifeTimeMult);
         aNBT.setDouble("OverflowMatter", overflowMatter);
         content.cleanUp();
-        aNBT.setTag("eM_Stacks", content.toNBT());
+        aNBT.setTag("eM_Stacks", content.toNBT(TecTech.definitionsRegistry));
         aNBT.setShort("eID", id);
     }
 
@@ -95,13 +96,13 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
         overflowMatter = aNBT.getFloat("overflowMatter")+aNBT.getDouble("OverflowMatter");
         id = aNBT.getShort("eID");
         try {
-            content = cElementalInstanceStackMap.fromNBT(aNBT.getCompoundTag("eM_Stacks"));
-        } catch (tElementalException e) {
+            content = EMInstanceStackMap.fromNBT(TecTech.definitionsRegistry,aNBT.getCompoundTag("eM_Stacks"));
+        } catch (EMException e) {
             if (DEBUG_MODE) {
                 e.printStackTrace();
             }
             if (content == null) {
-                content = new cElementalInstanceStackMap();
+                content = new EMInstanceStackMap();
             }
         }
     }
@@ -112,7 +113,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
             byte Tick = (byte) (aTick % 20);
             if (DECAY_AT == Tick) {
                 purgeOverflow();
-                content.tickContentByOneSecond(1, postEnergize);//Hatches don't life time mult things
+                content.tickContent(1, postEnergize,1);//Hatches don't life time mult things
                 purgeOverflow();
             } else if (OVERFLOW_AT == Tick) {
                 if (overflowMatter <= 0) {
@@ -165,7 +166,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
     }
 
     @Override
-    public cElementalInstanceStackMap getContainerHandler() {
+    public EMInstanceStackMap getContentHandler() {
         return content;
     }
 
@@ -206,11 +207,11 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
     }
 
     public int getMaxStacksCount() {
-        return mTier * 128;
+        return mTier * mTier >> 4;
     }
 
     public double getMaxStackSize() {
-        return mTier * (mTier - 7) * 64D * AVOGADRO_CONSTANT_144;
+        return mTier * (mTier - 7) * 64D * EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED;
     }
 
     @Override
@@ -281,8 +282,8 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
         return new String[]{
                 TEC_MARK_EM,
                 mDescription,
-                translateToLocal("tt.base.emhatch.desc.0") + " " + EnumChatFormatting.AQUA + getMaxStacksCount(),//Max stacks amount:
-                translateToLocal("tt.base.emhatch.desc.1") + " " + EnumChatFormatting.AQUA + getMaxStackSize(),//Stack capacity:
+                translateToLocal("tt.base.emhatch.desc.0") + " " + EnumChatFormatting.AQUA + GT_Utility.formatNumbers(getMaxStacksCount()),//Max stacks amount:
+                translateToLocal("tt.base.emhatch.desc.1") + " " + EnumChatFormatting.AQUA + TT_Utility.formatNumberShortExp(getMaxStackSize()),//Stack capacity:
                 translateToLocal("tt.base.emhatch.desc.2"),//Place Overflow Hatch behind,on top or below
                 translateToLocal("tt.base.emhatch.desc.3"),//to provide overflow protection while this block
                 translateToLocal("tt.base.emhatch.desc.4"),//is not attached to multi block.

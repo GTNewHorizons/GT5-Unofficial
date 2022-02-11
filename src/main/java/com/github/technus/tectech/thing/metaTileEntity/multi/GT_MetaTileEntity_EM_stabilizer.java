@@ -5,7 +5,6 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEnt
 import com.github.technus.tectech.util.CommonValues;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.item.ItemStack;
@@ -29,21 +28,21 @@ public class GT_MetaTileEntity_EM_stabilizer extends GT_MetaTileEntity_Multibloc
             translateToLocal("gt.blockmachines.multimachine.em.stabilizer.hint.1"),//2 - Elemental Hatches or Molecular Casing
     };
 
-    private static final IStructureDefinition<GT_MetaTileEntity_EM_stabilizer> STRUCTURE_DEFINITION =
-            StructureDefinition.<GT_MetaTileEntity_EM_stabilizer>builder()
+    private static final IStructureDefinition<GT_MetaTileEntity_EM_stabilizer> STRUCTURE_DEFINITION = IStructureDefinition
+            .<GT_MetaTileEntity_EM_stabilizer>builder()
             .addShape("main", transpose(new String[][]{
-                    {" AFA ","BCBCB","FBGBF","BCBCB"," AFA "},
-                    {"AEEEA","CBBBC","BBDBB","CBBBC","AEEEA"},
-                    {"FE~EF","BBBBB","GDDDG","BBBBB","FEEEF"},
-                    {"AEEEA","CBBBC","BBDBB","CBBBC","AEEEA"},
-                    {" AFA ","BCBCB","FBGBF","BCBCB"," AFA "}
+                    {" AFA ", "BCBCB", "FBGBF", "BCBCB", " AFA "},
+                    {"AEEEA", "CBBBC", "BBDBB", "CBBBC", "AEEEA"},
+                    {"FE~EF", "BBBBB", "GDDDG", "BBBBB", "FEEEF"},
+                    {"AEEEA", "CBBBC", "BBDBB", "CBBBC", "AEEEA"},
+                    {" AFA ", "BCBCB", "FBGBF", "BCBCB", " AFA "}
             }))
             .addElement('A', ofBlock(sBlockCasingsTT, 4))
             .addElement('B', ofBlock(sBlockCasingsTT, 5))
             .addElement('C', ofBlock(sBlockCasingsTT, 6))
             .addElement('D', ofBlock(sBlockCasingsTT, 9))
-            .addElement('E', ofHatchAdderOptional(GT_MetaTileEntity_EM_stabilizer::addClassicToMachineList, textureOffset, 1, sBlockCasingsTT, 0))
             .addElement('F', ofBlock(QuantumGlassBlock.INSTANCE, 0))
+            .addElement('E', ofHatchAdderOptional(GT_MetaTileEntity_EM_stabilizer::addClassicToMachineList, textureOffset, 1, sBlockCasingsTT, 0))
             .addElement('G', ofHatchAdderOptional(GT_MetaTileEntity_EM_stabilizer::addElementalToMachineList, textureOffset + 4, 2, sBlockCasingsTT, 4))
             .build();
     //endregion
@@ -77,7 +76,7 @@ public class GT_MetaTileEntity_EM_stabilizer extends GT_MetaTileEntity_Multibloc
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM("main", 2, 2, 0, hintsOnly, stackSize);
+        structureBuild_EM("main", 2, 2, 0, stackSize, hintsOnly);
     }
 
     @Override

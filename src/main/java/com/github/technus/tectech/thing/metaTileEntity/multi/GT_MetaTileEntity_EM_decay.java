@@ -1,7 +1,7 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
-import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
-import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
+import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMInstanceStack;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputElemental;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
@@ -12,7 +12,6 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_Rend
 import com.github.technus.tectech.util.CommonValues;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -31,7 +30,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
-import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.bTransformationInfo.AVOGADRO_CONSTANT;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry.EM_COUNT_PER_MATERIAL_AMOUNT;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
@@ -52,8 +51,8 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
     private static Textures.BlockIcons.CustomIcon ScreenON;
 
-    public static final double URANIUM_INGOT_MASS_DIFF = 1.6114516E10* AVOGADRO_CONSTANT;
-    private static final double URANIUM_MASS_TO_EU_PARTIAL = ConfigUtil.getFloat(MainConfig.get(), "balance/energy/generator/nuclear") * 3_000_000.0 / URANIUM_INGOT_MASS_DIFF;
+    public static final double URANIUM_INGOT_MASS_DIFF = 1.6114516E10* EM_COUNT_PER_MATERIAL_AMOUNT;
+    private static final double URANIUM_MASS_TO_EU_PARTIAL = ConfigUtil.getDouble(MainConfig.get(), "balance/energy/generator/nuclear") * 3_000_000.0 / URANIUM_INGOT_MASS_DIFF;
     public static final double URANIUM_MASS_TO_EU_INSTANT = URANIUM_MASS_TO_EU_PARTIAL * 20;
 
     private String clientLocale = "en_US";
@@ -66,8 +65,8 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
             translateToLocal("gt.blockmachines.multimachine.em.decay.hint.1"),//2 - Elemental Hatches or Molecular Casing
     };
 
-    private static final IStructureDefinition<GT_MetaTileEntity_EM_decay> STRUCTURE_DEFINITION =
-            StructureDefinition.<GT_MetaTileEntity_EM_decay>builder()
+    private static final IStructureDefinition<GT_MetaTileEntity_EM_decay> STRUCTURE_DEFINITION = IStructureDefinition
+            .<GT_MetaTileEntity_EM_decay>builder()
             .addShape("main",transpose(new String[][]{
                     {"A   A","AAAAA","A   A","ABBBA","ABCBA","ABBBA","A   A","AAAAA","A   A"},
                     {" FFF ","AAAAA"," EEE ","BDDDB","BDDDB","BDDDB"," EEE ","AAAAA"," FFF "},
@@ -79,8 +78,8 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
             .addElement('B', ofBlock(sBlockCasingsTT, 5))
             .addElement('C', ofBlock(sBlockCasingsTT, 6))
             .addElement('D', ofBlock(sBlockCasingsTT, 8))
-            .addElement('E', ofHatchAdderOptional(GT_MetaTileEntity_EM_decay::addElementalToMachineList, textureOffset + 4, 2, sBlockCasingsTT, 4))
             .addElement('F', ofHatchAdderOptional(GT_MetaTileEntity_EM_decay::addClassicToMachineList, textureOffset, 1, sBlockCasingsTT, 0))
+            .addElement('E', ofHatchAdderOptional(GT_MetaTileEntity_EM_decay::addElementalToMachineList, textureOffset + 4, 2, sBlockCasingsTT, 4))
             .build();
     //endregion
 
@@ -115,30 +114,30 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
 
     @Override
     public boolean checkRecipe_EM(ItemStack itemStack) {
-        cElementalInstanceStackMap map = getInputsClone_EM();
+        EMInstanceStackMap map = getInputsClone_EM();
         if (map != null && map.hasStacks()) {
             for (GT_MetaTileEntity_Hatch_InputElemental i : eInputHatches) {
-                i.getContainerHandler().clear();
+                i.getContentHandler().clear();
             }
             return startRecipe(map);
         }
         return false;
     }
 
-    private boolean startRecipe(cElementalInstanceStackMap input) {
+    private boolean startRecipe(EMInstanceStackMap input) {
         mMaxProgresstime = 20;
         mEfficiencyIncrease = 10000;
-        outputEM = new cElementalInstanceStackMap[2];
+        outputEM = new EMInstanceStackMap[2];
         outputEM[0] = input;
-        outputEM[1] = new cElementalInstanceStackMap();
+        outputEM[1] = new EMInstanceStackMap();
 
-        for (cElementalInstanceStack stack : outputEM[0].values()) {
-            if (stack.getEnergy() == 0 && stack.definition.decayMakesEnergy(1) &&
+        for (EMInstanceStack stack : outputEM[0].valuesToArray()) {
+            if (stack.getEnergy() == 0 && stack.getDefinition().decayMakesEnergy(1) &&
                     getBaseMetaTileEntity().decreaseStoredEnergyUnits(
                             (long) (stack.getEnergySettingCost(1) * URANIUM_MASS_TO_EU_INSTANT), false)) {
                 stack.setEnergy(1);
-            } else if (!stack.definition.decayMakesEnergy(stack.getEnergy())) {
-                outputEM[0].remove(stack.definition);
+            } else if (!stack.getDefinition().decayMakesEnergy(stack.getEnergy())) {
+                outputEM[0].removeKey(stack.getDefinition());
                 outputEM[1].putReplace(stack);
             }
         }
@@ -156,7 +155,7 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
     @Override
     public void outputAfterRecipe_EM() {
         for (int i = 0; i < 2 && i < eOutputHatches.size(); i++) {
-            eOutputHatches.get(i).getContainerHandler().putUnifyAll(outputEM[i]);
+            eOutputHatches.get(i).getContentHandler().putUnifyAll(outputEM[i]);
             outputEM[i] = null;
         }
     }
@@ -257,7 +256,7 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM("main", 2, 2, 0, hintsOnly, stackSize);
+        structureBuild_EM("main", 2, 2, 0, stackSize, hintsOnly);
     }
 
     @Override

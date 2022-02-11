@@ -1,6 +1,6 @@
 package com.github.technus.tectech.compatibility.thaumcraft.thing.metaTileEntity.multi;
 
-import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import net.minecraft.tileentity.TileEntity;
 
@@ -10,19 +10,23 @@ import net.minecraft.tileentity.TileEntity;
 public class EssentiaCompat {
     public static EssentiaCompat essentiaContainerCompat;
 
-    public boolean check(GT_MetaTileEntity_MultiblockBase_EM meta){
+    public <T extends GT_MetaTileEntity_MultiblockBase_EM> boolean check(T meta,TileEntity te){
         return false;
     }
 
-    public TileEntity getContainer(GT_MetaTileEntity_MultiblockBase_EM meta){
+    public <T extends GT_MetaTileEntity_MultiblockBase_EM> TileEntity getContainer(T meta){
         return null;
     }
 
-    public boolean putElementalInstanceStack(TileEntity conatainer, cElementalInstanceStack stack){
+    public String getEssentiaName(IEMDefinition stack){
+        return null;
+    }
+
+    public boolean putInContainer(TileEntity container, String name){
         return false;
     }
 
-    public cElementalInstanceStack getFromContainer(TileEntity container){
+    public IEMDefinition getFromContainer(TileEntity container){
         return null;
     }
 }

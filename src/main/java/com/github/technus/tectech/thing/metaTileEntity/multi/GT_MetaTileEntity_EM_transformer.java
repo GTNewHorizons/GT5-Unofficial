@@ -8,7 +8,6 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_Rend
 import com.github.technus.tectech.util.CommonValues;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -23,7 +22,6 @@ import net.minecraft.util.ResourceLocation;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
-import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sHintCasingsTT;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.GregTech_API.sBlockCasings1;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
@@ -34,24 +32,24 @@ import static net.minecraft.util.StatCollector.translateToLocal;
  */
 public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
     //region structure
-    private static final String[] description = new String[]{
+    private static final String[]                                               description          = new String[]{
             EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
             translateToLocal("gt.blockmachines.multimachine.em.transformer.hint"),//1 - Energy IO Hatches or High Power Casing
     };
-    private static final IStructureDefinition<GT_MetaTileEntity_EM_transformer> STRUCTURE_DEFINITION =
-            StructureDefinition.<GT_MetaTileEntity_EM_transformer>builder()
-                    .addShape("main",new String[][]{
-                            {"111", "1~1", "111",},
-                            {"111", "101", "111",},
-                            {"111", "111", "111",},
-                    })
-                    .addElement('0', ofBlock(sBlockCasings1,15))
-                    .addElement('1', ofChain(
-                            ofHatchAdder(GT_MetaTileEntity_EM_transformer::addEnergyIOToMachineList,textureOffset,sHintCasingsTT,0),
-                            onElementPass(t->t.casingCount++,ofBlock(sBlockCasingsTT,0))
-                    ))
-                    .build();
-    private int casingCount=0;
+    private static final IStructureDefinition<GT_MetaTileEntity_EM_transformer> STRUCTURE_DEFINITION = IStructureDefinition
+            .<GT_MetaTileEntity_EM_transformer>builder()
+            .addShape("main", new String[][]{
+                    {"111", "1~1", "111",},
+                    {"111", "101", "111",},
+                    {"111", "111", "111",},
+            })
+            .addElement('0', ofBlock(sBlockCasings1, 15))
+            .addElement('1', ofChain(
+                    ofHatchAdder(GT_MetaTileEntity_EM_transformer::addEnergyIOToMachineList, textureOffset, 1),
+                    onElementPass(t -> t.casingCount++, ofBlock(sBlockCasingsTT, 0))
+            ))
+            .build();
+    private              int                                                    casingCount          = 0;
 
     @Override
     public IStructureDefinition<GT_MetaTileEntity_EM_transformer> getStructure_EM() {
@@ -88,8 +86,8 @@ public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_Multiblo
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        casingCount=0;
-        return structureCheck_EM("main", 1, 1, 0) && casingCount>=5;
+        casingCount = 0;
+        return structureCheck_EM("main", 1, 1, 0) && casingCount >= 5;
     }
 
     @Override
@@ -118,12 +116,12 @@ public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_Multiblo
 
     @Override
     public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity,true,  false, false);
+        return new GT_Container_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, true, false, false);
     }
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "EMDisplay.png",true,  false, false);
+        return new GT_GUIContainer_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "EMDisplay.png", true, false, false);
     }
 
     @Override
@@ -161,7 +159,7 @@ public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_Multiblo
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM("main", 1, 1, 0, hintsOnly, stackSize);
+        structureBuild_EM("main", 1, 1, 0, stackSize, hintsOnly);
     }
 
     @Override

@@ -1,7 +1,7 @@
 package com.github.technus.tectech.mechanics.data;
 
-import com.github.technus.tectech.util.Util;
 import com.github.technus.tectech.loader.NetworkDispatcher;
+import com.github.technus.tectech.util.TT_Utility;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
 import net.minecraft.entity.player.EntityPlayer;
@@ -32,7 +32,7 @@ public class PlayerPersistence {
         if(tag!=null){
             return tag;
         }
-        tag=Util.getPlayerData(uuid1,uuid2,extension);
+        tag= TT_Utility.getPlayerData(uuid1,uuid2,extension);
         if(tag==null){
             tag=new NBTTagCompound();
         }
@@ -58,7 +58,7 @@ public class PlayerPersistence {
     }
 
     public void saveData(EntityPlayer player){
-        Util.savePlayerFile(player,extension,getDataOrSetToNewTag(player));
+        TT_Utility.savePlayerFile(player,extension,getDataOrSetToNewTag(player));
     }
 
     @SubscribeEvent

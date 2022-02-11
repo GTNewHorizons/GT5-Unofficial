@@ -7,7 +7,10 @@ import com.github.technus.tectech.compatibility.openmodularturrets.blocks.turret
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.block.QuantumStuffBlock;
 import com.github.technus.tectech.thing.block.ReactorSimBlock;
-import com.github.technus.tectech.thing.casing.*;
+import com.github.technus.tectech.thing.casing.GT_Block_CasingsBA0;
+import com.github.technus.tectech.thing.casing.GT_Block_CasingsNH;
+import com.github.technus.tectech.thing.casing.GT_Block_CasingsTT;
+import com.github.technus.tectech.thing.casing.TT_Container_Casings;
 import com.github.technus.tectech.thing.item.*;
 import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.Textures;
@@ -33,8 +36,6 @@ public class ThingsLoader implements Runnable {
         TecTech.LOGGER.info("Elemental Casing registered");
         TT_Container_Casings.sBlockCasingsBA0 = new GT_Block_CasingsBA0();
         TecTech.LOGGER.info("Nikolai's Casing registered");
-        TT_Container_Casings.sHintCasingsTT = new GT_Block_HintTT();
-        TecTech.LOGGER.info("Hint Blocks registered");
 
         QuantumGlassBlock.run();
         TecTech.LOGGER.info("Quantum Glass registered");
@@ -52,8 +53,6 @@ public class ThingsLoader implements Runnable {
         ReactorSimBlock.run();
         TecTech.LOGGER.info("Reactor Simulator registered");
 
-        ConstructableTriggerItem.run();
-        FrontRotationTriggerItem.run();
         ParametrizerMemoryCard.run();
         ElementalDefinitionScanStorage_EM.run();
         EuMeterGT.run();

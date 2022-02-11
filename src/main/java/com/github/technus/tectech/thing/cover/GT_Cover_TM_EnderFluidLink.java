@@ -3,6 +3,7 @@ package com.github.technus.tectech.thing.cover;
 import com.github.technus.tectech.loader.NetworkDispatcher;
 import com.github.technus.tectech.mechanics.enderStorage.EnderLinkCoverMessage;
 import com.github.technus.tectech.mechanics.enderStorage.EnderLinkTag;
+import com.github.technus.tectech.util.TT_Utility;
 import eu.usrv.yamcore.auxiliary.PlayerChatHelper;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.GT_GUICover;
@@ -25,7 +26,8 @@ import net.minecraftforge.fluids.IFluidHandler;
 import java.awt.*;
 import java.util.UUID;
 
-import static com.github.technus.tectech.mechanics.enderStorage.EnderWorldSavedData.*;
+import static com.github.technus.tectech.mechanics.enderStorage.EnderWorldSavedData.getEnderFluidContainer;
+import static com.github.technus.tectech.mechanics.enderStorage.EnderWorldSavedData.getEnderLinkTag;
 
 public class GT_Cover_TM_EnderFluidLink extends GT_CoverBehavior {
     private static final int L_PER_TICK = 8000;
@@ -325,7 +327,7 @@ public class GT_Cover_TM_EnderFluidLink extends GT_CoverBehavior {
         @Override
         public void resetTextBox(GT_GuiIntegerTextBox box) {
             //Solid White becomes: #FFFFFFFF
-            box.setText("#" + String.format("%08X", tag.getColorInt()));
+            box.setText("#" + TT_Utility.formatNumberIntHex(tag.getColorInt()));
         }
 
         public void resetColorField() {

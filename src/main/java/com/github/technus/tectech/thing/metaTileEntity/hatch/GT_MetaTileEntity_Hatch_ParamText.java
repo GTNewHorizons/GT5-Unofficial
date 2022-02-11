@@ -1,9 +1,9 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
-import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.loader.NetworkDispatcher;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_Container_ParamText;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_GUIContainer_ParamText;
+import com.github.technus.tectech.util.CommonValues;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -113,13 +113,7 @@ public class GT_MetaTileEntity_Hatch_ParamText extends GT_MetaTileEntity_Hatch_P
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         value0s = aNBT.getString("eIeValue0S");
-        if (value0s==null){
-            value0s="";
-        }
         value1s = aNBT.getString("eIeValue1S");
-        if(value1s==null){
-            value1s="";
-        }
     }
 
     @Override
