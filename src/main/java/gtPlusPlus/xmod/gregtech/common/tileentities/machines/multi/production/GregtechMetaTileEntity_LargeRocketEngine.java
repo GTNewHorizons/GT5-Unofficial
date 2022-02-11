@@ -15,6 +15,7 @@ import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.*;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
+import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.chemistry.RocketFuels;
 import gtPlusPlus.core.lib.*;
@@ -111,52 +112,13 @@ public class GregtechMetaTileEntity_LargeRocketEngine extends GregtechMeta_Multi
 						{"C~C", "SIS", "SIS", "SIS", "SIS", "SIS", "SIS", "SIS", "SIS", "CMC"},
 						{"CCC", "CSC", "CSC", "CSC", "CSC", "CSC", "CSC", "CSC", "CSC", "CCC"},
 					}))
-					.addElement(
-							'C',
-							ofBlock(
-									getCasingBlock(), getCasingMeta()
-									)
-							)
-					.addElement(
-							'I',
-							ofBlock(
-									getGearboxBlock(), getGearboxMeta()
-									)
-							)
-					.addElement(
-							'T',
-							ofChain(
-									ofHatchAdder(
-											GregtechMetaTileEntity_LargeRocketEngine::addLargeRocketEngineTopList, getCasingTextureIndex(), 2
-											),
-									onElementPass(
-											x -> ++x.mCasing,
-											ofBlock(
-													getCasingBlock(), getCasingMeta()
-													)
-											)
-									)
-							)
-					.addElement(
-							'S',
-							ofChain(
-									ofHatchAdder(
-											GregtechMetaTileEntity_LargeRocketEngine::addLargeRocketEngineSideList, getCasingTextureIndex(), 1
-											),
-									onElementPass(
-											x -> ++x.mCasing,
-											ofBlock(
-													getCasingBlock(), getCasingMeta()
-													)
-											)
-									)
-							)
-					.addElement(
-							'M',
-							ofHatchAdder(
-									GregtechMetaTileEntity_LargeRocketEngine::addLargeRocketEngineBackList, getCasingTextureIndex(), 3
-									)
-							)
+					.addElement('C', ofBlock(getCasingBlock(), getCasingMeta()))
+					.addElement('I', ofBlock(getGearboxBlock(), getGearboxMeta()))
+					.addElement('T', ofChain(ofHatchAdder(GregtechMetaTileEntity_LargeRocketEngine::addLargeRocketEngineTopList, getCasingTextureIndex(), 2),
+							onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta()))))
+					.addElement('S', ofChain(ofHatchAdder(GregtechMetaTileEntity_LargeRocketEngine::addLargeRocketEngineSideList, getCasingTextureIndex(), 1),
+							onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta()))))
+					.addElement('M', ofHatchAdder(GregtechMetaTileEntity_LargeRocketEngine::addLargeRocketEngineBackList, getCasingTextureIndex(), 3))
 					.build();
 		}
 		return this.STRUCTURE_DEFINITION;
@@ -270,7 +232,6 @@ public class GregtechMetaTileEntity_LargeRocketEngine extends GregtechMeta_Multi
 			int totalAir = 0;
 			for (GT_MetaTileEntity_Hatch_AirIntake u : this.mAirIntakes) {
 				if (u != null && u.mFluid != null) {
-					// had this trow errors cousing the machine to stop probebly fixed
 					FluidStack f = u.mFluid;
 					if (f.isFluidEqual(sAirFluidStack)) {
 						totalAir += f.amount;
@@ -289,51 +250,84 @@ public class GregtechMetaTileEntity_LargeRocketEngine extends GregtechMeta_Multi
 	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
 		final ArrayList<FluidStack> tFluids = this.getStoredFluids();
-
+		this.clearRecipeMapForAllInputHatches();
 		int aircount = getAir() ;
-		if (aircount <  this.euProduction/100) {
-			//log("Not Enough Air to Run "+aircount);
+		int aAirToConsume = this.euProduction/100;
+		if (aircount <  aAirToConsume) {
+			log("Not Enough Air to Run "+aircount);
 			return false;
 		}
 		else {
-			boolean hasIntakeAir = this.depleteInput(FluidUtils.getFluidStack(sAirFluid, this.euProduction/100));
-			if (!hasIntakeAir) {
-				//log("Could not consume Air to run "+aircount);
-				this.freeFuelTicks = 0;
-				return false;
+			int aTotalAir = 0;
+			for (GT_MetaTileEntity_Hatch_AirIntake aAirHatch : this.mAirIntakes) {
+				if (aAirHatch.mFluid != null) {
+					aTotalAir += aAirHatch.getFluidAmount();
+				}
+			}
+			log("Total Air: "+aTotalAir);
+			if (aTotalAir >= aAirToConsume) {
+				int aSplitAmount = (aAirToConsume / this.mAirIntakes.size());
+				if (aSplitAmount > 0) {
+					for (GT_MetaTileEntity_Hatch_AirIntake aAirHatch : mAirIntakes) {						
+						boolean hasIntakeAir = aAirHatch.drain(aSplitAmount, true) != null;
+						if (!hasIntakeAir) {
+							log("Could not consume Air to run "+aSplitAmount);
+							this.freeFuelTicks = 0;
+							return false;
+						}
+						log("Consumed Air to run "+aSplitAmount);
+					}
+				}
 			}
 		}
-		// reste fuel ticks incase it does not reset when it stops
+		// reset fuel ticks in case it does not reset when it stops
 		if (this.freeFuelTicks != 0 && this.mProgresstime == 0 && this.mEfficiency == 0)
 			this.freeFuelTicks = 0;
 
-		//log("Running "+aircount);
+		log("Running "+aircount);
 		log("looking at hatch");
 
 
 		if (tFluids.size() > 0 && getRecipeMap() != null) {
-
-			if (tFluids.contains(MISC_MATERIALS.CARBON_DIOXIDE.getFluidStack(this.boostEu ? 3 : 1)) || tFluids.contains(FluidUtils.getFluidStack("carbondioxide", (this.boostEu ? 3 : 1)))) {
+			FluidStack aCO2 = MISC_MATERIALS.CARBON_DIOXIDE.getFluidStack(this.boostEu ? 3 : 1);
+			FluidStack aCO2Fallback = FluidUtils.getWildcardFluidStack("carbondioxide", (this.boostEu ? 3 : 1));
+			
+			
+			boolean aHasCO2 = false;
+			for (FluidStack aFluid : tFluids) {
+				if (aCO2 != null && aFluid.isFluidEqual(aCO2)) {
+					log("Found CO2 (1)");
+					aHasCO2 = true;
+					break;
+				}
+				if (aCO2Fallback != null && aFluid.isFluidEqual(aCO2Fallback)) {
+					log("Found CO2 (2)");
+					aHasCO2 = true;
+					break;
+				}
+				log("Found: "+aFluid.getUnlocalizedName());
+			}
+			if (aHasCO2) {
 				if (this.mRuntime % 72 == 0 || this.mRuntime == 0) {
 					if (!consumeCO2()) {
 						this.freeFuelTicks = 0;
+						log("Bad Return 1");
 						return false;
 					}
 				}
-			} else
-			{
+			}
+			else {
 				this.freeFuelTicks = 0;
+				log("Bad Return 2 | "+aHasCO2+" | "+(aCO2 != null)+" | "+(aCO2Fallback != null));
 				return false;
 			}
-
-			if (this.freeFuelTicks == 0)
+			if (this.freeFuelTicks == 0) {
 				this.boostEu = consumeLOH();
-
+			}
 			for (final FluidStack hatchFluid1 : tFluids) {
 				if (hatchFluid1.isFluidEqual(sAirFluidStack)) {
 					continue;
 				}
-
 				if (this.freeFuelTicks == 0) {
 					for (final GT_Recipe aFuel : getRecipeMap().mRecipeList) {
 						final FluidStack tLiquid;
@@ -349,12 +343,10 @@ public class GregtechMetaTileEntity_LargeRocketEngine extends GregtechMeta_Multi
 							this.mMaxProgresstime = 1;
 							this.mEfficiencyIncrease =  this.euProduction/2000;
 							return true;
-							//log("");
 						}
 					}
-
-				} else
-				{
+				} 
+				else {
 					this.mEfficiencyIncrease =  this.euProduction/2000;
 					this.freeFuelTicks--;
 					this.mEUt = (int) ((this.mEfficiency < 1000) ? 0 : GT_Values.V[5]<<1);
@@ -362,12 +354,12 @@ public class GregtechMetaTileEntity_LargeRocketEngine extends GregtechMeta_Multi
 					this.mMaxProgresstime = 1;
 					return true;
 				}
-
 			}
 		}
 		this.mEUt = 0;
 		this.mEfficiency = 0;
 		this.freeFuelTicks = 0;
+		log("Bad Return 3");
 		return false;
 	}
 
@@ -398,13 +390,13 @@ public class GregtechMetaTileEntity_LargeRocketEngine extends GregtechMeta_Multi
 	public void setEUProduction(int energy){
 		energy /= 20;
 		double energyEfficiency;
-		double tDevideEnergy = Math.cbrt(energy);
+		double tDivideEnergy = Math.cbrt(energy);
 		if (energy > 10000) {
 			//cbrt(10 000) /
-			energyEfficiency =  (21.5443469/tDevideEnergy);
+			energyEfficiency =  (21.5443469/tDivideEnergy);
 			if (energy >= 40000)
 				//cbrt(40 000) /
-				energyEfficiency *= (34.19951893/tDevideEnergy);
+				energyEfficiency *= (34.19951893/tDivideEnergy);
 			energyEfficiency *= energy;
 		}
 		else {

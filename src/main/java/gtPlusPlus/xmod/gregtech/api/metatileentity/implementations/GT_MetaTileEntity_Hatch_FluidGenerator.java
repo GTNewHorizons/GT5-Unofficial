@@ -132,18 +132,19 @@ public abstract class GT_MetaTileEntity_Hatch_FluidGenerator extends GT_MetaTile
 	}
 
 	public void onPostTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTick) {
-		super.onPostTick(aBaseMetaTileEntity, aTick);	
-		
+		super.onPostTick(aBaseMetaTileEntity, aTick);
 		if (!aBaseMetaTileEntity.isAllowedToWork()) {
-            aBaseMetaTileEntity.setActive(false);	
-            mProgresstime = 0;
-            mMaxProgresstime = 0;		
+			aBaseMetaTileEntity.setActive(false);
+			mProgresstime = 0;
+			mMaxProgresstime = 0;
 		}
 		else {
 			aBaseMetaTileEntity.setActive(true);
 			mMaxProgresstime = getMaxTickTime();
 			if (++mProgresstime >= mMaxProgresstime) {
-				addFluidToHatch(aTick);
+				if (this.canTankBeFilled()) {					
+					addFluidToHatch(aTick);
+				}
 				mProgresstime = 0;
 			}
 		}
@@ -184,22 +185,23 @@ public abstract class GT_MetaTileEntity_Hatch_FluidGenerator extends GT_MetaTile
 		if (!doesHatchMeetConditionsToGenerate()) {
 			return false;
 		}
-		boolean didFill = false;
-		if (canTankBeFilled()) {
-			didFill = this.fill(FluidUtils.getFluidStack(getFluidToGenerate(), getAmountOfFluidToGenerate()), true) > 0;
-			if (didFill) {					
-				this.generateParticles(this.getBaseMetaTileEntity().getWorld(), "cloud");
-			}
+		int aFillAmount = this.fill(FluidUtils.getFluidStack(getFluidToGenerate(), getAmountOfFluidToGenerate()), true);
+		if (aFillAmount > 0) {
+			if (this.getBaseMetaTileEntity().isClientSide()) {
+				generateParticles(this.getBaseMetaTileEntity().getWorld(), "cloud");
+	        }
 		}
-		return didFill;	
+		return aFillAmount > 0;	
 	}
 
 	@Override
 	public boolean canTankBeFilled() {
-		//Logger.INFO("Total Space: "+this.getCapacity());
-		//Logger.INFO("Current capacity: "+this.getFluidAmount());
-		//Logger.INFO("To add: "+this.getAmountOfFluidToGenerate());		
-		//Logger.INFO("Space Free: "+(this.getCapacity()-this.getFluidAmount()));
+		if (this.getCapacity()-this.getFluidAmount() > 0) {
+			//Logger.INFO("Total Space: "+this.getCapacity());
+			//Logger.INFO("Current amount: "+this.getFluidAmount());
+			//Logger.INFO("To add: "+this.getAmountOfFluidToGenerate());		
+			//Logger.INFO("Space Free: "+(this.getCapacity()-this.getFluidAmount()));			
+		}
 		if (this.mFluid == null || (this.mFluid != null && (this.getCapacity() - this.getFluidAmount() >= this.getAmountOfFluidToGenerate()))) {
 			return true;
 		}
@@ -218,8 +220,41 @@ public abstract class GT_MetaTileEntity_Hatch_FluidGenerator extends GT_MetaTile
 
 	@Override
 	public int fill(FluidStack aFluid, boolean doFill) {
-		return super.fill(aFluid, doFill);
-	}
+        if (aFluid == null || aFluid.getFluid().getID() <= 0 || aFluid.amount <= 0 || aFluid.getFluid() != getFluidToGenerate() || !canTankBeFilled()) {
+        	return 0;
+        }
+
+        if (getFillableStack() == null || getFillableStack().getFluid().getID() <= 0) {
+            if (aFluid.amount <= getCapacity()) {
+                if (doFill) {
+                    setFillableStack(aFluid.copy());
+                    getBaseMetaTileEntity().markDirty();
+                }
+                return aFluid.amount;
+            }
+            if (doFill) {
+                setFillableStack(aFluid.copy());
+                getFillableStack().amount = getCapacity();
+                getBaseMetaTileEntity().markDirty();
+            }
+            return getCapacity();
+        }
+
+        if (!getFillableStack().isFluidEqual(aFluid))
+            return 0;
+
+        int space = getCapacity() - getFillableStack().amount;
+        if (aFluid.amount <= space) {
+            if (doFill) {
+                getFillableStack().amount += aFluid.amount;
+                getBaseMetaTileEntity().markDirty();
+            }
+            return aFluid.amount;
+        }
+        if (doFill)
+            getFillableStack().amount = getCapacity();
+        return space;
+    }
 
 	@Override
 	public boolean canFill(ForgeDirection aSide, Fluid aFluid) {

@@ -257,6 +257,11 @@ public class TreeFarmHelper {
 		return true;
 	}
 
+
+	public static boolean isValidForGUI(final ItemStack aStack) {
+		return isCorrectMachinePart(aStack) != SAWTOOL.NONE;
+	}
+	
 	public static SAWTOOL isCorrectMachinePart(final ItemStack aStack) {
 		if (aStack != null){
 			//Utils.LOG_WARNING("Found "+aStack.getDisplayName()+" in the GUI slot.");
