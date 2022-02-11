@@ -1,5 +1,7 @@
 package gregtech.common.blocks;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
@@ -9,6 +11,7 @@ import gregtech.api.render.TextureFactory;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.IIcon;
 
 import java.util.Arrays;
 
@@ -16,16 +19,17 @@ import static gregtech.api.enums.Textures.BlockIcons.BASALT_STONE;
 import static gregtech.api.enums.Textures.BlockIcons.GRANITE_BLACK_STONE;
 import static gregtech.api.enums.Textures.BlockIcons.GRANITE_RED_STONE;
 import static gregtech.api.enums.Textures.BlockIcons.MARBLE_STONE;
-import net.minecraft.util.IIcon;
 
 public class GT_Block_Ores extends GT_Block_Ores_Abstract {
+    private static final String UNLOCALIZED_NAME = "gt.blockores";
+
     public GT_Block_Ores() {
-        super("gt.blockores", 7, false, Material.rock);
+        super(UNLOCALIZED_NAME, 7, false, Material.rock);
     }
 
     @Override
     public String getUnlocalizedName() {
-        return "gt.blockores";
+        return UNLOCALIZED_NAME;
     }
 
     @Override
@@ -34,39 +38,40 @@ public class GT_Block_Ores extends GT_Block_Ores_Abstract {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta) {
         int index = ((meta / 1000) % 16);
         switch (index) {
-		case 0:
-			return Blocks.stone.getIcon(side, 0);
-		case 1:
-			return Blocks.netherrack.getIcon(side, 0);
-		case 2:
-			return Blocks.end_stone.getIcon(side, 0);
-		case 3:
-			return GRANITE_BLACK_STONE.getIcon();
-		case 4:
-			return GRANITE_RED_STONE.getIcon();
-		case 5:
-			return MARBLE_STONE.getIcon();
-		case 6:
-			return BASALT_STONE.getIcon();
-		default:
-			return Blocks.stone.getIcon(side, 0);
-		}
+            case 1:
+                return Blocks.netherrack.getIcon(side, 0);
+            case 2:
+                return Blocks.end_stone.getIcon(side, 0);
+            case 3:
+                return GRANITE_BLACK_STONE.getIcon();
+            case 4:
+                return GRANITE_RED_STONE.getIcon();
+            case 5:
+                return MARBLE_STONE.getIcon();
+            case 6:
+                return BASALT_STONE.getIcon();
+            default:
+                return Blocks.stone.getIcon(side, 0);
+        }
     }
 
     @Override
     public int getBaseBlockHarvestLevel(int aMeta) {
         switch (aMeta) {
             case 3:
-            case 4:return 3;
+            case 4:
+                return 3;
             case 0:
             case 1:
             case 2:
             case 5:
             case 6:
-            default:return 0;
+            default:
+                return 0;
         }
     }
 
