@@ -2,6 +2,8 @@ package gregtech.common.render;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.ITexture;
@@ -453,6 +455,7 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
         return true;
     }
     
+    @SideOnly(Side.CLIENT)
     public static void addHitEffects(EffectRenderer effectRenderer, Block block, World world, int x, int y, int z, int side) {
         double rX = x + XSTR.XSTR_INSTANCE.nextDouble() * 0.8 + 0.1;
         double rY = y + XSTR.XSTR_INSTANCE.nextDouble() * 0.8 + 0.1;
@@ -472,7 +475,8 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
         }
         effectRenderer.addEffect((new EntityDiggingFX(world, rX, rY, rZ, 0.0, 0.0, 0.0, block, block.getDamageValue(world, x, y, z), side)).applyColourMultiplier(x, y, z).multiplyVelocity(0.2F).multipleParticleScaleBy(0.6F));
     }
-    
+
+    @SideOnly(Side.CLIENT)
     public static void addDestroyEffects(EffectRenderer effectRenderer, Block block, World world, int x, int y, int z) {
         for (int iX = 0; iX < 4; ++iX) {
             for (int iY = 0; iY < 4; ++iY) {
