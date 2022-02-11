@@ -1631,8 +1631,8 @@ public class WerkstoffLoader {
                 }
             }
             for (OrePrefixes p : values())
-                if (!werkstoff.getGenerationFeatures().enforceUnification && (werkstoff.getGenerationFeatures().toGenerate & p.mMaterialGenerationBits) != 0 && OreDictHandler.getItemStack(werkstoff.getDefaultName(), p, 1) != null) {
-                    DebugLog.log("Found: " + (p + werkstoff.getVarName()) + " in oreDict, disable and reroute my Items to that, also add a Tooltip.");
+                if (Materials.get(werkstoff.getDefaultName()) != null && Materials.get(werkstoff.getDefaultName()).mMetaItemSubID != -1 && (werkstoff.getGenerationFeatures().toGenerate & p.mMaterialGenerationBits) != 0 && OreDictHandler.getItemStack(werkstoff.getDefaultName(), p, 1) != null) {
+                    DebugLog.log("Found: " + (p + werkstoff.getVarName()) + " in GT material system, disable and reroute my Items to that, also add a Tooltip.");
                     werkstoff.getGenerationFeatures().setBlacklist(p);
                 }
             WerkstoffLoader.toGenerateGlobal = (WerkstoffLoader.toGenerateGlobal | werkstoff.getGenerationFeatures().toGenerate);

@@ -123,6 +123,7 @@ public class StaticRecipeChangeLoaders {
 
     public static void unificationRecipeEnforcer() {
         for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
+            StaticRecipeChangeLoaders.runMaterialLinker(werkstoff);
             if (werkstoff.getGenerationFeatures().enforceUnification) {
 
                 if (werkstoff.contains(NOBLE_GAS))
@@ -258,6 +259,24 @@ public class StaticRecipeChangeLoaders {
                 for (ItemStack stack : OreDictionary.getOres(prefixes + werkstoff.getVarName())) {
                     GT_OreDictUnificator.addAssociation(prefixes, werkstoff.getBridgeMaterial(), stack, false);
                     GT_OreDictUnificator.getAssociation(stack).mUnificationTarget = werkstoff.get(prefixes);
+                }
+            }
+    }
+
+    private static void runMaterialLinker(Werkstoff werkstoff) {
+        if (werkstoff.getType() == Werkstoff.Types.ELEMENT) {
+            if (werkstoff.getBridgeMaterial() != null) {
+                werkstoff.getBridgeMaterial().mElement = Element.get(werkstoff.getToolTip());
+                Element.get(werkstoff.getToolTip()).mLinkedMaterials = new ArrayList<>();
+                Element.get(werkstoff.getToolTip()).mLinkedMaterials.add(werkstoff.getBridgeMaterial());
+            }
+        }
+
+        for (OrePrefixes prefixes : OrePrefixes.values())
+            if (werkstoff.hasItemType(prefixes) && werkstoff.getBridgeMaterial() != null) {
+                GT_OreDictUnificator.set(prefixes, werkstoff.getBridgeMaterial(), werkstoff.get(prefixes), true, true);
+                for (ItemStack stack : OreDictionary.getOres(prefixes + werkstoff.getVarName())) {
+                    GT_OreDictUnificator.addAssociation(prefixes, werkstoff.getBridgeMaterial(), stack, false);
                 }
             }
     }

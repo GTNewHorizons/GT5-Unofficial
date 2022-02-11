@@ -101,7 +101,7 @@ public class ToolLoader implements IWerkstoffRunnable {
         GT_ModHandler.addCraftingRecipe(GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(GT_MetaGenerated_Tool_01.SCREWDRIVER_LV, 1, werkstoff.getBridgeMaterial(), Materials.Steel, new long[]{50000L, 32L, 1L, -1L}), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"PdX", "MGS", "GBP", 'X', stickLong.get(werkstoff.getBridgeMaterial()), 'M', ItemList.Electric_Motor_LV.get(1L), 'S', screw.get(Materials.Steel), 'P', plate.get(Materials.Steel), 'G', gearGtSmall.get(Materials.Steel), 'B', ItemList.Battery_RE_LV_Sodium.get(1L)});
 
         GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(toolHeadHammer, werkstoff.getBridgeMaterial(), 1L), GT_Proxy.tBits, new Object[]{"II ", "IIh", "II ", 'P', plate.get(werkstoff.getBridgeMaterial()), 'I', ingot.get(werkstoff.getBridgeMaterial())});
-        if (werkstoff.hasItemType(plateDouble)) {
+        if (werkstoff.hasItemType(plateDouble) && werkstoff.hasItemType(cellMolten)) {
             GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(turbineBlade, werkstoff.getBridgeMaterial(), 1L), GT_Proxy.tBits, new Object[]{"fPd", "SPS", " P ", 'P', plateDouble.get(werkstoff.getBridgeMaterial()), 'S', screw.get(werkstoff.getBridgeMaterial())});
             GT_Values.RA.addExtruderRecipe(werkstoff.get(ingot, 6), ItemList.Shape_Extruder_Turbine_Blade.get(0), werkstoff.get(turbineBlade, 1), (int) werkstoff.getStats().getMass() / 2 * 20, 120);
             GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Turbine_Blade.get(0), werkstoff.getMolten(864), werkstoff.get(turbineBlade, 1), (int) werkstoff.getStats().getMass() * 20, 120);
