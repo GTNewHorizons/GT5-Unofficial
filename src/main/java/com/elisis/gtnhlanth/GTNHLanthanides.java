@@ -29,6 +29,7 @@ import gregtech.api.util.GT_Log;
             + "required-after:bartworks; " 
             + "required-after:GoodGenerator; "
             + "before:miscutils; "
+            + "required-after:dreamcraft; "
         )
 public class GTNHLanthanides {
     

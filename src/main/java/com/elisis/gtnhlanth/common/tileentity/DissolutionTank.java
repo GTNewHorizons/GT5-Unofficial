@@ -2,16 +2,25 @@ package com.elisis.gtnhlanth.common.tileentity;
 
 import static com.elisis.gtnhlanth.util.DescTextLocalization.BLUEPRINT_INFO;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAdder;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.lwjgl.input.Keyboard;
 
 import com.elisis.gtnhlanth.loader.RecipeAdder;
 import com.elisis.gtnhlanth.util.DescTextLocalization;
+import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
+import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
@@ -22,15 +31,17 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
+import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<DissolutionTank> implements IConstructable {
     
-	@SuppressWarnings("deprecation")
 	private IStructureDefinition<DissolutionTank> multiDefinition = StructureDefinition.<DissolutionTank>builder()
 		.addShape(mName, transpose(new String[][] {
 			{"-sss-", "sssss", "sssss", "sssss", "-sss-"},
@@ -40,15 +51,15 @@ public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<Di
 			{"s---s", "-----", "-----", "-----", "s---s"}
 		}))
 		.addElement('s', ofChain(
-				ofHatchAdder(DissolutionTank::addInputToMachineList, 48, 1),
-				ofHatchAdder(DissolutionTank::addOutputToMachineList, 48, 1),
-				ofHatchAdder(DissolutionTank::addEnergyInputToMachineList, 48, 1),
-				ofHatchAdder(DissolutionTank::addMaintenanceToMachineList, 48, 1),
-				ofHatchAdder(DissolutionTank::addMufflerToMachineList, 48, 1),
+				ofHatchAdder(DissolutionTank::addInputToMachineList, 49, 1),
+				ofHatchAdder(DissolutionTank::addOutputToMachineList, 49, 1),
+				ofHatchAdder(DissolutionTank::addEnergyInputToMachineList, 49, 1),
+				ofHatchAdder(DissolutionTank::addMaintenanceToMachineList, 49, 1),
+				ofHatchAdder(DissolutionTank::addMufflerToMachineList, 49, 1),
 				ofBlock(GregTech_API.sBlockCasings4, 1)
 			))
 		.addElement('h', ofBlock(GregTech_API.sBlockCasings1, 11))
-		//.addElement('g', ofBlock())
+		.addElement('g', ofBlockAdder(DissolutionTank::addGlass, ItemRegistry.bw_glasses[0], 1))
 		
 		
 		.build();
@@ -77,7 +88,7 @@ public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<Di
 	
 	@Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return checkPiece(mName, 3, 3, 0);
+        return checkPiece(mName, 2, 3, 0);
     }
 	
 	@Override
@@ -85,14 +96,33 @@ public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<Di
         return true;
     }
 	
+	private boolean addGlass(Block block, int meta) {
+		if (block != ItemRegistry.bw_glasses[0]) {
+			return false;
+		}
+		else {
+			return true;
+		}
+		
+	}
+	
 	@Override
 	public boolean checkRecipe(ItemStack itemStack) {
 		
+		GT_Log.out.print("in checkRecipe");
+		
 		ArrayList<FluidStack> tFluidInputs = this.getStoredFluids();
 		FluidStack[] tFluidInputArray = tFluidInputs.toArray(new FluidStack[0]);
-		ArrayList<ItemStack> tItems = this.getStoredInputs();
+		ItemStack[] tItems = this.getStoredInputs().toArray(new ItemStack[0]);
 		long tVoltage = this.getMaxInputVoltage();
 		
+		
+		for (GT_Recipe aRecipe : RecipeAdder.instance.DissolutionTankRecipes.mRecipeList) {
+			GT_Log.out.print("input: " + aRecipe.mFluidInputs[0] + "\n");
+			GT_Log.out.print("output: " + aRecipe.mFluidOutputs[0] + "\n");
+		}
+		
+		GT_Log.out.print("tFluidInputArray " + Arrays.toString(tFluidInputArray));
 		
 		
 		//Collection<GT_Recipe> tRecipes = RecipeAdder.instance.DigesterRecipes.mRecipeList;
@@ -100,17 +130,14 @@ public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<Di
 				this.getBaseMetaTileEntity(), 
 				this.doTickProfilingInThisTick, 
 				tVoltage, 
-				this.mOutputFluids,
-				this.mInventory
+				tFluidInputArray
 			);
-		
-		
 		
 		if (tRecipe == null)
 			return false;
 
-		
-		if (tRecipe.isRecipeInputEqual(true, tFluidInputArray, mInventory[1])) {
+		GT_Log.out.print("Recipe not null\n");
+		if (tRecipe.isRecipeInputEqual(true, tFluidInputArray)) {
 			
 			this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
 			this.mEfficiencyIncrease = 10000;
@@ -164,6 +191,9 @@ public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<Di
 			*/
 			if (majorInput == null || minorInput == null)
 				return false;
+			
+			GT_Log.out.print("major " + majorInput.getLocalizedName());
+			GT_Log.out.print("minor " + minorInput.getLocalizedName());
 			
 			if ((majorInput.amount / tRecipe.mSpecialValue) != (minorInput.amount))
 				return false;
@@ -221,20 +251,29 @@ public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<Di
 	
 	@Override
 	public void construct(ItemStack itemStack, boolean b) {
-		buildPiece(mName, itemStack, b, 3, 3, 0);
+		buildPiece(mName, itemStack, b, 2, 3, 0);
 		
 	}
 	
 	@Override
 	public String[] getStructureDescription(ItemStack arg0) {
-		return DescTextLocalization.addText("DissolutionTank.hint", 11);
+		return DescTextLocalization.addText("DissolutionTank.hint", 4);
 	}
 
 	@Override
-	public ITexture[] getTexture(IGregTechTileEntity arg0, byte arg1, byte arg2, byte arg3, boolean arg4,
-			boolean arg5) {
-		// TODO Auto-generated method stub
-		return null;
+	public ITexture[] getTexture(IGregTechTileEntity te, byte side, byte facing, byte colorIndex, boolean active,
+			boolean redstone) {
+		
+		if (side == facing) {
+            if (active) return new ITexture[]{casingTexturePages[0][49],
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE_GLOW).extFacing().glow().build()};
+            return new ITexture[]{casingTexturePages[0][49],
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_OIL_CRACKER).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_OIL_CRACKER_GLOW).extFacing().glow().build()};
+        }
+        return new ITexture[]{casingTexturePages[0][49]};
+        
 	}
 
 	@Override

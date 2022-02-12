@@ -191,6 +191,21 @@ public class RecipeLoader {
         		480
         	);
         
+        //IODINE-END
+       
+        GT_Values.RA.addBlastRecipe(
+        		WerkstoffMaterialPool.MagnesiumPeroxide.get(OrePrefixes.dust, 2),
+        		GT_ModHandler.getModItem("dreamcraft", "PotassiumHydroxideDust", 4),
+        		Materials.Oxygen.getGas(2000),
+        		Materials.Water.getFluid(2000),
+        		WerkstoffMaterialPool.PotassiumPermanganate.get(OrePrefixes.dust, 2),
+        		null,
+        		150,
+        		480,
+        		1200	
+        	);
+        
+        
         //Fluorosilicic Acid
         GT_Values.RA.addChemicalRecipe(
         		GT_Utility.getIntegratedCircuit(1),
