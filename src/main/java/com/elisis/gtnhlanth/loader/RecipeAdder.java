@@ -19,7 +19,7 @@ public class RecipeAdder {
 			"gtnhlanth.recipe.digester",
 			StatCollector.translateToLocal("tile.recipe.digester"),
 			null,
-			"gtnhlanth:textures/gui/digester",
+			"gtnhlanth:textures/gui/Digester",
 			1, 1, 1, 1, 1,
 			StatCollector.translateToLocal("value.digester") + ": ", //Heat Capacity
 			1,
@@ -33,11 +33,11 @@ public class RecipeAdder {
 			"gtnhlanth.recipe.disstank",
 			StatCollector.translateToLocal("tile.recipe.disstank"),
 			null,
-			"gtnhlanth:textures/gui/disstank",
+			"gtnhlanth:textures/gui/Disstank",
 			1, 1, 1, 1, 1,
 			StatCollector.translateToLocal("value.disstank") + " ",
 			1,
-			" EU/t",
+			":1",
 			false,
 			true			
 		);

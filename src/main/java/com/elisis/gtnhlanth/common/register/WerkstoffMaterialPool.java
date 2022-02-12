@@ -506,10 +506,22 @@ public class WerkstoffMaterialPool implements Runnable {
     		subscriptNumbers("KMnO4"),
     		new Werkstoff.Stats(),
     		Werkstoff.Types.COMPOUND,
-    		new Werkstoff.GenerationFeatures().disable().addCells(),
+    		new Werkstoff.GenerationFeatures().disable().onlyDust(),
     		offsetID + 43,
+    		TextureSet.SET_DULL
+    	);
+    
+    public static final Werkstoff PotassiumPermanganateSolution = new Werkstoff(
+    		new short[] {165, 50, 138},
+    		"Potassium Permanganate Solution",
+    		subscriptNumbers("KMnO4"),
+    		new Werkstoff.Stats(),
+    		Werkstoff.Types.COMPOUND,
+    		new Werkstoff.GenerationFeatures().disable().addCells(),
+    		offsetID + 44,
     		TextureSet.SET_FLUID
     	);
+    
     
     public static final Werkstoff SeaweedByproducts = new Werkstoff(
     		new short[] {125, 50, 138},
@@ -517,7 +529,7 @@ public class WerkstoffMaterialPool implements Runnable {
     		new Werkstoff.Stats(),
     		Werkstoff.Types.MIXTURE,
     		new Werkstoff.GenerationFeatures().disable().addCells(),
-    		offsetID + 44,
+    		offsetID + 45,
     		TextureSet.SET_FLUID
     	);
     
@@ -527,7 +539,7 @@ public class WerkstoffMaterialPool implements Runnable {
     		new Werkstoff.Stats(),
     		Werkstoff.Types.MIXTURE,
     		new Werkstoff.GenerationFeatures().disable().addCells(),
-    		offsetID + 45,
+    		offsetID + 46,
     		TextureSet.SET_FLUID
     	);
     
@@ -538,7 +550,7 @@ public class WerkstoffMaterialPool implements Runnable {
     		new Werkstoff.Stats(),
     		Werkstoff.Types.COMPOUND,
     		new Werkstoff.GenerationFeatures().disable().onlyDust(),
-    		offsetID + 46,
+    		offsetID + 47,
     		TextureSet.SET_DULL
     	);
     
@@ -549,7 +561,7 @@ public class WerkstoffMaterialPool implements Runnable {
     		new Werkstoff.Stats(),
     		Werkstoff.Types.COMPOUND,
     		new Werkstoff.GenerationFeatures().disable().onlyDust(),
-    		offsetID + 47,
+    		offsetID + 48,
     		TextureSet.SET_DULL
     	);
     
@@ -560,7 +572,7 @@ public class WerkstoffMaterialPool implements Runnable {
     		new Werkstoff.Stats(),
     		Werkstoff.Types.MIXTURE,
     		new Werkstoff.GenerationFeatures().disable().onlyDust(),
-    		offsetID + 48,
+    		offsetID + 49,
     		TextureSet.SET_DULL
     	);
     
@@ -980,6 +992,27 @@ public class WerkstoffMaterialPool implements Runnable {
     				,
     		offsetID3 + 12,
     		TextureSet.SET_METALLIC
+    	);
+    
+    
+    public static final Werkstoff MagnesiumPeroxide = new Werkstoff(
+    		new short[] {255, 255, 255},
+    		"Magnesium Peroxide",
+    		new Werkstoff.Stats(),
+    		Werkstoff.Types.COMPOUND,
+    		new Werkstoff.GenerationFeatures().disable().onlyDust(),
+    		offsetID3 + 13,
+    		TextureSet.SET_METALLIC	
+    	);
+    
+    public static final Werkstoff PotassiumChlorate = new Werkstoff(
+    		new short[] {255, 255, 255},
+    		"Potassium Chlorate",
+    		new Werkstoff.Stats(),
+    		Werkstoff.Types.COMPOUND,
+    		new Werkstoff.GenerationFeatures().disable().onlyDust().addMolten(),
+    		offsetID3 + 14,
+    		TextureSet.SET_DULL
     	);
     
     
