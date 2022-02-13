@@ -6,34 +6,29 @@ import baubles.api.BaubleType;
 import baubles.api.IBauble;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.enums.GT_Values;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.core.util.sys.KeyboardUtils;
 import gtPlusPlus.xmod.gregtech.common.helpers.ChargingHelper;
-import ic2.api.item.ElectricItem;
-import ic2.api.item.IElectricItem;
-import ic2.api.item.IElectricItemManager;
+import ic2.api.item.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.*;
 import net.minecraft.world.World;
 
 @Optional.InterfaceList(value = {@Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles"), @Optional.Interface(iface = "baubles.api.BaubleType", modid = "Baubles")})
 public class ItemHealingDevice extends Item implements IElectricItem, IElectricItemManager, IBauble{
 
 	private final String unlocalizedName = "personalHealingDevice";
-	private final ItemStack thisStack;
 	private final static int maxValueEU = 1000000000;
 	protected double chargeEU = 0;
 
@@ -42,7 +37,6 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
 		this.setUnlocalizedName(this.unlocalizedName);
 		this.setMaxStackSize(1);
 		this.setTextureName(CORE.MODID + ":" + "personalCloakingDevice");
-		this.thisStack = ItemUtils.getSimpleStack(this);
 		GameRegistry.registerItem(this, this.unlocalizedName);
 	}
 
@@ -85,32 +79,30 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
 
 	@Override
 	public double getTransferLimit(final ItemStack itemStack) {
-		return 32784;
+		return GT_Values.V[7];
 	}
 
 	@Override
 	public String getItemStackDisplayName(final ItemStack p_77653_1_) {
 
-		return (EnumChatFormatting.BLUE+"Personal Healing NanoBooster"+EnumChatFormatting.RESET);
+		return (EnumChatFormatting.BLUE + "Personal Healing NanoBooster" + EnumChatFormatting.RESET);
 	}
 
 	@Override
-	public double getDurabilityForDisplay(final ItemStack stack)
-	{
-		//return 1.0D - getEnergyStored(stack) / this.capacity;
-		return  1.0D - (this.getCharge(stack) / this.getMaxCharge(stack));
+	public double getDurabilityForDisplay(final ItemStack stack) {
+		// return 1.0D - getEnergyStored(stack) / this.capacity;
+		return 1.0D - (this.getCharge(stack) / this.getMaxCharge(stack));
 	}
 
 	@Override
-	public boolean showDurabilityBar(final ItemStack stack)
-	{
+	public boolean showDurabilityBar(final ItemStack stack) {
 		return true;
 	}
 
-	public double secondsLeft(final ItemStack stack){
+	public double secondsLeft(final ItemStack stack) {
 
 		double r = 0;
-		r = this.getCharge(stack)/(1638400/4);
+		r = this.getCharge(stack) / (1638400 / 4);
 		return (int) r;
 	}
 
@@ -282,6 +274,10 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
 			//Try Heal
 			if (this.getCharge(aBaubleStack) > 0){
 
+				if (!(arg1 instanceof EntityPlayer)) {
+					return;
+				}
+				EntityPlayer g = (EntityPlayer) arg1;
 				//health Check
 				float hp = 0;
 				if (arg1.getHealth() < arg1.getMaxHealth()){
@@ -292,30 +288,18 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
 					this.discharge(aBaubleStack, (1638400)*rx, 6, true, true, false);
 				}
 
-				//Hunger Check
 				int hunger = 0;
-				if (arg1 instanceof EntityPlayerMP) {
-					EntityPlayerMP g = (EntityPlayerMP) arg1;
-					if (g != null) {
-						hunger = 20 - g.getFoodStats().getFoodLevel();
-						g.getFoodStats().setFoodLevel(g.getFoodStats().getFoodLevel() + hunger);
-						this.discharge(aBaubleStack, (1638400) * hunger, 6, true, true, false);
-					}
-				}
-
-				//Saturation Check
 				float saturation = 0;
-				if (arg1 instanceof EntityPlayerMP) {
-					EntityPlayerMP g = (EntityPlayerMP) arg1;
-					if (g != null) {
-						saturation = 5f - g.getFoodStats().getSaturationLevel();
-						g.getFoodStats().setFoodSaturationLevel(g.getFoodStats().getSaturationLevel() + saturation);
-						this.discharge(aBaubleStack, (1638400) * saturation, 6, true, true, false);
-					}
+				FoodStats aFood = g.getFoodStats();
+				if (aFood != null) {
+					//Hunger Check
+					hunger = 20 - aFood.getFoodLevel();
+					this.discharge(aBaubleStack, (1638400) * hunger, 6, true, true, false);
+					// Saturation Check
+					saturation = 20f - aFood.getSaturationLevel();
+					this.discharge(aBaubleStack, (1638400) * saturation, 6, true, true, false);
+					aFood.addStats(hunger, saturation);
 				}
-
-
-				saturation = (int) saturation;
 				
 				//Only show Messages if they're enabled.
 				if (getShowMessages(aBaubleStack)) {
@@ -335,36 +319,10 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
 					if (hp > 0 || hunger > 0 || saturation > 0)
 						PlayerUtils.messagePlayer((EntityPlayer) arg1,
 								"You check it's remaining uses, it has " + (int) this.secondsLeft(aBaubleStack) + ".");
-
 				}
-
-
-
-
 			}
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 	
 	private static boolean createNBT(ItemStack rStack){
 		final NBTTagCompound tagMain = new NBTTagCompound();
@@ -424,9 +382,6 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
 	@Override
 	public boolean doesSneakBypassUse(World world, int x, int y, int z, EntityPlayer player) {
 		return true;
-	}
-	
-	
-	
+	}	
 
 }

@@ -149,14 +149,15 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 
 	@Override
 	public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-		mWirelessChargingMap.clear();
-		mLocalChargingMap.clear();
 
 		if (aPlayer.isSneaking()) {
 			mLocked = !mLocked;
 			PlayerUtils.messagePlayer(aPlayer, mLocked ? "Locked to owner." : "Unlocked.");	
+			return;
 		}
 		
+		mWirelessChargingMap.clear();
+		mLocalChargingMap.clear();
 		if (!this.getBaseMetaTileEntity().getWorld().playerEntities.isEmpty()){
 			for (Object mTempPlayer : this.getBaseMetaTileEntity().getWorld().playerEntities){
 				if (mTempPlayer instanceof EntityPlayer || mTempPlayer instanceof EntityPlayerMP){
@@ -442,11 +443,6 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 											PlayerUtils.messagePlayer(mTemp, "You have left charging range. ["+tempRange+"m - Long Range].");
 											ChargingHelper.removeValidPlayer(mTemp, this);	
 										}
-									}
-								}
-								if (mWirelessChargingMap.containsKey(mTemp.getDisplayName())){
-									if (mWirelessChargingMap.remove(mTemp.getDisplayName()) != null){
-										ChargingHelper.removeValidPlayer(mTemp, this);	
 									}
 								}
 							}
