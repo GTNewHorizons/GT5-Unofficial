@@ -1931,9 +1931,9 @@ public class RECIPES_Machines {
 
 				//Pollution Detector
 				RecipeUtils.addShapedGregtechRecipe(
-						CI.component_Plate[1], CI.sensor_MV, CI.component_Plate[1],
-						CI.component_Plate[2], CI.electricMotor_ULV, CI.component_Plate[2],
-						CI.getTieredCircuit(1), CI.machineHull_LV, CI.getTieredCircuit(0),
+						"plateSteel", CI.sensor_LV, "plateSteel",
+						"plateSteel", CI.electricMotor_LV, "plateSteel",
+						CI.getTieredCircuit(1), CI.machineHull_LV, CI.getTieredCircuit(1),
 						GregtechItemList.Pollution_Detector.get(1));
 
 				//ULV
