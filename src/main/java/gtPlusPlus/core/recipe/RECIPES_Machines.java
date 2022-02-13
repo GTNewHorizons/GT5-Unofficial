@@ -1774,9 +1774,9 @@ public class RECIPES_Machines {
 
 				//Industrial Sieve
 				RecipeUtils.addShapedGregtechRecipe(
-						"plateEglinSteel", CI.circuitTier2, "plateEglinSteel",
-						cableTier3, EV_MACHINE_Sifter, cableTier3,
-						"plateEglinSteel", CI.circuitTier2, "plateEglinSteel",
+						"plateEglinSteel", CI.circuitTier3, "plateEglinSteel",
+						cableTier4, EV_MACHINE_Sifter, cableTier4,
+						"plateEglinSteel", CI.circuitTier3, "plateEglinSteel",
 						RECIPE_IndustrialSieveController);
 				//Industrial Sieve Casing
 				RecipeUtils.addShapedGregtechRecipe(
