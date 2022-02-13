@@ -1295,9 +1295,9 @@ public class RECIPES_Machines {
 			ItemStack aBronzeBricks = ItemUtils.simpleMetaStack(GregTech_API.sBlockCasings1, 10, 1);
 			// Steam Macerator Multi
 			RecipeUtils.addShapedGregtechRecipe(
-					aBronzeBricks, ALLOY.TUMBAGA.getGear(1), aBronzeBricks,
-					aBronzeBricks, ALLOY.TUMBAGA.getFrameBox(1), aBronzeBricks,
-					aBronzeBricks, ALLOY.TUMBAGA.getGear(1), aBronzeBricks,
+					aBronzeBricks, "gemDiamond", aBronzeBricks,
+					"craftingPiston", ALLOY.TUMBAGA.getFrameBox(1), "craftingPiston",
+					aBronzeBricks, "gemDiamond", aBronzeBricks,
 					GregtechItemList.Controller_SteamMaceratorMulti.get(1));
 
 			// Steam Hatch
