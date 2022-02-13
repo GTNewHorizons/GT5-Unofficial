@@ -19,6 +19,10 @@ public final class MISC_MATERIALS {
 		MaterialUtils.generateSpecialDustAndAssignToAMaterial(SODIUM_NITRATE, false);
 		MaterialUtils.generateSpecialDustAndAssignToAMaterial(STRONTIUM_OXIDE, false);
 		MaterialUtils.generateSpecialDustAndAssignToAMaterial(STRONTIUM_HYDROXIDE, false);
+		MaterialUtils.generateSpecialDustAndAssignToAMaterial(CYANOACETIC_ACID, false);
+		MaterialUtils.generateSpecialDustAndAssignToAMaterial(SODIUM_CYANIDE, false);
+		MaterialUtils.generateSpecialDustAndAssignToAMaterial(COPPER_SULFATE, false);
+		MaterialUtils.generateSpecialDustAndAssignToAMaterial(COPPER_SULFATE_HYDRATED, false);
 		WATER.registerComponentForMaterial(FluidUtils.getWater(1000));
 	}
 
@@ -394,6 +398,248 @@ public final class MISC_MATERIALS {
 					new MaterialStack(MISC_MATERIALS.HYDROXIDE, 2)
 			});
 
+	// Glue Chemicals
 
+	public static final Material ACETIC_ANHYDRIDE = new Material(
+			"Acetic Anhydride",
+			MaterialState.PURE_LIQUID, //State
+			new short[] {250, 240, 110}, //Material Colour
+			-73, //Melting Point in C
+			139, //Boiling Point in C
+			-1, //Protons
+			-1,
+			false, //Uses Blast furnace?
+			"(CH3CO)2O",
+			0,
+			true,
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.getInstance().CARBON, 4),
+					new MaterialStack(ELEMENT.getInstance().HYDROGEN, 6),
+					new MaterialStack(ELEMENT.getInstance().OXYGEN, 3)
+			});
 
+	public static final Material CHLOROACETIC_ACID = new Material(
+			"Chloroacetic Acid",
+			MaterialState.PURE_LIQUID, //State
+			new short[] {230, 200, 90}, //Material Colour
+			63, //Melting Point in C
+			189, //Boiling Point in C
+			-1, //Protons
+			-1,
+			false, //Uses Blast furnace?
+			"ClCH2-COOH",
+			0,
+			true,
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.getInstance().CARBON, 2),
+					new MaterialStack(ELEMENT.getInstance().HYDROGEN, 3),
+					new MaterialStack(ELEMENT.getInstance().OXYGEN, 2),
+					new MaterialStack(ELEMENT.getInstance().CHLORINE, 1)
+			});
+
+	public static final Material DICHLOROACETIC_ACID = new Material(
+			"Dichloroacetic Acid",
+			MaterialState.PURE_LIQUID, //State
+			new short[] {190, 160, 60}, //Material Colour
+			13, //Melting Point in C
+			194, //Boiling Point in C
+			-1, //Protons
+			-1,
+			false, //Uses Blast furnace?
+			"Cl2CH-COOH",
+			0,
+			true,
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.getInstance().CARBON, 2),
+					new MaterialStack(ELEMENT.getInstance().HYDROGEN, 2),
+					new MaterialStack(ELEMENT.getInstance().OXYGEN, 2),
+					new MaterialStack(ELEMENT.getInstance().CHLORINE, 2)
+			});
+
+	public static final Material TRICHLOROACETIC_ACID = new Material(
+			"Trichloroacetic Acid",
+			MaterialState.PURE_LIQUID, //State
+			new short[] {120, 100, 30}, //Material Colour
+			57, //Melting Point in C
+			196, //Boiling Point in C
+			-1, //Protons
+			-1,
+			false, //Uses Blast furnace?
+			"Cl3C-COOH",
+			0,
+			true,
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.getInstance().CARBON, 2),
+					new MaterialStack(ELEMENT.getInstance().HYDROGEN, 1),
+					new MaterialStack(ELEMENT.getInstance().OXYGEN, 2),
+					new MaterialStack(ELEMENT.getInstance().CHLORINE, 3)
+			});
+
+	public static final Material CHLOROACETIC_MIXTURE = new Material(
+			"Chloroacetic Mixture",
+			MaterialState.LIQUID, //State
+			null,
+			new short[] {210, 160, 10},
+			40,
+			192,
+			-1,
+			-1,
+			false,
+			"Cl?H?C-COOH",
+			0,
+			true,
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.getInstance().CARBON, 6),
+					new MaterialStack(ELEMENT.getInstance().HYDROGEN, 6),
+					new MaterialStack(ELEMENT.getInstance().OXYGEN, 6),
+					new MaterialStack(ELEMENT.getInstance().CHLORINE, 6)
+			});
+
+	public static final Material SODIUM_CYANIDE = new Material(
+			"Sodium Cyanide",
+			MaterialState.SOLID, //State
+			new short[] {180, 190, 255}, //Material Colour
+			563, //Melting Point in C
+			1496, //Boiling Point in C
+			-1, //Protons
+			-1,
+			false, //Uses Blast furnace?
+			"NaCN",
+			0,
+			false,
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.getInstance().SODIUM, 1),
+					new MaterialStack(ELEMENT.getInstance().CARBON, 1),
+					new MaterialStack(ELEMENT.getInstance().NITROGEN, 1)
+			});
+
+	public static final Material CYANOACETIC_ACID = new Material(
+			"Cyanoacetic Acid",
+			MaterialState.SOLID, //State
+			new short[] {130, 130, 40}, //Material Colour
+			66, //Melting Point in C
+			108, //Boiling Point in C
+			-1, //Protons
+			-1,
+			false, //Uses Blast furnace?
+			"C3H3NO2",
+			0,
+			false,
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.getInstance().CARBON, 3),
+					new MaterialStack(ELEMENT.getInstance().HYDROGEN, 3),
+					new MaterialStack(ELEMENT.getInstance().NITROGEN, 1),
+					new MaterialStack(ELEMENT.getInstance().OXYGEN, 2)
+			});
+
+	public static final Material SOLID_ACID_MIXTURE = new Material(
+			"Solid Acid Catalyst Mixture",
+			MaterialState.LIQUID, //State
+			new short[] {80, 40, 0}, //Material Colour
+			-10, //Melting Point in C
+			337, //Boiling Point in C
+			-1, //Protons
+			-1,
+			false, //Uses Blast furnace?
+			"?H2SO4?",
+			0,
+			true,
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.getInstance().HYDROGEN, 2),
+					new MaterialStack(ELEMENT.getInstance().SULFUR, 1),
+					new MaterialStack(ELEMENT.getInstance().OXYGEN, 4)
+			});
+
+	public static final Material COPPER_SULFATE = new Material(
+			"Copper(II) Sulfate",
+			MaterialState.SOLID, //State
+			new short[] {200, 200, 200}, //Material Colour
+			590, //Melting Point in C
+			650, //Boiling Point in C
+			-1, //Protons
+			-1,
+			false, //Uses Blast furnace?
+			"CuSO4",
+			0,
+			false,
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.getInstance().COPPER, 1),
+					new MaterialStack(ELEMENT.getInstance().SULFUR, 1),
+					new MaterialStack(ELEMENT.getInstance().OXYGEN, 4)
+			});
+
+	public static final Material COPPER_SULFATE_HYDRATED = new Material(
+			"Copper(II) Sulfate Pentahydrate",
+			MaterialState.SOLID, //State
+			new short[] {90, 170, 255}, //Material Colour
+			590, //Melting Point in C
+			650, //Boiling Point in C
+			-1, //Protons
+			-1,
+			false, //Uses Blast furnace?
+			"CuSO4∙5H2O",
+			0,
+			false,
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.getInstance().COPPER, 1),
+					new MaterialStack(ELEMENT.getInstance().SULFUR, 1),
+					new MaterialStack(ELEMENT.getInstance().OXYGEN, 4)
+			});
+
+	public static final Material ETHYL_CYANOACETATE = new Material(
+			"Ethyl Cyanoacetate",
+			MaterialState.PURE_LIQUID, //State
+			new short[] {0, 75, 160}, //Material Colour
+			-22, //Melting Point in C
+			210, //Boiling Point in C
+			-1, //Protons
+			-1,
+			false, //Uses Blast furnace?
+			"C5H7NO2",
+			0,
+			true,
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.getInstance().CARBON, 2),
+					new MaterialStack(ELEMENT.getInstance().HYDROGEN, 1),
+					new MaterialStack(ELEMENT.getInstance().OXYGEN, 2),
+					new MaterialStack(ELEMENT.getInstance().CHLORINE, 3)
+			});
+
+	public static final Material CYANOACRYLATE_POLYMER = new Material(
+			"Cyanoacrylate Polymer",
+			MaterialState.LIQUID, //State
+			new short[] {140, 150, 160}, //Material Colour
+			-25, //Melting Point in C
+			55, //Boiling Point in C
+			-1, //Protons
+			-1,
+			false, //Uses Blast furnace?
+			"(-C6H7NO2-)n",
+			0,
+			true,
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.getInstance().CARBON, 2),
+					new MaterialStack(ELEMENT.getInstance().HYDROGEN, 1),
+					new MaterialStack(ELEMENT.getInstance().OXYGEN, 2),
+					new MaterialStack(ELEMENT.getInstance().CHLORINE, 3)
+			});
+
+	public static final Material ETHYL_CYANOACRYLATE = new Material(
+			"Ethyl Cyanoacrylate (Super Glue)",
+			MaterialState.PURE_LIQUID, //State
+			new short[] {170, 190, 200}, //Material Colour
+			-25, //Melting Point in C
+			55, //Boiling Point in C
+			-1, //Protons
+			-1,
+			false, //Uses Blast furnace?
+			"C6H7NO2",
+			0,
+			true,
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.getInstance().CARBON, 2),
+					new MaterialStack(ELEMENT.getInstance().HYDROGEN, 1),
+					new MaterialStack(ELEMENT.getInstance().OXYGEN, 2),
+					new MaterialStack(ELEMENT.getInstance().CHLORINE, 3)
+			});
 }

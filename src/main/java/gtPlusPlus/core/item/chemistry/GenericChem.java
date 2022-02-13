@@ -104,6 +104,7 @@ public class GenericChem extends ItemPackage {
 	public static ItemStack mBrownCatalyst;
 	public static ItemStack mPinkCatalyst;
 	public static ItemStack mFormaldehydeCatalyst;
+	public static ItemStack mSolidAcidCatalyst;
 
 	public static ItemStack mMillingBallAlumina;
 	public static ItemStack mMillingBallSoapstone;
@@ -153,6 +154,7 @@ public class GenericChem extends ItemPackage {
 		mPotassiumEthylXanthate = ItemUtils.simpleMetaStack(mGenericChemItem1, 11, 1);
 		mPotassiumHydroxide = ItemUtils.simpleMetaStack(mGenericChemItem1, 12, 1);
 		mFormaldehydeCatalyst = ItemUtils.simpleMetaStack(mGenericChemItem1, 13, 1);
+		mSolidAcidCatalyst = ItemUtils.simpleMetaStack(mGenericChemItem1, 14, 1);
 
 	}
 
@@ -172,6 +174,7 @@ public class GenericChem extends ItemPackage {
 		ItemUtils.addItemToOreDictionary(mPotassiumEthylXanthate, "dustPotassiumEthylXanthate");
 		ItemUtils.addItemToOreDictionary(mPotassiumHydroxide, "dustPotassiumHydroxide");
 		ItemUtils.addItemToOreDictionary(mFormaldehydeCatalyst, "catalystFormaldehyde");
+		ItemUtils.addItemToOreDictionary(mSolidAcidCatalyst, "catalystSolidAcid");
 
 	}
 
@@ -293,6 +296,7 @@ public class GenericChem extends ItemPackage {
 		recipeCatalystBrown();
 		recipeCatalystPink();
 		recipeCatalystFormaldehyde();
+		recipeCatalystSolidAcid();
 
 		recipeGrindingBallAlumina();
 		recipeGrindingBallSoapstone();
@@ -789,6 +793,20 @@ public class GenericChem extends ItemPackage {
 				ItemUtils.getSimpleStack(mFormaldehydeCatalyst, 4),
 				30 * 20, 
 				240);
+
+	}
+
+	private void recipeCatalystSolidAcid() {
+		// Assembly Recipe
+		CORE.RA.addSixSlotAssemblingRecipe(new ItemStack[] {
+				getTierThreeChip(),
+				CI.getEmptyCatalyst(5),
+				ItemUtils.getItemStackOfAmountFromOreDict("dustLapis", 2)
+			},
+			MISC_MATERIALS.SOLID_ACID_MIXTURE.getFluidStack(1000),
+			ItemUtils.getSimpleStack(GenericChem.mSolidAcidCatalyst, 5),
+			30 * 20,
+			2000);
 
 	}
 

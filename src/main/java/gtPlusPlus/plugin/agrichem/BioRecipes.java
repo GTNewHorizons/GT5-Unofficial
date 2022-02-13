@@ -67,7 +67,7 @@ public class BioRecipes {
 	private static Fluid mDilutedSulfuricAcid;
 	private static Fluid mSulfuricAcid;
 	private static Fluid mUrea;
-	private static Fluid mFormaldehyde;
+	public static Fluid mFormaldehyde;
 	private static Fluid mLiquidResin;
 	private static Fluid mMethane;
 	private static Fluid mBenzene;
