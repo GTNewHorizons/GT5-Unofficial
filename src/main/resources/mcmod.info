@@ -2,7 +2,7 @@
     {
       "modid": "${modId}",
       "name": "${modName}",
-      "description": ".",
+      "description": "",
       "version": "${modVersion}",
       "mcversion": "${minecraftVersion}",
       "url": "",
@@ -11,6 +11,8 @@
       "credits": "",
       "logoFile": "",
       "screenshots": [],
-      "dependencies": []
+      "requiredMods": [ "IC2", "gregtech", "tectech", "Thaumcraft", "ThaumicTinkerer" ],
+      "dependencies": [ "IC2", "gregtech", "tectech", "Thaumcraft", "ThaumicTinkerer", "bartworks", "dreamcraft" ],
+      "useDependencyInformation": true
     }
 ]
