@@ -102,6 +102,8 @@ public class BeforeGTPreload implements Runnable {
             OreDictionary.registerOre("blockGlassLuV", new ItemStack(bw_glasses[0], 1, 3));
             OreDictionary.registerOre("blockGlassZPM", new ItemStack(bw_glasses[0], 1, 4));
             OreDictionary.registerOre("blockGlassUV", new ItemStack(bw_glasses[0], 1, 5));
+            OreDictionary.registerOre("blockGlassUHV", new ItemStack(bw_glasses[0], 1, 13));
+            OreDictionary.registerOre("blockGlassUEV", new ItemStack(bw_glasses[0], 1, 14));
         } catch (IllegalAccessException | NoSuchFieldException | ClassNotFoundException e) {
             e.printStackTrace();
             FMLCommonHandler.instance().exitJava(-1, true);

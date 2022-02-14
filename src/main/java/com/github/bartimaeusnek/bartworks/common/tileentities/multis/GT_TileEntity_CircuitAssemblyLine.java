@@ -78,7 +78,9 @@ public class GT_TileEntity_CircuitAssemblyLine extends GT_MetaTileEntity_Enhance
                     ofBlock(ItemRegistry.bw_realglas, 3),
                     ofBlock(ItemRegistry.bw_realglas, 4),
                     ofBlock(ItemRegistry.bw_realglas, 5),
-                    ofBlock(ItemRegistry.bw_realglas, 12)
+                    ofBlock(ItemRegistry.bw_realglas, 12),
+                    ofBlock(ItemRegistry.bw_realglas, 13),
+                    ofBlock(ItemRegistry.bw_realglas, 14)
             ))
             .addElement('l', ofBlock(GregTech_API.sBlockCasings2, 5)) //assembling line casings
             .addElement('b', ofChain(

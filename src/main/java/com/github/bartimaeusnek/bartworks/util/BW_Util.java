@@ -344,6 +344,12 @@ public class BW_Util {
             case 5:
                 ret = 8;
                 break;
+            case 13:
+                ret = 9;
+                break;
+            case 14:
+                ret = 10;
+                break;
             default:
                 ret = 3;
         }
@@ -587,8 +593,16 @@ public class BW_Util {
             }
         }
 
-        if (block.equals(bw_realglasRef))
-            return meta == 12 ? 5 : meta > 1 && meta < 6 ? (byte) (meta + 3) : 4;
+        if (block.equals(bw_realglasRef)) {
+            if (meta > 12) {
+                return (byte) (meta - 3);
+            }
+            if (meta == 12)
+                return 12;
+            if (meta > 1 && meta < 6)
+                return (byte) (meta + 3);
+            return 4;
+        }
 
         if (block.getUnlocalizedName().equals("blockAlloyGlass"))
             return 4;

@@ -459,6 +459,7 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_MetaTileEntity_ElectricBl
         if (block != ItemRegistry.bw_glasses[0])
             return false;
         byte tier = BW_Util.getTierFromGlasMeta(meta);
+        if (tier >= 8) tier = 8;
         if (glasTier > 0)
             return tier == glasTier;
         glasTier = tier;

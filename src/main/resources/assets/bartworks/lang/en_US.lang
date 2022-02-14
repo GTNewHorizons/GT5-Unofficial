@@ -56,6 +56,8 @@ BW_GlasBlocks.9.name=Colored Borosilicate Glass Block (Yellow)
 BW_GlasBlocks.10.name=Colored Borosilicate Glass Block (Light Green)
 BW_GlasBlocks.11.name=Colored Borosilicate Glass Block (Brown)
 BW_GlasBlocks.12.name=Thorium Yttrium Glass Block
+BW_GlasBlocks.13.name=Uranium Reinforced Borosilicate Glass Block
+BW_GlasBlocks.14.name=Europium Reinforced Borosilicate Glass Block
 
 tooltip.glas.0.name=Glass-Tier:
 tooltip.LESU.0.name=Maximum Capacity!

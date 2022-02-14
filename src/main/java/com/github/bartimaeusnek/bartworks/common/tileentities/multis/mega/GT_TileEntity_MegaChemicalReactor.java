@@ -271,6 +271,7 @@ public class GT_TileEntity_MegaChemicalReactor extends GT_MetaTileEntity_LargeCh
             return false;
         }
         byte tier = BW_Util.getTierFromGlasMeta(meta);
+        if (tier >= 8) tier = 8;
         if (glasTier > 0) {
             return tier == glasTier;
         }

@@ -413,6 +413,7 @@ public class GT_TileEntity_MegaOilCracker extends GT_MetaTileEntity_OilCracker i
             return false;
         }
         byte tier = BW_Util.getTierFromGlasMeta(meta);
+        if (tier >= 8) tier = 8;
         if (glasTier > 0) {
             return tier == glasTier;
         }

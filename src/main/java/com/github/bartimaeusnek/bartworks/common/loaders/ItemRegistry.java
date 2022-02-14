@@ -104,8 +104,10 @@ public class ItemRegistry {
                     MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock5",
                     MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock6",
                     MainMod.MOD_ID + ":ThoriumYttriumGlass",
+                    MainMod.MOD_ID + ":UraniumReinforcedBoronSilicateGlassBlock",
+                    MainMod.MOD_ID + ":EuropiumReinforcedBoronSilicateGlassBlock",
             },
-            new short[][]{Materials.BorosilicateGlass.getRGBA(), Materials.Nickel.getRGBA(), Materials.Tungsten.getRGBA(), Materials.Chrome.getRGBA(), Materials.Iridium.getRGBA(), Materials.Osmium.getRGBA(), new short[]{0xff, 0, 0}, new short[]{0, 0xff, 0}, new short[]{0x80, 0, 0xff}, new short[]{0xff, 0xff, 0}, new short[]{0, 0xff, 0x80}, new short[]{0x80, 0x33, 0}, WerkstoffLoader.YttriumOxide.getRGBA()},
+            new short[][]{Materials.BorosilicateGlass.getRGBA(), Materials.Nickel.getRGBA(), Materials.Tungsten.getRGBA(), Materials.Chrome.getRGBA(), Materials.Iridium.getRGBA(), Materials.Osmium.getRGBA(), new short[]{0xff, 0, 0}, new short[]{0, 0xff, 0}, new short[]{0x80, 0, 0xff}, new short[]{0xff, 0xff, 0}, new short[]{0, 0xff, 0x80}, new short[]{0x80, 0x33, 0}, WerkstoffLoader.YttriumOxide.getRGBA(), Materials.Uranium235.getRGBA(), Materials.Europium.getRGBA()},
             MainMod.BIO_TAB,
             true, false
     );
