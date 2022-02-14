@@ -38,13 +38,17 @@ public class GT_MiningPipeAddon {
 
     /** Descents a pipe tip one plock deeper. */
     public boolean descent(IGregTechTileEntity te) {
+        if (!te.isAllowedToWork()) {
+            return false;
+        }
+
         int xCoord = te.getXCoord();
         int zCoord = te.getZCoord();
         int yCoord = te.getYCoord();
         int checkY = yCoord + tipDepth - 1;
         boolean isHitsTheVoid = checkY < 0;
         boolean isHitsBedrock = GT_Utility.getBlockHardnessAt(te.getWorld(), xCoord, checkY, zCoord) < 0;
-        boolean isFakePlayerAllowed = GT_Utility.setBlockByFakePlayer(getFakePlayer(te), xCoord, checkY, zCoord, MINING_PIPE_TIP_BLOCK, 0, true);
+        boolean isFakePlayerAllowed = canFakePlayerInteract(te, xCoord, checkY, zCoord);
 
         if (isHitsTheVoid || isHitsBedrock || !isFakePlayerAllowed) {
             // Disable and start retracting process.
@@ -119,8 +123,8 @@ public class GT_MiningPipeAddon {
         }
 
         // Inspect target block - it should be a pipe tip, else something went wrong.
-        boolean isPipeTip = aBaseMetaTileEntity.getBlockOffset(0, tipDepth, 0) == MINING_PIPE_TIP_BLOCK;
-        if (!isPipeTip) {
+        Block targetBlock = aBaseMetaTileEntity.getBlockOffset(0, tipDepth, 0);
+        if (targetBlock != MINING_PIPE_TIP_BLOCK || targetBlock != MINING_PIPE_BLOCK) {
             return;
         }
 
@@ -201,6 +205,10 @@ public class GT_MiningPipeAddon {
             mFakePlayer.setPosition(te.getXCoord(), te.getYCoord(), te.getZCoord());
         }
         return mFakePlayer;
+    }
+
+    public boolean canFakePlayerInteract(IGregTechTileEntity te, int xCoord, int yCoord, int zCoord) {
+        return GT_Utility.setBlockByFakePlayer(getFakePlayer(te), xCoord, yCoord, zCoord, MINING_PIPE_TIP_BLOCK, 0, true);
     }
 
     /** Get target block drops. We need to encapsulate everyting of mining in this class. */
