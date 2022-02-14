@@ -8,6 +8,7 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_TileEntity_Ores;
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.FakePlayer;
@@ -124,7 +125,7 @@ public class GT_MiningPipeAddon {
 
         // Inspect target block - it should be a pipe tip, else something went wrong.
         Block targetBlock = aBaseMetaTileEntity.getBlockOffset(0, tipDepth, 0);
-        if (targetBlock != MINING_PIPE_TIP_BLOCK || targetBlock != MINING_PIPE_BLOCK) {
+        if (targetBlock != MINING_PIPE_TIP_BLOCK && targetBlock != MINING_PIPE_BLOCK) {
             return;
         }
 
@@ -138,7 +139,7 @@ public class GT_MiningPipeAddon {
             owner.getBaseMetaTileEntity().getWorld().setBlock(xCoord, actualDrillY + 1, zCoord, MINING_PIPE_TIP_BLOCK);
         }
         // Remove the old pipe tip
-        aBaseMetaTileEntity.getWorld().setBlockToAir(xCoord, actualDrillY, zCoord);
+        aBaseMetaTileEntity.getWorld().setBlock(xCoord, actualDrillY, zCoord, Blocks.air, 0, /*send to client without neighbour updates*/2);
 
         // Return the pipe back to the machine (inputs allowed for this case!)
         owner.pushOutputs(MINING_PIPE_STACK, 1, false, true);
