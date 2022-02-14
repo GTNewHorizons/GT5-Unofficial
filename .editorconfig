@@ -10,7 +10,6 @@ end_of_line = lf
 indent_size = 4
 indent_style = space
 insert_final_newline = true
-tab_size = 4
 trim_trailing_whitespace = true
 
 [*.{bat,ini}]
@@ -18,4 +17,3 @@ end_of_line = crlf
 
 [*.{dtd,gradle,json,mcmeta,md,sh,svg,xml,xsd,xsl,yaml,yml}]
 indent_size = 2
-tab_size = 2
