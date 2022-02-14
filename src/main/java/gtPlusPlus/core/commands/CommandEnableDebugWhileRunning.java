@@ -116,9 +116,10 @@ public class CommandEnableDebugWhileRunning implements ICommand
 					if (aItem != null) {
 						String aModID = GameRegistry.findUniqueIdentifierFor(aItem.getItem()).modId;
 						String aRegistryName = GameRegistry.findUniqueIdentifierFor(aItem.getItem()).name;
-						Logger.INFO(aModID+":"+aRegistryName);
+						Logger.INFO(aModID+":"+aRegistryName+":"+aItem.getItemDamage()+" | "+aItem.getDisplayName());
 					}
 				}
+				PlayerUtils.messagePlayer(P, "Dumped Inventory.");	
 			}
 		}
 		else if (argString[0].toLowerCase().equals("hand")) {

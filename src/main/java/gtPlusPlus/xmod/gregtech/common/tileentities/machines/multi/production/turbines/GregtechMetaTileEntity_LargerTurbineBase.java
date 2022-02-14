@@ -425,13 +425,15 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechM
 
 	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
+		log("1");
 		return checkRecipeGeneric(new ItemStack[] {}, getStoredFluids().toArray(new FluidStack[] {}), 1, 100, 100, 10000);			
 	}
 
+	@Override
 	public boolean checkRecipeGeneric(
 			ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
 			int aMaxParallelRecipes, int aEUPercent,
-			int aSpeedBonusPercent, int aOutputChanceRoll, GT_Recipe aRecipe, boolean isPerpectOC) {
+			int aSpeedBonusPercent, int aOutputChanceRoll, GT_Recipe aRecipe) {
 
 		try {
 			ArrayList<GT_MetaTileEntity_Hatch_Turbine> aEmptyTurbineRotorHatches = getEmptyTurbineAssemblies();

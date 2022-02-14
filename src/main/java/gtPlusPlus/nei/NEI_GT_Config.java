@@ -35,6 +35,7 @@ implements IConfigureNEI {
 		mUniqueRecipeMapHandling.add(GTPP_Recipe_Map.sAlloyBlastSmelterRecipes.mUnlocalizedName);
 		mUniqueRecipeMapHandling.add(GTPP_Recipe_Map.sThermalFuels.mUnlocalizedName);
 		mUniqueRecipeMapHandling.add(GTPP_Recipe_Map.sSolarTowerRecipes.mUnlocalizedName);
+		mUniqueRecipeMapHandling.add(GTPP_Recipe_Map.sTreeSimFakeRecipes.mUnlocalizedName);
 		
 		// Standard GT Recipe Maps
 		Logger.INFO("NEI Registration: "+GTPP_Recipe_Map_Internal.sMappingsEx.size()+" sMappingEx");
@@ -71,6 +72,8 @@ implements IConfigureNEI {
 		new GT_NEI_MultiNoCell(GTPP_Recipe_Map.sThermalFuels);		
 		Logger.INFO("NEI Registration: Registering NEI handler for "+GTPP_Recipe_Map.sSolarTowerRecipes.mNEIName);
 		new GT_NEI_MultiSolarTower(GTPP_Recipe_Map.sSolarTowerRecipes);		
+		Logger.INFO("NEI Registration: Registering NEI handler for "+GTPP_Recipe_Map.sTreeSimFakeRecipes.mNEIName);
+		new GT_NEI_MultiTreeGrowthSimulator();		
 		Logger.INFO("NEI Registration: Registering NEI handler for "+GTPP_Recipe_Map.sAdvFreezerRecipes_GT.mNEIName);
 		new GT_NEI_MultiNoCell(GTPP_Recipe_Map.sAdvFreezerRecipes_GT);					
 		Logger.INFO("NEI Registration: Registering NEI handler for "+GTPP_Recipe_Map.sMultiblockCentrifugeRecipes_GT.mNEIName);

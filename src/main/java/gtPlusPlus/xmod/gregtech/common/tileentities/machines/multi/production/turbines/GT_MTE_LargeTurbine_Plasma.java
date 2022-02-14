@@ -63,11 +63,12 @@ public class GT_MTE_LargeTurbine_Plasma extends GregtechMetaTileEntity_LargerTur
         }
         return 0;
     }
-    
+
+	@Override
 	public boolean checkRecipeGeneric(
 			ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
 			int aMaxParallelRecipes, int aEUPercent,
-			int aSpeedBonusPercent, int aOutputChanceRoll, GT_Recipe aRecipe, boolean isPerpectOC) {
+			int aSpeedBonusPercent, int aOutputChanceRoll, GT_Recipe aRecipe) {
 
 		try {
 			ArrayList<GT_MetaTileEntity_Hatch_Turbine> aEmptyTurbineRotorHatches = getEmptyTurbineAssemblies();
@@ -87,7 +88,7 @@ public class GT_MTE_LargeTurbine_Plasma extends GregtechMetaTileEntity_LargerTur
 					}
 				}
 			}
-			//log("Found "+getFullTurbineAssemblies().size()+" Assemblies with a Turbine.");
+			log("Found "+getFullTurbineAssemblies().size()+" Assemblies with a Turbine.");
 
 			if (getEmptyTurbineAssemblies().size() > 0 || !areAllTurbinesTheSame()) {
 				log("BAD RETURN - 1");            
@@ -95,7 +96,7 @@ public class GT_MTE_LargeTurbine_Plasma extends GregtechMetaTileEntity_LargerTur
 				return false;		
 			}
 
-			//log("Running checkRecipeGeneric(0)");
+			log("Running checkRecipeGeneric(0)");
 
 			ArrayList<FluidStack> tFluids = getStoredFluids();
 

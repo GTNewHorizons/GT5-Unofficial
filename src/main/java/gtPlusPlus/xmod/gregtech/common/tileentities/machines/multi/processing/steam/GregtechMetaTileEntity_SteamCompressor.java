@@ -44,12 +44,12 @@ public class GregtechMetaTileEntity_SteamCompressor extends GregtechMeta_SteamMu
 
 	@Override
 	protected GT_RenderedTexture getFrontOverlay() {
-		return new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_TOP_STEAM_MACERATOR);
+		return new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_STEAM_COMPRESSOR);
 	}
 
 	@Override
 	protected GT_RenderedTexture getFrontOverlayActive() {
-		return new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_TOP_STEAM_MACERATOR_ACTIVE);
+		return new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_STEAM_COMPRESSOR_ACTIVE);
 	}
 
 	@Override
@@ -61,12 +61,12 @@ public class GregtechMetaTileEntity_SteamCompressor extends GregtechMeta_SteamMu
 	protected GT_Multiblock_Tooltip_Builder createTooltip() {
 		GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
 		tt.addMachineType(getMachineType())
-				.addInfo("Controller Block for the Steam Macerator")
-				.addInfo("Macerates " + getMaxParallelRecipes() + " ores at a time")
+				.addInfo("Controller Block for the Steam Compressor")
+				.addInfo("Compresses " + getMaxParallelRecipes() + " things at a time")
 				.addSeparator()
-				.beginStructureBlock(3, 3, 3, true)
+				.beginStructureBlock(3, 3, 4, true)
 				.addController("Front center")
-				.addCasingInfo(mCasingName, 14)
+				.addCasingInfo(mCasingName, 28)
 				.addStructureHint("Input Bus (Steam)", 1)
 				.addStructureHint("Output Bus (Steam)", 1)
 				.addStructureHint("Steam Hatch", 1)
@@ -127,7 +127,7 @@ public class GregtechMetaTileEntity_SteamCompressor extends GregtechMeta_SteamMu
 	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
 		mCasing = 0;
 		fixAllMaintenanceIssue();
-		return checkPiece(mName, 1, 1, 0) && mCasing >= 14;
+		return checkPiece(mName, 1, 1, 0) && mCasing >= 28;
 	}
 
 	@Override

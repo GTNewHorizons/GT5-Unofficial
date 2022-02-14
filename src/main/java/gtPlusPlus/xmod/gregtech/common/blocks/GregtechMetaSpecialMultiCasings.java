@@ -4,10 +4,12 @@ import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.common.blocks.GT_Material_Casings;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import gtPlusPlus.xmod.gregtech.api.objects.GTPP_CopiedBlockTexture;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.turbine.LargeTurbineTextureHandler;
 import net.minecraft.block.Block;
@@ -37,10 +39,6 @@ public class GregtechMetaSpecialMultiCasings extends GregtechMetaCasingBlocksAbs
 	
 	public GregtechMetaSpecialMultiCasings() {
 		super(SpecialCasingItemBlock.class, "gtplusplus.blockspecialcasings.1", GT_Material_Casings.INSTANCE);
-		for (byte i = 0; i < 16; i = (byte) (i + 1)) {
-			//TAE.registerTextures(new GT_CopiedBlockTexture(this, 6, i)); 
-			// Don't register these Textures, They already exist within vanilla GT. (May not exist in 5.08)
-		}
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".0.name", "Turbine Shaft");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".1.name", "Reinforced Steam Turbine Casing");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".2.name", "Reinforced HP Steam Turbine Casing");
@@ -55,7 +53,8 @@ public class GregtechMetaSpecialMultiCasings extends GregtechMetaCasingBlocksAbs
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".11.name", "Molecular Containment Casing");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".12.name", "High Voltage Current Capacitor");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".13.name", "Particle Containment Casing");
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".14.name", ""); // Unused
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".14.name", "Reinforced Heat Exchanger Casing");
+		TAE.registerTexture(1, 12, new GTPP_CopiedBlockTexture(this, 6, 14)); 
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".15.name", ""); // Unused
 
 		GregtechItemList.Casing_Turbine_Shaft.set(new ItemStack(this, 1, 0));
@@ -72,6 +71,8 @@ public class GregtechMetaSpecialMultiCasings extends GregtechMetaCasingBlocksAbs
 		GregtechItemList.Casing_Molecular_Transformer_1.set(new ItemStack(this, 1, 11));
 		GregtechItemList.Casing_Molecular_Transformer_2.set(new ItemStack(this, 1, 12));
 		GregtechItemList.Casing_Molecular_Transformer_3.set(new ItemStack(this, 1, 13));
+		GregtechItemList.Casing_XL_HeatExchanger.set(new ItemStack(this, 1, 14));
+		
 	}	
 	
 	@Override
@@ -114,6 +115,8 @@ public class GregtechMetaSpecialMultiCasings extends GregtechMetaCasingBlocksAbs
 				return TexturesGtBlock.Casing_Redox_5.getIcon();
 			case 13:
 				return TexturesGtBlock.TEXTURE_MAGIC_PANEL_B.getIcon();
+			case 14:
+				return TexturesGtBlock.Casing_Material_Talonite.getIcon();
 
 		}
 		return Textures.BlockIcons.RENDERING_ERROR.getIcon();

@@ -36,7 +36,7 @@ public class GT_NEI_LFTR extends GTPP_NEI_DefaultHandler {
 	public void drawExtras(final int aRecipeIndex) {
 		final long tEUt = ((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mSpecialValue;
 		final int tDuration = ((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mDuration;
-		drawText(10, 83, "Time: " + (tDuration < 20 ? "< 1" : MathUtils.formatNumbers(Integer.valueOf(tDuration / 20))) + " secs", -16777216);
+		drawText(10, 83, "Time: " + (tDuration < 20 ? "< 1" : MathUtils.formatNumbers(0.05d * tDuration)) + " secs", -16777216);
 		drawText(10, 93, this.mRecipeMap.mNEISpecialValuePre + MathUtils.formatNumbers((((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mSpecialValue * this.mRecipeMap.mNEISpecialValueMultiplier)) + this.mRecipeMap.mNEISpecialValuePost, -16777216);
 		drawText(10, 103, "Dynamo: " + MathUtils.formatNumbers((long) (tDuration * tEUt)) + " EU", -16777216);
 		drawText(10, 113, "Total: " + MathUtils.formatNumbers((long) (tDuration * tEUt * 4)) + " EU", -16777216);

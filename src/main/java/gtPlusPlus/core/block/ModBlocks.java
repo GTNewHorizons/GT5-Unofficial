@@ -61,6 +61,7 @@ public final class ModBlocks {
 	public static Block blockSpecialMultiCasings;
 	public static Block blockSpecialMultiCasings2;
 	public static Block blockCustomMachineCasings;
+	public static Block blockCustomPipeGearCasings;	
 	
 	public static Block blockMetaTileEntity;
 	public static Block blockHeliumGenerator;

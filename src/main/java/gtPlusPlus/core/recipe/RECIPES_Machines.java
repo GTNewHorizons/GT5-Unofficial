@@ -256,6 +256,7 @@ public class RECIPES_Machines {
 		sparging();
 		chisels();		
 		rockBreaker();
+		thermicFluidHeater();
 		
 		gt4FarmManager();
 		gt4Redstone();
@@ -274,6 +275,16 @@ public class RECIPES_Machines {
 		modulators();
 		
 
+	}
+	
+
+	private static void thermicFluidHeater() {
+		
+		RecipeUtils.addShapedGregtechRecipe(
+				CI.getPlate(5, 1), CI.circuitTier5, CI.getPlate(5, 1),
+				pipeTier7, ItemList.Machine_IV_FluidHeater.get(1), pipeTier7,
+				CI.getPlate(5, 1), CI.circuitTier4, CI.getPlate(5, 1),
+				GregtechItemList.Controller_IndustrialFluidHeater.get(1));
 	}
 	
 	private static void computerCube() {
@@ -1299,6 +1310,12 @@ public class RECIPES_Machines {
 					"craftingPiston", ALLOY.TUMBAGA.getFrameBox(1), "craftingPiston",
 					aBronzeBricks, "gemDiamond", aBronzeBricks,
 					GregtechItemList.Controller_SteamMaceratorMulti.get(1));
+			// Steam Compressor Multi
+			RecipeUtils.addShapedGregtechRecipe(
+					aBronzeBricks, "craftingPiston", aBronzeBricks,
+					ALLOY.TUMBAGA.getGear(1), ALLOY.TUMBAGA.getFrameBox(1), ALLOY.TUMBAGA.getGear(1),
+					aBronzeBricks, "craftingPiston", aBronzeBricks,
+					GregtechItemList.Controller_SteamCompressorMulti.get(1));
 
 			// Steam Hatch
 			RecipeUtils.addShapedGregtechRecipe(

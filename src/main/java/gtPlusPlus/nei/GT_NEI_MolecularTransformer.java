@@ -28,7 +28,7 @@ public class GT_NEI_MolecularTransformer extends GTPP_NEI_DefaultHandler {
 			drawText(10, 103, "Amperage: " + aRecipe.mSpecialValue, -16777216);			
 		}
 		if (tDuration > 0) {
-			drawText(10, 113, "Time: " + (tDuration < 20 ? "< 1" : MathUtils.formatNumbers(Long.valueOf(tDuration / 20))) + " secs", -16777216);
+			drawText(10, 113, "Time: " + (tDuration < 20 ? "< 1" : MathUtils.formatNumbers(0.05d * tDuration)) + " secs", -16777216);
 		}		
 	}
 

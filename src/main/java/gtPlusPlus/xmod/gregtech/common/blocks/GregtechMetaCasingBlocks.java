@@ -2,18 +2,15 @@ package gtPlusPlus.xmod.gregtech.common.blocks;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-
+import gregtech.api.enums.TAE;
+import gregtech.api.util.GT_LanguageManager;
+import gregtech.common.blocks.GT_Material_Casings;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import gtPlusPlus.xmod.gregtech.api.objects.GTPP_CopiedBlockTexture;
+import gtPlusPlus.xmod.gregtech.common.blocks.textures.CasingTextureHandler;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
-
-import gregtech.api.enums.TAE;
-import gregtech.api.objects.GT_CopiedBlockTexture;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.common.blocks.GT_Material_Casings;
-
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.common.blocks.textures.CasingTextureHandler;
 
 public class GregtechMetaCasingBlocks
 extends GregtechMetaCasingBlocksAbstract {
@@ -26,7 +23,7 @@ extends GregtechMetaCasingBlocksAbstract {
 			if (i == 2 || i == 3 || i == 4) {
 				continue;
 			}
-			TAE.registerTexture(0, i, new GT_CopiedBlockTexture(this, 6, i));
+			TAE.registerTexture(0, i, new GTPP_CopiedBlockTexture(this, 6, i));
 		}
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".0.name", "Centrifuge Casing");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".1.name", "Structural Coke Oven Casing");

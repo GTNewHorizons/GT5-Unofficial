@@ -31,6 +31,7 @@ public class NEI_IMC_Sender {
         setNBTInfoAndSendIt("gtpp.recipe.lftr.sparging", "gregtech:gt.blockmachines:31035", 1);
         setNBTInfoAndSendIt("gtpp.recipe.coldtrap", "gregtech:gt.blockmachines:31034");
         setNBTInfoAndSendIt("gtpp.recipe.reactorprocessingunit", "gregtech:gt.blockmachines:31032");
+        setNBTInfoAndSendIt("gtpp.recipe.treefarm", "gregtech:gt.blockmachines:836");
         if (LoadedMods.AdvancedSolarPanel) {
         	setNBTInfoAndSendIt("gtpp.recipe.moleculartransformer", "AdvancedSolarPanel:BlockMolecularTransformer");
         }

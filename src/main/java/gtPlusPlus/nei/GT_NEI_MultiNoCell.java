@@ -48,7 +48,7 @@ public class GT_NEI_MultiNoCell extends GTPP_NEI_DefaultHandler {
 			drawText(10, 100, "Usage: " + MathUtils.formatNumbers(tEUt) + " EU/t", -16777216);
 		}
 		if (tDuration > 0) {
-			drawText(10, 110, "Time: " + (tDuration < 20 ? "< 1" : MathUtils.formatNumbers(Integer.valueOf(tDuration / 20))) + " secs", -16777216);
+			drawText(10, 110, "Time: " + (tDuration < 20 ? "< 1" : MathUtils.formatNumbers(0.05d * tDuration)) + " secs", -16777216);
 		}
 		if ((GT_Utility.isStringValid(this.mRecipeMap.mNEISpecialValuePre)) || (GT_Utility.isStringValid(this.mRecipeMap.mNEISpecialValuePost))) {
 			drawText(10, 120, this.mRecipeMap.mNEISpecialValuePre + MathUtils.formatNumbers((((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mSpecialValue * this.mRecipeMap.mNEISpecialValueMultiplier)) + this.mRecipeMap.mNEISpecialValuePost, -16777216);

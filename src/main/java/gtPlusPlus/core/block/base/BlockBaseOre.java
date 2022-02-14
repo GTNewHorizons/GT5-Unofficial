@@ -7,8 +7,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.objects.GT_CopiedBlockTexture;
-import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.api.interfaces.ITexturedBlock;
 import gtPlusPlus.core.client.renderer.CustomOreBlockRenderer;
@@ -18,6 +16,8 @@ import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
+import gtPlusPlus.xmod.gregtech.api.objects.GTPP_CopiedBlockTexture;
+import gtPlusPlus.xmod.gregtech.api.objects.GTPP_RenderedTexture;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EnumCreatureType;
@@ -93,9 +93,9 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
 
 	public ITexture[] getTexture(Block block, byte side) {
 		if (this.blockMaterial != null){
-			GT_RenderedTexture aIconSet = new GT_RenderedTexture(blockMaterial.getTextureSet().mTextures[OrePrefixes.ore.mTextureIndex], this.blockMaterial.getRGBA());
+			GTPP_RenderedTexture aIconSet = new GTPP_RenderedTexture(blockMaterial.getTextureSet().mTextures[OrePrefixes.ore.mTextureIndex], this.blockMaterial.getRGBA());
 			if (aIconSet != null){
-				return new ITexture[]{new GT_CopiedBlockTexture(Blocks.stone, 0, 0), aIconSet};				
+				return new ITexture[]{new GTPP_CopiedBlockTexture(Blocks.stone, 0, 0), aIconSet};				
 			}
 		}
 
@@ -118,7 +118,7 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
 				}
 			}
 		}
-		return new ITexture[]{new GT_RenderedTexture(hiddenTextureArray[0], new short[]{240, 240, 240, 0})};
+		return new ITexture[]{new GTPP_RenderedTexture(hiddenTextureArray[0], new short[]{240, 240, 240, 0})};
 	}
 
 	@Override
@@ -196,9 +196,9 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
 
 		public ITexture[] getTexture(Block block, byte side) {
 			if (this.blockMaterial != null){
-				GT_RenderedTexture aIconSet = new GT_RenderedTexture(blockMaterial.getTextureSet().mTextures[OrePrefixes.ore.mTextureIndex], this.blockMaterial.getRGBA());
+				GTPP_RenderedTexture aIconSet = new GTPP_RenderedTexture(blockMaterial.getTextureSet().mTextures[OrePrefixes.ore.mTextureIndex], this.blockMaterial.getRGBA());
 				if (aIconSet != null){
-					return new ITexture[]{new GT_CopiedBlockTexture(Blocks.stone, 0, 0), aIconSet};				
+					return new ITexture[]{new GTPP_CopiedBlockTexture(Blocks.stone, 0, 0), aIconSet};				
 				}
 			}
 
@@ -221,7 +221,7 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
 					}
 				}
 			}
-			return new ITexture[]{new GT_RenderedTexture(hiddenTextureArray[0], new short[]{240, 240, 240, 0})};
+			return new ITexture[]{new GTPP_RenderedTexture(hiddenTextureArray[0], new short[]{240, 240, 240, 0})};
 		}
 
 	}	

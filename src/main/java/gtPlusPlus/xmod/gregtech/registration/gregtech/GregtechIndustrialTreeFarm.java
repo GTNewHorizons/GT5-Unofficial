@@ -10,8 +10,8 @@ public class GregtechIndustrialTreeFarm {
 
 	public static void run() {
 		if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
-			Logger.INFO("Gregtech5u Content | Registering Tree Farm Multiblock.");
 			if (CORE.ConfigSwitches.enableMultiblock_TreeFarmer) {
+				Logger.INFO("Gregtech5u Content | Registering Tree Farm Multiblock.");
 				run1();
 			}
 		}
@@ -19,10 +19,9 @@ public class GregtechIndustrialTreeFarm {
 	}
 
 	private static void run1() {
-		// Industrial Maceration Stack Multiblock
 		GregtechItemList.Industrial_TreeFarm
 				.set(new GregtechMetaTileEntityTreeFarm(836, "treefarm.controller.tier.single", "Tree Growth Simulator")
 						.getStackForm(1L));
-
+		GregtechMetaTileEntityTreeFarm.loadMapWoodFromSapling();
 	}
 }

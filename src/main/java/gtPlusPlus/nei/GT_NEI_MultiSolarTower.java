@@ -26,7 +26,7 @@ public class GT_NEI_MultiSolarTower extends GT_NEI_MultiNoCell {
 	public void drawExtras(final int aRecipeIndex) {
 		final int tDuration = ((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mDuration;
 		if (tDuration > 0) {
-			drawText(10, 90, "Time: " + (tDuration < 20 ? "< 1" : MathUtils.formatNumbers(Integer.valueOf(tDuration / 20))) + " secs", -16777216);
+			drawText(10, 90, "Time: " + (tDuration < 20 ? "< 1" : MathUtils.formatNumbers(0.05d * tDuration)) + " secs", -16777216);
 		}
 		drawText(5, 100, "Solar Heater rings boost tier", -16777216);
 		drawText(5, 110, "R1:T1, R2:T2, R3:T4, R4:T8, R5:T16", -16777216);

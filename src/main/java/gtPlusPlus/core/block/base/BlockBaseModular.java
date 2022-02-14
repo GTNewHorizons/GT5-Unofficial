@@ -17,6 +17,7 @@ import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.IBlockAccess;
@@ -29,6 +30,12 @@ public class BlockBaseModular extends BasicBlock {
 	public BlockTypes thisBlock;
 	protected String thisBlockMaterial;
 	protected final String thisBlockType;
+	
+	private static HashMap<String, Block> sBlockCache = new HashMap<String, Block>();
+	
+	public static Block getMaterialBlock(Material aMaterial, BlockTypes aType) {
+		return sBlockCache.get(aMaterial.getUnlocalizedName()+"."+aType.name());
+	}
 
 	public BlockBaseModular(final Material material, final BlockTypes blockType) {
 		this(material, blockType, material.getRgbAsHex());
@@ -39,6 +46,9 @@ public class BlockBaseModular extends BasicBlock {
 				blockType, colour, Math.min(Math.max(material.vTier, 1), 6));
 		blockMaterial = material;
 		registerComponent();
+		if (material != null) {
+			sBlockCache.put(material.getUnlocalizedName()+"."+blockType.name(), this);
+		}
 	}
 
 	protected BlockBaseModular(final String unlocalizedName, final String blockMaterialString,

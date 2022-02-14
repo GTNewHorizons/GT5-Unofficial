@@ -297,6 +297,9 @@ public final class ModItems {
 	public static ItemStack itemHotTitaniumIngot;
 
 	public static Fluid fluidZrF4;
+	public static Fluid fluidFertBasic;
+	public static Fluid fluidFertUN32;
+	public static Fluid fluidFertUN18;
 
 	public static Item boxTools;
 	public static Item boxFood;
@@ -771,10 +774,10 @@ public final class ModItems {
 				temp2 = ItemUtils.getCorrectStacktype("Forestry:fertilizerCompound", 1);
 			}
 			if (temp1 != null){
-				FluidUtils.generateFluidNonMolten("Fertiliser", "Fertiliser", 32, new short[]{45, 170, 45, 100}, temp1, temp2, true);
+				fluidFertBasic = FluidUtils.generateFluidNonMolten("Fertiliser", "Fertiliser", 32, new short[]{45, 170, 45, 100}, temp1, temp2, true);
 			}
-			FluidUtils.generateFluidNonMolten("UN32Fertiliser", "UN-32 Fertiliser", 24, new short[]{55, 190, 55, 100}, null, null, true);
-			FluidUtils.generateFluidNonMolten("UN18Fertiliser", "UN-18 Fertiliser", 22, new short[]{60, 155, 60, 100}, null, null, true);
+			fluidFertUN32 = FluidUtils.generateFluidNonMolten("UN32Fertiliser", "UN-32 Fertiliser", 24, new short[]{55, 190, 55, 100}, null, null, true);
+			fluidFertUN18 = FluidUtils.generateFluidNonMolten("UN18Fertiliser", "UN-18 Fertiliser", 22, new short[]{60, 155, 60, 100}, null, null, true);
 
 			/*GT_Values.RA.addMixerRecipe(
 			arg0, //Item In

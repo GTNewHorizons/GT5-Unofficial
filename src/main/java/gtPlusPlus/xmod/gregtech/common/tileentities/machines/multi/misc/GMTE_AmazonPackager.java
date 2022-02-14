@@ -395,14 +395,11 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase<GMTE_Amazon
 		return null;
 	}
 
-
-
-
-
+	@Override
 	public boolean checkRecipeGeneric(
 			ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
 			int aMaxParallelRecipes, int aEUPercent,
-			int aSpeedBonusPercent, int aOutputChanceRoll, GT_Recipe aRecipe, boolean isPerpectOC) {
+			int aSpeedBonusPercent, int aOutputChanceRoll, GT_Recipe aRecipe) {
 		// Based on the Processing Array. A bit overkill, but very flexible.		
 
 		// Reset outputs and progress stats
@@ -485,7 +482,7 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase<GMTE_Amazon
 		} else {
 			while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
 				this.mEUt *= 4;
-				if (isPerpectOC) this.mMaxProgresstime /= 4;
+				if (this.hasPerfectOverclock()) this.mMaxProgresstime /= 4;
 				else this.mMaxProgresstime /= 2;
 			}
 		}

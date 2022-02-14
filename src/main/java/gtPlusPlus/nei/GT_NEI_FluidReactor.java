@@ -78,7 +78,7 @@ public class GT_NEI_FluidReactor extends GTPP_NEI_DefaultHandler {
 			}
 		}
 		if (tDuration > 0) {
-			drawText(10, 103, "Time: " + (tDuration < 20 ? "< 1" : MathUtils.formatNumbers(Integer.valueOf(tDuration / 20))) + " secs", -16777216);
+			drawText(10, 103, "Time: " + (tDuration < 20 ? "< 1" : MathUtils.formatNumbers(0.05d * tDuration)) + " secs", -16777216);
 		}
 		if ((GT_Utility.isStringValid(this.mRecipeMap.mNEISpecialValuePre)) || (GT_Utility.isStringValid(this.mRecipeMap.mNEISpecialValuePost))) {
 			int aTier = (((ChemPlantDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mSpecialValue);
