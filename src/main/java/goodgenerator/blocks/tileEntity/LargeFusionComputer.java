@@ -2,6 +2,7 @@ package goodgenerator.blocks.tileEntity;
 
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_ChunkManager;
@@ -15,6 +16,11 @@ public class LargeFusionComputer extends GT_MetaTileEntity_MultiblockBase_EM imp
 
     public LargeFusionComputer(String name) {
         super(name);
+    }
+
+    @Override
+    public IStructureDefinition<? extends GT_MetaTileEntity_MultiblockBase_EM> getStructure_EM() {
+        return null;
     }
 
     public LargeFusionComputer(int id, String name, String nameRegional) {

@@ -308,7 +308,7 @@ public class PreciseAssembler extends GT_MetaTileEntity_MultiblockBase_EM implem
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM(mName, 4, 4, 0, hintsOnly, stackSize);
+        structureBuild_EM(mName, 4, 4, 0, stackSize, hintsOnly);
     }
 
     @Override

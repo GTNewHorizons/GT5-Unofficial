@@ -1,3 +1,3 @@
 # GoodGenerator
 
-add some muiltbolck generators for GTNH
+Add some muiltblock generators for GTNH

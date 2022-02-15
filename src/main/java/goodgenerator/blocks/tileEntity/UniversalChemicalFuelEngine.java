@@ -179,8 +179,8 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_MultiblockBas
     }
 
     @Override
-    public void construct(ItemStack itemStack, boolean b) {
-        structureBuild_EM(mName, 2, 2, 0, b, itemStack);
+    public void construct(ItemStack stackSize, boolean hintsOnly) {
+        structureBuild_EM(mName, 2, 2, 0, stackSize, hintsOnly);
     }
 
     @Override
@@ -249,7 +249,7 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_MultiblockBas
             consumeAllLiquid(getPromoter());
 
             this.mEUt = (int)(FuelAmount * recipe.mSpecialValue / 20.0D);
-            this.lEUt = (long)(FuelAmount * recipe.mSpecialValue / 20.0D);
+            this.lEUt = (long)((long) FuelAmount * recipe.mSpecialValue / 20.0D);
             this.mMaxProgresstime = 20;
             this.updateSlots();
             return true;
@@ -266,7 +266,7 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_MultiblockBas
             consumeAllLiquid(getPromoter());
 
             this.mEUt = (int)(FuelAmount * recipe.mSpecialValue / 20.0D);
-            this.lEUt = (long)(FuelAmount * recipe.mSpecialValue / 20.0D);
+            this.lEUt = (long)((long) FuelAmount * recipe.mSpecialValue / 20.0D);
             this.mMaxProgresstime = 20;
             this.updateSlots();
             return true;
@@ -285,7 +285,7 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_MultiblockBas
                 consumeAllLiquid(getPromoter());
 
                 this.mEUt = (int)(FuelAmount * recipe.mSpecialValue * 3 / 20.0D);
-                this.lEUt = (long)(FuelAmount * recipe.mSpecialValue * 3 / 20.0D);
+                this.lEUt = (long)((long) FuelAmount * recipe.mSpecialValue * 3 / 20.0D);
                 this.mMaxProgresstime = 20;
                 this.updateSlots();
                 return true;

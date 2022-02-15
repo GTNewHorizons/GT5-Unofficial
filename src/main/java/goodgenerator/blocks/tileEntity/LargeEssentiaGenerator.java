@@ -59,8 +59,8 @@ public class LargeEssentiaGenerator extends GT_MetaTileEntity_MultiblockBase_EM 
     }
 
     @Override
-    public void construct(ItemStack itemStack, boolean b) {
-        structureBuild_EM(mName, 4, 0, 4, b, itemStack);
+    public void construct(ItemStack itemStack, boolean hintsOnly) {
+        structureBuild_EM(mName, 4, 0, 4, itemStack, hintsOnly);
     }
 
     @Override
@@ -505,8 +505,8 @@ public class LargeEssentiaGenerator extends GT_MetaTileEntity_MultiblockBase_EM 
                 .addInfo("Controller block for the Large Essentia Generator")
                 .addInfo("Maybe some thaumaturages are upset by it. . .")
                 .addInfo("Transform essentia into energy!")
-                .addInfo("The the Diffusion Cell determines the highest hatch tier that LEG can accept.")
-                .addInfo("You can find more information about this generator in Thaumonomicon.")
+                .addInfo("The Diffusion Cell determines the highest hatch tier that the LEG can accept.")
+                .addInfo("You can find more information about this generator in the Thaumonomicon.")
                 .addInfo("The structure is too complex!")
                 .addInfo(BLUE_PRINT_INFO)
                 .addSeparator()

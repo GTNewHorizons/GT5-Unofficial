@@ -22,7 +22,9 @@ import cpw.mods.fml.common.Mod;
         dependencies = "required-after:IC2; "
         + "required-after:gregtech; "
         + "required-after:bartworks; "
-        + "required-after:tectech; ")
+        + "required-after:tectech; "
+        + "required-after:structurelib; "
+        + "required:dreamcraft;")
 public final class GoodGenerator {
     public static final String MOD_ID = "GRADLETOKEN_MODID";
     public static final String MOD_NAME = "GRADLETOKEN_MODNAME";

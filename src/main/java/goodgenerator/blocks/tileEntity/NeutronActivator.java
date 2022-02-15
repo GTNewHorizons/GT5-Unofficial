@@ -399,11 +399,11 @@ public class NeutronActivator extends GT_MetaTileEntity_MultiblockBase_EM implem
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM(NA_BOTTOM, 2, 0, 0, hintsOnly, stackSize);
+        structureBuild_EM(NA_BOTTOM, 2, 0, 0, stackSize, hintsOnly);
         int heights = stackSize.stackSize + 3;
-        structureBuild_EM(NA_TOP, 2, heights + 1, 0, hintsOnly, stackSize);
+        structureBuild_EM(NA_TOP, 2, heights + 1, 0, stackSize, hintsOnly);
         while (heights > 0) {
-            structureBuild_EM(NA_MID, 2, heights, 0, hintsOnly, stackSize);
+            structureBuild_EM(NA_MID, 2, heights, 0, stackSize, hintsOnly);
             heights --;
         }
     }

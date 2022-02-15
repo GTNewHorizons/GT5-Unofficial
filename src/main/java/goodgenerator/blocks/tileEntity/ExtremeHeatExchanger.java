@@ -303,7 +303,7 @@ public class ExtremeHeatExchanger extends GT_MetaTileEntity_MultiblockBase_EM im
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM(mName, 2, 5, 0, hintsOnly, stackSize);
+        structureBuild_EM(mName, 2, 5, 0, stackSize, hintsOnly);
     }
 
     @Override

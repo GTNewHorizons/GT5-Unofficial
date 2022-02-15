@@ -2,32 +2,30 @@
 
 repositories {
     maven {
-        name = "GTNH Maven"
-        url = "http://jenkins.usrv.eu:8081/nexus/content/groups/public/"
+        name 'GTNH Maven'
+        url 'http://jenkins.usrv.eu:8081/nexus/content/groups/public/'
+        allowInsecureProtocol
     }
-    jcenter()
     maven {
-        name = "ic2"
-        url = "http://maven.ic2.player.to/"
+        name 'ic2'
+        url 'https://maven.ic2.player.to/'
         metadataSources {
             mavenPom()
             artifact()
         }
 
     }
-
     maven {
-        name = "gt"
-        url = "https://gregtech.overminddl1.com/"
+        name 'gt'
+        url 'https://gregtech.overminddl1.com/'
     }
     maven {
-        name = "cofhCore"
-        url = "https://cursemaven.com"
+        url 'https://cursemaven.com'
+        content {
+            includeGroup 'curse.maven'
+        }
     }
     maven {
-        url = "http://www.ryanliptak.com/maven/"
-    }
-    maven {
-        url = "https://jitpack.io"
+        url 'https://jitpack.io'
     }
 }

@@ -704,7 +704,7 @@ public class NaquadahReworkRecipeLoader {
                     for (int i = 0; i < tRecipe.mOutputs.length; i ++) {
                         if (!GT_Utility.isStackValid(tRecipe.mOutputs[i])) continue;
                         if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadah.getDustTiny(1))) {
-                            tRecipe.mOutputs[i] = GT_Utility.copyAmount(tRecipe.mOutputs[i].stackSize * 2, naquadahEarth.get(OrePrefixes.dustTiny, 1));
+                            tRecipe.mOutputs[i] = GT_Utility.copyAmount(tRecipe.mOutputs[i].stackSize * 2L, naquadahEarth.get(OrePrefixes.dustTiny, 1));
                         }
                     }
                     if (!tRecipe.equals(recipe)){

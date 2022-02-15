@@ -1,16 +1,19 @@
-[
 {
-  "modid": "GoodGenerator",
-  "name": "Good Generator",
-  "description": "Add some powerful generators",
-  "version": "${modVersion}",
-  "mcversion": "${minecraftVersion}",
-  "url": "",
-  "updateUrl": "",
-  "authorList": ["GlodBlock"],
-  "credits": "",
-  "logoFile": "",
-  "screenshots": [],
-  "dependencies": []
+	"modListVersion": 2,
+	"modList": [{
+		"modid": "GoodGenerator",
+		"name": "Good Generator",
+		"description": "Add some powerful generators",
+		"version": "${modVersion}",
+		"mcversion": "${minecraftVersion}",
+		"url": "",
+		"updateUrl": "",
+		"authorList": ["GlodBlock"],
+		"credits": "",
+		"logoFile": "",
+		"screenshots": [],
+		"requiredMods": ["Forge", "IC2", "gregtech", "bartworks", "tectech", "structurelib"],
+		"dependencies": ["IC2", "gregtech", "bartworks", "tectech", "structurelib", "dreamcraft"],
+		"useDependencyInformation": true
+	}]
 }
-]

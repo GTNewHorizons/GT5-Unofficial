@@ -72,7 +72,7 @@ public class MultiNqGenerator extends GT_MetaTileEntity_MultiblockBase_EM implem
 
     @Override
     public void construct(ItemStack itemStack, boolean hintsOnly) {
-        structureBuild_EM(mName, 3,7,0, hintsOnly, itemStack);
+        structureBuild_EM(mName, 3,7,0, itemStack, hintsOnly);
     }
 
     @Override
