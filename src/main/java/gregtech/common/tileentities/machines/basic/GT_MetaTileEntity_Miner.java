@@ -253,7 +253,6 @@ public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine impl
                 // todo some weird checks. refactorings needed
                 if (block instanceof GT_Block_Ores_Abstract) {
                     TileEntity oreEntity = aBaseMetaTileEntity.getTileEntityOffset(x, pipe.getTipDepth(), z);
-                    // todo what 'natural' means?
                     if (oreEntity instanceof GT_TileEntity_Ores && ((GT_TileEntity_Ores)oreEntity).mNatural) {
                         oreBlockPositions.add(new ChunkPosition(x, pipe.getTipDepth(), z));
                     }
@@ -265,10 +264,7 @@ public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine impl
         }
     }
 
-    /**
-     * Pulls (or check can pull) items from an input slots.
-     * todo pull from few slots if first av are equals of type but insufficient count
-     */
+    /** Pulls (or check can pull) items from an input slots. */
     @Override
     public boolean pullInputs(Item item, int count, boolean simulate) {
         for (int i = 0; i < mInputSlotCount; i++) {
@@ -287,10 +283,7 @@ public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine impl
         return false;
     }
 
-    /**
-     * Pushes (or check can push) item to output slots.
-     * todo split pushed items between slots if it not fit to any
-     */
+    /** Pushes (or check can push) item to output slots. */
     @Override
     public boolean pushOutputs(ItemStack stack, int count, boolean simulate, boolean allowInputSlots) {
         int startSlot = allowInputSlots ? getInputSlot() : getOutputSlot();
@@ -323,7 +316,6 @@ public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine impl
     @Override
     public void setItemNBT(NBTTagCompound aNBT) {
         super.setItemNBT(aNBT);
-        aNBT.setByte("mTier", mTier); // todo wtf? It is used somewhere else in the another mod? Actually we don't need this record.
         aNBT.setInteger("radiusConfig", radiusConfig);
     }
 
