@@ -80,7 +80,7 @@ public class GT_MiningPipeAddon {
             return false;
         }
 
-        // If there is something - mine it (todo don't matter what? maybe some checks like in mining method?)
+        // If there is something - mine it
         Block block = te.getBlockOffset(0, tipDepth - 1, 0);
         if (!block.isAir(te.getWorld(), xCoord, yCoord, zCoord)) {
             mineBlock(te, block, xCoord, yCoord + tipDepth - 1, zCoord);
