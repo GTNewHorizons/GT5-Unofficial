@@ -598,7 +598,7 @@ public class BW_Util {
                 return (byte) (meta - 3);
             }
             if (meta == 12)
-                return 12;
+                return 5;
             if (meta > 1 && meta < 6)
                 return (byte) (meta + 3);
             return 4;
