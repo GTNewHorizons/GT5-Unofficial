@@ -96,7 +96,7 @@ public class CORE {
 	public static List<Pair<Integer, ItemStack>> burnables = new ArrayList<Pair<Integer, ItemStack>>();
 
 
-	//TesseractMapss
+	//TesseractMaps
 	public static final Map<UUID, Map<Integer, GT_MetaTileEntity_TesseractGenerator>> sTesseractGeneratorOwnershipMap = new HashMap<UUID, Map<Integer, GT_MetaTileEntity_TesseractGenerator>>();
 	public static final Map<UUID, Map<Integer, GT_MetaTileEntity_TesseractTerminal>> sTesseractTerminalOwnershipMap = new HashMap<UUID, Map<Integer, GT_MetaTileEntity_TesseractTerminal>>();
 
@@ -321,13 +321,13 @@ public class CORE {
 	public static class Everglades{
 		public static final String MODID = "ToxicEverglades";
 		public static final String NAME = "GT++ Toxic Everglades";
-		public static final String VERSION = "0.1";
+		public static final String VERSION = "GRADLETOKEN_VERSION";
 	}
 	
 	public static class Australia{
 		public static final String MODID = "Australia";
 		public static final String NAME = "GT++ Australia";
-		public static final String VERSION = "0.1";
+		public static final String VERSION = "GRADLETOKEN_VERSION";
 	}
 
 
