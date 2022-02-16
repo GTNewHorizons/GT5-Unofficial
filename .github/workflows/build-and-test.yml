@@ -28,18 +28,18 @@ jobs:
       run: chmod +x gradlew
 
     - name: Setup the workspace
-      run: ./gradlew setupCIWorkspace
+      run: ./gradlew setupDecompWorkspace
 
     - name: Build the mod
       run: ./gradlew build
 
-    - name: Run server for 1.5 minutes
+    - name: Run server for 4 minutes
       run: |
         mkdir run
         echo "eula=true" > run/eula.txt
-        timeout 90 ./gradlew runServer 2>&1 | tee -a server.log || true
+        timeout 240 ./gradlew runServer 2>&1 | tee -a server.log || true
 
     - name: Test no errors reported during server run
       run: |
-        chmod +x .github/scripts/test-no-error-reports.sh
-        .github/scripts/test-no-error-reports.sh
+        chmod +x .github/scripts/test_no_error_reports
+        .github/scripts/test_no_error_reports
