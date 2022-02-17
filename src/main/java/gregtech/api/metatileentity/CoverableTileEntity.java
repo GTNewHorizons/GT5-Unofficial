@@ -67,18 +67,17 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
 
     protected void readCoverNBT(NBTTagCompound aNBT) {
-        mCoverSides = aNBT.getIntArray("mCoverSides");
+        mCoverSides = aNBT.hasKey("mCoverSides") ? aNBT.getIntArray("mCoverSides") : new int[]{0, 0, 0, 0, 0, 0};
         mRedstone = aNBT.getBoolean("mRedstone");
-        mSidedRedstone = aNBT.getByteArray("mRedstoneSided");
+        mSidedRedstone = aNBT.hasKey("mRedstoneSided") ? aNBT.getByteArray("mRedstoneSided") : new byte[]{15, 15, 15, 15, 15, 15};
         mStrongRedstone = aNBT.getByte("mStrongRedstone");
 
-        if (mCoverSides.length != 6) mCoverSides = new int[]{0, 0, 0, 0, 0, 0};
         for (byte i = 0; i < 6; i++) mCoverBehaviors[i] = GregTech_API.getCoverBehaviorNew(mCoverSides[i]);
 
         // check old form of data
         mCoverData = new ISerializableObject[6];
         if (aNBT.hasKey("mCoverData", 11) && aNBT.getIntArray("mCoverData").length == 6) {
-            int[] tOldData = aNBT.getIntArray("mCoverData");
+            final int[] tOldData = aNBT.getIntArray("mCoverData");
             for (int i = 0; i < tOldData.length; i++) {
                 if(mCoverBehaviors[i] instanceof GT_Cover_Fluidfilter) {
                     final String filterKey = String.format("fluidFilter%d", i);
@@ -106,30 +105,31 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     public abstract boolean isStillValid();
 
     protected boolean doCoverThings() {
-        for (byte i = 0; i < 6; i++)
+        for (byte i : ALL_VALID_SIDES) {
             if (getCoverIDAtSide(i) != 0) {
-                GT_CoverBehaviorBase<?> tCover = getCoverBehaviorAtSideNew(i);
-                int tCoverTickRate = tCover.getTickRate(i, getCoverIDAtSide(i), mCoverData[i], this);
+                final GT_CoverBehaviorBase<?> tCover = getCoverBehaviorAtSideNew(i);
+                final int tCoverTickRate = tCover.getTickRate(i, getCoverIDAtSide(i), mCoverData[i], this);
                 if (tCoverTickRate > 0 && mTickTimer % tCoverTickRate == 0) {
-                    byte tRedstone = tCover.isRedstoneSensitive(i, getCoverIDAtSide(i), mCoverData[i], this, mTickTimer) ? getInputRedstoneSignal(i) : 0;
+                    final byte tRedstone = tCover.isRedstoneSensitive(i, getCoverIDAtSide(i), mCoverData[i], this, mTickTimer) ? getInputRedstoneSignal(i) : 0;
                     mCoverData[i] = tCover.doCoverThings(i, tRedstone, getCoverIDAtSide(i), mCoverData[i], this, mTickTimer);
                     if (!isStillValid()) return false;
                 }
             }
+        }
         return true;
     }
 
     public abstract boolean allowCoverOnSide(byte aSide, GT_ItemStack aCoverID);
 
     protected void checkDropCover() {
-        for (byte i = 0; i < 6; i++)
+        for (byte i : ALL_VALID_SIDES)
             if (getCoverIDAtSide(i) != 0)
                 if (!allowCoverOnSide(i, new GT_ItemStack(getCoverIDAtSide(i))))
                     dropCover(i, i, true);
     }
 
     protected void updateCoverBehavior() {
-        for (byte i = 0; i < 6; i++)
+        for (byte i : ALL_VALID_SIDES)
             mCoverBehaviors[i] = GregTech_API.getCoverBehaviorNew(mCoverSides[i]);
     }
 
@@ -152,12 +152,13 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
     protected void requestCoverDataIfNeeded() {
         if(worldObj == null || !worldObj.isRemote) return;
-        for (byte i = 0; i < 6; i++) {
+        for (byte i : ALL_VALID_SIDES) {
             if (getCoverBehaviorAtSideNew(i).isDataNeededOnClient(i, getCoverIDAtSide(i), getComplexCoverDataAtSide(i), this))
                 NW.sendToServer(new GT_Packet_RequestCoverData(i, getCoverIDAtSide(i), this));
         }
     }
 
+    @Override
     public void setCoverIdAndDataAtSide(byte aSide, int aId, ISerializableObject aData) {
         if(setCoverIDAtSideNoUpdate(aSide, aId)) {
             setCoverDataAtSide(aSide, aData);
@@ -174,6 +175,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         }
     }
 
+    @Override
     public boolean setCoverIDAtSideNoUpdate(byte aSide, int aID) {
         if (aSide >= 0 && aSide < 6 && mCoverSides[aSide] != aID) {
             if (aID == 0 && isClientSide())
@@ -259,10 +261,10 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     @Override
     public boolean dropCover(byte aSide, byte aDroppedSide, boolean aForced) {
         if (getCoverBehaviorAtSideNew(aSide).onCoverRemoval(aSide, getCoverIDAtSide(aSide), mCoverData[aSide], this, aForced) || aForced) {
-            ItemStack tStack = getCoverBehaviorAtSideNew(aSide).getDrop(aSide, getCoverIDAtSide(aSide), getComplexCoverDataAtSide(aSide), this);
+            final ItemStack tStack = getCoverBehaviorAtSideNew(aSide).getDrop(aSide, getCoverIDAtSide(aSide), getComplexCoverDataAtSide(aSide), this);
             if (tStack != null) {
                 getCoverBehaviorAtSideNew(aSide).onDropped(aSide, getCoverIDAtSide(aSide), getComplexCoverDataAtSide(aSide), this);
-                EntityItem tEntity = new EntityItem(worldObj, getOffsetX(aDroppedSide, 1) + 0.5, getOffsetY(aDroppedSide, 1) + 0.5, getOffsetZ(aDroppedSide, 1) + 0.5, tStack);
+                final EntityItem tEntity = new EntityItem(worldObj, getOffsetX(aDroppedSide, 1) + 0.5, getOffsetY(aDroppedSide, 1) + 0.5, getOffsetZ(aDroppedSide, 1) + 0.5, tStack);
                 tEntity.motionX = 0;
                 tEntity.motionY = 0;
                 tEntity.motionZ = 0;
@@ -362,7 +364,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
     protected void sendCoverDataIfNeeded() {
         if(worldObj == null || worldObj.isRemote) return;
-        int mCoverNeedUpdateLength = mCoverNeedUpdate.length;
+        final int mCoverNeedUpdateLength = mCoverNeedUpdate.length;
         for (byte i = 0; i < mCoverNeedUpdateLength; i++) {
             if (mCoverNeedUpdate[i]) {
                 NW.sendPacketToAllPlayersInRange(
@@ -378,11 +380,22 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
         final NBTTagCompound tag = accessor.getNBTData();
-        final int side = (byte)accessor.getSide().ordinal();
-        final String filterKey = "filterInfo" + side;
+        final byte side = (byte)accessor.getSide().ordinal();
 
-        if (tag.hasKey(filterKey)) {
-            currenttip.add(tag.getString(filterKey));
+        final int[] coverSides = tag.getIntArray("mCoverSides");
+        // Not all data is available on the client, so get it from the NBT packet
+        if (coverSides != null && coverSides.length == 6 && coverSides[side] != 0) {
+            final int coverId = coverSides[side];
+            final GT_CoverBehaviorBase<?> behavior = GregTech_API.getCoverBehaviorNew(coverId);
+            if (behavior != null && behavior != GregTech_API.sNoBehavior) {
+                if (tag.hasKey(CoverableTileEntity.COVER_DATA_NBT_KEYS[side])) {
+                    final ISerializableObject dataObject = behavior.createDataObject(tag.getTag(CoverableTileEntity.COVER_DATA_NBT_KEYS[side]));
+                    final ItemStack coverStack = behavior.getDisplayStack(coverId, dataObject);
+                    if (coverStack != null) currenttip.add(String.format("Cover: %s", coverStack.getDisplayName()));
+                    if (behavior instanceof GT_Cover_Fluidfilter)
+                        currenttip.add(behavior.getDescription(side, coverId, dataObject, null));
+                }
+            }
         }
 
         // No super implementation
@@ -393,11 +406,10 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y, int z) {
         // No super implementation
         // super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        for(byte side=0 ; side < 6 ; side++) {
-            if(getCoverBehaviorAtSideNew(side) instanceof GT_Cover_Fluidfilter) {
-                tag.setString("filterInfo" + side, getCoverBehaviorAtSideNew(side).getDescription(side, getCoverIDAtSide(side), getComplexCoverDataAtSide(side), this));
-            }
-        }
+
+        // While we have some cover data on the client (enough to render it); we don't have all the information we want, such as
+        // details on the fluid filter, so send it all here.
+        writeCoverNBT(tag, false);
     }
 
     /**

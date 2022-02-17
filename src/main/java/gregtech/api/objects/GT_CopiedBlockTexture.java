@@ -26,6 +26,7 @@ public class GT_CopiedBlockTexture extends gregtech.common.render.GT_CopiedBlock
         this(aBlock, aSide, aMeta, Dyes._NULL.mRGBa);
     }
 
+    @Override
     public boolean isOldTexture() {
         return true;
     }

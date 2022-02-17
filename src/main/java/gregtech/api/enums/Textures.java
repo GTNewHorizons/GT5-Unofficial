@@ -1681,14 +1681,13 @@ public class Textures {
                         BLOCK_BLAZE,
                         BLOCK_CRYOLITE
                 };
-        public static ITexture[] HIDDEN_TEXTURE = {
+        public static final ITexture[] HIDDEN_TEXTURE = {
                 TextureFactory.builder().addIcon(HIDDEN_FACE).stdOrient().build()
         };
-        public static ITexture[]
-                ERROR_RENDERING = {
+        public static final ITexture[] ERROR_RENDERING = {
                 TextureFactory.of(RENDERING_ERROR)
         };
-        public static ITexture[] OVERLAYS_ENERGY_IN = {
+        public static final ITexture[] OVERLAYS_ENERGY_IN = {
                 TextureFactory.of(OVERLAY_ENERGY_IN, new short[]{180, 180, 180, 0}),
                 TextureFactory.of(OVERLAY_ENERGY_IN, new short[]{220, 220, 220, 0}),
                 TextureFactory.of(OVERLAY_ENERGY_IN, new short[]{255, 100, 0, 0}),
@@ -1724,7 +1723,7 @@ public class Textures {
                 TextureFactory.of(OVERLAY_ENERGY_OUT, new short[]{60, 60, 245, 0}),
                 TextureFactory.of(OVERLAY_ENERGY_OUT, new short[]{40, 40, 245, 0}),
         };
-        public static ITexture[] OVERLAYS_ENERGY_IN_MULTI = {
+        public static final ITexture[] OVERLAYS_ENERGY_IN_MULTI = {
                 TextureFactory.of(OVERLAY_ENERGY_IN_MULTI, new short[]{180, 180, 180, 0}),
                 TextureFactory.of(OVERLAY_ENERGY_IN_MULTI, new short[]{220, 220, 220, 0}),
                 TextureFactory.of(OVERLAY_ENERGY_IN_MULTI, new short[]{255, 100, 0, 0}),
@@ -1742,7 +1741,7 @@ public class Textures {
                 TextureFactory.of(OVERLAY_ENERGY_IN_MULTI, new short[]{60, 60, 245, 0}),
                 TextureFactory.of(OVERLAY_ENERGY_IN_MULTI, new short[]{40, 40, 245, 0}),
         };
-        public static ITexture[] OVERLAYS_ENERGY_OUT_MULTI = {
+        public static final ITexture[] OVERLAYS_ENERGY_OUT_MULTI = {
                 TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI, new short[]{180, 180, 180, 0}),
                 TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI, new short[]{220, 220, 220, 0}),
                 TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI, new short[]{255, 100, 0, 0}),
@@ -1760,7 +1759,7 @@ public class Textures {
                 TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI, new short[]{60, 60, 245, 0}),
                 TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI, new short[]{40, 40, 245, 0}),
         };
-        public static ITexture[] OVERLAYS_ENERGY_IN_POWER = {
+        public static final ITexture[] OVERLAYS_ENERGY_IN_POWER = {
                 TextureFactory.of(OVERLAY_ENERGY_IN_POWER, new short[]{180, 180, 180, 0}),
                 TextureFactory.of(OVERLAY_ENERGY_IN_POWER, new short[]{220, 220, 220, 0}),
                 TextureFactory.of(OVERLAY_ENERGY_IN_POWER, new short[]{255, 100, 0, 0}),
@@ -1778,7 +1777,7 @@ public class Textures {
                 TextureFactory.of(OVERLAY_ENERGY_IN_POWER, new short[]{60, 60, 245, 0}),
                 TextureFactory.of(OVERLAY_ENERGY_IN_POWER, new short[]{40, 40, 245, 0}),
         };
-        public static ITexture[] OVERLAYS_ENERGY_OUT_POWER = {
+        public static final ITexture[] OVERLAYS_ENERGY_OUT_POWER = {
                 TextureFactory.of(OVERLAY_ENERGY_OUT_POWER, new short[]{180, 180, 180, 0}),
                 TextureFactory.of(OVERLAY_ENERGY_OUT_POWER, new short[]{220, 220, 220, 0}),
                 TextureFactory.of(OVERLAY_ENERGY_OUT_POWER, new short[]{255, 100, 0, 0}),
@@ -1796,7 +1795,7 @@ public class Textures {
                 TextureFactory.of(OVERLAY_ENERGY_OUT_POWER, new short[]{60, 60, 245, 0}),
                 TextureFactory.of(OVERLAY_ENERGY_OUT_POWER, new short[]{40, 40, 245, 0}),
         };
-        public static ITexture[] LOCKERS = {
+        public static final ITexture[] LOCKERS = {
                 TextureFactory.of(OVERLAY_LOCKER_000),
                 TextureFactory.of(OVERLAY_LOCKER_001),
                 TextureFactory.of(OVERLAY_LOCKER_002),
