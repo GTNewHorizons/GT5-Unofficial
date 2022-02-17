@@ -41,11 +41,11 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPELINE_FLUID_SIDE
 
 public class GT_MetaTileEntity_LongDistancePipelineFluid extends GT_MetaTileEntity_LongDistancePipelineBase {
     static final FluidTankInfo[] emptyTank = {new FluidTankInfo(null, Integer.MAX_VALUE)};
-    
+
     public GT_MetaTileEntity_LongDistancePipelineFluid(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, "Sends fluids over long distances");
     }
-    
+
     public GT_MetaTileEntity_LongDistancePipelineFluid(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
@@ -57,16 +57,16 @@ public class GT_MetaTileEntity_LongDistancePipelineFluid extends GT_MetaTileEnti
 
     @Override
     public int getPipeMeta() {
-        return 0;    
+        return 0;
     }
-    
+
     public IFluidHandler getTank() {
         final IGregTechTileEntity tTile = mTarget.getBaseMetaTileEntity();
         TileEntity tankTile = tTile.getTileEntityAtSide(tTile.getBackFacing());
         if (tankTile instanceof IFluidHandler) return (IFluidHandler)tankTile;
         else return null;
     }
-       
+
     @Override
     public FluidTankInfo[] getTankInfo(ForgeDirection aSide) {
         if (checkTarget()) {
@@ -106,7 +106,7 @@ public class GT_MetaTileEntity_LongDistancePipelineFluid extends GT_MetaTileEnti
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        if (aSide == aFacing) 
+        if (aSide == aFacing)
             return new ITexture[]{
                     MACHINE_CASINGS[mTier][aColorIndex + 1],
                     TextureFactory.of(OVERLAY_PIPELINE_FLUID_FRONT)};
@@ -114,7 +114,7 @@ public class GT_MetaTileEntity_LongDistancePipelineFluid extends GT_MetaTileEnti
             return new ITexture[]{
                     MACHINE_CASINGS[mTier][aColorIndex + 1],
                     TextureFactory.of(OVERLAY_PIPELINE_FLUID_BACK)};
-        else 
+        else
             return new ITexture[]{
                     MACHINE_CASINGS[mTier][aColorIndex + 1],
                     TextureFactory.of(OVERLAY_PIPELINE_FLUID_SIDE),

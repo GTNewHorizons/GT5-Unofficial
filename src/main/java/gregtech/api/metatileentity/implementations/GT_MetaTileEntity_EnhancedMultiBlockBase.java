@@ -48,14 +48,13 @@ public abstract class GT_MetaTileEntity_EnhancedMultiBlockBase<T extends GT_Meta
 			if(mMachine)
 				stopMachine();
 			mExtendedFacing = newExtendedFacing;
-			IGregTechTileEntity base = getBaseMetaTileEntity();
+			final IGregTechTileEntity base = getBaseMetaTileEntity();
 			mMachine = false;
 			mUpdated = false;
 			mUpdate = 100;
 			if (getBaseMetaTileEntity().isServerSide()) {
 				StructureLibAPI.sendAlignment((IAlignmentProvider) base,
-						new NetworkRegistry.TargetPoint(base.getWorld().provider.dimensionId,
-								base.getXCoord(), base.getYCoord(), base.getZCoord(), 512));
+						new NetworkRegistry.TargetPoint(base.getWorld().provider.dimensionId, base.getXCoord(), base.getYCoord(), base.getZCoord(), 512));
 			} else {
 				base.issueTextureUpdate();
 			}
@@ -173,12 +172,12 @@ public abstract class GT_MetaTileEntity_EnhancedMultiBlockBase<T extends GT_Meta
 	 * All these offsets can be negative.
 	 */
 	protected final boolean checkPiece(String piece, int horizontalOffset, int verticalOffset, int depthOffset) {
-		IGregTechTileEntity tTile = getBaseMetaTileEntity();
+		final IGregTechTileEntity tTile = getBaseMetaTileEntity();
 		return getCastedStructureDefinition().check(this, piece, tTile.getWorld(), getExtendedFacing(), tTile.getXCoord(), tTile.getYCoord(), tTile.getZCoord(), horizontalOffset, verticalOffset, depthOffset, !mMachine);
 	}
 
 	protected final boolean buildPiece(String piece, ItemStack trigger, boolean hintOnly, int horizontalOffset, int verticalOffset, int depthOffset) {
-		IGregTechTileEntity tTile = getBaseMetaTileEntity();
+		final IGregTechTileEntity tTile = getBaseMetaTileEntity();
 		return getCastedStructureDefinition().buildOrHints(this, trigger, piece, tTile.getWorld(), getExtendedFacing(), tTile.getXCoord(), tTile.getYCoord(), tTile.getZCoord(), horizontalOffset, verticalOffset, depthOffset, hintOnly);
 	}
 

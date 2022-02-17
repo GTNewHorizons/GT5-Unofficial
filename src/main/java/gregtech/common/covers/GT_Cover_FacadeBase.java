@@ -110,7 +110,8 @@ public abstract class GT_Cover_FacadeBase extends GT_CoverBehaviorBase<GT_Cover_
         Block block = getTargetBlock(aCoverVariable.mStack);
         if (block == null) return Textures.BlockIcons.ERROR_RENDERING[0];
         // TODO: change this when *someone* made the block render in both pass
-        if (block.getRenderBlockPass() != 0) return Textures.BlockIcons.ERROR_RENDERING[0];
+        if (block.getRenderBlockPass() != 0)
+            return Textures.BlockIcons.ERROR_RENDERING[0];
         return TextureFactory.builder().setFromBlock(block, getTargetMeta(aCoverVariable.mStack)).useWorldCoord().setFromSide(ForgeDirection.getOrientation(aSide)).build();
     }
 
@@ -206,7 +207,7 @@ public abstract class GT_Cover_FacadeBase extends GT_CoverBehaviorBase<GT_Cover_
         @Override
         public NBTBase saveDataToNBT() {
             NBTTagCompound tag = new NBTTagCompound();
-            tag.setTag("mStack", mStack.writeToNBT(new NBTTagCompound()));
+            if(mStack != null) tag.setTag("mStack", mStack.writeToNBT(new NBTTagCompound()));
             tag.setByte("mFlags", (byte) mFlags);
             return tag;
         }

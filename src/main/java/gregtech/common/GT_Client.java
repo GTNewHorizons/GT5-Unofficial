@@ -1,6 +1,6 @@
 // Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
 // Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
+// Decompiler options: packimports(3)
 // Source File Name:   GT_Client.java
 
 package gregtech.common;
@@ -181,21 +181,14 @@ public class GT_Client extends GT_Proxy
 
     private static void drawGrid(DrawBlockHighlightEvent aEvent, boolean showCoverConnections, boolean aIsWrench, boolean aIsSneaking) {
         if (!checkedForChicken) {
-            try {
-                Class.forName("codechicken.lib.vec.Rotation");
-            } catch (Throwable e) {
-                if (GT_Values.D1) {
-                    e.printStackTrace(GT_Log.err);
-                }
-                return;
-            }
+            try {Class.forName("codechicken.lib.vec.Rotation");} catch (ClassNotFoundException e) {return;}
             checkedForChicken = true;
         }
 
         GL11.glPushMatrix();
         GL11.glTranslated(-(aEvent.player.lastTickPosX + (aEvent.player.posX - aEvent.player.lastTickPosX) * (double) aEvent.partialTicks), -(aEvent.player.lastTickPosY + (aEvent.player.posY - aEvent.player.lastTickPosY) * (double) aEvent.partialTicks), -(aEvent.player.lastTickPosZ + (aEvent.player.posZ - aEvent.player.lastTickPosZ) * (double) aEvent.partialTicks));
         GL11.glTranslated((float) aEvent.target.blockX + 0.5F, (float) aEvent.target.blockY + 0.5F, (float) aEvent.target.blockZ + 0.5F);
-        int tSideHit = aEvent.target.sideHit;
+        final int tSideHit = aEvent.target.sideHit;
         Rotation.sideRotations[tSideHit].glApply();
         // draw grid
         GL11.glTranslated(0.0D, -0.501D, 0.0D);
@@ -210,7 +203,7 @@ public class GT_Client extends GT_Proxy
         GL11.glVertex3d(+.25D, .0D, +.50D);
         GL11.glVertex3d(-.25D, .0D, -.50D);
         GL11.glVertex3d(-.25D, .0D, +.50D);
-        TileEntity tTile = aEvent.player.worldObj.getTileEntity(aEvent.target.blockX, aEvent.target.blockY, aEvent.target.blockZ);
+        final TileEntity tTile = aEvent.player.worldObj.getTileEntity(aEvent.target.blockX, aEvent.target.blockY, aEvent.target.blockZ);
 
         // draw connection indicators
         byte tConnections = 0;
@@ -282,11 +275,10 @@ public class GT_Client extends GT_Proxy
         }
         GL11.glEnd();
         // draw turning indicator
-        if (aIsWrench && tTile instanceof IGregTechTileEntity &&
-                ((IGregTechTileEntity) tTile).getMetaTileEntity() instanceof IAlignmentProvider) {
-            IAlignment tAlignment = ((IAlignmentProvider) ((IGregTechTileEntity) tTile).getMetaTileEntity()).getAlignment();
+        if (aIsWrench && tTile instanceof IAlignmentProvider) {
+            final IAlignment tAlignment = ((IAlignmentProvider)(tTile)).getAlignment();
             if (tAlignment != null) {
-                ForgeDirection direction = tAlignment.getDirection();
+                final ForgeDirection direction = tAlignment.getDirection();
                 if (direction.ordinal() == tSideHit)
                     drawExtendedRotationMarker(ROTATION_MARKER_TRANSFORM_CENTER, aIsSneaking, false);
                 else if (direction.getOpposite().ordinal() == tSideHit) {
@@ -339,7 +331,7 @@ public class GT_Client extends GT_Proxy
     private static void drawFlipMarker(Transformation transform) {
         GL11.glPushMatrix();
         transform.glApply();
-        Tessellator t = Tessellator.instance;
+        final Tessellator t = Tessellator.instance;
         // right shape
         GL11.glLineStipple(4, (short) 0xAAAA);
         GL11.glEnable(GL11.GL_LINE_STIPPLE);
@@ -405,7 +397,7 @@ public class GT_Client extends GT_Proxy
     @Override
     public void onPreLoad() {
         super.onPreLoad();
-        String[] arr = {
+        final String[] arr = {
                 "renadi", "hanakocz", "MysteryDump", "Flaver4", "x_Fame", "Peluche321", "Goshen_Ithilien", "manf", "Bimgo", "leagris",
                 "IAmMinecrafter02", "Cerous", "Devilin_Pixy", "Bkarlsson87", "BadAlchemy", "CaballoCraft", "melanclock", "Resursator", "demanzke", "AndrewAmmerlaan",
                 "Deathlycraft", "Jirajha", "Axlegear", "kei_kouma", "Dracion", "dungi", "Dorfschwein", "Zero Tw0", "mattiagraz85", "sebastiank30",
@@ -445,7 +437,7 @@ public class GT_Client extends GT_Proxy
     @Override
     public void onPostLoad() {
         super.onPostLoad();
-        
+
         try {
             for (int i = 1; i < GregTech_API.METATILEENTITIES.length; i++) {
                 try {
@@ -472,7 +464,7 @@ public class GT_Client extends GT_Proxy
     @Override
     public void run() {
         GT_Log.out.println("GT_Mod: Downloading Cape List.");
-        try (Scanner tScanner = new Scanner(new URL(GT_CAPE_LIST_URL).openStream())) {
+        try (final Scanner tScanner = new Scanner(new URL(GT_CAPE_LIST_URL).openStream())) {
             while (tScanner.hasNextLine()) {
                 this.mCapeList.add(tScanner.nextLine().toLowerCase());
             }
@@ -480,9 +472,9 @@ public class GT_Client extends GT_Proxy
             e.printStackTrace(GT_Log.err);
         }
         GT_Log.out.println("GT New Horizons: Downloading Cape List.");
-        try (Scanner tScanner = new Scanner(new URL(GTNH_CAPE_LIST_URL).openStream())) {
+        try (final Scanner tScanner = new Scanner(new URL(GTNH_CAPE_LIST_URL).openStream())) {
             while (tScanner.hasNextLine()) {
-                String tName = tScanner.nextLine().toLowerCase();
+                final String tName = tScanner.nextLine().toLowerCase();
                 if (tName.contains(":")) {
                     if (!this.mCapeList.contains(tName.substring(0, tName.indexOf(":")))) {
                         this.mCapeList.add(tName);
@@ -541,7 +533,7 @@ public class GT_Client extends GT_Proxy
             }
             if (!GregTech_API.mServerStarted) GregTech_API.mServerStarted = true;
             if (GT_Values.updateFluidDisplayItems) {
-                MovingObjectPosition trace = Minecraft.getMinecraft().objectMouseOver;
+                final MovingObjectPosition trace = Minecraft.getMinecraft().objectMouseOver;
                 if (trace != null && trace.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK &&
                         (mLastUpdatedBlockX != trace.blockX &&
                                 mLastUpdatedBlockY != trace.blockY &&
@@ -549,9 +541,9 @@ public class GT_Client extends GT_Proxy
                     mLastUpdatedBlockX = trace.blockX;
                     mLastUpdatedBlockY = trace.blockY;
                     mLastUpdatedBlockZ = trace.blockZ;
-                    TileEntity tileEntity = aEvent.player.worldObj.getTileEntity(trace.blockX, trace.blockY, trace.blockZ);
+                    final TileEntity tileEntity = aEvent.player.worldObj.getTileEntity(trace.blockX, trace.blockY, trace.blockZ);
                     if (tileEntity instanceof IGregTechTileEntity) {
-                        IGregTechTileEntity gtTile = (IGregTechTileEntity) tileEntity;
+                        final IGregTechTileEntity gtTile = (IGregTechTileEntity) tileEntity;
                         if (gtTile.getMetaTileEntity() instanceof IHasFluidDisplayItem) {
                             GT_Values.NW.sendToServer(new MessageUpdateFluidDisplayItem(trace.blockX, trace.blockY, trace.blockZ, gtTile.getWorld().provider.dimensionId));
                         }
@@ -575,8 +567,8 @@ public class GT_Client extends GT_Proxy
 
     @SubscribeEvent
     public void onDrawBlockHighlight(DrawBlockHighlightEvent aEvent) {
-        Block aBlock = aEvent.player.worldObj.getBlock(aEvent.target.blockX, aEvent.target.blockY, aEvent.target.blockZ);
-        TileEntity aTileEntity = aEvent.player.worldObj.getTileEntity(aEvent.target.blockX, aEvent.target.blockY, aEvent.target.blockZ);
+        final Block aBlock = aEvent.player.worldObj.getBlock(aEvent.target.blockX, aEvent.target.blockY, aEvent.target.blockZ);
+        final TileEntity aTileEntity = aEvent.player.worldObj.getTileEntity(aEvent.target.blockX, aEvent.target.blockY, aEvent.target.blockZ);
 
         if (GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sWrenchList)) {
             if (aTileEntity instanceof ITurnable || ROTATABLE_VANILLA_BLOCKS.contains(aBlock) || aTileEntity instanceof IWrenchable)
@@ -628,7 +620,7 @@ public class GT_Client extends GT_Proxy
     public void onClientTickEvent(cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent aEvent) {
         if (aEvent.phase == cpw.mods.fml.common.gameevent.TickEvent.Phase.END) {
             if (changeDetected > 0) changeDetected--;
-            int newHideValue = shouldHeldItemHideThings();
+            final int newHideValue = shouldHeldItemHideThings();
             if (newHideValue != hideValue) {
                 hideValue = newHideValue;
                 changeDetected = 5;
@@ -637,9 +629,8 @@ public class GT_Client extends GT_Proxy
             if (mAnimationTick % 50L == 0L) {
                 mAnimationDirection = !mAnimationDirection;
             }
-            int tDirection = mAnimationDirection ? 1 : -1;
-            for (Object o : mPosR) {
-                Materials tMaterial = (Materials) o;
+            final int tDirection = mAnimationDirection ? 1 : -1;
+            for (Materials tMaterial : mPosR) {
                 tMaterial.mRGBa[0] = getSafeRGBValue(tMaterial.mRGBa[0], tDirection);
             }
 
@@ -737,55 +728,55 @@ public class GT_Client extends GT_Proxy
         if (tString.startsWith("streaming."))
             switch (aStack.stackSize) {
                 case 1: // '\001'
-                    tString = (new StringBuilder()).append(tString).append("13").toString();
+                    tString = tString + "13";
                     break;
 
                 case 2: // '\002'
-                    tString = (new StringBuilder()).append(tString).append("cat").toString();
+                    tString = tString + "cat";
                     break;
 
                 case 3: // '\003'
-                    tString = (new StringBuilder()).append(tString).append("blocks").toString();
+                    tString = tString + "blocks";
                     break;
 
                 case 4: // '\004'
-                    tString = (new StringBuilder()).append(tString).append("chirp").toString();
+                    tString = tString + "chirp";
                     break;
 
                 case 5: // '\005'
-                    tString = (new StringBuilder()).append(tString).append("far").toString();
+                    tString = tString + "far";
                     break;
 
                 case 6: // '\006'
-                    tString = (new StringBuilder()).append(tString).append("mall").toString();
+                    tString = tString + "mall";
                     break;
 
                 case 7: // '\007'
-                    tString = (new StringBuilder()).append(tString).append("mellohi").toString();
+                    tString = tString + "mellohi";
                     break;
 
                 case 8: // '\b'
-                    tString = (new StringBuilder()).append(tString).append("stal").toString();
+                    tString = tString + "stal";
                     break;
 
                 case 9: // '\t'
-                    tString = (new StringBuilder()).append(tString).append("strad").toString();
+                    tString = tString + "strad";
                     break;
 
                 case 10: // '\n'
-                    tString = (new StringBuilder()).append(tString).append("ward").toString();
+                    tString = tString + "ward";
                     break;
 
                 case 11: // '\013'
-                    tString = (new StringBuilder()).append(tString).append("11").toString();
+                    tString = tString + "11";
                     break;
 
                 case 12: // '\f'
-                    tString = (new StringBuilder()).append(tString).append("wait").toString();
+                    tString = tString + "wait";
                     break;
 
                 default:
-                    tString = (new StringBuilder()).append(tString).append("wherearewenow").toString();
+                    tString = tString + "wherearewenow";
                     break;
             }
         if (tString.startsWith("streaming.")) {
@@ -814,11 +805,11 @@ public class GT_Client extends GT_Proxy
 
     private static int shouldHeldItemHideThings() {
         try {
-            EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+            final EntityPlayer player = Minecraft.getMinecraft().thePlayer;
             if (player == null) return 0;
-            ItemStack tCurrentItem = player.getCurrentEquippedItem();
+            final ItemStack tCurrentItem = player.getCurrentEquippedItem();
             if (tCurrentItem == null) return 0;
-            int[] ids = OreDictionary.getOreIDs(tCurrentItem);
+            final int[] ids = OreDictionary.getOreIDs(tCurrentItem);
             int hide = 0;
             for (int i : ids) {
                 if (OreDictionary.getOreName(i).equals("craftingToolSolderingIron")) {
