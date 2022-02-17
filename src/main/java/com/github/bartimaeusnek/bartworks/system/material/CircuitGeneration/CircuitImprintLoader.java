@@ -88,9 +88,9 @@ public class CircuitImprintLoader {
 
     private static void handleCircuitRecipeRebuilding(GT_Recipe circuitRecipe, HashSet<GT_Recipe> toRem, HashSet<GT_Recipe> toAdd) {
         ItemStack[] outputs = circuitRecipe.mOutputs;
-        String name = getTypeFromOreDict(outputs);
+        boolean isOrePass = isCircuitOreDict(outputs[0]);
         String unlocalizedName = outputs[0].getUnlocalizedName();
-        if (name.contains("Circuit") || name.contains("circuit") || unlocalizedName.contains("Circuit") || unlocalizedName.contains("circuit")) {
+        if (isOrePass || unlocalizedName.contains("Circuit") || unlocalizedName.contains("circuit")) {
 
             CircuitImprintLoader.recipeTagMap.put(CircuitImprintLoader.getTagFromStack(outputs[0]), circuitRecipe.copy());
 
@@ -106,6 +106,7 @@ public class CircuitImprintLoader {
         }
     }
 
+    @Deprecated
     private static String getTypeFromOreDict(ItemStack[] outputs) {
         int[] oreIDS = OreDictionary.getOreIDs(outputs[0]);
 
@@ -113,6 +114,20 @@ public class CircuitImprintLoader {
             return "";
 
         return OreDictionary.getOreName(oreIDS[0]);
+    }
+
+    private static boolean isCircuitOreDict(ItemStack item) {
+        int[] oreIDS = OreDictionary.getOreIDs(item);
+
+        if (oreIDS.length < 1)
+            return false;
+        
+        for (int oreID : oreIDS) {
+            if (OreDictionary.getOreName(oreID).contains("Circuit") || OreDictionary.getOreName(oreID).contains("circuit"))
+                return true;
+        }
+
+        return false;
     }
 
     private static void exchangeRecipesInList(HashSet<GT_Recipe> toRem, HashSet<GT_Recipe> toAdd) {
