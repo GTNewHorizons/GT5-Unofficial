@@ -41,7 +41,7 @@ public class GT_SpawnEventHandler {
                         double dy = rep[1] + 0.5F - event.entity.posY;
                         double dz = rep[2] + 0.5F - event.entity.posZ;
                         if ((dx * dx + dz * dz + dy * dy) <= Math.pow(r, 2)) {
-                            ((EntitySlime) event.entityLiving).setCustomNameTag("DoNotSpawnSlimes");
+                            if(event.entityLiving instanceof EntitySlime) ((EntitySlime) event.entityLiving).setCustomNameTag("DoNotSpawnSlimes");
                             event.setResult(Event.Result.DENY);
                         }
                     }
