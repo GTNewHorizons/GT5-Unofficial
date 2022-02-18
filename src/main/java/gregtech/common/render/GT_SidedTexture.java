@@ -7,7 +7,7 @@ import gregtech.api.render.TextureFactory;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 
-class GT_SidedTexture implements ITexture, IColorModulationContainer {
+public class GT_SidedTexture extends GT_TextureBase implements ITexture, IColorModulationContainer {
     protected final ITexture[] mTextures;
     /**
      * DO NOT MANIPULATE THE VALUES INSIDE THIS ARRAY!!!
@@ -17,7 +17,7 @@ class GT_SidedTexture implements ITexture, IColorModulationContainer {
      */
     private final short[] mRGBa;
 
-    GT_SidedTexture(IIconContainer aIcon0, IIconContainer aIcon1, IIconContainer aIcon2, IIconContainer aIcon3, IIconContainer aIcon4, IIconContainer aIcon5, short[] aRGBa, boolean aAllowAlpha) {
+    protected GT_SidedTexture(IIconContainer aIcon0, IIconContainer aIcon1, IIconContainer aIcon2, IIconContainer aIcon3, IIconContainer aIcon4, IIconContainer aIcon5, short[] aRGBa, boolean aAllowAlpha) {
         if (aRGBa.length != 4) throw new IllegalArgumentException("RGBa doesn't have 4 Values @ GT_RenderedTexture");
         mTextures = new ITexture[]{
             TextureFactory.of(aIcon0, aRGBa, aAllowAlpha),
@@ -30,6 +30,11 @@ class GT_SidedTexture implements ITexture, IColorModulationContainer {
         mRGBa = aRGBa;
     }
 
+    @Override
+    public boolean isOldTexture() {
+        return false;
+    }
+    
     @Override
     public void renderXPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
         mTextures[5].renderXPos(aRenderer, aBlock, aX ,aY, aZ);

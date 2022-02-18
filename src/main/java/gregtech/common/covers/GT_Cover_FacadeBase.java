@@ -48,7 +48,7 @@ public abstract class GT_Cover_FacadeBase extends GT_CoverBehaviorBase<GT_Cover_
     @Override
     protected FacadeData onCoverScrewdriverClickImpl(byte aSide, int aCoverID, FacadeData aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         aCoverVariable.mFlags = ((aCoverVariable.mFlags + 1) & 15);
-        GT_Utility.sendChatToPlayer(aPlayer, ((aCoverVariable.mFlags & 1) != 0 ? trans("128", "Redstone ") : "") + ((aCoverVariable.mFlags & 2) != 0 ? trans("129", "Energy ") : "") + ((aCoverVariable.mFlags & 4) != 0 ? trans("130", "Fluids ") : "") + ((aCoverVariable.mFlags & 8) != 0 ? trans("131", "Items ") : ""));
+        GT_Utility.sendChatToPlayer(aPlayer, ((aCoverVariable.mFlags & 1) != 0 ? GT_Utility.trans("128", "Redstone ") : "") + ((aCoverVariable.mFlags & 2) != 0 ? GT_Utility.trans("129", "Energy ") : "") + ((aCoverVariable.mFlags & 4) != 0 ? GT_Utility.trans("130", "Fluids ") : "") + ((aCoverVariable.mFlags & 8) != 0 ? GT_Utility.trans("131", "Items ") : ""));
         return aCoverVariable;
     }
 
@@ -163,12 +163,11 @@ public abstract class GT_Cover_FacadeBase extends GT_CoverBehaviorBase<GT_Cover_
 
     @Override
     public boolean isCoverPlaceable(byte aSide, ItemStack aStack, ICoverable aTileEntity) {
-        // blocks that are not rendered in pass 0 are rejected for now.
-        // to implement it require changing GT_Block_Machine to render in both pass, which is not really a good idea...
+        // blocks that are not rendered in pass 0 are now accepted but rendered awkwardly
+        // to render it correctly require changing GT_Block_Machine to render in both pass, which is not really a good idea...
         if (!super.isCoverPlaceable(aSide, aStack, aTileEntity)) return false;
         Block targetBlock = getTargetBlock(aStack);
         if (targetBlock == null) return false;
-        if (targetBlock.getRenderBlockPass() != GregTech_API.sBlockMachines.getRenderBlockPass()) return false;
         // we allow one single type of facade on the same block for now
         // otherwise it's not clear which block this block should impersonate
         // this restriction can be lifted later by specifying a certain facade as dominate one as an extension to this class

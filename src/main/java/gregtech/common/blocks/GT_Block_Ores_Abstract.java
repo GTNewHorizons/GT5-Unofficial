@@ -17,6 +17,7 @@ import gregtech.common.render.GT_Renderer_Block;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -27,6 +28,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -37,12 +39,11 @@ import java.util.List;
 import java.util.Set;
 
 public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements ITileEntityProvider {
-    public static ThreadLocal<GT_TileEntity_Ores> mTemporaryTileEntity = new ThreadLocal();
+    private static final String DOT_NAME = ".name";
+    public static ThreadLocal<GT_TileEntity_Ores> mTemporaryTileEntity = new ThreadLocal<>();
     public static boolean FUCKING_LOCK = false;
     public static boolean tHideOres;
-    private final String aTextName = ".name";
-    private final String aTextSmall = "Small ";
-    public static Set aBlockedOres = new HashSet<Materials>();
+    public static Set<Materials> aBlockedOres = new HashSet<>();
 
     protected GT_Block_Ores_Abstract(String aUnlocalizedName, int aOreMetaCount, boolean aHideFirstMeta, Material aMaterial) {
         super(GT_Item_Ores.class, aUnlocalizedName, aMaterial);
@@ -50,7 +51,7 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
         setStepSound(soundTypeStone);
         setCreativeTab(GregTech_API.TAB_GREGTECH_ORES);
         tHideOres = Loader.isModLoaded("NotEnoughItems") && GT_Mod.gregtechproxy.mHideUnusedOres;
-        if(aOreMetaCount > 8 || aOreMetaCount < 0) aOreMetaCount = 8;
+        if (aOreMetaCount > 8 || aOreMetaCount < 0) aOreMetaCount = 8;
 
         for (int i = 0; i < 16; i++) {
             GT_ModHandler.addValuableOre(this, i, 1);
@@ -59,8 +60,8 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
             if (GregTech_API.sGeneratedMaterials[i] != null) {
                 for (int j = 0; j < aOreMetaCount; j++) {
                     if (!this.getEnabledMetas()[j]) continue;
-                    GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + (i + (j * 1000)) + aTextName, GT_LanguageManager.i18nPlaceholder ? getLocalizedNameFormat(GregTech_API.sGeneratedMaterials[i]) : getLocalizedName(GregTech_API.sGeneratedMaterials[i]));
-                    GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + ((i + 16000) + (j * 1000)) + aTextName, aTextSmall + (GT_LanguageManager.i18nPlaceholder ? getLocalizedNameFormat(GregTech_API.sGeneratedMaterials[i]) : getLocalizedName(GregTech_API.sGeneratedMaterials[i])));
+                    GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + (i + (j * 1000)) + DOT_NAME, GT_LanguageManager.i18nPlaceholder ? getLocalizedNameFormat(GregTech_API.sGeneratedMaterials[i]) : getLocalizedName(GregTech_API.sGeneratedMaterials[i]));
+                    GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + ((i + 16000) + (j * 1000)) + DOT_NAME, "Small " + (GT_LanguageManager.i18nPlaceholder ? getLocalizedNameFormat(GregTech_API.sGeneratedMaterials[i]) : getLocalizedName(GregTech_API.sGeneratedMaterials[i])));
                     if ((GregTech_API.sGeneratedMaterials[i].mTypes & 0x8) != 0 && !aBlockedOres.contains(GregTech_API.sGeneratedMaterials[i])) {
                         GT_OreDictUnificator.registerOre(this.getProcessingPrefix()[j] != null ? this.getProcessingPrefix()[j].get(GregTech_API.sGeneratedMaterials[i]) : "", new ItemStack(this, 1, i + (j * 1000)));
                         if (tHideOres) {
@@ -104,32 +105,32 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
     }
 
     public String getLocalizedNameFormat(Materials aMaterial) {
-    	switch (aMaterial.mName) {
-        case "InfusedAir":
-        case "InfusedDull":
-        case "InfusedEarth":
-        case "InfusedEntropy":
-        case "InfusedFire":
-        case "InfusedOrder":
-        case "InfusedVis":
-        case "InfusedWater":
-            return "%material Infused Stone";
-        case "Vermiculite":
-        case "Bentonite":
-        case "Kaolinite":
-        case "Talc":
-        case "BasalticMineralSand":
-        case "GraniticMineralSand":
-        case "GlauconiteSand":
-        case "CassiteriteSand":
-        case "GarnetSand":
-        case "QuartzSand":
-        case "Pitchblende":
-        case "FullersEarth":
-            return "%material";
-        default:
-            return "%material" + OrePrefixes.ore.mLocalizedMaterialPost;
-    	}
+        switch (aMaterial.mName) {
+            case "InfusedAir":
+            case "InfusedDull":
+            case "InfusedEarth":
+            case "InfusedEntropy":
+            case "InfusedFire":
+            case "InfusedOrder":
+            case "InfusedVis":
+            case "InfusedWater":
+                return "%material Infused Stone";
+            case "Vermiculite":
+            case "Bentonite":
+            case "Kaolinite":
+            case "Talc":
+            case "BasalticMineralSand":
+            case "GraniticMineralSand":
+            case "GlauconiteSand":
+            case "CassiteriteSand":
+            case "GarnetSand":
+            case "QuartzSand":
+            case "Pitchblende":
+            case "FullersEarth":
+                return "%material";
+            default:
+                return "%material" + OrePrefixes.ore.mLocalizedMaterialPost;
+        }
     }
 
     public String getLocalizedName(Materials aMaterial) {
@@ -156,7 +157,7 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
     public boolean onBlockEventReceived(World p_149696_1_, int p_149696_2_, int p_149696_3_, int p_149696_4_, int p_149696_5_, int p_149696_6_) {
         super.onBlockEventReceived(p_149696_1_, p_149696_2_, p_149696_3_, p_149696_4_, p_149696_5_, p_149696_6_);
         TileEntity tileentity = p_149696_1_.getTileEntity(p_149696_2_, p_149696_3_, p_149696_4_);
-        return tileentity != null ? tileentity.receiveClientEvent(p_149696_5_, p_149696_6_) : false;
+        return tileentity != null && tileentity.receiveClientEvent(p_149696_5_, p_149696_6_);
     }
 
     @Override
@@ -194,7 +195,7 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
 
     @Override
     public String getLocalizedName() {
-        return StatCollector.translateToLocal(getUnlocalizedName() + aTextName);
+        return StatCollector.translateToLocal(getUnlocalizedName() + DOT_NAME);
     }
 
     @Override
@@ -236,11 +237,13 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public IIcon getIcon(IBlockAccess aIBlockAccess, int aX, int aY, int aZ, int aSide) {
         return Blocks.stone.getIcon(0, 0);
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public IIcon getIcon(int aSide, int aMeta) {
         return Blocks.stone.getIcon(0, 0);
     }
@@ -248,6 +251,20 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister aIconRegister) {
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public boolean addHitEffects(World worldObj, MovingObjectPosition target, EffectRenderer effectRenderer) {
+        GT_Renderer_Block.addHitEffects(effectRenderer, this, worldObj, target.blockX, target.blockY, target.blockZ, target.sideHit);
+        return true;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public boolean addDestroyEffects(World world, int x, int y, int z, int meta, EffectRenderer effectRenderer) {
+        GT_Renderer_Block.addDestroyEffects(effectRenderer, this, world, x, y, z);
+        return true;
     }
 
     @Override
@@ -283,7 +300,7 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
         if ((tTileEntity instanceof GT_TileEntity_Ores)) {
             return ((GT_TileEntity_Ores) tTileEntity).getDrops(getDroppedBlock(), aFortune);
         }
-        return mTemporaryTileEntity.get() == null ? new ArrayList() : ((GT_TileEntity_Ores) mTemporaryTileEntity.get()).getDrops(getDroppedBlock(), aFortune);
+        return mTemporaryTileEntity.get() == null ? new ArrayList<>() : mTemporaryTileEntity.get().getDrops(getDroppedBlock(), aFortune);
     }
 
     @Override
@@ -293,27 +310,17 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
 
     public abstract ITexture[] getTextureSet(); //Must have 16 entries.
 
+    @SuppressWarnings({"unchecked"})
     @Override
+    @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item aItem, CreativeTabs aTab, List aList) {
         for (int i = 0; i < GregTech_API.sGeneratedMaterials.length; i++) {
             Materials tMaterial = GregTech_API.sGeneratedMaterials[i];
-            if ((tMaterial != null) && ((tMaterial.mTypes & 0x8) != 0)&& !aBlockedOres.contains(tMaterial)) {
-                if (!(new ItemStack(aItem, 1, i).getDisplayName().contains(aTextName))) aList.add(new ItemStack(aItem, 1, i));
-                if (!(new ItemStack(aItem, 1, i + 1000).getDisplayName().contains(aTextName))) aList.add(new ItemStack(aItem, 1, i + 1000));
-                if (!(new ItemStack(aItem, 1, i + 2000).getDisplayName().contains(aTextName))) aList.add(new ItemStack(aItem, 1, i + 2000));
-                if (!(new ItemStack(aItem, 1, i + 3000).getDisplayName().contains(aTextName))) aList.add(new ItemStack(aItem, 1, i + 3000));
-                if (!(new ItemStack(aItem, 1, i + 4000).getDisplayName().contains(aTextName))) aList.add(new ItemStack(aItem, 1, i + 4000));
-                if (!(new ItemStack(aItem, 1, i + 5000).getDisplayName().contains(aTextName))) aList.add(new ItemStack(aItem, 1, i + 5000));
-                if (!(new ItemStack(aItem, 1, i + 6000).getDisplayName().contains(aTextName))) aList.add(new ItemStack(aItem, 1, i + 6000));
-                if (!(new ItemStack(aItem, 1, i + 7000).getDisplayName().contains(aTextName))) aList.add(new ItemStack(aItem, 1, i + 7000));
-                if (!(new ItemStack(aItem, 1, i + 16000).getDisplayName().contains(aTextName))) aList.add(new ItemStack(aItem, 1, i + 16000));
-                if (!(new ItemStack(aItem, 1, i + 17000).getDisplayName().contains(aTextName))) aList.add(new ItemStack(aItem, 1, i + 17000));
-                if (!(new ItemStack(aItem, 1, i + 18000).getDisplayName().contains(aTextName))) aList.add(new ItemStack(aItem, 1, i + 18000));
-                if (!(new ItemStack(aItem, 1, i + 19000).getDisplayName().contains(aTextName))) aList.add(new ItemStack(aItem, 1, i + 19000));
-                if (!(new ItemStack(aItem, 1, i + 20000).getDisplayName().contains(aTextName))) aList.add(new ItemStack(aItem, 1, i + 20000));
-                if (!(new ItemStack(aItem, 1, i + 21000).getDisplayName().contains(aTextName))) aList.add(new ItemStack(aItem, 1, i + 21000));
-                if (!(new ItemStack(aItem, 1, i + 22000).getDisplayName().contains(aTextName))) aList.add(new ItemStack(aItem, 1, i + 22000));
-                if (!(new ItemStack(aItem, 1, i + 23000).getDisplayName().contains(aTextName))) aList.add(new ItemStack(aItem, 1, i + 23000));
+            if ((tMaterial != null) && ((tMaterial.mTypes & 0x8) != 0) && !aBlockedOres.contains(tMaterial)) {
+                for (int meta = i; meta < 23000 + i; meta += 1000) {
+                    if (!(new ItemStack(aItem, 1, meta).getDisplayName().contains(DOT_NAME)))
+                        aList.add(new ItemStack(aItem, 1, meta));
+                }
             }
         }
     }

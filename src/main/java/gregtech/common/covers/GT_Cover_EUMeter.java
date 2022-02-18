@@ -106,18 +106,30 @@ public class GT_Cover_EUMeter extends GT_CoverBehavior {
         aCoverVariable = (aCoverVariable + (aPlayer.isSneaking()? -1 : 1)) % 12;
         if(aCoverVariable <0){aCoverVariable = 11;}
         switch(aCoverVariable) {
-            case 0: GT_Utility.sendChatToPlayer(aPlayer, trans("031", "Normal Universal Storage")); break;
-            case 1: GT_Utility.sendChatToPlayer(aPlayer, trans("032", "Inverted Universal Storage")); break;
-            case 2: GT_Utility.sendChatToPlayer(aPlayer, trans("033", "Normal Electricity Storage")); break;
-            case 3: GT_Utility.sendChatToPlayer(aPlayer, trans("034", "Inverted Electricity Storage")); break;
-            case 4: GT_Utility.sendChatToPlayer(aPlayer, trans("035", "Normal Steam Storage")); break;
-            case 5: GT_Utility.sendChatToPlayer(aPlayer, trans("036", "Inverted Steam Storage")); break;
-            case 6: GT_Utility.sendChatToPlayer(aPlayer, trans("037", "Normal Average Electric Input")); break;
-            case 7: GT_Utility.sendChatToPlayer(aPlayer, trans("038", "Inverted Average Electric Input")); break;
-            case 8: GT_Utility.sendChatToPlayer(aPlayer, trans("039", "Normal Average Electric Output")); break;
-            case 9: GT_Utility.sendChatToPlayer(aPlayer, trans("040", "Inverted Average Electric Output")); break;
-            case 10: GT_Utility.sendChatToPlayer(aPlayer, trans("041", "Normal Electricity Storage(Including Batteries)")); break;
-            case 11: GT_Utility.sendChatToPlayer(aPlayer, trans("042", "Inverted Electricity Storage(Including Batteries)")); break;
+            case 0:
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("031", "Normal Universal Storage")); break;
+            case 1:
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("032", "Inverted Universal Storage")); break;
+            case 2:
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("033", "Normal Electricity Storage")); break;
+            case 3:
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("034", "Inverted Electricity Storage")); break;
+            case 4:
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("035", "Normal Steam Storage")); break;
+            case 5:
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("036", "Inverted Steam Storage")); break;
+            case 6:
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("037", "Normal Average Electric Input")); break;
+            case 7:
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("038", "Inverted Average Electric Input")); break;
+            case 8:
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("039", "Normal Average Electric Output")); break;
+            case 9:
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("040", "Inverted Average Electric Output")); break;
+            case 10:
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("041", "Normal Electricity Storage(Including Batteries)")); break;
+            case 11:
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("042", "Inverted Electricity Storage(Including Batteries)")); break;
         }
         return aCoverVariable;
     }
@@ -194,17 +206,17 @@ public class GT_Cover_EUMeter extends GT_CoverBehavior {
 
             GuiButton b;
             b = new GT_GuiIconCheckButton(this, 0, startX + spaceX*0, startY+spaceY*1, GT_GuiIcon.CHECKMARK, null)
-                    .setTooltipText(trans("256", "Universal Storage"));
+                    .setTooltipText(GT_Utility.trans("256", "Universal Storage"));
             b = new GT_GuiIconCheckButton(this, 1, startX + spaceX*0, startY+spaceY*0, GT_GuiIcon.CHECKMARK, null)
-                    .setTooltipText(trans("257", "Electricity Storage"));
+                    .setTooltipText(GT_Utility.trans("257", "Electricity Storage"));
             b = new GT_GuiIconCheckButton(this, 2, startX + spaceX*0, startY+spaceY*2, GT_GuiIcon.CHECKMARK, null)
-                    .setTooltipText(trans("258", "Steam Storage"));
+                    .setTooltipText(GT_Utility.trans("258", "Steam Storage"));
             b = new GT_GuiIconCheckButton(this, 3, startX + spaceX*4, startY+spaceY*1, GT_GuiIcon.CHECKMARK, null)
-                    .setTooltipText(trans("259", "Average Electric Input"));
+                    .setTooltipText(GT_Utility.trans("259", "Average Electric Input"));
             b = new GT_GuiIconCheckButton(this, 4, startX + spaceX*4, startY+spaceY*2, GT_GuiIcon.CHECKMARK, null)
-                    .setTooltipText(trans("260", "Average Electric Output"));
+                    .setTooltipText(GT_Utility.trans("260", "Average Electric Output"));
             b = new GT_GuiIconCheckButton(this, 5, startX + spaceX*4, startY+spaceY*0, GT_GuiIcon.CHECKMARK, null)
-                    .setTooltipText(trans("261", "Electricity Storage(Including Batteries)"));
+                    .setTooltipText(GT_Utility.trans("261", "Electricity Storage(Including Batteries)"));
             b = new GT_GuiIconCheckButton(this, 6, startX + spaceX*0, startY+spaceY*3+4, GT_GuiIcon.REDSTONE_ON, GT_GuiIcon.REDSTONE_OFF);
         }
 
@@ -213,22 +225,22 @@ public class GT_Cover_EUMeter extends GT_CoverBehavior {
             super.drawExtras(mouseX, mouseY, parTicks);
             String s2;
             if ((coverVariable & 0x1) > 0)
-                s2 = trans("INVERTED","Inverted");
+                s2 = GT_Utility.trans("INVERTED", "Inverted");
             else
-                s2 = trans("NORMAL","Normal");
+                s2 = GT_Utility.trans("NORMAL", "Normal");
             this.fontRendererObj.drawString(s2,  startX + spaceX*1, 8+startY+spaceY*3, 0xFF555555);
 
-            this.fontRendererObj.drawString(trans("301", "Universal"),
+            this.fontRendererObj.drawString(GT_Utility.trans("301", "Universal"),
                     startX + spaceX*1, 4+startY+spaceY*1, 0xFF555555);
-            this.fontRendererObj.drawString(trans("302", "Int. EU"),
+            this.fontRendererObj.drawString(GT_Utility.trans("302", "Int. EU"),
                     startX + spaceX*1, 4+startY+spaceY*0, 0xFF555555);
-            this.fontRendererObj.drawString(trans("303", "Steam"),
+            this.fontRendererObj.drawString(GT_Utility.trans("303", "Steam"),
                     startX + spaceX*1, 4+startY+spaceY*2, 0xFF555555);
-            this.fontRendererObj.drawString(trans("304", "Avg. Input"),
+            this.fontRendererObj.drawString(GT_Utility.trans("304", "Avg. Input"),
                     startX + spaceX*5, 4+startY+spaceY*1, 0xFF555555);
-            this.fontRendererObj.drawString(trans("305", "Avg. Output"),
+            this.fontRendererObj.drawString(GT_Utility.trans("305", "Avg. Output"),
                     startX + spaceX*5, 4+startY+spaceY*2, 0xFF555555);
-            this.fontRendererObj.drawString(trans("306", "EU stored"),
+            this.fontRendererObj.drawString(GT_Utility.trans("306", "EU stored"),
                     startX + spaceX*5, 4+startY+spaceY*0, 0xFF555555);
         }
 

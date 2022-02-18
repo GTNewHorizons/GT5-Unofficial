@@ -2,15 +2,14 @@ package gregtech.common.items;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
-import gregtech.api.enums.TC_Aspects;
+import gregtech.api.enums.*;
 import gregtech.api.items.GT_MetaGenerated_Item_X32;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
 import gregtech.common.covers.GT_Cover_SolarPanel;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_UEV;
@@ -69,7 +68,6 @@ public class GT_MetaGenerated_Item_03
         ItemList.Circuit_Parts_DiodeXSMD.set(addItem(tLastID = 179, "Optical SMD Diode", "Highly Advanced Electronic Component", o));
         ItemList.Circuit_Parts_TransistorXSMD.set(addItem(tLastID = 180, "Optical SMD Transistor", "Highly Advanced Electronic Component", o));
         ItemList.Circuit_Parts_CapacitorXSMD.set(addItem(tLastID = 181, "Optical SMD Capacitor", "Highly Advanced Electronic Component", o));
-
 
         /**
          * ICs
@@ -254,7 +252,7 @@ public class GT_MetaGenerated_Item_03
         ItemList.Circuit_Board_Bio_Ultra.set(addItem(tLastID = 107, "Ultra Bio Mutated Circuit Board", "Bio genetic mutated Board", o));
 
         // Optical circuits
-        ItemList.Circuit_OpticalProcessor.set(addItem(tLastID = 154, "Optical Processor", "An Optical Circuit", OrePrefixes.circuit.get(Materials.Ultimate), SubTag.NO_UNIFICATION));
+        ItemList.Circuit_OpticalProcessor.set(addItem(tLastID = 154, "Optical Processor", "An Optical Circuit", OrePrefixes.circuit.get(Materials.Superconductor), SubTag.NO_UNIFICATION));
         OreDictionary.registerOre("UV", ItemList.Circuit_OpticalProcessor.get(1));
         ItemList.Circuit_OpticalAssembly.set(addItem(tLastID = 155, "Optical Assembly", "An Optical Circuit", OrePrefixes.circuit.get(Materials.Infinite), SubTag.NO_UNIFICATION));
         OreDictionary.registerOre("UHV", ItemList.Circuit_OpticalAssembly.get(1));

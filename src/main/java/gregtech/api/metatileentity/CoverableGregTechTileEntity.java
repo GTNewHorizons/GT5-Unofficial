@@ -15,15 +15,20 @@ import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.GT_Client;
 import gregtech.common.covers.GT_Cover_Fluidfilter;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
 import static gregtech.api.enums.GT_Values.NW;
@@ -327,4 +332,30 @@ public abstract class CoverableGregTechTileEntity extends BaseTileEntity impleme
             }
         }
     }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        final NBTTagCompound tag = accessor.getNBTData();
+        final int side = (byte)accessor.getSide().ordinal();
+        final String filterKey = "filterInfo" + side;
+        
+        if (tag.hasKey(filterKey)) {
+            currenttip.add(tag.getString(filterKey));
+        }
+        
+        // No super implementation
+        // super.getWailaBody(itemStack, currenttip, accessor, config);
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y, int z) {
+        // No super implementation
+        // super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        for(byte side=0 ; side < 6 ; side++) {
+            if(getCoverBehaviorAtSideNew(side) instanceof GT_Cover_Fluidfilter) {
+                tag.setString("filterInfo" + side, getCoverBehaviorAtSideNew(side).getDescription(side, getCoverIDAtSide(side), getComplexCoverDataAtSide(side), this));
+            }
+        }
+    }
+
 }

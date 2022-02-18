@@ -141,7 +141,7 @@ public class GT_MetaTileEntity_LargeTurbine_HPSteam extends GT_MetaTileEntity_La
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
             looseFit ^= true;
-            GT_Utility.sendChatToPlayer(aPlayer, looseFit ? trans("500", "Fitting: Loose - More Flow") : trans("501", "Fitting: Tight - More Efficiency"));
+            GT_Utility.sendChatToPlayer(aPlayer, looseFit ? GT_Utility.trans("500", "Fitting: Loose - More Flow") : GT_Utility.trans("501", "Fitting: Tight - More Efficiency"));
         }
     }
 

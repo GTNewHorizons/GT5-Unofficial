@@ -1,6 +1,7 @@
 .gradle
 .settings
 /.idea/
+.shelf
 /run/
 /build/
 /eclipse/
@@ -31,3 +32,4 @@ src/main/resources/mixins.*.json
 /src/main/generated/
 /src/test/generated/
 .DS_Store
+classes

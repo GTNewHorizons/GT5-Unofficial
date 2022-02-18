@@ -10,8 +10,10 @@ import gregtech.api.gui.widgets.GT_GuiSlotTooltip;
 import gregtech.api.gui.widgets.GT_GuiSmartTooltip;
 import gregtech.api.gui.widgets.GT_GuiSmartTooltip.TooltipVisibilityProvider;
 import gregtech.api.net.GT_Packet_SetConfigurationCircuit;
+import gregtech.common.power.Power;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
+import gregtech.nei.NEI_TransferRectHost;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
@@ -28,7 +30,7 @@ import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
  * As the NEI-RecipeTransferRect Handler can't handle one GUI-Class for all GUIs I needed to produce some dummy-classes
  * which extend this class
  */
-public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machine {
+public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machine implements NEI_TransferRectHost {
     private static final int NEEDS_STEAM_VENTING = 64;
     private final static GT_GuiTabIconSet TAB_ICONSET_BRONZE = new GT_GuiTabIconSet(
         GT_GuiIcon.TAB_NORMAL_BRONZE,
@@ -255,5 +257,30 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
 
     private GT_Container_BasicMachine getContainer() {
         return (GT_Container_BasicMachine) mContainer;
+    }
+
+    @Override
+    public String getNeiTransferRectString() {
+        return mNEI;
+    }
+
+    @Override
+    public String getNeiTransferRectTooltip() {
+        Power powerInfo = getMachine().getPower();
+        if (getMachine().isSteampowered()) {
+            return powerInfo.getTierString() + " Steam recipes";
+        } else {
+            return "Recipes available in " + powerInfo.getTierString();
+        }
+    }
+
+    @Override
+    public Object[] getNeiTransferRectArgs() {
+        return new Object[]{getMachine().getPower()};
+    }
+
+    @Override
+    public Rectangle getNeiTransferRect() {
+        return new Rectangle(65, 13, 36, 18);
     }
 }

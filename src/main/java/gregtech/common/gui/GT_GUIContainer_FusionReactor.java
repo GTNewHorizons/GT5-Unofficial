@@ -4,11 +4,14 @@ import gregtech.api.gui.GT_Container_MultiMachine;
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Utility;
+import gregtech.nei.NEI_TransferRectHost;
 import net.minecraft.entity.player.InventoryPlayer;
+
+import java.awt.Rectangle;
 
 import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 
-public class GT_GUIContainer_FusionReactor extends GT_GUIContainerMetaTile_Machine {
+public class GT_GUIContainer_FusionReactor extends GT_GUIContainerMetaTile_Machine implements NEI_TransferRectHost {
 
     public String mNEI;
     String mName = "";
@@ -55,5 +58,25 @@ public class GT_GUIContainer_FusionReactor extends GT_GUIContainerMetaTile_Machi
             double tScale = (double) this.mContainer.mEnergy / (double) this.mContainer.mStorage;
             drawTexturedModalRect(x + 5, y + 156, 0, 251, Math.min(147, (int) (tScale * 148)), 5);
         }
+    }
+
+    @Override
+    public String getNeiTransferRectString() {
+        return mNEI;
+    }
+
+    @Override
+    public String getNeiTransferRectTooltip() {
+        return "Recipes";
+    }
+
+    @Override
+    public Object[] getNeiTransferRectArgs() {
+        return new Object[0];
+    }
+
+    @Override
+    public Rectangle getNeiTransferRect() {
+        return new Rectangle(149, -7, 18, 18);
     }
 }

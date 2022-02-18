@@ -88,7 +88,11 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                 GT_Values.RA.addExtruderRecipe(GT_Utility.copyAmount(2L, new Object[]{aStack}), ItemList.Shape_Extruder_Saw.get(0L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.toolHeadSaw, aMaterial.mSmeltInto, tAmount), (int) Math.max(aMaterialMass * 2L * tAmount, tAmount), 8 * tVoltageMultiplier);
                 GT_Values.RA.addExtruderRecipe(GT_Utility.copyAmount(4L, new Object[]{aStack}), ItemList.Shape_Extruder_Gear.get(0L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.gearGt, aMaterial.mSmeltInto, tAmount), (int) Math.max(aMaterialMass * 5L * tAmount, tAmount), 8 * tVoltageMultiplier);
 
-                GT_Values.RA.addAlloySmelterRecipe(GT_Utility.copyAmount(2L, aStack), ItemList.Shape_Mold_Plate.get(0L), GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial.mSmeltInto, tAmount), (int) Math.max(aMaterialMass * 2L * tAmount, tAmount), 2 * tVoltageMultiplier);
+                if (!(aMaterial == Materials.StyreneButadieneRubber || aMaterial == Materials.Silicone)) {
+                    GT_Values.RA.addAlloySmelterRecipe(GT_Utility.copyAmount(2L, aStack), ItemList.Shape_Mold_Plate.get(0L), GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial.mSmeltInto, tAmount), (int) Math.max(aMaterialMass * 2L * tAmount, tAmount), 2 * tVoltageMultiplier);
+                }else{
+                    GT_Values.RA.addAlloySmelterRecipe(GT_Utility.copyAmount(1L, aStack), ItemList.Shape_Mold_Plate.get(0L), GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial.mSmeltInto, tAmount), (int) Math.max(aMaterialMass * 2L * tAmount, tAmount), 2 * tVoltageMultiplier);
+                }
                 GT_Values.RA.addAlloySmelterRecipe(GT_Utility.copyAmount(8L, aStack), ItemList.Shape_Mold_Gear.get(0L), GT_OreDictUnificator.get(OrePrefixes.gearGt, aMaterial.mSmeltInto, tAmount), (int) Math.max(aMaterialMass * 10L * tAmount, tAmount), 2 * tVoltageMultiplier);
                 switch (aMaterial.mSmeltInto.mName) {
                     case "Glass":

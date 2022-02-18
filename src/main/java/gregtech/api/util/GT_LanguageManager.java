@@ -2,19 +2,23 @@ package gregtech.api.util;
 
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.GT_Values;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import static gregtech.api.enums.GT_Values.E;
 
 public class GT_LanguageManager {
-    public static final HashMap<String, String> TEMPMAP = new HashMap<String, String>(), BUFFERMAP = new HashMap<String, String>(), LANGMAP = new HashMap<String, String>();
+    public static final HashMap<String, String> TEMPMAP = new HashMap<>(), BUFFERMAP = new HashMap<>(), LANGMAP = new HashMap<>();
     public static Configuration sEnglishFile;
 	public static String sLanguage = "en_US";
     public static boolean sUseEnglishFile = false;
@@ -78,8 +82,9 @@ public class GT_LanguageManager {
             rTranslation = StatCollector.translateToLocal(tTrimmedKey);
             if (GT_Utility.isStringInvalid(rTranslation) || tTrimmedKey.equals(rTranslation)) {
                 if (aKey.endsWith(".name")) {
-                    rTranslation = StatCollector.translateToLocal(tTrimmedKey.substring(0, tTrimmedKey.length() - 5));
-                    if (GT_Utility.isStringInvalid(rTranslation) || tTrimmedKey.substring(0, tTrimmedKey.length() - 5).equals(rTranslation)) {
+                    String trimmedKeyNoName = tTrimmedKey.substring(0, tTrimmedKey.length() - 5);
+                    rTranslation = StatCollector.translateToLocal(trimmedKeyNoName);
+                    if (GT_Utility.isStringInvalid(rTranslation) || trimmedKeyNoName.equals(rTranslation)) {
                         return aKey;
                     }
                 } else {
@@ -335,10 +340,11 @@ public class GT_LanguageManager {
 		addStringLocalization("Interaction_DESCRIPTION_Index_216", "Deprecated Recipe");
 		addStringLocalization("Interaction_DESCRIPTION_Index_217", "Stocking mode. Keeps this many items in destination input slots. This mode can be server unfriendly.");
 		addStringLocalization("Interaction_DESCRIPTION_Index_218", "Transfer size mode. Add exactly this many items in destination input slots as long as there is room.");
-		addStringLocalization("Interaction_DESCRIPTION_Index_219", "Single recipe locking enabled. Will lock to next recipe.");
+		addStringLocalization("Interaction_DESCRIPTION_Index_219", "Extended Facing:");
 		addStringLocalization("Interaction_DESCRIPTION_Index_220", "Single recipe locking disabled.");
 		addStringLocalization("Interaction_DESCRIPTION_Index_221", "Item threshold");
 		addStringLocalization("Interaction_DESCRIPTION_Index_222", "Fluid threshold");
+		addStringLocalization("Interaction_DESCRIPTION_Index_223", "Single recipe locking enabled. Will lock to next recipe.");
 		addStringLocalization("Interaction_DESCRIPTION_Index_500", "Fitting: Loose - More Flow");
 		addStringLocalization("Interaction_DESCRIPTION_Index_501", "Fitting: Tight - More Efficiency");
 
@@ -364,5 +370,23 @@ public class GT_LanguageManager {
         addStringLocalization("Item_DESCRIPTION_Index_500", "Turbine Efficiency (Loose): %s");
         addStringLocalization("Item_DESCRIPTION_Index_501", "Optimal Steam flow (Loose): %s L/t");
     }
-    
+
+    @SuppressWarnings("rawtypes, unchecked")
+    public static void propagateLocalizationServerSide() {
+        if (!GT_Values.GT.isServerSide())
+            return;
+        try {
+            Class cls = Class.forName("net.minecraft.util.StringTranslate");
+            Field languageList = cls.getDeclaredField("languageList");
+            languageList.setAccessible(true);
+            Field instance = cls.getDeclaredField("instance");
+            instance.setAccessible(true);
+            Object m = languageList.get(instance.get(null));
+            if (!(m instanceof Map))
+                return;
+            ((Map)m).putAll(LANGMAP);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+    }
 }

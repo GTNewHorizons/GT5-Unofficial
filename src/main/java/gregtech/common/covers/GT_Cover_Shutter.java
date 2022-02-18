@@ -29,10 +29,14 @@ public class GT_Cover_Shutter extends GT_CoverBehavior {
         aCoverVariable = (aCoverVariable + (aPlayer.isSneaking()? -1 : 1)) % 4;
         if(aCoverVariable <0){aCoverVariable = 3;}
         switch(aCoverVariable) {
-            case 0: GT_Utility.sendChatToPlayer(aPlayer, trans("082", "Open if work enabled")); break;
-            case 1: GT_Utility.sendChatToPlayer(aPlayer, trans("083", "Open if work disabled")); break;
-            case 2: GT_Utility.sendChatToPlayer(aPlayer, trans("084", "Only Output allowed")); break;
-            case 3: GT_Utility.sendChatToPlayer(aPlayer, trans("085", "Only Input allowed")); break;
+            case 0:
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("082", "Open if work enabled")); break;
+            case 1:
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("083", "Open if work disabled")); break;
+            case 2:
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("084", "Only Output allowed")); break;
+            case 3:
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("085", "Only Input allowed")); break;
         }
         return aCoverVariable;
     }
@@ -126,13 +130,13 @@ public class GT_Cover_Shutter extends GT_CoverBehavior {
         @Override
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
-            this.fontRendererObj.drawString(trans("082", "Open if work enabled"),
+            this.fontRendererObj.drawString(GT_Utility.trans("082", "Open if work enabled"),
                     3+startX + spaceX*1, 4+startY+spaceY*0, 0xFF555555);
-            this.fontRendererObj.drawString(trans("083", "Open if work disabled"),
+            this.fontRendererObj.drawString(GT_Utility.trans("083", "Open if work disabled"),
                     3+startX + spaceX*1, 4+startY+spaceY*1, 0xFF555555);
-            this.fontRendererObj.drawString(trans("084", "Only Output allowed"),
+            this.fontRendererObj.drawString(GT_Utility.trans("084", "Only Output allowed"),
                     3+startX + spaceX*1, 4+startY+spaceY*2, 0xFF555555);
-            this.fontRendererObj.drawString(trans("085", "Only Input allowed"),
+            this.fontRendererObj.drawString(GT_Utility.trans("085", "Only Input allowed"),
                     3+startX + spaceX*1, 4+startY+spaceY*3, 0xFF555555);
         }
 

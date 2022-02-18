@@ -254,9 +254,9 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
             mTargetStackSize = (byte) ((mTargetStackSize + (aPlayer.isSneaking()? -1 : 1)) % 65);
             if(mTargetStackSize <0){mTargetStackSize = mMaxStackSize;}
             if (mTargetStackSize == 0) {
-                GT_Utility.sendChatToPlayer(aPlayer, trans("098","Do not regulate Item Stack Size"));
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("098","Do not regulate Item Stack Size"));
             } else {
-                GT_Utility.sendChatToPlayer(aPlayer, trans("099","Regulate Item Stack Size to: ") + mTargetStackSize);
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("099","Regulate Item Stack Size to: ") + mTargetStackSize);
             }
         }
     }
@@ -360,7 +360,7 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
         if (aPlayer.isSneaking()) {
             // I was so proud of all this but I literally just copied code from OutputBus
             bSortStacks = !bSortStacks;
-            GT_Utility.sendChatToPlayer(aPlayer, trans("200", "Sort mode: " + (bSortStacks ? "Enabled" : "Disabled")));
+            GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("200", "Sort mode: " + (bSortStacks ? "Enabled" : "Disabled")));
             return true;
         }
         return super.onSolderingToolRightClick(aSide,aWrenchingSide,aPlayer,aX,aY,aZ);
