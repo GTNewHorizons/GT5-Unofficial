@@ -65,6 +65,22 @@ public interface ITextureBuilder {
     ITextureBuilder stdOrient();
 
     /**
+     * Force using world coord overload of getIcon.
+     *
+     * @return {@link ITextureBuilder} for chaining
+     * @throws IllegalStateException if setFromBlock has never been called.
+     */
+    ITextureBuilder useWorldCoord();
+
+    /**
+     * Force using meta overload of getIcon.
+     *
+     * @return {@link ITextureBuilder} for chaining
+     * @throws IllegalStateException if setFromBlock has never been called.
+     */
+    ITextureBuilder noWorldCoord();
+
+    /**
      * Texture will orientate from block's {@link ExtendedFacing}
      *
      * @return {@link ITextureBuilder} for chaining

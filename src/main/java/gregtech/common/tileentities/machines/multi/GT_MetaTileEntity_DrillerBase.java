@@ -157,7 +157,7 @@ public abstract class GT_MetaTileEntity_DrillerBase extends GT_MetaTileEntity_En
     public boolean onSolderingToolRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
             mChunkLoadingEnabled = !mChunkLoadingEnabled;
-            GT_Utility.sendChatToPlayer(aPlayer, mChunkLoadingEnabled ? trans("502", "Mining chunk loading enabled") : trans("503", "Mining chunk loading disabled"));
+            GT_Utility.sendChatToPlayer(aPlayer, mChunkLoadingEnabled ? GT_Utility.trans("502", "Mining chunk loading enabled") : GT_Utility.trans("503", "Mining chunk loading disabled"));
             return true;
         }
         return super.onSolderingToolRightClick(aSide, aWrenchingSide, aPlayer, aX, aY, aZ);

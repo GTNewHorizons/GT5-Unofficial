@@ -1700,6 +1700,11 @@ public enum ItemList implements IItemContainer {
     Circuit_Parts_TransistorASMD,
     Circuit_Parts_CapacitorASMD,
 
+    Circuit_Parts_ResistorXSMD,
+    Circuit_Parts_DiodeXSMD,
+    Circuit_Parts_TransistorXSMD,
+    Circuit_Parts_CapacitorXSMD,
+
     Circuit_Silicon_Ingot,
     Circuit_Silicon_Ingot2,
     Circuit_Silicon_Ingot3,
@@ -1782,6 +1787,26 @@ public enum ItemList implements IItemContainer {
     Circuit_Parts_RawCrystalChip,
     Circuit_Bioprocessor,
     Circuit_Biomainframe,
+
+    Circuit_OpticalProcessor,
+    Circuit_OpticalAssembly,
+    Circuit_OpticalComputer,
+    Circuit_OpticalMainframe,
+
+    Circuit_ExoticProcessor,
+    Circuit_ExoticAssembly,
+    Circuit_ExoticComputer,
+    Circuit_ExoticMainframe,
+
+    Circuit_CosmicProcessor,
+    Circuit_CosmicAssembly,
+    Circuit_CosmicComputer,
+    Circuit_CosmicMainframe,
+
+    Circuit_TranscendentProcessor,
+    Circuit_TranscendentAssembly,
+    Circuit_TranscendentComputer,
+    Circuit_TranscendentMainframe,
 
     Machine_LV_CircuitAssembler,
     Machine_MV_CircuitAssembler,

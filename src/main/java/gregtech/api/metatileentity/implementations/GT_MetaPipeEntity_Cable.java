@@ -218,10 +218,10 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
         if (GT_Mod.gregtechproxy.gt6Cable && GT_ModHandler.damageOrDechargeItem(aPlayer.inventory.getCurrentItem(), 1, 500, aPlayer)) {
             if(isConnectedAtSide(aWrenchingSide)) {
                 disconnect(aWrenchingSide);
-                GT_Utility.sendChatToPlayer(aPlayer, trans("215", "Disconnected"));
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("215", "Disconnected"));
             }else if(!GT_Mod.gregtechproxy.costlyCableConnection){
                 if (connect(aWrenchingSide) > 0)
-                    GT_Utility.sendChatToPlayer(aPlayer, trans("214", "Connected"));
+                    GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("214", "Connected"));
             }
             return true;
         }
@@ -233,10 +233,10 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
         if (GT_Mod.gregtechproxy.gt6Cable && GT_ModHandler.damageOrDechargeItem(aPlayer.inventory.getCurrentItem(), 1, 500, aPlayer)) {
             if (isConnectedAtSide(aWrenchingSide)) {
                 disconnect(aWrenchingSide);
-                GT_Utility.sendChatToPlayer(aPlayer, trans("215", "Disconnected"));
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("215", "Disconnected"));
             } else if (!GT_Mod.gregtechproxy.costlyCableConnection || GT_ModHandler.consumeSolderingMaterial(aPlayer)) {
                 if (connect(aWrenchingSide) > 0)
-                    GT_Utility.sendChatToPlayer(aPlayer, trans("214", "Connected"));
+                    GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("214", "Connected"));
             }
             return true;
         }

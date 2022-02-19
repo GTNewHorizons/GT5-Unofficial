@@ -30,6 +30,8 @@ import gregtech.api.items.GT_Block_LongDistancePipe;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicHull_NonElectric;
 import gregtech.api.util.GT_Utility;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -37,13 +39,19 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
+
+import static mcp.mobius.waila.api.SpecialChars.GOLD;
+import static mcp.mobius.waila.api.SpecialChars.BLUE;
+import static mcp.mobius.waila.api.SpecialChars.RESET;
 
 public abstract class GT_MetaTileEntity_LongDistancePipelineBase extends GT_MetaTileEntity_BasicHull_NonElectric {
     public static int minimalDistancePoints = 64;
@@ -264,4 +272,20 @@ public abstract class GT_MetaTileEntity_LongDistancePipelineBase extends GT_Meta
     @Override
     public boolean shouldTriggerBlockUpdate() { return true; }
 
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        final int facing = getBaseMetaTileEntity().getFrontFacing();
+        final int side = (byte)accessor.getSide().ordinal();
+        
+        if (side == facing)
+            currenttip.add(GOLD + "Pipeline Input" + RESET);
+        else if (side == ForgeDirection.OPPOSITES[facing])
+            currenttip.add(BLUE + "Pipeline Output" + RESET);
+        else
+            currenttip.add("Pipeline Side");
+
+        super.getWailaBody(itemStack, currenttip, accessor, config);
+
+    }
+    
 }

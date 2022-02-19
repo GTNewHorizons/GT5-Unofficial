@@ -4,9 +4,14 @@ import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
 import gregtech.api.gui.widgets.GT_GuiIcon;
 import gregtech.api.gui.widgets.GT_GuiTabLine.GT_GuiTabIconSet;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.nei.NEI_TransferRectHost;
 import net.minecraft.entity.player.InventoryPlayer;
 
-public class GT_GUIContainer_PrimitiveBlastFurnace extends GT_GUIContainerMetaTile_Machine { private String name;
+import java.awt.*;
+
+public class GT_GUIContainer_PrimitiveBlastFurnace extends GT_GUIContainerMetaTile_Machine
+        implements NEI_TransferRectHost {
+    private String name;
     public String mNEI;
     private final static GT_GuiTabIconSet TAB_ICONSET = new GT_GuiTabIconSet(
         GT_GuiIcon.TAB_NORMAL_BRICK,
@@ -42,5 +47,25 @@ public class GT_GUIContainer_PrimitiveBlastFurnace extends GT_GUIContainerMetaTi
     @Override
     protected GT_GuiTabIconSet getTabBackground() {
         return TAB_ICONSET;
+    }
+
+    @Override
+    public String getNeiTransferRectString() {
+        return mNEI;
+    }
+
+    @Override
+    public String getNeiTransferRectTooltip() {
+        return "Recipes";
+    }
+
+    @Override
+    public Object[] getNeiTransferRectArgs() {
+        return new Object[0];
+    }
+
+    @Override
+    public Rectangle getNeiTransferRect() {
+        return new Rectangle(51, 10, 24, 24);
     }
 }

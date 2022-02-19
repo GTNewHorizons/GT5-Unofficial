@@ -19,7 +19,6 @@ import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.graphs.GenerateNodeMap;
 import gregtech.api.graphs.GenerateNodeMapPower;
 import gregtech.api.graphs.Node;
@@ -27,14 +26,18 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IEnergyConnected;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.IGregtechWailaProvider;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Transformer;
 import gregtech.api.net.GT_Packet_TileEntity;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.*;
-import gregtech.common.GT_Client;
 import gregtech.common.GT_Pollution;
+import gregtech.crossmod.GregtechWailaDataProvider;
 import ic2.api.Direction;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFire;
 import net.minecraft.entity.Entity;
@@ -76,7 +79,7 @@ import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 @Optional.InterfaceList(value = {
     @Optional.Interface(iface = "appeng.api.networking.security.IActionHost", modid = "appliedenergistics2", striprefs = true),
     @Optional.Interface(iface = "appeng.me.helpers.IGridProxyable", modid = "appliedenergistics2", striprefs = true)})
-public class BaseMetaTileEntity extends CoverableGregTechTileEntity implements IGregTechTileEntity, IActionHost, IGridProxyable, IAlignmentProvider, IConstructableProvider {
+public class BaseMetaTileEntity extends CoverableGregTechTileEntity implements IGregTechTileEntity, IActionHost, IGridProxyable, IAlignmentProvider, IConstructableProvider, IGregtechWailaProvider {
     protected MetaTileEntity mMetaTileEntity;
     protected long mStoredEnergy = 0, mStoredSteam = 0;
     protected int mAverageEUInputIndex = 0, mAverageEUOutputIndex = 0;
@@ -271,6 +274,8 @@ public class BaseMetaTileEntity extends CoverableGregTechTileEntity implements I
                     oZ = zCoord;
                     if (aSideServer) {
                         checkDropCover();
+                    } else {
+                        requestCoverDataIfNeeded();
                     }
                     worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
                     mMetaTileEntity.onFirstTick(this);
@@ -537,6 +542,22 @@ public class BaseMetaTileEntity extends CoverableGregTechTileEntity implements I
         mWorkUpdate = mInventoryChanged = mRunningThroughTick = false;
     }
 
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        if(hasValidMetaTileEntity() && getMetaTileEntity() != null) {
+            getMetaTileEntity().getWailaBody(itemStack, currenttip, accessor, config);
+        }
+        super.getWailaBody(itemStack, currenttip, accessor, config);
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y, int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        if(hasValidMetaTileEntity() && getMetaTileEntity() != null) {
+            getMetaTileEntity().getWailaNBTData(player, tile, tag, world, x, y, z);
+        }
+    }
+
     private void sendClientData() {
         if (mSendClientData) {
             NW.sendPacketToAllPlayersInRange(
@@ -552,6 +573,7 @@ public class BaseMetaTileEntity extends CoverableGregTechTileEntity implements I
             );
             mSendClientData = false;
         }
+        sendCoverDataIfNeeded();
     }
 
     @Override
@@ -706,19 +728,8 @@ public class BaseMetaTileEntity extends CoverableGregTechTileEntity implements I
 
     @Override
     public void issueCoverUpdate(byte aSide) {
+        super.issueCoverUpdate(aSide);
         issueClientUpdate();
-    }
-
-    @Override
-    public void receiveCoverData(byte coverSide, int coverID, int coverData) {
-        if ((coverSide >= 0 && coverSide < 6) && (mCoverSides[coverSide] == coverID))
-            setCoverDataAtSide(coverSide, coverData);
-    }
-
-    @Override
-    public void receiveCoverData(byte aCoverSide, int aCoverID, ISerializableObject aCoverData, EntityPlayerMP aPlayer) {
-        if ((aCoverSide >= 0 && aCoverSide < 6) && (mCoverSides[aCoverSide] == aCoverID))
-            setCoverDataAtSide(aCoverSide, aCoverData);
     }
 
     @Override
@@ -734,14 +745,6 @@ public class BaseMetaTileEntity extends CoverableGregTechTileEntity implements I
     @Override
     public boolean getRedstone(byte aSide) {
         return getInternalInputRedstoneSignal(aSide) > 0;
-    }
-
-    public ITexture getCoverTexture(byte aSide) {
-        if (getCoverIDAtSide(aSide) == 0) return null;
-        if (GT_Mod.instance.isClientSide() && (GT_Client.hideValue & 0x1) != 0) {
-            return BlockIcons.HIDDEN_TEXTURE[0]; // See through
-        }
-        return GregTech_API.sCovers.get(new GT_ItemStack(getCoverIDAtSide(aSide)));
     }
 
     @Override
@@ -1351,7 +1354,7 @@ public class BaseMetaTileEntity extends CoverableGregTechTileEntity implements I
                         if (GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
                             mInputDisabled = !mInputDisabled;
                             if (mInputDisabled) mOutputDisabled = !mOutputDisabled;
-                            GT_Utility.sendChatToPlayer(aPlayer, trans("086","Auto-Input: ") + (mInputDisabled ? trans("087","Disabled") : trans("088","Enabled") + trans("089","  Auto-Output: ") + (mOutputDisabled ? trans("087","Disabled") : trans("088","Enabled"))));
+                            GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("086","Auto-Input: ") + (mInputDisabled ? GT_Utility.trans("087","Disabled") : GT_Utility.trans("088","Enabled") + GT_Utility.trans("089","  Auto-Output: ") + (mOutputDisabled ? GT_Utility.trans("087","Disabled") : GT_Utility.trans("088","Enabled"))));
                             GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(1), 1.0F, -1, xCoord, yCoord, zCoord);
                         }
                         return true;
@@ -1362,7 +1365,7 @@ public class BaseMetaTileEntity extends CoverableGregTechTileEntity implements I
                             if (mWorks) disableWorking();
                             else enableWorking();
                             {
-                                String tChat = trans("090", "Machine Processing: ") + (isAllowedToWork() ? trans("088", "Enabled") : trans("087", "Disabled"));
+                                String tChat = GT_Utility.trans("090", "Machine Processing: ") + (isAllowedToWork() ? GT_Utility.trans("088", "Enabled") : GT_Utility.trans("087", "Disabled"));
                                 if (getMetaTileEntity() != null && getMetaTileEntity().hasAlternativeModeText())
                                     tChat = getMetaTileEntity().getAlternativeModeText();
                                 GT_Utility.sendChatToPlayer(aPlayer, tChat);
@@ -1379,7 +1382,7 @@ public class BaseMetaTileEntity extends CoverableGregTechTileEntity implements I
                             GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(103), 1.0F, -1, xCoord, yCoord, zCoord);
                         } else if (GT_ModHandler.useSolderingIron(tCurrentItem, aPlayer)) {
                             mStrongRedstone ^= (1 << tSide);
-                            GT_Utility.sendChatToPlayer(aPlayer, trans("091","Redstone Output at Side ") + tSide + trans("092"," set to: ") + ((mStrongRedstone & (1 << tSide)) != 0 ? trans("093","Strong") : trans("094","Weak")));
+                            GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("091","Redstone Output at Side ") + tSide + GT_Utility.trans("092"," set to: ") + ((mStrongRedstone & (1 << tSide)) != 0 ? GT_Utility.trans("093","Strong") : GT_Utility.trans("094","Weak")));
                             GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(103), 3.0F, -1, xCoord, yCoord, zCoord);
                             issueBlockUpdate();
                         }
@@ -1403,8 +1406,8 @@ public class BaseMetaTileEntity extends CoverableGregTechTileEntity implements I
                     if (getCoverIDAtSide(aSide) == 0) coverSide = GT_Utility.determineWrenchingSide(aSide, aX, aY, aZ);
 
                     if (getCoverIDAtSide(coverSide) == 0) {
-                        if (GregTech_API.sCovers.containsKey(new GT_ItemStack(tCurrentItem))) {
-                            if (GregTech_API.getCoverBehaviorNew(tCurrentItem).isCoverPlaceable(coverSide, new GT_ItemStack(tCurrentItem), this) &&
+                        if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sCovers.keySet())) {
+                            if (GregTech_API.getCoverBehaviorNew(tCurrentItem).isCoverPlaceable(coverSide, tCurrentItem, this) &&
                                 mMetaTileEntity.allowCoverOnSide(coverSide, new GT_ItemStack(tCurrentItem)))
                             {
                                 setCoverItemAtSide(coverSide, tCurrentItem);

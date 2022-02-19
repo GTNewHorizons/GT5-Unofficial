@@ -1,5 +1,6 @@
 package gregtech;
 
+import appeng.api.AEApi;
 import com.google.common.base.Stopwatch;
 import cpw.mods.fml.common.*;
 import cpw.mods.fml.common.event.*;
@@ -16,14 +17,18 @@ import gregtech.api.objects.ReverseShapelessRecipe;
 import gregtech.api.objects.XSTR;
 import gregtech.api.threads.GT_Runnable_MachineBlockUpdate;
 import gregtech.api.util.*;
+import gregtech.client.GT_TooltipEventHandler;
 import gregtech.common.GT_DummyWorld;
 import gregtech.common.GT_Network;
 import gregtech.common.GT_Proxy;
 import gregtech.common.GT_RecipeAdder;
+import gregtech.common.covers.GT_Cover_FacadeAE;
 import gregtech.common.entities.GT_Entity_Arrow;
 import gregtech.common.entities.GT_Entity_Arrow_Potion;
 import gregtech.common.misc.GT_Command;
 import gregtech.common.tileentities.storage.GT_MetaTileEntity_DigitalChestBase;
+import gregtech.crossmod.Harvestcraft;
+import gregtech.crossmod.Waila;
 import gregtech.loaders.ExtraIcons;
 import gregtech.loaders.load.GT_CoverBehaviorLoader;
 import gregtech.loaders.load.GT_FuelLoader;
@@ -247,6 +252,8 @@ public class GT_Mod implements IGT_Mod {
             gregtechproxy.registerUnificationEntries();
             new GT_FuelLoader().run();
         }
+        Waila.init();
+        Harvestcraft.init();
         GregTech_API.sLoadFinished = true;
         GT_Log.out.println("GT_Mod: Load-Phase finished!");
         GT_Log.ore.println("GT_Mod: Load-Phase finished!");
@@ -343,8 +350,15 @@ public class GT_Mod implements IGT_Mod {
             GT_Forestry_Compat.transferCentrifugeRecipes();
             GT_Forestry_Compat.transferSqueezerRecipes();
         }
-        if (GregTech_API.mAE2)
+        if (GregTech_API.mAE2) {
             GT_MetaTileEntity_DigitalChestBase.registerAEIntegration();
+            ItemStack facade = AEApi.instance().definitions().items().facade().maybeItem()
+                    .transform(i -> new ItemStack(i, 1, GT_Values.W))
+                    .orNull();
+            if (facade != null) {
+                GregTech_API.registerCover(facade, null, new GT_Cover_FacadeAE());
+            }
+        }
 
 
         Arrays.stream(new String[]{
@@ -357,8 +371,10 @@ public class GT_Mod implements IGT_Mod {
 
         GT_PostLoad.nerfVanillaTools();
         new GT_ExtremeDieselFuelLoader().run();
-        
-        
+        GT_TooltipEventHandler.init();
+        MinecraftForge.EVENT_BUS.register(new GT_TooltipEventHandler());
+        GT_LanguageManager.propagateLocalizationServerSide();
+
         /* 
          * Until this point most crafting recipe additions, and removals, have been buffered.
          * Go through, execute the removals in bulk, and then any deferred additions.  The bulk removals in particular significantly speed up the recipe list

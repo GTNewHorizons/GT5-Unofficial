@@ -44,10 +44,14 @@ public class GT_Cover_DoesWork extends GT_CoverBehavior {
         aCoverVariable = (aCoverVariable + (aPlayer.isSneaking()? -1 : 1)) % 4;
         if(aCoverVariable <0){aCoverVariable = 3;}
         switch(aCoverVariable) {
-            case 0: GT_Utility.sendChatToPlayer(aPlayer, trans("018", "Normal")); break; // Progress scaled
-            case 1: GT_Utility.sendChatToPlayer(aPlayer, trans("019", "Inverted")); break; // ^ inverted
-            case 2: GT_Utility.sendChatToPlayer(aPlayer, trans("020", "Ready to work")); break; // Not Running
-            case 3: GT_Utility.sendChatToPlayer(aPlayer, trans("021", "Not ready to work")); break; // Running
+            case 0:
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("018", "Normal")); break; // Progress scaled
+            case 1:
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("019", "Inverted")); break; // ^ inverted
+            case 2:
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("020", "Ready to work")); break; // Not Running
+            case 3:
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("021", "Not ready to work")); break; // Running
         }
         return aCoverVariable;
     }
@@ -133,13 +137,13 @@ public class GT_Cover_DoesWork extends GT_CoverBehavior {
             super.drawExtras(mouseX, mouseY, parTicks);
             String s1, s2;
             if ((coverVariable & 0x2) > 0)
-                s1 = trans("242", "Machine idle");
+                s1 = GT_Utility.trans("242", "Machine idle");
             else
-                s1 = trans("241", "Recipe progress");
+                s1 = GT_Utility.trans("241", "Recipe progress");
             if ((coverVariable & 0x1) > 0)
-                s2 = trans("INVERTED","Inverted");
+                s2 = GT_Utility.trans("INVERTED", "Inverted");
             else
-                s2 = trans("NORMAL","Normal");
+                s2 = GT_Utility.trans("NORMAL", "Normal");
             this.fontRendererObj.drawString(s1,  startX + spaceX*3, 4+startY+spaceY*0, 0xFF555555);
             this.fontRendererObj.drawString(s2,  startX + spaceX*3, 4+startY+spaceY*1, 0xFF555555);
         }
