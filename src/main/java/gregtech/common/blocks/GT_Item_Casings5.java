@@ -23,7 +23,6 @@ public class GT_Item_Casings5 extends GT_Item_Casings_Abstract implements ICosmi
 
     protected static final String mCoilHeatTooltip = GT_LanguageManager.addStringLocalization("gt.coilheattooltip", "Base Heating Capacity = ");
     protected static final String mCoilUnitTooltip = GT_LanguageManager.addStringLocalization("gt.coilunittooltip", " Kelvin");
-    protected static final String mCoilTierTooltip = GT_LanguageManager.addStringLocalization("gt.coiltiertooltip", "Coil Tier = ");
 
     @Override
     @SideOnly(Side.CLIENT)
@@ -32,7 +31,6 @@ public class GT_Item_Casings5 extends GT_Item_Casings_Abstract implements ICosmi
         super.addInformation(aStack, aPlayer, aList, aF3_H);
         HeatingCoilLevel coilLevel = GT_Block_Casings5.getCoilHeatFromDamage(aStack.getItemDamage());
         aList.add(mCoilHeatTooltip + coilLevel.getHeat() + mCoilUnitTooltip);
-        aList.add(mCoilTierTooltip + coilLevel.getTierName());
     }
     
     @SideOnly(Side.CLIENT)
