@@ -69,7 +69,7 @@ public class GT_Item_Machines extends ItemBlock implements IFluidContainerItem {
                 if (tTileEntity.getDescription() != null) {
                     int i = 0;
                     IMetaTileEntity metaTileEntity = tTileEntity.getMetaTileEntity();
-                    String suffix = (metaTileEntity instanceof MetaTileEntity && ((MetaTileEntity) metaTileEntity).isDisplaySecondaryDescription()) ? "Secondary_" : "";
+                    String suffix = (metaTileEntity instanceof MetaTileEntity && ((MetaTileEntity) metaTileEntity).isDisplaySecondaryDescription()) ? "_Secondary" : "";
                     for (String tDescription : tTileEntity.getDescription()) {
                         if (GT_Utility.isStringValid(tDescription)) {
                             if(tDescription.contains("%%%")){
@@ -80,9 +80,9 @@ public class GT_Item_Machines extends ItemBlock implements IFluidContainerItem {
                                     for (int j = 0; j < tString.length; j++)
                                         if (j % 2 == 0) tBuffer.append(tString[j]);
                                         else {tBuffer.append(" %s"); tRep[j / 2] = tString[j];}
-                                    aList.add(String.format(GT_LanguageManager.addStringLocalization("TileEntity_" + suffix + "DESCRIPTION_" + tDamage + "_Index_" + i++, tBuffer.toString(), !GregTech_API.sPostloadFinished ), (Object[]) tRep));
+                                    aList.add(String.format(GT_LanguageManager.addStringLocalization("TileEntity_DESCRIPTION_" + tDamage + suffix + "_Index_" + i++, tBuffer.toString(), !GregTech_API.sPostloadFinished ), (Object[]) tRep));
                                 }
-                            }else{String tTranslated = GT_LanguageManager.addStringLocalization("TileEntity_" + suffix + "DESCRIPTION_" + tDamage + "_Index_" + i++, tDescription, !GregTech_API.sPostloadFinished );
+                            }else{String tTranslated = GT_LanguageManager.addStringLocalization("TileEntity_DESCRIPTION_" + tDamage + suffix + "_Index_" + i++, tDescription, !GregTech_API.sPostloadFinished );
                                 aList.add(tTranslated.equals("") ? tDescription : tTranslated);}
                         }else i++;
                     }
