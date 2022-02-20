@@ -323,13 +323,13 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 
 	public BigInteger calculateTempCapacity(BigInteger tempCapacity, int meta) {
 		switch(meta) {
-		case 1: tempCapacity = tempCapacity.add(BigInteger.valueOf(100000000L)); capacity = capacity.add(BigInteger.valueOf(100000000L)); break;
-		case 2: tempCapacity = tempCapacity.add(BigInteger.valueOf(1000000000L)); capacity = capacity.add(BigInteger.valueOf(1000000000L)); break;
-		case 3: tempCapacity = tempCapacity.add(BigInteger.valueOf(10000000000L)); capacity = capacity.add(BigInteger.valueOf(10000000000L)); break;
-		case 4: tempCapacity = tempCapacity.add(BigInteger.valueOf(100000000000L)); capacity = capacity.add(BigInteger.valueOf(100000000000L)); break;
+		case 1: tempCapacity = tempCapacity.add(BigInteger.valueOf(400000000L)); capacity = capacity.add(BigInteger.valueOf(400000000L)); break;
+		case 2: tempCapacity = tempCapacity.add(BigInteger.valueOf(4000000000L)); capacity = capacity.add(BigInteger.valueOf(4000000000L)); break;
+		case 3: tempCapacity = tempCapacity.add(BigInteger.valueOf(40000000000L)); capacity = capacity.add(BigInteger.valueOf(40000000000L)); break;
+		case 4: tempCapacity = tempCapacity.add(BigInteger.valueOf(400000000000L)); capacity = capacity.add(BigInteger.valueOf(400000000000L)); break;
 		case 5: tempCapacity = tempCapacity.add(BigInteger.valueOf(100000000000L));	capacity = capacity.add(MAX_LONG); break;
 		case 6: break;
-		case 7: tempCapacity = tempCapacity.add(BigInteger.valueOf(10000000L)); capacity = capacity.add(BigInteger.valueOf(10000000L)); break;
+		case 7: tempCapacity = tempCapacity.add(BigInteger.valueOf(40000000L)); capacity = capacity.add(BigInteger.valueOf(10000000L)); break;
 		default: break; 
 		}
 		return tempCapacity;
