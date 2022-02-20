@@ -606,7 +606,7 @@ public class RecipeLoader {
         GT_Values.RA.addElectromagneticSeparatorRecipe(
         		WerkstoffMaterialPool.CooledMonaziteRareEarthConcentrate.get(OrePrefixes.dust, 1), 
         		WerkstoffMaterialPool.MonaziteRarerEarthSediment.get(OrePrefixes.dust, 1), 
-        		WerkstoffMaterialPool.EuropiumOxide.get(OrePrefixes.dustSmall, 1), 
+        		WerkstoffMaterialPool.EuropiumOxide.get(OrePrefixes.dustSmall, 1),  // Maybe also holmium
         		null, 
         		new int[] {
         				9000, 1 //Because fuck you
@@ -893,29 +893,6 @@ public class RecipeLoader {
         GT_Values.RA.addChemicalRecipe(
         		WerkstoffMaterialPool.NeodymicRareEarthConcentrate.get(OrePrefixes.dust, 1),
         		null,
-        		Materials.Fluorine.getGas(4000),
-        		null,
-        		WerkstoffMaterialPool.FluorinatedNeodymicRareEarths.get(OrePrefixes.dust, 1),
-        		null,
-        		450,
-        		800
-        	);
-        
-        GT_Values.RA.addBlastRecipe(
-        		WerkstoffMaterialPool.FluorinatedNeodymicRareEarths.get(OrePrefixes.dust, 8),
-        		null,
-        		null,
-        		null,
-        		WerkstoffMaterialPool.PraseodymiumTetrafluoride.get(OrePrefixes.dust, 1),
-        		WerkstoffMaterialPool.RareEarthTrifluorides.get(OrePrefixes.dust, 7),
-        		100,
-        		480,
-        		800
-        	);
-        
-        GT_Values.RA.addChemicalRecipe(
-        		WerkstoffMaterialPool.RareEarthTrifluorides.get(OrePrefixes.dust, 1),
-        		null,
         		Materials.HydrochloricAcid.getFluid(1000),
         		null,
         		WerkstoffMaterialPool.LanthaniumChloride.get(OrePrefixes.dustSmall, 2),
@@ -923,6 +900,54 @@ public class RecipeLoader {
         		450,
         		800	
         	);
+        
+        
+        //Sm RE
+        GT_Values.RA.addChemicalRecipe(
+        		WerkstoffMaterialPool.SamaricRareEarthConcentrate.get(OrePrefixes.dust, 1),
+        		null,
+        		Materials.HydrofluoricAcid.getFluid(2000),
+        		null,
+        		WerkstoffMaterialPool.FluorinatedSamaricConcentrate.get(OrePrefixes.dust, 1),
+        		null,
+        		300,
+        		480
+        	);
+        
+        GT_Values.RA.addBlastRecipe(
+        		WerkstoffMaterialPool.FluorinatedSamaricConcentrate.get(OrePrefixes.dust, 2),
+        		Materials.Calcium.getDust(3),
+        		null,
+        		WerkstoffMaterialPool.CalciumFluoride.getFluidOrGas(3000),
+        		Materials.Holmium.getDustSmall(1),
+        		WerkstoffMaterialPool.SamariumTerbiumMixture.get(OrePrefixes.dust, 1),
+        		400,
+        		1920,
+        		1200
+        	);
+        
+        GT_Values.RA.addChemicalRecipe(
+        		WerkstoffMaterialPool.SamariumTerbiumMixture.get(OrePrefixes.dust, 1),
+        		BotWerkstoffMaterialPool.AmmoniumNitrate.get(OrePrefixes.dust, 1),
+        		null,
+        		null,
+        		WerkstoffMaterialPool.NitratedSamariumTerbiumMixture.get(OrePrefixes.dust, 1),
+        		null,
+        		600,
+        		480
+        	);
+  
+        GT_Values.RA.addChemicalRecipe(
+        		WerkstoffMaterialPool.NitratedSamariumTerbiumMixture.get(OrePrefixes.dust, 1),
+        		Materials.Copper.getDustSmall(1),
+        		null,
+        		null,
+        		WerkstoffMaterialPool.TerbiumNitrate.get(OrePrefixes.dustSmall, 2),
+        		WerkstoffMaterialPool.SamaricResidue.get(OrePrefixes.dustSmall, 2), // Potentially make only Samarium
+        		800,
+        		1920
+        	);
+        
         
         
         
