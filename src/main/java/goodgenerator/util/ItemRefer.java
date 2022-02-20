@@ -122,6 +122,11 @@ public final class ItemRefer {
     public static ItemRefer Precise_Electronic_Unit_T1 = getItemStack(preciseUnitCasing, 0);
     public static ItemRefer Precise_Electronic_Unit_T2 = getItemStack(preciseUnitCasing, 1);
     public static ItemRefer Precise_Electronic_Unit_T3 = getItemStack(preciseUnitCasing, 2);
+    public static ItemRefer Compact_Fusion_Coil_T0 = getItemStack(compactFusionCoil, 0);
+    public static ItemRefer Compact_Fusion_Coil_T1 = getItemStack(compactFusionCoil, 1);
+    public static ItemRefer Compact_Fusion_Coil_T2 = getItemStack(compactFusionCoil, 2);
+    public static ItemRefer Compact_Fusion_Coil_T3 = getItemStack(compactFusionCoil, 3);
+    public static ItemRefer Compact_Fusion_Coil_T4 = getItemStack(compactFusionCoil, 4);
 
     public static ItemRefer Large_Naquadah_Reactor = getItemStack(MAR);
     public static ItemRefer Naquadah_Fuel_Refinery = getItemStack(FRF);
@@ -133,6 +138,11 @@ public final class ItemRefer {
     public static ItemRefer SC_Fluid_Turbine = getItemStack(SCTurbine);
     public static ItemRefer Extreme_Heat_Exchanger = getItemStack(XHE);
     public static ItemRefer Precise_Assembler = getItemStack(PA);
+    public static ItemRefer Compact_Fusion_MK1 = getItemStack(LFC[0]);
+    public static ItemRefer Compact_Fusion_MK2 = getItemStack(LFC[1]);
+    public static ItemRefer Compact_Fusion_MK3 = getItemStack(LFC[2]);
+    public static ItemRefer Compact_Fusion_MK4 = getItemStack(LFC[3]);
+    public static ItemRefer Compact_Fusion_MK5 = getItemStack(LFC[4]);
 
     private Item mItem = null;
     private Block mBlock = null;

@@ -6,8 +6,12 @@ import net.minecraft.world.IBlockAccess;
 
 public interface ITextureBlock {
 
-    ITexture[] getTexture(Block aBlock, byte aSide);
+    default ITexture[] getTexture(Block aBlock, byte aSide) {
+        return getTexture(aBlock, 0, aSide);
+    }
 
     ITexture[] getTexture(Block aBlock, byte aSide, IBlockAccess aWorld, int xCoord, int yCoord, int zCoord);
+
+    ITexture[] getTexture(Block aBlock, int aMeta, byte aSide);
 
 }

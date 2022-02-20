@@ -48,13 +48,6 @@ public class TurbineCasing extends Casing implements ITextureBlock{
     }
 
     @Override
-    public ITexture[] getTexture(Block aBlock, byte aSide) {
-        return new ITexture[] {
-                TextureFactory.of(base)
-        };
-    }
-
-    @Override
     public ITexture[] getTexture(Block aBlock, byte aSide, IBlockAccess aWorld, int xCoord, int yCoord, int zCoord) {
         int tInvertLeftRightMod = aSide % 2 * 2 - 1;
         switch (aSide / 2) {
@@ -96,6 +89,13 @@ public class TurbineCasing extends Casing implements ITextureBlock{
                 break;
         }
         return getTexture(aBlock, aSide);
+    }
+
+    @Override
+    public ITexture[] getTexture(Block aBlock, int aMeta, byte aSide) {
+        return new ITexture[] {
+                TextureFactory.of(base)
+        };
     }
 
     @Override

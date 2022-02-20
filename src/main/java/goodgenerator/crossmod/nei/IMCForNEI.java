@@ -7,7 +7,7 @@ public class IMCForNEI {
     public static void IMCSender() {
         setNBTAndSend("goodgenerator.crossmod.nei.NeutronActivatorHandler", "gregtech:gt.blockmachines:32013");
         setNBTAndSend("goodgenerator.crossmod.nei.ExtremeHeatExchangerHandler", "gregtech:gt.blockmachines:32017");
-        setNBTAndSend("gg.recipe.precise_assembler", "gregtech:gt.blockmachines:32018");
+        setNBTAndSend("goodgenerator.crossmod.nei.PreciseAssemblerHandler", "gregtech:gt.blockmachines:32018");
     }
 
     private static void setNBTAndSend(String aName, String aBlock) {

@@ -80,7 +80,7 @@ public class MyRecipeAdder {
             1,
             StatCollector.translateToLocal("value.precise_assembler.1"),
             true,
-            true
+            false
     );
 
     public static class liquidMentalFuelMapper extends GT_Recipe.GT_Recipe_Map_Fuel{
@@ -251,6 +251,7 @@ public class MyRecipeAdder {
             if (this.mFluidInputs != null) {
                 int index = 0;
                 for (FluidStack inFluid : mFluidInputs) {
+                    if (inFluid == null) continue;
                     inputStacks.add(new PositionedStack(GT_Utility.getFluidDisplayStack(inFluid, true), 4 + index * 18, 38));
                     index ++;
                 }
@@ -258,6 +259,7 @@ public class MyRecipeAdder {
             if (this.mInputs != null) {
                 int index = 0;
                 for (ItemStack inItem : mInputs) {
+                    if (inItem == null) continue;
                     inputStacks.add(new PositionedStack(inItem, 4 + index * 18, 3));
                     index ++;
                 }
@@ -275,6 +277,7 @@ public class MyRecipeAdder {
     }
 
     public void addPreciseAssemblerRecipe(ItemStack[] aItemInputs, FluidStack[] aFluidInputs, ItemStack aOutput, int aEUt, int aDuration, int aTier) {
+        if (aOutput == null) return;
         PA.addRecipe(false, aItemInputs, new ItemStack[]{aOutput}, null, null, aFluidInputs, null, aDuration, aEUt, aTier);
     }
 }

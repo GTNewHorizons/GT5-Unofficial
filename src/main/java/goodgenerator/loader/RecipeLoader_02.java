@@ -6,6 +6,7 @@ import goodgenerator.util.CrackRecipeAdder;
 import goodgenerator.util.ItemRefer;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import goodgenerator.util.MyRecipeAdder;
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -48,6 +49,8 @@ public class RecipeLoader_02 {
         CrackRecipeAdder.reAddBlastRecipe(MyMaterial.artheriumSn, 500, 122880, 6500, true);
         CrackRecipeAdder.reAddBlastRecipe(MyMaterial.titaniumBetaC, 400, 7680, 5300, true);
         CrackRecipeAdder.reAddBlastRecipe(MyMaterial.dalisenite, 800, 491520, 8700, true);
+        CrackRecipeAdder.reAddBlastRecipe(MyMaterial.hikarium, 1200, 122880, 5400, true);
+        CrackRecipeAdder.reAddBlastRecipe(MyMaterial.tairitsu, 1200, 1966080, 7400, true);
 
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
@@ -1041,7 +1044,7 @@ public class RecipeLoader_02 {
             );
 
             GT_Values.RA.addAssemblerRecipe(
-                    new ItemStack[] {
+                    new ItemStack[]{
                             ItemList.Robot_Arm_IV.get(4),
                             ItemRefer.HiC_T1.get(4),
                             ItemList.Tool_DataOrb.get(3),
@@ -1059,7 +1062,7 @@ public class RecipeLoader_02 {
             );
 
             GT_Values.RA.addAssemblerRecipe(
-                    new ItemStack[] {
+                    new ItemStack[]{
                             ItemList.Casing_ZPM.get(3),
                             ItemList.Robot_Arm_EV.get(2),
                             GT_OreDictUnificator.get(OrePrefixes.cableGt04, MyMaterial.lumiium.getBridgeMaterial(), 2),
@@ -1076,13 +1079,13 @@ public class RecipeLoader_02 {
             );
 
             MyRecipeAdder.instance.addPreciseAssemblerRecipe(
-                    new ItemStack[] {
+                    new ItemStack[]{
                             ItemRefer.HiC_T1.get(2),
                             GT_ModHandler.getModItem("dreamcraft", "item.EngravedDiamondCrystalChip", 8),
                             ItemList.Circuit_Chip_NAND.get(16),
                             Ic2Items.reactorVentCore
                     },
-                    new FluidStack[] {
+                    new FluidStack[]{
                             Materials.Plastic.getMolten(288),
                             MyMaterial.signalium.getMolten(144),
                             MyMaterial.lumiium.getMolten(72),
@@ -1095,13 +1098,13 @@ public class RecipeLoader_02 {
             );
 
             MyRecipeAdder.instance.addPreciseAssemblerRecipe(
-                    new ItemStack[] {
+                    new ItemStack[]{
                             ItemRefer.HiC_T2.get(2),
                             ItemList.Circuit_Parts_Crystal_Chip_Master.get(8),
                             ItemList.Circuit_Chip_CrystalSoC2.get(1),
                             Ic2Items.reactorVentDiamond
                     },
-                    new FluidStack[] {
+                    new FluidStack[]{
                             MyMaterial.adamantiumAlloy.getMolten(576),
                             MyMaterial.signalium.getMolten(288),
                             MyMaterial.lumiium.getMolten(144),
@@ -1114,13 +1117,13 @@ public class RecipeLoader_02 {
             );
 
             MyRecipeAdder.instance.addPreciseAssemblerRecipe(
-                    new ItemStack[] {
+                    new ItemStack[]{
                             ItemRefer.HiC_T3.get(2),
                             GT_ModHandler.getModItem("dreamcraft", "item.EngravedEnergyChip", 8),
                             ItemList.Circuit_Chip_QuantumCPU.get(16),
                             Ic2Items.reactorVentGold
                     },
-                    new FluidStack[] {
+                    new FluidStack[]{
                             MyMaterial.marM200.getMolten(1152),
                             MyMaterial.signalium.getMolten(576),
                             MyMaterial.lumiium.getMolten(288),
@@ -1133,13 +1136,13 @@ public class RecipeLoader_02 {
             );
 
             MyRecipeAdder.instance.addPreciseAssemblerRecipe(
-                    new ItemStack[] {
+                    new ItemStack[]{
                             ItemRefer.HiC_T4.get(2),
                             GT_ModHandler.getModItem("dreamcraft", "item.EngravedManyullynCrystalChip", 8),
                             ItemList.Circuit_Chip_BioCPU.get(1),
                             Ic2Items.reactorVentSpread
                     },
-                    new FluidStack[] {
+                    new FluidStack[]{
                             MyMaterial.titaniumBetaC.getMolten(1728),
                             MyMaterial.signalium.getMolten(1152),
                             MyMaterial.lumiium.getMolten(576),
@@ -1181,6 +1184,204 @@ public class RecipeLoader_02 {
                     ItemRefer.Precise_Electronic_Unit_T3.get(4),
                     4800,
                     491520
+            );
+        }
+
+        MyRecipeAdder.instance.addPreciseAssemblerRecipe(
+                new ItemStack[] {
+                        ItemList.Casing_Coil_Superconductor.get(1),
+                        ItemRefer.HiC_T2.get(1),
+                        ItemRefer.Special_Ceramics_Plate.get(2)
+                },
+                new FluidStack[] {
+                        MyMaterial.marM200.getMolten(1152),
+                        MyMaterial.zircaloy4.getMolten(288)
+                },
+                ItemRefer.Compact_Fusion_Coil_T0.get(1),
+                9001,
+                1200,
+                1
+        );
+
+        MyRecipeAdder.instance.addPreciseAssemblerRecipe(
+                new ItemStack[] {
+                        ItemList.Casing_Fusion_Coil.get(1),
+                        ItemRefer.Compact_Fusion_Coil_T0.get(1),
+                        ItemRefer.Quartz_Crystal_Resonator.get(2),
+                        ItemRefer.HiC_T3.get(1),
+                },
+                new FluidStack[] {
+                        MyMaterial.artheriumSn.getMolten(576),
+                        MyMaterial.titaniumBetaC.getMolten(144)
+                },
+                ItemRefer.Compact_Fusion_Coil_T1.get(1),
+                14000,
+                800,
+                2
+        );
+
+        MyRecipeAdder.instance.addPreciseAssemblerRecipe(
+                new ItemStack[] {
+                        ItemRefer.Compact_Fusion_Coil_T1.get(1),
+                        ItemRefer.Radiation_Protection_Plate.get(2),
+                        ItemList.QuantumStar.get(4),
+                        ItemRefer.HiC_T4.get(1)
+                },
+                new FluidStack[] {
+                        MyMaterial.dalisenite.getMolten(576),
+                        MyMaterial.hikarium.getMolten(144)
+                },
+                ItemRefer.Compact_Fusion_Coil_T2.get(1),
+                114514,
+                800,
+                3
+        );
+
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] {
+                        ItemList.FusionComputer_LuV.get(48),
+                        ItemRefer.HiC_T1.get(8),
+                        MyMaterial.marCeM200.get(OrePrefixes.plate, 32),
+                        GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 8),
+                        ItemList.Circuit_Wafer_HPIC.get(16),
+                        ItemList.Field_Generator_LuV.get(4),
+                        MyMaterial.marM200.get(OrePrefixes.stickLong, 8)
+                },
+                MyMaterial.adamantiumAlloy.getMolten(9216),
+                ItemRefer.Compact_Fusion_MK1.get(1),
+                1200,
+                30000
+        );
+
+        GT_Values.RA.addAssemblylineRecipe(
+                ItemRefer.Compact_Fusion_MK1.get(1),
+                24000,
+                new Object[] {
+                        ItemList.FusionComputer_ZPMV.get(48),
+                        new Object[] {"circuitUltimate", 1},
+                        new Object[] {"circuitUltimate", 1},
+                        new Object[] {"circuitUltimate", 1},
+                        new Object[] {"circuitUltimate", 1},
+                        ItemList.Circuit_Wafer_UHPIC.get(32),
+                        ItemList.ZPM_Coil.get(16),
+                        ItemList.Neutron_Reflector.get(4),
+                        ItemRefer.HiC_T2.get(8),
+                        ItemList.Field_Generator_ZPM.get(8),
+                        MyMaterial.artheriumSn.get(OrePrefixes.gearGtSmall, 32)
+                },
+                new FluidStack[] {
+                        MyMaterial.marCeM200.getMolten(2304),
+                        WerkstoffLoader.HDCS.getMolten(1152),
+                        MyMaterial.artheriumSn.getMolten(288)
+                },
+                ItemRefer.Compact_Fusion_MK2.get(1),
+                6000,
+                60000
+        );
+
+        GT_Values.RA.addAssemblylineRecipe(
+                ItemRefer.Compact_Fusion_MK2.get(1),
+                24000,
+                new Object[] {
+                        ItemList.FusionComputer_UV.get(48),
+                        new Object[] {"circuitSuperconductor", 1},
+                        new Object[] {"circuitSuperconductor", 1},
+                        new Object[] {"circuitSuperconductor", 1},
+                        new Object[] {"circuitSuperconductor", 1},
+                        ItemList.Circuit_Wafer_NPIC.get(64),
+                        ItemList.UV_Coil.get(16),
+                        ItemRefer.Advanced_Radiation_Protection_Plate.get(8),
+                        ItemRefer.HiC_T3.get(8),
+                        ItemList.Field_Generator_UV.get(8),
+                        WerkstoffLoader.HDCS.get(OrePrefixes.gearGtSmall, 64)
+                },
+                new FluidStack[] {
+                        MyMaterial.titaniumBetaC.getMolten(2304),
+                        MyMaterial.dalisenite.getMolten(1152),
+                        Materials.Americium.getMolten(288)
+                },
+                ItemRefer.Compact_Fusion_MK3.get(1),
+                6000,
+                90000
+        );
+
+        if (LoadedList.GTPP) {
+            MyRecipeAdder.instance.addPreciseAssemblerRecipe(
+                    new ItemStack[] {
+                            ItemRefer.Compact_Fusion_Coil_T2.get(1),
+                            GT_ModHandler.getModItem("miscutils", "gtplusplus.blockcasings.6", 1, 1),
+                            ItemRefer.HiC_T5.get(1),
+                            GT_ModHandler.getModItem("miscutils", "item.itemBufferCore4", 1),
+                    },
+                    new FluidStack[] {
+                            FluidRegistry.getFluidStack("molten.energycrystal", 1152),
+                            FluidRegistry.getFluidStack("molten.laurenium", 144)
+                    },
+                    ItemRefer.Compact_Fusion_Coil_T3.get(1),
+                    520000,
+                    1919,
+                    3
+            );
+
+            int tID = GregTech_API.METATILEENTITIES[31076] != null ? 31076 : 965;
+
+            GT_Values.RA.addAssemblylineRecipe(
+                    ItemRefer.Compact_Fusion_MK3.get(1),
+                    24000,
+                    new Object[] {
+                            GT_ModHandler.getModItem("gregtech", "gt.blockmachines", 48, tID),
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.SuperconductorLuV, 32),
+                            ItemList.Circuit_Wafer_PPIC.get(64),
+                            ItemList.UHV_Coil.get(16),
+                            ItemRefer.Compact_Fusion_Coil_T2.get(8),
+                            ItemRefer.HiC_T4.get(8)
+                    },
+                    new FluidStack[] {
+                            FluidRegistry.getFluidStack("molten.teflon", 1152),
+                            MyMaterial.dalisenite.getMolten(576),
+                            FluidRegistry.getFluidStack("molten.botmium", 288)
+                    },
+                    ItemRefer.Compact_Fusion_MK4.get(1),
+                    6000,
+                    520000
+            );
+
+            MyRecipeAdder.instance.addPreciseAssemblerRecipe(
+                    new ItemStack[] {
+                            ItemRefer.Compact_Fusion_Coil_T3.get(1),
+                            GT_ModHandler.getModItem("miscutils", "gtplusplus.blockcasings.3", 1, 13),
+                            ItemRefer.HiC_T5.get(4),
+                            GT_ModHandler.getModItem("miscutils", "item.itemBufferCore6", 1),
+                    },
+                    new FluidStack[] {
+                            FluidRegistry.getFluidStack("molten.laurenium", 1152),
+                            MyMaterial.hikarium.getMolten(576)
+                    },
+                    ItemRefer.Compact_Fusion_Coil_T4.get(1),
+                    1100000,
+                    1919,
+                    3
+            );
+
+            GT_Values.RA.addAssemblylineRecipe(
+                    ItemRefer.Compact_Fusion_MK4.get(1),
+                    24000,
+                    new Object[] {
+                            GT_ModHandler.getModItem("gregtech", "gt.blockmachines", 48, 965),
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.SuperconductorUV, 32),
+                            ItemList.Circuit_Wafer_QPIC.get(64),
+                            ItemList.UHV_Coil.get(64),
+                            ItemRefer.Compact_Fusion_Coil_T3.get(8),
+                            ItemRefer.HiC_T5.get(8)
+                    },
+                    new FluidStack[] {
+                            MyMaterial.tairitsu.getMolten( 1152),
+                            MyMaterial.artheriumSn.getMolten(576),
+                            FluidRegistry.getFluidStack("molten.rhugnor", 288)
+                    },
+                    ItemRefer.Compact_Fusion_MK5.get(1),
+                    6000,
+                    1100000
             );
         }
 

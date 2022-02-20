@@ -16,6 +16,7 @@ public class NEI_Config implements IConfigureNEI {
         NEI_Config.isAdded = false;
         new NeutronActivatorHandler(MyRecipeAdder.instance.NA);
         new ExtremeHeatExchangerHandler(MyRecipeAdder.instance.XHE);
+        new PreciseAssemblerHandler(MyRecipeAdder.instance.PA);
         NEI_Config.isAdded = true;
     }
 

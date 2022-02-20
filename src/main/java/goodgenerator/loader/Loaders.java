@@ -1,5 +1,6 @@
 package goodgenerator.loader;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import goodgenerator.blocks.myFluids.FluidsBuilder;
 import goodgenerator.blocks.regularBlock.*;
 import goodgenerator.client.render.BlockRenderHandler;
@@ -89,7 +90,7 @@ public class Loaders {
     public static final Block supercriticalFluidTurbineCasing = new TurbineCasing("supercriticalFluidTurbineCasing", "supercriticalFluidTurbineCasing");
     public static final Block pressureResistantWalls = new Casing("pressureResistantWalls", new String[]{GoodGenerator.MOD_ID+":pressureResistantWalls"});
     public static final Block preciseUnitCasing = new Casing("preciseUnitCasing", new String[]{GoodGenerator.MOD_ID+":preciseUnitCasing/1", GoodGenerator.MOD_ID+":preciseUnitCasing/2", GoodGenerator.MOD_ID+":preciseUnitCasing/3"});
-
+    public static final Block compactFusionCoil = new Casing("compactFusionCoil", new String[]{GoodGenerator.MOD_ID+":fuison/1", GoodGenerator.MOD_ID+":fuison/2", GoodGenerator.MOD_ID+":fuison/3", GoodGenerator.MOD_ID+":fuison/4", GoodGenerator.MOD_ID+":fuison/5"});
     public static Block essentiaHatch;
 
     public static ItemStack MAR;
@@ -103,6 +104,7 @@ public class Loaders {
     public static ItemStack SCTurbine;
     public static ItemStack XHE;
     public static ItemStack PA;
+    public static ItemStack[] LFC = new ItemStack[5];
 
     public static ItemStack[] NeutronAccelerators = new ItemStack[9];
     public static ItemStack[] Generator_Diesel = new ItemStack[2];
@@ -123,6 +125,13 @@ public class Loaders {
         Loaders.SCTurbine = new SupercriticalFluidTurbine(IDOffset + 15, "SupercriticalSteamTurbine", "SC Steam Turbine").getStackForm(1L);
         Loaders.XHE = new ExtremeHeatExchanger(IDOffset + 16, "ExtremeHeatExchanger", "Extreme Heat Exchanger").getStackForm(1L);
         Loaders.PA = new PreciseAssembler(IDOffset + 17, "PreciseAssembler", "Precise Auto-Assembler MT-3662").getStackForm(1L);
+        Loaders.LFC[0] = new LargeFusionComputer1(IDOffset + 18, "LargeFusionComputer1", "Compact Fusion Computer MK-I Prototype").getStackForm(1);
+        Loaders.LFC[1] = new LargeFusionComputer2(IDOffset + 19, "LargeFusionComputer2", "Compact Fusion Computer MK-II").getStackForm(1L);
+        Loaders.LFC[2] = new LargeFusionComputer3(IDOffset + 20, "LargeFusionComputer3", "Compact Fusion Computer MK-III").getStackForm(1L);
+        if (LoadedList.GTPP) {
+            Loaders.LFC[3] = new LargeFusionComputer4(IDOffset + 21, "LargeFusionComputer4", "Compact Fusion Computer MK-IV Prototype").getStackForm(1L);
+            Loaders.LFC[4] = new LargeFusionComputer5(IDOffset + 22, "LargeFusionComputer5", "Compact Fusion Computer MK-V").getStackForm(1L);
+        }
         Loaders.Generator_Diesel[0] = new DieselGenerator(1113, "basicgenerator.diesel.tier.04", "Turbo Supercharging Combustion Generator", 4).getStackForm(1L);
         Loaders.Generator_Diesel[1] = new DieselGenerator(1114, "basicgenerator.diesel.tier.05", "Ultimate Chemical Energy Releaser", 5).getStackForm(1L);
         CrackRecipeAdder.registerPipe(30995, MyMaterial.incoloy903, 15000, 8000, true);
@@ -150,6 +159,7 @@ public class Loaders {
         GameRegistry.registerBlock(supercriticalFluidTurbineCasing, MyItemBlocks.class, "supercriticalFluidTurbineCasing");
         GameRegistry.registerBlock(pressureResistantWalls, MyItemBlocks.class, "pressureResistantWalls");
         GameRegistry.registerBlock(preciseUnitCasing, MyItemBlocks.class, "preciseUnitCasing");
+        GameRegistry.registerBlock(compactFusionCoil, MyItemBlocks.class, "compactFusionCoil");
         GameRegistry.registerItem(radiationProtectionPlate, "radiationProtectionPlate", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(wrappedUraniumIngot, "wrappedUraniumIngot", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(highDensityUraniumNugget, "highDensityUraniumNugget", GoodGenerator.MOD_ID);
@@ -222,7 +232,9 @@ public class Loaders {
     }
 
     public static void initLoad() {
-        new BlockRenderHandler();
+        if (FMLCommonHandler.instance().getSide().isClient()) {
+            new BlockRenderHandler();
+        }
         GTMetaTileRegister();
         initLoadRecipes();
         IMCForNEI.IMCSender();

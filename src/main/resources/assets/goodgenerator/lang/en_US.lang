@@ -33,6 +33,11 @@ pressureResistantWalls.0.name=Pressure Resistant Wall
 preciseUnitCasing.0.name=Precise Electronic Unit Casing MK-I
 preciseUnitCasing.1.name=Precise Electronic Unit Casing MK-II
 preciseUnitCasing.2.name=Precise Electronic Unit Casing MK-III
+compactFusionCoil.0.name=Ameliorated Superconduct Coil
+compactFusionCoil.1.name=Compact Fusion Coil
+compactFusionCoil.2.name=Advanced Compact Fusion Coil
+compactFusionCoil.3.name=Compact Fusion Coil MK-II Prototype
+compactFusionCoil.4.name=Compact Fusion Coil MK-II Finaltype
 
 #Items
 item.radiationProtectionPlate.name=Radiation Proof Plate
@@ -229,6 +234,7 @@ scanner.info.YOTTank.1=Fluid Name:
 scanner.info.YOTTank.2=Current Used:
 scanner.info.XHE.0=Steam Output is equal to
 scanner.info.XHE.1=Overheated Threshold:
+scanner.info.UX.0=Running Parallel
 
 #GUI Info
 gui.NeutronSensor.0=Input the value of Neutron Kinetic Energy.
@@ -240,6 +246,8 @@ gui.NeutronActivator.1=Input:
 gui.YOTTank.0=Capacity:
 gui.YOTTank.1=Fluid:
 gui.YOTTank.2=Stored:
+gui.LargeFusion.0=Energy Capacity:
+gui.LargeFusion.1=Stored Energy:
 
 #NEI Info
 tile.recipe.naquadah_reactor=Large Naquadah Reactor
@@ -322,6 +330,51 @@ PreciseAssembler.hint.2=42x Reinforced Glasses
 PreciseAssembler.hint.3=21x Machine Casing (Not Machine Hull!)
 PreciseAssembler.hint.4=1 - Any Hatch/Precise Electronic Unit Casing
 PreciseAssembler.hint.5=Support TecTech Energy Hatches!
+LargeFusion1.hint.0=At least 1666x LuV Machine Casings
+LargeFusion1.hint.1=At least 63x Chrome Reinforced Borosilicate Glass Blocks
+LargeFusion1.hint.2=558x Ameliorated Superconduct Coils
+LargeFusion1.hint.3=128x Naquadah Alloy Frame Boxes
+LargeFusion1.hint.4=1 - Input Hatch
+LargeFusion1.hint.5=2 - Output Hatch
+LargeFusion1.hint.6=3 - Energy Hatch
+LargeFusion1.hint.7=All Hatches must be LuV or better.
+LargeFusion1.hint.8=Support TecTech Hatches.
+LargeFusion2.hint.0=At least 1666x Fusion Machine Casings
+LargeFusion2.hint.1=At least 63x Iridium Reinforced Borosilicate Glass Blocks
+LargeFusion2.hint.2=558x Compact Fusion Coils
+LargeFusion2.hint.3=128x Duranium Frame Boxes
+LargeFusion2.hint.4=1 - Input Hatch
+LargeFusion2.hint.5=2 - Output Hatch
+LargeFusion2.hint.6=3 - Energy Hatch
+LargeFusion2.hint.7=All Hatches must be ZPM or better.
+LargeFusion2.hint.8=Support TecTech Hatches.
+LargeFusion3.hint.0=At least 1666x Fusion Machine Casing MK II
+LargeFusion3.hint.1=At least 63x Osmium Reinforced Borosilicate Glass Blocks
+LargeFusion3.hint.2=558x Advanced Compact Fusion Coils
+LargeFusion3.hint.3=128x Neutronium Frame Boxes
+LargeFusion3.hint.4=1 - Input Hatch
+LargeFusion3.hint.5=2 - Output Hatch
+LargeFusion3.hint.6=3 - Energy Hatch
+LargeFusion3.hint.7=All Hatches must be UV or better.
+LargeFusion3.hint.8=Support TecTech Hatches.
+LargeFusion4.hint.0=At least 1666x Fusion Machine Casing MK III
+LargeFusion4.hint.1=At least 63x Uranium Reinforced Borosilicate Glass Blocks
+LargeFusion4.hint.2=558x Compact Fusion Coil MK-II Prototype
+LargeFusion4.hint.3=128x Infinity Catalyst Frame Boxes
+LargeFusion4.hint.4=1 - Input Hatch
+LargeFusion4.hint.5=2 - Output Hatch
+LargeFusion4.hint.6=3 - Energy Hatch
+LargeFusion4.hint.7=All Hatches must be UHV or better.
+LargeFusion4.hint.8=Support TecTech Hatches.
+LargeFusion5.hint.0=At least 1666x Fusion Machine Casing MK IV
+LargeFusion5.hint.1=At least 63x Europium Reinforced Borosilicate Glass Blocks
+LargeFusion5.hint.2=558x Compact Fusion Coil MK-II Finaltype
+LargeFusion5.hint.3=128x Infinity Frame Boxes
+LargeFusion5.hint.4=1 - Input Hatch
+LargeFusion5.hint.5=2 - Output Hatch
+LargeFusion5.hint.6=3 - Energy Hatch
+LargeFusion5.hint.7=All Hatches must be UEV or better.
+LargeFusion5.hint.8=Support TecTech Hatches.
 
 #Chat
 largeessentiagenerator.chat= Installed!
@@ -367,6 +420,14 @@ achievement.yottaFluidTankCell.4=Fluid Cell Block T5
 achievement.yottaFluidTankCell.4.desc=Pickup this item to see the recipe in NEI
 achievement.yottaFluidTankCell.5=Fluid Cell Block T6
 achievement.yottaFluidTankCell.5.desc=Pickup this item to see the recipe in NEI
+achievement.gt.blockmachines.largefusioncomputer2=Not Enough Fusions
+achievement.gt.blockmachines.largefusioncomputer2.desc=Pickup this item to see the recipe in NEI
+achievement.gt.blockmachines.largefusioncomputer3=PROJECT MOISS
+achievement.gt.blockmachines.largefusioncomputer3.desc=Pickup this item to see the recipe in NEI
+achievement.gt.blockmachines.largefusioncomputer4=イワシがつちからはえてくるんだ
+achievement.gt.blockmachines.largefusioncomputer4.desc=Pickup this item to see the recipe in NEI
+achievement.gt.blockmachines.largefusioncomputer5=XXXX
+achievement.gt.blockmachines.largefusioncomputer5.desc=Pickup this item to see the recipe in NEI
 
 #Thaumcraft Research Context
 research.ESSENTIA_GENERATOR.page.0=You have found that Essentia contains much more power than you thought. Is there a way to generate electricity from these Essentia?<BR><BR>The LEG(Large Essentia Generator) will automatically adapt its output voltage according to its dynamo hatch. The the Diffusion Cell determines the highest hatch tier that LEG can accept.

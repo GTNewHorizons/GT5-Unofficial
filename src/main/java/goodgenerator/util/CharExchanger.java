@@ -121,4 +121,13 @@ public class CharExchanger {
         }
         return sb.toString();
     }
+
+    public static String[] genString(String content, int len) {
+        String[] ret = new String[len];
+        while (len > 0) {
+            len --;
+            ret[len] = content;
+        }
+        return ret;
+    }
 }
