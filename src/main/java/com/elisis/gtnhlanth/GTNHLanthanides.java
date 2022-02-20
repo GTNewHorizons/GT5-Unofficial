@@ -21,7 +21,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerAboutToStartEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_Log;
 
 @Mod(modid = Tags.MODID, version = Tags.VERSION, name = Tags.MODNAME, 
@@ -80,6 +80,8 @@ public class GTNHLanthanides {
     	//
     	GT_Log.out.print("We are done loading");
     	BotRecipes.removeRecipes();
+    	
+    	GT_Log.out.print("blah blah " + WerkstoffMaterialPool.PTMEGElastomer.hasGenerationFeature(OrePrefixes.ingot));
     	
     	
     	

@@ -9,6 +9,7 @@ import com.github.bartimaeusnek.bartworks.util.EnumUtils;
 import com.github.bartimaeusnek.bartworks.util.Pair;
 
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TextureSet;
 
@@ -841,6 +842,69 @@ public class WerkstoffMaterialPool implements Runnable {
     		new Pair<>(Materials.Oxygen, 3)
     	);
     
+    public static final Werkstoff FluorinatedSamaricConcentrate = new Werkstoff(
+    		new short[] {255, 182, 193},
+    		"Fluorinated Samaric Concentrate",
+    		subscriptNumbers("??SmHo??"),
+    		new Werkstoff.Stats(),
+    		Werkstoff.Types.MIXTURE,
+    		new Werkstoff.GenerationFeatures().disable().onlyDust(),
+    		offsetID2 + 23,
+    		TextureSet.SET_DULL
+    	);
+    
+    public static final Werkstoff CalciumFluoride = new Werkstoff(
+    		new short[] {255, 255, 255},
+    		"Calcium Fluoride",
+    		subscriptNumbers("CaF2"),
+    		new Werkstoff.Stats().setElektrolysis(true),
+    		Werkstoff.Types.COMPOUND,
+    		new Werkstoff.GenerationFeatures().disable().onlyDust().addMolten().addCells(),
+    		offsetID2 + 24,
+    		TextureSet.SET_DULL,
+    		Arrays.asList(Materials.Calcium, Materials.Fluorine),
+    		new Pair<>(Materials.Calcium, 1),
+    		new Pair<>(Materials.Fluorine, 2)
+    	);
+    
+    public static final Werkstoff SamariumTerbiumMixture = new Werkstoff(
+    		new short[] {223, 182, 193},
+    		"Samarium-Terbium Mixture",
+    		subscriptNumbers("??SmTb??"),
+    		new Werkstoff.Stats(),
+    		Werkstoff.Types.MIXTURE,
+    		new Werkstoff.GenerationFeatures().disable().onlyDust(),
+    		offsetID2 + 25,
+    		TextureSet.SET_DULL
+    	);
+    
+    public static final Werkstoff NitratedSamariumTerbiumMixture = new Werkstoff(
+    		new short[] {223, 182, 193},
+    		"Nitrated Samarium-Terbium Mixture",
+    		subscriptNumbers("??SmTb??NH4NO3"),
+    		new Werkstoff.Stats(),
+    		Werkstoff.Types.MIXTURE,
+    		new Werkstoff.GenerationFeatures().disable().onlyDust(),
+    		offsetID2 + 26,
+    		TextureSet.SET_DULL
+    	);
+    
+    public static final Werkstoff TerbiumNitrate = new Werkstoff(
+    		new short[] {255, 255, 255},
+    		"Terbium Nitrate",
+    		subscriptNumbers("TbNO3"),
+    		new Werkstoff.Stats().setElektrolysis(true),
+    		Werkstoff.Types.MIXTURE,
+    		new Werkstoff.GenerationFeatures().disable().onlyDust(),
+    		offsetID2 + 27,
+    		TextureSet.SET_DULL,
+    		Arrays.asList(Materials.Terbium, Materials.Nitrogen, Materials.Oxygen),
+    		new Pair<>(Materials.Terbium, 1),
+    		new Pair<>(Materials.Nitrogen, 1),
+    		new Pair<>(Materials.Oxygen, 3)
+    	);
+    
+    
     
     
     
@@ -982,13 +1046,12 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff PTMEGElastomer = new Werkstoff(
     		new short[] {255, 255, 255},
     		"PTMEG Elastomer",
-    		new Werkstoff.Stats().setMeltingPoint(200),
+    		new Werkstoff.Stats().setMeltingPoint(600).setMeltingVoltage(64),
     		Werkstoff.Types.COMPOUND,
     		new Werkstoff.GenerationFeatures().disable()
-    				.onlyDust()
-    				.addMetalItems()
+    				.onlyDust()	
     				.addMolten()
-    				.addSimpleMetalWorkingItems()
+    				.addMetalItems() 				
     				,
     		offsetID3 + 12,
     		TextureSet.SET_METALLIC
@@ -1024,7 +1087,7 @@ public class WerkstoffMaterialPool implements Runnable {
     
     private static void addSubTags() {
     	
-    	WerkstoffMaterialPool.PTMEGElastomer.add(SubTag.BOUNCY, SubTag.STRETCHY);
+    	//WerkstoffMaterialPool.PTMEGElastomer.add(SubTag.BOUNCY, SubTag.STRETCHY);
     	
     }
     
