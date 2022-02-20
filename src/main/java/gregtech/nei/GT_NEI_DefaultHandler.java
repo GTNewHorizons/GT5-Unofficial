@@ -196,6 +196,9 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                     Power power = ((GT_MetaTileEntity_BasicMachine) gtTileEntity).getPower();
                     handler.loadCraftingRecipes(getOverlayIdentifier(), power);
                     return handler;
+                } else {
+                    handler.loadCraftingRecipes(getOverlayIdentifier(), (Object) null);
+                    return handler;
                 }
             }
         }
