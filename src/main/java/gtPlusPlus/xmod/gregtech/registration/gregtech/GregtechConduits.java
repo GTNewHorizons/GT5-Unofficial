@@ -168,7 +168,7 @@ public class GregtechConduits {
 			generateNonGTFluidPipes(GT_Materials.Void, null, BasePipeID+15, 800, 25000, true);
 		}
 		generateGTFluidPipes(Materials.Europium, BasePipeID+20, 12000, 7500, true);
-		generateNonGTFluidPipes(GT_Materials.Potin, ALLOY.POTIN, BasePipeID+25, 480, 2000, true);
+		generateNonGTFluidPipes(GT_Materials.Potin, ALLOY.POTIN, BasePipeID+25, 250, 2000, true);
 		generateNonGTFluidPipes(GT_Materials.MaragingSteel300, ALLOY.MARAGING300, BasePipeID+30, 7000, 2500, true);
 		generateNonGTFluidPipes(GT_Materials.MaragingSteel350, ALLOY.MARAGING350, BasePipeID+35, 8000, 2500, true);
 		generateNonGTFluidPipes(GT_Materials.Inconel690, ALLOY.INCONEL_690, BasePipeID+40, 7500, 4800, true);
