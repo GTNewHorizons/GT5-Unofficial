@@ -24,7 +24,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.material.ALLOY;
 
 import java.lang.reflect.Method;
