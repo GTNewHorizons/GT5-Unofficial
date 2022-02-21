@@ -5,7 +5,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 /** @author Relvl on 27.01.2022 */
-public interface GT_IMiningPipeOwner extends IMetaTileEntity {
+public interface GT_IDrillingLogicDelegateOwner extends IMetaTileEntity {
 
     /** Returns the machine actual tier. */
     int getMachineTier();

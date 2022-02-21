@@ -16,13 +16,13 @@ import static gregtech.api.enums.GT_Values.debugBlockMiner;
 
 /** @author Relvl on 27.01.2022 */
 @SuppressWarnings("ObjectEquality")
-public class GT_MiningPipeAddon {
+public class GT_DrillingLogicDelegate {
     public static final ItemStack MINING_PIPE_STACK = GT_ModHandler.getIC2Item("miningPipe", 0);
     public static final Block MINING_PIPE_BLOCK = GT_Utility.getBlockFromStack(MINING_PIPE_STACK);
     public static final Block MINING_PIPE_TIP_BLOCK = GT_Utility.getBlockFromStack(GT_ModHandler.getIC2Item("miningPipeTip", 0));
 
     /** The owner machine pointer */
-    private final GT_IMiningPipeOwner owner;
+    private final GT_IDrillingLogicDelegateOwner owner;
 
     /** Is pipe retracting process done and halts? */
     private boolean isRetractDone;
@@ -33,7 +33,7 @@ public class GT_MiningPipeAddon {
     /** Cached fake player */
     private FakePlayer mFakePlayer;
 
-    public GT_MiningPipeAddon(GT_IMiningPipeOwner owner) {
+    public GT_DrillingLogicDelegate(GT_IDrillingLogicDelegateOwner owner) {
         this.owner = owner;
     }
 

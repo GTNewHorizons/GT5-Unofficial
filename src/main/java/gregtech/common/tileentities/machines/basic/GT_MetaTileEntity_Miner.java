@@ -12,8 +12,8 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Block_Ores_Abstract;
 import gregtech.common.blocks.GT_TileEntity_Ores;
-import gregtech.common.misc.GT_IMiningPipeOwner;
-import gregtech.common.misc.GT_MiningPipeAddon;
+import gregtech.common.misc.GT_IDrillingLogicDelegateOwner;
+import gregtech.common.misc.GT_DrillingLogicDelegate;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -28,7 +28,7 @@ import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.debugBlockMiner;
 
 @SuppressWarnings("ObjectEquality")
-public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine implements GT_IMiningPipeOwner {
+public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine implements GT_IDrillingLogicDelegateOwner {
     static final int[] RADIUS = {8, 8, 16, 24, 32}; //Miner radius per tier
     static final int[] SPEED = {160, 160, 80, 40, 20}; //Miner cycle time per tier
     static final int[] ENERGY = {8, 8, 32, 128, 512}; //Miner energy consumption per tier
@@ -39,7 +39,7 @@ public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine impl
     private final ArrayList<ChunkPosition> oreBlockPositions = new ArrayList<>();
 
     /** General pipe accessor */
-    private final GT_MiningPipeAddon pipe = new GT_MiningPipeAddon(this);
+    private final GT_DrillingLogicDelegate pipe = new GT_DrillingLogicDelegate(this);
     private final int mSpeed;
 
     public GT_MetaTileEntity_Miner(int aID, String aName, String aNameRegional, int aTier) {
@@ -119,7 +119,7 @@ public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine impl
     @Override
     protected boolean allowPutStackValidated(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
         return super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, aSide, aStack) //
-               && aStack.getItem() == GT_MiningPipeAddon.MINING_PIPE_STACK.getItem();
+               && aStack.getItem() == GT_DrillingLogicDelegate.MINING_PIPE_STACK.getItem();
     }
 
     /** Both output slots must be free to work */
@@ -370,13 +370,13 @@ public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine impl
         return descends;
     }
 
-    /** @deprecated This method are obsolete, and may be removed in further updates. Please use 'this.pipe.getFakePlayer(te)' access! */
+    /** @deprecated This method are obsolete, and may be removed in further updates. Please use 'this.getPipe().getFakePlayer(te)' access! */
     @Deprecated
     protected FakePlayer getFakePlayer(IGregTechTileEntity aBaseTile) {
         return pipe.getFakePlayer(aBaseTile);
     }
 
-    public GT_MiningPipeAddon getPipe() {
+    public GT_DrillingLogicDelegate getPipe() {
         return pipe;
     }
 }
