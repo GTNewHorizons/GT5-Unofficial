@@ -198,7 +198,7 @@ public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine impl
             return;
         }
 
-        /* Checks if machine are wainting new mining pipe item */
+        /* Checks if machine are waiting new mining pipe item */
         if (!pipe.canContinueDrilling(aTick)) {
             mMaxProgresstime = 0;
             return;
@@ -298,7 +298,7 @@ public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine impl
                 }
                 return true;
             }
-            else if (slot.stackSize <= stack.getMaxStackSize() - count) {
+            else if (GT_Utility.areStacksEqual(slot, stack) && slot.stackSize <= slot.getMaxStackSize() - count) {
                 if (!simulate) {
                     slot.stackSize += count;
                 }
@@ -310,7 +310,7 @@ public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine impl
 
     @Override
     public long maxEUStore() {
-        return mTier == 1 ? 4096 : V[mTier] * 64;
+        return Math.max(V[mTier] * 64, 4096);
     }
 
     @Override
@@ -360,7 +360,7 @@ public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine impl
         return mSpeed;
     }
 
-    /** @deprecated This method are obsolete, and may be removed in further updates. Please use 'this.pipe.descent()' access! */
+    /** @deprecated This method are obsolete, and may be removed in further updates. Please use 'this.getPipe().descent()' access! */
     @Deprecated
     public boolean moveOneDown(IGregTechTileEntity tileEntity) {
         boolean descends = pipe.descent(tileEntity);
@@ -374,5 +374,9 @@ public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine impl
     @Deprecated
     protected FakePlayer getFakePlayer(IGregTechTileEntity aBaseTile) {
         return pipe.getFakePlayer(aBaseTile);
+    }
+
+    public GT_MiningPipeAddon getPipe() {
+        return pipe;
     }
 }

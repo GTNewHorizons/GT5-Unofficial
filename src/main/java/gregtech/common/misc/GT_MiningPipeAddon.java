@@ -75,7 +75,7 @@ public class GT_MiningPipeAddon {
         // Get and decrease pipe from the machine
         boolean pipeTaken = owner.pullInputs(MINING_PIPE_STACK.getItem(), 1, false);
         if (!pipeTaken) {
-            // If there was nothing - wainting for the pipes (just for prevent unnecessary checks)
+            // If there was nothing - waiting for the pipes (just for prevent unnecessary checks)
             isWaitingForPipeItem = true;
             return false;
         }
