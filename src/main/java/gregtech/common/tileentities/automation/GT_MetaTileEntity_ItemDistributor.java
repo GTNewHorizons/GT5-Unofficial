@@ -151,7 +151,7 @@ public class GT_MetaTileEntity_ItemDistributor extends GT_MetaTileEntity_Buffer 
         //Adjust items per side by 1 or -1, constrained to the cyclic interval [0, 127]
         itemsPerSide[aSide] += aPlayer.isSneaking() ? -1 : 1;
         itemsPerSide[aSide] = (byte) ((itemsPerSide[aSide] + 128) % 128);
-        GT_Utility.sendChatToPlayer(aPlayer, trans("211", "Items per side: ") + itemsPerSide[aSide]);
+        GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("211", "Items per side: ") + itemsPerSide[aSide]);
     }
 
     @Override

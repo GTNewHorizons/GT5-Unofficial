@@ -11,13 +11,24 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Utility;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import java.util.List;
+
 import static gregtech.api.enums.GT_Values.V;
+import static mcp.mobius.waila.api.SpecialChars.RESET;
+import static mcp.mobius.waila.api.SpecialChars.GOLD;
+import static mcp.mobius.waila.api.SpecialChars.BLUE;
+import static mcp.mobius.waila.api.SpecialChars.GREEN;
+import static mcp.mobius.waila.api.SpecialChars.RED;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -206,19 +217,59 @@ public class GT_MetaTileEntity_Transformer extends GT_MetaTileEntity_TieredMachi
     @Override
     public String getAlternativeModeText(){
     	return
-                (getBaseMetaTileEntity().isAllowedToWork() ? trans("145","Step Down, In: ") : trans("146","Step Up, In: ")) +
+                (getBaseMetaTileEntity().isAllowedToWork() ? GT_Utility.trans("145","Step Down, In: ") : GT_Utility.trans("146","Step Up, In: ")) +
                         maxEUInput() +
-                        trans("148","V ") +
+                        GT_Utility.trans("148","V ") +
                         maxAmperesIn() +
-                        trans("147","A, Out: ") +
+                        GT_Utility.trans("147","A, Out: ") +
                         maxEUOutput() +
-                        trans("148","V ") +
+                        GT_Utility.trans("148","V ") +
                         maxAmperesOut() +
-                        trans("149","A");
+                        GT_Utility.trans("149","A");
     }
 
     @Override
     public boolean shouldJoinIc2Enet() {
         return true;
     }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        final int facing = getBaseMetaTileEntity().getFrontFacing();
+        final NBTTagCompound tag = accessor.getNBTData();
+        final int side = (byte)accessor.getSide().ordinal();
+        final boolean allowedToWork = tag.getBoolean("isAllowedToWork");
+        
+        currenttip.add(
+            String.format(
+                "%s %d(%dA) -> %d(%dA)",
+                (allowedToWork ? (GREEN + "Step Down") : (RED + "Step Up")) + RESET,
+                tag.getLong("maxEUInput"),
+                tag.getLong("maxAmperesIn"),
+                tag.getLong("maxEUOutput"),
+                tag.getLong("maxAmperesOut")
+            )
+        );
+
+        if ((side == facing && allowedToWork) || (side != facing && !allowedToWork)) {
+            currenttip.add(String.format(GOLD + "Input:" + RESET + " %d(%dA)", tag.getLong("maxEUInput"), tag.getLong("maxAmperesIn")));
+        } else {
+            currenttip.add(String.format(BLUE + "Output:" + RESET + " %d(%dA)", tag.getLong("maxEUOutput"), tag.getLong("maxAmperesOut")));
+        }
+
+        super.getWailaBody(itemStack, currenttip, accessor, config);
+        
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y, int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setBoolean("isAllowedToWork", getBaseMetaTileEntity().isAllowedToWork());
+        tag.setLong("maxEUInput", maxEUInput());
+        tag.setLong("maxAmperesIn", maxAmperesIn());
+        tag.setLong("maxEUOutput", maxEUOutput());
+        tag.setLong("maxAmperesOut", maxAmperesOut());
+    }
+
+
 }

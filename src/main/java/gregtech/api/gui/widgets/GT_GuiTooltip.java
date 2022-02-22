@@ -75,6 +75,7 @@ public class GT_GuiTooltip {
      */
     public void setToolTipText(String... text) {
         this.data = formatTooltip(text);
+        this.displayedText = data.text;
     }
 
     /**

@@ -18,12 +18,17 @@ import gregtech.api.util.GT_Single_Recipe_Check;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Pollution;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.input.Keyboard;
 
@@ -32,6 +37,9 @@ import java.util.List;
 
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.VN;
+import static mcp.mobius.waila.api.SpecialChars.GREEN;
+import static mcp.mobius.waila.api.SpecialChars.RED;
+import static mcp.mobius.waila.api.SpecialChars.RESET;
 
 public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
 
@@ -39,7 +47,8 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
     public boolean mMachine = false, mWrench = false, mScrewdriver = false, mSoftHammer = false, mHardHammer = false, mSolderingTool = false, mCrowbar = false, mRunningOnLoad = false;
     public boolean mStructureChanged = false;
     public int mPollution = 0, mProgresstime = 0, mMaxProgresstime = 0, mEUt = 0, mEfficiencyIncrease = 0, mStartUpCheck = 100, mRuntime = 0, mEfficiency = 0;
-    public volatile int mUpdate = 0; //TODO: Replace with AtomicInteger
+    public volatile boolean mUpdated = false;
+    public int mUpdate = 0;
     public ItemStack[] mOutputItems = null;
     public FluidStack[] mOutputFluids = null;
     public String mNEI;
@@ -98,9 +107,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
         if (supportsSingleRecipeLocking()) {
             mLockedToSingleRecipe = !mLockedToSingleRecipe;
             if (mLockedToSingleRecipe) {
-                GT_Utility.sendChatToPlayer(aPlayer, trans("219","Single recipe locking enabled. Will lock to next recipe."));
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("223", "Single recipe locking enabled. Will lock to next recipe."));
             } else {
-                GT_Utility.sendChatToPlayer(aPlayer, trans("220","Single recipe locking disabled."));
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("220", "Single recipe locking disabled."));
                 mSingleRecipeCheck = null;
             }
         }
@@ -243,7 +252,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
     
     @Override
     public void onMachineBlockUpdate() {
-        mUpdate = 50;
+        mUpdated = true;
     }
 
     /**
@@ -280,6 +289,10 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
             if (mEfficiency < 0) mEfficiency = 0;
+            if (mUpdated) {
+                mUpdate = 50;
+                mUpdated = false;
+            }
             if (--mUpdate == 0 || --mStartUpCheck == 0) {
                 checkStructure(true, aBaseMetaTileEntity);
             }
@@ -1090,5 +1103,33 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
             }
         }
         return tFluidList.toArray(new FluidStack[0]);
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        final NBTTagCompound tag = accessor.getNBTData();
+
+        if(tag.getBoolean("incompleteStructure")) {
+            currenttip.add(RED + "** INCOMPLETE STRUCTURE **" + RESET);
+        }
+        currenttip.add((tag.getBoolean("hasProblems") ? (RED + "** HAS PROBLEMS **") : GREEN + "Running Fine") + RESET
+                           + "  Efficiency: " + tag.getFloat("efficiency") + "%");
+
+        currenttip.add(String.format("Progress: %d s / %d s", tag.getInteger("progress"), tag.getInteger("maxProgress")));
+
+        
+        super.getWailaBody(itemStack, currenttip, accessor, config);
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y, int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        
+        tag.setBoolean("hasProblems", (getIdealStatus() - getRepairStatus()) > 0);
+        tag.setFloat("efficiency", mEfficiency / 100.0F);
+        tag.setInteger("progress", mProgresstime/20);
+        tag.setInteger("maxProgress", mMaxProgresstime/20);
+        tag.setBoolean("incompleteStructure", (getBaseMetaTileEntity().getErrorDisplayID() & 64) != 0);
+
     }
 }

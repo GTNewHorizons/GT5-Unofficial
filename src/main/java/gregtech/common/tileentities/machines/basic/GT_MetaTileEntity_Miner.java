@@ -53,14 +53,31 @@ public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine {
                         "Maximum work area " + (RADIUS[aTier] * 2 + 1) + "x" + (RADIUS[aTier] * 2 + 1),
                         "Fortune bonus of " + aTier},
                 2, 2, "Miner.png", "",
-                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_SIDE_ACTIVE")),
-                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_SIDE")),
-                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_FRONT_ACTIVE")),
-                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_FRONT")),
-                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_TOP_ACTIVE")),
-                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_TOP")),
-                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_BOTTOM_ACTIVE")),
-                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_BOTTOM")));
+                TextureFactory.of(
+                        TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_SIDE_ACTIVE")),
+                        TextureFactory.builder().addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_SIDE_ACTIVE_GLOW")).glow().build()),
+                TextureFactory.of(
+                        TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_SIDE")),
+                        TextureFactory.builder().addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_SIDE_GLOW")).glow().build()),
+                TextureFactory.of(
+                        TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_FRONT_ACTIVE")),
+                        TextureFactory.builder().addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_FRONT_ACTIVE_GLOW")).glow().build()),
+                TextureFactory.of(
+                        TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_FRONT")),
+                        TextureFactory.builder().addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_FRONT_GLOW")).glow().build()),
+                TextureFactory.of(
+                        TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_TOP_ACTIVE")),
+                        TextureFactory.builder().addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_TOP_ACTIVE_GLOW")).glow().build()),
+                TextureFactory.of(
+                        TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_TOP")),
+                        TextureFactory.builder().addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_TOP_GLOW")).glow().build()),
+                TextureFactory.of(
+                        TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_BOTTOM_ACTIVE")),
+                        TextureFactory.builder().addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_BOTTOM_ACTIVE_GLOW")).glow().build()),
+                TextureFactory.of(
+                        TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_BOTTOM")),
+                        TextureFactory.builder().addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_BOTTOM_GLOW")).glow().build())
+                );
         radiusConfig = RADIUS[mTier];
 }
 
@@ -292,7 +309,7 @@ public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine {
         int yCoord = aBaseMetaTileEntity.getYCoord();
         boolean isHitsTheVoid = yCoord + drillY - 1 < 0;
         boolean isHitsBedrock = GT_Utility.getBlockHardnessAt(aBaseMetaTileEntity.getWorld(), xCoord, yCoord + drillY - 1, zCoord) < 0;
-        boolean isFakePlayerAllowed = !GT_Utility.setBlockByFakePlayer(getFakePlayer(aBaseMetaTileEntity), xCoord, yCoord + drillY - 1, zCoord, MINING_PIPE_TIP_BLOCK, 0, true);
+        boolean isFakePlayerAllowed = GT_Utility.setBlockByFakePlayer(getFakePlayer(aBaseMetaTileEntity), xCoord, yCoord + drillY - 1, zCoord, MINING_PIPE_TIP_BLOCK, 0, true);
 
         if (isHitsTheVoid || isHitsBedrock || !isFakePlayerAllowed) {
             aBaseMetaTileEntity.disableWorking();

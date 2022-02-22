@@ -58,18 +58,30 @@ public class GT_Cover_Conveyor extends GT_CoverBehavior {
         aCoverVariable = (aCoverVariable + (aPlayer.isSneaking()? -1 : 1)) % 12;
         if(aCoverVariable <0){aCoverVariable = 11;}
         switch(aCoverVariable) {
-            case 0: GT_Utility.sendChatToPlayer(aPlayer, trans("006", "Export")); break;
-            case 1: GT_Utility.sendChatToPlayer(aPlayer, trans("007", "Import")); break;
-            case 2: GT_Utility.sendChatToPlayer(aPlayer, trans("008", "Export (conditional)")); break;
-            case 3: GT_Utility.sendChatToPlayer(aPlayer, trans("009", "Import (conditional)")); break;
-            case 4: GT_Utility.sendChatToPlayer(aPlayer, trans("010", "Export (invert cond)")); break;
-            case 5: GT_Utility.sendChatToPlayer(aPlayer, trans("011", "Import (invert cond)")); break;
-            case 6: GT_Utility.sendChatToPlayer(aPlayer, trans("012", "Export allow Input")); break;
-            case 7: GT_Utility.sendChatToPlayer(aPlayer, trans("013", "Import allow Output")); break;
-            case 8: GT_Utility.sendChatToPlayer(aPlayer, trans("014", "Export allow Input (conditional)")); break;
-            case 9: GT_Utility.sendChatToPlayer(aPlayer, trans("015", "Import allow Output (conditional)")); break;
-            case 10: GT_Utility.sendChatToPlayer(aPlayer, trans("016", "Export allow Input (invert cond)")); break;
-            case 11: GT_Utility.sendChatToPlayer(aPlayer, trans("017", "Import allow Output (invert cond)")); break;
+            case 0:
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("006", "Export")); break;
+            case 1:
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("007", "Import")); break;
+            case 2:
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("008", "Export (conditional)")); break;
+            case 3:
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("009", "Import (conditional)")); break;
+            case 4:
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("010", "Export (invert cond)")); break;
+            case 5:
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("011", "Import (invert cond)")); break;
+            case 6:
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("012", "Export allow Input")); break;
+            case 7:
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("013", "Import allow Output")); break;
+            case 8:
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("014", "Export allow Input (conditional)")); break;
+            case 9:
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("015", "Import allow Output (conditional)")); break;
+            case 10:
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("016", "Export allow Input (invert cond)")); break;
+            case 11:
+                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("017", "Import allow Output (invert cond)")); break;
         }
         return aCoverVariable;
     }
@@ -155,21 +167,21 @@ public class GT_Cover_Conveyor extends GT_CoverBehavior {
             this.coverVariable = aCoverVariable;
 
             GT_GuiIconButton b;
-            b = new GT_GuiIconButton(this, 0, startX + spaceX*0, startY+spaceY*0, GT_GuiIcon.EXPORT).setTooltipText(trans("006","Export"));
-            b = new GT_GuiIconButton(this, 1, startX + spaceX*1, startY+spaceY*0, GT_GuiIcon.IMPORT).setTooltipText(trans("007","Import"));
-            b = new GT_GuiIconButton(this, 2, startX + spaceX*0, startY+spaceY*1, GT_GuiIcon.CHECKMARK).setTooltipText(trans("224","Always On"));
-            b = new GT_GuiIconButton(this, 3, startX + spaceX*1, startY+spaceY*1, GT_GuiIcon.REDSTONE_ON).setTooltipText(trans("225","Active with Redstone Signal"));
-            b = new GT_GuiIconButton(this, 4, startX + spaceX*2, startY+spaceY*1, GT_GuiIcon.REDSTONE_OFF).setTooltipText(trans("226","Inactive with Redstone Signal"));
-            b = new GT_GuiIconButton(this, 5, startX + spaceX*0, startY+spaceY*2, GT_GuiIcon.ALLOW_INPUT).setTooltipText(trans("227","Allow Input"));
-            b = new GT_GuiIconButton(this, 6, startX + spaceX*1, startY+spaceY*2, GT_GuiIcon.BLOCK_INPUT).setTooltipText(trans("228","Block Input"));
+            b = new GT_GuiIconButton(this, 0, startX + spaceX*0, startY+spaceY*0, GT_GuiIcon.EXPORT).setTooltipText(GT_Utility.trans("006", "Export"));
+            b = new GT_GuiIconButton(this, 1, startX + spaceX*1, startY+spaceY*0, GT_GuiIcon.IMPORT).setTooltipText(GT_Utility.trans("007", "Import"));
+            b = new GT_GuiIconButton(this, 2, startX + spaceX*0, startY+spaceY*1, GT_GuiIcon.CHECKMARK).setTooltipText(GT_Utility.trans("224", "Always On"));
+            b = new GT_GuiIconButton(this, 3, startX + spaceX*1, startY+spaceY*1, GT_GuiIcon.REDSTONE_ON).setTooltipText(GT_Utility.trans("225", "Active with Redstone Signal"));
+            b = new GT_GuiIconButton(this, 4, startX + spaceX*2, startY+spaceY*1, GT_GuiIcon.REDSTONE_OFF).setTooltipText(GT_Utility.trans("226", "Inactive with Redstone Signal"));
+            b = new GT_GuiIconButton(this, 5, startX + spaceX*0, startY+spaceY*2, GT_GuiIcon.ALLOW_INPUT).setTooltipText(GT_Utility.trans("227", "Allow Input"));
+            b = new GT_GuiIconButton(this, 6, startX + spaceX*1, startY+spaceY*2, GT_GuiIcon.BLOCK_INPUT).setTooltipText(GT_Utility.trans("228", "Block Input"));
         }
 
         @Override
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
-            this.fontRendererObj.drawString(trans("229","Import/Export" ),  startX + spaceX*3, 3+startY+spaceY*0, 0xFF555555);
-            this.fontRendererObj.drawString(trans("230","Conditional"),     startX + spaceX*3, 3+startY+spaceY*1, 0xFF555555);
-            this.fontRendererObj.drawString(trans("231", "Enable Input"),   startX + spaceX*3, 3+startY+spaceY*2, 0xFF555555);
+            this.fontRendererObj.drawString(GT_Utility.trans("229", "Import/Export"),  startX + spaceX*3, 3+startY+spaceY*0, 0xFF555555);
+            this.fontRendererObj.drawString(GT_Utility.trans("230", "Conditional"),     startX + spaceX*3, 3+startY+spaceY*1, 0xFF555555);
+            this.fontRendererObj.drawString(GT_Utility.trans("231", "Enable Input"),   startX + spaceX*3, 3+startY+spaceY*2, 0xFF555555);
         }
 
         @Override

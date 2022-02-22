@@ -12,6 +12,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagInt;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.IOException;
 
 /**
@@ -45,10 +46,11 @@ public interface ISerializableObject {
     /**
      * Read data from given parameter and return this.
      * The data read this way is intended to be stored for short amount of time over network.
+     * @param aPlayer the player who is sending this packet to server. null if it's client reading data.
      */
     // the NBT is an unfortunate piece of tech. everything uses it but its API is not as efficient as could be
     @Nonnull
-    ISerializableObject readFromPacket(ByteArrayDataInput aBuf, EntityPlayerMP aPlayer);
+    ISerializableObject readFromPacket(ByteArrayDataInput aBuf, @Nullable EntityPlayerMP aPlayer);
 
     /**
      * Reverse engineered and adapted {@link cpw.mods.fml.common.network.ByteBufUtils#readTag(ByteBuf)}

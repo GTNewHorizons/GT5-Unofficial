@@ -2,31 +2,44 @@ package gregtech.api.metatileentity;
 
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.net.GT_Packet_RequestCoverData;
+import gregtech.api.net.GT_Packet_SendCoverData;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
+import gregtech.common.GT_Client;
 import gregtech.common.covers.GT_Cover_Fluidfilter;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
+import static gregtech.api.enums.GT_Values.NW;
 
 public abstract class CoverableGregTechTileEntity extends BaseTileEntity implements IGregTechTileEntity {
-    static final String[] COVER_DATA_NBT_KEYS = Arrays.stream(ForgeDirection.VALID_DIRECTIONS).mapToInt(Enum::ordinal).mapToObj(i -> "mCoverData" + i).toArray(String[]::new);
+    public static final String[] COVER_DATA_NBT_KEYS = Arrays.stream(ForgeDirection.VALID_DIRECTIONS).mapToInt(Enum::ordinal).mapToObj(i -> "mCoverData" + i).toArray(String[]::new);
     protected final GT_CoverBehaviorBase<?>[] mCoverBehaviors = new GT_CoverBehaviorBase<?>[]{GregTech_API.sNoBehavior, GregTech_API.sNoBehavior, GregTech_API.sNoBehavior, GregTech_API.sNoBehavior, GregTech_API.sNoBehavior, GregTech_API.sNoBehavior};
 
     protected int[] mCoverSides = new int[]{0, 0, 0, 0, 0, 0};
     protected ISerializableObject[] mCoverData = new ISerializableObject[6];
+    protected final boolean[] mCoverNeedUpdate = new boolean[]{false, false, false, false, false, false};
     protected short mID = 0;
     public long mTickTimer = 0;
 
@@ -115,6 +128,8 @@ public abstract class CoverableGregTechTileEntity extends BaseTileEntity impleme
                     mCoverData[i] = mCoverBehaviors[i].createDataObject(aNBT.getTag(COVER_DATA_NBT_KEYS[i]));
                 else
                     mCoverData[i] = mCoverBehaviors[i].createDataObject();
+                if (mCoverBehaviors[i].isDataNeededOnClient(i, mCoverSides[i], mCoverData[i], this))
+                    issueCoverUpdate(i);
             }
         }
     }
@@ -145,7 +160,29 @@ public abstract class CoverableGregTechTileEntity extends BaseTileEntity impleme
             mCoverBehaviors[i] = GregTech_API.getCoverBehaviorNew(mCoverSides[i]);
     }
 
-    protected abstract boolean hasValidMetaTileEntity();
+    @Override
+    public void issueCoverUpdate(byte aSide) {
+        if (isServerSide() && getCoverBehaviorAtSideNew(aSide).isDataNeededOnClient(aSide, getCoverIDAtSide(aSide), getComplexCoverDataAtSide(aSide), this))
+            mCoverNeedUpdate[aSide] = true;
+    }
+
+	public ITexture getCoverTexture(byte aSide) {
+		if (getCoverIDAtSide(aSide) == 0) return null;
+		if (GT_Mod.instance.isClientSide() && (GT_Client.hideValue & 0x1) != 0) {
+			return Textures.BlockIcons.HIDDEN_TEXTURE[0]; // See through
+		}
+        ITexture coverTexture = getCoverBehaviorAtSideNew(aSide).getSpecialCoverTexture(aSide, getCoverIDAtSide(aSide), getComplexCoverDataAtSide(aSide), this);
+        return coverTexture != null ? coverTexture : GregTech_API.sCovers.get(new GT_ItemStack(getCoverIDAtSide(aSide)));
+    }
+
+    protected void requestCoverDataIfNeeded() {
+        for (byte i = 0; i < 6; i++) {
+            if (getCoverBehaviorAtSideNew(i).isDataNeededOnClient(i, getCoverIDAtSide(i), getComplexCoverDataAtSide(i), this))
+                NW.sendToServer(new GT_Packet_RequestCoverData(i, getCoverIDAtSide(i), this));
+        }
+    }
+
+	protected abstract boolean hasValidMetaTileEntity();
 
     protected boolean createNewMetatileEntity(short aID) {
         if (aID <= 0 || aID >= GregTech_API.METATILEENTITIES.length || GregTech_API.METATILEENTITIES[aID] == null) {
@@ -162,7 +199,9 @@ public abstract class CoverableGregTechTileEntity extends BaseTileEntity impleme
 
     @Override
     public void setCoverIDAtSide(byte aSide, int aID) {
-        if (aSide >= 0 && aSide < 6) {
+        if (aSide >= 0 && aSide < 6 && mCoverSides[aSide] != aID) {
+            if (aID == 0 && isClientSide())
+                mCoverBehaviors[aSide].onDropped(aSide, mCoverSides[aSide], mCoverData[aSide], this);
             mCoverSides[aSide] = aID;
             mCoverBehaviors[aSide] = GregTech_API.getCoverBehaviorNew(aID);
             mCoverData[aSide] = mCoverBehaviors[aSide].createDataObject();
@@ -192,7 +231,7 @@ public abstract class CoverableGregTechTileEntity extends BaseTileEntity impleme
 
     @Override
     public ItemStack getCoverItemAtSide(byte aSide) {
-        return GT_Utility.intToStack(getCoverIDAtSide(aSide));
+        return getCoverBehaviorAtSideNew(aSide).getDisplayStack(getCoverIDAtSide(aSide), getComplexCoverDataAtSide(aSide));
     }
 
     @Override
@@ -245,7 +284,7 @@ public abstract class CoverableGregTechTileEntity extends BaseTileEntity impleme
         if (getCoverBehaviorAtSideNew(aSide).onCoverRemoval(aSide, getCoverIDAtSide(aSide), mCoverData[aSide], this, aForced) || aForced) {
             ItemStack tStack = getCoverBehaviorAtSideNew(aSide).getDrop(aSide, getCoverIDAtSide(aSide), getComplexCoverDataAtSide(aSide), this);
             if (tStack != null) {
-                tStack.setTagCompound(null);
+                getCoverBehaviorAtSideNew(aSide).onDropped(aSide, getCoverIDAtSide(aSide), getComplexCoverDataAtSide(aSide), this);
                 EntityItem tEntity = new EntityItem(worldObj, getOffsetX(aDroppedSide, 1) + 0.5, getOffsetY(aDroppedSide, 1) + 0.5, getOffsetZ(aDroppedSide, 1) + 0.5, tStack);
                 tEntity.motionX = 0;
                 tEntity.motionY = 0;
@@ -262,6 +301,61 @@ public abstract class CoverableGregTechTileEntity extends BaseTileEntity impleme
     
     protected void updateOutputRedstoneSignal(byte aSide) {
         setOutputRedstoneSignal(aSide, (byte) 0);
+    }
+
+    @Override
+    public void receiveCoverData(byte coverSide, int coverID, int coverData) {
+        if ((coverSide >= 0 && coverSide < 6) && (mCoverSides[coverSide] == coverID))
+            setCoverDataAtSide(coverSide, coverData);
+    }
+
+    @Override
+    public void receiveCoverData(byte aCoverSide, int aCoverID, ISerializableObject aCoverData, EntityPlayerMP aPlayer) {
+        if ((aCoverSide >= 0 && aCoverSide < 6) && (mCoverSides[aCoverSide] == aCoverID)) {
+            setCoverDataAtSide(aCoverSide, aCoverData);
+            if (isClientSide())
+                getCoverBehaviorAtSideNew(aCoverSide).onDataChanged(aCoverSide, aCoverID, aCoverData, this);
+        }
+    }
+
+    protected void sendCoverDataIfNeeded() {
+        int mCoverNeedUpdateLength = mCoverNeedUpdate.length;
+        for (byte i = 0; i < mCoverNeedUpdateLength; i++) {
+            if (mCoverNeedUpdate[i]) {
+                NW.sendPacketToAllPlayersInRange(
+                        worldObj,
+                        new GT_Packet_SendCoverData(
+                                i, getCoverIDAtSide(i), getComplexCoverDataAtSide(i), this),
+                        xCoord, zCoord
+                );
+                mCoverNeedUpdate[i] = false;
+            }
+        }
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        final NBTTagCompound tag = accessor.getNBTData();
+        final int side = (byte)accessor.getSide().ordinal();
+        final String filterKey = "filterInfo" + side;
+        
+        if (tag.hasKey(filterKey)) {
+            currenttip.add(tag.getString(filterKey));
+        }
+        
+        // No super implementation
+        // super.getWailaBody(itemStack, currenttip, accessor, config);
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y, int z) {
+        // No super implementation
+        // super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        for(byte side=0 ; side < 6 ; side++) {
+            if(getCoverBehaviorAtSideNew(side) instanceof GT_Cover_Fluidfilter) {
+                tag.setString("filterInfo" + side, getCoverBehaviorAtSideNew(side).getDescription(side, getCoverIDAtSide(side), getComplexCoverDataAtSide(side), this));
+            }
+        }
     }
 
 }

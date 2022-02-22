@@ -9,7 +9,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 
 /**
  * Made for static imports, this Class is just a Helper.
@@ -302,6 +304,8 @@ public class GT_Values {
 
     public static boolean debugChunkloaders = false;
     public static boolean cls_enabled;
+    public static final Set<String> mCTMEnabledBlock = new HashSet<>();
+    public static final Set<String> mCTMDisabledBlock = new HashSet<>();
     
     public static boolean hideAssLineRecipes = false;
     public static boolean updateFluidDisplayItems = true;

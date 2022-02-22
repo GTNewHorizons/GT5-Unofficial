@@ -5,6 +5,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_MonsterRepellent;
 import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent.CheckSpawn;
@@ -22,9 +23,15 @@ public class GT_SpawnEventHandler {
 
     @SubscribeEvent
     public void denyMobSpawn(CheckSpawn event) {
+        if (event.entityLiving instanceof EntitySlime && !(((EntitySlime) event.entityLiving).getCustomNameTag().length() > 0)) {
+            ((EntitySlime) event.entityLiving).setCustomNameTag("DoNotSpawnSlimes");
+            if(event.getResult() == Event.Result.ALLOW) event.setResult(Event.Result.DEFAULT);
+        }
+
         if (event.getResult() == Event.Result.ALLOW) {
             return;
         }
+
         if (event.entityLiving.isCreatureType(EnumCreatureType.monster, false)) {
             for (int[] rep : mobReps) {
                 if (rep[3] == event.entity.worldObj.provider.dimensionId) {
