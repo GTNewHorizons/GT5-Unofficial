@@ -2,7 +2,7 @@ package gregtech.common.covers;
 
 import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.network.ByteBufUtils;
-import gregtech.api.GregTech_API;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.render.TextureFactory;
@@ -107,9 +107,11 @@ public abstract class GT_Cover_FacadeBase extends GT_CoverBehaviorBase<GT_Cover_
 
     @Override
     protected ITexture getSpecialCoverTextureImpl(byte aSide, int aCoverID, FacadeData aCoverVariable, ICoverable aTileEntity) {
-        if (GT_Utility.isStackInvalid(aCoverVariable.mStack)) return null;
+        if (GT_Utility.isStackInvalid(aCoverVariable.mStack)) return Textures.BlockIcons.ERROR_RENDERING[0];
         Block block = getTargetBlock(aCoverVariable.mStack);
-        if (block == null) return null;
+        if (block == null) return Textures.BlockIcons.ERROR_RENDERING[0];
+        // TODO: change this when *someone* made the block render in both pass
+        if (block.getRenderBlockPass() != 0) return Textures.BlockIcons.ERROR_RENDERING[0];
         return TextureFactory.builder().setFromBlock(block, getTargetMeta(aCoverVariable.mStack)).useWorldCoord().setFromSide(ForgeDirection.getOrientation(aSide)).build();
     }
 
