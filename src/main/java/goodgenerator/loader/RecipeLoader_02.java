@@ -1385,6 +1385,35 @@ public class RecipeLoader_02 {
             );
         }
 
+        GT_Values.RA.addMultiblockChemicalRecipe(
+            new ItemStack[]{
+                Materials.Antimony.getDust(8),
+                GT_Utility.getIntegratedCircuit(24)
+            },
+            new FluidStack[]{
+                MyMaterial.ether.getFluidOrGas(1000),
+                Materials.Fluorine.getGas(40000),
+                Materials.Ice.getSolid(8000)
+            },
+            new FluidStack[]{
+                MyMaterial.antimonyPentafluorideSolution.getFluidOrGas(8000)
+            },
+            null,
+            800,
+            7680
+        );
+
+        GT_Values.RA.addUniversalDistillationRecipe(
+            MyMaterial.antimonyPentafluorideSolution.getFluidOrGas(4000),
+            new FluidStack[]{
+                MyMaterial.antimonyPentafluoride.getFluidOrGas(4000),
+                MyMaterial.ether.getFluidOrGas(500)
+            },
+            null,
+            100,
+            120
+        );
+
     }
 
     public static void InitLoadRecipe() {

@@ -1268,6 +1268,17 @@ public class MyMaterial implements Runnable {
             new Pair<>(BlackPlutonium, 1)
     );
 
+    public static final Werkstoff antimonyPentafluorideSolution = new Werkstoff(
+        new short[]{0x16,0xd5,0xe2},
+        "Antimony Pentafluoride Solution",
+        subscriptNumbers("SbF5"),
+        new Werkstoff.Stats(),
+        Werkstoff.Types.MIXTURE,
+        new Werkstoff.GenerationFeatures().disable().addCells(),
+        OffsetID + 106,
+        TextureSet.SET_FLUID
+    );
+
     @Override
     public void run() { }
 }

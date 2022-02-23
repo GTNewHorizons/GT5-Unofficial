@@ -128,7 +128,7 @@ public class NaquadahReworkRecipeLoader {
         );
 
         GT_Values.RA.addChemicalRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Quicklime, 60),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Quicklime, 40),
                 null,
                 fluorineRichWasteLiquid.getFluidOrGas(1500),
                 wasteLiquid.getFluidOrGas(1000),
@@ -480,7 +480,7 @@ public class NaquadahReworkRecipeLoader {
                 GT_Utility.getIntegratedCircuit(2),
                 Materials.Nitrogen.getGas(1000),
                 null,
-                Materials.Naquadah.getNuggets(3),
+                Materials.Naquadah.getNuggets(1),
                 null,
                 2400,
                 7680,
