@@ -22,6 +22,7 @@
 
 package com.github.bartimaeusnek.bartworks.common.items;
 
+import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
 import com.github.bartimaeusnek.bartworks.API.ITileAddsInformation;
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.common.blocks.BW_GlasBlocks;
@@ -69,8 +70,10 @@ public class BW_ItemBlocks extends ItemBlock {
     @SideOnly(Side.CLIENT)
     @SuppressWarnings("unchecked")
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
-        if (this.field_150939_a instanceof BW_GlasBlocks)
-            aList.add(StatCollector.translateToLocal("tooltip.glas.0.name") + " " + BW_ColorUtil.getColorForTier(BW_Util.getTierFromGlasMeta(aStack.getItemDamage())) + GT_Values.VN[BW_Util.getTierFromGlasMeta(aStack.getItemDamage())]);
+        byte tier = BorosilicateGlass.getTier(this.field_150939_a, aStack.getItemDamage());
+        if (tier >= 0) {
+            aList.add(StatCollector.translateToLocal("tooltip.glas.0.name") + " " + BW_ColorUtil.getColorForTier(tier) + GT_Values.VN[tier]);
+        }
         if (this.field_150939_a instanceof ITileAddsInformation) {
             aList.addAll(Arrays.asList(((ITileAddsInformation) this.field_150939_a).getInfoData()));
         }

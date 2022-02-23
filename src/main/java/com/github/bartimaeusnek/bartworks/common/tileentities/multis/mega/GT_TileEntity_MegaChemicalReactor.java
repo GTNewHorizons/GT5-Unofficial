@@ -22,9 +22,9 @@
 
 package com.github.bartimaeusnek.bartworks.common.tileentities.multis.mega;
 
+import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
 import com.github.bartimaeusnek.bartworks.API.LoaderReference;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
-import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
 import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import com.github.bartimaeusnek.bartworks.util.MegaUtils;
@@ -33,20 +33,15 @@ import com.github.bartimaeusnek.crossmod.tectech.TecTechEnabledMulti;
 import com.github.bartimaeusnek.crossmod.tectech.helper.TecTechUtils;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeChemicalReactor;
-import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -55,13 +50,19 @@ import java.util.List;
 
 import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.getMultiOutput;
 import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.handleParallelRecipe;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GT_Values.V;
-import static gregtech.api.util.GT_StructureUtility.*;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 
 @Optional.Interface(iface = "com.github.bartimaeusnek.crossmod.tectech.TecTechEnabledMulti", modid = "tectech", striprefs = true)
 public class GT_TileEntity_MegaChemicalReactor extends GT_MetaTileEntity_LargeChemicalReactor implements TecTechEnabledMulti {
+    private final ArrayList<?> TTTunnels = new ArrayList<>();
+    private final ArrayList<?> TTMultiAmp = new ArrayList<>();
+
+    private byte glasTier;
 
     public GT_TileEntity_MegaChemicalReactor(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -98,11 +99,6 @@ public class GT_TileEntity_MegaChemicalReactor extends GT_MetaTileEntity_LargeCh
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_TileEntity_MegaChemicalReactor(this.mName);
     }
-
-    @SuppressWarnings("rawtypes")
-    public ArrayList TTTunnels = new ArrayList<>();
-    @SuppressWarnings("rawtypes")
-    public ArrayList TTMultiAmp = new ArrayList<>();
 
     @Override
     public boolean addEnergyInputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
@@ -207,7 +203,7 @@ public class GT_TileEntity_MegaChemicalReactor extends GT_MetaTileEntity_LargeCh
             return false;
         }
 
-        if (this.glasTier != 8 && !this.mEnergyHatches.isEmpty()) {
+        if (this.glasTier < 8 && !this.mEnergyHatches.isEmpty()) {
             for (GT_MetaTileEntity_Hatch_Energy hatchEnergy : this.mEnergyHatches) {
                 if (this.glasTier < hatchEnergy.mTier) {
                     return false;
@@ -234,49 +230,19 @@ public class GT_TileEntity_MegaChemicalReactor extends GT_MetaTileEntity_LargeCh
             .addElement('d', ofChain(
                     ofHatchAdder(GT_TileEntity_MegaChemicalReactor::addInputToMachineList, CASING_INDEX, 1),
                     ofHatchAdder(GT_TileEntity_MegaChemicalReactor::addOutputToMachineList, CASING_INDEX, 1),
-                    onElementPass(GT_TileEntity_MegaChemicalReactor::onCasingAdded, ofBlock(GregTech_API.sBlockCasings8, 0))
+                    ofBlock(GregTech_API.sBlockCasings8, 0)
             ))
-            .addElement('r', ofChain(
-                    ofHatchAdder(GT_TileEntity_MegaChemicalReactor::addMaintenanceToMachineList, CASING_INDEX, 2)
-            ))
-            .addElement('e', ofChain(
-                    ofHatchAdder(GT_TileEntity_MegaChemicalReactor::addEnergyInputToMachineList, CASING_INDEX, 3),
-                    onElementPass(GT_TileEntity_MegaChemicalReactor::onCasingAdded, ofBlock(GregTech_API.sBlockCasings8, 0))
-            ))
-            .addElement('c', ofChain(
-                    ofBlock(GregTech_API.sBlockCasings4, 7)
-            ))
-            .addElement('g', ofChain(
-                    ofBlockAdder(GT_TileEntity_MegaChemicalReactor::addGlas, ItemRegistry.bw_glasses[0], 1)
-            ))
+            .addElement('r', ofHatchAdder(GT_TileEntity_MegaChemicalReactor::addMaintenanceToMachineList, CASING_INDEX, 2))
+            .addElement('e', ofHatchAdderOptional(GT_TileEntity_MegaChemicalReactor::addEnergyInputToMachineList, CASING_INDEX, 3, GregTech_API.sBlockCasings8, 0))
+            .addElement('c', ofBlock(GregTech_API.sBlockCasings4, 7))
+            .addElement('g', BorosilicateGlass.ofBoroGlass((byte) 0, (byte) 1, Byte.MAX_VALUE, (te, t) -> te.glasTier = t, te -> te.glasTier))
             .build();
 
-    private int mCasingAmount;
 
-
-
+    @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public IStructureDefinition<GT_MetaTileEntity_LargeChemicalReactor> getStructureDefinition() {
         return (IStructureDefinition) STRUCTURE_DEFINITION;
-    }
-
-    private void onCasingAdded() {
-        mCasingAmount++;
-    }
-
-    private byte glasTier;
-
-    private boolean addGlas(Block block, int meta) {
-        if (block != ItemRegistry.bw_glasses[0]) {
-            return false;
-        }
-        byte tier = BW_Util.getTierFromGlasMeta(meta);
-        if (tier >= 8) tier = 8;
-        if (glasTier > 0) {
-            return tier == glasTier;
-        }
-        glasTier = tier;
-        return true;
     }
 
     @Override

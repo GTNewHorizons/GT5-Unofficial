@@ -296,6 +296,9 @@ public class BWCoreTransformer implements IClassTransformer {
                             toPatch.instructions.add(new VarInsnNode(ALOAD,2));
                             toPatch.instructions.add(new MethodInsnNode(INVOKESTATIC,"com/github/bartimaeusnek/bartworks/ASM/BWCoreStaticReplacementMethodes","findCachedMatchingRecipe","(Lnet/minecraft/inventory/InventoryCrafting;Lnet/minecraft/world/World;)Lnet/minecraft/item/ItemStack;",false));
                             toPatch.instructions.add(new InsnNode(ARETURN));
+                            toPatch.localVariables.clear();
+                            toPatch.maxStack = 2;
+                            toPatch.maxLocals = 3;
                             break scase;
                         }
                     }

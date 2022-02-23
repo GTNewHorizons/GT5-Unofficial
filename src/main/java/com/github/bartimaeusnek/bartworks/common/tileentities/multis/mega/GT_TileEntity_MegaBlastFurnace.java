@@ -22,6 +22,7 @@
 
 package com.github.bartimaeusnek.bartworks.common.tileentities.multis.mega;
 
+import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
 import com.github.bartimaeusnek.bartworks.API.LoaderReference;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
@@ -77,7 +78,7 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_MetaTileEntity_ElectricBl
             .addElement('t', ofHatchAdderOptional(GT_TileEntity_MegaBlastFurnace::addOutputHatchToTopList, CASING_INDEX, 1, GregTech_API.sBlockCasings1, CASING_INDEX))
             .addElement('m', ofHatchAdder(GT_TileEntity_MegaBlastFurnace::addMufflerToMachineList, CASING_INDEX, 2))
             .addElement('C', ofCoil(GT_TileEntity_MegaBlastFurnace::setCoilLevel, GT_MetaTileEntity_ElectricBlastFurnace::getCoilLevel))
-            .addElement('g', ofBlockAdder(GT_TileEntity_MegaBlastFurnace::addGlas, ItemRegistry.bw_glasses[0], 1))
+            .addElement('g', BorosilicateGlass.ofBoroGlass((byte) 0, (byte) 1, Byte.MAX_VALUE, (te, t) -> te.glasTier = t, te -> te.glasTier))
             .addElement('b', ofHatchAdderOptional(GT_TileEntity_MegaBlastFurnace::addBottomHatch, CASING_INDEX, 3, GregTech_API.sBlockCasings1, CASING_INDEX))
             .build();
 
@@ -163,9 +164,7 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_MetaTileEntity_ElectricBl
         return tt;
     }
 
-    @SuppressWarnings("rawtypes")
     public ArrayList<Object> TTTunnels = new ArrayList<>();
-    @SuppressWarnings("rawtypes")
     public ArrayList<Object> TTMultiAmp = new ArrayList<>();
 
     @Override
@@ -455,17 +454,6 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_MetaTileEntity_ElectricBl
         buildPiece("main", stackSize, hintsOnly, 7, 17, 0);
     }
 
-    private boolean addGlas(Block block, int meta) {
-        if (block != ItemRegistry.bw_glasses[0])
-            return false;
-        byte tier = BW_Util.getTierFromGlasMeta(meta);
-        if (tier >= 8) tier = 8;
-        if (glasTier > 0)
-            return tier == glasTier;
-        glasTier = tier;
-        return true;
-    }
-
     @Override
     public boolean checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
         if (LoaderReference.tectech) {
@@ -489,11 +477,11 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_MetaTileEntity_ElectricBl
         if (mMaintenanceHatches.size() != 1)
             return false;
 
-        if (LoaderReference.tectech && this.glasTier != 8)
+        if (LoaderReference.tectech && this.glasTier < 8)
             if (!areLazorsLowPowa() || areThingsNotProperlyTiered(this.getTecTechEnergyTunnels()) || areThingsNotProperlyTiered(this.getTecTechEnergyMultis()))
                 return false;
 
-        if (this.glasTier != 8 && !this.mEnergyHatches.isEmpty())
+        if (this.glasTier < 8 && !this.mEnergyHatches.isEmpty())
             for (GT_MetaTileEntity_Hatch_Energy hatchEnergy : this.mEnergyHatches)
                 if (this.glasTier < hatchEnergy.mTier)
                     return false;

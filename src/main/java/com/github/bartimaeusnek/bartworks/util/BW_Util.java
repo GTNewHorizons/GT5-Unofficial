@@ -23,6 +23,7 @@
 package com.github.bartimaeusnek.bartworks.util;
 
 import com.github.bartimaeusnek.bartworks.API.BioVatLogicAdder;
+import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
 import com.github.bartimaeusnek.bartworks.MainMod;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreDictNames;
@@ -325,6 +326,10 @@ public class BW_Util {
         return 0;
     }
 
+    /**
+     * @deprecated Use stuff in {@link com.github.bartimaeusnek.bartworks.API.BorosilicateGlass} instead
+     */
+    @Deprecated
     public static byte getTierFromGlasMeta(int meta) {
         byte ret;
         switch (meta) {
@@ -585,24 +590,9 @@ public class BW_Util {
 
     public static byte calculateGlassTier(@Nonnull Block block, @Nonnegative byte meta) {
 
-        if (bw_realglasRef == null){
-            try {
-                bw_realglasRef = (Block) Class.forName("com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry").getField("bw_realglas").get(null);
-            } catch (IllegalAccessException | NoSuchFieldException | ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-
-        if (block.equals(bw_realglasRef)) {
-            if (meta > 12) {
-                return (byte) (meta - 3);
-            }
-            if (meta == 12)
-                return 5;
-            if (meta > 1 && meta < 6)
-                return (byte) (meta + 3);
-            return 4;
-        }
+        byte boroTier = BorosilicateGlass.getTier(block, meta);
+        if (boroTier < 0)
+            return boroTier;
 
         if (block.getUnlocalizedName().equals("blockAlloyGlass"))
             return 4;
