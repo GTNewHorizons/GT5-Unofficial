@@ -45,6 +45,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -175,7 +176,7 @@ public class GT_TileEntity_CircuitAssemblyLine extends GT_MetaTileEntity_Enhance
             if (!this.imprintMachine(itemStack))
                 return false;
 
-        if (this.bufferedRecipe != null && this.bufferedRecipe.isRecipeInputEqual(true,false, BW_Util.getFluidsFromInputHatches(this), BW_Util.getItemsFromInputBusses(this))) {
+        if (this.bufferedRecipe != null && this.bufferedRecipe.isRecipeInputEqual(true,false, BW_Util.getFluidsFromInputHatches(this), getStoredInputs().toArray(new ItemStack[0]))) {
             setRecipeStats();
             return true;
         }
@@ -194,7 +195,7 @@ public class GT_TileEntity_CircuitAssemblyLine extends GT_MetaTileEntity_Enhance
         }
 
         for (GT_Recipe recipe : this.GT_RECIPE_COLLECTION) {
-            if (recipe.isRecipeInputEqual(true,false, BW_Util.getFluidsFromInputHatches(this), BW_Util.getItemsFromInputBusses(this)))
+            if (recipe.isRecipeInputEqual(true,false, BW_Util.getFluidsFromInputHatches(this), getStoredInputs().toArray(new ItemStack[0])))
                 this.bufferedRecipe = recipe;
             else
                 continue;
@@ -219,6 +220,23 @@ public class GT_TileEntity_CircuitAssemblyLine extends GT_MetaTileEntity_Enhance
     }
 
     @Override
+    public ArrayList<ItemStack> getStoredInputs() {
+        ArrayList<ItemStack> rList = new ArrayList<>();
+        for (GT_MetaTileEntity_Hatch_InputBus tHatch : mInputBusses) {
+            tHatch.mRecipeMap = getRecipeMap();
+            if (isValidMetaTileEntity(tHatch)) {
+                for (int i = 0; i < tHatch.getBaseMetaTileEntity().getSizeInventory(); i++) {
+                    if (tHatch.getBaseMetaTileEntity().getStackInSlot(i) != null) {
+                        rList.add(tHatch.getBaseMetaTileEntity().getStackInSlot(i));
+                        break;
+                    }
+                }
+            }
+        }
+        return rList;
+    }
+
+    @Override
     public boolean addInputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null) {
             return false;
@@ -228,7 +246,7 @@ public class GT_TileEntity_CircuitAssemblyLine extends GT_MetaTileEntity_Enhance
                 ((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
                 ((GT_MetaTileEntity_Hatch_Input)aMetaTileEntity).mRecipeMap = this.getRecipeMap();
                 return this.mInputHatches.add((GT_MetaTileEntity_Hatch_Input)aMetaTileEntity);
-            } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus && ((GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity).mTier == 0) {
+            } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus) {
                 ((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
                 ((GT_MetaTileEntity_Hatch_InputBus)aMetaTileEntity).mRecipeMap = this.getRecipeMap();
                 return this.mInputBusses.add((GT_MetaTileEntity_Hatch_InputBus)aMetaTileEntity);
@@ -283,7 +301,7 @@ public class GT_TileEntity_CircuitAssemblyLine extends GT_MetaTileEntity_Enhance
     private static final String[] DESCRIPTION = new String[]{
             "Circuit Assembly Line", "Size(WxHxD): (2-7)x3x3, variable length",
             "Bottom: Steel Machine Casing(or 1x Maintenance or Input Hatch),",
-            "ULV Input Bus (Last Output Bus), Steel Machine Casing",
+            "Input Bus (Last Output Bus), Steel Machine Casing",
             "Middle: EV+ Tier Glass, Assembling Line Casing, EV+ Tier Glass",
             "Top: Grate Machine Casing (or Controller or 1x Energy Hatch)",
             "Up to 7 repeating slices, last is Output Bus",
