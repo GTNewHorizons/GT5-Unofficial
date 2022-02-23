@@ -1,7 +1,5 @@
 package gregtech.api.enums;
 
-import net.minecraft.util.EnumChatFormatting;
-
 public enum HeatingCoilLevel {
         None, //                       0
         ULV,  //Not implemented      901
@@ -16,23 +14,13 @@ public enum HeatingCoilLevel {
         UHV,  //TRINIUM             9001
         UEV,  //ELECTRUMFLUX        9901
         UIV,  //AWAKENEDDRACONIUM  10801
-        //Not Implemented yet
-        UMV,
-        UXV,
-        OpV,
-        MAX,
+        UMV,  //INFINITY		   11701
+        UXV,  //HYPOGEN 		   12601
+        MAX,  //ETERNAL			   13501
         ;
 
+	
         private static final HeatingCoilLevel[] VALUES = values();
-
-        /**
-         * @return the Coils Tier Name
-         */
-        public String getTierName() {
-            if (this.ordinal() < 1 || (this.ordinal()-1) >= GT_Values.VN.length)
-                return "ERROR!";
-            return GT_Values.TIER_COLORS[this.ordinal() - 1] + GT_Values.VOLTAGE_NAMES[this.ordinal() - 1] + EnumChatFormatting.RESET;
-        }
 
         /**
          * @return the coil heat, used for recipes in the Electronic Blast Furnace for example

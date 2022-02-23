@@ -127,8 +127,7 @@ public class GT_Values {
                     "High Voltage", "Extreme Voltage", "Insane Voltage",
                     "Ludicrous Voltage", "ZPM Voltage", "Ultimate Voltage",
                     "Ultimate High Voltage", "Ultimate Extreme Voltage", "Ultimate Insane Voltage",
-                    "Ultimate Mega Voltage", "Ultimate Extended Mega Voltage", "Overpowered Voltage",
-                    "Maximum Voltage"};
+                    "Ultimate Mega Voltage", "Ultimate Extended Mega Voltage", "Maximum Voltage", "Error Voltage"};
 
     public static final String[] TIER_COLORS =
             new String[]{

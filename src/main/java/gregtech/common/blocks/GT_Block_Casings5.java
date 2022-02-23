@@ -33,7 +33,11 @@ public class GT_Block_Casings5 extends GT_Block_Casings_Abstract implements IHea
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "Awakened Draconium Coil Block");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "HSS-S Coil Block");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Trinium Coil Block");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name", "Infinity Coil Block");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "Hypogen Coil Block");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".13.name", "Eternal Coil Block");
 
+        
         ItemList.Casing_Coil_Cupronickel.set(new ItemStack(this, 1, 0));
         ItemList.Casing_Coil_Kanthal.set(new ItemStack(this, 1, 1));
         ItemList.Casing_Coil_Nichrome.set(new ItemStack(this, 1, 2));
@@ -45,6 +49,9 @@ public class GT_Block_Casings5 extends GT_Block_Casings_Abstract implements IHea
         ItemList.Casing_Coil_AwakenedDraconium.set(new ItemStack(this, 1, 8));
         ItemList.Casing_Coil_HSSS.set(new ItemStack(this, 1, 9));
         ItemList.Casing_Coil_Trinium.set(new ItemStack(this, 1, 10));
+        ItemList.Casing_Coil_Infinity.set(new ItemStack(this, 1, 11));
+        ItemList.Casing_Coil_Hypogen.set(new ItemStack(this, 1, 12));
+        ItemList.Casing_Coil_Eternal.set(new ItemStack(this, 1, 13));
     }
 
     @Override
@@ -73,6 +80,12 @@ public class GT_Block_Casings5 extends GT_Block_Casings_Abstract implements IHea
                 return Textures.BlockIcons.MACHINE_COIL_HSSS.getIcon();
             case 10:
                 return Textures.BlockIcons.MACHINE_COIL_TRINIUM.getIcon();
+            case 11:
+                return Textures.BlockIcons.MACHINE_COIL_INFINITY.getIcon();
+            case 12:
+                return Textures.BlockIcons.MACHINE_COIL_HYPOGEN.getIcon();
+            case 13:
+                return Textures.BlockIcons.MACHINE_COIL_ETERNAL.getIcon();
         }
         return Textures.BlockIcons.MACHINE_COIL_CUPRONICKEL.getIcon();
     }
@@ -103,6 +116,12 @@ public class GT_Block_Casings5 extends GT_Block_Casings_Abstract implements IHea
                 return LuV;
             case 10:
                 return UHV;
+            case 11:
+                return UMV;
+            case 12:
+                return UXV;
+            case 13:
+                return MAX;
             default:
                 return None;
         }
@@ -132,10 +151,18 @@ public class GT_Block_Casings5 extends GT_Block_Casings_Abstract implements IHea
                 return 9;
             case UHV:
                 return 10;
+            case UMV:
+                return 11;
+            case UXV:
+                return 12;
+            case MAX:
+                return 13;
             default:
                 return 0;
         }
     }
+    
+    
 
     @Override
     public HeatingCoilLevel getCoilHeat(int meta) {

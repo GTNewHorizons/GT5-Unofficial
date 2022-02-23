@@ -59,6 +59,9 @@ dependencies {
     compileOnly("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev") {
         transitive = false
     }
+    compileOnly("com.github.GTNewHorizons:Avaritia:1.22:dev") {
+        transitive = false
+    }
     compileOnly("com.google.auto.value:auto-value-annotations:1.8.2") {
         transitive = false
     }

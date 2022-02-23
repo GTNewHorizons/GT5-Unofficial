@@ -13,6 +13,7 @@ import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
 import cpw.mods.fml.client.event.ConfigChangedEvent;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent;
@@ -37,14 +38,7 @@ import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.common.entities.GT_Entity_Arrow;
 import gregtech.common.entities.GT_Entity_Arrow_Potion;
 import gregtech.common.net.MessageUpdateFluidDisplayItem;
-import gregtech.common.render.GT_CapeRenderer;
-import gregtech.common.render.GT_FlaskRenderer;
-import gregtech.common.render.GT_FluidDisplayStackRenderer;
-import gregtech.common.render.GT_MetaGenerated_Item_Renderer;
-import gregtech.common.render.GT_MetaGenerated_Tool_Renderer;
-import gregtech.common.render.GT_PollutionRenderer;
-import gregtech.common.render.GT_Renderer_Block;
-import gregtech.common.render.GT_Renderer_Entity_Arrow;
+import gregtech.common.render.*;
 import gregtech.loaders.preload.GT_PreLoad;
 import ic2.api.tile.IWrenchable;
 import net.minecraft.block.Block;
@@ -53,6 +47,7 @@ import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatFileWriter;
 import net.minecraft.tileentity.TileEntity;
@@ -450,32 +445,28 @@ public class GT_Client extends GT_Proxy
     @Override
     public void onPostLoad() {
         super.onPostLoad();
+        
         try {
-            label0:
-            for (int i = 1; i < GregTech_API.METATILEENTITIES.length; i++)
-                do {
-                    if (i >= GregTech_API.METATILEENTITIES.length)
-                        continue label0;
-                    if (GregTech_API.METATILEENTITIES[i] != null) {
+            for (int i = 1; i < GregTech_API.METATILEENTITIES.length; i++) {
+                try {
+                	if (GregTech_API.METATILEENTITIES[i] != null) {
                         GregTech_API.METATILEENTITIES[i].getStackForm(1L).getTooltip(null, true);
                         GT_Log.out.println("META " + i + " " + GregTech_API.METATILEENTITIES[i].getMetaName());
                     }
-                    i++;
-                } while (true);
+                }
+                catch (Throwable e) {
+                    e.printStackTrace(GT_Log.err);
+                }
+            }
         } catch (Throwable e) {
             e.printStackTrace(GT_Log.err);
         }
 
+        if (Loader.isModLoaded("Avaritia")) {
+            CosmicItemRendererGT.registerItemWithMeta(Item.getItemFromBlock( GregTech_API.sBlockCasings5), 14);
+            CosmicItemRendererGT.init();
+        }
 
-//        super.onPostLoad();
-//
-//            for (int i = 1; i < GregTech_API.METATILEENTITIES.length; i++) {
-//              try {
-//                for (; i < GregTech_API.METATILEENTITIES.length; i++) if (GregTech_API.METATILEENTITIES[i] != null) GregTech_API.METATILEENTITIES[i].getStackForm(1L).getTooltip(null, true);
-//              } catch (Throwable e) {
-//                e.printStackTrace(GT_Log.err);
-//              }
-//            }
     }
 
     @Override
