@@ -374,13 +374,13 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_MultiBlock
 		capacity = BigInteger.ZERO;
 		for(int i = 0; i < capacitors.length; i++) {	
 			switch(i) {
-			case 0: capacity = capacity.add(BigInteger.valueOf(100000000L).multiply(BigInteger.valueOf(capacitors[i]))); break;
-			case 1: capacity = capacity.add(BigInteger.valueOf(1000000000L).multiply(BigInteger.valueOf(capacitors[i]))); break;
-			case 2: capacity = capacity.add(BigInteger.valueOf(10000000000L).multiply(BigInteger.valueOf(capacitors[i]))); break;
-			case 3: capacity = capacity.add(BigInteger.valueOf(100000000000L).multiply(BigInteger.valueOf(capacitors[i]))); break;
+			case 0: capacity = capacity.add(BigInteger.valueOf(400000000L).multiply(BigInteger.valueOf(capacitors[i]))); break;
+			case 1: capacity = capacity.add(BigInteger.valueOf(4000000000L).multiply(BigInteger.valueOf(capacitors[i]))); break;
+			case 2: capacity = capacity.add(BigInteger.valueOf(40000000000L).multiply(BigInteger.valueOf(capacitors[i]))); break;
+			case 3: capacity = capacity.add(BigInteger.valueOf(400000000000L).multiply(BigInteger.valueOf(capacitors[i]))); break;
 			case 4: capacity = capacity.add(MAX_LONG.multiply(BigInteger.valueOf(capacitors[i]))); break;
 			case 5: break;
-			case 6: capacity = capacity.add(BigInteger.valueOf(10000000L).multiply(BigInteger.valueOf(capacitors[i]))); break;
+			case 6: capacity = capacity.add(BigInteger.valueOf(40000000L).multiply(BigInteger.valueOf(capacitors[i]))); break;
 			default: break; 
 			}
 		}
