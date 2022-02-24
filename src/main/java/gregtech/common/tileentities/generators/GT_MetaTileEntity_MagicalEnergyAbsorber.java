@@ -392,15 +392,17 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
             }
         }
         if (isDisenchantableItem(tStack)) {
-            EnchantmentHelper.setEnchantments(new HashMap(), tStack);
             tEU = tEU * getEfficiency() / 100;
-        } else if (isEnchantedBook(tStack)) {
-            tStack = new ItemStack(Items.book, 1);
         }
 
         // Only consume input if can store EU and push output
         if ((getBaseMetaTileEntity().getStoredEU() + tEU) < getBaseMetaTileEntity().getEUCapacity()
                 && getBaseMetaTileEntity().addStackToSlot(getOutputSlot(), tStack)) {
+            if (isDisenchantableItem(tStack)) {
+                EnchantmentHelper.setEnchantments(new HashMap(), tStack);
+            } else if (isEnchantedBook(tStack)) {
+                tStack = new ItemStack(Items.book, 1);
+            }
             decrStackSize(getInputSlot(), 1);
         } else {
             tEU = 0;
