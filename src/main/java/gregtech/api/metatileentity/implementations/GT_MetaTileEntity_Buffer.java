@@ -271,26 +271,33 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
         return false;
     }
 
+    protected void handleRedstoneOutput(IGregTechTileEntity aBaseMetaTileEntity) {
+        if (bRedstoneIfFull) {
+            boolean hasEmptySlots = false;
+            for (int i = 0; i < mInventory.length; i++) {
+                if (isValidSlot(i) && mInventory[i] == null) {
+                    hasEmptySlots = true;
+                    break;
+                }
+            }
+            if (bInvert)
+                hasEmptySlots = !hasEmptySlots;
+            for (byte b = 0; b < 6; b++)
+                aBaseMetaTileEntity.setInternalOutputRedstoneSignal(b, hasEmptySlots ? (byte) 0 : (byte) 15);
+        }
+        else {
+            for(byte b = 0;b<6;b++)
+                aBaseMetaTileEntity.setInternalOutputRedstoneSignal(b, (byte)0);
+        }
+    }
+
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
         if (aBaseMetaTileEntity.isAllowedToWork() && aBaseMetaTileEntity.isServerSide() && (aBaseMetaTileEntity.hasWorkJustBeenEnabled() || aBaseMetaTileEntity.hasInventoryBeenModified() || aTimer % 200 == 0 || mSuccess > 0)) {
             mSuccess--;
             updateSlots();
             moveItems(aBaseMetaTileEntity, aTimer);
-            for(byte b = 0;b<6;b++)
-            	aBaseMetaTileEntity.setInternalOutputRedstoneSignal(b,bInvert ? (byte)15 : (byte)0);
-            if (bRedstoneIfFull) {
-                for(byte b = 0;b<6;b++)
-                    aBaseMetaTileEntity.setInternalOutputRedstoneSignal(b,bInvert ? (byte)0 : (byte)15);
-                for (int i = 0; i < mInventory.length; i++)
-                    if (isValidSlot(i)) {
-                        if (mInventory[i] == null) {
-                            for(byte b = 0;b<6;b++)
-                                aBaseMetaTileEntity.setInternalOutputRedstoneSignal(b,bInvert ? (byte)15 : (byte)0);
-                            break;
-                        }
-                    }
-            }
+            handleRedstoneOutput(aBaseMetaTileEntity);
         }
     }
 

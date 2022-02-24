@@ -90,4 +90,22 @@ public class GT_MetaTileEntity_Filter extends GT_MetaTileEntity_Buffer {
         }
         return GT_Utility.areStacksEqual(this.mInventory[(aIndex + 9)], aStack, this.bIgnoreNBT);
     }
+
+    @Override
+    protected void handleRedstoneOutput(IGregTechTileEntity aBaseMetaTileEntity) {
+        if (bRedstoneIfFull) {
+            int emptySlots = 0;
+            for (int i = 0; i < 9; i++) {
+                if (mInventory[i] == null)
+                    ++emptySlots;
+            }
+            if (!bInvert)
+                emptySlots = 9 - emptySlots;
+            for (byte b = 0; b < 6; b++)
+                aBaseMetaTileEntity.setInternalOutputRedstoneSignal(b, (byte) emptySlots);
+        }
+        else
+            for (byte b = 0; b < 6; b++)
+                aBaseMetaTileEntity.setInternalOutputRedstoneSignal(b, (byte) 0);
+    }
 }
