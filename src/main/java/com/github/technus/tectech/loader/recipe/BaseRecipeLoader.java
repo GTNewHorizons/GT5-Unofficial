@@ -44,8 +44,8 @@ public class BaseRecipeLoader {
         // Recipes init - common goes here rest goes into methods below
         // ===================================================================================================
 
-        for(int i=1;i<=24;i++) {
-            RA.addAssemblerRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(i),
+        for(int i=0;i<=16;i++) {
+            RA.addAssemblerRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(i+1),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cobalt, 1)},
                     Materials.Aluminium.getMolten(864),
                     new ItemStack(StructureLibAPI.getBlockHint(), 1, i), 32, 120);
