@@ -4036,6 +4036,9 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addArcFurnaceRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.beta", 1L, 0), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Iron,2L)},null,150,90);
         GT_Values.RA.addArcFurnaceRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.beta", 1L, 1), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Iron,1L), GT_OreDictUnificator.get(OrePrefixes.dustSmall,Materials.Glass, 3)},null,150,90);
         GT_Values.RA.addArcFurnaceRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.beta", 1L, 2), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Bronze,12L), GT_OreDictUnificator.get(OrePrefixes.nugget,Materials.Iron, 3)},null,150,90);
+        GT_Values.RA.addFluidExtractionRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.beta", 1L, 0), GT_Values.NI, Materials.Iron.getMolten(288), 10000, 300, 60);
+        GT_Values.RA.addFluidExtractionRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.beta", 1L, 1), GT_Values.NI, Materials.Iron.getMolten(144), 10000, 300, 60);
+        GT_Values.RA.addFluidExtractionRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.beta", 1L, 2), GT_OreDictUnificator.get(OrePrefixes.nugget,Materials.Iron, 3), Materials.Bronze.getMolten(1728), 10000, 300, 60);
 
         GT_Values.RA.addPulveriserRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.beta", 1L, 13), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Steel, 2L)}, new int[]{10000}, 300, 2);
         GT_Values.RA.addPulveriserRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.beta", 1L, 14), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Steel, 1L), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3L)}, new int[]{10000, 10000}, 300, 2);
@@ -4043,6 +4046,9 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addArcFurnaceRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.beta", 1L, 13), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Steel,2L)},null,180,120);
         GT_Values.RA.addArcFurnaceRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.beta", 1L, 14), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Steel,1L), GT_OreDictUnificator.get(OrePrefixes.dustSmall,Materials.Glass, 3)},null,180,120);
         GT_Values.RA.addArcFurnaceRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.beta", 1L, 15), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Steel,39L)},null,180,120);
+        GT_Values.RA.addFluidExtractionRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.beta", 1L, 13), GT_Values.NI, Materials.Steel.getMolten(288), 10000, 400, 90);
+        GT_Values.RA.addFluidExtractionRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.beta", 1L, 14), GT_Values.NI, Materials.Steel.getMolten(144), 10000, 400, 90);
+        GT_Values.RA.addFluidExtractionRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.beta", 1L, 15), GT_Values.NI, Materials.Steel.getMolten(624), 10000, 400, 90);
 
         GT_Values.RA.addPulveriserRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.zeta", 1L, 0), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Aluminium, 2L)}, new int[]{10000}, 450, 8);
         GT_Values.RA.addPulveriserRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.zeta", 1L, 1), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Aluminium, 1L), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3L)}, new int[]{10000, 10000}, 450, 8);
@@ -4050,6 +4056,9 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addArcFurnaceRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.zeta", 1L, 0), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Aluminium,2L)},null,210,150);
         GT_Values.RA.addArcFurnaceRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.zeta", 1L, 1), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ash,12L), GT_OreDictUnificator.get(OrePrefixes.nugget,Materials.Aluminium, 3)},null,210,150);
         GT_Values.RA.addArcFurnaceRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.zeta", 1L, 2), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Aluminium,39L)},null,210,150);
+        GT_Values.RA.addFluidExtractionRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.zeta", 1L, 0), GT_Values.NI, Materials.Aluminium.getMolten(288), 10000, 500, 120);
+        GT_Values.RA.addFluidExtractionRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.zeta", 1L, 1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ash,12L), Materials.Aluminium.getMolten(48), 10000, 500, 120);
+        GT_Values.RA.addFluidExtractionRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.zeta", 1L, 2), GT_Values.NI, Materials.Aluminium.getMolten(624), 10000, 500, 120);
 
         GT_Values.RA.addPulveriserRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.zeta", 1L, 3), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.StainlessSteel, 2L)}, new int[]{10000}, 600, 16);
         GT_Values.RA.addPulveriserRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.zeta", 1L, 4), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.StainlessSteel, 1L), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3L)}, new int[]{10000, 10000}, 600, 16);
@@ -4057,6 +4066,9 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addArcFurnaceRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.zeta", 1L, 3), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.StainlessSteel,2L)},null,240,180);
         GT_Values.RA.addArcFurnaceRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.zeta", 1L, 4), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.StainlessSteel,1L), GT_OreDictUnificator.get(OrePrefixes.dustSmall,Materials.Glass, 3)},null,240,180);
         GT_Values.RA.addArcFurnaceRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.zeta", 1L, 5), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.StainlessSteel,39L)},null,240,180);
+        GT_Values.RA.addFluidExtractionRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.zeta", 1L, 3), GT_Values.NI, Materials.StainlessSteel.getMolten(288), 10000, 600, 180);
+        GT_Values.RA.addFluidExtractionRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.zeta", 1L, 4), GT_Values.NI, Materials.StainlessSteel.getMolten(144), 10000, 600, 180);
+        GT_Values.RA.addFluidExtractionRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.zeta", 1L, 5), GT_Values.NI, Materials.StainlessSteel.getMolten(624), 10000, 600, 180);
 
         GT_Values.RA.addPulveriserRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.zeta", 1L, 6), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Titanium, 2L)}, new int[]{10000}, 600, 30);
         GT_Values.RA.addPulveriserRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.zeta", 1L, 7), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Titanium, 1L), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3L)}, new int[]{10000, 10000}, 600, 30);
@@ -4064,6 +4076,9 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addArcFurnaceRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.zeta", 1L, 6), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Titanium,2L)},null,270,210);
         GT_Values.RA.addArcFurnaceRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.zeta", 1L, 7), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Titanium,1L), GT_OreDictUnificator.get(OrePrefixes.dustSmall,Materials.Glass, 3)},null,270,210);
         GT_Values.RA.addArcFurnaceRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.zeta", 1L, 8), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Titanium,39L)},null,270,210);
+        GT_Values.RA.addFluidExtractionRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.zeta", 1L, 6), GT_Values.NI, Materials.Titanium.getMolten(288), 10000, 700, 240);
+        GT_Values.RA.addFluidExtractionRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.zeta", 1L, 7), GT_Values.NI, Materials.Titanium.getMolten(144), 10000, 700, 240);
+        GT_Values.RA.addFluidExtractionRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.zeta", 1L, 8), GT_Values.NI, Materials.Titanium.getMolten(624), 10000, 700, 240);
 
         GT_Values.RA.addPulveriserRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.zeta", 1L, 9), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 2L)}, new int[]{10000}, 600, 30);
         GT_Values.RA.addPulveriserRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.zeta", 1L, 10), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 1L), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3L)}, new int[]{10000, 10000}, 600, 30);
@@ -4071,6 +4086,9 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addArcFurnaceRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.zeta", 1L, 9), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.TungstenSteel,2L)},null,300,240);
         GT_Values.RA.addArcFurnaceRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.zeta", 1L, 10), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.TungstenSteel,1L), GT_OreDictUnificator.get(OrePrefixes.dustSmall,Materials.Glass, 3)},null,300,240);
         GT_Values.RA.addArcFurnaceRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.zeta", 1L, 11), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.TungstenSteel,39L)},null,300,240);
+        GT_Values.RA.addFluidExtractionRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.zeta", 1L, 9), GT_Values.NI, Materials.TungstenSteel.getMolten(288), 10000, 800, 360);
+        GT_Values.RA.addFluidExtractionRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.zeta", 1L, 10), GT_Values.NI, Materials.TungstenSteel.getMolten(144), 10000, 800, 360);
+        GT_Values.RA.addFluidExtractionRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.zeta", 1L, 11), GT_Values.NI, Materials.TungstenSteel.getMolten(624), 10000, 800, 360);
 
         GT_Values.RA.addPulveriserRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.zeta", 1L, 12), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Palladium, 2L)}, new int[]{10000}, 750, 64);
         GT_Values.RA.addPulveriserRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.zeta", 1L, 13), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Palladium, 1L), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3L)}, new int[]{10000, 10000}, 750, 64);
@@ -4078,6 +4096,9 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addArcFurnaceRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.zeta", 1L, 12), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Palladium,2L)},null,330,270);
         GT_Values.RA.addArcFurnaceRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.zeta", 1L, 13), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Palladium,1L), GT_OreDictUnificator.get(OrePrefixes.dustSmall,Materials.Glass, 3)},null,330,270);
         GT_Values.RA.addArcFurnaceRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.zeta", 1L, 14), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.NiobiumTitanium,12L), GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Chrome, 3L)},null,330,270);
+        GT_Values.RA.addFluidExtractionRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.zeta", 1L, 12), GT_Values.NI, Materials.Palladium.getMolten(288), 10000, 900, 480);
+        GT_Values.RA.addFluidExtractionRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.zeta", 1L, 13), GT_Values.NI, Materials.Palladium.getMolten(144), 10000, 900, 480);
+        GT_Values.RA.addFluidExtractionRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.zeta", 1L, 14), GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.NiobiumTitanium,12L), Materials.Chrome.getMolten(48), 10000, 900, 480);
 
         GT_Values.RA.addPulveriserRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.eta", 1L, 0), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iridium, 2L)}, new int[]{10000}, 900, 120);
         GT_Values.RA.addPulveriserRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.eta", 1L, 1), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iridium, 1L), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3L)}, new int[]{10000, 10000}, 900, 120);
@@ -4085,6 +4106,9 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addArcFurnaceRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.eta", 1L, 0), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Iridium,2L)},null,360,300);
         GT_Values.RA.addArcFurnaceRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.eta", 1L, 1), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Iridium,1L), GT_OreDictUnificator.get(OrePrefixes.dustSmall,Materials.Glass, 3)},null,360,300);
         GT_Values.RA.addArcFurnaceRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.eta", 1L, 2), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Enderium,12L), GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Iridium, 3L)},null,360,300);
+        GT_Values.RA.addFluidExtractionRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.eta", 1L, 0), GT_Values.NI, Materials.Iridium.getMolten(288), 10000, 1000, 720);
+        GT_Values.RA.addFluidExtractionRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.eta", 1L, 1), GT_Values.NI, Materials.Iridium.getMolten(144), 10000, 1000, 720);
+        GT_Values.RA.addFluidExtractionRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.eta", 1L, 2), GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Enderium,12L), Materials.Iridium.getMolten(48), 10000, 1000, 720);
 
         GT_Values.RA.addPulveriserRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.eta", 1L, 3), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Osmium, 2L)}, new int[]{10000}, 1050, 256);
         GT_Values.RA.addPulveriserRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.eta", 1L, 4), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Osmium, 1L), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3L)}, new int[]{10000, 10000}, 1050, 256);
@@ -4092,6 +4116,9 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addArcFurnaceRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.eta", 1L, 3), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Osmium,2L)},null,360,330);
         GT_Values.RA.addArcFurnaceRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.eta", 1L, 4), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Osmium,1L), GT_OreDictUnificator.get(OrePrefixes.dustSmall,Materials.Glass, 3)},null,360,330);
         GT_Values.RA.addArcFurnaceRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.eta", 1L, 5), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Naquadah,12L), GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Osmium, 3L)},null,360,330);
+        GT_Values.RA.addFluidExtractionRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.eta", 1L, 3), GT_Values.NI, Materials.Osmium.getMolten(288), 10000, 1100, 960);
+        GT_Values.RA.addFluidExtractionRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.eta", 1L, 4), GT_Values.NI, Materials.Osmium.getMolten(144), 10000, 1100, 960);
+        GT_Values.RA.addFluidExtractionRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.eta", 1L, 5), GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Naquadah,12L), Materials.Osmium.getMolten(48), 10000, 1100, 960);
 
         GT_Values.RA.addPulveriserRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.eta", 1L, 6), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Neutronium, 2L)}, new int[]{10000}, 1200, 480);
         GT_Values.RA.addPulveriserRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.eta", 1L, 7), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Neutronium, 1L), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3L)}, new int[]{10000, 10000}, 1200, 480);
@@ -4099,6 +4126,9 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addArcFurnaceRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.eta", 1L, 6), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Neutronium,2L)},null,360,360);
         GT_Values.RA.addArcFurnaceRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.eta", 1L, 7), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Neutronium,1L), GT_OreDictUnificator.get(OrePrefixes.dustSmall,Materials.Glass, 3)},null,360,360);
         GT_Values.RA.addArcFurnaceRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.eta", 1L, 8), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Neutronium,39L)},null,360,360);
+        GT_Values.RA.addFluidExtractionRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.eta", 1L, 6), GT_Values.NI, Materials.Neutronium.getMolten(288), 10000, 1200, 1440);
+        GT_Values.RA.addFluidExtractionRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.eta", 1L, 7), GT_Values.NI, Materials.Neutronium.getMolten(144), 10000, 1200, 1440);
+        GT_Values.RA.addFluidExtractionRecipe(GT_ModHandler.getModItem(MOD_ID_RC, "machine.eta", 1L, 8), GT_Values.NI, Materials.Neutronium.getMolten(624), 10000, 1200, 1440);
 
         GT_Values.RA.addPyrolyseRecipe(GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 16), GT_Values.NF, 1, RailcraftToolItems.getCoalCoke(16), Materials.Creosote.getFluid(8000), 640, 64);
         GT_Values.RA.addPyrolyseRecipe(GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 16), Materials.Nitrogen.getGas(1000), 2, RailcraftToolItems.getCoalCoke(16), Materials.Creosote.getFluid(8000), 320, 96);
