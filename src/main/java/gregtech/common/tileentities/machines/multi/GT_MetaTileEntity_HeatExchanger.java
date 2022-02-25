@@ -47,8 +47,8 @@ public class GT_MetaTileEntity_HeatExchanger extends GT_MetaTileEntity_EnhancedM
                     {"c~c", "cHc", "ccc"},
             }))
             .addElement('P', ofBlock(GregTech_API.sBlockCasings2, 14))
-            .addElement('C', ofHatchAdder(GT_MetaTileEntity_HeatExchanger::addColdFluidOutputToMachineList, CASING_INDEX, 2))
-            .addElement('H', ofHatchAdder(GT_MetaTileEntity_HeatExchanger::addHotFluidInputToMachineList, CASING_INDEX, 3))
+            .addElement('C', ofHatchAdder(GT_MetaTileEntity_HeatExchanger::addColdFluidOutputToMachineList, CASING_INDEX, 3))
+            .addElement('H', ofHatchAdder(GT_MetaTileEntity_HeatExchanger::addHotFluidInputToMachineList, CASING_INDEX, 2))
             .addElement('c', ofChain(
                     ofHatchAdder(GT_MetaTileEntity_HeatExchanger::addInputToMachineList, CASING_INDEX, 1),
                     ofHatchAdder(GT_MetaTileEntity_HeatExchanger::addOutputToMachineList, CASING_INDEX, 1),
