@@ -341,6 +341,8 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
 
             //Unification
             output[i] = handleUnification(output[i]);
+            //Wildcard
+            output[i] = handleWildcard(output[i]);
         }
     }
 
@@ -354,6 +356,13 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
                 }
         }
         return GT_OreDictUnificator.get(stack);
+    }
+
+    private static ItemStack handleWildcard(ItemStack stack) {
+        if (stack.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
+            stack.setItemDamage(0);
+        }
+        return stack;
     }
 
     private static void handleReplacement(Set<ItemStack[]> inputsStacks, ItemData data, ItemStack[] output, ItemStack input, int i){
