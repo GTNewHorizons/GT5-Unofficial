@@ -90,7 +90,7 @@ public class GregtechMTE_ElementalDuplicator extends GregtechMeta_MultiBlockBase
 		.addController("Top Center")
 		.addCasingInfo("Elemental Confinement Shell", 138)
 		.addCasingInfo("Matter Fabricator Casing", 24)
-		.addCasingInfo("Containment Casing", 24)
+		.addCasingInfo("Particle Containment Casing", 24)
 		.addCasingInfo("Matter Generation Coil", 24)
 		.addCasingInfo("High Voltage Current Capacitor", 20)
 		.addCasingInfo("Resonance Chamber III", 24)
