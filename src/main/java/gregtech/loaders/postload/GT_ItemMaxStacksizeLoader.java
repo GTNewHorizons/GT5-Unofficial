@@ -20,6 +20,7 @@ public class GT_ItemMaxStacksizeLoader implements Runnable {
         Items.ender_pearl.setMaxStackSize(64);
         Items.egg.setMaxStackSize(64);
         Items.snowball.setMaxStackSize(64);
+        Items.mushroom_stew.setMaxStackSize(64);
         if (OrePrefixes.plank.mDefaultStackSize < 64) {
             Item.getItemFromBlock(Blocks.wooden_slab).setMaxStackSize(OrePrefixes.plank.mDefaultStackSize);
             Item.getItemFromBlock(Blocks.double_wooden_slab).setMaxStackSize(OrePrefixes.plank.mDefaultStackSize);
