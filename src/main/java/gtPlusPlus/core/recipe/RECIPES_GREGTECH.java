@@ -1943,32 +1943,32 @@ public class RECIPES_GREGTECH {
 	private static void cyclotronRecipes() {
 
 		// Polonium
-		CORE.RA.addCyclotronRecipe(CI.getNumberedCircuit(0), FluidUtils.getFluidStack("molten.bismuth", 1),
+		CORE.RA.addCyclotronRecipe(CI.getNumberedCircuit(1), FluidUtils.getFluidStack("molten.bismuth", 1),
 				new ItemStack[] { GregtechItemList.Pellet_RTG_PO210.get(1) }, null, new int[] { 100 }, 20 * 300 * 100, 2040 * 4,
 				500 * 20);
 
 		// Americium
-		CORE.RA.addCyclotronRecipe(CI.getNumberedCircuit(0), FluidUtils.getFluidStack("molten.americium", 1),
+		CORE.RA.addCyclotronRecipe(CI.getNumberedCircuit(1), FluidUtils.getFluidStack("molten.americium", 1),
 				new ItemStack[] { GregtechItemList.Pellet_RTG_AM241.get(4) }, null, new int[] { 2500 }, 20 * 300 * 100, 1020 * 4,
 				500 * 20); //PO Special Value
 
 		// Strontium u235
-		CORE.RA.addCyclotronRecipe(CI.getNumberedCircuit(0), FluidUtils.getFluidStack("molten.uranium235", 10),
+		CORE.RA.addCyclotronRecipe(CI.getNumberedCircuit(1), FluidUtils.getFluidStack("molten.uranium235", 10),
 				new ItemStack[] { GregtechItemList.Pellet_RTG_SR90.get(1) }, null, new int[] { 570 }, 20 * 300 * 100, 1020 * 4,
 				500 * 20); //PO Special Value
 
 		// Strontium u233
-		CORE.RA.addCyclotronRecipe(CI.getNumberedCircuit(0), FluidUtils.getFluidStack("molten.uranium233", 10),
+		CORE.RA.addCyclotronRecipe(CI.getNumberedCircuit(1), FluidUtils.getFluidStack("molten.uranium233", 10),
 				new ItemStack[] { GregtechItemList.Pellet_RTG_SR90.get(1) }, null, new int[] { 660 }, 20 * 300 * 100, 1020 * 4,
 				500 * 20); //PO Special Value
 
 		// Strontium pu239
-		CORE.RA.addCyclotronRecipe(CI.getNumberedCircuit(0), FluidUtils.getFluidStack("molten.plutonium239", 10),
+		CORE.RA.addCyclotronRecipe(CI.getNumberedCircuit(1), FluidUtils.getFluidStack("molten.plutonium239", 10),
 				new ItemStack[] { GregtechItemList.Pellet_RTG_SR90.get(1) }, null, new int[] { 220 }, 20 * 300 * 100, 1020 * 4,
 				500 * 20); //PO Special Value
 
 		// Plutonium
-		CORE.RA.addCyclotronRecipe(CI.getNumberedCircuit(0), FluidUtils.getFluidStack("molten.plutonium238", 1),
+		CORE.RA.addCyclotronRecipe(CI.getNumberedCircuit(1), FluidUtils.getFluidStack("molten.plutonium238", 1),
 				new ItemStack[] { GregtechItemList.Pellet_RTG_PU238.get(2) }, null, new int[] { 780 }, 20 * 300 * 100, 1020 * 4,
 				500 * 20); //PO Special Value
 
