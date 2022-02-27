@@ -31,6 +31,7 @@ import com.github.bartimaeusnek.bartworks.util.MegaUtils;
 import com.github.bartimaeusnek.bartworks.util.Pair;
 import com.github.bartimaeusnek.crossmod.tectech.TecTechEnabledMulti;
 import com.github.bartimaeusnek.crossmod.tectech.helper.TecTechUtils;
+import com.github.bartimaeusnek.crossmod.tectech.tileentites.tiered.LowPowerLaser;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.common.Optional;
@@ -38,6 +39,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -46,6 +48,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.getMultiOutput;
@@ -83,7 +86,7 @@ public class GT_TileEntity_MegaChemicalReactor extends GT_MetaTileEntity_LargeCh
                 .addInfo("Follow the Structure Lib hologram projector to build the main structure.")
                 .addSeparator()
                 .beginStructureBlock(5, 5,  9,  false)
-                .addController("Front bottom")
+                .addController("Front center")
                 .addStructureInfo("The glass tier limits the Energy Input tier")
                 .addEnergyHatch("Hint block ", 3)
                 .addMaintenanceHatch("Hint block ",2)
@@ -199,19 +202,44 @@ public class GT_TileEntity_MegaChemicalReactor extends GT_MetaTileEntity_LargeCh
             this.getTecTechEnergyTunnels().clear();
         }
 
-        if(checkPiece(STRUCTURE_PIECE_MAIN,2,2,0)&&(mMaintenanceHatches.size()==1)){
+        if(!checkPiece(STRUCTURE_PIECE_MAIN,2,2,0))
             return false;
-        }
 
-        if (this.glasTier < 8 && !this.mEnergyHatches.isEmpty()) {
-            for (GT_MetaTileEntity_Hatch_Energy hatchEnergy : this.mEnergyHatches) {
-                if (this.glasTier < hatchEnergy.mTier) {
+        if(mMaintenanceHatches.size() != 1)
+            return false;
+
+        if (LoaderReference.tectech && this.glasTier < 8)
+            if (!areLazorsLowPowa() || areThingsNotProperlyTiered(this.getTecTechEnergyTunnels()) || areThingsNotProperlyTiered(this.getTecTechEnergyMultis()))
+                return false;
+
+        if (this.glasTier < 8 && !this.mEnergyHatches.isEmpty())
+            for (GT_MetaTileEntity_Hatch_Energy hatchEnergy : this.mEnergyHatches)
+                if (this.glasTier < hatchEnergy.mTier)
                     return false;
-                }
-            }
-        }
 
 
+        return true;
+    }
+
+
+    @SuppressWarnings("rawtypes")
+    @Optional.Method(modid = "tectech")
+    private boolean areThingsNotProperlyTiered(Collection collection) {
+        if (!collection.isEmpty())
+            for (Object tecTechEnergyMulti : collection)
+                if (((GT_MetaTileEntity_TieredMachineBlock) tecTechEnergyMulti).mTier > this.glasTier)
+                    return true;
+        return false;
+    }
+
+    @SuppressWarnings("rawtypes")
+    @Optional.Method(modid = "tectech")
+    private boolean areLazorsLowPowa() {
+        Collection collection = this.getTecTechEnergyTunnels();
+        if (!collection.isEmpty())
+            for (Object tecTechEnergyMulti : collection)
+                if (!(tecTechEnergyMulti instanceof LowPowerLaser))
+                    return false;
         return true;
     }
 

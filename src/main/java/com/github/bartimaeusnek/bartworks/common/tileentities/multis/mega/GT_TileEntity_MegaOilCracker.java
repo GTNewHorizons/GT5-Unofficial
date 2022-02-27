@@ -31,6 +31,7 @@ import com.github.bartimaeusnek.bartworks.util.MegaUtils;
 import com.github.bartimaeusnek.bartworks.util.Pair;
 import com.github.bartimaeusnek.crossmod.tectech.TecTechEnabledMulti;
 import com.github.bartimaeusnek.crossmod.tectech.helper.TecTechUtils;
+import com.github.bartimaeusnek.crossmod.tectech.tileentites.tiered.LowPowerLaser;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.common.Optional;
@@ -40,6 +41,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -48,6 +50,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.getMultiOutput;
@@ -75,7 +78,7 @@ public class GT_TileEntity_MegaOilCracker extends GT_MetaTileEntity_OilCracker i
     @Override
     public GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Oil Cracking Unit")
+        tt.addMachineType("Cracker")
                 .addInfo("Controller block for the Mega Oil Cracking")
                 .addInfo("Thermally cracks heavy hydrocarbons into lighter fractions")
                 .addInfo("More efficient than the Chemical Reactor")
@@ -223,20 +226,44 @@ public class GT_TileEntity_MegaOilCracker extends GT_MetaTileEntity_OilCracker i
             this.getTecTechEnergyTunnels().clear();
         }
 
-        if(checkPiece(STRUCTURE_PIECE_MAIN,6,6,0)&&(mMaintenanceHatches.size()==1)&&(mEnergyHatches.size()<=2)){
+        if(!checkPiece(STRUCTURE_PIECE_MAIN,6,6,0))
             return false;
-        }
 
+        if(mMaintenanceHatches.size() != 1)
+            return false;
 
-        if (this.glasTier < 8 && !this.mEnergyHatches.isEmpty()) {
-            for (GT_MetaTileEntity_Hatch_Energy hatchEnergy : this.mEnergyHatches) {
-                if (this.glasTier < hatchEnergy.mTier) {
+        if (LoaderReference.tectech && this.glasTier < 8)
+            if (!areLazorsLowPowa() || areThingsNotProperlyTiered(this.getTecTechEnergyTunnels()) || areThingsNotProperlyTiered(this.getTecTechEnergyMultis()))
+                return false;
+
+        if (this.glasTier < 8 && !this.mEnergyHatches.isEmpty())
+            for (GT_MetaTileEntity_Hatch_Energy hatchEnergy : this.mEnergyHatches)
+                if (this.glasTier < hatchEnergy.mTier)
                     return false;
-                }
-            }
-        }
 
         return  true;
+    }
+
+
+    @SuppressWarnings("rawtypes")
+    @Optional.Method(modid = "tectech")
+    private boolean areThingsNotProperlyTiered(Collection collection) {
+        if (!collection.isEmpty())
+            for (Object tecTechEnergyMulti : collection)
+                if (((GT_MetaTileEntity_TieredMachineBlock) tecTechEnergyMulti).mTier > this.glasTier)
+                    return true;
+        return false;
+    }
+
+    @SuppressWarnings("rawtypes")
+    @Optional.Method(modid = "tectech")
+    private boolean areLazorsLowPowa() {
+        Collection collection = this.getTecTechEnergyTunnels();
+        if (!collection.isEmpty())
+            for (Object tecTechEnergyMulti : collection)
+                if (!(tecTechEnergyMulti instanceof LowPowerLaser))
+                    return false;
+        return true;
     }
 
     private static final int CASING_INDEX = 49;
