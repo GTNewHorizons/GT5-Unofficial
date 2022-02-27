@@ -378,7 +378,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         ItemList.Book_Written_02.set(addItem(tLastID = 488, "Book", "", new ItemData(Materials.Paper, 10886400L), "bookWritten", OreDictNames.craftingBook, new Behaviour_WrittenBook(), new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 2L)));
         ItemList.Book_Written_03.set(addItem(tLastID = 489, "Book", "", new ItemData(Materials.Paper, 10886400L), "bookWritten", OreDictNames.craftingBook, new Behaviour_WrittenBook(), new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 2L)));
 
-        ItemList.Schematic.set(addItem(tLastID = 490, "Schematic", "EMPTY", new ItemData(Materials.StainlessSteel, 7257600L), new TC_Aspects.TC_AspectStack(TC_Aspects.STRONTIO, 1L)));
+        ItemList.Schematic.set(addItem(tLastID = 490, "Schematic", "EMPTY", new ItemData(Materials.Steel, 7257600L), new TC_Aspects.TC_AspectStack(TC_Aspects.STRONTIO, 1L)));
         ItemList.Schematic_Crafting.set(addItem(tLastID = 491, "Schematic (Crafting)", "Crafts the Programmed Recipe", new ItemData(Materials.Steel, 7257600L), new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 1L)));
         ItemList.Schematic_1by1.set(addItem(tLastID = 495, "Schematic (1x1)", "Crafts 1 Items as 1x1 (use in Packager)", new ItemData(Materials.Steel, 7257600L), new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 1L)));
         ItemList.Schematic_2by2.set(addItem(tLastID = 496, "Schematic (2x2)", "Crafts 4 Items as 2x2 (use in Packager)", new ItemData(Materials.Steel, 7257600L), new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 1L)));
