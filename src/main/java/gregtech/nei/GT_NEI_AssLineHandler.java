@@ -1,6 +1,7 @@
 package gregtech.nei;
 
 import codechicken.lib.gui.GuiDraw;
+import codechicken.nei.NEIClientUtils;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.guihook.GuiContainerManager;
 import codechicken.nei.guihook.IContainerInputHandler;
@@ -39,6 +40,12 @@ public class GT_NEI_AssLineHandler extends RecipeMapHandler {
     public static final int sOffsetX = 5;
     public static final int sOffsetY = 11;
 
+    /**
+     * Static version of {@link TemplateRecipeHandler#cycleticks}.
+     * Can be referenced from cached recipes.
+     */
+    public static int cycleTicksStatic = Math.abs((int) System.currentTimeMillis());
+
     static {
         GuiContainerManager.addInputHandler(new GT_RectHandler());
         GuiContainerManager.addTooltipHandler(new GT_RectHandler());
@@ -54,7 +61,7 @@ public class GT_NEI_AssLineHandler extends RecipeMapHandler {
         Collections.sort(result);
         return result;
     }
-    
+
     public static void drawText(int aX, int aY, String aString, int aColor) {
         Minecraft.getMinecraft().fontRenderer.drawString(aString, aX, aY, aColor);
     }
@@ -175,6 +182,13 @@ public class GT_NEI_AssLineHandler extends RecipeMapHandler {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GuiDraw.changeTexture(getGuiTexture());
         GuiDraw.drawTexturedModalRect(-4, -8, 1, 3, 174, 79);
+    }
+
+    @Override
+    public void onUpdate() {
+        super.onUpdate();
+        if (!NEIClientUtils.shiftKey())
+            cycleTicksStatic++;
     }
 
     @Override
@@ -420,7 +434,7 @@ public class GT_NEI_AssLineHandler extends RecipeMapHandler {
 
         @Override
         public List<PositionedStack> getIngredients() {
-            return getCycledIngredients(GT_NEI_AssLineHandler.this.cycleticks / 10, this.mInputs);
+            return getCycledIngredients(cycleTicksStatic / 10, this.mInputs);
         }
 
         @Override
