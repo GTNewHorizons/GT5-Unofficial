@@ -9,6 +9,7 @@ dependencies {
     compile("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
 
     compile("com.github.GTNewHorizons:NotEnoughItems:2.2.5-GTNH:dev")
+	//compile files('NotEnoughItems-1.7.10-2.2.8-GTNH.dirty-dev.jar')
     compileOnly("com.github.GTNewHorizons:EnderCore:0.2.6:dev") {
         transitive = false
     }

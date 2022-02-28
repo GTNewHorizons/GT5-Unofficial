@@ -116,28 +116,20 @@ public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<Di
 		ItemStack[] tItems = this.getStoredInputs().toArray(new ItemStack[0]);
 		long tVoltage = this.getMaxInputVoltage();
 		
-		
-		for (GT_Recipe aRecipe : RecipeAdder.instance.DissolutionTankRecipes.mRecipeList) {
-			GT_Log.out.print("input: " + aRecipe.mFluidInputs[0] + "\n");
-			GT_Log.out.print("output: " + aRecipe.mFluidOutputs[0] + "\n");
-		}
-		
-		GT_Log.out.print("tFluidInputArray " + Arrays.toString(tFluidInputArray));
-		
-		
 		//Collection<GT_Recipe> tRecipes = RecipeAdder.instance.DigesterRecipes.mRecipeList;
 		GT_Recipe tRecipe = RecipeAdder.instance.DissolutionTankRecipes.findRecipe(
-				this.getBaseMetaTileEntity(), 
-				this.doTickProfilingInThisTick, 
+				getBaseMetaTileEntity(), 
+				false, 
 				tVoltage, 
-				tFluidInputArray
+				tFluidInputArray,
+				tItems
 			);
 		
 		if (tRecipe == null)
 			return false;
 
 		GT_Log.out.print("Recipe not null\n");
-		if (tRecipe.isRecipeInputEqual(true, tFluidInputArray)) {
+		if (tRecipe.isRecipeInputEqual(true, tFluidInputArray, tItems)) {
 			
 			this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
 			this.mEfficiencyIncrease = 10000;
@@ -150,7 +142,7 @@ public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<Di
 				this.mEUt = (-this.mEUt);	
 			
 			FluidStack majorGenericFluid = tRecipe.mFluidInputs[0];
-			FluidStack minorGenericFluid = tRecipe.mFluidOutputs[1];
+			FluidStack minorGenericFluid = tRecipe.mFluidInputs[1];
 			
 			FluidStack majorInput = null;
 			FluidStack minorInput = null;
@@ -158,19 +150,22 @@ public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<Di
 			FluidStack fluidInputOne = tFluidInputs.get(0);
 			FluidStack fluidInputTwo = tFluidInputs.get(1);
 			
-			majorInput = (fluidInputOne.getUnlocalizedName() == majorGenericFluid.getUnlocalizedName() ? fluidInputOne : fluidInputTwo);
-			if (fluidInputOne.getUnlocalizedName() == majorGenericFluid.getUnlocalizedName()) {
-				if (fluidInputTwo.getUnlocalizedName() == minorGenericFluid.getUnlocalizedName()) {
+			majorInput = ((fluidInputOne.getUnlocalizedName().equals(majorGenericFluid.getUnlocalizedName())) ? fluidInputOne : fluidInputTwo);
+			GT_Log.out.print(majorInput.getLocalizedName());
+			if (fluidInputOne.getUnlocalizedName().equals(majorGenericFluid.getUnlocalizedName())) {
+				if (fluidInputTwo.getUnlocalizedName().equals(minorGenericFluid.getUnlocalizedName())) {
 					majorInput = fluidInputOne;
 					minorInput = fluidInputTwo;
+					GT_Log.out.print("in first IF");
 				}
 				else
 					return false; // No valid other input
 
-			} else if (fluidInputTwo.getUnlocalizedName() == majorGenericFluid.getUnlocalizedName()) {
-				if (fluidInputOne.getUnlocalizedName() == minorGenericFluid.getUnlocalizedName()) {
+			} else if (fluidInputTwo.getUnlocalizedName().equals(majorGenericFluid.getUnlocalizedName())) {
+				if (fluidInputOne.getUnlocalizedName().equals(minorGenericFluid.getUnlocalizedName())) {
 					majorInput = fluidInputTwo;
 					minorInput = fluidInputOne;
+					GT_Log.out.print("in second if");
 				}
 				else
 					return false;
@@ -178,6 +173,8 @@ public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<Di
 			}
 			else
 				return false;
+			
+			GT_Log.out.print("out of switch weirdness");
 			
 			/*
 			for (FluidStack fluid : tFluidInputs) {
@@ -194,6 +191,8 @@ public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<Di
 			
 			GT_Log.out.print("major " + majorInput.getLocalizedName());
 			GT_Log.out.print("minor " + minorInput.getLocalizedName());
+			
+			GT_Log.out.print("mjrinputamt " + majorInput.amount);
 			
 			if ((majorInput.amount / tRecipe.mSpecialValue) != (minorInput.amount))
 				return false;
@@ -213,7 +212,7 @@ public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<Di
 	
 	@Override
     public Object getClientGUI(int id, InventoryPlayer playerInventory, IGregTechTileEntity metaTileEntity) {
-        return new GT_GUIContainer_MultiMachine(playerInventory, metaTileEntity, getLocalName(), "DissolutionTank.png");
+        return new GT_GUIContainer_MultiMachine(playerInventory, metaTileEntity, getLocalName(), "Disstank.png");
     }
 	
 	@Override
