@@ -32,7 +32,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.github.GTNewHorizons:ForgeGradle:1.2.5'
+        classpath 'com.github.GTNewHorizons:ForgeGradle:1.2.7'
     }
 }
 
