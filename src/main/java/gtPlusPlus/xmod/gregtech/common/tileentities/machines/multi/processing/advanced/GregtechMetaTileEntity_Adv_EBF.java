@@ -44,7 +44,7 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase<
 
 	public static int CASING_TEXTURE_ID;
 	public static String mHotFuelName = "Blazing Pyrotheum";
-	public static String mCasingName = "Advanced Blast Furnace Casing";
+	public static String mCasingName = "Volcanus Casing";
 	public static String mHatchName = "Pyrotheum Hatch";
 	private IStructureDefinition<GregtechMetaTileEntity_Adv_EBF> STRUCTURE_DEFINITION = null;
 	private int mCasing;
