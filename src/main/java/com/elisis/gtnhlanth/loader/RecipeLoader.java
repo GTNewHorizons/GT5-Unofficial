@@ -350,7 +350,9 @@ public class RecipeLoader {
         				Materials.Water.getFluid(10000), 
         				WerkstoffMaterialPool.MuddyRareEarthMonaziteSolution.getFluidOrGas(1000)
         		},
-        		null,
+        		new ItemStack[] {
+        				Materials.Saltpeter.getDust(1)
+        		},
         		WerkstoffMaterialPool.DilutedRareEarthMonaziteMud.getFluidOrGas(11000), 
         		new ItemStack[] {
             			WerkstoffMaterialPool.HafniaZirconiaBlend.get(OrePrefixes.dustTiny, 4),
@@ -595,7 +597,7 @@ public class RecipeLoader {
         		},
         		null,
         		new FluidStack[] {
-        				WerkstoffMaterialPool.NitricLeachedMonaziteMixture.getFluidOrGas(1000)
+        				WerkstoffMaterialPool.NitricMonaziteLeachedConcentrate.getFluidOrGas(1000)
         		},
         		null,
         		100,
@@ -739,7 +741,9 @@ public class RecipeLoader {
         				Materials.Water.getFluid(10000),
         				WerkstoffMaterialPool.ConditionedBastnasiteMud.getFluidOrGas(1000)
         		}, 
-        		null, 
+        		new ItemStack[] {
+        				Materials.Saltpeter.getDust(1)
+        		}, 
         		WerkstoffMaterialPool.DiltedRareEarthBastnasiteMud.getFluidOrGas(11000), 
         		new ItemStack[] {
         				WerkstoffMaterialPool.Gangue.get(OrePrefixes.dust, 1)
