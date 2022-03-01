@@ -176,7 +176,7 @@ public class Digester extends GT_MetaTileEntity_EnhancedMultiBlockBase<Digester>
 
 	@Override
 	public String[] getStructureDescription(ItemStack arg0) {
-		return DescTextLocalization.addText("Digester.hint", 5);
+		return DescTextLocalization.addText("Digester.hint", 6);
 	}
 
 	@Override

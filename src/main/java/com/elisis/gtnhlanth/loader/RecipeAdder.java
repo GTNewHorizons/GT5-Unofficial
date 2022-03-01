@@ -25,7 +25,7 @@ public class RecipeAdder {
 			1,
 			"K",
 			false,
-			true	
+			false	
 		);
 	
 	public final DissolutionTankMap DissolutionTankRecipes = new DissolutionTankMap(
@@ -35,11 +35,11 @@ public class RecipeAdder {
 			null,
 			"gtnhlanth:textures/gui/Disstank",
 			1, 1, 1, 1, 1,
-			StatCollector.translateToLocal("value.disstank") + ": ",
+			StatCollector.translateToLocal("value.disstank") + ": ", // Ratio
 			1,
 			":1",
 			false,
-			true			
+			false		
 		);
 	
 	

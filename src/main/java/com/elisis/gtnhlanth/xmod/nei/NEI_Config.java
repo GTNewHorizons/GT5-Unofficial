@@ -6,6 +6,8 @@ import com.elisis.gtnhlanth.loader.RecipeAdder;
 import codechicken.nei.api.IConfigureNEI;
 
 public class NEI_Config implements IConfigureNEI {
+	
+	public static boolean isAdded = true;
 
 	@Override
 	public String getName() {
@@ -19,7 +21,10 @@ public class NEI_Config implements IConfigureNEI {
 
 	@Override
 	public void loadConfig() {
-		//new DigesterHandler(RecipeAdder.instance.DigesterRecipes);
+		isAdded = false;
+		new DigesterHandler(RecipeAdder.instance.DigesterRecipes);
+		new DisstankHandler(RecipeAdder.instance.DissolutionTankRecipes);
+		isAdded = true;
 		
 	}
 	

@@ -7,6 +7,7 @@ public class IMC {
 
 	public static void IMCSender() {
         setNBTAndSend("com.elisis.gtnhlanth.xmod.nei.DigesterHandler", "gregtech:gt.blockmachines:10500");
+        setNBTAndSend("com.elisis.gtnhlanth.xmod.nei.DisstankHandler", "gregtech:gt.blockmachines:10501");
         
     }
 
