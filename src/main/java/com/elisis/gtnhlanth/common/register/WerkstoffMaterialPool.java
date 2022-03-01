@@ -894,7 +894,7 @@ public class WerkstoffMaterialPool implements Runnable {
     		"Terbium Nitrate",
     		subscriptNumbers("TbNO3"),
     		new Werkstoff.Stats().setElektrolysis(true),
-    		Werkstoff.Types.MIXTURE,
+    		Werkstoff.Types.COMPOUND,
     		new Werkstoff.GenerationFeatures().disable().onlyDust(),
     		offsetID2 + 27,
     		TextureSet.SET_DULL,
@@ -904,7 +904,16 @@ public class WerkstoffMaterialPool implements Runnable {
     		new Pair<>(Materials.Oxygen, 3)
     	);
     
-    
+    public static final Werkstoff SamariumOreConcentrate = new Werkstoff(
+    		new short[] {255, 200, 230},
+    		"Samarium Ore Concentrate",
+    		subscriptNumbers("??Sm??"),
+    		new Werkstoff.Stats(),
+    		Werkstoff.Types.MIXTURE,
+    		new Werkstoff.GenerationFeatures().disable().onlyDust(),
+    		offsetID2 + 28,
+    		TextureSet.SET_DULL
+    	);
     
     
     

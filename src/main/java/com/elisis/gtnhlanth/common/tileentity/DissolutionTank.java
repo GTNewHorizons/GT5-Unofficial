@@ -109,7 +109,7 @@ public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<Di
 	@Override
 	public boolean checkRecipe(ItemStack itemStack) {
 		
-		GT_Log.out.print("in checkRecipe");
+		//GT_Log.out.print("in checkRecipe");
 		
 		ArrayList<FluidStack> tFluidInputs = this.getStoredFluids();
 		FluidStack[] tFluidInputArray = tFluidInputs.toArray(new FluidStack[0]);
@@ -128,7 +128,7 @@ public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<Di
 		if (tRecipe == null)
 			return false;
 
-		GT_Log.out.print("Recipe not null\n");
+		//GT_Log.out.print("Recipe not null\n");
 		if (tRecipe.isRecipeInputEqual(true, tFluidInputArray, tItems)) {
 			
 			this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
@@ -147,16 +147,21 @@ public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<Di
 			FluidStack majorInput = null;
 			FluidStack minorInput = null;
 			
+			int majorAmount = 0;
+			int minorAmount = 0;
+			
 			FluidStack fluidInputOne = tFluidInputs.get(0);
 			FluidStack fluidInputTwo = tFluidInputs.get(1);
 			
 			majorInput = ((fluidInputOne.getUnlocalizedName().equals(majorGenericFluid.getUnlocalizedName())) ? fluidInputOne : fluidInputTwo);
-			GT_Log.out.print(majorInput.getLocalizedName());
+			//GT_Log.out.print(majorInput.getLocalizedName());
 			if (fluidInputOne.getUnlocalizedName().equals(majorGenericFluid.getUnlocalizedName())) {
 				if (fluidInputTwo.getUnlocalizedName().equals(minorGenericFluid.getUnlocalizedName())) {
 					majorInput = fluidInputOne;
+					majorAmount = fluidInputOne.amount;
 					minorInput = fluidInputTwo;
-					GT_Log.out.print("in first IF");
+					minorAmount = fluidInputTwo.amount;
+					//GT_Log.out.print("in first IF");
 				}
 				else
 					return false; // No valid other input
@@ -164,8 +169,10 @@ public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<Di
 			} else if (fluidInputTwo.getUnlocalizedName().equals(majorGenericFluid.getUnlocalizedName())) {
 				if (fluidInputOne.getUnlocalizedName().equals(minorGenericFluid.getUnlocalizedName())) {
 					majorInput = fluidInputTwo;
+					majorAmount = fluidInputTwo.amount;
 					minorInput = fluidInputOne;
-					GT_Log.out.print("in second if");
+					minorAmount = fluidInputOne.amount;
+					//GT_Log.out.print("in second if");
 				}
 				else
 					return false;
@@ -174,7 +181,7 @@ public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<Di
 			else
 				return false;
 			
-			GT_Log.out.print("out of switch weirdness");
+			//GT_Log.out.print("out of switch weirdness");
 			
 			/*
 			for (FluidStack fluid : tFluidInputs) {
@@ -189,12 +196,15 @@ public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<Di
 			if (majorInput == null || minorInput == null)
 				return false;
 			
-			GT_Log.out.print("major " + majorInput.getLocalizedName());
-			GT_Log.out.print("minor " + minorInput.getLocalizedName());
+			//GT_Log.out.print("major " + majorInput.getLocalizedName());
+			//GT_Log.out.print("minor " + minorInput.getLocalizedName());
 			
-			GT_Log.out.print("mjrinputamt " + majorInput.amount);
-			
+			//GT_Log.out.print("mjrinputamt " + majorInput.amount);
+			/*
 			if ((majorInput.amount / tRecipe.mSpecialValue) != (minorInput.amount))
+				return false;
+			*/
+			if ((majorAmount / tRecipe.mSpecialValue) != (minorAmount))
 				return false;
 			
 			this.mOutputFluids = new FluidStack[] {
@@ -219,23 +229,11 @@ public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<Di
     public String[] getDescription() {
 		final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Heat Exchanger")
-                .addInfo("Controller Block for the Large Heat Exchanger")
-                .addInfo("More complicated than a Fusion Reactor. Seriously")
-                .addInfo("Inputs are Hot Coolant or Lava")
-                .addInfo("Outputs Coolant or Pahoehoe Lava and SH Steam/Steam")
-                .addInfo("Read the wiki article to understand how it works")
-                .addInfo("Then go to the Discord to understand the wiki")
-                .addSeparator()
-                .beginStructureBlock(3, 4, 3, false)
-                .addController("Front bottom")
-                .addCasingInfo("Stable Titanium Machine Casing", 20)
-                .addOtherStructurePart("Titanium Pipe Casing", "Center 2 blocks")
-                .addMaintenanceHatch("Any casing", 1)
-                .addInputHatch("Hot fluid, bottom center", 2)
-                .addInputHatch("Distilled water, any casing", 1)
-                .addOutputHatch("Cold fluid, top center", 3)
-                .addOutputHatch("Steam/SH Steam, any casing", 1)
-                .toolTipFinisher("Gregtech");
+                .addInfo("Controller Block for the Dissolution Tank")
+                .addInfo("Input Water and Fluid, output Fluid")
+                .addInfo("You must input the Fluids at the correct Ratio")
+                .addInfo("(Not currently working)")
+                .toolTipFinisher("GTNH: Lanthanides");
 		if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
 	        return tt.getInformation();
 	    } else {

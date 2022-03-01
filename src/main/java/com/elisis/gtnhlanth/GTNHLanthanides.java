@@ -54,7 +54,7 @@ public class GTNHLanthanides {
     public static void init(FMLInitializationEvent e) {
         proxy.init(e);
         WerkstoffMaterialPool.runInit();
-        //IMC.IMCSender();
+        IMC.IMCSender();
     }
     
     @EventHandler

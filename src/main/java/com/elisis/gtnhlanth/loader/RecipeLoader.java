@@ -918,6 +918,17 @@ public class RecipeLoader {
         		480
         	);
         
+        GT_Values.RA.addChemicalRecipe(
+        		WerkstoffMaterialPool.SamaricRareEarthConcentrate.get(OrePrefixes.dust, 1),
+        		WerkstoffMaterialPool.SamariumOreConcentrate.get(OrePrefixes.dust, 1),
+        		Materials.HydrofluoricAcid.getFluid(2000),
+        		null,
+        		WerkstoffMaterialPool.FluorinatedSamaricConcentrate.get(OrePrefixes.dust, 2),
+        		null,
+        		350,
+        		480
+        		);
+        
         GT_Values.RA.addBlastRecipe(
         		WerkstoffMaterialPool.FluorinatedSamaricConcentrate.get(OrePrefixes.dust, 2),
         		Materials.Calcium.getDust(3),
@@ -1126,6 +1137,9 @@ public class RecipeLoader {
                             if (tRecipe.mOutputs[i].isItemEqual(Materials.Cerium.getDust(1))) {
                                 tRecipe.mOutputs[i] = GT_Utility.copyAmount(tRecipe.mOutputs[i].stackSize * 2, WerkstoffMaterialPool.CeriumRichMixture.get(OrePrefixes.dust, 1));
                             }
+                            else if (tRecipe.mOutputs[i].isItemEqual(Materials.Samarium.getDust(1)) ) {
+                            	tRecipe.mOutputs[i] = GT_Utility.copyAmount(tRecipe.mOutputs[i].stackSize * 2, WerkstoffMaterialPool.SamariumOreConcentrate.get(OrePrefixes.dust, 1));
+                            }
                         }
                         if (!tRecipe.equals(recipe)){
                             reAdd.add(tRecipe);
@@ -1160,6 +1174,9 @@ public class RecipeLoader {
                             if (tRecipe.mOutputs[i].isItemEqual(Materials.Cerium.getDust(1))) {
                                 tRecipe.mOutputs[i] = GT_Utility.copyAmount(tRecipe.mOutputs[i].stackSize * 2, WerkstoffMaterialPool.CeriumRichMixture.get(OrePrefixes.dust, 1));
                             }
+                            else if (tRecipe.mOutputs[i].isItemEqual(Materials.Samarium.getDust(1)) ) {
+                            	tRecipe.mOutputs[i] = GT_Utility.copyAmount(tRecipe.mOutputs[i].stackSize * 2, WerkstoffMaterialPool.SamariumOreConcentrate.get(OrePrefixes.dust, 1));
+                            }
                         }
                         if (!tRecipe.equals(recipe)){
                             reAdd.add(tRecipe);
@@ -1193,6 +1210,9 @@ public class RecipeLoader {
                             if (!GT_Utility.isStackValid(tRecipe.mOutputs[i])) continue;
                             if (tRecipe.mOutputs[i].isItemEqual(Materials.Cerium.getDust(1))) {
                                 tRecipe.mOutputs[i] = GT_Utility.copyAmount(tRecipe.mOutputs[i].stackSize * 2, WerkstoffMaterialPool.CeriumRichMixture.get(OrePrefixes.dust, 1));
+                            }
+                            else if (tRecipe.mOutputs[i].isItemEqual(Materials.Samarium.getDust(1)) ) {
+                            	tRecipe.mOutputs[i] = GT_Utility.copyAmount(tRecipe.mOutputs[i].stackSize * 2, WerkstoffMaterialPool.SamariumOreConcentrate.get(OrePrefixes.dust, 1));
                             }
                         }
                         if (!tRecipe.equals(recipe)){
@@ -1234,6 +1254,15 @@ public class RecipeLoader {
                                 tRecipe.mOutputs[i] = GT_Utility.copyAmount(tRecipe.mOutputs[i].stackSize * 2, WerkstoffMaterialPool.CeriumRichMixture.get(OrePrefixes.dust, 1));                         
                             } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Cerium.getDustSmall(1))) {
                                 tRecipe.mOutputs[i] = GT_Utility.copyAmount(tRecipe.mOutputs[i].stackSize * 2, WerkstoffMaterialPool.CeriumRichMixture.get(OrePrefixes.dustSmall, 1));
+                            }
+                            else if (tRecipe.mOutputs[i].isItemEqual(Materials.Samarium.getDustTiny(1)) ) {
+                            	tRecipe.mOutputs[i] = GT_Utility.copyAmount(tRecipe.mOutputs[i].stackSize * 2, WerkstoffMaterialPool.SamariumOreConcentrate.get(OrePrefixes.dustTiny, 1));
+                            }
+                            else if (tRecipe.mOutputs[i].isItemEqual(Materials.Samarium.getDust(1)) ) {
+                            	tRecipe.mOutputs[i] = GT_Utility.copyAmount(tRecipe.mOutputs[i].stackSize * 2, WerkstoffMaterialPool.SamariumOreConcentrate.get(OrePrefixes.dust, 1));
+                            }
+                            else if (tRecipe.mOutputs[i].isItemEqual(Materials.Samarium.getDustSmall(1)) ) {
+                            	tRecipe.mOutputs[i] = GT_Utility.copyAmount(tRecipe.mOutputs[i].stackSize * 2, WerkstoffMaterialPool.SamariumOreConcentrate.get(OrePrefixes.dustSmall, 1));
                             }
                         }
                         if (!tRecipe.equals(recipe)){
@@ -1278,6 +1307,9 @@ public class RecipeLoader {
                             if (tRecipe.mOutputs[i].isItemEqual(Materials.Cerium.getDust(1))) {
                                 tRecipe.mOutputs[i] = GT_Utility.copyAmount(tRecipe.mOutputs[i].stackSize * 2, WerkstoffMaterialPool.CeriumRichMixture.get(OrePrefixes.dust, 1));                            
                             }
+                            else if (tRecipe.mOutputs[i].isItemEqual(Materials.Samarium.getDust(1)) ) {
+                            	tRecipe.mOutputs[i] = GT_Utility.copyAmount(tRecipe.mOutputs[i].stackSize * 2, WerkstoffMaterialPool.SamariumOreConcentrate.get(OrePrefixes.dust, 1));
+                            }
                         }
                         if (!tRecipe.equals(recipe)){
                             reAdd.add(tRecipe);
@@ -1315,6 +1347,9 @@ public class RecipeLoader {
         					else if (tRecipe.mOutputs[i].isItemEqual(WerkstoffMaterialPool.Zirconium.get(OrePrefixes.dust, 1))) { //TODO: Does not work and I have zero clue why
         						tRecipe.mOutputs[i] = null;
         					}
+        					else if (tRecipe.mOutputs[i].isItemEqual(Materials.Samarium.getDust(1)) ) {
+                            	tRecipe.mOutputs[i] = null;
+                            }
         					
         				}
         				if (!tRecipe.equals(recipe)){
@@ -1433,6 +1468,9 @@ public class RecipeLoader {
                             if (!GT_Utility.isStackValid(tRecipe.mOutputs[i])) continue;
                             if (tRecipe.mOutputs[i].isItemEqual(Materials.Cerium.getDust(1))) {
                                 remove.add(tRecipe);                         
+                            }
+                            else if (tRecipe.mOutputs[i].isItemEqual(Materials.Samarium.getDust(1)) ) {
+                            	remove.add(tRecipe);
                             }
                         }
                         break;

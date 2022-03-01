@@ -8,9 +8,9 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.nei.GT_NEI_DefaultHandler;
 
-public class DigesterHandler extends GT_NEI_DefaultHandler {
+public class DisstankHandler extends GT_NEI_DefaultHandler {
 
-	public DigesterHandler(GT_Recipe_Map recipeMap) {
+	public DisstankHandler(GT_Recipe_Map recipeMap) {
 		super(recipeMap);
 		if (!NEI_Config.isAdded) {
 			FMLInterModComms.sendRuntimeMessage(GT_Values.GT, "NEIPlugins", "register-crafting-handler", "gregtech@" + this.getRecipeName() + "@" + this.getOverlayIdentifier());
@@ -21,7 +21,7 @@ public class DigesterHandler extends GT_NEI_DefaultHandler {
 	
 	@Override
     public TemplateRecipeHandler newInstance() {
-        return new DigesterHandler(this.mRecipeMap);
+        return new DisstankHandler(this.mRecipeMap);
     }
-
+	
 }
