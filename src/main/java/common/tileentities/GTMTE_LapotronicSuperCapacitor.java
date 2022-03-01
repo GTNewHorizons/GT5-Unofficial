@@ -354,8 +354,6 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMu
 		inputLastTick = BigInteger.ZERO;
 		outputLastTick = BigInteger.ZERO;
 
-		//System.out.println(getBaseMetaTileEntity().)
-
 		// Draw energy from GT hatches
 		for(GT_MetaTileEntity_Hatch_Energy eHatch : super.mEnergyHatches) {
 			if(eHatch == null || eHatch.getBaseMetaTileEntity().isInvalidTileEntity()) {
