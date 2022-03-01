@@ -41,5 +41,5 @@ jobs:
 
     - name: Test no errors reported during server run
       run: |
-        chmod +x .github/scripts/test-no-error-reports.sh
-        .github/scripts/test-no-error-reports.sh
+        chmod +x .github/scripts/test_no_error_reports
+        .github/scripts/test_no_error_reports

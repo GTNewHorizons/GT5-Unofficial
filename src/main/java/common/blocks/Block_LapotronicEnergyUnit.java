@@ -4,21 +4,51 @@ import java.util.List;
 
 import common.itemBlocks.IB_LapotronicEnergyUnit;
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.ResourceLocation;
 
 public class Block_LapotronicEnergyUnit extends BaseGTUpdateableBlock {
-	
+
 	private static final Block_LapotronicEnergyUnit INSTANCE = new Block_LapotronicEnergyUnit();
-	
+    public enum IconBaseSide implements IIconContainer {
+        INSTANCE;
+        IconBaseSide() {
+            // technically, this page is owned by me, glee8e, however, I'm kind enough to spare 1 for kekztech since
+            // this is basically abandon ware by now.
+            GT_Utility.addTexturePage((byte) 42);
+            Textures.BlockIcons.setCasingTexture((byte) 42, (byte) 127, TextureFactory.of(this));
+        }
+
+        @Override
+        public IIcon getIcon() {
+            return Block_LapotronicEnergyUnit.INSTANCE.iconBaseSide;
+        }
+
+        @Override
+        public IIcon getOverlayIcon() {
+            return null;
+        }
+
+        @Override
+        public ResourceLocation getTextureFile() {
+            return TextureMap.locationBlocksTexture;
+        }
+    }
+
 	private IIcon iconBaseSide;
 	private IIcon iconBaseTop;
-	
+
 	private IIcon iconLapoEmptySide;
 	private IIcon iconLapoEmptyTop;
 	private IIcon iconLapoEVSide;
@@ -33,11 +63,11 @@ public class Block_LapotronicEnergyUnit extends BaseGTUpdateableBlock {
 	private IIcon iconLapoUVTop;
 	private IIcon iconUltimateSide;
 	private IIcon iconUltimateTop;
-	
+
 	private Block_LapotronicEnergyUnit() {
 		super(Material.iron);
 	}
-	
+
 	public static Block registerBlock() {
 		final String blockName = "kekztech_lapotronicenergyunit_block";
 		INSTANCE.setBlockName(blockName);
@@ -48,13 +78,13 @@ public class Block_LapotronicEnergyUnit extends BaseGTUpdateableBlock {
 
 		return INSTANCE;
 	}
-	
+
 	@Override
 	public void registerBlockIcons(IIconRegister ir) {
 		iconBaseSide = ir.registerIcon("kekztech:LSCBase_side");
 		iconBaseTop = ir.registerIcon("kekztech:LSCBase_top");
-		
-		
+
+
 		iconLapoEmptySide = ir.registerIcon("kekztech:LapotronicEnergyUnit6_side");
 		iconLapoEmptyTop = ir.registerIcon("kekztech:LapotronicEnergyUnit6_top");
 		iconLapoEVSide = ir.registerIcon("kekztech:LapotronicEnergyUnit7_side");
@@ -67,11 +97,11 @@ public class Block_LapotronicEnergyUnit extends BaseGTUpdateableBlock {
 		iconLapoZPMTop = ir.registerIcon("kekztech:LapotronicEnergyUnit3_top");
 		iconLapoUVSide = ir.registerIcon("kekztech:LapotronicEnergyUnit4_side");
 		iconLapoUVTop = ir.registerIcon("kekztech:LapotronicEnergyUnit4_top");
-		
+
 		iconUltimateSide = ir.registerIcon("kekztech:UltimateEnergyUnit_side");
 		iconUltimateTop = ir.registerIcon("kekztech:UltimateEnergyUnit_top");
 	}
-	
+
 	@Override
 	@SuppressWarnings({"unchecked" })
 	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
@@ -88,7 +118,7 @@ public class Block_LapotronicEnergyUnit extends BaseGTUpdateableBlock {
 		// Ultimate battery
 		par3List.add(new ItemStack(par1, 1, 5));
 	}
-	
+
 	@Override
 	public IIcon getIcon(int side, int meta) {
 		switch(meta) {
@@ -103,5 +133,5 @@ public class Block_LapotronicEnergyUnit extends BaseGTUpdateableBlock {
 		default: return iconUltimateTop;
 		}
 	}
-	
+
 }
