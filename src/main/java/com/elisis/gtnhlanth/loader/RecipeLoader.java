@@ -311,18 +311,6 @@ public class RecipeLoader {
         		//WerkstoffMaterialPool.CeriumDioxide
         		//
         		//)
-        
-        // Cerium Oxalate
-        GT_Values.RA.addChemicalRecipe(
-        		GT_Utility.getIntegratedCircuit(1),
-        		WerkstoffMaterialPool.CeriumChloride.get(OrePrefixes.dust, 2),
-        		MyMaterial.oxalate.getFluidOrGas(3000),
-        		Materials.HydrochloricAcid.getFluid(6000),
-        		WerkstoffMaterialPool.CeriumOxalate.get(OrePrefixes.dust, 1),
-        		300,
-        		450	
-        	);
-        
         		
         // Cerium III Oxide
         GT_Values.RA.addBlastRecipe(
@@ -615,16 +603,6 @@ public class RecipeLoader {
         		Materials.Water.getCells(1),
         		500,
         		1920   		
-        	);
-        
-        GT_Values.RA.addChemicalRecipe(
-        		WerkstoffMaterialPool.CeriumChloride.get(OrePrefixes.dust, 2),
-        		null,
-        		MyMaterial.oxalate.getFluidOrGas(3000),
-        		Materials.HydrochloricAcid.getFluid(6000),
-        		WerkstoffMaterialPool.CeriumOxalate.get(OrePrefixes.dust, 2),
-        		600,
-        		1920	
         	);
         
         GT_Values.RA.addBlastRecipe(
