@@ -93,7 +93,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechM
 		.addInfo("Controller Block for the XL "+getTurbineType()+" Turbine")
 		.addPollutionAmount(getPollutionPerSecond(null))
 		.addSeparator()
-		.beginStructureBlock(3, 9, 3, false)
+		.beginStructureBlock(7, 9, 7, false)
 		.addController("Top Middle")
 		.addCasingInfo(getCasingName(), 360)
 		.addOtherStructurePart("Rotor Assembly", "Any 1 dot hint", 1)
