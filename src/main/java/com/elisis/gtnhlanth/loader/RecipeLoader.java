@@ -126,6 +126,17 @@ public class RecipeLoader {
                 600, 1920, 3400
             );
         
+        //Hf * 9
+        GT_Values.RA.addBlastRecipe(
+                GT_Utility.getIntegratedCircuit(13), 
+                WerkstoffMaterialPool.HafniumIodide.get(OrePrefixes.dust, 9),
+                null, 
+                WerkstoffMaterialPool.Iodine.getFluidOrGas(18000),
+                WerkstoffMaterialPool.Hafnium.get(OrePrefixes.ingotHot, 9),
+                WerkstoffMaterialPool.HafniumRunoff.get(OrePrefixes.dust, 1), 
+                5400, 1920, 3400
+            );
+        
         
         //Zirconia-Hafnia
         GT_Values.RA.addCentrifugeRecipe(
@@ -171,6 +182,19 @@ public class RecipeLoader {
         		WerkstoffMaterialPool.SeaweedConcentrate.getFluidOrGas(600),
         		Materials.Calcite.getDustSmall(2),
         		300,
+        		240
+        	);
+        
+      //SeaweedConcentrate * 4
+        GT_Values.RA.addMixerRecipe(
+        		WerkstoffMaterialPool.SeaweedAsh.get(OrePrefixes.dust, 4),
+        		null,
+        		null,
+        		null,
+        		Materials.DilutedSulfuricAcid.getFluid(2400),
+        		WerkstoffMaterialPool.SeaweedConcentrate.getFluidOrGas(2400),
+        		Materials.Calcite.getDust(2),
+        		1200,
         		240
         	);
         
@@ -376,7 +400,7 @@ public class RecipeLoader {
         		}, 
         		null, 
         		new int[] {
-        				8000, 7500, 1000, 500, 2000
+        				9000, 7500, 2000, 500, 2000
         		}, 
         		new FluidStack[] {
         				WerkstoffMaterialPool.DilutedRareEarthMonaziteMud.getFluidOrGas(1000)
@@ -413,6 +437,22 @@ public class RecipeLoader {
         		480
         	);
         
+        GT_Values.RA.addMultiblockChemicalRecipe(
+        		new ItemStack[] {
+        				GT_Utility.getIntegratedCircuit(14)
+        		},
+        		new FluidStack[] {
+        				WerkstoffMaterialPool.DilutedMonaziteSulfate.getFluidOrGas(9000),
+        				WerkstoffMaterialPool.AmmoniumNitrate.getFluidOrGas(1800)
+        		}, 
+        		null, 
+        		new ItemStack[] {
+        				WerkstoffMaterialPool.AcidicMonazitePowder.get(OrePrefixes.dust, 3), 
+        		},
+        		4320, 
+        		480
+        	);
+        
         GT_Values.RA.addSifterRecipe(
         		WerkstoffMaterialPool.AcidicMonazitePowder.get(OrePrefixes.dust, 1), 
         		new ItemStack[] {
@@ -434,6 +474,18 @@ public class RecipeLoader {
         		300, 
         		128, 
         		1500
+        	);
+        
+        GT_Values.RA.addThermalCentrifugeRecipe(
+        		WerkstoffMaterialPool.ThoriumPhosphateConcentrate.get(OrePrefixes.dust),
+        		Materials.Thorium.getDust(1),
+        		Materials.Phosphate.getDust(1),
+        		null, 
+        		new int[] {
+        				10000, 10000
+        		},
+        		200,
+        		480  		
         	);
         
         GT_Values.RA.addChemicalBathRecipe(
@@ -611,7 +663,7 @@ public class RecipeLoader {
         		WerkstoffMaterialPool.EuropiumOxide.get(OrePrefixes.dustSmall, 1),  // Maybe also holmium
         		null, 
         		new int[] {
-        				9000, 1 //Because fuck you
+        				9000, 10
         		}, 
         		600, 
         		1920
@@ -684,6 +736,24 @@ public class RecipeLoader {
         				10000, 10000
         		},
         		700,
+        		1920	
+        	);
+        
+        GT_Values.RA.addCentrifugeRecipe(
+        		WerkstoffMaterialPool.SaturatedMonaziteRareEarthMixture.get(OrePrefixes.dust, 18),
+        		null,
+        		null,
+        		Materials.Chloromethane.getFluid(1800),
+        		WerkstoffMaterialPool.SamaricResidue.get(OrePrefixes.dust, 6),
+        		WerkstoffMaterialPool.UnknownBlend.get(OrePrefixes.dust, 2),
+        		null,
+        		null,
+        		null,
+        		null,
+        		new int[] {
+        				10000, 10000
+        		},
+        		6300,
         		1920	
         	);
         
@@ -764,7 +834,7 @@ public class RecipeLoader {
         		}, 
         		null, 
         		new int[] {
-        				8000, 7500, 1000, 500, 2000
+        				9000, 7500, 1000, 500, 2000
         		}, 
         		new FluidStack[] {
         				WerkstoffMaterialPool.DiltedRareEarthBastnasiteMud.getFluidOrGas(1000)
@@ -1140,6 +1210,9 @@ public class RecipeLoader {
                             else if (tRecipe.mOutputs[i].isItemEqual(Materials.Samarium.getDust(1)) ) {
                             	tRecipe.mOutputs[i] = GT_Utility.copyAmount(tRecipe.mOutputs[i].stackSize * 2, WerkstoffMaterialPool.SamariumOreConcentrate.get(OrePrefixes.dust, 1));
                             }
+                            else if (tRecipe.mOutputs[i].isItemEqual(Materials.Lanthanum.getDust(1)) ) {
+                            	tRecipe.mOutputs[i] = null;
+                            }
                         }
                         if (!tRecipe.equals(recipe)){
                             reAdd.add(tRecipe);
@@ -1177,6 +1250,9 @@ public class RecipeLoader {
                             else if (tRecipe.mOutputs[i].isItemEqual(Materials.Samarium.getDust(1)) ) {
                             	tRecipe.mOutputs[i] = GT_Utility.copyAmount(tRecipe.mOutputs[i].stackSize * 2, WerkstoffMaterialPool.SamariumOreConcentrate.get(OrePrefixes.dust, 1));
                             }
+                            else if (tRecipe.mOutputs[i].isItemEqual(Materials.Lanthanum.getDust(1)) ) {
+                            	tRecipe.mOutputs[i] = null;
+                            }
                         }
                         if (!tRecipe.equals(recipe)){
                             reAdd.add(tRecipe);
@@ -1213,6 +1289,9 @@ public class RecipeLoader {
                             }
                             else if (tRecipe.mOutputs[i].isItemEqual(Materials.Samarium.getDust(1)) ) {
                             	tRecipe.mOutputs[i] = GT_Utility.copyAmount(tRecipe.mOutputs[i].stackSize * 2, WerkstoffMaterialPool.SamariumOreConcentrate.get(OrePrefixes.dust, 1));
+                            }
+                            else if (tRecipe.mOutputs[i].isItemEqual(Materials.Lanthanum.getDust(1)) ) {
+                            	tRecipe.mOutputs[i] = null;
                             }
                         }
                         if (!tRecipe.equals(recipe)){
