@@ -168,7 +168,6 @@ public class GT_MetaTileEntity_DistillationTower extends GT_MetaTileEntity_Enhan
                 }
             }
         }
-        tInputList.add(mInventory[1]);
         ItemStack[] inputs = tInputList.toArray(new ItemStack[0]);
 
         ArrayList<FluidStack> tFluidList = getStoredFluids();
