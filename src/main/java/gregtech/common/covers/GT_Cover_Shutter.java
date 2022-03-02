@@ -6,6 +6,7 @@ import gregtech.api.gui.widgets.GT_GuiIcon;
 import gregtech.api.gui.widgets.GT_GuiIconCheckButton;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
+import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.net.GT_Packet_TileEntityCover;
 import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_Utility;
@@ -26,17 +27,26 @@ public class GT_Cover_Shutter extends GT_CoverBehavior {
 
     @Override
     public int onCoverScrewdriverclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        aCoverVariable = (aCoverVariable + (aPlayer.isSneaking()? -1 : 1)) % 4;
-        if(aCoverVariable <0){aCoverVariable = 3;}
-        switch(aCoverVariable) {
+        aCoverVariable = (aCoverVariable + (aPlayer.isSneaking() ? -1 : 1)) % 4;
+        if (aCoverVariable < 0) {
+            aCoverVariable = 3;
+        }
+        switch (aCoverVariable) {
             case 0:
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("082", "Open if work enabled")); break;
+                GT_Utility.sendChatToPlayer(aPlayer, trans("082", "Open if work enabled"));
+                break;
             case 1:
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("083", "Open if work disabled")); break;
+                GT_Utility.sendChatToPlayer(aPlayer, trans("083", "Open if work disabled"));
+                break;
             case 2:
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("084", "Only Output allowed")); break;
+                GT_Utility.sendChatToPlayer(aPlayer, trans("084", "Only Output allowed"));
+                break;
             case 3:
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("085", "Only Input allowed")); break;
+                GT_Utility.sendChatToPlayer(aPlayer, trans("085", "Only Input allowed"));
+                break;
+        }
+        if (aTileEntity instanceof BaseMetaPipeEntity) {
+            ((BaseMetaPipeEntity) aTileEntity).reloadLocks();
         }
         return aCoverVariable;
     }

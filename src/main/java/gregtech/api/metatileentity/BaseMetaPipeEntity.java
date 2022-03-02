@@ -2,14 +2,18 @@ package gregtech.api.metatileentity;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
 import static gregtech.api.enums.GT_Values.NW;
+import static gregtech.api.metatileentity.BaseMetaTileEntity.COVER_DATA_NBT_KEYS;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
+import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.Textures.BlockIcons;
+import gregtech.api.graphs.Lock;
 import gregtech.api.graphs.Node;
 import gregtech.api.graphs.paths.NodePath;
 import gregtech.api.interfaces.ITexture;
@@ -19,10 +23,9 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IPipeRenderedTileEntity;
 import gregtech.api.net.GT_Packet_TileEntity;
 import gregtech.api.objects.GT_ItemStack;
-import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.*;
+import gregtech.common.GT_Client;
+import gregtech.common.covers.GT_Cover_Fluidfilter;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -30,11 +33,21 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
+
+import static gregtech.GT_Mod.GT_FML_LOGGER;
+import static gregtech.api.enums.GT_Values.NW;
+import static gregtech.api.metatileentity.BaseMetaTileEntity.COVER_DATA_NBT_KEYS;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -69,6 +82,34 @@ public class BaseMetaPipeEntity extends CoverableGregTechTileEntity implements I
         this.nodePath = nodePath;
     }
 
+    public void addToLock(TileEntity tileEntity, int side) {
+        if (node != null) {
+            Lock lock = node.locks[side];
+            if (lock != null) {
+                lock.addTileEntity(tileEntity);
+            }
+        } else if (nodePath != null) {
+            nodePath.lock.addTileEntity(tileEntity);
+        }
+    }
+
+    public void removeFromLock(TileEntity tileEntity, int side) {
+        if (node != null) {
+            Lock lock = node.locks[side];
+            if (lock != null) {
+                lock.removeTileEntity(tileEntity);
+            }
+        } else if (nodePath != null) {
+            nodePath.lock.removeTileEntity(tileEntity);
+        }
+    }
+
+    public void reloadLocks() {
+        IMetaTileEntity meta = getMetaTileEntity();
+        if (meta instanceof MetaPipeEntity) {
+            ((MetaPipeEntity) meta).reloadLocks();
+        }
+    }
 
     public BaseMetaPipeEntity() {
     }
@@ -533,11 +574,13 @@ public class BaseMetaPipeEntity extends CoverableGregTechTileEntity implements I
     public void enableWorking() {
         if (!mWorks) mWorkUpdate = true;
         mWorks = true;
+        reloadLocks();
     }
 
     @Override
     public void disableWorking() {
         mWorks = false;
+        reloadLocks();
     }
 
     @Override
