@@ -157,7 +157,6 @@ public class GT_MetaTileEntity_LargeChemicalReactor extends GT_MetaTileEntity_En
                     }
                 }
             }
-            tInputList.add(mInventory[1]);
             ItemStack[] inputs = tInputList.toArray(new ItemStack[0]);
 
             ArrayList<FluidStack> tFluidList = getStoredFluids();
