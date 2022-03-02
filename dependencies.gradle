@@ -9,7 +9,6 @@ dependencies {
     compile("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
 
     compile("com.github.GTNewHorizons:NotEnoughItems:2.2.8-GTNH:dev")
-	//compile files('NotEnoughItems-1.7.10-2.2.8-GTNH.dirty-dev.jar')
     compileOnly("com.github.GTNewHorizons:EnderCore:0.2.6:dev") {
         transitive = false
     }
@@ -17,8 +16,9 @@ dependencies {
     compile("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-79-GTNH:dev")
 	
     compile("com.github.GTNewHorizons:bartworks:0.5.39:dev")
-	compile files('bartworks-1.7.10-0.5.34.dirty-dev.jar')
+
     compileOnly("com.github.GTNewHorizons:GTplusplus:1.7.28:dev") {
+
         transitive = false
     }
     compileOnly("com.github.GTNewHorizons:AppleCore:3.1.9:dev") {
@@ -55,7 +55,9 @@ dependencies {
 /*    compileOnly("com.github.GTNewHorizons:Avaritia:1.25) {
         setChanging(true)
     }*/
-    compile files('Thaumcraft-1.7.10-4.2.3.5.deobf.jar')
+    compileOnly("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev") {
+        transitive = false
+    }
 	//compile files('ThaumicTinkerer-1.7.10-2.5-4-dev.jar')
 	
 }
