@@ -1,60 +1,39 @@
 // Add your dependencies here
 
 dependencies {
-	
-    compile("com.github.GTNewHorizons:GT5-Unofficial:5.09.40.39:dev")
-	compile("com.github.GTNewHorizons:NewHorizonsCoreMod:1.9.21:dev")
-    compile("com.github.GTNewHorizons:StructureLib:1.0.16:dev")
+    compile('com.github.GTNewHorizons:GT5-Unofficial:5.09.40.39:dev')
+	compile('com.github.GTNewHorizons:NewHorizonsCoreMod:1.9.21:dev')
+    compile('com.github.GTNewHorizons:StructureLib:1.0.16:dev')
+    compile('com.github.GTNewHorizons:GTplusplus:1.7.28:dev')
+    compile('com.github.GTNewHorizons:GoodGenerator:0.4.1:dev')
+    compile('com.github.GTNewHorizons:TecTech:5.0.6:dev')
+    compile('com.github.GTNewHorizons:ForestryMC:4.4.6:dev')
+    compile('com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-79-GTNH:dev')
+    compile('com.github.GTNewHorizons:bartworks:0.5.39:dev')
+    compile('com.github.GTNewHorizons:BuildCraft:7.1.27:dev')
+    compile('com.github.GTNewHorizons:NotEnoughItems:2.2.8-GTNH:dev')
 
-    compile("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
+    compile('net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev')
 
-    compile("com.github.GTNewHorizons:NotEnoughItems:2.2.8-GTNH:dev")
-    compileOnly("com.github.GTNewHorizons:EnderCore:0.2.6:dev") {
-        transitive = false
-    }
-	
-    compile("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-79-GTNH:dev")
-	
-    compile("com.github.GTNewHorizons:bartworks:0.5.39:dev")
+    compileOnly('com.github.GTNewHorizons:EnderCore:0.2.6:dev') {transitive=false}
+    compileOnly('com.github.GTNewHorizons:AppleCore:3.1.9:dev') {transitive = false}
+    compileOnly('com.github.GTNewHorizons:Railcraft:9.13.6:dev') {transitive = false}
+    compileOnly('com.github.GTNewHorizons:EnderIO:2.3.1.31:dev') {transitive=false}
+    compileOnly('com.github.GTNewHorizons:ExtraCells2:2.5.9:dev') {transitive=false}
 
-    compileOnly("com.github.GTNewHorizons:GTplusplus:1.7.28:dev") {
+    compileOnly('thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev') {transitive=false}
 
-        transitive = false
-    }
-    compileOnly("com.github.GTNewHorizons:AppleCore:3.1.9:dev") {
-        transitive = false
-    }
-    compile("com.github.GTNewHorizons:TecTech:5.0.6:dev")
-	compile("com.github.GTNewHorizons:GoodGenerator:0.4.1:dev")
-    compile("com.github.GTNewHorizons:ForestryMC:4.4.6:dev")
-    compileOnly("com.github.GTNewHorizons:Railcraft:9.13.6:dev") {
-        transitive = false
-    }
-    compileOnly("com.github.GTNewHorizons:EnderIO:2.3.1.31:dev") {
-        transitive = false
-    }
-    compile("com.github.GTNewHorizons:BuildCraft:7.1.27:dev") {
-        transitive = false
-    }
+	//compile('com.github.GTNewHorizons:GalacticGregGT5:1.0.7:dev')
+	//compile('com.github.GTNewHorizons:TecTech:5.0.6:dev')
+	//compile('com.github.GTNewHorizons:Galacticraft:3.0.40-GTNH:dev')
 
-	compile("com.github.GTNewHorizons:CodeChickenLib:1.1.5.3:dev")
-    compile("com.github.GTNewHorizons:CodeChickenCore:1.1.5:dev")
-	
-	//compile files('Botdustries-1.7.10-1.0.1.jar')
-    
-	runtime("com.github.GTNewHorizons:Baubles:1.0.1.14:dev")
-    runtime("com.github.GTNewHorizons:Yamcl:0.5.82:dev")
-    
-	compileOnly("com.github.GTNewHorizons:ExtraCells2:2.5.9:dev") {
-        transitive = false
-    }
-	
-/*    compileOnly("com.github.GTNewHorizons:Avaritia:1.25) {
-        setChanging(true)
-    }*/
-    compileOnly("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev") {
-        transitive = false
-    }
+    //compileOnly('com.github.GTNewHorizons:Avaritia:1.25)
+
 	//compile files('ThaumicTinkerer-1.7.10-2.5-4-dev.jar')
-	
+    //compile files('Botdustries-1.7.10-1.0.1.jar')
+
+   	//runtime('com.github.GTNewHorizons:Baubles:1.0.1.14:dev')
+    //runtime('com.github.GTNewHorizons:Yamcl:0.5.82:dev')
+    runtime('curse.maven:cofh-core-69162:2388751') //for GT++
+    runtime('curse.maven:advsolar-362768:2885953') //for GT++
 }
