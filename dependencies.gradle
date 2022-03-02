@@ -2,22 +2,20 @@
 
 dependencies {
 	
-    compile("com.github.GTNewHorizons:GT5-Unofficial:5.09.40.31:dev")
-	compile("com.github.GTNewHorizons:NewHorizonsCoreMod:1.9.20:dev")
-    compile("com.github.GTNewHorizons:StructureLib:1.0.14:dev")
+    compile("com.github.GTNewHorizons:GT5-Unofficial:5.09.40.39:dev")
+	compile("com.github.GTNewHorizons:NewHorizonsCoreMod:1.9.21:dev")
+    compile("com.github.GTNewHorizons:StructureLib:1.0.16:dev")
 
     compile("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
 
-    compile("com.github.GTNewHorizons:NotEnoughItems:2.2.5-GTNH:dev")
-	//compile files('NotEnoughItems-1.7.10-2.2.8-GTNH.dirty-dev.jar')
+    compile("com.github.GTNewHorizons:NotEnoughItems:2.2.8-GTNH:dev")
     compileOnly("com.github.GTNewHorizons:EnderCore:0.2.6:dev") {
         transitive = false
     }
 	
-    compile("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-75-GTNH:dev")
+    compile("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-79-GTNH:dev")
 	
-    compile("com.github.GTNewHorizons:bartworks:0.5.36:dev")
-	compile files('bartworks-1.7.10-0.5.34.dirty-dev.jar')
+    compile("com.github.GTNewHorizons:bartworks:0.5.39:dev")
     compileOnly("com.github.GTNewHorizons:GTplusplus:1.7.27:dev") {
         transitive = false
     }
@@ -55,7 +53,9 @@ dependencies {
 /*    compileOnly("com.github.GTNewHorizons:Avaritia:1.2.3) {
         setChanging(true)
     }*/
-    compile files('Thaumcraft-1.7.10-4.2.3.5.deobf.jar')
+    compileOnly("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev") {
+        transitive = false
+    }
 	//compile files('ThaumicTinkerer-1.7.10-2.5-4-dev.jar')
 	
 }
