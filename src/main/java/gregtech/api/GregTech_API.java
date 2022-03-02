@@ -129,7 +129,7 @@ public class GregTech_API {
      * 15000 - 16999 are reserved for TecTech.
      * 17000 - 29999 are currently free.
      * 30000 - 31999 are reserved for Alkalus.
-     * 32001 - 32766 are currently free.
+     * 32001 - 32766 are reserved for Glod.
      * <p/>
      * Contact me if you need a free ID-Range, which doesn't conflict with other Addons.
      * You could make an ID-Config, but we all know, what "stupid" customers think about conflicting ID's
