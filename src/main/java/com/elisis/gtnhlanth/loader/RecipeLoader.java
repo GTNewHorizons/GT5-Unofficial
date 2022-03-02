@@ -1,29 +1,21 @@
 package com.elisis.gtnhlanth.loader;
 
-import java.util.Arrays;
-import java.util.HashSet;
-
 import com.elisis.gtnhlanth.Tags;
 import com.elisis.gtnhlanth.common.register.BotWerkstoffMaterialPool;
+import com.elisis.gtnhlanth.common.register.LanthItemList;
 import com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
-
-import goodgenerator.crossmod.LoadedList;
 import goodgenerator.items.MyMaterial;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GTPP_Recipe;
-import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
-import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_MultisUsingFluidInsteadOfCells;
+import gregtech.api.util.*;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
+
+import java.util.HashSet;
 
 public class RecipeLoader {
 
@@ -1008,21 +1000,6 @@ public class RecipeLoader {
         		800,
         		1920
         	);
-        
-        
-        
-        
-        
-        
-        		
-        		
-        		
-        		
-        	
-        
-        
-        
-        
     }
     
     public static void addRandomChemCrafting() {
@@ -1154,10 +1131,16 @@ public class RecipeLoader {
     			900,
     			480
     		);
-    	
-    	
-    	
-    }
+		//Digester Control Block
+		GT_Values.RA.addAssemblerRecipe(new ItemStack[]
+				{ItemList.Hull_IV.get(1L),  ItemList.Super_Tank_EV.get(2L), ItemList.Electric_Motor_IV.get(4L), ItemList.Electric_Pump_IV.get(4L), GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Desh, 4L), ItemList.Circuit_Master.get(2L), GT_Utility.getIntegratedCircuit(1)},
+				Materials.Polytetrafluoroethylene.getMolten(1440), LanthItemList.DIGESTER, 600, 4096);
+
+		//Dissolution Tank
+		GT_Values.RA.addAssemblerRecipe(new ItemStack[]
+				{ItemList.Hull_EV.get(1L), ItemList.Super_Tank_HV.get(2L), ItemList.Electric_Motor_EV.get(4L), ItemList.Electric_Pump_EV.get(2L), GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.VibrantAlloy, 4L), ItemList.Circuit_Data.get(2L), GT_Utility.getIntegratedCircuit(1)},
+				Materials.Polytetrafluoroethylene.getMolten(720), LanthItemList.DISSOLUTION_TANK, 400, 960);
+	}
     
     //public static void loadZylon
     
