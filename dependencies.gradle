@@ -5,6 +5,7 @@ dependencies {
 	compile('com.github.GTNewHorizons:NewHorizonsCoreMod:1.9.21:dev')
     compile('com.github.GTNewHorizons:StructureLib:1.0.16:dev')
     compile('com.github.GTNewHorizons:GTplusplus:1.7.28:dev')
+    compile('com.github.GTNewHorizons:GoodGenerator:0.4.1:dev')
     compile('com.github.GTNewHorizons:TecTech:5.0.6:dev')
     compile('com.github.GTNewHorizons:ForestryMC:4.4.6:dev')
     compile('com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-79-GTNH:dev')
