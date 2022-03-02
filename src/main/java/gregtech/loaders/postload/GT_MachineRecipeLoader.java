@@ -3438,7 +3438,7 @@ public class GT_MachineRecipeLoader implements Runnable {
 
             //Decomposition
 
-            GT_Values.RA.addBlastRecipe(Materials.Gypsum.getDust(2), GT_Values.NI, GT_Values.NF, Materials.DilutedSulfuricAcid.getGas(1500), Materials.Quicklime.getDust(1), GT_Values.NI, 200, 480, 3200);
+            GT_Values.RA.addBlastRecipe(Materials.Gypsum.getDust(2), GT_Values.NI, GT_Values.NF, Materials.DilutedSulfuricAcid.getFluid(1500), Materials.Quicklime.getDust(1), GT_Values.NI, 200, 480, 3200);
 
             //Carbothermic Reduction
             int outputIngotAmount = GT_Mod.gregtechproxy.mMixedOreOnlyYieldsTwoThirdsOfPureOre ? 2 : 3;
