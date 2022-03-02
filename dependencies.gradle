@@ -25,6 +25,7 @@ dependencies {
         transitive = false
     }
     compile("com.github.GTNewHorizons:TecTech:5.0.6:dev")
+	compile("com.github.GTNewHorizons:GoodGenerator:0.4.1:dev")
     compile("com.github.GTNewHorizons:ForestryMC:4.4.6:dev")
     compileOnly("com.github.GTNewHorizons:Railcraft:9.13.6:dev") {
         transitive = false
@@ -35,11 +36,7 @@ dependencies {
     compile("com.github.GTNewHorizons:BuildCraft:7.1.27:dev") {
         transitive = false
     }
-	
-	//compile("com.github.GTNewHorizons:GalacticGregGT5:1.0.7:dev")
-	//compile("com.github.GTNewHorizons:TecTech:5.0.6:dev")
-	//compile("com.github.GTNewHorizons:Galacticraft:3.0.40-GTNH:dev")
-	
+
 	compile("com.github.GTNewHorizons:CodeChickenLib:1.1.5.3:dev")
     compile("com.github.GTNewHorizons:CodeChickenCore:1.1.5:dev")
 	
