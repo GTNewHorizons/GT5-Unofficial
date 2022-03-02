@@ -4,8 +4,8 @@
 // also being more explicit about what is depended on.
 
 dependencies {
-    compile("com.github.GTNewHorizons:StructureLib:1.0.15:dev")
-    compile("com.github.GTNewHorizons:NotEnoughItems:2.2.6-GTNH:dev")
+    compile("com.github.GTNewHorizons:StructureLib:1.0.16:dev")
+    compile("com.github.GTNewHorizons:NotEnoughItems:2.2.8-GTNH:dev")
     compile("com.github.GTNewHorizons:CodeChickenLib:1.1.5.3:dev")
     compile("com.github.GTNewHorizons:waila:1.5.18:dev")
     
