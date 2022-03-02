@@ -8,11 +8,11 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.Textures;
+import gregtech.api.graphs.Node;
+import gregtech.api.graphs.NodeList;
 import gregtech.api.graphs.PowerNode;
 import gregtech.api.graphs.PowerNodes;
 import gregtech.api.graphs.consumers.ConsumerNode;
-import gregtech.api.graphs.Node;
-import gregtech.api.graphs.NodeList;
 import gregtech.api.graphs.paths.PowerNodePath;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -22,6 +22,7 @@ import gregtech.api.interfaces.tileentity.IEnergyConnected;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
+import gregtech.api.objects.GT_Cover_None;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.*;
 import gregtech.common.GT_Client;
@@ -449,7 +450,7 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
             for( byte aSide = 0 ; aSide < 6 ; aSide++) if(isConnectedAtSide(aSide)) {
                 final TileEntity tTileEntity = baseMeta.getTileEntityAtSide(aSide);
                 final TileEntity tEmitter = (tTileEntity == null || tTileEntity instanceof IEnergyTile || EnergyNet.instance == null) ? tTileEntity :
-                    EnergyNet.instance.getTileEntity(tTileEntity.getWorldObj(), tTileEntity.xCoord, tTileEntity.yCoord, tTileEntity.zCoord);
+                        EnergyNet.instance.getTileEntity(tTileEntity.getWorldObj(), tTileEntity.xCoord, tTileEntity.yCoord, tTileEntity.zCoord);
 
                 if (tEmitter instanceof IEnergyEmitter)
                     return true;
@@ -457,5 +458,43 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
             }
         }
         return false;
+    }
+
+    @Override
+    public void reloadLocks() {
+        BaseMetaPipeEntity pipe = (BaseMetaPipeEntity) getBaseMetaTileEntity();
+        if (pipe.getNode() != null) {
+            for (byte i = 0; i < 6; i++) {
+                if (isConnectedAtSide(i)) {
+                    final GT_CoverBehaviorBase<?> coverBehavior = pipe.getCoverBehaviorAtSideNew(i);
+                    if (coverBehavior instanceof GT_Cover_None) continue;
+                    final int coverId = pipe.getCoverIDAtSide(i);
+                    ISerializableObject coverData = pipe.getComplexCoverDataAtSide(i);
+                    if (!letsIn(coverBehavior, i, coverId, coverData, pipe) || !letsOut(coverBehavior, i, coverId, coverData, pipe)) {
+                        pipe.addToLock(pipe, i);
+                    } else {
+                        pipe.removeFromLock(pipe, i);
+                    }
+                }
+            }
+        } else {
+            boolean dontAllow = false;
+            for (byte i = 0; i < 6; i++) {
+                if (isConnectedAtSide(i)) {
+                    final GT_CoverBehaviorBase<?> coverBehavior = pipe.getCoverBehaviorAtSideNew(i);
+                    if (coverBehavior instanceof GT_Cover_None) continue;
+                    final int coverId = pipe.getCoverIDAtSide(i);
+                    ISerializableObject coverData = pipe.getComplexCoverDataAtSide(i);
+                    if (!letsIn(coverBehavior, i, coverId, coverData, pipe) || !letsOut(coverBehavior, i, coverId, coverData, pipe)) {
+                        dontAllow = true;
+                    }
+                }
+            }
+            if (dontAllow) {
+                pipe.addToLock(pipe, 0);
+            } else {
+                pipe.removeFromLock(pipe, 0);
+            }
+        }
     }
 }
