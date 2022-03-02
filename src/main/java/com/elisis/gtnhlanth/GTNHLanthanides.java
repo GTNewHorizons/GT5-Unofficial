@@ -5,7 +5,7 @@ import java.util.logging.Logger;
 
 import com.elisis.gtnhlanth.common.CommonProxy;
 import com.elisis.gtnhlanth.common.register.BotWerkstoffMaterialPool;
-import com.elisis.gtnhlanth.common.register.ItemList;
+import com.elisis.gtnhlanth.common.register.LanthItemList;
 import com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool;
 import com.elisis.gtnhlanth.loader.BotRecipes;
 import com.elisis.gtnhlanth.loader.RecipeLoader;
@@ -46,7 +46,7 @@ public class GTNHLanthanides {
     public static void preInit(FMLPreInitializationEvent e) {
         WerkstoffAdderRegistry.addWerkstoffAdder(new WerkstoffMaterialPool());
         WerkstoffAdderRegistry.addWerkstoffAdder(new BotWerkstoffMaterialPool());
-        ItemList.register();
+        LanthItemList.register();
         proxy.preInit(e);
     }
     
