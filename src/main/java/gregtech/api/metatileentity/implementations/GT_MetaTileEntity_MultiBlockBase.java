@@ -249,7 +249,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
     public void onStructureChange() {
         mStructureChanged = true;
     }
-    
+
     @Override
     public void onMachineBlockUpdate() {
         mUpdated = true;
@@ -269,11 +269,11 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
         mMufflerHatches.clear();
         mMaintenanceHatches.clear();
     }
-    
+
     public boolean checkStructure(boolean aForceReset) {
         return checkStructure(aForceReset, getBaseMetaTileEntity());
     }
-    
+
     public boolean checkStructure(boolean aForceReset, IGregTechTileEntity aBaseMetaTileEntity) {
         if(!aBaseMetaTileEntity.isServerSide()) return mMachine;
         // Only trigger an update if forced (from onPostTick, generally), or if the structure has changed
@@ -739,7 +739,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
         }
         return false;
     }
-    
+
     public boolean addOutput(FluidStack aLiquid) {
         if (aLiquid == null) return false;
         FluidStack copiedFluidStack = aLiquid.copy();
@@ -864,6 +864,8 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
                 }
             }
         }
+        if(getStackInSlot(1) != null && getStackInSlot(1).getUnlocalizedName().startsWith("gt.integrated_circuit"))
+            rList.add(getStackInSlot(1));
         return rList;
     }
 
@@ -1117,14 +1119,14 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
 
         currenttip.add(String.format("Progress: %d s / %d s", tag.getInteger("progress"), tag.getInteger("maxProgress")));
 
-        
+
         super.getWailaBody(itemStack, currenttip, accessor, config);
     }
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y, int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        
+
         tag.setBoolean("hasProblems", (getIdealStatus() - getRepairStatus()) > 0);
         tag.setFloat("efficiency", mEfficiency / 100.0F);
         tag.setInteger("progress", mProgresstime/20);
