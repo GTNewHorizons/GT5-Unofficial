@@ -3436,6 +3436,10 @@ public class GT_MachineRecipeLoader implements Runnable {
 
             GT_Values.RA.addBlastRecipe(Materials.Galena.getDust(1), GT_Values.NI, Materials.Oxygen.getGas(3000), Materials.SulfurDioxide.getGas(1000), Materials.Massicot.getDust(1), Materials.Ash.getDustTiny(1), 120, 120, 1200);
 
+            //Decomposition
+
+            GT_Values.RA.addBlastRecipe(Materials.Gypsum.getDust(2), GT_Values.NI, GT_Values.NF, Materials.DilutedSulfuricAcid.getFluid(1500), Materials.Quicklime.getDust(1), GT_Values.NI, 200, 480, 3200);
+
             //Carbothermic Reduction
             int outputIngotAmount = GT_Mod.gregtechproxy.mMixedOreOnlyYieldsTwoThirdsOfPureOre ? 2 : 3;
             GT_Values.RA.addBlastRecipe(Materials.CupricOxide.getDust(2),         Materials.Carbon.getDust(1),      GT_Values.NF, Materials.CarbonDioxide.getGas(1000),  Materials.Copper.getIngots(outputIngotAmount),   Materials.Ash.getDustTiny(2), 240, 120, 1200);
@@ -3492,7 +3496,7 @@ public class GT_MachineRecipeLoader implements Runnable {
             	//Potassium Nitride
             	GT_Values.RA.addChemicalRecipe(Materials.Potassium.getDust(1), GT_Utility.getIntegratedCircuit(1), Materials.NitricAcid.getFluid(1000), GT_Values.NF, Materials.PotassiumNitrade.getDust(1), 100, 30);
 
-            	// Chrome Trioxide
+            	//Chromium Trioxide
             	GT_Values.RA.addChemicalRecipe(Materials.ChromiumDioxide.getDust(1), GT_Utility.getIntegratedCircuit(1), Materials.Oxygen.getGas(1000), GT_Values.NF, Materials.ChromiumTrioxide.getDust(1), GT_Values.NI,100, 60);
 
             	//Potassium Dichromate
