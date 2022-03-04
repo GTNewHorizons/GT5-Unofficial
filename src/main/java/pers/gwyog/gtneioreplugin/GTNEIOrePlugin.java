@@ -27,8 +27,8 @@ public class GTNEIOrePlugin {
 
     @EventHandler
     public void preinit(FMLPreInitializationEvent event) {
-        Config c = new Config(event, this.MODID + ".cfg");
-        csv = c.tConfig.getBoolean("print csv", "ALL", false, "princsv, you need apache commons collections to be injected in the minecraft jar.");
+        Config c = new Config(event, MODID + ".cfg");
+        csv = c.tConfig.getBoolean("print csv", "ALL", false, "print csv, you need apache commons collections to be injected in the minecraft jar.");
         CSVname = c.tConfig.getString("CSV_name", "ALL", event.getModConfigurationDirectory() + "/GTNH-Oresheet.csv", "rename the oresheet here, it will appear in /config");
         CSVnameSmall= c.tConfig.getString("CSV_name_for_Small_Ore_Sheet", "ALL", event.getModConfigurationDirectory() + "/GTNH-Small-Ores-Sheet.csv", "rename the oresheet here, it will appear in /config");
         toolTips = c.tConfig.getBoolean("DimTooltip", "ALL", true, "Activates Dimension Tooltips");
