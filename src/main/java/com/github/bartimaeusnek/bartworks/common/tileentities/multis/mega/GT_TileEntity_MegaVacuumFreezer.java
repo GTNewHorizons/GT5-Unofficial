@@ -24,21 +24,26 @@ package com.github.bartimaeusnek.bartworks.common.tileentities.multis.mega;
 
 import com.github.bartimaeusnek.bartworks.API.LoaderReference;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
-import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import com.github.bartimaeusnek.bartworks.util.MegaUtils;
 import com.github.bartimaeusnek.bartworks.util.Pair;
 import com.github.bartimaeusnek.crossmod.tectech.TecTechEnabledMulti;
 import com.github.bartimaeusnek.crossmod.tectech.helper.TecTechUtils;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
+import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_VacuumFreezer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -48,10 +53,12 @@ import java.util.List;
 
 import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.getMultiOutput;
 import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.handleParallelRecipe;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.util.GT_StructureUtility.*;
 
 @Optional.Interface(iface = "com.github.bartimaeusnek.crossmod.tectech.TecTechEnabledMulti", modid = "tectech", striprefs = true)
-public class GT_TileEntity_MegaVacuumFreezer extends GT_MetaTileEntity_VacuumFreezer implements TecTechEnabledMulti {
+public class GT_TileEntity_MegaVacuumFreezer extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_TileEntity_MegaVacuumFreezer> implements TecTechEnabledMulti {
 
     public GT_TileEntity_MegaVacuumFreezer(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -59,10 +66,6 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_MetaTileEntity_VacuumFre
 
     public GT_TileEntity_MegaVacuumFreezer(String aName) {
         super(aName);
-    }
-
-    public String[] getDescription() {
-        return BW_Tooltip_Reference.getTranslatedBrandedTooltip("tooltip.tile.mvf.0.name");
     }
 
     @Override
@@ -74,6 +77,47 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_MetaTileEntity_VacuumFre
     public ArrayList TTTunnels = new ArrayList<>();
     @SuppressWarnings("rawtypes")
     public ArrayList TTMultiAmp = new ArrayList<>();
+    private int mCasing = 0;
+
+    private static final int CASING_INDEX = 17;
+    private static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final IStructureDefinition<GT_TileEntity_MegaVacuumFreezer> STRUCTURE_DEFINITION = StructureDefinition.<GT_TileEntity_MegaVacuumFreezer>builder()
+        .addShape(STRUCTURE_PIECE_MAIN, transpose(new String[][]{
+            {"ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc"},
+            {"ccccccccccccccc", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "ccccccccccccccc"},
+            {"ccccccccccccccc", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "ccccccccccccccc"},
+            {"ccccccccccccccc", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "ccccccccccccccc"},
+            {"ccccccccccccccc", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "ccccccccccccccc"},
+            {"ccccccccccccccc", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "ccccccccccccccc"},
+            {"ccccccccccccccc", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "ccccccccccccccc"},
+            {"ccccccc~ccccccc", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "ccccccccccccccc"},
+            {"ccccccccccccccc", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "ccccccccccccccc"},
+            {"ccccccccccccccc", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "ccccccccccccccc"},
+            {"ccccccccccccccc", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "ccccccccccccccc"},
+            {"ccccccccccccccc", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "ccccccccccccccc"},
+            {"ccccccccccccccc", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "ccccccccccccccc"},
+            {"ccccccccccccccc", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "c-------------c", "ccccccccccccccc"},
+            {"ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc", "ccccccccccccccc"}
+        }))
+        .addElement('c', ofChain(
+            ofHatchAdder(GT_TileEntity_MegaVacuumFreezer::addEnergyInputToMachineList, CASING_INDEX, 1),
+            ofHatchAdder(GT_TileEntity_MegaVacuumFreezer::addMaintenanceToMachineList, CASING_INDEX, 1),
+            ofHatchAdder(GT_TileEntity_MegaVacuumFreezer::addOutputToMachineList, CASING_INDEX, 1),
+            ofHatchAdder(GT_TileEntity_MegaVacuumFreezer::addInputToMachineList, CASING_INDEX, 1),
+            onElementPass(x -> x.mCasing++, ofBlock(GregTech_API.sBlockCasings2, 1))
+        ))
+        .build();
+
+
+    @Override
+    public IStructureDefinition<GT_TileEntity_MegaVacuumFreezer> getStructureDefinition() {
+        return STRUCTURE_DEFINITION;
+    }
+
+    @Override
+    public void construct(ItemStack aStack, boolean aHintsOnly) {
+        buildPiece(STRUCTURE_PIECE_MAIN, aStack, aHintsOnly, 7, 7, 0);
+    }
 
     @Override
     public boolean addEnergyInputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
@@ -94,6 +138,11 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_MetaTileEntity_VacuumFre
         if (LoaderReference.tectech)
             return TecTechUtils.getMaxInputVoltage(this);
         return super.getMaxInputVoltage();
+    }
+
+    @Override
+    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
+        return GT_Recipe.GT_Recipe_Map.sVacuumRecipes;
     }
 
     @Override
@@ -152,14 +201,7 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_MetaTileEntity_VacuumFre
         return false;
     }
 
-    @Override
-    public IStructureDefinition<GT_MetaTileEntity_VacuumFreezer> getStructureDefinition() {
-        throw new UnsupportedOperationException();
-    }
 
-    @Override
-    public void construct(ItemStack aStack, boolean aHintsOnly) {
-    }
 
     // -------------- TEC TECH COMPAT ----------------
 
@@ -169,22 +211,77 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_MetaTileEntity_VacuumFre
             this.getTecTechEnergyMultis().clear();
             this.getTecTechEnergyTunnels().clear();
         }
-        return (
-                BW_Util.check_layer(aBaseMetaTileEntity, 7, -7, -6, GregTech_API.sBlockCasings2, 1, 7, false, false, true, GregTech_API.sBlockCasings2, 1, true, 17)
-                        && BW_Util.check_layer(aBaseMetaTileEntity, 7, -6, 0, GregTech_API.sBlockCasings2, 1, 7, false, false, true, Blocks.air, -1, true, 17)
-                        && BW_Util.check_layer(aBaseMetaTileEntity, 7, 0, 1, GregTech_API.sBlockCasings2, 1, 7, true, false, true, Blocks.air, -1, true, 17)
-                        && BW_Util.check_layer(aBaseMetaTileEntity, 7, 1, 7, GregTech_API.sBlockCasings2, 1, 7, false, false, true, Blocks.air, -1, true, 17)
-                        && BW_Util.check_layer(aBaseMetaTileEntity, 7, 7, 8, GregTech_API.sBlockCasings2, 1, 7, false, false, true, GregTech_API.sBlockCasings2, 1, true, 17)
-        ) &&
-                !this.mMaintenanceHatches.isEmpty() &&
-                LoaderReference.tectech ?
-                (!this.getTecTechEnergyMultis().isEmpty() || !this.getTecTechEnergyTunnels().isEmpty() || !this.mEnergyHatches.isEmpty()) :
-                !this.mEnergyHatches.isEmpty();
+        this.mCasing = 0;
+        if(!checkPiece(STRUCTURE_PIECE_MAIN, 7, 7, 0))
+            return false;
+        return
+            this.mMaintenanceHatches.size() == 1 &&
+                (LoaderReference.tectech ?
+                    (!this.getTecTechEnergyMultis().isEmpty() || !this.getTecTechEnergyTunnels().isEmpty() || !this.mEnergyHatches.isEmpty()) :
+                    !this.mEnergyHatches.isEmpty()) &&
+                this.mCasing >= 900;
     }
+
 
     @Override
     public String[] getInfoData() {
         return LoaderReference.tectech ? this.getInfoDataArray(this) : super.getInfoData();
+    }
+
+    @Override
+    protected GT_Multiblock_Tooltip_Builder createTooltip() {
+        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        tt.addMachineType("Vacuum Freezer").
+            addInfo("Controller Block for the Mega Vacuum Freezer").
+            addInfo("Cools hot ingots and cells").
+            addSeparator().
+            beginStructureBlock(15, 15, 15, true).
+            addController("Front center").
+            addCasingInfo("Frost Proof Machine Casing", 900).
+            addEnergyHatch("Any casing", 1).
+            addMaintenanceHatch("Any casing", 1).
+            addInputHatch("Any casing", 1).
+            addOutputHatch("Any casing", 1).
+            addInputBus("Any casing", 1).
+            addOutputBus("Any casing", 1).
+            toolTipFinisher("Bartworks");
+        return tt;
+    }
+
+    @Override
+    public boolean isCorrectMachinePart(ItemStack itemStack) {
+        return true;
+    }
+
+    @Override
+    public int getMaxEfficiency(ItemStack itemStack) {
+        return 10000;
+    }
+
+    @Override
+    public int getDamageToComponent(ItemStack itemStack) {
+        return 0;
+    }
+
+    @Override
+    public boolean explodesOnComponentBreak(ItemStack itemStack) {
+        return false;
+    }
+
+    @Override
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
+        ITexture[] rTexture;
+        if (aSide == aFacing) {
+            if (aActive) {
+                rTexture = new ITexture[]{Textures.BlockIcons.casingTexturePages[0][17], TextureFactory.builder().addIcon(new IIconContainer[]{Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE}).extFacing().build(), TextureFactory.builder().addIcon(new IIconContainer[]{Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE_GLOW}).extFacing().glow().build()};
+            } else {
+                rTexture = new ITexture[]{Textures.BlockIcons.casingTexturePages[0][17], TextureFactory.builder().addIcon(new IIconContainer[]{Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER}).extFacing().build(), TextureFactory.builder().addIcon(new IIconContainer[]{Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_GLOW}).extFacing().glow().build()};
+            }
+        } else {
+            rTexture = new ITexture[]{Textures.BlockIcons.casingTexturePages[0][17]};
+        }
+
+        return rTexture;
     }
 
     @Override

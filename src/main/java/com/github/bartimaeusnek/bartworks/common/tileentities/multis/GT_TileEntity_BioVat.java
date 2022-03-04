@@ -30,22 +30,27 @@ import com.github.bartimaeusnek.bartworks.common.loaders.FluidLoader;
 import com.github.bartimaeusnek.bartworks.common.net.RendererPacket;
 import com.github.bartimaeusnek.bartworks.common.tileentities.tiered.GT_MetaTileEntity_RadioHatch;
 import com.github.bartimaeusnek.bartworks.util.*;
+import com.gtnewhorizon.structurelib.StructureLibAPI;
+import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.IStructureElement;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -56,11 +61,16 @@ import net.minecraftforge.fluids.FluidStack;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class GT_TileEntity_BioVat extends GT_MetaTileEntity_MultiBlockBase {
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_GLOW;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
+
+public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_TileEntity_BioVat> {
 
     public static final HashMap<Coords, Integer> staticColorMap = new HashMap<>();
 
-    private static final byte MCASING_INDEX = 49;
     private static final byte TIMERDIVIDER = 20;
 
     private final HashSet<EntityPlayerMP> playerMPHashSet = new HashSet<>();
@@ -74,6 +84,7 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_MultiBlockBase {
     private byte mGlassTier;
     private int mSievert;
     private int mNeededSievert;
+    private int mCasing = 0;
 
     public GT_TileEntity_BioVat(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -81,6 +92,88 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_MultiBlockBase {
 
     public GT_TileEntity_BioVat(String aName) {
         super(aName);
+    }
+
+    private static final int CASING_INDEX = 49;
+    private static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final IStructureDefinition<GT_TileEntity_BioVat> STRUCTURE_DEFINITION = StructureDefinition.<GT_TileEntity_BioVat>builder()
+        .addShape(STRUCTURE_PIECE_MAIN, transpose(new String[][]{
+            {"ccccc", "ccccc", "ccccc", "ccccc", "ccccc"},
+            {"ggggg", "gaaag", "gaaag", "gaaag", "ggggg"},
+            {"ggggg", "gaaag", "gaaag", "gaaag", "ggggg"},
+            {"cc~cc", "ccccc", "ccccc", "ccccc", "ccccc"},
+        }))
+        .addElement('c', ofChain(
+            ofHatchAdder(GT_TileEntity_BioVat::addMaintenanceToMachineList, CASING_INDEX, 1),
+            ofHatchAdder(GT_TileEntity_BioVat::addOutputToMachineList, CASING_INDEX, 1),
+            ofHatchAdder(GT_TileEntity_BioVat::addInputToMachineList, CASING_INDEX, 1),
+            ofHatchAdder(GT_TileEntity_BioVat::addRadiationInputToMachineList, CASING_INDEX, 1),
+            ofHatchAdder(GT_TileEntity_BioVat::addEnergyInputToMachineList, CASING_INDEX, 1),
+            onElementPass(e -> e.mCasing++, ofBlock(GregTech_API.sBlockCasings4, 1))
+        ))
+        .addElement('a', ofChain(
+            isAir(),
+            ofBlockAnyMeta(FluidLoader.bioFluidBlock)
+        ))
+        .addElement('g', new IStructureElement<GT_TileEntity_BioVat>(){
+
+            @Override
+            public boolean check(GT_TileEntity_BioVat te, World world, int x, int y, int z) {
+                byte glasstier = BW_Util.calculateGlassTier(world.getBlock(x, y, z), (byte)world.getBlockMetadata(x, y, z));
+                if(glasstier == 0)
+                    return false;
+                if(te.mGlassTier == 0)
+                    te.mGlassTier = glasstier;
+                return te.mGlassTier == glasstier;
+            }
+
+            @Override
+            public boolean spawnHint(GT_TileEntity_BioVat te, World world, int x, int y, int z, ItemStack itemStack) {
+                StructureLibAPI.hintParticle(world, x, y, z, StructureLibAPI.getBlockHint(), 1 /* aDots: 2 */);
+                return true;
+            }
+
+            @Override
+            public boolean placeBlock(GT_TileEntity_BioVat te, World world, int x, int y, int z, ItemStack itemStack) {
+                world.setBlock(x, y, z, Blocks.glass, 0, 2);
+                return true;
+            }
+        })
+        .build();
+
+    @Override
+    public IStructureDefinition<GT_TileEntity_BioVat> getStructureDefinition() {
+        return STRUCTURE_DEFINITION;
+    }
+
+    @Override
+    protected IAlignmentLimits getInitialAlignmentLimits() {
+        return (d, r, f) -> d.offsetY == 0 && r.isNotRotated() && f.isNotFlipped();
+    }
+
+    @Override
+    protected GT_Multiblock_Tooltip_Builder createTooltip() {
+        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        tt.
+            addMachineType("Bacterial Vat").
+            addInfo("Controller block for the Bacterial Vat").
+            addInfo("For maximum efficiency boost keep the Output Hatch always half filled!").
+            addSeparator().
+            beginStructureBlock(5, 4, 5, false).
+            addController("Front bottom center").
+            addCasingInfo("Clean Stainless Steel Casings", 19).
+            addOtherStructurePart("Glass", "Hollow two middle layers", 2).
+            addStructureInfo("The glass can be any glass, i.e. Tinkers Construct Clear Glass").
+            addStructureInfo("Some Recipes need more advanced Glass Types").
+            addMaintenanceHatch("Any casing", 1).
+            addOtherStructurePart("Radio Hatch", "Any casing", 1).
+            addInputBus("Any casing", 1).
+            addOutputBus("Any casing", 1).
+            addInputHatch("Any casing", 1).
+            addOutputHatch("Any casing", 1).
+            addEnergyHatch("Any casing", 1).
+            toolTipFinisher("Bartworks");
+        return tt;
     }
 
     public static int[] specialValueUnpack(int aSpecialValue) {
@@ -259,7 +352,7 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_MultiBlockBase {
         return this.mOutputHatches.stream().map(GT_MetaTileEntity_Hatch_Output::getFluid).filter(Objects::nonNull).collect(Collectors.toSet());
     }
 
-    private boolean addRadiationInputToMachineList(IGregTechTileEntity aTileEntity) {
+    private boolean addRadiationInputToMachineList(IGregTechTileEntity aTileEntity, int CasingIndex) {
         if (aTileEntity == null) {
             return false;
         } else {
@@ -267,7 +360,7 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_MultiBlockBase {
             if (aMetaTileEntity == null) {
                 return false;
             } else if (aMetaTileEntity instanceof GT_MetaTileEntity_RadioHatch) {
-                ((GT_MetaTileEntity_RadioHatch) aMetaTileEntity).updateTexture(GT_TileEntity_BioVat.MCASING_INDEX);
+                ((GT_MetaTileEntity_RadioHatch) aMetaTileEntity).updateTexture(CasingIndex);
                 return this.mRadHatches.add((GT_MetaTileEntity_RadioHatch) aMetaTileEntity);
             } else {
                 return false;
@@ -277,49 +370,19 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_MultiBlockBase {
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack) {
-        int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 2;
-        int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * 2;
-        int blockcounter = 0;
         this.mRadHatches.clear();
+        this.mGlassTier = 0;
+        this.mCasing = 0;
 
-        for (int x = -2; x <= 2; x++)
-            for (int z = -2; z <= 2; z++)
-                for (int y = 0; y < 4; y++) {
-                    IGregTechTileEntity tileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, y, zDir + z);
-                    if (y == 0 || y == 3) {
-                        //controller
-                        if (y == 0 && xDir + x == 0 && zDir + z == 0)
-                            continue;
-                        if (!(this.addOutputToMachineList(tileEntity, GT_TileEntity_BioVat.MCASING_INDEX) || this.addRadiationInputToMachineList(tileEntity) || this.addInputToMachineList(tileEntity, GT_TileEntity_BioVat.MCASING_INDEX) || this.addMaintenanceToMachineList(tileEntity, GT_TileEntity_BioVat.MCASING_INDEX) || this.addEnergyInputToMachineList(tileEntity, GT_TileEntity_BioVat.MCASING_INDEX))) {
-                            if (BW_Util.addBlockToMachine(x, y, z, 2, aBaseMetaTileEntity, GregTech_API.sBlockCasings4, 1)) {
-                                ++blockcounter;
-                                continue;
-                            }
-                            return false;
-                        }
-                    } else {
-                        if (Math.abs(x) < 2 && Math.abs(z) != 2) {
-                            if (!(BW_Util.addBlockToMachine(x, y, z, 2, aBaseMetaTileEntity, Blocks.air) || (BW_Util.addBlockToMachine(x, y, z, 2, aBaseMetaTileEntity, FluidLoader.bioFluidBlock)))) {
-                                return false;
-                            }
-                        } else {
-                            if (x == -2 && z == -2 && y == 1)
-                                this.mGlassTier = BW_Util.calculateGlassTier(aBaseMetaTileEntity.getBlockOffset(xDir + -2, y, zDir + z), aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z));
-                            if (0 == this.mGlassTier || this.mGlassTier != BW_Util.calculateGlassTier(aBaseMetaTileEntity.getBlockOffset(xDir + x, y, zDir + z), aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z))) {
-                                return false;
-                            }
-                        }
-                    }
-                }
+        if(!checkPiece(STRUCTURE_PIECE_MAIN, 2, 3, 0))
+            return false;
 
-        if (blockcounter > 18 &&
-            this.mRadHatches.size() < 2 &&
-            this.mOutputHatches.size() == 1 &&
-            this.mMaintenanceHatches.size() == 1 &&
-            this.mInputHatches.size() > 0)
-                return this.mEnergyHatches.size() > 0;
-
-        return false;
+        return  this.mCasing >= 19 &&
+                this.mRadHatches.size() <= 1 &&
+                this.mOutputHatches.size() == 1 &&
+                this.mMaintenanceHatches.size() == 1 &&
+                this.mInputHatches.size() > 0 &&
+                this.mEnergyHatches.size() > 0;
     }
 
     @Override
@@ -567,18 +630,23 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_MultiBlockBase {
     }
 
     @Override
-    public String[] getDescription() {
-        String[] dsc = StatCollector.translateToLocal("tooltip.tile.bvat.0.name").split(";");
-        String[] fdsc = new String[dsc.length + 1];
-        for (int i = 0; i < dsc.length; i++) {
-            fdsc[i] = dsc[i];
-            fdsc[dsc.length] = BW_Tooltip_Reference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get();
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
+        if (aSide == aFacing) {
+            if (aActive)
+                return new ITexture[]{
+                    Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW).extFacing().glow().build()};
+            return new ITexture[]{
+                Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
+                TextureFactory.builder().addIcon(OVERLAY_FRONT_DISTILLATION_TOWER).extFacing().build(),
+                TextureFactory.builder().addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_GLOW).extFacing().glow().build()};
         }
-        return fdsc;
+        return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(CASING_INDEX)};
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        return aSide == aFacing ? new ITexture[]{Textures.BlockIcons.getCasingTextureForId(GT_TileEntity_BioVat.MCASING_INDEX), TextureFactory.of(aActive ? TextureFactory.of(TextureFactory.of(Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE), TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW).glow().build()) : TextureFactory.of(TextureFactory.of(Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER), TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_GLOW).glow().build()))} : new ITexture[]{Textures.BlockIcons.getCasingTextureForId(GT_TileEntity_BioVat.MCASING_INDEX)};
+    public void construct(ItemStack itemStack, boolean b) {
+        buildPiece(STRUCTURE_PIECE_MAIN, itemStack, b, 2, 3, 0);
     }
 }

@@ -22,34 +22,35 @@
 
 package com.github.bartimaeusnek.bartworks.common.tileentities.multis;
 
-import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
-import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
+import com.gtnewhorizon.structurelib.StructureLibAPI;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.IStructureElementNoPlacement;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
+import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 
+import static com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry.BW_BLOCKS;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 
-public class GT_TileEntity_ManualTrafo extends GT_MetaTileEntity_MultiBlockBase {
+public class GT_TileEntity_ManualTrafo extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_TileEntity_ManualTrafo> {
 
-    private static final byte SINGLE_UPSTEP = 0;
-    private static final byte SINGLE_DOWNSTEP = 1;
-    private static final byte MULTI_UPSTEP = 2;
-    private static final byte MULTI_DOWNSTEP = 3;
     private byte mode;
-    private byte texid = 2;
-    private long mCoilWicks;
+    private int mTiers;
     private boolean upstep = true;
 
     public GT_TileEntity_ManualTrafo(int aID, String aName, String aNameRegional) {
@@ -58,6 +59,96 @@ public class GT_TileEntity_ManualTrafo extends GT_MetaTileEntity_MultiBlockBase 
 
     public GT_TileEntity_ManualTrafo(String aName) {
         super(aName);
+    }
+
+    private static final int CASING_INDEX = 2;
+    private static final String STRUCTURE_PIECE_BASE = "base";
+    private static final String STRUCTURE_PIECE_LAYER = "layer";
+    private static final String STRUCTURE_PIECE_TOP = "top";
+    private static final String STRUCTURE_PIECE_TAP_LAYER = "taplayer";
+    private static final IStructureDefinition<GT_TileEntity_ManualTrafo> STRUCTURE_DEFINITION = StructureDefinition.<GT_TileEntity_ManualTrafo>builder()
+        .addShape(STRUCTURE_PIECE_BASE, transpose(new String[][]{
+            {"b~b", "bbb", "bbb"}
+        }))
+        .addShape(STRUCTURE_PIECE_LAYER, transpose(new String[][]{
+            {"ttt", "tft", "ttt"}
+        }))
+        .addShape(STRUCTURE_PIECE_TOP, transpose(new String[][]{
+            {"ooo", "ooo", "ooo"}
+        }))
+        .addShape(STRUCTURE_PIECE_TAP_LAYER, transpose(new String[][]{
+            {" TTT ", "TtttT", "TtftT", "TtttT", " TTT "}
+        }))
+        .addElement('b', ofChain(
+            ofHatchAdder(GT_TileEntity_ManualTrafo::addEnergyInputToMachineList, CASING_INDEX, 1),
+            ofHatchAdder(GT_TileEntity_ManualTrafo::addMaintenanceToMachineList, CASING_INDEX, 1),
+            ofBlock(GregTech_API.sBlockCasings1, 2)
+        ))
+        .addElement('o', ofHatchAdderOptional(GT_TileEntity_ManualTrafo::addDynamoToMachineList, CASING_INDEX, 2, GregTech_API.sBlockCasings1, 2))
+        .addElement('t', ofBlock(BW_BLOCKS[2], 1))
+        .addElement('f', ofBlock(BW_BLOCKS[2], 0))
+        .addElement('T', new IStructureElementNoPlacement<GT_TileEntity_ManualTrafo>() {
+                @Override
+                public boolean check(GT_TileEntity_ManualTrafo te, World world, int x, int y, int z) {
+                    if(world.isAirBlock(x, y, z))
+                        return true;
+                    TileEntity tileEntity = world.getTileEntity(x, y, z);
+                    if(tileEntity == null)
+                        return true;
+                    if(!(tileEntity instanceof IGregTechTileEntity))
+                        return true;
+                    IMetaTileEntity mte = ((IGregTechTileEntity) tileEntity).getMetaTileEntity();
+                    if(mte instanceof GT_MetaTileEntity_Hatch_Dynamo || mte instanceof GT_MetaTileEntity_Hatch_Energy) {
+                        int intier = te.mEnergyHatches.get(0).mTier;
+                        if(((GT_MetaTileEntity_TieredMachineBlock) mte).mTier == intier + (te.upstep ? te.mTiers : -te.mTiers)){
+                            te.addToMachineList((IGregTechTileEntity)tileEntity, CASING_INDEX);
+                            return true;
+                        }
+                        else
+                            return false;
+                    }
+                    return true;
+                }
+
+                @Override
+                public boolean spawnHint(GT_TileEntity_ManualTrafo te, World world, int x, int y, int z, ItemStack itemStack) {
+                    StructureLibAPI.hintParticle(world, x, y, z, StructureLibAPI.getBlockHint(), 2 /* aDots: 3 */);
+                    return true;
+                }
+            }
+        )
+        .build();
+
+    @Override
+    public IStructureDefinition<GT_TileEntity_ManualTrafo> getStructureDefinition() {
+        return STRUCTURE_DEFINITION;
+    }
+
+    @Override
+    protected GT_Multiblock_Tooltip_Builder createTooltip() {
+        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        tt.addMachineType("Transformer")
+            .addInfo("Controller block for the Manual Trafo")
+            .addInfo("Operates in 4 diffrent modes:")
+            .addInfo("Mode 1: Circuit 0 in controller: Direct-Upstep")
+            .addInfo("Mode 2: Circuit 1 in controller: Direct-Downstep")
+            .addInfo("Mode 3: Circuit 2 in controller: Tapped-Upstep (currently disabled)")
+            .addInfo("Mode 4: Circuit 2 in controller: Tapped-Downstep (currently disabled)")
+            .addSeparator()
+            .beginVariableStructureBlock(3, 3, 3, 10, 3, 3, false)
+            .addController("Front bottom center")
+            .addCasingInfo("MV Machine Casing", 0)
+            .addOtherStructurePart("Transformer-Winding Blocks", "1 Layer for each tier transformed")
+            .addOtherStructurePart("Nickel-Zinc-Ferrite Blocks", "Middle of Transformer-Winding Blocks")
+            .addMaintenanceHatch("Any bottom layer casing", 1)
+            .addEnergyHatch("Any bottom layer casing", 1)
+            .addDynamoHatch("Any top layer casing", 2)
+            .addStructureInfo("---------TAPPED MODE---------")
+            .addEnergyHatch("Touching Transformer-Winding Blocks", 3)
+            .addDynamoHatch("Touching Transformer-Winding Blocks", 3)
+            .addStructureInfo("Hatches touching Transformer-Winding Blocks must be tiered from bottom to top")
+            .toolTipFinisher("Bartworks");
+        return tt;
     }
 
     @Override
@@ -88,8 +179,8 @@ public class GT_TileEntity_ManualTrafo extends GT_MetaTileEntity_MultiBlockBase 
             else
                 this.mEfficiency = this.getMaxEfficiency(null);
 
-        if (this.mode > GT_TileEntity_ManualTrafo.SINGLE_DOWNSTEP) {
-            return this.onRunningTickTabbedMode();
+        if (this.mode > 1) {
+            return false;//this.onRunningTickTabbedMode(); Tapped mode is disable
         }
 
         return this.drainEnergyInput(this.getInputTier() * 2 * this.mEnergyHatches.size()) && this.addEnergyOutput(this.getInputTier() * 2 * this.mEnergyHatches.size() * (long) this.mEfficiency / this.getMaxEfficiency(null));
@@ -135,215 +226,64 @@ public class GT_TileEntity_ManualTrafo extends GT_MetaTileEntity_MultiBlockBase 
             this.stopMachine();
             return false;
         }
-        this.mode = this.mInventory[1] == null ? 0 : this.mInventory[1].getUnlocalizedName().startsWith("gt.integrated_circuit") ? this.mInventory[1].getItemDamage() > 4 ? (byte) this.mInventory[1].getItemDamage() : 0 : 0;
-        this.upstep = (this.mode == 0 || this.mode == 2);
+        if(itemStack == null || !itemStack.getUnlocalizedName().startsWith("gt.integrated_circuit"))
+            this.mode = 0;
+        else
+            this.mode = (byte)Math.min(3, itemStack.getItemDamage());
+        this.upstep = this.mode % 2 == 0;
         this.mProgresstime = 0;
         this.mMaxProgresstime = 1;
         this.mEfficiency = Math.max(this.mEfficiency, 100);
-        return this.upstep ? this.getOutputTier() - this.getInputTier() == this.mCoilWicks : this.getInputTier() - this.getOutputTier() == this.mCoilWicks;
+        return this.upstep ? this.getOutputTier() - this.getInputTier() == this.mTiers : this.getInputTier() - this.getOutputTier() == this.mTiers;
     }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack) {
 
-        this.mode = this.mInventory[1] == null ? 0 : this.mInventory[1].getUnlocalizedName().startsWith("gt.integrated_circuit") ? this.mInventory[1].getItemDamage() > 4 ? (byte) this.mInventory[1].getItemDamage() : 0 : 0;
+        if(itemStack == null || !itemStack.getUnlocalizedName().startsWith("gt.integrated_circuit"))
+            this.mode = 0;
+        else
+            this.mode = (byte)Math.min(3, itemStack.getItemDamage());
 
-        if (this.mode <= 1) {
+        this.upstep = this.mode % 2 == 0;
+        boolean tapmode = this.mode > 1;
 
-            int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
-            int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
+        if(!checkPiece(STRUCTURE_PIECE_BASE, 1, 0, 0))
+            return false;
 
-            //check height
-            int y = 1;
-            boolean stillcoil = true;
-            while (stillcoil) {
-                for (int x = -1; x <= 1; ++x) {
-                    for (int z = -1; z <= 1; ++z) {
-                        if (x != 0 || z != 0) {
-                            stillcoil = aBaseMetaTileEntity.getBlockOffset(xDir + x, y, zDir + z).equals(ItemRegistry.BW_BLOCKS[2]) && aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z) == 1;
-                            if (stillcoil) {
-                                ++this.mCoilWicks;
-                                if (this.mCoilWicks % 8 == 0) {
-                                    ++y;
-                                }
-                            } else
-                                break;
-                        }
-                    }
-                    if (!stillcoil)
-                        break;
-                }
-            }
+        if(this.mEnergyHatches.size() == 0)
+            return false;
 
-            if (this.mCoilWicks % 8 != 0)
+        byte intier = this.mEnergyHatches.get(0).mTier;
+        for (GT_MetaTileEntity_Hatch_Energy in : this.mEnergyHatches)
+            if (in.mTier != intier)
                 return false;
 
-            this.mCoilWicks = this.mCoilWicks / 8;
-
-            //check interior (NiFeZn02 Core)
-            for (int i = 1; i <= this.mCoilWicks; ++i) {
-                if (!aBaseMetaTileEntity.getBlockOffset(xDir, i, zDir).equals(ItemRegistry.BW_BLOCKS[2]) && aBaseMetaTileEntity.getMetaIDOffset(xDir, i, zDir) == 0) {
-                    return false;
-                }
+        int mHeight;
+        for(mHeight = 1; mHeight <= 8; mHeight++) {
+            if(tapmode)
+            {
+                this.mTiers = mHeight;
+                if(!checkPiece(STRUCTURE_PIECE_TAP_LAYER, 2, mHeight, 1))
+                    break;
             }
-
-            //check Bottom
-            for (int x = -1; x <= 1; ++x)
-                for (int z = -1; z <= 1; ++z)
-                    if (xDir + x != 0 || zDir + z != 0) {
-                        IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, 0, zDir + z);
-                        if (!this.addMaintenanceToMachineList(tTileEntity, this.texid) && !this.addEnergyInputToMachineList(tTileEntity, this.texid)) {
-                            if (aBaseMetaTileEntity.getBlockOffset(xDir + x, 0, zDir + z) != GregTech_API.sBlockCasings1) {
-                                return false;
-                            }
-                    /*
-                        if (aBaseMetaTileEntity.getMetaIDOffset(xDir + x, 0, zDir + z) != 11) {
-                            return false;
-                        }
-                    */
-                        }
-                    }
-
-            //check Top
-            for (int x = -1; x <= 1; ++x)
-                for (int z = -1; z <= 1; ++z) {
-                    IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, (int) this.mCoilWicks + 1, zDir + z);
-                    if (!this.addMaintenanceToMachineList(tTileEntity, this.texid) && !this.addDynamoToMachineList(tTileEntity, this.texid)) {
-                        if (aBaseMetaTileEntity.getBlockOffset(xDir + x, (int) this.mCoilWicks + 1, zDir + z) != GregTech_API.sBlockCasings1) {
-                            return false;
-                        }
-                    /*
-                        if (aBaseMetaTileEntity.getMetaIDOffset(xDir + x, 0, zDir + z) != 11) {
-                            return false;
-                        }
-                    */
-                    }
-                }
-
-            // check dynamos and energy hatches for the same tier
-            byte outtier = this.mDynamoHatches.get(0).mTier;
-            for (GT_MetaTileEntity_Hatch_Dynamo out : this.mDynamoHatches) {
-                if (out.mTier != outtier)
-                    return false;
-            }
-
-            byte intier = this.mEnergyHatches.get(0).mTier;
-            for (GT_MetaTileEntity_Hatch_Energy in : this.mEnergyHatches) {
-                if (in.mTier != intier)
-                    return false;
-            }
-        } else {
-
-            int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 2;
-            int yDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetY * 2;
-            int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * 2;
-            //check height
-            int y = 1;
-            boolean stillcoil = true;
-            while (stillcoil) {
-                for (int x = -1; x <= 1; ++x) {
-                    for (int z = -1; z <= 1; ++z) {
-                        if (x != 0 || z != 0) {
-                            stillcoil = aBaseMetaTileEntity.getBlockOffset(xDir + x, y, zDir + z).equals(ItemRegistry.BW_BLOCKS[2]) && aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z) == 1;
-                            if (stillcoil) {
-                                ++this.mCoilWicks;
-                                if (this.mCoilWicks % 8 == 0) {
-                                    ++y;
-                                }
-                            } else
-                                break;
-                        }
-                    }
-                    if (!stillcoil)
-                        break;
-                }
-            }
-
-            if (this.mCoilWicks % 8 != 0)
-                return false;
-
-            this.mCoilWicks = this.mCoilWicks / 8;
-
-            //check interior (NiFeZn02 Core)
-            for (int i = 1; i <= this.mCoilWicks; ++i) {
-                if (!aBaseMetaTileEntity.getBlockOffset(xDir, i, zDir).equals(ItemRegistry.BW_BLOCKS[2]) && aBaseMetaTileEntity.getMetaIDOffset(xDir, i, zDir) == 0) {
-                    return false;
-                }
-            }
-
-            //check Bottom
-            for (int x = -2; x <= 2; ++x)
-                for (int z = -2; z <= 2; ++z)
-                    if (xDir + x != 0 || zDir + z != 0) {
-                        IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, 0, zDir + z);
-                        if (!this.addMaintenanceToMachineList(tTileEntity, this.texid) && !this.addEnergyInputToMachineList(tTileEntity, this.texid)) {
-                            if (aBaseMetaTileEntity.getBlockOffset(xDir + x, 0, zDir + z) != GregTech_API.sBlockCasings1) {
-                                return false;
-                            }
-                    /*
-                        if (aBaseMetaTileEntity.getMetaIDOffset(xDir + x, 0, zDir + z) != 11) {
-                            return false;
-                        }
-                    */
-                        }
-                    }
-
-            //check Top
-            for (int x = -2; x <= 2; ++x)
-                for (int z = -2; z <= 2; ++z) {
-                    IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, (int) this.mCoilWicks + 1, zDir + z);
-                    if (!this.addMaintenanceToMachineList(tTileEntity, this.texid) && !this.addDynamoToMachineList(tTileEntity, this.texid)) {
-                        if (aBaseMetaTileEntity.getBlockOffset(xDir + x, (int) this.mCoilWicks + 1, zDir + z) != GregTech_API.sBlockCasings1) {
-                            return false;
-                        }
-                    /*
-                        if (aBaseMetaTileEntity.getMetaIDOffset(xDir + x, 0, zDir + z) != 11) {
-                            return false;
-                        }
-                    */
-                    }
-                }
-
-            if (this.mDynamoHatches.size() <= 0 || this.mEnergyHatches.size() <= 0)
-                return false;
-
-            byte outtier = this.mDynamoHatches.get(0).mTier;
-            for (GT_MetaTileEntity_Hatch_Dynamo out : this.mDynamoHatches) {
-                if (out.mTier != outtier)
-                    return false;
-            }
-
-            byte intier = this.mEnergyHatches.get(0).mTier;
-            for (GT_MetaTileEntity_Hatch_Energy in : this.mEnergyHatches) {
-                if (in.mTier != intier)
-                    return false;
-            }
-
-
-            //check tap hull
-            for (int ty = 1; ty <= y; ++ty) {
-
-                byte leveltier;
-                if (this.mInventory[1].getItemDamage() == 2)
-                    leveltier = ((byte) (intier - ty));
-                else if (this.mInventory[1].getItemDamage() == 3)
-                    leveltier = ((byte) (intier + ty));
-                else
-                    return false;
-
-                for (int x = -2; x <= 2; ++x)
-                    for (int z = -2; z <= 2; ++z)
-                        if (x == -2 || z == -2 || x == 2 || z == 2) {
-                            IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, ty, zDir + z);
-                            if (!this.addMaintenanceToMachineList(tTileEntity, this.texid) && !this.addEnergyInputToMachineList(tTileEntity, this.texid, leveltier) && !this.addDynamoToMachineList(tTileEntity, this.texid, leveltier)) {
-                                if (aBaseMetaTileEntity.getBlockOffset(xDir + x, ty, zDir + z) != GregTech_API.sBlockCasings1) {
-                                    return false;
-                                }
-                            }
-                        }
-            }
+            else if (!checkPiece(STRUCTURE_PIECE_LAYER, 1, mHeight, 0))
+                break;
         }
-        return !this.mDynamoHatches.isEmpty() && !this.mEnergyHatches.isEmpty();
+        if (!checkPiece(STRUCTURE_PIECE_TOP, 1, mHeight, 0))
+            return false;
+        this.mTiers = mHeight - 1;
+
+        if (this.mDynamoHatches.size() == 0 || mMaintenanceHatches.size() != 1 || this.mTiers == 0)
+            return false;
+
+        byte outtier = this.mDynamoHatches.get(0).mTier;
+        for (GT_MetaTileEntity_Hatch_Dynamo out : this.mDynamoHatches) {
+            if (out.mTier != outtier)
+                return false;
+        }
+
+        return true;
     }
 
     @Override
@@ -372,63 +312,52 @@ public class GT_TileEntity_ManualTrafo extends GT_MetaTileEntity_MultiBlockBase 
     }
 
     @Override
-    public String[] getDescription() {
-        return BW_Tooltip_Reference.getTranslatedBrandedTooltip("tooltip.tile.manualtravo.0.name");
-    }
-
-    @Override
     public void saveNBTData(NBTTagCompound ntag) {
-        ntag.setLong("mCoilWicks", this.mCoilWicks);
         super.saveNBTData(ntag);
+        ntag.setInteger("mTiers", this.mTiers);
+        ntag.setByte("mMode", this.mode);
+        ntag.setBoolean("upstep", this.upstep);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound ntag) {
         super.loadNBTData(ntag);
-        this.mCoilWicks = ntag.getLong("mCoilWicks");
+        this.mTiers = ntag.getInteger("mTiers");
+        this.mode = ntag.getByte("mMode");
+        this.upstep = ntag.getBoolean("upstep");
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        return aSide == aFacing ? new ITexture[]{Textures.BlockIcons.getCasingTextureForId(this.texid), TextureFactory.of(aActive ? TextureFactory.of(TextureFactory.of(Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE), TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE_GLOW).glow().build()) : TextureFactory.of(TextureFactory.of(Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE), TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_GLOW).glow().build()))} : new ITexture[]{Textures.BlockIcons.getCasingTextureForId(this.texid)};
-    }
-
-    public boolean addEnergyInputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex, short tier) {
-        if (aTileEntity == null) {
-            return false;
-        } else {
-            IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity == null) {
-                return false;
-            } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy) {
-                if (tier == ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mTier) {
-                    ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                    return this.mEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy) aMetaTileEntity);
-                }
-                return false;
-            } else {
-                return false;
-            }
+        if (aSide == aFacing) {
+            if (aActive)
+                return new ITexture[]{
+                    Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE_GLOW).extFacing().glow().build()};
+            return new ITexture[]{
+                Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
+                TextureFactory.builder().addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE).extFacing().build(),
+                TextureFactory.builder().addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_GLOW).extFacing().glow().build()};
         }
+        return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(CASING_INDEX)};
     }
 
-    public boolean addDynamoToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex, short tier) {
-        if (aTileEntity == null) {
-            return false;
-        } else {
-            IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity == null) {
-                return false;
-            } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Dynamo) {
-                if (tier == ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mTier) {
-                    ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                    return this.mDynamoHatches.add((GT_MetaTileEntity_Hatch_Dynamo) aMetaTileEntity);
-                }
-                return false;
-            } else {
-                return false;
-            }
+    @Override
+    public void construct(ItemStack itemStack, boolean b) {
+        if(this.mInventory[1] == null || !this.mInventory[1].getUnlocalizedName().startsWith("gt.integrated_circuit"))
+            this.mode = 0;
+        else
+            this.mode = (byte)Math.min(3, this.mInventory[1].getItemDamage());
+        int mHeight = Math.min(itemStack.stackSize, 8);
+        boolean tapmode = this.mode > 1;
+        buildPiece(STRUCTURE_PIECE_BASE, itemStack, b, 1, 0, 0);
+        for(int i = 0; i < mHeight; i++) {
+            if (tapmode)
+                buildPiece(STRUCTURE_PIECE_TAP_LAYER, itemStack, b, 2, i + 1, 1);
+            else
+                buildPiece(STRUCTURE_PIECE_LAYER, itemStack, b, 1, i + 1, 0);
         }
+        buildPiece(STRUCTURE_PIECE_TOP, itemStack, b, 1, mHeight + 1, 0);
     }
-
 }

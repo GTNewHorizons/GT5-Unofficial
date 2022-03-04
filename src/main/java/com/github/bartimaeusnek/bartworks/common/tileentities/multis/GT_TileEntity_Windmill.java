@@ -26,8 +26,11 @@ import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.client.gui.BW_GUIContainer_Windmill;
 import com.github.bartimaeusnek.bartworks.common.tileentities.classic.BW_RotorBlock;
 import com.github.bartimaeusnek.bartworks.server.container.BW_Container_Windmill;
-import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
+import com.gtnewhorizon.structurelib.StructureLibAPI;
+import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -39,9 +42,10 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
 import gregtech.api.objects.XSTR;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -55,15 +59,16 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityDispenser;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.GT_Values.V;
 
-public class GT_TileEntity_Windmill extends GT_MetaTileEntity_MultiBlockBase {
+public class GT_TileEntity_Windmill extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_TileEntity_Windmill> {
 
     private static final IIcon[] iIcons = new IIcon[2];
     private static final IIconContainer[] iIconContainers = new IIconContainer[2];
@@ -71,7 +76,8 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_MultiBlockBase {
 
     private static final XSTR localRandomInstance = new XSTR();
     private BW_RotorBlock rotorBlock;
-    private byte hasDoor;
+    private int mDoor = 0;
+    private int mHardenedClay = 0;
 
     public GT_TileEntity_Windmill(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -79,6 +85,62 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_MultiBlockBase {
 
     private GT_TileEntity_Windmill(String aName) {
         super(aName);
+    }
+
+    private static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final IStructureDefinition<GT_TileEntity_Windmill> STRUCTURE_DEFINITION = StructureDefinition.<GT_TileEntity_Windmill>builder()
+        .addShape(STRUCTURE_PIECE_MAIN, transpose(new String[][]{
+            {"       ", "       ", "       ", "   p   ", "       ", "       ", "       "},
+            {"       ", "       ", "  ppp  ", "  p p  ", "  ppp  ", "       ", "       "},
+            {"       ", " ppppp ", " p   p ", " p   p ", " p   p ", " ppppp ", "       "},
+            {" ppppp ", "p     p", "p     p", "p     p", "p     p", "p     p", " ppppp "},
+            {" ppspp ", "p     p", "p     p", "p     p", "p     p", "p     p", " ppppp "},
+            {" ppppp ", "p     p", "p     p", "p     p", "p     p", "p     p", " ppppp "},
+            {"       ", " ppppp ", " p   p ", " p   p ", " p   p ", " ppppp ", "       "},
+            {"       ", "  ccc  ", " c   c ", " c   c ", " c   c ", "  ccc  ", "       "},
+            {"       ", "  ccc  ", " c   c ", " c   c ", " c   c ", "  ccc  ", "       "},
+            {"       ", "  ccc  ", " c   c ", " c   c ", " c   c ", "  ccc  ", "       "},
+            {"       ", "  ccc  ", " c   c ", " c   c ", " c   c ", "  ccc  ", "       "},
+            {" bb~bb ", "bbbbbbb", "bbbbbbb", "bbbbbbb", "bbbbbbb", "bbbbbbb", " bbbbb "},
+        }))
+        .addElement('p', ofBlockAnyMeta(Blocks.planks))
+        .addElement('c', ofChain(
+            onElementPass(t -> t.mHardenedClay++, ofBlock(Blocks.hardened_clay, 0)),
+            ofTileAdder(GT_TileEntity_Windmill::addDispenserToOutputSet, Blocks.hardened_clay, 0),
+            onElementPass(t -> t.mDoor++, ofBlock(Blocks.wooden_door, 0))
+        ))
+        .addElement('b', ofBlock(Blocks.brick_block, 0))
+        .addElement('s', ofTileAdder(GT_TileEntity_Windmill::setRotorBlock, StructureLibAPI.getBlockHint(), 0))
+        .build();
+
+    @Override
+    public IStructureDefinition<GT_TileEntity_Windmill> getStructureDefinition() {
+        return STRUCTURE_DEFINITION;
+    }
+
+    @Override
+    protected IAlignmentLimits getInitialAlignmentLimits() {
+        return (d, r, f) -> d.offsetY == 0 && r.isNotRotated() && f.isNotFlipped();
+    }
+
+    @Override
+    protected GT_Multiblock_Tooltip_Builder createTooltip() {
+        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        tt.
+            addMachineType("Windmill").
+            addInfo("Controller block for the Windmill").
+            addInfo("A primitive Grinder powered by Kinetic energy").
+            addInfo("The structure is too complex!").
+            addInfo("Follow the StructureLib hologram projector to build the main structure.").
+            addSeparator().
+            beginStructureBlock(7, 12, 7, false).
+            addController("Front bottom center").
+            addCasingInfo("Hardened Clay block", 40).
+            addOtherStructurePart("Dispenser", "Any Hardened Clay block").
+            addOtherStructurePart("0-1 Wooden door", "Any Hardened Clay block").
+            addStructureHint("Primitive Kinetic Shaftbox", 1).
+            toolTipFinisher("Bartworks");
+        return tt;
     }
 
     @Override
@@ -368,6 +430,14 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_MultiBlockBase {
         return false;
     }
 
+    public boolean setRotorBlock(TileEntity aTileEntity){
+        if (aTileEntity instanceof BW_RotorBlock) {
+            this.rotorBlock = (BW_RotorBlock) aTileEntity;
+            return true;
+        }
+        return false;
+    }
+
     @SuppressWarnings("ALL")
     @Override
     public boolean addOutput(ItemStack aStack) {
@@ -401,94 +471,23 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_MultiBlockBase {
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack) {
-        /*
-         * offset x1 = 3x3
-         * offset x2 = 5x5
-         * offset x3 = 7x7
-         * etc.
-         */
-        int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 3;
-        int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * 3;
 
-        //floor
-        for (int x = -3; x <= 3; x++) {
-            for (int z = -3; z <= 3; z++) {
-                if (!((Math.abs(x) == 3 && Math.abs(z) == 3) || (xDir + x == 0 && zDir + z == 0)))
-                    if (aBaseMetaTileEntity.getBlockOffset(xDir + x, 0, zDir + z) != Blocks.brick_block) {
-                        return false;
-                    }
-            }
-        }
+        this.tileEntityDispensers.clear();
+        this.mDoor = 0;
+        this.mHardenedClay = 0;
 
-        //h_clay shaft
-        for (int y = 1; y <= 4; y++)
-            for (int x = -2; x <= 2; x++)
-                for (int z = -2; z <= 2; z++) {
-                    if (!((Math.abs(x) == 2 && Math.abs(z) == 2) || (Math.abs(x) < 2 && Math.abs(z) != 2)))
-                        if (aBaseMetaTileEntity.getBlockOffset(xDir + x, y, zDir + z) != Blocks.hardened_clay && !this.addDispenserToOutputSet(aBaseMetaTileEntity.getTileEntityOffset(xDir + x, y, zDir + z))) {
-                            if (aBaseMetaTileEntity.getBlockOffset(xDir + x, y, zDir + z) == Blocks.wooden_door && this.hasDoor < 3) {
-                                this.hasDoor++;
-                                continue;
-                            }
-                            return false;
-                        }
-                }
-
-        //plank layer 1
-        for (int x = -2; x <= 2; x++)
-            for (int z = -2; z <= 2; z++) {
-                if (!(Math.abs(x) < 2 && Math.abs(z) != 2)) {
-                    if (aBaseMetaTileEntity.getBlockOffset(xDir + x, 5, zDir + z) != Blocks.planks)
-                        return false;
-                }
-            }
-
-        //plank layer 2-4
-        for (int x = -3; x <= 3; x++)
-            for (int y = 6; y <= 8; y++)
-                for (int z = -3; z <= 3; z++)
-                    if (!(((Math.abs(x) == 3 && Math.abs(z) == 3) || (Math.abs(x) < 3 && (Math.abs(z) != 2 || Math.abs(z) != 1))) || (xDir + x == 0 && zDir + z == 0 && y == 7)))
-                        if (aBaseMetaTileEntity.getBlockOffset(xDir + x, y, zDir + z) != Blocks.planks)
-                            return false;
-
-        //plank layer 5
-        for (int x = -2; x <= 2; x++)
-            for (int z = -2; z <= 2; z++)
-                if (!(Math.abs(x) < 2 && (Math.abs(z) != 2))) {
-                    if (aBaseMetaTileEntity.getBlockOffset(xDir + x, 9, zDir + z) != Blocks.planks)
-                        return false;
-                }
-        //plank layer 6
-        for (int x = -1; x <= 1; x++)
-            for (int z = -1; z <= 1; z++)
-                if (!(Math.abs(x) < 1 && (Math.abs(z) != 1))) {
-                    if (aBaseMetaTileEntity.getBlockOffset(xDir + x, 10, zDir + z) != Blocks.planks)
-                        return false;
-                }
-        //plank layer 7
-        if (aBaseMetaTileEntity.getBlockOffset(xDir, 11, zDir) != Blocks.planks)
+        if(!checkPiece(STRUCTURE_PIECE_MAIN, 3, 11, 0))
             return false;
 
-        //Rotor Block
-        TileEntity te = this.getBaseMetaTileEntity().getWorld().getTileEntity(this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord() + 7, this.getBaseMetaTileEntity().getZCoord());
-
-        if (te instanceof BW_RotorBlock)
-            this.rotorBlock = (BW_RotorBlock) te;
-        else
+        if (this.tileEntityDispensers.isEmpty() || this.mDoor > 2 || this.mHardenedClay < 40)
             return false;
 
-        //check for outputs
-        if (this.tileEntityDispensers.isEmpty())
-            return false;
         this.mWrench = true;
         this.mScrewdriver = true;
         this.mSoftHammer = true;
         this.mHardHammer = true;
         this.mSolderingTool = true;
         this.mCrowbar = true;
-
-        //reset door cause bugs >_>
-        this.hasDoor = 0;
 
         return true;
     }
@@ -500,11 +499,9 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_MultiBlockBase {
         if (aBaseMetaTileEntity.isServerSide()) {
             if (this.mEfficiency < 0)
                 this.mEfficiency = 0;
-            //noinspection NonAtomicOperationOnVolatileField
-            if (--this.mUpdate == 0 || --this.mStartUpCheck == 0) {
-                this.hasDoor = 0;
-                this.tileEntityDispensers.clear();
-                this.mMachine = this.checkMachine(aBaseMetaTileEntity, this.mInventory[1]);
+            if (--this.mUpdate == 0 || --this.mStartUpCheck == 0 || this.mStructureChanged) {
+                checkStructure(true, aBaseMetaTileEntity);
+                this.mUpdate = 100;
             }
             if (this.mStartUpCheck < 0) {
                 if (this.mMachine) {
@@ -536,14 +533,14 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_MultiBlockBase {
                         }
                     }
                 } else {
-                    this.mMachine = this.checkMachine(aBaseMetaTileEntity, this.mInventory[1]);
+                    //this.mMachine = this.checkMachine(aBaseMetaTileEntity, this.mInventory[1]);
                     return;
                 }
             } else {
                 this.stopMachine();
             }
         }
-        aBaseMetaTileEntity.setErrorDisplayID((aBaseMetaTileEntity.getErrorDisplayID() & ~127) | (this.mWrench ? 0 : 1) | (this.mScrewdriver ? 0 : 2) | (this.mSoftHammer ? 0 : 4) | (this.mHardHammer ? 0 : 8) | (this.mSolderingTool ? 0 : 16) | (this.mCrowbar ? 0 : 32) | (this.mMachine ? 0 : 64));
+        aBaseMetaTileEntity.setErrorDisplayID((aBaseMetaTileEntity.getErrorDisplayID() & ~127) | (this.mMachine ? 0 : 64));
         aBaseMetaTileEntity.setActive(this.mMaxProgresstime > 0);
     }
 
@@ -583,11 +580,6 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_MultiBlockBase {
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
         return new GT_TileEntity_Windmill(this.mName);
-    }
-
-    @Override
-    public String[] getDescription() {
-        return BW_Tooltip_Reference.getTranslatedBrandedTooltip("tooltip.tile.windmill.0.name");
     }
 
     @Override
@@ -662,5 +654,10 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_MultiBlockBase {
         if (this.getBaseMetaTileEntity().getWorld() != null)
             return this.getBaseMetaTileEntity().getWorld().isRemote ? FMLCommonHandler.instance().getSide() == Side.CLIENT : FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT;
         return FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT;
+    }
+
+    @Override
+    public void construct(ItemStack itemStack, boolean b) {
+        buildPiece(STRUCTURE_PIECE_MAIN, itemStack, b, 3, 11, 0);
     }
 }

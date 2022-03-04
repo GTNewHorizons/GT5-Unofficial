@@ -591,7 +591,7 @@ public class BW_Util {
     public static byte calculateGlassTier(@Nonnull Block block, @Nonnegative byte meta) {
 
         byte boroTier = BorosilicateGlass.getTier(block, meta);
-        if (boroTier < 0)
+        if (boroTier != -1)
             return boroTier;
 
         if (block.getUnlocalizedName().equals("blockAlloyGlass"))
