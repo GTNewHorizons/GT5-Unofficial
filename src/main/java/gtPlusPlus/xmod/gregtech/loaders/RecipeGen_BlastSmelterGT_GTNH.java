@@ -158,20 +158,38 @@ public class RecipeGen_BlastSmelterGT_GTNH {
 					}
 					//If this recipe is enabled and we have a valid molten fluidstack, let's try add this recipe.
 					if (enabled && isValid(inputs, outputs, inputsF, mMoltenStack)) {						
+						// Boolean to decide whether or not to create a new circuit later
+						boolean circuitFound = false;
+
 						//Build correct input stack
 						ArrayList<ItemStack> aTempList = new ArrayList<ItemStack>();
-						for (ItemStack aPossibleCircuit : inputs) {
-							if (!ItemUtils.isControlCircuit(aPossibleCircuit)) {
-								aTempList.add(aPossibleCircuit);
+						for (ItemStack recipeItem : inputs) {
+							if (ItemUtils.isControlCircuit(recipeItem)) {
+								circuitFound = true;
 							}
+							aTempList.add(recipeItem);
 						}
+
 						inputs = aTempList.toArray(new ItemStack[aTempList.size()]);						
-						ItemStack[] newInput = new ItemStack[inputs.length+1];						
-						int l = 1;
+						int inputLength = inputs.length;
+						// If no circuit was found, increase array length by 1 to add circuit at newInput[0]
+						if (!circuitFound) {
+							inputLength++;
+						}
+
+						ItemStack[] newInput = new ItemStack[inputLength];
+
+						int l = 0;
+						// If no circuit was found, add a circuit here
+						if (!circuitFound) {
+							l = 1;
+							newInput[0] = CI.getNumberedCircuit(inputs.length);
+						}
+
 						for (ItemStack y : inputs) {
 							newInput[l++] = y;
 						}
-						newInput[0] = CI.getNumberedCircuit(inputs.length);						
+
 						//Logger.MACHINE_INFO("[ABS] Generating ABS recipe for "+mMoltenStack.getLocalizedName()+".");
 						if (CORE.RA.addBlastSmelterRecipe(newInput, (inputsF.length > 0 ? inputsF[0] : null), mMoltenStack, 100, MathUtils.roundToClosestInt(time*0.8), voltage, special)) {
 							//Logger.MACHINE_INFO("[ABS] Success.");
