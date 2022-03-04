@@ -80,13 +80,13 @@ public class GUI_PowerSubStation extends GT_GUIContainerMetaTile_Machine {
 
 			this.fontRendererObj.drawString("In", 178, 10, 16448255);
 			this.fontRendererObj.drawString("Out", 176, 28, 16448255);
-			this.fontRendererObj.drawString("Avg In: "+GT_Utility.formatNumbers(this.mPowerContainer.mAverageEuAdded)+" EU", 10, 20, 16448255);
-			this.fontRendererObj.drawString("Avg Out: "+GT_Utility.formatNumbers(this.mPowerContainer.mAverageEuConsumed)+" EU", 10, 30, 16448255);
+			this.fontRendererObj.drawString("Avg In: "+GT_Utility.formatNumbers(this.mPowerContainer.mAverageEuAdded.getValue())+" EU", 10, 20, 16448255);
+			this.fontRendererObj.drawString("Avg Out: "+GT_Utility.formatNumbers(this.mPowerContainer.mAverageEuConsumed.getValue())+" EU", 10, 30, 16448255);
 
-			final double tScale2 = MathUtils.findPercentage(this.mPowerContainer.mStoredEU, this.mPowerContainer.mMaxStoredEU);
+			final double tScale2 = MathUtils.findPercentage(this.mPowerContainer.mStoredEU.getValue(), this.mPowerContainer.mMaxStoredEU.getValue());
 			final int tScale = (int) (tScale2 * 2.55);
 			this.fontRendererObj.drawString("Stored:", 10, 132, 16448255);
-			this.fontRendererObj.drawString(GT_Utility.formatNumbers(this.mPowerContainer.mStoredEU) + " EU", 10, 142, Utils.rgbtoHexValue((255 - tScale), (0 + tScale), 0));
+			this.fontRendererObj.drawString(GT_Utility.formatNumbers(this.mPowerContainer.mStoredEU.getValue()) + " EU", 10, 142, Utils.rgbtoHexValue((255 - tScale), (0 + tScale), 0));
 			this.fontRendererObj.drawString(GT_Utility.formatNumbers(tScale2)+"%", 70, 155, 16448255);
 
 		}
@@ -104,7 +104,7 @@ public class GUI_PowerSubStation extends GT_GUIContainerMetaTile_Machine {
 		final int y = (this.height - this.ySize) / 2;
 		this.drawTexturedModalRect(x, y, 0, 0, this.xSize, this.ySize);
 		if (this.mPowerContainer != null) {
-			final double tScale = MathUtils.findPercentage(this.mPowerContainer.mStoredEU, this.mPowerContainer.mMaxStoredEU) / 100;
+			final double tScale = MathUtils.findPercentage(this.mPowerContainer.mStoredEU.getValue(), this.mPowerContainer.mMaxStoredEU.getValue()) / 100;
 			this.drawTexturedModalRect(x + 5, y + 156, 0, 251, Math.min(147, (int) (tScale * 148.0)), 5);
 
 			// A1

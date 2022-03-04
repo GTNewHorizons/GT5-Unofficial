@@ -1,9 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.storage;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 
@@ -286,25 +283,6 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 					.build();
 		}
 		return STRUCTURE_DEFINITION;
-	}
-
-	public static <T> IStructureElement<T> onlyIf(Predicate<? super T> predicate, IStructureElement<? super T> downstream) {
-		return new IStructureElement<T>() {
-			@Override
-			public boolean check(T t, World world, int x, int y, int z) {
-				return predicate.test(t) && downstream.check(t, world, x, y, z);
-			}
-
-			@Override
-			public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
-				return predicate.test(t) && downstream.spawnHint(t, world, x, y, z, trigger);
-			}
-
-			@Override
-			public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
-				return predicate.test(t) && downstream.placeBlock(t, world, x, y, z, trigger);
-			}
-		};
 	}
 
 	public static <T> IStructureElement<T> ofCell(int aIndex) {
