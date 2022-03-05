@@ -1998,7 +1998,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Salt.add(SubTag.STONE, SubTag.NO_SMASHING);
         RockSalt.add(SubTag.STONE, SubTag.NO_SMASHING);
 
-        Livingrock.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.NO_WORKING, SubTag.NO_SMELTING);
+        Livingrock.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         
         Sand.add(SubTag.NO_RECYCLING);
 

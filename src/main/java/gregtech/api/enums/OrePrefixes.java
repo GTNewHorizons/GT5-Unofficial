@@ -477,6 +477,7 @@ public enum OrePrefixes {
         stick.mNotGeneratedItems.add(Materials.Livingrock);
         bolt.mNotGeneratedItems.add(Materials.Livingrock);
         cell.mNotGeneratedItems.add(Materials.Livingrock);
+        block.mNotGeneratedItems.add(Materials.Livingrock);
 
         plate.mGeneratedItems.add(Materials.Paper);
         plateDouble.mGeneratedItems.add(Materials.Paper);
