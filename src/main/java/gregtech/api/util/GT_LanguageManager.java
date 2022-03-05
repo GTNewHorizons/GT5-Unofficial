@@ -378,9 +378,15 @@ public class GT_LanguageManager {
         try {
             Class cls = Class.forName("net.minecraft.util.StringTranslate");
             Field languageList = cls.getDeclaredField("languageList");
+            if (languageList == null)
+                cls.getDeclaredField("field_74816_c");
             languageList.setAccessible(true);
+
             Field instance = cls.getDeclaredField("instance");
+            if (instance == null)
+                instance = cls.getDeclaredField("field_74817_a");
             instance.setAccessible(true);
+
             Object m = languageList.get(instance.get(null));
             if (!(m instanceof Map))
                 return;
