@@ -1,6 +1,7 @@
 package gregtech.api.util;
 
 import cpw.mods.fml.common.registry.LanguageRegistry;
+import cpw.mods.fml.relauncher.ReflectionHelper;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 
@@ -376,11 +377,8 @@ public class GT_LanguageManager {
         if (!GT_Values.GT.isServerSide())
             return;
         try {
-            Class cls = Class.forName("net.minecraft.util.StringTranslate");
-            Field languageList = cls.getDeclaredField("languageList");
-            languageList.setAccessible(true);
-            Field instance = cls.getDeclaredField("instance");
-            instance.setAccessible(true);
+            Field languageList = ReflectionHelper.findField(net.minecraft.util.StringTranslate.class, "languageList", "field_74816_c");
+            Field instance = ReflectionHelper.findField(net.minecraft.util.StringTranslate.class, "instance", "field_74817_a");
             Object m = languageList.get(instance.get(null));
             if (!(m instanceof Map))
                 return;
