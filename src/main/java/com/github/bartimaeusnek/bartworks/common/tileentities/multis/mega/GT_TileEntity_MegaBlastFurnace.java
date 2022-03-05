@@ -25,7 +25,6 @@ package com.github.bartimaeusnek.bartworks.common.tileentities.multis.mega;
 import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
 import com.github.bartimaeusnek.bartworks.API.LoaderReference;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
-import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
 import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import com.github.bartimaeusnek.bartworks.util.MegaUtils;
@@ -50,7 +49,6 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ElectricBlastFurnace;
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -138,9 +136,9 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_MetaTileEntity_ElectricBl
         tt.addMachineType("Blast Furnace")
                 .addInfo("Controller block for the Mega Blast Furnace")
                 .addInfo("You can use some fluids to reduce recipe time. Place the circuit in the Input Bus")
-                .addInfo("Each 900K over the min. Heat required multiplies EU/t by 0.95")
-                .addInfo("Each 1800K over the min. Heat required allows for one upgraded overclock instead of normal")
-                .addInfo("Upgraded overclocks reduce recipe time to 25% (instead of 50%) and increase EU/t to 400%")
+                .addInfo("Each 900K over the min. Heat required reduces power consumption by 5% (multiplicatively)")
+                .addInfo("Each 1800K over the min. Heat required grants one perfect overclock")
+                .addInfo("For each perfect overclock the EBF will reduce recipe time 4 times (instead of 2) (100% efficiency)")
                 .addInfo("Additionally gives +100K for every tier past MV")
                 .addPollutionAmount(20 * getPollutionPerTick(null))
                 .addSeparator()
