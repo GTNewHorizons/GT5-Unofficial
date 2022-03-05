@@ -13,12 +13,13 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 public class NEI_GT_Config
 implements IConfigureNEI {
 	
-	public static boolean sIsAdded = false;
+	public static boolean sIsAdded = true;
 	
 	private static final AutoMap<String> mUniqueRecipeMapHandling = new AutoMap<String>();
 	
 	@Override
 	public synchronized void loadConfig() {
+		sIsAdded = false;
 
 		mUniqueRecipeMapHandling.add(GTPP_Recipe_Map.sFissionFuelProcessing.mUnlocalizedName);
 		mUniqueRecipeMapHandling.add(GTPP_Recipe_Map.sLiquidFluorineThoriumReactorRecipes.mUnlocalizedName);
