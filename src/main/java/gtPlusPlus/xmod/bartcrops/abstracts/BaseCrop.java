@@ -7,6 +7,7 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import ic2.api.crops.CropCard;
 import ic2.api.crops.ICropTile;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
@@ -46,7 +47,7 @@ public abstract class BaseCrop extends CropCard implements ICropCardInfo {
 
 	public List<String> getCropInformation() {
 		List<String> ret = new ArrayList<String>();
-		ret.add(this.attributes().toString());
+		ret.add(Arrays.toString(this.attributes()));
 		return ret;
 	}
 
