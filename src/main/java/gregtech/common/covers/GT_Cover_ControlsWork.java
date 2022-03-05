@@ -26,7 +26,7 @@ public class GT_Cover_ControlsWork extends GT_CoverBehavior {
                 } else if (machine.isAllowedToWork())
                     machine.disableWorking();
                 machine.setWorkDataValue(aInputRedstone);
-            } else if (aCoverVariable == 2 && machine.isAllowedToWork()) {
+            } else if (aCoverVariable == 2) {
                 machine.disableWorking();
             } else {
                 if (machine.wasShutdown()) {
