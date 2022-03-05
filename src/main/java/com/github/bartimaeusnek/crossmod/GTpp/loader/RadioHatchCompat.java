@@ -165,7 +165,10 @@ public class RadioHatchCompat {
             if (RadioHatchCompat.intf.isAssignableFrom(lStack.getItem().getClass())){
                 if (!RadioHatchCompat.isRadioactive.getBoolean(RadioHatchCompat.f.get(lStack.getItem())))
                     return null;
-                return new RadioHatchCompat.GTPPRadAdapter(RadioHatchCompat.componentType.get(lStack.getItem()).equals(RadioHatchCompat.rod) ? 1 : RadioHatchCompat.componentType.get(lStack.getItem()).equals(RadioHatchCompat.longRod) ? 2 : 0, RadioHatchCompat.f.get(lStack.getItem()));
+                int amount = RadioHatchCompat.componentType.get(lStack.getItem()).equals(RadioHatchCompat.rod) ? 1 : RadioHatchCompat.componentType.get(lStack.getItem()).equals(RadioHatchCompat.longRod) ? 2 : 0;
+                if (amount == 0)
+                    return null;
+                return new RadioHatchCompat.GTPPRadAdapter(amount, RadioHatchCompat.f.get(lStack.getItem()));
             }
         } catch (IllegalAccessException e) {
             e.printStackTrace();

@@ -167,79 +167,123 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch {
                 }
             }
 
-            ItemStack lStack = this.mInventory[0];
-
-            if (lStack == null)
+            if(this.mass >= this.cap)
                 return;
 
-            IRadMaterial radmat = null;
-            //gt++ compat
-            if (LoaderReference.miscutils)
-                radmat = RadioHatchCompat.GTppRadChecker(lStack);
+            ItemStack lStack = this.mInventory[0];
 
-            if (lStack.getItem() instanceof IRadMaterial || radmat != null) {
-                if (radmat == null)
-                    radmat = ((IRadMaterial) lStack.getItem());
-                int sv = radmat.getRadiationLevel(lStack);
-                if (sv > BioVatLogicAdder.RadioHatch.getMaxSv())
-                    BioVatLogicAdder.RadioHatch.MaxSV = sv;
-                if (this.mass == 0 || this.sievert == sv) {
-                    if (this.mass + radmat.getAmountOfMaterial(lStack) <= this.cap) {
-                        this.mass += radmat.getAmountOfMaterial(lStack);
-                        this.sievert = sv;
-                        this.mInventory[0].stackSize--;
-                        this.updateSlots();
-                        this.colorForGUI = radmat.getColorForGUI(lStack);
-                        this.material = radmat.getNameForGUI(lStack);
-                        return;
-                    }
-                }
-            }
-
-            for (ItemStack varStack : BioVatLogicAdder.RadioHatch.getIsSv().keySet()) {
-                if (GT_Utility.areStacksEqual(varStack, lStack, true)) {
-                    if (this.mass == 0 || this.sievert == BioVatLogicAdder.RadioHatch.getIsSv().get(varStack)) {
-                        int massToAdd = BioVatLogicAdder.RadioHatch.getIsKg().getOrDefault(varStack,1);
-                        if (this.mass + massToAdd <= this.cap) {
-                            this.mass += massToAdd;
-                            this.sievert = BioVatLogicAdder.RadioHatch.getIsSv().get(varStack);
-                            this.mInventory[0].stackSize--;
-                            this.updateSlots();
-                            this.colorForGUI = BioVatLogicAdder.RadioHatch.getIsColor().get(varStack);
-                            this.material = StatCollector.translateToLocal(varStack.getUnlocalizedName());
-                            return;
-                        }
-                    }
-                }
-            }
-
-            //check material for general validity
-            if (GT_OreDictUnificator.getAssociation(lStack) != null && GT_OreDictUnificator.getAssociation(lStack).mMaterial != null && GT_OreDictUnificator.getAssociation(lStack).mMaterial.mMaterial != null) {
-                //check orePrefix for general validity
-                if (GT_OreDictUnificator.getAssociation(lStack).mPrefix != null) {
-                    OrePrefixes orePrefixes = GT_OreDictUnificator.getAssociation(lStack).mPrefix;
-                    //check orePrefix for specialised validity
-                    if (orePrefixes.equals(OrePrefixes.stickLong) || orePrefixes.equals(OrePrefixes.stick)) {
-                        Materials materials = GT_OreDictUnificator.getAssociation(lStack).mMaterial.mMaterial;
-                        //check material for specialised validity
-                        if (materials.getProtons() >= 83 && materials.getProtons() != 125 || materials.getProtons() == 61 || materials.getProtons() == 43) {
-                            if (this.mass == 0 || this.sievert == calculateSv(materials)) {
-                                if ((this.mass + (orePrefixes.equals(OrePrefixes.stickLong) ? 2 : 1)) <= this.cap) {
-                                    this.sievert = calculateSv(materials);
-                                    this.mass += orePrefixes.equals(OrePrefixes.stickLong) ? 2 : 1;
-                                    this.mInventory[0].stackSize--;
-                                    this.updateSlots();
-                                    this.colorForGUI = materials.mColor.mRGBa;
-                                    this.material = materials.mName;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
+            isStackValidRadioMaterial(lStack, true);
 
         }
+    }
+
+    public boolean isStackValidRadioMaterial(ItemStack lStack)
+    {
+        return isStackValidRadioMaterial(lStack, false);
+    }
+
+    public boolean isStackValidRadioMaterial(ItemStack lStack, boolean use){
+        if (lStack == null)
+            return false;
+
+        IRadMaterial radmat = null;
+        //gt++ compat
+        if (LoaderReference.miscutils)
+            radmat = RadioHatchCompat.GTppRadChecker(lStack);
+
+        //GT++ and BW Materials check
+
+        if (lStack.getItem() instanceof IRadMaterial || radmat != null) {
+            if (radmat == null)
+                radmat = ((IRadMaterial) lStack.getItem());
+            int sv = radmat.getRadiationLevel(lStack);
+            int amount = radmat.getAmountOfMaterial(lStack);
+            if (sv > BioVatLogicAdder.RadioHatch.getMaxSv())
+                BioVatLogicAdder.RadioHatch.MaxSV = sv;
+            if ((this.mass == 0 || this.sievert == sv) && sv > 0 && amount > 0) {
+                if(use) {
+                    if (this.mass + amount <= this.cap) {
+                        String name = radmat.getNameForGUI(lStack);
+                        if (this.mass == 0 || this.material.equals(name)) {
+                            this.mass += amount;
+                            this.sievert = sv;
+                            this.mInventory[0].stackSize--;
+                            this.updateSlots();
+                            this.colorForGUI = radmat.getColorForGUI(lStack);
+                            this.material = name;
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+                return true;
+            }
+        }
+
+        // Predefined materials check
+
+        for (ItemStack varStack : BioVatLogicAdder.RadioHatch.getIsSv().keySet()) {
+            if (GT_Utility.areStacksEqual(varStack, lStack, true)) {
+                int amount = BioVatLogicAdder.RadioHatch.getIsKg().getOrDefault(varStack,0);
+                int sv = BioVatLogicAdder.RadioHatch.getIsSv().get(varStack);
+                if ((this.mass == 0 || this.sievert == sv) && sv > 0 && amount > 0) {
+                    if (use) {
+                        if (this.mass + amount <= this.cap) {
+                            String name = StatCollector.translateToLocal(varStack.getUnlocalizedName());
+                            if (this.mass == 0 || this.material.equals(name)) {
+                                this.mass += amount;
+                                this.sievert = BioVatLogicAdder.RadioHatch.getIsSv().get(varStack);
+                                this.mInventory[0].stackSize--;
+                                this.updateSlots();
+                                this.colorForGUI = BioVatLogicAdder.RadioHatch.getIsColor().get(varStack);
+                                this.material = name;
+                                return true;
+                            }
+                        }
+                        return false;
+                    }
+                    return true;
+                }
+            }
+        }
+
+        // Rest
+
+        //check material for general validity
+        if (GT_OreDictUnificator.getAssociation(lStack) != null && GT_OreDictUnificator.getAssociation(lStack).mMaterial != null && GT_OreDictUnificator.getAssociation(lStack).mMaterial.mMaterial != null) {
+            //check orePrefix for general validity
+            if (GT_OreDictUnificator.getAssociation(lStack).mPrefix != null) {
+                OrePrefixes orePrefixes = GT_OreDictUnificator.getAssociation(lStack).mPrefix;
+                //check orePrefix for specialised validity
+                if (orePrefixes.equals(OrePrefixes.stickLong) || orePrefixes.equals(OrePrefixes.stick)) {
+                    Materials materials = GT_OreDictUnificator.getAssociation(lStack).mMaterial.mMaterial;
+                    //check material for specialised validity
+                    if (materials.getProtons() >= 83 && materials.getProtons() != 125 || materials.getProtons() == 61 || materials.getProtons() == 43) {
+                        if (use) {
+                            int sv = calculateSv(materials);
+                            int amount = (orePrefixes.equals(OrePrefixes.stickLong) ? 2 : 1);
+                            if (this.mass == 0 || this.sievert == sv) {
+                                if ((this.mass + amount) <= this.cap) {
+                                    String name = materials.mName;
+                                    if (this.mass == 0 || this.material.equals(name)) {
+                                        this.sievert = sv;
+                                        this.mass += orePrefixes.equals(OrePrefixes.stickLong) ? 2 : 1;
+                                        this.mInventory[0].stackSize--;
+                                        this.updateSlots();
+                                        this.colorForGUI = materials.mColor.mRGBa;
+                                        this.material = materials.mName;
+                                        return true;
+                                    }
+                                }
+                            }
+                            return false;
+                        }
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     @Override
@@ -249,7 +293,7 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch {
 
     @Override
     public String[] getInfoData() {
-        if (GT_MetaTileEntity_RadioHatch.calcDecayTicks(this.sievert) != 0)
+        if (this.sievert != 0)
             return new String[]{
                     StatCollector.translateToLocal("tooltip.tile.radhatch.2.name") + " " + this.material,
                     StatCollector.translateToLocal("tooltip.tile.radhatch.3.name") + " " + this.sievert,
@@ -291,7 +335,8 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch {
     }
 
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return aSide == this.getBaseMetaTileEntity().getFrontFacing();
+        return (aSide == this.getBaseMetaTileEntity().getFrontFacing() &&
+                isStackValidRadioMaterial(aStack));
     }
 
     public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
