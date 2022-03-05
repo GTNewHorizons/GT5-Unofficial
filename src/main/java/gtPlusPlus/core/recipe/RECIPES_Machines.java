@@ -442,7 +442,7 @@ public class RECIPES_Machines {
 	private static void multiGeneratorArray() {
 
         GT_ModHandler.addCraftingRecipe(
-        		ItemList.Processing_Array.get(1L), 
+        		GregtechItemList.Generator_Array_Controller.get(1L),
         		CI.bitsd, 
         		new Object[]{"CTC", "FMF", "CBC",
         				'M', CI.getTieredGTPPMachineCasing(4, 1),
