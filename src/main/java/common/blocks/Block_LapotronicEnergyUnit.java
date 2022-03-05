@@ -23,12 +23,6 @@ public class Block_LapotronicEnergyUnit extends BaseGTUpdateableBlock {
 	private static final Block_LapotronicEnergyUnit INSTANCE = new Block_LapotronicEnergyUnit();
     public enum IconBaseSide implements IIconContainer {
         INSTANCE;
-        IconBaseSide() {
-            // technically, this page is owned by me, glee8e, however, I'm kind enough to spare 1 for kekztech since
-            // this is basically abandon ware by now.
-            GT_Utility.addTexturePage((byte) 42);
-            Textures.BlockIcons.setCasingTexture((byte) 42, (byte) 127, TextureFactory.of(this));
-        }
 
         @Override
         public IIcon getIcon() {
@@ -44,6 +38,13 @@ public class Block_LapotronicEnergyUnit extends BaseGTUpdateableBlock {
         public ResourceLocation getTextureFile() {
             return TextureMap.locationBlocksTexture;
         }
+    }
+
+    static {
+        // technically, this page is owned by me, glee8e, however, I'm kind enough to spare 1 for kekztech since
+        // this is basically abandon ware by now.
+        GT_Utility.addTexturePage((byte) 42);
+        Textures.BlockIcons.setCasingTexture((byte) 42, (byte) 127, TextureFactory.of(IconBaseSide.INSTANCE));
     }
 
 	private IIcon iconBaseSide;
