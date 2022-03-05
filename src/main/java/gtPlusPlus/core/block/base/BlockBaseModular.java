@@ -54,7 +54,7 @@ public class BlockBaseModular extends BasicBlock {
 	protected BlockBaseModular(final String unlocalizedName, final String blockMaterialString,
 			final net.minecraft.block.material.Material vanillaMaterial, final BlockTypes blockType, final int colour,
 			final int miningLevel) {
-		super(blockType, unlocalizedName, vanillaMaterial, miningLevel);	
+		super(blockType, unlocalizedName, vanillaMaterial, miningLevel);
 		this.setHarvestLevel(blockType.getHarvestTool(), miningLevel);
 		this.setBlockTextureName(CORE.MODID + ":" + blockType.getTexture());
 		this.blockColour = colour;
@@ -66,14 +66,18 @@ public class BlockBaseModular extends BasicBlock {
 		//ItemBlockGtBlock.sNameCache.put("block."+blockMaterial.getUnlocalizedName()+"."+this.thisBlock.name().toLowerCase(), GetProperName());
 		GameRegistry.registerBlock(this, ItemBlockGtBlock.class, Utils.sanitizeString(blockType.getTexture() + unlocalizedName));
 		if (fx == 0) {
-			GT_OreDictUnificator.registerOre("block" + thisBlockMaterial.replace(" ", ""), ItemUtils.getSimpleStack(this));
+			GT_OreDictUnificator.registerOre("block" + unifyMaterialName(thisBlockMaterial), ItemUtils.getSimpleStack(this));
 		}
 		else if (fx == 1) {
-			GT_OreDictUnificator.registerOre("frameGt" + thisBlockMaterial.replace(" ", ""), ItemUtils.getSimpleStack(this));
+			GT_OreDictUnificator.registerOre("frameGt" + unifyMaterialName(thisBlockMaterial), ItemUtils.getSimpleStack(this));
 		}
 		else if (fx == 2) {
-			GT_OreDictUnificator.registerOre("frameGt" + thisBlockMaterial.replace(" ", ""), ItemUtils.getSimpleStack(this));
+			GT_OreDictUnificator.registerOre("frameGt" + unifyMaterialName(thisBlockMaterial), ItemUtils.getSimpleStack(this));
 		}
+	}
+
+	public static String unifyMaterialName(String rawMaterName) {
+		return rawMaterName.replace(" ", "").replace("-", "").replace("_", "");
 	}
 	
 	public boolean registerComponent() {
