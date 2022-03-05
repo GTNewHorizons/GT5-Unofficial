@@ -6,8 +6,11 @@ import static gtPlusPlus.core.material.MISC_MATERIALS.SODIUM_CHLORIDE;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.chemistry.AgriculturalChem;
 import gtPlusPlus.core.item.chemistry.GenericChem;
@@ -24,6 +27,7 @@ import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.plugin.agrichem.BioRecipes;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -40,6 +44,8 @@ public class RecipeLoader_GlueLine {
         distillationTowerRecipes();
         fluidHeaterRecipes();
         mixerRecipes();
+
+        glueUsageRecipes();
     }
 
 
@@ -269,4 +275,164 @@ public class RecipeLoader_GlueLine {
                 30);
     }
 
+    private static void glueUsageRecipes() {
+        // Braintech Tape recipe, PBI and superglue make 16 tape at once
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] {
+                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Polybenzimidazole, 1L),
+                        GT_ModHandler.getIC2Item("carbonMesh", 1L),
+                        CI.getNumberedCircuit(10)
+                },
+                MISC_MATERIALS.ETHYL_CYANOACRYLATE.getFluidStack(100),
+                ItemList.Duct_Tape.get(16L),
+                120,
+                30
+        );
+
+        // Graphene recipes from later wafer tiers, using superglue instead of the bronze age glue
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] {
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustGraphite", 32),
+                        ItemList.Circuit_Silicon_Wafer4.get(1L),
+                        CI.getNumberedCircuit(2)
+                },
+                MISC_MATERIALS.ETHYL_CYANOACRYLATE.getFluidStack(200),
+                ItemUtils.getItemStackOfAmountFromOreDict("dustGraphene", 32),
+                120,
+                30
+        );
+
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] {
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustGraphite", 64),
+                        ItemList.Circuit_Silicon_Wafer5.get(1L),
+                        CI.getNumberedCircuit(2)
+                },
+                MISC_MATERIALS.ETHYL_CYANOACRYLATE.getFluidStack(200),
+                ItemUtils.getItemStackOfAmountFromOreDict("dustGraphene", 64),
+                120,
+                30
+        );
+
+        GT_Values.RA.addMixerRecipe(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 1L),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lithium, 1L),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 4L),
+                GT_Values.NI, GT_Values.NI, GT_Utility.getIntegratedCircuit(1),
+                MISC_MATERIALS.ETHYL_CYANOACRYLATE.getFluidStack(100),
+                null,
+                ItemList.SFMixture.get(32),
+                1600,
+                16
+        );
+
+        GT_Values.RA.addMixerRecipe(
+                ItemList.GelledToluene.get(1),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Aluminium, 1L),
+                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Polybenzimidazole, 1L),
+                GT_Values.NI, GT_Values.NI, GT_Utility.getIntegratedCircuit(1),
+                MISC_MATERIALS.ETHYL_CYANOACRYLATE.getFluidStack(100),
+                null,
+                ItemList.SFMixture.get(64),
+                1600,
+                16
+        );
+
+        GT_Values.RA.addAssemblerRecipe(
+                GT_OreDictUnificator.get(OrePrefixes.foil, Materials.PolyvinylChloride,8),
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Paper, 32),
+                MISC_MATERIALS.ETHYL_CYANOACRYLATE.getFluidStack(200),
+                new ItemStack(Items.book,64,0),
+                32,
+                8
+        );
+
+        if (LoadedMods.TecTech) {
+            GT_Values.RA.addAssemblerRecipe(
+                    GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Naquadah, 2),
+                    GT_OreDictUnificator.get(OrePrefixes.plate, Materials.RedSteel, 18),
+                    MISC_MATERIALS.ETHYL_CYANOACRYLATE.getFluidStack(144),
+                    ItemUtils.getItemStackFromFQRN("gregtech:gt.metaitem.01:32505", 1),
+                    300,
+                    7680
+            );
+
+            GT_Values.RA.addAssemblerRecipe(
+                    GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.NaquadahAlloy, 2),
+                    GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Europium, 6),
+                    MISC_MATERIALS.ETHYL_CYANOACRYLATE.getFluidStack(288),
+                    ItemUtils.getItemStackFromFQRN("gregtech:gt.metaitem.01:32506", 1),
+                    200,
+                    30720
+            );
+
+            GT_Values.RA.addAssemblerRecipe(
+                    GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.ElectrumFlux, 2),
+                    GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Americium, 18),
+                    MISC_MATERIALS.ETHYL_CYANOACRYLATE.getFluidStack(576),
+                    ItemUtils.getItemStackFromFQRN("gregtech:gt.metaitem.01:32507", 1),
+                    300,
+                    122880
+            );
+
+            GT_Values.RA.addAssemblerRecipe(
+                    GT_OreDictUnificator.get(OrePrefixes.cableGt02, Materials.ElectrumFlux, 2),
+                    GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Naquadah, 18),
+                    MISC_MATERIALS.ETHYL_CYANOACRYLATE.getFluidStack(1152),
+                    ItemUtils.getItemStackFromFQRN("gregtech:gt.metaitem.01:32561", 1),
+                    100,
+                    491520
+            );
+
+            GT_Values.RA.addAssemblerRecipe(
+                    GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.ElectrumFlux, 2),
+                    GT_OreDictUnificator.get(OrePrefixes.plate, Materials.NaquadahEnriched, 36),
+                    MISC_MATERIALS.ETHYL_CYANOACRYLATE.getFluidStack(2304),
+                    ItemUtils.getItemStackFromFQRN("gregtech:gt.metaitem.01:32562", 1),
+                    200,
+                    1966080
+            );
+
+            GT_Values.RA.addAssemblerRecipe(
+                    GT_OreDictUnificator.get(OrePrefixes.cableGt08, Materials.ElectrumFlux, 2),
+                    GT_OreDictUnificator.get(OrePrefixes.plate, Materials.NaquadahAlloy, 48),
+                    MISC_MATERIALS.ETHYL_CYANOACRYLATE.getFluidStack(4608),
+                    ItemUtils.getItemStackFromFQRN("gregtech:gt.metaitem.01:32563", 1),
+                    300,
+                    1966080
+            );
+
+            GT_Values.RA.addAssemblerRecipe(
+                    GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUHV, 2),
+                    GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 56),
+                    MISC_MATERIALS.ETHYL_CYANOACRYLATE.getFluidStack(9216),
+                    ItemUtils.getItemStackFromFQRN("gregtech:gt.metaitem.01:32564", 1),
+                    600,
+                    1966080
+            );
+
+            GT_Values.RA.addAssemblerRecipe(
+                    GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUHV, 2),
+                    GT_OreDictUnificator.get(OrePrefixes.plate, Materials.DraconiumAwakened, 64),
+                    MISC_MATERIALS.ETHYL_CYANOACRYLATE.getFluidStack(18432),
+                    ItemUtils.getItemStackFromFQRN("gregtech:gt.metaitem.01:32565", 1),
+                    1200,
+                    1966080
+            );
+        }
+        if (LoadedMods.DreamCraft && LoadedMods.GalacticraftCore) {
+            GT_Values.RA.addAssemblerRecipe(
+                    new ItemStack[]{
+                            ItemUtils.getItemStackFromFQRN("GalacticraftMars:item.itemBasicAsteroids:7", 1),
+                            GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Titanium, 8),
+                            ItemUtils.getItemStackFromFQRN("dreamcraft:item.TungstenString", 8),
+                            CI.getNumberedCircuit(1)
+                    },
+                    MISC_MATERIALS.ETHYL_CYANOACRYLATE.getFluidStack(576),
+                    ItemUtils.getItemStackFromFQRN("GalaxySpace:item.ThermalClothT2", 1),
+                    600,
+                    1024
+            );
+        }
+    }
 }
