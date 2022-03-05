@@ -379,7 +379,7 @@ public class GT_LanguageManager {
             Class cls = Class.forName("net.minecraft.util.StringTranslate");
             Field languageList = cls.getDeclaredField("languageList");
             if (languageList == null)
-                cls.getDeclaredField("field_74816_c");
+                languageList = cls.getDeclaredField("field_74816_c");
             languageList.setAccessible(true);
 
             Field instance = cls.getDeclaredField("instance");
