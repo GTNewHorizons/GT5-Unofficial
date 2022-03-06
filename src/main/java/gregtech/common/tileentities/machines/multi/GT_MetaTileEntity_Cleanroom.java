@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
+import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
@@ -14,7 +15,7 @@ import gregtech.api.interfaces.metatileentity.IMachineCallback;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicHull;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
@@ -27,11 +28,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.util.ForgeDirection;
+import org.lwjgl.input.Keyboard;
 
 import static gregtech.api.enums.GT_Values.debugCleanroom;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
-public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_Cleanroom> {
+public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_MultiBlockBase implements IConstructable {
     private int mHeight = -1;
 
     public GT_MetaTileEntity_Cleanroom(int aID, String aName, String aNameRegional) {
@@ -48,7 +50,7 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_EnhancedMulti
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
+    public String[] getDescription() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Cleanroom")
             .addInfo("Controller block for the Cleanroom")
@@ -73,7 +75,16 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_EnhancedMulti
             .addStructureInfo("You can also use Diodes for more power")
             .addStructureInfo("Diodes also count towards 10 Machine Hulls count limit")
             .toolTipFinisher("Gregtech");
-        return tt;
+        if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+            return tt.getStructureInformation();
+        } else {
+            return tt.getInformation();
+        }
+    }
+
+    @Override
+    public String[] getStructureDescription(ItemStack itemStack) {
+        return new String[] { "The structure in both X and Z axis has to be a square." };
     }
 
     @Override
@@ -87,16 +98,9 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_EnhancedMulti
     }
 
     @Override
-    protected IAlignmentLimits getInitialAlignmentLimits() {
-        return (d, r, f) -> d.offsetY == 1 && r.isNotRotated() && f.isNotFlipped();
+    public boolean isFacingValid(byte aFacing) {
+        return aFacing > 1;
     }
-
-    @Override
-    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
-        super.onFirstTick(aBaseMetaTileEntity);
-        aBaseMetaTileEntity.setFrontFacing((byte) 1);
-    }
-
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
@@ -350,11 +354,6 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_EnhancedMulti
     @Override
     public boolean isCorrectMachinePart(ItemStack aStack) {
         return true;
-    }
-
-    @Override
-    public IStructureDefinition<GT_MetaTileEntity_Cleanroom> getStructureDefinition() {
-        return null;
     }
 
     @Override
