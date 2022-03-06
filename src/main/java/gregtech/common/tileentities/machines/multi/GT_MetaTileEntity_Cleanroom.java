@@ -3,6 +3,9 @@ package gregtech.common.tileentities.machines.multi;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.gtnewhorizon.structurelib.StructureLibAPI;
+import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
@@ -11,7 +14,7 @@ import gregtech.api.interfaces.metatileentity.IMachineCallback;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicHull;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
@@ -20,15 +23,15 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.util.ForgeDirection;
-import org.lwjgl.input.Keyboard;
 
 import static gregtech.api.enums.GT_Values.debugCleanroom;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
-public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_MultiBlockBase {
+public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_Cleanroom> {
     private int mHeight = -1;
 
     public GT_MetaTileEntity_Cleanroom(int aID, String aName, String aNameRegional) {
@@ -45,36 +48,32 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_MultiBlockBas
     }
 
     @Override
-    public String[] getDescription() {
+    protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Cleanroom")
-                .addInfo("Controller block for the Cleanroom")
-                .addInfo("Consumes 40 EU/t when first turned on")
-                .addInfo("and 4 EU/t once at 100% efficiency when not overclocked")//?
-                .addInfo("An energy hatch accepts up to 2A, so you can use 2A LV or 1A MV")
-                .addInfo("2 LV batteries + 1 LV generator or 1 MV generator")//?
-                .addInfo("Time required to reach full efficiency is proportional to")
-                .addInfo("the height of empty space within")
-                .addInfo("Make sure your Energy Hatch matches! ?")
-                .addSeparator()
-                .beginVariableStructureBlock(3, 15, 4, 15, 3, 15, true)
-                .addController("Top center")
-                .addCasingInfo("Plascrete", 20)
-                .addStructureInfo(GT_Values.cleanroomGlass + "% of the Plascrete can be replaced with Reinforced Glass")//check
-                .addStructureInfo("Other material can be used in place of Plascrete. See config for detail")//check
-                .addOtherStructurePart("Filter Machine Casing", "Top besides controller and edges")
-                .addEnergyHatch("Any casing. Exactly one.")//check
-                .addMaintenanceHatch("Any casing")
-                .addStructureInfo("1x Reinforced Door (keep closed or efficiency will reduce)")
-                .addStructureInfo("Up to 10 Machine Hulls for Item & Energy transfer through walls")
-                .addStructureInfo("You can also use Diodes for more power")
-                .addStructureInfo("Diodes also count towards 10 Machine Hulls count limit")
-                .toolTipFinisher("Gregtech");
-        if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-            return tt.getStructureInformation();
-        } else {
-            return tt.getInformation();
-        }
+            .addInfo("Controller block for the Cleanroom")
+            .addInfo("Consumes 40 EU/t when first turned on")
+            .addInfo("and 4 EU/t once at 100% efficiency when not overclocked")//?
+            .addInfo("An energy hatch accepts up to 2A, so you can use 2A LV or 1A MV")
+            .addInfo("2 LV batteries + 1 LV generator or 1 MV generator")//?
+            .addInfo("Time required to reach full efficiency is proportional to")
+            .addInfo("the height of empty space within")
+            .addInfo("Make sure your Energy Hatch matches! ?")
+            .addSeparator()
+            .beginVariableStructureBlock(3, 15, 4, 15, 3, 15, true)
+            .addController("Top center")
+            .addCasingInfo("Plascrete", 20)
+            .addStructureInfo(GT_Values.cleanroomGlass + "% of the Plascrete can be replaced with Reinforced Glass")//check
+            .addStructureInfo("Other material can be used in place of Plascrete. See config for detail")//check
+            .addOtherStructurePart("Filter Machine Casing", "Top besides controller and edges")
+            .addEnergyHatch("Any casing. Exactly one.")//check
+            .addMaintenanceHatch("Any casing")
+            .addStructureInfo("1x Reinforced Door (keep closed or efficiency will reduce)")
+            .addStructureInfo("Up to 10 Machine Hulls for Item & Energy transfer through walls")
+            .addStructureInfo("You can also use Diodes for more power")
+            .addStructureInfo("Diodes also count towards 10 Machine Hulls count limit")
+            .toolTipFinisher("Gregtech");
+        return tt;
     }
 
     @Override
@@ -86,6 +85,18 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_MultiBlockBas
         mEUt /= -10;
         return true;
     }
+
+    @Override
+    protected IAlignmentLimits getInitialAlignmentLimits() {
+        return (d, r, f) -> d.offsetY == 1 && r.isNotRotated() && f.isNotFlipped();
+    }
+
+    @Override
+    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
+        super.onFirstTick(aBaseMetaTileEntity);
+        aBaseMetaTileEntity.setFrontFacing((byte) 1);
+    }
+
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
@@ -342,8 +353,8 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_MultiBlockBas
     }
 
     @Override
-    public boolean isFacingValid(byte aFacing) {
-        return aFacing > 1;
+    public IStructureDefinition<GT_MetaTileEntity_Cleanroom> getStructureDefinition() {
+        return null;
     }
 
     @Override
@@ -359,6 +370,37 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_MultiBlockBas
     @Override
     public boolean explodesOnComponentBreak(ItemStack aStack) {
         return false;
+    }
+
+    @Override
+    public void construct(ItemStack itemStack, boolean b) {
+        int i = Math.min(itemStack.stackSize, 7);
+        IGregTechTileEntity baseEntity = this.getBaseMetaTileEntity();
+        World world = baseEntity.getWorld();
+        int x = baseEntity.getXCoord();
+        int y = baseEntity.getYCoord();
+        int z = baseEntity.getZCoord();
+        for(int X = x - i; X <= x + i; X++)
+            for(int Y = y; Y >= y - (i * 2); Y--)
+                for(int Z = z - i; Z <= z + i; Z++)
+                {
+                    if(X == x && Y == y && Z == z)
+                        continue;
+                    if(X == x - i || X == x + i || Z == z - i || Z == z + i || Y == y - (i * 2))
+                    {
+                        if (b)
+                            StructureLibAPI.hintParticle(world, X, Y, Z, GregTech_API.sBlockReinforced, 2);
+                        else
+                            world.setBlock(X, Y, Z, GregTech_API.sBlockReinforced, 2, 2);
+                    }
+                    else if(Y == y)
+                    {
+                        if (b)
+                            StructureLibAPI.hintParticle(world, X, Y, Z, GregTech_API.sBlockCasings3, 11);
+                        else
+                            world.setBlock(X, Y, Z, GregTech_API.sBlockCasings3, 11, 2);
+                    }
+                }
     }
 
     private static class ConfigEntry {
