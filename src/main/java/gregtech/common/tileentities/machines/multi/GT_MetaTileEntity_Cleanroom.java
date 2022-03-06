@@ -380,13 +380,14 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_EnhancedMulti
         int x = baseEntity.getXCoord();
         int y = baseEntity.getYCoord();
         int z = baseEntity.getZCoord();
+        int yoff = Math.max(i * 2, 3);
         for(int X = x - i; X <= x + i; X++)
-            for(int Y = y; Y >= y - (i * 2); Y--)
+            for(int Y = y; Y >= y - yoff; Y--)
                 for(int Z = z - i; Z <= z + i; Z++)
                 {
                     if(X == x && Y == y && Z == z)
                         continue;
-                    if(X == x - i || X == x + i || Z == z - i || Z == z + i || Y == y - (i * 2))
+                    if(X == x - i || X == x + i || Z == z - i || Z == z + i || Y == y - yoff)
                     {
                         if (b)
                             StructureLibAPI.hintParticle(world, X, Y, Z, GregTech_API.sBlockReinforced, 2);
