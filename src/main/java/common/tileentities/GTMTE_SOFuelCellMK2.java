@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.lwjgl.input.Keyboard;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
+import gregtech.api.render.TextureFactory;
 
 import common.Blocks;
 import gregtech.api.GregTech_API;
@@ -14,91 +17,113 @@ import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
-import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import util.Vector3i;
-import util.Vector3ic;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
+import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_GLOW;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
-public class GTMTE_SOFuelCellMK2  extends GT_MetaTileEntity_MultiBlockBase {
-	
-	final Block CASING = GregTech_API.sBlockCasings4;
-	final int CASING_META = 0;
-	final int CASING_TEXTURE_ID = 48;
-	
+public class GTMTE_SOFuelCellMK2  extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_SOFuelCellMK2> {
+
 	private final int OXYGEN_PER_SEC = 2000;
 	private final int EU_PER_TICK = 24576; // 100% Efficiency, 3A IV
-	private final int STEAM_PER_SEC = 96000; // SH Steam (10,800EU/t @ 150% Efficiency) 
-	
+	private final int STEAM_PER_SEC = 96000; // SH Steam (10,800EU/t @ 150% Efficiency)
+
 	public GTMTE_SOFuelCellMK2(int aID, String aName, String aNameRegional) {
 		super(aID, aName, aNameRegional);
-		
+
 	}
 
 	public GTMTE_SOFuelCellMK2(String aName) {
 		super(aName);
-		
-	}
-	
-	@Override
-	public IMetaTileEntity newMetaEntity(IGregTechTileEntity var1) {
-		return new GTMTE_SOFuelCellMK2(super.mName);
 	}
 
-	@Override
-	public String[] getDescription() {
-		final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-		tt.addMachineType("Gas Turbine")
-		.addInfo("Oxidizes gas fuels to generate electricity without polluting the environment")
-		.addInfo("Consumes 442,200EU worth of fuel with up to 97% efficiency each second")
-		.addInfo("Steam production requires the SOFC to heat up completely first")
-		.addInfo("Outputs " + EU_PER_TICK + "EU/t and " + STEAM_PER_SEC + "L/s Steam")
-		.addInfo("Additionally, requires " + OXYGEN_PER_SEC + "L/s Oxygen gas")
-		.addSeparator()
-		.beginStructureBlock(3, 3, 5, false)
-		.addController("Front center")
-		.addCasingInfo("Robust Tungstensteel Machine Casing", 12)
-		.addOtherStructurePart("GDC Ceramic Electrolyte Unit", "3x, Center 1x1x3")
-		.addOtherStructurePart("Reinforced Glass", "6x, touching the electrolyte units on the horizontal sides")
-		.addDynamoHatch("Back center")
-		.addMaintenanceHatch("Any casing")
-		.addInputHatch("Fuel, any casing")
-		.addInputHatch("Oxygen, any casing")
-		.addOutputHatch("Superheated Steam, any casing")
-		.toolTipFinisher("KekzTech");
-		if(!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-			return tt.getInformation();
-		} else {
-			return tt.getStructureInformation();
-		}
-	}
-	
+    @Override
+    public IMetaTileEntity newMetaEntity(IGregTechTileEntity var1) {
+        return new GTMTE_SOFuelCellMK2(super.mName);
+    }
+
+    private int mCasing = 0;
+
+    private static final int CASING_TEXTURE_ID = 48;
+    private static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final IStructureDefinition<GTMTE_SOFuelCellMK2> STRUCTURE_DEFINITION = IStructureDefinition.<GTMTE_SOFuelCellMK2>builder()
+        .addShape(STRUCTURE_PIECE_MAIN, transpose(new String[][]{
+            {"ccc", "ccc", "ccc", "ccc", "ccc"},
+            {"c~c", "geg", "geg", "geg", "cdc"},
+            {"ccc", "ccc", "ccc", "ccc", "ccc"}
+        }))
+        .addElement('c', ofChain(
+            onElementPass(te -> te.mCasing++, ofBlock(GregTech_API.sBlockCasings4, 0)),
+            ofHatchAdder(GTMTE_SOFuelCellMK2::addInputToMachineList, CASING_TEXTURE_ID, 1),
+            ofHatchAdder(GTMTE_SOFuelCellMK2::addMaintenanceToMachineList, CASING_TEXTURE_ID, 1),
+            ofHatchAdder(GTMTE_SOFuelCellMK2::addOutputToMachineList, CASING_TEXTURE_ID, 1)
+        ))
+        .addElement('d', ofHatchAdder(GTMTE_SOFuelCellMK2::addDynamoToMachineList, CASING_TEXTURE_ID, 1))
+        .addElement('g', ofBlockAnyMeta(GameRegistry.findBlock("IC2", "blockAlloyGlass")))
+        .addElement('e', ofBlockAnyMeta(Blocks.gdcUnit))
+        .build();
+
+    @Override
+    public IStructureDefinition<GTMTE_SOFuelCellMK2> getStructureDefinition() {
+        return STRUCTURE_DEFINITION;
+    }
+
+    @Override
+    protected GT_Multiblock_Tooltip_Builder createTooltip() {
+        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        tt.addMachineType("Gas Turbine")
+            .addInfo("Oxidizes gas fuels to generate electricity without polluting the environment")
+            .addInfo("Consumes 442,200EU worth of fuel with up to 97% efficiency each second")
+            .addInfo("Steam production requires the SOFC to heat up completely first")
+            .addInfo("Outputs " + EU_PER_TICK + "EU/t and " + STEAM_PER_SEC + "L/s Steam")
+            .addInfo("Additionally, requires " + OXYGEN_PER_SEC + "L/s Oxygen gas")
+            .addSeparator()
+            .beginStructureBlock(3, 3, 5, false)
+            .addController("Front center")
+            .addCasingInfo("Robust Tungstensteel Machine Casing", 12)
+            .addOtherStructurePart("GDC Ceramic Electrolyte Unit", "3x, Center 1x1x3")
+            .addOtherStructurePart("Reinforced Glass", "6x, touching the electrolyte units on the horizontal sides")
+            .addDynamoHatch("Back center", 1)
+            .addMaintenanceHatch("Any casing")
+            .addInputHatch("Fuel, any casing")
+            .addInputHatch("Oxygen, any casing")
+            .addOutputHatch("Superheated Steam, any casing")
+            .toolTipFinisher("KekzTech");
+        return tt;
+    }
+
 	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
 			final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-		return aSide == aFacing
-				? new ITexture[]{Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_ID),
-						new GT_RenderedTexture(aActive ? 
-								Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE 
-								: Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER)}
-				: new ITexture[]{Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_ID)};
+        if (aSide == aFacing) {
+            if (aActive)
+                return new ITexture[]{
+                    Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_ID),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE_GLOW).extFacing().glow().build()};
+            return new ITexture[]{
+                Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_ID),
+                TextureFactory.builder().addIcon(OVERLAY_FRONT_HEAT_EXCHANGER).extFacing().build(),
+                TextureFactory.builder().addIcon(OVERLAY_FRONT_HEAT_EXCHANGER_GLOW).extFacing().glow().build()};
+        }
+        return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_ID)};
 	}
-	
+
 	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
 		return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(),
 				"MultiblockDisplay.png");
 	}
-	
+
 	@Override
 	public boolean isCorrectMachinePart(ItemStack stack) {
 		return true;
@@ -108,31 +133,31 @@ public class GTMTE_SOFuelCellMK2  extends GT_MetaTileEntity_MultiBlockBase {
 	public boolean checkRecipe(ItemStack stack) {
 		final ArrayList<FluidStack> storedFluids = super.getStoredFluids();
 		Collection<GT_Recipe> recipeList = GT_Recipe_Map.sTurbineFuels.mRecipeList;
-		
+
 		if((storedFluids.size() > 0 && recipeList != null)) {
-						
+
 			final Iterator<FluidStack> fluidsIterator = storedFluids.iterator();
 			while(fluidsIterator.hasNext()) {
-				
+
 				final FluidStack hatchFluid = fluidsIterator.next();
 				final Iterator<GT_Recipe> recipeIterator = recipeList.iterator();
 				while(recipeIterator.hasNext()) {
-					
+
 					final GT_Recipe aFuel = recipeIterator.next();
 					FluidStack liquid;
 					if((liquid = GT_Utility.getFluidForFilledItem(aFuel.getRepresentativeInput(0), true)) != null
 							&& hatchFluid.isFluidEqual(liquid)) {
-						
+
 						liquid.amount = Math.round((EU_PER_TICK * 20) / aFuel.mSpecialValue);
-						
+
 						if(super.depleteInput(liquid)) {
-							
+
 							if(!super.depleteInput(Materials.Oxygen.getGas(OXYGEN_PER_SEC))) {
 								super.mEUt = 0;
 								super.mEfficiency = 0;
 								return false;
 							}
-							
+
 							super.mEUt = EU_PER_TICK;
 							super.mMaxProgresstime = 20;
 							super.mEfficiencyIncrease = 80;
@@ -143,179 +168,27 @@ public class GTMTE_SOFuelCellMK2  extends GT_MetaTileEntity_MultiBlockBase {
 						}
 					}
 				}
-			}			
+			}
 		}
-		
+
 		super.mEUt = 0;
 		super.mEfficiency = 0;
 		return false;
 	}
-	
-	public Vector3ic rotateOffsetVector(Vector3ic forgeDirection, int x, int y, int z) {
-		final Vector3i offset = new Vector3i();
-		
-		// either direction on z-axis
-		if(forgeDirection.x() == 0 && forgeDirection.z() == -1) {
-			offset.x = x;
-			offset.y = y;
-			offset.z = z;
-		}
-		if(forgeDirection.x() == 0 && forgeDirection.z() == 1) {
-			offset.x = -x;
-			offset.y = y;
-			offset.z = -z;
-		}
-		// either direction on x-axis
-		if(forgeDirection.x() == -1 && forgeDirection.z() == 0) {
-			offset.x = z;
-			offset.y = y;
-			offset.z = -x;
-		}
-		if(forgeDirection.x() == 1 && forgeDirection.z() == 0) {
-			offset.x = -z;
-			offset.y = y;
-			offset.z = x;
-		}
-		// either direction on y-axis
-		if(forgeDirection.y() == -1) {
-			offset.x = x;
-			offset.y = z;
-			offset.z = y;
-		}
-		
-		return offset;
-	}
-	
-	@Override
-	public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {		
-		// Figure out the vector for the direction the back face of the controller is facing
-		final Vector3ic forgeDirection = new Vector3i(
-				ForgeDirection.getOrientation(thisController.getBackFacing()).offsetX,
-				ForgeDirection.getOrientation(thisController.getBackFacing()).offsetY,
-				ForgeDirection.getOrientation(thisController.getBackFacing()).offsetZ
-				);
-		int minCasingAmount = 12; 
-		boolean formationChecklist = true; // if this is still true at the end, machine is good to go :)
-		
-		// Front slice			
-		for(int X = -1; X <= 1; X++) {
-			for(int Y = -1; Y <= 1; Y++) {
-				if(X == 0 && Y == 0) {
-					continue; // is controller
-				}
-				
-				// Get next TE
-				final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, 0);
-				IGregTechTileEntity currentTE = 
-						thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());
-				
-				// Tries to add TE as either of those kinds of hatches.
-				// The number is the texture index number for the texture that needs to be painted over the hatch texture (TAE for GT++)
-				if (   !super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID) 
-					&& !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
-					&& !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)) {
-					
-					// If it's not a hatch, is it the right casing for this machine? Check block and block meta.
-					if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING) 
-							&& (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
-						// Seems to be valid casing. Decrement counter.
-						minCasingAmount--;
-					} else {
-						formationChecklist = false;
-					}
-				}
-			}
-		}
-		
-		// Middle three slices
-		for(int X = -1; X <= 1; X++) {
-			for(int Y = -1; Y <= 1; Y++) {
-				for(int Z = -1; Z >= -3; Z--) {
-					final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, Z);
-					if(X == 0 && Y == 0) {
-						if(!thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName()
-								.equals(Blocks.gdcUnit.getUnlocalizedName())) {
-							formationChecklist = false;
-						}
-						continue;
-					}
-					if(Y == 0 && (X == -1 || X == 1)) {
-						if(!thisController.getBlockOffset(offset.x(), offset.y(), offset.z()).getUnlocalizedName()
-								.equals("blockAlloyGlass")) {
-							formationChecklist = false;
-						}
-						continue;
-					}
-					// Get next TE
-					IGregTechTileEntity currentTE = 
-							thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());// x, y ,z
-					
-					// Tries to add TE as either of those kinds of hatches.
-					// The number is the texture index number for the texture that needs to be painted over the hatch texture (TAE for GT++)
-					if (   !super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID) 
-						&& !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
-						&& !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)) {
-						
-						// If it's not a hatch, is it the right casing for this machine? Check block and block meta.
-						if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING) 
-								&& (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
-							// Seems to be valid casing. Decrement counter.
-							minCasingAmount--;
-						} else {
-							formationChecklist = false;
-						}
-					}
-				}
-			}
-		}
-		
-		// Back slice
-		for(int X = -1; X <= 1; X++) {
-			for(int Y = -1; Y <= 1; Y++) {
-				// Get next TE
-				final Vector3ic offset = rotateOffsetVector(forgeDirection, X, Y, -4);
-				IGregTechTileEntity currentTE = 
-						thisController.getIGregTechTileEntityOffset(offset.x(), offset.y(), offset.z());// x, y ,z
-				
-				// Tries to add TE as either of those kinds of hatches.
-				// The number is the texture index number for the texture that needs to be painted over the hatch texture (TAE for GT++)
-				if (   !super.addMaintenanceToMachineList(currentTE, CASING_TEXTURE_ID) 
-					&& !super.addInputToMachineList(currentTE, CASING_TEXTURE_ID)
-					&& !super.addOutputToMachineList(currentTE, CASING_TEXTURE_ID)
-					&& !super.addDynamoToMachineList(currentTE, CASING_TEXTURE_ID)) {
-					
-					// If it's not a hatch, is it the right casing for this machine? Check block and block meta.
-					if ((thisController.getBlockOffset(offset.x(), offset.y(), offset.z()) == CASING) 
-							&& (thisController.getMetaIDOffset(offset.x(), offset.y(), offset.z()) == CASING_META)) {
-						// Seems to be valid casing. Decrement counter.
-						minCasingAmount--;
-					} else {
-						formationChecklist = false;
-					}
-				}
-			}
-		}		
-		
-		if(minCasingAmount > 0) {
-			formationChecklist = false;
-		}
-		
-		if(this.mDynamoHatches.size() != 1) {
-			System.out.println("Exactly one dynamo hatch is required!");
-			formationChecklist = false;
-		}
-		if(this.mInputHatches.size() < 2) {
-			System.out.println("At least two input hatches are required!");
-			formationChecklist = false;
-		}
-		
-		if(this.mMaintenanceHatches.size() < 1) {
-			System.out.println("You need a maintenance hatch to do maintenance.");
-		}
-		
-		return formationChecklist;
-	}
-	
+
+    @Override
+    public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {
+        this.mCasing = 0;
+
+        if(!checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 0))
+            return false;
+
+        return (this.mCasing >= 12 &&
+            this.mMaintenanceHatches.size() == 1 &&
+            this.mInputHatches.size() >= 2
+        );
+    }
+
 	@Override
 	public int getMaxEfficiency(ItemStack stack) {
 		return 10000;
@@ -335,5 +208,9 @@ public class GTMTE_SOFuelCellMK2  extends GT_MetaTileEntity_MultiBlockBase {
 	public boolean explodesOnComponentBreak(ItemStack stack) {
 		return false;
 	}
-	
+
+    @Override
+    public void construct(ItemStack itemStack, boolean b) {
+        buildPiece(STRUCTURE_PIECE_MAIN, itemStack, b, 1, 1, 0);
+    }
 }
