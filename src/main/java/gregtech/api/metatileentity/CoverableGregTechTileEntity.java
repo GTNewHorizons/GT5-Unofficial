@@ -162,7 +162,7 @@ public abstract class CoverableGregTechTileEntity extends BaseTileEntity impleme
 
     @Override
     public void issueCoverUpdate(byte aSide) {
-        if (getWorld() != null && isServerSide() && getCoverBehaviorAtSideNew(aSide).isDataNeededOnClient(aSide, getCoverIDAtSide(aSide), getComplexCoverDataAtSide(aSide), this))
+        if ((getWorld() == null || isServerSide()) && getCoverBehaviorAtSideNew(aSide).isDataNeededOnClient(aSide, getCoverIDAtSide(aSide), getComplexCoverDataAtSide(aSide), this))
             mCoverNeedUpdate[aSide] = true;
     }
 
