@@ -183,7 +183,7 @@ public class RecipeLoader_02 {
             GT_Values.RA.addAssemblerRecipe(
                     new ItemStack[]{
                             ItemList.Hatch_Output_IV.get(1),
-                            GT_ModHandler.getModItem("extracells", "part.base", 1, 9),
+                            GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1, 440),
                             GT_OreDictUnificator.get(OrePrefixes.screw, Materials.CertusQuartz, 8),
                             GT_Utility.getIntegratedCircuit(1)
                     },
@@ -1049,7 +1049,7 @@ public class RecipeLoader_02 {
                             ItemRefer.HiC_T1.get(4),
                             ItemList.Tool_DataOrb.get(3),
                             GT_OreDictUnificator.get(OrePrefixes.cableGt08, Materials.Titanium, 4),
-                            MyMaterial.adamantiumAlloy.get(OrePrefixes.gearGt, 4),
+                            MyMaterial.hikarium.get(OrePrefixes.gearGt, 4),
                             MyMaterial.marM200.get(OrePrefixes.plateDouble, 2),
                             ItemRefer.IC2_Ir_Plate.get(2),
                             MyMaterial.lumiium.get(OrePrefixes.bolt, 48),
@@ -1068,7 +1068,7 @@ public class RecipeLoader_02 {
                             GT_OreDictUnificator.get(OrePrefixes.cableGt04, MyMaterial.lumiium.getBridgeMaterial(), 2),
                             MyMaterial.marCeM200.get(OrePrefixes.plateDouble, 2),
                             ItemRefer.HiC_T1.get(1),
-                            GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Draconium, 32),
+                            MyMaterial.signalium.get(OrePrefixes.bolt, 32),
                             MyMaterial.titaniumBetaC.get(OrePrefixes.gearGtSmall, 8)
                     },
                     Materials.BlackSteel.getMolten(576),

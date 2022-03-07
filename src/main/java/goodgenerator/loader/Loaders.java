@@ -22,6 +22,7 @@ import goodgenerator.main.GoodGenerator;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import goodgenerator.util.CrackRecipeAdder;
+import goodgenerator.util.MaterialFix;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -247,6 +248,7 @@ public class Loaders {
 
     public static void completeLoad(){
         RecipeLoader_02.FinishLoadRecipe();
+        MaterialFix.addRecipeForMultiItems();
     }
 
     public static void initLoadRecipes(){
