@@ -22,24 +22,55 @@
 
 package com.github.bartimaeusnek.bartworks.neiHandler;
 
+import codechicken.nei.PositionedStack;
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.common.loaders.FluidLoader;
 import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
+import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.bartimaeusnek.bartworks.util.BWRecipes;
-import cpw.mods.fml.common.Optional;
+import gregtech.api.enums.OrePrefixes;
 import net.minecraft.item.ItemStack;
 
-@Optional.Interface(iface = "codechicken.nei.api.API", modid = "NotEnoughItems")
 public class NEI_BW_Config implements IConfigureNEI {
 
-    public static boolean sIsAdded = true;
+    static boolean sIsAdded = true;
 
+    static boolean checkRecipe(ItemStack labPart, Iterable<? extends PositionedStack> stacks) {
+        for (PositionedStack stack : stacks) {
+            for (ItemStack item : stack.items) {
+                if (labPart.getTagCompound().equals(item.getTagCompound())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
     public void loadConfig() {
         API.hideItem(new ItemStack(ItemRegistry.TAB));
         API.hideItem(new ItemStack(FluidLoader.bioFluidBlock));
         API.hideItem(new ItemStack(ItemRegistry.bw_fake_glasses));
+        ItemStack[] prefixesToHide = {
+            WerkstoffLoader.getCorrespondingItemStack(OrePrefixes.dustTiny, WerkstoffLoader.Bismutite).copy(),
+            WerkstoffLoader.getCorrespondingItemStack(OrePrefixes.dustSmall, WerkstoffLoader.Bismutite).copy(),
+            WerkstoffLoader.getCorrespondingItemStack(OrePrefixes.crushed, WerkstoffLoader.Bismutite).copy(),
+            WerkstoffLoader.getCorrespondingItemStack(OrePrefixes.crushedPurified, WerkstoffLoader.Bismutite).copy(),
+            WerkstoffLoader.getCorrespondingItemStack(OrePrefixes.crushedCentrifuged, WerkstoffLoader.Bismutite).copy(),
+            WerkstoffLoader.getCorrespondingItemStack(OrePrefixes.nugget, WerkstoffLoader.Bismutite).copy(),
+            WerkstoffLoader.getCorrespondingItemStack(OrePrefixes.gemChipped, WerkstoffLoader.Bismutite).copy(),
+            WerkstoffLoader.getCorrespondingItemStack(OrePrefixes.gemFlawed, WerkstoffLoader.Bismutite).copy(),
+            WerkstoffLoader.getCorrespondingItemStack(OrePrefixes.gemFlawless, WerkstoffLoader.Bismutite).copy(),
+            WerkstoffLoader.getCorrespondingItemStack(OrePrefixes.gemExquisite, WerkstoffLoader.Bismutite).copy(),
+            WerkstoffLoader.getCorrespondingItemStack(OrePrefixes.dustImpure, WerkstoffLoader.Bismutite).copy(),
+            WerkstoffLoader.getCorrespondingItemStack(OrePrefixes.dustPure, WerkstoffLoader.Bismutite).copy(),
+        };
+        for (ItemStack stack : prefixesToHide) {
+            stack.setItemDamage(Short.MAX_VALUE);
+            API.hideItem(stack);
+        }
         NEI_BW_Config.sIsAdded = false;
         new BW_NEI_OreHandler();
         new BW_NEI_BioVatHandler(BWRecipes.instance.getMappingsFor(BWRecipes.BACTERIALVATBYTE));
@@ -47,12 +78,12 @@ public class NEI_BW_Config implements IConfigureNEI {
         NEI_BW_Config.sIsAdded = true;
     }
 
-    @Optional.Method(modid = "NotEnoughItems")
+    @Override
     public String getName() {
         return "BartWorks NEI Plugin";
     }
 
-    @Optional.Method(modid = "NotEnoughItems")
+    @Override
     public String getVersion() {
         return MainMod.APIVERSION;
     }

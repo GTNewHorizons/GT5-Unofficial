@@ -32,12 +32,9 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.nei.GT_NEI_DefaultHandler;
 import net.minecraft.item.ItemStack;
 
-import java.awt.*;
-
 public class BW_NEI_BioLabHandler extends GT_NEI_DefaultHandler {
     public BW_NEI_BioLabHandler(GT_Recipe.GT_Recipe_Map aRecipeMap) {
         super(aRecipeMap);
-        this.transferRects.add(new TemplateRecipeHandler.RecipeTransferRect(new Rectangle(65, 13, 36, 18), this.getOverlayIdentifier()));
         if (!NEI_BW_Config.sIsAdded) {
             FMLInterModComms.sendRuntimeMessage(GT_Values.GT, "NEIPlugins", "register-crafting-handler", "gregtech@" + this.getRecipeName() + "@" + this.getOverlayIdentifier());
             GuiCraftingRecipe.craftinghandlers.add(this);
@@ -50,37 +47,23 @@ public class BW_NEI_BioLabHandler extends GT_NEI_DefaultHandler {
     }
 
     public void loadCraftingRecipes(ItemStack aResult) {
-        if (aResult != null && aResult.getItem() instanceof LabParts && aResult.getItemDamage() < 3) {
-            for (GT_Recipe recipe : this.getSortedRecipes()) {
-                if (aResult.getTagCompound() != null && recipe != null)
-                    for (int i = 0; i < recipe.mOutputs.length; i++) {
-                        if (recipe.mOutputs[i] != null)
-                            if (aResult.getTagCompound().equals(recipe.mOutputs[i].getTagCompound())) {
-                                this.arecipes.add(new CachedDefaultRecipe(recipe));
-                                break;
-                            }
-
-                    }
-            }
-        } else
+        if (aResult != null && aResult.getItem() instanceof LabParts && aResult.getItemDamage() < 3 && aResult.getTagCompound() != null) {
+            for (CachedDefaultRecipe recipe : getCache())
+                if (NEI_BW_Config.checkRecipe(aResult, recipe.mOutputs))
+                    arecipes.add(recipe);
+        } else {
             super.loadCraftingRecipes(aResult);
+        }
     }
 
     @Override
     public void loadUsageRecipes(ItemStack aResult) {
-        if (aResult != null && aResult.getItem() instanceof LabParts && aResult.getItemDamage() < 3) {
-            for (GT_Recipe recipe : this.getSortedRecipes()) {
-                if (aResult.getTagCompound() != null && recipe != null)
-                    for (int i = 0; i < recipe.mInputs.length; i++) {
-                        if (recipe.mInputs[i] != null)
-                            if (aResult.getTagCompound().equals(recipe.mInputs[i].getTagCompound())) {
-                                this.arecipes.add(new CachedDefaultRecipe(recipe));
-                                break;
-                            }
-
-                    }
-            }
-        } else
-            super.loadCraftingRecipes(aResult);
+        if (aResult != null && aResult.getItem() instanceof LabParts && aResult.getItemDamage() < 3 && aResult.getTagCompound() != null) {
+            for (CachedDefaultRecipe recipe : getCache())
+                if (NEI_BW_Config.checkRecipe(aResult, recipe.mInputs))
+                    arecipes.add(recipe);
+        } else {
+            super.loadUsageRecipes(aResult);
+        }
     }
 }

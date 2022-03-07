@@ -51,7 +51,6 @@ public class BW_NEI_OreHandler extends TemplateRecipeHandler {
         if (!NEI_BW_Config.sIsAdded) {
             FMLInterModComms.sendRuntimeMessage(MainMod.MOD_ID, "NEIPlugins", "register-crafting-handler", MainMod.MOD_ID + "@" + this.getRecipeName() + "@" + this.getOverlayIdentifier());
             GuiCraftingRecipe.craftinghandlers.add(this);
-//            GuiUsageRecipe.usagehandlers.add(this);
         }
     }
 
