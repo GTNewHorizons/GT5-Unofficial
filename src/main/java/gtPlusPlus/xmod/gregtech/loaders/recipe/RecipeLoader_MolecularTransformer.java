@@ -27,6 +27,8 @@ public class RecipeLoader_MolecularTransformer {
 	    	Logger.INFO("=======================");
 	    }
 		
+		transformerRecipes.clear();
+		
 	}
 	
 }

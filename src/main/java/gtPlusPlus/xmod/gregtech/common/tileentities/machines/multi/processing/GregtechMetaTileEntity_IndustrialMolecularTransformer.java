@@ -265,5 +265,5 @@ public class GregtechMetaTileEntity_IndustrialMolecularTransformer extends Gregt
 			this.getBaseMetaTileEntity().setFrontFacing((byte) 1); 
 		}
 	}
-
+       
 }

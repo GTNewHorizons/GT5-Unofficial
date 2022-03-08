@@ -124,11 +124,11 @@ public class RECIPES_GREGTECH {
 
 	private static void implosionRecipes() {
 
-        GT_Values.RA.addImplosionRecipe(
-        		ItemUtils.getSimpleStack(ModItems.itemSunnariumBit, 9),
-        		16, 
-        		ItemUtils.getSimpleStack(AdvancedSolarPanel.itemSunnariumPart, 1),
-        		GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glowstone, 8));
+        //GT_Values.RA.addImplosionRecipe(
+        		//ItemUtils.getSimpleStack(ModItems.itemSunnariumBit, 9),
+        		//16, 
+        		//ItemUtils.getSimpleStack(AdvancedSolarPanel.itemSunnariumPart, 1),
+        		//GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glowstone, 8));
 
 	}
 
