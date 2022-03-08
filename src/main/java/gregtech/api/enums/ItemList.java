@@ -1402,6 +1402,9 @@ public enum ItemList implements IItemContainer {
     Reactor_Coolant_NaK_6,
     neutroniumHeatCapacitor,
 
+    GlowstoneCell,
+    SunnariumCell,
+
     ThoriumCell_1,
     ThoriumCell_2,
     ThoriumCell_4,

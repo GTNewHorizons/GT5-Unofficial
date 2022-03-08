@@ -1130,6 +1130,9 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addCannerRecipe(GT_ModHandler.getIC2Item("fuelRod", 1), GT_ModHandler.getIC2Item("UranFuel", 1), ItemList.Uraniumcell_1.get(1), null, 30, 16);
         GT_Values.RA.addCannerRecipe(GT_ModHandler.getIC2Item("fuelRod", 1), GT_ModHandler.getIC2Item("MOXFuel", 1), ItemList.Moxcell_1.get(1), null, 30, 16);
 
+        // radiation manufacturing
+        GT_Values.RA.addMixerRecipe(GT_ModHandler.getIC2Item("fuelRod", 1), new ItemStack(Items.glowstone_dust, 9), NI, NI, Materials.Helium.getGas(250), NF, ItemList.GlowstoneCell.get(1), 30, 16);
+        RA.addThermalCentrifugeRecipe(ItemList.SunnariumCell.get(1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sunnarium, 1L), new ItemStack(Items.glowstone_dust, 2), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 1L), 500, 48);
         //Fusion tiering -T1 32768EU/t -T2 65536EU/t - T3 131073EU/t
         //Fusion with margin 32700         65450          131000
         //Startup  max       160M EU       320M EU        640M EU
