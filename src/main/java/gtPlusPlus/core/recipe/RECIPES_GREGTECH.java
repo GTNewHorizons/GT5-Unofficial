@@ -889,12 +889,12 @@ public class RECIPES_GREGTECH {
 				20 * 60 * 5,
 				MaterialUtils.getVoltageForTier(5));
 
-		GT_Values.RA.addLaserEngraverRecipe(
-				GregtechItemList.Laser_Lens_WoodsGlass.get(0),
-				ItemUtils.simpleMetaStack(ModBlocks.blockCompressedObsidian, 8, 1),
-				ItemUtils.getSimpleStack(ModItems.itemSunnariumBit, 3),
-				20 * 60 * 5,
-				MaterialUtils.getVoltageForTier(3));
+		//GT_Values.RA.addLaserEngraverRecipe(
+				//GregtechItemList.Laser_Lens_WoodsGlass.get(0),
+				//ItemUtils.simpleMetaStack(ModBlocks.blockCompressedObsidian, 8, 1),
+				//ItemUtils.getSimpleStack(ModItems.itemSunnariumBit, 3),
+				//20 * 60 * 5,
+				//MaterialUtils.getVoltageForTier(3));
 
 
 	}
