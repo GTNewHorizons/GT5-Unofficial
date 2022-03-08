@@ -151,7 +151,7 @@ public class RecipeLoader {
         GT_Values.RA.addChemicalRecipe(
         		GT_Utility.getIntegratedCircuit(12), 
         		Materials.NitricAcid.getCells(1), 
-        		Materials.Ammonium.getFluid(1000),
+        		Materials.Ammonia.getFluid(1000),
         		null, 
         		null, 
         		400
