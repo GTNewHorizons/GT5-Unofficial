@@ -70,7 +70,7 @@ public class BW_WorldGenRoss128b extends BW_OreLayer {
     public static void initundergroundFluids() {
         String ross128b = StatCollector.translateToLocal("planet.Ross128b");
         uo_dimensionList.SetConfigValues(ross128b, ross128b, "veryheavyoil", "liquid_extra_heavy_oil", 0, 625, 40, 5);
-        uo_dimensionList.SetConfigValues(ross128b, ross128b, "lava", FluidRegistry.getFluidName(FluidRegistry.LAVA), 0, 32767, 5, 5);
+        uo_dimensionList.SetConfigValues(ross128b, ross128b, "lava", FluidRegistry.getFluidName(FluidRegistry.LAVA), 0, 820, 5, 5);
         uo_dimensionList.SetConfigValues(ross128b, ross128b, "gas_natural_gas", "gas_natural_gas", 0, 625, 65, 5);
     }
 
