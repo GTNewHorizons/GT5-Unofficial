@@ -140,17 +140,17 @@ public class GT_MetaTileEntity_PotionBrewer extends GT_MetaTileEntity_BasicMachi
     }
 
     private int setOutput(String aFluidName) {
-        if (getFillableStack().amount < 1000) {
+        if (getFillableStack().amount < 750) {
             return 0;
         }
 
-        this.mOutputFluid = FluidRegistry.getFluidStack(aFluidName, 1000);
+        this.mOutputFluid = FluidRegistry.getFluidStack(aFluidName, 750);
         if (this.mOutputFluid == null) {
             this.mOutputFluid = FluidRegistry.getFluidStack("potion.mundane", getFillableStack().amount);
         }
-
+        
         getInputAt(0).stackSize -= 1;
-        getFillableStack().amount -= 1000;
+        getFillableStack().amount -= 750;
         return 2;
     }
 
