@@ -628,10 +628,10 @@ public class RecipeLoader {
         GT_Values.RA.addElectromagneticSeparatorRecipe(
         		WerkstoffMaterialPool.CooledMonaziteRareEarthConcentrate.get(OrePrefixes.dust, 1), 
         		WerkstoffMaterialPool.MonaziteRarerEarthSediment.get(OrePrefixes.dust, 1), 
-        		WerkstoffMaterialPool.EuropiumOxide.get(OrePrefixes.dustSmall, 1),  // Maybe also holmium
+        		WerkstoffMaterialPool.EuropiumOxide.get(OrePrefixes.dust, 1),  // Maybe also holmium
         		null, 
         		new int[] {
-        				9000, 10
+        				9000, 500
         		}, 
         		600, 
         		1920
@@ -1140,6 +1140,27 @@ public class RecipeLoader {
 		GT_Values.RA.addAssemblerRecipe(new ItemStack[]
 				{ItemList.Hull_EV.get(1L), ItemList.Super_Tank_HV.get(2L), ItemList.Electric_Motor_EV.get(4L), ItemList.Electric_Pump_EV.get(2L), GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.VibrantAlloy, 4L), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 4L), GT_Utility.getIntegratedCircuit(1)},
 				Materials.Polytetrafluoroethylene.getMolten(720), LanthItemList.DISSOLUTION_TANK, 400, 960);
+		
+		
+		GT_Values.RA.addMixerRecipe(
+				Materials.Nichrome.getDust(4),
+				Materials.Aluminium.getDust(2),
+				WerkstoffMaterialPool.Hafnium.get(OrePrefixes.dust, 1),
+				Materials.Tantalum.getDust(2),
+				Materials.Tungsten.getDust(5),
+				WerkstoffMaterialPool.Zirconium.get(OrePrefixes.dust, 1),
+				Materials.Titanium.getDust(1),
+				null,
+				null,
+				null,
+				null,
+				WerkstoffMaterialPool.MARM247.get(OrePrefixes.dust, 16),
+				null,
+				null,
+				null,
+				800,
+				7680
+			);
 	}
     
     //public static void loadZylon
@@ -1311,6 +1332,7 @@ public class RecipeLoader {
                     }
                 }
             }
+            /*
             GT_Recipe tRecipe = recipe.copy();
             if (GT_Utility.isStackValid(fluidInput)) {
             	if (fluidInput.getLocalizedName() == MyMaterial.plutoniumBasedLiquidFuel.getDefaultName()) {
@@ -1319,7 +1341,7 @@ public class RecipeLoader {
                 	remove.add(tRecipe);
             	}
             	
-            }
+            }*/
         }
         GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.mRecipeList.removeAll(remove);
         GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.mRecipeList.addAll(reAdd);

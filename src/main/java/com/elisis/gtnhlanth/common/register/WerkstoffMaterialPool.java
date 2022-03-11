@@ -116,7 +116,7 @@ public class WerkstoffMaterialPool implements Runnable {
             subscriptNumbers("Zr"),
             new Werkstoff.Stats(),
             Werkstoff.Types.COMPOUND,
-            new Werkstoff.GenerationFeatures().disable().addMetalItems().enforceUnification(),
+            new Werkstoff.GenerationFeatures().disable().onlyDust().addMetalItems().enforceUnification(),
             offsetID + 7,
             TextureSet.SET_DULL
             
@@ -1085,6 +1085,20 @@ public class WerkstoffMaterialPool implements Runnable {
     		new Werkstoff.GenerationFeatures().disable().onlyDust().addMolten(),
     		offsetID3 + 14,
     		TextureSet.SET_DULL
+    	);
+    
+    public static final Werkstoff MARM247 = new Werkstoff(
+    		new short[] {255, 133, 145},
+    		"MAR-M247",
+    		new Werkstoff.Stats().setMeltingPoint(8000).setBlastFurnace(true).setMeltingVoltage(7680),
+    		Werkstoff.Types.COMPOUND,
+    		new Werkstoff.GenerationFeatures().disable()
+    				.onlyDust()	
+    				.addMolten()
+    				.addMetalItems() 				
+    				,
+    		offsetID3 + 15,
+    		TextureSet.SET_METALLIC
     	);
     
     
