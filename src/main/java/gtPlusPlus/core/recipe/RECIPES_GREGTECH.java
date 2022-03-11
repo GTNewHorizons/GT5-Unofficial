@@ -1377,10 +1377,25 @@ public class RECIPES_GREGTECH {
 				ItemUtils.getItemStackOfAmountFromOreDict("plateVanadiumGallium", 8),
 				FluidUtils.getFluidStack("molten.tantalum", 144 * 4),
 				ItemUtils.simpleMetaStack(ModItems.itemHalfCompleteCasings, 1, 8), 32, 120);
+		
+		/*
 		addAR(ItemUtils.simpleMetaStack(ModItems.itemHalfCompleteCasings, 1, 1),
 				ItemUtils.getItemStackOfAmountFromOreDict("plateDenseLead", 4), FluidUtils.getFluidStack("oxygen", 16000),
 				ItemUtils.getSimpleStack(GregtechItemList.Casing_Vanadium_Redox.get(1), 1), 64, 240);
-
+		 */
+		CORE.RA.addSixSlotAssemblingRecipe(
+				new ItemStack[] {
+						ItemUtils.simpleMetaStack(ModItems.itemHalfCompleteCasings, 1, 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("plateDenseLead", 4),
+						ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(3), 4),
+						ItemUtils.getItemStackOfAmountFromOreDict("wireGt01SuperconductorHV", 2)
+				},
+				FluidUtils.getFluidStack("oxygen", 16000),
+				ItemUtils.getSimpleStack(GregtechItemList.Casing_Vanadium_Redox.get(1), 1), 
+				64, 
+				240
+			);
+		
 		//Tier 2-6
 		ItemStack T1 = GregtechItemList.Casing_Vanadium_Redox.get(1);
 		ItemStack T2 = GregtechItemList.Casing_Vanadium_Redox_IV.get(1);
@@ -1389,26 +1404,99 @@ public class RECIPES_GREGTECH {
 		ItemStack T5 = GregtechItemList.Casing_Vanadium_Redox_UV.get(1);
 		ItemStack T6 = GregtechItemList.Casing_Vanadium_Redox_MAX.get(1);
 
+		
+		/*
 		addAR(T1,
 				ItemUtils.getItemStackOfAmountFromOreDict("plateDenseTitanium", 4),
 				FluidUtils.getFluidStack("nitrogen", 16000),
 				T2, 120, 2000);
+		*/
+		CORE.RA.addSixSlotAssemblingRecipe(
+				new ItemStack[] {
+						T1,
+						ItemUtils.getItemStackOfAmountFromOreDict("plateDenseTitanium", 4),
+						ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(4), 4),
+						ItemUtils.getItemStackOfAmountFromOreDict("wireGt01SuperconductorEV", 2)
+				},
+				FluidUtils.getFluidStack("nitrogen", 16000),
+				T2, 
+				120, 
+				2000
+			);
+		
+		
+		/*
 		addAR(T2,
 				ItemUtils.getItemStackOfAmountFromOreDict("plateDenseTungstenSteel", 4),
 				FluidUtils.getFluidStack("helium", 8000),
 				T3, 250, 8000);
+		*/
+		CORE.RA.addSixSlotAssemblingRecipe(
+				new ItemStack[] {
+						T2,
+						ItemUtils.getItemStackOfAmountFromOreDict("plateDenseTungstenSteel", 4),
+						ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(5), 4),
+						ItemUtils.getItemStackOfAmountFromOreDict("wireGt01SuperconductorIV", 2)
+				},
+				FluidUtils.getFluidStack("helium", 8000),
+				T3, 
+				250, 
+				8000
+			);
+		/*
 		addAR(T3,
 				ItemUtils.getItemStackOfAmountFromOreDict("plateAlloyIridium", 16),
 				FluidUtils.getFluidStack("argon", 4000),
 				T4, 500, 32000);
+		*/
+		CORE.RA.addSixSlotAssemblingRecipe(
+				new ItemStack[] {
+						T3,
+						ItemUtils.getItemStackOfAmountFromOreDict("plateAlloyIridium", 16),
+						ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(6), 4),
+						ItemUtils.getItemStackOfAmountFromOreDict("wireGt01SuperconductorLuV", 2)
+				},
+				FluidUtils.getFluidStack("argon", 4000),
+				T4, 
+				500, 
+				32000
+			);
+		/*
 		addAR(T4,
 				ItemUtils.getItemStackOfAmountFromOreDict("plateDenseNaquadah", 4),
 				FluidUtils.getFluidStack("radon", 4000),
 				T5, 1000, 128000);
+		*/
+		CORE.RA.addSixSlotAssemblingRecipe(
+				new ItemStack[] {
+						T4,
+						ItemUtils.getItemStackOfAmountFromOreDict("plateDenseNaquadah", 4),
+						ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(7), 4),
+						ItemUtils.getItemStackOfAmountFromOreDict("wireGt01SuperconductorZPM", 2)
+				},
+				FluidUtils.getFluidStack("radon", 4000),
+				T5, 
+				1000, 
+				128000
+			);
+		/*
 		addAR(T5,
 				ItemUtils.getItemStackOfAmountFromOreDict("plateDenseAmericium", 4),
 				FluidUtils.getFluidStack("krypton", 500),
 				T6, 2000, 512000);
+		*/
+		CORE.RA.addSixSlotAssemblingRecipe(
+				new ItemStack[] {
+						T5,
+						ItemUtils.getItemStackOfAmountFromOreDict("plateDenseAmericium", 4),
+						ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(8), 4),
+						ItemUtils.getItemStackOfAmountFromOreDict("wireGt01SuperconductorUV", 2)
+				},
+				FluidUtils.getFluidStack("krypton", 500),
+				T6, 
+				2000, 
+				512000
+			);
 
 		addAR(ItemUtils.getItemStackOfAmountFromOreDict(
 				"dustClay", 32),
