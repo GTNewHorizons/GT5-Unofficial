@@ -26,11 +26,16 @@ public class CONTAINER_PowerSubStation extends GT_Container_MultiMachine {
 	}
 
 	public void addSlots(final InventoryPlayer aInventoryPlayer) {
-		this.addSlotToContainer(new Slot((IInventory) this.mTileEntity, 1, 155, 5));
-		this.addSlotToContainer(new SlotNoInput((IInventory) this.mTileEntity, 2, 155, 23));
+		this.addSlotToContainer(new Slot(this.mTileEntity, 1, 155, 5));
+		this.addSlotToContainer(new SlotNoInput(this.mTileEntity, 2, 155, 23));
 
-		for (int i = 0; i < 9; ++i) { this.addSlotToContainer(new Slot((IInventory) aInventoryPlayer, i, 8 + i * 18, 167)); }
+		for (int i = 0; i < 9; ++i) { this.addSlotToContainer(new Slot(aInventoryPlayer, i, 8 + i * 18, 167)); }
 
+	}
+
+	@Override
+	public boolean doesBindPlayerInventory() {
+		return false;
 	}
 
 	public int getSlotCount() {
@@ -44,6 +49,12 @@ public class CONTAINER_PowerSubStation extends GT_Container_MultiMachine {
 	@Override
 	public void detectAndSendChanges() {
 		super.detectAndSendChanges();
+
+		if (manager == null)
+			// maybe not yet initialized
+			// stupid java
+			// ask greg why he wants to call a method that's definitely going to be overridden in subclass in constructor
+			return;
 
 		GregtechMetaTileEntity_PowerSubStationController aPSS = (GregtechMetaTileEntity_PowerSubStationController) mTileEntity.getMetaTileEntity();
 		mStoredEU.setValue(mTileEntity.getStoredEU());

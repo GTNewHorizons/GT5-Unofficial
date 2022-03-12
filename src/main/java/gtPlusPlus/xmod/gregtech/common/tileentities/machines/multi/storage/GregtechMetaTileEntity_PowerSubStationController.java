@@ -4,6 +4,9 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.util.function.Predicate;
 
 import com.gtnewhorizon.structurelib.StructureLibAPI;
@@ -27,6 +30,7 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
+import gtPlusPlus.core.util.MovingAverageLong;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
@@ -43,6 +47,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.common.util.Constants.NBT;
 
 public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_PowerSubStationController> {
 
@@ -51,10 +57,9 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 		Top,
 		NotTop
 	}
-
 	protected long mAverageEuUsage = 0;
-	protected long mAverageEuAdded = 0;
-	protected long mAverageEuConsumed = 0;
+	protected final MovingAverageLong mAverageEuAdded = new MovingAverageLong(20);
+	protected final MovingAverageLong mAverageEuConsumed = new MovingAverageLong(20);
 	protected long mTotalEnergyAdded = 0;
 	protected long mTotalEnergyConsumed = 0;
 	protected long mTotalEnergyLost = 0;
@@ -454,8 +459,8 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 	@Override
 	public void saveNBTData(NBTTagCompound aNBT) {
 		aNBT.setLong("mAverageEuUsage", this.mAverageEuUsage);
-		aNBT.setLong("mAverageEuAdded", this.mAverageEuAdded);
-		aNBT.setLong("mAverageEuConsumed", this.mAverageEuConsumed);
+		this.mAverageEuAdded.write(aNBT, "mAverageEuAdded");
+		this.mAverageEuConsumed.write(aNBT, "mAverageEuConsumed");
 
 		//Usage Stats
 		aNBT.setLong("mTotalEnergyAdded", this.mTotalEnergyAdded);
@@ -473,12 +478,22 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 		// Best not to get a long if the Tag Map is holding an int
 		if (aNBT.hasKey("mAverageEuUsage")) {
 			this.mAverageEuUsage = aNBT.getLong("mAverageEuUsage");
-		}	
-		if (aNBT.hasKey("mAverageEuAdded")) {
-			this.mAverageEuAdded = aNBT.getLong("mAverageEuAdded");
 		}
-		if (aNBT.hasKey("mAverageEuConsumed")) {
-			this.mAverageEuConsumed = aNBT.getLong("mAverageEuConsumed");
+		switch (aNBT.func_150299_b("mAverageEuAdded")) {
+			case NBT.TAG_BYTE_ARRAY:
+				this.mAverageEuAdded.read(aNBT, "mAverageEuAdded");
+				break;
+			case NBT.TAG_LONG:
+				this.mAverageEuAdded.set(aNBT.getLong("mAverageEuAdded"));
+				break;
+		}
+		switch (aNBT.func_150299_b("mAverageEuConsumed")) {
+			case NBT.TAG_BYTE_ARRAY:
+				this.mAverageEuConsumed.read(aNBT, "mAverageEuConsumed");
+				break;
+			case NBT.TAG_LONG:
+				this.mAverageEuConsumed.set(aNBT.getLong("mAverageEuConsumed"));
+				break;
 		}
 
 		//Usage Stats
@@ -584,20 +599,16 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 		long aInputAverage = 0;
 		long aOutputAverage = 0;
 		// Input Power
-		for (Object THatch : this.mDischargeHatches) {
-			GT_MetaTileEntity_Hatch_OutputBattery tHatch = (GT_MetaTileEntity_Hatch_OutputBattery) THatch;
-			drawEnergyFromHatch(tHatch);
-			aInputAverage += tHatch.maxEUInput() * tHatch.maxAmperesIn();
+		for (GT_MetaTileEntity_Hatch THatch : this.mDischargeHatches) {
+			aInputAverage += drawEnergyFromHatch(THatch);
 		}
 		for (GT_MetaTileEntity_Hatch tHatch : this.mAllEnergyHatches) {
-			drawEnergyFromHatch(tHatch);
-			aInputAverage += tHatch.maxEUInput() * tHatch.maxAmperesIn();
+			aInputAverage += drawEnergyFromHatch(tHatch);
 		}
 
 		// Output Power
-		for (Object THatch : this.mChargeHatches) {
-			GT_MetaTileEntity_Hatch_InputBattery tHatch = (GT_MetaTileEntity_Hatch_InputBattery) THatch;
-			aOutputAverage += addEnergyToHatch(tHatch);
+		for (GT_MetaTileEntity_Hatch THatch : this.mChargeHatches) {
+			aOutputAverage += addEnergyToHatch(THatch);
 		}
 		for (GT_MetaTileEntity_Hatch tHatch : this.mAllDynamoHatches) {
 			aOutputAverage += addEnergyToHatch(tHatch);
@@ -605,8 +616,8 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 		// reset progress time
 		mProgresstime = 0;
 
-		this.mAverageEuAdded = aInputAverage;
-		this.mAverageEuConsumed = aOutputAverage;
+		this.mAverageEuAdded.sample(aInputAverage);
+		this.mAverageEuConsumed.sample(aOutputAverage);
 
 		return true;
 
@@ -662,8 +673,8 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 				"Requires Maintenance: " + (!mMaint ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)+ mMaint + EnumChatFormatting.RESET +" | Code: ["+(!mMaint ? EnumChatFormatting.GREEN : EnumChatFormatting.RED) + errorCode + EnumChatFormatting.RESET +"]",
 				"----------------------",
 				"Stats for Nerds",
-				"Average Input: " + EnumChatFormatting.BLUE + GT_Utility.formatNumbers(this.mAverageEuAdded) + EnumChatFormatting.RESET + " EU",
-				"Average Output: " + EnumChatFormatting.GOLD + GT_Utility.formatNumbers(this.mAverageEuConsumed) + EnumChatFormatting.RESET + " EU",
+				"Average Input: " + EnumChatFormatting.BLUE + this.mAverageEuAdded + EnumChatFormatting.RESET + " EU",
+				"Average Output: " + EnumChatFormatting.GOLD + this.mAverageEuConsumed + EnumChatFormatting.RESET + " EU",
 				"Total Input: " + EnumChatFormatting.BLUE + GT_Utility.formatNumbers(this.mTotalEnergyAdded) + EnumChatFormatting.RESET + " EU",
 				"Total Output: " + EnumChatFormatting.GOLD + GT_Utility.formatNumbers(this.mTotalEnergyConsumed) + EnumChatFormatting.RESET + " EU",
 				"Total Costs: " + EnumChatFormatting.RED + GT_Utility.formatNumbers(this.mTotalEnergyLost) + EnumChatFormatting.RESET + " EU",
@@ -733,11 +744,11 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 	}
 
 	public final long getAverageEuAdded() {
-		return this.mAverageEuAdded;
+		return this.mAverageEuAdded.get();
 	}
 
 	public final long getAverageEuConsumed() {
-		return this.mAverageEuConsumed;
+		return this.mAverageEuConsumed.get();
 	}
 
 	@Override

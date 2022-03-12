@@ -24,18 +24,23 @@ class SyncedLong {
     }
 
     public void setValue(long value) {
-        if (this.value != value)
+        if (this.value != value) {
             dirty = true;
-        this.value = value;
+            this.value = value;
+        }
     }
 
     void detectAndSendChanges(SendChanges func, int timer) {
         if (dirty || (timer & 0xff) == 0) {
             for (int i = 0; i < 4; i++) {
-                func.sendProgressBarUpdate(index + i, (int) ((value >> (16 * i)) & Short.MIN_VALUE));
+                func.sendProgressBarUpdate(index + i, (int) ((value >> (16 * i)) & 0xffff));
             }
             dirty = false;
         }
+    }
+    
+    private long getPiece(int index) {
+        return ((long) pieces[index]) & 0xffff;
     }
 
     boolean updateProgressBar(int short1, int short2) {
@@ -44,7 +49,7 @@ class SyncedLong {
             pieces[offset] = (short) short2;
             received |= (1 << offset);
             if (received == 0b1111) {
-                value = ((long) pieces[0]) | ((long) pieces[1] << 16) | ((long) pieces[2] << 32) | ((long) pieces[3] << 48);
+                value = (getPiece(0)) | (getPiece(1) << 16) | (getPiece(2) << 32) | (getPiece(3) << 48);
                 received = 0;
             }
             return true;
