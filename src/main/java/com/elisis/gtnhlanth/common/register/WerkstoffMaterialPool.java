@@ -1063,7 +1063,7 @@ public class WerkstoffMaterialPool implements Runnable {
     				.addMetalItems() 				
     				,
     		offsetID3 + 12,
-    		TextureSet.SET_METALLIC
+    		TextureSet.SET_DULL
     	);
     
     

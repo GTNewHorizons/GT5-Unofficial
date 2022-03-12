@@ -1161,6 +1161,25 @@ public class RecipeLoader {
 				800,
 				7680
 			);
+		
+		// PTMEG Manipulation
+		
+		GT_Values.RA.addFluidSolidifierRecipe(
+				ItemList.Shape_Mold_Ingot.get(0L), 
+				WerkstoffMaterialPool.PTMEGElastomer.getMolten(144), 
+				WerkstoffMaterialPool.PTMEGElastomer.get(OrePrefixes.ingot, 1), 
+				40, 
+				64
+			);
+		
+		GT_Values.RA.addFluidSolidifierRecipe(
+				ItemList.Shape_Mold_Plate.get(0L), 
+				WerkstoffMaterialPool.PTMEGElastomer.getMolten(144), 
+				WerkstoffMaterialPool.PTMEGElastomer.get(OrePrefixes.plate, 1), 
+				40, 
+				64
+			);
+		
 	}
     
     //public static void loadZylon
