@@ -1407,6 +1407,76 @@ public class WerkstoffLoader {
             new Pair<>(Materials.VanadiumSteel, 1),
             new Pair<>(Materials.DamascusSteel, 1)
     );
+    public static final Werkstoff HexafluorosilicicAcid = new Werkstoff(
+        new short[]{0x2c, 0x70, 0xb5},
+        "Hexafluorosilicic Acid",
+        subscriptNumbers("H2SiF6"),
+        new Werkstoff.Stats(),
+        Werkstoff.Types.COMPOUND,
+        new Werkstoff.GenerationFeatures().disable().addCells(),
+        98,
+        TextureSet.SET_FLUID
+    );
+    public static final Werkstoff Potassiumfluorosilicate = new Werkstoff(
+        new short[]{0x2e, 0x97, 0xb2},
+        "Potassiumfluorosilicate",
+        subscriptNumbers("K2SiF6"),
+        new Werkstoff.Stats(),
+        Werkstoff.Types.COMPOUND,
+        new Werkstoff.GenerationFeatures().disable().onlyDust(),
+        99,
+        TextureSet.SET_SHINY
+    );
+    public static final Werkstoff Alumina = new Werkstoff(
+        new short[]{0xa0, 0xad, 0xb1},
+        "Alumina",
+        subscriptNumbers("Al2O3"),
+        new Werkstoff.Stats(),
+        Werkstoff.Types.COMPOUND,
+        new Werkstoff.GenerationFeatures().disable().onlyDust(),
+        100,
+        TextureSet.SET_DULL
+    );
+    public static final Werkstoff PotassiumCarbonate = new Werkstoff(
+        new short[]{0x7b, 0x96, 0x4f},
+        "Potassium Carbonate",
+        subscriptNumbers("K2CO3"),
+        new Werkstoff.Stats().setElektrolysis(true),
+        Werkstoff.Types.COMPOUND,
+        new Werkstoff.GenerationFeatures().disable().onlyDust(),
+        101,
+        TextureSet.SET_DULL,
+        new Pair<>(Materials.Potassium, 2),
+        new Pair<>(Materials.Carbon, 1),
+        new Pair<>(Materials.Oxygen, 3)
+    );
+    public static final Werkstoff RawFluorophlogopite = new Werkstoff(
+        new short[]{0x36, 0x51, 0x0b},
+        "Raw Fluorophlogopite",
+        new Werkstoff.Stats(),
+        Werkstoff.Types.MIXTURE,
+        new Werkstoff.GenerationFeatures().disable().onlyDust(),
+        102,
+        TextureSet.SET_DULL
+    );
+    public static final Werkstoff HotFluorophlogopite = new Werkstoff(
+        new short[]{0xbf, 0xd3, 0x55},
+        "Unformed Fluorophlogopite",
+        new Werkstoff.Stats(),
+        Werkstoff.Types.MIXTURE,
+        new Werkstoff.GenerationFeatures().disable().addCells(),
+        103,
+        TextureSet.SET_FLUID
+    );
+    public static final Werkstoff Fluorophlogopite = new Werkstoff(
+        new short[]{0xbf, 0xd3, 0x55},
+        "Fluorophlogopite",
+        new Werkstoff.Stats(),
+        Werkstoff.Types.MIXTURE,
+        new Werkstoff.GenerationFeatures().disable().onlyDust().addMetalItems(),
+        104,
+        TextureSet.SET_SHINY
+    );
 
     public static HashMap<OrePrefixes, BW_MetaGenerated_Items> items = new HashMap<>();
     public static HashBiMap<Werkstoff, Fluid> fluids = HashBiMap.create();

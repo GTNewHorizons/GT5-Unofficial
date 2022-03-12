@@ -146,13 +146,14 @@ public class BW_GT_MaterialReference {
     public static Werkstoff Polytetrafluoroethylene = new Werkstoff(Materials.Polytetrafluoroethylene, ADD_CASINGS_ONLY, COMPOUND,31_766+473);
     public static Werkstoff Plastic = new Werkstoff(Materials.Plastic, ADD_CASINGS_ONLY, COMPOUND,31_766+874);
     public static Werkstoff Epoxid = new Werkstoff(Materials.Epoxid, ADD_CASINGS_ONLY, COMPOUND,31_766+470);
-    
+    public static Werkstoff Magnesia = new Werkstoff(Materials.Magnesia, new Werkstoff.GenerationFeatures().disable().addMetalItems().addMolten(), COMPOUND,31_766+471);
+
     public static void init() {
         MainMod.LOGGER.info("Load Elements from GT");
     }
 
 //    TODO: GT++ only?
-    
+
 //     public static Werkstoff Flerovium = new Werkstoff(Materials.Flerovium, <GenerationFeatures>, <TypeRef>,31_766+984);
 
 //    public static Werkstoff HeeEndium = new Werkstoff(Materials.HeeEndium, <GenerationFeatures>, <TypeRef>,31_766+770);
@@ -346,7 +347,7 @@ public class BW_GT_MaterialReference {
 //    public static Werkstoff Obsidian = new Werkstoff(Materials.Obsidian, <GenerationFeatures>, <TypeRef>,31_766+804);
 //    public static Werkstoff Phosphate = new Werkstoff(Materials.Phosphate, <GenerationFeatures>, <TypeRef>,31_766+833);
 //    public static Werkstoff PigIron = new Werkstoff(Materials.PigIron, <GenerationFeatures>, <TypeRef>,31_766+307);
-    
+
 //    public static Polydimethylsiloxane    = new MaterialBuilder
 //    public static Werkstoff Silicone = new Werkstoff(Materials.Silicone, <GenerationFeatures>, <TypeRef>,31_766+471);
 //    public static Werkstoff Polycaprolactam = new Werkstoff(Materials.Polycaprolactam, <GenerationFeatures>, <TypeRef>,31_766+472);
@@ -517,7 +518,7 @@ public class BW_GT_MaterialReference {
 //    public static Werkstoff Manyullyn = new Werkstoff(Materials.Manyullyn, <GenerationFeatures>, <TypeRef>,31_766+386);
 //    public static Werkstoff Steeleaf = new Werkstoff(Materials.Steeleaf, <GenerationFeatures>, <TypeRef>,31_766+339);
 //    public static Werkstoff Knightmetal = new Werkstoff(Materials.Knightmetal, <GenerationFeatures>, <TypeRef>,31_766+362);
-    
+
 //    public static Werkstoff NitroFuel = new Werkstoff(Materials.NitroFuel, <GenerationFeatures>, <TypeRef>,31_766+709);
 //    public static Werkstoff RedAlloy = new Werkstoff(Materials.RedAlloy, <GenerationFeatures>, <TypeRef>,31_766+308);
 //    public static Werkstoff CobaltBrass = new Werkstoff(Materials.CobaltBrass, <GenerationFeatures>, <TypeRef>,31_766+343);

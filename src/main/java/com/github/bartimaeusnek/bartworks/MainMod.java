@@ -162,7 +162,7 @@ public final class MainMod {
                 GT_OreDictUnificator.registerOre("blockGlass" + VN[pair.getValue()], new ItemStack(pair.getKey().getBlock(), 1, pair.getKey().getaByte()));
             }
         }
-
+        ArtificialMicaLine.runArtificialMicaRecipe();
         BioObjectAdder.regenerateBioFluids();
         if (ConfigHandler.newStuff) {
             WerkstoffLoader.run();
