@@ -370,10 +370,14 @@ public class BW_Util {
      * @param mAmperage - should be 1 ?
      */
     public static void calculateOverclockedNessMulti(@Nonnegative int aEUt, @Nonnegative int aDuration, @Nonnegative int mAmperage, @Nonnegative long maxInputVoltage, @Nonnull GT_MetaTileEntity_MultiBlockBase base) {
-        calculateOverclockednessMultiInternal(aEUt, aDuration, mAmperage, maxInputVoltage, base, 2);
+        calculateOverclockednessMultiInternal(aEUt, aDuration, mAmperage, maxInputVoltage, base, false);
     }
 
-    private static void calculateOverclockednessMultiInternal(@Nonnegative int aEUt, @Nonnegative int aDuration, @Nonnegative int mAmperage, @Nonnegative long maxInputVoltage, @Nonnull GT_MetaTileEntity_MultiBlockBase base, @Nonnegative int modifier){
+    public static void calculatePerfectOverclockedNessMulti(@Nonnegative int aEUt, @Nonnegative int aDuration, @Nonnegative int mAmperage, @Nonnegative long maxInputVoltage, @Nonnull GT_MetaTileEntity_MultiBlockBase base) {
+        calculateOverclockednessMultiInternal(aEUt, aDuration, mAmperage, maxInputVoltage, base, true);
+    }
+
+    private static void calculateOverclockednessMultiInternal(@Nonnegative int aEUt, @Nonnegative int aDuration, @Nonnegative int mAmperage, @Nonnegative long maxInputVoltage, @Nonnull GT_MetaTileEntity_MultiBlockBase base, @Nonnull boolean perfectOC){
         byte mTier = (byte) Math.max(0, GT_Utility.getTier(maxInputVoltage));
         if (mTier == 0) {
             //Long time calculation
@@ -383,7 +387,7 @@ public class BW_Util {
                 base.mEUt = Integer.MAX_VALUE - 1;
                 base.mMaxProgresstime = Integer.MAX_VALUE - 1;
             } else {
-                base.mEUt = aEUt >> modifier;
+                base.mEUt = aEUt >> 2;
                 base.mMaxProgresstime = (int) xMaxProgresstime;
             }
         } else {
@@ -395,21 +399,21 @@ public class BW_Util {
             base.mMaxProgresstime = aDuration;
 
             while (tempEUt <= V[mTier - 1] * mAmperage) {
-                tempEUt <<= modifier;//this actually controls overclocking
+                tempEUt <<= 2;//this actually controls overclocking
                 //xEUt *= 4;//this is effect of everclocking
-                base.mMaxProgresstime >>= 1;//this is effect of overclocking
+                base.mMaxProgresstime >>= perfectOC ? 2 : 1;//this is effect of overclocking
                 xEUt = base.mMaxProgresstime <= 0 ? xEUt >> 1 : xEUt << 2;//U know, if the time is less than 1 tick make the machine use less power
             }
 
             while (xEUt > maxInputVoltage && xEUt >= aEUt){
                 //downclock one notch until we are good again, we have overshot.
-                xEUt >>= modifier;
-                base.mMaxProgresstime <<= 1;
+                xEUt >>= 2;
+                base.mMaxProgresstime <<= perfectOC ? 2 : 1;
             }
 
             if (xEUt < aEUt){
-                xEUt <<= modifier;
-                base.mMaxProgresstime >>= 1;
+                xEUt <<= 2;
+                base.mMaxProgresstime >>= perfectOC ? 2 : 1;
             }
 
             if (xEUt > Integer.MAX_VALUE - 1) {

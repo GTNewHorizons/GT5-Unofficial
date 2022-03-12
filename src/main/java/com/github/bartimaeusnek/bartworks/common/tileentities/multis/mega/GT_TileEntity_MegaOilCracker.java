@@ -97,7 +97,7 @@ public class GT_TileEntity_MegaOilCracker extends GT_MetaTileEntity_OilCracker i
                 .addInputHatch("Hint block",2,3)
                 .addOutputHatch("Hint block",2,3)
                 .addInputHatch("Steam/Hydrogen ONLY, Hint block",4)
-                .toolTipFinisher(BW_Tooltip_Reference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get());
+                .toolTipFinisher("Bartworks");
         return tt;
     }
 
@@ -180,9 +180,9 @@ public class GT_TileEntity_MegaOilCracker extends GT_MetaTileEntity_OilCracker i
                     actualEUT = actualEUT / 2;
                     divider++;
                 }
-                calculatePerfectOverclockedNessMulti((int) actualEUT, tRecipe.mDuration * (divider * 2), 1, nominalV);
+                BW_Util.calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration * (divider * 2), 1, nominalV, this);
             } else {
-                calculatePerfectOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, 1, nominalV);
+                BW_Util.calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, 1, nominalV, this);
             }
             //In case recipe is too OP for that machine
             if (this.mMaxProgresstime == Integer.MAX_VALUE - 1 && this.mEUt == Integer.MAX_VALUE - 1) {

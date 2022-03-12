@@ -94,7 +94,7 @@ public class GT_TileEntity_MegaChemicalReactor extends GT_MetaTileEntity_LargeCh
                 .addInputBus("Hint block ",1)
                 .addOutputBus("Hint block ",1)
                 .addOutputHatch("Hint block ",1)
-                .toolTipFinisher(BW_Tooltip_Reference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get());
+                .toolTipFinisher("Bartworks");
         return tt;
     }
 
@@ -165,9 +165,9 @@ public class GT_TileEntity_MegaChemicalReactor extends GT_MetaTileEntity_LargeCh
                     actualEUT = actualEUT / 2;
                     divider++;
                 }
-                calculatePerfectOverclockedNessMulti((int) actualEUT, tRecipe.mDuration * (divider * 2), 1, nominalV);
+                BW_Util.calculatePerfectOverclockedNessMulti((int) actualEUT, tRecipe.mDuration * (divider * 2), 1, nominalV, this);
             } else {
-                calculatePerfectOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, 1, nominalV);
+                BW_Util.calculatePerfectOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, 1, nominalV, this);
             }
             //In case recipe is too OP for that machine
             if (this.mMaxProgresstime == Integer.MAX_VALUE - 1 && this.mEUt == Integer.MAX_VALUE - 1) {
