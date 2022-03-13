@@ -85,7 +85,9 @@ public class GT_Packet_SetLockedFluid extends GT_Packet_New {
 		if (!(mte instanceof GT_MetaTileEntity_Hatch_Output)) return;
 		Fluid tFluid = FluidRegistry.getFluid(mFluidID);
 		if (tFluid == null) return;
-		((GT_MetaTileEntity_Hatch_Output) mte).setLockedFluidName(tFluid.getName());
+        GT_MetaTileEntity_Hatch_Output hatch = (GT_MetaTileEntity_Hatch_Output) mte;
+        hatch.setLockedFluidName(tFluid.getName());
+        hatch.mMode = 9;
 		GT_Utility.sendChatToPlayer(mPlayer, String.format(GT_LanguageManager.addStringLocalization("Interaction_DESCRIPTION_Index_151.4", "Sucessfully locked Fluid to %s", false), new FluidStack(tFluid, 1).getLocalizedName()));
 	}
 }
