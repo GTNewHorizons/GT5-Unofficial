@@ -219,7 +219,7 @@ public enum CombType {
 
         static {
             int biggestId = Arrays.stream(CombType.values()).mapToInt(CombType::getId).max().getAsInt();
-            VALUES = new CombType[biggestId];
+            VALUES = new CombType[biggestId + 1];
             Arrays.fill(VALUES, _NULL);
             for (CombType type : CombType.values()) {
                 if (type != _NULL)
