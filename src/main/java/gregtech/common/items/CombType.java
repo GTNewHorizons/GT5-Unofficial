@@ -163,7 +163,7 @@ public enum CombType {
     RUNEII(129, "rune2", true, Materials._NULL, 10, 0xE31010, 0x0104D9),
     FIREESSENSE(130, "fireessence", true, Materials._NULL, 30, 0xFFA157, 0xD41238),
     CRYOLITE(131, "cryolite", true, Materials.Cryolite, 90, 0xBFEFFF, 0x73B9D0),
-    _NULL(-1, "null", true, Materials._NULL, 0, 0, 0);
+    _NULL(-1, "INVALIDCOMB", false, Materials._NULL, 0, 0, 0);
 
     public boolean showInList;
     public Materials material;
@@ -183,7 +183,7 @@ public enum CombType {
     }
 
     CombType(int id, String pName, boolean show, Materials material, int chance, int... color) {
-        if (id < 0 && !"null".equals(pName))
+        if (id < 0 && !"INVALIDCOMB".equals(pName))
             throw new IllegalArgumentException();
         this.id = id;
         this.name = pName;
@@ -220,8 +220,10 @@ public enum CombType {
         static {
             int biggestId = Arrays.stream(CombType.values()).mapToInt(CombType::getId).max().getAsInt();
             VALUES = new CombType[biggestId];
+            Arrays.fill(VALUES, _NULL);
             for (CombType type : CombType.values()) {
-                VALUES[type.getId()] = type;
+                if (type != _NULL)
+                    VALUES[type.getId()] = type;
             }
         }
     }

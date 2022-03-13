@@ -5,7 +5,8 @@ import org.junit.jupiter.api.Test;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class CombTypeTest {
     @Test
@@ -19,7 +20,15 @@ class CombTypeTest {
     @Test
     void noNegativeID() {
         for (CombType value : CombType.values()) {
-            assertTrue(value.getId() >= 0, "Comb type ID must not be negative");
+            if (value == CombType._NULL)
+                assertTrue(value.getId() <= 0, "Comb type ID must be negative for _NULL");
+            else
+                assertTrue(value.getId() >= 0, "Comb type ID must not be negative");
         }
+    }
+
+    @Test
+    void invalidIDNotNull() {
+        assertEquals(CombType.valueOf(-2), CombType._NULL, "Invalid ID Lookup should result in _NULL");
     }
 }
