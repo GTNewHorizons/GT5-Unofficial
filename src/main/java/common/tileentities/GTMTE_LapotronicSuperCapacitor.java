@@ -43,13 +43,13 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMu
 	}
 
     private enum Capacitor {
-        IV(2, BigInteger.valueOf(400000000L), BigInteger.valueOf(400000000L)),
-        LuV(3, BigInteger.valueOf(4000000000L), BigInteger.valueOf(4000000000L)),
-        ZPM(4, BigInteger.valueOf(40000000000L), BigInteger.valueOf(40000000000L)),
-        UV(5, BigInteger.valueOf(400000000000L), BigInteger.valueOf(400000000000L)),
+        IV(2, BigInteger.valueOf(600000000L), BigInteger.valueOf(600000000L)),
+        LuV(3, BigInteger.valueOf(6000000000L), BigInteger.valueOf(6000000000L)),
+        ZPM(4, BigInteger.valueOf(60000000000L), BigInteger.valueOf(60000000000L)),
+        UV(5, BigInteger.valueOf(600000000000L), BigInteger.valueOf(600000000000L)),
         UHV(6, BigInteger.valueOf(100000000000L), MAX_LONG),
         None(0, BigInteger.ZERO, BigInteger.ZERO),
-        EV(1, BigInteger.valueOf(40000000L), BigInteger.valueOf(40000000L));
+        EV(1, BigInteger.valueOf(60000000L), BigInteger.valueOf(60000000L));
 
         private final int minimalGlassTier;
 		private final BigInteger passiveDischargeValue;
