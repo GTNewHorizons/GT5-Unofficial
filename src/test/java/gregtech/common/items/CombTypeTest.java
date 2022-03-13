@@ -30,5 +30,14 @@ class CombTypeTest {
     @Test
     void invalidIDNotNull() {
         assertEquals(CombType.valueOf(-2), CombType._NULL, "Invalid ID Lookup should result in _NULL");
+        assertEquals(CombType.valueOf(Integer.MAX_VALUE), CombType._NULL, "Invalid ID Lookup should result in _NULL");
+    }
+
+    @Test
+    void validIDCorrectComb() {
+        for (CombType value : CombType.values()) {
+            if (value != CombType._NULL)
+                assertEquals(CombType.valueOf(value.getId()), value, "Valid ID Lookup should result in correct output");
+        }
     }
 }
