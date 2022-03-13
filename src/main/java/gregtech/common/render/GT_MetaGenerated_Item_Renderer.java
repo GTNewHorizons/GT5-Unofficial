@@ -1,6 +1,7 @@
 package gregtech.common.render;
 
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.GT_MetaGenerated_Item;
 import gregtech.api.util.GT_Utility;
@@ -143,6 +144,9 @@ public class GT_MetaGenerated_Item_Renderer implements IItemRenderer {
             } else {
                 tIcon = aItem.mIconList[(aMetaData - aItem.mOffset)][0];
             }
+
+            if (tIcon == null)
+                tIcon = Textures.ItemIcons.RENDERING_ERROR.getIcon();
 
             ItemList largeFluidCell = getLargeFluidCell(aStack);
             if (largeFluidCell != null) {
