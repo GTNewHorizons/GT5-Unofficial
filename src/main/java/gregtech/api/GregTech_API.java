@@ -247,6 +247,7 @@ public class GregTech_API {
             sAfterGTLoad = new ArrayList<>(),
             sBeforeGTPostload = new ArrayList<>(),
             sAfterGTPostload = new ArrayList<>(),
+            sFirstWorldTick = new ArrayList<>(),
             sBeforeGTServerstart = new ArrayList<>(),
             sAfterGTServerstart = new ArrayList<>(),
             sBeforeGTServerstop = new ArrayList<>(),
