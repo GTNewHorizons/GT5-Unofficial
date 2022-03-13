@@ -214,7 +214,7 @@ public enum CombType {
         return id < 0 || id >= Companion.VALUES.length ? _NULL : Companion.VALUES[id];
     }
 
-    public static final class Companion {
+    private static final class Companion {
         private static final CombType[] VALUES;
 
         static {
