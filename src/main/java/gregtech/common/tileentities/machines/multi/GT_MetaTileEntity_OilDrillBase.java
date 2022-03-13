@@ -286,7 +286,7 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
             StatCollector.translateToLocal("GT5U.machines.workarea") + ": " + EnumChatFormatting.GREEN + (chunkRangeConfig) + " x " + (chunkRangeConfig) +
                 EnumChatFormatting.RESET + " " + StatCollector.translateToLocal("GT5U.machines.chunks"),
             "Drilling fluid: " + EnumChatFormatting.GREEN + (mOilId > 0 ? FluidRegistry.getFluid(mOilId).getName() : "None") + EnumChatFormatting.RESET,
-            "Drilling flow: " + EnumChatFormatting.GREEN + (this.mMaxProgresstime > 0 ? (mOilFlow / this.mMaxProgresstime) : 0) + EnumChatFormatting.RESET + " L/t"));
+            "Drilling flow: " + EnumChatFormatting.GREEN + GT_Utility.formatNumbers(this.mMaxProgresstime > 0 ? (mOilFlow / this.mMaxProgresstime) : 0) + EnumChatFormatting.RESET + " L/t"));
         l.addAll(Arrays.asList(super.getInfoData()));
         return l.toArray(new String[0]);
     }
