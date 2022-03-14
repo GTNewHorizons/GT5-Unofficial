@@ -43,11 +43,11 @@ public class ItemComb extends Item {
 	}
 
 	public ItemStack getStackForType(CombType type) {
-		return new ItemStack(this, 1, type.ordinal());
+		return new ItemStack(this, 1, type.getId());
 	}
 
 	public ItemStack getStackForType(CombType type, int count) {
-		return new ItemStack(this, count, type.ordinal());
+		return new ItemStack(this, count, type.getId());
 	}
 
 	@Override
@@ -86,19 +86,13 @@ public class ItemComb extends Item {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public int getColorFromItemStack(ItemStack stack, int pass) {
-		int meta = Math.max(0, Math.min(CombType.values().length - 1, stack.getItemDamage()));
-		int colour = CombType.values()[meta].getColours()[0];
-
-		if (pass >= 1) {
-			colour = CombType.values()[meta].getColours()[1];
-		}
-
-		return colour;
+        CombType type = CombType.valueOf(stack.getItemDamage());
+        return type.getColours()[GT_Utility.clamp(pass, 0, 1)];
 	}
 
 	@Override
 	public String getItemStackDisplayName(ItemStack stack) {
-		return CombType.values()[stack.getItemDamage()].getName();
+		return CombType.valueOf(stack.getItemDamage()).getName();
 	}
 	public void initCombsRecipes() {
 
@@ -119,7 +113,7 @@ public class ItemComb extends Item {
 			addCentrifugeToItemStack(CombType.OIL, new ItemStack[] { ItemList.Crop_Drop_OilBerry.get(1), GT_Bees.drop.getStackForType(DropType.OIL), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Oilsands, 1), ItemList.FR_Wax.get(1) }, new int[] {70 * 100, 100 * 100, 100 * 100, 50 * 100}, Voltage.ULV);
 			addCentrifugeToMaterial(CombType.APATITE, new Materials[] { Materials.Apatite, Materials.Phosphate }, new int[] {100 * 100, 80 * 100 }, new int[] {}, Voltage.ULV, NI, 30 * 100);
 		}
-		
+
 		//ic2
 		addCentrifugeToItemStack(CombType.COOLANT, new ItemStack[] { GT_Bees.drop.getStackForType(DropType.COOLANT), ItemList.FR_Wax.get(1) }, new int[] {100 * 100, 100 * 100}, Voltage.HV, 196);
 		addCentrifugeToItemStack(CombType.ENERGY, new ItemStack[] {GT_Bees.drop.getStackForType(DropType.HOT_COOLANT), ItemList.IC2_Energium_Dust.get(1L), ItemList.FR_RefractoryWax.get(1)}, new int[] {20 * 100, 20 * 100, 50 * 100}, Voltage.HV, 196);
@@ -159,7 +153,7 @@ public class ItemComb extends Item {
 			addCentrifugeToMaterial(CombType.PULSATINGIRON, new Materials[] {Materials.PulsatingIron, Materials.Iron }, new int[] {80 * 100, 75 * 100 }, new int[] {}, Voltage.HV, ItemList.FR_RefractoryWax.get(1), 50 * 100);
 			addCentrifugeToMaterial(CombType.STAINLESSSTEEL, new Materials[] {Materials.StainlessSteel, Materials.Iron, Materials.Chrome, Materials.Manganese, Materials.Nickel }, new int[] {50 * 100, 75 * 100, 55 * 100, 75 * 100, 75 * 100 }, new int[] {}, Voltage.HV, ItemList.FR_RefractoryWax.get(1), 50 * 100);
 		}
-		
+
 		//Thaumic
 		addProcessGT(CombType.THAUMIUMDUST, new Materials[] {Materials.Thaumium, Materials.Iron }, Voltage.MV);
 		addCentrifugeToItemStack(CombType.THAUMIUMSHARD, new ItemStack[] {GT_ModHandler.getModItem("MagicBees", "propolis", 1, 1), GT_ModHandler.getModItem("MagicBees", "propolis", 1, 2), GT_ModHandler.getModItem("MagicBees", "propolis", 1, 3), GT_ModHandler.getModItem("MagicBees", "propolis", 1, 4), GT_ModHandler.getModItem("MagicBees", "propolis", 1, 5), GT_ModHandler.getModItem("MagicBees", "propolis", 1, 6), GT_ModHandler.getModItem("MagicBees", "wax", 1, 0) }, new int[] {20 * 100, 20 * 100, 20 * 100, 20 * 100, 20 * 100, 20 * 100, 50 * 100 }, Voltage.ULV);
@@ -186,7 +180,7 @@ public class ItemComb extends Item {
 			addCentrifugeToItemStack(CombType.QUICKSILVER, new ItemStack[] {GT_ModHandler.getModItem("MagicBees", "wax", 1, 0), GT_ModHandler.getModItem("Thaumcraft", "ItemNugget", 1, 5), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Cinnabar, 1) }, new int[] {50 * 100, 100 * 100, 85 * 100 }, Voltage.ULV);
 			addCentrifugeToMaterial(CombType.MITHRIL, new Materials[] {Materials.Mithril, Materials.Platinum}, new int[] {75 * 100, 55 * 100}, new int[] {}, Voltage.HV, GT_ModHandler.getModItem("MagicBees", "wax", 1, 0), 50 * 100);
 		}
-		
+
 		//Gem Line
 		addProcessGT(CombType.STONE, new Materials[] {Materials.Soapstone, Materials.Talc, Materials.Apatite, Materials.Phosphate, Materials.TricalciumPhosphate}, Voltage.LV);
 		addProcessGT(CombType.CERTUS, new Materials[] {Materials.CertusQuartz, Materials.Quartzite, Materials.Barite}, Voltage.LV);
@@ -224,7 +218,7 @@ public class ItemComb extends Item {
 			addCentrifugeToMaterial(CombType.PYROPE, new Materials[] {Materials.Pyrope, Materials.Aluminium, Materials.Magnesium, Materials.Silicon}, new int[] {100 * 100, 75 * 100, 80 * 100, 75 * 100}, new int[] {}, Voltage.ULV, NI, 30 * 100);
 			addCentrifugeToMaterial(CombType.GROSSULAR, new Materials[] {Materials.Grossular, Materials.Aluminium, Materials.Silicon}, new int[] {100 * 100, 75 * 100, 75 * 100}, new int[] {}, Voltage.ULV, NI, 30 * 100);
 		}
-		
+
 		// Metals Line
 		addProcessGT(CombType.SLAG, new Materials[] {Materials.Salt, Materials.RockSalt, Materials.Lepidolite, Materials.Spodumene, Materials.Monazite}, Voltage.LV);
 		addProcessGT(CombType.COPPER, new Materials[] {Materials.Copper, Materials.Tetrahedrite, Materials.Chalcopyrite, Materials.Malachite, Materials.Pyrite, Materials.Stibnite}, Voltage.LV);
@@ -314,7 +308,7 @@ public class ItemComb extends Item {
 			addCentrifugeToItemStack(CombType.SALT, new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Salt, 1), GT_ModHandler.getModItem(MOD_ID_DC, "item.EdibleSalt", 1L, 0),GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.RockSalt, 1), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Saltpeter, 1), ItemList.FR_Wax.get(1) }, new int[] {100 * 100, 50 * 100, 75 * 100, 65 * 100, 50 * 100}, Voltage.MV, 160);
 			addCentrifugeToMaterial(CombType.ELECTROTINE, new Materials[] {Materials.Electrotine, Materials.Electrum, Materials.Redstone}, new int[] { 80, 75, 65}, new int[] {}, Voltage.MV, NI, 30 * 100);
 		}
-		
+
 		//Radioactive Line
 		addProcessGT(CombType.ALMANDINE, new Materials[] {Materials.Almandine, Materials.Pyrope, Materials.Sapphire, Materials.GreenSapphire}, Voltage.LV);
 		addProcessGT(CombType.URANIUM, new Materials[] {Materials.Uranium, Materials.Pitchblende, Materials.Uraninite, Materials.Uranium235}, Voltage.EV);
@@ -337,7 +331,7 @@ public class ItemComb extends Item {
 			addCentrifugeToMaterial(CombType.AMERICIUM,new Materials[] {Materials.Americium, Materials.Lutetium}, new int[] {25 * 100, 45 * 100}, new int[] {}, Voltage.LUV, NI, 30 * 100);
 			addCentrifugeToMaterial(CombType.NEUTRONIUM,new Materials[] {Materials.Neutronium, Materials.Americium}, new int[] {15 * 100, 35 * 100}, new int[] {}, Voltage.UV, NI, 30 * 100);
 		}
-		
+
 		// Twilight
 		addCentrifugeToItemStack(CombType.NAGA, new ItemStack[] { GT_ModHandler.getModItem("MagicBees", "propolis", 1L, 4), GT_ModHandler.getModItem(MOD_ID_DC, "item.NagaScaleChip", 1L, 0),  GT_ModHandler.getModItem(MOD_ID_DC, "item.NagaScaleFragment", 1L, 0), ItemList.FR_Wax.get(1)}, new int[]{5 * 100, 33 * 100, 8 * 100, 30 * 100}, Voltage.MV);
 		addCentrifugeToItemStack(CombType.LICH, new ItemStack[] { GT_ModHandler.getModItem("MagicBees", "propolis", 1L, 5), GT_ModHandler.getModItem(MOD_ID_DC, "item.LichBoneChip", 1L, 0),  GT_ModHandler.getModItem(MOD_ID_DC, "item.LichBoneFragment", 1L, 0), ItemList.FR_Wax.get(1)}, new int[]{5 * 100, 33 * 100, 8 * 100, 30 * 100}, Voltage.HV);
@@ -408,7 +402,7 @@ public class ItemComb extends Item {
 		addCentrifugeToMaterial(CombType.INFINITYCATALYST, new Materials[] {Materials.InfinityCatalyst, Materials.Neutronium}, new int[] {(int) (0.05 * 100), 1 * 100}, new int[] {}, Voltage.UEV, 48000, NI, 50 * 100);
 		addCentrifugeToMaterial(CombType.INFINITY, new Materials[] {Materials.Infinity, Materials.InfinityCatalyst}, new int[] {(int) (0.01 * 100), (int) (0.05 * 100)}, new int[] {}, Voltage.UIV, 96000, NI, 50 * 100);
 	}
-	
+
 	/**
 	 * Currently use for STEEL, GOLD, MOLYBDENUM, PLUTONIUM
 	 * **/
@@ -416,7 +410,7 @@ public class ItemComb extends Item {
 		if(GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aOutMaterial, 4) == NI) return;
 		RA.addChemicalRecipe(GT_Utility.copyAmount(9, getStackForType(comb)), GT_OreDictUnificator.get(OrePrefixes.crushed, aInMaterial, 1), volt.getComplexChemical(), aInMaterial.mOreByProducts.isEmpty() ? null : aInMaterial.mOreByProducts.get(0).getMolten(144), GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aOutMaterial, 4), NI, volt.getComplexTime(), volt.getChemicalEnergy(), volt.compareTo(Voltage.IV) > 0);
 	}
-	
+
 	/**
 	 * Currently only used for CombType.MOLYBDENUM
 	 * @param circuitNumber should not conflict with addProcessGT
@@ -426,7 +420,7 @@ public class ItemComb extends Item {
 		if(GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 4) == NI) return;
 		RA.addAutoclaveRecipe(GT_Utility.copyAmount(9, getStackForType(comb)), GT_Utility.getIntegratedCircuit(circuitNumber), Materials.UUMatter.getFluid(Math.max(1, ((aMaterial.getMass()+volt.getUUAmplifier())/10))), GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 4), 10000, (int) (aMaterial.getMass() * 128), volt.getAutoClaveEnergy(), volt.compareTo(Voltage.HV) > 0);
 	}
-	
+
 	/**
 	 * this only adds Chemical and AutoClave process.
 	 * If you need Centrifuge recipe. use  addCentrifugeToMaterial or addCentrifugeToItemStack
@@ -442,7 +436,7 @@ public class ItemComb extends Item {
 			}
 		}
 	}
-	
+
 	/**
 	 * this method only adds Centrifuge based on Material. If volt is lower than MV than it will also adds forestry centrifuge recipe.
 	 * @param comb		BeeComb
@@ -481,7 +475,7 @@ public class ItemComb extends Item {
 
 		addCentrifugeToItemStack(comb, aOutPut, chance, volt, duration);
 	}
-	
+
 	/**
 	 * @param volt	required Tier of system. If it's lower than MV, it will also add forestry centrifuge.
 	 * @param aItem can be more than 6. but Over 6 will be ignored in Gregtech Centrifuge.
@@ -500,7 +494,7 @@ public class ItemComb extends Item {
 		if(volt.compareTo(Voltage.MV) < 0 || !GT_Mod.gregtechproxy.mNerfedCombs) {
 			RecipeManagers.centrifugeManager.addRecipe(40, tComb, Product.build());
 		}
-		
+
 		aItem = Arrays.copyOf(aItem, 6);
 		if(aItem.length > 6) {
 			chance = Arrays.copyOf(chance, 6);
@@ -508,7 +502,7 @@ public class ItemComb extends Item {
 
 		RA.addCentrifugeRecipe(tComb, NI, NF, NF, aItem[0], aItem[1], aItem[2], aItem[3], aItem[4], aItem[5], chance, duration, volt.getSimpleEnergy());
 	}
-	
+
 	enum Voltage {
 		ULV, LV, MV,
         HV, EV, IV,
