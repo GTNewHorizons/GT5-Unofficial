@@ -11,6 +11,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.*;
 import ic2.core.Ic2Items;
 import net.minecraft.item.ItemStack;
@@ -1010,7 +1011,7 @@ public class RecipeLoader_02 {
                         'P', GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.TungstenSteel, 1),
                         'H', ItemList.Hull_IV.get(1),
                         'S', MyMaterial.marM200.get(OrePrefixes.plate, 1),
-                        'E', Ic2Items.reactorHeatSwitchDiamond
+                        'E', GT_ModHandler.getIC2Item("reactorHeatSwitchDiamond", 1L, 1)
                 }
         );
 
@@ -1034,7 +1035,7 @@ public class RecipeLoader_02 {
                             ItemList.Circuit_Chip_NOR.get(32),
                             MyMaterial.signalium.get(OrePrefixes.bolt, 32),
                             GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Aluminium, 8),
-                            Ic2Items.reactorVent
+                            GT_ModHandler.getIC2Item("reactorVent", 1L, 1)
                     },
                     ItemRefer.HiC_T1.get(1),
                     288,
@@ -1083,7 +1084,7 @@ public class RecipeLoader_02 {
                             ItemRefer.HiC_T1.get(2),
                             GT_ModHandler.getModItem("dreamcraft", "item.EngravedDiamondCrystalChip", 8),
                             ItemList.Circuit_Chip_NAND.get(16),
-                            Ic2Items.reactorVentCore
+                            GT_ModHandler.getIC2Item("reactorVentCore", 1L, 1)
                     },
                     new FluidStack[]{
                             Materials.Plastic.getMolten(288),
@@ -1102,7 +1103,7 @@ public class RecipeLoader_02 {
                             ItemRefer.HiC_T2.get(2),
                             ItemList.Circuit_Parts_Crystal_Chip_Master.get(8),
                             ItemList.Circuit_Chip_CrystalSoC2.get(1),
-                            Ic2Items.reactorVentDiamond
+                            GT_ModHandler.getIC2Item("reactorVentDiamond", 1L, 1)
                     },
                     new FluidStack[]{
                             MyMaterial.adamantiumAlloy.getMolten(576),
@@ -1121,7 +1122,7 @@ public class RecipeLoader_02 {
                             ItemRefer.HiC_T3.get(2),
                             GT_ModHandler.getModItem("dreamcraft", "item.EngravedEnergyChip", 8),
                             ItemList.Circuit_Chip_QuantumCPU.get(16),
-                            Ic2Items.reactorVentGold
+                            GT_ModHandler.getIC2Item("reactorVentGold", 1L, 1)
                     },
                     new FluidStack[]{
                             MyMaterial.marM200.getMolten(1152),
