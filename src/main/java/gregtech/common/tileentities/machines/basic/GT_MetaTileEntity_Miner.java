@@ -308,6 +308,7 @@ public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine impl
                 return true;
             }
         }
+        return false;
     }
 
     @Override
