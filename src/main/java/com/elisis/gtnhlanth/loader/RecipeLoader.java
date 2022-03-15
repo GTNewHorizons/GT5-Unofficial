@@ -253,7 +253,7 @@ public class RecipeLoader {
     	// Methanol
         GT_Values.RA.addMultiblockChemicalRecipe(
                 new ItemStack[] {
-                	MyMaterial.vanadiumPentoxide.get(OrePrefixes.dustTiny, 0)
+                	MyMaterial.vanadiumPentoxide.get(OrePrefixes.dustTiny, 1)
                 }, 
                 new FluidStack[] {
                     Materials.Methanol.getFluid(1000),
@@ -266,13 +266,13 @@ public class RecipeLoader {
                 },
                 null, 
                 450, 
-                600
+                240
             );
             
         // Ethanol
         GT_Values.RA.addMultiblockChemicalRecipe(
                 new ItemStack[] {
-                    MyMaterial.vanadiumPentoxide.get(OrePrefixes.dustTiny, 0)
+                    MyMaterial.vanadiumPentoxide.get(OrePrefixes.dustTiny, 1)
                 }, 
                 new FluidStack[] {
                     Materials.Ethanol.getFluid(1000),
@@ -284,7 +284,7 @@ public class RecipeLoader {
                 },
                 null, 
                 450, 
-                600
+                240
             );
         
         // CeCl3
