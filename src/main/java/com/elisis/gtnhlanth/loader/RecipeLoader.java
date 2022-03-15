@@ -678,8 +678,8 @@ public class RecipeLoader {
         	);
         
         GT_Values.RA.addMixerRecipe(
+        		Materials.Salt.getDust(1),
         		WerkstoffMaterialPool.MonaziteHeterogenousHalogenicRareEarthMixture.get(OrePrefixes.dust, 1),
-        		null,
         		null,
         		null,
         		Materials.Acetone.getFluid(1000),
@@ -689,19 +689,31 @@ public class RecipeLoader {
         		240
         	);
         
+        GT_Values.RA.addMixerRecipe(
+        		WerkstoffMaterialPool.MonaziteHeterogenousHalogenicRareEarthMixture.get(OrePrefixes.dust, 1),
+        		WerkstoffMaterialPool.SamariumOreConcentrate.get(OrePrefixes.dust, 2),
+        		null,
+        		null,
+        		Materials.Acetone.getFluid(1000),
+        		null,
+        		WerkstoffMaterialPool.SaturatedMonaziteRareEarthMixture.get(OrePrefixes.dust, 3),
+        		400,
+        		240
+        	);
+        
         GT_Values.RA.addCentrifugeRecipe(
         		WerkstoffMaterialPool.SaturatedMonaziteRareEarthMixture.get(OrePrefixes.dust, 2),
         		null,
         		null,
         		Materials.Chloromethane.getFluid(200),
-        		WerkstoffMaterialPool.SamaricResidue.get(OrePrefixes.dustSmall, 6),
-        		WerkstoffMaterialPool.UnknownBlend.get(OrePrefixes.dustSmall, 2),
+        		WerkstoffMaterialPool.SamaricResidue.get(OrePrefixes.dustSmall, 6),       		
+        		null, /*WerkstoffMaterialPool.UnknownBlend.get(OrePrefixes.dustSmall, 2)*/ //TODO
         		null,
         		null,
         		null,
         		null,
         		new int[] {
-        				10000, 10000
+        				10000, //10000
         		},
         		700,
         		1920	
@@ -713,13 +725,13 @@ public class RecipeLoader {
         		null,
         		Materials.Chloromethane.getFluid(1800),
         		WerkstoffMaterialPool.SamaricResidue.get(OrePrefixes.dust, 6),
-        		WerkstoffMaterialPool.UnknownBlend.get(OrePrefixes.dust, 2),
+        		null, //WerkstoffMaterialPool.UnknownBlend.get(OrePrefixes.dust, 2) TODO
         		null,
         		null,
         		null,
         		null,
         		new int[] {
-        				10000, 10000
+        				10000, //10000
         		},
         		6300,
         		1920	
