@@ -1928,7 +1928,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         this.addRecipesApril2017ChemistryUpdate();
         //2Na + S = Na2S
         GT_Values.RA.addChemicalRecipe(Materials.Sodium.getDust(2), Materials.Sulfur.getDust(1), Materials.SodiumSulfide.getDust(3), 60);
-        //H2S + H2O + (O2) = H2SO4(Diluted)
+        //H2S + H2O + (O2) = 0.5H2SO4(Diluted) ( S loss
         GT_Values.RA.addChemicalRecipe(Materials.HydricSulfide.getCells(1), GT_Values.NI, Materials.Water.getFluid(1000), Materials.DilutedSulfuricAcid.getFluid(750), Materials.Empty.getCells(1), 60);
         GT_Values.RA.addChemicalRecipe(Materials.Water.getCells(1), GT_Values.NI, Materials.HydricSulfide.getGas(1000), Materials.DilutedSulfuricAcid.getFluid(750), Materials.Empty.getCells(1), 60);
         //SiO2 ->Quartzite
@@ -1959,7 +1959,7 @@ public class GT_MachineRecipeLoader implements Runnable {
             GT_Values.RA.addChemicalRecipe(GT_Utility.copyAmount(9, tCrop), GT_OreDictUnificator.get(OrePrefixes.crushed, aMaterial, 1), Materials.Water.getFluid(1000), aMaterial.mOreByProducts.isEmpty() ? null : aMaterial.mOreByProducts.get(0).getMolten(144), GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 4), 96, 24);
             GT_Values.RA.addAutoclaveRecipe(GT_Utility.copyAmount(16, tCrop), Materials.UUMatter.getFluid(Math.max(1, ((aMaterial.getMass()+9)/10))), GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 1), 10000, (int) (aMaterial.getMass() * 128), 384);
         } else {
-            GT_ModHandler.addExtractionRecipe(tCrop, GT_OreDictUnificator.get(OrePrefixes.dustTiny, aMaterial, 1));
+            GT_Values.RA.addExtractorRecipe(GT_Utility.copyAmount(16, tCrop), GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1),300,18);
         }
     }
 
@@ -1969,7 +1969,7 @@ public class GT_MachineRecipeLoader implements Runnable {
             GT_Values.RA.addChemicalRecipe(GT_Utility.copyAmount(9, tCrop), GT_OreDictUnificator.get(OrePrefixes.crushed, aMaterial, 1), Materials.Water.getFluid(1000), aMaterialOut.mOreByProducts.isEmpty() ? null : aMaterialOut.mOreByProducts.get(0).getMolten(144), GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterialOut, 4), 96, 24);
             GT_Values.RA.addAutoclaveRecipe(GT_Utility.copyAmount(16, tCrop), Materials.UUMatter.getFluid(Math.max(1, ((aMaterial.getMass()+9)/10))), GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 1), 10000, (int) (aMaterial.getMass() * 128), 384);
         } else {
-            if (aMainOutput) GT_ModHandler.addExtractionRecipe(tCrop, GT_OreDictUnificator.get(OrePrefixes.dustTiny, aMaterial, 1));
+            if (aMainOutput) GT_Values.RA.addExtractorRecipe(GT_Utility.copyAmount(16, tCrop), GT_OreDictUnificator.get(OrePrefixes.dustTiny, aMaterial, 1),300,18);
         }
     }
 
@@ -1979,7 +1979,7 @@ public class GT_MachineRecipeLoader implements Runnable {
             GT_Values.RA.addChemicalRecipe(GT_Utility.copyAmount(9, tCrop), GT_OreDictUnificator.get(OrePrefixes.crushed, aMaterial, 1), Materials.Water.getFluid(1000), aMaterialOut.mOreByProducts.isEmpty() ? null : aMaterialOut.mOreByProducts.get(0).getMolten(144), GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterialOut, 4), 96, 24);
             GT_Values.RA.addAutoclaveRecipe(GT_Utility.copyAmount(16, tCrop), Materials.UUMatter.getFluid(Math.max(1, ((aMaterial.getMass()+9)/10))), GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 1), 10000, (int) (aMaterial.getMass() * 128), 384);
         } else {
-            GT_ModHandler.addExtractionRecipe(tCrop, GT_OreDictUnificator.get(OrePrefixes.dustTiny, aMaterial, 1));
+            GT_Values.RA.addExtractorRecipe(GT_Utility.copyAmount(16, tCrop), GT_OreDictUnificator.get(OrePrefixes.dustTiny, aMaterial, 1),300,18);
         }
     }
 
@@ -2809,41 +2809,53 @@ public class GT_MachineRecipeLoader implements Runnable {
 	 * Instrumental materials are not mentioned here.
 	 */
 	private void addRecipesApril2017ChemistryUpdate(){
+        //CO2 = C + 2O
         GT_Values.RA.addElectrolyzerRecipe(GT_Utility.getIntegratedCircuit(1),  GT_Values.NI,                Materials.CarbonDioxide.getGas(1000), Materials.Oxygen.getGas(2000), Materials.Carbon.getDust(1), GT_Values.NI,                 GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, null, 300, 120);
         GT_Values.RA.addElectrolyzerRecipe(GT_Utility.getIntegratedCircuit(11), Materials.Empty.getCells(2), Materials.CarbonDioxide.getGas(1000), GT_Values.NF,                  Materials.Carbon.getDust(1), Materials.Oxygen.getCells(2), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, null, 300, 120);
+        //SO2 = S + 2O
         GT_Values.RA.addElectrolyzerRecipe(GT_Utility.getIntegratedCircuit(1),  GT_Values.NI,                Materials.SulfurDioxide.getGas(1000), Materials.Oxygen.getGas(2000), Materials.Sulfur.getDust(1), GT_Values.NI,                 GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, null, 300, 120);
         GT_Values.RA.addElectrolyzerRecipe(GT_Utility.getIntegratedCircuit(11), Materials.Empty.getCells(2), Materials.SulfurDioxide.getGas(1000), GT_Values.NF,                  Materials.Sulfur.getDust(1), Materials.Oxygen.getCells(2), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, null, 300, 120);
+        //NaCl = Na +Cl
         GT_Values.RA.addElectrolyzerRecipe(Materials.Salt.getDust(2),   GT_Values.NI,                        GT_Values.NF,                                     Materials.Chlorine.getGas(1000), Materials.Sodium.getDust(1),          GT_Values.NI,                   GT_Values.NI, GT_Values.NI,GT_Values.NI, GT_Values.NI, null, 320, 30);
-		GT_Values.RA.addElectrolyzerRecipe(Materials.Empty.getCells(1), GT_Utility.getIntegratedCircuit(1),  Materials.SaltWater.getFluid(2000),               Materials.Chlorine.getGas(1000), Materials.SodiumHydroxide.getDust(1), Materials.Hydrogen.getCells(1), GT_Values.NI, GT_Values.NI,GT_Values.NI, GT_Values.NI, null, 720, 30);
-		GT_Values.RA.addElectrolyzerRecipe(Materials.Empty.getCells(1), GT_Utility.getIntegratedCircuit(11), Materials.SaltWater.getFluid(2000),               Materials.Hydrogen.getGas(1000), Materials.SodiumHydroxide.getDust(1), Materials.Chlorine.getCells(1), GT_Values.NI, GT_Values.NI,GT_Values.NI, GT_Values.NI, null, 720, 30);
+        //(NaCl·H2O）= NaOH + H
+		GT_Values.RA.addElectrolyzerRecipe(Materials.Empty.getCells(1), GT_Utility.getIntegratedCircuit(1),  Materials.SaltWater.getFluid(1000),               Materials.Chlorine.getGas(1000), Materials.SodiumHydroxide.getDust(3), Materials.Hydrogen.getCells(1), GT_Values.NI, GT_Values.NI,GT_Values.NI, GT_Values.NI, null, 720, 30);
+		GT_Values.RA.addElectrolyzerRecipe(Materials.Empty.getCells(1), GT_Utility.getIntegratedCircuit(11), Materials.SaltWater.getFluid(1000),               Materials.Hydrogen.getGas(1000), Materials.SodiumHydroxide.getDust(3), Materials.Chlorine.getCells(1), GT_Values.NI, GT_Values.NI,GT_Values.NI, GT_Values.NI, null, 720, 30);
+		//HCl = H + Cl
 		GT_Values.RA.addElectrolyzerRecipe(Materials.Empty.getCells(1), GT_Utility.getIntegratedCircuit(1),  Materials.HydrochloricAcid.getFluid(1000),        Materials.Chlorine.getGas(1000), Materials.Hydrogen.getCells(1),       GT_Values.NI,                   GT_Values.NI, GT_Values.NI,GT_Values.NI, GT_Values.NI, null, 720, 30);
 		GT_Values.RA.addElectrolyzerRecipe(Materials.Empty.getCells(1), GT_Utility.getIntegratedCircuit(11), Materials.HydrochloricAcid.getFluid(1000),        Materials.Hydrogen.getGas(1000), Materials.Chlorine.getCells(1),       GT_Values.NI,                   GT_Values.NI, GT_Values.NI,GT_Values.NI, GT_Values.NI, null, 720, 30);
         GT_Values.RA.addElectrolyzerRecipe(Materials.HydrochloricAcid.getCells(1), GT_Utility.getIntegratedCircuit(1),  GT_Values.NF,        Materials.Chlorine.getGas(1000), Materials.Hydrogen.getCells(1),       GT_Values.NI,                   GT_Values.NI, GT_Values.NI,GT_Values.NI, GT_Values.NI, null, 720, 30);
         GT_Values.RA.addElectrolyzerRecipe(Materials.HydrochloricAcid.getCells(1), GT_Utility.getIntegratedCircuit(11), GT_Values.NF,        Materials.Hydrogen.getGas(1000), Materials.Chlorine.getCells(1),       GT_Values.NI,                   GT_Values.NI, GT_Values.NI,GT_Values.NI, GT_Values.NI, null, 720, 30);
-
+        //Na + H2O = NaOH + H
         GT_Values.RA.addChemicalBathRecipe(Materials.Sodium.getDust(2), Materials.Water.getFluid(2000), Materials.Hydrogen.getGas(1000), Materials.SodiumHydroxide.getDust(2), GT_Values.NI, GT_Values.NI,null ,100, 4);
-
+        //2 0.5HCl(Diluted) = HCl + H2O
         GT_Values.RA.addUniversalDistillationRecipe(Materials.DilutedHydrochloricAcid.getFluid(2000), new FluidStack[]{Materials.Water.getFluid(1000), Materials.HydrochloricAcid.getFluid(1000)}, GT_Values.NI, 600, 64);
-
-        GT_Values.RA.addChemicalRecipe(Materials.Potassium.getDust(1), GT_Utility.getIntegratedCircuit(2), Materials.NitricAcid.getFluid(1000), GT_Values.NF, Materials.Saltpeter.getDust(1), 100, 30);
-
+        //K + HNO3 = KNO3 + H (not real, but gameplay
+        GT_Values.RA.addChemicalRecipe(Materials.Potassium.getDust(1), GT_Utility.getIntegratedCircuit(2), Materials.NitricAcid.getFluid(1000), Materials.Hydrogen.getGas(1000), Materials.Saltpeter.getDust(5), 100, 30);
+        //NaCl + H2O = NaCl·H2O
 		GT_Values.RA.addMixerRecipe(Materials.Salt.getDust(1), GT_Values.NI, GT_Values.NI, GT_Values.NI, Materials.Water.getFluid(1000), Materials.SaltWater.getFluid(1000), GT_Values.NI, 100, 8);
-		GT_Values.RA.addDistilleryRecipe(1, Materials.SaltWater.getFluid(1000), GT_ModHandler.getDistilledWater(1000), Materials.Salt.getDust(1), 1600, 30, false);
+        //(NaCl·H2O) = NaCl + H2O
+		GT_Values.RA.addDistilleryRecipe(1, Materials.SaltWater.getFluid(1000), GT_ModHandler.getDistilledWater(1000), Materials.Salt.getDust(2), 1600, 30, false);
 
         GT_Values.RA.addUniversalDistillationRecipe(FluidRegistry.getFluidStack("potion.vinegar", 40), new FluidStack[]{Materials.AceticAcid.getFluid(5), Materials.Water.getFluid(35)}, GT_Values.NI, 20, 64);
-        GT_Values.RA.addMixerRecipe(Materials.Calcite.getDust(1),        GT_Utility.getIntegratedCircuit(1),  GT_Values.NI, GT_Values.NI, Materials.AceticAcid.getFluid(2000), Materials.CalciumAcetateSolution.getFluid(1000), GT_Values.NI, 240, 16);
-        GT_Values.RA.addMixerRecipe(Materials.Calcium.getDust(1),        GT_Utility.getIntegratedCircuit(1),  GT_Values.NI, GT_Values.NI, Materials.AceticAcid.getFluid(2000), Materials.CalciumAcetateSolution.getFluid(1000), GT_Values.NI, 80, 16);
-        GT_Values.RA.addMixerRecipe(Materials.Quicklime.getDust(1),      GT_Utility.getIntegratedCircuit(1),  GT_Values.NI, GT_Values.NI, Materials.AceticAcid.getFluid(2000), Materials.CalciumAcetateSolution.getFluid(1000), GT_Values.NI, 80, 16);
-        GT_Values.RA.addMixerRecipe(Materials.Calcite.getDust(1),        Materials.Empty.getCells(1), GT_Utility.getIntegratedCircuit(11), GT_Values.NI, Materials.AceticAcid.getFluid(2000), GT_Values.NF, Materials.CalciumAcetateSolution.getCells(1), 240, 16);
-        GT_Values.RA.addMixerRecipe(Materials.Calcium.getDust(1),        Materials.Empty.getCells(1), GT_Utility.getIntegratedCircuit(11), GT_Values.NI, Materials.AceticAcid.getFluid(2000), GT_Values.NF, Materials.CalciumAcetateSolution.getCells(1), 80, 16);
-        GT_Values.RA.addMixerRecipe(Materials.Quicklime.getDust(1),      Materials.Empty.getCells(1), GT_Utility.getIntegratedCircuit(11), GT_Values.NI, Materials.AceticAcid.getFluid(2000), GT_Values.NF, Materials.CalciumAcetateSolution.getCells(1), 80, 16);
+        //CaCO3 + 2 CH3COOH = Ca(CH3COO)2 + H2O + CO2
+        GT_Values.RA.addMixerRecipe(Materials.Calcite.getDust(5),        Materials.Empty.getCells(2),  GT_Utility.getIntegratedCircuit(1), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, Materials.AceticAcid.getFluid(2000), Materials.CalciumAcetateSolution.getFluid(1000), Materials.Water.getCells(1), Materials.CarbonDioxide.getCells(1), GT_Values.NI, GT_Values.NI, 240, 16);
+        GT_Values.RA.addMixerRecipe(Materials.Calcite.getDust(5),        Materials.Empty.getCells(2),  GT_Utility.getIntegratedCircuit(11), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, Materials.AceticAcid.getFluid(2000), Materials.Water.getFluid(1000), Materials.CalciumAcetateSolution.getCells(1), Materials.CarbonDioxide.getCells(1), GT_Values.NI, GT_Values.NI, 240, 16);
+        GT_Values.RA.addMixerRecipe(Materials.Calcite.getDust(5),        Materials.Empty.getCells(2),  GT_Utility.getIntegratedCircuit(21), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, Materials.AceticAcid.getFluid(2000), Materials.CarbonDioxide.getGas(1000), Materials.Water.getCells(1), Materials.CalciumAcetateSolution.getCells(1), GT_Values.NI, GT_Values.NI, 240, 16);
+        //Ca + 2 CH3COOH = Ca(CH3COO)2 + 2H
+        GT_Values.RA.addMixerRecipe(Materials.Calcium.getDust(1),        Materials.Empty.getCells(2),  GT_Utility.getIntegratedCircuit(1), GT_Values.NI, Materials.AceticAcid.getFluid(2000), Materials.CalciumAcetateSolution.getFluid(1000), Materials.Hydrogen.getCells(2), 80, 16);
+        GT_Values.RA.addMixerRecipe(Materials.Calcium.getDust(1),        Materials.Empty.getCells(1), GT_Utility.getIntegratedCircuit(11), GT_Values.NI, Materials.AceticAcid.getFluid(2000), Materials.Hydrogen.getGas(2000), Materials.CalciumAcetateSolution.getCells(1), 80, 16);
+        //CaO + 2 CH3COOH = Ca(CH3COO)2 + H2O
+        GT_Values.RA.addMixerRecipe(Materials.Quicklime.getDust(2),      Materials.Empty.getCells(1),  GT_Utility.getIntegratedCircuit(1), GT_Values.NI, Materials.AceticAcid.getFluid(2000), Materials.CalciumAcetateSolution.getFluid(1000), Materials.Water.getCells(1), 80, 16);
+        GT_Values.RA.addMixerRecipe(Materials.Quicklime.getDust(2),      Materials.Empty.getCells(1), GT_Utility.getIntegratedCircuit(11), GT_Values.NI, Materials.AceticAcid.getFluid(2000), Materials.Water.getFluid(1000), Materials.CalciumAcetateSolution.getCells(1), 80, 16);
         //GameRegistry.addSmelting(Materials.CalciumAcetateSolution.getCells(1), Materials.Acetone.getCells(1), 0);
+        //Ca(CH3COO)2 = CH3COCH3 + CaO + CO2
         GT_Values.RA.addFluidHeaterRecipe(GT_Utility.getIntegratedCircuit(1), Materials.CalciumAcetateSolution.getFluid(1000), Materials.Acetone.getFluid(1000), 80, 30);
         GT_Values.RA.addUniversalDistillationRecipe(Materials.CalciumAcetateSolution.getFluid(1000), new FluidStack[]{Materials.Acetone.getFluid(1000), Materials.CarbonDioxide.getGas(1000)}, Materials.Quicklime.getDustSmall(3), 80, 480);
-        GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{Materials.Calcite.getDust(1),   GT_Utility.getIntegratedCircuit(24)}, new FluidStack[]{Materials.AceticAcid.getFluid(4000)}, new FluidStack[]{Materials.Acetone.getFluid(4000), Materials.CarbonDioxide.getGas(4000)}, null, 400, 480);
-        GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{Materials.Calcium.getDust(1),   GT_Utility.getIntegratedCircuit(24)}, new FluidStack[]{Materials.AceticAcid.getFluid(4000)}, new FluidStack[]{Materials.Acetone.getFluid(4000), Materials.CarbonDioxide.getGas(4000)}, null, 400, 480);
-        GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{Materials.Quicklime.getDust(1), GT_Utility.getIntegratedCircuit(24)}, new FluidStack[]{Materials.AceticAcid.getFluid(4000)}, new FluidStack[]{Materials.Acetone.getFluid(4000), Materials.CarbonDioxide.getGas(4000)}, null, 400, 480);
-
+        //8CH3COOH = 4CH3COCH3 + 4CO2 + 8H
+        GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.copyAmount(0, Materials.Calcite.getDust(5)),   GT_Utility.getIntegratedCircuit(24)}, new FluidStack[]{Materials.AceticAcid.getFluid(4000)}, new FluidStack[]{Materials.Acetone.getFluid(4000), Materials.CarbonDioxide.getGas(4000), Materials.Hydrogen.getGas(8000)}, null, 400, 480);
+        GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.copyAmount(0,Materials.Calcium.getDust(1)),   GT_Utility.getIntegratedCircuit(24)}, new FluidStack[]{Materials.AceticAcid.getFluid(4000)}, new FluidStack[]{Materials.Acetone.getFluid(4000), Materials.CarbonDioxide.getGas(4000), Materials.Hydrogen.getGas(8000)}, null, 400, 480);
+        GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.copyAmount(0, Materials.Quicklime.getDust(2)), GT_Utility.getIntegratedCircuit(24)}, new FluidStack[]{Materials.AceticAcid.getFluid(4000)}, new FluidStack[]{Materials.Acetone.getFluid(4000), Materials.CarbonDioxide.getGas(4000), Materials.Hydrogen.getGas(8000)}, null, 400, 480);
+        //CH3COOH + CH3OH = CH3COOCH3 + H2O
         GT_Values.RA.addChemicalRecipe(Materials.AceticAcid.getCells(1), GT_Utility.getIntegratedCircuit(1),  Materials.Methanol.getFluid(1000),   Materials.MethylAcetate.getFluid(1000), Materials.Water.getCells(1), 240);
         GT_Values.RA.addChemicalRecipe(Materials.Methanol.getCells(1),   GT_Utility.getIntegratedCircuit(1),  Materials.AceticAcid.getFluid(1000), Materials.MethylAcetate.getFluid(1000), Materials.Water.getCells(1), 240);
         GT_Values.RA.addChemicalRecipe(Materials.AceticAcid.getCells(1), GT_Utility.getIntegratedCircuit(2),  Materials.Methanol.getFluid(1000),   Materials.MethylAcetate.getFluid(1000), Materials.Empty.getCells(1), 240);
@@ -2852,7 +2864,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addChemicalRecipe(Materials.Methanol.getCells(1),   GT_Utility.getIntegratedCircuit(11), Materials.AceticAcid.getFluid(1000), Materials.Water.getFluid(1000),         Materials.MethylAcetate.getCells(1), 240);
         GT_Values.RA.addChemicalRecipe(Materials.AceticAcid.getCells(1), GT_Utility.getIntegratedCircuit(12), Materials.Methanol.getFluid(1000),   GT_Values.NF,                           Materials.MethylAcetate.getCells(1), 240);
         GT_Values.RA.addChemicalRecipe(Materials.Methanol.getCells(1),   GT_Utility.getIntegratedCircuit(12), Materials.AceticAcid.getFluid(1000), GT_Values.NF,                           Materials.MethylAcetate.getCells(1), 240);
-
+        //2CH3COOCH3 + 3CH3COCH3/(C4H6O2)n = 5Glue
         GT_Values.RA.addMixerRecipe(Materials.Acetone.getCells(3), GT_Values.NI, GT_Values.NI, GT_Values.NI, Materials.PolyvinylAcetate.getFluid(2000), Materials.Glue.getFluid(5000), Materials.Empty.getCells(3), 100, 8);
         GT_Values.RA.addMixerRecipe(Materials.PolyvinylAcetate.getCells(2), GT_Values.NI, GT_Values.NI, GT_Values.NI, Materials.Acetone.getFluid(3000), Materials.Glue.getFluid(5000), Materials.Empty.getCells(2), 100, 8);
         GT_Values.RA.addMixerRecipe(Materials.MethylAcetate.getCells(3), GT_Values.NI, GT_Values.NI, GT_Values.NI, Materials.PolyvinylAcetate.getFluid(2000), Materials.Glue.getFluid(5000), Materials.Empty.getCells(3), 100, 8);
@@ -2871,31 +2883,35 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addChemicalRecipe(Materials.Charcoal.getDust(1), GT_Utility.getIntegratedCircuit(2), Materials.Oxygen.getGas(2000), Materials.CarbonDioxide.getGas(1000), Materials.Ash.getDustTiny(1), 40, 8);
         GT_Values.RA.addChemicalRecipe(Materials.Carbon.getDust(1), GT_Values.NI, Materials.CarbonDioxide.getGas(1000), Materials.CarbonMonoxide.getGas(2000), GT_Values.NI, 800);
 
-        GT_Values.RA.addChemicalRecipe(Materials.Coal.getGems(1),     GT_Utility.getIntegratedCircuit(9), Materials.Oxygen.getGas(9000), Materials.CarbonMonoxide.getGas(9000), Materials.Ash.getDust(1), 720, 8);
-        GT_Values.RA.addChemicalRecipe(Materials.Coal.getDust(1),     GT_Utility.getIntegratedCircuit(9), Materials.Oxygen.getGas(9000), Materials.CarbonMonoxide.getGas(9000), Materials.Ash.getDust(1), 720, 8);
-        GT_Values.RA.addChemicalRecipe(Materials.Charcoal.getGems(1), GT_Utility.getIntegratedCircuit(9), Materials.Oxygen.getGas(9000), Materials.CarbonMonoxide.getGas(9000), Materials.Ash.getDust(1), 720, 8);
-        GT_Values.RA.addChemicalRecipe(Materials.Charcoal.getDust(1), GT_Utility.getIntegratedCircuit(9), Materials.Oxygen.getGas(9000), Materials.CarbonMonoxide.getGas(9000), Materials.Ash.getDust(1), 720, 8);
-        GT_Values.RA.addChemicalRecipe(Materials.Coal.getGems(1),     GT_Utility.getIntegratedCircuit(8), Materials.Oxygen.getGas(18000), Materials.CarbonDioxide.getGas(9000), Materials.Ash.getDust(1), 360, 8);
-        GT_Values.RA.addChemicalRecipe(Materials.Coal.getDust(1),     GT_Utility.getIntegratedCircuit(8), Materials.Oxygen.getGas(18000), Materials.CarbonDioxide.getGas(9000), Materials.Ash.getDust(1), 360, 8);
-        GT_Values.RA.addChemicalRecipe(Materials.Charcoal.getGems(1), GT_Utility.getIntegratedCircuit(8), Materials.Oxygen.getGas(18000), Materials.CarbonDioxide.getGas(9000), Materials.Ash.getDust(1), 360, 8);
-        GT_Values.RA.addChemicalRecipe(Materials.Charcoal.getDust(1), GT_Utility.getIntegratedCircuit(8), Materials.Oxygen.getGas(18000), Materials.CarbonDioxide.getGas(9000), Materials.Ash.getDust(1), 360, 8);
-
+        GT_Values.RA.addChemicalRecipe(Materials.Coal.getGems(9),     GT_Utility.getIntegratedCircuit(9), Materials.Oxygen.getGas(9000), Materials.CarbonMonoxide.getGas(9000), Materials.Ash.getDust(1), 720, 8);
+        GT_Values.RA.addChemicalRecipe(Materials.Coal.getDust(9),     GT_Utility.getIntegratedCircuit(9), Materials.Oxygen.getGas(9000), Materials.CarbonMonoxide.getGas(9000), Materials.Ash.getDust(1), 720, 8);
+        GT_Values.RA.addChemicalRecipe(Materials.Charcoal.getGems(9), GT_Utility.getIntegratedCircuit(9), Materials.Oxygen.getGas(9000), Materials.CarbonMonoxide.getGas(9000), Materials.Ash.getDust(1), 720, 8);
+        GT_Values.RA.addChemicalRecipe(Materials.Charcoal.getDust(9), GT_Utility.getIntegratedCircuit(9), Materials.Oxygen.getGas(9000), Materials.CarbonMonoxide.getGas(9000), Materials.Ash.getDust(1), 720, 8);
+        GT_Values.RA.addChemicalRecipe(Materials.Coal.getGems(9),     GT_Utility.getIntegratedCircuit(8), Materials.Oxygen.getGas(18000), Materials.CarbonDioxide.getGas(9000), Materials.Ash.getDust(1), 360, 8);
+        GT_Values.RA.addChemicalRecipe(Materials.Coal.getDust(9),     GT_Utility.getIntegratedCircuit(8), Materials.Oxygen.getGas(18000), Materials.CarbonDioxide.getGas(9000), Materials.Ash.getDust(1), 360, 8);
+        GT_Values.RA.addChemicalRecipe(Materials.Charcoal.getGems(9), GT_Utility.getIntegratedCircuit(8), Materials.Oxygen.getGas(18000), Materials.CarbonDioxide.getGas(9000), Materials.Ash.getDust(1), 360, 8);
+        GT_Values.RA.addChemicalRecipe(Materials.Charcoal.getDust(9), GT_Utility.getIntegratedCircuit(8), Materials.Oxygen.getGas(18000), Materials.CarbonDioxide.getGas(9000), Materials.Ash.getDust(1), 360, 8);
+        //CO + 4H = CH3OH
         GT_Values.RA.addChemicalRecipe(Materials.CarbonMonoxide.getCells(1), GT_Utility.getIntegratedCircuit(1),  Materials.Hydrogen.getGas(4000),       Materials.Methanol.getFluid(1000), Materials.Empty.getCells(1), 120, 96);
         GT_Values.RA.addChemicalRecipe(Materials.Hydrogen.getCells(4),       GT_Utility.getIntegratedCircuit(1),  Materials.CarbonMonoxide.getGas(1000), Materials.Methanol.getFluid(1000), Materials.Empty.getCells(4), 120, 96);
         GT_Values.RA.addChemicalRecipe(Materials.CarbonMonoxide.getCells(1), GT_Utility.getIntegratedCircuit(11), Materials.Hydrogen.getGas(4000),       GT_Values.NF, Materials.Methanol.getCells(1), 120, 96);
         GT_Values.RA.addChemicalRecipe(Materials.Hydrogen.getCells(4),       GT_Utility.getIntegratedCircuit(11), Materials.CarbonMonoxide.getGas(1000), GT_Values.NF, Materials.Methanol.getCells(1), Materials.Empty.getCells(3), 120, 96);
+        //CO2 + 6H = CH3OH + H2O
         GT_Values.RA.addChemicalRecipe(Materials.CarbonDioxide.getCells(1),  GT_Utility.getIntegratedCircuit(1),  Materials.Hydrogen.getGas(6000),       Materials.Methanol.getFluid(1000), Materials.Water.getCells(1), 120, 96);
         GT_Values.RA.addChemicalRecipe(Materials.Hydrogen.getCells(6),       GT_Utility.getIntegratedCircuit(1),  Materials.CarbonDioxide.getGas(1000),  Materials.Methanol.getFluid(1000), Materials.Water.getCells(1), Materials.Empty.getCells(3), 120, 96);
         GT_Values.RA.addChemicalRecipe(Materials.CarbonDioxide.getCells(1),  GT_Utility.getIntegratedCircuit(2),  Materials.Hydrogen.getGas(6000),       Materials.Methanol.getFluid(1000), Materials.Empty.getCells(1), 120, 96);
         GT_Values.RA.addChemicalRecipe(Materials.Hydrogen.getCells(6),       GT_Utility.getIntegratedCircuit(2),  Materials.CarbonDioxide.getGas(1000),  Materials.Methanol.getFluid(1000), Materials.Empty.getCells(6), 120, 96);
         GT_Values.RA.addChemicalRecipe(Materials.CarbonDioxide.getCells(1),  GT_Utility.getIntegratedCircuit(12), Materials.Hydrogen.getGas(6000),       GT_Values.NF, Materials.Methanol.getCells(1), 120, 96);
         GT_Values.RA.addChemicalRecipe(Materials.Hydrogen.getCells(6),       GT_Utility.getIntegratedCircuit(12), Materials.CarbonDioxide.getGas(1000),  GT_Values.NF, Materials.Methanol.getCells(1), Materials.Empty.getCells(5), 120, 96);
+        //C + 4H + O = CH3OH
         GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{Materials.Carbon.getDust(1), GT_Utility.getIntegratedCircuit(23)}, new FluidStack[]{Materials.Hydrogen.getGas(4000), Materials.Oxygen.getGas(1000)}, new FluidStack[]{Materials.Methanol.getFluid(1000)}, null, 320, 96);
 
+        //CH3OH + CO = CH3COOH
         GT_Values.RA.addChemicalRecipe(Materials.Methanol.getCells(1), GT_Utility.getIntegratedCircuit(1), Materials.CarbonMonoxide.getGas(1000), Materials.AceticAcid.getFluid(1000), Materials.Empty.getCells(1), 300);
         GT_Values.RA.addChemicalRecipe(Materials.CarbonMonoxide.getCells(1), GT_Utility.getIntegratedCircuit(1), Materials.Methanol.getFluid(1000), Materials.AceticAcid.getFluid(1000), Materials.Empty.getCells(1), 300);
         GT_Values.RA.addChemicalRecipe(Materials.Methanol.getCells(1), GT_Utility.getIntegratedCircuit(11), Materials.CarbonMonoxide.getGas(1000), GT_Values.NF, Materials.AceticAcid.getCells(1), 300);
         GT_Values.RA.addChemicalRecipe(Materials.CarbonMonoxide.getCells(1), GT_Utility.getIntegratedCircuit(11), Materials.Methanol.getFluid(1000), GT_Values.NF, Materials.AceticAcid.getCells(1), 300);
+        //CH2CH2 + 2O = CH3COOH
         GT_Values.RA.addChemicalRecipe(Materials.Ethylene.getCells(1), GT_Utility.getIntegratedCircuit(9), Materials.Oxygen.getGas(2000), Materials.AceticAcid.getFluid(1000), Materials.Empty.getCells(1), 100);
         GT_Values.RA.addChemicalRecipe(Materials.Oxygen.getCells(2), GT_Utility.getIntegratedCircuit(9), Materials.Ethylene.getGas(1000), Materials.AceticAcid.getFluid(1000), Materials.Empty.getCells(2), 100);
         GT_Values.RA.addChemicalRecipe(Materials.Ethylene.getCells(1), GT_Utility.getIntegratedCircuit(19), Materials.Oxygen.getGas(2000), GT_Values.NF, Materials.AceticAcid.getCells(1), 100);
