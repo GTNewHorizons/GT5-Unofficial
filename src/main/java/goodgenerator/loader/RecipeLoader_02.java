@@ -1643,7 +1643,7 @@ public class RecipeLoader_02 {
                     MyRecipeAdder.instance.addExtremeHeatExchangerRecipe(
                             tPlasma,
                             output,
-                            FluidRegistry.getFluidStack("ic2distilledwater", tUnit * 300),
+                            FluidRegistry.getFluidStack("ic2distilledwater", tUnit * 300 / 160),
                             FluidRegistry.getFluidStack("ic2superheatedsteam", tUnit * 300),
                             FluidRegistry.getFluidStack("supercriticalsteam", tUnit * 3),
                             1

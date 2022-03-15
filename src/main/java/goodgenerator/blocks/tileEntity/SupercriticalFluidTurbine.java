@@ -79,7 +79,7 @@ public class SupercriticalFluidTurbine extends GT_MetaTileEntity_LargeTurbineBas
         } else {
             float efficiency = 1.0f - Math.abs((totalFlow - aOptFlow) / (float) aOptFlow);
             tEU *= efficiency;
-            tEU = Math.max(1, GT_Utility.safeInt((long) tEU * (long) aBaseEff / 10000L));
+            tEU = Math.max(1, GT_Utility.safeInt((long) tEU * (long) aBaseEff / 100L));
         }
 
         return tEU;
