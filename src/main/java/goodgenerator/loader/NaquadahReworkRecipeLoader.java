@@ -210,7 +210,7 @@ public class NaquadahReworkRecipeLoader {
                 },
                 new FluidStack[]{
                         P507.getFluidOrGas(1000),
-                        Materials.SulfuricAcid.getFluid(32000)
+                        Materials.SulfuricAcid.getFluid(18000)
                 },
                 new FluidStack[]{
                         enrichedNaquadahRichSolution.getFluidOrGas(4000),
@@ -222,6 +222,16 @@ public class NaquadahReworkRecipeLoader {
                 },
                 400,
                 1920
+        );
+
+        GT_Values.RA.addChemicalRecipe(
+            WerkstoffLoader.ZincSulfate.get(OrePrefixes.dust, 1),
+            null,
+            Materials.Hydrogen.getGas(1000),
+            Materials.SulfuricAcid.getFluid(1000),
+            Materials.Zinc.getDust(1),
+            30,
+            7
         );
 
         GT_Values.RA.addAutoclaveRecipe(
@@ -280,13 +290,13 @@ public class NaquadahReworkRecipeLoader {
 
         GT_Values.RA.addMultiblockChemicalRecipe(
                 new ItemStack[]{
-                        triniumSulphate.get(OrePrefixes.dust, 1),
+                        triniumSulphate.get(OrePrefixes.dust, 4),
                 },
                 new FluidStack[]{
-                        Materials.Hydrogen.getGas(1000)
+                        Materials.Hydrogen.getGas(4000)
                 },
                 new FluidStack[]{
-                        Materials.SulfuricAcid.getFluid(1000)
+                        Materials.SulfuricAcid.getFluid(4000)
                 },
                 new ItemStack[]{
                         GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Trinium, 1),
