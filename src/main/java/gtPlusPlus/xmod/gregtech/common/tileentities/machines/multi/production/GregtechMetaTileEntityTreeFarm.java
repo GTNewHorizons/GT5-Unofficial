@@ -309,7 +309,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
 	public static void loadMapWoodFromSapling() {
 
 		// galaxySpace
-		mapSaplingToLog("GalaxySpace:barnardaCsapling:0", GT_ModHandler.getModItem("GalaxySpace", "barnardaClog", 1)); // barnarda c
+		mapSaplingToLog("GalaxySpace:barnardaCsapling:1", GT_ModHandler.getModItem("GalaxySpace", "barnardaClog", 1)); // barnarda c
 		
 		// minecraft
 		mapSaplingToLog("minecraft:sapling:0", new ItemStack(Blocks.log, 1, 0)); // oak
