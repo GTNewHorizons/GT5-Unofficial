@@ -115,6 +115,10 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
         return false;
     }
 
+    public String[] getSecondaryDescription() {
+        return null;
+    }
+
     @Override
     public IGregTechTileEntity getBaseMetaTileEntity() {
         return mBaseMetaTileEntity;

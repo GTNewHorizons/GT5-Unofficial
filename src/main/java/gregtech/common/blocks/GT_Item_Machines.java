@@ -66,6 +66,30 @@ public class GT_Item_Machines extends ItemBlock implements IFluidContainerItem {
 
             if (GregTech_API.METATILEENTITIES[tDamage] != null) {
                 IGregTechTileEntity tTileEntity = GregTech_API.METATILEENTITIES[tDamage].getBaseMetaTileEntity();
+                if (!GregTech_API.sPostloadFinished && tTileEntity.getMetaTileEntity() instanceof MetaTileEntity) {
+                    final String[] secondaryDescription = ((MetaTileEntity) tTileEntity.getMetaTileEntity()).getSecondaryDescription();
+                    if (secondaryDescription != null) {
+                        int i = 0;
+                        for (String tDescription : secondaryDescription) {
+                            if (GT_Utility.isStringValid(tDescription)) {
+                                if (tDescription.contains("%%%")) {
+                                    String[] tString = tDescription.split("%%%");
+                                    if (tString.length >= 2) {
+                                        StringBuilder tBuffer = new StringBuilder();
+                                        for (int j = 0; j < tString.length; j++)
+                                            if (j % 2 == 0) tBuffer.append(tString[j]);
+                                            else {
+                                                tBuffer.append(" %s");
+                                            }
+                                        GT_LanguageManager.addStringLocalization("TileEntity_DESCRIPTION_" + tDamage + "_Secondary" + "_Index_" + i++, tBuffer.toString(), true);
+                                    }
+                                } else {
+                                    GT_LanguageManager.addStringLocalization("TileEntity_DESCRIPTION_" + tDamage + "_Secondary" + "_Index_" + i++, tDescription, true);
+                                }
+                            } else i++;
+                        }
+                    }
+                }
                 if (tTileEntity.getDescription() != null) {
                     int i = 0;
                     IMetaTileEntity metaTileEntity = tTileEntity.getMetaTileEntity();
