@@ -591,7 +591,7 @@ public class Recipes {
 				GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Neutronium, 24),
 				1200, 32);
 		GT_Values.RA.addUnboxingRecipe(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 5),
-				ItemList.ZPM2.get(1L),
+				ItemList.ZPM3.get(1L),
 				GT_OreDictUnificator.get(OrePrefixes.screw, Materials.CosmicNeutronium, 24),
 				1200, 32);
 
