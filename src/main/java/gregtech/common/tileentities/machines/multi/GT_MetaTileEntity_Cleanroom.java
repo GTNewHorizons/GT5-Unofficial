@@ -51,6 +51,19 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_MultiBlockBas
 
     @Override
     public String[] getDescription() {
+        if (isDisplaySecondaryDescription()) {
+            return getSecondaryDescription();
+        } else {
+            return getTooltip().getInformation();
+        }
+    }
+
+    @Override
+    public String[] getSecondaryDescription() {
+        return getTooltip().getStructureInformation();
+    }
+
+    protected GT_Multiblock_Tooltip_Builder getTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Cleanroom")
             .addInfo("Controller block for the Cleanroom")
@@ -75,11 +88,7 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_MultiBlockBas
             .addStructureInfo("You can also use Diodes for more power")
             .addStructureInfo("Diodes also count towards 10 Machine Hulls count limit")
             .toolTipFinisher("Gregtech");
-        if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-            return tt.getStructureInformation();
-        } else {
-            return tt.getInformation();
-        }
+        return tt;
     }
 
     @Override

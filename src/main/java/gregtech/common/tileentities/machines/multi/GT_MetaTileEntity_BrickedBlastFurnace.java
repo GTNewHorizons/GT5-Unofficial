@@ -30,6 +30,19 @@ public class GT_MetaTileEntity_BrickedBlastFurnace extends GT_MetaTileEntity_Pri
 
     @Override
     public String[] getDescription() {
+        if (isDisplaySecondaryDescription()) {
+            return getSecondaryDescription();
+        } else {
+            return getTooltip().getInformation();
+        }
+    }
+
+    @Override
+    public String[] getSecondaryDescription() {
+        return getTooltip().getStructureInformation();
+    }
+
+    protected GT_Multiblock_Tooltip_Builder getTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Blast Furnace")
                 .addInfo("Controller Block for the Bricked Blast Furnace")
@@ -44,11 +57,7 @@ public class GT_MetaTileEntity_BrickedBlastFurnace extends GT_MetaTileEntity_Pri
                 .addStructureInfo("You can share the walls of GT multis, so")
                 .addStructureInfo("each additional one costs less, up to 4")
                 .toolTipFinisher("Gregtech");
-        if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-            return tt.getStructureInformation();
-        } else {
-            return tt.getInformation();
-        }
+        return tt;
     }
 
     @Override
