@@ -25,31 +25,29 @@ package com.github.bartimaeusnek.bartworks.common.tileentities.multis.mega;
 import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
 import com.github.bartimaeusnek.bartworks.API.LoaderReference;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
-import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
-import com.github.bartimaeusnek.bartworks.util.MegaUtils;
 import com.github.bartimaeusnek.bartworks.util.Pair;
-import com.github.bartimaeusnek.crossmod.tectech.TecTechEnabledMulti;
 import com.github.bartimaeusnek.crossmod.tectech.helper.TecTechUtils;
-import com.github.bartimaeusnek.crossmod.tectech.tileentites.tiered.LowPowerLaser;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTech_API;
+import gregtech.api.gui.GT_GUIContainer_MultiMachine;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeChemicalReactor;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.getMultiOutput;
 import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.handleParallelRecipe;
@@ -57,13 +55,12 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 
 @Optional.Interface(iface = "com.github.bartimaeusnek.crossmod.tectech.TecTechEnabledMulti", modid = "tectech", striprefs = true)
-public class GT_TileEntity_MegaChemicalReactor extends GT_MetaTileEntity_LargeChemicalReactor implements TecTechEnabledMulti {
-    private final ArrayList<?> TTTunnels = new ArrayList<>();
-    private final ArrayList<?> TTMultiAmp = new ArrayList<>();
+public class GT_TileEntity_MegaChemicalReactor extends GT_TileEntity_MegaMultiBlockBase<GT_TileEntity_MegaChemicalReactor> {
 
     private byte glasTier;
 
@@ -104,28 +101,30 @@ public class GT_TileEntity_MegaChemicalReactor extends GT_MetaTileEntity_LargeCh
     }
 
     @Override
-    public boolean addEnergyInputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (LoaderReference.tectech) {
-            return TecTechUtils.addEnergyInputToMachineList(this, aTileEntity, aBaseCasingIndex);
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive,
+                                 boolean aRedstone) {
+        if (aSide == aFacing) {
+            if (aActive) return new ITexture[]{
+                casingTexturePages[1][48],
+                TextureFactory.builder().addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE).extFacing().build(),
+                TextureFactory.builder().addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW).extFacing().glow().build()};
+            return new ITexture[]{
+                casingTexturePages[1][48],
+                TextureFactory.builder().addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR).extFacing().build(),
+                TextureFactory.builder().addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW).extFacing().glow().build()};
         }
-        return super.addEnergyInputToMachineList(aTileEntity, aBaseCasingIndex);
+        return new ITexture[]{casingTexturePages[1][48]};
     }
 
     @Override
-    public boolean drainEnergyInput(long aEU) {
-        if (LoaderReference.tectech) {
-            return TecTechUtils.drainEnergyMEBFTecTech(this, aEU);
-        }
-        return MegaUtils.drainEnergyMegaVanilla(this, aEU);
+    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+        return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "LargeChemicalReactor.png");
     }
 
     @Override
-    public long getMaxInputVoltage() {
-        if (LoaderReference.tectech) {
-            return TecTechUtils.getMaxInputVoltage(this);
-        }
-        return super.getMaxInputVoltage();
-    }
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    } // TO IMPLEMENT
 
     @Override
     public boolean checkRecipe(ItemStack itemStack) {
@@ -146,6 +145,7 @@ public class GT_TileEntity_MegaChemicalReactor extends GT_MetaTileEntity_LargeCh
             found_Recipe = true;
             long tMaxPara = Math.min(ConfigHandler.megaMachinesMax, nominalV / tRecipe.mEUt);
             int tCurrentPara = handleParallelRecipe(tRecipe, tInputFluids, tInputs, (int) tMaxPara);
+            this.updateSlots();
             if (tCurrentPara <= 0) {
                 return false;
             }
@@ -158,30 +158,20 @@ public class GT_TileEntity_MegaChemicalReactor extends GT_MetaTileEntity_LargeCh
         if (found_Recipe) {
             this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
             this.mEfficiencyIncrease = 10000;
-            long actualEUT = (long) (tRecipe.mEUt) * processed;
-            if (actualEUT > Integer.MAX_VALUE) {
-                byte divider = 0;
-                while (actualEUT > Integer.MAX_VALUE) {
-                    actualEUT = actualEUT / 2;
-                    divider++;
-                }
-                BW_Util.calculatePerfectOverclockedNessMulti((int) actualEUT, tRecipe.mDuration * (divider * 2), 1, nominalV, this);
-            } else {
-                BW_Util.calculatePerfectOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, 1, nominalV, this);
-            }
+            long actualEUT = ((long)tRecipe.mEUt) * processed;
+            calculatePerfectOverclockedNessMulti(actualEUT, tRecipe.mDuration, nominalV);
             //In case recipe is too OP for that machine
-            if (this.mMaxProgresstime == Integer.MAX_VALUE - 1 && this.mEUt == Integer.MAX_VALUE - 1) {
+            if (this.mMaxProgresstime == Integer.MAX_VALUE - 1 && this.lEUt == Integer.MAX_VALUE - 1) {
                 return false;
             }
-            if (this.mEUt > 0) {
-                this.mEUt = (-this.mEUt);
+            if (this.lEUt > 0) {
+                this.lEUt = (-this.lEUt);
             }
             this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
             this.mOutputItems = new ItemStack[outputItems.size()];
             this.mOutputItems = outputItems.toArray(this.mOutputItems);
             this.mOutputFluids = new FluidStack[outputFluids.size()];
             this.mOutputFluids = outputFluids.toArray(this.mOutputFluids);
-            this.updateSlots();
             return true;
         }
         return false;
@@ -222,26 +212,6 @@ public class GT_TileEntity_MegaChemicalReactor extends GT_MetaTileEntity_LargeCh
     }
 
 
-    @SuppressWarnings("rawtypes")
-    @Optional.Method(modid = "tectech")
-    private boolean areThingsNotProperlyTiered(Collection collection) {
-        if (!collection.isEmpty())
-            for (Object tecTechEnergyMulti : collection)
-                if (((GT_MetaTileEntity_TieredMachineBlock) tecTechEnergyMulti).mTier > this.glasTier)
-                    return true;
-        return false;
-    }
-
-    @SuppressWarnings("rawtypes")
-    @Optional.Method(modid = "tectech")
-    private boolean areLazorsLowPowa() {
-        Collection collection = this.getTecTechEnergyTunnels();
-        if (!collection.isEmpty())
-            for (Object tecTechEnergyMulti : collection)
-                if (!(tecTechEnergyMulti instanceof LowPowerLaser))
-                    return false;
-        return true;
-    }
 
     private static final int CASING_INDEX = 176;
     private static final String STRUCTURE_PIECE_MAIN = "main";
@@ -267,34 +237,19 @@ public class GT_TileEntity_MegaChemicalReactor extends GT_MetaTileEntity_LargeCh
             .build();
 
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
-    public IStructureDefinition<GT_MetaTileEntity_LargeChemicalReactor> getStructureDefinition() {
-        return (IStructureDefinition) STRUCTURE_DEFINITION;
+    public IStructureDefinition<GT_TileEntity_MegaChemicalReactor> getStructureDefinition() {
+        return STRUCTURE_DEFINITION;
     }
 
-    @Override
-    public String[] getInfoData() {
-        return LoaderReference.tectech ? this.getInfoDataArray(this) : super.getInfoData();
-    }
-
-    @Override
+    @SuppressWarnings("rawtypes")
     @Optional.Method(modid = "tectech")
-    public List<GT_MetaTileEntity_Hatch_Energy> getVanillaEnergyHatches() {
-        return this.mEnergyHatches;
+    private boolean areThingsNotProperlyTiered(Collection collection) {
+        if (!collection.isEmpty())
+            for (Object tecTechEnergyMulti : collection)
+                if (((GT_MetaTileEntity_TieredMachineBlock) tecTechEnergyMulti).mTier > this.glasTier)
+                    return true;
+        return false;
     }
 
-    @Override
-    @SuppressWarnings({"rawtypes", "unchecked"})
-    @Optional.Method(modid = "tectech")
-    public List getTecTechEnergyTunnels() {
-        return TTTunnels;
-    }
-
-    @Override
-    @SuppressWarnings({"rawtypes", "unchecked"})
-    @Optional.Method(modid = "tectech")
-    public List getTecTechEnergyMultis() {
-        return TTMultiAmp;
-    }
 }

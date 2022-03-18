@@ -25,6 +25,7 @@ package com.github.bartimaeusnek.bartworks.util;
 import com.github.bartimaeusnek.bartworks.API.BioVatLogicAdder;
 import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
 import com.github.bartimaeusnek.bartworks.MainMod;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.ToolDictNames;
@@ -304,8 +305,32 @@ public class BW_Util {
         return (int) (30 * Math.pow(4, (tier - 1)));
     }
 
-    public static int getTierVoltage(int tier) {
-        return 8 << (2 * tier);
+    public static long getTierVoltage(int tier) {
+        return getTierVoltage((byte)tier);
+    }
+
+    public static long getTierVoltage(byte tier) {
+        return 8L << (2 * tier);
+    }
+
+    public static byte getTier(long voltage){
+        if(voltage <= Integer.MAX_VALUE)
+            return GT_Utility.getTier(voltage);
+        byte t = 0;
+        while(voltage > 8L) {
+            voltage >>= 2;
+            t++;
+        }
+        return t;
+    }
+
+    public static String getTierName(byte tier){
+        if(VN.length <= tier) return "MAX+";
+        else return VN[tier];
+    }
+
+    public static String getTierNameFromVoltage(long voltage){
+        return getTierName(getTier(voltage));
     }
 
     public static boolean areStacksEqualOrNull(ItemStack aStack1, ItemStack aStack2) {

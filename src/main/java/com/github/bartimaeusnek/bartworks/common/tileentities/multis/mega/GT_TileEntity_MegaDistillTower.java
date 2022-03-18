@@ -25,7 +25,6 @@ package com.github.bartimaeusnek.bartworks.common.tileentities.multis.mega;
 import com.github.bartimaeusnek.bartworks.API.LoaderReference;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.util.*;
-import com.github.bartimaeusnek.crossmod.tectech.TecTechEnabledMulti;
 import com.github.bartimaeusnek.crossmod.tectech.helper.TecTechUtils;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -34,13 +33,17 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.Textures;
+import gregtech.api.gui.GT_GUIContainer_MultiMachine;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_DistillationTower;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -53,10 +56,15 @@ import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.ge
 import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.handleParallelRecipe;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_GLOW;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
 @Optional.Interface(iface = "com.github.bartimaeusnek.crossmod.tectech.TecTechEnabledMulti", modid = "tectech", striprefs = true)
-public class GT_TileEntity_MegaDistillTower extends GT_MetaTileEntity_DistillationTower implements TecTechEnabledMulti{
+public class GT_TileEntity_MegaDistillTower extends GT_TileEntity_MegaMultiBlockBase<GT_TileEntity_MegaDistillTower> {
+    protected static final int CASING_INDEX = 49;
+    protected static final String STRUCTURE_PIECE_BASE = "base";
+    protected static final String STRUCTURE_PIECE_LAYER = "layer";
     private static final IStructureDefinition<GT_TileEntity_MegaDistillTower> STRUCTURE_DEFINITION = StructureDefinition.<GT_TileEntity_MegaDistillTower>builder()
             .addShape(STRUCTURE_PIECE_BASE, transpose(new String[][]{
                     {"bbbbbbb~bbbbbbb", "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb"},
@@ -135,13 +143,13 @@ public class GT_TileEntity_MegaDistillTower extends GT_MetaTileEntity_Distillati
 					}
 			)
             .build();
+    protected final List<List<GT_MetaTileEntity_Hatch_Output>> mOutputHatchesByLayer = new ArrayList<>();
+    protected int mHeight;
+    protected int mCasing;
+    protected boolean mTopLayerFound;
 
     // -1 => maybe top, maybe not, 0 => definitely not top, 1 => definitely top
     private int mTopState = -1;
-    @SuppressWarnings("rawtypes")
-    public ArrayList TTTunnels = new ArrayList<>();
-    @SuppressWarnings("rawtypes")
-    public ArrayList TTMultiAmp = new ArrayList<>();
 
     public GT_TileEntity_MegaDistillTower(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -154,6 +162,52 @@ public class GT_TileEntity_MegaDistillTower extends GT_MetaTileEntity_Distillati
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_TileEntity_MegaDistillTower(this.mName);
+    }
+
+    protected void onCasingFound() {
+        mCasing++;
+    }
+
+    protected boolean addLayerOutputHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity == null || aTileEntity.isDead() || !(aTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_Output))
+            return false;
+        while (mOutputHatchesByLayer.size() < mHeight)
+            mOutputHatchesByLayer.add(new ArrayList<>());
+        GT_MetaTileEntity_Hatch_Output tHatch = (GT_MetaTileEntity_Hatch_Output) aTileEntity.getMetaTileEntity();
+        tHatch.updateTexture(aBaseCasingIndex);
+        return mOutputHatchesByLayer.get(mHeight - 1).add(tHatch);
+    }
+
+    protected void onTopLayerFound(boolean aIsCasing) {
+        mTopLayerFound = true;
+        if (aIsCasing)
+            onCasingFound();
+    }
+
+    @Override
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
+        if (aSide == aFacing) {
+            if (aActive)
+                return new ITexture[]{
+                    Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW).extFacing().glow().build()};
+            return new ITexture[]{
+                Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
+                TextureFactory.builder().addIcon(OVERLAY_FRONT_DISTILLATION_TOWER).extFacing().build(),
+                TextureFactory.builder().addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_GLOW).extFacing().glow().build()};
+        }
+        return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(CASING_INDEX)};
+    }
+
+    @Override
+    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+        return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "DistillationTower.png");
+    }
+
+    @Override
+    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
+        return GT_Recipe.GT_Recipe_Map.sDistillationRecipes;
     }
 
     @Override
@@ -179,16 +233,8 @@ public class GT_TileEntity_MegaDistillTower extends GT_MetaTileEntity_Distillati
     }
 
     @Override
-    @SuppressWarnings({"rawtypes", "unchecked"})
-    public IStructureDefinition<GT_MetaTileEntity_DistillationTower> getStructureDefinition() {
-        return (IStructureDefinition) STRUCTURE_DEFINITION;
-    }
-
-    @Override
-    public boolean addEnergyInputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (LoaderReference.tectech)
-            return TecTechUtils.addEnergyInputToMachineList(this, aTileEntity, aBaseCasingIndex);
-        return super.addEnergyInputToMachineList(aTileEntity, aBaseCasingIndex);
+    public IStructureDefinition<GT_TileEntity_MegaDistillTower> getStructureDefinition() {
+        return STRUCTURE_DEFINITION;
     }
 
     @Override
@@ -260,6 +306,7 @@ public class GT_TileEntity_MegaDistillTower extends GT_MetaTileEntity_Distillati
                     found_Recipe = true;
                     long tMaxPara = Math.min(ConfigHandler.megaMachinesMax, nominalV / tRecipe.mEUt);
                     int tCurrentPara = handleParallelRecipe(tRecipe, new FluidStack[]{tFluid}, null, (int) tMaxPara);
+                    this.updateSlots();
                     processed = tCurrentPara;
                     Outputs = getMultiOutput(tRecipe, tCurrentPara);
                     outputFluids = Outputs.getKey();
@@ -270,21 +317,13 @@ public class GT_TileEntity_MegaDistillTower extends GT_MetaTileEntity_Distillati
                     continue;
                 this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
                 this.mEfficiencyIncrease = 10000;
-                long actualEUT = (long) (tRecipe.mEUt) * processed;
-                if (actualEUT > Integer.MAX_VALUE) {
-                    byte divider = 0;
-                    while (actualEUT > Integer.MAX_VALUE) {
-                        actualEUT = actualEUT / 2;
-                        divider++;
-                    }
-                    BW_Util.calculateOverclockedNessMulti((int) (actualEUT / (divider * 2)), tRecipe.mDuration * (divider * 2), 1, nominalV, this);
-                } else
-                    BW_Util.calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, 1, nominalV, this);
+                long actualEUT = ((long)tRecipe.mEUt) * processed;
+                calculateOverclockedNessMulti(actualEUT, tRecipe.mDuration, nominalV);
                 //In case recipe is too OP for that machine
-                if (this.mMaxProgresstime == Integer.MAX_VALUE - 1 && this.mEUt == Integer.MAX_VALUE - 1)
+                if (this.mMaxProgresstime == Integer.MAX_VALUE - 1 && this.lEUt == Integer.MAX_VALUE - 1)
                     return false;
-                if (this.mEUt > 0) {
-                    this.mEUt = (-this.mEUt);
+                if (this.lEUt > 0) {
+                    this.lEUt = (-this.lEUt);
                 }
                 this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
                 this.mOutputFluids = outputFluids.toArray(new FluidStack[0]);
@@ -292,44 +331,10 @@ public class GT_TileEntity_MegaDistillTower extends GT_MetaTileEntity_Distillati
                     this.mOutputItems = outputItems.toArray(new ItemStack[0]);
                 else
                     this.mOutputItems = null;
-                this.updateSlots();
                 return true;
             }
         }
         return false;
     }
 
-    @Override
-    public boolean drainEnergyInput(long aEU) {
-        if (LoaderReference.tectech)
-            return TecTechUtils.drainEnergyMEBFTecTech(this, aEU);
-        return MegaUtils.drainEnergyMegaVanilla(this, aEU);
-    }
-
-    @Override
-    public long getMaxInputVoltage() {
-        if (LoaderReference.tectech)
-            return TecTechUtils.getMaxInputVoltage(this);
-        return super.getMaxInputVoltage();
-    }
-
-    @Override
-    @Optional.Method(modid = "tectech")
-    public List<GT_MetaTileEntity_Hatch_Energy> getVanillaEnergyHatches() {
-        return this.mEnergyHatches;
-    }
-
-    @Override
-    @SuppressWarnings({"rawtypes", "unchecked"})
-    @Optional.Method(modid = "tectech")
-    public List getTecTechEnergyTunnels() {
-        return TTTunnels;
-    }
-
-    @Override
-    @SuppressWarnings({"rawtypes", "unchecked"})
-    @Optional.Method(modid = "tectech")
-    public List getTecTechEnergyMultis() {
-        return TTMultiAmp;
-    }
 }

@@ -32,23 +32,38 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockB
 
 public class TecTechUtils {
 
-    public static boolean addEnergyInputToMachineList(TecTechEnabledMulti baseTE, IGregTechTileEntity te, int aBaseCasingIndex) {
+    @Deprecated
+    public static boolean addEnergyInputToMachineList(TecTechEnabledMulti baseTE, IGregTechTileEntity te, int aBaseCasingIndex){
+        return addEnergyInputToMachineList(baseTE, te, aBaseCasingIndex, -1) != -1;
+    }
+
+    public static int addEnergyInputToMachineList(TecTechEnabledMulti baseTE, IGregTechTileEntity te, int aBaseCasingIndex, int aTier) {
         if (te == null || !(te.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch))
-            return false;
+            return -1;
         else {
             GT_MetaTileEntity_Hatch mte = (GT_MetaTileEntity_Hatch) te.getMetaTileEntity();
 
-            if (mte instanceof GT_MetaTileEntity_Hatch_Energy)
-                baseTE.getVanillaEnergyHatches().add((GT_MetaTileEntity_Hatch_Energy) mte);
-            else if (mte instanceof GT_MetaTileEntity_Hatch_EnergyTunnel)
-                baseTE.getTecTechEnergyTunnels().add((GT_MetaTileEntity_Hatch_EnergyTunnel) mte);
-            else if (mte instanceof GT_MetaTileEntity_Hatch_EnergyMulti)
-                baseTE.getTecTechEnergyMultis().add((GT_MetaTileEntity_Hatch_EnergyMulti) mte);
+            if(mte.mTier != aTier && aTier != -1)
+                return -1;
+
+            if (mte instanceof GT_MetaTileEntity_Hatch_EnergyTunnel)
+                if(baseTE.getVanillaEnergyHatches().isEmpty() && baseTE.getTecTechEnergyMultis().isEmpty())
+                    baseTE.getTecTechEnergyTunnels().add((GT_MetaTileEntity_Hatch_EnergyTunnel) mte);
+                else
+                    return -1;
+            else if(baseTE.getTecTechEnergyTunnels().isEmpty()) {
+                if (mte instanceof GT_MetaTileEntity_Hatch_Energy)
+                    baseTE.getVanillaEnergyHatches().add((GT_MetaTileEntity_Hatch_Energy) mte);
+                else if (mte instanceof GT_MetaTileEntity_Hatch_EnergyMulti)
+                    baseTE.getTecTechEnergyMultis().add((GT_MetaTileEntity_Hatch_EnergyMulti) mte);
+                else
+                    return -1;
+            }
             else
-                return false;
+                return -1;
 
             mte.updateTexture(aBaseCasingIndex);
-            return true;
+            return mte.mTier;
         }
     }
 
@@ -80,7 +95,7 @@ public class TecTechUtils {
             return false;
 
         if (hatches == 0) return false;
-        
+
         long euperhatch = aEU / hatches;
 
         boolean hasDrained = true;
@@ -139,10 +154,30 @@ public class TecTechUtils {
         }
         for (GT_MetaTileEntity_Hatch_EnergyTunnel tHatch : base.getTecTechEnergyTunnels()) {
             if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
-                rVoltage += getEUPerTickFromLaser(tHatch);
+                rVoltage += tHatch.maxEUInput();
             }
         }
         return rVoltage;
+    }
+
+    public static long getMaxInputAmperage(TecTechEnabledMulti base) {
+        long rAmperage = 0L;
+        for (GT_MetaTileEntity_Hatch_Energy tHatch : base.getVanillaEnergyHatches()) {
+            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
+                rAmperage += tHatch.getBaseMetaTileEntity().getInputAmperage();
+            }
+        }
+        for (GT_MetaTileEntity_Hatch_EnergyMulti tHatch : base.getTecTechEnergyMultis()) {
+            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
+                rAmperage += tHatch.getBaseMetaTileEntity().getInputAmperage();
+            }
+        }
+        for (GT_MetaTileEntity_Hatch_EnergyTunnel tHatch : base.getTecTechEnergyTunnels()) {
+            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
+                rAmperage += tHatch.Amperes;
+            }
+        }
+        return rAmperage;
     }
 
     public static long getEUPerTickFromLaser(GT_MetaTileEntity_Hatch_EnergyTunnel tHatch) {
