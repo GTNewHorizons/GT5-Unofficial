@@ -1326,26 +1326,26 @@ public class RecipeLoader_02 {
 
             int tID = GregTech_API.METATILEENTITIES[31076] != null ? 31076 : 965;
 
-            GT_Values.RA.addAssemblylineRecipe(
-                    ItemRefer.Compact_Fusion_MK3.get(1),
-                    24000,
-                    new Object[] {
-                            GT_ModHandler.getModItem("gregtech", "gt.blockmachines", 48, tID),
-                            GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.SuperconductorLuV, 32),
-                            ItemList.Circuit_Wafer_PPIC.get(64),
-                            ItemList.UHV_Coil.get(16),
-                            ItemRefer.Compact_Fusion_Coil_T2.get(8),
-                            ItemRefer.HiC_T4.get(8)
-                    },
-                    new FluidStack[] {
-                            FluidRegistry.getFluidStack("molten.teflon", 1152),
-                            MyMaterial.dalisenite.getMolten(576),
-                            FluidRegistry.getFluidStack("molten.botmium", 288)
-                    },
-                    ItemRefer.Compact_Fusion_MK4.get(1),
-                    6000,
-                    520000
-            );
+//             GT_Values.RA.addAssemblylineRecipe(
+//                     ItemRefer.Compact_Fusion_MK3.get(1),
+//                     24000,
+//                     new Object[] {
+//                             GT_ModHandler.getModItem("gregtech", "gt.blockmachines", 48, tID),
+//                             GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.SuperconductorLuV, 32),
+//                             ItemList.Circuit_Wafer_PPIC.get(64),
+//                             ItemList.UHV_Coil.get(16),
+//                             ItemRefer.Compact_Fusion_Coil_T2.get(8),
+//                             ItemRefer.HiC_T4.get(8)
+//                     },
+//                     new FluidStack[] {
+//                             FluidRegistry.getFluidStack("molten.teflon", 1152),
+//                             MyMaterial.dalisenite.getMolten(576),
+//                             FluidRegistry.getFluidStack("molten.botmium", 288)
+//                     },
+//                     ItemRefer.Compact_Fusion_MK4.get(1),
+//                     6000,
+//                     520000
+//             );
 
             MyRecipeAdder.instance.addPreciseAssemblerRecipe(
                     new ItemStack[] {
