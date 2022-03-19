@@ -50,7 +50,7 @@ public class GGCropsSaltyRoot extends CropCard implements ICropCardInfo {
 
     @Override
     public boolean canGrow(ICropTile crop) {
-        return true;
+        return crop.getSize() < maxSize();
     }
 
     @Override
