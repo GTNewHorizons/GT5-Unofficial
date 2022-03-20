@@ -246,7 +246,7 @@ public class StaticRecipeChangeLoaders {
 
     private static void runUnficationDeleter(Werkstoff werkstoff) {
         if (werkstoff.getType() == Werkstoff.Types.ELEMENT) {
-            if (werkstoff.getBridgeMaterial() != null) {
+            if (werkstoff.getBridgeMaterial() != null && Element.get(werkstoff.getToolTip()) != Element._NULL) {
                 werkstoff.getBridgeMaterial().mElement = Element.get(werkstoff.getToolTip());
                 Element.get(werkstoff.getToolTip()).mLinkedMaterials = new ArrayList<>();
                 Element.get(werkstoff.getToolTip()).mLinkedMaterials.add(werkstoff.getBridgeMaterial());
@@ -265,7 +265,7 @@ public class StaticRecipeChangeLoaders {
 
     private static void runMaterialLinker(Werkstoff werkstoff) {
         if (werkstoff.getType() == Werkstoff.Types.ELEMENT) {
-            if (werkstoff.getBridgeMaterial() != null) {
+            if (werkstoff.getBridgeMaterial() != null && Element.get(werkstoff.getToolTip()) != Element._NULL) {
                 werkstoff.getBridgeMaterial().mElement = Element.get(werkstoff.getToolTip());
                 Element.get(werkstoff.getToolTip()).mLinkedMaterials = new ArrayList<>();
                 Element.get(werkstoff.getToolTip()).mLinkedMaterials.add(werkstoff.getBridgeMaterial());
