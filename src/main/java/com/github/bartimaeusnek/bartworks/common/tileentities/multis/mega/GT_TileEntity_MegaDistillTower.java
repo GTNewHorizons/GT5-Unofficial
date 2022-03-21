@@ -337,4 +337,13 @@ public class GT_TileEntity_MegaDistillTower extends GT_TileEntity_MegaMultiBlock
         return false;
     }
 
+    @Override
+    protected void addFluidOutputs(FluidStack[] mOutputFluids2) {
+        for (int i = 0; i < mOutputFluids2.length && i < mOutputHatchesByLayer.size(); i++) {
+            FluidStack tStack = mOutputFluids2[i].copy();
+            if (!dumpFluid(mOutputHatchesByLayer.get(i), tStack, true))
+                dumpFluid(mOutputHatchesByLayer.get(i), tStack, false);
+        }
+    }
+
 }
