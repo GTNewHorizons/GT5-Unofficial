@@ -3,6 +3,7 @@ package gregtech.common.tileentities.machines.multi;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -31,7 +32,7 @@ import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
-public class GT_MetaTileEntity_Charcoal_Pit extends GT_MetaTileEntity_MultiBlockBase {
+public class GT_MetaTileEntity_Charcoal_Pit extends GT_MetaTileEntity_MultiBlockBase implements ISecondaryDescribable {
 
     private boolean running = false;
 
@@ -231,14 +232,18 @@ public class GT_MetaTileEntity_Charcoal_Pit extends GT_MetaTileEntity_MultiBlock
 
     @Override
     public String[] getDescription() {
-        if (isDisplaySecondaryDescription()) {
-            return getSecondaryDescription();
-        } else {
-            return getTooltip().getInformation();
-        }
+        return getCurrentDescription();
     }
 
     @Override
+    public boolean isDisplaySecondaryDescription() {
+        return Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
+    }
+
+    public String[] getPrimaryDescription() {
+        return getTooltip().getInformation();
+    }
+
     public String[] getSecondaryDescription() {
         return getTooltip().getStructureInformation();
     }

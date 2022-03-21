@@ -10,6 +10,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
+import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMachineCallback;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -33,7 +34,7 @@ import org.lwjgl.input.Keyboard;
 import static gregtech.api.enums.GT_Values.debugCleanroom;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
-public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_MultiBlockBase implements IConstructable {
+public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_MultiBlockBase implements IConstructable, ISecondaryDescribable {
     private int mHeight = -1;
 
     public GT_MetaTileEntity_Cleanroom(int aID, String aName, String aNameRegional) {
@@ -51,14 +52,18 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_MultiBlockBas
 
     @Override
     public String[] getDescription() {
-        if (isDisplaySecondaryDescription()) {
-            return getSecondaryDescription();
-        } else {
-            return getTooltip().getInformation();
-        }
+        return getCurrentDescription();
     }
 
     @Override
+    public boolean isDisplaySecondaryDescription() {
+        return Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
+    }
+
+    public String[] getPrimaryDescription() {
+        return getTooltip().getInformation();
+    }
+
     public String[] getSecondaryDescription() {
         return getTooltip().getStructureInformation();
     }
