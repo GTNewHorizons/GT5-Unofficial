@@ -11,6 +11,7 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import gregtech.api.GregTech_API;
+import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import net.minecraft.entity.player.EntityPlayer;
@@ -29,7 +30,7 @@ import java.util.concurrent.atomic.AtomicReferenceArray;
  *
  * @param <T> type of this
  */
-public abstract class GT_MetaTileEntity_EnhancedMultiBlockBase<T extends GT_MetaTileEntity_EnhancedMultiBlockBase<T>> extends GT_MetaTileEntity_MultiBlockBase implements IAlignment, IConstructable {
+public abstract class GT_MetaTileEntity_EnhancedMultiBlockBase<T extends GT_MetaTileEntity_EnhancedMultiBlockBase<T>> extends GT_MetaTileEntity_MultiBlockBase implements IAlignment, IConstructable, ISecondaryDescribable {
 	private static final AtomicReferenceArray<GT_Multiblock_Tooltip_Builder> tooltips = new AtomicReferenceArray<>(GregTech_API.METATILEENTITIES.length);
 	private ExtendedFacing mExtendedFacing = ExtendedFacing.DEFAULT;
 	private IAlignmentLimits mLimits = getInitialAlignmentLimits();
@@ -109,16 +110,20 @@ public abstract class GT_MetaTileEntity_EnhancedMultiBlockBase<T extends GT_Meta
 
 	protected abstract GT_Multiblock_Tooltip_Builder createTooltip();
 
-	@Override
-	public String[] getDescription() {
-		if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-			return getSecondaryDescription();
-		} else {
-			return getTooltip().getInformation();
-		}
-	}
+    @Override
+    public String[] getDescription() {
+        return getCurrentDescription();
+    }
 
     @Override
+    public boolean isDisplaySecondaryDescription() {
+        return Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
+    }
+
+    public String[] getPrimaryDescription() {
+        return getTooltip().getInformation();
+    }
+
     public String[] getSecondaryDescription() {
         return getTooltip().getStructureInformation();
     }
