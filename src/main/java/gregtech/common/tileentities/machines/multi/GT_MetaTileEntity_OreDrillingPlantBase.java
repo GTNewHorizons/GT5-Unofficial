@@ -265,6 +265,11 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
                 || itemData.mPrefix != OrePrefixes.crushed
                 && itemData.mPrefix != OrePrefixes.dustImpure
                 && itemData.mPrefix != OrePrefixes.dust
+                && itemData.mPrefix != OrePrefixes.gem
+                && itemData.mPrefix != OrePrefixes.gemChipped
+                && itemData.mPrefix != OrePrefixes.gemExquisite
+                && itemData.mPrefix != OrePrefixes.gemFlawed
+                && itemData.mPrefix != OrePrefixes.gemFlawless
                 && itemData.mMaterial.mMaterial != Materials.Oilsands;
     }
 
