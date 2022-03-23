@@ -670,12 +670,12 @@ public class GT_Utility {
                 ItemStack s = tPutInventory.getStackInSlot(slot);
                 if(s == null)
                     tPutFreeSlots.add(slot);
-                else if((s.stackSize < s.getMaxStackSize() && s.stackSize < ((IInventory) aTileEntity2).getInventoryStackLimit()) && aMinMoveAtOnce <= s.getMaxStackSize() - s.stackSize) {
+                else if((s.stackSize < s.getMaxStackSize() && s.stackSize < tPutInventory.getInventoryStackLimit()) && aMinMoveAtOnce <= s.getMaxStackSize() - s.stackSize) {
                     int ol = s.stackSize;
                     s.stackSize = 1;
                     String sID = s.toString() + (s.hasTagCompound() ? s.getTagCompound().toString() : "");
                     s.stackSize = ol;
-                    tPutItems.put(sID, tPutItems.getOrDefault(sID, 0) + (s.getMaxStackSize() - s.stackSize));
+                    tPutItems.put(sID, tPutItems.getOrDefault(sID, 0) + (Math.min(s.getMaxStackSize(), tPutInventory.getInventoryStackLimit()) - s.stackSize));
                     List<ItemStack> l = tPutItemStacks.getOrDefault(sID, new ArrayList<>(tPutInventory.getSizeInventory()));
                     l.add(s);
                     tPutItemStacks.put(sID, l);
@@ -701,42 +701,43 @@ public class GT_Utility {
                         int canPut = Math.min(tPutItems.get(sID), aMaxMoveAtOnce);
                         if(canPut >= aMinMoveAtOnce) {
                             List<ItemStack> putStack = tPutItemStacks.get(sID);
-                            int toPut = Math.min(canPut, tStackSize);
-                            tStackSize -= toPut;
-                            canPut -= toPut;
-                            tTotalItemsMoved += toPut;
-                            tMovedItems += toPut;
-                            for (int i = 0; i < putStack.size(); i++) {
-                                ItemStack s = putStack.get(i);
-                                int sToPut = Math.min(Math.min(Math.min(toPut, s.getMaxStackSize() - s.stackSize), ((IInventory) aTileEntity2).getInventoryStackLimit() - s.stackSize), aMaxTargetStackSize - s.stackSize);
-                                if(sToPut <= 0)
-                                    continue;
-                                if(sToPut < aMinMoveAtOnce)
-                                    continue;
-                                if(s.stackSize + sToPut < aMinTargetStackSize)
-                                    continue;
-                                toPut -= sToPut;
-                                s.stackSize += sToPut;
-                                if (s.stackSize == s.getMaxStackSize() || s.stackSize == ((IInventory) aTileEntity2).getInventoryStackLimit()) {
-                                    putStack.remove(i);
-                                    i--;
+                            if(!putStack.isEmpty()) {
+                                int toPut = Math.min(canPut, tStackSize);
+                                tStackSize -= toPut;
+                                tTotalItemsMoved += toPut;
+                                tMovedItems += toPut;
+                                for (int i = 0; i < putStack.size(); i++) {
+                                    ItemStack s = putStack.get(i);
+                                    int sToPut = Math.min(Math.min(Math.min(toPut, s.getMaxStackSize() - s.stackSize), tPutInventory.getInventoryStackLimit() - s.stackSize), aMaxTargetStackSize - s.stackSize);
+                                    if (sToPut <= 0)
+                                        continue;
+                                    if (sToPut < aMinMoveAtOnce)
+                                        continue;
+                                    if (s.stackSize + sToPut < aMinTargetStackSize)
+                                        continue;
+                                    toPut -= sToPut;
+                                    s.stackSize += sToPut;
+                                    if (s.stackSize == s.getMaxStackSize() || s.stackSize == tPutInventory.getInventoryStackLimit()) {
+                                        putStack.remove(i);
+                                        i--;
+                                    }
+                                    if (toPut == 0)
+                                        break;
                                 }
-                                if (toPut == 0)
-                                    break;
-                            }
-                            tStackSize += toPut;
-                            canPut += toPut;
-                            tTotalItemsMoved -= toPut;
-                            tMovedItems -= toPut;
-                            if (canPut == 0)
-                                tPutItems.remove(sID);
+                                tStackSize += toPut;
+                                tTotalItemsMoved -= toPut;
+                                tMovedItems -= toPut;
+                                tPutItems.put(sID, tPutItems.get(sID) - tMovedItems);
+                                if (tPutItems.get(sID) == 0)
+                                    tPutItems.remove(sID);
 
-                            tGrabStack.stackSize = tStackSize;
-                            if(tGrabStack.stackSize == 0)
-                                aTileEntity1.setInventorySlotContents(grabSlot, null);
-                            if(tMovedItems > 0) {
-                                aTileEntity1.markDirty();
-                                ((IInventory) aTileEntity2).markDirty();
+                                tGrabStack.stackSize = tStackSize;
+                                if (tGrabStack.stackSize == 0)
+                                    aTileEntity1.setInventorySlotContents(grabSlot, null);
+                                if (tMovedItems > 0) {
+                                    aTileEntity1.markDirty();
+                                    tPutInventory.markDirty();
+                                }
                             }
                         }
                     }
@@ -751,13 +752,13 @@ public class GT_Utility {
                                 {
                                     tPutFreeSlots.remove(i);
                                     i--;
-                                    ItemStack s = tPutInventory.getStackInSlot(grabSlot);
-                                    if(s.stackSize < s.getMaxStackSize()) {
+                                    ItemStack s = tPutInventory.getStackInSlot(tPutSlot);
+                                    if(s.stackSize < s.getMaxStackSize() && s.stackSize < tPutInventory.getInventoryStackLimit()) {
                                         int ol = s.stackSize;
                                         s.stackSize = 1;
                                         String ssID = s.toString() + (s.hasTagCompound() ? s.getTagCompound().toString() : "");
                                         s.stackSize = ol;
-                                        tPutItems.put(ssID, tPutItems.getOrDefault(ssID, 0) + (s.getMaxStackSize() - s.stackSize));
+                                        tPutItems.put(ssID, tPutItems.getOrDefault(ssID, 0) + (Math.min(s.getMaxStackSize(), tPutInventory.getInventoryStackLimit()) - s.stackSize));
                                         List<ItemStack> l = tPutItemStacks.getOrDefault(ssID, new ArrayList<>(tPutInventory.getSizeInventory()));
                                         l.add(s);
                                         tPutItemStacks.put(ssID, l);
