@@ -18,6 +18,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
 public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch {
@@ -150,16 +155,37 @@ public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch {
     }
 
     protected void fillStacksIntoFirstSlots() {
-        if (disableSort) {
-            for (int i = 0; i < mInventory.length; i++)
-                for (int j = i + 1; j < mInventory.length; j++)
-                    if (mInventory[j] != null && mInventory[j].stackSize <= 0 && (mInventory[i] == null || GT_Utility.areStacksEqual(mInventory[i], mInventory[j])))
-                        GT_Utility.moveStackFromSlotAToSlotB(getBaseMetaTileEntity(), getBaseMetaTileEntity(), j, i, (byte) 64, (byte) 1, (byte) 64, (byte) 1);
-        } else {
-            for (int i = 0; i < mInventory.length; i++)
-                for (int j = i + 1; j < mInventory.length; j++)
-                    if (mInventory[j] != null && (mInventory[i] == null || GT_Utility.areStacksEqual(mInventory[i], mInventory[j])))
-                        GT_Utility.moveStackFromSlotAToSlotB(getBaseMetaTileEntity(), getBaseMetaTileEntity(), j, i, (byte) 64, (byte) 1, (byte) 64, (byte) 1);
+        // no order, this is input bus :>
+        HashMap<String, Integer> slots = new HashMap<>(mInventory.length);
+        HashMap<String, ItemStack> stacks = new HashMap<>(mInventory.length);
+        //List<String> order = new ArrayList<>(mInventory.length);
+        for (int i = 0; i < mInventory.length - 1; i++) {
+            if (!isValidSlot(i)) {
+                continue;
+            }
+            ItemStack s = mInventory[i];
+            if(s == null)
+                continue;
+            int ol = s.stackSize;
+            s.stackSize = 1;
+            String sID = s.toString() + (s.hasTagCompound() ? s.getTagCompound().toString() : "");
+            s.stackSize = ol;
+            slots.put(sID, slots.getOrDefault(sID, 0) + s.stackSize);
+            if(!stacks.containsKey(sID))
+                stacks.put(sID, s);
+            //order.add(sID);
+            mInventory[i] = null;
+        }
+        int i = 0;
+        for(Map.Entry<String, Integer> entry : slots.entrySet()){
+            do {
+                mInventory[i] = stacks.get(entry.getKey()).copy();
+                int toSet = Math.min(entry.getValue(), mInventory[i].getMaxStackSize());
+                mInventory[i].stackSize = toSet;
+                entry.setValue(entry.getValue() - toSet);
+                i++;
+            }
+            while(entry.getValue() > 0);
         }
     }
 
