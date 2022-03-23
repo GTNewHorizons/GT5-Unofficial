@@ -9,10 +9,15 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_Log;
 import gregtech.api.world.GT_Worldgen;
+import gregtech.common.blocks.GT_TileEntity_Ores;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 
 import java.util.*;
+
+import static gregtech.api.enums.GT_Values.oreveinPlacerOres;
+import static gregtech.api.enums.GT_Values.oreveinPlacerOresMultiplier;
 
 public class GT_Worldgen_GT_Ore_Layer_Space extends GT_Worldgen {
 	public static int sWeight = 0;
@@ -254,40 +259,80 @@ public class GT_Worldgen_GT_Ore_Layer_Space extends GT_Worldgen {
 		if (GalacticGreg.GalacticConfig.ProfileOreGen)
 			mProfilingStart = System.currentTimeMillis();
 		// ---------------------------
-		int tMinY = this.mMinY + pRandom.nextInt(this.mMaxY - this.mMinY - 5);
+		int tMinY = this.mMinY + pRandom.nextInt(this.mMaxY - this.mMinY - 7);
 
 		int cX = pChunkX - pRandom.nextInt(this.mSize);
 		int eX = pChunkX + 16 + pRandom.nextInt(this.mSize);
+		int cZ = pChunkZ - pRandom.nextInt(this.mSize);
+		int eZ = pChunkZ + 16 + pRandom.nextInt(this.mSize);
 		for (int tX = cX; tX <= eX; tX++) {
-			int cZ = pChunkZ - pRandom.nextInt(this.mSize);
-			int eZ = pChunkZ + 16 + pRandom.nextInt(this.mSize);
 			for (int tZ = cZ; tZ <= eZ; tZ++) {
-				final int maxx = Math.max(Math.abs(cX - tX), Math.abs(eX - tX));
-				final int maxz = Math.max(Math.abs(cZ - tZ), Math.abs(eZ - tZ));
 				if (this.mSecondaryMeta > 0) {
-					for (int i = tMinY - 1; i < tMinY + 2; i++) {
-						if ((pRandom.nextInt(Math.max(1, maxz / this.mDensity)) == 0) || (pRandom.nextInt(Math.max(1, maxx / this.mDensity)) == 0)) {
+					for (int i = tMinY - 1; i < tMinY + 3; i++) {
+						int placeX = Math.max(1, Math.max(MathHelper.abs_int(cX - tX), MathHelper.abs_int(eX - tX))/getDensityFromPos(tX, tZ, pChunkX, pChunkZ));
+						int placeZ = Math.max(1, Math.max(MathHelper.abs_int(cZ - tZ), MathHelper.abs_int(eZ - tZ))/getDensityFromPos(tX, tZ, pChunkX, pChunkZ));
+						if ((pRandom.nextInt(placeZ) == 0) || (pRandom.nextInt(placeX) == 0)) {
 							GT_TileEntity_Ores_Space.setOuterSpaceOreBlock(tMDD, pWorld, tX, i, tZ, this.mSecondaryMeta);
 						}
 					}
 				}
-				if ((this.mBetweenMeta > 0)
-						&& ((pRandom.nextInt(Math.max(1, maxz / this.mDensity)) == 0) || (pRandom.nextInt(Math.max(1, maxx / this.mDensity)) == 0))) {
-					GT_TileEntity_Ores_Space.setOuterSpaceOreBlock(tMDD, pWorld, tX, tMinY + 2 + pRandom.nextInt(2), tZ, this.mBetweenMeta);
+				if (this.mBetweenMeta > 0) {
+					for (int i = tMinY + 2; i < tMinY + 6; i++) {
+						int placeX = Math.max(1, Math.max(MathHelper.abs_int(cX - tX), MathHelper.abs_int(eX - tX))/getDensityFromPos(tX, tZ, pChunkX, pChunkZ));
+						int placeZ = Math.max(1, Math.max(MathHelper.abs_int(cZ - tZ), MathHelper.abs_int(eZ - tZ))/getDensityFromPos(tX, tZ, pChunkX, pChunkZ));
+						if (((pRandom.nextInt(placeZ) == 0) || (pRandom.nextInt(placeX) == 0)) && (pRandom.nextInt(2) == 0)) {
+							GT_TileEntity_Ores_Space.setOuterSpaceOreBlock(tMDD, pWorld, tX, i, tZ, this.mBetweenMeta);
+						}
+					}
+
 				}
 				if (this.mPrimaryMeta > 0) {
-					for (int i = tMinY + 3; i < tMinY + 6; i++) {
-						if ((pRandom.nextInt(Math.max(1, maxz / this.mDensity)) == 0) || (pRandom.nextInt(Math.max(1, maxx / this.mDensity)) == 0)) {
+					for (int i = tMinY + 4; i < tMinY + 8; i++) {
+						int placeX = Math.max(1, Math.max(MathHelper.abs_int(cX - tX), MathHelper.abs_int(eX - tX))/getDensityFromPos(tX, tZ, pChunkX, pChunkZ));
+						int placeZ = Math.max(1, Math.max(MathHelper.abs_int(cZ - tZ), MathHelper.abs_int(eZ - tZ))/getDensityFromPos(tX, tZ, pChunkX, pChunkZ));
+						if ((pRandom.nextInt(placeZ) == 0) || (pRandom.nextInt(placeX) == 0)) {
 							GT_TileEntity_Ores_Space.setOuterSpaceOreBlock(tMDD, pWorld, tX, i, tZ, this.mPrimaryMeta);
 						}
 					}
 				}
-				if ((this.mSporadicMeta > 0)
-						&& ((pRandom.nextInt(Math.max(1, maxz / this.mDensity)) == 0) || (pRandom.nextInt(Math.max(1, maxx / this.mDensity)) == 0))) {
-					GT_TileEntity_Ores_Space.setOuterSpaceOreBlock(tMDD, pWorld, tX, tMinY - 1 + pRandom.nextInt(7), tZ, this.mSporadicMeta);
+				if (this.mSporadicMeta > 0) {
+					for (int i = tMinY - 1; i < tMinY + 8; i++) {
+						int placeX = Math.max(1, Math.max(MathHelper.abs_int(cX - tX), MathHelper.abs_int(eX - tX)) / getDensityFromPos(tX, tZ, pChunkX, pChunkZ));
+						int placeZ = Math.max(1, Math.max(MathHelper.abs_int(cZ - tZ), MathHelper.abs_int(eZ - tZ)) / getDensityFromPos(tX, tZ, pChunkX, pChunkZ));
+						if (((pRandom.nextInt(placeX) == 0) || (pRandom.nextInt(placeZ) == 0)) && (pRandom.nextInt(7) == 0)) {
+							GT_TileEntity_Ores_Space.setOuterSpaceOreBlock(tMDD, pWorld, tX, i, tZ, this.mSporadicMeta);
+						}
+					}
 				}
 			}
 		}
+
+		if( oreveinPlacerOres ) {
+			int nSmallOres = (cX-eX)*(cZ-eZ)*this.mDensity/10 * oreveinPlacerOresMultiplier;
+			for( int nSmallOresCount = 0; nSmallOresCount < nSmallOres; nSmallOresCount++) {
+				int tX = pRandom.nextInt(16) + pChunkX + 2;
+				int tZ = pRandom.nextInt(16) + pChunkZ + 2;
+				int tY = pRandom.nextInt(160) + 10; // Y height can vary from 10 to 170 for small ores.
+				if (this.mPrimaryMeta > 0)
+					GT_TileEntity_Ores_Space.setOuterSpaceOreBlock(tMDD, pWorld, tX, tY, tZ, this.mPrimaryMeta + 16000);
+				tX = pRandom.nextInt(16) + pChunkX + 2;
+				tZ = pRandom.nextInt(16) + pChunkZ + 2;
+				tY = pRandom.nextInt(160) + 10; // Y height can vary from 10 to 170 for small ores.
+				if (this.mSecondaryMeta > 0)
+					GT_TileEntity_Ores_Space.setOuterSpaceOreBlock(tMDD, pWorld, tX, tY, tZ, this.mSecondaryMeta + 16000);
+				tX = pRandom.nextInt(16) + pChunkX + 2;
+				tZ = pRandom.nextInt(16) + pChunkZ + 2;
+				tY = pRandom.nextInt(160) + 10; // Y height can vary from 10 to 170 for small ores.
+				if (this.mBetweenMeta > 0)
+					GT_TileEntity_Ores_Space.setOuterSpaceOreBlock(tMDD, pWorld, tX, tY, tZ, this.mBetweenMeta + 16000);
+				tX = pRandom.nextInt(16) + pChunkX + 2;
+				tZ = pRandom.nextInt(16) + pChunkZ + 2;
+				tY = pRandom.nextInt(190) + 10; // Y height can vary from 10 to 200 for small ores.
+				if (this.mSporadicMeta > 0)
+					GT_TileEntity_Ores_Space.setOuterSpaceOreBlock(tMDD, pWorld, tX, tY, tZ, this.mSporadicMeta + 16000);
+			}
+		}
+
 		// ---------------------------
 		if (GalacticGreg.GalacticConfig.ProfileOreGen)
 		{
@@ -301,5 +346,11 @@ public class GT_Worldgen_GT_Ore_Layer_Space extends GT_Worldgen {
 
 		GalacticGreg.Logger.trace("Leaving executeWorldgen");
 		return true;
+	}
+
+	public int getDensityFromPos(int aX, int aZ, int aSeedX, int aSeedZ) {
+		if (aX < 0) aX -= 16;
+		if (aZ < 0) aZ -= 16;
+		return Math.max(1, this.mDensity / ((int)Math.sqrt(2 + Math.pow(aX/16 - aSeedX/16, 2) + Math.pow(aZ/16 - aSeedZ/16, 2))));
 	}
 }
