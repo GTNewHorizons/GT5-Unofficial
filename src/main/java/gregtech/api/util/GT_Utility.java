@@ -668,11 +668,9 @@ public class GT_Utility {
                     slot = accessibleSlots[slot];
                 }
                 ItemStack s = tPutInventory.getStackInSlot(slot);
-                if(s == null) {
-                    tPutItems.put("null", tPutItems.getOrDefault("null", 0) + 1); // free slots count
+                if(s == null)
                     tPutFreeSlots.add(slot);
-                }
-                else if(s.stackSize < s.getMaxStackSize() && aMinMoveAtOnce <= s.getMaxStackSize() - s.stackSize) {
+                else if((s.stackSize < s.getMaxStackSize() && s.stackSize < ((IInventory) aTileEntity2).getInventoryStackLimit()) && aMinMoveAtOnce <= s.getMaxStackSize() - s.stackSize) {
                     int ol = s.stackSize;
                     s.stackSize = 1;
                     String sID = s.toString() + (s.hasTagCompound() ? s.getTagCompound().toString() : "");
@@ -710,12 +708,16 @@ public class GT_Utility {
                             tMovedItems += toPut;
                             for (int i = 0; i < putStack.size(); i++) {
                                 ItemStack s = putStack.get(i);
-                                int sToPut = Math.min(toPut, s.getMaxStackSize() - s.stackSize);
+                                int sToPut = Math.min(Math.min(Math.min(toPut, s.getMaxStackSize() - s.stackSize), ((IInventory) aTileEntity2).getInventoryStackLimit() - s.stackSize), aMaxTargetStackSize - s.stackSize);
+                                if(sToPut <= 0)
+                                    continue;
                                 if(sToPut < aMinMoveAtOnce)
+                                    continue;
+                                if(s.stackSize + sToPut < aMinTargetStackSize)
                                     continue;
                                 toPut -= sToPut;
                                 s.stackSize += sToPut;
-                                if (s.stackSize == s.getMaxStackSize()) {
+                                if (s.stackSize == s.getMaxStackSize() || s.stackSize == ((IInventory) aTileEntity2).getInventoryStackLimit()) {
                                     putStack.remove(i);
                                     i--;
                                 }
