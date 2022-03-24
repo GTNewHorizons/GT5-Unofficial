@@ -351,10 +351,11 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
         HashMap<String, Integer> slots = new HashMap<>(mInventory.length);
         HashMap<String, ItemStack> stacks = new HashMap<>(mInventory.length);
         List<String> order = new ArrayList<>(mInventory.length);
+        List<Integer> validSlots = new ArrayList<>(mInventory.length);
         for (int i = 0; i < mInventory.length - 1; i++) {
-            if (!isValidSlot(i)) {
+            if (!isValidSlot(i))
                 continue;
-            }
+            validSlots.add(i);
             ItemStack s = mInventory[i];
             if(s == null)
                 continue;
@@ -368,14 +369,15 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
             order.add(sID);
             mInventory[i] = null;
         }
-        for(int i = 0; i < order.size(); i ++)
-        {
-            String sID = order.get(i);
-            if(slots.get(sID) == 0)
+        int slotindex = 0;
+        for (String sID : order) {
+            if (slots.get(sID) == 0)
                 continue;
-            mInventory[i] = stacks.get(sID).copy();
-            int toSet = Math.min(slots.get(sID), mInventory[i].getMaxStackSize());
-            mInventory[i].stackSize = toSet;
+            int slot = validSlots.get(slotindex);
+            slotindex++;
+            mInventory[slot] = stacks.get(sID).copy();
+            int toSet = Math.min(slots.get(sID), mInventory[slot].getMaxStackSize());
+            mInventory[slot].stackSize = toSet;
             slots.put(sID, slots.get(sID) - toSet);
         }
     }

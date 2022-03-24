@@ -9,7 +9,9 @@ import gregtech.common.gui.GT_GUIContainer_SuperBuffer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_SUPERBUFFER;
@@ -49,11 +51,12 @@ public class GT_MetaTileEntity_SuperBuffer extends GT_MetaTileEntity_ChestBuffer
         // no order, this is super buffer
         HashMap<String, Integer> slots = new HashMap<>(mInventory.length);
         HashMap<String, ItemStack> stacks = new HashMap<>(mInventory.length);
+        List<Integer> validSlots = new ArrayList<>(mInventory.length);
         //List<String> order = new ArrayList<>(mInventory.length);
         for (int i = 0; i < mInventory.length - 1; i++) {
-            if (!isValidSlot(i)) {
+            if (!isValidSlot(i))
                 continue;
-            }
+            validSlots.add(i);
             ItemStack s = mInventory[i];
             if(s == null)
                 continue;
@@ -70,9 +73,10 @@ public class GT_MetaTileEntity_SuperBuffer extends GT_MetaTileEntity_ChestBuffer
         int i = 0;
         for(Map.Entry<String, Integer> entry : slots.entrySet()){
             do {
-                mInventory[i] = stacks.get(entry.getKey()).copy();
-                int toSet = Math.min(entry.getValue(), mInventory[i].getMaxStackSize());
-                mInventory[i].stackSize = toSet;
+                int slot = validSlots.get(i);
+                mInventory[slot] = stacks.get(entry.getKey()).copy();
+                int toSet = Math.min(entry.getValue(), mInventory[slot].getMaxStackSize());
+                mInventory[slot].stackSize = toSet;
                 entry.setValue(entry.getValue() - toSet);
                 i++;
             }
