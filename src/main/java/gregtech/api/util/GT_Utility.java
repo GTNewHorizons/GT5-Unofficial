@@ -3,7 +3,6 @@ package gregtech.api.util;
 import cofh.api.transport.IItemDuct;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Iterators;
 import com.google.common.collect.Maps;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
@@ -621,57 +620,161 @@ public class GT_Utility {
         if (aTileEntity1 == null || aMaxTargetStackSize <= 0 || aMinTargetStackSize <= 0 || aMaxMoveAtOnce <= 0 || aMinTargetStackSize > aMaxTargetStackSize || aMinMoveAtOnce > aMaxMoveAtOnce || aMaxStackTransfer == 0)
             return 0;
 
-        int[] tGrabSlots = null;
-        if (aTileEntity1 instanceof ISidedInventory)
-            tGrabSlots = ((ISidedInventory) aTileEntity1).getAccessibleSlotsFromSide(aGrabFrom);
-        if (tGrabSlots == null) {
-            tGrabSlots = new int[aTileEntity1.getSizeInventory()];
-            for (int i = 0; i < tGrabSlots.length; i++) tGrabSlots[i] = i;
+
+
+        int[] tGrabSlots = new int[aTileEntity1.getSizeInventory()];
+        int tGrabSlotsSize = 0;
+        if (aTileEntity1 instanceof ISidedInventory) {
+            for(int i : ((ISidedInventory) aTileEntity1).getAccessibleSlotsFromSide(aGrabFrom)) {
+                ItemStack s = aTileEntity1.getStackInSlot(i);
+                if (s == null || !isAllowedToTakeFromSlot(aTileEntity1, i, aGrabFrom, s) || s.stackSize < aMinMoveAtOnce || !listContainsItem(aFilter, s, true, aInvertFilter))
+                    continue;
+                tGrabSlots[tGrabSlotsSize++] = i;
+            }
+        }
+        else {
+            for (int i = 0; i < tGrabSlots.length; i++)
+            {
+                ItemStack s = aTileEntity1.getStackInSlot(i);
+                if (s == null || !isAllowedToTakeFromSlot(aTileEntity1, i, aGrabFrom, s) || s.stackSize < aMinMoveAtOnce || !listContainsItem(aFilter, s, true, aInvertFilter))
+                    continue;
+                tGrabSlots[tGrabSlotsSize++] = i;
+            }
         }
 
-
+        if(tGrabSlotsSize == 0)
+            return 0;
 
 
         int tGrabInventorySize = tGrabSlots.length;
         if (aTileEntity2 instanceof IInventory)
         {
-            int[] tPutSlots = null;
-            if (aTileEntity2 instanceof ISidedInventory)
-                tPutSlots = ((ISidedInventory) aTileEntity2).getAccessibleSlotsFromSide(aPutTo);
+            IInventory tPutInventory = (IInventory) aTileEntity2;
 
-            if (tPutSlots == null) {
-                tPutSlots = new int[((IInventory) aTileEntity2).getSizeInventory()];
-                for (int i = 0; i < tPutSlots.length; i++) tPutSlots[i] = i;
+            HashMap<String, Integer> tPutItems = new HashMap<>(tPutInventory.getSizeInventory());
+            HashMap<String, List<ItemStack>> tPutItemStacks = new HashMap<>(tPutInventory.getSizeInventory());
+            List<Integer> tPutFreeSlots = new ArrayList<>(tPutInventory.getSizeInventory());
+
+            int[] accessibleSlots = null;
+            if (aTileEntity2 instanceof ISidedInventory)
+                accessibleSlots = ((ISidedInventory) tPutInventory).getAccessibleSlotsFromSide(aPutTo);
+            for (int i = 0; i < tPutInventory.getSizeInventory(); i++)
+            {
+                int slot = i;
+                if(accessibleSlots != null)
+                {
+                    if(accessibleSlots.length <= i)
+                        break;
+                    slot = accessibleSlots[slot];
+                }
+                ItemStack s = tPutInventory.getStackInSlot(slot);
+                if(s == null)
+                    tPutFreeSlots.add(slot);
+                else if((s.stackSize < s.getMaxStackSize() && s.stackSize < tPutInventory.getInventoryStackLimit()) && aMinMoveAtOnce <= s.getMaxStackSize() - s.stackSize) {
+                    int ol = s.stackSize;
+                    s.stackSize = 1;
+                    String sID = s.toString() + (s.hasTagCompound() ? s.getTagCompound().toString() : "");
+                    s.stackSize = ol;
+                    tPutItems.put(sID, tPutItems.getOrDefault(sID, 0) + (Math.min(s.getMaxStackSize(), tPutInventory.getInventoryStackLimit()) - s.stackSize));
+                    List<ItemStack> l = tPutItemStacks.getOrDefault(sID, new ArrayList<>(tPutInventory.getSizeInventory()));
+                    l.add(s);
+                    tPutItemStacks.put(sID, l);
+                }
             }
 
-            IInventory tPutInventory = (IInventory) aTileEntity2;
-            int tPutInventorySize = tPutSlots.length;
-            int tFirstsValidSlot = 0,tStacksMoved = 0,tTotalItemsMoved = 0;
+            if(tPutItems.isEmpty() && tPutFreeSlots.isEmpty())
+                return 0;
+
+            int tStacksMoved = 0,tTotalItemsMoved = 0;
             for (int grabSlot : tGrabSlots) {
-                //ItemStack tInventoryStack : mInventory
                 int tMovedItems;
                 do {
-                    int tGrabSlot = grabSlot;
                     tMovedItems = 0;
-                    ItemStack tGrabStack = aTileEntity1.getStackInSlot(tGrabSlot);
-                    if (listContainsItem(aFilter, tGrabStack, true, aInvertFilter) &&
-                        (tGrabStack.stackSize >= aMinMoveAtOnce && isAllowedToTakeFromSlot(aTileEntity1, tGrabSlot, aGrabFrom, tGrabStack))) {
-                        int tStackSize = tGrabStack.stackSize;
+                    ItemStack tGrabStack = aTileEntity1.getStackInSlot(grabSlot);
+                    int tStackSize = tGrabStack.stackSize;
+                    tGrabStack.stackSize = 1;
+                    String sID = tGrabStack.toString() + (tGrabStack.hasTagCompound() ? tGrabStack.getTagCompound().toString() : "");
+                    tGrabStack.stackSize = tStackSize;
 
-                        for (int tPutSlotIndex = tFirstsValidSlot; tPutSlotIndex < tPutInventorySize; tPutSlotIndex++) {
-                            int tPutSlot = tPutSlots[tPutSlotIndex];
+                    if(tPutItems.containsKey(sID))
+                    {
+                        int canPut = Math.min(tPutItems.get(sID), aMaxMoveAtOnce);
+                        if(canPut >= aMinMoveAtOnce) {
+                            List<ItemStack> putStack = tPutItemStacks.get(sID);
+                            if(!putStack.isEmpty()) {
+                                int toPut = Math.min(canPut, tStackSize);
+                                tStackSize -= toPut;
+                                tTotalItemsMoved += toPut;
+                                tMovedItems += toPut;
+                                for (int i = 0; i < putStack.size(); i++) {
+                                    ItemStack s = putStack.get(i);
+                                    int sToPut = Math.min(Math.min(Math.min(toPut, s.getMaxStackSize() - s.stackSize), tPutInventory.getInventoryStackLimit() - s.stackSize), aMaxTargetStackSize - s.stackSize);
+                                    if (sToPut <= 0)
+                                        continue;
+                                    if (sToPut < aMinMoveAtOnce)
+                                        continue;
+                                    if (s.stackSize + sToPut < aMinTargetStackSize)
+                                        continue;
+                                    toPut -= sToPut;
+                                    s.stackSize += sToPut;
+                                    if (s.stackSize == s.getMaxStackSize() || s.stackSize == tPutInventory.getInventoryStackLimit()) {
+                                        putStack.remove(i);
+                                        i--;
+                                    }
+                                    if (toPut == 0)
+                                        break;
+                                }
+                                tStackSize += toPut;
+                                tTotalItemsMoved -= toPut;
+                                tMovedItems -= toPut;
+                                tPutItems.put(sID, tPutItems.get(sID) - tMovedItems);
+                                if (tPutItems.get(sID) == 0)
+                                    tPutItems.remove(sID);
+
+                                tGrabStack.stackSize = tStackSize;
+                                if (tGrabStack.stackSize == 0)
+                                    aTileEntity1.setInventorySlotContents(grabSlot, null);
+                                if (tMovedItems > 0) {
+                                    aTileEntity1.markDirty();
+                                    tPutInventory.markDirty();
+                                }
+                            }
+                        }
+                    }
+                    if(tStackSize > 0 && !tPutFreeSlots.isEmpty())
+                    {
+                        for(int i = 0; i < tPutFreeSlots.size(); i++)
+                        {
+                            int tPutSlot = tPutFreeSlots.get(i);
                             if (isAllowedToPutIntoSlot(tPutInventory, tPutSlot, aPutTo, tGrabStack, (byte) 64)) {
-                                int tMoved = moveStackFromSlotAToSlotB(aTileEntity1, tPutInventory, tGrabSlot, tPutSlot, aMaxTargetStackSize, aMinTargetStackSize, (byte) (aMaxMoveAtOnce - tMovedItems), aMinMoveAtOnce);
+                                int tMoved = moveStackFromSlotAToSlotB(aTileEntity1, tPutInventory, grabSlot, tPutSlot, aMaxTargetStackSize, aMinTargetStackSize, (byte) (aMaxMoveAtOnce - tMovedItems), aMinMoveAtOnce);
+                                if(tMoved > 0)
+                                {
+                                    tPutFreeSlots.remove(i);
+                                    i--;
+                                    ItemStack s = tPutInventory.getStackInSlot(tPutSlot);
+                                    if(s.stackSize < s.getMaxStackSize() && s.stackSize < tPutInventory.getInventoryStackLimit()) {
+                                        int ol = s.stackSize;
+                                        s.stackSize = 1;
+                                        String ssID = s.toString() + (s.hasTagCompound() ? s.getTagCompound().toString() : "");
+                                        s.stackSize = ol;
+                                        tPutItems.put(ssID, tPutItems.getOrDefault(ssID, 0) + (Math.min(s.getMaxStackSize(), tPutInventory.getInventoryStackLimit()) - s.stackSize));
+                                        List<ItemStack> l = tPutItemStacks.getOrDefault(ssID, new ArrayList<>(tPutInventory.getSizeInventory()));
+                                        l.add(s);
+                                        tPutItemStacks.put(ssID, l);
+                                    }
+                                }
                                 tTotalItemsMoved += tMoved;
                                 tMovedItems += tMoved;
                                 if (tMovedItems == tStackSize)
                                     break;
                             }
                         }
-                        if (tMovedItems > 0) {
-                            if (++tStacksMoved >= aMaxStackTransfer)
-                                return tTotalItemsMoved;
-                        }
+                    }
+
+                    if (tMovedItems > 0) {
+                        if (++tStacksMoved >= aMaxStackTransfer)
+                            return tTotalItemsMoved;
                     }
                 } while (tMovedItems > 0); //suport inventorys thgat store motre then a stack in a aslot
             }
@@ -743,7 +846,7 @@ public class GT_Utility {
     private static byte moveOneItemStack(IInventory aTileEntity1, Object aTileEntity2, byte aGrabFrom, byte aPutTo, List<ItemStack> aFilter, boolean aInvertFilter, byte aMaxTargetStackSize, byte aMinTargetStackSize, byte aMaxMoveAtOnce, byte aMinMoveAtOnce, boolean aDoCheckChests) {
         if (aTileEntity1 == null || aMaxTargetStackSize <= 0 || aMinTargetStackSize <= 0 || aMaxMoveAtOnce <= 0 || aMinTargetStackSize > aMaxTargetStackSize || aMinMoveAtOnce > aMaxMoveAtOnce)
             return 0;
-            
+
         int[] tGrabSlots = null;
         if (aTileEntity1 instanceof ISidedInventory)
             tGrabSlots = ((ISidedInventory) aTileEntity1).getAccessibleSlotsFromSide(aGrabFrom);
@@ -963,8 +1066,8 @@ public class GT_Utility {
     }
 
     public static boolean areStacksEqual(ItemStack aStack1, ItemStack aStack2, boolean aIgnoreNBT) {
-        return aStack1 != null && aStack2 != null && aStack1.getItem() == aStack2.getItem() 
-            && (aIgnoreNBT || (((aStack1.getTagCompound() == null) == (aStack2.getTagCompound() == null)) && (aStack1.getTagCompound() == null || aStack1.getTagCompound().equals(aStack2.getTagCompound())))) 
+        return aStack1 != null && aStack2 != null && aStack1.getItem() == aStack2.getItem()
+            && (aIgnoreNBT || (((aStack1.getTagCompound() == null) == (aStack2.getTagCompound() == null)) && (aStack1.getTagCompound() == null || aStack1.getTagCompound().equals(aStack2.getTagCompound()))))
             && (Items.feather.getDamage(aStack1) == Items.feather.getDamage(aStack2) || Items.feather.getDamage(aStack1) == W || Items.feather.getDamage(aStack2) == W);
     }
 
@@ -1231,7 +1334,7 @@ public class GT_Utility {
 
             if (tList == null) return false;
             if (aInput != null && !tEntry.getKey().matches(aInput)) return false;
-            
+
             return tList.stream().anyMatch(tOutput -> (aOutput == null || areStacksEqual(GT_OreDictUnificator.get(tOutput), aOutput)));
         }));
     }
@@ -2378,7 +2481,7 @@ public class GT_Utility {
         }
         return -1;
     }
-	
+
     private static DecimalFormat getDecimalFormat(){
         return decimalFormatters.computeIfAbsent(Locale.getDefault(Locale.Category.FORMAT), locale -> {
             DecimalFormat numberFormat =new DecimalFormat();//uses the necessary locale inside anyway

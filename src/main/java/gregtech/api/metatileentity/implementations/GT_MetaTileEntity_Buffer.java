@@ -9,6 +9,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import java.util.*;
+
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
@@ -250,7 +252,7 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
     @Override
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (aSide == getBaseMetaTileEntity().getBackFacing()) {
-        	
+
             mTargetStackSize = (byte) ((mTargetStackSize + (aPlayer.isSneaking()? -1 : 1)) % 65);
             if(mTargetStackSize <0){mTargetStackSize = mMaxStackSize;}
             if (mTargetStackSize == 0) {
@@ -332,7 +334,7 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
         return aSide != aBaseMetaTileEntity.getBackFacing();
     }
-    
+
     @Override
     public boolean allowGeneralRedstoneOutput(){
     	return true;
@@ -346,19 +348,37 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
     }
 
     protected void fillStacksIntoFirstSlots() {
+        HashMap<String, Integer> slots = new HashMap<>(mInventory.length);
+        HashMap<String, ItemStack> stacks = new HashMap<>(mInventory.length);
+        List<String> order = new ArrayList<>(mInventory.length);
+        List<Integer> validSlots = new ArrayList<>(mInventory.length);
         for (int i = 0; i < mInventory.length - 1; i++) {
-            if (!isValidSlot(i)) {
+            if (!isValidSlot(i))
                 continue;
-            }
-
-            for (int j = i + 1; j < mInventory.length; j++) {
-                if (!isValidSlot(j)) {
-                    continue;
-                }
-
-                if (mInventory[j] != null && (mInventory[i] == null || GT_Utility.areStacksEqual(mInventory[i], mInventory[j])))
-                    GT_Utility.moveStackFromSlotAToSlotB(getBaseMetaTileEntity(), getBaseMetaTileEntity(), j, i, (byte) 64, (byte) 1, (byte) 64, (byte) 1);
-            }
+            validSlots.add(i);
+            ItemStack s = mInventory[i];
+            if(s == null)
+                continue;
+            int ol = s.stackSize;
+            s.stackSize = 1;
+            String sID = s.toString() + (s.hasTagCompound() ? s.getTagCompound().toString() : "");
+            s.stackSize = ol;
+            slots.put(sID, slots.getOrDefault(sID, 0) + s.stackSize);
+            if(!stacks.containsKey(sID))
+                stacks.put(sID, s);
+            order.add(sID);
+            mInventory[i] = null;
+        }
+        int slotindex = 0;
+        for (String sID : order) {
+            if (slots.get(sID) == 0)
+                continue;
+            int slot = validSlots.get(slotindex);
+            slotindex++;
+            mInventory[slot] = stacks.get(sID).copy();
+            int toSet = Math.min(slots.get(sID), mInventory[slot].getMaxStackSize());
+            mInventory[slot].stackSize = toSet;
+            slots.put(sID, slots.get(sID) - toSet);
         }
     }
 
