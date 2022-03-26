@@ -6,12 +6,14 @@ import net.minecraft.nbt.NBTTagCompound;
 public class IMC {
 
 	public static void IMCSender() {
-        setNBTAndSend("com.elisis.gtnhlanth.xmod.nei.DigesterHandler", "gregtech:gt.blockmachines:10500");
-        setNBTAndSend("com.elisis.gtnhlanth.xmod.nei.DisstankHandler", "gregtech:gt.blockmachines:10501");
-        
+        sendHandler("com.elisis.gtnhlanth.xmod.nei.DigesterHandler", "gregtech:gt.blockmachines:10500");
+        sendHandler("com.elisis.gtnhlanth.xmod.nei.DisstankHandler", "gregtech:gt.blockmachines:10501");
+
+        sendCatalyst("gtnhlanth.recipe.digester", "gregtech:gt.blockmachines:10500");
+        sendCatalyst("gtnhlanth.recipe.disstank", "gregtech:gt.blockmachines:10501");
     }
 
-    private static void setNBTAndSend(String aName, String aBlock) {
+    private static void sendHandler(String aName, String aBlock) {
         NBTTagCompound aNBT = new NBTTagCompound();
         aNBT.setString("handler", aName);
         aNBT.setString("modName", "GTNH: Lanthanides");
@@ -24,5 +26,12 @@ public class IMC {
         aNBT.setInteger("yShift", 6);
         FMLInterModComms.sendMessage("NotEnoughItems", "registerHandlerInfo", aNBT);
     }
-	
+
+    private static void sendCatalyst(String aName, String aStack) {
+        NBTTagCompound aNBT = new NBTTagCompound();
+        aNBT.setString("handlerID", aName);
+        aNBT.setString("itemName", aStack);
+        FMLInterModComms.sendMessage("NotEnoughItems", "registerCatalystInfo", aNBT);
+    }
+
 }
