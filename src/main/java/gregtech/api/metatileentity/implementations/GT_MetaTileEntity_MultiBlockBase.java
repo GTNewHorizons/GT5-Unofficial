@@ -88,6 +88,11 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
     }
 
     @Override
+    public boolean isDisplaySecondaryDescription() {
+        return Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
+    }
+
+    @Override
     public boolean allowCoverOnSide(byte aSide, GT_ItemStack aCoverID) {
         return aSide != getBaseMetaTileEntity().getFrontFacing();
     }
