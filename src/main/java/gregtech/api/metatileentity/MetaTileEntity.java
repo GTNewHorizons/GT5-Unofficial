@@ -111,6 +111,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
      * This method will only be called on client side
      * @return whether the secondary description should be display. default is false
      */
+    @Deprecated
     public boolean isDisplaySecondaryDescription() {
         return false;
     }
@@ -941,7 +942,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
     public void onCreated(ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
         //
     }
-    
+
     @Override
     public boolean allowGeneralRedstoneOutput(){
     	return false;
@@ -951,12 +952,12 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
     public String trans(String aKey, String aEnglish){
     	return GT_Utility.trans(aKey, aEnglish);
     }
-    
+
     @Override
     public boolean hasAlternativeModeText(){
     	return false;
     }
-    
+
     @Override
     public String getAlternativeModeText(){
     	return "";
@@ -964,7 +965,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
 
     @Override
     public boolean shouldJoinIc2Enet() { return false; }
-    
+
     public boolean shouldTriggerBlockUpdate() { return false; }
 
     @Optional.Method(modid = "appliedenergistics2")
@@ -979,15 +980,15 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
 
     @Optional.Method(modid = "appliedenergistics2")
     public void gridChanged() {}
-    
+
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
         currenttip.add(String.format("Facing: %s", ForgeDirection.getOrientation(mBaseMetaTileEntity.getFrontFacing()).name()));
     }
-    
+
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y, int z) {
-        /* Empty */        
+        /* Empty */
     }
 
 }
