@@ -637,7 +637,7 @@ public class GT_Utility {
             for (int i = 0; i < tGrabSlots.length; i++)
             {
                 ItemStack s = aTileEntity1.getStackInSlot(i);
-                if (s == null || !isAllowedToTakeFromSlot(aTileEntity1, i, aGrabFrom, s) || s.stackSize < aMinMoveAtOnce || !listContainsItem(aFilter, s, true, aInvertFilter))
+                if (s == null || s.stackSize < aMinMoveAtOnce || !listContainsItem(aFilter, s, true, aInvertFilter))
                     continue;
                 tGrabSlots[tGrabSlotsSize++] = i;
             }
@@ -705,9 +705,7 @@ public class GT_Utility {
                             List<ItemStack> putStack = tPutItemStacks.get(sID);
                             if(!putStack.isEmpty()) {
                                 int toPut = Math.min(canPut, tStackSize);
-                                tStackSize -= toPut;
-                                tTotalItemsMoved += toPut;
-                                tMovedItems += toPut;
+                                tMovedItems = toPut;
                                 for (int i = 0; i < putStack.size(); i++) {
                                     ItemStack s = putStack.get(i);
                                     int sToPut = Math.min(Math.min(Math.min(toPut, s.getMaxStackSize() - s.stackSize), tPutInventory.getInventoryStackLimit() - s.stackSize), aMaxTargetStackSize - s.stackSize);
@@ -726,17 +724,19 @@ public class GT_Utility {
                                     if (toPut == 0)
                                         break;
                                 }
-                                tStackSize += toPut;
-                                tTotalItemsMoved -= toPut;
                                 tMovedItems -= toPut;
-                                tPutItems.merge(sID, tMovedItems, (a, b) -> a - b);
-                                if (tPutItems.get(sID) == 0)
-                                    tPutItems.remove(sID);
-
-                                tGrabStack.stackSize = tStackSize;
-                                if (tGrabStack.stackSize == 0)
-                                    aTileEntity1.setInventorySlotContents(grabSlot, null);
                                 if (tMovedItems > 0) {
+                                    tStackSize -= tMovedItems;
+                                    tTotalItemsMoved += tMovedItems;
+                                    tPutItems.merge(sID, tMovedItems, (a, b) -> a - b);
+                                    if (tPutItems.get(sID) == 0)
+                                        tPutItems.remove(sID);
+
+                                    if (tStackSize == 0)
+                                        aTileEntity1.setInventorySlotContents(grabSlot, null);
+                                    else
+                                        tGrabStack.stackSize = tStackSize;
+
                                     aTileEntity1.markDirty();
                                     tPutInventory.markDirty();
                                 }
@@ -765,11 +765,12 @@ public class GT_Utility {
                                         }
                                         l.add(s);
                                     }
+                                    tTotalItemsMoved += tMoved;
+                                    tMovedItems += tMoved;
+                                    tStackSize -= tMoved;
+                                    if (tStackSize == 0)
+                                        break;
                                 }
-                                tTotalItemsMoved += tMoved;
-                                tMovedItems += tMoved;
-                                if (tMovedItems == tStackSize)
-                                    break;
                             }
                         }
                     }

@@ -155,11 +155,10 @@ public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch {
     }
 
     protected void fillStacksIntoFirstSlots() {
-        // no order, this is input bus
         HashMap<GT_Utility.ItemId, Integer> slots = new HashMap<>(mInventory.length);
         HashMap<GT_Utility.ItemId, ItemStack> stacks = new HashMap<>(mInventory.length);
+        List<GT_Utility.ItemId> order = new ArrayList<>(mInventory.length);
         List<Integer> validSlots = new ArrayList<>(mInventory.length);
-        //List<String> order = new ArrayList<>(mInventory.length);
         for (int i = 0; i < mInventory.length - 1; i++) {
             if (!isValidSlot(i))
                 continue;
@@ -171,20 +170,20 @@ public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch {
             slots.merge(sID, s.stackSize, Integer::sum);
             if(!stacks.containsKey(sID))
                 stacks.put(sID, s);
-            //order.add(sID);
+            order.add(sID);
             mInventory[i] = null;
         }
-        int i = 0;
-        for(Map.Entry<GT_Utility.ItemId, Integer> entry : slots.entrySet()){
-            do {
-                int slot = validSlots.get(i);
-                mInventory[slot] = stacks.get(entry.getKey()).copy();
-                int toSet = Math.min(entry.getValue(), mInventory[slot].getMaxStackSize());
-                mInventory[slot].stackSize = toSet;
-                entry.setValue(entry.getValue() - toSet);
-                i++;
-            }
-            while(entry.getValue() > 0);
+        int slotindex = 0;
+        for (GT_Utility.ItemId sID : order) {
+            int toSet = slots.get(sID);
+            if (toSet == 0)
+                continue;
+            int slot = validSlots.get(slotindex);
+            slotindex++;
+            mInventory[slot] = stacks.get(sID).copy();
+            toSet = Math.min(toSet, mInventory[slot].getMaxStackSize());
+            mInventory[slot].stackSize = toSet;
+            slots.merge(sID, toSet, (a, b) -> a - b);
         }
     }
 

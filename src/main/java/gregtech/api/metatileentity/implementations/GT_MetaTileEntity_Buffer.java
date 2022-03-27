@@ -368,14 +368,15 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
         }
         int slotindex = 0;
         for (GT_Utility.ItemId sID : order) {
-            if (slots.get(sID) == 0)
+            int toSet = slots.get(sID);
+            if (toSet == 0)
                 continue;
             int slot = validSlots.get(slotindex);
             slotindex++;
             mInventory[slot] = stacks.get(sID).copy();
-            int toSet = Math.min(slots.get(sID), mInventory[slot].getMaxStackSize());
+            toSet = Math.min(toSet, mInventory[slot].getMaxStackSize());
             mInventory[slot].stackSize = toSet;
-            slots.put(sID, slots.get(sID) - toSet);
+            slots.merge(sID, toSet, (a, b) -> a - b);
         }
     }
 
