@@ -4,6 +4,7 @@ import common.Blocks;
 import common.blocks.*;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
+import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -28,7 +29,7 @@ import util.Vector3ic;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
+public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase implements ISecondaryDescribable {
 	
 	private final static String glassNameIC2Reinforced = "blockAlloyGlass";
 	private final static Block CASING = Blocks.tfftCasing;
@@ -59,9 +60,26 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 		return new GTMTE_FluidMultiStorage(super.mName);
 	}
 
-	@Override
-	public String[] getDescription() {
-		final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    @Override
+    public String[] getDescription() {
+        return getCurrentDescription();
+    }
+
+    @Override
+    public boolean isDisplaySecondaryDescription() {
+        return Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
+    }
+
+    public String[] getPrimaryDescription() {
+        return getTooltip().getInformation();
+    }
+
+    public String[] getSecondaryDescription() {
+        return getTooltip().getStructureInformation();
+    }
+
+    protected GT_Multiblock_Tooltip_Builder getTooltip() {
+        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
 		tt.addMachineType("Fluid Tank")
 		.addInfo("High-Tech fluid tank that can hold up to 25 different fluids!")
 		.addInfo("Has 1/25th of the total capacity as capacity for each fluid.")
@@ -86,12 +104,8 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 		.addStructureInfo("Use MIOH with conduits or fluid storage busses to see all fluids at once. If it's fixed.")
 		.addStructureInfo("Ask someone else why there's 4 versions, with 2 uncraftable ones")
 		.toolTipFinisher("KekzTech");
-		if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-			return tt.getInformation();
-		} else {
-			return tt.getStructureInformation();
-		}
-	}
+        return tt;
+    }
 
 	@Override
 	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
