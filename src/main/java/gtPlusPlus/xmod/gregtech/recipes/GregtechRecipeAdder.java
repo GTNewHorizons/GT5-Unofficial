@@ -1023,6 +1023,8 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 
     @Override
     public boolean addAssemblylineRecipe(ItemStack aResearchItem, int aResearchTime, ItemStack[] aInputs, FluidStack[] aFluidInputs, ItemStack aOutput, int aDuration, int aEUt) {
+		if (GTNH)
+			return RA.addAssemblylineRecipe(aResearchItem, aResearchTime, aInputs, aFluidInputs, aOutput, aDuration, aEUt);
         if ((aResearchItem==null)||(aResearchTime<=0)||(aInputs == null) || (aOutput == null) || aInputs.length>15 || aInputs.length<4) {
             return false;
         }
@@ -1042,6 +1044,8 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 
     @Override
 	public boolean addAssemblylineRecipe(ItemStack aResearchItem, int aResearchTime, Object[] aInputs, FluidStack[] aFluidInputs, ItemStack aOutput, int aDuration, int aEUt) {
+		if (GTNH)
+			return RA.addAssemblylineRecipe(aResearchItem, aResearchTime, aInputs, aFluidInputs, aOutput, aDuration, aEUt);
         if ((aResearchItem==null)||(aResearchTime<=0)||(aInputs == null) || (aOutput == null) || aInputs.length>15 || aInputs.length<4) {
             return false;
         }
