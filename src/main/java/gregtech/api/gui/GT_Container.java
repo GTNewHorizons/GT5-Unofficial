@@ -314,7 +314,7 @@ public class GT_Container extends Container {
             while (aStack.stackSize > 0 && (!par4 && var6 < aSlotCount || par4 && var6 >= aStartIndex)) {
                 var7 = (Slot) this.inventorySlots.get(var6);
                 var8 = var7.getStack();
-                if (!(var7 instanceof GT_Slot_Holo) && !(var7 instanceof GT_Slot_Output) && var8 != null && var8.getItem() == aStack.getItem() && (!aStack.getHasSubtypes() || aStack.getItemDamage() == var8.getItemDamage()) && ItemStack.areItemStackTagsEqual(aStack, var8)) {
+                if (!(var7 instanceof GT_Slot_Holo) && !(var7 instanceof GT_Slot_Output) && var7.isItemValid(aStack) && var8 != null && var8.getItem() == aStack.getItem() && (!aStack.getHasSubtypes() || aStack.getItemDamage() == var8.getItemDamage()) && ItemStack.areItemStackTagsEqual(aStack, var8)) {
                     int var9 = var8.stackSize + aStack.stackSize;
                     if (var8.stackSize < mTileEntity.getInventoryStackLimit()) {
                         if (var9 <= aStack.getMaxStackSize()) {
@@ -349,7 +349,7 @@ public class GT_Container extends Container {
                 var7 = (Slot) this.inventorySlots.get(var6);
                 var8 = var7.getStack();
 
-                if (var8 == null) {
+                if (var7.isItemValid(aStack) && var8 == null) {
                     int var10 = Math.min(aStack.stackSize, mTileEntity.getInventoryStackLimit());
                     var7.putStack(GT_Utility.copyAmount(var10, aStack));
                     var7.onSlotChanged();
