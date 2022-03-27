@@ -688,10 +688,13 @@ public class GT_Utility {
             int tStacksMoved = 0,tTotalItemsMoved = 0;
             for (int grabSlot : tGrabSlots) {
                 int tMovedItems;
+                int tStackSize;
                 do {
                     tMovedItems = 0;
                     ItemStack tGrabStack = aTileEntity1.getStackInSlot(grabSlot);
-                    int tStackSize = tGrabStack.stackSize;
+                    if(tGrabStack == null)
+                        break;
+                    tStackSize = tGrabStack.stackSize;
                     tGrabStack.stackSize = 1;
                     String sID = tGrabStack.toString() + (tGrabStack.hasTagCompound() ? tGrabStack.getTagCompound().toString() : "");
                     tGrabStack.stackSize = tStackSize;
@@ -776,7 +779,7 @@ public class GT_Utility {
                         if (++tStacksMoved >= aMaxStackTransfer)
                             return tTotalItemsMoved;
                     }
-                } while (tMovedItems > 0); //suport inventorys thgat store motre then a stack in a aslot
+                } while (tMovedItems > 0 && tStackSize > 0); //suport inventorys thgat store motre then a stack in a aslot
             }
             if (aDoCheckChests && aTileEntity1 instanceof TileEntityChest) {
                 TileEntityChest tTileEntity1 = (TileEntityChest) aTileEntity1;
