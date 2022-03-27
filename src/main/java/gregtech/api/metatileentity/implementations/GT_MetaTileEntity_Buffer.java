@@ -348,9 +348,9 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
     }
 
     protected void fillStacksIntoFirstSlots() {
-        HashMap<String, Integer> slots = new HashMap<>(mInventory.length);
-        HashMap<String, ItemStack> stacks = new HashMap<>(mInventory.length);
-        List<String> order = new ArrayList<>(mInventory.length);
+        HashMap<GT_Utility.ItemId, Integer> slots = new HashMap<>(mInventory.length);
+        HashMap<GT_Utility.ItemId, ItemStack> stacks = new HashMap<>(mInventory.length);
+        List<GT_Utility.ItemId> order = new ArrayList<>(mInventory.length);
         List<Integer> validSlots = new ArrayList<>(mInventory.length);
         for (int i = 0; i < mInventory.length - 1; i++) {
             if (!isValidSlot(i))
@@ -359,18 +359,15 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
             ItemStack s = mInventory[i];
             if(s == null)
                 continue;
-            int ol = s.stackSize;
-            s.stackSize = 1;
-            String sID = s.toString() + (s.hasTagCompound() ? s.getTagCompound().toString() : "");
-            s.stackSize = ol;
-            slots.put(sID, slots.getOrDefault(sID, 0) + s.stackSize);
+            GT_Utility.ItemId sID = GT_Utility.ItemId.createNoCopy(s);
+            slots.merge(sID, s.stackSize, Integer::sum);
             if(!stacks.containsKey(sID))
                 stacks.put(sID, s);
             order.add(sID);
             mInventory[i] = null;
         }
         int slotindex = 0;
-        for (String sID : order) {
+        for (GT_Utility.ItemId sID : order) {
             if (slots.get(sID) == 0)
                 continue;
             int slot = validSlots.get(slotindex);
