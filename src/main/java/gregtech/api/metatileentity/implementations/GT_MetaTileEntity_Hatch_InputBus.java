@@ -7,7 +7,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ClientPreference;
-import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
@@ -144,22 +143,22 @@ public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch {
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
         if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.hasInventoryBeenModified()) {
-            fillStacksIntoFirstSlots();
+            updateSlots();
         }
     }
 
     public void updateSlots() {
         for (int i = 0; i < mInventory.length; i++)
             if (mInventory[i] != null && mInventory[i].stackSize <= 0) mInventory[i] = null;
-        fillStacksIntoFirstSlots();
+        if(!disableSort)
+            fillStacksIntoFirstSlots();
     }
 
     protected void fillStacksIntoFirstSlots() {
-        // no order, this is input bus :>
-        HashMap<String, Integer> slots = new HashMap<>(mInventory.length);
-        HashMap<String, ItemStack> stacks = new HashMap<>(mInventory.length);
+        HashMap<GT_Utility.ItemId, Integer> slots = new HashMap<>(mInventory.length);
+        HashMap<GT_Utility.ItemId, ItemStack> stacks = new HashMap<>(mInventory.length);
+        List<GT_Utility.ItemId> order = new ArrayList<>(mInventory.length);
         List<Integer> validSlots = new ArrayList<>(mInventory.length);
-        //List<String> order = new ArrayList<>(mInventory.length);
         for (int i = 0; i < mInventory.length - 1; i++) {
             if (!isValidSlot(i))
                 continue;
@@ -167,27 +166,24 @@ public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch {
             ItemStack s = mInventory[i];
             if(s == null)
                 continue;
-            int ol = s.stackSize;
-            s.stackSize = 1;
-            String sID = s.toString() + (s.hasTagCompound() ? s.getTagCompound().toString() : "");
-            s.stackSize = ol;
-            slots.put(sID, slots.getOrDefault(sID, 0) + s.stackSize);
+            GT_Utility.ItemId sID = GT_Utility.ItemId.createNoCopy(s);
+            slots.merge(sID, s.stackSize, Integer::sum);
             if(!stacks.containsKey(sID))
                 stacks.put(sID, s);
-            //order.add(sID);
+            order.add(sID);
             mInventory[i] = null;
         }
-        int i = 0;
-        for(Map.Entry<String, Integer> entry : slots.entrySet()){
-            do {
-                int slot = validSlots.get(i);
-                mInventory[slot] = stacks.get(entry.getKey()).copy();
-                int toSet = Math.min(entry.getValue(), mInventory[slot].getMaxStackSize());
-                mInventory[slot].stackSize = toSet;
-                entry.setValue(entry.getValue() - toSet);
-                i++;
-            }
-            while(entry.getValue() > 0);
+        int slotindex = 0;
+        for (GT_Utility.ItemId sID : order) {
+            int toSet = slots.get(sID);
+            if (toSet == 0)
+                continue;
+            int slot = validSlots.get(slotindex);
+            slotindex++;
+            mInventory[slot] = stacks.get(sID).copy();
+            toSet = Math.min(toSet, mInventory[slot].getMaxStackSize());
+            mInventory[slot].stackSize = toSet;
+            slots.merge(sID, toSet, (a, b) -> a - b);
         }
     }
 

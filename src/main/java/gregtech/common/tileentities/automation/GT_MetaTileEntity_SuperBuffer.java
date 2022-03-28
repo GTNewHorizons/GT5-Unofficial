@@ -4,6 +4,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GT_Utility;
 import gregtech.common.gui.GT_Container_SuperBuffer;
 import gregtech.common.gui.GT_GUIContainer_SuperBuffer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -49,8 +50,8 @@ public class GT_MetaTileEntity_SuperBuffer extends GT_MetaTileEntity_ChestBuffer
     @Override
     protected void fillStacksIntoFirstSlots() {
         // no order, this is super buffer
-        HashMap<String, Integer> slots = new HashMap<>(mInventory.length);
-        HashMap<String, ItemStack> stacks = new HashMap<>(mInventory.length);
+        HashMap<GT_Utility.ItemId, Integer> slots = new HashMap<>(mInventory.length);
+        HashMap<GT_Utility.ItemId, ItemStack> stacks = new HashMap<>(mInventory.length);
         List<Integer> validSlots = new ArrayList<>(mInventory.length);
         //List<String> order = new ArrayList<>(mInventory.length);
         for (int i = 0; i < mInventory.length - 1; i++) {
@@ -60,18 +61,15 @@ public class GT_MetaTileEntity_SuperBuffer extends GT_MetaTileEntity_ChestBuffer
             ItemStack s = mInventory[i];
             if(s == null)
                 continue;
-            int ol = s.stackSize;
-            s.stackSize = 1;
-            String sID = s.toString() + (s.hasTagCompound() ? s.getTagCompound().toString() : "");
-            s.stackSize = ol;
-            slots.put(sID, slots.getOrDefault(sID, 0) + s.stackSize);
+            GT_Utility.ItemId sID = GT_Utility.ItemId.createNoCopy(s);
+            slots.merge(sID, s.stackSize, Integer::sum);
             if(!stacks.containsKey(sID))
                 stacks.put(sID, s);
             //order.add(sID);
             mInventory[i] = null;
         }
         int i = 0;
-        for(Map.Entry<String, Integer> entry : slots.entrySet()){
+        for(Map.Entry<GT_Utility.ItemId, Integer> entry : slots.entrySet()){
             do {
                 int slot = validSlots.get(i);
                 mInventory[slot] = stacks.get(entry.getKey()).copy();
