@@ -12,6 +12,7 @@ import gregtech.api.util.GT_AssemblyLineUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_DATA_ACCESS;
 
@@ -122,6 +123,23 @@ public class GT_MetaTileEntity_Hatch_DataAccess extends GT_MetaTileEntity_Hatch 
     public void setActive(boolean mActive){
         getBaseMetaTileEntity().setActive(mActive);
         timeout=mActive?4:0;
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        if (aNBT.getByte("mSticksUpdated") != 1) {
+            for (int i = 0; i < getSizeInventory(); i++) {
+                GT_AssemblyLineUtils.processDataStick(getStackInSlot(i));
+            }
+        }
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        // reminder: remove this marker after many years
+        aNBT.setByte("mSticksUpdated", (byte) 1);
     }
 
     @Override
