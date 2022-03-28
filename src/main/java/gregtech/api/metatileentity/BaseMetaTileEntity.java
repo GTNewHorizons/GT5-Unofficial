@@ -90,7 +90,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
     private final boolean[] mActiveEUOutputs = new boolean[]{false, false, false, false, false, false};
     private final int[] mTimeStatistics = new int[GregTech_API.TICKS_FOR_LAG_AVERAGING];
     private boolean mHasEnoughEnergy = true, mRunningThroughTick = false, mInputDisabled = false, mOutputDisabled = false, mMuffler = false, mLockUpgrade = false;
-    private boolean mActive = false, mWorkUpdate = false, mSteamConverter = false, mInventoryChanged = false, mWorks = true;
+    private boolean mActive = false, mWorkUpdate = false, mSteamConverter = false, mWorks = true;
     private boolean oRedstone = false;
     private byte mColor = 0, oColor = 0, oStrongRedstone = 0, oRedstoneData = 63, oTextureData = 0, oUpdateData = 0, oTexturePage=0;
     private byte oLightValueClient = -1, oLightValue = -1, mLightValue = 0, mOtherUpgrades = 0, mFacing = 0, oFacing = 0, mWorkData = 0;
@@ -1459,7 +1459,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
 
     @Override
     public byte getGeneralRS(byte aSide){
-    	if(mMetaTileEntity==null)return 0;
+    	if(mMetaTileEntity==null) return 0;
     	return mMetaTileEntity.allowGeneralRedstoneOutput() ? mSidedRedstone[aSide] : 0;
     }
 

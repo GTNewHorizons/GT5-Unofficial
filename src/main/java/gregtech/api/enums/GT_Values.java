@@ -55,7 +55,7 @@ public class GT_Values {
      * This is worth exactly one normal Item.
      * This Constant can be divided by many commonly used Numbers such as
      * 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 14, 15, 16, 18, 20, 21, 24, ... 64 or 81
-     * without loosing precision and is for that reason used as Unit of Amount.
+     * without losing precision and is for that reason used as Unit of Amount.
      * But it is also small enough to be multiplied with larger Numbers.
      * <p/>
      * This is used to determine the amount of Material contained inside a prefixed Ore.
@@ -199,25 +199,45 @@ public class GT_Values {
     /**
      * NBT String Keys
      */
-    public static final String
-        NBT_HIDDEN              = "gt.hidden",               // Boolean
-        NBT_MATERIAL            = "gt.material",             // String containing the Material Name.
-        NBT_COLOR               = "gt.color",                // Integer
-        NBT_MTE_REG             = "gt.mte.reg",              // Containing the MTE Registry ID
-        NBT_MTE_ID              = "gt.mte.id",               // Containing the MTE ID
-        NBT_DISPAY              = "gt.display",
-        NBT_FACING              = "gt.facing",
-        NBT_OWNER               = "gt.owner",
-        NBT_OWNER_UUID          = "gt.ownerUuid",
-        NBT_LOCK_UPGRADE        = "gt.locked",
-        NBT_CUSTOM_NAME         = "name",
+    public static class NBT {
+        public static final String
+            COLOR               = "gt.color",                // Integer
+            CUSTOM_NAME         = "name",                    // String
+            DISPAY              = "gt.display",              // String
+            FACING              = "gt.facing",               // Byte
+            HIDDEN              = "gt.hidden",               // Boolean
+            LOCK_UPGRADE        = "gt.locked",               // Boolean
+            MATERIAL            = "gt.material",             // String containing the Material Name.
+            MODE                = "gt.mode",                 // Number
+            ALLOWED_MODES       = "gt.amode",                // Number
+            MTE_ID              = "gt.mte.id",               // Containing the MTE ID
+            MTE_REG             = "gt.mte.reg",              // Containing the MTE Registry ID
+            OWNER               = "gt.owner",                // String
+            OWNER_UUID          = "gt.ownerUuid",            // UUID (String)
 
-        // MultiBlock
-        NBT_STRUCTURE_OK        = "gt.structure.ok",
-        NBT_ROTATION            = "gt.eRotation",
-        NBT_FLIP                = "gt.eFlip"
+            // Machines
+            FLUID_OUT           = "gt.fluidout",             // Output Fluid
+            INV_OUT             = "gt.invout",               // ItemStack
+            PARALLEL            = "gt.parallel",             // Number
+            TANK_CAPACITY       = "gt.tankcap",              // Number
+            TANK_IN             = "gt.tank.in.",             // FluidStack
+            TANK_OUT            = "gt.tank.out.",            // FluidStack
+            TEXTURE             = "gt.texture",              // String
+            INV_SIZE            = "gt.invsize",              // Number
+            INV_LIST            = "gt.invlist",              // NBT List
 
-   ;
+            // MultiBlock
+            STRUCTURE_OK        = "gt.structure.ok",
+            ROTATION            = "gt.eRotation",
+            FLIP                = "gt.eFlip",
+        	TARGET              = "gt.target",               // Boolean
+            TARGET_X            = "gt.target.x",             // Number
+            TARGET_Y            = "gt.target.y",             // Number
+            TARGET_Z            = "gt.target.z",             // Number
+
+            empty_              = "";
+    }
+
 
     public static final int UNCOLORED = 0x00ffffff;
 

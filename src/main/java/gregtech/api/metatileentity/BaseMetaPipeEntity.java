@@ -354,6 +354,7 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity implements IGregTec
         return true;
     }
 
+    @Override
     public ArrayList<String> getDebugInfo(EntityPlayer aPlayer, int aLogLevel) {
         final ArrayList<String> tList = new ArrayList<>();
         if (aLogLevel > 2) {

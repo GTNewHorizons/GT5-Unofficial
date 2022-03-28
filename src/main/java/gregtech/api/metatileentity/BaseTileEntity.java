@@ -41,6 +41,8 @@ import static gregtech.api.enums.GT_Values.SIDE_UP;
  * Basically everything a TileEntity should have.
  */
 public abstract class BaseTileEntity extends TileEntity implements IHasWorldObjectAndCoords, IIC2Enet, IGTEnet {
+    protected boolean mInventoryChanged = false;
+
     /**
      * Buffers adjacent TileEntities for faster access
      * <p/>
@@ -272,84 +274,84 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
 
     @Override
     public final IInventory getIInventory(int aX, int aY, int aZ) {
-        TileEntity tTileEntity = getTileEntity(aX, aY, aZ);
+        final TileEntity tTileEntity = getTileEntity(aX, aY, aZ);
         if (tTileEntity instanceof IInventory) return (IInventory) tTileEntity;
         return null;
     }
 
     @Override
     public final IInventory getIInventoryOffset(int aX, int aY, int aZ) {
-        TileEntity tTileEntity = getTileEntityOffset(aX, aY, aZ);
+        final TileEntity tTileEntity = getTileEntityOffset(aX, aY, aZ);
         if (tTileEntity instanceof IInventory) return (IInventory) tTileEntity;
         return null;
     }
 
     @Override
     public final IInventory getIInventoryAtSide(byte aSide) {
-        TileEntity tTileEntity = getTileEntityAtSide(aSide);
+        final TileEntity tTileEntity = getTileEntityAtSide(aSide);
         if (tTileEntity instanceof IInventory) return (IInventory) tTileEntity;
         return null;
     }
 
     @Override
     public final IInventory getIInventoryAtSideAndDistance(byte aSide, int aDistance) {
-        TileEntity tTileEntity = getTileEntityAtSideAndDistance(aSide, aDistance);
+        final TileEntity tTileEntity = getTileEntityAtSideAndDistance(aSide, aDistance);
         if (tTileEntity instanceof IInventory) return (IInventory) tTileEntity;
         return null;
     }
 
     @Override
     public final IFluidHandler getITankContainer(int aX, int aY, int aZ) {
-        TileEntity tTileEntity = getTileEntity(aX, aY, aZ);
+        final TileEntity tTileEntity = getTileEntity(aX, aY, aZ);
         if (tTileEntity instanceof IFluidHandler) return (IFluidHandler) tTileEntity;
         return null;
     }
 
     @Override
     public final IFluidHandler getITankContainerOffset(int aX, int aY, int aZ) {
-        TileEntity tTileEntity = getTileEntityOffset(aX, aY, aZ);
+        final TileEntity tTileEntity = getTileEntityOffset(aX, aY, aZ);
         if (tTileEntity instanceof IFluidHandler) return (IFluidHandler) tTileEntity;
         return null;
     }
 
     @Override
     public final IFluidHandler getITankContainerAtSide(byte aSide) {
-        TileEntity tTileEntity = getTileEntityAtSide(aSide);
+        final TileEntity tTileEntity = getTileEntityAtSide(aSide);
         if (tTileEntity instanceof IFluidHandler) return (IFluidHandler) tTileEntity;
         return null;
     }
 
     @Override
     public final IFluidHandler getITankContainerAtSideAndDistance(byte aSide, int aDistance) {
-        TileEntity tTileEntity = getTileEntityAtSideAndDistance(aSide, aDistance);
+        final TileEntity tTileEntity = getTileEntityAtSideAndDistance(aSide, aDistance);
         if (tTileEntity instanceof IFluidHandler) return (IFluidHandler) tTileEntity;
         return null;
     }
 
     @Override
     public final IGregTechTileEntity getIGregTechTileEntity(int aX, int aY, int aZ) {
-        TileEntity tTileEntity = getTileEntity(aX, aY, aZ);
+        final TileEntity tTileEntity = getTileEntity(aX, aY, aZ);
         if (tTileEntity instanceof IGregTechTileEntity) return (IGregTechTileEntity) tTileEntity;
         return null;
     }
 
     @Override
     public final IGregTechTileEntity getIGregTechTileEntityOffset(int aX, int aY, int aZ) {
-        TileEntity tTileEntity = getTileEntityOffset(aX, aY, aZ);
+        final TileEntity tTileEntity = getTileEntityOffset(aX, aY, aZ);
         if (tTileEntity instanceof IGregTechTileEntity) return (IGregTechTileEntity) tTileEntity;
         return null;
     }
 
     @Override
     public final IGregTechTileEntity getIGregTechTileEntityAtSide(byte aSide) {
-        TileEntity tTileEntity = getTileEntityAtSide(aSide);
+        final TileEntity tTileEntity = getTileEntityAtSide(aSide);
         if (tTileEntity instanceof IGregTechTileEntity) return (IGregTechTileEntity) tTileEntity;
         return null;
     }
 
     @Override
     public final IGregTechTileEntity getIGregTechTileEntityAtSideAndDistance(byte aSide, int aDistance) {
-        TileEntity tTileEntity = getTileEntityAtSideAndDistance(aSide, aDistance);
+        final TileEntity tTileEntity = getTileEntityAtSideAndDistance(aSide, aDistance);
         if (tTileEntity instanceof IGregTechTileEntity) return (IGregTechTileEntity) tTileEntity;
         return null;
     }
@@ -472,7 +474,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     }
 
     public void updateNeighbours(int mStrongRedstone, int oStrongRedstone) {
-        Block thisBlock = getBlockOffset(0, 0, 0);
+        final Block thisBlock = getBlockOffset(0, 0, 0);
         for (final ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
             final int x1 = xCoord + dir.offsetX, y1 = yCoord + dir.offsetY, z1 = zCoord + dir.offsetZ;
 
@@ -481,7 +483,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
 
                 // update if it was / is strong powered.
                 if (((((mStrongRedstone | oStrongRedstone) >>> dir.ordinal()) & 1) != 0 ) && getBlock(x1, y1, z1).isNormalCube()) {
-                    int skipUpdateSide = dir.getOpposite().ordinal(); //Don't update this block. Still updates diagonal blocks twice if conditions meet.
+                    final int skipUpdateSide = dir.getOpposite().ordinal(); //Don't update this block. Still updates diagonal blocks twice if conditions meet.
 
                     for (final ForgeDirection dir2 : ForgeDirection.VALID_DIRECTIONS) {
                         final int x2 = x1 + dir2.offsetX, y2 = y1 + dir2.offsetY, z2 = z1 + dir2.offsetZ;
@@ -540,6 +542,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
         }
     }
 
+    @Override
     public void doEnetUpdate() {
         leaveEnet();
         joinEnet();

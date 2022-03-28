@@ -7,7 +7,6 @@ import java.util.ArrayList;
 public interface IDebugableTileEntity {
     /**
      * Returns a Debug Message, for a generic DebugItem
-     * Blocks have to implement this interface NOT TileEntities!
      *
      * @param aPlayer   the Player, who rightclicked with his Debug Item
      * @param aLogLevel the Log Level of the Debug Item.
