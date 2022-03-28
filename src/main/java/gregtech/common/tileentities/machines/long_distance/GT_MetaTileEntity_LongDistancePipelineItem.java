@@ -144,10 +144,10 @@ public class GT_MetaTileEntity_LongDistancePipelineItem extends GT_MetaTileEntit
     public int[] getAccessibleSlotsFromSide(int aSide) {
         if (checkTarget()) {
             final IGregTechTileEntity tTile = mTarget.getBaseMetaTileEntity();
-            IInventory iInventory = getInventory();
+            final IInventory iInventory = getInventory();
             if (iInventory instanceof ISidedInventory) return ((ISidedInventory)iInventory).getAccessibleSlotsFromSide(tTile.getFrontFacing());
             if (iInventory != null) {
-                int[] tReturn = new int[iInventory.getSizeInventory()];
+                final int[] tReturn = new int[iInventory.getSizeInventory()];
                 for (int i = 0; i < tReturn.length; i++) tReturn[i] = i;
                 return tReturn;
             }

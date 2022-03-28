@@ -1958,15 +1958,7 @@ public class GT_Utility {
      */
     public static ItemStack loadItem(NBTTagCompound aNBT) {
         if (aNBT == null) return null;
-        ItemStack rStack = ItemStack.loadItemStackFromNBT(aNBT);
-        try {
-            if (rStack != null && (rStack.getItem().getClass().getName().startsWith("ic2.core.migration"))) {
-                rStack.getItem().onUpdate(rStack, DW, null, 0, false);
-            }
-        } catch (Throwable e) {
-            e.printStackTrace(GT_Log.err);
-        }
-        return GT_OreDictUnificator.get(true, rStack);
+        return GT_OreDictUnificator.get(true, ItemStack.loadItemStackFromNBT(aNBT));
     }
 
     /**

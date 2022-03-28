@@ -26,10 +26,12 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.stream.IntStream;
 import java.util.List;
 
 import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
+import static gregtech.api.enums.GT_Values.E;
 import static gregtech.api.enums.GT_Values.NW;
 import static gregtech.api.util.GT_LanguageManager.FACES;
 import static gregtech.api.util.GT_LanguageManager.getTranslation;
@@ -392,8 +394,8 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
                     final ISerializableObject dataObject = behavior.createDataObject(tag.getTag(CoverableTileEntity.COVER_DATA_NBT_KEYS[side]));
                     final ItemStack coverStack = behavior.getDisplayStack(coverId, dataObject);
                     if (coverStack != null) currenttip.add(String.format("Cover: %s", coverStack.getDisplayName()));
-                    if (behavior instanceof GT_Cover_Fluidfilter)
-                        currenttip.add(behavior.getDescription(side, coverId, dataObject, null));
+                    final String behaviorDesc = behavior.getDescription(side, coverId, dataObject, null);
+                    if (!Objects.equals(behaviorDesc, E)) currenttip.add(behaviorDesc);
                 }
             }
         }
