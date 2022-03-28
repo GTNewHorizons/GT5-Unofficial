@@ -1276,6 +1276,10 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addChemicalBathRecipe(GT_OreDictUnificator.get(OrePrefixes.gem, Materials.NetherStar, 1), Materials.Radon.getGas(1250), ItemList.QuantumStar.get(1L), null, null, null, 1920, 384);
         GT_Values.RA.addAutoclaveRecipe(GT_OreDictUnificator.get(ItemList.QuantumStar.get(1L)), Materials.Neutronium.getMolten(288), ItemList.Gravistar.get(1L), 10000, 480, 7680);
 
+        //Silicon Line
+        GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Magnesium, 2), GT_Values.NF, GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Magnesia, 2), 300, 30);
+        GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 3), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Aluminium, 4), GT_Values.NF, GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 3), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Aluminiumoxide, 2), 300, 30);
+
         GT_Values.RA.addBenderRecipe(ItemList.IC2_Mixed_Metal_Ingot.get(1L), GT_OreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Advanced, 1L), 100, 8);
 
         GT_Values.RA.addBenderRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Tin, 12L), ItemList.Cell_Empty.get(6L), 1200, 8);
