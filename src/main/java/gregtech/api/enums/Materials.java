@@ -1537,6 +1537,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Silicon.addOreByProducts(SiliconDioxide);
         InfusedGold.addOreByProduct(Gold);
         Cryolite.addOreByProducts(Aluminiumoxide, Sodium);
+        Naquadria.addOreByProduct(Naquadria);
     }
 
     private static void setColors() {
