@@ -7,7 +7,7 @@ import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TooltipMultiBlockBase;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
@@ -20,7 +20,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.ChunkPosition;
 import net.minecraftforge.oredict.OreDictionary;
-import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
 
@@ -32,7 +31,7 @@ import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
-public class GT_MetaTileEntity_Charcoal_Pit extends GT_MetaTileEntity_MultiBlockBase implements ISecondaryDescribable {
+public class GT_MetaTileEntity_Charcoal_Pit extends GT_MetaTileEntity_TooltipMultiBlockBase implements ISecondaryDescribable {
 
     private boolean running = false;
 
@@ -230,25 +229,7 @@ public class GT_MetaTileEntity_Charcoal_Pit extends GT_MetaTileEntity_MultiBlock
         return new GT_MetaTileEntity_Charcoal_Pit(mName);
     }
 
-    @Override
-    public String[] getDescription() {
-        return getCurrentDescription();
-    }
-
-    @Override
-    public boolean isDisplaySecondaryDescription() {
-        return Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
-    }
-
-    public String[] getPrimaryDescription() {
-        return getTooltip().getInformation();
-    }
-
-    public String[] getSecondaryDescription() {
-        return getTooltip().getStructureInformation();
-    }
-
-    protected GT_Multiblock_Tooltip_Builder getTooltip() {
+    protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Charcoal Pile Igniter")
                 .addInfo("Controller for the Charcoal Pit")
