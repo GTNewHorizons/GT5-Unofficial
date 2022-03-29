@@ -1609,7 +1609,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         CosmicNeutronium.mChemicalFormula = "SpNt";
         Aluminiumhydroxide.mChemicalFormula = "Al\u0028OH\u0029\u2083";
         SiliconSG.mChemicalFormula = "SIsg";
-        SiliconEG.mChemicalFormula = "SI\u208eg";
+        SiliconEG.mChemicalFormula = "SIeg";
     }
 
     private static void initSubTags() {
