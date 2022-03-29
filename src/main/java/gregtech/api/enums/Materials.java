@@ -1610,6 +1610,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Aluminiumhydroxide.mChemicalFormula = "Al\u0028OH\u0029\u2083";
         SiliconSG.mChemicalFormula = "SIsg";
         SiliconEG.mChemicalFormula = "SIeg";
+        NetherQuartz.mChemicalFormula = "SIO\u2082";
+        Quartzite.mChemicalFormula = "SIO\u2082";
+        CertusQuartz.mChemicalFormula = "SIO\u2082";
     }
 
     private static void initSubTags() {
