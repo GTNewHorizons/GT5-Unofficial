@@ -28,6 +28,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.EntityRegistry.EntityRegistration;
 import gregtech.GT_Mod;
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -723,6 +724,21 @@ public class Utils {
 		}
 	}
 
+    public static String addBookTitleLocalization(final String aTitle) {
+        return GT_LanguageManager.addStringLocalization(
+                new StringBuilder().append("Book.").append(aTitle).append(".Name").toString(), aTitle, !GregTech_API.sPostloadFinished);
+    }
+
+    public static String[] addBookPagesLocalization(final String aTitle, final String[] aPages) {
+        String[] aLocalizationPages = new String[aPages.length];
+        for (byte i = 0; i < aPages.length; i = (byte) (i + 1)) {
+            aLocalizationPages[i] = GT_LanguageManager
+                    .addStringLocalization(new StringBuilder().append("Book.").append(aTitle).append(".Page")
+                            .append((i < 10) ? new StringBuilder().append("0").append(i).toString() : Byte.valueOf(i))
+                            .toString(), aPages[i], !GregTech_API.sPostloadFinished);
+        }
+        return aLocalizationPages;
+    }
 
 	public static ItemStack getWrittenBook(final ItemStack aBook, final int aID, final String aMapping, final String aTitle, final String aAuthor,
 			final String[] aPages) {
@@ -739,15 +755,13 @@ public class Utils {
 		final int vMeta = aID;
 		rStack = (aBook == null ? new ItemStack(ModItems.itemCustomBook, 1, vMeta) : aBook);
 		final NBTTagCompound tNBT = new NBTTagCompound();
-		tNBT.setString("title", GT_LanguageManager.addStringLocalization(
-				new StringBuilder().append("Book.").append(aTitle).append(".Name").toString(), aTitle));
+        String localizationTitle = addBookTitleLocalization(aTitle);
+		tNBT.setString("title", localizationTitle);
 		tNBT.setString("author", aAuthor);
 		final NBTTagList tNBTList = new NBTTagList();
-		for (byte i = 0; i < aPages.length; i = (byte) (i + 1)) {
-			aPages[i] = GT_LanguageManager
-					.addStringLocalization(new StringBuilder().append("Book.").append(aTitle).append(".Page")
-							.append((i < 10) ? new StringBuilder().append("0").append(i).toString() : Byte.valueOf(i))
-							.toString(), aPages[i]);
+        final String[] aLocalizationPages = addBookPagesLocalization(aTitle, aPages);
+        for (byte i = 0; i < aPages.length; i = (byte) (i + 1)) {
+			aPages[i] = aLocalizationPages[i].replaceAll("<BR>", "\n");
 			if (i < 48) {
 				if (aPages[i].length() < 256) {
 					tNBTList.appendTag(new NBTTagString(aPages[i]));

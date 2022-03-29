@@ -1,6 +1,7 @@
 package gtPlusPlus.core.item.general.books;
 
 import static gtPlusPlus.core.handler.BookHandler.mBookMap;
+import static gtPlusPlus.core.util.Utils.addBookTitleLocalization;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -65,7 +66,7 @@ public class ItemBaseBook extends ItemWritableBook{
 			return NBTUtils.getString(tItem, "title");
 		}
 		else if (tItem.getItemDamage() > -1 && tItem.getItemDamage() <= mBookMap.size()){
-			return EnumChatFormatting.ITALIC+""+mBookMap.get(tItem.getItemDamage()).mTitle;
+            return EnumChatFormatting.ITALIC + "" + addBookTitleLocalization(mBookMap.get(tItem.getItemDamage()).mTitle);
 		}
 		//NBTUtils.tryIterateNBTData(tItem);
 		return "GT++ Storybook";
