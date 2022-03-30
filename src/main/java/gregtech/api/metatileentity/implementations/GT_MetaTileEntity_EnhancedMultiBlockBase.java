@@ -10,12 +10,14 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
+
 
 /**
  * Enhanced multiblock base class, featuring following improvement over {@link GT_MetaTileEntity_MultiBlockBase}
@@ -102,34 +104,6 @@ public abstract class GT_MetaTileEntity_EnhancedMultiBlockBase<T extends GT_Meta
 	public abstract IStructureDefinition<T> getStructureDefinition();
 
 	protected abstract GT_Multiblock_Tooltip_Builder createTooltip();
-
-    @Override
-    public String[] getDescription() {
-        return getCurrentDescription();
-    }
-
-    @Override
-    public boolean isDisplaySecondaryDescription() {
-        return Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
-    }
-
-    public String[] getPrimaryDescription() {
-        return getTooltip().getInformation();
-    }
-
-    public String[] getSecondaryDescription() {
-        return getTooltip().getStructureInformation();
-    }
-
-	protected GT_Multiblock_Tooltip_Builder getTooltip() {
-		final int tId = getBaseMetaTileEntity().getMetaTileID();
-		GT_Multiblock_Tooltip_Builder tooltip = tooltips.get(tId);
-		if (tooltip == null) {
-			tooltip = createTooltip();
-			tooltips.set(tId, tooltip);
-		}
-		return tooltip;
-	}
 
 	@Override
 	public String[] getStructureDescription(ItemStack stackSize) {
