@@ -96,14 +96,30 @@ public class GT_MetaTileEntity_LargeTurbine_Steam extends GT_MetaTileEntity_Larg
     int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow, int aBaseEff) {
         if (looseFit) {
             aOptFlow *= 4;
-            if (aBaseEff > 10000) {
-                aOptFlow *= Math.pow(1.1f, ((aBaseEff - 7500) / 10000F) * 20f);
-                aBaseEff = 7500;
-            } else if (aBaseEff > 7500) {
-                aOptFlow *= Math.pow(1.1f, ((aBaseEff - 7500) / 10000F) * 20f);
+            if(aBaseEff>=26000) {
+                aOptFlow *= Math.pow(1.1f, ((aBaseEff - 8000) / 10000F) * 20f);
+                aBaseEff *= 0.6f;
+            }else if(aBaseEff>22000) {
+                aOptFlow *= Math.pow(1.1f, ((aBaseEff - 7000) / 10000F) * 20f);
+                aBaseEff *= 0.65f;
+            }else if(aBaseEff>18000) {
+                aOptFlow *= Math.pow(1.1f, ((aBaseEff - 6000) / 10000F) * 20f);
+                aBaseEff *= 0.70f;
+            }else if(aBaseEff>14000) {
+                aOptFlow *= Math.pow(1.1f, ((aBaseEff - 5000) / 10000F) * 20f);
                 aBaseEff *= 0.75f;
-            } else {
-                aBaseEff *= 0.75f;
+            }else if(aBaseEff>10000) {
+                aOptFlow *= Math.pow(1.1f, ((aBaseEff - 4000) / 10000F) * 20f);
+                aBaseEff *= 0.8f;
+            }else if(aBaseEff>6000) {
+                aOptFlow *= Math.pow(1.1f, ((aBaseEff - 3000) / 10000F) * 20f);
+                aBaseEff *= 0.85f;
+            }else{
+                aBaseEff*=0.9f;
+            }
+
+            if (aBaseEff % 100 != 0){
+                aBaseEff -= aBaseEff % 100;
             }
         }
         int tEU = 0;

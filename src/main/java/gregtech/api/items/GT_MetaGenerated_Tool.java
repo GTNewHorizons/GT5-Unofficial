@@ -354,24 +354,43 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
 				aList.add(tOffset + 0, EnumChatFormatting.WHITE + String.format(transItem("001", "Durability: %s/%s"), "" + EnumChatFormatting.GREEN + (tMaxDamage - getToolDamage(aStack)) + " ", " " + tMaxDamage) + EnumChatFormatting.GRAY);
 				aList.add(tOffset + 1, EnumChatFormatting.WHITE + String.format(transItem("002", "%s lvl %s"), tMaterial.mLocalizedName + EnumChatFormatting.YELLOW, "" + getHarvestLevel(aStack, "")) + EnumChatFormatting.GRAY);
 				aList.add(tOffset + 2, EnumChatFormatting.WHITE + String.format(transItem("005", "Turbine Efficiency: %s"), "" + EnumChatFormatting.BLUE + (50.0F + (10.0F * getToolCombatDamage(aStack)))) + EnumChatFormatting.GRAY);
-				aList.add(tOffset + 3, EnumChatFormatting.WHITE + String.format(transItem("006", "Optimal Steam flow: %sL/sec"), "" + EnumChatFormatting.GOLD + Math.max(Float.MIN_NORMAL, tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed * 1000) + EnumChatFormatting.GRAY));
+				aList.add(tOffset + 3, EnumChatFormatting.WHITE + String.format(transItem("006", "Optimal Steam flow: %sL/t"), "" + EnumChatFormatting.GOLD + Math.max(Float.MIN_NORMAL, tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed * (1000 / 20)) + EnumChatFormatting.GRAY));
+                aList.add(tOffset + 4, EnumChatFormatting.WHITE + String.format(transItem("900", "Energy from Optimal Steam Flow: %sL/t"), "" + EnumChatFormatting.GOLD + Math.max(Float.MIN_NORMAL, tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed * (1000 / 20)) / 2 + EnumChatFormatting.GRAY));
                 {
                     int aBaseEff=(int)(5+getToolCombatDamage(aStack))*1000;
                     int aOptFlowLoose=aOptFlow*4;
-                    if(aBaseEff>10000){
-                        aOptFlowLoose*=Math.pow(1.1f,((aBaseEff-7500)/10000F)*20f);
-                        aBaseEff=7500;
-                    }else if(aBaseEff>7500){
-                        aOptFlowLoose*=Math.pow(1.1f,((aBaseEff-7500)/10000F)*20f);
-                        aBaseEff*=0.75f;
+                    if(aBaseEff>=26000){
+                        aOptFlowLoose*=Math.pow(1.1f,((aBaseEff-8000)/10000F)*20f);
+                        aBaseEff*=0.6f;
+                    }else if(aBaseEff>22000){
+                        aOptFlowLoose*=Math.pow(1.1f,((aBaseEff-7000)/10000F)*20f);
+                        aBaseEff*=0.65f;
+                    }else if(aBaseEff>18000){
+                        aOptFlowLoose*=Math.pow(1.1f,((aBaseEff-6000)/10000F)*20f);
+                        aBaseEff*=0.70f;
+                    }else if(aBaseEff>14000) {
+                        aOptFlowLoose *= Math.pow(1.1f, ((aBaseEff - 5000) / 10000F) * 20f);
+                        aBaseEff *= 0.75f;
+                    }else if(aBaseEff>10000) {
+                        aOptFlowLoose *= Math.pow(1.1f, ((aBaseEff - 4000) / 10000F) * 20f);
+                        aBaseEff *= 0.8f;
+                    }else if(aBaseEff>6000) {
+                        aOptFlowLoose *= Math.pow(1.1f, ((aBaseEff - 3000) / 10000F) * 20f);
+                        aBaseEff *= 0.85f;
                     }else{
-                        aBaseEff*=0.75f;
+                        aBaseEff*=0.9f;
                     }
-					aList.add(tOffset + 4, EnumChatFormatting.GRAY + String.format(transItem("500", "Turbine Efficiency (Loose): %s"), "" + EnumChatFormatting.BLUE + aBaseEff/100f) + EnumChatFormatting.DARK_GRAY);
-					aList.add(tOffset + 5, EnumChatFormatting.GRAY + String.format(transItem("501", "Optimal Steam flow (Loose): %s L/t"), "" + EnumChatFormatting.GOLD + aOptFlowLoose + EnumChatFormatting.DARK_GRAY));
+
+                    if (aBaseEff % 100 != 0){
+                        aBaseEff -= aBaseEff % 100;
+                    }
+					aList.add(tOffset + 5, EnumChatFormatting.GRAY + String.format(transItem("500", "Turbine Efficiency (Loose): %s"), "" + EnumChatFormatting.BLUE + aBaseEff/100f) + EnumChatFormatting.DARK_GRAY);
+					aList.add(tOffset + 6, EnumChatFormatting.GRAY + String.format(transItem("501", "Optimal Steam flow (Loose): %s L/t"), "" + EnumChatFormatting.GOLD + aOptFlowLoose + EnumChatFormatting.DARK_GRAY));
+                    aList.add(tOffset + 7, EnumChatFormatting.GRAY + String.format(transItem("901", "Energy from Optimal Steam Flow (Loose): %s L/t"), "" + EnumChatFormatting.GOLD + aOptFlowLoose / 2 + EnumChatFormatting.DARK_GRAY));
+
                 }
-				aList.add(tOffset + 6, EnumChatFormatting.WHITE + String.format(transItem("007", "Optimal Gas flow(EU burnvalue per tick): %sEU/t"), "" + EnumChatFormatting.GOLD + Math.max(Float.MIN_NORMAL, tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed * 50) + EnumChatFormatting.GRAY));
-				aList.add(tOffset + 7, EnumChatFormatting.WHITE + String.format(transItem("008", "Optimal Plasma flow(Plasma energyvalue per tick): %sEU/t"), "" + EnumChatFormatting.GOLD + Math.max(Float.MIN_NORMAL, tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed * 2000) + EnumChatFormatting.GRAY));
+				aList.add(tOffset + 8, EnumChatFormatting.WHITE + String.format(transItem("007", "Energy from Optimal Gas Flow: %sEU/t"), "" + EnumChatFormatting.GOLD + Math.max(Float.MIN_NORMAL, tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed * 50) + EnumChatFormatting.GRAY));
+				aList.add(tOffset + 9, EnumChatFormatting.WHITE + String.format(transItem("008", "Energy from Optimal Plasma Flow: %sEU/t"), "" + EnumChatFormatting.GOLD + Math.max(Float.MIN_NORMAL, tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed * 2000) + EnumChatFormatting.GRAY));
 
             } else {
 				aList.add(tOffset + 0, EnumChatFormatting.WHITE + String.format(transItem("001", "Durability: %s/%s"), "" + EnumChatFormatting.GREEN + (tMaxDamage - getToolDamage(aStack)) + " ", " " + tMaxDamage) + EnumChatFormatting.GRAY);
