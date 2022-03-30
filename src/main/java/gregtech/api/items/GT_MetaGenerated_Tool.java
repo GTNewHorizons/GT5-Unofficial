@@ -359,26 +359,26 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
                 {
                     int aBaseEff=(int)(5+getToolCombatDamage(aStack))*1000;
                     int aOptFlowLoose=aOptFlow*4;
-                    if(aBaseEff>=26000){
-                        aOptFlowLoose*=Math.pow(1.1f,((aBaseEff-8000)/10000F)*20f);
-                        aBaseEff*=0.6f;
-                    }else if(aBaseEff>22000){
-                        aOptFlowLoose*=Math.pow(1.1f,((aBaseEff-7000)/10000F)*20f);
-                        aBaseEff*=0.65f;
-                    }else if(aBaseEff>18000){
-                        aOptFlowLoose*=Math.pow(1.1f,((aBaseEff-6000)/10000F)*20f);
-                        aBaseEff*=0.70f;
-                    }else if(aBaseEff>14000) {
+                    if (aBaseEff >= 26000) {
+                        aOptFlowLoose *= Math.pow(1.1f, ((aBaseEff - 8000) / 10000F) * 20f);
+                        aBaseEff *= 0.6f;
+                    } else if(aBaseEff > 22000) {
+                        aOptFlowLoose *= Math.pow(1.1f, ((aBaseEff - 7000) / 10000F) * 20f);
+                        aBaseEff *= 0.65f;
+                    } else if(aBaseEff > 18000){
+                        aOptFlowLoose *= Math.pow(1.1f, ((aBaseEff - 6000) / 10000F) * 20f);
+                        aBaseEff *= 0.70f;
+                    } else if(aBaseEff > 14000) {
                         aOptFlowLoose *= Math.pow(1.1f, ((aBaseEff - 5000) / 10000F) * 20f);
                         aBaseEff *= 0.75f;
-                    }else if(aBaseEff>10000) {
+                    } else if(aBaseEff > 10000) {
                         aOptFlowLoose *= Math.pow(1.1f, ((aBaseEff - 4000) / 10000F) * 20f);
                         aBaseEff *= 0.8f;
-                    }else if(aBaseEff>6000) {
+                    } else if(aBaseEff > 6000) {
                         aOptFlowLoose *= Math.pow(1.1f, ((aBaseEff - 3000) / 10000F) * 20f);
                         aBaseEff *= 0.85f;
-                    }else{
-                        aBaseEff*=0.9f;
+                    } else{
+                        aBaseEff *= 0.9f;
                     }
 
                     if (aBaseEff % 100 != 0){
