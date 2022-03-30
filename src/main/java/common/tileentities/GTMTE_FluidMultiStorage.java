@@ -4,7 +4,6 @@ import common.Blocks;
 import common.blocks.*;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
-import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -22,15 +21,14 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
-import org.lwjgl.input.Keyboard;
 import util.Vector3i;
 import util.Vector3ic;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 
-public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase implements ISecondaryDescribable {
-	
+public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_TooltipMultiBlockBase {
+
 	private final static String glassNameIC2Reinforced = "blockAlloyGlass";
 	private final static Block CASING = Blocks.tfftCasing;
 	private final static Block_TFFTStorageFieldBlockT1 STORAGE_FIELD1 = (Block_TFFTStorageFieldBlockT1) Blocks.tfftStorageField1;
@@ -61,24 +59,7 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase im
 	}
 
     @Override
-    public String[] getDescription() {
-        return getCurrentDescription();
-    }
-
-    @Override
-    public boolean isDisplaySecondaryDescription() {
-        return Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
-    }
-
-    public String[] getPrimaryDescription() {
-        return getTooltip().getInformation();
-    }
-
-    public String[] getSecondaryDescription() {
-        return getTooltip().getStructureInformation();
-    }
-
-    protected GT_Multiblock_Tooltip_Builder getTooltip() {
+    protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
 		tt.addMachineType("Fluid Tank")
 		.addInfo("High-Tech fluid tank that can hold up to 25 different fluids!")
