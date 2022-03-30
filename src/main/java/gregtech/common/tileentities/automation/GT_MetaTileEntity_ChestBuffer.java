@@ -8,12 +8,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.common.gui.GT_Container_ChestBuffer;
 import gregtech.common.gui.GT_GUIContainer_ChestBuffer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
-
-import java.util.Arrays;
-import java.util.Comparator;
 
 import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_CHESTBUFFER;
 import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_CHESTBUFFER_GLOW;
@@ -43,7 +37,7 @@ public class GT_MetaTileEntity_ChestBuffer extends GT_MetaTileEntity_Buffer {
     public GT_MetaTileEntity_ChestBuffer(String aName, int aTier, int aInvSlotCount, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
-    
+
     public GT_MetaTileEntity_ChestBuffer(String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
@@ -69,9 +63,6 @@ public class GT_MetaTileEntity_ChestBuffer extends GT_MetaTileEntity_Buffer {
     protected void moveItems(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
         if (aTimer % tickRate[mTier] > 0) return;
 
-        if(this.bSortStacks && aBaseMetaTileEntity.hasInventoryBeenModified()) {
-            fillStacksIntoFirstSlots();
-        }
         // mSuccess will be negative if the call is caused by the %200 aTimer, always try to push. Otherwise it will be positive.
         // For the first 6 ticks after a successful move (49->44), push every tick. Then go to every 5 ticks.
         if ( (mSuccess <= 0 ) || (mSuccess > 43) || ((mSuccess % 5) == 0 )){
@@ -81,14 +72,6 @@ public class GT_MetaTileEntity_ChestBuffer extends GT_MetaTileEntity_Buffer {
         if(mSuccess < 0) {
             mSuccess = 0;
         }
-    }
-
-    @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
-        if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.hasInventoryBeenModified()) {
-            fillStacksIntoFirstSlots();
-        }
-        super.onPostTick(aBaseMetaTileEntity, aTimer);
     }
 
     @Override
