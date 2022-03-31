@@ -465,9 +465,12 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     public final void setToFire() {
         worldObj.setBlock(xCoord, yCoord, zCoord, Blocks.fire);
     }
-    
-    @Override 
-    public void markDirty() {/* Do not do the super Function */} 
+
+    @Override
+    public void markDirty() {
+        // Avoid sending neighbor updates, just mark the chunk as dirty to make sure it gets saved
+        worldObj.getChunkFromBlockCoords(xCoord, zCoord).setChunkModified();
+    }
 
     @Deprecated
     public String trans(String aKey, String aEnglish){

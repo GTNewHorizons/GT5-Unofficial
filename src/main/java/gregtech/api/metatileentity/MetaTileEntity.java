@@ -679,6 +679,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
 
     @Override
     public void setInventorySlotContents(int aIndex, ItemStack aStack) {
+        markDirty();
         if (aIndex >= 0 && aIndex < mInventory.length) mInventory[aIndex] = aStack;
     }
 
@@ -753,6 +754,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
     }
 
     public int fill_default(ForgeDirection aSide, FluidStack aFluid, boolean doFill) {
+        markDirty();
         return fill(aFluid, doFill);
     }
 
@@ -761,6 +763,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
         if (getBaseMetaTileEntity().hasSteamEngineUpgrade() && GT_ModHandler.isSteam(aFluid) && aFluid.amount > 1) {
             int tSteam = (int) Math.min(Integer.MAX_VALUE, Math.min(aFluid.amount / 2, getBaseMetaTileEntity().getSteamCapacity() - getBaseMetaTileEntity().getStoredSteam()));
             if (tSteam > 0) {
+                markDirty();
                 if (doFill) getBaseMetaTileEntity().increaseStoredSteam(tSteam, true);
                 return tSteam * 2;
             }
@@ -814,7 +817,9 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
 
     @Override
     public void markDirty() {
-        //
+        if (mBaseMetaTileEntity != null) {
+            mBaseMetaTileEntity.markDirty();
+        }
     }
 
     @Override

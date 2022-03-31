@@ -203,9 +203,9 @@ public class BaseMetaPipeEntity extends CoverableGregTechTileEntity implements I
                     }
                 }
                 if (isServerSide() && mTickTimer > 10) {
-                    if (!doCoverThings()) 
+                    if (!doCoverThings())
                         return;
-                    
+
                     byte oldConnections = mConnections;
                     // Mask-out connection direction bits to keep only Foam related connections
                     mConnections = (byte) (mMetaTileEntity.mConnections | (mConnections & ~IConnectable.CONNECTED_ALL));
@@ -278,7 +278,7 @@ public class BaseMetaPipeEntity extends CoverableGregTechTileEntity implements I
             NW.sendPacketToAllPlayersInRange(
                 worldObj,
                 new GT_Packet_TileEntity(
-                    xCoord, (short) yCoord, zCoord, mID, mCoverSides[0], mCoverSides[1], mCoverSides[2], mCoverSides[3], mCoverSides[4], mCoverSides[5], oTextureData = mConnections, 
+                    xCoord, (short) yCoord, zCoord, mID, mCoverSides[0], mCoverSides[1], mCoverSides[2], mCoverSides[3], mCoverSides[4], mCoverSides[5], oTextureData = mConnections,
                     oUpdateData = hasValidMetaTileEntity() ? mMetaTileEntity.getUpdateData() : 0,
                     oRedstoneData = (byte) (((mSidedRedstone[0] > 0) ? 1 : 0) | ((mSidedRedstone[1] > 0) ? 2 : 0) | ((mSidedRedstone[2] > 0) ? 4 : 0) | ((mSidedRedstone[3] > 0) ? 8 : 0) | ((mSidedRedstone[4] > 0) ? 16 : 0) | ((mSidedRedstone[5] > 0) ? 32 : 0)),
                     oColor = mColor
@@ -471,6 +471,7 @@ public class BaseMetaPipeEntity extends CoverableGregTechTileEntity implements I
 
     @Override
     public void setInventorySlotContents(int aIndex, ItemStack aStack) {
+        markDirty();
         mInventoryChanged = true;
         if (canAccessData())
             mMetaTileEntity.setInventorySlotContents(aIndex, worldObj.isRemote ? aStack : GT_OreDictUnificator.setStack(true, aStack));
@@ -1156,7 +1157,7 @@ public class BaseMetaPipeEntity extends CoverableGregTechTileEntity implements I
         if (!canAccessData() || getCoverIDAtSide(aSide) != 0) return false;
         return mMetaTileEntity.injectRotationalEnergy(aSide, aSpeed, aEnergy);
     }
-    
+
     private boolean canMoveFluidOnSide(ForgeDirection aSide, Fluid aFluid, boolean isFill) {
         if (aSide == ForgeDirection.UNKNOWN)
             return true;
@@ -1215,7 +1216,7 @@ public class BaseMetaPipeEntity extends CoverableGregTechTileEntity implements I
     @Override
     public FluidTankInfo[] getTankInfo(ForgeDirection aSide) {
         if (canAccessData()
-            && (aSide == ForgeDirection.UNKNOWN 
+            && (aSide == ForgeDirection.UNKNOWN
                 || (mMetaTileEntity.isLiquidInput((byte) aSide.ordinal())
                     && getCoverBehaviorAtSideNew((byte) aSide.ordinal()).letsFluidIn((byte) aSide.ordinal(), getCoverIDAtSide((byte) aSide.ordinal()), getComplexCoverDataAtSide((byte) aSide.ordinal()), null, this))
                 || (mMetaTileEntity.isLiquidOutput((byte) aSide.ordinal()) && getCoverBehaviorAtSideNew((byte) aSide.ordinal()).letsFluidOut((byte) aSide.ordinal(), getCoverIDAtSide((byte) aSide.ordinal()), getComplexCoverDataAtSide((byte) aSide.ordinal()), null, this))
@@ -1242,6 +1243,7 @@ public class BaseMetaPipeEntity extends CoverableGregTechTileEntity implements I
         }
         aStack = GT_OreDictUnificator.get(aStack);
         if (GT_Utility.areStacksEqual(tStack, aStack) && tStack.stackSize + aStack.stackSize <= Math.min(aStack.getMaxStackSize(), getInventoryStackLimit())) {
+            markDirty();
             tStack.stackSize += aStack.stackSize;
             return true;
         }
