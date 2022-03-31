@@ -21,15 +21,14 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
-import org.lwjgl.input.Keyboard;
 import util.Vector3i;
 import util.Vector3ic;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 
-public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
-	
+public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_TooltipMultiBlockBase {
+
 	private final static String glassNameIC2Reinforced = "blockAlloyGlass";
 	private final static Block CASING = Blocks.tfftCasing;
 	private final static Block_TFFTStorageFieldBlockT1 STORAGE_FIELD1 = (Block_TFFTStorageFieldBlockT1) Blocks.tfftStorageField1;
@@ -59,9 +58,9 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 		return new GTMTE_FluidMultiStorage(super.mName);
 	}
 
-	@Override
-	public String[] getDescription() {
-		final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    @Override
+    protected GT_Multiblock_Tooltip_Builder createTooltip() {
+        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
 		tt.addMachineType("Fluid Tank")
 		.addInfo("High-Tech fluid tank that can hold up to 25 different fluids!")
 		.addInfo("Has 1/25th of the total capacity as capacity for each fluid.")
@@ -86,12 +85,8 @@ public class GTMTE_FluidMultiStorage extends GT_MetaTileEntity_MultiBlockBase {
 		.addStructureInfo("Use MIOH with conduits or fluid storage busses to see all fluids at once. If it's fixed.")
 		.addStructureInfo("Ask someone else why there's 4 versions, with 2 uncraftable ones")
 		.toolTipFinisher("KekzTech");
-		if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-			return tt.getInformation();
-		} else {
-			return tt.getStructureInformation();
-		}
-	}
+        return tt;
+    }
 
 	@Override
 	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
