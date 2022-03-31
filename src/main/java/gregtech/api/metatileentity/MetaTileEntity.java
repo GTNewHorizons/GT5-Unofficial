@@ -418,7 +418,10 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
      * This is used to set the internal Energy to the given Parameter. I use this for the IDSU.
      */
     public void setEUVar(long aEnergy) {
-        ((BaseMetaTileEntity) mBaseMetaTileEntity).mStoredEnergy = aEnergy;
+        if (aEnergy != ((BaseMetaTileEntity) mBaseMetaTileEntity).mStoredEnergy) {
+            markDirty();
+            ((BaseMetaTileEntity) mBaseMetaTileEntity).mStoredEnergy = aEnergy;
+        }
     }
 
     /**
@@ -432,7 +435,10 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
      * This is used to set the internal Steam Energy to the given Parameter.
      */
     public void setSteamVar(long aSteam) {
-        ((BaseMetaTileEntity) mBaseMetaTileEntity).mStoredSteam = aSteam;
+        if(((BaseMetaTileEntity) mBaseMetaTileEntity).mStoredSteam != aSteam){
+            markDirty();
+            ((BaseMetaTileEntity) mBaseMetaTileEntity).mStoredSteam = aSteam;
+        }
     }
 
     /**
@@ -705,10 +711,14 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
         ItemStack tStack = getStackInSlot(aIndex), rStack = GT_Utility.copyOrNull(tStack);
         if (tStack != null) {
             if (tStack.stackSize <= aAmount) {
-                if (setStackToZeroInsteadOfNull(aIndex)) tStack.stackSize = 0;
+                if (setStackToZeroInsteadOfNull(aIndex)) {
+                    tStack.stackSize = 0;
+                    markDirty();
+                }
                 else setInventorySlotContents(aIndex, null);
             } else {
                 rStack = tStack.splitStack(aAmount);
+                markDirty();
                 if (tStack.stackSize == 0 && !setStackToZeroInsteadOfNull(aIndex))
                     setInventorySlotContents(aIndex, null);
             }
