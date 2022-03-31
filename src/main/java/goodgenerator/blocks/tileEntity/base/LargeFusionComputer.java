@@ -1,7 +1,6 @@
 package goodgenerator.blocks.tileEntity.base;
 
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
@@ -35,11 +34,10 @@ import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.ge
 import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.handleParallelRecipe;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
-import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 
-public abstract class LargeFusionComputer extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
+public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMultiBlockBase_EM implements IConstructable {
 
     public static final String MAIN_NAME = "largeFusion";
     private boolean isLoadedChunk;

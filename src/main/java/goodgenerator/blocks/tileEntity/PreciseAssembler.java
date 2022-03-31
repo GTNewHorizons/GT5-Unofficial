@@ -1,13 +1,13 @@
 package goodgenerator.blocks.tileEntity;
 
 import com.github.bartimaeusnek.bartworks.util.Pair;
-import com.github.technus.tectech.thing.metaTileEntity.hatch.*;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import goodgenerator.blocks.tileEntity.base.GT_MetaTileEntity_TooltipMultiBlockBase_EM;
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.DescTextLocalization;
 import goodgenerator.util.MyRecipeAdder;
@@ -31,7 +31,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
-import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
 
@@ -43,7 +42,7 @@ import static goodgenerator.util.StructureHelper.addTieredBlock;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
-public class PreciseAssembler extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
+public class PreciseAssembler extends GT_MetaTileEntity_TooltipMultiBlockBase_EM implements IConstructable {
 
     private static final IIconContainer textureFontOn = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_QTANK");
     private static final IIconContainer textureFontOn_Glow = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_QTANK_GLOW");
@@ -326,7 +325,7 @@ public class PreciseAssembler extends GT_MetaTileEntity_MultiblockBase_EM implem
     }
 
     @Override
-    public String[] getDescription() {
+    protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Precise Assembler/Assembler")
                 .addInfo("Controller block for the Precise Assembler")
@@ -353,11 +352,7 @@ public class PreciseAssembler extends GT_MetaTileEntity_MultiblockBase_EM implem
                 .addMufflerHatch("Any Casing")
                 .addMaintenanceHatch("Any Casing")
                 .toolTipFinisher("Good Generator");
-        if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-            return tt.getInformation();
-        } else {
-            return tt.getStructureInformation();
-        }
+        return tt;
     }
 
     @Override

@@ -1,17 +1,17 @@
 package goodgenerator.blocks.tileEntity;
 
-import goodgenerator.loader.Loaders;
-import goodgenerator.util.DescTextLocalization;
-import goodgenerator.util.MyRecipeAdder;
 import com.github.bartimaeusnek.crossmod.tectech.TecTechEnabledMulti;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyTunnel;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import goodgenerator.blocks.tileEntity.base.GT_MetaTileEntity_TooltipMultiBlockBase_EM;
+import goodgenerator.loader.Loaders;
+import goodgenerator.util.DescTextLocalization;
+import goodgenerator.util.MyRecipeAdder;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -28,17 +28,16 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
-import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static gregtech.api.util.GT_StructureUtility.*;
+import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
-public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM implements TecTechEnabledMulti, IConstructable {
+public class FuelRefineFactory extends GT_MetaTileEntity_TooltipMultiBlockBase_EM implements TecTechEnabledMulti, IConstructable {
 
     private IStructureDefinition<FuelRefineFactory> multiDefinition = null;
     private int Tier = -1;
@@ -165,7 +164,7 @@ public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM imple
     }
 
     @Override
-    public String[] getDescription(){
+    protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Naquadah Fuel Refinery")
                 .addInfo("Controller block for the Naquadah Fuel Refinery")
@@ -182,11 +181,7 @@ public class FuelRefineFactory extends GT_MetaTileEntity_MultiblockBase_EM imple
                 .addOutputHatch("The casings adjoin the field restriction glass.")
                 .addEnergyHatch("The casings adjoin the field restriction glass.")
                 .toolTipFinisher("Good Generator");
-        if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-            return tt.getInformation();
-        } else {
-            return tt.getStructureInformation();
-        }
+        return tt;
     }
 
     @Override

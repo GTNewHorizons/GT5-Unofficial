@@ -1,6 +1,7 @@
 package goodgenerator.blocks.tileEntity;
 
 import goodgenerator.blocks.tileEntity.GTMetaTileEntity.YOTTAHatch;
+import goodgenerator.blocks.tileEntity.base.GT_MetaTileEntity_TooltipMultiBlockBase_EM;
 import goodgenerator.client.GUI.YOTTankGUIClient;
 import goodgenerator.common.container.YOTTankGUIContainer;
 import goodgenerator.loader.Loaders;
@@ -15,6 +16,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -42,7 +44,7 @@ import static goodgenerator.util.StructureHelper.addTieredBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.util.GT_StructureUtility.*;
 
-public class YottaFluidTank extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
+public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM implements IConstructable {
 
     private static final IIconContainer textureFontOn = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_QTANK");
     private static final IIconContainer textureFontOn_Glow = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_QTANK_GLOW");
@@ -309,7 +311,7 @@ public class YottaFluidTank extends GT_MetaTileEntity_MultiblockBase_EM implemen
     }
 
     @Override
-    public String[] getDescription() {
+    protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Fluid Tank")
                 .addInfo("Controller block for the YOTTank.")
@@ -326,11 +328,7 @@ public class YottaFluidTank extends GT_MetaTileEntity_MultiblockBase_EM implemen
                 .addMaintenanceHatch("Hint block with dot 2")
                 .addOutputHatch("Hint block with dot 3")
                 .toolTipFinisher("Good Generator");
-        if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-            return tt.getInformation();
-        } else {
-            return tt.getStructureInformation();
-        }
+        return tt;
     }
 
     public BigInteger calStorage(int meta) {

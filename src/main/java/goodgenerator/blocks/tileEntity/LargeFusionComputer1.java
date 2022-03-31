@@ -14,7 +14,6 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import org.lwjgl.input.Keyboard;
 
 import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FUSION1;
@@ -35,35 +34,31 @@ public class LargeFusionComputer1 extends LargeFusionComputer {
     }
 
     @Override
-    public String[] getDescription() {
+    protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Fusion Reactor")
-                .addInfo("Millions of nuclear.")
-                .addInfo("Controller block for the Compact Fusion Reactor MK-I Prototype.")
-                .addInfo("131,072EU/t and 5M EU capacity per Energy Hatch")
-                .addInfo("If the recipe has a startup cost greater than the")
-                .addInfo("number of energy hatches * cap, you can't do it")
-                .addInfo("Make sure the whole structure is built in the 3x3")
-                .addInfo("chuck area of the ring center (not controller).")
-                .addInfo("It can run 64x recipes at most.")
-                .addInfo("Support" + EnumChatFormatting.BLUE + " Tec" + EnumChatFormatting.DARK_BLUE + "Tech" + EnumChatFormatting.GRAY + " Energy/Laser Hatches!")
-                .addInfo("The structure is too complex!")
-                .addInfo(BLUE_PRINT_INFO)
-                .addSeparator()
-                .addCasingInfo("LuV Machine Casing", 1666)
-                .addCasingInfo("Ameliorated Superconduct Coil", 558)
-                .addCasingInfo("Naquadah Alloy Frame Boxes", 128)
-                .addCasingInfo("Chrome Reinforced Borosilicate Glass Block", 63)
-                .addEnergyHatch("1-32, Hint block with dot 3", 3)
-                .addInputHatch("2-16, Hint block with dot 1", 1)
-                .addOutputHatch("1-16, Hint block with dot 2", 2)
-                .addStructureInfo("ALL Hatches must be LuV or better")
-                .toolTipFinisher("Good Generator");
-        if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-            return tt.getInformation();
-        } else {
-            return tt.getStructureInformation();
-        }
+            .addInfo("Millions of nuclear.")
+            .addInfo("Controller block for the Compact Fusion Reactor MK-I Prototype.")
+            .addInfo("131,072EU/t and 5M EU capacity per Energy Hatch")
+            .addInfo("If the recipe has a startup cost greater than the")
+            .addInfo("number of energy hatches * cap, you can't do it")
+            .addInfo("Make sure the whole structure is built in the 3x3")
+            .addInfo("chuck area of the ring center (not controller).")
+            .addInfo("It can run 64x recipes at most.")
+            .addInfo("Support" + EnumChatFormatting.BLUE + " Tec" + EnumChatFormatting.DARK_BLUE + "Tech" + EnumChatFormatting.GRAY + " Energy/Laser Hatches!")
+            .addInfo("The structure is too complex!")
+            .addInfo(BLUE_PRINT_INFO)
+            .addSeparator()
+            .addCasingInfo("LuV Machine Casing", 1666)
+            .addCasingInfo("Ameliorated Superconduct Coil", 558)
+            .addCasingInfo("Naquadah Alloy Frame Boxes", 128)
+            .addCasingInfo("Chrome Reinforced Borosilicate Glass Block", 63)
+            .addEnergyHatch("1-32, Hint block with dot 3", 3)
+            .addInputHatch("2-16, Hint block with dot 1", 1)
+            .addOutputHatch("1-16, Hint block with dot 2", 2)
+            .addStructureInfo("ALL Hatches must be LuV or better")
+            .toolTipFinisher("Good Generator");
+        return tt;
     }
 
     @Override

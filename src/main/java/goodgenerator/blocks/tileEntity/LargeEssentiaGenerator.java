@@ -1,22 +1,27 @@
 package goodgenerator.blocks.tileEntity;
 
-import goodgenerator.crossmod.thaumcraft.LargeEssentiaEnergyData;
-import goodgenerator.items.MyMaterial;
-import goodgenerator.loader.Loaders;
-import goodgenerator.util.DescTextLocalization;
-import goodgenerator.util.ItemRefer;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import goodgenerator.blocks.tileEntity.base.GT_MetaTileEntity_TooltipMultiBlockBase_EM;
+import goodgenerator.crossmod.thaumcraft.LargeEssentiaEnergyData;
+import goodgenerator.items.MyMaterial;
+import goodgenerator.loader.Loaders;
+import goodgenerator.util.DescTextLocalization;
+import goodgenerator.util.ItemRefer;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.*;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.objects.XSTR;
 import gregtech.api.render.TextureFactory;
@@ -36,11 +41,11 @@ import thaumcraft.common.config.ConfigBlocks;
 
 import java.util.ArrayList;
 
-import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
-public class LargeEssentiaGenerator extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
+public class LargeEssentiaGenerator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM implements IConstructable {
 
     private IStructureDefinition<LargeEssentiaGenerator> multiDefinition = null;
     protected int mStableValue = 0;
@@ -499,7 +504,7 @@ public class LargeEssentiaGenerator extends GT_MetaTileEntity_MultiblockBase_EM 
     }
 
     @Override
-    public String[] getDescription() {
+    protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Essentia Generator")
                 .addInfo("Controller block for the Large Essentia Generator")
@@ -513,13 +518,9 @@ public class LargeEssentiaGenerator extends GT_MetaTileEntity_MultiblockBase_EM 
                 .addMaintenanceHatch("Hint block with dot 1")
                 .addInputHatch("Hint block with dot 1")
                 .addDynamoHatch("Hint block with dot 1")
-                .addOtherStructurePart("Essentia Input Hatch","Hint block with dot 1")
+                .addOtherStructurePart("Essentia Input Hatch", "Hint block with dot 1")
                 .toolTipFinisher("Good Generator");
-        if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-            return tt.getInformation();
-        } else {
-            return tt.getStructureInformation();
-        }
+        return tt;
     }
 
     @Override

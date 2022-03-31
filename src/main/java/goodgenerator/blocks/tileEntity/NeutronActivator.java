@@ -1,5 +1,9 @@
 package goodgenerator.blocks.tileEntity;
 
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
+import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import goodgenerator.blocks.tileEntity.GTMetaTileEntity.NeutronAccelerator;
 import goodgenerator.blocks.tileEntity.GTMetaTileEntity.NeutronSensor;
 import goodgenerator.client.GUI.NeutronActivatorGUIClient;
@@ -9,10 +13,6 @@ import goodgenerator.util.CharExchanger;
 import goodgenerator.util.DescTextLocalization;
 import goodgenerator.util.ItemRefer;
 import goodgenerator.util.MyRecipeAdder;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
-import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
-import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
@@ -38,9 +38,9 @@ import org.lwjgl.input.Keyboard;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static goodgenerator.util.StructureHelper.addFrame;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 import static org.apache.commons.lang3.RandomUtils.nextInt;
 
@@ -166,8 +166,7 @@ public class NeutronActivator extends GT_MetaTileEntity_MultiblockBase_EM implem
         super.saveNBTData(aNBT);
     }
 
-    @Override
-    public String[] getDescription() {
+    protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Neutron Activator")
                 .addInfo("Controller block for the Neutron Activator")
@@ -194,11 +193,7 @@ public class NeutronActivator extends GT_MetaTileEntity_MultiblockBase_EM implem
                 .addOtherStructurePart("Neutron Sensor", "Hint block with dot 2")
                 .addCasingInfo("Clean Stainless Steel Machine Casing", 7)
                 .toolTipFinisher("Good Generator");
-        if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-            return tt.getInformation();
-        } else {
-            return tt.getStructureInformation();
-        }
+        return tt;
     }
 
     @Override

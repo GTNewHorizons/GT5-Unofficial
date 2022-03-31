@@ -14,7 +14,6 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import org.lwjgl.input.Keyboard;
 
 import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FUSION2;
@@ -35,7 +34,7 @@ public class LargeFusionComputer2 extends LargeFusionComputer {
     }
 
     @Override
-    public String[] getDescription() {
+    protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Fusion Reactor")
                 .addInfo("Millions of nuclear.")
@@ -60,11 +59,7 @@ public class LargeFusionComputer2 extends LargeFusionComputer {
                 .addOutputHatch("1-16, Hint block with dot 2", 2)
                 .addStructureInfo("ALL Hatches must be ZPM or better")
                 .toolTipFinisher("Good Generator");
-        if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-            return tt.getInformation();
-        } else {
-            return tt.getStructureInformation();
-        }
+        return tt;
     }
 
     @Override
