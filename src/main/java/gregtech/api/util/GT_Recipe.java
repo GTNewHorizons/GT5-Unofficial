@@ -1940,8 +1940,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
     public static class GT_Recipe_Map_LargeChemicalReactor extends GT_Recipe_Map {
         private static final int TOTAL_INPUT_COUNT = 6;
-        private static final int OUTPUT_COUNT = 2;
-        private static final int FLUID_OUTPUT_COUNT = 4;
+        private static final int OUTPUT_COUNT = 6;
+        private static final int FLUID_OUTPUT_COUNT = 6;
 
         public GT_Recipe_Map_LargeChemicalReactor() {
             super(new HashSet<>(1000), "gt.recipe.largechemicalreactor", "Large Chemical Reactor", null, RES_PATH_GUI + "basicmachines/Default", 2, OUTPUT_COUNT, 0, 0, 1, E, 1, E, true, true);
