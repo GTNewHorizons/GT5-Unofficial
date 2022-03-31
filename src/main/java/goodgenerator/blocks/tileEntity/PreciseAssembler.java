@@ -5,10 +5,13 @@ import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_H
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import goodgenerator.blocks.tileEntity.base.GT_MetaTileEntity_TooltipMultiBlockBase_EM;
 import goodgenerator.loader.Loaders;
+import goodgenerator.main.GoodGenerator;
+import goodgenerator.network.MessageResetTileTexture;
 import goodgenerator.util.DescTextLocalization;
 import goodgenerator.util.MyRecipeAdder;
 import gregtech.api.GregTech_API;
@@ -27,6 +30,7 @@ import gregtech.api.util.GT_Utility;
 import ic2.core.Ic2Items;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
@@ -194,7 +198,7 @@ public class PreciseAssembler extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
         if (this.mode == 0) {
             for (GT_MetaTileEntity_Hatch_InputBus bus : mInputBusses) {
                 if (!isValidMetaTileEntity(bus)) continue;
-                GT_Recipe tRecipe = getRecipeMap().findRecipe(this.getBaseMetaTileEntity(), true, Math.min(getMachineVoltageLimit(), getMaxInputVoltage()), inputFluids, getStoredItemFromHatch(bus));
+                GT_Recipe tRecipe = getRecipeMap().findRecipe(this.getBaseMetaTileEntity(), false, Math.min(getMachineVoltageLimit(), getMaxInputVoltage()), inputFluids, getStoredItemFromHatch(bus));
                 if (tRecipe != null && tRecipe.mSpecialValue <= casingTier) {
                     this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
                     this.mEfficiencyIncrease = 10000;
@@ -211,8 +215,8 @@ public class PreciseAssembler extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
         }
         else {
             for (GT_MetaTileEntity_Hatch_InputBus bus : mInputBusses) {
-                if (!isValidMetaTileEntity(bus)) continue;
-                GT_Recipe tRecipe = getRecipeMap().findRecipe(this.getBaseMetaTileEntity(), true, Math.min(getMachineVoltageLimit(), getMaxInputVoltage()), inputFluids, getStoredItemFromHatch(bus));
+                if (!isValidMetaTileEntity(bus) || getStoredItemFromHatch(bus).length < 1) continue;
+                GT_Recipe tRecipe = getRecipeMap().findRecipe(this.getBaseMetaTileEntity(), false, Math.min(getMachineVoltageLimit(), getMaxInputVoltage()), inputFluids, getStoredItemFromHatch(bus));
                 if (tRecipe != null) {
                     this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
                     this.mEfficiencyIncrease = 10000;
@@ -319,7 +323,8 @@ public class PreciseAssembler extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
             if (casingTier != 0) {
                 reUpdate(1538 + casingTier);
             }
-            return casingAmount >= 12 && machineTier != 0 && casingTier != 0 && mMaintenanceHatches.size() == 1 && !mMufflerHatches.isEmpty();
+            GoodGenerator.CHANNEL.sendToAllAround(new MessageResetTileTexture(aBaseMetaTileEntity, casingTier), new NetworkRegistry.TargetPoint(aBaseMetaTileEntity.getWorld().provider.dimensionId, aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord(), 16));
+            return casingAmount >= 42 && machineTier != 0 && casingTier != 0 && mMaintenanceHatches.size() == 1 && !mMufflerHatches.isEmpty();
         }
         return false;
     }
@@ -430,35 +435,5 @@ public class PreciseAssembler extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
             };
         }
         else return new ITexture[] {Textures.BlockIcons.getCasingTextureForId(1538 + t)};
-    }
-
-    @SideOnly(Side.CLIENT)
-    public int getCasingTierClient() {
-        if (this.getBaseMetaTileEntity().getWorld() == null) {
-            return 0;
-        }
-        try {
-            for (byte i = 0; i < 6; i++) {
-                Block casing = getBaseMetaTileEntity().getBlockAtSide(i);
-                if (casing != null && casing.equals(Loaders.preciseUnitCasing)) {
-                    return getBaseMetaTileEntity().getMetaIDAtSide(i) + 1;
-                }
-            }
-        }
-        catch (Throwable t) {
-            return 0;
-        }
-        return 0;
-    }
-
-    @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (aBaseMetaTileEntity.isClientSide()) {
-            if (this.getBaseMetaTileEntity() != null && this.getBaseMetaTileEntity().getWorld() != null) {
-                this.casingTier = getCasingTierClient();
-                markDirty();
-            }
-        }
-        super.onPostTick(aBaseMetaTileEntity, aTick);
     }
 }

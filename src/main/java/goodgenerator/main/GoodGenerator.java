@@ -5,6 +5,7 @@ import goodgenerator.crossmod.thaumcraft.Research;
 import goodgenerator.items.MyMaterial;
 import goodgenerator.loader.*;
 import goodgenerator.network.MessageOpenNeutronSensorGUI;
+import goodgenerator.network.MessageResetTileTexture;
 import goodgenerator.network.MessageSetNeutronSensorData;
 import goodgenerator.tabs.MyTabs;
 import com.github.bartimaeusnek.bartworks.API.WerkstoffAdderRegistry;
@@ -39,6 +40,7 @@ public final class GoodGenerator {
     static {
         CHANNEL.registerMessage(MessageSetNeutronSensorData.ServerHandler.class, MessageSetNeutronSensorData.class, 0, Side.SERVER);
         CHANNEL.registerMessage(MessageOpenNeutronSensorGUI.ClientHandler.class, MessageOpenNeutronSensorGUI.class, 1, Side.CLIENT);
+        CHANNEL.registerMessage(MessageResetTileTexture.ClientHandler.class, MessageResetTileTexture.class, 1, Side.CLIENT);
     }
 
     @Mod.Instance(GoodGenerator.MOD_ID)
