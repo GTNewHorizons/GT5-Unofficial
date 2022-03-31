@@ -418,7 +418,10 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
      * This is used to set the internal Energy to the given Parameter. I use this for the IDSU.
      */
     public void setEUVar(long aEnergy) {
-        ((BaseMetaTileEntity) mBaseMetaTileEntity).mStoredEnergy = aEnergy;
+        if (aEnergy != ((BaseMetaTileEntity) mBaseMetaTileEntity).mStoredEnergy) {
+            markDirty();
+            ((BaseMetaTileEntity) mBaseMetaTileEntity).mStoredEnergy = aEnergy;
+        }
     }
 
     /**
@@ -432,7 +435,10 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
      * This is used to set the internal Steam Energy to the given Parameter.
      */
     public void setSteamVar(long aSteam) {
-        ((BaseMetaTileEntity) mBaseMetaTileEntity).mStoredSteam = aSteam;
+        if(((BaseMetaTileEntity) mBaseMetaTileEntity).mStoredSteam != aSteam){
+            markDirty();
+            ((BaseMetaTileEntity) mBaseMetaTileEntity).mStoredSteam = aSteam;
+        }
     }
 
     /**
@@ -679,6 +685,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
 
     @Override
     public void setInventorySlotContents(int aIndex, ItemStack aStack) {
+        markDirty();
         if (aIndex >= 0 && aIndex < mInventory.length) mInventory[aIndex] = aStack;
     }
 
@@ -704,10 +711,14 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
         ItemStack tStack = getStackInSlot(aIndex), rStack = GT_Utility.copyOrNull(tStack);
         if (tStack != null) {
             if (tStack.stackSize <= aAmount) {
-                if (setStackToZeroInsteadOfNull(aIndex)) tStack.stackSize = 0;
+                if (setStackToZeroInsteadOfNull(aIndex)) {
+                    tStack.stackSize = 0;
+                    markDirty();
+                }
                 else setInventorySlotContents(aIndex, null);
             } else {
                 rStack = tStack.splitStack(aAmount);
+                markDirty();
                 if (tStack.stackSize == 0 && !setStackToZeroInsteadOfNull(aIndex))
                     setInventorySlotContents(aIndex, null);
             }
@@ -753,6 +764,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
     }
 
     public int fill_default(ForgeDirection aSide, FluidStack aFluid, boolean doFill) {
+        markDirty();
         return fill(aFluid, doFill);
     }
 
@@ -761,6 +773,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
         if (getBaseMetaTileEntity().hasSteamEngineUpgrade() && GT_ModHandler.isSteam(aFluid) && aFluid.amount > 1) {
             int tSteam = (int) Math.min(Integer.MAX_VALUE, Math.min(aFluid.amount / 2, getBaseMetaTileEntity().getSteamCapacity() - getBaseMetaTileEntity().getStoredSteam()));
             if (tSteam > 0) {
+                markDirty();
                 if (doFill) getBaseMetaTileEntity().increaseStoredSteam(tSteam, true);
                 return tSteam * 2;
             }
@@ -814,7 +827,9 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
 
     @Override
     public void markDirty() {
-        //
+        if (mBaseMetaTileEntity != null) {
+            mBaseMetaTileEntity.markDirty();
+        }
     }
 
     @Override

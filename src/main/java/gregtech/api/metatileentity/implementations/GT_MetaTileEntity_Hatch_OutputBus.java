@@ -133,6 +133,7 @@ public class GT_MetaTileEntity_Hatch_OutputBus extends GT_MetaTileEntity_Hatch {
      * @return true if stack is fully accepted. false is stack is partially accepted or nothing is accepted
      */
     public boolean storeAll(ItemStack aStack) {
+        markDirty();
         for (int i = 0, mInventoryLength = mInventory.length; i < mInventoryLength && aStack.stackSize > 0; i++) {
             ItemStack tSlot = mInventory[i];
             if (GT_Utility.isStackInvalid(tSlot)) {
