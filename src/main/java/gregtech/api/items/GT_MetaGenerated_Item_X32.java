@@ -7,6 +7,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.creativetab.CreativeTabs;
@@ -61,6 +62,7 @@ public abstract class GT_MetaGenerated_Item_X32 extends GT_MetaGenerated_Item {
                 }
                 if ((tPrefix == OrePrefixes.stick || tPrefix == OrePrefixes.wireFine || tPrefix == OrePrefixes.ingot) && (tMaterial == Materials.Lead || tMaterial == Materials.Tin || tMaterial == Materials.SolderingAlloy)) {
                     GregTech_API.sSolderingMetalList.add(tStack);
+                    GT_ModHandler.registerBoxableItemToToolBox(tStack);
                 }
             }
         }
@@ -87,7 +89,7 @@ public abstract class GT_MetaGenerated_Item_X32 extends GT_MetaGenerated_Item {
         // if (!super.doesMaterialAllowGeneration(aPrefix, aMaterial)) return false;
         return aPrefix != null && aMaterial != null && aPrefix.doGenerateItem(aMaterial);
     }
-	
+
 	/* ---------- OVERRIDEABLE FUNCTIONS ---------- */
 
     /**
@@ -128,7 +130,7 @@ public abstract class GT_MetaGenerated_Item_X32 extends GT_MetaGenerated_Item {
     public boolean doesShowInCreative(OrePrefixes aPrefix, Materials aMaterial, boolean aDoShowAllItems) {
         return true;
     }
-	
+
 	/* ---------- INTERNAL OVERRIDES ---------- */
 
     @Override
