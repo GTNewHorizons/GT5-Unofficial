@@ -23,6 +23,20 @@ public class RecipeLoader_02 {
 
     public static void RecipeLoad(){
 
+        GT_Values.RA.addAssemblerRecipe(
+            new ItemStack[]{
+                GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.StainlessSteel,1),
+                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.BlueAlloy,1),
+                GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorHV,32),
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Beryllium,32),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite,1)
+            },
+            null,
+            ItemRefer.Speeding_Pipe.get(1),
+            300,
+            1920
+        );
+
         // Compact MK1 Fusion Disassembly Recipe
         GT_Values.RA.addAssemblerRecipe(
             new ItemStack[]{

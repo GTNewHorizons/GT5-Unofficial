@@ -10,8 +10,6 @@ import static gregtech.api.enums.GT_Values.V;
 
 public class NeutronAccelerator extends GT_MetaTileEntity_Hatch_Energy {
 
-    public boolean isRunning;
-
     public NeutronAccelerator(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);
     }
@@ -27,13 +25,11 @@ public class NeutronAccelerator extends GT_MetaTileEntity_Hatch_Energy {
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        this.isRunning = aNBT.getBoolean("isRunning");
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setBoolean("isRunning", this.isRunning);
     }
 
     @Override
@@ -53,12 +49,12 @@ public class NeutronAccelerator extends GT_MetaTileEntity_Hatch_Energy {
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (this.getBaseMetaTileEntity().isServerSide()) {
+        if (aBaseMetaTileEntity.isServerSide()) {
             if (aBaseMetaTileEntity.getStoredEU() >= getMaxEUConsume() && aBaseMetaTileEntity.isAllowedToWork()) {
                 setEUVar(aBaseMetaTileEntity.getStoredEU() - getMaxEUConsume());
-                isRunning = true;
+                aBaseMetaTileEntity.setActive(true);
             } else {
-                isRunning = false;
+                aBaseMetaTileEntity.setActive(false);
             }
         }
         super.onPostTick(aBaseMetaTileEntity, aTick);

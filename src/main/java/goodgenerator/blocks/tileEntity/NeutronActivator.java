@@ -330,7 +330,7 @@ public class NeutronActivator extends GT_MetaTileEntity_MultiblockBase_EM implem
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         boolean anyWorking = false;
-        if (this.getBaseMetaTileEntity().isServerSide()) {
+        if (aBaseMetaTileEntity.isServerSide()) {
 
             for (ItemStack input : getStoredInputs()) {
                 if (input.isItemEqual(Materials.Graphite.getDust(1)) || input.isItemEqual(Materials.Beryllium.getDust(1))) {
@@ -341,7 +341,7 @@ public class NeutronActivator extends GT_MetaTileEntity_MultiblockBase_EM implem
             }
 
             for (NeutronAccelerator tHatch : mNeutronAccelerator) {
-                if (tHatch.isRunning && this.getRepairStatus() == this.getIdealStatus()) {
+                if (tHatch.getBaseMetaTileEntity().isActive() && this.getRepairStatus() == this.getIdealStatus()) {
                     anyWorking = true;
                     this.eV += Math.max(nextInt(tHatch.getMaxEUConsume(), tHatch.getMaxEUConsume() * 2 + 1) * 10 * Math.pow(0.95, height - 4), 10);
                 }
@@ -413,7 +413,7 @@ public class NeutronActivator extends GT_MetaTileEntity_MultiblockBase_EM implem
         int currentNKEInput = 0;
         boolean anyWorking = false;
         for (NeutronAccelerator tHatch : mNeutronAccelerator) {
-            if (tHatch.isRunning) {
+            if (tHatch.getBaseMetaTileEntity().isActive()) {
                 currentNKEInput += nextInt(tHatch.getMaxEUConsume(), tHatch.getMaxEUConsume() * 2 + 1) * 10 * Math.pow(0.95, height - 4);
                 anyWorking = true;
             }
