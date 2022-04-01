@@ -80,12 +80,11 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
      */
     public GT_MetaGenerated_Tool(String aUnlocalized) {
         super(aUnlocalized);
-        GT_ModHandler.registerBoxableItemToToolBox(this);
         setCreativeTab(GregTech_API.TAB_GREGTECH);
         setMaxStackSize(1);
         sInstances.put(getUnlocalizedName(), this);
     }
-	
+
 	/* ---------- FOR ADDING CUSTOM ITEMS INTO THE REMAINING 766 RANGE ---------- */
 
     public static final Materials getPrimaryMaterial(ItemStack aStack) {
@@ -105,7 +104,7 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
         }
         return Materials._NULL;
     }
-	
+
 	/* ---------- INTERNAL OVERRIDES ---------- */
 
     public static final long getToolMaxDamage(ItemStack aStack) {
@@ -168,6 +167,7 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
             }
             if (GregTech_API.sThaumcraftCompat != null)
                 GregTech_API.sThaumcraftCompat.registerThaumcraftAspectsToItem(rStack, tAspects, false);
+            GT_ModHandler.registerBoxableItemToToolBox(rStack);
             return rStack;
         }
         return null;
@@ -217,14 +217,14 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
         if (isItemStackUsable(aStack) && getDigSpeed(aStack, aBlock, aMetaData) > 0.0F)
             doDamage(aStack, tStats.convertBlockDrops(aDrops, aStack, aPlayer, aBlock, aX, aY, aZ, aMetaData, aFortune, aSilkTouch, aEvent) * tStats.getToolDamagePerDropConversion());
     }
-    
+
     @Mod.EventHandler
     public float onBlockBreakSpeedEvent(float aDefault, ItemStack aStack, EntityPlayer aPlayer, Block aBlock, int aX, int aY, int aZ, byte aMetaData, PlayerEvent.BreakSpeed aEvent)
     {
-      IToolStats tStats = getToolStats(aStack); 
+      IToolStats tStats = getToolStats(aStack);
       return tStats == null ? aDefault : tStats.getMiningSpeed(aBlock, aMetaData, aDefault, aPlayer, aPlayer.worldObj, aX, aY, aZ);
     }
-    
+
     @Override
     public boolean onBlockStartBreak(ItemStack aStack, int aX, int aY, int aZ, EntityPlayer aPlayer)
     {
@@ -393,7 +393,7 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
                     		aNBT.setLong("HeatTime", tWorldTime);
                     		if(tHeat>-10000)aNBT.setInteger("Heat", tHeat);
                     	}
-                    	
+
                     	 aList.add(tOffset + 3, EnumChatFormatting.RED + "Heat: " + aNBT.getInteger("Heat")+" K" + EnumChatFormatting.GRAY);
                     }
                 }
@@ -542,7 +542,7 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
         IToolStats tStats = getToolStats(aStack);
         if (tStats != null) doDamage(aStack, tStats.getToolDamagePerEntityAttack());
     }
-    
+
 	@Override
 	public boolean canWrench(EntityPlayer player, int x, int y, int z) {
 		if(player==null)return false;
@@ -559,7 +559,7 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
         IToolStats tStats = getToolStats(player.getCurrentEquippedItem());
         if (tStats != null) doDamage(player.getCurrentEquippedItem(), tStats.getToolDamagePerEntityAttack());
 	}
-	
+
 	@Override
 	public boolean canUse(ItemStack stack, EntityPlayer player, int x, int y, int z){
 		 return canWrench(player, x, y, z);
@@ -569,7 +569,7 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
 	public void used(ItemStack stack, EntityPlayer player, int x, int y, int z){
 		wrenchUsed(player, x, y, z);
 	}
-	
+
 	@Override
 	public boolean shouldHideFacades(ItemStack stack, EntityPlayer player) {
 		if(player==null)return false;
@@ -578,7 +578,7 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
 		IToolStats tStats = getToolStats(player.getCurrentEquippedItem());
 		return tStats.isWrench();
 	}
-	
+
 
     @Override
     public boolean canLink(EntityPlayer aPlayer, ItemStack aStack, EntityMinecart cart) {

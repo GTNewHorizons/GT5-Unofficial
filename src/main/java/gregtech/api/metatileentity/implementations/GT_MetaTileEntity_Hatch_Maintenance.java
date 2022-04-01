@@ -1,6 +1,5 @@
 package gregtech.api.metatileentity.implementations;
 
-import com.mojang.authlib.GameProfile;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
@@ -23,10 +22,9 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.FakePlayer;
-
 import net.minecraftforge.common.util.FakePlayer;
 
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_AUTOMAINTENANCE;
@@ -240,9 +238,9 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
         return true;
     }
 
-    public void onToolClick(ItemStack aStack, EntityLivingBase aPlayer) {
+    public void onToolClick(ItemStack aStack, EntityLivingBase aPlayer, IInventory aToolboxInventory) {
         if (aStack == null || aPlayer == null) return;
-        
+
         // Allow IC2 Toolbox with tools to function for maint issues.
         if (aStack.getItem() instanceof ItemToolbox && aPlayer instanceof EntityPlayer) {
             applyToolbox(aStack, (EntityPlayer)aPlayer);
@@ -259,7 +257,8 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
             mHardHammer = true;
         if (GT_Utility.isStackInList(aStack, GregTech_API.sCrowbarList) && !mCrowbar && GT_ModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer))
             mCrowbar = true;
-        if (!mSolderingTool && GT_ModHandler.useSolderingIron(aStack, aPlayer)) mSolderingTool = true;
+        if (!mSolderingTool && GT_ModHandler.useSolderingIron(aStack, aPlayer, aToolboxInventory))
+            mSolderingTool = true;
         if (GT_OreDictUnificator.isItemStackInstanceOf(aStack, "craftingDuctTape")) {
             mWrench = mScrewdriver = mSoftHammer = mHardHammer = mCrowbar = mSolderingTool = true;
             getBaseMetaTileEntity().setActive(false);
@@ -274,11 +273,15 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
         }
     }
 
+    public void onToolClick(ItemStack aStack, EntityLivingBase aPlayer) {
+        onToolClick(aStack, aPlayer, null);
+    }
+
     private void applyToolbox(ItemStack aStack, EntityPlayer aPlayer) {
         ItemToolbox aToolbox = (ItemToolbox) aStack.getItem();
         IHasGui aToolboxGUI = aToolbox.getInventory(aPlayer, aStack);
         for (int i=0; i<aToolboxGUI.getSizeInventory(); i++)
-            onToolClick(aToolboxGUI.getStackInSlot(i), aPlayer);
+            onToolClick(aToolboxGUI.getStackInSlot(i), aPlayer, aToolboxGUI);
     }
 
     @Override
