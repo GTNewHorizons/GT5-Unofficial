@@ -1764,6 +1764,8 @@ public enum ItemList implements IItemContainer {
     Circuit_Chip_Biocell,
 
     Tube_Wires,
+    GalliumArsenideCrystal,
+    GalliumArsenideCrystalSmallPart,
 
     Circuit_Microprocessor,
     Circuit_Processor,
