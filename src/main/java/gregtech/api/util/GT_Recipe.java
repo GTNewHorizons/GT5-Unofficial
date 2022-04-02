@@ -558,6 +558,20 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 	public static class GT_Recipe_AssemblyLine{
         public static final ArrayList<GT_Recipe_AssemblyLine> sAssemblylineRecipes = new ArrayList<GT_Recipe_AssemblyLine>();
 
+        static {
+            GregTech_API.sFirstWorldTick.add(GT_Recipe_AssemblyLine::checkInvalidRecipes);
+        }
+
+        private static void checkInvalidRecipes() {
+            boolean foundInvalid = false;
+            for (GT_Recipe_AssemblyLine recipe : sAssemblylineRecipes) {
+                if (recipe.getPersistentHash() == 0)
+                    foundInvalid = true;
+            }
+            if (foundInvalid)
+                throw new RuntimeException("There are invalid assembly line recipes! Check logs for details!");
+        }
+
         public ItemStack mResearchItem;
         public int mResearchTime;
         public ItemStack[] mInputs;

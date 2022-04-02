@@ -40,7 +40,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -129,7 +128,7 @@ public class GregTech_API {
      * 15000 - 16999 are reserved for TecTech.
      * 17000 - 29999 are currently free.
      * 30000 - 31999 are reserved for Alkalus.
-     * 32001 - 32766 are currently free.
+     * 32001 - 32766 are reserved for Glod.
      * <p/>
      * Contact me if you need a free ID-Range, which doesn't conflict with other Addons.
      * You could make an ID-Config, but we all know, what "stupid" customers think about conflicting ID's
@@ -194,18 +193,7 @@ public class GregTech_API {
     private static final Map<Integer, List<ItemStack>> sConfigurationLists = new HashMap<>();
     private static final Map<Predicate<ItemStack>, BiFunction<ItemStack, EntityPlayerMP, ItemStack>> sRealCircuitProgrammerList = new LinkedHashMap<>();
     public static final Map<Predicate<ItemStack>, BiFunction<ItemStack, EntityPlayerMP, ItemStack>> sCircuitProgrammerList = Collections.unmodifiableMap(sRealCircuitProgrammerList);
-    static {
-        registerCircuitProgrammer(new Predicate<ItemStack>() {
-            private final int screwdriverOreId = OreDictionary.getOreID("craftingToolScrewdriver");
-            @Override
-            public boolean test(ItemStack stack) {
-                for (int i : OreDictionary.getOreIDs(stack))
-                    if (i == screwdriverOreId)
-                        return true;
-                return false;
-            }
-        }, true);
-    }
+
     /**
      * The List of Dimensions, which are Whitelisted for the Teleporter. This list should not contain other Planets.
      * Mystcraft Dimensions and other Dimensional Things should be allowed.
@@ -247,6 +235,7 @@ public class GregTech_API {
             sAfterGTLoad = new ArrayList<>(),
             sBeforeGTPostload = new ArrayList<>(),
             sAfterGTPostload = new ArrayList<>(),
+            sFirstWorldTick = new ArrayList<>(),
             sBeforeGTServerstart = new ArrayList<>(),
             sAfterGTServerstart = new ArrayList<>(),
             sBeforeGTServerstop = new ArrayList<>(),

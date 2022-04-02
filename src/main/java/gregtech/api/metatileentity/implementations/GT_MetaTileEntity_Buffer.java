@@ -9,6 +9,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import java.util.*;
+
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
@@ -250,7 +252,7 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
     @Override
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (aSide == getBaseMetaTileEntity().getBackFacing()) {
-        	
+
             mTargetStackSize = (byte) ((mTargetStackSize + (aPlayer.isSneaking()? -1 : 1)) % 65);
             if(mTargetStackSize <0){mTargetStackSize = mMaxStackSize;}
             if (mTargetStackSize == 0) {
@@ -271,26 +273,33 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
         return false;
     }
 
+    protected void handleRedstoneOutput(IGregTechTileEntity aBaseMetaTileEntity) {
+        if (bRedstoneIfFull) {
+            boolean hasEmptySlots = false;
+            for (int i = 0; i < mInventory.length; i++) {
+                if (isValidSlot(i) && mInventory[i] == null) {
+                    hasEmptySlots = true;
+                    break;
+                }
+            }
+            if (bInvert)
+                hasEmptySlots = !hasEmptySlots;
+            for (byte b = 0; b < 6; b++)
+                aBaseMetaTileEntity.setInternalOutputRedstoneSignal(b, hasEmptySlots ? (byte) 0 : (byte) 15);
+        }
+        else {
+            for(byte b = 0;b<6;b++)
+                aBaseMetaTileEntity.setInternalOutputRedstoneSignal(b, (byte)0);
+        }
+    }
+
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
         if (aBaseMetaTileEntity.isAllowedToWork() && aBaseMetaTileEntity.isServerSide() && (aBaseMetaTileEntity.hasWorkJustBeenEnabled() || aBaseMetaTileEntity.hasInventoryBeenModified() || aTimer % 200 == 0 || mSuccess > 0)) {
             mSuccess--;
             updateSlots();
             moveItems(aBaseMetaTileEntity, aTimer);
-            for(byte b = 0;b<6;b++)
-            	aBaseMetaTileEntity.setInternalOutputRedstoneSignal(b,bInvert ? (byte)15 : (byte)0);
-            if (bRedstoneIfFull) {
-                for(byte b = 0;b<6;b++)
-                    aBaseMetaTileEntity.setInternalOutputRedstoneSignal(b,bInvert ? (byte)0 : (byte)15);
-                for (int i = 0; i < mInventory.length; i++)
-                    if (isValidSlot(i)) {
-                        if (mInventory[i] == null) {
-                            for(byte b = 0;b<6;b++)
-                                aBaseMetaTileEntity.setInternalOutputRedstoneSignal(b,bInvert ? (byte)15 : (byte)0);
-                            break;
-                        }
-                    }
-            }
+            handleRedstoneOutput(aBaseMetaTileEntity);
         }
     }
 
@@ -325,7 +334,7 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
         return aSide != aBaseMetaTileEntity.getBackFacing();
     }
-    
+
     @Override
     public boolean allowGeneralRedstoneOutput(){
     	return true;
@@ -339,19 +348,35 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
     }
 
     protected void fillStacksIntoFirstSlots() {
+        HashMap<GT_Utility.ItemId, Integer> slots = new HashMap<>(mInventory.length);
+        HashMap<GT_Utility.ItemId, ItemStack> stacks = new HashMap<>(mInventory.length);
+        List<GT_Utility.ItemId> order = new ArrayList<>(mInventory.length);
+        List<Integer> validSlots = new ArrayList<>(mInventory.length);
         for (int i = 0; i < mInventory.length - 1; i++) {
-            if (!isValidSlot(i)) {
+            if (!isValidSlot(i))
                 continue;
-            }
-
-            for (int j = i + 1; j < mInventory.length; j++) {
-                if (!isValidSlot(j)) {
-                    continue;
-                }
-
-                if (mInventory[j] != null && (mInventory[i] == null || GT_Utility.areStacksEqual(mInventory[i], mInventory[j])))
-                    GT_Utility.moveStackFromSlotAToSlotB(getBaseMetaTileEntity(), getBaseMetaTileEntity(), j, i, (byte) 64, (byte) 1, (byte) 64, (byte) 1);
-            }
+            validSlots.add(i);
+            ItemStack s = mInventory[i];
+            if(s == null)
+                continue;
+            GT_Utility.ItemId sID = GT_Utility.ItemId.createNoCopy(s);
+            slots.merge(sID, s.stackSize, Integer::sum);
+            if(!stacks.containsKey(sID))
+                stacks.put(sID, s);
+            order.add(sID);
+            mInventory[i] = null;
+        }
+        int slotindex = 0;
+        for (GT_Utility.ItemId sID : order) {
+            int toSet = slots.get(sID);
+            if (toSet == 0)
+                continue;
+            int slot = validSlots.get(slotindex);
+            slotindex++;
+            mInventory[slot] = stacks.get(sID).copy();
+            toSet = Math.min(toSet, mInventory[slot].getMaxStackSize());
+            mInventory[slot].stackSize = toSet;
+            slots.merge(sID, toSet, (a, b) -> a - b);
         }
     }
 

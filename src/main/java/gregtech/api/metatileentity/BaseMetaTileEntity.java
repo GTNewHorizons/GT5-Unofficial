@@ -89,7 +89,7 @@ public class BaseMetaTileEntity extends CoverableGregTechTileEntity implements I
     private final boolean[] mActiveEUOutputs = new boolean[]{false, false, false, false, false, false};
     private byte[] mSidedRedstone = new byte[]{15, 15, 15, 15, 15, 15};
     private final int[] mTimeStatistics = new int[GregTech_API.TICKS_FOR_LAG_AVERAGING];
-    private boolean mHasEnoughEnergy = true, mRunningThroughTick = false, mInputDisabled = false, mOutputDisabled = false, mMuffler = false, mLockUpgrade = false; 
+    private boolean mHasEnoughEnergy = true, mRunningThroughTick = false, mInputDisabled = false, mOutputDisabled = false, mMuffler = false, mLockUpgrade = false;
     private boolean mActive = false, mRedstone = false, mWorkUpdate = false, mSteamConverter = false, mInventoryChanged = false, mWorks = true, mNeedsUpdate = true;
     private boolean mNeedsBlockUpdate = true, mSendClientData = false, oRedstone = false;
     private byte mColor = 0, oColor = 0, oStrongRedstone = 0, mStrongRedstone = 0, oRedstoneData = 63, oTextureData = 0, oUpdateData = 0, oTexturePage=0;
@@ -322,9 +322,9 @@ public class BaseMetaTileEntity extends CoverableGregTechTileEntity implements I
                     mAverageEUInput[mAverageEUInputIndex] = 0;
                     mAverageEUOutput[mAverageEUOutputIndex] = 0;
                 }
-                
+
                 mMetaTileEntity.onPreTick(this, mTickTimer);
-                
+
                 if (!hasValidMetaTileEntity()) {
                     mRunningThroughTick = false;
                     return;
@@ -777,7 +777,7 @@ public class BaseMetaTileEntity extends CoverableGregTechTileEntity implements I
 
             doEnetUpdate();
             cableUpdateDelay = 10;
-            
+
             if (mMetaTileEntity.shouldTriggerBlockUpdate()) {
                 // If we're triggering a block update this will call onMachineBlockUpdate()
                 GregTech_API.causeMachineUpdate(worldObj, xCoord, yCoord, zCoord);
@@ -803,8 +803,10 @@ public class BaseMetaTileEntity extends CoverableGregTechTileEntity implements I
     @Override
     public void setInventorySlotContents(int aIndex, ItemStack aStack) {
         mInventoryChanged = true;
-        if (canAccessData())
+        if (canAccessData()) {
+            markDirty();
             mMetaTileEntity.setInventorySlotContents(aIndex, worldObj.isRemote ? aStack : GT_OreDictUnificator.setStack(true, aStack));
+        }
     }
 
     @Override
@@ -1145,7 +1147,7 @@ public class BaseMetaTileEntity extends CoverableGregTechTileEntity implements I
         }
         return false;
     }
-    
+
     @Override
     protected boolean hasValidMetaTileEntity() {
         return mMetaTileEntity != null && mMetaTileEntity.getBaseMetaTileEntity() == this;
@@ -1676,7 +1678,7 @@ public class BaseMetaTileEntity extends CoverableGregTechTileEntity implements I
         return rEU / (mAverageEUOutput.length - 1);
     }
 
-    
+
     @Override
     protected void updateOutputRedstoneSignal(byte aSide) {
         if (mMetaTileEntity.hasSidedRedstoneOutputBehavior()) {
@@ -1685,7 +1687,7 @@ public class BaseMetaTileEntity extends CoverableGregTechTileEntity implements I
             setOutputRedstoneSignal(aSide, (byte) 15);
         }
     }
-    
+
     @Override
     public String getOwnerName() {
         if (GT_Utility.isStringInvalid(mOwnerName)) return "Player";
@@ -1983,6 +1985,7 @@ public class BaseMetaTileEntity extends CoverableGregTechTileEntity implements I
         aStack = GT_OreDictUnificator.get(aStack);
         if (GT_Utility.areStacksEqual(tStack, aStack) && tStack.stackSize + aStack.stackSize <= Math.min(aStack.getMaxStackSize(), getInventoryStackLimit())) {
             tStack.stackSize += aStack.stackSize;
+            markDirty();
             return true;
         }
         return false;
