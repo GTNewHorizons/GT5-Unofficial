@@ -1,6 +1,7 @@
 package gregtech.api.util;
 
 import codechicken.nei.PositionedStack;
+import cpw.mods.fml.common.Loader;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -81,7 +82,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
      * Used for describing recipes that do not fit the default recipe pattern (for example Large Boiler Fuels)
      */
     private String[] neiDesc = null;
-    
+
     private GT_Recipe(GT_Recipe aRecipe) {
         mInputs = GT_Utility.copyStackArray((Object[]) aRecipe.mInputs);
         mOutputs = GT_Utility.copyStackArray((Object[]) aRecipe.mOutputs);
@@ -621,7 +622,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 		@Override
 		public int hashCode() {
 			final int prime = 31;
-			int result = 1;			
+			int result = 1;
 			GT_ItemStack[] thisInputs = new GT_ItemStack[this.mInputs.length];
 			int totalInputStackSize = 0;
 			for (int i=0;i<this.mInputs.length;i++) {
@@ -634,13 +635,13 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 			GT_ItemStack thisResearch = new GT_ItemStack(mResearchItem);
 			int miscRecipeDataHash = Arrays.deepHashCode(new Object[] {
 					totalInputStackSize,
-					mDuration, mEUt, 
+					mDuration, mEUt,
 					thisOutput,
 					thisResearch,
 					mResearchTime
 					});
-			result = prime * result + inputFluidHash;			
-			result = prime * result + inputHash;			
+			result = prime * result + inputFluidHash;
+			result = prime * result + inputHash;
 			result = prime * result + miscRecipeDataHash;
 			return result;
 		}
@@ -690,7 +691,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 					return false;
 				}
 			}
-			
+
 			return this.mDuration == other.mDuration
 					&& this.mEUt == other.mEUt
 					&& this.mResearchTime == other.mResearchTime;
@@ -799,7 +800,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map sBenderRecipes = new GT_Recipe_Map(new HashSet<>(5000), "gt.recipe.metalbender", "Bending Machine", null, RES_PATH_GUI + "basicmachines/Bender", 2, 1, 2, 0, 1, E, 1, E, true, true);
         public static final GT_Recipe_Map sAlloySmelterRecipes = new GT_Recipe_Map(new HashSet<>(12000), "gt.recipe.alloysmelter", "Alloy Smelter", null, RES_PATH_GUI + "basicmachines/AlloySmelter", 2, 1, 2, 0, 1, E, 1, E, true, true);
         public static final GT_Recipe_Map sAssemblerRecipes = new GT_Recipe_Map_Assembler(new HashSet<>(8200), "gt.recipe.assembler", "Assembler", null, RES_PATH_GUI + "basicmachines/Assembler2", 9, 1, 1, 0, 1, E, 1, E, true, true);
-        public static final GT_Recipe_Map sCircuitAssemblerRecipes = new GT_Recipe_Map_Assembler(new HashSet<>(605), "gt.recipe.circuitassembler", "Circuit Assembler", null, RES_PATH_GUI + "basicmachines/CircuitAssembler", 6, 1, 1, 0, 1, E, 1, E, true, true);
+        public static final GT_Recipe_Map sCircuitAssemblerRecipes = new GT_Recipe_Map_Assembler(new HashSet<>(605), "gt.recipe.circuitassembler", "Circuit Assembler", null, RES_PATH_GUI + "basicmachines/CircuitAssembler", 6, 1, 1, 0, 1, E, 1, E, true, true, !Loader.isModLoaded("neicustomdiagram"));
         public static final GT_Recipe_Map sCannerRecipes = new GT_Recipe_Map(new HashSet<>(900), "gt.recipe.canner", "Canning Machine", null, RES_PATH_GUI + "basicmachines/Canner", 2, 2, 1, 0, 1, E, 1, E, true, true);
         public static final GT_Recipe_Map sCNCRecipes = new GT_Recipe_Map(new HashSet<>(100), "gt.recipe.cncmachine", "CNC Machine", null, RES_PATH_GUI + "basicmachines/Default", 2, 1, 2, 1, 1, E, 1, E, true, true);
         public static final GT_Recipe_Map sLatheRecipes = new GT_Recipe_Map(new HashSet<>(1150), "gt.recipe.lathe", "Lathe", null, RES_PATH_GUI + "basicmachines/Lathe", 1, 2, 1, 0, 1, E, 1, E, true, true);
@@ -851,7 +852,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public final String mNEIGUIPath;
         public final String mNEISpecialValuePre, mNEISpecialValuePost;
         public final int mUsualInputCount, mUsualOutputCount, mNEISpecialValueMultiplier, mMinimalInputItems, mMinimalInputFluids, mAmperage;
-        public final boolean mNEIAllowed, mShowVoltageAmperageInNEI;
+        public final boolean mNEIAllowed, mShowVoltageAmperageInNEI, mNEIUnificateOutput;
 
         /**
          * Unique identifier for this recipe map. Generated from aUnlocalizedName and a few other parameters.
@@ -882,11 +883,13 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
          * @param aNEISpecialValueMultiplier the Value the Special Value is getting Multiplied with before displaying
          * @param aNEISpecialValuePost       the String after the Special Value. Usually for a Unit or something.
          * @param aNEIAllowed                if NEI is allowed to display this Recipe Handler in general.
+         * @param aNEIUnificateOutput        if NEI generate oredict equivalents
          */
-        public GT_Recipe_Map(Collection<GT_Recipe> aRecipeList, String aUnlocalizedName, String aLocalName, String aNEIName, String aNEIGUIPath, int aUsualInputCount, int aUsualOutputCount, int aMinimalInputItems, int aMinimalInputFluids, int aAmperage, String aNEISpecialValuePre, int aNEISpecialValueMultiplier, String aNEISpecialValuePost, boolean aShowVoltageAmperageInNEI, boolean aNEIAllowed) {
+        public GT_Recipe_Map(Collection<GT_Recipe> aRecipeList, String aUnlocalizedName, String aLocalName, String aNEIName, String aNEIGUIPath, int aUsualInputCount, int aUsualOutputCount, int aMinimalInputItems, int aMinimalInputFluids, int aAmperage, String aNEISpecialValuePre, int aNEISpecialValueMultiplier, String aNEISpecialValuePost, boolean aShowVoltageAmperageInNEI, boolean aNEIAllowed, boolean aNEIUnificateOutput) {
             sMappings.add(this);
             mNEIAllowed = aNEIAllowed;
             mShowVoltageAmperageInNEI = aShowVoltageAmperageInNEI;
+            mNEIUnificateOutput = aNEIUnificateOutput;
             mRecipeList = aRecipeList;
             mNEIName = aNEIName == null ? aUnlocalizedName : aNEIName;
             mNEIGUIPath = aNEIGUIPath.endsWith(".png") ? aNEIGUIPath : aNEIGUIPath + ".png";
@@ -904,6 +907,10 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             mUniqueIdentifier = String.format("%s_%d_%d_%d_%d_%d", aUnlocalizedName, aAmperage, aUsualInputCount, aUsualOutputCount, aMinimalInputFluids, aMinimalInputItems);
             if (sIndexedMappings.put(mUniqueIdentifier, this) != null)
                 throw new IllegalArgumentException("Duplicate recipe map registered: " + mUniqueIdentifier);
+        }
+
+        public GT_Recipe_Map(Collection<GT_Recipe> aRecipeList, String aUnlocalizedName, String aLocalName, String aNEIName, String aNEIGUIPath, int aUsualInputCount, int aUsualOutputCount, int aMinimalInputItems, int aMinimalInputFluids, int aAmperage, String aNEISpecialValuePre, int aNEISpecialValueMultiplier, String aNEISpecialValuePost, boolean aShowVoltageAmperageInNEI, boolean aNEIAllowed) {
+            this(aRecipeList, aUnlocalizedName, aLocalName, aNEIName, aNEIGUIPath, aUsualInputCount, aUsualOutputCount, aMinimalInputItems, aMinimalInputFluids, aAmperage, aNEISpecialValuePre, aNEISpecialValueMultiplier, aNEISpecialValuePost, aShowVoltageAmperageInNEI, aNEIAllowed, true);
         }
 
         public GT_Recipe addRecipe(boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecial, int[] aOutputChances, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
@@ -1029,7 +1036,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         public GT_Recipe findRecipe(IHasWorldObjectAndCoords aTileEntity, GT_Recipe aRecipe, boolean aNotUnificated, long aVoltage, FluidStack[] aFluids, ItemStack aSpecialSlot, ItemStack... aInputs) {
         	return findRecipe(aTileEntity, aRecipe, aNotUnificated, false, aVoltage, aFluids, aSpecialSlot, aInputs);
-        }	
+        }
         /**
          * finds a Recipe matching the aFluid and ItemStack Inputs.
          *
@@ -1614,8 +1621,12 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
      */
     public static class GT_Recipe_Map_Assembler extends GT_Recipe_Map {
 
+        public GT_Recipe_Map_Assembler(Collection<GT_Recipe> aRecipeList, String aUnlocalizedName, String aLocalName, String aNEIName, String aNEIGUIPath, int aUsualInputCount, int aUsualOutputCount, int aMinimalInputItems, int aMinimalInputFluids, int aAmperage, String aNEISpecialValuePre, int aNEISpecialValueMultiplier, String aNEISpecialValuePost, boolean aShowVoltageAmperageInNEI, boolean aNEIAllowed, boolean aNEIUnificateOutput) {
+            super(aRecipeList, aUnlocalizedName, aLocalName, aNEIName, aNEIGUIPath, aUsualInputCount, aUsualOutputCount, aMinimalInputItems, aMinimalInputFluids, aAmperage, aNEISpecialValuePre, aNEISpecialValueMultiplier, aNEISpecialValuePost, aShowVoltageAmperageInNEI, aNEIAllowed, aNEIUnificateOutput);
+        }
+
         public GT_Recipe_Map_Assembler(Collection<GT_Recipe> aRecipeList, String aUnlocalizedName, String aLocalName, String aNEIName, String aNEIGUIPath, int aUsualInputCount, int aUsualOutputCount, int aMinimalInputItems, int aMinimalInputFluids, int aAmperage, String aNEISpecialValuePre, int aNEISpecialValueMultiplier, String aNEISpecialValuePost, boolean aShowVoltageAmperageInNEI, boolean aNEIAllowed) {
-            super(aRecipeList, aUnlocalizedName, aLocalName, aNEIName, aNEIGUIPath, aUsualInputCount, aUsualOutputCount, aMinimalInputItems, aMinimalInputFluids, aAmperage, aNEISpecialValuePre, aNEISpecialValueMultiplier, aNEISpecialValuePost, aShowVoltageAmperageInNEI, aNEIAllowed);
+            this(aRecipeList, aUnlocalizedName, aLocalName, aNEIName, aNEIGUIPath, aUsualInputCount, aUsualOutputCount, aMinimalInputItems, aMinimalInputFluids, aAmperage, aNEISpecialValuePre, aNEISpecialValueMultiplier, aNEISpecialValuePost, aShowVoltageAmperageInNEI, aNEIAllowed, true);
         }
 
         @Override
@@ -1831,7 +1842,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
     }
 
     public static class GT_Recipe_Map_LargeBoilerFakeFuels extends GT_Recipe_Map {
-    	
+
     	private static final List<String> ALLOWED_SOLID_FUELS = Arrays.asList(GregTech_API.sMachineFile.mConfig.getStringList(
     			"LargeBoiler.allowedFuels",
     			ConfigCategories.machineconfig.toString(),
@@ -1844,19 +1855,19 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             explanatoryRecipe.setNeiDesc("Not all solid fuels are listed.", "Any item that burns in a", "vanilla furnace will burn in", "a Large Bronze or Steel Boiler.");
             addRecipe(explanatoryRecipe);
         }
-        
+
         public static boolean isAllowedSolidFuel(ItemStack stack) {
         	return isAllowedSolidFuel(Item.itemRegistry.getNameForObject(stack.getItem()), stack.getItemDamage());
         }
-        
+
         public static boolean isAllowedSolidFuel(String itemRegistryName, int meta) {
         	return ALLOWED_SOLID_FUELS.contains(itemRegistryName + ":" + meta);
         }
-        
+
         public static boolean addAllowedSolidFuel(ItemStack stack) {
         	return addAllowedSolidFuel(Item.itemRegistry.getNameForObject(stack.getItem()), stack.getItemDamage());
         }
-        
+
         public static boolean addAllowedSolidFuel(String itemregistryName, int meta) {
         	return ALLOWED_SOLID_FUELS.add(itemregistryName + ":" + meta);
         }
@@ -1888,7 +1899,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 			recipe = new GT_Recipe(recipe);
 			//Some recipes will have a burn time like 15.9999999 and % always rounds down
 			double floatErrorCorrection = 0.0001;
-			
+
     		double bronzeBurnTime = baseBurnTime * 2 + floatErrorCorrection;
     		bronzeBurnTime -= bronzeBurnTime % 0.05;
     		double steelBurnTime = baseBurnTime + floatErrorCorrection;
@@ -1935,7 +1946,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
             return super.addRecipe(recipe);
         }
-    	
+
     }
 
     public static class GT_Recipe_Map_LargeChemicalReactor extends GT_Recipe_Map {
@@ -2057,7 +2068,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     else
                         inputStacks.add(new FixedPositionedStack(new ItemStack(Items.command_block_minecart), 48 - j % 3 * 18, (j >= 3 ? 5 : 23)));
 				}
-				
+
 				for (int i = 0; i < fluidLimit; i++, j++) {
                     if (this.mFluidInputs == null || this.mFluidInputs[i] == null) {
                         if (this.mOutputs != null && this.mOutputs.length > 0 && this.mOutputs[0] != null)
@@ -2092,7 +2103,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 return outputStacks;
 			}
 
-            
+
         }
     }
     public static class GT_Recipe_Map_DistillationTower extends GT_Recipe_Map {
@@ -2209,7 +2220,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 			mOreDictAlt = aAlt;
 		}
 
-		
+
 		public Object getAltRepresentativeInput(int aIndex) {
 	        if (aIndex < 0) return null;
 	        if (aIndex < mOreDictAlt.length) {
@@ -2224,7 +2235,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 	        if (aIndex >= mInputs.length) return null;
 	        return GT_Utility.copyOrNull(mInputs[aIndex]);
 	    }
-    	
+
     }
 
     private static class ReplicatorFakeMap extends GT_Recipe_Map {
