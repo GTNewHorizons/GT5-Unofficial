@@ -1276,7 +1276,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Calciumhydride, 1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1), Materials.Hydrogen.getGas(2000), Materials.Hydrogen.getGas(2000), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.CalciumDisilicide, 1),300, 30);
         GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1), GT_Utility.getIntegratedCircuit(2), Materials.Chlorine.getGas(4000), Materials.SiliconTetrachloride.getFluid(1000), null,400, 30);
         GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Chlorine, 4), GT_Values.NF, Materials.SiliconTetrachloride.getFluid(1000), ItemList.Cell_Empty.get(4L),400, 30);
-
+       
         GT_Values.RA.addBenderRecipe(ItemList.IC2_Mixed_Metal_Ingot.get(1L), GT_OreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Advanced, 1L), 100, 8);
 
         GT_Values.RA.addBenderRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Tin, 12L), ItemList.Cell_Empty.get(6L), 1200, 8);
