@@ -3,6 +3,7 @@ package gregtech.api.util;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreDictNames;
@@ -1837,7 +1838,8 @@ public class GT_ModHandler {
                 EntityPlayer tPlayer = (EntityPlayer) aPlayer;
                 if (tPlayer.capabilities.isCreativeMode) return true;
                 if (isElectricItem(aStack) && ic2.api.item.ElectricItem.manager.getCharge(aStack) > 1000.0d) {
-                    if (consumeSolderingMaterial(tPlayer) || (aExternalInventory != null && consumeSolderingMaterialFromExternal(aExternalInventory))) {
+                    if (consumeSolderingMaterial(tPlayer)
+                        || (aExternalInventory != null && consumeSolderingMaterial(aExternalInventory))) {
                     	if (canUseElectricItem(aStack, 10000)) {
                             return GT_ModHandler.useElectricItem(aStack, 10000, (EntityPlayer) aPlayer);
                         }
@@ -1857,29 +1859,23 @@ public class GT_ModHandler {
         return useSolderingIron(aStack, aPlayer, null);
     }
 
-    /**
-     * Simply consumes some soldering material from player inventory
-     */
     public static boolean consumeSolderingMaterial(EntityPlayer aPlayer) {
     	if (aPlayer.capabilities.isCreativeMode) return true;
-        for (int i = 0; i < aPlayer.inventory.mainInventory.length; i++) {
-            if (GT_Utility.isStackInList(aPlayer.inventory.mainInventory[i], GregTech_API.sSolderingMetalList)) {
-                if (aPlayer.inventory.mainInventory[i].stackSize < 1) return false;
-                if (aPlayer.inventory.mainInventory[i].stackSize == 1) {
-                    aPlayer.inventory.mainInventory[i] = null;
-                } else {
-                    aPlayer.inventory.mainInventory[i].stackSize--;
-                }
-                if (aPlayer.inventoryContainer != null) aPlayer.inventoryContainer.detectAndSendChanges();
-                return true;
+        if (consumeSolderingMaterial(aPlayer.inventory)) {
+            if (aPlayer.inventoryContainer != null) {
+                aPlayer.inventoryContainer.detectAndSendChanges();
             }
+            return true;
         }
-    	return false;
+        return false;
     }
 
-    public static boolean consumeSolderingMaterialFromExternal(IInventory aExternalInventory) {
-        for (int i = 0; i < aExternalInventory.getSizeInventory(); i++) {
-            ItemStack tStack = aExternalInventory.getStackInSlot(i);
+    /**
+     * Consumes soldering material from given inventory
+     */
+    public static boolean consumeSolderingMaterial(IInventory aInventory) {
+        for (int i = 0; i < aInventory.getSizeInventory(); i++) {
+            ItemStack tStack = aInventory.getStackInSlot(i);
             if (GT_Utility.isStackInList(tStack, GregTech_API.sSolderingMetalList)) {
                 if (tStack.stackSize < 1) return false;
                 if (tStack.stackSize == 1) {
@@ -1887,8 +1883,8 @@ public class GT_ModHandler {
                 } else {
                     tStack.stackSize--;
                 }
-                aExternalInventory.setInventorySlotContents(i, tStack);
-                aExternalInventory.markDirty();
+                aInventory.setInventorySlotContents(i, tStack);
+                aInventory.markDirty();
                 return true;
             }
         }
@@ -1938,7 +1934,7 @@ public class GT_ModHandler {
 
     @Deprecated
     public static void registerBoxableItemToToolBox(Item aItem) {
-        registerBoxableItemToToolBox(new ItemStack(aItem));
+        registerBoxableItemToToolBox(new ItemStack(aItem, 1, GT_Values.W));
     }
 
     public static int getCapsuleCellContainerCountMultipliedWithStackSize(ItemStack... aStacks) {
