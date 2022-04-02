@@ -235,6 +235,18 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         return true;
     }
 
+    public boolean addBlastRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aInput3, ItemStack aInput4, FluidStack aFluidInput, FluidStack aFluidOutput, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3, ItemStack aOutput4, int aDuration, int aEUt, int aLevel) {
+        if ((aInput1 == null) || (aOutput1 == null)) {
+            return false;
+        }
+        if ((aDuration = GregTech_API.sRecipeFile.get("blastfurnace", aInput1, aDuration)) <= 0) {
+            return false;
+        }
+        GT_Recipe.GT_Recipe_Map.sBlastRecipes.addRecipe(true, new ItemStack[]{aInput1, aInput2, aInput3, aInput4}, new ItemStack[]{aOutput1, aOutput2, aOutput3, aOutput4}, null, null,
+            new FluidStack[]{aFluidInput}, new FluidStack[]{aFluidOutput}, aDuration, aEUt, aLevel);
+        return true;
+    }
+
     @Override
     public boolean addPrimitiveBlastRecipe(ItemStack aInput1, ItemStack aInput2, int aCoalAmount, ItemStack aOutput1, ItemStack aOutput2, int aDuration) {
         if ((aInput1 == null && aInput2 == null) || (aOutput1 == null && aOutput2 == null)) {
