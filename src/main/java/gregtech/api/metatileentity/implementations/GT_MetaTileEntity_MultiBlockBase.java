@@ -249,7 +249,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
     public void onStructureChange() {
         mStructureChanged = true;
     }
-    
+
     @Override
     public void onMachineBlockUpdate() {
         mUpdated = true;
@@ -269,11 +269,11 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
         mMufflerHatches.clear();
         mMaintenanceHatches.clear();
     }
-    
+
     public boolean checkStructure(boolean aForceReset) {
         return checkStructure(aForceReset, getBaseMetaTileEntity());
     }
-    
+
     public boolean checkStructure(boolean aForceReset, IGregTechTileEntity aBaseMetaTileEntity) {
         if(!aBaseMetaTileEntity.isServerSide()) return mMachine;
         // Only trigger an update if forced (from onPostTick, generally), or if the structure has changed
@@ -354,6 +354,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
     protected void runMachine(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (mMaxProgresstime > 0 && doRandomMaintenanceDamage()) {
             if (onRunningTick(mInventory[1])) {
+                markDirty();
                 if (!polluteEnvironment(getPollutionPerTick(mInventory[1]))) {
                     stopMachine();
                 }
@@ -390,7 +391,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
             if (aTick % 100 == 0 || aBaseMetaTileEntity.hasWorkJustBeenEnabled() || aBaseMetaTileEntity.hasInventoryBeenModified()) {
 
                 if (aBaseMetaTileEntity.isAllowedToWork()) {
-                    checkRecipe(mInventory[1]);
+                    if(checkRecipe(mInventory[1])) {
+                        markDirty();
+                    }
                 }
                 if (mMaxProgresstime <= 0) mEfficiency = Math.max(0, mEfficiency - 1000);
             }
@@ -739,7 +742,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
         }
         return false;
     }
-    
+
     public boolean addOutput(FluidStack aLiquid) {
         if (aLiquid == null) return false;
         FluidStack copiedFluidStack = aLiquid.copy();
@@ -814,8 +817,8 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
             if (isValidMetaTileEntity(tHatch)) {
                 for (int i = tHatch.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
                     if (GT_Utility.areStacksEqual(aStack, tHatch.getBaseMetaTileEntity().getStackInSlot(i))) {
-                        if (tHatch.getBaseMetaTileEntity().getStackInSlot(0).stackSize >= aStack.stackSize) {
-                            tHatch.getBaseMetaTileEntity().decrStackSize(0, aStack.stackSize);
+                        if (tHatch.getBaseMetaTileEntity().getStackInSlot(i).stackSize >= aStack.stackSize) {
+                            tHatch.getBaseMetaTileEntity().decrStackSize(i, aStack.stackSize);
                             return true;
                         }
                     }
@@ -864,6 +867,8 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
                 }
             }
         }
+        if(getStackInSlot(1) != null && getStackInSlot(1).getUnlocalizedName().startsWith("gt.integrated_circuit"))
+            rList.add(getStackInSlot(1));
         return rList;
     }
 
@@ -1117,14 +1122,14 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
 
         currenttip.add(String.format("Progress: %d s / %d s", tag.getInteger("progress"), tag.getInteger("maxProgress")));
 
-        
+
         super.getWailaBody(itemStack, currenttip, accessor, config);
     }
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y, int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        
+
         tag.setBoolean("hasProblems", (getIdealStatus() - getRepairStatus()) > 0);
         tag.setFloat("efficiency", mEfficiency / 100.0F);
         tag.setInteger("progress", mProgresstime/20);

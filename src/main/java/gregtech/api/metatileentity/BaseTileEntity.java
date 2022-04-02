@@ -16,6 +16,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
@@ -465,9 +466,15 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     public final void setToFire() {
         worldObj.setBlock(xCoord, yCoord, zCoord, Blocks.fire);
     }
-    
-    @Override 
-    public void markDirty() {/* Do not do the super Function */} 
+
+    @Override
+    public void markDirty() {
+        // Avoid sending neighbor updates, just mark the chunk as dirty to make sure it gets saved
+        Chunk chunk = worldObj.getChunkFromBlockCoords(xCoord, zCoord);
+        if(chunk != null) {
+            chunk.setChunkModified();
+        }
+    }
 
     @Deprecated
     public String trans(String aKey, String aEnglish){

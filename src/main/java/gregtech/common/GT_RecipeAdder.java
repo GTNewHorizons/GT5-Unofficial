@@ -463,22 +463,9 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
             }
         }
 
-        for (int i = 0; i < aInputs.length; ++i) {
-            if (!GT_Utility.isStackValid(aInputs[i])) {
+        for (ItemStack aInput : aInputs) {
+            if (!GT_Utility.isStackValid(aInput)) {
                 GT_FML_LOGGER.debug("GT_RecipeAdder: Invalid input for (" + aOutput1.toString() + ")");
-                continue;
-            }
-            for (int oreID : OreDictionary.getOreIDs(aInputs[i])) {
-                String odName = OreDictionary.getOreName(oreID);
-                if (odName.startsWith("circuit")) {
-                    for (ItemStack tStack : GT_OreDictUnificator.getOresImmutable(odName)) {
-                        if (!GT_Utility.isStackValid(tStack))
-                            continue;
-                        aInputs[i] = new ItemStack(tStack.getItem(), aInputs[i].stackSize, tStack.getItemDamage());
-                        GT_Recipe.GT_Recipe_Map.sAssemblerRecipes.addRecipe(true, aInputs, new ItemStack[]{aOutput1}, null, new FluidStack[]{aFluidInput}, null, aDuration, aEUt, aCleanroom ? -200 : 0);
-                        ret = true;
-                    }
-                }
             }
         }
 
@@ -1434,7 +1421,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         }
         if ((aDuration = GregTech_API.sRecipeFile.get("assemblingline", aOutput, aDuration)) <= 0) {
             return false;
-        } 
+        }
         ItemStack[] tInputs = new ItemStack[aInputs.length];
         ItemStack[][] tAlts = new ItemStack[aInputs.length][];
         int tPersistentHash = 1;
@@ -1469,7 +1456,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         				int tAmount = ((Number) objs[1]).intValue();
             			List<ItemStack> uList = new ArrayList<>();
             			for (ItemStack tStack : tList) {
-            				ItemStack uStack = GT_Utility.copyAmount(tAmount, tStack); 
+            				ItemStack uStack = GT_Utility.copyAmount(tAmount, tStack);
             				if (GT_Utility.isStackValid(uStack)) {
             					uList.add(uStack);
             					if (tInputs[i] == null)
@@ -1528,37 +1515,16 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
             return false;
         }
 
-        boolean ret = false;
-
         for (int oreID : OreDictionary.getOreIDs(aOutput)) {
             if (OreDictionary.getOreName(oreID).startsWith("circuit")){
                 return this.addCircuitAssemblerRecipeNonOredicted(aInputs, aFluidInput, aOutput, aDuration, aEUt, aCleanroom);
             }
         }
 
-        for (int i = 0; i < aInputs.length; ++i) {
-            for (int oreID : OreDictionary.getOreIDs(aInputs[i])) {
-                String odName = OreDictionary.getOreName(oreID);
-                if (odName.startsWith("circuit")) {
-                    for (ItemStack tStack : GT_OreDictUnificator.getOresImmutable(odName)) {
-                        if (!GT_Utility.isStackValid(tStack))
-                            continue;
-                        aInputs[i] = new ItemStack(tStack.getItem(),aInputs[i].stackSize,tStack.getItemDamage());
-                        GT_Recipe.GT_Recipe_Map.sCircuitAssemblerRecipes.addRecipe(true, aInputs, new ItemStack[]{aOutput}, null, new FluidStack[]{aFluidInput}, null, aDuration, aEUt, aCleanroom ? -200 : 0);
-                        ret = true;
-                    }
-                }
-            }
-        }
-
-        if (!ret) {
-            GT_Recipe.GT_Recipe_Map.sCircuitAssemblerRecipes.addRecipe(true, aInputs, new ItemStack[]{aOutput}, null, new FluidStack[]{aFluidInput}, null, aDuration, aEUt, aCleanroom ? -200 : 0);
-            ret = true;
-        }
-
-        return ret;
+        GT_Recipe.GT_Recipe_Map.sCircuitAssemblerRecipes.addRecipe(true, aInputs, new ItemStack[]{aOutput}, null, new FluidStack[]{aFluidInput}, null, aDuration, aEUt, aCleanroom ? -200 : 0);
+        return true;
     }
-    
+
     public boolean addCircuitAssemblerRecipeNonOredicted(ItemStack[] aInputs, FluidStack aFluidInput, ItemStack aOutput, int aDuration, int aEUt, boolean aCleanroom) {
         if ((aInputs == null) || (aOutput == null) || aInputs.length>6 || aInputs.length<1) {
             return false;
@@ -1572,6 +1538,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         GT_Recipe.GT_Recipe_Map.sCircuitAssemblerRecipes.addRecipe(true, aInputs, new ItemStack[]{aOutput}, null, null, new FluidStack[]{aFluidInput}, null, aDuration, aEUt, aCleanroom ? -200 : 0);
         return true;
     }
+
     private boolean areItemsAndFluidsBothNull(ItemStack[] items, FluidStack[] fluids){
         boolean itemsNull = true;
         if (items != null) {

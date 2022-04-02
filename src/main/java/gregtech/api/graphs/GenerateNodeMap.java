@@ -67,10 +67,13 @@ abstract public class GenerateNodeMap {
                     aNextNodeValue = tNextNode.mHighestNodeValue;
                     aPipeNode.mHighestNodeValue = tNextNode.mHighestNodeValue;
                     aPipeNode.mNeighbourNodes[i] = tNextNode;
-                    aPipeNode.mNodePaths[i] = aPipeNode.mReturnPath;
+                    aPipeNode.mNodePaths[i] = aPipeNode.returnValues.mReturnPath;
+                    aPipeNode.locks[i] = aPipeNode.returnValues.returnLock;
+                    aPipeNode.mNodePaths[i].reloadLocks();
                 }
             }
         }
+        aPipe.reloadLocks();
     }
 
     // on a valid tile entity create a new node
@@ -98,7 +101,11 @@ abstract public class GenerateNodeMap {
             if (tInvalidSide > -1) {
                 tPipeNode.mNeighbourNodes[tInvalidSide] = aPreviousNode;
                 tPipeNode.mNodePaths[tInvalidSide] = getNewPath(aPipes.toArray(new MetaPipeEntity[0]));
-                aPreviousNode.mReturnPath = tPipeNode.mNodePaths[tInvalidSide];
+                Lock lock = new Lock();
+                tPipeNode.mNodePaths[tSideOp].lock = lock;
+                tPipeNode.locks[tInvalidSide] = lock;
+                aPreviousNode.returnValues.mReturnPath = tPipeNode.mNodePaths[tInvalidSide];
+                aPreviousNode.returnValues.returnLock = lock;
             }
             if (tConnections > 1)
                 generateNextNode(tPipe, tPipeNode, tInvalidSide, aNextNodeValue, aConsumers, aNodeMap);
@@ -106,7 +113,10 @@ abstract public class GenerateNodeMap {
             ConsumerNode tConsumeNode = aConsumers.get(aConsumers.size() - 1);
             tConsumeNode.mNeighbourNodes[tSideOp] = aPreviousNode;
             tConsumeNode.mNodePaths[tSideOp] = getNewPath(aPipes.toArray(new MetaPipeEntity[0]));
-            aPreviousNode.mReturnPath = tConsumeNode.mNodePaths[tSideOp];
+            Lock lock = new Lock();
+            tConsumeNode.mNodePaths[tSideOp].lock = lock;
+            aPreviousNode.returnValues.mReturnPath = tConsumeNode.mNodePaths[tSideOp];
+            aPreviousNode.returnValues.returnLock = lock;
             tThisNode = tConsumeNode;
         }
         return tThisNode;

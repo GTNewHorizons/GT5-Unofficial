@@ -1,16 +1,12 @@
 package gregtech.api.util;
 
-import com.google.auto.value.AutoValue;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
-import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +15,7 @@ import java.util.Map;
 public class GT_Single_Recipe_Check {
     protected final GT_MetaTileEntity_MultiBlockBase multiBlockBase;
     protected final GT_Recipe recipe;
-    protected final ImmutableMap<ItemId, Integer> itemCost;
+    protected final ImmutableMap<GT_Utility.ItemId, Integer> itemCost;
     protected final ImmutableMap<Fluid, Integer> fluidCost;
 
     protected final int totalItemCost;
@@ -28,7 +24,7 @@ public class GT_Single_Recipe_Check {
     protected GT_Single_Recipe_Check(
             GT_MetaTileEntity_MultiBlockBase multiBlockBase,
             GT_Recipe recipe,
-            ImmutableMap<ItemId, Integer> itemCost,
+            ImmutableMap<GT_Utility.ItemId, Integer> itemCost,
             ImmutableMap<Fluid, Integer> fluidCost) {
         this.multiBlockBase = multiBlockBase;
         this.recipe = recipe;
@@ -50,16 +46,16 @@ public class GT_Single_Recipe_Check {
      * restriction, so any multi-block that calls those can use this method.
      */
     public boolean checkRecipeInputsSingleStack(boolean consumeInputs) {
-        Map<ItemId, ItemStack> itemMap = null;
+        Map<GT_Utility.ItemId, ItemStack> itemMap = null;
         if (totalItemCost > 0) {
             itemMap = new HashMap<>();
             for (ItemStack itemStack : multiBlockBase.getStoredInputs()) {
                 itemMap.merge(
-                        ItemId.createNoCopy(itemStack), itemStack,
+                        GT_Utility.ItemId.createNoCopy(itemStack), itemStack,
                         (a, b) -> a.stackSize >= b.stackSize ? a : b);
             }
 
-            for (Map.Entry<ItemId, Integer> entry : itemCost.entrySet()) {
+            for (Map.Entry<GT_Utility.ItemId, Integer> entry : itemCost.entrySet()) {
                 ItemStack itemStack = itemMap.get(entry.getKey());
                 if (itemStack == null || itemStack.stackSize < entry.getValue()) {
                     return false;
@@ -86,7 +82,7 @@ public class GT_Single_Recipe_Check {
 
         if (consumeInputs) {
             if (totalItemCost > 0) {
-                for (Map.Entry<ItemId, Integer> entry : itemCost.entrySet()) {
+                for (Map.Entry<GT_Utility.ItemId, Integer> entry : itemCost.entrySet()) {
                     itemMap.get(entry.getKey()).stackSize -= entry.getValue();
                 }
             }
@@ -110,12 +106,12 @@ public class GT_Single_Recipe_Check {
         if (totalItemCost > 0) {
             items = multiBlockBase.getStoredInputs();
 
-            Map<ItemId, Integer> itemMap = new HashMap<>();
+            Map<GT_Utility.ItemId, Integer> itemMap = new HashMap<>();
             for (ItemStack itemStack : items) {
-                itemMap.merge(ItemId.createNoCopy(itemStack), itemStack.stackSize, Integer::sum);
+                itemMap.merge(GT_Utility.ItemId.createNoCopy(itemStack), itemStack.stackSize, Integer::sum);
             }
 
-            for (Map.Entry<ItemId, Integer> entry : itemCost.entrySet()) {
+            for (Map.Entry<GT_Utility.ItemId, Integer> entry : itemCost.entrySet()) {
                 if (itemMap.getOrDefault(entry.getKey(), 0) < entry.getValue()) {
                     return false;
                 }
@@ -141,9 +137,9 @@ public class GT_Single_Recipe_Check {
         if (consumeInputs) {
             if (totalItemCost > 0) {
                 int remainingItemCost = totalItemCost;
-                Map<ItemId, Integer> runningItemCost = Maps.newHashMap(itemCost);
+                Map<GT_Utility.ItemId, Integer> runningItemCost = Maps.newHashMap(itemCost);
                 for (ItemStack itemStack : items) {
-                    ItemId key = ItemId.createNoCopy(itemStack);
+                    GT_Utility.ItemId key = GT_Utility.ItemId.createNoCopy(itemStack);
                     int runningCost = runningItemCost.getOrDefault(key, 0);
                     int paid = Math.min(itemStack.stackSize, runningCost);
                     itemStack.stackSize -= paid;
@@ -177,11 +173,11 @@ public class GT_Single_Recipe_Check {
         return true;
     }
 
-    protected static Map<ItemId, Integer> buildItemMap(
+    protected static Map<GT_Utility.ItemId, Integer> buildItemMap(
             GT_MetaTileEntity_MultiBlockBase multiBlockBase) {
-        Map<ItemId, Integer> itemMap = new HashMap<>();
+        Map<GT_Utility.ItemId, Integer> itemMap = new HashMap<>();
         for (ItemStack itemStack : multiBlockBase.getStoredInputs()) {
-            itemMap.merge(ItemId.create(itemStack), itemStack.stackSize, Integer::sum);
+            itemMap.merge(GT_Utility.ItemId.create(itemStack), itemStack.stackSize, Integer::sum);
         }
         return itemMap;
     }
@@ -204,9 +200,9 @@ public class GT_Single_Recipe_Check {
 
         // In order to compute which items and fluids are consumed by the recipe, we compare the
         // multi-block's items and fluids before and after inputs are consumed by the recipe.
-        private Map<ItemId, Integer> beforeItems;
+        private Map<GT_Utility.ItemId, Integer> beforeItems;
         private Map<Fluid, Integer> beforeFluids;
-        private Map<ItemId, Integer> afterItems;
+        private Map<GT_Utility.ItemId, Integer> afterItems;
         private Map<Fluid, Integer> afterFluids;
 
         private GT_Recipe recipe;
@@ -235,8 +231,8 @@ public class GT_Single_Recipe_Check {
         }
 
         public GT_Single_Recipe_Check build() {
-            ImmutableMap.Builder<ItemId, Integer> itemCostBuilder = ImmutableMap.builder();
-            for (Map.Entry<ItemId, Integer> entry : beforeItems.entrySet()) {
+            ImmutableMap.Builder<GT_Utility.ItemId, Integer> itemCostBuilder = ImmutableMap.builder();
+            for (Map.Entry<GT_Utility.ItemId, Integer> entry : beforeItems.entrySet()) {
                 int cost = entry.getValue() - afterItems.getOrDefault(entry.getKey(), 0);
                 if (cost > 0) {
                     itemCostBuilder.put(entry.getKey(), cost);
@@ -256,29 +252,5 @@ public class GT_Single_Recipe_Check {
         }
     }
 
-    @AutoValue
-    protected abstract static class ItemId {
-        /** This method copies NBT, as it is mutable. */
-        protected static ItemId create(ItemStack itemStack) {
-            NBTTagCompound nbt = itemStack.getTagCompound();
-            if (nbt != null) {
-                nbt = (NBTTagCompound) nbt.copy();
-            }
 
-            return new AutoValue_GT_Single_Recipe_Check_ItemId(
-                    itemStack.getItem(), itemStack.getItemDamage(), nbt);
-        }
-
-        /** This method does not copy NBT in order to save time. Make sure not to mutate it! */
-        protected static ItemId createNoCopy(ItemStack itemStack) {
-            return new AutoValue_GT_Single_Recipe_Check_ItemId(
-                    itemStack.getItem(), itemStack.getItemDamage(), itemStack.getTagCompound());
-        }
-
-        protected abstract Item item();
-        protected abstract int metaData();
-
-        @Nullable
-        protected abstract NBTTagCompound nbt();
-    }
 }

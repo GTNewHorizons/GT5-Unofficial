@@ -4,6 +4,7 @@ import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons;
+import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -12,7 +13,7 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import net.minecraft.block.Block;
 import org.lwjgl.input.Keyboard;
 
-public class GT_MetaTileEntity_BrickedBlastFurnace extends GT_MetaTileEntity_PrimitiveBlastFurnace {
+public class GT_MetaTileEntity_BrickedBlastFurnace extends GT_MetaTileEntity_PrimitiveBlastFurnace implements ISecondaryDescribable {
     private static final ITexture[] FACING_SIDE = {TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_DENSEBRICKS)};
     private static final ITexture[] FACING_FRONT = {TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_BRICKEDBLASTFURNACE_INACTIVE)};
     private static final ITexture[] FACING_ACTIVE = {
@@ -30,6 +31,23 @@ public class GT_MetaTileEntity_BrickedBlastFurnace extends GT_MetaTileEntity_Pri
 
     @Override
     public String[] getDescription() {
+        return getCurrentDescription();
+    }
+
+    @Override
+    public boolean isDisplaySecondaryDescription() {
+        return Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
+    }
+
+    public String[] getPrimaryDescription() {
+        return getTooltip().getInformation();
+    }
+
+    public String[] getSecondaryDescription() {
+        return getTooltip().getStructureInformation();
+    }
+
+    protected GT_Multiblock_Tooltip_Builder getTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Blast Furnace")
                 .addInfo("Controller Block for the Bricked Blast Furnace")
@@ -44,11 +62,7 @@ public class GT_MetaTileEntity_BrickedBlastFurnace extends GT_MetaTileEntity_Pri
                 .addStructureInfo("You can share the walls of GT multis, so")
                 .addStructureInfo("each additional one costs less, up to 4")
                 .toolTipFinisher("Gregtech");
-        if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-            return tt.getStructureInformation();
-        } else {
-            return tt.getInformation();
-        }
+        return tt;
     }
 
     @Override

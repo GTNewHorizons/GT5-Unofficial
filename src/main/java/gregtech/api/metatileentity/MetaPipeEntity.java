@@ -859,14 +859,24 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
     public boolean letsIn(GT_CoverBehaviorBase<?> coverBehavior, byte aSide, int aCoverID, ISerializableObject aCoverVariable, ICoverable aTileEntity) { return false; }
     public boolean letsOut(GT_CoverBehaviorBase<?> coverBehavior, byte aSide, int aCoverID, ISerializableObject aCoverVariable, ICoverable aTileEntity) { return false; }
 
-	public boolean canConnect(byte aSide, TileEntity tTileEntity) { return false; }
-	public boolean getGT6StyleConnection() { return false; }
+    public boolean canConnect(byte aSide, TileEntity tTileEntity) {
+        return false;
+    }
+
+    public boolean getGT6StyleConnection() {
+        return false;
+    }
 
     @Override
-    public boolean shouldJoinIc2Enet() { return false; }
+    public boolean shouldJoinIc2Enet() {
+        return false;
+    }
 
     @Override
     public boolean isMachineBlockUpdateRecursive() {
         return false;
+    }
+
+    public void reloadLocks() {
     }
 }

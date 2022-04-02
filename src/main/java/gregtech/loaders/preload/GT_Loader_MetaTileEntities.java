@@ -984,7 +984,7 @@ public class GT_Loader_MetaTileEntities implements Runnable {//TODO CHECK CIRCUI
 
 
         ItemList.Charcoal_Pile.set(new GT_MetaTileEntity_Charcoal_Pit(1155, "multimachine.charcoalpile", "Charcoal Pile Igniter").getStackForm(1));
-        GT_ModHandler.addCraftingRecipe(ItemList.Charcoal_Pile.get(1L), bitsd, new Object[]{"EXE", "EME", " C ", 'M', ItemList.Hull_HP_Bricks, 'E', OrePrefixes.plate.get(Materials.AnyBronze), 'C', new ItemStack(Items.flint_and_steel, 1), 'X', OrePrefixes.rotor.get(Materials.Steel),});
+        GT_ModHandler.addCraftingRecipe(ItemList.Charcoal_Pile.get(1L), bitsd, new Object[]{"EXE", "EME", "hCw", 'M', ItemList.Hull_HP_Bricks, 'E', OrePrefixes.plate.get(Materials.AnyBronze), 'C', new ItemStack(Items.flint_and_steel, 1), 'X', OrePrefixes.rotor.get(Materials.Steel),});
 
         ItemList.Seismic_Prospector_LV.set(new GT_MetaTileEntity_SeismicProspector(1156, "basicmachine.seismicprospector.01", "Seismic Prospector LV", 1).getStackForm(1));
         ItemList.Seismic_Prospector_MV.set(new GT_MetaTileEntity_SeismicProspector(2100, "basicmachine.seismicprospector.02", "Seismic Prospector MV", 2).getStackForm(1));

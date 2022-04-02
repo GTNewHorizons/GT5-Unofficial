@@ -10,16 +10,12 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import cpw.mods.fml.common.network.NetworkRegistry;
-import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
-import org.lwjgl.input.Keyboard;
-
-import java.util.concurrent.atomic.AtomicReferenceArray;
 
 /**
  * Enhanced multiblock base class, featuring following improvement over {@link GT_MetaTileEntity_MultiBlockBase}
@@ -29,8 +25,7 @@ import java.util.concurrent.atomic.AtomicReferenceArray;
  *
  * @param <T> type of this
  */
-public abstract class GT_MetaTileEntity_EnhancedMultiBlockBase<T extends GT_MetaTileEntity_EnhancedMultiBlockBase<T>> extends GT_MetaTileEntity_MultiBlockBase implements IAlignment, IConstructable {
-	private static final AtomicReferenceArray<GT_Multiblock_Tooltip_Builder> tooltips = new AtomicReferenceArray<>(GregTech_API.METATILEENTITIES.length);
+public abstract class GT_MetaTileEntity_EnhancedMultiBlockBase<T extends GT_MetaTileEntity_EnhancedMultiBlockBase<T>> extends GT_MetaTileEntity_TooltipMultiBlockBase implements IAlignment, IConstructable {
 	private ExtendedFacing mExtendedFacing = ExtendedFacing.DEFAULT;
 	private IAlignmentLimits mLimits = getInitialAlignmentLimits();
 
@@ -108,25 +103,6 @@ public abstract class GT_MetaTileEntity_EnhancedMultiBlockBase<T extends GT_Meta
 	public abstract IStructureDefinition<T> getStructureDefinition();
 
 	protected abstract GT_Multiblock_Tooltip_Builder createTooltip();
-
-	@Override
-	public String[] getDescription() {
-		if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-			return getTooltip().getStructureInformation();
-		} else {
-			return getTooltip().getInformation();
-		}
-	}
-
-	protected GT_Multiblock_Tooltip_Builder getTooltip() {
-		int tId = getBaseMetaTileEntity().getMetaTileID();
-		GT_Multiblock_Tooltip_Builder tooltip = tooltips.get(tId);
-		if (tooltip == null) {
-			tooltip = createTooltip();
-			tooltips.set(tId, tooltip);
-		}
-		return tooltip;
-	}
 
 	@Override
 	public String[] getStructureDescription(ItemStack stackSize) {
