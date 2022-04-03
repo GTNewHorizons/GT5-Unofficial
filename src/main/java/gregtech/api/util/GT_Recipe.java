@@ -2081,16 +2081,18 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 int fluidLimit = Math.min(mFluidOutputs.length, FLUID_OUTPUT_COUNT);
                 ArrayList<PositionedStack> outputStacks = new ArrayList<>(itemLimit + fluidLimit);
 
-                for (int i = 0; i < itemLimit; i++) {
-                    outputStacks.add(new FixedPositionedStack(this.mOutputs[i].copy(), 102 + i * 18, 5));
+                int j = 0;
+
+                for (int i = 0; i < itemLimit; i++, j++) {
+                    outputStacks.add(new FixedPositionedStack(this.mOutputs[i].copy(), 102 + j % 3 * 18, (j >= 3 ? 5 : 23)));
                 }
 
-                for (int i = 0; i < fluidLimit; i++) {
-                    outputStacks.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(this.mFluidOutputs[i], true), 102 + (i % 3) * 18, i >= 3 ? 5 : 23));
+                for (int i = 0; i < fluidLimit; i++, j++) {
+                    outputStacks.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(this.mFluidOutputs[i], true), 102 + j % 3 * 18, (j >= 3 ? 5 : 23)));
                 }
 
                 return outputStacks;
-			}
+            }
 
 
         }
