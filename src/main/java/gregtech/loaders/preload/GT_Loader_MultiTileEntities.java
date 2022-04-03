@@ -2,7 +2,9 @@ package gregtech.loaders.preload;
 
 import gregtech.api.multitileentity.MultiTileEntityBlock;
 import gregtech.api.multitileentity.MultiTileEntityRegistry;
+import gregtech.api.multitileentity.multiblock.base.MultiBlockPart;
 import gregtech.api.util.GT_Util;
+import gregtech.common.tileentities.machines.multiblock.MultiBlock_Macerator;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
@@ -21,18 +23,15 @@ public class GT_Loader_MultiTileEntities implements Runnable {
 
         Class<? extends TileEntity> aClass;
 
-        /*
-         * Placeholder, implemented in MTEMultiBlock branch
-         */
-//        aClass = MultiBlock_Macerator.class; aRegistry.add(
-//            "Large Macerator", "Multiblock Controller", 1000,  aClass, 1, 64, aMachine,
-//            GT_Util.makeNBT(tuple(NBT.MATERIAL, Material.iron),  tuple(NBT.TEXTURE, "metalwall"), tuple(NBT.TANK_CAPACITY, 128000L))
-//        );
+        aClass = MultiBlock_Macerator.class; aRegistry.add(
+            "Large Macerator", "Multiblock Controller", 1000,  aClass, 1, 64, aMachine,
+            GT_Util.makeNBT(tuple(NBT.MATERIAL, Material.iron),  tuple(NBT.TEXTURE, "metalwall"), tuple(NBT.TANK_CAPACITY, 128000L))
+        );
 
-//        aClass = MultiBlockPart.class; aRegistry.add(
-//         "Test Casing", "Multiblock Casing", 18000, aClass, 1, 64, aMachine,
-//          GT_Util.makeNBT(tuple(NBT.MATERIAL, Material.iron),  tuple(NBT.TEXTURE, "metalwall"))
-//        );
+        aClass = MultiBlockPart.class; aRegistry.add(
+         "Test Casing", "Multiblock Casing", 18000, aClass, 1, 64, aMachine,
+          GT_Util.makeNBT(tuple(NBT.MATERIAL, Material.iron),  tuple(NBT.TEXTURE, "metalwall"))
+        );
 
     }
 }
