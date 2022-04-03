@@ -49,6 +49,7 @@ import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.HashSet;
 
+import com.elisis.gtnhlanth.common.register.BotWerkstoffMaterialPool;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 
 import cpw.mods.fml.common.Loader;
@@ -123,6 +124,21 @@ public class BotRecipes {
         //LMP103S
         GT_Values.RA.addChemicalRecipe(Materials.CarbonMonoxide.getCells(1), C2, Materials.Chlorine.getGas(2000),
                 null, Phosgene.get(cell, 1), 50, 480);
+        GT_Values.RA.addChemicalRecipe(Materials.Chlorine.getCells(2), C2, Materials.CarbonMonoxide.getGas(1000),
+            null, Phosgene.get(cell, 1),  Materials.Empty.getCells(1),50, 480);
+        GT_Values.RA.addChemicalRecipe(Materials.CarbonMonoxide.getCells(1), C2, Materials.Chlorine.getGas(2000),
+            BotWerkstoffMaterialPool.Phosgene.getFluidOrGas(1000), null,  Materials.Empty.getCells(1),50, 480);
+        GT_Values.RA.addChemicalRecipe(Materials.Chlorine.getCells(2), C2, Materials.CarbonMonoxide.getGas(1000),
+            BotWerkstoffMaterialPool.Phosgene.getFluidOrGas(1000), null,  Materials.Empty.getCells(2),50, 480);
+        GT_Values.RA.addChemicalRecipe(Materials.CarbonMonoxide.getCells(1), Materials.Chlorine.getCells(2), null,
+            null, Phosgene.get(cell, 1),  Materials.Empty.getCells(2), 50, 480);
+        GT_Values.RA.addChemicalRecipe(Materials.Chlorine.getCells(2), Materials.CarbonMonoxide.getCells(1), null,
+            null, Phosgene.get(cell, 1),  Materials.Empty.getCells(2),50, 480);
+        GT_Values.RA.addChemicalRecipe(Materials.CarbonMonoxide.getCells(1), Materials.Chlorine.getCells(2), null,
+            BotWerkstoffMaterialPool.Phosgene.getFluidOrGas(1000), null,  Materials.Empty.getCells(3),50, 480);
+        GT_Values.RA.addChemicalRecipe(Materials.Chlorine.getCells(2), Materials.CarbonMonoxide.getCells(1), null,
+            BotWerkstoffMaterialPool.Phosgene.getFluidOrGas(1000), null,  Materials.Empty.getCells(3),50, 480);
+
         GT_Values.RA.addChemicalRecipe(Phosgene.get(cell, 1), C2, Materials.Ethanol.getFluid(1000),
                 Materials.HydrochloricAcid.getGas(1000), Ethylchloroformate.get(cell, 1), 20, 1920);
 
@@ -417,5 +433,5 @@ public class BotRecipes {
         electroRecipeMap.removeAll(toDel);
         GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes.reInit();
     }
-	
+
 }
