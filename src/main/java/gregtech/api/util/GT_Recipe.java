@@ -81,7 +81,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
      * Used for describing recipes that do not fit the default recipe pattern (for example Large Boiler Fuels)
      */
     private String[] neiDesc = null;
-    
+
     private GT_Recipe(GT_Recipe aRecipe) {
         mInputs = GT_Utility.copyStackArray((Object[]) aRecipe.mInputs);
         mOutputs = GT_Utility.copyStackArray((Object[]) aRecipe.mOutputs);
@@ -559,17 +559,23 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final ArrayList<GT_Recipe_AssemblyLine> sAssemblylineRecipes = new ArrayList<GT_Recipe_AssemblyLine>();
 
         static {
-            GregTech_API.sFirstWorldTick.add(GT_Recipe_AssemblyLine::checkInvalidRecipes);
+            if (!Boolean.getBoolean("com.gtnh.gt5u.ignore-invalid-assline-recipe"))
+                GregTech_API.sFirstWorldTick.add(GT_Recipe_AssemblyLine::checkInvalidRecipes);
+            else
+                GT_Log.out.println("NOT CHECKING INVALID ASSLINE RECIPE.");
         }
 
         private static void checkInvalidRecipes() {
-            boolean foundInvalid = false;
+            int invalidCount = 0;
+            GT_Log.out.println("Started assline validation");
             for (GT_Recipe_AssemblyLine recipe : sAssemblylineRecipes) {
-                if (recipe.getPersistentHash() == 0)
-                    foundInvalid = true;
+                if (recipe.getPersistentHash() == 0) {
+                    invalidCount++;
+                    GT_Log.err.printf("Invalid recipe: %s%n", recipe);
+                }
             }
-            if (foundInvalid)
-                throw new RuntimeException("There are invalid assembly line recipes! Check logs for details!");
+            if (invalidCount > 0)
+                throw new RuntimeException("There are " + invalidCount + " invalid assembly line recipe(s)! Check GregTech.log for details!");
         }
 
         public ItemStack mResearchItem;
@@ -618,10 +624,10 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         	mOreDictAlt = aAlt;
         }
 
-		@Override
+        @Override
 		public int hashCode() {
 			final int prime = 31;
-			int result = 1;			
+			int result = 1;
 			GT_ItemStack[] thisInputs = new GT_ItemStack[this.mInputs.length];
 			int totalInputStackSize = 0;
 			for (int i=0;i<this.mInputs.length;i++) {
@@ -634,13 +640,13 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 			GT_ItemStack thisResearch = new GT_ItemStack(mResearchItem);
 			int miscRecipeDataHash = Arrays.deepHashCode(new Object[] {
 					totalInputStackSize,
-					mDuration, mEUt, 
+					mDuration, mEUt,
 					thisOutput,
 					thisResearch,
 					mResearchTime
 					});
-			result = prime * result + inputFluidHash;			
-			result = prime * result + inputHash;			
+			result = prime * result + inputFluidHash;
+			result = prime * result + inputHash;
 			result = prime * result + miscRecipeDataHash;
 			return result;
 		}
@@ -690,7 +696,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 					return false;
 				}
 			}
-			
+
 			return this.mDuration == other.mDuration
 					&& this.mEUt == other.mEUt
 					&& this.mResearchTime == other.mResearchTime;
@@ -1029,7 +1035,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         public GT_Recipe findRecipe(IHasWorldObjectAndCoords aTileEntity, GT_Recipe aRecipe, boolean aNotUnificated, long aVoltage, FluidStack[] aFluids, ItemStack aSpecialSlot, ItemStack... aInputs) {
         	return findRecipe(aTileEntity, aRecipe, aNotUnificated, false, aVoltage, aFluids, aSpecialSlot, aInputs);
-        }	
+        }
         /**
          * finds a Recipe matching the aFluid and ItemStack Inputs.
          *
@@ -1831,7 +1837,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
     }
 
     public static class GT_Recipe_Map_LargeBoilerFakeFuels extends GT_Recipe_Map {
-    	
+
     	private static final List<String> ALLOWED_SOLID_FUELS = Arrays.asList(GregTech_API.sMachineFile.mConfig.getStringList(
     			"LargeBoiler.allowedFuels",
     			ConfigCategories.machineconfig.toString(),
@@ -1844,19 +1850,19 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             explanatoryRecipe.setNeiDesc("Not all solid fuels are listed.", "Any item that burns in a", "vanilla furnace will burn in", "a Large Bronze or Steel Boiler.");
             addRecipe(explanatoryRecipe);
         }
-        
+
         public static boolean isAllowedSolidFuel(ItemStack stack) {
         	return isAllowedSolidFuel(Item.itemRegistry.getNameForObject(stack.getItem()), stack.getItemDamage());
         }
-        
+
         public static boolean isAllowedSolidFuel(String itemRegistryName, int meta) {
         	return ALLOWED_SOLID_FUELS.contains(itemRegistryName + ":" + meta);
         }
-        
+
         public static boolean addAllowedSolidFuel(ItemStack stack) {
         	return addAllowedSolidFuel(Item.itemRegistry.getNameForObject(stack.getItem()), stack.getItemDamage());
         }
-        
+
         public static boolean addAllowedSolidFuel(String itemregistryName, int meta) {
         	return ALLOWED_SOLID_FUELS.add(itemregistryName + ":" + meta);
         }
@@ -1888,7 +1894,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 			recipe = new GT_Recipe(recipe);
 			//Some recipes will have a burn time like 15.9999999 and % always rounds down
 			double floatErrorCorrection = 0.0001;
-			
+
     		double bronzeBurnTime = baseBurnTime * 2 + floatErrorCorrection;
     		bronzeBurnTime -= bronzeBurnTime % 0.05;
     		double steelBurnTime = baseBurnTime + floatErrorCorrection;
@@ -1935,7 +1941,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
             return super.addRecipe(recipe);
         }
-    	
+
     }
 
     public static class GT_Recipe_Map_LargeChemicalReactor extends GT_Recipe_Map {
@@ -2057,7 +2063,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     else
                         inputStacks.add(new FixedPositionedStack(new ItemStack(Items.command_block_minecart), 48 - j % 3 * 18, (j >= 3 ? 5 : 23)));
 				}
-				
+
 				for (int i = 0; i < fluidLimit; i++, j++) {
                     if (this.mFluidInputs == null || this.mFluidInputs[i] == null) {
                         if (this.mOutputs != null && this.mOutputs.length > 0 && this.mOutputs[0] != null)
@@ -2092,7 +2098,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 return outputStacks;
 			}
 
-            
+
         }
     }
     public static class GT_Recipe_Map_DistillationTower extends GT_Recipe_Map {
@@ -2209,7 +2215,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 			mOreDictAlt = aAlt;
 		}
 
-		
+
 		public Object getAltRepresentativeInput(int aIndex) {
 	        if (aIndex < 0) return null;
 	        if (aIndex < mOreDictAlt.length) {
@@ -2224,7 +2230,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 	        if (aIndex >= mInputs.length) return null;
 	        return GT_Utility.copyOrNull(mInputs[aIndex]);
 	    }
-    	
+
     }
 
     private static class ReplicatorFakeMap extends GT_Recipe_Map {
