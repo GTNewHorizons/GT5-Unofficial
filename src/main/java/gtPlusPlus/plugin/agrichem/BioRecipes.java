@@ -208,7 +208,7 @@ public class BioRecipes {
 		//GT_Values.RA.addFuel(ItemUtils.getItemStackOfAmountFromOreDict("cellCoalGas", 1), null, 96, 1);
 
 		//Combustion Fuels
-		GT_Values.RA.addFuel(ItemUtils.getItemStackOfAmountFromOreDict("cellButanol", 1), null, 1125, 0);
+		GT_Values.RA.addFuel(ItemUtils.getItemStackOfAmountFromOreDict("cellButanol", 1), null, 400, 0);
 
 	}
 	private static void recipeGreenAlgae() {
