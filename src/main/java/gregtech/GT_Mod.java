@@ -53,12 +53,15 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.oredict.OreDictionary;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.util.*;
+import java.util.function.Predicate;
 
+import static gregtech.api.GregTech_API.registerCircuitProgrammer;
 import static gregtech.api.enums.GT_Values.MOD_ID_FR;
 
 @SuppressWarnings("ALL")
@@ -248,6 +251,18 @@ public class GT_Mod implements IGT_Mod {
         }
 
         gregtechproxy.onLoad();
+
+        registerCircuitProgrammer(new Predicate<ItemStack>() {
+            private final int screwdriverOreId = OreDictionary.getOreID("craftingToolScrewdriver");
+            @Override
+            public boolean test(ItemStack stack) {
+                for (int i : OreDictionary.getOreIDs(stack))
+                    if (i == screwdriverOreId)
+                        return true;
+                return false;
+            }
+        }, true);
+
         if (gregtechproxy.mSortToTheEnd) {
             new GT_ItemIterator().run();
             gregtechproxy.registerUnificationEntries();
@@ -293,7 +308,7 @@ public class GT_Mod implements IGT_Mod {
                 GT_Log.out.println("META " + i + " " + GregTech_API.METATILEENTITIES[i].getMetaName());
             }
         }
-        
+
         if (gregtechproxy.mSortToTheEnd) {
             gregtechproxy.registerUnificationEntries();
         } else {
@@ -344,7 +359,7 @@ public class GT_Mod implements IGT_Mod {
         }
         GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("machine", 1L));
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item("machine", 1L), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"RRR", "RwR", "RRR", 'R', OrePrefixes.plate.get(Materials.Iron)});
-        
+
         GT_PostLoad.registerFluidCannerRecipes();
 
         if (Loader.isModLoaded(MOD_ID_FR)) {
@@ -376,7 +391,7 @@ public class GT_Mod implements IGT_Mod {
         MinecraftForge.EVENT_BUS.register(new GT_TooltipEventHandler());
         GT_LanguageManager.propagateLocalizationServerSide();
 
-        /* 
+        /*
          * Until this point most crafting recipe additions, and removals, have been buffered.
          * Go through, execute the removals in bulk, and then any deferred additions.  The bulk removals in particular significantly speed up the recipe list
          * modifications.
@@ -386,7 +401,7 @@ public class GT_Mod implements IGT_Mod {
         GT_Log.out.println("GT_Mod: Adding buffered Recipes.");
         GT_ModHandler.stopBufferingCraftingRecipes();
         GT_FML_LOGGER.info("Executed delayed Crafting Recipes (" + stopwatch.stop() + "). Have a Cake.");
-        
+
         GT_Log.out.println("GT_Mod: Saving Lang File.");
         GT_LanguageManager.sEnglishFile.save();
         GregTech_API.sPostloadFinished = true;
@@ -425,7 +440,7 @@ public class GT_Mod implements IGT_Mod {
         GregTech_API.sAfterGTLoad = null;
         GregTech_API.sBeforeGTPostload = null;
         GregTech_API.sAfterGTPostload = null;
-        
+
         GT_PostLoad.createGTtoolsCreativeTab();
     }
 

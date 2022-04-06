@@ -166,6 +166,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     public boolean mMagneticraftRecipes = false;
     public boolean mImmersiveEngineeringRecipes = false;
     private boolean isFirstServerWorldTick = true;
+    private boolean isFirstWorldTick = true;
     private boolean mOreDictActivated = false;
     public boolean mChangeHarvestLevels=false;
     public boolean mNerfedCombs = true;
@@ -1459,7 +1460,13 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     @SubscribeEvent
     public void onWorldTickEvent(TickEvent.WorldTickEvent aEvent) {
         if(aEvent.world.provider.dimensionId == 0)
-            mTicksUntilNextCraftSound--;   
+            mTicksUntilNextCraftSound--;
+        if (isFirstWorldTick) {
+            for (Runnable runnable : GregTech_API.sFirstWorldTick)
+                runnable.run();
+            isFirstWorldTick = false;
+            worldTickHappened = true;
+        }
         if (aEvent.side.isServer()) {
             if (this.mUniverse == null) {
                 this.mUniverse = aEvent.world;

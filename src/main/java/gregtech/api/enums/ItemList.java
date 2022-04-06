@@ -1402,6 +1402,9 @@ public enum ItemList implements IItemContainer {
     Reactor_Coolant_NaK_6,
     neutroniumHeatCapacitor,
 
+    GlowstoneCell,
+    SunnariumCell,
+
     ThoriumCell_1,
     ThoriumCell_2,
     ThoriumCell_4,
@@ -1700,11 +1703,6 @@ public enum ItemList implements IItemContainer {
     Circuit_Parts_TransistorASMD,
     Circuit_Parts_CapacitorASMD,
 
-    Circuit_Parts_ResistorXSMD,
-    Circuit_Parts_DiodeXSMD,
-    Circuit_Parts_TransistorXSMD,
-    Circuit_Parts_CapacitorXSMD,
-
     Circuit_Silicon_Ingot,
     Circuit_Silicon_Ingot2,
     Circuit_Silicon_Ingot3,
@@ -1834,8 +1832,12 @@ public enum ItemList implements IItemContainer {
     UHV_Coil,
 
     VOLUMETRIC_FLASK,
-	
-	HULL_LIVINGROCK;
+  	HULL_LIVINGROCK;
+
+    Circuit_Parts_ResistorXSMD,
+    Circuit_Parts_DiodeXSMD,
+    Circuit_Parts_TransistorXSMD,
+    Circuit_Parts_CapacitorXSMD,
 	
     public static final ItemList[]
             DYE_ONLY_ITEMS = {
