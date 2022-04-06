@@ -559,17 +559,23 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final ArrayList<GT_Recipe_AssemblyLine> sAssemblylineRecipes = new ArrayList<GT_Recipe_AssemblyLine>();
 
         static {
-            GregTech_API.sFirstWorldTick.add(GT_Recipe_AssemblyLine::checkInvalidRecipes);
+            if (!Boolean.getBoolean("com.gtnh.gt5u.ignore-invalid-assline-recipe"))
+                GregTech_API.sFirstWorldTick.add(GT_Recipe_AssemblyLine::checkInvalidRecipes);
+            else
+                GT_Log.out.println("NOT CHECKING INVALID ASSLINE RECIPE.");
         }
 
         private static void checkInvalidRecipes() {
-            boolean foundInvalid = false;
+            int invalidCount = 0;
+            GT_Log.out.println("Started assline validation");
             for (GT_Recipe_AssemblyLine recipe : sAssemblylineRecipes) {
-                if (recipe.getPersistentHash() == 0)
-                    foundInvalid = true;
+                if (recipe.getPersistentHash() == 0) {
+                    invalidCount++;
+                    GT_Log.err.printf("Invalid recipe: %s%n", recipe);
+                }
             }
-            if (foundInvalid)
-                throw new RuntimeException("There are invalid assembly line recipes! Check logs for details!");
+            if (invalidCount > 0)
+                throw new RuntimeException("There are " + invalidCount + " invalid assembly line recipe(s)! Check GregTech.log for details!");
         }
 
         public ItemStack mResearchItem;
@@ -618,7 +624,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         	mOreDictAlt = aAlt;
         }
 
-		@Override
+        @Override
 		public int hashCode() {
 			final int prime = 31;
 			int result = 1;
@@ -2093,8 +2099,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
                 return outputStacks;
             }
-
-
         }
     }
     public static class GT_Recipe_Map_DistillationTower extends GT_Recipe_Map {
