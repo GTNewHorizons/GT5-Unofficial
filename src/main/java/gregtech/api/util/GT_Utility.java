@@ -742,11 +742,15 @@ public class GT_Utility {
                                     tPutFreeSlots.remove(i);
                                     i--;
                                     ItemStack s = tPutInventory.getStackInSlot(tPutSlot);
-                                    // s might be null if tPutInventory is very special, e.g. infinity chest
-                                    int spare = Math.min(tGrabStack.getMaxStackSize(), tPutInventory.getInventoryStackLimit()) - (s == null ? 0 : s.stackSize);
-                                    if (spare > 0) {
-                                        tPutItems.merge(sID, spare, Integer::sum);
-                                        tPutItemStacks.computeIfAbsent(sID, k -> new ArrayList<>()).add(s);
+                                    if (s != null) {
+                                        // s might be null if tPutInventory is very special, e.g. infinity chest
+                                        // if s is null, we will not mark this slot as target candidate for anything
+                                        int spare = Math.min(tGrabStack.getMaxStackSize(), tPutInventory.getInventoryStackLimit()) - s.stackSize;
+                                        if (spare > 0) {
+                                            ItemId ssID = ItemId.createNoCopy(s);
+                                            tPutItems.merge(ssID, spare, Integer::sum);
+                                            tPutItemStacks.computeIfAbsent(ssID, k -> new ArrayList<>()).add(s);
+                                        }
                                     }
                                     tTotalItemsMoved += tMoved;
                                     tMovedItems += tMoved;
