@@ -54,6 +54,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static gregtech.api.enums.GT_Values.MOD_ID_FR;
 import static gregtech.api.enums.GT_Values.MOD_ID_RC;
+import static gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine_Steam.calculateLooseFlow;
 
 /**
  * This is an example on how you can create a Tool ItemStack, in this case a Bismuth Wrench:
@@ -359,36 +360,13 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item implements 
 				aList.add(tOffset + 3, EnumChatFormatting.WHITE + String.format(transItem("006", "Optimal Steam flow: %sL/t"), "" + EnumChatFormatting.GOLD + Math.max(Float.MIN_NORMAL, tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed * (1000 / 20)) + EnumChatFormatting.GRAY));
                 aList.add(tOffset + 4, EnumChatFormatting.WHITE + String.format(transItem("900", "Energy from Optimal Steam Flow: %sEU/t"), "" + EnumChatFormatting.GOLD + Math.max(Float.MIN_NORMAL, tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed * (1000 / 20)) * (50.0F + (10.0F * getToolCombatDamage(aStack))) / 200 + EnumChatFormatting.GRAY));
                 {
-                    int aOptFlowLoose=aOptFlow*4;
-                    float aBaseEffLoose = 10000;
-                    if (aBaseEff >= 26000) {
-                        aOptFlowLoose *= Math.pow(1.1f, ((aBaseEff - 8000) / 10000F) * 20f);
-                        aBaseEffLoose = aBaseEff * 0.6f;
-                    } else if(aBaseEff > 22000) {
-                        aOptFlowLoose *= Math.pow(1.1f, ((aBaseEff - 7000) / 10000F) * 20f);
-                        aBaseEffLoose = aBaseEff * 0.65f;
-                    } else if(aBaseEff > 18000){
-                        aOptFlowLoose *= Math.pow(1.1f, ((aBaseEff - 6000) / 10000F) * 20f);
-                        aBaseEffLoose = aBaseEff * 0.70f;
-                    } else if(aBaseEff > 14000) {
-                        aOptFlowLoose *= Math.pow(1.1f, ((aBaseEff - 5000) / 10000F) * 20f);
-                        aBaseEffLoose = aBaseEff * 0.75f;
-                    } else if(aBaseEff > 10000) {
-                        aOptFlowLoose *= Math.pow(1.1f, ((aBaseEff - 4000) / 10000F) * 20f);
-                        aBaseEffLoose = aBaseEff * 0.8f;
-                    } else if(aBaseEff > 6000) {
-                        aOptFlowLoose *= Math.pow(1.1f, ((aBaseEff - 3000) / 10000F) * 20f);
-                        aBaseEffLoose = aBaseEff * 0.85f;
-                    } else{
-                        aBaseEffLoose = aBaseEff * 0.9f;
-                    }
+                    long[] calculatedFlow = calculateLooseFlow(aOptFlow, aBaseEff);
+                    long aOptFlowLoose = calculatedFlow[0];
+                    long aBaseEffLoose = calculatedFlow[1];
 
-                    if (aBaseEffLoose % 100 != 0){
-                        aBaseEffLoose -= aBaseEffLoose % 100;
-                    }
-                    aList.add(tOffset + 5, EnumChatFormatting.GRAY + String.format(transItem("500", "Turbine Efficiency (Loose): %s"), "" + EnumChatFormatting.BLUE + aBaseEffLoose/100f) + EnumChatFormatting.DARK_GRAY);
+                    aList.add(tOffset + 5, EnumChatFormatting.GRAY + String.format(transItem("500", "Turbine Efficiency (Loose): %s"), "" + EnumChatFormatting.BLUE + aBaseEffLoose / 100 + EnumChatFormatting.DARK_GRAY));
 					aList.add(tOffset + 6, EnumChatFormatting.GRAY + String.format(transItem("501", "Optimal Steam flow (Loose): %s L/t"), "" + EnumChatFormatting.GOLD + aOptFlowLoose + EnumChatFormatting.DARK_GRAY));
-                    aList.add(tOffset + 7, EnumChatFormatting.GRAY + String.format(transItem("901", "Energy from Optimal Steam Flow (Loose): %s EU/t"), "" + EnumChatFormatting.GOLD + aOptFlowLoose * (aBaseEffLoose / 20000) + EnumChatFormatting.DARK_GRAY));
+                    aList.add(tOffset + 7, EnumChatFormatting.GRAY + String.format(transItem("901", "Energy from Optimal Steam Flow (Loose): %s EU/t"), "" + EnumChatFormatting.GOLD + (aOptFlowLoose / 10000) * (aBaseEffLoose / 2) + EnumChatFormatting.DARK_GRAY));
 
                 }
 				aList.add(tOffset + 8, EnumChatFormatting.WHITE + String.format(transItem("007", "Energy from Optimal Gas Flow: %sEU/t"), "" + EnumChatFormatting.GOLD + Math.max(Float.MIN_NORMAL, tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed * 50) * (50.0F + (10.0F * getToolCombatDamage(aStack))) / 100 + EnumChatFormatting.GRAY));
