@@ -19,6 +19,15 @@ repositories {
         }
     }
     maven {
+        // IC2
+        name = "ic2"
+        url = "https://maven2.ic2.player.to/"
+        metadataSources {
+            mavenPom()
+            artifact()
+        }
+    }
+    maven {
         url 'https://cursemaven.com'
         content {
             includeGroup 'curse.maven'
