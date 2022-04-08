@@ -185,8 +185,8 @@ public class GT_MetaTileEntity_LongDistancePipelineItem extends GT_MetaTileEntit
                 TextureFactory.of(OVERLAY_PIPELINE_ITEM_FRONT)};
         else if (aSide == GT_Utility.getOppositeSide(aFacing))
             return new ITexture[]{
-                MACHINE_CASINGS[mTier][aColorIndex + 1],
-                TextureFactory.of(OVERLAY_PIPELINE_ITEM_BACK)};
+                    MACHINE_CASINGS[mTier][aColorIndex + 1],
+                    TextureFactory.of(OVERLAY_PIPELINE_ITEM_BACK)};
         else
             return new ITexture[]{
                 MACHINE_CASINGS[mTier][aColorIndex + 1],
