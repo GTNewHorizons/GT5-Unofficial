@@ -2,6 +2,7 @@ package gregtech.api.metatileentity.implementations;
 
 import gregtech.GT_Mod;
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
@@ -338,7 +339,7 @@ public class GT_MetaPipeEntity_Item extends MetaPipeEntity implements IMetaTileE
                 cacheSides = super.getAccessibleSlotsFromSide(aSide);
             return cacheSides;
         } else {
-            return new int[0];
+            return GT_Values.emptyIntArray;
         }
     }
 
