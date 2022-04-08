@@ -12,7 +12,9 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
-import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_QTANK;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_QTANK_GLOW;
 
 public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntity_BasicTank {
     protected boolean mVoidOverflow = false;
@@ -266,7 +268,7 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
 
     @Override
     public int getCapacity() {
-        return commonSizeCompute(mTier);
+        return mVoidOverflow ? Integer.MAX_VALUE : commonSizeCompute(mTier);
     }
 
     @Override
