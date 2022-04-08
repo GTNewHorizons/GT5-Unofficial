@@ -22,7 +22,6 @@
 
 package gregtech.common.tileentities.machines.long_distance;
 
-import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -40,6 +39,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPELINE_ITEM_SIDE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPELINE_ITEM_SIDE_GLOW;
 
 public class GT_MetaTileEntity_LongDistancePipelineItem extends GT_MetaTileEntity_LongDistancePipelineBase {
+    static final int[] emptyIntArray = new int[0];
+
     public GT_MetaTileEntity_LongDistancePipelineItem(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, "Sends Items over long distances");
     }
@@ -144,16 +145,16 @@ public class GT_MetaTileEntity_LongDistancePipelineItem extends GT_MetaTileEntit
     public int[] getAccessibleSlotsFromSide(int aSide) {
         if (checkTarget()) {
             final IGregTechTileEntity tTile = mTarget.getBaseMetaTileEntity();
-            final IInventory iInventory = getInventory();
-            if (iInventory instanceof ISidedInventory) return ((ISidedInventory)iInventory).getAccessibleSlotsFromSide(tTile.getBackFacing());
+            IInventory iInventory = getInventory();
+            if (iInventory instanceof ISidedInventory) return ((ISidedInventory)iInventory).getAccessibleSlotsFromSide(tTile.getFrontFacing());
             if (iInventory != null) {
-                final int[] tReturn = new int[iInventory.getSizeInventory()];
+                int[] tReturn = new int[iInventory.getSizeInventory()];
                 for (int i = 0; i < tReturn.length; i++) tReturn[i] = i;
                 return tReturn;
             }
         }
 
-        return GT_Values.emptyIntArray;
+        return emptyIntArray;
     }
 
     @Override
@@ -161,7 +162,7 @@ public class GT_MetaTileEntity_LongDistancePipelineItem extends GT_MetaTileEntit
         if (checkTarget()) {
             final IGregTechTileEntity tTile = mTarget.getBaseMetaTileEntity();
             IInventory iInventory = getInventory();
-            if (iInventory instanceof ISidedInventory) return ((ISidedInventory)iInventory).canInsertItem(aSlot, aStack, tTile.getBackFacing());
+            if (iInventory instanceof ISidedInventory) return ((ISidedInventory)iInventory).canInsertItem(aSlot, aStack, tTile.getFrontFacing());
             return iInventory != null;
         }
         return false;
@@ -180,16 +181,16 @@ public class GT_MetaTileEntity_LongDistancePipelineItem extends GT_MetaTileEntit
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         if (aSide == aFacing)
             return new ITexture[]{
-                    MACHINE_CASINGS[mTier][aColorIndex + 1],
-                    TextureFactory.of(OVERLAY_PIPELINE_ITEM_FRONT)};
+                MACHINE_CASINGS[mTier][aColorIndex + 1],
+                TextureFactory.of(OVERLAY_PIPELINE_ITEM_FRONT)};
         else if (aSide == GT_Utility.getOppositeSide(aFacing))
             return new ITexture[]{
-                    MACHINE_CASINGS[mTier][aColorIndex + 1],
-                    TextureFactory.of(OVERLAY_PIPELINE_ITEM_BACK)};
+                MACHINE_CASINGS[mTier][aColorIndex + 1],
+                TextureFactory.of(OVERLAY_PIPELINE_ITEM_BACK)};
         else
             return new ITexture[]{
-                    MACHINE_CASINGS[mTier][aColorIndex + 1],
-                    TextureFactory.of(OVERLAY_PIPELINE_ITEM_SIDE),
-                    TextureFactory.builder().addIcon(OVERLAY_PIPELINE_ITEM_SIDE_GLOW).glow().build()};
+                MACHINE_CASINGS[mTier][aColorIndex + 1],
+                TextureFactory.of(OVERLAY_PIPELINE_ITEM_SIDE),
+                TextureFactory.builder().addIcon(OVERLAY_PIPELINE_ITEM_SIDE_GLOW).glow().build()};
     }
 }
