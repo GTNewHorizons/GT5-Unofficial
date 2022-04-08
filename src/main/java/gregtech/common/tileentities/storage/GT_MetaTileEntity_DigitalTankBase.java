@@ -173,10 +173,10 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
                 FluidStack tFluid = GT_Utility.getFluidForFilledItem(mInventory[getInputSlot()], true);
                 if (tFluid != null && isFluidInputAllowed(tFluid)) {
                     if (getFillableStack() == null) {
-                        if ((tFluid.amount <= getCapacity()) || mVoidOverflow) {
-                            if (isFluidInputAllowed(tFluid)) {
+                        if (isFluidInputAllowed(tFluid)) {
+                            if ((tFluid.amount <= getRealCapacity()) || mVoidOverflow) {
                                 tFluid = tFluid.copy();
-                                tFluid.amount = Math.min(tFluid.amount, getCapacity());
+                                tFluid.amount = Math.min(tFluid.amount, getRealCapacity());
                                 if (aBaseMetaTileEntity.addStackToSlot(getOutputSlot(), GT_Utility.getContainerItem(mInventory[getInputSlot()], true), 1)) {
                                     setFillableStack(tFluid);
                                     this.onEmptyingContainerWhenEmpty();
@@ -186,9 +186,9 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
                         }
                     } else {
                         if (tFluid.isFluidEqual(getFillableStack())) {
-                            if ((((long) tFluid.amount + getFillableStack().amount) <= (long) getCapacity()) || mVoidOverflow) {
+                            if ((((long) tFluid.amount + getFillableStack().amount) <= (long) getRealCapacity()) || mVoidOverflow) {
                                 if (aBaseMetaTileEntity.addStackToSlot(getOutputSlot(), GT_Utility.getContainerItem(mInventory[getInputSlot()], true), 1)) {
-                                    getFillableStack().amount += Math.min(tFluid.amount, getCapacity() - getFillableStack().amount);
+                                    getFillableStack().amount += Math.min(tFluid.amount, getRealCapacity() - getFillableStack().amount);
                                     aBaseMetaTileEntity.decrStackSize(getInputSlot(), 1);
                                 }
                             }
@@ -213,37 +213,23 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
     public int fill(FluidStack aFluid, boolean doFill) {
         if (aFluid == null || aFluid.getFluid().getID() <= 0 || aFluid.amount <= 0 || !canTankBeFilled() || !isFluidInputAllowed(aFluid))
             return 0;
-
-        if (getFillableStack() == null || getFillableStack().getFluid().getID() <= 0) {
-            if (aFluid.amount <= getCapacity()) {
-                if (doFill) {
-                    setFillableStack(aFluid.copy());
-                    getBaseMetaTileEntity().markDirty();
-                }
-                return aFluid.amount;
-            }
-            if (doFill) {
-                setFillableStack(aFluid.copy());
-                getFillableStack().amount = getCapacity();
-                getBaseMetaTileEntity().markDirty();
-            }
-            return mVoidOverflow ? aFluid.amount : getCapacity();
-        }
-
-        if (!getFillableStack().isFluidEqual(aFluid))
+        if (getFillableStack() != null && !getFillableStack().isFluidEqual(aFluid)) {
             return 0;
-
-        int space = getCapacity() - getFillableStack().amount;
-        if (aFluid.amount <= space) {
-            if (doFill) {
-                getFillableStack().amount += aFluid.amount;
-                getBaseMetaTileEntity().markDirty();
-            }
-            return aFluid.amount;
         }
-        if (doFill)
-            getFillableStack().amount = getCapacity();
-        return mVoidOverflow ? aFluid.amount : space;
+
+        FluidStack fillableStack = getFillableStack();
+        if (fillableStack == null) {
+            fillableStack = aFluid.copy();
+            fillableStack.amount = 0;
+        }
+
+        int amount = Math.min(aFluid.amount, getRealCapacity() - fillableStack.amount);
+        if (doFill) {
+            fillableStack.amount += amount;
+            if (getFillableStack() == null) setFillableStack(fillableStack);
+            getBaseMetaTileEntity().markDirty();
+        }
+        return mVoidOverflow ? aFluid.amount : amount;
     }
 
     @Override
@@ -268,7 +254,11 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
 
     @Override
     public int getCapacity() {
-        return mVoidOverflow ? Integer.MAX_VALUE : commonSizeCompute(mTier);
+        return mVoidOverflow ? Integer.MAX_VALUE : getRealCapacity();
+    }
+
+    private int getRealCapacity(){
+        return commonSizeCompute(mTier);
     }
 
     @Override
