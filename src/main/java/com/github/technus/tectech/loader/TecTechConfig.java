@@ -40,6 +40,7 @@ public class TecTechConfig extends ConfigManager {
     public float TESLA_SINGLE_LOSS_FACTOR_OVERDRIVE;
     public int TESLA_SINGLE_LOSS_PER_BLOCK;
     public int TESLA_SINGLE_RANGE;
+    public boolean TESLA_VISUAL_EFFECT;
 
     /**
      * This loading phases do not correspond to mod loading phases!
@@ -74,6 +75,7 @@ public class TecTechConfig extends ConfigManager {
         TESLA_SINGLE_LOSS_FACTOR_OVERDRIVE = 0.25F;
         TESLA_SINGLE_LOSS_PER_BLOCK = 1;
         TESLA_SINGLE_RANGE = 20;
+        TESLA_VISUAL_EFFECT = true;
     }
 
     /**
@@ -138,6 +140,8 @@ public class TecTechConfig extends ConfigManager {
                 TESLA_SINGLE_LOSS_PER_BLOCK, 0, Integer.MAX_VALUE, "Tesla Transceiver power transmission loss per block per amp");
         TESLA_SINGLE_RANGE = _mainConfig.getInt("TeslaSingleRange", "tesla_tweaks",
                 TESLA_SINGLE_RANGE, 0, Integer.MAX_VALUE, "Tesla Transceiver to max range");
+        TESLA_VISUAL_EFFECT = _mainConfig.getBoolean("EnableTeslaVisualEffect", "tesla_tweaks",
+                TESLA_VISUAL_EFFECT, "Set true to enable the cool visual effect when tesla tower running.");
     }
 
     /**

@@ -65,6 +65,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     private static final int     heliumUse                             = TecTech.configTecTech.TESLA_MULTI_PLASMA_PER_SECOND_T1_HELIUM;//Default is 100
     private static final int     nitrogenUse                           = TecTech.configTecTech.TESLA_MULTI_PLASMA_PER_SECOND_T1_NITROGEN;//Default is 50
     private static final int     radonUse                              = TecTech.configTecTech.TESLA_MULTI_PLASMA_PER_SECOND_T2_RADON;//Default is 50
+    private static final boolean visualEffect                          = TecTech.configTecTech.TESLA_VISUAL_EFFECT;//Default is true
     //Default is {1, 1, 1}
     private static final int[]   plasmaTierLoss                        = new int[]{TecTech.configTecTech.TESLA_MULTI_LOSS_PER_BLOCK_T0,
             TecTech.configTecTech.TESLA_MULTI_LOSS_PER_BLOCK_T1, TecTech.configTecTech.TESLA_MULTI_LOSS_PER_BLOCK_T2};
@@ -613,7 +614,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
 
         //TODO Encapsulate the spark sender
         sparkCount--;
-        if (sparkCount == 0) {
+        if (sparkCount == 0 && visualEffect) {
             IGregTechTileEntity mte = getBaseMetaTileEntity();
             sparkCount = 10;
             if (!sparkList.isEmpty()) {
