@@ -535,7 +535,7 @@ public class GT_PreLoad {
         GT_Mod.gregtechproxy.mCoverTabsFlipped = GregTech_API.sClientDataFile.get("interface", "FlipCoverTabs", false);
         GT_Mod.gregtechproxy.mTooltipVerbosity = GregTech_API.sClientDataFile.get("interface", "TooltipVerbosity", 2);
         GT_Mod.gregtechproxy.mTooltipShiftVerbosity = GregTech_API.sClientDataFile.get("interface", "TooltipShiftVerbosity", 3);
-        final String[] Circuits = GregTech_API.sClientDataFile.get("interface", "CircuitsOrder", "").split(";");
+        final String[] Circuits = GregTech_API.sClientDataFile.get("interface", "CircuitsOrder" );
         GT_Mod.gregtechproxy.mCircuitsOrder.clear();
         for (int i = 0; i < Circuits.length; i++) {
             GT_Mod.gregtechproxy.mCircuitsOrder.putIfAbsent(Circuits[i], i);
