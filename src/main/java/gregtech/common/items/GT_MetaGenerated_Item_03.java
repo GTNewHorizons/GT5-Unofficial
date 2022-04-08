@@ -313,6 +313,9 @@ public class GT_MetaGenerated_Item_03
         ItemList.ZPM_Coil.set(addItem(tLastID = 147, "ZPM Voltage Coil", "Ultimate Coil", o));
         ItemList.UV_Coil.set(addItem(tLastID = 148, "Ultimate Voltage Coil", "Super Coil", o));
         ItemList.UHV_Coil.set(addItem(tLastID = 149, "Highly Ultimate Voltage Coil", "Infinite Coil", o));
+
+        ItemList.GalliumArsenideCrystal.set(addItem(tLastID = 190, "Gallium Arsenide Crystal", "For make Wafers", o));
+        ItemList.GalliumArsenideCrystalSmallPart.set(addItem(tLastID = 191, "Small Gallium Arsenide Crystal", "For make Wafers", o));
     }
 
     @Override
