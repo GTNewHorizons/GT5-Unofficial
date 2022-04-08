@@ -2,8 +2,10 @@ package gregtech.api;
 
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.GT_Mod;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IDamagableItem;
@@ -31,6 +33,7 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.world.GT_Worldgen;
+import gregtech.common.items.GT_IntegratedCircuit_Item;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -44,6 +47,7 @@ import net.minecraftforge.fluids.Fluid;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -684,7 +688,24 @@ public class GregTech_API {
      * DO NOT MODIFY THE ItemStacks!
      */
     public static List<ItemStack> getConfigurationCircuitList(int machineTier) {
-        return Collections.unmodifiableList(sConfigurationLists.computeIfAbsent(machineTier, (t) -> sRealConfigurationList.entries().stream().filter(e -> e.getKey() <= machineTier).map(Map.Entry::getValue).collect(Collectors.toList())));
+        return Collections.unmodifiableList(
+            sConfigurationLists.computeIfAbsent(machineTier, (t) -> sRealConfigurationList.entries().stream().filter(e -> e.getKey() <= machineTier).map(Map.Entry::getValue).collect(Collectors.toList()))
+                .stream()
+                .sorted(getConfigurationCircuitsComparator())
+                .collect(Collectors.toList())
+        );
+    }
+
+    public static Comparator<ItemStack> getConfigurationCircuitsComparator() {
+        return Comparator
+            .comparingInt((ItemStack is) -> {
+                // By default, the Programmed Circuit should be the earliest configuration circuit to which the player is exposed
+                if (GT_Mod.gregtechproxy.mCircuitsOrder.isEmpty())
+                    return is.getItem() instanceof GT_IntegratedCircuit_Item ? 0 : 1;
+                return GT_Mod.gregtechproxy.mCircuitsOrder.getOrDefault(GameRegistry.findUniqueIdentifierFor(is.getItem()).toString(), Integer.MAX_VALUE);
+            })
+            .thenComparing(ItemStack::getUnlocalizedName)
+            .thenComparing(ItemStack::getItemDamage);
     }
 
     public static void registerCircuitProgrammer(ItemStack stack, boolean ignoreNBT, boolean useContainer) {
