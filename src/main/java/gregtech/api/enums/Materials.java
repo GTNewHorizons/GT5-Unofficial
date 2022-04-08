@@ -1,6 +1,5 @@
 package gregtech.api.enums;
 
-import akka.io.Tcp;
 import cpw.mods.fml.common.Loader;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
