@@ -35,8 +35,7 @@ import org.lwjgl.input.Keyboard;
 import java.util.ArrayList;
 import java.util.List;
 
-import static gregtech.api.enums.GT_Values.V;
-import static gregtech.api.enums.GT_Values.VN;
+import static gregtech.api.enums.GT_Values.*;
 import static mcp.mobius.waila.api.SpecialChars.GREEN;
 import static mcp.mobius.waila.api.SpecialChars.RED;
 import static mcp.mobius.waila.api.SpecialChars.RESET;
@@ -763,12 +762,23 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
         for (GT_MetaTileEntity_Hatch_Input tHatch : mInputHatches) {
             tHatch.mRecipeMap = getRecipeMap();
             if (isValidMetaTileEntity(tHatch)) {
-                FluidStack tLiquid = tHatch.getFluid();
-                if (tLiquid != null && tLiquid.isFluidEqual(aLiquid)) {
-                    tLiquid = tHatch.drain(aLiquid.amount, false);
-                    if (tLiquid != null && tLiquid.amount >= aLiquid.amount) {
-                        tLiquid = tHatch.drain(aLiquid.amount, true);
-                        return tLiquid != null && tLiquid.amount >= aLiquid.amount;
+                if (tHatch instanceof GT_MetaTileEntity_Hatch_MultiInput) {
+                    if (((GT_MetaTileEntity_Hatch_MultiInput) tHatch).hasFluid(aLiquid)) {
+                        FluidStack tLiquid = tHatch.drain(aLiquid.amount, false);
+                        if (tLiquid != null && tLiquid.amount >= aLiquid.amount) {
+                            tLiquid = tHatch.drain(aLiquid.amount, true);
+                            return tLiquid != null && tLiquid.amount >= aLiquid.amount;
+                        }
+                    }
+                }
+                else {
+                    FluidStack tLiquid = tHatch.getFluid();
+                    if (tLiquid != null && tLiquid.isFluidEqual(aLiquid)) {
+                        tLiquid = tHatch.drain(aLiquid.amount, false);
+                        if (tLiquid != null && tLiquid.amount >= aLiquid.amount) {
+                            tLiquid = tHatch.drain(aLiquid.amount, true);
+                            return tLiquid != null && tLiquid.amount >= aLiquid.amount;
+                        }
                     }
                 }
             }
@@ -849,8 +859,21 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
         ArrayList<FluidStack> rList = new ArrayList<>();
         for (GT_MetaTileEntity_Hatch_Input tHatch : mInputHatches) {
             tHatch.mRecipeMap = getRecipeMap();
-            if (isValidMetaTileEntity(tHatch) && tHatch.getFillableStack() != null) {
-                rList.add(tHatch.getFillableStack());
+            if (tHatch instanceof GT_MetaTileEntity_Hatch_MultiInput) {
+                if (isValidMetaTileEntity(tHatch)) {
+                    for (FluidStack tFluid : ((GT_MetaTileEntity_Hatch_MultiInput) tHatch).getStoredFluid()) {
+                        if (tFluid != null) {
+                            //GT_Log.out.print("mf: " + tFluid + "\n");
+                            rList.add(tFluid);
+                        }
+                    }
+                }
+            }
+            else {
+                if (isValidMetaTileEntity(tHatch) && tHatch.getFillableStack() != null) {
+                    //GT_Log.out.print("sf: " + tHatch.getFillableStack() + "\n");
+                    rList.add(tHatch.getFillableStack());
+                }
             }
         }
         return rList;

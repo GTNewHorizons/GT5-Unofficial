@@ -355,7 +355,7 @@ public enum ItemList implements IItemContainer {
     Schematic_2by2,
     Schematic_3by3,
     Schematic_Dust,
-    
+
     Circuit_Integrated,
     Circuit_Board_Basic,
     Circuit_Board_Advanced,
@@ -420,7 +420,7 @@ public enum ItemList implements IItemContainer {
     Steam_Valve_HV,
     Steam_Valve_EV,
     Steam_Valve_IV,
-    
+
     FluidRegulator_LV,
     FluidRegulator_MV,
     FluidRegulator_HV,
@@ -525,7 +525,7 @@ public enum ItemList implements IItemContainer {
     Field_Generator_UXV,
     Field_Generator_OpV,
     Field_Generator_MAX,
-    
+
     Battery_Hull_LV,
     Battery_Hull_MV,
     Battery_Hull_HV,
@@ -971,6 +971,8 @@ public enum ItemList implements IItemContainer {
     Hatch_Input_ZPM,
     Hatch_Input_UV,
     Hatch_Input_MAX,
+
+    Hatch_Input_Multi_2x2,
 
     Hatch_Input_Bus_ULV,
     Hatch_Input_Bus_LV,
@@ -1470,7 +1472,7 @@ public enum ItemList implements IItemContainer {
     Super_Chest_HV,
     Super_Chest_EV,
     Super_Chest_IV,
-    
+
     Long_Distance_Pipeline_Fluid,
     Long_Distance_Pipeline_Item,
 
@@ -1649,7 +1651,7 @@ public enum ItemList implements IItemContainer {
     Block_MSSFUEL,
     SFMixture,
     MSFMixture,
-    
+
     Depleted_Naquadah_1,
     Depleted_Naquadah_2,
     Depleted_Naquadah_4,
@@ -1662,10 +1664,10 @@ public enum ItemList implements IItemContainer {
     MNqCell_1,
     MNqCell_2,
     MNqCell_4,
-    
+
     Hatch_AutoMaintenance,
     Machine_Multi_Cleanroom,
-    
+
     Circuit_Board_Coated,
     Circuit_Board_Coated_Basic,
     Circuit_Board_Phenolic,
@@ -1818,7 +1820,7 @@ public enum ItemList implements IItemContainer {
     Machine_LuV_CircuitAssembler,
     Machine_ZPM_CircuitAssembler,
     Machine_UV_CircuitAssembler,
-    
+
     Circuit_Integrated_Good,
     Machine_IV_LightningRod,
     Machine_HV_LightningRod,
@@ -1841,7 +1843,7 @@ public enum ItemList implements IItemContainer {
     Circuit_Parts_CapacitorXSMD,
 
     VOLUMETRIC_FLASK;
-	
+
     public static final ItemList[]
             DYE_ONLY_ITEMS = {
             Color_00,
