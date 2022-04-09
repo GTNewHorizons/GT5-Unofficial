@@ -28,7 +28,7 @@ public class GT_MetaTileEntity_Boxinator extends GT_MetaTileEntity_BasicMachine 
                         TextureFactory.builder().addIcon(OVERLAY_SIDE_BOXINATOR_GLOW).glow().build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_FRONT_BOXINATOR_ACTIVE),
-                        TextureFactory.builder().addIcon(OVERLAY_FRONT_BOXINATOR_ACTIVE).glow().build()),
+                        TextureFactory.builder().addIcon(OVERLAY_FRONT_BOXINATOR_ACTIVE_GLOW).glow().build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_FRONT_BOXINATOR),
                         TextureFactory.builder().addIcon(OVERLAY_FRONT_BOXINATOR_GLOW).glow().build()),

@@ -512,6 +512,7 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
                             return isDone;
                         })
                             )
+                .filter(x -> x.mEUt < GT_Values.V[this.mTier])
                 .map(x -> new DissassembleReference(stacksize.get(), x.mInputs, x))
                 .collect(Collectors.toList());
 
