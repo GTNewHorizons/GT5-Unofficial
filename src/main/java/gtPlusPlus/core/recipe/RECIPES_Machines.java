@@ -1453,7 +1453,7 @@ public class RECIPES_Machines {
 				//Coke Oven Frame Casing
 				RecipeUtils.addShapedGregtechRecipe(
 						CI.component_Plate[7], CI.component_Rod[7], CI.component_Plate[7],
-						CI.component_Rod[7], "frameGtTantalloy-61", CI.component_Rod[7],
+						CI.component_Rod[7], "frameGtTantalloy61", CI.component_Rod[7],
 						CI.component_Plate[7], CI.component_Rod[7], CI.component_Plate[7],
 						RECIPE_IndustrialCokeOvenFrame);
 				//Coke Oven Coil 1
@@ -1516,7 +1516,7 @@ public class RECIPES_Machines {
 				//Maceration Frame Casing
 				RecipeUtils.addShapedGregtechRecipe(
 						"platePalladium", "platePalladium", "platePalladium",
-						"stickPlatinum", "frameGtInconel-625", "stickPlatinum",
+						"stickPlatinum", "frameGtInconel625", "stickPlatinum",
 						"platePalladium", "stickLongPalladium", "platePalladium",
 						RECIPE_IndustrialMacerationStackFrame);
 				//Industrial Maceration stack
@@ -1772,7 +1772,7 @@ public class RECIPES_Machines {
 				//Matter Fabricator Frame Casing
 				RecipeUtils.addShapedGregtechRecipe(
 						"plateNiobiumCarbide", CI.component_Rod[8], "plateNiobiumCarbide",
-						CI.component_Rod[8], "frameGtInconel-690", CI.component_Rod[8],
+						CI.component_Rod[8], "frameGtInconel690", CI.component_Rod[8],
 						"plateNiobiumCarbide", CI.component_Rod[8], "plateNiobiumCarbide",
 						RECIPE_IndustrialMatterFabFrame);
 				//Matter Fabricator Coil
@@ -2144,14 +2144,14 @@ public class RECIPES_Machines {
 				//Hastelloy-N Sealant Casing
 				RecipeUtils.addShapedGregtechRecipe(
 						"plateIncoloyMA956", "plateHastelloyN", "plateIncoloyMA956",
-						"plateHastelloyN", "frameGtHastelloy-C276", "plateHastelloyN",
+						"plateHastelloyN", "frameGtHastelloyC276", "plateHastelloyN",
 						"plateIncoloyMA956", "plateHastelloyN", "plateIncoloyMA956",
 						GregtechItemList.Casing_Refinery_External.get(Casing_Amount));
 
 				//Hastelloy-X Structural Casing
 				RecipeUtils.addShapedGregtechRecipe(
 						"ringInconel792", "gearGtHastelloyX", CI.component_Plate[5],
-						CI.craftingToolHammer_Hard, "frameGtHastelloy-C276", CI.craftingToolWrench,
+						CI.craftingToolHammer_Hard, "frameGtHastelloyC276", CI.craftingToolWrench,
 						CI.component_Plate[5], CI.getTieredMachineCasing(4), "ringInconel792",
 						GregtechItemList.Casing_Refinery_Structural.get(Casing_Amount));				
 
@@ -2267,7 +2267,7 @@ public class RECIPES_Machines {
 			if (CORE.ConfigSwitches.enableMultiblock_PowerSubstation){
 				RecipeUtils.addShapedRecipe(
 						"screwTitanium", "plateIncoloy020", "screwTitanium",
-						"plateIncoloy020", "frameGtIncoloy-MA956", "plateIncoloy020",
+						"plateIncoloy020", "frameGtIncoloyMA956", "plateIncoloy020",
 						"screwTitanium", "plateIncoloy020", "screwTitanium",
 						GregtechItemList.Casing_Power_SubStation.get(Casing_Amount));
 
