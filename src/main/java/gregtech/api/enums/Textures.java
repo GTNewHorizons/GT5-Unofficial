@@ -1068,6 +1068,7 @@ public class Textures {
         MARBLE_COBBLE,
         BLOCK_SILICONSG,
         BLOCK_SILICONEG,
+        BLOCK_NICKELALUMINIUM,
 
         MARBLE_COBBLE_MOSSY,
         MARBLE_BRICKS,
@@ -1686,7 +1687,8 @@ public class Textures {
                 STORAGE_BLOCKS12 = {
                         BLOCK_CRYOLITE,
                         BLOCK_SILICONEG,
-                        BLOCK_SILICONSG
+                        BLOCK_SILICONSG,
+                        BLOCK_NICKELALUMINIUM
         };
         public static final ITexture[] HIDDEN_TEXTURE = {
                 TextureFactory.builder().addIcon(HIDDEN_FACE).stdOrient().build()
