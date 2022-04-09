@@ -1242,7 +1242,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addAutoclaveRecipe(GT_OreDictUnificator.get(ItemList.QuantumStar.get(1L)), Materials.Neutronium.getMolten(288), ItemList.Gravistar.get(1L), 10000, 480, 7680);
 
 //Kevlar Line
-        GT_Values.RA.addDistillationTowerRecipe(Materials.DiphenylmethaneDiisocyanateMixture.getFluid(25000L),  new FluidStack[]{Materials.HydrochloricAcid.getFluid(4000L)}, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.DiphenylmethaneDiisocyanate, 1L),2500, 1920);
+        GT_Values.RA.addDistillationTowerRecipe(MaterialsKevlar.DiphenylmethaneDiisocyanateMixture.getFluid(25000L),  new FluidStack[]{Materials.HydrochloricAcid.getFluid(4000L)}, GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.DiphenylmethaneDiisocyanate, 1L),2500, 1920);
         if (Loader.isModLoaded("bartworks") && (Loader.isModLoaded("miscutils"))){
             GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(1)}, new FluidStack[]{new FluidStack(FluidRegistry.getFluid("formaldehyde"), 1000), new FluidStack(FluidRegistry.getFluid("aniline"), 2000), Materials.HydrochloricAcid.getFluid(1000)}, new FluidStack[]{MaterialsKevlar.DiaminodiphenylmethanMixture.getFluid(1000L)}, null,1200, 1920);
             GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Palladium, 1L)}, new FluidStack[]{new FluidStack(FluidRegistry.getFluid("nitrobenzene"), 9000), Materials.Hydrogen.getGas(45000)}, new FluidStack[]{ Materials.Water.getFluid(30000),  new FluidStack(FluidRegistry.getFluid("aniline"), 9000)}, null,900, 1920);
