@@ -8,6 +8,7 @@ import cpw.mods.fml.common.Loader;
 
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE.ConfigSwitches;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechTextures;
 import gtPlusPlus.xmod.gregtech.recipes.GregtechRecipeAdder;
 
@@ -87,7 +88,7 @@ public class LoadedMods {
 
 			totalMods++;
 		}
-		if (isModLoaded("dreamcraft")){
+		if (isModLoaded("dreamcraft") || ReflectionUtils.doesClassExist("gregtech.api.util.GT_Multiblock_Tooltip_Builder")){
 			DreamCraft = true;
 			GTNH = true;
 			Logger.INFO("Components enabled for: DreamCraft");
