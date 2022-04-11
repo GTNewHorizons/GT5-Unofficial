@@ -9,6 +9,7 @@ import com.elisis.gtnhlanth.common.register.LanthItemList;
 import com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool;
 import com.elisis.gtnhlanth.loader.BotRecipes;
 import com.elisis.gtnhlanth.loader.RecipeLoader;
+import com.elisis.gtnhlanth.loader.ZPMRubberChanges;
 import com.elisis.gtnhlanth.xmod.nei.IMC;
 import com.github.bartimaeusnek.bartworks.API.WerkstoffAdderRegistry;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
@@ -22,6 +23,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerAboutToStartEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_Log;
 
@@ -47,6 +49,7 @@ public class GTNHLanthanides {
         WerkstoffAdderRegistry.addWerkstoffAdder(new WerkstoffMaterialPool());
         WerkstoffAdderRegistry.addWerkstoffAdder(new BotWerkstoffMaterialPool());
         LanthItemList.register();
+        GregTech_API.sAfterGTPostload.add(new ZPMRubberChanges());
         proxy.preInit(e);
     }
     

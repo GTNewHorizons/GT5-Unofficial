@@ -854,7 +854,7 @@ public class WerkstoffMaterialPool implements Runnable {
     	);
     
     public static final Werkstoff CalciumFluoride = new Werkstoff(
-    		new short[] {255, 255, 255},
+    		new short[] {255, 250, 250},
     		"Calcium Fluoride",
     		subscriptNumbers("CaF2"),
     		new Werkstoff.Stats().setElektrolysis(true),
@@ -890,7 +890,7 @@ public class WerkstoffMaterialPool implements Runnable {
     	);
     
     public static final Werkstoff TerbiumNitrate = new Werkstoff(
-    		new short[] {255, 255, 255},
+    		new short[] {167, 252, 0},
     		"Terbium Nitrate",
     		subscriptNumbers("TbNO3"),
     		new Werkstoff.Stats().setElektrolysis(true),
@@ -919,7 +919,7 @@ public class WerkstoffMaterialPool implements Runnable {
     
     // Weird/Exciting Chemicals		
     public static final Werkstoff Tetrahydrofuran = new Werkstoff(
-    		new short[] {255, 255, 255}, //TODO
+    		new short[] {222, 165, 164},
     		"Tetrahydrofuran",
     		subscriptNumbers("(CH2)4O"),
     		new Werkstoff.Stats(),
@@ -931,7 +931,7 @@ public class WerkstoffMaterialPool implements Runnable {
     
     //1,4-Butanediol
     public static final Werkstoff Butanediol = new Werkstoff(
-    		new short[] {255, 255, 255}, //TODO
+    		new short[] {185, 78, 72},
     		"1,4-Butanediol",
     		subscriptNumbers("HO(CH2)4OH"),
     		new Werkstoff.Stats(),
@@ -987,7 +987,7 @@ public class WerkstoffMaterialPool implements Runnable {
     	);
     
     public static final Werkstoff Polytetrahydrofuran = new Werkstoff(
-    		new short[] {255, 255, 255},
+    		new short[] {192, 128, 129},
     		"Polytetrahydrofuran",
     		subscriptNumbers("(C4H8O)OH2"),
     		new Werkstoff.Stats(),
@@ -998,7 +998,7 @@ public class WerkstoffMaterialPool implements Runnable {
     	);
     
     public static final Werkstoff TungstophosphoricAcid = new Werkstoff(
-    		new short[] {255, 255, 255},
+    		new short[] {223, 255, 0},
     		"Tungstophosphoric Acid",
     		subscriptNumbers("H3PW12O40"),
     		new Werkstoff.Stats(),
@@ -1020,7 +1020,7 @@ public class WerkstoffMaterialPool implements Runnable {
     	);
     
     public static final Werkstoff Dinitrotoluene = new Werkstoff(
-    		new short[] {255, 255, 255},
+    		new short[] {216, 191, 216},
     		"Dinitrotoluene",
     		subscriptNumbers("C7H6N2O4"),
     		new Werkstoff.Stats(),
@@ -1031,7 +1031,7 @@ public class WerkstoffMaterialPool implements Runnable {
     	);
     
     public static final Werkstoff Diaminotoluene = new Werkstoff(
-    		new short[] {255, 255, 255},
+    		new short[] {227, 218, 201},
     		"Diaminotoluene",
     		subscriptNumbers("C6H3(NH2)2CH3"),
     		new Werkstoff.Stats(),
@@ -1053,7 +1053,7 @@ public class WerkstoffMaterialPool implements Runnable {
     	);
     
     public static final Werkstoff PTMEGElastomer = new Werkstoff(
-    		new short[] {255, 255, 255},
+    		new short[] {248, 248, 255},
     		"PTMEG Elastomer",
     		new Werkstoff.Stats().setMeltingPoint(600).setMeltingVoltage(64),
     		Werkstoff.Types.COMPOUND,
@@ -1068,7 +1068,7 @@ public class WerkstoffMaterialPool implements Runnable {
     
     
     public static final Werkstoff MagnesiumPeroxide = new Werkstoff(
-    		new short[] {255, 255, 255},
+    		new short[] {255, 250, 205},
     		"Magnesium Peroxide",
     		new Werkstoff.Stats(),
     		Werkstoff.Types.COMPOUND,
@@ -1078,7 +1078,7 @@ public class WerkstoffMaterialPool implements Runnable {
     	);
     
     public static final Werkstoff PotassiumChlorate = new Werkstoff(
-    		new short[] {255, 255, 255},
+    		new short[] {240, 255, 255},
     		"Potassium Chlorate",
     		new Werkstoff.Stats(),
     		Werkstoff.Types.COMPOUND,
