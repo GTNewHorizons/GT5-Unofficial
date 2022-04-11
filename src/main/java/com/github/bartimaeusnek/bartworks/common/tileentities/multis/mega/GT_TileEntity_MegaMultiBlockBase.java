@@ -160,7 +160,7 @@ public abstract class GT_TileEntity_MegaMultiBlockBase<T extends GT_TileEntity_M
                 EnumChatFormatting.YELLOW + (float) this.mEfficiency / 100.0F + EnumChatFormatting.RESET + " %",
             StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": " +
                 EnumChatFormatting.GREEN + mPollutionReduction + EnumChatFormatting.RESET + " %",
-            BW_Tooltip_Reference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get()};
+            BW_Tooltip_Reference.BW};
     }
 
 

@@ -72,6 +72,8 @@ import static gregtech.api.enums.GT_Values.VN;
                 + "after:GalacticraftMars; "
                 + "after:GalacticraftCore; "
                 + "after:Forestry; "
+                + "after:ProjRed|Illumination; "
+                + "after:RandomThings; "
                 + "before:miscutils; "
     )
 public final class MainMod {

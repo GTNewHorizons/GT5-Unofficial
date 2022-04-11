@@ -22,6 +22,7 @@
 
 package com.github.bartimaeusnek.bartworks.common.tileentities.multis;
 
+import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
@@ -139,7 +140,7 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
 
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Breeder Reactor")
                 .addInfo("Controller block for the High Temperature Gas-cooled Reactor (HTGR)")
                 .addInfo("Needs a constant supply of coolant while running")
@@ -160,7 +161,7 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
                 .addOutputHatch("Any bottom layer casing", 1)
                 .addEnergyHatch("Any bottom layer casing", 1)
                 .addMaintenanceHatch("Any bottom layer casing", 1)
-                .toolTipFinisher("Bartworks");
+                .toolTipFinisher("Added by " + ChatColorHelper.GOLD + "kuba6000" + ChatColorHelper.RESET + " via " + BW_Tooltip_Reference.BW);
         return tt;
     }
 
@@ -247,7 +248,7 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
 
     @Override
     public boolean checkRecipe(ItemStack controllerStack) {
-        
+
         if(this.empty)
         {
             if(this.HeliumSupply > 0 || this.fuelsupply > 0){
@@ -278,7 +279,7 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
             new ItemStack(HTGRMaterials.aHTGR_Materials, burnedballs, meta),
             new ItemStack(HTGRMaterials.aHTGR_Materials, toReduce, meta + 1)
         };
-        
+
         //this.updateSlots(); // not needed ?
 
         this.coolanttaking = (int)(4000D * (((this.fueltype * 0.5D) + 1)) * eff);
@@ -288,7 +289,7 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
         this.mMaxProgresstime=72000;
         return true;
     }
-    
+
     private int runningtick = 0;
 
     @Override
@@ -349,7 +350,7 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
                     }
                 }
             }
-        
+
             if(drainedamount > 0)
                 addOutput(FluidRegistry.getFluidStack("ic2hotcoolant", drainedamount));
 
@@ -358,11 +359,11 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
             if(takecoolant > 0)
                 this.stopMachine();
         }
-        
+
         return true;
     }
 
-    
+
 
     @Override
     public int getMaxEfficiency(ItemStack itemStack) {
@@ -430,8 +431,8 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
         GT_Utility.sendChatToPlayer(aPlayer, "HTGR is now running in " + (this.empty ? "emptying mode." : "normal Operation"));
     }
 
-    
-    
+
+
     public static class HTGRMaterials{
 
         private static class CustomHTGRSimpleSubItemClass extends SimpleSubItemClass{
@@ -494,8 +495,8 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
                 this.sEnglish = b;
             }
         }
-        
-        static final Base_[] sHTGR_Bases = new Base_[]{ 
+
+        static final Base_[] sHTGR_Bases = new Base_[]{
             new Base_("HTGRFuelMixture", "HTGR fuel mixture"),
             new Base_("BISOPebbleCompound", "BISO pebble compound"),
             new Base_("TRISOPebbleCompound", "TRISO pebble compound"),
@@ -508,19 +509,19 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
         static final int USABLE_FUEL_INDEX = 4;
         static final int BURNED_OUT_FUEL_INDEX = 5;
         static final Fuel_[] sHTGR_Fuel = new Fuel_[]{
-            new Fuel_("Thorium", "Thorium", WerkstoffLoader.Thorium232.get(OrePrefixes.dust, 64), Materials.Uranium235.getDust(4), 
-                GT_Values.NF, new ItemStack[]{ 
+            new Fuel_("Thorium", "Thorium", WerkstoffLoader.Thorium232.get(OrePrefixes.dust, 64), Materials.Uranium235.getDust(4),
+                GT_Values.NF, new ItemStack[]{
                     Materials.Silicon.getDust(1), Materials.Graphite.getDust(1), Materials.Carbon.getDust(1),
                     Materials.Lutetium.getDust(1), WerkstoffLoader.Thorium232.get(OrePrefixes.dust,1)},
                 new int[]{9000, 9000, 9000, 9000, 1000}, "Multiplies coolant by 1"),
-            new Fuel_("Uranium", "Uranium", Materials.Uranium.getDust(64), Materials.Uranium235.getDust(8), 
-                FluidRegistry.getFluidStack("krypton", 8), new ItemStack[]{ 
+            new Fuel_("Uranium", "Uranium", Materials.Uranium.getDust(64), Materials.Uranium235.getDust(8),
+                FluidRegistry.getFluidStack("krypton", 8), new ItemStack[]{
                     Materials.Silicon.getDust(1), Materials.Graphite.getDust(1), Materials.Carbon.getDust(1),
                     Materials.Lead.getDust(1),
                     Materials.Uranium.getDust(1)},
                 new int[]{9000, 9000, 9000, 7000, 1000}, "Multiplies coolant by 1.5"),
-            new Fuel_("Plutonium", "Plutonium", Materials.Plutonium.getDust(64), Materials.Plutonium241.getDust(4), 
-                FluidRegistry.getFluidStack("xenon", 8), new ItemStack[]{ 
+            new Fuel_("Plutonium", "Plutonium", Materials.Plutonium.getDust(64), Materials.Plutonium241.getDust(4),
+                FluidRegistry.getFluidStack("xenon", 8), new ItemStack[]{
                     Materials.Silicon.getDust(1), Materials.Graphite.getDust(1), Materials.Carbon.getDust(1),
                     Materials.Lead.getDust(1),
                     Materials.Plutonium.getDust(1)},
@@ -543,7 +544,7 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
                 }
             aHTGR_Materials = new CustomHTGRSimpleSubItemClass(tooltip, sHTGR_Materials);
         }
-        
+
 
         public static void registeraTHR_Materials(){
             for(LangEntry_ iName : aHTGR_Localizations)

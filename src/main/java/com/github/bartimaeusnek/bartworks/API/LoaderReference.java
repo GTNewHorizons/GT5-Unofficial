@@ -57,6 +57,8 @@ public class LoaderReference {
     public static boolean HardcoreEnderExpension;
     public static boolean betterloadingscreen;
     public static boolean TGregworks;
+    public static boolean ProjRedIllumination;
+
 
     public static void init() {
         Natura = Loader.isModLoaded("Natura");
@@ -86,5 +88,6 @@ public class LoaderReference {
         HardcoreEnderExpension = Loader.isModLoaded("HardcoreEnderExpension");
         betterloadingscreen = Loader.isModLoaded("betterloadingscreen");
         TGregworks = Loader.isModLoaded("TGregworks");
+        ProjRedIllumination = Loader.isModLoaded("ProjRed|Illumination");
     }
 }

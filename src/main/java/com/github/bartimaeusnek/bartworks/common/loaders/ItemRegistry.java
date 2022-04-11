@@ -34,11 +34,7 @@ import com.github.bartimaeusnek.bartworks.common.tileentities.classic.BW_RotorBl
 import com.github.bartimaeusnek.bartworks.common.tileentities.classic.BW_TileEntity_ExperimentalFloodGate;
 import com.github.bartimaeusnek.bartworks.common.tileentities.classic.BW_TileEntity_HeatedWaterPump;
 import com.github.bartimaeusnek.bartworks.common.tileentities.debug.CreativeScanner;
-import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_CircuitAssemblyLine;
-import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_DEHP;
-import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_ElectricImplosionCompressor;
-import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_THTR;
-import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_HTGR;
+import com.github.bartimaeusnek.bartworks.common.tileentities.multis.*;
 import com.github.bartimaeusnek.bartworks.common.tileentities.multis.mega.GT_TileEntity_MegaBlastFurnace;
 import com.github.bartimaeusnek.bartworks.common.tileentities.multis.mega.GT_TileEntity_MegaDistillTower;
 import com.github.bartimaeusnek.bartworks.common.tileentities.multis.mega.GT_TileEntity_MegaVacuumFreezer;
@@ -151,6 +147,7 @@ public class ItemRegistry {
     public static ItemStack[] voidminer = new ItemStack[3];
     public static ItemStack THTR;
     public static ItemStack HTGR;
+    public static ItemStack EIG;
     public static ItemStack eic;
     public static ItemStack cal;
     public static ItemStack compressedHatch;
@@ -196,6 +193,7 @@ public class ItemRegistry {
             GT_TileEntity_THTR.THTRMaterials.registeraTHR_Materials();
             ItemRegistry.HTGR = new GT_TileEntity_HTGR(ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 15 + 48, "HTGR", "High Temperature Gas-cooled Reactor").getStackForm(1L);
             GT_TileEntity_HTGR.HTGRMaterials.registeraTHR_Materials();
+            ItemRegistry.EIG = new GT_TileEntity_ExtremeIndustrialGreenhouse(ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 15 + 49, "EIG", "Extreme Industrial Greenhouse").getStackForm(1L);
             GT_OreDictUnificator.add(OrePrefixes.block, Materials.BorosilicateGlass, new ItemStack(ItemRegistry.bw_glasses[0], 1, 0));
             GT_OreDictUnificator.registerOre(OrePrefixes.block, Materials.NickelZincFerrite, new ItemStack(ItemRegistry.BW_BLOCKS[2]));
             for (int i = 0; i < GT_Values.VN.length; i++) {
