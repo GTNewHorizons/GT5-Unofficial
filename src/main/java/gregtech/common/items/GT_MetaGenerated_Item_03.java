@@ -313,10 +313,7 @@ public class GT_MetaGenerated_Item_03
         ItemList.ZPM_Coil.set(addItem(tLastID = 147, "ZPM Voltage Coil", "Ultimate Coil", o));
         ItemList.UV_Coil.set(addItem(tLastID = 148, "Ultimate Voltage Coil", "Super Coil", o));
         ItemList.UHV_Coil.set(addItem(tLastID = 149, "Highly Ultimate Voltage Coil", "Infinite Coil", o));
-
-        ItemList.PolyurethaneResin.set(addItem(tLastID = 200, "Polyurethane Resin", "Polyurethane or PU", o));
-
-    }
+}
 
     @Override
     public boolean doesShowInCreative(OrePrefixes aPrefix, Materials aMaterial, boolean aDoShowAllItems) {
