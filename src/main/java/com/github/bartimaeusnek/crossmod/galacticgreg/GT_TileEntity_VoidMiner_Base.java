@@ -32,9 +32,6 @@ import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.bartimaeusnek.bartworks.system.oregen.BW_OreLayer;
-import com.github.bartimaeusnek.bartworks.system.oregen.BW_WorldGenRoss128b;
-import com.github.bartimaeusnek.bartworks.system.oregen.BW_WorldGenRoss128ba;
-import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 import com.github.bartimaeusnek.bartworks.util.Pair;
 import com.google.common.collect.ArrayListMultimap;
 import gregtech.api.GregTech_API;
@@ -42,18 +39,23 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.objects.XSTR;
-import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Worldgen_GT_Ore_Layer;
 import gregtech.common.GT_Worldgen_GT_Ore_SmallPieces;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_DrillerBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkProviderServer;
 import net.minecraftforge.fluids.FluidStack;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -78,6 +80,8 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
 
     protected byte TIER_MULTIPLIER;
 
+    private boolean mBlacklist = false;
+
     public static void addMatierialToDimensionList(int DimensionID, ISubTagContainer Material, float weight) {
         if (Material instanceof Materials)
             getExtraDropsDimMap().put(DimensionID, new Pair<>(new Pair<>(((Materials)Material).mMetaItemSubID,false), weight));
@@ -98,12 +102,14 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setByte("TIER_MULTIPLIER",TIER_MULTIPLIER);
+        aNBT.setBoolean("mBlacklist", mBlacklist);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         TIER_MULTIPLIER = aNBT.getByte("TIER_MULTIPLIER");
+        mBlacklist = aNBT.getBoolean("mBlacklist");
     }
 
     public GT_TileEntity_VoidMiner_Base(String aName, int tier) {
@@ -161,6 +167,9 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
                 .addInfo("Consumes " + GT_Values.V[this.getMinTier()] + "EU/t")
                 .addInfo("Can be supplied with 2L/s of Neon(x4), Krypton(x8), Xenon(x16) or Oganesson(x64) for higher outputs.")
                 .addInfo("Will output "+(2*TIER_MULTIPLIER)+" Ores per Second depending on the Dimension it is build in")
+                .addInfo("Put the Ore into the input bus to set the Whitelist/Blacklist")
+                .addInfo("Use a screwdriver to toggle Whitelist/Blacklist")
+                .addInfo("Blacklist or non Whitelist Ore will be VOIDED")
                 .addSeparator()
                 .beginStructureBlock(3, 7, 3, false)
                 .addController("Front bottom")
@@ -169,7 +178,7 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
                 .addOtherStructurePart(getFrameMaterial().mName + " Frame Boxes", "Each pillar's side and 1x3x1 on top")
                 .addEnergyHatch(VN[getMinTier()] + "+, Any base casing")
                 .addMaintenanceHatch("Any base casing")
-                .addInputBus("Mining Pipes, optional, any base casing")
+                .addInputBus("Mining Pipes or Ores, optional, any base casing")
                 .addInputHatch("Optional noble gas, any base casing")
                 .addOutputBus("Any base casing")
                 .toolTipFinisher("Gregtech");
@@ -415,8 +424,19 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
     }
 
     private void handleOutputs() {
-        Pair<Integer,Boolean> stats = getOreDamage();
-        this.addOutput(new ItemStack(stats.getValue() ? WerkstoffLoader.BWOres : GregTech_API.sBlockOres1, multiplier, stats.getKey()));
+        Pair<Integer, Boolean> stats = getOreDamage();
+        final List<ItemStack> inputOres = this.getStoredInputs().stream().filter(GT_Utility::isOre).collect(Collectors.toList());
+        final ItemStack output = new ItemStack(stats.getValue() ? WerkstoffLoader.BWOres : GregTech_API.sBlockOres1, multiplier, stats.getKey());
+        if (inputOres.size() == 0
+            || (mBlacklist && inputOres.stream().allMatch(is -> !GT_Utility.areStacksEqual(is, output)))
+            || (!mBlacklist && inputOres.stream().anyMatch(is -> GT_Utility.areStacksEqual(is, output)))
+        ) this.addOutput(output);
         this.updateSlots();
+    }
+
+    @Override
+    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        mBlacklist = !mBlacklist;
+        GT_Utility.sendChatToPlayer(aPlayer, "Mode: " + (mBlacklist ? "Blacklist" : "Whitelist"));
     }
 }

@@ -1,7 +1,7 @@
 // Add your dependencies here
 
 dependencies {
-    compile("com.github.GTNewHorizons:GT5-Unofficial:5.09.40.31:dev")
+    compile("com.github.GTNewHorizons:GT5-Unofficial:5.09.40.42:dev")
     compile("com.github.GTNewHorizons:StructureLib:1.0.15:dev")
     compile("com.github.GTNewHorizons:TecTech:4.10.18:dev")
     compile("com.github.GTNewHorizons:NotEnoughItems:2.2.5-GTNH:dev")
@@ -13,7 +13,7 @@ dependencies {
         exclude group:"com.github.GTNewHorizons", module:"bartworks"
     }
     compile("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
-    
+
     compileOnly("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-75-GTNH:dev") {
         transitive = false
     }
