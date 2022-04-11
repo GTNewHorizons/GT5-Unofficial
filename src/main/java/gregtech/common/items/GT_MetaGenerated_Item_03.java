@@ -316,7 +316,6 @@ public class GT_MetaGenerated_Item_03
 
         ItemList.GalliumArsenideCrystal.set(addItem(tLastID = 190, "Gallium Arsenide Crystal", "For make Wafers", o));
         ItemList.GalliumArsenideCrystalSmallPart.set(addItem(tLastID = 191, "Small Gallium Arsenide Crystal", "For make Wafers", o));
-   	ItemList.PolyurethaneResin.set(addItem(tLastID = 200, "Polyurethane Resin", "Polyurethane or PU", o));
 }
 
     @Override
