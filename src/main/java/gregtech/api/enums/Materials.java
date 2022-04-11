@@ -1618,7 +1618,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         NetherQuartz.mChemicalFormula = "SIO\u2082";
         Quartzite.mChemicalFormula = "SIO\u2082";
         CertusQuartz.mChemicalFormula = "SIO\u2082";
-        MaterialsKevlar.CalciumHydroxide.mChemicalFormula = "Ca\u0028OH\u0029\u2082";
     }
 
     private static void initSubTags() {
