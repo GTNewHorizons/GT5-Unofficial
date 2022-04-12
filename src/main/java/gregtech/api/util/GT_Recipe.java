@@ -136,7 +136,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         for (ItemStack aInput : aInputs)
             if (aInput != null && Items.feather.getDamage(aInput) != W)
                 for (int j = 0; j < aOutputs.length; j++) {
-                    if (GT_Utility.areStacksEqual(aInput, aOutputs[j])) {
+                    if (GT_Utility.areStacksEqual(aInput, aOutputs[j]) && aChances[j] >= 10000) {
                         if (aInput.stackSize >= aOutputs[j].stackSize) {
                             aInput.stackSize -= aOutputs[j].stackSize;
                             aOutputs[j] = null;
