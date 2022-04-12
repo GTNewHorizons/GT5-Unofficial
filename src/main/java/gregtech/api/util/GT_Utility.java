@@ -739,8 +739,6 @@ public class GT_Utility {
                             if (isAllowedToPutIntoSlot(tPutInventory, tPutSlot, aPutTo, tGrabStack, (byte) 64)) {
                                 int tMoved = moveStackFromSlotAToSlotB(aTileEntity1, tPutInventory, grabSlot, tPutSlot, aMaxTargetStackSize, aMinTargetStackSize, (byte) (aMaxMoveAtOnce - tMovedItems), aMinMoveAtOnce);
                                 if (tMoved > 0) {
-                                    tPutFreeSlots.remove(i);
-                                    i--;
                                     ItemStack s = tPutInventory.getStackInSlot(tPutSlot);
                                     if (s != null) {
                                         // s might be null if tPutInventory is very special, e.g. infinity chest
@@ -751,6 +749,8 @@ public class GT_Utility {
                                             tPutItems.merge(ssID, spare, Integer::sum);
                                             tPutItemStacks.computeIfAbsent(ssID, k -> new ArrayList<>()).add(s);
                                         }
+                                        tPutFreeSlots.remove(i);
+                                        i--;
                                     }
                                     tTotalItemsMoved += tMoved;
                                     tMovedItems += tMoved;
