@@ -174,7 +174,7 @@ public class DreamCraftRecipeLoader {
                         getOrDefault("Trinium", Materials.Osmium).getMolten(1296),
                 }, CustomItemList.eM_Coil.get(4), 800, 2000000);
 
-        //infinite oil rig
+        // Infinite Oil Rig
         TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.OilDrill3.get(1),
                 16777216, 2048, 2000000, 4, new Object[]{
                         ItemList.OilDrill3.get(1),
@@ -190,6 +190,18 @@ public class DreamCraftRecipeLoader {
                         Materials.SolderingAlloy.getMolten(1296),
                         Materials.Neutronium.getMolten(576)
                 }, ItemList.OilDrillInfinite.get(1), 6000, 2000000);
+
+        // Infinity Coil
+        TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Casing_Coil_AwakenedDraconium.get(1),
+                16777216, 2048, 8000000, 1, new Object[]{
+                        new Object[]{"circuitInfinite", 1},
+                        GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.Infinity, 8),
+                        GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Infinity, 16),
+                        GT_ModHandler.getModItem("dreamcraft", "item.MicaInsulatorFoil", 64, 0),
+                        GT_ModHandler.getModItem("dreamcraft", "item.MicaInsulatorFoil", 32, 0)
+                }, new FluidStack[]{
+                        Materials.DraconiumAwakened.getMolten(576),
+                }, ItemList.Casing_Coil_Infinity.get(1), 60*20, 8000000);
 
         //Tesla Base
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
@@ -1513,7 +1525,7 @@ public class DreamCraftRecipeLoader {
                         ELEMENT.STANDALONE.ASTRAL_TITANIUM.getFluidStack(2304),
                 }, GregtechItemList.Casing_Fusion_Internal.get(1), 1200, 2000000);
 
-        // MK4 Casing 1234
+        // MK4 Casing
         TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Casing_Fusion2.get(1L),
                 80000, 512, 2000000, 1, new Object[]{
                         new Object[]{OrePrefixes.circuit.get(Materials.Data), 16L},
