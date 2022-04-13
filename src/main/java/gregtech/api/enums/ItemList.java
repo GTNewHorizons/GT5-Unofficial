@@ -1767,8 +1767,10 @@ public enum ItemList implements IItemContainer {
     Tube_Wires,
     GalliumArsenideCrystal,
     GalliumArsenideCrystalSmallPart,
-    PolyurethaneResin,
-    
+    KevlarFiber,
+    WovenKevlar,
+    Spinneret,
+
     Circuit_Microprocessor,
     Circuit_Processor,
     Circuit_Computer,
