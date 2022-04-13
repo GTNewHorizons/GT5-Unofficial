@@ -1762,7 +1762,9 @@ public enum ItemList implements IItemContainer {
     Circuit_Chip_Biocell,
 
     Tube_Wires,
-    PolyurethaneResin,
+    KevlarFiber,
+    WovenKevlar,
+    Spinneret,
 
     Circuit_Microprocessor,
     Circuit_Processor,
