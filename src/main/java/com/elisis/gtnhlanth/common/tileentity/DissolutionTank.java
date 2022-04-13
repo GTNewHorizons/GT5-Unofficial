@@ -27,6 +27,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
+import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -40,7 +41,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<DissolutionTank> implements IConstructable {
+public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<DissolutionTank> implements IConstructable, ISecondaryDescribable {
     
 	private IStructureDefinition<DissolutionTank> multiDefinition = StructureDefinition.<DissolutionTank>builder()
 		.addShape(mName, transpose(new String[][] {
@@ -225,21 +226,7 @@ public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<Di
         return new GT_GUIContainer_MultiMachine(playerInventory, metaTileEntity, getLocalName(), "Disstank.png");
     }
 	
-	@Override
-    public String[] getDescription() {
-		final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Heat Exchanger")
-                .addInfo("Controller Block for the Dissolution Tank")
-                .addInfo("Input Water and Fluid, output Fluid")
-                .addInfo("You must input the Fluids at the correct Ratio")
-                .addInfo("(Not currently working)")
-                .toolTipFinisher("GTNH: Lanthanides");
-		if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-	        return tt.getInformation();
-	    } else {
-	        return tt.getStructureInformation();
-	    }
-    }
+	
 	
 	@Override
 	public IMetaTileEntity newMetaEntity(IGregTechTileEntity arg0) {
@@ -272,12 +259,15 @@ public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<Di
         return new ITexture[]{casingTexturePages[0][49]};
         
 	}
-
+	
 	@Override
 	protected GT_Multiblock_Tooltip_Builder createTooltip() {
 		final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Dissolution Tank")
                 .addInfo("Controller block for the Dissolution Tank")
+                .addInfo("Input Water and Fluid, output Fluid")
+                .addInfo("You must input the Fluids at the correct Ratio")
+                .addInfo("(^Not currently working)")
                 .addInfo(BLUEPRINT_INFO)
                 .addSeparator()
                 .addController("Front bottom")
@@ -290,7 +280,7 @@ public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<Di
         
         return tt;
 	}
-
+	
 	@Override
 	public boolean explodesOnComponentBreak(ItemStack arg0) {
 		return false;
