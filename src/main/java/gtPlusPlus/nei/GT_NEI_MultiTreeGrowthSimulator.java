@@ -144,13 +144,14 @@ public class GT_NEI_MultiTreeGrowthSimulator extends GTPP_NEI_DefaultHandler {
 			if (aOutputItemsCount > 0) {			
 				if (aOutputItemsCount > 9) {
 					aOutputItemsCount = 9;
-				}		
+				}
+				boolean tUnificate = mRecipeMap.mNEIUnificateOutput;
 				for (int i=0;i<aOutputItemsCount;i++) {
 					int x = mOutputSlotMap.get(aOutputSlotsUsed).getKey();
 					int y = mOutputSlotMap.get(aOutputSlotsUsed).getValue();
 					ItemStack aRepStack = mRecipe.getOutput(aSlotToCheck);
 					if (aRepStack != null) {
-						this.mOutputs.add(new FixedPositionedStack(aRepStack, x, y, mRecipe.getOutputChance(aSlotToCheck)));	
+						this.mOutputs.add(new FixedPositionedStack(aRepStack, x, y, mRecipe.getOutputChance(aSlotToCheck), tUnificate));
 						aOutputSlotsUsed++;
 					}
 					aSlotToCheck++;

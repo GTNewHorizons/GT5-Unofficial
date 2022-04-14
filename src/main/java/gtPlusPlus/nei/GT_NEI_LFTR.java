@@ -82,33 +82,34 @@ public class GT_NEI_LFTR extends GTPP_NEI_DefaultHandler {
 			}
 
 			tStartIndex = 0;
+			boolean tUnificate = mRecipeMap.mNEIUnificateOutput;
 			if (mRecipe.mFluidOutputs.length > 0) {
 				if ((mRecipe.mFluidOutputs[0] != null) && (mRecipe.mFluidOutputs[0].getFluid() != null)) {
-					this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(mRecipe.mFluidOutputs[0], true), 102, 5, mRecipe.getOutputChance(tStartIndex++)));
+					this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(mRecipe.mFluidOutputs[0], true), 102, 5, mRecipe.getOutputChance(tStartIndex++), tUnificate));
 				}
 				if ((mRecipe.mFluidOutputs.length > 1) && (mRecipe.mFluidOutputs[1] != null) && (mRecipe.mFluidOutputs[1].getFluid() != null)) {
-					this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(mRecipe.mFluidOutputs[1], true), 120, 5, mRecipe.getOutputChance(tStartIndex++)));
+					this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(mRecipe.mFluidOutputs[1], true), 120, 5, mRecipe.getOutputChance(tStartIndex++), tUnificate));
 				}
 				if ((mRecipe.mFluidOutputs.length > 2) && (mRecipe.mFluidOutputs[2] != null) && (mRecipe.mFluidOutputs[2].getFluid() != null)) {
-					this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(mRecipe.mFluidOutputs[2], true), 138, 5, mRecipe.getOutputChance(tStartIndex++)));
+					this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(mRecipe.mFluidOutputs[2], true), 138, 5, mRecipe.getOutputChance(tStartIndex++), tUnificate));
 				}
 				if ((mRecipe.mFluidOutputs.length > 3) && (mRecipe.mFluidOutputs[3] != null) && (mRecipe.mFluidOutputs[3].getFluid() != null)) {
-					this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(mRecipe.mFluidOutputs[3], true), 102, 23, mRecipe.getOutputChance(tStartIndex++)));
+					this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(mRecipe.mFluidOutputs[3], true), 102, 23, mRecipe.getOutputChance(tStartIndex++), tUnificate));
 				}
 				if ((mRecipe.mFluidOutputs.length > 4) && (mRecipe.mFluidOutputs[4] != null) && (mRecipe.mFluidOutputs[4].getFluid() != null)) {
-					this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(mRecipe.mFluidOutputs[4], true), 120, 23, mRecipe.getOutputChance(tStartIndex++)));
+					this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(mRecipe.mFluidOutputs[4], true), 120, 23, mRecipe.getOutputChance(tStartIndex++), tUnificate));
 				}
 				if ((mRecipe.mFluidOutputs.length > 5) && (mRecipe.mFluidOutputs[5] != null) && (mRecipe.mFluidOutputs[5].getFluid() != null)) {
-					this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(mRecipe.mFluidOutputs[5], true), 138, 23, mRecipe.getOutputChance(tStartIndex++)));
+					this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(mRecipe.mFluidOutputs[5], true), 138, 23, mRecipe.getOutputChance(tStartIndex++), tUnificate));
 				}
 				if ((mRecipe.mFluidOutputs.length > 6) && (mRecipe.mFluidOutputs[6] != null) && (mRecipe.mFluidOutputs[6].getFluid() != null)) {
-					this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(mRecipe.mFluidOutputs[6], true), 102, 41, mRecipe.getOutputChance(tStartIndex++)));
+					this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(mRecipe.mFluidOutputs[6], true), 102, 41, mRecipe.getOutputChance(tStartIndex++), tUnificate));
 				}
 				if ((mRecipe.mFluidOutputs.length > 7) && (mRecipe.mFluidOutputs[7] != null) && (mRecipe.mFluidOutputs[7].getFluid() != null)) {
-					this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(mRecipe.mFluidOutputs[7], true), 120, 41, mRecipe.getOutputChance(tStartIndex++)));
+					this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(mRecipe.mFluidOutputs[7], true), 120, 41, mRecipe.getOutputChance(tStartIndex++), tUnificate));
 				}
 				if ((mRecipe.mFluidOutputs.length > 8) && (mRecipe.mFluidOutputs[8] != null) && (mRecipe.mFluidOutputs[8].getFluid() != null)) {
-					this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(mRecipe.mFluidOutputs[8], true), 138, 41, mRecipe.getOutputChance(tStartIndex++)));
+					this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(mRecipe.mFluidOutputs[8], true), 138, 41, mRecipe.getOutputChance(tStartIndex++), tUnificate));
 				}
 			}
 			
