@@ -36,6 +36,7 @@ public class MaterialsKevlar {
     public static Materials ThionylChloride = new MaterialBuilder(767, TextureSet.SET_FLUID, "Thionyl Chloride").setName("ThionylChloride").addCell().addFluid().setRGB(255, 255, 255).setColor(Dyes.dyeWhite).constructMaterial();//SOCl2
     public static Materials SulfurDichloride = new MaterialBuilder(766, TextureSet.SET_FLUID, "Sulfur Dichloride").setName("SulfurDichloride").addCell().addFluid().setRGB(200, 0, 0).setColor(Dyes.dyeRed).constructMaterial();//SCl2
     public static Materials DimethylTerephthalate = new MaterialBuilder(765, TextureSet.SET_POWDER, "Dimethyl Terephthalate").setName("DimethylTerephthalate").addDustItems().setRGB(255, 255, 255).setColor(Dyes.dyeWhite).setMeltingPoint(415).setMaterialList(new MaterialStack(Materials.Carbon, 10), new MaterialStack(Materials.Hydrogen, 10), new MaterialStack(Materials.Oxygen, 4)).constructMaterial();//C10H10O4
+    public static Materials Kevlar = new MaterialBuilder(764, TextureSet.SET_DULL, "Kevlar").setName("Kevlar").addDustItems().addMetalItems().addGearItems().setRGB(0, 240, 0).setColor(Dyes.dyeYellow).constructMaterial();
     //Terephthalic acid C6H4(CO2H)2 700K White crystal Powder
 
 
