@@ -1355,6 +1355,9 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addFluidSolidifierRecipe(ItemList.Spinneret.get(0L), MaterialsKevlar.LiquidCrystalKevlar.getFluid(144L), ItemList.KevlarFiber.get(8L), 800, 1920);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.KevlarFiber.get(8L), GT_Utility.getIntegratedCircuit(8)}, GT_Values.NF, ItemList.WovenKevlar.get(1L), 300, 1920);
         GT_Values.RA.addChemicalBathRecipe(ItemList.WovenKevlar.get(1L), MaterialsKevlar.PolyurethaneResin.getFluid(1000), GT_Values.NF, MaterialsKevlar.Kevlar.getPlates(1), GT_Values.NI, GT_Values.NI,null ,1200, 30);
+        GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(1), GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.TerephthalicAcid, 1L)}, new FluidStack[]{Materials.Methanol.getFluid(2000), Materials.SulfuricAcid.getFluid(2000)}, null, new ItemStack[]{ GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.DimethylTerephthalate, 1L)},250, 1920);
+        GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(9), GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.TerephthalicAcid, 9L)}, new FluidStack[]{Materials.Methanol.getFluid(18000), Materials.SulfuricAcid.getFluid(18000)}, null, new ItemStack[]{ GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.DimethylTerephthalate, 9L)},1750, 1920);
+        GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.cell, MaterialsKevlar.IVDimethylbenzene, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.CobaltIINaphthenate, 1L), Materials.Oxygen.getGas(1000L), Materials.Hydrogen.getGas(1000L), GT_OreDictUnificator.get(OrePrefixes.cell, MaterialsKevlar.TerephthalicAcid, 1L ), 150, 480);
 
         GT_Values.RA.addBenderRecipe(ItemList.IC2_Mixed_Metal_Ingot.get(1L), GT_OreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Advanced, 1L), 100, 8);
 
