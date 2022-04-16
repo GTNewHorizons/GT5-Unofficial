@@ -11,6 +11,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
 
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_QTANK;
@@ -264,5 +265,15 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
     @Override
     public boolean isGivingInformation() {
         return true;
+    }
+
+    @Override
+    public FluidTankInfo getInfo() {
+        return new FluidTankInfo(getFluid(), getRealCapacity());
+    }
+
+    @Override
+    public FluidTankInfo[] getTankInfo(ForgeDirection aSide) {
+        return new FluidTankInfo[]{getInfo()};
     }
 }
