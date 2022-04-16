@@ -633,6 +633,7 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
 		}
 		if ((aID >= 0) && (aID < this.mItemAmount)) {
 			final ItemStack rStack = new ItemStack(this, 1, this.mOffset + aID);
+			GT_ModHandler.registerBoxableItemToToolBox(rStack);
 			this.mEnabledItems.set(aID);
 			this.mVisibleItems.set(aID);
 			GT_LanguageManager.addStringLocalization(this.getUnlocalizedName(rStack) + ".name", aEnglish);
