@@ -9,14 +9,17 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.net.GT_Packet_TileEntityCover;
 import gregtech.api.util.GT_CoverBehavior;
+import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 
 public class GT_Cover_ControlsWork extends GT_CoverBehavior {
     @Override
     public int doCoverThings(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
+        if (!makeSureOnlyOne(aSide, aTileEntity)) return 0;
         if (aTileEntity instanceof IMachineProgress) {
             IMachineProgress machine = (IMachineProgress) aTileEntity;
             if (aCoverVariable < 2) {
@@ -39,6 +42,21 @@ public class GT_Cover_ControlsWork extends GT_CoverBehavior {
             }
         }
         return aCoverVariable;
+    }
+
+    /**
+     * Make sure there is only one GT_Cover_ControlsWork on the aTileEntity
+     * @return true if the cover is the first (side) one
+     **/
+    private boolean makeSureOnlyOne(byte aSide, ICoverable aTileEntity) {
+        for (byte i = 0; i < 6; i++) {
+            if (aTileEntity.getCoverBehaviorAtSideNew(i) instanceof GT_Cover_ControlsWork && i < aSide) {
+                aTileEntity.dropCover(aSide, aSide, true);
+                aTileEntity.markDirty();
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
@@ -106,6 +124,17 @@ public class GT_Cover_ControlsWork extends GT_CoverBehavior {
     @Override
     public int getTickRate(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return 1;
+    }
+
+    @Override
+    public boolean isCoverPlaceable(byte aSide, ItemStack aStack, ICoverable aTileEntity) {
+        if (!super.isCoverPlaceable(aSide, aStack, aTileEntity)) return false;
+        for (byte i = 0; i < 6; i++) {
+            if (aTileEntity.getCoverBehaviorAtSideNew(i) instanceof GT_Cover_ControlsWork) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
