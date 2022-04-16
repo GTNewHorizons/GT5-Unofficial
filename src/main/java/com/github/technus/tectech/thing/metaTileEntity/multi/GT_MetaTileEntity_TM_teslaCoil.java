@@ -125,7 +125,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
                     {"       ", "       ", "       ", "   C   ", "       ", "       ", "       "},
                     {"       ", "       ", "       ", "   C   ", "       ", "       ", "       "},
                     {"       ", "  DDD  ", " D   D ", " D C D ", " D   D ", "  DDD  ", "       "},
-                    {" EE~EE ", "EAAAAAE", "EADDDAE", "EADADAE", "EADDDAE", " AAAAAE", " EEEEE "}
+                    {" EE~EE ", "EAAAAAE", "EADDDAE", "EADADAE", "EADDDAE", "EAAAAAE", " EEEEE "}
             }))
             .addElement('A', ofBlock(sBlockCasingsBA0, 6))
             .addElement('B', ofBlock(sBlockCasingsBA0, 7))
