@@ -52,6 +52,12 @@ import static gregtech.api.enums.OrePrefixes.*;
 @SuppressWarnings("ALL")
 public class LuVTierEnhancer implements Runnable {
 
+    private static List<ItemStack> blackListForOsmiridium = new ArrayList<>();
+
+    static {
+        addToBlackListForOsmiridiumReplacement(ItemList.Casing_MiningOsmiridium.get(1));
+    }
+
     public void run() {
 
         List<IRecipe> bufferedRecipeList = null;
@@ -89,6 +95,10 @@ public class LuVTierEnhancer implements Runnable {
         replaceAllRecipes(LuVMachines,LuVMaterialsGenerated,bufferedRecipeList);
 
         AfterLuVTierEnhacement.run();
+    }
+
+    public static void addToBlackListForOsmiridiumReplacement(ItemStack stack) {
+        blackListForOsmiridium.add(stack);
     }
 
     private static void replaceAllRecipes(Collection<ItemStack> LuVMachines, OrePrefixes[] LuVMaterialsGenerated, List<IRecipe> bufferedRecipeList){
@@ -211,7 +221,7 @@ public class LuVTierEnhancer implements Runnable {
     }
 
     private static boolean isOutputBlackListed(ItemStack output) {
-        if (output.isItemEqual(ItemList.Casing_MiningOsmiridium.get(1))) return true;
+        if (blackListForOsmiridium.stream().anyMatch(s -> s.isItemEqual(output))) return true;
         return false;
     }
 
