@@ -10,19 +10,15 @@ import gregtech.api.gui.widgets.GT_GuiIntegerTextBox;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicBatteryBuffer;
 import gregtech.api.net.GT_Packet_TileEntityCoverNew;
 import gregtech.api.util.GT_CoverBehaviorBase;
-import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
-import ic2.api.item.IElectricItem;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -299,56 +295,24 @@ public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMe
             GT_Utility.trans("306", "EU stored"),
             GT_Utility.trans("261", "Electricity Storage(Including Batteries)"),
             (te) -> {
-                long stored = te.getStoredEU();
                 if (te instanceof IGregTechTileEntity) {
-                    IGregTechTileEntity tTileEntity = (IGregTechTileEntity) te;
-                    IMetaTileEntity mTileEntity = tTileEntity.getMetaTileEntity();
-                    if (mTileEntity instanceof GT_MetaTileEntity_BasicBatteryBuffer) {
-                        GT_MetaTileEntity_BasicBatteryBuffer buffer = (GT_MetaTileEntity_BasicBatteryBuffer) mTileEntity;
-                        if (buffer.mInventory != null) {
-                            for (ItemStack aStack : buffer.mInventory) {
-                                if (GT_ModHandler.isElectricItem(aStack)) {
-                                    if (aStack.getItem() instanceof GT_MetaBase_Item) {
-                                        Long[] stats = ((GT_MetaBase_Item) aStack.getItem()).getElectricStats(aStack);
-                                        if (stats != null) {
-                                            stored = stored + ((GT_MetaBase_Item) aStack.getItem()).getRealCharge(aStack);
-                                        }
-                                    } else if (aStack.getItem() instanceof IElectricItem) {
-                                        stored = stored + (long) ic2.api.item.ElectricItem.manager.getCharge(aStack);
-                                    }
-                                }
-                            }
-
-                        }
+                    IMetaTileEntity mte = ((IGregTechTileEntity) te).getMetaTileEntity();
+                    if (mte instanceof GT_MetaTileEntity_BasicBatteryBuffer) {
+                        GT_MetaTileEntity_BasicBatteryBuffer buffer = (GT_MetaTileEntity_BasicBatteryBuffer) mte;
+                        return buffer.getStoredEnergy()[0];
                     }
                 }
-                return stored;
+                return te.getStoredEU();
             },
             (te) -> {
-                long capacity = te.getEUCapacity();
                 if (te instanceof IGregTechTileEntity) {
-                    IGregTechTileEntity tTileEntity = (IGregTechTileEntity) te;
-                    IMetaTileEntity mTileEntity = tTileEntity.getMetaTileEntity();
-                    if (mTileEntity instanceof GT_MetaTileEntity_BasicBatteryBuffer) {
-                        GT_MetaTileEntity_BasicBatteryBuffer buffer = (GT_MetaTileEntity_BasicBatteryBuffer) mTileEntity;
-                        if (buffer.mInventory != null) {
-                            for (ItemStack aStack : buffer.mInventory) {
-                                if (GT_ModHandler.isElectricItem(aStack)) {
-                                    if (aStack.getItem() instanceof GT_MetaBase_Item) {
-                                        Long[] stats = ((GT_MetaBase_Item) aStack.getItem()).getElectricStats(aStack);
-                                        if (stats != null) {
-                                            capacity = capacity + stats[0];
-                                        }
-                                    } else if (aStack.getItem() instanceof IElectricItem) {
-                                        capacity = capacity + (long) ((IElectricItem) aStack.getItem()).getMaxCharge(aStack);
-                                    }
-                                }
-                            }
-
-                        }
+                    IMetaTileEntity mte = ((IGregTechTileEntity) te).getMetaTileEntity();
+                    if (mte instanceof GT_MetaTileEntity_BasicBatteryBuffer) {
+                        GT_MetaTileEntity_BasicBatteryBuffer buffer = (GT_MetaTileEntity_BasicBatteryBuffer) mte;
+                        return buffer.getStoredEnergy()[1];
                     }
                 }
-                return capacity;
+                return te.getEUCapacity();
             }
         );
 
