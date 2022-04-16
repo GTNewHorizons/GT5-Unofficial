@@ -1,5 +1,7 @@
 package common;
 
+import com.github.bartimaeusnek.bartworks.system.material.GT_Enhancement.LuVTierEnhancer;
+import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import com.github.technus.tectech.recipe.TT_recipeAdder;
 import common.items.ErrorItem;
 import common.items.MetaItem_CraftingComponent;
@@ -29,10 +31,10 @@ import java.util.HashMap;
 public class Recipes {
 
 	public static final HashMap<String, InfusionRecipe> infusionRecipes = new HashMap<>();
-	
+
 	public static void postInit() {
 		KekzCore.LOGGER.info("Registering recipes...");
-		
+
 		registerRecipes_TFFT();
 		registerRecipes_SOFC();
 		//registerRecipes_Nuclear();
@@ -45,7 +47,7 @@ public class Recipes {
 	}
 
 	private static void registerRecipes_TFFT() {
-		
+
 		// Controller
 		final Object[] tfft_recipe = {
 				"HFH", "PVP", "CFC",
@@ -56,7 +58,7 @@ public class Recipes {
 				'C', OrePrefixes.circuit.get(Materials.Data)
 		};
 		GT_ModHandler.addCraftingRecipe(TileEntities.fms.getStackForm(1), tfft_recipe);
-		
+
 		// Blocks
 		final ItemStack[] tfftcasing = {
 				GT_Utility.getIntegratedCircuit(6),
@@ -162,11 +164,11 @@ public class Recipes {
 		GT_ModHandler.addShapelessCraftingRecipe(TileEntities.mhIV.getStackForm(1),
 				new ItemStack[]{new ItemStack(Blocks.tfftMultiHatch, 1)});
 	}
-	
+
 	private static void registerRecipes_SOFC() {
-		
+
 		final MetaItem_CraftingComponent craftingItem = MetaItem_CraftingComponent.getInstance();
-		
+
 		// Controller
 		final Object[] mk1_recipe = {
 				"CCC", "PHP", "FBL",
@@ -176,7 +178,7 @@ public class Recipes {
 				'F', GT_OreDictUnificator.get(OrePrefixes.pipeSmall, Materials.StainlessSteel, 1),
 				'B', GT_OreDictUnificator.get(OrePrefixes.cableGt02, Materials.Gold, 1),
 				'L', GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.StainlessSteel, 1)
-		};		
+		};
 		GT_ModHandler.addCraftingRecipe(TileEntities.sofc1.getStackForm(1), mk1_recipe);
 		final Object[] mk2_recipe = {
 				"CCC", "PHP", "FBL",
@@ -188,7 +190,7 @@ public class Recipes {
 				'L', GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Ultimate, 1)
 		};
 		GT_ModHandler.addCraftingRecipe(TileEntities.sofc2.getStackForm(1), mk2_recipe);
-		
+
 		// Blocks
 		final ItemStack[] yszUnit = {
 				GT_Utility.getIntegratedCircuit(6),
@@ -198,9 +200,9 @@ public class Recipes {
 				ItemList.Electric_Motor_HV.get(1L),
 		};
 		GT_Values.RA.addAssemblerRecipe(
-				yszUnit, 
-				Materials.Hydrogen.getGas(4000), 
-				new ItemStack(Blocks.yszUnit, 1), 
+				yszUnit,
+				Materials.Hydrogen.getGas(4000),
+				new ItemStack(Blocks.yszUnit, 1),
 				1200, 480);
 		final ItemStack[] gdcUnit = {
 				GT_Utility.getIntegratedCircuit(6),
@@ -210,23 +212,23 @@ public class Recipes {
 				ItemList.Electric_Motor_IV.get(1L),
 		};
 		GT_Values.RA.addAssemblerRecipe(
-				gdcUnit, 
-				Materials.Hydrogen.getGas(16000), 
-				new ItemStack(Blocks.gdcUnit, 1), 
+				gdcUnit,
+				Materials.Hydrogen.getGas(16000),
+				new ItemStack(Blocks.gdcUnit, 1),
 				2400, 1920);
-		
+
 		// Items
 		GT_Values.RA.addAlloySmelterRecipe(
-				craftingItem.getStackOfAmountFromDamage(Items.YSZCeramicDust.getMetaID(), Loader.isModLoaded("bartworks") ? 3 : 10), 
+				craftingItem.getStackOfAmountFromDamage(Items.YSZCeramicDust.getMetaID(), Loader.isModLoaded("bartworks") ? 3 : 10),
 				ItemList.Shape_Mold_Plate.get(0),
-				craftingItem.getStackOfAmountFromDamage(Items.YSZCeramicPlate.getMetaID(), 1), 
+				craftingItem.getStackOfAmountFromDamage(Items.YSZCeramicPlate.getMetaID(), 1),
 				400, 480);
 		GT_Values.RA.addFormingPressRecipe(
-				craftingItem.getStackOfAmountFromDamage(Items.GDCCeramicDust.getMetaID(), 10), 
+				craftingItem.getStackOfAmountFromDamage(Items.GDCCeramicDust.getMetaID(), 10),
 				ItemList.Shape_Mold_Plate.get(0),
-				craftingItem.getStackOfAmountFromDamage(Items.GDCCeramicPlate.getMetaID(), 1), 
+				craftingItem.getStackOfAmountFromDamage(Items.GDCCeramicPlate.getMetaID(), 1),
 				800, 480);
-		
+
 		if (!Loader.isModLoaded("bartworks")) {
 			GT_Values.RA.addChemicalRecipe(
 					Materials.Yttrium.getDust(1), GT_Utility.getIntegratedCircuit(6), Materials.Oxygen.getGas(3000),
@@ -237,31 +239,31 @@ public class Recipes {
 					null, craftingItem.getStackOfAmountFromDamage(Items.ZirconiaDust.getMetaID(), 1), null,
 					400, 30);
 		}
-		
+
 		GT_Values.RA.addChemicalRecipe(
 				Materials.Cerium.getDust(2), GT_Utility.getIntegratedCircuit(6), Materials.Oxygen.getGas(3000),
-				null, craftingItem.getStackOfAmountFromDamage(Items.CeriaDust.getMetaID(), 2), null, 
+				null, craftingItem.getStackOfAmountFromDamage(Items.CeriaDust.getMetaID(), 2), null,
 				400, 30);
 		GT_Values.RA.addMixerRecipe(
 				Items.YttriaDust.getOreDictedItemStack(1),
 				Items.ZirconiaDust.getOreDictedItemStack(5),
 				GT_Utility.getIntegratedCircuit(6), null, null, null,
-				craftingItem.getStackOfAmountFromDamage(Items.YSZCeramicDust.getMetaID(), 6), 
+				craftingItem.getStackOfAmountFromDamage(Items.YSZCeramicDust.getMetaID(), 6),
 				400, 96);
 		GT_Values.RA.addMixerRecipe(
 				GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Gadolinium, new ItemStack(ErrorItem.getInstance(), 1), 1),
 				craftingItem.getStackOfAmountFromDamage(Items.CeriaDust.getMetaID(), 9),
 				GT_Utility.getIntegratedCircuit(6), null, null, null,
-				craftingItem.getStackOfAmountFromDamage(Items.GDCCeramicDust.getMetaID(), 10), 
+				craftingItem.getStackOfAmountFromDamage(Items.GDCCeramicDust.getMetaID(), 10),
 				400, 1920);
 	}
-	
+
 	/*private static void registerRecipes_Nuclear() {
-		
+
 		final MetaItem_CraftingComponent craftingItem = MetaItem_CraftingComponent.getInstance();
-		
+
 		// Controller
-		
+
 		// Blocks
 		final ItemStack[] controlrod = {
 				GT_Utility.getIntegratedCircuit(6),
@@ -270,9 +272,9 @@ public class Recipes {
 				GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 64)
 			};
 		GT_Values.RA.addAssemblerRecipe(
-				controlrod, 
+				controlrod,
 				null,
-				new ItemStack(Blocks.reactorControlRod, 1), 
+				new ItemStack(Blocks.reactorControlRod, 1),
 				800, 480);
 		final ItemStack[] reactorchamber = {
 				GT_Utility.getIntegratedCircuit(6),
@@ -282,14 +284,14 @@ public class Recipes {
 				GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Steel, 2),
 			};
 		GT_Values.RA.addAssemblerRecipe(
-				reactorchamber, 
+				reactorchamber,
 				FluidRegistry.getFluidStack("wet.concrete", 144),
-				new ItemStack(Blocks.reactorChamberOFF, 1), 
+				new ItemStack(Blocks.reactorChamberOFF, 1),
 				1600, 480);
-		
+
 		// Items
-		GT_Values.RA.addMixerRecipe(Materials.Boron.getDust(1),	Materials.Arsenic.getDust(1), GT_Utility.getIntegratedCircuit(6), null, 
-				null, null, craftingItem.getStackOfAmountFromDamage(Items.BoronArsenideDust.getMetaID(), 2), 
+		GT_Values.RA.addMixerRecipe(Materials.Boron.getDust(1),	Materials.Arsenic.getDust(1), GT_Utility.getIntegratedCircuit(6), null,
+				null, null, craftingItem.getStackOfAmountFromDamage(Items.BoronArsenideDust.getMetaID(), 2),
 				100, 1920);
 		GT_Values.RA.addChemicalRecipe(
 				Materials.Ammonia.getCells(2),
@@ -297,7 +299,7 @@ public class Recipes {
 				null,
 				null,
 				craftingItem.getStackOfAmountFromDamage(Items.AmineCarbamiteDust.getMetaID(), 1),
-				Util.getStackofAmountFromOreDict("cellEmpty", 3), 
+				Util.getStackofAmountFromOreDict("cellEmpty", 3),
 				400, 30);
 		GT_Values.RA.addChemicalRecipe(
 				craftingItem.getStackOfAmountFromDamage(Items.AmineCarbamiteDust.getMetaID(), 1),
@@ -306,18 +308,18 @@ public class Recipes {
 				null,
 				craftingItem.getStackOfAmountFromDamage(Items.IsotopicallyPureDiamondDust.getMetaID(), 1),
 				null, 1200, 480);
-		
+
 		GT_Values.RA.addAutoclaveRecipe(
-				craftingItem.getStackOfAmountFromDamage(Items.IsotopicallyPureDiamondDust.getMetaID(), 4), 
-				Materials.CarbonDioxide.getGas(16000), 
+				craftingItem.getStackOfAmountFromDamage(Items.IsotopicallyPureDiamondDust.getMetaID(), 4),
+				Materials.CarbonDioxide.getGas(16000),
 				craftingItem.getStackOfAmountFromDamage(Items.IsotopicallyPureDiamondCrystal.getMetaID(), 1), 10000, 2400, 7680);
 		GT_Values.RA.addAutoclaveRecipe(
-				craftingItem.getStackOfAmountFromDamage(Items.BoronArsenideDust.getMetaID(), 4), 
-				Materials.Nitrogen.getGas(4000), 
+				craftingItem.getStackOfAmountFromDamage(Items.BoronArsenideDust.getMetaID(), 4),
+				Materials.Nitrogen.getGas(4000),
 				craftingItem.getStackOfAmountFromDamage(Items.BoronArsenideCrystal.getMetaID(), 1), 10000, 2400, 1920);
-		
+
 		GT_Values.RA.addLatheRecipe(
-				GT_OreDictUnificator.get(OrePrefixes.stick, Materials.AnnealedCopper, 1),  
+				GT_OreDictUnificator.get(OrePrefixes.stick, Materials.AnnealedCopper, 1),
 				craftingItem.getStackFromDamage(Items.CopperHeatPipe.getMetaID()),
 				null, 120, 120);
 		GT_Values.RA.addLatheRecipe(
@@ -325,15 +327,15 @@ public class Recipes {
 				craftingItem.getStackFromDamage(Items.SilverHeatPipe.getMetaID()),
 				null, 120, 480);
 		GT_Values.RA.addLatheRecipe(
-				craftingItem.getStackOfAmountFromDamage(Items.BoronArsenideCrystal.getMetaID(), 4),  
+				craftingItem.getStackOfAmountFromDamage(Items.BoronArsenideCrystal.getMetaID(), 4),
 				craftingItem.getStackFromDamage(Items.BoronArsenideHeatPipe.getMetaID()),
 				null, 1200, 1920);
 		GT_Values.RA.addLatheRecipe(
-				craftingItem.getStackOfAmountFromDamage(Items.IsotopicallyPureDiamondCrystal.getMetaID(), 4),  
+				craftingItem.getStackOfAmountFromDamage(Items.IsotopicallyPureDiamondCrystal.getMetaID(), 4),
 				craftingItem.getStackFromDamage(Items.DiamondHeatPipe.getMetaID()),
-				null, 1200, 7680);	
+				null, 1200, 7680);
 	}*/
-	
+
 	private static void registerRecipes_Jars() {
 
 		// Thaumium Reinforced Jar
@@ -397,7 +399,7 @@ public class Recipes {
 				.add(Aspect.GREED, 64)
 				.add(Aspect.VOID, 64)
 				.add(Aspect.AIR, 32);
-		infusionRecipes.put("ICHORJAR", 
+		infusionRecipes.put("ICHORJAR",
 				ThaumcraftApi.addInfusionCraftingRecipe("ICHORJAR", new ItemStack(Blocks.jarIchor, 1, 0),
 				15, aspects_jarichor, ItemApi.getBlock("blockJar", 0), recipe_jarichor));
 		// Ichor Void Jar
@@ -434,7 +436,7 @@ public class Recipes {
             GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.TungstenSteel, 2),
             GT_OreDictUnificator.get(OrePrefixes.block, Materials.Lapis, 1)
         }, null, new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 0), 100, 480);
-		
+
 		// Empty Capacitor
 		final Object[] lcEmpty_recipe = {
 				"SLS", "L L", "SLS",
@@ -442,7 +444,7 @@ public class Recipes {
 				'L', OrePrefixes.plate.get(Materials.Lapis)
 		};
 		GT_ModHandler.addCraftingRecipe(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 6), lcEmpty_recipe);
-		
+
 		// EV Capacitor
 		final Object[] lcEV_recipe = {
 				"SLS", "LCL", "SLS",
@@ -451,10 +453,19 @@ public class Recipes {
 				'C', GT_ModHandler.getIC2Item("lapotronCrystal", 1L, GT_Values.W)
 		};
 		GT_ModHandler.addCraftingRecipe(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 7), lcEV_recipe);
-		
-		//EV cap alt recipe
-		GT_Values.RA.addAssemblerRecipe(new ItemStack[] {(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 6)), GT_ModHandler.getIC2Item("lapotronCrystal", 1L, GT_Values.W), GT_Utility.getIntegratedCircuit(7)}, null, new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 7), 200, 480);
-		
+
+		// EV Capacitor alt recipe
+		GT_Values.RA.addAssemblerRecipe(
+            new ItemStack[] {
+                new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 6),
+                GT_ModHandler.getIC2Item("lapotronCrystal", 1L, GT_Values.W),
+                GT_Utility.getIntegratedCircuit(7)
+            },
+            null,
+            new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 7),
+            200, BW_Util.getMachineVoltageFromTier(3)
+        );
+
 		// IV Capacitor
 		final Object[] lcIV_recipe = {
 				"SLS", "LOL", "SLS",
@@ -464,9 +475,18 @@ public class Recipes {
 		};
 		GT_ModHandler.addCraftingRecipe(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 1), lcIV_recipe);
 
-		//IV cap alt recipe
-		GT_Values.RA.addAssemblerRecipe(new ItemStack[] {(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 6)), ItemList.Energy_LapotronicOrb.get(1L), GT_Utility.getIntegratedCircuit(1)}, null, new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 1), 200, 1920);
-		
+		// IV Capacitor alt recipe
+		GT_Values.RA.addAssemblerRecipe(
+            new ItemStack[] {
+                new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 6),
+                ItemList.Energy_LapotronicOrb.get(1L),
+                GT_Utility.getIntegratedCircuit(1)
+            },
+            null,
+            new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 1),
+            400, BW_Util.getMachineVoltageFromTier(4)
+        );
+
 		// LuV Capacitor
 		GT_Values.RA.addAssemblylineRecipe(
 				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 1), 288000,
@@ -488,9 +508,23 @@ public class Recipes {
 				new FluidStack[] {
 						Materials.SolderingAlloy.getMolten(720)
 				},
-				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 2), 2000, 100000
+				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 2), 1000, 80000
 		);
-		
+
+        // LuV Capacitor alt recipe
+        GT_Values.RA.addAssemblerRecipe(
+            new ItemStack[] {
+                ItemList.Energy_LapotronicOrb2.get(1),
+                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Osmiridium, 4),
+                GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Osmiridium, 24),
+                GT_Utility.getIntegratedCircuit(6)
+            },
+            null,
+            new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 2),
+            800, BW_Util.getMachineVoltageFromTier(5)
+        );
+        LuVTierEnhancer.addToBlackListForOsmiridiumReplacement(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 2));
+
 		// ZPM Capacitor
 		GT_Values.RA.addAssemblylineRecipe(
 				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 2), 288000,
@@ -515,7 +549,20 @@ public class Recipes {
 				},
 				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 3), 2000, 100000
 		);
-		
+
+        // ZPM Capacitor alt recipe
+        GT_Values.RA.addAssemblerRecipe(
+            new ItemStack[] {
+                ItemList.Energy_Module.get(1),
+                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.NaquadahAlloy, 4),
+                GT_OreDictUnificator.get(OrePrefixes.screw, Materials.NaquadahAlloy, 24),
+                GT_Utility.getIntegratedCircuit(6)
+            },
+            null,
+            new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 3),
+            1600, BW_Util.getMachineVoltageFromTier(6)
+        );
+
 		// UV Capacitor
 		GT_Values.RA.addAssemblylineRecipe(
 				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 3), 288000,
@@ -540,8 +587,21 @@ public class Recipes {
 				},
 				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 4), 2000, 200000
 		);
-		
-		// Ultimate Capacitor
+
+        // UV Capacitor alt recipe
+        GT_Values.RA.addAssemblerRecipe(
+            new ItemStack[] {
+                ItemList.Energy_Cluster.get(1),
+                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 4),
+                GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Neutronium, 24),
+                GT_Utility.getIntegratedCircuit(6)
+            },
+            null,
+            new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 4),
+            3200, BW_Util.getMachineVoltageFromTier(7)
+        );
+
+		// Ultimate Capacitor (UHV)
 		TT_recipeAdder.addResearchableAssemblylineRecipe(
 				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 4), 12000,
 				16, 300000, 3,
@@ -559,15 +619,29 @@ public class Recipes {
 						ItemList.Circuit_Wafer_UHPIC.get(64),
 						ItemList.Circuit_Wafer_UHPIC.get(64),
 						ItemList.Circuit_Wafer_SoC2.get(32),
-						ItemList.Circuit_Parts_DiodeASMD.get(64)
+						ItemList.Circuit_Parts_DiodeASMD.get(64),
+                        GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorUHV, 64)
 				},
 				new FluidStack[] {
 						Materials.SolderingAlloy.getMolten(4608),
 						Materials.Naquadria.getMolten(9216),
 						new FluidStack(FluidRegistry.getFluid("ic2coolant"), 32000)
 				},
-				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 5), 2000, 200000
+				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 5), 4000, 1600000
 		);
+
+        // UHV Capacitor alt recipe
+        GT_Values.RA.addAssemblerRecipe(
+            new ItemStack[] {
+                ItemList.ZPM3.get(1),
+                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.CosmicNeutronium, 4),
+                GT_OreDictUnificator.get(OrePrefixes.screw, Materials.CosmicNeutronium, 24),
+                GT_Utility.getIntegratedCircuit(6)
+            },
+            null,
+            new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 5),
+            6400, BW_Util.getMachineVoltageFromTier(8)
+        );
 
 		// Capacitor recycling
 		GT_Values.RA.addUnboxingRecipe(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 7),
@@ -594,19 +668,6 @@ public class Recipes {
 				ItemList.ZPM3.get(1L),
 				GT_OreDictUnificator.get(OrePrefixes.screw, Materials.CosmicNeutronium, 24),
 				1200, 32);
-
-		// For the people that already made the Really Ultimate Battery but want to use the LSC
-		GT_Values.RA.addAssemblerRecipe(
-				new ItemStack[] {
-						ItemList.ZPM3.get(1),
-						GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.CosmicNeutronium, 4),
-						GT_OreDictUnificator.get(OrePrefixes.screw, Materials.CosmicNeutronium, 24),
-						GT_Utility.getIntegratedCircuit(6)
-				},
-				null,
-				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 5),
-				12000, 200000
-		);
 	}
 
 	/*private static void registerRecipes_SpaceElevator() {
