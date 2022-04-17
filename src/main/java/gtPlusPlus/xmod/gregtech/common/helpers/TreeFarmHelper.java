@@ -1,39 +1,19 @@
 package gtPlusPlus.xmod.gregtech.common.helpers;
 
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableTreeFarmerParticles;
-
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-
 import com.google.common.collect.Lists;
-
-import gnu.trove.set.hash.THashSet;
-
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
-
-import gregtech.api.enums.*;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockAir;
-import net.minecraft.block.IGrowable;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.play.server.S23PacketBlockChange;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.ChunkPosition;
-import net.minecraft.world.World;
-
+import gnu.trove.set.hash.THashSet;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.Textures;
+import gregtech.api.enums.ToolDictNames;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaGenerated_Tool;
-import gregtech.common.items.GT_MetaGenerated_Item_02;
-
+import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
@@ -48,12 +28,36 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.particles.BlockBreakParticles;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockAir;
+import net.minecraft.block.IGrowable;
+import net.minecraft.block.material.Material;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+import net.minecraft.network.play.server.S23PacketBlockChange;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.ChunkPosition;
+import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.BonemealEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Queue;
+import java.util.Set;
+import java.util.Stack;
+import java.util.concurrent.ConcurrentHashMap;
+
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableTreeFarmerParticles;
 
 public class TreeFarmHelper {
 
@@ -261,37 +265,24 @@ public class TreeFarmHelper {
 	public static boolean isValidForGUI(final ItemStack aStack) {
 		return isCorrectMachinePart(aStack) != SAWTOOL.NONE;
 	}
-	
-	public static SAWTOOL isCorrectMachinePart(final ItemStack aStack) {
-		if (aStack != null){
-			//Utils.LOG_WARNING("Found "+aStack.getDisplayName()+" in the GUI slot.");
-			if ((aStack.getItem() instanceof GT_MetaGenerated_Item_02) || (aStack.getItem() instanceof GT_MetaGenerated_Tool)){
-				if (OrePrefixes.craftingTool.contains(aStack)){
-					if (aStack.getDisplayName().toLowerCase().contains("saw") || aStack.getDisplayName().toLowerCase().contains("gt.metatool.01")){
-						if (aStack.getItemDamage() == 10){
-							return SAWTOOL.SAW;
-						}
-						else if (aStack.getItemDamage() == 140  || aStack.getDisplayName().toLowerCase().contains("gt.metatool.01.140")){
-							return SAWTOOL.BUZZSAW;
-						}
-						else if (aStack.getItemDamage() == 110  || aStack.getDisplayName().toLowerCase().contains("gt.metatool.01.110")){
-							return SAWTOOL.CHAINSAW;
-						}
-						else if (aStack.getItemDamage() == 112  || aStack.getDisplayName().toLowerCase().contains("gt.metatool.01.112")){
-							return SAWTOOL.CHAINSAW;
-						}
-						else if (aStack.getItemDamage() == 114  || aStack.getDisplayName().toLowerCase().contains("gt.metatool.01.114")){
-							return SAWTOOL.CHAINSAW;
-						}
-						else {
-							return SAWTOOL.NONE;
-						}
-					}
-				}
-			}
-		}
-		return SAWTOOL.NONE;
-	}
+
+    public static SAWTOOL isCorrectMachinePart(final ItemStack aStack) {
+        if (aStack != null && aStack.getItem() instanceof GT_MetaGenerated_Tool_01) {
+            switch (aStack.getItemDamage()) {
+                case GT_MetaGenerated_Tool_01.SAW:
+                    return SAWTOOL.SAW;
+                case GT_MetaGenerated_Tool_01.BUZZSAW_LV:
+                case GT_MetaGenerated_Tool_01.BUZZSAW_MV:
+                case GT_MetaGenerated_Tool_01.BUZZSAW_HV:
+                    return SAWTOOL.BUZZSAW;
+                case GT_MetaGenerated_Tool_01.CHAINSAW_LV:
+                case GT_MetaGenerated_Tool_01.CHAINSAW_MV:
+                case GT_MetaGenerated_Tool_01.CHAINSAW_HV:
+                    return SAWTOOL.CHAINSAW;
+            }
+        }
+        return SAWTOOL.NONE;
+    }
 	
 	public static ToolType getPartType(final ItemStack aStack) {
 		if (aStack != null){
