@@ -1,36 +1,44 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base;
 
-import static gregtech.api.enums.GT_Values.V;
-import static gtPlusPlus.core.util.data.ArrayUtils.removeNulls;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.commons.lang3.ArrayUtils;
-
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.*;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
-import gtPlusPlus.api.objects.data.*;
+import gtPlusPlus.api.objects.data.AutoMap;
+import gtPlusPlus.api.objects.data.ConcurrentHashSet;
+import gtPlusPlus.api.objects.data.ConcurrentSet;
+import gtPlusPlus.api.objects.data.FlexiblePair;
+import gtPlusPlus.api.objects.data.Triplet;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Steam_BusInput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Steam_BusOutput;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
+import org.apache.commons.lang3.ArrayUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static gregtech.api.enums.GT_Values.V;
+import static gtPlusPlus.core.util.data.ArrayUtils.removeNulls;
 
 public abstract class GregtechMeta_SteamMultiBase extends GregtechMeta_MultiBlockBase {
 	
 	public ArrayList<GT_MetaTileEntity_Hatch_Steam_BusInput> mSteamInputs = new ArrayList<GT_MetaTileEntity_Hatch_Steam_BusInput>();
 	public ArrayList<GT_MetaTileEntity_Hatch_Steam_BusOutput> mSteamOutputs = new ArrayList<GT_MetaTileEntity_Hatch_Steam_BusOutput>();
 	public ArrayList<GT_MetaTileEntity_Hatch_CustomFluidBase> mSteamInputFluids = new ArrayList<GT_MetaTileEntity_Hatch_CustomFluidBase>();
+
+	protected static final String TT_steaminputbus = StatCollector.translateToLocal("GTPP.MBTT.SteamInputBus");
+	protected static final String TT_steamoutputbus = StatCollector.translateToLocal("GTPP.MBTT.SteamOutputBus");
+	protected static final String TT_steamhatch = StatCollector.translateToLocal("GTPP.MBTT.SteamHatch");
 	
 	public GregtechMeta_SteamMultiBase(String aName) {
 		super(aName);

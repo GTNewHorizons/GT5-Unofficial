@@ -69,9 +69,9 @@ public class GregtechMetaTileEntity_SteamMacerator extends GregtechMeta_SteamMul
 				.beginStructureBlock(3, 3, 3, true)
 				.addController("Front center")
 				.addCasingInfo(mCasingName, 14)
-				.addStructureHint("Input Bus (Steam)", 1)
-				.addStructureHint("Output Bus (Steam)", 1)
-				.addStructureHint("Steam Hatch", 1)
+				.addOtherStructurePart(TT_steaminputbus, "Any casing", 1)
+				.addOtherStructurePart(TT_steamoutputbus, "Any casing", 1)
+				.addOtherStructurePart(TT_steamhatch, "Any casing", 1)
 				.toolTipFinisher(CORE.GT_Tooltip_Builder);
 		return tt;
 	}

@@ -85,9 +85,10 @@ GTPP.time.days=Days
 GTPP.time.weeks=Weeks
 GTPP.time.months=Months
 
-
-
-
+//Steam MultiBlock Tooltips
+GTPP.MBTT.SteamHatch=Steam Hatch
+GTPP.MBTT.SteamInputBus=Input Bus (Steam)
+GTPP.MBTT.SteamOutputBus=Output Bus (Steam)
 
 
 
@@ -220,4 +221,3 @@ achievement.gt.blockmachines.gtpp.multimachine.flotationcell=Flotation Cell
 achievement.gt.blockmachines.gtpp.multimachine.flotationcell.desc=[AL] Pickup this item to see the recipe in NEI
 achievement.gt.blockmachines.gtpp.multimachine.isamill=IsaMill
 achievement.gt.blockmachines.gtpp.multimachine.isamill.desc=[AL] Pickup this item to see the recipe in NEI
-

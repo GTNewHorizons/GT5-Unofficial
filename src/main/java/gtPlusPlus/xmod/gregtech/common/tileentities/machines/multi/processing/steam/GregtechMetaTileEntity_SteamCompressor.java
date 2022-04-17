@@ -67,9 +67,9 @@ public class GregtechMetaTileEntity_SteamCompressor extends GregtechMeta_SteamMu
 				.beginStructureBlock(3, 3, 4, true)
 				.addController("Front center")
 				.addCasingInfo(mCasingName, 28)
-				.addOtherStructurePart("Input Bus (Steam)", "Any machine casing", 1)
-				.addOtherStructurePart("Output Bus (Steam)", "Any machine casing", 1)
-				.addOtherStructurePart("Steam Hatch", "Any machine casing", 1)
+				.addOtherStructurePart(TT_steaminputbus, "Any casing", 1)
+				.addOtherStructurePart(TT_steamoutputbus, "Any casing", 1)
+				.addOtherStructurePart(TT_steamhatch, "Any casing", 1)
 				.toolTipFinisher(CORE.GT_Tooltip_Builder);
 		return tt;
 	}
