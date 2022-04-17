@@ -29,7 +29,11 @@ import com.github.bartimaeusnek.bartworks.common.items.LabParts;
 import com.github.bartimaeusnek.bartworks.common.loaders.FluidLoader;
 import com.github.bartimaeusnek.bartworks.common.net.RendererPacket;
 import com.github.bartimaeusnek.bartworks.common.tileentities.tiered.GT_MetaTileEntity_RadioHatch;
-import com.github.bartimaeusnek.bartworks.util.*;
+import com.github.bartimaeusnek.bartworks.util.BWRecipes;
+import com.github.bartimaeusnek.bartworks.util.BW_Util;
+import com.github.bartimaeusnek.bartworks.util.BioCulture;
+import com.github.bartimaeusnek.bartworks.util.Coords;
+import com.github.bartimaeusnek.bartworks.util.MathUtils;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -51,6 +55,8 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -58,12 +64,21 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.isAir;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static gregtech.api.enums.Textures.BlockIcons.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_GLOW;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
@@ -85,6 +100,8 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBa
     private int mSievert;
     private int mNeededSievert;
     private int mCasing = 0;
+    private int mExpectedTimes = 0;
+    private int mTimes = 0;
 
     public GT_TileEntity_BioVat(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -224,6 +241,21 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBa
         return BWRecipes.instance.getMappingsFor(BWRecipes.BACTERIALVATBYTE);
     }
 
+    /**
+     * Calculates the expected output multiplier based on the output hatch
+     * @param recipeFluidOutput the recipe fluid output
+     * @param needEqual if the recipeFluidOutput should be equal to the fluid in the output hatch
+     * @return the expected output multiplier
+     */
+    private int getExpectedTimes(@Nullable FluidStack recipeFluidOutput, boolean needEqual) {
+        FluidStack storedFluidOutputs = this.getStoredFluidOutputs();
+        if (storedFluidOutputs == null) return 1;
+        if (!needEqual || storedFluidOutputs.isFluidEqual(recipeFluidOutput)) {
+            return this.calcMod(storedFluidOutputs.amount) + 1;
+        }
+        return 1;
+    }
+
     private int calcMod(double x) {
         double y = (((double) this.getOutputCapacity()) / 2D),
                z = ConfigHandler.bioVatMaxParallelBonus;
@@ -276,80 +308,67 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBa
     public boolean checkRecipe(ItemStack itemStack) {
         GT_Recipe.GT_Recipe_Map gtRecipeMap = this.getRecipeMap();
 
-        if (gtRecipeMap == null)
-            return false;
+        if (gtRecipeMap == null) return false;
 
         ItemStack[] tInputs = getItemInputs().toArray(new ItemStack[0]);
         FluidStack[] tFluids = getFluidInputs().toArray(new FluidStack[0]);
 
-        if (tFluids.length > 0) {
+        if (tFluids.length <= 0) return false;
 
-            GT_Recipe gtRecipe = gtRecipeMap.findRecipe(this.getBaseMetaTileEntity(), this.mLastRecipe, false, this.getMaxInputVoltage(), tFluids, itemStack, tInputs);
+        GT_Recipe gtRecipe = gtRecipeMap.findRecipe(this.getBaseMetaTileEntity(), this.mLastRecipe, false, this.getMaxInputVoltage(), tFluids, itemStack, tInputs);
 
-            if (gtRecipe == null)
-                return false;
+        if (gtRecipe == null) return false;
 
-            if (!BW_Util.areStacksEqualOrNull((ItemStack) gtRecipe.mSpecialItems, itemStack))
-                return false;
+        assert gtRecipe.mFluidInputs.length == 1;
+        assert gtRecipe.mFluidOutputs.length == 1;
 
-            int[] conditions = GT_TileEntity_BioVat.specialValueUnpack(gtRecipe.mSpecialValue);
+        if (!BW_Util.areStacksEqualOrNull((ItemStack) gtRecipe.mSpecialItems, itemStack)) return false;
 
-            this.mNeededSievert = conditions[3];
+        int[] conditions = GT_TileEntity_BioVat.specialValueUnpack(gtRecipe.mSpecialValue);
 
-            if (conditions[2] == 0 ?
-                    (this.mSievert < this.mNeededSievert || this.mGlassTier < conditions[0])
-                    : (this.mSievert != conditions[3] || this.mGlassTier < conditions[0]))
-                return false;
+        this.mNeededSievert = conditions[3];
 
-            int times = 1;
+        if (conditions[2] == 0 ?
+            (this.mSievert < this.mNeededSievert || this.mGlassTier < conditions[0])
+            : (this.mSievert != conditions[3] || this.mGlassTier < conditions[0]))
+            return false;
 
-            this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
-            this.mEfficiencyIncrease = 10000;
+        this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
+        this.mEfficiencyIncrease = 10000;
 
-            Set<FluidStack> storedFluidOutputs = this.getStoredFluidOutputs();
+        if (!gtRecipe.isRecipeInputEqual(true, tFluids, tInputs)) return false;
 
-            if (gtRecipe.isRecipeInputEqual(true, tFluids, tInputs)) {
-                if (storedFluidOutputs.size() > 0) {
-                    this.mOutputFluids = new FluidStack[gtRecipe.mFluidOutputs.length];
-                    for (FluidStack storedOutputFluid : storedFluidOutputs) {
-                        if (storedOutputFluid.isFluidEqual(gtRecipe.getFluidOutput(0)))
-                            for (FluidStack inputFluidStack : gtRecipe.mFluidInputs) {
-                                int j = this.calcMod(storedOutputFluid.amount);
-                                for (int i = 0; i < j; i++)
-                                    if (this.depleteInput(inputFluidStack))
-                                        times++;
-                            }
-                    }
-                    for (FluidStack storedfluidStack : storedFluidOutputs) {
-                        for (int i = 0; i < gtRecipe.mFluidOutputs.length; i++) {
-                            if (storedfluidStack.isFluidEqual(gtRecipe.getFluidOutput(i)))
-                                this.mOutputFluids[i] = (new FluidStack(gtRecipe.getFluidOutput(i), times * gtRecipe.getFluidOutput(0).amount));
-                        }
+        final FluidStack recipeFluidOutput = gtRecipe.getFluidOutput(0);
+        final FluidStack recipeFluidInput = gtRecipe.mFluidInputs[0];
 
-                    }
-                } else {
-                    this.mOutputFluids = gtRecipe.mFluidOutputs;
-                }
-            } else
-                return false;
+        this.mExpectedTimes = this.getExpectedTimes(recipeFluidOutput, true);
 
-            BW_Util.calculateOverclockedNessMulti(gtRecipe.mEUt, gtRecipe.mDuration, 1, this.getMaxInputVoltage(), this);
-
-            if (this.mEUt > 0)
-                this.mEUt = -this.mEUt;
-            this.mProgresstime = 0;
-
-            if (gtRecipe.mCanBeBuffered)
-                this.mLastRecipe = gtRecipe;
-
-            this.updateSlots();
-            return true;
+        this.mTimes = 1;
+        for (int i = 1; i < this.mExpectedTimes; i++) {
+            if (this.depleteInput(recipeFluidInput)) {
+                this.mTimes++;
+            }
         }
-        return false;
+
+        this.mOutputFluids = new FluidStack[]{new FluidStack(recipeFluidOutput, recipeFluidOutput.amount * this.mTimes)};
+
+        BW_Util.calculateOverclockedNessMulti(gtRecipe.mEUt, gtRecipe.mDuration, 1, this.getMaxInputVoltage(), this);
+
+        if (this.mEUt > 0)
+            this.mEUt = -this.mEUt;
+        this.mProgresstime = 0;
+
+        if (gtRecipe.mCanBeBuffered)
+            this.mLastRecipe = gtRecipe;
+
+        this.updateSlots();
+        return true;
     }
 
-    public Set<FluidStack> getStoredFluidOutputs() {
-        return this.mOutputHatches.stream().map(GT_MetaTileEntity_Hatch_Output::getFluid).filter(Objects::nonNull).collect(Collectors.toSet());
+    public FluidStack getStoredFluidOutputs() {
+        // Only one output Hatch
+        assert this.mOutputHatches.size() == 1;
+        return this.mOutputHatches.get(0).getFluid();
     }
 
     private boolean addRadiationInputToMachineList(IGregTechTileEntity aTileEntity, int CasingIndex) {
@@ -559,6 +578,12 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBa
             if (this.getBaseMetaTileEntity().isActive() && this.mNeededSievert > this.mSievert)
                 this.mOutputFluids = null;
         }
+        if (aBaseMetaTileEntity.isServerSide()) {
+            if (this.mMaxProgresstime <= 0) {
+                this.mTimes = 0;
+                this.mMaxProgresstime = 0;
+            }
+        }
     }
 
     @Override
@@ -648,5 +673,17 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBa
     @Override
     public void construct(ItemStack itemStack, boolean b) {
         buildPiece(STRUCTURE_PIECE_MAIN, itemStack, b, 2, 3, 0);
+    }
+
+    @Override
+    public String[] getInfoData() {
+        final String[] baseInfoData = super.getInfoData();
+        final String[] infoData = new String[baseInfoData.length + 2];
+        System.arraycopy(baseInfoData, 0, infoData, 0, baseInfoData.length);
+        infoData[infoData.length - 2] = StatCollector.translateToLocal("BW.infoData.BioVat.expectedProduction") + ": " +
+            EnumChatFormatting.GREEN + (mMaxProgresstime <= 0 ? getExpectedTimes(null, false) : mExpectedTimes) * 100 + EnumChatFormatting.RESET + " %";
+        infoData[infoData.length - 1] = StatCollector.translateToLocal("BW.infoData.BioVat.production") + ": " +
+            EnumChatFormatting.GREEN + (mMaxProgresstime <= 0 ? 0 : mTimes) * 100 + EnumChatFormatting.RESET + " %";
+        return infoData;
     }
 }
