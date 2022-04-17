@@ -596,7 +596,7 @@ public class WerkstoffMaterialPool implements Runnable {
     		offsetID2,
     		TextureSet.SET_FLUID
     	);
-    
+    /*
     public static final Werkstoff FluorosilicicAcid = new Werkstoff(
     		new short[] {205, 133, 63},
     		"Hexafluorosilicic Acid",
@@ -607,7 +607,7 @@ public class WerkstoffMaterialPool implements Runnable {
     		offsetID2 + 1,
     		TextureSet.SET_FLUID
     	);
-    
+    */
     public static final Werkstoff SodiumFluorosilicate = new Werkstoff(
     		new short[] {205, 133, 63},
     		"Sodiumfluorosilicate",

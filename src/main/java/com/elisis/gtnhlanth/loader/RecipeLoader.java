@@ -237,7 +237,7 @@ public class RecipeLoader {
         GT_Values.RA.addChemicalRecipe(
         		Materials.Empty.getCells(2),
         		Materials.Salt.getDust(2),
-        		WerkstoffMaterialPool.FluorosilicicAcid.getFluidOrGas(1000),
+        		WerkstoffLoader.HexafluorosilicicAcid.getFluidOrGas(1000),
         		WerkstoffMaterialPool.SodiumFluorosilicate.getFluidOrGas(1000),
         		Materials.HydrochloricAcid.getCells(2),
         		600,
@@ -700,14 +700,14 @@ public class RecipeLoader {
         		400,
         		240
         	);
-        
+        /*
         GT_Values.RA.addCentrifugeRecipe(
         		WerkstoffMaterialPool.SaturatedMonaziteRareEarthMixture.get(OrePrefixes.dust, 2),
         		null,
         		null,
-        		Materials.Chloromethane.getFluid(200),
+        		Materials.Chloromethane.getGas(200),
         		WerkstoffMaterialPool.SamaricResidue.get(OrePrefixes.dustSmall, 6),       		
-        		null, /*WerkstoffMaterialPool.UnknownBlend.get(OrePrefixes.dustSmall, 2)*/ //TODO
+        		null,  //TODO
         		null,
         		null,
         		null,
@@ -718,12 +718,12 @@ public class RecipeLoader {
         		700,
         		1920	
         	);
-        
+        */
         GT_Values.RA.addCentrifugeRecipe(
-        		WerkstoffMaterialPool.SaturatedMonaziteRareEarthMixture.get(OrePrefixes.dust, 18),
+        		GT_Utility.getIntegratedCircuit(4),
+        		WerkstoffMaterialPool.SaturatedMonaziteRareEarthMixture.get(OrePrefixes.dust, 8),
         		null,
-        		null,
-        		Materials.Chloromethane.getFluid(1800),
+        		Materials.Chloromethane.getGas(800),
         		WerkstoffMaterialPool.SamaricResidue.get(OrePrefixes.dust, 6),
         		null, //WerkstoffMaterialPool.UnknownBlend.get(OrePrefixes.dust, 2) TODO
         		null,
