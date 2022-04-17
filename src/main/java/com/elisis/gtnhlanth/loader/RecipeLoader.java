@@ -221,7 +221,7 @@ public class RecipeLoader {
         		1200	
         	);
         
-        
+        /*
         //Fluorosilicic Acid
         GT_Values.RA.addChemicalRecipe(
         		GT_Utility.getIntegratedCircuit(1),
@@ -232,7 +232,7 @@ public class RecipeLoader {
         		300,
         		600
         	);
-        
+        */
         //Sodium Fluorosilicate
         GT_Values.RA.addChemicalRecipe(
         		Materials.Empty.getCells(2),
