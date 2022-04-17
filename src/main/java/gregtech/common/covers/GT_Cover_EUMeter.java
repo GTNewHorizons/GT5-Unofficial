@@ -46,9 +46,8 @@ public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMe
 
     @Override
     protected EUMeterData doCoverThingsImpl(byte aSide, byte aInputRedstone, int aCoverID, EUMeterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
-        final EnergyType energyType = EnergyType.values()[aCoverVariable.type];
-        long stored = energyType.getTileEntityStoredEnergy(aTileEntity);
-        final long capacity = energyType.getTileEntityEnergyCapacity(aTileEntity);
+        final long stored = aCoverVariable.type.getTileEntityStoredEnergy(aTileEntity);
+        final long capacity = aCoverVariable.type.getTileEntityEnergyCapacity(aTileEntity);
 
         byte redstoneSignal;
 
@@ -184,7 +183,7 @@ public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMe
     //endregion
 
     public static class EUMeterData implements ISerializableObject {
-        private byte type;
+        private EnergyType type;
         private boolean inverted;
         /**
          * The special value {@code 0} means threshold check is disabled.
@@ -193,12 +192,12 @@ public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMe
 
 
         public EUMeterData() {
-            type = 0;
+            type = EnergyType.UNIVERSAL_STORAGE;
             inverted = false;
             threshold = 0;
         }
 
-        public EUMeterData(byte type, boolean inverted, long threshold) {
+        public EUMeterData(EnergyType type, boolean inverted, long threshold) {
             this.type = type;
             this.inverted = inverted;
             this.threshold = threshold;
@@ -211,11 +210,11 @@ public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMe
         }
 
         public int getNum() {
-            return type * 2 + (inverted ? 1 : 0);
+            return type.ordinal() * 2 + (inverted ? 1 : 0);
         }
 
         public void setNum(int num) {
-            type = (byte) (num / 2);
+            type = EnergyType.getEnergyType(num / 2);
             inverted = num % 2 == 1;
         }
 
@@ -229,7 +228,7 @@ public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMe
         @Override
         public NBTBase saveDataToNBT() {
             NBTTagCompound tag = new NBTTagCompound();
-            tag.setByte("type", type);
+            tag.setInteger("typeOrdinal", type.ordinal());
             tag.setBoolean("inverted", inverted);
             tag.setLong("threshold", threshold);
             return tag;
@@ -237,7 +236,7 @@ public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMe
 
         @Override
         public void writeToByteBuf(ByteBuf aBuf) {
-            aBuf.writeByte(type);
+            aBuf.writeInt(type.ordinal());
             aBuf.writeBoolean(inverted);
             aBuf.writeLong(threshold);
         }
@@ -245,7 +244,8 @@ public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMe
         @Override
         public void loadDataFromNBT(NBTBase aNBT) {
             NBTTagCompound tag = (NBTTagCompound) aNBT;
-            type = tag.getByte("type");
+            int typeOrdinal = tag.getInteger("typeOrdinal");
+            type = EnergyType.getEnergyType(typeOrdinal);
             inverted = tag.getBoolean("inverted");
             threshold = tag.getLong("threshold");
         }
@@ -253,7 +253,8 @@ public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMe
         @Nonnull
         @Override
         public ISerializableObject readFromPacket(ByteArrayDataInput aBuf, @Nullable EntityPlayerMP aPlayer) {
-            type = aBuf.readByte();
+            int typeOrdinal = aBuf.readInt();
+            type = EnergyType.getEnergyType(typeOrdinal);
             inverted = aBuf.readBoolean();
             threshold = aBuf.readLong();
             return this;
@@ -321,7 +322,7 @@ public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMe
         private final Function<ICoverable, Long> getTileEntityStoredEnergyFunc;
         private final Function<ICoverable, Long> getTileEntityEnergyCapacityFunc;
 
-        EnergyType(String title,String tooltip, Function<ICoverable, Long> getTileEntityStoredEnergyFunc, Function<ICoverable, Long> getTileEntityEnergyCapacityFunc) {
+        EnergyType(String title, String tooltip, Function<ICoverable, Long> getTileEntityStoredEnergyFunc, Function<ICoverable, Long> getTileEntityEnergyCapacityFunc) {
             this.title = title;
             this.tooltip = tooltip;
             this.getTileEntityStoredEnergyFunc = getTileEntityStoredEnergyFunc;
@@ -342,6 +343,17 @@ public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMe
 
         public long getTileEntityEnergyCapacity(ICoverable aTileEntity) {
             return getTileEntityEnergyCapacityFunc.apply(aTileEntity);
+        }
+
+        public EnergyType getNext() {
+            return values()[(ordinal() + 1) % values().length];
+        }
+
+        public static EnergyType getEnergyType(int ordinal) {
+            if (ordinal < 0 || values().length <= ordinal) {
+                ordinal = 0;
+            }
+            return values()[ordinal];
         }
     }
 
@@ -375,7 +387,7 @@ public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMe
         @Override
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
-            this.getFontRenderer().drawString(EnergyType.values()[coverVariable.type].getTitle(), startX + spaceX, 4 + startY, 0xFF555555);
+            this.getFontRenderer().drawString(coverVariable.type.getTitle(), startX + spaceX, 4 + startY, 0xFF555555);
             this.getFontRenderer().drawString(coverVariable.inverted ? INVERTED : NORMAL, startX + spaceX, 4 + startY + spaceY, 0xFF555555);
             this.getFontRenderer().drawString(GT_Utility.trans("222.1", "Energy threshold"), startX, startY + spaceY * 3 + 4, 0xFF555555);
         }
@@ -390,7 +402,7 @@ public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMe
         @Override
         public void buttonClicked(GuiButton btn) {
             if (btn == typeButton) {
-                coverVariable.type = (byte) ((coverVariable.type + 1) % EnergyType.values().length);
+                coverVariable.type = coverVariable.type.getNext();
             }
             if (btn == invertedButton) {
                 coverVariable.inverted = !coverVariable.inverted;
@@ -441,7 +453,7 @@ public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMe
 
         private void update() {
             invertedButton.setChecked(coverVariable.inverted);
-            typeButton.setTooltipText(EnergyType.values()[coverVariable.type].getTooltip());
+            typeButton.setTooltipText(coverVariable.type.getTooltip());
             resetTextBox(thresholdSlot);
         }
 
