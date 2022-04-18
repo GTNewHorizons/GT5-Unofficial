@@ -60,7 +60,7 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
         if (fluid == null) return E;
 
         final FluidStack sFluid = new FluidStack(fluid, 1000);
-        return (String.format("Filtering Fluid: %s  Mode: %s", sFluid.getLocalizedName(), getFilterMode(aCoverVariable.mFilterMode)));
+        return (String.format("Filtering Fluid: %s - %s", sFluid.getLocalizedName(), getFilterMode(aCoverVariable.mFilterMode)));
     }
 
     @Override

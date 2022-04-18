@@ -284,7 +284,7 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch {
             if (getLockedFluidName() != null && !getLockedFluidName().equals(tFluid.getFluid().getName())) {
                 GT_Utility.sendChatToPlayer(aPlayer, String.format("%s %s", GT_Utility.trans("151.3",
                         "Hatch is locked to a different fluid. To change the locking, empty it and made it locked to the next fluid with a screwdriver. Currently locked to")
-                        , StatCollector.translateToLocal(tFluid.getUnlocalizedName())));
+                        , StatCollector.translateToLocal(getLockedFluidName())));
             }
             else {
                 setLockedFluidName(tFluid.getFluid().getName());

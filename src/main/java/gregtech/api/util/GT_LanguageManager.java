@@ -24,8 +24,22 @@ public class GT_LanguageManager {
 	public static String sLanguage = "en_US";
     public static boolean sUseEnglishFile = false;
     public static boolean i18nPlaceholder = true;
+	
+	public static String
+		FACE_ANY = "gt.lang.face.any", 
+		FACE_BOTTOM = "gt.lang.face.bottom", 
+		FACE_TOP = "gt.lang.face.top", 
+		FACE_LEFT = "gt.lang.face.left", 
+		FACE_FRONT = "gt.lang.face.front", 
+		FACE_RIGHT = "gt.lang.face.right", 
+		FACE_BACK = "gt.lang.face.back", 
+		FACE_NONE = "gt.lang.face.none";
+	
+	public static String[]	
+		FACES = {FACE_BOTTOM, FACE_TOP, FACE_LEFT, FACE_FRONT, FACE_RIGHT, FACE_BACK, FACE_NONE};
 
-    public static String addStringLocalization(String aKey, String aEnglish) {
+
+	public static String addStringLocalization(String aKey, String aEnglish) {
         return addStringLocalization(aKey, aEnglish, true);
     }
 
@@ -370,6 +384,15 @@ public class GT_LanguageManager {
         addStringLocalization("Item_DESCRIPTION_Index_018", "State: %s");
         addStringLocalization("Item_DESCRIPTION_Index_500", "Turbine Efficiency (Loose): %s");
         addStringLocalization("Item_DESCRIPTION_Index_501", "Optimal Steam flow (Loose): %s L/t");
+		
+		addStringLocalization(FACE_ANY,     "Any Side");
+		addStringLocalization(FACE_BOTTOM,  "Bottom");
+		addStringLocalization(FACE_TOP,     "Top");
+		addStringLocalization(FACE_LEFT,    "Left");
+		addStringLocalization(FACE_FRONT,   "Front");
+		addStringLocalization(FACE_RIGHT,   "Right");
+		addStringLocalization(FACE_BACK,    "Back");
+		addStringLocalization(FACE_NONE,    "None");
     }
 
     @SuppressWarnings("rawtypes, unchecked")

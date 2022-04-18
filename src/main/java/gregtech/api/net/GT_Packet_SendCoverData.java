@@ -3,13 +3,11 @@ package gregtech.api.net;
 import com.google.common.io.ByteArrayDataInput;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.CoverableTileEntity;
 import gregtech.api.util.ISerializableObject;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.common.DimensionManager;
 
 /**
  * Server -> Client : Update cover data
@@ -82,8 +80,8 @@ public class GT_Packet_SendCoverData extends GT_Packet_New {
     public void process(IBlockAccess aWorld) {
         if (aWorld != null) {
             TileEntity tile = aWorld.getTileEntity(mX, mY, mZ);
-            if (tile instanceof IGregTechTileEntity && !((IGregTechTileEntity) tile).isDead()) {
-                ((IGregTechTileEntity) tile).receiveCoverData(side, coverID, coverData, null);
+            if (tile instanceof CoverableTileEntity && !((CoverableTileEntity) tile).isDead()) {
+                ((CoverableTileEntity) tile).receiveCoverData(side, coverID, coverData, null);
             }
         }
     }

@@ -304,19 +304,19 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
     @Override
     public final void sendSound(byte aIndex) {
         if (!getBaseMetaTileEntity().hasMufflerUpgrade())
-            getBaseMetaTileEntity().sendBlockEvent(MetaTileClientEvents.DO_SOUND, aIndex);
+            getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.DO_SOUND, aIndex);
     }
 
     @Override
     public final void sendLoopStart(byte aIndex) {
         if (!getBaseMetaTileEntity().hasMufflerUpgrade())
-            getBaseMetaTileEntity().sendBlockEvent(MetaTileClientEvents.START_SOUND_LOOP, aIndex);
+            getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.START_SOUND_LOOP, aIndex);
     }
 
     @Override
     public final void sendLoopEnd(byte aIndex) {
         if (!getBaseMetaTileEntity().hasMufflerUpgrade())
-            getBaseMetaTileEntity().sendBlockEvent(MetaTileClientEvents.STOP_SOUND_LOOP, aIndex);
+            getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.STOP_SOUND_LOOP, aIndex);
     }
 
     @Override

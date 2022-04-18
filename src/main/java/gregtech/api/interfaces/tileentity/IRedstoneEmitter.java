@@ -34,4 +34,11 @@ public interface IRedstoneEmitter extends IHasWorldObjectAndCoords {
      * Gets the Output for the comparator on the given Side
      */
     byte getComparatorValue(byte aSide);
+
+    /**
+     * Get the redstone output signal strength for a given side
+     */
+    default byte getGeneralRS(byte aSide) {
+        return 0;
+    }
 }
