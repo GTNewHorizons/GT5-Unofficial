@@ -209,7 +209,7 @@ public class RecipeLoader_Nuclear {
 					ELEMENT.getInstance().OXYGEN.getCell(1), 
 					ELEMENT.getInstance().HYDROGEN.getFluidStack(1000),
 					MISC_MATERIALS.HYDROXIDE.getFluidStack(2000),
-					CI.emptyCells(2), 
+					CI.emptyCells(1),
 					GT_Values.NI, 
 					8 * 20, 
 					30);
@@ -261,7 +261,7 @@ public class RecipeLoader_Nuclear {
 					ELEMENT.getInstance().OXYGEN.getCell(1), 
 					ELEMENT.getInstance().HYDROGEN.getFluidStack(1000),
 					MISC_MATERIALS.HYDROXIDE.getFluidStack(2000),
-					CI.emptyCells(2), 
+					CI.emptyCells(1),
 					GT_Values.NI, 
 					8 * 20, 
 					30);
