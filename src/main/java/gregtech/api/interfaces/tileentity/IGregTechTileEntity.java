@@ -17,7 +17,7 @@ import java.util.UUID;
 /**
  * A simple compound Interface for all my TileEntities.
  * <p/>
- * Also delivers most of the Informations about my TileEntities.
+ * Also delivers most of the Information about my TileEntities.
  * <p/>
  * It can cause Problems to include this Interface!
  */

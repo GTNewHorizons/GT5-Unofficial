@@ -452,7 +452,7 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
         final IFluidHandler fTileEntity = (tTileEntity instanceof IFluidHandler) ? (IFluidHandler) tTileEntity : null;
 
         if (fTileEntity != null) {
-            FluidTankInfo[] tInfo = fTileEntity.getTankInfo(ForgeDirection.getOrientation(tSide));
+            final FluidTankInfo[] tInfo = fTileEntity.getTankInfo(ForgeDirection.getOrientation(tSide));
             if (tInfo != null) {
                 return tInfo.length > 0
                         || (GregTech_API.mTranslocator && isTranslocator(tTileEntity))

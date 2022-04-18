@@ -241,14 +241,14 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
     }
 
     /**
-     * If it lets Items into the Block, aSlot = -1 means if it is generally accepting Items (return false for no eraction at all), aSlot = -2 means if it would accept for all Slots Impl(return true to skip the Checks for each Slot).
+     * If it lets Items into the Block, aSlot = -1 means if it is generally accepting Items (return false for no reaction at all), aSlot = -2 means if it would accept for all Slots Impl(return true to skip the Checks for each Slot).
      */
     public final boolean letsItemsIn(byte aSide, int aCoverID, ISerializableObject aCoverVariable, int aSlot, ICoverable aTileEntity) {
         return letsItemsInImpl(aSide, aCoverID, forceCast(aCoverVariable), aSlot, aTileEntity);
     }
 
     /**
-     * If it lets Items out of the Block, aSlot = -1 means if it is generally accepting Items (return false for no eraction at all), aSlot = -2 means if it would accept for all Slots Impl(return true to skip the Checks for each Slot).
+     * If it lets Items out of the Block, aSlot = -1 means if it is generally accepting Items (return false for no reaction at all), aSlot = -2 means if it would accept for all Slots Impl(return true to skip the Checks for each Slot).
      */
     public final boolean letsItemsOut(byte aSide, int aCoverID, ISerializableObject aCoverVariable, int aSlot, ICoverable aTileEntity) {
         return letsItemsOutImpl(aSide, aCoverID, forceCast(aCoverVariable), aSlot, aTileEntity);
