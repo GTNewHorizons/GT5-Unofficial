@@ -46,21 +46,21 @@ public interface IEnergyConnected extends IColoredTileEntity, IHasWorldObjectAnd
     /**
      * Utility for the Network
      */
-    class Util {
+    final class Util {
         /**
          * Emits Energy to the E-net. Also compatible with adjacent IC2 TileEntities.
          *
          * @return the used Amperage.
          */
-        public static final long emitEnergyToNetwork(long aVoltage, long aAmperage, IEnergyConnected aEmitter) {
+        public static long emitEnergyToNetwork(long aVoltage, long aAmperage, IEnergyConnected aEmitter) {
             long rUsedAmperes = 0;
             for (byte i = 0, j = 0; i < 6 && aAmperage > rUsedAmperes; i++) {
                 if (aEmitter.outputsEnergyTo(i)) {
                     j = GT_Utility.getOppositeSide(i);
-                    TileEntity tTileEntity = aEmitter.getTileEntityAtSide(i);
+                    final TileEntity tTileEntity = aEmitter.getTileEntityAtSide(i);
                     if (tTileEntity instanceof IEnergyConnected) {
                         if (aEmitter.getColorization() >= 0) {
-                            byte tColor = ((IEnergyConnected) tTileEntity).getColorization();
+                            final byte tColor = ((IEnergyConnected) tTileEntity).getColorization();
                             if (tColor >= 0 && tColor != aEmitter.getColorization()) continue;
                         }
                         rUsedAmperes += ((IEnergyConnected) tTileEntity).injectEnergyUnits(j, aVoltage, aAmperage - rUsedAmperes);
@@ -71,8 +71,8 @@ public interface IEnergyConnected extends IColoredTileEntity, IHasWorldObjectAnd
                                 rUsedAmperes++;
                         }
                     } else if (GregTech_API.mOutputRF && tTileEntity instanceof IEnergyReceiver) {
-                        ForgeDirection tDirection = ForgeDirection.getOrientation(i).getOpposite();
-                        int rfOut = GT_Utility.safeInt(aVoltage * GregTech_API.mEUtoRF / 100);
+                        final ForgeDirection tDirection = ForgeDirection.getOrientation(i).getOpposite();
+                        final int rfOut = GT_Utility.safeInt(aVoltage * GregTech_API.mEUtoRF / 100);
                         if (((IEnergyReceiver) tTileEntity).receiveEnergy(tDirection, rfOut, true) == rfOut) {
                             ((IEnergyReceiver) tTileEntity).receiveEnergy(tDirection, rfOut, false);
                             rUsedAmperes++;
