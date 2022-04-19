@@ -865,6 +865,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 1L), new ItemStack(Blocks.crafting_table, 1), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Cover_Crafting.get(1L), 800, 16);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 1L), new ItemStack(Blocks.crafting_table, 1), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Cover_Crafting.get(1L), 800, 16);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Cover_Shutter.get(1L), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Basic, 2), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.FluidFilter.get(1L), 800, 4);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Cover_Screen.get(1L), ItemList.Cover_FluidDetector.get(1L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Cover_FluidStorageMonitor.get(1L), 1200, 128);
 
         GregTech_API.registerCover(ItemList.Cover_Screen.get(1L), TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(TextureFactory.of(OVERLAY_SCREEN), TextureFactory.builder().addIcon(OVERLAY_SCREEN_GLOW).glow().build())), new GT_Cover_Screen());
         GregTech_API.registerCover(ItemList.Cover_Crafting.get(1L), TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(OVERLAY_CRAFTING)), new GT_Cover_Crafting());
