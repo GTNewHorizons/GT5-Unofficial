@@ -63,7 +63,10 @@ public class GT_MetaTileEntity_HeatExchanger extends GT_MetaTileEntity_EnhancedM
     private GT_MetaTileEntity_Hatch_Output mOutputColdFluidHatch;
     private boolean superheated = false;
     private int superheated_threshold=0;
-    private int water;
+    /**
+     * How much more steam we can make without draining real water. Unit is (1L/GT_Values.STEAM_PER_WATER)
+     */
+    private int steamBudget;
     private int mCasingAmount;
 
     public GT_MetaTileEntity_HeatExchanger(int aID, String aName, String aNameRegional) {
@@ -100,14 +103,14 @@ public class GT_MetaTileEntity_HeatExchanger extends GT_MetaTileEntity_EnhancedM
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         superheated = aNBT.getBoolean("superheated");
-        water = aNBT.getInteger("water");
+        steamBudget = aNBT.getInteger("steamBudget");
         super.loadNBTData(aNBT);
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setBoolean("superheated", superheated);
-        aNBT.setInteger("water", water);
+        aNBT.setInteger("steamBudget", steamBudget);
         super.saveNBTData(aNBT);
     }
 
@@ -195,14 +198,11 @@ public class GT_MetaTileEntity_HeatExchanger extends GT_MetaTileEntity_EnhancedM
         return true;
     }
 
-    private static int ceilDiv(int x, int y){
-        return -Math.floorDiv(-x,y);
-    }
-
-    private int useWater(int input) {
-        water += input;
-        int usage = ceilDiv(water, GT_Values.STEAM_PER_WATER);
-        water -= usage * GT_Values.STEAM_PER_WATER;
+    private int useWater(int steam) {
+        steamBudget -= steam;
+        int usage = Math.min(0, Math.floorDiv(steamBudget, GT_Values.STEAM_PER_WATER));
+        // still subtract, because usage will be a negative number
+        steamBudget -= usage * GT_Values.STEAM_PER_WATER;
         return usage;
     }
 
