@@ -27,6 +27,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Optional;
 
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FLUID_STORAGE_MONITOR0;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FLUID_STORAGE_MONITOR1;
@@ -132,10 +133,8 @@ public class GT_Cover_FluidStorageMonitor extends GT_CoverBehaviorBase<GT_Cover_
         if (aPlayer == null || aPlayer.worldObj == null || aPlayer.worldObj.isRemote) {
             return false;
         }
-        if (aPlayer.isSneaking()) {
-            return false;
-        }
-        if (aPlayer.getHeldItem() == null || !(aPlayer.getHeldItem().getItem() instanceof IFluidContainerItem)) {
+        final ItemStack heldItem = aPlayer.getHeldItem();
+        if (aPlayer.isSneaking() || heldItem == null) {
             return false;
         }
         final FluidTankInfo[] tanks = getValidFluidTankInfos(aTileEntity, aCoverVariable.side);
@@ -149,47 +148,98 @@ public class GT_Cover_FluidStorageMonitor extends GT_CoverBehaviorBase<GT_Cover_
         if (tank == null) {
             return false;
         }
-        final FluidStack tankFluid = tank.fluid;
-
         IFluidHandler tankHandler = (IFluidHandler) aTileEntity;
 
-        final ItemStack heldItem = aPlayer.getHeldItem();
         final ItemStack heldItemSizedOne = GT_Utility.copyAmount(1, heldItem);
         if (heldItemSizedOne == null || heldItemSizedOne.stackSize <= 0) {
             return false;
         }
-        IFluidContainerItem container = (IFluidContainerItem) heldItemSizedOne.getItem();
-        final FluidStack fluidHeld = GT_Utility.getFluidForFilledItem(heldItemSizedOne, true);
 
-        if (fluidHeld != null && 0 < fluidHeld.amount) {
-            final FluidStack fluidToFill = fluidHeld.copy();
-            if (tankHandler.canFill(aCoverVariable.side, fluidToFill.getFluid())) {
-                final int filled = tankHandler.fill(aCoverVariable.side, fluidToFill, true);
-                if (filled > 0) {
-                    heldItem.stackSize--;
-                    container.drain(heldItemSizedOne, filled, true);
-                    GT_Utility.addItemToPlayerInventory(aPlayer, heldItemSizedOne);
-                    aPlayer.inventoryContainer.detectAndSendChanges();
-                    return true;
-                }
-            }
-        } else {
-            if (tankFluid != null && 0 < tankFluid.amount) {
-                final FluidStack fluidToDrain = tankFluid.copy();
-                if (tankHandler.canDrain(aCoverVariable.side, fluidToDrain.getFluid())) {
-                    final int drained = container.fill(heldItemSizedOne, fluidToDrain, true);
-                    if (drained > 0) {
-                        heldItem.stackSize--;
-                        tankHandler.drain(aCoverVariable.side, drained, true);
-                        GT_Utility.addItemToPlayerInventory(aPlayer, heldItemSizedOne);
-                        aPlayer.inventoryContainer.detectAndSendChanges();
-                        return true;
-                    }
-                }
-            }
+        ItemStack result;
+        result = fillToTank(heldItemSizedOne, tankHandler, aCoverVariable.side);
+        if (result != null) {
+            replaceHeldItemStack(aPlayer, heldItem, result);
+            return true;
+        }
+        result = fillToContainer(heldItemSizedOne, tank, tankHandler, aCoverVariable.side);
+        if (result != null) {
+            replaceHeldItemStack(aPlayer, heldItem, result);
+            return true;
         }
         return false;
     }
+
+
+    protected static ItemStack fillToTank(@Nonnull ItemStack container, @Nonnull IFluidHandler tank, ForgeDirection side) {
+        final FluidStack fluidToFill = GT_Utility.getFluidForFilledItem(container, true);
+        if (fluidToFill == null || fluidToFill.getFluid() == null || fluidToFill.amount <= 0) {
+            return null;
+        }
+        if (!tank.canFill(side, fluidToFill.getFluid())) {
+            return null;
+        }
+
+        if (container.getItem() instanceof IFluidContainerItem) {
+            final IFluidContainerItem containerItem = (IFluidContainerItem) container.getItem();
+            final int filled = tank.fill(side, fluidToFill, true);
+            if (filled == 0) {
+                return null;
+            }
+            containerItem.drain(container, filled, true);
+            return container;
+        } else {
+            final int filled = tank.fill(side, fluidToFill, false);
+            if (filled != fluidToFill.amount) {
+                return null;
+            }
+            tank.fill(side, fluidToFill, true);
+            return GT_Utility.getContainerForFilledItem(container, false);
+        }
+    }
+
+    protected static ItemStack fillToContainer(@Nonnull ItemStack container, @Nonnull FluidTankInfo tankInfo, @Nonnull IFluidHandler tank, ForgeDirection side) {
+        if (tankInfo.fluid == null || tankInfo.fluid.getFluid() == null || tankInfo.fluid.amount <= 0) {
+            return null;
+        }
+        if (!tank.canDrain(side, tankInfo.fluid.getFluid())) {
+            return null;
+        }
+
+        if (container.getItem() instanceof IFluidContainerItem) {
+            final IFluidContainerItem containerItem = (IFluidContainerItem) container.getItem();
+            final int filled = Math.min(
+                Optional.ofNullable(tank.drain(side, new FluidStack(tankInfo.fluid.getFluid(), containerItem.getCapacity(container)), false)).filter(fs -> GT_Utility.areFluidsEqual(fs, tankInfo.fluid)).map(fs -> fs.amount).orElse(0),
+                containerItem.fill(container, new FluidStack(tankInfo.fluid.getFluid(), containerItem.getCapacity(container)), false)
+            );
+            if (filled == 0) {
+                return null;
+            }
+            containerItem.fill(container, new FluidStack(tankInfo.fluid.getFluid(), filled), true);
+            tank.drain(side, new FluidStack(tankInfo.fluid.getFluid(), filled), true);
+            return container;
+        } else {
+            final ItemStack filledContainer = GT_Utility.fillFluidContainer(tankInfo.fluid, container, false, false);
+            if (filledContainer == null) {
+                return null;
+            }
+            final FluidStack filledFluid = GT_Utility.getFluidForFilledItem(filledContainer, false);
+            if (filledFluid == null || filledFluid.getFluid() == null || filledFluid.amount <= 0) {
+                return null;
+            }
+            if (Optional.ofNullable(tank.drain(side, filledFluid, false)).filter(fs -> GT_Utility.areFluidsEqual(fs, filledFluid)).map(fs -> fs.amount).orElse(0) != filledFluid.amount) {
+                return null;
+            }
+            tank.drain(side, filledFluid, true);
+            return filledContainer;
+        }
+    }
+
+    protected static void replaceHeldItemStack(@Nonnull EntityPlayer player, @Nonnull ItemStack heldItem, @Nonnull ItemStack result) {
+        heldItem.stackSize--;
+        GT_Utility.addItemToPlayerInventory(player, result);
+        player.inventoryContainer.detectAndSendChanges();
+    }
+
 
     @Override
     protected FluidStorageData onCoverScrewdriverClickImpl(byte aSide, int aCoverID, FluidStorageData aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
