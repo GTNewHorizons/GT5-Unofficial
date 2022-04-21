@@ -222,7 +222,8 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
 
     protected boolean isRainPossible() {
         BiomeGenBase biome = getBiome();
-        return biome.rainfall > 0 && (!biome.getEnableSnow() && !biome.canSpawnLightningBolt());
+        // see net.minecraft.client.renderer.EntityRenderer.renderRainSnow
+        return biome.rainfall > 0 && (biome.canSpawnLightningBolt() || biome.getEnableSnow());
     }
 
     @Override

@@ -143,6 +143,7 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
         blackList.add(new GT_ItemStack(ItemList.Casing_Coil_Superconductor.get(1L)));
         blackList.add(new GT_ItemStack(Materials.Graphene.getDust(1)));
         blackList.add(new GT_ItemStack(ItemList.Circuit_Parts_Vacuum_Tube.get(1L)));
+        blackList.add(new GT_ItemStack(ItemList.Schematic.get(1L)));
     }
 
     private boolean compareToUnpacker(ItemStack is){
