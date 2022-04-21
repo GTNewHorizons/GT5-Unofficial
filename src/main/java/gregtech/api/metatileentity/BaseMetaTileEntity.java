@@ -54,6 +54,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -219,6 +220,12 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
         increaseStoredEnergyUnits(GT_ModHandler.dischargeElectricItem(aStack, (int) Math.min(Integer.MAX_VALUE, getEUCapacity() - getStoredEU()), (int) Math.min(Integer.MAX_VALUE, mMetaTileEntity.getInputTier()), false, false, false), true);
     }
 
+    protected boolean isRainPossible() {
+        BiomeGenBase biome = getBiome();
+        // see net.minecraft.client.renderer.EntityRenderer.renderRainSnow
+        return biome.rainfall > 0 && (biome.canSpawnLightningBolt() || biome.getEnableSnow());
+    }
+
     @Override
     public void updateEntity() {
         super.updateEntity();
@@ -359,7 +366,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
                                 return;
                             }
 
-                            if (getRandomNumber(1000) == 0) {
+                            if (getRandomNumber(1000) == 0 && isRainPossible()) {
                                 final int precipitationHeightAtSide2 = worldObj.getPrecipitationHeight(xCoord, zCoord - 1);
                                 final int precipitationHeightAtSide3 = worldObj.getPrecipitationHeight(xCoord, zCoord + 1);
                                 final int precipitationHeightAtSide4 = worldObj.getPrecipitationHeight(xCoord - 1, zCoord);
@@ -370,7 +377,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
                                     || (getCoverIDAtSide((byte) 3) == 0 && precipitationHeightAtSide3 - 1 < yCoord && precipitationHeightAtSide3 > -1)
                                     || (getCoverIDAtSide((byte) 4) == 0 && precipitationHeightAtSide4 - 1 < yCoord && precipitationHeightAtSide4 > -1)
                                     || (getCoverIDAtSide((byte) 5) == 0 && precipitationHeightAtSide5 - 1 < yCoord && precipitationHeightAtSide5 > -1)) {
-                                    if (GregTech_API.sMachineRainExplosions && worldObj.isRaining() && getBiome().rainfall > 0) {
+                                    if (GregTech_API.sMachineRainExplosions && worldObj.isRaining()) {
                                         if (getRandomNumber(10) == 0) {
                                             try {
                                                 GT_Mod.achievements.issueAchievement(this.getWorldObj().getPlayerEntityByName(mOwnerName), "badweather");
@@ -386,8 +393,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
                                         mRunningThroughTick = false;
                                         return;
                                     }
-                                    if (GregTech_API.sMachineThunderExplosions && worldObj.isThundering() && getBiome().rainfall > 0 && getRandomNumber(
-                                        3) == 0) {
+                                    if (GregTech_API.sMachineThunderExplosions && worldObj.isThundering() && getRandomNumber(3) == 0) {
                                         try {
                                             GT_Mod.achievements.issueAchievement(this.getWorldObj().getPlayerEntityByName(mOwnerName), "badweather");
                                         } catch (Exception ignored) {}
