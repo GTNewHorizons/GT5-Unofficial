@@ -689,6 +689,8 @@ public interface IGT_RecipeAdder {
      */
     boolean addUniversalDistillationRecipe(FluidStack aInput, FluidStack[] aOutputs, ItemStack aOutput2, int aDuration, int aEUt);
 
+    boolean addUniversalDistillationRecipewithCircuit(FluidStack aInput, ItemStack[] aCircuit, FluidStack[] aOutputs, ItemStack aOutput2, int aDuration, int aEUt);
+
     /**
      * Adds Pyrolyse Recipe
      *
