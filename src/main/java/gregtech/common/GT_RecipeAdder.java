@@ -681,7 +681,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         for (int i = 0; i < Math.min(aOutputs.length, 11); i++) {
             addDistilleryRecipe(i + 1, aInput, aOutputs[i], aOutput2, aDuration * 2, aEUt / 4, false);
         }
-        return addDistillationTowerRecipe(aInput, aOutputs, aOutput2, aDuration, aEUt);
+        return addDistillationTowerRecipe(aInput, aCircuit, aOutputs, aOutput2, aDuration, aEUt);
     }
 
     @Override

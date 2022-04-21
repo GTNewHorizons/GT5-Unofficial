@@ -1,6 +1,5 @@
 package gregtech.loaders.postload;
 
-import appeng.integration.abstraction.ITE;
 import codechicken.nei.api.API;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
