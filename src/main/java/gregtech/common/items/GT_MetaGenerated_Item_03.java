@@ -88,7 +88,7 @@ public class GT_MetaGenerated_Item_03
          * quantum chips
          */
         ItemList.Circuit_Silicon_Ingot.set(addItem(tLastID = 30, "Monocrystalline Silicon Boule", "Raw Circuit", o));
-        ItemList.Circuit_Silicon_Ingot2.set(addItem(tLastID = 31, "Glowstone doped Monocrystalline Silicon Boule", "Raw Circuit", o));
+        ItemList.Circuit_Silicon_Ingot2.set(addItem(tLastID = 31, "Phosphorus doped Monocrystalline Silicon Boule", "Raw Circuit", o));
         ItemList.Circuit_Silicon_Ingot3.set(addItem(tLastID = 32, "Naquadah doped Monocrystalline Silicon Boule", "Raw Circuit", o));
         ItemList.Circuit_Silicon_Ingot4.set(addItem(tLastID = 150, "Europium doped Monocrystalline Silicon Boule", "Raw Circuit", o));
         ItemList.Circuit_Silicon_Ingot5.set(addItem(tLastID = 152, "Americium doped Monocrystalline Silicon Boule", "Raw Circuit", o));
