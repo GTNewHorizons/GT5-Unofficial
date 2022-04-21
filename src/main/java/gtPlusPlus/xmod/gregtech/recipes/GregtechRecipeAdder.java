@@ -1467,7 +1467,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 				false,
 				new ItemStack[] {
 						aInput1,
-						GregtechItemList.Laser_Lens_WoodsGlass.get(1),
+						GregtechItemList.Laser_Lens_WoodsGlass.get(0),
 				},
 				new ItemStack[] {
 						aOutput
