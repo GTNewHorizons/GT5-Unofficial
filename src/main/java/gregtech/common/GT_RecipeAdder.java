@@ -677,6 +677,14 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
     }
 
     @Override
+    public boolean addUniversalDistillationRecipewithCircuit(FluidStack aInput, ItemStack[] aCircuit, FluidStack[] aOutputs, ItemStack aOutput2, int aDuration, int aEUt) {
+        for (int i = 0; i < Math.min(aOutputs.length, 11); i++) {
+            addDistilleryRecipe(i + 1, aInput, aOutputs[i], aOutput2, aDuration * 2, aEUt / 4, false);
+        }
+        return addDistillationTowerRecipe(aInput, aOutputs, aOutput2, aDuration, aEUt);
+    }
+
+    @Override
     public boolean addVacuumFreezerRecipe(ItemStack aInput1, ItemStack aOutput1, int aDuration, int aEUt) {
         if ((aInput1 == null) || (aOutput1 == null)) {
             return false;
