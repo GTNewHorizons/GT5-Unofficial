@@ -855,6 +855,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     static {
         MaterialsKevlar.init();
+        MaterialsBotania.init();
     }
     /**
      * Materials which are renamed automatically
