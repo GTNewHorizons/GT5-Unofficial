@@ -220,7 +220,7 @@ public class PreciseAssembler extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
                 if (tRecipe != null) {
                     this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
                     this.mEfficiencyIncrease = 10000;
-                    long fullInput = getMaxInputEnergy();
+                    long fullInput = getMaxInputEnergy_EM();
                     int pall = handleParallelRecipe(tRecipe, inputFluids, getStoredItemFromHatch(bus), (int) Math.min((long) Math.pow(2, 4 + casingTier), fullInput / tRecipe.mEUt));
                     if (pall <= 0) continue;
                     Pair<ArrayList<FluidStack>, ArrayList<ItemStack>> Outputs = getMultiOutput(tRecipe, pall);
@@ -233,7 +233,7 @@ public class PreciseAssembler extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
                         modifier ++;
                     }
                     mOutputItems = Outputs.getValue().toArray(new ItemStack[0]);
-                    calculateOverclockedNessMultiPara((int) lEUt, time, 1, Math.min(Integer.MAX_VALUE, getMaxInputEnergy()));
+                    calculateOverclockedNessMultiPara((int) lEUt, time, 1, Math.min(Integer.MAX_VALUE, getMaxInputEnergy_EM()));
                     this.updateSlots();
                     if (this.mEUt > 0) {
                         this.mEUt = (-this.mEUt);
