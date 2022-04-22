@@ -937,6 +937,7 @@ public class RecipeLoader {
                         ItemStack eInput = input[j][i];
                         ItemStack eDynamo = dynamo[j][i];
 
+                        int solderingAmount = Math.max(144 * i, 72) * (j + 1);
                         GT_Values.RA.addAssemblerRecipe(
                                 new ItemStack[]{
                                         new ItemStack(ItemRegistry.TecTechPipeEnergyLowPower.getItem(), ((j + 1) * 16), ItemRegistry.TecTechPipeEnergyLowPower.getItemDamage()),
@@ -946,7 +947,7 @@ public class RecipeLoader {
                                         sensors[i].get(2 * (j + 1)),
                                         ItemList.TRANSFORMERS[4 + i].get(2 * (j + 1)),
                                 },
-                                Materials.SolderingAlloy.getMolten(144 * i * (j + 1)),
+                                Materials.SolderingAlloy.getMolten(solderingAmount),
                                 converter,
                                 200 * (j + 1),
                                 BW_Util.getMachineVoltageFromTier(4 + i));
@@ -958,7 +959,7 @@ public class RecipeLoader {
                                         sensors[i].get(2 * (j + 1)),
                                         ItemList.HATCHES_ENERGY[4 + i].get(2 * (j + 1)),
                                 },
-                                Materials.SolderingAlloy.getMolten(144 * i * (j + 1)),
+                                Materials.SolderingAlloy.getMolten(solderingAmount),
                                 eInput,
                                 200 * (j + 1),
                                 BW_Util.getMachineVoltageFromTier(4 + i));
@@ -970,7 +971,7 @@ public class RecipeLoader {
                                         emitters[i].get(2 * (j + 1)),
                                         ItemList.HATCHES_DYNAMO[4 + i].get(2 * (j + 1)),
                                 },
-                                Materials.SolderingAlloy.getMolten(144 * i * (j + 1)),
+                                Materials.SolderingAlloy.getMolten(solderingAmount),
                                 eDynamo,
                                 200 * (j + 1),
                                 BW_Util.getMachineVoltageFromTier(4 + i));
