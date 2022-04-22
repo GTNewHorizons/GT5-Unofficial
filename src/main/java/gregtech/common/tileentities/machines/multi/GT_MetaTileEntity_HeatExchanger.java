@@ -4,6 +4,7 @@ import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -62,7 +63,10 @@ public class GT_MetaTileEntity_HeatExchanger extends GT_MetaTileEntity_EnhancedM
     private GT_MetaTileEntity_Hatch_Output mOutputColdFluidHatch;
     private boolean superheated = false;
     private int superheated_threshold=0;
-    private float water;
+    /**
+     * How much more steam we can make without draining real water. Unit is (1L/GT_Values.STEAM_PER_WATER)
+     */
+    private int steamBudget;
     private int mCasingAmount;
 
     public GT_MetaTileEntity_HeatExchanger(int aID, String aName, String aNameRegional) {
@@ -99,12 +103,14 @@ public class GT_MetaTileEntity_HeatExchanger extends GT_MetaTileEntity_EnhancedM
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         superheated = aNBT.getBoolean("superheated");
+        steamBudget = aNBT.getInteger("steamBudget");
         super.loadNBTData(aNBT);
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setBoolean("superheated", superheated);
+        aNBT.setInteger("steamBudget", steamBudget);
         super.saveNBTData(aNBT);
     }
 
@@ -192,10 +198,11 @@ public class GT_MetaTileEntity_HeatExchanger extends GT_MetaTileEntity_EnhancedM
         return true;
     }
 
-    private int useWater(float input) {
-        water = water + input;
-        int usage = (int) water;
-        water = water - usage;
+    private int useWater(int steam) {
+        steamBudget -= steam;
+        int usage = Math.min(0, Math.floorDiv(steamBudget, GT_Values.STEAM_PER_WATER));
+        // still subtract, because usage will be a negative number
+        steamBudget -= usage * GT_Values.STEAM_PER_WATER;
         return usage;
     }
 
@@ -207,7 +214,7 @@ public class GT_MetaTileEntity_HeatExchanger extends GT_MetaTileEntity_EnhancedM
 
                 if (superheated) tGeneratedEU /= 2; // We produce half as much superheated steam if necessary
 
-                int distilledConsumed = useWater(tGeneratedEU / 160f); // how much distilled water to consume
+                int distilledConsumed = useWater(tGeneratedEU); // how much distilled water to consume
                 //tGeneratedEU = distilledConsumed * 160; // EXACTLY how much steam to generate, producing a perfect 1:160 ratio with distilled water consumption
 
                 FluidStack distilledStack = GT_ModHandler.getDistilledWater(distilledConsumed);
