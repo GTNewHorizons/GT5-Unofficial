@@ -1456,6 +1456,12 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addVacuumFreezerRecipe(GT_OreDictUnificator.get(OrePrefixes.ingotHot, Materials.Longasssuperconductornameforuhvwire, 1L), GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Longasssuperconductornameforuhvwire, 1L), 1600, 1966080);
         GT_Values.RA.addVacuumFreezerRecipe(GT_OreDictUnificator.get(OrePrefixes.ingotHot, Materials.SuperconductorUEVBase, 1L), GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.SuperconductorUEVBase, 1L), 3200, 7864320);
 
+        //Plasma Freezing
+        GT_Values.RA.addVacuumFreezerRecipe(GT_OreDictUnificator.get(OrePrefixes.cellPlasma, Materials.Americium, 1L), GT_OreDictUnificator.get(OrePrefixes.cellMolten, Materials.Americium, 1L), 20, 30720);
+        GT_Values.RA.addVacuumFreezerRecipe(GT_OreDictUnificator.get(OrePrefixes.cellPlasma, Materials.Helium, 1L), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Helium, 1L), 5, 120);
+        GT_Values.RA.addVacuumFreezerRecipe(GT_OreDictUnificator.get(OrePrefixes.cellPlasma, Materials.Nitrogen, 1L), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Nitrogen, 1L), 28, 120);
+        GT_Values.RA.addVacuumFreezerRecipe(GT_OreDictUnificator.get(OrePrefixes.cellPlasma, Materials.Oxygen, 1L), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Oxygen, 1L), 32, 120);
+        GT_Values.RA.addVacuumFreezerRecipe(GT_OreDictUnificator.get(OrePrefixes.cellPlasma, Materials.Radon, 1L), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Radon, 1L), 110, 480);
 
         GT_Values.RA.addAlloySmelterRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lead, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Obsidian, 2L), ItemList.TE_Hardened_Glass.get(2L), 200, 16);
         GT_Values.RA.addAlloySmelterRecipe(GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Lead, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Obsidian, 2L), ItemList.TE_Hardened_Glass.get(2L), 200, 16);
