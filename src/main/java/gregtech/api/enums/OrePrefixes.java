@@ -481,14 +481,6 @@ public enum OrePrefixes {
 
         stickLong.mGeneratedItems.add(Materials.Blaze);
 
-        ingot.mGeneratedItems.add(Materials.Manasteel);
-        nugget.mGeneratedItems.add(Materials.Manasteel);
-        plate.mGeneratedItems.add(Materials.Manasteel);
-        stick.mGeneratedItems.add(Materials.Manasteel);
-        bolt.mGeneratedItems.add(Materials.Manasteel);
-        stickLong.mGeneratedItems.add(Materials.Manasteel);
-        ring.mGeneratedItems.add(Materials.Manasteel);
-        screw.mGeneratedItems.add(Materials.Manasteel);
         //-----
 
         dust.mGeneratedItems.addAll(dustPure.mGeneratedItems);
