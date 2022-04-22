@@ -1462,6 +1462,11 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addVacuumFreezerRecipe(GT_OreDictUnificator.get(OrePrefixes.cellPlasma, Materials.Nitrogen, 1L), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Nitrogen, 1L), 28, 120);
         GT_Values.RA.addVacuumFreezerRecipe(GT_OreDictUnificator.get(OrePrefixes.cellPlasma, Materials.Oxygen, 1L), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Oxygen, 1L), 32, 120);
         GT_Values.RA.addVacuumFreezerRecipe(GT_OreDictUnificator.get(OrePrefixes.cellPlasma, Materials.Radon, 1L), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Radon, 1L), 110, 480);
+        GT_Values.RA.addVacuumFreezerRecipe(Materials.Americium.getPlasma(1000), Materials.Americium.getMolten(144), 20, 30720);
+        GT_Values.RA.addVacuumFreezerRecipe(Materials.Helium.getPlasma(1000), Materials.Helium.getGas(1000),  5, 120);
+        GT_Values.RA.addVacuumFreezerRecipe(Materials.Nitrogen.getPlasma(1000), Materials.Nitrogen.getGas(1000),  28, 120);
+        GT_Values.RA.addVacuumFreezerRecipe(Materials.Oxygen.getPlasma(1000),  Materials.Oxygen.getGas(1000),32, 120);
+        GT_Values.RA.addVacuumFreezerRecipe(Materials.Radon.getPlasma(1000),  Materials.Radon.getGas(1000),110, 480);
 
         GT_Values.RA.addAlloySmelterRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lead, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Obsidian, 2L), ItemList.TE_Hardened_Glass.get(2L), 200, 16);
         GT_Values.RA.addAlloySmelterRecipe(GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Lead, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Obsidian, 2L), ItemList.TE_Hardened_Glass.get(2L), 200, 16);
