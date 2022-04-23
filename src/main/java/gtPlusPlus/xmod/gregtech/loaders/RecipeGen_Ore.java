@@ -159,8 +159,6 @@ public class RecipeGen_Ore extends RecipeGen_Base {
 			}				
 		}
 
-		ItemStack tinyDustA = getTinyDust(bonusA);
-		ItemStack tinyDustB = getTinyDust(bonusB);
 		ItemStack matDust = getDust(material);
 		ItemStack matDustA = getDust(bonusA);
 		ItemStack matDustB = getDust(bonusB);
@@ -202,7 +200,7 @@ public class RecipeGen_Ore extends RecipeGen_Base {
 				Logger.MATERIALS("[OreWasher] Added Recipe: 'Wash Crushed ore into Purified Crushed ore'");
 			}*/
 		//.08 compat method
-		if (GT_ModHandler.addOreWasherRecipe(material.getCrushed(1), 1000, material.getCrushedPurified(1), tinyDustA, dustStone)){
+		if (GT_ModHandler.addOreWasherRecipe(material.getCrushed(1), new int[]{10000, 1111, 10000}, 1000, material.getCrushedPurified(1), matDustA, dustStone)){
 			Logger.MATERIALS("[OreWasher] Added Recipe: 'Wash Crushed ore into Purified Crushed ore'");
 		}
 
@@ -230,14 +228,14 @@ public class RecipeGen_Ore extends RecipeGen_Base {
 		
 		try {
 			//.08 compat
-			if (GT_ModHandler.addThermalCentrifugeRecipe(material.getCrushed(1), (int) Math.min(5000L, Math.abs(material.getMass() * 20L)), material.getCrushedCentrifuged(1), tinyDustB, dustStone)){
-				Logger.MATERIALS("[ThermalCentrifuge] Added Recipe: 'Crushed ore to Centrifuged Ore' | Input: "+material.getCrushed(1).getDisplayName()+" | Outputs: "+material.getCrushedCentrifuged(1).getDisplayName()+", "+tinyDustB.getDisplayName()+", "+dustStone.getDisplayName()+".");
+			if (GT_ModHandler.addThermalCentrifugeRecipe(material.getCrushed(1), new int[]{10000, 1111, 10000}, (int) Math.min(5000L, Math.abs(material.getMass() * 20L)), material.getCrushedCentrifuged(1), matDustB, dustStone)){
+				Logger.MATERIALS("[ThermalCentrifuge] Added Recipe: 'Crushed ore to Centrifuged Ore' | Input: "+material.getCrushed(1).getDisplayName()+" | Outputs: "+material.getCrushedCentrifuged(1).getDisplayName()+", "+matDustB.getDisplayName()+", "+dustStone.getDisplayName()+".");
 			}
 		}
 		catch (Throwable t) {}
 		try {
-			if (GT_ModHandler.addThermalCentrifugeRecipe(material.getCrushedPurified(1), (int) Math.min(5000L, Math.abs(material.getMass() * 20L)), material.getCrushedCentrifuged(1), tinyDustA, dustStone)){
-				Logger.MATERIALS("[ThermalCentrifuge] Added Recipe: 'Washed ore to Centrifuged Ore' | Input: "+material.getCrushedPurified(1).getDisplayName()+" | Outputs: "+material.getCrushedCentrifuged(1).getDisplayName()+", "+tinyDustA.getDisplayName()+", "+dustStone.getDisplayName()+".");
+			if (GT_ModHandler.addThermalCentrifugeRecipe(material.getCrushedPurified(1), new int[]{10000, 1111, 10000}, (int) Math.min(5000L, Math.abs(material.getMass() * 20L)), material.getCrushedCentrifuged(1), matDustA, dustStone)){
+				Logger.MATERIALS("[ThermalCentrifuge] Added Recipe: 'Washed ore to Centrifuged Ore' | Input: "+material.getCrushedPurified(1).getDisplayName()+" | Outputs: "+material.getCrushedCentrifuged(1).getDisplayName()+", "+matDustA.getDisplayName()+", "+dustStone.getDisplayName()+".");
 			}
 		}
 		catch (Throwable t) {}
@@ -264,9 +262,9 @@ public class RecipeGen_Ore extends RecipeGen_Base {
 				material.getDustPurified(1), null,
 				null, //In Fluid
 				null, //Out Fluid
-				matDust, tinyDustA,null, 
+				matDust, matDustA,null,
 				null, null,null, 
-				new int[]{10000, 10000}, //Chances
+				new int[]{10000, 1111}, //Chances
 				(int) Math.max(1L, material.getMass() * 8L), //Time
 				tVoltageMultiplier/2)){ //Eu
 			Logger.MATERIALS("[Centrifuge] Added Recipe: Purified Dust to Clean Dust");
@@ -277,9 +275,9 @@ public class RecipeGen_Ore extends RecipeGen_Base {
 				material.getDustImpure(1), null,
 				null, //In Fluid
 				null, //Out Fluid
-				matDust, tinyDustB,null, 
+				matDust, matDustB,null,
 				null, null,null, 
-				new int[]{10000, 10000}, //Chances
+				new int[]{10000, 1111}, //Chances
 				(int) Math.max(1L, material.getMass() * 8L), //Time
 				tVoltageMultiplier/2)){ //Eu
 			Logger.MATERIALS("[Centrifuge] Added Recipe: Inpure Dust to Clean Dust");
