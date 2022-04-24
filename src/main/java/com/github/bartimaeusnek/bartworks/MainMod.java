@@ -32,6 +32,7 @@ import com.github.bartimaeusnek.bartworks.client.textures.PrefixTextureLinker;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.common.loaders.*;
 import com.github.bartimaeusnek.bartworks.common.net.BW_Network;
+import com.github.bartimaeusnek.bartworks.neiHandler.IMCForNEI;
 import com.github.bartimaeusnek.bartworks.server.EventHandler.ServerEventHandler;
 import com.github.bartimaeusnek.bartworks.system.material.CircuitGeneration.CircuitImprintLoader;
 import com.github.bartimaeusnek.bartworks.system.material.CircuitGeneration.CircuitPartLoader;
@@ -153,6 +154,7 @@ public final class MainMod {
         }
         ItemRegistry.run();
         RecipeLoader.run();
+        IMCForNEI.IMCSender();
     }
 
     @Mod.EventHandler
