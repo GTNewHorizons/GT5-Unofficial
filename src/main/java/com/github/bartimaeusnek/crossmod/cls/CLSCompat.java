@@ -34,6 +34,8 @@ public class CLSCompat {
     private CLSCompat() {
     }
 
+    private static final long MINIMAL_UPDATE_INTERVAL = 1000 / 30; // target 30 fps
+    private static long lastUpdate = 0;
     private static Class alexiilMinecraftDisplayer;
     private static Class alexiilProgressDisplayer;
     private static Method displayProgress;
@@ -85,10 +87,14 @@ public class CLSCompat {
     public static int invokeStepSize(Werkstoff werkstoff, Integer[] steps, int size) {
         --steps[0];
 
-        try {
-            displayProgress.invoke(null, werkstoff.getDefaultName(), ((float) size) / 10000);
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
+        long time = System.currentTimeMillis();
+        if (time - lastUpdate >= MINIMAL_UPDATE_INTERVAL) {
+            try {
+                displayProgress.invoke(null, werkstoff.getDefaultName(), ((float) size) / 10000);
+            } catch (IllegalAccessException | InvocationTargetException e) {
+                e.printStackTrace();
+            }
+            lastUpdate = time;
         }
 
         if (steps[0] == 0 && Werkstoff.werkstoffHashSet.size() >= 100)
