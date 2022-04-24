@@ -34,25 +34,16 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
 import java.util.List;
-import java.util.Optional;
 
 public class BW_MetaGenerated_WerkstoffBlocks extends BW_MetaGenerated_Blocks {
 
     public BW_MetaGenerated_WerkstoffBlocks(Material p_i45386_1_, Class<? extends TileEntity> tileEntity, String blockName) {
         super(p_i45386_1_, tileEntity, blockName);
+        this.blockTypeLocalizedName = GT_LanguageManager.addStringLocalization("bw.blocktype." + OrePrefixes.block, OrePrefixes.block.mLocalizedMaterialPre + "%material" + OrePrefixes.block.mLocalizedMaterialPost);
     }
 
     @Override
-    protected void doRegistrationStuff(Werkstoff tMaterial) {
-        Optional.ofNullable(tMaterial)
-                .filter(pMaterial -> pMaterial.hasItemType(OrePrefixes.gem) || pMaterial.hasItemType(OrePrefixes.ingot))
-                .ifPresent(pMaterial ->
-                        GT_LanguageManager.addStringLocalization(
-                                this.getUnlocalizedName() + "." + pMaterial.getmID() + ".name",
-                                OrePrefixes.block.mLocalizedMaterialPre + pMaterial.getDefaultName() + OrePrefixes.block.mLocalizedMaterialPost
-                        )
-                );
-    }
+    protected void doRegistrationStuff(Werkstoff tMaterial) {}
 
     @Override
     public String getUnlocalizedName() {

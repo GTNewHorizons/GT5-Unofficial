@@ -36,6 +36,8 @@ import net.minecraft.world.World;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.github.bartimaeusnek.bartworks.system.material.Werkstoff.werkstoffHashMap;
+
 public class BW_MetaGeneratedBlock_Item extends BW_ItemBlocks {
 
     public BW_MetaGeneratedBlock_Item(Block par1) {
@@ -51,6 +53,15 @@ public class BW_MetaGeneratedBlock_Item extends BW_ItemBlocks {
     }
 
     public String getItemStackDisplayName(ItemStack aStack) {
+        Block block = Block.getBlockFromItem(aStack.getItem());
+        if (block != null) {
+            if (block instanceof BW_MetaGenerated_Blocks) {
+                int aMetaData = aStack.getItemDamage();
+                Werkstoff werkstoff = werkstoffHashMap.get((short) aMetaData);
+                if (werkstoff == null) werkstoff = Werkstoff.default_null_Werkstoff;
+                return ((BW_MetaGenerated_Blocks) block).blockTypeLocalizedName.replace("%material", werkstoff.getLocalizedName());
+            }
+        }
         return GT_LanguageManager.getTranslation( getUnlocalizedName(aStack) + ".name");
     }
 
@@ -66,7 +77,7 @@ public class BW_MetaGeneratedBlock_Item extends BW_ItemBlocks {
         }
         Werkstoff werkstoff = Werkstoff.werkstoffHashMap.get((short) aStack.getItemDamage());
         if(werkstoff != null) {
-            aList.add(werkstoff.getToolTip());
+            aList.add(werkstoff.getLocalizedToolTip());
         }
         aList.add(BW_Tooltip_Reference.ADDED_BY_BARTWORKS.get());
     }

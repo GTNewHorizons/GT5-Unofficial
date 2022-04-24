@@ -36,6 +36,7 @@ import java.util.Arrays;
 public class BW_MetaGenerated_SmallOres extends BW_MetaGenerated_Ores {
     public BW_MetaGenerated_SmallOres(Material p_i45386_1_, Class<? extends TileEntity> tileEntity, String blockName) {
         super(p_i45386_1_, tileEntity, blockName);
+        this.blockTypeLocalizedName = GT_LanguageManager.addStringLocalization("bw.blocktype." + OrePrefixes.oreSmall,  OrePrefixes.oreSmall.mLocalizedMaterialPre+"%material" + OrePrefixes.oreSmall.mLocalizedMaterialPost);
     }
 
     @Override
@@ -44,7 +45,6 @@ public class BW_MetaGenerated_SmallOres extends BW_MetaGenerated_Ores {
             if (!w.hasItemType(OrePrefixes.ore) || ((w.getGenerationFeatures().blacklist & 0b1000) != 0))
                 return;
             GT_ModHandler.addValuableOre(this, w.getmID(), 1);
-            GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + "." + w.getmID() + ".name", "Small " + w.getDefaultName() + OrePrefixes.oreSmall.mLocalizedMaterialPost);
         }
     }
 

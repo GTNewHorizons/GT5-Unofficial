@@ -105,14 +105,14 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
      */
     public Werkstoff(Materials materials, Werkstoff.GenerationFeatures generationFeatures, Types type, int mID){
         this(   materials.mRGBa,
-                materials.mDefaultLocalName,
-                materials.getToolTip(),
-                type == null ? materials.mElement != null ? Types.ELEMENT : Types.UNDEFINED : type,
-                generationFeatures,
-                mID,
-                materials.mIconSet,
-                (List) materials.mOreByProducts,
-                new Pair<>(materials, 1)
+            materials.mDefaultLocalName,
+            materials.getToolTip(),
+            type == null ? materials.mElement != null ? Types.ELEMENT : Types.UNDEFINED : type,
+            generationFeatures,
+            mID,
+            materials.mIconSet,
+            (List) materials.mOreByProducts,
+            new Pair<>(materials, 1)
         );
         if(!(mID > 31_766 && mID <= 32_767))
             throw new IllegalArgumentException();
@@ -492,7 +492,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
 
     public float getToolSpeed() {
         return this.stats.getSpeedOverride() > 0f ? this.stats.getSpeedOverride() : Math.max(1f,
-                2f * ((float) -this.getStats().getMass() + 0.1f * (float) this.getStats().getMeltingPoint() + (float) this.getStats().getProtons()) * 0.1f / (float) this.getContents().getKey() * 0.1f * (float) this.getToolQuality()
+            2f * ((float) -this.getStats().getMass() + 0.1f * (float) this.getStats().getMeltingPoint() + (float) this.getStats().getProtons()) * 0.1f / (float) this.getContents().getKey() * 0.1f * (float) this.getToolQuality()
         );
     }
 

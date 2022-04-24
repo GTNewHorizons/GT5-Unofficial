@@ -44,6 +44,7 @@ public class BW_MetaGenerated_Ores extends BW_MetaGenerated_Blocks {
 
     public BW_MetaGenerated_Ores(Material p_i45386_1_, Class<? extends TileEntity> tileEntity, String blockName) {
         super(p_i45386_1_, tileEntity, blockName);
+        this.blockTypeLocalizedName = GT_LanguageManager.addStringLocalization("bw.blocktype." + OrePrefixes.ore, OrePrefixes.ore.mLocalizedMaterialPre + "%material" + OrePrefixes.ore.mLocalizedMaterialPost);
     }
 
     protected void doRegistrationStuff(Werkstoff w) {
@@ -51,7 +52,6 @@ public class BW_MetaGenerated_Ores extends BW_MetaGenerated_Blocks {
             if (!w.hasItemType(OrePrefixes.ore) || ((w.getGenerationFeatures().blacklist & 0b1000) != 0))
                 return;
             GT_ModHandler.addValuableOre(this, w.getmID(), 1);
-            GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + "." + w.getmID() + ".name", w.getDefaultName() + OrePrefixes.ore.mLocalizedMaterialPost);
         }
     }
 

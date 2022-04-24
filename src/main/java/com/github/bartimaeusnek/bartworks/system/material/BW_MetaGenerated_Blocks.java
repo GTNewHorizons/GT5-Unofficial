@@ -28,6 +28,7 @@ import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GT_LanguageManager;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -43,6 +44,7 @@ public abstract class BW_MetaGenerated_Blocks extends BW_TileEntityContainer {
 
     public static ThreadLocal<BW_MetaGenerated_Block_TE> mTemporaryTileEntity = new ThreadLocal<>();
     protected OrePrefixes _prefixes;
+    protected String blockTypeLocalizedName;
 
     public BW_MetaGenerated_Blocks(Material p_i45386_1_, Class<? extends TileEntity> tileEntity, String blockName) {
         this(p_i45386_1_, tileEntity, blockName, null);
@@ -55,6 +57,9 @@ public abstract class BW_MetaGenerated_Blocks extends BW_TileEntityContainer {
         this.setBlockTextureName("stone");
         this.setCreativeTab(metaTab);
         _prefixes = types;
+        if (_prefixes != null) {
+            this.blockTypeLocalizedName = GT_LanguageManager.addStringLocalization("bw.blocktype." + _prefixes, _prefixes.mLocalizedMaterialPre + "%material" + _prefixes.mLocalizedMaterialPost);
+        }
         Werkstoff.werkstoffHashSet.forEach(this::doRegistrationStuff);
     }
 

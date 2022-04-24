@@ -26,7 +26,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_LanguageManager;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
@@ -86,16 +85,6 @@ public class BW_MetaGeneratedBlocks_Casing extends BW_MetaGenerated_Blocks imple
     @Override
     protected void doRegistrationStuff(Werkstoff tMaterial) {
         GregTech_API.registerMachineBlock(this, -1);
-        if (tMaterial == null) return;
-        if ((tMaterial.doesOreDictedItemExists(OrePrefixes.plate) && tMaterial.doesOreDictedItemExists(OrePrefixes.gearGtSmall)) || (tMaterial.hasItemType(OrePrefixes.plate) && tMaterial.hasItemType(OrePrefixes.gearGtSmall))) {
-            Optional.of(tMaterial)
-                    .ifPresent(pMaterial ->
-                            GT_LanguageManager.addStringLocalization(
-                                    this.getUnlocalizedName() + "." + pMaterial.getmID() + ".name",
-                                    _prefixes.mLocalizedMaterialPre + pMaterial.getDefaultName() + _prefixes.mLocalizedMaterialPost
-                            )
-                    );
-        }
     }
 
     @Override
