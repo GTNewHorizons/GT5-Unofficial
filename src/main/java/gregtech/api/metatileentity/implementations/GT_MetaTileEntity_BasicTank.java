@@ -38,7 +38,7 @@ public abstract class GT_MetaTileEntity_BasicTank extends GT_MetaTileEntity_Tier
     public GT_MetaTileEntity_BasicTank(String aName, int aTier, int aInvSlotCount, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
-    
+
     public GT_MetaTileEntity_BasicTank(String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
@@ -162,7 +162,7 @@ public abstract class GT_MetaTileEntity_BasicTank extends GT_MetaTileEntity_Tier
                 if (tFluid != null && isFluidInputAllowed(tFluid)) {
                     if (getFillableStack() == null) {
                         if (isFluidInputAllowed(tFluid) && tFluid.amount <= getCapacity()) {
-                            if (aBaseMetaTileEntity.addStackToSlot(getOutputSlot(), GT_Utility.getContainerItem(mInventory[getInputSlot()], true), 1)) {
+                            if (aBaseMetaTileEntity.addStackToSlot(getOutputSlot(), GT_Utility.getContainerForFilledItem(mInventory[getInputSlot()], true), 1)) {
                                 setFillableStack(tFluid.copy());
                                 this.onEmptyingContainerWhenEmpty();
                                 aBaseMetaTileEntity.decrStackSize(getInputSlot(), 1);
@@ -170,7 +170,7 @@ public abstract class GT_MetaTileEntity_BasicTank extends GT_MetaTileEntity_Tier
                         }
                     } else {
                         if (tFluid.isFluidEqual(getFillableStack()) && ((long)tFluid.amount + getFillableStack().amount) <= (long)getCapacity()) {
-                            if (aBaseMetaTileEntity.addStackToSlot(getOutputSlot(), GT_Utility.getContainerItem(mInventory[getInputSlot()], true), 1)) {
+                            if (aBaseMetaTileEntity.addStackToSlot(getOutputSlot(), GT_Utility.getContainerForFilledItem(mInventory[getInputSlot()], true), 1)) {
                                 getFillableStack().amount += tFluid.amount;
                                 aBaseMetaTileEntity.decrStackSize(getInputSlot(), 1);
                             }
@@ -301,7 +301,7 @@ public abstract class GT_MetaTileEntity_BasicTank extends GT_MetaTileEntity_Tier
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
         return aIndex == getInputSlot();
     }
-    
+
     protected void onEmptyingContainerWhenEmpty(){
     	//Do nothing
     }

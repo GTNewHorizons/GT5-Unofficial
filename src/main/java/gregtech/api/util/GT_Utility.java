@@ -1270,6 +1270,9 @@ public class GT_Utility {
         return tData == null ? null : tData.fluid.copy();
     }
 
+    /**
+     * Get empty fluid container from filled one.
+     */
     public static ItemStack getContainerForFilledItem(ItemStack aStack, boolean aCheckIFluidContainerItems) {
         if (isStackInvalid(aStack)) return null;
         FluidContainerData tData = sFilledContainerToData.get(new GT_ItemStack(aStack));
@@ -1281,6 +1284,10 @@ public class GT_Utility {
         return null;
     }
 
+    /**
+     * Get general container item, not only fluid container but also non-consumable item.
+     * {@link #getContainerForFilledItem} works better for fluid container.
+     */
     public static ItemStack getContainerItem(ItemStack aStack, boolean aCheckIFluidContainerItems) {
         if (isStackInvalid(aStack)) return null;
         if (aStack.getItem().hasContainerItem(aStack)) return aStack.getItem().getContainerItem(aStack);
