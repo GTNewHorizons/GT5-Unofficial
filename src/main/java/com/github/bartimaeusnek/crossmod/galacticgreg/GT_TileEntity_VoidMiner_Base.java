@@ -34,6 +34,7 @@ import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.bartimaeusnek.bartworks.system.oregen.BW_OreLayer;
 import com.github.bartimaeusnek.bartworks.util.Pair;
 import com.google.common.collect.ArrayListMultimap;
+import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
@@ -231,7 +232,10 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
     }
 
     private void addDrop(Pair<Integer,Boolean> key, float value){
-        if(!dropmap.containsKey(key))
+        final ItemStack ore = getOreItemStack(key);
+        if (ConfigHandler.voidMinerBlacklist.contains(String.format("%s:%d", GameRegistry.findUniqueIdentifierFor(ore.getItem()).toString(), ore.getItemDamage())))
+            return;
+        if (!dropmap.containsKey(key))
             dropmap.put(key, value);
         else
             dropmap.put(key, dropmap.get(key) + value);
@@ -426,12 +430,16 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
     private void handleOutputs() {
         Pair<Integer, Boolean> stats = getOreDamage();
         final List<ItemStack> inputOres = this.getStoredInputs().stream().filter(GT_Utility::isOre).collect(Collectors.toList());
-        final ItemStack output = new ItemStack(stats.getValue() ? WerkstoffLoader.BWOres : GregTech_API.sBlockOres1, multiplier, stats.getKey());
+        final ItemStack output = getOreItemStack(stats);
         if (inputOres.size() == 0
             || (mBlacklist && inputOres.stream().allMatch(is -> !GT_Utility.areStacksEqual(is, output)))
             || (!mBlacklist && inputOres.stream().anyMatch(is -> GT_Utility.areStacksEqual(is, output)))
         ) this.addOutput(output);
         this.updateSlots();
+    }
+
+    private ItemStack getOreItemStack(Pair<Integer, Boolean> stats) {
+        return new ItemStack(stats.getValue() ? WerkstoffLoader.BWOres : GregTech_API.sBlockOres1, multiplier, stats.getKey());
     }
 
     @Override
