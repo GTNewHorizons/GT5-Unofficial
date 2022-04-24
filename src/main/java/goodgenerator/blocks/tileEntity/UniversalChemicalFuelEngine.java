@@ -35,8 +35,8 @@ import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
 public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_TooltipMultiBlockBase_EM implements IConstructable {
 
-    protected final double DIESEL_EFFICIENCY_COEFFICIENT = 0.02D;
-    protected final double GAS_EFFICIENCY_COEFFICIENT = 0.01D;
+    protected final double DIESEL_EFFICIENCY_COEFFICIENT = 0.04D;
+    protected final double GAS_EFFICIENCY_COEFFICIENT = 0.04D;
     protected final double ROCKET_EFFICIENCY_COEFFICIENT = 0.005D;
     protected final double EFFICIENCY_CEILING = 1.5D;
 
