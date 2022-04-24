@@ -559,6 +559,7 @@ public enum ItemList implements IItemContainer {
     Cover_FluidDetector,
     Cover_ItemDetector,
     Cover_EnergyDetector,
+    Cover_FluidStorageMonitor,
     Cover_Drain,
     Cover_Shutter,
     Cover_Crafting,
