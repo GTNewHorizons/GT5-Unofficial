@@ -68,22 +68,23 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRa
     };
 
     protected final OrePrefixes orePrefixes;
+    protected final String itemTypeLocalizedName;
 
     public BW_MetaGenerated_Items(OrePrefixes orePrefixes, Object unused){
         super("bwMetaGeneratedGTEnhancement" + orePrefixes.name(), (short) 32766, (short) 0);
         this.orePrefixes = orePrefixes;
+        this.itemTypeLocalizedName = GT_LanguageManager.addStringLocalization("bw.itemtype." + orePrefixes, orePrefixes.mLocalizedMaterialPre + "%material" + orePrefixes.mLocalizedMaterialPost);
     }
 
     public BW_MetaGenerated_Items(OrePrefixes orePrefixes) {
         super("bwMetaGenerated" + orePrefixes.name(), (short) 32766, (short) 0);
         this.orePrefixes = orePrefixes;
+        this.itemTypeLocalizedName = GT_LanguageManager.addStringLocalization("bw.itemtype." + orePrefixes, orePrefixes.mLocalizedMaterialPre + "%material" + orePrefixes.mLocalizedMaterialPost);
         this.setCreativeTab(BW_MetaGenerated_Items.metaTab);
         for (Werkstoff w : werkstoffHashSet) {
             ItemStack tStack = new ItemStack(this, 1, w.getmID());
             if (!w.hasItemType(this.orePrefixes))
                 continue;
-            GT_LanguageManager.addStringLocalization(this.getUnlocalizedName(tStack) + ".name", this.getDefaultLocalization(w));
-            GT_LanguageManager.addStringLocalization(this.getUnlocalizedName(tStack) + ".tooltip", w.getToolTip());
             GT_OreDictUnificator.registerOre(this.orePrefixes.name() + w.getVarName(), tStack);
         }
     }
@@ -136,13 +137,12 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRa
         aList.add(BW_Tooltip_Reference.ADDED_BY_BARTWORKS.get());
     }
 
-    public String getDefaultLocalization(Werkstoff werkstoff) {
-        return werkstoff != null ? this.orePrefixes.mLocalizedMaterialPre + werkstoff.getDefaultName() + this.orePrefixes.mLocalizedMaterialPost : Werkstoff.default_null_Werkstoff.getDefaultName();
-    }
-
     @Override
     public String getItemStackDisplayName(ItemStack aStack) {
-        return GT_LanguageManager.getTranslation(this.getUnlocalizedName(aStack) + ".name");
+        int aMetaData = aStack.getItemDamage();
+        Werkstoff werkstoff = werkstoffHashMap.get((short) aMetaData);
+        if (werkstoff == null) werkstoff = Werkstoff.default_null_Werkstoff;
+        return itemTypeLocalizedName.replace("%material", werkstoff.getLocalizedName());
     }
 
     @Override

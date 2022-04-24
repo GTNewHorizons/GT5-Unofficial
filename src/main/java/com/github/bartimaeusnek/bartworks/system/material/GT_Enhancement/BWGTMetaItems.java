@@ -27,6 +27,7 @@ import com.github.bartimaeusnek.bartworks.client.textures.PrefixTextureLinker;
 import com.github.bartimaeusnek.bartworks.system.material.BW_MetaGenerated_Items;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
+import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
@@ -34,11 +35,11 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -71,9 +72,6 @@ public class BWGTMetaItems extends BW_MetaGenerated_Items {
                 hiddenThings.add(i);
                 continue;
             }
-
-            GT_LanguageManager.addStringLocalization(this.getUnlocalizedName(tStack) + ".name", getDefaultLocalization(material));
-            GT_LanguageManager.addStringLocalization(this.getUnlocalizedName(tStack) + ".tooltip", material.getToolTip());
             GT_OreDictUnificator.registerOre(this.orePrefixes.name() + material.mDefaultLocalName.replaceAll(" ",""), tStack);
         }
 
@@ -92,14 +90,43 @@ public class BWGTMetaItems extends BW_MetaGenerated_Items {
                     hiddenThings.add(i);
                     continue;
                 }
-                GT_LanguageManager.addStringLocalization(this.getUnlocalizedName(tStack) + ".name", getDefaultLocalization(w));
-                GT_LanguageManager.addStringLocalization(this.getUnlocalizedName(tStack) + ".tooltip", w.getToolTip());
                 GT_OreDictUnificator.registerOre(this.orePrefixes.name() + w.mDefaultLocalName.replaceAll(" ",""), tStack);
             }
         }
     }
 
+    private Materials getMaterial(ItemStack is) {
+        if (is == null || is.getItem() != this)
+            return null;
+        final int meta = is.getItemDamage();
+        Materials material;
+        if (meta > 1000 && hasList)
+            material = NoMetaValue.get(meta - 1001);
+        else
+            material = Materials.values()[meta];
+        return material;
+    }
+
     @Override
+    public String getItemStackDisplayName(ItemStack aStack) {
+        Materials material = getMaterial(aStack);
+        if (material == null) material = Materials._NULL;
+        return material.getLocalizedNameForItem(itemTypeLocalizedName);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    protected void addAdditionalToolTips(List aList, ItemStack aStack, EntityPlayer aPlayer) {
+        Materials material = getMaterial(aStack);
+        if (material != null) {
+            if (material.getToolTip() != null) {
+                aList.add(material.getToolTip());
+            }
+        }
+        aList.add(BW_Tooltip_Reference.ADDED_BY_BARTWORKS.get());
+    }
+
+        @Override
     public IIconContainer getIconContainer(int aMetaData) {
         if (this.orePrefixes.mTextureIndex == -1)
             return getIconContainerBartWorks(aMetaData);
@@ -108,10 +135,6 @@ public class BWGTMetaItems extends BW_MetaGenerated_Items {
         if (aMetaData < 0 || aMetaData > Materials.values().length || Materials.values()[(short) aMetaData] == null)
             return null;
         return Materials.values()[(short) aMetaData].mIconSet.mTextures[this.orePrefixes.mTextureIndex];
-    }
-
-    public String getDefaultLocalization(Materials werkstoff) {
-        return werkstoff != null ? this.orePrefixes.mLocalizedMaterialPre + werkstoff.mDefaultLocalName + this.orePrefixes.mLocalizedMaterialPost : Materials._NULL.mDefaultLocalName;
     }
 
     @Override

@@ -23,18 +23,36 @@
 package com.github.bartimaeusnek.bartworks.system.material;
 
 import com.github.bartimaeusnek.bartworks.system.oredict.OreDictHandler;
-import com.github.bartimaeusnek.bartworks.util.*;
+import com.github.bartimaeusnek.bartworks.util.BW_ColorUtil;
+import com.github.bartimaeusnek.bartworks.util.BW_Util;
+import com.github.bartimaeusnek.bartworks.util.MurmurHash3;
+import com.github.bartimaeusnek.bartworks.util.NonNullWrappedHashMap;
+import com.github.bartimaeusnek.bartworks.util.Pair;
 import com.github.bartimaeusnek.crossmod.thaumcraft.util.ThaumcraftHandler;
-import gregtech.api.enums.*;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SubTag;
+import gregtech.api.enums.TC_Aspects;
+import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.interfaces.ISubTagContainer;
+import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteBuffer;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
+import java.util.Optional;
 
 @SuppressWarnings("ALL")
 public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
@@ -55,7 +73,9 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
     private final HashSet<SubTag> SUBTAGS = new HashSet<>();
     private byte[] rgb = new byte[3];
     private final String defaultName;
+    private final String localizedName;
     private String toolTip;
+    private final String localizedToolTip;
 
     private Werkstoff.Stats stats;
     private final Werkstoff.Types type;
@@ -161,10 +181,11 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         if (type == null)
             type = Werkstoff.Types.UNDEFINED;
 
+        this.mID = (short) mID;
         this.defaultName = defaultName;
+        this.localizedName = GT_LanguageManager.addStringLocalization(String.format("bw.werkstoff.%05d.name", this.mID), defaultName);
         this.stats = stats;
         this.type = type;
-        this.mID = (short) mID;
         this.generationFeatures = generationFeatures;
         this.setRgb(BW_ColorUtil.correctCorlorArray(rgba));
         this.CONTENTS.addAll(Arrays.asList(contents));
@@ -198,6 +219,8 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
 
 //        if (this.toolTip.length() > 25)
 //            this.toolTip = "The formula is to long...";
+
+        this.localizedToolTip = GT_LanguageManager.addStringLocalization(String.format("bw.werkstoff.%05d.tooltip", this.mID), toolTip);
 
         if (this.stats.protons == 0) {
             long tmpprotons = 0;
@@ -378,12 +401,20 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         return this.defaultName;
     }
 
+    public String getLocalizedName() {
+        return this.localizedName;
+    }
+
     public String getVarName() {
         return this.defaultName.replaceAll(" ", "");
     }
 
     public String getToolTip() {
         return this.toolTip;
+    }
+
+    public String getLocalizedToolTip() {
+        return this.localizedToolTip;
     }
 
     public Werkstoff.Stats getStats() {
