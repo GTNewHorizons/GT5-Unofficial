@@ -46,7 +46,7 @@ public class DecayableRecipeHandler extends TemplateRecipeHandler {
 	}
 
 	public void loadTransferRects() {
-		this.transferRects.add(new RecipeTransferRect(new Rectangle(6, 3, 16, 16), "GTPP_Decayables", new Object[0]));
+		this.transferRects.add(new RecipeTransferRect(new Rectangle(6, 3, 16, 16), getOverlayIdentifier(), new Object[0]));
 	}
 
 	public void loadCraftingRecipes(ItemStack result) {

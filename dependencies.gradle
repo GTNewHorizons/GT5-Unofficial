@@ -3,7 +3,7 @@
 dependencies {
     compile('com.github.GTNewHorizons:GT5-Unofficial:5.09.40.47:dev')
     compile('com.github.GTNewHorizons:StructureLib:1.0.15:dev') 
-    compile('com.github.GTNewHorizons:NotEnoughItems:2.2.7-GTNH:dev') 
+    compile('com.github.GTNewHorizons:NotEnoughItems:2.2.12-GTNH:dev')
     compile('com.github.GTNewHorizons:CodeChickenCore:1.1.4:dev')
     compile('com.github.GTNewHorizons:CodeChickenLib:1.1.5.3:dev')
     compile('net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev')
