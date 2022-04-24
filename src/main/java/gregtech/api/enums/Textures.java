@@ -476,6 +476,7 @@ public class Textures {
         OVERLAY_PIPE,
         OVERLAY_PIPE_IN,
         OVERLAY_PIPE_OUT,
+        OVERLAY_INPUT_HATCH_2x2,
         FLUID_OUT_SIGN,
         FLUID_IN_SIGN,
         ITEM_IN_SIGN,
