@@ -789,6 +789,7 @@ gt.blockmachines.debug.tt.genny.name=Debug Power Generator
 gt.blockmachines.debug.tt.genny.desc.0=Power from nothing
 gt.blockmachines.debug.tt.genny.desc.1=Infinite Producer/Consumer
 gt.blockmachines.debug.tt.genny.desc.2=Since i wanted one...
+gt.blockmachines.debug.tt.genny.desc.3=Change it to Laser mode with a screwdriver.
 gt.blockmachines.debug.tt.writer.name=Debug Structure Writer
 gt.blockmachines.debug.tt.writer.desc.0=Scans Blocks Around
 gt.blockmachines.debug.tt.writer.desc.1=Prints Multiblock NonTE structure check code
@@ -1244,3 +1245,5 @@ tt.IUPAC.E=Enn
 tt.IUPAC.ium=ium
 tt.IUPAC.Anti=Anti
 tt.keyword.Weird=*
+
+tt.chat.debug.generator=Laser mode: %s
