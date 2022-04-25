@@ -1083,9 +1083,7 @@ public class Textures {
         MARBLE_STONE,
         MARBLE_COBBLE,
         BLOCK_SILICONSG,
-        BLOCK_SILICONEG,
         BLOCK_NICKELALUMINIUM,
-
         MARBLE_COBBLE_MOSSY,
         MARBLE_BRICKS,
         MARBLE_BRICKS_CRACKED,
@@ -1702,7 +1700,6 @@ public class Textures {
                 },
                 STORAGE_BLOCKS12 = {
                         BLOCK_CRYOLITE,
-                        BLOCK_SILICONEG,
                         BLOCK_SILICONSG,
                         BLOCK_NICKELALUMINIUM
         };
