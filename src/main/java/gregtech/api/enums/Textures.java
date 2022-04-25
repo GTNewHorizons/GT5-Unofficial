@@ -1066,8 +1066,7 @@ public class Textures {
         MARBLE_STONE,
         MARBLE_COBBLE,
         BLOCK_SILICONSG,
-        BLOCK_SILICONEG,
-
+        
         MARBLE_COBBLE_MOSSY,
         MARBLE_BRICKS,
         MARBLE_BRICKS_CRACKED,
@@ -1680,12 +1679,12 @@ public class Textures {
                         BLOCK_YELLOWGARNET,
                         BLOCK_NETHERSTAR,
                         BLOCK_CHARCOAL,
-                        BLOCK_BLAZE,
+                        BLOCK_BLAZE
                 },
                 STORAGE_BLOCKS12 = {
                         BLOCK_CRYOLITE,
-                        BLOCK_SILICONEG,
-                        BLOCK_SILICONSG
+                        BLOCK_SILICONSG,
+                        
         };
 
       public static final ITexture[] HIDDEN_TEXTURE = {
