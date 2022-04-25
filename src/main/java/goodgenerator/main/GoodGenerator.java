@@ -40,7 +40,7 @@ public final class GoodGenerator {
     static {
         CHANNEL.registerMessage(MessageSetNeutronSensorData.ServerHandler.class, MessageSetNeutronSensorData.class, 0, Side.SERVER);
         CHANNEL.registerMessage(MessageOpenNeutronSensorGUI.ClientHandler.class, MessageOpenNeutronSensorGUI.class, 1, Side.CLIENT);
-        CHANNEL.registerMessage(MessageResetTileTexture.ClientHandler.class, MessageResetTileTexture.class, 1, Side.CLIENT);
+        CHANNEL.registerMessage(MessageResetTileTexture.ClientHandler.class, MessageResetTileTexture.class, 2, Side.CLIENT);
     }
 
     @Mod.Instance(GoodGenerator.MOD_ID)
