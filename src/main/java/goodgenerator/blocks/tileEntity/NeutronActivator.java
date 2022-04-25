@@ -1,11 +1,11 @@
 package goodgenerator.blocks.tileEntity;
 
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import goodgenerator.blocks.tileEntity.GTMetaTileEntity.NeutronAccelerator;
 import goodgenerator.blocks.tileEntity.GTMetaTileEntity.NeutronSensor;
+import goodgenerator.blocks.tileEntity.base.GT_MetaTileEntity_TooltipMultiBlockBase_EM;
 import goodgenerator.client.GUI.NeutronActivatorGUIClient;
 import goodgenerator.common.container.NeutronActivatorGUIContainer;
 import goodgenerator.loader.Loaders;
@@ -44,7 +44,7 @@ import static goodgenerator.util.StructureHelper.addFrame;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 import static org.apache.commons.lang3.RandomUtils.nextInt;
 
-public class NeutronActivator extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
+public class NeutronActivator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM implements IConstructable {
 
     protected IStructureDefinition<NeutronActivator> multiDefinition = null;
     protected final ArrayList<NeutronAccelerator> mNeutronAccelerator = new ArrayList<>();
