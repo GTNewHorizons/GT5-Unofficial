@@ -129,7 +129,6 @@ import java.util.function.Supplier;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
 import static gregtech.api.enums.GT_Values.D1;
-import static gregtech.api.enums.GT_Values.DW;
 import static gregtech.api.enums.GT_Values.E;
 import static gregtech.api.enums.GT_Values.GT;
 import static gregtech.api.enums.GT_Values.L;
@@ -652,8 +651,12 @@ public class GT_Utility {
         }
 
         // no source, bail out
-        if(tGrabSlotsSize == 0)
+        if(tGrabSlotsSize == 0) {
+            // maybe source is a double chest. check it
+            if (aDoCheckChests && aTileEntity1 instanceof TileEntityChest)
+                return moveFromAdjacentChests((TileEntityChest) aTileEntity1, aTileEntity2, aGrabFrom, aPutTo, aFilter, aInvertFilter, aMaxTargetStackSize, aMinTargetStackSize, aMaxMoveAtOnce, aMinMoveAtOnce, aMaxStackTransfer);
             return 0;
+        }
 
         // if target is an inventory, e.g. chest, machine, drawers...
         if (aTileEntity2 instanceof IInventory) {
@@ -690,8 +693,12 @@ public class GT_Utility {
             }
 
             // target completely filled, bail out
-            if(tPutItems.isEmpty() && tPutFreeSlots.isEmpty())
+            if(tPutItems.isEmpty() && tPutFreeSlots.isEmpty()) {
+                // maybe target is a double chest. check it.
+                if (aDoCheckChests && aTileEntity2 instanceof TileEntityChest)
+                    return moveToAdjacentChests(aTileEntity1, (TileEntityChest) aTileEntity2, aGrabFrom, aPutTo, aFilter, aInvertFilter, aMaxTargetStackSize, aMinTargetStackSize, aMaxMoveAtOnce, aMinMoveAtOnce, aMaxStackTransfer);
                 return 0;
+            }
 
             // go over source stacks one by one
             int tStacksMoved = 0,tTotalItemsMoved = 0;
@@ -799,42 +806,17 @@ public class GT_Utility {
 
             // check if source is a double chest, if yes, try move from the adjacent as well
             if (aDoCheckChests && aTileEntity1 instanceof TileEntityChest) {
-                TileEntityChest tTileEntity1 = (TileEntityChest) aTileEntity1;
-                int tAmount = 0;
-                int maxStackTransfer = aMaxStackTransfer - tStacksMoved;
-                if (tTileEntity1.adjacentChestXNeg != null) {
-                    tAmount = moveMultipleItemStacks(tTileEntity1.adjacentChestXNeg, aTileEntity2, aGrabFrom, aPutTo, aFilter, aInvertFilter, aMaxTargetStackSize, aMinTargetStackSize, aMaxMoveAtOnce, aMinMoveAtOnce,maxStackTransfer, false);
-                } else if (tTileEntity1.adjacentChestZNeg != null) {
-                    tAmount = moveMultipleItemStacks(tTileEntity1.adjacentChestZNeg, aTileEntity2, aGrabFrom, aPutTo, aFilter, aInvertFilter, aMaxTargetStackSize, aMinTargetStackSize, aMaxMoveAtOnce, aMinMoveAtOnce,maxStackTransfer, false);
-                } else if (tTileEntity1.adjacentChestXPos != null) {
-                    tAmount = moveMultipleItemStacks(tTileEntity1.adjacentChestXPos, aTileEntity2, aGrabFrom, aPutTo, aFilter, aInvertFilter, aMaxTargetStackSize, aMinTargetStackSize, aMaxMoveAtOnce, aMinMoveAtOnce,maxStackTransfer, false);
-                } else if (tTileEntity1.adjacentChestZPos != null) {
-                    tAmount = moveMultipleItemStacks(tTileEntity1.adjacentChestZPos, aTileEntity2, aGrabFrom, aPutTo, aFilter, aInvertFilter, aMaxTargetStackSize, aMinTargetStackSize, aMaxMoveAtOnce, aMinMoveAtOnce,maxStackTransfer, false);
-                }
+                int tAmount = moveFromAdjacentChests((TileEntityChest) aTileEntity1, aTileEntity2, aGrabFrom, aPutTo, aFilter, aInvertFilter, aMaxTargetStackSize, aMinTargetStackSize, aMaxMoveAtOnce, aMinMoveAtOnce, aMaxStackTransfer - tStacksMoved);
                 if (tAmount != 0) return tAmount+tTotalItemsMoved;
             }
 
             // check if target is a double chest, if yes, try move to the adjacent as well
             if (aDoCheckChests && aTileEntity2 instanceof TileEntityChest) {
-                TileEntityChest tTileEntity2 = (TileEntityChest) aTileEntity2;
-                if (tTileEntity2.adjacentChestChecked) {
-                    int tAmount = 0;
-                    int maxStackTransfer = aMaxStackTransfer - tStacksMoved;
-                    if (tTileEntity2.adjacentChestXNeg != null) {
-                        tAmount = moveMultipleItemStacks(aTileEntity1, tTileEntity2.adjacentChestXNeg, aGrabFrom, aPutTo, aFilter, aInvertFilter, aMaxTargetStackSize, aMinTargetStackSize, aMaxMoveAtOnce, aMinMoveAtOnce,maxStackTransfer, false);
-                    } else if (tTileEntity2.adjacentChestZNeg != null) {
-                        tAmount = moveMultipleItemStacks(aTileEntity1, tTileEntity2.adjacentChestZNeg, aGrabFrom, aPutTo, aFilter, aInvertFilter, aMaxTargetStackSize, aMinTargetStackSize, aMaxMoveAtOnce, aMinMoveAtOnce,maxStackTransfer, false);
-                    } else if (tTileEntity2.adjacentChestXPos != null) {
-                        tAmount = moveMultipleItemStacks(aTileEntity1, tTileEntity2.adjacentChestXPos, aGrabFrom, aPutTo, aFilter, aInvertFilter, aMaxTargetStackSize, aMinTargetStackSize, aMaxMoveAtOnce, aMinMoveAtOnce,maxStackTransfer, false);
-                    } else if (tTileEntity2.adjacentChestZPos != null) {
-                        tAmount = moveMultipleItemStacks(aTileEntity1, tTileEntity2.adjacentChestZPos, aGrabFrom, aPutTo, aFilter, aInvertFilter, aMaxTargetStackSize, aMinTargetStackSize, aMaxMoveAtOnce, aMinMoveAtOnce,maxStackTransfer, false);
-                    }
-                    if (tAmount != 0) return tAmount+tTotalItemsMoved;
-                }
+                int tAmount = moveToAdjacentChests(aTileEntity1, (TileEntityChest) aTileEntity2, aGrabFrom, aPutTo, aFilter, aInvertFilter, aMaxTargetStackSize, aMinTargetStackSize, aMaxMoveAtOnce, aMinMoveAtOnce, aMaxStackTransfer - tStacksMoved);
+                if (tAmount != 0) return tAmount+tTotalItemsMoved;
             }
 
             return tTotalItemsMoved;
-
         }
         // there should be a function to transfer more than 1 stack in a pipe
         // however I do not see any ways to improve it. too much work for what it is worth
@@ -848,6 +830,34 @@ public class GT_Utility {
                 tTotalItemsMoved += tMoved;
         }
         return  0;
+    }
+
+    private static int moveToAdjacentChests(IInventory aTileEntity1, TileEntityChest aTargetChest, byte aGrabFrom, byte aPutTo, List<ItemStack> aFilter, boolean aInvertFilter, byte aMaxTargetStackSize, byte aMinTargetStackSize, byte aMaxMoveAtOnce, byte aMinMoveAtOnce, int aMaxStackTransfer) {
+        if (aTargetChest.adjacentChestChecked) {
+            if (aTargetChest.adjacentChestXNeg != null) {
+                return moveMultipleItemStacks(aTileEntity1, aTargetChest.adjacentChestXNeg, aGrabFrom, aPutTo, aFilter, aInvertFilter, aMaxTargetStackSize, aMinTargetStackSize, aMaxMoveAtOnce, aMinMoveAtOnce, aMaxStackTransfer, false);
+            } else if (aTargetChest.adjacentChestZNeg != null) {
+                return moveMultipleItemStacks(aTileEntity1, aTargetChest.adjacentChestZNeg, aGrabFrom, aPutTo, aFilter, aInvertFilter, aMaxTargetStackSize, aMinTargetStackSize, aMaxMoveAtOnce, aMinMoveAtOnce, aMaxStackTransfer, false);
+            } else if (aTargetChest.adjacentChestXPos != null) {
+                return moveMultipleItemStacks(aTileEntity1, aTargetChest.adjacentChestXPos, aGrabFrom, aPutTo, aFilter, aInvertFilter, aMaxTargetStackSize, aMinTargetStackSize, aMaxMoveAtOnce, aMinMoveAtOnce, aMaxStackTransfer, false);
+            } else if (aTargetChest.adjacentChestZPos != null) {
+                return moveMultipleItemStacks(aTileEntity1, aTargetChest.adjacentChestZPos, aGrabFrom, aPutTo, aFilter, aInvertFilter, aMaxTargetStackSize, aMinTargetStackSize, aMaxMoveAtOnce, aMinMoveAtOnce, aMaxStackTransfer, false);
+            }
+        }
+        return 0;
+    }
+
+    private static int moveFromAdjacentChests(TileEntityChest aChest, Object aTileEntity2, byte aGrabFrom, byte aPutTo, List<ItemStack> aFilter, boolean aInvertFilter, byte aMaxTargetStackSize, byte aMinTargetStackSize, byte aMaxMoveAtOnce, byte aMinMoveAtOnce, int aMaxStackTransfer) {
+        if (aChest.adjacentChestXNeg != null) {
+            return moveMultipleItemStacks(aChest.adjacentChestXNeg, aTileEntity2, aGrabFrom, aPutTo, aFilter, aInvertFilter, aMaxTargetStackSize, aMinTargetStackSize, aMaxMoveAtOnce, aMinMoveAtOnce, aMaxStackTransfer, false);
+        } else if (aChest.adjacentChestZNeg != null) {
+            return moveMultipleItemStacks(aChest.adjacentChestZNeg, aTileEntity2, aGrabFrom, aPutTo, aFilter, aInvertFilter, aMaxTargetStackSize, aMinTargetStackSize, aMaxMoveAtOnce, aMinMoveAtOnce, aMaxStackTransfer, false);
+        } else if (aChest.adjacentChestXPos != null) {
+            return moveMultipleItemStacks(aChest.adjacentChestXPos, aTileEntity2, aGrabFrom, aPutTo, aFilter, aInvertFilter, aMaxTargetStackSize, aMinTargetStackSize, aMaxMoveAtOnce, aMinMoveAtOnce, aMaxStackTransfer, false);
+        } else if (aChest.adjacentChestZPos != null) {
+            return moveMultipleItemStacks(aChest.adjacentChestZPos, aTileEntity2, aGrabFrom, aPutTo, aFilter, aInvertFilter, aMaxTargetStackSize, aMinTargetStackSize, aMaxMoveAtOnce, aMinMoveAtOnce, aMaxStackTransfer, false);
+        }
+        return 0;
     }
 
 
