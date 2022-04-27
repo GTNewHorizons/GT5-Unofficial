@@ -97,8 +97,8 @@ public class BeforeGTPreload implements Runnable {
             OreDictionary.registerOre("blockGlassHV", new ItemStack(bw_glasses[0], 1, 0));
             OreDictionary.registerOre("blockGlassEV", Ic2Items.reinforcedGlass);
             OreDictionary.registerOre("blockGlassEV", new ItemStack(bw_glasses[0], 1, 1));
-            OreDictionary.registerOre("blockGlassIV", new ItemStack(bw_glasses[0], 1, 2));
             OreDictionary.registerOre("blockGlassIV", new ItemStack(bw_glasses[0], 1, 12));
+            OreDictionary.registerOre("blockGlassIV", new ItemStack(bw_glasses[0], 1, 2));
             OreDictionary.registerOre("blockGlassLuV", new ItemStack(bw_glasses[0], 1, 3));
             OreDictionary.registerOre("blockGlassZPM", new ItemStack(bw_glasses[0], 1, 4));
             OreDictionary.registerOre("blockGlassUV", new ItemStack(bw_glasses[0], 1, 5));
