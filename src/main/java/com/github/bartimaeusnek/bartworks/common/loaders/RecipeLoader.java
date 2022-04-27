@@ -514,7 +514,7 @@ public class RecipeLoader {
                             'S', GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Titanium, 1L),
                             'C', new ItemStack(ItemRegistry.BW_BLOCKS[2]),
                             'H', ItemList.Hull_HV.get(1L),
-                            'Z', GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 1L)
+                            'Z', "circuitAdvanced"
                     }
             );
 
