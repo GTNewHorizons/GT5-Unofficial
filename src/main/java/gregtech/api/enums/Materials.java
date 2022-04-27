@@ -345,6 +345,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
      * Not possible to determine exact Components
      */
     public static Materials Antimatter              = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Antimatter"              ,   "Antimatter"                    ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyePink        , Arrays.asList(new TC_AspectStack(TC_Aspects.POTENTIA, 9), new TC_AspectStack(TC_Aspects.PERFODIO, 8)));
+    public static Materials AdvancedGlue            = new MaterialBuilder(567, TextureSet.SET_FLUID         ,                                                                                                         "Advanced Glue").setName("AdvancedGlue").addCell().addFluid().setRGB(255, 255, 185).setColor(Dyes.dyeYellow).setAspects(Arrays.asList(new TC_AspectStack(TC_Aspects.LIMUS, 5))).constructMaterial();
     public static Materials BioFuel                 = new Materials( 705, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 255, 128,   0,   0,   "BioFuel"                 ,   "Biofuel"                       ,    0,       6,         -1,    0, false, false,   1,   1,   1, Dyes.dyeOrange      );
     public static Materials Biomass                 = new Materials( 704, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                ,   0, 255,   0,   0,   "Biomass"        	     ,   "Forestry Biomass"              ,    3,       8,         -1,    0, false, false,   1,   1,   1, Dyes.dyeGreen       );
     public static Materials CharcoalByproducts      = new MaterialBuilder(675, TextureSet.SET_FLUID             ,                                                                                                     "Charcoal Byproducts").addCell().setRGB(120, 68, 33).setColor(Dyes.dyeBrown).constructMaterial();
@@ -1558,6 +1559,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     private static void overrideChemicalFormulars() {
         Glue.mChemicalFormula = "No Horses were harmed for the Production";
+        AdvancedGlue.mChemicalFormula = "A chemically approved glue!";
         UUAmplifier.mChemicalFormula = "Accelerates the Mass Fabricator";
         LiveRoot.mChemicalFormula = "";
         WoodSealed.mChemicalFormula = "";
