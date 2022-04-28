@@ -358,6 +358,7 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends GregtechMeta_
 
 		long tVoltage = getMaxInputVoltage();
 		byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
+		long tEnergy = getMaxInputEnergy();
 
 		GT_Recipe.GT_Recipe_Map tRecipeMap = this.getRecipeMap(tCircuit);
 		if (tRecipeMap == null)
@@ -401,7 +402,7 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends GregtechMeta_
 		Logger.WARNING("tVoltage: "+tVoltage);
 		Logger.WARNING("tRecipeEUt: "+tRecipeEUt);
 		// Count recipes to do in parallel, consuming input items and fluids and considering input voltage limits
-		for (; parallelRecipes < aMaxParallelRecipes && tTotalEUt < (tVoltage - tRecipeEUt); parallelRecipes++) {
+		for (; parallelRecipes < aMaxParallelRecipes && tTotalEUt < (tEnergy - tRecipeEUt); parallelRecipes++) {
 			if (!tRecipe.isRecipeInputEqual(true, aFluidInputs, aItemInputs)) {
 				Logger.WARNING("Broke at "+parallelRecipes+".");
 				break;

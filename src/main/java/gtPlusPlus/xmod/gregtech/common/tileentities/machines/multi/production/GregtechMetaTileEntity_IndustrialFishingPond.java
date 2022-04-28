@@ -496,6 +496,7 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends GregtechMeta_M
 
 		long tVoltage = getMaxInputVoltage();
 		byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
+		long tEnergy = getMaxInputEnergy();
 		log("Running checkRecipeGeneric(0)");
 
 		//Check to see if Voltage Tier > Control Core Tier
@@ -546,7 +547,7 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends GregtechMeta_M
 		log("tVoltage: "+tVoltage);
 		log("tRecipeEUt: "+tRecipeEUt);
 		// Count recipes to do in parallel, consuming input items and fluids and considering input voltage limits
-		for (; parallelRecipes < aMaxParallelRecipes && tTotalEUt < (tVoltage - tRecipeEUt); parallelRecipes++) {			
+		for (; parallelRecipes < aMaxParallelRecipes && tTotalEUt < (tEnergy - tRecipeEUt); parallelRecipes++) {
 			log("Bumped EU from "+tTotalEUt+" to "+(tTotalEUt+tRecipeEUt)+".");
 			tTotalEUt += tRecipeEUt;
 		}
