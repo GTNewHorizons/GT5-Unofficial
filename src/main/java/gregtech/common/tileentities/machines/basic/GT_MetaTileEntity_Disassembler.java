@@ -203,11 +203,11 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
     }
 
     private int process(){
-        int statusCode = checkRecipeMap();
+        int statusCode = onTheFlyGeneration();
         if (statusCode != DID_NOT_FIND_RECIPE)
             return statusCode;
 
-        return onTheFlyGeneration();
+        return checkRecipeMap();
     }
 
     private int onTheFlyGeneration() {
