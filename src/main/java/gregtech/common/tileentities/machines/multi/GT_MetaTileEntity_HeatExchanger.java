@@ -200,9 +200,9 @@ public class GT_MetaTileEntity_HeatExchanger extends GT_MetaTileEntity_EnhancedM
 
     private int useWater(int steam) {
         steamBudget -= steam;
-        int usage = Math.min(0, Math.floorDiv(steamBudget, GT_Values.STEAM_PER_WATER));
+        int usage = -Math.min(0, Math.floorDiv(steamBudget, GT_Values.STEAM_PER_WATER));
         // still subtract, because usage will be a negative number
-        steamBudget -= usage * GT_Values.STEAM_PER_WATER;
+        steamBudget += usage * GT_Values.STEAM_PER_WATER;
         return usage;
     }
 
