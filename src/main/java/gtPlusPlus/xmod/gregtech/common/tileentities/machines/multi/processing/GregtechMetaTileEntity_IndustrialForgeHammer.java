@@ -59,7 +59,8 @@ public class GregtechMetaTileEntity_IndustrialForgeHammer extends GregtechMeta_M
 		tt.addMachineType(getMachineType())
 		.addInfo("Controller Block for the Industrial Forge Hammer")
 		.addInfo("Speed: 100% x Anvil Tier | Eu Usage: 100% | Parallel: Tier x 8")
-		.addInfo("T1 - Vanilla Anvil");
+		.addInfo("T1 - Vanilla Anvil")
+		.addInfo("Anvil goes in Middle 3x3x3 Structure");
 		if (LoadedMods.Railcraft) {
 			tt.addInfo("T2 - Steel Anvil");
 		}
