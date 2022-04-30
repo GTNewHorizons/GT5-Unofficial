@@ -84,7 +84,7 @@ public class BW_TileEntity_HeatedWaterPump extends TileEntity implements ITileDr
 
 
     private boolean checkPreUpdate() {
-        return this.worldObj.isRemote || ((this.fuelstack == null || this.fuelstack.stackSize <= 0) && this.fuel <= 0) || (this.tick == 0 && this.worldObj.getBlock(this.xCoord, this.yCoord - 1, this.zCoord) == Blocks.air);
+        return this.worldObj.isRemote || ((this.fuelstack == null || this.fuelstack.stackSize <= 0) && this.fuel <= 0);
     }
 
     private void fixUnderlflow() {
