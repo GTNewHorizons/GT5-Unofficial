@@ -21,6 +21,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.extensions.ArrayExt;
+import ic2.api.item.IC2Items;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -149,6 +150,7 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
         blackList.add(new GT_ItemStack(GT_ModHandler.getModItem(MOD_ID_RC, "track", 1L, 0)));
         blackList.add(new GT_ItemStack(GT_ModHandler.getModItem(MOD_ID_RC, "track", 1L, 736)));
         blackList.add(new GT_ItemStack(GT_ModHandler.getModItem(MOD_ID_RC, "track", 1L, 816)));
+        blackList.add(new GT_ItemStack(IC2Items.getItem("mixedMetalIngot")));
     }
 
     private boolean compareToUnpacker(ItemStack is){
