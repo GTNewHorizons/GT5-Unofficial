@@ -84,7 +84,7 @@ public class GT_MetaTileEntity_LargeTurbine_HPSteam extends GT_MetaTileEntity_La
     }
 
     @Override
-    int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow, int aBaseEff, int overflowEfficiency, boolean turbineJustStarted) {
+    int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow, int aBaseEff, int overflowEfficiency) {
         if (looseFit) {
             long[] calculatedFlow = calculateLooseFlow(aOptFlow, aBaseEff);
             aOptFlow = GT_Utility.safeInt(calculatedFlow[0]);
@@ -108,15 +108,9 @@ public class GT_MetaTileEntity_LargeTurbine_HPSteam extends GT_MetaTileEntity_La
         for (int i = 0; i < aFluids.size() && remainingFlow > 0; i++) {
             final FluidStack aFluidStack = aFluids.get(i);
             if (GT_ModHandler.isSuperHeatedSteam(aFluidStack)) {
-                if (turbineJustStarted) {
-                    flow = aFluidStack.amount; // consume all the fluid in the turbine if it was just activated, to protect it from explosions
-                    depleteInput(new FluidStack(aFluidStack, flow)); // deplete that amount
-                }
-                else {
-                    flow = Math.min(aFluidStack.amount, remainingFlow); // try to use up to the max flow defined just above
-                    depleteInput(new FluidStack(aFluidStack, flow)); // deplete that amount
-                    this.storedFluid += aFluidStack.amount;
-                }
+                flow = Math.min(aFluidStack.amount, remainingFlow); // try to use up to the max flow defined just above
+                depleteInput(new FluidStack(aFluidStack, flow)); // deplete that amount
+                this.storedFluid += aFluidStack.amount;
                 remainingFlow -= flow; // track amount we're allowed to continue depleting from hatches
                 totalFlow += flow; // track total input used
                 if (!achievement) {
@@ -139,6 +133,12 @@ public class GT_MetaTileEntity_LargeTurbine_HPSteam extends GT_MetaTileEntity_La
             float efficiency = getOverflowEfficiency(totalFlow, aOptFlow, overflowMultiplier);
             tEU *= efficiency;
             tEU = Math.max(1, GT_Utility.safeInt((long) tEU * (long) aBaseEff / 10000L));
+        }
+
+        // If next output is above the maximum the dynamo can handle, set it to the maximum instead of exploding the turbine
+        // Raising the maximum allowed flow rate to account for the efficiency changes beyond the optimal flow rate can explode turbines on world load
+        if (tEU > getMaximumOutput()){
+            tEU = GT_Utility.safeInt(getMaximumOutput());
         }
 
         return tEU;

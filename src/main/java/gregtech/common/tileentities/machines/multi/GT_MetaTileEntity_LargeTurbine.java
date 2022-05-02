@@ -115,7 +115,6 @@ public abstract class GT_MetaTileEntity_LargeTurbine extends GT_MetaTileEntity_E
             stopMachine();
             return false;
         }
-        boolean turbineJustStarted = false;
         ArrayList<FluidStack> tFluids = getStoredFluids();
         if (tFluids.size() > 0) {
 
@@ -148,11 +147,7 @@ public abstract class GT_MetaTileEntity_LargeTurbine extends GT_MetaTileEntity_E
             }
         }
 
-        if (this.getBaseMetaTileEntity().hasWorkJustBeenEnabled()) {
-            turbineJustStarted = true;
-        }
-
-        int newPower = fluidIntoPower(tFluids, optFlow, baseEff, overflowMultiplier, turbineJustStarted);  // How much the turbine should be producing with this flow
+        int newPower = fluidIntoPower(tFluids, optFlow, baseEff, overflowMultiplier);  // How much the turbine should be producing with this flow
         int difference = newPower - this.mEUt; // difference between current output and new output
 
         // Magic numbers: can always change by at least 10 eu/t, but otherwise by at most 1 percent of the difference in power level (per tick)
@@ -178,9 +173,21 @@ public abstract class GT_MetaTileEntity_LargeTurbine extends GT_MetaTileEntity_E
         }
     }
 
-    abstract int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow, int aBaseEff, int overflowMultiplier, boolean turbineJustStarted);
+    abstract int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow, int aBaseEff, int overflowMultiplier);
 
     abstract float getOverflowEfficiency(int totalFlow, int actualOptimalFlow, int overflowMultiplier);
+
+    // Gets the maximum output that the turbine currently can handle. Going above this will cause the turbine to explode
+    public long getMaximumOutput() {
+        long aTotal = 0;
+        for (GT_MetaTileEntity_Hatch_Dynamo aDynamo : mDynamoHatches) {
+            if (isValidMetaTileEntity(aDynamo)) {
+                long aVoltage = aDynamo.maxEUOutput();
+                aTotal = aDynamo.maxAmperesOut() * aVoltage;
+            }
+        }
+        return aTotal;
+    }
 
     @Override
     public int getDamageToComponent(ItemStack aStack) {
