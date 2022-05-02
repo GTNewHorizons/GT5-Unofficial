@@ -1605,6 +1605,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Aluminiumhydroxide.mChemicalFormula = "Al\u0028OH\u0029\u2083";
         MaterialsKevlar.LiquidCrystalKevlar.mChemicalFormula = "[-CO-C\u2086H\u2084-CO-NH-C\u2086H\u2084-NH-]n";
         MaterialsKevlar.RhodiumChloride.mChemicalFormula = "RhCl\u2083";
+        MaterialsKevlar.OrganorhodiumCatalyst.mChemicalFormula = "RhHCO(P(C\u2086H\u2085)\u2083)\u2083";
     }
 
     private static void initSubTags() {
