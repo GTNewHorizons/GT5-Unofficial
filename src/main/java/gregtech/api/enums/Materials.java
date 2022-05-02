@@ -1626,6 +1626,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         CertusQuartz.mChemicalFormula = "SIO\u2082";
         MaterialsKevlar.LiquidCrystalKevlar.mChemicalFormula = "[-CO-C\u2086H\u2084-CO-NH-C\u2086H\u2084-NH-]n";
         MaterialsKevlar.RhodiumChloride.mChemicalFormula = "RhCl\u2083";
+        MaterialsKevlar.OrganorhodiumCatalyst.mChemicalFormula = "RhHCO(P(C\u2086H\u2085)\u2083)\u2083";
     }
 
     private static void initSubTags() {
