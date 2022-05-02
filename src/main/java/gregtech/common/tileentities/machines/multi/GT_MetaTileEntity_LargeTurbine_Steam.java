@@ -93,7 +93,7 @@ public class GT_MetaTileEntity_LargeTurbine_Steam extends GT_MetaTileEntity_Larg
     }
 
     @Override
-    int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow, int aBaseEff, int overflowEfficiency) {
+    int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow, int aBaseEff, int overflowEfficiency, boolean turbineJustStarted) {
         if (looseFit) {
             long[] calculatedFlow = calculateLooseFlow(aOptFlow, aBaseEff);
             aOptFlow = GT_Utility.safeInt(calculatedFlow[0]);
@@ -117,9 +117,15 @@ public class GT_MetaTileEntity_LargeTurbine_Steam extends GT_MetaTileEntity_Larg
         for (int i = 0; i < aFluids.size() && remainingFlow > 0; i++) { // loop through each hatch; extract inputs and track totals.
             final FluidStack aFluidStack = aFluids.get(i);
             if (GT_ModHandler.isAnySteam(aFluidStack)) {
-                flow = Math.min(aFluidStack.amount, remainingFlow); // try to use up w/o exceeding remainingFlow
-                depleteInput(new FluidStack(aFluidStack, flow)); // deplete that amount
-                this.storedFluid += aFluidStack.amount;
+                if (turbineJustStarted) {
+                    flow = aFluidStack.amount; // consume all the fluid in the turbine if it was just activated, to protect it from explosions
+                    depleteInput(new FluidStack(aFluidStack, flow)); // deplete that amount
+                }
+                else {
+                    flow = Math.min(aFluidStack.amount, remainingFlow); // try to use up to the max flow defined just above
+                    depleteInput(new FluidStack(aFluidStack, flow)); // deplete that amount
+                    this.storedFluid += aFluidStack.amount;
+                }
                 remainingFlow -= flow; // track amount we're allowed to continue depleting from hatches
                 totalFlow += flow; // track total input used
                 if (!achievement) {

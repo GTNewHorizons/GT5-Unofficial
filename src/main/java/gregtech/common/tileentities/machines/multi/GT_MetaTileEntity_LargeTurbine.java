@@ -115,8 +115,10 @@ public abstract class GT_MetaTileEntity_LargeTurbine extends GT_MetaTileEntity_E
             stopMachine();
             return false;
         }
+        boolean turbineJustStarted = false;
         ArrayList<FluidStack> tFluids = getStoredFluids();
         if (tFluids.size() > 0) {
+
             if (baseEff == 0 || optFlow == 0 || counter >= 512 || this.getBaseMetaTileEntity().hasWorkJustBeenEnabled()
                     || this.getBaseMetaTileEntity().hasInventoryBeenModified()) {
                 counter = 0;
@@ -146,7 +148,11 @@ public abstract class GT_MetaTileEntity_LargeTurbine extends GT_MetaTileEntity_E
             }
         }
 
-        int newPower = fluidIntoPower(tFluids, optFlow, baseEff, overflowMultiplier);  // How much the turbine should be producing with this flow
+        if (this.getBaseMetaTileEntity().hasWorkJustBeenEnabled()) {
+            turbineJustStarted = true;
+        }
+
+        int newPower = fluidIntoPower(tFluids, optFlow, baseEff, overflowMultiplier, turbineJustStarted);  // How much the turbine should be producing with this flow
         int difference = newPower - this.mEUt; // difference between current output and new output
 
         // Magic numbers: can always change by at least 10 eu/t, but otherwise by at most 1 percent of the difference in power level (per tick)
@@ -172,7 +178,7 @@ public abstract class GT_MetaTileEntity_LargeTurbine extends GT_MetaTileEntity_E
         }
     }
 
-    abstract int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow, int aBaseEff, int overflowMultiplier);
+    abstract int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow, int aBaseEff, int overflowMultiplier, boolean turbineJustStarted);
 
     abstract float getOverflowEfficiency(int totalFlow, int actualOptimalFlow, int overflowMultiplier);
 
