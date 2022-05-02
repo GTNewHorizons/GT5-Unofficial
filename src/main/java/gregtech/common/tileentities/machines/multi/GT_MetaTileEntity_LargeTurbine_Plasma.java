@@ -115,7 +115,7 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
             storedFluid = 0;
             for (FluidStack aFluid : aFluids) {
                 if (aFluid.isFluidEqual(firstFuelType)) {
-                    flow = Math.min(aFluid.amount, remainingFlow); // try to use up w/o exceeding remainingFlow
+                    flow = Math.min(aFluid.amount, remainingFlow); // try to use up to the max flow defined just above
                     depleteInput(new FluidStack(aFluid, flow)); // deplete that amount
                     this.storedFluid += aFluid.amount;
                     remainingFlow -= flow; // track amount we're allowed to continue depleting from hatches
@@ -145,6 +145,12 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
                 float efficiency = getOverflowEfficiency(totalFlow, actualOptimalFlow, overflowMultiplier);
                 tEU = (int) (tEU * efficiency);
                 tEU = GT_Utility.safeInt((long) (aBaseEff / 10000D * tEU));
+            }
+
+            // If next output is above the maximum the dynamo can handle, set it to the maximum instead of exploding the turbine
+            // Raising the maximum allowed flow rate to account for the efficiency changes beyond the optimal flow rate can explode turbines on world load
+            if (tEU > getMaximumOutput()){
+                tEU = GT_Utility.safeInt(getMaximumOutput());
             }
 
             return tEU;

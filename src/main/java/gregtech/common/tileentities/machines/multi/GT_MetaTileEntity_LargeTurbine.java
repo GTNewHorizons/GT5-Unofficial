@@ -117,6 +117,7 @@ public abstract class GT_MetaTileEntity_LargeTurbine extends GT_MetaTileEntity_E
         }
         ArrayList<FluidStack> tFluids = getStoredFluids();
         if (tFluids.size() > 0) {
+
             if (baseEff == 0 || optFlow == 0 || counter >= 512 || this.getBaseMetaTileEntity().hasWorkJustBeenEnabled()
                     || this.getBaseMetaTileEntity().hasInventoryBeenModified()) {
                 counter = 0;
@@ -175,6 +176,18 @@ public abstract class GT_MetaTileEntity_LargeTurbine extends GT_MetaTileEntity_E
     abstract int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow, int aBaseEff, int overflowMultiplier);
 
     abstract float getOverflowEfficiency(int totalFlow, int actualOptimalFlow, int overflowMultiplier);
+
+    // Gets the maximum output that the turbine currently can handle. Going above this will cause the turbine to explode
+    public long getMaximumOutput() {
+        long aTotal = 0;
+        for (GT_MetaTileEntity_Hatch_Dynamo aDynamo : mDynamoHatches) {
+            if (isValidMetaTileEntity(aDynamo)) {
+                long aVoltage = aDynamo.maxEUOutput();
+                aTotal = aDynamo.maxAmperesOut() * aVoltage;
+            }
+        }
+        return aTotal;
+    }
 
     @Override
     public int getDamageToComponent(ItemStack aStack) {
