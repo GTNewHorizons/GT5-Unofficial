@@ -79,6 +79,7 @@ public class GT_GUIContainer_OutputHatch extends GT_GUIContainerMetaTile_Machine
             }
             if (tFluidStack != null) {
                 GT_Values.NW.sendToServer(new GT_Packet_SetLockedFluid(((GT_GUIContainer_OutputHatch) gui).mContainer.mTileEntity, tFluidStack));
+                draggedStack.stackSize = 0;
                 return true;
             }
         }
