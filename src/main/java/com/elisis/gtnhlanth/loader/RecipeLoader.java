@@ -591,8 +591,8 @@ public class RecipeLoader {
         		Materials.Ammonia.getGas(3000),
         		WerkstoffMaterialPool.CeriumChloride.get(OrePrefixes.dust, 1),
         		Materials.Water.getCells(1),
-        		500,
-        		1920   		
+        		300,
+        		450   		
         	);
         
         GT_Values.RA.addBlastRecipe(
