@@ -33,7 +33,7 @@ import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 public class GTMTE_SOFuelCellMK1  extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_SOFuelCellMK1> {
 
 	private final int OXYGEN_PER_SEC = 100;
-	private final int EU_PER_TICK = 2000;
+	private final int EU_PER_TICK = 2048;
 	private final int STEAM_PER_SEC = 20000;
 
 	public GTMTE_SOFuelCellMK1(int aID, String aName, String aNameRegional) {
@@ -146,7 +146,7 @@ public class GTMTE_SOFuelCellMK1  extends GT_MetaTileEntity_EnhancedMultiBlockBa
 					if((liquid = GT_Utility.getFluidForFilledItem(aFuel.getRepresentativeInput(0), true)) != null
 							&& hatchFluid.isFluidEqual(liquid)) {
 
-						liquid.amount = (int) Math.floor((EU_PER_TICK * 20) / aFuel.mSpecialValue);
+						liquid.amount = (EU_PER_TICK * 20) / aFuel.mSpecialValue;
 
 						if(super.depleteInput(liquid)) {
 
