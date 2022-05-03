@@ -26,6 +26,7 @@ import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_Log;
+import net.minecraftforge.oredict.OreDictionary;
 
 @Mod(modid = Tags.MODID, version = Tags.VERSION, name = Tags.MODNAME, 
     dependencies = "required-after:IC2; " + "required-after:gregtech; "
@@ -74,7 +75,7 @@ public class GTNHLanthanides {
         GT_Log.out.print(Arrays.toString(Werkstoff.werkstoffNameHashMap.keySet().toArray()));
         GT_Log.out.print(Arrays.toString(Werkstoff.werkstoffHashMap.keySet().toArray()));
         
-        
+        GT_Log.out.print("HMMM " + Arrays.toString(OreDictionary.getOreIDs(WerkstoffMaterialPool.DephosphatedSamariumConcentrate.get(OrePrefixes.dust, 1))));
         
         
     }

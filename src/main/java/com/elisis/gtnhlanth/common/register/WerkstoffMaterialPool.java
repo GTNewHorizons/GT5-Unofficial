@@ -915,6 +915,17 @@ public class WerkstoffMaterialPool implements Runnable {
     		TextureSet.SET_DULL
     	);
     
+    public static final Werkstoff DephosphatedSamariumConcentrate = new Werkstoff(
+    		new short[] {255, 170, 220},
+    		"Dephosphated Samarium Concentrate",
+    		subscriptNumbers("??Sm??"),
+    		new Werkstoff.Stats(),
+    		Werkstoff.Types.MIXTURE,
+    		new Werkstoff.GenerationFeatures().disable().onlyDust(),
+    		offsetID2 + 29,
+    		TextureSet.SET_DULL
+    	);
+    
     
     
     // Weird/Exciting Chemicals		

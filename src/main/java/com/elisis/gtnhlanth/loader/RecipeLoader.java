@@ -979,6 +979,8 @@ public class RecipeLoader {
         		480
         		);
         
+        
+        
         GT_Values.RA.addBlastRecipe(
         		WerkstoffMaterialPool.FluorinatedSamaricConcentrate.get(OrePrefixes.dust, 2),
         		Materials.Calcium.getDust(3),
@@ -1011,6 +1013,35 @@ public class RecipeLoader {
         		WerkstoffMaterialPool.SamaricResidue.get(OrePrefixes.dustSmall, 2), // Potentially make only Samarium
         		800,
         		1920
+        	);
+        
+        GT_Values.RA.addChemicalRecipe(
+        		WerkstoffMaterialPool.SamariumOreConcentrate.get(OrePrefixes.dust, 2), 
+        		Materials.Calcium.getDust(3), 
+        		null,
+        		null,
+        		WerkstoffMaterialPool.DephosphatedSamariumConcentrate.get(OrePrefixes.dust, 1),
+        		Materials.TricalciumPhosphate.getDust(1),
+        		300,
+        		1920
+        	);
+        
+        GT_Values.RA.addCentrifugeRecipe(
+        		WerkstoffMaterialPool.DephosphatedSamariumConcentrate.get(OrePrefixes.dust, 6),
+        		null,
+        		null,
+        		null,
+        		Materials.Samarium.getDust(1),
+        		WerkstoffLoader.Thorianit.get(OrePrefixes.dust, 2),
+        		WerkstoffMaterialPool.Gangue.get(OrePrefixes.dust, 4),
+        		null,
+        		null,
+        		null,
+        		new int[] {
+        				9000, 8000, 10000
+        		},
+        		200,
+        		1920        		
         	);
     }
     
@@ -1334,7 +1365,7 @@ public class RecipeLoader {
             if (GT_Utility.isStackValid(input)) {
                 int[] oreDict = OreDictionary.getOreIDs(input);
                 for (int oreDictID : oreDict) {
-                    if (OreDictionary.getOreName(oreDictID).startsWith("dust") /*OreDictionary.getOreName(oreDictID).startsWith("dustPureCerium") || OreDictionary.getOreName(oreDictID).startsWith("dustImpureCerium") || OreDictionary.getOreName(oreDictID).startsWith("dustSpace") || OreDictionary.getOreName(oreDictID).startsWith("dustCerium")*/) {
+                    if (OreDictionary.getOreName(oreDictID).startsWith("dust") && (!OreDictionary.getOreName(oreDictID).contains("Dephosphated")) /*OreDictionary.getOreName(oreDictID).startsWith("dustPureCerium") || OreDictionary.getOreName(oreDictID).startsWith("dustImpureCerium") || OreDictionary.getOreName(oreDictID).startsWith("dustSpace") || OreDictionary.getOreName(oreDictID).startsWith("dustCerium")*/) {
                         GT_Recipe tRecipe = recipe.copy();
                         for (int i = 0; i < tRecipe.mOutputs.length; i ++) {
                             if (!GT_Utility.isStackValid(tRecipe.mOutputs[i])) continue;
