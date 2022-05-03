@@ -588,7 +588,7 @@ public class RecipeLoader {
         		WerkstoffMaterialPool.CeriumDioxide.get(OrePrefixes.dust, 1),
         		Materials.Empty.getCells(1),
         		WerkstoffLoader.AmmoniumChloride.getFluidOrGas(3000),
-        		Materials.Ammonia.getFluid(3000),
+        		Materials.Ammonia.getGas(3000),
         		WerkstoffMaterialPool.CeriumChloride.get(OrePrefixes.dust, 1),
         		Materials.Water.getCells(1),
         		500,
