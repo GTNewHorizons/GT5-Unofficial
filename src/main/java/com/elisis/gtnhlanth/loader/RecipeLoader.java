@@ -557,7 +557,7 @@ public class RecipeLoader {
         		null,
         		WerkstoffMaterialPool.NitratedRareEarthMonaziteConcentrate.getFluidOrGas(1000),
         		WerkstoffMaterialPool.NitricLeachedMonaziteMixture.getFluidOrGas(2000),
-        		Materials.Empty.getCells(1),
+        		null,
         		220,
         		120
         	);
