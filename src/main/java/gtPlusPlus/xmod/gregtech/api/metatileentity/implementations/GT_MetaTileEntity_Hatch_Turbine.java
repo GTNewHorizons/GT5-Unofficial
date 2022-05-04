@@ -167,9 +167,6 @@ public class GT_MetaTileEntity_Hatch_Turbine extends GT_MetaTileEntity_Hatch {
 		if (hasTurbine() && MathUtils.randInt(0, 1) == 0) {
 			ItemStack aTurbine = getTurbine();                  
 			((GT_MetaGenerated_Tool) aTurbine.getItem()).doDamage(aTurbine, (long)getDamageToComponent(aTurbine) * (long) Math.min(aEUt / damageFactorLow, Math.pow(aEUt, damageFactorHigh)));
-			if (aTurbine.stackSize == 0) {
-				aTurbine = null;
-			}
 		}
 	}
     
@@ -213,6 +210,8 @@ public class GT_MetaTileEntity_Hatch_Turbine extends GT_MetaTileEntity_Hatch {
 		else {
 			//No Controller
 		}
+		if (this.mInventory[0] != null && this.mInventory[0].stackSize <= 0)
+			this.mInventory[0] = null;
 	}
 
 	public boolean isControllerActive() {
