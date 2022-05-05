@@ -32,9 +32,9 @@ import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
 public class GTMTE_SOFuelCellMK1  extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_SOFuelCellMK1> {
 
-	private final int OXYGEN_PER_SEC = 400;
-	private final int EU_PER_TICK = 1024;
-	private final int STEAM_PER_SEC = 18000;
+	private final int OXYGEN_PER_SEC = 100;
+	private final int EU_PER_TICK = 2048;
+	private final int STEAM_PER_SEC = 20000;
 
 	public GTMTE_SOFuelCellMK1(int aID, String aName, String aNameRegional) {
 		super(aID, aName, aNameRegional);
@@ -81,7 +81,7 @@ public class GTMTE_SOFuelCellMK1  extends GT_MetaTileEntity_EnhancedMultiBlockBa
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Gas Turbine")
             .addInfo("Oxidizes gas fuels to generate electricity without polluting the environment")
-            .addInfo("Consumes 29,480EU worth of fuel with up to 97% efficiency each second")
+            .addInfo("Consumes up to" + (EU_PER_TICK * 20) + "EU worth of fuel with up to 100% efficiency each second")
             .addInfo("Steam production requires the SOFC to heat up completely first")
             .addInfo("Outputs " + EU_PER_TICK + "EU/t and " + STEAM_PER_SEC + "L/s Steam")
             .addInfo("Additionally, requires " + OXYGEN_PER_SEC + "L/s Oxygen gas")
@@ -146,7 +146,7 @@ public class GTMTE_SOFuelCellMK1  extends GT_MetaTileEntity_EnhancedMultiBlockBa
 					if((liquid = GT_Utility.getFluidForFilledItem(aFuel.getRepresentativeInput(0), true)) != null
 							&& hatchFluid.isFluidEqual(liquid)) {
 
-						liquid.amount = Math.round((EU_PER_TICK * 20) / aFuel.mSpecialValue);
+						liquid.amount = (EU_PER_TICK * 20) / aFuel.mSpecialValue;
 
 						if(super.depleteInput(liquid)) {
 

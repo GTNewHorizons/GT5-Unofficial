@@ -2,21 +2,14 @@
 
 repositories {
     maven {
-        name 'GTNH Maven'
-        url 'http://jenkins.usrv.eu:8081/nexus/content/groups/public/'
+        name = 'GTNH Maven'
+        url = 'http://jenkins.usrv.eu:8081/nexus/content/groups/public/'
         allowInsecureProtocol
     }
     maven {
-        name 'ic2'
-        url 'https://maven.ic2.player.to/'
-        metadataSources {
-            mavenPom()
-            artifact()
-        }
-    }
-    maven {
-        name 'ic2'
-        url 'https://maven2.ic2.player.to/'
+        name = 'ic2'
+        url = 'https://maven.ic2.player.to/'
+        url ='https://maven2.ic2.player.to/'
         metadataSources {
             mavenPom()
             artifact()
@@ -29,6 +22,6 @@ repositories {
         }
     }
     maven {
-        url 'https://jitpack.io'
+        url = 'https://jitpack.io'
     }
 }

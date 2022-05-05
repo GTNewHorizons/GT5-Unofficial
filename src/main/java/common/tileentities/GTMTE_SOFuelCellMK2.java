@@ -83,7 +83,8 @@ public class GTMTE_SOFuelCellMK2  extends GT_MetaTileEntity_EnhancedMultiBlockBa
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Gas Turbine")
             .addInfo("Oxidizes gas fuels to generate electricity without polluting the environment")
-            .addInfo("Consumes 442,200EU worth of fuel with up to 97% efficiency each second")
+            .addInfo("Consumes up to" + (EU_PER_TICK * 20) + "EU worth of fuel with up to 100% efficiency each second")
+            .addInfo("Nitrobenzene and other gas fuels above 1M EU/bucket are more efficient")
             .addInfo("Steam production requires the SOFC to heat up completely first")
             .addInfo("Outputs " + EU_PER_TICK + "EU/t and " + STEAM_PER_SEC + "L/s Steam")
             .addInfo("Additionally, requires " + OXYGEN_PER_SEC + "L/s Oxygen gas")
@@ -148,7 +149,7 @@ public class GTMTE_SOFuelCellMK2  extends GT_MetaTileEntity_EnhancedMultiBlockBa
 					if((liquid = GT_Utility.getFluidForFilledItem(aFuel.getRepresentativeInput(0), true)) != null
 							&& hatchFluid.isFluidEqual(liquid)) {
 
-						liquid.amount = Math.round((EU_PER_TICK * 20) / aFuel.mSpecialValue);
+                        liquid.amount = (int) (Math.floor((EU_PER_TICK * 20) / aFuel.mSpecialValue) / Math.max(1, aFuel.mSpecialValue / 1000));
 
 						if(super.depleteInput(liquid)) {
 
