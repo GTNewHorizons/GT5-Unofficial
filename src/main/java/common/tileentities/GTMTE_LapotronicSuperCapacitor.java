@@ -36,7 +36,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
 public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_LapotronicSuperCapacitor> {
-	private enum TopState {
+    private enum TopState {
 		MayBeTop,
 		Top,
 		NotTop
@@ -73,6 +73,15 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMu
 		public BigInteger getProvidedCapacity() {
 			return providedCapacity;
 		}
+
+        public static int getIndexFromGlassTier(int glassTier) {
+            for (int index = 0; index < values().length; index++) {
+                if (values()[index].getMinimalGlassTier() == glassTier) {
+                    return index;
+                }
+            }
+            return -1;
+        }
 	}
 
 	private static final String STRUCTURE_PIECE_BASE = "base";
@@ -120,7 +129,10 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMu
 	private final Set<GT_MetaTileEntity_Hatch_DynamoMulti> mDynamoHatchesTT = new HashSet<>();
 	private final Set<GT_MetaTileEntity_Hatch_EnergyTunnel> mEnergyTunnelsTT = new HashSet<>();
 	private final Set<GT_MetaTileEntity_Hatch_DynamoTunnel> mDynamoTunnelsTT = new HashSet<>();
-	// Count the amount of capacitors of each tier in each slot (translate with meta - 1)
+    /**
+     * Count the amount of capacitors of each tier in each slot.
+     * Index = meta - 1
+     */
 	private final int[] capacitors = new int[7];
 	private BigInteger capacity = BigInteger.ZERO;
 	private BigInteger stored = BigInteger.ZERO;
@@ -308,7 +320,8 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMu
 		// Make sure glass tier is T-2 of the highest tier capacitor in the structure
 		// Count down from the highest tier until an entry is found
 		// Borosilicate glass after 5 are just recolours of 0
-		for (int highestCapacitor = capacitors.length - 1; highestCapacitor >= 0; highestCapacitor--) {
+		for (int highestGlassTier = capacitors.length - 1; highestGlassTier >= 0; highestGlassTier--) {
+            int highestCapacitor = Capacitor.getIndexFromGlassTier(highestGlassTier);
 			if (capacitors[highestCapacitor] > 0) {
 				if (Capacitor.VALUES[highestCapacitor].getMinimalGlassTier() > glasTier)
 					return false;
