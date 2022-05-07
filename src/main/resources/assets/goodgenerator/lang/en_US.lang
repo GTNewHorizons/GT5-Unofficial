@@ -204,6 +204,17 @@ fluid.Low Quality Naquadria Sulphate=Low Quality Naquadria Sulphate
 fluid.Naquadah Goo=Naquadah Goo
 fluid.Enriched Naquadah Goo=Enriched Naquadah Goo
 fluid.Naquadria Goo=Naquadria Goo
+fluid.Diethylamine=Diethylamine
+fluid.Cyclopentadiene=Cyclopentadiene
+fluid.Jet Fuel No.3=Jet Fuel No.3
+fluid.Ferrocene Solution=Ferrocene Solution
+fluid.Impure Ferrocene Mixture=Impure Ferrocene Mixture
+fluid.Ethanol Gasoline=Ethanol Gasoline
+fluid.Iron II Chloride=Iron II Chloride
+fluid.Low Quality Naquadah Solution=Low Quality Naquadah Solution
+fluid.Ferrocene Waste=Ferrocene Waste
+fluid.Jet Fuel A=Jet Fuel A
+fluid.Thorium Tetrachloride=Thorium Tetrachloride
 
 #Fluid Tiles
 tile.lightlyCrackedNaquadahGas.name=Lightly Cracked Naquadah Gas
