@@ -185,7 +185,10 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
                 if (s.getStackSize() == 0)
                     continue;
                 NBTTagCompound tag = new NBTTagCompound();
-                s.getItemStack().writeToNBT(tag);
+                NBTTagCompound tagItemStack = new NBTTagCompound();
+                s.getItemStack().writeToNBT(tagItemStack);
+                tag.setTag("itemStack", tagItemStack);
+                tag.setLong("size", s.getStackSize());
                 items.appendTag(tag);
             }
             aNBT.setTag("cachedItems", items);
@@ -204,7 +207,11 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
             if (t instanceof NBTTagList) {
                 NBTTagList l = (NBTTagList)t;
                 for (int i = 0; i < l.tagCount(); ++i) {
-                    itemCache.add(AEApi.instance().storage().createItemStack(GT_Utility.loadItem(l.getCompoundTagAt(i))));
+                    NBTTagCompound tag = l.getCompoundTagAt(i);
+                    NBTTagCompound tagItemStack = tag.getCompoundTag("itemStack");
+                    final IAEItemStack s = AEApi.instance().storage().createItemStack(GT_Utility.loadItem(tagItemStack));
+                    s.setStackSize(tag.getLong("size"));
+                    itemCache.add(s);
                 }
             }
         }
