@@ -208,6 +208,10 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
                 NBTTagList l = (NBTTagList)t;
                 for (int i = 0; i < l.tagCount(); ++i) {
                     NBTTagCompound tag = l.getCompoundTagAt(i);
+                    if (!tag.hasKey("itemStack")) { // legacy #868
+                        itemCache.add(AEApi.instance().storage().createItemStack(GT_Utility.loadItem(l.getCompoundTagAt(i))));
+                        continue;
+                    }
                     NBTTagCompound tagItemStack = tag.getCompoundTag("itemStack");
                     final IAEItemStack s = AEApi.instance().storage().createItemStack(GT_Utility.loadItem(tagItemStack));
                     s.setStackSize(tag.getLong("size"));
