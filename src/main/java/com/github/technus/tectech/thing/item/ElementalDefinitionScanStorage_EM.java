@@ -64,8 +64,8 @@ public final class ElementalDefinitionScanStorage_EM extends Item {
 
     public static ArrayList<String> getLines(ItemStack containerItem){
         if(containerItem.stackTagCompound!=null && containerItem.stackTagCompound.hasKey("content")) {
-            EMInstanceStackMap contenet = EMInstanceStackMap.fromNBT(TecTech.definitionsRegistry, containerItem.stackTagCompound.getCompoundTag("contenet"));
-            return contenet.getScanInfo(containerItem.stackTagCompound.getIntArray("scanConfiguration"));
+            EMInstanceStackMap content = EMInstanceStackMap.fromNBT(TecTech.definitionsRegistry, containerItem.stackTagCompound.getCompoundTag("content"));
+            return content.getScanInfo(containerItem.stackTagCompound.getIntArray("scanConfiguration"));
         }
         return null;
     }
