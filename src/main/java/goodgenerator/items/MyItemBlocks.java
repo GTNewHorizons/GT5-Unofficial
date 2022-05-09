@@ -1,6 +1,7 @@
 package goodgenerator.items;
 
 import goodgenerator.blocks.regularBlock.TEBlock;
+import goodgenerator.blocks.tileEntity.EssentiaOutputHatch;
 import goodgenerator.util.CharExchanger;
 import goodgenerator.util.DescTextLocalization;
 import cpw.mods.fml.relauncher.Side;
@@ -71,8 +72,11 @@ public class MyItemBlocks extends ItemBlock {
             TEBlock tile = (TEBlock) Block.getBlockFromItem(p_77624_1_.getItem());
             if (tile.getIndex() == 1)
                 p_77624_3_.addAll(Arrays.asList(DescTextLocalization.addText("EssentiaHatch.tooltip", 2)));
-        }
-        else p_77624_3_.add(mNoTileEntityToolTip);
+            if (tile.getIndex() == 2) {
+                p_77624_3_.add(StatCollector.translateToLocal("EssentiaOutputHatch.tooltip.0"));
+                p_77624_3_.add(StatCollector.translateToLocal("EssentiaOutputHatch.tooltip.1") + " " + EssentiaOutputHatch.CAPACITY);
+            }
+        } else p_77624_3_.add(mNoTileEntityToolTip);
 
         if (Block.getBlockFromItem(p_77624_1_.getItem()).equals(yottaFluidTankCell)) {
             StringBuilder cap = new StringBuilder();

@@ -38,6 +38,9 @@ compactFusionCoil.1.name=压缩聚变线圈方块
 compactFusionCoil.2.name=进阶压缩聚变线圈方块
 compactFusionCoil.3.name=压缩聚变线圈方块MK-II原型
 compactFusionCoil.4.name=压缩聚变线圈方块MK-II
+essentiaFilterCasing.0.name=源质过滤方块
+essentiaOutputHatch.0.name=源质输出仓
+essentiaOutputHatch_ME.0.name=源质输出仓 (ME)
 
 #Items
 item.radiationProtectionPlate.name=防辐射板
@@ -137,6 +140,8 @@ huiCircuit.tooltip.1=§e76M处理单元§r
 huiCircuit.tooltip.2=§a无效RSA算法§r
 huiCircuit.tooltip.3=§c第56梅森素数§r
 huiCircuit.tooltip.4=§5佯谬§r
+EssentiaOutputHatch.tooltip.0=空手右键清空容器.
+EssentiaOutputHatch.tooltip.1=容量：
 
 #Fluids
 fluid.lightlyCrackedNaquadahGas=轻度裂化硅岩气
@@ -386,6 +391,14 @@ LargeFusion5.hint.5=2 - 输出仓
 LargeFusion5.hint.6=3 - 能源仓
 LargeFusion5.hint.7=所有仓室必须为UEV以上
 LargeFusion5.hint.8=支持TecTech能源仓.
+LargeEssentiaSmeltery.hint.0=24x魔法机械方块(至少！)
+LargeEssentiaSmeltery.hint.1=12x源质扩散单元(至少！)
+LargeEssentiaSmeltery.hint.2=3x高级炼金炉(至少！)
+LargeEssentiaSmeltery.hint.3=3x源质过滤方块(至少！)
+LargeEssentiaSmeltery.hint.4=0 - 空气
+LargeEssentiaSmeltery.hint.5=1 - 基础仓室/魔法机械方块
+LargeEssentiaSmeltery.hint.6=2 - 消声仓
+LargeEssentiaSmeltery.hint.7=支持TecTech能源仓.
 
 #Chat
 largeessentiagenerator.chat= 已安装!
@@ -473,3 +486,7 @@ research.ESSENTIA_UPGRADE_RADIATION.page.1=可用源质:<BR><BR>Radio:238000EU;�
 research.ESSENTIA_UPGRADE_RADIATION.page.2=可选流体:<BR><BR>熔融铯:效率:x2.0<BR><BR>熔融铀-235:效率:x3.0<BR><BR>熔融硅岩:效率:x4.0<BR><BR>熔融原子分离催化剂:效率:x16.0
 research.ESSENTIA_UPGRADE_ELECTRIC.page.0=ELECTRUM源质本身就代表了电力!<BR><BR>发电机的动力仓电压越高,ELECTRUM源质被越强的电势差影响,发电量就越高.
 research.ESSENTIA_UPGRADE_ELECTRIC.page.1=可用源质:Electrum<BR><BR>能量公式:<BR>8x(3.0^动力仓等级)EU
+research.ESSENTIA_SMELTERY.page.0=荒古炼金炉已经不足以支撑你的源质生产了...<BR><BR>LES(大型源质冶炼厂)是荒古炼金炉的进阶版,消耗电力和cent-vis冶炼源质.
+research.ESSENTIA_SMELTERY.page.1=Ignis与Aqua是LES运行的基本条件,最低需求约为最高能源仓等级^2*1.15cv/每次工作,满足后机器才能运行.<BR><BR>Ordo影响污染、咒波瓦斯生成概率(冶炼源质时随机在消声仓仓口排出咒波瓦斯).<BR><BR>Perditio可以加速机器工作,最高200%(100cv/5t).
+research.ESSENTIA_SMELTERY.page.2=扩散单元等级及结构大小仅影响机器并行,最大并行为64x.<BR><BR>不含源质的物品会冶炼出1点perditio.
+research.ESSENTIA_OUTPUT_HATCH_ME.page.0=总有一天你会用到它...<BR><BR>务必连接网络使用,它没有缓存！

@@ -608,5 +608,133 @@ public class Research{
                         "research.ESSENTIA_UPGRADE_ELECTRIC.page.1"
                 }
         );
+
+        ItemStack nodeLinkDevice = LoadedList.THAUMIC_BASES ? GT_ModHandler.getModItem("thaumicbases", "nodeLinker", 1, 0) : new ItemStack(ConfigBlocks.blockStoneDevice, 1, 11);
+        ItemStack alchemicalFurnace = LoadedList.THAUMIC_BASES ? GT_ModHandler.getModItem("thaumicbases", "advAlchFurnace", 1, 0) : new ItemStack(ConfigBlocks.blockStoneDevice, 1, 0);
+        ItemStack nitor = LoadedList.THAUMIC_TINKERER ? GT_ModHandler.getModItem("ThaumicTinkerer", "brightNitor", 1, 0) : new ItemStack(ConfigItems.itemResource, 1, 1);
+        ItemStack alchemicalBoiler = LoadedList.AUTOMAGY ? GT_ModHandler.getModItem("Automagy", "blockBoiler", 1, 0) : new ItemStack(ConfigBlocks.blockStoneDevice, 1, 1);
+        ItemStack essentiaLocus = LoadedList.AUTOMAGY ? GT_ModHandler.getModItem("Automagy", "blockEssentiaLocus", 1, 0) : new ItemStack(ConfigBlocks.blockJar, 1, 1);
+        ItemStack thauminiteBlock = LoadedList.THAUMIC_BASES ? GT_ModHandler.getModItem("thaumicbases", "thauminiteBlock", 1, 0) : new ItemStack(ConfigBlocks.blockCosmeticSolid, 1, 4);
+        GregTech_API.sThaumcraftCompat.addResearch("ESSENTIA_SMELTERY",
+            "Large Essentia Smeltery",
+            "You need a bigger boat.",
+            new String[]{"INFUSION"},
+            "ARTIFICE",
+            ItemRefer.Large_Essentia_Smeltery.get(1),
+            4, 0, -16, 3,
+            Arrays.asList(
+                new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 10),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.TENEBRAE, 10),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 10),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.LUCRUM, 10),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 10),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.LIMUS, 10)
+            ),
+            null,
+            new Object[]{
+                "research.ESSENTIA_SMELTERY.page.0",
+                GregTech_API.sThaumcraftCompat.addInfusionRecipe(
+                    "ESSENTIA_SMELTERY",
+                    ItemList.Casing_Firebox_TungstenSteel.get(1),
+                    new ItemStack[]{
+                        nodeLinkDevice,
+                        nitor,
+                        alchemicalFurnace,
+                        essentiaLocus,
+                        alchemicalBoiler,
+                        new ItemStack(ConfigBlocks.blockCrystal, 1, 1),
+                        new ItemStack(ConfigBlocks.blockMetalDevice, 1, 3),
+                        ItemList.Electric_Piston_IV.get(1),
+                        GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.FierySteel, 1L),
+                        GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 1L),
+                        GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 1L),
+                        GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 1L),
+                        GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 1L)
+                    },
+                    ItemRefer.Large_Essentia_Smeltery.get(1),
+                    16,
+                    Arrays.asList(
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 256),
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 256),
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.PERDITIO, 256),
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 256),
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.LUCRUM, 256),
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 256)
+                    )
+                ),
+                "research.ESSENTIA_SMELTERY.page.1",
+                GregTech_API.sThaumcraftCompat.addInfusionRecipe(
+                    "ESSENTIA_GENERATOR",
+                    ItemList.Hatch_Output_HV.get(1),
+                    new ItemStack[]{
+                        new ItemStack(ConfigBlocks.blockJar, 1),
+                        ItemRefer.Magic_Casing.get(1),
+                        new ItemStack(ConfigBlocks.blockTube, 1),
+                        ItemList.Electric_Pump_MV.get(1L)
+                    },
+                    ItemRefer.Essentia_Output_Hatch.get(1),
+                    6,
+                    Arrays.asList(
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 128),
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 64),
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 32),
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 32)
+                    )
+                ),
+                "research.ESSENTIA_SMELTERY.page.2",
+                addArcaneCraftingRecipe(
+                    "ESSENTIA_SMELTERY",
+                    ItemRefer.Essentia_Filter_Casing.get(1),
+                    new AspectList().add(Aspect.AIR, 70).add(Aspect.EARTH, 70).add(Aspect.FIRE, 70).add(Aspect.WATER, 70).add(Aspect.ORDER, 70).add(Aspect.ENTROPY, 70),
+                    "ABA", "CDC", "EFE",
+                    'A', new ItemStack(ConfigBlocks.blockTube, 1, 3),
+                    'B', new ItemStack(ConfigBlocks.blockStoneDevice, 1, 14),
+                    'C', GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Void, 1),
+                    'D', new ItemStack(GregTech_API.sBlockCasings3, 1, 11),
+                    'E', GT_OreDictUnificator.get(OrePrefixes.pipeSmall, Materials.NetherStar, 1),
+                    'F', thauminiteBlock
+                )
+            }
+        );
+
+        ItemStack essentiaPump = LoadedList.WITCHING_GADGETS ? GT_ModHandler.getModItem("WitchingGadgets", "WG_MetalDevice", 1, 0) : new ItemStack(ConfigBlocks.blockTube, 1, 4);
+        ItemStack inter = LoadedList.THAUMIC_TINKERER ? GT_ModHandler.getModItem("ThaumicTinkerer", "interface", 1, 0) : new ItemStack(ConfigItems.itemResource, 1, 15);
+        GregTech_API.sThaumcraftCompat.addResearch("ESSENTIA_OUTPUT_HATCH_ME",
+            "Essentia Output Hatch (ME)",
+            "It must exist.",
+            new String[]{"INFUSION"},
+            "ARTIFICE",
+            ItemRefer.Essentia_Output_Hatch_ME.get(1),
+            3, 0, -15, 3,
+            Arrays.asList(
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ALIENIS, 10),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.VINCULUM, 10),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.STRONTIO, 10),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 10),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 10)
+            ),
+            null,
+            new Object[]{
+                "research.ESSENTIA_OUTPUT_HATCH_ME.page.0",
+                GregTech_API.sThaumcraftCompat.addInfusionRecipe(
+                    "ESSENTIA_OUTPUT_HATCH_ME",
+                    ItemRefer.Essentia_Output_Hatch.get(1),
+                    new ItemStack[]{
+                        GT_ModHandler.getModItem("thaumicenergistics", "thaumicenergistics.block.essentia.provider", 1),
+                        new ItemStack(ConfigBlocks.blockEssentiaReservoir,1,0),
+                        essentiaPump,
+                        inter,
+                    },
+                    ItemRefer.Essentia_Output_Hatch_ME.get(1),
+                    8,
+                    Arrays.asList(
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 256),
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 256),
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.ALIENIS, 256),
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.STRONTIO, 256)
+                    )
+                )
+            }
+        );
     }
 }

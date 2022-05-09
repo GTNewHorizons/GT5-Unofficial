@@ -1,6 +1,8 @@
 package goodgenerator.blocks.regularBlock;
 
 import goodgenerator.blocks.tileEntity.EssentiaHatch;
+import goodgenerator.blocks.tileEntity.EssentiaOutputHatch;
+import goodgenerator.blocks.tileEntity.EssentiaOutputHatch_ME;
 import goodgenerator.main.GoodGenerator;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -138,9 +140,16 @@ public class TEBlock extends BlockContainer {
 
     @Override
     public TileEntity createTileEntity(World world, int meta) {
-        if (index == 1)
-            return new EssentiaHatch();
-        return null;
+        switch (index) {
+            case 1:
+                return new EssentiaHatch();
+            case 2:
+                return new EssentiaOutputHatch();
+            case 3:
+                return new EssentiaOutputHatch_ME();
+            default:
+                return null;
+        }
     }
 
     @Override
@@ -159,17 +168,23 @@ public class TEBlock extends BlockContainer {
                             ((EssentiaHatch) tile).setLockedAspect(tLocked);
                             GT_Utility.sendChatToPlayer(player, String.format(StatCollector.translateToLocal("essentiahatch.chat.0"), tLocked.getLocalizedDescription()));
                         }
-                    }
-                    else {
+                    } else {
                         ((EssentiaHatch) tile).setLockedAspect(null);
                         GT_Utility.sendChatToPlayer(player, StatCollector.translateToLocal("essentiahatch.chat.1"));
                     }
                     world.markBlockForUpdate(x, y, z);
                     return true;
-                }
-                else return false;
-            }
-            else return false;
+                } else return false;
+            } else if (index == 2) {
+                if (tile instanceof EssentiaOutputHatch) {
+                    ItemStack tItemStack = player.getHeldItem();
+                    if (tItemStack == null) {
+                        ((EssentiaOutputHatch) tile).clear();
+                        GT_Utility.sendChatToPlayer(player, StatCollector.translateToLocal("essentiaoutputhatch.chat.0"));
+                    }
+                    return true;
+                } else return false;
+            } else return false;
         }
     }
 

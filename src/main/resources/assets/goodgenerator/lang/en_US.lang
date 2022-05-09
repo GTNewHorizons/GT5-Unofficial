@@ -38,6 +38,9 @@ compactFusionCoil.1.name=Compact Fusion Coil
 compactFusionCoil.2.name=Advanced Compact Fusion Coil
 compactFusionCoil.3.name=Compact Fusion Coil MK-II Prototype
 compactFusionCoil.4.name=Compact Fusion Coil MK-II Finaltype
+essentiaFilterCasing.0.name=Essentia Filter Casing
+essentiaOutputHatch.0.name=Essentia Output Hatch
+essentiaOutputHatch_ME.0.name=Essentia Output Hatch (ME)
 
 #Items
 item.radiationProtectionPlate.name=Radiation Proof Plate
@@ -137,6 +140,8 @@ huiCircuit.tooltip.1=§e76M Processor Units§r
 huiCircuit.tooltip.2=§aInvalidate RSA§r
 huiCircuit.tooltip.3=§c56th Mersenne Prime§r
 huiCircuit.tooltip.4=§5Paradox§r
+EssentiaOutputHatch.tooltip.0=Right click it with empty hands to clear the container.
+EssentiaOutputHatch.tooltip.1=Capacity:
 
 #Fluids
 fluid.lightlyCrackedNaquadahGas=Lightly Cracked Naquadah Gas
@@ -386,6 +391,14 @@ LargeFusion5.hint.5=2 - Output Hatch
 LargeFusion5.hint.6=3 - Energy Hatch
 LargeFusion5.hint.7=All Hatches must be UEV or better.
 LargeFusion5.hint.8=Support TecTech Hatches.
+LargeEssentiaSmeltery.hint.0=At least 24x Magic Casings
+LargeEssentiaSmeltery.hint.1=At least 12x Essentia Diffusion Cells
+LargeEssentiaSmeltery.hint.2=At least 3x Advanced Alchemical Furnace Blocks
+LargeEssentiaSmeltery.hint.3=At least 3x Essentia Filter Casings
+LargeEssentiaSmeltery.hint.4=0 - Air
+LargeEssentiaSmeltery.hint.5=1 - Basic Hatch/Magic Casing
+LargeEssentiaSmeltery.hint.6=2 - Muffler Hatch
+LargeEssentiaSmeltery.hint.7=Support TecTech Hatches.
 
 #Chat
 largeessentiagenerator.chat= Installed!
@@ -397,6 +410,7 @@ yottank.chat.0=Clear the lock filter
 yottank.chat.1=Lock to %s
 preciseassembler.chat.0=Precise Mode
 preciseassembler.chat.1=Normal Mode
+essentiaoutputhatch.chat.0=Cleared.
 
 #Achievement
 achievement.gt.blockmachines.nag=Large Naquadah Reactor
@@ -473,3 +487,7 @@ research.ESSENTIA_UPGRADE_RADIATION.page.1=Acceptable Aspects:<BR><BR>Radio: 238
 research.ESSENTIA_UPGRADE_RADIATION.page.2=Optional Liquid:<BR><BR>Molten Caesium: Efficiency:x2.0<BR><BR>Molten Uranium-235: Efficiency:x3.0<BR><BR>Molten Naquadah: Efficiency:x4.0<BR><BR>Molten Atomic Separation Catalyst: Efficiency:x16.0
 research.ESSENTIA_UPGRADE_ELECTRIC.page.0=The ELECTRUM Essentia itself represents electricity!<BR><BR>The higher the voltage of the generator dynamo hatch, the more ELECTRUM will be affected by potential difference and increase the amount of energy.
 research.ESSENTIA_UPGRADE_ELECTRIC.page.1=Acceptable Aspects: Electrum<BR><BR>The formula to calculate its power:<BR>8x(3.0^Dynamo Hatch Tier)EU
+research.ESSENTIA_SMELTERY.page.0=The Advanced Alchemical Furnace is no longer enough to support your Essentia production...<BR><BR>The LES(Large Elemental Smelter) is an advanced version of the Advanced Alchemical Furnace, which consumes electricity and cent-vis to smelt Essentia.
+research.ESSENTIA_SMELTERY.page.1=Ignis and Aqua are the basic conditions for the operation of LES. The minimum demand is about the highest Energy Hatch tier^2*1.15cv/work, and the machine can run only after it is satisfied.<BR><BR>Ordo affects the pollution and the generation of Flux Gas (randomly exhaust Flux Gas at the facing of the muffler when smelting Essentia).<BR><BR>Perditio can speed up machine work, up to 200% (100cv/5t).
+research.ESSENTIA_SMELTERY.page.2=The Essentia Diffusion Cell tier and structure size only affect the machine parallel, and the max parallel is 64x.<BR><BR>Items without Essentia will be smelted to 1 point of perditio.
+research.ESSENTIA_OUTPUT_HATCH_ME.page.0=Someday you will use it...<BR><BR>Be sure to connect to the network. It has no cache!

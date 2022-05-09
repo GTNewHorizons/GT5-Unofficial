@@ -92,7 +92,10 @@ public class Loaders {
     public static final Block pressureResistantWalls = new Casing("pressureResistantWalls", new String[]{GoodGenerator.MOD_ID+":pressureResistantWalls"});
     public static final Block preciseUnitCasing = new Casing("preciseUnitCasing", new String[]{GoodGenerator.MOD_ID+":preciseUnitCasing/1", GoodGenerator.MOD_ID+":preciseUnitCasing/2", GoodGenerator.MOD_ID+":preciseUnitCasing/3"});
     public static final Block compactFusionCoil = new Casing("compactFusionCoil", new String[]{GoodGenerator.MOD_ID+":fuison/1", GoodGenerator.MOD_ID+":fuison/2", GoodGenerator.MOD_ID+":fuison/3", GoodGenerator.MOD_ID+":fuison/4", GoodGenerator.MOD_ID+":fuison/5"});
+    public static final Block essentiaFilterCasing = new Casing("essentiaFilterCasing", new String[]{GoodGenerator.MOD_ID + ":essentiaFilterCasing"});
     public static Block essentiaHatch;
+    public static Block essentiaOutputHatch;
+    public static Block essentiaOutputHatch_ME;
 
     public static ItemStack MAR;
     public static ItemStack FRF;
@@ -105,6 +108,7 @@ public class Loaders {
     public static ItemStack SCTurbine;
     public static ItemStack XHE;
     public static ItemStack PA;
+    public static ItemStack LES;
     public static ItemStack[] LFC = new ItemStack[5];
 
     public static ItemStack[] NeutronAccelerators = new ItemStack[9];
@@ -198,11 +202,20 @@ public class Loaders {
             LargeEssentiaEnergyData.processEssentiaData();
             GameRegistry.registerItem(upgradeEssentia, "upgradeEssentia", GoodGenerator.MOD_ID);
             GameRegistry.registerTileEntity(EssentiaHatch.class, "EssentiaHatch");
+            GameRegistry.registerTileEntity(EssentiaOutputHatch.class, "EssentiaOutputHatch");
+            GameRegistry.registerTileEntity(EssentiaOutputHatch_ME.class, "EssentiaOutputHatch_ME");
             Loaders.LEG = new LargeEssentiaGenerator(IDOffset + 1, "LargeEssentiaGenerator", "Large Essentia Generator").getStackForm(1L);
+            Loaders.LES = new LargeEssentiaSmeltery(IDOffset + 23, "LargeEssentiaSmeltery", "Large Essentia Smeltery").getStackForm(1L);
             essentiaHatch = new TEBlock("essentiaHatch", new String[]{GoodGenerator.MOD_ID + ":essentiaHatch"}, 1);
+            essentiaOutputHatch = new TEBlock("essentiaOutputHatch", new String[]{GoodGenerator.MOD_ID + ":essentiaOutputHatch"}, 2);
+            essentiaOutputHatch_ME = new TEBlock("essentiaOutputHatch_ME", new String[]{GoodGenerator.MOD_ID + ":essentiaOutputHatch_ME"}, 3);
             GameRegistry.registerBlock(magicCasing, MyItemBlocks.class, "magicCasing");
             GameRegistry.registerBlock(essentiaCell, MyItemBlocks.class, "essentiaCell");
             GameRegistry.registerBlock(essentiaHatch, MyItemBlocks.class, "essentiaHatch");
+            GameRegistry.registerBlock(essentiaOutputHatch, MyItemBlocks.class, "essentiaOutputHatch");
+            GameRegistry.registerBlock(essentiaFilterCasing, MyItemBlocks.class, "essentiaFilterCasing");
+            GameRegistry.registerBlock(essentiaOutputHatch_ME, MyItemBlocks.class, "essentiaOutputHatch_ME");
+
             Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage][0] = TextureFactory.of(magicCasing);
         }
     }
