@@ -23,7 +23,6 @@ import static gregtech.api.enums.GT_Values.E;
 
 public class GT_LanguageManager {
     public static final HashMap<String, String> TEMPMAP = new HashMap<>(), BUFFERMAP = new HashMap<>(), LANGMAP = new HashMap<>();
-    private static final Set<String> WRITTEN_KEYS = Collections.newSetFromMap(new ConcurrentHashMap<>());
     public static Configuration sEnglishFile;
 	public static String sLanguage = "en_US";
     public static boolean sUseEnglishFile = false;
@@ -49,10 +48,11 @@ public class GT_LanguageManager {
 
     public static synchronized String addStringLocalization(String aKey, String aEnglish, boolean aWriteIntoLangFile) {
         if (aKey == null) return E;
-        if (aWriteIntoLangFile && WRITTEN_KEYS.add(aKey)){ aEnglish = writeToLangFile(aKey, aEnglish);
-        if(!LANGMAP.containsKey(aKey)){
-        	LANGMAP.put(aKey, aEnglish);
-        	}
+        if (aWriteIntoLangFile && (!LANGMAP.containsKey(aKey) || (sEnglishFile != null && !BUFFERMAP.isEmpty()))) {
+            aEnglish = writeToLangFile(aKey, aEnglish);
+            if (!LANGMAP.containsKey(aKey)) {
+                LANGMAP.put(aKey, aEnglish);
+            }
         }
         TEMPMAP.put(aKey.trim(), aEnglish);
         LanguageRegistry.instance().injectLanguage(sLanguage, TEMPMAP);
@@ -74,17 +74,17 @@ public class GT_LanguageManager {
         } else {
             if (!BUFFERMAP.isEmpty()) {
                 for (Entry<String, String> tEntry : BUFFERMAP.entrySet()) {
-                    sEnglishFile.get("LanguageFile", tEntry.getKey(), tEntry.getValue());
+                    Property tProperty = sEnglishFile.get("LanguageFile", tEntry.getKey(), tEntry.getValue());
+                    if (!tProperty.wasRead() && GregTech_API.sPostloadFinished) sEnglishFile.save();
                 }
-                if (sEnglishFile.hasChanged() && GregTech_API.sPostloadFinished) sEnglishFile.save();
                 BUFFERMAP.clear();
             }
             Property tProperty = sEnglishFile.get("LanguageFile", aKey.trim(), aEnglish);
+            if (!tProperty.wasRead() && GregTech_API.sPostloadFinished) sEnglishFile.save();
             if (sEnglishFile.get("EnableLangFile", "UseThisFileAsLanguageFile", false).getBoolean(false)){
                 aEnglish = tProperty.getString();
                 sUseEnglishFile = true;
             }
-            if (sEnglishFile.hasChanged() && GregTech_API.sPostloadFinished) sEnglishFile.save();
         }
         return aEnglish;
     }
