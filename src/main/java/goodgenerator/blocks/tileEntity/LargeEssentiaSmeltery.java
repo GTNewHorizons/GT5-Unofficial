@@ -400,7 +400,7 @@ public class LargeEssentiaSmeltery extends GT_MetaTileEntity_TooltipMultiBlockBa
 
             this.nodePurificationEfficiency = Math.max(0, this.nodePurificationEfficiency - 1);
             if (this.nodePurificationEfficiency < 100) {
-                this.nodePurificationEfficiency = (int) Math.min(100, this.nodePurificationEfficiency + Math.ceil(VisNetHandler.drainVis(WORLD, x, y, z, Aspect.ORDER, 100) * 0.05));
+                this.nodePurificationEfficiency = (int) Math.min(100, this.nodePurificationEfficiency + Math.ceil(VisNetHandler.drainVis(WORLD, x, y, z, Aspect.ORDER, 200) * 0.05));
             }
 
             this.nodeIncrease = Math.min(100, VisNetHandler.drainVis(WORLD, x, y, z, Aspect.ENTROPY, 125));
@@ -409,7 +409,7 @@ public class LargeEssentiaSmeltery extends GT_MetaTileEntity_TooltipMultiBlockBa
 
     @Override
     public boolean onRunningTick(ItemStack aStack) {
-        this.nodePurificationEfficiency = Math.max(0, this.nodePurificationEfficiency - 5);
+        this.nodePurificationEfficiency = Math.max(0, this.nodePurificationEfficiency - 1);
         if (xstr.nextInt(20) == 0) {
             if (xstr.nextInt(100) < Math.max(100 - this.nodePurificationEfficiency, 0)) {
                 final World WORLD = this.getBaseMetaTileEntity().getWorld();
