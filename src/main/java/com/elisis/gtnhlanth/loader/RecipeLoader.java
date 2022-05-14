@@ -1578,6 +1578,60 @@ public class RecipeLoader {
         }
         */
 
+      //Sifter
+        for (GT_Recipe recipe : GT_Recipe.GT_Recipe_Map.sSifterRecipes.mRecipeList) {
+        	//ItemStack input = recipe.mInputs[0];
+        	for (ItemStack input : recipe.mInputs) {
+        		GT_Log.out.print(input.getDisplayName() + "\n");
+        		if (GT_Utility.isStackValid(input)) {
+        			if (input.getDisplayName().contains("Tin Ore") || input.getDisplayName().contains("Ilmenite Ore") || input.getDisplayName().contains("Cassiterite Ore")) {
+        				
+        				GT_Recipe tRecipe = recipe.copy();			
+        				remove.add(recipe);
+        				break;
+        			}
+        		}
+        	}
+        }
+        
+        GT_Recipe.GT_Recipe_Map.sSifterRecipes.mRecipeList.removeAll(remove);
+        GT_Recipe.GT_Recipe_Map.sSifterRecipes.mRecipeList.addAll(reAdd);
+        GT_Recipe.GT_Recipe_Map.sSifterRecipes.reInit();
+        
+        GT_Log.out.print(Tags.MODID + ": Replace " + remove.size() + "! ");
+        
+        remove.clear();
+        reAdd.clear();
+
+        GT_Log.out.print("Sifter done!\n");
+        
+      //Chemical Bath
+        for (GT_Recipe recipe : GT_Recipe.GT_Recipe_Map.sChemicalBathRecipes.mRecipeList) {
+        	//ItemStack input = recipe.mInputs[0];
+        	for (ItemStack input : recipe.mInputs) {
+        		GT_Log.out.print(input.getDisplayName() + "\n");
+        		if (GT_Utility.isStackValid(input)) {
+        			if (input.getDisplayName().contains("Tin Dust") || input.getDisplayName().contains("Rutile Dust")) {
+        				
+        				GT_Recipe tRecipe = recipe.copy();			
+        				remove.add(recipe);
+        				break;
+        			}
+        		}
+        	}
+        }
+        
+        GT_Recipe.GT_Recipe_Map.sChemicalBathRecipes.mRecipeList.removeAll(remove);
+        GT_Recipe.GT_Recipe_Map.sChemicalBathRecipes.mRecipeList.addAll(reAdd);
+        GT_Recipe.GT_Recipe_Map.sChemicalBathRecipes.reInit();
+        
+        GT_Log.out.print(Tags.MODID + ": Replace " + remove.size() + "! ");
+        
+        remove.clear();
+        reAdd.clear();
+
+        GT_Log.out.print("Chemical Bath done!\n");
+        
         //For ByProduct List
         for (GT_Recipe recipe : GT_Recipe.GT_Recipe_Map.sByProductList.mRecipeList) {
             ItemStack input = recipe.mInputs[0];
