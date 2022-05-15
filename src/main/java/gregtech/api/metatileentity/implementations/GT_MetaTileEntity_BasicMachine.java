@@ -69,7 +69,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     public int mMainFacing = -1, mProgresstime = 0, mMaxProgresstime = 0, mEUt = 0, mOutputBlocked = 0;
     public FluidStack mOutputFluid;
     public String mGUIName, mNEIName;
-    private final Power mPower;
+    protected final Power mPower;
 
 
     @Deprecated
