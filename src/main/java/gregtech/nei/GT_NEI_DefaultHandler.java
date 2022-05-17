@@ -1065,7 +1065,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         return GT_Utility.trans(aKey, aEnglish);
     }
 
-    private static class SortedRecipeListCache {
+    private class SortedRecipeListCache {
         private int mCachedRecipesVersion = -1;
         @Nullable
         private SoftReference<List<CachedDefaultRecipe>> mCachedRecipes;
@@ -1107,9 +1107,9 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
             byte lowestTier = 0;
             while(iterator.hasNext()) {
                 CachedDefaultRecipe recipe = iterator.next();
-                byte recipeTier = GT_Utility.getTier(recipe.mRecipe.mEUt);
+                byte recipeTier = GT_Utility.getTier(recipe.mRecipe.mEUt / GT_NEI_DefaultHandler.this.mRecipeMap.mAmperage);
                 if (recipeTier != previousTier) {
-                    if ( maxIndex != -1) {
+                    if (maxIndex != -1) {
                         mTierIndexes[previousTier] = Range.between(minIndex, maxIndex);
                     } else {
                         lowestTier = recipeTier;
