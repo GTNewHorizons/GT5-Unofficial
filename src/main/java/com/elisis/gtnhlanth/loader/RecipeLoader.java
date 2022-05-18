@@ -289,17 +289,6 @@ public class RecipeLoader {
                 240
             );
         
-        // CeCl3
-        GT_Values.RA.addChemicalRecipe(
-        		GT_Utility.getIntegratedCircuit(1),
-        		WerkstoffMaterialPool.CeriumDioxide.get(OrePrefixes.dust, 1),
-        		WerkstoffLoader.AmmoniumChloride.getFluidOrGas(3000),
-        		Materials.Ammonia.getGas(3000),
-        		WerkstoffMaterialPool.CeriumChloride.get(OrePrefixes.dust, 1),
-        		300,
-        		450
-        	);
-        
         //GT_Values.RA.addChemicalRecipe(
         	//	GT_Utility.getIntegratedCircuit(2),
         		//WerkstoffMaterialPool.CeriumDioxide
