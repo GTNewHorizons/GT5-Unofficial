@@ -15,6 +15,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.HashSet;
 
 public class RecipeLoader {
@@ -1577,21 +1579,24 @@ public class RecipeLoader {
             
         }
         */
-
+        
+        
+        /* DOES NOT WORK, something to do with load times for sifter recipes or some shit
       //Sifter
         for (GT_Recipe recipe : GT_Recipe.GT_Recipe_Map.sSifterRecipes.mRecipeList) {
-        	//ItemStack input = recipe.mInputs[0];
-        	for (ItemStack input : recipe.mInputs) {
-        		GT_Log.out.print(input.getDisplayName() + "\n");
-        		if (GT_Utility.isStackValid(input)) {
-        			if (input.getDisplayName().contains("Tin Ore") || input.getDisplayName().contains("Ilmenite Ore") || input.getDisplayName().contains("Cassiterite Ore")) {
-        				
-        				GT_Recipe tRecipe = recipe.copy();			
-        				remove.add(recipe);
-        				break;
-        			}
+        	if (recipe.mInputs.length == 0)
+        		break;
+        	ItemStack input = recipe.mInputs[0];
+        	GT_Log.out.print("Sift ore found " + input.getDisplayName() + "\n");
+        	if (GT_Utility.isStackValid(input)) {
+        		if (true) {	
+        			GT_Log.out.print("Sift ore found and iffed " + input.getDisplayName() + "\n");
+        			//GT_Recipe tRecipe = recipe.copy();			
+        			remove.add(recipe);
+        			break;
         		}
         	}
+        	
         }
         
         GT_Recipe.GT_Recipe_Map.sSifterRecipes.mRecipeList.removeAll(remove);
@@ -1604,7 +1609,7 @@ public class RecipeLoader {
         reAdd.clear();
 
         GT_Log.out.print("Sifter done!\n");
-        
+        */
       //Chemical Bath
         for (GT_Recipe recipe : GT_Recipe.GT_Recipe_Map.sChemicalBathRecipes.mRecipeList) {
         	//ItemStack input = recipe.mInputs[0];
