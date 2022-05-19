@@ -21,6 +21,7 @@ import gtPlusPlus.core.material.ELEMENT;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -84,7 +85,7 @@ public class DreamCraftRecipeLoader {
                 GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Osmium, 4),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorUHV, 2),
                 ItemList.Field_Generator_MV.get(1),
-                ItemList.Circuit_Quantummainframe.get(1)
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 1)
         }, Materials.Osmium.getMolten(288), CustomItemList.EMpipe.get(1), 400, 500000);
 
         //Laser
@@ -452,14 +453,14 @@ public class DreamCraftRecipeLoader {
         addAssemblerRecipeWithCleanroom(new ItemStack[]{
                 CustomItemList.eM_Computer_Casing.get(1),
                 ItemList.Hatch_Input_Bus_LuV.get(1),
-                ItemList.Circuit_Crystalcomputer.get(1),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 1),
                 CustomItemList.DATApipe.get(2)
         }, Materials.Iridium.getMolten(1296), CustomItemList.dataIn_Hatch.get(1), 200, 122880);
         //Data Output
         addAssemblerRecipeWithCleanroom(new ItemStack[]{
                 CustomItemList.eM_Computer_Casing.get(1),
                 ItemList.Hatch_Output_Bus_LuV.get(1),
-                ItemList.Circuit_Crystalcomputer.get(1),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 1),
                 CustomItemList.DATApipe.get(2)
         }, Materials.Iridium.getMolten(1296), CustomItemList.dataOut_Hatch.get(1), 200, 122880);
 
@@ -467,7 +468,7 @@ public class DreamCraftRecipeLoader {
         addAssemblerRecipeWithCleanroom(new ItemStack[]{
                 CustomItemList.eM_Computer_Bus.get(1),
                 ItemList.Hatch_Input_Bus_ZPM.get(1),
-                ItemList.Circuit_Crystalcomputer.get(2),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 2),
                 CustomItemList.DATApipe.get(4)
         }, Materials.Iridium.getMolten(1296), CustomItemList.rack_Hatch.get(1), 800, 122880);
 
@@ -491,7 +492,7 @@ public class DreamCraftRecipeLoader {
         //Parameterizer
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                 CustomItemList.eM_Computer_Casing.get(1),
-                ItemList.Circuit_Masterquantumcomputer.get(1),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 1),
                 CustomItemList.DATApipe.get(4),
                 ItemList.Cover_Screen.get(1),
                 new ItemStack(Blocks.stone_button, 16),
@@ -499,7 +500,7 @@ public class DreamCraftRecipeLoader {
         }, Materials.Iridium.getMolten(2592), CustomItemList.Parametrizer_Hatch.get(1), 800, 122880);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                 CustomItemList.eM_Computer_Casing.get(1),
-                ItemList.Circuit_Ultimatecrystalcomputer.get(1),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 1),
                 CustomItemList.DATApipe.get(6),
                 ItemList.Cover_Screen.get(1),
                 new ItemStack(Blocks.stone_button, 32),
@@ -508,7 +509,7 @@ public class DreamCraftRecipeLoader {
 
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                 CustomItemList.eM_Computer_Casing.get(1),
-                ItemList.Circuit_Biomainframe.get(1),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Bio, 1),
                 CustomItemList.DATApipe.get(8),
                 ItemList.Cover_Screen.get(2),
                 new ItemStack(Blocks.stone_button, 64),
@@ -517,7 +518,7 @@ public class DreamCraftRecipeLoader {
         //Uncertainty
         addAssemblerRecipeWithCleanroom(new ItemStack[]{
                 CustomItemList.eM_Computer_Casing.get(1),
-                ItemList.Circuit_Ultimatecrystalcomputer.get(1),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 1),
                 CustomItemList.DATApipe.get(16),
                 ItemList.Cover_Screen.get(1),
                 new ItemStack(Blocks.stone_button, 16),
@@ -526,7 +527,7 @@ public class DreamCraftRecipeLoader {
 
         addAssemblerRecipeWithCleanroom(new ItemStack[]{
                 CustomItemList.eM_Computer_Casing.get(1),
-                ItemList.Circuit_Biomainframe.get(1),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Bio, 1),
                 CustomItemList.DATApipe.get(32),
                 ItemList.Cover_Screen.get(1),
                 new ItemStack(Blocks.stone_button, 16),
@@ -640,12 +641,12 @@ public class DreamCraftRecipeLoader {
 
         //Matter Junction
         TT_recipeAdder.addResearchableAssemblylineRecipe(CustomItemList.Machine_Multi_Switch.get(1),
-                8000, 32, 500000, 4, new ItemStack[]{
+                8000, 32, 500000, 4, new Object[]{
                         CustomItemList.Machine_Multi_Transformer.get(1),
                         GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Naquadah, 4),
                         ItemList.Robot_Arm_LuV.get(2),
                         ItemList.Electric_Piston_LuV.get(2),
-                        ItemList.Circuit_Wetwaresupercomputer.get(2),
+                        new Object[]{"circuitSuperconductor", 2},
                         GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorUHV, 4),
                 }, new FluidStack[]{
                         Materials.UUMatter.getFluid(1000),
@@ -656,11 +657,11 @@ public class DreamCraftRecipeLoader {
 
         //Matter Quantizer
         TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Hatch_Input_UV.get(1),
-                12000, 32, 500000, 6, new ItemStack[]{
+                12000, 32, 500000, 6, new Object[]{
                         CustomItemList.Machine_Multi_Transformer.get(1),
                         GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Naquadah, 4),
                         ItemList.Emitter_UV.get(2),
-                        ItemList.Circuit_Wetwaresupercomputer.get(1),
+                        new Object[]{"circuitSuperconductor", 1},
                         GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorUHV, 2),
                 }, new FluidStack[]{
                         Materials.UUMatter.getFluid(1000),
@@ -671,11 +672,11 @@ public class DreamCraftRecipeLoader {
 
         //Matter DeQuantizer
         TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Hatch_Output_UV.get(1),
-                12000, 32, 500000, 6, new ItemStack[]{
+                12000, 32, 500000, 6, new Object[]{
                         CustomItemList.Machine_Multi_Transformer.get(1),
                         GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Naquadah, 4),
                         ItemList.Sensor_UV.get(2),
-                        ItemList.Circuit_Wetwaresupercomputer.get(1),
+                        new Object[]{"circuitSuperconductor", 1},
                         GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorUHV, 2),
                 }, new FluidStack[]{
                         Materials.UUMatter.getFluid(1000),
@@ -686,11 +687,11 @@ public class DreamCraftRecipeLoader {
 
         //Essentia Quantizer
         TT_recipeAdder.addResearchableAssemblylineRecipe(CustomItemList.Machine_Multi_MatterToEM.get(1),
-                15000, 32, 500000, 8, new ItemStack[]{
+                15000, 32, 500000, 8, new Object[]{
                         CustomItemList.Machine_Multi_MatterToEM.get(1),
                         GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Neutronium, 4),
                         ItemList.Emitter_UV.get(2),
-                        ItemList.Circuit_Wetwaresupercomputer.get(1),
+                        new Object[]{"circuitSuperconductor", 1},
                         GT_OreDictUnificator.get(OrePrefixes.cableGt02, Materials.Draconium, 2),
                 }, new FluidStack[]{
                         Materials.UUMatter.getFluid(2000),
@@ -701,11 +702,11 @@ public class DreamCraftRecipeLoader {
 
         //Essentia DeQuantizer
         TT_recipeAdder.addResearchableAssemblylineRecipe(CustomItemList.Machine_Multi_EMToMatter.get(1),
-                15000, 32, 500000, 8, new ItemStack[]{
+                15000, 32, 500000, 8, new Object[]{
                         CustomItemList.Machine_Multi_EMToMatter.get(1),
                         GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Neutronium, 4),
                         ItemList.Sensor_UV.get(2),
-                        ItemList.Circuit_Wetwaresupercomputer.get(1),
+                        new Object[]{"circuitSuperconductor", 1},
                         GT_OreDictUnificator.get(OrePrefixes.cableGt02, Materials.Draconium, 2),
                 }, new FluidStack[]{
                         Materials.UUMatter.getFluid(2000),
@@ -1412,7 +1413,8 @@ public class DreamCraftRecipeLoader {
                     getItemContainer("StargateFramePart").get(1L), 72000, 500000000);
         }
         //endregion
-        
+
+        Fluid oganesson = FluidRegistry.getFluid("oganesson");
         //Deep Dark Portal
         TT_recipeAdder.addResearchableAssemblylineRecipe(GT_ModHandler.getModItem("dreamcraft", "item.HeavyDutyPlateTier8", 1, 0),
         		16777216, 2048, 2000000, 64, new Object[]{
@@ -1428,7 +1430,7 @@ public class DreamCraftRecipeLoader {
                     	ItemList.Emitter_UEV.get(4),
                     	ItemList.Sensor_UEV.get(4),
             	}, new FluidStack[]{
-            			new FluidStack(FluidRegistry.getFluid("oganesson"), 50000),
+                        oganesson != null ? new FluidStack(oganesson, 50000) : null,
             			Materials.Infinity.getMolten(9216L),
             			Materials.Cheese.getMolten(232000L),
             	}, ItemList.Block_BedrockiumCompressed.get(1), 10000, 5000000);
