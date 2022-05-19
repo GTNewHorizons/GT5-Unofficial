@@ -257,6 +257,7 @@ public class RECIPES_Machines {
 		chisels();		
 		rockBreaker();
 		thermicFluidHeater();
+		advHeatExchanger();
 		
 		gt4FarmManager();
 		gt4Redstone();
@@ -286,7 +287,34 @@ public class RECIPES_Machines {
 				CI.getPlate(5, 1), CI.circuitTier4, CI.getPlate(5, 1),
 				GregtechItemList.Controller_IndustrialFluidHeater.get(1));
 	}
-	
+
+	private static void advHeatExchanger() {
+		CORE.RA.addSixSlotAssemblingRecipe(
+				new ItemStack[] {
+						CI.getNumberedAdvancedCircuit(18),
+						ItemList.Machine_Multi_HeatExchanger.get(1),
+						CI.getDoublePlate(6, 8),
+						CI.getScrew(6, 16),
+						CI.getCircuit(5, 8)
+				},
+				CI.tieredMaterials[5].getMolten(144 * 8),
+				GregtechItemList.XL_HeatExchanger.get(1),
+				20 * 60,
+				MaterialUtils.getVoltageForTier(6));
+
+		CORE.RA.addSixSlotAssemblingRecipe(
+				new ItemStack[] {
+						CI.getNumberedAdvancedCircuit(18),
+						ItemList.Casing_StableTitanium.get(1),
+						CI.getPlate(5, 4),
+						CI.getScrew(5, 8),
+				},
+				CI.tieredMaterials[5].getMolten(144 * 2),
+				GregtechItemList.Casing_XL_HeatExchanger.get(1),
+				20 * 5,
+				MaterialUtils.getVoltageForTier(6));
+	}
+
 	private static void computerCube() {
 		
 		CORE.RA.addSixSlotAssemblingRecipe(
