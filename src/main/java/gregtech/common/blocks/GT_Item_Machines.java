@@ -34,6 +34,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
@@ -68,50 +69,13 @@ public class GT_Item_Machines extends ItemBlock implements IFluidContainerItem {
             if (GregTech_API.METATILEENTITIES[tDamage] != null) {
                 final IGregTechTileEntity tTileEntity = GregTech_API.METATILEENTITIES[tDamage].getBaseMetaTileEntity();
                 if (!GregTech_API.sPostloadFinished && tTileEntity.getMetaTileEntity() instanceof ISecondaryDescribable) {
-                    final String[] secondaryDescription = ((ISecondaryDescribable) tTileEntity.getMetaTileEntity()).getSecondaryDescription();
-                    if (secondaryDescription != null) {
-                        int i = 0;
-                        for (String tDescription : secondaryDescription) {
-                            if (GT_Utility.isStringValid(tDescription)) {
-                                if (tDescription.contains("%%%")) {
-                                    String[] tString = tDescription.split("%%%");
-                                    if (tString.length >= 2) {
-                                        StringBuilder tBuffer = new StringBuilder();
-                                        for (int j = 0; j < tString.length; j++)
-                                            if (j % 2 == 0) tBuffer.append(tString[j]);
-                                            else {
-                                                tBuffer.append(" %s");
-                                            }
-                                        GT_LanguageManager.addStringLocalization("TileEntity_DESCRIPTION_" + tDamage + "_Secondary" + "_Index_" + i++, tBuffer.toString(), true);
-                                    }
-                                } else {
-                                    GT_LanguageManager.addStringLocalization("TileEntity_DESCRIPTION_" + tDamage + "_Secondary" + "_Index_" + i++, tDescription, true);
-                                }
-                            } else i++;
-                        }
-                    }
+                    final String[] tSecondaryDescription = ((ISecondaryDescribable) tTileEntity.getMetaTileEntity()).getSecondaryDescription();
+                    addDescription(null, tSecondaryDescription, tDamage, "_Secondary", true);
                 }
-                if (tTileEntity.getDescription() != null) {
-                    int i = 0;
-                    final IMetaTileEntity metaTileEntity = tTileEntity.getMetaTileEntity();
-                    final String suffix = (metaTileEntity instanceof ISecondaryDescribable && ((ISecondaryDescribable) metaTileEntity).isDisplaySecondaryDescription()) ? "_Secondary" : "";
-                    for (String tDescription : tTileEntity.getDescription()) {
-                        if (GT_Utility.isStringValid(tDescription)) {
-                            if(tDescription.contains("%%%")){
-                                final String[] tString = tDescription.split("%%%");
-                                if(tString.length>=2){
-                                    final StringBuilder tBuffer = new StringBuilder();
-                                    final String[] tRep = new String[tString.length / 2];
-                                    for (int j = 0; j < tString.length; j++)
-                                        if (j % 2 == 0) tBuffer.append(tString[j]);
-                                        else {tBuffer.append(" %s"); tRep[j / 2] = tString[j];}
-                                    aList.add(String.format(GT_LanguageManager.addStringLocalization("TileEntity_DESCRIPTION_" + tDamage + suffix + "_Index_" + i++, tBuffer.toString(), !GregTech_API.sPostloadFinished ), (Object[]) tRep));
-                                }
-                            }else{
-                                String tTranslated = GT_LanguageManager.addStringLocalization("TileEntity_DESCRIPTION_" + tDamage + suffix + "_Index_" + i++, tDescription, !GregTech_API.sPostloadFinished );
-                                aList.add(tTranslated.equals("") ? tDescription : tTranslated);}
-                        }else i++;
-                    }
+                {
+                    final IMetaTileEntity tMetaTileEntity = tTileEntity.getMetaTileEntity();
+                    final String tSuffix = (tMetaTileEntity instanceof ISecondaryDescribable && ((ISecondaryDescribable) tMetaTileEntity).isDisplaySecondaryDescription()) ? "_Secondary" : "";
+                    addDescription(aList, tTileEntity.getDescription(), tDamage, tSuffix, !GregTech_API.sPostloadFinished);
                 }
                 if (tTileEntity.getEUCapacity() > 0L) {
                     if (tTileEntity.getInputVoltage() > 0L) {
@@ -164,6 +128,32 @@ public class GT_Item_Machines extends ItemBlock implements IFluidContainerItem {
             }
         } catch (Throwable e) {
             GT_FML_LOGGER.error("addInformation", e);
+        }
+    }
+
+    private void addDescription(@Nullable List<String> aList, @Nullable String[] aDescription, int aDamage, String aSuffix, boolean aWriteIntoLangFile) {
+        if (aDescription == null) return;
+        for (int i = 0, tLength = aDescription.length; i < tLength; i++) {
+            String tDescLine = aDescription[i];
+            if (!GT_Utility.isStringValid(tDescLine)) continue;
+
+            String tKey = String.format("TileEntity_DESCRIPTION_%05d%s_Index_%02d", aDamage, aSuffix, i);
+            if (tDescLine.contains("%%%")) {
+                final String[] tSplitStrings = tDescLine.split("%%%");
+                final StringBuilder tBuffer = new StringBuilder();
+                final String[] tRep = new String[tSplitStrings.length / 2];
+                for (int j = 0; j < tSplitStrings.length; j++)
+                    if (j % 2 == 0) tBuffer.append(tSplitStrings[j]);
+                    else {
+                        tBuffer.append(" %s");
+                        tRep[j / 2] = tSplitStrings[j];
+                    }
+                final String tTranslated = String.format(GT_LanguageManager.addStringLocalization(tKey, tBuffer.toString(), aWriteIntoLangFile), (Object[]) tRep);
+                if (aList != null) aList.add(tTranslated);
+            } else {
+                String tTranslated = GT_LanguageManager.addStringLocalization(tKey, tDescLine, aWriteIntoLangFile);
+                if (aList != null) aList.add(tTranslated.equals("") ? tDescLine : tTranslated);
+            }
         }
     }
 
