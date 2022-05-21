@@ -1521,7 +1521,7 @@ public class RECIPES_GREGTECH {
 
 
 
-		CORE.RA.addSixSlotAssemblingRecipe(new ItemStack[] {
+		/*CORE.RA.addSixSlotAssemblingRecipe(new ItemStack[] {
 				GregtechItemList.Casing_Multi_Use.get(1),
 				ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(6), 1),
 				ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(4), 8),
@@ -1534,7 +1534,7 @@ public class RECIPES_GREGTECH {
 				20*20,
 				2048);
 
-
+		*/
 
 
 
