@@ -2142,8 +2142,11 @@ public class RECIPES_Machines {
 						RECIPE_LFTROuterCasing);
 
 				//LFTR Control Circuit
-				ItemStack circuitT5 = ItemList.Circuit_Master.get(1);
-				GT_Values.RA.addAssemblerRecipe(circuitT5, CI.fieldGenerator_HV, controlCircuit, 240*20, 500);
+				CORE.RA.addSixSlotAssemblingRecipe(new ItemStack[] {
+						ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(6), 1),
+						CI.fieldGenerator_HV
+				},
+						null, controlCircuit, 240*20, 500);
 
 
 				//Fission Fuel Plant
