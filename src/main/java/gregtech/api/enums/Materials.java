@@ -1599,6 +1599,10 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         //Pentacadmiummagneiumhexaoxid.mChemicalFormula="Cd5MgO6";
         CosmicNeutronium.mChemicalFormula = "SpNt";
         Aluminiumhydroxide.mChemicalFormula = "Al\u0028OH\u0029\u2083";
+        Uranium.mChemicalFormula = "U\u20B2\u20B3\u2078";
+        Uranium235.mChemicalFormula = "U\u20B2\u20B3\u2075";
+        Plutonium.mChemicalFormula = "Pu\u20B2\u20B3\u2079";
+        Plutonium241.mChemicalFormula = "Pu\u20B2\u2074\u20B9";
     }
 
     private static void initSubTags() {
