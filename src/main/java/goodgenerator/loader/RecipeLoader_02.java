@@ -1190,7 +1190,7 @@ public class RecipeLoader_02 {
 
             GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[]{
-                    GT_ModHandler.getModItem("dreamcraft", "gt.blockcasingsNH", 3, 12),
+                    ItemList.Casing_UV.get(3),
                     ItemList.Robot_Arm_LuV.get(2),
                     GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.ElectrumFlux, 4),
                     ItemRefer.HiC_T2.get(1),
