@@ -2123,15 +2123,15 @@ public class RECIPES_Machines {
 							RECIPE_LFTRController);
 				} else  {
 					RecipeUtils.addShapedGregtechRecipe(
-							controlCircuit, "cableGt12NaquadahAlloy", controlCircuit,
+							controlCircuit, "cableGt12Naquadah", controlCircuit,
 							"plateDoubleHastelloyN", GregtechItemList.Gregtech_Computer_Cube.get(1), "plateDoubleHastelloyN",
 							"plateThorium232", CI.machineHull_IV, "plateThorium232",
 							RECIPE_LFTRController);
 				}
 				RecipeUtils.addShapedGregtechRecipe(
-						"plateDoubleZeron100", CI.craftingToolScrewdriver, "plateDoubleZeron100",
+						"plateDoubleHastelloyC276", CI.craftingToolScrewdriver, "plateDoubleHastelloyC276",
 						"gearGtTalonite", CI.fieldGenerator_MV, "gearGtTalonite",
-						"plateDoubleZeron100", CI.craftingToolHammer_Hard, "plateDoubleZeron100",
+						"plateDoubleHastelloyC276", CI.craftingToolHammer_Hard, "plateDoubleHastelloyC276",
 						RECIPE_LFTRInnerCasing);
 
 				ItemStack IC2HeatPlate = ItemUtils.getItemStackFromFQRN("IC2:reactorPlatingHeat", 1);

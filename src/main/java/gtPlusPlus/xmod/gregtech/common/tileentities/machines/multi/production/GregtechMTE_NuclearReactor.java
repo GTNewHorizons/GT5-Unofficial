@@ -368,6 +368,8 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase<Greg
 		// Warm up for 4~ minutes
 		Logger.WARNING("Checking LFTR recipes.");
 		if (mEfficiency < this.getMaxEfficiency(null)) {
+			this.mOutputItems = new ItemStack[]{};
+			this.mOutputFluids = new FluidStack[]{};
 			this.mProgresstime = 0;
 			this.mMaxProgresstime = 1;
 			this.mEfficiencyIncrease = 2;

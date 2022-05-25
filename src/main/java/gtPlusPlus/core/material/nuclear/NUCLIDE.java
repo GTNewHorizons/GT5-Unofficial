@@ -11,7 +11,7 @@ import gtPlusPlus.core.util.data.StringUtils;
 public final class NUCLIDE {
 
 	public static final Material Li2BeF4 = new Material(
-			"Lithium Tetrafluoroberyllate", //Material Name
+			"Lithium Tetrafluoroberyllate (LFTB)", //Material Name
 			MaterialState.LIQUID, //State
 			TextureSets.NUCLEAR.get(),
 			null, //Material Colour
@@ -29,7 +29,7 @@ public final class NUCLIDE {
 			});
 	
 	public static final Material LiFBeF2ThF4UF4 = new Material(
-			"LiFBeF2ThF4UF4", //Material Name
+			"LFTR Fuel 3", //Material Name
 			MaterialState.LIQUID, //State
 			TextureSets.NUCLEAR.get(),
 			null, //Material Colour
@@ -49,7 +49,7 @@ public final class NUCLIDE {
 			});
 	
 	public static final Material LiFBeF2ZrF4UF4 = new Material(
-			"LiFBeF2ZrF4UF4", //Material Name
+			"LFTR Fuel 2", //Material Name
 			MaterialState.LIQUID, //State
 			TextureSets.NUCLEAR.get(),
 			null, //Material Colour
@@ -69,7 +69,7 @@ public final class NUCLIDE {
 			});
 
 	public static final Material LiFBeF2ZrF4U235 = new Material(
-			"LiFBeF2ZrF4U235", //Material Name
+			"LFTR Fuel 1", //Material Name
 			MaterialState.LIQUID, //State
 			TextureSets.NUCLEAR.get(),
 			null, //Material Colour
@@ -129,7 +129,7 @@ public final class NUCLIDE {
 	
 	// LFTR Core Fluids
 	public static final Material LiFBeF2UF4FP = new Material(
-			"LiFBeF2UF4FP", //Material Name
+			"Uranium Depleted Molten Salt (U Salt)", //Material Name
 			MaterialState.PURE_LIQUID, //State
 			null, //Material Colour
 			-1, //Melting Point in C
@@ -147,7 +147,7 @@ public final class NUCLIDE {
 			});
 	
 	public static final Material Sparged_LiFBeF2UF4FP = new Material(
-			"Helium Sparged LiFBeF2UF4FP", //Material Name
+			"Helium Sparged U Salt", //Material Name
 			MaterialState.PURE_LIQUID, //State
 			null, //Material Colour
 			-1, //Melting Point in C
@@ -165,7 +165,7 @@ public final class NUCLIDE {
 			});
 	
 	public static final Material UF6F2FP = new Material(
-			"UF6F2FP", //Material Name
+			"Phosphorous Uranium Hexafluoride (P-UF6)", //Material Name
 			MaterialState.PURE_LIQUID, //State
 			null, //Material Colour
 			-1, //Melting Point in C
@@ -182,7 +182,7 @@ public final class NUCLIDE {
 			});
 	
 	public static final Material LiFBeF2 = new Material(
-			"LiFBeF2", //Material Name
+			"Stable Molten Salt Base", //Material Name
 			MaterialState.PURE_LIQUID, //State
 			null, //Material Colour
 			-1, //Melting Point in C
@@ -198,7 +198,7 @@ public final class NUCLIDE {
 			});
 	
 	public static final Material LiFBeF2UF4 = new Material(
-			"LiFBeF2UF4", //Material Name
+			"LFTR Fuel Base", //Material Name
 			MaterialState.PURE_LIQUID, //State
 			null, //Material Colour
 			-1, //Melting Point in C
@@ -222,7 +222,7 @@ public final class NUCLIDE {
 
 	// Tier 1 Fuel blanket output
 	public static final Material LiFThF4 = new Material(
-			"LiFThF4", //Material Name
+			"Thorium Depleted Molten Salt (T Salt)", //Material Name
 			MaterialState.PURE_LIQUID, //State
 			null, //Material Colour
 			-1, //Melting Point in C
@@ -239,7 +239,7 @@ public final class NUCLIDE {
 	
 	// Tier 2 Fuel blanket output
 	public static final Material LiFBeF2ThF4 = new Material(
-			"LiFBeF2ThF4", //Material Name
+			"Thorium-Beryllium Depleted Molten Salt (TB Salt)", //Material Name
 			MaterialState.PURE_LIQUID, //State
 			null, //Material Colour
 			-1, //Melting Point in C
@@ -257,7 +257,7 @@ public final class NUCLIDE {
 	
 	// Tier 1 Fuel blanket output
 	public static final Material Sparged_LiFThF4 = new Material(
-			"Fluorine Sparged LiFThF4", //Material Name
+			"Fluorine Sparged T Salt", //Material Name
 			MaterialState.PURE_LIQUID, //State
 			null, //Material Colour
 			-1, //Melting Point in C
@@ -274,7 +274,7 @@ public final class NUCLIDE {
 	
 	// Tier 2 Fuel blanket output
 	public static final Material Sparged_LiFBeF2ThF4 = new Material(
-			"Fluorine Sparged LiFBeF2ThF4", //Material Name
+			"Fluorine Sparged TB Salt", //Material Name
 			MaterialState.PURE_LIQUID, //State
 			null, //Material Colour
 			-1, //Melting Point in C
@@ -291,7 +291,7 @@ public final class NUCLIDE {
 			});
 	
 	public static final Material UF6F2 = new Material(
-			"UF6F2", //Material Name
+			"Fluorinated Uranium Hexafluoride (F-UF6)", //Material Name
 			MaterialState.PURE_LIQUID, //State
 			null, //Material Colour
 			-1, //Melting Point in C
