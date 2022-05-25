@@ -8,6 +8,7 @@ import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
@@ -26,7 +27,7 @@ import ic2.api.crops.Crops;
 import ic2.core.Ic2Items;
 import ic2.core.crop.TileEntityCrop;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockCrops;
+import net.minecraft.block.IGrowable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -167,6 +168,7 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse extends GT_MetaTileEntity
             addInfo("Every tier past UV, slots are multiplied by 4").
             addInfo("Process time: 5 sec").
             addInfo("All crops are accelerated by x32 times").
+            addInfo("Cannot process primordial").
             addInfo(BW_Tooltip_Reference.TT_BLUEPRINT).
             addSeparator().
             beginStructureBlock(5, 4, 5, false).
@@ -360,7 +362,7 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse extends GT_MetaTileEntity
     public String[] getInfoData() {
         List<String> info = new ArrayList<>(Arrays.asList(
             "Running in mode: " + EnumChatFormatting.GREEN + (setupphase == 0 ? (isIC2Mode ? "IC2 crops" : "Normal crops") : ("Setup mode " + (setupphase == 1 ? "(input)" : "(output)"))) + EnumChatFormatting.RESET,
-            "Uses " + waterusage * 1000 + "L/s of water",
+            "Uses " + waterusage * 1000 + "/operation of water",
             "Max slots: " + EnumChatFormatting.GREEN + this.mMaxSlots + EnumChatFormatting.RESET,
             "Used slots: " + EnumChatFormatting.GREEN + this.mStorage.size() + EnumChatFormatting.RESET
         ));
@@ -412,7 +414,7 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse extends GT_MetaTileEntity
     private static class GreenHouseSlot extends InventoryCrafting {
 
         ItemStack input;
-        BlockCrops crop;
+        Block crop;
         List<ItemStack> drops;
         boolean isValid;
         boolean isIC2Crop;
@@ -423,6 +425,8 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse extends GT_MetaTileEntity
         IRecipe recipe;
         ItemStack recipeInput;
 
+        int optimalgrowth = 7;
+
         public NBTTagCompound toNBTTagCompound(){
             NBTTagCompound aNBT = new NBTTagCompound();
             aNBT.setTag("input", input.writeToNBT(new NBTTagCompound()));
@@ -431,6 +435,7 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse extends GT_MetaTileEntity
                 aNBT.setInteger("dropscount", drops.size());
                 for (int i = 0; i < drops.size(); i++)
                     aNBT.setTag("drop." + i, drops.get(i).writeToNBT(new NBTTagCompound()));
+                aNBT.setInteger("optimalgrowth", optimalgrowth);
             }
             else {
                 aNBT.setInteger("generationscount", generations.size());
@@ -453,10 +458,12 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse extends GT_MetaTileEntity
             isValid = aNBT.getBoolean("isValid");
             input = ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag("input"));
             if(!isIC2Crop) {
-                crop = (BlockCrops) Block.getBlockById(aNBT.getInteger("crop"));
+                crop = Block.getBlockById(aNBT.getInteger("crop"));
                 drops = new ArrayList<>();
                 for (int i = 0; i < aNBT.getInteger("dropscount"); i++)
                     drops.add(ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag("drop." + i)));
+                optimalgrowth = aNBT.getInteger("optimalgrowth");
+                if(optimalgrowth == 0) optimalgrowth = 7;
             }
             else
             {
@@ -480,6 +487,7 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse extends GT_MetaTileEntity
             int toconsume = Math.min(64 - this.input.stackSize, input.stackSize);
             int left = addDrops(world, toconsume, true);
             input.stackSize -= toconsume - left;
+            this.input.stackSize += toconsume - left;
             return left == 0;
         }
 
@@ -536,11 +544,14 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse extends GT_MetaTileEntity
                 return;
             }
             Block b = ((ItemSeeds) input.getItem()).getPlant(world, 0, 0, 0);
-            if (!(b instanceof BlockCrops))
+            if (!(b instanceof IGrowable))
                 return;
-            crop = (BlockCrops) b;
+            GameRegistry.UniqueIdentifier u = GameRegistry.findUniqueIdentifierFor(input.getItem());
+            if(u != null && Objects.equals(u.modId, "Natura"))
+                optimalgrowth = 8;
+            crop = b;
             isIC2Crop = false;
-            if(addDrops(world, input.stackSize, autocraft) == 0){
+            if(addDrops(world, input.stackSize, autocraft) == 0 && !drops.isEmpty()){
                 this.isValid = true;
             }
         }
@@ -664,7 +675,7 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse extends GT_MetaTileEntity
         public int addDrops(World world, int count, boolean autocraft){
             drops = new ArrayList<>();
             for(int i = 0; i < count; i++) {
-                List<ItemStack> d = crop.getDrops(world, 0, 0, 0, 7, 0);
+                List<ItemStack> d = crop.getDrops(world, 0, 0, 0, optimalgrowth, 0);
                 for(ItemStack x : drops)
                     for(ItemStack y : d)
                         if(GT_Utility.areStacksEqual(x, y))
