@@ -681,14 +681,10 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Wood, 3L), GT_Utility.getIntegratedCircuit(4)}, Materials.Glue.getFluid(20), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Wood, 4L), 200, 30);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Wood, 1L), GT_Utility.getIntegratedCircuit(12)}, Materials.Glue.getFluid(60), GT_OreDictUnificator.get(OrePrefixes.pipeSmall, Materials.Wood, 6L), 200, 30);
 
-        GT_Values.RA.addUniversalDistillationRecipe(Materials.OilLight.getFluid(150),
-                new FluidStack[]{ Materials.SulfuricHeavyFuel.getFluid(10),  Materials.SulfuricLightFuel.getFluid(20), Materials.SulfuricNaphtha.getFluid(30), Materials.SulfuricGas.getGas(240)}, null, 20, 96);
-        GT_Values.RA.addUniversalDistillationRecipe(Materials.OilMedium.getFluid(100),
-                new FluidStack[]{Materials.SulfuricHeavyFuel.getFluid(15),  Materials.SulfuricLightFuel.getFluid(50), Materials.SulfuricNaphtha.getFluid(20), Materials.SulfuricGas.getGas(60)}, null, 20, 96);
-        GT_Values.RA.addUniversalDistillationRecipe(Materials.Oil.getFluid(50L),
-                new FluidStack[]{Materials.SulfuricHeavyFuel.getFluid(15),  Materials.SulfuricLightFuel.getFluid(50), Materials.SulfuricNaphtha.getFluid(20), Materials.SulfuricGas.getGas(60)}, null, 20, 96);
-        GT_Values.RA.addUniversalDistillationRecipe(Materials.OilHeavy.getFluid(100),
-                new FluidStack[]{Materials.SulfuricHeavyFuel.getFluid(250), Materials.SulfuricLightFuel.getFluid(45), Materials.SulfuricNaphtha.getFluid(15), Materials.SulfuricGas.getGas(60)}, null, 20, 288);
+        GT_Values.RA.addUniversalDistillationRecipewithCircuit(Materials.OilLight.getFluid(150), new ItemStack[]{GT_Utility.getIntegratedCircuit(1)}, new FluidStack[]{ Materials.SulfuricHeavyFuel.getFluid(10),  Materials.SulfuricLightFuel.getFluid(20), Materials.SulfuricNaphtha.getFluid(30), Materials.SulfuricGas.getGas(240)}, null, 20, 96);
+        GT_Values.RA.addUniversalDistillationRecipewithCircuit(Materials.OilMedium.getFluid(100), new ItemStack[]{GT_Utility.getIntegratedCircuit(1)}, new FluidStack[]{Materials.SulfuricHeavyFuel.getFluid(15),  Materials.SulfuricLightFuel.getFluid(50), Materials.SulfuricNaphtha.getFluid(20), Materials.SulfuricGas.getGas(60)}, null, 20, 96);
+        GT_Values.RA.addUniversalDistillationRecipewithCircuit(Materials.Oil.getFluid(50L), new ItemStack[]{GT_Utility.getIntegratedCircuit(1)}, new FluidStack[]{Materials.SulfuricHeavyFuel.getFluid(15),  Materials.SulfuricLightFuel.getFluid(50), Materials.SulfuricNaphtha.getFluid(20), Materials.SulfuricGas.getGas(60)}, null, 20, 96);
+        GT_Values.RA.addUniversalDistillationRecipewithCircuit(Materials.OilHeavy.getFluid(100), new ItemStack[]{GT_Utility.getIntegratedCircuit(1)}, new FluidStack[]{ Materials.SulfuricHeavyFuel.getFluid(250), Materials.SulfuricLightFuel.getFluid(45), Materials.SulfuricNaphtha.getFluid(15), Materials.SulfuricGas.getGas(60)}, null, 20, 288);
 
          if (GregTech_API.sSpecialFile.get("general", "EnableLagencyOilGalactiCraft", false) && FluidRegistry.getFluid("oilgc") != null)
             GT_Values.RA.addUniversalDistillationRecipe(new FluidStack(FluidRegistry.getFluid("oilgc"), 50), new FluidStack[]{Materials.SulfuricHeavyFuel.getFluid(15), Materials.SulfuricLightFuel.getFluid(50), Materials.SulfuricNaphtha.getFluid(20), Materials.SulfuricGas.getGas(60)}, null, 20, 96);
@@ -1325,36 +1321,24 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(1)}, new FluidStack[]{MaterialsKevlar.TerephthalicAcid.getFluid(1000L), Materials.Methanol.getFluid(2000), Materials.SulfuricAcid.getFluid(2000)}, new FluidStack[]{MaterialsKevlar.DimethylTerephthalate.getFluid(1000L)}, null,250, 1920);
         GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(9)}, new FluidStack[]{MaterialsKevlar.TerephthalicAcid.getFluid(9000L), Materials.Methanol.getFluid(18000), Materials.SulfuricAcid.getFluid(18000)}, new FluidStack[]{MaterialsKevlar.DimethylTerephthalate.getFluid(9000L)}, null,1750, 1920);
         GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.cell, MaterialsKevlar.IVDimethylbenzene, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.CobaltIINaphthenate, 1L), Materials.Oxygen.getGas(1000L), Materials.Water.getFluid(1000L), GT_OreDictUnificator.get(OrePrefixes.cell, MaterialsKevlar.TerephthalicAcid, 1L ), 150, 480);
-
-        // DT Recipes to separate 1,2-Dimethylbenzene into the other isomers (IV-tier)
-        GT_Values.RA.addDistillationTowerRecipe(Materials.Dimethylbenzene.getFluid(1000), new ItemStack[]{GT_Utility.getIntegratedCircuit(1)},
-            new FluidStack[]{MaterialsKevlar.IIIDimethylbenzene.getFluid(100), MaterialsKevlar.IVDimethylbenzene.getFluid(900)},
-            GT_Values.NI,  20, 7680);
-        GT_Values.RA.addDistillationTowerRecipe(Materials.Dimethylbenzene.getFluid(1000), new ItemStack[]{GT_Utility.getIntegratedCircuit(2)},
-            new FluidStack[]{MaterialsKevlar.IIIDimethylbenzene.getFluid(900), MaterialsKevlar.IVDimethylbenzene.getFluid(100)},
-            GT_Values.NI,  20, 7680);
-
-        // DT Recipes to separate 1,3-Dimethylbenzene into the other isomers (IV-tier)
-        GT_Values.RA.addDistillationTowerRecipe(MaterialsKevlar.IIIDimethylbenzene.getFluid(1000), new ItemStack[]{GT_Utility.getIntegratedCircuit(1)},
-            new FluidStack[]{Materials.Dimethylbenzene.getFluid(100), MaterialsKevlar.IVDimethylbenzene.getFluid(900)},
-            GT_Values.NI,  20, 7680);
-        GT_Values.RA.addDistillationTowerRecipe(MaterialsKevlar.IIIDimethylbenzene.getFluid(1000), new ItemStack[]{GT_Utility.getIntegratedCircuit(2)},
-            new FluidStack[]{Materials.Dimethylbenzene.getFluid(900), MaterialsKevlar.IVDimethylbenzene.getFluid(100)},
-            GT_Values.NI,  20, 7680);
-
-        // DT Recipes to separate 1,4-Dimethylbenzene into the other isomers (IV-tier)
-        GT_Values.RA.addDistillationTowerRecipe(MaterialsKevlar.IVDimethylbenzene.getFluid(1000), new ItemStack[]{GT_Utility.getIntegratedCircuit(1)},
-            new FluidStack[]{Materials.Dimethylbenzene.getFluid(100), MaterialsKevlar.IIIDimethylbenzene.getFluid(900)},
-            GT_Values.NI,  20, 7680);
-        GT_Values.RA.addDistillationTowerRecipe(MaterialsKevlar.IVDimethylbenzene.getFluid(1000), new ItemStack[]{GT_Utility.getIntegratedCircuit(2)},
-            new FluidStack[]{Materials.Dimethylbenzene.getFluid(900), MaterialsKevlar.IIIDimethylbenzene.getFluid(100)},
-            GT_Values.NI,  20, 7680);
-
-        // DT Recipe to get Naphthenic Acid from Sulfuric Naphtha (IV-tier)
-        GT_Values.RA.addDistillationTowerRecipe(Materials.SulfuricNaphtha.getFluid(1000),
-            new FluidStack[]{Materials.Naphtha.getFluid(700), MaterialsKevlar.NaphthenicAcid.getFluid(100)},
-            Materials.Sulfur.getDust(1),  60, 7680);
-
+        GT_Values.RA.addDistillationTowerRecipe(Materials.CharcoalByproducts.getGas(1000), new ItemStack[]{GT_Utility.getIntegratedCircuit(2)},
+            new FluidStack[]{Materials.WoodTar.getFluid(250), Materials.WoodVinegar.getFluid(400), Materials.WoodGas.getGas(250), MaterialsKevlar.IIIDimethylbenzene.getFluid(100)},
+            Materials.Charcoal.getDustSmall(1),  40, 256);
+        GT_Values.RA.addDistillationTowerRecipe(Materials.WoodTar.getFluid(1000), new ItemStack[]{GT_Utility.getIntegratedCircuit(2)},
+            new FluidStack[]{Materials.Creosote.getFluid(250), Materials.Phenol.getFluid(100), Materials.Benzene.getFluid(400), Materials.Toluene.getFluid(100), MaterialsKevlar.IIIDimethylbenzene.getFluid(150)},
+            GT_Values.NI,  40, 224);
+        GT_Values.RA.addDistillationTowerRecipe(Materials.CharcoalByproducts.getGas(1000), new ItemStack[]{GT_Utility.getIntegratedCircuit(3)},
+            new FluidStack[]{Materials.WoodTar.getFluid(250), Materials.WoodVinegar.getFluid(400), Materials.WoodGas.getGas(250), MaterialsKevlar.IVDimethylbenzene.getFluid(100)},
+            Materials.Charcoal.getDustSmall(1),  40, 256);
+        GT_Values.RA.addUniversalDistillationRecipewithCircuit(Materials.WoodTar.getFluid(1000), new ItemStack[]{GT_Utility.getIntegratedCircuit(3)},
+            new FluidStack[]{Materials.Creosote.getFluid(250), Materials.Phenol.getFluid(100), Materials.Benzene.getFluid(400), Materials.Toluene.getFluid(100), MaterialsKevlar.IVDimethylbenzene.getFluid(150)},
+            GT_Values.NI,  40, 224);
+        GT_Values.RA.addDistillationTowerRecipe(Materials.CharcoalByproducts.getGas(1000), new ItemStack[]{GT_Utility.getIntegratedCircuit(4)},
+            new FluidStack[]{Materials.WoodTar.getFluid(250), Materials.WoodVinegar.getFluid(400), Materials.WoodGas.getGas(250), Materials.Dimethylbenzene.getFluid(20), MaterialsKevlar.IIIDimethylbenzene.getFluid(60), MaterialsKevlar.IVDimethylbenzene.getFluid(20)},
+            Materials.Charcoal.getDustSmall(1),  40, 256);
+        GT_Values.RA.addDistillationTowerRecipe(Materials.WoodTar.getFluid(1000), new ItemStack[]{GT_Utility.getIntegratedCircuit(4)},
+            new FluidStack[]{Materials.Creosote.getFluid(250), Materials.Phenol.getFluid(100), Materials.Benzene.getFluid(400), Materials.Toluene.getFluid(100),  Materials.Dimethylbenzene.getFluid(30), MaterialsKevlar.IIIDimethylbenzene.getFluid(90), MaterialsKevlar.IVDimethylbenzene.getFluid(30)},
+            GT_Values.NI,  40, 224);
         GT_Values.RA.addDistilleryRecipe(6, Materials.WoodTar.getFluid(200), MaterialsKevlar.IIIDimethylbenzene.getFluid(30), 16, 64, false);
         GT_Values.RA.addDistilleryRecipe(6, Materials.CharcoalByproducts.getGas(200), MaterialsKevlar.IIIDimethylbenzene.getFluid(20), 100, 64, false);
         GT_Values.RA.addDistilleryRecipe(7, Materials.WoodTar.getFluid(200), MaterialsKevlar.IVDimethylbenzene.getFluid(30), 16, 64, false);
@@ -1372,6 +1356,10 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addChemicalRecipe(Materials.Cobalt.getDust(1), Materials.NitricAcid.getCells(2), Materials.Water.getFluid(6000L), Materials.Water.getFluid(6000L), MaterialsKevlar.CobaltIINitrate.getDust(1), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Hydrogen, 2L),100, 120);
         GT_Values.RA.addChemicalRecipe(MaterialsKevlar.CobaltIINitrate.getDust(1), GT_ModHandler.getModItem(MOD_ID_DC,"item.PotassiumHydroxideDust", 2L, 0), Materials.Water.getFluid(6000L), Materials.Water.getFluid(6000L), MaterialsKevlar.CobaltIIHydroxide.getDust(1), Materials.Saltpeter.getDust(2),100, 120);
         GT_Values.RA.addChemicalRecipe(Materials.CobaltOxide.getDust(1), Materials.AceticAcid.getCells(2), GT_Values.NF, Materials.Hydrogen.getGas(1000L), MaterialsKevlar.CobaltIIAcetate.getDust(1), ItemList.Cell_Empty.get(2L),100, 120);
+        GT_Values.RA.addDistillationTowerRecipe(Materials.OilLight.getFluid(1500), new ItemStack[]{GT_Utility.getIntegratedCircuit(9)}, new FluidStack[]{ Materials.SulfuricHeavyFuel.getFluid(100), Materials.SulfuricLightFuel.getFluid(200), Materials.SulfuricNaphtha.getFluid(300), MaterialsKevlar.NaphthenicAcid.getFluid(25), Materials.SulfuricGas.getGas(2400)}, null, 32, 480);
+        GT_Values.RA.addDistillationTowerRecipe(Materials.OilMedium.getFluid(1000), new ItemStack[]{GT_Utility.getIntegratedCircuit(9)}, new FluidStack[]{Materials.SulfuricHeavyFuel.getFluid(150), Materials.SulfuricLightFuel.getFluid(500), Materials.SulfuricNaphtha.getFluid(200), MaterialsKevlar.NaphthenicAcid.getFluid(25), Materials.SulfuricGas.getGas(600)}, null, 32, 480);
+        GT_Values.RA.addDistillationTowerRecipe(Materials.Oil.getFluid(500L), new ItemStack[]{GT_Utility.getIntegratedCircuit(9)}, new FluidStack[]{Materials.SulfuricHeavyFuel.getFluid(150), Materials.SulfuricLightFuel.getFluid(500), Materials.SulfuricNaphtha.getFluid(200), MaterialsKevlar.NaphthenicAcid.getFluid(25), Materials.SulfuricGas.getGas(600)}, null, 32, 480);
+        GT_Values.RA.addDistillationTowerRecipe(Materials.OilHeavy.getFluid(1000),  new ItemStack[]{GT_Utility.getIntegratedCircuit(9)}, new FluidStack[]{Materials.SulfuricHeavyFuel.getFluid(2500), Materials.SulfuricLightFuel.getFluid(450),  Materials.SulfuricNaphtha.getFluid(150),  MaterialsKevlar.NaphthenicAcid.getFluid(50), Materials.SulfuricGas.getGas(600)}, null, 100, 480);
         GT_Values.RA.addChemicalRecipeForBasicMachineOnly(Materials.Phosphorus.getDust(1), Materials.Chlorine.getCells(3), GT_Values.NF, MaterialsKevlar.PhosphorusTrichloride.getFluid(1000L), ItemList.Cell_Empty.get(3L), GT_Values.NI,200, 120);
         GT_Values.RA.addChemicalRecipe(Materials.Phosphorus.getDust(1), GT_Utility.getIntegratedCircuit(1), Materials.Chlorine.getGas(3000L), MaterialsKevlar.PhosphorusTrichloride.getFluid(1000L), GT_Values.NI,200, 120);
         GT_Values.RA.addChemicalRecipe(Materials.Phosphorus.getDust(9), GT_Utility.getIntegratedCircuit(9), Materials.Chlorine.getGas(27000L), MaterialsKevlar.PhosphorusTrichloride.getFluid(9000L), GT_Values.NI,1500, 120);
@@ -3003,16 +2991,16 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addPyrolyseRecipe(Materials.Sugar.getDust(23), 								  GT_Values.NF, 					1, Materials.Charcoal.getDust(12),   Materials.Water.getFluid(1500), 				320, 64);
         GT_Values.RA.addPyrolyseRecipe(Materials.Sugar.getDust(23), 								  Materials.Nitrogen.getGas(500),   2, Materials.Charcoal.getDust(12),   Materials.Water.getFluid(1500), 				160, 96);
 
-        GT_Values.RA.addUniversalDistillationRecipe(Materials.CharcoalByproducts.getGas(1000),
+        GT_Values.RA.addUniversalDistillationRecipewithCircuit(Materials.CharcoalByproducts.getGas(1000), new ItemStack[]{ GT_Utility.getIntegratedCircuit(1)},
                 new FluidStack[]{Materials.WoodTar.getFluid(250), Materials.WoodVinegar.getFluid(400), Materials.WoodGas.getGas(250), Materials.Dimethylbenzene.getFluid(100)},
                 Materials.Charcoal.getDustSmall(1),  40, 256);
-        GT_Values.RA.addUniversalDistillationRecipe(Materials.WoodGas.getGas(1000),
+        GT_Values.RA.addUniversalDistillationRecipewithCircuit(Materials.WoodGas.getGas(1000), new ItemStack[]{ GT_Utility.getIntegratedCircuit(1)},
                 new FluidStack[]{Materials.CarbonDioxide.getGas(490), Materials.Ethylene.getGas(20), Materials.Methane.getGas(130), Materials.CarbonMonoxide.getGas(340), Materials.Hydrogen.getGas(20)},
                 GT_Values.NI,  40, 256);
-        GT_Values.RA.addUniversalDistillationRecipe(Materials.WoodVinegar.getFluid(1000),
+        GT_Values.RA.addUniversalDistillationRecipewithCircuit(Materials.WoodVinegar.getFluid(1000), new ItemStack[]{ GT_Utility.getIntegratedCircuit(1)},
                 new FluidStack[]{Materials.AceticAcid.getFluid(100), Materials.Water.getFluid(500), Materials.Ethanol.getFluid(10), Materials.Methanol.getFluid(300), Materials.Acetone.getFluid(50), Materials.MethylAcetate.getFluid(10)},
                 GT_Values.NI,  40, 256);
-        GT_Values.RA.addUniversalDistillationRecipe(Materials.WoodTar.getFluid(1000),
+        GT_Values.RA.addUniversalDistillationRecipewithCircuit(Materials.WoodTar.getFluid(1000), new ItemStack[]{ GT_Utility.getIntegratedCircuit(1)},
                 new FluidStack[]{Materials.Creosote.getFluid(250), Materials.Phenol.getFluid(100), Materials.Benzene.getFluid(400), Materials.Toluene.getFluid(100), Materials.Dimethylbenzene.getFluid(150)},
                 GT_Values.NI,  40, 224);
 
