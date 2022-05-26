@@ -968,6 +968,25 @@ public final class ALLOY {
 					new MaterialStack(ELEMENT.getInstance().ARSENIC, 2)
 			});
 
+	public static final Material INDALLOY_140 = new Material(
+			"Indalloy 140", //Material Name
+			MaterialState.SOLID, //State
+			null, //Material Colour
+			5200, //Melting Point in C
+			6500,
+			-1,
+			-1,
+			true, //Uses Blast furnace?
+			//Material Stacks with Percentage of required elements.
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.getInstance().BISMUTH, 47),
+					new MaterialStack(ELEMENT.getInstance().LEAD, 25),
+					new MaterialStack(ELEMENT.getInstance().TIN, 13),
+					new MaterialStack(ELEMENT.getInstance().CADMIUM, 10),
+					new MaterialStack(ELEMENT.getInstance().INDIUM, 5)
+			});
+
+
 
 
 
