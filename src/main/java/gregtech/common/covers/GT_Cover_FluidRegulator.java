@@ -471,7 +471,10 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
 				if (i > maxFlow) {
 					i = maxFlow;
 					warn = true;
-				}
+				} else if (i < -maxFlow) {
+                    i = -maxFlow;
+                    warn = true;
+                }
 				if (coverVariable.speed == i) return;
 				coverVariable.speed = (int) i;
 			} else if (box.id == 3) {
