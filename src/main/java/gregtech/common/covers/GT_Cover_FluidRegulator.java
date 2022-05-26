@@ -484,7 +484,7 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
 				} else if (Math.abs(coverVariable.speed) > mTransferRate * i) {
 					i = Math.min(TICK_RATE_MAX, (Math.abs(coverVariable.speed) + mTransferRate - 1) / mTransferRate);
 					warn = true;
-                } else if (i < TICK_RATE_MIN) {
+				} else if (i < TICK_RATE_MIN) {
 					i = 1;
 				}
 				if (!warn && coverVariable.tickRate == i) return;
