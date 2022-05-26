@@ -368,11 +368,21 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
 			new GT_GuiIconButton(this, 3, startX + spaceX * 1, startY + spaceY * 1, GT_GuiIcon.REDSTONE_ON).setTooltipText(GT_Utility.trans("225", "Active with Redstone Signal"));
 			new GT_GuiIconButton(this, 4, startX + spaceX * 2, startY + spaceY * 1, GT_GuiIcon.REDSTONE_OFF).setTooltipText(GT_Utility.trans("226", "Inactive with Redstone Signal"));
 
-			tBox = new GT_GuiIntegerTextBox(this, 2, startX + spaceX * 0, startY + spaceY * 2 + 2, spaceX * 4 - 3, 12);
+			tBox = new GT_GuiIntegerTextBox(this, 2, startX + spaceX * 0, startY + spaceY * 2 + 2, spaceX * 4 - 3, 12) {
+                @Override
+                public boolean validChar(char c, int key) {
+                    return super.validChar(c, key) || c == '-';
+                }
+            };
 			tBox.setText(String.valueOf(this.coverVariable.speed));
 			tBox.setMaxStringLength(10);
 
-			lBox = new GT_GuiIntegerTextBox(this, 3, startX + spaceX * 5, startY + spaceY * 2 + 2, spaceX * 2 - 3, 12);
+			lBox = new GT_GuiIntegerTextBox(this, 3, startX + spaceX * 5, startY + spaceY * 2 + 2, spaceX * 2 - 3, 12) {
+                @Override
+                public boolean validChar(char c, int key) {
+                    return super.validChar(c, key) || c == '-';
+                }
+            };
 			lBox.setText(String.valueOf(this.coverVariable.tickRate));
 			lBox.setMaxStringLength(4);
 		}
@@ -401,6 +411,11 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
 				case 0:
 				case 1:
 					coverVariable.speed *= -1;
+                    for (GT_GuiIntegerTextBox box : textBoxes){
+                        if (box.id == 2) {
+                            box.setText(String.valueOf(coverVariable.speed));
+                        }
+                    }
 					break;
 				case 2:
 				case 3:
@@ -456,8 +471,6 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
 				if (i > maxFlow) {
 					i = maxFlow;
 					warn = true;
-				} else if (i < 0) {
-					i = 0;
 				}
 				if (coverVariable.speed == i) return;
 				coverVariable.speed = (int) i;
