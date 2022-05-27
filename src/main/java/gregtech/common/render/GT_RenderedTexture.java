@@ -50,7 +50,10 @@ public class GT_RenderedTexture extends GT_TextureBase implements ITexture, ICol
         final boolean enableAO = aRenderer.enableAO;
         final LightingHelper lighting = new LightingHelper(aRenderer);
         if (glow) {
-            if (!GT_Mod.gregtechproxy.mRenderGlowTextures) return;
+            if (!GT_Mod.gregtechproxy.mRenderGlowTextures) {
+                draw(aRenderer);
+                return;
+            }
             aRenderer.enableAO = false;
             lighting.setLightnessOverride(1.0F);
             if (enableAO) lighting.setBrightnessOverride(MAX_BRIGHTNESS);
@@ -72,7 +75,10 @@ public class GT_RenderedTexture extends GT_TextureBase implements ITexture, ICol
         final boolean enableAO = aRenderer.enableAO;
         final LightingHelper lighting = new LightingHelper(aRenderer);
         if (glow) {
-            if (!GT_Mod.gregtechproxy.mRenderGlowTextures) return;
+            if (!GT_Mod.gregtechproxy.mRenderGlowTextures) {
+                draw(aRenderer);
+                return;
+            }
             aRenderer.enableAO = false;
             lighting.setLightnessOverride(1.0F);
             lighting.setBrightnessOverride(MAX_BRIGHTNESS);
@@ -94,7 +100,10 @@ public class GT_RenderedTexture extends GT_TextureBase implements ITexture, ICol
         final boolean enableAO = aRenderer.enableAO;
         final LightingHelper lighting = new LightingHelper(aRenderer);
         if (glow) {
-            if (!GT_Mod.gregtechproxy.mRenderGlowTextures) return;
+            if (!GT_Mod.gregtechproxy.mRenderGlowTextures) {
+                draw(aRenderer);
+                return;
+            }
             aRenderer.enableAO = false;
             lighting.setLightnessOverride(1.0F);
             lighting.setBrightnessOverride(MAX_BRIGHTNESS);
@@ -116,7 +125,10 @@ public class GT_RenderedTexture extends GT_TextureBase implements ITexture, ICol
         final boolean enableAO = aRenderer.enableAO;
         final LightingHelper lighting = new LightingHelper(aRenderer);
         if (glow) {
-            if (!GT_Mod.gregtechproxy.mRenderGlowTextures) return;
+            if (!GT_Mod.gregtechproxy.mRenderGlowTextures) {
+                draw(aRenderer);
+                return;
+            }
             aRenderer.enableAO = false;
             lighting.setLightnessOverride(1.0F);
             lighting.setBrightnessOverride(MAX_BRIGHTNESS);
@@ -138,7 +150,10 @@ public class GT_RenderedTexture extends GT_TextureBase implements ITexture, ICol
         final boolean enableAO = aRenderer.enableAO;
         final LightingHelper lighting = new LightingHelper(aRenderer);
         if (glow) {
-            if (!GT_Mod.gregtechproxy.mRenderGlowTextures) return;
+            if (!GT_Mod.gregtechproxy.mRenderGlowTextures) {
+                draw(aRenderer);
+                return;
+            }
             aRenderer.enableAO = false;
             lighting.setLightnessOverride(1.0F);
             lighting.setBrightnessOverride(MAX_BRIGHTNESS);
@@ -160,7 +175,10 @@ public class GT_RenderedTexture extends GT_TextureBase implements ITexture, ICol
         final boolean enableAO = aRenderer.enableAO;
         final LightingHelper lighting = new LightingHelper(aRenderer);
         if (glow) {
-            if (!GT_Mod.gregtechproxy.mRenderGlowTextures) return;
+            if (!GT_Mod.gregtechproxy.mRenderGlowTextures){
+                draw(aRenderer);
+                return;
+            }
             aRenderer.enableAO = false;
             lighting.setLightnessOverride(1.0F);
             lighting.setBrightnessOverride(MAX_BRIGHTNESS);

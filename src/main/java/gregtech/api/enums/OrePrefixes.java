@@ -848,6 +848,8 @@ public enum OrePrefixes {
                 if (tPrefix == oreNether && aOre.equals("oreNetherQuartz")) return ore;
 		        if (tPrefix == oreNether && aOre.equals("oreNetherStar")) return ore;
 		        if (tPrefix == oreBasalt && aOre.equals("oreBasalticMineralSand")) return ore;
+                if (tPrefix == stickLong && aOre.equals("stickLongasssuperconductornameforuvwire")) return stick;
+                if (tPrefix == stickLong && aOre.equals("stickLongasssuperconductornameforuhvwire")) return stick;
                 return tPrefix;
             }
         return null;
