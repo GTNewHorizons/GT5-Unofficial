@@ -12,6 +12,7 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import ic2.core.Ic2Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.util.GT_Utility;
@@ -31,6 +32,8 @@ public class RecipeLoader {
                 1920
         );
 
+        Fluid solderIndalloy = FluidRegistry.getFluid("molten.indalloy140") != null ? FluidRegistry.getFluid("molten.indalloy140") : FluidRegistry.getFluid("molten.solderingalloy");
+
         //LNR Controller
         GT_Values.RA.addAssemblylineRecipe(
                 ItemList.Generator_Naquadah_Mark_III.get(1).copy(),
@@ -48,7 +51,7 @@ public class RecipeLoader {
                 },
                 new FluidStack[]{
                         Materials.Trinium.getMolten(576),
-                        Materials.SolderingAlloy.getMolten(4608),
+                        new FluidStack(solderIndalloy, 4608),
                         Materials.Lubricant.getFluid(8000)
                 },
                 ItemRefer.Large_Naquadah_Reactor.get(1),
@@ -701,7 +704,7 @@ public class RecipeLoader {
                         Materials.Quantium.getMolten(9216L),
                         Materials.DraconiumAwakened.getMolten(4608L),
                         MyMaterial.extremelyUnstableNaquadah.getMolten(1440),
-                        Materials.SolderingAlloy.getMolten(14400L)
+                        new FluidStack(solderIndalloy, 14400)
                 },
                 ItemRefer.Naquadah_Fuel_Refinery.get(1),
                 36000,
@@ -721,7 +724,7 @@ public class RecipeLoader {
                         ItemRefer.Radiation_Protection_Plate.get(1),
                 },
                 new FluidStack[]{
-                        Materials.SolderingAlloy.getMolten(1152)
+                        new FluidStack(solderIndalloy, 1152)
                 },
                 ItemRefer.Advanced_Radiation_Protection_Plate.get(1),
                 1000,
@@ -744,7 +747,7 @@ public class RecipeLoader {
                 },
                 new FluidStack[]{
                         Materials.TungstenSteel.getMolten(1152),
-                        Materials.SolderingAlloy.getMolten(2304)
+                        new FluidStack(solderIndalloy, 2304)
                 },
                 ItemRefer.Naquadah_Fuel_Refinery_Casing.get(1),
                 500,
@@ -848,7 +851,7 @@ public class RecipeLoader {
                     new FluidStack[]{
                             Materials.Trinium.getMolten(2304),
                             Materials.Platinum.getMolten(4608),
-                            Materials.SolderingAlloy.getMolten(9216),
+                            new FluidStack(solderIndalloy, 9216),
                             FluidRegistry.getFluidStack("ic2coolant",8000)
                     },
                     ItemRefer.Field_Restriction_Coil_T1.get(1),
@@ -879,7 +882,7 @@ public class RecipeLoader {
                     new FluidStack[]{
                             Materials.Tritanium.getMolten(2304),
                             Materials.Palladium.getMolten(4608),
-                            Materials.SolderingAlloy.getMolten(9216),
+                            new FluidStack(solderIndalloy, 9216),
                             FluidRegistry.getFluidStack("ic2coolant",8000)
                     },
                     ItemRefer.Field_Restriction_Coil_T2.get(1),
@@ -910,7 +913,7 @@ public class RecipeLoader {
                     new FluidStack[]{
                             Materials.Americium.getMolten(2304),
                             Materials.Osmium.getMolten(4608),
-                            Materials.SolderingAlloy.getMolten(9216),
+                            new FluidStack(solderIndalloy, 9216),
                             FluidRegistry.getFluidStack("ic2coolant",8000)
                     },
                     ItemRefer.Field_Restriction_Coil_T3.get(1),

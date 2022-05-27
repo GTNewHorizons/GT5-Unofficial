@@ -15,6 +15,7 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.*;
 import ic2.core.Ic2Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -366,6 +367,8 @@ public class RecipeLoader_02 {
             1960580
         );
 
+        Fluid solderIndalloy = FluidRegistry.getFluid("molten.indalloy140") != null ? FluidRegistry.getFluid("molten.indalloy140") : FluidRegistry.getFluid("molten.solderingalloy");
+
         GT_Values.RA.addAssemblylineRecipe(
             ItemRefer.Fluid_Storage_Core_T2.get(1),
             20000,
@@ -376,7 +379,7 @@ public class RecipeLoader_02 {
                 GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Iridium,32)
             },
             new FluidStack[]{
-                Materials.SolderingAlloy.getMolten(2304),
+                new FluidStack(solderIndalloy, 2304),
                 Materials.Lubricant.getFluid(4000)
             },
             ItemRefer.Fluid_Storage_Core_T3.get(1),
@@ -394,7 +397,7 @@ public class RecipeLoader_02 {
                 GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Osmium,32)
             },
             new FluidStack[]{
-                Materials.SolderingAlloy.getMolten(18432),
+                new FluidStack(solderIndalloy, 18432),
                 Materials.Lubricant.getFluid(16000)
             },
             ItemRefer.Fluid_Storage_Core_T4.get(1),
