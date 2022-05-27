@@ -54,7 +54,10 @@ public class PlayerSleepEventHandler {
 	@SubscribeEvent
 	public void wake(PlayerWakeUpEvent event) {
 		EntityPlayer aPlayer = event.entityPlayer;
-		if (aPlayer != null && !aPlayer.worldObj.isRemote) {			
+		if (aPlayer != null && !aPlayer.worldObj.isRemote) {
+			if (event.entityPlayer.getEntityWorld().getWorldTime() % 24000 != 0) {
+				return;
+			}
 			boolean aRemovedBad = false;
 			try {
 				Collection<PotionEffect> aActive = aPlayer.getActivePotionEffects();
