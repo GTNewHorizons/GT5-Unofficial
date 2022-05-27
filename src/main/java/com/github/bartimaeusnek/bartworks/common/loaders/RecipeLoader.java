@@ -45,6 +45,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -189,6 +190,8 @@ public class RecipeLoader {
                             'P', "plateAlloyIridium",
                     });
 
+        Fluid solderIndalloy = FluidRegistry.getFluid("molten.indalloy140") != null ? FluidRegistry.getFluid("molten.indalloy140") : FluidRegistry.getFluid("molten.solderingalloy");
+
         if (newStuff) {
 
             GT_ModHandler.addCraftingRecipe(new ItemStack(ItemRegistry.PUMPPARTS, 1, 0),//tube
@@ -250,7 +253,7 @@ public class RecipeLoader {
                                 ItemList.Field_Generator_LuV.get(8)
                         },
                         new FluidStack[]{
-                                Materials.SolderingAlloy.getMolten(32 * 144),
+                                new FluidStack(solderIndalloy, 32 * 144),
                                 Materials.Polytetrafluoroethylene.getMolten(32 * 144)
                         }, ItemRegistry.dehp, 5000, BW_Util.getMachineVoltageFromTier(6));
 
@@ -823,7 +826,7 @@ public class RecipeLoader {
                                 GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Europium, 36L)
                         },
                         new FluidStack[]{
-                                Materials.SolderingAlloy.getMolten(1440),
+                                new FluidStack(solderIndalloy, 1440),
                                 WerkstoffLoader.Neon.getFluidOrGas(20000),
                         },
                         ItemRegistry.voidminer[0].copy(),
@@ -847,7 +850,7 @@ public class RecipeLoader {
                                     GT_OreDictUnificator.get(OrePrefixes.screw, Materials.BlackPlutonium, 36L)
                             },
                             new FluidStack[]{
-                                    Materials.SolderingAlloy.getMolten(1440),
+                                    new FluidStack(solderIndalloy, 1440),
                                     WerkstoffLoader.Krypton.getFluidOrGas(20000)
                             },
                             ItemRegistry.voidminer[1].copy(),
@@ -868,7 +871,7 @@ public class RecipeLoader {
                                     GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Neutronium, 36L)
                             },
                             new FluidStack[]{
-                                    Materials.SolderingAlloy.getMolten(1440),
+                                    new FluidStack(solderIndalloy, 1440),
                                     WerkstoffLoader.Oganesson.getFluidOrGas(20000)
                             },
                             ItemRegistry.voidminer[2].copy(),
@@ -887,7 +890,7 @@ public class RecipeLoader {
                                 ItemList.Electric_Piston_UV.get(64),
                         },
                         new FluidStack[]{
-                                Materials.SolderingAlloy.getMolten(1440),
+                                new FluidStack(solderIndalloy, 1440),
                                 Materials.Osmium.getMolten(1440),
                                 Materials.Neutronium.getMolten(1440)
                         },
@@ -996,7 +999,7 @@ public class RecipeLoader {
                             Materials.Chrome.getPlates(8)
                     },
                     new FluidStack[]{
-                            Materials.SolderingAlloy.getMolten(1440)
+                            new FluidStack(solderIndalloy, 1440)
                     },
                     ItemRegistry.cal.copy(),
                     24000,
