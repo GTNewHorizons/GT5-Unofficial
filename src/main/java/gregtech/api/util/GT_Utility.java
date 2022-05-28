@@ -157,6 +157,7 @@ public class GT_Utility {
     private static final Map<String, Fluid> sFluidUnlocalizedNameToFluid = new HashMap<>();
     /** Must use {@code Supplier} here because the ore prefixes have not yet been registered at class load time. */
     private static final Map<OrePrefixes, Supplier<ItemStack>> sOreToCobble = new HashMap<>();
+    private final static Map<Integer, Boolean> sOreTable = new HashMap<>();
     public static volatile int VERSION = 509;
     public static boolean TE_CHECK = false, BC_CHECK = false, CHECK_ALL = true, RF_CHECK = false;
     public static Map<GT_PlayedSound, Integer> sPlayedSoundMap = new /*Concurrent*/HashMap<>();
@@ -2961,10 +2962,17 @@ public class GT_Utility {
     }
 
     public static boolean isOre(ItemStack aStack) {
-        for (int id: OreDictionary.getOreIDs(aStack)) {
-            if (OreDictionary.getOreName(id).startsWith("ore"))
-                return true;
+        int tItem = GT_Utility.stackToInt(aStack);
+        if (sOreTable.containsKey(tItem)) {
+            return sOreTable.get(tItem);
         }
+        for (int id: OreDictionary.getOreIDs(aStack)) {
+            if (OreDictionary.getOreName(id).startsWith("ore")) {
+                sOreTable.put(tItem, true);
+                return true;
+            }
+        }
+        sOreTable.put(tItem, false);
         return false;
     }
 
