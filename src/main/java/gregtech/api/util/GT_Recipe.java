@@ -398,10 +398,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
      * You'll get weird behavior.
      */
     public boolean isRecipeInputEqual(boolean aDecreaseStacksizeBySuccess, boolean aDontCheckStackSizes, FluidStack[] aFluidInputs, ItemStack... aInputs) {
-        return isRecipeInputEqual(aDecreaseStacksizeBySuccess, aDontCheckStackSizes, false, aFluidInputs, aInputs);
-    }
-
-    public boolean isRecipeInputEqual(boolean aDecreaseStacksizeBySuccess, boolean aDontCheckStackSizes, boolean alreadyUnificated, FluidStack[] aFluidInputs, ItemStack... aInputs) {
         if (mInputs.length > 0 && aInputs == null) return false;
         if (mFluidInputs.length > 0 && aFluidInputs == null) return false;
 
@@ -410,12 +406,10 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         int remainingCost;
 
         // Array tracking modified fluid amounts. For efficiency, we will lazily initialize this array.
-        int[] newFluidAmounts = null;
+        // We use Integer so that we can have null as the default value, meaning unchanged.
+        Integer[] newFluidAmounts = null;
         if (aFluidInputs != null) {
-            newFluidAmounts = new int[aFluidInputs.length];
-            for (int i = 0; i < aFluidInputs.length; i++) {
-                newFluidAmounts[i] = aFluidInputs[i] == null ? 0 : aFluidInputs[i].amount;
-            }
+            newFluidAmounts = new Integer[aFluidInputs.length];
 
             for (FluidStack recipeFluidCost : mFluidInputs) {
                 if (recipeFluidCost != null) {
@@ -426,6 +420,9 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                         FluidStack providedFluid = aFluidInputs[i];
                         if (providedFluid != null && providedFluid.isFluidEqual(recipeFluidCost)) {
                             inputFound = true;
+                            if (newFluidAmounts[i] == null) {
+                                newFluidAmounts[i] = providedFluid.amount;
+                            }
 
                             if (aDontCheckStackSizes || newFluidAmounts[i] >= remainingCost) {
                                 newFluidAmounts[i] -= remainingCost;
@@ -447,22 +444,20 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         }
 
         // Array tracking modified item stack sizes. For efficiency, we will lazily initialize this array.
-        int[] newItemAmounts = null;
+        // We use Integer so that we can have null as the default value, meaning unchanged.
+        Integer[] newItemAmounts = null;
         if (aInputs != null) {
-            newItemAmounts = new int[aInputs.length];
-            for (int i = 0; i < aInputs.length; i++) {
-                newItemAmounts[i] = aInputs[i] == null ? 0 : aInputs[i].stackSize;
-            }
+            newItemAmounts = new Integer[aInputs.length];
 
             for (ItemStack recipeItemCost : mInputs) {
-                ItemStack unifiedItemCost = alreadyUnificated ? recipeItemCost : GT_OreDictUnificator.get_nocopy(true, recipeItemCost);
+                ItemStack unifiedItemCost = GT_OreDictUnificator.get_nocopy(true, recipeItemCost);
                 if (unifiedItemCost != null) {
                     inputFound = false;
                     remainingCost = recipeItemCost.stackSize;
 
                     for (int i = 0; i < aInputs.length; i++) {
                         ItemStack providedItem = aInputs[i];
-                        if (alreadyUnificated ? GT_Utility.areStacksEqual(providedItem, unifiedItemCost, true) : GT_OreDictUnificator.isInputStackEqual(providedItem, unifiedItemCost)) {
+                        if (GT_OreDictUnificator.isInputStackEqual(providedItem, unifiedItemCost)) {
                             if (GTppRecipeHelper) { // Please see JavaDoc on GTppRecipeHelper for why this is here.
                                 if (GT_Utility.areStacksEqual(providedItem, Ic2Items.FluidCell.copy(), true) || GT_Utility.areStacksEqual(providedItem, ItemList.Tool_DataStick.get(1L), true) || GT_Utility.areStacksEqual(providedItem, ItemList.Tool_DataOrb.get(1L), true)) {
                                     if (!GT_Utility.areStacksEqual(providedItem, recipeItemCost, false))
@@ -471,6 +466,9 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                             }
 
                             inputFound = true;
+                            if (newItemAmounts[i] == null) {
+                                newItemAmounts[i] = providedItem.stackSize;
+                            }
 
                             if (aDontCheckStackSizes || newItemAmounts[i] >= remainingCost) {
                                 newItemAmounts[i] -= remainingCost;
@@ -495,7 +493,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             // Copy modified amounts into the input stacks.
             if (aFluidInputs != null) {
                 for (int i = 0; i < aFluidInputs.length; i++) {
-                    if (aFluidInputs[i] != null) {
+                    if (newFluidAmounts[i] != null) {
                         aFluidInputs[i].amount = newFluidAmounts[i];
                     }
                 }
@@ -503,7 +501,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
             if (aInputs != null) {
                 for (int i = 0; i < aInputs.length; i++) {
-                    if (aInputs[i] != null) {
+                    if (newItemAmounts[i] != null) {
                         aInputs[i].stackSize = newItemAmounts[i];
                     }
                 }
@@ -1084,7 +1082,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
             // Check the Recipe which has been used last time in order to not have to search for it again, if possible.
             if (aRecipe != null)
-                if (!aRecipe.mFakeRecipe && aRecipe.mCanBeBuffered && aRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, true, aFluids, aInputs))
+                if (!aRecipe.mFakeRecipe && aRecipe.mCanBeBuffered && aRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs))
                     return aRecipe.mEnabled && aVoltage * mAmperage >= aRecipe.mEUt ? aRecipe : null;
 
             // Now look for the Recipes inside the Item HashMaps, but only when the Recipes usually have Items.
@@ -1093,11 +1091,11 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     Collection<GT_Recipe>
                             tRecipes = mRecipeItemMap.get(new GT_ItemStack(tStack));
                     if (tRecipes != null) for (GT_Recipe tRecipe : tRecipes)
-                        if (!tRecipe.mFakeRecipe && tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, true, aFluids, aInputs))
+                        if (!tRecipe.mFakeRecipe && tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs))
                             return tRecipe.mEnabled && aVoltage * mAmperage >= tRecipe.mEUt ? tRecipe : null;
                     tRecipes = mRecipeItemMap.get(new GT_ItemStack(tStack, true));
                     if (tRecipes != null) for (GT_Recipe tRecipe : tRecipes)
-                        if (!tRecipe.mFakeRecipe && tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, true, aFluids, aInputs))
+                        if (!tRecipe.mFakeRecipe && tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs))
                             return tRecipe.mEnabled && aVoltage * mAmperage >= tRecipe.mEUt ? tRecipe : null;
                 }
 
@@ -1107,7 +1105,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     Collection<GT_Recipe>
                             tRecipes = mRecipeFluidMap.get(aFluid.getFluid());
                     if (tRecipes != null) for (GT_Recipe tRecipe : tRecipes)
-                        if (!tRecipe.mFakeRecipe && tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, true, aFluids, aInputs))
+                        if (!tRecipe.mFakeRecipe && tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs))
                             return tRecipe.mEnabled && aVoltage * mAmperage >= tRecipe.mEUt ? tRecipe : null;
                 }
 
@@ -1286,7 +1284,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         @Override
         public GT_Recipe findRecipe(IHasWorldObjectAndCoords aTileEntity, GT_Recipe aRecipe, boolean aNotUnificated, long aVoltage, FluidStack[] aFluids, ItemStack aSpecialSlot, ItemStack... aInputs) {
             if (aInputs == null || aInputs.length <= 0 || aInputs[0] == null) return null;
-            if (aRecipe != null && aRecipe.isRecipeInputEqual(false, true, !aNotUnificated, aFluids, aInputs)) return aRecipe;
+            if (aRecipe != null && aRecipe.isRecipeInputEqual(false, true, aFluids, aInputs)) return aRecipe;
             ItemStack tOutput = GT_ModHandler.getSmeltingOutput(aInputs[0], false, null);
             return tOutput == null ? null : new GT_Recipe(false, new ItemStack[]{GT_Utility.copyAmount(1, aInputs[0])}, new ItemStack[]{tOutput}, null, null, null, null, 128, 4, 0);
         }
@@ -1308,7 +1306,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         @Override
         public GT_Recipe findRecipe(IHasWorldObjectAndCoords aTileEntity, GT_Recipe aRecipe, boolean aNotUnificated, long aVoltage, FluidStack[] aFluids, ItemStack aSpecialSlot, ItemStack... aInputs) {
             if (aInputs == null || aInputs.length <= 0 || aInputs[0] == null) return null;
-            if (aRecipe != null && aRecipe.isRecipeInputEqual(false, true, !aNotUnificated, aFluids, aInputs)) return aRecipe;
+            if (aRecipe != null && aRecipe.isRecipeInputEqual(false, true, aFluids, aInputs)) return aRecipe;
             ItemStack tOutput = GT_ModHandler.getSmeltingOutput(aInputs[0], false, null);
 
             if (GT_Utility.areStacksEqual(aInputs[0], new ItemStack(Items.book, 1, W))) {
@@ -1472,7 +1470,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         @Override
         public GT_Recipe findRecipe(IHasWorldObjectAndCoords aTileEntity, GT_Recipe aRecipe, boolean aNotUnificated, long aVoltage, FluidStack[] aFluids, ItemStack aSpecialSlot, ItemStack... aInputs) {
             if (aInputs == null || aInputs.length <= 0 || aInputs[0] == null) return null;
-            if (aRecipe != null && aRecipe.isRecipeInputEqual(false, true, !aNotUnificated, aFluids, aInputs)) return aRecipe;
+            if (aRecipe != null && aRecipe.isRecipeInputEqual(false, true, aFluids, aInputs)) return aRecipe;
             return new GT_Recipe(false, new ItemStack[]{GT_Utility.copyAmount(1, aInputs[0])}, GT_ModHandler.getRecyclerOutput(GT_Utility.copyAmount(64, aInputs[0]), 0) == null ? null : new ItemStack[]{ItemList.IC2_Scrap.get(1)}, null, new int[]{1250}, null, null, 45, 1, 0);
         }
 
@@ -1493,7 +1491,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         @Override
         public GT_Recipe findRecipe(IHasWorldObjectAndCoords aTileEntity, GT_Recipe aRecipe, boolean aNotUnificated, long aVoltage, FluidStack[] aFluids, ItemStack aSpecialSlot, ItemStack... aInputs) {
             if (aInputs == null || aInputs.length <= 0 || aInputs[0] == null) return null;
-            if (aRecipe != null && aRecipe.isRecipeInputEqual(false, true, !aNotUnificated, aFluids, aInputs)) return aRecipe;
+            if (aRecipe != null && aRecipe.isRecipeInputEqual(false, true, aFluids, aInputs)) return aRecipe;
             ItemStack tComparedInput = GT_Utility.copyOrNull(aInputs[0]);
             ItemStack[] tOutputItems = GT_ModHandler.getMachineOutput(tComparedInput, ic2.api.recipe.Recipes.compressor.getRecipes(), true, new NBTTagCompound(), null, null, null);
             return GT_Utility.arrayContainsNonNull(tOutputItems) ? new GT_Recipe(false, new ItemStack[]{GT_Utility.copyAmount(aInputs[0].stackSize - tComparedInput.stackSize, aInputs[0])}, tOutputItems, null, null, null, null, 400, 2, 0) : null;
@@ -1516,7 +1514,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         @Override
         public GT_Recipe findRecipe(IHasWorldObjectAndCoords aTileEntity, GT_Recipe aRecipe, boolean aNotUnificated, long aVoltage, FluidStack[] aFluids, ItemStack aSpecialSlot, ItemStack... aInputs) {
             if (aInputs == null || aInputs.length <= 0 || aInputs[0] == null) return null;
-            if (aRecipe != null && aRecipe.isRecipeInputEqual(false, true, !aNotUnificated, aFluids, aInputs)) return aRecipe;
+            if (aRecipe != null && aRecipe.isRecipeInputEqual(false, true, aFluids, aInputs)) return aRecipe;
             ItemStack tComparedInput = GT_Utility.copyOrNull(aInputs[0]);
             ItemStack[] tOutputItems = GT_ModHandler.getMachineOutput(tComparedInput, ic2.api.recipe.Recipes.extractor.getRecipes(), true, new NBTTagCompound(), null, null, null);
             return GT_Utility.arrayContainsNonNull(tOutputItems) ? new GT_Recipe(false, new ItemStack[]{GT_Utility.copyAmount(aInputs[0].stackSize - tComparedInput.stackSize, aInputs[0])}, tOutputItems, null, null, null, null, 400, 2, 0) : null;
@@ -1539,7 +1537,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         @Override
         public GT_Recipe findRecipe(IHasWorldObjectAndCoords aTileEntity, GT_Recipe aRecipe, boolean aNotUnificated, long aVoltage, FluidStack[] aFluids, ItemStack aSpecialSlot, ItemStack... aInputs) {
             if (aInputs == null || aInputs.length <= 0 || aInputs[0] == null) return null;
-            if (aRecipe != null && aRecipe.isRecipeInputEqual(false, true, !aNotUnificated, aFluids, aInputs)) return aRecipe;
+            if (aRecipe != null && aRecipe.isRecipeInputEqual(false, true, aFluids, aInputs)) return aRecipe;
             ItemStack tComparedInput = GT_Utility.copyOrNull(aInputs[0]);
             ItemStack[] tOutputItems = GT_ModHandler.getMachineOutput(tComparedInput, ic2.api.recipe.Recipes.centrifuge.getRecipes(), true, new NBTTagCompound(), null, null, null);
             return GT_Utility.arrayContainsNonNull(tOutputItems) ? new GT_Recipe(false, new ItemStack[]{GT_Utility.copyAmount(aInputs[0].stackSize - tComparedInput.stackSize, aInputs[0])}, tOutputItems, null, null, null, null, 400, 48, 0) : null;
@@ -1563,7 +1561,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public GT_Recipe findRecipe(IHasWorldObjectAndCoords aTileEntity, GT_Recipe aRecipe, boolean aNotUnificated, long aVoltage, FluidStack[] aFluids, ItemStack aSpecialSlot, ItemStack... aInputs) {
             if (aInputs == null || aInputs.length <= 0 || aInputs[0] == null || aFluids == null || aFluids.length < 1 || !GT_ModHandler.isWater(aFluids[0]))
                 return null;
-            if (aRecipe != null && aRecipe.isRecipeInputEqual(false, true, !aNotUnificated, aFluids, aInputs)) return aRecipe;
+            if (aRecipe != null && aRecipe.isRecipeInputEqual(false, true, aFluids, aInputs)) return aRecipe;
             ItemStack tComparedInput = GT_Utility.copyOrNull(aInputs[0]);
             NBTTagCompound aRecipeMetaData = new NBTTagCompound();
             ItemStack[] tOutputItems = GT_ModHandler.getMachineOutput(tComparedInput, ic2.api.recipe.Recipes.oreWashing.getRecipes(), true, aRecipeMetaData, null, null, null);
