@@ -61,18 +61,8 @@ public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<Di
 			))
 		.addElement('h', ofBlock(GregTech_API.sBlockCasings1, 11))
 		.addElement('g', ofBlockAdder(DissolutionTank::addGlass, ItemRegistry.bw_glasses[0], 1))
-		
-		
 		.build();
 		
-	
-				
-				
-		
-		
-		
-	
-	
 	public DissolutionTank(String name) {
     	super(name);
     }
@@ -80,7 +70,6 @@ public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<Di
 	public DissolutionTank(int id, String name, String nameRegional) {
 		super(id, name, nameRegional);
 	}
-
 	
 	@Override
     public IStructureDefinition<DissolutionTank> getStructureDefinition(){	
@@ -209,7 +198,10 @@ public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<Di
 				return false;
 			
 			this.mOutputFluids = new FluidStack[] {
-					tRecipe.getFluidOutput(0)
+				tRecipe.getFluidOutput(0)
+			};
+			this.mOutputItems = new ItemStack[] {
+				tRecipe.getOutput(0)
 			};
 			return true;
 		}
