@@ -176,7 +176,7 @@ public class TEBlock extends BlockContainer {
                     return true;
                 } else return false;
             } else if (index == 2) {
-                if (tile instanceof EssentiaOutputHatch) {
+                if (tile instanceof EssentiaOutputHatch && player.isSneaking()) {
                     ItemStack tItemStack = player.getHeldItem();
                     if (tItemStack == null) {
                         ((EssentiaOutputHatch) tile).clear();

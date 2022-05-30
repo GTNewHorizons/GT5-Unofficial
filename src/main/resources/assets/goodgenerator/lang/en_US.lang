@@ -140,7 +140,7 @@ huiCircuit.tooltip.1=§e76M Processor Units§r
 huiCircuit.tooltip.2=§aInvalidate RSA§r
 huiCircuit.tooltip.3=§c56th Mersenne Prime§r
 huiCircuit.tooltip.4=§5Paradox§r
-EssentiaOutputHatch.tooltip.0=Right click it with empty hands to clear the container.
+EssentiaOutputHatch.tooltip.0=Shift right click it with empty hands to clear the container.
 EssentiaOutputHatch.tooltip.1=Capacity:
 
 #Fluids
