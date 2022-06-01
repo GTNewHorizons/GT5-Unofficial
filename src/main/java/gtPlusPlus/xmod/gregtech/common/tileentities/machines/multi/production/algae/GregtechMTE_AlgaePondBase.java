@@ -14,6 +14,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 
 import gregtech.api.GregTech_API;
@@ -48,6 +49,11 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase<Gregt
 	private int mCasing;
 	private IStructureDefinition<GregtechMTE_AlgaePondBase> STRUCTURE_DEFINITION = null;
 	private int checkMeta;
+	private static final Class<?> cofhWater;
+
+	static {
+		cofhWater = ReflectionUtils.getClass("cofh.asmhooks.block.BlockWater");
+	}
 
 	public GregtechMTE_AlgaePondBase(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
@@ -241,8 +247,8 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase<Gregt
 			for (int j = mOffsetZ_Lower + 1; j <= mOffsetZ_Upper - 1; ++j) {
 				for (int h = 0; h < 2; h++) {
 					Block tBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
-					// byte tMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
-					if (tBlock == Blocks.air || tBlock == Blocks.flowing_water || tBlock == BlocksItems.getFluidBlock(InternalName.fluidDistilledWater)) {
+					 byte tMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
+					if (isNotStaticWater(tBlock, tMeta)) {
 						if (this.getStoredFluids() != null) {
 							for (FluidStack stored : this.getStoredFluids()) {
 								if (stored.isFluidEqual(FluidUtils.getFluidStack("water", 1))) {
@@ -278,6 +284,13 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase<Gregt
 		else {		
 			return false;
 		}
+	}
+
+	private boolean isNotStaticWater(Block block, byte meta) {
+		return block == Blocks.air
+				|| block == Blocks.flowing_water
+				|| block == BlocksItems.getFluidBlock(InternalName.fluidDistilledWater)
+				|| (cofhWater != null && cofhWater.isAssignableFrom(block.getClass()) && meta != 0);
 	}
 
 	@Override

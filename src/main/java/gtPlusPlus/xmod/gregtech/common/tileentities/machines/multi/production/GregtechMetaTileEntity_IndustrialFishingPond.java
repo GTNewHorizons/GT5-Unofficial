@@ -45,6 +45,11 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends GregtechMeta_M
 	private static final Item circuit = CI.getNumberedCircuit(0).getItem();
 	private int mCasing;
 	private IStructureDefinition<GregtechMetaTileEntity_IndustrialFishingPond> STRUCTURE_DEFINITION = null;
+	private static final Class<?> cofhWater;
+
+	static {
+		cofhWater = ReflectionUtils.getClass("cofh.asmhooks.block.BlockWater");
+	}
 
 	public GregtechMetaTileEntity_IndustrialFishingPond(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
@@ -74,6 +79,8 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends GregtechMeta_M
 				.addInfo("Circuit 14 for Fish")
 				.addInfo("Circuit 15 for Junk")
 				.addInfo("Circuit 16 for Treasure")
+				.addInfo("Need to be filled with water.")
+				.addInfo("Will automatically fill water from input hatch.")
 				.addPollutionAmount(getPollutionPerSecond(null))
 				.addSeparator()
 				.beginStructureBlock(9, 3, 9, true)
@@ -294,8 +301,8 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends GregtechMeta_M
 			for (int j = mOffsetZ_Lower + 1; j <= mOffsetZ_Upper - 1; ++j) {
 				for (int h = 0; h < 2; h++) {
 					Block tBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
-					// byte tMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
-					if (tBlock == Blocks.air || tBlock == Blocks.flowing_water || tBlock == BlocksItems.getFluidBlock(InternalName.fluidDistilledWater)) {
+					byte tMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
+					if (isNotStaticWater(tBlock, tMeta)) {
 						if (this.getStoredFluids() != null) {
 							for (FluidStack stored : this.getStoredFluids()) {
 								if (stored.isFluidEqual(FluidUtils.getFluidStack("water", 1))) {
@@ -323,25 +330,20 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends GregtechMeta_M
 		}
 		
 		boolean isValidWater = tAmount >= 60;
-		
 		if (isValidWater) {
 			log("Filled structure.");
-			return true;
 		}
-		else {			
-			
-			long aAvgVoltage = 0;
-			for (GT_MetaTileEntity_Hatch_Energy g : this.mEnergyHatches) {
-				if (g != null) {
-					aAvgVoltage += (g.maxEUInput() * g.maxAmperesIn());
-				}
-			}			
-			this.mEUt = (int) Math.max(30, aAvgVoltage);
-			this.mMaxProgresstime = (int) Math.max(((aAvgVoltage/8)*20/10), 100);
-			this.mProgresstime = 1;
-			log("Did not fill structure. Consuming "+aAvgVoltage+"eu/t to try fill.");			
-			return false;
+		else {
+			log("Did not fill structure.");
 		}
+		return isValidWater;
+	}
+
+	private boolean isNotStaticWater(Block block, byte meta) {
+		return block == Blocks.air
+			|| block == Blocks.flowing_water
+			|| block == BlocksItems.getFluidBlock(InternalName.fluidDistilledWater)
+			|| (cofhWater != null && cofhWater.isAssignableFrom(block.getClass()) && meta != 0);
 	}
 
 	private static AutoMap<AutoMap<WeightedRandomFishable>> categories = new AutoMap<AutoMap<WeightedRandomFishable>>();

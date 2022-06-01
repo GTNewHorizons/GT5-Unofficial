@@ -77,6 +77,8 @@ public class GregtechMetaTileEntity_IndustrialWashPlant extends GregtechMeta_Mul
 				.addInfo("400% faster than using single block machines of the same voltage")
 				.addInfo("Processes four item per voltage tier")
 				.addInfo("Always requires an Input Hatch full of water to refill structure")
+				.addInfo("Need to be filled with water.")
+				.addInfo("Will automatically fill water from input hatch.")
 				.addPollutionAmount(getPollutionPerSecond(null))
 				.addSeparator()
 				.beginStructureBlock(5, 3, 7, true)
@@ -308,13 +310,15 @@ public class GregtechMetaTileEntity_IndustrialWashPlant extends GregtechMeta_Mul
 				}
 			}
 		}
-		if ((tAmount >= 45)){
+
+		boolean isValidWater = tAmount >= 45;
+		if (isValidWater){
 			Logger.WARNING("Filled structure.");
 		}
 		else {
 			Logger.WARNING("Did not fill structure.");
 		}
-		return (tAmount >= 45);
+		return isValidWater;
 	}
 
 	@Override

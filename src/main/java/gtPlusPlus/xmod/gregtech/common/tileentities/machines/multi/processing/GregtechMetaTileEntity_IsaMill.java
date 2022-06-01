@@ -148,6 +148,11 @@ public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase<
 		return checkPiece(mName, 1, 1, 0) && mCasing >= 48 - 8 && checkHatch();
 	}
 
+	@Override
+	public boolean checkHatch() {
+		return super.checkHatch() && mMillingBallBuses.size() == 1;
+	}
+
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
 		return new ITexture[]{
 				Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(2)),
@@ -171,10 +176,6 @@ public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase<
 			return addToMachineListInternal(mMillingBallBuses, aMetaTileEntity, aBaseCasingIndex);
 		}		
 		return super.addToMachineList(aTileEntity, aBaseCasingIndex);
-	}
-
-	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "LargeDieselEngine.png");
 	}
 
 	@Override
@@ -386,7 +387,7 @@ public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase<
 
 	@Override
 	public boolean hasSlotInGUI() {
-		return false;
+		return true;
 	}
 
 	@Override
@@ -431,7 +432,7 @@ public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase<
 	}
 
 	private ItemStack findMillingBall(ItemStack[] aItemInputs) {		
-		if (mMillingBallBuses.isEmpty() || mMillingBallBuses.size() > 1) {
+		if (mMillingBallBuses.size() != 1) {
 			return null;
 		}
 		else {
