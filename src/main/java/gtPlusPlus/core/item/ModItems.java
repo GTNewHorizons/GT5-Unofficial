@@ -638,7 +638,7 @@ public final class ModItems {
 
 			MaterialGenerator.generate(ALLOY.BABBIT_ALLOY, false);
 			MaterialGenerator.generate(ALLOY.BLACK_TITANIUM, false);
-			MaterialGenerator.generate(ALLOY.INDALLOY_140, false);
+			MaterialGenerator.generate(ALLOY.INDALLOY_140, false, false);
 
 			// High Level Bioplastic
 			MaterialGenerator.generate(ELEMENT.STANDALONE.RHUGNOR, false, false);

@@ -1011,6 +1011,21 @@ public class RECIPES_GREGTECH {
 				20 * 75,
 				7680);
 
+		//INDALLOY_140
+		CORE.RA.addBlastSmelterRecipe(
+				new ItemStack[] {
+						ItemUtils.getGregtechCircuit(5),
+						ELEMENT.getInstance().BISMUTH.getDust(47),
+						ELEMENT.getInstance().LEAD.getDust(25),
+						ELEMENT.getInstance().TIN.getDust(13),
+						ELEMENT.getInstance().CADMIUM.getDust(10),
+						ELEMENT.getInstance().INDIUM.getDust(5)
+
+				},
+				ALLOY.INDALLOY_140.getFluidStack(100 * 144),
+				0,
+				20 * 40,
+				7680);
 
 
 
