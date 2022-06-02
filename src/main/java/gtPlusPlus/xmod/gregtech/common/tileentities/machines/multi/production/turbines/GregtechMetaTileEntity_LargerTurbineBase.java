@@ -153,6 +153,9 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechM
 	}
 
 	private boolean requiresMufflers() {
+		if (!PollutionUtils.isPollutionEnabled()) {
+			return false;
+		}
 		return getPollutionPerSecond(null) > 0;
 	}
 
