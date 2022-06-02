@@ -1137,20 +1137,20 @@ public class RecipeLoader {
     	GT_Values.RA.addChemicalRecipe(
     			WerkstoffMaterialPool.Diaminotoluene.get(OrePrefixes.cell, 1),
     			null,
-    			BotWerkstoffMaterialPool.Phosgene.getFluidOrGas(1000),
+    			BotWerkstoffMaterialPool.Phosgene.getFluidOrGas(2000),
     			WerkstoffMaterialPool.TolueneDiisocyanate.getFluidOrGas(1000),
-    			Materials.HydrochloricAcid.getCells(1),
+    			Materials.HydrochloricAcid.getCells(4),
     			900,
     			480
     		);
     	
     	//Diaminotoluene
     	GT_Values.RA.addChemicalRecipe(
-    			Materials.Hydrogen.getCells(2),
+    			Materials.Hydrogen.getCells(4),
     			null,
     			WerkstoffMaterialPool.Dinitrotoluene.getFluidOrGas(1000),
     			WerkstoffMaterialPool.Diaminotoluene.getFluidOrGas(1000),
-    			Materials.Empty.getCells(2),
+    			Materials.Empty.getCells(4),
     			300,
     			480
     		);
