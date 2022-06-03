@@ -169,7 +169,7 @@ public interface IGT_RecipeAdder {
 
     /**
      * Adds a Chemical Recipe that only exists in the Large Chemical Reactor
-     * 
+     *
      * @param aInputs   item inputs
      * @param aFluidInputs fluid inputs
      * @param aFluidOutputs fluid outputs
@@ -178,7 +178,7 @@ public interface IGT_RecipeAdder {
      * @param aEUtick   must be > 0
      * <br>aInputs and aFluidInputs must contain at least one valid input.
      * <br>aOutputs and aFluidOutputs must contain at least one valid output.
-     * 
+     *
      */
 
     boolean addMultiblockChemicalRecipe(ItemStack[] aInputs, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, ItemStack[] aOutputs, int aDuration, int aEUtick);
@@ -214,15 +214,16 @@ public interface IGT_RecipeAdder {
     boolean addBlastRecipe(ItemStack aInput1, ItemStack aInput2,  ItemStack aInput3,  ItemStack aInput4, FluidStack aFluidInput, FluidStack aFluidOutput, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3, ItemStack aOutput4,int aDuration, int aEUt, int aLevel);
 
     /**
-     * Adds a Blast Furnace Recipe
+     * Adds a Plasma Forge Recipe
      *
-     * @param aInput1     must be != null if aInput2 == null
-     * @param aInput2     must be != null if aInput1 == null
-     * @param aCoalAmount must be > 0
-     * @param aOutput1    must be != null if aOutput2 == null
-     * @param aOutput2    must be != null if aOutput1 == null
-     * @param aDuration   must be > 0
+     * @param InputItemArray   First element must not be null.
+     * @param OutputItemArray  First element must not be null.
+     * @param aDuration Must be > 0
+     * @param aEUt      Must be > 0
+     * @param coil_heat_level    Must be > 0.
      */
+    boolean addPlasmaForgeRecipe(ItemStack[] InputItemArray, FluidStack aFluidInput, FluidStack aFluidOutput, ItemStack[] OutputItemArray, int aDuration, int aEUt, int coil_heat_level);
+
 
     boolean addPrimitiveBlastRecipe(ItemStack aInput1, ItemStack aInput2, int aCoalAmount, ItemStack aOutput1, ItemStack aOutput2, int aDuration);
 
@@ -274,12 +275,12 @@ public interface IGT_RecipeAdder {
 
     /**
      * Adds an Assembler Recipe
-     * 
+     *
      * @param aInputs   must be != null
      * @param aOutput1  must be != null
      * @param aDuration must be > 0
      * @param aEUt      should be > 0
-     * 
+     *
      */
     boolean addAssemblerRecipe(ItemStack[] aInputs, FluidStack aFluidInput, ItemStack aOutput1, int aDuration, int aEUt);
 

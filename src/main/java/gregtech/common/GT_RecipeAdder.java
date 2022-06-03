@@ -248,6 +248,19 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
     }
 
     @Override
+    public boolean addPlasmaForgeRecipe(ItemStack[] InputItemArray, FluidStack aFluidInput, FluidStack aFluidOutput, ItemStack[] OutputItemArray, int aDuration, int aEUt, int coil_heat_level) {
+        if ((InputItemArray[0] == null) || (OutputItemArray[0] == null)) {
+            return false;
+        }
+        if ((aDuration = GregTech_API.sRecipeFile.get("blastfurnace", InputItemArray[0], aDuration)) <= 0) {
+            return false;
+        }
+        GT_Recipe.GT_Recipe_Map.sPlasmaForgeRecipes.addRecipe(true, InputItemArray, OutputItemArray, null, null,
+            new FluidStack[]{aFluidInput}, new FluidStack[]{aFluidOutput}, aDuration, aEUt, coil_heat_level);
+        return true;
+    }
+
+    @Override
     public boolean addPrimitiveBlastRecipe(ItemStack aInput1, ItemStack aInput2, int aCoalAmount, ItemStack aOutput1, ItemStack aOutput2, int aDuration) {
         if ((aInput1 == null && aInput2 == null) || (aOutput1 == null && aOutput2 == null)) {
             return false;

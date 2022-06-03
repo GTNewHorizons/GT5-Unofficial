@@ -587,6 +587,32 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addBlastRecipe(GT_OreDictUnificator.get(OrePrefixes.block, Materials.Silicon, 64), GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Americium, 4), Materials.Radon.getGas(16000), null, ItemList.Circuit_Silicon_Ingot5.get(1), null, 21000, 30720, 9000);
         GT_Values.RA.addCutterRecipe(ItemList.Circuit_Silicon_Ingot5.get(1), GT_Values.NI, ItemList.Circuit_Silicon_Wafer5.get(64), ItemList.Circuit_Silicon_Wafer5.get(64), 3200, 7680, true);
 
+        // 1234 TESTING.
+        ItemStack[] Neutronium_Input_Tier_1 = new ItemStack[8];
+        Arrays.fill(Neutronium_Input_Tier_1, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Neutronium, 64));
+        ItemStack[] Neutronium_Output_Tier_1 = new ItemStack[8];
+        Arrays.fill(Neutronium_Output_Tier_1, GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Neutronium, 64));
+        GT_Values.RA.addPlasmaForgeRecipe(Neutronium_Input_Tier_1, Materials.DimensionallyTranscendentCrudeCatalyst.getFluid(161L), null, Neutronium_Output_Tier_1, 5000, 500000, 10800);
+
+        ItemStack[] Neutronium_Input_Tier_2 = new ItemStack[8*3];
+        Arrays.fill(Neutronium_Input_Tier_2, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Neutronium, 64));
+        ItemStack[] Neutronium_Output_Tier_2 = new ItemStack[8*3];
+        Arrays.fill(Neutronium_Output_Tier_2, GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Neutronium, 64));
+        GT_Values.RA.addPlasmaForgeRecipe(Neutronium_Input_Tier_2, Materials.DimensionallyTranscendentProsaicCatalyst.getFluid(161L), null, Neutronium_Output_Tier_2, 5000, 500000, 10800);
+
+        ItemStack[] Neutronium_Input_Tier_3 = new ItemStack[8*3*3];
+        Arrays.fill(Neutronium_Input_Tier_3, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Neutronium, 64));
+        ItemStack[] Neutronium_Output_Tier_3 = new ItemStack[8*3*3];
+        Arrays.fill(Neutronium_Output_Tier_3, GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Neutronium, 64));
+        GT_Values.RA.addPlasmaForgeRecipe(Neutronium_Input_Tier_3, Materials.DimensionallyTranscendentResplendentCatalyst.getFluid(161L), null, Neutronium_Output_Tier_3, 5000, 500000, 10800);
+
+        ItemStack[] Neutronium_Input_Tier_4 = new ItemStack[8*3*3*3];
+        Arrays.fill(Neutronium_Input_Tier_4, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Neutronium, 64));
+        ItemStack[] Neutronium_Output_Tier_4 = new ItemStack[8*3*3*3];
+        Arrays.fill(Neutronium_Output_Tier_4, GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Neutronium, 64));
+        GT_Values.RA.addPlasmaForgeRecipe(Neutronium_Input_Tier_4, Materials.DimensionallyTranscendentExoticCatalyst.getFluid(161L), null, Neutronium_Output_Tier_4, 5000, 500000, 10800);
+
+
         GT_Values.RA.addAssemblerRecipe(new ItemStack(Blocks.redstone_torch, 2, 32767), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L), Materials.Concrete.getMolten(144L), new ItemStack(Items.repeater, 1, 0), 80, 10);
         GT_Values.RA.addAssemblerRecipe(new ItemStack(Items.leather, 1, 32767), new ItemStack(Items.lead, 1, 32767), Materials.Glue.getFluid(72L), new ItemStack(Items.name_tag, 1, 0), 100, 8);
         GT_Values.RA.addAssemblerRecipe(GT_ModHandler.getModItem(MOD_ID_DC, "item.ArtificialLeather", 1L, 0), new ItemStack(Items.lead, 1, 32767), Materials.Glue.getFluid(72L), new ItemStack(Items.name_tag, 1, 0), 100, 8);
