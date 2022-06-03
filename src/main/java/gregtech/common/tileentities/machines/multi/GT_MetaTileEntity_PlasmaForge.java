@@ -118,20 +118,13 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Blast Furnace")
                 .addInfo("Controller block for the Dimensionally Transcendent Plasma Forge")
-                .addInfo("Additionally gives +100K for every tier past MV")
-                .addPollutionAmount(getPollutionPerSecond(null))
                 .addSeparator()
-                .beginStructureBlock(3, 4, 30, true)
-                .addController("Front bottom")
-                .addCasingInfo("Heat Proof Machine Casing", 0)
-                .addOtherStructurePart("Heating Coils", "Two middle Layers")
-                .addEnergyHatch("Any bottom layer casing", 3)
-                .addMaintenanceHatch("Any bottom layer casing", 3)
-                .addMufflerHatch("Top middle", 2)
-                .addInputBus("Any bottom layer casing", 3)
-                .addInputHatch("Any bottom layer casing", 3)
-                .addOutputHatch("Gasses, Any top layer casing", 1)
-                .addStructureInfo("Recovery amount scales with Muffler Hatch tier")
+                .beginStructureBlock(33, 24, 33, false)
+                .addStructureInfo("Structure is too complex! See schematic for details.")
+                .addStructureInfo("2112 Heating coils required.")
+                .addStructureInfo("120 Dimensional bridge blocks required.")
+                .addStructureInfo("1270 Dimensional injection casing required.")
+                .addStructureInfo("2121 Dimensionally transcendent casing required.")
                 .toolTipFinisher("&kGregtech");
         return tt;
     }
@@ -154,7 +147,7 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "ElectricBlastFurnace.png");
+        return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "PlasmaForge.png");
     }
 
     @Override
@@ -164,7 +157,7 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
 
     @Override
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-        return GT_Recipe.GT_Recipe_Map.sBlastRecipes;
+        return GT_Recipe.GT_Recipe_Map.sPlasmaForgeRecipes;
     }
 
     @Override
@@ -224,7 +217,7 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
         if (tRecipe == null)
             return false;
 
-        this.mEUt = -4;
+        this.mEUt = -tRecipe.mEUt;
 
         if (!tRecipe.isRecipeInputEqual(true, tFluids, tItems))
             return false;

@@ -592,25 +592,25 @@ public class GT_MachineRecipeLoader implements Runnable {
         Arrays.fill(Neutronium_Input_Tier_1, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Neutronium, 64));
         ItemStack[] Neutronium_Output_Tier_1 = new ItemStack[8];
         Arrays.fill(Neutronium_Output_Tier_1, GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Neutronium, 64));
-        GT_Values.RA.addPlasmaForgeRecipe(Neutronium_Input_Tier_1, Materials.DimensionallyTranscendentCrudeCatalyst.getFluid(323L), null, Neutronium_Output_Tier_1, 2500, 25600000, 10900);
+        GT_Values.RA.addPlasmaForgeRecipe(Neutronium_Input_Tier_1, Materials.DimensionallyTranscendentCrudeCatalyst.getFluid(6320L), Materials.DimensionallyTranscendentResidue.getFluid(5L), Neutronium_Output_Tier_1, 2500, 25600000, 10900);
 
         ItemStack[] Neutronium_Input_Tier_2 = new ItemStack[8*3];
         Arrays.fill(Neutronium_Input_Tier_2, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Neutronium, 64));
         ItemStack[] Neutronium_Output_Tier_2 = new ItemStack[8*3];
         Arrays.fill(Neutronium_Output_Tier_2, GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Neutronium, 64));
-            GT_Values.RA.addPlasmaForgeRecipe(Neutronium_Input_Tier_2, Materials.DimensionallyTranscendentProsaicCatalyst.getGas(71L), null, Neutronium_Output_Tier_2, 1250, 51200000, 11800);
+            GT_Values.RA.addPlasmaForgeRecipe(Neutronium_Input_Tier_2, Materials.DimensionallyTranscendentProsaicCatalyst.getFluid(1419L), Materials.DimensionallyTranscendentResidue.getFluid(5L), Neutronium_Output_Tier_2, 1250, 51200000, 11800);
 
         ItemStack[] Neutronium_Input_Tier_3 = new ItemStack[8*3*3];
         Arrays.fill(Neutronium_Input_Tier_3, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Neutronium, 64));
         ItemStack[] Neutronium_Output_Tier_3 = new ItemStack[8*3*3];
         Arrays.fill(Neutronium_Output_Tier_3, GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Neutronium, 64));
-        GT_Values.RA.addPlasmaForgeRecipe(Neutronium_Input_Tier_3, Materials.DimensionallyTranscendentResplendentCatalyst.getGas(15L), null, Neutronium_Output_Tier_3, 625, 102400000, 12700);
+        GT_Values.RA.addPlasmaForgeRecipe(Neutronium_Input_Tier_3, Materials.DimensionallyTranscendentResplendentCatalyst.getFluid(313L), Materials.DimensionallyTranscendentResidue.getFluid(5L), Neutronium_Output_Tier_3, 625, 102400000, 12700);
 
         ItemStack[] Neutronium_Input_Tier_4 = new ItemStack[8*3*3*3];
         Arrays.fill(Neutronium_Input_Tier_4, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Neutronium, 64));
         ItemStack[] Neutronium_Output_Tier_4 = new ItemStack[8*3*3*3];
         Arrays.fill(Neutronium_Output_Tier_4, GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Neutronium, 64));
-        GT_Values.RA.addPlasmaForgeRecipe(Neutronium_Input_Tier_4, Materials.DimensionallyTranscendentExoticCatalyst.getGas(3L), null, Neutronium_Output_Tier_4, 312, 204800000, 13600);
+        GT_Values.RA.addPlasmaForgeRecipe(Neutronium_Input_Tier_4, Materials.DimensionallyTranscendentExoticCatalyst.getFluid(3L), Materials.DimensionallyTranscendentResidue.getFluid(5L), Neutronium_Output_Tier_4, 312, 204800000, 13600);
 
 
         GT_Values.RA.addAssemblerRecipe(new ItemStack(Blocks.redstone_torch, 2, 32767), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L), Materials.Concrete.getMolten(144L), new ItemStack(Items.repeater, 1, 0), 80, 10);
