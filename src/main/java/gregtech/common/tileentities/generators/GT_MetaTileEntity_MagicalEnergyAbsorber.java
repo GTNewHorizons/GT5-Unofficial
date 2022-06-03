@@ -388,21 +388,21 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
             if ((Integer) e.getKey() < Enchantment.enchantmentsList.length) {
                 Enchantment tEnchantment = Enchantment.enchantmentsList[(Integer) e.getKey()];
                 Integer tLevel = (Integer) e.getValue();
-                tEU += 1000000 * tLevel / (tEnchantment.getMaxLevel() * tEnchantment.getWeight());
+                tEU += 1000000L * tLevel / tEnchantment.getMaxLevel() / tEnchantment.getWeight();
             }
         }
-        if (isDisenchantableItem(tStack)) {
+
+        ItemStack tOutputStack = GT_Utility.copyAmount(1L, tStack);
+        if (isDisenchantableItem(tOutputStack)) {
             tEU = tEU * getEfficiency() / 100;
+            EnchantmentHelper.setEnchantments(new HashMap<>(), tOutputStack);
+        } else if (isEnchantedBook(tOutputStack)) {
+            tOutputStack = new ItemStack(Items.book, 1);
         }
 
         // Only consume input if can store EU and push output
         if ((getBaseMetaTileEntity().getStoredEU() + tEU) < getBaseMetaTileEntity().getEUCapacity()
-                && getBaseMetaTileEntity().addStackToSlot(getOutputSlot(), tStack)) {
-            if (isDisenchantableItem(tStack)) {
-                EnchantmentHelper.setEnchantments(new HashMap(), tStack);
-            } else if (isEnchantedBook(tStack)) {
-                tStack = new ItemStack(Items.book, 1);
-            }
+                && getBaseMetaTileEntity().addStackToSlot(getOutputSlot(), tOutputStack)) {
             decrStackSize(getInputSlot(), 1);
         } else {
             tEU = 0;

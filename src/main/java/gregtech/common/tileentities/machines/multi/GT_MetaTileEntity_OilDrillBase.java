@@ -21,9 +21,10 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-import static gregtech.api.enums.GT_Values.VN;
-import static gregtech.api.enums.GT_Values.debugDriller;
+import static gregtech.api.enums.GT_Values.*;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_DRILL;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_DRILL_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_DRILL_ACTIVE_GLOW;
@@ -35,6 +36,7 @@ import static gregtech.common.GT_UndergroundOil.undergroundOilReadInformation;
 public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_DrillerBase {
     private final ArrayList<Chunk> mOilFieldChunks = new ArrayList<>();
     private int mOilId = 0;
+    private int mOilFlow = 0;
 
     private int chunkRangeConfig = getRangeInChunks();
 
@@ -274,15 +276,18 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
         for( Chunk tChunk : emptyChunks) {
             mOilFieldChunks.remove( tChunk );
         }
+        mOilFlow = tOil.amount;
         return tOil.amount == 0 ? null : tOil;
     }
 
     @Override
     public String[] getInfoData() {
-        return new String[]{
-                EnumChatFormatting.BLUE+StatCollector.translateToLocal("GT5U.machines.oilfluidpump")+EnumChatFormatting.RESET,
-                StatCollector.translateToLocal("GT5U.machines.workarea")+": " + EnumChatFormatting.GREEN + (chunkRangeConfig)+ " x " + (chunkRangeConfig) + 
-                EnumChatFormatting.RESET+" " + StatCollector.translateToLocal("GT5U.machines.chunks")
-        };
+        List<String> l = new ArrayList<>(Arrays.asList(EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.machines.oilfluidpump") + EnumChatFormatting.RESET,
+            StatCollector.translateToLocal("GT5U.machines.workarea") + ": " + EnumChatFormatting.GREEN + (chunkRangeConfig) + " x " + (chunkRangeConfig) +
+                EnumChatFormatting.RESET + " " + StatCollector.translateToLocal("GT5U.machines.chunks"),
+            "Drilling fluid: " + EnumChatFormatting.GREEN + (mOilId > 0 ? FluidRegistry.getFluid(mOilId).getName() : "None") + EnumChatFormatting.RESET,
+            "Drilling flow: " + EnumChatFormatting.GREEN + GT_Utility.formatNumbers(this.mMaxProgresstime > 0 ? (mOilFlow / this.mMaxProgresstime) : 0) + EnumChatFormatting.RESET + " L/t"));
+        l.addAll(Arrays.asList(super.getInfoData()));
+        return l.toArray(new String[0]);
     }
 }

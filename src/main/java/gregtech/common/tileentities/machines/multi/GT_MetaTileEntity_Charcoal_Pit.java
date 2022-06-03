@@ -3,10 +3,11 @@ package gregtech.common.tileentities.machines.multi;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TooltipMultiBlockBase;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
@@ -19,7 +20,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.ChunkPosition;
 import net.minecraftforge.oredict.OreDictionary;
-import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
 
@@ -31,7 +31,7 @@ import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
-public class GT_MetaTileEntity_Charcoal_Pit extends GT_MetaTileEntity_MultiBlockBase {
+public class GT_MetaTileEntity_Charcoal_Pit extends GT_MetaTileEntity_TooltipMultiBlockBase implements ISecondaryDescribable {
 
     private boolean running = false;
 
@@ -229,8 +229,7 @@ public class GT_MetaTileEntity_Charcoal_Pit extends GT_MetaTileEntity_MultiBlock
         return new GT_MetaTileEntity_Charcoal_Pit(mName);
     }
 
-    @Override
-    public String[] getDescription() {
+    protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Charcoal Pile Igniter")
                 .addInfo("Controller for the Charcoal Pit")
@@ -245,11 +244,7 @@ public class GT_MetaTileEntity_Charcoal_Pit extends GT_MetaTileEntity_MultiBlock
                 .addOtherStructurePart("Wood Logs", "Inside the previously mentioned blocks")
                 .addStructureInfo("No air between logs allowed")
                 .toolTipFinisher("Gregtech");
-        if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-            return tt.getStructureInformation();
-        } else {
-            return tt.getInformation();
-        }
+        return tt;
     }
 
     @Override
@@ -267,7 +262,7 @@ public class GT_MetaTileEntity_Charcoal_Pit extends GT_MetaTileEntity_MultiBlock
         }
         return new ITexture[]{casingTexturePages[0][10]};
     }
-    
+
     @Override
     public boolean polluteEnvironment(int aPollutionLevel) {
         // Do nothing and don't choke on pollution. This is fine because we add

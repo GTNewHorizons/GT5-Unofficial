@@ -7,7 +7,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ClientPreference;
-import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
@@ -17,6 +16,11 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
@@ -139,27 +143,47 @@ public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch {
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
         if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.hasInventoryBeenModified()) {
-            fillStacksIntoFirstSlots();
+            updateSlots();
         }
     }
 
     public void updateSlots() {
         for (int i = 0; i < mInventory.length; i++)
             if (mInventory[i] != null && mInventory[i].stackSize <= 0) mInventory[i] = null;
-        fillStacksIntoFirstSlots();
+        if(!disableSort)
+            fillStacksIntoFirstSlots();
     }
 
     protected void fillStacksIntoFirstSlots() {
-        if (disableSort) {
-            for (int i = 0; i < mInventory.length; i++)
-                for (int j = i + 1; j < mInventory.length; j++)
-                    if (mInventory[j] != null && mInventory[j].stackSize <= 0 && (mInventory[i] == null || GT_Utility.areStacksEqual(mInventory[i], mInventory[j])))
-                        GT_Utility.moveStackFromSlotAToSlotB(getBaseMetaTileEntity(), getBaseMetaTileEntity(), j, i, (byte) 64, (byte) 1, (byte) 64, (byte) 1);
-        } else {
-            for (int i = 0; i < mInventory.length; i++)
-                for (int j = i + 1; j < mInventory.length; j++)
-                    if (mInventory[j] != null && (mInventory[i] == null || GT_Utility.areStacksEqual(mInventory[i], mInventory[j])))
-                        GT_Utility.moveStackFromSlotAToSlotB(getBaseMetaTileEntity(), getBaseMetaTileEntity(), j, i, (byte) 64, (byte) 1, (byte) 64, (byte) 1);
+        HashMap<GT_Utility.ItemId, Integer> slots = new HashMap<>(mInventory.length);
+        HashMap<GT_Utility.ItemId, ItemStack> stacks = new HashMap<>(mInventory.length);
+        List<GT_Utility.ItemId> order = new ArrayList<>(mInventory.length);
+        List<Integer> validSlots = new ArrayList<>(mInventory.length);
+        for (int i = 0; i < mInventory.length; i++) {
+            if (!isValidSlot(i))
+                continue;
+            validSlots.add(i);
+            ItemStack s = mInventory[i];
+            if(s == null)
+                continue;
+            GT_Utility.ItemId sID = GT_Utility.ItemId.createNoCopy(s);
+            slots.merge(sID, s.stackSize, Integer::sum);
+            if(!stacks.containsKey(sID))
+                stacks.put(sID, s);
+            order.add(sID);
+            mInventory[i] = null;
+        }
+        int slotindex = 0;
+        for (GT_Utility.ItemId sID : order) {
+            int toSet = slots.get(sID);
+            if (toSet == 0)
+                continue;
+            int slot = validSlots.get(slotindex);
+            slotindex++;
+            mInventory[slot] = stacks.get(sID).copy();
+            toSet = Math.min(toSet, mInventory[slot].getMaxStackSize());
+            mInventory[slot].stackSize = toSet;
+            slots.merge(sID, toSet, (a, b) -> a - b);
         }
     }
 

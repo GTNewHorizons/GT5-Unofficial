@@ -5,6 +5,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.fluids.IFluidHandler;
@@ -24,6 +25,10 @@ public interface IHasWorldObjectAndCoords {
     short getYCoord();
 
     int getZCoord();
+
+    default ChunkCoordinates getCoords() {
+        return new ChunkCoordinates(getXCoord(), getYCoord(), getZCoord());
+    }
 
     boolean isServerSide();
 

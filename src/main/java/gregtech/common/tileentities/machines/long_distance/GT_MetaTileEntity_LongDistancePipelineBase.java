@@ -34,6 +34,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -49,15 +50,19 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-import static mcp.mobius.waila.api.SpecialChars.GOLD;
 import static mcp.mobius.waila.api.SpecialChars.BLUE;
+import static mcp.mobius.waila.api.SpecialChars.GOLD;
+import static mcp.mobius.waila.api.SpecialChars.GREEN;
+import static mcp.mobius.waila.api.SpecialChars.RED;
 import static mcp.mobius.waila.api.SpecialChars.RESET;
+import static mcp.mobius.waila.api.SpecialChars.YELLOW;
 
 public abstract class GT_MetaTileEntity_LongDistancePipelineBase extends GT_MetaTileEntity_BasicHull_NonElectric {
     public static int minimalDistancePoints = 64;
     protected GT_MetaTileEntity_LongDistancePipelineBase mTarget = null, mSender = null;
     protected ChunkCoordinates mTargetPos = null;
-    
+    protected GT_MetaTileEntity_LongDistancePipelineBase mTooCloseTarget = null, mTooCloseSender = null;
+
     public GT_MetaTileEntity_LongDistancePipelineBase(int aID, String aName, String aNameRegional, int aTier, String aDescription) {
         super(aID, aName, aNameRegional, aTier, aDescription);
     }
@@ -141,8 +146,13 @@ public abstract class GT_MetaTileEntity_LongDistancePipelineBase extends GT_Meta
                 }
             }
         }
+        if (mTooCloseTarget != null && mTooCloseTarget.mSender == null)  mTooCloseTarget.mTooCloseSender = this;
+        if (mTooCloseSender != null && (mTooCloseSender.isDead() || mTooCloseSender.mTarget != null)) mTooCloseSender = null;
         if (mTarget == null || mTarget == this) return false;
-        if (mTarget.mSender == null || mTarget.mSender.isDead() || mTarget.mSender.mTarget == null || mTarget.mSender.mTarget.isDead()) mTarget.mSender = this;
+        if (mTarget.mSender == null || mTarget.mSender.isDead() || mTarget.mSender.mTarget == null || mTarget.mSender.mTarget.isDead()) {
+            mTarget.mSender = this;
+            mTarget.mTooCloseSender = null;
+        }
 
         return mTarget.mSender == this;
     }
@@ -226,7 +236,12 @@ public abstract class GT_MetaTileEntity_LongDistancePipelineBase extends GT_Meta
                             if (distance > minimalDistancePoints) {
                                 mTarget = tGtTile;
                                 mTargetPos = tGtTile.getCoords();
+                                mTooCloseTarget = null;
                                 return;
+                            } else {
+                                if (mTooCloseTarget == null) {
+                                    mTooCloseTarget = tGtTile;
+                                }
                             }
                         }
                         
@@ -274,9 +289,10 @@ public abstract class GT_MetaTileEntity_LongDistancePipelineBase extends GT_Meta
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        final NBTTagCompound tag = accessor.getNBTData();
         final int facing = getBaseMetaTileEntity().getFrontFacing();
-        final int side = (byte)accessor.getSide().ordinal();
-        
+        final int side = (byte) accessor.getSide().ordinal();
+
         if (side == facing)
             currenttip.add(GOLD + "Pipeline Input" + RESET);
         else if (side == ForgeDirection.OPPOSITES[facing])
@@ -284,8 +300,32 @@ public abstract class GT_MetaTileEntity_LongDistancePipelineBase extends GT_Meta
         else
             currenttip.add("Pipeline Side");
 
+        if (tag.getBoolean("hasSender"))
+            currenttip.add("Other End of Input: " + GREEN + "distance" + RESET);
+        else if (tag.getBoolean("hasTooCloseSender"))
+            currenttip.add("Other End of Input: " + RED + "too close" + RESET);
+        else
+            currenttip.add("Other End of Input: " + YELLOW + "cannot found(may need to update other end)" + RESET);
+
+        if (tag.getBoolean("hasTarget"))
+            currenttip.add("Other End of Output: " + GREEN + "distance" + RESET);
+        else if (tag.getBoolean("hasTooCloseTarget"))
+            currenttip.add("Other End of Output: " + RED + "too close" + RESET);
+        else
+            currenttip.add("Other End of Output: " + YELLOW + "cannot found" + RESET);
+
         super.getWailaBody(itemStack, currenttip, accessor, config);
 
     }
-    
+
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y, int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+
+        tag.setBoolean("hasSender", mSender != null);
+        tag.setBoolean("hasTooCloseSender", mTooCloseSender != null);
+        tag.setBoolean("hasTarget", mTarget != null && mTarget != this);
+        tag.setBoolean("hasTooCloseTarget", mTooCloseTarget != null);
+    }
 }
