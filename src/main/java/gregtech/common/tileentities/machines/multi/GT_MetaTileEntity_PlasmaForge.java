@@ -224,7 +224,7 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
         if (tRecipe == null)
             return false;
 
-        this.mEUt = 4;
+        this.mEUt = -4;
 
         if (!tRecipe.isRecipeInputEqual(true, tFluids, tItems))
             return false;

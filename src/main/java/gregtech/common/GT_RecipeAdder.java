@@ -252,10 +252,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         if ((InputItemArray[0] == null) || (OutputItemArray[0] == null)) {
             return false;
         }
-        if ((aDuration = GregTech_API.sRecipeFile.get("blastfurnace", InputItemArray[0], aDuration)) <= 0) {
-            return false;
-        }
-        GT_Recipe.GT_Recipe_Map.sPlasmaForgeRecipes.addRecipe(true, InputItemArray, OutputItemArray, null, null,
+        GT_Recipe.GT_Recipe_Map.sPlasmaForgeRecipes.addRecipe(false, InputItemArray, OutputItemArray, null, null,
             new FluidStack[]{aFluidInput}, new FluidStack[]{aFluidOutput}, aDuration, aEUt, coil_heat_level);
         return true;
     }
