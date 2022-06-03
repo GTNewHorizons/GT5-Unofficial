@@ -52,9 +52,11 @@ import java.util.stream.Collectors;
 
 import static codechicken.nei.recipe.RecipeInfo.getGuiOffset;
 
+@SuppressWarnings("all")
 public class GT_NEI_DefaultHandler extends RecipeMapHandler {
     public static final int sOffsetX = 5;
     public static final int sOffsetY = 11;
+    private static final int M = 1000000;
     private static final ConcurrentMap<GT_Recipe.GT_Recipe_Map, SortedRecipeListCache> CACHE = new ConcurrentHashMap<>();
 
     private Power mPower;
@@ -360,6 +362,9 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         if (mPower.getDurationTicks() > 0) {
             drawLine(4, GT_Utility.trans("158", "Time: ") + mPower.getDurationString());
         }
+        if (this.mRecipeMap.mNEIName.equals("gt.recipe.fusionreactor")) {
+            drawOptionalLine(5, getSpecialInfo(recipe.mSpecialValue) + " " + formatSpecialValueFusion(recipe.mSpecialValue, recipe.mEUt));
+        }
         drawOptionalLine(5, getSpecialInfo(recipe.mSpecialValue));
     }
 
@@ -405,6 +410,29 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         return this.mRecipeMap.mNEISpecialValuePre + GT_Utility.formatNumbers(
                 (long) SpecialValue * this.mRecipeMap.mNEISpecialValueMultiplier)
                 + this.mRecipeMap.mNEISpecialValuePost;
+    }
+
+    private String formatSpecialValueFusion(int SpecialValue, int Voltage) {
+        int tier = 1;
+        if (SpecialValue <= 10 * M * 16) {
+            tier = Math.max(tier, 1);
+        } else if (SpecialValue <= 20 * M * 16) {
+            tier = Math.max(tier, 2);
+        } else if (SpecialValue <= 40 * M * 16) {
+            tier = Math.max(tier, 3);
+        } else {
+            tier = Math.max(tier, 4);
+        }
+        if (Voltage <= 32768) {
+            tier = Math.max(tier, 1);
+        } else if (Voltage <= 65536) {
+            tier = Math.max(tier, 2);
+        } else if (Voltage <= 131072) {
+            tier = Math.max(tier, 3);
+        } else {
+            tier = Math.max(tier, 4);
+        }
+        return "(MK " + tier + ")";
     }
 
     private void drawOptionalLine(int lineNumber, String line, String prefix) {
