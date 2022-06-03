@@ -413,15 +413,15 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
     }
 
     private String formatSpecialValueFusion(int SpecialValue, int Voltage) {
-        int tier = 1;
+        int tier = 0;
         if (SpecialValue <= 10 * M * 16) {
-            tier = Math.max(tier, 1);
+            tier = 1;
         } else if (SpecialValue <= 20 * M * 16) {
-            tier = Math.max(tier, 2);
+            tier = 2;
         } else if (SpecialValue <= 40 * M * 16) {
-            tier = Math.max(tier, 3);
+            tier = 3;
         } else {
-            tier = Math.max(tier, 4);
+            tier = 4;
         }
         if (Voltage <= 32768) {
             tier = Math.max(tier, 1);
