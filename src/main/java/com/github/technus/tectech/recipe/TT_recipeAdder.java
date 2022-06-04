@@ -77,7 +77,7 @@ public class  TT_recipeAdder extends GT_RecipeAdder {
                 ItemStack[] aStacks = (ItemStack[]) obj;
                 if (aStacks.length > 0) {
                     tInputs[i] = aStacks[0];
-                    tAlts[i] = (ItemStack[]) Arrays.copyOf(aStacks, aStacks.length);
+                    tAlts[i] = Arrays.copyOf(aStacks, aStacks.length);
                     for (ItemStack tAlt : tAlts[i]) {
                         tPersistentHash = tPersistentHash * 31 + GT_Utility.persistentHash(tAlt, true, false);
                     }
