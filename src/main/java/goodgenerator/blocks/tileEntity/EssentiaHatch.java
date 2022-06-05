@@ -86,7 +86,7 @@ public class EssentiaHatch extends TileEntity implements IAspectContainer, IEsse
     }
 
     public void fillfrompipe() {
-        if (getEssentiaAmount(null) > 1000)
+        if (getEssentiaAmount(null) >= 1000)
             return;
         TileEntity[] te = new TileEntity[ForgeDirection.VALID_DIRECTIONS.length];
         for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
