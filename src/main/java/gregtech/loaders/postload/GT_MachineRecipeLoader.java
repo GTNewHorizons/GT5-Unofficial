@@ -591,10 +591,10 @@ public class GT_MachineRecipeLoader implements Runnable {
 
         GT_Values.RA.addPlasmaForgeRecipe(
             new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.block, Materials.Iron, 2)},
-            new FluidStack[]{Materials.DimensionallyTranscendentCrudeCatalyst.getFluid(2L), Materials.Water.getFluid(3L), Materials.Iron.getMolten(4L)},
+            new FluidStack[]{Materials.DimensionallyTranscendentCrudeCatalyst.getFluid(2L), Materials.Iron.getMolten(73728L)},
 
             new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.block, Materials.Silicon, 2)},
-            new FluidStack[]{Materials.DimensionallyTranscendentResidue.getFluid(5L), Materials.Iron.getMolten(3L), Materials.Water.getFluid(2L)},
+            new FluidStack[]{Materials.DimensionallyTranscendentResidue.getFluid(1L), Materials.Neutronium.getMolten(73728L)},
             40, 1, 10900);
 //        GT_Values.RA.addPlasmaForgeRecipe(null, new FluidStack[]{Materials.DimensionallyTranscendentCrudeCatalyst.getFluid(1L), Materials.Water.getFluid(1L)}, new FluidStack[]{Materials.DimensionallyTranscendentResidue.getFluid(5L), Materials.Iron.getMolten(3000000L)}, null, 40, 1, 10900);
 
