@@ -248,12 +248,9 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
     }
 
     @Override
-    public boolean addPlasmaForgeRecipe(ItemStack[] InputItemArray, FluidStack aFluidInput, FluidStack aFluidOutput, ItemStack[] OutputItemArray, int aDuration, int aEUt, int coil_heat_level) {
-        if ((InputItemArray[0] == null) || (OutputItemArray[0] == null)) {
-            return false;
-        }
-        GT_Recipe.GT_Recipe_Map.sPlasmaForgeRecipes.addRecipe(false, InputItemArray, OutputItemArray, null, null,
-            new FluidStack[]{aFluidInput}, new FluidStack[]{aFluidOutput}, aDuration, aEUt, coil_heat_level);
+    public boolean addPlasmaForgeRecipe(ItemStack[] ItemInputArray, FluidStack[] FluidInputArray, ItemStack[] OutputItemArray, FluidStack[] FluidOutputArray, int aDuration, int aEUt, int coil_heat_level) {
+        GT_Recipe.GT_Recipe_Map.sPlasmaForgeRecipes.addRecipe(false, ItemInputArray, OutputItemArray, null, null,
+            FluidInputArray, FluidOutputArray, aDuration, aEUt, coil_heat_level);
         return true;
     }
 

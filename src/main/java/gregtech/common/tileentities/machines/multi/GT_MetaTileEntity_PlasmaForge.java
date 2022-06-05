@@ -6,6 +6,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -17,10 +18,12 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffl
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -49,9 +52,6 @@ import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMultiFurnace<GT_MetaTileEntity_PlasmaForge> implements IConstructable {
     private int mHeatingCapacity = 0;
     private boolean isBussesSeparate = false;
-    protected final ArrayList<GT_MetaTileEntity_Hatch_Output> mPollutionOutputHatches = new ArrayList<>();
-    protected final FluidStack[] pollutionFluidStacks = {Materials.CarbonDioxide.getGas(1000),
-            Materials.CarbonMonoxide.getGas(1000), Materials.SulfurDioxide.getGas(1000)};
 
     protected static final int NULL_CASING = 12;
     protected static final int USEFUL_CASING = 13;
@@ -200,9 +200,6 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
 
     protected boolean processRecipe(ItemStack[] tItems, FluidStack[] tFluids) {
 
-        if (tItems.length <= 0)
-            return false;
-
         long tVoltage = getMaxInputVoltage();
         byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
 
@@ -218,25 +215,17 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
             return false;
 
         this.mEUt = -tRecipe.mEUt;
+        this.mMaxProgresstime = tRecipe.mDuration;
 
-        if (!tRecipe.isRecipeInputEqual(true, tFluids, tItems))
+        if (!tRecipe.isRecipeInputEqual(true, tFluids, tItems)) {
             return false;
+        }
 
-        this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-        this.mEfficiencyIncrease = 10000;
+        // Outputs.
+        this.mOutputItems = tRecipe.mOutputs.clone();
+        this.mOutputFluids = tRecipe.mFluidOutputs.clone();
+        this.updateSlots();
 
-        this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-
-        this.mOutputItems = new ItemStack[]{
-                tRecipe.getOutput(0),
-                tRecipe.getOutput(1)
-        };
-
-        this.mOutputFluids = new FluidStack[]{
-                tRecipe.getFluidOutput(0)
-        };
-
-        updateSlots();
         return true;
     }
 
@@ -245,8 +234,6 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
         this.mHeatingCapacity = 0;
 
         setCoilLevel(HeatingCoilLevel.None);
-
-        mPollutionOutputHatches.clear();
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 16, 21, 16))
             return false;
@@ -266,42 +253,13 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
         if (aLiquid == null)
             return false;
         FluidStack tLiquid = aLiquid.copy();
-        boolean isOutputPollution = false;
-        for (FluidStack pollutionFluidStack : pollutionFluidStacks) {
-            if (!tLiquid.isFluidEqual(pollutionFluidStack))
-                continue;
 
-            isOutputPollution = true;
-            break;
-        }
-        ArrayList<GT_MetaTileEntity_Hatch_Output> tOutputHatches;
-        if (isOutputPollution) {
-            tOutputHatches = this.mPollutionOutputHatches;
-            int pollutionReduction = 0;
-            for (GT_MetaTileEntity_Hatch_Muffler tHatch : mMufflerHatches) {
-                if (!isValidMetaTileEntity(tHatch))
-                    continue;
-                pollutionReduction = 100 - tHatch.calculatePollutionReduction(100);
-                break;
-            }
-            tLiquid.amount = tLiquid.amount * (pollutionReduction + 5) / 100;
-        } else {
-            tOutputHatches = this.mOutputHatches;
-        }
-
-        return dumpFluid(tOutputHatches, tLiquid, true) ||
-            dumpFluid(tOutputHatches, tLiquid, false);
+        return dumpFluid(this.mOutputHatches, tLiquid, true) ||
+            dumpFluid(this.mOutputHatches, tLiquid, false);
     }
 
     @Override
     public String[] getInfoData() {
-        int mPollutionReduction = 0;
-        for (GT_MetaTileEntity_Hatch_Muffler tHatch : mMufflerHatches) {
-            if (!isValidMetaTileEntity(tHatch))
-                continue;
-            mPollutionReduction = Math.max(tHatch.calculatePollutionReduction(100), mPollutionReduction);
-        }
-
         long storedEnergy = 0;
         long maxEnergy = 0;
         for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
@@ -312,22 +270,23 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
         }
 
         return new String[]{
-                StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": " +
-                        EnumChatFormatting.GREEN + GT_Utility.formatNumbers(mProgresstime / 20) + EnumChatFormatting.RESET + " s / " +
-                        EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(mMaxProgresstime / 20) + EnumChatFormatting.RESET + " s",
-                StatCollector.translateToLocal("GT5U.multiblock.energy") + ": " +
-                        EnumChatFormatting.GREEN + GT_Utility.formatNumbers(storedEnergy) + EnumChatFormatting.RESET + " EU / " +
-                        EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(maxEnergy) + EnumChatFormatting.RESET + " EU",
-                StatCollector.translateToLocal("GT5U.multiblock.usage") + ": " +
-                        EnumChatFormatting.RED + GT_Utility.formatNumbers(-mEUt) + EnumChatFormatting.RESET + " EU/t",
-                StatCollector.translateToLocal("GT5U.multiblock.mei") + ": " +
-                        EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(getMaxInputVoltage()) + EnumChatFormatting.RESET + " EU/t(*2A) " +
-                        StatCollector.translateToLocal("GT5U.machines.tier") + ": " +
-                        EnumChatFormatting.YELLOW + VN[GT_Utility.getTier(getMaxInputVoltage())] + EnumChatFormatting.RESET,
-                StatCollector.translateToLocal("GT5U.EBF.heat") + ": " +
-                        EnumChatFormatting.GREEN + GT_Utility.formatNumbers(mHeatingCapacity) + EnumChatFormatting.RESET + " K",
-                StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": " +
-                        EnumChatFormatting.GREEN + mPollutionReduction + EnumChatFormatting.RESET + " %"
+            "------------ Critical Information ------------",
+            StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": " +
+                    EnumChatFormatting.GREEN + GT_Utility.formatNumbers(mProgresstime) + EnumChatFormatting.RESET + "t / " +
+                    EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(mMaxProgresstime) + EnumChatFormatting.RESET + "t",
+            StatCollector.translateToLocal("GT5U.multiblock.energy") + ": " +
+                    EnumChatFormatting.GREEN + GT_Utility.formatNumbers(storedEnergy) + EnumChatFormatting.RESET + " EU / " +
+                    EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(maxEnergy) + EnumChatFormatting.RESET + " EU",
+            StatCollector.translateToLocal("GT5U.multiblock.usage") + ": " +
+                    EnumChatFormatting.RED + GT_Utility.formatNumbers(-mEUt) + EnumChatFormatting.RESET + " EU/t",
+            StatCollector.translateToLocal("GT5U.multiblock.mei") + ": " +
+                    EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(getMaxInputVoltage()) + EnumChatFormatting.RESET + " EU/t(*2A) " +
+                    StatCollector.translateToLocal("GT5U.machines.tier") + ": " +
+                    EnumChatFormatting.YELLOW + VN[GT_Utility.getTier(getMaxInputVoltage())] + EnumChatFormatting.RESET,
+            StatCollector.translateToLocal("GT5U.EBF.heat") + ": " +
+                    EnumChatFormatting.GREEN + GT_Utility.formatNumbers(mHeatingCapacity) + EnumChatFormatting.RESET + " K",
+            "----------------------------------------------"
+
         };
     }
 
