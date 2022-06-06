@@ -946,9 +946,9 @@ public class RECIPES_Machines {
         		GregtechItemList.Casing_Machine_Custom_2.get(2L, new Object[0]),
         		CI.bits, 
         		new Object[]{
-        				"PhP",
-        				"PFP",
-        				"PwP",
+        				"PPP",
+        				"hFw",
+        				"PPP",
         				'P',
         				OrePrefixes.plate.get(Materials.Aluminium),
         				'F',
