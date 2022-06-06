@@ -1698,7 +1698,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 
 		ItemStack[][] aInputArray = new ItemStack[][] {aInputsOre1, aInputsOre2, aInputsCrushed1, aInputsCrushed2};
 		ItemStack[][] aOutputArray = new ItemStack[][] {aOutputsOre1, aOutputsOre2, aOutputsCrushed1, aOutputsCrushed2};		
-		int[] aTime = new int[] {6000, 7500, 7500, 9000};		
+		int[] aTime = new int[] {6000, 7500, 3000, 3750};
 
 		int aSize = GTPP_Recipe.GTPP_Recipe_Map.sOreMillRecipes.mRecipeList.size();
 		int aSize2 = aSize;

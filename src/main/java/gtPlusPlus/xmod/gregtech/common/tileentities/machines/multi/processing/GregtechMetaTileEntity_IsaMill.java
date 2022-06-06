@@ -83,7 +83,7 @@ public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase<
 				.beginStructureBlock(3, 3, 7, false)
 				.addController("Front Center")
 				.addCasingInfo("IsaMill Exterior Casing", 40)
-                .addOtherStructurePart("IsaMill Gearbox", "Inner Blocks")
+                .addOtherStructurePart("IsaMill Gearbox", "5x, Inner Blocks")
                 .addOtherStructurePart("IsaMill Piping", "8x, ring around controller")
                 .addStructureInfo("IsaMill Pipings must not be obstructed in front (only air blocks)")
 				.addOtherStructurePart("Milling Ball Hatch", "Any Casing")

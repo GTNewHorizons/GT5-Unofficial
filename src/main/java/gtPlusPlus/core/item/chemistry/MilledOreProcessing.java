@@ -161,7 +161,7 @@ public class MilledOreProcessing extends ItemPackage {
 				SphaleriteFlotationFroth, 
 				ELEMENT.getInstance().ZINC, 180, 
 				ELEMENT.getInstance().IRON, 120,
-				ELEMENT.getInstance().INDIUM, 40, 
+				ELEMENT.getInstance().INDIUM, 64,
 				ELEMENT.getInstance().GERMANIUM, 15
 				);		
 		//milledChalcopyrite
