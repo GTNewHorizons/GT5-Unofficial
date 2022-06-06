@@ -55,11 +55,11 @@ item.MiscUtils.material.dustCryotheum.name=Cryotheum Dust
 item.MiscUtils.material.rodBlizz.name=Blizz Rod
 item.MiscUtils.material.dustBlizz.name=Blizz Powder
 
-//============= 'miscutils' is Case Sensitive Here, unsure why
+//------------- 'miscutils' is Case Sensitive Here, unsure why
 tile.miscutils.fluid.pyrotheum.name=Blazing Pyrotheum
 tile.miscutils.fluid.cryotheum.name=Gelid Cryotheum
 tile.miscutils.fluid.ender.name=Resonant Ender
-//==============
+//--------------
 
 //Forestry Stuff
 item.frameAccelerated.name=Accelerated Frame
@@ -97,8 +97,9 @@ item.itemPLACEHOLDER_Circuit.name=Quark Manipulator (UV)
 item.itemPlateEnrichedSoularium.name=Enriched Soularium Plate
 item.itemHeliumBlob.name=Mysterious Hydrogen Substance
 item.itemAlkalusDisk.name=Alkalus Disk
-item.itemHotIngotRaisinBread.name=Hot Loaf of Raisin Bread
-item.itemIngotRaisinBread.name=§5ImQ009's §fRaisin Bread
+# The following 2 keys have been deprecated and overwritten
+# item.itemHotIngotRaisinBread.name=Hot Loaf of Raisin Bread
+# item.itemIngotRaisinBread.name=§5ImQ009's §fRaisin Bread
 
 //Misc Blocks
 tile.blockCompressedObsidian.0.name=Compressed Obsidian (9)
@@ -511,7 +512,6 @@ item.itemDustSmallCalifornium.name=Small Pile of Californium Dust
 item.itemNuggetCalifornium.name=Californium Nugget
 item.itemPlateCalifornium.name=Californium Plate
 item.itemPlateDoubleCalifornium.name=Double Californium Plate
-item.itemIngotEinsteinium.name=Einsteinium Ingot
 item.itemDustEinsteinium.name=Einsteinium Dust
 item.itemDustTinyEinsteinium.name=Tiny Pile of Einsteinium Dust
 item.itemDustSmallEinsteinium.name=Small Pile of Einsteinium Dust
@@ -1959,9 +1959,10 @@ tile.Block of Plutonium-239.name=Block of Plutonium-239
 tile.Fluorite Ore [Old].name=Fluorite Ore [Deprecated]
 tile.blockMiningPipeFake.name=Strengthened Mining Pipe
 tile.blockMiningHeadFake.name=Bedrock Drill
-item.itemCellLiFBeF2ThF4UF4.name=Cell of Molten Salt [LiFBeF2ThF4UF4]
-item.itemCellLiFBeF2ZrF4UF4.name=Cell of Molten Salt [LiFBeF2ZrF4UF4]
-item.itemCellLiFBeF2ZrF4U235.name=Cell of Molten Salt [LiFBeF2ZrF4U235]
+# The following 3 keys have been deprecated and overwritten
+# item.itemCellLiFBeF2ThF4UF4.name=Cell of Molten Salt [LiFBeF2ThF4UF4]
+# item.itemCellLiFBeF2ZrF4UF4.name=Cell of Molten Salt [LiFBeF2ZrF4UF4]
+# item.itemCellLiFBeF2ZrF4U235.name=Cell of Molten Salt [LiFBeF2ZrF4U235]
 item.itemPlateMeatRaw.name=Fleshy Panel
 tile.Block of MeatRaw.name=Block of Raw Meat
 
@@ -3109,13 +3110,14 @@ item.BasicGenericChemItem.5.name=Brown Metal Catalyst
 item.MudRedSlurry.name=Cell of Red Mud Slurry
 item.liquid_toluene.name=Toluene Cell
 
-item.BasicAlgaeItem.0.name=Algae Spore (I)
-item.BasicAlgaeItem.1.name=Algae Spore (II)
-item.BasicAlgaeItem.2.name=Algae Spore (III)
-item.BasicAlgaeItem.3.name=Algae Spore (IV)
-item.BasicAlgaeItem.4.name=Algae Spore (V)
-item.BasicAlgaeItem.5.name=Algae Spore (VI)
-item.BasicAlgaeItem.6.name=Algae Spore (VII)
+# The following 7 keys have been deprecated and overwritten
+# item.BasicAlgaeItem.0.name=Algae Spore (I)
+# item.BasicAlgaeItem.1.name=Algae Spore (II)
+# item.BasicAlgaeItem.2.name=Algae Spore (III)
+# item.BasicAlgaeItem.3.name=Algae Spore (IV)
+# item.BasicAlgaeItem.4.name=Algae Spore (V)
+# item.BasicAlgaeItem.5.name=Algae Spore (VI)
+# item.BasicAlgaeItem.6.name=Algae Spore (VII)
 
 //Added 17/01/20
 item.BasicGenericChemItem.6.name=Pink Metal Catalyst
