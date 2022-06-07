@@ -521,6 +521,8 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         GT_Mod.gregtechproxy.addFluid("refinedGlue", "Refined Glue", Materials.Glue, 1, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Glue, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
         GT_Mod.gregtechproxy.addFluid("hotfryingoil", "Hot Frying Oil", Materials.FryingOilHot, 1, 400, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.FryingOilHot, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
 
+        GT_Mod.gregtechproxy.addFluid("SpaceTime", "SpaceTime", Materials.SpaceTime, 2, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.SpaceTime, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
+
         GT_Mod.gregtechproxy.addFluid("fieryblood", "Fiery Blood", Materials.FierySteel, 1, 6400, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.FierySteel, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
         GT_Mod.gregtechproxy.addFluid("holywater", "Holy Water", Materials.HolyWater, 1, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.HolyWater, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
         if (ItemList.TF_Vial_FieryBlood.get(1L, new Object[0]) != null) {

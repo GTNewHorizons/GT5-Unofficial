@@ -590,13 +590,12 @@ public class GT_MachineRecipeLoader implements Runnable {
         // 1234 TESTING.
 
         GT_Values.RA.addPlasmaForgeRecipe(
-            new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.block, Materials.Iron, 2)},
-            new FluidStack[]{Materials.DimensionallyTranscendentCrudeCatalyst.getFluid(2L), Materials.Iron.getMolten(73728L)},
+            new ItemStack[]{GT_Values.NI},
+            new FluidStack[]{Materials.DimensionallyTranscendentCrudeCatalyst.getFluid(2L), Materials.Iron.getMolten(2L)},
 
-            new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.block, Materials.Silicon, 2)},
+            new ItemStack[]{GT_Values.NI},
             new FluidStack[]{Materials.DimensionallyTranscendentResidue.getFluid(1L), Materials.Neutronium.getMolten(73728L)},
             40, 1, 10900);
-//        GT_Values.RA.addPlasmaForgeRecipe(null, new FluidStack[]{Materials.DimensionallyTranscendentCrudeCatalyst.getFluid(1L), Materials.Water.getFluid(1L)}, new FluidStack[]{Materials.DimensionallyTranscendentResidue.getFluid(5L), Materials.Iron.getMolten(3000000L)}, null, 40, 1, 10900);
 
 
         GT_Values.RA.addAssemblerRecipe(new ItemStack(Blocks.redstone_torch, 2, 32767), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L), Materials.Concrete.getMolten(144L), new ItemStack(Items.repeater, 1, 0), 80, 10);

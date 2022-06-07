@@ -118,6 +118,7 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Blast Furnace")
                 .addInfo("Controller block for the Dimensionally Transcendent Plasma Forge")
+                .addInfo("Author: Colen")
                 .addSeparator()
                 .beginStructureBlock(33, 24, 33, false)
                 .addStructureInfo("Structure is too complex! See schematic for details.")
@@ -125,7 +126,7 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
                 .addStructureInfo("120 Dimensional bridge blocks required.")
                 .addStructureInfo("1270 Dimensional injection casing required.")
                 .addStructureInfo("2121 Dimensionally transcendent casing required.")
-                .toolTipFinisher("&kGregtech");
+                .toolTipFinisher("Gregtech");
         return tt;
     }
 
