@@ -345,7 +345,7 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
 
     @Override
     public boolean isValidSlot(int aIndex) {
-        return true;
+        return aIndex != 2;
     }
 
     @Override
