@@ -17,6 +17,7 @@ import gregtech.api.util.GT_Utility;
 import kekztech.Items;
 import kekztech.KekzCore;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import thaumcraft.api.ItemApi;
@@ -31,6 +32,7 @@ import java.util.HashMap;
 public class Recipes {
 
 	public static final HashMap<String, InfusionRecipe> infusionRecipes = new HashMap<>();
+    static Fluid solderIndalloy = FluidRegistry.getFluid("molten.indalloy140") != null ? FluidRegistry.getFluid("molten.indalloy140") : FluidRegistry.getFluid("molten.solderingalloy");
 
 	public static void postInit() {
 		KekzCore.LOGGER.info("Registering recipes...");
@@ -506,7 +508,7 @@ public class Recipes {
 					GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Platinum, 64)
 				},
 				new FluidStack[] {
-						Materials.SolderingAlloy.getMolten(720)
+                    new FluidStack(solderIndalloy, 720)
 				},
 				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 2), 1000, 80000
 		);
@@ -544,7 +546,7 @@ public class Recipes {
 					GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Naquadah, 32)
 		},
 				new FluidStack[] {
-						Materials.SolderingAlloy.getMolten(2880),
+                        new FluidStack(solderIndalloy, 2880),
 						new FluidStack(FluidRegistry.getFluid("ic2coolant"), 16000)
 				},
 				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 3), 2000, 100000
@@ -582,7 +584,7 @@ public class Recipes {
 					GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.NaquadahAlloy, 32)
 		},
 				new FluidStack[] {
-						Materials.SolderingAlloy.getMolten(2880),
+                        new FluidStack(solderIndalloy, 2880),
 						new FluidStack(FluidRegistry.getFluid("ic2coolant"), 16000)
 				},
 				new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 4), 2000, 200000
@@ -623,7 +625,7 @@ public class Recipes {
                         GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorUHV, 64)
 				},
 				new FluidStack[] {
-						Materials.SolderingAlloy.getMolten(4608),
+                        new FluidStack(solderIndalloy, 4608),
 						Materials.Naquadria.getMolten(9216),
 						new FluidStack(FluidRegistry.getFluid("ic2coolant"), 32000)
 				},
