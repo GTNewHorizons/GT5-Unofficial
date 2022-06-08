@@ -177,9 +177,11 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
 
     protected boolean processRecipe(ItemStack[] tItems, FluidStack[] tFluids) {
 
+        // Get information about multi configuration.
         long tVoltage = getMaxInputVoltage();
         byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
 
+        // Look up recipe.
         GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sPlasmaForgeRecipes.findRecipe(
                 getBaseMetaTileEntity(),
                 false,
@@ -188,15 +190,17 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
                 tItems
         );
 
+        // Sanity checks.
         if (tRecipe == null)
             return false;
-
-        mEUt = -tRecipe.mEUt;
-        mMaxProgresstime = tRecipe.mDuration;
 
         if (!tRecipe.isRecipeInputEqual(true, tFluids, tItems)) {
             return false;
         }
+
+        // Vital recipe info.
+        mEUt = -tRecipe.mEUt;
+        mMaxProgresstime = tRecipe.mDuration;
 
         // Outputs.
         mOutputItems = tRecipe.mOutputs.clone();
