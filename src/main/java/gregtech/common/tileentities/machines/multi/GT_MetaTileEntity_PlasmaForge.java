@@ -191,8 +191,8 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
         if (tRecipe == null)
             return false;
 
-        this.mEUt = -tRecipe.mEUt;
-        this.mMaxProgresstime = tRecipe.mDuration;
+        mEUt = -tRecipe.mEUt;
+        mMaxProgresstime = tRecipe.mDuration;
 
         if (!tRecipe.isRecipeInputEqual(true, tFluids, tItems)) {
             return false;
