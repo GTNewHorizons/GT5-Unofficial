@@ -51,7 +51,6 @@ import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 
 public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMultiFurnace<GT_MetaTileEntity_PlasmaForge> implements IConstructable {
     private int mHeatingCapacity = 0;
-    private boolean isBussesSeparate = false;
 
     protected static final int NULL_CASING = 12;
     protected static final int USEFUL_CASING = 13;
@@ -173,32 +172,7 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
 
     @Override
     public boolean checkRecipe(ItemStack aStack) {
-
-        System.out.println("TESTABC1234 - 3");
-
-        if(isBussesSeparate) {
-            FluidStack[] tFluids = getStoredFluids().toArray(new FluidStack[0]);
-            for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
-                ArrayList<ItemStack> tInputs = new ArrayList<>();
-                tBus.mRecipeMap = getRecipeMap();
-
-                if (isValidMetaTileEntity(tBus)) {
-                    for (int i = tBus.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
-                        if (tBus.getBaseMetaTileEntity().getStackInSlot(i) != null) {
-                            tInputs.add(tBus.getBaseMetaTileEntity().getStackInSlot(i));
-                        }
-                    }
-                }
-                ItemStack[] tItems = tInputs.toArray(new ItemStack[0]);
-                if (processRecipe(tItems, tFluids)) {
-                    return true;
-                }
-            }
-            return false;
-        } else {
-            return processRecipe(getCompactedInputs(), getCompactedFluids());
-        }
-
+        return processRecipe(getCompactedInputs(), getCompactedFluids());
     }
 
     protected boolean processRecipe(ItemStack[] tItems, FluidStack[] tFluids) {
@@ -225,9 +199,9 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
         }
 
         // Outputs.
-        this.mOutputItems = tRecipe.mOutputs.clone();
-        this.mOutputFluids = tRecipe.mFluidOutputs.clone();
-        this.updateSlots();
+        mOutputItems = tRecipe.mOutputs.clone();
+        mOutputFluids = tRecipe.mFluidOutputs.clone();
+        updateSlots();
 
         return true;
     }
@@ -299,20 +273,12 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
     }
 
     @Override
-    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        isBussesSeparate = !isBussesSeparate;
-        GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + isBussesSeparate);
-    }
-
-    @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setBoolean("isBussesSeparate", isBussesSeparate);
     }
 
     @Override
     public void loadNBTData(final NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        isBussesSeparate = aNBT.getBoolean("isBussesSeparate");
     }
 }
