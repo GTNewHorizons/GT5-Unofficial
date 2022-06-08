@@ -174,6 +174,8 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
     @Override
     public boolean checkRecipe(ItemStack aStack) {
 
+        System.out.println("TESTABC1234 - 3");
+
         if(isBussesSeparate) {
             FluidStack[] tFluids = getStoredFluids().toArray(new FluidStack[0]);
             for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
