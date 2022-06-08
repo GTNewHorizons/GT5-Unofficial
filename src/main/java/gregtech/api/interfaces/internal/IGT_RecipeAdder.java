@@ -213,7 +213,17 @@ public interface IGT_RecipeAdder {
 
     boolean addBlastRecipe(ItemStack aInput1, ItemStack aInput2,  ItemStack aInput3,  ItemStack aInput4, FluidStack aFluidInput, FluidStack aFluidOutput, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3, ItemStack aOutput4,int aDuration, int aEUt, int aLevel);
 
-
+    /**
+     * Adds a Plasma Forge Recipe
+     *
+     * @param ItemInputArray    Array of input items.
+     * @param FluidInputArray   Array of output items.
+     * @param OutputItemArray   Array of input fluids.
+     * @param FluidOutputArray  Array of output items.
+     * @param aDuration         Must be > 0. Duration in ticks.
+     * @param aEUt              Should be > 0. EU/t.
+     * @param coil_heat_level   Should be > 0. Heat of the coils used.
+     */
     boolean addPlasmaForgeRecipe(ItemStack[] ItemInputArray, FluidStack[] FluidInputArray, ItemStack[] OutputItemArray, FluidStack[] FluidOutputArray, int aDuration, int aEUt, int coil_heat_level);
 
     boolean addPrimitiveBlastRecipe(ItemStack aInput1, ItemStack aInput2, int aCoalAmount, ItemStack aOutput1, ItemStack aOutput2, int aDuration);
