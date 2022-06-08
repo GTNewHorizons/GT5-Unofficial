@@ -125,6 +125,9 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
                 .addStructureInfo("120 Dimensional bridge blocks required.")
                 .addStructureInfo("1270 Dimensional injection casing required.")
                 .addStructureInfo("2121 Dimensionally transcendent casing required.")
+                .addStructureInfo("--------------------------------------------")
+                .addStructureInfo("If you are having difficulty with the blueprint")
+                .addStructureInfo("you can rotate the controller. This multi is symmetrical.")
                 .toolTipFinisher("Gregtech");
         return tt;
     }
@@ -222,9 +225,26 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
         if (getCoilLevel() == HeatingCoilLevel.None)
             return false;
 
+        // Hatch limits.
+        if (mInputBusses.size() > 3)
+            return false;
+
+        if (mOutputBusses.size() > 3)
+            return false;
+
+        if (mInputHatches.size() > 3)
+            return false;
+
+        if (mOutputHatches.size() > 3)
+            return false;
+
+        if (!((mEnergyHatches.size() == 1) || (mEnergyHatches.size() ==  2)))
+            return false;
+
         if (mMaintenanceHatches.size() != 1)
             return false;
 
+        // Heat capacity of coils used on multi.
         this.mHeatingCapacity = (int) getCoilLevel().getHeat() + 100 * (GT_Utility.getTier(getMaxInputVoltage()) - 2);
         return true;
     }
