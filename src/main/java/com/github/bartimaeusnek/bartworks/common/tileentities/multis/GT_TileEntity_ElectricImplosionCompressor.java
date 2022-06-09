@@ -283,7 +283,7 @@ public class GT_TileEntity_ElectricImplosionCompressor extends GT_MetaTileEntity
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        this.piston = aNBT.getBoolean("piston");
+        if(aNBT.hasKey("piston")) this.piston = aNBT.getBoolean("piston");
     }
 
     @Override
