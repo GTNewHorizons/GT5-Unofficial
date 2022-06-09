@@ -225,9 +225,9 @@ public class NaquadahReworkRecipeLoader {
         );
 
         GT_Values.RA.addChemicalRecipe(
-            WerkstoffLoader.ZincSulfate.get(OrePrefixes.dust, 1),
+            WerkstoffLoader.ZincSulfate.get(OrePrefixes.dust, 6),
             null,
-            Materials.Hydrogen.getGas(1000),
+            Materials.Hydrogen.getGas(2000),
             Materials.SulfuricAcid.getFluid(1000),
             Materials.Zinc.getDust(1),
             30,
@@ -282,7 +282,7 @@ public class NaquadahReworkRecipeLoader {
                 null,
                 null,
                 GT_OreDictUnificator.get(OrePrefixes.ingotHot, Materials.NaquadahEnriched, 1),
-                WerkstoffLoader.ZincSulfate.get(OrePrefixes.dust, 2),
+                WerkstoffLoader.ZincSulfate.get(OrePrefixes.dust, 12),
                 100,
                 7680,
                 7500
