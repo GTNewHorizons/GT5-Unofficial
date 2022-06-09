@@ -238,12 +238,12 @@ public class GT_PreLoad {
 
         List<String> mMTTags = new ArrayList<>();
         oreTags.stream()
-                .filter(test -> StringUtils.startsWithAny(test, preS))
-                .forEach(test -> {
-                    mMTTags.add(test);
-                    if (GT_Values.D1)
-                        GT_FML_LOGGER.info("oretag: " + test);
-                });
+            .filter(test -> StringUtils.startsWithAny(test, preS))
+            .forEach(test -> {
+                mMTTags.add(test);
+                if (GT_Values.D1)
+                    GT_FML_LOGGER.info("oretag: " + test);
+            });
 
         GT_FML_LOGGER.info("reenableMetaItems");
 
@@ -377,6 +377,7 @@ public class GT_PreLoad {
         GT_Mod.gregtechproxy.mAxeWhenAdventure = tMainConfig.get(GT_Mod.aTextGeneral, "AdventureModeStartingAxe", true).getBoolean(true);
         GT_Mod.gregtechproxy.mHardcoreCables = tMainConfig.get(GT_Mod.aTextGeneral, "HardCoreCableLoss", false).getBoolean(false);
         GT_Mod.gregtechproxy.mSurvivalIntoAdventure = tMainConfig.get(GT_Mod.aTextGeneral, "forceAdventureMode", false).getBoolean(false);
+        GT_Mod.gregtechproxy.mNEIRecipeSecondMode = tMainConfig.get(GT_Mod.aTextGeneral, "NEI_recipe_second_mode", false).getBoolean(false);
         GT_Mod.gregtechproxy.mHungerEffect = tMainConfig.get(GT_Mod.aTextGeneral, "AFK_Hunger", false).getBoolean(false);
         GT_Mod.gregtechproxy.mHardRock = tMainConfig.get(GT_Mod.aTextGeneral, "harderstone", false).getBoolean(false);
         GT_Mod.gregtechproxy.mInventoryUnification = tMainConfig.get(GT_Mod.aTextGeneral, "InventoryUnification", true).getBoolean(true);
@@ -490,8 +491,8 @@ public class GT_PreLoad {
             GT_Mod.gregtechproxy.mGraniteHavestLevel = GregTech_API.sMaterialProperties.get("havestLevel", "graniteHarvestLevel", 3);
             GT_Mod.gregtechproxy.mMaxHarvestLevel = Math.min(15, GregTech_API.sMaterialProperties.get("havestLevel", "maxLevel", 7));
             Materials.getMaterialsMap().values().parallelStream().filter(tMaterial -> tMaterial != null && tMaterial.mToolQuality > 0 && tMaterial.mMetaItemSubID < GT_Mod.gregtechproxy.mHarvestLevel.length && tMaterial.mMetaItemSubID >= 0).forEach(
-                    tMaterial -> GT_Mod.gregtechproxy.mHarvestLevel[tMaterial.mMetaItemSubID] = GregTech_API.sMaterialProperties.get("materialHavestLevel", tMaterial.mDefaultLocalName, tMaterial.mToolQuality)
-                                                                                                                                                                                                                                                       );
+                tMaterial -> GT_Mod.gregtechproxy.mHarvestLevel[tMaterial.mMetaItemSubID] = GregTech_API.sMaterialProperties.get("materialHavestLevel", tMaterial.mDefaultLocalName, tMaterial.mToolQuality)
+            );
         }
 
         if (tMainConfig.get("general", "hardermobspawners", true).getBoolean(true)) {
@@ -519,12 +520,12 @@ public class GT_PreLoad {
     public static void loadClientConfig() {
         String SBdye0 = "ColorModulation.";
         Arrays.stream(Dyes.values()).filter(tDye -> (tDye != Dyes._NULL) && (tDye.mIndex < 0)).forEach(tDye -> {
-                    String SBdye1 = SBdye0 + tDye;
-                    tDye.mRGBa[0] = ((short) Math.min(255, Math.max(0, GregTech_API.sClientDataFile.get(SBdye1, "R", tDye.mOriginalRGBa[0]))));
-                    tDye.mRGBa[1] = ((short) Math.min(255, Math.max(0, GregTech_API.sClientDataFile.get(SBdye1, "G", tDye.mOriginalRGBa[1]))));
-                    tDye.mRGBa[2] = ((short) Math.min(255, Math.max(0, GregTech_API.sClientDataFile.get(SBdye1, "B", tDye.mOriginalRGBa[2]))));
-                }
-                                                                                                      );
+                String SBdye1 = SBdye0 + tDye;
+                tDye.mRGBa[0] = ((short) Math.min(255, Math.max(0, GregTech_API.sClientDataFile.get(SBdye1, "R", tDye.mOriginalRGBa[0]))));
+                tDye.mRGBa[1] = ((short) Math.min(255, Math.max(0, GregTech_API.sClientDataFile.get(SBdye1, "G", tDye.mOriginalRGBa[1]))));
+                tDye.mRGBa[2] = ((short) Math.min(255, Math.max(0, GregTech_API.sClientDataFile.get(SBdye1, "B", tDye.mOriginalRGBa[2]))));
+            }
+        );
         GT_Mod.gregtechproxy.mRenderTileAmbientOcclusion = GregTech_API.sClientDataFile.get("render", "TileAmbientOcclusion", true);
         GT_Mod.gregtechproxy.mRenderGlowTextures = GregTech_API.sClientDataFile.get("render", "GlowTextures", true);
         GT_Mod.gregtechproxy.mRenderFlippedMachinesFlipped = GregTech_API.sClientDataFile.get("render", "RenderFlippedMachinesFlipped", true);

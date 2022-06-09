@@ -153,6 +153,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     public boolean mIncreaseDungeonLoot = true;
     public boolean mAxeWhenAdventure = true;
     public boolean mSurvivalIntoAdventure = false;
+    public boolean mNEIRecipeSecondMode = false;
     public boolean mNerfedWoodPlank = true;
     public boolean mNerfedVanillaTools = true;
     public boolean mHardRock = false;
