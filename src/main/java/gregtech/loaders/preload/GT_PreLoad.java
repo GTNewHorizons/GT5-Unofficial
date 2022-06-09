@@ -377,7 +377,7 @@ public class GT_PreLoad {
         GT_Mod.gregtechproxy.mAxeWhenAdventure = tMainConfig.get(GT_Mod.aTextGeneral, "AdventureModeStartingAxe", true).getBoolean(true);
         GT_Mod.gregtechproxy.mHardcoreCables = tMainConfig.get(GT_Mod.aTextGeneral, "HardCoreCableLoss", false).getBoolean(false);
         GT_Mod.gregtechproxy.mSurvivalIntoAdventure = tMainConfig.get(GT_Mod.aTextGeneral, "forceAdventureMode", false).getBoolean(false);
-        GT_Mod.gregtechproxy.mNEIRecipeSecondMode = tMainConfig.get(GT_Mod.aTextGeneral, "NEI_recipe_second_mode", false).getBoolean(false);
+        GT_Mod.gregtechproxy.mNEIRecipeSecondMode = tMainConfig.get(GT_Mod.aTextGeneral, "NEI_recipe_second_mode", true).getBoolean(true);
         GT_Mod.gregtechproxy.mHungerEffect = tMainConfig.get(GT_Mod.aTextGeneral, "AFK_Hunger", false).getBoolean(false);
         GT_Mod.gregtechproxy.mHardRock = tMainConfig.get(GT_Mod.aTextGeneral, "harderstone", false).getBoolean(false);
         GT_Mod.gregtechproxy.mInventoryUnification = tMainConfig.get(GT_Mod.aTextGeneral, "InventoryUnification", true).getBoolean(true);
