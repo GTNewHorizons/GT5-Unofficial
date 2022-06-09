@@ -1453,7 +1453,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addChemicalRecipeForBasicMachineOnly(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Chlorine, 4), GT_Values.NF, Materials.SiliconTetrachloride.getFluid(1000), ItemList.Cell_Empty.get(4L), GT_Values.NI,400, 30);
 
         this.addKevlarRecipes();
-        
+
         //advanced alloy plate
         GT_Values.RA.addBenderRecipe(ItemList.IC2_Mixed_Metal_Ingot.get(1L), GT_OreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Advanced, 1L), 100, 8);
 
@@ -2249,8 +2249,6 @@ public class GT_MachineRecipeLoader implements Runnable {
 
     }
 
-
-    }
 
     public void addProcess(ItemStack tCrop, Materials aMaterial, int chance, boolean aMainOutput) {
     	if(tCrop==null||aMaterial==null||GT_OreDictUnificator.get(OrePrefixes.crushed, aMaterial,1)==null)return;
