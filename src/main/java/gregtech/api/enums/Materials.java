@@ -365,7 +365,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Ethanol                 = new Materials( 706, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 255, 128,   0,   0,   "Ethanol"                 ,   "Ethanol"                       ,    0,     192,         -1,    0, false, false,   1,   1,   1, Dyes.dyeOrange      , 1, Arrays.asList(new MaterialStack(Carbon, 2), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 1)), Arrays.asList(new TC_AspectStack(TC_Aspects.VENENUM, 1), new TC_AspectStack(TC_Aspects.AQUA, 1)));
     public static Materials FishOil                 = new Materials( 711, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 255, 196,   0,   0,   "FishOil"                 ,   "Fish Oil"                      ,    3,       2,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow      , Arrays.asList(new TC_AspectStack(TC_Aspects.CORPUS, 2)));
     public static Materials FermentedBiomass        = new MaterialBuilder(691, TextureSet.SET_FLUID             ,                                                                                                     "Fermented Biomass").addCell().addFluid().setRGB(68, 85, 0).setColor(Dyes.dyeBrown).constructMaterial();
-    public static Materials Fuel                    = new Materials( 708, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 255, 255,   0,   0,   "Fuel"                    ,   "Diesel"                        ,    0,     480,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow      );
+    public static Materials Fuel                    = new Materials( 708, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 255, 255,   0,   0,   "Fuel"                  ,   "Diesel"                        ,    0,     480,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow      );
     public static Materials Glue                    = new Materials( 726, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 200, 196,   0,   0,   "Glue"                    ,   "Refined Glue"                  ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeOrange      , Arrays.asList(new TC_AspectStack(TC_Aspects.LIMUS, 2)));
     public static Materials Gunpowder               = new Materials( 800, TextureSet.SET_DULL              ,   1.0F,      0,  0, 1                         , 128, 128, 128,   0,   "Gunpowder"               ,   "Gunpowder"                     ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeGray        , Arrays.asList(new TC_AspectStack(TC_Aspects.PERDITIO, 3), new TC_AspectStack(TC_Aspects.IGNIS, 4)));
     public static Materials FryingOilHot            = new Materials( 727, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 200, 196,   0,   0,   "FryingOilHot"            ,   "Hot Frying Oil"                ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeOrange      , Arrays.asList(new TC_AspectStack(TC_Aspects.AQUA, 1), new TC_AspectStack(TC_Aspects.IGNIS, 1)));
@@ -858,7 +858,17 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     public static Materials SuperCoolant = new MaterialBuilder( -1, TextureSet.SET_DULL,"Super Coolant").setRGB(2, 91, 111).addFluid().constructMaterial().setLiquidTemperature(1);
 
-    static {
+    //1234
+    public static Materials DimensionallyTranscendentCrudeCatalyst           = new Materials( 781, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             , 10, 20,   20, 1,   "DimensionallyTranscendentCrudeCatalyst"           ,   "Dimensionally Transcendent Crude Catalyst"                ,    0,       0,         500000000,    1, false,  true,   1,   1,   1, Dyes.dyeCyan).setLiquidTemperature(500000000).setHasCorrespondingFluid(true);
+    public static Materials DimensionallyTranscendentProsaicCatalyst         = new Materials( 782, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             , 35, 59,   41, 1,   "DimensionallyTranscendentProsaicCatalyst"           ,   "Dimensionally Transcendent Prosaic Catalyst"                ,    0,       0,         500000000,    1, false,  true,   1,   1,   1, Dyes.dyeGreen).setLiquidTemperature(500000000).setHasCorrespondingFluid(true);
+    public static Materials DimensionallyTranscendentResplendentCatalyst     = new Materials( 783, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             , 38, 20,   56, 1,   "DimensionallyTranscendentResplendentCatalyst"           ,   "Dimensionally Transcendent Resplendent Catalyst"                ,    0,       0,         500000000,    1, false,  true,   1,   1,   1, Dyes.dyeLime).setLiquidTemperature(500000000).setHasCorrespondingFluid(true);
+    public static Materials DimensionallyTranscendentExoticCatalyst          = new Materials( 784, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             , 240, 240, 41, 1,   "DimensionallyTranscendentExoticCatalyst"           ,   "Dimensionally Transcendent Exotic Catalyst"                ,    0,       0,         500000000,    1, false,  true,   1,   1,   1, Dyes.dyeMagenta).setLiquidTemperature(500000000).setHasCorrespondingFluid(true);
+
+    public static Materials DimensionallyTranscendentResidue                 = new Materials( 785, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             , 0, 0, 0, 1,   "DimensionallyTranscendentResidue"           ,   "Dimensionally Transcendent Residue"                ,    0,       0,         25,    1, false,  true,   1,   1,   1, Dyes.dyeBlack).setLiquidTemperature(2000000000).setHasCorrespondingFluid(true);
+
+    public static Materials SpaceTime                = new Materials(   786, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             ,   0,   0, 255, 240,   "SpaceTime"                ,   "SpaceTime"                      ,    1,      20,         14,    0, false,  true,   2,   1,   1, Dyes.dyeBlue         , Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 1)));
+    
+static {
         MaterialsKevlar.init();
         MaterialsBotania.init();
     }
@@ -980,10 +990,10 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             mEnchantmentArmorsLevel = 0,
             mToolQuality = 0;
     public short
-            mMeltingPoint = 0,
-            mBlastFurnaceTemp = 0,
-            mGasTemp = 0;
+            mBlastFurnaceTemp = 0;
     public int
+            mMeltingPoint = 0,
+            mGasTemp = 0,
             mMetaItemSubID,
             mTypes = 0,
             mDurability = 16,
@@ -1098,7 +1108,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
      */
     public Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aDurability, int aToolQuality, int aTypes, int aR, int aG, int aB, int aA, String aName, String aDefaultLocalName, int aFuelType, int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp, boolean aBlastFurnaceRequired, boolean aTransparent, int aOreValue, int aDensityMultiplier, int aDensityDivider, Dyes aColor, String aConfigSection, boolean aCustomOre, String aCustomID) {
         this(aMetaItemSubID, aIconSet, aToolSpeed, aDurability, aToolQuality, true, aName, aDefaultLocalName, aConfigSection, aCustomOre, aCustomID);
-        mMeltingPoint = (short) aMeltingPoint;
+        mMeltingPoint = aMeltingPoint;
         mBlastFurnaceRequired = aBlastFurnaceRequired;
         mBlastFurnaceTemp = (short) aBlastFurnaceTemp;
         mTransparent = aTransparent;
@@ -2210,10 +2220,10 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     private static void addTemperatureValues(Materials aMaterial, String aConfigPath) {
-        aMaterial.mMeltingPoint = (short) GregTech_API.sMaterialProperties.get(aConfigPath, "MeltingPoint", aMaterial.mMeltingPoint);
+        aMaterial.mMeltingPoint = GregTech_API.sMaterialProperties.get(aConfigPath, "MeltingPoint", aMaterial.mMeltingPoint);
         aMaterial.mBlastFurnaceRequired = GregTech_API.sMaterialProperties.get(aConfigPath, "BlastFurnaceRequired", aMaterial.mBlastFurnaceRequired);
         aMaterial.mBlastFurnaceTemp = (short) GregTech_API.sMaterialProperties.get(aConfigPath, "BlastFurnaceTemp", aMaterial.mBlastFurnaceTemp);
-        aMaterial.mGasTemp = (short) GregTech_API.sMaterialProperties.get(aConfigPath, "GasTemp", aMaterial.mGasTemp);
+        aMaterial.mGasTemp = GregTech_API.sMaterialProperties.get(aConfigPath, "GasTemp", aMaterial.mGasTemp);
         aMaterial.setHeatDamage((float) GregTech_API.sMaterialProperties.get(aConfigPath, "HeatDamage", aMaterial.mHeatDamage));
     }
 
@@ -2789,7 +2799,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     public Materials setLiquidTemperature(int liquidTemperature) {
-        this.mMeltingPoint = (short) liquidTemperature;
+        this.mMeltingPoint = liquidTemperature;
         return this;
     }
 
@@ -2798,7 +2808,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     public Materials setGasTemperature(int gasTemperature) {
-        this.mGasTemp = (short) gasTemperature;
+        this.mGasTemp = gasTemperature;
         return this;
     }
 

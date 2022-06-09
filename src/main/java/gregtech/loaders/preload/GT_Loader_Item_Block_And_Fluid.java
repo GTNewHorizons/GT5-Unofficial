@@ -470,6 +470,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         GT_Mod.gregtechproxy.addFluid("Helium", "Helium", Materials.Helium, 2, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Helium, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
         GT_Mod.gregtechproxy.addFluid("Argon", "Argon", Materials.Argon, 2, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Argon, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
         GT_Mod.gregtechproxy.addFluid("Radon", "Radon", Materials.Radon, 2, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Radon, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
+
         GT_Mod.gregtechproxy.addFluid("Fluorine", "Fluorine", Materials.Fluorine, 2, 53, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Fluorine, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
         GT_Mod.gregtechproxy.addFluid("Titaniumtetrachloride", "Titaniumtetrachloride", Materials.Titaniumtetrachloride, 1, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Titaniumtetrachloride, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
         GT_Mod.gregtechproxy.addFluid("Helium-3", "Helium-3", Materials.Helium_3, 2, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Helium_3, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
@@ -527,6 +528,8 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         GT_Mod.gregtechproxy.addFluid("refinedGlue", "Refined Glue", Materials.Glue, 1, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Glue, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
         //GT_Mod.gregtechproxy.addFluid("advancedGlue", "Advanced Glue", Materials.AdvancedGlue, 1, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.AdvancedGlue, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
         GT_Mod.gregtechproxy.addFluid("hotfryingoil", "Hot Frying Oil", Materials.FryingOilHot, 1, 400, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.FryingOilHot, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
+
+        GT_Mod.gregtechproxy.addFluid("SpaceTime", "SpaceTime", Materials.SpaceTime, 1, 0, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.SpaceTime, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
 
         GT_Mod.gregtechproxy.addFluid("fieryblood", "Fiery Blood", Materials.FierySteel, 1, 6400, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.FierySteel, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
         GT_Mod.gregtechproxy.addFluid("holywater", "Holy Water", Materials.HolyWater, 1, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.HolyWater, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
