@@ -22,6 +22,7 @@ import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import scala.Console;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -715,6 +716,37 @@ public class GT_MachineRecipeLoader implements Runnable {
             2000, 2000000000, 12700);
 
         // -----------------------------------------------------------------------------------------------------------------------------
+//                new FluidStack[]{Materials.Helium.getPlasma(1L), Materials.Iron.getPlasma(1L), Materials.Calcium.getPlasma(1L), Materials.Niobium.getPlasma(1L), Materials.Radon.getPlasma(1L), Materials.Nickel.getPlasma(1L)},
+//        GT_Values.RA.addFusionReactorRecipe(
+//            new FluidStack[]{Materials.Helium.getPlasma(1L), Materials.Iron.getPlasma(1L), Materials.Calcium.getPlasma(1L), Materials.Niobium.getPlasma(1L), Materials.Radon.getPlasma(1L), Materials.Nickel.getPlasma(1L), Materials.Boron.getPlasma(1L), Materials.Sulfur.getPlasma(1L), Materials.Nitrogen.getPlasma(1L), Materials.Zinc.getPlasma(1L), Materials.Silver.getPlasma(1L), Materials.Titanium.getPlasma(1L), Materials.Americium.getPlasma(1L), Materials.Bismuth.getPlasma(1L), Materials.Oxygen.getPlasma(1L), Materials.Tin.getPlasma(1L)},
+//            new FluidStack[]{Materials.DimensionallyTranscendentCrudeCatalyst.getFluid(1L)},
+//            80, 1, 1
+//        );
+
+        GT_Values.RA.addFusionReactorRecipe(
+            new FluidStack[]{Materials.Helium.getPlasma(10L), Materials.Iron.getPlasma(10L), Materials.Calcium.getPlasma(10L), Materials.Niobium.getPlasma(10L)},
+            new FluidStack[]{Materials.DimensionallyTranscendentCrudeCatalyst.getFluid(10L)},
+            20, 32500, 150000000
+        );
+
+        GT_Values.RA.addFusionReactorRecipe(
+            new FluidStack[]{Materials.Helium.getPlasma(10L), Materials.Iron.getPlasma(10L), Materials.Calcium.getPlasma(10L), Materials.Niobium.getPlasma(10L), Materials.Radon.getPlasma(10L), Materials.Nickel.getPlasma(10L), Materials.Boron.getPlasma(10L), Materials.Sulfur.getPlasma(10L)},
+            new FluidStack[]{Materials.DimensionallyTranscendentResplendentCatalyst.getFluid(10L)},
+            20, 65000, 300000000
+        );
+
+        GT_Values.RA.addFusionReactorRecipe(
+            new FluidStack[]{Materials.Helium.getPlasma(10L), Materials.Iron.getPlasma(10L), Materials.Calcium.getPlasma(10L), Materials.Niobium.getPlasma(10L), Materials.Radon.getPlasma(10L), Materials.Nickel.getPlasma(10L), Materials.Boron.getPlasma(10L), Materials.Sulfur.getPlasma(10L), Materials.Nitrogen.getPlasma(10L), Materials.Zinc.getPlasma(10L), Materials.Silver.getPlasma(10L), Materials.Titanium.getPlasma(10L)},
+            new FluidStack[]{Materials.DimensionallyTranscendentExoticCatalyst.getFluid(10L)},
+            20, 130000, 600000000
+        );
+
+        GT_Values.RA.addFusionReactorRecipe(
+            new FluidStack[]{Materials.Helium.getPlasma(10L), Materials.Iron.getPlasma(10L), Materials.Calcium.getPlasma(10L), Materials.Niobium.getPlasma(10L), Materials.Radon.getPlasma(10L), Materials.Nickel.getPlasma(10L), Materials.Boron.getPlasma(10L), Materials.Sulfur.getPlasma(10L), Materials.Nitrogen.getPlasma(10L), Materials.Zinc.getPlasma(10L), Materials.Silver.getPlasma(10L), Materials.Titanium.getPlasma(10L), Materials.Americium.getPlasma(10L), Materials.Bismuth.getPlasma(10L), Materials.Oxygen.getPlasma(10L), Materials.Tin.getPlasma(10L)},
+            new FluidStack[]{Materials.DimensionallyTranscendentExoticCatalyst.getFluid(10L)},
+            20, 260000, 1200000000
+        );
+
 
         GT_Values.RA.addAssemblerRecipe(new ItemStack(Blocks.redstone_torch, 2, 32767), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L), Materials.Concrete.getMolten(144L), new ItemStack(Items.repeater, 1, 0), 80, 10);
         GT_Values.RA.addAssemblerRecipe(new ItemStack(Items.leather, 1, 32767), new ItemStack(Items.lead, 1, 32767), Materials.Glue.getFluid(72L), new ItemStack(Items.name_tag, 1, 0), 100, 8);

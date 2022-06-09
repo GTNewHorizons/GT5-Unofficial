@@ -278,7 +278,13 @@ public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity
         }
         if (tFluidList.size() > 1) {
             FluidStack[] tFluids = tFluidList.toArray(new FluidStack[tFluidList.size()]);
-            GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sFusionRecipes.findRecipe(this.getBaseMetaTileEntity(), this.mLastRecipe, false, GT_Values.V[8], tFluids);
+            GT_Recipe tRecipe;
+
+            if (tFluids.length <= 2)
+                tRecipe = GT_Recipe.GT_Recipe_Map.sFusionRecipes.findRecipe(this.getBaseMetaTileEntity(), this.mLastRecipe, false, GT_Values.V[8], tFluids);
+            else
+                tRecipe = GT_Recipe.GT_Recipe_Map.sComplexFusionRecipes.findRecipe(this.getBaseMetaTileEntity(), this.mLastRecipe, false, GT_Values.V[8], tFluids);
+
             if ((tRecipe == null && !mRunningOnLoad) || (maxEUStore() < tRecipe.mSpecialValue)) {
                 turnCasingActive(false);
                 this.mLastRecipe = null;

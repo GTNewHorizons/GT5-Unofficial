@@ -26,6 +26,19 @@ public interface IGT_RecipeAdder {
     boolean addFusionReactorRecipe(FluidStack aInput1, FluidStack aInput2, FluidStack aOutput1, int aFusionDurationInTicks, int aFusionEnergyPerTick, int aEnergyNeededForStartingFusion);
 
     /**
+     * Adds a Fusion Reactor Recipe
+     *
+     * @param FluidOutputArray               : Array of input fluids.
+     * @param FluidOutputArray               : Array of output fluids.
+     * @param aFusionDurationInTicks         : How many ticks the Fusion lasts (must be > 0).
+     * @param aFusionEnergyPerTick           : The EU generated per Tick (can even be negative!).
+     * @param aEnergyNeededForStartingFusion : EU needed for heating the Reactor up (must be >= 0).
+     * @return true if the Recipe got added, otherwise false.
+     */
+    boolean addFusionReactorRecipe(FluidStack[] FluidInputArray, FluidStack[] FluidOutputArray, int aFusionDurationInTicks, int aFusionEnergyPerTick, int aEnergyNeededForStartingFusion);
+
+
+    /**
      * Adds a Centrifuge Recipe
      *
      * @param aInput1    must be != null

@@ -34,6 +34,7 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.Range;
 import org.lwjgl.opengl.GL11;
@@ -362,7 +363,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         if (mPower.getDurationTicks() > 0) {
             drawLine(4, GT_Utility.trans("158", "Time: ") + mPower.getDurationString());
         }
-        if (this.mRecipeMap.mNEIName.equals("gt.recipe.fusionreactor")) {
+        if (this.mRecipeMap.mNEIName.equals("gt.recipe.fusionreactor") || this.mRecipeMap.mNEIName.equals("gt.recipe.complexfusionreactor")) {
             drawOptionalLine(5, getSpecialInfo(recipe.mSpecialValue) + " " + formatSpecialValueFusion(recipe.mSpecialValue, recipe.mEUt));
         }
         drawOptionalLine(5, getSpecialInfo(recipe.mSpecialValue));
@@ -1045,30 +1046,68 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                     }
                     tStartIndex++;
             }
-            if ((aRecipe.mFluidInputs.length > 0) && (aRecipe.mFluidInputs[0] != null) && (aRecipe.mFluidInputs[0].getFluid() != null)) {
-                this.mInputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidInputs[0], true), 48, 52));
-                if ((aRecipe.mFluidInputs.length > 1) && (aRecipe.mFluidInputs[1] != null) && (aRecipe.mFluidInputs[1].getFluid() != null)) {
-                    this.mInputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidInputs[1], true), 30, 52));
+
+            // Generates a 4x4 grid of fluid icons if it's a complex fusion recipe.
+            if (GT_Recipe.GT_Recipe_Map.sComplexFusionRecipes == GT_NEI_DefaultHandler.this.mRecipeMap) {
+                // 1234
+                int x_coord = 3;
+                int y_coord = -1;
+
+                int x_max = x_coord + 4 * 18;
+
+                for(FluidStack fluid : aRecipe.mFluidInputs) {
+                    this.mInputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(fluid, true), x_coord, y_coord));
+                    x_coord += 18;
+                    if (x_coord == x_max) {
+                        x_coord = 3;
+                        y_coord += 18;
+                    }
+                }
+
+            } else {
+                if ((aRecipe.mFluidInputs.length > 0) && (aRecipe.mFluidInputs[0] != null) && (aRecipe.mFluidInputs[0].getFluid() != null)) {
+                    this.mInputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidInputs[0], true), 48, 52));
+                    if ((aRecipe.mFluidInputs.length > 1) && (aRecipe.mFluidInputs[1] != null) && (aRecipe.mFluidInputs[1].getFluid() != null)) {
+                        this.mInputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidInputs[1], true), 30, 52));
+                    }
                 }
             }
-            if (aRecipe.mFluidOutputs.length > 1) {
-                if (aRecipe.mFluidOutputs[0] != null && (aRecipe.mFluidOutputs[0].getFluid() != null)) {
-                    this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[0], true), 120, 5));
+
+            if (GT_Recipe.GT_Recipe_Map.sComplexFusionRecipes == GT_NEI_DefaultHandler.this.mRecipeMap) {
+
+                int x_coord = 93;
+                int y_coord = -1;
+
+                int x_max = x_coord + 4 * 18;
+
+                for(FluidStack fluid : aRecipe.mFluidOutputs) {
+                    this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(fluid, true), x_coord, y_coord));
+                    x_coord += 18;
+                    if (x_coord == x_max) {
+                        x_coord = 93;
+                        y_coord += 18;
+                    }
                 }
-                if (aRecipe.mFluidOutputs[1] != null && (aRecipe.mFluidOutputs[1].getFluid() != null)) {
-                    this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[1], true), 138, 5));
+            } else {
+                if (aRecipe.mFluidOutputs.length > 1) {
+                    if (aRecipe.mFluidOutputs[0] != null && (aRecipe.mFluidOutputs[0].getFluid() != null)) {
+                        this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[0], true), 120, 5));
+                    }
+                    if (aRecipe.mFluidOutputs[1] != null && (aRecipe.mFluidOutputs[1].getFluid() != null)) {
+                        this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[1], true), 138, 5));
+                    }
+                    if (aRecipe.mFluidOutputs.length > 2 && aRecipe.mFluidOutputs[2] != null && (aRecipe.mFluidOutputs[2].getFluid() != null)) {
+                        this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[2], true), 102, 23));
+                    }
+                    if (aRecipe.mFluidOutputs.length > 3 && aRecipe.mFluidOutputs[3] != null && (aRecipe.mFluidOutputs[3].getFluid() != null)) {
+                        this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[3], true), 120, 23));
+                    }
+                    if (aRecipe.mFluidOutputs.length > 4 && aRecipe.mFluidOutputs[4] != null && (aRecipe.mFluidOutputs[4].getFluid() != null)) {
+                        this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[4], true), 138, 23));
+                    }
+                } else if ((aRecipe.mFluidOutputs.length > 0) && (aRecipe.mFluidOutputs[0] != null) && (aRecipe.mFluidOutputs[0].getFluid() != null)) {
+                    this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[0], true), 102, 52));
                 }
-                if (aRecipe.mFluidOutputs.length > 2 && aRecipe.mFluidOutputs[2] != null && (aRecipe.mFluidOutputs[2].getFluid() != null)) {
-                    this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[2], true), 102, 23));
-                }
-                if (aRecipe.mFluidOutputs.length > 3 && aRecipe.mFluidOutputs[3] != null && (aRecipe.mFluidOutputs[3].getFluid() != null)) {
-                    this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[3], true), 120, 23));
-                }
-                if (aRecipe.mFluidOutputs.length > 4 && aRecipe.mFluidOutputs[4] != null && (aRecipe.mFluidOutputs[4].getFluid() != null)) {
-                    this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[4], true), 138, 23));
-                }
-            } else if ((aRecipe.mFluidOutputs.length > 0) && (aRecipe.mFluidOutputs[0] != null) && (aRecipe.mFluidOutputs[0].getFluid() != null)) {
-                this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[0], true), 102, 52));
             }
         }
 
