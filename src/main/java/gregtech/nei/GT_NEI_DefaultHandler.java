@@ -20,11 +20,7 @@ import gregtech.api.gui.GT_GUIContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
 import gregtech.api.objects.ItemData;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.*;
 import gregtech.common.power.EUPower;
 import gregtech.common.power.Power;
 import gregtech.common.power.UnspecifiedEUPower;
@@ -64,7 +60,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
     private NEIHandlerAbsoluteTooltip mRecipeNameTooltip;
     private static final int RECIPE_NAME_WIDTH = 140;
 
-     /**
+    /**
      * Static version of {@link TemplateRecipeHandler#cycleticks}.
      * Can be referenced from cached recipes.
      */
@@ -96,10 +92,10 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         List<CachedDefaultRecipe> cache;
         if (cacheHolder.getCachedRecipesVersion() != GT_Mod.gregtechproxy.getReloadCount() || (cache = cacheHolder.getCachedRecipes()) == null) {
             cache = mRecipeMap.mRecipeList.stream()  // do not use parallel stream. This is already parallelized by NEI
-                    .filter(r -> !r.mHidden)
-                    .sorted()
-                    .map(CachedDefaultRecipe::new)
-                    .collect(Collectors.toList());
+                .filter(r -> !r.mHidden)
+                .sorted()
+                .map(CachedDefaultRecipe::new)
+                .collect(Collectors.toList());
             // while the NEI parallelize handlers, for each individual handler it still uses sequential execution model
             // so we do not need any synchronization here
             // even if it does break, at worst case it's just recreating the cache multiple times, which should be fine
@@ -314,7 +310,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
             for (PositionedStack tStack : tRecipe.mInputs) {
                 if (aStack == tStack.item) {
                     if ((gregtech.api.enums.ItemList.Display_Fluid.isStackEqual(tStack.item, true, true)) ||
-                            (tStack.item.stackSize != 0)) {
+                        (tStack.item.stackSize != 0)) {
                         break;
                     }
                     currenttip.add(GT_Utility.trans("151", "Does not get consumed in the process"));
@@ -356,23 +352,38 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
             mPower = getPowerFromRecipeMap();
         }
         mPower.computePowerUsageAndDuration(recipe.mEUt, recipe.mDuration);
+
+        int lineCounter = 0;
         if (mPower.getEuPerTick() > 0) {
-            drawPowerUsageLines();
+            drawLine(lineCounter, GT_Utility.trans("152", "Total: ") + mPower.getTotalPowerString());
+            lineCounter++;
+            drawLine(lineCounter, GT_Utility.trans("153", "Usage: ") + mPower.getPowerUsageString());
+            lineCounter++;
+
+            if ((mPower.getVoltageString() != null) && (mPower.getVoltageString() != "unspecified") && (Integer.parseInt(mPower.getAmperageString()) != 1)) {
+                drawLine(lineCounter, GT_Utility.trans("154", "Voltage: ") + mPower.getVoltageString());
+                lineCounter++;
+            }
+
+            if ((mPower.getAmperageString() != null) && (mPower.getAmperageString() != "unspecified") && (Integer.parseInt(mPower.getAmperageString()) != 1)) {
+                drawLine(lineCounter, GT_Utility.trans("155", "Amperage: ") + mPower.getAmperageString());
+                lineCounter++;
+            }
+
         }
         if (mPower.getDurationTicks() > 0) {
-            drawLine(4, GT_Utility.trans("158", "Time: ") + mPower.getDurationString());
+            if(GT_Mod.gregtechproxy.mNEIRecipeSecondMode) {
+                drawLine(lineCounter, GT_Utility.trans("158", "Time: ") + mPower.getDurationStringSeconds());
+                lineCounter++;
+            } else {
+                drawLine(lineCounter, GT_Utility.trans("158", "Time: ") + mPower.getDurationStringTicks());
+                lineCounter++;
+            }
         }
         if (this.mRecipeMap.mNEIName.equals("gt.recipe.fusionreactor")) {
-            drawOptionalLine(5, getSpecialInfo(recipe.mSpecialValue) + " " + formatSpecialValueFusion(recipe.mSpecialValue, recipe.mEUt));
+            drawOptionalLine(lineCounter, getSpecialInfo(recipe.mSpecialValue) + " " + formatSpecialValueFusion(recipe.mSpecialValue, recipe.mEUt));
         }
-        drawOptionalLine(5, getSpecialInfo(recipe.mSpecialValue));
-    }
-
-    private void drawPowerUsageLines() {
-        drawLine(0, GT_Utility.trans("152", "Total: ") + mPower.getTotalPowerString());
-        drawLine(1, GT_Utility.trans("153", "Usage: ") + mPower.getPowerUsageString());
-        drawOptionalLine(2, mPower.getVoltageString(), GT_Utility.trans("154", "Voltage: "));
-        drawOptionalLine(3, mPower.getAmperageString(), GT_Utility.trans("155", "Amperage: "));
+        drawOptionalLine(lineCounter, getSpecialInfo(recipe.mSpecialValue));
     }
 
     private void drawOverrideDescription(String[] recipeDesc) {
@@ -403,13 +414,13 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
 
     private boolean hasSpecialValueFormat() {
         return (GT_Utility.isStringValid(this.mRecipeMap.mNEISpecialValuePre))
-                || (GT_Utility.isStringValid(this.mRecipeMap.mNEISpecialValuePost));
+            || (GT_Utility.isStringValid(this.mRecipeMap.mNEISpecialValuePost));
     }
 
     private String formatSpecialValue(int SpecialValue) {
         return this.mRecipeMap.mNEISpecialValuePre + GT_Utility.formatNumbers(
-                (long) SpecialValue * this.mRecipeMap.mNEISpecialValueMultiplier)
-                + this.mRecipeMap.mNEISpecialValuePost;
+            (long) SpecialValue * this.mRecipeMap.mNEISpecialValueMultiplier)
+            + this.mRecipeMap.mNEISpecialValuePost;
     }
 
     private String formatSpecialValueFusion(int SpecialValue, int Voltage) {
@@ -436,13 +447,13 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
     }
 
     private void drawOptionalLine(int lineNumber, String line, String prefix) {
-        if (line != null) {
+        if ((line != null) && (line != "unspecified")) {
             drawLine(lineNumber, prefix + line);
         }
     }
 
     private void drawOptionalLine(int lineNumber, String line) {
-        if (line != null) {
+        if ((line != null) && (line != "unspecified")) {
             drawLine(lineNumber, line);
         }
     }
@@ -452,7 +463,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
     }
 
     public static class GT_RectHandler
-            implements IContainerInputHandler, IContainerTooltipHandler {
+        implements IContainerInputHandler, IContainerTooltipHandler {
         @Override
         public boolean mouseClicked(GuiContainer gui, int mousex, int mousey, int button) {
             if (canHandle(gui)) {
@@ -471,8 +482,8 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
 
         private Point getMousePos(GuiContainer gui, int mousex, int mousey) {
             Point point = new Point(
-                    mousex - ((GT_GUIContainer) gui).getLeft() - getGuiOffset(gui)[0],
-                    mousey - ((GT_GUIContainer) gui).getTop() - getGuiOffset(gui)[1]);
+                mousex - ((GT_GUIContainer) gui).getLeft() - getGuiOffset(gui)[0],
+                mousey - ((GT_GUIContainer) gui).getTop() - getGuiOffset(gui)[1]);
             return point;
         }
 
@@ -602,7 +613,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
     }
 
     public class CachedDefaultRecipe
-            extends TemplateRecipeHandler.CachedRecipe {
+        extends TemplateRecipeHandler.CachedRecipe {
         public final GT_Recipe mRecipe;
         public final List<PositionedStack> mOutputs;
         public final List<PositionedStack> mInputs;
