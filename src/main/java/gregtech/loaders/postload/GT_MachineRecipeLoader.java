@@ -716,13 +716,8 @@ public class GT_MachineRecipeLoader implements Runnable {
             2000, 2000000000, 12700);
 
         // -----------------------------------------------------------------------------------------------------------------------------
-//                new FluidStack[]{Materials.Helium.getPlasma(1L), Materials.Iron.getPlasma(1L), Materials.Calcium.getPlasma(1L), Materials.Niobium.getPlasma(1L), Materials.Radon.getPlasma(1L), Materials.Nickel.getPlasma(1L)},
-//        GT_Values.RA.addFusionReactorRecipe(
-//            new FluidStack[]{Materials.Helium.getPlasma(1L), Materials.Iron.getPlasma(1L), Materials.Calcium.getPlasma(1L), Materials.Niobium.getPlasma(1L), Materials.Radon.getPlasma(1L), Materials.Nickel.getPlasma(1L), Materials.Boron.getPlasma(1L), Materials.Sulfur.getPlasma(1L), Materials.Nitrogen.getPlasma(1L), Materials.Zinc.getPlasma(1L), Materials.Silver.getPlasma(1L), Materials.Titanium.getPlasma(1L), Materials.Americium.getPlasma(1L), Materials.Bismuth.getPlasma(1L), Materials.Oxygen.getPlasma(1L), Materials.Tin.getPlasma(1L)},
-//            new FluidStack[]{Materials.DimensionallyTranscendentCrudeCatalyst.getFluid(1L)},
-//            80, 1, 1
-//        );
 
+        // Catalysts for Plasma Forge.
         GT_Values.RA.addFusionReactorRecipe(
             new FluidStack[]{Materials.Helium.getPlasma(10L), Materials.Iron.getPlasma(10L), Materials.Calcium.getPlasma(10L), Materials.Niobium.getPlasma(10L)},
             new FluidStack[]{Materials.DimensionallyTranscendentCrudeCatalyst.getFluid(10L)},
@@ -746,6 +741,8 @@ public class GT_MachineRecipeLoader implements Runnable {
             new FluidStack[]{Materials.DimensionallyTranscendentExoticCatalyst.getFluid(10L)},
             20, 260000, 1200000000
         );
+
+        // -----------------------------------------------------------------------------------------------------------------------------
 
 
         GT_Values.RA.addAssemblerRecipe(new ItemStack(Blocks.redstone_torch, 2, 32767), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L), Materials.Concrete.getMolten(144L), new ItemStack(Items.repeater, 1, 0), 80, 10);
