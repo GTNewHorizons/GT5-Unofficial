@@ -22,7 +22,6 @@ import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import scala.Console;
 
 import java.util.Arrays;
 import java.util.Collections;
