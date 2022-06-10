@@ -377,7 +377,6 @@ public class GT_PreLoad {
         GT_Mod.gregtechproxy.mAxeWhenAdventure = tMainConfig.get(GT_Mod.aTextGeneral, "AdventureModeStartingAxe", true).getBoolean(true);
         GT_Mod.gregtechproxy.mHardcoreCables = tMainConfig.get(GT_Mod.aTextGeneral, "HardCoreCableLoss", false).getBoolean(false);
         GT_Mod.gregtechproxy.mSurvivalIntoAdventure = tMainConfig.get(GT_Mod.aTextGeneral, "forceAdventureMode", false).getBoolean(false);
-        GT_Mod.gregtechproxy.mNEIRecipeSecondMode = tMainConfig.get(GT_Mod.aTextGeneral, "NEI_recipe_second_mode", true).getBoolean(true);
         GT_Mod.gregtechproxy.mHungerEffect = tMainConfig.get(GT_Mod.aTextGeneral, "AFK_Hunger", false).getBoolean(false);
         GT_Mod.gregtechproxy.mHardRock = tMainConfig.get(GT_Mod.aTextGeneral, "harderstone", false).getBoolean(false);
         GT_Mod.gregtechproxy.mInventoryUnification = tMainConfig.get(GT_Mod.aTextGeneral, "InventoryUnification", true).getBoolean(true);
@@ -536,6 +535,8 @@ public class GT_PreLoad {
         GT_Mod.gregtechproxy.mCoverTabsFlipped = GregTech_API.sClientDataFile.get("interface", "FlipCoverTabs", false);
         GT_Mod.gregtechproxy.mTooltipVerbosity = GregTech_API.sClientDataFile.get("interface", "TooltipVerbosity", 2);
         GT_Mod.gregtechproxy.mTooltipShiftVerbosity = GregTech_API.sClientDataFile.get("interface", "TooltipShiftVerbosity", 3);
+        GT_Mod.gregtechproxy.mNEIRecipeSecondMode = GregTech_API.sClientDataFile.get("features", "NEI_recipe_second_mode", true);
+
         final String[] Circuits = GregTech_API.sClientDataFile.get("interface", "CircuitsOrder" );
         GT_Mod.gregtechproxy.mCircuitsOrder.clear();
         for (int i = 0; i < Circuits.length; i++) {

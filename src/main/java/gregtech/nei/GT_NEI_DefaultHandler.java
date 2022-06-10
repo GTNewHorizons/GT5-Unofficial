@@ -14,6 +14,7 @@ import codechicken.nei.recipe.IUsageHandler;
 import codechicken.nei.recipe.RecipeCatalysts;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import gregtech.GT_Mod;
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.gui.GT_GUIContainer;
@@ -358,11 +359,11 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
             drawLine(lineCounter, GT_Utility.trans("152", "Total: ") + mPower.getTotalPowerString());
             lineCounter++;
 
-            if (mPower.getAmperageString().equals("1")) {
-                drawLine(lineCounter, GT_Utility.trans("154", "Voltage: ") + mPower.getVoltageString());
-                lineCounter++;
-            } else if (mPower.getAmperageString().equals("unspecified")){
+            if (mPower.getAmperageString().equals("unspecified") || mPower.getPowerUsageString().contains("(OC)")){
                 drawLine(lineCounter, GT_Utility.trans("153", "Usage: ") + mPower.getPowerUsageString());
+                lineCounter++;
+            } else if (mPower.getAmperageString().equals("1")) {
+                drawLine(lineCounter, GT_Utility.trans("154", "Voltage: ") + mPower.getVoltageString());
                 lineCounter++;
             } else {
                 drawLine(lineCounter, GT_Utility.trans("153", "Usage: ") + mPower.getPowerUsageString());
@@ -450,13 +451,13 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
     }
 
     private void drawOptionalLine(int lineNumber, String line, String prefix) {
-        if (!line.equals("unspecified")) {
+        if ((line != null) && (!line.equals("unspecified"))) {
             drawLine(lineNumber, prefix + line);
         }
     }
 
     private void drawOptionalLine(int lineNumber, String line) {
-        if (!line.equals("unspecified")) {
+        if ((line != null) && (!line.equals("unspecified"))) {
             drawLine(lineNumber, line);
         }
     }
