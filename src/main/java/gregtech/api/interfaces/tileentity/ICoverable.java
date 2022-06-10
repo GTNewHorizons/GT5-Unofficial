@@ -21,8 +21,9 @@ public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEn
             setCoverDataAtSide(aSide, ((ISerializableObject.LegacyCoverData) aData).get());
     }
 
+    void setCoverIdAndDataAtSide(byte aSide, int aId, ISerializableObject aData);
     void setCoverIDAtSide(byte aSide, int aID);
-
+    boolean setCoverIDAtSideNoUpdate(byte aSide, int aID);
     void setCoverItemAtSide(byte aSide, ItemStack aCover);
 
     @Deprecated

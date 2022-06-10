@@ -159,7 +159,7 @@ public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch {
         HashMap<GT_Utility.ItemId, ItemStack> stacks = new HashMap<>(mInventory.length);
         List<GT_Utility.ItemId> order = new ArrayList<>(mInventory.length);
         List<Integer> validSlots = new ArrayList<>(mInventory.length);
-        for (int i = 0; i < mInventory.length - 1; i++) {
+        for (int i = 0; i < mInventory.length; i++) {
             if (!isValidSlot(i))
                 continue;
             validSlots.add(i);

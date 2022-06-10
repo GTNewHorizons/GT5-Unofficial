@@ -1,10 +1,9 @@
 package gregtech.api.util;
 
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreDictNames;
@@ -30,6 +29,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -90,6 +90,7 @@ public class GT_ModHandler {
     public static Collection<String> sNativeRecipeClasses = new HashSet<>(), sSpecialRecipeClasses = new HashSet<>();
     public static GT_HashSet<GT_ItemStack> sNonReplaceableItems = new GT_HashSet<>();
     public static Object sBoxableWrapper = new GT_IBoxableWrapper();
+    public static Collection<GT_ItemStack> sBoxableItems = new ArrayList<>();
     private static final Map<IRecipeInput, RecipeOutput> sExtractorRecipes = new HashMap<>();
     private static final Map<IRecipeInput, RecipeOutput> sMaceratorRecipes = new HashMap<>();
     private static final Map<IRecipeInput, RecipeOutput> sCompressorRecipes = new HashMap<>();
@@ -493,10 +494,10 @@ public class GT_ModHandler {
         boolean temp = false;
         if (aInput.stackSize == 1 && addSmeltingRecipe(aInput, aOutput)) temp = true;
         return (RA.addAlloySmelterRecipe(
-            aInput, 
-            OrePrefixes.ingot.contains(aOutput) ? ItemList.Shape_Mold_Ingot.get(0) : OrePrefixes.block.contains(aOutput) ? ItemList.Shape_Mold_Block.get(0) : OrePrefixes.nugget.contains(aOutput) ? ItemList.Shape_Mold_Nugget.get(0) : null, 
-            aOutput, 
-            130, 
+            aInput,
+            OrePrefixes.ingot.contains(aOutput) ? ItemList.Shape_Mold_Ingot.get(0) : OrePrefixes.block.contains(aOutput) ? ItemList.Shape_Mold_Block.get(0) : OrePrefixes.nugget.contains(aOutput) ? ItemList.Shape_Mold_Nugget.get(0) : null,
+            aOutput,
+            130,
             3,
             hidden
        ));
@@ -579,7 +580,7 @@ public class GT_ModHandler {
         }
         return true;
     }
-    
+
     public static boolean addImmersiveEngineeringRecipe(ItemStack aInput, ItemStack aOutput1, ItemStack aOutput2, int aChance2, ItemStack aOutput3, int aChance3){
     	return true;
     }
@@ -846,22 +847,22 @@ public class GT_ModHandler {
      */
     public static boolean addCraftingRecipe(ItemStack aResult, long aBitMask, Object[] aRecipe) {
         return addCraftingRecipe(
-            aResult, 
-            new Enchantment[0], 
-            new int[0], 
-            (aBitMask & RecipeBits.MIRRORED) != 0, 
-            (aBitMask & RecipeBits.BUFFERED) != 0, 
-            (aBitMask & RecipeBits.KEEPNBT) != 0, 
-            (aBitMask & RecipeBits.DISMANTLEABLE) != 0, 
-            (aBitMask & RecipeBits.NOT_REMOVABLE) == 0, 
-            (aBitMask & RecipeBits.REVERSIBLE) != 0, 
-            (aBitMask & RecipeBits.DELETE_ALL_OTHER_RECIPES) != 0, 
-            (aBitMask & RecipeBits.DELETE_ALL_OTHER_RECIPES_IF_SAME_NBT) != 0, 
-            (aBitMask & RecipeBits.DELETE_ALL_OTHER_SHAPED_RECIPES) != 0, 
-            (aBitMask & RecipeBits.DELETE_ALL_OTHER_NATIVE_RECIPES) != 0, 
-            (aBitMask & RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS) == 0, 
-            (aBitMask & RecipeBits.ONLY_ADD_IF_THERE_IS_ANOTHER_RECIPE_FOR_IT) != 0, 
-            (aBitMask & RecipeBits.ONLY_ADD_IF_RESULT_IS_NOT_NULL) != 0, 
+            aResult,
+            new Enchantment[0],
+            new int[0],
+            (aBitMask & RecipeBits.MIRRORED) != 0,
+            (aBitMask & RecipeBits.BUFFERED) != 0,
+            (aBitMask & RecipeBits.KEEPNBT) != 0,
+            (aBitMask & RecipeBits.DISMANTLEABLE) != 0,
+            (aBitMask & RecipeBits.NOT_REMOVABLE) == 0,
+            (aBitMask & RecipeBits.REVERSIBLE) != 0,
+            (aBitMask & RecipeBits.DELETE_ALL_OTHER_RECIPES) != 0,
+            (aBitMask & RecipeBits.DELETE_ALL_OTHER_RECIPES_IF_SAME_NBT) != 0,
+            (aBitMask & RecipeBits.DELETE_ALL_OTHER_SHAPED_RECIPES) != 0,
+            (aBitMask & RecipeBits.DELETE_ALL_OTHER_NATIVE_RECIPES) != 0,
+            (aBitMask & RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS) == 0,
+            (aBitMask & RecipeBits.ONLY_ADD_IF_THERE_IS_ANOTHER_RECIPE_FOR_IT) != 0,
+            (aBitMask & RecipeBits.ONLY_ADD_IF_RESULT_IS_NOT_NULL) != 0,
             aRecipe);
     }
 
@@ -869,22 +870,22 @@ public class GT_ModHandler {
      * Internal realisation of the Crafting Recipe adding Process.
      */
     private static boolean addCraftingRecipe(
-        ItemStack aResult, 
-        Enchantment[] aEnchantmentsAdded, 
-        int[] aEnchantmentLevelsAdded, 
-        boolean aMirrored, 
-        boolean aBuffered, 
-        boolean aKeepNBT, 
-        boolean aDismantleable, 
-        boolean aRemovable, 
-        boolean aReversible, 
-        boolean aRemoveAllOthersWithSameOutput, 
-        boolean aRemoveAllOthersWithSameOutputIfTheyHaveSameNBT, 
-        boolean aRemoveAllOtherShapedsWithSameOutput, 
-        boolean aRemoveAllOtherNativeRecipes, 
-        boolean aCheckForCollisions, 
-        boolean aOnlyAddIfThereIsAnyRecipeOutputtingThis, 
-        boolean aOnlyAddIfResultIsNotNull, 
+        ItemStack aResult,
+        Enchantment[] aEnchantmentsAdded,
+        int[] aEnchantmentLevelsAdded,
+        boolean aMirrored,
+        boolean aBuffered,
+        boolean aKeepNBT,
+        boolean aDismantleable,
+        boolean aRemovable,
+        boolean aReversible,
+        boolean aRemoveAllOthersWithSameOutput,
+        boolean aRemoveAllOthersWithSameOutputIfTheyHaveSameNBT,
+        boolean aRemoveAllOtherShapedsWithSameOutput,
+        boolean aRemoveAllOtherNativeRecipes,
+        boolean aCheckForCollisions,
+        boolean aOnlyAddIfThereIsAnyRecipeOutputtingThis,
+        boolean aOnlyAddIfResultIsNotNull,
         Object[] aRecipe
     ) {
         aResult = GT_OreDictUnificator.get(true, aResult);
@@ -1083,7 +1084,7 @@ public class GT_ModHandler {
             else
                 removeRecipeByOutputDelayed(aResult);
         }
-        
+
         if (aOnlyAddIfThereIsAnyRecipeOutputtingThis && !tDoWeCareIfThereWasARecipe && !tThereWasARecipe) {
             ArrayList<IRecipe> tList = (ArrayList<IRecipe>) CraftingManager.getInstance().getRecipeList();
             int tList_sS=tList.size();
@@ -1210,7 +1211,7 @@ public class GT_ModHandler {
     public static ItemStack removeRecipe(ItemStack... aRecipe) {
         if (aRecipe == null) return null;
         if (Arrays.stream(aRecipe).noneMatch(Objects::nonNull)) return null;
-        
+
         ItemStack rReturn = null;
         InventoryCrafting aCrafting = new InventoryCrafting(new Container() {
             @Override
@@ -1239,7 +1240,7 @@ public class GT_ModHandler {
             removeRecipe(aRecipe);
             return;
         }
-        
+
         if (aRecipe == null) return;
         if (Arrays.stream(aRecipe).noneMatch(Objects::nonNull)) return;
 
@@ -1257,7 +1258,7 @@ public class GT_ModHandler {
     public static void bulkRemoveByRecipe(List<InventoryCrafting> toRemove) {
         ArrayList<IRecipe> tList = (ArrayList<IRecipe>) CraftingManager.getInstance().getRecipeList();
         GT_FML_LOGGER.info("BulkRemoveByRecipe: tList: " + tList.size() + " toRemove: " + toRemove.size() );
-        
+
         Set<IRecipe> tListToRemove = tList.parallelStream().filter(tRecipe -> {
             if ((tRecipe instanceof IGT_CraftingRecipe) && !((IGT_CraftingRecipe) tRecipe).isRemovable()) return false;
             return toRemove.stream().anyMatch(aCrafting -> tRecipe.matches(aCrafting, DW));
@@ -1272,7 +1273,7 @@ public class GT_ModHandler {
         else
             return removeRecipeByOutput(aOutput);
     }
-    
+
     public static boolean removeRecipeByOutputDelayed (ItemStack aOutput, boolean aIgnoreNBT, boolean aNotRemoveShapelessRecipes, boolean aOnlyRemoveNativeHandlers) {
         if (sBufferCraftingRecipes && (aIgnoreNBT && !aNotRemoveShapelessRecipes && !aOnlyRemoveNativeHandlers))
             // Too lazy to handle deferred versions of the parameters that aren't used very often
@@ -1280,7 +1281,7 @@ public class GT_ModHandler {
         else
             return removeRecipeByOutput(aOutput, aIgnoreNBT, aNotRemoveShapelessRecipes, aOnlyRemoveNativeHandlers);
     }
-    
+
     public static boolean removeRecipeByOutput(ItemStack aOutput) {
         return removeRecipeByOutput(aOutput, true, false, false);
     }
@@ -1308,7 +1309,7 @@ public class GT_ModHandler {
             }
             ItemStack tStack = tRecipe.getRecipeOutput();
             if (
-                    (!(tRecipe instanceof IGT_CraftingRecipe) || ((IGT_CraftingRecipe) tRecipe).isRemovable()) 
+                    (!(tRecipe instanceof IGT_CraftingRecipe) || ((IGT_CraftingRecipe) tRecipe).isRemovable())
                   && GT_Utility.areStacksEqual(GT_OreDictUnificator.get(tStack), aOutput, aIgnoreNBT)
             ) {
                 tList.remove(i--); tList_sS=tList.size();
@@ -1322,20 +1323,20 @@ public class GT_ModHandler {
         ArrayList<IRecipe> tList = (ArrayList<IRecipe>) CraftingManager.getInstance().getRecipeList();
 
         Set<ItemStack> setToRemove = toRemove.parallelStream().map(GT_OreDictUnificator::get_nocopy).collect(Collectors.toSet());
-        
+
         GT_FML_LOGGER.info("BulkRemoveRecipeByOutput: tList: " + tList.size() + " setToRemove: " + setToRemove.size() );
-        
+
         Set<IRecipe> tListToRemove = tList.parallelStream().filter(tRecipe -> {
             if ((tRecipe instanceof IGT_CraftingRecipe) && !((IGT_CraftingRecipe) tRecipe).isRemovable()) return false;
             if (sSpecialRecipeClasses.contains(tRecipe.getClass().getName())) return false;
             final ItemStack tStack = GT_OreDictUnificator.get_nocopy(tRecipe.getRecipeOutput());
             return setToRemove.stream().anyMatch(aOutput -> GT_Utility.areStacksEqual(tStack, aOutput, true));
         }).collect(Collectors.toSet());
-        
+
         tList.removeIf(tListToRemove::contains);
         return true;
     }
-    
+
     /**
      * Checks all Crafting Handlers for Recipe Output
      * Used for the Autocrafting Table
@@ -1407,15 +1408,15 @@ public class GT_ModHandler {
     public static ItemStack getRecipeOutput(ItemStack... aRecipe) {
         return getRecipeOutput(false, true, aRecipe);
     }
-    
+
     public static ItemStack getRecipeOutputNoOreDict(ItemStack... aRecipe) {
         return getRecipeOutput(false,false, aRecipe);
     }
-    
+
     public static ItemStack getRecipeOutput(boolean aUncopiedStack, ItemStack... aRecipe) {
         return getRecipeOutput(aUncopiedStack, true, aRecipe);
     }
-    
+
     /**
      * Gives you a copy of the Output from a Crafting Recipe
      * Used for Recipe Detection.
@@ -1433,11 +1434,11 @@ public class GT_ModHandler {
         for (int i = 0; i < 9 && i < aRecipe.length; i++) aCrafting.setInventorySlotContents(i, aRecipe[i]);
         ArrayList<IRecipe> tList = (ArrayList<IRecipe>) CraftingManager.getInstance().getRecipeList();
         boolean found = false;
-        
+
         for (IRecipe iRecipe : tList) {
             found = false;
             if (!allowOreDict && iRecipe instanceof ShapedOreRecipe) continue;
-            
+
             try {
                 found = iRecipe.matches(aCrafting, DW);
             } catch (Throwable e) {
@@ -1828,16 +1829,17 @@ public class GT_ModHandler {
     }
 
     /**
-     * Uses a Soldering Iron
+     * Uses a Soldering Iron from player or external inventory
      */
-    public static boolean useSolderingIron(ItemStack aStack, EntityLivingBase aPlayer) {
+    public static boolean useSolderingIron(ItemStack aStack, EntityLivingBase aPlayer, IInventory aExternalInventory) {
         if (aPlayer == null || aStack == null) return false;
         if (GT_Utility.isStackInList(aStack, GregTech_API.sSolderingToolList)) {
             if (aPlayer instanceof EntityPlayer) {
                 EntityPlayer tPlayer = (EntityPlayer) aPlayer;
                 if (tPlayer.capabilities.isCreativeMode) return true;
                 if (isElectricItem(aStack) && ic2.api.item.ElectricItem.manager.getCharge(aStack) > 1000.0d) {
-                    if (consumeSolderingMaterial(tPlayer)) {
+                    if (consumeSolderingMaterial(tPlayer)
+                        || (aExternalInventory != null && consumeSolderingMaterial(aExternalInventory))) {
                     	if (canUseElectricItem(aStack, 10000)) {
                             return GT_ModHandler.useElectricItem(aStack, 10000, (EntityPlayer) aPlayer);
                         }
@@ -1853,24 +1855,40 @@ public class GT_ModHandler {
         return false;
     }
 
-    /**
-     * Simply consumes some soldering material
-     */
+    public static boolean useSolderingIron(ItemStack aStack, EntityLivingBase aPlayer) {
+        return useSolderingIron(aStack, aPlayer, null);
+    }
+
     public static boolean consumeSolderingMaterial(EntityPlayer aPlayer) {
     	if (aPlayer.capabilities.isCreativeMode) return true;
-        for (int i = 0; i < aPlayer.inventory.mainInventory.length; i++) {
-            if (GT_Utility.isStackInList(aPlayer.inventory.mainInventory[i], GregTech_API.sSolderingMetalList)) {
-                if (aPlayer.inventory.mainInventory[i].stackSize < 1) return false;
-                if (aPlayer.inventory.mainInventory[i].stackSize == 1) {
-                    aPlayer.inventory.mainInventory[i] = null;
+        if (consumeSolderingMaterial(aPlayer.inventory)) {
+            if (aPlayer.inventoryContainer != null) {
+                aPlayer.inventoryContainer.detectAndSendChanges();
+            }
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Consumes soldering material from given inventory
+     */
+    public static boolean consumeSolderingMaterial(IInventory aInventory) {
+        for (int i = 0; i < aInventory.getSizeInventory(); i++) {
+            ItemStack tStack = aInventory.getStackInSlot(i);
+            if (GT_Utility.isStackInList(tStack, GregTech_API.sSolderingMetalList)) {
+                if (tStack.stackSize < 1) return false;
+                if (tStack.stackSize == 1) {
+                    tStack = null;
                 } else {
-                    aPlayer.inventory.mainInventory[i].stackSize--;
+                    tStack.stackSize--;
                 }
-                if (aPlayer.inventoryContainer != null) aPlayer.inventoryContainer.detectAndSendChanges();
+                aInventory.setInventorySlotContents(i, tStack);
+                aInventory.markDirty();
                 return true;
             }
         }
-    	return false;
+        return false;
     }
 
     /**
@@ -1902,16 +1920,21 @@ public class GT_ModHandler {
         return false;
     }
 
+    /**
+     * Allow item to be inserted into ic2 toolbox
+     */
     public static void registerBoxableItemToToolBox(ItemStack aStack) {
-        if (aStack != null) registerBoxableItemToToolBox(aStack.getItem());
+        if (aStack != null) {
+            try {
+                ic2.api.item.ItemWrapper.registerBoxable(aStack.getItem(), (IBoxable) sBoxableWrapper);
+            } catch (Throwable ignored) {/*Do nothing*/}
+            sBoxableItems.add(new GT_ItemStack(aStack));
+        }
     }
 
+    @Deprecated
     public static void registerBoxableItemToToolBox(Item aItem) {
-        if (aItem != null && sBoxableWrapper != null) {
-            try {
-                ic2.api.item.ItemWrapper.registerBoxable(aItem, (IBoxable) sBoxableWrapper);
-            } catch (Throwable e) {/*Do nothing*/}
-        }
+        registerBoxableItemToToolBox(new ItemStack(aItem, 1, GT_Values.W));
     }
 
     public static int getCapsuleCellContainerCountMultipliedWithStackSize(ItemStack... aStacks) {

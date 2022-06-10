@@ -72,9 +72,14 @@ public class GT_GUIContainer_OutputHatch extends GT_GUIContainerMetaTile_Machine
     public boolean handleDragNDrop(GuiContainer gui, int mousex, int mousey, ItemStack draggedStack, int button) {
         if (gui instanceof GT_GUIContainer_OutputHatch && ((GT_GUIContainer_OutputHatch) gui).isMouseOverSlot(3, mousex, mousey)) {
             // the instanceof check should be unnecessary, but we will do it regardless, just in case.
-            FluidStack tFluidStack = GT_Utility.getFluidForFilledItem(draggedStack, true);
+            FluidStack tFluidStack;
+            tFluidStack = GT_Utility.getFluidForFilledItem(draggedStack, true);
+            if (tFluidStack == null) {
+                tFluidStack = GT_Utility.getFluidFromDisplayStack(draggedStack);
+            }
             if (tFluidStack != null) {
                 GT_Values.NW.sendToServer(new GT_Packet_SetLockedFluid(((GT_GUIContainer_OutputHatch) gui).mContainer.mTileEntity, tFluidStack));
+                draggedStack.stackSize = 0;
                 return true;
             }
         }

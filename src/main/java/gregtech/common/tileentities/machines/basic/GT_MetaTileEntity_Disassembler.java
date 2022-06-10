@@ -16,10 +16,12 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachi
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.extensions.ArrayExt;
+import ic2.api.item.IC2Items;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -31,6 +33,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static gregtech.api.enums.GT_Values.MOD_ID_RC;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
 public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachine {
@@ -143,6 +146,11 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
         blackList.add(new GT_ItemStack(ItemList.Casing_Coil_Superconductor.get(1L)));
         blackList.add(new GT_ItemStack(Materials.Graphene.getDust(1)));
         blackList.add(new GT_ItemStack(ItemList.Circuit_Parts_Vacuum_Tube.get(1L)));
+        blackList.add(new GT_ItemStack(ItemList.Schematic.get(1L)));
+        blackList.add(new GT_ItemStack(GT_ModHandler.getModItem(MOD_ID_RC, "track", 1L, 0)));
+        blackList.add(new GT_ItemStack(GT_ModHandler.getModItem(MOD_ID_RC, "track", 1L, 736)));
+        blackList.add(new GT_ItemStack(GT_ModHandler.getModItem(MOD_ID_RC, "track", 1L, 816)));
+        blackList.add(new GT_ItemStack(IC2Items.getItem("mixedMetalIngot")));
     }
 
     private boolean compareToUnpacker(ItemStack is){
@@ -164,7 +172,7 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
 
         if (
                 is.getItem() instanceof GT_MetaGenerated_Tool
-                || blackList.stream().anyMatch(t -> t.isStackEqual(is))
+                || blackList.stream().anyMatch(t -> GT_Utility.areStacksEqual(t.toStack(), is, true))
                 || compareToUnpacker(is)
         )
             return DID_NOT_FIND_RECIPE;
@@ -202,11 +210,11 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
     }
 
     private int process(){
-        int statusCode = checkRecipeMap();
+        int statusCode = onTheFlyGeneration();
         if (statusCode != DID_NOT_FIND_RECIPE)
             return statusCode;
 
-        return onTheFlyGeneration();
+        return checkRecipeMap();
     }
 
     private int onTheFlyGeneration() {
@@ -359,7 +367,7 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
     }
 
     private static ItemStack handleWildcard(ItemStack stack) {
-        if (stack.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
+        if (stack.getItemDamage() == OreDictionary.WILDCARD_VALUE && !stack.getItem().isDamageable()) {
             stack.setItemDamage(0);
         }
         return stack;
@@ -537,7 +545,7 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
         fluidOutputValueRaw = fluidOutputValueRaw > 0 ? fluidOutputValueRaw : 144D;
         double outputValue = Arrays.stream(x.recipe.mOutputs).flatMapToInt(f -> IntStream.of(f.stackSize)).sum() +
                 (fluidOutputValueRaw / 144D);
-        return inputValue / outputValue;
+        return outputValue / inputValue;
     }
 
     @Override

@@ -287,7 +287,7 @@ public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine impl
     @Override
     public boolean pushOutputs(ItemStack stack, int count, boolean simulate, boolean allowInputSlots) {
         return allowInputSlots && pushOutput(getInputSlot(), getInputSlot() + mInputSlotCount, stack, count, simulate) ||
-            pushOutput(getOutputSlot(), mOutputItems.length, stack, count, simulate);
+            pushOutput(getOutputSlot(), getOutputSlot() + mOutputItems.length, stack, count, simulate);
     }
 
     private boolean pushOutput(int startIndex, int endIndex, ItemStack stack, int count, boolean simulate) {
