@@ -5,34 +5,24 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.HeatingCoilLevel;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.objects.GT_ChunkManager;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraftforge.fluids.FluidStack;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.ArrayList;
-import java.util.Collection;
 
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
@@ -44,7 +34,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAS
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GT_StructureUtility.ofCoil;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 
 
@@ -55,6 +44,8 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
     protected static final int NULL_CASING = 12;
     protected static final int USEFUL_CASING = 13;
     protected static final int DIM_CASING = 14;
+
+    private boolean isMultiChunkloaded = true;
 
     protected static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<GT_MetaTileEntity_PlasmaForge> STRUCTURE_DEFINITION = StructureDefinition.<GT_MetaTileEntity_PlasmaForge>builder()
@@ -289,6 +280,33 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
             "----------------------------------------------"
 
         };
+    }
+
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        if (aBaseMetaTileEntity.isServerSide() && !aBaseMetaTileEntity.isAllowedToWork()) {
+            // If machine has stopped, stop chunkloading.
+            GT_ChunkManager.releaseTicket((TileEntity) aBaseMetaTileEntity);
+            isMultiChunkloaded = false;
+        } else if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.isAllowedToWork() && !isMultiChunkloaded) {
+            // Load a 3x3 area centered on controller when machine is running.
+            GT_ChunkManager.releaseTicket((TileEntity) aBaseMetaTileEntity);
+
+            int ControllerXCoordinate = ((TileEntity) aBaseMetaTileEntity).xCoord;
+            int ControllerZCoordinate = ((TileEntity) aBaseMetaTileEntity).zCoord;
+
+            GT_ChunkManager.requestChunkLoad((TileEntity) aBaseMetaTileEntity, new ChunkCoordIntPair(ControllerXCoordinate, ControllerZCoordinate));
+            GT_ChunkManager.requestChunkLoad((TileEntity) aBaseMetaTileEntity, new ChunkCoordIntPair(ControllerXCoordinate + 16, ControllerZCoordinate));
+            GT_ChunkManager.requestChunkLoad((TileEntity) aBaseMetaTileEntity, new ChunkCoordIntPair(ControllerXCoordinate - 16, ControllerZCoordinate));
+            GT_ChunkManager.requestChunkLoad((TileEntity) aBaseMetaTileEntity, new ChunkCoordIntPair(ControllerXCoordinate, ControllerZCoordinate + 16));
+            GT_ChunkManager.requestChunkLoad((TileEntity) aBaseMetaTileEntity, new ChunkCoordIntPair(ControllerXCoordinate, ControllerZCoordinate - 16));
+            GT_ChunkManager.requestChunkLoad((TileEntity) aBaseMetaTileEntity, new ChunkCoordIntPair(ControllerXCoordinate + 16, ControllerZCoordinate + 16));
+            GT_ChunkManager.requestChunkLoad((TileEntity) aBaseMetaTileEntity, new ChunkCoordIntPair(ControllerXCoordinate + 16, ControllerZCoordinate - 16));
+            GT_ChunkManager.requestChunkLoad((TileEntity) aBaseMetaTileEntity, new ChunkCoordIntPair(ControllerXCoordinate - 16, ControllerZCoordinate + 16));
+            GT_ChunkManager.requestChunkLoad((TileEntity) aBaseMetaTileEntity, new ChunkCoordIntPair(ControllerXCoordinate - 16, ControllerZCoordinate - 16));
+
+            isMultiChunkloaded = true;
+        }
+        super.onPostTick(aBaseMetaTileEntity, aTick);
     }
 
     @Override
