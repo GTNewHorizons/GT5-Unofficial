@@ -34,8 +34,12 @@ public abstract class Power {
         return 0.05d * getDurationTicks();
     }
 
-    public String getDurationString() {
+    public String getDurationStringSeconds() {
         return GT_Utility.formatNumbers(getDurationSeconds()) + GT_Utility.trans("161", " secs");
+    }
+
+    public String getDurationStringTicks() {
+        return GT_Utility.formatNumbers(getDurationTicks()) + GT_Utility.trans("224", " ticks");
     }
 
     public abstract String getTotalPowerString();

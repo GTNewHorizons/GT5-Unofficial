@@ -58,6 +58,7 @@ public abstract class GT_MetaTileEntity_LargeTurbine extends GT_MetaTileEntity_E
     protected int storedFluid = 0;
     protected int counter = 0;
     protected boolean looseFit = false;
+    protected int overflowMultiplier = 0;
 
     public GT_MetaTileEntity_LargeTurbine(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -116,6 +117,7 @@ public abstract class GT_MetaTileEntity_LargeTurbine extends GT_MetaTileEntity_E
         }
         ArrayList<FluidStack> tFluids = getStoredFluids();
         if (tFluids.size() > 0) {
+
             if (baseEff == 0 || optFlow == 0 || counter >= 512 || this.getBaseMetaTileEntity().hasWorkJustBeenEnabled()
                     || this.getBaseMetaTileEntity().hasInventoryBeenModified()) {
                 counter = 0;
@@ -124,6 +126,18 @@ public abstract class GT_MetaTileEntity_LargeTurbine extends GT_MetaTileEntity_E
                         ((GT_MetaGenerated_Tool) aStack.getItem()).getToolStats(aStack).getSpeedMultiplier()
                                 * GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mToolSpeed
                                 * 50));
+
+                int toolQualityLevel = GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mToolQuality;
+                if (toolQualityLevel >= 6) {
+                    overflowMultiplier = 3;
+                }
+                else if (toolQualityLevel >= 3) {
+                    overflowMultiplier = 2;
+                }
+                else {
+                    overflowMultiplier = 1;
+                }
+
                 if(optFlow<=0 || baseEff<=0){
                     stopMachine();//in case the turbine got removed
                     return false;
@@ -133,7 +147,7 @@ public abstract class GT_MetaTileEntity_LargeTurbine extends GT_MetaTileEntity_E
             }
         }
 
-        int newPower = fluidIntoPower(tFluids, optFlow, baseEff);  // How much the turbine should be producing with this flow
+        int newPower = fluidIntoPower(tFluids, optFlow, baseEff, overflowMultiplier);  // How much the turbine should be producing with this flow
         int difference = newPower - this.mEUt; // difference between current output and new output
 
         // Magic numbers: can always change by at least 10 eu/t, but otherwise by at most 1 percent of the difference in power level (per tick)
@@ -159,7 +173,21 @@ public abstract class GT_MetaTileEntity_LargeTurbine extends GT_MetaTileEntity_E
         }
     }
 
-    abstract int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow, int aBaseEff);
+    abstract int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow, int aBaseEff, int overflowMultiplier);
+
+    abstract float getOverflowEfficiency(int totalFlow, int actualOptimalFlow, int overflowMultiplier);
+
+    // Gets the maximum output that the turbine currently can handle. Going above this will cause the turbine to explode
+    public long getMaximumOutput() {
+        long aTotal = 0;
+        for (GT_MetaTileEntity_Hatch_Dynamo aDynamo : mDynamoHatches) {
+            if (isValidMetaTileEntity(aDynamo)) {
+                long aVoltage = aDynamo.maxEUOutput();
+                aTotal = aDynamo.maxAmperesOut() * aVoltage;
+            }
+        }
+        return aTotal;
+    }
 
     @Override
     public int getDamageToComponent(ItemStack aStack) {

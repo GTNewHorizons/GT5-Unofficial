@@ -127,8 +127,8 @@ GT5U.machines.stalled_stuttering.tooltip.3=§7the recipe to complete it.
 GT5U.machines.stalled_stuttering.tooltip.extended=§7Progress was lost, but not
 GT5U.machines.stalled_stuttering.tooltip.extended.1=§7the recipe's output.
 GT5U.machines.stalled_vent.tooltip=§4Stalled: Cannot vent steam!
-GT5U.machines.stalled_vent.tooltip.1=§7Right-click with a wrench to 
-GT5U.machines.stalled_vent.tooltip.2=§7point this machine's steam 
+GT5U.machines.stalled_vent.tooltip.1=§7Right-click with a wrench to
+GT5U.machines.stalled_vent.tooltip.2=§7point this machine's steam
 GT5U.machines.stalled_vent.tooltip.3=§7vent towards an empty space.
 GT5U.machines.stalled_vent.tooltip.extended=§7Progress was lost, but not
 GT5U.machines.stalled_vent.tooltip.extended.1=§7the recipe's output.
@@ -202,6 +202,7 @@ GT5U.config.render.RenderFlippedMachinesFlipped=Render flipped machines with fli
 GT5U.config.render.RenderIndicatorsOnHatch=Render indicator on hatch
 GT5U.config.render.RenderPollutionFog=Render pollution fog
 GT5U.config.render.TileAmbientOcclusion=Enable Ambient Occlusion
+GT5U.config.feature.NEI_recipe_second_mode=Show NEI recipes using seconds (as opposed to ticks).
 
 // Cover tabs
 GT5U.interface.coverTabs.down=Bottom
@@ -807,7 +808,7 @@ gregtech.areaLethargic=Lethargic
 gregtech.areaExploratory=Exploratory
 gregtech.speedUnproductive=Unproductive
 gregtech.speedAccelerated=Accelerated
-gregtech.lifeBlink=Blink 
+gregtech.lifeBlink=Blink
 gregtech.lifeEon=Eon
 
 entity.gregtech.GT_Entity_Arrow.name= a GregTech arrow
