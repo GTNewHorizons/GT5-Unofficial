@@ -2,6 +2,11 @@ package gtPlusPlus.xmod.railcraft;
 
 import static gtPlusPlus.core.creative.AddToCreativeTab.tabMisc;
 
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.base.BaseItemBurnable;
 import gtPlusPlus.core.lib.CORE;
@@ -67,8 +72,23 @@ public class HANDLER_Railcraft {
 				ItemUtils.getSimpleStack(ModItems.itemSugarCoke)
 				};
 		for (int i=0;i<aOutputs.length;i++) {
-			CORE.RA.addCokeOvenRecipe(aInputs1[i], CI.getNumberedCircuit(3), null, FluidUtils.getFluidStack("creosote", 30), aInputs2[i], 125, 16);			
-			CORE.RA.addCokeOvenRecipe(aInputs2[i], CI.getNumberedCircuit(4), null, FluidUtils.getFluidStack("creosote", 30), aOutputs[i], 125, 16);			
+			// Recipes for the Charcoals and Cokes, outputting either Creosote or Charcoal Byproducts depending on the fluid input
+			CORE.RA.addCokeOvenRecipe(aInputs1[i], CI.getNumberedCircuit(3), null, FluidUtils.getFluidStack("creosote", 100), aInputs2[i], 20, 16);
+			CORE.RA.addCokeOvenRecipe(aInputs1[i], CI.getNumberedCircuit(4), FluidUtils.getFluidStack("nitrogen", 100), FluidUtils.getFluidStack("charcoal_byproducts", 200), aInputs2[i], 10, 16);
+			CORE.RA.addCokeOvenRecipe(aInputs2[i], CI.getNumberedCircuit(3), null, FluidUtils.getFluidStack("creosote", 200), aOutputs[i], 40, 16);
+			CORE.RA.addCokeOvenRecipe(aInputs2[i], CI.getNumberedCircuit(4), FluidUtils.getFluidStack("nitrogen", 50), FluidUtils.getFluidStack("charcoal_byproducts", 100), aOutputs[i], 20, 16);
+
+			// Generate Wood Tar and Wood Gas from these Cokes
+			CORE.RA.addCokeOvenRecipe(aOutputs[i], CI.getNumberedCircuit(5), FluidUtils.getFluidStack("steam", 100), Materials.WoodTar.getFluid(200) , Materials.Ash.getDustSmall(1), 60, 240);
+			CORE.RA.addCokeOvenRecipe(aOutputs[i], CI.getNumberedCircuit(6), FluidUtils.getFluidStack("steam", 100), Materials.WoodGas.getFluid(300) , Materials.Ash.getDustSmall(1), 60, 240);
+
+			// Fluid Extracting the Charcoals for Wood Tar
+			GT_Values.RA.addFluidExtractionRecipe(aInputs2[i], GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 1L), Materials.WoodTar.getFluid(50L), 1000, 30, 16);
+
+			// Processing the Charcoals with Oxygen to get CO and CO2
+			GT_Values.RA.addChemicalRecipe(aInputs2[i], GT_Utility.getIntegratedCircuit(1), Materials.Oxygen.getGas(500), Materials.CarbonMonoxide.getGas(500), Materials.Ash.getDustTiny(1), 80, 8);
+			GT_Values.RA.addChemicalRecipe(aInputs2[i], GT_Utility.getIntegratedCircuit(2), Materials.Oxygen.getGas(1000), Materials.CarbonDioxide.getGas(1000), Materials.Ash.getDustTiny(1), 40, 8);
+
 		}
 		if (LoadedMods.Railcraft) {		
 			for (int i=0;i<aOutputs.length;i++) {
