@@ -133,6 +133,7 @@ GT5U.machines.stalled_vent.tooltip.3=§7vent towards an empty space.
 GT5U.machines.stalled_vent.tooltip.extended=§7Progress was lost, but not
 GT5U.machines.stalled_vent.tooltip.extended.1=§7the recipe's output.
 GT5U.machines.oreprocessor=§eRunning Mode: §b%s
+GT5U.machines.oreprocessor.void=§eVoid Stone Dust: §b%s
 
 GT5U.recipe_filter.representation_slot.tooltip=Click with a machine to set filter
 

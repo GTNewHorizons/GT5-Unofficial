@@ -41,6 +41,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends GT_MetaTileEntity_En
     private static final String WASH = "Ore Washer";
     private static final String THERMAL = "Thermal Centrifuge";
     private static final String CENTRIFUGE = "Centrifuge";
+    private static final String SIFTER = "Sifter";
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<GT_MetaTileEntity_IntegratedOreFactory> STRUCTURE_DEFINITION = StructureDefinition.<GT_MetaTileEntity_IntegratedOreFactory>builder()
         .addShape(STRUCTURE_PIECE_MAIN, transpose(new String[][]{
@@ -77,6 +78,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends GT_MetaTileEntity_En
     private static final HashSet<Integer> isOre = new HashSet<>();
     private ItemStack[] sMidProduct;
     private int sMode = 0;
+    private boolean sVoidStone = false;
 
     static {
         for (String name : OreDictionary.getOreNames()) {
@@ -171,10 +173,11 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends GT_MetaTileEntity_En
         tt.addMachineType("Ore Processor")
             .addInfo("Controller Block for the Integrated Ore Factory")
             .addInfo("It is OP. I mean ore processor.")
-            .addInfo("Do crush/ore wash/centrifuge/thermal centrifuge in one step.")
+            .addInfo("Do crush/ore wash/centrifuge/thermal centrifuge/sifter in one step.")
             .addInfo("Can process up to 1024 ores per time.")
             .addInfo("Every ore costs 30EU/t * 90s (can be overclocked), 2L lubricant, 200L distilled water.")
             .addInfo("Use a screwdriver to switch mode.")
+            .addInfo("Sneak click with screwdriver to void the stone dusts.")
             .addSeparator()
             .beginStructureBlock(6, 12, 11, false)
             .addController("The third layer")
@@ -275,8 +278,8 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends GT_MetaTileEntity_En
                 break;
             case 3:
                 doMac();
-                doThermal();
-                doMac();
+                doWash();
+                doSift();
                 break;
             default:
                 return false;
@@ -296,13 +299,18 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends GT_MetaTileEntity_En
 
     @Override
     public final void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        if (aPlayer.isSneaking()) {
+            sVoidStone = !sVoidStone;
+            GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.void", sVoidStone));
+            return;
+        }
         sMode = (sMode + 1) % 4;
         String des;
         switch (sMode) {
-            case 0: des = CRUSH + ", " + WASH + ", " + THERMAL + ", " + CRUSH;break;
-            case 1: des = CRUSH + ", " + WASH + ", " + CRUSH + ", " + CENTRIFUGE;break;
-            case 2: des = CRUSH + ", " + CRUSH + ", " + CENTRIFUGE;break;
-            case 3: des = CRUSH + ", " + THERMAL + ", " + CRUSH;break;
+            case 0: des = CRUSH + ", " + WASH + ", " + THERMAL + ", " + CRUSH; break;
+            case 1: des = CRUSH + ", " + WASH + ", " + CRUSH + ", " + CENTRIFUGE; break;
+            case 2: des = CRUSH + ", " + CRUSH + ", " + CENTRIFUGE; break;
+            case 3: des = CRUSH + ", " + WASH + ", " + SIFTER; break;
             default: des = "";
         }
         GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor", des));
@@ -401,6 +409,26 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends GT_MetaTileEntity_En
         doCompress(tProduct);
     }
 
+    private void doSift() {
+        List<ItemStack> tProduct = new ArrayList<>();
+        if (sMidProduct != null) {
+            for (ItemStack aStack : sMidProduct) {
+                int tID = GT_Utility.stackToInt(aStack);
+                if (isCrushedPureOre.contains(tID)) {
+                    GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sSifterRecipes.findRecipe(getBaseMetaTileEntity(), false, GT_Values.V[15], null, aStack);
+                    if (tRecipe != null) {
+                        tProduct.addAll(getOutputStack(tRecipe, aStack.stackSize));
+                    } else {
+                        tProduct.add(aStack);
+                    }
+                } else {
+                    tProduct.add(aStack);
+                }
+            }
+        }
+        doCompress(tProduct);
+    }
+
     private List<ItemStack> getOutputStack(GT_Recipe aRecipe, int aTime) {
         List<ItemStack> tOutput = new ArrayList<>();
         for (int i = 0; i < aRecipe.mOutputs.length; i ++) {
@@ -423,6 +451,11 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends GT_MetaTileEntity_En
         HashMap<Integer, Integer> rProduct = new HashMap<>();
         for (ItemStack stack : aList) {
             int tID = GT_Utility.stackToInt(stack);
+            if (sVoidStone) {
+                if (GT_Utility.areStacksEqual(Materials.Stone.getDust(1), stack)) {
+                    continue;
+                }
+            }
             if (tID != 0) {
                 if (rProduct.containsKey(tID)) {
                     rProduct.put(tID, rProduct.get(tID) + stack.stackSize);
