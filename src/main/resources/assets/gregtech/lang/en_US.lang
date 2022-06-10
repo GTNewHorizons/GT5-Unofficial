@@ -202,7 +202,7 @@ GT5U.config.render.RenderFlippedMachinesFlipped=Render flipped machines with fli
 GT5U.config.render.RenderIndicatorsOnHatch=Render indicator on hatch
 GT5U.config.render.RenderPollutionFog=Render pollution fog
 GT5U.config.render.TileAmbientOcclusion=Enable Ambient Occlusion
-GT5U.config.feature.NEI_recipe_second_mode=If true NEI will display GT recipes using seconds, if false it will use ticks.
+GT5U.config.feature.NEI_recipe_second_mode=Show NEI recipes using seconds (as opposed to ticks).
 
 // Cover tabs
 GT5U.interface.coverTabs.down=Bottom
