@@ -307,10 +307,10 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends GT_MetaTileEntity_En
         sMode = (sMode + 1) % 4;
         String des;
         switch (sMode) {
-            case 0: des = CRUSH + ", " + WASH + ", " + THERMAL + ", " + CRUSH; break;
-            case 1: des = CRUSH + ", " + WASH + ", " + CRUSH + ", " + CENTRIFUGE; break;
-            case 2: des = CRUSH + ", " + CRUSH + ", " + CENTRIFUGE; break;
-            case 3: des = CRUSH + ", " + WASH + ", " + SIFTER; break;
+            case 0: des = CRUSH + "->" + WASH + "->" + THERMAL + "->" + CRUSH; break;
+            case 1: des = CRUSH + "->" + WASH + "->" + CRUSH + "->" + CENTRIFUGE; break;
+            case 2: des = CRUSH + "->" + CRUSH + "->" + CENTRIFUGE; break;
+            case 3: des = CRUSH + "->" + WASH + "->" + SIFTER; break;
             default: des = "";
         }
         GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor", des));
