@@ -251,7 +251,7 @@ public abstract class GT_MetaTileEntity_LargeBoiler extends GT_MetaTileEntity_En
                 for (ItemStack tInput : tInputList) {
                     if (tInput != GT_OreDictUnificator.get(OrePrefixes.bucket, Materials.Lava, 1)){
                         // Solid fuels with burn values below getEUt are ignored (mostly items like sticks), and also those with very high fuel values that would cause an overflow error.
-                        if (GT_Utility.getFluidForFilledItem(tInput, true) == null && (this.mMaxProgresstime = GT_ModHandler.getFuelValue(tInput) / 80) > 0 && (GT_ModHandler.getFuelValue(tInput) / this.getEUt()) > 1 && GT_ModHandler.getFuelValue(tInput) < 100000000) {
+                        if (GT_Utility.getFluidForFilledItem(tInput, true) == null && (this.mMaxProgresstime = GT_ModHandler.getFuelValue(tInput) / 80) > 0 && (GT_ModHandler.getFuelValue(tInput) * 2 / this.getEUt()) > 1 && GT_ModHandler.getFuelValue(tInput) < 100000000) {
                             this.excessFuel += GT_ModHandler.getFuelValue(tInput) % 80;
                             this.mMaxProgresstime += this.excessFuel / 80;
                             this.excessFuel %= 80;
