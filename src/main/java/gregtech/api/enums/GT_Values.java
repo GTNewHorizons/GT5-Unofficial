@@ -55,7 +55,7 @@ public class GT_Values {
      * This is worth exactly one normal Item.
      * This Constant can be divided by many commonly used Numbers such as
      * 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 14, 15, 16, 18, 20, 21, 24, ... 64 or 81
-     * without loosing precision and is for that reason used as Unit of Amount.
+     * without losing precision and is for that reason used as Unit of Amount.
      * But it is also small enough to be multiplied with larger Numbers.
      * <p/>
      * This is used to determine the amount of Material contained inside a prefixed Ore.
@@ -195,6 +195,98 @@ public class GT_Values {
             RES_PATH_ASPECTS = MOD_ID + ":" + TEX_DIR_ASPECTS,
             RES_PATH_IC2 = MOD_ID_IC2.toLowerCase(Locale.ENGLISH) + ":",
             RES_PATH_MODEL = MOD_ID + ":" + TEX_DIR + "models/";
+
+    /**
+     * NBT String Keys
+     */
+    public static class NBT {
+        public static final String
+            COLOR               = "gt.color",                // Integer
+            CUSTOM_NAME         = "name",                    // String
+            DISPAY              = "gt.display",              // String
+            FACING              = "gt.facing",               // Byte
+            HIDDEN              = "gt.hidden",               // Boolean
+            LOCK_UPGRADE        = "gt.locked",               // Boolean
+            MATERIAL            = "gt.material",             // String containing the Material Name.
+            MODE                = "gt.mode",                 // Number
+            ALLOWED_MODES       = "gt.amode",                // Number
+            MTE_ID              = "gt.mte.id",               // Containing the MTE ID
+            MTE_REG             = "gt.mte.reg",              // Containing the MTE Registry ID
+            OWNER               = "gt.owner",                // String
+            OWNER_UUID          = "gt.ownerUuid",            // UUID (String)
+
+            // Machines
+            FLUID_OUT           = "gt.fluidout",             // Output Fluid
+            INV_OUT             = "gt.invout",               // ItemStack
+            PARALLEL            = "gt.parallel",             // Number
+            TANK_CAPACITY       = "gt.tankcap",              // Number
+            TANK_IN             = "gt.tank.in.",             // FluidStack
+            TANK_OUT            = "gt.tank.out.",            // FluidStack
+            TEXTURE             = "gt.texture",              // String
+            INV_SIZE            = "gt.invsize",              // Number
+            INV_LIST            = "gt.invlist",              // NBT List
+
+            // MultiBlock
+            STRUCTURE_OK        = "gt.structure.ok",
+            ROTATION            = "gt.eRotation",
+            FLIP                = "gt.eFlip",
+        	TARGET              = "gt.target",               // Boolean
+            TARGET_X            = "gt.target.x",             // Number
+            TARGET_Y            = "gt.target.y",             // Number
+            TARGET_Z            = "gt.target.z",             // Number
+
+            empty_              = "";
+    }
+
+
+    public static final int UNCOLORED = 0x00ffffff;
+
+    /**
+     * Sides
+     */
+    public static final byte
+        SIDE_BOTTOM    = 0, SIDE_DOWN      = 0,
+        SIDE_TOP       = 1, SIDE_UP        = 1,
+        SIDE_NORTH     = 2, // Also a Side with a stupidly mirrored Texture
+        SIDE_SOUTH     = 3,
+        SIDE_WEST      = 4,
+        SIDE_EAST      = 5, // Also a Side with a stupidly mirrored Texture
+        SIDE_ANY    = 6, SIDE_UNKNOWN   = 6, SIDE_INVALID = 6, SIDE_INSIDE = 6, SIDE_UNDEFINED = 6;
+
+    /** Compass alike Array for the proper ordering of North, East, South and West. */
+    public static final byte[] COMPASS_DIRECTIONS = {SIDE_NORTH, SIDE_EAST, SIDE_SOUTH, SIDE_WEST};
+
+
+    /**
+     * An Array containing all Sides which follow the Condition, in order to iterate over them for example.
+     */
+    public static final byte[]
+        ALL_SIDES                    =  {0,1,2,3,4,5,6},
+        ALL_VALID_SIDES              =  {0,1,2,3,4,5  };
+
+    /**
+     * For Facing Checks.
+     */
+
+    public static final boolean[]
+        INVALID_SIDES           = { false, false, false, false, false, false, true  },
+        VALID_SIDES             = { true,  true,  true,  true,  true,  true,  false };
+
+
+    /**
+     *  Side->Offset Mappings.
+     */
+    public static final byte[]
+        OFFX = { 0, 0, 0, 0,-1,+1, 0},
+        OFFY = {-1,+1, 0, 0, 0, 0, 0},
+        OFFZ = { 0, 0,-1,+1, 0, 0, 0};
+
+    /**
+     *  Side->Opposite Mappings.
+     **/
+    public static final byte[]
+        OPOS = { 1, 0, 3, 2, 5, 4, 6};
+
     /**
      * The Mod Object itself. That is the GT_Mod-Object. It's needed to open GUI's and similar.
      */
@@ -223,7 +315,7 @@ public class GT_Values {
      * Whether or not to place small ores as placer ores for an orevein
      */
     public static boolean oreveinPlacerOres;
-    /** 
+    /**
      * Multiplier to control how many placer ores get generated.
      */
     public static int oreveinPlacerOresMultiplier;
@@ -231,18 +323,18 @@ public class GT_Values {
      * How wide to look for oreveins that affect a requested chunk. Trying to use oreveins larger than this will not work correctly. Increasing the size will cause additional worldgenerator lag.
      * Disabled for now, using 64 in Deep Dark, 32 elsewhere
      */
-    // public static int oreveinMaxSize; 
+    // public static int oreveinMaxSize;
     /**
      * Not really Constants, but they set using the Config and therefore should be constant (those are for the Debug Mode)
      */
     public static boolean D1 = false, D2 = false;
     /**
      * Debug parameter for cleanroom testing.
-     */     
+     */
     public static boolean debugCleanroom = false;
     /**
      * Debug parameter for driller testing.
-     */     
+     */
     public static boolean debugDriller = false;
     /**
      * Debug parameter for world generation. Tracks chunks added/removed from run queue.
@@ -306,7 +398,7 @@ public class GT_Values {
     public static boolean cls_enabled;
     public static final Set<String> mCTMEnabledBlock = new HashSet<>();
     public static final Set<String> mCTMDisabledBlock = new HashSet<>();
-    
+
     public static boolean hideAssLineRecipes = false;
     public static boolean updateFluidDisplayItems = true;
     public static final int STEAM_PER_WATER = 160;
@@ -314,4 +406,8 @@ public class GT_Values {
      *  If true, then digital chest with AE2 storage bus will be accessible only through AE2
      */
     public static boolean disableDigitalChestsExternalAccess = false;
+    public static boolean lateConfigSave = true;
+    public static boolean worldTickHappened = false;
+
+    public static final int[] emptyIntArray = new int[0];
 }

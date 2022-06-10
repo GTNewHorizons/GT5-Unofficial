@@ -49,13 +49,13 @@ public interface IMachineProgress extends IHasWorldObjectAndCoords {
      * used to control Machines via Redstone Signal Strength by special Covers
      * In case of 0 the Machine is very likely doing nothing, or is just not being controlled at all.
      */
-    byte getWorkDataValue();
+    default byte getWorkDataValue() { return 0; }
 
     /**
      * used to control Machines via Redstone Signal Strength by special Covers
      * only Values between 0 and 15!
      */
-    void setWorkDataValue(byte aValue);
+    default void setWorkDataValue(byte aValue) {}
 
     /**
      * gives you the Active Status of the Machine

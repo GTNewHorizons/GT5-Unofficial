@@ -2,8 +2,10 @@ package gregtech.api;
 
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.GT_Mod;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IDamagableItem;
@@ -31,6 +33,7 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.world.GT_Worldgen;
+import gregtech.common.items.GT_IntegratedCircuit_Item;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -40,11 +43,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -125,7 +128,8 @@ public class GregTech_API {
      * 13101 - 13500 are reserved for kekzdealer
      * 13501 - 14000 are reserved for glee8e.
      * 14001 - 14100 are reserved for glowredman
-     * 14101 - 14999 are currently free.
+     * 14101 - 14200 are reserved for MuXiu1997.
+     * 14201 - 14999 are currently free.
      * 15000 - 16999 are reserved for TecTech.
      * 17000 - 29999 are currently free.
      * 30000 - 31999 are reserved for Alkalus.
@@ -194,18 +198,7 @@ public class GregTech_API {
     private static final Map<Integer, List<ItemStack>> sConfigurationLists = new HashMap<>();
     private static final Map<Predicate<ItemStack>, BiFunction<ItemStack, EntityPlayerMP, ItemStack>> sRealCircuitProgrammerList = new LinkedHashMap<>();
     public static final Map<Predicate<ItemStack>, BiFunction<ItemStack, EntityPlayerMP, ItemStack>> sCircuitProgrammerList = Collections.unmodifiableMap(sRealCircuitProgrammerList);
-    static {
-        registerCircuitProgrammer(new Predicate<ItemStack>() {
-            private final int screwdriverOreId = OreDictionary.getOreID("craftingToolScrewdriver");
-            @Override
-            public boolean test(ItemStack stack) {
-                for (int i : OreDictionary.getOreIDs(stack))
-                    if (i == screwdriverOreId)
-                        return true;
-                return false;
-            }
-        }, true);
-    }
+
     /**
      * The List of Dimensions, which are Whitelisted for the Teleporter. This list should not contain other Planets.
      * Mystcraft Dimensions and other Dimensional Things should be allowed.
@@ -247,6 +240,7 @@ public class GregTech_API {
             sAfterGTLoad = new ArrayList<>(),
             sBeforeGTPostload = new ArrayList<>(),
             sAfterGTPostload = new ArrayList<>(),
+            sFirstWorldTick = new ArrayList<>(),
             sBeforeGTServerstart = new ArrayList<>(),
             sAfterGTServerstart = new ArrayList<>(),
             sBeforeGTServerstop = new ArrayList<>(),
@@ -695,7 +689,24 @@ public class GregTech_API {
      * DO NOT MODIFY THE ItemStacks!
      */
     public static List<ItemStack> getConfigurationCircuitList(int machineTier) {
-        return Collections.unmodifiableList(sConfigurationLists.computeIfAbsent(machineTier, (t) -> sRealConfigurationList.entries().stream().filter(e -> e.getKey() <= machineTier).map(Map.Entry::getValue).collect(Collectors.toList())));
+        return Collections.unmodifiableList(
+            sConfigurationLists.computeIfAbsent(machineTier, (t) -> sRealConfigurationList.entries().stream().filter(e -> e.getKey() <= machineTier).map(Map.Entry::getValue).collect(Collectors.toList()))
+                .stream()
+                .sorted(getConfigurationCircuitsComparator())
+                .collect(Collectors.toList())
+        );
+    }
+
+    public static Comparator<ItemStack> getConfigurationCircuitsComparator() {
+        return Comparator
+            .comparingInt((ItemStack is) -> {
+                // By default, the Programmed Circuit should be the earliest configuration circuit to which the player is exposed
+                if (GT_Mod.gregtechproxy.mCircuitsOrder.isEmpty())
+                    return is.getItem() instanceof GT_IntegratedCircuit_Item ? 0 : 1;
+                return GT_Mod.gregtechproxy.mCircuitsOrder.getOrDefault(GameRegistry.findUniqueIdentifierFor(is.getItem()).toString(), Integer.MAX_VALUE);
+            })
+            .thenComparing(ItemStack::getUnlocalizedName)
+            .thenComparing(ItemStack::getItemDamage);
     }
 
     public static void registerCircuitProgrammer(ItemStack stack, boolean ignoreNBT, boolean useContainer) {

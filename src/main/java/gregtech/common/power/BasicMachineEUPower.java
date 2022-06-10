@@ -1,12 +1,10 @@
 package gregtech.common.power;
 
-import gregtech.api.util.GT_Utility;
-
 import static gregtech.api.enums.GT_Values.V;
 
-public class BasicMachineEUPower extends EUPower{
-    private static final String OC = " (OC)";
-    private boolean wasOverclocked;
+public class BasicMachineEUPower extends EUPower {
+    protected static final String OC = " (OC)";
+    protected boolean wasOverclocked;
 
     public BasicMachineEUPower(byte tier, int amperage) {
         super(tier, amperage);
@@ -59,14 +57,14 @@ public class BasicMachineEUPower extends EUPower{
         return decorateWithOverclockLabel(super.getPowerUsageString());
     }
 
-    private String decorateWithOverclockLabel(String s) {
+    protected String decorateWithOverclockLabel(String s) {
         if (wasOverclocked) {
             s += OC;
         }
         return s;
     }
 
-    private boolean checkIfOverclocked() {
+    protected boolean checkIfOverclocked() {
         return originalVoltage != computeVoltageForEuRate(recipeEuPerTick);
     }
 }

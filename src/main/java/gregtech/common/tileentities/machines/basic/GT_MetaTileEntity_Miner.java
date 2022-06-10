@@ -286,9 +286,12 @@ public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine impl
     /** Pushes (or check can push) item to output slots. */
     @Override
     public boolean pushOutputs(ItemStack stack, int count, boolean simulate, boolean allowInputSlots) {
-        int startSlot = allowInputSlots ? getInputSlot() : getOutputSlot();
-        int maxSlot = mInventory.length;
-        for (int i = startSlot; i < maxSlot; i++) {
+        return allowInputSlots && pushOutput(getInputSlot(), getInputSlot() + mInputSlotCount, stack, count, simulate) ||
+            pushOutput(getOutputSlot(), getOutputSlot() + mOutputItems.length, stack, count, simulate);
+    }
+
+    private boolean pushOutput(int startIndex, int endIndex, ItemStack stack, int count, boolean simulate) {
+        for (int i = startIndex; i < endIndex; i++) {
             ItemStack slot = mInventory[i];
             if (slot == null || slot.stackSize == 0) {
                 if (!simulate) {

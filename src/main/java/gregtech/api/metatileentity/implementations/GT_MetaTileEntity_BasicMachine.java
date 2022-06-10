@@ -69,7 +69,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     public int mMainFacing = -1, mProgresstime = 0, mMaxProgresstime = 0, mEUt = 0, mOutputBlocked = 0;
     public FluidStack mOutputFluid;
     public String mGUIName, mNEIName;
-    private final Power mPower;
+    protected final Power mPower;
 
 
     @Deprecated
@@ -125,7 +125,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         mNEIName = aNEIName;
         mPower = buildPower();
     }
-    
+
     public GT_MetaTileEntity_BasicMachine(String aName, int aTier, int aAmperage, String[] aDescription, ITexture[][][] aTextures, int aInputSlotCount, int aOutputSlotCount, String aGUIName, String aNEIName) {
         super(aName, aTier, OTHER_SLOT_COUNT + aInputSlotCount + aOutputSlotCount + 1, aDescription, aTextures);
         mInputSlotCount = Math.max(0, aInputSlotCount);
@@ -146,7 +146,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     protected boolean isValidMainFacing(byte aSide) {
     	return aSide > 1;
     }
-    
+
     public boolean setMainFacing(byte aSide){
     	if (!isValidMainFacing(aSide)) return false;
     	mMainFacing = aSide;
@@ -408,6 +408,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
 
     @Override
     public FluidStack setDrainableStack(FluidStack aFluid) {
+        markDirty();
         mFluidOut = aFluid;
         return mFluidOut;
     }
@@ -428,9 +429,9 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         	if(aBaseMetaTileEntity.getAirAtSide(i)){
         		aBaseMetaTileEntity.openGUI(aPlayer);
         		return true;
-        	}        	
+        	}
         }
-        GT_Utility.sendChatToPlayer(aPlayer,"No free Side!");        
+        GT_Utility.sendChatToPlayer(aPlayer,"No free Side!");
         return true;
     }
 
@@ -509,6 +510,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
             boolean tSucceeded = false;
 
             if (mMaxProgresstime > 0 && (mProgresstime >= 0 || aBaseMetaTileEntity.isAllowedToWork())) {
+                markDirty();
                 aBaseMetaTileEntity.setActive(true);
                 if (mProgresstime < 0 || drainEnergyForProcess(mEUt)) {
                     if (++mProgresstime >= mMaxProgresstime) {
@@ -966,7 +968,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
                 {
 					if (debugCleanroom) {
 						GT_Log.out.println(
-							"BasicMachine: Voiding output due to efficiency failure. mEfficiency = " + 
+							"BasicMachine: Voiding output due to efficiency failure. mEfficiency = " +
 							getCallbackBase().mEfficiency
 						);
 					}

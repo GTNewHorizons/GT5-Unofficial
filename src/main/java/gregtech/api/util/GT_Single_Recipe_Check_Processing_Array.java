@@ -24,7 +24,7 @@ public class GT_Single_Recipe_Check_Processing_Array extends GT_Single_Recipe_Ch
     protected GT_Single_Recipe_Check_Processing_Array(
             GT_MetaTileEntity_MultiBlockBase multiBlockBase,
             GT_Recipe recipe,
-            ImmutableMap<ItemId, Integer> itemCost,
+            ImmutableMap<GT_Utility.ItemId, Integer> itemCost,
             ImmutableMap<Fluid, Integer> fluidCost,
             int recipeAmperage,
             ItemStack machineStack) {
@@ -60,12 +60,12 @@ public class GT_Single_Recipe_Check_Processing_Array extends GT_Single_Recipe_Ch
         if (totalItemCost > 0) {
             items = multiBlockBase.getStoredInputs();
 
-            Map<ItemId, Integer> itemMap = new HashMap<>();
+            Map<GT_Utility.ItemId, Integer> itemMap = new HashMap<>();
             for (ItemStack itemStack : items) {
-                itemMap.merge(ItemId.createNoCopy(itemStack), itemStack.stackSize, Integer::sum);
+                itemMap.merge(GT_Utility.ItemId.createNoCopy(itemStack), itemStack.stackSize, Integer::sum);
             }
 
-            for (Map.Entry<ItemId, Integer> entry : itemCost.entrySet()) {
+            for (Map.Entry<GT_Utility.ItemId, Integer> entry : itemCost.entrySet()) {
                 parallel = Math.min(parallel, itemMap.getOrDefault(entry.getKey(), 0) / entry.getValue());
                 if (parallel <= 0) {
                     return 0;
@@ -94,7 +94,7 @@ public class GT_Single_Recipe_Check_Processing_Array extends GT_Single_Recipe_Ch
         if (consumeInputs) {
             if (totalItemCost > 0) {
                 int remainingItemCost = totalItemCost * finalParallel;
-                Map<ItemId, Integer> runningItemCost =
+                Map<GT_Utility.ItemId, Integer> runningItemCost =
                         itemCost.entrySet().stream()
                                 .collect(
                                         Collectors.toMap(
@@ -102,7 +102,7 @@ public class GT_Single_Recipe_Check_Processing_Array extends GT_Single_Recipe_Ch
                                                 entry -> entry.getValue() * finalParallel));
 
                 for (ItemStack itemStack : items) {
-                    ItemId key = ItemId.createNoCopy(itemStack);
+                    GT_Utility.ItemId key = GT_Utility.ItemId.createNoCopy(itemStack);
                     int runningCost = runningItemCost.getOrDefault(key, 0);
                     int paid = Math.min(itemStack.stackSize, runningCost);
                     itemStack.stackSize -= paid;
@@ -151,9 +151,9 @@ public class GT_Single_Recipe_Check_Processing_Array extends GT_Single_Recipe_Ch
 
         // In order to compute which items and fluids are consumed by the recipe, we compare the
         // multi-block's items and fluids before and after inputs are consumed by the recipe.
-        private Map<ItemId, Integer> beforeItems;
+        private Map<GT_Utility.ItemId, Integer> beforeItems;
         private Map<Fluid, Integer> beforeFluids;
-        private Map<ItemId, Integer> afterItems;
+        private Map<GT_Utility.ItemId, Integer> afterItems;
         private Map<Fluid, Integer> afterFluids;
 
         private GT_Recipe recipe;
@@ -188,8 +188,8 @@ public class GT_Single_Recipe_Check_Processing_Array extends GT_Single_Recipe_Ch
         }
 
         public GT_Single_Recipe_Check_Processing_Array build() {
-            ImmutableMap.Builder<ItemId, Integer> itemCostBuilder = ImmutableMap.builder();
-            for (Map.Entry<ItemId, Integer> entry : beforeItems.entrySet()) {
+            ImmutableMap.Builder<GT_Utility.ItemId, Integer> itemCostBuilder = ImmutableMap.builder();
+            for (Map.Entry<GT_Utility.ItemId, Integer> entry : beforeItems.entrySet()) {
                 int cost = entry.getValue() - afterItems.getOrDefault(entry.getKey(), 0);
                 if (cost > 0) {
                     itemCostBuilder.put(entry.getKey(), cost);
