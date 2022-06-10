@@ -373,11 +373,6 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                 lineCounter++;
             }
 
-//            if ((mPower.getAmperageString() != null) && (!mPower.getAmperageString().equals("unspecified")) && (Integer.parseInt(mPower.getAmperageString()) != 1)) {
-//                drawLine(lineCounter, GT_Utility.trans("155", "Amperage: ") + mPower.getAmperageString());
-//                lineCounter++;
-//            }
-
         }
         if (mPower.getDurationTicks() > 0) {
             if(GT_Mod.gregtechproxy.mNEIRecipeSecondMode) {
