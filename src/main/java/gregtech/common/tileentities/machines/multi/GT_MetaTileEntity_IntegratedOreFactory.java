@@ -319,12 +319,14 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends GT_MetaTileEntity_En
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         sMode = aNBT.getInteger("ssMode");
+        sVoidStone = aNBT.getBoolean("ssStone");
         super.loadNBTData(aNBT);
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setInteger("ssMode", sMode);
+        aNBT.setBoolean("ssStone", sVoidStone);
         super.saveNBTData(aNBT);
     }
 
