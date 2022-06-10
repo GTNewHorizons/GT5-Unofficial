@@ -450,13 +450,13 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
     }
 
     private void drawOptionalLine(int lineNumber, String line, String prefix) {
-        if ((line != null) && (!line.equals("unspecified"))) {
+        if (!line.equals("unspecified")) {
             drawLine(lineNumber, prefix + line);
         }
     }
 
     private void drawOptionalLine(int lineNumber, String line) {
-        if ((line != null) && (!line.equals("unspecified"))) {
+        if (!line.equals("unspecified")) {
             drawLine(lineNumber, line);
         }
     }
