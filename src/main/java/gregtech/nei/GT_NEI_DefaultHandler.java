@@ -390,7 +390,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
             }
         }
         if (this.mRecipeMap.mNEIName.equals("gt.recipe.fusionreactor") || this.mRecipeMap.mNEIName.equals("gt.recipe.complexfusionreactor")) {
-            drawOptionalLine(5, getSpecialInfo(recipe.mSpecialValue) + " " + formatSpecialValueFusion(recipe.mSpecialValue, recipe.mEUt));
+            drawOptionalLine(lineCounter, getSpecialInfo(recipe.mSpecialValue) + " " + formatSpecialValueFusion(recipe.mSpecialValue, recipe.mEUt));
         }
         drawOptionalLine(lineCounter, getSpecialInfo(recipe.mSpecialValue));
     }
@@ -542,16 +542,13 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         }
 
         @Override
-        public void onKeyTyped(GuiContainer gui, char keyChar, int keyID) {
-        }
+        public void onKeyTyped(GuiContainer gui, char keyChar, int keyID) {}
 
         @Override
-        public void onMouseClicked(GuiContainer gui, int mousex, int mousey, int button) {
-        }
+        public void onMouseClicked(GuiContainer gui, int mousex, int mousey, int button) {}
 
         @Override
-        public void onMouseUp(GuiContainer gui, int mousex, int mousey, int button) {
-        }
+        public void onMouseUp(GuiContainer gui, int mousex, int mousey, int button) {}
 
         @Override
         public boolean mouseScrolled(GuiContainer gui, int mousex, int mousey, int scrolled) {
@@ -559,12 +556,10 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         }
 
         @Override
-        public void onMouseScrolled(GuiContainer gui, int mousex, int mousey, int scrolled) {
-        }
+        public void onMouseScrolled(GuiContainer gui, int mousex, int mousey, int scrolled) {}
 
         @Override
-        public void onMouseDragged(GuiContainer gui, int mousex, int mousey, int button, long heldTime) {
-        }
+        public void onMouseDragged(GuiContainer gui, int mousex, int mousey, int button, long heldTime) {}
     }
 
     public static class FixedPositionedStack extends PositionedStack {
