@@ -1936,6 +1936,15 @@ public class GT_Utility {
         return rStack;
     }
 
+    public static ItemStack copyAmountUnsafe(long aAmount, Object... aStacks) {
+        ItemStack rStack = copy(aStacks);
+        if (isStackInvalid(rStack)) return null;
+        if (aAmount > Integer.MAX_VALUE) aAmount = Integer.MAX_VALUE;
+        else if (aAmount < 0) aAmount = 0;
+        rStack.stackSize = (int) aAmount;
+        return rStack;
+    }
+
     public static ItemStack copyMetaData(long aMetaData, Object... aStacks) {
         ItemStack rStack = copy(aStacks);
         if (isStackInvalid(rStack)) return null;

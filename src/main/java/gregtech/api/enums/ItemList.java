@@ -1447,6 +1447,7 @@ public enum ItemList implements IItemContainer {
     Processing_Array,
     Distillation_Tower,
     Energy_LapotronicOrb2,
+    Ore_Processor,
 
     ZPM3,
     ZPM2,
