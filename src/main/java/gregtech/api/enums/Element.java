@@ -135,9 +135,10 @@ public enum Element {
     Tn(125, 198, 0, -1, null, "Tritanium", false),
 
     SpFe(26, 42, 0, -1, null, "Meteoric Iron", false),
-    De(22, 27, 0, -1, null, "Desh", false), 
+    De(22, 27, 0, -1, null, "Desh", false),
     Oh(76, 125, 0, -1, null, "Oriharukon", false),
-       
+    Di(500, 500, 0, -1, null, "Dimensionally Transcendent Matter", false),
+
     Ma(0, 0, 100, -1, null, "Magic", false),
     Nq(130, 200, 0, -1, null, "Naquadah", false),
     Nt(0, 1000, 0, -1, null, "Neutronium", false),
@@ -266,9 +267,9 @@ public enum Element {
     $Ts(-117, -177, 0, -1, null, "Anti-Tenness", false),
     $Og(-118, -176, 0, -1, null, "Anti-Oganesson", false),
     $Tn(-125, -198, 0, -1, null, "Anti-Tritanium", false),
-    
+
     $SpFe(-26, -42, 0, -1, null, "Anti-Meteoric Iron", true),
-    $De(-22, -27, 0, -1, null, "Anti-Desh", true), 
+    $De(-22, -27, 0, -1, null, "Anti-Desh", true),
     $Oh(-76, -125, 0, -1, null, "Anti-Oriharukon", true),
 
     $Ma(0, 0, -100, -1, null, "Anti-Magic", false),
