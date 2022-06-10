@@ -39,7 +39,7 @@ public abstract class Power {
     }
 
     public String getDurationStringTicks() {
-        return GT_Utility.formatNumbers(getDurationTicks()) + GT_Utility.trans("161", " ticks");
+        return GT_Utility.formatNumbers(getDurationTicks()) + GT_Utility.trans("224", " ticks");
     }
 
     public abstract String getTotalPowerString();

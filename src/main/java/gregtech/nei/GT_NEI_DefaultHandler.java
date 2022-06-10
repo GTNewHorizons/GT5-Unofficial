@@ -357,18 +357,26 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         if (mPower.getEuPerTick() > 0) {
             drawLine(lineCounter, GT_Utility.trans("152", "Total: ") + mPower.getTotalPowerString());
             lineCounter++;
-            drawLine(lineCounter, GT_Utility.trans("153", "Usage: ") + mPower.getPowerUsageString());
-            lineCounter++;
 
-            if ((mPower.getVoltageString() != null) && (mPower.getVoltageString() != "unspecified") && (Integer.parseInt(mPower.getAmperageString()) != 1)) {
+            if (mPower.getAmperageString().equals("1")) {
                 drawLine(lineCounter, GT_Utility.trans("154", "Voltage: ") + mPower.getVoltageString());
                 lineCounter++;
-            }
-
-            if ((mPower.getAmperageString() != null) && (mPower.getAmperageString() != "unspecified") && (Integer.parseInt(mPower.getAmperageString()) != 1)) {
+            } else if (mPower.getAmperageString().equals("unspecified")){
+                drawLine(lineCounter, GT_Utility.trans("153", "Usage: ") + mPower.getPowerUsageString());
+                lineCounter++;
+            } else {
+                drawLine(lineCounter, GT_Utility.trans("153", "Usage: ") + mPower.getPowerUsageString());
+                lineCounter++;
+                drawLine(lineCounter, GT_Utility.trans("154", "Voltage: ") + mPower.getVoltageString());
+                lineCounter++;
                 drawLine(lineCounter, GT_Utility.trans("155", "Amperage: ") + mPower.getAmperageString());
                 lineCounter++;
             }
+
+//            if ((mPower.getAmperageString() != null) && (!mPower.getAmperageString().equals("unspecified")) && (Integer.parseInt(mPower.getAmperageString()) != 1)) {
+//                drawLine(lineCounter, GT_Utility.trans("155", "Amperage: ") + mPower.getAmperageString());
+//                lineCounter++;
+//            }
 
         }
         if (mPower.getDurationTicks() > 0) {
@@ -447,13 +455,13 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
     }
 
     private void drawOptionalLine(int lineNumber, String line, String prefix) {
-        if ((line != null) && (line != "unspecified")) {
+        if ((line != null) && (!line.equals("unspecified"))) {
             drawLine(lineNumber, prefix + line);
         }
     }
 
     private void drawOptionalLine(int lineNumber, String line) {
-        if ((line != null) && (line != "unspecified")) {
+        if ((line != null) && (!line.equals("unspecified"))) {
             drawLine(lineNumber, line);
         }
     }
