@@ -1836,14 +1836,15 @@ public enum ItemList implements IItemContainer {
     ZPM_Coil,
     UV_Coil,
     UHV_Coil,
-
+       
     Circuit_Parts_ResistorXSMD,
     Circuit_Parts_DiodeXSMD,
     Circuit_Parts_TransistorXSMD,
     Circuit_Parts_CapacitorXSMD,
 
-    VOLUMETRIC_FLASK;
-
+    VOLUMETRIC_FLASK,
+  	HULL_LIVINGROCK;
+	
     public static final ItemList[]
             DYE_ONLY_ITEMS = {
             Color_00,

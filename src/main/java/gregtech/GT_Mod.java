@@ -102,7 +102,8 @@ import static gregtech.api.enums.GT_Values.MOD_ID_FR;
                 " after:RedPowerControl;" +
                 " after:UndergroundBiomes;" +
                 " after:TConstruct;" +
-                " after:Translocator;")
+                " after:Translocator;" +
+                " after:Botania;")
 public class GT_Mod implements IGT_Mod {
 
     @Deprecated // Keep for use in BaseMetaTileEntity

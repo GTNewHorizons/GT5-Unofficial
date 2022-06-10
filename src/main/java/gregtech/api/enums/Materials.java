@@ -147,7 +147,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Unknown                 = new Materials(  -1, TextureSet.SET_DULL              ,   1.0F,      0,  2,                                          false,   "Unknown"                 ,   "Unknown"                       );
     public static Materials Cobblestone             = new Materials(  -1, TextureSet.SET_DULL              ,   1.0F,      0,  1,                                          false,   "Cobblestone"             ,   "Cobblestone"                   );
     public static Materials BrickNether             = new Materials(  -1, TextureSet.SET_DULL              ,   1.0F,      0,  1,                                          false,   "BrickNether"             ,   "BrickNether"                   );
-
+    public static Materials Livingrock              = new Materials( 517, TextureSet.SET_SHINY             ,   1.0F,      0,  3, 1|64|128                  , 201, 195, 171,   0,   "Livingrock"              ,   "Livingrock"                    ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL);
+    
+    
     /**
      * The "I don't care" Section, everything I don't want to do anything with right now, is right here. Just to make the Material Finder shut up about them.
      * But I do see potential uses in some of these Materials.
@@ -2012,6 +2014,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Salt.add(SubTag.STONE, SubTag.NO_SMASHING);
         RockSalt.add(SubTag.STONE, SubTag.NO_SMASHING);
 
+        Livingrock.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+        
         Sand.add(SubTag.NO_RECYCLING);
 
         Gold.add(SubTag.MORTAR_GRINDABLE);
