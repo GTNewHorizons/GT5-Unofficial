@@ -1841,6 +1841,10 @@ public enum ItemList implements IItemContainer {
     Circuit_Parts_TransistorXSMD,
     Circuit_Parts_CapacitorXSMD,
 
+    Circuit_Parts_InductorSMD,
+    Circuit_Parts_InductorASMD,
+    Circuit_Parts_InductorXSMD,
+
     VOLUMETRIC_FLASK;
 
     public static final ItemList[]
