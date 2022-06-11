@@ -654,14 +654,27 @@ public interface IGT_RecipeAdder {
     boolean addMixerRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aInput3, ItemStack aInput4, ItemStack aInput5, ItemStack aInput6, ItemStack aInput7, ItemStack aInput8, ItemStack aInput9, FluidStack aFluidInput, FluidStack aFluidOutput, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3, ItemStack aOutput4, int aDuration, int aEUt);
 
     /**
-     * Adds a Recipe for the Laser Engraver
+     * Adds a Recipe for the Laser Engraver.
      */
     boolean addLaserEngraverRecipe(ItemStack aItemToEngrave, ItemStack aLens, ItemStack aEngravedItem, int aDuration, int aEUt);
 
     /**
-     * Adds a Recipe for the Laser Engraver
+     * Adds a Recipe for the Laser Engraver.
      */
     boolean addLaserEngraverRecipe(ItemStack aItemToEngrave, ItemStack aLens, ItemStack aEngravedItem, int aDuration, int aEUt, boolean aCleanroom);
+
+    /**
+     * Adds a Generalised Laser Engraver Recipe.
+     *
+     * @param ItemInputArray    Array of input items.
+     * @param FluidInputArray   Array of output items.
+     * @param OutputItemArray   Array of input fluids.
+     * @param FluidOutputArray  Array of output items.
+     * @param aDuration         Must be > 0. Duration in ticks.
+     * @param aEUt              Should be > 0. EU/t.
+     * @param aCleanroom        Boolean for usage of cleanroom in recipe.
+     */
+    boolean addLaserEngraverRecipe(ItemStack[] ItemInputArray, FluidStack[] FluidInputArray, ItemStack[] OutputItemArray, FluidStack[] FluidOutputArray, int aDuration, int aEUt, boolean aCleanroom);
 
     /**
      * Adds a Recipe for the Forming Press

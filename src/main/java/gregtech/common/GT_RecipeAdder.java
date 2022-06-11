@@ -1250,6 +1250,14 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         return true;
     }
 
+
+    @Override
+    public boolean addLaserEngraverRecipe(ItemStack[] ItemInputArray, FluidStack[] FluidInputArray, ItemStack[] OutputItemArray, FluidStack[] FluidOutputArray, int aDuration, int aEUt, boolean aCleanroom) {
+        GT_Recipe.GT_Recipe_Map.sLaserEngraverRecipes.addRecipe(false, ItemInputArray, OutputItemArray, null, null,
+            FluidInputArray, FluidOutputArray, aDuration, aEUt, aCleanroom ? -200 : 0);
+        return true;
+    }
+
     @Override
     public boolean addFormingPressRecipe(ItemStack aItemToImprint, ItemStack aForm, ItemStack aImprintedItem, int aDuration, int aEUt) {
         if ((aItemToImprint == null) || (aForm == null) || (aImprintedItem == null)) {

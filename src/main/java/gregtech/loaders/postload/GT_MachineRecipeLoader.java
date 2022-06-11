@@ -743,6 +743,15 @@ public class GT_MachineRecipeLoader implements Runnable {
 
         // -----------------------------------------------------------------------------------------------------------------------------
 
+        // 1234
+        GT_Values.RA.addLaserEngraverRecipe(
+            new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 8L)},
+            new FluidStack[]{Materials.DimensionallyTranscendentResidue.getFluid(100L), Materials.Infinity.getMolten(9216L)},
+
+            new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Paper, 8L)},
+            new FluidStack[]{Materials.SpaceTime.getFluid(1L)},
+            20, 1, false
+        );
 
         GT_Values.RA.addAssemblerRecipe(new ItemStack(Blocks.redstone_torch, 2, 32767), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L), Materials.Concrete.getMolten(144L), new ItemStack(Items.repeater, 1, 0), 80, 10);
         GT_Values.RA.addAssemblerRecipe(new ItemStack(Items.leather, 1, 32767), new ItemStack(Items.lead, 1, 32767), Materials.Glue.getFluid(72L), new ItemStack(Items.name_tag, 1, 0), 100, 8);
