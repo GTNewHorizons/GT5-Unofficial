@@ -11,15 +11,15 @@ import net.minecraft.item.ItemStack;
 public class GT_MetaTileEntity_Hatch_MillingBalls extends GT_MetaTileEntity_Hatch_NbtConsumable {
 	
     public GT_MetaTileEntity_Hatch_MillingBalls(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, 6, 4, "Dedicated Milling Ball Storage", true);
+        super(aID, aName, aNameRegional, 6, 4, "Dedicated Milling Ball Storage", false);
     }
 
     public GT_MetaTileEntity_Hatch_MillingBalls(String aName, String aDescription, ITexture[][][] aTextures) {
-        super(aName, 6, 4, aDescription, true, aTextures);
+        super(aName, 6, 4, aDescription, false, aTextures);
     }
     
     public GT_MetaTileEntity_Hatch_MillingBalls(String aName, String[] aDescription, ITexture[][][] aTextures) {
-        super(aName, 6, 4, aDescription[0], true, aTextures);
+        super(aName, 6, 4, aDescription[0], false, aTextures);
     }
 
     @Override

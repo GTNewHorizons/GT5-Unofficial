@@ -72,7 +72,7 @@ public abstract class GT_MetaTileEntity_Hatch_NbtConsumable extends GT_MetaTileE
 
 	@Override
 	public final boolean isValidSlot(int aIndex) {
-		return aIndex < mInputslotCount;
+		return true;
 	}
 
 	@Override
@@ -112,6 +112,7 @@ public abstract class GT_MetaTileEntity_Hatch_NbtConsumable extends GT_MetaTileE
 
 	@Override
 	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
+		validateUsageSlots();
 		if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.hasInventoryBeenModified()) {
 			fillStacksIntoFirstSlots();
 			tryFillUsageSlots();
@@ -126,6 +127,14 @@ public abstract class GT_MetaTileEntity_Hatch_NbtConsumable extends GT_MetaTileE
 			// Only moves items in the first four slots
 			if (i <= getSlotID_LastInput()) {
 				fillStacksIntoFirstSlots();
+			}
+		}
+	}
+
+	protected void validateUsageSlots() {
+		for (int i = getSlotID_FirstUsage(); i <= getSlotID_LastUsage(); i++) {
+			if (mInventory[i] != null && mInventory[i].stackSize < 1) {
+				mInventory[i] = null;
 			}
 		}
 	}
@@ -244,7 +253,7 @@ public abstract class GT_MetaTileEntity_Hatch_NbtConsumable extends GT_MetaTileE
 
 	@Override
 	public final boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-		return aSide == getBaseMetaTileEntity().getFrontFacing() && isItemValidForUsageSlot(aStack);
+		return aSide == getBaseMetaTileEntity().getFrontFacing() && isItemValidForUsageSlot(aStack) && aIndex < mInputslotCount;
 	}
 	
 	/**
