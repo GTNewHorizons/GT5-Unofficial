@@ -147,8 +147,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Cobblestone             = new Materials(  -1, TextureSet.SET_DULL              ,   1.0F,      0,  1,                                          false,   "Cobblestone"             ,   "Cobblestone"                   );
     public static Materials BrickNether             = new Materials(  -1, TextureSet.SET_DULL              ,   1.0F,      0,  1,                                          false,   "BrickNether"             ,   "BrickNether"                   );
     public static Materials Livingrock              = new Materials( 517, TextureSet.SET_SHINY             ,   1.0F,      0,  3, 1|64|128                  , 201, 195, 171,   0,   "Livingrock"              ,   "Livingrock"                    ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL);
-    
-    
+
+
     /**
      * The "I don't care" Section, everything I don't want to do anything with right now, is right here. Just to make the Material Finder shut up about them.
      * But I do see potential uses in some of these Materials.
@@ -862,12 +862,12 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     //1234
-    public static Materials DimensionallyTranscendentCrudeCatalyst           = new Materials( 781, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             , 10, 20,   20, 1,   "DimensionallyTranscendentCrudeCatalyst"           ,   "Dimensionally Transcendent Crude Catalyst"                ,    0,       0,         500000000,    1, false,  true,   1,   1,   1, Dyes.dyeCyan).setLiquidTemperature(500000000).setHasCorrespondingFluid(true);
-    public static Materials DimensionallyTranscendentProsaicCatalyst         = new Materials( 782, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             , 35, 59,   41, 1,   "DimensionallyTranscendentProsaicCatalyst"           ,   "Dimensionally Transcendent Prosaic Catalyst"                ,    0,       0,         500000000,    1, false,  true,   1,   1,   1, Dyes.dyeGreen).setLiquidTemperature(500000000).setHasCorrespondingFluid(true);
-    public static Materials DimensionallyTranscendentResplendentCatalyst     = new Materials( 783, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             , 38, 20,   56, 1,   "DimensionallyTranscendentResplendentCatalyst"           ,   "Dimensionally Transcendent Resplendent Catalyst"                ,    0,       0,         500000000,    1, false,  true,   1,   1,   1, Dyes.dyeLime).setLiquidTemperature(500000000).setHasCorrespondingFluid(true);
-    public static Materials DimensionallyTranscendentExoticCatalyst          = new Materials( 784, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             , 240, 240, 41, 1,   "DimensionallyTranscendentExoticCatalyst"           ,   "Dimensionally Transcendent Exotic Catalyst"                ,    0,       0,         500000000,    1, false,  true,   1,   1,   1, Dyes.dyeMagenta).setLiquidTemperature(500000000).setHasCorrespondingFluid(true);
+    public static Materials DimensionallyTranscendentCrudeCatalyst           = new Materials( 748, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             , 10, 20,   20, 1,   "DimensionallyTranscendentCrudeCatalyst"           ,   "Dimensionally Transcendent Crude Catalyst"                ,    0,       0,         500000000,    1, false,  true,   1,   1,   1, Dyes.dyeCyan).setLiquidTemperature(500000000).setHasCorrespondingFluid(true);
+    public static Materials DimensionallyTranscendentProsaicCatalyst         = new Materials( 747, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             , 35, 59,   41, 1,   "DimensionallyTranscendentProsaicCatalyst"           ,   "Dimensionally Transcendent Prosaic Catalyst"                ,    0,       0,         500000000,    1, false,  true,   1,   1,   1, Dyes.dyeGreen).setLiquidTemperature(500000000).setHasCorrespondingFluid(true);
+    public static Materials DimensionallyTranscendentResplendentCatalyst     = new Materials( 746, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             , 38, 20,   56, 1,   "DimensionallyTranscendentResplendentCatalyst"           ,   "Dimensionally Transcendent Resplendent Catalyst"                ,    0,       0,         500000000,    1, false,  true,   1,   1,   1, Dyes.dyeLime).setLiquidTemperature(500000000).setHasCorrespondingFluid(true);
+    public static Materials DimensionallyTranscendentExoticCatalyst          = new Materials( 745, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             , 240, 240, 41, 1,   "DimensionallyTranscendentExoticCatalyst"           ,   "Dimensionally Transcendent Exotic Catalyst"                ,    0,       0,         500000000,    1, false,  true,   1,   1,   1, Dyes.dyeMagenta).setLiquidTemperature(500000000).setHasCorrespondingFluid(true);
 
-    public static Materials DimensionallyTranscendentResidue                 = new Materials( 785, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             , 0, 0, 0, 1,   "DimensionallyTranscendentResidue"           ,   "Dimensionally Transcendent Residue"                ,    0,       0,         25,    1, false,  true,   1,   1,   1, Dyes.dyeBlack).setLiquidTemperature(2000000000).setHasCorrespondingFluid(true);
+    public static Materials DimensionallyTranscendentResidue                 = new Materials( 589, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             , 0, 0, 0, 1,   "DimensionallyTranscendentResidue"           ,   "Dimensionally Transcendent Residue"                ,    0,       0,         25,    1, false,  true,   1,   1,   1, Dyes.dyeBlack).setLiquidTemperature(2000000000).setHasCorrespondingFluid(true);
 
     public static Materials SpaceTime                = new Materials(   786, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             ,   0,   0, 255, 240,   "SpaceTime"                ,   "SpaceTime"                      ,    1,      20,         14,    0, false,  true,   2,   1,   1, Dyes.dyeBlue         , Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 1)));
 
@@ -2034,7 +2034,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         RockSalt.add(SubTag.STONE, SubTag.NO_SMASHING);
 
         Livingrock.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-        
+
         Sand.add(SubTag.NO_RECYCLING);
 
         Gold.add(SubTag.MORTAR_GRINDABLE);
