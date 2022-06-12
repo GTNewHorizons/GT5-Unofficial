@@ -3,9 +3,9 @@
 dependencies {
     shadowImplementation('com.github.GTNewHorizons:AVRcore:master-SNAPSHOT')
 
-    compile('com.github.GTNewHorizons:GT5-Unofficial:5.09.40.43:dev')
+    compile('com.github.GTNewHorizons:GT5-Unofficial:5.09.40.49:dev')
     compile('com.github.GTNewHorizons:Yamcl:0.5.82:dev')
-    compile('com.github.GTNewHorizons:NotEnoughItems:2.2.7-GTNH:dev')
+    compile('com.github.GTNewHorizons:NotEnoughItems:2.2.15-GTNH:dev')
     compile('com.github.GTNewHorizons:CodeChickenLib:1.1.5.3:dev')
     compile('com.github.GTNewHorizons:CodeChickenCore:1.1.4:dev')
     compile('com.github.GTNewHorizons:StructureLib:1.0.15:dev')
@@ -13,8 +13,8 @@ dependencies {
 
     compileOnly('com.github.GTNewHorizons:OpenModularTurrets:2.2.11-247:dev') {transitive=false}
     compileOnly('com.github.GTNewHorizons:OpenComputers:1.7.5.23-GTNH:dev') {transitive=false}
-    compileOnly('com.github.GTNewHorizons:GTplusplus:1.7.27:dev') {transitive=false}
-    compileOnly('com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-76-GTNH:dev') {transitive=false}
+    compileOnly('com.github.GTNewHorizons:GTplusplus:1.7.32:dev') {transitive=false}
+    compileOnly('com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-85-GTNH:dev') {transitive=false}
 
     compileOnly('curse.maven:cofh-lib-220333:2388748') {transitive=false}
     compileOnly('curse.maven:computercraft-67504:2269339') {transitive=false}
