@@ -198,7 +198,7 @@ public class PreciseAssembler extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
         if (this.mode == 0) {
             for (GT_MetaTileEntity_Hatch_InputBus bus : mInputBusses) {
                 if (!isValidMetaTileEntity(bus)) continue;
-                GT_Recipe tRecipe = getRecipeMap().findRecipe(this.getBaseMetaTileEntity(), false, Math.min(getMachineVoltageLimit(), getMaxInputVoltage()), inputFluids, getStoredItemFromHatch(bus));
+                GT_Recipe tRecipe = getRecipeMap().findRecipe(this.getBaseMetaTileEntity(), false, Math.min(getMachineVoltageLimit(), getMaxInputEnergyPA()), inputFluids, getStoredItemFromHatch(bus));
                 if (tRecipe != null && tRecipe.mSpecialValue <= casingTier) {
                     this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
                     this.mEfficiencyIncrease = 10000;
@@ -216,7 +216,7 @@ public class PreciseAssembler extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
         else {
             for (GT_MetaTileEntity_Hatch_InputBus bus : mInputBusses) {
                 if (!isValidMetaTileEntity(bus) || getStoredItemFromHatch(bus).length < 1) continue;
-                GT_Recipe tRecipe = getRecipeMap().findRecipe(this.getBaseMetaTileEntity(), false, Math.min(getMachineVoltageLimit(), getMaxInputVoltage()), inputFluids, getStoredItemFromHatch(bus));
+                GT_Recipe tRecipe = getRecipeMap().findRecipe(this.getBaseMetaTileEntity(), false, Math.min(getMachineVoltageLimit(), getMaxInputEnergyPA()), inputFluids, getStoredItemFromHatch(bus));
                 if (tRecipe != null) {
                     this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
                     this.mEfficiencyIncrease = 10000;
@@ -243,6 +243,28 @@ public class PreciseAssembler extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
             }
         }
         return false;
+    }
+
+    /**
+     * Modified version of {@link #getMaxInputEnergy()}
+     */
+    private long getMaxInputEnergyPA() {
+        long rEnergy = 0;
+        if (mEnergyHatches.size() == 1) {
+            // it works like most of the gt multies
+            return mEnergyHatches.get(0).getBaseMetaTileEntity().getInputVoltage();
+        }
+        for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
+            if (isValidMetaTileEntity(tHatch)) {
+                rEnergy += tHatch.getBaseMetaTileEntity().getInputVoltage() * tHatch.getBaseMetaTileEntity().getInputAmperage();
+            }
+        }
+        for (GT_MetaTileEntity_Hatch_EnergyMulti tHatch : eEnergyMulti) {
+            if (isValidMetaTileEntity(tHatch)) {
+                rEnergy += tHatch.getBaseMetaTileEntity().getInputVoltage() * tHatch.getBaseMetaTileEntity().getInputAmperage();
+            }
+        }
+        return rEnergy;
     }
 
     @Override
