@@ -13,6 +13,7 @@ import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.ISerializableObject;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -866,16 +867,30 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
 
     @Override
     public void setCoverIDAtSide(byte aSide, int aID) {
-        if (aSide >= 0 && aSide < 6) {
-            mCoverSides[aSide] = aID;
-            mCoverData[aSide] = 0;
-            mCoverBehaviors[aSide] = GregTech_API.getCoverBehavior(aID);
+        if (setCoverIDAtSideNoUpdate(aSide, aID)) {
             issueCoverUpdate(aSide);
             issueBlockUpdate();
         }
     }
 
-    @Override
+	@Override
+	public boolean setCoverIDAtSideNoUpdate(byte aSide, int aID) {
+		if (aSide >= 0 && aSide < 6) {
+			mCoverSides[aSide] = aID;
+			mCoverData[aSide] = 0;
+			mCoverBehaviors[aSide] = GregTech_API.getCoverBehavior(aID);
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public void setCoverIdAndDataAtSide(byte aSide, int aId, ISerializableObject aData) {
+		setCoverIDAtSide(aSide, aId);
+		setCoverDataAtSide(aSide, aData);
+	}
+
+	@Override
     public void setCoverItemAtSide(byte aSide, ItemStack aCover) {
         GregTech_API.getCoverBehavior(aCover).placeCover(aSide, aCover, this);
     }
