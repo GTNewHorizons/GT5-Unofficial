@@ -531,6 +531,14 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
 
         GT_Mod.gregtechproxy.addFluid("SpaceTime", "SpaceTime", Materials.SpaceTime, 1, 0, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.SpaceTime, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
 
+        GT_Mod.gregtechproxy.addFluid("DimensionallyTranscendentResidue", "Dimensionally Transcendent Residue"      , Materials.DimensionallyTranscendentResidue, 1, 2000000000, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.DimensionallyTranscendentResidue, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
+
+        GT_Mod.gregtechproxy.addFluid("ExcitedDTCC", "Excited Dimensionally Transcendent Crude Catalyst"       , Materials.ExcitedDTCC, 1, 500000000, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.ExcitedDTCC, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
+        GT_Mod.gregtechproxy.addFluid("ExcitedDTPC", "Excited Dimensionally Transcendent Prosaic Catalyst"     , Materials.ExcitedDTPC, 1, 500000000, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.ExcitedDTPC, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
+        GT_Mod.gregtechproxy.addFluid("ExcitedDTRC", "Excited Dimensionally Transcendent Resplendent Catalyst" , Materials.ExcitedDTRC, 1, 500000000, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.ExcitedDTRC, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
+        GT_Mod.gregtechproxy.addFluid("ExcitedDTEC", "Excited Dimensionally Transcendent Exotic Catalyst"      , Materials.ExcitedDTEC, 1, 500000000, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.ExcitedDTEC, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
+
+
         GT_Mod.gregtechproxy.addFluid("fieryblood", "Fiery Blood", Materials.FierySteel, 1, 6400, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.FierySteel, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
         GT_Mod.gregtechproxy.addFluid("holywater", "Holy Water", Materials.HolyWater, 1, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.HolyWater, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
         if (ItemList.TF_Vial_FieryBlood.get(1L, new Object[0]) != null) {

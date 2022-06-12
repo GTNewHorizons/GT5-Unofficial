@@ -620,107 +620,107 @@ public class GT_MachineRecipeLoader implements Runnable {
         // Neutronium Smelting.
         GT_Values.RA.addPlasmaForgeRecipe(
             new ItemStack[]{GT_Values.NI},
-            new FluidStack[]{Materials.DimensionallyTranscendentCrudeCatalyst.getFluid(28288L), Materials.Iron.getMolten(73728L)},
+            new FluidStack[]{Materials.ExcitedDTCC.getFluid(20645L), Materials.Iron.getMolten(73728L)},
 
             new ItemStack[]{GT_Values.NI},
-            new FluidStack[]{Materials.DimensionallyTranscendentResidue.getFluid(3536L), Materials.Neutronium.getMolten(73728L)},
-            2500, 25165824, 10900);
-
-        GT_Values.RA.addPlasmaForgeRecipe(
-            new ItemStack[]{GT_Values.NI},
-            new FluidStack[]{Materials.DimensionallyTranscendentProsaicCatalyst.getFluid(18434L), Materials.Iron.getMolten(147456L)},
-
-            new ItemStack[]{GT_Values.NI},
-            new FluidStack[]{Materials.DimensionallyTranscendentResidue.getFluid(4608L), Materials.Neutronium.getMolten(147456L)},
-            1250, 50331648, 11800);
+            new FluidStack[]{Materials.DimensionallyTranscendentResidue.getFluid(2580L), Materials.Neutronium.getMolten(73728L)},
+            2500, 50331648, 10900);
 
         GT_Values.RA.addPlasmaForgeRecipe(
             new ItemStack[]{GT_Values.NI},
-            new FluidStack[]{Materials.DimensionallyTranscendentResplendentCatalyst.getFluid(4564L), Materials.Iron.getMolten(294912L)},
+            new FluidStack[]{Materials.ExcitedDTPC.getFluid(9861L), Materials.Iron.getMolten(147456L)},
 
             new ItemStack[]{GT_Values.NI},
-            new FluidStack[]{Materials.DimensionallyTranscendentResidue.getFluid(2282L), Materials.Neutronium.getMolten(294912L)},
-            625, 100663296, 12700);
+            new FluidStack[]{Materials.DimensionallyTranscendentResidue.getFluid(2465L), Materials.Neutronium.getMolten(147456L)},
+            1250, 100663296, 11800);
 
         GT_Values.RA.addPlasmaForgeRecipe(
             new ItemStack[]{GT_Values.NI},
-            new FluidStack[]{Materials.DimensionallyTranscendentExoticCatalyst.getFluid(1026L), Materials.Iron.getMolten(589824L)},
+            new FluidStack[]{Materials.ExcitedDTRC.getFluid(4456L), Materials.Iron.getMolten(294912L)},
 
             new ItemStack[]{GT_Values.NI},
-            new FluidStack[]{Materials.DimensionallyTranscendentResidue.getFluid(1026L), Materials.Neutronium.getMolten(589824L)},
-            312, 201326592, 13600);
+            new FluidStack[]{Materials.DimensionallyTranscendentResidue.getFluid(2228L), Materials.Neutronium.getMolten(294912L)},
+            625, 201326592, 12700);
+
+        GT_Values.RA.addPlasmaForgeRecipe(
+            new ItemStack[]{GT_Values.NI},
+            new FluidStack[]{Materials.ExcitedDTEC.getFluid(1905L), Materials.Iron.getMolten(589824L)},
+
+            new ItemStack[]{GT_Values.NI},
+            new FluidStack[]{Materials.DimensionallyTranscendentResidue.getFluid(1905L), Materials.Neutronium.getMolten(589824L)},
+            312, 402653184, 13600);
 
         // Cosmic Neutronium Smelting.
         GT_Values.RA.addPlasmaForgeRecipe(
             new ItemStack[]{GT_Values.NI},
-            new FluidStack[]{Materials.DimensionallyTranscendentCrudeCatalyst.getFluid(48343L), Materials.Copper.getMolten(73728L)},
+            new FluidStack[]{Materials.ExcitedDTCC.getFluid(35283L), Materials.Copper.getMolten(73728L)},
 
             new ItemStack[]{GT_Values.NI},
-            new FluidStack[]{Materials.DimensionallyTranscendentResidue.getFluid(6042L), Materials.CosmicNeutronium.getMolten(73728L)},
-            4200, 25600000, 10900);
-
-        GT_Values.RA.addPlasmaForgeRecipe(
-            new ItemStack[]{GT_Values.NI},
-            new FluidStack[]{Materials.DimensionallyTranscendentProsaicCatalyst.getFluid(31503L), Materials.Copper.getMolten(294912L)},
-
-            new ItemStack[]{GT_Values.NI},
-            new FluidStack[]{Materials.DimensionallyTranscendentResidue.getFluid(7875L), Materials.CosmicNeutronium.getMolten(147456L)},
-            2100, 51200000, 11800);
+            new FluidStack[]{Materials.DimensionallyTranscendentResidue.getFluid(4410), Materials.CosmicNeutronium.getMolten(73728L)},
+            4200, 51200000, 10900);
 
         GT_Values.RA.addPlasmaForgeRecipe(
             new ItemStack[]{GT_Values.NI},
-            new FluidStack[]{Materials.DimensionallyTranscendentResplendentCatalyst.getFluid(7801L), Materials.Copper.getMolten(294912L)},
+            new FluidStack[]{Materials.ExcitedDTPC.getFluid(16853L), Materials.Copper.getMolten(147456L)},
 
             new ItemStack[]{GT_Values.NI},
-            new FluidStack[]{Materials.DimensionallyTranscendentResidue.getFluid(3900L), Materials.CosmicNeutronium.getMolten(294912L)},
-            1050, 102400000, 12700);
+            new FluidStack[]{Materials.DimensionallyTranscendentResidue.getFluid(4213L), Materials.CosmicNeutronium.getMolten(147456L)},
+            2100, 102400000, 11800);
 
         GT_Values.RA.addPlasmaForgeRecipe(
             new ItemStack[]{GT_Values.NI},
-            new FluidStack[]{Materials.DimensionallyTranscendentExoticCatalyst.getFluid(1756L), Materials.Copper.getMolten(589824L)},
+            new FluidStack[]{Materials.ExcitedDTRC.getFluid(7616L), Materials.Copper.getMolten(294912L)},
 
             new ItemStack[]{GT_Values.NI},
-            new FluidStack[]{Materials.DimensionallyTranscendentResidue.getFluid(1756L), Materials.CosmicNeutronium.getMolten(589824L)},
-            525, 204800000, 13600);
+            new FluidStack[]{Materials.DimensionallyTranscendentResidue.getFluid(3808L), Materials.CosmicNeutronium.getMolten(294912L)},
+            1050, 204800000, 12700);
+
+        GT_Values.RA.addPlasmaForgeRecipe(
+            new ItemStack[]{GT_Values.NI},
+            new FluidStack[]{Materials.ExcitedDTEC.getFluid(3256L), Materials.Copper.getMolten(589824L)},
+
+            new ItemStack[]{GT_Values.NI},
+            new FluidStack[]{Materials.DimensionallyTranscendentResidue.getFluid(3256L), Materials.CosmicNeutronium.getMolten(589824L)},
+            525, 409600000, 13600);
 
         // Infinity Smelting.
         GT_Values.RA.addPlasmaForgeRecipe(
             new ItemStack[]{GT_Values.NI},
-            new FluidStack[]{Materials.DimensionallyTranscendentCrudeCatalyst.getFluid(460416L), Materials.InfinityCatalyst.getMolten(73728L)},
+            new FluidStack[]{Materials.ExcitedDTCC.getFluid(91933L), Materials.InfinityCatalyst.getMolten(28800L)},
 
             new ItemStack[]{GT_Values.NI},
-            new FluidStack[]{Materials.DimensionallyTranscendentResidue.getFluid(57552L), Materials.Infinity.getMolten(73728L)},
-            4200, 204800000, 10900);
-
-        GT_Values.RA.addPlasmaForgeRecipe(
-            new ItemStack[]{GT_Values.NI},
-            new FluidStack[]{Materials.DimensionallyTranscendentProsaicCatalyst.getFluid(300036L), Materials.InfinityCatalyst.getMolten(294912L)},
-
-            new ItemStack[]{GT_Values.NI},
-            new FluidStack[]{Materials.DimensionallyTranscendentResidue.getFluid(75009), Materials.Infinity.getMolten(147456L)},
-            2100, 204800000*2, 11800);
+            new FluidStack[]{Materials.DimensionallyTranscendentResidue.getFluid(11491L), Materials.Infinity.getMolten(28800L)},
+            4200, 112066560, 10900);
 
         GT_Values.RA.addPlasmaForgeRecipe(
             new ItemStack[]{GT_Values.NI},
-            new FluidStack[]{Materials.DimensionallyTranscendentResplendentCatalyst.getFluid(74299L), Materials.InfinityCatalyst.getMolten(294912L)},
+            new FluidStack[]{Materials.ExcitedDTPC.getFluid(43917), Materials.InfinityCatalyst.getMolten(57600L)},
 
             new ItemStack[]{GT_Values.NI},
-            new FluidStack[]{Materials.DimensionallyTranscendentResidue.getFluid(37149L), Materials.Infinity.getMolten(294912L)},
-            1050, 204800000*4, 12700);
+            new FluidStack[]{Materials.DimensionallyTranscendentResidue.getFluid(10979), Materials.Infinity.getMolten(57600L)},
+            2100, 224133120, 11800);
 
         GT_Values.RA.addPlasmaForgeRecipe(
             new ItemStack[]{GT_Values.NI},
-            new FluidStack[]{Materials.DimensionallyTranscendentExoticCatalyst.getFluid(16730L), Materials.InfinityCatalyst.getMolten(589824L)},
+            new FluidStack[]{Materials.ExcitedDTRC.getFluid(19843L), Materials.InfinityCatalyst.getMolten(115200L)},
 
             new ItemStack[]{GT_Values.NI},
-            new FluidStack[]{Materials.DimensionallyTranscendentResidue.getFluid(16730L), Materials.Infinity.getMolten(589824L)},
-            525, 204800000*8, 13600);
+            new FluidStack[]{Materials.DimensionallyTranscendentResidue.getFluid(9921L), Materials.Infinity.getMolten(115200L)},
+            1050, 448266240, 12700);
+
+        GT_Values.RA.addPlasmaForgeRecipe(
+            new ItemStack[]{GT_Values.NI},
+            new FluidStack[]{Materials.ExcitedDTEC.getFluid(8484L), Materials.InfinityCatalyst.getMolten(230400L)},
+
+            new ItemStack[]{GT_Values.NI},
+            new FluidStack[]{Materials.DimensionallyTranscendentResidue.getFluid(8484L), Materials.Infinity.getMolten(230400L)},
+            525, 896532480, 13600);
 
         // Misc
 
         GT_Values.RA.addPlasmaForgeRecipe(
             new ItemStack[]{GT_Values.NI},
-            new FluidStack[]{Materials.DimensionallyTranscendentResidue.getFluid(100L), Materials.Infinity.getMolten(9216L)},
+            new FluidStack[]{Materials.DimensionallyTranscendentResidue.getFluid(10000L), Materials.Infinity.getMolten(9216L)},
 
             new ItemStack[]{GT_Values.NI},
             new FluidStack[]{Materials.SpaceTime.getFluid(1L)},
@@ -737,13 +737,13 @@ public class GT_MachineRecipeLoader implements Runnable {
 
         GT_Values.RA.addFusionReactorRecipe(
             new FluidStack[]{Materials.Helium.getPlasma(10L), Materials.Iron.getPlasma(10L), Materials.Calcium.getPlasma(10L), Materials.Niobium.getPlasma(10L), Materials.Radon.getPlasma(10L), Materials.Nickel.getPlasma(10L), Materials.Boron.getPlasma(10L), Materials.Sulfur.getPlasma(10L)},
-            new FluidStack[]{Materials.DimensionallyTranscendentResplendentCatalyst.getFluid(10L)},
+            new FluidStack[]{Materials.DimensionallyTranscendentProsaicCatalyst.getFluid(10L)},
             20, 65000, 300000000
         );
 
         GT_Values.RA.addFusionReactorRecipe(
             new FluidStack[]{Materials.Helium.getPlasma(10L), Materials.Iron.getPlasma(10L), Materials.Calcium.getPlasma(10L), Materials.Niobium.getPlasma(10L), Materials.Radon.getPlasma(10L), Materials.Nickel.getPlasma(10L), Materials.Boron.getPlasma(10L), Materials.Sulfur.getPlasma(10L), Materials.Nitrogen.getPlasma(10L), Materials.Zinc.getPlasma(10L), Materials.Silver.getPlasma(10L), Materials.Titanium.getPlasma(10L)},
-            new FluidStack[]{Materials.DimensionallyTranscendentExoticCatalyst.getFluid(10L)},
+            new FluidStack[]{Materials.DimensionallyTranscendentResplendentCatalyst.getFluid(10L)},
             20, 130000, 600000000
         );
 
@@ -755,6 +755,44 @@ public class GT_MachineRecipeLoader implements Runnable {
 
         // -----------------------------------------------------------------------------------------------------------------------------
 
+        // 1234
+        GT_Values.RA.addLaserEngraverRecipe(
+            new ItemStack[]{GT_Values.NI},
+            new FluidStack[]{Materials.DimensionallyTranscendentCrudeCatalyst.getFluid(1L)},
+
+            new ItemStack[]{GT_Values.NI},
+            new FluidStack[]{Materials.ExcitedDTCC.getFluid(1L)},
+            5, 8000000, true
+        );
+
+        GT_Values.RA.addLaserEngraverRecipe(
+            new ItemStack[]{GT_Values.NI},
+            new FluidStack[]{Materials.DimensionallyTranscendentProsaicCatalyst.getFluid(1L)},
+
+            new ItemStack[]{GT_Values.NI},
+            new FluidStack[]{Materials.ExcitedDTPC.getFluid(1L)},
+            5, 32000000, true
+        );
+
+        GT_Values.RA.addLaserEngraverRecipe(
+            new ItemStack[]{GT_Values.NI},
+            new FluidStack[]{Materials.DimensionallyTranscendentResplendentCatalyst.getFluid(1L)},
+
+            new ItemStack[]{GT_Values.NI},
+            new FluidStack[]{Materials.ExcitedDTRC.getFluid(1L)},
+            5, 128000000, true
+        );
+
+        GT_Values.RA.addLaserEngraverRecipe(
+            new ItemStack[]{GT_Values.NI},
+            new FluidStack[]{Materials.DimensionallyTranscendentExoticCatalyst.getFluid(1L)},
+
+            new ItemStack[]{GT_Values.NI},
+            new FluidStack[]{Materials.ExcitedDTEC.getFluid(1L)},
+            5, 512000000, true
+        );
+
+        // -----------------------------------------------------------------------------------------------------------------------------
 
         GT_Values.RA.addAssemblerRecipe(new ItemStack(Blocks.redstone_torch, 2, 32767), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L), Materials.Concrete.getMolten(144L), new ItemStack(Items.repeater, 1, 0), 80, 10);
         GT_Values.RA.addAssemblerRecipe(new ItemStack(Items.leather, 1, 32767), new ItemStack(Items.lead, 1, 32767), Materials.Glue.getFluid(72L), new ItemStack(Items.name_tag, 1, 0), 100, 8);
