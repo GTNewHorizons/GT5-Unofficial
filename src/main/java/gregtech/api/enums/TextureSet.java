@@ -3,6 +3,11 @@ package gregtech.api.enums;
 import gregtech.api.interfaces.IIconContainer;
 
 public class TextureSet {
+
+    public final TextureSet SET_CUSTOM(String aTextureFileName) {
+        return new TextureSet("CUSTOM/" + aTextureFileName);
+    }
+
     public static final TextureSet
             SET_NONE = new TextureSet("NONE"),
             SET_DULL = new TextureSet("DULL"),
