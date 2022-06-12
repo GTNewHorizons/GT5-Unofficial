@@ -4,7 +4,7 @@ import gregtech.api.interfaces.IIconContainer;
 
 public class TextureSet {
 
-    public final TextureSet SET_CUSTOM(String aTextureFileName) {
+    public static final TextureSet SET_CUSTOM(String aTextureFileName) {
         return new TextureSet("CUSTOM/" + aTextureFileName);
     }
 
