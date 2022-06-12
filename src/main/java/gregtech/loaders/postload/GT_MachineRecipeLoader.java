@@ -649,7 +649,7 @@ public class GT_MachineRecipeLoader implements Runnable {
 
         GT_Values.RA.addPlasmaForgeRecipe(
             new ItemStack[]{GT_Values.NI},
-            new FluidStack[]{Materials.ExcitedDTPC.getFluid(16853L), Materials.Copper.getMolten(294912L)},
+            new FluidStack[]{Materials.ExcitedDTPC.getFluid(16853L), Materials.Copper.getMolten(147456L)},
 
             new ItemStack[]{GT_Values.NI},
             new FluidStack[]{Materials.DimensionallyTranscendentResidue.getFluid(4213L), Materials.CosmicNeutronium.getMolten(147456L)},
