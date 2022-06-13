@@ -259,7 +259,6 @@ public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<Di
                 .addInfo("Controller block for the Dissolution Tank")
                 .addInfo("Input Water and Fluid, output Fluid")
                 .addInfo("You must input the Fluids at the correct Ratio")
-                .addInfo("(^Not currently working)")
                 .addInfo(BLUEPRINT_INFO)
                 .addSeparator()
                 .addController("Front bottom")
