@@ -215,7 +215,7 @@ public class WerkstoffMaterialPool implements Runnable {
     
     public static final Werkstoff NitratedRareEarthMonaziteConcentrate = new Werkstoff(
             new short[] {250, 223, 173},
-            "Nitrated Monazite Rare Earth Concentrate",
+            "Nitrogenated Monazite Rare Earth Concentrate",
             subscriptNumbers("??LaNd??"),
             new Werkstoff.Stats(),
             Werkstoff.Types.MIXTURE,
@@ -394,7 +394,7 @@ public class WerkstoffMaterialPool implements Runnable {
     
     public static final Werkstoff SaturatedMonaziteRareEarthMixture = new Werkstoff(
             new short[] {250, 214, 165},
-            "Saturated Monazite Rare Earth Mixture",
+            "Saturated Monazite Rare Earth",
             subscriptNumbers("????"),
             new Werkstoff.Stats(),
             Werkstoff.Types.MIXTURE,
@@ -738,7 +738,7 @@ public class WerkstoffMaterialPool implements Runnable {
     
     public static final Werkstoff NitratedBastnasiteRarerEarthOxides = new Werkstoff(
     		new short[] {160, 90, 60},
-    		"Nitrated Bastnasite Rarer Earth Oxides",
+    		"Nitrogenated Bastnasite Rarer Earth Oxides",
     		new Werkstoff.Stats(),
     		Werkstoff.Types.MIXTURE,
     		new Werkstoff.GenerationFeatures().disable().addCells(),
@@ -748,7 +748,7 @@ public class WerkstoffMaterialPool implements Runnable {
     
     public static final Werkstoff SaturatedBastnasiteRarerEarthOxides = new Werkstoff(
     		new short[] {170, 90, 60},
-    		"Saturated Bastnasite Rarer Earth Oxides",
+    		"Bastnasite Rarer Earth Oxide Suspension",
     		new Werkstoff.Stats(),
     		Werkstoff.Types.MIXTURE,
     		new Werkstoff.GenerationFeatures().disable().addCells(),
@@ -880,7 +880,7 @@ public class WerkstoffMaterialPool implements Runnable {
     
     public static final Werkstoff NitratedSamariumTerbiumMixture = new Werkstoff(
     		new short[] {223, 182, 193},
-    		"Nitrated Samarium-Terbium Mixture",
+    		"Nitrogenated Samarium-Terbium Mixture",
     		subscriptNumbers("??SmTb??NH4NO3"),
     		new Werkstoff.Stats(),
     		Werkstoff.Types.MIXTURE,
@@ -1110,6 +1110,16 @@ public class WerkstoffMaterialPool implements Runnable {
     				,
     		offsetID3 + 15,
     		TextureSet.SET_METALLIC
+    	);
+    
+    public static final Werkstoff DilutedAcetone = new Werkstoff(
+    		new short[] {254, 254, 250},
+    		"Diluted Acetone",
+    		new Werkstoff.Stats(),
+    		Werkstoff.Types.MIXTURE,
+    		new Werkstoff.GenerationFeatures().disable().addCells(),
+    		offsetID3 + 16,
+    		TextureSet.SET_FLUID
     	);
     
     
