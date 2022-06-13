@@ -1172,7 +1172,7 @@ public class RecipeLoader {
 
 		//Dissolution Tank
 		GT_Values.RA.addAssemblerRecipe(new ItemStack[]
-				{ItemList.Hull_EV.get(1L), ItemList.Super_Tank_HV.get(2L), ItemList.Electric_Motor_EV.get(4L), ItemList.Electric_Pump_EV.get(2L), GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.VibrantAlloy, 4L), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 4L), GT_Utility.getIntegratedCircuit(1)},
+				{ItemList.Hull_EV.get(1L), ItemList.Super_Tank_HV.get(2L), ItemList.Electric_Motor_EV.get(4L), ItemList.Electric_Pump_EV.get(2L), GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.VibrantAlloy, 4L), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 4L), GT_Utility.getIntegratedCircuit(2)},
 				Materials.Polytetrafluoroethylene.getMolten(720), LanthItemList.DISSOLUTION_TANK, 400, 960);
 		
 		
