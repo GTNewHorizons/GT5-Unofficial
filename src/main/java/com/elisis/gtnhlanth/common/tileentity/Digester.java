@@ -113,8 +113,8 @@ public class Digester extends GT_MetaTileEntity_EnhancedMultiBlockBase<Digester>
 		
 		//Collection<GT_Recipe> tRecipes = RecipeAdder.instance.DigesterRecipes.mRecipeList;
 		GT_Recipe tRecipe = RecipeAdder.instance.DigesterRecipes.findRecipe(
-				this.getBaseMetaTileEntity(), 
-				this.doTickProfilingInThisTick, 
+				getBaseMetaTileEntity(), 
+				false, 
 				tVoltage, 
 				tFluidInputArray,
 				tItems
@@ -122,20 +122,24 @@ public class Digester extends GT_MetaTileEntity_EnhancedMultiBlockBase<Digester>
 		
 		if (tRecipe == null)
 			return false;
-		GT_Log.out.print("Recipe not null\n");
+		//GT_Log.out.print("Recipe not null\n");
 		if (tRecipe.isRecipeInputEqual(true, tFluidInputArray, tItems)) {
-			GT_Log.out.print("in isRecipeInputEqual\n");
+			//GT_Log.out.print("in isRecipeInputEqual\n");
 			this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
 			this.mEfficiencyIncrease = 10000;
 			this.calculateOverclockedNessMulti(tRecipe.mEUt, tRecipe.mDuration, 1, tVoltage);
 			
 			if (mMaxProgresstime == Integer.MAX_VALUE - 1 && this.mEUt == Integer.MAX_VALUE - 1)
 				return false;
-			GT_Log.out.print("valid values");
+			
+			if (this.mEUt > 0)
+				this.mEUt = (-this.mEUt);	
+			//GT_Log.out.print("valid values");
 			
 			if (tRecipe.mSpecialValue > this.getCoilLevel().getHeat())
 				return false;
-			GT_Log.out.print("Coils good");
+			//GT_Log.out.print("Coils good\n");
+			//GT_Log.out.print(tRecipe.getFluidOutput(0).getLocalizedName());
 			this.mOutputFluids = new FluidStack[] {
 					tRecipe.getFluidOutput(0)
 			};
