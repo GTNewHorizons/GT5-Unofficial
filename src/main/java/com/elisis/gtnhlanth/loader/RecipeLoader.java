@@ -1196,6 +1196,14 @@ public class RecipeLoader {
 				7680
 			);
 		
+		GT_Values.RA.addFluidHeaterRecipe(
+				null,
+				WerkstoffMaterialPool.DilutedAcetone.getFluidOrGas(250),
+				Materials.Acetone.getFluid(150),
+				120,
+				120
+			);
+		
 		// PTMEG Manipulation
 		
 		GT_Values.RA.addFluidSolidifierRecipe(
