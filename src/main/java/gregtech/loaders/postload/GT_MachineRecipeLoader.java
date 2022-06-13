@@ -743,7 +743,6 @@ public class GT_MachineRecipeLoader implements Runnable {
 
         // -----------------------------------------------------------------------------------------------------------------------------
 
-        // 1234
         GT_Values.RA.addLaserEngraverRecipe(
             new ItemStack[]{GT_Values.NI},
             new FluidStack[]{Materials.DimensionallyTranscendentCrudeCatalyst.getFluid(1L)},
