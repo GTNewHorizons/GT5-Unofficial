@@ -84,7 +84,7 @@ public class RecipeLoader_02 {
         CrackRecipeAdder.reAddBlastRecipe(MyMaterial.artheriumSn, 500, 122880, 6500, true);
         CrackRecipeAdder.reAddBlastRecipe(MyMaterial.titaniumBetaC, 400, 7680, 5300, true);
         CrackRecipeAdder.reAddBlastRecipe(MyMaterial.dalisenite, 800, 491520, 8700, true);
-        CrackRecipeAdder.reAddBlastRecipe(MyMaterial.hikarium, 1200, 122800, 5400, true);
+        CrackRecipeAdder.reAddBlastRecipe(MyMaterial.hikarium, 1200, 30720, 5400, true);
         CrackRecipeAdder.reAddBlastRecipe(MyMaterial.tairitsu, 1200, 1966080, 7400, true);
 
         GT_Values.RA.addAssemblerRecipe(
