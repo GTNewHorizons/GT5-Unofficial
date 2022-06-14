@@ -454,7 +454,7 @@ public class MilledOreProcessing extends ItemPackage {
 				new FluidStack[] {
 						FluidUtils.getFluidStack(SphaleriteFlotationFroth, 1000)						
 				},
-				20 * 1200, 
+				20 * 480,
 				MaterialUtils.getVoltageForTier(6)
 				);
 
@@ -468,7 +468,7 @@ public class MilledOreProcessing extends ItemPackage {
 				new FluidStack[] {
 						FluidUtils.getFluidStack(ChalcopyriteFlotationFroth, 1000)						
 				},
-				20 * 1200, 
+				20 * 480,
 				MaterialUtils.getVoltageForTier(5)
 				);
 
@@ -482,7 +482,7 @@ public class MilledOreProcessing extends ItemPackage {
 				new FluidStack[] {
 						FluidUtils.getFluidStack(NickelFlotationFroth, 1000)						
 				},
-				20 * 1200, 
+				20 * 480,
 				MaterialUtils.getVoltageForTier(5)
 				);
 
@@ -496,7 +496,7 @@ public class MilledOreProcessing extends ItemPackage {
 				new FluidStack[] {
 						FluidUtils.getFluidStack(PlatinumFlotationFroth, 1000)						
 				},
-				20 * 1200, 
+				20 * 480,
 				MaterialUtils.getVoltageForTier(6)
 				);
 
@@ -511,7 +511,7 @@ public class MilledOreProcessing extends ItemPackage {
 				new FluidStack[] {
 						FluidUtils.getFluidStack(PentlanditeFlotationFroth, 1000)						
 				},
-				20 * 1200, 
+				20 * 480,
 				MaterialUtils.getVoltageForTier(6)
 				);
 		
@@ -529,7 +529,7 @@ public class MilledOreProcessing extends ItemPackage {
 				new FluidStack[] {
 						FluidUtils.getFluidStack(RedstoneFlotationFroth, 1000)						
 				},
-				20 * 1200, 
+				20 * 480,
 				MaterialUtils.getVoltageForTier(5)
 				);
 
@@ -543,7 +543,7 @@ public class MilledOreProcessing extends ItemPackage {
 				new FluidStack[] {
 						FluidUtils.getFluidStack(SpessartineFlotationFroth, 1000)						
 				},
-				20 * 1200, 
+				20 * 480,
 				MaterialUtils.getVoltageForTier(6)
 				);
 
@@ -557,7 +557,7 @@ public class MilledOreProcessing extends ItemPackage {
 				new FluidStack[] {
 						FluidUtils.getFluidStack(GrossularFlotationFroth, 1000)						
 				},
-				20 * 1200, 
+				20 * 480,
 				MaterialUtils.getVoltageForTier(6)
 				);
 
@@ -571,7 +571,7 @@ public class MilledOreProcessing extends ItemPackage {
 				new FluidStack[] {
 						FluidUtils.getFluidStack(AlmandineFlotationFroth, 1000)						
 				},
-				20 * 1200, 
+				20 * 480,
 				MaterialUtils.getVoltageForTier(5)
 				);
 
@@ -585,7 +585,7 @@ public class MilledOreProcessing extends ItemPackage {
 				new FluidStack[] {
 						FluidUtils.getFluidStack(PyropeFlotationFroth, 1000)						
 				},
-				20 * 1200, 
+				20 * 480,
 				MaterialUtils.getVoltageForTier(4)
 				);
 
@@ -599,7 +599,7 @@ public class MilledOreProcessing extends ItemPackage {
 				new FluidStack[] {
 						FluidUtils.getFluidStack(MonaziteFlotationFroth, 1000)						
 				},
-				20 * 1200, 
+				20 * 480,
 				MaterialUtils.getVoltageForTier(6)
 				);
 
