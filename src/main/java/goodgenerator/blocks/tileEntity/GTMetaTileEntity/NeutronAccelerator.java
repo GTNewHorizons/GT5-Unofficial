@@ -4,7 +4,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import net.minecraft.nbt.NBTTagCompound;
 
 import static gregtech.api.enums.GT_Values.V;
 
@@ -20,16 +19,6 @@ public class NeutronAccelerator extends GT_MetaTileEntity_Hatch_Energy {
 
     public int getMaxEUConsume() {
         return (int)(V[mTier] * 8 / 10);
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
-    }
-
-    @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        super.saveNBTData(aNBT);
     }
 
     @Override

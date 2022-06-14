@@ -21,6 +21,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.objects.XSTR;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
@@ -33,7 +34,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
-import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -42,7 +42,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static goodgenerator.util.StructureHelper.addFrame;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
-import static org.apache.commons.lang3.RandomUtils.nextInt;
 
 public class NeutronActivator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM implements IConstructable {
 
@@ -52,6 +51,7 @@ public class NeutronActivator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
     protected int casingAmount = 0;
     protected int height = 0;
     protected int eV = 0, mCeil = 0, mFloor = 0;
+    final XSTR R = new XSTR();
 
     private static final IIconContainer textureFontOn = new Textures.BlockIcons.CustomIcon("icons/NeutronActivator_On");
     private static final IIconContainer textureFontOn_Glow = new Textures.BlockIcons.CustomIcon("icons/NeutronActivator_On_GLOW");
@@ -343,7 +343,7 @@ public class NeutronActivator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
             for (NeutronAccelerator tHatch : mNeutronAccelerator) {
                 if (tHatch.getBaseMetaTileEntity().isActive() && this.getRepairStatus() == this.getIdealStatus()) {
                     anyWorking = true;
-                    this.eV += Math.max(nextInt(tHatch.getMaxEUConsume(), tHatch.getMaxEUConsume() * 2 + 1) * 10 * Math.pow(0.95, height - 4), 10);
+                    this.eV += Math.max((R.nextInt(tHatch.getMaxEUConsume() + 1) + tHatch.getMaxEUConsume()) * 10 * Math.pow(0.95, height - 4), 10);
                 }
             }
             if (!anyWorking) {
@@ -414,7 +414,7 @@ public class NeutronActivator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
         boolean anyWorking = false;
         for (NeutronAccelerator tHatch : mNeutronAccelerator) {
             if (tHatch.getBaseMetaTileEntity().isActive()) {
-                currentNKEInput += nextInt(tHatch.getMaxEUConsume(), tHatch.getMaxEUConsume() * 2 + 1) * 10 * Math.pow(0.95, height - 4);
+                currentNKEInput += (R.nextInt(tHatch.getMaxEUConsume() + 1) + tHatch.getMaxEUConsume()) * 10 * Math.pow(0.95, height - 4);
                 anyWorking = true;
             }
         }
