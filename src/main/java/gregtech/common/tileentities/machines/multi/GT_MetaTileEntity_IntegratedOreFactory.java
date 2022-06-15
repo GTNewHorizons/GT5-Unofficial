@@ -20,6 +20,7 @@ import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -42,6 +43,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends GT_MetaTileEntity_En
     private static final String THERMAL = "Thermal Centrifuge";
     private static final String CENTRIFUGE = "Centrifuge";
     private static final String SIFTER = "Sifter";
+    private static final String CHEM_WASH = "Chemical Bathing";
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<GT_MetaTileEntity_IntegratedOreFactory> STRUCTURE_DEFINITION = StructureDefinition.<GT_MetaTileEntity_IntegratedOreFactory>builder()
         .addShape(STRUCTURE_PIECE_MAIN, transpose(new String[][]{
@@ -173,9 +175,10 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends GT_MetaTileEntity_En
         tt.addMachineType("Ore Processor")
             .addInfo("Controller Block for the Integrated Ore Factory")
             .addInfo("It is OP. I mean ore processor.")
-            .addInfo("Do crush/ore wash/centrifuge/thermal centrifuge/sifter in one step.")
+            .addInfo("Do all ore procession in one step.")
             .addInfo("Can process up to 1024 ores per time.")
-            .addInfo("Every ore costs 30EU/t * 90s (can be overclocked), 2L lubricant, 200L distilled water.")
+            .addInfo("Every ore costs 30EU/t, 2L lubricant, 200L distilled water.")
+            .addInfo("Process time is depend on mode.")
             .addInfo("Use a screwdriver to switch mode.")
             .addInfo("Sneak click with screwdriver to void the stone dusts.")
             .addSeparator()
@@ -184,7 +187,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends GT_MetaTileEntity_En
             .addEnergyHatch("Button Casing", 1)
             .addMaintenanceHatch("Button Casing", 1)
             .addInputBus("Input ore/crushed ore", 2)
-            .addInputHatch("Input lubricant/distilled water", 3)
+            .addInputHatch("Input lubricant/distilled water/washing chemicals", 3)
             .addMufflerHatch("Output Pollution", 3)
             .addOutputBus("Output products", 4)
             .toolTipFinisher("Gregtech");
@@ -204,6 +207,23 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends GT_MetaTileEntity_En
     @Override
     public boolean isCorrectMachinePart(ItemStack aStack) {
         return true;
+    }
+
+    private int getTime() {
+        switch (sMode) {
+            case 0:
+                return 30 * 20;
+            case 1:
+                return 15 * 20;
+            case 2:
+                return 10 * 20;
+            case 3:
+                return 20 * 20;
+            case 4:
+                return 17 * 20;
+        }
+        //go to hell
+        return 1000000000;
     }
 
     @Override
@@ -260,26 +280,32 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends GT_MetaTileEntity_En
 
         switch (sMode) {
             case 0:
-                doMac();
-                doWash();
-                doThermal();
-                doMac();
+                doMac(isOre);
+                doWash(isCrushedOre);
+                doThermal(isCrushedPureOre, isCrushedOre);
+                doMac(isThermal, isOre, isCrushedOre, isCrushedPureOre);
                 break;
             case 1:
-                doMac();
-                doWash();
-                doMac();
-                doCentrifuge();
+                doMac(isOre);
+                doWash(isCrushedOre);
+                doMac(isOre, isCrushedOre, isCrushedPureOre);
+                doCentrifuge(isImpureDust, isPureDust);
                 break;
             case 2:
-                doMac();
-                doMac();
-                doCentrifuge();
+                doMac(isOre);
+                doMac(isThermal, isOre, isCrushedOre, isCrushedPureOre);
+                doCentrifuge(isImpureDust, isPureDust);
                 break;
             case 3:
-                doMac();
-                doWash();
-                doSift();
+                doMac(isOre);
+                doWash(isCrushedOre);
+                doSift(isCrushedPureOre);
+                break;
+            case 4:
+                doMac(isOre);
+                doChemWash(isCrushedOre, isCrushedPureOre);
+                doMac(isCrushedOre, isCrushedPureOre);
+                doCentrifuge(isImpureDust, isPureDust);
                 break;
             default:
                 return false;
@@ -288,13 +314,23 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends GT_MetaTileEntity_En
         this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;
         this.mOutputItems = sMidProduct;
-        calculateOverclockedNessMulti(30 * tRealUsed, 1800, 1, getMaxInputVoltage());
+        calculateOverclockedNessMulti(30 * tRealUsed, getTime(), 1, getMaxInputVoltage());
         if (this.mEUt > 0) {
             this.mEUt = -this.mEUt;
         }
         this.updateSlots();
 
         return true;
+    }
+
+    @SafeVarargs
+    private final boolean checkTypes(int aID, HashSet<Integer>... aTables) {
+        for (HashSet<Integer> set : aTables) {
+            if (set.contains(aID)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -304,16 +340,17 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends GT_MetaTileEntity_En
             GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.void", sVoidStone));
             return;
         }
-        sMode = (sMode + 1) % 4;
+        sMode = (sMode + 1) % 5;
         String des;
         switch (sMode) {
-            case 0: des = CRUSH + "->" + WASH + "->" + THERMAL + "->" + CRUSH; break;
-            case 1: des = CRUSH + "->" + WASH + "->" + CRUSH + "->" + CENTRIFUGE; break;
-            case 2: des = CRUSH + "->" + CRUSH + "->" + CENTRIFUGE; break;
-            case 3: des = CRUSH + "->" + WASH + "->" + SIFTER; break;
+            case 0: des = EnumChatFormatting.AQUA + CRUSH + "->" + WASH + "->" + THERMAL + "->" + CRUSH; break;
+            case 1: des = EnumChatFormatting.AQUA + CRUSH + "->" + WASH + "->" + CRUSH + "->" + CENTRIFUGE; break;
+            case 2: des = EnumChatFormatting.AQUA + CRUSH + "->" + CRUSH + "->" + CENTRIFUGE; break;
+            case 3: des = EnumChatFormatting.AQUA + CRUSH + "->" + WASH + "->" + SIFTER; break;
+            case 4: des = EnumChatFormatting.AQUA + CRUSH + "->" + CHEM_WASH + "->" + CRUSH + "->" + CENTRIFUGE; break;
             default: des = "";
         }
-        GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor", des));
+        GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor", des, getTime() / 20));
     }
 
     @Override
@@ -330,13 +367,13 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends GT_MetaTileEntity_En
         super.saveNBTData(aNBT);
     }
 
-    private void doMac() {
+    @SafeVarargs
+    private final void doMac(HashSet<Integer>... aTables) {
         List<ItemStack> tProduct = new ArrayList<>();
         if (sMidProduct != null) {
             for (ItemStack aStack : sMidProduct) {
                 int tID = GT_Utility.stackToInt(aStack);
-                if (isCrushedPureOre.contains(tID) || isCrushedOre.contains(tID) ||
-                    isThermal.contains(tID) || isOre.contains(tID)) {
+                if (checkTypes(tID, aTables)) {
                     GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sMaceratorRecipes.findRecipe(getBaseMetaTileEntity(), false, GT_Values.V[15], null, aStack);
                     if (tRecipe != null) {
                         tProduct.addAll(getOutputStack(tRecipe, aStack.stackSize));
@@ -351,12 +388,13 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends GT_MetaTileEntity_En
         doCompress(tProduct);
     }
 
-    private void doWash() {
+    @SafeVarargs
+    private final void doWash(HashSet<Integer>... aTables) {
         List<ItemStack> tProduct = new ArrayList<>();
         if (sMidProduct != null) {
             for (ItemStack aStack : sMidProduct) {
                 int tID = GT_Utility.stackToInt(aStack);
-                if (isCrushedOre.contains(tID)) {
+                if (checkTypes(tID, aTables)) {
                     GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sOreWasherRecipes.findRecipe(getBaseMetaTileEntity(), false, GT_Values.V[15], new FluidStack[]{GT_ModHandler.getDistilledWater(Integer.MAX_VALUE)}, aStack);
                     if (tRecipe != null) {
                         tProduct.addAll(getOutputStack(tRecipe, aStack.stackSize));
@@ -371,12 +409,13 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends GT_MetaTileEntity_En
         doCompress(tProduct);
     }
 
-    private void doThermal() {
+    @SafeVarargs
+    private final void doThermal(HashSet<Integer>... aTables) {
         List<ItemStack> tProduct = new ArrayList<>();
         if (sMidProduct != null) {
             for (ItemStack aStack : sMidProduct) {
                 int tID = GT_Utility.stackToInt(aStack);
-                if (isCrushedOre.contains(tID) || isCrushedPureOre.contains(tID)) {
+                if (checkTypes(tID, aTables)) {
                     GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sThermalCentrifugeRecipes.findRecipe(getBaseMetaTileEntity(), false, GT_Values.V[15], null, aStack);
                     if (tRecipe != null) {
                         tProduct.addAll(getOutputStack(tRecipe, aStack.stackSize));
@@ -391,12 +430,13 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends GT_MetaTileEntity_En
         doCompress(tProduct);
     }
 
-    private void doCentrifuge() {
+    @SafeVarargs
+    private final void doCentrifuge(HashSet<Integer>... aTables) {
         List<ItemStack> tProduct = new ArrayList<>();
         if (sMidProduct != null) {
             for (ItemStack aStack : sMidProduct) {
                 int tID = GT_Utility.stackToInt(aStack);
-                if (isImpureDust.contains(tID) || isPureDust.contains(tID)) {
+                if (checkTypes(tID, aTables)) {
                     GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.findRecipe(getBaseMetaTileEntity(), false, GT_Values.V[15], null, aStack);
                     if (tRecipe != null) {
                         tProduct.addAll(getOutputStack(tRecipe, aStack.stackSize));
@@ -411,12 +451,13 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends GT_MetaTileEntity_En
         doCompress(tProduct);
     }
 
-    private void doSift() {
+    @SafeVarargs
+    private final void doSift(HashSet<Integer>... aTables) {
         List<ItemStack> tProduct = new ArrayList<>();
         if (sMidProduct != null) {
             for (ItemStack aStack : sMidProduct) {
                 int tID = GT_Utility.stackToInt(aStack);
-                if (isCrushedPureOre.contains(tID)) {
+                if (checkTypes(tID, aTables)) {
                     GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sSifterRecipes.findRecipe(getBaseMetaTileEntity(), false, GT_Values.V[15], null, aStack);
                     if (tRecipe != null) {
                         tProduct.addAll(getOutputStack(tRecipe, aStack.stackSize));
@@ -429,6 +470,45 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends GT_MetaTileEntity_En
             }
         }
         doCompress(tProduct);
+    }
+
+    @SafeVarargs
+    private final void doChemWash(HashSet<Integer>... aTables) {
+        List<ItemStack> tProduct = new ArrayList<>();
+        if (sMidProduct != null) {
+            for (ItemStack aStack : sMidProduct) {
+                int tID = GT_Utility.stackToInt(aStack);
+                if (checkTypes(tID, aTables)) {
+                    GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sChemicalBathRecipes.findRecipe(getBaseMetaTileEntity(), false, GT_Values.V[15], getStoredFluids().toArray(new FluidStack[0]), aStack);
+                    if (tRecipe != null && tRecipe.getRepresentativeFluidInput(0) != null) {
+                        FluidStack tInputFluid = tRecipe.getRepresentativeFluidInput(0).copy();
+                        int tStored = getFluidAmount(tInputFluid);
+                        int tWashed = Math.min(tStored / tInputFluid.amount, aStack.stackSize);
+                        depleteInput(new FluidStack(tInputFluid.getFluid(), tWashed * tInputFluid.amount));
+                        tProduct.addAll(getOutputStack(tRecipe, tWashed));
+                        if (tWashed < aStack.stackSize) {
+                            tProduct.add(GT_Utility.copyAmountUnsafe(aStack.stackSize - tWashed, aStack));
+                        }
+                    } else {
+                        tProduct.add(aStack);
+                    }
+                } else {
+                    tProduct.add(aStack);
+                }
+            }
+        }
+        doCompress(tProduct);
+    }
+
+    private int getFluidAmount(FluidStack aFluid) {
+        int tAmt = 0;
+        if (aFluid == null) return 0;
+        for (FluidStack fluid : getStoredFluids()) {
+            if (aFluid.isFluidEqual(fluid)) {
+                tAmt += fluid.amount;
+            }
+        }
+        return tAmt;
     }
 
     private List<ItemStack> getOutputStack(GT_Recipe aRecipe, int aTime) {
