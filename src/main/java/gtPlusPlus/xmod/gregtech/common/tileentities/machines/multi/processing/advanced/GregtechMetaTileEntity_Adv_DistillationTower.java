@@ -31,6 +31,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 
@@ -142,6 +145,7 @@ public class GregtechMetaTileEntity_Adv_DistillationTower extends GregtechMeta_M
 		GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
 		tt.addMachineType(getMachineType())
 				.addInfo("Controller Block for the Advanced Distillation Tower")
+				.addInfo("250% faster than a standard DT in DT mode")
 				.addInfo("T1 and T2 constructed identical to standard DT")
 				.addInfo("Right click the controller with screwdriver to change mode.")
 				.addInfo("Max parallel dictated by tower tier and mode")
@@ -320,11 +324,13 @@ public class GregtechMetaTileEntity_Adv_DistillationTower extends GregtechMeta_M
 			return this.checkRecipeGeneric(getMaxParallelRecipes(), getEuDiscountForParallelism(), 100);
 		}
 		else {
+			ItemStack[] inputs = getCompactedInputs();
+	
 			for (GT_MetaTileEntity_Hatch_Input hatch : mInputHatches) {
 				FluidStack tFluid = hatch.getFluid();
 				if (tFluid != null) {
-					int para = (4* GT_Utility.getTier(this.getMaxInputVoltage()));
-					if (checkRecipeGeneric(null, new FluidStack[]{tFluid}, para,100, 250, 10000)) {
+					int para = (4 * GT_Utility.getTier(this.getMaxInputVoltage()));
+					if (checkRecipeGeneric(inputs, new FluidStack[]{tFluid}, para, 100, 250, 10000)) {
 						return true;
 					}
 				}
