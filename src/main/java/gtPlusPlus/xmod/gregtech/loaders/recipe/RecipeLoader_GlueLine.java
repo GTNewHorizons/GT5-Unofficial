@@ -421,7 +421,7 @@ public class RecipeLoader_GlueLine {
 
             GT_Values.RA.addAssemblerRecipe(
                     GT_OreDictUnificator.get(OrePrefixes.cableGt02, Materials.ElectrumFlux, 2),
-                    GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Naquadah, 18),
+                    GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Naquadah, 24),
                     MISC_MATERIALS.ETHYL_CYANOACRYLATE.getFluidStack(1152),
                     ItemUtils.getItemStackFromFQRN("gregtech:gt.metaitem.01:32561", 1),
                     100,
