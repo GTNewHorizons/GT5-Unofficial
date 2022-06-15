@@ -19,6 +19,7 @@ import java.util.ArrayList;
 
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
+import static gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine_Steam.calculateLooseFlow;
 
 public class GT_MetaTileEntity_LargeTurbine_HPSteam extends GT_MetaTileEntity_LargeTurbine {
 
@@ -83,30 +84,31 @@ public class GT_MetaTileEntity_LargeTurbine_HPSteam extends GT_MetaTileEntity_La
     }
 
     @Override
-    int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow, int aBaseEff) {
+    int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow, int aBaseEff, int overflowEfficiency) {
         if (looseFit) {
-            aOptFlow *= 4;
-            if (aBaseEff > 10000) {
-                aOptFlow *= Math.pow(1.1f, ((aBaseEff - 7500) / 10000F) * 20f);
-                aBaseEff = 7500;
-            } else if (aBaseEff > 7500) {
-                aOptFlow *= Math.pow(1.1f, ((aBaseEff - 7500) / 10000F) * 20f);
-                aBaseEff *= 0.75f;
-            } else {
-                aBaseEff *= 0.75f;
-            }
+            long[] calculatedFlow = calculateLooseFlow(aOptFlow, aBaseEff);
+            aOptFlow = GT_Utility.safeInt(calculatedFlow[0]);
+            aBaseEff = GT_Utility.safeInt(calculatedFlow[1]);
         }
         int tEU = 0;
         int totalFlow = 0; // Byproducts are based on actual flow
         int flow = 0;
-        int remainingFlow = GT_Utility.safeInt((long) (aOptFlow * 1.25f)); // Allowed to use up to 125% of optimal flow.  Variable required outside of loop for multi-hatch scenarios.
+
+        // Allowed to use up to 300% optimal flow rate, depending on the value of overflowMultiplier.
+        // This value is chosen because the highest EU/t possible depends on the overflowMultiplier, and the formula used
+        // makes it so the flow rate for that max, per value of overflowMultiplier, is (percentage of optimal flow rate):
+        // - 200% if it is 1
+        // - 250% if it is 2
+        // - 300% if it is 3
+        // Variable required outside of loop for multi-hatch scenarios.
+        int remainingFlow = GT_Utility.safeInt((long) (aOptFlow * (0.5f * overflowMultiplier + 1.5)));
         this.realOptFlow = aOptFlow;
 
         storedFluid = 0;
         for (int i = 0; i < aFluids.size() && remainingFlow > 0; i++) {
             final FluidStack aFluidStack = aFluids.get(i);
             if (GT_ModHandler.isSuperHeatedSteam(aFluidStack)) {
-                flow = Math.min(aFluidStack.amount, remainingFlow); // try to use up w/o exceeding remainingFlow
+                flow = Math.min(aFluidStack.amount, remainingFlow); // try to use up to the max flow defined just above
                 depleteInput(new FluidStack(aFluidStack, flow)); // deplete that amount
                 this.storedFluid += aFluidStack.amount;
                 remainingFlow -= flow; // track amount we're allowed to continue depleting from hatches
@@ -128,13 +130,36 @@ public class GT_MetaTileEntity_LargeTurbine_HPSteam extends GT_MetaTileEntity_La
         if (totalFlow == aOptFlow) {
             tEU = GT_Utility.safeInt((long) tEU * (long) aBaseEff / 10000L);
         } else {
-            float efficiency = 1.0f - Math.abs((totalFlow - aOptFlow) / (float) aOptFlow);
-            //if(totalFlow>aOptFlow){efficiency = 1.0f;}
+            float efficiency = getOverflowEfficiency(totalFlow, aOptFlow, overflowMultiplier);
             tEU *= efficiency;
             tEU = Math.max(1, GT_Utility.safeInt((long) tEU * (long) aBaseEff / 10000L));
         }
 
+        // If next output is above the maximum the dynamo can handle, set it to the maximum instead of exploding the turbine
+        // Raising the maximum allowed flow rate to account for the efficiency changes beyond the optimal flow rate can explode turbines on world load
+        if (tEU > getMaximumOutput()){
+            tEU = GT_Utility.safeInt(getMaximumOutput());
+        }
+
         return tEU;
+    }
+
+    @Override
+    float getOverflowEfficiency(int totalFlow, int actualOptimalFlow, int overflowMultiplier) {
+        // overflowMultiplier changes how quickly the turbine loses efficiency after flow goes beyond the optimal value
+        // At the default value of 1, any flow will generate less EU/t than optimal flow, regardless of the amount of fuel used
+        // The bigger this number is, the slower efficiency loss happens as flow moves beyond the optimal value
+        // Superheated steam is the second least efficient out of all turbine fuels in this regard, with steam being the least efficient
+        float efficiency = 0;
+
+        if (totalFlow > actualOptimalFlow) {
+            efficiency = 1.0f - Math.abs((totalFlow - actualOptimalFlow)) / ((float) actualOptimalFlow * (overflowMultiplier + 2));
+        }
+        else {
+            efficiency = 1.0f - Math.abs((totalFlow - actualOptimalFlow) / (float) actualOptimalFlow);
+        }
+
+        return efficiency;
     }
 
     @Override

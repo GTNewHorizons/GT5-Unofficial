@@ -93,7 +93,7 @@ public class GT_MetaTileEntity_LargeTurbine_Steam extends GT_MetaTileEntity_Larg
     }
 
     @Override
-    int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow, int aBaseEff) {
+    int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow, int aBaseEff, int overflowEfficiency) {
         if (looseFit) {
             long[] calculatedFlow = calculateLooseFlow(aOptFlow, aBaseEff);
             aOptFlow = GT_Utility.safeInt(calculatedFlow[0]);
@@ -102,14 +102,22 @@ public class GT_MetaTileEntity_LargeTurbine_Steam extends GT_MetaTileEntity_Larg
         int tEU = 0;
         int totalFlow = 0; // Byproducts are based on actual flow
         int flow = 0;
-        int remainingFlow = GT_Utility.safeInt((long) (aOptFlow * 1.25f)); // Allowed to use up to 125% of optimal flow.  Variable required outside of loop for multi-hatch scenarios.
+
+        // Allowed to use up to 250% optimal flow rate, depending on the value of overflowMultiplier.
+        // This value is chosen because the highest EU/t possible depends on the overflowMultiplier, and the formula used
+        // makes it so the flow rate for that max, per value of overflowMultiplier, is (percentage of optimal flow rate):
+        // - 150% if it is 1
+        // - 200% if it is 2
+        // - 250% if it is 3
+        // Variable required outside of loop for multi-hatch scenarios.
+        int remainingFlow = GT_Utility.safeInt((long) (aOptFlow * (0.5f * overflowMultiplier + 1)));
         this.realOptFlow = aOptFlow;
 
         storedFluid = 0;
         for (int i = 0; i < aFluids.size() && remainingFlow > 0; i++) { // loop through each hatch; extract inputs and track totals.
             final FluidStack aFluidStack = aFluids.get(i);
             if (GT_ModHandler.isAnySteam(aFluidStack)) {
-                flow = Math.min(aFluidStack.amount, remainingFlow); // try to use up w/o exceeding remainingFlow
+                flow = Math.min(aFluidStack.amount, remainingFlow); // try to use up to the max flow defined just above
                 depleteInput(new FluidStack(aFluidStack, flow)); // deplete that amount
                 this.storedFluid += aFluidStack.amount;
                 remainingFlow -= flow; // track amount we're allowed to continue depleting from hatches
@@ -129,12 +137,36 @@ public class GT_MetaTileEntity_LargeTurbine_Steam extends GT_MetaTileEntity_Larg
         if (totalFlow == aOptFlow) {
             tEU = GT_Utility.safeInt((long) tEU * (long) aBaseEff / 20000L);
         } else {
-            float efficiency = 1.0f - Math.abs((totalFlow - aOptFlow) / (float) aOptFlow);
+            float efficiency = getOverflowEfficiency(totalFlow, aOptFlow, overflowMultiplier);
             tEU *= efficiency;
             tEU = Math.max(1, GT_Utility.safeInt((long) tEU * (long) aBaseEff / 20000L));
         }
 
+        // If next output is above the maximum the dynamo can handle, set it to the maximum instead of exploding the turbine
+        // Raising the maximum allowed flow rate to account for the efficiency changes beyond the optimal flow rate can explode turbines on world load
+        if (tEU > getMaximumOutput()){
+            tEU = GT_Utility.safeInt(getMaximumOutput());
+        }
+
         return tEU;
+    }
+
+    @Override
+    float getOverflowEfficiency(int totalFlow, int actualOptimalFlow, int overflowMultiplier) {
+        // overflowMultiplier changes how quickly the turbine loses efficiency after flow goes beyond the optimal value
+        // At the default value of 1, any flow will generate less EU/t than optimal flow, regardless of the amount of fuel used
+        // The bigger this number is, the slower efficiency loss happens as flow moves beyond the optimal value
+        // Steam is the least efficient out of all turbine fuels in this regard
+        float efficiency = 0;
+
+        if (totalFlow > actualOptimalFlow) {
+            efficiency = 1.0f - Math.abs((totalFlow - actualOptimalFlow)) / ((float) actualOptimalFlow * (overflowMultiplier + 1));
+        }
+        else {
+            efficiency = 1.0f - Math.abs((totalFlow - actualOptimalFlow) / (float) actualOptimalFlow);
+        }
+
+        return efficiency;
     }
 
     public static long[] calculateLooseFlow(int aOptFlow, int aBaseEff) {
