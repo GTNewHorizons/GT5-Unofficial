@@ -2435,7 +2435,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                     Materials.ElectrumFlux.getMolten(1152L),
             }, ItemList.FusionComputer_UV.get(1), 1000, 90000);
 
-        GT_Values.RA.addAssemblylineRecipe(ItemList.Machine_IV_Macerator.get(1), 432000, new Object[]{
+        GT_Values.RA.addAssemblylineRecipe(ItemList.Machine_IV_OreWasher.get(1), 432000, new Object[]{
             ItemList.Hull_ZPM.get(1L),
             ItemList.Electric_Motor_ZPM.get(32L),
             ItemList.Electric_Piston_ZPM.get(8L),
