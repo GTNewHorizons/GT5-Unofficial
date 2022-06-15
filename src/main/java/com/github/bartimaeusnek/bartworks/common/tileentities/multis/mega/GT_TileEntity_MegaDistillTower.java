@@ -274,6 +274,9 @@ public class GT_TileEntity_MegaDistillTower extends GT_TileEntity_MegaMultiBlock
 
     @Override
     public boolean checkRecipe(ItemStack aStack) {
+
+        ItemStack[] tItems = getCompactedInputs();
+
         ArrayList<FluidStack> tFluidList = this.getStoredFluids();
 
         for (int i = 0; i < tFluidList.size() - 1; ++i) {
@@ -300,7 +303,7 @@ public class GT_TileEntity_MegaDistillTower extends GT_TileEntity_MegaMultiBlock
                 Pair<ArrayList<FluidStack>, ArrayList<ItemStack>> Outputs;
                 int processed = 0;
                 boolean found_Recipe = false;
-                GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sDistillationRecipes.findRecipe(this.getBaseMetaTileEntity(), false, GT_Values.V[tTier], new FluidStack[]{tFluid});
+                GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sDistillationRecipes.findRecipe(this.getBaseMetaTileEntity(), false, GT_Values.V[tTier], new FluidStack[]{tFluid}, tItems);
 
                 if (tRecipe != null) {
                     found_Recipe = true;
