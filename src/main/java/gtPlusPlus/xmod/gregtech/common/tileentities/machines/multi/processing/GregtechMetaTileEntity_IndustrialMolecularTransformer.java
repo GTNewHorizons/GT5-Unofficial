@@ -60,7 +60,6 @@ public class GregtechMetaTileEntity_IndustrialMolecularTransformer extends Gregt
 		tt.addMachineType(getMachineType())
 				.addInfo("Changes the structure of items to produce new ones")
 				.addInfo("Speed: 100% | Eu Usage: 100%")
-				.addInfo("This multiblock cannot be overclocked")
 				.addInfo("Maximum 1x of each bus/hatch.")
 				.addPollutionAmount(getPollutionPerSecond(null))
 				.addSeparator()

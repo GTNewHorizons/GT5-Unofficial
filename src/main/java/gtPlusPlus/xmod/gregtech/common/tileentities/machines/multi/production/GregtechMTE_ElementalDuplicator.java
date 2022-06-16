@@ -81,7 +81,6 @@ public class GregtechMTE_ElementalDuplicator extends GregtechMeta_MultiBlockBase
 		tt.addMachineType(getMachineType())
 		.addInfo("Produces Elemental Material from UU Matter")
 		.addInfo("Speed: 100% | Eu Usage: 100% | Parallel: 8 * Tier")
-		.addInfo("This multiblock cannot be overclocked")
 		.addInfo("Maximum 1x of each bus/hatch.")
 		.addInfo("Does not require both Output Hatch & Bus")
 		.addPollutionAmount(getPollutionPerSecond(null))
