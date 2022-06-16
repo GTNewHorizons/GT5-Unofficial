@@ -51,13 +51,18 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setInteger("chunkRadiusConfig", chunkRadiusConfig);
+        aNBT.setBoolean("replaceWithCobblestone", replaceWithCobblestone);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        if (aNBT.hasKey("chunkRadiusConfig"))
+        if (aNBT.hasKey("chunkRadiusConfig")) {
             chunkRadiusConfig = aNBT.getInteger("chunkRadiusConfig");
+        }
+        if (aNBT.hasKey("replaceWithCobblestone")) {
+            replaceWithCobblestone = aNBT.getBoolean("replaceWithCobblestone");
+        }
     }
 
     @Override
