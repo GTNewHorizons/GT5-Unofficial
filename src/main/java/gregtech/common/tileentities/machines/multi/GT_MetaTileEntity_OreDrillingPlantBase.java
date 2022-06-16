@@ -37,6 +37,7 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
     private final ArrayList<ChunkPosition> oreBlockPositions = new ArrayList<>();
     protected int mTier = 1;
     private int chunkRadiusConfig = getRadiusInChunks();
+    private boolean replaceWithCobblestone = true;
 
     GT_MetaTileEntity_OreDrillingPlantBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -81,6 +82,13 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
                 chunkRadiusConfig = 1;
         }
         GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.machines.workareaset") + " " + (chunkRadiusConfig << 4) + " " + StatCollector.translateToLocal("GT5U.machines.radius"));
+    }
+
+    @Override
+    public boolean onWireCutterRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        replaceWithCobblestone = !replaceWithCobblestone;
+        GT_Utility.sendChatToPlayer(aPlayer, "Replace with cobblestone " + replaceWithCobblestone);
+        return true;
     }
 
     @Override
@@ -133,7 +141,11 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
 
             Collection<ItemStack> oreBlockDrops = getBlockDrops(oreBlock, x, y, z);
             ItemStack cobble = GT_Utility.getCobbleForOre(oreBlock, metaData);
-            getBaseMetaTileEntity().getWorld().setBlock(x, y, z, Block.getBlockFromItem(cobble.getItem()), cobble.getItemDamage(), 3);
+            if (replaceWithCobblestone) {
+                getBaseMetaTileEntity().getWorld().setBlock(x, y, z, Block.getBlockFromItem(cobble.getItem()), cobble.getItemDamage(), 3);
+            } else {
+                getBaseMetaTileEntity().getWorld().setBlockToAir(oreBlockPos.chunkPosX, oreBlockPos.chunkPosY, oreBlockPos.chunkPosZ);
+            }
             mOutputItems = getOutputByDrops(oreBlockDrops);
         }
         return true;
@@ -220,7 +232,7 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
         GT_ChunkManager.requestChunkLoad((TileEntity)getBaseMetaTileEntity(), new ChunkCoordIntPair(nextChunkX, nextChunkZ));
         return true;
     }
-    
+
     @Override
     protected boolean checkHatches(){
         return !mMaintenanceHatches.isEmpty() && !mInputHatches.isEmpty() && !mOutputBusses.isEmpty() && !mEnergyHatches.isEmpty();
@@ -349,13 +361,14 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
 
     protected GT_Multiblock_Tooltip_Builder createTooltip(String tierSuffix) {
         String casings = getCasingBlockItem().get(0).getDisplayName();
-        
+
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
 		tt.addMachineType("Miner")
 		.addInfo("Controller Block for the Ore Drilling Plant " + (tierSuffix != null ? tierSuffix : ""))
 		.addInfo("Use a Screwdriver to configure block radius")
 		.addInfo("Maximum radius is " + (getRadiusInChunks() << 4) + " blocks")
 		.addInfo("Use Soldering iron to turn off chunk mode")
+        .addInfo("Use Wire Cutter to toggle replacing mined blocks with cobblestone")
 		.addInfo("In chunk mode, working area center is the chunk corner nearest to the drill")
 		.addInfo("Gives ~3x as much crushed ore vs normal processing")
 		.addInfo("Fortune bonus of " + (mTier + 3) + ". Only works on small ores")
