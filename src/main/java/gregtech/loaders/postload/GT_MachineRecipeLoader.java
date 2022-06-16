@@ -399,7 +399,7 @@ public class GT_MachineRecipeLoader implements Runnable {
 
         GT_Values.RA.addAutoclave4Recipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1), GT_Utility.getIntegratedCircuit(1), Materials.Water.getFluid(1000L), GT_Values.NF, new ItemStack[]{GT_Values.NI, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 3)}, new int[]{0, 7500}, 1200, 30, false);
         GT_Values.RA.addAutoclave4Recipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1), GT_Utility.getIntegratedCircuit(1), GT_ModHandler.getDistilledWater(1000L), GT_Values.NF, new ItemStack[]{GT_Values.NI, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 3)}, new int[]{0, 9000}, 1200, 30, false);
-        GT_Values.RA.addSimpleArcFurnaceRecipe(GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Silicon, 1L), Materials.Oxygen.getGas(2000L), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust,Materials.SiliconDioxide,1)}, null, 1200,30);
+        GT_Values.RA.addSimpleArcFurnaceRecipe(GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Silicon, 1L), Materials.Oxygen.getGas(2000L), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust,Materials.SiliconDioxide,3)}, null, 1200,30);
 
         GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.foil, Materials.PolyvinylChloride,1),ItemList.Paper_Printed_Pages.get(1L),Materials.Glue.getFluid(20L), new ItemStack(Items.written_book,1,0), 32, 8);
         GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.foil, Materials.PolyvinylChloride,1), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Paper, 3), Materials.Glue.getFluid(20L), new ItemStack(Items.book,1,0),20,16);
