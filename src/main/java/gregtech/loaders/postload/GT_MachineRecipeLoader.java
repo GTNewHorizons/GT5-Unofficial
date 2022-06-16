@@ -2091,7 +2091,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Neutronium, 2L),
                 GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.NaquadahAlloy, 4L)}, new FluidStack[]{
                 Materials.Naquadria.getMolten(1296),
-                Materials.SolderingAlloy.getMolten(1296),
+                new FluidStack(solderIndalloy, 1296),
                 Materials.Lubricant.getFluid(2000)}, ItemList.Electric_Piston_UV.get(1), 600, 100000);
 
         //RobotArms
