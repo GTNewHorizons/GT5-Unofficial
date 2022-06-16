@@ -3568,16 +3568,20 @@ public class GT_MachineRecipeLoader implements Runnable {
             private void addPolybenzimidazoleRecipes() {
 
             	//Potassium Nitride
-            	GT_Values.RA.addChemicalRecipe(Materials.Potassium.getDust(1), GT_Utility.getIntegratedCircuit(1), Materials.NitricAcid.getFluid(1000), GT_Values.NF, Materials.PotassiumNitrade.getDust(1), 100, 30);
+                //K + HNO3 = KNO3 + H
+            	GT_Values.RA.addChemicalRecipe(Materials.Potassium.getDust(1), GT_Utility.getIntegratedCircuit(1), Materials.NitricAcid.getFluid(1000), Materials.Hydrogen.getGas(1000), Materials.PotassiumNitrade.getDust(5), 100, 30);
 
             	//Chromium Trioxide
-            	GT_Values.RA.addChemicalRecipe(Materials.ChromiumDioxide.getDust(1), GT_Utility.getIntegratedCircuit(1), Materials.Oxygen.getGas(1000), GT_Values.NF, Materials.ChromiumTrioxide.getDust(1), GT_Values.NI,100, 60);
+                //CrO2 + O = CrO3
+            	GT_Values.RA.addChemicalRecipe(Materials.ChromiumDioxide.getDust(3), GT_Utility.getIntegratedCircuit(1), Materials.Oxygen.getGas(1000), GT_Values.NF, Materials.ChromiumTrioxide.getDust(4), GT_Values.NI,100, 60);
 
             	//Potassium Dichromate
-            	GT_Values.RA.addChemicalRecipe(Materials.Saltpeter.getDust(2), Materials.ChromiumTrioxide.getDust(2), Materials.Potassiumdichromate.getDust(1), 100, 480);
-            	GT_Values.RA.addChemicalRecipe(Materials.PotassiumNitrade.getDust(2), Materials.ChromiumTrioxide.getDust(2), Materials.Potassiumdichromate.getDust(1), 100, 480);
+                //2KNO3 + 2CrO3 = K2Cr2O7 + NO
+            	GT_Values.RA.addChemicalRecipe(Materials.Saltpeter.getDust(10), Materials.ChromiumTrioxide.getDust(8), GT_Values.NF, Materials.NitricOxide.getGas(1000), Materials.Potassiumdichromate.getDust(11), 100, 480);
+            	GT_Values.RA.addChemicalRecipe(Materials.PotassiumNitrade.getDust(10), Materials.ChromiumTrioxide.getDust(8), GT_Values.NF, Materials.NitricOxide.getGas(1000), Materials.Potassiumdichromate.getDust(11), 100, 480);
 
             	//Nitrochlorobenzene
+                //C6H5Cl + HNO3 = C6H4ClNO2 + H2O
             	GT_Values.RA.addChemicalRecipe(Materials.Chlorobenzene.getCells(1), GT_Utility.getIntegratedCircuit(1), Materials.NitrationMixture.getFluid(1000), Materials.DilutedSulfuricAcid.getFluid(1000), Materials.Nitrochlorobenzene.getCells(1), 100, 480);
             	GT_Values.RA.addChemicalRecipe(Materials.Chlorobenzene.getCells(1), GT_Utility.getIntegratedCircuit(11), Materials.NitrationMixture.getFluid(1000), Materials.Nitrochlorobenzene.getFluid(1000), Materials.DilutedSulfuricAcid.getCells(1), 100, 480);
             	GT_Values.RA.addChemicalRecipe(Materials.NitrationMixture.getCells(1), GT_Utility.getIntegratedCircuit(1), Materials.Chlorobenzene.getFluid(1000), Materials.DilutedSulfuricAcid.getFluid(1000), Materials.Nitrochlorobenzene.getCells(1), 100, 480);
@@ -3586,18 +3590,21 @@ public class GT_MachineRecipeLoader implements Runnable {
             	//Dimethylbenzene
             	GT_Values.RA.addDistilleryRecipe(5, Materials.WoodTar.getFluid(200), Materials.Dimethylbenzene.getFluid(30), 100, 120, false);
             	GT_Values.RA.addDistilleryRecipe(5, Materials.CharcoalByproducts.getGas(200), Materials.Dimethylbenzene.getFluid(20), 100, 120, false);
-
-            	GT_Values.RA.addChemicalRecipe(Materials.Methane.getCells(1), GT_Utility.getIntegratedCircuit(11), Materials.Benzene.getFluid(1000), GT_Values.NF,Materials.Dimethylbenzene.getCells(1), 4000, 120);
-            	GT_Values.RA.addChemicalRecipe(Materials.Benzene.getCells(1), GT_Utility.getIntegratedCircuit(12), Materials.Methane.getGas(1000), GT_Values.NF, Materials.Dimethylbenzene.getCells(1), 4000, 120);
-            	GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(1)}, new FluidStack[]{Materials.Benzene.getFluid(1000), Materials.Methane.getGas(1000)}, new FluidStack[]{Materials.Dimethylbenzene.getFluid(1000L)}, null, 4000, 120);
+                //C6H6 + 2CH4 = C8H10 + 4H
+            	GT_Values.RA.addChemicalRecipe(Materials.Methane.getCells(2), GT_Utility.getIntegratedCircuit(11), Materials.Benzene.getFluid(1000), Materials.Hydrogen.getGas(4000), Materials.Dimethylbenzene.getCells(1), 4000, 120);
+            	GT_Values.RA.addChemicalRecipe(Materials.Benzene.getCells(1), GT_Utility.getIntegratedCircuit(12), Materials.Methane.getGas(2000), Materials.Hydrogen.getGas(4000), Materials.Dimethylbenzene.getCells(1), 4000, 120);
+            	GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(1)}, new FluidStack[]{Materials.Benzene.getFluid(1000L), Materials.Methane.getGas(2000L)}, new FluidStack[]{Materials.Dimethylbenzene.getFluid(1000L), Materials.Hydrogen.getGas(4000L)}, null, 4000, 120);
 
             	//Phthalic Acid
-            	GT_Values.RA.addChemicalRecipe(Materials.Dimethylbenzene.getCells(1), Materials.Potassiumdichromate.getDustTiny(1), Materials.Oxygen.getGas(2000), Materials.Water.getFluid(2000), Materials.PhthalicAcid.getCells(1), 100, 1920);
-            	GT_Values.RA.addChemicalRecipe(Materials.Oxygen.getCells(2), Materials.Potassiumdichromate.getDustTiny(1), Materials.Dimethylbenzene.getFluid(1000), Materials.Water.getFluid(2000), Materials.PhthalicAcid.getCells(1), ItemList.Cell_Empty.get(1L),100, 1920);
+                //C8H10 + 6O =K2Cr2O7= C8H6O4 + 2H2O
+            	GT_Values.RA.addChemicalRecipe(Materials.Dimethylbenzene.getCells(1), Materials.Potassiumdichromate.getDustTiny(1), Materials.Oxygen.getGas(6000), Materials.Water.getFluid(2000), Materials.PhthalicAcid.getCells(1), 100, 1920);
+            	GT_Values.RA.addChemicalRecipe(Materials.Oxygen.getCells(6), Materials.Potassiumdichromate.getDustTiny(1), Materials.Dimethylbenzene.getFluid(1000), Materials.Water.getFluid(2000), Materials.PhthalicAcid.getCells(1), ItemList.Cell_Empty.get(1L),100, 1920);
 
-            	GT_Values.RA.addChemicalRecipe(Materials.Dimethylbenzene.getCells(9), Materials.Potassiumdichromate.getDust(1), Materials.Oxygen.getGas(18000), Materials.Water.getFluid(18000), Materials.PhthalicAcid.getCells(9), 900, 1920);
-            	GT_Values.RA.addChemicalRecipe(Materials.Oxygen.getCells(18), Materials.Potassiumdichromate.getDust(1), Materials.Dimethylbenzene.getFluid(9000), Materials.Water.getFluid(18000), Materials.PhthalicAcid.getCells(9), ItemList.Cell_Empty.get(9L), 900, 1920);
+            	GT_Values.RA.addChemicalRecipe(Materials.Dimethylbenzene.getCells(9), Materials.Potassiumdichromate.getDust(1), Materials.Oxygen.getGas(54000), Materials.Water.getFluid(18000), Materials.PhthalicAcid.getCells(9), 900, 1920);
+            	GT_Values.RA.addChemicalRecipe(Materials.Oxygen.getCells(54), Materials.Potassiumdichromate.getDust(1), Materials.Dimethylbenzene.getFluid(9000), Materials.Water.getFluid(18000), Materials.PhthalicAcid.getCells(9), ItemList.Cell_Empty.get(9L), 900, 1920);
 
+            	//These following recipes are broken in element term.
+                //But they are kept in gamewise, too much existed setup will be broken.
             	//Dichlorobenzidine
             	GT_Values.RA.addChemicalRecipe(Materials.Copper.getDustTiny(1), GT_Utility.getIntegratedCircuit(1), Materials.Nitrochlorobenzene.getFluid(1000), Materials.Dichlorobenzidine.getFluid(1000), null, 200, 1920);
             	GT_Values.RA.addChemicalRecipe(Materials.Copper.getDust(1), GT_Utility.getIntegratedCircuit(9), Materials.Nitrochlorobenzene.getFluid(9000), Materials.Dichlorobenzidine.getFluid(9000), null, 1800, 1920);
