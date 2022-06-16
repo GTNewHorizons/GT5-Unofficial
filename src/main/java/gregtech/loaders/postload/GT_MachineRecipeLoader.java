@@ -2814,13 +2814,13 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addElectrolyzerRecipe(Materials.HydrochloricAcid.getCells(1), GT_Utility.getIntegratedCircuit(1),  GT_Values.NF,        Materials.Chlorine.getGas(1000), Materials.Hydrogen.getCells(1),       GT_Values.NI,                   GT_Values.NI, GT_Values.NI,GT_Values.NI, GT_Values.NI, null, 720, 30);
         GT_Values.RA.addElectrolyzerRecipe(Materials.HydrochloricAcid.getCells(1), GT_Utility.getIntegratedCircuit(11), GT_Values.NF,        Materials.Hydrogen.getGas(1000), Materials.Chlorine.getCells(1),       GT_Values.NI,                   GT_Values.NI, GT_Values.NI,GT_Values.NI, GT_Values.NI, null, 720, 30);
         //Na + H2O = NaOH + H
-        GT_Values.RA.addChemicalBathRecipe(Materials.Sodium.getDust(2), Materials.Water.getFluid(2000), Materials.Hydrogen.getGas(1000), Materials.SodiumHydroxide.getDust(2), GT_Values.NI, GT_Values.NI,null ,100, 4);
+        GT_Values.RA.addChemicalBathRecipe(Materials.Sodium.getDust(1), Materials.Water.getFluid(1000), Materials.Hydrogen.getGas(1000), Materials.SodiumHydroxide.getDust(3), GT_Values.NI, GT_Values.NI,null ,100, 4);
         //2 0.5HCl(Diluted) = HCl + H2O
         GT_Values.RA.addUniversalDistillationRecipe(Materials.DilutedHydrochloricAcid.getFluid(2000), new FluidStack[]{Materials.Water.getFluid(1000), Materials.HydrochloricAcid.getFluid(1000)}, GT_Values.NI, 600, 64);
         //K + HNO3 = KNO3 + H (not real, but gameplay
         GT_Values.RA.addChemicalRecipe(Materials.Potassium.getDust(1), GT_Utility.getIntegratedCircuit(2), Materials.NitricAcid.getFluid(1000), Materials.Hydrogen.getGas(1000), Materials.Saltpeter.getDust(5), 100, 30);
-        //NaCl + H2O = NaCl·H2O
-		GT_Values.RA.addMixerRecipe(Materials.Salt.getDust(1), GT_Values.NI, GT_Values.NI, GT_Values.NI, Materials.Water.getFluid(1000), Materials.SaltWater.getFluid(1000), GT_Values.NI, 100, 8);
+        //NaCl + H2O = (NaCl·H2O)
+		GT_Values.RA.addMixerRecipe(Materials.Salt.getDust(2), GT_Values.NI, GT_Values.NI, GT_Values.NI, Materials.Water.getFluid(1000), Materials.SaltWater.getFluid(1000), GT_Values.NI, 100, 8);
         //(NaCl·H2O) = NaCl + H2O
 		GT_Values.RA.addDistilleryRecipe(1, Materials.SaltWater.getFluid(1000), GT_ModHandler.getDistilledWater(1000), Materials.Salt.getDust(2), 1600, 30, false);
 
