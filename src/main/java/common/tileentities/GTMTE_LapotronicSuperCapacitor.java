@@ -237,7 +237,7 @@ public class GTMTE_LapotronicSuperCapacitor extends GT_MetaTileEntity_EnhancedMu
 				.addInfo("Exception: Ultimate Capacitors only count as Lapotronic Capacitors (UV) for the")
 				.addInfo("purposes of passive loss calculation. The full capacity is counted towards the actual power capacity.")
 				.addSeparator()
-				.addInfo("Glass shell has to be Tier - 2 of the highest capacitor tier")
+				.addInfo("Glass shell has to be Tier - 3 of the highest capacitor tier")
 				.addInfo("UV-tier glass required for TecTech Laser Hatches")
 				.addInfo("Add more or better capacitors to increase capacity")
 				.addSeparator()
