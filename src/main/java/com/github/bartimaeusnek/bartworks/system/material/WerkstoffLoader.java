@@ -227,9 +227,9 @@ public class WerkstoffLoader {
             new short[]{175, 175, 175, 0},
             "Zirconium",
             "Zr",
-            new Werkstoff.Stats().setProtons(40).setMeltingPoint(2130),
+            new Werkstoff.Stats().setProtons(40).setBlastFurnace(true).setMeltingPoint(2130).setMeltingVoltage(480),
             Werkstoff.Types.ELEMENT,
-            new Werkstoff.GenerationFeatures().onlyDust().enforceUnification(),
+            new Werkstoff.GenerationFeatures().disable().onlyDust().addMetalItems().enforceUnification(),
             3,
             TextureSet.SET_METALLIC
             //No Byproducts
