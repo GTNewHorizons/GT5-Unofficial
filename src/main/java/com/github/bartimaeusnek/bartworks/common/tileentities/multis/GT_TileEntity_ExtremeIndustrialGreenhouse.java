@@ -33,6 +33,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemSeeds;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
@@ -153,6 +154,7 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse extends GT_MetaTileEntity
             addInfo("Does not take power").
             addInfo("There are two modes: input / output").
             addInfo("Input mode: machine will take seeds from input bus and plant them").
+            addInfo("[IC2] You need to also input block that is required under the crop").
             addInfo("Output mode: machine will take planted seeds and output them").
             addInfo("-------------------- NORMAL CROPS --------------------").
             addInfo("Minimal tier: EV").
@@ -257,6 +259,8 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse extends GT_MetaTileEntity
             else if(setupphase == 2 && mStorage.size() > 0)
             {
                 this.addOutput(this.mStorage.get(0).input.copy());
+                if(this.mStorage.get(0).undercrop != null)
+                    this.addOutput(this.mStorage.get(0).undercrop.copy());
                 this.mStorage.remove(0);
                 this.updateSlots();
             }
@@ -386,10 +390,12 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse extends GT_MetaTileEntity
         for(int i = 0; i < mStorage.size(); i++) {
             if(!mStorage.get(i).isValid)
                 continue;
-            StringBuilder a = new StringBuilder("Slot " + i + ": " + EnumChatFormatting.GREEN + "x" + this.mStorage.get(i).input.stackSize + " " + this.mStorage.get(i).input.getDisplayName() + " : ");
-            if(this.isIC2Mode)
-                for(Map.Entry<String, Double> entry : mStorage.get(i).dropprogress.entrySet())
+            StringBuilder a = new StringBuilder("Slot " + i + ": " + EnumChatFormatting.GREEN + "x" + this.mStorage.get(i).input.stackSize + " " + this.mStorage.get(i).input.getDisplayName());
+            if(this.isIC2Mode) {
+                a.append(" : ");
+                for (Map.Entry<String, Double> entry : mStorage.get(i).dropprogress.entrySet())
                     a.append((int) (entry.getValue() * 100d)).append("% ");
+            }
             a.append(EnumChatFormatting.RESET);
             info.add(a.toString());
         }
@@ -441,6 +447,7 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse extends GT_MetaTileEntity
 
         ItemStack input;
         Block crop;
+        ItemStack undercrop = null;
         List<ItemStack> drops;
         boolean isValid;
         boolean isIC2Crop;
@@ -464,6 +471,8 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse extends GT_MetaTileEntity
                 aNBT.setInteger("optimalgrowth", optimalgrowth);
             }
             else {
+                if(undercrop != null)
+                    aNBT.setTag("undercrop", undercrop.writeToNBT(new NBTTagCompound()));
                 aNBT.setInteger("generationscount", generations.size());
                 for(int i = 0; i < generations.size(); i++)
                 {
@@ -493,6 +502,8 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse extends GT_MetaTileEntity
             }
             else
             {
+                if(aNBT.hasKey("undercrop"))
+                    undercrop = ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag("undercrop"));
                 generations = new ArrayList<>();
                 for(int i = 0; i < aNBT.getInteger("generationscount"); i++)
                 {
@@ -600,8 +611,16 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse extends GT_MetaTileEntity
             xyz[0] += tileEntity.getBaseMetaTileEntity().getXCoord();
             xyz[1] += tileEntity.getBaseMetaTileEntity().getYCoord();
             xyz[2] += tileEntity.getBaseMetaTileEntity().getZCoord();
+            boolean cheating = false;
             try{
-                world.setBlock(xyz[0], xyz[1], xyz[2], Block.getBlockFromItem(Ic2Items.crop.getItem()), 0, 3);
+                if(world.getBlock(xyz[0], xyz[1] - 2, xyz[2]) != GregTech_API.sBlockCasings4 || world.getBlockMetadata(xyz[0], xyz[1] - 2, xyz[2]) != 1)
+                {
+                    // no
+                    cheating = true;
+                    return;
+                }
+
+                world.setBlock(xyz[0], xyz[1], xyz[2], Block.getBlockFromItem(Ic2Items.crop.getItem()), 0, 0);
                 TileEntity wte = world.getTileEntity(xyz[0], xyz[1], xyz[2]);
                 if(!(wte instanceof TileEntityCrop))
                 {
@@ -611,13 +630,44 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse extends GT_MetaTileEntity
                 TileEntityCrop te = (TileEntityCrop)wte;
                 te.ticker = 1; // dont even think about ticking once
                 te.setCrop(cc);
-                te.setSize((byte) cc.maxSize());
+
                 te.setGrowth(gr);
                 te.setGain(ga);
                 te.setResistance(re);
 
+                ItemStack tobeused = null;
+
+                te.setSize((byte) (cc.maxSize() - 1));
+                if(!cc.canGrow(te))
+                {
+                    // needs special block
+
+                    boolean cangrow = false;
+                    ArrayList<ItemStack> inputs = tileEntity.getStoredInputs();
+                    for(ItemStack a : inputs)
+                    {
+                        Block b = Block.getBlockFromItem(a.getItem());
+                        if(b == Blocks.air)
+                            continue;
+                        world.setBlock(xyz[0], xyz[1] - 2, xyz[2], b, a.getItemDamage(), 0);
+                        if(!cc.canGrow(te))
+                            continue;
+                        cangrow = true;
+                        undercrop = a.copy();
+                        undercrop.stackSize = 1;
+                        tobeused = a;
+                        break;
+                    }
+
+                    if(!cangrow)
+                        return;
+                }
+
+                te.setSize((byte) cc.maxSize());
+
                 if(!cc.canBeHarvested(te))
                     return;
+
                 // GENERATE DROPS
                 generations = new ArrayList<>();
                 out: for(int i = 0; i < 10; i++) // get 10 generations
@@ -636,7 +686,7 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse extends GT_MetaTileEntity
                 if(generations.isEmpty())
                     return;
                 rn = new Random();
-                input.stackSize --;
+
 
                 // CHECK GROWTH SPEED
                 te.humidity = 12;   // humidity with full water storage
@@ -651,12 +701,18 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse extends GT_MetaTileEntity
                 if(growthticks < 1)
                     growthticks = 1;
 
+                input.stackSize --;
+                if(tobeused != null)
+                    tobeused.stackSize --;
+
                 this.isValid = true;
             }
             catch (Exception e){
                 e.printStackTrace(System.err);
             }
             finally {
+                if(!cheating)
+                    world.setBlock(xyz[0], xyz[1] - 2, xyz[2], GregTech_API.sBlockCasings4, 1, 0);
                 world.setBlockToAir(xyz[0], xyz[1], xyz[2]);
             }
         }
