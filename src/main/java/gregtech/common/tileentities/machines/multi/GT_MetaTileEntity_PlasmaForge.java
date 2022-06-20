@@ -223,7 +223,7 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
         if (mOutputBusses.size() > 3)
             return false;
 
-        if (mInputHatches.size() > 3)
+        if (mInputHatches.size() > 6) // Required to satisfy fluid inputs for SCs.
             return false;
 
         if (mOutputHatches.size() > 3)
