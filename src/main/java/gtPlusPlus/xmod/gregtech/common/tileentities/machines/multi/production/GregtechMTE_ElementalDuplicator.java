@@ -325,7 +325,7 @@ public class GregtechMTE_ElementalDuplicator extends GregtechMeta_MultiBlockBase
 			}
 			ItemStack aDataOrbStack = null;
 			recipe : for (GT_Recipe nRecipe : this.getRecipeMap().mRecipeList) {
-				log("Checking Recipe for: "+(nRecipe.mOutputs.length > 0 && nRecipe.mOutputs[0] != null ? nRecipe.mOutputs[0].getDisplayName() : nRecipe.mFluidOutputs[0].getLocalizedName()));
+				//log("Checking Recipe for: "+(nRecipe.mOutputs.length > 0 && nRecipe.mOutputs[0] != null ? nRecipe.mOutputs[0].getDisplayName() : nRecipe.mFluidOutputs[0].getLocalizedName()));
 				ItemStack aTempStack = getSpecialSlotStack(nRecipe);
 				if (aTempStack != null) {
 					for (ItemStack aItem : aItemInputs) {
