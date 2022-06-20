@@ -293,6 +293,10 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         if (Loader.isModLoaded("Railcraft")) {
             GT_Recipe.GT_Recipe_Map.sPrimitiveBlastRecipes.addRecipe(true, new ItemStack[]{aInput1, aInput2, RailcraftToolItems.getCoalCoke(aCoalAmount / 2)}, new ItemStack[]{aOutput1, aOutput2, Materials.Ash.getDustTiny(aCoalAmount / 2)}, null, null, null, null, aDuration * 2 / 3, 0, 0);
         }
+        if (Loader.isModLoaded("miscutils")) {
+            GT_Recipe.GT_Recipe_Map.sPrimitiveBlastRecipes.addRecipe(true, new ItemStack[]{aInput1, aInput2, GT_ModHandler.getModItem("miscutils", "itemCactusCoke", (aCoalAmount * 2))}, new ItemStack[]{aOutput1, aOutput2, Materials.Ash.getDustTiny(aCoalAmount * 2)}, null, null, null, null, aDuration * 2 / 3, 0, 0);
+            GT_Recipe.GT_Recipe_Map.sPrimitiveBlastRecipes.addRecipe(true, new ItemStack[]{aInput1, aInput2, GT_ModHandler.getModItem("miscutils", "itemSugarCoke", (aCoalAmount * 2))}, new ItemStack[]{aOutput1, aOutput2, Materials.Ash.getDustTiny(aCoalAmount * 2)}, null, null, null, null, aDuration * 2 / 3, 0, 0);
+        }
         if ((aInput1 == null || aInput1.stackSize <= 6) && (aInput2 == null || aInput2.stackSize <= 6) &&
                 (aOutput1 == null || aOutput1.stackSize <= 6) && (aOutput2 == null || aOutput2.stackSize <= 6)) {
             aInput1 = aInput1 == null ? null : GT_Utility.copyAmount(aInput1.stackSize * 10, aInput1);
