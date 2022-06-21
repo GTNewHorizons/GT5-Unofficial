@@ -249,10 +249,12 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
         }
         else {
             IWideReadableNumberConverter nc = ReadableNumberConverter.INSTANCE;
-            ss.add("The bus contains cached items: ");
+            ss.add(String.format("The bus contains %d cached stacks: ", itemCache.size()));
+            int counter = 0;
             for (IAEItemStack s : itemCache) {
                 ss.add(s.getItem().getItemStackDisplayName(s.getItemStack()) + ": " +
                     EnumChatFormatting.GOLD + nc.toWideReadableForm(s.getStackSize()) + EnumChatFormatting.RESET);
+                if (++counter > 100) break;
             }
         }
         return ss.toArray(new String[itemCache.size() + 2]);
