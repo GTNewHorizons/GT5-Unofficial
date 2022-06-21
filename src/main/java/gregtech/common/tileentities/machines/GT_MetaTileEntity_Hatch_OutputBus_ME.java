@@ -1,5 +1,8 @@
 package gregtech.common.tileentities.machines;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import appeng.api.AEApi;
 import appeng.api.networking.GridFlags;
 import appeng.api.networking.security.BaseActionSource;
@@ -12,9 +15,12 @@ import appeng.api.util.AECableType;
 import appeng.me.GridAccessException;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
+import appeng.util.IWideReadableNumberConverter;
 import appeng.util.Platform;
+import appeng.util.ReadableNumberConverter;
 import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -27,6 +33,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -43,7 +50,10 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
 
     public GT_MetaTileEntity_Hatch_OutputBus_ME(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 1, new String[]{
-            "Item Output for Multiblocks", "Stores directly into ME"}, 0);
+            "Item Output for Multiblocks", "Stores directly into ME",
+            "To use in GT++ multiblocks", "  turn off overflow control",
+            "  with a soldering iron."
+        }, 0);
     }
 
     public GT_MetaTileEntity_Hatch_OutputBus_ME(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -168,9 +178,11 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        tickCounter = aTick;
-        if (tickCounter > (lastOutputTick + 40))
-            flushCachedStack();
+        if (GT_Values.GT.isServerSide()) {
+            tickCounter = aTick;
+            if (tickCounter > (lastOutputTick + 40))
+                flushCachedStack();
+        }
         super.onPostTick(aBaseMetaTileEntity, aTick);
     }
 
@@ -223,5 +235,31 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
 
     public boolean isLastOutputFailed() {
         return lastOutputFailed;
+    }
+
+    @Override
+    public boolean isGivingInformation() {
+        return true;
+    }
+
+    @Override
+    public String[] getInfoData() {
+        List<String> ss = new ArrayList<>();
+        ss.add("The bus is " + ((getProxy() != null && getProxy().isActive())?
+            EnumChatFormatting.GREEN + "online" : EnumChatFormatting.RED + "offline") + EnumChatFormatting.RESET);
+        if (itemCache.isEmpty()) {
+            ss.add("The bus has no cached items");
+        }
+        else {
+            IWideReadableNumberConverter nc = ReadableNumberConverter.INSTANCE;
+            ss.add(String.format("The bus contains %d cached stacks: ", itemCache.size()));
+            int counter = 0;
+            for (IAEItemStack s : itemCache) {
+                ss.add(s.getItem().getItemStackDisplayName(s.getItemStack()) + ": " +
+                    EnumChatFormatting.GOLD + nc.toWideReadableForm(s.getStackSize()) + EnumChatFormatting.RESET);
+                if (++counter > 100) break;
+            }
+        }
+        return ss.toArray(new String[itemCache.size() + 2]);
     }
 }
