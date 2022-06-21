@@ -714,7 +714,7 @@ public class GT_MachineRecipeLoader implements Runnable {
             new FluidStack[]{Materials.DimensionallyTranscendentResidue.getFluid(10000L), Materials.Infinity.getMolten(9216L)},
 
             new ItemStack[]{GT_Values.NI},
-            new FluidStack[]{Materials.SpaceTime.getFluid(1L)},
+            new FluidStack[]{Materials.SpaceTime.getMolten(1L)},
             2000, 2000000000, 12700);
 
         // -----------------------------------------------------------------------------------------------------------------------------
