@@ -6,8 +6,6 @@ import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import goodgenerator.blocks.tileEntity.base.GT_MetaTileEntity_TooltipMultiBlockBase_EM;
 import goodgenerator.loader.Loaders;
 import goodgenerator.main.GoodGenerator;
@@ -30,7 +28,6 @@ import gregtech.api.util.GT_Utility;
 import ic2.core.Ic2Items;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
@@ -58,6 +55,7 @@ public class PreciseAssembler extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
     protected int casingTier;
     protected int machineTier;
     protected int mode;
+    protected int energyHatchTier;
 
     public PreciseAssembler(String name) {
         super(name);
@@ -274,8 +272,8 @@ public class PreciseAssembler extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
 
     public long getMachineVoltageLimit() {
         if (machineTier <= 0) return 0;
-        if (machineTier >= 10) return Integer.MAX_VALUE - 7;
-        else return GT_Values.V[machineTier - 1];
+        if (machineTier >= 10) return GT_Values.V[energyHatchTier];
+        else return GT_Values.V[Math.min(machineTier - 1, energyHatchTier)];
     }
 
     public ItemStack[] getStoredItemFromHatch(GT_MetaTileEntity_Hatch_InputBus tHatch) {
@@ -341,7 +339,9 @@ public class PreciseAssembler extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
         this.machineTier = 0;
         this.casingAmount = 0;
         this.casingTier = 0;
+        this.energyHatchTier = 0;
         if (structureCheck_EM(mName, 4, 4, 0)) {
+            energyHatchTier = checkEnergyHatchTier();
             if (casingTier != 0) {
                 reUpdate(1538 + casingTier);
             }
@@ -360,8 +360,8 @@ public class PreciseAssembler extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
                 .addInfo("Can assemble precise component in Precise Mode.")
                 .addInfo("Can work like a normal assembler in Normal Mode.")
                 .addInfo("Use screwdriver to change mode.")
-                .addInfo("The Machine Casing limits the voltage tier the machine can work on.")
-                .addInfo("UHV Machine Casing will unlock all voltage.")
+                .addInfo("Machine Casing and Energy Hatch limits the voltage tier the machine can work on.")
+                .addInfo("UHV Machine Casing will unlock all voltage, but you still need good Energy Hatch.")
                 .addInfo("Precise Electronic Unit Casing won't limit recipe in Normal Mode.")
                 .addInfo("But gives more parallel with more advanced one.")
                 .addInfo("It is 100% faster in Normal Mode.")
@@ -395,6 +395,21 @@ public class PreciseAssembler extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new PreciseAssembler(this.mName);
+    }
+
+    private int checkEnergyHatchTier() {
+        int tier = 0;
+        for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
+            if (isValidMetaTileEntity(tHatch)) {
+                tier = Math.max(tHatch.mTier, tier);
+            }
+        }
+        for (GT_MetaTileEntity_Hatch_EnergyMulti tHatch : eEnergyMulti) {
+            if (isValidMetaTileEntity(tHatch)) {
+                tier = Math.max(tHatch.mTier, tier);
+            }
+        }
+        return tier;
     }
 
     public int getCasingTier() {
