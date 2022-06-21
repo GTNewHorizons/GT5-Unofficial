@@ -83,6 +83,12 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
 
     private boolean mBlacklist = false;
 
+    /**
+     * Public method giving other mods the ability to add manually a material with an ore version into the external dromap for a specified dim id
+     * @param DimensionID the dim id targetted
+     * @param Material the material with an ore version
+     * @param weight the non normalised version of the given weight
+     */
     public static void addMatierialToDimensionList(int DimensionID, ISubTagContainer Material, float weight) {
         if (Material instanceof Materials)
             getExtraDropsDimMap().put(DimensionID, new Pair<>(new Pair<>(((Materials)Material).mMetaItemSubID,false), weight));
@@ -90,6 +96,7 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
             getExtraDropsDimMap().put(DimensionID, new Pair<>(new Pair<>((int) ((Werkstoff)Material).getmID(),true), weight));
     }
 
+    //adding tellurium to OW to ensure a way to get it, as it's used in Magneto Resonatic Dust and Circuit Compound MK3 Dust
     static {
         addMatierialToDimensionList(0, Materials.Tellurium, 8.0f);
     }
@@ -146,7 +153,10 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
 
     @Override
     protected boolean workingAtBottom(ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe, int yHead, int oldYHead) {
-        makeDropMap();
+        //if the dropmap has never been initialised or if the dropmap is empty
+        if (dropmap == null || totalWeight == 0)
+            calculateDropMap();
+
         if(totalWeight != 0.f){
             handleFluidConsumption();
             handleOutputs();
@@ -186,10 +196,18 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
         return tt;
     }
 
+    /**
+     * getter for the external drop map
+     * @return the extraDriosDimMap
+     */
     public static ArrayListMultimap<Integer, Pair<Pair<Integer, Boolean>, Float>> getExtraDropsDimMap() {
         return extraDropsDimMap;
     }
 
+    /**
+     * Makes a predicate for the GT normal ore veins worldgen
+     * @return the predicate
+     */
     private Predicate<GT_Worldgen_GT_Ore_Layer> makeOreLayerPredicate() {
         World world = this.getBaseMetaTileEntity().getWorld();
         switch (world.provider.dimensionId) {
@@ -211,6 +229,10 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
         }
     }
 
+    /**
+     * Makes a predicate for the GT normal small ore worldgen
+     * @return the predicate
+     */
     private Predicate<GT_Worldgen_GT_Ore_SmallPieces> makeSmallOresPredicate() {
         World world = this.getBaseMetaTileEntity().getWorld();
         switch (world.provider.dimensionId) {
@@ -231,6 +253,11 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
         }
     }
 
+    /**
+     * Method used to add an ore to the droplist
+     * @param key a Pair of <int, bool> where the int is the meta of the ore, and the bool is true for BW ores, false for GT ores
+     * @param value the non normalised weight
+     */
     private void addDrop(Pair<Integer,Boolean> key, float value){
         final ItemStack ore = getOreItemStack(key);
         if (ConfigHandler.voidMinerBlacklist.contains(String.format("%s:%d", GameRegistry.findUniqueIdentifierFor(ore.getItem()).toString(), ore.getItemDamage())))
@@ -241,6 +268,10 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
             dropmap.put(key, dropmap.get(key) + value);
     }
 
+    /**
+     * Method to add the ores of a vanilla GT worldgen
+     * @param oreLayerPredicate the predicate made by makeOreLayerPredicate
+     */
     private void getDropsVanillaVeins(Predicate<GT_Worldgen_GT_Ore_Layer> oreLayerPredicate) {
         GT_Worldgen_GT_Ore_Layer.sList.stream().filter(gt_worldgen -> gt_worldgen.mEnabled && oreLayerPredicate.test(gt_worldgen)).forEach(element -> {
                     addDrop(new Pair<>((int) element.mPrimaryMeta,false), (float) element.mWeight);
@@ -251,22 +282,20 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
         );
     }
 
+    /**
+     * Method to add the small ores of a vanilla GT worldgen
+     * @param smallOresPredicate the predicate made by makeSmallOresPredicate
+     */
     private void getDropsVanillaSmallOres(Predicate<GT_Worldgen_GT_Ore_SmallPieces> smallOresPredicate) {
         GT_Worldgen_GT_Ore_SmallPieces.sList.stream().filter(gt_worldgen -> gt_worldgen.mEnabled && smallOresPredicate.test(gt_worldgen)).forEach(element ->
                 addDrop(new Pair<>((int) element.mMeta,false), (float) element.mAmount)
         );
     }
 
-    private void getDropMapVanilla() {
-        getDropsVanillaVeins(makeOreLayerPredicate());
-        getDropsVanillaSmallOres(makeSmallOresPredicate());
-    }
-
-    private void getDropMapSpace(ModDimensionDef finalDef) {
-        getDropsOreVeinsSpace(finalDef);
-        getDropsSmallOreSpace(finalDef);
-    }
-
+    /**
+     * add to the dropmap the ores from the gagreg space worldgen corresponding to the target dim
+     * @param finalDef ModDimensionDef corresponding to the target dim
+     */
     private void getDropsOreVeinsSpace(ModDimensionDef finalDef) {
         Set space = GalacticGreg.oreVeinWorldgenList.stream()
                 .filter(gt_worldgen -> gt_worldgen.mEnabled && gt_worldgen instanceof GT_Worldgen_GT_Ore_Layer_Space && ((GT_Worldgen_GT_Ore_Layer_Space) gt_worldgen).isEnabledForDim(finalDef))
@@ -282,6 +311,10 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
         );
     }
 
+    /**
+     * add to the dropmap the small ores from the gagreg space worldgen corresponding to the target dim
+     * @param finalDef ModDimensionDef corresponding to the target dim
+     */
     private void getDropsSmallOreSpace(ModDimensionDef finalDef) {
         Set space = GalacticGreg.smallOreWorldgenList.stream()
                 .filter(gt_worldgen -> gt_worldgen.mEnabled && gt_worldgen instanceof GT_Worldgen_GT_Ore_SmallPieces_Space && ((GT_Worldgen_GT_Ore_SmallPieces_Space) gt_worldgen).isEnabledForDim(finalDef))
@@ -293,6 +326,10 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
         );
     }
 
+    /**
+     * method used to pick the next key in the dropmap that will be used to generate the ore.
+     * @return the chosen key
+     */
     private Pair<Integer,Boolean> getOreDamage() {
         float curentWeight = 0.f;
         while (true) {
@@ -305,6 +342,10 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
         }
     }
 
+    /**
+     * Method used to check the current gat and its corresponding multiplier
+     * @return the noble gas in the hatch. returns null if there is no noble gas found.
+     */
     private FluidStack getNobleGasInputAndSetMultiplier() {
         for (FluidStack s : this.getStoredFluids()) {
             for (int i = 0; i < NOBLE_GASSES.length; i++) {
@@ -318,6 +359,11 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
         return null;
     }
 
+    /**
+     * method used to decrement the quantity of gas in the hatch
+     * @param gasToConsume the fluid stack in the hatch
+     * @return if yes or no it was able to decrement the quantity of the fluidstack
+     */
     private boolean consumeNobleGas(FluidStack gasToConsume) {
         for (FluidStack s : this.getStoredFluids()) {
             if (s.isFluidEqual(gasToConsume) && s.amount >= 1) {
@@ -329,12 +375,19 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
         return false;
     }
 
+    /**
+     * handler for the fluid consumption
+     */
     private void handleFluidConsumption() {
         FluidStack storedNobleGas = getNobleGasInputAndSetMultiplier();
         if (storedNobleGas == null || !consumeNobleGas(storedNobleGas))
             multiplier = TIER_MULTIPLIER;
     }
 
+    /**
+     * Handles the addition of Ross dims' ores into the drop map
+     * @param aID dim id of Ross128b or Ross128ba
+     */
     private void getDropMapRoss(int aID) {
         Consumer<BW_OreLayer> addToList = makeAddToList();
         BW_OreLayer.sList.stream()
@@ -343,12 +396,10 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
                 .forEach(addToList);
     }
 
-    private void getDropMapBartworks(ModDimensionDef finalDef) {
-        Consumer<BW_OreLayer> addToList = makeAddToList();
-        addOresVeinsBartworks(finalDef, addToList);
-        addSmallOresBartworks(finalDef);
-    }
-
+    /**
+     * Method used to generate a consumer used specifically to add BW ores into the dropmap
+     * @return the consumer
+     */
     private Consumer<BW_OreLayer> makeAddToList() {
         return element -> {
             List<Pair<Integer,Boolean>> data = element.getStacksRawData();
@@ -361,6 +412,10 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
         };
     }
 
+    /**
+     * Method used to build the ModDimensionDef object corresponding to the dimension the VM is in.
+     * @return the ModDimensionDef object.
+     */
     private ModDimensionDef makeModDimDef() {
         return getModContainers().stream()
                 .flatMap(modContainer -> modContainer.getDimensionList().stream())
@@ -369,6 +424,11 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
                 .findFirst().orElse(null);
     }
 
+    /**
+     * Handles the addition of small ores for bartwork dims
+     * @param finalDef the ModDimensionDef object corresponding to the dim
+     * @param addToList a consumer used to add the ores from the vein with proper weight
+     */
     private void addOresVeinsBartworks(ModDimensionDef finalDef, Consumer<BW_OreLayer> addToList) {
         try {
             Set space = GalacticGreg.oreVeinWorldgenList.stream()
@@ -379,6 +439,10 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
         } catch (NullPointerException ignored) {}
     }
 
+    /**
+     * Handles the addition of small ores for bartwork dims
+     * @param finalDef the ModDimensionDef object corresponding to the dim
+     */
     private void addSmallOresBartworks(ModDimensionDef finalDef) {
         try {
             Set space = GalacticGreg.smallOreWorldgenList.stream()
@@ -392,28 +456,54 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
         } catch (NullPointerException ignored) {}
     }
 
+    /**
+     * Handles the ores added manually with addMatierialToDimensionList
+     * @param id the specified dim id
+     */
     private void handleExtraDrops(int id) {
         Optional.ofNullable(getExtraDropsDimMap().get(id)).ifPresent(e -> e.forEach(f -> addDrop(f.getKey(), f.getValue())));
     }
 
+    /**
+     * Computes the total weight for normalisation
+     */
     private void calculateTotalWeight() {
         totalWeight = 0.0f;
         dropmap.values().forEach(f -> totalWeight += f);
     }
 
+    /**
+     * Computes the ores of the dim for the specifed dim id
+     * @param id the dim number
+     */
     private void handleModDimDef(int id) {
+        //vanilla dims or TF
         if ((id <= 1 && id >= -1) || id == 7) {
-            getDropMapVanilla();
+            getDropsVanillaVeins(makeOreLayerPredicate());
+            getDropsVanillaSmallOres(makeSmallOresPredicate());
+
+        // ross dims
         } else if (id == ConfigHandler.ross128BID || id == ConfigHandler.ross128BAID) {
             getDropMapRoss(id);
+
+        // other space dims
         } else {
             Optional.ofNullable(makeModDimDef()).ifPresent(def -> {
-                getDropMapSpace(def);
-                getDropMapBartworks(def);
+                //normal space dim
+                getDropsOreVeinsSpace(def);
+                getDropsSmallOreSpace(def);
+
+                // BW space dim
+                Consumer<BW_OreLayer> addToList = makeAddToList();
+                addOresVeinsBartworks(def, addToList);
+                addSmallOresBartworks(def);
             });
         }
     }
 
+    /**
+     * Computes first the ores related to the dim the VM is in, then the ores added manually, then it computes the totalweight for normalisation
+     */
     private void calculateDropMap() {
         dropmap = new HashMap<>();
         int id = this.getBaseMetaTileEntity().getWorld().provider.dimensionId;
@@ -422,11 +512,9 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
         calculateTotalWeight();
     }
 
-    private void makeDropMap() {
-        if (dropmap == null || totalWeight == 0)
-            calculateDropMap();
-    }
-
+    /**
+     * Output logic of the VM
+     */
     private void handleOutputs() {
         Pair<Integer, Boolean> stats = getOreDamage();
         final List<ItemStack> inputOres = this.getStoredInputs().stream().filter(GT_Utility::isOre).collect(Collectors.toList());
@@ -438,6 +526,11 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
         this.updateSlots();
     }
 
+    /**
+     * Builds the ore item stack from the key specified in the dropmap
+     * @param stats the key of the dropmap
+     * @return an ItemStack corresponding to the target ore, with a stacksize corresponding to the mutiplier induced by the gas used
+     */
     private ItemStack getOreItemStack(Pair<Integer, Boolean> stats) {
         return new ItemStack(stats.getValue() ? WerkstoffLoader.BWOres : GregTech_API.sBlockOres1, multiplier, stats.getKey());
     }
