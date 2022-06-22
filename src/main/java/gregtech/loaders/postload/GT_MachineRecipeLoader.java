@@ -1502,6 +1502,30 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addVacuumFreezerRecipe(GT_OreDictUnificator.get(OrePrefixes.ingotHot, Materials.Longasssuperconductornameforuhvwire, 1L), GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Longasssuperconductornameforuhvwire, 1L), 1600, 1966080);
         GT_Values.RA.addVacuumFreezerRecipe(GT_OreDictUnificator.get(OrePrefixes.ingotHot, Materials.SuperconductorUEVBase, 1L), GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.SuperconductorUEVBase, 1L), 3200, 7864320);
 
+        GT_Values.RA.addBlastRecipe(
+            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SuperconductorUEVBase, 1L),
+            GT_Utility.getIntegratedCircuit(1),
+            GT_Values.NF,
+            GT_Values.NF,
+            GT_OreDictUnificator.get(OrePrefixes.ingotHot, Materials.SuperconductorUEVBase, 1L),
+            GT_Values.NI,
+            19660,
+            122880*4,
+            11800
+        );
+
+        GT_Values.RA.addBlastRecipe(
+            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SuperconductorUEVBase, 1L),
+            GT_Utility.getIntegratedCircuit(11),
+            Materials.Radon.getGas(1000L),
+            GT_Values.NF,
+            GT_OreDictUnificator.get(OrePrefixes.ingotHot, Materials.SuperconductorUEVBase, 1L),
+            GT_Values.NI,
+            8847,
+            122880*4,
+            11800
+        ); // 0.45 * 19660 = 8847
+
         //Plasma Freezing
         GT_Values.RA.addVacuumFreezerRecipe(GT_OreDictUnificator.get(OrePrefixes.cellPlasma, Materials.Americium, 1L), GT_OreDictUnificator.get(OrePrefixes.cellMolten, Materials.Americium, 1L), 20, 30720);
         GT_Values.RA.addVacuumFreezerRecipe(GT_OreDictUnificator.get(OrePrefixes.cellPlasma, Materials.Helium, 1L), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Helium, 1L), 5, 120);
