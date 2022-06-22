@@ -614,11 +614,67 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         }
     }
 
-    public class CachedDefaultRecipe
-        extends TemplateRecipeHandler.CachedRecipe {
+    public class CachedDefaultRecipe extends TemplateRecipeHandler.CachedRecipe {
         public final GT_Recipe mRecipe;
         public final List<PositionedStack> mOutputs;
         public final List<PositionedStack> mInputs;
+
+            // Draws a grid of items for NEI rendering.
+        private void drawNEIItemGrid(ItemStack[] ItemArray, int x_coord_origin, int y_coord_origin, int x_dir_max_items, int y_max_dir_max_items, GT_Recipe Recipe, boolean is_input) {
+            if (ItemArray.length > x_dir_max_items * y_max_dir_max_items) {
+                GT_Log.err.println("Recipe cannot be properly displayed in NEI due to too many items.");
+            }
+            // 18 pixels to get to a new grid for placing a item tile since they are 16x16 and have 1 pixel buffers around them.
+            int x_max = x_coord_origin + x_dir_max_items * 18;
+
+            // Temp variables to keep track of current coords to place item at.
+            int x_coord = x_coord_origin;
+            int y_coord = y_coord_origin;
+
+            // Iterate over all items in array and display them.
+            int special_counter = 0;
+            for(ItemStack item : ItemArray) {
+                if (item != GT_Values.NI) {
+                    if (is_input) {
+                        mInputs.add(new FixedPositionedStack(item, x_coord, y_coord, true));
+                    } else {
+                        mOutputs.add(new FixedPositionedStack(item, x_coord, y_coord, Recipe.getOutputChance(special_counter), GT_NEI_DefaultHandler.this.mRecipeMap.mNEIUnificateOutput));
+                        special_counter++;
+                    }
+                    x_coord += 18;
+                    if (x_coord == x_max) {
+                        x_coord = x_coord_origin;
+                        y_coord += 18;
+                    } //1234
+                }
+            }
+        }
+
+        // Draws a grid of fluids for NEI rendering.
+        private void drawNEIFluidGrid(FluidStack[] FluidArray, int x_coord_origin, int y_coord_origin, int x_dir_max_fluids, int y_max_dir_max_fluids) {
+
+            if (FluidArray.length > x_dir_max_fluids * y_max_dir_max_fluids) {
+                GT_Log.err.println("Recipe cannot be properly displayed in NEI due to too many fluids.");
+            }
+
+            // 18 pixels to get to a new grid for placing a fluid tile since they are 16x16 and have 1 pixel buffers around them.
+            int x_max = x_coord_origin + x_dir_max_fluids * 18;
+
+            // Temp variables to keep track of current coords to place fluid at.
+            int x_coord = x_coord_origin;
+            int y_coord = y_coord_origin;
+
+            // Iterate over all fluids in array and display them.
+            for(FluidStack fluid : FluidArray) {
+                this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(fluid, true), x_coord, y_coord));
+                x_coord += 18;
+                if (x_coord == x_max) {
+                    x_coord = x_coord_origin;
+                    y_coord += 18;
+                }
+            }
+
+        }
 
         public CachedDefaultRecipe(GT_Recipe aRecipe) {
             super();
@@ -650,432 +706,81 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
             mOutputs = new ArrayList<>();
             mInputs = new ArrayList<>();
 
-            int tStartIndex = 0;
+            // Draw items in a grid for NEI single block machines.
             switch (GT_NEI_DefaultHandler.this.mRecipeMap.mUsualInputCount) {
                 case 0:
                     break;
-                case 1:
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 48, 14));
-                    }
-                    tStartIndex++;
+                case 1: // 1x1
+                    drawNEIItemGrid(aRecipe.mInputs, 48, 14, 1, 1, aRecipe, true);
                     break;
-                case 2:
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 30, 14));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 48, 14));
-                    }
-                    tStartIndex++;
+                case 2: // 2x1
+                    drawNEIItemGrid(aRecipe.mInputs, 30, 14, 2, 1, aRecipe, true);
                     break;
-                case 3:
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 12, 14));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 30, 14));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 48, 14));
-                    }
-                    tStartIndex++;
+                case 3: //
+                    drawNEIItemGrid(aRecipe.mInputs, 12, 14, 3, 1, aRecipe, true);
                     break;
                 case 4:
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 30, 5));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 48, 5));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 30, 23));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 48, 23));
-                    }
-                    tStartIndex++;
+                    drawNEIItemGrid(aRecipe.mInputs, 12, 14, 3, 2, aRecipe, true);
                     break;
                 case 5:
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 12, 5));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 30, 5));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 48, 5));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 30, 23));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 48, 23));
-                    }
-                    tStartIndex++;
+                    drawNEIItemGrid(aRecipe.mInputs, 12, 14, 3, 2, aRecipe, true);
                     break;
                 case 6:
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 12, 5));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 30, 5));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 48, 5));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 12, 23));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 30, 23));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 48, 23));
-                    }
-                    tStartIndex++;
+                    drawNEIItemGrid(aRecipe.mInputs, 12, -4, 3, 2, aRecipe, true);
                     break;
                 case 7:
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 12, -4));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 30, -4));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 48, -4));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 12, 14));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 30, 14));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 48, 14));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 12, 32));
-                    }
-                    tStartIndex++;
+                    drawNEIItemGrid(aRecipe.mInputs, 12, -4, 3, 3, aRecipe, true);
                     break;
                 case 8:
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 12, -4));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 30, -4));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 48, -4));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 12, 14));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 30, 14));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 48, 14));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 12, 32));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 30, 32));
-                    }
-                    tStartIndex++;
+                    drawNEIItemGrid(aRecipe.mInputs, 12, -4, 3, 3, aRecipe, true);
                     break;
                 default:
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 12, -4));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 30, -4));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 48, -4));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 12, 14));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 30, 14));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 48, 14));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 12, 32));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 30, 32));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 48, 32));
-                    }
-                    tStartIndex++;
+                    drawNEIItemGrid(aRecipe.mInputs, 12, -4, 3, 3, aRecipe, true);
             }
+
+            // ??? No idea what this does. Leaving it alone.
             if (aRecipe.mSpecialItems != null) {
                 this.mInputs.add(new FixedPositionedStack(aRecipe.mSpecialItems, 120, 52));
             }
-            tStartIndex = 0;
+
             boolean tUnificate = GT_NEI_DefaultHandler.this.mRecipeMap.mNEIUnificateOutput;
             switch (GT_NEI_DefaultHandler.this.mRecipeMap.mUsualOutputCount) {
                 case 0:
                     break;
                 case 1:
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 102, 14, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
+                    drawNEIItemGrid(aRecipe.mOutputs, 102, 14, 1, 1, aRecipe, false);
                     break;
                 case 2:
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 102, 14, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 120, 14, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
+                    drawNEIItemGrid(aRecipe.mOutputs, 102, 14, 2, 1, aRecipe, false);
                     break;
                 case 3:
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 102, 14, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 120, 14, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 138, 14, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
+                    drawNEIItemGrid(aRecipe.mOutputs, 102, 14, 2, 2, aRecipe, false);
                     break;
                 case 4:
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 102, 5, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 120, 5, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 102, 23, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 120, 23, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
+                    drawNEIItemGrid(aRecipe.mOutputs, 102, 5, 2, 2, aRecipe, false);
                     break;
                 case 5:
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 102, 5, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 120, 5, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 138, 5, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 102, 23, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 120, 23, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
+                    drawNEIItemGrid(aRecipe.mOutputs, 102, 5, 3, 2, aRecipe, false);
                     break;
                 case 6:
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 102, 5, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 120, 5, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 138, 5, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 102, 23, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 120, 23, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 138, 23, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
+                    drawNEIItemGrid(aRecipe.mOutputs, 102, 5, 3, 2, aRecipe, false);
                     break;
                 case 7:
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 102, -4, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 120, -4, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 138, -4, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 102, 14, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 120, 14, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 138, 14, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 102, 32, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
+                    drawNEIItemGrid(aRecipe.mOutputs, 102, -4, 3, 3, aRecipe, false);
                     break;
                 case 8:
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 102, -4, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 120, -4, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 138, -4, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 102, 14, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 120, 14, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 138, 14, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 102, 32, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 120, 32, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
+                    drawNEIItemGrid(aRecipe.mOutputs, 102, -4, 3, 3, aRecipe, false);
                     break;
                 default:
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 102, -4, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 120, -4, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 138, -4, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 102, 14, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 120, 14, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 138, 14, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 102, 32, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 120, 32, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 138, 32, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
+                    drawNEIItemGrid(aRecipe.mOutputs, 102, -4, 3, 3, aRecipe, false);
             }
 
-            // Generates a 4x4 grid of fluid icons if it's a complex fusion recipe.
             if (GT_Recipe.GT_Recipe_Map.sComplexFusionRecipes == GT_NEI_DefaultHandler.this.mRecipeMap) {
-                // 1234
-                int x_coord = 3;
-                int y_coord = -1;
-
-                int x_max = x_coord + 4 * 18;
-
-                for(FluidStack fluid : aRecipe.mFluidInputs) {
-                    this.mInputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(fluid, true), x_coord, y_coord));
-                    x_coord += 18;
-                    if (x_coord == x_max) {
-                        x_coord = 3;
-                        y_coord += 18;
-                    }
-                }
-
+                // Generates a 4x4 grid of fluid icons if it's a complex fusion recipe.
+                drawNEIFluidGrid(aRecipe.mFluidInputs, 3, -1, 4, 4);
+            } else if (GT_Recipe.GT_Recipe_Map.sPlasmaForgeRecipes == GT_NEI_DefaultHandler.this.mRecipeMap) {
+                // Generates a 3x2 grid of fluid icons if it's a complex fusion recipe.
+                drawNEIFluidGrid(aRecipe.mFluidInputs, 13, 5, 2, 2);
             } else {
                 if ((aRecipe.mFluidInputs.length > 0) && (aRecipe.mFluidInputs[0] != null) && (aRecipe.mFluidInputs[0].getFluid() != null)) {
                     this.mInputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidInputs[0], true), 48, 52));
@@ -1086,20 +791,11 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
             }
 
             if (GT_Recipe.GT_Recipe_Map.sComplexFusionRecipes == GT_NEI_DefaultHandler.this.mRecipeMap) {
-
-                int x_coord = 93;
-                int y_coord = -1;
-
-                int x_max = x_coord + 4 * 18;
-
-                for(FluidStack fluid : aRecipe.mFluidOutputs) {
-                    this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(fluid, true), x_coord, y_coord));
-                    x_coord += 18;
-                    if (x_coord == x_max) {
-                        x_coord = 93;
-                        y_coord += 18;
-                    }
-                }
+                // Generates a 4x4 grid of fluid icons if it's a complex fusion recipe.
+                drawNEIFluidGrid(aRecipe.mFluidOutputs, 93, -1, 4, 4);
+            } else if (GT_Recipe.GT_Recipe_Map.sPlasmaForgeRecipes == GT_NEI_DefaultHandler.this.mRecipeMap){
+                // Generates a 3x2 grid of fluid icons if it's a plasma forge recipe.
+                drawNEIFluidGrid(aRecipe.mFluidOutputs, 102, 5, 3, 2);
             } else {
                 if (aRecipe.mFluidOutputs.length > 1) {
                     if (aRecipe.mFluidOutputs[0] != null && (aRecipe.mFluidOutputs[0].getFluid() != null)) {
