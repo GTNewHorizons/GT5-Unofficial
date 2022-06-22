@@ -288,8 +288,6 @@ public class GT_MetaTileEntity_ElectricBlastFurnace extends GT_MetaTileEntity_Ab
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         this.mHeatingCapacity = 0;
 
-        replaceDeprecatedCoils(aBaseMetaTileEntity);
-
         setCoilLevel(HeatingCoilLevel.None);
 
         mPollutionOutputHatches.clear();
@@ -305,39 +303,6 @@ public class GT_MetaTileEntity_ElectricBlastFurnace extends GT_MetaTileEntity_Ab
 
         this.mHeatingCapacity = (int) getCoilLevel().getHeat() + 100 * (GT_Utility.getTier(getMaxInputVoltage()) - 2);
         return true;
-    }
-
-    private void replaceDeprecatedCoils(IGregTechTileEntity aBaseMetaTileEntity) {
-        int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
-        int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
-        int tX = aBaseMetaTileEntity.getXCoord() + xDir;
-        int tY = aBaseMetaTileEntity.getYCoord();
-        int tZ = aBaseMetaTileEntity.getZCoord() + zDir;
-        int tUsedMeta;
-        for (int xPos = tX - 1; xPos <= tX + 1; xPos++) {
-            for (int zPos = tZ - 1; zPos <= tZ + 1; zPos++) {
-                if ((xPos == tX) && (zPos == tZ))
-                    continue;
-                for (int yPos = tY + 1; yPos <= tY + 2; yPos++) {
-                    tUsedMeta = aBaseMetaTileEntity.getMetaID(xPos, yPos, zPos);
-                    if (tUsedMeta < 12)
-                        continue;
-                    if (tUsedMeta > 14)
-                        continue;
-                    if (aBaseMetaTileEntity.getBlock(xPos, yPos, zPos) != GregTech_API.sBlockCasings1)
-                        continue;
-
-                    aBaseMetaTileEntity.getWorld().setBlock(
-                            xPos,
-                            yPos,
-                            zPos,
-                            GregTech_API.sBlockCasings5,
-                            tUsedMeta - 12,
-                            3
-                    );
-                }
-            }
-        }
     }
 
     @Override
