@@ -23,20 +23,21 @@ public interface IGT_RecipeAdder {
      * @param aEnergyNeededForStartingFusion = EU needed for heating the Reactor up (must be >= 0)
      * @return true if the Recipe got added, otherwise false.
      */
+
+    @Deprecated
     boolean addFusionReactorRecipe(FluidStack aInput1, FluidStack aInput2, FluidStack aOutput1, int aFusionDurationInTicks, int aFusionEnergyPerTick, int aEnergyNeededForStartingFusion);
 
     /**
      * Adds a Fusion Reactor Recipe
      *
-     * @param FluidOutputArray               : Array of input fluids.
-     * @param FluidOutputArray               : Array of output fluids.
+     * @param FluidOutputArray               : Array of input fluids. Up to 16.
+     * @param FluidOutputArray               : Array of output fluids. Up to 16.
      * @param aFusionDurationInTicks         : How many ticks the Fusion lasts (must be > 0).
-     * @param aFusionEnergyPerTick           : The EU generated per Tick (can even be negative!).
-     * @param aEnergyNeededForStartingFusion : EU needed for heating the Reactor up (must be >= 0).
-     * @return true if the Recipe got added, otherwise false.
+     * @param aFusionEnergyPerTick           : The EU consumed per tick to keep the reaction going.
+     * @param aEnergyNeededForStartingFusion : EU needed to initialize the fusion reaction. (must be >= 0).
+     * @return true if the recipe got added, otherwise false.
      */
     boolean addFusionReactorRecipe(FluidStack[] FluidInputArray, FluidStack[] FluidOutputArray, int aFusionDurationInTicks, int aFusionEnergyPerTick, int aEnergyNeededForStartingFusion);
-
 
     /**
      * Adds a Centrifuge Recipe
@@ -656,11 +657,13 @@ public interface IGT_RecipeAdder {
     /**
      * Adds a Recipe for the Laser Engraver.
      */
+    @Deprecated
     boolean addLaserEngraverRecipe(ItemStack aItemToEngrave, ItemStack aLens, ItemStack aEngravedItem, int aDuration, int aEUt);
 
     /**
      * Adds a Recipe for the Laser Engraver.
      */
+    @Deprecated
     boolean addLaserEngraverRecipe(ItemStack aItemToEngrave, ItemStack aLens, ItemStack aEngravedItem, int aDuration, int aEUt, boolean aCleanroom);
 
     /**
