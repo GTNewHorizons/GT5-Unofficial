@@ -5,10 +5,8 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Worldgen_GT_Ore_Layer;
@@ -31,7 +29,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.oredict.OreDictionary;
 
 public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends GregtechMeta_MultiBlockBase {
 
@@ -72,15 +69,19 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 		this.casingTextureIndex = this.getCasingTextureIndex();
 	}
 
-	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
-			final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-		if (aSide == aFacing) {
-			return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(this.casingTextureIndex),
-					new GT_RenderedTexture(
-							(IIconContainer) (aActive ? Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT_ACTIVE
-									: Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT)) };
-		}
-		return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(this.casingTextureIndex) };
+	@Override
+	protected IIconContainer getActiveOverlay() {
+		return Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT_ACTIVE;
+	}
+
+	@Override
+	protected IIconContainer getInactiveOverlay() {
+		return Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT;
+	}
+
+	@Override
+	protected int getCasingTextureId() {
+		return this.casingTextureIndex;
 	}
 
 	public Object getClientGUI(final int aID, final InventoryPlayer aPlayerInventory,

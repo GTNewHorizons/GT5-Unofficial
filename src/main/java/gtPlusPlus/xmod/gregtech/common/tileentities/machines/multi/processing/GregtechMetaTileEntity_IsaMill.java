@@ -11,18 +11,14 @@ import java.util.List;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import gregtech.api.metatileentity.implementations.*;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gtPlusPlus.core.lib.CORE;
 import org.apache.commons.lang3.ArrayUtils;
 
 import gregtech.api.enums.TAE;
-import gregtech.api.enums.Textures;
-import gregtech.api.gui.GT_GUIContainer_MultiMachine;
-import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.GTPP_Recipe;
@@ -31,7 +27,6 @@ import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -42,7 +37,6 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.CustomIco
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
@@ -56,16 +50,14 @@ public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase<
 	private int mCasing;
 	private IStructureDefinition<GregtechMetaTileEntity_IsaMill> STRUCTURE_DEFINITION = null;
 
-	private static ITexture frontFace;
-	private static ITexture frontFaceActive;
+	private static final IIconContainer frontFaceActive = new CustomIcon("iconsets/Grinder/GRINDER_ACTIVE5");
+	private static final IIconContainer frontFace = new CustomIcon("iconsets/Grinder/GRINDER5");
 
 	private ArrayList<GT_MetaTileEntity_Hatch_MillingBalls> mMillingBallBuses = new ArrayList<GT_MetaTileEntity_Hatch_MillingBalls>();
 	private static final DamageSource mIsaMillDamageSource = new DamageSource("gtpp.grinder").setDamageBypassesArmor();
 
 	public GregtechMetaTileEntity_IsaMill(int aID, String aName, String aNameRegional) {
 		super(aID, aName, aNameRegional);
-		frontFaceActive = new GT_RenderedTexture(new CustomIcon("iconsets/Grinder/GRINDER_ACTIVE5"));
-		frontFace = new GT_RenderedTexture(new CustomIcon("iconsets/Grinder/GRINDER5"));
 	}
 
 	public GregtechMetaTileEntity_IsaMill(String aName) {
@@ -153,10 +145,19 @@ public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase<
 		return super.checkHatch() && mMillingBallBuses.size() == 1;
 	}
 
-	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-		return new ITexture[]{
-				Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(2)),
-				aFacing == aSide ? aActive ? frontFaceActive : frontFace : Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(2))};
+	@Override
+	protected IIconContainer getActiveOverlay() {
+		return frontFaceActive;
+	}
+
+	@Override
+	protected IIconContainer getInactiveOverlay() {
+		return frontFace;
+	}
+
+	@Override
+	protected int getCasingTextureId() {
+		return TAE.GTPP_INDEX(2);
 	}
 
 	@Override

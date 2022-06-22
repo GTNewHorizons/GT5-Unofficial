@@ -6,13 +6,14 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
+import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
+import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
+import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
@@ -20,16 +21,18 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
-import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GTPP_Recipe.GTPP_Recipe_Map;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class GregtechMetaTileEntity_IndustrialMolecularTransformer extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialMolecularTransformer> {
 
@@ -59,7 +62,6 @@ public class GregtechMetaTileEntity_IndustrialMolecularTransformer extends Gregt
 		GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
 		tt.addMachineType(getMachineType())
 				.addInfo("Changes the structure of items to produce new ones")
-				.addInfo("Speed: 100% | Eu Usage: 100%")
 				.addInfo("Maximum 1x of each bus/hatch.")
 				.addPollutionAmount(getPollutionPerSecond(null))
 				.addSeparator()
@@ -193,13 +195,19 @@ public class GregtechMetaTileEntity_IndustrialMolecularTransformer extends Gregt
 		return false;
 	}
 
-	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
-			final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-		if (aSide == aFacing) {
-			return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(44),
-					new GT_RenderedTexture((IIconContainer) (aActive ? TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active : TexturesGtBlock.Overlay_Machine_Controller_Advanced))};
-		}
-		return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(44)};
+	@Override
+	protected IIconContainer getActiveOverlay() {
+		return TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active;
+	}
+
+	@Override
+	protected IIconContainer getInactiveOverlay() {
+		return TexturesGtBlock.Overlay_Machine_Controller_Advanced;
+	}
+
+	@Override
+	protected int getCasingTextureId() {
+		return 44;
 	}
 
 	@Override
@@ -214,7 +222,7 @@ public class GregtechMetaTileEntity_IndustrialMolecularTransformer extends Gregt
 
 	@Override
 	public String getCustomGUIResourceName() {
-		return "VacuumFreezer";
+		return null;
 	}
 
 	public GT_Recipe.GT_Recipe_Map getRecipeMap() {				
@@ -227,7 +235,7 @@ public class GregtechMetaTileEntity_IndustrialMolecularTransformer extends Gregt
 
 	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
-		return checkRecipeGeneric(1, 100, 100);
+		return checkRecipeGeneric();
 	}
 	
 	@Override
@@ -237,7 +245,7 @@ public class GregtechMetaTileEntity_IndustrialMolecularTransformer extends Gregt
 
 	@Override
 	public int getEuDiscountForParallelism() {
-		return 100;
+		return 0;
 	}
 
 	public int getMaxEfficiency(final ItemStack aStack) {
@@ -255,14 +263,9 @@ public class GregtechMetaTileEntity_IndustrialMolecularTransformer extends Gregt
 	public boolean explodesOnComponentBreak(final ItemStack aStack) {
 		return false;
 	}
-	
+
 	@Override
-	public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-		super.onPreTick(aBaseMetaTileEntity, aTick);		
-		// Fix GT bug
-		if (this.getBaseMetaTileEntity().getFrontFacing() != 1) {
-			this.getBaseMetaTileEntity().setFrontFacing((byte) 1); 
-		}
+	public boolean isNewExtendedFacingValid(ExtendedFacing alignment) {
+		return alignment.getDirection() == ForgeDirection.UP && super.isNewExtendedFacingValid(alignment);
 	}
-       
 }

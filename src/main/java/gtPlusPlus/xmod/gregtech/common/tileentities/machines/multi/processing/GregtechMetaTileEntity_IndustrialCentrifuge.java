@@ -3,12 +3,10 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.enums.TAE;
-import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.*;
-import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -31,18 +29,14 @@ import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 public class GregtechMetaTileEntity_IndustrialCentrifuge extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialCentrifuge> {
 	
 	private boolean mIsAnimated;
-	private static ITexture frontFace;
-	private static ITexture frontFaceActive;
-	private static CustomIcon GT9_5_Active = new CustomIcon("iconsets/LARGECENTRIFUGE_ACTIVE5");
-	private static CustomIcon GT9_5 = new CustomIcon("iconsets/LARGECENTRIFUGE5");
+	private static final CustomIcon frontFaceActive = new CustomIcon("iconsets/LARGECENTRIFUGE_ACTIVE5");
+	private static final CustomIcon frontFace = new CustomIcon("iconsets/LARGECENTRIFUGE5");
 	private int mCasing;
 	private IStructureDefinition<GregtechMetaTileEntity_IndustrialCentrifuge> STRUCTURE_DEFINITION = null;
 	//public static double recipesComplete = 0;
 
 	public GregtechMetaTileEntity_IndustrialCentrifuge(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
-		frontFaceActive = new GT_RenderedTexture(GT9_5_Active);
-		frontFace = new GT_RenderedTexture(GT9_5);
 		mIsAnimated = true;
 	}
 
@@ -150,8 +144,22 @@ public class GregtechMetaTileEntity_IndustrialCentrifuge extends GregtechMeta_Mu
 	}
 
 	@Override
-	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-		return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(0)), aFacing == aSide ? aActive ? getFrontFacingTurbineTexture(aActive) : getFrontFacingTurbineTexture(aActive) : Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(0))};
+	protected IIconContainer getActiveOverlay() {
+		if (usingAnimations()) {
+			return frontFaceActive;
+		} else {
+			return frontFace;
+		}
+	}
+
+	@Override
+	protected IIconContainer getInactiveOverlay() {
+		return frontFace;
+	}
+
+	@Override
+	protected int getCasingTextureId() {
+		return TAE.GTPP_INDEX(0);
 	}
 
 	@Override
@@ -248,15 +256,6 @@ public class GregtechMetaTileEntity_IndustrialCentrifuge extends GregtechMeta_Mu
 	public boolean usingAnimations() {
 		//Logger.INFO("Is animated? "+this.mIsAnimated);
 		return this.mIsAnimated;
-	}
-	
-	private ITexture getFrontFacingTurbineTexture(boolean isActive) {
-		if (usingAnimations()) {
-			if (isActive) {
-				return frontFaceActive;
-			}
-		}
-		return frontFace;
 	}
 
 }

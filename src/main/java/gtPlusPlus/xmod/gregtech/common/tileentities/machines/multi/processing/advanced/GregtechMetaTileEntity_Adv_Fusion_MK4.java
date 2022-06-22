@@ -12,6 +12,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energ
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_FusionComputer;
 import gtPlusPlus.core.block.ModBlocks;
@@ -103,24 +104,21 @@ public class GregtechMetaTileEntity_Adv_Fusion_MK4 extends GT_MetaTileEntity_Fus
     }
 
 	@Override
-	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
-			final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-		ITexture[] sTexture;
+	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
 		if (aSide == aFacing) {
-			sTexture = new ITexture[]{
+			return new ITexture[]{
                     new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS,
                             Dyes.getModulation(-1, Dyes._NULL.mRGBa)),
-                    new GT_RenderedTexture(this.getIconOverlay())};
+					TextureFactory.builder().addIcon(this.getIconOverlay()).extFacing().build()};
 		} else if (!aActive) {
-			sTexture = new ITexture[]{
+			return new ITexture[]{
                     new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS,
                             Dyes.getModulation(-1, Dyes._NULL.mRGBa))};
 		} else {
-			sTexture = new ITexture[]{
+			return new ITexture[]{
                     new GT_RenderedTexture(TexturesGtBlock.TEXTURE_CASING_FUSION_CASING_ULTRA,
                             Dyes.getModulation(-1, Dyes._NULL.mRGBa))};
 		}
-		return sTexture;
 	}
 
     @Override

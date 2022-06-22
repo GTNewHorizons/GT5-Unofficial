@@ -1876,7 +1876,8 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
     }
 
 
-    public boolean addMolecularTransformerRecipe(ItemStack aInput, ItemStack aOutput, int aDuration, int aEUt, int aAmps) {
+	@Override
+	public boolean addMolecularTransformerRecipe(ItemStack aInput, ItemStack aOutput, int aDuration, int aEUt) {
     	if ((aInput == null) || (aOutput == null)) {
     		return false;
     	}        
@@ -1890,14 +1891,16 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
     			new FluidStack[] {},
     			aDuration,
     			aEUt,
-    			aAmps);	
+    			0);
 
     	int aSize = GTPP_Recipe_Map.sMolecularTransformerRecipes.mRecipeList.size();
     	GTPP_Recipe_Map.sMolecularTransformerRecipes.add(aRecipe);
     	return GTPP_Recipe_Map.sMolecularTransformerRecipes.mRecipeList.size() > aSize;
-}
+	}
 
 
-
-
+	@Override
+	public boolean addMolecularTransformerRecipe(ItemStack aInput, ItemStack aOutput, int aDuration, int aEUt, int aAmps) {
+		return addMolecularTransformerRecipe(aInput, aOutput, aDuration, aEUt);
+	}
 }

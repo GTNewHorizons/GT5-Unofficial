@@ -5,8 +5,11 @@ import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_Container_MultiMachine;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
+import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
@@ -14,6 +17,7 @@ import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
@@ -2690,5 +2694,31 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
 		};
 	}
 
+	@Override
+	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
+		if (aSide == aFacing) {
+			if (aActive)
+				return new ITexture[]{getCasingTexture(),
+						TextureFactory.builder().addIcon(getActiveOverlay()).extFacing().build()};
+			return new ITexture[]{getCasingTexture(),
+					TextureFactory.builder().addIcon(getInactiveOverlay()).extFacing().build()};
+		}
+		return new ITexture[]{getCasingTexture()};
+	}
 
+	protected IIconContainer getActiveOverlay() {
+		return null;
+	}
+
+	protected IIconContainer getInactiveOverlay() {
+		return null;
+	}
+
+	protected ITexture getCasingTexture() {
+		return Textures.BlockIcons.getCasingTextureForId(getCasingTextureId());
+	}
+
+	protected int getCasingTextureId() {
+		return 0;
+	}
 }

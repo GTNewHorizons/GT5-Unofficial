@@ -9,9 +9,8 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.TAE;
-import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
-import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.*;
@@ -22,7 +21,6 @@ import gtPlusPlus.core.block.base.BlockBaseModular;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
-import gtPlusPlus.xmod.gregtech.api.objects.GTPP_RenderedTexture;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -128,12 +126,20 @@ public class GregtechMetaTileEntity_Adv_HeatExchanger extends GregtechMeta_Multi
         super.saveNBTData(aNBT);
     }
 
-	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-		if (aSide == aFacing) {
-			return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(CASING_INDEX), new GTPP_RenderedTexture(aActive ? TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active : TexturesGtBlock.Overlay_Machine_Controller_Advanced)};
-		}
-		return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(CASING_INDEX)};
-	}
+    @Override
+    protected IIconContainer getActiveOverlay() {
+        return TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active;
+    }
+
+    @Override
+    protected IIconContainer getInactiveOverlay() {
+        return TexturesGtBlock.Overlay_Machine_Controller_Advanced;
+    }
+
+    @Override
+    protected int getCasingTextureId() {
+        return CASING_INDEX;
+    }
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
