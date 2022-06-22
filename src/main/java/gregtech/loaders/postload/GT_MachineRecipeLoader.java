@@ -3106,7 +3106,7 @@ public class GT_MachineRecipeLoader implements Runnable {
                 new FluidStack[]{Materials.WoodTar.getFluid(250), Materials.WoodVinegar.getFluid(400), Materials.WoodGas.getGas(250), Materials.Dimethylbenzene.getFluid(100)},
                 Materials.Charcoal.getDustSmall(1),  40, 256);
         GT_Values.RA.addUniversalDistillationRecipe(Materials.WoodGas.getGas(1000),
-                new FluidStack[]{Materials.CarbonDioxide.getGas(490), Materials.Ethylene.getGas(20), Materials.Methane.getGas(130), Materials.CarbonMonoxide.getGas(340), Materials.Hydrogen.getGas(20)},
+                new FluidStack[]{Materials.CarbonDioxide.getGas(390), Materials.Ethylene.getGas(120), Materials.Methane.getGas(130), Materials.CarbonMonoxide.getGas(240), Materials.Hydrogen.getGas(120)},
                 GT_Values.NI,  40, 256);
         GT_Values.RA.addUniversalDistillationRecipe(Materials.WoodVinegar.getFluid(1000),
                 new FluidStack[]{Materials.AceticAcid.getFluid(100), Materials.Water.getFluid(500), Materials.Ethanol.getFluid(10), Materials.Methanol.getFluid(300), Materials.Acetone.getFluid(50), Materials.MethylAcetate.getFluid(10)},
