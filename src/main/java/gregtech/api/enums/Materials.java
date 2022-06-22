@@ -2264,7 +2264,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 //        }
 
         if (aMaterial.mIconSet.is_custom) {
-            System.out.println("ABC1234 " + aMaterial.mHasPlasma + aMaterial.mHasGas);
             return;
         } else {
             if (aMaterial.mHasPlasma = GregTech_API.sMaterialProperties.get(aConfigPath, "AddPlasma", aMaterial.mHasPlasma))
