@@ -1966,7 +1966,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         private static final int FLUID_OUTPUT_COUNT = 4;
 
         public GT_Recipe_Map_LargeChemicalReactor() {
-            super(new HashSet<>(1000), "gt.recipe.largechemicalreactor", "Large Chemical Reactor", null, RES_PATH_GUI + "basicmachines/Default", 2, OUTPUT_COUNT, 0, 0, 1, E, 1, E, true, true);
+            super(new HashSet<>(1000), "gt.recipe.largechemicalreactor", "Large Chemical Reactor", null, RES_PATH_GUI + "basicmachines/LCRNEI", 2, OUTPUT_COUNT, 0, 0, 1, E, 1, E, true, true);
         }
 
         @Override
