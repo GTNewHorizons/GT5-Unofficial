@@ -33,7 +33,12 @@ import com.github.bartimaeusnek.bartworks.util.log.DebugLog;
 import com.github.bartimaeusnek.crossmod.BartWorksCrossmod;
 import com.google.common.collect.ArrayListMultimap;
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.enums.*;
+import gnu.trove.map.hash.TObjectDoubleHashMap;
+import gregtech.api.enums.Element;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SubTag;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -46,23 +51,51 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_ElectricImplosionCompressor.eicMap;
-import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.*;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.ANAEROBE_GAS;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.NOBLE_GAS;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.Oganesson;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.fluids;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.molten;
 import static gregtech.api.enums.GT_Values.VN;
 
 public class StaticRecipeChangeLoaders {
+
+    private static TObjectDoubleHashMap<Materials> gtEbfGasRecipeTimeMultipliers = null;
+    private static TObjectDoubleHashMap<Materials> gtEbfGasRecipeConsumptionMultipliers = null;
 
     private StaticRecipeChangeLoaders() {
     }
 
     public static void addEBFGasRecipes() {
+        if (gtEbfGasRecipeTimeMultipliers == null) {
+            // For Werkstoff gases, use Werkstoff.Stats.setEbfGasRecipeTimeMultiplier
+            gtEbfGasRecipeTimeMultipliers = new TObjectDoubleHashMap<>(10, 0.5F, -1.0D); // keep default value as -1
+            // Example to make Argon cut recipe times into a third of the original:
+            // gtEbfGasRecipeTimeMultipliers.put(Materials.Argon, 1.0D / 3.0D);
+        }
+        if (gtEbfGasRecipeConsumptionMultipliers == null) {
+            // For Werkstoff gases, use Werkstoff.Stats.setEbfGasRecipeConsumedAmountMultiplier
+            gtEbfGasRecipeConsumptionMultipliers = new TObjectDoubleHashMap<>(10, 0.5F, 1.0D); // keep default value as 1
+            // Example to make Argon recipes use half the gas amount of the primary recipe (1000L->500L, 2000L->1000L etc.):
+            // gtEbfGasRecipeConsumptionMultipliers.put(Materials.Argon, 1.0D / 2.0D);
+        }
         ArrayListMultimap<SubTag, GT_Recipe> toChange = getRecipesToChange(NOBLE_GAS, ANAEROBE_GAS);
         editRecipes(toChange, getNoGasItems(toChange));
     }
@@ -281,12 +314,16 @@ public class StaticRecipeChangeLoaders {
             }
     }
 
+    /**
+     * Constructs a list of recipes to change by scanning all EBF recipes for uses of noble gases.
+     * @param GasTags list of gas tags to look out for in EBF recipes
+     * @return A multimap from the gas tag (noble and/or anaerobic) to all the recipes containing a gas with that tag
+     */
     private static ArrayListMultimap<SubTag, GT_Recipe> getRecipesToChange(SubTag... GasTags) {
         ArrayListMultimap<SubTag, GT_Recipe> toAdd = ArrayListMultimap.create();
         for (GT_Recipe recipe : GT_Recipe.GT_Recipe_Map.sBlastRecipes.mRecipeList) {
             if (recipe.mFluidInputs != null && recipe.mFluidInputs.length > 0) {
-                String FluidString = recipe.mFluidInputs[0].getFluid().getName().replaceAll("molten", "").replaceAll("fluid", "");
-                Materials mat = Materials.get(FluidString.substring(0, 1).toUpperCase() + FluidString.substring(1));
+                Materials mat = getMaterialFromInputFluid(recipe);
                 if (mat != Materials._NULL) {
                     for (SubTag tag : GasTags) {
                         if (mat.contains(tag)) {
@@ -300,6 +337,12 @@ public class StaticRecipeChangeLoaders {
         return toAdd;
     }
 
+    /**
+     * Scans EBF recipes for no-gas variants of the recipes present in base.
+     * Adds these recipes to the base multimap.
+     * @param base The recipe multimap to scan and modify
+     * @return Set of item outputs (recipe.mOutputs[0]) of the no-gas recipes
+     */
     private static HashSet<ItemStack> getNoGasItems(ArrayListMultimap<SubTag, GT_Recipe> base) {
         HashSet<ItemStack> toAdd = new HashSet<>();
         ArrayListMultimap<SubTag, GT_Recipe> repToAdd = ArrayListMultimap.create();
@@ -321,25 +364,54 @@ public class StaticRecipeChangeLoaders {
         return toAdd;
     }
 
-    private static void editEBFMaterialRecipes(SubTag GasTag, GT_Recipe recipe, Materials mat, HashSet<GT_Recipe> toAdd) {
-        for (Materials materials : Materials.values()) {
-            if (materials.contains(GasTag)) {
-                int time = (int) ((double) recipe.mDuration / 200D * (200D + (materials.getProtons() >= mat.getProtons() ? (double) mat.getProtons() - (double) materials.getProtons() : (double) mat.getProtons() * 2.75D - (double) materials.getProtons())));
-                toAdd.add(new BWRecipes.DynamicGTRecipe(false, recipe.mInputs, recipe.mOutputs, recipe.mSpecialItems, recipe.mChances, new FluidStack[]{materials.getGas(recipe.mFluidInputs[0].amount)}, recipe.mFluidOutputs, time, recipe.mEUt, recipe.mSpecialValue));
+    private static int transformEBFGasRecipeTime(int originalDuration, long originalGasProtons, long newGasProtons) {
+        double protonTerm = (double) originalGasProtons * (newGasProtons >= originalGasProtons ? 1.0D : 2.75D) - (double) newGasProtons;
+        return Math.max(1, (int) ((double) originalDuration / 200D * Math.max(200D + protonTerm, 1D)));
+    }
+
+    private static int transformEBFGasRecipeTime(GT_Recipe recipe, Materials originalGas, Materials newGas) {
+        double newEbfMul = gtEbfGasRecipeTimeMultipliers.get(newGas);
+        if (newEbfMul < 0.0D) {
+            return transformEBFGasRecipeTime(recipe.mDuration, originalGas.getProtons(), newGas.getProtons());
+        } else {
+            return Math.max(1, (int) ((double) recipe.mDuration * newEbfMul));
+        }
+    }
+
+    private static int transformEBFGasRecipeTime(GT_Recipe recipe, Materials originalGas, Werkstoff newGas) {
+        double newEbfMul = newGas.getStats().getEbfGasRecipeTimeMultiplier();
+        if (newEbfMul < 0.0D) {
+            return transformEBFGasRecipeTime(recipe.mDuration, originalGas.getProtons(), newGas.getStats().getProtons());
+        } else {
+            return Math.max(1, (int) ((double) recipe.mDuration * newEbfMul));
+        }
+    }
+
+    private static int transformEBFNoGasRecipeTime(GT_Recipe recipe, Materials originalGas) {
+        return transformEBFGasRecipeTime(recipe.mDuration, originalGas.getProtons(), 0);
+    }
+
+    private static void editEBFMaterialRecipes(SubTag GasTag, GT_Recipe recipe, Materials originalGas, HashSet<GT_Recipe> toAdd) {
+        for (Materials newGas : Materials.values()) {
+            if (newGas.contains(GasTag)) {
+                int time = transformEBFGasRecipeTime(recipe, originalGas, newGas);
+                int gasAmount = Math.max(1, (int) Math.round((double) recipe.mFluidInputs[0].amount * gtEbfGasRecipeConsumptionMultipliers.get(newGas)));
+                toAdd.add(new BWRecipes.DynamicGTRecipe(false, recipe.mInputs, recipe.mOutputs, recipe.mSpecialItems, recipe.mChances, new FluidStack[]{newGas.getGas(gasAmount)}, recipe.mFluidOutputs, time, recipe.mEUt, recipe.mSpecialValue));
             }
         }
     }
 
-    private static void editEBFWerkstoffRecipes(SubTag GasTag, GT_Recipe recipe, Materials mat, HashSet<GT_Recipe> toAdd) {
-        for (Werkstoff werkstoff : Werkstoff.werkstoffHashMap.values()) {
-            if (werkstoff.contains(GasTag)) {
-                int time = (int) ((double) recipe.mDuration / 200D * (200D + (werkstoff.getStats().getProtons() >= mat.getProtons() ? (double) mat.getProtons() - (double) werkstoff.getStats().getProtons() : (double) mat.getProtons() * 2.75D - (double) werkstoff.getStats().getProtons())));
-                toAdd.add(new BWRecipes.DynamicGTRecipe(false, recipe.mInputs, recipe.mOutputs, recipe.mSpecialItems, recipe.mChances, new FluidStack[]{new FluidStack(Objects.requireNonNull(fluids.get(werkstoff)), recipe.mFluidInputs[0].amount)}, recipe.mFluidOutputs, time, recipe.mEUt, recipe.mSpecialValue));
+    private static void editEBFWerkstoffRecipes(SubTag GasTag, GT_Recipe recipe, Materials originalGas, HashSet<GT_Recipe> toAdd) {
+        for (Werkstoff newGas : Werkstoff.werkstoffHashMap.values()) {
+            if (newGas.contains(GasTag)) {
+                int time = transformEBFGasRecipeTime(recipe, originalGas, newGas);
+                int gasAmount = Math.max(1, (int) Math.round((double) recipe.mFluidInputs[0].amount * newGas.getStats().getEbfGasRecipeConsumedAmountMultiplier()));
+                toAdd.add(new BWRecipes.DynamicGTRecipe(false, recipe.mInputs, recipe.mOutputs, recipe.mSpecialItems, recipe.mChances, new FluidStack[]{new FluidStack(Objects.requireNonNull(fluids.get(newGas)), gasAmount)}, recipe.mFluidOutputs, time, recipe.mEUt, recipe.mSpecialValue));
             }
         }
     }
 
-    private static void editEBFNoGasRecipes(GT_Recipe recipe, Materials mat, HashSet<GT_Recipe> toAdd, HashSet<ItemStack> noGas) {
+    private static void editEBFNoGasRecipes(GT_Recipe recipe, Materials originalGas, HashSet<GT_Recipe> toAdd, HashSet<ItemStack> noGas) {
         for (ItemStack is : noGas) {
             byte circuitConfiguration = 1;
             if (GT_Utility.areStacksEqual(is, recipe.mOutputs[0])) {
@@ -351,7 +423,7 @@ public class StaticRecipeChangeLoaders {
                         inputs.add(stack);
                     }
                 inputs.add(GT_Utility.getIntegratedCircuit(circuitConfiguration));
-                toAdd.add(new BWRecipes.DynamicGTRecipe(false, inputs.toArray(new ItemStack[0]), recipe.mOutputs, recipe.mSpecialItems, recipe.mChances, null, recipe.mFluidOutputs, (int) ((double) recipe.mDuration / 200D * (200D + ((double) mat.getProtons() * 2.75D))), recipe.mEUt, recipe.mSpecialValue));
+                toAdd.add(new BWRecipes.DynamicGTRecipe(false, inputs.toArray(new ItemStack[0]), recipe.mOutputs, recipe.mSpecialItems, recipe.mChances, null, recipe.mFluidOutputs, transformEBFNoGasRecipeTime(recipe, originalGas), recipe.mEUt, recipe.mSpecialValue));
                 break;
             }
         }
@@ -380,8 +452,11 @@ public class StaticRecipeChangeLoaders {
     }
 
     private static Materials getMaterialFromInputFluid(GT_Recipe recipe) {
-        String materialString = recipe.mFluidInputs[0].getFluid().getName().replaceAll("molten", "").replaceAll("fluid", "");
-        return Materials.get(materialString.substring(0, 1).toUpperCase() + materialString.substring(1));
+        String materialString = recipe.mFluidInputs[0].getFluid().getName();
+        materialString = StringUtils.removeStart(materialString, "molten");
+        materialString = StringUtils.removeStart(materialString, "fluid");
+        materialString = StringUtils.capitalize(materialString);
+        return Materials.get(materialString);
     }
 
     private static void editRecipes(ArrayListMultimap<SubTag, GT_Recipe> base, HashSet<ItemStack> noGas) {
@@ -393,11 +468,11 @@ public class StaticRecipeChangeLoaders {
         for (SubTag gasTag : base.keySet()) {
             for (GT_Recipe recipe : base.get(gasTag)) {
                 if (recipe.mFluidInputs != null && recipe.mFluidInputs.length > 0) {
-                    Materials mat = getMaterialFromInputFluid(recipe);
-                    if (mat != Materials._NULL) {
-                        editEBFWerkstoffRecipes(gasTag, recipe, mat, toAdd);
-                        editEBFMaterialRecipes(gasTag, recipe, mat, toAdd);
-                        editEBFNoGasRecipes(recipe, mat, toAdd, noGas);
+                    Materials originalGas  = getMaterialFromInputFluid(recipe);
+                    if (originalGas != Materials._NULL) {
+                        editEBFWerkstoffRecipes(gasTag, recipe, originalGas, toAdd);
+                        editEBFMaterialRecipes(gasTag, recipe, originalGas, toAdd);
+                        editEBFNoGasRecipes(recipe, originalGas, toAdd, noGas);
                     }
                 }
             }

@@ -1,4 +1,4 @@
-//version: 1644894948
+//version: 1652851397
 /*
 DO NOT CHANGE THIS FILE!
 
@@ -6,12 +6,11 @@ Also, you may replace this file at any time if there is an update available.
 Please check https://github.com/GTNewHorizons/ExampleMod1.7.10/blob/main/build.gradle for updates.
 */
 
-import org.gradle.internal.logging.text.StyledTextOutput
-import org.gradle.internal.logging.text.StyledTextOutputFactory
-import org.gradle.internal.logging.text.StyledTextOutput.Style
 
 import com.github.jengelman.gradle.plugins.shadow.tasks.ConfigureShadowRelocation
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import org.gradle.internal.logging.text.StyledTextOutput.Style
+import org.gradle.internal.logging.text.StyledTextOutputFactory
 
 import java.util.concurrent.TimeUnit
 
@@ -45,13 +44,14 @@ plugins {
     id 'eclipse'
     id 'scala'
     id 'maven-publish'
-    id 'org.jetbrains.kotlin.jvm'        version '1.5.30' apply false
-    id 'org.jetbrains.kotlin.kapt'       version '1.5.30' apply false
+    id 'org.jetbrains.kotlin.jvm'        version '1.5.30'       apply false
+    id 'org.jetbrains.kotlin.kapt'       version '1.5.30'       apply false
+    id 'com.google.devtools.ksp'         version '1.5.30-1.0.0' apply false
     id 'org.ajoberstar.grgit'            version '4.1.1'
     id 'com.github.johnrengelman.shadow' version '4.0.4'
-    id 'com.palantir.git-version'        version '0.13.0' apply false
+    id 'com.palantir.git-version'        version '0.13.0'       apply false
     id 'de.undercouch.download'          version '5.0.1'
-    id 'com.github.gmazzo.buildconfig'   version '3.0.3'  apply false
+    id 'com.github.gmazzo.buildconfig'   version '3.0.3'        apply false
 }
 
 if (project.file('.git/HEAD').isFile()) {
@@ -104,6 +104,7 @@ checkPropertyExists("usesShadowedDependencies")
 checkPropertyExists("developmentEnvironmentUserName")
 
 boolean noPublishedSources = project.findProperty("noPublishedSources") ? project.noPublishedSources.toBoolean() : false
+boolean usesMixinDebug = project.findProperty('usesMixinDebug') ?: project.usesMixins.toBoolean()
 
 String javaSourceDir = "src/main/java/"
 String scalaSourceDir = "src/main/scala/"
@@ -214,13 +215,17 @@ else {
 def arguments = []
 def jvmArguments = []
 
-if(usesMixins.toBoolean()) {
+if (usesMixins.toBoolean()) {
     arguments += [
-            "--tweakClass org.spongepowered.asm.launch.MixinTweaker"
+        "--tweakClass org.spongepowered.asm.launch.MixinTweaker"
     ]
-    jvmArguments += [
-            "-Dmixin.debug.countInjections=true", "-Dmixin.debug.verbose=true", "-Dmixin.debug.export=true"
-    ]
+    if (usesMixinDebug.toBoolean()) {
+        jvmArguments += [
+            "-Dmixin.debug.countInjections=true",
+            "-Dmixin.debug.verbose=true",
+            "-Dmixin.debug.export=true"
+        ]
+    }
 }
 
 minecraft {
@@ -312,18 +317,23 @@ def refMap = "${tasks.compileJava.temporaryDir}" + File.separator + mixingConfig
 def mixinSrg = "${tasks.reobf.temporaryDir}" + File.separator + "mixins.srg"
 
 task generateAssets {
-    if(usesMixins.toBoolean()) {
-        getFile("/src/main/resources/mixins." + modId + ".json").text = """{
+    if (usesMixins.toBoolean()) {
+        def mixinConfigFile = getFile("/src/main/resources/mixins." + modId + ".json");
+        if (!mixinConfigFile.exists()) {
+            mixinConfigFile.text = """{
   "required": true,
   "minVersion": "0.7.11",
   "package": "${modGroup}.${mixinsPackage}",
   "plugin": "${modGroup}.${mixinPlugin}",
   "refmap": "${mixingConfigRefMap}",
   "target": "@env(DEFAULT)",
-  "compatibilityLevel": "JAVA_8"
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [],
+  "client": [],
+  "server": []
 }
-
 """
+        }
     }
 }
 
@@ -559,7 +569,7 @@ publishing {
                 artifact source: shadowJar, classifier: ""
             }
             if(!noPublishedSources) {
-                artifact source: sourcesJar, classifier: "src"
+                artifact source: sourcesJar, classifier: "sources"
             }
             artifact source: usesShadowedDependencies.toBoolean() ? shadowDevJar : devJar, classifier: "dev"
             if (apiPackage) {
