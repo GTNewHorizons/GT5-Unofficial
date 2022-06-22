@@ -195,6 +195,7 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
         // Vital recipe info.
         mEUt = -tRecipe.mEUt;
         mMaxProgresstime = tRecipe.mDuration;
+        mMaxProgresstime = Math.max(1, mMaxProgresstime);
 
         // Outputs.
         mOutputItems = tRecipe.mOutputs.clone();
@@ -223,11 +224,16 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
         if (mOutputBusses.size() > 3)
             return false;
 
-        if (mInputHatches.size() > 3)
+        if (mInputHatches.size() > 6) // Required to satisfy fluid inputs for SCs.
             return false;
 
         if (mOutputHatches.size() > 3)
             return false;
+
+        byte tier_of_hatch = mEnergyHatches.get(0).mTier;
+        for(GT_MetaTileEntity_Hatch_Energy energyHatch : mEnergyHatches) {
+            if (energyHatch.mTier != tier_of_hatch) { return false; }
+        }
 
         if (!((mEnergyHatches.size() == 1) || (mEnergyHatches.size() ==  2)))
             return false;

@@ -2,11 +2,11 @@ package gregtech.api.enums;
 
 import gregtech.api.interfaces.IIconContainer;
 
+import javax.xml.soap.Text;
+
 public class TextureSet {
 
-    public static final TextureSet SET_CUSTOM(String aTextureFileName) {
-        return new TextureSet("CUSTOM/" + aTextureFileName);
-    }
+    public boolean is_custom = false;
 
     public static final TextureSet
             SET_NONE = new TextureSet("NONE"),
@@ -56,6 +56,7 @@ public class TextureSet {
     private static final String aTextVoidDir = "/void";
 
     public TextureSet(String aSetName) {
+        boolean is_custom = false;
         mSetName = aSetName;
         mTextures[0] = new Textures.ItemIcons.CustomIcon(aTextMatIconDir + mSetName + "/dustTiny");
         mTextures[1] = new Textures.ItemIcons.CustomIcon(aTextMatIconDir + mSetName + "/dustSmall");
@@ -186,4 +187,10 @@ public class TextureSet {
         mTextures[126] = new Textures.ItemIcons.CustomIcon(aTextMatIconDir + mSetName + "/handleMallet");
         mTextures[127] = new Textures.ItemIcons.CustomIcon(aTextMatIconDir + mSetName + "/toolHeadMallet");
     }
+
+    public TextureSet(String aSetName, boolean is_custom) {
+        this("CUSTOM/" + aSetName);
+        this.is_custom = is_custom;
+    }
+
 }
