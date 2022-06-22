@@ -706,7 +706,9 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
             mOutputs = new ArrayList<>();
             mInputs = new ArrayList<>();
 
-            // Draw items in a grid for NEI single block machines.
+            // Item handling.
+            // ------------------------------------------------------------------------------------------------------
+            // Draw item input of GT NEI recipe.
             switch (GT_NEI_DefaultHandler.this.mRecipeMap.mUsualInputCount) {
                 case 0:
                     break;
@@ -743,7 +745,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                 this.mInputs.add(new FixedPositionedStack(aRecipe.mSpecialItems, 120, 52));
             }
 
-            boolean tUnificate = GT_NEI_DefaultHandler.this.mRecipeMap.mNEIUnificateOutput;
+            // Draw item output of GT NEI recipe.
             switch (GT_NEI_DefaultHandler.this.mRecipeMap.mUsualOutputCount) {
                 case 0:
                     break;
@@ -774,13 +776,14 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                 default:
                     drawNEIItemGrid(aRecipe.mOutputs, 102, -4, 3, 3, aRecipe, false);
             }
+            // ------------------------------------------------------------------------------------------------------
 
             if (GT_Recipe.GT_Recipe_Map.sComplexFusionRecipes == GT_NEI_DefaultHandler.this.mRecipeMap) {
                 // Generates a 4x4 grid of fluid icons if it's a complex fusion recipe.
                 drawNEIFluidGrid(aRecipe.mFluidInputs, 3, -1, 4, 4);
             } else if (GT_Recipe.GT_Recipe_Map.sPlasmaForgeRecipes == GT_NEI_DefaultHandler.this.mRecipeMap) {
-                // Generates a 3x2 grid of fluid icons if it's a complex fusion recipe.
-                drawNEIFluidGrid(aRecipe.mFluidInputs, 13, 5, 2, 2);
+                // Generates a 3x3 grid of fluid icons if it's a plasma forge recipe.
+                drawNEIFluidGrid(aRecipe.mFluidInputs, 1, 1, 3, 2);
             } else {
                 if ((aRecipe.mFluidInputs.length > 0) && (aRecipe.mFluidInputs[0] != null) && (aRecipe.mFluidInputs[0].getFluid() != null)) {
                     this.mInputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidInputs[0], true), 48, 52));
