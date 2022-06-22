@@ -619,10 +619,10 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         public final List<PositionedStack> mOutputs;
         public final List<PositionedStack> mInputs;
 
-        // 1234
+        // Draw a grid of fluids and items (in that order).
         private void drawNEIItemAndFluidGrid(ItemStack[] ItemArray, FluidStack[] FluidArray, int x_coord_origin, int y_coord_origin, int x_dir_max_items, int y_max_dir_max_items, GT_Recipe Recipe, boolean is_input) {
             if (ItemArray.length + FluidArray.length > x_dir_max_items * y_max_dir_max_items) {
-                GT_Log.err.println("Recipe cannot be properly displayed in NEI due to too many items.");
+                GT_Log.err.println("Recipe cannot be properly displayed in NEI due to too many items/fluids.");
             }
 
             int x_max = x_coord_origin + x_dir_max_items * 18;
