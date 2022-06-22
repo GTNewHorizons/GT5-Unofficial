@@ -224,19 +224,22 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
         if (mOutputBusses.size() > 3)
             return false;
 
-        if (mInputHatches.size() > 6) // Required to satisfy fluid inputs for SCs.
+        // Numerous input hatches required to satisfy fluid inputs for superconductor recipes.
+        if (mInputHatches.size() > 6)
             return false;
 
         if (mOutputHatches.size() > 3)
             return false;
 
+        // Check that there is between 1 and 2 energy hatches in the multi.
+        if (!((mEnergyHatches.size() == 1) || (mEnergyHatches.size() ==  2)))
+            return false;
+
+        // Check whether each energy hatch is the same tier.
         byte tier_of_hatch = mEnergyHatches.get(0).mTier;
         for(GT_MetaTileEntity_Hatch_Energy energyHatch : mEnergyHatches) {
             if (energyHatch.mTier != tier_of_hatch) { return false; }
         }
-
-        if (!((mEnergyHatches.size() == 1) || (mEnergyHatches.size() ==  2)))
-            return false;
 
         if (mMaintenanceHatches.size() != 1)
             return false;
