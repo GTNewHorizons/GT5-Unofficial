@@ -72,29 +72,30 @@ public class RecipeLoader_AlgaeFarm {
 		}
 
 		final int[] aDurations = new int[] {
-				432000,					
-				378000,				
-				216000, 
-				162000,				
-				108000,
-				81000,				
-				54000,
-				40500,				
-				27000,
-				20250,
-				13500, 
-				6750, 
-				3375,
-				1686,
-				843, 
-				421
+				2000,
+				1800,
+				1600,
+				1400,
+				1200,
+				1000,
+				512,
+				256,
+				128,
+				64,
+				32,
+				16,
+				8,
+				4,
+				2,
+				1
 		};
 
-		ItemStack[] aInputs = new ItemStack[] {};	
+		ItemStack[] aInputs = new ItemStack[] {};
 
 		if (aUsingCompost) {
 			// Make it use 4 compost per tier if we have some available
-			ItemStack aCompost = ItemUtils.getSimpleStack(AgriculturalChem.mCompost, aTier * 4);
+			// Compost consumption maxes out at 1 stack per cycle
+			ItemStack aCompost = ItemUtils.getSimpleStack(AgriculturalChem.mCompost, aTier > 1 ? (int) Math.min(64, Math.pow(2, aTier-1)) : 1);
 			aInputs = new ItemStack[] {aCompost};
 			// Boost Tier by one if using compost so it gets a speed boost
 			aTier++;
@@ -124,73 +125,76 @@ public class RecipeLoader_AlgaeFarm {
 		
 		// Create an Automap to dump contents into
 		AutoMap<ItemStack> aOutputMap = new AutoMap<ItemStack>();
-		
-		// Buff output by yielding 6-8 times more.
-		for (int i=0;i<MathUtils.randInt(4, 8);i++) {
-			// Add loot relevant to tier and also add any from lower tiers.
-			if (aTier >= 0) {
-				aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mAlgaeBiosmass, MathUtils.randInt(16, 32)));
-				aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mAlgaeBiosmass, MathUtils.randInt(32, 64)));			
-				if (MathUtils.randInt(0, 10) > 9) {
-					aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, MathUtils.randInt(8, 16)));				
-				}
-			}
-			if (aTier >= 1) {
-				aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mAlgaeBiosmass, MathUtils.randInt(16, 32)));
-				aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, MathUtils.randInt(16, 32)));			
-				if (MathUtils.randInt(0, 10) > 9) {
-					aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, MathUtils.randInt(4, 8)));				
-				}
-			}
-			if (aTier >= 2) {
-				aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, MathUtils.randInt(8, 16)));
-				aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, MathUtils.randInt(16, 32)));			
-				if (MathUtils.randInt(0, 10) > 9) {
-					aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, MathUtils.randInt(4, 8)));				
-				}
-			}
-			if (aTier >= 3) {
-				aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, MathUtils.randInt(16, 32)));
-				aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mBrownAlgaeBiosmass, MathUtils.randInt(2, 8)));			
-				if (MathUtils.randInt(0, 10) > 9) {
-					aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mBrownAlgaeBiosmass, MathUtils.randInt(8, 16)));				
-				}
-			}
-			if (aTier >= 4) {
-				aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mBrownAlgaeBiosmass, MathUtils.randInt(16, 32)));
-				aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mBrownAlgaeBiosmass, MathUtils.randInt(32, 64)));			
-				if (MathUtils.randInt(0, 10) > 9) {
-					aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mGoldenBrownAlgaeBiosmass, MathUtils.randInt(4, 8)));				
-				}
-			}
-			if (aTier >= 5) {
-				aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mBrownAlgaeBiosmass, MathUtils.randInt(16, 32)));
-				aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mGoldenBrownAlgaeBiosmass, MathUtils.randInt(16, 32)));			
-				if (MathUtils.randInt(0, 10) > 9) {
-					aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mRedAlgaeBiosmass, MathUtils.randInt(1, 2)));				
-				}
-			}
-			// Tier 6 is Highest for outputs
-			if (aTier >= 6) {
-				aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mGoldenBrownAlgaeBiosmass, MathUtils.randInt(16, 32)));
-				aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mRedAlgaeBiosmass, MathUtils.randInt(8, 16)));			
-				if (MathUtils.randInt(0, 10) > 9) {
-					aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mRedAlgaeBiosmass, MathUtils.randInt(8, 16)));				
-				}
-			}
-			
-			// Iterate a special loop at higher tiers to provide more Red/Gold Algae.
-			for (int i2=0;i2<(9-aTier);i2++) {
-				if (aTier >= (6+i2)) {
-					int aMulti = i2 + 1;
-					aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mGoldenBrownAlgaeBiosmass, MathUtils.randInt(4, 8*aMulti)));
-					aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mRedAlgaeBiosmass, MathUtils.randInt(4, 8*aMulti)));			
-					if (MathUtils.randInt(0, 10) > 8) {
-						aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mRedAlgaeBiosmass, MathUtils.randInt(8, 16*aMulti)));				
-					}
-				}
+
+
+		// Add loot relevant to tier and also add any from lower tiers.
+
+		if (aTier >= 0) {
+			aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mAlgaeBiosmass, 2));
+			aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mAlgaeBiosmass, 4));
+			if (MathUtils.randInt(0, 10) > 9) {
+				aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 2));
 			}
 		}
+
+		if (aTier >= 1) {
+			aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mAlgaeBiosmass, 4));
+			aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 2));
+			if (MathUtils.randInt(0, 10) > 9) {
+				aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 4));
+			}
+		}
+		if (aTier >= 2) {
+			aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 2));
+			aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 3));
+			if (MathUtils.randInt(0, 10) > 9) {
+				aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 8));
+			}
+		}
+		if (aTier >= 3) {
+			aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 4));
+			aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mBrownAlgaeBiosmass, 1));
+			if (MathUtils.randInt(0, 10) > 9) {
+				aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mBrownAlgaeBiosmass, 4));
+			}
+		}
+		if (aTier >= 4) {
+			aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mBrownAlgaeBiosmass, 2));
+			aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mBrownAlgaeBiosmass, 3));
+			if (MathUtils.randInt(0, 10) > 9) {
+				aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mGoldenBrownAlgaeBiosmass, 4));
+			}
+		}
+		if (aTier >= 5) {
+			aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mBrownAlgaeBiosmass, 4));
+			aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mGoldenBrownAlgaeBiosmass, 2));
+			if (MathUtils.randInt(0, 10) > 9) {
+				aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mRedAlgaeBiosmass, 4));
+			}
+		}
+		// Tier 6 is Highest for outputs
+		if (aTier >= 6) {
+			aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mGoldenBrownAlgaeBiosmass, 4));
+			aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mRedAlgaeBiosmass, 2));
+			if (MathUtils.randInt(0, 10) > 9) {
+				aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mRedAlgaeBiosmass, 8));
+			}
+		}
+
+		// Iterate a special loop at higher tiers to provide more Red/Gold Algae.
+		for (int i2=0;i2<20;i2++) {
+			if (aTier >= (6+i2)) {
+				int aMulti = i2 + 1;
+				aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, aMulti * 4));
+				aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mBrownAlgaeBiosmass, aMulti * 3));
+				aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mGoldenBrownAlgaeBiosmass, aMulti * 2));
+				aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mRedAlgaeBiosmass, aMulti));
+			}
+			else {
+				i2 = 20;
+			}
+		}
+
 		
 		
 		

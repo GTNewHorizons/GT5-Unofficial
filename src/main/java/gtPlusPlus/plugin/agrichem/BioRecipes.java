@@ -258,7 +258,7 @@ public class BioRecipes {
 		// Sodium Carbonate
 		CORE.RA.addChemicalRecipe(
 				getBrownAlgaeRecipeChip(),
-				ItemUtils.getSimpleStack(AgriculturalChem.mBrownAlgaeBiosmass, 20),
+				ItemUtils.getSimpleStack(AgriculturalChem.mBrownAlgaeBiosmass, 40),
 				FluidUtils.getDistilledWater(2000), 
 				GT_Values.NF, 
 				ItemUtils.getSimpleStack(AgriculturalChem.mSodiumCarbonate, 20),
@@ -515,7 +515,7 @@ public class BioRecipes {
 				FluidUtils.getFluidStack(mFermentationBase, 1000),
 				null, 
 				new ItemStack[] {
-						ItemUtils.getSimpleStack(AgriculturalChem.mCompost, 10),
+						ItemUtils.getSimpleStack(AgriculturalChem.mCompost, 2),
 						ItemUtils.getItemStackOfAmountFromOreDict("cellAceticAcid", 1)						
 				},
 				new int[] {10000, 10000}, 
@@ -664,7 +664,7 @@ public class BioRecipes {
 				new FluidStack[] {
 						FluidUtils.getFluidStack(BioRecipes.mFermentationBase, 2000),
 				},
-				30 * 20,
+				10 * 20,
 				30,
 				0);
 
@@ -704,7 +704,7 @@ public class BioRecipes {
 					new FluidStack[] {
 							FluidUtils.getFluidStack(BioRecipes.mFermentationBase, 2000),
 					},
-					30 * 20,
+					10 * 20,
 					30,
 					0);
 		}
@@ -1059,8 +1059,8 @@ public class BioRecipes {
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
 						getBioChip(7),
-						ItemUtils.getSimpleStack(AgriculturalChem.mGoldenBrownCelluloseFiber, 6),
-						ItemUtils.getSimpleStack(AgriculturalChem.mBrownAlgaeBiosmass, 30)
+						ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 10),
+						ItemUtils.getSimpleStack(AgriculturalChem.mBrownAlgaeBiosmass, 6)
 				},
 				new FluidStack[] {
 						FluidUtils.getFluidStack(BioRecipes.mDistilledWater, 5000),
@@ -1078,8 +1078,8 @@ public class BioRecipes {
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
 						getBioChip(7),
-						ItemUtils.getSimpleStack(AgriculturalChem.mRedCelluloseFiber, 1),
-						ItemUtils.getSimpleStack(AgriculturalChem.mRedAlgaeBiosmass, 10)
+						ItemUtils.getSimpleStack(AgriculturalChem.mGoldenBrownCelluloseFiber, 2),
+						ItemUtils.getSimpleStack(AgriculturalChem.mBrownAlgaeBiosmass, 10)
 				},
 				new FluidStack[] {
 						FluidUtils.getFluidStack(BioRecipes.mDistilledWater, 5000),
@@ -1090,9 +1090,9 @@ public class BioRecipes {
 				new FluidStack[] {
 						FluidUtils.getFluidStack(BioRecipes.mSulfuricAcid, 5000),
 				},
-				25 * 20,
-				120,
-				2);
+				6 * 20,
+				180,
+				3);
 
 	}
 
@@ -1203,7 +1203,7 @@ public class BioRecipes {
 	private static void recipeCompost() {
 		ItemStack aFert;
 		if (LoadedMods.Forestry) {
-			aFert = ItemUtils.getSimpleStack(AgriculturalChem.aFertForestry, 64);
+			aFert = ItemUtils.getSimpleStack(AgriculturalChem.aFertForestry, 32);
 			CORE.RA.addChemicalPlantRecipe(
 					new ItemStack[] {
 							getBioChip(11),
@@ -1211,7 +1211,7 @@ public class BioRecipes {
 							ItemUtils.getSimpleStack(AgriculturalChem.mCompost, 8)
 					},
 					new FluidStack[] {
-							FluidUtils.getFluidStack(BioRecipes.mUrea, 500),
+							FluidUtils.getFluidStack(BioRecipes.mUrea, 200),
 					},
 					new ItemStack[] {
 							aFert
@@ -1219,12 +1219,12 @@ public class BioRecipes {
 					new FluidStack[] {
 
 					},
-					120 * 20,
+					30 * 20,
 					60,
 					1);
 		}
 
-		aFert = ItemUtils.getSimpleStack(AgriculturalChem.aFertIC2, 2);
+		aFert = ItemUtils.getSimpleStack(AgriculturalChem.aFertIC2, 32);
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
 						getBioChip(12),
@@ -1232,7 +1232,7 @@ public class BioRecipes {
 						ItemUtils.getSimpleStack(AgriculturalChem.mCompost, 8)
 				},
 				new FluidStack[] {
-						FluidUtils.getFluidStack(BioRecipes.mUrea, 500),
+						FluidUtils.getFluidStack(BioRecipes.mUrea, 200),
 				},
 				new ItemStack[] {
 						aFert
@@ -1240,7 +1240,7 @@ public class BioRecipes {
 				new FluidStack[] {
 
 				},
-				120 * 20,
+				30 * 20,
 				60,
 				1);
 
@@ -1262,8 +1262,8 @@ public class BioRecipes {
 				new FluidStack[] {
 						FluidUtils.getFluidStack(BioRecipes.mMethane, 500),
 				},
-				20 * 20,
-				8,
+				5 * 20,
+				64,
 				1);
 
 		CORE.RA.addChemicalPlantRecipe(
