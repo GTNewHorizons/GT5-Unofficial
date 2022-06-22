@@ -1,8 +1,5 @@
 package gregtech.api.enums;
-
 import gregtech.api.interfaces.IIconContainer;
-
-import javax.xml.soap.Text;
 
 public class TextureSet {
 
