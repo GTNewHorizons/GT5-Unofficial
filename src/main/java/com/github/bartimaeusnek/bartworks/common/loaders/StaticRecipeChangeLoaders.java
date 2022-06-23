@@ -32,13 +32,10 @@ import com.github.bartimaeusnek.bartworks.util.StreamUtils;
 import com.github.bartimaeusnek.bartworks.util.log.DebugLog;
 import com.github.bartimaeusnek.crossmod.BartWorksCrossmod;
 import com.google.common.collect.ArrayListMultimap;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gnu.trove.map.hash.TObjectDoubleHashMap;
-import gregtech.api.enums.Element;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
+import gregtech.api.enums.*;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -73,6 +70,8 @@ import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader
 import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.Oganesson;
 import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.fluids;
 import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.molten;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.*;
+import static gregtech.api.enums.GT_Values.MOD_ID_FR;
 import static gregtech.api.enums.GT_Values.VN;
 
 public class StaticRecipeChangeLoaders {
@@ -488,6 +487,20 @@ public class StaticRecipeChangeLoaders {
         if (eicMap == null) {
             eicMap = new GT_Recipe.GT_Recipe_Map(new HashSet<>(GT_Recipe.GT_Recipe_Map.sImplosionRecipes.mRecipeList.size()), "gt.recipe.electricimplosioncompressor", "Electric Implosion Compressor", (String) null, "gregtech:textures/gui/basicmachines/Default", 1, 2, 1, 0, 1, "", 1, "", true, true);
             GT_Recipe.GT_Recipe_Map.sImplosionRecipes.mRecipeList.stream().filter(e -> e.mInputs != null).forEach(recipe -> eicMap.addRecipe(true, Arrays.stream(recipe.mInputs).filter(e -> !StaticRecipeChangeLoaders.checkForExplosives(e)).distinct().toArray(ItemStack[]::new), recipe.mOutputs, null, null, null, 1, BW_Util.getMachineVoltageFromTier(10), 0));
+        }
+
+        // Custom electric implosion compressor recipe. Cannot be overclocked.
+        if (Loader.isModLoaded("eternalsingularity")) {
+
+            // 1L SpaceTime -> 1 Eternal singularity.
+            eicMap.addRecipe(
+                false,
+                new ItemStack[]{GT_Values.NI},
+                new ItemStack[]{GT_ModHandler.getModItem("eternalsingularity", "eternal_singularity", 1L)},
+                null,
+                new FluidStack[]{Materials.SpaceTime.getMolten(1L)},
+                new FluidStack[]{GT_Values.NF},
+                100*20, 128_000_000, 1); // aSpecialVaue has no meaning here.
         }
     }
 

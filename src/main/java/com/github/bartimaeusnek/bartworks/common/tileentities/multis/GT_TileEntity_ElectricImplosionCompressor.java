@@ -43,12 +43,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
 
 import static com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry.BW_BLOCKS;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
 public class GT_TileEntity_ElectricImplosionCompressor extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_TileEntity_ElectricImplosionCompressor> {
@@ -180,15 +182,22 @@ public class GT_TileEntity_ElectricImplosionCompressor extends GT_MetaTileEntity
             }
         }
 
-        ItemStack[] tInputs = tInputList.toArray(new ItemStack[0]);
+        ItemStack[] tItemInputs = tInputList.toArray(new ItemStack[0]);
+        FluidStack[] tFluidInputs = getCompactedFluids();
+
+        long tVoltage = getMaxInputVoltage();
+        byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
+
+
         if (tInputList.size() > 0) {
-            GT_Recipe tRecipe = GT_TileEntity_ElectricImplosionCompressor.eicMap.findRecipe(this.getBaseMetaTileEntity(), false, 9223372036854775807L, null, tInputs);
-            if (tRecipe != null && tRecipe.isRecipeInputEqual(true, null, tInputs)) {
+            GT_Recipe tRecipe = GT_TileEntity_ElectricImplosionCompressor.eicMap.findRecipe(this.getBaseMetaTileEntity(), false, V[tTier], tFluidInputs, tItemInputs);
+            if (tRecipe != null && tRecipe.isRecipeInputEqual(true, tFluidInputs, tItemInputs)) {
                 this.mEfficiency = 10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000;
                 this.mEfficiencyIncrease = 10000;
                 this.mEUt = -tRecipe.mEUt;
-                this.mMaxProgresstime = Math.max(1, tRecipe.mDuration);
-                this.mOutputItems = new ItemStack[]{tRecipe.getOutput(0), tRecipe.getOutput(1)};
+                calculateOverclockedNessMulti(tRecipe.mEUt, tRecipe.mDuration, 1, tVoltage);
+                this.mOutputItems = tRecipe.mOutputs.clone();
+                this.mOutputFluids = tRecipe.mFluidOutputs.clone();
                 this.sendLoopStart((byte) 20);
                 this.updateSlots();
                 return true;
