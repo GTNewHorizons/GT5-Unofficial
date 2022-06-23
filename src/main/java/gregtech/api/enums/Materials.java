@@ -859,7 +859,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     public static Materials DimensionallyTranscendentResidue = new Materials( 589, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16             , 0, 0, 0, 1,   "DimensionallyTranscendentResidue"           ,   "Dimensionally Transcendent Residue"                ,    -1,       -1,         25,    1, false,  true,   1,   1,   1, Dyes.dyeBlack);
 
-    public static Materials SpaceTime                = new Materials(   588, new TextureSet("spacetime", true)             ,   1.0F,      0,  2, 1|2|16|64|128,   255,   255, 255, 0,   "SpaceTime"                ,   "SpaceTime"                      ,    -1,      -1,         14,    0, false,  true,   2,   1,   1, Dyes._NULL         , Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 1)));
+    public static Materials SpaceTime                = new Materials(   588, new TextureSet("spacetime", true)             ,   1.0F,      0,  2, 1|2|16|64|128,   255,   255, 255, 0,   "SpaceTime"                ,   "SpaceTime"                      ,    -1,      -1,         0,    0, false,  true,   2,   1,   1, Dyes._NULL         , Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 1)));
 
 
     /**
