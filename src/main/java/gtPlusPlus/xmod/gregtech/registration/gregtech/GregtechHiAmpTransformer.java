@@ -149,7 +149,7 @@ public class GregtechHiAmpTransformer {
 							mItem_2 });
 			GT_ModHandler.addCraftingRecipe(GregtechItemList.Transformer_HA_MAX_UV.get(1L, new Object[0]), bitsd,
 					new Object[] { "KBB", "CM ", "KBB", Character.valueOf('M'), ItemList.Transformer_MAX_UV, Character.valueOf('C'),
-							OrePrefixes.wireGt01.get(Materials.Superconductor), Character.valueOf('B'),
+							OrePrefixes.wireGt01.get(Materials.Bedrockium), Character.valueOf('B'),
 							OrePrefixes.wireGt04.get(Materials.NaquadahAlloy), Character.valueOf('K'),
 							mItem_3 });
 		}
