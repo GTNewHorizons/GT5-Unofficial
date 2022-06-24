@@ -12,6 +12,7 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -124,11 +125,24 @@ public class GT_MTE_LargeTurbine_Steam extends GregtechMetaTileEntity_LargerTurb
 
     @Override
     public void onModeChangeByScrewdriver(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        //Using a screwdriver to change modes should allow for any combination of Slow/Fast and Tight/Loose Mode
+        //Whenever there's a mode switch, there will be two messages on the player chat
+        //The two messages specify which two modes the turbine is on after the change
+        //(Tight/Loose changes on every action, Slow/Fast changes every other action, all pairs are cycled this way)
         if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
             looseFit^=true;
             GT_Utility.sendChatToPlayer(aPlayer, looseFit ? "Fitting: Loose - More Flow" : "Fitting: Tight - More Efficiency");
         }
-		super.onModeChangeByScrewdriver(aSide, aPlayer, aX, aY, aZ);	
+
+        if (looseFit) {
+            super.onModeChangeByScrewdriver(aSide, aPlayer, aX, aY, aZ);
+        }
+        else if (mFastMode) {
+            PlayerUtils.messagePlayer(aPlayer, "Running in Fast (48x) Mode.");
+        }
+        else {
+            PlayerUtils.messagePlayer(aPlayer, "Running in Slow (16x) Mode.");
+        }
     }
 
     @Override

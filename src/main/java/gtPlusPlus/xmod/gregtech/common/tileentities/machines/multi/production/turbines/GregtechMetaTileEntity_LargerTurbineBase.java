@@ -33,7 +33,10 @@ import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.lib.LoadedMods;
+import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.core.util.sys.KeyboardUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Turbine;
@@ -43,6 +46,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
@@ -55,6 +59,11 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechM
 	protected int storedFluid = 0;
 	protected int counter = 0;
 	protected int mCasing;
+	protected boolean mFastMode = false;
+	protected int speedMultiplier = 16;
+	protected int maintenanceThreshold = 1;
+	protected int pollutionMultiplier = 1;
+	protected int turbineDamageMultiplier = 1;
 
 	public ITexture frontFace;
 	public ITexture frontFaceActive;	
@@ -91,7 +100,14 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechM
 		GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
 		tt.addMachineType(getMachineType())
 		.addInfo("Controller Block for the XL "+getTurbineType()+" Turbine")
+		.addInfo("Runs as fast as 16 Large Turbines of the same type, takes the space of 12")
+		.addInfo("Right-click with screwdriver to enable Fast Mode, to run it even faster")
+		.addInfo("Optimal flow will increase or decrease accordingly on mode switch")
+		.addInfo("Fast Mode increases speed to 48x instead of 16x, with some penalties")
+		.addInfo("Maintenance problems and turbine damage happen 12x as often in Fast Mode")
+		.addInfo("XL Steam Turbines can use Loose Mode with either Slow or Fast Mode")
 		.addPollutionAmount(getPollutionPerSecond(null))
+		.addInfo("Pollution is 3x higher in Fast Mode")
 		.addSeparator()
 		.beginStructureBlock(7, 9, 7, false)
 		.addController("Top Middle")
@@ -162,6 +178,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechM
 	@Override
 	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
 		this.mDynamoHatches.clear();
+		this.mTecTechDynamoHatches.clear();
 		this.mTurbineRotorHatches.clear();
 		this.mMaintenanceHatches.clear();
 		if (requiresMufflers()) {
@@ -180,7 +197,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechM
 		if (!aCasingCount || 
 				mTurbineRotorHatches.size() != 12 ||
 				mMaintenanceHatches.size() != 1 || 
-				mDynamoHatches.size() < 1 || 
+				(mDynamoHatches.size() < 1 && mTecTechDynamoHatches.size() < 1) ||
 				(requiresMufflers() && mMufflerHatches.size() != 4) ||
 				mInputBusses.size() < 1 ||
 				mInputHatches.size() < 1 ||
@@ -263,6 +280,11 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechM
 			}
 			else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Dynamo) {
 				return addToMachineList(aTileEntity, aBaseCasingIndex);
+			}
+			else if (LoadedMods.TecTech) {
+				if (isThisHatchMultiDynamo(aMetaTileEntity)) {
+					return addToMachineList(aTileEntity, aBaseCasingIndex);
+				}
 			}
 		}
 		log("Bad Hatch");
@@ -478,7 +500,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechM
 					float aTotalOptimalFlow = 0;
 
 					ItemStack aStack = getFullTurbineAssemblies().get(0).getTurbine();
-					for (int i=0;i<18;i++) {
+					for (int i=0;i<speedMultiplier;i++) {
 						if (i == 0) {
 							aTotalBaseEff += GT_Utility.safeInt((long) ((5F + ((GT_MetaGenerated_Tool) aStack.getItem()).getToolCombatDamage(aStack)) * 1000F));
 							//log("Bumped base eff to "+aTotalBaseEff);							
@@ -560,7 +582,8 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechM
 		}
 		if (mRuntime++ > 1000) {
 			mRuntime = 0;
-			if (getBaseMetaTileEntity().getRandomNumber(6000) == 0) {
+
+			if (getBaseMetaTileEntity().getRandomNumber(6000) < maintenanceThreshold) {
 				switch (getBaseMetaTileEntity().getRandomNumber(6)) {
 					case 0:
 						mWrench = false;
@@ -583,7 +606,9 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechM
 				}
 			}            
 			for (GT_MetaTileEntity_Hatch_Turbine aHatch : getFullTurbineAssemblies()) {
-				aHatch.damageTurbine(mEUt, damageFactorLow, damageFactorHigh);         
+				for (int i = 0; i < turbineDamageMultiplier; i++) {
+					aHatch.damageTurbine(mEUt, damageFactorLow, damageFactorHigh);
+				}
 			}            
 		}
 		return true;
@@ -681,7 +706,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechM
 
 	public boolean polluteEnvironment(int aPollutionLevel) {
 		if (this.requiresMufflers()) {
-			mPollution += aPollutionLevel;
+			mPollution += aPollutionLevel * pollutionMultiplier;
 			for (GT_MetaTileEntity_Hatch_Muffler tHatch : mMufflerHatches) {
 				if (isValidMetaTileEntity(tHatch)) {
 					if (mPollution >= 10000) {					
@@ -699,17 +724,50 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechM
 	}
 	@Override
 	public long maxAmperesOut() {
-		return 16;
-	}
-
-
-	@Override
-	public void onModeChangeByScrewdriver(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-		if (!KeyboardUtils.isShiftKeyDown()) {
-			//super.onModeChangeByScrewdriver(aSide, aPlayer, aX, aY, aZ);		
+		// This should not be a hard limit, due to TecTech dynamos
+		if (mFastMode) {
+			return 64;
 		}
 		else {
-			/*
+			return 16;
+		}
+	}
+
+	@Override
+	public void saveNBTData(NBTTagCompound aNBT) {
+		aNBT.setBoolean("mFastMode", mFastMode);
+		super.saveNBTData(aNBT);
+	}
+
+	@Override
+	public void loadNBTData(NBTTagCompound aNBT) {
+		mFastMode = aNBT.getBoolean("mFastMode");
+		super.loadNBTData(aNBT);
+	}
+	@Override
+	public void onModeChangeByScrewdriver(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+		mFastMode = Utils.invertBoolean(mFastMode);
+		if (mFastMode){
+			PlayerUtils.messagePlayer(aPlayer, "Running in Fast (48x) Mode.");
+			speedMultiplier = 48;
+			maintenanceThreshold = 12;
+			pollutionMultiplier = 3;
+			turbineDamageMultiplier = 12;
+		}
+		else {
+			PlayerUtils.messagePlayer(aPlayer, "Running in Slow (16x) Mode.");
+			speedMultiplier = 16;
+			maintenanceThreshold = 1;
+			pollutionMultiplier = 1;
+			turbineDamageMultiplier = 1;
+		}
+	}
+
+		/*if (!KeyboardUtils.isShiftKeyDown()) {
+			super.onModeChangeByScrewdriver(aSide, aPlayer, aX, aY, aZ);
+		}
+		else {
+
 			this.mIsAnimated = Utils.invertBoolean(mIsAnimated);
 			if (this.mIsAnimated) {
 			PlayerUtils.messagePlayer(aPlayer, "Using Animated Turbine Texture.");
@@ -724,8 +782,8 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechM
 				}
 			}
 			}	
-			 */}			
-	}
+			 }
+	}*/
 
 	@Override
 	public final ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
