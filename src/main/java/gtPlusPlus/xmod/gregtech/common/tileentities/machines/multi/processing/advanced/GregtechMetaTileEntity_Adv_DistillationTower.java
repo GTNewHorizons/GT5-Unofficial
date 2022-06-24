@@ -30,13 +30,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 
 public class GregtechMetaTileEntity_Adv_DistillationTower extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_Adv_DistillationTower> {
 
 	private byte mMode = 0;
 	private boolean mUpgraded = false;
+	private byte mTopLayerFound = 0;
 	private IStructureDefinition<GregtechMetaTileEntity_Adv_DistillationTower> STRUCTURE_DEFINITION = null;
 
 	public GregtechMetaTileEntity_Adv_DistillationTower(int aID, String aName, String aNameRegional) {
@@ -58,10 +59,13 @@ public class GregtechMetaTileEntity_Adv_DistillationTower extends GregtechMeta_M
 					.addShape(mName + "bottom", transpose(new String[][]{
 							{"I~I", "III", "III"}
 					}))
-					.addShape(mName + "mid", transpose(new String[][]{
+					.addShape(mName + "layer", transpose(new String[][]{
+							{"CCC", "CAC", "CCC"}
+					}))
+					.addShape(mName + "hintlayer", transpose(new String[][]{
 							{"CCC", "C-C", "CCC"}
 					}))
-					.addShape(mName + "top", transpose(new String[][]{
+					.addShape(mName + "hinttop", transpose(new String[][]{
 							{"MMM", "MMM", "MMM"}
 					}))
 					.addElement(
@@ -74,15 +78,25 @@ public class GregtechMetaTileEntity_Adv_DistillationTower extends GregtechMeta_M
 					.addElement(
 							'C',
 							ofHatchAdderOptional(
-									GregtechMetaTileEntity_Adv_DistillationTower::addAdvDistillationTowerMidList, getCasingTextureID(),
+									GregtechMetaTileEntity_Adv_DistillationTower::addAdvDistillationTowerLayerList, getCasingTextureID(),
 									2, GregTech_API.sBlockCasings4, 1
 							)
 					)
 					.addElement(
 							'M',
 							ofHatchAdderOptional(
-									GregtechMetaTileEntity_Adv_DistillationTower::addAdvDistillationTowerTopList, getCasingTextureID(),
+									GregtechMetaTileEntity_Adv_DistillationTower::addAdvDistillationTowerLayerList, getCasingTextureID(),
 									3, GregTech_API.sBlockCasings4, 1
+							)
+					)
+					.addElement(
+							'A',
+							ofChain(
+									onElementPass(t -> t.mTopLayerFound |= 1, ofHatchAdderOptional(
+											GregtechMetaTileEntity_Adv_DistillationTower::addAdvDistillationTowerLayerList, getCasingTextureID(),
+											2, GregTech_API.sBlockCasings4, 1
+									)),
+									isAir()
 							)
 					)
 					.build();
@@ -110,19 +124,7 @@ public class GregtechMetaTileEntity_Adv_DistillationTower extends GregtechMeta_M
 		return false;
 	}
 
-	public final boolean addAdvDistillationTowerMidList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-		if (aTileEntity == null) {
-			return false;
-		} else {
-			IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output){
-				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			}
-		}
-		return false;
-	}
-
-	public final boolean addAdvDistillationTowerTopList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+	public final boolean addAdvDistillationTowerLayerList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
 		if (aTileEntity == null) {
 			return false;
 		} else {
@@ -130,6 +132,7 @@ public class GregtechMetaTileEntity_Adv_DistillationTower extends GregtechMeta_M
 			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output){
 				return addToMachineList(aTileEntity, aBaseCasingIndex);
 			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler){
+				mTopLayerFound |= 2;
 				return addToMachineList(aTileEntity, aBaseCasingIndex);
 			}
 		}
@@ -166,23 +169,27 @@ public class GregtechMetaTileEntity_Adv_DistillationTower extends GregtechMeta_M
 		int layer = Math.min(stackSize.stackSize + 2, 12);
 		buildPiece(mName + "bottom", stackSize, hintsOnly, 1, 0, 0);
 		for (int i = 1; i < layer - 1; i++) {
-			buildPiece(mName + "mid", stackSize, hintsOnly, 1, i, 0);
+			buildPiece(mName + "hintlayer", stackSize, hintsOnly, 1, i, 0);
 		}
-		buildPiece(mName + "top", stackSize, hintsOnly, 1, layer - 1, 0);
+		buildPiece(mName + "hinttop", stackSize, hintsOnly, 1, layer - 1, 0);
 	}
 
 	@Override
 	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
 		if (!checkPiece(mName + "bottom", 1, 0, 0))
 			return false;
-		int layer = 1;
-		while (checkPiece(mName + "mid", 1, layer, 0)) {
-			if (layer != mOutputHatches.size()) return false;
-			layer ++;
+		mTopLayerFound = 0;
+		int layer = 0;
+		while (checkPiece(mName + "layer", 1, layer + 1, 0)) {
+			layer++;
+			if (layer > 12)
+				return false;
+			if (layer != mOutputHatches.size())
+				return false;
+			if (mTopLayerFound == 3) break;
+			if (mTopLayerFound != 0) return false;
 		}
-		if (layer > 12 || !checkPiece(mName + "top", 1, layer, 0))
-			return false;
-		return layer == mOutputHatches.size() && checkHatch();
+		return mTopLayerFound == 3 && layer == mOutputHatches.size() && checkHatch();
 	}
 
 	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
