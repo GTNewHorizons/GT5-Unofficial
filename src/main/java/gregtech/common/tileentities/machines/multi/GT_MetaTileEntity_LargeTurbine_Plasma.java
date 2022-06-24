@@ -89,7 +89,7 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
     }
 
     @Override
-    int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow, int aBaseEff) {
+    int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow, int aBaseEff, int overflowMultiplier) {
         if (aFluids.size() >= 1) {
             aOptFlow *= 800;//CHANGED THINGS HERE, check recipe runs once per 20 ticks
             int tEU = 0;
@@ -101,14 +101,21 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
             actualOptimalFlow = GT_Utility.safeInt((long) Math.ceil((double) aOptFlow / (double) fuelValue));
             this.realOptFlow = actualOptimalFlow; // For scanner info
 
-            int remainingFlow = GT_Utility.safeInt((long) (actualOptimalFlow * 1.25f)); // Allowed to use up to 125% of optimal flow.  Variable required outside of loop for multi-hatch scenarios.
+            // Allowed to use up to 550% optimal flow rate, depending on the value of overflowMultiplier.
+            // This value is chosen because the highest EU/t possible depends on the overflowMultiplier, and the formula used
+            // makes it so the flow rate for that max, per value of overflowMultiplier, is (percentage of optimal flow rate):
+            // - 250% if it is 1
+            // - 400% if it is 2
+            // - 550% if it is 3
+            // Variable required outside of loop for multi-hatch scenarios.
+            int remainingFlow = GT_Utility.safeInt((long) (actualOptimalFlow * (1.5f * overflowMultiplier + 1)));
             int flow = 0;
             int totalFlow = 0;
 
             storedFluid = 0;
             for (FluidStack aFluid : aFluids) {
                 if (aFluid.isFluidEqual(firstFuelType)) {
-                    flow = Math.min(aFluid.amount, remainingFlow); // try to use up w/o exceeding remainingFlow
+                    flow = Math.min(aFluid.amount, remainingFlow); // try to use up to the max flow defined just above
                     depleteInput(new FluidStack(aFluid, flow)); // deplete that amount
                     this.storedFluid += aFluid.amount;
                     remainingFlow -= flow; // track amount we're allowed to continue depleting from hatches
@@ -135,16 +142,39 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
             if (totalFlow == actualOptimalFlow) {
                 tEU = GT_Utility.safeInt((long) (aBaseEff / 10000D * tEU));
             } else {
-                double efficiency = 1.0D - Math.abs((totalFlow - actualOptimalFlow) / (float) actualOptimalFlow);
-
+                float efficiency = getOverflowEfficiency(totalFlow, actualOptimalFlow, overflowMultiplier);
                 tEU = (int) (tEU * efficiency);
                 tEU = GT_Utility.safeInt((long) (aBaseEff / 10000D * tEU));
+            }
+
+            // If next output is above the maximum the dynamo can handle, set it to the maximum instead of exploding the turbine
+            // Raising the maximum allowed flow rate to account for the efficiency changes beyond the optimal flow rate can explode turbines on world load
+            if (tEU > getMaximumOutput()){
+                tEU = GT_Utility.safeInt(getMaximumOutput());
             }
 
             return tEU;
 
         }
         return 0;
+    }
+
+    @Override
+    float getOverflowEfficiency(int totalFlow, int actualOptimalFlow, int overflowMultiplier) {
+        // overflowMultiplier changes how quickly the turbine loses efficiency after flow goes beyond the optimal value
+        // At the default value of 1, any flow will generate less EU/t than optimal flow, regardless of the amount of fuel used
+        // The bigger this number is, the slower efficiency loss happens as flow moves beyond the optimal value
+        // Plasmas are the most efficient out of all turbine fuels in this regard
+        float efficiency = 0;
+
+        if (totalFlow > actualOptimalFlow) {
+            efficiency = 1.0f - Math.abs((totalFlow - actualOptimalFlow)) / ((float) actualOptimalFlow * ((overflowMultiplier * 3) + 1));
+        }
+        else {
+            efficiency = 1.0f - Math.abs((totalFlow - actualOptimalFlow) / (float) actualOptimalFlow);
+        }
+
+        return efficiency;
     }
 
     @Override
@@ -173,7 +203,7 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
             return false;
         }
 
-        int newPower = fluidIntoPower(tFluids, optFlow, baseEff);  // How much the turbine should be producing with this flow
+        int newPower = fluidIntoPower(tFluids, optFlow, baseEff, overflowMultiplier);  // How much the turbine should be producing with this flow
 
         int difference = newPower - this.mEUt; // difference between current output and new output
 

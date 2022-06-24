@@ -280,8 +280,13 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
     private void applyToolbox(ItemStack aStack, EntityPlayer aPlayer) {
         ItemToolbox aToolbox = (ItemToolbox) aStack.getItem();
         IHasGui aToolboxGUI = aToolbox.getInventory(aPlayer, aStack);
-        for (int i=0; i<aToolboxGUI.getSizeInventory(); i++)
-            onToolClick(aToolboxGUI.getStackInSlot(i), aPlayer, aToolboxGUI);
+        for (int i = 0; i < aToolboxGUI.getSizeInventory(); i ++) {
+            if (aToolboxGUI.getStackInSlot(i) != null) {
+                onToolClick(aToolboxGUI.getStackInSlot(i), aPlayer, aToolboxGUI);
+                if (aToolboxGUI.getStackInSlot(i) != null && aToolboxGUI.getStackInSlot(i).stackSize <= 0)
+                    aToolboxGUI.setInventorySlotContents(i, null);
+            }
+        }
     }
 
     @Override

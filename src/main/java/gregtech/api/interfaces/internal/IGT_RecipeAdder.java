@@ -23,7 +23,21 @@ public interface IGT_RecipeAdder {
      * @param aEnergyNeededForStartingFusion = EU needed for heating the Reactor up (must be >= 0)
      * @return true if the Recipe got added, otherwise false.
      */
+
+    @Deprecated
     boolean addFusionReactorRecipe(FluidStack aInput1, FluidStack aInput2, FluidStack aOutput1, int aFusionDurationInTicks, int aFusionEnergyPerTick, int aEnergyNeededForStartingFusion);
+
+    /**
+     * Adds a Fusion Reactor Recipe
+     *
+     * @param FluidOutputArray               : Array of input fluids. Up to 16.
+     * @param FluidOutputArray               : Array of output fluids. Up to 16.
+     * @param aFusionDurationInTicks         : How many ticks the Fusion lasts (must be > 0).
+     * @param aFusionEnergyPerTick           : The EU consumed per tick to keep the reaction going.
+     * @param aEnergyNeededForStartingFusion : EU needed to initialize the fusion reaction. (must be >= 0).
+     * @return true if the recipe got added, otherwise false.
+     */
+    boolean addFusionReactorRecipe(FluidStack[] FluidInputArray, FluidStack[] FluidOutputArray, int aFusionDurationInTicks, int aFusionEnergyPerTick, int aEnergyNeededForStartingFusion);
 
     /**
      * Adds a Centrifuge Recipe
@@ -169,7 +183,7 @@ public interface IGT_RecipeAdder {
 
     /**
      * Adds a Chemical Recipe that only exists in the Large Chemical Reactor
-     * 
+     *
      * @param aInputs   item inputs
      * @param aFluidInputs fluid inputs
      * @param aFluidOutputs fluid outputs
@@ -178,7 +192,7 @@ public interface IGT_RecipeAdder {
      * @param aEUtick   must be > 0
      * <br>aInputs and aFluidInputs must contain at least one valid input.
      * <br>aOutputs and aFluidOutputs must contain at least one valid output.
-     * 
+     *
      */
 
     boolean addMultiblockChemicalRecipe(ItemStack[] aInputs, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, ItemStack[] aOutputs, int aDuration, int aEUtick);
@@ -214,15 +228,17 @@ public interface IGT_RecipeAdder {
     boolean addBlastRecipe(ItemStack aInput1, ItemStack aInput2,  ItemStack aInput3,  ItemStack aInput4, FluidStack aFluidInput, FluidStack aFluidOutput, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3, ItemStack aOutput4,int aDuration, int aEUt, int aLevel);
 
     /**
-     * Adds a Blast Furnace Recipe
+     * Adds a Plasma Forge Recipe
      *
-     * @param aInput1     must be != null if aInput2 == null
-     * @param aInput2     must be != null if aInput1 == null
-     * @param aCoalAmount must be > 0
-     * @param aOutput1    must be != null if aOutput2 == null
-     * @param aOutput2    must be != null if aOutput1 == null
-     * @param aDuration   must be > 0
+     * @param ItemInputArray    Array of input items.
+     * @param FluidInputArray   Array of output items.
+     * @param OutputItemArray   Array of input fluids.
+     * @param FluidOutputArray  Array of output items.
+     * @param aDuration         Must be > 0. Duration in ticks.
+     * @param aEUt              Should be > 0. EU/t.
+     * @param coil_heat_level   Should be > 0. Heat of the coils used.
      */
+    boolean addPlasmaForgeRecipe(ItemStack[] ItemInputArray, FluidStack[] FluidInputArray, ItemStack[] OutputItemArray, FluidStack[] FluidOutputArray, int aDuration, int aEUt, int coil_heat_level);
 
     boolean addPrimitiveBlastRecipe(ItemStack aInput1, ItemStack aInput2, int aCoalAmount, ItemStack aOutput1, ItemStack aOutput2, int aDuration);
 
@@ -274,12 +290,12 @@ public interface IGT_RecipeAdder {
 
     /**
      * Adds an Assembler Recipe
-     * 
+     *
      * @param aInputs   must be != null
      * @param aOutput1  must be != null
      * @param aDuration must be > 0
      * @param aEUt      should be > 0
-     * 
+     *
      */
     boolean addAssemblerRecipe(ItemStack[] aInputs, FluidStack aFluidInput, ItemStack aOutput1, int aDuration, int aEUt);
 
@@ -641,14 +657,29 @@ public interface IGT_RecipeAdder {
     boolean addMixerRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aInput3, ItemStack aInput4, ItemStack aInput5, ItemStack aInput6, ItemStack aInput7, ItemStack aInput8, ItemStack aInput9, FluidStack aFluidInput, FluidStack aFluidOutput, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3, ItemStack aOutput4, int aDuration, int aEUt);
 
     /**
-     * Adds a Recipe for the Laser Engraver
+     * Adds a Recipe for the Laser Engraver.
      */
+    @Deprecated
     boolean addLaserEngraverRecipe(ItemStack aItemToEngrave, ItemStack aLens, ItemStack aEngravedItem, int aDuration, int aEUt);
 
     /**
-     * Adds a Recipe for the Laser Engraver
+     * Adds a Recipe for the Laser Engraver.
      */
+    @Deprecated
     boolean addLaserEngraverRecipe(ItemStack aItemToEngrave, ItemStack aLens, ItemStack aEngravedItem, int aDuration, int aEUt, boolean aCleanroom);
+
+    /**
+     * Adds a Generalised Laser Engraver Recipe.
+     *
+     * @param ItemInputArray    Array of input items.
+     * @param FluidInputArray   Array of output items.
+     * @param OutputItemArray   Array of input fluids.
+     * @param FluidOutputArray  Array of output items.
+     * @param aDuration         Must be > 0. Duration in ticks.
+     * @param aEUt              Should be > 0. EU/t.
+     * @param aCleanroom        Boolean for usage of cleanroom in recipe.
+     */
+    boolean addLaserEngraverRecipe(ItemStack[] ItemInputArray, FluidStack[] FluidInputArray, ItemStack[] OutputItemArray, FluidStack[] FluidOutputArray, int aDuration, int aEUt, boolean aCleanroom);
 
     /**
      * Adds a Recipe for the Forming Press
