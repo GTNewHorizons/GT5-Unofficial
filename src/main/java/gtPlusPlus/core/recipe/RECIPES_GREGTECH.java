@@ -1,16 +1,14 @@
 package gtPlusPlus.core.recipe;
 
-import static gtPlusPlus.core.lib.CORE.GTNH;
-
-import java.util.ArrayList;
-
-import advsolar.common.AdvancedSolarPanel;
 import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.*;
+import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.HotFuel;
+import gregtech.api.util.ThermalFuel;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
@@ -22,11 +20,7 @@ import gtPlusPlus.core.item.crafting.ItemDummyResearch;
 import gtPlusPlus.core.item.crafting.ItemDummyResearch.ASSEMBLY_LINE_RESEARCH;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
-import gtPlusPlus.core.material.ALLOY;
-import gtPlusPlus.core.material.ELEMENT;
-import gtPlusPlus.core.material.MISC_MATERIALS;
-import gtPlusPlus.core.material.ORES;
-import gtPlusPlus.core.material.Particle;
+import gtPlusPlus.core.material.*;
 import gtPlusPlus.core.material.nuclear.FLUORIDES;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
@@ -43,6 +37,10 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
+
+import java.util.ArrayList;
+
+import static gtPlusPlus.core.lib.CORE.GTNH;
 
 public class RECIPES_GREGTECH {
 
@@ -1352,9 +1350,21 @@ public class RECIPES_GREGTECH {
 					5 * 20,
 					180);
 		}
-
+		//Alternative ACETIC ANHYDRIDE recipe for Kevlar Line
+		CORE.RA.addDehydratorRecipe(
+				new ItemStack[] {
+						CI.getNumberedAdvancedCircuit(18),
+						CI.emptyCells(1)
+				},
+				FluidUtils.getFluidStack("aceticacid", 2000),
+				MISC_MATERIALS.ACETIC_ANHYDRIDE.getFluidStack(1000),
+				new ItemStack[] {
+						ItemUtils.getItemStackOfAmountFromOreDict("cellWater", 1),
+				},
+				new int[] {10000},
+				30 * 20,
+				480);
 	}
-
 	private static void largeChemReactorRecipes() {
 		//Styrene
 		CORE.RA.addMultiblockChemicalRecipe(

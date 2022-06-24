@@ -191,7 +191,7 @@ public class GenericChem extends ItemPackage {
 			Benzene = FluidRegistry.getFluid("benzene");
 		}
 
-		NitroBenzene = FluidUtils.generateFluidNoPrefix("nitrobenzene", "NitroBenzene", 278,	new short[] { 70, 50, 40, 100 }, true);
+		NitroBenzene = FluidUtils.generateFluidNoPrefix("nitrobenzene", "Nitrobenzene", 278,	new short[] { 70, 50, 40, 100 }, true);
 
 		Aniline = FluidUtils.generateFluidNoPrefix("aniline", "Aniline", 266,	new short[] { 100, 100, 30, 100 }, true);
 
@@ -490,7 +490,7 @@ public class GenericChem extends ItemPackage {
 		// Burnables
 
 		// Gas Fuels
-		GT_Values.RA.addFuel(ItemUtils.getItemStackOfAmountFromOreDict("cellNitroBenzene", 1), null, 1250, 1);
+		GT_Values.RA.addFuel(ItemUtils.getItemStackOfAmountFromOreDict("cellNitrobenzene", 1), null, 1250, 1);
 
 	}
 
