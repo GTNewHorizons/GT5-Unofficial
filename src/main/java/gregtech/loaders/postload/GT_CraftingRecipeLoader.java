@@ -19,6 +19,7 @@ import ic2.core.Ic2Items;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -358,10 +359,10 @@ public class GT_CraftingRecipeLoader implements Runnable {
         GT_ModHandler.addCraftingRecipe(ItemList.IC2_Mixed_Metal_Ingot.get(20L), bits_no_remove_buffered, new Object[]{"X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.HSSS), 'Y', OrePrefixes.plate.get(Materials.TungstenSteel), 'Z', OrePrefixes.plate.get(Materials.RoseGold)});
         GT_ModHandler.addCraftingRecipe(ItemList.IC2_Mixed_Metal_Ingot.get(20L), bits_no_remove_buffered, new Object[]{"X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.HSSS), 'Y', OrePrefixes.plate.get(Materials.TungstenSteel), 'Z', OrePrefixes.plate.get(Materials.AstralSilver)});
 
-        GT_ModHandler.addCraftingRecipe(ItemList.Long_Distance_Pipeline_Fluid.get(1L),GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE| GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"GPG", "IwI", "GPG", 'G', GT_OreDictUnificator.get(OrePrefixes.gear, Materials.Steel, 1L), 'P', GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 1L), 'I', GT_OreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Steel, 1L)});
-        GT_ModHandler.addCraftingRecipe(ItemList.Long_Distance_Pipeline_Item.get(1L), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE| GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"GPG", "IwI", "GPG",'G' ,GT_OreDictUnificator.get(OrePrefixes.gear, Materials.Steel, 1L), 'P', GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 1L), 'I', GT_OreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Tin, 1L)});
-        GT_ModHandler.addCraftingRecipe(ItemList.Long_Distance_Pipeline_Fluid_Pipe.get(32L), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE| GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"PPP", "IwI", "PPP", 'P',GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 1L), 'I', GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Steel, 1L)});
-        GT_ModHandler.addCraftingRecipe(ItemList.Long_Distance_Pipeline_Item_Pipe.get(32L), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE| GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"PPP", "IwI", "PPP", 'P',GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 1L), 'I', GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Tin, 1L)});
+        GT_ModHandler.addCraftingRecipe(ItemList.Long_Distance_Pipeline_Fluid.get(1L),GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"GPG", "IwI", "GPG", 'G', GT_OreDictUnificator.get(OrePrefixes.gear, Materials.Steel, 1L), 'P', GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 1L), 'I', GT_OreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Steel, 1L)});
+        GT_ModHandler.addCraftingRecipe(ItemList.Long_Distance_Pipeline_Item.get(1L), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"GPG", "IwI", "GPG",'G' ,GT_OreDictUnificator.get(OrePrefixes.gear, Materials.Steel, 1L), 'P', GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 1L), 'I', GT_OreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Tin, 1L)});
+        GT_ModHandler.addCraftingRecipe(ItemList.Long_Distance_Pipeline_Fluid_Pipe.get(32L), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"PPP", "IwI", "PPP", 'P',GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 1L), 'I', GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Steel, 1L)});
+        GT_ModHandler.addCraftingRecipe(ItemList.Long_Distance_Pipeline_Item_Pipe.get(32L), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"PPP", "IwI", "PPP", 'P',GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 1L), 'I', GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Tin, 1L)});
 
         GT_ModHandler.addCraftingRecipe(ItemList.IC2_Mixed_Metal_Ingot.get(22L), bits_no_remove_buffered, new Object[]{"X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.Naquadah), 'Y', OrePrefixes.plate.get(Materials.Iridium), 'Z', OrePrefixes.plate.get(Materials.HSSG)});
         GT_ModHandler.addCraftingRecipe(ItemList.IC2_Mixed_Metal_Ingot.get(24L), bits_no_remove_buffered, new Object[]{"X", "Y", "Z", 'X', OrePrefixes.plate.get(Materials.Naquadah), 'Y', OrePrefixes.plate.get(Materials.Iridium), 'Z', OrePrefixes.plate.get(Materials.HSSE)});
@@ -710,7 +711,13 @@ public class GT_CraftingRecipeLoader implements Runnable {
         }
 
         GT_ModHandler.addShapelessCraftingRecipe(Materials.Fireclay.getDust(2), new Object[]{Materials.Brick.getDust(1), Materials.Clay.getDust(1)});
-        GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Ball.get(0), new FluidStack(FluidRegistry.getFluid("molten.borosilicateglass"), 144), ItemList.VOLUMETRIC_FLASK.get(1), 44, 24);
+
+        ItemStack flask = ItemList.VOLUMETRIC_FLASK.get(1);
+        NBTTagCompound nbtFlask = new NBTTagCompound();
+        nbtFlask.setInteger("Capacity", 1000);
+        flask.setTagCompound(nbtFlask);
+        GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Ball.get(0), new FluidStack(FluidRegistry.getFluid("molten.borosilicateglass"), 144), flask, 44, 24);
+
         if (Loader.isModLoaded("bartworks")) {
             GT_ModHandler.addCraftingRecipe(ItemList.Casing_Advanced_Rhodium_Palladium.get(1L), bits, new Object[]{"PhP", "PFP", aTextPlateWrench, 'P', GT_ModHandler.getModItem("bartworks", "gt.bwMetaGeneratedplate", 1L, 88), 'F', OrePrefixes.frameGt.get(Materials.Chrome)});
         }

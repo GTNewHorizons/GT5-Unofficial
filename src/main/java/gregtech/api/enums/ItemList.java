@@ -559,6 +559,7 @@ public enum ItemList implements IItemContainer {
     Cover_FluidDetector,
     Cover_ItemDetector,
     Cover_EnergyDetector,
+    Cover_FluidStorageMonitor,
     Cover_Drain,
     Cover_Shutter,
     Cover_Crafting,
@@ -794,9 +795,9 @@ public enum ItemList implements IItemContainer {
     Casing_MAX,
     Casing_BronzePlatedBricks,
     Casing_HeatProof,
-    Casing_Coil_Cupronickel_Deprecated,
-    Casing_Coil_Kanthal_Deprecated,
-    Casing_Coil_Nichrome_Deprecated,
+    Casing_Dim_Trans,
+    Casing_Dim_Injector,
+    Casing_Dim_Bridge,
     Casing_Coil_Superconductor,
 
     Casing_SolidSteel,
@@ -972,6 +973,8 @@ public enum ItemList implements IItemContainer {
     Hatch_Input_UV,
     Hatch_Input_MAX,
 
+    Hatch_Input_Multi_2x2,
+
     Hatch_Input_Bus_ULV,
     Hatch_Input_Bus_LV,
     Hatch_Input_Bus_MV,
@@ -1080,6 +1083,7 @@ public enum ItemList implements IItemContainer {
     Machine_Multi_LargeBoiler_Titanium,
     Machine_Multi_LargeBoiler_TungstenSteel,
     Machine_Multi_BlastFurnace,
+    Machine_Multi_PlasmaForge,
     Machine_Multi_ImplosionCompressor,
     Machine_Multi_VacuumFreezer,
     Machine_Multi_Furnace,
@@ -1839,6 +1843,10 @@ public enum ItemList implements IItemContainer {
     Circuit_Parts_DiodeXSMD,
     Circuit_Parts_TransistorXSMD,
     Circuit_Parts_CapacitorXSMD,
+
+    Circuit_Parts_InductorSMD,
+    Circuit_Parts_InductorASMD,
+    Circuit_Parts_InductorXSMD,
 
     VOLUMETRIC_FLASK;
 

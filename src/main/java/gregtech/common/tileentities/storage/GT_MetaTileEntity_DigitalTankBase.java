@@ -178,7 +178,7 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
                             if ((tFluid.amount <= getRealCapacity()) || mVoidOverflow) {
                                 tFluid = tFluid.copy();
                                 tFluid.amount = Math.min(tFluid.amount, getRealCapacity());
-                                if (aBaseMetaTileEntity.addStackToSlot(getOutputSlot(), GT_Utility.getContainerItem(mInventory[getInputSlot()], true), 1)) {
+                                if (aBaseMetaTileEntity.addStackToSlot(getOutputSlot(), GT_Utility.getContainerForFilledItem(mInventory[getInputSlot()], true), 1)) {
                                     setFillableStack(tFluid);
                                     this.onEmptyingContainerWhenEmpty();
                                     aBaseMetaTileEntity.decrStackSize(getInputSlot(), 1);
@@ -188,7 +188,7 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
                     } else {
                         if (tFluid.isFluidEqual(getFillableStack())) {
                             if ((((long) tFluid.amount + getFillableStack().amount) <= (long) getRealCapacity()) || mVoidOverflow) {
-                                if (aBaseMetaTileEntity.addStackToSlot(getOutputSlot(), GT_Utility.getContainerItem(mInventory[getInputSlot()], true), 1)) {
+                                if (aBaseMetaTileEntity.addStackToSlot(getOutputSlot(), GT_Utility.getContainerForFilledItem(mInventory[getInputSlot()], true), 1)) {
                                     getFillableStack().amount += Math.min(tFluid.amount, getRealCapacity() - getFillableStack().amount);
                                     aBaseMetaTileEntity.decrStackSize(getInputSlot(), 1);
                                 }

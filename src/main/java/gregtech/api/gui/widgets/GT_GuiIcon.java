@@ -29,10 +29,11 @@ public enum GT_GuiIcon implements IGuiIcon{
     BLOCK_INPUT             (0, 32*3,  32*2),
     GREEN_ARROW_UP          (0, 32*4,  32*2),
     GREEN_ARROW_DOWN        (0, 32*5,  32*2),
+    CYCLIC                  (0, 32*6,  32*2),
 
     SLOT_DARKGRAY           (1, 176,0,18,18),
     SLOT_GRAY               (1, 176,18,18,18),
-    
+
     TAB_NORMAL              (2,     0,   0,18,20),
     TAB_HIGHLIGHT           (2,    18,   0,18,20),
     TAB_DISABLED            (2,  18*2,   0,18,20),
@@ -48,7 +49,7 @@ public enum GT_GuiIcon implements IGuiIcon{
     TAB_INFO_GRAY           (2,   220,   0,18,20),
     TAB_INFO_BLUE           (2,220+18,   0,18,20),
 ;
-    
+
 
     private static final int T_SIZE = 256;
     private static ResourceLocation[] TEXTURES = {
@@ -79,7 +80,7 @@ public enum GT_GuiIcon implements IGuiIcon{
     public static void render(IGuiIcon icon, double x, double y, double width, double height, double zLevel,
             boolean doDraw) {
         render(icon, x, y, width, height, zLevel, doDraw, false);
-    } 
+    }
 
     public static void render(IGuiIcon icon, double x, double y, double width, double height, double zLevel,
             boolean doDraw, boolean flipHoritontally) {
@@ -107,7 +108,7 @@ public enum GT_GuiIcon implements IGuiIcon{
     /**
      * This is intended to enable addon mods to register additional textures. They can then add to this enum using
      * EnumHelper.addEnum or by creating your their enum that implements IGuiIcon (still requires adding a texture here)
-     * 
+     *
      * @param location
      */
     public static void addTextures(ResourceLocation... location) {
