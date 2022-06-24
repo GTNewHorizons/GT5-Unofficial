@@ -52,6 +52,26 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
     }
 
     @Override
+    public boolean addFusionReactorRecipe(FluidStack[] FluidInputArray, FluidStack[] FluidOutputArray, int aFusionDurationInTicks, int aFusionEnergyPerTick, int aEnergyNeededForStartingFusion) {
+        if (FluidInputArray.length == 0)
+            return false;
+
+        if (FluidOutputArray.length == 0)
+            return false;
+
+        // If the recipe has more than 2 inputs or 2 outputs it is added to a different recipe map.
+        // This is so NEI can function properly and understand the recipe. Otherwise it gets cut off.
+        if ((FluidInputArray.length > 2) || (FluidInputArray.length > 2)) {
+            GT_Recipe.GT_Recipe_Map.sComplexFusionRecipes.addRecipe(null, FluidInputArray, FluidOutputArray, aFusionDurationInTicks, aFusionEnergyPerTick, aEnergyNeededForStartingFusion);
+            return true;
+        }
+
+        GT_Recipe.GT_Recipe_Map.sFusionRecipes.addRecipe(null, FluidInputArray, FluidOutputArray, aFusionDurationInTicks, aFusionEnergyPerTick, aEnergyNeededForStartingFusion);
+        return true;
+    }
+
+
+    @Override
     public boolean addCentrifugeRecipe(ItemStack aInput1, int aInput2, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3, ItemStack aOutput4, ItemStack aOutput5, ItemStack aOutput6, int aDuration) {
         return addCentrifugeRecipe(aInput1, aInput2 < 0 ? ItemList.IC2_Fuel_Can_Empty.get(-aInput2, new Object[0]) : aInput2 > 0 ? ItemList.Cell_Empty.get(aInput2, new Object[0]) : null, null, null, aOutput1, aOutput2, aOutput3, aOutput4, aOutput5, aOutput6, null, aDuration, 5);
     }
@@ -248,6 +268,13 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
     }
 
     @Override
+    public boolean addPlasmaForgeRecipe(ItemStack[] ItemInputArray, FluidStack[] FluidInputArray, ItemStack[] OutputItemArray, FluidStack[] FluidOutputArray, int aDuration, int aEUt, int coil_heat_level) {
+        GT_Recipe.GT_Recipe_Map.sPlasmaForgeRecipes.addRecipe(false, ItemInputArray, OutputItemArray, null, null,
+            FluidInputArray, FluidOutputArray, aDuration, aEUt, coil_heat_level);
+        return true;
+    }
+
+    @Override
     public boolean addPrimitiveBlastRecipe(ItemStack aInput1, ItemStack aInput2, int aCoalAmount, ItemStack aOutput1, ItemStack aOutput2, int aDuration) {
         if ((aInput1 == null && aInput2 == null) || (aOutput1 == null && aOutput2 == null)) {
             return false;
@@ -265,6 +292,10 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         }
         if (Loader.isModLoaded("Railcraft")) {
             GT_Recipe.GT_Recipe_Map.sPrimitiveBlastRecipes.addRecipe(true, new ItemStack[]{aInput1, aInput2, RailcraftToolItems.getCoalCoke(aCoalAmount / 2)}, new ItemStack[]{aOutput1, aOutput2, Materials.Ash.getDustTiny(aCoalAmount / 2)}, null, null, null, null, aDuration * 2 / 3, 0, 0);
+        }
+        if (Loader.isModLoaded("miscutils")) {
+            GT_Recipe.GT_Recipe_Map.sPrimitiveBlastRecipes.addRecipe(true, new ItemStack[]{aInput1, aInput2, GT_ModHandler.getModItem("miscutils", "itemCactusCoke", (aCoalAmount * 2))}, new ItemStack[]{aOutput1, aOutput2, Materials.Ash.getDustTiny(aCoalAmount * 2)}, null, null, null, null, aDuration * 2 / 3, 0, 0);
+            GT_Recipe.GT_Recipe_Map.sPrimitiveBlastRecipes.addRecipe(true, new ItemStack[]{aInput1, aInput2, GT_ModHandler.getModItem("miscutils", "itemSugarCoke", (aCoalAmount * 2))}, new ItemStack[]{aOutput1, aOutput2, Materials.Ash.getDustTiny(aCoalAmount * 2)}, null, null, null, null, aDuration * 2 / 3, 0, 0);
         }
         if ((aInput1 == null || aInput1.stackSize <= 6) && (aInput2 == null || aInput2.stackSize <= 6) &&
                 (aOutput1 == null || aOutput1.stackSize <= 6) && (aOutput2 == null || aOutput2.stackSize <= 6)) {
@@ -674,6 +705,14 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         }
         GT_Recipe.GT_Recipe_Map.sDistillationRecipes.addRecipe(false, aCircuit, new ItemStack[]{aOutput2}, null, new FluidStack[]{aInput}, aOutputs, Math.max(1, aDuration), Math.max(1, aEUt), 0);
         return false;
+    }
+
+    @Override
+    public boolean addUniversalDistillationRecipewithCircuit(FluidStack aInput, ItemStack[] aCircuit, FluidStack[] aOutputs, ItemStack aOutput2, int aDuration, int aEUt) {
+        for (int i = 0; i < Math.min(aOutputs.length, 11); i++) {
+            addDistilleryRecipe(i + 1, aInput, aOutputs[i], aOutput2, aDuration * 2, aEUt / 4, false);
+        }
+        return addDistillationTowerRecipe(aInput, aCircuit, aOutputs, aOutput2, aDuration, aEUt);
     }
 
     @Override
@@ -1220,6 +1259,14 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
             aCleanroom = false;
         }
         GT_Recipe.GT_Recipe_Map.sLaserEngraverRecipes.addRecipe(true, new ItemStack[]{aItemToEngrave, aLens}, new ItemStack[]{aEngravedItem}, null, null, null, aDuration, aEUt, aCleanroom ? -200 : 0);
+        return true;
+    }
+
+
+    @Override
+    public boolean addLaserEngraverRecipe(ItemStack[] ItemInputArray, FluidStack[] FluidInputArray, ItemStack[] OutputItemArray, FluidStack[] FluidOutputArray, int aDuration, int aEUt, boolean aCleanroom) {
+        GT_Recipe.GT_Recipe_Map.sLaserEngraverRecipes.addRecipe(false, ItemInputArray, OutputItemArray, null, null,
+            FluidInputArray, FluidOutputArray, aDuration, aEUt, aCleanroom ? -200 : 0);
         return true;
     }
 

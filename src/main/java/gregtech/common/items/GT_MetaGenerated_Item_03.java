@@ -1,15 +1,11 @@
 package gregtech.common.items;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
 import gregtech.api.items.GT_MetaGenerated_Item_X32;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
 import gregtech.common.covers.GT_Cover_SolarPanel;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_UEV;
@@ -49,12 +45,12 @@ public class GT_MetaGenerated_Item_03
          * capacitors normal+smd
          * Glass Fibers
          */
-        ItemList.Circuit_Parts_ResistorSMD.set(addItem(tLastID = 11, "SMD Resistor", "Electronic Component", o));
+        ItemList.Circuit_Parts_ResistorSMD.set(addItem(tLastID = 11, "SMD Resistor", "Electronic Component", OrePrefixes.componentCircuit.get(Materials.Resistor), SubTag.NO_UNIFICATION));
         ItemList.Circuit_Parts_Glass_Tube.set(addItem(tLastID = 12, "Glass Tube", "", o));
         ItemList.Circuit_Parts_Coil.set(addItem(tLastID = 14, "Small Coil", "Basic Electronic Component", o));
-        ItemList.Circuit_Parts_DiodeSMD.set(addItem(tLastID = 16, "SMD Diode", "Electronic Component", o));
-        ItemList.Circuit_Parts_TransistorSMD.set(addItem(tLastID = 18, "SMD Transistor", "Electronic Component", o));
-        ItemList.Circuit_Parts_CapacitorSMD.set(addItem(tLastID = 20, "SMD Capacitor", "Electronic Component", o));
+        ItemList.Circuit_Parts_DiodeSMD.set(addItem(tLastID = 16, "SMD Diode", "Electronic Component", OrePrefixes.componentCircuit.get(Materials.Diode), SubTag.NO_UNIFICATION));
+        ItemList.Circuit_Parts_TransistorSMD.set(addItem(tLastID = 18, "SMD Transistor", "Electronic Component", OrePrefixes.componentCircuit.get(Materials.Transistor), SubTag.NO_UNIFICATION));
+        ItemList.Circuit_Parts_CapacitorSMD.set(addItem(tLastID = 20, "SMD Capacitor", "Electronic Component", OrePrefixes.componentCircuit.get(Materials.Capacitor), SubTag.NO_UNIFICATION));
         ItemList.Circuit_Parts_GlassFiber.set(addItem(tLastID = 21, "Glass Fiber", Materials.BorosilicateGlass.mChemicalFormula, o));
         ItemList.Circuit_Parts_PetriDish.set(addItem(tLastID = 22, "Petri Dish", "For cultivating cells", o));
         ItemList.Circuit_Parts_Reinforced_Glass_Tube.set(addItem(tLastID = 23, "Reinforced Glass Tube", "", o));
@@ -68,6 +64,22 @@ public class GT_MetaGenerated_Item_03
         ItemList.Circuit_Parts_DiodeXSMD.set(addItem(tLastID = 179, "Optical SMD Diode", "Highly Advanced Electronic Component", o));
         ItemList.Circuit_Parts_TransistorXSMD.set(addItem(tLastID = 180, "Optical SMD Transistor", "Highly Advanced Electronic Component", o));
         ItemList.Circuit_Parts_CapacitorXSMD.set(addItem(tLastID = 181, "Optical SMD Capacitor", "Highly Advanced Electronic Component", o));
+
+        ItemList.Circuit_Parts_InductorSMD.set(addItem(tLastID = 182, "SMD Inductor", "Electronic Component", OrePrefixes.componentCircuit.get(Materials.Inductor), SubTag.NO_UNIFICATION));
+        ItemList.Circuit_Parts_InductorASMD.set(addItem(tLastID = 183, "Advanced SMD Inductor", "Advanced Electronic Component", o));
+        ItemList.Circuit_Parts_InductorXSMD.set(addItem(tLastID = 184, "Optical SMD Inductor", "Highly Advanced Electronic Component", o));
+
+        GT_OreDictUnificator.set(OrePrefixes.componentCircuit, Materials.Resistor, ItemList.Circuit_Parts_Resistor.get(1L));
+        GT_OreDictUnificator.set(OrePrefixes.componentCircuit, Materials.Diode, ItemList.Circuit_Parts_Diode.get(1L));
+        GT_OreDictUnificator.set(OrePrefixes.componentCircuit, Materials.Transistor, ItemList.Circuit_Parts_Transistor.get(1L));
+        GT_OreDictUnificator.set(OrePrefixes.componentCircuit, Materials.Inductor, ItemList.Circuit_Parts_Coil.get(1L));
+        GT_OreDictUnificator.set(OrePrefixes.componentCircuit, Materials.Capacitor, ItemList.Circuit_Parts_Capacitor.get(1L));
+
+        GT_OreDictUnificator.addAssociation(OrePrefixes.componentCircuit, Materials.Resistor, ItemList.Circuit_Parts_ResistorSMD.get(1L), true);
+        GT_OreDictUnificator.addAssociation(OrePrefixes.componentCircuit, Materials.Diode, ItemList.Circuit_Parts_DiodeSMD.get(1L), true);
+        GT_OreDictUnificator.addAssociation(OrePrefixes.componentCircuit, Materials.Transistor, ItemList.Circuit_Parts_TransistorSMD.get(1L), true);
+        GT_OreDictUnificator.addAssociation(OrePrefixes.componentCircuit, Materials.Capacitor, ItemList.Circuit_Parts_CapacitorSMD.get(1L), true);
+        GT_OreDictUnificator.addAssociation(OrePrefixes.componentCircuit, Materials.Inductor, ItemList.Circuit_Parts_InductorSMD.get(1L), true);
 
         /**
          * ICs
@@ -88,13 +100,13 @@ public class GT_MetaGenerated_Item_03
          * quantum chips
          */
         ItemList.Circuit_Silicon_Ingot.set(addItem(tLastID = 30, "Monocrystalline Silicon Boule", "Raw Circuit", o));
-        ItemList.Circuit_Silicon_Ingot2.set(addItem(tLastID = 31, "Glowstone doped Monocrystalline Silicon Boule", "Raw Circuit", o));
+        ItemList.Circuit_Silicon_Ingot2.set(addItem(tLastID = 31, "Phosphorus doped Monocrystalline Silicon Boule", "Raw Circuit", o));
         ItemList.Circuit_Silicon_Ingot3.set(addItem(tLastID = 32, "Naquadah doped Monocrystalline Silicon Boule", "Raw Circuit", o));
         ItemList.Circuit_Silicon_Ingot4.set(addItem(tLastID = 150, "Europium doped Monocrystalline Silicon Boule", "Raw Circuit", o));
         ItemList.Circuit_Silicon_Ingot5.set(addItem(tLastID = 152, "Americium doped Monocrystalline Silicon Boule", "Raw Circuit", o));
 
         ItemList.Circuit_Silicon_Wafer.set(addItem(tLastID = 33, "Wafer", "Raw Circuit", o));
-        ItemList.Circuit_Silicon_Wafer2.set(addItem(tLastID = 34, "Glowstone doped Wafer", "Raw Circuit", o));
+        ItemList.Circuit_Silicon_Wafer2.set(addItem(tLastID = 34, "Phosphorus doped Wafer", "Raw Circuit", o));
         ItemList.Circuit_Silicon_Wafer3.set(addItem(tLastID = 35, "Naquadah doped Wafer", "Raw Circuit", o));
         ItemList.Circuit_Silicon_Wafer4.set(addItem(tLastID = 151, "Europium doped Wafer", "Raw Circuit", o));
         ItemList.Circuit_Silicon_Wafer5.set(addItem(tLastID = 153, "Americium doped Wafer", "Raw Circuit", o));
@@ -313,6 +325,12 @@ public class GT_MetaGenerated_Item_03
         ItemList.ZPM_Coil.set(addItem(tLastID = 147, "ZPM Voltage Coil", "Ultimate Coil", o));
         ItemList.UV_Coil.set(addItem(tLastID = 148, "Ultimate Voltage Coil", "Super Coil", o));
         ItemList.UHV_Coil.set(addItem(tLastID = 149, "Highly Ultimate Voltage Coil", "Infinite Coil", o));
+
+        ItemList.GalliumArsenideCrystal.set(addItem(tLastID = 190, "Gallium Arsenide Crystal", "For making boules", o));
+        ItemList.GalliumArsenideCrystalSmallPart.set(addItem(tLastID = 191, "Small Gallium Arsenide Crystal", "For making boules", o));
+        ItemList.KevlarFiber.set(addItem(tLastID = 192, "Kevlar Fiber", "For make Kevlar Plates", o));
+        ItemList.WovenKevlar.set(addItem(tLastID = 193, "Woven Kevlar", "For make Kevlar Plates", o));
+        ItemList.Spinneret.set(addItem(tLastID = 194, "Spinneret", "For make Kevlar Fiber", o));       
     }
 
     @Override

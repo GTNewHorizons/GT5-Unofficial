@@ -14,14 +14,17 @@ import codechicken.nei.recipe.IUsageHandler;
 import codechicken.nei.recipe.RecipeCatalysts;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import gregtech.GT_Mod;
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.gui.GT_GUIContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
 import gregtech.api.objects.ItemData;
-import gregtech.api.util.*;
+import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GT_Log;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Utility;
 import gregtech.common.power.EUPower;
 import gregtech.common.power.Power;
 import gregtech.common.power.UnspecifiedEUPower;
@@ -61,7 +64,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
     private NEIHandlerAbsoluteTooltip mRecipeNameTooltip;
     private static final int RECIPE_NAME_WIDTH = 140;
 
-    /**
+     /**
      * Static version of {@link TemplateRecipeHandler#cycleticks}.
      * Can be referenced from cached recipes.
      */
@@ -93,10 +96,10 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         List<CachedDefaultRecipe> cache;
         if (cacheHolder.getCachedRecipesVersion() != GT_Mod.gregtechproxy.getReloadCount() || (cache = cacheHolder.getCachedRecipes()) == null) {
             cache = mRecipeMap.mRecipeList.stream()  // do not use parallel stream. This is already parallelized by NEI
-                .filter(r -> !r.mHidden)
-                .sorted()
-                .map(CachedDefaultRecipe::new)
-                .collect(Collectors.toList());
+                    .filter(r -> !r.mHidden)
+                    .sorted()
+                    .map(CachedDefaultRecipe::new)
+                    .collect(Collectors.toList());
             // while the NEI parallelize handlers, for each individual handler it still uses sequential execution model
             // so we do not need any synchronization here
             // even if it does break, at worst case it's just recreating the cache multiple times, which should be fine
@@ -384,7 +387,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                 lineCounter++;
             }
         }
-        if (this.mRecipeMap.mNEIName.equals("gt.recipe.fusionreactor")) {
+        if (this.mRecipeMap.mNEIName.equals("gt.recipe.fusionreactor") || this.mRecipeMap.mNEIName.equals("gt.recipe.complexfusionreactor")) {
             drawOptionalLine(lineCounter, getSpecialInfo(recipe.mSpecialValue) + " " + formatSpecialValueFusion(recipe.mSpecialValue, recipe.mEUt));
         }
         drawOptionalLine(lineCounter, getSpecialInfo(recipe.mSpecialValue));
@@ -537,16 +540,13 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         }
 
         @Override
-        public void onKeyTyped(GuiContainer gui, char keyChar, int keyID) {
-        }
+        public void onKeyTyped(GuiContainer gui, char keyChar, int keyID) {}
 
         @Override
-        public void onMouseClicked(GuiContainer gui, int mousex, int mousey, int button) {
-        }
+        public void onMouseClicked(GuiContainer gui, int mousex, int mousey, int button) {}
 
         @Override
-        public void onMouseUp(GuiContainer gui, int mousex, int mousey, int button) {
-        }
+        public void onMouseUp(GuiContainer gui, int mousex, int mousey, int button) {}
 
         @Override
         public boolean mouseScrolled(GuiContainer gui, int mousex, int mousey, int scrolled) {
@@ -554,12 +554,10 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         }
 
         @Override
-        public void onMouseScrolled(GuiContainer gui, int mousex, int mousey, int scrolled) {
-        }
+        public void onMouseScrolled(GuiContainer gui, int mousex, int mousey, int scrolled) {}
 
         @Override
-        public void onMouseDragged(GuiContainer gui, int mousex, int mousey, int button, long heldTime) {
-        }
+        public void onMouseDragged(GuiContainer gui, int mousex, int mousey, int button, long heldTime) {}
     }
 
     public static class FixedPositionedStack extends PositionedStack {
@@ -616,11 +614,120 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         }
     }
 
-    public class CachedDefaultRecipe
-        extends TemplateRecipeHandler.CachedRecipe {
+    public class CachedDefaultRecipe extends TemplateRecipeHandler.CachedRecipe {
         public final GT_Recipe mRecipe;
         public final List<PositionedStack> mOutputs;
         public final List<PositionedStack> mInputs;
+
+        // Draw a grid of fluids and items (in that order).
+        private void drawNEIItemAndFluidGrid(ItemStack[] ItemArray, FluidStack[] FluidArray, int x_coord_origin, int y_coord_origin, int x_dir_max_items, int y_max_dir_max_items, GT_Recipe Recipe, boolean is_input) {
+            if (ItemArray.length + FluidArray.length > x_dir_max_items * y_max_dir_max_items) {
+                GT_Log.err.println("Recipe cannot be properly displayed in NEI due to too many items/fluids.");
+            }
+
+            int x_max = x_coord_origin + x_dir_max_items * 18;
+
+            int x_coord = x_coord_origin;
+            int y_coord = y_coord_origin;
+
+            for(FluidStack fluid : FluidArray) {
+                if (fluid != GT_Values.NF) {
+                    if (is_input) {
+                        this.mInputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(fluid, true), x_coord, y_coord, true));
+                    } else {
+                        this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(fluid, true), x_coord, y_coord, GT_NEI_DefaultHandler.this.mRecipeMap.mNEIUnificateOutput));
+                    }
+                    x_coord += 18;
+                    if (x_coord == x_max) {
+                        x_coord = x_coord_origin;
+                        y_coord += 18;
+                    }
+                }
+            }
+
+            // Iterate over all items in array and display them.
+            int special_counter = 0;
+            for(ItemStack item : ItemArray) {
+                if (item != GT_Values.NI) {
+                    if (is_input) {
+                        mInputs.add(new FixedPositionedStack(item, x_coord, y_coord, true));
+                    } else {
+                        mOutputs.add(new FixedPositionedStack(item, x_coord, y_coord, Recipe.getOutputChance(special_counter), GT_NEI_DefaultHandler.this.mRecipeMap.mNEIUnificateOutput));
+                        special_counter++;
+                    }
+                    x_coord += 18;
+                    if (x_coord == x_max) {
+                        x_coord = x_coord_origin;
+                        y_coord += 18;
+                    }
+                }
+            }
+
+        };
+
+
+        // Draws a grid of items for NEI rendering.
+        private void drawNEIItemGrid(ItemStack[] ItemArray, int x_coord_origin, int y_coord_origin, int x_dir_max_items, int y_max_dir_max_items, GT_Recipe Recipe, boolean is_input) {
+            if (ItemArray.length > x_dir_max_items * y_max_dir_max_items) {
+                GT_Log.err.println("Recipe cannot be properly displayed in NEI due to too many items.");
+            }
+            // 18 pixels to get to a new grid for placing a item tile since they are 16x16 and have 1 pixel buffers around them.
+            int x_max = x_coord_origin + x_dir_max_items * 18;
+
+            // Temp variables to keep track of current coords to place item at.
+            int x_coord = x_coord_origin;
+            int y_coord = y_coord_origin;
+
+            // Iterate over all items in array and display them.
+            int special_counter = 0;
+            for(ItemStack item : ItemArray) {
+                if (item != GT_Values.NI) {
+                    if (is_input) {
+                        mInputs.add(new FixedPositionedStack(item, x_coord, y_coord, true));
+                    } else {
+                        mOutputs.add(new FixedPositionedStack(item, x_coord, y_coord, Recipe.getOutputChance(special_counter), GT_NEI_DefaultHandler.this.mRecipeMap.mNEIUnificateOutput));
+                        special_counter++;
+                    }
+                    x_coord += 18;
+                    if (x_coord == x_max) {
+                        x_coord = x_coord_origin;
+                        y_coord += 18;
+                    }
+                }
+            }
+        }
+
+        // Draws a grid of fluids for NEI rendering.
+        private void drawNEIFluidGrid(FluidStack[] FluidArray, int x_coord_origin, int y_coord_origin, int x_dir_max_fluids, int y_max_dir_max_fluids, GT_Recipe Recipe, boolean is_input) {
+
+            if (FluidArray.length > x_dir_max_fluids * y_max_dir_max_fluids) {
+                GT_Log.err.println("Recipe cannot be properly displayed in NEI due to too many fluids.");
+            }
+
+            // 18 pixels to get to a new grid for placing a fluid tile since they are 16x16 and have 1 pixel buffers around them.
+            int x_max = x_coord_origin + x_dir_max_fluids * 18;
+
+            // Temp variables to keep track of current coords to place fluid at.
+            int x_coord = x_coord_origin;
+            int y_coord = y_coord_origin;
+
+            // Iterate over all fluids in array and display them.
+            for(FluidStack fluid : FluidArray) {
+                if (fluid != GT_Values.NF) {
+                    if (is_input) {
+                        this.mInputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(fluid, true), x_coord, y_coord, true));
+                    } else {
+                        this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(fluid, true), x_coord, y_coord, GT_NEI_DefaultHandler.this.mRecipeMap.mNEIUnificateOutput));
+                    }
+                    x_coord += 18;
+                    if (x_coord == x_max) {
+                        x_coord = x_coord_origin;
+                        y_coord += 18;
+                    }
+                }
+            }
+
+        }
 
         public CachedDefaultRecipe(GT_Recipe aRecipe) {
             super();
@@ -628,462 +735,107 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
             List<PositionedStack> maybeIn;
             List<PositionedStack> maybeOut;
 
-            try {
-                maybeIn = aRecipe.getInputPositionedStacks();
-            } catch (NullPointerException npe) {
-                maybeIn = null;
-                GT_Log.err.println("CachedDefaultRecipe - Invalid InputPositionedStacks " + aRecipe);
-                npe.printStackTrace(GT_Log.err);
-            }
-            try {
-                maybeOut = aRecipe.getOutputPositionedStacks();
-            } catch (NullPointerException npe) {
-                maybeOut = null;
-                GT_Log.err.println("CachedDefaultRecipe - Invalid OutputPositionedStacks " + aRecipe);
-                npe.printStackTrace(GT_Log.err);
-            }
-
-            if (maybeIn != null && maybeOut != null) {
-                mInputs = maybeIn;
-                mOutputs = maybeOut;
-                return;
-            }
-
             mOutputs = new ArrayList<>();
             mInputs = new ArrayList<>();
 
-            int tStartIndex = 0;
-            switch (GT_NEI_DefaultHandler.this.mRecipeMap.mUsualInputCount) {
-                case 0:
-                    break;
-                case 1:
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 48, 14));
-                    }
-                    tStartIndex++;
-                    break;
-                case 2:
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 30, 14));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 48, 14));
-                    }
-                    tStartIndex++;
-                    break;
-                case 3:
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 12, 14));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 30, 14));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 48, 14));
-                    }
-                    tStartIndex++;
-                    break;
-                case 4:
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 30, 5));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 48, 5));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 30, 23));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 48, 23));
-                    }
-                    tStartIndex++;
-                    break;
-                case 5:
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 12, 5));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 30, 5));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 48, 5));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 30, 23));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 48, 23));
-                    }
-                    tStartIndex++;
-                    break;
-                case 6:
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 12, 5));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 30, 5));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 48, 5));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 12, 23));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 30, 23));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 48, 23));
-                    }
-                    tStartIndex++;
-                    break;
-                case 7:
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 12, -4));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 30, -4));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 48, -4));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 12, 14));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 30, 14));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 48, 14));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 12, 32));
-                    }
-                    tStartIndex++;
-                    break;
-                case 8:
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 12, -4));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 30, -4));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 48, -4));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 12, 14));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 30, 14));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 48, 14));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 12, 32));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 30, 32));
-                    }
-                    tStartIndex++;
-                    break;
-                default:
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 12, -4));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 30, -4));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 48, -4));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 12, 14));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 30, 14));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 48, 14));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 12, 32));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 30, 32));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getRepresentativeInput(tStartIndex) != null) {
-                        this.mInputs.add(new FixedPositionedStack(aRecipe.getRepresentativeInput(tStartIndex), 48, 32));
-                    }
-                    tStartIndex++;
-            }
-            if (aRecipe.mSpecialItems != null) {
-                this.mInputs.add(new FixedPositionedStack(aRecipe.mSpecialItems, 120, 52));
-            }
-            tStartIndex = 0;
-            boolean tUnificate = GT_NEI_DefaultHandler.this.mRecipeMap.mNEIUnificateOutput;
-            switch (GT_NEI_DefaultHandler.this.mRecipeMap.mUsualOutputCount) {
-                case 0:
-                    break;
-                case 1:
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 102, 14, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    break;
-                case 2:
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 102, 14, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 120, 14, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    break;
-                case 3:
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 102, 14, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 120, 14, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 138, 14, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    break;
-                case 4:
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 102, 5, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 120, 5, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 102, 23, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 120, 23, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    break;
-                case 5:
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 102, 5, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 120, 5, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 138, 5, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 102, 23, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 120, 23, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    break;
-                case 6:
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 102, 5, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 120, 5, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 138, 5, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 102, 23, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 120, 23, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 138, 23, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    break;
-                case 7:
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 102, -4, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 120, -4, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 138, -4, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 102, 14, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 120, 14, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 138, 14, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 102, 32, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    break;
-                case 8:
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 102, -4, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 120, -4, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 138, -4, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 102, 14, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 120, 14, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 138, 14, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 102, 32, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 120, 32, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    break;
-                default:
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 102, -4, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 120, -4, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 138, -4, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 102, 14, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 120, 14, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 138, 14, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 102, 32, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 120, 32, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-                    if (aRecipe.getOutput(tStartIndex) != null) {
-                        this.mOutputs.add(new FixedPositionedStack(aRecipe.getOutput(tStartIndex), 138, 32, aRecipe.getOutputChance(tStartIndex), tUnificate));
-                    }
-                    tStartIndex++;
-            }
-            if ((aRecipe.mFluidInputs.length > 0) && (aRecipe.mFluidInputs[0] != null) && (aRecipe.mFluidInputs[0].getFluid() != null)) {
-                this.mInputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidInputs[0], true), 48, 52));
-                if ((aRecipe.mFluidInputs.length > 1) && (aRecipe.mFluidInputs[1] != null) && (aRecipe.mFluidInputs[1].getFluid() != null)) {
-                    this.mInputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidInputs[1], true), 30, 52));
+            if (GT_Recipe.GT_Recipe_Map.sComplexFusionRecipes == GT_NEI_DefaultHandler.this.mRecipeMap) {
+                // Special handler for complex fusion NEI display.
+                // Generates a 4x4 grid of fluid icons if it's a complex fusion recipe.
+                drawNEIFluidGrid(aRecipe.mFluidInputs, 3, -1, 4, 4, aRecipe, true);
+                drawNEIFluidGrid(aRecipe.mFluidOutputs, 93, -1, 4, 4, aRecipe, false);
+            } else if (GT_Recipe.GT_Recipe_Map.sPlasmaForgeRecipes == GT_NEI_DefaultHandler.this.mRecipeMap) {
+                // Special handeler for plasma forge NEI display.
+                // Generates a 3x3 grid of fluid icons if it's a plasma forge recipe.
+                drawNEIItemAndFluidGrid(aRecipe.mInputs, aRecipe.mFluidInputs, 12, 5, 3, 2, aRecipe, true);
+                drawNEIItemAndFluidGrid(aRecipe.mOutputs, aRecipe.mFluidOutputs, 102, 5, 3, 2, aRecipe, false);
+//                drawNEIFluidGrid(aRecipe.mFluidInputs, 1, 1, 3, 3, aRecipe, true);
+//                drawNEIFluidGrid(aRecipe.mFluidOutputs, 102, 5, 3, 3, aRecipe, false);
+            } else if (GT_Recipe.GT_Recipe_Map.sMultiblockChemicalRecipes == GT_NEI_DefaultHandler.this.mRecipeMap) {
+                // Special handler for LCR.
+                drawNEIItemAndFluidGrid(aRecipe.mInputs, aRecipe.mFluidInputs, 12, 5, 3, 2, aRecipe, true);
+                drawNEIItemAndFluidGrid(aRecipe.mOutputs, aRecipe.mFluidOutputs, 102, 5, 3, 2, aRecipe, false);
+            } else {
+                // Default GT NEI handler for drawing fluids/items on screen.
+                switch (GT_NEI_DefaultHandler.this.mRecipeMap.mUsualInputCount) {
+                    case 0:
+                        break;
+                    case 1: // 1x1
+                        drawNEIItemGrid(aRecipe.mInputs, 48, 14, 1, 1, aRecipe, true);
+                        break;
+                    case 2: // 2x1
+                        drawNEIItemGrid(aRecipe.mInputs, 30, 14, 2, 1, aRecipe, true);
+                        break;
+                    case 3: //
+                        drawNEIItemGrid(aRecipe.mInputs, 12, 14, 3, 1, aRecipe, true);
+                        break;
+                    case 4:
+                        drawNEIItemGrid(aRecipe.mInputs, 12, 14, 3, 2, aRecipe, true);
+                        break;
+                    case 5:
+                        drawNEIItemGrid(aRecipe.mInputs, 12, 14, 3, 2, aRecipe, true);
+                        break;
+                    case 6:
+                        drawNEIItemGrid(aRecipe.mInputs, 12, -4, 3, 2, aRecipe, true);
+                        break;
+                    default:
+                        drawNEIItemGrid(aRecipe.mInputs, 12, -4, 3, 3, aRecipe, true);
                 }
-            }
-            if (aRecipe.mFluidOutputs.length > 1) {
-                if (aRecipe.mFluidOutputs[0] != null && (aRecipe.mFluidOutputs[0].getFluid() != null)) {
-                    this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[0], true), 120, 5));
+                switch (GT_NEI_DefaultHandler.this.mRecipeMap.mUsualOutputCount) {
+                    case 0:
+                        break;
+                    case 1:
+                        drawNEIItemGrid(aRecipe.mOutputs, 102, 14, 1, 1, aRecipe, false);
+                        break;
+                    case 2:
+                        drawNEIItemGrid(aRecipe.mOutputs, 102, 14, 2, 1, aRecipe, false);
+                        break;
+                    case 3:
+                        drawNEIItemGrid(aRecipe.mOutputs, 102, 14, 3, 1, aRecipe, false);
+                        break;
+                    case 4:
+                        drawNEIItemGrid(aRecipe.mOutputs, 102, 5, 2, 2, aRecipe, false);
+                        break;
+                    case 5:
+                        drawNEIItemGrid(aRecipe.mOutputs, 102, 5, 3, 2, aRecipe, false);
+                        break;
+                    case 6:
+                        drawNEIItemGrid(aRecipe.mOutputs, 102, 5, 3, 2, aRecipe, false);
+                        break;
+                    default:
+                        drawNEIItemGrid(aRecipe.mOutputs, 102, -4, 3, 3, aRecipe, false);
                 }
-                if (aRecipe.mFluidOutputs[1] != null && (aRecipe.mFluidOutputs[1].getFluid() != null)) {
-                    this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[1], true), 138, 5));
+
+                // ??? No idea what this does. Leaving it alone.
+                if (aRecipe.mSpecialItems != null) {
+                    this.mInputs.add(new FixedPositionedStack(aRecipe.mSpecialItems, 120, 52));
                 }
-                if (aRecipe.mFluidOutputs.length > 2 && aRecipe.mFluidOutputs[2] != null && (aRecipe.mFluidOutputs[2].getFluid() != null)) {
-                    this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[2], true), 102, 23));
+
+                if ((aRecipe.mFluidInputs.length > 0) && (aRecipe.mFluidInputs[0] != null) && (aRecipe.mFluidInputs[0].getFluid() != null)) {
+                    this.mInputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidInputs[0], true), 48, 52));
+                    if ((aRecipe.mFluidInputs.length > 1) && (aRecipe.mFluidInputs[1] != null) && (aRecipe.mFluidInputs[1].getFluid() != null)) {
+                        this.mInputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidInputs[1], true), 30, 52));
+                    }
                 }
-                if (aRecipe.mFluidOutputs.length > 3 && aRecipe.mFluidOutputs[3] != null && (aRecipe.mFluidOutputs[3].getFluid() != null)) {
-                    this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[3], true), 120, 23));
+
+                if (aRecipe.mFluidOutputs.length > 1) {
+                    if (aRecipe.mFluidOutputs[0] != null && (aRecipe.mFluidOutputs[0].getFluid() != null)) {
+                        this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[0], true), 120, 5));
+                    }
+                    if (aRecipe.mFluidOutputs[1] != null && (aRecipe.mFluidOutputs[1].getFluid() != null)) {
+                        this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[1], true), 138, 5));
+                    }
+                    if (aRecipe.mFluidOutputs.length > 2 && aRecipe.mFluidOutputs[2] != null && (aRecipe.mFluidOutputs[2].getFluid() != null)) {
+                        this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[2], true), 102, 23));
+                    }
+                    if (aRecipe.mFluidOutputs.length > 3 && aRecipe.mFluidOutputs[3] != null && (aRecipe.mFluidOutputs[3].getFluid() != null)) {
+                        this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[3], true), 120, 23));
+                    }
+                    if (aRecipe.mFluidOutputs.length > 4 && aRecipe.mFluidOutputs[4] != null && (aRecipe.mFluidOutputs[4].getFluid() != null)) {
+                        this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[4], true), 138, 23));
+                    }
+                } else if ((aRecipe.mFluidOutputs.length > 0) && (aRecipe.mFluidOutputs[0] != null) && (aRecipe.mFluidOutputs[0].getFluid() != null)) {
+                    this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[0], true), 102, 52));
                 }
-                if (aRecipe.mFluidOutputs.length > 4 && aRecipe.mFluidOutputs[4] != null && (aRecipe.mFluidOutputs[4].getFluid() != null)) {
-                    this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[4], true), 138, 23));
-                }
-            } else if ((aRecipe.mFluidOutputs.length > 0) && (aRecipe.mFluidOutputs[0] != null) && (aRecipe.mFluidOutputs[0].getFluid() != null)) {
-                this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[0], true), 102, 52));
             }
         }
 

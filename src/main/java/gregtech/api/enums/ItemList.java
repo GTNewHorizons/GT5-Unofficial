@@ -795,9 +795,9 @@ public enum ItemList implements IItemContainer {
     Casing_MAX,
     Casing_BronzePlatedBricks,
     Casing_HeatProof,
-    Casing_Coil_Cupronickel_Deprecated,
-    Casing_Coil_Kanthal_Deprecated,
-    Casing_Coil_Nichrome_Deprecated,
+    Casing_Dim_Trans,
+    Casing_Dim_Injector,
+    Casing_Dim_Bridge,
     Casing_Coil_Superconductor,
 
     Casing_SolidSteel,
@@ -1083,6 +1083,7 @@ public enum ItemList implements IItemContainer {
     Machine_Multi_LargeBoiler_Titanium,
     Machine_Multi_LargeBoiler_TungstenSteel,
     Machine_Multi_BlastFurnace,
+    Machine_Multi_PlasmaForge,
     Machine_Multi_ImplosionCompressor,
     Machine_Multi_VacuumFreezer,
     Machine_Multi_Furnace,
@@ -1446,6 +1447,7 @@ public enum ItemList implements IItemContainer {
     Processing_Array,
     Distillation_Tower,
     Energy_LapotronicOrb2,
+    Ore_Processor,
 
     ZPM3,
     ZPM2,
@@ -1766,6 +1768,11 @@ public enum ItemList implements IItemContainer {
     Circuit_Chip_Biocell,
 
     Tube_Wires,
+    KevlarFiber,
+    WovenKevlar,
+    Spinneret,
+    GalliumArsenideCrystal,
+    GalliumArsenideCrystalSmallPart,
 
     Circuit_Microprocessor,
     Circuit_Processor,
@@ -1842,7 +1849,12 @@ public enum ItemList implements IItemContainer {
 
     VOLUMETRIC_FLASK,
   	HULL_LIVINGROCK;
-	
+
+    Circuit_Parts_InductorSMD,
+    Circuit_Parts_InductorASMD,
+    Circuit_Parts_InductorXSMD,
+
+
     public static final ItemList[]
             DYE_ONLY_ITEMS = {
             Color_00,

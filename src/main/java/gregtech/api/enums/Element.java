@@ -46,7 +46,7 @@ public enum Element {
     Ge(32, 40, 0, -1, null, "Germanium", false),
     As(33, 42, 0, -1, null, "Arsenic", false),
     Se(34, 45, 0, -1, null, "Selenium", false),
-    Br(35, 45, 0, -1, null, "Bromine", false),
+    Br(35, 44, 0, -1, null, "Bromine", false),
     Kr(36, 48, 0, -1, null, "Krypton", false),
     Rb(37, 48, 0, -1, null, "Rubidium", false),
     Sr(38, 49, 0, -1, null, "Strontium", false),
@@ -135,9 +135,10 @@ public enum Element {
     Tn(125, 198, 0, -1, null, "Tritanium", false),
 
     SpFe(26, 42, 0, -1, null, "Meteoric Iron", false),
-    De(22, 27, 0, -1, null, "Desh", false), 
+    De(22, 27, 0, -1, null, "Desh", false),
     Oh(76, 125, 0, -1, null, "Oriharukon", false),
-       
+    Di(500, 500, 0, -1, null, "Dimensionally Transcendent Matter", false),
+
     Ma(0, 0, 100, -1, null, "Magic", false),
     Nq(130, 200, 0, -1, null, "Naquadah", false),
     Nt(0, 1000, 0, -1, null, "Neutronium", false),
@@ -179,7 +180,7 @@ public enum Element {
     $Ge(-32, -40, 0, -1, null, "Anti-Germanium", false),
     $As(-33, -42, 0, -1, null, "Anti-Arsenic", false),
     $Se(-34, -45, 0, -1, null, "Anti-Selenium", false),
-    $Br(-35, -45, 0, -1, null, "Anti-Bromine", false),
+    $Br(-35, -44, 0, -1, null, "Anti-Bromine", false),
     $Kr(-36, -48, 0, -1, null, "Anti-Krypton", false),
     $Rb(-37, -48, 0, -1, null, "Anti-Rubidium", false),
     $Sr(-38, -49, 0, -1, null, "Anti-Strontium", false),
@@ -266,9 +267,9 @@ public enum Element {
     $Ts(-117, -177, 0, -1, null, "Anti-Tenness", false),
     $Og(-118, -176, 0, -1, null, "Anti-Oganesson", false),
     $Tn(-125, -198, 0, -1, null, "Anti-Tritanium", false),
-    
+
     $SpFe(-26, -42, 0, -1, null, "Anti-Meteoric Iron", true),
-    $De(-22, -27, 0, -1, null, "Anti-Desh", true), 
+    $De(-22, -27, 0, -1, null, "Anti-Desh", true),
     $Oh(-76, -125, 0, -1, null, "Anti-Oriharukon", true),
 
     $Ma(0, 0, -100, -1, null, "Anti-Magic", false),

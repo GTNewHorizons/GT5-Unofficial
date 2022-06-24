@@ -235,6 +235,9 @@ public class Textures {
         MACHINE_MAX_BOTTOM,
         MACHINE_BRONZEPLATEDBRICKS,
         MACHINE_HEATPROOFCASING,
+        MACHINE_DIM_TRANS_CASING,
+        MACHINE_DIM_INJECTOR,
+        MACHINE_DIM_BRIDGE,
         MACHINE_COIL_SUPERCONDUCTOR,
 
         MACHINE_BRONZEBLASTFURNACE,
@@ -308,7 +311,7 @@ public class Textures {
         MACHINE_CASING_FIREBOX_STEEL,
         MACHINE_CASING_FIREBOX_TUNGSTENSTEEL,
         MACHINE_CASING_ENGINE_INTAKE,
-        MACHINE_CASING_EXTREME_ENGINE_INTAKE,//changed color in a terrible way
+        MACHINE_CASING_EXTREME_ENGINE_INTAKE, //changed color in a terrible way
         MACHINE_CASING_CHEMICALLY_INERT,
         MACHINE_COIL_CUPRONICKEL,
 
@@ -1082,7 +1085,9 @@ public class Textures {
         BLOCK_CRYOLITE,
         MARBLE_STONE,
         MARBLE_COBBLE,
-
+        BLOCK_NICKELALUMINIUM,
+        BLOCK_SILICONSG,
+        
         MARBLE_COBBLE_MOSSY,
         MARBLE_BRICKS,
         MARBLE_BRICKS_CRACKED,
@@ -1696,9 +1701,14 @@ public class Textures {
                         BLOCK_NETHERSTAR,
                         BLOCK_CHARCOAL,
                         BLOCK_BLAZE,
-                        BLOCK_CRYOLITE
-                };
-        public static final ITexture[] HIDDEN_TEXTURE = {
+                },
+                STORAGE_BLOCKS12 = {
+                        BLOCK_CRYOLITE,
+                        BLOCK_SILICONSG,
+                        BLOCK_NICKELALUMINIUM                      
+        };
+
+      public static final ITexture[] HIDDEN_TEXTURE = {
                 TextureFactory.builder().addIcon(HIDDEN_FACE).stdOrient().build()
         };
         public static final ITexture[] ERROR_RENDERING = {
