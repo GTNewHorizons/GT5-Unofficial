@@ -2818,6 +2818,24 @@ public class GT_MachineRecipeLoader implements Runnable {
                     Materials.ElectrumFlux.getMolten(1152L),
             }, ItemList.FusionComputer_UV.get(1), 1000, 90000);
 
+        GT_Values.RA.addAssemblylineRecipe(ItemList.Machine_IV_OreWasher.get(1), 432000, new Object[]{
+            ItemList.Hull_ZPM.get(1L),
+            ItemList.Electric_Motor_ZPM.get(32L),
+            ItemList.Electric_Piston_ZPM.get(8L),
+            ItemList.Electric_Pump_ZPM.get(16L),
+            ItemList.Conveyor_Module_ZPM.get(8L),
+            ItemList.Robot_Arm_ZPM.get(8L),
+            new Object[]{OrePrefixes.circuit.get(Materials.Superconductor), 4},
+            new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Duranium, 32), GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.NaquadahAlloy, 32)},
+            GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Polybenzimidazole, 64),
+            new ItemStack[]{ItemList.Component_Grinder_Tungsten.get(4L), ItemList.Component_Grinder_Diamond.get(64L)},
+            GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.StainlessSteel, 32),
+            GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Chrome, 16)
+        }, new FluidStack[] {
+            new FluidStack(solderIndalloy, 2880),
+            Materials.Naquadria.getMolten(1440)
+        }, ItemList.Ore_Processor.get(1), 1200, 90000);
+
 
         if (GregTech_API.sThaumcraftCompat != null) {
                 String tKey = "GT_WOOD_TO_CHARCOAL";
