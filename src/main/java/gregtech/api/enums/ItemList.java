@@ -1841,18 +1841,18 @@ public enum ItemList implements IItemContainer {
     ZPM_Coil,
     UV_Coil,
     UHV_Coil,
-       
+
     Circuit_Parts_ResistorXSMD,
     Circuit_Parts_DiodeXSMD,
     Circuit_Parts_TransistorXSMD,
     Circuit_Parts_CapacitorXSMD,
 
     VOLUMETRIC_FLASK,
-  	HULL_LIVINGROCK;
+  	HULL_LIVINGROCK,
 
     Circuit_Parts_InductorSMD,
     Circuit_Parts_InductorASMD,
-    Circuit_Parts_InductorXSMD,
+    Circuit_Parts_InductorXSMD;
 
 
     public static final ItemList[]
