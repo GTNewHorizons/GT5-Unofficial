@@ -812,7 +812,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map sCannerRecipes = new GT_Recipe_Map(new HashSet<>(900), "gt.recipe.canner", "Canning Machine", null, RES_PATH_GUI + "basicmachines/Canner", 2, 2, 1, 0, 1, E, 1, E, true, true);
         public static final GT_Recipe_Map sCNCRecipes = new GT_Recipe_Map(new HashSet<>(100), "gt.recipe.cncmachine", "CNC Machine", null, RES_PATH_GUI + "basicmachines/Default", 2, 1, 2, 1, 1, E, 1, E, true, true);
         public static final GT_Recipe_Map sLatheRecipes = new GT_Recipe_Map(new HashSet<>(1150), "gt.recipe.lathe", "Lathe", null, RES_PATH_GUI + "basicmachines/Lathe", 1, 2, 1, 0, 1, E, 1, E, true, true);
-        public static final GT_Recipe_Map sCutterRecipes = new GT_Recipe_Map(new HashSet<>(5125), "gt.recipe.cuttingsaw", "Cutting Machine", null, RES_PATH_GUI + "basicmachines/Cutter2", 2, 2, 1, 1, 1, E, 1, E, true, true);
+        public static final GT_Recipe_Map sCutterRecipes = new GT_Recipe_Map(new HashSet<>(5125), "gt.recipe.cuttingsaw", "Cutting Machine", null, RES_PATH_GUI + "basicmachines/Cutter4", 2, 4, 1, 1, 1, E, 1, E, true, true);
         public static final GT_Recipe_Map sSlicerRecipes = new GT_Recipe_Map(new HashSet<>(20), "gt.recipe.slicer", "Slicing Machine", null, RES_PATH_GUI + "basicmachines/Slicer", 2, 1, 2, 0, 1, E, 1, E, true, true);
         public static final GT_Recipe_Map sExtruderRecipes = new GT_Recipe_Map(new HashSet<>(13000), "gt.recipe.extruder", "Extruder", null, RES_PATH_GUI + "basicmachines/Extruder", 2, 1, 2, 0, 1, E, 1, E, true, true);
         public static final GT_Recipe_Map sHammerRecipes = new GT_Recipe_Map(new HashSet<>(3800), "gt.recipe.hammer", "Forge Hammer", null, RES_PATH_GUI + "basicmachines/Hammer", 1, 1, 1, 0, 1, E, 1, E, true, true);
@@ -1962,8 +1962,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
     public static class GT_Recipe_Map_LargeChemicalReactor extends GT_Recipe_Map {
         private static final int TOTAL_INPUT_COUNT = 6;
-        private static final int OUTPUT_COUNT = 2;
-        private static final int FLUID_OUTPUT_COUNT = 4;
+        private static final int OUTPUT_COUNT = 6;
+        private static final int FLUID_OUTPUT_COUNT = 6;
 
         public GT_Recipe_Map_LargeChemicalReactor() {
             super(new HashSet<>(1000), "gt.recipe.largechemicalreactor", "Large Chemical Reactor", null, RES_PATH_GUI + "basicmachines/LCRNEI", 2, OUTPUT_COUNT, 0, 0, 1, E, 1, E, true, true);
@@ -2103,18 +2103,18 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 int fluidLimit = Math.min(mFluidOutputs.length, FLUID_OUTPUT_COUNT);
                 ArrayList<PositionedStack> outputStacks = new ArrayList<>(itemLimit + fluidLimit);
 
-                for (int i = 0; i < itemLimit; i++) {
-                    outputStacks.add(new FixedPositionedStack(this.mOutputs[i].copy(), 102 + i * 18, 5));
+                int j = 0;
+
+                for (int i = 0; i < itemLimit; i++, j++) {
+                    outputStacks.add(new FixedPositionedStack(this.mOutputs[i].copy(), 102 + j % 3 * 18, (j >= 3 ? 5 : 23)));
                 }
 
-                for (int i = 0; i < fluidLimit; i++) {
-                    outputStacks.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(this.mFluidOutputs[i], true), 102 + i * 18, 23));
+                for (int i = 0; i < fluidLimit; i++, j++) {
+                    outputStacks.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(this.mFluidOutputs[i], true), 102 + j % 3 * 18, (j >= 3 ? 5 : 23)));
                 }
 
                 return outputStacks;
-			}
-
-
+            }
         }
     }
     public static class GT_Recipe_Map_DistillationTower extends GT_Recipe_Map {

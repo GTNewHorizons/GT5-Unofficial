@@ -414,14 +414,22 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         }, OrePrefixes.block, gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS10);
 
         GregTech_API.sBlockGem3 = new GT_Block_Metal("gt.blockgem3", new Materials[]{
-            Materials.Topaz,
-            Materials.Vinteum,
-            Materials.GarnetYellow,
-            Materials.NetherStar,
-            Materials.Charcoal,
-            Materials.Blaze,
-            Materials.Cryolite
+
+                Materials.Topaz,
+                Materials.Vinteum,
+                Materials.GarnetYellow,
+                Materials.NetherStar,
+                Materials.Charcoal,
+                Materials.Blaze,
+
         }, OrePrefixes.block, gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS11);
+
+        GregTech_API.sBlockMetal9 = new GT_Block_Metal("gt.blockmetal9", new Materials[]{
+                Materials.Cryolite,
+                Materials.SiliconSG
+
+        }, OrePrefixes.block, gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS12);
+
 
         GregTech_API.sBlockReinforced = new GT_Block_Reinforced("gt.blockreinforced");
 
