@@ -105,6 +105,7 @@ public class GenericChem extends ItemPackage {
 	public static ItemStack mPinkCatalyst;
 	public static ItemStack mFormaldehydeCatalyst;
 	public static ItemStack mSolidAcidCatalyst;
+	public static ItemStack mInfiniteMutationCatalyst;
 
 	public static ItemStack mMillingBallAlumina;
 	public static ItemStack mMillingBallSoapstone;
@@ -155,6 +156,8 @@ public class GenericChem extends ItemPackage {
 		mPotassiumHydroxide = ItemUtils.simpleMetaStack(mGenericChemItem1, 12, 1);
 		mFormaldehydeCatalyst = ItemUtils.simpleMetaStack(mGenericChemItem1, 13, 1);
 		mSolidAcidCatalyst = ItemUtils.simpleMetaStack(mGenericChemItem1, 14, 1);
+		mInfiniteMutationCatalyst = ItemUtils.simpleMetaStack(mGenericChemItem1, 15, 1);
+
 
 	}
 
@@ -175,6 +178,7 @@ public class GenericChem extends ItemPackage {
 		ItemUtils.addItemToOreDictionary(mPotassiumHydroxide, "dustPotassiumHydroxide");
 		ItemUtils.addItemToOreDictionary(mFormaldehydeCatalyst, "catalystFormaldehyde");
 		ItemUtils.addItemToOreDictionary(mSolidAcidCatalyst, "catalystSolidAcid");
+		ItemUtils.addItemToOreDictionary(mInfiniteMutationCatalyst, "catalystInfiniteMutation");
 
 	}
 
@@ -297,6 +301,7 @@ public class GenericChem extends ItemPackage {
 		recipeCatalystPink();
 		recipeCatalystFormaldehyde();
 		recipeCatalystSolidAcid();
+		recipeCatalystInfiniteMutation();
 
 		recipeGrindingBallAlumina();
 		recipeGrindingBallSoapstone();
@@ -331,7 +336,9 @@ public class GenericChem extends ItemPackage {
 		recipeCarbonDisulfide();
 		recipeEthylXanthates();
 		recipePotassiumHydroxide();
-		
+
+		recipeMutatedLivingSolder();
+
 		registerFuels();
 
 		return true;
@@ -482,6 +489,34 @@ public class GenericChem extends ItemPackage {
 				2);
 		
 		
+	}
+
+	private void recipeMutatedLivingSolder() {
+
+		//Endgame soldering alloy meant for the bioware circuit line and beyond.
+		CORE.RA.addChemicalPlantRecipe(
+				new ItemStack[] {
+						ItemUtils.getSimpleStack(GenericChem.mInfiniteMutationCatalyst, 1),
+                        ItemList.Circuit_Chip_Biocell.get(64),
+						ItemList.Gravistar.get(8),
+						Materials.InfinityCatalyst.getDust(2)
+
+				},
+				new FluidStack[] {
+						FluidUtils.getFluidStack("plasma.tin", 18000),
+						FluidUtils.getFluidStack("plasma.bismuth", 18000),
+						FluidUtils.getFluidStack("cryotheum", 4000)
+				},
+				new ItemStack[] {
+
+				},
+				new FluidStack[] {
+						MISC_MATERIALS.MUTATED_LIVING_SOLDER.getFluidStack(40000)
+				},
+				20*800,
+				3842160,
+				7);
+
 	}
 
 
@@ -807,6 +842,21 @@ public class GenericChem extends ItemPackage {
 			ItemUtils.getSimpleStack(GenericChem.mSolidAcidCatalyst, 5),
 			30 * 20,
 			2000);
+
+	}
+
+	private void recipeCatalystInfiniteMutation() {
+		// Assembly Recipe
+		CORE.RA.addSixSlotAssemblingRecipe(new ItemStack[] {
+						getTierThreeChip(),
+						CI.getEmptyCatalyst(5),
+						Materials.Infinity.getDust(1),
+						Materials.Naquadria.getDust(10)
+				},
+				GT_Values.NF,
+				ItemUtils.getSimpleStack(GenericChem.mInfiniteMutationCatalyst, 1),
+				5 * 20,
+				1966080);
 
 	}
 

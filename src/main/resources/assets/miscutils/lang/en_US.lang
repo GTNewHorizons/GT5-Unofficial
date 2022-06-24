@@ -3389,3 +3389,6 @@ item.miscutils:magicfeather.name=Magical Feather
 
 //Added 10/02/22
 item.BasicGenericChemItem.14.name=Solid-Acid Catalyst
+
+//Added 30/05/22
+item.BasicGenericChemItem.15.name=Infinite Mutation Catalyst

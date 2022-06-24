@@ -660,4 +660,21 @@ public final class MISC_MATERIALS {
 					new MaterialStack(ELEMENT.getInstance().OXYGEN, 2),
 					new MaterialStack(ELEMENT.getInstance().CHLORINE, 3)
 			});
+
+	public static final Material MUTATED_LIVING_SOLDER = new Material(
+			"Mutated Living Solder",
+			MaterialState.PURE_LIQUID, //State
+			new short[] {147, 109, 155}, //Material Colour
+			-200, //Melting Point in C
+			500, //Boiling Point in C
+			-1, //Protons
+			-1,
+			false, //Uses Blast furnace?
+			"?Sn?Bi?",
+			0,
+			true,
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.getInstance().TIN, 1),
+					new MaterialStack(ELEMENT.getInstance().BISMUTH, 1)
+			});
 }

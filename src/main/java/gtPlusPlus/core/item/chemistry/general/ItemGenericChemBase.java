@@ -23,7 +23,7 @@ public class ItemGenericChemBase extends Item {
 
 	final protected IIcon base[];
 	
-	final private int aMetaSize = 15;
+	final private int aMetaSize = 16;
 	
 	/*
 	 * 0 - Red Metal Catalyst //FeCu

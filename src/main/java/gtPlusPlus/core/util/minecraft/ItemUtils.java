@@ -1341,6 +1341,9 @@ public class ItemUtils {
 		if (GT_Utility.areStacksEqual(aStack, GenericChem.mSolidAcidCatalyst, true)) {
 			return true;
 		}
+		if (GT_Utility.areStacksEqual(aStack, GenericChem.mInfiniteMutationCatalyst, true)) {
+			return true;
+		}
 		if (GT_Utility.areStacksEqual(aStack, AgriculturalChem.mGreenCatalyst, true)) {
 			return true;
 		}

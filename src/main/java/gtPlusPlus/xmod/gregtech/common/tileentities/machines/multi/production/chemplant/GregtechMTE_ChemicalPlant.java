@@ -930,7 +930,11 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<Gregt
 
 	private void damageCatalyst(ItemStack aStack, int parallelRecipes) {
 		for (int i=0; i<parallelRecipes; i++){
-			if (MathUtils.randFloat(0, 10000000)/10000000f < (1.2f - (0.2 * this.mPipeCasingTier))) {
+			// Awakened Draconium Coils with Tungstensteel Pipe Casings (or above) no longer consume catalysts.
+			if (this.mCoilTier >= 11 && this.mPipeCasingTier >= 4) {
+				log("not consuming catalyst");
+			}
+			else if (MathUtils.randFloat(0, 10000000)/10000000f < (1.2f - (0.2 * this.mPipeCasingTier))) {
 				int damage = getDamage(aStack) + 1;
 				log("damage catalyst "+damage);
 				if (damage >= getMaxCatalystDurability()) {
