@@ -281,7 +281,7 @@ public class GregTech_API {
             sBlockOresUb2,
             sBlockOresUb3,
     /*sBlockGem,*/
-    sBlockMetal1,
+            sBlockMetal1,
             sBlockMetal2,
             sBlockMetal3,
             sBlockMetal4,
