@@ -41,7 +41,6 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -51,8 +50,8 @@ import java.util.HashSet;
 
 import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 public class GT_TileEntity_CircuitAssemblyLine extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_TileEntity_CircuitAssemblyLine> {
@@ -336,7 +335,18 @@ public class GT_TileEntity_CircuitAssemblyLine extends GT_MetaTileEntity_Enhance
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        return aSide == aFacing ? new ITexture[]{Textures.BlockIcons.getCasingTextureForId(16), TextureFactory.of(aActive ? TextureFactory.of(TextureFactory.of(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE), TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW).glow().build()) : TextureFactory.of(TextureFactory.of(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE), TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_GLOW).glow().build()))} : new ITexture[]{Textures.BlockIcons.getCasingTextureForId(16)};
+        if (aSide == aFacing) {
+            if (aActive)
+                return new ITexture[]{
+                    Textures.BlockIcons.getCasingTextureForId(16),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE).extFacing().build(),
+                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW).extFacing().glow().build()};
+            return new ITexture[]{
+                Textures.BlockIcons.getCasingTextureForId(16),
+                TextureFactory.builder().addIcon(OVERLAY_FRONT_ASSEMBLY_LINE).extFacing().build(),
+                TextureFactory.builder().addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_GLOW).extFacing().glow().build()};
+        }
+        return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(16)};
     }
 
     private static final String[] description = new String[] {
