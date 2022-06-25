@@ -198,13 +198,13 @@ public class RecipeLoader {
         		null,
         		WerkstoffMaterialPool.SeaweedConcentrate.getFluidOrGas(2000),
         		WerkstoffMaterialPool.SeaweedByproducts.getFluidOrGas(200),
+        		Materials.Empty.getCells(1),
         		WerkstoffMaterialPool.Iodine.get(OrePrefixes.dust, 1),
         		null,
         		null,
         		null,
         		null,
-        		null,
-        		new int[] {10000},
+        		new int[] {10000, 10000},
         		760,
         		480
         	);
