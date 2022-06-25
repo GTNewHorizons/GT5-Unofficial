@@ -17,7 +17,6 @@ public class GT_FuelLoader implements Runnable {
     @Override
     public void run() {
         GT_Log.out.println("GT_Mod: Initializing various Fuels.");
-        ItemList.sNitricAcid = GT_Mod.gregtechproxy.addFluid("nitricacid", "Nitric acid ", Materials.NitricAcid, 1, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.NitricAcid, 1), ItemList.Cell_Empty.get(1, new Object[0]), 1000);
         ItemList.sBlueVitriol = GT_Mod.gregtechproxy.addFluid("solution.bluevitriol", "Blue Vitriol water solution", null, 1, 295);
         ItemList.sNickelSulfate = GT_Mod.gregtechproxy.addFluid("solution.nickelsulfate", "Nickel sulfate water solution", null, 1, 295);
         ItemList.sIndiumConcentrate = GT_Mod.gregtechproxy.addFluid("indiumconcentrate", "Indium Concentrate", null, 1, 295);//TODO CHECK NEW x3
@@ -37,7 +36,7 @@ public class GT_FuelLoader implements Runnable {
         GT_Recipe.GT_Recipe_Map.sMagicFuels.addRecipe(true, new ItemStack[]{GT_ModHandler.getModItem("AWWayofTime","imbuedSlate",1L)},  new ItemStack[]{GT_ModHandler.getModItem("AWWayofTime","reinforcedSlate",1L)}, null, null, null, 0, 0, 1000);
         GT_Recipe.GT_Recipe_Map.sMagicFuels.addRecipe(true, new ItemStack[]{GT_ModHandler.getModItem("AWWayofTime","demonicSlate",1L)},  new ItemStack[]{GT_ModHandler.getModItem("AWWayofTime","imbuedSlate",1L)}, null, null, null, 0, 0, 8000);
         GT_Recipe.GT_Recipe_Map.sMagicFuels.addRecipe(true, new ItemStack[]{GT_ModHandler.getModItem("AWWayofTime","bloodMagicBaseItems",1L,27)},  new ItemStack[]{GT_ModHandler.getModItem("AWWayofTime","demonicSlate",1L)}, null, null, null, 0, 0, 20000);
-        
+
         GT_Values.RA.addFuel(GT_ModHandler.getModItem("Thaumcraft", "ItemResource", 1L, 4), null, 4, 5);
         GT_Values.RA.addFuel(new ItemStack(Items.experience_bottle, 1), null, 10, 5);
         GT_Values.RA.addFuel(new ItemStack(Items.ghast_tear, 1), null, 50, 5);

@@ -2020,7 +2020,6 @@ public enum ItemList implements IItemContainer {
     public static Fluid sOilExtraHeavy,
             sEpichlorhydrin,
             sDrillingFluid,
-            sNitricAcid,
             sBlueVitriol,
             sNickelSulfate,
             sToluene,
