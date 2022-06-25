@@ -748,8 +748,6 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                 // Generates a 3x3 grid of fluid icons if it's a plasma forge recipe.
                 drawNEIItemAndFluidGrid(aRecipe.mInputs, aRecipe.mFluidInputs, 12, 5, 3, 2, aRecipe, true);
                 drawNEIItemAndFluidGrid(aRecipe.mOutputs, aRecipe.mFluidOutputs, 102, 5, 3, 2, aRecipe, false);
-//                drawNEIFluidGrid(aRecipe.mFluidInputs, 1, 1, 3, 3, aRecipe, true);
-//                drawNEIFluidGrid(aRecipe.mFluidOutputs, 102, 5, 3, 3, aRecipe, false);
             } else if (GT_Recipe.GT_Recipe_Map.sMultiblockChemicalRecipes == GT_NEI_DefaultHandler.this.mRecipeMap) {
                 // Special handler for LCR.
                 drawNEIItemAndFluidGrid(aRecipe.mInputs, aRecipe.mFluidInputs, 12, 5, 3, 2, aRecipe, true);
@@ -775,9 +773,15 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                         drawNEIItemGrid(aRecipe.mInputs, 12, 14, 3, 2, aRecipe, true);
                         break;
                     case 6:
-                        drawNEIItemGrid(aRecipe.mInputs, 12, -4, 3, 2, aRecipe, true);
+                        drawNEIItemGrid(aRecipe.mInputs, 12, 5, 3, 2, aRecipe, true);
                         break;
                     default:
+                        if (GT_NEI_DefaultHandler.this.mRecipeMap.mUnlocalizedName.equals("gg.recipe.precise_assembler")) {
+                            drawNEIItemGrid(aRecipe.mInputs, 4, 3, 4, 1, aRecipe, true);
+                            drawNEIFluidGrid(aRecipe.mFluidInputs, 4, 38, 4, 1, aRecipe, true);
+                            break;
+                        }
+
                         drawNEIItemGrid(aRecipe.mInputs, 12, -4, 3, 3, aRecipe, true);
                 }
                 switch (GT_NEI_DefaultHandler.this.mRecipeMap.mUsualOutputCount) {
@@ -802,6 +806,12 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                         drawNEIItemGrid(aRecipe.mOutputs, 102, 5, 3, 2, aRecipe, false);
                         break;
                     default:
+                        // Custom handlers from addons.
+                        if (GT_NEI_DefaultHandler.this.mRecipeMap.mUnlocalizedName == "gg.recipe.precise_assembler") {
+                            drawNEIItemGrid(aRecipe.mOutputs, 111, 20, 1, 1, aRecipe, false);
+                            break;
+                        }
+
                         drawNEIItemGrid(aRecipe.mOutputs, 102, -4, 3, 3, aRecipe, false);
                 }
 
@@ -810,31 +820,34 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                     this.mInputs.add(new FixedPositionedStack(aRecipe.mSpecialItems, 120, 52));
                 }
 
-                if ((aRecipe.mFluidInputs.length > 0) && (aRecipe.mFluidInputs[0] != null) && (aRecipe.mFluidInputs[0].getFluid() != null)) {
-                    this.mInputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidInputs[0], true), 48, 52));
-                    if ((aRecipe.mFluidInputs.length > 1) && (aRecipe.mFluidInputs[1] != null) && (aRecipe.mFluidInputs[1].getFluid() != null)) {
-                        this.mInputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidInputs[1], true), 30, 52));
-                    }
-                }
+                if (!GT_NEI_DefaultHandler.this.mRecipeMap.mUnlocalizedName.equals("gg.recipe.precise_assembler")) {
 
-                if (aRecipe.mFluidOutputs.length > 1) {
-                    if (aRecipe.mFluidOutputs[0] != null && (aRecipe.mFluidOutputs[0].getFluid() != null)) {
-                        this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[0], true), 120, 5));
+                    if ((aRecipe.mFluidInputs.length > 0) && (aRecipe.mFluidInputs[0] != null) && (aRecipe.mFluidInputs[0].getFluid() != null)) {
+                        this.mInputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidInputs[0], true), 48, 52));
+                        if ((aRecipe.mFluidInputs.length > 1) && (aRecipe.mFluidInputs[1] != null) && (aRecipe.mFluidInputs[1].getFluid() != null)) {
+                            this.mInputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidInputs[1], true), 30, 52));
+                        }
                     }
-                    if (aRecipe.mFluidOutputs[1] != null && (aRecipe.mFluidOutputs[1].getFluid() != null)) {
-                        this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[1], true), 138, 5));
+
+                    if (aRecipe.mFluidOutputs.length > 1) {
+                        if (aRecipe.mFluidOutputs[0] != null && (aRecipe.mFluidOutputs[0].getFluid() != null)) {
+                            this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[0], true), 120, 5));
+                        }
+                        if (aRecipe.mFluidOutputs[1] != null && (aRecipe.mFluidOutputs[1].getFluid() != null)) {
+                            this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[1], true), 138, 5));
+                        }
+                        if (aRecipe.mFluidOutputs.length > 2 && aRecipe.mFluidOutputs[2] != null && (aRecipe.mFluidOutputs[2].getFluid() != null)) {
+                            this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[2], true), 102, 23));
+                        }
+                        if (aRecipe.mFluidOutputs.length > 3 && aRecipe.mFluidOutputs[3] != null && (aRecipe.mFluidOutputs[3].getFluid() != null)) {
+                            this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[3], true), 120, 23));
+                        }
+                        if (aRecipe.mFluidOutputs.length > 4 && aRecipe.mFluidOutputs[4] != null && (aRecipe.mFluidOutputs[4].getFluid() != null)) {
+                            this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[4], true), 138, 23));
+                        }
+                    } else if ((aRecipe.mFluidOutputs.length > 0) && (aRecipe.mFluidOutputs[0] != null) && (aRecipe.mFluidOutputs[0].getFluid() != null)) {
+                        this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[0], true), 102, 52));
                     }
-                    if (aRecipe.mFluidOutputs.length > 2 && aRecipe.mFluidOutputs[2] != null && (aRecipe.mFluidOutputs[2].getFluid() != null)) {
-                        this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[2], true), 102, 23));
-                    }
-                    if (aRecipe.mFluidOutputs.length > 3 && aRecipe.mFluidOutputs[3] != null && (aRecipe.mFluidOutputs[3].getFluid() != null)) {
-                        this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[3], true), 120, 23));
-                    }
-                    if (aRecipe.mFluidOutputs.length > 4 && aRecipe.mFluidOutputs[4] != null && (aRecipe.mFluidOutputs[4].getFluid() != null)) {
-                        this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[4], true), 138, 23));
-                    }
-                } else if ((aRecipe.mFluidOutputs.length > 0) && (aRecipe.mFluidOutputs[0] != null) && (aRecipe.mFluidOutputs[0].getFluid() != null)) {
-                    this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[0], true), 102, 52));
                 }
             }
         }
