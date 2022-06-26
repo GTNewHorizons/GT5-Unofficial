@@ -367,7 +367,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
             drawLine(lineCounter, GT_Utility.trans("152", "Total: ") + mPower.getTotalPowerString());
             lineCounter++;
 
-            if (mPower.getAmperageString().equals("unspecified") || mPower.getPowerUsageString().contains("(OC)")){
+            if (mPower.getAmperageString() == null || mPower.getAmperageString().equals("unspecified") || mPower.getPowerUsageString().contains("(OC)")){
                 drawLine(lineCounter, GT_Utility.trans("153", "Usage: ") + mPower.getPowerUsageString());
                 lineCounter++;
             } else if (mPower.getAmperageString().equals("1")) {
