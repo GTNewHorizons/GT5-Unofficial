@@ -8,6 +8,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 /**
  * Handle the parallel more efficient.
@@ -90,14 +91,15 @@ public class RecipeFinderForParallel {
 
         /*OreDict Stuff*/
         /*Wildcard Stuff*/
-        for (int tItem : tCompressedItemRecipe.keySet()) {
+        for (Iterator<Integer> i = tCompressedItemRecipe.keySet().iterator(); i.hasNext();) {
+            int tItem = i.next();
             if (tItem >> 16 == Short.MAX_VALUE) {
                 for (ItemStack tInputItem : aItemStacks) {
                     int InputID = GT_Utility.stackToInt(tInputItem);
                     if ((InputID & 0xffff) == (tItem & 0xffff)) {
                         if (tInputItem.stackSize >= tCompressedItemRecipe.get(tItem)) {
                             tInputItem.stackSize -= tCompressedItemRecipe.get(tItem);
-                            tCompressedItemRecipe.remove(tItem);
+                            i.remove();
                             break;
                         }
                         else {
@@ -118,7 +120,7 @@ public class RecipeFinderForParallel {
                         input.stackSize -= d;
                     }
                     if (tTargetAmount == 0) {
-                        tCompressedItemRecipe.remove(tItem);
+                        i.remove();
                         break;
                     }
                 }
