@@ -367,18 +367,20 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
             drawLine(lineCounter, GT_Utility.trans("152", "Total: ") + mPower.getTotalPowerString());
             lineCounter++;
 
-            if (mPower.getAmperageString() == null || mPower.getAmperageString().equals("unspecified") || mPower.getPowerUsageString().contains("(OC)")){
-                drawLine(lineCounter, GT_Utility.trans("153", "Usage: ") + mPower.getPowerUsageString());
+            String amperage = mPower.getAmperageString();
+            String powerUsage = mPower.getPowerUsageString();
+            if (amperage == null || amperage.equals("unspecified") || powerUsage.contains("(OC)")){
+                drawLine(lineCounter, GT_Utility.trans("153", "Usage: ") + powerUsage);
                 lineCounter++;
-            } else if (mPower.getAmperageString().equals("1")) {
+            } else if (amperage.equals("1")) {
                 drawLine(lineCounter, GT_Utility.trans("154", "Voltage: ") + mPower.getVoltageString());
                 lineCounter++;
             } else {
-                drawLine(lineCounter, GT_Utility.trans("153", "Usage: ") + mPower.getPowerUsageString());
+                drawLine(lineCounter, GT_Utility.trans("153", "Usage: ") + powerUsage);
                 lineCounter++;
                 drawLine(lineCounter, GT_Utility.trans("154", "Voltage: ") + mPower.getVoltageString());
                 lineCounter++;
-                drawLine(lineCounter, GT_Utility.trans("155", "Amperage: ") + mPower.getAmperageString());
+                drawLine(lineCounter, GT_Utility.trans("155", "Amperage: ") + amperage);
                 lineCounter++;
             }
 
