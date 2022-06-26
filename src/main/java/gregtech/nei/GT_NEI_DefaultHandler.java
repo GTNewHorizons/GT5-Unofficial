@@ -77,7 +77,12 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
 
     public GT_NEI_DefaultHandler(GT_Recipe.GT_Recipe_Map aRecipeMap) {
         super(aRecipeMap);
-        this.transferRects.add(new RecipeTransferRect(new Rectangle(65, 13, 36, 18), getOverlayIdentifier()));
+        if ("gt.recipe.complexfusionreactor".equals(aRecipeMap.mUnlocalizedName)) {
+            this.transferRects.add(new RecipeTransferRect(new Rectangle(74, 23, 18, 18), getOverlayIdentifier()));
+        }
+        else {
+            this.transferRects.add(new RecipeTransferRect(new Rectangle(65, 13, 36, 18), getOverlayIdentifier()));
+        }
     }
 
     @Deprecated
@@ -620,7 +625,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         public final List<PositionedStack> mInputs;
 
         // Draw a grid of fluids and items (in that order).
-        private void drawNEIItemAndFluidGrid(ItemStack[] ItemArray, FluidStack[] FluidArray, int x_coord_origin, int y_coord_origin, int x_dir_max_items, int y_max_dir_max_items, GT_Recipe Recipe, boolean is_input) {
+        public void drawNEIItemAndFluidGrid(ItemStack[] ItemArray, FluidStack[] FluidArray, int x_coord_origin, int y_coord_origin, int x_dir_max_items, int y_max_dir_max_items, GT_Recipe Recipe, boolean is_input) {
             if (ItemArray.length + FluidArray.length > x_dir_max_items * y_max_dir_max_items) {
                 GT_Log.err.println("Recipe cannot be properly displayed in NEI due to too many items/fluids.");
             }
@@ -735,74 +740,79 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
             List<PositionedStack> maybeIn;
             List<PositionedStack> maybeOut;
 
+            try {
+                maybeIn = aRecipe.getInputPositionedStacks();
+            } catch (NullPointerException npe) {
+                maybeIn = null;
+                GT_Log.err.println("CachedDefaultRecipe - Invalid InputPositionedStacks " + aRecipe);
+                npe.printStackTrace(GT_Log.err);
+            }
+            try {
+                maybeOut = aRecipe.getOutputPositionedStacks();
+            } catch (NullPointerException npe) {
+                maybeOut = null;
+                GT_Log.err.println("CachedDefaultRecipe - Invalid OutputPositionedStacks " + aRecipe);
+                npe.printStackTrace(GT_Log.err);
+            }
+
+            if (maybeOut != null && maybeIn != null) {
+                mOutputs = maybeOut;
+                mInputs = maybeIn;
+                return;
+            }
+
             mOutputs = new ArrayList<>();
             mInputs = new ArrayList<>();
 
-            if (GT_Recipe.GT_Recipe_Map.sComplexFusionRecipes == GT_NEI_DefaultHandler.this.mRecipeMap) {
-                // Special handler for complex fusion NEI display.
-                // Generates a 4x4 grid of fluid icons if it's a complex fusion recipe.
-                drawNEIFluidGrid(aRecipe.mFluidInputs, 3, -1, 4, 4, aRecipe, true);
-                drawNEIFluidGrid(aRecipe.mFluidOutputs, 93, -1, 4, 4, aRecipe, false);
-            } else if (GT_Recipe.GT_Recipe_Map.sPlasmaForgeRecipes == GT_NEI_DefaultHandler.this.mRecipeMap) {
-                // Special handeler for plasma forge NEI display.
-                // Generates a 3x3 grid of fluid icons if it's a plasma forge recipe.
-                drawNEIItemAndFluidGrid(aRecipe.mInputs, aRecipe.mFluidInputs, 12, 5, 3, 2, aRecipe, true);
-                drawNEIItemAndFluidGrid(aRecipe.mOutputs, aRecipe.mFluidOutputs, 102, 5, 3, 2, aRecipe, false);
-//                drawNEIFluidGrid(aRecipe.mFluidInputs, 1, 1, 3, 3, aRecipe, true);
-//                drawNEIFluidGrid(aRecipe.mFluidOutputs, 102, 5, 3, 3, aRecipe, false);
-            } else if (GT_Recipe.GT_Recipe_Map.sMultiblockChemicalRecipes == GT_NEI_DefaultHandler.this.mRecipeMap) {
-                // Special handler for LCR.
-                drawNEIItemAndFluidGrid(aRecipe.mInputs, aRecipe.mFluidInputs, 12, 5, 3, 2, aRecipe, true);
-                drawNEIItemAndFluidGrid(aRecipe.mOutputs, aRecipe.mFluidOutputs, 102, 5, 3, 2, aRecipe, false);
-            } else {
-                // Default GT NEI handler for drawing fluids/items on screen.
-                switch (GT_NEI_DefaultHandler.this.mRecipeMap.mUsualInputCount) {
-                    case 0:
-                        break;
-                    case 1: // 1x1
-                        drawNEIItemGrid(aRecipe.mInputs, 48, 14, 1, 1, aRecipe, true);
-                        break;
-                    case 2: // 2x1
-                        drawNEIItemGrid(aRecipe.mInputs, 30, 14, 2, 1, aRecipe, true);
-                        break;
-                    case 3: //
-                        drawNEIItemGrid(aRecipe.mInputs, 12, 14, 3, 1, aRecipe, true);
-                        break;
-                    case 4:
-                        drawNEIItemGrid(aRecipe.mInputs, 12, 14, 3, 2, aRecipe, true);
-                        break;
-                    case 5:
-                        drawNEIItemGrid(aRecipe.mInputs, 12, 14, 3, 2, aRecipe, true);
-                        break;
-                    case 6:
-                        drawNEIItemGrid(aRecipe.mInputs, 12, -4, 3, 2, aRecipe, true);
-                        break;
-                    default:
-                        drawNEIItemGrid(aRecipe.mInputs, 12, -4, 3, 3, aRecipe, true);
+            // Default GT NEI handler for drawing fluids/items on screen.
+            switch (GT_NEI_DefaultHandler.this.mRecipeMap.mUsualInputCount) {
+                case 0:
+                    break;
+                case 1: // 1x1
+                    drawNEIItemGrid(aRecipe.mInputs, 48, 14, 1, 1, aRecipe, true);
+                    break;
+                case 2: // 2x1
+                    drawNEIItemGrid(aRecipe.mInputs, 30, 14, 2, 1, aRecipe, true);
+                    break;
+                case 3: //
+                    drawNEIItemGrid(aRecipe.mInputs, 12, 14, 3, 1, aRecipe, true);
+                    break;
+                case 4:
+                    drawNEIItemGrid(aRecipe.mInputs, 12, 14, 3, 2, aRecipe, true);
+                    break;
+                case 5:
+                    drawNEIItemGrid(aRecipe.mInputs, 12, 14, 3, 2, aRecipe, true);
+                    break;
+                case 6:
+                    drawNEIItemGrid(aRecipe.mInputs, 12, 5, 3, 2, aRecipe, true);
+                    break;
+                default:
+                    drawNEIItemGrid(aRecipe.mInputs, 12, -4, 3, 3, aRecipe, true);
                 }
-                switch (GT_NEI_DefaultHandler.this.mRecipeMap.mUsualOutputCount) {
-                    case 0:
-                        break;
-                    case 1:
-                        drawNEIItemGrid(aRecipe.mOutputs, 102, 14, 1, 1, aRecipe, false);
-                        break;
-                    case 2:
-                        drawNEIItemGrid(aRecipe.mOutputs, 102, 14, 2, 1, aRecipe, false);
-                        break;
-                    case 3:
-                        drawNEIItemGrid(aRecipe.mOutputs, 102, 14, 3, 1, aRecipe, false);
-                        break;
-                    case 4:
-                        drawNEIItemGrid(aRecipe.mOutputs, 102, 5, 2, 2, aRecipe, false);
-                        break;
-                    case 5:
-                        drawNEIItemGrid(aRecipe.mOutputs, 102, 5, 3, 2, aRecipe, false);
-                        break;
-                    case 6:
-                        drawNEIItemGrid(aRecipe.mOutputs, 102, 5, 3, 2, aRecipe, false);
-                        break;
-                    default:
-                        drawNEIItemGrid(aRecipe.mOutputs, 102, -4, 3, 3, aRecipe, false);
+
+            switch (GT_NEI_DefaultHandler.this.mRecipeMap.mUsualOutputCount) {
+                case 0:
+                    break;
+                case 1:
+                    drawNEIItemGrid(aRecipe.mOutputs, 102, 14, 1, 1, aRecipe, false);
+                    break;
+                case 2:
+                    drawNEIItemGrid(aRecipe.mOutputs, 102, 14, 2, 1, aRecipe, false);
+                    break;
+                case 3:
+                    drawNEIItemGrid(aRecipe.mOutputs, 102, 14, 3, 1, aRecipe, false);
+                    break;
+                case 4:
+                    drawNEIItemGrid(aRecipe.mOutputs, 102, 5, 2, 2, aRecipe, false);
+                    break;
+                case 5:
+                    drawNEIItemGrid(aRecipe.mOutputs, 102, 5, 3, 2, aRecipe, false);
+                    break;
+                case 6:
+                    drawNEIItemGrid(aRecipe.mOutputs, 102, 5, 3, 2, aRecipe, false);
+                    break;
+                default:
+                    drawNEIItemGrid(aRecipe.mOutputs, 102, -4, 3, 3, aRecipe, false);
                 }
 
                 // ??? No idea what this does. Leaving it alone.
@@ -836,7 +846,6 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                 } else if ((aRecipe.mFluidOutputs.length > 0) && (aRecipe.mFluidOutputs[0] != null) && (aRecipe.mFluidOutputs[0].getFluid() != null)) {
                     this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[0], true), 102, 52));
                 }
-            }
         }
 
         @Override
