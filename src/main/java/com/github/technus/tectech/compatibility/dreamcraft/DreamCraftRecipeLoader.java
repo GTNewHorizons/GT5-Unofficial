@@ -9,6 +9,7 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.em_machine.Behaviou
 import com.github.technus.tectech.thing.metaTileEntity.multi.em_machine.Behaviour_Recycler;
 import com.github.technus.tectech.thing.metaTileEntity.multi.em_machine.GT_MetaTileEntity_EM_machine;
 import cpw.mods.fml.common.Loader;
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -30,6 +31,7 @@ import gtPlusPlus.core.material.ALLOY;
 import java.lang.reflect.Method;
 
 import static com.github.technus.tectech.loader.recipe.BaseRecipeLoader.getOrDefault;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 
 /**
  * Created by Tec on 06.08.2017.
@@ -1350,9 +1352,96 @@ public class DreamCraftRecipeLoader {
                     },
                     getItemContainer("StargateFramePart").get(1L), 72000, 500000000);
         }
-        //endregion
 
-        Fluid oganesson = FluidRegistry.getFluid("oganesson");
+        // Dimensionally Transcendent Plasma Forge (DTPF)
+
+        if (Loader.isModLoaded("eternalsingularity")) {
+
+            // DTPF Controller.
+            TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Casing_Dim_Bridge.get(1),
+                    32_000_000, 4096, 32_000_000, 1, new ItemStack[]{
+                            ItemList.Casing_Dim_Bridge.get(4),
+                            GT_ModHandler.getModItem("gregtech", "gt.blockmachines", 16L, 12730),
+                            getItemContainer("Hatch_Energy_UIV").get(4L),
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUEV, 6),
+                            ItemList.Reactor_Coolant_Sp_6.get(1L),
+                            ItemList.Reactor_Coolant_Sp_6.get(1L),
+                            ItemList.Reactor_Coolant_Sp_6.get(1L),
+                            ItemList.Reactor_Coolant_Sp_6.get(1L),
+                            GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Nano, 20),
+                            ItemList.Field_Generator_UEV.get(4),
+                            GT_ModHandler.getModItem("eternalsingularity", "eternal_singularity", 4L),
+                            GT_ModHandler.getModItem("miscutils", "MU-metaitem.01", 1L, 32105),
+                            GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Osmium, 64L),
+                            ItemList.Electric_Pump_UEV.get(4),
+                            ItemList.ZPM3.get(1),
+                            GT_ModHandler.getModItem("IC2", "blockMachine2", 1, 0)
+                    },
+                    new FluidStack[]{
+                            new FluidStack(FluidRegistry.getFluid("oganesson"), 128000),
+                            new FluidStack(FluidRegistry.getFluid("molten.mutatedlivingsolder"), 36864*2),
+                            new FluidStack(FluidRegistry.getFluid("molten.californium"), 36864),
+                    },
+                    ItemList.Machine_Multi_PlasmaForge.get(1), 72000, 32_000_000);
+
+            // Dimensional bridge.
+            TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Casing_Dim_Injector.get(1),
+                    8_000_000, 4096, 32_000_000, 1, new ItemStack[]{
+                            ItemList.Casing_Dim_Trans.get(1),
+                            ItemList.MicroTransmitter_UV.get(1),
+                            GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 2),
+                            GT_ModHandler.getModItem("Avaritia", "Singularity", 2L, 0),
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUHV, 6),
+                            GT_ModHandler.getModItem("dreamcraft", "item.PicoWafer", 2, 0),
+                            ItemList.Field_Generator_UHV.get(1L)
+                    },
+                    new FluidStack[]{
+                            new FluidStack(FluidRegistry.getFluid("oganesson"), 8000),
+                            new FluidStack(FluidRegistry.getFluid("molten.mutatedlivingsolder"), 1152*8),
+                            Materials.EnrichedNaquadria.getFluid(1152L)
+                    },
+                    ItemList.Casing_Dim_Bridge.get(1), 240*20, 32_000_000);
+
+            // Dimensional injection casing.
+            TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Casing_Dim_Trans.get(1),
+                    2_000_000, 2048, 32_000_000, 1, new ItemStack[]{
+                            GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Osmium, 4),
+                            GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Ledox, 1),
+                            GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.CallistoIce, 1),
+                            ItemList.Reactor_Coolant_Sp_6.get(1L),
+                            GT_ModHandler.getModItem("miscutils", "itemScrewLaurenium", 12, 0),
+                            GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 2),
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUHV, 2),
+                            ItemList.Super_Chest_IV.get(1),
+                            ItemList.Super_Tank_IV.get(1),
+                            GT_ModHandler.getModItem("dreamcraft", "item.PicoWafer", 1, 0),
+                    },
+                    new FluidStack[]{
+                            new FluidStack(FluidRegistry.getFluid("oganesson"), 1000),
+                            new FluidStack(FluidRegistry.getFluid("molten.mutatedlivingsolder"), 288),
+                            Materials.EnrichedNaquadria.getFluid(288L)
+                    },
+                    ItemList.Casing_Dim_Injector.get(1), 20*20, 32_000_000);
+
+            // Dimensionally Transcendent Casing.
+            TT_recipeAdder.addResearchableAssemblylineRecipe(GT_ModHandler.getModItem("Avaritia", "Singularity", 1L, 0),
+                    2_000_000, 2048, 32_000_000, 1, new ItemStack[]{
+                            GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Osmium, 6),
+                            GT_ModHandler.getModItem("miscutils", "itemScrewLaurenium", 12, 0),
+                            ItemList.Reactor_Coolant_Sp_6.get(1L),
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUHV, 1),
+                    },
+                    new FluidStack[]{
+                            new FluidStack(FluidRegistry.getFluid("oganesson"), 500),
+                            new FluidStack(FluidRegistry.getFluid("molten.mutatedlivingsolder"), 288),
+                            Materials.EnrichedNaquadria.getFluid(288L)
+                    },
+                    ItemList.Casing_Dim_Trans.get(1), 20*20, 32_000_000);
+
+
+        }
+
+            Fluid oganesson = FluidRegistry.getFluid("oganesson");
         //Deep Dark Portal
         TT_recipeAdder.addResearchableAssemblylineRecipe(GT_ModHandler.getModItem("dreamcraft", "item.HeavyDutyPlateTier8", 1, 0),
         		16777216, 2048, 2000000, 64, new Object[]{
