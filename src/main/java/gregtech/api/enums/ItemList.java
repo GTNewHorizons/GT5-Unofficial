@@ -1447,6 +1447,7 @@ public enum ItemList implements IItemContainer {
     Processing_Array,
     Distillation_Tower,
     Energy_LapotronicOrb2,
+    Ore_Processor,
 
     ZPM3,
     ZPM2,
@@ -1767,6 +1768,11 @@ public enum ItemList implements IItemContainer {
     Circuit_Chip_Biocell,
 
     Tube_Wires,
+    KevlarFiber,
+    WovenKevlar,
+    Spinneret,
+    GalliumArsenideCrystal,
+    GalliumArsenideCrystalSmallPart,
 
     Circuit_Microprocessor,
     Circuit_Processor,
@@ -2012,7 +2018,6 @@ public enum ItemList implements IItemContainer {
     public static Fluid sOilExtraHeavy,
             sEpichlorhydrin,
             sDrillingFluid,
-            sNitricAcid,
             sBlueVitriol,
             sNickelSulfate,
             sToluene,

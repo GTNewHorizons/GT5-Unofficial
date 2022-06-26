@@ -23,15 +23,19 @@ Please report any issues you to find to the main GTNH issue tracker. Include as 
 
 Please do! However, please take a note of [current issues](https://github.com/GTNewHorizons/GT-New-Horizons-Modpack/issues) and what is currently being worked on.
 
+## Attribution
+
+Some textures/ideas have been taken from future versions of GT and texture pack authors for GTNH. Credit goes to Jimbno for the UU-Tex texture pack and its contributions to the base pack here: https://github.com/Jimbno/UU-Tex.
+
 ## License
 
-GT5-Unofficial is free software: you can redistribute it and/or modify it under the terms of the 
-GNU Lesser General Public License as published by the Free Software Foundation, either version 3 
+GT5-Unofficial is free software: you can redistribute it and/or modify it under the terms of the
+GNU Lesser General Public License as published by the Free Software Foundation, either version 3
 of the License, or (at your option) any later version.
 
-GT5-Unofficial is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+GT5-Unofficial is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 See the GNU Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public License along with GT5-Unofficial. 
+You should have received a copy of the GNU Lesser General Public License along with GT5-Unofficial.
 If not, see <http://www.gnu.org/licenses/>.

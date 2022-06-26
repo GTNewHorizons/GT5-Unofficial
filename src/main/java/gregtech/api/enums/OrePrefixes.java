@@ -202,7 +202,7 @@ public enum OrePrefixes {
     pipeRestrictiveMedium("Medium Restrictive Pipes", "Medium Restrictive ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0, M * 3, 64, 80),
     pipeRestrictiveLarge("Large Restrictive Pipes", "Large Restrictive ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0, M * 6, 64, 81),
     pipeRestrictiveHuge("Huge Restrictive Pipes", "Huge Restrictive ", " Pipe", true, true, false, false, true, false, true, false, false, false, 0, M * 12, 64, 82),
-    pipe("Pipes", "", " Pipe", false, false, false, false, false, false, false, false, false, false, 0, -1, 64, 77),
+    pipe("Pipes", "", " Pipe", true, false, false, false, false, false, false, false, false, false, 0, -1, 64, 77),
     wireGt16("16x Wires", "16x ", " Wire", true, true, false, false, false, false, true, false, false, false, 0, M * 8, 64, -1),
     wireGt12("12x Wires", "12x ", " Wire", true, true, false, false, false, false, true, false, false, false, 0, M * 6, 64, -1),
     wireGt08("8x Wires", "8x ", " Wire", true, true, false, false, false, false, true, false, false, false, 0, M * 4, 64, -1),
@@ -376,19 +376,7 @@ public enum OrePrefixes {
                 for (OrePrefixes tPrefix2 : values())
                     if (tPrefix2.name().startsWith("ore"))
                         tPrefix1.addFamiliarPrefix(tPrefix2);
-        for (OrePrefixes tPrefix1 : values())
-            if (tPrefix1.name().startsWith("pipe"))
-                for (OrePrefixes tPrefix2 : values())
-                    if (tPrefix2.name().startsWith("pipe"))
-                        tPrefix1.addFamiliarPrefix(tPrefix2);
-        for (OrePrefixes tPrefix1 : values())
-            if (tPrefix1.name().startsWith("wireGt"))
-                for (OrePrefixes tPrefix2 : values())
-                    if (tPrefix2.name().startsWith("wireGt"))
-                        tPrefix1.addFamiliarPrefix(tPrefix2);
-        for (OrePrefixes tPrefix1 : values())
-            if (tPrefix1.name().startsWith("cableGt")) for (OrePrefixes tPrefix2 : values())
-                if (tPrefix2.name().startsWith("cableGt")) tPrefix1.addFamiliarPrefix(tPrefix2);
+
 
         // These are only the important ones.
         gem.mNotGeneratedItems.add(Materials.Coal);
@@ -538,7 +526,7 @@ public enum OrePrefixes {
         pipeRestrictiveMedium.mSecondaryMaterial = new MaterialStack(Materials.Steel, ring.mMaterialAmount * 3);
         pipeRestrictiveLarge.mSecondaryMaterial = new MaterialStack(Materials.Steel, ring.mMaterialAmount * 4);
         pipeRestrictiveHuge.mSecondaryMaterial = new MaterialStack(Materials.Steel, ring.mMaterialAmount * 5);
-        cableGt12.mSecondaryMaterial = new MaterialStack(Materials.Rubber, plate.mMaterialAmount * 5);
+        cableGt16.mSecondaryMaterial = new MaterialStack(Materials.Rubber, plate.mMaterialAmount * 5);
         cableGt12.mSecondaryMaterial = new MaterialStack(Materials.Rubber, plate.mMaterialAmount * 4);
         cableGt08.mSecondaryMaterial = new MaterialStack(Materials.Rubber, plate.mMaterialAmount * 3);
         cableGt04.mSecondaryMaterial = new MaterialStack(Materials.Rubber, plate.mMaterialAmount * 2);

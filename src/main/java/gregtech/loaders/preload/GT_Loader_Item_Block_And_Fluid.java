@@ -414,14 +414,23 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         }, OrePrefixes.block, gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS10);
 
         GregTech_API.sBlockGem3 = new GT_Block_Metal("gt.blockgem3", new Materials[]{
-            Materials.Topaz,
-            Materials.Vinteum,
-            Materials.GarnetYellow,
-            Materials.NetherStar,
-            Materials.Charcoal,
-            Materials.Blaze,
-            Materials.Cryolite
+
+                Materials.Topaz,
+                Materials.Vinteum,
+                Materials.GarnetYellow,
+                Materials.NetherStar,
+                Materials.Charcoal,
+                Materials.Blaze
+
         }, OrePrefixes.block, gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS11);
+
+        GregTech_API.sBlockMetal9 = new GT_Block_Metal("gt.blockmetal9", new Materials[]{
+                Materials.Cryolite,
+                MaterialsKevlar.NickelAluminide,
+                Materials.SiliconSG
+
+        }, OrePrefixes.block, gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS12);
+
 
         GregTech_API.sBlockReinforced = new GT_Block_Reinforced("gt.blockreinforced");
 
@@ -522,10 +531,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         GT_Mod.gregtechproxy.addFluid("refinedGlue", "Refined Glue", Materials.Glue, 1, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Glue, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
         GT_Mod.gregtechproxy.addFluid("hotfryingoil", "Hot Frying Oil", Materials.FryingOilHot, 1, 400, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.FryingOilHot, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
 
-        GT_Mod.gregtechproxy.addFluid("SpaceTime", "SpaceTime", Materials.SpaceTime, 1, 0, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.SpaceTime, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
-
         GT_Mod.gregtechproxy.addFluid("DimensionallyTranscendentResidue", "Dimensionally Transcendent Residue", Materials.DimensionallyTranscendentResidue, 1, 2000000000, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.DimensionallyTranscendentResidue, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
-
         GT_Mod.gregtechproxy.addFluid("ExcitedDTCC", "Excited Dimensionally Transcendent Crude Catalyst", Materials.ExcitedDTCC, 1, 500000000, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.ExcitedDTCC, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
         GT_Mod.gregtechproxy.addFluid("ExcitedDTPC", "Excited Dimensionally Transcendent Prosaic Catalyst", Materials.ExcitedDTPC, 1, 500000000, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.ExcitedDTPC, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
         GT_Mod.gregtechproxy.addFluid("ExcitedDTRC", "Excited Dimensionally Transcendent Resplendent Catalyst", Materials.ExcitedDTRC, 1, 500000000, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.ExcitedDTRC, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
