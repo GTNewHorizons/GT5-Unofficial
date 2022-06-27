@@ -15,11 +15,11 @@ import gregtech.api.enums.TextureSet;
 
 @SuppressWarnings({"unchecked"})
 public class WerkstoffMaterialPool implements Runnable {
-    
+
     private static final int offsetID = 11_000;
     private static final int offsetID2 = 11_100;
     private static final int offsetID3 = 11_300;
-    
+
     /*
      * public static final Werkstoff __ = new Werkstoff(
     		new short[] {_, _, _},
@@ -31,19 +31,19 @@ public class WerkstoffMaterialPool implements Runnable {
     		TextureSet.SET_DULL
     	);
      */
-    
+
     //Misc.
     public static final Werkstoff Hafnium = new Werkstoff(
             new short[] {232, 224, 219},
             "Hafnium",
             subscriptNumbers("Hf"),
             new Werkstoff.Stats(),
-            Werkstoff.Types.COMPOUND,
+            Werkstoff.Types.ELEMENT,
             new Werkstoff.GenerationFeatures().disable().onlyDust().addMetalItems().enforceUnification(), //Perhaps use hafnia liquid in elemental hafnium synthesis
             offsetID,
             TextureSet.SET_DULL
         );
-    
+
     public static final Werkstoff LowPurityHafnium = new Werkstoff(
             new short[] {240, 223, 208},
             "Low-Purity Hafnium",
@@ -54,7 +54,7 @@ public class WerkstoffMaterialPool implements Runnable {
             offsetID + 1,
             TextureSet.SET_DULL
         );
-    
+
     public static final Werkstoff Hafnia = new Werkstoff(
             new short[] {247, 223, 203},
             "Hafnia",
@@ -65,7 +65,7 @@ public class WerkstoffMaterialPool implements Runnable {
             offsetID + 2,
             TextureSet.SET_DULL
         );
-    
+
     public static final Werkstoff HafniumTetrachloride = new Werkstoff(
             new short[] {238, 247, 249},
             "Hafnium Tetrachloride",
@@ -76,7 +76,7 @@ public class WerkstoffMaterialPool implements Runnable {
             offsetID + 3,
             TextureSet.SET_DULL
         );
-    
+
     public static final Werkstoff HafniumTetrachlorideSolution = new Werkstoff(
             new short[] {238, 247, 249},
             "Hafnium Tetrachloride Solution",
@@ -87,7 +87,7 @@ public class WerkstoffMaterialPool implements Runnable {
             offsetID + 4,
             TextureSet.SET_FLUID
         );
-    
+
     public static final Werkstoff HafniumIodide = new Werkstoff(
             new short[] {216, 60, 1},
             "Hafnium Iodide",
@@ -98,7 +98,7 @@ public class WerkstoffMaterialPool implements Runnable {
             offsetID + 5,
             TextureSet.SET_DULL
         );
-    
+
     public static final Werkstoff HafniumRunoff = new Werkstoff(
             new short[] {74, 65, 42}, //Literally the statistically ugliest colour
             "Hafnium Runoff",
@@ -109,7 +109,7 @@ public class WerkstoffMaterialPool implements Runnable {
             offsetID + 6,
             TextureSet.SET_DULL
         );
-    
+
     public static final Werkstoff Zirconium = new Werkstoff(
             new short[] {225,230,225},
             "Zirconium",
@@ -119,9 +119,9 @@ public class WerkstoffMaterialPool implements Runnable {
             new Werkstoff.GenerationFeatures().disable().onlyDust().addMetalItems().enforceUnification(),
             offsetID + 7,
             TextureSet.SET_DULL
-            
+
         );
-    
+
     public static final Werkstoff Zirconia = new Werkstoff(
             new short[] {177,152,101},
             "Zirconia",
@@ -131,9 +131,9 @@ public class WerkstoffMaterialPool implements Runnable {
             new Werkstoff.GenerationFeatures().disable().onlyDust(),
             offsetID + 8,
             TextureSet.SET_DULL
-            
+
         );
-    
+
     public static final Werkstoff ZirconiumTetrachloride = new Werkstoff(
             new short[] {179, 164, 151},
             "Zirconium Tetrachloride",
@@ -144,7 +144,7 @@ public class WerkstoffMaterialPool implements Runnable {
             offsetID + 9,
             TextureSet.SET_DULL
         );
-    
+
     public static final Werkstoff ZirconiumTetrachlorideSolution = new Werkstoff(
             new short[] {179, 164, 151},
             "Zirconium Tetrachloride Solution",
@@ -155,7 +155,7 @@ public class WerkstoffMaterialPool implements Runnable {
             offsetID + 10,
             TextureSet.SET_FLUID
         );
-    
+
     public static final Werkstoff HafniaZirconiaBlend = new Werkstoff(
             new short[] {247, 223, 203},
             "Hafnia-Zirconia Blend", // Maybe Hafnon??
@@ -166,7 +166,7 @@ public class WerkstoffMaterialPool implements Runnable {
             offsetID + 11,
             TextureSet.SET_DULL
         );
-    
+
     public static final Werkstoff Iodine = new Werkstoff(
             new short[] {171, 40, 175},
             "Iodine",
@@ -177,20 +177,20 @@ public class WerkstoffMaterialPool implements Runnable {
             offsetID + 12,
             TextureSet.SET_FLUID
         );
-    
-    
+
+
     //Lanthanide Line
     public static final Werkstoff MuddyRareEarthMonaziteSolution = new Werkstoff(
             new short[] {111, 78, 55},
             "Muddy Monazite Rare Earth Solution",
             subscriptNumbers("??LaNdZr??"),
-            new Werkstoff.Stats(),     
+            new Werkstoff.Stats(),
             Werkstoff.Types.MIXTURE,
             new Werkstoff.GenerationFeatures().disable().addCells(),
             offsetID + 14,
             TextureSet.SET_FLUID
         );
-    
+
     public static final Werkstoff DilutedRareEarthMonaziteMud = new Werkstoff(
             new short[] {160, 120, 90},
             "Diluted Monazite Rare Earth Mud",
@@ -201,7 +201,7 @@ public class WerkstoffMaterialPool implements Runnable {
             offsetID + 15,
             TextureSet.SET_FLUID
         );
-    
+
     public static final Werkstoff DilutedMonaziteSulfate = new Werkstoff(
             new short[] {237, 201, 175},
             "Diluted Monazite Sulfate",
@@ -212,7 +212,7 @@ public class WerkstoffMaterialPool implements Runnable {
             offsetID + 16,
             TextureSet.SET_FLUID
         );
-    
+
     public static final Werkstoff NitratedRareEarthMonaziteConcentrate = new Werkstoff(
             new short[] {250, 223, 173},
             "Nitrogenated Monazite Rare Earth Concentrate",
@@ -223,7 +223,7 @@ public class WerkstoffMaterialPool implements Runnable {
             offsetID + 17,
             TextureSet.SET_FLUID
         );
-    
+
     public static final Werkstoff NitricMonaziteLeachedConcentrate = new Werkstoff(
             new short[] {244, 202, 22},
             "Nitric Monazite Leached Concentrate",
@@ -234,7 +234,7 @@ public class WerkstoffMaterialPool implements Runnable {
             offsetID + 18,
             TextureSet.SET_FLUID
         );
-    
+
     public static final Werkstoff MonaziteSulfate = new Werkstoff(
             new short[] {152, 118, 84},
             "Monazite Sulfate",
@@ -245,7 +245,7 @@ public class WerkstoffMaterialPool implements Runnable {
             offsetID + 19,
             TextureSet.SET_DULL
         );
-    
+
     public static final Werkstoff AcidicMonazitePowder = new Werkstoff(
             new short[] {50, 23, 77},
             "Acidic Monazite Powder",
@@ -256,7 +256,7 @@ public class WerkstoffMaterialPool implements Runnable {
             offsetID + 20,
             TextureSet.SET_DULL
         );
-    
+
     public static final Werkstoff MonaziteRareEarthFiltrate = new Werkstoff(
             new short[] {72, 60, 50},
             "Monazite Rare Earth Filtrate",
@@ -267,7 +267,7 @@ public class WerkstoffMaterialPool implements Runnable {
             offsetID + 21,
             TextureSet.SET_DULL
         );
-    
+
     public static final Werkstoff NeutralizedMonaziteRareEarthFiltrate = new Werkstoff(
             new short[] {50, 23, 77},
             "Neutralized Monazite Rare Earth Filtrate",
@@ -278,7 +278,7 @@ public class WerkstoffMaterialPool implements Runnable {
             offsetID + 22,
             TextureSet.SET_DULL
         );
-    
+
     public static final Werkstoff MonaziteRareEarthHydroxideConcentrate = new Werkstoff(
             new short[] {193, 154, 107},
             "Monazite Rare Earth Hydroxide Concentrate",
@@ -289,7 +289,7 @@ public class WerkstoffMaterialPool implements Runnable {
             offsetID + 23,
             TextureSet.SET_DULL
         );
-    
+
     public static final Werkstoff DriedMonaziteRareEarthConcentrate = new Werkstoff(
             new short[] {250, 214, 165},
             "Dried Monazite Rare Earth Concentrate",
@@ -300,7 +300,7 @@ public class WerkstoffMaterialPool implements Runnable {
             offsetID + 24,
             TextureSet.SET_DULL
         );
-    
+
     public static final Werkstoff CeriumDioxide = new Werkstoff(
             new short[] {255, 255, 255},
             "Cerium Dioxide",
@@ -311,7 +311,7 @@ public class WerkstoffMaterialPool implements Runnable {
             offsetID + 25,
             TextureSet.SET_DULL
         );
-    
+
     public static final Werkstoff CeriumChloride = new Werkstoff(
             new short[] {255, 255, 255},
             "Cerium Chloride",
@@ -322,7 +322,7 @@ public class WerkstoffMaterialPool implements Runnable {
             offsetID + 26,
             TextureSet.SET_DULL
         );
-    
+
     public static final Werkstoff CeriumOxalate = new Werkstoff(
             new short[] {255, 255, 224},
             "Cerium Oxalate",
@@ -333,7 +333,7 @@ public class WerkstoffMaterialPool implements Runnable {
             offsetID + 27,
             TextureSet.SET_DULL
         );
-    
+
     public static final Werkstoff CeriumIIIOxide = new Werkstoff(
             new short[] {255, 255, 102},
             "Cerium (III) Oxide",
@@ -345,9 +345,9 @@ public class WerkstoffMaterialPool implements Runnable {
             TextureSet.SET_DULL,
             Arrays.asList(Materials.Cerium, Materials.Oxygen),
             new Pair<>(Materials.Cerium, 2),
-            new Pair<>(Materials.Oxygen, 3)      
+            new Pair<>(Materials.Oxygen, 3)
         );
-    
+
     public static final Werkstoff CeriumRichMixture = new Werkstoff(
     		new short[] {244, 164, 96},
     		"Cerium-Rich Mixture",
@@ -356,9 +356,9 @@ public class WerkstoffMaterialPool implements Runnable {
     		Werkstoff.Types.COMPOUND,
     		new Werkstoff.GenerationFeatures().disable().onlyDust(),
     		offsetID + 29,
-    		TextureSet.SET_DULL	
+    		TextureSet.SET_DULL
     	);
-    
+
     public static final Werkstoff CooledMonaziteRareEarthConcentrate = new Werkstoff(
             new short[] {250, 214, 165},
             "Cooled Monazite Rare Earth Concentrate",
@@ -369,7 +369,7 @@ public class WerkstoffMaterialPool implements Runnable {
             offsetID + 30,
             TextureSet.SET_DULL
         );
-    
+
     public static final Werkstoff MonaziteRarerEarthSediment = new Werkstoff(
             new short[] {250, 214, 165},
             "MonaziteRarer Earth Sediment",
@@ -380,7 +380,7 @@ public class WerkstoffMaterialPool implements Runnable {
             offsetID + 31,
             TextureSet.SET_DULL
         );
-    
+
     public static final Werkstoff MonaziteHeterogenousHalogenicRareEarthMixture = new Werkstoff(
             new short[] {250, 214, 165},
             "Heterogenous Halogenic Monazite Rare Earth Mixture",
@@ -391,7 +391,7 @@ public class WerkstoffMaterialPool implements Runnable {
             offsetID + 32,
             TextureSet.SET_DULL
         );
-    
+
     public static final Werkstoff SaturatedMonaziteRareEarthMixture = new Werkstoff(
             new short[] {250, 214, 165},
             "Saturated Monazite Rare Earth",
@@ -402,7 +402,7 @@ public class WerkstoffMaterialPool implements Runnable {
             offsetID + 33,
             TextureSet.SET_DULL
         );
-    
+
     public static final Werkstoff SamaricResidue = new Werkstoff(
     		new short[] {248, 243, 231},
     		"Samaric Residue",
@@ -413,7 +413,7 @@ public class WerkstoffMaterialPool implements Runnable {
     		offsetID + 34,
     		TextureSet.SET_DULL
     	);
-    
+
     public static final Werkstoff MonaziteResidue = new Werkstoff(
     		new short[] {64, 69, 62},
     		"Monazite Residue",
@@ -424,7 +424,7 @@ public class WerkstoffMaterialPool implements Runnable {
     		offsetID + 35,
     		TextureSet.SET_DULL
     	);
-    		
+
     public static final Werkstoff AmmoniumNitrate = new Werkstoff(
     		new short[] {255, 255, 255},
     		"Ammonium Nitrate Solution",
@@ -435,7 +435,7 @@ public class WerkstoffMaterialPool implements Runnable {
     		offsetID + 36,
     		TextureSet.SET_FLUID
     	);
-    
+
     public static final Werkstoff ThoriumPhosphateCake = new Werkstoff(
     		new short[] {188, 143, 143},
     		"Thorium-Phosphate Cake",
@@ -446,7 +446,7 @@ public class WerkstoffMaterialPool implements Runnable {
     		offsetID + 37,
     		TextureSet.SET_DULL
     	);
-    
+
     public static final Werkstoff ThoriumPhosphateConcentrate = new Werkstoff(
     		new short[] {217, 144, 88},
     		"Thorium-Phosphate Concentrate",
@@ -457,7 +457,7 @@ public class WerkstoffMaterialPool implements Runnable {
     		offsetID + 38,
     		TextureSet.SET_DULL
     	);
-    
+
     public static final Werkstoff UraniumFiltrate = new Werkstoff(
     		new short[] {190, 240, 94},
     		"UraniumFiltrate",
@@ -468,7 +468,7 @@ public class WerkstoffMaterialPool implements Runnable {
     		offsetID + 39,
     		TextureSet.SET_DULL
     	);
-    
+
     public static final Werkstoff NeutralizedUraniumFiltrate = new Werkstoff(
     		new short[] {217, 120, 88},
     		"Neutralized Uranium Filtrate",
@@ -479,7 +479,7 @@ public class WerkstoffMaterialPool implements Runnable {
     		offsetID + 40,
     		TextureSet.SET_DULL
     	);
-    
+
     public static final Werkstoff SeaweedAsh = new Werkstoff(
     		new short[] {70, 75, 71},
     		"Seaweed Ash",
@@ -489,7 +489,7 @@ public class WerkstoffMaterialPool implements Runnable {
     		offsetID + 41,
     		TextureSet.SET_DULL
     	);
-    
+
     public static final Werkstoff SeaweedConcentrate = new Werkstoff(
     		new short[] {70, 100, 71},
     		"Seaweed Concentrate",
@@ -500,7 +500,7 @@ public class WerkstoffMaterialPool implements Runnable {
     		offsetID + 42,
     		TextureSet.SET_FLUID
     	);
-    
+
     public static final Werkstoff PotassiumPermanganate = new Werkstoff(
     		new short[] {165, 50, 138},
     		"Potassium Permanganate",
@@ -511,7 +511,7 @@ public class WerkstoffMaterialPool implements Runnable {
     		offsetID + 43,
     		TextureSet.SET_DULL
     	);
-    
+
     public static final Werkstoff PotassiumPermanganateSolution = new Werkstoff(
     		new short[] {165, 50, 138},
     		"Potassium Permanganate Solution",
@@ -522,8 +522,8 @@ public class WerkstoffMaterialPool implements Runnable {
     		offsetID + 44,
     		TextureSet.SET_FLUID
     	);
-    
-    
+
+
     public static final Werkstoff SeaweedByproducts = new Werkstoff(
     		new short[] {125, 50, 138},
     		"Seaweed Byproducts",
@@ -533,7 +533,7 @@ public class WerkstoffMaterialPool implements Runnable {
     		offsetID + 45,
     		TextureSet.SET_FLUID
     	);
-    
+
     public static final Werkstoff NitricLeachedMonaziteMixture = new Werkstoff(
     		new short[] {125, 50, 138},
     		"Nitric-Leached Monazite Mixture",
@@ -543,7 +543,7 @@ public class WerkstoffMaterialPool implements Runnable {
     		offsetID + 46,
     		TextureSet.SET_FLUID
     	);
-    
+
     public static final Werkstoff EuropiumOxide = new Werkstoff(
     		new short[] {255, 255, 255},
     		"Europium Oxide",
@@ -554,7 +554,7 @@ public class WerkstoffMaterialPool implements Runnable {
     		offsetID + 47,
     		TextureSet.SET_DULL
     	);
-    
+
     public static final Werkstoff EuropiumSulfide = new Werkstoff(
     		new short[] {5, 0, 5},
     		"Europium Sulfide",
@@ -565,7 +565,7 @@ public class WerkstoffMaterialPool implements Runnable {
     		offsetID + 48,
     		TextureSet.SET_DULL
     	);
-    
+
     public static final Werkstoff UnknownBlend = new Werkstoff(
     		new short[] {0, 0, 5},
     		"UnknownBlend",
@@ -576,15 +576,15 @@ public class WerkstoffMaterialPool implements Runnable {
     		offsetID + 49,
     		TextureSet.SET_DULL
     	);
-    
-    
-    
-    
+
+
+
+
     // TODO
-    
-    
-    
-    
+
+
+
+
     // BASTNASITE
     public static final Werkstoff MuddyRareEarthBastnasiteSolution = new Werkstoff(
     		new short[] {205, 133, 63},
@@ -618,7 +618,7 @@ public class WerkstoffMaterialPool implements Runnable {
     		offsetID2 + 2,
     		TextureSet.SET_FLUID
     	);
-    
+
     public static final Werkstoff SteamCrackedBasnasiteSolution = new Werkstoff(
     		new short[] {205, 133, 63},
     		"Steam-Cracked Bastnasite Mud",
@@ -629,7 +629,7 @@ public class WerkstoffMaterialPool implements Runnable {
     		offsetID2 + 3,
     		TextureSet.SET_FLUID
     	);
-    
+
     public static final Werkstoff ConditionedBastnasiteMud = new Werkstoff(
     		new short[] {205, 133, 63},
     		"Conditioned Bastnasite Mud",
@@ -640,7 +640,7 @@ public class WerkstoffMaterialPool implements Runnable {
     		offsetID2 + 4,
     		TextureSet.SET_FLUID
     	);
-    
+
     public static final Werkstoff DiltedRareEarthBastnasiteMud = new Werkstoff(
     		new short[] {205, 133, 63},
     		"Diluted Bastnasite Mud",
@@ -651,7 +651,7 @@ public class WerkstoffMaterialPool implements Runnable {
     		offsetID2 + 5,
     		TextureSet.SET_FLUID
     	);
-    
+
     public static final Werkstoff FilteredBastnasiteMud = new Werkstoff(
     		new short[] {205, 133, 63},
     		"Filtered Bastnasite Mud",
@@ -662,7 +662,7 @@ public class WerkstoffMaterialPool implements Runnable {
     		offsetID2 + 6,
     		TextureSet.SET_FLUID
     	);
-    
+
     public static final Werkstoff BastnasiteRareEarthOxidePowder = new Werkstoff(
     		new short[] {205, 133, 63},
     		"Bastnasite Rare Earth Oxides",
@@ -673,7 +673,7 @@ public class WerkstoffMaterialPool implements Runnable {
     		offsetID2 + 7,
     		TextureSet.SET_DULL
     	);
-    
+
     public static final Werkstoff LeachedBastnasiteRareEarthOxides = new Werkstoff(
     		new short[] {205, 133, 63},
     		"Acid-Leached Bastnasite Rare Earth Oxides",
@@ -684,7 +684,7 @@ public class WerkstoffMaterialPool implements Runnable {
     		offsetID2 + 8,
     		TextureSet.SET_DULL
     	);
-    
+
     public static final Werkstoff Gangue = new Werkstoff(
     		new short[] {0, 0, 0},
     		"Gangue",
@@ -705,7 +705,7 @@ public class WerkstoffMaterialPool implements Runnable {
     		offsetID2 + 10,
     		TextureSet.SET_DULL
     	);
-    
+
     public static final Werkstoff WetRareEarthOxides = new Werkstoff(
     		new short[] {160, 82, 49},
     		"Wet Rare Earth Oxides",
@@ -715,7 +715,7 @@ public class WerkstoffMaterialPool implements Runnable {
     		offsetID2 + 11,
     		TextureSet.SET_DULL
     	);
-    
+
     public static final Werkstoff CeriumOxidisedRareEarthOxides = new Werkstoff(
     		new short[] {160, 82, 49},
     		"Cerium-Oxidised Rare Earth Oxides",
@@ -725,7 +725,7 @@ public class WerkstoffMaterialPool implements Runnable {
     		offsetID2 + 12,
     		TextureSet.SET_DULL
     	);
-    
+
     public static final Werkstoff BastnasiteRarerEarthOxides = new Werkstoff(
     		new short[] {160, 82, 49},
     		"Bastnasite Rarer Earth Oxides",
@@ -735,7 +735,7 @@ public class WerkstoffMaterialPool implements Runnable {
     		offsetID2 + 13,
     		TextureSet.SET_DULL
     	);
-    
+
     public static final Werkstoff NitratedBastnasiteRarerEarthOxides = new Werkstoff(
     		new short[] {160, 90, 60},
     		"Nitrogenated Bastnasite Rarer Earth Oxides",
@@ -745,7 +745,7 @@ public class WerkstoffMaterialPool implements Runnable {
     		offsetID2 + 14,
     		TextureSet.SET_DULL
     	);
-    
+
     public static final Werkstoff SaturatedBastnasiteRarerEarthOxides = new Werkstoff(
     		new short[] {170, 90, 60},
     		"Bastnasite Rarer Earth Oxide Suspension",
@@ -755,7 +755,7 @@ public class WerkstoffMaterialPool implements Runnable {
     		offsetID2 + 15,
     		TextureSet.SET_DULL
     	);
-    
+
     public static final Werkstoff SamaricRareEarthConcentrate = new Werkstoff(
     		new short[] {170, 90, 60},
     		"Samaric Rare Earth Concentrate",
@@ -766,7 +766,7 @@ public class WerkstoffMaterialPool implements Runnable {
     		offsetID2 + 16,
     		TextureSet.SET_DULL
     	);
-    
+
     public static final Werkstoff NeodymicRareEarthConcentrate = new Werkstoff(
     		new short[] {170, 90, 60},
     		"Neodymium Rare Earth Concentrate",
@@ -777,7 +777,7 @@ public class WerkstoffMaterialPool implements Runnable {
     		offsetID2 + 17,
     		TextureSet.SET_DULL
     	);
-    
+
     public static final Werkstoff FluorinatedNeodymicRareEarths = new Werkstoff(
     		new short[] {170, 90, 60},
     		"Fluorinated Neodymium Rare Earths",
@@ -788,7 +788,7 @@ public class WerkstoffMaterialPool implements Runnable {
     		offsetID2 + 18,
     		TextureSet.SET_DULL
     	);
-    
+
     public static final Werkstoff PraseodymiumTetrafluoride = new Werkstoff(
     		new short[] {82, 112, 102},
     		"Praseodymium Tetrafluoride",
@@ -800,9 +800,9 @@ public class WerkstoffMaterialPool implements Runnable {
     		TextureSet.SET_DULL,
     		Arrays.asList(Materials.Praseodymium, Materials.Fluorine),
             new Pair<>(Materials.Praseodymium, 1),
-            new Pair<>(Materials.Fluorine, 4) 
+            new Pair<>(Materials.Fluorine, 4)
     	);
-    
+
     public static final Werkstoff RareEarthTrifluorides = new Werkstoff(
     		new short[] {82, 112, 102},
     		"Rare Earth Trifluorides",
@@ -813,7 +813,7 @@ public class WerkstoffMaterialPool implements Runnable {
     		offsetID2 + 20,
     		TextureSet.SET_DULL
     	);
-    
+
     public static final Werkstoff LanthaniumChloride = new Werkstoff(
     		new short[] {82, 112, 102},
     		"Lanthanium Chloride",
@@ -827,7 +827,7 @@ public class WerkstoffMaterialPool implements Runnable {
     		new Pair<>(Materials.Lanthanum, 1),
     		new Pair<>(Materials.Chlorine, 3)
     	);
-    
+
     public static final Werkstoff NeodymiumOxide = new Werkstoff(
     		new short[] {82, 112, 102},
     		"Neodymium Oxide",
@@ -841,7 +841,7 @@ public class WerkstoffMaterialPool implements Runnable {
     		new Pair<>(Materials.Neodymium, 2),
     		new Pair<>(Materials.Oxygen, 3)
     	);
-    
+
     public static final Werkstoff FluorinatedSamaricConcentrate = new Werkstoff(
     		new short[] {255, 182, 193},
     		"Fluorinated Samaric Concentrate",
@@ -852,7 +852,7 @@ public class WerkstoffMaterialPool implements Runnable {
     		offsetID2 + 23,
     		TextureSet.SET_DULL
     	);
-    
+
     public static final Werkstoff CalciumFluoride = new Werkstoff(
     		new short[] {255, 250, 250},
     		"Calcium Fluoride",
@@ -866,7 +866,7 @@ public class WerkstoffMaterialPool implements Runnable {
     		new Pair<>(Materials.Calcium, 1),
     		new Pair<>(Materials.Fluorine, 2)
     	);
-    
+
     public static final Werkstoff SamariumTerbiumMixture = new Werkstoff(
     		new short[] {223, 182, 193},
     		"Samarium-Terbium Mixture",
@@ -877,7 +877,7 @@ public class WerkstoffMaterialPool implements Runnable {
     		offsetID2 + 25,
     		TextureSet.SET_DULL
     	);
-    
+
     public static final Werkstoff NitratedSamariumTerbiumMixture = new Werkstoff(
     		new short[] {223, 182, 193},
     		"Nitrogenated Samarium-Terbium Mixture",
@@ -888,7 +888,7 @@ public class WerkstoffMaterialPool implements Runnable {
     		offsetID2 + 26,
     		TextureSet.SET_DULL
     	);
-    
+
     public static final Werkstoff TerbiumNitrate = new Werkstoff(
     		new short[] {167, 252, 0},
     		"Terbium Nitrate",
@@ -903,7 +903,7 @@ public class WerkstoffMaterialPool implements Runnable {
     		new Pair<>(Materials.Nitrogen, 1),
     		new Pair<>(Materials.Oxygen, 3)
     	);
-    
+
     public static final Werkstoff SamariumOreConcentrate = new Werkstoff(
     		new short[] {255, 200, 230},
     		"Samarium Ore Concentrate",
@@ -914,7 +914,7 @@ public class WerkstoffMaterialPool implements Runnable {
     		offsetID2 + 28,
     		TextureSet.SET_DULL
     	);
-    
+
     public static final Werkstoff DephosphatedSamariumConcentrate = new Werkstoff(
     		new short[] {255, 170, 220},
     		"Dephosphated Samarium Concentrate",
@@ -925,10 +925,10 @@ public class WerkstoffMaterialPool implements Runnable {
     		offsetID2 + 29,
     		TextureSet.SET_DULL
     	);
-    
-    
-    
-    // Weird/Exciting Chemicals		
+
+
+
+    // Weird/Exciting Chemicals
     public static final Werkstoff Tetrahydrofuran = new Werkstoff(
     		new short[] {222, 165, 164},
     		"Tetrahydrofuran",
@@ -939,7 +939,7 @@ public class WerkstoffMaterialPool implements Runnable {
     		offsetID3,
     		TextureSet.SET_FLUID
     	);
-    
+
     //1,4-Butanediol
     public static final Werkstoff Butanediol = new Werkstoff(
     		new short[] {185, 78, 72},
@@ -951,7 +951,7 @@ public class WerkstoffMaterialPool implements Runnable {
     		offsetID3 + 1,
     		TextureSet.SET_FLUID
     	);
-    
+
     //Acidicised 1,4-Butanediol
     public static final Werkstoff AcidicButanediol = new Werkstoff(
     		new short[] {255, 239, 213},
@@ -962,7 +962,7 @@ public class WerkstoffMaterialPool implements Runnable {
     		offsetID3 + 2,
     		TextureSet.SET_FLUID
     	);
-    
+
     //Tellurium-Molybdenum-Oxide Catalyst
     public static final Werkstoff MoTeOCatalyst= new Werkstoff(
     		new short[] {238, 131, 238},
@@ -973,7 +973,7 @@ public class WerkstoffMaterialPool implements Runnable {
     		offsetID3 + 3,
     		TextureSet.SET_DULL
     	);
-    
+
     //Tellurium Oxide
     public static final Werkstoff TelluriumIVOxide = new Werkstoff(
     		new short[] {229, 199, 187},
@@ -985,7 +985,7 @@ public class WerkstoffMaterialPool implements Runnable {
     		offsetID3 + 4,
     		TextureSet.SET_DULL
     	);
-    
+
     public static final Werkstoff MolybdenumIVOxide = new Werkstoff(
     		new short[] {52, 53, 57},
     		"Molybdenum (IV) Oxide",
@@ -996,7 +996,7 @@ public class WerkstoffMaterialPool implements Runnable {
     		offsetID3 + 5,
     		TextureSet.SET_DULL
     	);
-    
+
     public static final Werkstoff Polytetrahydrofuran = new Werkstoff(
     		new short[] {192, 128, 129},
     		"Polytetrahydrofuran",
@@ -1007,7 +1007,7 @@ public class WerkstoffMaterialPool implements Runnable {
     		offsetID3 + 6,
     		TextureSet.SET_DULL
     	);
-    
+
     public static final Werkstoff TungstophosphoricAcid = new Werkstoff(
     		new short[] {223, 255, 0},
     		"Tungstophosphoric Acid",
@@ -1018,7 +1018,7 @@ public class WerkstoffMaterialPool implements Runnable {
     		offsetID3 + 7,
     		TextureSet.SET_FLUID
     	);
-    
+
     public static final Werkstoff TolueneDiisocyanate = new Werkstoff(
     		new short[] {255, 255, 102},
     		"Toluene Diisocyanate",
@@ -1029,7 +1029,7 @@ public class WerkstoffMaterialPool implements Runnable {
     		offsetID3 + 8,
     		TextureSet.SET_FLUID
     	);
-    
+
     public static final Werkstoff Dinitrotoluene = new Werkstoff(
     		new short[] {216, 191, 216},
     		"Dinitrotoluene",
@@ -1040,7 +1040,7 @@ public class WerkstoffMaterialPool implements Runnable {
     		offsetID3 + 9,
     		TextureSet.SET_FLUID
     	);
-    
+
     public static final Werkstoff Diaminotoluene = new Werkstoff(
     		new short[] {227, 218, 201},
     		"Diaminotoluene",
@@ -1051,7 +1051,7 @@ public class WerkstoffMaterialPool implements Runnable {
     		offsetID3 + 10,
     		TextureSet.SET_FLUID
     	);
-    
+
     public static final Werkstoff TolueneTetramethylDiisocyanate = new Werkstoff(
     		new short[] {255, 255, 255},
     		"Toluene Tetramethyl Diisocyanate",
@@ -1062,22 +1062,22 @@ public class WerkstoffMaterialPool implements Runnable {
     		offsetID3 + 11,
     		TextureSet.SET_FLUID
     	);
-    
+
     public static final Werkstoff PTMEGElastomer = new Werkstoff(
     		new short[] {248, 248, 255},
     		"PTMEG Elastomer",
     		new Werkstoff.Stats().setMeltingPoint(600).setMeltingVoltage(64),
     		Werkstoff.Types.COMPOUND,
     		new Werkstoff.GenerationFeatures().disable()
-    				.onlyDust()	
+    				.onlyDust()
     				.addMolten()
-    				.addMetalItems() 				
+    				.addMetalItems()
     				,
     		offsetID3 + 12,
     		TextureSet.SET_DULL
     	);
-    
-    
+
+
     public static final Werkstoff MagnesiumPeroxide = new Werkstoff(
     		new short[] {255, 250, 205},
     		"Magnesium Peroxide",
@@ -1085,9 +1085,9 @@ public class WerkstoffMaterialPool implements Runnable {
     		Werkstoff.Types.COMPOUND,
     		new Werkstoff.GenerationFeatures().disable().onlyDust(),
     		offsetID3 + 13,
-    		TextureSet.SET_METALLIC	
+    		TextureSet.SET_METALLIC
     	);
-    
+
     public static final Werkstoff PotassiumChlorate = new Werkstoff(
     		new short[] {240, 255, 255},
     		"Potassium Chlorate",
@@ -1097,21 +1097,21 @@ public class WerkstoffMaterialPool implements Runnable {
     		offsetID3 + 14,
     		TextureSet.SET_DULL
     	);
-    
+
     public static final Werkstoff MARM247 = new Werkstoff(
     		new short[] {255, 133, 145},
     		"MAR-M247",
     		new Werkstoff.Stats().setMeltingPoint(8000).setBlastFurnace(true).setMeltingVoltage(7680),
     		Werkstoff.Types.COMPOUND,
     		new Werkstoff.GenerationFeatures().disable()
-    				.onlyDust()	
+    				.onlyDust()
     				.addMolten()
-    				.addMetalItems() 				
+    				.addMetalItems()
     				,
     		offsetID3 + 15,
     		TextureSet.SET_METALLIC
     	);
-    
+
     public static final Werkstoff DilutedAcetone = new Werkstoff(
     		new short[] {254, 254, 250},
     		"Diluted Acetone",
@@ -1121,27 +1121,27 @@ public class WerkstoffMaterialPool implements Runnable {
     		offsetID3 + 16,
     		TextureSet.SET_FLUID
     	);
-    
-    
+
+
     public static void runInit() {
-    	
+
     	addSubTags();
-    	
+
     }
-    
+
     private static void addSubTags() {
-    	
+
     	//WerkstoffMaterialPool.PTMEGElastomer.add(SubTag.BOUNCY, SubTag.STRETCHY);
-    	
+
     }
-    
-    
-    		
-    
+
+
+
+
     @Override
     public void run() {
-        
+
     }
-    
+
 
 }
