@@ -1168,6 +1168,7 @@ public final class ModItems {
 		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, ALLOY.KOBOLDITE);
 		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, ALLOY.HG1223);
 		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, ALLOY.QUANTUM);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, ELEMENT.STANDALONE.HYPOGEN);
 
 		//Foil
 		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FOIL, ALLOY.PIKYONIUM);
