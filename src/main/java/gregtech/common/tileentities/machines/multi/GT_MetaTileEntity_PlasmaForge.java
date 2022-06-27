@@ -169,6 +169,11 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
     }
 
     @Override
+    protected boolean addBottomHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        return super.addBottomHatch(aTileEntity, aBaseCasingIndex) || addExoticEnergyInputToMachineList(aTileEntity, aBaseCasingIndex);
+    }
+    
+    @Override
     public IStructureDefinition<GT_MetaTileEntity_PlasmaForge> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
