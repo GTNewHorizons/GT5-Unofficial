@@ -146,7 +146,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
 
 	/**
 	 * Method used to get the boost based on the ordinal of the saw
-	 * @param sawType ordinal of the saw
+	 * @param sawType type of the saw
 	 * @return an int corresponding to the boost
 	 */
 	public int getSawBoost(SAWTOOL sawType){
