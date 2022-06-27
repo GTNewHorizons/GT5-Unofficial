@@ -1081,6 +1081,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff MagnesiumPeroxide = new Werkstoff(
     		new short[] {255, 250, 205},
     		"Magnesium Peroxide",
+            subscriptNumbers("MnO2"),
     		new Werkstoff.Stats(),
     		Werkstoff.Types.COMPOUND,
     		new Werkstoff.GenerationFeatures().disable().onlyDust(),
@@ -1091,6 +1092,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff PotassiumChlorate = new Werkstoff(
     		new short[] {240, 255, 255},
     		"Potassium Chlorate",
+            subscriptNumbers("KClO3"),
     		new Werkstoff.Stats(),
     		Werkstoff.Types.COMPOUND,
     		new Werkstoff.GenerationFeatures().disable().onlyDust().addMolten(),
