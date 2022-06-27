@@ -9,9 +9,11 @@ import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.objects.GT_ChunkManager;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GT_ExoticEnergyInputHelper;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -24,6 +26,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraftforge.fluids.FluidStack;
 
+import java.util.List;
+import java.util.ArrayList;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.GT_Values.V;
@@ -108,7 +112,7 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Blast Furnace")
                 .addInfo("Controller block for the Dimensionally Transcendent Plasma Forge")
-                .addInfo("Author: Colen")
+                .addInfo("Author: " + EnumChatFormatting.RED + "Colen")
                 .addSeparator()
                 .beginStructureBlock(33, 24, 33, false)
                 .addStructureInfo("Structure is too complex! See schematic for details.")
@@ -121,6 +125,11 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
                 .addStructureInfo("you can rotate the controller. This multi is symmetrical.")
                 .toolTipFinisher("Gregtech");
         return tt;
+    }
+
+    @Override
+    public boolean addToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        return super.addToMachineList(aTileEntity, aBaseCasingIndex) || addExoticEnergyInputToMachineList(aTileEntity, aBaseCasingIndex);
     }
 
     @Override
@@ -232,7 +241,7 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
             return false;
 
         // Check that there is between 1 and 2 energy hatches in the multi.
-        if (!((mEnergyHatches.size() == 1) || (mEnergyHatches.size() ==  2)))
+        if ((!((mEnergyHatches.size() == 1) || (mEnergyHatches.size() ==  2))) || (mExoticEnergyHatches.size() == 1))
             return false;
 
         // Check whether each energy hatch is the same tier.
@@ -246,6 +255,8 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
 
         // Heat capacity of coils used on multi.
         this.mHeatingCapacity = (int) getCoilLevel().getHeat() + 100 * (GT_Utility.getTier(getMaxInputVoltage()) - 2);
+        mExoticEnergyHatches.clear();
+
         return true;
     }
 
@@ -260,10 +271,15 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
     }
 
     @Override
+    public boolean drainEnergyInput(long aEU) {
+        return GT_ExoticEnergyInputHelper.drainEnergy(aEU, getExoticAndNormalEnergyHatchList());
+    }
+
+    @Override
     public String[] getInfoData() {
         long storedEnergy = 0;
         long maxEnergy = 0;
-        for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
+        for(GT_MetaTileEntity_Hatch tHatch : mExoticEnergyHatches) {
             if (!isValidMetaTileEntity(tHatch))
                 continue;
             storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
@@ -289,6 +305,13 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
             "----------------------------------------------"
 
         };
+    }
+
+    public List<GT_MetaTileEntity_Hatch> getExoticAndNormalEnergyHatchList() {
+        List<GT_MetaTileEntity_Hatch> tHatches = new ArrayList<>();
+        tHatches.addAll(mExoticEnergyHatches);
+        tHatches.addAll(mEnergyHatches);
+        return tHatches;
     }
 
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
