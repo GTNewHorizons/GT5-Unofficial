@@ -94,6 +94,11 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
             .addElement('s', ofBlock(GregTech_API.sBlockCasings1, DIM_CASING))
             .build();
 
+    @Override
+    protected boolean addBottomHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        return super.addBottomHatch(aTileEntity, aBaseCasingIndex) || addExoticEnergyInputToMachineList(aTileEntity, aBaseCasingIndex);
+    }
+
     public GT_MetaTileEntity_PlasmaForge(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
@@ -169,11 +174,6 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
     }
 
     @Override
-    protected boolean addBottomHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        return super.addBottomHatch(aTileEntity, aBaseCasingIndex) || addExoticEnergyInputToMachineList(aTileEntity, aBaseCasingIndex);
-    }
-    
-    @Override
     public IStructureDefinition<GT_MetaTileEntity_PlasmaForge> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
@@ -245,16 +245,25 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
         if (mOutputHatches.size() > 3)
             return false;
 
-        // Check that there is between 1 and 2 energy hatches in the multi.
-        if ((!((mEnergyHatches.size() == 1) || (mEnergyHatches.size() ==  2))) || (mExoticEnergyHatches.size() == 1))
-            return false;
-
-        // Check whether each energy hatch is the same tier.
-        byte tier_of_hatch = mEnergyHatches.get(0).mTier;
-        for(GT_MetaTileEntity_Hatch_Energy energyHatch : mEnergyHatches) {
-            if (energyHatch.mTier != tier_of_hatch) { return false; }
+        // If there is more than 1 TT energy hatch structure check will fail.
+        if (mExoticEnergyHatches.size() > 0){
+            if (mEnergyHatches.size() > 0) return false;
+            if (mExoticEnergyHatches.size() > 1) return false;
         }
 
+        // If there is 0 or more than 2 energy hatches structure check will fail.
+        if (mEnergyHatches.size() > 0) {
+            if (mExoticEnergyHatches.size() > 0) return false;
+            if (mEnergyHatches.size() > 2) return false;
+
+            // Check will also fail if energy hatches are not of the same tier.
+            byte tier_of_hatch = mEnergyHatches.get(0).mTier;
+            for(GT_MetaTileEntity_Hatch_Energy energyHatch : mEnergyHatches) {
+                if (energyHatch.mTier != tier_of_hatch) { return false; }
+            }
+        }
+
+        // One maintenance hatch only. Mandatory.
         if (mMaintenanceHatches.size() != 1)
             return false;
 
