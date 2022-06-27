@@ -144,6 +144,23 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
 		return TreeFarmHelper.isValidForGUI(aStack) && !GT_ModHandler.isElectricItem(aStack) || GT_ModHandler.canUseElectricItem(aStack, 1);
 	}
 
+	/**
+	 * Method used to get the boost based on the ordinal of the saw
+	 * @param sawType ordinal of the saw
+	 * @return an int corresponding to the boost
+	 */
+	public int getSawBoost(SAWTOOL sawType){
+		switch(sawType){
+			case SAW:
+				return 1;
+			case BUZZSAW:
+				return 2;
+			case CHAINSAW:
+				return 4;
+			default:
+				return 1;
+		}
+	}
 	public boolean checkRecipe(final ItemStack aStack) {
 
 		if (aStack == null && !replaceTool()) {
@@ -184,7 +201,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
 			this.mEUt = (-this.mEUt);
 		}
 		try {
-			int aOutputAmount = ((2 * (tTier * tTier)) - (2 * tTier) + 5) * (mMaxProgresstime / 20) * mToolType.ordinal();
+			int aOutputAmount = ((2 * (tTier * tTier)) - (2 * tTier) + 5) * (mMaxProgresstime / 20) * getSawBoost(mToolType);
 			int aFert = hasLiquidFert();
 			if (aFert > 0) { //Sapling
 				if (aFert < aOutputAmount) {
