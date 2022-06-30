@@ -137,35 +137,35 @@ public class GT_Container_Teleporter extends GT_ContainerMetaTile_Machine {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void updateProgressBar(int par1, int par2) {
-        super.updateProgressBar(par1, par2);
-        switch (par1) {
+    public void updateProgressBar(int id, int value) {
+        super.updateProgressBar(id, value);
+        switch (id) {
             case 100:
-                this.mTargetX = (this.mTargetX & 0xFFFF0000 | par2 & 0xFFFF);
+                this.mTargetX = (this.mTargetX & 0xFFFF0000 | value & 0xFFFF);
                 break;
             case 101:
-                this.mTargetX = (this.mTargetX & 0xFFFF | par2 << 16);
+                this.mTargetX = (this.mTargetX & 0xFFFF | value << 16);
                 break;
             case 102:
-                this.mTargetY = (this.mTargetY & 0xFFFF0000 | par2 & 0xFFFF);
+                this.mTargetY = (this.mTargetY & 0xFFFF0000 | value & 0xFFFF);
                 break;
             case 103:
-                this.mTargetY = (this.mTargetY & 0xFFFF | par2 << 16);
+                this.mTargetY = (this.mTargetY & 0xFFFF | value << 16);
                 break;
             case 104:
-                this.mTargetZ = (this.mTargetZ & 0xFFFF0000 | par2 & 0xFFFF);
+                this.mTargetZ = (this.mTargetZ & 0xFFFF0000 | value & 0xFFFF);
                 break;
             case 105:
-                this.mTargetZ = (this.mTargetZ & 0xFFFF | par2 << 16);
+                this.mTargetZ = (this.mTargetZ & 0xFFFF | value << 16);
                 break;
             case 106:
-                this.mTargetD = (this.mTargetD & 0xFFFF0000 | par2 & 0xFFFF);
+                this.mTargetD = (this.mTargetD & 0xFFFF0000 | value & 0xFFFF);
                 break;
             case 107:
-                this.mTargetD = (this.mTargetD & 0xFFFF | par2 << 16);
+                this.mTargetD = (this.mTargetD & 0xFFFF | value << 16);
                 break;
             case 108:
-                this.mEgg = par2;
+                this.mEgg = value;
         }
     }
 }

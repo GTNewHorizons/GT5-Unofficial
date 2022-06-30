@@ -125,35 +125,35 @@ public class GT_Container_Regulator extends GT_ContainerMetaTile_Machine {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void updateProgressBar(int par1, int par2) {
-        super.updateProgressBar(par1, par2);
-        switch (par1) {
+    public void updateProgressBar(int id, int value) {
+        super.updateProgressBar(id, value);
+        switch (id) {
             case 100:
-                this.mTargetSlots[0] = par2;
+                this.mTargetSlots[0] = value;
                 break;
             case 101:
-                this.mTargetSlots[1] = par2;
+                this.mTargetSlots[1] = value;
                 break;
             case 102:
-                this.mTargetSlots[2] = par2;
+                this.mTargetSlots[2] = value;
                 break;
             case 103:
-                this.mTargetSlots[3] = par2;
+                this.mTargetSlots[3] = value;
                 break;
             case 104:
-                this.mTargetSlots[4] = par2;
+                this.mTargetSlots[4] = value;
                 break;
             case 105:
-                this.mTargetSlots[5] = par2;
+                this.mTargetSlots[5] = value;
                 break;
             case 106:
-                this.mTargetSlots[6] = par2;
+                this.mTargetSlots[6] = value;
                 break;
             case 107:
-                this.mTargetSlots[7] = par2;
+                this.mTargetSlots[7] = value;
                 break;
             case 108:
-                this.mTargetSlots[8] = par2;
+                this.mTargetSlots[8] = value;
         }
     }
 

@@ -506,9 +506,9 @@ public class GT_Container extends Container {
     }
 
     @Override
-    public void updateProgressBar(int par1, int par2) {
+    public void updateProgressBar(int id, int value) {
         try {
-            super.updateProgressBar(par1, par2);
+            super.updateProgressBar(id, value);
         } catch (Throwable e) {
             e.printStackTrace(GT_Log.err);
         }

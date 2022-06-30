@@ -67,20 +67,20 @@ public class GT_Container_Boiler extends GT_ContainerMetaTile_Machine {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void updateProgressBar(int par1, int par2) {
-        super.updateProgressBar(par1, par2);
-        switch (par1) {
+    public void updateProgressBar(int id, int value) {
+        super.updateProgressBar(id, value);
+        switch (id) {
             case 100:
-                this.mTemperature = par2;
+                this.mTemperature = value;
                 break;
             case 101:
-                this.mProcessingEnergy = par2;
+                this.mProcessingEnergy = value;
                 break;
             case 102:
-                this.mSteamAmount = par2;
+                this.mSteamAmount = value;
                 break;
             case 103:
-                this.mWaterAmount = par2;
+                this.mWaterAmount = value;
         }
     }
 }

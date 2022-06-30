@@ -144,59 +144,59 @@ public class GT_ContainerMetaTile_Machine extends GT_Container {
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void updateProgressBar(int par1, int par2) {
-        super.updateProgressBar(par1, par2);
-        switch (par1) {
+    public void updateProgressBar(int id, int value) {
+        super.updateProgressBar(id, value);
+        switch (id) {
             case 0:
-                mEnergy = mEnergy & 0xffff0000 | par2 & 0x0000ffff;
+                mEnergy = mEnergy & 0xffff0000 | value & 0x0000ffff;
                 break;
             case 1:
-                mEnergy = mEnergy & 0x0000ffff | par2 << 16;
+                mEnergy = mEnergy & 0x0000ffff | value << 16;
                 break;
             case 2:
-                mStorage = mStorage & 0xffff0000 | par2 & 0x0000ffff;
+                mStorage = mStorage & 0xffff0000 | value & 0x0000ffff;
                 break;
             case 3:
-                mStorage = mStorage & 0x0000ffff | par2 << 16;
+                mStorage = mStorage & 0x0000ffff | value << 16;
                 break;
             case 4:
-                mOutput = par2;
+                mOutput = value;
                 break;
             case 5:
-                mInput = par2;
+                mInput = value;
                 break;
             case 6:
-                mDisplayErrorCode = par2;
+                mDisplayErrorCode = value;
                 break;
             case 11:
-                mProgressTime = mProgressTime & 0xffff0000 | par2;
+                mProgressTime = mProgressTime & 0xffff0000 | value;
                 break;
             case 12:
-                mProgressTime = mProgressTime & 0x0000ffff | par2 << 16;
+                mProgressTime = mProgressTime & 0x0000ffff | value << 16;
                 break;
             case 13:
-                mMaxProgressTime = mMaxProgressTime & 0xffff0000 | par2 & 0x0000ffff;
+                mMaxProgressTime = mMaxProgressTime & 0xffff0000 | value & 0x0000ffff;
                 break;
             case 14:
-                mMaxProgressTime = mMaxProgressTime & 0x0000ffff | par2 << 16;
+                mMaxProgressTime = mMaxProgressTime & 0x0000ffff | value << 16;
                 break;
             case 15:
-                mID = par2;
+                mID = value;
                 break;
             case 16:
-                mActive = par2;
+                mActive = value;
                 break;
             case 17:
-                mSteam = mSteam & 0xffff0000 | par2 & 0x0000ffff;
+                mSteam = mSteam & 0xffff0000 | value & 0x0000ffff;
                 break;
             case 18:
-                mSteam = mSteam & 0x0000ffff | par2 << 16;
+                mSteam = mSteam & 0x0000ffff | value << 16;
                 break;
             case 19:
-                mSteamStorage = mSteamStorage & 0xffff0000 | par2 & 0x0000ffff;
+                mSteamStorage = mSteamStorage & 0xffff0000 | value & 0x0000ffff;
                 break;
             case 20:
-                mSteamStorage = mSteamStorage & 0x0000ffff | par2 << 16;
+                mSteamStorage = mSteamStorage & 0x0000ffff | value << 16;
                 break;
         }
     }

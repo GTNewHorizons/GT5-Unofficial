@@ -80,14 +80,14 @@ public class GT_Container_BasicTank extends GT_ContainerMetaTile_Machine {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void updateProgressBar(int par1, int par2) {
-        super.updateProgressBar(par1, par2);
-        switch (par1) {
+    public void updateProgressBar(int id, int value) {
+        super.updateProgressBar(id, value);
+        switch (id) {
             case 100:
-                mContent = mContent & 0xffff0000 | par2 & 0x0000ffff;
+                mContent = mContent & 0xffff0000 | value & 0x0000ffff;
                 break;
             case 101:
-                mContent = mContent & 0xffff | par2 << 16;
+                mContent = mContent & 0xffff | value << 16;
                 break;
         }
     }

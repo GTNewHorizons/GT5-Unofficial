@@ -301,17 +301,17 @@ public class GT_Container_BasicMachine extends GT_Container_BasicTank {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void updateProgressBar(int par1, int par2) {
-        super.updateProgressBar(par1, par2);
-        switch (par1) {
+    public void updateProgressBar(int id, int value) {
+        super.updateProgressBar(id, value);
+        switch (id) {
             case 102:
-                mFluidTransfer = (par2 != 0);
+                mFluidTransfer = (value != 0);
                 break;
             case 103:
-                mItemTransfer = (par2 != 0);
+                mItemTransfer = (value != 0);
                 break;
             case 104:
-                mStuttering = (par2 != 0);
+                mStuttering = (value != 0);
                 break;
         }
     }
