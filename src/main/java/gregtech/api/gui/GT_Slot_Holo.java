@@ -15,12 +15,12 @@ public class GT_Slot_Holo extends Slot {
             mCanStackItem;
     public int mMaxStacksize = 127;
 
-    public GT_Slot_Holo(IInventory par1iInventory, int par2, int par3, int par4, boolean aCanInsertItem, boolean aCanStackItem, int aMaxStacksize) {
-        super(par1iInventory, par2, par3, par4);
+    public GT_Slot_Holo(IInventory inventory, int slotIndex, int xPos, int yPos, boolean aCanInsertItem, boolean aCanStackItem, int aMaxStacksize) {
+        super(inventory, slotIndex, xPos, yPos);
         mCanInsertItem = aCanInsertItem;
         mCanStackItem = aCanStackItem;
         mMaxStacksize = aMaxStacksize;
-        mSlotIndex = par2;
+        mSlotIndex = slotIndex;
     }
 
     @Override
