@@ -26,7 +26,6 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraftforge.fluids.FluidStack;
-import org.lwjgl.Sys;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -56,6 +55,7 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
     private boolean isMultiChunkloaded = true;
 
     protected static final String STRUCTURE_PIECE_MAIN = "main";
+    @SuppressWarnings("SpellCheckingInspection")
     private static final IStructureDefinition<GT_MetaTileEntity_PlasmaForge> STRUCTURE_DEFINITION = StructureDefinition.<GT_MetaTileEntity_PlasmaForge>builder()
         .addShape(STRUCTURE_PIECE_MAIN, new String[][] {
             {"                                 ", "         N   N     N   N         ", "         N   N     N   N         ", "         N   N     N   N         ", "                                 ", "                                 ", "                                 ", "         N   N     N   N         ", "         N   N     N   N         ", " NNN   NNN   N     N   NNN   NNN ", "                                 ", "                                 ", "                                 ", " NNN   NNN             NNN   NNN ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", " NNN   NNN             NNN   NNN ", "                                 ", "                                 ", "                                 ", " NNN   NNN             NNN   NNN "},
@@ -120,10 +120,10 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addInfo("Transcending Dimensional Boundaries")
-            .addInfo("Takes " + EnumChatFormatting.RED + GT_Utility.formatNumbers(max_efficiency_time_in_ticks/(3600*20)) + EnumChatFormatting.RESET + " hours of continuous run time to breach dimensional")
-            .addInfo("boundaries and achieve maximum efficiency. This reduces")
-            .addInfo("fuel consumption by up to " +EnumChatFormatting.RED + GT_Utility.formatNumbers(100*maximum_discount) + EnumChatFormatting.RESET + "%.")
+        tt.addInfo("Transcending Dimensional Boundaries.")
+            .addInfo("Takes " + EnumChatFormatting.RED + GT_Utility.formatNumbers(max_efficiency_time_in_ticks/(3600*20)) + EnumChatFormatting.GRAY + " hours of continuous run time to fully breach dimensional")
+            .addInfo("boundaries and achieve maximum efficiency. This reduces fuel")
+            .addInfo("consumption by up to " + EnumChatFormatting.RED + GT_Utility.formatNumbers(100*maximum_discount) + "%" + EnumChatFormatting.GRAY + ". Does not overclock.")
             .addInfo("Author: " +
                 EnumChatFormatting.RED + EnumChatFormatting.BOLD + EnumChatFormatting.ITALIC + EnumChatFormatting.UNDERLINE + "C" +
                 EnumChatFormatting.GOLD + EnumChatFormatting.BOLD + EnumChatFormatting.ITALIC + EnumChatFormatting.UNDERLINE + "o" +
@@ -135,10 +135,18 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
             .addStructureInfo("DTPF Structure is too complex! See schematic for details.")
             .addStructureInfo("2112 Heating coils required.")
             .addStructureInfo("120 Dimensional bridge blocks required.")
-            .addStructureInfo("1270 Dimensional injection casing required.")
-            .addStructureInfo("2121 Dimensionally transcendent casing required.")
+            .addStructureInfo("1270 Dimensional injection casings required.")
+            .addStructureInfo("2121 Dimensionally transcendent casings required.")
             .addStructureInfo("--------------------------------------------")
-            .addStructureInfo("If you are having difficulty with the blueprint")
+            .addStructureInfo("Requires 1-2 energy hatches or 1 TT energy hatch.")
+            .addStructureInfo("Requires 1 maintenance hatch.")
+            .addStructureInfo("Requires 0-6 input hatches.")
+            .addStructureInfo("Requires 0-2 output hatches.")
+            .addStructureInfo("Requires 0-2 input busses.")
+            .addStructureInfo("Requires 0-2 output busses.")
+            .addStructureInfo("Requires 1 maintenance hatch.")
+            .addStructureInfo("--------------------------------------------")
+            .addStructureInfo("If you are having difficulties with the blueprint")
             .addStructureInfo("you can rotate the controller. This multi is symmetrical.")
             .toolTipFinisher("Gregtech");
         return tt;
@@ -297,7 +305,6 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
 
         // If there is 0 or more than 2 energy hatches structure check will fail.
         if (mEnergyHatches.size() > 0) {
-            if (mExoticEnergyHatches.size() > 0) return false;
             if (mEnergyHatches.size() > 2) return false;
 
             // Check will also fail if energy hatches are not of the same tier.
@@ -395,6 +402,7 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
 
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide() && !aBaseMetaTileEntity.isAllowedToWork()) {
+            // Reset running time and discount.
             running_time = 0;
             discount = 1;
             // If machine has stopped, stop chunkloading.
