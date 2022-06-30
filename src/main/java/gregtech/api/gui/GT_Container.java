@@ -119,6 +119,9 @@ public class GT_Container extends Container {
             e.printStackTrace(GT_Log.err);
         }
 
+        // It looks like the rest of this code should ideally never be
+        // called, and might in fact never be called.
+
         ItemStack rStack = null;
         InventoryPlayer aPlayerInventory = aPlayer.inventory;
         Slot aSlot;
@@ -219,20 +222,24 @@ public class GT_Container extends Container {
                     aSlot.onSlotChanged();
                 }
             }
+            // Did the player try to swap a slot with his hotbar using a
+            // number key from 1 to 9
+            // aMouseclick == 0 means number 1, aMouseclick == 8 means number 9
         } else if (aShifthold == 2 && aMouseclick >= 0 && aMouseclick < 9) {
             aSlot = (Slot) this.inventorySlots.get(aSlotIndex);
 
             if (aSlot.canTakeStack(aPlayer)) {
+                // get the stack at the specified hotbar slot.
                 tTempStack = aPlayerInventory.getStackInSlot(aMouseclick);
-                boolean var9 = tTempStack == null || aSlot.inventory == aPlayerInventory && aSlot.isItemValid(tTempStack);
+                boolean canSwap = tTempStack == null || aSlot.inventory == aPlayerInventory && aSlot.isItemValid(tTempStack);
                 tTempStackSize = -1;
 
-                if (!var9) {
+                if (!canSwap) {
                     tTempStackSize = aPlayerInventory.getFirstEmptyStack();
-                    var9 = tTempStackSize > -1;
+                    canSwap = tTempStackSize > -1;
                 }
 
-                if (var9 && aSlot.getHasStack()) {
+                if (canSwap && aSlot.getHasStack()) {
                     aHoldStack = aSlot.getStack();
                     aPlayerInventory.setInventorySlotContents(aMouseclick, aHoldStack);
 
