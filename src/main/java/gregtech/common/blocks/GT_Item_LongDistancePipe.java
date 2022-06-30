@@ -13,13 +13,13 @@ public class GT_Item_LongDistancePipe extends ItemBlock {
     protected final String mNoMobsToolTip = GT_LanguageManager.addStringLocalization("gt.nomobspawnsonthisblock", "Mobs cannot Spawn on this Block");
     protected final String mNoTileEntityToolTip = GT_LanguageManager.addStringLocalization("gt.notileentityinthisblock", "This is NOT a TileEntity!");
 
-    public GT_Item_LongDistancePipe(Block par1) {
-        super(par1);
+    public GT_Item_LongDistancePipe(Block block) {
+        super(block);
         setMaxDamage(0);
         setHasSubtypes(true);
         setCreativeTab(GregTech_API.TAB_GREGTECH_MATERIALS);
     }
-    
+
     @Override
     public int getMetadata(int aMeta) {
         return aMeta;

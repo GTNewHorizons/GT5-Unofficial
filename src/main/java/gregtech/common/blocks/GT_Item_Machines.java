@@ -40,8 +40,8 @@ import java.util.List;
 import static gregtech.GT_Mod.GT_FML_LOGGER;
 
 public class GT_Item_Machines extends ItemBlock implements IFluidContainerItem {
-    public GT_Item_Machines(Block par1) {
-        super(par1);
+    public GT_Item_Machines(Block block) {
+        super(block);
         setMaxDamage(0);
         setHasSubtypes(true);
         setCreativeTab(GregTech_API.TAB_GREGTECH);

@@ -9,8 +9,8 @@ import net.minecraft.item.ItemStack;
 import java.util.List;
 
 public class GT_Item_Storage extends ItemBlock {
-    public GT_Item_Storage(Block par1) {
-        super(par1);
+    public GT_Item_Storage(Block block) {
+        super(block);
         setMaxDamage(0);
         setHasSubtypes(true);
         setCreativeTab(GregTech_API.TAB_GREGTECH_MATERIALS);
