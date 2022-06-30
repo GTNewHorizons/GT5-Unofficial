@@ -161,7 +161,7 @@ public class GT_MetaGenerated_Item_99 extends GT_MetaGenerated_Item {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item var1, CreativeTabs aCreativeTab, List aList) {
+    public void getSubItems(Item aItem, CreativeTabs aCreativeTab, List aList) {
         enabled.stream()
                 .mapToObj(i -> new ItemStack(this, 1, i))
                 .forEach(aList::add);

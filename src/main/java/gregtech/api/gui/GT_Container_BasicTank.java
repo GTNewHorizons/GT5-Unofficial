@@ -68,10 +68,10 @@ public class GT_Container_BasicTank extends GT_ContainerMetaTile_Machine {
         else
             mContent = 0;
         for (Object crafter : this.crafters) {
-            ICrafting var1 = (ICrafting) crafter;
+            ICrafting player = (ICrafting) crafter;
             if (mTimer % 500 == 0 || oContent != mContent) {
-                var1.sendProgressBarUpdate(this, 100, mContent & 65535);
-                var1.sendProgressBarUpdate(this, 101, mContent >>> 16);
+                player.sendProgressBarUpdate(this, 100, mContent & 65535);
+                player.sendProgressBarUpdate(this, 101, mContent >>> 16);
             }
         }
 

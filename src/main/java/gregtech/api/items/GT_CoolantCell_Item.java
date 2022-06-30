@@ -40,12 +40,12 @@ public class GT_CoolantCell_Item
         }
         tNBT.setInteger("heat", aHeat);
         if (this.heatStorage > 0) {
-            double var4 = (double) aHeat / (double) this.heatStorage;
-            int var6 = (int) (aStack.getMaxDamage() * var4);
-            if (var6 >= aStack.getMaxDamage()) {
-                var6 = aStack.getMaxDamage() - 1;
+            double heatRatio = (double) aHeat / (double) this.heatStorage;
+            int damage = (int) (aStack.getMaxDamage() * heatRatio);
+            if (damage >= aStack.getMaxDamage()) {
+                damage = aStack.getMaxDamage() - 1;
             }
-            aStack.setItemDamage(var6);
+            aStack.setItemDamage(damage);
         }
     }
 

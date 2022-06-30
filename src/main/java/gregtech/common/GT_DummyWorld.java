@@ -30,11 +30,11 @@ public class GT_DummyWorld extends World {
     public GT_DummyWorld() {
         this(new ISaveHandler() {
                  @Override
-                 public void saveWorldInfoWithPlayer(WorldInfo var1, NBTTagCompound var2) {
+                 public void saveWorldInfoWithPlayer(WorldInfo worldInfo, NBTTagCompound nbtTagCompound) {
                  }
 
                  @Override
-                 public void saveWorldInfo(WorldInfo var1) {
+                 public void saveWorldInfo(WorldInfo worldInfo) {
                  }
 
                  @Override
@@ -48,12 +48,12 @@ public class GT_DummyWorld extends World {
                  }
 
                  @Override
-                 public File getMapFileFromName(String var1) {
+                 public File getMapFileFromName(String mapName) {
                      return null;
                  }
 
                  @Override
-                 public IChunkLoader getChunkLoader(WorldProvider var1) {
+                 public IChunkLoader getChunkLoader(WorldProvider worldProvider) {
                      return null;
                  }
 

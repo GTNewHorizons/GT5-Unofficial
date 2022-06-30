@@ -119,16 +119,16 @@ public class GT_Container_MicrowaveEnergyTransmitter extends GT_ContainerMetaTil
         this.mEgg = (((GT_MetaTileEntity_MicrowaveEnergyTransmitter) this.mTileEntity.getMetaTileEntity()).hasDimensionalTeleportCapability() ? 1 : 0);
 
         for (Object crafter : this.crafters) {
-            ICrafting var1 = (ICrafting) crafter;
-            var1.sendProgressBarUpdate(this, 100, this.mTargetX & 0xFFFF);
-            var1.sendProgressBarUpdate(this, 101, this.mTargetX >>> 16);
-            var1.sendProgressBarUpdate(this, 102, this.mTargetY & 0xFFFF);
-            var1.sendProgressBarUpdate(this, 103, this.mTargetY >>> 16);
-            var1.sendProgressBarUpdate(this, 104, this.mTargetZ & 0xFFFF);
-            var1.sendProgressBarUpdate(this, 105, this.mTargetZ >>> 16);
-            var1.sendProgressBarUpdate(this, 106, this.mTargetD & 0xFFFF);
-            var1.sendProgressBarUpdate(this, 107, this.mTargetD >>> 16);
-            var1.sendProgressBarUpdate(this, 108, this.mEgg);
+            ICrafting aPlayer = (ICrafting) crafter;
+            aPlayer.sendProgressBarUpdate(this, 100, this.mTargetX & 0xFFFF);
+            aPlayer.sendProgressBarUpdate(this, 101, this.mTargetX >>> 16);
+            aPlayer.sendProgressBarUpdate(this, 102, this.mTargetY & 0xFFFF);
+            aPlayer.sendProgressBarUpdate(this, 103, this.mTargetY >>> 16);
+            aPlayer.sendProgressBarUpdate(this, 104, this.mTargetZ & 0xFFFF);
+            aPlayer.sendProgressBarUpdate(this, 105, this.mTargetZ >>> 16);
+            aPlayer.sendProgressBarUpdate(this, 106, this.mTargetD & 0xFFFF);
+            aPlayer.sendProgressBarUpdate(this, 107, this.mTargetD >>> 16);
+            aPlayer.sendProgressBarUpdate(this, 108, this.mEgg);
         }
     }
 

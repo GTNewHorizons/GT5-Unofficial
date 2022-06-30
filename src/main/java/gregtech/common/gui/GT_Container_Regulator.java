@@ -116,9 +116,9 @@ public class GT_Container_Regulator extends GT_ContainerMetaTile_Machine {
             this.mTargetSlots[i] = ((GT_MetaTileEntity_Regulator) this.mTileEntity.getMetaTileEntity()).mTargetSlots[i];
         }
         for (Object crafter : this.crafters) {
-            ICrafting var1 = (ICrafting) crafter;
+            ICrafting player = (ICrafting) crafter;
             for (int i = 0; i < 9; i++) {
-                var1.sendProgressBarUpdate(this, 100 + i, this.mTargetSlots[i]);
+                player.sendProgressBarUpdate(this, 100 + i, this.mTargetSlots[i]);
             }
         }
     }

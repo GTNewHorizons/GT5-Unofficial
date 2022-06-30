@@ -156,7 +156,7 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
     }
 
     @Override
-    public boolean canConnectRedstone(IBlockAccess var1, int var2, int var3, int var4, int var5) {
+    public boolean canConnectRedstone(IBlockAccess aWorld, int aX, int aY, int aZ, int aSide) {
         return true;
     }
 

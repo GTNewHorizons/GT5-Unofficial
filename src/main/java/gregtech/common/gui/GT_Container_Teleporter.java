@@ -120,18 +120,18 @@ public class GT_Container_Teleporter extends GT_ContainerMetaTile_Machine {
         this.mTargetD = ((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).mTargetD;
         this.mEgg = (((GT_MetaTileEntity_Teleporter) this.mTileEntity.getMetaTileEntity()).hasDimensionalTeleportCapability() ? 1 : 0);
 
-        Iterator var2 = this.crafters.iterator();
-        while (var2.hasNext()) {
-            ICrafting var1 = (ICrafting) var2.next();
-            var1.sendProgressBarUpdate(this, 100, this.mTargetX & 0xFFFF);
-            var1.sendProgressBarUpdate(this, 101, this.mTargetX >>> 16);
-            var1.sendProgressBarUpdate(this, 102, this.mTargetY & 0xFFFF);
-            var1.sendProgressBarUpdate(this, 103, this.mTargetY >>> 16);
-            var1.sendProgressBarUpdate(this, 104, this.mTargetZ & 0xFFFF);
-            var1.sendProgressBarUpdate(this, 105, this.mTargetZ >>> 16);
-            var1.sendProgressBarUpdate(this, 106, this.mTargetD & 0xFFFF);
-            var1.sendProgressBarUpdate(this, 107, this.mTargetD >>> 16);
-            var1.sendProgressBarUpdate(this, 108, this.mEgg);
+        Iterator playerIterator = this.crafters.iterator();
+        while (playerIterator.hasNext()) {
+            ICrafting player = (ICrafting) playerIterator.next();
+            player.sendProgressBarUpdate(this, 100, this.mTargetX & 0xFFFF);
+            player.sendProgressBarUpdate(this, 101, this.mTargetX >>> 16);
+            player.sendProgressBarUpdate(this, 102, this.mTargetY & 0xFFFF);
+            player.sendProgressBarUpdate(this, 103, this.mTargetY >>> 16);
+            player.sendProgressBarUpdate(this, 104, this.mTargetZ & 0xFFFF);
+            player.sendProgressBarUpdate(this, 105, this.mTargetZ >>> 16);
+            player.sendProgressBarUpdate(this, 106, this.mTargetD & 0xFFFF);
+            player.sendProgressBarUpdate(this, 107, this.mTargetD >>> 16);
+            player.sendProgressBarUpdate(this, 108, this.mEgg);
         }
     }
 

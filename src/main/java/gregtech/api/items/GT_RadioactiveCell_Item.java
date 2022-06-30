@@ -73,15 +73,6 @@ public class GT_RadioactiveCell_Item
             aStack.setTagCompound(tNBT);
         }
         tNBT.setInteger("durability", aDurability);
-//    if (this.maxDelay > 0)
-//    {
-//      double var4 = (this.maxDelay - aDurability) / this.maxDelay;
-//      int var6 = (int)(aStack.getMaxDamage() * var4);
-//      if (var6 >= aStack.getMaxDamage()) {
-//        var6 = aStack.getMaxDamage() - 1;
-//      }
-//      aStack.setItemDamage(aStack.getMaxDamage() - var6);
-//    }
     }
 
     public int getMaxNuclearDurability() {
