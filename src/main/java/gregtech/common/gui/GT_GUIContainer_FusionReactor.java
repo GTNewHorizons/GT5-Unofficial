@@ -23,7 +23,7 @@ public class GT_GUIContainer_FusionReactor extends GT_GUIContainerMetaTile_Machi
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(int par1, int par2) {
+    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         fontRendererObj.drawString(mName, 8, -10, 16448255);
 
         if (mContainer != null) {

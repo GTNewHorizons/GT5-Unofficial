@@ -10,7 +10,7 @@ public class GT_GUIContainer_BronzeBlastFurnace extends GT_GUIContainerMetaTile_
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(int par1, int par2) {
+    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         this.fontRendererObj.drawString("Bronze Blast Furnace", 8, 4, 4210752);
     }
 

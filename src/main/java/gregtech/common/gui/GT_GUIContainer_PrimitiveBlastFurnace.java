@@ -17,17 +17,17 @@ public class GT_GUIContainer_PrimitiveBlastFurnace extends GT_GUIContainerMetaTi
         GT_GuiIcon.TAB_NORMAL_BRICK,
         GT_GuiIcon.TAB_HIGHLIGHT_BRICK,
         GT_GuiIcon.TAB_DISABLED_BRICK);
-    
+
     public GT_GUIContainer_PrimitiveBlastFurnace(InventoryPlayer inventoryPlayer, IGregTechTileEntity tileEntity,
             String name, String aNEI) {
-        super(new GT_Container_PrimitiveBlastFurnace(inventoryPlayer, tileEntity), 
+        super(new GT_Container_PrimitiveBlastFurnace(inventoryPlayer, tileEntity),
                 String.format("gregtech:textures/gui/%s.png", name.replace(" ", "")));
         this.name = name;
         this.mNEI = aNEI;
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(int par1, int par2) {
+    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         this.fontRendererObj.drawString(name, 8, 4, 4210752);
     }
 

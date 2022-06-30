@@ -12,7 +12,7 @@ public class GT_GUIContainer_MaintenanceHatch extends GT_GUIContainerMetaTile_Ma
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(int par1, int par2) {
+    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         fontRendererObj.drawString("Maintenance Hatch", 8, 4, 4210752);
         fontRendererObj.drawString("Click with Tool to repair.", 8, 12, 4210752);
     }

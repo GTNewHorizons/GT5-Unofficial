@@ -20,7 +20,7 @@ public class GT_GUIContainer_4by4 extends GT_GUIContainerMetaTile_Machine {
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(int par1, int par2) {
+    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         fontRendererObj.drawString(mName, 8, 4, 4210752);
     }
 

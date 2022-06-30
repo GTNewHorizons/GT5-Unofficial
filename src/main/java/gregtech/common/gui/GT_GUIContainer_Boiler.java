@@ -10,7 +10,7 @@ public class GT_GUIContainer_Boiler extends GT_GUIContainerMetaTile_Machine {
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(int par1, int par2) {
+    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         this.fontRendererObj.drawString("Boiler", 8, 4, 4210752);
     }
 
