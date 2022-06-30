@@ -226,16 +226,6 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
     }
 
     @Override
-    public boolean renderAsNormalBlock() {
-        return true;
-    }
-
-    @Override
-    public boolean isOpaqueCube() {
-        return true;
-    }
-
-    @Override
     public boolean canCreatureSpawn(EnumCreatureType type, IBlockAccess world, int x, int y, int z) {
         return false;
     }
@@ -248,11 +238,6 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
     @Override
     public int getDamageValue(World aWorld, int aX, int aY, int aZ) {
         return aWorld.getBlockMetadata(aX, aY, aZ);
-    }
-
-    @Override
-    public int quantityDropped(Random par1Random) {
-        return 1;
     }
 
     @Override

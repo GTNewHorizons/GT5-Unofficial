@@ -100,14 +100,6 @@ public class GT_Block_Stones_Abstract extends GT_Generic_Block implements IOreRe
         return true;
     }
     @Override
-    public boolean renderAsNormalBlock() {
-        return true;
-    }
-    @Override
-    public boolean isOpaqueCube() {
-        return true;
-    }
-    @Override
     public IIcon getIcon(int aSide, int aMeta) {
         if ((aMeta >= 0) && (aMeta < 16)) {
             return gregtech.api.enums.Textures.BlockIcons.GRANITES[aMeta].getIcon();
@@ -126,10 +118,6 @@ public class GT_Block_Stones_Abstract extends GT_Generic_Block implements IOreRe
     @Override
     public int getDamageValue(World aWorld, int aX, int aY, int aZ) {
         return aWorld.getBlockMetadata(aX, aY, aZ);
-    }
-    @Override
-    public int quantityDropped(Random par1Random) {
-        return 1;
     }
 
     @Override

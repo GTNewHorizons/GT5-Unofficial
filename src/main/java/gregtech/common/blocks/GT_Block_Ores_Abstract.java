@@ -222,16 +222,6 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
     }
 
     @Override
-    public boolean renderAsNormalBlock() {
-        return true;
-    }
-
-    @Override
-    public boolean isOpaqueCube() {
-        return true;
-    }
-
-    @Override
     public TileEntity createNewTileEntity(World aWorld, int aMeta) {
         return createTileEntity(aWorld, aMeta);
     }
