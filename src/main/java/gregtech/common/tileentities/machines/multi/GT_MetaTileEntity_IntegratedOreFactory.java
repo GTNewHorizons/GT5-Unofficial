@@ -268,9 +268,10 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends GT_MetaTileEntity_En
                     ore.stackSize = 0;
                 } else {
                     tRealUsed = tCharged;
-                    tOres.add(GT_Utility.copyAmount(ore.stackSize - tCharged, ore));
-                    tCharged = 0;
+                    tOres.add(GT_Utility.copyAmount(tCharged, ore));
                     ore.stackSize -= tCharged;
+                    tCharged = 0;
+                    break;
                 }
             }
         }
@@ -279,8 +280,8 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends GT_MetaTileEntity_En
             return false;
         }
 
-        depleteInput(GT_ModHandler.getDistilledWater(tRealUsed * 200));
-        depleteInput(Materials.Lubricant.getFluid(tRealUsed * 2));
+        depleteInput(GT_ModHandler.getDistilledWater(tRealUsed * 200L));
+        depleteInput(Materials.Lubricant.getFluid(tRealUsed * 2L));
 
         sMidProduct = tOres.toArray(new ItemStack[0]);
 
