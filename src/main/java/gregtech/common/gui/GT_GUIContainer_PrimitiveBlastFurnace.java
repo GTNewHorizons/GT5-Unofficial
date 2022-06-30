@@ -32,8 +32,8 @@ public class GT_GUIContainer_PrimitiveBlastFurnace extends GT_GUIContainerMetaTi
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
-        super.drawGuiContainerBackgroundLayer(par1, par2, par3);
+    protected void drawGuiContainerBackgroundLayer(float parTicks, int mouseX, int mouseY) {
+        super.drawGuiContainerBackgroundLayer(parTicks, mouseX, mouseY);
         int x = (this.width - this.xSize) / 2;
         int y = (this.height - this.ySize) / 2;
         drawTexturedModalRect(x, y, 0, 0, this.xSize, this.ySize);
