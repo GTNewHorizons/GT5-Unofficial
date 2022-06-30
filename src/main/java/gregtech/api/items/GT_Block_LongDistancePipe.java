@@ -23,7 +23,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import java.util.List;
-import java.util.Random;
 
 public class GT_Block_LongDistancePipe extends GT_Generic_Block {
     public IIconContainer[] mIcons;
@@ -97,11 +96,6 @@ public class GT_Block_LongDistancePipe extends GT_Generic_Block {
     @Override
     public boolean canCreatureSpawn(EnumCreatureType type, IBlockAccess world, int x, int y, int z) {
         return false;
-    }
-
-    @Override
-    public Item getItemDropped(int par1, Random par2Random, int par3) {
-        return Item.getItemFromBlock(this);
     }
 
     @Override
