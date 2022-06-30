@@ -240,11 +240,11 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
     }
 
     @Override
-    public void dropBlockAsItemWithChance(World aWorld, int aX, int aY, int aZ, int par5, float chance, int par7) {
-        if (par5 == 4) {
+    public void dropBlockAsItemWithChance(World aWorld, int aX, int aY, int aZ, int aMetadata, float chance, int aFortune) {
+        if (aMetadata == 4) {
             this.dropBlockAsItem(aWorld, aX, aY, aZ, new ItemStack(Items.coal, XSTR_INSTANCE.nextInt(2) + 1, 1));
         } else {
-            super.dropBlockAsItemWithChance(aWorld, aX, aY, aZ, par5, chance, par7);
+            super.dropBlockAsItemWithChance(aWorld, aX, aY, aZ, aMetadata, chance, aFortune);
         }
     }
 
@@ -313,7 +313,7 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item aItem, CreativeTabs par2CreativeTabs, List aList) {
+    public void getSubBlocks(Item aItem, CreativeTabs aCreativeTab, List aList) {
         for (int i = 0; i < 16; i++) {
             ItemStack aStack = new ItemStack(aItem, 1, i);
             if (!aStack.getDisplayName().contains(".name")) aList.add(aStack);

@@ -267,12 +267,12 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
     }
 
     @Override
-    public void breakBlock(World aWorld, int aX, int aY, int aZ, Block par5, int par6) {
+    public void breakBlock(World aWorld, int aX, int aY, int aZ, Block aBlock, int aMetadata) {
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if ((tTileEntity instanceof GT_TileEntity_Ores)) {
             mTemporaryTileEntity.set((GT_TileEntity_Ores) tTileEntity);
         }
-        super.breakBlock(aWorld, aX, aY, aZ, par5, par6);
+        super.breakBlock(aWorld, aX, aY, aZ, aBlock, aMetadata);
         aWorld.removeTileEntity(aX, aY, aZ);
     }
 

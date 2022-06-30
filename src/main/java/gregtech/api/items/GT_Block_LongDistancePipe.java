@@ -48,9 +48,9 @@ public class GT_Block_LongDistancePipe extends GT_Generic_Block {
         }
     }
     @Override
-    public void breakBlock(World aWorld, int aX, int aY, int aZ, Block par5, int par6) {
+    public void breakBlock(World aWorld, int aX, int aY, int aZ, Block aBlock, int aMetaData) {
         GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
-        super.breakBlock(aWorld, aX, aY, aZ, par5, par6);
+        super.breakBlock(aWorld, aX, aY, aZ, aBlock, aMetaData);
     }
     @Override
     public String getHarvestTool(int aMeta) {
@@ -90,7 +90,7 @@ public class GT_Block_LongDistancePipe extends GT_Generic_Block {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister p_149651_1_) {
+    public void registerBlockIcons(IIconRegister aIconRegister) {
     }
 
     @Override
@@ -110,7 +110,7 @@ public class GT_Block_LongDistancePipe extends GT_Generic_Block {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item aItem, CreativeTabs par2CreativeTabs, List aList) {
+    public void getSubBlocks(Item aItem, CreativeTabs aCreativeTab, List aList) {
         for (int i = 0; i < 3; i++) {
             ItemStack aStack = new ItemStack(aItem, 1, i);
             if (!aStack.getDisplayName().contains(".name")) aList.add(aStack);
