@@ -22,8 +22,8 @@ public class GT_DummyWorld extends World {
     public GT_IteratorRandom mRandom = new GT_IteratorRandom();
     public ItemStack mLastSetBlock = null;
 
-    public GT_DummyWorld(ISaveHandler par1iSaveHandler, String par2Str, WorldProvider par3WorldProvider, WorldSettings par4WorldSettings, Profiler par5Profiler) {
-        super(par1iSaveHandler, par2Str, par4WorldSettings, par3WorldProvider, par5Profiler);
+    public GT_DummyWorld(ISaveHandler saveHandler, String name, WorldProvider worldProvider, WorldSettings worldSettings, Profiler profiler) {
+        super(saveHandler, name, worldSettings, worldProvider, profiler);
         this.rand = this.mRandom;
     }
 
