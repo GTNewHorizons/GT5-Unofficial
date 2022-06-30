@@ -32,11 +32,11 @@ public class GT_Block_LongDistancePipe extends GT_Generic_Block {
         setStepSound(soundTypeMetal);
         setCreativeTab(GregTech_API.TAB_GREGTECH);
         GregTech_API.registerMachineBlock(this, -1);
-        
+
         GT_LanguageManager.addStringLocalization(getUnlocalizedName()+".0.name", "Long Distance Fluid Pipeline Pipe");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName()+".1.name", "Long Distance Item Pipeline Pipe");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + 32767 + ".name", "Any Sub Block of this");
-        
+
         ItemList.Long_Distance_Pipeline_Fluid_Pipe.set(new ItemStack(this, 1, 0));
         ItemList.Long_Distance_Pipeline_Item_Pipe.set(new ItemStack(this, 1, 1));
         mIcons = new IIconContainer[]{Textures.BlockIcons.LONG_DISTANCE_PIPE_FLUID, Textures.BlockIcons.LONG_DISTANCE_PIPE_ITEM};
@@ -83,7 +83,7 @@ public class GT_Block_LongDistancePipe extends GT_Generic_Block {
     public String getLocalizedName() {
         return StatCollector.translateToLocal(this.mUnlocalizedName + ".name");
     }
-    
+
     @Override
     public IIcon getIcon(int aSide, int aMeta) {
         return mIcons[aMeta % mIcons.length].getIcon();
@@ -110,13 +110,13 @@ public class GT_Block_LongDistancePipe extends GT_Generic_Block {
     }
 
     @Override
-    public int damageDropped(int par1) {
-        return par1;
+    public int damageDropped(int metadata) {
+        return metadata;
     }
 
     @Override
-    public int getDamageValue(World par1World, int par2, int par3, int par4) {
-        return par1World.getBlockMetadata(par2, par3, par4);
+    public int getDamageValue(World aWorld, int aX, int aY, int aZ) {
+        return aWorld.getBlockMetadata(aX, aY, aZ);
     }
 
     @Override

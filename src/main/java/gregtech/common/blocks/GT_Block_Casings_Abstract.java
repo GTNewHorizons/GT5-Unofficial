@@ -106,13 +106,13 @@ public abstract class GT_Block_Casings_Abstract extends GT_Generic_Block {
     }
 
     @Override
-    public int damageDropped(int par1) {
-        return par1;
+    public int damageDropped(int metadata) {
+        return metadata;
     }
 
     @Override
-    public int getDamageValue(World par1World, int par2, int par3, int par4) {
-        return par1World.getBlockMetadata(par2, par3, par4);
+    public int getDamageValue(World aWorld, int aX, int aY, int aZ) {
+        return aWorld.getBlockMetadata(aX, aY, aZ);
     }
 
     @Override

@@ -120,12 +120,12 @@ public class GT_Block_Stones_Abstract extends GT_Generic_Block implements IOreRe
         return world.getBlockMetadata(x, y, z) % 8 < 3;
     }
     @Override
-    public int damageDropped(int par1) {
-        return par1 % 8 == 0 ? par1 + 1 : par1;
+    public int damageDropped(int metadata) {
+        return metadata % 8 == 0 ? metadata + 1 : metadata;
     }
     @Override
-    public int getDamageValue(World par1World, int par2, int par3, int par4) {
-        return par1World.getBlockMetadata(par2, par3, par4);
+    public int getDamageValue(World aWorld, int aX, int aY, int aZ) {
+        return aWorld.getBlockMetadata(aX, aY, aZ);
     }
     @Override
     public int quantityDropped(Random par1Random) {

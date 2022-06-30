@@ -72,7 +72,7 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
         ItemList.Block_BedrockiumCompressed.set(new ItemStack(this.setHardness(1500.0f).setResistance(5000.0f), 1, 12));
         GT_ModHandler.addShapelessCraftingRecipe(new ItemStack(Items.coal, 1, 1), new Object[]{ItemList.Block_BrittleCharcoal.get(1)});
         GT_ModHandler.addCraftingRecipe(ItemList.Block_Powderbarrel.get(1L),GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"WSW","GGG","WGW", 'W', OrePrefixes.plate.get(Materials.Wood), 'G', new ItemStack(Items.gunpowder,1),'S',new ItemStack(Items.string,1)});
-        
+
     }
 
     @Override
@@ -241,13 +241,13 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
     }
 
     @Override
-    public int damageDropped(int par1) {
-        return par1;
+    public int damageDropped(int metadata) {
+        return metadata;
     }
 
     @Override
-    public int getDamageValue(World par1World, int par2, int par3, int par4) {
-        return par1World.getBlockMetadata(par2, par3, par4);
+    public int getDamageValue(World aWorld, int aX, int aY, int aZ) {
+        return aWorld.getBlockMetadata(aX, aY, aZ);
     }
 
     @Override
@@ -268,7 +268,7 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
             super.dropBlockAsItemWithChance(aWorld, aX, aY, aZ, par5, chance, par7);
         }
     }
-    
+
     @Override
     public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z)
     {
@@ -287,7 +287,7 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
       }
       return super.removedByPlayer(world, player, x, y, z);
     }
-    
+
     @Override
     public void onBlockAdded(World world, int x, int y, int z)
     {
@@ -296,7 +296,7 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
         removedByPlayer(world, null, x, y, z);
       }
     }
-    
+
     @Override
     public void onNeighborBlockChange(World world, int x, int y, int z, Block neighbor)
     {
@@ -304,7 +304,7 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
         removedByPlayer(world, null, x, y, z);
       }
     }
-    
+
     @Override
     public void onBlockExploded(World world, int x, int y, int z, Explosion explosion) {
       if (!world.isRemote && world.getBlockMetadata(x, y, z)==5){
@@ -314,14 +314,14 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
       }
       super.onBlockExploded(world, x, y, z, explosion);
     }
-    
+
     @Override
     public boolean onBlockActivated(World par1World, int x, int y, int z, EntityPlayer player, int side, float xOffset, float yOffset, float zOffset)
     {
       if ((player.getCurrentEquippedItem() != null) && (player.getCurrentEquippedItem().getItem() == Items.flint_and_steel)&&par1World.getBlockMetadata(x, y, z)==5)
       {
         removedByPlayer(par1World, player, x, y, z);
-        
+
         return true;
       }
       return super.onBlockActivated(par1World, x, y, z, player, side, xOffset, yOffset, zOffset);
@@ -340,7 +340,7 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
             if (!aStack.getDisplayName().contains(".name")) aList.add(aStack);
         }
     }
-    
+
     @Override
     public boolean canEntityDestroy(IBlockAccess world, int x, int y, int z, Entity entity) {
         return !(entity instanceof EntityWither);
