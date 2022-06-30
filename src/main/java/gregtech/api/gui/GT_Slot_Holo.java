@@ -24,7 +24,7 @@ public class GT_Slot_Holo extends Slot {
     }
 
     @Override
-    public boolean isItemValid(ItemStack par1ItemStack) {
+    public boolean isItemValid(ItemStack itemStack) {
         return mCanInsertItem;
     }
 
@@ -39,14 +39,14 @@ public class GT_Slot_Holo extends Slot {
     }
 
     @Override
-    public ItemStack decrStackSize(int par1) {
+    public ItemStack decrStackSize(int amount) {
         if (!mCanStackItem)
             return null;
-        return super.decrStackSize(par1);
+        return super.decrStackSize(amount);
     }
 
     @Override
-    public boolean canTakeStack(EntityPlayer par1EntityPlayer) {
+    public boolean canTakeStack(EntityPlayer player) {
         return false;
     }
 

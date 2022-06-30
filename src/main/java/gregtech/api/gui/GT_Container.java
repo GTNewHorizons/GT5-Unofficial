@@ -300,92 +300,92 @@ public class GT_Container extends Container {
      * merges provided ItemStack with the first avaliable one in the container/player inventory
      */
     @Override
-    protected boolean mergeItemStack(ItemStack aStack, int aStartIndex, int aSlotCount, boolean par4) {
-        boolean var5 = false;
-        int var6 = aStartIndex;
+    protected boolean mergeItemStack(ItemStack aStack, int aStartIndex, int aSlotCount, boolean reverseOrder) {
+        boolean transferredStack = false;
+        int slotIndex = aStartIndex;
 
         mTileEntity.markDirty();
 
-        if (par4) {
-            var6 = aSlotCount - 1;
+        if (reverseOrder) {
+            slotIndex = aSlotCount - 1;
         }
 
-        Slot var7;
-        ItemStack var8;
+        Slot slot;
+        ItemStack itemStack;
 
         if (aStack.isStackable()) {
-            while (aStack.stackSize > 0 && (!par4 && var6 < aSlotCount || par4 && var6 >= aStartIndex)) {
-                var7 = (Slot) this.inventorySlots.get(var6);
-                var8 = var7.getStack();
-                if (!(var7 instanceof GT_Slot_Holo) && !(var7 instanceof GT_Slot_Output) && var7.isItemValid(aStack) && var8 != null && var8.getItem() == aStack.getItem() && (!aStack.getHasSubtypes() || aStack.getItemDamage() == var8.getItemDamage()) && ItemStack.areItemStackTagsEqual(aStack, var8)) {
-                    int var9 = var8.stackSize + aStack.stackSize;
-                    if (var8.stackSize < mTileEntity.getInventoryStackLimit()) {
+            while (aStack.stackSize > 0 && (!reverseOrder && slotIndex < aSlotCount || reverseOrder && slotIndex >= aStartIndex)) {
+                slot = (Slot) this.inventorySlots.get(slotIndex);
+                itemStack = slot.getStack();
+                if (!(slot instanceof GT_Slot_Holo) && !(slot instanceof GT_Slot_Output) && slot.isItemValid(aStack) && itemStack != null && itemStack.getItem() == aStack.getItem() && (!aStack.getHasSubtypes() || aStack.getItemDamage() == itemStack.getItemDamage()) && ItemStack.areItemStackTagsEqual(aStack, itemStack)) {
+                    int var9 = itemStack.stackSize + aStack.stackSize;
+                    if (itemStack.stackSize < mTileEntity.getInventoryStackLimit()) {
                         if (var9 <= aStack.getMaxStackSize()) {
                             aStack.stackSize = 0;
-                            var8.stackSize = var9;
-                            var7.onSlotChanged();
-                            var5 = true;
-                        } else if (var8.stackSize < aStack.getMaxStackSize()) {
-                            aStack.stackSize -= aStack.getMaxStackSize() - var8.stackSize;
-                            var8.stackSize = aStack.getMaxStackSize();
-                            var7.onSlotChanged();
-                            var5 = true;
+                            itemStack.stackSize = var9;
+                            slot.onSlotChanged();
+                            transferredStack = true;
+                        } else if (itemStack.stackSize < aStack.getMaxStackSize()) {
+                            aStack.stackSize -= aStack.getMaxStackSize() - itemStack.stackSize;
+                            itemStack.stackSize = aStack.getMaxStackSize();
+                            slot.onSlotChanged();
+                            transferredStack = true;
                         }
                     }
                 }
 
-                if (par4) {
-                    --var6;
+                if (reverseOrder) {
+                    --slotIndex;
                 } else {
-                    ++var6;
+                    ++slotIndex;
                 }
             }
         }
         if (aStack.stackSize > 0) {
-            if (par4) {
-                var6 = aSlotCount - 1;
+            if (reverseOrder) {
+                slotIndex = aSlotCount - 1;
             } else {
-                var6 = aStartIndex;
+                slotIndex = aStartIndex;
             }
 
-            while (!par4 && var6 < aSlotCount || par4 && var6 >= aStartIndex) {
-                var7 = (Slot) this.inventorySlots.get(var6);
-                var8 = var7.getStack();
+            while (!reverseOrder && slotIndex < aSlotCount || reverseOrder && slotIndex >= aStartIndex) {
+                slot = (Slot) this.inventorySlots.get(slotIndex);
+                itemStack = slot.getStack();
 
-                if (var7.isItemValid(aStack) && var8 == null) {
+                if (slot.isItemValid(aStack) && itemStack == null) {
                     int var10 = Math.min(aStack.stackSize, mTileEntity.getInventoryStackLimit());
-                    var7.putStack(GT_Utility.copyAmount(var10, aStack));
-                    var7.onSlotChanged();
+                    slot.putStack(GT_Utility.copyAmount(var10, aStack));
+                    slot.onSlotChanged();
                     aStack.stackSize -= var10;
-                    var5 = true;
+                    transferredStack = true;
                     break;
                 }
 
-                if (par4) {
-                    --var6;
+                if (reverseOrder) {
+                    --slotIndex;
                 } else {
-                    ++var6;
+                    ++slotIndex;
                 }
             }
         }
 
-        return var5;
+        return transferredStack;
     }
 
     @Override
-    protected Slot addSlotToContainer(Slot par1Slot) {
+    protected Slot addSlotToContainer(Slot slot) {
         try {
-            return super.addSlotToContainer(par1Slot);
+            return super.addSlotToContainer(slot);
         } catch (Throwable e) {
             e.printStackTrace(GT_Log.err);
         }
-        return par1Slot;
+        return slot;
     }
 
     @Override
-    public void addCraftingToCrafters(ICrafting par1ICrafting) {
+    public void addCraftingToCrafters(ICrafting player) {
         try {
-            super.addCraftingToCrafters(par1ICrafting);
+            super.addCraftingToCrafters(player);
         } catch (Throwable e) {
             e.printStackTrace(GT_Log.err);
         }
@@ -402,9 +402,9 @@ public class GT_Container extends Container {
     }
 
     @Override
-    public void removeCraftingFromCrafters(ICrafting par1ICrafting) {
+    public void removeCraftingFromCrafters(ICrafting player) {
         try {
-            super.removeCraftingFromCrafters(par1ICrafting);
+            super.removeCraftingFromCrafters(player);
         } catch (Throwable e) {
             e.printStackTrace(GT_Log.err);
         }
@@ -420,9 +420,9 @@ public class GT_Container extends Container {
     }
 
     @Override
-    public boolean enchantItem(EntityPlayer par1EntityPlayer, int par2) {
+    public boolean enchantItem(EntityPlayer player, int slotIndex) {
         try {
-            return super.enchantItem(par1EntityPlayer, par2);
+            return super.enchantItem(player, slotIndex);
         } catch (Throwable e) {
             e.printStackTrace(GT_Log.err);
         }
@@ -430,9 +430,9 @@ public class GT_Container extends Container {
     }
 
     @Override
-    public Slot getSlotFromInventory(IInventory par1IInventory, int par2) {
+    public Slot getSlotFromInventory(IInventory inventory, int slotIndex) {
         try {
-            return super.getSlotFromInventory(par1IInventory, par2);
+            return super.getSlotFromInventory(inventory, slotIndex);
         } catch (Throwable e) {
             e.printStackTrace(GT_Log.err);
         }
@@ -440,9 +440,9 @@ public class GT_Container extends Container {
     }
 
     @Override
-    public Slot getSlot(int par1) {
+    public Slot getSlot(int slotIndex) {
         try {
-            if (this.inventorySlots.size() > par1) return super.getSlot(par1);
+            if (this.inventorySlots.size() > slotIndex) return super.getSlot(slotIndex);
         } catch (Throwable e) {
             e.printStackTrace(GT_Log.err);
         }
@@ -450,9 +450,9 @@ public class GT_Container extends Container {
     }
 
     @Override
-    public boolean func_94530_a(ItemStack par1ItemStack, Slot par2Slot) {
+    public boolean func_94530_a(ItemStack itemStack, Slot slot) {
         try {
-            return super.func_94530_a(par1ItemStack, par2Slot);
+            return super.func_94530_a(itemStack, slot);
         } catch (Throwable e) {
             e.printStackTrace(GT_Log.err);
         }
@@ -460,18 +460,18 @@ public class GT_Container extends Container {
     }
 
     @Override
-    protected void retrySlotClick(int par1, int par2, boolean par3, EntityPlayer par4EntityPlayer) {
+    protected void retrySlotClick(int slotIndex, int mouseButton, boolean aShifthold, EntityPlayer player) {
         try {
-            super.retrySlotClick(par1, par2, par3, par4EntityPlayer);
+            super.retrySlotClick(slotIndex, mouseButton, aShifthold, player);
         } catch (Throwable e) {
             e.printStackTrace(GT_Log.err);
         }
     }
 
     @Override
-    public void onContainerClosed(EntityPlayer par1EntityPlayer) {
+    public void onContainerClosed(EntityPlayer player) {
         try {
-            super.onContainerClosed(par1EntityPlayer);
+            super.onContainerClosed(player);
             mTileEntity.closeInventory();
         } catch (Throwable e) {
             e.printStackTrace(GT_Log.err);
@@ -479,27 +479,27 @@ public class GT_Container extends Container {
     }
 
     @Override
-    public void onCraftMatrixChanged(IInventory par1IInventory) {
+    public void onCraftMatrixChanged(IInventory inventory) {
         try {
-            super.onCraftMatrixChanged(par1IInventory);
+            super.onCraftMatrixChanged(inventory);
         } catch (Throwable e) {
             e.printStackTrace(GT_Log.err);
         }
     }
 
     @Override
-    public void putStackInSlot(int par1, ItemStack par2ItemStack) {
+    public void putStackInSlot(int slotIndex, ItemStack itemStack) {
         try {
-            super.putStackInSlot(par1, par2ItemStack);
+            super.putStackInSlot(slotIndex, itemStack);
         } catch (Throwable e) {
             e.printStackTrace(GT_Log.err);
         }
     }
 
     @Override
-    public void putStacksInSlots(ItemStack[] par1ArrayOfItemStack) {
+    public void putStacksInSlots(ItemStack[] itemStacks) {
         try {
-            super.putStacksInSlots(par1ArrayOfItemStack);
+            super.putStacksInSlots(itemStacks);
         } catch (Throwable e) {
             e.printStackTrace(GT_Log.err);
         }
@@ -515,9 +515,9 @@ public class GT_Container extends Container {
     }
 
     @Override
-    public short getNextTransactionID(InventoryPlayer par1InventoryPlayer) {
+    public short getNextTransactionID(InventoryPlayer inventoryPlayer) {
         try {
-            return super.getNextTransactionID(par1InventoryPlayer);
+            return super.getNextTransactionID(inventoryPlayer);
         } catch (Throwable e) {
             e.printStackTrace(GT_Log.err);
         }
@@ -525,9 +525,9 @@ public class GT_Container extends Container {
     }
 
     @Override
-    public boolean isPlayerNotUsingContainer(EntityPlayer par1EntityPlayer) {
+    public boolean isPlayerNotUsingContainer(EntityPlayer player) {
         try {
-            return super.isPlayerNotUsingContainer(par1EntityPlayer);
+            return super.isPlayerNotUsingContainer(player);
         } catch (Throwable e) {
             e.printStackTrace(GT_Log.err);
         }
@@ -535,9 +535,9 @@ public class GT_Container extends Container {
     }
 
     @Override
-    public void setPlayerIsPresent(EntityPlayer par1EntityPlayer, boolean par2) {
+    public void setPlayerIsPresent(EntityPlayer player, boolean value) {
         try {
-            super.setPlayerIsPresent(par1EntityPlayer, par2);
+            super.setPlayerIsPresent(player, value);
         } catch (Throwable e) {
             e.printStackTrace(GT_Log.err);
         }
@@ -553,9 +553,9 @@ public class GT_Container extends Container {
     }
 
     @Override
-    public boolean canDragIntoSlot(Slot par1Slot) {
+    public boolean canDragIntoSlot(Slot slot) {
         try {
-            return super.canDragIntoSlot(par1Slot);
+            return super.canDragIntoSlot(slot);
         } catch (Throwable e) {
             e.printStackTrace(GT_Log.err);
         }

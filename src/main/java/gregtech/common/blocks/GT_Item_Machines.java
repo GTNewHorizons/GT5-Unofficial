@@ -59,7 +59,7 @@ public class GT_Item_Machines extends ItemBlock implements IFluidContainerItem {
 
     @Override
     @SuppressWarnings("unchecked")
-    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean par4) {
+    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
         try {
             final int tDamage = getDamage(aStack);
             if ((tDamage <= 0) || (tDamage >= GregTech_API.METATILEENTITIES.length)) {

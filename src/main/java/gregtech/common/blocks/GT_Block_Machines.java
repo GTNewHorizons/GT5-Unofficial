@@ -568,7 +568,7 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
 
     @Override
     public float getExplosionResistance(
-            Entity par1Entity, World aWorld, int aX, int aY, int aZ,
+            Entity entity, World aWorld, int aX, int aY, int aZ,
             double explosionX, double explosionY, double explosionZ) {
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (tTileEntity instanceof IGregTechTileEntity) {
@@ -580,10 +580,10 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
     @SideOnly(Side.CLIENT)
     @Override
     @SuppressWarnings("unchecked") // Old API uses raw List type
-    public void getSubBlocks(Item par1Item, CreativeTabs aCreativeTab, List par3List) {
+    public void getSubBlocks(Item item, CreativeTabs aCreativeTab, List outputSubBlocks) {
         for (int i = 1; i < GregTech_API.METATILEENTITIES.length; i++) {
             if (GregTech_API.METATILEENTITIES[i] != null) {
-                par3List.add(new ItemStack(par1Item, 1, i));
+                outputSubBlocks.add(new ItemStack(item, 1, i));
             }
         }
     }

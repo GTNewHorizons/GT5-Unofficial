@@ -295,8 +295,8 @@ public class GT_Container_BasicMachine extends GT_Container_BasicTank {
     }
 
     @Override
-    public void addCraftingToCrafters(ICrafting par1ICrafting) {
-        super.addCraftingToCrafters(par1ICrafting);
+    public void addCraftingToCrafters(ICrafting player) {
+        super.addCraftingToCrafters(player);
     }
 
     @Override

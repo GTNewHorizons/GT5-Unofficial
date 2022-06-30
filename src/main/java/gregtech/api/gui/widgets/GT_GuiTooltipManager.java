@@ -11,7 +11,7 @@ public class GT_GuiTooltipManager {
         int getGuiTop();
         int getXSize();
         FontRenderer getFontRenderer();
-        void drawHoveringText(List<String> par1List, int par2, int par3, FontRenderer font);
+        void drawHoveringText(List<String> text, int mouseX, int mouseY, FontRenderer font);
     }
 
     private static final long DELAY = 5;

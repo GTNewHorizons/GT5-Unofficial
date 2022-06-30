@@ -165,7 +165,7 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
     }
 
     @Override
-    public float getExplosionResistance(Entity par1Entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ) {
+    public float getExplosionResistance(Entity entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ) {
         if (world == null) {
             return 0.0F;
         }
@@ -201,7 +201,7 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
             return 2500.0F;
 
         }
-        return super.getExplosionResistance(par1Entity, world, x, y, z, explosionX, explosionY, explosionZ);
+        return super.getExplosionResistance(entity, world, x, y, z, explosionX, explosionY, explosionZ);
     }
 
     @Override
@@ -295,15 +295,15 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
     }
 
     @Override
-    public boolean onBlockActivated(World par1World, int x, int y, int z, EntityPlayer player, int side, float xOffset, float yOffset, float zOffset)
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xOffset, float yOffset, float zOffset)
     {
-      if ((player.getCurrentEquippedItem() != null) && (player.getCurrentEquippedItem().getItem() == Items.flint_and_steel)&&par1World.getBlockMetadata(x, y, z)==5)
+      if ((player.getCurrentEquippedItem() != null) && (player.getCurrentEquippedItem().getItem() == Items.flint_and_steel)&&world.getBlockMetadata(x, y, z)==5)
       {
-        removedByPlayer(par1World, player, x, y, z);
+        removedByPlayer(world, player, x, y, z);
 
         return true;
       }
-      return super.onBlockActivated(par1World, x, y, z, player, side, xOffset, yOffset, zOffset);
+      return super.onBlockActivated(world, x, y, z, player, side, xOffset, yOffset, zOffset);
     }
 
     @Override

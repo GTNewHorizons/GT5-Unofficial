@@ -267,12 +267,12 @@ public class GT_EnergyArmor_Item extends ItemArmor implements ISpecialArmor {
     }
 
     @Override
-    public boolean isBookEnchantable(ItemStack itemstack1, ItemStack itemstack2) {
+    public boolean isBookEnchantable(ItemStack ingredient, ItemStack bookEnchant) {
         return false;
     }
 
     @Override
-    public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
+    public boolean getIsRepairable(ItemStack toBeRepaired, ItemStack repairWith) {
         return false;
     }
 

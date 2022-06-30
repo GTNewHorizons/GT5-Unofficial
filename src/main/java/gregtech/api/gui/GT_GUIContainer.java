@@ -41,14 +41,14 @@ public class GT_GUIContainer extends GuiContainer {
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
+    protected void drawGuiContainerBackgroundLayer(float parTicks, int mouseX, int mouseY) {
         mc.renderEngine.bindTexture(mGUIbackground);
     }
 
     @Override
-    public void drawScreen(int par1, int par2, float par3) {
+    public void drawScreen(int mouseX, int mouseY, float parTicks) {
         try {
-            super.drawScreen(par1, par2, par3);
+            super.drawScreen(mouseX, mouseY, parTicks);
         } catch (Throwable e) {
             try {
                 Tessellator.instance.draw();
@@ -86,9 +86,9 @@ public class GT_GUIContainer extends GuiContainer {
 
     /*
     @Override
-    protected void drawSlotInventory(Slot par1Slot) {
+    protected void drawSlotInventory(Slot slot) {
         try {
-        	super.drawSlotInventory(par1Slot);
+        	super.drawSlotInventory(slot);
         } catch(Throwable e) {
             try {
             	Tessellator.instance.draw();

@@ -10,7 +10,7 @@ public class GT_Slot_Output extends Slot {
     }
 
     @Override
-    public boolean isItemValid(ItemStack par1ItemStack) {
+    public boolean isItemValid(ItemStack itemStack) {
         return false;
     }
 }

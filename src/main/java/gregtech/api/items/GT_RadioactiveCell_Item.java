@@ -40,7 +40,7 @@ public class GT_RadioactiveCell_Item
         }
         return b;
     }
-    
+
     protected static int triangularNumber(int x)
     {
       return (x * x + x) / 2;
@@ -93,11 +93,12 @@ public class GT_RadioactiveCell_Item
     }
 
     @Override
-    public boolean isBookEnchantable(ItemStack itemstack1, ItemStack itemstack2) {
+    public boolean isBookEnchantable(ItemStack ingredient, ItemStack bookEnchant) {
         return false;
     }
 
-    public boolean func_82789_a(ItemStack par1ItemStack, ItemStack par2ItemStack) {
+    // getIsRepairable
+    public boolean func_82789_a(ItemStack toBeRepaired, ItemStack repairWith) {
         return false;
     }
 
