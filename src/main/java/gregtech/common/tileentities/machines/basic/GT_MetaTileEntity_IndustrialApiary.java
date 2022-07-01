@@ -2,7 +2,7 @@ package gregtech.common.tileentities.machines.basic;
 
 import com.google.common.collect.ImmutableSet;
 import com.mojang.authlib.GameProfile;
-import com.sun.corba.se.impl.interceptors.InterceptorInvoker;
+import cpw.mods.fml.common.Loader;
 import forestry.api.apiculture.*;
 import forestry.api.arboriculture.EnumGermlingType;
 import forestry.api.core.*;
@@ -18,7 +18,8 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Client;
 import gregtech.common.gui.GT_Container_IndustrialApiary;
 import gregtech.common.gui.GT_GUIContainer_IndustrialApiary;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.bdew.gendustry.api.ApiaryModifiers;
+import net.bdew.gendustry.api.items.IApiaryUpgrade;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -133,6 +134,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                 mod = 1.f / mod;
                 float cycles = h/mod;
 
+
                 // PRODUCTS
 
                 HashMap<GT_Utility.ItemId, ItemStack> pollen = new HashMap<>();
@@ -238,23 +240,23 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                     this.mOutputItems[i].stackSize *= actualdivider;
 
                 this.mProgresstime = 0;
-                this.mEUt = (int)(baseEUtUsage * this.energyMod);
+                this.mEUt = (int)((float)baseEUtUsage * this.energyMod * useddivider);
                 if(useddivider == 2)
-                    this.mEUt += 192;
+                    this.mEUt += 32;
                 else if(useddivider > 2)
-                    this.mEUt += (192 * (useddivider << (this.mSpeed - 2)));
+                    this.mEUt += (32 * (useddivider << (this.mSpeed - 2)));
             }
             else {
                 // Breeding time
                 this.mMaxProgresstime = 100;
                 this.mProgresstime = 0;
-                this.mEUt = baseEUtUsage;
                 int useddivider = Math.min(100, 1 << this.mSpeed);
                 this.mMaxProgresstime /= useddivider;
+                this.mEUt = (int)((float)baseEUtUsage * this.energyMod * useddivider);
                 if(useddivider == 2)
-                    this.mEUt += 192;
+                    this.mEUt += 32;
                 else if(useddivider > 2)
-                    this.mEUt += (192 * (useddivider << (this.mSpeed - 2)));
+                    this.mEUt += (32 * (useddivider << (this.mSpeed - 2)));
 
                 IBee princess = BeeManager.beeRoot.getMember(getQueen());
                 IBee drone = BeeManager.beeRoot.getMember(getDrone());
@@ -359,9 +361,15 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
     @Override
     public boolean isItemValidForSlot(int aIndex, ItemStack aStack) {
         if(aStack == null) return false;
+        if(aIndex < getInputSlot())
+            return true;
         if(aIndex == queen) return beeRoot.isMember(aStack, EnumBeeType.QUEEN.ordinal()) || beeRoot.isMember(aStack, EnumBeeType.PRINCESS.ordinal());
         else if(aIndex == drone) return beeRoot.isMember(aStack, EnumBeeType.DRONE.ordinal());
-        else if(aIndex < getOutputSlot()) return false; // for now
+        else if(aIndex < getOutputSlot()) {
+            if(!Loader.isModLoaded("gendustry"))
+                return false;
+            return aStack.getItem() instanceof IApiaryUpgrade;
+        }
         else return false;
 
     }
@@ -419,17 +427,19 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
 
     @Override
     public BiomeGenBase getBiome() {
-        return this.getBaseMetaTileEntity().getBiome();
+        if(biomeOverride == null)
+            return this.getBaseMetaTileEntity().getBiome();
+        return biomeOverride;
     }
 
     @Override
     public EnumTemperature getTemperature() {
-        return EnumTemperature.getFromValue(getBiome().temperature);
+        return EnumTemperature.getFromValue(getBiome().temperature + temperatureMod);
     }
 
     @Override
     public EnumHumidity getHumidity() {
-        return EnumHumidity.getFromValue(getBiome().rainfall);
+        return EnumHumidity.getFromValue(getBiome().rainfall + humidityMod);
     }
 
     @Override
@@ -532,15 +542,43 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
     private boolean sealedMod = false;
     private boolean selfLightedMod = false;
     private boolean sunlightSimulatedMod = false;
-    private boolean heelishOverride = false;
+    private BiomeGenBase biomeOverride = null;
+    private float humidityMod = 1f;
+    private float temperatureMod = 1f;
 
     public void updateModifiers(){
+        if(!Loader.isModLoaded("gendustry"))
+            return;
+        ApiaryModifiers mods = new ApiaryModifiers();
+        for(int i = 2; i < 2+4; i++)
+        {
+            ItemStack s = getInputAt(i);
+            if(s == null)
+                continue;
+            if(!(s.getItem() instanceof IApiaryUpgrade))
+                continue;
+            IApiaryUpgrade up = (IApiaryUpgrade)s.getItem();
+            up.applyModifiers(mods, s);
+        }
 
+        terrorityMod = mods.territory;
+        mutationMod = mods.mutation;
+        lifespanMod = mods.lifespan;
+        productionMod = mods.production;
+        floweringMod = mods.flowering;
+        geneticDecayMod = mods.geneticDecay;
+        energyMod = mods.energy;
+        sealedMod = mods.isSealed;
+        selfLightedMod = mods.isSelfLighted;
+        sunlightSimulatedMod = mods.isSunlightSimulated;
+        biomeOverride = mods.biomeOverride;
+        humidityMod = mods.humidity;
+        temperatureMod = mods.temperature;
     }
 
     @Override
     public float getTerritoryModifier(IBeeGenome iBeeGenome, float v) {
-        return terrorityMod;
+        return Math.min(5, terrorityMod);
     }
 
     @Override
@@ -585,7 +623,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
 
     @Override
     public boolean isHellish() {
-        return heelishOverride || getBiome() == BiomeGenBase.hell;
+        return getBiome() == BiomeGenBase.hell;
     }
 
 
