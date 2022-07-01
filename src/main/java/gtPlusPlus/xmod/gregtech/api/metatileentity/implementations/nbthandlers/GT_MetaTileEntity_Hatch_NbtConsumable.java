@@ -135,6 +135,7 @@ public abstract class GT_MetaTileEntity_Hatch_NbtConsumable extends GT_MetaTileE
 		for (int i = getSlotID_FirstUsage(); i <= getSlotID_LastUsage(); i++) {
 			if (mInventory[i] != null && mInventory[i].stackSize < 1) {
 				mInventory[i] = null;
+				this.markDirty();
 			}
 		}
 	}
