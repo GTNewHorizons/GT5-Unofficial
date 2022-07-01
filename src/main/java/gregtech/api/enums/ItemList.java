@@ -962,6 +962,17 @@ public enum ItemList implements IItemContainer {
     Hatch_Energy_UV,
     Hatch_Energy_MAX,
 
+    Wireless_Hatch_Energy_ULV,
+    Wireless_Hatch_Energy_LV,
+//    Wireless_Hatch_Energy_MV,
+//    Wireless_Hatch_Energy_HV,
+//    Wireless_Hatch_Energy_EV,
+//    Wireless_Hatch_Energy_IV,
+//    Wireless_Hatch_Energy_LuV,
+//    Wireless_Hatch_Energy_ZPM,
+//    Wireless_Hatch_Energy_UV,
+//    Wireless_Hatch_Energy_MAX,
+
     Hatch_Input_ULV,
     Hatch_Input_LV,
     Hatch_Input_MV,

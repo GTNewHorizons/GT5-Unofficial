@@ -1087,7 +1087,7 @@ public class Textures {
         MARBLE_COBBLE,
         BLOCK_NICKELALUMINIUM,
         BLOCK_SILICONSG,
-        
+
         MARBLE_COBBLE_MOSSY,
         MARBLE_BRICKS,
         MARBLE_BRICKS_CRACKED,
@@ -1705,7 +1705,7 @@ public class Textures {
                 STORAGE_BLOCKS12 = {
                         BLOCK_CRYOLITE,
                         BLOCK_SILICONSG,
-                        BLOCK_NICKELALUMINIUM                      
+                        BLOCK_NICKELALUMINIUM
         };
 
       public static final ITexture[] HIDDEN_TEXTURE = {
@@ -1768,6 +1768,26 @@ public class Textures {
                 TextureFactory.of(OVERLAY_ENERGY_IN_MULTI, new short[]{60, 60, 245, 0}),
                 TextureFactory.of(OVERLAY_ENERGY_IN_MULTI, new short[]{40, 40, 245, 0}),
         };
+
+        public static final ITexture[] OVERLAYS_ENERGY_IN_MULTI_WIRELESS = {
+            TextureFactory.of(MACHINE_CASING_MAGIC_FRONT_ACTIVE, new short[]{180, 180, 180, 0}),
+            TextureFactory.of(MACHINE_CASING_MAGIC_FRONT_ACTIVE, new short[]{220, 220, 220, 0}),
+            TextureFactory.of(MACHINE_CASING_MAGIC_FRONT_ACTIVE, new short[]{255, 100, 0, 0}),
+            TextureFactory.of(MACHINE_CASING_MAGIC_FRONT_ACTIVE, new short[]{255, 255, 30, 0}),
+            TextureFactory.of(MACHINE_CASING_MAGIC_FRONT_ACTIVE, new short[]{128, 128, 128, 0}),
+            TextureFactory.of(MACHINE_CASING_MAGIC_FRONT_ACTIVE, new short[]{240, 240, 245, 0}),
+            TextureFactory.of(MACHINE_CASING_MAGIC_FRONT_ACTIVE, new short[]{220, 220, 245, 0}),
+            TextureFactory.of(MACHINE_CASING_MAGIC_FRONT_ACTIVE, new short[]{200, 200, 245, 0}),
+            TextureFactory.of(MACHINE_CASING_MAGIC_FRONT_ACTIVE, new short[]{180, 180, 245, 0}),
+            TextureFactory.of(MACHINE_CASING_MAGIC_FRONT_ACTIVE, new short[]{160, 160, 245, 0}),
+            TextureFactory.of(MACHINE_CASING_MAGIC_FRONT_ACTIVE, new short[]{140, 140, 245, 0}),
+            TextureFactory.of(MACHINE_CASING_MAGIC_FRONT_ACTIVE, new short[]{120, 120, 245, 0}),
+            TextureFactory.of(MACHINE_CASING_MAGIC_FRONT_ACTIVE, new short[]{100, 100, 245, 0}),
+            TextureFactory.of(MACHINE_CASING_MAGIC_FRONT_ACTIVE, new short[]{80, 80, 245, 0}),
+            TextureFactory.of(MACHINE_CASING_MAGIC_FRONT_ACTIVE, new short[]{60, 60, 245, 0}),
+            TextureFactory.of(MACHINE_CASING_MAGIC_FRONT_ACTIVE, new short[]{40, 40, 245, 0}),
+        };
+
         public static final ITexture[] OVERLAYS_ENERGY_OUT_MULTI = {
                 TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI, new short[]{180, 180, 180, 0}),
                 TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI, new short[]{220, 220, 220, 0}),

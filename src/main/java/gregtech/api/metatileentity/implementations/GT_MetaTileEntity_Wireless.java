@@ -9,35 +9,33 @@ import net.minecraft.item.ItemStack;
 
 import static gregtech.api.enums.GT_Values.V;
 
-public class GT_MetaTileEntity_Hatch_Energy extends GT_MetaTileEntity_Hatch {
-    public GT_MetaTileEntity_Hatch_Energy(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 0, new String[]{"Energy Injector for Multiblocks", "Accepts up to 2 Amps"});
-        System.out.println("TEST1");
-    }
+public class GT_MetaTileEntity_Wireless extends GT_MetaTileEntity_Hatch_Energy {
 
-    public GT_MetaTileEntity_Hatch_Energy(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 0, aDescription, aTextures);
-        System.out.println("TEST2");
-    }
+    int mID;
+    String mNameRegional;
 
-    public GT_MetaTileEntity_Hatch_Energy(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+    long time_between_ticks = 200L;
+    long ticks_storage = 300L;
+
+    public GT_MetaTileEntity_Wireless(String aName, byte aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
         System.out.println("TEST3");
     }
 
-    public GT_MetaTileEntity_Hatch_Energy(String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 0, aDescription, aTextures);
-        System.out.println("TEST4");
+    public GT_MetaTileEntity_Wireless(int aID, String aName, String aNameRegional, int aTier) {
+        super(aID, aName, aNameRegional, aTier);
+        mID = aID;
+        mNameRegional = aNameRegional;
     }
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[]{aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI[mTier]};
+        return new ITexture[]{aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_WIRELESS[mTier]};
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[]{aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI[mTier]};
+        return new ITexture[]{aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_WIRELESS[mTier]};
     }
 
     @Override
@@ -82,7 +80,11 @@ public class GT_MetaTileEntity_Hatch_Energy extends GT_MetaTileEntity_Hatch {
 
     @Override
     public long maxEUStore() {
-        return 512L + V[mTier] * 8L;
+        return 5000000 + V[mTier] * ticks_storage;
+    }
+
+    public long getEUCapacity() {
+        return 40000L;
     }
 
     @Override
@@ -92,7 +94,7 @@ public class GT_MetaTileEntity_Hatch_Energy extends GT_MetaTileEntity_Hatch {
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Hatch_Energy(mName, mTier, mDescriptionArray, mTextures);
+        return new GT_MetaTileEntity_Wireless(mName, mTier, new String[] {"TEST1", "TEST2"}, mTextures);
     }
 
     @Override
@@ -104,4 +106,18 @@ public class GT_MetaTileEntity_Hatch_Energy extends GT_MetaTileEntity_Hatch {
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
         return false;
     }
+
+    @Override
+    public boolean ownerControl() {
+        return true;
+    }
+
+    @Override
+    public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        if (aTick % time_between_ticks == 0) {
+            setEUVar(aBaseMetaTileEntity.getStoredEU() + V[mTier] * time_between_ticks);
+            super.onPreTick(aBaseMetaTileEntity, aTick);
+        }
+    }
+
 }

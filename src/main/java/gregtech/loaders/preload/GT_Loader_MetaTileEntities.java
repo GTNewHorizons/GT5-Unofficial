@@ -202,6 +202,7 @@ public class GT_Loader_MetaTileEntities implements Runnable {//TODO CHECK CIRCUI
         GT_ModHandler.addCraftingRecipe(ItemList.Hatch_Dynamo_LV.get(1L), bitsd, new Object[]{"XOL", "SMP", "XOL", 'M', ItemList.Hull_LV, 'S', OrePrefixes.spring.get(Materials.Tin), 'X', OrePrefixes.circuit.get(Materials.Basic), 'O', ItemList.LV_Coil, 'L', OrePrefixes.cell.get(Materials.Lubricant), 'P', ItemList.Electric_Pump_LV});
         GT_ModHandler.addCraftingRecipe(ItemList.Hatch_Dynamo_MV.get(1L), bitsd, new Object[]{"XOL", "SMP", "XOL", 'M', ItemList.Hull_MV, 'S', OrePrefixes.spring.get(Materials.Copper), 'X', ItemList.Circuit_Chip_ULPIC, 'O', ItemList.MV_Coil, 'L', OrePrefixes.cell.get(Materials.Lubricant), 'P', ItemList.Electric_Pump_MV});
 
+        // 1234
         ItemList.Hatch_Energy_ULV.set(new GT_MetaTileEntity_Hatch_Energy(40, "hatch.energy.tier.00", "ULV Energy Hatch", 0).getStackForm(1L));
         ItemList.Hatch_Energy_LV.set(new GT_MetaTileEntity_Hatch_Energy(41, "hatch.energy.tier.01", "LV Energy Hatch", 1).getStackForm(1L));
         ItemList.Hatch_Energy_MV.set(new GT_MetaTileEntity_Hatch_Energy(42, "hatch.energy.tier.02", "MV Energy Hatch", 2).getStackForm(1L));
@@ -372,6 +373,17 @@ public class GT_Loader_MetaTileEntities implements Runnable {//TODO CHECK CIRCUI
         ItemList.Locker_ZPM.set(new GT_MetaTileEntity_Locker(157, "locker.tier.07", "ZPM Voltage Locker", 7).getStackForm(1L));
         ItemList.Locker_UV.set(new GT_MetaTileEntity_Locker(158, "locker.tier.08", "Ultimate Voltage Locker", 8).getStackForm(1L));
         ItemList.Locker_MAX.set(new GT_MetaTileEntity_Locker(159, "locker.tier.09", "Highly Ultimate Voltage Locker", 9).getStackForm(1L));
+
+        ItemList.Wireless_Hatch_Energy_ULV.set(new GT_MetaTileEntity_Wireless(566, "hatch.wireless.energy.tier.00", "ULV Wireless Energy Hatch", 0).getStackForm(1L));
+        ItemList.Wireless_Hatch_Energy_LV.set(new GT_MetaTileEntity_Wireless(567, "hatch.wireless.energy.tier.01", "LV Wireless Energy Hatch", 1).getStackForm(1L));
+//        ItemList.Wireless_Hatch_Energy_MV.set(new GT_MetaTileEntity_Wireless(567, "hatch.wireless.energy.tier.02", "MV Wireless Energy Hatch", 2).getStackForm(1L));
+//        ItemList.Wireless_Hatch_Energy_HV.set(new GT_MetaTileEntity_Wireless(568, "hatch.wireless.energy.tier.03", "HV Wireless Energy Hatch", 3).getStackForm(1L));
+//        ItemList.Wireless_Hatch_Energy_EV.set(new GT_MetaTileEntity_Wireless(569, "hatch.wireless.energy.tier.04", "EV Wireless Energy Hatch", 4).getStackForm(1L));
+//        ItemList.Wireless_Hatch_Energy_IV.set(new GT_MetaTileEntity_Wireless(570, "hatch.wireless.energy.tier.05", "IV Wireless Energy Hatch", 5).getStackForm(1L));
+//        ItemList.Wireless_Hatch_Energy_LuV.set(new GT_MetaTileEntity_Wireless(571, "hatch.wireless.energy.tier.06", "LuV Wireless Energy Hatch", 6).getStackForm(1L));
+//        ItemList.Wireless_Hatch_Energy_ZPM.set(new GT_MetaTileEntity_Wireless(572, "hatch.wireless.energy.tier.07", "ZPM Wireless Energy Hatch", 7).getStackForm(1L));
+//        ItemList.Wireless_Hatch_Energy_UV.set(new GT_MetaTileEntity_Wireless(573, "hatch.wireless.energy.tier.08", "UV Wireless Energy Hatch", 8).getStackForm(1L));
+//        ItemList.Wireless_Hatch_Energy_MAX.set(new GT_MetaTileEntity_Wireless(574, "hatch.wireless.energy.tier.09", "UHV Wireless Energy Hatch", 9).getStackForm(1L));
 
         ItemList.Battery_Buffer_1by1_ULV.set(new GT_MetaTileEntity_BasicBatteryBuffer(160, "batterybuffer.01.tier.00", "Ultra Low Voltage Battery Buffer", 0, "", 1).getStackForm(1L));
         ItemList.Battery_Buffer_1by1_LV.set(new GT_MetaTileEntity_BasicBatteryBuffer(161, "batterybuffer.01.tier.01", "Low Voltage Battery Buffer", 1, "", 1).getStackForm(1L));
