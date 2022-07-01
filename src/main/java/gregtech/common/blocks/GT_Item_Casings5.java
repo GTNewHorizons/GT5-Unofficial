@@ -11,8 +11,8 @@ import net.minecraft.item.ItemStack;
 import java.util.List;
 
 public class GT_Item_Casings5 extends GT_Item_Casings_Abstract {
-    public GT_Item_Casings5(Block par1) {
-        super(par1);
+    public GT_Item_Casings5(Block block) {
+        super(block);
     }
 
     protected static final String mCoilHeatTooltip = GT_LanguageManager.addStringLocalization("gt.coilheattooltip", "Base Heating Capacity = ");

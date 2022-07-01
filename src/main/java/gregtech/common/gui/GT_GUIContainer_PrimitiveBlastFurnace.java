@@ -17,23 +17,23 @@ public class GT_GUIContainer_PrimitiveBlastFurnace extends GT_GUIContainerMetaTi
         GT_GuiIcon.TAB_NORMAL_BRICK,
         GT_GuiIcon.TAB_HIGHLIGHT_BRICK,
         GT_GuiIcon.TAB_DISABLED_BRICK);
-    
+
     public GT_GUIContainer_PrimitiveBlastFurnace(InventoryPlayer inventoryPlayer, IGregTechTileEntity tileEntity,
             String name, String aNEI) {
-        super(new GT_Container_PrimitiveBlastFurnace(inventoryPlayer, tileEntity), 
+        super(new GT_Container_PrimitiveBlastFurnace(inventoryPlayer, tileEntity),
                 String.format("gregtech:textures/gui/%s.png", name.replace(" ", "")));
         this.name = name;
         this.mNEI = aNEI;
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(int par1, int par2) {
+    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         this.fontRendererObj.drawString(name, 8, 4, 4210752);
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
-        super.drawGuiContainerBackgroundLayer(par1, par2, par3);
+    protected void drawGuiContainerBackgroundLayer(float parTicks, int mouseX, int mouseY) {
+        super.drawGuiContainerBackgroundLayer(parTicks, mouseX, mouseY);
         int x = (this.width - this.xSize) / 2;
         int y = (this.height - this.ySize) / 2;
         drawTexturedModalRect(x, y, 0, 0, this.xSize, this.ySize);

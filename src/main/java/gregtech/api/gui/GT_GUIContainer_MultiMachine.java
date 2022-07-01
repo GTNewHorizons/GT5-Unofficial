@@ -29,7 +29,7 @@ public class GT_GUIContainer_MultiMachine extends GT_GUIContainerMetaTile_Machin
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(int par1, int par2) {
+    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 
         // If text is drawn iterate down GUI 8 pixels (height of characters).
         int line_counter = 7;
@@ -73,43 +73,43 @@ public class GT_GUIContainer_MultiMachine extends GT_GUIContainerMetaTile_Machin
 
 
         if (mContainer != null) {//(mWrench ? 0 : 1) | (mScrewdriver ? 0 : 2) | (mSoftHammer ? 0 : 4) | (mHardHammer ? 0 : 8) | (mSolderingTool ? 0 : 16) | (mCrowbar ? 0 : 32) | (mMachine ? 0 : 64));
-            if ((((GT_Container_MultiMachine) mContainer).mDisplayErrorCode & 1) != 0) {
+            if ((mContainer.mDisplayErrorCode & 1) != 0) {
                 fontRendererObj.drawString(GT_Utility.trans("132", "Pipe is loose."), 10, line_counter, 16448255);
                 line_counter += 8;
             }
 
-            if ((((GT_Container_MultiMachine) mContainer).mDisplayErrorCode & 2) != 0) {
+            if ((mContainer.mDisplayErrorCode & 2) != 0) {
                 fontRendererObj.drawString(GT_Utility.trans("133", "Screws are loose."), 10, line_counter, 16448255);
                 line_counter += 8;
             }
 
-            if ((((GT_Container_MultiMachine) mContainer).mDisplayErrorCode & 4) != 0) {
+            if ((mContainer.mDisplayErrorCode & 4) != 0) {
                 fontRendererObj.drawString(GT_Utility.trans("134", "Something is stuck."), 10, line_counter, 16448255);
                 line_counter += 8;
             }
 
-            if ((((GT_Container_MultiMachine) mContainer).mDisplayErrorCode & 8) != 0) {
+            if ((mContainer.mDisplayErrorCode & 8) != 0) {
                 fontRendererObj.drawString(GT_Utility.trans("135", "Platings are dented."), 10, line_counter, 16448255);
                 line_counter += 8;
             }
 
-            if ((((GT_Container_MultiMachine) mContainer).mDisplayErrorCode & 16) != 0) {
+            if ((mContainer.mDisplayErrorCode & 16) != 0) {
                 fontRendererObj.drawString(GT_Utility.trans("136", "Circuitry burned out."), 10, line_counter, 16448255);
                 line_counter += 8;
             }
 
-            if ((((GT_Container_MultiMachine) mContainer).mDisplayErrorCode & 32) != 0) {
+            if ((mContainer.mDisplayErrorCode & 32) != 0) {
                 fontRendererObj.drawString(GT_Utility.trans("137", "That doesn't belong there."), 10, line_counter, 16448255);
                 line_counter += 8;
             }
 
-            if ((((GT_Container_MultiMachine) mContainer).mDisplayErrorCode & 64) != 0) {
+            if ((mContainer.mDisplayErrorCode & 64) != 0) {
                 fontRendererObj.drawString(GT_Utility.trans("138", "Incomplete Structure."), 10, line_counter, 16448255);
                 line_counter += 8;
             }
 
-            if (((GT_Container_MultiMachine) mContainer).mDisplayErrorCode == 0) {
-                if (((GT_Container_MultiMachine) mContainer).mActive == 0) {
+            if (mContainer.mDisplayErrorCode == 0) {
+                if (mContainer.mActive == 0) {
                     fontRendererObj.drawString(GT_Utility.trans("139", "Hit with Soft Mallet"), 10, line_counter, 16448255);
                     line_counter += 8;
                     fontRendererObj.drawString(GT_Utility.trans("140", "to (re-)start the Machine"), 10, line_counter, 16448255);
@@ -141,8 +141,8 @@ public class GT_GUIContainer_MultiMachine extends GT_GUIContainerMetaTile_Machin
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
-        super.drawGuiContainerBackgroundLayer(par1, par2, par3);
+    protected void drawGuiContainerBackgroundLayer(float parTicks, int mouseX, int mouseY) {
+        super.drawGuiContainerBackgroundLayer(parTicks, mouseX, mouseY);
         int x = (width - xSize) / 2;
         int y = (height - ySize) / 2;
         drawTexturedModalRect(x, y, 0, 0, xSize, ySize);

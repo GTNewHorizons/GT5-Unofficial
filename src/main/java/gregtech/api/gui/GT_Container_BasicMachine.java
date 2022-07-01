@@ -287,31 +287,31 @@ public class GT_Container_BasicMachine extends GT_Container_BasicTank {
         mStuttering = getMachine().mStuttering;
 
         for (Object crafter : this.crafters) {
-            ICrafting var1 = (ICrafting) crafter;
-            var1.sendProgressBarUpdate(this, 102, mFluidTransfer ? 1 : 0);
-            var1.sendProgressBarUpdate(this, 103, mItemTransfer ? 1 : 0);
-            var1.sendProgressBarUpdate(this, 104, mStuttering ? 1 : 0);
+            ICrafting player = (ICrafting) crafter;
+            player.sendProgressBarUpdate(this, 102, mFluidTransfer ? 1 : 0);
+            player.sendProgressBarUpdate(this, 103, mItemTransfer ? 1 : 0);
+            player.sendProgressBarUpdate(this, 104, mStuttering ? 1 : 0);
         }
     }
 
     @Override
-    public void addCraftingToCrafters(ICrafting par1ICrafting) {
-        super.addCraftingToCrafters(par1ICrafting);
+    public void addCraftingToCrafters(ICrafting player) {
+        super.addCraftingToCrafters(player);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void updateProgressBar(int par1, int par2) {
-        super.updateProgressBar(par1, par2);
-        switch (par1) {
+    public void updateProgressBar(int id, int value) {
+        super.updateProgressBar(id, value);
+        switch (id) {
             case 102:
-                mFluidTransfer = (par2 != 0);
+                mFluidTransfer = (value != 0);
                 break;
             case 103:
-                mItemTransfer = (par2 != 0);
+                mItemTransfer = (value != 0);
                 break;
             case 104:
-                mStuttering = (par2 != 0);
+                mStuttering = (value != 0);
                 break;
         }
     }

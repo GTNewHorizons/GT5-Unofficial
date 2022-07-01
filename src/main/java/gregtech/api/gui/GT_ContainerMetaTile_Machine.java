@@ -87,45 +87,45 @@ public class GT_ContainerMetaTile_Machine extends GT_Container {
         mTimer++;
 
         for (Object crafter : this.crafters) {
-            ICrafting var1 = (ICrafting) crafter;
+            ICrafting player = (ICrafting) crafter;
             if (mTimer % 500 == 10 || oEnergy != mEnergy) {
-                var1.sendProgressBarUpdate(this, 0, mEnergy & 65535);
-                var1.sendProgressBarUpdate(this, 1, mEnergy >>> 16);
+                player.sendProgressBarUpdate(this, 0, mEnergy & 65535);
+                player.sendProgressBarUpdate(this, 1, mEnergy >>> 16);
             }
             if (mTimer % 500 == 10 || oStorage != mStorage) {
-                var1.sendProgressBarUpdate(this, 2, mStorage & 65535);
-                var1.sendProgressBarUpdate(this, 3, mStorage >>> 16);
+                player.sendProgressBarUpdate(this, 2, mStorage & 65535);
+                player.sendProgressBarUpdate(this, 3, mStorage >>> 16);
             }
             if (mTimer % 500 == 10 || oOutput != mOutput) {
-                var1.sendProgressBarUpdate(this, 4, mOutput);
+                player.sendProgressBarUpdate(this, 4, mOutput);
             }
             if (mTimer % 500 == 10 || oInput != mInput) {
-                var1.sendProgressBarUpdate(this, 5, mInput);
+                player.sendProgressBarUpdate(this, 5, mInput);
             }
             if (mTimer % 500 == 10 || oDisplayErrorCode != mDisplayErrorCode) {
-                var1.sendProgressBarUpdate(this, 6, mDisplayErrorCode);
+                player.sendProgressBarUpdate(this, 6, mDisplayErrorCode);
             }
             if (mTimer % 500 == 10 || oProgressTime != mProgressTime) {
-                var1.sendProgressBarUpdate(this, 11, mProgressTime & 65535);
-                var1.sendProgressBarUpdate(this, 12, mProgressTime >>> 16);
+                player.sendProgressBarUpdate(this, 11, mProgressTime & 65535);
+                player.sendProgressBarUpdate(this, 12, mProgressTime >>> 16);
             }
             if (mTimer % 500 == 10 || oMaxProgressTime != mMaxProgressTime) {
-                var1.sendProgressBarUpdate(this, 13, mMaxProgressTime & 65535);
-                var1.sendProgressBarUpdate(this, 14, mMaxProgressTime >>> 16);
+                player.sendProgressBarUpdate(this, 13, mMaxProgressTime & 65535);
+                player.sendProgressBarUpdate(this, 14, mMaxProgressTime >>> 16);
             }
             if (mTimer % 500 == 10 || oID != mID) {
-                var1.sendProgressBarUpdate(this, 15, mID);
+                player.sendProgressBarUpdate(this, 15, mID);
             }
             if (mTimer % 500 == 10 || oActive != mActive) {
-                var1.sendProgressBarUpdate(this, 16, mActive);
+                player.sendProgressBarUpdate(this, 16, mActive);
             }
             if (mTimer % 500 == 10 || oSteam != mSteam) {
-                var1.sendProgressBarUpdate(this, 17, mSteam & 65535);
-                var1.sendProgressBarUpdate(this, 18, mSteam >>> 16);
+                player.sendProgressBarUpdate(this, 17, mSteam & 65535);
+                player.sendProgressBarUpdate(this, 18, mSteam >>> 16);
             }
             if (mTimer % 500 == 10 || oSteamStorage != mSteamStorage) {
-                var1.sendProgressBarUpdate(this, 19, mSteamStorage & 65535);
-                var1.sendProgressBarUpdate(this, 20, mSteamStorage >>> 16);
+                player.sendProgressBarUpdate(this, 19, mSteamStorage & 65535);
+                player.sendProgressBarUpdate(this, 20, mSteamStorage >>> 16);
             }
         }
 
@@ -144,59 +144,59 @@ public class GT_ContainerMetaTile_Machine extends GT_Container {
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void updateProgressBar(int par1, int par2) {
-        super.updateProgressBar(par1, par2);
-        switch (par1) {
+    public void updateProgressBar(int id, int value) {
+        super.updateProgressBar(id, value);
+        switch (id) {
             case 0:
-                mEnergy = mEnergy & 0xffff0000 | par2 & 0x0000ffff;
+                mEnergy = mEnergy & 0xffff0000 | value & 0x0000ffff;
                 break;
             case 1:
-                mEnergy = mEnergy & 0x0000ffff | par2 << 16;
+                mEnergy = mEnergy & 0x0000ffff | value << 16;
                 break;
             case 2:
-                mStorage = mStorage & 0xffff0000 | par2 & 0x0000ffff;
+                mStorage = mStorage & 0xffff0000 | value & 0x0000ffff;
                 break;
             case 3:
-                mStorage = mStorage & 0x0000ffff | par2 << 16;
+                mStorage = mStorage & 0x0000ffff | value << 16;
                 break;
             case 4:
-                mOutput = par2;
+                mOutput = value;
                 break;
             case 5:
-                mInput = par2;
+                mInput = value;
                 break;
             case 6:
-                mDisplayErrorCode = par2;
+                mDisplayErrorCode = value;
                 break;
             case 11:
-                mProgressTime = mProgressTime & 0xffff0000 | par2;
+                mProgressTime = mProgressTime & 0xffff0000 | value;
                 break;
             case 12:
-                mProgressTime = mProgressTime & 0x0000ffff | par2 << 16;
+                mProgressTime = mProgressTime & 0x0000ffff | value << 16;
                 break;
             case 13:
-                mMaxProgressTime = mMaxProgressTime & 0xffff0000 | par2 & 0x0000ffff;
+                mMaxProgressTime = mMaxProgressTime & 0xffff0000 | value & 0x0000ffff;
                 break;
             case 14:
-                mMaxProgressTime = mMaxProgressTime & 0x0000ffff | par2 << 16;
+                mMaxProgressTime = mMaxProgressTime & 0x0000ffff | value << 16;
                 break;
             case 15:
-                mID = par2;
+                mID = value;
                 break;
             case 16:
-                mActive = par2;
+                mActive = value;
                 break;
             case 17:
-                mSteam = mSteam & 0xffff0000 | par2 & 0x0000ffff;
+                mSteam = mSteam & 0xffff0000 | value & 0x0000ffff;
                 break;
             case 18:
-                mSteam = mSteam & 0x0000ffff | par2 << 16;
+                mSteam = mSteam & 0x0000ffff | value << 16;
                 break;
             case 19:
-                mSteamStorage = mSteamStorage & 0xffff0000 | par2 & 0x0000ffff;
+                mSteamStorage = mSteamStorage & 0xffff0000 | value & 0x0000ffff;
                 break;
             case 20:
-                mSteamStorage = mSteamStorage & 0x0000ffff | par2 << 16;
+                mSteamStorage = mSteamStorage & 0x0000ffff | value << 16;
                 break;
         }
     }

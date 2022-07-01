@@ -1215,7 +1215,7 @@ public class GT_ModHandler {
         ItemStack rReturn = null;
         InventoryCrafting aCrafting = new InventoryCrafting(new Container() {
             @Override
-            public boolean canInteractWith(EntityPlayer var1) {
+            public boolean canInteractWith(EntityPlayer player) {
                 return false;
             }
         }, 3, 3);
@@ -1246,7 +1246,7 @@ public class GT_ModHandler {
 
         InventoryCrafting aCrafting = new InventoryCrafting(new Container() {
             @Override
-            public boolean canInteractWith(EntityPlayer var1) {
+            public boolean canInteractWith(EntityPlayer player) {
                 return false;
             }
         }, 3, 3);
@@ -1356,7 +1356,7 @@ public class GT_ModHandler {
         if (!temp) return null;
         InventoryCrafting aCrafting = new InventoryCrafting(new Container() {
             @Override
-            public boolean canInteractWith(EntityPlayer var1) {
+            public boolean canInteractWith(EntityPlayer player) {
                 return false;
             }
         }, 3, 3);
@@ -1427,7 +1427,7 @@ public class GT_ModHandler {
 
         InventoryCrafting aCrafting = new InventoryCrafting(new Container() {
             @Override
-            public boolean canInteractWith(EntityPlayer var1) {
+            public boolean canInteractWith(EntityPlayer player) {
                 return false;
             }
         }, 3, 3);
@@ -1555,7 +1555,7 @@ public class GT_ModHandler {
             return rList;
         InventoryCrafting aCrafting = new InventoryCrafting(new Container() {
             @Override
-            public boolean canInteractWith(EntityPlayer var1) {
+            public boolean canInteractWith(EntityPlayer player) {
                 return false;
             }
         }, 3, 3);

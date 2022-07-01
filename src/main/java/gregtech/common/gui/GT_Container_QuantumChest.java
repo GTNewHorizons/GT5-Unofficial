@@ -41,22 +41,22 @@ public class GT_Container_QuantumChest extends GT_ContainerMetaTile_Machine {
         }
 
         for (Object crafter : this.crafters) {
-            ICrafting var1 = (ICrafting) crafter;
-            var1.sendProgressBarUpdate(this, 100, mContent & 65535);
-            var1.sendProgressBarUpdate(this, 101, mContent >>> 16);
+            ICrafting aPlayer = (ICrafting) crafter;
+            aPlayer.sendProgressBarUpdate(this, 100, mContent & 65535);
+            aPlayer.sendProgressBarUpdate(this, 101, mContent >>> 16);
         }
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void updateProgressBar(int par1, int par2) {
-        super.updateProgressBar(par1, par2);
-        switch (par1) {
+    public void updateProgressBar(int id, int value) {
+        super.updateProgressBar(id, value);
+        switch (id) {
             case 100:
-                mContent = mContent & 0xffff0000 | par2 & 0x0000ffff;
+                mContent = mContent & 0xffff0000 | value & 0x0000ffff;
                 break;
             case 101:
-                mContent = mContent & 0x0000ffff | par2 << 16;
+                mContent = mContent & 0x0000ffff | value << 16;
                 break;
         }
     }

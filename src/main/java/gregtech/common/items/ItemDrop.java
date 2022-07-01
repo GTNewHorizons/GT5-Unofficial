@@ -65,9 +65,9 @@ public class ItemDrop extends Item {
 
 	@Override
     @SideOnly(Side.CLIENT)
-	public void registerIcons(IIconRegister par1IconRegister) {
-		this.itemIcon = par1IconRegister.registerIcon("forestry:honeyDrop.0");
-		this.secondIcon = par1IconRegister.registerIcon("forestry:honeyDrop.1");
+	public void registerIcons(IIconRegister iconRegister) {
+		this.itemIcon = iconRegister.registerIcon("forestry:honeyDrop.0");
+		this.secondIcon = iconRegister.registerIcon("forestry:honeyDrop.1");
 	}
 
 	@Override
