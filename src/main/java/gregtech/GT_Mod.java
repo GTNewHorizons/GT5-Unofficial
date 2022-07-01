@@ -70,7 +70,7 @@ import static gregtech.api.enums.GT_Values.MOD_ID_FR;
         dependencies = " required-after:IC2;" +
                 " required-after:structurelib;" +
                 " after:dreamcraft;" +
-                " after:Forestry;" +
+                " required-after:Forestry;" +
                 " after:PFAAGeologica;" +
                 " after:Thaumcraft;" +
                 " after:Railcraft;" +
@@ -102,7 +102,8 @@ import static gregtech.api.enums.GT_Values.MOD_ID_FR;
                 " after:RedPowerControl;" +
                 " after:UndergroundBiomes;" +
                 " after:TConstruct;" +
-                " after:Translocator;")
+                " after:Translocator;" +
+                " after:gendustry;")
 public class GT_Mod implements IGT_Mod {
 
     @Deprecated // Keep for use in BaseMetaTileEntity
