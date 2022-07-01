@@ -12,6 +12,7 @@ import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_IndustrialA
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
@@ -27,7 +28,6 @@ public class GT_Container_IndustrialApiary extends GT_ContainerMetaTile_Machine 
 
     boolean mItemTransfer;
 
-    int mProgress = 0; // scale 0 - 100
     int mSpeed = 0; // scale 0 - 8
 
     int mErrorStatesSize = 0;
@@ -42,23 +42,22 @@ public class GT_Container_IndustrialApiary extends GT_ContainerMetaTile_Machine 
     public void addSlots(InventoryPlayer aInventoryPlayer) {
         addSlotToContainer(slotItemTransferToggle = new GT_Slot_Holo(mTileEntity, 0, 8, 63, false, true, 1));
         addSlotToContainer(slotSpeedToggle = new GT_Slot_Holo(mTileEntity, 0, 26, 63, false, true, 1));
-        addSlotToContainer(slotBattery = new Slot(mTileEntity, 1, 80, 63));
-        addSlotToContainer(slotSpecial = new Slot(mTileEntity, 3, 125, 63));
-
         int tStartIndex = 5;
 
-        addSlotToContainer(new Slot(this.mTileEntity, tStartIndex++, 26, 18));
-        addSlotToContainer(new Slot(this.mTileEntity, tStartIndex++, 26, 38));
+        addSlotToContainer(new ApiarySlot(this.mTileEntity, tStartIndex++, 26, 18));
+        addSlotToContainer(new ApiarySlot(this.mTileEntity, tStartIndex++, 26, 38));
 
-        addSlotToContainer(new Slot(this.mTileEntity, tStartIndex++, 62, 24));
-        addSlotToContainer(new Slot(this.mTileEntity, tStartIndex++, 80, 24));
-        addSlotToContainer(new Slot(this.mTileEntity, tStartIndex++, 62, 42));
-        addSlotToContainer(new Slot(this.mTileEntity, tStartIndex++, 80, 42));
+        addSlotToContainer(new ApiarySlot(this.mTileEntity, tStartIndex++, 62, 24));
+        addSlotToContainer(new ApiarySlot(this.mTileEntity, tStartIndex++, 80, 24));
+        addSlotToContainer(new ApiarySlot(this.mTileEntity, tStartIndex++, 62, 42));
+        addSlotToContainer(new ApiarySlot(this.mTileEntity, tStartIndex++, 80, 42));
 
         for(int i = 107; i <= 143; i += 18)
             for(int j = 6; j <= 42; j += 18)
                 addSlotToContainer(new GT_Slot_Output(this.mTileEntity, tStartIndex++, i, j));
 
+        addSlotToContainer(slotBattery = new Slot(mTileEntity, 1, 80, 63));
+        addSlotToContainer(slotSpecial = new Slot(mTileEntity, 3, 125, 63));
 
     }
 
@@ -81,12 +80,12 @@ public class GT_Container_IndustrialApiary extends GT_ContainerMetaTile_Machine 
 
     @Override
     public int getSlotStartIndex() {
-        return 4;
+        return 2;
     }
 
     @Override
     public int getSlotCount() {
-        return 15;
+        return 6+9+2;
     }
 
     @Override
@@ -137,5 +136,17 @@ public class GT_Container_IndustrialApiary extends GT_ContainerMetaTile_Machine 
 
     public GT_MetaTileEntity_IndustrialApiary getMachine() {
         return (GT_MetaTileEntity_IndustrialApiary) mTileEntity.getMetaTileEntity();
+    }
+
+    private static class ApiarySlot extends Slot{
+
+        public ApiarySlot(IInventory p_i1824_1_, int p_i1824_2_, int p_i1824_3_, int p_i1824_4_) {
+            super(p_i1824_1_, p_i1824_2_, p_i1824_3_, p_i1824_4_);
+        }
+
+        @Override
+        public boolean isItemValid(ItemStack p_75214_1_) {
+            return this.inventory.isItemValidForSlot(this.getSlotIndex(), p_75214_1_);
+        }
     }
 }
