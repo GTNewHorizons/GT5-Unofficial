@@ -4,6 +4,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.render.TextureFactory;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
@@ -14,12 +15,11 @@ public class GT_MetaTileEntity_Wireless extends GT_MetaTileEntity_Hatch_Energy {
     int mID;
     String mNameRegional;
 
-    long time_between_ticks = 200L;
-    long ticks_storage = 300L;
+    long ticks_between_energy_addition = 400L;
+    long number_of_energy_additions = 10L;
 
     public GT_MetaTileEntity_Wireless(String aName, byte aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
-        System.out.println("TEST3");
     }
 
     public GT_MetaTileEntity_Wireless(int aID, String aName, String aNameRegional, int aTier) {
@@ -30,12 +30,12 @@ public class GT_MetaTileEntity_Wireless extends GT_MetaTileEntity_Hatch_Energy {
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[]{aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_WIRELESS[mTier]};
+        return new ITexture[]{aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_WIRELESS_ON[mTier]};
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[]{aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_WIRELESS[mTier]};
+        return new ITexture[]{aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_WIRELESS_ON[mTier]};
     }
 
     @Override
@@ -80,7 +80,7 @@ public class GT_MetaTileEntity_Wireless extends GT_MetaTileEntity_Hatch_Energy {
 
     @Override
     public long maxEUStore() {
-        return 5000000 + V[mTier] * ticks_storage;
+        return V[mTier] * number_of_energy_additions * ticks_between_energy_addition;
     }
 
     public long getEUCapacity() {
@@ -94,7 +94,7 @@ public class GT_MetaTileEntity_Wireless extends GT_MetaTileEntity_Hatch_Energy {
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Wireless(mName, mTier, new String[] {"TEST1", "TEST2"}, mTextures);
+        return new GT_MetaTileEntity_Wireless(mName, mTier, new String[] {"Idk what this does but apparently it's needed"}, mTextures);
     }
 
     @Override
@@ -114,10 +114,9 @@ public class GT_MetaTileEntity_Wireless extends GT_MetaTileEntity_Hatch_Energy {
 
     @Override
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (aTick % time_between_ticks == 0) {
-            setEUVar(aBaseMetaTileEntity.getStoredEU() + V[mTier] * time_between_ticks);
+        if (aTick % ticks_between_energy_addition == 0) {
+            setEUVar(aBaseMetaTileEntity.getStoredEU() + V[mTier] * ticks_between_energy_addition);
             super.onPreTick(aBaseMetaTileEntity, aTick);
         }
     }
-
 }

@@ -374,17 +374,6 @@ public class GT_Loader_MetaTileEntities implements Runnable {//TODO CHECK CIRCUI
         ItemList.Locker_UV.set(new GT_MetaTileEntity_Locker(158, "locker.tier.08", "Ultimate Voltage Locker", 8).getStackForm(1L));
         ItemList.Locker_MAX.set(new GT_MetaTileEntity_Locker(159, "locker.tier.09", "Highly Ultimate Voltage Locker", 9).getStackForm(1L));
 
-        ItemList.Wireless_Hatch_Energy_ULV.set(new GT_MetaTileEntity_Wireless(566, "hatch.wireless.energy.tier.00", "ULV Wireless Energy Hatch", 0).getStackForm(1L));
-        ItemList.Wireless_Hatch_Energy_LV.set(new GT_MetaTileEntity_Wireless(567, "hatch.wireless.energy.tier.01", "LV Wireless Energy Hatch", 1).getStackForm(1L));
-//        ItemList.Wireless_Hatch_Energy_MV.set(new GT_MetaTileEntity_Wireless(567, "hatch.wireless.energy.tier.02", "MV Wireless Energy Hatch", 2).getStackForm(1L));
-//        ItemList.Wireless_Hatch_Energy_HV.set(new GT_MetaTileEntity_Wireless(568, "hatch.wireless.energy.tier.03", "HV Wireless Energy Hatch", 3).getStackForm(1L));
-//        ItemList.Wireless_Hatch_Energy_EV.set(new GT_MetaTileEntity_Wireless(569, "hatch.wireless.energy.tier.04", "EV Wireless Energy Hatch", 4).getStackForm(1L));
-//        ItemList.Wireless_Hatch_Energy_IV.set(new GT_MetaTileEntity_Wireless(570, "hatch.wireless.energy.tier.05", "IV Wireless Energy Hatch", 5).getStackForm(1L));
-//        ItemList.Wireless_Hatch_Energy_LuV.set(new GT_MetaTileEntity_Wireless(571, "hatch.wireless.energy.tier.06", "LuV Wireless Energy Hatch", 6).getStackForm(1L));
-//        ItemList.Wireless_Hatch_Energy_ZPM.set(new GT_MetaTileEntity_Wireless(572, "hatch.wireless.energy.tier.07", "ZPM Wireless Energy Hatch", 7).getStackForm(1L));
-//        ItemList.Wireless_Hatch_Energy_UV.set(new GT_MetaTileEntity_Wireless(573, "hatch.wireless.energy.tier.08", "UV Wireless Energy Hatch", 8).getStackForm(1L));
-//        ItemList.Wireless_Hatch_Energy_MAX.set(new GT_MetaTileEntity_Wireless(574, "hatch.wireless.energy.tier.09", "UHV Wireless Energy Hatch", 9).getStackForm(1L));
-
         ItemList.Battery_Buffer_1by1_ULV.set(new GT_MetaTileEntity_BasicBatteryBuffer(160, "batterybuffer.01.tier.00", "Ultra Low Voltage Battery Buffer", 0, "", 1).getStackForm(1L));
         ItemList.Battery_Buffer_1by1_LV.set(new GT_MetaTileEntity_BasicBatteryBuffer(161, "batterybuffer.01.tier.01", "Low Voltage Battery Buffer", 1, "", 1).getStackForm(1L));
         ItemList.Battery_Buffer_1by1_MV.set(new GT_MetaTileEntity_BasicBatteryBuffer(162, "batterybuffer.01.tier.02", "Medium Voltage Battery Buffer", 2, "", 1).getStackForm(1L));
@@ -483,6 +472,22 @@ public class GT_Loader_MetaTileEntities implements Runnable {//TODO CHECK CIRCUI
         ItemList.Battery_Charger_4by4_ZPM.set(new GT_MetaTileEntity_Charger(697, "batterycharger.16.tier.07", "ZPM Voltage Battery Charger", 7, "Each battery gives 8A in/4A out (min 4A/2A)", 4).getStackForm(1L));
         ItemList.Battery_Charger_4by4_UV.set(new GT_MetaTileEntity_Charger(698, "batterycharger.16.tier.08", "Ultimate Voltage Battery Charger", 8, "Each battery gives 8A in/4A out (min 4A/2A)", 4).getStackForm(1L));
         ItemList.Battery_Charger_4by4_MAX.set(new GT_MetaTileEntity_Charger(699, "batterycharger.16.tier.09", "Highly Ultimate Voltage Battery Charger", 9, "Each battery gives 8A in/4A out (min 4A/2A)", 4).getStackForm(1L));
+
+        ItemList.Wireless_Hatch_Energy_ULV.set(new GT_MetaTileEntity_Wireless(700, "hatch.wireless.receiver.tier.00", "ULV Wireless Energy Receiver", 0).getStackForm(1L));
+        ItemList.Wireless_Hatch_Energy_LV.set(new GT_MetaTileEntity_Wireless(701, "hatch.wireless.receiver.tier.01", "LV Wireless Energy Receiver", 1).getStackForm(1L));
+        ItemList.Wireless_Hatch_Energy_MV.set(new GT_MetaTileEntity_Wireless(702, "hatch.wireless.receiver.tier.02", "MV Wireless Energy Receiver", 2).getStackForm(1L));
+        ItemList.Wireless_Hatch_Energy_HV.set(new GT_MetaTileEntity_Wireless(703, "hatch.wireless.receiver.tier.03", "HV Wireless Energy Receiver", 3).getStackForm(1L));
+        ItemList.Wireless_Hatch_Energy_EV.set(new GT_MetaTileEntity_Wireless(704, "hatch.wireless.receiver.tier.04", "EV Wireless Energy Receiver", 4).getStackForm(1L));
+        ItemList.Wireless_Hatch_Energy_IV.set(new GT_MetaTileEntity_Wireless(705, "hatch.wireless.receiver.tier.05", "IV Wireless Energy Receiver", 5).getStackForm(1L));
+        ItemList.Wireless_Hatch_Energy_LuV.set(new GT_MetaTileEntity_Wireless(706, "hatch.wireless.receiver.tier.06", "LuV Wireless Energy Receiver", 6).getStackForm(1L));
+        ItemList.Wireless_Hatch_Energy_ZPM.set(new GT_MetaTileEntity_Wireless(707, "hatch.wireless.receiver.tier.07", "ZPM Wireless Energy Receiver", 7).getStackForm(1L));
+        ItemList.Wireless_Hatch_Energy_UV.set(new GT_MetaTileEntity_Wireless(708, "hatch.wireless.receiver.tier.08", "UV Wireless Energy Receiver", 8).getStackForm(1L));
+        ItemList.Wireless_Hatch_Energy_UHV.set(new GT_MetaTileEntity_Wireless(709, "hatch.wireless.receiver.tier.09", "UHV Wireless Energy Receiver", 9).getStackForm(1L));
+        ItemList.Wireless_Hatch_Energy_UEV.set(new GT_MetaTileEntity_Wireless(710, "hatch.wireless.receiver.tier.10", "UEV Wireless Energy Receiver", 10).getStackForm(1L));
+        ItemList.Wireless_Hatch_Energy_UIV.set(new GT_MetaTileEntity_Wireless(711, "hatch.wireless.receiver.tier.11", "UIV Wireless Energy Receiver", 11).getStackForm(1L));
+        ItemList.Wireless_Hatch_Energy_UMV.set(new GT_MetaTileEntity_Wireless(712, "hatch.wireless.receiver.tier.12", "UMV Wireless Energy Receiver", 12).getStackForm(1L));
+        ItemList.Wireless_Hatch_Energy_UXV.set(new GT_MetaTileEntity_Wireless(713, "hatch.wireless.receiver.tier.13", "UXV Wireless Energy Receiver", 13).getStackForm(1L));
+        ItemList.Wireless_Hatch_Energy_MAX.set(new GT_MetaTileEntity_Wireless(714, "hatch.wireless.receiver.tier.14", "MAX Wireless Energy Receiver", 14).getStackForm(1L));
 
         GT_ModHandler.addCraftingRecipe(ItemList.Battery_Charger_4by4_ULV.get(1L), bitsd, new Object[]{aTextWireChest, aTextWireHull, "BCB", 'M', ItemList.Hull_ULV, 'W', OrePrefixes.wireGt16.get(Materials.Lead), 'T', OreDictNames.craftingChest, 'B', ItemList.Battery_RE_ULV_Tantalum, 'C', OrePrefixes.circuit.get(Materials.Primitive)});
         GT_ModHandler.addCraftingRecipe(ItemList.Battery_Charger_4by4_LV.get(1L), bitsd, new Object[]{aTextWireChest, aTextWireHull, "BCB", 'M', ItemList.Hull_LV, 'W', OrePrefixes.wireGt16.get(Materials.Tin), 'T', OreDictNames.craftingChest, 'B', ItemList.Battery_RE_LV_Lithium, 'C', OrePrefixes.circuit.get(Materials.Basic)});
