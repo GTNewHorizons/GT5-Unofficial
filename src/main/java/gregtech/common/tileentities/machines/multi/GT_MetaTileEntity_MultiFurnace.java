@@ -127,25 +127,30 @@ public class GT_MetaTileEntity_MultiFurnace extends GT_MetaTileEntity_AbstractMu
         int mVolatage = GT_Utility.safeInt(getMaxInputVoltage());
         int tMaxParrallel = 8 * this.mLevel;
         int tCurrenParrallel = 0;
-        ItemStack tSmeltStack = tInputList.get(0);
-        ItemStack tOutputStack = GT_ModHandler.getSmeltingOutput(tSmeltStack,false,null);
-        if (tOutputStack == null)
-                return false;
-        for (ItemStack item : tInputList)
-            if (tSmeltStack.isItemEqual(item)) if (item.stackSize < (tMaxParrallel - tCurrenParrallel)) {
-                tCurrenParrallel += item.stackSize;
-                item.stackSize = 0;
-            } else {
-                item.stackSize = (tCurrenParrallel + item.stackSize) - tMaxParrallel;
-                tCurrenParrallel = tMaxParrallel;
+        ArrayList<ItemStack> smeltedOutputs = new ArrayList<ItemStack>();
+        ArrayList<Integer> outputStackSizes = new ArrayList<Integer>();
+        for (ItemStack item : tInputList) {
+            ItemStack smeltedOutput = GT_ModHandler.getSmeltingOutput(item, false, null);
+            if (smeltedOutput != null) {
+                outputStackSizes.add(item.stackSize);
+                smeltedOutputs.add(smeltedOutput);
+                if (item.stackSize < (tMaxParrallel - tCurrenParrallel)) {
+                    tCurrenParrallel += item.stackSize;
+                    item.stackSize = 0;
+                } else {
+                    item.stackSize = (tCurrenParrallel + item.stackSize) - tMaxParrallel;
+                    tCurrenParrallel = tMaxParrallel;
+                    break;
+                }
+            }
+            if (tCurrenParrallel == tMaxParrallel) {
                 break;
             }
-
-        tCurrenParrallel *= tOutputStack.stackSize;
-        this.mOutputItems = new ItemStack[(tCurrenParrallel/64)+1];
+        }
+        this.mOutputItems = new ItemStack[smeltedOutputs.size()];
         for (int i = 0; i < this.mOutputItems.length; i++) {
-            ItemStack tNewStack = tOutputStack.copy();
-            int size = Math.min(tCurrenParrallel, 64);
+            ItemStack tNewStack = smeltedOutputs.get(i);
+            int size = Math.min(Math.min(tCurrenParrallel, outputStackSizes.get(i)), 64);
             tNewStack.stackSize = size;
             tCurrenParrallel -= size;
             this.mOutputItems[i] = tNewStack;
