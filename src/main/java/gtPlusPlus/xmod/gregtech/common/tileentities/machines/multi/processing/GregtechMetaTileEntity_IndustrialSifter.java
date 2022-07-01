@@ -60,6 +60,8 @@ public class GregtechMetaTileEntity_IndustrialSifter extends GregtechMeta_MultiB
 				.addCasingInfo("Sieve Casings", 35)
 				.addInputBus("Any Casing", 1)
 				.addOutputBus("Any Casing (x4)", 1)
+				.addInputHatch("Any Casing", 1)
+				.addOutputHatch("Any Casing", 1)
 				.addEnergyHatch("Any Casing", 1)
 				.addMaintenanceHatch("Any Casing", 1)
 				.addMufflerHatch("Any Casing", 1)
@@ -127,7 +129,11 @@ public class GregtechMetaTileEntity_IndustrialSifter extends GregtechMeta_MultiB
 				return addToMachineList(aTileEntity, aBaseCasingIndex);
 			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler) {
 				return addToMachineList(aTileEntity, aBaseCasingIndex);
-			}
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
+				return addToMachineList(aTileEntity, aBaseCasingIndex);
+			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
+				return addToMachineList(aTileEntity, aBaseCasingIndex);
+		}
 		}
 		return false;
 	}
