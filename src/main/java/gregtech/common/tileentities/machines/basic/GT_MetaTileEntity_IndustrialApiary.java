@@ -23,6 +23,7 @@ import net.bdew.gendustry.api.items.IApiaryUpgrade;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
@@ -34,6 +35,7 @@ import java.io.IOException;
 import java.util.*;
 
 import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.util.GT_Utility.moveMultipleItemStacks;
 
 public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicMachine implements IBeeHousing, IBeeHousingInventory, IErrorLogic, IBeeModifier, IBeeListener {
 
@@ -47,6 +49,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
 
     public int mSpeed = 0;
     public boolean retreviePollen = false;
+    private boolean inited = false;
 
     public GT_MetaTileEntity_IndustrialApiary(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 12, "BEEZ", 6, 9, "IndustrialApiary.png", "",
@@ -116,6 +119,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
 
     @Override
     public int checkRecipe() {
+        inited = true;
         updateModifiers();
         if(logic.canWork()) {
 
@@ -258,8 +262,8 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                 else if(useddivider > 2)
                     this.mEUt += (32 * (useddivider << (this.mSpeed - 2)));
 
-                IBee princess = BeeManager.beeRoot.getMember(getQueen());
-                IBee drone = BeeManager.beeRoot.getMember(getDrone());
+                IBee princess = beeRoot.getMember(getQueen());
+                IBee drone = beeRoot.getMember(getDrone());
                 princess.mate(drone);
                 NBTTagCompound nbttagcompound = new NBTTagCompound();
                 princess.writeToNBT(nbttagcompound);
@@ -292,6 +296,8 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
         }
         if(aBaseMetaTileEntity.isServerSide()){
 
+            doDisplayThings();
+
             if(!aBaseMetaTileEntity.isActive())
             {
                 if(aBaseMetaTileEntity.isAllowedToWork() && (aBaseMetaTileEntity.hasInventoryBeenModified() || aTick % 600 == 0 || aBaseMetaTileEntity.hasWorkJustBeenEnabled()) && hasEnoughEnergyToCheckRecipe())
@@ -303,6 +309,11 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                 }
             }
             else{
+                if(!inited) {
+                    updateModifiers();
+                    inited = true;
+                }
+
                 if(this.mProgresstime < 0)
                 {
                     this.mProgresstime++;
@@ -344,15 +355,42 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                 if(this.mProgresstime >= this.mMaxProgresstime)
                 {
                     for (int i = 0; i < mOutputItems.length; i++)
-                        for (int j = 0; j < mOutputItems.length; j++)
-                            if (aBaseMetaTileEntity.addStackToSlot(getOutputSlot() + ((j + i) % mOutputItems.length), mOutputItems[i]))
-                                break;
+                        if(mOutputItems[i] != null)
+                            for (int j = 0; j < mOutputItems.length; j++) {
+                                if(isAutomated)
+                                {
+                                    if(beeRoot.isMember(mOutputItems[i], EnumBeeType.QUEEN.ordinal()) || beeRoot.isMember(mOutputItems[i], EnumBeeType.PRINCESS.ordinal())) {
+                                        if(aBaseMetaTileEntity.addStackToSlot(queen, mOutputItems[i]))
+                                            break;
+                                    }
+                                    else if(beeRoot.isMember(mOutputItems[i], EnumBeeType.DRONE.ordinal()))
+                                        if(aBaseMetaTileEntity.addStackToSlot(drone, mOutputItems[i]))
+                                            break;
+                                }
+                                if (aBaseMetaTileEntity.addStackToSlot(getOutputSlot() + ((j + i) % mOutputItems.length), mOutputItems[i]))
+                                    break;
+                            }
                     Arrays.fill(mOutputItems, null);
                     mEUt = 0;
                     mProgresstime = 0;
                     mMaxProgresstime = 0;
                     mStuttering = false;
                     aBaseMetaTileEntity.setActive(false);
+
+                    if (doesAutoOutput() && !isOutputEmpty() && aBaseMetaTileEntity.getFrontFacing() != mMainFacing) {
+                        TileEntity tTileEntity2 = aBaseMetaTileEntity.getTileEntityAtSide(aBaseMetaTileEntity.getFrontFacing());
+                        long tStoredEnergy = aBaseMetaTileEntity.getUniversalEnergyStored();
+                        int tMaxStacks = (int)(tStoredEnergy/64L);
+                        if (tMaxStacks > mOutputItems.length)
+                            tMaxStacks = mOutputItems.length;
+
+                        moveMultipleItemStacks(aBaseMetaTileEntity, tTileEntity2, aBaseMetaTileEntity.getFrontFacing(), aBaseMetaTileEntity.getBackFacing(), null, false, (byte) 64, (byte) 1, (byte) 64, (byte) 1,tMaxStacks);
+                    }
+
+                    int check = checkRecipe();
+                    if(check == FOUND_AND_SUCCESSFULLY_USED_RECIPE) {
+                        aBaseMetaTileEntity.setActive(true);
+                    }
                 }
             }
         }
@@ -545,6 +583,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
     private BiomeGenBase biomeOverride = null;
     private float humidityMod = 1f;
     private float temperatureMod = 1f;
+    private boolean isAutomated = false;
 
     public void updateModifiers(){
         if(!Loader.isModLoaded("gendustry"))
@@ -574,6 +613,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
         biomeOverride = mods.biomeOverride;
         humidityMod = mods.humidity;
         temperatureMod = mods.temperature;
+        isAutomated = mods.isAutomated;
     }
 
     @Override
