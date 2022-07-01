@@ -11,13 +11,13 @@ import static com.github.bartimaeusnek.bartworks.util.BW_Util.subscriptNumbers;
 
 
 /*
- * 
+ *
  * Originally authored by botn365 under the MIT License. See BotdustriesLICENSE
  *
  */
 @SuppressWarnings("unchecked")
 public class BotWerkstoffMaterialPool implements Runnable {
-	
+
 	public static final Werkstoff TungsticAcid = new Werkstoff(
             new short[]{0xf5, 0xf1, 0x16},
             "Tungstic Acid",
@@ -184,7 +184,7 @@ public class BotWerkstoffMaterialPool implements Runnable {
     );
     public static final Werkstoff  VanadiumPentoxide = new Werkstoff(
             new short[]{0x69,0x69,0x69},
-            " Vanadium Pentoxide",
+            "Vanadium Pentoxide",
             new Werkstoff.Stats(),
             COMPOUND,
             new Werkstoff.GenerationFeatures().onlyDust(),
@@ -392,7 +392,7 @@ public class BotWerkstoffMaterialPool implements Runnable {
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 }
