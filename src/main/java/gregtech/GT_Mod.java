@@ -70,7 +70,7 @@ import static gregtech.api.enums.GT_Values.MOD_ID_FR;
         dependencies = " required-after:IC2;" +
                 " required-after:structurelib;" +
                 " after:dreamcraft;" +
-                " required-after:Forestry;" +
+                " after:Forestry;" +
                 " after:PFAAGeologica;" +
                 " after:Thaumcraft;" +
                 " after:Railcraft;" +

@@ -688,7 +688,8 @@ public class GT_Loader_MetaTileEntities implements Runnable {//TODO CHECK CIRCUI
         GT_ModHandler.addCraftingRecipe(ItemList.Machine_EV_Disassembler.get(1L), bitsd, new Object[]{"ACA", aTextWireHull, "ACA", 'M', ItemList.Hull_EV, 'A', ItemList.Robot_Arm_EV, 'C', OrePrefixes.circuit.get(Materials.Data), 'W', OrePrefixes.cableGt01.get(Materials.Aluminium)});
         GT_ModHandler.addCraftingRecipe(ItemList.Machine_IV_Disassembler.get(1L), bitsd, new Object[]{"ACA", aTextWireHull, "ACA", 'M', ItemList.Hull_IV, 'A', ItemList.Robot_Arm_IV, 'C', OrePrefixes.circuit.get(Materials.Elite), 'W', OrePrefixes.cableGt01.get(Materials.Tungsten)});
 
-        ItemList.Machine_IndustrialApiary.set(new GT_MetaTileEntity_IndustrialApiary(9399, "basicmachine.industrialapiary", "Industrial Apiary", 8).getStackForm(1L));
+        if(Loader.isModLoaded("Forestry"))
+            ItemList.Machine_IndustrialApiary.set(new GT_MetaTileEntity_IndustrialApiary(9399, "basicmachine.industrialapiary", "Industrial Apiary", 8).getStackForm(1L));
 
         ItemList.Machine_LV_Massfab.set(new GT_MetaTileEntity_Massfabricator(461, "basicmachine.massfab.tier.01", "Basic Mass Fabricator", 1).getStackForm(1L));
         ItemList.Machine_MV_Massfab.set(new GT_MetaTileEntity_Massfabricator(462, "basicmachine.massfab.tier.02", "Advanced Mass Fabricator", 2).getStackForm(1L));
