@@ -63,7 +63,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 /*
- * 
+ *
  * Originally authored by botn365 under the MIT License. See BotdustriesLICENSE
  *
  */
@@ -367,9 +367,11 @@ public class BotRecipes {
                 20, 122_880
         );
 
+        cells.stackSize = 2;
         GT_Values.RA.addMixerRecipe(UnsymmetricalDimethylhydrazine.get(cell,2),C2,null,null,
                 Trinitramid.getFluidOrGas(1000),UnsymmetricalDimethylhydrazineFuelMix.getFluidOrGas(3000),cells,10,120);
 
+        cells.stackSize = 1;
         GT_Values.RA.addMixerRecipe(Trinitramid.get(cell,1),C2,null,null,
                 UnsymmetricalDimethylhydrazine.getFluidOrGas(2000),UnsymmetricalDimethylhydrazineFuelMix.getFluidOrGas(3000),cells,10,120);
 
