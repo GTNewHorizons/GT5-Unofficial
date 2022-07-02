@@ -27,7 +27,7 @@ public class GT_MetaTileEntity_Wireless_Dynamo extends GT_MetaTileEntity_Hatch_D
     }
 
     public GT_MetaTileEntity_Wireless_Dynamo(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, new String[] {"TEST1234"});
+        super(aID, aName, aNameRegional, aTier, new String[] {""});
     }
 
     @Override
@@ -57,7 +57,7 @@ public class GT_MetaTileEntity_Wireless_Dynamo extends GT_MetaTileEntity_Hatch_D
 
     @Override
     public boolean isEnetOutput() {
-        return true;
+        return false;
     }
 
     @Override
@@ -90,6 +90,7 @@ public class GT_MetaTileEntity_Wireless_Dynamo extends GT_MetaTileEntity_Hatch_D
         String uuid = gregtechproxy.getThePlayer().getUniqueID().toString();
         return new String[] {
             "Transmits " + EnumChatFormatting.RED + GT_Utility.formatNumbers(eu_transferred_per_operation/V[mTier]) + EnumChatFormatting.GRAY + " A of " + TIER_COLORS[mTier] + VN[mTier] + EnumChatFormatting.GRAY + " through trans-dimensional space every " + EnumChatFormatting.RED + GT_Utility.formatNumbers(ticks_between_energy_addition) + EnumChatFormatting.GRAY + " ticks.",
+            EnumChatFormatting.GRAY + "Does not connect to wires.",
             EnumChatFormatting.GRAY + "There is currently " + EnumChatFormatting.RED + GT_Utility.formatNumbers(GlobalEnergyMap.getOrDefault(uuid, 0L)) + EnumChatFormatting.GRAY + " EU in your network."
         };
     }
@@ -137,6 +138,7 @@ public class GT_MetaTileEntity_Wireless_Dynamo extends GT_MetaTileEntity_Hatch_D
 
             // Every ticks_between_energy_addition ticks change the energy content of the block.
             if (aTick % ticks_between_energy_addition == 0L) {
+
                 long total_eu = GlobalEnergyMap.get(owner_uuid);
                 GlobalEnergyMap.put(owner_uuid, total_eu + aBaseMetaTileEntity.getStoredEU());
                 setEUVar(0L);
