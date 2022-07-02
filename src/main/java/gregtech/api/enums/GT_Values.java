@@ -114,8 +114,7 @@ public class GT_Values {
                     "HV", "EV", "IV",
                     "LuV", "ZPM", "UV",
                     "UHV", "UEV", "UIV",
-                    "UMV", "UXV", "OpV",
-                    "MAX"};
+                    "UMV", "UXV", "MAX"};
 
     /**
      * The long Names for the Voltages
