@@ -1319,9 +1319,9 @@ public class DreamCraftRecipeLoader {
                     32000000*12, 32768, 32000000, 64, new ItemStack[]{
                             ItemList.Electric_Piston_UEV.get(16L),
                             ItemList.Electric_Motor_UEV.get(64L),
+                            GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.SpaceTime, 16L),
                             GT_OreDictUnificator.get(OrePrefixes.block, Materials.Infinity, 64L),
                             GT_OreDictUnificator.get(OrePrefixes.block, Materials.NaquadahAlloy, 64L),
-                            GT_OreDictUnificator.get(OrePrefixes.block, Materials.NetherStar, 64L),
                             GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Osmiridium, 8L),
                             GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Osmiridium, 8L),
                             GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Osmiridium, 8L),
@@ -1381,6 +1381,7 @@ public class DreamCraftRecipeLoader {
                             new FluidStack(FluidRegistry.getFluid("oganesson"), 128000),
                             new FluidStack(FluidRegistry.getFluid("molten.mutatedlivingsolder"), 36864*2),
                             new FluidStack(FluidRegistry.getFluid("molten.californium"), 36864),
+                            Materials.NaquadahEnriched.getMolten(36864L)
                     },
                     ItemList.Machine_Multi_PlasmaForge.get(1), 72000, 32_000_000);
 
@@ -1398,14 +1399,14 @@ public class DreamCraftRecipeLoader {
                     new FluidStack[]{
                             new FluidStack(FluidRegistry.getFluid("oganesson"), 8000),
                             new FluidStack(FluidRegistry.getFluid("molten.mutatedlivingsolder"), 1152*8),
-                            Materials.EnrichedNaquadria.getFluid(1152L)
+                            Materials.NaquadahEnriched.getMolten(1296L)
                     },
                     ItemList.Casing_Dim_Bridge.get(1), 240*20, 32_000_000);
 
             // Dimensional injection casing.
             TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Casing_Dim_Trans.get(1),
                     2_000_000, 2048, 32_000_000, 1, new ItemStack[]{
-                            GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Osmium, 4),
+                            GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Osmiridium, 4),
                             GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Ledox, 1),
                             GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.CallistoIce, 1),
                             ItemList.Reactor_Coolant_Sp_6.get(1L),
@@ -1418,15 +1419,15 @@ public class DreamCraftRecipeLoader {
                     },
                     new FluidStack[]{
                             new FluidStack(FluidRegistry.getFluid("oganesson"), 1000),
-                            new FluidStack(FluidRegistry.getFluid("molten.mutatedlivingsolder"), 288),
-                            Materials.EnrichedNaquadria.getFluid(288L)
+                            new FluidStack(FluidRegistry.getFluid("molten.mutatedlivingsolder"), 576),
+                            Materials.NaquadahEnriched.getMolten(288L)
                     },
                     ItemList.Casing_Dim_Injector.get(1), 20*20, 32_000_000);
 
             // Dimensionally Transcendent Casing.
             TT_recipeAdder.addResearchableAssemblylineRecipe(GT_ModHandler.getModItem("Avaritia", "Singularity", 1L, 0),
                     2_000_000, 2048, 32_000_000, 1, new ItemStack[]{
-                            GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Osmium, 6),
+                            GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Osmiridium, 6),
                             GT_ModHandler.getModItem("miscutils", "itemScrewLaurenium", 12, 0),
                             ItemList.Reactor_Coolant_Sp_6.get(1L),
                             GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUHV, 1),
@@ -1434,7 +1435,7 @@ public class DreamCraftRecipeLoader {
                     new FluidStack[]{
                             new FluidStack(FluidRegistry.getFluid("oganesson"), 500),
                             new FluidStack(FluidRegistry.getFluid("molten.mutatedlivingsolder"), 288),
-                            Materials.EnrichedNaquadria.getFluid(288L)
+                            Materials.NaquadahEnriched.getMolten(144L)
                     },
                     ItemList.Casing_Dim_Trans.get(1), 20*20, 32_000_000);
 
