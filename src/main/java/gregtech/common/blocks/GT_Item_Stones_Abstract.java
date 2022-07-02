@@ -12,8 +12,8 @@ import java.util.List;
 public class GT_Item_Stones_Abstract extends ItemBlock {
     private final String mNoMobsToolTip = GT_LanguageManager.addStringLocalization("gt.nomobspawnsonthisblock", "Mobs cannot Spawn on this Block");
 
-    public GT_Item_Stones_Abstract(Block par1) {
-        super(par1);
+    public GT_Item_Stones_Abstract(Block block) {
+        super(block);
         setMaxDamage(0);
         setHasSubtypes(true);
         setCreativeTab(GregTech_API.TAB_GREGTECH_MATERIALS);

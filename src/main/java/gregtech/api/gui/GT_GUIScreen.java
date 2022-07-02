@@ -266,8 +266,8 @@ public abstract class GT_GUIScreen extends GuiScreen implements GT_IToolTipRende
 	 * GT_IToolTipRenderer
 	 */
 	@Override
-	public void drawHoveringText(List par1List, int par2, int par3, FontRenderer render) {
-		super.drawHoveringText(par1List, par2, par3, render);
+	public void drawHoveringText(List text, int mouseX, int mouseY, FontRenderer render) {
+		super.drawHoveringText(text, mouseX, mouseY, render);
 	}
 	@Override
 	public FontRenderer getFontRenderer() {

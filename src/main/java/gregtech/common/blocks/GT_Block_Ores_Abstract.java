@@ -138,7 +138,7 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
     }
 
     @Override
-    public boolean onBlockActivated(World aWorld, int aX, int aY, int aZ, EntityPlayer aPlayer, int aSide, float par1, float par2, float par3) {
+    public boolean onBlockActivated(World aWorld, int aX, int aY, int aZ, EntityPlayer aPlayer, int aSide, float aOffsetX, float aOffsetY, float aOffsetZ) {
         if (!aPlayer.isSneaking() || !aPlayer.capabilities.isCreativeMode) {
             return false;
         }
@@ -181,7 +181,7 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
     }
 
     @Override
-    public float getExplosionResistance(Entity par1Entity, World aWorld, int aX, int aY, int aZ, double explosionX, double explosionY, double explosionZ) {
+    public float getExplosionResistance(Entity entity, World aWorld, int aX, int aY, int aZ, double explosionX, double explosionY, double explosionZ) {
         return 1.0F + getHarvestLevel(aWorld.getBlockMetadata(aX, aY, aZ)) * 1.0F;
     }
 
@@ -218,16 +218,6 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
 
     @Override
     public boolean hasTileEntity(int aMeta) {
-        return true;
-    }
-
-    @Override
-    public boolean renderAsNormalBlock() {
-        return true;
-    }
-
-    @Override
-    public boolean isOpaqueCube() {
         return true;
     }
 
@@ -277,12 +267,12 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
     }
 
     @Override
-    public void breakBlock(World aWorld, int aX, int aY, int aZ, Block par5, int par6) {
+    public void breakBlock(World aWorld, int aX, int aY, int aZ, Block aBlock, int aMetadata) {
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if ((tTileEntity instanceof GT_TileEntity_Ores)) {
             mTemporaryTileEntity.set((GT_TileEntity_Ores) tTileEntity);
         }
-        super.breakBlock(aWorld, aX, aY, aZ, par5, par6);
+        super.breakBlock(aWorld, aX, aY, aZ, aBlock, aMetadata);
         aWorld.removeTileEntity(aX, aY, aZ);
     }
 

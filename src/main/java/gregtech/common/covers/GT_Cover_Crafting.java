@@ -20,7 +20,7 @@ public class GT_Cover_Crafting extends GT_CoverBehavior {
             ((EntityPlayerMP) aPlayer).playerNetServerHandler.sendPacket(new S2DPacketOpenWindow(((EntityPlayerMP) aPlayer).currentWindowId, 1, "Crafting", 9, true));
             ((EntityPlayerMP) aPlayer).openContainer = new ContainerWorkbench(((EntityPlayerMP) aPlayer).inventory, ((EntityPlayerMP) aPlayer).worldObj, aTileEntity.getXCoord(), aTileEntity.getYCoord(), aTileEntity.getZCoord()) {
                 @Override
-                public boolean canInteractWith(EntityPlayer par1EntityPlayer) {
+                public boolean canInteractWith(EntityPlayer player) {
                     return true;
                 }
             };
