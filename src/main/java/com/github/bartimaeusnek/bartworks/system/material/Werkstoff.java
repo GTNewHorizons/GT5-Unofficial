@@ -75,9 +75,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
     private final HashSet<SubTag> SUBTAGS = new HashSet<>();
     private byte[] rgb = new byte[3];
     private final String defaultName;
-    private String localizedName;
     private String toolTip;
-    private String localizedToolTip;
 
     private Werkstoff.Stats stats;
     private final Werkstoff.Types type;
@@ -185,8 +183,9 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
 
         this.mID = (short) mID;
         this.defaultName = defaultName;
+        // Ensure that localization key are written to the lang file
         GregTech_API.sAfterGTPreload.add(() -> {
-            this.localizedName = GT_LanguageManager.addStringLocalization(String.format("bw.werkstoff.%05d.name", this.mID), defaultName);
+            this.getLocalizedName();
         });
         this.stats = stats;
         this.type = type;
@@ -224,8 +223,9 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
 //        if (this.toolTip.length() > 25)
 //            this.toolTip = "The formula is to long...";
 
+        // Ensure that localization key are written to the lang file
         GregTech_API.sAfterGTPreload.add(() -> {
-            this.localizedToolTip = GT_LanguageManager.addStringLocalization(String.format("bw.werkstoff.%05d.tooltip", this.mID), toolTip);
+            this.getLocalizedToolTip();
         });
 
         if (this.stats.protons == 0) {
@@ -408,7 +408,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
     }
 
     public String getLocalizedName() {
-        return this.localizedName;
+        return GT_LanguageManager.addStringLocalization(String.format("bw.werkstoff.%05d.name", this.mID), defaultName, !GregTech_API.sPostloadFinished);
     }
 
     public String getVarName() {
@@ -420,7 +420,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
     }
 
     public String getLocalizedToolTip() {
-        return this.localizedToolTip;
+        return GT_LanguageManager.addStringLocalization(String.format("bw.werkstoff.%05d.tooltip", this.mID), toolTip, !GregTech_API.sPostloadFinished);
     }
 
     public Werkstoff.Stats getStats() {
