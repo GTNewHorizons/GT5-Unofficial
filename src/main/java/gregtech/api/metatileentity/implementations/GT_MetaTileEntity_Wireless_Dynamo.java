@@ -1,32 +1,33 @@
 package gregtech.api.metatileentity.implementations;
 
 import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.IGlobalEnergy;
+import gregtech.api.interfaces.IGlobalWirelessEnergy;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 
-import static gregtech.api.enums.GT_Values.V;
+import java.util.UUID;
 
-public class GT_MetaTileEntity_Wireless_Dynamo extends GT_MetaTileEntity_Hatch_Dynamo implements IGlobalEnergy {
+import static gregtech.GT_Mod.gregtechproxy;
+import static gregtech.api.enums.GT_Values.*;
+
+public class GT_MetaTileEntity_Wireless_Dynamo extends GT_MetaTileEntity_Hatch_Dynamo implements IGlobalWirelessEnergy {
 
     static final long ticks_between_energy_addition = 200L;
     static final long number_of_energy_additions = 10L;
     private final long eu_transferred_per_operation = 2L * V[mTier] * ticks_between_energy_addition;
-    private String owner_name;
+    private String owner_uuid;
 
     public GT_MetaTileEntity_Wireless_Dynamo(String aName, byte aTier, String[] aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, new String[] {"TESTING 123"}, aTextures);
+        super(aName, aTier, aDescription, aTextures);
     }
 
     public GT_MetaTileEntity_Wireless_Dynamo(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier);
-    }
-
-    public GT_MetaTileEntity_Wireless_Dynamo(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, aDescription, aTextures);
+        super(aID, aName, aNameRegional, aTier, new String[] {"TEST1234"});
     }
 
     @Override
@@ -55,7 +56,7 @@ public class GT_MetaTileEntity_Wireless_Dynamo extends GT_MetaTileEntity_Hatch_D
     }
 
     @Override
-    public boolean isEnetInput() {
+    public boolean isEnetOutput() {
         return true;
     }
 
@@ -75,7 +76,7 @@ public class GT_MetaTileEntity_Wireless_Dynamo extends GT_MetaTileEntity_Hatch_D
     }
 
     @Override
-    public long maxEUInput() {
+    public long maxEUOutput() {
         return V[mTier];
     }
 
@@ -84,18 +85,23 @@ public class GT_MetaTileEntity_Wireless_Dynamo extends GT_MetaTileEntity_Hatch_D
         return V[mTier] * number_of_energy_additions * ticks_between_energy_addition;
     }
 
-    public long getEUCapacity() {
-        return 40000L;
+    @Override
+    public String[] getDescription() {
+        String uuid = gregtechproxy.getThePlayer().getUniqueID().toString();
+        return new String[] {
+            "Transmits " + EnumChatFormatting.RED + GT_Utility.formatNumbers(eu_transferred_per_operation/V[mTier]) + EnumChatFormatting.GRAY + " A of " + TIER_COLORS[mTier] + VN[mTier] + EnumChatFormatting.GRAY + " through trans-dimensional space every " + EnumChatFormatting.RED + GT_Utility.formatNumbers(ticks_between_energy_addition) + EnumChatFormatting.GRAY + " ticks.",
+            EnumChatFormatting.GRAY + "There is currently " + EnumChatFormatting.RED + GT_Utility.formatNumbers(GlobalEnergyMap.getOrDefault(uuid, 0L)) + EnumChatFormatting.GRAY + " EU in your network."
+        };
     }
 
     @Override
-    public long maxAmperesIn() {
+    public long maxAmperesOut() {
         return 2;
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Wireless_Dynamo(mName, mTier, new String[] {"Idk what this does but apparently it's needed"}, mTextures);
+        return new GT_MetaTileEntity_Wireless_Dynamo(mName, mTier, new String[] {""}, mTextures);
     }
 
     @Override
@@ -121,25 +127,19 @@ public class GT_MetaTileEntity_Wireless_Dynamo extends GT_MetaTileEntity_Hatch_D
 
             // On first tick find the player name and attempt to add them to the map.
             if (aTick == 1) {
-                owner_name = this.getBaseMetaTileEntity().getOwnerName();
-
-                if (owner_name == null) {
-                    throw new IllegalArgumentException("Wireless energy receiver got a null name.");
-                }
+                owner_uuid = getBaseMetaTileEntity().getOwnerUuid().toString();
 
                 // If the owner is not in the hash map, add them with 0 EU.
-                if (!GlobalEnergyMap.containsKey(owner_name)) {
-                    GlobalEnergyMap.put(owner_name, 100_000_000L);
+                if (!GlobalEnergyMap.containsKey(owner_uuid)) {
+                    GlobalEnergyMap.put(owner_uuid, 100_000_000L);
                 }
             }
 
             // Every ticks_between_energy_addition ticks change the energy content of the block.
             if (aTick % ticks_between_energy_addition == 0L) {
-
-                long total_eu = GlobalEnergyMap.get(owner_name);
-                GlobalEnergyMap.put(owner_name, total_eu + aBaseMetaTileEntity.getStoredEU());
+                long total_eu = GlobalEnergyMap.get(owner_uuid);
+                GlobalEnergyMap.put(owner_uuid, total_eu + aBaseMetaTileEntity.getStoredEU());
                 setEUVar(0L);
-
             }
         }
     }
