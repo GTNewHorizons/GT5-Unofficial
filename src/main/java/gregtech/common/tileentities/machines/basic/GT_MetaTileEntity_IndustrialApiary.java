@@ -8,6 +8,7 @@ import forestry.api.arboriculture.EnumGermlingType;
 import forestry.api.core.*;
 import forestry.api.genetics.AlleleManager;
 import forestry.api.genetics.IIndividual;
+import forestry.core.errors.EnumErrorCode;
 import forestry.plugins.PluginApiculture;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -20,6 +21,8 @@ import gregtech.common.gui.GT_Container_IndustrialApiary;
 import gregtech.common.gui.GT_GUIContainer_IndustrialApiary;
 import net.bdew.gendustry.api.ApiaryModifiers;
 import net.bdew.gendustry.api.items.IApiaryUpgrade;
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -45,11 +48,11 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
 
 
     IBeeRoot beeRoot = (IBeeRoot) AlleleManager.alleleRegistry.getSpeciesRoot("rootBees");
-    IBeekeepingLogic logic = beeRoot.createBeekeepingLogic(this);
 
     public int mSpeed = 0;
     public boolean retreviePollen = false;
-    private boolean inited = false;
+
+    private ItemStack usedQueen = null;
 
     public GT_MetaTileEntity_IndustrialApiary(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 12, "BEEZ", 6, 9, "IndustrialApiary.png", "",
@@ -119,11 +122,11 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
 
     @Override
     public int checkRecipe() {
-        inited = true;
         updateModifiers();
-        if(logic.canWork()) {
+        if(canWork()) {
 
-            ItemStack queen =  getQueen();
+            ItemStack queen = getQueen();
+            usedQueen = queen.copy();
             if(beeRoot.getType(queen) == EnumBeeType.QUEEN)
             {
                 IBee bee = beeRoot.getMember(queen);
@@ -309,10 +312,6 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                 }
             }
             else{
-                if(!inited) {
-                    updateModifiers();
-                    inited = true;
-                }
 
                 if(this.mProgresstime < 0)
                 {
@@ -324,16 +323,14 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                     this.mStuttering = false;
                     return;
                 }
-                /*
                 if(this.hasErrors())
                 {
                     if(aTick % 100 == 0)
-                        if(!logic.canWork())
+                        if(!canWork(usedQueen))
                             this.stutterProcess();
                     return;
                 }
 
-                 */
                 if(!drainEnergyForProcess(this.mEUt))
                 {
                     this.mStuttering = true;
@@ -341,19 +338,19 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                     return;
                 }
                 this.mProgresstime++;
-                /*
+
                 if(this.mProgresstime % 100 == 0)
                 {
-                    if(!logic.canWork())
+                    if(!canWork(usedQueen))
                     {
                         this.stutterProcess();
                         return;
                     }
                 }
 
-                 */
                 if(this.mProgresstime >= this.mMaxProgresstime)
                 {
+                    updateModifiers();
                     for (int i = 0; i < mOutputItems.length; i++)
                         if(mOutputItems[i] != null)
                             for (int j = 0; j < mOutputItems.length; j++) {
@@ -431,7 +428,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
 
     @Override
     public IBeekeepingLogic getBeekeepingLogic() {
-        return logic;
+        return dummylogic;
     }
 
     @Override
@@ -565,6 +562,73 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
         return ImmutableSet.copyOf(mErrorStates);
     }
 
+    private String flowerType = "";
+    private ChunkCoordinates flowercoords = null;
+    private Block flowerBlock;
+    private int flowerBlockMeta;
+
+
+    private boolean checkFlower(IBee bee){
+        String flowerType = bee.getGenome().getFlowerProvider().getFlowerType();
+        if(!this.flowerType.equals(flowerType))
+            flowercoords = null;
+        if(flowercoords != null) {
+            if(     getWorld().getBlock(flowercoords.posX, flowercoords.posY, flowercoords.posZ) != flowerBlock
+                ||  getWorld().getBlockMetadata(flowercoords.posX, flowercoords.posY, flowercoords.posZ) != flowerBlockMeta)
+                if (!FlowerManager.flowerRegistry.isAcceptedFlower(flowerType, getWorld(), flowercoords.posX, flowercoords.posY, flowercoords.posZ))
+                    flowercoords = null;
+                else
+                {
+                    flowerBlock = getWorld().getBlock(flowercoords.posX, flowercoords.posY, flowercoords.posZ);
+                    flowerBlockMeta = getWorld().getBlockMetadata(flowercoords.posX, flowercoords.posY, flowercoords.posZ);
+                }
+        }
+        if(flowercoords == null) {
+            flowercoords = FlowerManager.flowerRegistry.getAcceptedFlowerCoordinates(this, bee, flowerType);
+            if(flowercoords != null)
+            {
+                flowerBlock = getWorld().getBlock(flowercoords.posX, flowercoords.posY, flowercoords.posZ);
+                flowerBlockMeta = getWorld().getBlockMetadata(flowercoords.posX, flowercoords.posY, flowercoords.posZ);
+                this.flowerType = flowerType;
+            }
+        }
+        return flowercoords != null;
+    }
+
+    private boolean canWork(ItemStack queen){
+        clearErrors();
+        if(beeRoot.isMember(queen, EnumBeeType.PRINCESS.ordinal()))
+            return true;
+        IBee bee = beeRoot.getMember(queen);
+        for(IErrorState err : bee.getCanWork(this))
+            setCondition(true, err);
+        setCondition(!checkFlower(bee), EnumErrorCode.NO_FLOWER);
+        return !hasErrors();
+    }
+
+    private boolean canWork(){
+        clearErrors();
+        EnumBeeType beeType = beeRoot.getType(getQueen());
+        if(beeType == EnumBeeType.PRINCESS)
+        {
+            setCondition(!beeRoot.isDrone(getDrone()), EnumErrorCode.NO_DRONE);
+            return !hasErrors();
+        }
+        if(beeType == EnumBeeType.QUEEN)
+        {
+            IBee bee = beeRoot.getMember(getQueen());
+            for(IErrorState err : bee.getCanWork(this))
+                setCondition(true, err);
+            setCondition(!checkFlower(bee), EnumErrorCode.NO_FLOWER);
+            return !hasErrors();
+        }
+        else
+        {
+            setCondition(true, EnumErrorCode.NO_QUEEN);
+            return false;
+        }
+    }
+
 
 //endregion
 
@@ -688,6 +752,53 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
 
 
     //endregion
+
+    static final IBeekeepingLogic dummylogic = new IBeekeepingLogic() {
+        @Override
+        public boolean canWork() {
+            return true;
+        }
+
+        @Override
+        public void doWork() {
+
+        }
+
+        @Override
+        public void syncToClient() {
+
+        }
+
+        @Override
+        public void syncToClient(EntityPlayerMP entityPlayerMP) {
+
+        }
+
+        @Override
+        public int getBeeProgressPercent() {
+            return 0;
+        }
+
+        @Override
+        public boolean canDoBeeFX() {
+            return false;
+        }
+
+        @Override
+        public void doBeeFX() {
+
+        }
+
+        @Override
+        public void readFromNBT(NBTTagCompound nbtTagCompound) {
+
+        }
+
+        @Override
+        public void writeToNBT(NBTTagCompound nbtTagCompound) {
+
+        }
+    };
 
 
 }
