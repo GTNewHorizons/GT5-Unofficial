@@ -78,8 +78,15 @@ public class BW_MetaGeneratedBlock_Item extends BW_ItemBlocks {
         Werkstoff werkstoff = Werkstoff.werkstoffHashMap.get((short) aStack.getItemDamage());
         if(werkstoff != null) {
             aList.add(werkstoff.getLocalizedToolTip());
+            String owner = werkstoff.getOwner();
+            if (owner != null) {
+                aList.add(BW_Tooltip_Reference.ADDED_VIA_BARTWORKS.apply(owner));
+            } else {
+                aList.add(BW_Tooltip_Reference.ADDED_BY_BARTWORKS.get());
+            }
+        } else {
+            aList.add(BW_Tooltip_Reference.ADDED_BY_BARTWORKS.get());
         }
-        aList.add(BW_Tooltip_Reference.ADDED_BY_BARTWORKS.get());
     }
 
     public boolean placeBlockAt(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int side, float hitX, float hitY, float hitZ, int aMeta) {

@@ -48,13 +48,17 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+
+import static net.minecraft.util.EnumChatFormatting.*;
 
 @SuppressWarnings("ALL")
 public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
@@ -62,6 +66,15 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
     public static final LinkedHashSet<Werkstoff> werkstoffHashSet = new LinkedHashSet<>();
     public static final LinkedHashMap<Short, Werkstoff> werkstoffHashMap = new LinkedHashMap<>();
     public static final LinkedHashMap<String, Werkstoff> werkstoffNameHashMap = new LinkedHashMap<>();
+
+    /**
+     * {className, modName}
+     */
+    public static final Map<String, String> knownModNames = new HashMap(){{
+        put("goodgenerator.items", GREEN + "Good Generator");
+        put("com.elisis.gtnhlanth.common.register", GREEN + "GTNH: Lanthanides");
+        put("galaxyspace.core.register", DARK_PURPLE + "GalaxySpace");
+    }};
 
     private static final HashSet<Short> idHashSet = new HashSet<>();
 
@@ -83,6 +96,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
     private final short mID;
     private final TextureSet texSet;
     private Materials bridgeMaterial;
+    private final String owner;
 
     public Materials getBridgeMaterial() {
         return this.bridgeMaterial;
@@ -288,6 +302,8 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         Werkstoff.werkstoffHashSet.add(this);
         Werkstoff.werkstoffHashMap.put(this.mID, this);
         Werkstoff.werkstoffNameHashMap.put(this.defaultName, this);
+
+        this.owner = getMaterialOwner();
     }
 
 
@@ -527,6 +543,21 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
      */
     public boolean doesOreDictedItemExists(OrePrefixes prefixes) {
         return OreDictHandler.getItemStack(this.getDefaultName(), prefixes,1) != null;
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    private String getMaterialOwner() {
+        for (StackTraceElement stacktrace : Thread.currentThread().getStackTrace()) {
+            for (Map.Entry<String, String> entry : knownModNames.entrySet()) {
+                if (stacktrace.getClassName().contains(entry.getKey())) {
+                    return entry.getValue();
+                }
+            }
+        }
+        return null;
     }
 
     public enum Types {

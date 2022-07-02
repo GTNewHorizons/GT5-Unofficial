@@ -134,7 +134,13 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRa
         if (aStack != null && aStack.getItem() instanceof BW_MetaGenerated_Items && aStack.getItemDamage() == WerkstoffLoader.Tiberium.getmID())
             aList.add(GT_LanguageManager.getTranslation("metaitem.01.tooltip.nqgen"));
 
-        aList.add(BW_Tooltip_Reference.ADDED_BY_BARTWORKS.get());
+        Werkstoff werkstoff = werkstoffHashMap.get((short) this.getDamage(aStack));
+        String owner = werkstoff.getOwner();
+        if (owner != null) {
+            aList.add(BW_Tooltip_Reference.ADDED_VIA_BARTWORKS.apply(owner));
+        } else {
+            aList.add(BW_Tooltip_Reference.ADDED_BY_BARTWORKS.get());
+        }
     }
 
     @Override
