@@ -1,23 +1,36 @@
 package goodgenerator.crossmod.nei;
 
 import cpw.mods.fml.common.event.FMLInterModComms;
+import goodgenerator.crossmod.LoadedList;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class IMCForNEI {
     public static void IMCSender() {
         sendHandler("goodgenerator.crossmod.nei.NeutronActivatorHandler", "gregtech:gt.blockmachines:32013");
-        sendHandler("goodgenerator.crossmod.nei.ExtremeHeatExchangerHandler", "gregtech:gt.blockmachines:32017");
-        sendHandler("goodgenerator.crossmod.nei.PreciseAssemblerHandler", "gregtech:gt.blockmachines:32018");
-
         sendCatalyst("gg.recipe.neutron_activator", "gregtech:gt.blockmachines:32013");
+
+        sendHandler("goodgenerator.crossmod.nei.ExtremeHeatExchangerHandler", "gregtech:gt.blockmachines:32017");
         sendCatalyst("gg.recipe.extreme_heat_exchanger", "gregtech:gt.blockmachines:32017");
+
+        sendHandler("goodgenerator.crossmod.nei.PreciseAssemblerHandler", "gregtech:gt.blockmachines:32018");
         sendCatalyst("gg.recipe.precise_assembler", "gregtech:gt.blockmachines:32018");
-        sendCatalyst("gt.recipe.fusionreactor", "gregtech:gt.blockmachines:32019", -1);
-        sendCatalyst("gt.recipe.fusionreactor", "gregtech:gt.blockmachines:32020", -1);
-        sendCatalyst("gt.recipe.fusionreactor", "gregtech:gt.blockmachines:32021", -1);
-        sendCatalyst("gt.recipe.fusionreactor", "gregtech:gt.blockmachines:32022", -1);
-//        sendCatalyst("gt.recipe.fusionreactor", "gregtech:gt.blockmachines:32023"); // Compact Fusion MK-V
         sendCatalyst("gt.recipe.assembler", "gregtech:gt.blockmachines:32018");
+
+        sendCatalyst("gt.recipe.fusionreactor", "gregtech:gt.blockmachines:32019", -10);
+        sendCatalyst("gt.recipe.fusionreactor", "gregtech:gt.blockmachines:32020", -10);
+        sendCatalyst("gt.recipe.fusionreactor", "gregtech:gt.blockmachines:32021", -10);
+        if (LoadedList.GTPP) {
+            sendCatalyst("gt.recipe.fusionreactor", "gregtech:gt.blockmachines:32022", -10);
+        }
+//        sendCatalyst("gt.recipe.fusionreactor", "gregtech:gt.blockmachines:32023", -10); // Compact Fusion MK-V
+
+        sendCatalyst("gt.recipe.complexfusionreactor", "gregtech:gt.blockmachines:32019", -10);
+        sendCatalyst("gt.recipe.complexfusionreactor", "gregtech:gt.blockmachines:32020", -10);
+        sendCatalyst("gt.recipe.complexfusionreactor", "gregtech:gt.blockmachines:32021", -10);
+        if (LoadedList.GTPP) {
+            sendCatalyst("gt.recipe.complexfusionreactor", "gregtech:gt.blockmachines:32022", -10);
+        }
+//        sendCatalyst("gt.recipe.complexfusionreactor", "gregtech:gt.blockmachines:32023", -10); // Compact Fusion MK-V
     }
 
     private static void sendHandler(String aName, String aBlock) {
