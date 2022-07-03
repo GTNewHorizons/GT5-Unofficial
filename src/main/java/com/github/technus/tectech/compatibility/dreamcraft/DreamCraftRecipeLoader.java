@@ -1190,7 +1190,7 @@ public class DreamCraftRecipeLoader {
                         Materials.Radon.getGas(2500L),
                 }, ItemList.Circuit_Wetwaremainframe.get(1L), 2000, 300000);
 
-        //Bio Chips
+        // Bioware circuits.
         TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Circuit_Biowarecomputer.get(1L),
                 48000, 128, 500000, 8, new Object[]{
                         ItemList.Circuit_Board_Bio_Ultra.get(2L),
@@ -1204,7 +1204,7 @@ public class DreamCraftRecipeLoader {
                         GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.NiobiumTitanium, 32L),
                         new Object[]{OrePrefixes.foil.get(Materials.AnySyntheticRubber), 64L},
                 }, new FluidStack[]{
-                        Materials.SolderingAlloy.getMolten(1440L),
+                        new FluidStack(FluidRegistry.getFluid("molten.mutatedlivingsolder"), 1440),
                         Materials.BioMediumSterilized.getFluid(1440L),
                         new FluidStack(FluidRegistry.getFluid("ic2coolant"), 10000)
                 },
@@ -1225,7 +1225,7 @@ public class DreamCraftRecipeLoader {
                         new Object[]{OrePrefixes.foil.get(Materials.AnySyntheticRubber), 64L},
                         GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Polybenzimidazole, 64)
                 }, new FluidStack[]{
-                        Materials.SolderingAlloy.getMolten(2880L),
+                        new FluidStack(FluidRegistry.getFluid("molten.mutatedlivingsolder"), 2880),
                         Materials.BioMediumSterilized.getFluid(2880L),
                         new FluidStack(FluidRegistry.getFluid("ic2coolant"), 20000)
                 }, ItemList.Circuit_Biomainframe.get(1L), 6000, 2000000);
@@ -1247,7 +1247,7 @@ public class DreamCraftRecipeLoader {
                         new Object[]{OrePrefixes.foil.get(Materials.AnySyntheticRubber), 64L},
                         GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Polybenzimidazole, 64)
                 }, new FluidStack[]{
-                        Materials.SolderingAlloy.getMolten(3744L),
+                        new FluidStack(FluidRegistry.getFluid("molten.mutatedlivingsolder"), 3744),
                         Materials.Naquadria.getMolten(4032L),
                         new FluidStack(FluidRegistry.getFluid("ic2coolant"), 20000)
                 }, getItemContainer("NanoCircuit").get(1L), 8000, 8000000);
@@ -1268,7 +1268,7 @@ public class DreamCraftRecipeLoader {
                         GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Neutronium, 16),
                         GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Lanthanum, 64)
                 }, new FluidStack[]{
-                        Materials.SolderingAlloy.getMolten(3744L),
+                        new FluidStack(FluidRegistry.getFluid("molten.mutatedlivingsolder"), 3744),
                         Materials.UUMatter.getFluid(8000L),
                         Materials.Osmium.getMolten(1152L)
                 }, getItemContainer("PikoCircuit").get(1L), 10000, 8000000);
@@ -1285,10 +1285,10 @@ public class DreamCraftRecipeLoader {
                         ItemList.Circuit_Chip_QPIC.get(64L),
                         GT_OreDictUnificator.get(OrePrefixes.foil, Materials.NiobiumTitanium, 64),
                         GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Indium, 64),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Bedrockium, 8),
+                        GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SpaceTime, 8),
                         GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Lanthanum, 64)
                 }, new FluidStack[]{
-                        Materials.SolderingAlloy.getMolten(3744L),
+                        new FluidStack(FluidRegistry.getFluid("molten.mutatedlivingsolder"), 3744),
                         Materials.UUMatter.getFluid(24000L),
                         Materials.Osmium.getMolten(2304L)
                 }, getItemContainer("QuantumCircuit").get(1L), 20000, 32000000);
@@ -1309,9 +1309,9 @@ public class DreamCraftRecipeLoader {
                     },
                     new FluidStack[]{
                             Materials.Neutronium.getMolten(36864L),
-                            Materials.Tritanium.getMolten(36864L),
+                            Materials.SpaceTime.getMolten(36864L),
                             Materials.SuperconductorUEVBase.getMolten(36864L),
-                            Materials.DimensionallyTranscendentExoticCatalyst.getFluid(36864L)
+                            Materials.ExcitedDTEC.getMolten(36864L)
                     },
                     getItemContainer("StargateShieldingFoil").get(1L), 72000, 500000000);
 
@@ -1330,10 +1330,10 @@ public class DreamCraftRecipeLoader {
                             getItemContainer("QuantumCircuit").get(1L).splitStack(32)
                     },
                     new FluidStack[]{
-                            Materials.Neutronium.getMolten(9216L),
-                            Materials.Tritanium.getMolten(9216L),
-                            Materials.SuperconductorUEVBase.getMolten(9216L),
-                            Materials.DimensionallyTranscendentExoticCatalyst.getFluid(9216L)
+                            Materials.Neutronium.getMolten(36864L),
+                            Materials.SpaceTime.getMolten(36864L),
+                            Materials.SuperconductorUEVBase.getMolten(36864L),
+                            Materials.ExcitedDTEC.getMolten(36864L)
                     },
                     getItemContainer("StargateChevron").get(1L), 72000, 500000000);
 
@@ -1346,7 +1346,8 @@ public class DreamCraftRecipeLoader {
                             GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Osmiridium, 64L)
                     },
                     new FluidStack[]{
-                            Materials.Neutronium.getMolten(73728L),
+                            Materials.ExcitedDTEC.getMolten(73728L),
+                            Materials.SpaceTime.getMolten(73728L),
                             Materials.Tritanium.getMolten(73728L),
                             Materials.Concrete.getMolten(73728L)
                     },
@@ -1513,7 +1514,7 @@ public class DreamCraftRecipeLoader {
                 ItemList.Circuit_Parts_DiodeASMD.get(64),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorUHV, 64),
         }, new FluidStack[]{
-                Materials.SolderingAlloy.getMolten(4608),
+                new FluidStack(FluidRegistry.getFluid("molten.mutatedlivingsolder"), 4608),
                 Materials.Naquadria.getMolten(9216),
                 new FluidStack(FluidRegistry.getFluid("ic2coolant"), 32000)
         }, ItemList.ZPM3.get(1), 4000, 1600000);
