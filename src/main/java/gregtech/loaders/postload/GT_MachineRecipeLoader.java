@@ -711,7 +711,7 @@ public class GT_MachineRecipeLoader implements Runnable {
 
             new ItemStack[]{GT_Values.NI},
             new FluidStack[]{Materials.DimensionallyTranscendentResidue.getFluid(840L/2), Materials.Bedrockium.getMolten(8192L*144L)},
-            840, 118_638_885, 12700);
+            840, 118_638_885, 12_700);
 
         GT_Values.RA.addPlasmaForgeRecipe(
             new ItemStack[]{GT_Values.NI},
@@ -719,7 +719,7 @@ public class GT_MachineRecipeLoader implements Runnable {
 
             new ItemStack[]{GT_Values.NI},
             new FluidStack[]{Materials.DimensionallyTranscendentResidue.getFluid(420L), Materials.Bedrockium.getMolten(16384L*144L)},
-            420, 237_277_769, 13600);
+            420, 237_277_769, 13_600);
 
         // Misc
         GT_Values.RA.addPlasmaForgeRecipe(
@@ -727,34 +727,42 @@ public class GT_MachineRecipeLoader implements Runnable {
             new FluidStack[]{Materials.DimensionallyTranscendentResidue.getFluid(10000L), Materials.Infinity.getMolten(9216L)},
 
             new ItemStack[]{GT_Values.NI},
-            new FluidStack[]{Materials.SpaceTime.getMolten(1L)},
-            2000, 2000000000, 12700);
+            new FluidStack[]{Materials.SpaceTime.getMolten(72L)},
+            2_000, 2_000_000_000, 12_700);
 
         // -----------------------------------------------------------------------------------------------------------------------------
 
         // Catalysts for Plasma Forge.
-        GT_Values.RA.addFusionReactorRecipe(
+        GT_Values.RA.addMixerRecipe(
+            new ItemStack[] {GT_Values.NI},
             new FluidStack[]{Materials.Helium.getPlasma(10L), Materials.Iron.getPlasma(10L), Materials.Calcium.getPlasma(10L), Materials.Niobium.getPlasma(10L)},
+            new ItemStack[] {GT_Values.NI},
             new FluidStack[]{Materials.DimensionallyTranscendentCrudeCatalyst.getFluid(10L)},
-            20, 32500, 150000000
+            20, 32_500
         );
 
-        GT_Values.RA.addFusionReactorRecipe(
-            new FluidStack[]{Materials.Helium.getPlasma(10L), Materials.Iron.getPlasma(10L), Materials.Calcium.getPlasma(10L), Materials.Niobium.getPlasma(10L), Materials.Radon.getPlasma(10L), Materials.Nickel.getPlasma(10L), Materials.Boron.getPlasma(10L), Materials.Sulfur.getPlasma(10L)},
+        GT_Values.RA.addMixerRecipe(
+            new ItemStack[] {GT_Values.NI},
+            new FluidStack[]{Materials.DimensionallyTranscendentCrudeCatalyst.getFluid(10L), Materials.Radon.getPlasma(10L), Materials.Nickel.getPlasma(10L), Materials.Boron.getPlasma(10L), Materials.Sulfur.getPlasma(10L)},
+            new ItemStack[] {GT_Values.NI},
             new FluidStack[]{Materials.DimensionallyTranscendentProsaicCatalyst.getFluid(10L)},
-            20, 65000, 300000000
+            20, 65_000
         );
 
-        GT_Values.RA.addFusionReactorRecipe(
-            new FluidStack[]{Materials.Helium.getPlasma(10L), Materials.Iron.getPlasma(10L), Materials.Calcium.getPlasma(10L), Materials.Niobium.getPlasma(10L), Materials.Radon.getPlasma(10L), Materials.Nickel.getPlasma(10L), Materials.Boron.getPlasma(10L), Materials.Sulfur.getPlasma(10L), Materials.Nitrogen.getPlasma(10L), Materials.Zinc.getPlasma(10L), Materials.Silver.getPlasma(10L), Materials.Titanium.getPlasma(10L)},
+        GT_Values.RA.addMixerRecipe(
+            new ItemStack[] {GT_Values.NI},
+            new FluidStack[]{Materials.DimensionallyTranscendentProsaicCatalyst.getFluid(10L), Materials.Nitrogen.getPlasma(10L), Materials.Zinc.getPlasma(10L), Materials.Silver.getPlasma(10L), Materials.Titanium.getPlasma(10L)},
+            new ItemStack[] {GT_Values.NI},
             new FluidStack[]{Materials.DimensionallyTranscendentResplendentCatalyst.getFluid(10L)},
-            20, 130000, 600000000
+            20, 130_000
         );
 
-        GT_Values.RA.addFusionReactorRecipe(
-            new FluidStack[]{Materials.Helium.getPlasma(10L), Materials.Iron.getPlasma(10L), Materials.Calcium.getPlasma(10L), Materials.Niobium.getPlasma(10L), Materials.Radon.getPlasma(10L), Materials.Nickel.getPlasma(10L), Materials.Boron.getPlasma(10L), Materials.Sulfur.getPlasma(10L), Materials.Nitrogen.getPlasma(10L), Materials.Zinc.getPlasma(10L), Materials.Silver.getPlasma(10L), Materials.Titanium.getPlasma(10L), Materials.Americium.getPlasma(10L), Materials.Bismuth.getPlasma(10L), Materials.Oxygen.getPlasma(10L), Materials.Tin.getPlasma(10L)},
+        GT_Values.RA.addMixerRecipe(
+            new ItemStack[] {GT_Values.NI},
+            new FluidStack[]{Materials.DimensionallyTranscendentResplendentCatalyst.getFluid(10L), Materials.Americium.getPlasma(10L), Materials.Bismuth.getPlasma(10L), Materials.Oxygen.getPlasma(10L), Materials.Tin.getPlasma(10L)},
+            new ItemStack[] {GT_Values.NI},
             new FluidStack[]{Materials.DimensionallyTranscendentExoticCatalyst.getFluid(10L)},
-            20, 260000, 1200000000
+            20, 260_000
         );
 
         // -----------------------------------------------------------------------------------------------------------------------------
