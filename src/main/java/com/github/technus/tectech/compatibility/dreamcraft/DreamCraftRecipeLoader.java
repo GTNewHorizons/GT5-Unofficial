@@ -206,6 +206,36 @@ public class DreamCraftRecipeLoader {
                         Materials.DraconiumAwakened.getMolten(576),
                 }, ItemList.Casing_Coil_Infinity.get(1), 60*20, 8000000);
 
+        // Hypogen Coil
+        TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Casing_Coil_Infinity.get(1),
+                16_777_216*2, 2048*2, 8000000*4, 1, new Object[]{
+                        ItemList.Circuit_Biowarecomputer.get(1L),
+                        GT_ModHandler.getModItem("miscutils", "itemFineWireHypogen", 64, 0),
+                        GT_ModHandler.getModItem("miscutils", "itemScrewHypogen", 8, 0),
+                        GT_ModHandler.getModItem("dreamcraft", "item.MicaInsulatorFoil", 64, 0),
+                        GT_ModHandler.getModItem("dreamcraft", "item.MicaInsulatorFoil", 64, 0),
+                        GT_ModHandler.getModItem("dreamcraft", "item.MicaInsulatorFoil", 64, 0),
+                }, new FluidStack[]{
+                        Materials.Infinity.getMolten(576),
+                }, ItemList.Casing_Coil_Hypogen.get(1), 60*20, 8000000*4);
+
+        // Eternal coil
+        TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Casing_Coil_Hypogen.get(1),
+                16_777_216*4, 2048*4, 8000000*16, 1, new Object[]{
+                        GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Nano, 2),
+                        GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SpaceTime, 8),
+                        GT_OreDictUnificator.get(OrePrefixes.screw, Materials.SpaceTime, 16),
+                        GT_ModHandler.getModItem("dreamcraft", "item.MicaInsulatorFoil", 64, 0),
+                        GT_ModHandler.getModItem("dreamcraft", "item.MicaInsulatorFoil", 64, 0),
+                        GT_ModHandler.getModItem("dreamcraft", "item.MicaInsulatorFoil", 64, 0),
+                        GT_ModHandler.getModItem("dreamcraft", "item.MicaInsulatorFoil", 64, 0),
+                        GT_ModHandler.getModItem("dreamcraft", "item.MicaInsulatorFoil", 64, 0),
+                        GT_ModHandler.getModItem("dreamcraft", "item.MicaInsulatorFoil", 64, 0),
+                }, new FluidStack[]{
+                        new FluidStack(FluidRegistry.getFluid("molten.hypogen"), 576),
+                }, ItemList.Casing_Coil_Eternal.get(1), 60*20, 8_000_000*16);
+
+
         //Tesla Base
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.NickelZincFerrite, 6),
