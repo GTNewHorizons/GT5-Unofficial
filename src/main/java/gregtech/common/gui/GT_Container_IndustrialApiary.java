@@ -15,6 +15,7 @@ import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
 import java.util.ArrayList;
@@ -23,16 +24,18 @@ public class GT_Container_IndustrialApiary extends GT_ContainerMetaTile_Machine 
 
     GT_Slot_Holo slotItemTransferToggle;
     GT_Slot_Holo slotSpeedToggle;
+    GT_Slot_Holo slotPollenToggle;
     Slot slotBattery;
     Slot slotSpecial;
 
     boolean mItemTransfer;
+    boolean mStuttering;
 
     int mSpeed = 0; // scale 0 - 8
+    boolean retrievePollen;
 
     int mErrorStatesSize = 0;
     ArrayList<String> mErrorStates = new ArrayList<>(50);
-
 
     public GT_Container_IndustrialApiary(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
         super(aInventoryPlayer, aTileEntity);
@@ -42,10 +45,11 @@ public class GT_Container_IndustrialApiary extends GT_ContainerMetaTile_Machine 
     public void addSlots(InventoryPlayer aInventoryPlayer) {
         addSlotToContainer(slotItemTransferToggle = new GT_Slot_Holo(mTileEntity, 0, 8, 63, false, true, 1));
         addSlotToContainer(slotSpeedToggle = new GT_Slot_Holo(mTileEntity, 0, 26, 63, false, true, 1));
+        addSlotToContainer(slotPollenToggle = new GT_Slot_Holo(mTileEntity, 0, 8, 45, false, true, 1));
         int tStartIndex = 5;
 
-        addSlotToContainer(new ApiarySlot(this.mTileEntity, tStartIndex++, 26, 18));
-        addSlotToContainer(new ApiarySlot(this.mTileEntity, tStartIndex++, 26, 38));
+        addSlotToContainer(new ApiarySlot(this.mTileEntity, tStartIndex++, 37, 22));
+        addSlotToContainer(new ApiarySlot(this.mTileEntity, tStartIndex++, 37, 42));
 
         addSlotToContainer(new ApiarySlot(this.mTileEntity, tStartIndex++, 62, 24));
         addSlotToContainer(new ApiarySlot(this.mTileEntity, tStartIndex++, 80, 24));
@@ -74,13 +78,16 @@ public class GT_Container_IndustrialApiary extends GT_ContainerMetaTile_Machine 
                 machine.mSpeed++;
                 if(machine.mSpeed > 8) machine.mSpeed = 0;
                 return null;
+            case 2:
+                machine.retreviePollen = !machine.retreviePollen;
+                return null;
         }
         return super.slotClick(aSlotNumber, aMouseclick, aShifthold, aPlayer);
     }
 
     @Override
     public int getSlotStartIndex() {
-        return 2;
+        return 3;
     }
 
     @Override
@@ -102,6 +109,8 @@ public class GT_Container_IndustrialApiary extends GT_ContainerMetaTile_Machine 
 
         this.mSpeed = getMachine().mSpeed;
         this.mItemTransfer = getMachine().mItemTransfer;
+        this.mStuttering = getMachine().mStuttering;
+        this.retrievePollen = getMachine().retreviePollen;
 
         for (Object crafter : this.crafters) {
             ICrafting var1 = (ICrafting) crafter;
@@ -110,6 +119,8 @@ public class GT_Container_IndustrialApiary extends GT_ContainerMetaTile_Machine 
             var1.sendProgressBarUpdate(this, 102, getMachine().mErrorStates.size());
             for(IErrorState s : getMachine().mErrorStates)
                 var1.sendProgressBarUpdate(this, 103, s.getID());
+            var1.sendProgressBarUpdate(this, 104, this.mStuttering ? 1 : 0);
+            var1.sendProgressBarUpdate(this, 105, this.retrievePollen ? 1 : 0);
         }
     }
 
@@ -129,7 +140,13 @@ public class GT_Container_IndustrialApiary extends GT_ContainerMetaTile_Machine 
                 this.mErrorStates.clear();
                 break;
             case 103:
-                this.mErrorStates.add(StatCollector.translateToLocal(ForestryAPI.errorStateRegistry.getErrorState((short) par2).getDescription()));
+                this.mErrorStates.add(EnumChatFormatting.RED + StatCollector.translateToLocal("for." + ForestryAPI.errorStateRegistry.getErrorState((short) par2).getDescription()));
+                break;
+            case 104:
+                this.mStuttering = par2 == 1;
+                break;
+            case 105:
+                this.retrievePollen = par2 == 1;
                 break;
         }
     }

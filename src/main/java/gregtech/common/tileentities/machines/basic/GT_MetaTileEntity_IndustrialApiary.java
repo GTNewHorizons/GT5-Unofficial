@@ -3,6 +3,8 @@ package gregtech.common.tileentities.machines.basic;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.authlib.GameProfile;
 import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import forestry.api.apiculture.*;
 import forestry.api.arboriculture.EnumGermlingType;
 import forestry.api.core.*;
@@ -42,7 +44,7 @@ import static gregtech.api.util.GT_Utility.moveMultipleItemStacks;
 
 public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicMachine implements IBeeHousing, IBeeHousingInventory, IErrorLogic, IBeeModifier, IBeeListener {
 
-    static final int baseEUtUsage = 37;
+    public static final int baseEUtUsage = 37;
     static final int queen = 5;
     static final int drone = 6;
 
@@ -55,7 +57,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
     private ItemStack usedQueen = null;
 
     public GT_MetaTileEntity_IndustrialApiary(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 12, "BEEZ", 6, 9, "IndustrialApiary.png", "",
+        super(aID, aName, aNameRegional, aTier, 12, "BEES GOES BRRRR", 6, 9, "IndustrialApiary.png", "",
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_SIDE_BOXINATOR_ACTIVE),
                         TextureFactory.builder().addIcon(OVERLAY_SIDE_BOXINATOR_ACTIVE_GLOW).glow().build()),
@@ -384,10 +386,8 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                         moveMultipleItemStacks(aBaseMetaTileEntity, tTileEntity2, aBaseMetaTileEntity.getFrontFacing(), aBaseMetaTileEntity.getBackFacing(), null, false, (byte) 64, (byte) 1, (byte) 64, (byte) 1,tMaxStacks);
                     }
 
-                    int check = checkRecipe();
-                    if(check == FOUND_AND_SUCCESSFULLY_USED_RECIPE) {
+                    if(aBaseMetaTileEntity.isAllowedToWork() && checkRecipe() == FOUND_AND_SUCCESSFULLY_USED_RECIPE)
                         aBaseMetaTileEntity.setActive(true);
-                    }
                 }
             }
         }
@@ -407,6 +407,22 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
         }
         else return false;
 
+    }
+
+    @Override
+    public void setInventorySlotContents(int aIndex, ItemStack aStack) {
+        super.setInventorySlotContents(aIndex, aStack);
+        if(aIndex > drone && aIndex < getOutputSlot())
+            updateModifiers();
+        if(getBaseMetaTileEntity().isClientSide()){
+            if(aIndex == queen && aStack != null)
+                usedQueen = aStack.copy();
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    public ItemStack getUsedQueen(){
+        return usedQueen;
     }
 
     //region IBeeHousing
@@ -597,6 +613,8 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
 
     private boolean canWork(ItemStack queen){
         clearErrors();
+        if(queen == null)
+            return true; // Reloaded the chunk ?
         if(beeRoot.isMember(queen, EnumBeeType.PRINCESS.ordinal()))
             return true;
         IBee bee = beeRoot.getMember(queen);
@@ -645,8 +663,8 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
     private boolean selfLightedMod = false;
     private boolean sunlightSimulatedMod = false;
     private BiomeGenBase biomeOverride = null;
-    private float humidityMod = 1f;
-    private float temperatureMod = 1f;
+    private float humidityMod = 0f;
+    private float temperatureMod = 0f;
     private boolean isAutomated = false;
 
     public void updateModifiers(){
@@ -710,6 +728,10 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
         return geneticDecayMod;
     }
 
+    public float getEnergyModifier() {
+        return energyMod;
+    }
+
     @Override
     public boolean isSealed() {
         return sealedMod;
@@ -724,6 +746,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
     public boolean isSunlightSimulated() {
         return sunlightSimulatedMod;
     }
+
 
     @Override
     public boolean isHellish() {
