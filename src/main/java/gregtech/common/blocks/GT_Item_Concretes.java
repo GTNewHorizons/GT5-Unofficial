@@ -10,8 +10,8 @@ import java.util.List;
 public class GT_Item_Concretes extends GT_Item_Stones_Abstract {
     private final String mRunFasterToolTip = GT_LanguageManager.addStringLocalization("gt.runfastertooltip", "You can walk faster on this Block");
 
-    public GT_Item_Concretes(Block par1) {
-        super(par1);
+    public GT_Item_Concretes(Block block) {
+        super(block);
     }
 
     @Override

@@ -39,6 +39,7 @@ import gregtech.loaders.misc.GT_Bees;
 import gregtech.loaders.misc.GT_CoverLoader;
 import gregtech.loaders.postload.*;
 import gregtech.loaders.preload.*;
+import gregtech.nei.IMCForNEI;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
 import net.minecraft.entity.player.EntityPlayer;
@@ -270,6 +271,7 @@ public class GT_Mod implements IGT_Mod {
         }
         Waila.init();
         Harvestcraft.init();
+        IMCForNEI.IMCSender();
         GregTech_API.sLoadFinished = true;
         GT_Log.out.println("GT_Mod: Load-Phase finished!");
         GT_Log.ore.println("GT_Mod: Load-Phase finished!");

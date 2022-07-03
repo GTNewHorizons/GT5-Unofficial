@@ -22,19 +22,19 @@ public class GT_DummyWorld extends World {
     public GT_IteratorRandom mRandom = new GT_IteratorRandom();
     public ItemStack mLastSetBlock = null;
 
-    public GT_DummyWorld(ISaveHandler par1iSaveHandler, String par2Str, WorldProvider par3WorldProvider, WorldSettings par4WorldSettings, Profiler par5Profiler) {
-        super(par1iSaveHandler, par2Str, par4WorldSettings, par3WorldProvider, par5Profiler);
+    public GT_DummyWorld(ISaveHandler saveHandler, String name, WorldProvider worldProvider, WorldSettings worldSettings, Profiler profiler) {
+        super(saveHandler, name, worldSettings, worldProvider, profiler);
         this.rand = this.mRandom;
     }
 
     public GT_DummyWorld() {
         this(new ISaveHandler() {
                  @Override
-                 public void saveWorldInfoWithPlayer(WorldInfo var1, NBTTagCompound var2) {
+                 public void saveWorldInfoWithPlayer(WorldInfo worldInfo, NBTTagCompound nbtTagCompound) {
                  }
 
                  @Override
-                 public void saveWorldInfo(WorldInfo var1) {
+                 public void saveWorldInfo(WorldInfo worldInfo) {
                  }
 
                  @Override
@@ -48,12 +48,12 @@ public class GT_DummyWorld extends World {
                  }
 
                  @Override
-                 public File getMapFileFromName(String var1) {
+                 public File getMapFileFromName(String mapName) {
                      return null;
                  }
 
                  @Override
-                 public IChunkLoader getChunkLoader(WorldProvider var1) {
+                 public IChunkLoader getChunkLoader(WorldProvider worldProvider) {
                      return null;
                  }
 

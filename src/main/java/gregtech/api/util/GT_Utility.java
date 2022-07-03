@@ -344,12 +344,11 @@ public class GT_Utility {
         try {
             Field tPotionHashmap = null;
 
-            Field[] var3 = EntityLiving.class.getDeclaredFields();
-            int var4 = var3.length;
+            Field[] fields = EntityLiving.class.getDeclaredFields();
 
-            for (Field var6 : var3) {
-                if (var6.getType() == HashMap.class) {
-                    tPotionHashmap = var6;
+            for (Field field : fields) {
+                if (field.getType() == HashMap.class) {
+                    tPotionHashmap = field;
                     tPotionHashmap.setAccessible(true);
                     break;
                 }
@@ -372,12 +371,11 @@ public class GT_Utility {
         try {
             Field tPotionHashmap = null;
 
-            Field[] var3 = EntityLiving.class.getDeclaredFields();
-            int var4 = var3.length;
+            Field[] fields = EntityLiving.class.getDeclaredFields();
 
-            for (Field var6 : var3) {
-                if (var6.getType() == HashMap.class) {
-                    tPotionHashmap = var6;
+            for (Field field : fields) {
+                if (field.getType() == HashMap.class) {
+                    tPotionHashmap = field;
                     tPotionHashmap.setAccessible(true);
                     break;
                 }

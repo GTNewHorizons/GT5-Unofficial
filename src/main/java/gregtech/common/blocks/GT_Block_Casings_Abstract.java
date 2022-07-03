@@ -20,7 +20,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import java.util.List;
-import java.util.Random;
 
 public abstract class GT_Block_Casings_Abstract extends GT_Generic_Block {
     public GT_Block_Casings_Abstract(Class<? extends ItemBlock> aItemClass, String aName, Material aMaterial) {
@@ -84,16 +83,6 @@ public abstract class GT_Block_Casings_Abstract extends GT_Generic_Block {
     }
 
     @Override
-    public boolean renderAsNormalBlock() {
-        return true;
-    }
-
-    @Override
-    public boolean isOpaqueCube() {
-        return true;
-    }
-
-    @Override
     public void breakBlock(World aWorld, int aX, int aY, int aZ, Block aBlock, int aMetaData) {
         if (GregTech_API.isMachineBlock(this, aWorld.getBlockMetadata(aX, aY, aZ))) {
             GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
@@ -106,23 +95,13 @@ public abstract class GT_Block_Casings_Abstract extends GT_Generic_Block {
     }
 
     @Override
-    public int damageDropped(int par1) {
-        return par1;
+    public int damageDropped(int metadata) {
+        return metadata;
     }
 
     @Override
-    public int getDamageValue(World par1World, int par2, int par3, int par4) {
-        return par1World.getBlockMetadata(par2, par3, par4);
-    }
-
-    @Override
-    public int quantityDropped(Random par1Random) {
-        return 1;
-    }
-
-    @Override
-    public Item getItemDropped(int par1, Random par2Random, int par3) {
-        return Item.getItemFromBlock(this);
+    public int getDamageValue(World aWorld, int aX, int aY, int aZ) {
+        return aWorld.getBlockMetadata(aX, aY, aZ);
     }
 
     @Override
@@ -132,7 +111,7 @@ public abstract class GT_Block_Casings_Abstract extends GT_Generic_Block {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item aItem, CreativeTabs par2CreativeTabs, List aList) {
+    public void getSubBlocks(Item aItem, CreativeTabs aCreativeTab, List aList) {
         for (int i = 0; i < 16; i++) {
             ItemStack aStack = new ItemStack(aItem, 1, i);
             if (!aStack.getDisplayName().contains(".name")) aList.add(aStack);

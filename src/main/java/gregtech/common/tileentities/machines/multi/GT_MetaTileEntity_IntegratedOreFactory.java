@@ -78,11 +78,12 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends GT_MetaTileEntity_En
     private static final HashSet<Integer> isImpureDust = new HashSet<>();
     private static final HashSet<Integer> isThermal = new HashSet<>();
     private static final HashSet<Integer> isOre = new HashSet<>();
+    private static boolean isInit = false;
     private ItemStack[] sMidProduct;
     private int sMode = 0;
     private boolean sVoidStone = false;
 
-    static {
+    private static void initHash() {
         for (String name : OreDictionary.getOreNames()) {
             if (name == null || name.isEmpty()) continue;
             if (name.startsWith("crushedPurified")) {
@@ -228,6 +229,11 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends GT_MetaTileEntity_En
 
     @Override
     public boolean checkRecipe(ItemStack aStack) {
+        if (!isInit) {
+            initHash();
+            isInit = true;
+        }
+
         int tCharged = MAX_PARA;
         List<ItemStack> tInput = getStoredInputs();
         List<FluidStack> tInputFluid = getStoredFluids();
@@ -262,9 +268,10 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends GT_MetaTileEntity_En
                     ore.stackSize = 0;
                 } else {
                     tRealUsed = tCharged;
-                    tOres.add(GT_Utility.copyAmount(ore.stackSize - tCharged, ore));
-                    tCharged = 0;
+                    tOres.add(GT_Utility.copyAmount(tCharged, ore));
                     ore.stackSize -= tCharged;
+                    tCharged = 0;
+                    break;
                 }
             }
         }
@@ -273,8 +280,8 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends GT_MetaTileEntity_En
             return false;
         }
 
-        depleteInput(GT_ModHandler.getDistilledWater(tRealUsed * 200));
-        depleteInput(Materials.Lubricant.getFluid(tRealUsed * 2));
+        depleteInput(GT_ModHandler.getDistilledWater(tRealUsed * 200L));
+        depleteInput(Materials.Lubricant.getFluid(tRealUsed * 2L));
 
         sMidProduct = tOres.toArray(new ItemStack[0]);
 
