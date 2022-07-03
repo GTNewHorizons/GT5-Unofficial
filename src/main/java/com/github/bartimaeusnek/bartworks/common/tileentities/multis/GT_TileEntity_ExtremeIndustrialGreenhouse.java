@@ -1,3 +1,20 @@
+/*
+ *  Copyright (C) 2022 kuba6000
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package com.github.bartimaeusnek.bartworks.common.tileentities.multis;
 
 import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
@@ -32,6 +49,7 @@ import net.minecraft.block.IGrowable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemSeeds;
@@ -49,7 +67,6 @@ import java.util.*;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_GLOW;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
 public class GT_TileEntity_ExtremeIndustrialGreenhouse extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_TileEntity_ExtremeIndustrialGreenhouse> {
@@ -64,6 +81,7 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse extends GT_MetaTileEntity
     private int waterusage = 0;
     private static final int CASING_INDEX = 49;
     private static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final Item forestryfertilizer = GameRegistry.findItem("Forestry", "fertilizerCompound");
     private static final IStructureDefinition<GT_TileEntity_ExtremeIndustrialGreenhouse> STRUCTURE_DEFINITION = StructureDefinition.<GT_TileEntity_ExtremeIndustrialGreenhouse>builder()
         .addShape(STRUCTURE_PIECE_MAIN, transpose(new String[][] {
             {"ccccc", "ccccc", "ccccc", "ccccc", "ccccc"},
@@ -140,6 +158,10 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse extends GT_MetaTileEntity
         return (d, r, f) -> d.offsetY == 0 && r.isNotRotated() && f.isNotFlipped();
     }
 
+    private static String tierString(int tier){
+        return GT_Values.TIER_COLORS[tier] + GT_Values.VN[tier] + ChatColorHelper.RESET + ChatColorHelper.GRAY;
+    }
+
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
@@ -150,6 +172,7 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse extends GT_MetaTileEntity
             addInfo("Use screwdriver to enable/change/disable setup mode").
             addInfo("Use screwdriver while sneaking to enable/disable IC2 mode").
             addInfo("Uses 1000L of water per crop per operation").
+            addInfo("You can insert fertilizer each operation to get more drops (max +400%)").
             addInfo("-------------------- SETUP   MODE --------------------").
             addInfo("Does not take power").
             addInfo("There are two modes: input / output").
@@ -157,22 +180,24 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse extends GT_MetaTileEntity
             addInfo("[IC2] You need to also input block that is required under the crop").
             addInfo("Output mode: machine will take planted seeds and output them").
             addInfo("-------------------- NORMAL CROPS --------------------").
-            addInfo("Minimal tier: EV").
+            addInfo("Minimal tier: " + tierString(4)).
             addInfo("Starting with 1 slot").
             addInfo("Every slot gives 64 crops").
-            addInfo("Every tier past EV adds additional 2 slots").
+            addInfo("Every tier past " + tierString(4) + ", slots are multiplied by 2").
             addInfo("Base process time: 5 sec").
-            addInfo("Process time is divided by number of tiers past HV (Minimum 1 sec)").
+            addInfo("Process time is divided by number of tiers past " + tierString(3) + " (Minimum 1 sec)").
             addInfo("All crops are grown at the end of the operation").
             addInfo("Will automatically craft seeds if they are not dropped").
+            addInfo("1 Fertilizer per 1 crop +200%").
             addInfo("-------------------- IC2    CROPS --------------------").
-            addInfo("Minimal tier: UV").
-            addInfo("Need UV glass tier").
+            addInfo("Minimal tier: " + tierString(6)).
+            addInfo("Need " + tierString(6) + " glass tier").
             addInfo("Starting with 4 slots").
             addInfo("Every slot gives 1 crop").
-            addInfo("Every tier past UV, slots are multiplied by 4").
+            addInfo("Every tier past " + tierString(6) + ", slots are multiplied by 4").
             addInfo("Process time: 5 sec").
             addInfo("All crops are accelerated by x32 times").
+            addInfo("1 Fertilizer per 1 crop +10%").
             addInfo("Cannot process primordial").
             addInfo(BW_Tooltip_Reference.TT_BLUEPRINT).
             addSeparator().
@@ -272,8 +297,6 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse extends GT_MetaTileEntity
         buildPiece(STRUCTURE_PIECE_MAIN, itemStack, b, 2, 5, 0);
     }
 
-
-
     @Override
     public boolean isCorrectMachinePart(ItemStack itemStack) {
         return true;
@@ -283,12 +306,12 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse extends GT_MetaTileEntity
     public boolean checkRecipe(ItemStack itemStack) {
         long v = this.getMaxInputVoltage();
         int tier = GT_Utility.getTier(v);
-        if(tier < (isIC2Mode ? 8 : 4))
+        if(tier < (isIC2Mode ? 6 : 4))
             mMaxSlots = 0;
         else if(isIC2Mode)
-            mMaxSlots = 4 << (2 * (tier - 8));
+            mMaxSlots = 4 << (2 * (tier - 6));
         else
-            mMaxSlots = Math.max((tier - 4) * 2, 1);
+            mMaxSlots = 1 << (tier - 4);
         if(mStorage.size() > mMaxSlots)
         {
             // Void if user just downgraded power
@@ -318,31 +341,57 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse extends GT_MetaTileEntity
             return false;
 
         // OVERCLOCK
+        // FERTILIZER IDEA - IC2 +10% per fertilizer per crop per operation, NORMAL +200% per fertilizer per crop per operation
+
+        int boost = 0;
+        int maxboost = 0;
+        for(GreenHouseSlot s : mStorage)
+            maxboost += s.input.stackSize * (isIC2Mode ? 40 : 2);
+
+        ArrayList<ItemStack> inputs = getStoredInputs();
+        for(ItemStack i : inputs){
+            if(( i.getItem() == Items.dye && i.getItemDamage() == 15) ||
+                (forestryfertilizer != null && (i.getItem() == forestryfertilizer)) ||
+                (GT_Utility.areStacksEqual(i, Ic2Items.fertilizer)))
+            {
+                int used = Math.min(i.stackSize, maxboost - boost);
+                i.stackSize -= used;
+                boost += used;
+            }
+            if(boost == maxboost)
+                break;
+        }
+
+        double multiplier = 1.d + (((double)boost/(double)maxboost) * 4d);
+
         if(isIC2Mode)
         {
-            if(glasTier < 8)
+            if(glasTier < 6)
                 return false;
             this.mMaxProgresstime = 100;
             List<ItemStack> outputs = new ArrayList<>();
             for (int i = 0; i < Math.min(mMaxSlots, mStorage.size()); i++)
-                outputs.addAll(mStorage.get(i).getIC2Drops(this.mMaxProgresstime / 8));
+                outputs.addAll(mStorage.get(i).getIC2Drops(((double)this.mMaxProgresstime / 8d) * multiplier));
             this.mOutputItems = outputs.toArray(new ItemStack[0]);
         }
         else {
             this.mMaxProgresstime = Math.max(20, 100 / (tier - 3)); // Min 1 s
             List<ItemStack> outputs = new ArrayList<>();
             for (int i = 0; i < Math.min(mMaxSlots, mStorage.size()); i++) {
-                for (ItemStack drop : mStorage.get(i).getDrops())
-                    outputs.add(drop.copy());
+                for (ItemStack drop : mStorage.get(i).getDrops()) {
+                    ItemStack s = drop.copy();
+                    s.stackSize = (int)((double)s.stackSize * multiplier);
+                    outputs.add(s);
+                }
             }
             this.mOutputItems = outputs.toArray(new ItemStack[0]);
         }
         this.mEUt = -(int)((double) GT_Values.V[tier] * 0.99d);
         this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;
+        this.updateSlots();
         return true;
     }
-
 
     @Override
     public boolean checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
@@ -724,11 +773,11 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse extends GT_MetaTileEntity
         Map<String, Double> dropprogress = new HashMap<>();
         static Map<String, ItemStack> dropstacks = new HashMap<>();
 
-        public List<ItemStack> getIC2Drops(int timeelapsed){
+        public List<ItemStack> getIC2Drops(double timeelapsed){
             int r = rn.nextInt(10);
             if(generations.size() <= r)
                 return new ArrayList<>();
-            double growthPercent = ((double)timeelapsed / (double)growthticks);
+            double growthPercent = (timeelapsed / (double)growthticks);
             List<ItemStack> generation = generations.get(r);
             List<ItemStack> copied = new ArrayList<>();
             for(ItemStack g : generation)
@@ -809,6 +858,5 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse extends GT_MetaTileEntity
             return count;
         }
     }
-
 
 }
