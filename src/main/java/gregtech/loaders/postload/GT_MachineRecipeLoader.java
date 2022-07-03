@@ -728,7 +728,7 @@ public class GT_MachineRecipeLoader implements Runnable {
 
             new ItemStack[]{GT_Values.NI},
             new FluidStack[]{Materials.SpaceTime.getMolten(72L)},
-            2_000, 2_000_000_000, 12_700);
+            2_000*5, 2_000_000_000, 12_700);
 
         // -----------------------------------------------------------------------------------------------------------------------------
 
