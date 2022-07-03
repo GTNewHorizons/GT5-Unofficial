@@ -81,7 +81,7 @@ public class GT_Generic_Item extends Item implements IProjectileItem {
     }
 
     @Override
-    public IIcon getIconFromDamage(int par1) {
+    public IIcon getIconFromDamage(int aMetaData) {
         return mIcon;
     }
 

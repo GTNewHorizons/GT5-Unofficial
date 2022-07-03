@@ -57,30 +57,30 @@ public class GT_Container_Boiler extends GT_ContainerMetaTile_Machine {
         this.mProcessingEnergy = Math.min(14, Math.max(this.mProcessingEnergy > 0 ? 1 : 0, this.mProcessingEnergy * 14 / 1000));
 
         for (Object crafter : this.crafters) {
-            ICrafting var1 = (ICrafting) crafter;
-            var1.sendProgressBarUpdate(this, 100, this.mTemperature);
-            var1.sendProgressBarUpdate(this, 101, this.mProcessingEnergy);
-            var1.sendProgressBarUpdate(this, 102, this.mSteamAmount);
-            var1.sendProgressBarUpdate(this, 103, this.mWaterAmount);
+            ICrafting player = (ICrafting) crafter;
+            player.sendProgressBarUpdate(this, 100, this.mTemperature);
+            player.sendProgressBarUpdate(this, 101, this.mProcessingEnergy);
+            player.sendProgressBarUpdate(this, 102, this.mSteamAmount);
+            player.sendProgressBarUpdate(this, 103, this.mWaterAmount);
         }
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void updateProgressBar(int par1, int par2) {
-        super.updateProgressBar(par1, par2);
-        switch (par1) {
+    public void updateProgressBar(int id, int value) {
+        super.updateProgressBar(id, value);
+        switch (id) {
             case 100:
-                this.mTemperature = par2;
+                this.mTemperature = value;
                 break;
             case 101:
-                this.mProcessingEnergy = par2;
+                this.mProcessingEnergy = value;
                 break;
             case 102:
-                this.mSteamAmount = par2;
+                this.mSteamAmount = value;
                 break;
             case 103:
-                this.mWaterAmount = par2;
+                this.mWaterAmount = value;
         }
     }
 }

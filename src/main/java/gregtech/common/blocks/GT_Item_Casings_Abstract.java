@@ -23,8 +23,8 @@ public abstract class GT_Item_Casings_Abstract extends ItemBlock {
     protected final String mCoil09Tooltip = GT_LanguageManager.addStringLocalization("gt.coil09tooltip", "Base Heating Capacity = 10800 Kelvin");
     protected final String mBlastProofTooltip = GT_LanguageManager.addStringLocalization("gt.blastprooftooltip", "This Block is Blast Proof");
 
-    public GT_Item_Casings_Abstract(Block par1) {
-        super(par1);
+    public GT_Item_Casings_Abstract(Block block) {
+        super(block );
         setMaxDamage(0);
         setHasSubtypes(true);
         setCreativeTab(GregTech_API.TAB_GREGTECH_MATERIALS);

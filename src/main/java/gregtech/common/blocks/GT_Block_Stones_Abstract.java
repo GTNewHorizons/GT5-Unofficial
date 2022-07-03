@@ -22,7 +22,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import java.util.List;
-import java.util.Random;
 
 public class GT_Block_Stones_Abstract extends GT_Generic_Block implements IOreRecipeRegistrator {
     public GT_Block_Stones_Abstract(Class<? extends ItemBlock> aItemClass, String aName) {
@@ -100,14 +99,6 @@ public class GT_Block_Stones_Abstract extends GT_Generic_Block implements IOreRe
         return true;
     }
     @Override
-    public boolean renderAsNormalBlock() {
-        return true;
-    }
-    @Override
-    public boolean isOpaqueCube() {
-        return true;
-    }
-    @Override
     public IIcon getIcon(int aSide, int aMeta) {
         if ((aMeta >= 0) && (aMeta < 16)) {
             return gregtech.api.enums.Textures.BlockIcons.GRANITES[aMeta].getIcon();
@@ -120,21 +111,12 @@ public class GT_Block_Stones_Abstract extends GT_Generic_Block implements IOreRe
         return world.getBlockMetadata(x, y, z) % 8 < 3;
     }
     @Override
-    public int damageDropped(int par1) {
-        return par1 % 8 == 0 ? par1 + 1 : par1;
+    public int damageDropped(int metadata) {
+        return metadata % 8 == 0 ? metadata + 1 : metadata;
     }
     @Override
-    public int getDamageValue(World par1World, int par2, int par3, int par4) {
-        return par1World.getBlockMetadata(par2, par3, par4);
-    }
-    @Override
-    public int quantityDropped(Random par1Random) {
-        return 1;
-    }
-
-    @Override
-    public Item getItemDropped(int par1, Random par2Random, int par3) {
-        return Item.getItemFromBlock(this);
+    public int getDamageValue(World aWorld, int aX, int aY, int aZ) {
+        return aWorld.getBlockMetadata(aX, aY, aZ);
     }
 
     @Override
@@ -144,7 +126,7 @@ public class GT_Block_Stones_Abstract extends GT_Generic_Block implements IOreRe
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item aItem, CreativeTabs par2CreativeTabs, List aList) {
+    public void getSubBlocks(Item aItem, CreativeTabs aCreativeTab, List aList) {
         for (int i = 0; i < 16; i++) {
             aList.add(new ItemStack(aItem, 1, i));
         }

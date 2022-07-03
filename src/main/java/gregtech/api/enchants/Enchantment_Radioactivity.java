@@ -40,7 +40,7 @@ public class Enchantment_Radioactivity extends EnchantmentDamage {
     }
 
     @Override
-    public boolean canApply(ItemStack par1ItemStack) {
+    public boolean canApply(ItemStack itemStack) {
         return false;
     }
 
