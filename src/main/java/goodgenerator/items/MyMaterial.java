@@ -3,6 +3,7 @@ package goodgenerator.items;
 import goodgenerator.util.CharExchanger;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.TextureSet;
 import com.github.bartimaeusnek.bartworks.util.Pair;
 
@@ -343,7 +344,7 @@ public class MyMaterial implements Runnable {
             new short[]{0xeb,0xbc,0x2f},
             "Ether",
             subscriptNumbers("CH3CH2OCH2CH3"),
-            new Werkstoff.Stats(),
+            new Werkstoff.Stats().setElektrolysis(true),
             Werkstoff.Types.COMPOUND,
             new Werkstoff.GenerationFeatures().disable().addCells(),
             OffsetID + 28,
@@ -596,7 +597,9 @@ public class MyMaterial implements Runnable {
             Werkstoff.Types.COMPOUND,
             new Werkstoff.GenerationFeatures().disable().onlyDust(),
             OffsetID + 51,
-            TextureSet.SET_SHINY
+            TextureSet.SET_SHINY,
+            new Pair<>(Zinc, 1),
+            new Pair<>(Chlorine, 2)
     );
 
     public static final Werkstoff zincThoriumAlloy = new Werkstoff(
@@ -728,7 +731,7 @@ public class MyMaterial implements Runnable {
             new short[]{0x33,0x33,0x33},
             "Naquadahine",
             subscriptNumbers("NqO2"),
-            new Werkstoff.Stats().setElektrolysis(true),
+            new Werkstoff.Stats().setElektrolysis(false),
             Werkstoff.Types.COMPOUND,
             new Werkstoff.GenerationFeatures().disable().onlyDust(),
             OffsetID + 62,
@@ -1277,6 +1280,20 @@ public class MyMaterial implements Runnable {
         new Werkstoff.GenerationFeatures().disable().addCells(),
         OffsetID + 106,
         TextureSet.SET_FLUID
+    );
+
+    public static final Werkstoff magnesiumSulphate = new Werkstoff(
+        new short[]{0x87,0x74,0x91},
+        "Magnesium Sulphate",
+        subscriptNumbers("MgSO4"),
+        new Werkstoff.Stats().setElektrolysis(true),
+        Werkstoff.Types.COMPOUND,
+        new Werkstoff.GenerationFeatures().disable().onlyDust(),
+        OffsetID + 107,
+        TextureSet.SET_DULL,
+        new Pair<>(Magnesium, 1),
+        new Pair<>(Sulfur, 1),
+        new Pair<>(Oxygen, 4)
     );
 
     @Override

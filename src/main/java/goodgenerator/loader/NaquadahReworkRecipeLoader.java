@@ -55,15 +55,16 @@ public class NaquadahReworkRecipeLoader {
                 GT_Utility.getIntegratedCircuit(1),
                 fluoroantimonicAcid.getFluidOrGas(3000),
                 lowQualityNaquadahEmulsion.getFluidOrGas(2000),
-                titaniumTrifluoride.get(OrePrefixes.dust, 1),
+                titaniumTrifluoride.get(OrePrefixes.dust, 4),
                 null,
                 100,
                 480,
                 3000
         );
 
+        //TiF3 + 3H = Ti + 3HF
         GT_Values.RA.addBlastRecipe(
-                titaniumTrifluoride.get(OrePrefixes.dust, 1),
+                titaniumTrifluoride.get(OrePrefixes.dust, 4),
                 GT_Utility.getIntegratedCircuit(1),
                 Materials.Hydrogen.getGas(3000),
                 Materials.HydrofluoricAcid.getFluid(3000),
@@ -84,14 +85,15 @@ public class NaquadahReworkRecipeLoader {
                 480
         );
 
+        //2C8H18O + H3PO4 =Na,C2H6O= C16H35O3P + 2H2O
         GT_Values.RA.addMultiblockChemicalRecipe(
                 new ItemStack[]{
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 16)
+                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 2)
                 },
                 new FluidStack[]{
                         towEthyl1Hexanol.getFluidOrGas(2000),
                         Materials.PhosphoricAcid.getFluid(1000),
-                        Materials.Ethanol.getFluid(4000)
+                        Materials.Ethanol.getFluid(2000)
                 },
                 new FluidStack[]{
                         P507.getFluidOrGas(1000)
@@ -172,15 +174,16 @@ public class NaquadahReworkRecipeLoader {
                 null,
                 naquadahRichSolution.getFluidOrGas(5000),
                 P507.getFluidOrGas(1000),
-                naquadahine.get(OrePrefixes.dust, 10),
+                naquadahine.get(OrePrefixes.dust, 30),
                 10000,
                 1000,
                 120,
                 false
         );
 
+        //NqO2 + C = CO2 + Nq
         GT_Values.RA.addBlastRecipe(
-                naquadahine.get(OrePrefixes.dust, 1),
+                naquadahine.get(OrePrefixes.dust, 3),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1),
                 null,
                 Materials.CarbonDioxide.getGas(1000),
@@ -196,10 +199,11 @@ public class NaquadahReworkRecipeLoader {
                 GT_Utility.getIntegratedCircuit(1),
                 lowQualityNaquadahEmulsion.getFluidOrGas(10000),
                 lowQualityNaquadahSolution.getFluidOrGas(9000),
-                galliumHydroxide.get(OrePrefixes.dust, 16),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.AntimonyTrioxide, 10),
-                null,null,null, null,
-                new int[]{6250, 10000},
+                galliumHydroxide.get(OrePrefixes.dust, 64),
+                galliumHydroxide.get(OrePrefixes.dust, 48),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Antimony, 15),
+                null,null, null,
+                new int[]{6250, 6250, 10000},
                 1000,
                 1920
         );
@@ -224,6 +228,7 @@ public class NaquadahReworkRecipeLoader {
                 1920
         );
 
+        //ZnSO4 + 2H = H2SO4 + Zn
         GT_Values.RA.addChemicalRecipe(
             WerkstoffLoader.ZincSulfate.get(OrePrefixes.dust, 6),
             null,
@@ -235,7 +240,7 @@ public class NaquadahReworkRecipeLoader {
         );
 
         GT_Values.RA.addAutoclaveRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SodiumHydroxide, 27),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SodiumHydroxide, 60),
                 null,
                 enrichedNaquadahRichSolution.getFluidOrGas(10000),
                 P507.getFluidOrGas(2500),
@@ -246,20 +251,6 @@ public class NaquadahReworkRecipeLoader {
                 false
         );
 
-        if (LoadedList.GTNH_CORE) {
-            GT_Values.RA.addAutoclaveRecipe(
-                    GT_ModHandler.getModItem("dreamcraft", "item.PotassiumHydroxideDust", 5),
-                    null,
-                    enrichedNaquadahRichSolution.getFluidOrGas(5000),
-                    P507.getFluidOrGas(1250),
-                    concentratedEnrichedNaquadahSludge.get(OrePrefixes.dust, 4),
-                    10000,
-                    500,
-                    480,
-                    false
-            );
-        }
-
         MyRecipeAdder.instance.addNeutronActivatorRecipe(
                 null,
                 new ItemStack[]{
@@ -267,17 +258,21 @@ public class NaquadahReworkRecipeLoader {
                 },
                 null,
                 new ItemStack[]{
-                        enrichedNaquadahSulphate.get(OrePrefixes.dust, 15),
-                        WerkstoffLoader.Sodiumsulfate.get(OrePrefixes.dust, 20),
-                        lowQualityNaquadriaSulphate.get(OrePrefixes.dust, 2)
+                        enrichedNaquadahSulphate.get(OrePrefixes.dust, 64),
+                        enrichedNaquadahSulphate.get(OrePrefixes.dust, 64),
+                        enrichedNaquadahSulphate.get(OrePrefixes.dust, 37),
+                        WerkstoffLoader.Sodiumsulfate.get(OrePrefixes.dust, 64),
+                        WerkstoffLoader.Sodiumsulfate.get(OrePrefixes.dust, 64),
+                        WerkstoffLoader.Sodiumsulfate.get(OrePrefixes.dust, 12),
                 },
                 120,
                 480,
                 460
         );
 
+        //Nq+(SO4)2 + 2Zn = Nq+ + 2ZnSO4
         GT_Values.RA.addBlastRecipe(
-                enrichedNaquadahSulphate.get(OrePrefixes.dust, 1),
+                enrichedNaquadahSulphate.get(OrePrefixes.dust, 11),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Zinc, 2),
                 null,
                 null,
@@ -288,15 +283,16 @@ public class NaquadahReworkRecipeLoader {
                 7500
         );
 
+        //KeSO4 + 2H = Ke + H2SO4
         GT_Values.RA.addMultiblockChemicalRecipe(
                 new ItemStack[]{
-                        triniumSulphate.get(OrePrefixes.dust, 4),
+                        triniumSulphate.get(OrePrefixes.dust, 6),
                 },
                 new FluidStack[]{
-                        Materials.Hydrogen.getGas(4000)
+                        Materials.Hydrogen.getGas(2000)
                 },
                 new FluidStack[]{
-                        Materials.SulfuricAcid.getFluid(4000)
+                        Materials.SulfuricAcid.getFluid(1000)
                 },
                 new ItemStack[]{
                         GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Trinium, 1),
@@ -310,7 +306,7 @@ public class NaquadahReworkRecipeLoader {
                 null,
                 Materials.PhosphoricAcid.getFluid(4000),
                 null,
-                indiumPhosphate.get(OrePrefixes.dust, 1),
+                indiumPhosphate.get(OrePrefixes.dust, 6),
                 lowQualityNaquadriaPhosphate.get(OrePrefixes.dust, 4),
                 null, null, null, null,
                 new int[]{2000, 10000},
@@ -318,20 +314,25 @@ public class NaquadahReworkRecipeLoader {
                 122880
         );
 
+        //Ga(OH)3 + 3Na = Ga + 3NaOH
         GT_Values.RA.addChemicalRecipe(
-                galliumHydroxide.get(OrePrefixes.dust, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 1),
+                galliumHydroxide.get(OrePrefixes.dust, 7),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 2),
+                null,
+                null,
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Gallium, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SodiumHydroxide, 9),
                 40,
                 30
         );
 
+        //2InPO4 + 3Ca = 2In + Ca3(PO4)2
         GT_Values.RA.addChemicalRecipe(
-                indiumPhosphate.get(OrePrefixes.dust, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Calcium, 1),
+                indiumPhosphate.get(OrePrefixes.dust, 12),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Calcium, 3),
                 null, null,
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Indium, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TricalciumPhosphate, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Indium, 2),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TricalciumPhosphate, 5),
                 20,
                 30
         );
@@ -354,7 +355,7 @@ public class NaquadahReworkRecipeLoader {
                 null,
                 null,
                 new ItemStack[]{
-                        naquadriaSulphate.get(OrePrefixes.dust, 4),
+                        naquadriaSulphate.get(OrePrefixes.dust, 44),
                         lowQualityNaquadriaSulphate.get(OrePrefixes.dust, 6)
                 },
                 100,
@@ -384,26 +385,28 @@ public class NaquadahReworkRecipeLoader {
                 7680
         );
 
+        //Nq*(SO4)2 + 2Mg = Nq* + 2MgSO4
         GT_Values.RA.addBlastRecipe(
-                naquadriaSulphate.get(OrePrefixes.dust, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Magnesium, 1),
+                naquadriaSulphate.get(OrePrefixes.dust, 11),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Magnesium, 2),
                 null,
-                Materials.HydricSulfide.getGas(1000),
+                null,
                 GT_OreDictUnificator.get(OrePrefixes.ingotHot, Materials.Naquadria, 1),
-                null,
+                magnesiumSulphate.get(OrePrefixes.dust, 12),
                 100,
                 122880,
                 9100
         );
 
+        //InPO4 + Ga(OH)3 = InGaP
         GT_Values.RA.addMixerRecipe(
-                indiumPhosphate.get(OrePrefixes.dust, 1),
-                galliumHydroxide.get(OrePrefixes.dust, 1),
+                indiumPhosphate.get(OrePrefixes.dust, 6),
+                galliumHydroxide.get(OrePrefixes.dust, 7),
                 GT_Utility.getIntegratedCircuit(2),
                 null,
                 null,
                 null,
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.IndiumGalliumPhosphide, 2),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.IndiumGalliumPhosphide, 3),
                 15,
                 7
         );
@@ -467,7 +470,7 @@ public class NaquadahReworkRecipeLoader {
 
         GT_Values.RA.addBlastRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.block, Materials.Silicon, 16),
-                naquadahine.get(OrePrefixes.dust, 1),
+                naquadahine.get(OrePrefixes.dust, 3),
                 Materials.Argon.getGas(8000),
                 null,
                 ItemList.Circuit_Silicon_Ingot3.get(1),
@@ -477,10 +480,14 @@ public class NaquadahReworkRecipeLoader {
                 4484
         );
 
+        //NqO2 + 4Na = 2Na2O + Nq
         GT_Values.RA.addChemicalRecipe(
-                naquadahine.get(OrePrefixes.dust, 1),
-                Materials.Sodium.getDust(1),
+                naquadahine.get(OrePrefixes.dust, 3),
+                Materials.Sodium.getDust(4),
+                null,
+                null,
                 Materials.Naquadah.getDust(1),
+                Materials.SodiumOxide.getDust(6),
                 100,
                 1920
         );
@@ -497,6 +504,7 @@ public class NaquadahReworkRecipeLoader {
                 5000
         );
 
+        //C2H4 + H2O(g) = C2H6O
         GT_Values.RA.addMultiblockChemicalRecipe(
                 new ItemStack[]{
                         GT_Utility.getIntegratedCircuit(24)

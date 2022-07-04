@@ -236,7 +236,7 @@ public class RecipeLoader {
         //Th-232
         GT_Values.RA.addMultiblockChemicalRecipe(
                 new ItemStack[]{
-                        GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Sugar,16),
+                        GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Sugar,24),
                         MyMaterial.vanadiumPentoxide.get(OrePrefixes.dust,0),
                         GT_Utility.getIntegratedCircuit(1)
                 },
@@ -252,18 +252,20 @@ public class RecipeLoader {
                 120
         );
 
+        //Th + 2O = ThO2
         GT_Values.RA.addBlastRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Thorium,1),
                 null,
                 Materials.Oxygen.getGas(2000),
                 null,
-                WerkstoffLoader.Thorianit.get(OrePrefixes.dust,1),
+                WerkstoffLoader.Thorianit.get(OrePrefixes.dust,3),
                 null,
                 100,
                 480,
                 1200
         );
 
+        //Th + 8HNO3 =HF= Th(NO3)4 + 4NO2 + 4H2O
         GT_Values.RA.addMultiblockChemicalRecipe(
                 new ItemStack[]{
                         Materials.Thorium.getDust(1),
@@ -281,19 +283,21 @@ public class RecipeLoader {
                 120
         );
 
+        //4NaOH + Th(NO3)4 = Th(OH)4 + 4NaNO3
         GT_Values.RA.addChemicalRecipe(
                 GT_Utility.getIntegratedCircuit(1),
-                Materials.SodiumHydroxide.getDust(4),
+                Materials.SodiumHydroxide.getDust(12),
                 MyMaterial.thoriumNitrate.getFluidOrGas(1000),
                 null,
-                MyMaterial.thoriumHydroxide.get(OrePrefixes.dust, 1),
-                WerkstoffLoader.SodiumNitrate.get(OrePrefixes.dust, 4),
+                MyMaterial.thoriumHydroxide.get(OrePrefixes.dust, 9),
+                WerkstoffLoader.SodiumNitrate.get(OrePrefixes.dust, 20),
                 200,
                 120
         );
 
+        //Th(OH)4 + 4HF = ThF4 + 4H2O
         GT_Values.RA.addChemicalRecipe(
-                MyMaterial.thoriumHydroxide.get(OrePrefixes.dust,1),
+                MyMaterial.thoriumHydroxide.get(OrePrefixes.dust,9),
                 GT_Utility.getIntegratedCircuit(1),
                 Materials.HydrofluoricAcid.getFluid(4000),
                 MyMaterial.thoriumTetrafluoride.getFluidOrGas(1000),
@@ -303,6 +307,7 @@ public class RecipeLoader {
                 30
         );
 
+        //Zn + 2Cl = ZnCl2
         GT_Values.RA.addChemicalRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Zinc, 1),
                 GT_Utility.getIntegratedCircuit(1),
@@ -312,18 +317,6 @@ public class RecipeLoader {
                 null,
                 100,
                 30
-        );
-
-        GT_Values.RA.addElectrolyzerRecipe(
-                MyMaterial.zincChloride.get(OrePrefixes.dust, 3),
-                null,
-                null,
-                Materials.Chlorine.getGas(2000),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Zinc, 1),
-                null, null, null, null, null,
-                new int[]{10000},
-                150,
-                120
         );
 
         GT_Values.RA.addBlastRecipe(
@@ -342,7 +335,7 @@ public class RecipeLoader {
                 MyMaterial.zincThoriumAlloy.get(OrePrefixes.ingot, 1),
                 GT_Utility.getIntegratedCircuit(11),
                 Materials.Argon.getGas(250),
-                Materials.Zinc.getMolten(36),
+                Materials.Zinc.getMolten(48),
                 WerkstoffLoader.Thorium232.get(OrePrefixes.dust, 1),
                 null,
                 150,
@@ -350,12 +343,13 @@ public class RecipeLoader {
                 1900
         );
 
+        //2V + 5O = V2O5
         GT_Values.RA.addBlastRecipe(
                 GT_Utility.getIntegratedCircuit(24),
                 GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Vanadium,2),
                 Materials.Oxygen.getGas(5000),
                 null,
-                MyMaterial.vanadiumPentoxide.get(OrePrefixes.dust,1),
+                MyMaterial.vanadiumPentoxide.get(OrePrefixes.dust,7),
                 null,
                 200,
                 120,
@@ -487,6 +481,7 @@ public class RecipeLoader {
                 800
         );
 
+        //2C2H6O =H2SO4= C4H10O + H2O
         GT_Values.RA.addMultiblockChemicalRecipe(
                 new ItemStack[]{
                         GT_Utility.getIntegratedCircuit(2)
@@ -519,6 +514,7 @@ public class RecipeLoader {
         GT_Values.RA.addFuel(MyMaterial.ironedFuel.get(OrePrefixes.cell), null, 2248, 0);
         GT_Values.RA.addFuel(MyMaterial.ironedKerosene.get(OrePrefixes.cell), null, 1824, 0);
 
+        //Sb + 3Cl = SbCl3
         GT_Values.RA.addMultiblockChemicalRecipe(
                 new ItemStack[]{
                         GT_Utility.getIntegratedCircuit(1),
@@ -536,6 +532,7 @@ public class RecipeLoader {
                 30
         );
 
+        //SbCl3 + 2Cl = SbCl5
         GT_Values.RA.addMultiblockChemicalRecipe(
                 new ItemStack[]{
                         GT_Utility.getIntegratedCircuit(1),
@@ -563,6 +560,7 @@ public class RecipeLoader {
                 120
         );
 
+        //SbCl5 + 5HF = SbF5 + 5HCl
         GT_Values.RA.addMultiblockChemicalRecipe(
                 new ItemStack[]{
                         GT_Utility.getIntegratedCircuit(1),
@@ -580,6 +578,7 @@ public class RecipeLoader {
                 30
         );
 
+        //SbH5 + HF = HSbF6
         GT_Values.RA.addMultiblockChemicalRecipe(
                 new ItemStack[]{
                         GT_Utility.getIntegratedCircuit(1),
@@ -626,8 +625,6 @@ public class RecipeLoader {
                 240,
                 30
         );
-
-
 
         GT_Values.RA.addUniversalDistillationRecipe(
                 MyMaterial.naquadahSolution.getFluidOrGas(20),
@@ -936,6 +933,7 @@ public class RecipeLoader {
                 120000
         );
 
+        //Ca + O = CaO
         GT_Values.RA.addChemicalRecipe(
                 GT_Utility.getIntegratedCircuit(1),
                 GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Calcium,1),
@@ -946,6 +944,7 @@ public class RecipeLoader {
                 30
         );
 
+        //AlN = Al + N
         GT_Values.RA.addElectrolyzerRecipe(
                 ItemRefer.Aluminum_Nitride_Dust.get(2),
                 null,
@@ -1048,7 +1047,7 @@ public class RecipeLoader {
                 120
         );
 
-        if (LoadedList.GTPP) {
+        if (FluidRegistry.getFluidStack("fluid.hydrogenperoxide", 1000) != null) {
             GT_Values.RA.addMultiblockChemicalRecipe(
                     new ItemStack[]{
                             GT_Utility.getIntegratedCircuit(16),
@@ -1084,7 +1083,7 @@ public class RecipeLoader {
             );
         }
 
-        if (LoadedList.BOTDUSTRIES) {
+        if (FluidRegistry.getFluidStack("hydrogen peroxide", 1000) != null) {
             GT_Values.RA.addMultiblockChemicalRecipe(
                     new ItemStack[]{
                             GT_Utility.getIntegratedCircuit(16),
@@ -1101,7 +1100,7 @@ public class RecipeLoader {
                     200,
                     120
             );
-            
+
             GT_Values.RA.addMultiblockChemicalRecipe(
                     new ItemStack[]{
                             GT_Utility.getIntegratedCircuit(16),
@@ -1476,11 +1475,12 @@ public class RecipeLoader {
                 7680
         );
 
+        //Al2O3 + 2N + 3C = 2AlN + 3CO
         GT_Values.RA.addBlastRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Sapphire,1),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Sapphire,5),
                 GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Coal,3),
-                FluidRegistry.getFluidStack("liquidnitrogen",1000),
-                null,
+                FluidRegistry.getFluidStack("liquidnitrogen",2000),
+                Materials.CarbonMonoxide.getGas(3000),
                 ItemRefer.Aluminum_Nitride_Dust.get(2),
                 null,
                 200,
@@ -1489,15 +1489,27 @@ public class RecipeLoader {
         );
 
         GT_Values.RA.addBlastRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.GreenSapphire,1),
+                GT_OreDictUnificator.get(OrePrefixes.dust,Materials.GreenSapphire,5),
                 GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Coal,3),
-                FluidRegistry.getFluidStack("liquidnitrogen",1000),
-                null,
+                FluidRegistry.getFluidStack("liquidnitrogen",2000),
+                Materials.CarbonMonoxide.getGas(3000),
                 ItemRefer.Aluminum_Nitride_Dust.get(2),
                 null,
                 200,
                 1920,
                 4600
+        );
+
+        GT_Values.RA.addBlastRecipe(
+            GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Aluminiumoxide,5),
+            GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Coal,3),
+            FluidRegistry.getFluidStack("liquidnitrogen",2000),
+            Materials.CarbonMonoxide.getGas(3000),
+            ItemRefer.Aluminum_Nitride_Dust.get(2),
+            null,
+            200,
+            1920,
+            4600
         );
 
         GT_Values.RA.addBlastRecipe(

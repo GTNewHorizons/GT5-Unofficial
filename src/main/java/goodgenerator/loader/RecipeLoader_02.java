@@ -697,6 +697,7 @@ public class RecipeLoader_02 {
             false
         );
 
+        //FeCl2 + Cl = FeCl3
         GT_Values.RA.addChemicalRecipe(
             MyMaterial.ferrousChloride.get(OrePrefixes.cell, 1),
             GT_Utility.getIntegratedCircuit(1),
@@ -706,6 +707,7 @@ public class RecipeLoader_02 {
             40
         );
 
+        //FeCl3 + H = FeCl2 + HCl
         GT_Values.RA.addChemicalRecipe(
             Materials.IronIIIChloride.getCells(1),
             GT_Utility.getIntegratedCircuit(7),
@@ -716,11 +718,12 @@ public class RecipeLoader_02 {
             120
         );
 
+        //NH3 + 2C2H6O = C4H11N + 2H2O
         GT_Values.RA.addChemicalRecipe(
             Materials.Ammonia.getCells(1),
             GT_Utility.getIntegratedCircuit(1),
             Materials.Ethanol.getFluid(2000),
-            null,
+            Materials.Water.getFluid(2000),
             MyMaterial.diethylamine.get(OrePrefixes.cell, 1),
             200,
             120
