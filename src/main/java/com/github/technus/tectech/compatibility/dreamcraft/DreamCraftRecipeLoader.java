@@ -197,7 +197,7 @@ public class DreamCraftRecipeLoader {
         // Infinity Coil
         TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Casing_Coil_AwakenedDraconium.get(1),
                 16777216, 2048, 8000000, 1, new Object[]{
-                        new Object[]{"circuitInfinite", 1},
+                        GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Infinite, 1),
                         GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.Infinity, 8),
                         GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Infinity, 16),
                         GT_ModHandler.getModItem("dreamcraft", "item.MicaInsulatorFoil", 64, 0),
@@ -209,7 +209,7 @@ public class DreamCraftRecipeLoader {
         // Hypogen Coil
         TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Casing_Coil_Infinity.get(1),
                 16_777_216*2, 2048*2, 8000000*4, 1, new Object[]{
-                        ItemList.Circuit_Biomainframe.get(1L),
+                        GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Bio, 1),
                         GT_ModHandler.getModItem("miscutils", "itemFineWireHypogen", 64, 0),
                         GT_ModHandler.getModItem("miscutils", "itemScrewHypogen", 8, 0),
                         GT_ModHandler.getModItem("dreamcraft", "item.MicaInsulatorFoil", 64, 0),
