@@ -118,7 +118,7 @@ public class BotRecipes {
 
         //WO3 + 6H = W + 3H2O
         GT_Values.RA.addBlastRecipe(WO3,C2,Materials.Hydrogen.getGas(6000),
-            GT_ModHandler.getSteam(480000),Materials.Tungsten.getDust(1),null,100,1920,1000);
+            GT_ModHandler.getSteam(3000),Materials.Tungsten.getDust(1),null,100,1920,1000);
 
         WO3.stackSize = 8;
         //2WO3 + 3C = 2W + 3CO2
