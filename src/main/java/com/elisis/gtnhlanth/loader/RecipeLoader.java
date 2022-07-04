@@ -976,7 +976,7 @@ public class RecipeLoader {
         		null,
         		null,
         		WerkstoffMaterialPool.SaturatedBastnasiteRarerEarthOxides.getFluidOrGas(1000),
-        		null,
+        		WerkstoffMaterialPool.DilutedAcetone.getFluidOrGas(750),
         		WerkstoffMaterialPool.NeodymicRareEarthConcentrate.get(OrePrefixes.dust, 1),
         		WerkstoffMaterialPool.SamaricRareEarthConcentrate.get(OrePrefixes.dust, 1),
         		null,
