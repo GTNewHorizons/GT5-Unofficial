@@ -1333,15 +1333,22 @@ public class DreamCraftRecipeLoader {
         //Stargate Recipes
         if (Loader.isModLoaded("eternalsingularity") && Loader.isModLoaded("SGCraft")) {
             TT_recipeAdder.addResearchableAssemblylineRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.SpaceTime, 1L),
-                    32000000*12, 32768, 32000000, 64, new ItemStack[]{
-                            GT_ModHandler.getModItem("eternalsingularity", "eternal_singularity", 16L),
-                            ItemList.Sensor_UEV.get(16L),
+                    2_000_000_000, 32768, 500_000_000, 64, new ItemStack[]{
+
                             GT_OreDictUnificator.get(OrePrefixes.block, Materials.CosmicNeutronium, 64L),
                             GT_OreDictUnificator.get(OrePrefixes.block, Materials.Infinity, 64L),
                             GT_OreDictUnificator.get(OrePrefixes.block, Materials.Infinity, 64L),
                             GT_OreDictUnificator.get(OrePrefixes.block, Materials.Infinity, 64L),
+
                             GT_OreDictUnificator.get(OrePrefixes.block, Materials.SpaceTime, 16L),
-                            GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Quantum, 16L)
+                            GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Quantum, 16L),
+                            GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.SpaceTime, 16L),
+                            GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Infinity, 16L),
+
+                            ItemList.Sensor_UEV.get(16L),
+                            ItemList.Emitter_UEV.get(16L),
+                            GT_ModHandler.getModItem("eternalsingularity", "eternal_singularity", 16L)
+
                     },
                     new FluidStack[]{
                             Materials.Neutronium.getMolten(4*36864L),
@@ -1349,35 +1356,47 @@ public class DreamCraftRecipeLoader {
                             Materials.SuperconductorUEVBase.getMolten(36864L),
                             Materials.ExcitedDTEC.getFluid(36864L)
                     },
-                    getItemContainer("StargateShieldingFoil").get(1L), 72000, 500000000);
+                    getItemContainer("StargateShieldingFoil").get(1L), 72_000, 500_000_000);
 
             TT_recipeAdder.addResearchableAssemblylineRecipe(getItemContainer("StargateShieldingFoil").get(1L),
-                    32000000*12, 32768, 32000000, 64, new ItemStack[]{
-                            ItemList.Electric_Piston_UEV.get(16L),
-                            ItemList.Electric_Motor_UEV.get(64L),
-                            GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.SpaceTime, 16L),
+                    2_000_000_000, 32_768, 500_000_000, 64, new ItemStack[]{
+
                             GT_OreDictUnificator.get(OrePrefixes.block, Materials.Infinity, 64L),
                             GT_OreDictUnificator.get(OrePrefixes.block, Materials.NaquadahAlloy, 64L),
-                            GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Osmiridium, 8L),
-                            GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Osmiridium, 8L),
-                            GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Osmiridium, 8L),
+                            GT_OreDictUnificator.get(OrePrefixes.block, Materials.Neutronium, 64L),
+                            GT_OreDictUnificator.get(OrePrefixes.block, Materials.Neutronium, 64L),
+
+                            GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.SpaceTime, 16L),
+                            GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 16L),
                             GT_OreDictUnificator.get(OrePrefixes.gemExquisite, Materials.Ruby, 16L),
                             GT_OreDictUnificator.get(OrePrefixes.gemExquisite, Materials.Jasper, 16L),
-                            getItemContainer("QuantumCircuit").get(1L).splitStack(32)
+
+                            GT_OreDictUnificator.get(OrePrefixes.gemExquisite, Materials.Opal, 16L),
+                            GT_OreDictUnificator.get(OrePrefixes.gemExquisite, Materials.Sapphire, 16L),
+                            GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Osmiridium, 8L),
+                            GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Osmiridium, 8L),
+
+                            ItemList.Electric_Motor_UEV.get(64L),
+                            ItemList.Electric_Piston_UEV.get(64L),
+                            ItemList.Field_Generator_UEV.get(16L),
+                            getItemContainer("QuantumCircuit").get(1L).splitStack(32),
                     },
                     new FluidStack[]{
-                            Materials.Neutronium.getMolten(36864L),
+                            Materials.Neutronium.getMolten(4L*36864L),
                             Materials.SpaceTime.getMolten(36864L),
                             Materials.SuperconductorUEVBase.getMolten(36864L),
                             Materials.ExcitedDTEC.getFluid(36864L)
                     },
-                    getItemContainer("StargateChevron").get(1L), 72000, 500000000);
+                    getItemContainer("StargateChevron").get(1L), 72_000, 500_000_000);
 
             TT_recipeAdder.addResearchableAssemblylineRecipe(GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.SpaceTime, 1L),
-                    32000000*12, 32768, 32000000, 64, new ItemStack[]{
+                    2_000_000_000, 32_768, 500_000_000, 64, new ItemStack[]{
+
                             GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Infinity, 64L),
+                            GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.SpaceTime, 64L),
                             GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.NaquadahAlloy, 64L),
                             GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.CosmicNeutronium, 64L),
+
                             GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Neutronium, 64L),
                             GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Osmiridium, 64L)
                     },
@@ -1387,7 +1406,7 @@ public class DreamCraftRecipeLoader {
                             Materials.Tritanium.getMolten(73728L),
                             Materials.Concrete.getMolten(73728L)
                     },
-                    getItemContainer("StargateFramePart").get(1L), 72000, 500000000);
+                    getItemContainer("StargateFramePart").get(1L), 72_000, 500_000_000);
         }
 
         // Dimensionally Transcendent Plasma Forge (DTPF)
