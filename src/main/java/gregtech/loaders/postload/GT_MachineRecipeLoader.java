@@ -739,73 +739,73 @@ public class GT_MachineRecipeLoader implements Runnable {
 
         // Catalysts for Plasma Forge.
         GT_Values.RA.addMixerRecipe(
+            new ItemStack[] {GT_Utility.getIntegratedCircuit(9)}, //1234
+            new FluidStack[]{Materials.Helium.getPlasma(1000L), Materials.Iron.getPlasma(1000L), Materials.Calcium.getPlasma(1000L), Materials.Niobium.getPlasma(1000L)},
             new ItemStack[] {GT_Values.NI},
-            new FluidStack[]{Materials.Helium.getPlasma(10L), Materials.Iron.getPlasma(10L), Materials.Calcium.getPlasma(10L), Materials.Niobium.getPlasma(10L)},
-            new ItemStack[] {GT_Values.NI},
-            new FluidStack[]{Materials.DimensionallyTranscendentCrudeCatalyst.getFluid(10L)},
-            20, 32_500
+            new FluidStack[]{Materials.DimensionallyTranscendentCrudeCatalyst.getFluid(1000L)},
+            50_000, 125_000
         );
 
         GT_Values.RA.addMixerRecipe(
+            new ItemStack[] {GT_Utility.getIntegratedCircuit(10)},
+            new FluidStack[]{Materials.DimensionallyTranscendentCrudeCatalyst.getFluid(1000L), Materials.Radon.getPlasma(1000L), Materials.Nickel.getPlasma(1000L), Materials.Boron.getPlasma(10L), Materials.Sulfur.getPlasma(1000L)},
             new ItemStack[] {GT_Values.NI},
-            new FluidStack[]{Materials.DimensionallyTranscendentCrudeCatalyst.getFluid(10L), Materials.Radon.getPlasma(10L), Materials.Nickel.getPlasma(10L), Materials.Boron.getPlasma(10L), Materials.Sulfur.getPlasma(10L)},
-            new ItemStack[] {GT_Values.NI},
-            new FluidStack[]{Materials.DimensionallyTranscendentProsaicCatalyst.getFluid(10L)},
-            20, 65_000
+            new FluidStack[]{Materials.DimensionallyTranscendentProsaicCatalyst.getFluid(1000L)},
+            50_000, 125_000*4
         );
 
         GT_Values.RA.addMixerRecipe(
+            new ItemStack[] {GT_Utility.getIntegratedCircuit(11)},
+            new FluidStack[]{Materials.DimensionallyTranscendentProsaicCatalyst.getFluid(1000L), Materials.Nitrogen.getPlasma(1000L), Materials.Zinc.getPlasma(1000L), Materials.Silver.getPlasma(1000L), Materials.Titanium.getPlasma(1000L)},
             new ItemStack[] {GT_Values.NI},
-            new FluidStack[]{Materials.DimensionallyTranscendentProsaicCatalyst.getFluid(10L), Materials.Nitrogen.getPlasma(10L), Materials.Zinc.getPlasma(10L), Materials.Silver.getPlasma(10L), Materials.Titanium.getPlasma(10L)},
-            new ItemStack[] {GT_Values.NI},
-            new FluidStack[]{Materials.DimensionallyTranscendentResplendentCatalyst.getFluid(10L)},
-            20, 130_000
+            new FluidStack[]{Materials.DimensionallyTranscendentResplendentCatalyst.getFluid(1000L)},
+            50_000, 125_000*16
         );
 
         GT_Values.RA.addMixerRecipe(
+            new ItemStack[] {GT_Utility.getIntegratedCircuit(12)},
+            new FluidStack[]{Materials.DimensionallyTranscendentResplendentCatalyst.getFluid(1000L), Materials.Americium.getPlasma(1000L), Materials.Bismuth.getPlasma(1000L), Materials.Oxygen.getPlasma(1000L), Materials.Tin.getPlasma(1000L)},
             new ItemStack[] {GT_Values.NI},
-            new FluidStack[]{Materials.DimensionallyTranscendentResplendentCatalyst.getFluid(10L), Materials.Americium.getPlasma(10L), Materials.Bismuth.getPlasma(10L), Materials.Oxygen.getPlasma(10L), Materials.Tin.getPlasma(10L)},
-            new ItemStack[] {GT_Values.NI},
-            new FluidStack[]{Materials.DimensionallyTranscendentExoticCatalyst.getFluid(10L)},
-            20, 260_000
+            new FluidStack[]{Materials.DimensionallyTranscendentExoticCatalyst.getFluid(1000L)},
+            50_000, 125_000*64
         );
 
         // -----------------------------------------------------------------------------------------------------------------------------
 
         GT_Values.RA.addLaserEngraverRecipe(
             new ItemStack[]{GT_Values.NI},
-            new FluidStack[]{Materials.DimensionallyTranscendentCrudeCatalyst.getFluid(1L)},
+            new FluidStack[]{Materials.DimensionallyTranscendentCrudeCatalyst.getFluid(1000L)},
 
             new ItemStack[]{GT_Values.NI},
-            new FluidStack[]{Materials.ExcitedDTCC.getFluid(1L)},
-            5, 8000000, true
+            new FluidStack[]{Materials.ExcitedDTCC.getFluid(1000L)},
+            50_000, 125_000, true
         );
 
         GT_Values.RA.addLaserEngraverRecipe(
             new ItemStack[]{GT_Values.NI},
-            new FluidStack[]{Materials.DimensionallyTranscendentProsaicCatalyst.getFluid(1L)},
+            new FluidStack[]{Materials.DimensionallyTranscendentProsaicCatalyst.getFluid(1000L)},
 
             new ItemStack[]{GT_Values.NI},
-            new FluidStack[]{Materials.ExcitedDTPC.getFluid(1L)},
-            5, 32000000, true
+            new FluidStack[]{Materials.ExcitedDTPC.getFluid(1000L)},
+            50_000, 125_000*4, true
         );
 
         GT_Values.RA.addLaserEngraverRecipe(
             new ItemStack[]{GT_Values.NI},
-            new FluidStack[]{Materials.DimensionallyTranscendentResplendentCatalyst.getFluid(1L)},
+            new FluidStack[]{Materials.DimensionallyTranscendentResplendentCatalyst.getFluid(1000L)},
 
             new ItemStack[]{GT_Values.NI},
-            new FluidStack[]{Materials.ExcitedDTRC.getFluid(1L)},
-            5, 128000000, true
+            new FluidStack[]{Materials.ExcitedDTRC.getFluid(1000L)},
+            50_000, 125_000*16, true
         );
 
         GT_Values.RA.addLaserEngraverRecipe(
             new ItemStack[]{GT_Values.NI},
-            new FluidStack[]{Materials.DimensionallyTranscendentExoticCatalyst.getFluid(1L)},
+            new FluidStack[]{Materials.DimensionallyTranscendentExoticCatalyst.getFluid(1000L)},
 
             new ItemStack[]{GT_Values.NI},
-            new FluidStack[]{Materials.ExcitedDTEC.getFluid(1L)},
-            5, 512000000, true
+            new FluidStack[]{Materials.ExcitedDTEC.getFluid(1000L)},
+            50_000, 125_000*64, true
         );
 
         // -----------------------------------------------------------------------------------------------------------------------------
