@@ -77,13 +77,16 @@ public class PlatinumSludgeOverHaul {
 
     private static void runHelperrecipes() {
         //DilutedSulfuricAcid
-        GT_Values.RA.addMixerRecipe(Materials.SulfuricAcid.getCells(3), Materials.Water.getCells(1), GT_Utility.getIntegratedCircuit(1), null, null, null, Materials.DilutedSulfuricAcid.getCells(4), 30, 30);
-        GT_Values.RA.addMixerRecipe(Materials.Water.getCells(1), GT_Utility.getIntegratedCircuit(1), null, null, Materials.SulfuricAcid.getFluid(3000), Materials.DilutedSulfuricAcid.getFluid(4000), Materials.Empty.getCells(1), 30, 30);
-        GT_Values.RA.addMixerRecipe(Materials.SulfuricAcid.getCells(3), GT_Utility.getIntegratedCircuit(1), null, null, Materials.Water.getFluid(1000), Materials.DilutedSulfuricAcid.getFluid(4000), Materials.Empty.getCells(3), 30, 30);
+        // 2H2SO4 + H2O = 3H2SO4(d)
+        GT_Values.RA.addMixerRecipe(Materials.SulfuricAcid.getCells(2), Materials.Water.getCells(1), GT_Utility.getIntegratedCircuit(1), null, null, null, Materials.DilutedSulfuricAcid.getCells(3), 30, 30);
+        GT_Values.RA.addMixerRecipe(Materials.Water.getCells(1), GT_Utility.getIntegratedCircuit(1), null, null, Materials.SulfuricAcid.getFluid(2000), Materials.DilutedSulfuricAcid.getFluid(3000), Materials.Empty.getCells(1), 30, 30);
+        GT_Values.RA.addMixerRecipe(Materials.SulfuricAcid.getCells(2), GT_Utility.getIntegratedCircuit(1), null, null, Materials.Water.getFluid(1000), Materials.DilutedSulfuricAcid.getFluid(3000), Materials.Empty.getCells(2), 30, 30);
         //FormicAcid
-        GT_Values.RA.addChemicalRecipe(Materials.CarbonMonoxide.getCells(1), Materials.SodiumHydroxide.getDust(1), null, null, Sodiumformate.get(cell), null, 15);
-        GT_Values.RA.addChemicalRecipe(Sodiumformate.get(cell, 2), GT_Utility.getIntegratedCircuit(1), Materials.SulfuricAcid.getFluid(1000), null, FormicAcid.get(cell, 2), Sodiumsulfate.get(dust, 1), 15);
-        GT_Values.RA.addChemicalRecipe(Materials.SulfuricAcid.getCells(1), GT_Utility.getIntegratedCircuit(1), Sodiumformate.getFluidOrGas(2000), FormicAcid.getFluidOrGas(2000), Materials.Empty.getCells(1), Sodiumsulfate.get(dust, 1), 15);
+        //CO + NaOH = CHO2Na
+        GT_Values.RA.addChemicalRecipe(Materials.CarbonMonoxide.getCells(1), Materials.SodiumHydroxide.getDust(3), null, null, Sodiumformate.get(cell), null, 15);
+        //H2SO4 + 2CHO2Na = 2CH2O2 + Na2SO4
+        GT_Values.RA.addChemicalRecipe(Sodiumformate.get(cell, 2), GT_Utility.getIntegratedCircuit(1), Materials.SulfuricAcid.getFluid(1000), null, FormicAcid.get(cell, 2), Sodiumsulfate.get(dust, 7), 15);
+        GT_Values.RA.addChemicalRecipe(Materials.SulfuricAcid.getCells(1), GT_Utility.getIntegratedCircuit(1), Sodiumformate.getFluidOrGas(2000), FormicAcid.getFluidOrGas(2000), Materials.Empty.getCells(1), Sodiumsulfate.get(dust, 7), 15);
         //AquaRegia
         GT_Values.RA.addMixerRecipe(Materials.DilutedSulfuricAcid.getCells(1), Materials.NitricAcid.getCells(1), GT_Utility.getIntegratedCircuit(1), null, null, null, AquaRegia.get(cell, 2), 30, 30);
         GT_Values.RA.addMixerRecipe(Materials.DilutedSulfuricAcid.getCells(1), Materials.NitricAcid.getCells(1), GT_Utility.getIntegratedCircuit(2), null, null, AquaRegia.getFluidOrGas(2000), Materials.Empty.getCells(2), 30, 30);
@@ -91,6 +94,7 @@ public class PlatinumSludgeOverHaul {
         GT_Values.RA.addMixerRecipe(Materials.DilutedSulfuricAcid.getCells(1), GT_Utility.getIntegratedCircuit(4), null, null, Materials.NitricAcid.getFluid(1000), AquaRegia.getFluidOrGas(2000), Materials.Empty.getCells(1), 30, 30);
 
         //AmmoniumCloride
+        //NH3 + HCl = NH4Cl
         GT_Values.RA.addChemicalRecipe(Materials.Ammonia.getCells(1), GT_Utility.getIntegratedCircuit(1), Materials.HydrochloricAcid.getFluid(1000), null, AmmoniumChloride.get(cell, 1), null, 15);
         GT_Values.RA.addChemicalRecipe(Materials.HydrochloricAcid.getCells(1), GT_Utility.getIntegratedCircuit(1), Materials.Ammonia.getGas(1000), AmmoniumChloride.getFluidOrGas(1000), Materials.Empty.getCells(1), null, 15);
 
@@ -112,10 +116,10 @@ public class PlatinumSludgeOverHaul {
 
         GT_Values.RA.addChemicalRecipe(PTMetallicPowder.get(dust), GT_Utility.getIntegratedCircuit(1), AquaRegia.getFluidOrGas(1000), PTConcentrate.getFluidOrGas(1000), PTResidue.get(dustTiny), 250);
         GT_Values.RA.addChemicalRecipe(PTMetallicPowder.get(dust, 9), GT_Utility.getIntegratedCircuit(9), AquaRegia.getFluidOrGas(9000), PTConcentrate.getFluidOrGas(9000), PTResidue.get(dust), 2250);
-        GT_Values.RA.addCentrifugeRecipe(PTConcentrate.get(cell,2), null, AmmoniumChloride.getFluidOrGas(200), PDAmmonia.getFluidOrGas(200), PTSaltCrude.get(dustTiny, 16), PTRawPowder.get(dustTiny,2), Materials.NitrogenDioxide.getCells(1), Materials.DilutedSulfuricAcid.getCells(1), null, null, null, 1200, 30);
+        GT_Values.RA.addCentrifugeRecipe(PTConcentrate.get(cell,2), null, AmmoniumChloride.getFluidOrGas(200), PDAmmonia.getFluidOrGas(200), PTSaltCrude.get(dustTiny, 16), PTRawPowder.get(dustTiny,4), Materials.NitrogenDioxide.getCells(1), Materials.DilutedSulfuricAcid.getCells(1), null, null, null, 1200, 30);
         //GT_Values.RA.addCentrifugeRecipe(PTConcentrate.get(cell,18), GT_Utility.getIntegratedCircuit(9), AmmoniumChloride.getFluidOrGas(1800), PDAmmonia.getFluidOrGas(1800), PTSaltCrude.get(dust, 16), PTRawPowder.get(dust,2), Materials.NitrogenDioxide.getCells(9), Materials.DilutedSulfuricAcid.getCells(9), null, null, null, 1400, 240);
-        GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(1)}, new FluidStack[]{PTConcentrate.getFluidOrGas(2000), AmmoniumChloride.getFluidOrGas(200)}, new FluidStack[]{PDAmmonia.getFluidOrGas(200), Materials.NitrogenDioxide.getGas(1000),Materials.DilutedSulfuricAcid.getFluid(1000)}, new ItemStack[]{PTSaltCrude.get(dustTiny, 16), PTRawPowder.get(dustTiny,2)}, 1200, 30);
-        GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(2)}, new FluidStack[]{PTConcentrate.getFluidOrGas(18000), AmmoniumChloride.getFluidOrGas(1800)}, new FluidStack[]{PDAmmonia.getFluidOrGas(1800), Materials.NitrogenDioxide.getGas(9000),Materials.DilutedSulfuricAcid.getFluid(9000)}, new ItemStack[]{PTSaltCrude.get(dust, 16), PTRawPowder.get(dust,2)}, 1400, 240);
+        GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(1)}, new FluidStack[]{PTConcentrate.getFluidOrGas(2000), AmmoniumChloride.getFluidOrGas(200)}, new FluidStack[]{PDAmmonia.getFluidOrGas(200), Materials.NitrogenDioxide.getGas(1000),Materials.DilutedSulfuricAcid.getFluid(1000)}, new ItemStack[]{PTSaltCrude.get(dustTiny, 16), PTRawPowder.get(dustTiny,4)}, 1200, 30);
+        GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(2)}, new FluidStack[]{PTConcentrate.getFluidOrGas(18000), AmmoniumChloride.getFluidOrGas(1800)}, new FluidStack[]{PDAmmonia.getFluidOrGas(1800), Materials.NitrogenDioxide.getGas(9000),Materials.DilutedSulfuricAcid.getFluid(9000)}, new ItemStack[]{PTSaltCrude.get(dust, 16), PTRawPowder.get(dust,4)}, 1400, 240);
         GT_Values.RA.addSifterRecipe(PTSaltCrude.get(dust), new ItemStack[]{
                 PTSaltRefined.get(dust),
                 PTSaltRefined.get(dust),
@@ -130,7 +134,8 @@ public class PlatinumSludgeOverHaul {
                 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1500,
         }, 600, 30);
         GT_Values.RA.addBlastRecipe(PTSaltRefined.get(dust), GT_Utility.getIntegratedCircuit(1), null, Materials.Chlorine.getGas(87), PTMetallicPowder.get(dust), null, 200, 120, 900);
-        GT_Values.RA.addChemicalRecipe(PTRawPowder.get(dust, 2), Materials.Calcium.getDust(1), null, null, Materials.Platinum.getDust(2), CalciumChloride.get(dust), 30);
+        //2PtCl + Ca = 2Pt + CaCl2
+        GT_Values.RA.addChemicalRecipe(PTRawPowder.get(dust, 4), Materials.Calcium.getDust(1), null, null, Materials.Platinum.getDust(2), CalciumChloride.get(dust, 3), 30);
         //Pd
         GT_Values.RA.addChemicalRecipe(PDMetallicPowder.get(dust), GT_Utility.getIntegratedCircuit(1), Materials.Ammonia.getGas(1000), PDAmmonia.getFluidOrGas(1000), null, 250);
         GT_Values.RA.addChemicalRecipe(PDMetallicPowder.get(dust), GT_Utility.getIntegratedCircuit(1), PDAmmonia.getFluidOrGas(1000), null, PDSalt.get(dustTiny, 16), PDRawPowder.get(dustTiny, 2), 250);
@@ -151,7 +156,8 @@ public class PlatinumSludgeOverHaul {
         }, 600, 30);
         GT_Values.RA.addChemicalRecipeForBasicMachineOnly(PDRawPowder.get(dust, 2), Materials.Empty.getCells(1), FormicAcid.getFluidOrGas(4000), Materials.Ammonia.getGas(2000), Materials.Palladium.getDust(2), Materials.Ethylene.getCells(1), 250, 30);
         GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{PDRawPowder.get(dust, 2)}, new FluidStack[]{FormicAcid.getFluidOrGas(4000)}, new FluidStack[]{Materials.Ammonia.getGas(2000), Materials.Ethylene.getGas(1000), Materials.Water.getFluid(1000)}, new ItemStack[]{Materials.Palladium.getDust(2)}, 250, 30);
-        GT_Values.RA.addChemicalRecipe(Sodiumsulfate.get(dust, 1), Materials.Hydrogen.getCells(2), null, Materials.SulfuricAcid.getFluid(1000), Materials.Sodium.getDust(2), Materials.Empty.getCells(2), 30);
+        //Na2SO4 + 2H = 2Na + H2SO4
+        GT_Values.RA.addChemicalRecipe(Sodiumsulfate.get(dust, 7), Materials.Hydrogen.getCells(2), null, Materials.SulfuricAcid.getFluid(1000), Materials.Sodium.getDust(2), Materials.Empty.getCells(2), 30);
         //K2S2O7
         // GT_Values.RA.addChemicalRecipe(Sodiumsulfate.get(dust), Materials.Potassium.getDust(2), Materials.Oxygen.getGas(3000), null, PotassiumDisulfate.get(dust,6), null, 30);
         //Rh/Os/Ir/Ru
@@ -186,7 +192,9 @@ public class PlatinumSludgeOverHaul {
         GT_Values.RA.addChemicalRecipe(Materials.Zinc.getDust(1), null, RHSulfateSolution.getFluidOrGas(1000), null, ZincSulfate.get(dust,6), CrudeRhMetall.get(dust), 300);
         GT_Values.RA.addBlastRecipe(CrudeRhMetall.get(dust), Materials.Salt.getDust(1), Materials.Chlorine.getGas(1000), null, RHSalt.get(dust, 3), null, 300, 120, 600);
         GT_Values.RA.addMixerRecipe(RHSalt.get(dust, 10), null, null, null, Materials.Water.getFluid(2000), RHSaltSolution.getFluidOrGas(2000), null, 300, 30);
-        GT_Values.RA.addChemicalRecipe(SodiumNitrate.get(dust), GT_Utility.getIntegratedCircuit(1), RHSaltSolution.getFluidOrGas(1000), null, RHNitrate.get(dust), Materials.Salt.getDust(1), 300);
+        GT_Values.RA.addChemicalRecipe(SodiumNitrate.get(dust, 5), GT_Utility.getIntegratedCircuit(1), RHSaltSolution.getFluidOrGas(1000), null, RHNitrate.get(dust), Materials.Salt.getDust(2), 300);
+        //Na + HNO3 = NaNO3 + H
+        GT_Values.RA.addChemicalRecipe(Materials.Sodium.getDust(1), GT_Values.NI, Materials.NitricAcid.getFluid(1000), Materials.Hydrogen.getGas(1000), SodiumNitrate.get(dust, 5), 8, 60);
         GT_Values.RA.addSifterRecipe(RHNitrate.get(dust), new ItemStack[]{
                 RhFilterCake.get(dust),
                 RhFilterCake.get(dust),

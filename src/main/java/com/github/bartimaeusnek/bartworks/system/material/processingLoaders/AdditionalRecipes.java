@@ -292,15 +292,19 @@ public class AdditionalRecipes {
                 400,
                 BW_Util.getMachineVoltageFromTier(5)
         );
-        GT_Values.RA.addChemicalRecipe(WerkstoffLoader.Thorianit.get(dust), Materials.Aluminium.getDust(1), Materials.Thorium.getDust(1), 1000);
-        GT_Values.RA.addChemicalRecipe(WerkstoffLoader.Thorianit.get(dust), Materials.Magnesium.getDust(1), Materials.Thorium.getDust(1), 1000);
+        //3ThO2 + 4Al = 3Th + 2Al2O3
+        GT_Values.RA.addChemicalRecipe(WerkstoffLoader.Thorianit.get(dust, 9), Materials.Aluminium.getDust(4), null, null, Materials.Thorium.getDust(3), Materials.Aluminiumoxide.getDust(10), 1000);
+        //ThO2 + 2Mg = Th + 2MgO
+        GT_Values.RA.addChemicalRecipe(WerkstoffLoader.Thorianit.get(dust, 3), Materials.Magnesium.getDust(2), null, null, Materials.Thorium.getDust(1), Materials.Magnesia.getDust(4), 1000);
         GT_Values.RA.addChemicalRecipe(WerkstoffLoader.Thorianit.get(crushed), ItemList.Crop_Drop_Thorium.get(9), Materials.Water.getFluid(1000), Materials.Thorium.getMolten(144), WerkstoffLoader.Thorianit.get(crushedPurified, 4), 96, 24);
 
         //Prasiolite
         GT_Values.RA.addBlastRecipe(GT_OreDictUnificator.get(dust, Materials.Quartzite, 40L), Materials.Amethyst.getDust(10), GT_Values.NF, GT_Values.NF, WerkstoffLoader.Prasiolite.get(OrePrefixes.gemFlawed, 20), GT_Values.NI, 800, BW_Util.getMachineVoltageFromTier(2), 500);
         GT_Values.RA.addPrimitiveBlastRecipe(GT_OreDictUnificator.get(dust, Materials.Quartzite, 40L), Materials.Amethyst.getDust(10), 6, WerkstoffLoader.Prasiolite.get(OrePrefixes.gemFlawed, 20), GT_Values.NI, 800);
         //Cubic Circonia
+        //2Y + 3O = Y2O3
         GT_Values.RA.addChemicalRecipe(Materials.Yttrium.getDust(2), GT_Utility.getIntegratedCircuit(5), Materials.Oxygen.getGas(3000), GT_Values.NF, WerkstoffLoader.YttriumOxide.get(dust, 5), 4096, BW_Util.getMachineVoltageFromTier(1));
+        //Zr + 2O =Y22O3= ZrO2
         GT_Recipe.GT_Recipe_Map.sBlastRecipes.addRecipe(false, new ItemStack[]{WerkstoffLoader.Zirconium.get(dust, 10), WerkstoffLoader.YttriumOxide.get(dust)}, new ItemStack[]{WerkstoffLoader.YttriumOxide.get(dust), WerkstoffLoader.CubicZirconia.get(gemFlawed, 40)}, null, null, new FluidStack[]{Materials.Oxygen.getGas(20000)}, null, 57600, BW_Util.getMachineVoltageFromTier(3), 2953);
         //Tellurium
         GT_Values.RA.addBlastRecipe(GT_OreDictUnificator.get(crushed, Materials.Lead, 10L), GT_Utility.getIntegratedCircuit(17), GT_Values.NF, GT_Values.NF, Materials.Lead.getIngots(10), Materials.Tellurium.getNuggets(20), 800, BW_Util.getMachineVoltageFromTier(2), 722);
