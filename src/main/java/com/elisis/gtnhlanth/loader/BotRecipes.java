@@ -413,9 +413,11 @@ public class BotRecipes {
                 20, 122_880
         );
 
+        cells.stackSize = 2;
         GT_Values.RA.addMixerRecipe(UnsymmetricalDimethylhydrazine.get(cell,2),C2,null,null,
                 Trinitramid.getFluidOrGas(1000),UnsymmetricalDimethylhydrazineFuelMix.getFluidOrGas(3000),cells,10,120);
 
+        cells.stackSize = 1;
         GT_Values.RA.addMixerRecipe(Trinitramid.get(cell,1),C2,null,null,
                 UnsymmetricalDimethylhydrazine.getFluidOrGas(2000),UnsymmetricalDimethylhydrazineFuelMix.getFluidOrGas(3000),cells,10,120);
 
