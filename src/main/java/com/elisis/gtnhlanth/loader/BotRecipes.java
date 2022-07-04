@@ -55,6 +55,7 @@ import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
+import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -117,7 +118,7 @@ public class BotRecipes {
 
         //WO3 + 6H = W + 3H2O
         GT_Values.RA.addBlastRecipe(WO3,C2,Materials.Hydrogen.getGas(6000),
-                Materials.Water.getFluid(3000),Materials.Tungsten.getDust(1),null,100,1920,1000);
+            GT_ModHandler.getSteam(6000),Materials.Tungsten.getDust(1),null,100,1920,1000);
 
         WO3.stackSize = 8;
         //2WO3 + 3C = 2W + 3CO2
@@ -156,12 +157,12 @@ public class BotRecipes {
         GT_Values.RA.addChemicalRecipe(Ethylcarbamate.get(cell, 1), C2, Materials.NitricAcid.getFluid(1000),
                 Materials.Water.getFluid(1000), EthylNnitrocarbamate.get(cell, 1), 40, 1024);
 
-        //C3H6N2O4 + NH3 = C3H10N3O4
+        //C3H6N2O4 + NH3 = C3H9N3O4
         GT_Values.RA.addChemicalRecipe(EthylNnitrocarbamate.get(cell, 1), C2, Materials.Ammonia.getGas(1000),
                 null, AmmoniumNnitrourethane.get(cell, 1), 40, 1920);
 
-        //C3H10N3O4 + N2O5 = C3H5N3O6 + N2H4O3 + H
-        GT_Values.RA.addChemicalRecipe(AmmoniumNnitrourethane.get(cell, 1), DinitrogenPentoxide.get(dust, 7), null, Materials.Hydrogen.getGas(1000),
+        //C3H9N3O4 + N2O5 = C3H5N3O6 + N2H4O3
+        GT_Values.RA.addChemicalRecipe(AmmoniumNnitrourethane.get(cell, 1), DinitrogenPentoxide.get(dust, 7), null, null,
                 EthylDinitrocarbamate.get(cell, 1), AmmoniumNitrate.get(dust, 9), 200, 480);
 
         //C3H5N3O6 + 2NH3 = C3H7O2N + H4N4O4
@@ -214,19 +215,19 @@ public class BotRecipes {
         GT_Values.RA.addMultiblockChemicalRecipe(
                 new ItemStack[]{
                         C24,
-                        AmmoniumNitrate.get(dust, 2),
-                        Materials.SodiumHydroxide.getDust(2)
+                        AmmoniumNitrate.get(dust, 9),
+                        Materials.SodiumHydroxide.getDust(3)
                 },
                 new FluidStack[]{
                         Materials.SulfuricAcid.getFluid(1000),
-                        Materials.Hydrogen.getGas(2000)
+                        Materials.Hydrogen.getGas(1000)
                 },
                 new FluidStack[]{
-                        Materials.Ammonia.getGas(2000),
-                        Materials.NitricAcid.getFluid(2000),
+                        Materials.Ammonia.getGas(1000),
+                        Materials.NitricAcid.getFluid(1000),
                         Materials.DilutedSulfuricAcid.getFluid(1000)
                 },
-                new ItemStack[]{Materials.Sodium.getDust(2)},
+                new ItemStack[]{Materials.Sodium.getDust(1)},
                 300, 480
         );
 
@@ -316,19 +317,23 @@ public class BotRecipes {
         GT_Values.RA.addCrackingRecipe(2,Materials.Propane.getGas(1000),Materials.NitricAcid.getFluid(2000),
                 Nitromethane.getFluidOrGas(2000),300,1920);
 
-        //HF + BF3 + CH3NO2 + HNO3 + H = CH4O + H2O + NO + NO2BF4
+        //HF + BF3 + 3CH3NO2 + 6HNO3 = 3CO2 + 8H2O + 8NO + NO2BF4
+        //Combine of two reactions:
+        //BF3 + HF + HNO3 = NO2BF4 + H2O
+        //3CH3NO2 + 5HNO3 = 3CO2 + 7H2O + 8NO
         GT_Values.RA.addMultiblockChemicalRecipe(
                 new ItemStack[]{C2},
                 new FluidStack[]{
                         Materials.HydrofluoricAcid.getFluid(1000),
                         BoronTrifluoride.getFluidOrGas(1000),
-                        Nitromethane.getFluidOrGas(1000),
-                        Materials.NitricAcid.getFluid(1000),
-                        Materials.Hydrogen.getGas(1000)},
+                        Nitromethane.getFluidOrGas(3000),
+                        Materials.NitricAcid.getFluid(6000),
+                },
                 new FluidStack[]{
-                     Materials.Methanol.getFluid(1000),
-                     Materials.Water.getFluid(1000),
-                     Materials.NitricOxide.getGas(1000)},
+                     Materials.CarbonDioxide.getGas(3000),
+                     Materials.Water.getFluid(8000),
+                     Materials.NitricOxide.getGas(8000)
+                },
                 new ItemStack[]{NitroniumTetrafluoroborate.get(dust,8)},
                 100,7_680
         );
@@ -350,21 +355,21 @@ public class BotRecipes {
         GT_Values.RA.addChemicalRecipe(BoronTrioxide.get(dust,5),cells,Materials.HydrofluoricAcid.getFluid(6000),
                 BoronTrifluoride.getFluidOrGas(2000),Materials.Water.getCells(3),50,480);
 
+        //Na2B4O7(H2O)10 + H2SO4 -> 2B2O3 + Na2SO4 + 11H2O
         GT_Values.RA.addChemicalRecipe(Materials.Borax.getDust(23),C2,Materials.SulfuricAcid.getFluid(1000),
                 null,WerkstoffLoader.Sodiumsulfate.get(dust,7),BoronTrioxide.get(dust,10),400,1920);
 
-        //NH4BF4 = NH3 + BF4 + H
+        //NH4BF4 = NH3 + HBF4
         cells.stackSize = 1;
         GT_Values.RA.addUniversalDistillationRecipe(AmmoniaBoronfluorideSolution.getFluidOrGas(1000),
             new FluidStack[]{
-                Materials.Hydrogen.getGas(1000),
                 Materials.Ammonia.getGas(1000),
                 Tetrafluoroborate.getFluidOrGas(1000)
             }, null,
             20,30_720);
 
-        //BF4 + Na = NaBF4
-        GT_Values.RA.addChemicalRecipe(Materials.Sodium.getDust(1),null,Tetrafluoroborate.getFluidOrGas(1000),
+        //HBF4 + NaOH = NaBF4 + H2O
+        GT_Values.RA.addChemicalRecipe(Materials.SodiumHydroxide.getDust(3),null,Tetrafluoroborate.getFluidOrGas(1000),
                 SodiumTetrafluoroborate.getFluidOrGas(1000),null,100,1920);
 
         //NaBF4 = NaF + BF3

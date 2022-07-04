@@ -119,7 +119,7 @@ public class BotWerkstoffMaterialPool implements Runnable {
     public static final Werkstoff AmmoniumNnitrourethane = new Werkstoff(
             new short[]{0x0d,0x54,0xb8},
             "Ammonium N-nitrourethane",
-            subscriptNumbers("C3H10N3O4"),
+            subscriptNumbers("C3H9N3O4"),
             new Werkstoff.Stats(),
             COMPOUND,
             new Werkstoff.GenerationFeatures().disable().addCells(),
@@ -405,8 +405,8 @@ public class BotWerkstoffMaterialPool implements Runnable {
     );
     public static final Werkstoff  Tetrafluoroborate  = new Werkstoff(
             new short[]{0x6a,0x53,0x8c},
-            "Tetrafluoroborate",
-            subscriptNumbers("BF4"),
+            "Tetrafluoroboric Acid",
+            subscriptNumbers("HBF4"),
             new Werkstoff.Stats().setGas(true),
             COMPOUND,
             new Werkstoff.GenerationFeatures().disable().addCells(),

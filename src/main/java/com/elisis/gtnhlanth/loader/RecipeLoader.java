@@ -157,14 +157,33 @@ public class RecipeLoader {
 
         //Ammonium Nitrate
         //HNO3 + NH3 = NH4NO3
-        GT_Values.RA.addChemicalRecipe(
+        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
         		GT_Utility.getIntegratedCircuit(12),
         		Materials.NitricAcid.getCells(1),
         		Materials.Ammonia.getGas(1000),
         		WerkstoffMaterialPool.AmmoniumNitrate.getFluidOrGas(1000),
         		Materials.Empty.getCells(1),
+        		null,
+        		30,
         		400
-        	);
+        );
+
+        GT_Values.RA.addMultiblockChemicalRecipe(
+            new ItemStack[] {
+                GT_Utility.getIntegratedCircuit(12)
+            },
+            new FluidStack[] {
+                Materials.NitricAcid.getFluid(1000),
+                Materials.Ammonia.getGas(1000)
+            },
+            new FluidStack[] {
+                WerkstoffMaterialPool.AmmoniumNitrate.getFluidOrGas(1000)
+            },
+            new ItemStack[] {
+            },
+            30,
+            400
+        );
 
         //IODINE-START
         //SeaweedAsh
@@ -1008,7 +1027,7 @@ public class RecipeLoader {
 
         GT_Values.RA.addBlastRecipe(
         		WerkstoffMaterialPool.FluorinatedSamaricConcentrate.get(OrePrefixes.dust, 2),
-        		Materials.Calcium.getDust(2),
+        		Materials.Calcium.getDust(1),
         		null,
         		WerkstoffMaterialPool.CalciumFluoride.getFluidOrGas(3000),
         		Materials.Holmium.getDustSmall(1),
@@ -1020,7 +1039,7 @@ public class RecipeLoader {
 
         GT_Values.RA.addChemicalRecipe(
         		WerkstoffMaterialPool.SamariumTerbiumMixture.get(OrePrefixes.dust, 1),
-        		BotWerkstoffMaterialPool.AmmoniumNitrate.get(OrePrefixes.dust, 1),
+        		BotWerkstoffMaterialPool.AmmoniumNitrate.get(OrePrefixes.dust, 9),
         		null,
         		null,
         		WerkstoffMaterialPool.NitratedSamariumTerbiumMixture.get(OrePrefixes.dust, 1),
@@ -1046,7 +1065,7 @@ public class RecipeLoader {
         		null,
         		null,
         		WerkstoffMaterialPool.DephosphatedSamariumConcentrate.get(OrePrefixes.dust, 1),
-        		Materials.TricalciumPhosphate.getDust(1),
+        		Materials.TricalciumPhosphate.getDust(5),
         		300,
         		1920
         	);
