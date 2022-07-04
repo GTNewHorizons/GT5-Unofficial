@@ -118,7 +118,7 @@ public class BotRecipes {
 
         //WO3 + 6H = W + 3H2O
         GT_Values.RA.addBlastRecipe(WO3,C2,Materials.Hydrogen.getGas(6000),
-            GT_ModHandler.getSteam(6000),Materials.Tungsten.getDust(1),null,100,1920,1000);
+            GT_ModHandler.getSteam(480000),Materials.Tungsten.getDust(1),null,100,1920,1000);
 
         WO3.stackSize = 8;
         //2WO3 + 3C = 2W + 3CO2
@@ -413,11 +413,9 @@ public class BotRecipes {
                 20, 122_880
         );
 
-        cells.stackSize = 2;
         GT_Values.RA.addMixerRecipe(UnsymmetricalDimethylhydrazine.get(cell,2),C2,null,null,
                 Trinitramid.getFluidOrGas(1000),UnsymmetricalDimethylhydrazineFuelMix.getFluidOrGas(3000),cells,10,120);
 
-        cells.stackSize = 1;
         GT_Values.RA.addMixerRecipe(Trinitramid.get(cell,1),C2,null,null,
                 UnsymmetricalDimethylhydrazine.getFluidOrGas(2000),UnsymmetricalDimethylhydrazineFuelMix.getFluidOrGas(3000),cells,10,120);
 
@@ -434,10 +432,10 @@ public class BotRecipes {
             }
             if (Loader.isModLoaded("miscutils"))
             {
-                Class gtppRecipeMap = Class.forName("gregtech.api.util.GTPP_Recipe$GTPP_Recipe_Map");
+                Class<?> gtppRecipeMap = Class.forName("gregtech.api.util.GTPP_Recipe$GTPP_Recipe_Map");
                 Field rocketFuels = gtppRecipeMap.getDeclaredField("sRocketFuels");
                 rocketFuels.setAccessible(true);
-                Class rocketFuelsClass = rocketFuels.getType();
+                Class<?> rocketFuelsClass = rocketFuels.getType();
                 Object rocketFuelsObject = rocketFuels.get(null);
                 Method addFuel = rocketFuelsClass.getDeclaredMethod("addFuel",FluidStack.class,FluidStack.class,int.class);
                 addFuel.invoke(rocketFuelsObject,LMP103S.getFluidOrGas(1000),null,666);
