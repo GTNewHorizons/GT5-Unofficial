@@ -1027,6 +1027,7 @@ public class Textures {
         BLOCK_TUNGSTEN,
         BLOCK_TUNGSTENSTEEL,
         BLOCK_ULTIMET,
+        BLOCK_SPACETIME,
 
         BLOCK_URANIUM,
         BLOCK_URANIUM235,
@@ -1707,7 +1708,8 @@ public class Textures {
                 STORAGE_BLOCKS12 = {
                         BLOCK_CRYOLITE,
                         BLOCK_SILICONSG,
-                        BLOCK_NICKELALUMINIUM
+                        BLOCK_NICKELALUMINIUM,
+                        BLOCK_SPACETIME
         };
 
       public static final ITexture[] HIDDEN_TEXTURE = {
