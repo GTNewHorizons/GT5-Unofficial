@@ -17,6 +17,9 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:ForestryMC:4.4.5:dev") {
         transitive = false
     }
+    compileOnly("com.github.GTNewHorizons:gendustry:1.6.5.4-GTNH:dev") {
+        transitive = false
+    }
     compileOnly("com.github.GTNewHorizons:Railcraft:9.13.6:dev") {
         transitive = false
     }
