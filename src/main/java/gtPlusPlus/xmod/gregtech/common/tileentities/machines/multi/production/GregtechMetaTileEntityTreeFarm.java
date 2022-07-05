@@ -7,15 +7,16 @@ import forestry.api.arboriculture.EnumTreeChromosome;
 import forestry.api.arboriculture.ITree;
 import forestry.api.arboriculture.TreeManager;
 import forestry.api.genetics.IAlleleBoolean;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.TAE;
-import gregtech.api.interfaces.*;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaGenerated_Tool;
-import gregtech.api.metatileentity.implementations.*;
-import gregtech.api.util.*;
 import gregtech.api.util.GTPP_Recipe.GTPP_Recipe_Map;
+import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
@@ -27,12 +28,12 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.helpers.TreeFarmHelper;
-import gtPlusPlus.xmod.gregtech.common.helpers.treefarm.TreeGenerator;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -43,18 +44,15 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
 
 	public static int CASING_TEXTURE_ID;
 	public static String mCasingName = "Sterile Farm Casing";
-	public static TreeGenerator mTreeData;
+//	public static TreeGenerator mTreeData;
 	public static HashMap<String, ItemStack> sLogCache = new HashMap<>();
 
-	private ItemStack mTreeType;
 	private int mCasing;
 	private IStructureDefinition<GregtechMetaTileEntityTreeFarm> STRUCTURE_DEFINITION = null;
 
 	private SAWTOOL mToolType;
-	private ItemStack currSapling;
-	private int currSlot = 0;
-	private GT_MetaTileEntity_Hatch_InputBus currInputBus;
-
+	private ItemStack mSapling;
+	private ItemStack mWood;
 	private float heightModifier = 1.0f;
 	private float saplingsModifier = 1.0f;
 	private int girthModifier = 1;
@@ -91,6 +89,10 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
 				.addInfo("Chainsaw = 4x")
 				.addInfo("Add a sapling in the input bus to select wood type output")
 				.addInfo("Tools can also be fed to the controller via input bus")
+				.addInfo("The working speed is fixed for 5s")
+				.addInfo("Production Formula: (2 * tier^2 - 2 * tier + 5) * 5 * saw boost")
+				.addInfo("When fertilizer is insufficient, sapling production reduced to one-tenth")
+				.addInfo("Forestry saplings can get increased production")
 				.addPollutionAmount(getPollutionPerSecond(null))
 				.addSeparator()
 				.beginStructureBlock(3, 3, 3, true)
@@ -135,13 +137,9 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
 		return "VacuumFreezer";
 	}
 
-	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-		return null;
-	}
-
 	public boolean isCorrectMachinePart(final ItemStack aStack) {
 		// is correct part && either not powered tool or have enough power
-		return TreeFarmHelper.isValidForGUI(aStack) && !GT_ModHandler.isElectricItem(aStack) || GT_ModHandler.canUseElectricItem(aStack, 1);
+		return TreeFarmHelper.isValidForGUI(aStack) && !GT_ModHandler.isElectricItem(aStack) || GT_ModHandler.canUseElectricItem(aStack, 32);
 	}
 
 	/**
@@ -161,22 +159,13 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
 				return 1;
 		}
 	}
+
+	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
+		if (!isCorrectMachinePart(aStack) && !replaceTool()) return false;
+		if (!checkSapling()) return false;
 
-		if (aStack == null && !replaceTool()) {
-			// no tool
-			return false;
-		}
-		if (!isCorrectMachinePart(aStack)) {
-			// not a tool
-			return false;
-		}
-
-		getWoodFromSapling();
-
-		if (currSapling == null) return false;
-
-		mToolType = TreeFarmHelper.isCorrectMachinePart(aStack);
+		this.mToolType = TreeFarmHelper.isCorrectMachinePart(aStack);
 
 		long tVoltage = getMaxInputVoltage();
 		byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
@@ -187,41 +176,31 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
 		this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
 		this.mEfficiencyIncrease = 10000;
 
-		// Overclock
-		if (this.mEUt <= 16) {
-			this.mEUt = (this.mEUt * (1 << tTier - 1) * (1 << tTier - 1));
-			this.mMaxProgresstime = (this.mMaxProgresstime / (1 << tTier - 1));
-		} else {
-			while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
-				this.mEUt *= 4;
-				this.mMaxProgresstime /= 2;
-			}
-		}
 		if (this.mEUt > 0) {
 			this.mEUt = (-this.mEUt);
 		}
-		try {
-			int aOutputAmount = ((2 * (tTier * tTier)) - (2 * tTier) + 5) * (mMaxProgresstime / 20) * getSawBoost(mToolType);
-			int aFert = hasLiquidFert();
-			if (aFert > 0) { //Sapling
-				if (aFert < aOutputAmount) {
-					aOutputAmount /= 10;
-				} else {
-					tryConsumeLiquidFert(aOutputAmount);
-				}
 
-				aOutputAmount = (int) (aOutputAmount * saplingsModifier);
-				this.mOutputItems = new ItemStack[]{ItemUtils.getSimpleStack(currSapling, aOutputAmount)};
-			} else { //Log
+		int aOutputAmount = ((2 * (tTier * tTier)) - (2 * tTier) + 5) * (mMaxProgresstime / 20) * getSawBoost(mToolType);
+		int aFert = hasLiquidFert();
 
-				aOutputAmount = (int) (aOutputAmount * heightModifier * girthModifier);
-				this.mOutputItems = new ItemStack[]{ItemUtils.getSimpleStack(mTreeType, aOutputAmount)};
+		if (aFert > 0) { //Sapling
+
+			if (aFert < aOutputAmount) {
+				aOutputAmount /= 10;
+			} else {
+				tryConsumeLiquidFert(aOutputAmount);
 			}
 
-			this.updateSlots();
-		} catch (Throwable t) {
-			t.printStackTrace(GT_Log.err);
+			aOutputAmount = (int) (aOutputAmount * saplingsModifier);
+			this.mOutputItems = new ItemStack[]{ItemUtils.getSimpleStack(mSapling, aOutputAmount)};
+		} else { //Log
+
+			aOutputAmount = (int) (aOutputAmount * heightModifier * girthModifier);
+			this.mOutputItems = new ItemStack[]{ItemUtils.getSimpleStack(mWood, aOutputAmount)};
 		}
+
+		this.tryDamageTool();
+		this.updateSlots();
 		return true;
 	}
 
@@ -257,104 +236,85 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
 		}
 	}
 
+	@Override
 	public int getMaxEfficiency(final ItemStack aStack) {
 		return 10000;
 	}
 
+	@Override
 	public int getPollutionPerSecond(final ItemStack aStack) {
 		return CORE.ConfigSwitches.pollutionPerSecondMultiTreeFarm;
 	}
 
+	@Override
 	public int getDamageToComponent(final ItemStack aStack) {
 		return MathUtils.balance((int) (75 - ((GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).getMass()))), 5, 120);
 	}
 
+	@Override
 	public boolean explodesOnComponentBreak(final ItemStack aStack) {
 		return false;
 	}
 
-	private int mPossibleRecursion = 0;
+	private boolean tryDamageTool() {
+		return GT_ModHandler.damageOrDechargeItem(this.mInventory[1], 1, 32, null) ? true : replaceTool();
+	}
 
 	public boolean replaceTool() {
-		if (mPossibleRecursion > 32) {
-			mPossibleRecursion = 0;
-			return false;
-		}
 		ItemStack invItem = this.mInventory[1];
-		if (invItem == null) {
-			ArrayList<ItemStack> aInputs = getStoredInputs();
-			for (ItemStack aStack : aInputs) {
-				if (aStack != null && isCorrectMachinePart(aStack)) {
+		if (isCorrectMachinePart(invItem)) return true;
+		else {
+			if (invItem != null) {
+				this.mInventory[1] = null;
+				this.addOutput(invItem);
+			}
+
+			for (ItemStack aStack : getStoredInputs()) {
+				if (isCorrectMachinePart(aStack)) {
 					this.mInventory[1] = aStack.copy();
 					this.depleteInput(aStack);
-					mPossibleRecursion = 0;
 					return true;
 				}
 			}
-		} else {
-			if (GT_ModHandler.isElectricItem(invItem)) {
-				if (ic2.api.item.ElectricItem.manager.getCharge(invItem) < 32) {
-					this.addOutput(invItem.copy());
-					this.mInventory[1] = null;
-					mPossibleRecursion++;
-					return replaceTool();
-				}
-			}
 		}
-		mPossibleRecursion = 0;
 		return false;
 	}
 
-	public void getWoodFromSapling() {
-		if (this.currSapling != null && this.currInputBus != null) {
-			ItemStack uStack = this.currInputBus.mInventory[this.currSlot];
-			if (uStack == this.currSapling) return;
-		}
+	public boolean checkSapling() {
+		for (ItemStack uStack : this.getStoredInputs()) {
 
-		for (GT_MetaTileEntity_Hatch_InputBus mInputBus : this.mInputBusses) {
-			for (int i = 0; i < mInputBus.mInventory.length; i++) {
-				ItemStack uStack = mInputBus.mInventory[i];
+			if (uStack != null) {
+				String registryName = Item.itemRegistry.getNameForObject(uStack.getItem());
+				ItemStack aWood = sLogCache.get(registryName + ":" + uStack.getItemDamage());
 
-				if (uStack != null) {
-					String registryName = Item.itemRegistry.getNameForObject(uStack.getItem());
-					ItemStack aWood = sLogCache.get(registryName + ":" + uStack.getItemDamage());
+				if (aWood != null) {
+					this.heightModifier = 1.0f;
+					this.saplingsModifier = 1.0f;
+					this.girthModifier = 1;
 
-					if (aWood != null) {
-						this.heightModifier = 1.0f;
-						this.saplingsModifier = 1.0f;
-						this.girthModifier = 1;
+					this.mSapling = uStack;
+					this.mWood = aWood;
+					return true;
+				} else {
+					if (registryName.equals("Forestry:sapling")) {
 
-						this.currSapling = uStack;
-						this.currInputBus = mInputBus;
-						this.currSlot = i;
+						ITree tree = TreeManager.treeRoot.getMember(uStack);
 
-						this.mTreeType = aWood;
-						return;
-					} else {
-						if (registryName.equals("Forestry:sapling")) {
+						this.heightModifier = Math.max(3 * (tree.getGenome().getHeight() - 1), 0) + 1;
+						this.saplingsModifier = Math.max(tree.getGenome().getFertility() * 20, 1);
+						this.girthModifier = tree.getGenome().getGirth();
+						boolean fireproof = ((IAlleleBoolean) tree.getGenome().getChromosomes()[EnumTreeChromosome.FIREPROOF.ordinal()].getActiveAllele()).getValue();
 
-							ITree tree = TreeManager.treeRoot.getMember(uStack);
+						aWood = sLogCache.get(tree.getIdent() + (fireproof ? "fireproof" : ""));
 
-							this.heightModifier = Math.max(3 * (tree.getGenome().getHeight() - 1), 0) + 1;
-							this.saplingsModifier = Math.max(tree.getGenome().getFertility() * 20, 1);
-							this.girthModifier = tree.getGenome().getGirth();
-							boolean fireproof = ((IAlleleBoolean) tree.getGenome().getChromosomes()[EnumTreeChromosome.FIREPROOF.ordinal()].getActiveAllele()).getValue();
-
-							aWood = sLogCache.get(tree.getIdent() + (fireproof ? "fireproof" : ""));
-
-							this.currSapling = uStack;
-							this.currInputBus = mInputBus;
-							this.currSlot = i;
-
-							this.mTreeType = aWood;
-							return;
-						}
+						this.mSapling = uStack;
+						this.mWood = aWood;
+						return true;
 					}
 				}
 			}
 		}
-		this.currSapling = null;
-		this.mTreeType = null;
+		return false;
 	}
 
 	public static void loadMapWoodFromSapling() {
@@ -492,42 +452,6 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
 
 	}
 
-	public boolean tryDamageTool(ItemStack invItem) {
-		if (invItem != null && invItem.getItem() instanceof GT_MetaGenerated_Tool) {
-			long aDmg = GT_MetaGenerated_Tool.getToolDamage(invItem);
-			long aDmgMax = GT_MetaGenerated_Tool.getToolMaxDamage(invItem);
-			if (aDmg < aDmgMax && GT_MetaGenerated_Tool.getPrimaryMaterial(invItem) != Materials._NULL) {
-				return GT_ModHandler.damageOrDechargeItem(invItem, 1, 32, null);
-			}
-		}
-		return false;
-	}
-
-	@Override
-	public boolean doRandomMaintenanceDamage() {
-		ItemStack tSaw = mInventory[1];
-		if (!isCorrectMachinePart(tSaw) || getRepairStatus() == 0) {
-			stopMachine();
-			return false;
-		}
-		if (CORE.RANDOM.nextInt(200) == 0) {
-			if (!tryDamageTool(tSaw)) {
-				this.mInventory[1] = null;
-				if (!replaceTool()) {
-					this.getBaseMetaTileEntity().disableWorking();
-				}
-				tryDamageTool(tSaw);
-			}
-		}
-		return super.doRandomMaintenanceDamage();
-	}
-
-	@Override
-	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-		super.onPostTick(aBaseMetaTileEntity, aTick);
-		replaceTool();
-	}
-
 	@Override
 	public void construct(ItemStack stackSize, boolean hintsOnly) {
 		buildPiece(mName, stackSize, hintsOnly, 1, 1, 0);
@@ -545,7 +469,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
 	
 	private static int sRecipeID = 0;
 
-	public static boolean addFakeRecipeToNEI(ItemStack aSapling, ItemStack aLog) {
+	public static boolean addFakeRecipeToNEI(@Nonnull ItemStack aSapling, ItemStack aLog) {
 		int aRecipes = GTPP_Recipe_Map.sTreeSimFakeRecipes.mRecipeList.size();
 		Logger.INFO("Adding Tree Growth Simulation for " + aSapling.getDisplayName() + " -> " + (aLog == null ? "NULL" : aLog.getDisplayName()));
 		ItemStack[] aOutput = new ItemStack[]{aLog, aSapling};
