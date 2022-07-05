@@ -617,7 +617,7 @@ public class GT_MachineRecipeLoader implements Runnable {
 
         // Catalysts for Plasma Forge.
         GT_Values.RA.addMixerRecipe(
-            new ItemStack[] {GT_Utility.getIntegratedCircuit(9)}, //1234
+            new ItemStack[] {GT_Utility.getIntegratedCircuit(9)},
             new FluidStack[]{Materials.Helium.getPlasma(1000L), Materials.Iron.getPlasma(1000L), Materials.Calcium.getPlasma(1000L), Materials.Niobium.getPlasma(1000L)},
             new ItemStack[] {GT_Values.NI},
             new FluidStack[]{Materials.DimensionallyTranscendentCrudeCatalyst.getFluid(1000L)},
