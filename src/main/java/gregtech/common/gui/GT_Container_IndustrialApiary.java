@@ -25,6 +25,7 @@ public class GT_Container_IndustrialApiary extends GT_ContainerMetaTile_Machine 
     GT_Slot_Holo slotItemTransferToggle;
     GT_Slot_Holo slotSpeedToggle;
     GT_Slot_Holo slotPollenToggle;
+    GT_Slot_Holo slotCancelProcess;
     Slot slotBattery;
     Slot slotSpecial;
 
@@ -46,6 +47,7 @@ public class GT_Container_IndustrialApiary extends GT_ContainerMetaTile_Machine 
         addSlotToContainer(slotItemTransferToggle = new GT_Slot_Holo(mTileEntity, 0, 8, 63, false, true, 1));
         addSlotToContainer(slotSpeedToggle = new GT_Slot_Holo(mTileEntity, 0, 26, 63, false, true, 1));
         addSlotToContainer(slotPollenToggle = new GT_Slot_Holo(mTileEntity, 0, 8, 45, false, true, 1));
+        addSlotToContainer(slotCancelProcess = new GT_Slot_Holo(mTileEntity, 0, 8, 27, false, true, 1));
         int tStartIndex = 5;
 
         addSlotToContainer(new ApiarySlot(this.mTileEntity, tStartIndex++, 37, 22));
@@ -81,13 +83,16 @@ public class GT_Container_IndustrialApiary extends GT_ContainerMetaTile_Machine 
             case 2:
                 machine.retreviePollen = !machine.retreviePollen;
                 return null;
+            case 3:
+                machine.cancelProcess();
+                return null;
         }
         return super.slotClick(aSlotNumber, aMouseclick, aShifthold, aPlayer);
     }
 
     @Override
     public int getSlotStartIndex() {
-        return 3;
+        return 4;
     }
 
     @Override
