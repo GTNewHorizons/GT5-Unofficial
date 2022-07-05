@@ -199,7 +199,7 @@ public class DreamCraftRecipeLoader {
         // Infinity Coil
         TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Casing_Coil_AwakenedDraconium.get(1),
                 16_777_216, 2048, 8_000_000, 1, new Object[]{
-                        GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Infinite, 1),
+                        new Object[]{OrePrefixes.circuit.get(Materials.Infinite), 1L},
                         GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.Infinity, 8),
                         GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Infinity, 16),
                         GT_ModHandler.getModItem("dreamcraft", "item.MicaInsulatorFoil", 64, 0),
@@ -211,7 +211,7 @@ public class DreamCraftRecipeLoader {
         // Hypogen Coil
         TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Casing_Coil_Infinity.get(1),
                 16_777_216*2, 2048*2, 32_000_000, 1, new Object[]{
-                        GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Bio, 1),
+                        new Object[]{OrePrefixes.circuit.get(Materials.Bio), 1L},
                         GT_ModHandler.getModItem("miscutils", "itemFineWireHypogen", 64, 0),
                         GT_ModHandler.getModItem("miscutils", "itemScrewHypogen", 8, 0),
                         GT_ModHandler.getModItem("dreamcraft", "item.MicaInsulatorFoil", 64, 0),
@@ -1437,7 +1437,7 @@ public class DreamCraftRecipeLoader {
                             ItemList.Field_Generator_UEV.get(4),
                             GT_ModHandler.getModItem("eternalsingularity", "eternal_singularity", 4L),
                             GT_ModHandler.getModItem("miscutils", "MU-metaitem.01", 1L, 32105),
-                            GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Osmium, 64L),
+                            GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Osmiridium, 64L),
                             ItemList.Electric_Pump_UEV.get(4),
                             ItemList.ZPM3.get(1),
                             GT_ModHandler.getModItem("IC2", "blockMachine2", 1, 0)
@@ -1455,7 +1455,7 @@ public class DreamCraftRecipeLoader {
                     8_000_000, 4096, 32_000_000, 1, new Object[]{
                             ItemList.Casing_Dim_Trans.get(1),
                             ItemList.MicroTransmitter_UV.get(1),
-                            new Object[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 2)},
+                            new Object[]{OrePrefixes.circuit.get(Materials.Superconductor), 2L},
                             GT_ModHandler.getModItem("Avaritia", "Singularity", 2L, 0),
                             GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUHV, 6),
                             GT_ModHandler.getModItem("dreamcraft", "item.PicoWafer", 2, 0),
