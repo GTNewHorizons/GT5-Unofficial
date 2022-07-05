@@ -358,7 +358,6 @@ public class BioRecipes {
 				240,
 				2);
 
-
 	}
 
 	private static void recipeWoodPellets() {
@@ -418,7 +417,6 @@ public class BioRecipes {
 				ItemUtils.getItemStackOfAmountFromOreDict("gemCharcoal", 3),
 				120, 
 				16);			
-
 
 	}
 
@@ -487,21 +485,21 @@ public class BioRecipes {
 						var7, // Item Out
 						var8, // Time
 						var9); // Eu
-		 */	
+		 */
 
+		//CH4O + CO = C2H4O2
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
 						CI.getGreenCatalyst(0)
 				},
 				new FluidStack[] {
 						FluidUtils.getFluidStack(BioRecipes.mMethanol, 700),
-						FluidUtils.getFluidStack(BioRecipes.mCarbonMonoxide, 300),
-						FluidUtils.getFluidStack(BioRecipes.mDistilledWater, 2000),
+						FluidUtils.getFluidStack(BioRecipes.mCarbonMonoxide, 700),
 				},
 				new ItemStack[] {
 				},
 				new FluidStack[] {
-						FluidUtils.getFluidStack(BioRecipes.mAceticAcid, 250),						
+						FluidUtils.getFluidStack(BioRecipes.mAceticAcid, 700),
 				},
 				120 * 20,
 				60,
@@ -521,7 +519,6 @@ public class BioRecipes {
 				new int[] {10000, 10000}, 
 				60 * 20,
 				16);
-
 
 	}
 
@@ -733,17 +730,17 @@ public class BioRecipes {
 				32,
 				1);
 
-
 	}
 
 	private static void recipePropionicAcid() {
+		//C2H4 + CO + H2O = C3H6O2
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
 						CI.getGreenCatalyst(0)
 				},
 				new FluidStack[] {
-						FluidUtils.getFluidStack(BioRecipes.mEthylene, 500),
-						FluidUtils.getFluidStack(BioRecipes.mCarbonMonoxide, 500),
+						FluidUtils.getFluidStack(BioRecipes.mEthylene, 1000),
+						FluidUtils.getFluidStack(BioRecipes.mCarbonMonoxide, 1000),
 						FluidUtils.getFluidStack(BioRecipes.mDistilledWater, 1000),
 				},
 				new ItemStack[] {
@@ -786,6 +783,7 @@ public class BioRecipes {
 	}
 
 	private static void recipeSodiumHydroxide() {
+		//NaCl·H2O = NaOH + Cl + H
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
 						getBioChip(4)
@@ -794,16 +792,17 @@ public class BioRecipes {
 						FluidUtils.getFluidStack(BioRecipes.mSalineWater, 1000),
 				},
 				new ItemStack[] {
-						ItemUtils.getSimpleStack(AgriculturalChem.mSodiumHydroxide, 1)
+						ItemUtils.getSimpleStack(AgriculturalChem.mSodiumHydroxide, 3)
 				},
 				new FluidStack[] {
-						FluidUtils.getFluidStack(BioRecipes.mChlorine, 400),
-						FluidUtils.getFluidStack(BioRecipes.mHydrogen, 600),						
+						FluidUtils.getFluidStack(BioRecipes.mChlorine, 1000),
+						FluidUtils.getFluidStack(BioRecipes.mHydrogen, 1000),
 				},
 				300 * 20,
 				120,
 				1);
 
+		//Na + H2O = NaOH + H
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
 						getBioChip(5),
@@ -813,7 +812,7 @@ public class BioRecipes {
 						FluidUtils.getFluidStack(BioRecipes.mDistilledWater, 5000),
 				},
 				new ItemStack[] {
-						ItemUtils.getSimpleStack(AgriculturalChem.mSodiumHydroxide, 5)
+						ItemUtils.getSimpleStack(AgriculturalChem.mSodiumHydroxide, 15)
 				},
 				new FluidStack[] {
 						FluidUtils.getFluidStack(BioRecipes.mHydrogen, 5000),						
@@ -825,23 +824,23 @@ public class BioRecipes {
 
 	private static void recipeSodiumCarbonate() {
 
-		if (OreDictUtils.containsValidEntries("fuelCoke")) {			
+		if (OreDictUtils.containsValidEntries("fuelCoke")) {
+			//Na2CO3 + Al2O3 =C= 2NaAlO2 + CO2
 			CORE.RA.addChemicalPlantRecipe(
 					new ItemStack[] {
 							getBioChip(18),
-							ItemUtils.getItemStackOfAmountFromOreDict("fuelCoke", 3),
-							ItemUtils.getSimpleStack(AgriculturalChem.mSodiumCarbonate, 3),
-							ItemUtils.getSimpleStack(AgriculturalChem.mAluminiumPellet, 6)
+							ItemUtils.getItemStackOfAmountFromOreDict("fuelCoke", 1),
+							ItemUtils.getSimpleStack(AgriculturalChem.mSodiumCarbonate, 6),
+							ItemUtils.getSimpleStack(AgriculturalChem.mAluminiumPellet, 5)
 					},
 					new FluidStack[] {
-							FluidUtils.getFluidStack(BioRecipes.mDistilledWater, 1000),
+
 					},
 					new ItemStack[] {
-							ItemUtils.getSimpleStack(AgriculturalChem.mSodiumAluminate, 18)
+							ItemUtils.getSimpleStack(AgriculturalChem.mSodiumAluminate, 8)
 					},
 					new FluidStack[] {
-							FluidUtils.getFluidStack(BioRecipes.mHydrogen, 200),
-							FluidUtils.getFluidStack(BioRecipes.mCarbonDioxide, 1600),
+							FluidUtils.getFluidStack(BioRecipes.mCarbonDioxide, 1000),
 					},
 					120 * 20,
 					120,
@@ -852,19 +851,18 @@ public class BioRecipes {
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
 						getBioChip(18),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustCoal", 6),
-						ItemUtils.getSimpleStack(AgriculturalChem.mSodiumCarbonate, 4),
-						ItemUtils.getSimpleStack(AgriculturalChem.mAluminiumPellet, 6)
+						ItemUtils.getItemStackOfAmountFromOreDict("dustCoal", 2),
+						ItemUtils.getSimpleStack(AgriculturalChem.mSodiumCarbonate, 6),
+						ItemUtils.getSimpleStack(AgriculturalChem.mAluminiumPellet, 5)
 				},
 				new FluidStack[] {
-						FluidUtils.getFluidStack(BioRecipes.mDistilledWater, 1000),
+
 				},
 				new ItemStack[] {
-						ItemUtils.getSimpleStack(AgriculturalChem.mSodiumAluminate, 16)
+						ItemUtils.getSimpleStack(AgriculturalChem.mSodiumAluminate, 8)
 				},
 				new FluidStack[] {
-						FluidUtils.getFluidStack(BioRecipes.mHydrogen, 100),
-						FluidUtils.getFluidStack(BioRecipes.mCarbonDioxide, 1750),
+						FluidUtils.getFluidStack(BioRecipes.mCarbonDioxide, 1000),
 				},
 				180 * 20,
 				120,
@@ -968,30 +966,30 @@ public class BioRecipes {
 				ItemUtils.getSimpleStack(AgriculturalChem.mAluminiumPellet, 4),
 				20 * 30, 
 				64);
-
-
 	}
 
 	private static void recipeAlumina() {
+		//2NaAlO2 + 2NaOH + 2CO2 = Al2O3 + 2Na2CO3 + H2O
 		GT_Values.RA.addBlastRecipe(
-				ItemUtils.getSimpleStack(AgriculturalChem.mSodiumAluminate, 24),
-				ItemUtils.getSimpleStack(AgriculturalChem.mSodiumHydroxide, 3),
-				FluidUtils.getFluidStack(mCarbonDioxide, 6000), 
+				ItemUtils.getSimpleStack(AgriculturalChem.mSodiumAluminate, 8),
+				ItemUtils.getSimpleStack(AgriculturalChem.mSodiumHydroxide, 6),
+				FluidUtils.getFluidStack(mCarbonDioxide, 2000),
 				GT_Values.NF,
-				ItemUtils.getSimpleStack(AgriculturalChem.mAlumina, 24),
-				ItemUtils.getSimpleStack(AgriculturalChem.mSodiumCarbonate, 2),
-				20 * 120,
+				ItemUtils.getSimpleStack(AgriculturalChem.mAlumina, 5),
+				ItemUtils.getSimpleStack(AgriculturalChem.mSodiumCarbonate, 12),
+				20 * 40,
 				120,
 				1200);
 	}
 
 	private static void recipeAluminium() {
+		//2Al2O3 + 3C = 4Al + 3CO2
 		GT_Values.RA.addBlastRecipe(
-				ItemUtils.getSimpleStack(AgriculturalChem.mAlumina, 24),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustCarbon", 4),
+				ItemUtils.getSimpleStack(AgriculturalChem.mAlumina, 10),
+				ItemUtils.getItemStackOfAmountFromOreDict("dustCarbon", 3),
 				GT_Values.NF,
-				GT_Values.NF,
-				ItemUtils.getItemStackOfAmountFromOreDict("dustAluminium", 24),
+				Materials.CarbonDioxide.getGas(3000),
+				ItemUtils.getItemStackOfAmountFromOreDict("dustAluminium", 4),
 				null,
 				20 * 120,
 				120,
@@ -1055,7 +1053,6 @@ public class BioRecipes {
 
 	private static void recipeSulfuricAcid() {
 
-
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
 						getBioChip(7),
@@ -1098,21 +1095,21 @@ public class BioRecipes {
 
 	private static void recipeUrea() {
 
-
+		//2NH3 + CO2 = CH4N2O + H2O
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
 						getBioChip(9),
 				},
 				new FluidStack[] {
 						FluidUtils.getFluidStack(BioRecipes.mAmmonia, 600),
-						FluidUtils.getFluidStack(BioRecipes.mCarbonDioxide, 400),
+						FluidUtils.getFluidStack(BioRecipes.mCarbonDioxide, 300),
 				},
 				new ItemStack[] {
 
 				},
 				new FluidStack[] {
-						FluidUtils.getFluidStack(BioRecipes.mUrea, 400),	
-						FluidUtils.getFluidStack(BioRecipes.mDistilledWater, 600),						
+						FluidUtils.getFluidStack(BioRecipes.mUrea, 300),
+						FluidUtils.getFluidStack(BioRecipes.mDistilledWater, 300),
 				},
 				5 * 20,
 				30,
@@ -1289,18 +1286,20 @@ public class BioRecipes {
 
 	private static void recipeBenzene() {
 
+		//6CH4 = C6H6 + 18H
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
 						getBioChip(19),
 						CI.getGreenCatalyst(0),
 				},
 				new FluidStack[] {
-						FluidUtils.getFluidStack(BioRecipes.mMethane, 1000),
+						FluidUtils.getFluidStack(BioRecipes.mMethane, 6000),
 				},
 				new ItemStack[] {
 				},
 				new FluidStack[] {
-						FluidUtils.getFluidStack(BioRecipes.mBenzene, 500),					
+						FluidUtils.getFluidStack(BioRecipes.mBenzene, 1000),
+						Materials.Hydrogen.getGas(18000)
 				},
 				8 * 20,
 				120,
@@ -1309,6 +1308,7 @@ public class BioRecipes {
 
 	private static void recipeStyrene() {
 
+		//C8H10 = C8H8 + 2H
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
 						getBioChip(20),
@@ -1320,7 +1320,8 @@ public class BioRecipes {
 				new ItemStack[] {
 				},
 				new FluidStack[] {
-						FluidUtils.getFluidStack(BioRecipes.mStyrene, 25),					
+						FluidUtils.getFluidStack(BioRecipes.mStyrene, 100),
+						Materials.Hydrogen.getGas(200)
 				},
 				16 * 20,
 				480,
@@ -1417,8 +1418,6 @@ public class BioRecipes {
 			}
 		}
 		return didInvoke;
-
-
 	}
 
 

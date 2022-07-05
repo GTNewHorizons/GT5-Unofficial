@@ -6,6 +6,7 @@ import java.util.LinkedHashMap;
 
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
@@ -97,54 +98,51 @@ public class RocketFuels extends ItemPackage {
 				new int[]{100, 50}, 
 				20*16, 
 				500);*/
-		
+
+		//2HNO3 + Cu = N2O4 + H2O + CuO
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[]{
-						ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 12),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 1),
 						ItemUtils.getSimpleStack(GenericChem.mOrangeCatalyst, 0),
 				},
 				new FluidStack[] {
-						FluidUtils.getFluidStack("nitricacid", 4000)
+						FluidUtils.getFluidStack("nitricacid", 2000)
 				},
 				new ItemStack[]{
-						ItemUtils.getItemStackOfAmountFromOreDict("dustSmallAsh", 1),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustSmallDarkAsh", 1),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustTinyAsh", 1),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustTinyDarkAsh", 1)
+						Materials.CupricOxide.getDust(2),
 				},
 				new FluidStack[] {
-						FluidUtils.getFluidStack(Nitrogen_Tetroxide, 3000),
+						FluidUtils.getFluidStack(Nitrogen_Tetroxide, 1000),
 				},
 				new int[]{100, 100, 50, 50}, 
 				20 * 30,
 				MaterialUtils.getVoltageForTier(3),
 				3);
 
-		
 	}
 
 	public static void createHydrazine(){		
 
+		//H2O2 + 2NH3 = N2H4 + 2H2O
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
 						CI.getNumberedCircuit(21)
 				}, 
 				new FluidStack[] {
-						FluidUtils.getFluidStack("fluid.hydrogenperoxide", 2000),
+						FluidUtils.getFluidStack("fluid.hydrogenperoxide", 1000),
 						FluidUtils.getFluidStack("ammonia", 2000),
 				}, 
 				new ItemStack[] {
 
 				}, 
 				new FluidStack[] {
-						FluidUtils.getFluidStack(Hydrazine, 4000),
-
+						FluidUtils.getFluidStack(Hydrazine, 1000),
 				},
 				20 * 30, 
 				MaterialUtils.getVoltageForTier(2), 
 				1);
 
-		FluidStack aBartWorksHydrogenPeroxide = FluidUtils.getWildcardFluidStack("Hydrogen Peroxide", 2000);
+		FluidStack aBartWorksHydrogenPeroxide = FluidUtils.getWildcardFluidStack("Hydrogen Peroxide", 1000);
 		if (aBartWorksHydrogenPeroxide != null) {
 			Logger.INFO("Found BW Hydrogen Peroxide, adding compat recipe.");
 			CORE.RA.addChemicalPlantRecipe(
@@ -159,7 +157,7 @@ public class RocketFuels extends ItemPackage {
 
 					}, 
 					new FluidStack[] {
-							FluidUtils.getFluidStack(Hydrazine, 4000),
+							FluidUtils.getFluidStack(Hydrazine, 1000),
 
 					},
 					20 * 30, 
@@ -172,20 +170,21 @@ public class RocketFuels extends ItemPackage {
 
 	public static void createMonomethylhydrazine(){
 
+		//C + 2H + N2H4 = CH6N2
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
 						CI.getNumberedCircuit(21),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustCarbon", 2)
+						ItemUtils.getItemStackOfAmountFromOreDict("dustCarbon", 1)
 				}, 
 				new FluidStack[] {
 						FluidUtils.getFluidStack("hydrogen", 2000),
-						FluidUtils.getFluidStack(Hydrazine, 2000),
+						FluidUtils.getFluidStack(Hydrazine, 1000),
 				}, 
 				new ItemStack[] {
 
 				}, 
 				new FluidStack[] {
-						FluidUtils.getFluidStack(Monomethylhydrazine, 4000),
+						FluidUtils.getFluidStack(Monomethylhydrazine, 1000),
 
 				},
 				20 * 48, 
@@ -206,6 +205,7 @@ public class RocketFuels extends ItemPackage {
 
 	private static void createHydratedAmmoniumNitrateSlurry() {		
 
+		//NH3 + HNO3 = NH4NO3
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
 						CI.getNumberedAdvancedCircuit(21),
@@ -218,7 +218,7 @@ public class RocketFuels extends ItemPackage {
 
 				}, 
 				new FluidStack[] {
-						FluidUtils.getFluidStack(Hydrated_Ammonium_Nitrate_Slurry, 8000),
+						FluidUtils.getFluidStack(Hydrated_Ammonium_Nitrate_Slurry, 5184),
 
 				},
 				20 * 60, 
@@ -230,7 +230,7 @@ public class RocketFuels extends ItemPackage {
 	private static void createAmmoniumNitrateDust() {
 		CORE.RA.addDehydratorRecipe(
 				new ItemStack[] {CI.getNumberedCircuit(8)}, 
-				FluidUtils.getFluidStack(Hydrated_Ammonium_Nitrate_Slurry, 8*144), 
+				FluidUtils.getFluidStack(Hydrated_Ammonium_Nitrate_Slurry, 8 * 144),
 				FluidUtils.getWater(2000), 
 				new ItemStack[] {
 						ItemUtils.getSimpleStack(Ammonium_Nitrate_Dust, 8)
@@ -243,21 +243,21 @@ public class RocketFuels extends ItemPackage {
 
 	private static void createFormaldehyde() {		
 
+		//O + CH4O = CH2O + H2O
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
 						CI.getNumberedAdvancedCircuit(21),
 						ItemUtils.getSimpleStack(GenericChem.mFormaldehydeCatalyst, 0),
 				}, 
 				new FluidStack[] {
-						FluidUtils.getFluidStack("oxygen", 16000),
+						FluidUtils.getFluidStack("oxygen", 32000),
 						FluidUtils.getFluidStack("methanol", 32000),
 				}, 
 				new ItemStack[] {
 
 				}, 
 				new FluidStack[] {
-						FluidUtils.getFluidStack(Formaldehyde, 8000),
-
+						FluidUtils.getFluidStack(Formaldehyde, 32000),
 				},
 				20 * 90, 
 				120, 

@@ -19,7 +19,7 @@ public class RecipeLoader_AlgaeFarm {
 	private static final HashMap<Integer, AutoMap<GT_Recipe>> mRecipeCache = new HashMap<Integer, AutoMap<GT_Recipe>>();
 	private static final HashMap<Integer, AutoMap<GT_Recipe>> mRecipeCompostCache = new HashMap<Integer, AutoMap<GT_Recipe>>();
 
-	public static final void generateRecipes() {
+	public static void generateRecipes() {
 		for (int i=0;i<10;i++) {
 			getTieredRecipeFromCache(i, false);
 		}

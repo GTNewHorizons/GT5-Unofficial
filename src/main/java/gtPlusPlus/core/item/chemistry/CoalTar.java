@@ -254,10 +254,10 @@ public class CoalTar extends ItemPackage {
 				new ItemStack[] {
 						CI.getNumberedBioCircuit(15)
 						}, 
-				FluidUtils.getFluidStack("fluid.phthalicacid", 144), 
+				FluidUtils.getFluidStack("fluid.phthalicacid", 1000),
 				null, 
 				new ItemStack[]{
-						ItemUtils.getItemStackOfAmountFromOreDict("dustPhthalicAnhydride", 1)
+						ItemUtils.getItemStackOfAmountFromOreDict("dustPhthalicAnhydride", 15)
 				}, 
 				new int[] {10000}, 
 				60 * 20,

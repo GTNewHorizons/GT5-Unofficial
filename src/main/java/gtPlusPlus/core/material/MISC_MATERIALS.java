@@ -40,11 +40,9 @@ public final class MISC_MATERIALS {
 			"KNO3",
 			0, 
 			false,
-			new MaterialStack[]{
-					new MaterialStack(ELEMENT.getInstance().POTASSIUM, 1),
-					new MaterialStack(ELEMENT.getInstance().NITROGEN, 1),
-					new MaterialStack(ELEMENT.getInstance().OXYGEN, 3)
-			});
+			new MaterialStack(ELEMENT.getInstance().POTASSIUM, 1),
+			new MaterialStack(ELEMENT.getInstance().NITROGEN, 1),
+			new MaterialStack(ELEMENT.getInstance().OXYGEN, 3));
 	public static final Material SODIUM_NITRATE = new Material(
 			"Sodium Nitrate", 
 			MaterialState.SOLID, //State
@@ -58,11 +56,9 @@ public final class MISC_MATERIALS {
 			"NaNO3",
 			0, 
 			false,
-			new MaterialStack[]{
-					new MaterialStack(ELEMENT.getInstance().SODIUM, 1),
-					new MaterialStack(ELEMENT.getInstance().NITROGEN, 1),
-					new MaterialStack(ELEMENT.getInstance().OXYGEN, 3)
-			});	
+			new MaterialStack(ELEMENT.getInstance().SODIUM, 1),
+			new MaterialStack(ELEMENT.getInstance().NITROGEN, 1),
+			new MaterialStack(ELEMENT.getInstance().OXYGEN, 3));
 
 	public static final Material SOLAR_SALT_COLD = new Material(
 			"Solar Salt (Cold)",
@@ -74,10 +70,8 @@ public final class MISC_MATERIALS {
 			-1,
 			false, //Uses Blast furnace?
 			//Material Stacks with Percentage of required elements.
-			new MaterialStack[]{
-					new MaterialStack(POTASSIUM_NITRATE, 4),
-					new MaterialStack(SODIUM_NITRATE, 6)
-			});
+			new MaterialStack(POTASSIUM_NITRATE, 4),
+			new MaterialStack(SODIUM_NITRATE, 6));
 	
 	public static final Material SOLAR_SALT_HOT = new Material(
 			"Solar Salt (Hot)",
@@ -89,12 +83,8 @@ public final class MISC_MATERIALS {
 			-1,
 			false, //Uses Blast furnace?
 			//Material Stacks with Percentage of required elements.
-			new MaterialStack[]{
-					new MaterialStack(POTASSIUM_NITRATE, 4),
-					new MaterialStack(SODIUM_NITRATE, 6)
-			});
-	
-	
+			new MaterialStack(POTASSIUM_NITRATE, 4),
+			new MaterialStack(SODIUM_NITRATE, 6));
 	
 	public static final Material STRONTIUM_OXIDE = new Material(
 			"Strontium Oxide", 
@@ -109,10 +99,8 @@ public final class MISC_MATERIALS {
 			"SrO",
 			0, 
 			false,
-			new MaterialStack[]{
-					new MaterialStack(ELEMENT.getInstance().STRONTIUM, 1),
-					new MaterialStack(ELEMENT.getInstance().OXYGEN, 1)
-			});
+			new MaterialStack(ELEMENT.getInstance().STRONTIUM, 1),
+			new MaterialStack(ELEMENT.getInstance().OXYGEN, 1));
 
 	public static final Material SELENIUM_DIOXIDE = new Material(
 			"Selenium Dioxide",
@@ -124,10 +112,8 @@ public final class MISC_MATERIALS {
 			-1,
 			false, //Uses Blast furnace?
 			//Material Stacks with Percentage of required elements.
-			new MaterialStack[]{
-					new MaterialStack(ELEMENT.getInstance().SELENIUM, 1),
-					new MaterialStack(ELEMENT.getInstance().OXYGEN, 2)
-			});
+			new MaterialStack(ELEMENT.getInstance().SELENIUM, 1),
+			new MaterialStack(ELEMENT.getInstance().OXYGEN, 2));
 
 	public static final Material SELENIOUS_ACID = new Material(
 			"Selenious Acid",
@@ -139,11 +125,9 @@ public final class MISC_MATERIALS {
 			-1,
 			false, //Uses Blast furnace?
 			//Material Stacks with Percentage of required elements.
-			new MaterialStack[]{
-					new MaterialStack(SELENIUM_DIOXIDE, 1),
-					new MaterialStack(ELEMENT.getInstance().HYDROGEN, 8),
-					new MaterialStack(ELEMENT.getInstance().OXYGEN, 4)
-			});
+			new MaterialStack(SELENIUM_DIOXIDE, 1),
+			new MaterialStack(ELEMENT.getInstance().HYDROGEN, 8),
+			new MaterialStack(ELEMENT.getInstance().OXYGEN, 4));
 
 	public static final Material HYDROGEN_CYANIDE = new Material(
 			"Hydrogen Cyanide",
@@ -155,11 +139,9 @@ public final class MISC_MATERIALS {
 			-1,
 			false, //Uses Blast furnace?
 			//Material Stacks with Percentage of required elements.
-			new MaterialStack[]{
-					new MaterialStack(ELEMENT.getInstance().HYDROGEN, 1),
-					new MaterialStack(ELEMENT.getInstance().CARBON, 1),
-					new MaterialStack(ELEMENT.getInstance().NITROGEN, 1)
-			});
+			new MaterialStack(ELEMENT.getInstance().HYDROGEN, 1),
+			new MaterialStack(ELEMENT.getInstance().CARBON, 1),
+			new MaterialStack(ELEMENT.getInstance().NITROGEN, 1));
 
 	public static final Material CARBON_MONOXIDE = new Material(
 			"Carbon Monoxide",
@@ -171,10 +153,8 @@ public final class MISC_MATERIALS {
 			-1,
 			false, //Uses Blast furnace?
 			//Material Stacks with Percentage of required elements.
-			new MaterialStack[]{
-					new MaterialStack(ELEMENT.getInstance().CARBON, 1),
-					new MaterialStack(ELEMENT.getInstance().OXYGEN, 1)
-			});
+			new MaterialStack(ELEMENT.getInstance().CARBON, 1),
+			new MaterialStack(ELEMENT.getInstance().OXYGEN, 1));
 
 	public static final Material CARBON_DIOXIDE = new Material(
 			"Carbon Dioxide",
@@ -186,10 +166,8 @@ public final class MISC_MATERIALS {
 			-1,
 			false, //Uses Blast furnace?
 			//Material Stacks with Percentage of required elements.
-			new MaterialStack[]{
-					new MaterialStack(ELEMENT.getInstance().CARBON, 1),
-					new MaterialStack(ELEMENT.getInstance().OXYGEN, 2)
-			});
+			new MaterialStack(ELEMENT.getInstance().CARBON, 1),
+			new MaterialStack(ELEMENT.getInstance().OXYGEN, 2));
 	
 	public static final Material WOODS_GLASS = new Material(
 			"Wood's Glass", //Material Name
@@ -204,12 +182,10 @@ public final class MISC_MATERIALS {
 			"Si4Ba3Na2Ni",
 			0, 
 			false,
-			new MaterialStack[]{
-					new MaterialStack(ELEMENT.getInstance().SILICON, 40),
-					new MaterialStack(ELEMENT.getInstance().BARIUM, 30),
-					new MaterialStack(ELEMENT.getInstance().SODIUM, 20),
-					new MaterialStack(ELEMENT.getInstance().NICKEL, 10),
-			});
+			new MaterialStack(ELEMENT.getInstance().SILICON, 40),
+			new MaterialStack(ELEMENT.getInstance().BARIUM, 30),
+			new MaterialStack(ELEMENT.getInstance().SODIUM, 20),
+			new MaterialStack(ELEMENT.getInstance().NICKEL, 10));
 
 
 	/*
@@ -285,10 +261,8 @@ public final class MISC_MATERIALS {
 	public static final Material WATER = new Material(
 			"Water",
 			MaterialState.PURE_LIQUID,
-			new MaterialStack[]{
-					new MaterialStack(ELEMENT.getInstance().HYDROGEN, 2),
-					new MaterialStack(ELEMENT.getInstance().OXYGEN, 1)
-			});
+			new MaterialStack(ELEMENT.getInstance().HYDROGEN, 2),
+			new MaterialStack(ELEMENT.getInstance().OXYGEN, 1));
 
 	//OH
 	public static final Material HYDROXIDE = new Material(
@@ -301,10 +275,8 @@ public final class MISC_MATERIALS {
 			-1,
 			false, //Uses Blast furnace?
 			//Material Stacks with Percentage of required elements.
-			new MaterialStack[]{
-					new MaterialStack(ELEMENT.getInstance().OXYGEN, 1),
-					new MaterialStack(ELEMENT.getInstance().HYDROGEN, 1)
-			});
+			new MaterialStack(ELEMENT.getInstance().OXYGEN, 1),
+			new MaterialStack(ELEMENT.getInstance().HYDROGEN, 1));
 
 	//NH3
 	public static final Material AMMONIA = new Material(
@@ -317,10 +289,8 @@ public final class MISC_MATERIALS {
 			-1,
 			false, //Uses Blast furnace?
 			//Material Stacks with Percentage of required elements.
-			new MaterialStack[]{
-					new MaterialStack(ELEMENT.getInstance().NITROGEN, 1),
-					new MaterialStack(ELEMENT.getInstance().HYDROGEN, 3)
-			});
+			new MaterialStack(ELEMENT.getInstance().NITROGEN, 1),
+			new MaterialStack(ELEMENT.getInstance().HYDROGEN, 3));
 
 	//NH4
 	public static final Material AMMONIUM = new Material(
@@ -333,53 +303,41 @@ public final class MISC_MATERIALS {
 			-1,
 			false, //Uses Blast furnace?
 			//Material Stacks with Percentage of required elements.
-			new MaterialStack[]{
-					new MaterialStack(ELEMENT.getInstance().NITROGEN, 1),
-					new MaterialStack(ELEMENT.getInstance().HYDROGEN, 4)
-			});
+			new MaterialStack(ELEMENT.getInstance().NITROGEN, 1),
+			new MaterialStack(ELEMENT.getInstance().HYDROGEN, 4));
 
 
 	public static final Material HYDROGEN_CHLORIDE = new Material(
 			"Hydrogen Chloride",
 			MaterialState.PURE_GAS,
-			new MaterialStack[]{
-					new MaterialStack(ELEMENT.getInstance().HYDROGEN, 1),
-					new MaterialStack(ELEMENT.getInstance().CHLORINE, 1),
-			});
+			new MaterialStack(ELEMENT.getInstance().HYDROGEN, 1),
+			new MaterialStack(ELEMENT.getInstance().CHLORINE, 1));
 
 
 	public static final Material SODIUM_CHLORIDE = new Material(
 			"Sodium Chloride",
 			MaterialState.PURE_GAS,
-			new MaterialStack[]{
-					new MaterialStack(ELEMENT.getInstance().SODIUM, 1),
-					new MaterialStack(ELEMENT.getInstance().CHLORINE, 1),
-			});
+			new MaterialStack(ELEMENT.getInstance().SODIUM, 1),
+			new MaterialStack(ELEMENT.getInstance().CHLORINE, 1));
 
 
 	public static final Material SODIUM_HYDROXIDE = new Material(
 			"Sodium Hydroxide",
 			MaterialState.PURE_GAS,
-			new MaterialStack[]{
-					new MaterialStack(ELEMENT.getInstance().SODIUM, 1),
-					new MaterialStack(HYDROXIDE, 1),
-			});
+			new MaterialStack(ELEMENT.getInstance().SODIUM, 1),
+			new MaterialStack(HYDROXIDE, 1));
 
 	public static final Material SALT_WATER = new Material(
 			"Salt Water",
 			MaterialState.PURE_LIQUID,
-			new MaterialStack[]{
-					new MaterialStack(WATER, 3),
-					new MaterialStack(SODIUM_CHLORIDE, 1),
-			});
+			new MaterialStack(WATER, 3),
+			new MaterialStack(SODIUM_CHLORIDE, 1));
 
 	public static final Material BRINE = new Material(
 			"Brine",
 			MaterialState.PURE_LIQUID,
-			new MaterialStack[]{
-					new MaterialStack(SALT_WATER, 1),
-					new MaterialStack(SODIUM_CHLORIDE, 2),
-			});
+			new MaterialStack(SALT_WATER, 1),
+			new MaterialStack(SODIUM_CHLORIDE, 2));
 
 	public static final Material STRONTIUM_HYDROXIDE = new Material(
 			"Strontium Hydroxide", 
@@ -394,10 +352,8 @@ public final class MISC_MATERIALS {
 			"Sr(OH)2",
 			0, 
 			false,
-			new MaterialStack[]{
-					new MaterialStack(ELEMENT.getInstance().STRONTIUM, 1),
-					new MaterialStack(MISC_MATERIALS.HYDROXIDE, 2)
-			});
+			new MaterialStack(ELEMENT.getInstance().STRONTIUM, 1),
+			new MaterialStack(MISC_MATERIALS.HYDROXIDE, 2));
 
 	// Glue Chemicals
 
@@ -413,11 +369,9 @@ public final class MISC_MATERIALS {
 			"(CH3CO)2O",
 			0,
 			true,
-			new MaterialStack[]{
-					new MaterialStack(ELEMENT.getInstance().CARBON, 4),
-					new MaterialStack(ELEMENT.getInstance().HYDROGEN, 6),
-					new MaterialStack(ELEMENT.getInstance().OXYGEN, 3)
-			});
+			new MaterialStack(ELEMENT.getInstance().CARBON, 4),
+			new MaterialStack(ELEMENT.getInstance().HYDROGEN, 6),
+			new MaterialStack(ELEMENT.getInstance().OXYGEN, 3));
 
 	public static final Material CHLOROACETIC_ACID = new Material(
 			"Chloroacetic Acid",
@@ -431,12 +385,10 @@ public final class MISC_MATERIALS {
 			"ClCH2-COOH",
 			0,
 			true,
-			new MaterialStack[]{
-					new MaterialStack(ELEMENT.getInstance().CARBON, 2),
-					new MaterialStack(ELEMENT.getInstance().HYDROGEN, 3),
-					new MaterialStack(ELEMENT.getInstance().OXYGEN, 2),
-					new MaterialStack(ELEMENT.getInstance().CHLORINE, 1)
-			});
+			new MaterialStack(ELEMENT.getInstance().CARBON, 2),
+			new MaterialStack(ELEMENT.getInstance().HYDROGEN, 3),
+			new MaterialStack(ELEMENT.getInstance().OXYGEN, 2),
+			new MaterialStack(ELEMENT.getInstance().CHLORINE, 1));
 
 	public static final Material DICHLOROACETIC_ACID = new Material(
 			"Dichloroacetic Acid",
@@ -450,12 +402,10 @@ public final class MISC_MATERIALS {
 			"Cl2CH-COOH",
 			0,
 			true,
-			new MaterialStack[]{
-					new MaterialStack(ELEMENT.getInstance().CARBON, 2),
-					new MaterialStack(ELEMENT.getInstance().HYDROGEN, 2),
-					new MaterialStack(ELEMENT.getInstance().OXYGEN, 2),
-					new MaterialStack(ELEMENT.getInstance().CHLORINE, 2)
-			});
+			new MaterialStack(ELEMENT.getInstance().CARBON, 2),
+			new MaterialStack(ELEMENT.getInstance().HYDROGEN, 2),
+			new MaterialStack(ELEMENT.getInstance().OXYGEN, 2),
+			new MaterialStack(ELEMENT.getInstance().CHLORINE, 2));
 
 	public static final Material TRICHLOROACETIC_ACID = new Material(
 			"Trichloroacetic Acid",
@@ -469,12 +419,10 @@ public final class MISC_MATERIALS {
 			"Cl3C-COOH",
 			0,
 			true,
-			new MaterialStack[]{
-					new MaterialStack(ELEMENT.getInstance().CARBON, 2),
-					new MaterialStack(ELEMENT.getInstance().HYDROGEN, 1),
-					new MaterialStack(ELEMENT.getInstance().OXYGEN, 2),
-					new MaterialStack(ELEMENT.getInstance().CHLORINE, 3)
-			});
+			new MaterialStack(ELEMENT.getInstance().CARBON, 2),
+			new MaterialStack(ELEMENT.getInstance().HYDROGEN, 1),
+			new MaterialStack(ELEMENT.getInstance().OXYGEN, 2),
+			new MaterialStack(ELEMENT.getInstance().CHLORINE, 3));
 
 	public static final Material CHLOROACETIC_MIXTURE = new Material(
 			"Chloroacetic Mixture",
@@ -489,12 +437,10 @@ public final class MISC_MATERIALS {
 			"Cl?H?C-COOH",
 			0,
 			true,
-			new MaterialStack[]{
-					new MaterialStack(ELEMENT.getInstance().CARBON, 6),
-					new MaterialStack(ELEMENT.getInstance().HYDROGEN, 6),
-					new MaterialStack(ELEMENT.getInstance().OXYGEN, 6),
-					new MaterialStack(ELEMENT.getInstance().CHLORINE, 6)
-			});
+			new MaterialStack(ELEMENT.getInstance().CARBON, 6),
+			new MaterialStack(ELEMENT.getInstance().HYDROGEN, 6),
+			new MaterialStack(ELEMENT.getInstance().OXYGEN, 6),
+			new MaterialStack(ELEMENT.getInstance().CHLORINE, 6));
 
 	public static final Material SODIUM_CYANIDE = new Material(
 			"Sodium Cyanide",
@@ -508,11 +454,9 @@ public final class MISC_MATERIALS {
 			"NaCN",
 			0,
 			false,
-			new MaterialStack[]{
-					new MaterialStack(ELEMENT.getInstance().SODIUM, 1),
-					new MaterialStack(ELEMENT.getInstance().CARBON, 1),
-					new MaterialStack(ELEMENT.getInstance().NITROGEN, 1)
-			});
+			new MaterialStack(ELEMENT.getInstance().SODIUM, 1),
+			new MaterialStack(ELEMENT.getInstance().CARBON, 1),
+			new MaterialStack(ELEMENT.getInstance().NITROGEN, 1));
 
 	public static final Material CALCIUM_CHLORIDE = new Material(
 			"Calcium Chloride",
@@ -526,10 +470,8 @@ public final class MISC_MATERIALS {
 			"CaCl2",
 			0,
 			false,
-			new MaterialStack[]{
-					new MaterialStack(ELEMENT.getInstance().CALCIUM, 1),
-					new MaterialStack(ELEMENT.getInstance().CHLORINE, 2)
-			});
+			new MaterialStack(ELEMENT.getInstance().CALCIUM, 1),
+			new MaterialStack(ELEMENT.getInstance().CHLORINE, 2));
 
 	public static final Material CYANOACETIC_ACID = new Material(
 			"Cyanoacetic Acid",
@@ -543,12 +485,10 @@ public final class MISC_MATERIALS {
 			"C3H3NO2",
 			0,
 			false,
-			new MaterialStack[]{
-					new MaterialStack(ELEMENT.getInstance().CARBON, 3),
-					new MaterialStack(ELEMENT.getInstance().HYDROGEN, 3),
-					new MaterialStack(ELEMENT.getInstance().NITROGEN, 1),
-					new MaterialStack(ELEMENT.getInstance().OXYGEN, 2)
-			});
+			new MaterialStack(ELEMENT.getInstance().CARBON, 3),
+			new MaterialStack(ELEMENT.getInstance().HYDROGEN, 3),
+			new MaterialStack(ELEMENT.getInstance().NITROGEN, 1),
+			new MaterialStack(ELEMENT.getInstance().OXYGEN, 2));
 
 	public static final Material SOLID_ACID_MIXTURE = new Material(
 			"Solid Acid Catalyst Mixture",
@@ -562,11 +502,9 @@ public final class MISC_MATERIALS {
 			"?H2SO4?",
 			0,
 			true,
-			new MaterialStack[]{
-					new MaterialStack(ELEMENT.getInstance().HYDROGEN, 2),
-					new MaterialStack(ELEMENT.getInstance().SULFUR, 1),
-					new MaterialStack(ELEMENT.getInstance().OXYGEN, 4)
-			});
+			new MaterialStack(ELEMENT.getInstance().HYDROGEN, 2),
+			new MaterialStack(ELEMENT.getInstance().SULFUR, 1),
+			new MaterialStack(ELEMENT.getInstance().OXYGEN, 4));
 
 	public static final Material COPPER_SULFATE = new Material(
 			"Copper(II) Sulfate",
@@ -580,11 +518,9 @@ public final class MISC_MATERIALS {
 			"CuSO4",
 			0,
 			false,
-			new MaterialStack[]{
-					new MaterialStack(ELEMENT.getInstance().COPPER, 1),
-					new MaterialStack(ELEMENT.getInstance().SULFUR, 1),
-					new MaterialStack(ELEMENT.getInstance().OXYGEN, 4)
-			});
+			new MaterialStack(ELEMENT.getInstance().COPPER, 1),
+			new MaterialStack(ELEMENT.getInstance().SULFUR, 1),
+			new MaterialStack(ELEMENT.getInstance().OXYGEN, 4));
 
 	public static final Material COPPER_SULFATE_HYDRATED = new Material(
 			"Copper(II) Sulfate Pentahydrate",
@@ -595,14 +531,12 @@ public final class MISC_MATERIALS {
 			-1, //Protons
 			-1,
 			false, //Uses Blast furnace?
-			"CuSO4∙5H2O",
+			"CuSO4∙(H2O)5",
 			0,
 			false,
-			new MaterialStack[]{
-					new MaterialStack(ELEMENT.getInstance().COPPER, 1),
-					new MaterialStack(ELEMENT.getInstance().SULFUR, 1),
-					new MaterialStack(ELEMENT.getInstance().OXYGEN, 4)
-			});
+			new MaterialStack(ELEMENT.getInstance().COPPER, 1),
+			new MaterialStack(ELEMENT.getInstance().SULFUR, 1),
+			new MaterialStack(ELEMENT.getInstance().OXYGEN, 4));
 
 	public static final Material ETHYL_CYANOACETATE = new Material(
 			"Ethyl Cyanoacetate",
@@ -616,12 +550,10 @@ public final class MISC_MATERIALS {
 			"C5H7NO2",
 			0,
 			true,
-			new MaterialStack[]{
-					new MaterialStack(ELEMENT.getInstance().CARBON, 2),
-					new MaterialStack(ELEMENT.getInstance().HYDROGEN, 1),
-					new MaterialStack(ELEMENT.getInstance().OXYGEN, 2),
-					new MaterialStack(ELEMENT.getInstance().CHLORINE, 3)
-			});
+			new MaterialStack(ELEMENT.getInstance().CARBON, 2),
+			new MaterialStack(ELEMENT.getInstance().HYDROGEN, 1),
+			new MaterialStack(ELEMENT.getInstance().OXYGEN, 2),
+			new MaterialStack(ELEMENT.getInstance().CHLORINE, 3));
 
 	public static final Material CYANOACRYLATE_POLYMER = new Material(
 			"Cyanoacrylate Polymer",
@@ -635,12 +567,10 @@ public final class MISC_MATERIALS {
 			"(-C6H7NO2-)n",
 			0,
 			true,
-			new MaterialStack[]{
-					new MaterialStack(ELEMENT.getInstance().CARBON, 2),
-					new MaterialStack(ELEMENT.getInstance().HYDROGEN, 1),
-					new MaterialStack(ELEMENT.getInstance().OXYGEN, 2),
-					new MaterialStack(ELEMENT.getInstance().CHLORINE, 3)
-			});
+			new MaterialStack(ELEMENT.getInstance().CARBON, 2),
+			new MaterialStack(ELEMENT.getInstance().HYDROGEN, 1),
+			new MaterialStack(ELEMENT.getInstance().OXYGEN, 2),
+			new MaterialStack(ELEMENT.getInstance().CHLORINE, 3));
 
 	public static final Material ETHYL_CYANOACRYLATE = new Material(
 			"Ethyl Cyanoacrylate (Super Glue)",
@@ -654,12 +584,10 @@ public final class MISC_MATERIALS {
 			"C6H7NO2",
 			0,
 			true,
-			new MaterialStack[]{
-					new MaterialStack(ELEMENT.getInstance().CARBON, 2),
-					new MaterialStack(ELEMENT.getInstance().HYDROGEN, 1),
-					new MaterialStack(ELEMENT.getInstance().OXYGEN, 2),
-					new MaterialStack(ELEMENT.getInstance().CHLORINE, 3)
-			});
+			new MaterialStack(ELEMENT.getInstance().CARBON, 2),
+			new MaterialStack(ELEMENT.getInstance().HYDROGEN, 1),
+			new MaterialStack(ELEMENT.getInstance().OXYGEN, 2),
+			new MaterialStack(ELEMENT.getInstance().CHLORINE, 3));
 
 	public static final Material MUTATED_LIVING_SOLDER = new Material(
 			"Mutated Living Solder",
@@ -673,8 +601,6 @@ public final class MISC_MATERIALS {
 			"?Sn?Bi?",
 			0,
 			true,
-			new MaterialStack[]{
-					new MaterialStack(ELEMENT.getInstance().TIN, 1),
-					new MaterialStack(ELEMENT.getInstance().BISMUTH, 1)
-			});
+			new MaterialStack(ELEMENT.getInstance().TIN, 1),
+			new MaterialStack(ELEMENT.getInstance().BISMUTH, 1));
 }
