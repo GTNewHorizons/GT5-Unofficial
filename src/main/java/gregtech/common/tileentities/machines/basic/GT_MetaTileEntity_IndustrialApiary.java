@@ -409,12 +409,11 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
 
     }
 
-    @Override
-    public void setInventorySlotContents(int aIndex, ItemStack aStack) {
-        super.setInventorySlotContents(aIndex, aStack);
+    public void onInventoryUpdate(int aIndex){
         if(aIndex > drone && aIndex < getOutputSlot())
             updateModifiers();
         if(getBaseMetaTileEntity().isClientSide()){
+            ItemStack aStack = getStackInSlot(aIndex);
             if(aIndex == queen && aStack != null)
                 usedQueen = aStack.copy();
         }

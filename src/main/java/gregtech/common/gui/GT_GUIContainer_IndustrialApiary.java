@@ -1,8 +1,6 @@
 package gregtech.common.gui;
 
-import forestry.api.apiculture.BeeManager;
-import forestry.api.apiculture.IBee;
-import forestry.api.apiculture.IBeeGenome;
+import forestry.api.apiculture.*;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
 import gregtech.api.gui.widgets.GT_GuiSlotTooltip;
@@ -77,17 +75,22 @@ public class GT_GUIContainer_IndustrialApiary extends GT_GUIContainerMetaTile_Ma
         s.add("Energy required: " + GT_Utility.formatNumbers((int)((float)GT_MetaTileEntity_IndustrialApiary.baseEUtUsage * IA.getEnergyModifier()) + energyusage) + " EU/t");
         s.add("Temperature: " + StatCollector.translateToLocal(IA.getTemperature().getName()));
         s.add("Humidity: " + StatCollector.translateToLocal(IA.getHumidity().getName()));
-        if(IA.getUsedQueen() != null)
+        if(IA.getUsedQueen() != null && BeeManager.beeRoot.isMember(IA.getUsedQueen(), EnumBeeType.QUEEN.ordinal()))
         {
             IBee bee = BeeManager.beeRoot.getMember(IA.getUsedQueen());
-            IBeeGenome genome = bee.getGenome();
+            if(bee.isAnalyzed()) {
+                IBeeGenome genome = bee.getGenome();
+                IBeeModifier mod = BeeManager.beeRoot.getBeekeepingMode(IA.getWorld()).getBeeModifier();
 
-            s.add("Production Modifier: " + Math.round(100f * IA.getProductionModifier(null, 1f) * genome.getSpeed()) + "%");
-            s.add("Flowering Chance: " + Math.round(IA.getFloweringModifier(null, 1f) * genome.getFlowering()) + "%");
-            s.add("Lifespan Modifier: " + Math.round(IA.getLifespanModifier(null, null, 1f) * genome.getLifespan()) + "%");
-            float tmod = IA.getTerritoryModifier(null, 1f);
-            int[] t = Arrays.stream(genome.getTerritory()).map(i->(int)((float)i*tmod)).toArray();
-            s.add("Terrority: " + t[0] + " x " + t[1] + " x " + t[2]);
+                int prod = Math.round(100f * IA.getProductionModifier(null, 1f) * genome.getSpeed() * mod.getProductionModifier(null, 1f));
+
+                s.add("Production Modifier: " + prod + "%");
+                s.add("Flowering Chance: " + Math.round(IA.getFloweringModifier(null, 1f) * genome.getFlowering() * mod.getFloweringModifier(null, 1f)) + "%");
+                s.add("Lifespan Modifier: " + Math.round(IA.getLifespanModifier(null, null, 1f) * genome.getLifespan() * mod.getLifespanModifier(null, null, 1f)) + "%");
+                float tmod = IA.getTerritoryModifier(null, 1f) * mod.getTerritoryModifier(null, 1f);
+                int[] t = Arrays.stream(genome.getTerritory()).map(i -> (int) ((float) i * tmod)).toArray();
+                s.add("Terrority: " + t[0] + " x " + t[1] + " x " + t[2]);
+            }
         }
 
 
