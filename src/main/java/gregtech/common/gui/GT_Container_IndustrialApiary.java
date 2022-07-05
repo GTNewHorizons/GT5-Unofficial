@@ -165,5 +165,11 @@ public class GT_Container_IndustrialApiary extends GT_ContainerMetaTile_Machine 
         public boolean isItemValid(ItemStack p_75214_1_) {
             return this.inventory.isItemValidForSlot(this.getSlotIndex(), p_75214_1_);
         }
+
+        @Override
+        public void onSlotChanged() {
+            super.onSlotChanged();
+            ((GT_MetaTileEntity_IndustrialApiary)((IGregTechTileEntity)this.inventory).getMetaTileEntity()).onInventoryUpdate(this.getSlotIndex());
+        }
     }
 }
