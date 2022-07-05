@@ -50,7 +50,7 @@ public class GT_MTE_LargeTurbine_Gas extends GregtechMetaTileEntity_LargerTurbin
 
     @Override
     public int getPollutionPerSecond(ItemStack aStack) {
-        return 5000;
+        return 4000;
     }
     
     public int getFuelValue(FluidStack aLiquid) {
