@@ -43,6 +43,8 @@ public class GT_GUIContainer_IndustrialApiary extends GT_GUIContainerMetaTile_Ma
         addToolTip(mInfoTooltip = new GT_GuiTooltip(new Rectangle(this.guiLeft + 163, guiTop + 5, 6, 17)));
 
         addToolTip(new GT_GuiSlotTooltip(getContainer().slotPollenToggle, new GT_TooltipDataCache.TooltipData(Arrays.asList("Retrieve pollen", EnumChatFormatting.RED + "WARNING: INCREASES LAG"), null)));
+        addToolTip(new GT_GuiSlotTooltip(getContainer().slotCancelProcess, new GT_TooltipDataCache.TooltipData(Arrays.asList("Cancel process", EnumChatFormatting.GRAY + "Will also disable machine (soft mallet)", EnumChatFormatting.GRAY + "(Can't stop breeding)"), null)));
+
 
         addToolTip(new GT_GuiSlotTooltip(getContainer().slotItemTransferToggle,
             mTooltipCache.getData("GT5U.machines.item_transfer.tooltip")));
@@ -104,7 +106,7 @@ public class GT_GUIContainer_IndustrialApiary extends GT_GUIContainerMetaTile_Ma
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
         this.fontRendererObj.drawString("Ind. Apiary", 8, 4, 4210752);
         this.fontRendererObj.drawString("x", 30, 63, 4210752);
-        this.fontRendererObj.drawString((1 << getContainer().mSpeed) + "", 25, 72, 4210752);
+        this.fontRendererObj.drawString((1 << getContainer().mSpeed) + "", 26, 72, 4210752);
     }
 
     @Override

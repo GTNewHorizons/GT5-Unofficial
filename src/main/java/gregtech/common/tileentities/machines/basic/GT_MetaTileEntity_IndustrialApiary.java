@@ -393,6 +393,20 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
         }
     }
 
+    public void cancelProcess(){
+        if(this.getBaseMetaTileEntity().isActive() && usedQueen != null && beeRoot.isMember(usedQueen, EnumBeeType.QUEEN.ordinal()))
+        {
+            Arrays.fill(mOutputItems, null);
+            mEUt = 0;
+            mProgresstime = 0;
+            mMaxProgresstime = 0;
+            mStuttering = false;
+            this.getBaseMetaTileEntity().setActive(false);
+            setQueen(usedQueen);
+            this.getBaseMetaTileEntity().disableWorking();
+        }
+    }
+
     @Override
     public boolean isItemValidForSlot(int aIndex, ItemStack aStack) {
         if(aStack == null) return false;
