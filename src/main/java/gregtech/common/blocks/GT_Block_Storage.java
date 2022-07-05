@@ -33,6 +33,11 @@ public class GT_Block_Storage extends GT_Generic_Block {
     }
 
     @Override
+    public boolean isBeaconBase(IBlockAccess worldObj, int x, int y, int z, int beaconX, int beaconY, int beaconZ) {
+        return true;
+    }
+
+    @Override
     public int getHarvestLevel(int aMeta) {
         return 1;
     }
