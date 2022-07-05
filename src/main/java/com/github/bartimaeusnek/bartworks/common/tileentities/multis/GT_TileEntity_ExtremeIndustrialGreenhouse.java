@@ -90,7 +90,7 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse extends GT_MetaTileEntity
             {"ggggg", "g   g", "g   g", "g   g", "ggggg"},
             {"ggggg", "g   g", "g   g", "g   g", "ggggg"},
             {"ccccc", "cdddc", "cdwdc", "cdddc", "ccccc"},
-            {"cc~cc", "ccccc", "ccccc", "ccccc", "ccccc"},
+            {"cc~cc", "cCCCc", "cCCCc", "cCCCc", "ccccc"},
         }))
         .addElement('c', ofChain(
             onElementPass(t -> t.mCasing++, ofBlock(GregTech_API.sBlockCasings4, 1)),
@@ -99,6 +99,7 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse extends GT_MetaTileEntity
             ofHatchAdder(GT_TileEntity_ExtremeIndustrialGreenhouse::addInputToMachineList, CASING_INDEX, 1),
             ofHatchAdder(GT_TileEntity_ExtremeIndustrialGreenhouse::addOutputToMachineList, CASING_INDEX, 1)
         ))
+        .addElement('C', onElementPass(t -> t.mCasing++, ofBlock(GregTech_API.sBlockCasings4, 1)))
         .addElement('l', LoaderReference.ProjRedIllumination ? ofBlock(Block.getBlockFromName("ProjRed|Illumination:projectred.illumination.lamp"), 10) : ofBlock(Blocks.redstone_lamp, 0))
         .addElement('g', debug ? ofBlock(Blocks.glass, 0) : BorosilicateGlass.ofBoroGlass((byte) 0, (byte) 1, Byte.MAX_VALUE, (te, t) -> te.glasTier = t, te -> te.glasTier))
         .addElement('d', ofBlock(LoaderReference.RandomThings ? Block.getBlockFromName("RandomThings:fertilizedDirt_tilled") : Blocks.farmland, 0))
@@ -209,11 +210,11 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse extends GT_MetaTileEntity
             addStructureInfo("The glass tier limits the Energy Input tier").
             addStructureInfo("The dirt is from RandomThings, must be tilled").
             addStructureInfo("Purple lamps are from ProjectRedIllumination. They can be lit").
-            addMaintenanceHatch("Any casing", 1).
-            addInputBus("Any casing", 1).
-            addOutputBus("Any casing", 1).
-            addInputHatch("Any casing", 1).
-            addEnergyHatch("Any casing", 1).
+            addMaintenanceHatch("Any casing (Except inner bottom ones)", 1).
+            addInputBus("Any casing (Except inner bottom ones)", 1).
+            addOutputBus("Any casing (Except inner bottom ones)", 1).
+            addInputHatch("Any casing (Except inner bottom ones)", 1).
+            addEnergyHatch("Any casing (Except inner bottom ones)", 1).
             toolTipFinisher(MULTIBLOCK_ADDED_VIA_BARTWORKS.apply(ChatColorHelper.GOLD + "kuba6000"));
         return tt;
     }
