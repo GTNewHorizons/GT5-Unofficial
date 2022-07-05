@@ -48,6 +48,7 @@ public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_CubicMu
     private int tTier = 0;
     private int mMult = 0;
     private boolean mSeparate = false;
+    private boolean downtierUEV = true;
     private String mMachineName = "";
 
     public GT_MetaTileEntity_ProcessingArray(int aID, String aName, String aNameRegional) {
@@ -71,7 +72,7 @@ public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_CubicMu
                 .addInfo("Place up to 64 singleblock GT machines into the controller")
                 .addInfo("Note that you still need to supply power to them all")
                 .addInfo("Use a screwdriver to enable separate input busses")
-                .addInfo("Maximal overclockedness of machines inside: Tier 9")
+                .addInfo("Use a wire cutter to disable UEV+ downtiering")
                 .addInfo("Doesn't work on certain machines, deal with it")
                 .addInfo("Use it if you hate GT++, or want even more speed later on")
                 .addSeparator()
@@ -201,19 +202,34 @@ public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_CubicMu
                     mMult = 0;//*1
                     break;
                 case 10:
-                    tTier = 9;
-                    mMult = 2;//u need 4x less machines and they will use 4x less power
+                    if (downtierUEV) {
+                        tTier = 9;
+                        mMult = 2;//u need 4x less machines and they will use 4x less power
+                    } else {
+                        tTier = machineTier;
+                        mMult = 0;//*1
+                    }
                     break;
                 case 11:
-                    tTier = 9;
-                    mMult = 4;//u need 16x less machines and they will use 16x less power
+                    if (downtierUEV) {
+                        tTier = 9;
+                        mMult = 4;//u need 16x less machines and they will use 16x less power
+                    } else {
+                        tTier = machineTier;
+                        mMult = 0;//*1
+                    }
                     break;
                 case 12:
                 case 13:
                 case 14:
                 case 15:
-                    tTier = 9;
-                    mMult = 6;//u need 64x less machines and they will use 64x less power
+                    if (downtierUEV) {
+                        tTier = 9;
+                        mMult = 6;//u need 64x less machines and they will use 64x less power
+                    } else {
+                        tTier = machineTier;
+                        mMult = 0;//*1
+                    }
                     break;
             }
         }
@@ -389,12 +405,14 @@ public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_CubicMu
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setBoolean("mSeparate", mSeparate);
+        aNBT.setBoolean("downtierUEV", downtierUEV);
     }
 
     @Override
     public void loadNBTData(final NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         mSeparate = aNBT.getBoolean("mSeparate");
+        downtierUEV = aNBT.getBoolean("downtierUEV");
     }
 
     @Override
@@ -406,6 +424,14 @@ public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_CubicMu
             mSeparate = !mSeparate;
             GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + mSeparate);
         }
+    }
+
+    @Override
+    public boolean onWireCutterRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        downtierUEV = !downtierUEV;
+        mLastRecipe = null; // clears last recipe
+        GT_Utility.sendChatToPlayer(aPlayer, "Treat UEV+ machines as multiple UHV " + downtierUEV);
+        return true;
     }
 
     @Override
@@ -455,7 +481,7 @@ public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_CubicMu
                 StatCollector.translateToLocal("GT5U.multiblock.usage") + ": " +
                         EnumChatFormatting.RED + GT_Utility.formatNumbers(-mEUt) + EnumChatFormatting.RESET + " EU/t",
                 StatCollector.translateToLocal("GT5U.multiblock.mei") + ": " +
-                        EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(GT_ExoticEnergyInputHelper.getMaxInputVoltageMulti(getExoticAndNormalEnergyHatchList())) + EnumChatFormatting.RESET + " EU/t(*" + GT_ExoticEnergyInputHelper.getMaxInputAmpsMulti(getExoticAndNormalEnergyHatchList()) + "A) " +
+                        EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(GT_ExoticEnergyInputHelper.getMaxInputVoltageMulti(getExoticAndNormalEnergyHatchList())) + EnumChatFormatting.RESET + " EU/t(*" + GT_Utility.formatNumbers(GT_ExoticEnergyInputHelper.getMaxInputAmpsMulti(getExoticAndNormalEnergyHatchList())) + "A) " +
                         StatCollector.translateToLocal("GT5U.machines.tier") + ": " +
                         EnumChatFormatting.YELLOW + VN[GT_Utility.getTier(GT_ExoticEnergyInputHelper.getMaxInputVoltageMulti(getExoticAndNormalEnergyHatchList()))] + EnumChatFormatting.RESET,
                 StatCollector.translateToLocal("GT5U.multiblock.problems") + ": " +

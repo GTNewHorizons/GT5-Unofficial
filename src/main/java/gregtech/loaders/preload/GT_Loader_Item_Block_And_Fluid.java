@@ -427,8 +427,8 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         GregTech_API.sBlockMetal9 = new GT_Block_Metal("gt.blockmetal9", new Materials[]{
                 Materials.Cryolite,
                 MaterialsKevlar.NickelAluminide,
-                Materials.SiliconSG
-
+                Materials.SiliconSG,
+                Materials.SpaceTime
         }, OrePrefixes.block, gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS12);
 
 
@@ -793,34 +793,6 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
 
         GT_OreDictUnificator.set(OrePrefixes.dust, Materials.Cocoa, GT_ModHandler.getModItem("harvestcraft", "cocoapowderItem", 1L, 0));
         GT_OreDictUnificator.set(OrePrefixes.dust, Materials.Coffee, ItemList.IC2_CoffeePowder.get(1L, new Object[0]));
-
-    {
-        NBTTagCompound aNBT = new NBTTagCompound();
-            aNBT.setString("handler","gt.recipe.plasmaforge");
-            aNBT.setString("modName","GregTech");
-            aNBT.setString("modId","gregtech");
-            aNBT.setBoolean("modRequired",true);
-            aNBT.setString("itemName","gregtech:gt.blockmachines:1004");
-            aNBT.setInteger("handlerHeight",135);
-            aNBT.setInteger("handlerWidth",166);
-            aNBT.setInteger("maxRecipesPerPage",2);
-            aNBT.setInteger("yShift",6);
-            FMLInterModComms.sendMessage("NotEnoughItems","registerHandlerInfo",aNBT);
-    }
-
-    {
-        NBTTagCompound aNBT = new NBTTagCompound();
-        aNBT.setString("handler","gt.recipe.complexfusionreactor");
-        aNBT.setString("modName","GregTech");
-        aNBT.setString("modId","gregtech");
-        aNBT.setBoolean("modRequired",true);
-        aNBT.setString("itemName","gregtech:gt.blockmachines:1193");
-        aNBT.setInteger("handlerHeight",135);
-        aNBT.setInteger("handlerWidth",166);
-        aNBT.setInteger("maxRecipesPerPage",2);
-        aNBT.setInteger("yShift",6);
-        FMLInterModComms.sendMessage("NotEnoughItems","registerHandlerInfo",aNBT);
-    }
 
 
         //TODO ADD LATER @Technus why it crash if enable?
