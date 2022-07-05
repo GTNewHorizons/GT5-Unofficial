@@ -36,10 +36,11 @@ public class ExtremeHeatExchangerHandler extends GT_NEI_DefaultHandler {
         FluidStack[] Outputs = ((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mFluidOutputs;
         int Threshold = ((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mSpecialValue;
         drawText(10, 73, StatCollector.translateToLocal("value.extreme_heat_exchanger.0") + " " + GT_Utility.formatNumbers(Inputs[0].amount) + " L/s", -16777216);
-        drawText(10, 83, StatCollector.translateToLocal("value.extreme_heat_exchanger.1") + " " + GT_Utility.formatNumbers(Inputs[1].amount) + " L/s", -16777216);
-        drawText(10, 93, StatCollector.translateToLocal("value.extreme_heat_exchanger.2") + " " + GT_Utility.formatNumbers(Outputs[0].amount) + " L/s", -16777216);
-        drawText(10, 103, StatCollector.translateToLocal("value.extreme_heat_exchanger.3") + " " + GT_Utility.formatNumbers(Outputs[1].amount) + " L/s", -16777216);
-        drawText(10, 113, StatCollector.translateToLocal("value.extreme_heat_exchanger.4") + " " + Threshold + " L/s", -16777216);
+        drawText(10, 83, StatCollector.translateToLocal("value.extreme_heat_exchanger.1"), -16777216);
+        drawText(10, 93, GT_Utility.formatNumbers(Outputs[0].amount / 160) + " L/s", -16777216);
+        drawText(10, 103, StatCollector.translateToLocal("value.extreme_heat_exchanger.2"), -16777216);
+        drawText(10, 113, GT_Utility.formatNumbers(Outputs[1].amount / 160) + " L/s", -16777216);
+        drawText(10, 123, StatCollector.translateToLocal("value.extreme_heat_exchanger.4") + " " + Threshold + " L/s", -16777216);
     }
 
 }

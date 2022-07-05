@@ -23,6 +23,7 @@ import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import goodgenerator.util.CrackRecipeAdder;
 import goodgenerator.util.MaterialFix;
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -109,6 +110,7 @@ public class Loaders {
     public static ItemStack XHE;
     public static ItemStack PA;
     public static ItemStack LES;
+    public static ItemStack CT;
     public static ItemStack[] LFC = new ItemStack[5];
 
     public static ItemStack[] NeutronAccelerators = new ItemStack[9];
@@ -139,6 +141,7 @@ public class Loaders {
         }
         Loaders.Generator_Diesel[0] = new DieselGenerator(1113, "basicgenerator.diesel.tier.04", "Turbo Supercharging Combustion Generator", 4).getStackForm(1L);
         Loaders.Generator_Diesel[1] = new DieselGenerator(1114, "basicgenerator.diesel.tier.05", "Ultimate Chemical Energy Releaser", 5).getStackForm(1L);
+        Loaders.CT = new CoolantTower(IDOffset + 24, "CoolantTower", "Coolant Tower").getStackForm(1L);
         CrackRecipeAdder.registerPipe(30995, MyMaterial.incoloy903, 15000, 8000, true);
         CrackRecipeAdder.registerWire(32749, MyMaterial.signalium, 12, 131072, 16, true);
         CrackRecipeAdder.registerWire(32737, MyMaterial.lumiium, 8, 524288, 64, true);
@@ -232,6 +235,7 @@ public class Loaders {
             Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage][3] = TextureFactory.of(preciseUnitCasing, 0);
             Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage][4] = TextureFactory.of(preciseUnitCasing, 1);
             Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage][5] = TextureFactory.of(preciseUnitCasing, 2);
+            Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage][6] = TextureFactory.of(GregTech_API.sBlockConcretes, 8);
         }
     }
 

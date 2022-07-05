@@ -146,6 +146,7 @@ public final class ItemRefer {
     public static ItemRefer Compact_Fusion_MK4 = getItemStack(LFC[3]);
     public static ItemRefer Compact_Fusion_MK5 = getItemStack(LFC[4]);
     public static ItemRefer Large_Essentia_Smeltery = getItemStack(LES);
+    public static ItemRefer Coolant_Tower = getItemStack(CT);
 
     private Item mItem = null;
     private Block mBlock = null;

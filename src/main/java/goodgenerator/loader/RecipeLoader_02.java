@@ -975,7 +975,7 @@ public class RecipeLoader_02 {
             MyMaterial.marCeM200.get(OrePrefixes.ingotHot, 19),
             null,
             5700,
-            1920,
+            122880,
             4500
         );
 
@@ -1468,6 +1468,18 @@ public class RecipeLoader_02 {
             120
         );
 
+        GT_Values.RA.addAssemblerRecipe(
+            new ItemStack[]{
+                GT_OreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Plastic, 2),
+                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 1),
+                GT_Utility.getIntegratedCircuit(1)
+            },
+            Materials.Concrete.getMolten(2304),
+            ItemRefer.Coolant_Tower.get(1),
+            200,
+            120
+        );
+
     }
 
     public static void InitLoadRecipe() {
@@ -1684,9 +1696,21 @@ public class RecipeLoader_02 {
             if (tPlasma == null) {
                 continue;
             }
-            tPlasma.amount = 100;
-            String tPlasmaName = FluidRegistry.getFluidName(tPlasma);
             int tUnit = plasmaFuel.mSpecialValue;
+            if (tUnit > 200_000) {
+                tPlasma.amount = 1500;
+            } else if (tUnit > 100_000) {
+                tPlasma.amount = 1000;
+            } else if (tUnit > 50_000) {
+                tPlasma.amount = 800;
+            } else if (tUnit > 10_000) {
+                tPlasma.amount = 500;
+            } else {
+                tPlasma.amount = 100;
+            }
+
+            String tPlasmaName = FluidRegistry.getFluidName(tPlasma);
+
             if (tPlasmaName.split("\\.", 2).length == 2) {
                 String tOutName = tPlasmaName.split("\\.", 2)[1];
                 FluidStack output = FluidRegistry.getFluidStack(tOutName, tPlasma.amount);
@@ -1696,9 +1720,9 @@ public class RecipeLoader_02 {
                     MyRecipeAdder.instance.addExtremeHeatExchangerRecipe(
                         tPlasma,
                         output,
-                        FluidRegistry.getFluidStack("ic2distilledwater", tUnit * 300 / 160),
-                        FluidRegistry.getFluidStack("ic2superheatedsteam", tUnit * 300),
-                        FluidRegistry.getFluidStack("supercriticalsteam", tUnit * 3),
+                        FluidRegistry.getFluidStack("ic2distilledwater", tUnit * 3 * tPlasma.amount / 160),
+                        FluidRegistry.getFluidStack("ic2superheatedsteam", tUnit * 3 * tPlasma.amount),
+                        FluidRegistry.getFluidStack("supercriticalsteam", tUnit * 3 * tPlasma.amount / 100),
                         1
                     );
                 }
