@@ -184,7 +184,7 @@ public class DreamCraftRecipeLoader {
                 16777216, 2048, 2000000, 4, new Object[]{
                         ItemList.OilDrill3.get(1),
                         GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 4),
-                        GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Infinite, 4),
+                        new Object[]{OrePrefixes.circuit.get(Materials.Infinite), 4L},
                         ItemList.Electric_Motor_UHV.get(4),
                         ItemList.Electric_Pump_UHV.get(4),
                         GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.Neutronium, 4),
@@ -1415,7 +1415,7 @@ public class DreamCraftRecipeLoader {
 
             // DTPF Controller.
             TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Casing_Dim_Bridge.get(1),
-                    32_000_000, 4096, 32_000_000, 1, new ItemStack[]{
+                    32_000_000, 4096, 32_000_000, 1, new Object[]{
                             ItemList.Casing_Dim_Bridge.get(4),
                             GT_ModHandler.getModItem("gregtech", "gt.blockmachines", 16L, 12730),
                             getItemContainer("Hatch_Energy_UIV").get(4L),
@@ -1443,10 +1443,10 @@ public class DreamCraftRecipeLoader {
 
             // Dimensional bridge.
             TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Casing_Dim_Injector.get(1),
-                    8_000_000, 4096, 32_000_000, 1, new ItemStack[]{
+                    8_000_000, 4096, 32_000_000, 1, new Object[]{
                             ItemList.Casing_Dim_Trans.get(1),
                             ItemList.MicroTransmitter_UV.get(1),
-                            GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 2),
+                            new Object[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 2)},
                             GT_ModHandler.getModItem("Avaritia", "Singularity", 2L, 0),
                             GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUHV, 6),
                             GT_ModHandler.getModItem("dreamcraft", "item.PicoWafer", 2, 0),
@@ -1461,13 +1461,13 @@ public class DreamCraftRecipeLoader {
 
             // Dimensional injection casing.
             TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Casing_Dim_Trans.get(1),
-                    2_000_000, 2048, 32_000_000, 1, new ItemStack[]{
+                    2_000_000, 2048, 32_000_000, 1, new Object[]{
                             GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Osmiridium, 4),
                             GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Ledox, 1),
                             GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.CallistoIce, 1),
                             ItemList.Reactor_Coolant_Sp_6.get(1L),
                             GT_ModHandler.getModItem("miscutils", "itemScrewLaurenium", 12, 0),
-                            GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 2),
+                            new Object[]{OrePrefixes.circuit.get(Materials.Elite), 2L},
                             GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUHV, 2),
                             ItemList.Super_Chest_IV.get(1),
                             ItemList.Super_Tank_IV.get(1),
@@ -1482,7 +1482,7 @@ public class DreamCraftRecipeLoader {
 
             // Dimensionally Transcendent Casing.
             TT_recipeAdder.addResearchableAssemblylineRecipe(GT_ModHandler.getModItem("Avaritia", "Singularity", 1L, 0),
-                    2_000_000, 2048, 32_000_000, 1, new ItemStack[]{
+                    2_000_000, 2048, 32_000_000, 1, new Object[]{
                             GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Osmiridium, 6),
                             GT_ModHandler.getModItem("miscutils", "itemScrewLaurenium", 12, 0),
                             ItemList.Reactor_Coolant_Sp_6.get(1L),
