@@ -138,7 +138,7 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRa
         if (werkstoff != null) {
             String tooltip = werkstoff.getLocalizedToolTip();
             if (!tooltip.isEmpty()) {
-                aList.add(werkstoff.getLocalizedToolTip());
+                aList.add(tooltip);
             }
 
             String owner = werkstoff.getOwner();

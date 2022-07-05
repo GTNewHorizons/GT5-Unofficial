@@ -79,7 +79,7 @@ public class BW_MetaGeneratedBlock_Item extends BW_ItemBlocks {
         if(werkstoff != null) {
             String tooltip = werkstoff.getLocalizedToolTip();
             if (!tooltip.isEmpty()) {
-                aList.add(werkstoff.getLocalizedToolTip());
+                aList.add(tooltip);
             }
 
             String owner = werkstoff.getOwner();
