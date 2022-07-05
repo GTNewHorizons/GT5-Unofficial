@@ -65,8 +65,8 @@ public class GT_FluidDisplayItem extends GT_Generic_Item {
     }
 
     @Override
-    public IIcon getIconFromDamage(int aMeta) {
-        return Stream.of(FluidRegistry.getFluid(aMeta), FluidRegistry.WATER)
+    public IIcon getIconFromDamage(int aMetaData) {
+        return Stream.of(FluidRegistry.getFluid(aMetaData), FluidRegistry.WATER)
                 .filter(Objects::nonNull)
                 .map(Fluid::getStillIcon)
                 .filter(Objects::nonNull)

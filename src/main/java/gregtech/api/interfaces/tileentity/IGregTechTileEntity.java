@@ -119,7 +119,7 @@ public interface IGregTechTileEntity extends ITexturedTileEntity, IGearEnergyTil
     /**
      * Called when rightclicking the TileEntity
      */
-    boolean onRightclick(EntityPlayer aPlayer, byte aSide, float par1, float par2, float par3);
+    boolean onRightclick(EntityPlayer aPlayer, byte aSide, float aX, float aY, float aZ);
 
     float getBlastResistance(byte aSide);
 
