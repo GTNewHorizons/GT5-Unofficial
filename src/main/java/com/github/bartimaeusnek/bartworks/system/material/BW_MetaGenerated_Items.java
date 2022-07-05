@@ -135,9 +135,18 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRa
             aList.add(GT_LanguageManager.getTranslation("metaitem.01.tooltip.nqgen"));
 
         Werkstoff werkstoff = werkstoffHashMap.get((short) this.getDamage(aStack));
-        String owner = werkstoff.getOwner();
-        if (owner != null) {
-            aList.add(BW_Tooltip_Reference.ADDED_VIA_BARTWORKS.apply(owner));
+        if (werkstoff != null) {
+            String tooltip = werkstoff.getLocalizedToolTip();
+            if (!tooltip.isEmpty()) {
+                aList.add(werkstoff.getLocalizedToolTip());
+            }
+
+            String owner = werkstoff.getOwner();
+            if (owner != null) {
+                aList.add(BW_Tooltip_Reference.ADDED_VIA_BARTWORKS.apply(owner));
+            } else {
+                aList.add(BW_Tooltip_Reference.ADDED_BY_BARTWORKS.get());
+            }
         } else {
             aList.add(BW_Tooltip_Reference.ADDED_BY_BARTWORKS.get());
         }

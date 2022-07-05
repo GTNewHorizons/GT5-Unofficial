@@ -33,9 +33,14 @@ public class BW_Tooltip_Reference {
     public static final String TT_NO_RESET = BLUE + "Tec" + DARK_BLUE + "Tech";
     public static final String BW = BW_NO_RESET + GRAY;
     public static final String TT = TT_NO_RESET + GRAY;
+
     public static final Supplier<String> ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS = () -> StatCollector.translateToLocal("tooltip.bw.1.name") + " " + BW;
     public static final Supplier<String> ADDED_BY_BARTWORKS = () -> StatCollector.translateToLocal("tooltip.bw.0.name") + " " + BW;
     public static final Function<String, String> ADDED_VIA_BARTWORKS = owner -> String.format(StatCollector.translateToLocal("tooltip.bw.via.name"), owner);
+    public static final String MULTIBLOCK_ADDED_BY_BARTWORKS = BW;
+    public static final Function<String, String> MULTIBLOCK_ADDED_VIA_BARTWORKS = owner -> String.format(StatCollector.translateToLocal("tooltip.bw.mb_via.name"), owner);
+    public static final String MULTIBLOCK_ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS = MULTIBLOCK_ADDED_VIA_BARTWORKS.apply(GREEN + "bartimaeusnek");
+
     public static final String ADV_STR_CHECK = "Uses an advanced "+ TT +" structure check, due to "+ BW;
     public static final String TT_BLUEPRINT = "To see the structure, use a "+ TT + " Blueprint on the Controller!";
 

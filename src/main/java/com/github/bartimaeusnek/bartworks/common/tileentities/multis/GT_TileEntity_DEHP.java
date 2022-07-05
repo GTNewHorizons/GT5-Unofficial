@@ -47,6 +47,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 
+import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.MULTIBLOCK_ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS;
 import static gregtech.api.enums.GT_Values.VN;
 
 public class GT_TileEntity_DEHP extends GT_MetaTileEntity_DrillerBase {
@@ -131,7 +132,7 @@ public class GT_TileEntity_DEHP extends GT_MetaTileEntity_DrillerBase {
                 .addInputBus("Mining Pipes, optional, any base casing")
                 .addInputHatch("Any base casing")
                 .addOutputHatch("Any base casing")
-                .toolTipFinisher(BW_Tooltip_Reference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get());
+                .toolTipFinisher(MULTIBLOCK_ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS);
         return tt;
     }
 

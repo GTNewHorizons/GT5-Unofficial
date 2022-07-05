@@ -64,6 +64,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.MULTIBLOCK_ADDED_BY_BARTWORKS;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.GT_Values.V;
@@ -139,7 +140,7 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_EnhancedMultiBlock
             addOtherStructurePart("Dispenser", "Any Hardened Clay block").
             addOtherStructurePart("0-1 Wooden door", "Any Hardened Clay block").
             addStructureHint("Primitive Kinetic Shaftbox", 1).
-            toolTipFinisher("Bartworks");
+            toolTipFinisher(MULTIBLOCK_ADDED_BY_BARTWORKS);
         return tt;
     }
 

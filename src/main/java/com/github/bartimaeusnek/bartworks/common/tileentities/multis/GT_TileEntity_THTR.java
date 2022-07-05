@@ -55,6 +55,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.MULTIBLOCK_ADDED_BY_BARTWORKS;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
@@ -157,7 +158,7 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_EnhancedMultiBlockBase
                 .addOutputHatch("Any bottom layer casing", 1)
                 .addEnergyHatch("Any bottom layer casing", 1)
                 .addMaintenanceHatch("Any bottom layer casing", 1)
-                .toolTipFinisher("Bartworks");
+                .toolTipFinisher(MULTIBLOCK_ADDED_BY_BARTWORKS);
         return tt;
     }
 
@@ -235,7 +236,7 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_EnhancedMultiBlockBase
 
     @Override
     public boolean checkRecipe(ItemStack controllerStack) {
-        
+
         if(this.empty)
         {
             if(this.HeliumSupply > 0 || this.fuelsupply > 0){
@@ -305,7 +306,7 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_EnhancedMultiBlockBase
                 }
             }
         }
-        
+
         if(drainedamount > 0)
             addOutput(FluidRegistry.getFluidStack("ic2hotcoolant", drainedamount));
 

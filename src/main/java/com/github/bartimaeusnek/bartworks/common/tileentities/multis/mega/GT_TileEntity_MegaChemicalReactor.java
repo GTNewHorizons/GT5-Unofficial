@@ -49,6 +49,7 @@ import net.minecraftforge.fluids.FluidStack;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.MULTIBLOCK_ADDED_BY_BARTWORKS;
 import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.getMultiOutput;
 import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.handleParallelRecipe;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
@@ -91,7 +92,7 @@ public class GT_TileEntity_MegaChemicalReactor extends GT_TileEntity_MegaMultiBl
                 .addInputBus("Hint block ",1)
                 .addOutputBus("Hint block ",1)
                 .addOutputHatch("Hint block ",1)
-                .toolTipFinisher("Bartworks");
+                .toolTipFinisher(MULTIBLOCK_ADDED_BY_BARTWORKS);
         return tt;
     }
 

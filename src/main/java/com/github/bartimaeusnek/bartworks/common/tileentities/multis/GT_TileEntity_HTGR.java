@@ -58,6 +58,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.MULTIBLOCK_ADDED_VIA_BARTWORKS;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
@@ -161,7 +162,7 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
                 .addOutputHatch("Any bottom layer casing", 1)
                 .addEnergyHatch("Any bottom layer casing", 1)
                 .addMaintenanceHatch("Any bottom layer casing", 1)
-                .toolTipFinisher("Added by " + ChatColorHelper.GOLD + "kuba6000" + ChatColorHelper.RESET + " via " + BW_Tooltip_Reference.BW);
+                .toolTipFinisher(MULTIBLOCK_ADDED_VIA_BARTWORKS.apply(ChatColorHelper.GOLD + "kuba6000"));
         return tt;
     }
 

@@ -48,6 +48,7 @@ import net.minecraftforge.fluids.FluidStack;
 import java.util.ArrayList;
 
 import static com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry.BW_BLOCKS;
+import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.MULTIBLOCK_ADDED_BY_BARTWORKS;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.GT_Values.V;
@@ -154,7 +155,7 @@ public class GT_TileEntity_ElectricImplosionCompressor extends GT_MetaTileEntity
             addInputBus("Any bottom casing", 1).
             addOutputBus("Any bottom casing", 1).
             addEnergyHatch("Bottom and top middle", 2).
-            toolTipFinisher("Bartworks");
+            toolTipFinisher(MULTIBLOCK_ADDED_BY_BARTWORKS);
         return tt;
     }
 

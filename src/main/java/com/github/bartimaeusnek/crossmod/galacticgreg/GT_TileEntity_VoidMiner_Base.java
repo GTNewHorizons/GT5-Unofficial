@@ -62,6 +62,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static bloodasp.galacticgreg.registry.GalacticGregRegistry.getModContainers;
+import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.MULTIBLOCK_ADDED_BY_BARTWORKS;
 import static gregtech.api.enums.GT_Values.VN;
 
 @SuppressWarnings("ALL")
@@ -192,7 +193,7 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
                 .addInputBus("Mining Pipes or Ores, optional, any base casing")
                 .addInputHatch("Optional noble gas, any base casing")
                 .addOutputBus("Any base casing")
-                .toolTipFinisher("Gregtech");
+                .toolTipFinisher(MULTIBLOCK_ADDED_BY_BARTWORKS);
         return tt;
     }
 

@@ -119,8 +119,9 @@ public class BWGTMetaItems extends BW_MetaGenerated_Items {
     protected void addAdditionalToolTips(List aList, ItemStack aStack, EntityPlayer aPlayer) {
         Materials material = getMaterial(aStack);
         if (material != null) {
-            if (material.getToolTip() != null) {
-                aList.add(material.getToolTip());
+            String tooltip = material.getToolTip();
+            if (tooltip != null && !tooltip.isEmpty()) {
+                aList.add(tooltip);
             }
         }
         aList.add(BW_Tooltip_Reference.ADDED_BY_BARTWORKS.get());
