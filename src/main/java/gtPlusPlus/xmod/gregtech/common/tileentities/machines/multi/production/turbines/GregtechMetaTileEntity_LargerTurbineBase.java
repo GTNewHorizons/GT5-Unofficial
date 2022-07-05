@@ -64,6 +64,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechM
 	protected int maintenanceThreshold = 1;
 	protected int pollutionMultiplier = 1;
 	protected int turbineDamageMultiplier = 1;
+	protected double mufflerReduction = 1;
 
 	public ITexture frontFace;
 	public ITexture frontFaceActive;	
@@ -175,6 +176,16 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechM
 		return getPollutionPerSecond(null) > 0;
 	}
 
+	public final double getMufflerReduction() {
+		double totalReduction = 0;
+		for (GT_MetaTileEntity_Hatch_Muffler tHatch : mMufflerHatches) {
+			if (isValidMetaTileEntity(tHatch)) {
+				totalReduction += ((double) tHatch.calculatePollutionReduction(100)) / 100;
+			}
+		}
+		return totalReduction / 4;
+	}
+
 	@Override
 	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
 		this.mDynamoHatches.clear();
@@ -213,6 +224,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechM
 					", Casing Count: "+aCasingCount+" | Found: "+mCasing);
 			return false;
 		}		
+		mufflerReduction = getMufflerReduction();
 		log("Built "+this.getLocalName()+" with "+mCasing+"/360 casings.");	
 		return  aCasingCount && aStructure;
 	}
@@ -644,13 +656,8 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechM
 
 	@Override
 	public String[] getExtraInfoData() {
-		int mPollutionReduction=0;
-		for (GT_MetaTileEntity_Hatch_Muffler tHatch : mMufflerHatches) {
-			if (isValidMetaTileEntity(tHatch)) {
-				mPollutionReduction=Math.max(StaticFields59.calculatePollutionReducation(tHatch, 100),mPollutionReduction);
-			}
-		}
-
+		int mPollutionReduction=(int) (100 * mufflerReduction);
+	
 		String tRunning = mMaxProgresstime > 0 ?
 				EnumChatFormatting.GREEN+StatCollector.translateToLocal("GT5U.turbine.running.true")+EnumChatFormatting.RESET :
 					EnumChatFormatting.RED+StatCollector.translateToLocal("GT5U.turbine.running.false")+EnumChatFormatting.RESET;
@@ -706,7 +713,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechM
 
 	public boolean polluteEnvironment(int aPollutionLevel) {
 		if (this.requiresMufflers()) {
-			mPollution += aPollutionLevel * pollutionMultiplier;
+			mPollution += aPollutionLevel * pollutionMultiplier * mufflerReduction;
 			for (GT_MetaTileEntity_Hatch_Muffler tHatch : mMufflerHatches) {
 				if (isValidMetaTileEntity(tHatch)) {
 					if (mPollution >= 10000) {					
