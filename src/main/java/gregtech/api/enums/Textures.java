@@ -509,6 +509,8 @@ public class Textures {
         OVERLAY_FLUID_STORAGE_MONITOR13,
         OVERLAY_FLUID_STORAGE_MONITOR14,
 
+        OVERLAY_DTPF_OFF,
+        OVERLAY_DTPF_ON,
         OVERLAY_FUSION1,
         OVERLAY_FUSION1_GLOW,
         OVERLAY_FUSION2,
@@ -1026,6 +1028,7 @@ public class Textures {
         BLOCK_TUNGSTEN,
         BLOCK_TUNGSTENSTEEL,
         BLOCK_ULTIMET,
+        BLOCK_SPACETIME,
 
         BLOCK_URANIUM,
         BLOCK_URANIUM235,
@@ -1769,7 +1772,8 @@ public class Textures {
                 STORAGE_BLOCKS12 = {
                         BLOCK_CRYOLITE,
                         BLOCK_SILICONSG,
-                        BLOCK_NICKELALUMINIUM
+                        BLOCK_NICKELALUMINIUM,
+                        BLOCK_SPACETIME
         };
 
       public static final ITexture[] HIDDEN_TEXTURE = {
