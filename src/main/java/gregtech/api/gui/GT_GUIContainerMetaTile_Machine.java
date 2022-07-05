@@ -30,7 +30,7 @@ import org.lwjgl.opengl.GL11;
 public class GT_GUIContainerMetaTile_Machine extends GT_GUIContainer implements GT_IToolTipRenderer, GT_ITabRenderer {
 
     public final GT_ContainerMetaTile_Machine mContainer;
-    
+
     protected GT_GuiTooltipManager mTooltipManager = new GT_GuiTooltipManager();
     protected GT_TooltipDataCache mTooltipCache = new GT_TooltipDataCache();
 
@@ -53,7 +53,7 @@ public class GT_GUIContainerMetaTile_Machine extends GT_GUIContainer implements 
     public GT_GUIContainerMetaTile_Machine(GT_ContainerMetaTile_Machine aContainer, String aGUIbackground) {
         super(aContainer, aGUIbackground);
         mContainer = aContainer;
-        
+
         DisplayStyle preferredDisplayStyle = GT_Mod.gregtechproxy.mCoverTabsVisible
         ? (GT_Mod.gregtechproxy.mCoverTabsFlipped ? DisplayStyle.INVERSE : DisplayStyle.NORMAL)
         : DisplayStyle.NONE;
@@ -148,7 +148,7 @@ public class GT_GUIContainerMetaTile_Machine extends GT_GUIContainer implements 
         // Check for clicked tabs
         coverTabs.onMouseClicked(mouseX, mouseY, mouseButton);
     }
-    
+
     @Override
     public void initGui() {
         super.initGui();
@@ -173,8 +173,8 @@ public class GT_GUIContainerMetaTile_Machine extends GT_GUIContainer implements 
 
     // GT_IToolTipRenderer and GT_ITabRenderer implementations
     @Override
-    public void drawHoveringText(List text, int x, int y, FontRenderer font) {
-        super.drawHoveringText(text, x, y, font);
+    public void drawHoveringText(List text, int mouseX, int mouseY, FontRenderer font) {
+        super.drawHoveringText(text, mouseX, mouseY, font);
     }
     @Override
     public int getGuiTop() {
@@ -191,7 +191,7 @@ public class GT_GUIContainerMetaTile_Machine extends GT_GUIContainer implements 
     @Override
     public FontRenderer getFontRenderer() {
         return fontRendererObj;
-    }    
+    }
     @Override
     public RenderItem getItemRenderer() {
         return itemRender;

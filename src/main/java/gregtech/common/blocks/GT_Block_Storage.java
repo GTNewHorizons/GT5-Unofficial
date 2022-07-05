@@ -18,7 +18,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import java.util.List;
-import java.util.Random;
 
 public class GT_Block_Storage extends GT_Generic_Block {
 
@@ -31,6 +30,11 @@ public class GT_Block_Storage extends GT_Generic_Block {
     @Override
     public String getHarvestTool(int aMeta) {
         return "pickaxe";
+    }
+
+    @Override
+    public boolean isBeaconBase(IBlockAccess worldObj, int x, int y, int z, int beaconX, int beaconY, int beaconZ) {
+        return true;
     }
 
     @Override
@@ -69,38 +73,18 @@ public class GT_Block_Storage extends GT_Generic_Block {
     }
 
     @Override
-    public boolean renderAsNormalBlock() {
-        return true;
-    }
-
-    @Override
-    public boolean isOpaqueCube() {
-        return true;
-    }
-
-    @Override
     public boolean canCreatureSpawn(EnumCreatureType type, IBlockAccess world, int x, int y, int z) {
         return true;
     }
 
     @Override
-    public int damageDropped(int par1) {
-        return par1;
+    public int damageDropped(int metadata) {
+        return metadata;
     }
 
     @Override
-    public int getDamageValue(World par1World, int par2, int par3, int par4) {
-        return par1World.getBlockMetadata(par2, par3, par4);
-    }
-
-    @Override
-    public int quantityDropped(Random par1Random) {
-        return 1;
-    }
-
-    @Override
-    public Item getItemDropped(int par1, Random par2Random, int par3) {
-        return Item.getItemFromBlock(this);
+    public int getDamageValue(World aWorld, int aX, int aY, int aZ) {
+        return aWorld.getBlockMetadata(aX, aY, aZ);
     }
 
     @Override
@@ -110,7 +94,7 @@ public class GT_Block_Storage extends GT_Generic_Block {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item aItem, CreativeTabs par2CreativeTabs, List aList) {
+    public void getSubBlocks(Item aItem, CreativeTabs aCreativeTab, List aList) {
         for (int i = 0; i < 16; i++) {
             if (!(new ItemStack(aItem, 1, i).getDisplayName().contains(".name"))) aList.add(new ItemStack(aItem, 1, i));
         }

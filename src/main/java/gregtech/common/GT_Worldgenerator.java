@@ -61,9 +61,9 @@ public class GT_Worldgenerator implements IWorldGenerator {
             mList.add(new WorldGenContainer(new XSTR(Math.abs(aRandom.nextInt()) +1), aX, aZ, aWorld.provider.dimensionId, aWorld, aChunkGenerator, aChunkProvider, aWorld.getBiomeGenForCoords(aX * 16 + 8, aZ * 16 + 8).biomeName));
             if (debugWorldGen) GT_Log.out.println(
                 "ADD WorldSeed:"+aWorld.getSeed() +
-                " DimId" + aWorld.provider.dimensionId + 
-                " chunk x:" + aX + 
-                " z:" + aZ + 
+                " DimId" + aWorld.provider.dimensionId +
+                " chunk x:" + aX +
+                " z:" + aZ +
                 " SIZE: " + mList.size()
             );
         }
@@ -76,11 +76,11 @@ public class GT_Worldgenerator implements IWorldGenerator {
                 WorldGenContainer toRun = (WorldGenContainer) mList.get(0);
                 if (debugWorldGen) GT_Log.out.println(
                     "RUN WorldSeed:"+aWorld.getSeed()+
-                    " DimId" + aWorld.provider.dimensionId + 
-                    " chunk x:" + toRun.mX + 
-                    " z:" + toRun.mZ + 
-                    " SIZE: " + mList.size() + 
-                    " i: " + i 
+                    " DimId" + aWorld.provider.dimensionId +
+                    " chunk x:" + toRun.mX +
+                    " z:" + toRun.mZ +
+                    " SIZE: " + mList.size() +
+                    " i: " + i
                 );
                 synchronized (listLock)
                 {
@@ -379,7 +379,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
             for( ; seedList.size() != 0; seedList.remove(0) ) {
                 if (debugWorldGen) GT_Log.out.println(
                     "Processing seed x="+seedList.get(0).mX+
-                    " z="+seedList.get(0).mZ 
+                    " z="+seedList.get(0).mZ
                 );
                 worldGenFindVein( seedList.get(0).mX, seedList.get(0).mZ );
             }
@@ -431,35 +431,35 @@ public class GT_Worldgenerator implements IWorldGenerator {
                     //    mSize = aRandom.nextInt((int) (gcMaxSize - gcMinSize));
                 }
                 if ((mWorld.getBlock(tX, tY, tZ).isAir(mWorld, tX, tY, tZ))) {
-                    float var6 = aRandom.nextFloat() * 3.141593F;
-                    double var7 = tX + 8 + MathHelper.sin(var6) * mSize / 8.0F;
-                    double var9 = tX + 8 - MathHelper.sin(var6) * mSize / 8.0F;
-                    double var11 = tZ + 8 + MathHelper.cos(var6) * mSize / 8.0F;
-                    double var13 = tZ + 8 - MathHelper.cos(var6) * mSize / 8.0F;
-                    double var15 = tY + aRandom.nextInt(3) - 2;
-                    double var17 = tY + aRandom.nextInt(3) - 2;
-                    for (int var19 = 0; var19 <= mSize; var19++) {
-                        double var20 = var7 + (var9 - var7) * var19 / mSize;
-                        double var22 = var15 + (var17 - var15) * var19 / mSize;
-                        double var24 = var11 + (var13 - var11) * var19 / mSize;
-                        double var26 = aRandom.nextDouble() * mSize / 16.0D;
-                        double var28 = (MathHelper.sin(var19 * 3.141593F / mSize) + 1.0F) * var26 + 1.0D;
-                        double var30 = (MathHelper.sin(var19 * 3.141593F / mSize) + 1.0F) * var26 + 1.0D;
-                        int tMinX = MathHelper.floor_double(var20 - var28 / 2.0D);
-                        int tMinY = MathHelper.floor_double(var22 - var30 / 2.0D);
-                        int tMinZ = MathHelper.floor_double(var24 - var28 / 2.0D);
-                        int tMaxX = MathHelper.floor_double(var20 + var28 / 2.0D);
-                        int tMaxY = MathHelper.floor_double(var22 + var30 / 2.0D);
-                        int tMaxZ = MathHelper.floor_double(var24 + var28 / 2.0D);
+                    float randomRadian = aRandom.nextFloat() * 3.141593F;
+                    double xBase = tX + 8 + MathHelper.sin(randomRadian) * mSize / 8.0F;
+                    double xFactor = tX + 8 - MathHelper.sin(randomRadian) * mSize / 8.0F;
+                    double zBase = tZ + 8 + MathHelper.cos(randomRadian) * mSize / 8.0F;
+                    double zFactor = tZ + 8 - MathHelper.cos(randomRadian) * mSize / 8.0F;
+                    double yBase = tY + aRandom.nextInt(3) - 2;
+                    double yFactor = tY + aRandom.nextInt(3) - 2;
+                    for (int i = 0; i <= mSize; i++) {
+                        double xCenter = xBase + (xFactor - xBase) * i / mSize;
+                        double yCenter = yBase + (yFactor - yBase) * i / mSize;
+                        double zCenter = zBase + (zFactor - zBase) * i / mSize;
+                        double randomDistance = aRandom.nextDouble() * mSize / 16.0D;
+                        double halfLength = (MathHelper.sin(i * 3.141593F / mSize) + 1.0F) * randomDistance + 1.0D;
+                        double halfHeight = (MathHelper.sin(i * 3.141593F / mSize) + 1.0F) * randomDistance + 1.0D;
+                        int tMinX = MathHelper.floor_double(xCenter - halfLength / 2.0D);
+                        int tMinY = MathHelper.floor_double(yCenter - halfHeight / 2.0D);
+                        int tMinZ = MathHelper.floor_double(zCenter - halfLength / 2.0D);
+                        int tMaxX = MathHelper.floor_double(xCenter + halfLength / 2.0D);
+                        int tMaxY = MathHelper.floor_double(yCenter + halfHeight / 2.0D);
+                        int tMaxZ = MathHelper.floor_double(zCenter + halfLength / 2.0D);
                         for (int eX = tMinX; eX <= tMaxX; eX++) {
-                            double var39 = (eX + 0.5D - var20) / (var28 / 2.0D);
-                            if (var39 * var39 < 1.0D) {
+                            double xChance = (eX + 0.5D - xCenter) / (halfLength / 2.0D);
+                            if (xChance * xChance < 1.0D) {
                                 for (int eY = tMinY; eY <= tMaxY; eY++) {
-                                    double var42 = (eY + 0.5D - var22) / (var30 / 2.0D);
-                                    if (var39 * var39 + var42 * var42 < 1.0D) {
+                                    double yChance = (eY + 0.5D - yCenter) / (halfHeight / 2.0D);
+                                    if (xChance * xChance + yChance * yChance < 1.0D) {
                                         for (int eZ = tMinZ; eZ <= tMaxZ; eZ++) {
-                                            double var45 = (eZ + 0.5D - var24) / (var28 / 2.0D);
-                                            if ((var39 * var39 + var42 * var42 + var45 * var45 < 1.0D) && (mWorld.getBlock(tX, tY, tZ).isAir(mWorld, tX, tY, tZ))) {
+                                            double zChance = (eZ + 0.5D - zCenter) / (halfLength / 2.0D);
+                                            if ((xChance * xChance + yChance * yChance + zChance * zChance < 1.0D) && (mWorld.getBlock(tX, tY, tZ).isAir(mWorld, tX, tY, tZ))) {
                                                 int ranOre = aRandom.nextInt(50);
                                                 if (ranOre < 3) {
                                                     GT_TileEntity_Ores.setOreBlock(mWorld, eX, eY, eZ, primaryMeta, false);
@@ -494,7 +494,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
                 GT_Log.out.println(
                     " Oregen took " + (oregenTime-leftOverTime)+
                     " Leftover gen took " + (leftOverTime - startTime) +
-                    " Worldgen took " + duration + 
+                    " Worldgen took " + duration +
                     " nanoseconds"
                     );
             }

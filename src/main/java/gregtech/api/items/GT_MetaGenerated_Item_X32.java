@@ -162,7 +162,7 @@ public abstract class GT_MetaGenerated_Item_X32 extends GT_MetaGenerated_Item {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public final void getSubItems(Item var1, CreativeTabs aCreativeTab, List aList) {
+    public final void getSubItems(Item aItem, CreativeTabs aCreativeTab, List aList) {
         for (int i = 0; i < 32000; i++) {
             OrePrefixes aPrefix = mGeneratedPrefixList[i / 1000];
             Materials aMaterial = GregTech_API.sGeneratedMaterials[i % 1000];
@@ -174,7 +174,7 @@ public abstract class GT_MetaGenerated_Item_X32 extends GT_MetaGenerated_Item {
                 }
             }
         }
-        super.getSubItems(var1, aCreativeTab, aList);
+        super.getSubItems(aItem, aCreativeTab, aList);
     }
 
     @Override

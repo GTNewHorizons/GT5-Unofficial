@@ -9,8 +9,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 public class GT_Item_Ores extends ItemBlock {
-    public GT_Item_Ores(Block par1) {
-        super(par1);
+    public GT_Item_Ores(Block block) {
+        super(block);
         setMaxDamage(0);
         setHasSubtypes(true);
         setCreativeTab(GregTech_API.TAB_GREGTECH_MATERIALS);
