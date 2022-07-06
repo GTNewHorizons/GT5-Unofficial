@@ -43,7 +43,7 @@ public class GT_GUIContainer_IndustrialApiary extends GT_GUIContainerMetaTile_Ma
         addToolTip(mInfoTooltip = new GT_GuiTooltip(new Rectangle(this.guiLeft + 163, guiTop + 5, 6, 17)));
 
         addToolTip(new GT_GuiSlotTooltip(getContainer().slotPollenToggle, new GT_TooltipDataCache.TooltipData(Arrays.asList("Retrieve pollen", EnumChatFormatting.RED + "WARNING: INCREASES LAG"), null)));
-        addToolTip(new GT_GuiSlotTooltip(getContainer().slotCancelProcess, new GT_TooltipDataCache.TooltipData(Arrays.asList("Cancel process", EnumChatFormatting.GRAY + "Will also disable machine (soft mallet)", EnumChatFormatting.GRAY + "(Can't stop breeding)"), null)));
+        addToolTip(new GT_GuiSlotTooltip(getContainer().slotCancelProcess, new GT_TooltipDataCache.TooltipData(Arrays.asList("Cancel process", EnumChatFormatting.GRAY + "Will also disable machine (soft mallet)", EnumChatFormatting.GRAY + "" + EnumChatFormatting.ITALIC + "Can't stop princess breeding"), null)));
 
 
         addToolTip(new GT_GuiSlotTooltip(getContainer().slotItemTransferToggle,
@@ -77,10 +77,12 @@ public class GT_GUIContainer_IndustrialApiary extends GT_GUIContainerMetaTile_Ma
         s.add("Energy required: " + GT_Utility.formatNumbers((int)((float)GT_MetaTileEntity_IndustrialApiary.baseEUtUsage * IA.getEnergyModifier()) + energyusage) + " EU/t");
         s.add("Temperature: " + StatCollector.translateToLocal(IA.getTemperature().getName()));
         s.add("Humidity: " + StatCollector.translateToLocal(IA.getHumidity().getName()));
+        boolean moreinformationgiven = false;
         if(IA.getUsedQueen() != null && BeeManager.beeRoot.isMember(IA.getUsedQueen(), EnumBeeType.QUEEN.ordinal()))
         {
             IBee bee = BeeManager.beeRoot.getMember(IA.getUsedQueen());
             if(bee.isAnalyzed()) {
+                moreinformationgiven = true;
                 IBeeGenome genome = bee.getGenome();
                 IBeeModifier mod = BeeManager.beeRoot.getBeekeepingMode(IA.getWorld()).getBeeModifier();
 
@@ -94,6 +96,8 @@ public class GT_GUIContainer_IndustrialApiary extends GT_GUIContainerMetaTile_Ma
                 s.add("Terrority: " + t[0] + " x " + t[1] + " x " + t[2]);
             }
         }
+        if(!moreinformationgiven)
+            s.add(EnumChatFormatting.GRAY + "" + EnumChatFormatting.ITALIC + "Insert analyzed bee to see more info");
 
 
         mInfoTooltip.setToolTipText(new GT_TooltipDataCache.TooltipData(s,null));
