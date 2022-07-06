@@ -74,6 +74,7 @@ public class BW_MetaGeneratedBlocks_Casing extends BW_MetaGenerated_Blocks imple
     @Override
     public void breakBlock(World aWorld, int aX, int aY, int aZ, Block aBlock, int aMetaData) {
         GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
+        super.breakBlock(aWorld, aX, aY, aZ, aBlock, aMetaData);
     }
 
     @Override
