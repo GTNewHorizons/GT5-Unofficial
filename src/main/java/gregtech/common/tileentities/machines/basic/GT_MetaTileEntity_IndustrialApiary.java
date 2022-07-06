@@ -9,6 +9,7 @@ import forestry.api.apiculture.*;
 import forestry.api.arboriculture.EnumGermlingType;
 import forestry.api.core.*;
 import forestry.api.genetics.AlleleManager;
+import forestry.api.genetics.IEffectData;
 import forestry.api.genetics.IIndividual;
 import forestry.core.errors.EnumErrorCode;
 import forestry.plugins.PluginApiculture;
@@ -55,6 +56,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
     public boolean retreviePollen = false;
 
     private ItemStack usedQueen = null;
+    private IEffectData[] effectData = new IEffectData[2];
 
     public GT_MetaTileEntity_IndustrialApiary(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 12, "BEES GOES BRRRR", 6, 9, "IndustrialApiary.png", "",
@@ -113,6 +115,8 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
         super.saveNBTData(aNBT);
         aNBT.setInteger("mSpeed", mSpeed);
         aNBT.setBoolean("retrievePolen", retreviePollen);
+        if(usedQueen != null)
+            aNBT.setTag("usedQueen", usedQueen.writeToNBT(new NBTTagCompound()));
     }
 
     @Override
@@ -120,6 +124,8 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
         super.loadNBTData(aNBT);
         mSpeed = aNBT.getInteger("mSpeed");
         retreviePollen = aNBT.getBoolean("retrievePolen");
+        if(aNBT.hasKey("usedQueen"))
+            usedQueen = ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag("usedQueen"));
     }
 
     @Override
@@ -292,12 +298,23 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (aBaseMetaTileEntity.isClientSide() && GT_Client.changeDetected == 4) {
-            /* Client tick counter that is set to 5 on hiding pipes and covers.
-             * It triggers a texture update next client tick when reaching 4, with provision for 3 more update tasks,
-             * spreading client change detection related work and network traffic on different ticks, until it reaches 0.
-             */
-            aBaseMetaTileEntity.issueTextureUpdate();
+        if (aBaseMetaTileEntity.isClientSide()) {
+            if(GT_Client.changeDetected == 4) {
+                /* Client tick counter that is set to 5 on hiding pipes and covers.
+                 * It triggers a texture update next client tick when reaching 4, with provision for 3 more update tasks,
+                 * spreading client change detection related work and network traffic on different ticks, until it reaches 0.
+                 */
+                aBaseMetaTileEntity.issueTextureUpdate();
+            }
+            if(aBaseMetaTileEntity.isActive()){
+                if(usedQueen != null) {
+                    if (aTick % 2 == 0) {
+                        // FX on client, effect on server
+                        IBee bee = beeRoot.getMember(usedQueen);
+                        effectData = bee.doFX(effectData, this);
+                    }
+                }
+            }
         }
         if(aBaseMetaTileEntity.isServerSide()){
 
@@ -345,6 +362,10 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                     return;
                 }
                 this.mProgresstime++;
+                if(usedQueen != null) {
+                    IBee bee = beeRoot.getMember(usedQueen);
+                    effectData = bee.doEffect(effectData, this);
+                }
 
                 if(this.mProgresstime % 100 == 0)
                 {
@@ -399,7 +420,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
     }
 
     public void cancelProcess(){
-        if(this.getBaseMetaTileEntity().isActive() && usedQueen != null && beeRoot.isMember(usedQueen, EnumBeeType.QUEEN.ordinal()))
+        if(this.getBaseMetaTileEntity().isActive() && this.getBaseMetaTileEntity().isServerSide() && usedQueen != null && beeRoot.isMember(usedQueen, EnumBeeType.QUEEN.ordinal()))
         {
             Arrays.fill(mOutputItems, null);
             mEUt = 0;
@@ -428,14 +449,17 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
 
     }
 
+    @Override
+    public void setInventorySlotContents(int aIndex, ItemStack aStack) {
+        if(aIndex == queen && aStack != null && getBaseMetaTileEntity().isClientSide())
+            usedQueen = aStack.copy();
+        super.setInventorySlotContents(aIndex, aStack);
+    }
+
+    // Gets called on slot click //
     public void onInventoryUpdate(int aIndex){
         if(aIndex > drone && aIndex < getOutputSlot())
             updateModifiers();
-        if(getBaseMetaTileEntity().isClientSide()){
-            ItemStack aStack = getStackInSlot(aIndex);
-            if(aIndex == queen && aStack != null)
-                usedQueen = aStack.copy();
-        }
     }
 
     @SideOnly(Side.CLIENT)

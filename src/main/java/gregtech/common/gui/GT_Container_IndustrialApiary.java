@@ -85,6 +85,7 @@ public class GT_Container_IndustrialApiary extends GT_ContainerMetaTile_Machine 
                 return null;
             case 3:
                 machine.cancelProcess();
+                detectAndSendChanges();
                 return null;
         }
         return super.slotClick(aSlotNumber, aMouseclick, aShifthold, aPlayer);
