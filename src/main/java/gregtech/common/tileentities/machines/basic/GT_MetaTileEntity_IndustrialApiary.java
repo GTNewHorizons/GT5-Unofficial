@@ -320,13 +320,18 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                     this.mProgresstime++;
                     return;
                 }
-                if(this.mStuttering && aTick % 100 == 0)
+                if(this.mStuttering)
                 {
-                    this.mStuttering = false;
+                    if(!aBaseMetaTileEntity.isAllowedToWork())
+                        return;
+                    if(aTick % 100 == 0)
+                        this.mStuttering = false;
                     return;
                 }
                 if(this.hasErrors())
                 {
+                    if(!aBaseMetaTileEntity.isAllowedToWork())
+                        return;
                     if(aTick % 100 == 0)
                         if(!canWork(usedQueen))
                             this.stutterProcess();
