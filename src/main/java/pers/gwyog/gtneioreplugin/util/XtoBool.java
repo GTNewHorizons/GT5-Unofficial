@@ -3,11 +3,10 @@ package pers.gwyog.gtneioreplugin.util;
 import com.opencsv.bean.AbstractBeanField;
 import com.opencsv.exceptions.CsvConstraintViolationException;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
+import java.util.ResourceBundle;
 import org.apache.commons.beanutils.ConversionException;
 import org.apache.commons.beanutils.Converter;
 import org.apache.commons.beanutils.converters.BooleanConverter;
-
-import java.util.ResourceBundle;
 
 public class XtoBool<T> extends AbstractBeanField<T> {
 
@@ -23,13 +22,12 @@ public class XtoBool<T> extends AbstractBeanField<T> {
             return bc.convert(Boolean.class, value.trim());
         } catch (ConversionException e) {
             CsvDataTypeMismatchException csve = new CsvDataTypeMismatchException(
-                    value, field.getType(), ResourceBundle
-                    .getBundle("convertGermanToBoolean", errorLocale)
-                    .getString("input.not.boolean"));
+                    value,
+                    field.getType(),
+                    ResourceBundle.getBundle("convertGermanToBoolean", errorLocale)
+                            .getString("input.not.boolean"));
             csve.initCause(e);
             throw csve;
         }
     }
-
-
 }

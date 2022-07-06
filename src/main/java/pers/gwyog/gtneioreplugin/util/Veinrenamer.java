@@ -17,11 +17,9 @@ public class Veinrenamer<T> extends AbstractBeanField<T> {
             ret = ret.replaceAll(" ", "");
             ret = ret.replaceAll("\\.", "");
             ret = ret.toLowerCase();
-        } else
-            ret = value;
+        } else ret = value;
         ret = ret.replaceAll(" ", "");
         ret = ret.toLowerCase();
         return ret;
     }
-
 }

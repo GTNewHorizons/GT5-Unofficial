@@ -1,9 +1,8 @@
 package pers.gwyog.gtneioreplugin;
 
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.common.config.Configuration;
-
 import java.io.File;
+import net.minecraftforge.common.config.Configuration;
 
 public class Config {
     public Configuration tConfig;
@@ -15,8 +14,6 @@ public class Config {
     }
 
     public void save() {
-        if (tConfig.hasChanged())
-            tConfig.save();
+        if (tConfig.hasChanged()) tConfig.save();
     }
-
 }

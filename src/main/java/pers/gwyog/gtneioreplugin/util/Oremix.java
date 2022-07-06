@@ -7,98 +7,142 @@ public class Oremix {
 
     @CsvCustomBindByName(column = "Moon", required = false, converter = XtoBool.class)
     public boolean mo;
+
     @CsvCustomBindByName(column = "End Asteroids", required = false, converter = XtoBool.class)
     public boolean ea;
+
     @CsvCustomBindByName(column = "AstroidBelt", required = false, converter = XtoBool.class)
     public boolean as;
+
     @CsvCustomBindByName(column = "Barnard C", required = false, converter = XtoBool.class)
     public boolean bc;
+
     @CsvCustomBindByName(column = "Barnard E", required = false, converter = XtoBool.class)
     public boolean be;
+
     @CsvCustomBindByName(column = "Barnard F", required = false, converter = XtoBool.class)
     public boolean bf;
+
     @CsvCustomBindByName(column = "Mars", required = false, converter = XtoBool.class)
     public boolean ma;
+
     @CsvCustomBindByName(column = "Callisto", required = false, converter = XtoBool.class)
     public boolean ca;
+
     @CsvCustomBindByName(column = "Centauri Bb", required = false, converter = XtoBool.class)
     public boolean cb;
+
     @CsvCustomBindByName(column = "Ceres", required = false, converter = XtoBool.class)
     public boolean ce;
+
     @CsvCustomBindByName(column = "Twilight Forest", required = false, converter = XtoBool.class)
     public boolean tf;
+
     @CsvCustomBindByName(column = "Deep Dark", required = false, converter = XtoBool.class)
     public boolean dd;
+
     @CsvCustomBindByName(column = "Phobos", required = false, converter = XtoBool.class)
     public boolean ph;
+
     @CsvCustomBindByName(column = "Deimos", required = false, converter = XtoBool.class)
     public boolean de;
+
     @CsvCustomBindByName(column = "Europa", required = false, converter = XtoBool.class)
     public boolean eu;
+
     @CsvCustomBindByName(column = "Ganymede", required = false, converter = XtoBool.class)
     public boolean ga;
+
     @CsvCustomBindByName(column = "Io", required = false, converter = XtoBool.class)
     public boolean io;
+
     @CsvCustomBindByName(column = "Venus", required = false, converter = XtoBool.class)
     public boolean ve;
+
     @CsvCustomBindByName(column = "Mercury", required = false, converter = XtoBool.class)
     public boolean me;
+
     @CsvCustomBindByName(column = "Enceladus", required = false, converter = XtoBool.class)
     public boolean en;
+
     @CsvCustomBindByName(column = "Titan", required = false, converter = XtoBool.class)
     public boolean ti;
+
     @CsvCustomBindByName(column = "Miranda", required = false, converter = XtoBool.class)
     public boolean mi;
+
     @CsvCustomBindByName(column = "Oberon", required = false, converter = XtoBool.class)
     public boolean ob;
+
     @CsvCustomBindByName(column = "Triton", required = false, converter = XtoBool.class)
     public boolean tr;
+
     @CsvCustomBindByName(column = "Proteus", required = false, converter = XtoBool.class)
     public boolean pr;
+
     @CsvCustomBindByName(column = "Pluto", required = false, converter = XtoBool.class)
     public boolean pl;
+
     @CsvCustomBindByName(column = "Kuiper Belt", required = false, converter = XtoBool.class)
     public boolean kb;
+
     @CsvCustomBindByName(column = "Haumea", required = false, converter = XtoBool.class)
     public boolean ha;
+
     @CsvCustomBindByName(column = "Makemake", required = false, converter = XtoBool.class)
     public boolean make;
+
     @CsvCustomBindByName(column = "Vega B", required = false, converter = XtoBool.class)
     public boolean vb;
+
     @CsvCustomBindByName(column = "T Ceti E", required = false, converter = XtoBool.class)
     public boolean tcetie;
+
     @CsvCustomBindByName(column = "Ore Name", required = true, converter = Veinrenamer.class)
     private String oreName;
+
     @CsvBindByName(column = "Primary", required = false)
     private String primary = "";
+
     @CsvBindByName(column = "Secondary", required = false)
     private String secondary = "";
+
     @CsvBindByName(column = "Inbetween", required = false)
     private String inbetween = "";
+
     @CsvBindByName(column = "Around", required = false)
     private String around = "";
+
     @CsvBindByName(column = "ID	", required = false)
     private String mix = "";
+
     @CsvBindByName(column = "Tier", required = false)
     private String tier = "";
+
     @CsvBindByName(column = "Height", required = false)
     private String height = "";
+
     @CsvBindByName(column = "Density", required = false)
     private int density;
+
     @CsvBindByName(column = "Size", required = false)
     private int size;
+
     @CsvBindByName(column = "Weight", required = false)
     private int weight;
+
     @CsvCustomBindByName(column = "Overworld", required = false, converter = XtoBool.class)
     private boolean overworld;
+
     @CsvCustomBindByName(column = "Nether", required = false, converter = XtoBool.class)
     private boolean nether;
+
     @CsvCustomBindByName(column = "End", required = false, converter = XtoBool.class)
     private boolean end;
+
     private int miny, maxy;
 
-    public Oremix() {
-    }
+    public Oremix() {}
 
     public boolean isMo() {
         return mo;
@@ -486,5 +530,4 @@ public class Oremix {
     public String getHeightcalced() {
         return new String(this.miny + "-" + this.maxy);
     }
-
 }
