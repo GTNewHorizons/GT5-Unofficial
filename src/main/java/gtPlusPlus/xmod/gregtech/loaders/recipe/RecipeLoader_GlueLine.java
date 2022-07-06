@@ -47,7 +47,7 @@ public class RecipeLoader_GlueLine {
         CORE.RA.addChemicalPlantRecipe(
                 new ItemStack[] {
                         CI.getNumberedCircuit(17),
-                        ItemUtils.getSimpleStack(GenericChem.mBlueCatalyst, 1)
+                        ItemUtils.getSimpleStack(GenericChem.mBlueCatalyst, 0)
                 },
                 new FluidStack[] {
                         FluidUtils.getFluidStack("carbonmonoxide", 1000),
@@ -110,7 +110,7 @@ public class RecipeLoader_GlueLine {
         CORE.RA.addChemicalPlantRecipe(
                 new ItemStack[] {
                         CI.getNumberedCircuit(20),
-                        ItemUtils.getSimpleStack(GenericChem.mSolidAcidCatalyst, 1),
+                        ItemUtils.getSimpleStack(GenericChem.mSolidAcidCatalyst, 0),
                         MISC_MATERIALS.COPPER_SULFATE.getDust(6),
                         MISC_MATERIALS.CYANOACETIC_ACID.getDust(45)
                 },
@@ -151,7 +151,7 @@ public class RecipeLoader_GlueLine {
         CORE.RA.addChemicalPlantRecipe(
                 new ItemStack[] {
                         CI.getNumberedCircuit(22),
-                        ItemUtils.getSimpleStack(GenericChem.mSolidAcidCatalyst, 1)
+                        ItemUtils.getSimpleStack(GenericChem.mSolidAcidCatalyst, 0)
                 },
                 new FluidStack[] {
                         MISC_MATERIALS.ETHYL_CYANOACETATE.getFluidStack(100),
@@ -171,7 +171,7 @@ public class RecipeLoader_GlueLine {
         CORE.RA.addChemicalPlantRecipe(
                 new ItemStack[] {
                         CI.getNumberedCircuit(23),
-                        ItemUtils.getSimpleStack(GenericChem.mPinkCatalyst, 1)
+                        ItemUtils.getSimpleStack(GenericChem.mPinkCatalyst, 0)
                 },
                 new FluidStack[] {
                         FluidUtils.getFluidStack("methane", 2000),

@@ -491,7 +491,7 @@ public class GenericChem extends ItemPackage {
 		//Endgame soldering alloy meant for the bioware circuit line and beyond.
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[] {
-						ItemUtils.getSimpleStack(GenericChem.mInfiniteMutationCatalyst, 1),
+						ItemUtils.getSimpleStack(GenericChem.mInfiniteMutationCatalyst, 0),
                         ItemList.Circuit_Chip_Biocell.get(64),
 						ItemList.Gravistar.get(8),
 						Materials.InfinityCatalyst.getDust(2)
