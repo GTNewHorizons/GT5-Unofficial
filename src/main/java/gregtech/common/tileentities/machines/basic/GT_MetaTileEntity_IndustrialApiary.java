@@ -31,6 +31,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -59,7 +60,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
     private IEffectData[] effectData = new IEffectData[2];
 
     public GT_MetaTileEntity_IndustrialApiary(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 12, "BEES GOES BRRRR", 6, 9, "IndustrialApiary.png", "",
+        super(aID, aName, aNameRegional, aTier, 12, new String[] { "BEES GOES BRRRR", EnumChatFormatting.GRAY + "Added by " + EnumChatFormatting.GOLD + "kuba6000" }, 6, 9, "IndustrialApiary.png", "",
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_SIDE_INDUSTRIAL_APIARY_ACTIVE),
                         TextureFactory.builder().addIcon(OVERLAY_SIDE_INDUSTRIAL_APIARY_ACTIVE_GLOW).glow().build()),
