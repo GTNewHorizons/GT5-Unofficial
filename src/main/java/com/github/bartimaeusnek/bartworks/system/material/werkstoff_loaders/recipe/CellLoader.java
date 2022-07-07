@@ -54,6 +54,9 @@ public class CellLoader implements IWerkstoffRunnable {
         if (!werkstoff.hasItemType(cell))
             return;
 
+        if (werkstoff.hasItemType(dust))
+            return;
+
         if (werkstoff.getStats().isElektrolysis() || werkstoff.getStats().isCentrifuge()) {
             List<FluidStack> flOutputs = new ArrayList<>();
             List<ItemStack> stOutputs = new ArrayList<>();
