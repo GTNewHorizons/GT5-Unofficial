@@ -1639,7 +1639,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         MaterialsKevlar.OrganorhodiumCatalyst.mChemicalFormula = "RhHCO(P(C\u2086H\u2085)\u2083)\u2083";
         SiliconSG.mChemicalFormula = "SIsg";
         NetherQuartz.mChemicalFormula = "SIO\u2082";
-        Quartzite.mChemicalFormula = "SIO\u2082";
+        Quartzite.mChemicalFormula = "SiO\u2082";
         CertusQuartz.mChemicalFormula = "SIO\u2082";
         SpaceTime.mChemicalFormula = "Reality itself distilled into liquid form";
     }
