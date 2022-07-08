@@ -2,19 +2,26 @@ package gregtech.common.blocks;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.GT_Mod;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GT_RenderingWorld;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 
 public class GT_Block_Casings8 extends GT_Block_Casings_Abstract {
+    public static boolean mConnectedMachineTextures = true;
 
     //WATCH OUT FOR TEXTURE ID's
     public GT_Block_Casings8() {
         super(GT_Item_Casings8.class, "gt.blockcasings8", GT_Material_Casings.INSTANCE);
-        for (int i = 0; i < 9; i = (i + 1)) {
+        for (int i = 0; i < 10; i = (i + 1)) {
             Textures.BlockIcons.casingTexturePages[1][i+48] = TextureFactory.of(this, i);
         }
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Chemically Inert Machine Casing");
@@ -26,6 +33,7 @@ public class GT_Block_Casings8 extends GT_Block_Casings_Abstract {
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Advanced Rhodium Plated Palladium Machine Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Advanced Iridium Plated Machine Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "Magical Machine Casing");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "HSS-S Turbine Casing");
 
         ItemList.Casing_Chemically_Inert.set(new ItemStack(this, 1, 0));
         ItemList.Casing_Pipe_Polytetrafluoroethylene.set(new ItemStack(this, 1, 1));
@@ -36,6 +44,7 @@ public class GT_Block_Casings8 extends GT_Block_Casings_Abstract {
         ItemList.Casing_Advanced_Rhodium_Palladium.set(new ItemStack(this, 1, 6));
         ItemList.Casing_Advanced_Iridium.set(new ItemStack(this, 1, 7));
         ItemList.Casing_Magical.set(new ItemStack(this, 1, 8));
+        ItemList.Casing_TurbineGasAdvanced.set(new ItemStack(this, 1, 9));
     }
 
     @Override
@@ -58,9 +67,99 @@ public class GT_Block_Casings8 extends GT_Block_Casings_Abstract {
             return Textures.BlockIcons.MACHINE_CASING_RHODIUM_PALLADIUM.getIcon();
         case 7:
             return Textures.BlockIcons.MACHINE_CASING_IRIDIUM.getIcon();
-            case 8:
-                return Textures.BlockIcons.MACHINE_CASING_MAGICAL.getIcon();
+        case 8:
+            return Textures.BlockIcons.MACHINE_CASING_MAGICAL.getIcon();
+        case 9:
+            return Textures.BlockIcons.MACHINE_CASING_ADVANCEDGAS.getIcon();
         }
         return Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
+    }
+
+    @Deprecated
+    public IIcon getTurbineCasing(int meta, int iconIndex, boolean active) {
+        switch (meta) {
+            case 9:
+                return active ? Textures.BlockIcons.TURBINE_ADVGASACTIVE[iconIndex].getIcon() : Textures.BlockIcons.TURBINEADVGAS[iconIndex].getIcon();
+            default:
+                return active ? Textures.BlockIcons.TURBINE_ACTIVE[iconIndex].getIcon() : Textures.BlockIcons.TURBINE[iconIndex].getIcon();
+        }
+    }
+
+    public IIcon getTurbineCasing(int meta, int iconIndex, boolean active, boolean hasTurbine) {
+        switch (meta) {
+            case 9:
+                return active ? Textures.BlockIcons.TURBINE_ADVGASACTIVE[iconIndex].getIcon() : hasTurbine ? Textures.BlockIcons.TURBINEADVGAS[iconIndex].getIcon() : Textures.BlockIcons.TURBINE_ADVGASEMPTY[iconIndex].getIcon();
+            default:
+                return active ? Textures.BlockIcons.TURBINE_ACTIVE[iconIndex].getIcon() : hasTurbine ? Textures.BlockIcons.TURBINE[iconIndex].getIcon() : Textures.BlockIcons.TURBINE_EMPTY[iconIndex].getIcon();
+        }
+    }
+
+    private static int isTurbineControllerWithSide(IBlockAccess aWorld, int aX, int aY, int aZ, int aSide) {
+        TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
+        if (!(tTileEntity instanceof IGregTechTileEntity)) return 0;
+        IGregTechTileEntity tTile = (IGregTechTileEntity) tTileEntity;
+        if (tTile.getMetaTileEntity() instanceof GT_MetaTileEntity_LargeTurbine && tTile.getFrontFacing() == aSide) {
+            if (tTile.isActive()) return 1;
+            return ((GT_MetaTileEntity_LargeTurbine) tTile.getMetaTileEntity()).hasTurbine() ? 2 : 3;
+        }
+        return 0;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public IIcon getIcon(IBlockAccess aWorld, int xCoord, int yCoord, int zCoord, int aSide) {
+        aWorld = GT_RenderingWorld.getInstance(aWorld);
+        int tMeta = aWorld.getBlockMetadata(xCoord, yCoord, zCoord);
+        if (tMeta != 9 || !mConnectedMachineTextures) {
+            return getIcon(aSide, tMeta);
+        }
+        if (tMeta == 9) {
+            int tInvertLeftRightMod = aSide % 2 * 2 - 1;
+            switch (aSide / 2) {
+                case 0:
+                    for (int i = -1; i < 2; i++) {
+                        for (int j = -1; j < 2; j++) {
+                            if (i == 0 && j == 0)
+                                continue;
+                            int tState;
+                            if ((tState = isTurbineControllerWithSide(aWorld, xCoord + j, yCoord, zCoord + i, aSide)) != 0) {
+                                return getTurbineCasing(tMeta, 4 - i * 3 - j, tState == 1, tState == 2);
+                            }
+                        }
+                    }
+                    break;
+                case 1:
+                    for (int i = -1; i < 2; i++) {
+                        for (int j = -1; j < 2; j++) {
+                            if (i == 0 && j == 0)
+                                continue;
+                            int tState;
+                            if ((tState = isTurbineControllerWithSide(aWorld, xCoord + j, yCoord + i, zCoord, aSide)) != 0) {
+                                return getTurbineCasing(tMeta, 4 + i * 3 - j * tInvertLeftRightMod, tState == 1, tState == 2);
+                            }
+                        }
+                    }
+                    break;
+                case 2:
+                    for (int i = -1; i < 2; i++) {
+                        for (int j = -1; j < 2; j++) {
+                            if (i == 0 && j == 0)
+                                continue;
+                            int tState;
+                            if ((tState = isTurbineControllerWithSide(aWorld, xCoord, yCoord + i, zCoord + j, aSide)) != 0) {
+                                return getTurbineCasing(tMeta, 4 + i * 3 + j * tInvertLeftRightMod, tState == 1, tState == 2);
+                            }
+                        }
+                    }
+                    break;
+            }
+            switch (tMeta) {
+                case 9:
+                    return Textures.BlockIcons.MACHINE_CASING_ADVANCEDGAS.getIcon();
+                default:
+                    return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
+            }
+        }
+        return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
     }
 }
