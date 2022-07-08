@@ -80,7 +80,7 @@ public class GT_MetaTileEntity_LargeTurbine_Gas extends GT_MetaTileEntity_LargeT
     }
 
     @Override
-    public byte getCasingTextureIndex() {
+    public int getCasingTextureIndex() {
         return 58;
     }
 

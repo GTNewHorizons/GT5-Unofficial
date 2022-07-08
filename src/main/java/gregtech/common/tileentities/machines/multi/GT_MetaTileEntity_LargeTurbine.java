@@ -92,7 +92,7 @@ public abstract class GT_MetaTileEntity_LargeTurbine extends GT_MetaTileEntity_E
 
     public abstract byte getCasingMeta();
 
-    public abstract byte getCasingTextureIndex();
+    public abstract int getCasingTextureIndex();
 
     @Override
     public boolean addToMachineList(IGregTechTileEntity tTileEntity, int aBaseCasingIndex) {

@@ -32,7 +32,7 @@ public class GT_MetaTileEntity_LargeTurbine_GasAdvanced extends GT_MetaTileEntit
         return new ITexture[]{MACHINE_CASINGS[1][aColorIndex + 1],
             aFacing == aSide ?
                 (aActive ? TextureFactory.builder().addIcon(LARGETURBINE_ADVGAS_ACTIVE5).extFacing().build() : hasTurbine() ? TextureFactory.builder().addIcon(LARGETURBINE_ADVGAS5).extFacing().build() : TextureFactory.builder().addIcon(LARGETURBINE_ADVGAS_EMPTY5).extFacing().build())
-                : casingTexturePages[0][41]};
+                : casingTexturePages[1][57]};
     }
 
     @Override
@@ -79,9 +79,7 @@ public class GT_MetaTileEntity_LargeTurbine_GasAdvanced extends GT_MetaTileEntit
     }
 
     @Override
-    public byte getCasingTextureIndex() {
-        return 41;
-    }
+    public int getCasingTextureIndex() { return 185; }
 
     @Override
     public int getPollutionPerSecond(ItemStack aStack) {
