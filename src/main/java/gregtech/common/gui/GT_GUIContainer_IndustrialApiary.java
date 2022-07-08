@@ -19,6 +19,21 @@ import java.util.Arrays;
 
 public class GT_GUIContainer_IndustrialApiary extends GT_GUIContainerMetaTile_Machine {
 
+
+    private static final String
+        BATTERY_SLOT_TOOLTIP = "GT5U.machines.battery_slot.tooltip",
+        UNUSED_SLOT_TOOLTIP = "GT5U.machines.unused_slot.tooltip",
+        STALLED_STUTTERING_TOOLTIP = "GT5U.machines.stalled_stuttering.tooltip",
+        ITEM_TRANSFER_TOOLTIP = "GT5U.machines.item_transfer.tooltip",
+        POWER_SOURCE_POWER = "GT5U.machines.powersource.power",
+        RETRIEVE_POLLEN_TOOLTIP = "GT5U.machines.industrialapiary.pollen.tooltip",
+        CANCEL_PROCESS_TOOLTIP = "GT5U.machines.industrialapiary.cancel.tooltip",
+        SPEED_TOOLTIP = "GT5U.machines.industrialapiary.speed.tooltip",
+        INFO_TOOLTIP = "GT5U.machines.industrialapiary.info.tooltip",
+        INFO_WITH_BEE_TOOLTIP = "GT5U.machines.industrialapiary.infoextended.tooltip"
+            ;
+
+
     GT_GuiTooltip mErrorStatesTooltip;
     GT_GuiTooltip mSpeedToggleTooltip;
     GT_GuiTooltip mInfoTooltip;
@@ -42,26 +57,25 @@ public class GT_GUIContainer_IndustrialApiary extends GT_GUIContainerMetaTile_Ma
         mErrorStatesTooltip.enabled = false;
         addToolTip(mInfoTooltip = new GT_GuiTooltip(new Rectangle(this.guiLeft + 163, guiTop + 5, 6, 17)));
 
-        addToolTip(new GT_GuiSlotTooltip(getContainer().slotPollenToggle, new GT_TooltipDataCache.TooltipData(Arrays.asList("Retrieve pollen", EnumChatFormatting.RED + "WARNING: INCREASES LAG"), null)));
-        addToolTip(new GT_GuiSlotTooltip(getContainer().slotCancelProcess, new GT_TooltipDataCache.TooltipData(Arrays.asList("Cancel process", EnumChatFormatting.GRAY + "Will also disable machine (soft mallet)", EnumChatFormatting.GRAY + "" + EnumChatFormatting.ITALIC + "Can't stop princess breeding"), null)));
+        addToolTip(new GT_GuiSlotTooltip(getContainer().slotPollenToggle, mTooltipCache.getData(RETRIEVE_POLLEN_TOOLTIP)));
+        addToolTip(new GT_GuiSlotTooltip(getContainer().slotCancelProcess, mTooltipCache.getData(CANCEL_PROCESS_TOOLTIP)));
 
 
-        addToolTip(new GT_GuiSlotTooltip(getContainer().slotItemTransferToggle,
-            mTooltipCache.getData("GT5U.machines.item_transfer.tooltip")));
-        addToolTip( new GT_GuiSlotTooltip(getContainer().slotBattery,
-            mTooltipCache.getData("GT5U.machines.battery_slot.tooltip",
+        addToolTip(new GT_GuiSlotTooltip(getContainer().slotItemTransferToggle, mTooltipCache.getData(ITEM_TRANSFER_TOOLTIP)));
+        addToolTip(new GT_GuiSlotTooltip(getContainer().slotBattery, mTooltipCache.getData(BATTERY_SLOT_TOOLTIP,
                 powerTierName(getContainer().getMachine().mTier),
                 powerTierName((byte)(getContainer().getMachine().mTier + 1)))));
+        addToolTip(new GT_GuiSlotTooltip(getContainer().slotSpecial, mTooltipCache.getData(UNUSED_SLOT_TOOLTIP)));
     }
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float parTicks) {
         mErrorStatesTooltip.enabled = !getContainer().mErrorStates.isEmpty();
-        if(mErrorStatesTooltip.enabled){ mErrorStatesTooltip.setToolTipText(new GT_TooltipDataCache.TooltipData(getContainer().mErrorStates, null)); }
+        if(mErrorStatesTooltip.enabled){ mErrorStatesTooltip.setToolTipText(new GT_TooltipDataCache.TooltipData(getContainer().mErrorStates, getContainer().mErrorStates)); }
         else if(getContainer().mStuttering)
         {
             mErrorStatesTooltip.enabled = true;
-            mErrorStatesTooltip.setToolTipText(mTooltipCache.getData("GT5U.machines.stalled_stuttering.tooltip", StatCollector.translateToLocal("GT5U.machines.powersource.power")));
+            mErrorStatesTooltip.setToolTipText(mTooltipCache.getData(STALLED_STUTTERING_TOOLTIP, StatCollector.translateToLocal(POWER_SOURCE_POWER)));
         }
         int accelerated = (1 << getContainer().mSpeed);
         int energyusage = 0;
@@ -69,38 +83,31 @@ public class GT_GUIContainer_IndustrialApiary extends GT_GUIContainerMetaTile_Ma
             energyusage = 32;
         else if(accelerated > 2)
             energyusage = 32 * accelerated << (getContainer().mSpeed - 2);
-        mSpeedToggleTooltip.setToolTipText("Acceleration: " + accelerated + "x", "Energy usage: +" + GT_Utility.formatNumbers(energyusage) + " EU/t");
-
+        mSpeedToggleTooltip.setToolTipText(mTooltipCache.getUncachedTooltipData(SPEED_TOOLTIP, accelerated, GT_Utility.formatNumbers(energyusage)));
         ArrayList<String> s = new ArrayList<>();
         GT_MetaTileEntity_IndustrialApiary IA = getContainer().getMachine();
 
-        s.add("Energy required: " + GT_Utility.formatNumbers((int)((float)GT_MetaTileEntity_IndustrialApiary.baseEUtUsage * IA.getEnergyModifier()) + energyusage) + " EU/t");
-        s.add("Temperature: " + StatCollector.translateToLocal(IA.getTemperature().getName()));
-        s.add("Humidity: " + StatCollector.translateToLocal(IA.getHumidity().getName()));
+        String energyreq = GT_Utility.formatNumbers((int)((float)GT_MetaTileEntity_IndustrialApiary.baseEUtUsage * IA.getEnergyModifier()) + energyusage);
+        String Temp = StatCollector.translateToLocal(IA.getTemperature().getName());
+        String Hum = StatCollector.translateToLocal(IA.getHumidity().getName());
         boolean moreinformationgiven = false;
-        if(IA.getUsedQueen() != null && BeeManager.beeRoot.isMember(IA.getUsedQueen(), EnumBeeType.QUEEN.ordinal()))
-        {
+        if(IA.getUsedQueen() != null && BeeManager.beeRoot.isMember(IA.getUsedQueen(), EnumBeeType.QUEEN.ordinal())) {
             IBee bee = BeeManager.beeRoot.getMember(IA.getUsedQueen());
-            if(bee.isAnalyzed()) {
+            if (bee.isAnalyzed()) {
                 moreinformationgiven = true;
                 IBeeGenome genome = bee.getGenome();
                 IBeeModifier mod = BeeManager.beeRoot.getBeekeepingMode(IA.getWorld()).getBeeModifier();
-
-                int prod = Math.round(100f * IA.getProductionModifier(null, 1f) * genome.getSpeed() * mod.getProductionModifier(null, 1f));
-
-                s.add("Production Modifier: " + prod + "%");
-                s.add("Flowering Chance: " + Math.round(IA.getFloweringModifier(null, 1f) * genome.getFlowering() * mod.getFloweringModifier(null, 1f)) + "%");
-                s.add("Lifespan Modifier: " + Math.round(IA.getLifespanModifier(null, null, 1f) * genome.getLifespan() * mod.getLifespanModifier(null, null, 1f)) + "%");
                 float tmod = IA.getTerritoryModifier(null, 1f) * mod.getTerritoryModifier(null, 1f);
                 int[] t = Arrays.stream(genome.getTerritory()).map(i -> (int) ((float) i * tmod)).toArray();
-                s.add("Terrority: " + t[0] + " x " + t[1] + " x " + t[2]);
+                mInfoTooltip.setToolTipText(mTooltipCache.getUncachedTooltipData(INFO_WITH_BEE_TOOLTIP, energyreq, Temp, Hum,
+                    Math.round(100f * IA.getProductionModifier(null, 1f) * genome.getSpeed() * mod.getProductionModifier(null, 1f)),
+                    Math.round(IA.getFloweringModifier(null, 1f) * genome.getFlowering() * mod.getFloweringModifier(null, 1f)),
+                    Math.round(IA.getLifespanModifier(null, null, 1f) * genome.getLifespan() * mod.getLifespanModifier(null, null, 1f)),
+                    t[0], t[1], t[2]));
             }
         }
         if(!moreinformationgiven)
-            s.add(EnumChatFormatting.GRAY + "" + EnumChatFormatting.ITALIC + "Insert analyzed bee to see more info");
-
-
-        mInfoTooltip.setToolTipText(new GT_TooltipDataCache.TooltipData(s,null));
+            mInfoTooltip.setToolTipText(mTooltipCache.getUncachedTooltipData(INFO_TOOLTIP, energyreq, Temp, Hum));
 
 
         super.drawScreen(mouseX, mouseY, parTicks);

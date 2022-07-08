@@ -134,6 +134,24 @@ GT5U.machines.stalled_vent.tooltip.extended=§7Progress was lost, but not
 GT5U.machines.stalled_vent.tooltip.extended.1=§7the recipe's output.
 GT5U.machines.oreprocessor=§eRunning Mode: %s §cTime: %s s
 GT5U.machines.oreprocessor.void=§eVoid Stone Dust: %s
+GT5U.machines.industrialapiary.pollen.tooltip=Retrevie Pollen
+GT5U.machines.industrialapiary.pollen.tooltip.1=§cWARNING: INCREASES LAG
+GT5U.machines.industrialapiary.cancel.tooltip=§cCancel process
+GT5U.machines.industrialapiary.cancel.tooltip.1=§7Will also disable machine (soft mallet)
+GT5U.machines.industrialapiary.cancel.tooltip.2=§7§oCan't stop princess breeding
+GT5U.machines.industrialapiary.speed.tooltip=Acceleration: %1$d
+GT5U.machines.industrialapiary.speed.tooltip.1=§7Energy usage: +%2$s EU/t
+GT5U.machines.industrialapiary.info.tooltip=Energy required: %1$s EU/t
+GT5U.machines.industrialapiary.info.tooltip.1=Temperature: %2$s
+GT5U.machines.industrialapiary.info.tooltip.2=Humidity: %3$s
+GT5U.machines.industrialapiary.info.tooltip.3=§7§oInsert analyzed bee to see more info
+GT5U.machines.industrialapiary.infoextended.tooltip=Energy required: %1$s EU/t
+GT5U.machines.industrialapiary.infoextended.tooltip.1=Temperature: %2$s
+GT5U.machines.industrialapiary.infoextended.tooltip.2=Humidity: %3$s
+GT5U.machines.industrialapiary.infoextended.tooltip.3=Production Modifier: %4$d %%
+GT5U.machines.industrialapiary.infoextended.tooltip.4=Flowering Chance: %5$d %%
+GT5U.machines.industrialapiary.infoextended.tooltip.5=Lifespan Modifier: %6$d %%
+GT5U.machines.industrialapiary.infoextended.tooltip.6=Terrority: %7$d x %8$d x %9$d
 
 GT5U.recipe_filter.representation_slot.tooltip=Click with a machine to set filter
 
