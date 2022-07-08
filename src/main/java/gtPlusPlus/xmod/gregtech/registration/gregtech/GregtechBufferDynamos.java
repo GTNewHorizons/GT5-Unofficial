@@ -38,7 +38,7 @@ public class GregtechBufferDynamos {
 		GregtechItemList.Hatch_Buffer_Dynamo_UV.set(
 				new GT_MetaTileEntity_Hatch_DynamoBuffer(mID++, "hatch.dynamo.buffer.tier.08", "UV Dynamo Hatch [Buffered]", 8).getStackForm(1L));
 		GregtechItemList.Hatch_Buffer_Dynamo_MAX.set(
-				new GT_MetaTileEntity_Hatch_DynamoBuffer(mID++, "hatch.dynamo.buffer.tier.09", "Max Dynamo Hatch [Buffered]", 9).getStackForm(1L));
+				new GT_MetaTileEntity_Hatch_DynamoBuffer(mID++, "hatch.dynamo.buffer.tier.09", "UHV Dynamo Hatch [Buffered]", 9).getStackForm(1L));
 		GT_ModHandler.addCraftingRecipe(GregtechItemList.Hatch_Buffer_Dynamo_ULV.get(1L, new Object[0]), bitsd,
 				new Object[]{"TMC", 'M', ItemList.Hatch_Dynamo_ULV, 'T', CI.getTieredCircuit(0), 'C', OrePrefixes.cableGt04.get((Object) Materials.Lead)});
 		GT_ModHandler.addCraftingRecipe(GregtechItemList.Hatch_Buffer_Dynamo_LV.get(1L, new Object[0]), bitsd,
