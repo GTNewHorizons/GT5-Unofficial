@@ -22,7 +22,7 @@ public class GT_Block_Casings8 extends GT_Block_Casings_Abstract {
     public GT_Block_Casings8() {
         super(GT_Item_Casings8.class, "gt.blockcasings8", GT_Material_Casings.INSTANCE);
         for (int i = 0; i < 10; i = (i + 1)) {
-            Textures.BlockIcons.casingTexturePages[0][i + 32] = TextureFactory.of(this, i);
+            Textures.BlockIcons.casingTexturePages[1][i+48] = TextureFactory.of(this, i);
         }
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Chemically Inert Machine Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "PTFE Pipe Casing");
