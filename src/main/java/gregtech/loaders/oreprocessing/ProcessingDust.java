@@ -65,7 +65,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                     long tItemAmount = 0L;
                     long tCapsuleCount = 0L;
                     long tDensityMultiplier = aMaterial.getDensity() > 3628800L ? aMaterial.getDensity() / 3628800L : 1L;
-                    ArrayList<ItemStack> tList = new ArrayList();
+                    ArrayList<ItemStack> tList = new ArrayList<>();
                     for (MaterialStack tMat : aMaterial.mMaterialList)
                         if (tMat.mAmount > 0L) {
                             if (tMat.mMaterial == Materials.Air) {
@@ -97,7 +97,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                         int tList_sS = tList.size();
                         for (int i = 0; i < tList_sS; i++) {
                             if ((!ItemList.Cell_Air.isStackEqual(tList.get(i))) && ((tFluid = GT_Utility.getFluidForFilledItem((ItemStack) tList.get(i), true)) != null)) {
-                                tFluid.amount *= ((ItemStack) tList.get(i)).stackSize;
+                                tFluid.amount *= tList.get(i).stackSize;
                                 tCapsuleCount -= GT_ModHandler.getCapsuleCellContainerCountMultipliedWithStackSize((ItemStack) tList.get(i));
                                 tList.remove(i);
                                 break;
