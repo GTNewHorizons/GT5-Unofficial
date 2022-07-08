@@ -2079,6 +2079,9 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addAutoclaveRecipe(Materials.SiliconDioxide.getDust(1), GT_ModHandler.getDistilledWater(100L), Materials.Quartzite.getGems(1), 1000, 1500, 24);
         GT_Values.RA.addAutoclaveRecipe(Materials.SiliconDioxide.getDust(1), Materials.Void.getMolten(36L), Materials.Quartzite.getGems(1), 10000, 1000, 24);
 
+        //NaOH = Na + O + H
+        GT_Values.RA.addElectrolyzerRecipe(Materials.SodiumHydroxide.getDust(3), Materials.Empty.getCells(1), GT_Values.NF, Materials.Oxygen.getGas(1000), Materials.Sodium.getDust(1), Materials.Hydrogen.getCells(1), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, new int[]{10000, 10000}, 1000, 60);
+
         this.addRecipesMay2017OilRefining();
         this.addPyrometallurgicalRecipes();
         this.addPolybenzimidazoleRecipes();
