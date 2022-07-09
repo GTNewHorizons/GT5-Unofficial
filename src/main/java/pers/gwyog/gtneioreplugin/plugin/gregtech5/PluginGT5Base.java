@@ -1,20 +1,15 @@
 package pers.gwyog.gtneioreplugin.plugin.gregtech5;
 
-import static pers.gwyog.gtneioreplugin.GTNEIOrePlugin.toolTips;
-
 import codechicken.lib.gui.GuiDraw;
-import codechicken.nei.guihook.GuiContainerManager;
 import codechicken.nei.recipe.GuiRecipe;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_LanguageManager;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.util.List;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.EnumChatFormatting;
 import pers.gwyog.gtneioreplugin.plugin.PluginBase;
-import pers.gwyog.gtneioreplugin.util.DimensionHelper;
 import pers.gwyog.gtneioreplugin.util.GuiRecipeHelper;
 
 public abstract class PluginGT5Base extends PluginBase {
@@ -49,30 +44,6 @@ public abstract class PluginGT5Base extends PluginBase {
 
     static void drawLine(String lineKey, String value, int x, int y) {
         GuiDraw.drawString(I18n.format(lineKey) + ": " + value, x, y, 0x404040, false);
-    }
-
-    /**
-     * Add lines to the current tooltip if appropriate
-     *
-     * @param gui An instance of the currentscreen
-     * @param currenttip The current tooltip, will contain item name and info
-     * @param recipe The recipe index being handled
-     * @return The modified tooltip. DO NOT return null
-     */
-    @Override
-    public List<String> handleTooltip(GuiRecipe gui, List<String> currenttip, int recipe) {
-        if (toolTips && GuiContainerManager.shouldShowTooltip(gui) && currenttip.size() == 0) {
-            String dimNames = getDimensionNames(recipe);
-            Rectangle dimRect = getDimensionNamesRect(gui, recipe, dimNames);
-            Point mousePos = GuiDraw.getMousePosition();
-
-            if (dimRect.contains(mousePos.x, mousePos.y)) {
-                List<String> dims = DimensionHelper.convertCondensedStringToToolTip(dimNames);
-                currenttip.addAll(dims);
-            }
-        }
-
-        return super.handleTooltip(gui, currenttip, recipe);
     }
 
     /**
@@ -117,20 +88,6 @@ public abstract class PluginGT5Base extends PluginBase {
      */
     protected void drawDimNames(String dimNames) {
         GuiDraw.drawString(I18n.format("gtnop.gui.nei.worldNames") + ": ", 2, 100, 0x404040, false);
-
-        if (dimNames.length() > 36) {
-            GuiDraw.drawString(I18n.format("") + dimNames.substring(0, 36), 2, 110, 0x404040, false);
-            if (dimNames.length() > 70) {
-                GuiDraw.drawString(I18n.format("") + dimNames.substring(36, 70), 2, 120, 0x404040, false);
-                GuiDraw.drawString(
-                        I18n.format("") + dimNames.substring(70, dimNames.length() - 1), 2, 130, 0x404040, false);
-            } else {
-                GuiDraw.drawString(
-                        I18n.format("") + dimNames.substring(36, dimNames.length() - 1), 2, 120, 0x404040, false);
-            }
-        } else {
-            GuiDraw.drawString(I18n.format("") + dimNames.substring(0, dimNames.length() - 1), 2, 110, 0x404040, false);
-        }
     }
 
     /**

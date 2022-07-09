@@ -5,10 +5,14 @@ import static pers.gwyog.gtneioreplugin.util.OreVeinLayer.*;
 import codechicken.nei.PositionedStack;
 import cpw.mods.fml.common.Loader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
+import pers.gwyog.gtneioreplugin.plugin.items.ItemDimensionDisplay;
+import pers.gwyog.gtneioreplugin.util.DimensionHelper;
 import pers.gwyog.gtneioreplugin.util.GT5OreLayerHelper;
 import pers.gwyog.gtneioreplugin.util.GT5OreLayerHelper.OreLayerWrapper;
 
@@ -34,6 +38,20 @@ public class PluginGT5VeinStat extends PluginGT5Base {
         for (OreLayerWrapper oreVein : getAllVeins()) {
             if (oreVein.containsOre(oreId)) {
                 addVeinWithLayers(oreVein, getMaximumMaterialIndex(oreId, false));
+            }
+        }
+    }
+
+    @Override
+    public void loadUsageRecipes(ItemStack stack) {
+        String dimension = ItemDimensionDisplay.getDimension(stack);
+        if (dimension == null) {
+            return;
+        }
+
+        for (OreLayerWrapper oreVein : getAllVeins()) {
+            if (Arrays.asList(getDimNameArrayFromVeinName(oreVein.veinName)).contains(dimension)) {
+                addVeinWithLayers(oreVein, getMaximumMaterialIndex((short) (stack.getItemDamage() % 1000), false));
             }
         }
     }
@@ -123,12 +141,21 @@ public class PluginGT5VeinStat extends PluginGT5Base {
         return GT5OreLayerHelper.bufferedDims.get(oreLayer);
     }
 
+    private String[] getDimNameArrayFromVeinName(String veinName) {
+        OreLayerWrapper oreLayer = GT5OreLayerHelper.mapOreLayerWrapper.get(veinName);
+        String[] dims = DimensionHelper.parseDimNames(GT5OreLayerHelper.bufferedDims.get(oreLayer));
+        Arrays.sort(dims, Comparator.comparingInt(s -> Arrays.asList(DimensionHelper.DimNameDisplayed)
+                .indexOf(s)));
+        return dims;
+    }
+
     public class CachedVeinStatRecipe extends CachedRecipe {
         public String veinName;
         public PositionedStack positionedStackPrimary;
         public PositionedStack positionedStackSecondary;
         public PositionedStack positionedStackBetween;
         public PositionedStack positionedStackSporadic;
+        private final List<PositionedStack> dimensionDisplayItems = new ArrayList<>();
 
         public CachedVeinStatRecipe(
                 String veinName,
@@ -141,25 +168,48 @@ public class PluginGT5VeinStat extends PluginGT5Base {
             positionedStackSecondary = new PositionedStack(stackListSecondary, 22, 0);
             positionedStackBetween = new PositionedStack(stackListBetween, 42, 0);
             positionedStackSporadic = new PositionedStack(stackListSporadic, 62, 0);
+            setDimensionDisplayItems();
+        }
+
+        private void setDimensionDisplayItems() {
+            int x = 2;
+            int y = 110;
+            int count = 0;
+            int itemsPerLine = 9;
+            int itemSize = 18;
+            for (String dim : getDimNameArrayFromVeinName(this.veinName)) {
+                ItemStack item = ItemDimensionDisplay.getItem(dim);
+                if (item != null) {
+                    int xPos = x + itemSize * (count % itemsPerLine);
+                    int yPos = y + itemSize * (count / itemsPerLine);
+                    dimensionDisplayItems.add(new PositionedStack(item, xPos, yPos, false));
+                    count++;
+                }
+            }
         }
 
         @Override
         public List<PositionedStack> getIngredients() {
-            List<PositionedStack> ingredientsList = new ArrayList<>();
-            positionedStackPrimary.setPermutationToRender((cycleticks / 20) % positionedStackPrimary.items.length);
-            positionedStackSecondary.setPermutationToRender((cycleticks / 20) % positionedStackPrimary.items.length);
-            positionedStackBetween.setPermutationToRender((cycleticks / 20) % positionedStackPrimary.items.length);
-            positionedStackSporadic.setPermutationToRender((cycleticks / 20) % positionedStackPrimary.items.length);
-            ingredientsList.add(positionedStackPrimary);
-            ingredientsList.add(positionedStackSecondary);
-            ingredientsList.add(positionedStackBetween);
-            ingredientsList.add(positionedStackSporadic);
-            return ingredientsList;
+            return dimensionDisplayItems;
         }
 
         @Override
         public PositionedStack getResult() {
             return null;
+        }
+
+        @Override
+        public List<PositionedStack> getOtherStacks() {
+            List<PositionedStack> outputs = new ArrayList<>();
+            positionedStackPrimary.setPermutationToRender((cycleticks / 20) % positionedStackPrimary.items.length);
+            positionedStackSecondary.setPermutationToRender((cycleticks / 20) % positionedStackPrimary.items.length);
+            positionedStackBetween.setPermutationToRender((cycleticks / 20) % positionedStackPrimary.items.length);
+            positionedStackSporadic.setPermutationToRender((cycleticks / 20) % positionedStackPrimary.items.length);
+            outputs.add(positionedStackPrimary);
+            outputs.add(positionedStackSecondary);
+            outputs.add(positionedStackBetween);
+            outputs.add(positionedStackSporadic);
+            return outputs;
         }
     }
 }

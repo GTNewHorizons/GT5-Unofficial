@@ -108,11 +108,9 @@ public class DimensionHelper {
     private static final HashMap<String, List<String>> tooltipBuffer = new HashMap<>();
 
     private static List<String> computeString(String line) {
-        String[] dims = line.split(",");
+        String[] dims = parseDimNames(line);
         for (int j = 0; j < dims.length; j++) {
             String s = dims[j];
-            s = s.replaceAll(",", "");
-            s = s.trim();
             for (int i = 0; i < DimNameDisplayed.length; i++) {
                 if (s.equals(DimNameDisplayed[i])) {
                     String k = DimName[i]
@@ -180,6 +178,17 @@ public class DimensionHelper {
         }
 
         return Arrays.asList(dims);
+    }
+
+    public static String[] parseDimNames(String line) {
+        String[] dims = line.split(",");
+        for (int j = 0; j < dims.length; j++) {
+            String s = dims[j];
+            s = s.replaceAll(",", "");
+            s = s.trim();
+            dims[j] = s;
+        }
+        return dims;
     }
 
     public static List<String> convertCondensedStringToToolTip(String line) {

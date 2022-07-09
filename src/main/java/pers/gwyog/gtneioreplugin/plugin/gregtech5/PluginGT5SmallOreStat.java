@@ -4,9 +4,13 @@ import codechicken.nei.PositionedStack;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
+import pers.gwyog.gtneioreplugin.plugin.items.ItemDimensionDisplay;
+import pers.gwyog.gtneioreplugin.util.DimensionHelper;
 import pers.gwyog.gtneioreplugin.util.GT5OreSmallHelper;
 import pers.gwyog.gtneioreplugin.util.GT5OreSmallHelper.OreSmallWrapper;
 
@@ -66,6 +70,20 @@ public class PluginGT5SmallOreStat extends PluginGT5Base {
         } else super.loadCraftingRecipes(stack);
     }
 
+    @Override
+    public void loadUsageRecipes(ItemStack stack) {
+        String dimension = ItemDimensionDisplay.getDimension(stack);
+        if (dimension == null) {
+            return;
+        }
+
+        for (OreSmallWrapper oreVein : GT5OreSmallHelper.mapOreSmallWrapper.values()) {
+            if (Arrays.asList(getDimNameArrayFromVeinName(oreVein.oreGenName)).contains(dimension)) {
+                addSmallOre(oreVein, 7);
+            }
+        }
+    }
+
     private void loadSmallOre(short oreMeta, int maximumIndex) {
         OreSmallWrapper smallOre = getSmallOre(oreMeta);
         if (smallOre != null) {
@@ -120,11 +138,20 @@ public class PluginGT5SmallOreStat extends PluginGT5Base {
         return GT5OreSmallHelper.bufferedDims.get(oreSmall);
     }
 
+    private String[] getDimNameArrayFromVeinName(String veinName) {
+        OreSmallWrapper oreSmall = GT5OreSmallHelper.mapOreSmallWrapper.get(veinName);
+        String[] dims = DimensionHelper.parseDimNames(GT5OreSmallHelper.bufferedDims.get(oreSmall));
+        Arrays.sort(dims, Comparator.comparingInt(s -> Arrays.asList(DimensionHelper.DimNameDisplayed)
+                .indexOf(s)));
+        return dims;
+    }
+
     public class CachedOreSmallRecipe extends CachedRecipe {
         public String oreGenName;
         public PositionedStack positionedStackOreSmall;
         public PositionedStack positionedStackMaterialDust;
         public List<PositionedStack> positionedDropStackList;
+        private final List<PositionedStack> dimensionDisplayItems = new ArrayList<>();
 
         public CachedOreSmallRecipe(
                 String oreGenName,
@@ -141,21 +168,46 @@ public class PluginGT5SmallOreStat extends PluginGT5Base {
                 positionedDropStackList.add(new PositionedStack(
                         stackDrop, 43 + 20 * (i % 4), 79 + 16 * ((i++) / 4) + getRestrictBiomeOffset()));
             this.positionedDropStackList = positionedDropStackList;
+            setDimensionDisplayItems();
+        }
+
+        private void setDimensionDisplayItems() {
+            int x = 2;
+            int y = 110;
+            int count = 0;
+            int itemsPerLine = 9;
+            int itemSize = 18;
+            for (String dim : getDimNameArrayFromVeinName(this.oreGenName)) {
+                ItemStack item = ItemDimensionDisplay.getItem(dim);
+                if (item != null) {
+                    int xPos = x + itemSize * (count % itemsPerLine);
+                    int yPos = y + itemSize * (count / itemsPerLine);
+                    dimensionDisplayItems.add(new PositionedStack(item, xPos, yPos, false));
+                    count++;
+                }
+            }
         }
 
         @Override
         public List<PositionedStack> getIngredients() {
-            positionedStackOreSmall.setPermutationToRender((cycleticks / 20) % positionedStackOreSmall.items.length);
-            positionedStackMaterialDust.setPermutationToRender(
-                    (cycleticks / 20) % positionedStackMaterialDust.items.length);
-            positionedDropStackList.add(positionedStackOreSmall);
-            positionedDropStackList.add(positionedStackMaterialDust);
-            return positionedDropStackList;
+            return dimensionDisplayItems;
         }
 
         @Override
         public PositionedStack getResult() {
             return null;
+        }
+
+        @Override
+        public List<PositionedStack> getOtherStacks() {
+            List<PositionedStack> outputs = new ArrayList<>();
+            positionedStackOreSmall.setPermutationToRender((cycleticks / 20) % positionedStackOreSmall.items.length);
+            positionedStackMaterialDust.setPermutationToRender(
+                    (cycleticks / 20) % positionedStackMaterialDust.items.length);
+            outputs.add(positionedStackOreSmall);
+            outputs.add(positionedStackMaterialDust);
+            outputs.addAll(positionedDropStackList);
+            return outputs;
         }
     }
 }

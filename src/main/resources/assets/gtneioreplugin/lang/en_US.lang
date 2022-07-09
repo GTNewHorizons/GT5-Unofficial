@@ -84,3 +84,6 @@ gtnop.ore.null.name=None
 gtnop.ore.vein.name=Vein 
 gtnop.ore.asteroid.name=Asteriod
 gtnop.ore.custom.name=Custom
+
+# items
+itemGroup.gtneioreplugin=GT NEI Ore Plugin

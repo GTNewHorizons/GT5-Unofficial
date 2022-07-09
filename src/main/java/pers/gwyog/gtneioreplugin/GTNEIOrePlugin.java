@@ -2,11 +2,17 @@ package pers.gwyog.gtneioreplugin;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import pers.gwyog.gtneioreplugin.plugin.items.ModItems;
+import pers.gwyog.gtneioreplugin.plugin.renderer.ItemDimensionDisplayRenderer;
 import pers.gwyog.gtneioreplugin.util.GT5OreLayerHelper;
 import pers.gwyog.gtneioreplugin.util.GT5OreSmallHelper;
 import pers.gwyog.gtneioreplugin.util.GuiRecipeHelper;
@@ -26,6 +32,13 @@ public class GTNEIOrePlugin {
     public static String CSVnameSmall;
     public static boolean toolTips = true;
     public static int maxTooltipLines = 11;
+    public static final CreativeTabs creativeTab = new CreativeTabs(MODID) {
+        @Override
+        public Item getTabIconItem() {
+            return GameRegistry.makeItemStack("gregtech:gt.blockores", 386, 1, null)
+                    .getItem();
+        }
+    };
 
     @Mod.Instance(MODID)
     public static GTNEIOrePlugin instance;
@@ -58,6 +71,14 @@ public class GTNEIOrePlugin {
                 "Maximum number of lines the dimension names tooltip can have before it wraps around.");
 
         c.save();
+    }
+
+    @EventHandler
+    public void init(FMLInitializationEvent event) {
+        ModItems.init();
+        if (event.getSide() == Side.CLIENT) {
+            new ItemDimensionDisplayRenderer();
+        }
     }
 
     @EventHandler
