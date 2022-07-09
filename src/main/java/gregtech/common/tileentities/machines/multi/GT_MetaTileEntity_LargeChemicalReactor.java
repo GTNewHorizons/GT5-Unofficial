@@ -138,43 +138,12 @@ public class GT_MetaTileEntity_LargeChemicalReactor extends GT_MetaTileEntity_En
             if (!mSingleRecipeCheck.checkRecipeInputsSingleStack(true)) {
                 return false;
             }
-
             tRecipe = mSingleRecipeCheck.getRecipe();
         } else {
             ArrayList<ItemStack> tInputList = getStoredInputs();
-            int tInputList_sS = tInputList.size();
-            for (int i = 0; i < tInputList_sS - 1; i++) {
-                for (int j = i + 1; j < tInputList_sS; j++) {
-                    if (GT_Utility.areStacksEqual(tInputList.get(i), tInputList.get(j))) {
-                        if (tInputList.get(i).stackSize >= tInputList.get(j).stackSize) {
-                            tInputList.remove(j--);
-                            tInputList_sS = tInputList.size();
-                        } else {
-                            tInputList.remove(i--);
-                            tInputList_sS = tInputList.size();
-                            break;
-                        }
-                    }
-                }
-            }
-            ItemStack[] inputs = tInputList.toArray(new ItemStack[0]);
-
             ArrayList<FluidStack> tFluidList = getStoredFluids();
-            int tFluidList_sS = tFluidList.size();
-            for (int i = 0; i < tFluidList_sS - 1; i++) {
-                for (int j = i + 1; j < tFluidList_sS; j++) {
-                    if (GT_Utility.areFluidsEqual(tFluidList.get(i), tFluidList.get(j))) {
-                        if (tFluidList.get(i).amount >= tFluidList.get(j).amount) {
-                            tFluidList.remove(j--);
-                            tFluidList_sS = tFluidList.size();
-                        } else {
-                            tFluidList.remove(i--);
-                            tFluidList_sS = tFluidList.size();
-                            break;
-                        }
-                    }
-                }
-            }
+
+            ItemStack[] inputs = tInputList.toArray(new ItemStack[0]);
             FluidStack[] fluids = tFluidList.toArray(new FluidStack[0]);
 
             if (inputs.length == 0 && fluids.length == 0) {
