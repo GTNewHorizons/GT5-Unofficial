@@ -50,9 +50,10 @@ public class CoalTar extends ItemPackage {
 
 	public static void recipeCreateEthylene(){
 
-		FluidStack bioEth1 = FluidUtils.getFluidStack("fluid.bioethanol", 2000);
-		FluidStack bioEth2 = FluidUtils.getFluidStack("bioethanol", 2000);
+		FluidStack bioEth1 = FluidUtils.getFluidStack("fluid.bioethanol", 1000);
+		FluidStack bioEth2 = FluidUtils.getFluidStack("bioethanol", 1000);
 
+		//C2H6O = C2H4 + H2O
 		if (bioEth1 != null){			
 			CORE.RA.addDehydratorRecipe(
 					new ItemStack[] {
@@ -87,29 +88,31 @@ public class CoalTar extends ItemPackage {
 	}
 
 	public static void recipeCreateBenzene(){
-		//Create Benzene - (Toluene + Hydrogen | 95% Benzene / 5% methane)		
+		//C7H8 + 2H = CH4 + C6H6
 		CORE.RA.addDehydratorRecipe(
 				new ItemStack[]{
-						ItemUtils.getItemStackOfAmountFromOreDict("cellToluene", 10),
-						ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogen", 10)
+						ItemUtils.getItemStackOfAmountFromOreDict("cellToluene", 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogen", 2)
 				}, 
 				null, 
 				null,
 				new ItemStack[]{
 						ItemUtils.getItemStackOfAmountFromOreDict("cellMethane", 1),
-						ItemUtils.getItemStackOfAmountFromOreDict("cellBenzene", 19)
+						ItemUtils.getItemStackOfAmountFromOreDict("cellBenzene", 1),
+						Materials.Empty.getCells(1)
 				},
-				new int[]{10000, 10000}, 
-				20*100, 
+				new int[]{10000, 10000, 10000},
+				20*10,
 				90);
 	}
 
 	public static void recipeCreateEthylbenzene(){
+		//C2H4 + C6H6 = C8H10
 		GT_Values.RA.addChemicalRecipe(
 				ItemUtils.getItemStackOfAmountFromOreDict("cellEthylene", 2), 
 				ItemUtils.getItemStackOfAmountFromOreDict("cellBenzene", 2), 
 				null,
-				FluidUtils.getFluidStack("fluid.ethylbenzene", 4000),
+				FluidUtils.getFluidStack("fluid.ethylbenzene", 2000),
 				ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 4), 
 				300);
 	}
@@ -369,10 +372,6 @@ public class CoalTar extends ItemPackage {
 		// v - Dehydrate at 180C+
 		//Create Phthalic Anhydride
 		//ItemUtils.generateSpecialUseDusts("PhthalicAnhydride", "Phthalic Anhydride", "C6H4(CO)2O", Utils.rgbtoHexValue(175, 175, 175));
-
-
-
-
 	}
 
 }

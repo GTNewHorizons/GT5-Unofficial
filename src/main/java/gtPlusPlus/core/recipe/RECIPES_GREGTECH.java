@@ -1344,6 +1344,7 @@ public class RECIPES_GREGTECH {
 					180);
 		}
 		//Alternative ACETIC ANHYDRIDE recipe for Kevlar Line
+		//2C2H4O2 = C4H6O3 + H2O
 		CORE.RA.addDehydratorRecipe(
 				new ItemStack[] {
 						CI.getNumberedAdvancedCircuit(18),

@@ -390,18 +390,19 @@ public class RecipeLoader_Nuclear {
 
 		// Calcium Hydroxide
 		if ((ItemUtils.checkForInvalidItems(ItemUtils.getItemStackOfAmountFromOreDict("dustQuicklime", 1)))	|| LoadedMods.IHL) {
+			//CaO + H2O = Ca(OH)2
 			CORE.RA.addDehydratorRecipe(
 					new ItemStack[] { 
 							CI.getNumberedBioCircuit(20),
-							ItemUtils.getItemStackOfAmountFromOreDict("dustQuicklime", 10) 
+							ItemUtils.getItemStackOfAmountFromOreDict("dustQuicklime", 2)
 					},
-					FluidUtils.getFluidStack("water", 10000),
+					FluidUtils.getFluidStack("water", 1000),
 					null, // Fluid output (slot 2)
 					new ItemStack[] { 
-							ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumHydroxide", 20) 
+							ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumHydroxide", 5)
 					}, // Output
 					new int[] { 10000 }, 
-					120 * 20, // Time in ticks
+					12 * 20, // Time in ticks
 					120); // EU	
 		}
 		else {			
