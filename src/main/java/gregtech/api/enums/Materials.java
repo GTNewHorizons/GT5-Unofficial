@@ -610,15 +610,15 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials IronIIIChloride           = new MaterialBuilder(693, TextureSet.SET_FLUID      ,                                                                                                     "Iron III Chloride").setName("IronIIIChloride").addCell().addFluid().setRGB(22, 21, 14).setColor(Dyes.dyeBlack).setMaterialList(new MaterialStack(Chlorine, 3), new MaterialStack(Iron, 1)).addElectrolyzerRecipe().constructMaterial();
     public static Materials LifeEssence               = new MaterialBuilder(694, TextureSet.SET_FLUID      ,                                                                                                     "Life").setName("lifeessence").addCell().addFluid().setFuelPower(100).setFuelType(5).setRGB(110, 3, 3).setColor(Dyes.dyeRed).setMaterialList().constructMaterial();
 
-    //Raosted Ore Dust
-    public static Materials RaostedCopper             = new MaterialBuilder(546, TextureSet.SET_DULL    , "Raosted Copper").setName("RaostedCopper").addDustItems().setRGB(77, 18, 18).constructMaterial();
-    public static Materials RaostedAntimony           = new MaterialBuilder(547, TextureSet.SET_DULL    , "Raosted Antimony").setName("RaostedAntimony").addDustItems().setRGB(196, 178, 194).constructMaterial();
-    public static Materials RaostedIron               = new MaterialBuilder(548, TextureSet.SET_DULL    , "Raosted Iron").setName("RaostedIron").addDustItems().setRGB(148, 98, 98).addOreItems().constructMaterial();
-    public static Materials RaostedNickel             = new MaterialBuilder(549, TextureSet.SET_METALLIC, "Raosted Nickel").setName("RaostedNickel").addDustItems().setRGB(70, 140, 45).addOreItems().constructMaterial();
-    public static Materials RaostedZinc               = new MaterialBuilder(550, TextureSet.SET_DULL    , "Raosted Zinc").setName("RaostedZinc").addDustItems().setRGB(209, 209, 209).constructMaterial();
-    public static Materials RaostedCobalt             = new MaterialBuilder(551, TextureSet.SET_METALLIC, "Raosted Cobalt").setName("RaostedCobalt").addDustItems().setRGB(8, 64, 9).constructMaterial();
-    public static Materials RaostedArsenic            = new MaterialBuilder(552, TextureSet.SET_SHINY   , "Raosted Arsenic").setName("RaostedArsenic").addDustItems().setRGB(240, 240, 240).constructMaterial();
-    public static Materials RaostedLead               = new MaterialBuilder(553, TextureSet.SET_SHINY   , "Raosted Lead").setName("RaostedLead").addDustItems().setRGB(168, 149, 43).constructMaterial();
+    //Roasted Ore Dust
+    public static Materials RoastedCopper             = new MaterialBuilder(546, TextureSet.SET_DULL    , "Roasted Copper").setName("RoastedCopper").addDustItems().setRGB(77, 18, 18).constructMaterial();
+    public static Materials RoastedAntimony           = new MaterialBuilder(547, TextureSet.SET_DULL    , "Roasted Antimony").setName("RoastedAntimony").addDustItems().setRGB(196, 178, 194).constructMaterial();
+    public static Materials RoastedIron               = new MaterialBuilder(548, TextureSet.SET_DULL    , "Roasted Iron").setName("RoastedIron").addDustItems().setRGB(148, 98, 98).addOreItems().constructMaterial();
+    public static Materials RoastedNickel             = new MaterialBuilder(549, TextureSet.SET_METALLIC, "Roasted Nickel").setName("RoastedNickel").addDustItems().setRGB(70, 140, 45).addOreItems().constructMaterial();
+    public static Materials RoastedZinc               = new MaterialBuilder(550, TextureSet.SET_DULL    , "Roasted Zinc").setName("RoastedZinc").addDustItems().setRGB(209, 209, 209).constructMaterial();
+    public static Materials RoastedCobalt             = new MaterialBuilder(551, TextureSet.SET_METALLIC, "Roasted Cobalt").setName("RoastedCobalt").addDustItems().setRGB(8, 64, 9).constructMaterial();
+    public static Materials RoastedArsenic            = new MaterialBuilder(552, TextureSet.SET_SHINY   , "Roasted Arsenic").setName("RoastedArsenic").addDustItems().setRGB(240, 240, 240).constructMaterial();
+    public static Materials RoastedLead               = new MaterialBuilder(553, TextureSet.SET_SHINY   , "Roasted Lead").setName("RoastedLead").addDustItems().setRGB(168, 149, 43).constructMaterial();
 
     //Silicon Line
     public static Materials SiliconSG               = new Materials(  856, TextureSet.SET_METALLIC         ,   1.0F,      0,  2, 1|2  |8   |32             ,  80,  80, 100,   0,   "SiliconSolarGrade"  ,   "Silicon Solar Grade (Poly SI)"      ,    0,       0,         2273,   2273, true, false,   1,   1,   1, Dyes.dyeBlack       , Arrays.asList(new TC_AspectStack(TC_Aspects.METALLUM, 4), new TC_AspectStack(TC_Aspects.TENEBRAE, 2)));
@@ -1218,8 +1218,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     private static void setOthers() {
         Mercury.add(SubTag.SMELTING_TO_GEM);
-        BandedIron.setOreReplacement(RaostedIron);
-        Garnierite.setOreReplacement(RaostedNickel);
+        BandedIron.setOreReplacement(RoastedIron);
+        Garnierite.setOreReplacement(RoastedNickel);
     }
 
     private static void setDirectSmelting() {
@@ -1245,14 +1245,14 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Cooperite.setDirectSmelting(Platinum).add(SubTag.DONT_ADD_DEFAULT_BBF_RECIPE);
         Molybdenite.setDirectSmelting(Molybdenum).add(SubTag.DONT_ADD_DEFAULT_BBF_RECIPE);
         Galena.setDirectSmelting(Lead);
-        RaostedIron.setDirectSmelting(Iron);
-        RaostedAntimony.setDirectSmelting(Antimony);
-        RaostedLead.setDirectSmelting(Lead);
-        RaostedArsenic.setDirectSmelting(Arsenic);
-        RaostedCobalt.setDirectSmelting(Cobalt);
-        RaostedZinc.setDirectSmelting(Zinc);
-        RaostedNickel.setDirectSmelting(Nickel);
-        RaostedCopper.setDirectSmelting(Copper);
+        RoastedIron.setDirectSmelting(Iron);
+        RoastedAntimony.setDirectSmelting(Antimony);
+        RoastedLead.setDirectSmelting(Lead);
+        RoastedArsenic.setDirectSmelting(Arsenic);
+        RoastedCobalt.setDirectSmelting(Cobalt);
+        RoastedZinc.setDirectSmelting(Zinc);
+        RoastedNickel.setDirectSmelting(Nickel);
+        RoastedCopper.setDirectSmelting(Copper);
     }
 
     private static void setMultipliers() {
@@ -1593,7 +1593,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         InfusedGold.addOreByProduct(Gold);
         Cryolite.addOreByProducts(Aluminiumoxide, Sodium);
         Naquadria.addOreByProduct(Naquadria);
-        RaostedNickel.addOreByProduct(Nickel);
+        RoastedNickel.addOreByProduct(Nickel);
     }
 
     private static void setColors() {
