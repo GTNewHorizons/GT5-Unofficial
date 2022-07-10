@@ -261,7 +261,6 @@ public class Textures {
         MACHINE_CASING_FUSION_GLASS_YELLOW_GLOW,
         MACHINE_CASING_FUSION_2,
 
-
         MACHINE_CASING_MAGIC,
         MACHINE_CASING_MAGIC_GLOW,
         MACHINE_CASING_MAGIC_ACTIVE,
@@ -510,6 +509,8 @@ public class Textures {
         OVERLAY_FLUID_STORAGE_MONITOR13,
         OVERLAY_FLUID_STORAGE_MONITOR14,
 
+        OVERLAY_DTPF_OFF,
+        OVERLAY_DTPF_ON,
         OVERLAY_FUSION1,
         OVERLAY_FUSION1_GLOW,
         OVERLAY_FUSION2,
@@ -537,8 +538,6 @@ public class Textures {
         OVERLAY_ENERGY_IN,
         OVERLAY_ENERGY_OUT,
 
-        OVERLAY_ENERGY_ON_WIRELESS,
-        OVERLAY_ENERGY_OFF_WIRELESS,
         OVERLAY_ENERGY_IN_MULTI,
         OVERLAY_ENERGY_OUT_MULTI,
         OVERLAY_FRONT_LARGE_BOILER,
@@ -907,6 +906,7 @@ public class Textures {
         LARGETURBINE_TU_ACTIVE8,
         LARGETURBINE_TU_ACTIVE9,
         MACHINE_CASING_TURBINE,
+        MACHINE_CASING_ADVANCEDGAS,
         BLOCK_ADAMANTIUM,
         BLOCK_ALUMINIUM,
         BLOCK_AMERICIUM,
@@ -1028,6 +1028,7 @@ public class Textures {
         BLOCK_TUNGSTEN,
         BLOCK_TUNGSTENSTEEL,
         BLOCK_ULTIMET,
+        BLOCK_SPACETIME,
 
         BLOCK_URANIUM,
         BLOCK_URANIUM235,
@@ -1215,7 +1216,37 @@ public class Textures {
         LARGETURBINE_TU_EMPTY6,
         LARGETURBINE_TU_EMPTY7,
         LARGETURBINE_TU_EMPTY8,
-        LARGETURBINE_TU_EMPTY9;
+        LARGETURBINE_TU_EMPTY9,
+
+        LARGETURBINE_ADVGAS1,
+        LARGETURBINE_ADVGAS2,
+        LARGETURBINE_ADVGAS3,
+        LARGETURBINE_ADVGAS4,
+        LARGETURBINE_ADVGAS5,
+        LARGETURBINE_ADVGAS6,
+        LARGETURBINE_ADVGAS7,
+        LARGETURBINE_ADVGAS8,
+        LARGETURBINE_ADVGAS9,
+
+        LARGETURBINE_ADVGAS_ACTIVE1,
+        LARGETURBINE_ADVGAS_ACTIVE2,
+        LARGETURBINE_ADVGAS_ACTIVE3,
+        LARGETURBINE_ADVGAS_ACTIVE4,
+        LARGETURBINE_ADVGAS_ACTIVE5,
+        LARGETURBINE_ADVGAS_ACTIVE6,
+        LARGETURBINE_ADVGAS_ACTIVE7,
+        LARGETURBINE_ADVGAS_ACTIVE8,
+        LARGETURBINE_ADVGAS_ACTIVE9,
+
+        LARGETURBINE_ADVGAS_EMPTY1,
+        LARGETURBINE_ADVGAS_EMPTY2,
+        LARGETURBINE_ADVGAS_EMPTY3,
+        LARGETURBINE_ADVGAS_EMPTY4,
+        LARGETURBINE_ADVGAS_EMPTY5,
+        LARGETURBINE_ADVGAS_EMPTY6,
+        LARGETURBINE_ADVGAS_EMPTY7,
+        LARGETURBINE_ADVGAS_EMPTY8,
+        LARGETURBINE_ADVGAS_EMPTY9;
 
         /**
          * Icon for Fresh CFoam
@@ -1490,6 +1521,39 @@ public class Textures {
                         LARGETURBINE_TU_EMPTY8,
                         LARGETURBINE_TU_EMPTY9
                 },
+                TURBINEADVGAS = {
+                        LARGETURBINE_ADVGAS1,
+                        LARGETURBINE_ADVGAS2,
+                        LARGETURBINE_ADVGAS3,
+                        LARGETURBINE_ADVGAS4,
+                        LARGETURBINE_ADVGAS5,
+                        LARGETURBINE_ADVGAS6,
+                        LARGETURBINE_ADVGAS7,
+                        LARGETURBINE_ADVGAS8,
+                        LARGETURBINE_ADVGAS9
+                },
+                TURBINE_ADVGASACTIVE = {
+                        LARGETURBINE_ADVGAS_ACTIVE1,
+                        LARGETURBINE_ADVGAS_ACTIVE2,
+                        LARGETURBINE_ADVGAS_ACTIVE3,
+                        LARGETURBINE_ADVGAS_ACTIVE4,
+                        LARGETURBINE_ADVGAS_ACTIVE5,
+                        LARGETURBINE_ADVGAS_ACTIVE6,
+                        LARGETURBINE_ADVGAS_ACTIVE7,
+                        LARGETURBINE_ADVGAS_ACTIVE8,
+                        LARGETURBINE_ADVGAS_ACTIVE9
+                },
+                TURBINE_ADVGASEMPTY = {
+                        LARGETURBINE_ADVGAS_EMPTY1,
+                        LARGETURBINE_ADVGAS_EMPTY2,
+                        LARGETURBINE_ADVGAS_EMPTY3,
+                        LARGETURBINE_ADVGAS_EMPTY4,
+                        LARGETURBINE_ADVGAS_EMPTY5,
+                        LARGETURBINE_ADVGAS_EMPTY6,
+                        LARGETURBINE_ADVGAS_EMPTY7,
+                        LARGETURBINE_ADVGAS_EMPTY8,
+                        LARGETURBINE_ADVGAS_EMPTY9
+                },
                 CONNECTED_HULLS = {
                         CONCRETE_DARK_STONE,
                         FUSIONI_1,
@@ -1708,7 +1772,8 @@ public class Textures {
                 STORAGE_BLOCKS12 = {
                         BLOCK_CRYOLITE,
                         BLOCK_SILICONSG,
-                        BLOCK_NICKELALUMINIUM
+                        BLOCK_NICKELALUMINIUM,
+                        BLOCK_SPACETIME
         };
 
       public static final ITexture[] HIDDEN_TEXTURE = {

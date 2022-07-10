@@ -42,6 +42,8 @@ public class GT_MetaTileEntity_LargeTurbine_Gas extends GT_MetaTileEntity_LargeT
         tt.addMachineType("Gas Turbine")
                 .addInfo("Controller block for the Large Gas Turbine")
                 .addInfo("Needs a Turbine, place inside controller")
+                .addInfo("Can only produce up to 8192 EU/t, regardless of Dynamo Hatch")
+                .addInfo("The excess fuel that gets consumed will be voided!")
                 .addPollutionAmount(getPollutionPerSecond(null))
                 .addSeparator()
                 .beginStructureBlock(3, 3, 4, true)
@@ -78,7 +80,7 @@ public class GT_MetaTileEntity_LargeTurbine_Gas extends GT_MetaTileEntity_LargeT
     }
 
     @Override
-    public byte getCasingTextureIndex() {
+    public int getCasingTextureIndex() {
         return 58;
     }
 
@@ -141,8 +143,14 @@ public class GT_MetaTileEntity_LargeTurbine_Gas extends GT_MetaTileEntity_LargeT
                 tEU = GT_Utility.safeInt((long) tEU * (long) aBaseEff / 10000L);
             }
 
+            // EU/t output cap to properly tier the LGT against the Advanced LGT
+            if (tEU > 8192) {
+                tEU = 8192;
+            }
+
             // If next output is above the maximum the dynamo can handle, set it to the maximum instead of exploding the turbine
-            // Raising the maximum allowed flow rate to account for the efficiency changes beyond the optimal flow rate can explode turbines on world load
+            // Raising the maximum allowed flow rate to account for the efficiency changes beyond the optimal flow
+            // When the max fuel consumption rate was increased, turbines could explode on world load
             if (tEU > getMaximumOutput()){
                 tEU = GT_Utility.safeInt(getMaximumOutput());
             }
