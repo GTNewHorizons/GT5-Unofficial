@@ -2285,6 +2285,26 @@ public class RECIPES_GREGTECH {
 				(int) MaterialUtils.getVoltageForTier(6),
 				750 * 20);
 
+		CORE.RA.addCyclotronRecipe(
+				new ItemStack[] {
+						CI.getNumberedCircuit(21),
+						Particle.getIon("Hydrogen", 0),
+				},
+				FluidUtils.getFluidStack("hydrogen", 1000),
+				new ItemStack[] {
+						Particle.getBaseParticle(Particle.PROTON),
+						Particle.getBaseParticle(Particle.NEUTRON),
+						Particle.getBaseParticle(Particle.ELECTRON),
+						Particle.getBaseParticle(Particle.UNKNOWN),
+						Particle.getBaseParticle(Particle.UNKNOWN),
+						Particle.getBaseParticle(Particle.UNKNOWN),
+				},
+				FluidUtils.getFluidStack("plasma.hydrogen", 100),
+				new int[] { 1250, 1250, 1250, 750, 750, 750 },
+				20 * 60 * 2,
+				(int) MaterialUtils.getVoltageForTier(6),
+				750 * 20);
+
 
 		// Generate Protons Easily
 		CORE.RA.addCyclotronRecipe(

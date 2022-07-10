@@ -254,6 +254,7 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 				.addInputBus("Any Casing", 1)
 				.addOutputBus("Any Casing", 1)
 				.addInputHatch("Any Casing", 1)
+				.addOutputHatch("Any Casing", 1)
 				.addEnergyHatch("Any Casing", 1)
 				.addMaintenanceHatch("Any Casing", 1)
 				.addMufflerHatch("Any Casing", 1)
