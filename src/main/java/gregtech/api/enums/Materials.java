@@ -609,6 +609,17 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials SaltWater                 = new MaterialBuilder(692, TextureSet.SET_FLUID      ,                                                                                                     "Salt Water").addCell().addFluid().setRGB(0, 0, 200).setColor(Dyes.dyeBlue).constructMaterial();
     public static Materials IronIIIChloride           = new MaterialBuilder(693, TextureSet.SET_FLUID      ,                                                                                                     "Iron III Chloride").setName("IronIIIChloride").addCell().addFluid().setRGB(22, 21, 14).setColor(Dyes.dyeBlack).setMaterialList(new MaterialStack(Chlorine, 3), new MaterialStack(Iron, 1)).addElectrolyzerRecipe().constructMaterial();
     public static Materials LifeEssence               = new MaterialBuilder(694, TextureSet.SET_FLUID      ,                                                                                                     "Life").setName("lifeessence").addCell().addFluid().setFuelPower(100).setFuelType(5).setRGB(110, 3, 3).setColor(Dyes.dyeRed).setMaterialList().constructMaterial();
+
+    //Raosted Ore Dust
+    public static Materials RaostedCopper             = new MaterialBuilder(546, TextureSet.SET_DULL    , "Raosted Copper").setName("RaostedCopper").addDustItems().setRGB(77, 18, 18).constructMaterial();
+    public static Materials RaostedAntimony           = new MaterialBuilder(547, TextureSet.SET_DULL    , "Raosted Antimony").setName("RaostedAntimony").addDustItems().setRGB(196, 178, 194).constructMaterial();
+    public static Materials RaostedIron               = new MaterialBuilder(548, TextureSet.SET_DULL    , "Raosted Iron").setName("RaostedIron").addDustItems().setRGB(148, 98, 98).addOreItems().constructMaterial();
+    public static Materials RaostedNickel             = new MaterialBuilder(549, TextureSet.SET_METALLIC, "Raosted Nickel").setName("RaostedNickel").addDustItems().setRGB(70, 140, 45).addOreItems().constructMaterial();
+    public static Materials RaostedZinc               = new MaterialBuilder(550, TextureSet.SET_DULL    , "Raosted Zinc").setName("RaostedZinc").addDustItems().setRGB(209, 209, 209).constructMaterial();
+    public static Materials RaostedCobalt             = new MaterialBuilder(551, TextureSet.SET_METALLIC, "Raosted Cobalt").setName("RaostedCobalt").addDustItems().setRGB(8, 64, 9).constructMaterial();
+    public static Materials RaostedArsenic            = new MaterialBuilder(552, TextureSet.SET_SHINY   , "Raosted Arsenic").setName("RaostedArsenic").addDustItems().setRGB(240, 240, 240).constructMaterial();
+    public static Materials RaostedLead               = new MaterialBuilder(553, TextureSet.SET_SHINY   , "Raosted Lead").setName("RaostedLead").addDustItems().setRGB(168, 149, 43).constructMaterial();
+
     //Silicon Line
     public static Materials SiliconSG               = new Materials(  856, TextureSet.SET_METALLIC         ,   1.0F,      0,  2, 1|2  |8   |32             ,  80,  80, 100,   0,   "SiliconSolarGrade"  ,   "Silicon Solar Grade (Poly SI)"      ,    0,       0,         2273,   2273, true, false,   1,   1,   1, Dyes.dyeBlack       , Arrays.asList(new TC_AspectStack(TC_Aspects.METALLUM, 4), new TC_AspectStack(TC_Aspects.TENEBRAE, 2)));
     public static Materials CalciumDisilicide       = new Materials(  971, TextureSet.SET_METALLIC         ,   1.0F,      0,  2, 1    |8                   , 180, 180, 180,   0,   "CalciumDisilicide"       ,   "Calcium Disilicide"            ,    0,       0,       1313,   -1, false, false,   1,   1,   1, Dyes.dyeGray        ,1         , Arrays.asList(new MaterialStack(Calcium, 1), new MaterialStack(Silicon, 2)), Arrays.asList(new TC_AspectStack(TC_Aspects.TERRA, 1), new TC_AspectStack(TC_Aspects.ORDO, 1)));//CaSi2
@@ -771,7 +782,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Diphenylisophthalate = new MaterialBuilder(598, TextureSet.SET_FLUID             ,                                                                                                     "Diphenyl Isophtalate").addCell().addFluid().setRGB(36, 110, 87).setColor(Dyes.dyeOrange).setMaterialList(new MaterialStack(Carbon, 20),new MaterialStack(Hydrogen, 14),new MaterialStack(Oxygen, 4)).constructMaterial();
     public static Materials Polybenzimidazole   = new Materials(599, TextureSet.SET_DULL                 ,3.0F,     64,  1, 1|2          |64|128      , 45, 45,  45,   0,   "Polybenzimidazole"   ,   "Polybenzimidazole"  ,    0,       0,        1450,    0, false, false,   1,   1,   1, Dyes.dyeBlack       , 0, Arrays.asList(new MaterialStack(Carbon, 20), new MaterialStack(Nitrogen, 4), new MaterialStack(Hydrogen, 12)), Arrays.asList(new TC_AspectStack(TC_Aspects.ORDO, 2),new TC_AspectStack(TC_Aspects.VOLATUS, 1)));
 
-
+    //Gasoline
     public static Materials MTBEMixture        = new MaterialBuilder(983, TextureSet.SET_FLUID             ,                                                                                                      "MTBE Reaction Mixture").addCell().addGas().setRGB(255, 255, 255).setColor(Dyes.dyeWhite).constructMaterial();
     public static Materials NitrousOxide       = new MaterialBuilder(993, TextureSet.SET_FLUID             ,                                                                                                      "Nitrous Oxide").addCell().addGas().setRGB(125, 200, 255).setColor(Dyes.dyeBlue).setMaterialList(new MaterialStack(Nitrogen, 2), new MaterialStack(Oxygen, 1)).addElectrolyzerRecipe().constructMaterial();
     public static Materials AntiKnock          = new MaterialBuilder(994, TextureSet.SET_FLUID             ,                                                                                                      "Anti-Knock Agent").setName("EthylTertButylEther").addCell().addFluid().setRGB(255, 255, 255).setColor(Dyes.dyeWhite).constructMaterial();
@@ -1207,6 +1218,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     private static void setOthers() {
         Mercury.add(SubTag.SMELTING_TO_GEM);
+        BandedIron.setOreReplacement(RaostedIron);
+        Garnierite.setOreReplacement(RaostedNickel);
     }
 
     private static void setDirectSmelting() {
@@ -1230,9 +1243,16 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Cobaltite.setDirectSmelting(Cobalt);
         Stibnite.setDirectSmelting(Antimony);
         Cooperite.setDirectSmelting(Platinum).add(SubTag.DONT_ADD_DEFAULT_BBF_RECIPE);
-        Magnesite.add(SubTag.DONT_ADD_DEFAULT_BBF_RECIPE);
         Molybdenite.setDirectSmelting(Molybdenum).add(SubTag.DONT_ADD_DEFAULT_BBF_RECIPE);
         Galena.setDirectSmelting(Lead);
+        RaostedIron.setDirectSmelting(Iron);
+        RaostedAntimony.setDirectSmelting(Antimony);
+        RaostedLead.setDirectSmelting(Lead);
+        RaostedArsenic.setDirectSmelting(Arsenic);
+        RaostedCobalt.setDirectSmelting(Cobalt);
+        RaostedZinc.setDirectSmelting(Zinc);
+        RaostedNickel.setDirectSmelting(Nickel);
+        RaostedCopper.setDirectSmelting(Copper);
     }
 
     private static void setMultipliers() {
@@ -1573,6 +1593,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         InfusedGold.addOreByProduct(Gold);
         Cryolite.addOreByProducts(Aluminiumoxide, Sodium);
         Naquadria.addOreByProduct(Naquadria);
+        RaostedNickel.addOreByProduct(Nickel);
     }
 
     private static void setColors() {
