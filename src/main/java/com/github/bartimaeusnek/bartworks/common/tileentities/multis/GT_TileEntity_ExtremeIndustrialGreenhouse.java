@@ -87,8 +87,8 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse extends GT_MetaTileEntity
         .addShape(STRUCTURE_PIECE_MAIN, transpose(new String[][] {
             {"ccccc", "ccccc", "ccccc", "ccccc", "ccccc"},
             {"ccccc", "clllc", "clllc", "clllc", "ccccc"},
-            {"ggggg", "g   g", "g   g", "g   g", "ggggg"},
-            {"ggggg", "g   g", "g   g", "g   g", "ggggg"},
+            {"ggggg", "g---g", "g---g", "g---g", "ggggg"},
+            {"ggggg", "g---g", "g---g", "g---g", "ggggg"},
             {"ccccc", "cdddc", "cdwdc", "cdddc", "ccccc"},
             {"cc~cc", "cCCCc", "cCCCc", "cCCCc", "ccccc"},
         }))
