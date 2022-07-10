@@ -17,6 +17,8 @@ public class IMCForNEI {
         sendCatalyst("gt.recipe.complexfusionreactor", "gregtech:gt.blockmachines:1193");
         sendCatalyst("gt.recipe.complexfusionreactor", "gregtech:gt.blockmachines:1194");
         sendCatalyst("gt.recipe.complexfusionreactor", "gregtech:gt.blockmachines:1195");
+
+        sendCatalyst("gt.recipe.gasturbinefuel", "gregtech:gt.blockmachines:1005", -1);
     }
 
     private static void sendHandler(String aName, String aBlock) {
