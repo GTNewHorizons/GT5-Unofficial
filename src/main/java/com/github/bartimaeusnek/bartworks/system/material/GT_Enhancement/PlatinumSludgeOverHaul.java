@@ -116,10 +116,9 @@ public class PlatinumSludgeOverHaul {
 
         GT_Values.RA.addChemicalRecipe(PTMetallicPowder.get(dust), GT_Utility.getIntegratedCircuit(1), AquaRegia.getFluidOrGas(1000), PTConcentrate.getFluidOrGas(1000), PTResidue.get(dustTiny), 250);
         GT_Values.RA.addChemicalRecipe(PTMetallicPowder.get(dust, 9), GT_Utility.getIntegratedCircuit(9), AquaRegia.getFluidOrGas(9000), PTConcentrate.getFluidOrGas(9000), PTResidue.get(dust), 2250);
-        GT_Values.RA.addCentrifugeRecipe(PTConcentrate.get(cell,2), null, AmmoniumChloride.getFluidOrGas(200), PDAmmonia.getFluidOrGas(200), PTSaltCrude.get(dustTiny, 16), PTRawPowder.get(dustTiny,4), Materials.NitrogenDioxide.getCells(1), Materials.DilutedSulfuricAcid.getCells(1), null, null, null, 1200, 30);
-        //GT_Values.RA.addCentrifugeRecipe(PTConcentrate.get(cell,18), GT_Utility.getIntegratedCircuit(9), AmmoniumChloride.getFluidOrGas(1800), PDAmmonia.getFluidOrGas(1800), PTSaltCrude.get(dust, 16), PTRawPowder.get(dust,2), Materials.NitrogenDioxide.getCells(9), Materials.DilutedSulfuricAcid.getCells(9), null, null, null, 1400, 240);
-        GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(1)}, new FluidStack[]{PTConcentrate.getFluidOrGas(2000), AmmoniumChloride.getFluidOrGas(200)}, new FluidStack[]{PDAmmonia.getFluidOrGas(200), Materials.NitrogenDioxide.getGas(1000),Materials.DilutedSulfuricAcid.getFluid(1000)}, new ItemStack[]{PTSaltCrude.get(dustTiny, 16), PTRawPowder.get(dustTiny,4)}, 1200, 30);
-        GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(2)}, new FluidStack[]{PTConcentrate.getFluidOrGas(18000), AmmoniumChloride.getFluidOrGas(1800)}, new FluidStack[]{PDAmmonia.getFluidOrGas(1800), Materials.NitrogenDioxide.getGas(9000),Materials.DilutedSulfuricAcid.getFluid(9000)}, new ItemStack[]{PTSaltCrude.get(dust, 16), PTRawPowder.get(dust,4)}, 1400, 240);
+        GT_Values.RA.addCentrifugeRecipe(PTConcentrate.get(cell,2), null, AmmoniumChloride.getFluidOrGas(400), PDAmmonia.getFluidOrGas(400), PTSaltCrude.get(dustTiny, 16), PTRawPowder.get(dustTiny,4), Materials.NitrogenDioxide.getCells(1), Materials.DilutedSulfuricAcid.getCells(1), null, null, null, 1200, 30);
+        GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(1)}, new FluidStack[]{PTConcentrate.getFluidOrGas(2000), AmmoniumChloride.getFluidOrGas(400)}, new FluidStack[]{PDAmmonia.getFluidOrGas(400), Materials.NitrogenDioxide.getGas(1000),Materials.DilutedSulfuricAcid.getFluid(1000)}, new ItemStack[]{PTSaltCrude.get(dustTiny, 16), PTRawPowder.get(dustTiny,4)}, 1200, 30);
+        GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(2)}, new FluidStack[]{PTConcentrate.getFluidOrGas(18000), AmmoniumChloride.getFluidOrGas(3600)}, new FluidStack[]{PDAmmonia.getFluidOrGas(3600), Materials.NitrogenDioxide.getGas(9000),Materials.DilutedSulfuricAcid.getFluid(9000)}, new ItemStack[]{PTSaltCrude.get(dust, 16), PTRawPowder.get(dust,4)}, 1400, 240);
         GT_Values.RA.addSifterRecipe(PTSaltCrude.get(dust), new ItemStack[]{
                 PTSaltRefined.get(dust),
                 PTSaltRefined.get(dust),
@@ -154,8 +153,8 @@ public class PlatinumSludgeOverHaul {
         }, new int[] {
                 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1500,
         }, 600, 30);
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(PDRawPowder.get(dust, 2), Materials.Empty.getCells(1), FormicAcid.getFluidOrGas(4000), Materials.Ammonia.getGas(2000), Materials.Palladium.getDust(2), Materials.Ethylene.getCells(1), 250, 30);
-        GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{PDRawPowder.get(dust, 2)}, new FluidStack[]{FormicAcid.getFluidOrGas(4000)}, new FluidStack[]{Materials.Ammonia.getGas(2000), Materials.Ethylene.getGas(1000), Materials.Water.getFluid(1000)}, new ItemStack[]{Materials.Palladium.getDust(2)}, 250, 30);
+        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(PDRawPowder.get(dust, 4), Materials.Empty.getCells(1), FormicAcid.getFluidOrGas(4000), Materials.Ammonia.getGas(4000), Materials.Palladium.getDust(2), Materials.Ethylene.getCells(1), 250, 30);
+        GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{PDRawPowder.get(dust, 4)}, new FluidStack[]{FormicAcid.getFluidOrGas(4000)}, new FluidStack[]{Materials.Ammonia.getGas(4000), Materials.Ethylene.getGas(1000), Materials.Water.getFluid(1000)}, new ItemStack[]{Materials.Palladium.getDust(2)}, 250, 30);
         //Na2SO4 + 2H = 2Na + H2SO4
         GT_Values.RA.addChemicalRecipe(Sodiumsulfate.get(dust, 7), Materials.Hydrogen.getCells(2), null, Materials.SulfuricAcid.getFluid(1000), Materials.Sodium.getDust(2), Materials.Empty.getCells(2), 30);
         //K2S2O7
@@ -333,13 +332,13 @@ public class PlatinumSludgeOverHaul {
                         }
                         if (GT_OreDictUnificator.getAssociation(recipe.mOutputs[i]).mPrefix.equals(dust) || GT_OreDictUnificator.getAssociation(recipe.mOutputs[i]).mPrefix.equals(dustImpure) || GT_OreDictUnificator.getAssociation(recipe.mOutputs[i]).mPrefix.equals(dustPure)) {
                             int amount = recipe.mOutputs[i].stackSize;
-                            recipe.mOutputs[i] = BW_Util.setStackSize(PDMetallicPowder.get(dust), amount * 2);
+                            recipe.mOutputs[i] = BW_Util.setStackSize(PDMetallicPowder.get(dust), amount * 4);
                         } else if (GT_OreDictUnificator.getAssociation(recipe.mOutputs[i]).mPrefix.equals(dustSmall)) {
                             int amount = recipe.mOutputs[i].stackSize;
-                            recipe.mOutputs[i] = BW_Util.setStackSize(PDMetallicPowder.get(dustSmall), amount * 2);
+                            recipe.mOutputs[i] = BW_Util.setStackSize(PDMetallicPowder.get(dustSmall), amount * 4);
                         } else if (GT_OreDictUnificator.getAssociation(recipe.mOutputs[i]).mPrefix.equals(dustTiny)) {
                             int amount = recipe.mOutputs[i].stackSize;
-                            recipe.mOutputs[i] = BW_Util.setStackSize(PDMetallicPowder.get(dustTiny), amount * 2);
+                            recipe.mOutputs[i] = BW_Util.setStackSize(PDMetallicPowder.get(dustTiny), amount * 4);
                         }
                     } else if (GT_OreDictUnificator.getAssociation(recipe.mOutputs[i]).mMaterial.mMaterial.equals(Materials.Osmium)) {
                         for (int j = 0; j < recipe.mInputs.length; j++) {
