@@ -150,6 +150,7 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
     @Optional.Method(modid = "appliedenergistics2")
     private void flushCachedStack()
     {
+        lastOutputFailed = false;
         AENetworkProxy proxy = getProxy();
         if (proxy == null) {
             lastOutputFailed = true;
