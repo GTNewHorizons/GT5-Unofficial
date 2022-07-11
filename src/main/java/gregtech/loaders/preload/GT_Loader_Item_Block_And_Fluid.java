@@ -224,6 +224,8 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         GregTech_API.sBlockStones = new GT_Block_Stones();
         GregTech_API.sBlockOres1 = new GT_Block_Ores();
 
+        // meta ID order, DO NOT CHANGE ORDER
+
         GregTech_API.sBlockMetal1 = new GT_Block_Metal("gt.blockmetal1", new Materials[]{
             Materials.Adamantium,
             Materials.Aluminium,
@@ -426,8 +428,8 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
 
         GregTech_API.sBlockMetal9 = new GT_Block_Metal("gt.blockmetal9", new Materials[]{
                 Materials.Cryolite,
-                MaterialsKevlar.NickelAluminide,
                 Materials.SiliconSG,
+                MaterialsKevlar.NickelAluminide,
                 Materials.SpaceTime
         }, OrePrefixes.block, gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS12);
 
