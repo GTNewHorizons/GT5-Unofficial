@@ -1,6 +1,5 @@
 package gregtech.common.gui;
 
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import forestry.api.core.ForestryAPI;
@@ -212,8 +211,6 @@ public class GT_Container_IndustrialApiary extends GT_ContainerMetaTile_Machine 
             return super.transferStackInSlot(aPlayer, aSlotIndex);
         ItemStack aStack = s.getStack();
         if(aStack == null)
-            return super.transferStackInSlot(aPlayer, aSlotIndex);
-        if(!Loader.isModLoaded("gendustry"))
             return super.transferStackInSlot(aPlayer, aSlotIndex);
         if(!(aStack.getItem() instanceof IApiaryUpgrade) && !OrePrefixes.apiaryUpgrade.contains(aStack))
             return super.transferStackInSlot(aPlayer, aSlotIndex);

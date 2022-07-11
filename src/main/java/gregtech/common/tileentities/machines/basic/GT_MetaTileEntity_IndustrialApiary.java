@@ -2,7 +2,6 @@ package gregtech.common.tileentities.machines.basic;
 
 import com.google.common.collect.ImmutableSet;
 import com.mojang.authlib.GameProfile;
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import forestry.api.apiculture.*;
@@ -450,8 +449,6 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
         if(aIndex == queen) return beeRoot.isMember(aStack, EnumBeeType.QUEEN.ordinal()) || beeRoot.isMember(aStack, EnumBeeType.PRINCESS.ordinal());
         else if(aIndex == drone) return beeRoot.isMember(aStack, EnumBeeType.DRONE.ordinal());
         else if(aIndex < getOutputSlot()) {
-            if(!Loader.isModLoaded("gendustry"))
-                return false;
             if(!(aStack.getItem() instanceof IApiaryUpgrade) && !OrePrefixes.apiaryUpgrade.contains(aStack))
                 return false;
             for(int i = drone+1; i < drone+1+4; i++)
@@ -743,8 +740,6 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
     private int maxspeed = 5;
 
     public void updateModifiers(){
-        if(!Loader.isModLoaded("gendustry"))
-            return;
         maxspeed = 5;
         ApiaryModifiers mods = new ApiaryModifiers();
         for(int i = 2; i < 2+4; i++)
