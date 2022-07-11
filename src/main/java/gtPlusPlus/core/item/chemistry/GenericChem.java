@@ -520,7 +520,7 @@ public class GenericChem extends ItemPackage {
 		// Burnables
 
 		// Gas Fuels
-		GT_Values.RA.addFuel(ItemUtils.getItemStackOfAmountFromOreDict("cellNitrobenzene", 1), null, 1250, 1);
+		GT_Values.RA.addFuel(ItemUtils.getItemStackOfAmountFromOreDict("cellNitrobenzene", 1), null, 1600, 1);
 
 	}
 
