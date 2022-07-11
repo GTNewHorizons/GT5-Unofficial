@@ -691,9 +691,15 @@ public class GT_Loader_MetaTileEntities implements Runnable {//TODO CHECK CIRCUI
 
         if(Loader.isModLoaded("Forestry")) {
             ItemList.Machine_IndustrialApiary.set(new GT_MetaTileEntity_IndustrialApiary(9399, "basicmachine.industrialapiary", "Industrial Apiary", 8).getStackForm(1L));
-            // Real recipe is in scripts
-            if(Loader.isModLoaded("gendustry"))
-                GT_ModHandler.addShapelessCraftingRecipe(ItemList.Machine_IndustrialApiary.get(1), new Object[] { GT_ModHandler.getModItem("gendustry", "IndustrialApiary", 1, 0) });
+            if(Loader.isModLoaded("gendustry")) {
+                /* Conversion recipe /
+                /  Real recipe is in scripts */
+                GT_ModHandler.addShapelessCraftingRecipe(ItemList.Machine_IndustrialApiary.get(1L), new Object[]{GT_ModHandler.getModItem("gendustry", "IndustrialApiary", 1, 0)});
+
+                GT_ModHandler.addCraftingRecipe(ItemList.IndustrialApiary_Upgrade_Acceleration_1.get(1L), bitsd, new Object[]{"PPP", "PAP", "PPP", 'P', GT_ModHandler.getModItem("gendustry", "ApiaryUpgrade", 1, 0), 'A', GT_ModHandler.getModItem("gregtech", "gt.blockmachines", 1, 11105)});
+                GT_ModHandler.addCraftingRecipe(ItemList.IndustrialApiary_Upgrade_Acceleration_2.get(1L), bitsd, new Object[]{"PPP", "PAP", "PPP", 'P', GT_ModHandler.getModItem("gendustry", "ApiaryUpgrade", 1, 0), 'A', GT_ModHandler.getModItem("gregtech", "gt.blockmachines", 1, 11106)});
+                GT_ModHandler.addCraftingRecipe(ItemList.IndustrialApiary_Upgrade_Acceleration_3.get(1L), bitsd, new Object[]{"PPP", "PAP", "PPP", 'P', GT_ModHandler.getModItem("gendustry", "ApiaryUpgrade", 1, 0), 'A', GT_ModHandler.getModItem("gregtech", "gt.blockmachines", 1, 11107)});
+            }
         }
 
         ItemList.Machine_LV_Massfab.set(new GT_MetaTileEntity_Massfabricator(461, "basicmachine.massfab.tier.01", "Basic Mass Fabricator", 1).getStackForm(1L));

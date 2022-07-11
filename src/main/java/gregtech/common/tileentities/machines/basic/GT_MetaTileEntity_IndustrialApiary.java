@@ -13,11 +13,13 @@ import forestry.api.genetics.IEffectData;
 import forestry.api.genetics.IIndividual;
 import forestry.core.errors.EnumErrorCode;
 import forestry.plugins.PluginApiculture;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GT_ApiaryUpgrade;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Client;
 import gregtech.common.gui.GT_Container_IndustrialApiary;
@@ -132,6 +134,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
     @Override
     public int checkRecipe() {
         updateModifiers();
+        mSpeed = Math.min(mSpeed, maxspeed);
         if(canWork()) {
 
             ItemStack queen = getQueen();
@@ -298,6 +301,11 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
     }
 
     @Override
+    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
+        updateModifiers();
+    }
+
+    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isClientSide()) {
             if(GT_Client.changeDetected == 4) {
@@ -444,7 +452,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
         else if(aIndex < getOutputSlot()) {
             if(!Loader.isModLoaded("gendustry"))
                 return false;
-            return aStack.getItem() instanceof IApiaryUpgrade;
+            return aStack.getItem() instanceof IApiaryUpgrade || OrePrefixes.apiaryUpgrade.contains(aStack);
         }
         else return false;
 
@@ -710,20 +718,34 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
     private float temperatureMod = 0f;
     private boolean isAutomated = false;
 
+    private int maxspeed = 5;
+
     public void updateModifiers(){
         if(!Loader.isModLoaded("gendustry"))
             return;
+        maxspeed = 5;
         ApiaryModifiers mods = new ApiaryModifiers();
         for(int i = 2; i < 2+4; i++)
         {
             ItemStack s = getInputAt(i);
             if(s == null)
                 continue;
-            if(!(s.getItem() instanceof IApiaryUpgrade))
-                continue;
-            IApiaryUpgrade up = (IApiaryUpgrade)s.getItem();
-            up.applyModifiers(mods, s);
+            if(s.getItem() instanceof IApiaryUpgrade) {
+                IApiaryUpgrade up = (IApiaryUpgrade) s.getItem();
+                up.applyModifiers(mods, s);
+            }
+            else if(OrePrefixes.apiaryUpgrade.contains(s))
+            {
+                GT_ApiaryUpgrade upgrade = GT_ApiaryUpgrade.getUpgrade(s);
+                if(upgrade != null)
+                {
+                    maxspeed = upgrade.applyMaxSpeedModifier(maxspeed);
+                    upgrade.applyModifiers(mods, s);
+                }
+            }
         }
+
+
 
         terrorityMod = mods.territory;
         mutationMod = mods.mutation;
@@ -796,6 +818,9 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
         return getBiome() == BiomeGenBase.hell;
     }
 
+    public int getMaxSpeed(){
+        return maxspeed;
+    }
 
     //endregion
 

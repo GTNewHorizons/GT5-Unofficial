@@ -78,7 +78,7 @@ public class GT_Container_IndustrialApiary extends GT_ContainerMetaTile_Machine 
                 return null;
             case 1:
                 machine.mSpeed++;
-                if(machine.mSpeed > 8) machine.mSpeed = 0;
+                if(machine.mSpeed > machine.getMaxSpeed()) machine.mSpeed = 0;
                 return null;
             case 2:
                 machine.retreviePollen = !machine.retreviePollen;

@@ -1398,6 +1398,9 @@ public enum ItemList implements IItemContainer {
     Machine_HV_Miner,
 
     Machine_IndustrialApiary,
+    IndustrialApiary_Upgrade_Acceleration_1,
+    IndustrialApiary_Upgrade_Acceleration_2,
+    IndustrialApiary_Upgrade_Acceleration_3,
 
     Neutron_Reflector,
 
