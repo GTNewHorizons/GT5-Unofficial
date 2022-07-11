@@ -11,17 +11,19 @@ import java.util.EnumSet;
 import java.util.HashMap;
 
 public enum GT_ApiaryUpgrade {
-    speed1(32200, 6),
-    speed2(32201, 7),
-    speed3(32202, 8)
+    speed1(32200, 1, 6),
+    speed2(32201, 1, 7),
+    speed3(32202, 1, 8)
     ;
     private int meta = 0;
+    private int maxnumber = 1;
     private int maxspeedmodifier = 0; // formula: maxspeed = modifier
 
     private ArrayList<ItemStack> additionalGendustryUpgrades = new ArrayList<>();
 
-    GT_ApiaryUpgrade(int meta, int maxspeedmodifier){
+    GT_ApiaryUpgrade(int meta, int maxnumber, int maxspeedmodifier){
         this.meta = meta;
+        this.maxnumber = maxnumber;
         this.maxspeedmodifier = maxspeedmodifier;
     }
 
@@ -31,6 +33,18 @@ public enum GT_ApiaryUpgrade {
         if(!OrePrefixes.apiaryUpgrade.contains(s))
             return null;
         return quickLookup.get(s.getItemDamage());
+    }
+
+    public boolean isAllowedToWorkWith(ItemStack s){
+        for(ItemStack upgrade : additionalGendustryUpgrades){
+            if(GT_Utility.areStacksEqual(upgrade, s))
+                return false;
+        }
+        return true;
+    }
+
+    public int getMaxNumber(){
+        return maxnumber;
     }
 
     public void applyModifiers(ApiaryModifiers mods, ItemStack s){

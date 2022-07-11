@@ -452,7 +452,29 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
         else if(aIndex < getOutputSlot()) {
             if(!Loader.isModLoaded("gendustry"))
                 return false;
-            return aStack.getItem() instanceof IApiaryUpgrade || OrePrefixes.apiaryUpgrade.contains(aStack);
+            if(!(aStack.getItem() instanceof IApiaryUpgrade) && !OrePrefixes.apiaryUpgrade.contains(aStack))
+                return false;
+            for(int i = drone+1; i < drone+1+4; i++)
+            {
+                if(aIndex == i)
+                    continue;
+                ItemStack s = getStackInSlot(i);
+                if(s == null)
+                    continue;
+                if(GT_Utility.areStacksEqual(getStackInSlot(i), aStack))
+                    return false;
+                if(OrePrefixes.apiaryUpgrade.contains(aStack))
+                {
+                    if(!GT_ApiaryUpgrade.getUpgrade(aStack).isAllowedToWorkWith(getStackInSlot(i)))
+                        return false;
+                }
+                else if(OrePrefixes.apiaryUpgrade.contains(s))
+                {
+                    if(!GT_ApiaryUpgrade.getUpgrade(s).isAllowedToWorkWith(aStack))
+                        return false;
+                }
+            }
+            return true;
         }
         else return false;
 
