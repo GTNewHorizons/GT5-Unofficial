@@ -58,6 +58,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
     public boolean retreviePollen = false;
 
     private ItemStack usedQueen = null;
+    private IBee usedQueenBee = null;
     private IEffectData[] effectData = new IEffectData[2];
 
     public GT_MetaTileEntity_IndustrialApiary(int aID, String aName, String aNameRegional, int aTier) {
@@ -141,6 +142,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
             if(beeRoot.getType(queen) == EnumBeeType.QUEEN)
             {
                 IBee bee = beeRoot.getMember(queen);
+                usedQueenBee = bee;
 
                 // LIFE CYCLES
 
@@ -277,6 +279,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                     this.mEUt += (32 * (useddivider << (this.mSpeed - 2)));
 
                 IBee princess = beeRoot.getMember(getQueen());
+                usedQueenBee = princess;
                 IBee drone = beeRoot.getMember(getDrone());
                 princess.mate(drone);
                 NBTTagCompound nbttagcompound = new NBTTagCompound();
@@ -371,8 +374,9 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                 }
                 this.mProgresstime++;
                 if(usedQueen != null) {
-                    IBee bee = beeRoot.getMember(usedQueen);
-                    effectData = bee.doEffect(effectData, this);
+                    if(usedQueenBee == null)
+                        usedQueenBee = beeRoot.getMember(usedQueen);
+                    effectData = usedQueenBee.doEffect(effectData, this);
                 }
 
                 if(this.mProgresstime % 100 == 0)
