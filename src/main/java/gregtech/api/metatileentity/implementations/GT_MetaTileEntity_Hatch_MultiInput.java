@@ -1,6 +1,5 @@
 package gregtech.api.metatileentity.implementations;
 
-import gregtech.GT_Mod;
 import gregtech.api.enums.ItemList;
 import gregtech.api.gui.GT_Container_2by2_Fluid;
 import gregtech.api.gui.GT_GUIContainer_2by2_Fluid;
@@ -15,7 +14,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 
-import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_INPUT_HATCH_2x2;
 
 public class GT_MetaTileEntity_Hatch_MultiInput extends GT_MetaTileEntity_Hatch_Input {
 
@@ -29,7 +28,7 @@ public class GT_MetaTileEntity_Hatch_MultiInput extends GT_MetaTileEntity_Hatch_
     }
 
     public GT_MetaTileEntity_Hatch_MultiInput(String aName, int aSlot, int aTier, String[] aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, aSlot, aDescription, aTextures);
+        super(aName, aSlot, aTier, aDescription, aTextures);
         this.mStoredFluid = new FluidStack[aSlot];
         mCapacityPer = 8000 * (1 << aTier) / aSlot;
     }
@@ -217,7 +216,7 @@ public class GT_MetaTileEntity_Hatch_MultiInput extends GT_MetaTileEntity_Hatch_
     @Override
     public FluidStack drain(ForgeDirection from, FluidStack aFluid, boolean doDrain) {
         if (getFluid() != null && aFluid != null && getFluid().isFluidEqual(aFluid)) {
-            if (hasFluid(aFluid) && !canTankBeEmptied()) {
+            if (hasFluid(aFluid)) {
                 FluidStack tStored = mStoredFluid[getFluidSlot(aFluid)];
                 if (tStored.amount <= 0 && isFluidChangingAllowed()) {
                     setFluid(null, getFluidSlot(tStored));
