@@ -5,7 +5,7 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class IMC {
 
-	public static void IMCSender() {
+    public static void IMCSender() {
         sendHandler("com.elisis.gtnhlanth.xmod.nei.DigesterHandler", "gregtech:gt.blockmachines:10500");
         sendHandler("com.elisis.gtnhlanth.xmod.nei.DisstankHandler", "gregtech:gt.blockmachines:10501");
 
@@ -33,5 +33,4 @@ public class IMC {
         aNBT.setString("itemName", aStack);
         FMLInterModComms.sendMessage("NotEnoughItems", "registerCatalystInfo", aNBT);
     }
-
 }
