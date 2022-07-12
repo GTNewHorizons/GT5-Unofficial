@@ -104,7 +104,11 @@ import static gregtech.api.enums.GT_Values.MOD_ID_FR;
                 " after:UndergroundBiomes;" +
                 " after:TConstruct;" +
                 " after:Translocator;" +
+<<<<<<< HEAD
                 " after:gendustry;")
+=======
+                " after:Botania;")
+>>>>>>> origin/livingrock
 public class GT_Mod implements IGT_Mod {
 
     @Deprecated // Keep for use in BaseMetaTileEntity
