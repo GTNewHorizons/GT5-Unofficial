@@ -35,7 +35,7 @@ public class RecipeAdder {
             null,
             "gtnhlanth:textures/gui/Disstank",
             1,
-            1,
+            3,
             1,
             1,
             1,
