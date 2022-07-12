@@ -11,8 +11,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import pers.gwyog.gtneioreplugin.plugin.items.ModItems;
-import pers.gwyog.gtneioreplugin.plugin.renderer.ItemDimensionDisplayRenderer;
+import pers.gwyog.gtneioreplugin.plugin.block.ModBlocks;
 import pers.gwyog.gtneioreplugin.util.GT5OreLayerHelper;
 import pers.gwyog.gtneioreplugin.util.GT5OreSmallHelper;
 import pers.gwyog.gtneioreplugin.util.GuiRecipeHelper;
@@ -75,10 +74,7 @@ public class GTNEIOrePlugin {
 
     @EventHandler
     public void init(FMLInitializationEvent event) {
-        ModItems.init();
-        if (event.getSide() == Side.CLIENT) {
-            new ItemDimensionDisplayRenderer();
-        }
+        ModBlocks.init();
     }
 
     @EventHandler

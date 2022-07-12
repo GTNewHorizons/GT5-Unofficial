@@ -2,25 +2,19 @@ package pers.gwyog.gtneioreplugin.plugin.renderer;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
-import net.minecraftforge.client.MinecraftForgeClient;
 import org.lwjgl.opengl.GL11;
-import pers.gwyog.gtneioreplugin.GTNEIOrePlugin;
-import pers.gwyog.gtneioreplugin.plugin.items.ItemDimensionDisplay;
-import pers.gwyog.gtneioreplugin.plugin.items.ModItems;
+import pers.gwyog.gtneioreplugin.plugin.item.ItemDimensionDisplay;
 
 public class ItemDimensionDisplayRenderer implements IItemRenderer {
 
-    public ItemDimensionDisplayRenderer() {
-        MinecraftForgeClient.registerItemRenderer(ModItems.itemDimensionDisplay, this);
-    }
+    private final RenderItem renderItem = new RenderItem();
 
     @Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-        return true;
+        return type == ItemRenderType.INVENTORY;
     }
 
     @Override
@@ -29,110 +23,30 @@ public class ItemDimensionDisplayRenderer implements IItemRenderer {
     }
 
     @Override
-    public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-        String dimension = ItemDimensionDisplay.getDimension(item);
+    public void renderItem(ItemRenderType type, ItemStack stack, Object... data) {
+        String dimension = ItemDimensionDisplay.getDimension(stack);
         if (dimension == null) {
             return;
         }
 
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glEnable(GL11.GL_ALPHA_TEST);
-
-        Minecraft.getMinecraft().renderEngine.bindTexture(getResourceLocation(dimension));
-
-        Tessellator tess = Tessellator.instance;
-        tess.startDrawingQuads();
-        tess.addVertexWithUV(0, 16, 0, 0, 1);
-        tess.addVertexWithUV(16, 16, 0, 1, 1);
-        tess.addVertexWithUV(16, 0, 0, 1, 0);
-        tess.addVertexWithUV(0, 0, 0, 0, 0);
-        tess.draw();
-
-        GL11.glDisable(GL11.GL_BLEND);
+        renderItem.renderItemIntoGUI(
+                Minecraft.getMinecraft().fontRenderer, Minecraft.getMinecraft().renderEngine, stack, 0, 0, false);
 
         String prefix = getPrefix(dimension);
         if (!prefix.isEmpty()) {
             FontRenderer fontRender = Minecraft.getMinecraft().fontRenderer;
-            float smallTextScale = fontRender.getUnicodeFlag() ? 3F / 4F : 1F / 2F;
+            float smallTextScale = 3F / 4F;
+
+            GL11.glPushMatrix();
+            GL11.glTranslatef(0, 0, 300);
             GL11.glScalef(smallTextScale, smallTextScale, 1.0f);
 
             fontRender.drawString(prefix, 0, (int) (16 / smallTextScale) - fontRender.FONT_HEIGHT + 1, 0xFFFFFF, true);
+
+            GL11.glPopMatrix();
         }
 
         GL11.glDisable(GL11.GL_ALPHA_TEST);
-    }
-
-    private ResourceLocation getResourceLocation(String dimension) {
-        switch (dimension) {
-            case "Ow":
-            case "Ne":
-            case "TF":
-            case "EN":
-            case "VA":
-            case "EA":
-                return new ResourceLocation(
-                        GTNEIOrePlugin.MODID, String.format("textures/items/dimensionDisplay/%s.png", dimension));
-            case "Mo":
-                return new ResourceLocation("galacticraftcore:textures/gui/celestialbodies/moon.png");
-            case "De":
-                return new ResourceLocation("galaxyspace:textures/gui/celestialbodies/deimos.png");
-            case "Ma":
-                return new ResourceLocation("galacticraftcore:textures/gui/celestialbodies/mars.png");
-            case "Ph":
-                return new ResourceLocation("galaxyspace:textures/gui/celestialbodies/phobos.png");
-            case "As":
-                return new ResourceLocation("galacticraftcore:textures/gui/celestialbodies/asteroid.png");
-            case "Ca":
-                return new ResourceLocation("galaxyspace:textures/gui/celestialbodies/callisto.png");
-            case "Ce":
-                return new ResourceLocation("galaxyspace:textures/gui/celestialbodies/ceres.png");
-            case "Eu":
-                return new ResourceLocation("galaxyspace:textures/gui/celestialbodies/europa.png");
-            case "Ga":
-                return new ResourceLocation("galaxyspace:textures/gui/celestialbodies/ganymede.png");
-            case "Io":
-                return new ResourceLocation("galaxyspace:textures/gui/celestialbodies/io.png");
-            case "Me":
-                return new ResourceLocation("galaxyspace:textures/gui/celestialbodies/mercury.png");
-            case "Ve":
-                return new ResourceLocation("galacticraftcore:textures/gui/celestialbodies/venus.png");
-            case "En":
-                return new ResourceLocation("galaxyspace:textures/gui/celestialbodies/enceladus.png");
-            case "Mi":
-                return new ResourceLocation("galaxyspace:textures/gui/celestialbodies/miranda.png");
-            case "Ob":
-                return new ResourceLocation("galaxyspace:textures/gui/celestialbodies/oberon.png");
-            case "Ti":
-                return new ResourceLocation("galaxyspace:textures/gui/celestialbodies/titan.png");
-            case "Pr":
-                return new ResourceLocation("galaxyspace:textures/gui/celestialbodies/proteus.png");
-            case "Tr":
-                return new ResourceLocation("galaxyspace:textures/gui/celestialbodies/triton.png");
-            case "Ha":
-                return new ResourceLocation("galaxyspace:textures/gui/celestialbodies/haumea.png");
-            case "KB":
-                return new ResourceLocation("galaxyspace:textures/gui/celestialbodies/kuiperbelt.png");
-            case "MM":
-                return new ResourceLocation("galaxyspace:textures/gui/celestialbodies/makemake.png");
-            case "Pl":
-                return new ResourceLocation("galaxyspace:textures/gui/celestialbodies/pluto.png");
-            case "BC":
-                return new ResourceLocation("galaxyspace:textures/gui/celestialbodies/barnards/Barnarda2.png");
-            case "BE":
-                return new ResourceLocation("galaxyspace:textures/gui/celestialbodies/barnards/Barnarda4.png");
-            case "BF":
-                return new ResourceLocation("galaxyspace:textures/gui/celestialbodies/barnards/Barnarda5.png");
-            case "CB":
-                return new ResourceLocation("galaxyspace:textures/gui/celestialbodies/aCentauri/CentauriBb.png");
-            case "TE":
-                return new ResourceLocation("galaxyspace:textures/gui/celestialbodies/tceti/TCetiE.png");
-            case "DD":
-                return new ResourceLocation("extrautils:textures/blocks/dark_portal.png");
-            case "VB":
-                return new ResourceLocation("galaxyspace:textures/gui/celestialbodies/vega/Vega1.png");
-            default:
-                return new ResourceLocation(GTNEIOrePlugin.MODID, "textures/items/dimensionDisplay/_unknown.png");
-        }
     }
 
     private static String getPrefix(String dimName) {

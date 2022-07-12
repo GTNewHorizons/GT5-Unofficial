@@ -1,0 +1,48 @@
+package pers.gwyog.gtneioreplugin.plugin.block;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IIcon;
+
+public class BlockDimensionDisplay extends Block {
+
+    private final String dimension;
+    private IIcon iconTop;
+    private IIcon iconRight;
+    private IIcon iconLeft;
+
+    public BlockDimensionDisplay(String dimension) {
+        super(Material.rock);
+        this.dimension = dimension;
+    }
+
+    @Override
+    public IIcon getIcon(int side, int meta) {
+        EnumFacing direction = EnumFacing.getFront(side);
+        switch (direction) {
+            case NORTH:
+            case SOUTH:
+                return iconRight;
+            case WEST:
+            case EAST:
+                return iconLeft;
+            case UP:
+            case DOWN:
+            default:
+                return iconTop;
+        }
+    }
+
+    @Override
+    public void registerBlockIcons(IIconRegister iconRegister) {
+        this.iconTop = iconRegister.registerIcon("gtneioreplugin:" + dimension + "_top");
+        this.iconRight = iconRegister.registerIcon("gtneioreplugin:" + dimension + "_right");
+        this.iconLeft = iconRegister.registerIcon("gtneioreplugin:" + dimension + "_left");
+    }
+
+    public String getDimension() {
+        return dimension;
+    }
+}

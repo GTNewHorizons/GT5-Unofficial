@@ -63,7 +63,7 @@ public class DimensionHelper {
         "Ow", // Overworld
         "Ne", // Nether
         "TF", // Twilight
-        "EN", // TheEnd because En = Encalus
+        "ED", // TheEnd because En = Encalus
         "VA", // Vanilla_EndAsteroids
         "EA", // EndAsteroid
         // T1

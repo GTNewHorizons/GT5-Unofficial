@@ -9,7 +9,7 @@ import java.util.Comparator;
 import java.util.List;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
-import pers.gwyog.gtneioreplugin.plugin.items.ItemDimensionDisplay;
+import pers.gwyog.gtneioreplugin.plugin.item.ItemDimensionDisplay;
 import pers.gwyog.gtneioreplugin.util.DimensionHelper;
 import pers.gwyog.gtneioreplugin.util.GT5OreSmallHelper;
 import pers.gwyog.gtneioreplugin.util.GT5OreSmallHelper.OreSmallWrapper;
