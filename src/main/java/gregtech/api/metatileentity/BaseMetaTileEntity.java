@@ -501,6 +501,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
                 }
             }
         } catch (Throwable e) {
+            e.printStackTrace();
             e.printStackTrace(GT_Log.err);
         }
 
