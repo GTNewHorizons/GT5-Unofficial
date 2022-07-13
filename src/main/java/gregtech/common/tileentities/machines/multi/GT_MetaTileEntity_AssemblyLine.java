@@ -12,11 +12,7 @@ import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_DataAccess;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
+import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_AssemblyLineUtils;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
@@ -173,8 +169,9 @@ public class GT_MetaTileEntity_AssemblyLine extends GT_MetaTileEntity_EnhancedMu
 
         int[] tStack = null;
         int[] tFluids = null;
+        int[] tFluidSlot = null;
         boolean foundRecipe = false;
-        
+
         nextDataStick:
         for (ItemStack tDataStick : tDataStickList) {
         	GT_AssemblyLineUtils.LookupResult tLookupResult = GT_AssemblyLineUtils.findAssemblyLineRecipeFromDataStick(tDataStick, false);
@@ -190,11 +187,11 @@ public class GT_MetaTileEntity_AssemblyLine extends GT_MetaTileEntity_EnhancedMu
                     continue;
                 }
             }
-        	
+
         	// So here we check against the recipe found on the data stick.
         	// If we run into missing buses/hatches or bad inputs, we go to the next data stick.
         	// This check only happens if we have a valid up to date data stick.
-        	
+
         	// Check Inputs allign
             int aItemCount = tRecipe.mInputs.length;
             tStack = new int[aItemCount];
@@ -212,26 +209,37 @@ public class GT_MetaTileEntity_AssemblyLine extends GT_MetaTileEntity_EnhancedMu
                     GT_FML_LOGGER.info("Item: " + i + " accepted");
                 }
             }
-            
+
             // Check Fluid Inputs allign
         	int aFluidCount = tRecipe.mFluidInputs.length;
             tFluids = new int[aFluidCount];
+            tFluidSlot = new int[aFluidCount];
             for (int i = 0; i < aFluidCount; i++){
                 if (mInputHatches.get(i) == null) {
                     continue nextDataStick;
                 }
                 else {
-                    FluidStack fluidInHatch = mInputHatches.get(i).mFluid;
-                    if (!GT_Utility.areFluidsEqual(fluidInHatch, tRecipe.mFluidInputs[i], true) || fluidInHatch.amount < tRecipe.mFluidInputs[i].amount) {
-                        continue nextDataStick;
+                    if (mInputHatches.get(i) instanceof GT_MetaTileEntity_Hatch_MultiInput) {
+                        GT_MetaTileEntity_Hatch_MultiInput tMultiHatch = (GT_MetaTileEntity_Hatch_MultiInput) mInputHatches.get(i);
+                        if (!tMultiHatch.hasFluid(tRecipe.mFluidInputs[i]) || tMultiHatch.getFluidAmount(tRecipe.mFluidInputs[i]) < tRecipe.mFluidInputs[i].amount) {
+                            continue nextDataStick;
+                        }
+                        tFluids[i] = tRecipe.mFluidInputs[i].amount;
+                        tFluidSlot[i] = tMultiHatch.getFluidSlot(tRecipe.mFluidInputs[i]);
                     }
-                    tFluids[i] = tRecipe.mFluidInputs[i].amount;
+                    else {
+                        FluidStack fluidInHatch = mInputHatches.get(i).mFluid;
+                        if (!GT_Utility.areFluidsEqual(fluidInHatch, tRecipe.mFluidInputs[i], true) || fluidInHatch.amount < tRecipe.mFluidInputs[i].amount) {
+                            continue nextDataStick;
+                        }
+                        tFluids[i] = tRecipe.mFluidInputs[i].amount;
+                    }
                     if (GT_Values.D1) {
                         GT_FML_LOGGER.info("Fluid:" + i + " accepted");
                     }
                 }
             }
-        	
+
         	if (GT_Values.D1) {
         		GT_FML_LOGGER.info("Check overclock");
         	}
@@ -244,18 +252,18 @@ public class GT_MetaTileEntity_AssemblyLine extends GT_MetaTileEntity_EnhancedMu
         		continue;
         	}
         	if (GT_Values.D1) {
-        		GT_FML_LOGGER.info("Find available recipe");             
+        		GT_FML_LOGGER.info("Find available recipe");
         	}
             mOutputItems = new ItemStack[] {tRecipe.mOutput};
             foundRecipe = true;
         	break ;
         }
-        
+
         // Best not to run this recipe.
         if (!foundRecipe || tStack.length <= 0) {
         	return false;
         }
-        
+
 
         if (GT_Values.D1) {
         	GT_FML_LOGGER.info("All checked start consuming inputs");
@@ -266,9 +274,17 @@ public class GT_MetaTileEntity_AssemblyLine extends GT_MetaTileEntity_EnhancedMu
         }
 
         for (int i = 0; i < tFluids.length; i++) {
-            mInputHatches.get(i).mFluid.amount -= tFluids[i];
-            if (mInputHatches.get(i).mFluid.amount <= 0) {
-                mInputHatches.get(i).mFluid = null;
+            if (mInputHatches.get(i) instanceof GT_MetaTileEntity_Hatch_MultiInput) {
+                GT_MetaTileEntity_Hatch_MultiInput tMultiHatch = (GT_MetaTileEntity_Hatch_MultiInput) mInputHatches.get(i);
+                tMultiHatch.getFluid(tFluidSlot[i]).amount -= tFluids[i];
+                if (tMultiHatch.getFluid(tFluidSlot[i]).amount <= 0) {
+                    tMultiHatch.setFluid(null, tFluidSlot[i]);
+                }
+            } else {
+                mInputHatches.get(i).mFluid.amount -= tFluids[i];
+                if (mInputHatches.get(i).mFluid.amount <= 0) {
+                    mInputHatches.get(i).mFluid = null;
+                }
             }
         }
 
