@@ -278,8 +278,8 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
 
 
         // Logic for overclocking calculations.
-        double EU_input_tier = log(tTotalEU) / log4; // 33
-        double EU_recipe_tier = log(tRecipe_0.mEUt) / log4; // 31
+        double EU_input_tier = log(tTotalEU) / log4;
+        double EU_recipe_tier = log(tRecipe_0.mEUt) / log4;
         long overclock_count = (long) floor(EU_input_tier - EU_recipe_tier);
 
         // Vital recipe info. Calculate overclocks here if necessary.
@@ -301,10 +301,13 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
 
+        // Reset heating capacity.
         this.mHeatingCapacity = 0;
 
+        // Get heating capacity from coils in structure.
         setCoilLevel(HeatingCoilLevel.None);
 
+        // Check the main structure
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 16, 21, 16))
             return false;
 
@@ -386,6 +389,7 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
             if (!drainEnergyInput(-EU_per_tick)) {
                 running_time = 0;
                 discount = 1;
+                EU_per_tick = 0;
                 criticalStopMachine();
                 return false;
             }
@@ -474,12 +478,14 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setLong("eRunningTime", running_time);
+        aNBT.setLong("eLongEUPerTick", EU_per_tick);
         super.saveNBTData(aNBT);
     }
 
     @Override
     public void loadNBTData(final NBTTagCompound aNBT) {
         running_time = aNBT.getLong("eRunningTime");
+        EU_per_tick = aNBT.getLong("eLongEUPerTick");
         super.loadNBTData(aNBT);
     }
 }
