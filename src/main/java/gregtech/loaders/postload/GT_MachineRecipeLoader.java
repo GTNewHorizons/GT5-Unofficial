@@ -2095,7 +2095,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         //Kevlar Line
         //C15H10N2O2(5HCl) = C15H10N2O2 + 5HCl
         GT_Values.RA.addDistillationTowerRecipe(MaterialsKevlar.DiphenylmethaneDiisocyanateMixture.getFluid(1000L), new FluidStack[]{Materials.HydrochloricAcid.getFluid(5000L)}, GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.DiphenylmethaneDiisocyanate, 29L), 2500, 1920);
-        if (Loader.isModLoaded("bartworks") && (Loader.isModLoaded("miscutils"))) {
+        if (Loader.isModLoaded("gtnhlanth") && (Loader.isModLoaded("miscutils"))) {
             //CH2O + 2C6H7N + HCl = C13H14N2(HCl) + H2O
             GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(1)}, new FluidStack[]{new FluidStack(FluidRegistry.getFluid("formaldehyde"), 1000), new FluidStack(FluidRegistry.getFluid("aniline"), 2000), Materials.HydrochloricAcid.getFluid(1000)}, new FluidStack[]{MaterialsKevlar.DiaminodiphenylmethanMixture.getFluid(1000L)}, null, 1200, 1920);
             //C6H5NO2 + 6H =Pd= C6H7N + 2H2O
