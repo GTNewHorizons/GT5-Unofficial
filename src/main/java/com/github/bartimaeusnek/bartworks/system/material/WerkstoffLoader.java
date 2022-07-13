@@ -943,7 +943,7 @@ public class WerkstoffLoader {
             new short[]{0xff, 0xaa, 0x77},
             "Formic Acid",
             subscriptNumbers("CH2O2"),
-            new Werkstoff.Stats().setElektrolysis(true),
+            new Werkstoff.Stats().setElektrolysis(false),
             Werkstoff.Types.COMPOUND,
             new Werkstoff.GenerationFeatures().disable().addCells(),
             58,
