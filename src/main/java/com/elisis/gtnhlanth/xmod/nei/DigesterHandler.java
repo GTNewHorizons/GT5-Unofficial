@@ -10,18 +10,21 @@ import gregtech.nei.GT_NEI_DefaultHandler;
 
 public class DigesterHandler extends GT_NEI_DefaultHandler {
 
-	public DigesterHandler(GT_Recipe_Map recipeMap) {
-		super(recipeMap);
-		if (!NEI_Config.isAdded) {
-			FMLInterModComms.sendRuntimeMessage(GT_Values.GT, "NEIPlugins", "register-crafting-handler", "gregtech@" + this.getRecipeName() + "@" + this.getOverlayIdentifier());
-			GuiCraftingRecipe.craftinghandlers.add(this);
-			GuiUsageRecipe.usagehandlers.add(this);
-		}
-	}
-	
-	@Override
+    public DigesterHandler(GT_Recipe_Map recipeMap) {
+        super(recipeMap);
+        if (!NEI_Config.isAdded) {
+            FMLInterModComms.sendRuntimeMessage(
+                    GT_Values.GT,
+                    "NEIPlugins",
+                    "register-crafting-handler",
+                    "gregtech@" + this.getRecipeName() + "@" + this.getOverlayIdentifier());
+            GuiCraftingRecipe.craftinghandlers.add(this);
+            GuiUsageRecipe.usagehandlers.add(this);
+        }
+    }
+
+    @Override
     public TemplateRecipeHandler newInstance() {
         return new DigesterHandler(this.mRecipeMap);
     }
-
 }
