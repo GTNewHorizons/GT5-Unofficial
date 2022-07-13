@@ -31,12 +31,12 @@ import java.util.List;
 import java.util.ArrayList;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.enums.GT_Values.TIER_COLORS;
 import static gregtech.api.enums.GT_Values.VN;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GT_StructureUtility.ofCoil;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
-
+import static java.lang.Math.*;
 
 
 public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMultiFurnace<GT_MetaTileEntity_PlasmaForge> implements IConstructable {
@@ -47,6 +47,11 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
     final double maximum_discount = 0.5d;
     private int mHeatingCapacity = 0;
     long running_time = 0;
+
+    private long EU_per_tick = 0;
+
+    // Saves recomputing this every recipe check for overclocking.
+    private static final double log4 = log(4);
 
     private final int min_input_hatch = 0;
     private final int max_input_hatch = 6;
@@ -135,7 +140,7 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
         tt.addInfo("Transcending Dimensional Boundaries.")
             .addInfo("Takes " + EnumChatFormatting.RED + GT_Utility.formatNumbers(max_efficiency_time_in_ticks/(3600*20)) + EnumChatFormatting.GRAY + " hours of continuous run time to fully breach dimensional")
             .addInfo("boundaries and achieve maximum efficiency. This reduces fuel")
-            .addInfo("consumption by up to " + EnumChatFormatting.RED + GT_Utility.formatNumbers(100*maximum_discount) + "%" + EnumChatFormatting.GRAY + ". Does not overclock.")
+            .addInfo("consumption by up to " + EnumChatFormatting.RED + GT_Utility.formatNumbers(100*maximum_discount) + "%" + EnumChatFormatting.GRAY + ". Supports overclocking beyond MAX voltage.")
             .addInfo("Author: " +
                 EnumChatFormatting.DARK_RED + EnumChatFormatting.BOLD + EnumChatFormatting.ITALIC + EnumChatFormatting.UNDERLINE + "C" +
                 EnumChatFormatting.GOLD + EnumChatFormatting.BOLD + EnumChatFormatting.ITALIC + EnumChatFormatting.UNDERLINE + "o" +
@@ -145,20 +150,18 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
             .addSeparator()
             .beginStructureBlock(33, 24, 33, false)
             .addStructureInfo("DTPF Structure is too complex! See schematic for details.")
-            .addStructureInfo("2112 Heating coils required.")
-            .addStructureInfo("120 Dimensional bridge blocks required.")
-            .addStructureInfo("1270 Dimensional injection casings required.")
-            .addStructureInfo("2121 Dimensionally transcendent casings required.")
+            .addStructureInfo(EnumChatFormatting.GOLD + "2112" + EnumChatFormatting.GRAY + " Heating coils required.")
+            .addStructureInfo(EnumChatFormatting.GOLD + "120"  + EnumChatFormatting.GRAY + " Dimensional bridge blocks required.")
+            .addStructureInfo(EnumChatFormatting.GOLD + "1270" + EnumChatFormatting.GRAY + " Dimensional injection casings required.")
+            .addStructureInfo(EnumChatFormatting.GOLD + "2121" + EnumChatFormatting.GRAY + " Dimensionally transcendent casings required.")
             .addStructureInfo("--------------------------------------------")
-            .addStructureInfo("Requires 1-2 energy hatches or 1 TT energy hatch.")
-            .addStructureInfo("Requires 1 maintenance hatch.")
-            .addStructureInfo("Requires 0-6 input hatches.")
-            .addStructureInfo("Requires 0-2 output hatches.")
-            .addStructureInfo("Requires 0-2 input busses.")
-            .addStructureInfo("Requires 0-2 output busses.")
+            .addStructureInfo("Requires " + EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "-" + EnumChatFormatting.GOLD + "2" + EnumChatFormatting.GRAY + " energy hatches or " + EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " TT energy hatch.")
+            .addStructureInfo("Requires " + EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " maintenance hatch.")
+            .addStructureInfo("Requires " + EnumChatFormatting.GOLD + min_input_hatch  + EnumChatFormatting.GRAY + "-" + EnumChatFormatting.GOLD + max_input_hatch + EnumChatFormatting.GRAY  + " input hatches.")
+            .addStructureInfo("Requires " + EnumChatFormatting.GOLD + min_output_hatch + EnumChatFormatting.GRAY + "-" + EnumChatFormatting.GOLD + max_output_hatch + EnumChatFormatting.GRAY + " output hatches.")
+            .addStructureInfo("Requires " + EnumChatFormatting.GOLD + min_input_bus    + EnumChatFormatting.GRAY + "-" + EnumChatFormatting.GOLD + max_input_bus + EnumChatFormatting.GRAY    + " input busses.")
+            .addStructureInfo("Requires " + EnumChatFormatting.GOLD + min_output_bus   + EnumChatFormatting.GRAY + "-" + EnumChatFormatting.GOLD + max_input_bus + EnumChatFormatting.GRAY    + " output busses.")
             .addStructureInfo("--------------------------------------------")
-            .addStructureInfo("If you are having difficulties with the blueprint")
-            .addStructureInfo("you can rotate the controller. This multi is symmetrical.")
             .toolTipFinisher("Gregtech");
         return tt;
     }
@@ -224,22 +227,33 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
 
     protected boolean processRecipe(ItemStack[] tItems, FluidStack[] tFluids) {
 
-        // Get information about multi configuration.
+        // Gets the EU input of the
         long tVoltage = GT_ExoticEnergyInputHelper.getMaxInputVoltageMulti(getExoticAndNormalEnergyHatchList());
-        byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
+        long tAmps = GT_ExoticEnergyInputHelper.getMaxInputAmpsMulti(getExoticAndNormalEnergyHatchList());
+
+        long tTotalEU = tVoltage * tAmps;
+        System.out.println(tTotalEU);
+
+        // Hacky method to determine if double energy hatches are being used.
+        if (getExoticAndNormalEnergyHatchList().get(0) instanceof GT_MetaTileEntity_Hatch_Energy) {
+            tTotalEU /= 2L;
+        }
 
         // Look up recipe. If not found it will return null.
         GT_Recipe tRecipe_0 = GT_Recipe.GT_Recipe_Map.sPlasmaForgeRecipes.findRecipe(
             getBaseMetaTileEntity(),
             false,
-            V[tTier],
+            tTotalEU,
             tFluids,
             tItems
         );
 
-        // Sanity check.
+        // Check if recipe found.
         if (tRecipe_0 == null)
             return false;
+
+        System.out.println("Recipe found");
+
 
         // If coil heat capacity is too low, refuse to start recipe.
         if (mHeatingCapacity <= tRecipe_0.mSpecialValue)
@@ -259,13 +273,19 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
         }
 
         // Takes items/fluids from hatches/busses.
-        if (!tRecipe_1.isRecipeInputEqual(true, tFluids, tItems)) {
+        if (!tRecipe_1.isRecipeInputEqual(true, tFluids, tItems))
             return false;
-        }
 
-        // Vital recipe info.
-        mEUt = -tRecipe_0.mEUt;
-        mMaxProgresstime = tRecipe_0.mDuration;
+
+        // Logic for overclocking calculations.
+        double EU_input_tier = log(tTotalEU) / log4;
+        double EU_recipe_tier = log(tRecipe_0.mEUt) / log4;
+        long overclock_count = (long) floor(EU_input_tier - EU_recipe_tier);
+
+        // Vital recipe info. Calculate overclocks here if necessary.
+        EU_per_tick = (long) -(tRecipe_0.mEUt * pow(4, overclock_count));
+
+        mMaxProgresstime = (int) (tRecipe_0.mDuration / pow(2, overclock_count));
         mMaxProgresstime = Math.max(1, mMaxProgresstime);
 
         // Output items/fluids.
@@ -281,10 +301,13 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
 
+        // Reset heating capacity.
         this.mHeatingCapacity = 0;
 
+        // Get heating capacity from coils in structure.
         setCoilLevel(HeatingCoilLevel.None);
 
+        // Check the main structure
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 16, 21, 16))
             return false;
 
@@ -325,6 +348,10 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
             }
         }
 
+        // If there are no energy hatches or TT energy hatches, structure will fail to form.
+        if ((mEnergyHatches.size() == 0) && (mExoticEnergyHatches.size() == 0))
+            return false;
+
         // One maintenance hatch only. Mandatory.
         if (mMaintenanceHatches.size() != 1)
             return false;
@@ -358,10 +385,11 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
 
     @Override
     public boolean onRunningTick(ItemStack aStack) {
-        if (mEUt < 0) {
-            if (!drainEnergyInput(-mEUt)) {
+        if (EU_per_tick < 0) {
+            if (!drainEnergyInput(-EU_per_tick)) {
                 running_time = 0;
                 discount = 1;
+                EU_per_tick = 0;
                 criticalStopMachine();
                 return false;
             }
@@ -392,7 +420,7 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
                 EnumChatFormatting.GREEN + GT_Utility.formatNumbers(storedEnergy) + EnumChatFormatting.RESET + " EU / " +
                 EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(maxEnergy) + EnumChatFormatting.RESET + " EU",
             StatCollector.translateToLocal("GT5U.multiblock.usage") + ": " +
-                EnumChatFormatting.RED + GT_Utility.formatNumbers(-mEUt) + EnumChatFormatting.RESET + " EU/t",
+                EnumChatFormatting.RED + GT_Utility.formatNumbers(-EU_per_tick) + EnumChatFormatting.RESET + " EU/t",
             StatCollector.translateToLocal("GT5U.multiblock.mei") + ": " +
                 EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(GT_ExoticEnergyInputHelper.getMaxInputVoltageMulti(getExoticAndNormalEnergyHatchList())) + EnumChatFormatting.RESET + " EU/t(*" + EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(GT_ExoticEnergyInputHelper.getMaxInputAmpsMulti(getExoticAndNormalEnergyHatchList())) + EnumChatFormatting.RESET + "A) " +
                 StatCollector.translateToLocal("GT5U.machines.tier") + ": " +
@@ -450,12 +478,14 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setLong("eRunningTime", running_time);
+        aNBT.setLong("eLongEUPerTick", EU_per_tick);
         super.saveNBTData(aNBT);
     }
 
     @Override
     public void loadNBTData(final NBTTagCompound aNBT) {
         running_time = aNBT.getLong("eRunningTime");
+        EU_per_tick = aNBT.getLong("eLongEUPerTick");
         super.loadNBTData(aNBT);
     }
 }
