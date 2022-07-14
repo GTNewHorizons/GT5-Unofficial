@@ -521,6 +521,9 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends GT_MetaTileEntity_En
     private List<ItemStack> getOutputStack(GT_Recipe aRecipe, int aTime) {
         List<ItemStack> tOutput = new ArrayList<>();
         for (int i = 0; i < aRecipe.mOutputs.length; i ++) {
+            if (aRecipe.getOutput(i) == null) {
+                continue;
+            }
             int tChance = aRecipe.getOutputChance(i);
             if (tChance == 10000) {
                 tOutput.add(GT_Utility.copyAmountUnsafe(aTime * aRecipe.getOutput(i).stackSize, aRecipe.getOutput(i)));
