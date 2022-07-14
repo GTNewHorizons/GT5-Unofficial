@@ -2188,7 +2188,7 @@ public class RECIPES_GREGTECH {
 				}, 
 				null,
 				new int[] {100},
-				20 * (GTNH ? 300 : 60),
+				20 * (GTNH ? 25 : 60),
 				(int) MaterialUtils.getVoltageForTier(8),
 				500 * 20);
 
