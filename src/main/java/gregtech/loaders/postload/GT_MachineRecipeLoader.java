@@ -628,7 +628,7 @@ public class GT_MachineRecipeLoader implements Runnable {
 
         GT_Values.RA.addMixerRecipe(
             new ItemStack[] {GT_Utility.getIntegratedCircuit(10)},
-            new FluidStack[]{Materials.DimensionallyTranscendentCrudeCatalyst.getFluid(1000L), Materials.Radon.getPlasma(1000L), Materials.Nickel.getPlasma(1000L), Materials.Boron.getPlasma(10L), Materials.Sulfur.getPlasma(1000L)},
+            new FluidStack[]{Materials.DimensionallyTranscendentCrudeCatalyst.getFluid(1000L), Materials.Radon.getPlasma(1000L), Materials.Nickel.getPlasma(1000L), Materials.Boron.getPlasma(1000L), Materials.Sulfur.getPlasma(1000L)},
             new ItemStack[] {GT_Values.NI},
             new FluidStack[]{Materials.DimensionallyTranscendentProsaicCatalyst.getFluid(1000L)},
             50_000, 125_000*4
