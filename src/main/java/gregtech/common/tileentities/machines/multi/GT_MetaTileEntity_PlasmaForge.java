@@ -42,25 +42,36 @@ import static java.lang.Math.*;
 public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMultiFurnace<GT_MetaTileEntity_PlasmaForge> implements IConstructable {
 
     // 3600 seconds in an hour, 8 hours, 20 ticks in a second.
-    double max_efficiency_time_in_ticks = 3600d * 8d * 20d;
-    double discount = 1;
-    final double maximum_discount = 0.5d;
-    private int mHeatingCapacity = 0;
-    long running_time = 0;
+    private static final double max_efficiency_time_in_ticks = 3600d * 8d * 20d;
+    private static final double maximum_discount = 0.5d;
 
-    private long EU_per_tick = 0;
+    // Valid fuels which the discount will get applied to.
+    private static final FluidStack[] valid_fuels = {
+        Materials.ExcitedDTEC.getFluid(1L),
+        Materials.ExcitedDTRC.getFluid(1L),
+        Materials.ExcitedDTPC.getFluid(1L),
+        Materials.ExcitedDTCC.getFluid(1L),
+    };
 
     // Saves recomputing this every recipe check for overclocking.
     private static final double log4 = log(4);
 
-    private final int min_input_hatch = 0;
-    private final int max_input_hatch = 6;
-    private final int min_output_hatch = 0;
-    private final int max_output_hatch = 2;
-    private final int min_input_bus = 0;
-    private final int max_input_bus = 6;
-    private final int min_output_bus = 0;
-    private final int max_output_bus = 1;
+    private static final int min_input_hatch = 0;
+    private static final int max_input_hatch = 6;
+    private static final int min_output_hatch = 0;
+    private static final int max_output_hatch = 2;
+    private static final int min_input_bus = 0;
+    private static final int max_input_bus = 6;
+    private static final int min_output_bus = 0;
+    private static final int max_output_bus = 1;
+
+    // Current discount rate. 1 = 0%, 0 = 100%.
+    private double discount = 1;
+    private int mHeatingCapacity = 0;
+    private long running_time = 0;
+    // Custom long EU per tick value given that mEUt is an int. Required to overclock beyond MAX voltage.
+    private long EU_per_tick = 0;
+
 
     @SuppressWarnings("SpellCheckingInspection")
     private static final String[][] structure_string = new String[][] {
@@ -131,7 +142,7 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_PlasmaForge(this.mName);
+        return new GT_MetaTileEntity_PlasmaForge(mName);
     }
 
     @Override
@@ -218,8 +229,7 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
 
         // If recipe cannot be found then continuity is broken and reset running time to 0.
         if (!recipe_process) {
-            running_time = 0;
-            discount = 1;
+            resetDiscount();
         }
 
         return recipe_process;
@@ -232,7 +242,6 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
         long tAmps = GT_ExoticEnergyInputHelper.getMaxInputAmpsMulti(getExoticAndNormalEnergyHatchList());
 
         long tTotalEU = tVoltage * tAmps;
-        System.out.println(tTotalEU);
 
         // Hacky method to determine if double energy hatches are being used.
         if (getExoticAndNormalEnergyHatchList().get(0) instanceof GT_MetaTileEntity_Hatch_Energy) {
@@ -252,25 +261,29 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
         if (tRecipe_0 == null)
             return false;
 
-        System.out.println("Recipe found");
-
-
         // If coil heat capacity is too low, refuse to start recipe.
         if (mHeatingCapacity <= tRecipe_0.mSpecialValue)
             return false;
 
         // Reduce fuel quantity if machine has been running for long enough.
         GT_Recipe tRecipe_1 = tRecipe_0.copy();
-        for(int i = 0; i < tRecipe_0.mFluidInputs.length; i++) {
-            if (tRecipe_1.mFluidInputs[i].isFluidEqual(Materials.ExcitedDTCC.getFluid(1L))) {
-                // If running for max_efficiency_time_in_ticks then discount is at maximum
-                double time_percentage = running_time / max_efficiency_time_in_ticks;
-                time_percentage = Math.min(time_percentage, 1.0d);
-                discount = (1 - time_percentage);
-                discount = Math.max(maximum_discount, discount);
-                tRecipe_1.mFluidInputs[i].amount = (int) Math.round(tRecipe_1.mFluidInputs[i].amount * discount);
+
+        // Break out to the outermost for loop when fuel found and discounted. Only 1 fuel per recipe is intended.
+        outside:
+        for (int i = 0; i < tRecipe_0.mFluidInputs.length; i++) {
+            for (FluidStack fuel : valid_fuels) {
+                if (tRecipe_1.mFluidInputs[i].isFluidEqual(fuel)) {
+                    // If running for max_efficiency_time_in_ticks then discount is at maximum.
+                    double time_percentage = running_time / max_efficiency_time_in_ticks;
+                    time_percentage = Math.min(time_percentage, 1.0d);
+                    discount = (1 - time_percentage);
+                    discount = Math.max(maximum_discount, discount);
+                    tRecipe_1.mFluidInputs[i].amount = (int) Math.round(tRecipe_1.mFluidInputs[i].amount * discount);
+                    break outside;
+                }
             }
         }
+
 
         // Takes items/fluids from hatches/busses.
         if (!tRecipe_1.isRecipeInputEqual(true, tFluids, tItems))
@@ -302,7 +315,7 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
 
         // Reset heating capacity.
-        this.mHeatingCapacity = 0;
+        mHeatingCapacity = 0;
 
         // Get heating capacity from coils in structure.
         setCoilLevel(HeatingCoilLevel.None);
@@ -332,7 +345,7 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
 
         // If there is more than 1 TT energy hatch, the structure check will fail.
         // If there is a TT hatch and a normal hatch, the structure check will fail.
-        if (mExoticEnergyHatches.size() > 0){
+        if (mExoticEnergyHatches.size() > 0) {
             if (mEnergyHatches.size() > 0) return false;
             if (mExoticEnergyHatches.size() > 1) return false;
         }
@@ -357,7 +370,7 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
             return false;
 
         // Heat capacity of coils used on multi. No free heat from extra EU!
-        this.mHeatingCapacity = (int) getCoilLevel().getHeat();
+        mHeatingCapacity = (int) getCoilLevel().getHeat();
 
         // All structure checks passed, return true.
         return true;
@@ -374,8 +387,8 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
             return false;
         FluidStack tLiquid = aLiquid.copy();
 
-        return dumpFluid(this.mOutputHatches, tLiquid, true) ||
-            dumpFluid(this.mOutputHatches, tLiquid, false);
+        return dumpFluid(mOutputHatches, tLiquid, true) ||
+            dumpFluid(mOutputHatches, tLiquid, false);
     }
 
     @Override
@@ -387,8 +400,7 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
     public boolean onRunningTick(ItemStack aStack) {
         if (EU_per_tick < 0) {
             if (!drainEnergyInput(-EU_per_tick)) {
-                running_time = 0;
-                discount = 1;
+                resetDiscount();
                 EU_per_tick = 0;
                 criticalStopMachine();
                 return false;
@@ -439,11 +451,16 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
         return tHatches;
     }
 
+    // Reset running time and discount.
+    public void resetDiscount() {
+        running_time = 0;
+        discount = 1;
+    }
+
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide() && !aBaseMetaTileEntity.isAllowedToWork()) {
             // Reset running time and discount.
-            running_time = 0;
-            discount = 1;
+            resetDiscount();
             // If machine has stopped, stop chunkloading.
             GT_ChunkManager.releaseTicket((TileEntity) aBaseMetaTileEntity);
             isMultiChunkloaded = false;
@@ -478,6 +495,7 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setLong("eRunningTime", running_time);
+        aNBT.setDouble("eLongDiscountValue", discount);
         aNBT.setLong("eLongEUPerTick", EU_per_tick);
         super.saveNBTData(aNBT);
     }
@@ -485,6 +503,7 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
     @Override
     public void loadNBTData(final NBTTagCompound aNBT) {
         running_time = aNBT.getLong("eRunningTime");
+        discount = aNBT.getDouble("eLongDiscountValue");
         EU_per_tick = aNBT.getLong("eLongEUPerTick");
         super.loadNBTData(aNBT);
     }
