@@ -658,6 +658,13 @@ public final class ModItems {
 			MaterialGenerator.generateOreMaterial(ALLOY.KOBOLDITE);
 			GTplusplus_Everglades.GenerateOreMaterials();
 
+			// Werkstoff bridge
+			ELEMENT.getInstance().ZIRCONIUM.setWerkstoffID((short) 3);
+			ELEMENT.getInstance().THORIUM232.setWerkstoffID((short) 30);
+			ELEMENT.getInstance().RUTHENIUM.setWerkstoffID((short) 64);
+			ELEMENT.getInstance().HAFNIUM.setWerkstoffID((short) 11000);
+			ELEMENT.getInstance().IODINE.setWerkstoffID((short) 11012);
+
 
 		} catch (final Throwable r){
 			Logger.INFO("Failed to Generated a Material. "+r.getMessage());

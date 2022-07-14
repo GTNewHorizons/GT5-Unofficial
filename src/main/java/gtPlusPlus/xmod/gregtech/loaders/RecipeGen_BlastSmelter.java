@@ -216,7 +216,7 @@ public class RecipeGen_BlastSmelter extends RecipeGen_Base {
 									}
 								}
 								else {
-									components[irc] = M.getComposites().get(irc).getDustStack(r);
+									components[irc] = M.getComposites().get(irc).getUnificatedDustStack(r);
 								}
 							}
 						}

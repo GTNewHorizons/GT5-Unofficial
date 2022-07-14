@@ -88,6 +88,8 @@ public class Material {
 	
 	public BaseTinkersMaterial vTiConHandler;
 
+	public short werkstoffID;
+
 
 	public static AutoMap<Materials> invalidMaterials = new AutoMap<Materials>();
 	
@@ -1525,6 +1527,10 @@ public class Material {
 		else {
 			return aGregtechMaterial;
 		}
+	}
+
+	public void setWerkstoffID(short werkstoffID) {
+		this.werkstoffID = werkstoffID;
 	}
 
 }

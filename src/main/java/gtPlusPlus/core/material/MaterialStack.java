@@ -3,6 +3,8 @@ package gtPlusPlus.core.material;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+import gregtech.api.enums.OrePrefixes;
+import gtPlusPlus.xmod.bartworks.BW_Utils;
 import net.minecraft.item.ItemStack;
 
 import gtPlusPlus.api.objects.Logger;
@@ -51,6 +53,16 @@ public class MaterialStack {
 
 	public ItemStack getDustStack(final int amount){
 		return this.stackMaterial.getDust(amount);
+	}
+
+	public ItemStack getUnificatedDustStack(final int amount) {
+		if (this.stackMaterial.werkstoffID != 0) {
+			ItemStack stack = BW_Utils.getCorrespondingItemStack(OrePrefixes.dust, this.stackMaterial.werkstoffID, amount);
+			if (stack != null) {
+				return stack;
+			}
+		}
+		return getDustStack(amount);
 	}
 
 	public Material getStackMaterial(){

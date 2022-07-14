@@ -1,8 +1,12 @@
 package gtPlusPlus.xmod.bartworks;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Map;
 
+import gregtech.api.enums.OrePrefixes;
+import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import net.minecraft.item.ItemStack;
 
@@ -10,12 +14,21 @@ public class BW_Utils {
 
 	private final static Method sName;
 	private final static Method sGet;
-	private static final Class sClassBW_NonMeta_MaterialItems;
+	private static final Class<?> sClassBW_NonMeta_MaterialItems;
+	private static final Class<?> Werkstoff;
+	private static final Class<?> WerkstoffLoader;
+	private static final Map<Short, ?> werkstoffHashMap;
+	private static final Method getCorrespondingItemStackUnsafe;
 	
 	static {
 		sName = ReflectionUtils.getMethod(Enum.class, "name");
 		sClassBW_NonMeta_MaterialItems = ReflectionUtils.getClass("com.github.bartimaeusnek.bartworks.system.material.BW_NonMeta_MaterialItems");
 		sGet = ReflectionUtils.getMethod(sClassBW_NonMeta_MaterialItems, "get", long.class, Object[].class);
+		Werkstoff = ReflectionUtils.getClass("com.github.bartimaeusnek.bartworks.system.material.Werkstoff");
+		WerkstoffLoader = ReflectionUtils.getClass("com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader");
+		Field fieldWerkstoffHashMap = ReflectionUtils.getField(Werkstoff, "werkstoffHashMap");
+		werkstoffHashMap = ReflectionUtils.getFieldValue(fieldWerkstoffHashMap);
+		getCorrespondingItemStackUnsafe = ReflectionUtils.getMethod(WerkstoffLoader, "getCorrespondingItemStackUnsafe", OrePrefixes.class, Werkstoff, int.class);
 	}
 	
 	public enum NonMeta_MaterialItem {
@@ -51,5 +64,17 @@ public class BW_Utils {
 		aItems.add(getBW_NonMeta_MaterialItems(NonMeta_MaterialItem.TiberiumCell_4, aStackSize));
 		aItems.add(getBW_NonMeta_MaterialItems(NonMeta_MaterialItem.TheCoreCell, aStackSize));
 		return aItems;
+	}
+
+	public static ItemStack getCorrespondingItemStack(OrePrefixes orePrefixes, short werkstoffID, int amount) {
+		if (LoadedMods.BartWorks) {
+			if (werkstoffHashMap != null) {
+				Object werkstoff = werkstoffHashMap.get(werkstoffID);
+				if (werkstoff != null) {
+					return (ItemStack) ReflectionUtils.invokeNonBool(null, getCorrespondingItemStackUnsafe, new Object[]{orePrefixes, werkstoff, amount});
+				}
+			}
+		}
+		return null;
 	}
 }
