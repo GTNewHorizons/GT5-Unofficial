@@ -12,7 +12,6 @@ import forestry.api.genetics.IEffectData;
 import forestry.api.genetics.IIndividual;
 import forestry.core.errors.EnumErrorCode;
 import forestry.plugins.PluginApiculture;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -453,7 +452,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
         if(aIndex == queen) return beeRoot.isMember(aStack, EnumBeeType.QUEEN.ordinal()) || beeRoot.isMember(aStack, EnumBeeType.PRINCESS.ordinal());
         else if(aIndex == drone) return beeRoot.isMember(aStack, EnumBeeType.DRONE.ordinal());
         else if(aIndex < getOutputSlot()) {
-            if(!(aStack.getItem() instanceof IApiaryUpgrade) && !OrePrefixes.apiaryUpgrade.contains(aStack))
+            if(!(aStack.getItem() instanceof IApiaryUpgrade) && !GT_ApiaryUpgrade.isUpgrade(aStack))
                 return false;
             for(int i = drone+1; i < drone+1+4; i++)
             {
@@ -464,12 +463,12 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                     continue;
                 if(GT_Utility.areStacksEqual(getStackInSlot(i), aStack))
                     return false;
-                if(OrePrefixes.apiaryUpgrade.contains(aStack))
+                if(GT_ApiaryUpgrade.isUpgrade(aStack))
                 {
                     if(!GT_ApiaryUpgrade.getUpgrade(aStack).isAllowedToWorkWith(getStackInSlot(i)))
                         return false;
                 }
-                else if(OrePrefixes.apiaryUpgrade.contains(s))
+                else if(GT_ApiaryUpgrade.isUpgrade(s))
                 {
                     if(!GT_ApiaryUpgrade.getUpgrade(s).isAllowedToWorkWith(aStack))
                         return false;
@@ -755,7 +754,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                 IApiaryUpgrade up = (IApiaryUpgrade) s.getItem();
                 up.applyModifiers(mods, s);
             }
-            else if(OrePrefixes.apiaryUpgrade.contains(s))
+            else if(GT_ApiaryUpgrade.isUpgrade(s))
             {
                 GT_ApiaryUpgrade upgrade = GT_ApiaryUpgrade.getUpgrade(s);
                 if(upgrade != null)

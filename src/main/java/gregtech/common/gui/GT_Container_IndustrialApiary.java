@@ -4,7 +4,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import forestry.api.core.ForestryAPI;
 import forestry.api.core.IErrorState;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.gui.GT_ContainerMetaTile_Machine;
 import gregtech.api.gui.GT_Slot_Holo;
 import gregtech.api.gui.GT_Slot_Output;
@@ -127,7 +126,7 @@ public class GT_Container_IndustrialApiary extends GT_ContainerMetaTile_Machine 
             return null; // super would replace item
         if(slotstack == null && !slot.isItemValid(s))
             return super.slotClick(aSlotNumber, aMouseclick, aShifthold, aPlayer);
-        if(!(s.getItem() instanceof IApiaryUpgrade) && !OrePrefixes.apiaryUpgrade.contains(s))
+        if(!(s.getItem() instanceof IApiaryUpgrade) && !GT_ApiaryUpgrade.isUpgrade(s))
             return super.slotClick(aSlotNumber, aMouseclick, aShifthold, aPlayer);
         int max = 1;
         if (s.getItem() instanceof IApiaryUpgrade)
@@ -233,7 +232,7 @@ public class GT_Container_IndustrialApiary extends GT_ContainerMetaTile_Machine 
         ItemStack aStack = s.getStack();
         if(aStack == null)
             return super.transferStackInSlot(aPlayer, aSlotIndex);
-        if(!(aStack.getItem() instanceof IApiaryUpgrade) && !OrePrefixes.apiaryUpgrade.contains(aStack))
+        if(!(aStack.getItem() instanceof IApiaryUpgrade) && !GT_ApiaryUpgrade.isUpgrade(aStack))
             return super.transferStackInSlot(aPlayer, aSlotIndex);
         for(int i = getSlotStartIndex()+2; i < getSlotStartIndex()+2+4; i++) {
             Slot iSlot = getSlot(i);
