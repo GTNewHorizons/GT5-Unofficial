@@ -170,8 +170,7 @@ public class GT_StructureUtility {
 			}
 
 			private int getMeta(ItemStack trigger) {
-				// -4 to skip unimplemented tiers
-				return GT_Block_Casings5.getMetaFromCoilHeat(HeatingCoilLevel.getFromTier((byte) Math.min(HeatingCoilLevel.getMaxTier() - 4, Math.max(0, trigger.stackSize - 1))));
+				return GT_Block_Casings5.getMetaFromCoilHeat(HeatingCoilLevel.getFromTier((byte) Math.min(HeatingCoilLevel.getMaxTier(), Math.max(0, trigger.stackSize - 1))));
 			}
 
 			@Override
