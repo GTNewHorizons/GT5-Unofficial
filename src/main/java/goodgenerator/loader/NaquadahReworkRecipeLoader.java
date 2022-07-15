@@ -546,21 +546,25 @@ public class NaquadahReworkRecipeLoader {
                                     || OreDictionary.getOreName(oreDictID).startsWith("crushed"))
                             && OreDictionary.getOreName(oreDictID).contains("Naq")) {
                         GT_Recipe tRecipe = recipe.copy();
+                        boolean modified = false;
                         for (int i = 0; i < tRecipe.mOutputs.length; i++) {
                             if (!GT_Utility.isStackValid(tRecipe.mOutputs[i])) continue;
                             if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadah.getDust(1))) {
                                 tRecipe.mOutputs[i] = GT_Utility.copyAmount(
                                         tRecipe.mOutputs[i].stackSize * 2, naquadahEarth.get(OrePrefixes.dust, 1));
+                                modified = true;
                             } else if (tRecipe.mOutputs[i].isItemEqual(Materials.NaquadahEnriched.getDust(1))) {
                                 tRecipe.mOutputs[i] = GT_Utility.copyAmount(
                                         tRecipe.mOutputs[i].stackSize * 2,
                                         enrichedNaquadahEarth.get(OrePrefixes.dust, 1));
+                                modified = true;
                             } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadria.getDust(1))) {
                                 tRecipe.mOutputs[i] = GT_Utility.copyAmount(
                                         tRecipe.mOutputs[i].stackSize * 2, naquadriaEarth.get(OrePrefixes.dust, 1));
+                                modified = true;
                             }
                         }
-                        if (!tRecipe.equals(recipe)) {
+                        if (modified) {
                             reAdd.add(tRecipe);
                             remove.add(recipe);
                         }
@@ -589,21 +593,25 @@ public class NaquadahReworkRecipeLoader {
                     if (OreDictionary.getOreName(oreDictID).startsWith("crushed")
                             && OreDictionary.getOreName(oreDictID).contains("Naq")) {
                         GT_Recipe tRecipe = recipe.copy();
+                        boolean modified = false;
                         for (int i = 0; i < tRecipe.mOutputs.length; i++) {
                             if (!GT_Utility.isStackValid(tRecipe.mOutputs[i])) continue;
                             if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadah.getDust(1))) {
                                 tRecipe.mOutputs[i] = GT_Utility.copyAmount(
                                         tRecipe.mOutputs[i].stackSize * 2, naquadahEarth.get(OrePrefixes.dust, 1));
+                                modified = true;
                             } else if (tRecipe.mOutputs[i].isItemEqual(Materials.NaquadahEnriched.getDust(1))) {
                                 tRecipe.mOutputs[i] = GT_Utility.copyAmount(
                                         tRecipe.mOutputs[i].stackSize * 2,
                                         enrichedNaquadahEarth.get(OrePrefixes.dust, 1));
+                                modified = true;
                             } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadria.getDust(1))) {
                                 tRecipe.mOutputs[i] = GT_Utility.copyAmount(
                                         tRecipe.mOutputs[i].stackSize * 2, naquadriaEarth.get(OrePrefixes.dust, 1));
+                                modified = true;
                             }
                         }
-                        if (!tRecipe.equals(recipe)) {
+                        if (modified) {
                             reAdd.add(tRecipe);
                             remove.add(recipe);
                         }
@@ -632,21 +640,25 @@ public class NaquadahReworkRecipeLoader {
                     if (OreDictionary.getOreName(oreDictID).startsWith("crushed")
                             && OreDictionary.getOreName(oreDictID).contains("Naq")) {
                         GT_Recipe tRecipe = recipe.copy();
+                        boolean modified = false;
                         for (int i = 0; i < tRecipe.mOutputs.length; i++) {
                             if (!GT_Utility.isStackValid(tRecipe.mOutputs[i])) continue;
                             if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadah.getDust(1))) {
                                 tRecipe.mOutputs[i] = GT_Utility.copyAmount(
                                         tRecipe.mOutputs[i].stackSize * 2, naquadahEarth.get(OrePrefixes.dust, 1));
+                                modified = true;
                             } else if (tRecipe.mOutputs[i].isItemEqual(Materials.NaquadahEnriched.getDust(1))) {
                                 tRecipe.mOutputs[i] = GT_Utility.copyAmount(
                                         tRecipe.mOutputs[i].stackSize * 2,
                                         enrichedNaquadahEarth.get(OrePrefixes.dust, 1));
+                                modified = true;
                             } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadria.getDust(1))) {
                                 tRecipe.mOutputs[i] = GT_Utility.copyAmount(
                                         tRecipe.mOutputs[i].stackSize * 2, naquadriaEarth.get(OrePrefixes.dust, 1));
+                                modified = true;
                             }
                         }
-                        if (!tRecipe.equals(recipe)) {
+                        if (modified) {
                             reAdd.add(tRecipe);
                             remove.add(recipe);
                         }
@@ -674,14 +686,16 @@ public class NaquadahReworkRecipeLoader {
                 int[] oreDict = OreDictionary.getOreIDs(input);
                 if (input.isItemEqual(GT_Bees.combs.getStackForType(CombType.DOB))) {
                     GT_Recipe tRecipe = recipe.copy();
+                    boolean modified = false;
                     for (int i = 0; i < tRecipe.mOutputs.length; i++) {
                         if (!GT_Utility.isStackValid(tRecipe.mOutputs[i])) continue;
                         if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadah.getDustTiny(1))) {
                             tRecipe.mOutputs[i] = GT_Utility.copyAmount(
                                     tRecipe.mOutputs[i].stackSize * 2L, naquadahEarth.get(OrePrefixes.dustTiny, 1));
+                            modified = true;
                         }
                     }
-                    if (!tRecipe.equals(recipe)) {
+                    if (modified) {
                         reAdd.add(tRecipe);
                         remove.add(recipe);
                     }
@@ -692,46 +706,56 @@ public class NaquadahReworkRecipeLoader {
                                 || OreDictionary.getOreName(oreDictID).startsWith("dustSpace")
                                 || OreDictionary.getOreName(oreDictID).startsWith("dustNaq")) {
                             GT_Recipe tRecipe = recipe.copy();
+                            boolean modified = false;
                             for (int i = 0; i < tRecipe.mOutputs.length; i++) {
                                 if (!GT_Utility.isStackValid(tRecipe.mOutputs[i])) continue;
                                 if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadah.getDustTiny(1))) {
                                     tRecipe.mOutputs[i] = GT_Utility.copyAmount(
                                             tRecipe.mOutputs[i].stackSize * 2,
                                             naquadahEarth.get(OrePrefixes.dustTiny, 1));
+                                    modified = true;
                                 } else if (tRecipe.mOutputs[i].isItemEqual(Materials.NaquadahEnriched.getDustTiny(1))) {
                                     tRecipe.mOutputs[i] = GT_Utility.copyAmount(
                                             tRecipe.mOutputs[i].stackSize * 2,
                                             enrichedNaquadahEarth.get(OrePrefixes.dustTiny, 1));
+                                    modified = true;
                                 } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadria.getDustTiny(1))) {
                                     tRecipe.mOutputs[i] = GT_Utility.copyAmount(
                                             tRecipe.mOutputs[i].stackSize * 2,
                                             naquadriaEarth.get(OrePrefixes.dustTiny, 1));
+                                    modified = true;
                                 } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadah.getDust(1))) {
                                     tRecipe.mOutputs[i] = GT_Utility.copyAmount(
                                             tRecipe.mOutputs[i].stackSize * 2, naquadahEarth.get(OrePrefixes.dust, 1));
+                                    modified = true;
                                 } else if (tRecipe.mOutputs[i].isItemEqual(Materials.NaquadahEnriched.getDust(1))) {
                                     tRecipe.mOutputs[i] = GT_Utility.copyAmount(
                                             tRecipe.mOutputs[i].stackSize * 2,
                                             enrichedNaquadahEarth.get(OrePrefixes.dust, 1));
+                                    modified = true;
                                 } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadria.getDust(1))) {
                                     tRecipe.mOutputs[i] = GT_Utility.copyAmount(
                                             tRecipe.mOutputs[i].stackSize * 2, naquadriaEarth.get(OrePrefixes.dust, 1));
+                                    modified = true;
                                 } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadah.getDustSmall(1))) {
                                     tRecipe.mOutputs[i] = GT_Utility.copyAmount(
                                             tRecipe.mOutputs[i].stackSize * 2,
                                             naquadahEarth.get(OrePrefixes.dustSmall, 1));
+                                    modified = true;
                                 } else if (tRecipe.mOutputs[i].isItemEqual(
                                         Materials.NaquadahEnriched.getDustSmall(1))) {
                                     tRecipe.mOutputs[i] = GT_Utility.copyAmount(
                                             tRecipe.mOutputs[i].stackSize * 2,
                                             enrichedNaquadahEarth.get(OrePrefixes.dustSmall, 1));
+                                    modified = true;
                                 } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadria.getDustSmall(1))) {
                                     tRecipe.mOutputs[i] = GT_Utility.copyAmount(
                                             tRecipe.mOutputs[i].stackSize * 2,
                                             naquadriaEarth.get(OrePrefixes.dustSmall, 1));
+                                    modified = true;
                                 }
                             }
-                            if (!tRecipe.equals(recipe)) {
+                            if (modified) {
                                 reAdd.add(tRecipe);
                                 remove.add(recipe);
                             }
@@ -760,21 +784,25 @@ public class NaquadahReworkRecipeLoader {
                     if (OreDictionary.getOreName(oreDictID).startsWith("crushed")
                             && OreDictionary.getOreName(oreDictID).contains("Naq")) {
                         GT_Recipe tRecipe = recipe.copy();
+                        boolean modified = false;
                         for (int i = 0; i < tRecipe.mOutputs.length; i++) {
                             if (!GT_Utility.isStackValid(tRecipe.mOutputs[i])) continue;
                             if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadah.getDust(1))) {
                                 tRecipe.mOutputs[i] = GT_Utility.copyAmount(
                                         tRecipe.mOutputs[i].stackSize * 2, naquadahEarth.get(OrePrefixes.dust, 1));
+                                modified = true;
                             } else if (tRecipe.mOutputs[i].isItemEqual(Materials.NaquadahEnriched.getDust(1))) {
                                 tRecipe.mOutputs[i] = GT_Utility.copyAmount(
                                         tRecipe.mOutputs[i].stackSize * 2,
                                         enrichedNaquadahEarth.get(OrePrefixes.dust, 1));
+                                modified = true;
                             } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadria.getDust(1))) {
                                 tRecipe.mOutputs[i] = GT_Utility.copyAmount(
                                         tRecipe.mOutputs[i].stackSize * 2, naquadriaEarth.get(OrePrefixes.dust, 1));
+                                modified = true;
                             }
                         }
-                        if (!tRecipe.equals(recipe)) {
+                        if (modified) {
                             reAdd.add(tRecipe);
                             remove.add(recipe);
                         }
@@ -809,17 +837,21 @@ public class NaquadahReworkRecipeLoader {
             }
             if (!isAny) continue;
             GT_Recipe tRecipe = recipe.copy();
+            boolean modified = false;
             for (int i = 0; i < recipe.mFluidOutputs.length; i++) {
                 if (recipe.mFluidOutputs[i] == null) continue;
                 if (recipe.mFluidOutputs[i].isFluidEqual(Materials.Naquadah.getMolten(1))) {
                     tRecipe.mFluidOutputs[i] = naquadahGoo.getFluidOrGas(recipe.mFluidOutputs[i].amount * 2);
+                    modified = true;
                 } else if (recipe.mFluidOutputs[i].isFluidEqual(Materials.NaquadahEnriched.getMolten(1))) {
                     tRecipe.mFluidOutputs[i] = enrichedNaquadahGoo.getFluidOrGas(recipe.mFluidOutputs[i].amount * 2);
+                    modified = true;
                 } else if (recipe.mFluidOutputs[i].isFluidEqual(Materials.Naquadria.getMolten(1))) {
                     tRecipe.mFluidOutputs[i] = naquadriaGoo.getFluidOrGas(recipe.mFluidOutputs[i].amount * 2);
+                    modified = true;
                 }
             }
-            if (!tRecipe.equals(recipe)) {
+            if (modified) {
                 reAdd.add(tRecipe);
                 remove.add(recipe);
             }
@@ -850,17 +882,21 @@ public class NaquadahReworkRecipeLoader {
             }
             if (!isAny) continue;
             GT_Recipe tRecipe = recipe.copy();
+            boolean modified = false;
             for (int i = 0; i < recipe.mFluidOutputs.length; i++) {
                 if (recipe.mFluidOutputs[i] == null) continue;
                 if (recipe.mFluidOutputs[i].isFluidEqual(Materials.Naquadah.getMolten(1))) {
                     tRecipe.mFluidOutputs[i] = naquadahGoo.getFluidOrGas(recipe.mFluidOutputs[i].amount * 2);
+                    modified = true;
                 } else if (recipe.mFluidOutputs[i].isFluidEqual(Materials.NaquadahEnriched.getMolten(1))) {
                     tRecipe.mFluidOutputs[i] = enrichedNaquadahGoo.getFluidOrGas(recipe.mFluidOutputs[i].amount * 2);
+                    modified = true;
                 } else if (recipe.mFluidOutputs[i].isFluidEqual(Materials.Naquadria.getMolten(1))) {
                     tRecipe.mFluidOutputs[i] = naquadriaGoo.getFluidOrGas(recipe.mFluidOutputs[i].amount * 2);
+                    modified = true;
                 }
             }
-            if (!tRecipe.equals(recipe)) {
+            if (modified) {
                 reAdd.add(tRecipe);
                 remove.add(recipe);
             }
@@ -893,21 +929,25 @@ public class NaquadahReworkRecipeLoader {
                     for (int oreDictID : oreDict) {
                         if (OreDictionary.getOreName(oreDictID).startsWith("dustImpureNaq")) {
                             GT_Recipe tRecipe = recipe.copy();
+                            boolean modified = false;
                             for (int i = 0; i < tRecipe.mOutputs.length; i++) {
                                 if (!GT_Utility.isStackValid(tRecipe.mOutputs[i])) continue;
                                 if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadah.getDust(1))) {
                                     tRecipe.mOutputs[i] = GT_Utility.copyAmount(
                                             tRecipe.mOutputs[i].stackSize, naquadahEarth.get(OrePrefixes.dust, 1));
+                                    modified = true;
                                 } else if (tRecipe.mOutputs[i].isItemEqual(Materials.NaquadahEnriched.getDust(1))) {
                                     tRecipe.mOutputs[i] = GT_Utility.copyAmount(
                                             tRecipe.mOutputs[i].stackSize,
                                             enrichedNaquadahEarth.get(OrePrefixes.dust, 1));
+                                    modified = true;
                                 } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadria.getDust(1))) {
                                     tRecipe.mOutputs[i] = GT_Utility.copyAmount(
                                             tRecipe.mOutputs[i].stackSize, naquadriaEarth.get(OrePrefixes.dust, 1));
+                                    modified = true;
                                 }
                             }
-                            if (!tRecipe.equals(recipe)) {
+                            if (modified) {
                                 reAdd.add(tRecipe);
                                 remove.add(recipe);
                             }
@@ -937,20 +977,24 @@ public class NaquadahReworkRecipeLoader {
                     if (OreDictionary.getOreName(oreDictID).startsWith("ore")
                             && OreDictionary.getOreName(oreDictID).contains("Naq")) {
                         GT_Recipe tRecipe = recipe.copy();
+                        boolean modified = false;
                         for (int i = 0; i < tRecipe.mOutputs.length; i++) {
                             if (!GT_Utility.isStackValid(tRecipe.mOutputs[i])) continue;
                             if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadah.getDust(1))) {
                                 tRecipe.mOutputs[i] = GT_Utility.copyAmount(
                                         tRecipe.mOutputs[i].stackSize, naquadahEarth.get(OrePrefixes.dust, 1));
+                                modified = true;
                             } else if (tRecipe.mOutputs[i].isItemEqual(Materials.NaquadahEnriched.getDust(1))) {
                                 tRecipe.mOutputs[i] = GT_Utility.copyAmount(
                                         tRecipe.mOutputs[i].stackSize, enrichedNaquadahEarth.get(OrePrefixes.dust, 1));
+                                modified = true;
                             } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadria.getDust(1))) {
                                 tRecipe.mOutputs[i] = GT_Utility.copyAmount(
                                         tRecipe.mOutputs[i].stackSize, naquadriaEarth.get(OrePrefixes.dust, 1));
+                                modified = true;
                             }
                         }
-                        if (!tRecipe.equals(recipe)) {
+                        if (modified) {
                             reAdd.add(tRecipe);
                             remove.add(recipe);
                         }
