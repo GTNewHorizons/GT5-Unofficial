@@ -55,6 +55,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
     IBeeRoot beeRoot = (IBeeRoot) AlleleManager.alleleRegistry.getSpeciesRoot("rootBees");
 
     public int mSpeed = 0;
+    public boolean mLockedSpeed = true;
     public boolean retreviePollen = false;
 
     private ItemStack usedQueen = null;
@@ -134,7 +135,6 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
     @Override
     public int checkRecipe() {
         updateModifiers();
-        mSpeed = Math.min(mSpeed, maxspeed);
         if(canWork()) {
 
             ItemStack queen = getQueen();
@@ -782,6 +782,11 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
         humidityMod = mods.humidity;
         temperatureMod = mods.temperature;
         isAutomated = mods.isAutomated;
+
+        if(mLockedSpeed)
+            mSpeed = maxspeed;
+        else
+            mSpeed = Math.min(mSpeed, maxspeed);
     }
 
     @Override

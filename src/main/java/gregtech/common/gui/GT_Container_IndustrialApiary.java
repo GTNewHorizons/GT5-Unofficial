@@ -37,9 +37,9 @@ public class GT_Container_IndustrialApiary extends GT_ContainerMetaTile_Machine 
     boolean mStuttering;
 
     int mSpeed = 0; // scale 0 - 8
+    boolean mLockedSpeed = true;
     boolean retrievePollen;
 
-    int mErrorStatesSize = 0;
     ArrayList<String> mErrorStates = new ArrayList<>(50);
 
     public GT_Container_IndustrialApiary(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
@@ -81,8 +81,25 @@ public class GT_Container_IndustrialApiary extends GT_ContainerMetaTile_Machine 
                 machine.mItemTransfer = !machine.mItemTransfer;
                 return null;
             case 1:
-                machine.mSpeed++;
-                if(machine.mSpeed > machine.getMaxSpeed()) machine.mSpeed = 0;
+                if(aMouseclick == 0) {
+                    if(machine.mLockedSpeed)
+                        return null;
+                    if(aShifthold == 0) {
+                        machine.mSpeed++;
+                        if (machine.mSpeed > machine.getMaxSpeed()) machine.mSpeed = 0;
+                    }
+                    else if(aShifthold == 1)
+                    {
+                        machine.mSpeed--;
+                        if (machine.mSpeed < 0) machine.mSpeed = machine.getMaxSpeed();
+                    }
+                }
+                else if(aMouseclick == 1)
+                {
+                    machine.mLockedSpeed = !machine.mLockedSpeed;
+                    if(machine.mLockedSpeed)
+                        machine.mSpeed = machine.getMaxSpeed();
+                }
                 return null;
             case 2:
                 machine.retreviePollen = !machine.retreviePollen;
@@ -158,16 +175,18 @@ public class GT_Container_IndustrialApiary extends GT_ContainerMetaTile_Machine 
         this.mItemTransfer = getMachine().mItemTransfer;
         this.mStuttering = getMachine().mStuttering;
         this.retrievePollen = getMachine().retreviePollen;
+        this.mLockedSpeed = getMachine().mLockedSpeed;
 
         for (Object crafter : this.crafters) {
             ICrafting var1 = (ICrafting) crafter;
             var1.sendProgressBarUpdate(this, 100, this.mSpeed);
             var1.sendProgressBarUpdate(this, 101, this.mItemTransfer ? 1 : 0);
-            var1.sendProgressBarUpdate(this, 102, getMachine().mErrorStates.size());
+            var1.sendProgressBarUpdate(this, 102, 0);
             for(IErrorState s : getMachine().mErrorStates)
                 var1.sendProgressBarUpdate(this, 103, s.getID());
             var1.sendProgressBarUpdate(this, 104, this.mStuttering ? 1 : 0);
             var1.sendProgressBarUpdate(this, 105, this.retrievePollen ? 1 : 0);
+            var1.sendProgressBarUpdate(this, 106, this.mLockedSpeed ? 1 : 0);
         }
     }
 
@@ -183,7 +202,6 @@ public class GT_Container_IndustrialApiary extends GT_ContainerMetaTile_Machine 
                 this.mItemTransfer = par2 == 1;
                 break;
             case 102:
-                this.mErrorStatesSize = par2;
                 this.mErrorStates.clear();
                 break;
             case 103:
@@ -194,6 +212,9 @@ public class GT_Container_IndustrialApiary extends GT_ContainerMetaTile_Machine 
                 break;
             case 105:
                 this.retrievePollen = par2 == 1;
+                break;
+            case 106:
+                this.mLockedSpeed = par2 == 1;
                 break;
         }
     }

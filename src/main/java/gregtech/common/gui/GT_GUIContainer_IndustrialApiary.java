@@ -29,6 +29,7 @@ public class GT_GUIContainer_IndustrialApiary extends GT_GUIContainerMetaTile_Ma
         RETRIEVE_POLLEN_TOOLTIP = "GT5U.machines.industrialapiary.pollen.tooltip",
         CANCEL_PROCESS_TOOLTIP = "GT5U.machines.industrialapiary.cancel.tooltip",
         SPEED_TOOLTIP = "GT5U.machines.industrialapiary.speed.tooltip",
+        SPEED_LOCKED_TOOLTIP = "GT5U.machines.industrialapiary.speedlocked.tooltip",
         INFO_TOOLTIP = "GT5U.machines.industrialapiary.info.tooltip",
         INFO_WITH_BEE_TOOLTIP = "GT5U.machines.industrialapiary.infoextended.tooltip"
             ;
@@ -83,7 +84,7 @@ public class GT_GUIContainer_IndustrialApiary extends GT_GUIContainerMetaTile_Ma
             energyusage = 32;
         else if(accelerated > 2)
             energyusage = 32 * accelerated << (getContainer().mSpeed - 2);
-        mSpeedToggleTooltip.setToolTipText(mTooltipCache.getUncachedTooltipData(SPEED_TOOLTIP, accelerated, GT_Utility.formatNumbers(energyusage)));
+        mSpeedToggleTooltip.setToolTipText(mTooltipCache.getUncachedTooltipData(getContainer().mLockedSpeed ? SPEED_LOCKED_TOOLTIP : SPEED_TOOLTIP, accelerated, GT_Utility.formatNumbers(energyusage)));
         ArrayList<String> s = new ArrayList<>();
         GT_MetaTileEntity_IndustrialApiary IA = getContainer().getMachine();
 
