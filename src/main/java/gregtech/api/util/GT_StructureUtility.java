@@ -30,14 +30,17 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
 import java.util.Arrays;
+import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.function.ToIntFunction;
 
 public class GT_StructureUtility {
-//    private static final Map<Class<?>, String> customNames = new HashMap<>();
+    //    private static final Map<Class<?>, String> customNames = new HashMap<>();
     private GT_StructureUtility() {
         throw new AssertionError("Not instantiable");
     }
@@ -100,6 +103,20 @@ public class GT_StructureUtility {
                 return StructureUtility.survivalPlaceBlock(tFrameStack, ItemStackPredicate.NBTMode.IGNORE_KNOWN_INSIGNIFICANT_TAGS, null, false, world, x, y, z, s, actor);
             }
         };
+    }
+
+    public static <T extends GT_MetaTileEntity_EnhancedMultiBlockBase<?>> HatchElementBuilder<T> buildHatchAdder() {
+        return HatchElementBuilder.builder();
+    }
+
+    /**
+     * Completely equivalent to {@link #buildHatchAdder()}, except it plays nicer with type inference
+     * @param typeToken
+     * @return
+     * @param <T>
+     */
+    public static <T extends GT_MetaTileEntity_EnhancedMultiBlockBase<?>> HatchElementBuilder<T> buildHatchAdder(Class<T> typeToken) {
+        return HatchElementBuilder.builder();
     }
 
     public static <T> IStructureElementNoPlacement<T> ofHatchAdder(IGT_HatchAdder<T> aHatchAdder, int aTextureIndex, Block aHintBlock, int aHintMeta) {
@@ -315,7 +332,11 @@ public class GT_StructureUtility {
         };
     }
 
-    public static class HatchElementBuilder {
-        // TODO that freak above is just too long. replace it with a builder
+    @Nonnull
+    public static Predicate<ItemStack> filterByMTEClass(List<? extends Class<? extends IMetaTileEntity>> list) {
+        return is -> {
+            IMetaTileEntity tile = GT_Item_Machines.getMetaTileEntity(is);
+            return tile != null && list.stream().anyMatch(c -> c.isInstance(tile));
+        };
     }
 }

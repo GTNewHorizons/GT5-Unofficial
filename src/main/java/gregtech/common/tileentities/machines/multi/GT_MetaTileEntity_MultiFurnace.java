@@ -1,10 +1,8 @@
 package gregtech.common.tileentities.machines.multi;
 
-import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
@@ -36,14 +34,13 @@ import java.util.ArrayList;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.enums.GT_Values.VN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
-import static gregtech.api.util.GT_StructureUtility.ofMuffler;
 
 public class GT_MetaTileEntity_MultiFurnace extends GT_MetaTileEntity_AbstractMultiFurnace<GT_MetaTileEntity_MultiFurnace> implements ISurvivalConstructable {
     private int mLevel = 0;
@@ -58,10 +55,14 @@ public class GT_MetaTileEntity_MultiFurnace extends GT_MetaTileEntity_AbstractMu
                     {"b~b", "bbb", "bbb"}
             }))
             .addElement('c', ofBlock(GregTech_API.sBlockCasings1, CASING_INDEX))
-            .addElement('m', ofMuffler(CASING_INDEX, 2, IStructureElement.PlaceResult.ACCEPT))
+            .addElement('m', Muffler.newAny(CASING_INDEX, 2))
             .addElement('C', GT_StructureUtility.ofCoil(GT_MetaTileEntity_MultiFurnace::setCoilLevel, GT_MetaTileEntity_MultiFurnace::getCoilLevel))
             .addElement('b', ofChain(
-                ofHatchAdder(GT_MetaTileEntity_MultiFurnace::addBottomHatch, CASING_INDEX, StructureLibAPI.getBlockHint(), 1, GT_MetaTileEntity_MultiFurnace::isBottomHatch, GT_MetaTileEntity_MultiFurnace::suggestBottomHatch, IStructureElement.PlaceResult.ACCEPT_STOP),
+                GT_StructureUtility.<GT_MetaTileEntity_MultiFurnace>buildHatchAdder()
+                    .atLeast(Maintenance, InputBus, OutputBus, Energy)
+                    .casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .build(),
                 ofBlock(GregTech_API.sBlockCasings1, CASING_INDEX)
             ))
             .build();
