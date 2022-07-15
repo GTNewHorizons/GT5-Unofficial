@@ -22,6 +22,7 @@
 
 package com.github.bartimaeusnek.bartworks.system.material;
 
+import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.common.loaders.StaticRecipeChangeLoaders;
 import com.github.bartimaeusnek.bartworks.system.oredict.OreDictHandler;
 import com.github.bartimaeusnek.bartworks.util.BW_ColorUtil;
@@ -29,7 +30,10 @@ import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import com.github.bartimaeusnek.bartworks.util.MurmurHash3;
 import com.github.bartimaeusnek.bartworks.util.NonNullWrappedHashMap;
 import com.github.bartimaeusnek.bartworks.util.Pair;
+import com.github.bartimaeusnek.crossmod.BartWorksCrossmod;
+import com.github.bartimaeusnek.crossmod.tgregworks.MaterialsInjector;
 import com.github.bartimaeusnek.crossmod.thaumcraft.util.ThaumcraftHandler;
+import cpw.mods.fml.common.Loader;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -67,14 +71,15 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
     public static final LinkedHashMap<Short, Werkstoff> werkstoffHashMap = new LinkedHashMap<>();
     public static final LinkedHashMap<String, Werkstoff> werkstoffNameHashMap = new LinkedHashMap<>();
 
-    /**
-     * {className, modName}
-     */
-    public static final Map<String, String> knownModNames = new HashMap(){{
-        put("goodgenerator.items", GREEN + "Good Generator");
-        put("com.elisis.gtnhlanth.common.register", GREEN + "GTNH: Lanthanides");
-        put("galaxyspace.core.register", DARK_PURPLE + "GalaxySpace");
+    public static final Map<String, String> modNameOverrides = new HashMap(){{
+        put("GalaxySpace", DARK_PURPLE + "GalaxySpace");
     }};
+
+    private static final List<String> BWModNames = Arrays.asList(
+        MainMod.NAME,
+        BartWorksCrossmod.NAME,
+        MaterialsInjector.NAME
+    );
 
     private static final HashSet<Short> idHashSet = new HashSet<>();
 
@@ -550,14 +555,14 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
     }
 
     private String getMaterialOwner() {
-        for (StackTraceElement stacktrace : Thread.currentThread().getStackTrace()) {
-            for (Map.Entry<String, String> entry : knownModNames.entrySet()) {
-                if (stacktrace.getClassName().contains(entry.getKey())) {
-                    return entry.getValue();
-                }
-            }
+        String modName = Loader.instance().activeModContainer().getName();
+        if (modNameOverrides.get(modName) != null) {
+            return modNameOverrides.get(modName);
         }
-        return null;
+        if (BWModNames.contains(modName)) {
+            return null;
+        }
+        return GREEN + modName;
     }
 
     public enum Types {
