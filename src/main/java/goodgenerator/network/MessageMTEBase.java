@@ -41,8 +41,7 @@ public abstract class MessageMTEBase implements IMessage {
     protected short y;
     protected int z;
 
-    public MessageMTEBase() {
-    }
+    public MessageMTEBase() {}
 
     public MessageMTEBase(IGregTechTileEntity tile) {
         this.w = tile.getWorld().provider.dimensionId;
@@ -67,7 +66,8 @@ public abstract class MessageMTEBase implements IMessage {
         buf.writeInt(w);
     }
 
-    public static abstract class Handler<REQ extends MessageMTEBase, REPLY extends IMessage> implements IMessageHandler<REQ, REPLY> {
+    public abstract static class Handler<REQ extends MessageMTEBase, REPLY extends IMessage>
+            implements IMessageHandler<REQ, REPLY> {
         protected abstract REPLY onError(REQ message, MessageContext ctx);
 
         protected abstract REPLY onSuccess(REQ message, MessageContext ctx, IMetaTileEntity mte);
@@ -79,17 +79,14 @@ public abstract class MessageMTEBase implements IMessage {
                 world = DimensionManager.getWorld(message.w);
             } else {
                 world = TecTech.proxy.getClientWorld();
-                if (world.provider.dimensionId != message.w)
-                    return onError(message, ctx);
+                if (world.provider.dimensionId != message.w) return onError(message, ctx);
             }
-            if (world == null)
-                return onError(message, ctx);
+            if (world == null) return onError(message, ctx);
             if (world.blockExists(message.x, message.y, message.z)) {
                 TileEntity te = world.getTileEntity(message.x, message.y, message.z);
                 if (te instanceof IGregTechTileEntity && !((IGregTechTileEntity) te).isInvalidTileEntity()) {
                     IMetaTileEntity mte = ((IGregTechTileEntity) te).getMetaTileEntity();
-                    if (mte != null)
-                        return onSuccess(message, ctx, mte);
+                    if (mte != null) return onSuccess(message, ctx, mte);
                 }
             }
             return onError(message, ctx);

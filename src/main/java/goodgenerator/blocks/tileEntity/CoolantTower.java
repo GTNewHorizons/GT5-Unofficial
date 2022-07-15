@@ -1,5 +1,11 @@
 package goodgenerator.blocks.tileEntity;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
+import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.util.GT_StructureUtility.ofFrame;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
+
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -21,12 +27,6 @@ import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
-import static gregtech.api.enums.Textures.BlockIcons.*;
-import static gregtech.api.util.GT_StructureUtility.ofFrame;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
-
 public class CoolantTower extends GT_MetaTileEntity_TooltipMultiBlockBase_EM implements IConstructable {
 
     protected IStructureDefinition<CoolantTower> multiDefinition = null;
@@ -42,38 +42,187 @@ public class CoolantTower extends GT_MetaTileEntity_TooltipMultiBlockBase_EM imp
 
     @Override
     public IStructureDefinition<? extends GT_MetaTileEntity_MultiblockBase_EM> getStructure_EM() {
-        if(multiDefinition == null) {
-            multiDefinition = StructureDefinition
-                .<CoolantTower>builder()
-                .addShape(mName,
-                    transpose(new String[][]{
-                        {"           ", "           ", "    BBB    ", "   B   B   ", "  B     B  ", "  B     B  ", "  B     B  ", "   B   B   ", "    BBB    ", "           ", "           "},
-                        {"           ", "           ", "    BBB    ", "   BBBBB   ", "  BB   BB  ", "  BB   BB  ", "  BB   BB  ", "   BBBBB   ", "    BBB    ", "           ", "           "},
-                        {"           ", "           ", "           ", "    BBB    ", "   B   B   ", "   B   B   ", "   B   B   ", "    BBB    ", "           ", "           ", "           "},
-                        {"           ", "           ", "           ", "    BBB    ", "   B   B   ", "   B   B   ", "   B   B   ", "    BBB    ", "           ", "           ", "           "},
-                        {"           ", "           ", "           ", "    BBB    ", "   B   B   ", "   B   B   ", "   B   B   ", "    BBB    ", "           ", "           ", "           "},
-                        {"           ", "           ", "    BBB    ", "   BBBBB   ", "  BB   BB  ", "  BB   BB  ", "  BB   BB  ", "   BBBBB   ", "    BBB    ", "           ", "           "},
-                        {"           ", "           ", "    BBB    ", "   B   B   ", "  B     B  ", "  B     B  ", "  B     B  ", "   B   B   ", "    BBB    ", "           ", "           "},
-                        {"           ", "           ", "    BBB    ", "   B   B   ", "  B     B  ", "  B     B  ", "  B     B  ", "   B   B   ", "    BBB    ", "           ", "           "},
-                        {"           ", "    BBB    ", "   BBBBB   ", "  BB   BB  ", " BB     BB ", " BB     BB ", " BB     BB ", "  BB   BB  ", "   BBBBB   ", "    BBB    ", "           "},
-                        {"           ", "    BBB    ", "   B   B   ", "  B     B  ", " B       B ", " B       B ", " B       B ", "  B     B  ", "   B   B   ", "    BBB    ", "           "},
-                        {"           ", "   BBBBB   ", "  BB   BB  ", " BB     BB ", " B       B ", " B       B ", " B       B ", " BB     BB ", "  BB   BB  ", "   BBBBB   ", "           "},
-                        {"   HH~HH   ", "  HBBBBBH  ", " HB     BH ", "HB       BH", "HB       BH", "HB       BH", "HB       BH", "HB       BH", " HB     BH ", "  HBBBBBH  ", "   HHHHH   "},
-                        {"   CCCCC   ", "  C     C  ", " C       C ", "C         C", "C         C", "C         C", "C         C", "C         C", " C       C ", "  C     C  ", "   CCCCC   "},
-                    })
-                ).addElement('B',
-                    ofBlockAnyMeta(GregTech_API.sBlockConcretes, 8)
-                ).addElement('C',
-                    ofFrame(Materials.TungstenCarbide)
-                ).addElement('H',
-                    ofChain(
-                        ofHatchAdder(
-                            CoolantTower::addIOFluidToMachineList, CASING_INDEX, 1
-                        ),
-                        ofBlockAnyMeta(GregTech_API.sBlockConcretes, 8)
-                    )
-                )
-                .build();
+        if (multiDefinition == null) {
+            multiDefinition = StructureDefinition.<CoolantTower>builder()
+                    .addShape(mName, transpose(new String[][] {
+                        {
+                            "           ",
+                            "           ",
+                            "    BBB    ",
+                            "   B   B   ",
+                            "  B     B  ",
+                            "  B     B  ",
+                            "  B     B  ",
+                            "   B   B   ",
+                            "    BBB    ",
+                            "           ",
+                            "           "
+                        },
+                        {
+                            "           ",
+                            "           ",
+                            "    BBB    ",
+                            "   BBBBB   ",
+                            "  BB   BB  ",
+                            "  BB   BB  ",
+                            "  BB   BB  ",
+                            "   BBBBB   ",
+                            "    BBB    ",
+                            "           ",
+                            "           "
+                        },
+                        {
+                            "           ",
+                            "           ",
+                            "           ",
+                            "    BBB    ",
+                            "   B   B   ",
+                            "   B   B   ",
+                            "   B   B   ",
+                            "    BBB    ",
+                            "           ",
+                            "           ",
+                            "           "
+                        },
+                        {
+                            "           ",
+                            "           ",
+                            "           ",
+                            "    BBB    ",
+                            "   B   B   ",
+                            "   B   B   ",
+                            "   B   B   ",
+                            "    BBB    ",
+                            "           ",
+                            "           ",
+                            "           "
+                        },
+                        {
+                            "           ",
+                            "           ",
+                            "           ",
+                            "    BBB    ",
+                            "   B   B   ",
+                            "   B   B   ",
+                            "   B   B   ",
+                            "    BBB    ",
+                            "           ",
+                            "           ",
+                            "           "
+                        },
+                        {
+                            "           ",
+                            "           ",
+                            "    BBB    ",
+                            "   BBBBB   ",
+                            "  BB   BB  ",
+                            "  BB   BB  ",
+                            "  BB   BB  ",
+                            "   BBBBB   ",
+                            "    BBB    ",
+                            "           ",
+                            "           "
+                        },
+                        {
+                            "           ",
+                            "           ",
+                            "    BBB    ",
+                            "   B   B   ",
+                            "  B     B  ",
+                            "  B     B  ",
+                            "  B     B  ",
+                            "   B   B   ",
+                            "    BBB    ",
+                            "           ",
+                            "           "
+                        },
+                        {
+                            "           ",
+                            "           ",
+                            "    BBB    ",
+                            "   B   B   ",
+                            "  B     B  ",
+                            "  B     B  ",
+                            "  B     B  ",
+                            "   B   B   ",
+                            "    BBB    ",
+                            "           ",
+                            "           "
+                        },
+                        {
+                            "           ",
+                            "    BBB    ",
+                            "   BBBBB   ",
+                            "  BB   BB  ",
+                            " BB     BB ",
+                            " BB     BB ",
+                            " BB     BB ",
+                            "  BB   BB  ",
+                            "   BBBBB   ",
+                            "    BBB    ",
+                            "           "
+                        },
+                        {
+                            "           ",
+                            "    BBB    ",
+                            "   B   B   ",
+                            "  B     B  ",
+                            " B       B ",
+                            " B       B ",
+                            " B       B ",
+                            "  B     B  ",
+                            "   B   B   ",
+                            "    BBB    ",
+                            "           "
+                        },
+                        {
+                            "           ",
+                            "   BBBBB   ",
+                            "  BB   BB  ",
+                            " BB     BB ",
+                            " B       B ",
+                            " B       B ",
+                            " B       B ",
+                            " BB     BB ",
+                            "  BB   BB  ",
+                            "   BBBBB   ",
+                            "           "
+                        },
+                        {
+                            "   HH~HH   ",
+                            "  HBBBBBH  ",
+                            " HB     BH ",
+                            "HB       BH",
+                            "HB       BH",
+                            "HB       BH",
+                            "HB       BH",
+                            "HB       BH",
+                            " HB     BH ",
+                            "  HBBBBBH  ",
+                            "   HHHHH   "
+                        },
+                        {
+                            "   CCCCC   ",
+                            "  C     C  ",
+                            " C       C ",
+                            "C         C",
+                            "C         C",
+                            "C         C",
+                            "C         C",
+                            "C         C",
+                            " C       C ",
+                            "  C     C  ",
+                            "   CCCCC   "
+                        },
+                    }))
+                    .addElement('B', ofBlockAnyMeta(GregTech_API.sBlockConcretes, 8))
+                    .addElement('C', ofFrame(Materials.TungstenCarbide))
+                    .addElement(
+                            'H',
+                            ofChain(
+                                    ofHatchAdder(CoolantTower::addIOFluidToMachineList, CASING_INDEX, 1),
+                                    ofBlockAnyMeta(GregTech_API.sBlockConcretes, 8)))
+                    .build();
         }
         return multiDefinition;
     }
@@ -86,11 +235,11 @@ public class CoolantTower extends GT_MetaTileEntity_TooltipMultiBlockBase_EM imp
             if (aMetaTileEntity == null) {
                 return false;
             } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-                ((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                return this.mInputHatches.add((GT_MetaTileEntity_Hatch_Input)aMetaTileEntity);
+                ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+                return this.mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
             } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
-                ((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                return this.mOutputHatches.add((GT_MetaTileEntity_Hatch_Output)aMetaTileEntity);
+                ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+                return this.mOutputHatches.add((GT_MetaTileEntity_Hatch_Output) aMetaTileEntity);
             } else {
                 return false;
             }
@@ -112,14 +261,14 @@ public class CoolantTower extends GT_MetaTileEntity_TooltipMultiBlockBase_EM imp
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Coolant Tower")
-            .addInfo("Controller block for the Coolant Tower.")
-            .addInfo("Turn Steam back to Distilled Water.")
-            .addInfo(BLUE_PRINT_INFO)
-            .addSeparator()
-            .addController("Mid of the second layer.")
-            .addInputHatch("Input Hatch", 1)
-            .addOutputHatch("Output Hatch", 1)
-            .toolTipFinisher("Good Generator");
+                .addInfo("Controller block for the Coolant Tower.")
+                .addInfo("Turn Steam back to Distilled Water.")
+                .addInfo(BLUE_PRINT_INFO)
+                .addSeparator()
+                .addController("Mid of the second layer.")
+                .addInputHatch("Input Hatch", 1)
+                .addOutputHatch("Output Hatch", 1)
+                .toolTipFinisher("Good Generator");
         return tt;
     }
 
@@ -177,18 +326,40 @@ public class CoolantTower extends GT_MetaTileEntity_TooltipMultiBlockBase_EM imp
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
+    public ITexture[] getTexture(
+            IGregTechTileEntity aBaseMetaTileEntity,
+            byte aSide,
+            byte aFacing,
+            byte aColorIndex,
+            boolean aActive,
+            boolean aRedstone) {
         if (aSide == aFacing) {
             if (aActive)
-                return new ITexture[]{
+                return new ITexture[] {
                     casingTexturePages[12][6],
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE_GLOW).extFacing().glow().build()};
-            return new ITexture[]{
+                    TextureFactory.builder()
+                            .addIcon(OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE)
+                            .extFacing()
+                            .build(),
+                    TextureFactory.builder()
+                            .addIcon(OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE_GLOW)
+                            .extFacing()
+                            .glow()
+                            .build()
+                };
+            return new ITexture[] {
                 casingTexturePages[12][6],
-                TextureFactory.builder().addIcon(OVERLAY_FRONT_HEAT_EXCHANGER).extFacing().build(),
-                TextureFactory.builder().addIcon(OVERLAY_FRONT_HEAT_EXCHANGER_GLOW).extFacing().glow().build()};
+                TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_HEAT_EXCHANGER)
+                        .extFacing()
+                        .build(),
+                TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_HEAT_EXCHANGER_GLOW)
+                        .extFacing()
+                        .glow()
+                        .build()
+            };
         }
-        return new ITexture[]{casingTexturePages[12][6]};
+        return new ITexture[] {casingTexturePages[12][6]};
     }
 }

@@ -7,5 +7,4 @@ public class CropsLoader {
     public static void registerCrops() {
         Crops.instance.registerCrop(new GGCropsSaltyRoot("saltroot"));
     }
-
 }

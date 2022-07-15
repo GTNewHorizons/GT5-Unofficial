@@ -1,12 +1,12 @@
-//package goodgenerator.items.nuclear;
+// package goodgenerator.items.nuclear;
 //
-//import goodgenerator.loader.Loaders;
-//import net.minecraft.item.ItemStack;
+// import goodgenerator.loader.Loaders;
+// import net.minecraft.item.ItemStack;
 //
-//import java.util.HashMap;
-//import java.util.HashSet;
+// import java.util.HashMap;
+// import java.util.HashSet;
 //
-//public class IsotopeMaterial {
+// public class IsotopeMaterial {
 //
 //    public static final HashSet<IsotopeMaterial> mIsotopeMaterial = new HashSet<>();
 //    public static final HashMap<Integer, IsotopeMaterial> mIDMap = new HashMap<>();
@@ -21,7 +21,8 @@
 //    public final short[] mRGBO;
 //    public final NuclearTextures mTexture;
 //
-//    public IsotopeMaterial(int aID, String aName, String aMaterialName, String aLocalizedName, NuclearTextures aTexture, int aR, int aG, int aB, int aNeutron) {
+//    public IsotopeMaterial(int aID, String aName, String aMaterialName, String aLocalizedName, NuclearTextures
+// aTexture, int aR, int aG, int aB, int aNeutron) {
 //        if (mIDMap.get(aID) != null)
 //            throw new UnsupportedOperationException("ID:" + aID + " is already used!");
 //        this.mID = aID;
@@ -56,4 +57,4 @@
 //        if (aAmount > 64) aAmount = 64;
 //        return new ItemStack(Loaders.Isotope, aAmount, mID + 4000);
 //    }
-//}
+// }

@@ -1,9 +1,10 @@
 package goodgenerator.blocks.regularBlock;
 
-import goodgenerator.main.GoodGenerator;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import goodgenerator.main.GoodGenerator;
 import gregtech.api.GregTech_API;
+import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -16,12 +17,11 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import java.util.List;
-
 public class Casing extends Block {
 
     @SideOnly(Side.CLIENT)
     protected IIcon[] texture;
+
     String[] textureNames;
     protected String name;
 
@@ -30,29 +30,29 @@ public class Casing extends Block {
         this.setHardness(9.0F);
         this.setResistance(5.0F);
         this.name = name;
-        this.setHarvestLevel("wrench",2);
+        this.setHarvestLevel("wrench", 2);
         this.setCreativeTab(GoodGenerator.GG);
         GregTech_API.registerMachineBlock(this, -1);
     }
 
-    public Casing(String name, String[] texture){
+    public Casing(String name, String[] texture) {
         super(Material.iron);
         this.setHardness(9.0F);
         this.setResistance(5.0F);
         this.name = name;
         this.textureNames = texture;
-        this.setHarvestLevel("wrench",2);
+        this.setHarvestLevel("wrench", 2);
         this.setCreativeTab(GoodGenerator.GG);
         GregTech_API.registerMachineBlock(this, -1);
     }
 
-    public Casing(String name, String[] texture, Material material){
+    public Casing(String name, String[] texture, Material material) {
         super(material);
         this.setHardness(9.0F);
         this.setResistance(5.0F);
         this.name = name;
         this.textureNames = texture;
-        this.setHarvestLevel("wrench",2);
+        this.setHarvestLevel("wrench", 2);
         this.setCreativeTab(GoodGenerator.GG);
         GregTech_API.registerMachineBlock(this, -1);
     }
@@ -119,5 +119,4 @@ public class Casing extends Block {
     public boolean canCreatureSpawn(EnumCreatureType type, IBlockAccess world, int x, int y, int z) {
         return false;
     }
-
 }

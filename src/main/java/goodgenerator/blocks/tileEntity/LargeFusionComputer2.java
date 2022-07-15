@@ -1,5 +1,9 @@
 package goodgenerator.blocks.tileEntity;
 
+import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FUSION2;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FUSION2_GLOW;
+
 import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
 import goodgenerator.blocks.tileEntity.base.LargeFusionComputer;
 import goodgenerator.loader.Loaders;
@@ -15,18 +19,18 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
-import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FUSION2;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FUSION2_GLOW;
-
 public class LargeFusionComputer2 extends LargeFusionComputer {
 
     private static final ITexture textureOverlay = TextureFactory.of(
             TextureFactory.builder().addIcon(OVERLAY_FUSION2).extFacing().build(),
-            TextureFactory.builder().addIcon(OVERLAY_FUSION2_GLOW).extFacing().glow().build());
+            TextureFactory.builder()
+                    .addIcon(OVERLAY_FUSION2_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build());
 
     public LargeFusionComputer2(int id, String name, String nameRegional) {
-        super(id,name,nameRegional);
+        super(id, name, nameRegional);
     }
 
     public LargeFusionComputer2(String name) {
@@ -46,7 +50,8 @@ public class LargeFusionComputer2 extends LargeFusionComputer {
                 .addInfo("chuck area of the ring center (not controller).")
                 .addInfo("Startup < 160,000,000 EU: 128x Parallel")
                 .addInfo("Startup < 320,000,000 EU: 64x Parallel")
-                .addInfo("Support" + EnumChatFormatting.BLUE + " Tec" + EnumChatFormatting.DARK_BLUE + "Tech" + EnumChatFormatting.GRAY + " Energy/Laser Hatches!")
+                .addInfo("Support" + EnumChatFormatting.BLUE + " Tec" + EnumChatFormatting.DARK_BLUE + "Tech"
+                        + EnumChatFormatting.GRAY + " Energy/Laser Hatches!")
                 .addInfo("The structure is too complex!")
                 .addInfo(BLUE_PRINT_INFO)
                 .addSeparator()

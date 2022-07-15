@@ -1,16 +1,15 @@
 package goodgenerator.common.container;
 
-import goodgenerator.blocks.tileEntity.YottaFluidTank;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_Container_MultiMachineEM;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import goodgenerator.blocks.tileEntity.YottaFluidTank;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import java.nio.ByteBuffer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.util.StatCollector;
-
-import java.nio.ByteBuffer;
 
 public class YOTTankGUIContainer extends GT_Container_MultiMachineEM {
 
@@ -36,7 +35,9 @@ public class YOTTankGUIContainer extends GT_Container_MultiMachineEM {
             buffer.putChar(Integer.BYTES * 3 + Character.BYTES * (i + currentStore.length()), store.charAt(i));
         }
         for (int i = 0; i < fluidName.length(); ++i) {
-            buffer.putChar(Integer.BYTES * 3 + Character.BYTES * (i + currentStore.length() + store.length()), fluidName.charAt(i));
+            buffer.putChar(
+                    Integer.BYTES * 3 + Character.BYTES * (i + currentStore.length() + store.length()),
+                    fluidName.charAt(i));
         }
         sendStateUpdate(clientHandle);
         super.addCraftingToCrafters(clientHandle);
@@ -48,7 +49,7 @@ public class YOTTankGUIContainer extends GT_Container_MultiMachineEM {
         if (buffer == null) {
             buffer = ByteBuffer.allocate(8192);
         }
-        if(mTileEntity.isServerSide()) {
+        if (mTileEntity.isServerSide()) {
             YottaFluidTank tile = (YottaFluidTank) mTileEntity.getMetaTileEntity();
             if (tile == null) return;
             String newStored = tile.getStored();
@@ -69,7 +70,9 @@ public class YOTTankGUIContainer extends GT_Container_MultiMachineEM {
                     buffer.putChar(Integer.BYTES * 3 + Character.BYTES * (i + currentStore.length()), store.charAt(i));
                 }
                 for (int i = 0; i < fluidName.length(); ++i) {
-                    buffer.putChar(Integer.BYTES * 3 + Character.BYTES * (i + currentStore.length() + store.length()), fluidName.charAt(i));
+                    buffer.putChar(
+                            Integer.BYTES * 3 + Character.BYTES * (i + currentStore.length() + store.length()),
+                            fluidName.charAt(i));
                 }
                 isUpdated = true;
             }
@@ -87,7 +90,8 @@ public class YOTTankGUIContainer extends GT_Container_MultiMachineEM {
     }
 
     private void sendStateUpdate(ICrafting clientHandle) {
-        final int bytes = Integer.BYTES * 3 + Character.BYTES * (currentStore.length() + store.length() + fluidName.length());
+        final int bytes =
+                Integer.BYTES * 3 + Character.BYTES * (currentStore.length() + store.length() + fluidName.length());
         for (int i = 0; i < bytes; i++) {
             clientHandle.sendProgressBarUpdate(this, i + 300, buffer.get(i));
         }
@@ -97,7 +101,7 @@ public class YOTTankGUIContainer extends GT_Container_MultiMachineEM {
     public void updateProgressBar(int index, int value) {
         super.updateProgressBar(index, value);
         index = index - 300;
-        if(index >= 0 && index < buffer.capacity()) {
+        if (index >= 0 && index < buffer.capacity()) {
             buffer.put(index, (byte) value);
         }
     }

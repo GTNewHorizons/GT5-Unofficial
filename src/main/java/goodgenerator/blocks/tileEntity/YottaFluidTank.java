@@ -1,5 +1,16 @@
 package goodgenerator.blocks.tileEntity;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
+import static goodgenerator.util.StructureHelper.addFrame;
+import static goodgenerator.util.StructureHelper.addTieredBlock;
+import static gregtech.api.util.GT_StructureUtility.*;
+
+import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
+import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.IStructureElement;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import goodgenerator.blocks.tileEntity.GTMetaTileEntity.YOTTAHatch;
 import goodgenerator.blocks.tileEntity.base.GT_MetaTileEntity_TooltipMultiBlockBase_EM;
 import goodgenerator.client.GUI.YOTTankGUIClient;
@@ -7,16 +18,9 @@ import goodgenerator.common.container.YOTTankGUIContainer;
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.CharExchanger;
 import goodgenerator.util.DescTextLocalization;
-import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
-import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
-import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.IStructureElement;
-import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -25,6 +29,9 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -32,24 +39,15 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import org.lwjgl.input.Keyboard;
-
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
-
-import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
-import static goodgenerator.util.StructureHelper.addFrame;
-import static goodgenerator.util.StructureHelper.addTieredBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static gregtech.api.util.GT_StructureUtility.*;
 
 public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM implements IConstructable {
 
     private static final IIconContainer textureFontOn = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_QTANK");
-    private static final IIconContainer textureFontOn_Glow = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_QTANK_GLOW");
+    private static final IIconContainer textureFontOn_Glow =
+            new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_QTANK_GLOW");
     private static final IIconContainer textureFontOff = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_QCHEST");
-    private static final IIconContainer textureFontOff_Glow = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_QCHEST_GLOW");
+    private static final IIconContainer textureFontOff_Glow =
+            new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_QCHEST_GLOW");
 
     protected IStructureDefinition<YottaFluidTank> multiDefinition = null;
     protected final ArrayList<YOTTAHatch> mYottaHatch = new ArrayList<>();
@@ -88,7 +86,8 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM i
     }
 
     public String getFluidName() {
-        if (mFluidName == null || mFluidName.equals("") || FluidRegistry.getFluidStack(mFluidName, 1) == null) return "Empty";
+        if (mFluidName == null || mFluidName.equals("") || FluidRegistry.getFluidStack(mFluidName, 1) == null)
+            return "Empty";
         return FluidRegistry.getFluidStack(mFluidName, 1).getLocalizedName();
     }
 
@@ -123,8 +122,7 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM i
         BigInteger tmp = new BigInteger(amount + "");
         if (mStorageCurrent.compareTo(tmp) < 0) {
             return false;
-        }
-        else {
+        } else {
             mStorageCurrent = mStorageCurrent.subtract(tmp);
             return true;
         }
@@ -134,8 +132,7 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM i
         BigInteger tmp = new BigInteger(amount + "");
         if (mStorage.subtract(mStorageCurrent).compareTo(tmp) < 0) {
             return false;
-        }
-        else {
+        } else {
             mStorageCurrent = mStorageCurrent.add(tmp);
             return true;
         }
@@ -155,7 +152,7 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM i
         if (!structureCheck_EM(YOTTANK_BOTTOM, 2, 0, 0)) return false;
         int cnt = 0;
         while (structureCheck_EM(YOTTANK_MID, 2, cnt + 1, 0)) {
-            cnt ++;
+            cnt++;
         }
         if (cnt > 15 || cnt < 1) return false;
         if (!structureCheck_EM(YOTTANK_TOP, 2, cnt + 2, 0)) return false;
@@ -172,52 +169,27 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM i
 
     @Override
     public IStructureDefinition<YottaFluidTank> getStructure_EM() {
-        if(multiDefinition == null) {
-            multiDefinition = StructureDefinition
-                    .<YottaFluidTank>builder()
-                    .addShape(YOTTANK_BOTTOM, transpose(new String[][]{
-                            {"MM~MM","MCCCM","MCCCM","MCCCM","MMMMM"},
-                            {"     "," OOO "," OOO "," OOO ","     "}
+        if (multiDefinition == null) {
+            multiDefinition = StructureDefinition.<YottaFluidTank>builder()
+                    .addShape(YOTTANK_BOTTOM, transpose(new String[][] {
+                        {"MM~MM", "MCCCM", "MCCCM", "MCCCM", "MMMMM"},
+                        {"     ", " OOO ", " OOO ", " OOO ", "     "}
                     }))
-                    .addShape(YOTTANK_MID, transpose(new String[][]{
-                            {"GGGGG","GRRRG","GRRRG","GRRRG","GGGGG"}
+                    .addShape(YOTTANK_MID, transpose(new String[][] {{"GGGGG", "GRRRG", "GRRRG", "GRRRG", "GGGGG"}}))
+                    .addShape(YOTTANK_TOP, transpose(new String[][] {
+                        {"FFFFF", "F   F", "F   F", "F   F", "FFFFF"},
+                        {"CCCCC", "CIIIC", "CIIIC", "CIIIC", "CCCCC"}
                     }))
-                    .addShape(YOTTANK_TOP, transpose(new String[][]{
-                            {"FFFFF","F   F","F   F","F   F","FFFFF"},
-                            {"CCCCC","CIIIC","CIIIC","CIIIC","CCCCC"}
-                    }))
-                    .addElement(
-                            'C',
-                            ofBlock(
-                                    Loaders.yottaFluidTankCasing, 0
-                            )
-                    )
+                    .addElement('C', ofBlock(Loaders.yottaFluidTankCasing, 0))
                     .addElement(
                             'G',
                             addTieredBlock(
-                                    ItemRegistry.bw_realglas, YottaFluidTank::setMeta, YottaFluidTank::getMeta, 12
-                            )
-                    )
-                    .addElement(
-                            'R',
-                            ofChain(
-                                    cells(10)
-                            )
-                    )
-                    .addElement(
-                            'F',
-                            addFrame(Materials.Steel)
-                    )
+                                    ItemRegistry.bw_realglas, YottaFluidTank::setMeta, YottaFluidTank::getMeta, 12))
+                    .addElement('R', ofChain(cells(10)))
+                    .addElement('F', addFrame(Materials.Steel))
                     .addElement(
                             'I',
-                            ofHatchAdderOptional(
-                                    YottaFluidTank::addInput,
-                                    1537,
-                                    1,
-                                    Loaders.yottaFluidTankCasing,
-                                    0
-                            )
-                    )
+                            ofHatchAdderOptional(YottaFluidTank::addInput, 1537, 1, Loaders.yottaFluidTankCasing, 0))
                     .addElement(
                             'M',
                             ofHatchAdderOptional(
@@ -225,19 +197,10 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM i
                                     1537,
                                     2,
                                     Loaders.yottaFluidTankCasing,
-                                    0
-                            )
-                    )
+                                    0))
                     .addElement(
                             'O',
-                            ofHatchAdderOptional(
-                                    YottaFluidTank::addOutput,
-                                    1537,
-                                    3,
-                                    Loaders.yottaFluidTankCasing,
-                                    0
-                            )
-                    )
+                            ofHatchAdderOptional(YottaFluidTank::addOutput, 1537, 3, Loaders.yottaFluidTankCasing, 0))
                     .build();
         }
         return multiDefinition;
@@ -247,15 +210,12 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM i
         List<IStructureElement<YottaFluidTank>> out = new ArrayList<>();
         for (int i = 0; i < num; ++i) {
             int finalI = i;
-            out.add(
-                    onElementPass(
-                            x -> {
-                                x.mStorage = x.mStorage.add(calStorage(finalI));
-                                x.maxCell = Math.max(x.maxCell, finalI);
-                            },
-                            ofBlock(Loaders.yottaFluidTankCell, i)
-                    )
-            );
+            out.add(onElementPass(
+                    x -> {
+                        x.mStorage = x.mStorage.add(calStorage(finalI));
+                        x.maxCell = Math.max(x.maxCell, finalI);
+                    },
+                    ofBlock(Loaders.yottaFluidTankCell, i)));
         }
         return out;
     }
@@ -269,8 +229,8 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM i
                 return false;
             } else {
                 if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-                    ((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                    return this.mInputHatches.add((GT_MetaTileEntity_Hatch_Input)aMetaTileEntity);
+                    ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+                    return this.mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
                 }
             }
         }
@@ -286,15 +246,14 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM i
                 return false;
             } else {
                 if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
-                    ((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                    return this.mOutputHatches.add((GT_MetaTileEntity_Hatch_Output)aMetaTileEntity);
+                    ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+                    return this.mOutputHatches.add((GT_MetaTileEntity_Hatch_Output) aMetaTileEntity);
                 } else if (aMetaTileEntity instanceof YOTTAHatch) {
-                    //only one yothatch allowed
-                    if(!this.mYottaHatch.isEmpty())
-                        return false;
-                    ((GT_MetaTileEntity_Hatch)aMetaTileEntity).updateTexture(aBaseCasingIndex);
+                    // only one yothatch allowed
+                    if (!this.mYottaHatch.isEmpty()) return false;
+                    ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
                     ((YOTTAHatch) aMetaTileEntity).setTank(this);
-                    return this.mYottaHatch.add((YOTTAHatch)aMetaTileEntity);
+                    return this.mYottaHatch.add((YOTTAHatch) aMetaTileEntity);
                 }
             }
         }
@@ -304,9 +263,12 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM i
     @Override
     public String[] getInfoData() {
         return new String[] {
-                StatCollector.translateToLocal("scanner.info.YOTTank.0") + " " + EnumChatFormatting.GREEN + CharExchanger.formatNumber(getCap()) + EnumChatFormatting.RESET + " L",
-                StatCollector.translateToLocal("scanner.info.YOTTank.1") + " " + EnumChatFormatting.YELLOW + CharExchanger.formatNumber(getFluidName()) + EnumChatFormatting.RESET,
-                StatCollector.translateToLocal("scanner.info.YOTTank.2") + " " + EnumChatFormatting.BLUE + CharExchanger.formatNumber(getStored()) + EnumChatFormatting.RESET + " L",
+            StatCollector.translateToLocal("scanner.info.YOTTank.0") + " " + EnumChatFormatting.GREEN
+                    + CharExchanger.formatNumber(getCap()) + EnumChatFormatting.RESET + " L",
+            StatCollector.translateToLocal("scanner.info.YOTTank.1") + " " + EnumChatFormatting.YELLOW
+                    + CharExchanger.formatNumber(getFluidName()) + EnumChatFormatting.RESET,
+            StatCollector.translateToLocal("scanner.info.YOTTank.2") + " " + EnumChatFormatting.BLUE
+                    + CharExchanger.formatNumber(getStored()) + EnumChatFormatting.RESET + " L",
         };
     }
 
@@ -315,14 +277,15 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM i
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Fluid Tank")
                 .addInfo("Controller block for the YOTTank.")
-                .addInfo("The max output speed is decided by the amount of stored liquid and the output hatch's capacity.")
+                .addInfo(
+                        "The max output speed is decided by the amount of stored liquid and the output hatch's capacity.")
                 .addInfo("The max fluid cell tier is limited by the glass tier.")
                 .addInfo("HV glass for T1, EV glass for T2, IV glass for T3. . .")
                 .addInfo("The max height of the cell blocks is 15.")
                 .addInfo("The structure is too complex!")
                 .addInfo(BLUE_PRINT_INFO)
                 .addSeparator()
-                .beginVariableStructureBlock(5, 5, 1, 15, 5 ,5, false)
+                .beginVariableStructureBlock(5, 5, 1, 15, 5, 5, false)
                 .addController("Front of the second layer")
                 .addInputHatch("Hint block with dot 1")
                 .addMaintenanceHatch("Hint block with dot 2")
@@ -334,8 +297,7 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM i
     public BigInteger calStorage(int meta) {
         StringBuilder cap = new StringBuilder();
         cap.append("1000000");
-        for (int i = 0; i < meta; ++i)
-            cap.append("00");
+        for (int i = 0; i < meta; ++i) cap.append("00");
         return new BigInteger(cap.toString());
     }
 
@@ -356,7 +318,9 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM i
             List<FluidStack> tStore = getStoredFluids();
             for (FluidStack tFluid : tStore) {
                 if (tFluid == null) continue;
-                if (mFluidName == null || mFluidName.equals("") || tFluid.getFluid().getName().equals(mFluidName)) {
+                if (mFluidName == null
+                        || mFluidName.equals("")
+                        || tFluid.getFluid().getName().equals(mFluidName)) {
                     if (mFluidName == null || mFluidName.equals("")) {
                         mFluidName = tFluid.getFluid().getName();
                     }
@@ -371,7 +335,8 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM i
                 }
             }
             BigInteger outputAmount = mStorageCurrent.divide(new BigInteger("100", 10));
-            if (outputAmount.compareTo(new BigInteger(Integer.MAX_VALUE + "", 10)) > 0) outputAmount = new BigInteger(Integer.MAX_VALUE + "");
+            if (outputAmount.compareTo(new BigInteger(Integer.MAX_VALUE + "", 10)) > 0)
+                outputAmount = new BigInteger(Integer.MAX_VALUE + "");
             if (outputAmount.compareTo(BigInteger.ONE) <= 0) outputAmount = new BigInteger("1", 10);
 
             if (mStorageCurrent.compareTo(BigInteger.ZERO) <= 0) mFluidName = "";
@@ -384,17 +349,15 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM i
                         int leftSpace = outputHatch.getCapacity() - tHatchFluid.amount;
                         if (leftSpace < tOutput.amount) {
                             if (reduceFluid(leftSpace)) tHatchFluid.amount += leftSpace;
-                        }
-                        else {
+                        } else {
                             if (reduceFluid(tOutput.amount)) tHatchFluid.amount += tOutput.amount;
                         }
-                    }
-                    else if (tHatchFluid == null) {
+                    } else if (tHatchFluid == null) {
                         int leftSpace = outputHatch.getCapacity();
                         if (leftSpace < tOutput.amount) {
-                            if (reduceFluid(leftSpace)) outputHatch.fill(FluidRegistry.getFluidStack(mFluidName, leftSpace), true);
-                        }
-                        else {
+                            if (reduceFluid(leftSpace))
+                                outputHatch.fill(FluidRegistry.getFluidStack(mFluidName, leftSpace), true);
+                        } else {
                             if (reduceFluid(tOutput.amount)) outputHatch.fill(tOutput, true);
                         }
                     }
@@ -412,7 +375,7 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM i
         structureBuild_EM(YOTTANK_TOP, 2, height + 2, 0, stackSize, hintsOnly);
         while (height > 0) {
             structureBuild_EM(YOTTANK_MID, 2, height, 0, stackSize, hintsOnly);
-            height --;
+            height--;
         }
     }
 
@@ -427,19 +390,26 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM i
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone){
+    public ITexture[] getTexture(
+            IGregTechTileEntity aBaseMetaTileEntity,
+            byte aSide,
+            byte aFacing,
+            byte aColorIndex,
+            boolean aActive,
+            boolean aRedstone) {
         if (aSide == aFacing) {
-            if (aActive) return new ITexture[] {
+            if (aActive)
+                return new ITexture[] {
                     Textures.BlockIcons.getCasingTextureForId(1537),
                     TextureFactory.of(textureFontOn),
                     TextureFactory.builder().addIcon(textureFontOn_Glow).glow().build()
-            };
-            else return new ITexture[] {
+                };
+            else
+                return new ITexture[] {
                     Textures.BlockIcons.getCasingTextureForId(1537),
                     TextureFactory.of(textureFontOff),
                     TextureFactory.builder().addIcon(textureFontOff_Glow).glow().build()
-            };
-        }
-        else return new ITexture[] {Textures.BlockIcons.getCasingTextureForId(1537)};
+                };
+        } else return new ITexture[] {Textures.BlockIcons.getCasingTextureForId(1537)};
     }
 }

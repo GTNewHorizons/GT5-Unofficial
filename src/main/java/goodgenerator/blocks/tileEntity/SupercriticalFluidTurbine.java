@@ -11,14 +11,13 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
+import java.util.ArrayList;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-
-import java.util.ArrayList;
 
 public class SupercriticalFluidTurbine extends GT_MetaTileEntity_LargeTurbineBase {
 
@@ -54,7 +53,9 @@ public class SupercriticalFluidTurbine extends GT_MetaTileEntity_LargeTurbineBas
         int tEU = 0;
         int totalFlow = 0; // Byproducts are based on actual flow
         int flow = 0;
-        int remainingFlow = GT_Utility.safeInt((long) (aOptFlow * 1.25f)); // Allowed to use up to 125% of optimal flow.  Variable required outside of loop for multi-hatch scenarios.
+        int remainingFlow = GT_Utility.safeInt((long) (aOptFlow
+                * 1.25f)); // Allowed to use up to 125% of optimal flow.  Variable required outside of loop for
+        // multi-hatch scenarios.
         this.realOptFlow = aOptFlow;
 
         storedFluid = 0;
@@ -89,7 +90,11 @@ public class SupercriticalFluidTurbine extends GT_MetaTileEntity_LargeTurbineBas
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
             looseFit ^= true;
-            GT_Utility.sendChatToPlayer(aPlayer, looseFit ? trans("500", "Fitting: Loose - More Flow") : trans("501", "Fitting: Tight - More Efficiency"));
+            GT_Utility.sendChatToPlayer(
+                    aPlayer,
+                    looseFit
+                            ? trans("500", "Fitting: Loose - More Flow")
+                            : trans("501", "Fitting: Tight - More Efficiency"));
         }
     }
 
@@ -161,12 +166,20 @@ public class SupercriticalFluidTurbine extends GT_MetaTileEntity_LargeTurbineBas
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
+    public ITexture[] getTexture(
+            IGregTechTileEntity aBaseMetaTileEntity,
+            byte aSide,
+            byte aFacing,
+            byte aColorIndex,
+            boolean aActive,
+            boolean aRedstone) {
         return new ITexture[] {
-                Textures.BlockIcons.getCasingTextureForId(1538),
-                aFacing == aSide ?
-                        (aActive ? TextureFactory.of(turbineOn) : hasTurbine() ? TextureFactory.of(turbineOff) : TextureFactory.of(turbineEmpty))
-                        : Textures.BlockIcons.getCasingTextureForId(1538)
+            Textures.BlockIcons.getCasingTextureForId(1538),
+            aFacing == aSide
+                    ? (aActive
+                            ? TextureFactory.of(turbineOn)
+                            : hasTurbine() ? TextureFactory.of(turbineOff) : TextureFactory.of(turbineEmpty))
+                    : Textures.BlockIcons.getCasingTextureForId(1538)
         };
     }
 }

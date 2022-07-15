@@ -1,11 +1,11 @@
 package goodgenerator.network;
 
-import goodgenerator.blocks.tileEntity.GTMetaTileEntity.NeutronSensor;
 import com.github.technus.tectech.TecTech;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.relauncher.Side;
+import goodgenerator.blocks.tileEntity.GTMetaTileEntity.NeutronSensor;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import io.netty.buffer.ByteBuf;
@@ -13,8 +13,7 @@ import io.netty.buffer.ByteBuf;
 public class MessageSetNeutronSensorData extends MessageMTEBase {
     protected String data;
 
-    public MessageSetNeutronSensorData() {
-    }
+    public MessageSetNeutronSensorData() {}
 
     public MessageSetNeutronSensorData(IGregTechTileEntity tile, String data) {
         super(tile);
@@ -43,8 +42,7 @@ public class MessageSetNeutronSensorData extends MessageMTEBase {
         protected IMessage onSuccess(MessageSetNeutronSensorData message, MessageContext ctx, IMetaTileEntity mte) {
             if (mte instanceof NeutronSensor) {
                 ((NeutronSensor) mte).setText(message.data);
-                if (ctx.side == Side.CLIENT)
-                    mte.getBaseMetaTileEntity().openGUI(TecTech.proxy.getPlayer());
+                if (ctx.side == Side.CLIENT) mte.getBaseMetaTileEntity().openGUI(TecTech.proxy.getPlayer());
             }
             return null;
         }

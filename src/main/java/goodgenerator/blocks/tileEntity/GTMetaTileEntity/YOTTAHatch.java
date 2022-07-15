@@ -29,6 +29,9 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
@@ -37,19 +40,35 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
-
-@Optional.InterfaceList(value = {
-        @Optional.Interface(iface = "appeng.api.networking.security.IActionHost", modid = "appliedenergistics2", striprefs = true),
-        @Optional.Interface(iface = "appeng.me.helpers.IGridProxyable", modid = "appliedenergistics2", striprefs = true),
-        @Optional.Interface(iface = "appeng.api.storage.IMEInventory", modid = "appliedenergistics2", striprefs = true),
-        @Optional.Interface(iface = "appeng.api.storage.IMEInventoryHandler", modid = "appliedenergistics2", striprefs = true),
-        @Optional.Interface(iface = "appeng.api.storage.ICellContainer", modid = "appliedenergistics2", striprefs = true),
-})
-public class YOTTAHatch extends GT_MetaTileEntity_Hatch implements IGridProxyable, IActionHost, ICellContainer,
-        IMEInventory<IAEFluidStack>, IMEInventoryHandler<IAEFluidStack> {
+@Optional.InterfaceList(
+        value = {
+            @Optional.Interface(
+                    iface = "appeng.api.networking.security.IActionHost",
+                    modid = "appliedenergistics2",
+                    striprefs = true),
+            @Optional.Interface(
+                    iface = "appeng.me.helpers.IGridProxyable",
+                    modid = "appliedenergistics2",
+                    striprefs = true),
+            @Optional.Interface(
+                    iface = "appeng.api.storage.IMEInventory",
+                    modid = "appliedenergistics2",
+                    striprefs = true),
+            @Optional.Interface(
+                    iface = "appeng.api.storage.IMEInventoryHandler",
+                    modid = "appliedenergistics2",
+                    striprefs = true),
+            @Optional.Interface(
+                    iface = "appeng.api.storage.ICellContainer",
+                    modid = "appliedenergistics2",
+                    striprefs = true),
+        })
+public class YOTTAHatch extends GT_MetaTileEntity_Hatch
+        implements IGridProxyable,
+                IActionHost,
+                ICellContainer,
+                IMEInventory<IAEFluidStack>,
+                IMEInventoryHandler<IAEFluidStack> {
 
     private static final IIconContainer textureFont = new Textures.BlockIcons.CustomIcon("icons/YOTTAHatch");
 
@@ -57,14 +76,17 @@ public class YOTTAHatch extends GT_MetaTileEntity_Hatch implements IGridProxyabl
     private AENetworkProxy gridProxy = null;
     private int priority;
     private AccessRestriction readMode = AccessRestriction.READ_WRITE;
-    private final AccessRestriction[] AEModes = new AccessRestriction[]{AccessRestriction.NO_ACCESS, AccessRestriction.READ, AccessRestriction.WRITE, AccessRestriction.READ_WRITE};
+    private final AccessRestriction[] AEModes = new AccessRestriction[] {
+        AccessRestriction.NO_ACCESS, AccessRestriction.READ, AccessRestriction.WRITE, AccessRestriction.READ_WRITE
+    };
 
     public YOTTAHatch(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 0,
-                new String[] {"Special I/O port for EC2.",
-                        "Directly connected YOTTank with AE fluid storage system.",
-                        "Use screwdriver to set storage priority",
-                        "Use soldering iron to set read/write mode"});
+        super(aID, aName, aNameRegional, aTier, 0, new String[] {
+            "Special I/O port for EC2.",
+            "Directly connected YOTTank with AE fluid storage system.",
+            "Use screwdriver to set storage priority",
+            "Use soldering iron to set read/write mode"
+        });
     }
 
     public YOTTAHatch(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -101,17 +123,18 @@ public class YOTTAHatch extends GT_MetaTileEntity_Hatch implements IGridProxyabl
 
     @Override
     public final void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (aPlayer.isSneaking())
-            this.priority -= 10;
-        else
-            this.priority += 10;
-        GT_Utility.sendChatToPlayer(aPlayer, String.format(StatCollector.translateToLocal("yothatch.chat.0"), this.priority));
+        if (aPlayer.isSneaking()) this.priority -= 10;
+        else this.priority += 10;
+        GT_Utility.sendChatToPlayer(
+                aPlayer, String.format(StatCollector.translateToLocal("yothatch.chat.0"), this.priority));
     }
 
     @Override
-    public boolean onSolderingToolRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public boolean onSolderingToolRightClick(
+            byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         this.readMode = AEModes[(readMode.ordinal() + 1) % 4];
-        GT_Utility.sendChatToPlayer(aPlayer, String.format(StatCollector.translateToLocal("yothatch.chat.1"), this.readMode));
+        GT_Utility.sendChatToPlayer(
+                aPlayer, String.format(StatCollector.translateToLocal("yothatch.chat.1"), this.readMode));
         return true;
     }
 
@@ -151,15 +174,16 @@ public class YOTTAHatch extends GT_MetaTileEntity_Hatch implements IGridProxyabl
     @Override
     @Optional.Method(modid = "appliedenergistics2")
     public IItemList<IAEFluidStack> getAvailableItems(IItemList<IAEFluidStack> out) {
-        if (host == null || host.getBaseMetaTileEntity() == null || !host.getBaseMetaTileEntity().isActive())
-            return out;
-        if (host.mFluidName == null || host.mFluidName.equals("") || host.mStorageCurrent.compareTo(BigInteger.ZERO) <= 0)
-            return out;
+        if (host == null
+                || host.getBaseMetaTileEntity() == null
+                || !host.getBaseMetaTileEntity().isActive()) return out;
+        if (host.mFluidName == null
+                || host.mFluidName.equals("")
+                || host.mStorageCurrent.compareTo(BigInteger.ZERO) <= 0) return out;
         int ready;
         if (host.mStorageCurrent.compareTo(BigInteger.valueOf(Integer.MAX_VALUE)) > 0) {
             ready = Integer.MAX_VALUE;
-        }
-        else ready = host.mStorageCurrent.intValue();
+        } else ready = host.mStorageCurrent.intValue();
         out.add(FluidUtil.createAEFluidStack(FluidRegistry.getFluid(host.mFluidName), ready));
         return out;
     }
@@ -183,8 +207,7 @@ public class YOTTAHatch extends GT_MetaTileEntity_Hatch implements IGridProxyabl
         if (ready != null) {
             if (mode.equals(Actionable.MODULATE)) drain(null, request.getFluidStack(), true);
             return FluidUtil.createAEFluidStack(ready.getFluid(), ready.amount);
-        }
-        else return null;
+        } else return null;
     }
 
     @Override
@@ -209,9 +232,10 @@ public class YOTTAHatch extends GT_MetaTileEntity_Hatch implements IGridProxyabl
                 IStorageGrid storageGrid = grid.getCache(IStorageGrid.class);
                 if (storageGrid == null) {
                     node.getGrid().postEvent(new MENetworkStorageEvent(null, StorageChannel.FLUIDS));
-                }
-                else {
-                    node.getGrid().postEvent(new MENetworkStorageEvent(storageGrid.getFluidInventory(), StorageChannel.FLUIDS));
+                } else {
+                    node.getGrid()
+                            .postEvent(
+                                    new MENetworkStorageEvent(storageGrid.getFluidInventory(), StorageChannel.FLUIDS));
                 }
                 node.getGrid().postEvent(new MENetworkCellArrayUpdate());
             }
@@ -221,27 +245,29 @@ public class YOTTAHatch extends GT_MetaTileEntity_Hatch implements IGridProxyabl
 
     @Override
     public int getCapacity() {
-        if (host == null || host.getBaseMetaTileEntity() == null || !host.getBaseMetaTileEntity().isActive()) return 0;
+        if (host == null
+                || host.getBaseMetaTileEntity() == null
+                || !host.getBaseMetaTileEntity().isActive()) return 0;
         if (host.mStorage.compareTo(BigInteger.valueOf(Integer.MAX_VALUE)) >= 0) {
             return Integer.MAX_VALUE;
-        }
-        else return host.mStorage.intValue();
+        } else return host.mStorage.intValue();
     }
 
     @Override
     public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-        if (host == null || host.getBaseMetaTileEntity() == null || !host.getBaseMetaTileEntity().isActive()) return 0;
-        if (host.mFluidName == null || host.mFluidName.equals("") || host.mFluidName.equals(resource.getFluid().getName())) {
+        if (host == null
+                || host.getBaseMetaTileEntity() == null
+                || !host.getBaseMetaTileEntity().isActive()) return 0;
+        if (host.mFluidName == null
+                || host.mFluidName.equals("")
+                || host.mFluidName.equals(resource.getFluid().getName())) {
             host.mFluidName = resource.getFluid().getName();
             if (host.mStorage.subtract(host.mStorageCurrent).compareTo(BigInteger.valueOf(resource.amount)) >= 0) {
-                if (doFill)
-                    host.addFluid(resource.amount);
+                if (doFill) host.addFluid(resource.amount);
                 return resource.amount;
-            }
-            else {
+            } else {
                 int added = host.mStorage.subtract(host.mStorageCurrent).intValue();
-                if (doFill)
-                    host.addFluid(added);
+                if (doFill) host.addFluid(added);
                 return added;
             }
         }
@@ -250,15 +276,16 @@ public class YOTTAHatch extends GT_MetaTileEntity_Hatch implements IGridProxyabl
 
     @Override
     public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
-        if (host == null || host.getBaseMetaTileEntity() == null || !host.getBaseMetaTileEntity().isActive())
-            return null;
-        if (host.mFluidName == null || host.mFluidName.equals("") || !host.mFluidName.equals(resource.getFluid().getName()))
-            return null;
+        if (host == null
+                || host.getBaseMetaTileEntity() == null
+                || !host.getBaseMetaTileEntity().isActive()) return null;
+        if (host.mFluidName == null
+                || host.mFluidName.equals("")
+                || !host.mFluidName.equals(resource.getFluid().getName())) return null;
         int ready;
         if (host.mStorageCurrent.compareTo(BigInteger.valueOf(Integer.MAX_VALUE)) > 0) {
             ready = Integer.MAX_VALUE;
-        }
-        else ready = host.mStorageCurrent.intValue();
+        } else ready = host.mStorageCurrent.intValue();
         ready = Math.min(ready, resource.amount);
         if (doDrain) {
             host.reduceFluid(ready);
@@ -268,10 +295,10 @@ public class YOTTAHatch extends GT_MetaTileEntity_Hatch implements IGridProxyabl
 
     @Override
     public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
-        if (host == null || host.getBaseMetaTileEntity() == null || !host.getBaseMetaTileEntity().isActive())
-            return null;
-        if (host.mFluidName == null || host.mFluidName.equals(""))
-            return null;
+        if (host == null
+                || host.getBaseMetaTileEntity() == null
+                || !host.getBaseMetaTileEntity().isActive()) return null;
+        if (host.mFluidName == null || host.mFluidName.equals("")) return null;
         return this.drain(from, FluidRegistry.getFluidStack(host.mFluidName, maxDrain), doDrain);
     }
 
@@ -279,13 +306,13 @@ public class YOTTAHatch extends GT_MetaTileEntity_Hatch implements IGridProxyabl
     public FluidTankInfo[] getTankInfo(ForgeDirection from) {
         FluidTankInfo[] tankInfo = new FluidTankInfo[1];
         tankInfo[0] = new FluidTankInfo(null, 0);
-        if (host == null || host.getBaseMetaTileEntity() == null || !host.getBaseMetaTileEntity().isActive())
-            return tankInfo;
+        if (host == null
+                || host.getBaseMetaTileEntity() == null
+                || !host.getBaseMetaTileEntity().isActive()) return tankInfo;
         FluidStack fluid = null;
         if (host.mFluidName != null && !host.mFluidName.equals("")) {
             int camt;
-            if (host.mStorageCurrent.compareTo(BigInteger.valueOf(Integer.MAX_VALUE)) > 0)
-                camt = Integer.MAX_VALUE;
+            if (host.mStorageCurrent.compareTo(BigInteger.valueOf(Integer.MAX_VALUE)) > 0) camt = Integer.MAX_VALUE;
             else camt = host.mStorageCurrent.intValue();
             fluid = FluidRegistry.getFluidStack(host.mFluidName, camt);
         }
@@ -307,16 +334,14 @@ public class YOTTAHatch extends GT_MetaTileEntity_Hatch implements IGridProxyabl
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
         return new ITexture[] {
-                aBaseTexture,
-                TextureFactory.of(textureFont),
+            aBaseTexture, TextureFactory.of(textureFont),
         };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
         return new ITexture[] {
-                aBaseTexture,
-                TextureFactory.of(textureFont),
+            aBaseTexture, TextureFactory.of(textureFont),
         };
     }
 
@@ -380,10 +405,10 @@ public class YOTTAHatch extends GT_MetaTileEntity_Hatch implements IGridProxyabl
     }
 
     @Override
-    public void blinkCell(int slot) { }
+    public void blinkCell(int slot) {}
 
     @Override
     public void saveChanges(IMEInventory cellInventory) {
-        //This is handled by host itself.
+        // This is handled by host itself.
     }
 }

@@ -1,9 +1,9 @@
 package goodgenerator.crossmod.nei;
 
-import goodgenerator.main.GoodGenerator;
-import goodgenerator.util.MyRecipeAdder;
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
+import goodgenerator.main.GoodGenerator;
+import goodgenerator.util.MyRecipeAdder;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

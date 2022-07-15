@@ -23,5 +23,4 @@ public class LoadedList {
         AUTOMAGY = Loader.isModLoaded("Automagy");
         WITCHING_GADGETS = Loader.isModLoaded("WitchingGadgets");
     }
-
 }

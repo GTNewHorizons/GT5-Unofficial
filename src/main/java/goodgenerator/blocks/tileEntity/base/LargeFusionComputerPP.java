@@ -1,5 +1,12 @@
 package goodgenerator.blocks.tileEntity.base;
 
+import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.getMultiOutput;
+import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.handleParallelRecipe;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.util.GT_StructureUtility.ofFrame;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
+
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -7,7 +14,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import goodgenerator.client.GUI.LargeFusionComputerGUIClient;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -19,6 +25,7 @@ import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import java.util.ArrayList;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -29,60 +36,65 @@ import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
-import java.util.ArrayList;
-
-import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.getMultiOutput;
-import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.handleParallelRecipe;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static gregtech.api.enums.Textures.BlockIcons.*;
-import static gregtech.api.util.GT_StructureUtility.ofFrame;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
-
-public abstract class LargeFusionComputerPP extends GT_MetaTileEntity_TooltipMultiBlockBase_EM implements IConstructable {
+public abstract class LargeFusionComputerPP extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
+        implements IConstructable {
 
     public static final String MAIN_NAME = "largeFusionPP";
     private boolean isLoadedChunk;
     public GT_Recipe mLastRecipe;
     public int para;
     public long mEUStore;
-    private static final ClassValue<IStructureDefinition<LargeFusionComputerPP>> STRUCTURE_DEFINITION = new ClassValue<IStructureDefinition<LargeFusionComputerPP>>() {
-        @Override
-        protected IStructureDefinition<LargeFusionComputerPP> computeValue(Class<?> type) {
-            return StructureDefinition.<LargeFusionComputerPP>builder()
-                    .addShape(MAIN_NAME, transpose(new String[][]{
-                            L0, L1, L2, L3, L2, L1, L0
-                    }))
-                    .addElement(
-                            'H', lazy(x -> ofBlock(x.getCoilBlock(), x.getCoilMeta()))
-                    )
-                    .addElement(
-                            'C', lazy(x -> ofBlock(x.getCasingBlock(), x.getCasingMeta()))
-                    )
-                    .addElement(
-                            'B', lazy(x -> ofBlock(x.getGlassBlock(), x.getGlassMeta()))
-                    )
-                    .addElement(
-                            'I', lazy(x -> ofHatchAdderOptional(LargeFusionComputerPP::addInjector, x.textureIndex(), 1, x.getGlassBlock(), x.getGlassMeta()))
-                    )
-                    .addElement(
-                            'O', lazy(x -> ofHatchAdderOptional(LargeFusionComputerPP::addExtractor, x.textureIndex(), 2, x.getGlassBlock(), x.getGlassMeta()))
-                    )
-                    .addElement(
-                            'E', lazy(x -> ofHatchAdderOptional(LargeFusionComputerPP::addEnergyInjector, x.textureIndex(), 3, x.getCasingBlock(), x.getCasingMeta()))
-                    )
-                    .addElement(
-                            'F', lazy(x -> ofFrame(x.getFrameBox()))
-                    )
-                    .build();
-        }
-    };
+    private static final ClassValue<IStructureDefinition<LargeFusionComputerPP>> STRUCTURE_DEFINITION =
+            new ClassValue<IStructureDefinition<LargeFusionComputerPP>>() {
+                @Override
+                protected IStructureDefinition<LargeFusionComputerPP> computeValue(Class<?> type) {
+                    return StructureDefinition.<LargeFusionComputerPP>builder()
+                            .addShape(MAIN_NAME, transpose(new String[][] {L0, L1, L2, L3, L2, L1, L0}))
+                            .addElement('H', lazy(x -> ofBlock(x.getCoilBlock(), x.getCoilMeta())))
+                            .addElement('C', lazy(x -> ofBlock(x.getCasingBlock(), x.getCasingMeta())))
+                            .addElement('B', lazy(x -> ofBlock(x.getGlassBlock(), x.getGlassMeta())))
+                            .addElement(
+                                    'I',
+                                    lazy(x -> ofHatchAdderOptional(
+                                            LargeFusionComputerPP::addInjector,
+                                            x.textureIndex(),
+                                            1,
+                                            x.getGlassBlock(),
+                                            x.getGlassMeta())))
+                            .addElement(
+                                    'O',
+                                    lazy(x -> ofHatchAdderOptional(
+                                            LargeFusionComputerPP::addExtractor,
+                                            x.textureIndex(),
+                                            2,
+                                            x.getGlassBlock(),
+                                            x.getGlassMeta())))
+                            .addElement(
+                                    'E',
+                                    lazy(x -> ofHatchAdderOptional(
+                                            LargeFusionComputerPP::addEnergyInjector,
+                                            x.textureIndex(),
+                                            3,
+                                            x.getCasingBlock(),
+                                            x.getCasingMeta())))
+                            .addElement('F', lazy(x -> ofFrame(x.getFrameBox())))
+                            .build();
+                }
+            };
 
     static {
-        Textures.BlockIcons.setCasingTextureForId(52,
+        Textures.BlockIcons.setCasingTextureForId(
+                52,
                 TextureFactory.of(
-                        TextureFactory.builder().addIcon(MACHINE_CASING_FUSION_GLASS_YELLOW).extFacing().build(),
-                        TextureFactory.builder().addIcon(MACHINE_CASING_FUSION_GLASS_YELLOW_GLOW).extFacing().glow().build()
-                ));
+                        TextureFactory.builder()
+                                .addIcon(MACHINE_CASING_FUSION_GLASS_YELLOW)
+                                .extFacing()
+                                .build(),
+                        TextureFactory.builder()
+                                .addIcon(MACHINE_CASING_FUSION_GLASS_YELLOW_GLOW)
+                                .extFacing()
+                                .glow()
+                                .build()));
     }
 
     public LargeFusionComputerPP(String name) {
@@ -90,7 +102,7 @@ public abstract class LargeFusionComputerPP extends GT_MetaTileEntity_TooltipMul
     }
 
     public LargeFusionComputerPP(int id, String name, String nameRegional) {
-        super(id,name,nameRegional);
+        super(id, name, nameRegional);
     }
 
     @Override
@@ -119,7 +131,8 @@ public abstract class LargeFusionComputerPP extends GT_MetaTileEntity_TooltipMul
 
     public int textureIndex() {
         return 53;
-    };
+    }
+    ;
 
     public abstract ITexture getTextureOverlay();
 
@@ -133,7 +146,10 @@ public abstract class LargeFusionComputerPP extends GT_MetaTileEntity_TooltipMul
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         this.eEnergyMulti.clear();
-        if (structureCheck_EM(MAIN_NAME, 23, 3, 40) && mInputHatches.size() > 1 && !mOutputHatches.isEmpty() && (mEnergyHatches.size() + eEnergyMulti.size()) != 0) {
+        if (structureCheck_EM(MAIN_NAME, 23, 3, 40)
+                && mInputHatches.size() > 1
+                && !mOutputHatches.isEmpty()
+                && (mEnergyHatches.size() + eEnergyMulti.size()) != 0) {
             fixAllIssue();
             return true;
         }
@@ -158,30 +174,45 @@ public abstract class LargeFusionComputerPP extends GT_MetaTileEntity_TooltipMul
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide() && !aBaseMetaTileEntity.isAllowedToWork()) {
             // if machine has stopped, stop chunkloading
-            GT_ChunkManager.releaseTicket((TileEntity)aBaseMetaTileEntity);
+            GT_ChunkManager.releaseTicket((TileEntity) aBaseMetaTileEntity);
             this.isLoadedChunk = false;
-        }
-        else if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.isAllowedToWork() && !this.isLoadedChunk) {
-            //load a 3x3 area when machine is running
-            GT_ChunkManager.releaseTicket((TileEntity)aBaseMetaTileEntity);
+        } else if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.isAllowedToWork() && !this.isLoadedChunk) {
+            // load a 3x3 area when machine is running
+            GT_ChunkManager.releaseTicket((TileEntity) aBaseMetaTileEntity);
             int offX = ForgeDirection.getOrientation(aBaseMetaTileEntity.getFrontFacing()).offsetX;
             int offZ = ForgeDirection.getOrientation(aBaseMetaTileEntity.getFrontFacing()).offsetZ;
-            GT_ChunkManager.requestChunkLoad((TileEntity)aBaseMetaTileEntity, new ChunkCoordIntPair(getChunkX() + offX, getChunkZ() + offZ));
-            GT_ChunkManager.requestChunkLoad((TileEntity)aBaseMetaTileEntity, new ChunkCoordIntPair(getChunkX() + 1 + offX, getChunkZ() + 1 + offZ));
-            GT_ChunkManager.requestChunkLoad((TileEntity)aBaseMetaTileEntity, new ChunkCoordIntPair(getChunkX() + 1 + offX, getChunkZ() + offZ));
-            GT_ChunkManager.requestChunkLoad((TileEntity)aBaseMetaTileEntity, new ChunkCoordIntPair(getChunkX() + 1 + offX, getChunkZ() - 1 + offZ));
-            GT_ChunkManager.requestChunkLoad((TileEntity)aBaseMetaTileEntity, new ChunkCoordIntPair(getChunkX() - 1 + offX, getChunkZ() + 1 + offZ));
-            GT_ChunkManager.requestChunkLoad((TileEntity)aBaseMetaTileEntity, new ChunkCoordIntPair(getChunkX() - 1 + offX, getChunkZ() + offZ));
-            GT_ChunkManager.requestChunkLoad((TileEntity)aBaseMetaTileEntity, new ChunkCoordIntPair(getChunkX() - 1 + offX, getChunkZ() - 1 + offZ));
-            GT_ChunkManager.requestChunkLoad((TileEntity)aBaseMetaTileEntity, new ChunkCoordIntPair(getChunkX() + offX, getChunkZ() + 1 + offZ));
-            GT_ChunkManager.requestChunkLoad((TileEntity)aBaseMetaTileEntity, new ChunkCoordIntPair(getChunkX() + offX, getChunkZ() - 1 + offZ));
+            GT_ChunkManager.requestChunkLoad(
+                    (TileEntity) aBaseMetaTileEntity, new ChunkCoordIntPair(getChunkX() + offX, getChunkZ() + offZ));
+            GT_ChunkManager.requestChunkLoad(
+                    (TileEntity) aBaseMetaTileEntity,
+                    new ChunkCoordIntPair(getChunkX() + 1 + offX, getChunkZ() + 1 + offZ));
+            GT_ChunkManager.requestChunkLoad(
+                    (TileEntity) aBaseMetaTileEntity,
+                    new ChunkCoordIntPair(getChunkX() + 1 + offX, getChunkZ() + offZ));
+            GT_ChunkManager.requestChunkLoad(
+                    (TileEntity) aBaseMetaTileEntity,
+                    new ChunkCoordIntPair(getChunkX() + 1 + offX, getChunkZ() - 1 + offZ));
+            GT_ChunkManager.requestChunkLoad(
+                    (TileEntity) aBaseMetaTileEntity,
+                    new ChunkCoordIntPair(getChunkX() - 1 + offX, getChunkZ() + 1 + offZ));
+            GT_ChunkManager.requestChunkLoad(
+                    (TileEntity) aBaseMetaTileEntity,
+                    new ChunkCoordIntPair(getChunkX() - 1 + offX, getChunkZ() + offZ));
+            GT_ChunkManager.requestChunkLoad(
+                    (TileEntity) aBaseMetaTileEntity,
+                    new ChunkCoordIntPair(getChunkX() - 1 + offX, getChunkZ() - 1 + offZ));
+            GT_ChunkManager.requestChunkLoad(
+                    (TileEntity) aBaseMetaTileEntity,
+                    new ChunkCoordIntPair(getChunkX() + offX, getChunkZ() + 1 + offZ));
+            GT_ChunkManager.requestChunkLoad(
+                    (TileEntity) aBaseMetaTileEntity,
+                    new ChunkCoordIntPair(getChunkX() + offX, getChunkZ() - 1 + offZ));
             this.isLoadedChunk = true;
         }
 
         if (aBaseMetaTileEntity.isServerSide()) {
             if (aTick % 400 == 0) fixAllIssue();
-            if (mEfficiency < 0)
-                mEfficiency = 0;
+            if (mEfficiency < 0) mEfficiency = 0;
             if (mRunningOnLoad && checkMachine(aBaseMetaTileEntity, mInventory[1])) {
                 this.mEUStore = aBaseMetaTileEntity.getStoredEU();
                 checkRecipe(mInventory[1]);
@@ -194,11 +225,18 @@ public abstract class LargeFusionComputerPP extends GT_MetaTileEntity_TooltipMul
                     if (this.mEnergyHatches != null) {
                         for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches)
                             if (isValidMetaTileEntity(tHatch)) {
-                                if (aBaseMetaTileEntity.getStoredEU() + (2048L * tierOverclock() * getMaxPara() * extraPara(100)) < maxEUStore()
-                                        && tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(2048L * tierOverclock() * getMaxPara() * extraPara(100), false)) {
-                                    aBaseMetaTileEntity.increaseStoredEnergyUnits(2048L * tierOverclock() * getMaxPara() * extraPara(100), true);
+                                if (aBaseMetaTileEntity.getStoredEU()
+                                                        + (2048L * tierOverclock() * getMaxPara() * extraPara(100))
+                                                < maxEUStore()
+                                        && tHatch.getBaseMetaTileEntity()
+                                                .decreaseStoredEnergyUnits(
+                                                        2048L * tierOverclock() * getMaxPara() * extraPara(100),
+                                                        false)) {
+                                    aBaseMetaTileEntity.increaseStoredEnergyUnits(
+                                            2048L * tierOverclock() * getMaxPara() * extraPara(100), true);
                                 } else if (aBaseMetaTileEntity.getStoredEU() + (2048L * tierOverclock()) < maxEUStore()
-                                        && tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(2048L * tierOverclock(), false)) {
+                                        && tHatch.getBaseMetaTileEntity()
+                                                .decreaseStoredEnergyUnits(2048L * tierOverclock(), false)) {
                                     aBaseMetaTileEntity.increaseStoredEnergyUnits(2048L * tierOverclock(), true);
                                 }
                             }
@@ -206,11 +244,18 @@ public abstract class LargeFusionComputerPP extends GT_MetaTileEntity_TooltipMul
                     if (this.eEnergyMulti != null) {
                         for (GT_MetaTileEntity_Hatch_EnergyMulti tHatch : eEnergyMulti)
                             if (isValidMetaTileEntity(tHatch)) {
-                                if (aBaseMetaTileEntity.getStoredEU() + (2048L * tierOverclock() * getMaxPara() * extraPara(100)) < maxEUStore()
-                                        && tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(2048L * tierOverclock() * getMaxPara() * extraPara(100), false)) {
-                                    aBaseMetaTileEntity.increaseStoredEnergyUnits(2048L * tierOverclock() * getMaxPara() * extraPara(100), true);
+                                if (aBaseMetaTileEntity.getStoredEU()
+                                                        + (2048L * tierOverclock() * getMaxPara() * extraPara(100))
+                                                < maxEUStore()
+                                        && tHatch.getBaseMetaTileEntity()
+                                                .decreaseStoredEnergyUnits(
+                                                        2048L * tierOverclock() * getMaxPara() * extraPara(100),
+                                                        false)) {
+                                    aBaseMetaTileEntity.increaseStoredEnergyUnits(
+                                            2048L * tierOverclock() * getMaxPara() * extraPara(100), true);
                                 } else if (aBaseMetaTileEntity.getStoredEU() + (2048L * tierOverclock()) < maxEUStore()
-                                        && tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(2048L * tierOverclock(), false)) {
+                                        && tHatch.getBaseMetaTileEntity()
+                                                .decreaseStoredEnergyUnits(2048L * tierOverclock(), false)) {
                                     aBaseMetaTileEntity.increaseStoredEnergyUnits(2048L * tierOverclock(), true);
                                 }
                             }
@@ -225,17 +270,19 @@ public abstract class LargeFusionComputerPP extends GT_MetaTileEntity_TooltipMul
                                 for (ItemStack tStack : mOutputItems) if (tStack != null) addOutput(tStack);
                             if (mOutputFluids != null)
                                 for (FluidStack tStack : mOutputFluids) if (tStack != null) addOutput(tStack);
-                            mEfficiency = Math.max(0, Math.min(mEfficiency + mEfficiencyIncrease, getMaxEfficiency(mInventory[1])));
+                            mEfficiency = Math.max(
+                                    0, Math.min(mEfficiency + mEfficiencyIncrease, getMaxEfficiency(mInventory[1])));
                             mOutputItems = null;
                             mProgresstime = 0;
                             mMaxProgresstime = 0;
                             mEfficiencyIncrease = 0;
                             this.mEUStore = getBaseMetaTileEntity().getStoredEU();
-                            if (aBaseMetaTileEntity.isAllowedToWork())
-                                checkRecipe(mInventory[1]);
+                            if (aBaseMetaTileEntity.isAllowedToWork()) checkRecipe(mInventory[1]);
                         }
                     } else {
-                        if (aTick % 100 == 0 || aBaseMetaTileEntity.hasWorkJustBeenEnabled() || aBaseMetaTileEntity.hasInventoryBeenModified()) {
+                        if (aTick % 100 == 0
+                                || aBaseMetaTileEntity.hasWorkJustBeenEnabled()
+                                || aBaseMetaTileEntity.hasInventoryBeenModified()) {
                             turnCasingActive(mMaxProgresstime > 0);
                             if (aBaseMetaTileEntity.isAllowedToWork()) {
                                 this.mEUStore = getBaseMetaTileEntity().getStoredEU();
@@ -244,11 +291,12 @@ public abstract class LargeFusionComputerPP extends GT_MetaTileEntity_TooltipMul
                                         mMaxProgresstime = 0;
                                         turnCasingActive(false);
                                     }
-                                    getBaseMetaTileEntity().decreaseStoredEnergyUnits(this.mLastRecipe.mSpecialValue - this.mEUt, false);
+                                    getBaseMetaTileEntity()
+                                            .decreaseStoredEnergyUnits(
+                                                    this.mLastRecipe.mSpecialValue - this.mEUt, false);
                                 }
                             }
-                            if (mMaxProgresstime <= 0)
-                                mEfficiency = Math.max(0, mEfficiency - 1000);
+                            if (mMaxProgresstime <= 0) mEfficiency = Math.max(0, mEfficiency - 1000);
                         }
                     }
                 } else {
@@ -257,7 +305,8 @@ public abstract class LargeFusionComputerPP extends GT_MetaTileEntity_TooltipMul
                     stopMachine();
                 }
             }
-            aBaseMetaTileEntity.setErrorDisplayID((aBaseMetaTileEntity.getErrorDisplayID() & ~127) | (mMachine ? 0 : 64));
+            aBaseMetaTileEntity.setErrorDisplayID(
+                    (aBaseMetaTileEntity.getErrorDisplayID() & ~127) | (mMachine ? 0 : 64));
             aBaseMetaTileEntity.setActive(mMaxProgresstime > 0);
         }
     }
@@ -287,10 +336,28 @@ public abstract class LargeFusionComputerPP extends GT_MetaTileEntity_TooltipMul
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        if (aSide == aFacing) return new ITexture[]{TextureFactory.builder().addIcon(MACHINE_CASING_FUSION_GLASS).extFacing().build(), getTextureOverlay()};
-        if (aActive) return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(52)};
-        return new ITexture[]{TextureFactory.builder().addIcon(MACHINE_CASING_FUSION_GLASS).extFacing().build()};
+    public ITexture[] getTexture(
+            IGregTechTileEntity aBaseMetaTileEntity,
+            byte aSide,
+            byte aFacing,
+            byte aColorIndex,
+            boolean aActive,
+            boolean aRedstone) {
+        if (aSide == aFacing)
+            return new ITexture[] {
+                TextureFactory.builder()
+                        .addIcon(MACHINE_CASING_FUSION_GLASS)
+                        .extFacing()
+                        .build(),
+                getTextureOverlay()
+            };
+        if (aActive) return new ITexture[] {Textures.BlockIcons.getCasingTextureForId(52)};
+        return new ITexture[] {
+            TextureFactory.builder()
+                    .addIcon(MACHINE_CASING_FUSION_GLASS)
+                    .extFacing()
+                    .build()
+        };
     }
 
     @Override
@@ -334,18 +401,22 @@ public abstract class LargeFusionComputerPP extends GT_MetaTileEntity_TooltipMul
 
         if (tFluidList.size() > 1) {
             FluidStack[] tFluids = tFluidList.toArray(new FluidStack[0]);
-            GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sFusionRecipes.findRecipe(this.getBaseMetaTileEntity(), this.mLastRecipe, false, Integer.MAX_VALUE, tFluids);
+            GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sFusionRecipes.findRecipe(
+                    this.getBaseMetaTileEntity(), this.mLastRecipe, false, Integer.MAX_VALUE, tFluids);
             if ((tRecipe == null && !mRunningOnLoad) || (maxEUStore() < tRecipe.mSpecialValue)) {
                 turnCasingActive(false);
                 this.mLastRecipe = null;
                 return false;
             }
-            int pall = handleParallelRecipe(tRecipe, tFluids, null, Math.min(getMaxPara() * extraPara(tRecipe.mSpecialValue), (int) (getMaxEUInput() / tRecipe.mEUt / overclock(tRecipe.mSpecialValue))));
+            int pall = handleParallelRecipe(
+                    tRecipe, tFluids, null, Math.min(getMaxPara() * extraPara(tRecipe.mSpecialValue), (int)
+                            (getMaxEUInput() / tRecipe.mEUt / overclock(tRecipe.mSpecialValue))));
             this.para = pall;
             if (mRunningOnLoad || pall > 0) {
                 this.mLastRecipe = tRecipe;
                 this.mEUt = (this.mLastRecipe.mEUt * overclock(this.mLastRecipe.mSpecialValue) * pall);
-                this.mMaxProgresstime = Math.max(this.mLastRecipe.mDuration / overclock(this.mLastRecipe.mSpecialValue), 1);
+                this.mMaxProgresstime =
+                        Math.max(this.mLastRecipe.mDuration / overclock(this.mLastRecipe.mSpecialValue), 1);
                 this.mEfficiencyIncrease = 10000;
                 this.mOutputFluids = getMultiOutput(mLastRecipe, pall).getKey().toArray(new FluidStack[0]);
                 turnCasingActive(true);
@@ -360,12 +431,16 @@ public abstract class LargeFusionComputerPP extends GT_MetaTileEntity_TooltipMul
         long sum = 0;
         for (GT_MetaTileEntity_Hatch_Energy hatch : mEnergyHatches) {
             if (isValidMetaTileEntity(hatch)) {
-                sum += Math.min(2048L * tierOverclock() * getMaxPara() * extraPara(100), hatch.maxEUInput() * hatch.maxAmperesIn());
+                sum += Math.min(
+                        2048L * tierOverclock() * getMaxPara() * extraPara(100),
+                        hatch.maxEUInput() * hatch.maxAmperesIn());
             }
         }
         for (GT_MetaTileEntity_Hatch_EnergyMulti hatch : eEnergyMulti) {
             if (isValidMetaTileEntity(hatch)) {
-                sum += Math.min(2048L * tierOverclock() * getMaxPara() * extraPara(100), hatch.maxEUInput() * hatch.maxAmperesIn());
+                sum += Math.min(
+                        2048L * tierOverclock() * getMaxPara() * extraPara(100),
+                        hatch.maxEUInput() * hatch.maxAmperesIn());
             }
         }
         return sum;
@@ -373,8 +448,7 @@ public abstract class LargeFusionComputerPP extends GT_MetaTileEntity_TooltipMul
 
     @Override
     public void onRemoval() {
-        if (this.isLoadedChunk)
-            GT_ChunkManager.releaseTicket((TileEntity)getBaseMetaTileEntity());
+        if (this.isLoadedChunk) GT_ChunkManager.releaseTicket((TileEntity) getBaseMetaTileEntity());
         super.onRemoval();
     }
 
@@ -394,8 +468,7 @@ public abstract class LargeFusionComputerPP extends GT_MetaTileEntity_TooltipMul
             if (tHatch.mTier < hatchTier()) return false;
             tHatch.updateTexture(aBaseCasingIndex);
             return mEnergyHatches.add(tHatch);
-        }
-        else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_EnergyMulti) {
+        } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_EnergyMulti) {
             GT_MetaTileEntity_Hatch_EnergyMulti tHatch = (GT_MetaTileEntity_Hatch_EnergyMulti) aMetaTileEntity;
             if (tHatch.mTier < hatchTier()) return false;
             tHatch.updateTexture(aBaseCasingIndex);
@@ -453,226 +526,232 @@ public abstract class LargeFusionComputerPP extends GT_MetaTileEntity_TooltipMul
 
     @Override
     public String[] getInfoData() {
-        String tier = hatchTier() == 9 ? EnumChatFormatting.BLUE+"IV"+EnumChatFormatting.RESET : EnumChatFormatting.GOLD+"V"+EnumChatFormatting.RESET;
+        String tier = hatchTier() == 9
+                ? EnumChatFormatting.BLUE + "IV" + EnumChatFormatting.RESET
+                : EnumChatFormatting.GOLD + "V" + EnumChatFormatting.RESET;
         float plasmaOut = 0;
         int powerRequired = 0;
         if (this.mLastRecipe != null) {
             powerRequired = this.mLastRecipe.mEUt * this.para;
             if (this.mLastRecipe.getFluidOutput(0) != null) {
-                plasmaOut = (float)this.mLastRecipe.getFluidOutput(0).amount / (float)this.mLastRecipe.mDuration * this.para;
+                plasmaOut = (float) this.mLastRecipe.getFluidOutput(0).amount
+                        / (float) this.mLastRecipe.mDuration
+                        * this.para;
             }
         }
 
-        return new String[]{
-                EnumChatFormatting.BLUE + "Fusion Reactor MK " + EnumChatFormatting.RESET + tier,
-                StatCollector.translateToLocal("scanner.info.UX.0") + ": " +
-                        EnumChatFormatting.LIGHT_PURPLE + GT_Utility.formatNumbers(this.para) + EnumChatFormatting.RESET,
-                StatCollector.translateToLocal("GT5U.fusion.req") + ": " +
-                        EnumChatFormatting.RED + GT_Utility.formatNumbers(powerRequired) + EnumChatFormatting.RESET + "EU/t",
-                StatCollector.translateToLocal("GT5U.multiblock.energy") + ": " +
-                        EnumChatFormatting.GREEN + GT_Utility.formatNumbers(mEUStore) + EnumChatFormatting.RESET + " EU / " +
-                        EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(maxEUStore()) + EnumChatFormatting.RESET + " EU",
-                StatCollector.translateToLocal("GT5U.fusion.plasma") + ": " +
-                        EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(plasmaOut) + EnumChatFormatting.RESET + "L/t"};
+        return new String[] {
+            EnumChatFormatting.BLUE + "Fusion Reactor MK " + EnumChatFormatting.RESET + tier,
+            StatCollector.translateToLocal("scanner.info.UX.0") + ": " + EnumChatFormatting.LIGHT_PURPLE
+                    + GT_Utility.formatNumbers(this.para) + EnumChatFormatting.RESET,
+            StatCollector.translateToLocal("GT5U.fusion.req") + ": " + EnumChatFormatting.RED
+                    + GT_Utility.formatNumbers(powerRequired) + EnumChatFormatting.RESET + "EU/t",
+            StatCollector.translateToLocal("GT5U.multiblock.energy") + ": " + EnumChatFormatting.GREEN
+                    + GT_Utility.formatNumbers(mEUStore) + EnumChatFormatting.RESET + " EU / "
+                    + EnumChatFormatting.YELLOW
+                    + GT_Utility.formatNumbers(maxEUStore()) + EnumChatFormatting.RESET + " EU",
+            StatCollector.translateToLocal("GT5U.fusion.plasma") + ": " + EnumChatFormatting.YELLOW
+                    + GT_Utility.formatNumbers(plasmaOut) + EnumChatFormatting.RESET + "L/t"
+        };
     }
 
     public static final String[] L0 = {
-            "                                               ",
-            "                                               ",
-            "                    FCCCCCF                    ",
-            "                    FCIBICF                    ",
-            "                    FCCCCCF                    ",
-            "                                               ",
-            "                                               ",
-            "                                               ",
-            "                                               ",
-            "                                               ",
-            "                                               ",
-            "                                               ",
-            "                                               ",
-            "                                               ",
-            "                                               ",
-            "                                               ",
-            "                                               ",
-            "                                               ",
-            "                                               ",
-            "                                               ",
-            "  FFF                                     FFF  ",
-            "  CCC                                     CCC  ",
-            "  CIC                                     CIC  ",
-            "  CBC                                     CBC  ",
-            "  CIC                                     CIC  ",
-            "  CCC                                     CCC  ",
-            "  FFF                                     FFF  ",
-            "                                               ",
-            "                                               ",
-            "                                               ",
-            "                                               ",
-            "                                               ",
-            "                                               ",
-            "                                               ",
-            "                                               ",
-            "                                               ",
-            "                                               ",
-            "                                               ",
-            "                                               ",
-            "                                               ",
-            "                                               ",
-            "                                               ",
-            "                    FCCCCCF                    ",
-            "                    FCIBICF                    ",
-            "                    FCCCCCF                    ",
-            "                                               ",
-            "                                               ",
+        "                                               ",
+        "                                               ",
+        "                    FCCCCCF                    ",
+        "                    FCIBICF                    ",
+        "                    FCCCCCF                    ",
+        "                                               ",
+        "                                               ",
+        "                                               ",
+        "                                               ",
+        "                                               ",
+        "                                               ",
+        "                                               ",
+        "                                               ",
+        "                                               ",
+        "                                               ",
+        "                                               ",
+        "                                               ",
+        "                                               ",
+        "                                               ",
+        "                                               ",
+        "  FFF                                     FFF  ",
+        "  CCC                                     CCC  ",
+        "  CIC                                     CIC  ",
+        "  CBC                                     CBC  ",
+        "  CIC                                     CIC  ",
+        "  CCC                                     CCC  ",
+        "  FFF                                     FFF  ",
+        "                                               ",
+        "                                               ",
+        "                                               ",
+        "                                               ",
+        "                                               ",
+        "                                               ",
+        "                                               ",
+        "                                               ",
+        "                                               ",
+        "                                               ",
+        "                                               ",
+        "                                               ",
+        "                                               ",
+        "                                               ",
+        "                                               ",
+        "                    FCCCCCF                    ",
+        "                    FCIBICF                    ",
+        "                    FCCCCCF                    ",
+        "                                               ",
+        "                                               ",
     };
 
     public static final String[] L1 = {
-            "                                               ",
-            "                    FCBBBCF                    ",
-            "                   CC     CC                   ",
-            "                CCCCC     CCCCC                ",
-            "              CCCCCCC     CCCCCCC              ",
-            "            CCCCCCC FCBBBCF CCCCCCC            ",
-            "           CCCCC               CCCCC           ",
-            "          CCCC                   CCCC          ",
-            "         CCC                       CCC         ",
-            "        CCC                         CCC        ",
-            "       CCC                           CCC       ",
-            "      CCC                             CCC      ",
-            "     CCC                               CCC     ",
-            "     CCC                               CCC     ",
-            "    CCC                                 CCC    ",
-            "    CCC                                 CCC    ",
-            "   CCC                                   CCC   ",
-            "   CCC                                   CCC   ",
-            "   CCC                                   CCC   ",
-            "  CCC                                     CCC  ",
-            " FCCCF                                   FCCCF ",
-            " C   C                                   C   C ",
-            " B   B                                   B   B ",
-            " B   B                                   B   B ",
-            " B   B                                   B   B ",
-            " C   C                                   C   C ",
-            " FCCCF                                   FCCCF ",
-            "  CCC                                     CCC  ",
-            "   CCC                                   CCC   ",
-            "   CCC                                   CCC   ",
-            "   CCC                                   CCC   ",
-            "    CCC                                 CCC    ",
-            "    CCC                                 CCC    ",
-            "     CCC                               CCC     ",
-            "     CCC                               CCC     ",
-            "      CCC                             CCC      ",
-            "       CCC                           CCC       ",
-            "        CCC                         CCC        ",
-            "         CCC                       CCC         ",
-            "          CCCC                   CCCC          ",
-            "           CCCCC               CCCCC           ",
-            "            CCCCCCC FCBBBCF CCCCCCC            ",
-            "              CCCCCCC     CCCCCCC              ",
-            "                CCCCC     CCCCC                ",
-            "                   CC     CC                   ",
-            "                    FCBBBCF                    ",
-            "                                               ",
+        "                                               ",
+        "                    FCBBBCF                    ",
+        "                   CC     CC                   ",
+        "                CCCCC     CCCCC                ",
+        "              CCCCCCC     CCCCCCC              ",
+        "            CCCCCCC FCBBBCF CCCCCCC            ",
+        "           CCCCC               CCCCC           ",
+        "          CCCC                   CCCC          ",
+        "         CCC                       CCC         ",
+        "        CCC                         CCC        ",
+        "       CCC                           CCC       ",
+        "      CCC                             CCC      ",
+        "     CCC                               CCC     ",
+        "     CCC                               CCC     ",
+        "    CCC                                 CCC    ",
+        "    CCC                                 CCC    ",
+        "   CCC                                   CCC   ",
+        "   CCC                                   CCC   ",
+        "   CCC                                   CCC   ",
+        "  CCC                                     CCC  ",
+        " FCCCF                                   FCCCF ",
+        " C   C                                   C   C ",
+        " B   B                                   B   B ",
+        " B   B                                   B   B ",
+        " B   B                                   B   B ",
+        " C   C                                   C   C ",
+        " FCCCF                                   FCCCF ",
+        "  CCC                                     CCC  ",
+        "   CCC                                   CCC   ",
+        "   CCC                                   CCC   ",
+        "   CCC                                   CCC   ",
+        "    CCC                                 CCC    ",
+        "    CCC                                 CCC    ",
+        "     CCC                               CCC     ",
+        "     CCC                               CCC     ",
+        "      CCC                             CCC      ",
+        "       CCC                           CCC       ",
+        "        CCC                         CCC        ",
+        "         CCC                       CCC         ",
+        "          CCCC                   CCCC          ",
+        "           CCCCC               CCCCC           ",
+        "            CCCCCCC FCBBBCF CCCCCCC            ",
+        "              CCCCCCC     CCCCCCC              ",
+        "                CCCCC     CCCCC                ",
+        "                   CC     CC                   ",
+        "                    FCBBBCF                    ",
+        "                                               ",
     };
 
     public static final String[] L2 = {
-            "                    FCCCCCF                    ",
-            "                   CC     CC                   ",
-            "                CCCCC     CCCCC                ",
-            "              CCCCCHHHHHHHHHCCCCC              ",
-            "            CCCCHHHCC     CCHHHCCCC            ",
-            "           CCCHHCCCCC     CCCCCHHCCC           ",
-            "          ECHHCCCCC FCCCCCF CCCCCHHCE          ",
-            "         CCHCCCC               CCCCHCC         ",
-            "        CCHCCC                   CCCHCC        ",
-            "       CCHCE                       ECHCC       ",
-            "      ECHCC                         CCHCE      ",
-            "     CCHCE                           ECHCC     ",
-            "    CCHCC                             CCHCC    ",
-            "    CCHCC                             CCHCC    ",
-            "   CCHCC                               CCHCC   ",
-            "   CCHCC                               CCHCC   ",
-            "  CCHCC                                 CCHCC  ",
-            "  CCHCC                                 CCHCC  ",
-            "  CCHCC                                 CCHCC  ",
-            " CCHCC                                   CCHCC ",
-            "FCCHCCF                                 FCCHCCF",
-            "C  H  C                                 C  H  C",
-            "C  H  C                                 C  H  C",
-            "C  H  C                                 C  H  C",
-            "C  H  C                                 C  H  C",
-            "C  H  C                                 C  H  C",
-            "FCCHCCF                                 FCCHCCF",
-            " CCHCC                                   CCHCC ",
-            "  CCHCC                                 CCHCC  ",
-            "  CCHCC                                 CCHCC  ",
-            "  CCHCC                                 CCHCC  ",
-            "   CCHCC                               CCHCC   ",
-            "   CCHCC                               CCHCC   ",
-            "    CCHCC                             CCHCC    ",
-            "    CCHCC                             CCHCC    ",
-            "     CCHCE                           ECHCC     ",
-            "      ECHCC                         CCHCE      ",
-            "       CCHCE                       ECHCC       ",
-            "        CCHCCC                   CCCHCC        ",
-            "         CCHCCCC               CCCCHCC         ",
-            "          ECHHCCCCC FCCCCCF CCCCCHHCE          ",
-            "           CCCHHCCCCC     CCCCCHHCCC           ",
-            "            CCCCHHHCC     CCHHHCCCC            ",
-            "              CCCCCHHHHHHHHHCCCCC              ",
-            "                CCCCC     CCCCC                ",
-            "                   CC     CC                   ",
-            "                    FCCCCCF                    ",
+        "                    FCCCCCF                    ",
+        "                   CC     CC                   ",
+        "                CCCCC     CCCCC                ",
+        "              CCCCCHHHHHHHHHCCCCC              ",
+        "            CCCCHHHCC     CCHHHCCCC            ",
+        "           CCCHHCCCCC     CCCCCHHCCC           ",
+        "          ECHHCCCCC FCCCCCF CCCCCHHCE          ",
+        "         CCHCCCC               CCCCHCC         ",
+        "        CCHCCC                   CCCHCC        ",
+        "       CCHCE                       ECHCC       ",
+        "      ECHCC                         CCHCE      ",
+        "     CCHCE                           ECHCC     ",
+        "    CCHCC                             CCHCC    ",
+        "    CCHCC                             CCHCC    ",
+        "   CCHCC                               CCHCC   ",
+        "   CCHCC                               CCHCC   ",
+        "  CCHCC                                 CCHCC  ",
+        "  CCHCC                                 CCHCC  ",
+        "  CCHCC                                 CCHCC  ",
+        " CCHCC                                   CCHCC ",
+        "FCCHCCF                                 FCCHCCF",
+        "C  H  C                                 C  H  C",
+        "C  H  C                                 C  H  C",
+        "C  H  C                                 C  H  C",
+        "C  H  C                                 C  H  C",
+        "C  H  C                                 C  H  C",
+        "FCCHCCF                                 FCCHCCF",
+        " CCHCC                                   CCHCC ",
+        "  CCHCC                                 CCHCC  ",
+        "  CCHCC                                 CCHCC  ",
+        "  CCHCC                                 CCHCC  ",
+        "   CCHCC                               CCHCC   ",
+        "   CCHCC                               CCHCC   ",
+        "    CCHCC                             CCHCC    ",
+        "    CCHCC                             CCHCC    ",
+        "     CCHCE                           ECHCC     ",
+        "      ECHCC                         CCHCE      ",
+        "       CCHCE                       ECHCC       ",
+        "        CCHCCC                   CCCHCC        ",
+        "         CCHCCCC               CCCCHCC         ",
+        "          ECHHCCCCC FCCCCCF CCCCCHHCE          ",
+        "           CCCHHCCCCC     CCCCCHHCCC           ",
+        "            CCCCHHHCC     CCHHHCCCC            ",
+        "              CCCCCHHHHHHHHHCCCCC              ",
+        "                CCCCC     CCCCC                ",
+        "                   CC     CC                   ",
+        "                    FCCCCCF                    ",
     };
 
     public static final String[] L3 = {
-            "                    FCOBOCF                    ",
-            "                   CC     CC                   ",
-            "                CCCHHHHHHHHHCCC                ",
-            "              CCHHHHHHHHHHHHHHHCC              ",
-            "            CCHHHHHHHHHHHHHHHHHHHCC            ",
-            "           CHHHHHHHCC     CCHHHHHHHC           ",
-            "          CHHHHHCCC FCOBOCF CCCHHHHHC          ",
-            "         CHHHHCC               CCHHHHC         ",
-            "        CHHHCC                   CCHHHC        ",
-            "       CHHHC                       CHHHC       ",
-            "      CHHHC                         CHHHC      ",
-            "     CHHHC                           CHHHC     ",
-            "    CHHHC                             CHHHC    ",
-            "    CHHHC                             CHHHC    ",
-            "   CHHHC                               CHHHC   ",
-            "   CHHHC                               CHHHC   ",
-            "  CHHHC                                 CHHHC  ",
-            "  CHHHC                                 CHHHC  ",
-            "  CHHHC                                 CHHHC  ",
-            " CHHHC                                   CHHHC ",
-            "FCHHHCF                                 FCHHHCF",
-            "C HHH C                                 C HHH C",
-            "O HHH O                                 O HHH O",
-            "B HHH B                                 B HHH B",
-            "O HHH O                                 O HHH O",
-            "C HHH C                                 C HHH C",
-            "FCHHHCF                                 FCHHHCF",
-            " CHHHC                                   CHHHC ",
-            "  CHHHC                                 CHHHC  ",
-            "  CHHHC                                 CHHHC  ",
-            "  CHHHC                                 CHHHC  ",
-            "   CHHHC                               CHHHC   ",
-            "   CHHHC                               CHHHC   ",
-            "    CHHHC                             CHHHC    ",
-            "    CHHHC                             CHHHC    ",
-            "     CHHHC                           CHHHC     ",
-            "      CHHHC                         CHHHC      ",
-            "       CHHHC                       CHHHC       ",
-            "        CHHHCC                   CCHHHC        ",
-            "         CHHHHCC               CCHHHHC         ",
-            "          CHHHHHCCC FCO~OCF CCCHHHHHC          ",
-            "           CHHHHHHHCC     CCHHHHHHHC           ",
-            "            CCHHHHHHHHHHHHHHHHHHHCC            ",
-            "              CCHHHHHHHHHHHHHHHCC              ",
-            "                CCCHHHHHHHHHCCC                ",
-            "                   CC     CC                   ",
-            "                    FCOBOCF                    ",
+        "                    FCOBOCF                    ",
+        "                   CC     CC                   ",
+        "                CCCHHHHHHHHHCCC                ",
+        "              CCHHHHHHHHHHHHHHHCC              ",
+        "            CCHHHHHHHHHHHHHHHHHHHCC            ",
+        "           CHHHHHHHCC     CCHHHHHHHC           ",
+        "          CHHHHHCCC FCOBOCF CCCHHHHHC          ",
+        "         CHHHHCC               CCHHHHC         ",
+        "        CHHHCC                   CCHHHC        ",
+        "       CHHHC                       CHHHC       ",
+        "      CHHHC                         CHHHC      ",
+        "     CHHHC                           CHHHC     ",
+        "    CHHHC                             CHHHC    ",
+        "    CHHHC                             CHHHC    ",
+        "   CHHHC                               CHHHC   ",
+        "   CHHHC                               CHHHC   ",
+        "  CHHHC                                 CHHHC  ",
+        "  CHHHC                                 CHHHC  ",
+        "  CHHHC                                 CHHHC  ",
+        " CHHHC                                   CHHHC ",
+        "FCHHHCF                                 FCHHHCF",
+        "C HHH C                                 C HHH C",
+        "O HHH O                                 O HHH O",
+        "B HHH B                                 B HHH B",
+        "O HHH O                                 O HHH O",
+        "C HHH C                                 C HHH C",
+        "FCHHHCF                                 FCHHHCF",
+        " CHHHC                                   CHHHC ",
+        "  CHHHC                                 CHHHC  ",
+        "  CHHHC                                 CHHHC  ",
+        "  CHHHC                                 CHHHC  ",
+        "   CHHHC                               CHHHC   ",
+        "   CHHHC                               CHHHC   ",
+        "    CHHHC                             CHHHC    ",
+        "    CHHHC                             CHHHC    ",
+        "     CHHHC                           CHHHC     ",
+        "      CHHHC                         CHHHC      ",
+        "       CHHHC                       CHHHC       ",
+        "        CHHHCC                   CCHHHC        ",
+        "         CHHHHCC               CCHHHHC         ",
+        "          CHHHHHCCC FCO~OCF CCCHHHHHC          ",
+        "           CHHHHHHHCC     CCHHHHHHHC           ",
+        "            CCHHHHHHHHHHHHHHHHHHHCC            ",
+        "              CCHHHHHHHHHHHHHHHCC              ",
+        "                CCCHHHHHHHHHCCC                ",
+        "                   CC     CC                   ",
+        "                    FCOBOCF                    ",
     };
 }

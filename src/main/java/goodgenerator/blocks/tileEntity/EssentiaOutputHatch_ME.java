@@ -21,12 +21,17 @@ import thaumcraft.api.aspects.AspectList;
 import thaumicenergistics.api.grid.IEssentiaGrid;
 import thaumicenergistics.api.grid.IMEEssentiaMonitor;
 
-import java.util.Map;
-
-
-@Optional.InterfaceList(value = {
-    @Optional.Interface(iface = "appeng.api.networking.security.IActionHost", modid = "appliedenergistics2", striprefs = true),
-    @Optional.Interface(iface = "appeng.me.helpers.IGridProxyable", modid = "appliedenergistics2", striprefs = true),})
+@Optional.InterfaceList(
+        value = {
+            @Optional.Interface(
+                    iface = "appeng.api.networking.security.IActionHost",
+                    modid = "appliedenergistics2",
+                    striprefs = true),
+            @Optional.Interface(
+                    iface = "appeng.me.helpers.IGridProxyable",
+                    modid = "appliedenergistics2",
+                    striprefs = true),
+        })
 public class EssentiaOutputHatch_ME extends EssentiaOutputHatch implements IActionHost, IGridProxyable {
 
     private AENetworkProxy gridProxy = null;
@@ -55,30 +60,26 @@ public class EssentiaOutputHatch_ME extends EssentiaOutputHatch implements IActi
     @Optional.Method(modid = "appliedenergistics2")
     public void readFromNBT_AENetwork(final NBTTagCompound data) {
         AENetworkProxy gp = getProxy();
-        if (gp != null)
-            getProxy().readFromNBT(data);
+        if (gp != null) getProxy().readFromNBT(data);
     }
 
     @TileEvent(TileEventType.WORLD_NBT_WRITE)
     @Optional.Method(modid = "appliedenergistics2")
     public void writeToNBT_AENetwork(final NBTTagCompound data) {
         AENetworkProxy gp = getProxy();
-        if (gp != null)
-            gp.writeToNBT(data);
+        if (gp != null) gp.writeToNBT(data);
     }
 
     @Optional.Method(modid = "appliedenergistics2")
     void onChunkUnloadAE() {
         AENetworkProxy gp = getProxy();
-        if (gp != null)
-            gp.onChunkUnload();
+        if (gp != null) gp.onChunkUnload();
     }
 
     @Optional.Method(modid = "appliedenergistics2")
     void invalidateAE() {
         AENetworkProxy gp = getProxy();
-        if (gp != null)
-            gp.invalidate();
+        if (gp != null) gp.invalidate();
     }
 
     @Optional.Method(modid = "appliedenergistics2")
@@ -89,8 +90,7 @@ public class EssentiaOutputHatch_ME extends EssentiaOutputHatch implements IActi
 
     @Override
     @Optional.Method(modid = "appliedenergistics2")
-    public void gridChanged() {
-    }
+    public void gridChanged() {}
 
     @Override
     @Optional.Method(modid = "appliedenergistics2")
@@ -100,8 +100,7 @@ public class EssentiaOutputHatch_ME extends EssentiaOutputHatch implements IActi
 
     @Override
     @Optional.Method(modid = "appliedenergistics2")
-    public void securityBreak() {
-    }
+    public void securityBreak() {}
 
     @Override
     @Optional.Method(modid = "appliedenergistics2")
@@ -168,5 +167,4 @@ public class EssentiaOutputHatch_ME extends EssentiaOutputHatch implements IActi
     public MachineSource getMachineSource() {
         return this.asMachineSource;
     }
-
 }

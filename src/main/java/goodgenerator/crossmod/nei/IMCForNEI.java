@@ -22,7 +22,8 @@ public class IMCForNEI {
         if (LoadedList.GTPP) {
             sendCatalyst("gt.recipe.fusionreactor", "gregtech:gt.blockmachines:32022", -10);
         }
-//        sendCatalyst("gt.recipe.fusionreactor", "gregtech:gt.blockmachines:32023", -10); // Compact Fusion MK-V
+        //        sendCatalyst("gt.recipe.fusionreactor", "gregtech:gt.blockmachines:32023", -10); // Compact Fusion
+        // MK-V
 
         sendCatalyst("gt.recipe.complexfusionreactor", "gregtech:gt.blockmachines:32019", -10);
         sendCatalyst("gt.recipe.complexfusionreactor", "gregtech:gt.blockmachines:32020", -10);
@@ -30,7 +31,8 @@ public class IMCForNEI {
         if (LoadedList.GTPP) {
             sendCatalyst("gt.recipe.complexfusionreactor", "gregtech:gt.blockmachines:32022", -10);
         }
-//        sendCatalyst("gt.recipe.complexfusionreactor", "gregtech:gt.blockmachines:32023", -10); // Compact Fusion MK-V
+        //        sendCatalyst("gt.recipe.complexfusionreactor", "gregtech:gt.blockmachines:32023", -10); // Compact
+        // Fusion MK-V
     }
 
     private static void sendHandler(String aName, String aBlock) {

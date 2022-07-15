@@ -1,6 +1,7 @@
 package goodgenerator.blocks.tileEntity;
 
 import goodgenerator.crossmod.thaumcraft.LargeEssentiaEnergyData;
+import java.util.ArrayList;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
@@ -13,8 +14,6 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IAspectContainer;
 import thaumcraft.api.aspects.IEssentiaTransport;
-
-import java.util.ArrayList;
 
 public class EssentiaHatch extends TileEntity implements IAspectContainer, IEssentiaTransport {
 
@@ -86,17 +85,19 @@ public class EssentiaHatch extends TileEntity implements IAspectContainer, IEsse
     }
 
     public void fillfrompipe() {
-        if (getEssentiaAmount(null) >= 1000)
-            return;
+        if (getEssentiaAmount(null) >= 1000) return;
         TileEntity[] te = new TileEntity[ForgeDirection.VALID_DIRECTIONS.length];
         for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
-            te[i] = ThaumcraftApiHelper.getConnectableTile(this.worldObj, this.xCoord, this.yCoord, this.zCoord, ForgeDirection.VALID_DIRECTIONS[i]);
+            te[i] = ThaumcraftApiHelper.getConnectableTile(
+                    this.worldObj, this.xCoord, this.yCoord, this.zCoord, ForgeDirection.VALID_DIRECTIONS[i]);
             if (te[i] != null) {
                 IEssentiaTransport pipe = (IEssentiaTransport) te[i];
                 if (!pipe.canOutputTo(ForgeDirection.VALID_DIRECTIONS[i])) {
                     return;
                 }
-                if ((pipe.getEssentiaType(ForgeDirection.VALID_DIRECTIONS[i].getOpposite()) != null) && (pipe.getSuctionAmount(ForgeDirection.VALID_DIRECTIONS[i]) < getSuctionAmount(ForgeDirection.VALID_DIRECTIONS[i]))) {
+                if ((pipe.getEssentiaType(ForgeDirection.VALID_DIRECTIONS[i].getOpposite()) != null)
+                        && (pipe.getSuctionAmount(ForgeDirection.VALID_DIRECTIONS[i])
+                                < getSuctionAmount(ForgeDirection.VALID_DIRECTIONS[i]))) {
                     Aspect readyInput = pipe.getEssentiaType(ForgeDirection.VALID_DIRECTIONS[i].getOpposite());
                     int type = LargeEssentiaEnergyData.getAspectTypeIndex(readyInput);
                     if (type != -1 && (mState & (1 << type)) == 0) continue;
@@ -104,7 +105,12 @@ public class EssentiaHatch extends TileEntity implements IAspectContainer, IEsse
                         addToContainer(mLocked, pipe.takeEssentia(mLocked, 1, ForgeDirection.VALID_DIRECTIONS[i]));
                     }
                     if (mLocked == null)
-                        addToContainer(pipe.getEssentiaType(ForgeDirection.VALID_DIRECTIONS[i]), pipe.takeEssentia(pipe.getEssentiaType(ForgeDirection.VALID_DIRECTIONS[i]), 1, ForgeDirection.VALID_DIRECTIONS[i]));
+                        addToContainer(
+                                pipe.getEssentiaType(ForgeDirection.VALID_DIRECTIONS[i]),
+                                pipe.takeEssentia(
+                                        pipe.getEssentiaType(ForgeDirection.VALID_DIRECTIONS[i]),
+                                        1,
+                                        ForgeDirection.VALID_DIRECTIONS[i]));
                 }
             }
         }
@@ -159,8 +165,7 @@ public class EssentiaHatch extends TileEntity implements IAspectContainer, IEsse
     @Override
     public boolean doesContainerContain(AspectList aspectList) {
         ArrayList<Boolean> ret = new ArrayList<Boolean>();
-        for (Aspect a : aspectList.aspects.keySet())
-            ret.add(current.aspects.containsKey(a));
+        for (Aspect a : aspectList.aspects.keySet()) ret.add(current.aspects.containsKey(a));
         return !ret.contains(false);
     }
 
@@ -185,7 +190,7 @@ public class EssentiaHatch extends TileEntity implements IAspectContainer, IEsse
     }
 
     @Override
-    public void setSuction(Aspect aspect, int i) { }
+    public void setSuction(Aspect aspect, int i) {}
 
     @Override
     public Aspect getSuctionType(ForgeDirection forgeDirection) {

@@ -2,22 +2,21 @@ package goodgenerator.blocks.regularBlock;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import java.util.List;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
-import java.util.List;
-
-public class ComplexTextureCasing extends Casing{
+public class ComplexTextureCasing extends Casing {
 
     @SideOnly(Side.CLIENT)
     protected IIcon[] texture1, texture2;
     String[] textureSide;
     String[] textureTopAndDown;
 
-    public ComplexTextureCasing(String name, String[] textureSide, String[] textureTopAndDown){
+    public ComplexTextureCasing(String name, String[] textureSide, String[] textureTopAndDown) {
         super(name);
         this.textureSide = textureSide;
         this.textureTopAndDown = textureTopAndDown;
@@ -28,8 +27,7 @@ public class ComplexTextureCasing extends Casing{
     public IIcon getIcon(int side, int meta) {
         if (side < 2) {
             return meta < this.texture2.length ? this.texture2[meta] : this.texture2[0];
-        }
-        else {
+        } else {
             return meta < this.texture1.length ? this.texture1[meta] : this.texture1[0];
         }
     }

@@ -1,13 +1,14 @@
 package goodgenerator.blocks.regularBlock;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import goodgenerator.blocks.tileEntity.EssentiaHatch;
 import goodgenerator.blocks.tileEntity.EssentiaOutputHatch;
 import goodgenerator.blocks.tileEntity.EssentiaOutputHatch_ME;
 import goodgenerator.main.GoodGenerator;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gregtech.api.util.GT_Utility;
+import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -26,46 +27,45 @@ import net.minecraft.world.World;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.IEssentiaContainerItem;
 
-import java.util.List;
-
 public class TEBlock extends BlockContainer {
 
     @SideOnly(Side.CLIENT)
     protected IIcon[] texture;
+
     String[] textureNames;
     protected String name;
     protected int index;
 
-    public TEBlock(String name, String[] texture, CreativeTabs Tab){
+    public TEBlock(String name, String[] texture, CreativeTabs Tab) {
         super(Material.iron);
         this.setHardness(9.0F);
         this.setResistance(5.0F);
         this.name = name;
         this.textureNames = texture;
-        this.setHarvestLevel("wrench",2);
+        this.setHarvestLevel("wrench", 2);
         this.setCreativeTab(GoodGenerator.GG);
         GregTech_API.registerMachineBlock(this, -1);
     }
 
-    public TEBlock(String name, String[] texture, int index){
+    public TEBlock(String name, String[] texture, int index) {
         super(Material.iron);
         this.setHardness(9.0F);
         this.setResistance(5.0F);
         this.name = name;
         this.textureNames = texture;
-        this.setHarvestLevel("wrench",2);
+        this.setHarvestLevel("wrench", 2);
         this.index = index;
         this.setCreativeTab(GoodGenerator.GG);
         GregTech_API.registerMachineBlock(this, -1);
     }
 
-    public TEBlock(String name, String[] texture, Material material){
+    public TEBlock(String name, String[] texture, Material material) {
         super(material);
         this.setHardness(9.0F);
         this.setResistance(5.0F);
         this.name = name;
         this.textureNames = texture;
-        this.setHarvestLevel("wrench",2);
+        this.setHarvestLevel("wrench", 2);
         this.setCreativeTab(GoodGenerator.GG);
         GregTech_API.registerMachineBlock(this, -1);
     }
@@ -153,7 +153,8 @@ public class TEBlock extends BlockContainer {
     }
 
     @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9) {
+    public boolean onBlockActivated(
+            World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9) {
         if (world.isRemote) {
             return false;
         } else {
@@ -163,10 +164,21 @@ public class TEBlock extends BlockContainer {
                     ItemStack tItemStack = player.getHeldItem();
                     if (tItemStack != null) {
                         Item tItem = tItemStack.getItem();
-                        if (tItem instanceof IEssentiaContainerItem && ((IEssentiaContainerItem) tItem).getAspects(player.getHeldItem()) != null && ((IEssentiaContainerItem) tItem).getAspects(player.getHeldItem()).size() > 0) {
-                            Aspect tLocked = ((IEssentiaContainerItem) tItem).getAspects(player.getHeldItem()).getAspects()[0];
+                        if (tItem instanceof IEssentiaContainerItem
+                                && ((IEssentiaContainerItem) tItem).getAspects(player.getHeldItem()) != null
+                                && ((IEssentiaContainerItem) tItem)
+                                                .getAspects(player.getHeldItem())
+                                                .size()
+                                        > 0) {
+                            Aspect tLocked = ((IEssentiaContainerItem) tItem)
+                                    .getAspects(player.getHeldItem())
+                                    .getAspects()[0];
                             ((EssentiaHatch) tile).setLockedAspect(tLocked);
-                            GT_Utility.sendChatToPlayer(player, String.format(StatCollector.translateToLocal("essentiahatch.chat.0"), tLocked.getLocalizedDescription()));
+                            GT_Utility.sendChatToPlayer(
+                                    player,
+                                    String.format(
+                                            StatCollector.translateToLocal("essentiahatch.chat.0"),
+                                            tLocked.getLocalizedDescription()));
                         }
                     } else {
                         ((EssentiaHatch) tile).setLockedAspect(null);
@@ -180,7 +192,8 @@ public class TEBlock extends BlockContainer {
                     ItemStack tItemStack = player.getHeldItem();
                     if (tItemStack == null) {
                         ((EssentiaOutputHatch) tile).clear();
-                        GT_Utility.sendChatToPlayer(player, StatCollector.translateToLocal("essentiaoutputhatch.chat.0"));
+                        GT_Utility.sendChatToPlayer(
+                                player, StatCollector.translateToLocal("essentiaoutputhatch.chat.0"));
                     }
                     return true;
                 } else return false;

@@ -1,25 +1,25 @@
-//package goodgenerator.items.nuclear;
+// package goodgenerator.items.nuclear;
 //
-//import com.github.bartimaeusnek.bartworks.util.Pair;
-//import cpw.mods.fml.relauncher.Side;
-//import cpw.mods.fml.relauncher.SideOnly;
-//import goodgenerator.main.GoodGenerator;
-//import gregtech.api.interfaces.IIconContainer;
-//import gregtech.api.items.GT_MetaGenerated_Item;
-//import gregtech.api.util.GT_LanguageManager;
-//import gregtech.api.util.GT_OreDictUnificator;
-//import net.minecraft.creativetab.CreativeTabs;
-//import net.minecraft.item.Item;
-//import net.minecraft.item.ItemStack;
-//import net.minecraft.util.EnumChatFormatting;
-//import net.minecraft.util.IIcon;
+// import com.github.bartimaeusnek.bartworks.util.Pair;
+// import cpw.mods.fml.relauncher.Side;
+// import cpw.mods.fml.relauncher.SideOnly;
+// import goodgenerator.main.GoodGenerator;
+// import gregtech.api.interfaces.IIconContainer;
+// import gregtech.api.items.GT_MetaGenerated_Item;
+// import gregtech.api.util.GT_LanguageManager;
+// import gregtech.api.util.GT_OreDictUnificator;
+// import net.minecraft.creativetab.CreativeTabs;
+// import net.minecraft.item.Item;
+// import net.minecraft.item.ItemStack;
+// import net.minecraft.util.EnumChatFormatting;
+// import net.minecraft.util.IIcon;
 //
-//import java.util.List;
+// import java.util.List;
 //
-//import static goodgenerator.items.nuclear.IsotopeMaterial.mIDMap;
-//import static goodgenerator.items.nuclear.IsotopeMaterial.mIsotopeMaterial;
+// import static goodgenerator.items.nuclear.IsotopeMaterial.mIDMap;
+// import static goodgenerator.items.nuclear.IsotopeMaterial.mIsotopeMaterial;
 //
-//public class NuclearMetaItemGenerator extends GT_MetaGenerated_Item {
+// public class NuclearMetaItemGenerator extends GT_MetaGenerated_Item {
 //
 //    /**
 //     *  <p>Full ingot - 1000
@@ -48,8 +48,10 @@
 //                int tOffset = tType.getKey();
 //                String tOreName = tType.getValue();
 //                ItemStack tStack = new ItemStack(this, 1, tIsotope.mID + tOffset);
-//                GT_LanguageManager.addStringLocalization(this.getUnlocalizedName(tStack) + ".name", String.format(tOreName, tIsotope.mLocalizedName));
-//                GT_LanguageManager.addStringLocalization(this.getUnlocalizedName(tStack) + ".tooltip", EnumChatFormatting.AQUA + String.format("%s's Isotope.", tIsotope.mMaterialName) + EnumChatFormatting.RESET);
+//                GT_LanguageManager.addStringLocalization(this.getUnlocalizedName(tStack) + ".name",
+// String.format(tOreName, tIsotope.mLocalizedName));
+//                GT_LanguageManager.addStringLocalization(this.getUnlocalizedName(tStack) + ".tooltip",
+// EnumChatFormatting.AQUA + String.format("%s's Isotope.", tIsotope.mMaterialName) + EnumChatFormatting.RESET);
 //            }
 //            for (Pair<Integer, String> tOreDict : OREPREFIX) {
 //                int tOffset = tOreDict.getKey();
@@ -105,4 +107,4 @@
 //    public final IIcon getIconFromDamage(int aMetaData) {
 //        return this.getIconContainer(aMetaData).getIcon();
 //    }
-//}
+// }

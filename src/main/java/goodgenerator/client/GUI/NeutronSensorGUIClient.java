@@ -1,10 +1,10 @@
 package goodgenerator.client.GUI;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import goodgenerator.main.GoodGenerator;
 import goodgenerator.network.MessageSetNeutronSensorData;
 import goodgenerator.util.CharExchanger;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.client.gui.GuiTextField;
@@ -20,15 +20,16 @@ public class NeutronSensorGUIClient extends GT_GUIContainerMetaTile_Machine {
     private GuiTextField TextBox;
     private String context;
 
-    public NeutronSensorGUIClient(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aTexture, String text) {
+    public NeutronSensorGUIClient(
+            InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aTexture, String text) {
         super(aInventoryPlayer, aTileEntity, aTexture);
         this.mName = "Neutron Sensor";
         this.mContainer.detectAndSendChanges();
         if (text == null) this.context = "";
-            else this.context = text;
+        else this.context = text;
     }
 
-    public void initGui(){
+    public void initGui() {
         super.initGui();
         this.TextBox = new GuiTextField(this.fontRendererObj, 8, 48, 100, 18);
         TextBox.setMaxStringLength(20);
@@ -44,12 +45,18 @@ public class NeutronSensorGUIClient extends GT_GUIContainerMetaTile_Machine {
         if (TextBox.getText() != null) {
             if (isValidSuffix(TextBox.getText())) {
                 if (CharExchanger.isValidCompareExpress(rawProcessExp(TextBox.getText())))
-                    this.fontRendererObj.drawString(StatCollector.translateToLocal("gui.NeutronSensor.2"), 120, 53, 0x077d02);
-                else this.fontRendererObj.drawString(StatCollector.translateToLocal("gui.NeutronSensor.3"), 120, 53, 0xff0000);
-            }
-            else this.fontRendererObj.drawString(StatCollector.translateToLocal("gui.NeutronSensor.3"), 120, 53, 0xff0000);
+                    this.fontRendererObj.drawString(
+                            StatCollector.translateToLocal("gui.NeutronSensor.2"), 120, 53, 0x077d02);
+                else
+                    this.fontRendererObj.drawString(
+                            StatCollector.translateToLocal("gui.NeutronSensor.3"), 120, 53, 0xff0000);
+            } else
+                this.fontRendererObj.drawString(
+                        StatCollector.translateToLocal("gui.NeutronSensor.3"), 120, 53, 0xff0000);
         }
-        this.mc.getTextureManager().bindTexture(new ResourceLocation(GoodGenerator.MOD_ID + ":textures/gui/NeutronSensorGUI.png"));
+        this.mc
+                .getTextureManager()
+                .bindTexture(new ResourceLocation(GoodGenerator.MOD_ID + ":textures/gui/NeutronSensorGUI.png"));
     }
 
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
@@ -60,8 +67,7 @@ public class NeutronSensorGUIClient extends GT_GUIContainerMetaTile_Machine {
     }
 
     protected void keyTyped(char par1, int par2) {
-        if (!this.TextBox.isFocused())
-            super.keyTyped(par1, par2);
+        if (!this.TextBox.isFocused()) super.keyTyped(par1, par2);
         if (par2 == 1) this.mc.thePlayer.closeScreen();
         this.TextBox.textboxKeyTyped(par1, par2);
     }
@@ -79,13 +85,14 @@ public class NeutronSensorGUIClient extends GT_GUIContainerMetaTile_Machine {
     @Override
     public void onGuiClosed() {
         if (CharExchanger.isValidCompareExpress(rawProcessExp(TextBox.getText())))
-            GoodGenerator.CHANNEL.sendToServer(new MessageSetNeutronSensorData(mContainer.mTileEntity, TextBox.getText()));
+            GoodGenerator.CHANNEL.sendToServer(
+                    new MessageSetNeutronSensorData(mContainer.mTileEntity, TextBox.getText()));
         super.onGuiClosed();
     }
 
     protected String rawProcessExp(String exp) {
         StringBuilder ret = new StringBuilder();
-        for (char c: exp.toCharArray()) {
+        for (char c : exp.toCharArray()) {
             if (exp.length() - ret.length() == 3) {
                 if (Character.isDigit(c)) ret.append(c);
                 break;
@@ -105,6 +112,10 @@ public class NeutronSensorGUIClient extends GT_GUIContainerMetaTile_Machine {
         if (exp.charAt(index) != 'E' && exp.charAt(index) != 'e') return false;
         index = exp.length() - 3;
         if (index < 0) return false;
-        return exp.charAt(index) == 'M' || exp.charAt(index) == 'm' || exp.charAt(index) == 'K' || exp.charAt(index) == 'k' || Character.isDigit(exp.charAt(index));
+        return exp.charAt(index) == 'M'
+                || exp.charAt(index) == 'm'
+                || exp.charAt(index) == 'K'
+                || exp.charAt(index) == 'k'
+                || Character.isDigit(exp.charAt(index));
     }
 }

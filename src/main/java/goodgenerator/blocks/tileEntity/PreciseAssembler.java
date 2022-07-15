@@ -1,5 +1,13 @@
 package goodgenerator.blocks.tileEntity;
 
+import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.getMultiOutput;
+import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.handleParallelRecipe;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
+import static goodgenerator.util.StructureHelper.addTieredBlock;
+import static gregtech.api.util.GT_StructureUtility.ofFrame;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
+
 import com.github.bartimaeusnek.bartworks.util.Pair;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
@@ -26,6 +34,7 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import ic2.core.Ic2Items;
+import java.util.ArrayList;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -33,22 +42,14 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
-import java.util.ArrayList;
-
-import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.getMultiOutput;
-import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.handleParallelRecipe;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
-import static goodgenerator.util.StructureHelper.addTieredBlock;
-import static gregtech.api.util.GT_StructureUtility.ofFrame;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
-
 public class PreciseAssembler extends GT_MetaTileEntity_TooltipMultiBlockBase_EM implements IConstructable {
 
     private static final IIconContainer textureFontOn = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_QTANK");
-    private static final IIconContainer textureFontOn_Glow = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_QTANK_GLOW");
+    private static final IIconContainer textureFontOn_Glow =
+            new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_QTANK_GLOW");
     private static final IIconContainer textureFontOff = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_QCHEST");
-    private static final IIconContainer textureFontOff_Glow = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_QCHEST_GLOW");
+    private static final IIconContainer textureFontOff_Glow =
+            new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_QCHEST_GLOW");
 
     protected IStructureDefinition<PreciseAssembler> multiDefinition = null;
     protected int casingAmount;
@@ -68,49 +69,34 @@ public class PreciseAssembler extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
     @Override
     public IStructureDefinition<PreciseAssembler> getStructure_EM() {
         if (multiDefinition == null) {
-            multiDefinition = StructureDefinition
-                    .<PreciseAssembler>builder()
-                    .addShape(mName,
-                            transpose(new String[][]{
-                                    {"CCCCCCCCC", "CCCCCCCCC", "CCCCCCCCC", "CCCCCCCCC", "CCCCCCCCC"},
-                                    {"F       F", "CGGGGGGGC", "C-------C", "CGGGGGGGC", "F       F"},
-                                    {"F       F", "CGGGGGGGC", "C-------C", "CGGGGGGGC", "F       F"},
-                                    {"F       F", "CGGGGGGGC", "C-------C", "CGGGGGGGC", "F       F"},
-                                    {"CCCC~CCCC", "CMMMMMMMC", "CMMMMMMMC", "CMMMMMMMC", "CCCCCCCCC"}
-                            })
-                    )
+            multiDefinition = StructureDefinition.<PreciseAssembler>builder()
+                    .addShape(mName, transpose(new String[][] {
+                        {"CCCCCCCCC", "CCCCCCCCC", "CCCCCCCCC", "CCCCCCCCC", "CCCCCCCCC"},
+                        {"F       F", "CGGGGGGGC", "C-------C", "CGGGGGGGC", "F       F"},
+                        {"F       F", "CGGGGGGGC", "C-------C", "CGGGGGGGC", "F       F"},
+                        {"F       F", "CGGGGGGGC", "C-------C", "CGGGGGGGC", "F       F"},
+                        {"CCCC~CCCC", "CMMMMMMMC", "CMMMMMMMC", "CMMMMMMMC", "CCCCCCCCC"}
+                    }))
                     .addElement(
                             'C',
                             ofChain(
-                                    ofHatchAdder(
-                                            PreciseAssembler::addToPAssList, 0, 1
-                                    ),
+                                    ofHatchAdder(PreciseAssembler::addToPAssList, 0, 1),
                                     onElementPass(
                                             x -> x.casingAmount++,
                                             addTieredBlock(
-                                                    Loaders.preciseUnitCasing, PreciseAssembler::setCasingTier, PreciseAssembler::getCasingTier, 3
-                                            )
-                                    )
-                            )
-                    )
-                    .addElement(
-                            'F',
-                            ofFrame(
-                                    Materials.TungstenSteel
-                            )
-                    )
-                    .addElement(
-                            'G',
-                            ofBlock(
-                                    Block.getBlockFromItem(Ic2Items.reinforcedGlass.getItem()), 0
-                            )
-                    )
+                                                    Loaders.preciseUnitCasing,
+                                                    PreciseAssembler::setCasingTier,
+                                                    PreciseAssembler::getCasingTier,
+                                                    3))))
+                    .addElement('F', ofFrame(Materials.TungstenSteel))
+                    .addElement('G', ofBlock(Block.getBlockFromItem(Ic2Items.reinforcedGlass.getItem()), 0))
                     .addElement(
                             'M',
                             addTieredBlock(
-                                    GregTech_API.sBlockCasings1, PreciseAssembler::setMachineTier, PreciseAssembler::getMachineTier, 10
-                            )
-                    )
+                                    GregTech_API.sBlockCasings1,
+                                    PreciseAssembler::setMachineTier,
+                                    PreciseAssembler::getMachineTier,
+                                    10))
                     .build();
         }
         return multiDefinition;
@@ -196,13 +182,23 @@ public class PreciseAssembler extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
         if (this.mode == 0) {
             for (GT_MetaTileEntity_Hatch_InputBus bus : mInputBusses) {
                 if (!isValidMetaTileEntity(bus)) continue;
-                GT_Recipe tRecipe = getRecipeMap().findRecipe(this.getBaseMetaTileEntity(), false, Math.min(getMachineVoltageLimit(), getMaxInputEnergyPA()), inputFluids, getStoredItemFromHatch(bus));
+                GT_Recipe tRecipe = getRecipeMap()
+                        .findRecipe(
+                                this.getBaseMetaTileEntity(),
+                                false,
+                                Math.min(getMachineVoltageLimit(), getMaxInputEnergyPA()),
+                                inputFluids,
+                                getStoredItemFromHatch(bus));
                 if (tRecipe != null && tRecipe.mSpecialValue <= casingTier) {
                     this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
                     this.mEfficiencyIncrease = 10000;
                     tRecipe.isRecipeInputEqual(true, inputFluids, getStoredItemFromHatch(bus));
                     mOutputItems = tRecipe.mOutputs;
-                    calculateOverclockedNessMulti(tRecipe.mEUt, tRecipe.mDuration, 1, Math.min(GT_Values.V[machineTier - 1], getMaxInputVoltage()));
+                    calculateOverclockedNessMulti(
+                            tRecipe.mEUt,
+                            tRecipe.mDuration,
+                            1,
+                            Math.min(GT_Values.V[machineTier - 1], getMaxInputVoltage()));
                     this.updateSlots();
                     if (this.mEUt > 0) {
                         this.mEUt = (-this.mEUt);
@@ -210,16 +206,22 @@ public class PreciseAssembler extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
                     return true;
                 }
             }
-        }
-        else {
+        } else {
             for (GT_MetaTileEntity_Hatch_InputBus bus : mInputBusses) {
                 if (!isValidMetaTileEntity(bus) || getStoredItemFromHatch(bus).length < 1) continue;
-                GT_Recipe tRecipe = getRecipeMap().findRecipe(this.getBaseMetaTileEntity(), false, Math.min(getMachineVoltageLimit(), getMaxInputEnergyPA()), inputFluids, getStoredItemFromHatch(bus));
+                GT_Recipe tRecipe = getRecipeMap()
+                        .findRecipe(
+                                this.getBaseMetaTileEntity(),
+                                false,
+                                Math.min(getMachineVoltageLimit(), getMaxInputEnergyPA()),
+                                inputFluids,
+                                getStoredItemFromHatch(bus));
                 if (tRecipe != null) {
                     this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
                     this.mEfficiencyIncrease = 10000;
                     long fullInput = getMaxInputEnergy_EM();
-                    int pall = handleParallelRecipe(tRecipe, inputFluids, getStoredItemFromHatch(bus), (int) Math.min((long) Math.pow(2, 4 + casingTier), fullInput / tRecipe.mEUt));
+                    int pall = handleParallelRecipe(tRecipe, inputFluids, getStoredItemFromHatch(bus), (int)
+                            Math.min((long) Math.pow(2, 4 + casingTier), fullInput / tRecipe.mEUt));
                     if (pall <= 0) continue;
                     Pair<ArrayList<FluidStack>, ArrayList<ItemStack>> Outputs = getMultiOutput(tRecipe, pall);
                     long lEUt = (long) tRecipe.mEUt * (long) pall;
@@ -228,10 +230,11 @@ public class PreciseAssembler extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
                     while (lEUt >= Integer.MAX_VALUE - 1) {
                         lEUt = (long) tRecipe.mEUt * (long) pall / modifier;
                         time = tRecipe.mDuration / 2 * modifier;
-                        modifier ++;
+                        modifier++;
                     }
                     mOutputItems = Outputs.getValue().toArray(new ItemStack[0]);
-                    calculateOverclockedNessMultiPara((int) lEUt, time, 1, Math.min(Integer.MAX_VALUE, getMaxInputEnergy_EM()));
+                    calculateOverclockedNessMultiPara(
+                            (int) lEUt, time, 1, Math.min(Integer.MAX_VALUE, getMaxInputEnergy_EM()));
                     this.updateSlots();
                     if (this.mEUt > 0) {
                         this.mEUt = (-this.mEUt);
@@ -254,12 +257,14 @@ public class PreciseAssembler extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
         }
         for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
             if (isValidMetaTileEntity(tHatch)) {
-                rEnergy += tHatch.getBaseMetaTileEntity().getInputVoltage() * tHatch.getBaseMetaTileEntity().getInputAmperage();
+                rEnergy += tHatch.getBaseMetaTileEntity().getInputVoltage()
+                        * tHatch.getBaseMetaTileEntity().getInputAmperage();
             }
         }
         for (GT_MetaTileEntity_Hatch_EnergyMulti tHatch : eEnergyMulti) {
             if (isValidMetaTileEntity(tHatch)) {
-                rEnergy += tHatch.getBaseMetaTileEntity().getInputVoltage() * tHatch.getBaseMetaTileEntity().getInputAmperage();
+                rEnergy += tHatch.getBaseMetaTileEntity().getInputVoltage()
+                        * tHatch.getBaseMetaTileEntity().getInputAmperage();
             }
         }
         return rEnergy;
@@ -345,8 +350,19 @@ public class PreciseAssembler extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
             if (casingTier != 0) {
                 reUpdate(1538 + casingTier);
             }
-            GoodGenerator.CHANNEL.sendToAllAround(new MessageResetTileTexture(aBaseMetaTileEntity, casingTier), new NetworkRegistry.TargetPoint(aBaseMetaTileEntity.getWorld().provider.dimensionId, aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord(), 16));
-            return casingAmount >= 42 && machineTier != 0 && casingTier != 0 && mMaintenanceHatches.size() == 1 && !mMufflerHatches.isEmpty();
+            GoodGenerator.CHANNEL.sendToAllAround(
+                    new MessageResetTileTexture(aBaseMetaTileEntity, casingTier),
+                    new NetworkRegistry.TargetPoint(
+                            aBaseMetaTileEntity.getWorld().provider.dimensionId,
+                            aBaseMetaTileEntity.getXCoord(),
+                            aBaseMetaTileEntity.getYCoord(),
+                            aBaseMetaTileEntity.getZCoord(),
+                            16));
+            return casingAmount >= 42
+                    && machineTier != 0
+                    && casingTier != 0
+                    && mMaintenanceHatches.size() == 1
+                    && !mMufflerHatches.isEmpty();
         }
         return false;
     }
@@ -383,7 +399,7 @@ public class PreciseAssembler extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
     }
 
     @Override
-    public int getPollutionPerSecond(ItemStack aStack){
+    public int getPollutionPerSecond(ItemStack aStack) {
         return 780;
     }
 
@@ -456,21 +472,28 @@ public class PreciseAssembler extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone){
+    public ITexture[] getTexture(
+            IGregTechTileEntity aBaseMetaTileEntity,
+            byte aSide,
+            byte aFacing,
+            byte aColorIndex,
+            boolean aActive,
+            boolean aRedstone) {
         int t = 1;
         if (getCasingTier() != 0) t = getCasingTier();
         if (aSide == aFacing) {
-            if (aActive) return new ITexture[] {
+            if (aActive)
+                return new ITexture[] {
                     Textures.BlockIcons.getCasingTextureForId(1538 + t),
                     TextureFactory.of(textureFontOn),
                     TextureFactory.builder().addIcon(textureFontOn_Glow).glow().build()
-            };
-            else return new ITexture[] {
+                };
+            else
+                return new ITexture[] {
                     Textures.BlockIcons.getCasingTextureForId(1538 + t),
                     TextureFactory.of(textureFontOff),
                     TextureFactory.builder().addIcon(textureFontOff_Glow).glow().build()
-            };
-        }
-        else return new ITexture[] {Textures.BlockIcons.getCasingTextureForId(1538 + t)};
+                };
+        } else return new ITexture[] {Textures.BlockIcons.getCasingTextureForId(1538 + t)};
     }
 }

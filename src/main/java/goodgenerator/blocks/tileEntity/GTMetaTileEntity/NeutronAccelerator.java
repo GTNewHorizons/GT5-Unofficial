@@ -1,11 +1,11 @@
 package goodgenerator.blocks.tileEntity.GTMetaTileEntity;
 
+import static gregtech.api.enums.GT_Values.V;
+
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-
-import static gregtech.api.enums.GT_Values.V;
 
 public class NeutronAccelerator extends GT_MetaTileEntity_Hatch_Energy {
 
@@ -18,7 +18,7 @@ public class NeutronAccelerator extends GT_MetaTileEntity_Hatch_Energy {
     }
 
     public int getMaxEUConsume() {
-        return (int)(V[mTier] * 8 / 10);
+        return (int) (V[mTier] * 8 / 10);
     }
 
     @Override
@@ -28,11 +28,11 @@ public class NeutronAccelerator extends GT_MetaTileEntity_Hatch_Energy {
 
     @Override
     public String[] getDescription() {
-        return new String[]{
-                "Input EU to Accelerate the Neutron!",
-                "Max EU input: " + this.maxEUInput(),
-                "Max EU consumption: " + this.getMaxEUConsume(),
-                "Every EU can be transformed into 10~20 eV Neutron Kinetic Energy."
+        return new String[] {
+            "Input EU to Accelerate the Neutron!",
+            "Max EU input: " + this.maxEUInput(),
+            "Max EU consumption: " + this.getMaxEUConsume(),
+            "Every EU can be transformed into 10~20 eV Neutron Kinetic Energy."
         };
     }
 

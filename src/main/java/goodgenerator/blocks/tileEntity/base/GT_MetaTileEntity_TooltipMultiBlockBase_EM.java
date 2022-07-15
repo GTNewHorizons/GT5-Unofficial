@@ -3,12 +3,12 @@ package goodgenerator.blocks.tileEntity.base;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import org.lwjgl.input.Keyboard;
-
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import org.lwjgl.input.Keyboard;
 
-public abstract class GT_MetaTileEntity_TooltipMultiBlockBase_EM extends GT_MetaTileEntity_MultiblockBase_EM implements ISecondaryDescribable {
+public abstract class GT_MetaTileEntity_TooltipMultiBlockBase_EM extends GT_MetaTileEntity_MultiblockBase_EM
+        implements ISecondaryDescribable {
     private static final Map<Integer, GT_Multiblock_Tooltip_Builder> tooltips = new ConcurrentHashMap<>();
 
     protected GT_MetaTileEntity_TooltipMultiBlockBase_EM(int aID, String aName, String aNameRegional) {
@@ -48,5 +48,4 @@ public abstract class GT_MetaTileEntity_TooltipMultiBlockBase_EM extends GT_Meta
     public String[] getSecondaryDescription() {
         return getTooltip().getStructureInformation();
     }
-
 }

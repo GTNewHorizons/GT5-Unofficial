@@ -1,5 +1,6 @@
 package goodgenerator.blocks.tileEntity;
 
+import java.util.Map;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -8,8 +9,6 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IAspectContainer;
 import thaumcraft.api.aspects.IEssentiaTransport;
-
-import java.util.Map;
 
 public class EssentiaOutputHatch extends TileThaumcraft implements IAspectContainer, IEssentiaTransport {
 
@@ -134,8 +133,7 @@ public class EssentiaOutputHatch extends TileThaumcraft implements IAspectContai
     }
 
     @Override
-    public void setSuction(Aspect var1, int var2) {
-    }
+    public void setSuction(Aspect var1, int var2) {}
 
     @Override
     public Aspect getSuctionType(ForgeDirection var1) {

@@ -11,8 +11,7 @@ public class MessageResetTileTexture extends MessageMTEBase {
 
     protected int index;
 
-    public MessageResetTileTexture(){
-    }
+    public MessageResetTileTexture() {}
 
     public MessageResetTileTexture(IGregTechTileEntity tile, int index) {
         super(tile);
@@ -47,5 +46,4 @@ public class MessageResetTileTexture extends MessageMTEBase {
             return null;
         }
     }
-
 }

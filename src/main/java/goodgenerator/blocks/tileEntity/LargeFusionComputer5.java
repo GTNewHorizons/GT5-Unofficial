@@ -1,5 +1,8 @@
 package goodgenerator.blocks.tileEntity;
 
+import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
+import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS;
+
 import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import goodgenerator.blocks.tileEntity.base.LargeFusionComputerPP;
@@ -21,15 +24,11 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import org.lwjgl.input.Keyboard;
-
-import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
-import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS;
 
 public class LargeFusionComputer5 extends LargeFusionComputerPP {
 
     public LargeFusionComputer5(int id, String name, String nameRegional) {
-        super(id,name,nameRegional);
+        super(id, name, nameRegional);
     }
 
     public LargeFusionComputer5(String name) {
@@ -53,7 +52,8 @@ public class LargeFusionComputer5 extends LargeFusionComputerPP {
                 .addInfo("Startup < 640,000,000 EU: 192x Parallel")
                 .addInfo("Startup < 1,200,000,000 EU: 128x Parallel")
                 .addInfo("Startup < 2,000,000,000 EU: 64x Parallel")
-                .addInfo("Support" + EnumChatFormatting.BLUE + " Tec" + EnumChatFormatting.DARK_BLUE + "Tech" + EnumChatFormatting.GRAY + " Energy/Laser Hatches!")
+                .addInfo("Support" + EnumChatFormatting.BLUE + " Tec" + EnumChatFormatting.DARK_BLUE + "Tech"
+                        + EnumChatFormatting.GRAY + " Energy/Laser Hatches!")
                 .addInfo("The structure is too complex!")
                 .addInfo(BLUE_PRINT_INFO)
                 .addSeparator()
@@ -117,9 +117,15 @@ public class LargeFusionComputer5 extends LargeFusionComputerPP {
     @Override
     public ITexture getTextureOverlay() {
         if (this.mMaxProgresstime > 0)
-            return TextureFactory.of(TextureFactory.builder().addIcon(TexturesGtBlock.Casing_Machine_Screen_3).extFacing().build());
+            return TextureFactory.of(TextureFactory.builder()
+                    .addIcon(TexturesGtBlock.Casing_Machine_Screen_3)
+                    .extFacing()
+                    .build());
         else
-            return TextureFactory.of(TextureFactory.builder().addIcon(TexturesGtBlock.Casing_Machine_Screen_1).extFacing().build());
+            return TextureFactory.of(TextureFactory.builder()
+                    .addIcon(TexturesGtBlock.Casing_Machine_Screen_1)
+                    .extFacing()
+                    .build());
     }
 
     @Override
@@ -134,19 +140,19 @@ public class LargeFusionComputer5 extends LargeFusionComputerPP {
 
     @Override
     public int overclock(int mStartEnergy) {
-        return (mStartEnergy < 160000000) ? 256 : ((mStartEnergy < 320000000) ? 64 : ((mStartEnergy < 640000000) ? 16 : ((mStartEnergy < 1200000000) ? 4 : 1)));
+        return (mStartEnergy < 160000000)
+                ? 256
+                : ((mStartEnergy < 320000000)
+                        ? 64
+                        : ((mStartEnergy < 640000000) ? 16 : ((mStartEnergy < 1200000000) ? 4 : 1)));
     }
 
     @Override
     public int extraPara(int startEnergy) {
-        if (startEnergy < 160000000)
-            return 5;
-        if (startEnergy < 320000000)
-            return 4;
-        if (startEnergy < 640000000)
-            return 3;
-        if (startEnergy < 1200000000)
-            return 2;
+        if (startEnergy < 160000000) return 5;
+        if (startEnergy < 320000000) return 4;
+        if (startEnergy < 640000000) return 3;
+        if (startEnergy < 1200000000) return 2;
         return 1;
     }
 
@@ -181,10 +187,28 @@ public class LargeFusionComputer5 extends LargeFusionComputerPP {
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        if (aSide == aFacing) return new ITexture[]{TextureFactory.builder().addIcon(MACHINE_CASING_FUSION_GLASS).extFacing().build(), getTextureOverlay()};
-        if (!aActive) return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(52)};
-        return new ITexture[]{TextureFactory.builder().addIcon(TexturesGtBlock.TEXTURE_CASING_FUSION_CASING_ULTRA).extFacing().build()};
+    public ITexture[] getTexture(
+            IGregTechTileEntity aBaseMetaTileEntity,
+            byte aSide,
+            byte aFacing,
+            byte aColorIndex,
+            boolean aActive,
+            boolean aRedstone) {
+        if (aSide == aFacing)
+            return new ITexture[] {
+                TextureFactory.builder()
+                        .addIcon(MACHINE_CASING_FUSION_GLASS)
+                        .extFacing()
+                        .build(),
+                getTextureOverlay()
+            };
+        if (!aActive) return new ITexture[] {Textures.BlockIcons.getCasingTextureForId(52)};
+        return new ITexture[] {
+            TextureFactory.builder()
+                    .addIcon(TexturesGtBlock.TEXTURE_CASING_FUSION_CASING_ULTRA)
+                    .extFacing()
+                    .build()
+        };
     }
 
     @Override

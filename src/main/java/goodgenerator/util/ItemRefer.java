@@ -1,13 +1,13 @@
 package goodgenerator.util;
 
+import static goodgenerator.loader.FuelRodLoader.*;
+import static goodgenerator.loader.Loaders.*;
+
 import gregtech.api.util.GT_Utility;
 import ic2.core.Ic2Items;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-
-import static goodgenerator.loader.FuelRodLoader.*;
-import static goodgenerator.loader.Loaders.*;
 
 public final class ItemRefer {
 

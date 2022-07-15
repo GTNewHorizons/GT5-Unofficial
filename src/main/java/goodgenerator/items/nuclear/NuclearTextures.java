@@ -1,9 +1,9 @@
-//package goodgenerator.items.nuclear;
+// package goodgenerator.items.nuclear;
 //
-//import gregtech.api.enums.Textures;
-//import gregtech.api.interfaces.IIconContainer;
+// import gregtech.api.enums.Textures;
+// import gregtech.api.interfaces.IIconContainer;
 //
-//public class NuclearTextures {
+// public class NuclearTextures {
 //    public static final NuclearTextures
 //            STABLE1 = new NuclearTextures("stable1"),
 //            STABLE2 = new NuclearTextures("stable2"),
@@ -28,4 +28,4 @@
 //        mTextures[2] = new Textures.ItemIcons.CustomIcon(mTextureDir + aName);
 //        mTextures[3] = new Textures.ItemIcons.CustomIcon(mTextureDir + aName + "tiny");
 //    }
-//}
+// }

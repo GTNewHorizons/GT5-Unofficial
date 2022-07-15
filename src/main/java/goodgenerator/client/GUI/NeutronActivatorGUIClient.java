@@ -1,9 +1,9 @@
 package goodgenerator.client.GUI;
 
-import goodgenerator.common.container.NeutronActivatorGUIContainer;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_GUIContainer_MultiMachineEM;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import goodgenerator.common.container.NeutronActivatorGUIContainer;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.StatCollector;
@@ -13,7 +13,8 @@ public class NeutronActivatorGUIClient extends GT_GUIContainer_MultiMachineEM {
 
     private final NeutronActivatorGUIContainer containerNeutronActivator;
 
-    public NeutronActivatorGUIClient(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName, String aTextureFile) {
+    public NeutronActivatorGUIClient(
+            InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName, String aTextureFile) {
         super(new NeutronActivatorGUIContainer(aInventoryPlayer, aTileEntity), aName, aTextureFile, true, true, true);
         containerNeutronActivator = (NeutronActivatorGUIContainer) this.mContainer;
     }
@@ -39,5 +40,4 @@ public class NeutronActivatorGUIClient extends GT_GUIContainer_MultiMachineEM {
         num2 /= 1000F;
         return String.format("%.1fM", num2);
     }
-
 }

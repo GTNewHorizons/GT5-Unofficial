@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 
-public class RadioactiveItem extends MyItems{
+public class RadioactiveItem extends MyItems {
 
     protected final int mRadio;
 
@@ -36,5 +36,4 @@ public class RadioactiveItem extends MyItems{
         if (!GT_Utility.isWearingFullRadioHazmat(tPlayer))
             tPlayer.addPotionEffect(new PotionEffect(IC2Potion.radiation.id, mRadio, 4));
     }
-
 }

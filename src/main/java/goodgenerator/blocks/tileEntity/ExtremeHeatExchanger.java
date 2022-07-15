@@ -1,5 +1,11 @@
 package goodgenerator.blocks.tileEntity;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
+import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
@@ -28,12 +34,6 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
-import static gregtech.api.enums.GT_Values.V;
-import static gregtech.api.enums.Textures.BlockIcons.*;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
-
 public class ExtremeHeatExchanger extends GT_MetaTileEntity_TooltipMultiBlockBase_EM implements IConstructable {
 
     protected IStructureDefinition<ExtremeHeatExchanger> multiDefinition = null;
@@ -56,104 +56,60 @@ public class ExtremeHeatExchanger extends GT_MetaTileEntity_TooltipMultiBlockBas
 
     @Override
     public IStructureDefinition<ExtremeHeatExchanger> getStructure_EM() {
-        if(multiDefinition == null) {
-            multiDefinition = StructureDefinition
-                    .<ExtremeHeatExchanger>builder()
-                    .addShape(mName,
-                            transpose(new String[][]{
-                                    {" CCC ", "TTTTT", "TTTTT", "TTTTT", "TTTTT", "TTTTT", "TTTTT", "TTTTT", "TTTTT", "TTTTT", " CCC "},
-                                    {" CCC ", "GPPPG", "GWWWG", "GPPPG", "GWWWG", "GPPPG", "GWWWG", "GPPPG", "GWWWG", "GPPPG", " CCC "},
-                                    {" CFC ", "GPPPG", "GWWWG", "GPPPG", "GWWWG", "GPPPG", "GWWWG", "GPPPG", "GWWWG", "GPPPG", " CEC "},
-                                    {" CCC ", "GPPPG", "GWWWG", "GPPPG", "GWWWG", "GPPPG", "GWWWG", "GPPPG", "GWWWG", "GPPPG", " CCC "},
-                                    {" CCC ", "GPPPG", "GWWWG", "GPPPG", "GWWWG", "GPPPG", "GWWWG", "GPPPG", "GWWWG", "GPPPG", " CCC "},
-                                    {" C~C ", "BBBBB", "BBBBB", "BBBBB", "BBBBB", "BBBBB", "BBBBB", "BBBBB", "BBBBB", "BBBBB", " CCC "},
-                            })
-                    ).addElement(
+        if (multiDefinition == null) {
+            multiDefinition = StructureDefinition.<ExtremeHeatExchanger>builder()
+                    .addShape(mName, transpose(new String[][] {
+                        {
+                            " CCC ", "TTTTT", "TTTTT", "TTTTT", "TTTTT", "TTTTT", "TTTTT", "TTTTT", "TTTTT", "TTTTT",
+                            " CCC "
+                        },
+                        {
+                            " CCC ", "GPPPG", "GWWWG", "GPPPG", "GWWWG", "GPPPG", "GWWWG", "GPPPG", "GWWWG", "GPPPG",
+                            " CCC "
+                        },
+                        {
+                            " CFC ", "GPPPG", "GWWWG", "GPPPG", "GWWWG", "GPPPG", "GWWWG", "GPPPG", "GWWWG", "GPPPG",
+                            " CEC "
+                        },
+                        {
+                            " CCC ", "GPPPG", "GWWWG", "GPPPG", "GWWWG", "GPPPG", "GWWWG", "GPPPG", "GWWWG", "GPPPG",
+                            " CCC "
+                        },
+                        {
+                            " CCC ", "GPPPG", "GWWWG", "GPPPG", "GWWWG", "GPPPG", "GWWWG", "GPPPG", "GWWWG", "GPPPG",
+                            " CCC "
+                        },
+                        {
+                            " C~C ", "BBBBB", "BBBBB", "BBBBB", "BBBBB", "BBBBB", "BBBBB", "BBBBB", "BBBBB", "BBBBB",
+                            " CCC "
+                        },
+                    }))
+                    .addElement(
                             'B',
                             ofChain(
-                                    ofHatchAdder(
-                                            ExtremeHeatExchanger::addClassicInputToMachineList, 48,
-                                            1
-                                    ),
-                                    ofHatchAdder(
-                                            ExtremeHeatExchanger::addMaintenanceToMachineList, 48,
-                                            1
-                                    ),
-                                    onElementPass(
-                                            x -> x.casingAmount++,
-                                            ofBlock(
-                                                    GregTech_API.sBlockCasings4, 0
-                                            )
-                                    )
-                            )
-                    )
+                                    ofHatchAdder(ExtremeHeatExchanger::addClassicInputToMachineList, 48, 1),
+                                    ofHatchAdder(ExtremeHeatExchanger::addMaintenanceToMachineList, 48, 1),
+                                    onElementPass(x -> x.casingAmount++, ofBlock(GregTech_API.sBlockCasings4, 0))))
                     .addElement(
                             'T',
                             ofChain(
-                                    ofHatchAdder(
-                                            ExtremeHeatExchanger::addClassicOutputToMachineList, 48,
-                                            2
-                                    ),
-                                    ofHatchAdder(
-                                            ExtremeHeatExchanger::addMaintenanceToMachineList, 48,
-                                            2
-                                    ),
-                                    onElementPass(
-                                            x -> x.casingAmount++,
-                                            ofBlock(
-                                                    GregTech_API.sBlockCasings4, 0
-                                            )
-                                    )
-                            )
-                    )
-                    .addElement(
-                            'F',
-                            ofHatchAdder(
-                                    ExtremeHeatExchanger::addHotFluidInputToMachineList, 48,
-                                    3
-                            )
-                    )
-                    .addElement(
-                            'E',
-                            ofHatchAdder(
-                                    ExtremeHeatExchanger::addColdFluidOutputToMachineList, 48,
-                                    4
-                            )
-                    )
+                                    ofHatchAdder(ExtremeHeatExchanger::addClassicOutputToMachineList, 48, 2),
+                                    ofHatchAdder(ExtremeHeatExchanger::addMaintenanceToMachineList, 48, 2),
+                                    onElementPass(x -> x.casingAmount++, ofBlock(GregTech_API.sBlockCasings4, 0))))
+                    .addElement('F', ofHatchAdder(ExtremeHeatExchanger::addHotFluidInputToMachineList, 48, 3))
+                    .addElement('E', ofHatchAdder(ExtremeHeatExchanger::addColdFluidOutputToMachineList, 48, 4))
                     .addElement(
                             'C',
                             ofChain(
                                     ofHatchAdder(
-                                            ExtremeHeatExchanger::addMaintenanceToMachineList, 48,
-                                            GregTech_API.sBlockCasings4, 0
-                                    ),
-                                    onElementPass(
-                                            x -> x.casingAmount++,
-                                            ofBlock(
-                                                    GregTech_API.sBlockCasings4, 0
-                                            )
-                                    )
-                            )
-
-                    )
-                    .addElement(
-                            'G',
-                            ofBlock(
-                                    Block.getBlockFromItem(Ic2Items.reinforcedGlass.getItem()), 0
-                            )
-                    )
-                    .addElement(
-                            'P',
-                            ofBlock(
-                                    GregTech_API.sBlockCasings2,15
-                            )
-                    )
-                    .addElement(
-                            'W',
-                            ofBlock(
-                                    Loaders.pressureResistantWalls, 0
-                            )
-                    )
+                                            ExtremeHeatExchanger::addMaintenanceToMachineList,
+                                            48,
+                                            GregTech_API.sBlockCasings4,
+                                            0),
+                                    onElementPass(x -> x.casingAmount++, ofBlock(GregTech_API.sBlockCasings4, 0))))
+                    .addElement('G', ofBlock(Block.getBlockFromItem(Ic2Items.reinforcedGlass.getItem()), 0))
+                    .addElement('P', ofBlock(GregTech_API.sBlockCasings2, 15))
+                    .addElement('W', ofBlock(Loaders.pressureResistantWalls, 0))
                     .build();
         }
         return multiDefinition;
@@ -232,11 +188,10 @@ public class ExtremeHeatExchanger extends GT_MetaTileEntity_TooltipMultiBlockBas
     @Override
     public boolean checkRecipe_EM(ItemStack aStack) {
         tRunningRecipe = null;
-        if (mHotFluidHatch.getFluid() == null)
-            return true;
-        MyRecipeAdder.ExtremeHeatExchangerRecipe tRecipe = MyRecipeAdder.mXHeatExchangerFuelMap.get(mHotFluidHatch.getFluid().getFluid());
-        if (tRecipe == null)
-            return false;
+        if (mHotFluidHatch.getFluid() == null) return true;
+        MyRecipeAdder.ExtremeHeatExchangerRecipe tRecipe = MyRecipeAdder.mXHeatExchangerFuelMap.get(
+                mHotFluidHatch.getFluid().getFluid());
+        if (tRecipe == null) return false;
         tRunningRecipe = tRecipe;
         this.hotName = mHotFluidHatch.getFluid().getFluid().getName();
         int tMaxConsume = tRecipe.getMaxHotFluidConsume();
@@ -255,8 +210,7 @@ public class ExtremeHeatExchanger extends GT_MetaTileEntity_TooltipMultiBlockBas
         }
         efficiency -= penalty;
 
-        if (transformed_threshold <= 0)
-            transformed_threshold = 1;
+        if (transformed_threshold <= 0) transformed_threshold = 1;
 
         transformed = tRealConsume >= transformed_threshold;
 
@@ -277,9 +231,8 @@ public class ExtremeHeatExchanger extends GT_MetaTileEntity_TooltipMultiBlockBas
             if (waterAmount < 0) return false;
             if (depleteInput(GT_ModHandler.getDistilledWater(waterAmount))) {
                 addOutput(new FluidStack(tReadySteam, waterAmount * 160));
-            }
-            else {
-                GT_Log.exp.println(this.mName+" had no more Distilled water!");
+            } else {
+                GT_Log.exp.println(this.mName + " had no more Distilled water!");
                 mHotFluidHatch.getBaseMetaTileEntity().doExplosion(V[8]);
                 return false;
             }
@@ -289,10 +242,14 @@ public class ExtremeHeatExchanger extends GT_MetaTileEntity_TooltipMultiBlockBas
 
     public double getUnitSteamPower(String steam) {
         switch (steam) {
-            case "steam": return 0.5;
-            case "ic2superheatedsteam": return 1;
-            case "supercriticalsteam": return 100;
-            default: return -1;
+            case "steam":
+                return 0.5;
+            case "ic2superheatedsteam":
+                return 1;
+            case "supercriticalsteam":
+                return 100;
+            default:
+                return -1;
         }
     }
 
@@ -319,34 +276,59 @@ public class ExtremeHeatExchanger extends GT_MetaTileEntity_TooltipMultiBlockBas
     @Override
     public String[] getInfoData() {
         int tThreshold = tRunningRecipe != null ? tRunningRecipe.mSpecialValue : 0;
-        return new String[]{
-                StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": " +
-                        EnumChatFormatting.GREEN + GT_Utility.formatNumbers(mProgresstime / 20) + EnumChatFormatting.RESET + " s / " +
-                        EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(mMaxProgresstime / 20) + EnumChatFormatting.RESET + " s",
-                StatCollector.translateToLocal("GT5U.multiblock.problems") + ": " +
-                        EnumChatFormatting.RED + (getIdealStatus() - getRepairStatus()) + EnumChatFormatting.RESET + " " +
-                        StatCollector.translateToLocal("GT5U.multiblock.efficiency") + ": " +
-                        EnumChatFormatting.YELLOW + mEfficiency / 100.0F + EnumChatFormatting.RESET + " %",
-                StatCollector.translateToLocal("scanner.info.XHE.0") + " " +
-                        (transformed ? EnumChatFormatting.RED : EnumChatFormatting.YELLOW) + GT_Utility.formatNumbers(this.mEUt) + EnumChatFormatting.RESET + " EU/t",
-                StatCollector.translateToLocal("scanner.info.XHE.1") + " " +
-                        EnumChatFormatting.GREEN + GT_Utility.formatNumbers(tThreshold) + EnumChatFormatting.RESET + " L/s"
+        return new String[] {
+            StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": " + EnumChatFormatting.GREEN
+                    + GT_Utility.formatNumbers(mProgresstime / 20) + EnumChatFormatting.RESET + " s / "
+                    + EnumChatFormatting.YELLOW
+                    + GT_Utility.formatNumbers(mMaxProgresstime / 20) + EnumChatFormatting.RESET + " s",
+            StatCollector.translateToLocal("GT5U.multiblock.problems") + ": " + EnumChatFormatting.RED
+                    + (getIdealStatus() - getRepairStatus()) + EnumChatFormatting.RESET + " "
+                    + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
+                    + ": " + EnumChatFormatting.YELLOW
+                    + mEfficiency / 100.0F + EnumChatFormatting.RESET + " %",
+            StatCollector.translateToLocal("scanner.info.XHE.0") + " "
+                    + (transformed ? EnumChatFormatting.RED : EnumChatFormatting.YELLOW)
+                    + GT_Utility.formatNumbers(this.mEUt) + EnumChatFormatting.RESET + " EU/t",
+            StatCollector.translateToLocal("scanner.info.XHE.1") + " " + EnumChatFormatting.GREEN
+                    + GT_Utility.formatNumbers(tThreshold) + EnumChatFormatting.RESET + " L/s"
         };
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
+    public ITexture[] getTexture(
+            IGregTechTileEntity aBaseMetaTileEntity,
+            byte aSide,
+            byte aFacing,
+            byte aColorIndex,
+            boolean aActive,
+            boolean aRedstone) {
         if (aSide == aFacing) {
             if (aActive)
-                return new ITexture[]{
-                        casingTexturePages[0][48],
-                        TextureFactory.builder().addIcon(OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE).extFacing().build(),
-                        TextureFactory.builder().addIcon(OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE_GLOW).extFacing().glow().build()};
-            return new ITexture[]{
+                return new ITexture[] {
                     casingTexturePages[0][48],
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_HEAT_EXCHANGER).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_HEAT_EXCHANGER_GLOW).extFacing().glow().build()};
+                    TextureFactory.builder()
+                            .addIcon(OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE)
+                            .extFacing()
+                            .build(),
+                    TextureFactory.builder()
+                            .addIcon(OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE_GLOW)
+                            .extFacing()
+                            .glow()
+                            .build()
+                };
+            return new ITexture[] {
+                casingTexturePages[0][48],
+                TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_HEAT_EXCHANGER)
+                        .extFacing()
+                        .build(),
+                TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_HEAT_EXCHANGER_GLOW)
+                        .extFacing()
+                        .glow()
+                        .build()
+            };
         }
-        return new ITexture[]{casingTexturePages[0][48]};
+        return new ITexture[] {casingTexturePages[0][48]};
     }
 }

@@ -4,12 +4,11 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import thaumcraft.api.aspects.Aspect;
-
 import java.io.*;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import thaumcraft.api.aspects.Aspect;
 
 public class LargeEssentiaEnergyData {
 
@@ -17,7 +16,9 @@ public class LargeEssentiaEnergyData {
 
     public static String readJsonFile() {
         try {
-            URL url = Thread.currentThread().getContextClassLoader().getResource("assets/goodgenerator/data/essentia.json");
+            URL url = Thread.currentThread()
+                    .getContextClassLoader()
+                    .getResource("assets/goodgenerator/data/essentia.json");
             assert url != null;
             BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream(), StandardCharsets.UTF_8));
             String s;
@@ -39,7 +40,7 @@ public class LargeEssentiaEnergyData {
             return;
         }
         JsonParser jsonParser = new JsonParser();
-        JsonObject jsonObject = (JsonObject)jsonParser.parse(data);
+        JsonObject jsonObject = (JsonObject) jsonParser.parse(data);
         JsonArray jsonArray = jsonObject.get("Essentia").getAsJsonArray();
         for (JsonElement elm : jsonArray) {
             JsonObject essData = elm.getAsJsonObject();
@@ -57,29 +58,25 @@ public class LargeEssentiaEnergyData {
     public static int getAspectTypeIndex(Aspect aspect) {
         if (ASPECT_FUEL_DATA.containsKey(aspect)) {
             return ASPECT_FUEL_DATA.get(aspect).getCategoryIndex();
-        }
-        else return -1;
+        } else return -1;
     }
 
     public static String getAspectType(Aspect aspect) {
         if (ASPECT_FUEL_DATA.containsKey(aspect)) {
             return ASPECT_FUEL_DATA.get(aspect).getCategory();
-        }
-        else return null;
+        } else return null;
     }
 
     public static int getAspectFuelValue(Aspect aspect) {
         if (ASPECT_FUEL_DATA.containsKey(aspect)) {
             return ASPECT_FUEL_DATA.get(aspect).getFuelValue();
-        }
-        else return 0;
+        } else return 0;
     }
 
     public static float getAspectCeo(Aspect aspect) {
         if (ASPECT_FUEL_DATA.containsKey(aspect)) {
             return ASPECT_FUEL_DATA.get(aspect).getConsumeSpeed();
-        }
-        else return 0;
+        } else return 0;
     }
 }
 
@@ -108,17 +105,28 @@ class FuelData {
 
     public int getCategoryIndex() {
         switch (category) {
-            case "NORMAL": return 0;
-            case "AIR": return 1;
-            case "THERMAL": return 2;
-            case "UNSTABLE": return 3;
-            case "VICTUS": return 4;
-            case "TAINTED": return 5;
-            case "MECHANICS": return 6;
-            case "SPRITE": return 7;
-            case "RADIATION": return 8;
-            case "ELECTRIC": return 9;
-            default: return -1;
+            case "NORMAL":
+                return 0;
+            case "AIR":
+                return 1;
+            case "THERMAL":
+                return 2;
+            case "UNSTABLE":
+                return 3;
+            case "VICTUS":
+                return 4;
+            case "TAINTED":
+                return 5;
+            case "MECHANICS":
+                return 6;
+            case "SPRITE":
+                return 7;
+            case "RADIATION":
+                return 8;
+            case "ELECTRIC":
+                return 9;
+            default:
+                return -1;
         }
     }
 }

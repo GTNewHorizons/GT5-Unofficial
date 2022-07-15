@@ -1,10 +1,10 @@
 package goodgenerator.network;
 
-import goodgenerator.blocks.tileEntity.GTMetaTileEntity.NeutronSensor;
 import com.github.technus.tectech.TecTech;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import goodgenerator.blocks.tileEntity.GTMetaTileEntity.NeutronSensor;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import io.netty.buffer.ByteBuf;
@@ -12,8 +12,7 @@ import io.netty.buffer.ByteBuf;
 public class MessageOpenNeutronSensorGUI extends MessageMTEBase {
     protected String data;
 
-    public MessageOpenNeutronSensorGUI() {
-    }
+    public MessageOpenNeutronSensorGUI() {}
 
     public MessageOpenNeutronSensorGUI(IGregTechTileEntity tile, String data) {
         super(tile);

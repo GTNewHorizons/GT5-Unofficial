@@ -6,14 +6,13 @@ import goodgenerator.main.GoodGenerator;
 import goodgenerator.util.ItemRefer;
 import ic2.api.crops.CropCard;
 import ic2.api.crops.ICropTile;
+import java.util.Arrays;
+import java.util.List;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import speiger.src.crops.api.ICropCardInfo;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class GGCropsSaltyRoot extends CropCard implements ICropCardInfo {
 
@@ -88,7 +87,7 @@ public class GGCropsSaltyRoot extends CropCard implements ICropCardInfo {
     public void registerSprites(IIconRegister iconRegister) {
         textures = new IIcon[maxSize()];
         for (int i = 1; i <= textures.length; i++) {
-            textures[i - 1] = iconRegister.registerIcon(GoodGenerator.MOD_ID + ":crops/"+name()+"."+i);
+            textures[i - 1] = iconRegister.registerIcon(GoodGenerator.MOD_ID + ":crops/" + name() + "." + i);
         }
     }
 
@@ -111,15 +110,12 @@ public class GGCropsSaltyRoot extends CropCard implements ICropCardInfo {
 
     @Override
     public int weightInfluences(ICropTile crop, float humidity, float nutrients, float air) {
-        return (int) ( - humidity + nutrients * 2 + air);
+        return (int) (-humidity + nutrients * 2 + air);
     }
 
     @Override
     public List<String> getCropInformation() {
-        return Arrays.asList(
-                "It prefers dry environment.",
-                "Inedible."
-        );
+        return Arrays.asList("It prefers dry environment.", "Inedible.");
     }
 
     @Override

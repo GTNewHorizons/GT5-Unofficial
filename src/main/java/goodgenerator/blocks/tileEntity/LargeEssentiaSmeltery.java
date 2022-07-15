@@ -1,5 +1,9 @@
 package goodgenerator.blocks.tileEntity;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
+import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
+
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
@@ -18,6 +22,8 @@ import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.XSTR;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import java.util.ArrayList;
+import java.util.Map;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.item.ItemStack;
@@ -33,19 +39,16 @@ import thaumcraft.api.visnet.VisNetHandler;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
 
-import java.util.ArrayList;
-import java.util.Map;
-
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
-
 public class LargeEssentiaSmeltery extends GT_MetaTileEntity_TooltipMultiBlockBase_EM implements IConstructable {
 
-    private static final IIconContainer textureFontOn = new Textures.BlockIcons.CustomIcon("icons/LargeEssentiaSmeltery_On");
-    private static final IIconContainer textureFontOn_Glow = new Textures.BlockIcons.CustomIcon("icons/LargeEssentiaSmeltery_On_GLOW");
-    private static final IIconContainer textureFontOff = new Textures.BlockIcons.CustomIcon("icons/LargeEssentiaSmeltery_Off");
-    private static final IIconContainer textureFontOff_Glow = new Textures.BlockIcons.CustomIcon("icons/LargeEssentiaSmeltery_Off_GLOW");
+    private static final IIconContainer textureFontOn =
+            new Textures.BlockIcons.CustomIcon("icons/LargeEssentiaSmeltery_On");
+    private static final IIconContainer textureFontOn_Glow =
+            new Textures.BlockIcons.CustomIcon("icons/LargeEssentiaSmeltery_On_GLOW");
+    private static final IIconContainer textureFontOff =
+            new Textures.BlockIcons.CustomIcon("icons/LargeEssentiaSmeltery_Off");
+    private static final IIconContainer textureFontOff_Glow =
+            new Textures.BlockIcons.CustomIcon("icons/LargeEssentiaSmeltery_Off_GLOW");
     private static final String STRUCTURE_PIECE_FIRST = "first";
     private static final String STRUCTURE_PIECE_LATER = "later";
     private static final String STRUCTURE_PIECE_LAST = "last";
@@ -81,7 +84,7 @@ public class LargeEssentiaSmeltery extends GT_MetaTileEntity_TooltipMultiBlockBa
     @Override
     public void construct(ItemStack itemStack, boolean hintsOnly) {
         structureBuild_EM(STRUCTURE_PIECE_FIRST, 2, 2, 0, itemStack, hintsOnly);
-        //default
+        // default
         structureBuild_EM(STRUCTURE_PIECE_LATER, 2, 2, -1, itemStack, hintsOnly);
         structureBuild_EM(STRUCTURE_PIECE_LATER, 2, 2, -2, itemStack, hintsOnly);
         int len = itemStack.stackSize;
@@ -110,10 +113,10 @@ public class LargeEssentiaSmeltery extends GT_MetaTileEntity_TooltipMultiBlockBa
         while (structureCheck_EM(STRUCTURE_PIECE_LATER, 2, 2, -len - 1)) len++;
         if (len > MAX_STRUCTURE_LENGTH - 1 || len < DEFAULT_STRUCTURE_LENGTH) return false;
         if (!structureCheck_EM(STRUCTURE_PIECE_LAST, 2, 2, -len - 1)) return false;
-        if (this.mCasing >= 24 &&
-            this.mMaintenanceHatches.size() == 1 &&
-            this.mInputBusses.size() >= 1 &&
-            this.mEssentiaOutputHatches.size() >= 1) {
+        if (this.mCasing >= 24
+                && this.mMaintenanceHatches.size() == 1
+                && this.mInputBusses.size() >= 1
+                && this.mEssentiaOutputHatches.size() >= 1) {
             this.mParallel = Math.floor(this.mParallel += 1 << this.pTier);
             return true;
         }
@@ -123,31 +126,40 @@ public class LargeEssentiaSmeltery extends GT_MetaTileEntity_TooltipMultiBlockBa
     @Override
     public IStructureDefinition<? extends GT_MetaTileEntity_MultiblockBase_EM> getStructure_EM() {
         if (this.multiDefinition == null) {
-            this.multiDefinition = StructureDefinition
-                .<LargeEssentiaSmeltery>builder()
-                .addShape("first", transpose(new String[][]{{"  A  "}, {" AAA "}, {"AA~AA"}, {" AAA "}, {"  A  "}}))
-                .addShape("later", transpose(new String[][]{{" ABA "}, {"AECEA"}, {"D---D"}, {"AEFEA"}, {" AAA "}}))
-                .addShape("last", transpose(new String[][]{{"  A  "}, {" AAA "}, {"AAAAA"}, {" AAA "}, {"  A  "}}))
-                .addElement('C', ofBlock(Loaders.essentiaFilterCasing, 0))
-                .addElement('D', ofBlock(ConfigBlocks.blockCosmeticOpaque, 2))
-                .addElement('F', LoadedList.THAUMIC_BASES ? ofBlock(Block.getBlockFromName("thaumicbases:advAlchFurnace"), 0) : ofBlock(ConfigBlocks.blockStoneDevice, 0))
-                .addElement('E', ofChain(
-                    onElementPass(x -> x.onEssentiaCellFound(0),
-                        ofBlock(Loaders.essentiaCell, 0)),
-                    onElementPass(x -> x.onEssentiaCellFound(1),
-                        ofBlock(Loaders.essentiaCell, 1)),
-                    onElementPass(x -> x.onEssentiaCellFound(2),
-                        ofBlock(Loaders.essentiaCell, 2)),
-                    onElementPass(x -> x.onEssentiaCellFound(3),
-                        ofBlock(Loaders.essentiaCell, 3))))
-                .addElement('A', ofChain(
-                    ofHatchAdder(LargeEssentiaSmeltery::addMaintenanceToMachineList, CASING_INDEX, 1),
-                    ofHatchAdder(LargeEssentiaSmeltery::addInputToMachineList, CASING_INDEX, 1),
-                    ofHatchAdder(LargeEssentiaSmeltery::addEnergyHatchToMachineList, CASING_INDEX, 1),
-                    ofTileAdder(LargeEssentiaSmeltery::addEssentiaOutputHatchToMachineList, Loaders.magicCasing, 0),
-                    onElementPass(LargeEssentiaSmeltery::onCasingFound, ofBlock(Loaders.magicCasing, 0))))
-                .addElement('B', ofHatchAdder(LargeEssentiaSmeltery::addMufflerToMachineList, CASING_INDEX, 2))
-                .build();
+            this.multiDefinition = StructureDefinition.<LargeEssentiaSmeltery>builder()
+                    .addShape(
+                            "first", transpose(new String[][] {{"  A  "}, {" AAA "}, {"AA~AA"}, {" AAA "}, {"  A  "}}))
+                    .addShape(
+                            "later", transpose(new String[][] {{" ABA "}, {"AECEA"}, {"D---D"}, {"AEFEA"}, {" AAA "}}))
+                    .addShape("last", transpose(new String[][] {{"  A  "}, {" AAA "}, {"AAAAA"}, {" AAA "}, {"  A  "}}))
+                    .addElement('C', ofBlock(Loaders.essentiaFilterCasing, 0))
+                    .addElement('D', ofBlock(ConfigBlocks.blockCosmeticOpaque, 2))
+                    .addElement(
+                            'F',
+                            LoadedList.THAUMIC_BASES
+                                    ? ofBlock(Block.getBlockFromName("thaumicbases:advAlchFurnace"), 0)
+                                    : ofBlock(ConfigBlocks.blockStoneDevice, 0))
+                    .addElement(
+                            'E',
+                            ofChain(
+                                    onElementPass(x -> x.onEssentiaCellFound(0), ofBlock(Loaders.essentiaCell, 0)),
+                                    onElementPass(x -> x.onEssentiaCellFound(1), ofBlock(Loaders.essentiaCell, 1)),
+                                    onElementPass(x -> x.onEssentiaCellFound(2), ofBlock(Loaders.essentiaCell, 2)),
+                                    onElementPass(x -> x.onEssentiaCellFound(3), ofBlock(Loaders.essentiaCell, 3))))
+                    .addElement(
+                            'A',
+                            ofChain(
+                                    ofHatchAdder(LargeEssentiaSmeltery::addMaintenanceToMachineList, CASING_INDEX, 1),
+                                    ofHatchAdder(LargeEssentiaSmeltery::addInputToMachineList, CASING_INDEX, 1),
+                                    ofHatchAdder(LargeEssentiaSmeltery::addEnergyHatchToMachineList, CASING_INDEX, 1),
+                                    ofTileAdder(
+                                            LargeEssentiaSmeltery::addEssentiaOutputHatchToMachineList,
+                                            Loaders.magicCasing,
+                                            0),
+                                    onElementPass(
+                                            LargeEssentiaSmeltery::onCasingFound, ofBlock(Loaders.magicCasing, 0))))
+                    .addElement('B', ofHatchAdder(LargeEssentiaSmeltery::addMufflerToMachineList, CASING_INDEX, 2))
+                    .build();
         }
         return this.multiDefinition;
     }
@@ -156,25 +168,25 @@ public class LargeEssentiaSmeltery extends GT_MetaTileEntity_TooltipMultiBlockBa
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Essentia Smeltery")
-            .addInfo("Controller block for the Large Essentia Smeltery")
-            .addInfo("Necessary evil.")
-            .addInfo("Advanced Essentia smelting technology.")
-            .addInfo("Max parallel dictated by structure size and Essentia Diffusion Cell tier")
-            .addInfo("Energy Hatch tier: HV+")
-            .addInfo("You can find more information about this machine in the Thaumonomicon.")
-            .addPollutionAmount(getPollutionPerSecond(null))
-            .addInfo("The structure is too complex!")
-            .addInfo(BLUE_PRINT_INFO)
-            .addSeparator()
-            .addController("Front center")
-            .addCasingInfo("Magic Casing", 24)
-            .addMaintenanceHatch("Hint block with dot 1")
-            .addInputBus("Hint block with dot 1")
-            .addInputHatch("Hint block with dot 1")
-            .addEnergyHatch("Hint block with dot 1")
-            .addOtherStructurePart("Essentia Output Hatch", "Hint block with dot 1")
-            .addMufflerHatch("Hint block with dot 2")
-            .toolTipFinisher("Good Generator");
+                .addInfo("Controller block for the Large Essentia Smeltery")
+                .addInfo("Necessary evil.")
+                .addInfo("Advanced Essentia smelting technology.")
+                .addInfo("Max parallel dictated by structure size and Essentia Diffusion Cell tier")
+                .addInfo("Energy Hatch tier: HV+")
+                .addInfo("You can find more information about this machine in the Thaumonomicon.")
+                .addPollutionAmount(getPollutionPerSecond(null))
+                .addInfo("The structure is too complex!")
+                .addInfo(BLUE_PRINT_INFO)
+                .addSeparator()
+                .addController("Front center")
+                .addCasingInfo("Magic Casing", 24)
+                .addMaintenanceHatch("Hint block with dot 1")
+                .addInputBus("Hint block with dot 1")
+                .addInputHatch("Hint block with dot 1")
+                .addEnergyHatch("Hint block with dot 1")
+                .addOtherStructurePart("Essentia Output Hatch", "Hint block with dot 1")
+                .addMufflerHatch("Hint block with dot 2")
+                .toolTipFinisher("Good Generator");
         return tt;
     }
 
@@ -186,25 +198,36 @@ public class LargeEssentiaSmeltery extends GT_MetaTileEntity_TooltipMultiBlockBa
     @Override
     public String[] getInfoData() {
         String[] info = super.getInfoData();
-        info[8] = "Node Power: " + EnumChatFormatting.RED + this.nodePower + EnumChatFormatting.RESET + " Purification Efficiency: " + EnumChatFormatting.AQUA + this.nodePurificationEfficiency + "%" + EnumChatFormatting.RESET + " Speed Up: " + EnumChatFormatting.GRAY + this.nodeIncrease + "%" + EnumChatFormatting.RESET;
+        info[8] = "Node Power: " + EnumChatFormatting.RED + this.nodePower + EnumChatFormatting.RESET
+                + " Purification Efficiency: " + EnumChatFormatting.AQUA + this.nodePurificationEfficiency + "%"
+                + EnumChatFormatting.RESET + " Speed Up: " + EnumChatFormatting.GRAY + this.nodeIncrease + "%"
+                + EnumChatFormatting.RESET;
         return info;
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
+    public ITexture[] getTexture(
+            IGregTechTileEntity aBaseMetaTileEntity,
+            byte aSide,
+            byte aFacing,
+            byte aColorIndex,
+            boolean aActive,
+            boolean aRedstone) {
         if (aSide == aFacing) {
-            if (aActive) return new ITexture[]{
-                Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
-                TextureFactory.of(textureFontOn),
-                TextureFactory.builder().addIcon(textureFontOn_Glow).glow().build()
-            };
-            else return new ITexture[]{
-                Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
-                TextureFactory.of(textureFontOff),
-                TextureFactory.builder().addIcon(textureFontOff_Glow).glow().build()
-            };
+            if (aActive)
+                return new ITexture[] {
+                    Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
+                    TextureFactory.of(textureFontOn),
+                    TextureFactory.builder().addIcon(textureFontOn_Glow).glow().build()
+                };
+            else
+                return new ITexture[] {
+                    Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
+                    TextureFactory.of(textureFontOff),
+                    TextureFactory.builder().addIcon(textureFontOff_Glow).glow().build()
+                };
         }
-        return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(CASING_INDEX)};
+        return new ITexture[] {Textures.BlockIcons.getCasingTextureForId(CASING_INDEX)};
     }
 
     protected void onCasingFound() {
@@ -254,7 +277,7 @@ public class LargeEssentiaSmeltery extends GT_MetaTileEntity_TooltipMultiBlockBa
         if (!isFullPower()) return false;
 
         ArrayList<ItemStack> tInputList = getStoredInputs();
-//        ArrayList<FluidStack> tFluidList = getStoredFluids();
+        //        ArrayList<FluidStack> tFluidList = getStoredFluids();
 
         if (tInputList.size() == 0) return false;
 
@@ -290,7 +313,11 @@ public class LargeEssentiaSmeltery extends GT_MetaTileEntity_TooltipMultiBlockBa
         this.drainNodePower(WORLD, x, y, z);
         this.nodePower -= expectedPower();
 
-        calculatePerfectOverclockedNessMulti(RECIPE_EUT, (int) Math.ceil(this.mOutputAspects.visSize() * RECIPE_DURATION * (1 - this.nodeIncrease * 0.005)), 1, Math.min(Integer.MAX_VALUE, getMaxInputEnergy_EM()));
+        calculatePerfectOverclockedNessMulti(
+                RECIPE_EUT,
+                (int) Math.ceil(this.mOutputAspects.visSize() * RECIPE_DURATION * (1 - this.nodeIncrease * 0.005)),
+                1,
+                Math.min(Integer.MAX_VALUE, getMaxInputEnergy_EM()));
 
         this.updateSlots();
         if (this.mEUt > 0) this.mEUt = -this.mEUt;
@@ -400,7 +427,10 @@ public class LargeEssentiaSmeltery extends GT_MetaTileEntity_TooltipMultiBlockBa
 
             this.nodePurificationEfficiency = Math.max(0, this.nodePurificationEfficiency - 1);
             if (this.nodePurificationEfficiency < 100) {
-                this.nodePurificationEfficiency = (int) Math.min(100, this.nodePurificationEfficiency + Math.ceil(VisNetHandler.drainVis(WORLD, x, y, z, Aspect.ORDER, 200) * 0.05));
+                this.nodePurificationEfficiency = (int) Math.min(
+                        100,
+                        this.nodePurificationEfficiency
+                                + Math.ceil(VisNetHandler.drainVis(WORLD, x, y, z, Aspect.ORDER, 200) * 0.05));
             }
 
             this.nodeIncrease = Math.min(100, VisNetHandler.drainVis(WORLD, x, y, z, Aspect.ENTROPY, 125));
@@ -413,12 +443,14 @@ public class LargeEssentiaSmeltery extends GT_MetaTileEntity_TooltipMultiBlockBa
         if (xstr.nextInt(20) == 0) {
             if (xstr.nextInt(100) < Math.max(100 - this.nodePurificationEfficiency, 0)) {
                 final World WORLD = this.getBaseMetaTileEntity().getWorld();
-                GT_MetaTileEntity_Hatch_Muffler mufflerHatch = this.mMufflerHatches.get(xstr.next(this.mMufflerHatches.size()));
+                GT_MetaTileEntity_Hatch_Muffler mufflerHatch =
+                        this.mMufflerHatches.get(xstr.next(this.mMufflerHatches.size()));
                 int x = mufflerHatch.getBaseMetaTileEntity().getXCoord();
                 int y = mufflerHatch.getBaseMetaTileEntity().getYCoord();
                 int z = mufflerHatch.getBaseMetaTileEntity().getZCoord();
 
-                ForgeDirection facing = ForgeDirection.getOrientation(mufflerHatch.getBaseMetaTileEntity().getFrontFacing());
+                ForgeDirection facing = ForgeDirection.getOrientation(
+                        mufflerHatch.getBaseMetaTileEntity().getFrontFacing());
                 switch (facing) {
                     case SOUTH:
                         z += 1;
@@ -475,5 +507,4 @@ public class LargeEssentiaSmeltery extends GT_MetaTileEntity_TooltipMultiBlockBa
     protected void maintenance_EM() {
         super.maintenance_EM();
     }
-
 }

@@ -20,7 +20,8 @@ import net.minecraft.nbt.NBTTagCompound;
 public class NeutronSensor extends GT_MetaTileEntity_Hatch {
 
     private static final IIconContainer textureFont = new Textures.BlockIcons.CustomIcon("icons/NeutronSensorFont");
-    private static final IIconContainer textureFont_Glow = new Textures.BlockIcons.CustomIcon("icons/NeutronSensorFont_GLOW");
+    private static final IIconContainer textureFont_Glow =
+            new Textures.BlockIcons.CustomIcon("icons/NeutronSensorFont_GLOW");
 
     protected String texts = "";
     boolean isOn = false;
@@ -35,10 +36,10 @@ public class NeutronSensor extends GT_MetaTileEntity_Hatch {
 
     @Override
     public String[] getDescription() {
-        return new String[]{
-                "Can be installed in Neutron Activator.",
-                "Output Redstone Signal according to the Neutron Kinetic Energy.",
-                "Right click to open the GUI and setting."
+        return new String[] {
+            "Can be installed in Neutron Activator.",
+            "Output Redstone Signal according to the Neutron Kinetic Energy.",
+            "Right click to open the GUI and setting."
         };
     }
 
@@ -81,7 +82,11 @@ public class NeutronSensor extends GT_MetaTileEntity_Hatch {
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new NeutronSensorGUIClient(aPlayerInventory, aBaseMetaTileEntity, GoodGenerator.MOD_ID + ":textures/gui/NeutronSensorGUI.png", this.texts);
+        return new NeutronSensorGUIClient(
+                aPlayerInventory,
+                aBaseMetaTileEntity,
+                GoodGenerator.MOD_ID + ":textures/gui/NeutronSensorGUI.png",
+                this.texts);
     }
 
     @Override
@@ -90,10 +95,12 @@ public class NeutronSensor extends GT_MetaTileEntity_Hatch {
     }
 
     @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, byte aSide, float aX, float aY, float aZ) {
+    public boolean onRightclick(
+            IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, byte aSide, float aX, float aY, float aZ) {
         if (aBaseMetaTileEntity.isClientSide()) return true;
         if (aSide == aBaseMetaTileEntity.getFrontFacing() && aPlayer instanceof EntityPlayerMP) {
-            GoodGenerator.CHANNEL.sendTo(new MessageOpenNeutronSensorGUI(aBaseMetaTileEntity, texts), (EntityPlayerMP) aPlayer);
+            GoodGenerator.CHANNEL.sendTo(
+                    new MessageOpenNeutronSensorGUI(aBaseMetaTileEntity, texts), (EntityPlayerMP) aPlayer);
             return true;
         }
         return false;
@@ -107,45 +114,39 @@ public class NeutronSensor extends GT_MetaTileEntity_Hatch {
         return texts == null ? "" : texts;
     }
 
-    public void outputRedstoneSignal(){
+    public void outputRedstoneSignal() {
         isOn = true;
     }
 
-    public void stopOutputRedstoneSignal(){
+    public void stopOutputRedstoneSignal() {
         isOn = false;
     }
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
         return new ITexture[] {
-                aBaseTexture,
-                TextureFactory.of(textureFont),
-                TextureFactory.builder().addIcon(textureFont_Glow).glow().build()
+            aBaseTexture,
+            TextureFactory.of(textureFont),
+            TextureFactory.builder().addIcon(textureFont_Glow).glow().build()
         };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] {
-                aBaseTexture,
-                TextureFactory.of(textureFont)
-        };
+        return new ITexture[] {aBaseTexture, TextureFactory.of(textureFont)};
     }
 
     @Override
-    public boolean allowGeneralRedstoneOutput(){
+    public boolean allowGeneralRedstoneOutput() {
         return true;
     }
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (isOn) {
-            for (byte i = 0; i < 6; i ++)
-                aBaseMetaTileEntity.setInternalOutputRedstoneSignal(i, (byte) 15);
-        }
-        else {
-            for (byte i = 0; i < 6; i ++)
-                aBaseMetaTileEntity.setInternalOutputRedstoneSignal(i, (byte) 0);
+            for (byte i = 0; i < 6; i++) aBaseMetaTileEntity.setInternalOutputRedstoneSignal(i, (byte) 15);
+        } else {
+            for (byte i = 0; i < 6; i++) aBaseMetaTileEntity.setInternalOutputRedstoneSignal(i, (byte) 0);
         }
         super.onPostTick(aBaseMetaTileEntity, aTick);
     }
@@ -164,5 +165,4 @@ public class NeutronSensor extends GT_MetaTileEntity_Hatch {
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
         return false;
     }
-
 }

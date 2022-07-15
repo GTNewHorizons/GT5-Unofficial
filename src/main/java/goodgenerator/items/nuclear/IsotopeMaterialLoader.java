@@ -1,6 +1,6 @@
-//package goodgenerator.items.nuclear;
+// package goodgenerator.items.nuclear;
 //
-//public class IsotopeMaterialLoader implements Runnable {
+// public class IsotopeMaterialLoader implements Runnable {
 //
 //    protected static final int OffsetID = 0;
 //
@@ -174,4 +174,4 @@
 //
 //    @Override
 //    public void run() { }
-//}
+// }

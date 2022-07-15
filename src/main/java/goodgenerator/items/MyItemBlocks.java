@@ -1,33 +1,33 @@
 package goodgenerator.items;
 
-import goodgenerator.blocks.regularBlock.TEBlock;
-import goodgenerator.blocks.tileEntity.EssentiaOutputHatch;
-import goodgenerator.util.CharExchanger;
-import goodgenerator.util.DescTextLocalization;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.util.GT_LanguageManager;
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemBlock;
-import goodgenerator.main.GoodGenerator;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
-
-import java.util.Arrays;
-import java.util.List;
-
 import static goodgenerator.loader.Loaders.essentiaCell;
 import static goodgenerator.loader.Loaders.yottaFluidTankCell;
 import static goodgenerator.util.CharExchanger.tierName;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import goodgenerator.blocks.regularBlock.TEBlock;
+import goodgenerator.blocks.tileEntity.EssentiaOutputHatch;
+import goodgenerator.main.GoodGenerator;
+import goodgenerator.util.CharExchanger;
+import goodgenerator.util.DescTextLocalization;
+import gregtech.api.util.GT_LanguageManager;
+import java.util.Arrays;
+import java.util.List;
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
+
 public class MyItemBlocks extends ItemBlock {
-    private final String mNoMobsToolTip = GT_LanguageManager.addStringLocalization("gt.nomobspawnsonthisblock", "Mobs cannot Spawn on this Block");
-    private final String mNoTileEntityToolTip = GT_LanguageManager.addStringLocalization("gt.notileentityinthisblock", "This is NOT a TileEntity!");
+    private final String mNoMobsToolTip =
+            GT_LanguageManager.addStringLocalization("gt.nomobspawnsonthisblock", "Mobs cannot Spawn on this Block");
+    private final String mNoTileEntityToolTip =
+            GT_LanguageManager.addStringLocalization("gt.notileentityinthisblock", "This is NOT a TileEntity!");
 
-
-    public MyItemBlocks(Block block){
+    public MyItemBlocks(Block block) {
         super(block);
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
@@ -74,7 +74,8 @@ public class MyItemBlocks extends ItemBlock {
                 p_77624_3_.addAll(Arrays.asList(DescTextLocalization.addText("EssentiaHatch.tooltip", 2)));
             if (tile.getIndex() == 2) {
                 p_77624_3_.add(StatCollector.translateToLocal("EssentiaOutputHatch.tooltip.0"));
-                p_77624_3_.add(StatCollector.translateToLocal("EssentiaOutputHatch.tooltip.1") + " " + EssentiaOutputHatch.CAPACITY);
+                p_77624_3_.add(StatCollector.translateToLocal("EssentiaOutputHatch.tooltip.1") + " "
+                        + EssentiaOutputHatch.CAPACITY);
             }
         } else p_77624_3_.add(mNoTileEntityToolTip);
 
@@ -83,11 +84,13 @@ public class MyItemBlocks extends ItemBlock {
             cap.append(" 1000000");
             for (int i = 0; i < p_77624_1_.getItemDamage(); i++) cap.append("00");
             cap.append(" L");
-            p_77624_3_.add(StatCollector.translateToLocal("YOTTankCell.tooltip.0") + CharExchanger.formatNumber(cap.toString()));
+            p_77624_3_.add(StatCollector.translateToLocal("YOTTankCell.tooltip.0")
+                    + CharExchanger.formatNumber(cap.toString()));
         }
 
         if (Block.getBlockFromItem(p_77624_1_.getItem()).equals(essentiaCell)) {
-            p_77624_3_.add(StatCollector.translateToLocal("hatchTier.tooltip.0") + " " + tierName[p_77624_1_.getItemDamage() + 4]);
+            p_77624_3_.add(StatCollector.translateToLocal("hatchTier.tooltip.0") + " "
+                    + tierName[p_77624_1_.getItemDamage() + 4]);
         }
     }
 }
