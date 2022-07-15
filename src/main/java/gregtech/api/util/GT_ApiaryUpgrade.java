@@ -8,15 +8,25 @@ import net.bdew.gendustry.api.items.IApiaryUpgrade;
 import net.minecraft.item.ItemStack;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 public enum GT_ApiaryUpgrade {
-    speed1(UNIQUE_INDEX.SPEED_UPGRADE, 32200, 1, 6),
-    speed2(UNIQUE_INDEX.SPEED_UPGRADE, 32201, 1, 7),
-    speed3(UNIQUE_INDEX.SPEED_UPGRADE, 32202, 1, 8),
+    speed1(UNIQUE_INDEX.SPEED_UPGRADE, 32200, 1, 1),
+    speed2(UNIQUE_INDEX.SPEED_UPGRADE, 32201, 1, 2),
+    speed3(UNIQUE_INDEX.SPEED_UPGRADE, 32202, 1, 3),
+    speed4(UNIQUE_INDEX.SPEED_UPGRADE, 32203, 1, 4),
+    speed5(UNIQUE_INDEX.SPEED_UPGRADE, 32204, 1, 5),
+    speed6(UNIQUE_INDEX.SPEED_UPGRADE, 32205, 1, 6),
+    speed7(UNIQUE_INDEX.SPEED_UPGRADE, 32206, 1, 7),
+    speed8(UNIQUE_INDEX.SPEED_UPGRADE, 32207, 1, 8),
     ;
 
     private enum UNIQUE_INDEX{
         SPEED_UPGRADE,
+        ;
+        void apply(Consumer<GT_ApiaryUpgrade> fn){
+            UNIQUE_UPGRADE_LIST.get(this).forEach(fn);
+        }
     }
 
     private static final EnumMap<UNIQUE_INDEX, ArrayList<GT_ApiaryUpgrade>> UNIQUE_UPGRADE_LIST = new EnumMap<>(UNIQUE_INDEX.class);
@@ -87,14 +97,12 @@ public enum GT_ApiaryUpgrade {
     private static final HashMap<Integer, GT_ApiaryUpgrade> quickLookup = new HashMap<>();
 
     static{
+        EnumSet.allOf(GT_ApiaryUpgrade.class).forEach(GT_ApiaryUpgrade::setup_static_variables);
+
         if(Loader.isModLoaded("gendustry")) {
             ItemStack s = GT_ModHandler.getModItem("gendustry", "ApiaryUpgrade", 8L, 0);
             GT_Utility.ItemId a = GT_Utility.ItemId.createNoCopy(s);
-            speed1.additionalGendustryUpgrades.put(a, s);
-            speed2.additionalGendustryUpgrades.put(a, s);
-            speed3.additionalGendustryUpgrades.put(a, s);
+            UNIQUE_INDEX.SPEED_UPGRADE.apply((u) -> u.additionalGendustryUpgrades.put(a, s));
         }
-
-        EnumSet.allOf(GT_ApiaryUpgrade.class).forEach(GT_ApiaryUpgrade::setup_static_variables);
     }
 }

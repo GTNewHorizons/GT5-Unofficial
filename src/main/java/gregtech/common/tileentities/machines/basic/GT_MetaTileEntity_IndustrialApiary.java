@@ -741,10 +741,10 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
     private float temperatureMod = 0f;
     private boolean isAutomated = false;
 
-    private int maxspeed = 5;
+    private int maxspeed = 0;
 
     public void updateModifiers(){
-        maxspeed = 5;
+        maxspeed = 0;
         ApiaryModifiers mods = new ApiaryModifiers();
         for(int i = 2; i < 2+4; i++)
         {
