@@ -10,30 +10,51 @@ import net.minecraft.item.ItemStack;
 import java.util.*;
 
 public enum GT_ApiaryUpgrade {
-    speed1(32200, 1, 6),
-    speed2(32201, 1, 7),
-    speed3(32202, 1, 8)
+    speed1(UNIQUE_INDEX.SPEED_UPGRADE, 32200, 1, 6),
+    speed2(UNIQUE_INDEX.SPEED_UPGRADE, 32201, 1, 7),
+    speed3(UNIQUE_INDEX.SPEED_UPGRADE, 32202, 1, 8),
     ;
+
+    private enum UNIQUE_INDEX{
+        SPEED_UPGRADE,
+    }
+
+    private static final EnumMap<UNIQUE_INDEX, ArrayList<GT_ApiaryUpgrade>> UNIQUE_UPGRADE_LIST = new EnumMap<>(UNIQUE_INDEX.class);
+
     private int meta = 0;
     private int maxnumber = 1;
     private int maxspeedmodifier = 0; // formula: maxspeed = modifier
 
-    private GT_Utility.ItemId id;
+    private final GT_Utility.ItemId id;
+    private final UNIQUE_INDEX unique_index;
 
-    private HashMap<GT_Utility.ItemId, ItemStack> additionalGendustryUpgrades = new HashMap<>();
-    private HashSet<GT_Utility.ItemId> blacklistedUpgrades = new HashSet<>(); // additionalGendustryUpgrades are blacklisted by default
+    private final HashMap<GT_Utility.ItemId, ItemStack> additionalGendustryUpgrades = new HashMap<>();
+    private final HashSet<GT_Utility.ItemId> blacklistedUpgrades = new HashSet<>(); // additionalGendustryUpgrades are blacklisted by default
 
-    GT_ApiaryUpgrade(int meta, int maxnumber, int maxspeedmodifier){
+    GT_ApiaryUpgrade(UNIQUE_INDEX unique_index, int meta, int maxnumber, int maxspeedmodifier){
+        this.unique_index = unique_index;
         this.meta = meta;
         this.maxnumber = maxnumber;
         this.maxspeedmodifier = maxspeedmodifier;
         this.id = GT_Utility.ItemId.createNoCopy(get(1));
     }
 
+    private void setup_static_variables(){
+        quickLookup.put(this.meta, this);
+        ArrayList<GT_ApiaryUpgrade> un = UNIQUE_UPGRADE_LIST.get(this.unique_index);
+        if(un != null)
+            un.forEach((u) -> { u.blacklistedUpgrades.add(this.id); this.blacklistedUpgrades.add(u.id); });
+        else {
+            un = new ArrayList<>(1);
+            UNIQUE_UPGRADE_LIST.put(this.unique_index, un);
+        }
+        un.add(this);
+    }
+
     public static GT_ApiaryUpgrade getUpgrade(ItemStack s){
         if(s == null)
             return null;
-        if(!OrePrefixes.apiaryUpgrade.contains(s))
+        if(!isUpgrade(s))
             return null;
         return quickLookup.get(s.getItemDamage());
     }
@@ -55,6 +76,10 @@ public enum GT_ApiaryUpgrade {
         return new ItemStack(GT_MetaGenerated_Item_03.INSTANCE, count, meta);
     }
 
+    public static boolean isUpgrade(ItemStack s){
+        return OrePrefixes.apiaryUpgrade.contains(s);
+    }
+
     public int applyMaxSpeedModifier(int maxspeed){
         return Math.max(maxspeed, maxspeedmodifier);
     }
@@ -68,11 +93,8 @@ public enum GT_ApiaryUpgrade {
             speed1.additionalGendustryUpgrades.put(a, s);
             speed2.additionalGendustryUpgrades.put(a, s);
             speed3.additionalGendustryUpgrades.put(a, s);
-            speed1.blacklistedUpgrades.addAll(Arrays.asList(speed2.id, speed3.id));
-            speed2.blacklistedUpgrades.addAll(Arrays.asList(speed1.id, speed3.id));
-            speed3.blacklistedUpgrades.addAll(Arrays.asList(speed1.id, speed2.id));
         }
 
-        EnumSet.allOf(GT_ApiaryUpgrade.class).forEach((u)->quickLookup.put(u.meta, u));
+        EnumSet.allOf(GT_ApiaryUpgrade.class).forEach(GT_ApiaryUpgrade::setup_static_variables);
     }
 }
