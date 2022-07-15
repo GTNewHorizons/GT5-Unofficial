@@ -197,15 +197,13 @@ public class GregtechMetaTileEntity_IndustrialMixer extends GregtechMeta_MultiBl
 			int slot = 0;
 			for (ItemStack g : tBusItems) {
 				inputs[slot++] = g;
-			}			
-			if (inputs.length > 0) {				
-				log("Recipe. ["+inputs.length+"]["+getMaxParallelRecipes()+"]");	
-				FluidStack[] fluid = this.getStoredFluids().toArray(new FluidStack[] {});	
-				if (checkRecipeGeneric(inputs,fluid , getMaxParallelRecipes(), getEuDiscountForParallelism(), 250, 10000)) {
-					log("Recipe 2.");
-					return true;
-				}
-			}			
+			}
+			log("Recipe. ["+inputs.length+"]["+getMaxParallelRecipes()+"]");
+			FluidStack[] fluid = this.getStoredFluids().toArray(new FluidStack[] {});
+			if (checkRecipeGeneric(inputs,fluid , getMaxParallelRecipes(), getEuDiscountForParallelism(), 250, 10000)) {
+				log("Recipe 2.");
+				return true;
+			}
 
 		}
 		return false;
