@@ -69,7 +69,7 @@ public class CircuitImprintLoader {
         rebuildCircuitAssemblerMap(toRem,toAdd);
         exchangeRecipesInList(toRem,toAdd);
         makeCircuitImprintRecipes();
-        
+
         toRem = null;
         toAdd = null;
     }
@@ -117,17 +117,7 @@ public class CircuitImprintLoader {
     }
 
     private static boolean isCircuitOreDict(ItemStack item) {
-        int[] oreIDS = OreDictionary.getOreIDs(item);
-
-        if (oreIDS.length < 1)
-            return false;
-        
-        for (int oreID : oreIDS) {
-            if (OreDictionary.getOreName(oreID).contains("Circuit") || OreDictionary.getOreName(oreID).contains("circuit"))
-                return true;
-        }
-
-        return false;
+        return BW_Util.isTieredCircuit(item);
     }
 
     private static void exchangeRecipesInList(HashSet<GT_Recipe> toRem, HashSet<GT_Recipe> toAdd) {
@@ -148,8 +138,7 @@ public class CircuitImprintLoader {
     public static GT_Recipe makeMoreExpensive(GT_Recipe original) {
         GT_Recipe newRecipe = original.copy();
         for (ItemStack is : newRecipe.mInputs){
-            int[] oreIDs = OreDictionary.getOreIDs(is);
-            if(oreIDs == null || oreIDs.length < 1 || !OreDictionary.getOreName(oreIDs[0]).contains("circuit")) {
+            if (!BW_Util.isTieredCircuit(is)) {
                 is.stackSize = Math.min(is.stackSize * 6, 64);
                 if (is.stackSize > is.getItem().getItemStackLimit() || is.stackSize > is.getMaxStackSize())
                     is.stackSize = is.getMaxStackSize();

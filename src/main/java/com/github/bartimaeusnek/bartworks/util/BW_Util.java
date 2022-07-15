@@ -49,6 +49,7 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
@@ -611,8 +612,41 @@ public class BW_Util {
             case "circuitSuperconductor": return 8;
             case "circuitInfinite": return 9;
             case "circuitBio": return 10;
+            case "circuitNano":
+            case "circuitOptical":
+                return 11;
+            case "circuitPiko":
+            case "circuitExotic":
+                return 12;
+            case "circuitQuantum":
+            case "circuitCosmic":
+                return 13;
+            case "circuitTranscendent":
+                return 14;
             default: return -1;
         }
+    }
+
+    public static byte getCircuitTierFromItemStack(ItemStack stack) {
+        for (String oreName : getOreNames(stack)) {
+            byte tier = getCircuitTierFromOreDictName(oreName);
+            if (tier != -1) {
+                return tier;
+            }
+        }
+        return -1;
+    }
+
+    public static boolean isTieredCircuit(ItemStack stack) {
+        return getCircuitTierFromItemStack(stack) != -1;
+    }
+
+    public static List<String> getOreNames(ItemStack stack) {
+        List<String> ret = new ArrayList<>();
+        for (int oreID : OreDictionary.getOreIDs(stack)) {
+            ret.add(OreDictionary.getOreName(oreID));
+        }
+        return ret;
     }
 
     private static Block bw_realglasRef;
