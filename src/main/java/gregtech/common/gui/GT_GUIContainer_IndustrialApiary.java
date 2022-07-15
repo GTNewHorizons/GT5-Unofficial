@@ -88,7 +88,7 @@ public class GT_GUIContainer_IndustrialApiary extends GT_GUIContainerMetaTile_Ma
         ArrayList<String> s = new ArrayList<>();
         GT_MetaTileEntity_IndustrialApiary IA = getContainer().getMachine();
 
-        String energyreq = GT_Utility.formatNumbers((int)((float)GT_MetaTileEntity_IndustrialApiary.baseEUtUsage * IA.getEnergyModifier()) + energyusage);
+        String energyreq = GT_Utility.formatNumbers((int)((float)GT_MetaTileEntity_IndustrialApiary.baseEUtUsage * IA.getEnergyModifier() * accelerated) + energyusage);
         String Temp = StatCollector.translateToLocal(IA.getTemperature().getName());
         String Hum = StatCollector.translateToLocal(IA.getHumidity().getName());
         boolean moreinformationgiven = false;
