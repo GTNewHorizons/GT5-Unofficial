@@ -625,7 +625,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechM
 	}
 	@Override
 	public boolean explodesOnComponentBreak(ItemStack aStack) {
-		return true;
+		return false;
 	}
 
 	public boolean isLooseMode() {
@@ -887,11 +887,6 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechM
                 }
                 totalOutput += aTotal;
             }
-        }
-
-        if (totalOutput < aEU || (aFoundMixedDynamos && !aAllowMixedVoltageDynamos)) {
-            explodeMultiblock();
-            return false;
         }
 
         long leftToInject;
