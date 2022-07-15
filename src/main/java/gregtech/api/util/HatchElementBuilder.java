@@ -20,13 +20,11 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
 
 import java.util.*;
-import java.util.function.BiPredicate;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
+import java.util.function.*;
 import java.util.stream.Collectors;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
@@ -278,7 +276,7 @@ public class HatchElementBuilder<T extends GT_MetaTileEntity_EnhancedMultiBlockB
             }
 
             @Override
-            public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger, IItemSource s, EntityPlayerMP actor) {
+            public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger, IItemSource s, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
                 if (mShouldSkip != null) {
                     TileEntity tileEntity = world.getTileEntity(x, y, z);
                     if (tileEntity instanceof IGregTechTileEntity && mShouldSkip.test(t, (IGregTechTileEntity) tileEntity))
@@ -290,7 +288,7 @@ public class HatchElementBuilder<T extends GT_MetaTileEntity_EnhancedMultiBlockB
                 ItemStack taken = s.takeOne(mHatchItemFilter.apply(t), true);
                 if (GT_Utility.isStackInvalid(taken)) {
                     String type = getHint();
-                    actor.addChatMessage(new ChatComponentText("Suggested to have " + type + " but none was found"));
+                    chatter.accept(new ChatComponentText("Suggested to have " + type + " but none was found"));
                     return PlaceResult.REJECT;
                 }
                 return StructureUtility.survivalPlaceBlock(taken, ItemStackPredicate.NBTMode.IGNORE, null, true, world, x, y, z, s, actor) == PlaceResult.ACCEPT ? PlaceResult.ACCEPT_STOP : PlaceResult.REJECT;

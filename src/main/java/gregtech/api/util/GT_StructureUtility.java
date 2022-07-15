@@ -27,17 +27,14 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.BiConsumer;
-import java.util.function.BiPredicate;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.function.ToIntFunction;
+import java.util.function.*;
 
 public class GT_StructureUtility {
     //    private static final Map<Class<?>, String> customNames = new HashMap<>();
@@ -95,7 +92,7 @@ public class GT_StructureUtility {
             }
 
             @Override
-            public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger, IItemSource s, EntityPlayerMP actor) {
+            public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger, IItemSource s, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
                 if (check(t, world, x, y, z)) return PlaceResult.SKIP;
                 ItemStack tFrameStack = GT_OreDictUnificator.get(OrePrefixes.frameGt, aFrameMaterial, 1);
                 if (!GT_Utility.isStackValid(tFrameStack) || !(tFrameStack.getItem() instanceof ItemBlock))
@@ -111,9 +108,6 @@ public class GT_StructureUtility {
 
     /**
      * Completely equivalent to {@link #buildHatchAdder()}, except it plays nicer with type inference
-     * @param typeToken
-     * @return
-     * @param <T>
      */
     public static <T extends GT_MetaTileEntity_EnhancedMultiBlockBase<?>> HatchElementBuilder<T> buildHatchAdder(Class<T> typeToken) {
         return HatchElementBuilder.builder();
@@ -162,7 +156,7 @@ public class GT_StructureUtility {
             }
 
             @Override
-            public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger, IItemSource s, EntityPlayerMP actor) {
+            public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger, IItemSource s, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
                 if (shouldSkip != null) {
                     TileEntity tileEntity = world.getTileEntity(x, y, z);
                     if (tileEntity instanceof IGregTechTileEntity && shouldSkip.test(t, (IGregTechTileEntity) tileEntity))
@@ -174,7 +168,7 @@ public class GT_StructureUtility {
                 if (clazz == null) return PlaceResult.REJECT;
                 ItemStack taken = s.takeOne(is -> clazz.isInstance(GT_Item_Machines.getMetaTileEntity(is)), true);
                 if (GT_Utility.isStackInvalid(taken)) {
-                    actor.addChatMessage(new ChatComponentText("Suggested to have MTE of type " + clazz.getSimpleName() + " but none was found"));
+                    chatter.accept(new ChatComponentText("Suggested to have MTE of type " + clazz.getSimpleName() + " but none was found"));
                     return PlaceResult.REJECT;
                 }
                 if (StructureUtility.survivalPlaceBlock(taken, ItemStackPredicate.NBTMode.IGNORE, null, true, world, x, y, z, s, actor) == PlaceResult.ACCEPT) {
@@ -210,7 +204,7 @@ public class GT_StructureUtility {
             }
 
             @Override
-            public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger, IItemSource s, EntityPlayerMP actor) {
+            public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger, IItemSource s, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
                 if (shouldSkip != null) {
                     TileEntity tileEntity = world.getTileEntity(x, y, z);
                     if (tileEntity instanceof IGregTechTileEntity && shouldSkip.test(t, (IGregTechTileEntity) tileEntity))
@@ -223,7 +217,7 @@ public class GT_StructureUtility {
                 if (meta < 0) return PlaceResult.REJECT;
                 ItemStack taken = s.takeOne(ItemStackPredicate.from(item).setMeta(meta), true);
                 if (GT_Utility.isStackInvalid(taken)) {
-                    actor.addChatMessage(new ChatComponentText("Suggested to have MTE of id " + meta + " but none was found"));
+                    chatter.accept(new ChatComponentText("Suggested to have MTE of id " + meta + " but none was found"));
                     return PlaceResult.REJECT;
                 }
                 return StructureUtility.survivalPlaceBlock(taken, ItemStackPredicate.NBTMode.IGNORE, null, true, world, x, y, z, s, actor) == PlaceResult.ACCEPT ? PlaceResult.ACCEPT_STOP : PlaceResult.REJECT;
@@ -323,7 +317,7 @@ public class GT_StructureUtility {
             }
 
             @Override
-            public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger, IItemSource s, EntityPlayerMP actor) {
+            public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger, IItemSource s, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
                 Block block = world.getBlock(x, y, z);
                 boolean isCoil = block instanceof IHeatingCoil && ((IHeatingCoil) block).getCoilHeat(world.getBlockMetadata(x, y, z)) == getHeatFromHint(trigger);
                 if (isCoil) return PlaceResult.SKIP;
