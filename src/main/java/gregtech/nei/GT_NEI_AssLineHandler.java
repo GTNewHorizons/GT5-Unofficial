@@ -278,14 +278,23 @@ public class GT_NEI_AssLineHandler extends RecipeMapHandler {
                 specialDrew = true;
             }
             int y = 123 + (specialDrew ? 10 : 0);
-            if (GT_Mod.gregtechproxy.mNEIRecipeOwner && recipe.owner != null) {
-                drawText(10, y, EnumChatFormatting.ITALIC + GT_Utility.trans("225", "Recipe by: ") + recipe.owner.getName(), 0xFF000000);
-                y += 10;
+            if (GT_Mod.gregtechproxy.mNEIRecipeOwner) {
+                if (recipe.owners.size() > 1) {
+                    drawText(10, y, EnumChatFormatting.ITALIC + GT_Utility.trans("226", "Original Recipe by: ") + recipe.owners.get(0).getName(), 0xFF000000);
+                    y += 10;
+                    for (int i = 1; i < recipe.owners.size(); i++) {
+                        drawText(10, y, EnumChatFormatting.ITALIC + GT_Utility.trans("227", "Modified by: ") + recipe.owners.get(i).getName(), 0xFF000000);
+                        y += 10;
+                    }
+                } else if (recipe.owners.size() > 0) {
+                    drawText(10, y, EnumChatFormatting.ITALIC + GT_Utility.trans("225", "Recipe by: ") + recipe.owners.get(0).getName(), 0xFF000000);
+                    y += 10;
+                }
             }
             if (GT_Mod.gregtechproxy.mNEIRecipeOwnerStackTrace && recipe.stackTraces != null) {
                 drawText(10, y, "stackTrace:", 0xFF000000);
                 y += 10;
-                for (StackTraceElement stackTrace : recipe.stackTraces) {
+                for (StackTraceElement stackTrace : recipe.stackTraces.get(0)) {
                     drawText(10, y, stackTrace.toString(), 0xFF000000);
                     y += 10;
                 }

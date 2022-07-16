@@ -403,14 +403,24 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         if (drawOptionalLine(lineCounter, getSpecialInfo(recipe.mSpecialValue))) {
             lineCounter++;
         }
-        if (GT_Mod.gregtechproxy.mNEIRecipeOwner && recipe.owner != null) {
-            drawLine(lineCounter, EnumChatFormatting.ITALIC + GT_Utility.trans("225", "Recipe by: ") + recipe.owner.getName());
-            lineCounter++;
+        if (GT_Mod.gregtechproxy.mNEIRecipeOwner) {
+            if (recipe.owners.size() > 1) {
+                drawLine(lineCounter, EnumChatFormatting.ITALIC + GT_Utility.trans("226", "Original Recipe by: ") + recipe.owners.get(0).getName());
+                lineCounter++;
+                for (int i = 1; i < recipe.owners.size(); i++) {
+                    drawLine(lineCounter, EnumChatFormatting.ITALIC + GT_Utility.trans("227", "Modified by: ") + recipe.owners.get(i).getName());
+                    lineCounter++;
+                }
+            } else if (recipe.owners.size() > 0) {
+                drawLine(lineCounter, EnumChatFormatting.ITALIC + GT_Utility.trans("225", "Recipe by: ") + recipe.owners.get(0).getName());
+                lineCounter++;
+            }
         }
         if (GT_Mod.gregtechproxy.mNEIRecipeOwnerStackTrace && recipe.stackTraces != null) {
             drawLine(lineCounter, "stackTrace:");
             lineCounter++;
-            for (StackTraceElement stackTrace : recipe.stackTraces) {
+            // todo: good way to show all stacktraces
+            for (StackTraceElement stackTrace : recipe.stackTraces.get(0)) {
                 drawLine(lineCounter, stackTrace.toString());
                 lineCounter++;
             }
