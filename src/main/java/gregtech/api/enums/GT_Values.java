@@ -81,10 +81,11 @@ public class GT_Values {
     public static final long[] V =
             new long[]{
                     8L, 32L, 128L,
-                    512L, 2_048L, 8_192L,
-                    32_768L, 131_072L, 524_288L,
-                    2_097_152L, 8_388_608L, 33_554_432L,
-                    134_217_728L, 536_870_912L, Integer.MAX_VALUE - 7};
+                    512L, 2048L, 8192L,
+                    32768L, 131072L, 524288L,
+                    2097152L, 8388608L, 33554432L,
+                    134217728L, 536870912L, 1073741824L,
+                    Integer.MAX_VALUE - 7};
     //TODO:Adding that in coremod!!!
     //TODO:tier 14,15 wires and transformers only (not even cables !!!)
     //TODO:tier 12,13 the above + batteries, battery buffers, (maybe cables,12 also works for machines)
@@ -110,31 +111,67 @@ public class GT_Values {
      * The short Names for the Voltages
      */
     public static final String[] VN =
-            new String[]{"ULV", "LV", "MV",
-                    "HV", "EV", "IV",
-                    "LuV", "ZPM", "UV",
-                    "UHV", "UEV", "UIV",
-                    "UMV", "UXV", "MAX"};
+            new String[]{
+                "ULV", // 0
+                "LV",  // 1
+                "MV",  // 2
+                "HV",  // 3
+                "EV",  // 4
+                "IV",  // 5
+                "LuV", // 6
+                "ZPM", // 7
+                "UV",  // 8
+                "UHV", // 9
+                "UEV", // 10
+                "UIV", // 11
+                "UMV", // 12
+                "UXV", // 13
+                "MAX", // 14
+                "ERROR VOLTAGE" // 15
+    };
 
     /**
      * The long Names for the Voltages
      */
     public static final String[] VOLTAGE_NAMES =
             new String[]{
-                    "Ultra Low Voltage", "Low Voltage", "Medium Voltage",
-                    "High Voltage", "Extreme Voltage", "Insane Voltage",
-                    "Ludicrous Voltage", "ZPM Voltage", "Ultimate Voltage",
-                    "Ultimate High Voltage", "Ultimate Extreme Voltage", "Ultimate Insane Voltage",
-                    "Ultimate Mega Voltage", "Ultimate Extended Mega Voltage", "Maximum Voltage", "Error Voltage"};
+                "Ultra Low Voltage",              // 0
+                "Low Voltage",                    // 1
+                "Medium Voltage",                 // 2
+                "High Voltage",                   // 3
+                "Extreme Voltage",                // 4
+                "Insane Voltage",                 // 5
+                "Ludicrous Voltage",              // 6
+                "ZPM Voltage",                    // 7
+                "Ultimate Voltage",               // 8
+                "Ultimate High Voltage",          // 9
+                "Ultimate Extreme Voltage",       // 10
+                "Ultimate Insane Voltage",        // 11
+                "Ultimate Mega Voltage",          // 12
+                "Ultimate Extended Mega Voltage", // 13
+                "Maximum Voltage",                // 14
+                "Error Voltage"                   // 15
+    };
 
     public static final String[] TIER_COLORS =
             new String[]{
-                    EnumChatFormatting.RED.toString(), EnumChatFormatting.GRAY.toString(), EnumChatFormatting.AQUA.toString(),
-                    EnumChatFormatting.GOLD.toString(), EnumChatFormatting.DARK_PURPLE.toString(), EnumChatFormatting.DARK_BLUE.toString(),
-                    EnumChatFormatting.LIGHT_PURPLE.toString(), EnumChatFormatting.WHITE.toString(), EnumChatFormatting.DARK_AQUA.toString(),
-                    EnumChatFormatting.DARK_RED.toString(), EnumChatFormatting.GREEN.toString(), EnumChatFormatting.DARK_GREEN.toString(),
-                    EnumChatFormatting.YELLOW.toString(), EnumChatFormatting.UNDERLINE.toString(), EnumChatFormatting.BOLD.toString(),
-                    EnumChatFormatting.OBFUSCATED.toString()};
+                EnumChatFormatting.RED.toString(),          // ULV, 0
+                EnumChatFormatting.GRAY.toString(),         // LV,  1
+                EnumChatFormatting.AQUA.toString(),         // MV,  2
+                EnumChatFormatting.GOLD.toString(),         // HV,  3
+                EnumChatFormatting.DARK_PURPLE.toString(),  // EV,  4
+                EnumChatFormatting.DARK_BLUE.toString(),    // IV,  5
+                EnumChatFormatting.LIGHT_PURPLE.toString(), // LuV, 6
+                EnumChatFormatting.WHITE.toString(),        // ZPM, 7
+                EnumChatFormatting.DARK_AQUA.toString(),    // UV,  8
+                EnumChatFormatting.DARK_RED.toString(),     // UHV, 9
+                EnumChatFormatting.GREEN.toString(),        // UEV, 10
+                EnumChatFormatting.DARK_GREEN.toString(),   // UIV, 11
+                EnumChatFormatting.YELLOW.toString(),       // UMV, 12
+                EnumChatFormatting.UNDERLINE.toString(),    // UXV, 13
+                EnumChatFormatting.BOLD.toString(),         // MAX, 14
+                EnumChatFormatting.OBFUSCATED.toString()    // ~~~, 15
+    };
 
     /**
      * This way it is possible to have a Call Hierarchy of NullPointers in ItemStack based Functions, and also because most of the time I don't know what kind of Data Type the "null" stands for

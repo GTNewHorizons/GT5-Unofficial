@@ -2,6 +2,8 @@ package gregtech.api.util;
 
 import codechicken.nei.PositionedStack;
 import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.ModContainer;
+import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -27,6 +29,7 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 import static gregtech.api.enums.GT_Values.*;
 
@@ -82,6 +85,14 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
      * Used for describing recipes that do not fit the default recipe pattern (for example Large Boiler Fuels)
      */
     private String[] neiDesc = null;
+    /**
+     * Stores which mod added this recipe
+     */
+    public ModContainer owner = null;
+    /**
+     * Stores stack traces where this recipe was added
+     */
+    public List<StackTraceElement> stackTraces = null;
 
     private GT_Recipe(GT_Recipe aRecipe) {
         mInputs = GT_Utility.copyStackArray((Object[]) aRecipe.mInputs);
@@ -98,6 +109,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         mFakeRecipe = aRecipe.mFakeRecipe;
         mEnabled = aRecipe.mEnabled;
         mHidden = aRecipe.mHidden;
+        reloadOwner();
     }
 
     public GT_Recipe(boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems, int[] aChances, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
@@ -194,6 +206,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         mSpecialValue = aSpecialValue;
         mEUt = aEUt;
 //		checkCellBalance();
+        reloadOwner();
     }
 
     public GT_Recipe(ItemStack aInput1, ItemStack aOutput1, int aFuelValue, int aType) {
@@ -554,6 +567,23 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
      */
     public ArrayList<PositionedStack> getOutputPositionedStacks(){
     	return null;
+    }
+
+    public void reloadOwner() {
+        this.owner = Loader.instance().activeModContainer();
+
+        final List<String> excludedClasses = Arrays.asList(
+            "java.lang.Thread",
+            "gregtech.api.util.GT_Recipe",
+            "gregtech.common.GT_RecipeAdder");
+        if (GT_Mod.gregtechproxy.mNEIRecipeOwnerStackTrace) {
+            this.stackTraces = new ArrayList<>();
+            for (StackTraceElement stackTrace : Thread.currentThread().getStackTrace()) {
+                if (!excludedClasses.stream().anyMatch(c -> stackTrace.getClassName().contains(c))) {
+                    this.stackTraces.add(stackTrace);
+                }
+            }
+        }
     }
 
 	public static class GT_Recipe_AssemblyLine{

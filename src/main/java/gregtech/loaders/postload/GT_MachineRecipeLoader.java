@@ -473,7 +473,11 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addArcFurnaceRecipe(ItemList.Long_Distance_Pipeline_Item_Pipe.get(1L), new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Tin, 1L), GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Steel, 1L)}, null, 10, 120);
         GT_Values.RA.addFluidExtractionRecipe(ItemList.Long_Distance_Pipeline_Item_Pipe.get(16L), GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Tin, 3L), Materials.Steel.getMolten(324), 10000, 400, 90);
 
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.pipeQuadruple, Materials.StainlessSteel, 1L), ItemList.Hull_EV.get(1L), GT_Utility.getIntegratedCircuit(4)}, Materials.Glass.getMolten(2304L), ItemList.Hatch_Input_Multi_2x2.get(1L), 600, 24);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.pipeQuadruple, Materials.StainlessSteel, 1L), ItemList.Hull_EV.get(1L), GT_Utility.getIntegratedCircuit(4)}, Materials.Glass.getMolten(2304L), ItemList.Hatch_Input_Multi_2x2_EV.get(1L), 600, 24);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.pipeQuadruple, Materials.Titanium, 1L), ItemList.Hull_IV.get(1L), GT_Utility.getIntegratedCircuit(4)}, Materials.Glass.getMolten(2304L), ItemList.Hatch_Input_Multi_2x2_IV.get(1L), 600, 24);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.pipeQuadruple, Materials.TungstenSteel, 1L), ItemList.Hull_LuV.get(1L), GT_Utility.getIntegratedCircuit(4)}, Materials.Polytetrafluoroethylene.getMolten(2304L), ItemList.Hatch_Input_Multi_2x2_LuV.get(1L), 600, 24);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.pipeQuadruple, Materials.NiobiumTitanium, 1L), ItemList.Hull_ZPM.get(1L), GT_Utility.getIntegratedCircuit(4)}, Materials.Polytetrafluoroethylene.getMolten(2304L), ItemList.Hatch_Input_Multi_2x2_ZPM.get(1L), 600, 24);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.pipeQuadruple, Materials.MysteriousCrystal, 1L), ItemList.Hull_UV.get(1L), GT_Utility.getIntegratedCircuit(4)}, Materials.Polybenzimidazole.getMolten(2304L), ItemList.Hatch_Input_Multi_2x2_UV.get(1L), 600, 24);
 
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 4L), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 1L), ItemList.Robot_Arm_IV.get(2L), GT_Utility.getIntegratedCircuit(3)}, GT_Values.NF, ItemList.Casing_Gearbox_TungstenSteel.get(1L), 200, 30);
 
@@ -628,7 +632,7 @@ public class GT_MachineRecipeLoader implements Runnable {
 
         GT_Values.RA.addMixerRecipe(
             new ItemStack[] {GT_Utility.getIntegratedCircuit(10)},
-            new FluidStack[]{Materials.DimensionallyTranscendentCrudeCatalyst.getFluid(1000L), Materials.Radon.getPlasma(1000L), Materials.Nickel.getPlasma(1000L), Materials.Boron.getPlasma(10L), Materials.Sulfur.getPlasma(1000L)},
+            new FluidStack[]{Materials.DimensionallyTranscendentCrudeCatalyst.getFluid(1000L), Materials.Radon.getPlasma(1000L), Materials.Nickel.getPlasma(1000L), Materials.Boron.getPlasma(1000L), Materials.Sulfur.getPlasma(1000L)},
             new ItemStack[] {GT_Values.NI},
             new FluidStack[]{Materials.DimensionallyTranscendentProsaicCatalyst.getFluid(1000L)},
             50_000, 125_000*4
@@ -1892,7 +1896,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addCentrifugeRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Endstone, 1L), GT_Values.NI, GT_Values.NF, Materials.Helium.getGas(120L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Tungstate, 1L), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Platinum, 1L), new ItemStack(Blocks.sand, 1), GT_Values.NI, GT_Values.NI, GT_Values.NI, new int[]{1250, 625, 9000, 0, 0, 0}, 320, 20);
         GT_Values.RA.addCentrifugeRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Netherrack, 1L), GT_Values.NI, GT_Values.NF, GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Redstone, 1L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Sulfur, 1L), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Coal, 1L), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Gold, 1L), GT_Values.NI, GT_Values.NI, new int[]{5625, 9900, 5625, 625, 0, 0}, 160, 20);
 
-        GT_Values.RA.addCentrifugeRecipe(GT_Utility.getIntegratedCircuit(10),GT_Values.NI,Materials.Lava.getFluid(400L),GT_Values.NF,Materials.SiliconDioxide.getDust(1),Materials.Magnesia.getDust(1),Materials.Quicklime.getDust(1),Materials.Gold.getNuggets(4),Materials.Sapphire.getDust(1),Materials.Tantalite.getDust(1),new int[]{5000,1000,1000,250,1250,500},80,320);
+        GT_Values.RA.addCentrifugeRecipe(GT_Utility.getIntegratedCircuit(10),GT_Values.NI,Materials.Lava.getFluid(400L),GT_Values.NF,Materials.SiliconDioxide.getDust(1),Materials.Magnesia.getDust(1),Materials.Quicklime.getDust(1),Materials.Gold.getNuggets(4),Materials.Sapphire.getDust(1),Materials.Tantalite.getDust(1),new int[]{5000,1000,1000,250,1250,500},320,80);
         GT_Values.RA.addCentrifugeRecipe(new ItemStack(Blocks.soul_sand, 1), GT_Values.NI, GT_Values.NF, Materials.Oil.getFluid(200L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Saltpeter, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 1L), new ItemStack(Blocks.sand, 1), GT_Values.NI, GT_Values.NI, GT_Values.NI, new int[]{1000, 700, 9000, 0, 0, 0}, 200, 12);
 
         GT_Values.RA.addCentrifugeRecipe(GT_Utility.getIntegratedCircuit(10), GT_Values.NI, FluidRegistry.getFluidStack("ic2pahoehoelava", 100), GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Copper, 1L), GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Tin, 1L), GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Silver, 1L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Phosphorus, 1L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Scheelite, 1L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Bauxite, 1L), new int[]{2000, 1000, 250, 50, 250, 500}, 40, 1024);
@@ -2095,7 +2099,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         //Kevlar Line
         //C15H10N2O2(5HCl) = C15H10N2O2 + 5HCl
         GT_Values.RA.addDistillationTowerRecipe(MaterialsKevlar.DiphenylmethaneDiisocyanateMixture.getFluid(1000L), new FluidStack[]{Materials.HydrochloricAcid.getFluid(5000L)}, GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.DiphenylmethaneDiisocyanate, 29L), 2500, 1920);
-        if (Loader.isModLoaded("bartworks") && (Loader.isModLoaded("miscutils"))) {
+        if (Loader.isModLoaded("gtnhlanth") && (Loader.isModLoaded("miscutils"))) {
             //CH2O + 2C6H7N + HCl = C13H14N2(HCl) + H2O
             GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(1)}, new FluidStack[]{new FluidStack(FluidRegistry.getFluid("formaldehyde"), 1000), new FluidStack(FluidRegistry.getFluid("aniline"), 2000), Materials.HydrochloricAcid.getFluid(1000)}, new FluidStack[]{MaterialsKevlar.DiaminodiphenylmethanMixture.getFluid(1000L)}, null, 1200, 1920);
             //C6H5NO2 + 6H =Pd= C6H7N + 2H2O
@@ -3980,6 +3984,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addChemicalRecipeForBasicMachineOnly(Materials.Saltpeter.getDust(10), Materials.ChromiumTrioxide.getDust(8), GT_Values.NF, Materials.NitricOxide.getGas(2000), Materials.Potassiumdichromate.getDust(11), GT_Values.NI, 100, 480);
         GT_Values.RA.addChemicalRecipeForBasicMachineOnly(Materials.PotassiumNitrade.getDust(10), Materials.ChromiumTrioxide.getDust(8), GT_Values.NF, Materials.NitricOxide.getGas(2000), Materials.Potassiumdichromate.getDust(11), GT_Values.NI, 100, 480);
         GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{Materials.PotassiumNitrade.getDust(10), Materials.ChromiumTrioxide.getDust(8)}, null, new FluidStack[]{Materials.NitricOxide.getGas(2000), Materials.Oxygen.getGas(3000)}, new ItemStack[]{Materials.Potassiumdichromate.getDust(11)}, 100, 480);
+        GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{Materials.Saltpeter.getDust(10), Materials.ChromiumTrioxide.getDust(8)}, null, new FluidStack[]{Materials.NitricOxide.getGas(2000), Materials.Oxygen.getGas(3000)}, new ItemStack[]{Materials.Potassiumdichromate.getDust(11)}, 100, 480);
 
         //Nitrochlorobenzene
         //C6H5Cl + HNO3 = C6H4ClNO2 + H2O

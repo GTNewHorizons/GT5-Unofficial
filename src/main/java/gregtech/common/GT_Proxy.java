@@ -153,7 +153,6 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     public boolean mIncreaseDungeonLoot = true;
     public boolean mAxeWhenAdventure = true;
     public boolean mSurvivalIntoAdventure = false;
-    public boolean mNEIRecipeSecondMode = true;
     public boolean mNerfedWoodPlank = true;
     public boolean mNerfedVanillaTools = true;
     public boolean mHardRock = false;
@@ -290,6 +289,21 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
      * How verbose should tooltips be when LSHIFT is held? 0: disabled, 1: one-line, 2: normal, 3+: extended
      */
     public int mTooltipShiftVerbosity = 3;
+
+    /**
+     * Whether to show seconds or ticks on NEI
+     */
+    public boolean mNEIRecipeSecondMode = true;
+
+    /**
+     * This enables "Recipe by" display on NEI
+     */
+    public boolean mNEIRecipeOwner = false;
+
+    /**
+     * This enables showing stack traces where the recipe was added. Reboot needed
+     */
+    public boolean mNEIRecipeOwnerStackTrace = false;
 
     /**
      * What is the order of the circuits when they are selected?

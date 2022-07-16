@@ -2368,6 +2368,22 @@ public class GT_Utility {
             } catch (Throwable e) {
                 if (D1) e.printStackTrace(GT_Log.err);
             }
+
+            try {
+                if (tTileEntity instanceof forestry.arboriculture.tiles.TileLeaves) {
+                    final forestry.arboriculture.tiles.TileLeaves tileLeaves = (forestry.arboriculture.tiles.TileLeaves)tTileEntity;
+                    final forestry.api.arboriculture.ITree tree = tileLeaves.getTree();
+                    if (tree != null ) {
+                        rEUAmount += 1000;
+                        if (!tree.isAnalyzed())
+                            tree.analyze();
+                        tree.addTooltip(tList);
+                    }
+                }
+            } catch (Throwable e) {
+                if (D1) e.printStackTrace(GT_Log.err);
+            }
+
         }
 
         final Chunk currentChunk = aWorld.getChunkFromBlockCoords(aX, aZ);
