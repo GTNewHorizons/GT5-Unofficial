@@ -89,17 +89,4 @@ public class GT_MetaTileEntity_LargeBoiler_TungstenSteel extends GT_MetaTileEnti
 
     @Override
     boolean isSuperheated() { return true; }
-
-    @Override
-    public boolean checkRecipe(ItemStack aStack) {
-        for(ItemStack input : getStoredInputs()) {
-            if(!GT_Recipe_Map_LargeBoilerFakeFuels.isAllowedSolidFuel(input)) {
-                //if any item is not in ALLOWED_SOLID_FUELS, operation cannot be allowed because it might still be consumed
-                this.mMaxProgresstime = 0;
-                this.mEUt = 0;
-                return false;
-            }
-        }
-        return super.checkRecipe(aStack);
-    }
 }
