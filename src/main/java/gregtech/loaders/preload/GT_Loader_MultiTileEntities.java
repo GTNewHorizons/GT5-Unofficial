@@ -23,15 +23,16 @@ public class GT_Loader_MultiTileEntities implements Runnable {
 
         Class<? extends TileEntity> aClass;
 
-        aClass = MultiBlock_Macerator.class; aRegistry.add(
-            "Large Macerator", "Multiblock Controller", 1000,  aClass, 1, 64, aMachine,
-            GT_Util.makeNBT(tuple(NBT.MATERIAL, Material.iron),  tuple(NBT.TEXTURE, "metalwall"), tuple(NBT.TANK_CAPACITY, 128000L))
-        );
-
-        aClass = MultiBlockPart.class; aRegistry.add(
-         "Test Casing", "Multiblock Casing", 18000, aClass, 1, 64, aMachine,
-          GT_Util.makeNBT(tuple(NBT.MATERIAL, Material.iron),  tuple(NBT.TEXTURE, "metalwall"))
-        );
+        // Disable for now
+//        aClass = MultiBlock_Macerator.class; aRegistry.add(
+//            "Large Macerator", "Multiblock Controller", 1000,  aClass, 1, 64, aMachine,
+//            GT_Util.makeNBT(tuple(NBT.MATERIAL, Material.iron),  tuple(NBT.TEXTURE, "metalwall"), tuple(NBT.TANK_CAPACITY, 128000L))
+//        );
+//
+//        aClass = MultiBlockPart.class; aRegistry.add(
+//         "Test Casing", "Multiblock Casing", 18000, aClass, 1, 64, aMachine,
+//          GT_Util.makeNBT(tuple(NBT.MATERIAL, Material.iron),  tuple(NBT.TEXTURE, "metalwall"))
+//        );
 
     }
 }
