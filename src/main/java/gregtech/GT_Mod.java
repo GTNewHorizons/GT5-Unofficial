@@ -205,6 +205,7 @@ public class GT_Mod implements IGT_Mod {
         new GT_Loader_ItemData().run();
         new GT_Loader_Item_Block_And_Fluid().run();
         new GT_Loader_MetaTileEntities().run();
+        new GT_Loader_MultiTileEntities().run();
 
         new GT_Loader_CircuitBehaviors().run();
         new GT_CoverBehaviorLoader().run();
