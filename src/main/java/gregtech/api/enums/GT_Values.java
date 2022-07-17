@@ -1,5 +1,6 @@
 package gregtech.api.enums;
 
+import gregtech.api.fluid.FluidTankGT;
 import gregtech.api.interfaces.internal.IGT_Mod;
 import gregtech.api.interfaces.internal.IGT_RecipeAdder;
 import gregtech.api.net.IGT_NetworkHandler;
@@ -7,6 +8,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.HashSet;
@@ -445,4 +448,9 @@ public class GT_Values {
     public static boolean worldTickHappened = false;
 
     public static final int[] emptyIntArray = new int[0];
+    public static final IFluidTank[] emptyFluidTank = new IFluidTank[0];
+    public static final FluidTankGT[] emptyFluidTankGT = new FluidTankGT[0];
+    public static final FluidTankInfo[] emptyFluidTankInfo = new FluidTankInfo[0];
+    public static final FluidStack[] emptyFluidStack = new FluidStack[0];
+    public static final ItemStack[] emptyItemStackArray = new ItemStack[0];
 }

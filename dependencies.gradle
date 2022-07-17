@@ -9,6 +9,8 @@ dependencies {
     compile("com.github.GTNewHorizons:CodeChickenLib:1.1.5.3:dev")
     compile("com.github.GTNewHorizons:waila:1.5.18:dev")
 
+    compile("com.github.GTNewHorizons:Hodgepodge:1.6.23:dev")
+
     compile("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
 
     compileOnly("com.github.GTNewHorizons:EnderCore:0.2.6:dev") {
