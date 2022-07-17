@@ -1,7 +1,10 @@
 package gregtech.api.interfaces.tileentity;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.IDescribable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.common.blocks.GT_Block_Machines;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -157,4 +160,15 @@ public interface IGregTechTileEntity extends ITexturedTileEntity, IGearEnergyTil
     }
 
     default void setShutdownStatus(boolean newStatus) {return;}
+
+    /**
+     * A randomly called display update to be able to add particles or other items for display
+     * The event is proxied by the {@link GT_Block_Machines#randomDisplayTick}
+     */
+    @SideOnly(Side.CLIENT)
+    default void onRandomDisplayTick() {
+        if (getMetaTileEntity() != null && getMetaTileEntity().getBaseMetaTileEntity() == this) {
+            getMetaTileEntity().onRandomDisplayTick(this);
+        }
+    }
 }

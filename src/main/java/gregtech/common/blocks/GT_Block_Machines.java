@@ -1,4 +1,5 @@
 package gregtech.common.blocks;
+import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 import com.cricketcraft.chisel.api.IFacade;
 import cpw.mods.fml.common.Optional;
@@ -48,6 +49,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
 import static gregtech.api.enums.GT_Values.SIDE_UP;
@@ -538,6 +540,18 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
     public float getAmbientOcclusionLightValue()
     {
         return this.renderAsNormalBlock() ? 0.2F : 0.5F;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void randomDisplayTick(World aWorld, int aX, int aY, int aZ, Random aRandom) {
+        final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
+        if (tTileEntity instanceof IGregTechTileEntity) {
+            ((IGregTechTileEntity) tTileEntity).onRandomDisplayTick();
+        }
     }
 
     @Override
