@@ -304,8 +304,8 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse extends GT_MetaTileEntity
         return true;
     }
 
-    @Override
-    public boolean checkRecipe(ItemStack itemStack) {
+    private void updateMaxSlots()
+    {
         long v = this.getMaxInputVoltage();
         int tier = GT_Utility.getTier(v);
         if(tier < (isIC2Mode ? 6 : 4))
@@ -314,15 +314,13 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse extends GT_MetaTileEntity
             mMaxSlots = 4 << (2 * (tier - 6));
         else
             mMaxSlots = 1 << (tier - 4);
-        if(mStorage.size() > mMaxSlots)
-        {
-            // Void if user just downgraded power
-            for(int i = mMaxSlots; i < mStorage.size(); i++)
-            {
-                mStorage.remove(i);
-                i--;
-            }
-        }
+    }
+
+    @Override
+    public boolean checkRecipe(ItemStack itemStack) {
+        long v = this.getMaxInputVoltage();
+        int tier = GT_Utility.getTier(v);
+        updateMaxSlots();
         if(setupphase > 0) {
             if((mStorage.size() >= mMaxSlots && setupphase == 1) || (mStorage.size() == 0 && setupphase == 2))
                 return false;
@@ -332,6 +330,8 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse extends GT_MetaTileEntity
             this.mEfficiencyIncrease = 10000;
             return true;
         }
+        if(mStorage.size() > mMaxSlots)
+            return false;
         if(mStorage.isEmpty())
             return false;
 
@@ -410,9 +410,14 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse extends GT_MetaTileEntity
                 if (this.glasTier < hatchEnergy.mTier)
                     return false;
 
-        return  this.mMaintenanceHatches.size() == 1 &&
-                this.mEnergyHatches.size() >= 1 &&
-                this.mCasing >= 70;
+        boolean valid = this.mMaintenanceHatches.size() == 1 &&
+            this.mEnergyHatches.size() >= 1 &&
+            this.mCasing >= 70;
+
+        if(valid)
+            updateMaxSlots();
+
+        return valid;
     }
 
     @Override
@@ -436,7 +441,7 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse extends GT_MetaTileEntity
             "Running in mode: " + EnumChatFormatting.GREEN + (setupphase == 0 ? (isIC2Mode ? "IC2 crops" : "Normal crops") : ("Setup mode " + (setupphase == 1 ? "(input)" : "(output)"))) + EnumChatFormatting.RESET,
             "Uses " + waterusage * 1000 + "L/operation of water",
             "Max slots: " + EnumChatFormatting.GREEN + this.mMaxSlots + EnumChatFormatting.RESET,
-            "Used slots: " + EnumChatFormatting.GREEN + this.mStorage.size() + EnumChatFormatting.RESET
+            "Used slots: " + ((mStorage.size() > mMaxSlots) ? EnumChatFormatting.RED : EnumChatFormatting.GREEN) + this.mStorage.size() + EnumChatFormatting.RESET
         ));
         for(int i = 0; i < mStorage.size(); i++) {
             if(!mStorage.get(i).isValid)
@@ -450,7 +455,8 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse extends GT_MetaTileEntity
             a.append(EnumChatFormatting.RESET);
             info.add(a.toString());
         }
-
+        if(mStorage.size() > mMaxSlots)
+            info.add(EnumChatFormatting.DARK_RED + "There are too many crops inside to run !" + EnumChatFormatting.RESET);
         info.addAll(Arrays.asList(super.getInfoData()));
         return info.toArray(new String[0]);
     }
