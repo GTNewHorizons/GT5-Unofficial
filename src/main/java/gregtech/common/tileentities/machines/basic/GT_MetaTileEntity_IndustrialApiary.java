@@ -117,6 +117,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setInteger("mSpeed", mSpeed);
+        aNBT.setBoolean("mLockedSpeed", mLockedSpeed);
         aNBT.setBoolean("retrievePolen", retreviePollen);
         if(usedQueen != null)
             aNBT.setTag("usedQueen", usedQueen.writeToNBT(new NBTTagCompound()));
@@ -126,6 +127,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         mSpeed = aNBT.getInteger("mSpeed");
+        mLockedSpeed = aNBT.getBoolean("mLockedSpeed");
         retreviePollen = aNBT.getBoolean("retrievePolen");
         if(aNBT.hasKey("usedQueen"))
             usedQueen = ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag("usedQueen"));
