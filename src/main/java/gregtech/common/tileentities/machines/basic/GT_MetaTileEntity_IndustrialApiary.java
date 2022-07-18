@@ -62,7 +62,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
     private IEffectData[] effectData = new IEffectData[2];
 
     public GT_MetaTileEntity_IndustrialApiary(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 12, new String[] { "BEES GOES BRRRR", EnumChatFormatting.GRAY + "Added by " + EnumChatFormatting.GOLD + "kuba6000" }, 6, 9, "IndustrialApiary.png", "",
+        super(aID, aName, aNameRegional, aTier, 4, new String[] { "BEES GOES BRRRR", EnumChatFormatting.GRAY + "Added by " + EnumChatFormatting.GOLD + "kuba6000" }, 6, 9, "IndustrialApiary.png", "",
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_SIDE_INDUSTRIAL_APIARY_ACTIVE),
                         TextureFactory.builder().addIcon(OVERLAY_SIDE_INDUSTRIAL_APIARY_ACTIVE_GLOW).glow().build()),
@@ -90,11 +90,11 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
     }
 
     public GT_MetaTileEntity_IndustrialApiary(String aName, int aTier, String aDescription, ITexture[][][] aTextures, String aGUIName, String aNEIName) {
-        super(aName, aTier, 12, aDescription, aTextures, 6, 9, aGUIName, aNEIName);
+        super(aName, aTier, 4, aDescription, aTextures, 6, 9, aGUIName, aNEIName);
     }
 
     public GT_MetaTileEntity_IndustrialApiary(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures, String aGUIName, String aNEIName) {
-        super(aName, aTier, 12, aDescription, aTextures, 6, 9, aGUIName, aNEIName);
+        super(aName, aTier, 4, aDescription, aTextures, 6, 9, aGUIName, aNEIName);
     }
 
     @Override
