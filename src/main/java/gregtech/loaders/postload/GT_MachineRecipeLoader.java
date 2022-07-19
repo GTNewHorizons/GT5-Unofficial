@@ -3846,7 +3846,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         // C2H6O + C4H8 = C6H14O
         GT_Values.RA.addChemicalRecipeForBasicMachineOnly(Materials.Ethanol.getCells(1), Materials.Butene.getCells(1), GT_Values.NF, GT_Values.NF, Materials.AntiKnock.getCells(1), Materials.Empty.getCells(1), 400, 480);
         // CH4O + C4H8 = C5H12O
-        GT_Values.RA.addMixerRecipe(Materials.Methanol.getCells(1), Materials.Butene.getCells(1), NI, NI, GT_Values.NF, GT_Values.NF, Materials.MTBEMixture.getCells(1), 20, 480);
+        GT_Values.RA.addMixerRecipe(Materials.Methanol.getCells(1), Materials.Butene.getCells(1), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NF, GT_Values.NF, Materials.MTBEMixture.getCells(1), Materials.Empty.getCells(1), GT_Values.NI, GT_Values.NI, 20, 480);
         GT_Values.RA.addMixerRecipe(Materials.Naphtha.getCells(16), Materials.Gas.getCells(2), Materials.Methanol.getCells(1), Materials.Acetone.getCells(1), GT_Values.NF, GT_Values.NF, Materials.GasolineRaw.getCells(20), 100, 480);
         GT_Values.RA.addChemicalRecipe(Materials.GasolineRaw.getCells(10), Materials.Toluene.getCells(1), GT_Values.NF, GT_Values.NF, Materials.GasolineRegular.getCells(11), 10, 480);
         GT_Values.RA.addMixerRecipe(Materials.GasolineRegular.getCells(20), Materials.Octane.getCells(2), Materials.NitrousOxide.getCells(6), Materials.Toluene.getCells(1), Materials.AntiKnock.getFluid(3000L), Materials.GasolinePremium.getFluid(32000L), Materials.Empty.getCells(29), 50, 1920);
