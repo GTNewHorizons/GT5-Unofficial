@@ -137,9 +137,13 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
 		return "VacuumFreezer";
 	}
 
+	@Override
 	public boolean isCorrectMachinePart(final ItemStack aStack) {
 		// is correct part && either not powered tool or have enough power
-		return TreeFarmHelper.isValidForGUI(aStack) && !GT_ModHandler.isElectricItem(aStack) || GT_ModHandler.canUseElectricItem(aStack, 32);
+		if (TreeFarmHelper.isValidForGUI(aStack) && GT_MetaGenerated_Tool.getToolDamage(aStack) < GT_MetaGenerated_Tool.getToolMaxDamage(aStack)) {
+			return GT_ModHandler.isElectricItem(aStack) ? GT_ModHandler.canUseElectricItem(aStack, 32) : true;
+		}
+		return false;
 	}
 
 	/**
@@ -257,7 +261,8 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
 	}
 
 	private boolean tryDamageTool() {
-		return GT_ModHandler.damageOrDechargeItem(this.mInventory[1], 1, 32, null) ? true : replaceTool();
+		GT_ModHandler.damageOrDechargeItem(this.mInventory[1], 1, 32, null);
+		return replaceTool();
 	}
 
 	public boolean replaceTool() {
