@@ -3843,18 +3843,23 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addChemicalRecipeForBasicMachineOnly(Materials.Nitrogen.getCells(2), Materials.Oxygen.getCells(1), GT_Values.NF, GT_Values.NF, Materials.NitrousOxide.getCells(1), Materials.Empty.getCells(2),200, 30);
         GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(24)}, new FluidStack[]{Materials.Nitrogen.getGas(20000), Materials.Oxygen.getGas(10000)}, new FluidStack[]{Materials.NitrousOxide.getGas(10000)}, new ItemStack[]{null}, 50, 480);
 
+        // C2H6O + C4H8 = C6H14O
         GT_Values.RA.addChemicalRecipeForBasicMachineOnly(Materials.Ethanol.getCells(1), Materials.Butene.getCells(1), GT_Values.NF, GT_Values.NF, Materials.AntiKnock.getCells(1), Materials.Empty.getCells(1), 400, 480);
-        GT_Values.RA.addMixerRecipe(Materials.Methanol.getCells(1), Materials.Butene.getCells(1), NI, NI, GT_Values.NF, GT_Values.NF, Materials.MTBEMixture.getCells(2), 20, 480);
+        // CH4O + C4H8 = C5H12O
+        GT_Values.RA.addMixerRecipe(Materials.Methanol.getCells(1), Materials.Butene.getCells(1), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NF, GT_Values.NF, Materials.MTBEMixture.getCells(1), Materials.Empty.getCells(1), GT_Values.NI, GT_Values.NI, 20, 480);
         GT_Values.RA.addMixerRecipe(Materials.Naphtha.getCells(16), Materials.Gas.getCells(2), Materials.Methanol.getCells(1), Materials.Acetone.getCells(1), GT_Values.NF, GT_Values.NF, Materials.GasolineRaw.getCells(20), 100, 480);
         GT_Values.RA.addChemicalRecipe(Materials.GasolineRaw.getCells(10), Materials.Toluene.getCells(1), GT_Values.NF, GT_Values.NF, Materials.GasolineRegular.getCells(11), 10, 480);
         GT_Values.RA.addMixerRecipe(Materials.GasolineRegular.getCells(20), Materials.Octane.getCells(2), Materials.NitrousOxide.getCells(6), Materials.Toluene.getCells(1), Materials.AntiKnock.getFluid(3000L), Materials.GasolinePremium.getFluid(32000L), Materials.Empty.getCells(29), 50, 1920);
-        GT_Values.RA.addDistillationTowerRecipe(Materials.MTBEMixture.getGas(1000L), new FluidStack[]{Materials.AntiKnock.getFluid(400L), Materials.Methanol.getFluid(900L), Materials.Butene.getGas(900L)}, null, 40, 240);
+        // 9C5H12O = 4C6H14O + 5CH4O + 4C4H8
+        GT_Values.RA.addDistillationTowerRecipe(Materials.MTBEMixture.getGas(900L), new FluidStack[]{Materials.AntiKnock.getFluid(400L), Materials.Methanol.getFluid(500L), Materials.Butene.getGas(400L)}, null, 40, 240);
 
         GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(24)}, new FluidStack[]{Materials.Naphtha.getFluid(16000), Materials.Gas.getGas(2000), Materials.Methanol.getFluid(1000), Materials.Acetone.getFluid(1000)}, new FluidStack[]{ Materials.GasolineRaw.getFluid(20000)}, null, 100, 480);
         GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(24)}, new FluidStack[]{Materials.GasolineRaw.getFluid(10000), Materials.Toluene.getFluid(1000)}, new FluidStack[]{ Materials.GasolineRegular.getFluid(11000)}, null, 10, 480);
         GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(24)}, new FluidStack[]{Materials.GasolineRegular.getFluid(20000), Materials.Octane.getFluid(2000), Materials.NitrousOxide.getGas(6000), Materials.Toluene.getFluid(1000), Materials.AntiKnock.getFluid(3000L)},   new FluidStack[]{Materials.GasolinePremium.getFluid(32000L)}, null, 50, 1920);
-        GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(24)}, new FluidStack[]{Materials.Ethanol.getFluid(1000), Materials.Butene.getGas(1000)}, new FluidStack[]{Materials.AntiKnock.getFluid(2000)}, null,400, 480);
-        GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(24)}, new FluidStack[]{Materials.Methanol.getFluid(1000), Materials.Butene.getGas(1000)}, new FluidStack[]{Materials.MTBEMixture.getGas(2000)}, null, 20, 480);
+        // C2H6O + C4H8 = C6H14O
+        GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(24)}, new FluidStack[]{Materials.Ethanol.getFluid(1000), Materials.Butene.getGas(1000)}, new FluidStack[]{Materials.AntiKnock.getFluid(1000)}, null,400, 480);
+        // CH4O + C4H8 = C5H12O
+        GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(24)}, new FluidStack[]{Materials.Methanol.getFluid(1000), Materials.Butene.getGas(1000)}, new FluidStack[]{Materials.MTBEMixture.getGas(1000)}, null, 20, 480);
 
         //Oxide Recipe
         GT_Values.RA.addChemicalRecipe(GT_Utility.getIntegratedCircuit(2), Materials.Antimony.getDust(2), Materials.Oxygen.getGas(3000), GT_Values.NF, Materials.AntimonyTrioxide.getDust(5), 20, 30);
