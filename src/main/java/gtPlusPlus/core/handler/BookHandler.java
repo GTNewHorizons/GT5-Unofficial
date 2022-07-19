@@ -188,7 +188,7 @@ public class BookHandler {
 
 
 		book_MultiChemicalPlant = writeBookTemplate(
-				"book_Multi_ChemicalPlant", "Chemical Plant Manual", "Alkalus", 
+				"book_Multi_ChemicalPlant", "Chemical Plant Manual", "Alkalus",
 				new String[] {
 
 						// Intro
@@ -201,9 +201,13 @@ public class BookHandler {
 						"T1 50% , T2 100% , T3 150%, etc" + "\n",
 						
 						"Higher tier pipe casings boost parallel"+ "\n" + 
-						"and reduce catalyst consumption" + "\n" +
+						"and reduce catalyst consumption." + "\n" +
 						"+2 parallel per tier, 20% extra chance of"+ "\n" + 
-						"not damaging catalyst per tier" + "\n",
+						"not damaging catalyst per tier.",
+
+						"Awakened Draconium Coil (or above) with" + "\n" +
+						"Tungstensteel Pipe Casing" + "\n" +
+						"does not damage catalyst at all.",
 						
 						
 						// Machine Casings
@@ -244,8 +248,16 @@ public class BookHandler {
 						"3 - Nichrome" + "\n" +
 						"4 - Tungstensteel" + "\n" +
 						"5 - HSS-G" + "\n" +
-						"6 - Naquadah" + "\n" +
-						"7 - Naquadah Alloy",
+						"6 - HSS-S" + "\n" +
+						"7 - Naquadah" + "\n" +
+						"8 - Naquadah Alloy" + "\n" +
+						"9 - Trinium" + "\n" +
+						"10 - Fluxed Electrum",
+
+						"11 - Awakened Draconium" + "\n" +
+						"12 - Infinity" + "\n" +
+						"13 - Hypogen" + "\n" +
+						"14 - Eternal",
 
 						// Requirements
 						"Multiblock Requirements:" + "\n" + "\n" +

@@ -167,8 +167,11 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<Gregt
 			case 8: return 11;
 			case 9: return 6;
 			case 10: return 9;
+			case 11: return 12;
+			case 12: return 13;
+			case 13: return 14;
+			default: return 0;
 		}
-		return 0;
 	}
 
 	@Override
@@ -270,7 +273,7 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<Gregt
 					.addElement(
 							'H',
 							addTieredBlock(
-									GregTech_API.sBlockCasings5, GregtechMTE_ChemicalPlant::setCoilMeta, GregtechMTE_ChemicalPlant::getCoilMeta, 11
+									GregTech_API.sBlockCasings5, GregtechMTE_ChemicalPlant::setCoilMeta, GregtechMTE_ChemicalPlant::getCoilMeta, 14
 							)
 					)
 					.addElement(
@@ -344,7 +347,7 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<Gregt
 			mPipeCasingTier = checkPipe - 12;
 			mCoilTier = coilTier(checkCoil - 1);
 			updateHatchTexture();
-			return mMachineCasingTier >= maxTierOfHatch;
+			return mMachineCasingTier >= 9 || mMachineCasingTier >= maxTierOfHatch;
 		}
 		return false;
 	}
