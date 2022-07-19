@@ -358,11 +358,11 @@ public class StaticRecipeChangeLoaders {
                                     ItemStack tmpInput = recipe.mInputs[i];
                                     if (
                                         (recipe.mFluidInputs == null || recipe.mFluidInputs.length == 0)
-                                            && whitelistForEBFNoGasRecipeDontCheckItemData.stream().anyMatch(s -> GT_Utility.areStacksEqual(s, tmpInput))
-                                            || (BW_Util.checkStackAndPrefix(recipe.mInputs[i])
-                                                && BW_Util.checkStackAndPrefix(baseRe.mInputs[i])
-                                                && GT_OreDictUnificator.getAssociation(recipe.mInputs[i]).mMaterial.mMaterial.equals(GT_OreDictUnificator.getAssociation(baseRe.mInputs[i]).mMaterial.mMaterial)
-                                                && GT_Utility.areStacksEqual(recipe.mOutputs[0], baseRe.mOutputs[0]))) {
+                                            && (whitelistForEBFNoGasRecipeDontCheckItemData.stream().anyMatch(s -> GT_Utility.areStacksEqual(s, tmpInput))
+                                                || (BW_Util.checkStackAndPrefix(recipe.mInputs[i])
+                                                    && BW_Util.checkStackAndPrefix(baseRe.mInputs[i])
+                                                    && GT_OreDictUnificator.getAssociation(recipe.mInputs[i]).mMaterial.mMaterial.equals(GT_OreDictUnificator.getAssociation(baseRe.mInputs[i]).mMaterial.mMaterial)
+                                                    && GT_Utility.areStacksEqual(recipe.mOutputs[0], baseRe.mOutputs[0])))) {
                                         toAdd.add(recipe.mOutputs[0]);
                                         repToAdd.put(tag, recipe);
                                         continue recipeLoop;
