@@ -31,12 +31,15 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 public class TecTechResearchLoader {
 
     @SuppressWarnings("deprecation")
     public static void runResearches() {
+        Fluid solderIndalloy = FluidRegistry.getFluid("molten.indalloy140") != null ? FluidRegistry.getFluid("molten.indalloy140") : FluidRegistry.getFluid("molten.solderingalloy");
 
         if (LoaderReference.galacticgreg) {
 
@@ -56,7 +59,7 @@ public class TecTechResearchLoader {
                             GT_OreDictUnificator.get(OrePrefixes.screw, Materials.BlackPlutonium, 36L)
                     },
                     new FluidStack[]{
-                            Materials.SolderingAlloy.getMolten(1440),
+                            new FluidStack(solderIndalloy, 1440),
                             WerkstoffLoader.Krypton.getFluidOrGas(20000)
                     },
                     ItemRegistry.voidminer[1].copy(),
@@ -80,7 +83,7 @@ public class TecTechResearchLoader {
                             GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Neutronium, 36L)
                     },
                     new FluidStack[]{
-                            Materials.SolderingAlloy.getMolten(1440),
+                            new FluidStack(solderIndalloy, 1440),
                             WerkstoffLoader.Oganesson.getFluidOrGas(20000)
                     },
                     ItemRegistry.voidminer[2].copy(),
@@ -105,7 +108,7 @@ public class TecTechResearchLoader {
                         ItemList.Electric_Piston_UV.get(64),
                 },
                 new FluidStack[]{
-                        Materials.SolderingAlloy.getMolten(1440),
+                        new FluidStack(solderIndalloy, 1440),
                         Materials.Osmium.getMolten(1440),
                         Materials.Neutronium.getMolten(1440)
                 },
