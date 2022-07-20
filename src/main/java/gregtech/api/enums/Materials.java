@@ -2300,13 +2300,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     private static void addHasGasFluid(Materials aMaterial, String aConfigPath) {
-//        System.out.println("ABC4321 " + aMaterial.mDefaultLocalName + " " + aMaterial.mIconSet.is_custom + " " + aMaterial.mName);
-//        if (aMaterial.mDefaultLocalName.toLowerCase().contains("spacetime")) {
-////            GT_Mod.gregtechproxy.addFluid("molten.spacetime", "Molten SpaceTime", Materials.SpaceTime, 0, 0, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.SpaceTime, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 100);
-//            System.out.println("TESTING 1234");
-//            System.out.println("ABC4321 " + aMaterial.mDefaultLocalName + " " + aMaterial.mIconSet.is_custom + " " + aMaterial.mName + " " + aMaterial.mHasPlasma + " " + aMaterial.mHasGas);
-//            return;
-//        }
 
         if (aMaterial.mIconSet.is_custom) {
             return;

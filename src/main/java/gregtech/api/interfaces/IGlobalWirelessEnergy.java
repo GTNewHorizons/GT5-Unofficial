@@ -19,9 +19,7 @@ public interface IGlobalWirelessEnergy {
 
     default void loadGlobalEnergyMap(World world) {
         try {
-            System.out.println("TEST1321KDW");
             Path path = Paths.get("./saves/" + world.getWorldInfo().getWorldName() + "/" + GlobalEnergyMapFileName + ".txt").toAbsolutePath();
-            System.out.println("DWMKDOAKW");
 
             String[] data;
             for(String line : Files.readAllLines(path)) {
@@ -34,9 +32,7 @@ public interface IGlobalWirelessEnergy {
             }
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (NullPointerException e) {
-            System.out.println("TEST39129JE");
-        }
+        } catch (NullPointerException e) { }
     };
 
 }
