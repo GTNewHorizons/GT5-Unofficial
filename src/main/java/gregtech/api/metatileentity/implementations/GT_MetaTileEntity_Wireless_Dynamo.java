@@ -9,16 +9,15 @@ import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-
-import java.util.UUID;
+import java.math.BigInteger;
 
 import static gregtech.GT_Mod.gregtechproxy;
 import static gregtech.api.enums.GT_Values.*;
 
 public class GT_MetaTileEntity_Wireless_Dynamo extends GT_MetaTileEntity_Hatch_Dynamo implements IGlobalWirelessEnergy {
 
-    static final long ticks_between_energy_addition = 200L;
-    static final long number_of_energy_additions = 10L;
+    private static final long ticks_between_energy_addition = 400L;
+    private static final long number_of_energy_additions = 10L;
     private final long eu_transferred_per_operation = 2L * V[mTier] * ticks_between_energy_addition;
     private String owner_uuid;
 
@@ -91,7 +90,7 @@ public class GT_MetaTileEntity_Wireless_Dynamo extends GT_MetaTileEntity_Hatch_D
         return new String[] {
             "Transmits " + EnumChatFormatting.RED + GT_Utility.formatNumbers(eu_transferred_per_operation/V[mTier]) + EnumChatFormatting.GRAY + " A of " + TIER_COLORS[mTier] + VN[mTier] + EnumChatFormatting.GRAY + " through trans-dimensional space every " + EnumChatFormatting.RED + GT_Utility.formatNumbers(ticks_between_energy_addition) + EnumChatFormatting.GRAY + " ticks.",
             EnumChatFormatting.GRAY + "Does not connect to wires.",
-            EnumChatFormatting.GRAY + "There is currently " + EnumChatFormatting.RED + GT_Utility.formatNumbers(GlobalEnergyMap.getOrDefault(uuid, 0L)) + EnumChatFormatting.GRAY + " EU in your network."
+            EnumChatFormatting.GRAY + "There is currently " + EnumChatFormatting.RED + GT_Utility.formatNumbers(GlobalEnergyMap.getOrDefault(uuid, BigInteger.ZERO)) + EnumChatFormatting.GRAY + " EU in your network."
         };
     }
 
@@ -128,19 +127,25 @@ public class GT_MetaTileEntity_Wireless_Dynamo extends GT_MetaTileEntity_Hatch_D
 
             // On first tick find the player name and attempt to add them to the map.
             if (aTick == 1) {
-                owner_uuid = getBaseMetaTileEntity().getOwnerUuid().toString();
+
+                // UUID of the owner.
+                owner_uuid = aBaseMetaTileEntity.getOwnerUuid().toString();
+
+                // Attempt to load in map from file.
+                if (GlobalEnergyMap.size() == 0)
+                    loadGlobalEnergyMap(aBaseMetaTileEntity.getWorld());
 
                 // If the owner is not in the hash map, add them with 0 EU.
                 if (!GlobalEnergyMap.containsKey(owner_uuid)) {
-                    GlobalEnergyMap.put(owner_uuid, 100_000_000L);
+                    GlobalEnergyMap.put(owner_uuid, new BigInteger("0"));
                 }
             }
 
             // Every ticks_between_energy_addition ticks change the energy content of the block.
             if (aTick % ticks_between_energy_addition == 0L) {
-
-                long total_eu = GlobalEnergyMap.get(owner_uuid);
-                GlobalEnergyMap.put(owner_uuid, total_eu + aBaseMetaTileEntity.getStoredEU());
+                BigInteger total_eu = GlobalEnergyMap.get(owner_uuid);
+                BigInteger internal_eu = BigInteger.valueOf(aBaseMetaTileEntity.getStoredEU());
+                GlobalEnergyMap.put(owner_uuid, total_eu.add(internal_eu));
                 setEUVar(0L);
             }
         }
