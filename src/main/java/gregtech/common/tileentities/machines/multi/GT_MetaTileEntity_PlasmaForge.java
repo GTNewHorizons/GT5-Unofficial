@@ -151,7 +151,7 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
             .addInfo("Takes " + EnumChatFormatting.RED + GT_Utility.formatNumbers(max_efficiency_time_in_ticks/(3600*20)) + EnumChatFormatting.GRAY + " hours of continuous run time to fully breach dimensional")
             .addInfo("boundaries and achieve maximum efficiency. This reduces fuel")
             .addInfo("consumption by up to " + EnumChatFormatting.RED + GT_Utility.formatNumbers(100*maximum_discount) + "%" + EnumChatFormatting.GRAY + ". Supports overclocking beyond MAX voltage.")
-            .addInfo("Author: " + AuthorColen)
+            .addInfo(AuthorColen)
             .addSeparator()
             .beginStructureBlock(33, 24, 33, false)
             .addStructureInfo("DTPF Structure is too complex! See schematic for details.")
