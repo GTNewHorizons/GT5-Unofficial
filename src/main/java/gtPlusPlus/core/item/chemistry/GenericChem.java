@@ -352,11 +352,10 @@ public class GenericChem extends ItemPackage {
 						ELEMENT.getInstance().SODIUM.getDust(1)
 				}, 
 				new FluidStack[] {
-						FluidUtils.getFluidStack(BioRecipes.mEthanol, 1000),
+						Materials.Ethanol.getFluid(1000)
 				}, 
 				new ItemStack[] {
 						ItemUtils.getSimpleStack(mSodiumEthoxide, 9)
-
 				}, 
 				new FluidStack[] {
 						ELEMENT.getInstance().HYDROGEN.getFluidStack(1000)
@@ -365,7 +364,6 @@ public class GenericChem extends ItemPackage {
 				120, 
 				2);
 	}
-
 
 	private void recipePotassiumHydroxide() {
 		//Ca(OH)2 + K2O + CO2 → CaCO3 + 2 KOH
@@ -402,7 +400,7 @@ public class GenericChem extends ItemPackage {
 						ItemUtils.getSimpleStack(mPotassiumHydroxide, 3),
 				}, 
 				new FluidStack[] {
-						FluidUtils.getFluidStack(BioRecipes.mEthanol, 1000),
+						Materials.Ethanol.getFluid(1000),
 						FluidUtils.getFluidStack(Carbon_Disulfide, 1000),
 				}, 
 				new ItemStack[] {

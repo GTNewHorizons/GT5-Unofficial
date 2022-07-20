@@ -115,7 +115,7 @@ public class RecipeLoader_GlueLine {
                         MISC_MATERIALS.CYANOACETIC_ACID.getDust(45)
                 },
                 new FluidStack[] {
-                        FluidUtils.getFluidStack(BioRecipes.mEthanol, 5000)
+                        Materials.Ethanol.getFluid(5000)
                 },
                 new ItemStack[] {
                         MISC_MATERIALS.COPPER_SULFATE_HYDRATED.getDust(11)
@@ -134,7 +134,7 @@ public class RecipeLoader_GlueLine {
                         MISC_MATERIALS.CYANOACETIC_ACID.getDust(9)
                 },
                 new FluidStack[] {
-                        FluidUtils.getFluidStack(BioRecipes.mEthanol, 1000)
+                        Materials.Ethanol.getFluid(1000)
                 },
                 new ItemStack[] {
 

@@ -84,21 +84,7 @@ public class RocketFuels extends ItemPackage {
 		}
 	}
 
-	public static void createNitrogenTetroxide(){	
-		/*CORE.RA.addDehydratorRecipe(
-				new ItemStack[]{
-						ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 4)
-				}, 
-				FluidUtils.getFluidStack("nitricacid", 2000), 
-				FluidUtils.getFluidStack(Nitrogen_Tetroxide, 450),
-				new ItemStack[]{
-						ItemUtils.getItemStackOfAmountFromOreDict("dustTinyAsh", 1),	
-						ItemUtils.getItemStackOfAmountFromOreDict("dustTinyDarkAsh", 1)						
-				},
-				new int[]{100, 50}, 
-				20*16, 
-				500);*/
-
+	public static void createNitrogenTetroxide(){
 		//2HNO3 + Cu = N2O4 + H2O + CuO
 		CORE.RA.addChemicalPlantRecipe(
 				new ItemStack[]{
@@ -142,6 +128,30 @@ public class RocketFuels extends ItemPackage {
 				MaterialUtils.getVoltageForTier(2), 
 				1);
 
+		FluidStack aBartWorksHydrazine = FluidUtils.getWildcardFluidStack("hydrazine", 1000);
+		if (aBartWorksHydrazine != null) {
+			Logger.INFO("Found BW Hydrazine, adding compat recipe.");
+			CORE.RA.addDistilleryRecipe(
+					GT_Utility.getIntegratedCircuit(24),
+					FluidUtils.getFluidStack(Hydrazine, 1000),
+					aBartWorksHydrazine,
+					null,
+					20,
+					8,
+					false
+			);
+
+			CORE.RA.addDistilleryRecipe(
+					GT_Utility.getIntegratedCircuit(24),
+					aBartWorksHydrazine,
+					FluidUtils.getFluidStack(Hydrazine, 1000),
+					null,
+					20,
+					8,
+					false
+			);
+		}
+
 		FluidStack aBartWorksHydrogenPeroxide = FluidUtils.getWildcardFluidStack("Hydrogen Peroxide", 1000);
 		if (aBartWorksHydrogenPeroxide != null) {
 			Logger.INFO("Found BW Hydrogen Peroxide, adding compat recipe.");
@@ -158,12 +168,31 @@ public class RocketFuels extends ItemPackage {
 					}, 
 					new FluidStack[] {
 							FluidUtils.getFluidStack(Hydrazine, 1000),
-
 					},
 					20 * 30, 
 					MaterialUtils.getVoltageForTier(2), 
 					1);
-		}		
+
+			CORE.RA.addDistilleryRecipe(
+					GT_Utility.getIntegratedCircuit(24),
+					FluidUtils.getFluidStack("fluid.hydrogenperoxide", 1000),
+					aBartWorksHydrogenPeroxide,
+					null,
+					20,
+					8,
+					false
+			);
+
+			CORE.RA.addDistilleryRecipe(
+					GT_Utility.getIntegratedCircuit(24),
+					aBartWorksHydrogenPeroxide,
+					FluidUtils.getFluidStack("fluid.hydrogenperoxide", 1000),
+					null,
+					20,
+					8,
+					false
+			);
+		}
 
 	}
 
@@ -190,6 +219,30 @@ public class RocketFuels extends ItemPackage {
 				20 * 48, 
 				240, 
 				2);
+
+		FluidStack aBartWorksMonomethylhydrazine = FluidUtils.getWildcardFluidStack("Monomethylhydrazine", 1000);
+		if (aBartWorksMonomethylhydrazine != null) {
+			Logger.INFO("Found BW Hydrazine, adding compat recipe.");
+			CORE.RA.addDistilleryRecipe(
+					GT_Utility.getIntegratedCircuit(24),
+					FluidUtils.getFluidStack(Monomethylhydrazine, 1000),
+					aBartWorksMonomethylhydrazine,
+					null,
+					20,
+					8,
+					false
+			);
+
+			CORE.RA.addDistilleryRecipe(
+					GT_Utility.getIntegratedCircuit(24),
+					aBartWorksMonomethylhydrazine,
+					FluidUtils.getFluidStack(Monomethylhydrazine, 1000),
+					null,
+					20,
+					8,
+					false
+			);
+		}
 
 	}
 
@@ -224,7 +277,6 @@ public class RocketFuels extends ItemPackage {
 				20 * 60, 
 				120, 
 				1);
-
 	}
 
 	private static void createAmmoniumNitrateDust() {
@@ -238,7 +290,6 @@ public class RocketFuels extends ItemPackage {
 				new int[] {10000}, 
 				90 * 20,
 				480);
-
 	}
 
 	private static void createFormaldehyde() {		
@@ -262,6 +313,30 @@ public class RocketFuels extends ItemPackage {
 				20 * 90, 
 				120, 
 				1);
+
+		FluidStack aBartWorksFormaldehyde = FluidUtils.getWildcardFluidStack("Formaldehyde", 1000);
+		if (aBartWorksFormaldehyde != null) {
+			Logger.INFO("Found BW Formaldehyde, adding compat recipe.");
+			CORE.RA.addDistilleryRecipe(
+					GT_Utility.getIntegratedCircuit(24),
+					FluidUtils.getFluidStack(Formaldehyde, 1000),
+					aBartWorksFormaldehyde,
+					null,
+					20,
+					8,
+					false
+			);
+
+			CORE.RA.addDistilleryRecipe(
+					GT_Utility.getIntegratedCircuit(24),
+					aBartWorksFormaldehyde,
+					FluidUtils.getFluidStack(Formaldehyde, 1000),
+					null,
+					20,
+					8,
+					false
+			);
+		}
 
 	}
 
