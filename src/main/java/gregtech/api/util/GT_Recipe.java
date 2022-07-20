@@ -88,11 +88,11 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
     /**
      * Stores which mod added this recipe
      */
-    public ModContainer owner = null;
+    public List<ModContainer> owners = new ArrayList<>();
     /**
      * Stores stack traces where this recipe was added
      */
-    public List<StackTraceElement> stackTraces = null;
+    public List<List<StackTraceElement>> stackTraces = new ArrayList<>();
 
     private GT_Recipe(GT_Recipe aRecipe) {
         mInputs = GT_Utility.copyStackArray((Object[]) aRecipe.mInputs);
@@ -109,6 +109,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         mFakeRecipe = aRecipe.mFakeRecipe;
         mEnabled = aRecipe.mEnabled;
         mHidden = aRecipe.mHidden;
+        owners = new ArrayList<>(aRecipe.owners);
         reloadOwner();
     }
 
@@ -570,18 +571,38 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
     }
 
     public void reloadOwner() {
-        this.owner = Loader.instance().activeModContainer();
+        setOwner(Loader.instance().activeModContainer());
 
         final List<String> excludedClasses = Arrays.asList(
             "java.lang.Thread",
             "gregtech.api.util.GT_Recipe",
             "gregtech.common.GT_RecipeAdder");
         if (GT_Mod.gregtechproxy.mNEIRecipeOwnerStackTrace) {
-            this.stackTraces = new ArrayList<>();
+            List<StackTraceElement> toAdd = new ArrayList<>();
             for (StackTraceElement stackTrace : Thread.currentThread().getStackTrace()) {
-                if (!excludedClasses.stream().anyMatch(c -> stackTrace.getClassName().contains(c))) {
-                    this.stackTraces.add(stackTrace);
+                if (excludedClasses.stream().noneMatch(c -> stackTrace.getClassName().contains(c))) {
+                    toAdd.add(stackTrace);
                 }
+            }
+            stackTraces.add(toAdd);
+        }
+    }
+
+    public void setOwner(ModContainer newOwner) {
+        ModContainer oldOwner = owners.size() > 0 ? this.owners.get(owners.size() - 1) : null;
+        if (newOwner != null && newOwner != oldOwner) {
+            owners.add(newOwner);
+        }
+    }
+
+    /**
+     * Use in case {@link Loader#activeModContainer()} isn't helpful
+     */
+    public void setOwner(String modId) {
+        for (ModContainer mod : Loader.instance().getModList()) {
+            if (mod.getModId().equals(modId)) {
+                setOwner(mod);
+                return;
             }
         }
     }
