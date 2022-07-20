@@ -33,8 +33,9 @@ public class Recipes {
 
 	public static final HashMap<String, InfusionRecipe> infusionRecipes = new HashMap<>();
     static Fluid solderIndalloy = FluidRegistry.getFluid("molten.indalloy140") != null ? FluidRegistry.getFluid("molten.indalloy140") : FluidRegistry.getFluid("molten.solderingalloy");
+    static Fluid solderUEV = FluidRegistry.getFluid("molten.mutatedlivingsolder") != null ? FluidRegistry.getFluid("molten.mutatedlivingsolder") : FluidRegistry.getFluid("molten.solderingalloy");
 
-	public static void postInit() {
+    public static void postInit() {
 		KekzCore.LOGGER.info("Registering recipes...");
 
 		registerRecipes_TFFT();
@@ -625,7 +626,7 @@ public class Recipes {
                         GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorUHV, 64)
 				},
 				new FluidStack[] {
-                        new FluidStack(solderIndalloy, 4608),
+                        new FluidStack(solderUEV, 4608),
 						Materials.Naquadria.getMolten(9216),
 						new FluidStack(FluidRegistry.getFluid("ic2coolant"), 32000)
 				},
