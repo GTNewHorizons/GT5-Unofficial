@@ -22,13 +22,13 @@ public class GT_TooltipEventHandler {
 
 	/*
 	 * What you can do:
-	 * - add simple, unformated text
-	 * - add formatted text
+	 * - Add simple, unformatted text.
+	 * - Add formatted text.
 	 *   Note: you can chain formatting codes but the color must be used first:
 	 *   e.g. BLACK + ITALIC will create black, italic text but ITALIC + BLACK will only create black text.
 	 * - add animated text
 	 * - chain multiple static and/or animated text together using chain()
-	 *   (Although chaining only static text together is pointless, text() is already able to to that)
+	 *   (Although chaining only static text together is pointless, text() is already able to do that)
 	 * - add multiple lines by using NEW_LINE (either as String or as Supplier<String>)
 	 *   Note: formatting only applies for one line
 	 *   Note: having a NEW_LINE in animated text results in "skipping" of one formatting since NEW_LINE

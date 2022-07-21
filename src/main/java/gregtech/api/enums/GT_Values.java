@@ -95,6 +95,7 @@ public class GT_Values {
     //TODO:AND ALL THE MATERIALS... for that
     //TODO:LIST OF MACHINES WITH POINTLESS TIERS (unless you implement some other tiering mechanism like reducing eu cost if time=1tick)
     //Macerator/Compressor/Furnace... and for cheap recipes any
+
     /**
      * keeping Voltage*Amps < Integer.MAX_VALUE-7 for machines (and tier logic 4x EUt 2/ time)
      * AMV[4]= max amps at tier 4
@@ -230,6 +231,7 @@ public class GT_Values {
             RES_PATH_ASPECTS = MOD_ID + ":" + TEX_DIR_ASPECTS,
             RES_PATH_IC2 = MOD_ID_IC2.toLowerCase(Locale.ENGLISH) + ":",
             RES_PATH_MODEL = MOD_ID + ":" + TEX_DIR + "models/";
+
 
     /**
      * NBT String Keys
@@ -445,4 +447,17 @@ public class GT_Values {
     public static boolean worldTickHappened = false;
 
     public static final int[] emptyIntArray = new int[0];
+
+
+    /**
+     *  Pretty formatting for author names.
+     */
+    public static final String AuthorColen = "Author: " +
+        EnumChatFormatting.DARK_RED + EnumChatFormatting.BOLD + EnumChatFormatting.ITALIC + EnumChatFormatting.UNDERLINE + "C" +
+        EnumChatFormatting.GOLD + EnumChatFormatting.BOLD + EnumChatFormatting.ITALIC + EnumChatFormatting.UNDERLINE + "o" +
+        EnumChatFormatting.GREEN + EnumChatFormatting.BOLD + EnumChatFormatting.ITALIC + EnumChatFormatting.UNDERLINE + "l" +
+        EnumChatFormatting.DARK_AQUA + EnumChatFormatting.BOLD + EnumChatFormatting.ITALIC + EnumChatFormatting.UNDERLINE + "e" +
+        EnumChatFormatting.DARK_PURPLE + EnumChatFormatting.BOLD + EnumChatFormatting.ITALIC + EnumChatFormatting.UNDERLINE + "n";
+
+
 }

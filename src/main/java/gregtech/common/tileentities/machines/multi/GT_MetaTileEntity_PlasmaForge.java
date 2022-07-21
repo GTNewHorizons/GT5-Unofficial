@@ -31,8 +31,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static gregtech.api.enums.GT_Values.TIER_COLORS;
-import static gregtech.api.enums.GT_Values.VN;
+import static gregtech.api.enums.GT_Values.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GT_StructureUtility.ofCoil;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
@@ -152,12 +151,7 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
             .addInfo("Takes " + EnumChatFormatting.RED + GT_Utility.formatNumbers(max_efficiency_time_in_ticks/(3600*20)) + EnumChatFormatting.GRAY + " hours of continuous run time to fully breach dimensional")
             .addInfo("boundaries and achieve maximum efficiency. This reduces fuel")
             .addInfo("consumption by up to " + EnumChatFormatting.RED + GT_Utility.formatNumbers(100*maximum_discount) + "%" + EnumChatFormatting.GRAY + ". Supports overclocking beyond MAX voltage.")
-            .addInfo("Author: " +
-                EnumChatFormatting.DARK_RED + EnumChatFormatting.BOLD + EnumChatFormatting.ITALIC + EnumChatFormatting.UNDERLINE + "C" +
-                EnumChatFormatting.GOLD + EnumChatFormatting.BOLD + EnumChatFormatting.ITALIC + EnumChatFormatting.UNDERLINE + "o" +
-                EnumChatFormatting.GREEN + EnumChatFormatting.BOLD + EnumChatFormatting.ITALIC + EnumChatFormatting.UNDERLINE + "l" +
-                EnumChatFormatting.DARK_AQUA + EnumChatFormatting.BOLD + EnumChatFormatting.ITALIC + EnumChatFormatting.UNDERLINE + "e" +
-                EnumChatFormatting.DARK_PURPLE + EnumChatFormatting.BOLD + EnumChatFormatting.ITALIC + EnumChatFormatting.UNDERLINE + "n")
+            .addInfo(AuthorColen)
             .addSeparator()
             .beginStructureBlock(33, 24, 33, false)
             .addStructureInfo("DTPF Structure is too complex! See schematic for details.")
