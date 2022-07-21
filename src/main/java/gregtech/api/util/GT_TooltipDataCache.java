@@ -23,8 +23,8 @@ public class GT_TooltipDataCache {
 
     /**
      * Returns tooltip data respecting the user's configured verbosity levels, applying any formatting arguments.
-     * 
-     * @param key the key to lookup 
+     *
+     * @param key the key to lookup
      * @param args arguments for string formatting (prefer using positional arguments)
      * @return The tooltip data the user asked for
      */
@@ -39,12 +39,12 @@ public class GT_TooltipDataCache {
 
     /**
      * Builds tooltip data respecting the user's configured verbosity levels, applying any formatting arguments.
-     * 
-     * @param key the key to lookup 
+     *
+     * @param key the key to lookup
      * @param args arguments for string formatting (prefer using positional arguments)
      * @return The tooltip data the user asked for
      */
-    private TooltipData getUncachedTooltipData(String key, Object... args) {
+    public TooltipData getUncachedTooltipData(String key, Object... args) {
         List<String> lines = getAllLines(key, args);
         int normalLines = lines.size();
         if (Math.max(GT_Mod.gregtechproxy.mTooltipVerbosity, GT_Mod.gregtechproxy.mTooltipShiftVerbosity) >= 3) {
@@ -60,8 +60,8 @@ public class GT_TooltipDataCache {
 
     /**
      * Gets all the lines for the given key and every other subsequent consecutive key with a .n suffix, n in {1,2,3...}
-     * 
-     * @param key the key to lookup 
+     *
+     * @param key the key to lookup
      * @param args arguments for string formatting (prefer using positional arguments)
      * @return The lines for the key and all of it's subkeys
      */
@@ -78,7 +78,7 @@ public class GT_TooltipDataCache {
 
     /**
      * Determines how many lines from a tooltip to include from the full line list to respect a given verbosity level.
-     * 
+     *
      * @param tooltipVerbosity the verbosity level we're applying
      * @param defaultIndex return if tooltipVerbosity is 2
      * @param maxIndex return if tooltipVerbosity is greater than 2

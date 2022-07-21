@@ -12,10 +12,11 @@ import gregtech.common.tileentities.boilers.*;
 import gregtech.common.tileentities.generators.*;
 import gregtech.common.tileentities.machines.*;
 import gregtech.common.tileentities.machines.basic.*;
+import gregtech.common.tileentities.machines.long_distance.GT_MetaTileEntity_LongDistancePipelineFluid;
+import gregtech.common.tileentities.machines.long_distance.GT_MetaTileEntity_LongDistancePipelineItem;
 import gregtech.common.tileentities.machines.multi.*;
 import gregtech.common.tileentities.machines.steam.*;
 import gregtech.common.tileentities.storage.*;
-import gregtech.common.tileentities.machines.long_distance.*;
 import gregtech.loaders.postload.GT_ProcessingArrayRecipeLoader;
 import ic2.core.Ic2Items;
 import net.minecraft.init.Blocks;
@@ -698,6 +699,22 @@ public class GT_Loader_MetaTileEntities implements Runnable {//TODO CHECK CIRCUI
         GT_ModHandler.addCraftingRecipe(ItemList.Machine_HV_Disassembler.get(1L), bitsd, new Object[]{"ACA", aTextWireHull, "ACA", 'M', ItemList.Hull_HV, 'A', ItemList.Robot_Arm_HV, 'C', OrePrefixes.circuit.get(Materials.Advanced), 'W', OrePrefixes.cableGt01.get(Materials.Gold)});
         GT_ModHandler.addCraftingRecipe(ItemList.Machine_EV_Disassembler.get(1L), bitsd, new Object[]{"ACA", aTextWireHull, "ACA", 'M', ItemList.Hull_EV, 'A', ItemList.Robot_Arm_EV, 'C', OrePrefixes.circuit.get(Materials.Data), 'W', OrePrefixes.cableGt01.get(Materials.Aluminium)});
         GT_ModHandler.addCraftingRecipe(ItemList.Machine_IV_Disassembler.get(1L), bitsd, new Object[]{"ACA", aTextWireHull, "ACA", 'M', ItemList.Hull_IV, 'A', ItemList.Robot_Arm_IV, 'C', OrePrefixes.circuit.get(Materials.Elite), 'W', OrePrefixes.cableGt01.get(Materials.Tungsten)});
+
+        if(Loader.isModLoaded("Forestry") && Loader.isModLoaded("gendustry")) {
+            ItemList.Machine_IndustrialApiary.set(new GT_MetaTileEntity_IndustrialApiary(9399, "basicmachine.industrialapiary", "Industrial Apiary", 8).getStackForm(1L));
+            /* Conversion recipe /
+            /  Real recipe is in scripts */
+            GT_ModHandler.addShapelessCraftingRecipe(ItemList.Machine_IndustrialApiary.get(1L), new Object[]{GT_ModHandler.getModItem("gendustry", "IndustrialApiary", 1, 0)});
+
+            GT_ModHandler.addCraftingRecipe(ItemList.IndustrialApiary_Upgrade_Acceleration_1.get(1L), bitsd, new Object[]{"PPP", "PAP", "PPP", 'P', GT_ModHandler.getModItem("gendustry", "ApiaryUpgrade", 1, 0), 'A', GT_ModHandler.getModItem("gregtech", "gt.blockmachines", 1, 11100)});
+            GT_ModHandler.addCraftingRecipe(ItemList.IndustrialApiary_Upgrade_Acceleration_2.get(1L), bitsd, new Object[]{"PPP", "PAP", "PPP", 'P', GT_ModHandler.getModItem("gendustry", "ApiaryUpgrade", 1, 0), 'A', GT_ModHandler.getModItem("gregtech", "gt.blockmachines", 1, 11101)});
+            GT_ModHandler.addCraftingRecipe(ItemList.IndustrialApiary_Upgrade_Acceleration_3.get(1L), bitsd, new Object[]{"PPP", "PAP", "PPP", 'P', GT_ModHandler.getModItem("gendustry", "ApiaryUpgrade", 1, 0), 'A', GT_ModHandler.getModItem("gregtech", "gt.blockmachines", 1, 11102)});
+            GT_ModHandler.addCraftingRecipe(ItemList.IndustrialApiary_Upgrade_Acceleration_4.get(1L), bitsd, new Object[]{"PPP", "PAP", "PPP", 'P', GT_ModHandler.getModItem("gendustry", "ApiaryUpgrade", 1, 0), 'A', GT_ModHandler.getModItem("gregtech", "gt.blockmachines", 1, 11103)});
+            GT_ModHandler.addCraftingRecipe(ItemList.IndustrialApiary_Upgrade_Acceleration_5.get(1L), bitsd, new Object[]{"PPP", "PAP", "PPP", 'P', GT_ModHandler.getModItem("gendustry", "ApiaryUpgrade", 1, 0), 'A', GT_ModHandler.getModItem("gregtech", "gt.blockmachines", 1, 11104)});
+            GT_ModHandler.addCraftingRecipe(ItemList.IndustrialApiary_Upgrade_Acceleration_6.get(1L), bitsd, new Object[]{"PPP", "PAP", "PPP", 'P', GT_ModHandler.getModItem("gendustry", "ApiaryUpgrade", 1, 0), 'A', GT_ModHandler.getModItem("gregtech", "gt.blockmachines", 1, 11105)});
+            GT_ModHandler.addCraftingRecipe(ItemList.IndustrialApiary_Upgrade_Acceleration_7.get(1L), bitsd, new Object[]{"PPP", "PAP", "PPP", 'P', GT_ModHandler.getModItem("gendustry", "ApiaryUpgrade", 1, 0), 'A', GT_ModHandler.getModItem("gregtech", "gt.blockmachines", 1, 11106)});
+            GT_ModHandler.addCraftingRecipe(ItemList.IndustrialApiary_Upgrade_Acceleration_8.get(1L), bitsd, new Object[]{"PPP", "PAP", "PPP", 'P', GT_ModHandler.getModItem("gendustry", "ApiaryUpgrade", 1, 0), 'A', GT_ModHandler.getModItem("gregtech", "gt.blockmachines", 1, 11107)});
+        }
 
         ItemList.Machine_LV_Massfab.set(new GT_MetaTileEntity_Massfabricator(461, "basicmachine.massfab.tier.01", "Basic Mass Fabricator", 1).getStackForm(1L));
         ItemList.Machine_MV_Massfab.set(new GT_MetaTileEntity_Massfabricator(462, "basicmachine.massfab.tier.02", "Advanced Mass Fabricator", 2).getStackForm(1L));

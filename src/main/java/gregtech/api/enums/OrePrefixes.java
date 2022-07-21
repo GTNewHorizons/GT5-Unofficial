@@ -331,7 +331,9 @@ public enum OrePrefixes {
     cellSteamCracked2("Cells", "Moderately Steam-Cracked ", " Cell", true, true, true, true, false, false, false, true, false, false, 0, M * 1, 64, 30),
     cellSteamCracked3("Cells", "Severely Steam-Cracked ", " Cell", true, true, true, true, false, false, false, true, false, false, 0, M * 1, 64, 30),
 
-    componentCircuit("Circuit Parts", "", "", true, true, false, false, false, false, false, false, false, false, 0, -1, 64, -1);
+    componentCircuit("Circuit Parts", "", "", true, true, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
+
+    apiaryUpgrade("Industrial Apiary Upgrade", "", "", false, false, true, false, false, false, false, false, true, false, 0, -1, 64, -1);
 
     public static final ImmutableList<OrePrefixes> CELL_TYPES =
             ImmutableList.of(
