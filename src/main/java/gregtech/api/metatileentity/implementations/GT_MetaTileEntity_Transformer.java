@@ -5,7 +5,9 @@ import cofh.api.energy.IEnergyStorage;
 import crazypants.enderio.machine.capbank.TileCapBank;
 import crazypants.enderio.machine.capbank.network.ICapBankNetwork;
 import crazypants.enderio.power.IPowerContainer;
+import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -207,13 +209,13 @@ public class GT_MetaTileEntity_Transformer extends GT_MetaTileEntity_TieredMachi
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
         return false;
-    } 
-    
+    }
+
     @Override
     public boolean hasAlternativeModeText(){
     	return true;
     }
-    
+
     @Override
     public String getAlternativeModeText(){
     	return
@@ -239,26 +241,49 @@ public class GT_MetaTileEntity_Transformer extends GT_MetaTileEntity_TieredMachi
         final NBTTagCompound tag = accessor.getNBTData();
         final int side = (byte)accessor.getSide().ordinal();
         final boolean allowedToWork = tag.getBoolean("isAllowedToWork");
-        
+
+        final byte inputTier = GT_Utility.getTier(tag.getLong("maxEUInput"));
+        final byte outputTier = GT_Utility.getTier(tag.getLong("maxEUOutput"));
+
         currenttip.add(
             String.format(
-                "%s %d(%dA) -> %d(%dA)",
+                "%s %s(%dA) -> %s(%dA)",
                 (allowedToWork ? (GREEN + "Step Down") : (RED + "Step Up")) + RESET,
-                tag.getLong("maxEUInput"),
+                GT_Mod.gregtechproxy.mWailaTransformerVoltageTier
+                    ? GT_Values.TIER_COLORS[inputTier] + GT_Values.VN[inputTier] + RESET
+                    : tag.getLong("maxEUInput"),
                 tag.getLong("maxAmperesIn"),
-                tag.getLong("maxEUOutput"),
+                GT_Mod.gregtechproxy.mWailaTransformerVoltageTier
+                    ? GT_Values.TIER_COLORS[outputTier] + GT_Values.VN[outputTier] + RESET
+                    : tag.getLong("maxEUOutput"),
                 tag.getLong("maxAmperesOut")
             )
         );
 
         if ((side == facing && allowedToWork) || (side != facing && !allowedToWork)) {
-            currenttip.add(String.format(GOLD + "Input:" + RESET + " %d(%dA)", tag.getLong("maxEUInput"), tag.getLong("maxAmperesIn")));
+            currenttip.add(
+                String.format(
+                    GOLD + "Input:" + RESET + " %s(%dA)",
+                    GT_Mod.gregtechproxy.mWailaTransformerVoltageTier
+                        ? GT_Values.TIER_COLORS[inputTier] + GT_Values.VN[inputTier] + RESET
+                        : tag.getLong("maxEUInput"),
+                    tag.getLong("maxAmperesIn")
+                )
+            );
         } else {
-            currenttip.add(String.format(BLUE + "Output:" + RESET + " %d(%dA)", tag.getLong("maxEUOutput"), tag.getLong("maxAmperesOut")));
+            currenttip.add(
+                String.format(
+                    BLUE + "Output:" + RESET + " %s(%dA)",
+                    GT_Mod.gregtechproxy.mWailaTransformerVoltageTier
+                        ? GT_Values.TIER_COLORS[outputTier] + GT_Values.VN[outputTier] + RESET
+                        : tag.getLong("maxEUOutput"),
+                    tag.getLong("maxAmperesOut")
+                )
+            );
         }
 
         super.getWailaBody(itemStack, currenttip, accessor, config);
-        
+
     }
 
     @Override

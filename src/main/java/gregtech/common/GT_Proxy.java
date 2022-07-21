@@ -306,6 +306,11 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     public boolean mNEIRecipeOwnerStackTrace = false;
 
     /**
+     * This enables showing voltage tier of transformer for Waila, instead of raw voltage number
+     */
+    public boolean mWailaTransformerVoltageTier = true;
+
+    /**
      * What is the order of the circuits when they are selected?
      */
     public Map<String, Integer> mCircuitsOrder = new HashMap<>();

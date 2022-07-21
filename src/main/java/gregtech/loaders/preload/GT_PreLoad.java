@@ -538,6 +538,7 @@ public class GT_PreLoad {
         GT_Mod.gregtechproxy.mNEIRecipeSecondMode = GregTech_API.sClientDataFile.get("nei", "RecipeSecondMode", true);
         GT_Mod.gregtechproxy.mNEIRecipeOwner = GregTech_API.sClientDataFile.get("nei", "RecipeOwner", false);
         GT_Mod.gregtechproxy.mNEIRecipeOwnerStackTrace = GregTech_API.sClientDataFile.get("nei", "RecipeOwnerStackTrace", false);
+        GT_Mod.gregtechproxy.mWailaTransformerVoltageTier = GregTech_API.sClientDataFile.get("waila", "WailaTransformerVoltageTier", true);
 
         final String[] Circuits = GregTech_API.sClientDataFile.get("interface", "CircuitsOrder" );
         GT_Mod.gregtechproxy.mCircuitsOrder.clear();
