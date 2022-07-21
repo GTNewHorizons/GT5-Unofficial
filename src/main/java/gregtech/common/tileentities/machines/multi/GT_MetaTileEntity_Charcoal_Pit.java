@@ -55,6 +55,11 @@ public class GT_MetaTileEntity_Charcoal_Pit extends GT_MetaTileEntity_TooltipMul
     }
 
     @Override
+    public Class<?> getType() {
+        return GT_MetaTileEntity_Cleanroom.class;
+    }
+
+    @Override
     public boolean isCorrectMachinePart(ItemStack aStack) {
         return true;
     }
