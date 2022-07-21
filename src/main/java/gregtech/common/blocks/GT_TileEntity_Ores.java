@@ -210,17 +210,18 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
             rList.add(new ItemStack(aDroppedOre, 1, this.mMetaData));
             return rList;
         }
-        Materials aMaterial = GregTech_API.sGeneratedMaterials[(this.mMetaData % 1000)];
+        Materials aOreMaterial = GregTech_API.sGeneratedMaterials[(this.mMetaData % 1000)];
 
         // Everyone gets a free small fortune boost
         aFortune += 1;
         if (!this.mNatural) {
             aFortune = 0;
         }
-        if (aMaterial != null) {
+        if (aOreMaterial != null) {
             Random tRandom = new XSTR(this.xCoord ^ this.yCoord ^ this.zCoord);
             ArrayList<ItemStack> tSelector = new ArrayList<>();
 
+            Materials aMaterial = aOreMaterial.mOreReplacement;
 
             ItemStack tStack = GT_OreDictUnificator.get(OrePrefixes.gemExquisite, aMaterial, GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L), 1L);
             if (tStack != null) {
