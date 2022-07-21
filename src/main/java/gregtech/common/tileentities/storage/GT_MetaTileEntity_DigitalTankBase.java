@@ -160,6 +160,23 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
         GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal(mVoidOverflow ? "GT5U.machines.voidoveflow.enabled" : "GT5U.machines.voidoveflow.disabled"));
     }
 
+    @Override
+    public FluidStack setFillableStack(FluidStack aFluid) {
+        mFluid = aFluid;
+        if (mFluid != null) {
+            mFluid.amount = Math.min(mFluid.amount, getRealCapacity());
+        }
+        return mFluid;
+    }
+
+    @Override
+    public FluidStack setDrainableStack(FluidStack aFluid) {
+        mFluid = aFluid;
+        if (mFluid != null) {
+            mFluid.amount = Math.min(mFluid.amount, getRealCapacity());
+        }
+        return mFluid;
+    }
 
     @Override
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
@@ -258,7 +275,7 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
         return mVoidOverflow ? Integer.MAX_VALUE : getRealCapacity();
     }
 
-    private int getRealCapacity(){
+    public int getRealCapacity(){
         return commonSizeCompute(mTier);
     }
 

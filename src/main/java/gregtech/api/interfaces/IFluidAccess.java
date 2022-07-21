@@ -9,4 +9,14 @@ public interface IFluidAccess {
     FluidStack get();
 
     int getCapacity();
+
+    default int getRealCapacity() {
+        return getCapacity();
+    }
+
+    default void addAmount(int amount) {
+        if (get() != null) {
+            get().amount = Math.min(get().amount + amount, getRealCapacity());
+        }
+    }
 }
