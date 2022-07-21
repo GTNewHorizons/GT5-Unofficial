@@ -90,7 +90,7 @@ public class GT_MetaTileEntity_LargeTurbine_Gas extends GT_MetaTileEntity_LargeT
     }
 
     @Override
-    int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow, int aBaseEff, int overflowMultiplier) {
+    int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow, int aBaseEff, int overflowMultiplier, float[] flowMultipliers) {
         if (aFluids.size() >= 1) {
             int tEU = 0;
             int actualOptimalFlow = 0;
@@ -108,7 +108,7 @@ public class GT_MetaTileEntity_LargeTurbine_Gas extends GT_MetaTileEntity_LargeT
                 return GT_Utility.safeInt((long) aOptFlow * (long) aBaseEff / 10000L);
             }
 
-            actualOptimalFlow = GT_Utility.safeInt((long) aOptFlow / fuelValue);
+            actualOptimalFlow = GT_Utility.safeInt((long) (aOptFlow * flowMultipliers[1] / fuelValue));
             this.realOptFlow = actualOptimalFlow;
 
             // Allowed to use up to 450% optimal flow rate, depending on the value of overflowMultiplier.
