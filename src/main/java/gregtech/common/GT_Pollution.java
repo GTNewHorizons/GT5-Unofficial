@@ -5,11 +5,14 @@ import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.interfaces.metatileentity.IMachineCallback;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.net.GT_Packet_Pollution;
 import gregtech.api.util.GT_ChunkAssociatedData;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.render.GT_PollutionRenderer;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Cleanroom;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
@@ -281,8 +284,19 @@ public class GT_Pollution {
 	}
 
 	/** @see #addPollution(World, int, int, int) */
+	@SuppressWarnings("rawtypes")
 	public static void addPollution(IGregTechTileEntity te, int aPollution) {
 		if (!GT_Mod.gregtechproxy.mPollution || aPollution == 0 || te.isClientSide()) return;
+        IMetaTileEntity iMetaTileEntity = te.getMetaTileEntity();
+
+		if (iMetaTileEntity instanceof IMachineCallback) {
+		    if (((IMachineCallback) iMetaTileEntity).getCallbackBase() instanceof GT_MetaTileEntity_Cleanroom) {
+		        if (aPollution > 0) {
+                    ((GT_MetaTileEntity_Cleanroom) ((IMachineCallback) iMetaTileEntity).getCallbackBase()).doMaintenanceIssue();
+                }
+            }
+        }
+
 		mutatePollution(te.getWorld(), te.getXCoord() >> 4, te.getZCoord() >> 4, d -> d.changeAmount(aPollution), null);
 	}
 
@@ -362,7 +376,7 @@ public class GT_Pollution {
 	//Add compatibility with old code
 	@Deprecated /*Don't use it... too weird way of passing position*/
 	public static void addPollution(World aWorld, ChunkPosition aPos, int aPollution) {
-		//The abuse of ChunkPosition to store block position and dim... 
+		//The abuse of ChunkPosition to store block position and dim...
 		//is just bad especially when that is both used to store ChunkPos and BlockPos depending on context
 		addPollution(aWorld.getChunkFromBlockCoords(aPos.chunkPosX, aPos.chunkPosZ), aPollution);
 	}

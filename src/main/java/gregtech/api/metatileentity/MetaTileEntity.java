@@ -8,12 +8,14 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
 import gregtech.api.GregTech_API;
+import gregtech.api.interfaces.metatileentity.IMachineCallback;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Cable;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.*;
 import gregtech.common.GT_Client;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Cleanroom;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.block.Block;
@@ -53,7 +55,7 @@ import static gregtech.api.enums.GT_Values.V;
  * "new GT_MetaTileEntity_E_Furnace(54, "GT_E_Furnace", "Automatic E-Furnace");"
  */
 @SuppressWarnings("unused")
-public abstract class MetaTileEntity implements IMetaTileEntity {
+public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallback<MetaTileEntity> {
     /**
      * Only assigned for the MetaTileEntity in the List! Also only used to get the localized Name for the ItemStack and for getInvName.
      */
@@ -64,6 +66,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
     public final ItemStack[] mInventory;
     public boolean doTickProfilingInThisTick = true;
 
+    private MetaTileEntity mCallBackTile;
 
     /**
      * accessibility to this Field is no longer given, see below
@@ -275,6 +278,21 @@ public abstract class MetaTileEntity implements IMetaTileEntity {
 
     @Override
     public void stopSoundLoop(byte aValue, double aX, double aY, double aZ) {/*Do nothing*/}
+
+    @Override
+    public MetaTileEntity getCallbackBase() {
+        return mCallBackTile;
+    }
+
+    @Override
+    public void setCallbackBase(MetaTileEntity callback) {
+        this.mCallBackTile = callback;
+    }
+
+    @Override
+    public Class<?> getType() {
+        return null;
+    }
 
     @Override
     public final void sendSound(byte aIndex) {
