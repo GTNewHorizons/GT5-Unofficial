@@ -1853,11 +1853,13 @@ public enum ItemList implements IItemContainer {
     Circuit_Parts_TransistorXSMD,
     Circuit_Parts_CapacitorXSMD,
 
+    VOLUMETRIC_FLASK,
+  	HULL_LIVINGROCK,
+
     Circuit_Parts_InductorSMD,
     Circuit_Parts_InductorASMD,
-    Circuit_Parts_InductorXSMD,
+    Circuit_Parts_InductorXSMD;
 
-    VOLUMETRIC_FLASK;
 
     public static final ItemList[]
             DYE_ONLY_ITEMS = {
