@@ -181,10 +181,30 @@ public abstract class GT_MetaTileEntity_LargeBoiler extends GT_MetaTileEntity_En
         return true;
     }
 
+    boolean isIntegratedCircuit(ItemStack input) {
+        return input != null && input.getUnlocalizedName().startsWith("gt.integrated_circuit");
+    }
+
+    boolean isFuelValid() {
+        if (!isSuperheated())
+            return true;
+        for (ItemStack input : getStoredInputs()) {
+            if (!GT_Recipe.GT_Recipe_Map_LargeBoilerFakeFuels.isAllowedSolidFuel(input) && !isIntegratedCircuit(input)) {
+                //if any item is not in ALLOWED_SOLID_FUELS, operation cannot be allowed because it might still be consumed
+                this.mMaxProgresstime = 0;
+                this.mEUt = 0;
+                return false;
+            }
+        }
+        return true;
+    }
+
     @Override
     public boolean checkRecipe(ItemStack aStack) {
+        if (!isFuelValid())
+            return false;
         //Do we have an integrated circuit with a valid configuration?
-        if (mInventory[1] != null && mInventory[1].getUnlocalizedName().startsWith("gt.integrated_circuit")) {
+        if (isIntegratedCircuit(mInventory[1])) {
             int circuit_config = mInventory[1].getItemDamage();
             if (circuit_config >= 1 && circuit_config <= 25) {
                 // If so, overwrite the current config
@@ -382,7 +402,7 @@ public abstract class GT_MetaTileEntity_LargeBoiler extends GT_MetaTileEntity_En
     }
 
     private int adjustEUtForConfig(int rawEUt) {
-        int adjustedSteamOutput = rawEUt - 25 * integratedCircuitConfig;
+        int adjustedSteamOutput = rawEUt - (isSuperheated() ? 75 : 25) * integratedCircuitConfig;
         return Math.max(adjustedSteamOutput, 25);
     }
 
@@ -390,7 +410,7 @@ public abstract class GT_MetaTileEntity_LargeBoiler extends GT_MetaTileEntity_En
         if (mEfficiency < getMaxEfficiency(mInventory[1]) - ((getIdealStatus() - getRepairStatus()) * 1000)) {
             return rawBurnTime;
         }
-        int adjustedEUt = Math.max(25, getEUt() - 25 * integratedCircuitConfig);
+        int adjustedEUt = Math.max(25, getEUt() - (isSuperheated() ? 75 : 25) * integratedCircuitConfig);
         int adjustedBurnTime = rawBurnTime * getEUt() / adjustedEUt;
         this.excessProjectedEU += getEUt() * rawBurnTime - adjustedEUt * adjustedBurnTime;
         adjustedBurnTime += this.excessProjectedEU / adjustedEUt;
