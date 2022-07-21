@@ -270,9 +270,9 @@ public class GT_Loader_MetaTileEntities implements Runnable {//TODO CHECK CIRCUI
 
         if (GregTech_API.mAE2)
             ItemList.Hatch_Output_Bus_ME.set(new GT_MetaTileEntity_Hatch_OutputBus_ME(2710, "hatch.output_bus.me", "Output Bus (ME)").getStackForm(1L));
-        if (Loader.isModLoaded(MOD_ID_BOT))
-        ItemList.HULL_LIVINGROCK.set(new GT_MetaTileEntity_BasicHull(3770, "hull.mtier.01", "Livingrock Hull", 1, imagination).getStackForm(1L));
-
+        if (Loader.isModLoaded(MOD_ID_BOT)) {
+            ItemList.HULL_LIVINGROCK.set(new GT_MetaTileEntity_BasicHull(3770, "hull.mtier.01", "Livingrock Hull", 1, imagination).getStackForm(1L));
+        }
         ItemList.Hatch_Input_Bus_ULV.set(new GT_MetaTileEntity_Hatch_InputBus(70, "hatch.input_bus.tier.00", "Input Bus (ULV)", 0).getStackForm(1L));
         ItemList.Hatch_Input_Bus_LV.set(new GT_MetaTileEntity_Hatch_InputBus(71, "hatch.input_bus.tier.01", "Input Bus (LV)", 1).getStackForm(1L));
         ItemList.Hatch_Input_Bus_MV.set(new GT_MetaTileEntity_Hatch_InputBus(72, "hatch.input_bus.tier.02", "Input Bus (MV)", 2).getStackForm(1L));
