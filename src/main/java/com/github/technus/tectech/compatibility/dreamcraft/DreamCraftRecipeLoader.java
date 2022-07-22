@@ -229,8 +229,8 @@ public class DreamCraftRecipeLoader {
                 16_777_216*4, 8_192, 128_000_000, 1, new Object[]{
                         GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Nano, 1),
                         GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SpaceTime, 8),
-                        GT_OreDictUnificator.get(OrePrefixes.screw, Materials.SpaceTime, 16),
-                        GT_ModHandler.getModItem("eternalsingularity", "eternal_singularity", 4L),
+                        GT_OreDictUnificator.get(OrePrefixes.screw, Materials.SpaceTime, 8),
+                        GT_ModHandler.getModItem("eternalsingularity", "eternal_singularity", 1L),
                         GT_ModHandler.getModItem("dreamcraft", "item.MicaInsulatorFoil", 64, 0),
                         GT_ModHandler.getModItem("dreamcraft", "item.MicaInsulatorFoil", 64, 0),
                         GT_ModHandler.getModItem("dreamcraft", "item.MicaInsulatorFoil", 64, 0),
