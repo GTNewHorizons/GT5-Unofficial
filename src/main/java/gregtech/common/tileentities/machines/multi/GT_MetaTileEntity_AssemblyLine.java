@@ -104,13 +104,13 @@ public class GT_MetaTileEntity_AssemblyLine extends GT_MetaTileEntity_EnhancedMu
                 .addInfo("Used to make complex machine parts (LuV+)")
                 .addInfo("Does not make Assembler items")
                 .addSeparator()
-                .beginVariableStructureBlock(5, 15, 4, 4, 3, 3, false)//?
+                .beginVariableStructureBlock(5, 16, 4, 4, 3, 3, false)//?
                 .addStructureInfo("From Bottom to Top, Left to Right")
-                .addStructureInfo("Layer 1 - Solid Steel Machine Casing, Input Bus (last is Output Bus), Solid Steel Machine Casing")
+                .addStructureInfo("Layer 1 - Solid Steel Machine Casing, Input Bus (last can be Output Bus), Solid Steel Machine Casing")
                 .addStructureInfo("Layer 2 - Reinforced Glass, Assembling Line Casing, Reinforced Glass")
                 .addStructureInfo("Layer 3 - Grate Machine Casing, Assembler Machine Casing, Grate Machine Casing")
                 .addStructureInfo("Layer 4 - Empty, Solid Steel Machine Casing, Empty")
-                .addStructureInfo("Up to 16 repeating slices, each one allows for 1 more item in recipes, aside from the last")
+                .addStructureInfo("Up to 16 repeating slices, each one allows for 1 more item in recipes")
 
                 .addController("Either Grate on layer 3 of the first slice")
                 .addEnergyHatch("Any layer 4 casing", 1)
