@@ -33,6 +33,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GT_Values.STEAM_PER_WATER;
+import static gregtech.api.enums.ItemList.Circuit_Integrated;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_BOILER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_BOILER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_BOILER_ACTIVE_GLOW;
@@ -181,15 +182,11 @@ public abstract class GT_MetaTileEntity_LargeBoiler extends GT_MetaTileEntity_En
         return true;
     }
 
-    boolean isIntegratedCircuit(ItemStack input) {
-        return input != null && input.getUnlocalizedName().startsWith("gt.integrated_circuit");
-    }
-
     boolean isFuelValid() {
         if (!isSuperheated())
             return true;
         for (ItemStack input : getStoredInputs()) {
-            if (!GT_Recipe.GT_Recipe_Map_LargeBoilerFakeFuels.isAllowedSolidFuel(input) && !isIntegratedCircuit(input)) {
+            if (!GT_Recipe.GT_Recipe_Map_LargeBoilerFakeFuels.isAllowedSolidFuel(input) && !Circuit_Integrated.isStackEqual(input, true, true)) {
                 //if any item is not in ALLOWED_SOLID_FUELS, operation cannot be allowed because it might still be consumed
                 this.mMaxProgresstime = 0;
                 this.mEUt = 0;
@@ -204,7 +201,7 @@ public abstract class GT_MetaTileEntity_LargeBoiler extends GT_MetaTileEntity_En
         if (!isFuelValid())
             return false;
         //Do we have an integrated circuit with a valid configuration?
-        if (isIntegratedCircuit(mInventory[1])) {
+        if (Circuit_Integrated.isStackEqual(mInventory[1], true, true)) {
             int circuit_config = mInventory[1].getItemDamage();
             if (circuit_config >= 1 && circuit_config <= 25) {
                 // If so, overwrite the current config
