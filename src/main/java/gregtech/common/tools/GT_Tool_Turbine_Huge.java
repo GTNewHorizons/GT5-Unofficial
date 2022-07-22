@@ -16,7 +16,7 @@ public class GT_Tool_Turbine_Huge extends GT_Tool_Turbine {
 
     @Override
     public float getBaseDamage() {
-        return 3.0F;
+        return 7.5F;
     }
 
     @Override
