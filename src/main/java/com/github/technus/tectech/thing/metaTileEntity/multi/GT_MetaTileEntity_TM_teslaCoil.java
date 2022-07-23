@@ -29,6 +29,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.*;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -445,13 +446,22 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     }
 
     @Override
-    public String[] getDescription() {
-        return new String[]{
-                CommonValues.BASS_MARK,
-                translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.desc.0"),//Tower of Wireless Power
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.desc.1"),//Fewer pesky cables!
-                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.desc.2"),//Survival chances might be affected
-        };
+    public GT_Multiblock_Tooltip_Builder createTooltip() {
+        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.name"))   // Machine Type: Tesla Tower
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.desc.0"))  // Controller block of the Tesla Tower
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.desc.1"))  // Used to transmit power to Tesla Coil Covers
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.desc.2"))  // Can be fed with Helium/Nitrogen/Radon Plasma to reduce power loss
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.desc.3"))  // Transmitted voltage depends on the used Tesla Capacitor tier
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.desc.4"))  // Primary Tesla Windings need to be at least the same tier as the Tesla Capacitor
+                .addInfo(translateToLocal("tt.keyword.Structure.StructureTooComplex")) // The structure is too complex!
+                .addSeparator()
+                .beginStructureBlock(7, 17, 7, false)
+                .addOtherStructurePart(translateToLocal("gt.blockmachines.hatch.capacitor.tier.03.name"), translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1) // Capacitor Hatch: Any outer Tesla Base Casing
+                .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1) // Energy Hatch: Any outer Tesla Base Casing
+                .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1) // Maintenance Hatch: Any outer Tesla Base Casing
+                .toolTipFinisher(CommonValues.BASS_MARK);
+        return tt;
     }
 
     @Override

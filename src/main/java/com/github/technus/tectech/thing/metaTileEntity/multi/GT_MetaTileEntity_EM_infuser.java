@@ -13,6 +13,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -157,14 +158,22 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
     }
 
     @Override
-    public String[] getDescription() {
-        return new String[]{
-                CommonValues.TEC_MARK_GENERAL,
-                translateToLocal("gt.blockmachines.multimachine.em.infuser.desc.0"),//Power Transfer Extreme!
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.multimachine.em.infuser.desc.1"),
-                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.multimachine.em.infuser.desc.2"),
-                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.multimachine.em.infuser.desc.3")
-        };
+    public GT_Multiblock_Tooltip_Builder createTooltip() {
+        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.infuser.name"))   // Machine Type: Network Switch With QoS
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.infuser.desc.0"))  // Controller block of the Energy Infuser
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.infuser.desc.1"))  // Can be used to charge items in the controller GUI
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.infuser.desc.2"))  // Has a loss of 3.125%
+                .addSeparator()
+                .beginStructureBlock(3, 5, 3, false)
+                .addController(translateToLocal("tt.keyword.Structure.FrontCenter3rd"))    // Controller: Front 3rd layer center
+                .addOtherStructurePart(translateToLocal("gt.blockcasingsTT.0.name"), translateToLocal("gt.blockmachines.multimachine.em.infuser.Structure.HighPowerCasing"))  // High Power Casing: Layer 1 and 5
+                .addOtherStructurePart(translateToLocal("gt.blockcasingsTT.7.name"), translateToLocal("gt.blockmachines.multimachine.em.infuser.Structure.MolecularCoil"))    // Molecular Coil: Layer 2 and 4
+                .addOtherStructurePart(translateToLocal("gt.blockcasingsTT.4.name"), translateToLocal("gt.blockmachines.multimachine.em.infuser.Structure.MolecularCasing"))  // Molecular Casing: Layer 3 (hollow)
+                .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1) // Energy Hatch: Any High Power Casing
+                .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1) // Maintenance Hatch: Any High Power Casing
+                .toolTipFinisher(CommonValues.TEC_MARK_GENERAL);
+        return tt;
     }
 
     @Override

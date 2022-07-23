@@ -19,6 +19,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
@@ -188,12 +189,22 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
     }
 
     @Override
-    public String[] getDescription() {
-        return new String[]{
-                CommonValues.TEC_MARK_EM,
-                translateToLocal("gt.blockmachines.multimachine.em.switch.desc.0"),//User controlled computation power routing
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.multimachine.em.switch.desc.1")//Quality of service is a must
-        };
+    public GT_Multiblock_Tooltip_Builder createTooltip() {
+        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.switch.name"))   // Machine Type: Network Switch With QoS
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.desc.0"))  // Controller block of the Network Switch With QoS
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.desc.1"))  // Used to route and distribute computation
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.desc.2"))  // Needs a Parametrizer to be configured
+                .addSeparator()
+                .beginStructureBlock(3, 3, 3, false)
+                .addController(translateToLocal("tt.keyword.Structure.FrontCenter"))    // Controller: Front center
+                .addCasingInfo(translateToLocal("gt.blockcasingsTT.1.name"), 0) // 0x Computer Casing (minimum)
+                .addOtherStructurePart(translateToLocal("tt.keyword.Structure.DataConnector"), translateToLocal("tt.keyword.Structure.AnyComputerCasing"), 2) // Data Connector: Any Computer Casing
+                .addOtherStructurePart(translateToLocal("gt.blockmachines.hatch.param.tier.05.name"), translateToLocal("tt.keyword.Structure.AnyComputerCasing"), 2) // Parametrizer: Any Computer Casing
+                .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyComputerCasing"), 1) // Energy Hatch: Any Computer Casing
+                .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyComputerCasing"), 1) // Maintenance Hatch: Any Computer Casing
+                .toolTipFinisher(CommonValues.TEC_MARK_EM);
+        return tt;
     }
 
     @Override

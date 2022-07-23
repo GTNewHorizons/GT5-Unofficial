@@ -22,6 +22,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
@@ -331,12 +332,19 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
     }
 
     @Override
-    public String[] getDescription() {
-        return new String[]{
-                CommonValues.TEC_MARK_EM,
-                translateToLocal("gt.blockmachines.multimachine.em.scanner.desc.0"),//What is existing here?
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.multimachine.em.scanner.desc.1")//I HAVE NO IDEA (yet)!
-        };
+    public GT_Multiblock_Tooltip_Builder createTooltip() {
+        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.scanner.name"))   // Machine Type: Elemental Scanner
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.scanner.desc.0"))  // Controller block of the Elemental Scanner
+                .addInfo(translateToLocal("tt.keyword.Structure.StructureTooComplex")) // The structure is too complex!
+                .addSeparator()
+                .beginStructureBlock(5, 5, 8, false)
+                .addOtherStructurePart(translateToLocal("tt.keyword.Structure.ElementalInput"), translateToLocal("tt.keyword.Structure.BackCenter"), 2) // Elemental Input Hatch: Back Center
+                .addOtherStructurePart(translateToLocal("tt.keyword.Structure.ElementalOutput"), translateToLocal("tt.keyword.Structure.AnyMolecularCasing3D"), 3) // Elemental Output Hatch: Any Molecular Casing with 3 dot
+                .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing1D"), 1) // Energy Hatch: Any High Power Casing with 1 dot
+                .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing1D"), 1) // Maintenance Hatch: Any High Power Casing with 1 dot
+                .toolTipFinisher(CommonValues.TEC_MARK_EM);
+        return tt;
     }
 
     @Override

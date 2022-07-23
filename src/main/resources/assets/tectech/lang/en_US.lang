@@ -547,16 +547,20 @@ gt.blockcasingsBA0.8.desc.1=Who wouldn't want a 32k epoxy multi?
 #Multiblocks
 gt.blockmachines.multimachine.em.transformer.name=Active Transformer
 gt.blockmachines.multimachine.em.transformer.hint=1 - Energy IO Hatches or High Power Casing
-gt.blockmachines.multimachine.em.transformer.desc.0=Power substation
-gt.blockmachines.multimachine.em.transformer.desc.1=All the transformation!
+gt.blockmachines.multimachine.em.transformer.desc.0=Controller block of the Active Transformer
+gt.blockmachines.multimachine.em.transformer.desc.1=Can transform to and from any voltage
 gt.blockmachines.multimachine.em.transformer.desc.2=Only 0.004% power loss, HAYO!
+gt.blockmachines.multimachine.em.transformer.desc.3=Will explode if broken while running
 
 gt.blockmachines.multimachine.tm.microwave.name=Microwave Grinder
 gt.blockmachines.multimachine.tm.microwave.hint.0=1 - Classic Hatches or Clean Stainless Steel Casing
 gt.blockmachines.multimachine.tm.microwave.hint.1=Also acts like a hopper so give it an Output Bus
-gt.blockmachines.multimachine.tm.microwave.desc.0=High Frequency Oven
-gt.blockmachines.multimachine.tm.microwave.desc.1=From live to done in seconds!
-gt.blockmachines.multimachine.tm.microwave.desc.2=I said nuke the... I meant microwave supper!
+gt.blockmachines.multimachine.tm.microwave.desc.0=Controller block of the Microwave Grinder
+gt.blockmachines.multimachine.tm.microwave.desc.1=Starts a timer when enabled
+gt.blockmachines.multimachine.tm.microwave.desc.2=While the timer is running anything inside the machine will take damage
+gt.blockmachines.multimachine.tm.microwave.desc.3=The machine will also collect any items inside of it
+gt.blockmachines.multimachine.tm.microwave.desc.4=Can be configured with a Parametrizer
+gt.blockmachines.multimachine.tm.microwave.desc.5=(Do not insert a Wither)
 gt.blockmachines.multimachine.tm.microwave.cfgi.0=Power setting
 gt.blockmachines.multimachine.tm.microwave.cfgi.1=Timer setting
 gt.blockmachines.multimachine.tm.microwave.cfgo.0=Timer value
@@ -565,9 +569,11 @@ gt.blockmachines.multimachine.tm.microwave.cfgo.1=Timer remaining
 gt.blockmachines.multimachine.tm.teslaCoil.name=Tesla Tower
 gt.blockmachines.multimachine.tm.teslaCoil.hint.0=1 - Classic Hatches, Capacitor Hatches or Tesla Base Casing
 gt.blockmachines.multimachine.tm.teslaCoil.hint.1=2 - Titanium Frames
-gt.blockmachines.multimachine.tm.teslaCoil.desc.0=Tower of Wireless Power
-gt.blockmachines.multimachine.tm.teslaCoil.desc.1=Fewer pesky cables!
-gt.blockmachines.multimachine.tm.teslaCoil.desc.2=Survival chances might be affected
+gt.blockmachines.multimachine.tm.teslaCoil.desc.0=Controller block of the Tesla Tower
+gt.blockmachines.multimachine.tm.teslaCoil.desc.1=Used to transmit power to Tesla Coil Covers
+gt.blockmachines.multimachine.tm.teslaCoil.desc.2=Can be fed with Helium/Nitrogen/Radon Plasma to reduce power loss
+gt.blockmachines.multimachine.tm.teslaCoil.desc.3=Transmitted voltage depends on the used Tesla Capacitor tier
+gt.blockmachines.multimachine.tm.teslaCoil.desc.4=Primary Tesla Windings need to be at least the same tier as the Tesla Capacitor
 gt.blockmachines.multimachine.tm.teslaCoil.cfgi.0=Hysteresis low setting
 gt.blockmachines.multimachine.tm.teslaCoil.cfgi.1=Hysteresis high setting
 gt.blockmachines.multimachine.tm.teslaCoil.cfgi.2=Tesla Towers transfer radius setting
@@ -590,8 +596,10 @@ gt.blockmachines.multimachine.tm.teslaCoil.cfgo.8=Scan time display
 
 gt.blockmachines.multimachine.em.switch.name=Network Switch With QoS
 gt.blockmachines.multimachine.em.switch.hint=1 - Classic/Data Hatches or Computer casing
-gt.blockmachines.multimachine.em.switch.desc.0=User controlled computation power routing
-gt.blockmachines.multimachine.em.switch.desc.1=Quality of service is a must
+gt.blockmachines.multimachine.em.switch.desc.0=Controller block of the Network Switch With QoS
+gt.blockmachines.multimachine.em.switch.desc.1=Used to route and distribute computation
+gt.blockmachines.multimachine.em.switch.desc.2=Needs a Parametrizer to be configured
+
 
 gt.blockmachines.multimachine.em.computer.name=Quantum Computer
 gt.blockmachines.multimachine.em.computer.hint.0=1 - Classic/Data Hatches or Computer casing
@@ -601,62 +609,67 @@ gt.blockmachines.multimachine.em.computer.cfgi.0=Overclock ratio
 gt.blockmachines.multimachine.em.computer.cfgi.1=Overvoltage ratio
 gt.blockmachines.multimachine.em.computer.cfgo.0=Current max. heat
 gt.blockmachines.multimachine.em.computer.cfgo.1=Produced computation
+gt.blockmachines.multimachine.em.computer.desc.0=Controller block of the Quantum Computer
+gt.blockmachines.multimachine.em.computer.desc.1=Used to generate computation (and heat)
 
 gt.blockmachines.multimachine.em.databank.name=Data Bank
 gt.blockmachines.multimachine.em.databank.hint.0=1 - Classic Hatches or high power casing
 gt.blockmachines.multimachine.em.databank.hint.1=2 - Data Access/Data Bank Master Hatches or computer casing
-gt.blockmachines.multimachine.em.databank.desc.0=Remote assembly data delivery
-gt.blockmachines.multimachine.em.databank.desc.1=Apply directly to the forehead
+gt.blockmachines.multimachine.em.databank.desc.0=Controller block of the Data Bank
+gt.blockmachines.multimachine.em.databank.desc.1=Used to supply Assembling Lines with more Data Sticks
+gt.blockmachines.multimachine.em.databank.desc.2=and give multiple Assembling Lines access to the same Data Stick
 
 gt.blockmachines.multimachine.em.junction.name=Matter Junction
 gt.blockmachines.multimachine.em.junction.hint.0=1 - Classic Hatches or High Power Casing
 gt.blockmachines.multimachine.em.junction.hint.1=2 - Elemental Hatches or Molecular Casing
-gt.blockmachines.multimachine.em.junction.desc.0=Reroutes Matter
-gt.blockmachines.multimachine.em.junction.desc.1=Axis aligned movement!
+gt.blockmachines.multimachine.em.junction.desc.0=Controller block of the Matter Junction
+gt.blockmachines.multimachine.em.junction.desc.1=Used to route and distribute elemental matter
+gt.blockmachines.multimachine.em.junction.desc.2=Needs a Parametrizer to be configured
 
 gt.blockmachines.multimachine.em.mattertoem.name=Matter Quantizer
 gt.blockmachines.multimachine.em.mattertoem.hint.0=1 - Classic Hatches or High Power Casing
 gt.blockmachines.multimachine.em.mattertoem.hint.1=2 - Elemental Output Hatch
 gt.blockmachines.multimachine.em.mattertoem.hint.2=3 - Elemental Overflow Hatches or Molecular Casing
-gt.blockmachines.multimachine.em.mattertoem.desc.0=Conveniently convert regular stuff into quantum form.
-gt.blockmachines.multimachine.em.mattertoem.desc.1=To make it more inconvenient.
+gt.blockmachines.multimachine.em.mattertoem.desc.0=Controller block of the Matter Quantizer
+gt.blockmachines.multimachine.em.mattertoem.desc.1=Transforms items into their elemental form
 
 gt.blockmachines.multimachine.em.emtomatter.name=Matter Dequantizer
 gt.blockmachines.multimachine.em.emtomatter.hint.0=1 - Classic Hatches or High Power Casing"
 gt.blockmachines.multimachine.em.emtomatter.hint.1=2 - Elemental Input Hatch
 gt.blockmachines.multimachine.em.emtomatter.hint.2=3 - Elemental Overflow Hatches or Molecular Casing
-gt.blockmachines.multimachine.em.emtomatter.desc.0=Transform quantum form back to...
-gt.blockmachines.multimachine.em.emtomatter.desc.1=regular one, but why?
+gt.blockmachines.multimachine.em.emtomatter.desc.0=Controller block of the Matter Dequantizer
+gt.blockmachines.multimachine.em.emtomatter.desc.1=Transforms elemental matter back into items
 
 gt.blockmachines.multimachine.em.emtoessentia.name=Essentia Dequantizer
 gt.blockmachines.multimachine.em.emtoessentia.hint.0=1 - Classic Hatches or High Power Casing
 gt.blockmachines.multimachine.em.emtoessentia.hint.1=2 - Elemental Input Hatch
 gt.blockmachines.multimachine.em.emtoessentia.hint.2=3 - Elemental Overflow Hatches or Elemental Casing
 gt.blockmachines.multimachine.em.emtoessentia.hint.3=General - Some sort of Essentia Storage
-gt.blockmachines.multimachine.em.emtoessentia.desc.0=Transform quantum form back to...
-gt.blockmachines.multimachine.em.emtoessentia.desc.1=regular one, but why?
+gt.blockmachines.multimachine.em.emtoessentia.desc.0=Controller block of the Essentia Dequantizer
+gt.blockmachines.multimachine.em.emtoessentia.desc.1=Transforms elemental matter back into essentia
 
 gt.blockmachines.multimachine.em.essentiatoem.name=Essentia Quantizer
 gt.blockmachines.multimachine.em.essentiatoem.hint.0=1 - Classic Hatches or High Power Casing
 gt.blockmachines.multimachine.em.essentiatoem.hint.1=2 - Elemental Output Hatch
 gt.blockmachines.multimachine.em.essentiatoem.hint.2=3 - Elemental Overflow Hatches or Elemental Casing
 gt.blockmachines.multimachine.em.essentiatoem.hint.3=General - Some sort of Essentia Storage
-gt.blockmachines.multimachine.em.essentiatoem.desc.0=Conveniently convert regular stuff into quantum form.
-gt.blockmachines.multimachine.em.essentiatoem.desc.1=To make it more inconvenient.
+gt.blockmachines.multimachine.em.essentiatoem.desc.0=Controller block of the Essentia Quantizer
+gt.blockmachines.multimachine.em.essentiatoem.desc.1=Transforms essentia into their elemental form
 
 gt.blockmachines.multimachine.em.scanner.name=Elemental Scanner
 gt.blockmachines.multimachine.em.scanner.hint.0=1 - Classic Hatches or High Power Casing
 gt.blockmachines.multimachine.em.scanner.hint.1=2 - Elemental Input Hatches or Molecular Casing
 gt.blockmachines.multimachine.em.scanner.hint.2=3 - Elemental Output Hatches or Molecular Casing
 gt.blockmachines.multimachine.em.scanner.hint.3=4 - Elemental Overflow Hatches or Molecular Casing
-gt.blockmachines.multimachine.em.scanner.desc.0=What is existing here?
-gt.blockmachines.multimachine.em.scanner.desc.1=I HAVE NO IDEA (yet)!
+gt.blockmachines.multimachine.em.scanner.desc.0=Controller block of the Elemental Scanner
 
 gt.blockmachines.multimachine.em.research.name=Research Station
 gt.blockmachines.multimachine.em.research.hint.0=1 - Classic/Data Hatches or Computer casing
 gt.blockmachines.multimachine.em.research.hint.1=2 - Holder Hatch
-gt.blockmachines.multimachine.em.research.desc.0=Philosophers didn't even...
-gt.blockmachines.multimachine.em.research.desc.1=dream about it!
+gt.blockmachines.multimachine.em.research.desc.0=Controller block of the Research Station
+gt.blockmachines.multimachine.em.research.desc.1=Used to scan Data Sticks for Assembling Line Recipes
+gt.blockmachines.multimachine.em.research.desc.2=Needs to be fed with computation to work
+gt.blockmachines.multimachine.em.research.desc.3=Does not consume the item until the Data Stick is written
 
 gt.blockmachines.multimachine.em.collider.name=Matter Collider
 gt.blockmachines.multimachine.em.collider.hint.0=1 - Classic Hatches or High Power Casing
@@ -664,19 +677,25 @@ gt.blockmachines.multimachine.em.collider.hint.1=2 - Elemental Input Hatches or 
 gt.blockmachines.multimachine.em.collider.hint.2=3 - Elemental Output Hatches or Molecular Casing
 gt.blockmachines.multimachine.em.collider.hint.3=4 - Elemental Overflow Hatches or Molecular Casing
 gt.blockmachines.multimachine.em.collider.hint.4=General - Another Controller facing opposite direction
-gt.blockmachines.multimachine.em.collider.desc.0=Collide matter at extreme velocities.
-gt.blockmachines.multimachine.em.collider.desc.1=Faster than light*!!!
+gt.blockmachines.multimachine.em.collider.desc.0=Controller block of the Matter Collider
+gt.blockmachines.multimachine.em.collider.desc.1=This machine needs a mirrored copy of it to work
+gt.blockmachines.multimachine.em.collider.desc.2=One needs to be set to 'Fuse Mode' and the other to 'Collide Mode'
+gt.blockmachines.multimachine.em.collider.desc.3=Fuses two elemental matter to create another (and power)
 gt.blockmachines.multimachine.em.collider.mode.0=Mode: Fuse
 gt.blockmachines.multimachine.em.collider.mode.1=Mode: Collide
 gt.blockmachines.multimachine.em.collider.mode.2=Mode: Undefined
 gt.blockmachines.multimachine.em.collider.mode.3=Currently Slaves...
+gt.blockmachines.multimachine.em.collider.Structure.AdditionalCollider=Needs another Matter Collider that is mirrored to this one
 
 gt.blockmachines.multimachine.em.infuser.name=Energy Infuser
 gt.blockmachines.multimachine.em.infuser.hint=1 - Classic Hatches or High Power Casing
-gt.blockmachines.multimachine.em.infuser.desc.0=Power Transfer Extreme!
-gt.blockmachines.multimachine.em.infuser.desc.1=Insanely fast charging!
-gt.blockmachines.multimachine.em.infuser.desc.2=Doesn't work while broken!
-gt.blockmachines.multimachine.em.infuser.desc.3=Power loss is a thing.
+gt.blockmachines.multimachine.em.infuser.desc.0=Controller block of the Energy Infuser
+gt.blockmachines.multimachine.em.infuser.desc.1=Can be used to charge items in the controller GUI
+gt.blockmachines.multimachine.em.infuser.desc.2=Has a loss of 3.125%
+gt.blockmachines.multimachine.em.infuser.Structure.HighPowerCasing=Layer 1 and 5
+gt.blockmachines.multimachine.em.infuser.Structure.MolecularCoil=Layer 2 and 4
+gt.blockmachines.multimachine.em.infuser.Structure.MolecularCasing=Layer 3 (hollow)
+
 
 gt.blockmachines.multimachine.em.processing.name=Quantum Processing Machine
 gt.blockmachines.multimachine.em.processing.hint.0=1 - Classic Hatches or High Power Casing
@@ -687,39 +706,36 @@ gt.blockmachines.multimachine.em.processing.desc.1=the time u started using it.
 gt.blockmachines.multimachine.em.crafter.name=Matter Assembler
 gt.blockmachines.multimachine.em.crafter.hint.0=1 - Classic Hatches or High Power Casing
 gt.blockmachines.multimachine.em.crafter.hint.1=2 - Elemental Hatches or Molecular Casing
-gt.blockmachines.multimachine.em.crafter.desc.0=The most precise way of making stuff.
-gt.blockmachines.multimachine.em.crafter.desc.1=(Trans-Planck process)
+gt.blockmachines.multimachine.em.crafter.desc.0=Controller block of the Matter Assembler
 
 gt.blockmachines.multimachine.em.stabilizer.name=Elemental Stabilizer
 gt.blockmachines.multimachine.em.stabilizer.hint.0=1 - Classic Hatches or High Power Casing
 gt.blockmachines.multimachine.em.stabilizer.hint.1=2 - Elemental Hatches or Molecular Casing
-gt.blockmachines.multimachine.em.stabilizer.desc.0=Alters time to stabilize matter
-gt.blockmachines.multimachine.em.stabilizer.desc.1=Wibbly wobbly timey wimey, stuff.
+gt.blockmachines.multimachine.em.stabilizer.desc.0=Controller block of the Elemental Stabilizer
 
 gt.blockmachines.multimachine.em.wormhole.name=Wormhole
 gt.blockmachines.multimachine.em.wormhole.hint.0=1 - Classic Hatches or High Power Casing
 gt.blockmachines.multimachine.em.wormhole.hint.1=2 - Elemental Hatches or Molecular Casing
-gt.blockmachines.multimachine.em.wormhole.desc.0=It is not full of worms.
-gt.blockmachines.multimachine.em.wormhole.desc.1=It is full of anti-worms!!!
+gt.blockmachines.multimachine.em.wormhole.desc.0=Controller block of the Wormhole
 
 gt.blockmachines.multimachine.em.decay.name=Decay Generator
 gt.blockmachines.multimachine.em.decay.hint.0=1 - Classic Hatches or High Power Casing
 gt.blockmachines.multimachine.em.decay.hint.1=2 - Elemental Hatches or Molecular Casing
-gt.blockmachines.multimachine.em.decay.desc.0=Is life time too long?
-gt.blockmachines.multimachine.em.decay.desc.1=Make it half-life (3) instead!
+gt.blockmachines.multimachine.em.decay.desc.0=Controller block of the Decay Generator
+gt.blockmachines.multimachine.em.decay.desc.1=Decays elemental matter to generate power
+
 gt.blockmachines.multimachine.em.decay.conf=Ampere divider
 
 gt.blockmachines.multimachine.em.annihilation.name=Annihilation Generator
 gt.blockmachines.multimachine.em.annihilation.hint.0=1 - Classic Hatches or High Power Casing
 gt.blockmachines.multimachine.em.annihilation.hint.1=2 - Elemental Hatches or Molecular Casing
-gt.blockmachines.multimachine.em.annihilation.desc.0=Things+Anti Things don't like each other.
-gt.blockmachines.multimachine.em.annihilation.desc.1=Matter into power!
+gt.blockmachines.multimachine.em.annihilation.desc.0=Controller block of the Annihilation Generator
 
 gt.blockmachines.multimachine.em.blackholegenerator.name=Black Hole Generator
 gt.blockmachines.multimachine.em.blackholegenerator.hint.0=1 - Classic Hatches or High Power Casing
 gt.blockmachines.multimachine.em.blackholegenerator.hint.1=2 - Elemental Hatches or Molecular Casing
-gt.blockmachines.multimachine.em.blackholegenerator.desc.0=Singularity based power generation.
-gt.blockmachines.multimachine.em.blackholegenerator.desc.1=Super unstable!!!
+gt.blockmachines.multimachine.em.blackholegenerator.desc.0=Controller block of the Black Hole Generator
+gt.blockmachines.multimachine.em.blackholegenerator.desc.1=Uses a black hole to generate power
 
 #Pipes
 gt.blockmachines.pipe.elementalmatter.name=Quantum "Tunnel"
@@ -800,6 +816,46 @@ gt.blockmachines.debug.tt.writer.desc.2=ABC axises aligned to machine front
 tt.keyword.ID=ID
 #Example: 32EU at 1A
 tt.keyword.at=at
+# Structure is too complex
+tt.keyword.Structure.StructureTooComplex=The structure is too complex!
+# Any X
+tt.keyword.Structure.AnyComputerCasing=Any Computer Casing
+tt.keyword.Structure.AnyHighPowerCasing=Any High Power Casing
+tt.keyword.Structure.AnyHighPowerCasing1D=Any High Power Casing with 1 dot
+tt.keyword.Structure.AnyHighPowerCasing2D=Any High Power Casing with 2 dots
+tt.keyword.Structure.AnyHighPowerCasingFront=Any High Power Casing on the front side
+tt.keyword.Structure.AnyTeslaBaseCasingOuter=Any outer Tesla Base Casing
+tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice=Any Computer Casing on the first or last slice
+tt.keyword.Structure.AnyComputerCasingBackMain=Any Computer Casing on the backside of the main body
+tt.keyword.Structure.AnyAdvComputerCasingExceptOuter=Any Advanced Computer Casing, except the outer ones
+tt.keyword.Structure.AnyMolecularCasing=Any Molecular Casing
+tt.keyword.Structure.AnyMolecularCasing2D=Any Molecular Casing with 2 dots
+tt.keyword.Structure.AnyMolecularCasing3D=Any Molecular Casing with 3 dots
+tt.keyword.Structure.AnyMolecularCasing4D=Any Molecular Casing with 4 dots
+tt.keyword.Structure.AnyOuterMolecularCasing3rd=Any outer Molecular Casing on the 3rd slice
+tt.keyword.Structure.AnyOuterMolecularCasing4th=Any outer Molecular Casing on the 4th slice
+tt.keyword.Structure.AnyOuterMolecularCasing3rd4th=Any outer Molecular Casing on the 3rd or 4th slice
+tt.keyword.Structure.AnyOuterCasingOnBottom=Any outer casing on the bottom layer
+# Optional
+tt.keyword.Structure.Optional=(optional)
+# Placement specification
+tt.keyword.Structure.FrontCenter=Front center
+tt.keyword.Structure.BackCenter=Back center
+tt.keyword.Structure.SideCenter=Side center
+tt.keyword.Structure.FrontCenter3rd=Front 3rd layer center
+tt.keyword.Structure.CenterPillar=Center of the front pillar
+tt.keyword.Structure.Center=Center
+# Additional structure components
+tt.keyword.Structure.DataAccessHatch=Data Access Hatch
+tt.keyword.Structure.ElementalOutput=Elemental Output Hatch
+tt.keyword.Structure.Elemental=Elemental Hatch
+tt.keyword.Structure.ElementalOverflow=Elemental Overflow Hatch
+tt.keyword.Structure.ElementalInput=Elemental Input Hatch
+tt.keyword.Structure.EssentiaStorage=Essentia Storage
+tt.keyword.Structure.DataConnector=Data Connector
+tt.keyword.Structure.SuperconductingCoilBlock=Superconducting Coil Block
+tt.keyword.Structure.StainlessSteelCasing=Stainless Steel Casing
+
 
 tt.keyphrase.Hint_Details=Hint Details
 

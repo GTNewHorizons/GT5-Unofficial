@@ -28,6 +28,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -577,12 +578,24 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    public String[] getDescription() {
-        return new String[]{
-                CommonValues.TEC_MARK_EM,
-                translateToLocal("gt.blockmachines.multimachine.em.collider.desc.0"),//Collide matter at extreme velocities.
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.multimachine.em.collider.desc.1")//Faster than light*!!!
-        };
+    public GT_Multiblock_Tooltip_Builder createTooltip() {
+        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.collider.name"))   // Machine Type: Matter Collider
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.collider.desc.0"))  // Controller block of the Matter Collider
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.collider.desc.1"))  // This machine needs a mirrored copy of it to work
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.collider.desc.2"))  // One needs to be set to 'Fuse Mode' and the other to 'Collide Mode'
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.collider.desc.3"))  // Fuses two elemental matter to create another (and power)
+                .addInfo(translateToLocal("tt.keyword.Structure.StructureTooComplex")) // The structure is too complex!
+                .addSeparator()
+                .beginStructureBlock(21, 3, 23, false)
+                .addOtherStructurePart(translateToLocal("gt.blockmachines.multimachine.em.collider.name"), translateToLocal("gt.blockmachines.multimachine.em.collider.Structure.AdditionalCollider"), 2) // Matter Collider: Needs another Matter Collider that is mirrored to this one
+                .addOtherStructurePart(translateToLocal("tt.keyword.Structure.ElementalInput"), translateToLocal("tt.keyword.Structure.AnyMolecularCasing2D"), 2) // Elemental Input Hatch: Any Molecular Casing with 2 dots
+                .addOtherStructurePart(translateToLocal("tt.keyword.Structure.ElementalOutput"), translateToLocal("tt.keyword.Structure.AnyMolecularCasing3D"), 2) // Elemental Output Hatch: Any Molecular Casing with 3 dots
+                .addOtherStructurePart(translateToLocal("tt.keyword.Structure.ElementalOverflow"), translateToLocal("tt.keyword.Structure.AnyMolecularCasing4D"), 2) // Elemental Overflow Hatch: Any Molecular Casing with 4 dots
+                .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1) // Energy Hatch: Any High Power Casing
+                .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1) // Maintenance Hatch: Any High Power Casing
+                .toolTipFinisher(CommonValues.TEC_MARK_EM);
+        return tt;
     }
 
     @Override

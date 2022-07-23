@@ -21,6 +21,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -292,12 +293,22 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    public String[] getDescription() {
-        return new String[]{
-                CommonValues.TEC_MARK_EM,
-                TT_Utility.intBitsToString(TecTech.RANDOM.nextInt()),
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.multimachine.em.computer.desc")//You need it to process the number above
-        };
+    public GT_Multiblock_Tooltip_Builder createTooltip() {
+        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.computer.name"))   // Machine Type: Quantum Computer
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.computer.desc.0"))  // Controller block of the Quantum Computer
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.computer.desc.1"))  // Used to generate computation (and heat)
+                .addInfo(translateToLocal("tt.keyword.Structure.StructureTooComplex")) // The structure is too complex!
+                .addSeparator()
+                .beginVariableStructureBlock(2, 2, 4, 4, 5, 16, false)
+                .addOtherStructurePart(translateToLocal("gt.blockmachines.hatch.certain.tier.07.name"), translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"), 1) // Uncertainty Resolver: Any Computer Casing on first or last slice
+                .addOtherStructurePart(translateToLocal("tt.keyword.Structure.DataConnector"), translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"), 1) // Optical Connector: Any Computer Casing on first or last slice
+                .addOtherStructurePart(translateToLocal("gt.blockmachines.hatch.rack.tier.08.name"), translateToLocal("tt.keyword.Structure.AnyAdvComputerCasingExceptOuter"), 2) // Computer Rack: Any Advanced Computer Casing, except the outer ones
+                .addOtherStructurePart(translateToLocal("gt.blockmachines.hatch.param.tier.05.name"), translateToLocal ("tt.keyword.Structure.Optional") + " " + translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"), 2) // Parametrizer: (optional) Any Computer Casing on first or last slice
+                .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"), 1) // Energy Hatch: Any Computer Casing on first or last slice
+                .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"), 1) // Maintenance Hatch: Any Computer Casing on first or last slice
+                .toolTipFinisher(CommonValues.TEC_MARK_EM);
+        return tt;
     }
 
     @Override

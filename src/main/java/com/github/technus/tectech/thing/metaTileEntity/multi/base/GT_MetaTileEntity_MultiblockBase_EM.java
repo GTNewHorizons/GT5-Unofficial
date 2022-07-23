@@ -28,6 +28,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.*;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Pollution;
@@ -54,7 +55,7 @@ import static java.lang.Math.min;
 /**
  * Created by danie_000 on 27.10.2016.
  */
-public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEntity_MultiBlockBase implements IAlignment {
+public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEntity_TooltipMultiBlockBase implements IAlignment {
     //region Client side variables (static - one per class)
 
     //Front icon holders - static so it is default one for my blocks
@@ -329,17 +330,12 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         return list;
     }
 
-    /**
-     * TOOLTIP
-     *
-     * @return strings in tooltip
-     */
     @Override
-    public String[] getDescription() {
-        return new String[]{
-                TEC_MARK_GENERAL,
-                "Nothing special just override me."
-        };
+    public GT_Multiblock_Tooltip_Builder createTooltip() {
+        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        tt.addInfo("Nothing special just override me")
+                .toolTipFinisher(TEC_MARK_GENERAL);
+        return tt;
     }
 
     /**
