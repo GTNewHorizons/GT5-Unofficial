@@ -58,6 +58,7 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
             .addInfo("Time required to reach full efficiency is proportional to")
             .addInfo("the height of empty space within")
             .addInfo("Make sure your Energy Hatch matches! ?")
+            .addInfo("Machines that cause pollution aren't allowed to be put in.")
             .addSeparator()
             .beginVariableStructureBlock(3, 15, 4, 15, 3, 15, true)
             .addController("Top center")
