@@ -47,6 +47,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
+import java.util.HashMap;
 
 import static com.github.bartimaeusnek.bartworks.util.BW_Util.calculateSv;
 
@@ -59,6 +60,7 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch {
     private byte mass;
     private String material;
     private byte coverage;
+    private static HashMap<Integer, Long> sievertDecayCache = new HashMap<>();
 
     public GT_MetaTileEntity_RadioHatch(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 1, new String[]{StatCollector.translateToLocal("tooltip.tile.radhatch.0.name"), StatCollector.translateToLocal("tooltip.tile.tiereddsc.3.name") + " " + (aTier - 2) + " " + ((aTier - 2) >= 2 ? StatCollector.translateToLocal("tooltip.bw.kg.1.name") : StatCollector.translateToLocal("tooltip.bw.kg.0.name")), StatCollector.translateToLocal("tooltip.tile.radhatch.1.name"), BW_Tooltip_Reference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get()});
@@ -76,15 +78,20 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch {
     }
 
     public static long calcDecayTicks(int x) {
-        long ret;
+        long ret = GT_MetaTileEntity_RadioHatch.sievertDecayCache.getOrDefault(x, 0L);
+        if (ret != 0)
+            return ret;
+
         if (x == 43)
             ret = 5000;
         else if (x == 61)
             ret = 4500;
         else if (x <= 100)
-            ret = MathUtils.ceilLong((8000F * MathUtils.tanh(-x / 20F) + 8000F) * 1000F);
+            ret = MathUtils.ceilLong((8000D * Math.tanh(-x / 20D) + 8000D) * 1000D);
         else
-            ret = MathUtils.ceilLong(((8000F * MathUtils.tanh(-x / 65F) + 8000F)));
+            ret = MathUtils.ceilLong(((8000D * Math.tanh(-x / 65D) + 8000D)));
+
+        GT_MetaTileEntity_RadioHatch.sievertDecayCache.put(x, ret);
         return ret;//*20;
     }
 
@@ -156,8 +163,9 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch {
             if (this.mass > 0)
                 ++this.timer;
 
-            if (this.mass > 0 && this.sievert > 0 && GT_MetaTileEntity_RadioHatch.calcDecayTicks(this.sievert) > 0) {
-                if (this.timer % (GT_MetaTileEntity_RadioHatch.calcDecayTicks(this.sievert)) == 0) {
+            if (this.mass > 0 && this.sievert > 0) {
+                float decayTicks = GT_MetaTileEntity_RadioHatch.calcDecayTicks(this.sievert);
+                if (decayTicks > 0 && this.timer % decayTicks == 0) {
                     this.mass--;
                     if (this.mass == 0) {
                         this.material = StatCollector.translateToLocal("tooltip.bw.empty.name");
