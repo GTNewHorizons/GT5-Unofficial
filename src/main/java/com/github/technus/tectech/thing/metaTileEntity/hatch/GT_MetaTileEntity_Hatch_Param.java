@@ -138,12 +138,12 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch {
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setInteger("ePointer", pointer);
+        aNBT.setLong("ePointer", pointer);
         aNBT.setDouble("eValue0D", value0D);
         aNBT.setDouble("eValue1D", value1D);
         aNBT.setDouble("eInput0D", input0D);
         aNBT.setDouble("eInput1D", input1D);
-        aNBT.setInteger("eParam", param);
+        aNBT.setLong("eParam", param);
     }
 
     @Override
@@ -157,15 +157,15 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch {
                 aNBT.hasKey("eInput1i")){
             boolean usesFloat = aNBT.getBoolean("eFloats");
             if(usesFloat){
-                value0D=Float.intBitsToFloat(aNBT.getInteger("eValue0i"));
-                value1D=Float.intBitsToFloat(aNBT.getInteger("eValue1i"));
-                input0D=Float.intBitsToFloat(aNBT.getInteger("eInput0i"));
-                input1D=Float.intBitsToFloat(aNBT.getInteger("eInput1i"));
+                value0D=Double.longBitsToDouble(aNBT.getLong("eValue0i"));
+                value1D=Double.longBitsToDouble(aNBT.getLong("eValue1i"));
+                input0D=Double.longBitsToDouble(aNBT.getLong("eInput0i"));
+                input1D=Double.longBitsToDouble(aNBT.getLong("eInput1i"));
             }else {
-                value0D=aNBT.getInteger("eValue0i");
-                value1D=aNBT.getInteger("eValue1i");
-                input0D=aNBT.getInteger("eInput0i");
-                input1D=aNBT.getInteger("eInput1i");
+                value0D=aNBT.getLong("eValue0i");
+                value1D=aNBT.getLong("eValue1i");
+                input0D=aNBT.getLong("eInput0i");
+                input1D=aNBT.getLong("eInput1i");
             }
         }else{
             value0D=aNBT.getDouble("eValue0D");
