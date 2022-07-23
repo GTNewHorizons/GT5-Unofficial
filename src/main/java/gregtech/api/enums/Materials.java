@@ -952,6 +952,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     */
 
     //Superconductor re-routed for mod compability. Circuits are re-routed into SuperconductorUHV aswell, internal name is now Superconductor while translated name is SuperconductorUHV
+    /**
+     * @deprecated Use {@link #SuperconductorUHV} instead
+     */
     @Deprecated
     public static Materials Superconductor = new Materials(SuperconductorUHV, true);// new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Superconductor"          ,   "Superconductor"                ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 9)));
     @Deprecated

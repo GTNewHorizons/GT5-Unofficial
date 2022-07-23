@@ -1,6 +1,6 @@
 package gregtech.common.tools;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.GT_MetaGenerated_Tool;
@@ -73,17 +73,12 @@ public class GT_Tool_Soldering_Iron extends GT_Tool {
 
     @Override
     public String getCraftingSound() {
-        return (String) GregTech_API.sSoundList.get(100);
+        return SoundResource.IC2_TOOLS_WRENCH.toString();
     }
 
     @Override
     public String getEntityHitSound() {
         return null;
-    }
-
-    @Override
-    public String getBreakingSound() {
-        return (String) GregTech_API.sSoundList.get(0);
     }
 
     @Override

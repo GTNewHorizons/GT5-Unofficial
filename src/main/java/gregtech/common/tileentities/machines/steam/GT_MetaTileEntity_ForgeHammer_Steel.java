@@ -1,6 +1,9 @@
 package gregtech.common.tileentities.machines.steam;
 
-import gregtech.api.GregTech_API;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.ParticleFX;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.gui.GT_GUIContainer_BasicMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -9,9 +12,13 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachin
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 public class GT_MetaTileEntity_ForgeHammer_Steel extends GT_MetaTileEntity_BasicMachine_Steel {
     public GT_MetaTileEntity_ForgeHammer_Steel(int aID, String aName, String aNameRegional) {
@@ -45,7 +52,7 @@ public class GT_MetaTileEntity_ForgeHammer_Steel extends GT_MetaTileEntity_Basic
     public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {
         super.startSoundLoop(aIndex, aX, aY, aZ);
         if (aIndex == 1) {
-            GT_Utility.doSoundAtClient(GregTech_API.sSoundList.get(1), 10, 1.0F, aX, aY, aZ);
+            GT_Utility.doSoundAtClient(SoundResource.RANDOM_ANVIL_USE, 10, 1.0F, aX, aY, aZ);
         }
     }
 
@@ -57,64 +64,126 @@ public class GT_MetaTileEntity_ForgeHammer_Steel extends GT_MetaTileEntity_Basic
     @Override
     public ITexture[] getSideFacingActive(byte aColor) {
         return new ITexture[]{
-                super.getSideFacingActive(aColor)[0],
-                TextureFactory.of(OVERLAY_SIDE_STEAM_HAMMER_ACTIVE),
-                TextureFactory.builder().addIcon(OVERLAY_SIDE_STEAM_HAMMER_ACTIVE_GLOW).glow().build()};
+            super.getSideFacingActive(aColor)[0],
+            TextureFactory.of(OVERLAY_SIDE_STEAM_HAMMER_ACTIVE),
+            TextureFactory.builder().addIcon(OVERLAY_SIDE_STEAM_HAMMER_ACTIVE_GLOW).glow().build()};
     }
 
     @Override
     public ITexture[] getSideFacingInactive(byte aColor) {
         return new ITexture[]{
-                super.getSideFacingInactive(aColor)[0],
-                TextureFactory.of(OVERLAY_SIDE_STEAM_HAMMER),
-                TextureFactory.builder().addIcon(OVERLAY_SIDE_STEAM_HAMMER_GLOW).glow().build()};
+            super.getSideFacingInactive(aColor)[0],
+            TextureFactory.of(OVERLAY_SIDE_STEAM_HAMMER),
+            TextureFactory.builder().addIcon(OVERLAY_SIDE_STEAM_HAMMER_GLOW).glow().build()};
     }
 
     @Override
     public ITexture[] getFrontFacingActive(byte aColor) {
         return new ITexture[]{
-                super.getFrontFacingActive(aColor)[0],
-                TextureFactory.of(OVERLAY_FRONT_STEAM_HAMMER_ACTIVE),
-                TextureFactory.builder().addIcon(OVERLAY_FRONT_STEAM_HAMMER_ACTIVE_GLOW).glow().build()};
+            super.getFrontFacingActive(aColor)[0],
+            TextureFactory.of(OVERLAY_FRONT_STEAM_HAMMER_ACTIVE),
+            TextureFactory.builder().addIcon(OVERLAY_FRONT_STEAM_HAMMER_ACTIVE_GLOW).glow().build()};
     }
 
     @Override
     public ITexture[] getFrontFacingInactive(byte aColor) {
         return new ITexture[]{
-                super.getFrontFacingInactive(aColor)[0],
-                TextureFactory.of(OVERLAY_FRONT_STEAM_HAMMER),
-                TextureFactory.builder().addIcon(OVERLAY_FRONT_STEAM_HAMMER_GLOW).glow().build()};
+            super.getFrontFacingInactive(aColor)[0],
+            TextureFactory.of(OVERLAY_FRONT_STEAM_HAMMER),
+            TextureFactory.builder().addIcon(OVERLAY_FRONT_STEAM_HAMMER_GLOW).glow().build()};
     }
 
     @Override
     public ITexture[] getTopFacingActive(byte aColor) {
         return new ITexture[]{
-                super.getTopFacingActive(aColor)[0],
-                TextureFactory.of(OVERLAY_TOP_STEAM_HAMMER_ACTIVE),
-                TextureFactory.builder().addIcon(OVERLAY_TOP_STEAM_HAMMER_ACTIVE_GLOW).glow().build()};
+            super.getTopFacingActive(aColor)[0],
+            TextureFactory.of(OVERLAY_TOP_STEAM_HAMMER_ACTIVE),
+            TextureFactory.builder().addIcon(OVERLAY_TOP_STEAM_HAMMER_ACTIVE_GLOW).glow().build()};
     }
 
     @Override
     public ITexture[] getTopFacingInactive(byte aColor) {
         return new ITexture[]{
-                super.getTopFacingInactive(aColor)[0],
-                TextureFactory.of(OVERLAY_TOP_STEAM_HAMMER),
-                TextureFactory.builder().addIcon(OVERLAY_TOP_STEAM_HAMMER_GLOW).glow().build()};
+            super.getTopFacingInactive(aColor)[0],
+            TextureFactory.of(OVERLAY_TOP_STEAM_HAMMER),
+            TextureFactory.builder().addIcon(OVERLAY_TOP_STEAM_HAMMER_GLOW).glow().build()};
     }
 
     @Override
     public ITexture[] getBottomFacingActive(byte aColor) {
         return new ITexture[]{
-                super.getBottomFacingActive(aColor)[0],
-                TextureFactory.of(OVERLAY_BOTTOM_STEAM_HAMMER_ACTIVE),
-                TextureFactory.builder().addIcon(OVERLAY_BOTTOM_STEAM_HAMMER_ACTIVE_GLOW).glow().build()};
+            super.getBottomFacingActive(aColor)[0],
+            TextureFactory.of(OVERLAY_BOTTOM_STEAM_HAMMER_ACTIVE),
+            TextureFactory.builder().addIcon(OVERLAY_BOTTOM_STEAM_HAMMER_ACTIVE_GLOW).glow().build()};
     }
 
     @Override
     public ITexture[] getBottomFacingInactive(byte aColor) {
         return new ITexture[]{
-                super.getBottomFacingInactive(aColor)[0],
-                TextureFactory.of(OVERLAY_BOTTOM_STEAM_HAMMER),
-                TextureFactory.builder().addIcon(OVERLAY_BOTTOM_STEAM_HAMMER_GLOW).glow().build()};
+            super.getBottomFacingInactive(aColor)[0],
+            TextureFactory.of(OVERLAY_BOTTOM_STEAM_HAMMER),
+            TextureFactory.builder().addIcon(OVERLAY_BOTTOM_STEAM_HAMMER_GLOW).glow().build()};
+    }
+
+    /**
+     * Handles {@link Block#randomDisplayTick}.
+     * Draws Random Sparkles at main face.
+     *
+     * @param aBaseMetaTileEntity The entity that will handle the {@see Block#randomDisplayTick}
+     */
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void onRandomDisplayTick(IGregTechTileEntity aBaseMetaTileEntity) {
+
+        // Random Sparkles at main face
+        if (aBaseMetaTileEntity.isActive() && XSTR_INSTANCE.nextInt(3) == 0) {
+
+            final byte mainFacing = (byte) this.mMainFacing;
+
+            if (mainFacing > 1
+                && aBaseMetaTileEntity.getCoverIDAtSide(mainFacing) == 0
+                && !aBaseMetaTileEntity.getOpacityAtSide(mainFacing)) {
+
+                final double oX = aBaseMetaTileEntity.getXCoord();
+                final double oY = aBaseMetaTileEntity.getYCoord();
+                final double oZ = aBaseMetaTileEntity.getZCoord();
+                final double offset = 0.02D;
+                final double horizontal = 0.5D + XSTR_INSTANCE.nextFloat() * 8D / 16D - 4D / 16D;
+
+                final double x, y, z, mX, mZ;
+
+                y = oY + XSTR_INSTANCE.nextFloat() * 10D / 16D + 5D / 16D;
+
+                if (mainFacing == ForgeDirection.WEST.ordinal()) {
+                    x = oX - offset;
+                    mX = -.05D;
+                    z = oZ + horizontal;
+                    mZ = 0D;
+                } else if (mainFacing == ForgeDirection.EAST.ordinal()) {
+                    x = oX + offset;
+                    mX = .05D;
+                    z = oZ + horizontal;
+                    mZ = 0D;
+                } else if (mainFacing == ForgeDirection.NORTH.ordinal()) {
+                    x = oX + horizontal;
+                    mX = 0D;
+                    z = oZ - offset;
+                    mZ = -.05D;
+                } else // if (frontFacing == ForgeDirection.SOUTH.ordinal())
+                {
+                    x = oX + horizontal;
+                    mX = 0D;
+                    z = oZ + offset;
+                    mZ = .05D;
+                }
+
+                ParticleEventBuilder particleEventBuilder =
+                    (new ParticleEventBuilder())
+                        .setMotion(mX, 0, mZ)
+                        .setPosition(x, y, z)
+                        .setWorld(getBaseMetaTileEntity().getWorld());
+                particleEventBuilder.setIdentifier(ParticleFX.LAVA).run();
+            }
+        }
     }
 }

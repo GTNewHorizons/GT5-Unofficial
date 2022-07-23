@@ -1,7 +1,7 @@
 package gregtech.common.tools;
 
-import gregtech.api.GregTech_API;
 import gregtech.api.damagesources.GT_DamageSources;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import net.minecraft.block.Block;
@@ -77,7 +77,7 @@ public abstract class GT_Tool implements IToolStats {
 
     @Override
     public String getBreakingSound() {
-        return (String) GregTech_API.sSoundList.get(Integer.valueOf(0));
+        return SoundResource.RANDOM_BREAK.toString();
     }
 
     @Override
@@ -99,12 +99,12 @@ public abstract class GT_Tool implements IToolStats {
     public boolean isGrafter() {
         return false;
     }
-    
+
     @Override
     public boolean isChainsaw(){
     	return false;
     }
-    
+
     @Override
     public boolean isWrench() {
         return false;

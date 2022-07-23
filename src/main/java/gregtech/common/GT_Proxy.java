@@ -970,7 +970,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
             new WorldSpawnedEventBuilder.SoundAtEntityEventBuilder()
                     .setPitch(0.64893958288F + tSpeed * 0.5F)
                     .setVolume(1f)
-                    .setIdentifier("random.bow")
+                    .setIdentifier(SoundResource.RANDOM_BOW)
                     .setEntity(aEvent.entityPlayer)
                     .setWorld(aEvent.entityPlayer.worldObj)
                     .run();
