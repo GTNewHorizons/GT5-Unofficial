@@ -243,7 +243,7 @@ public class GT_Container_ParamAdv extends GT_ContainerMetaTile_Machine {
     @Override
     @SideOnly(Side.CLIENT)
     public void updateProgressBar(int par1, int par2) {
-            super.updateProgressBar(par1, par2);
+        super.updateProgressBar(par1, par2);
         switch (par1) {
             case 100:
             case 101:
