@@ -138,12 +138,12 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch {
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setLong("ePointer", pointer);
+        aNBT.setInteger("ePointer", pointer);
         aNBT.setDouble("eValue0D", value0D);
         aNBT.setDouble("eValue1D", value1D);
         aNBT.setDouble("eInput0D", input0D);
         aNBT.setDouble("eInput1D", input1D);
-        aNBT.setLong("eParam", param);
+        aNBT.setInteger("eParam", param);
     }
 
     @Override
