@@ -70,11 +70,6 @@ public class GT_Tool_Axe extends GT_Tool {
     }
 
     @Override
-    public String getBreakingSound() {
-        return (String) GregTech_API.sSoundList.get(0);
-    }
-
-    @Override
     public String getMiningSound() {
         return null;
     }
@@ -114,7 +109,7 @@ public class GT_Tool_Axe extends GT_Tool {
         }
         return rAmount;
     }
-    
+
     @Override
     public float getMiningSpeed(Block aBlock, byte aMetaData, float aDefault, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ)
     {

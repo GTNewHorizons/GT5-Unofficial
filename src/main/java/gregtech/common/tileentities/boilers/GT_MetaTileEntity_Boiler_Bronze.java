@@ -3,6 +3,7 @@ package gregtech.common.tileentities.boilers;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GT_Mod;
+import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
@@ -12,7 +13,7 @@ import gregtech.api.objects.XSTR;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import gregtech.api.util.WorldSpawnedEventBuilder;
+import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
 import gregtech.common.GT_Pollution;
 import gregtech.common.gui.GT_Container_Boiler;
 import gregtech.common.gui.GT_GUIContainer_Boiler;
@@ -36,7 +37,7 @@ public class GT_MetaTileEntity_Boiler_Bronze extends GT_MetaTileEntity_Boiler {
         super(aID, aName, aNameRegional, new String[]{
                 "An early way to get Steam Power",
                 "Produces 120L of Steam per second",
-                "Causes "+Integer.toString(GT_Mod.gregtechproxy.mPollutionSmallCoalBoilerPerSecond)+" Pollution per second"});
+                "Causes " + GT_Mod.gregtechproxy.mPollutionSmallCoalBoilerPerSecond + " Pollution per second"});
     }
 
     public GT_MetaTileEntity_Boiler_Bronze(int aID, String aName, String aNameRegional, String[] aDescription) {
@@ -95,6 +96,11 @@ public class GT_MetaTileEntity_Boiler_Bronze extends GT_MetaTileEntity_Boiler {
         return new GT_MetaTileEntity_Boiler_Bronze(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
     }
 
+    /**
+     * Draws random flames and smoke particles in front of active boiler
+     *
+     * @param aBaseMetaTileEntity The entity that will handle the {@link Block#randomDisplayTick}
+     */
     @SideOnly(Side.CLIENT)
     @Override
     public void onRandomDisplayTick(IGregTechTileEntity aBaseMetaTileEntity) {
@@ -102,47 +108,43 @@ public class GT_MetaTileEntity_Boiler_Bronze extends GT_MetaTileEntity_Boiler {
 
             final byte frontFacing = aBaseMetaTileEntity.getFrontFacing();
 
-            final double oX = aBaseMetaTileEntity.getOffsetX(frontFacing, 1) + 0.5F;
-            final double oY = aBaseMetaTileEntity.getOffsetY(frontFacing, 1) + XSTR_INSTANCE.nextFloat() * 6.0F / 16.0F;
-            final double oZ = aBaseMetaTileEntity.getOffsetZ(frontFacing, 1) + 0.5F;
-            final double offset = -0.48F;
-            final double horizontal = XSTR_INSTANCE.nextFloat() * 0.6F - 0.3F;
+            if (frontFacing > 1
+                && aBaseMetaTileEntity.getCoverIDAtSide(frontFacing) == 0
+                && !aBaseMetaTileEntity.getOpacityAtSide(frontFacing)) {
 
-            final double x, z;
+                final double oX = aBaseMetaTileEntity.getOffsetX(frontFacing, 1) + 8D / 16D;
+                final double oY = aBaseMetaTileEntity.getOffsetY(frontFacing, 1);
+                final double oZ = aBaseMetaTileEntity.getOffsetZ(frontFacing, 1) + 8D / 16D;
+                final double offset = -0.48D;
+                final double horizontal = XSTR_INSTANCE.nextFloat() * 10D / 16D - 5D / 16D;
 
-            if (frontFacing == ForgeDirection.WEST.ordinal())
-            {
-                x = (oX - offset);
-                z = oZ + horizontal;
-            }
-            else if (frontFacing == ForgeDirection.EAST.ordinal())
-            {
-                x = oX + offset;
-                z = oZ + horizontal;
-            }
-            else if (frontFacing == ForgeDirection.NORTH.ordinal())
-            {
-                x = oX + horizontal;
-                z = oZ - offset;
-            }
-            else // if (frontFacing == ForgeDirection.SOUTH.ordinal())
-            {
-               x = oX + horizontal;
-               z = oZ + offset;
-            }
+                final double x, y, z;
 
-            new WorldSpawnedEventBuilder.ParticleEventBuilder()
-                    .setMotion(0D, 0.0D, 0D)
-                    .setIdentifier("smoke")
-                    .setPosition(x, oY, z)
-                    .setWorld(getBaseMetaTileEntity().getWorld())
-                    .run();
-            new WorldSpawnedEventBuilder.ParticleEventBuilder()
-                    .setMotion(0D, 0.0D, 0D)
-                    .setIdentifier("flame")
-                    .setPosition(x, oY, z)
-                    .setWorld(getBaseMetaTileEntity().getWorld())
-                    .run();
+                y = oY + XSTR_INSTANCE.nextFloat() * 6D / 16D;
+
+                if (frontFacing == ForgeDirection.WEST.ordinal()) {
+                    x = oX - offset;
+                    z = oZ + horizontal;
+                } else if (frontFacing == ForgeDirection.EAST.ordinal()) {
+                    x = oX + offset;
+                    z = oZ + horizontal;
+                } else if (frontFacing == ForgeDirection.NORTH.ordinal()) {
+                    x = oX + horizontal;
+                    z = oZ - offset;
+                } else // if (frontFacing == ForgeDirection.SOUTH.ordinal())
+                {
+                    x = oX + horizontal;
+                    z = oZ + offset;
+                }
+
+                ParticleEventBuilder particleEventBuilder =
+                    (new ParticleEventBuilder())
+                        .setMotion(0D, 0D, 0D)
+                        .setPosition(x, y, z)
+                        .setWorld(getBaseMetaTileEntity().getWorld());
+                particleEventBuilder.setIdentifier(ParticleFX.SMOKE).run();
+                particleEventBuilder.setIdentifier(ParticleFX.FLAME).run();
+            }
         }
     }
 

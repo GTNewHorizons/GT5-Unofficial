@@ -1,7 +1,7 @@
 package gregtech.common.tools;
 
 import gregtech.GT_Mod;
-import gregtech.api.GregTech_API;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.util.GT_Recipe;
@@ -22,6 +22,8 @@ import net.minecraftforge.event.world.BlockEvent;
 
 import java.util.Arrays;
 import java.util.List;
+
+import static gregtech.GT_Mod.MAX_IC2;
 
 public class GT_Tool_HardHammer extends GT_Tool {
     public static final List<String> mEffectiveList = Arrays.asList(EntityIronGolem.class.getName(), "EntityTowerGuardian");
@@ -80,7 +82,7 @@ public class GT_Tool_HardHammer extends GT_Tool {
 
     @Override
     public String getCraftingSound() {
-        return (String) GregTech_API.sSoundList.get(1);
+        return SoundResource.RANDOM_ANVIL_USE.toString();
     }
 
     @Override
@@ -90,7 +92,7 @@ public class GT_Tool_HardHammer extends GT_Tool {
 
     @Override
     public String getBreakingSound() {
-        return (String) GregTech_API.sSoundList.get(2);
+        return SoundResource.RANDOM_ANVIL_BREAK.toString();
     }
 
     @Override
@@ -127,10 +129,10 @@ public class GT_Tool_HardHammer extends GT_Tool {
     @Override
     public int convertBlockDrops(List<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, Block aBlock, int aX, int aY, int aZ, byte aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {
         int rConversions = 0;
-        GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sHammerRecipes.findRecipe(null, true, 2147483647L, null, new ItemStack(aBlock, 1, aMetaData));
+        GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sHammerRecipes.findRecipe(null, true, MAX_IC2, null, new ItemStack(aBlock, 1, aMetaData));
         if ((tRecipe == null) || (aBlock.hasTileEntity(aMetaData))) {
             for (ItemStack tDrop : aDrops) {
-                tRecipe = GT_Recipe.GT_Recipe_Map.sHammerRecipes.findRecipe(null, true, 2147483647L, null, GT_Utility.copyAmount(1L, new Object[]{tDrop}));
+                tRecipe = GT_Recipe.GT_Recipe_Map.sHammerRecipes.findRecipe(null, true, MAX_IC2, null, GT_Utility.copyAmount(1L, tDrop));
                 if (tRecipe != null) {
                     ItemStack tHammeringOutput = tRecipe.getOutput(0);
                     if (tHammeringOutput != null) {
@@ -178,7 +180,7 @@ public class GT_Tool_HardHammer extends GT_Tool {
     public void onToolCrafted(ItemStack aStack, EntityPlayer aPlayer) {
         super.onToolCrafted(aStack, aPlayer);
         try {
-            GT_Mod.instance.achievements.issueAchievement(aPlayer, "tools");
+            GT_Mod.achievements.issueAchievement(aPlayer, "tools");
         } catch (Exception ignored) {
         }
     }

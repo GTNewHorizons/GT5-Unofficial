@@ -27,7 +27,7 @@ public abstract class WorldSpawnedEventBuilder implements Runnable {
         return this;
     }
 
-    /* Methodes */
+    /* Methods */
 
     @SuppressWarnings("unchecked")
     public <U extends WorldSpawnedEventBuilder> void times(int times, Consumer<U> action) {
@@ -66,6 +66,7 @@ public abstract class WorldSpawnedEventBuilder implements Runnable {
     private interface IStringIdentifierWorldSpawnedEvent {
          String getIdentifier();
          IStringIdentifierWorldSpawnedEvent setIdentifier(String identifier);
+         IStringIdentifierWorldSpawnedEvent setIdentifier(Enum<?> identifier);
     }
 
     private interface ISoundWorldSpawnedEvent {
@@ -150,6 +151,12 @@ public abstract class WorldSpawnedEventBuilder implements Runnable {
             this.identifier = identifier;
             return this;
         }
+
+        @Override
+        public StringIdentifierPositionedWorldSpawnedEventBuilder setIdentifier(Enum<?> identifier){
+            this.identifier = identifier.toString();
+            return this;
+        }
     }
 
     private abstract static class SoundStringIdentifierPositionedWorldSpawnedEventBuilder extends StringIdentifierPositionedWorldSpawnedEventBuilder implements ISoundWorldSpawnedEvent {
@@ -221,6 +228,11 @@ public abstract class WorldSpawnedEventBuilder implements Runnable {
         }
 
         @Override
+        public ParticleEventBuilder setIdentifier(Enum<?> identifier) {
+            return (ParticleEventBuilder) super.setIdentifier(identifier);
+        }
+
+        @Override
         public void run() {
             if (getPosition() == null || getIdentifier() == null || getMotion() == null || getWorld() == null)
                 throw new IllegalStateException("Position, identifier, motion and world must be set");
@@ -252,6 +264,11 @@ public abstract class WorldSpawnedEventBuilder implements Runnable {
 
         @Override
         public SoundEffectEventBuilder setIdentifier(String identifier) {
+            return (SoundEffectEventBuilder) super.setIdentifier(identifier);
+        }
+
+        @Override
+        public SoundEffectEventBuilder setIdentifier(Enum<?> identifier) {
             return (SoundEffectEventBuilder) super.setIdentifier(identifier);
         }
 
@@ -497,6 +514,12 @@ public abstract class WorldSpawnedEventBuilder implements Runnable {
         }
 
         @Override
+        public SoundAtEntityEventBuilder setIdentifier(Enum<?> identifier) {
+            this.identifier = identifier.toString();
+            return this;
+        }
+
+        @Override
         public float getPitch() {
             return pitch;
         }
@@ -552,6 +575,12 @@ public abstract class WorldSpawnedEventBuilder implements Runnable {
         @Override
         public SoundToNearExceptEventBuilder setIdentifier(String identifier) {
             this.identifier = identifier;
+            return this;
+        }
+
+        @Override
+        public SoundToNearExceptEventBuilder setIdentifier(Enum<?> identifier) {
+            this.identifier = identifier.toString();
             return this;
         }
 

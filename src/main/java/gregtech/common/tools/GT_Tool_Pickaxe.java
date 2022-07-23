@@ -1,7 +1,6 @@
 package gregtech.common.tools;
 
 import gregtech.GT_Mod;
-import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.util.GT_ToolHarvestHelper;
@@ -64,11 +63,6 @@ public class GT_Tool_Pickaxe extends GT_Tool {
     @Override
     public String getEntityHitSound() {
         return null;
-    }
-
-    @Override
-    public String getBreakingSound() {
-        return (String) GregTech_API.sSoundList.get(0);
     }
 
     @Override

@@ -3,6 +3,7 @@ package gregtech.api.metatileentity.implementations;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GT_Mod;
+import gregtech.api.enums.ParticleFX;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -92,7 +93,7 @@ public class GT_MetaTileEntity_Hatch_Muffler extends GT_MetaTileEntity_Hatch {
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isClientSide() && this.getBaseMetaTileEntity().isActive()) {
-            pollutionParticles(this.getBaseMetaTileEntity().getWorld(), "largesmoke");
+            pollutionParticles(this.getBaseMetaTileEntity().getWorld(), ParticleFX.LARGE_SMOKE.toString());
         }
     }
 

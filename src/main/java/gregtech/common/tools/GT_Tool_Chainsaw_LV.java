@@ -3,6 +3,7 @@ package gregtech.common.tools;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.GT_MetaGenerated_Tool;
@@ -65,22 +66,17 @@ public class GT_Tool_Chainsaw_LV extends GT_Tool_Saw {
 
     @Override
     public String getCraftingSound() {
-        return (String) GregTech_API.sSoundList.get(104);
+        return SoundResource.IC2_TOOLS_CHAINSAW_CHAINSAW_USE_ONE.toString();
     }
 
     @Override
     public String getEntityHitSound() {
-        return (String) GregTech_API.sSoundList.get(105);
-    }
-
-    @Override
-    public String getBreakingSound() {
-        return (String) GregTech_API.sSoundList.get(0);
+        return SoundResource.IC2_TOOLS_CHAINSAW_CHAINSAW_USE_TWO.toString();
     }
 
     @Override
     public String getMiningSound() {
-        return (String) GregTech_API.sSoundList.get(104);
+        return SoundResource.IC2_TOOLS_CHAINSAW_CHAINSAW_USE_ONE.toString();
     }
 
     @Override
@@ -92,7 +88,7 @@ public class GT_Tool_Chainsaw_LV extends GT_Tool_Saw {
     public boolean isChainsaw(){
     	return true;
     }
-    
+
     @Override
     public boolean isWeapon() {
         return true;
@@ -102,8 +98,8 @@ public class GT_Tool_Chainsaw_LV extends GT_Tool_Saw {
     public void onToolCrafted(ItemStack aStack, EntityPlayer aPlayer) {
         super.onToolCrafted(aStack, aPlayer);
         try {
-            GT_Mod.instance.achievements.issueAchievement(aPlayer, "brrrr");
-            GT_Mod.instance.achievements.issueAchievement(aPlayer, "buildChainsaw");
+            GT_Mod.achievements.issueAchievement(aPlayer, "brrrr");
+            GT_Mod.achievements.issueAchievement(aPlayer, "buildChainsaw");
         } catch (Exception ignored) {
         }
     }
@@ -115,10 +111,10 @@ public class GT_Tool_Chainsaw_LV extends GT_Tool_Saw {
             if (((IShearable) aBlock).isShearable(aStack, aPlayer.worldObj, aX, aY, aZ)) {
                 ArrayList<ItemStack> tDrops = ((IShearable) aBlock).onSheared(aStack, aPlayer.worldObj, aX, aY, aZ, aFortune);
                 aDrops.clear();
-       
+
             }
             aPlayer.worldObj.setBlock(aX, aY, aZ, Blocks.air, 0, 0);
-        } else 
+        } else
         	if (((aBlock.getMaterial() == Material.ice) || (aBlock.getMaterial() == Material.packedIce)) && (aDrops.isEmpty())) {
             aDrops.add(new ItemStack(aBlock, 1, aMetaData));
             aPlayer.worldObj.setBlockToAir(aX, aY, aZ);
@@ -136,7 +132,7 @@ public class GT_Tool_Chainsaw_LV extends GT_Tool_Saw {
         }
         return rAmount;
     }
-    
+
     @Override
     public float getMiningSpeed(Block aBlock, byte aMetaData, float aDefault, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ)
     {

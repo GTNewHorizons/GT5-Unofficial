@@ -1,7 +1,6 @@
 package gregtech.common.tools;
 
 import gregtech.GT_Mod;
-import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.util.GT_ToolHarvestHelper;
@@ -65,11 +64,6 @@ public class GT_Tool_UniversalSpade extends GT_Tool {
     @Override
     public String getEntityHitSound() {
         return null;
-    }
-
-    @Override
-    public String getBreakingSound() {
-        return (String) GregTech_API.sSoundList.get(0);
     }
 
     @Override
@@ -142,7 +136,7 @@ public class GT_Tool_UniversalSpade extends GT_Tool {
         super.onToolCrafted(aStack, aPlayer);
         aPlayer.triggerAchievement(AchievementList.buildSword);
         try {
-            GT_Mod.instance.achievements.issueAchievement(aPlayer, "unitool");
+            GT_Mod.achievements.issueAchievement(aPlayer, "unitool");
         } catch (Exception ignored) {
         }
     }

@@ -1,8 +1,8 @@
 package gregtech.common.items.behaviors;
 
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
@@ -26,7 +26,7 @@ public class Behaviour_Spray_Color extends Behaviour_None {
     private final ItemStack mFull;
     private final long mUses;
     private final byte mColor;
-    private final Collection<Block> mAllowedVanillaBlocks = Arrays.asList(new Block[]{Blocks.glass, Blocks.glass_pane, Blocks.stained_glass, Blocks.stained_glass_pane, Blocks.carpet, Blocks.hardened_clay, ItemList.TE_Rockwool.getBlock()});
+    private final Collection<Block> mAllowedVanillaBlocks = Arrays.asList(Blocks.glass, Blocks.glass_pane, Blocks.stained_glass, Blocks.stained_glass_pane, Blocks.carpet, Blocks.hardened_clay, ItemList.TE_Rockwool.getBlock());
     private final String mTooltip;
     private final String mTooltipUses = GT_LanguageManager.addStringLocalization("gt.behaviour.paintspray.uses", "Remaining Uses:");
     private final String mTooltipUnstackable = GT_LanguageManager.addStringLocalization("gt.behaviour.unstackable", "Not usable when stacked!");
@@ -60,7 +60,7 @@ public class Behaviour_Spray_Color extends Behaviour_None {
             tUses = this.mUses;
         }
         if ((GT_Utility.areStacksEqual(aStack, this.mUsed, true)) && (colorize(aWorld, aX, aY, aZ, aSide))) {
-            GT_Utility.sendSoundToPlayers(aWorld, (String) GregTech_API.sSoundList.get(Integer.valueOf(102)), 1.0F, 1.0F, aX, aY, aZ);
+            GT_Utility.sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_PAINTER, 1.0F, 1.0F, aX, aY, aZ);
             if (!aPlayer.capabilities.isCreativeMode) {
                 tUses -= 1L;
             }
@@ -90,24 +90,24 @@ public class Behaviour_Spray_Color extends Behaviour_None {
         Block aBlock = aWorld.getBlock(aX, aY, aZ);
         if ((aBlock != Blocks.air) && ((this.mAllowedVanillaBlocks.contains(aBlock)) || ((aBlock instanceof BlockColored)))) {
             if (aBlock == Blocks.hardened_clay) {
-                aWorld.setBlock(aX, aY, aZ, Blocks.stained_hardened_clay, (this.mColor ^ 0xFFFFFFFF) & 0xF, 3);
+                aWorld.setBlock(aX, aY, aZ, Blocks.stained_hardened_clay, (~this.mColor) & 0xF, 3);
                 return true;
             }
             if (aBlock == Blocks.glass_pane) {
-                aWorld.setBlock(aX, aY, aZ, Blocks.stained_glass_pane, (this.mColor ^ 0xFFFFFFFF) & 0xF, 3);
+                aWorld.setBlock(aX, aY, aZ, Blocks.stained_glass_pane, (~this.mColor) & 0xF, 3);
                 return true;
             }
             if (aBlock == Blocks.glass) {
-                aWorld.setBlock(aX, aY, aZ, Blocks.stained_glass, (this.mColor ^ 0xFFFFFFFF) & 0xF, 3);
+                aWorld.setBlock(aX, aY, aZ, Blocks.stained_glass, (~this.mColor) & 0xF, 3);
                 return true;
             }
-            if (aWorld.getBlockMetadata(aX, aY, aZ) == ((this.mColor ^ 0xFFFFFFFF) & 0xF)) {
+            if (aWorld.getBlockMetadata(aX, aY, aZ) == ((~this.mColor) & 0xF)) {
                 return false;
             }
-            aWorld.setBlockMetadataWithNotify(aX, aY, aZ, (this.mColor ^ 0xFFFFFFFF) & 0xF, 3);
+            aWorld.setBlockMetadataWithNotify(aX, aY, aZ, (~this.mColor) & 0xF, 3);
             return true;
         }
-        return aBlock.recolourBlock(aWorld, aX, aY, aZ, ForgeDirection.getOrientation(aSide), (this.mColor ^ 0xFFFFFFFF) & 0xF);
+        return aBlock.recolourBlock(aWorld, aX, aY, aZ, ForgeDirection.getOrientation(aSide), (~this.mColor) & 0xF);
     }
 
     @Override

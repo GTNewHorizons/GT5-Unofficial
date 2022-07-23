@@ -1,17 +1,19 @@
 package gregtech.api.metatileentity.implementations;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Log;
-import gregtech.common.power.Power;
 import gregtech.api.util.GT_Recipe;
-import gregtech.common.power.SteamPower;
 import gregtech.api.util.GT_Utility;
-import gregtech.api.util.WorldSpawnedEventBuilder;
+import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
+import gregtech.common.power.Power;
+import gregtech.common.power.SteamPower;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
@@ -20,13 +22,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import java.util.ArrayList;
 
 import static gregtech.api.enums.GT_Values.D1;
-import static gregtech.api.enums.Textures.BlockIcons.MACHINE_BRONZEBRICKS_BOTTOM;
-import static gregtech.api.enums.Textures.BlockIcons.MACHINE_BRONZEBRICKS_SIDE;
-import static gregtech.api.enums.Textures.BlockIcons.MACHINE_BRONZEBRICKS_TOP;
-import static gregtech.api.enums.Textures.BlockIcons.MACHINE_BRONZE_BOTTOM;
-import static gregtech.api.enums.Textures.BlockIcons.MACHINE_BRONZE_SIDE;
-import static gregtech.api.enums.Textures.BlockIcons.MACHINE_BRONZE_TOP;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
+import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 /**
@@ -43,7 +39,7 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
         super(aID, aName, aNameRegional, aHighPressure ? 2 : 1, 0, aDescription, aInputSlotCount, aOutputSlotCount, "", "");
     }
 
-    public GT_MetaTileEntity_BasicMachine_Bronze(String aName, String aDescription, ITexture[][][] aTextures, int aInputSlotCount, int aOutputSlotCount,  boolean aHighPressure) {
+    public GT_MetaTileEntity_BasicMachine_Bronze(String aName, String aDescription, ITexture[][][] aTextures, int aInputSlotCount, int aOutputSlotCount, boolean aHighPressure) {
         super(aName, aHighPressure ? 2 : 1, 0, aDescription, aTextures, aInputSlotCount, aOutputSlotCount, "", "");
     }
 
@@ -185,23 +181,23 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
     public void doSound(byte aIndex, double aX, double aY, double aZ) {
         super.doSound(aIndex, aX, aY, aZ);
         if (aIndex == 9) {
-            GT_Utility.doSoundAtClient(GregTech_API.sSoundList.get(4), 5, 1.0F, aX, aY, aZ);
+            GT_Utility.doSoundAtClient(SoundResource.RANDOM_FIZZ, 5, 1.0F, aX, aY, aZ);
 
-            new WorldSpawnedEventBuilder.ParticleEventBuilder()
-                    .setIdentifier("largesmoke")
-                    .setWorld(getBaseMetaTileEntity().getWorld())
-                    .setMotion(
-                            ForgeDirection.getOrientation(getBaseMetaTileEntity().getFrontFacing()).offsetX / 5.0,
-                            ForgeDirection.getOrientation(getBaseMetaTileEntity().getFrontFacing()).offsetY / 5.0,
-                            ForgeDirection.getOrientation(getBaseMetaTileEntity().getFrontFacing()).offsetZ / 5.0
-                    )
-                    .<WorldSpawnedEventBuilder.ParticleEventBuilder>times(8, x -> x
-                            .setPosition(
-                                    aX - 0.5 + XSTR_INSTANCE.nextFloat(),
-                                    aY - 0.5 + XSTR_INSTANCE.nextFloat(),
-                                    aZ - 0.5 + XSTR_INSTANCE.nextFloat()
-                            ).run()
-                    );
+            new ParticleEventBuilder()
+                .setIdentifier(ParticleFX.CLOUD)
+                .setWorld(getBaseMetaTileEntity().getWorld())
+                .setMotion(
+                    ForgeDirection.getOrientation(getBaseMetaTileEntity().getFrontFacing()).offsetX / 5.0,
+                    ForgeDirection.getOrientation(getBaseMetaTileEntity().getFrontFacing()).offsetY / 5.0,
+                    ForgeDirection.getOrientation(getBaseMetaTileEntity().getFrontFacing()).offsetZ / 5.0
+                )
+                .<ParticleEventBuilder>times(8, x -> x
+                    .setPosition(
+                        aX - 0.5 + XSTR_INSTANCE.nextFloat(),
+                        aY - 0.5 + XSTR_INSTANCE.nextFloat(),
+                        aZ - 0.5 + XSTR_INSTANCE.nextFloat()
+                    ).run()
+                );
         }
     }
 

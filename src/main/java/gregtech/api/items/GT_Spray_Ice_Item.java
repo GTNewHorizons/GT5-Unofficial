@@ -1,8 +1,8 @@
 package gregtech.api.items;
 
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
@@ -26,9 +26,9 @@ public class GT_Spray_Ice_Item extends GT_Tool_Item {
 		addToEffectiveList("EntityTFFireBeetle");
 		addToEffectiveList("EntityTFMazeSlime");
 		addToEffectiveList("EntityTFSlimeBeetle");
-		setCraftingSound(GregTech_API.sSoundList.get(102));
-		setBreakingSound(GregTech_API.sSoundList.get(102));
-		setEntityHitSound(GregTech_API.sSoundList.get(102));
+		setCraftingSound(Sounds.IC2_TOOLS_PAINTER);
+		setBreakingSound(Sounds.IC2_TOOLS_PAINTER);
+		setEntityHitSound(Sounds.IC2_TOOLS_PAINTER);
 		setUsageAmounts(4, 16, 1);*/
 
         for (Object tName : Arrays.asList(OrePrefixes.bucket.get(Materials.Water), OrePrefixes.cell.get(Materials.Water), OrePrefixes.capsule.get(Materials.Water))) {
@@ -61,7 +61,7 @@ public class GT_Spray_Ice_Item extends GT_Tool_Item {
 
         if (aBlock == Blocks.water || aBlock == Blocks.flowing_water) {
             if (aMeta == 0 && GT_ModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
-                GT_Utility.sendSoundToPlayers(aWorld, GregTech_API.sSoundList.get(102), 1.0F, -1, aX, aY, aZ);
+                GT_Utility.sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_PAINTER, 1.0F, -1, aX, aY, aZ);
                 aWorld.setBlock(aX, aY, aZ, Blocks.ice, 0, 3);
                 return true;
             }
@@ -70,7 +70,7 @@ public class GT_Spray_Ice_Item extends GT_Tool_Item {
 
         if (aBlock == Blocks.lava || aBlock == Blocks.flowing_lava) {
             if (aMeta == 0 && GT_ModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
-                GT_Utility.sendSoundToPlayers(aWorld, GregTech_API.sSoundList.get(102), 1.0F, -1, aX, aY, aZ);
+                GT_Utility.sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_PAINTER, 1.0F, -1, aX, aY, aZ);
                 aWorld.setBlock(aX, aY, aZ, Blocks.obsidian, 0, 3);
                 return true;
             }
