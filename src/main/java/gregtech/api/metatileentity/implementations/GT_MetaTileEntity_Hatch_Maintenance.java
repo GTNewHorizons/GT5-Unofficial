@@ -148,13 +148,14 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
         if (aSide == aBaseMetaTileEntity.getFrontFacing()) {
             // only allow OC robot fake player
             if (aPlayer instanceof FakePlayer && !aPlayer.getGameProfile().getName().endsWith(".robot"))
-                return true;
+                return false;
             if (aPlayer.getCurrentEquippedItem() != null && aPlayer.getCurrentEquippedItem().getItem() instanceof ItemToolbox)
                 applyToolbox(aPlayer.getCurrentEquippedItem(), aPlayer);
             else
                 aBaseMetaTileEntity.openGUI(aPlayer);
+            return true;
         }
-        return true;
+        return false;
     }
 
     @Override

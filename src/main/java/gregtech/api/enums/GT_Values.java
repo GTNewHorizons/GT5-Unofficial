@@ -1,5 +1,6 @@
 package gregtech.api.enums;
 
+import gregtech.api.fluid.FluidTankGT;
 import gregtech.api.interfaces.internal.IGT_Mod;
 import gregtech.api.interfaces.internal.IGT_RecipeAdder;
 import gregtech.api.net.IGT_NetworkHandler;
@@ -7,6 +8,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.HashSet;
@@ -232,7 +235,6 @@ public class GT_Values {
             RES_PATH_IC2 = MOD_ID_IC2.toLowerCase(Locale.ENGLISH) + ":",
             RES_PATH_MODEL = MOD_ID + ":" + TEX_DIR + "models/";
 
-
     /**
      * NBT String Keys
      */
@@ -449,6 +451,12 @@ public class GT_Values {
     public static final int[] emptyIntArray = new int[0];
 
 
+    public static final IFluidTank[] emptyFluidTank = new IFluidTank[0];
+    public static final FluidTankGT[] emptyFluidTankGT = new FluidTankGT[0];
+    public static final FluidTankInfo[] emptyFluidTankInfo = new FluidTankInfo[0];
+    public static final FluidStack[] emptyFluidStack = new FluidStack[0];
+    public static final ItemStack[] emptyItemStackArray = new ItemStack[0];
+
     /**
      *  Pretty formatting for author names.
      */
@@ -458,6 +466,5 @@ public class GT_Values {
         EnumChatFormatting.GREEN + EnumChatFormatting.BOLD + EnumChatFormatting.ITALIC + EnumChatFormatting.UNDERLINE + "l" +
         EnumChatFormatting.DARK_AQUA + EnumChatFormatting.BOLD + EnumChatFormatting.ITALIC + EnumChatFormatting.UNDERLINE + "e" +
         EnumChatFormatting.DARK_PURPLE + EnumChatFormatting.BOLD + EnumChatFormatting.ITALIC + EnumChatFormatting.UNDERLINE + "n";
-
 
 }

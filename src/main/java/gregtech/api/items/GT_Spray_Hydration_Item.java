@@ -1,6 +1,6 @@
 package gregtech.api.items;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
@@ -13,9 +13,9 @@ import net.minecraft.world.World;
 public class GT_Spray_Hydration_Item extends GT_Tool_Item {
     public GT_Spray_Hydration_Item(String aUnlocalized, String aEnglish, int aMaxDamage, int aEntityDamage) {
         super(aUnlocalized, aEnglish, "To hydrate Crops and similar", aMaxDamage, aEntityDamage, true);/*
-        setCraftingSound(GregTech_API.sSoundList.get(102));
-		setBreakingSound(GregTech_API.sSoundList.get(102));
-		setEntityHitSound(GregTech_API.sSoundList.get(102));
+        setCraftingSound(Sounds.IC2_TOOLS_PAINTER);
+		setBreakingSound(Sounds.IC2_TOOLS_PAINTER);
+		setEntityHitSound(Sounds.IC2_TOOLS_PAINTER);
 		setUsageAmounts(20, 3, 1);*/
     }
 
@@ -35,7 +35,7 @@ public class GT_Spray_Hydration_Item extends GT_Tool_Item {
                 int tCropBefore = ((ic2.api.crops.ICropTile) aTileEntity).getHydrationStorage();
                 if (tCropBefore <= 100 && GT_ModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
                     ((ic2.api.crops.ICropTile) aTileEntity).setHydrationStorage(tCropBefore + 100);
-                    GT_Utility.sendSoundToPlayers(aWorld, GregTech_API.sSoundList.get(102), 1.0F, -1, aX, aY, aZ);
+                    GT_Utility.sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_PAINTER, 1.0F, -1, aX, aY, aZ);
                 }
                 return true;
             }
@@ -44,7 +44,7 @@ public class GT_Spray_Hydration_Item extends GT_Tool_Item {
         if (aTileEntity instanceof IGregTechTileEntity) {
             if (((IGregTechTileEntity) aTileEntity).getColorization() >= 0 && GT_ModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
                 ((IGregTechTileEntity) aTileEntity).setColorization((byte) -1);
-                GT_Utility.sendSoundToPlayers(aWorld, GregTech_API.sSoundList.get(102), 1.0F, -1, aX, aY, aZ);
+                GT_Utility.sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_PAINTER, 1.0F, -1, aX, aY, aZ);
             }
         }
 

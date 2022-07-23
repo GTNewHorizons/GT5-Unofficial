@@ -2,8 +2,10 @@ package gregtech.common.tileentities.boilers;
 
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
@@ -11,7 +13,7 @@ import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
-import gregtech.api.util.WorldSpawnedEventBuilder;
+import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
 import gregtech.common.GT_Pollution;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -24,14 +26,13 @@ import net.minecraftforge.fluids.IFluidHandler;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTank {
+    public static final byte SOUND_EVENT_LET_OFF_EXCESS_STEAM = 1;
     public int mTemperature = 20;
     public int mProcessingEnergy = 0;
     public int mLossTimer = 0;
     public FluidStack mSteam = null;
     public boolean mHadNoWater = false;
     private int mExcessWater = 0;
-
-    public static final byte SOUND_EVENT_LET_OFF_EXCESS_STEAM = 1;
 
     public GT_MetaTileEntity_Boiler(int aID, String aName, String aNameRegional, String aDescription, ITexture... aTextures) {
         super(aID, aName, aNameRegional, 0, 4, aDescription, aTextures);
@@ -44,7 +45,7 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
     public GT_MetaTileEntity_Boiler(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 4, aDescription, aTextures);
     }
-    
+
     public GT_MetaTileEntity_Boiler(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 4, aDescription, aTextures);
     }
@@ -190,7 +191,8 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
         }
         try {
             aNBT.setTag("mSteam", this.mSteam.writeToNBT(new NBTTagCompound()));
-        } catch (Throwable ignored) {}
+        } catch (Throwable ignored) {
+        }
     }
 
     @Override
@@ -224,8 +226,7 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         pollute(aTick);
 
-        if (isNotAllowedToWork(aBaseMetaTileEntity, aTick))
-            return;
+        if (isNotAllowedToWork(aBaseMetaTileEntity, aTick)) return;
 
         calculateCooldown();
         pushSteamToInventories(aBaseMetaTileEntity);
@@ -292,27 +293,23 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
         return false;
     }
 
-    protected void onDangerousWaterLack(IGregTechTileEntity tile, long ticks) {
+    protected void onDangerousWaterLack(IGregTechTileEntity tile, long ignoredTicks) {
         tile.doExplosion(2048L);
     }
 
     protected final void pushSteamToSide(IGregTechTileEntity aBaseMetaTileEntity, int aSide) {
         IFluidHandler tTileEntity = aBaseMetaTileEntity.getITankContainerAtSide((byte) aSide);
-        if (tTileEntity == null)
-            return;
+        if (tTileEntity == null) return;
         FluidStack tDrained = aBaseMetaTileEntity.drain(ForgeDirection.getOrientation(aSide), Math.max(1, this.mSteam.amount / 2), false);
-        if (tDrained == null)
-            return;
+        if (tDrained == null) return;
         int tFilledAmount = tTileEntity.fill(ForgeDirection.getOrientation(aSide).getOpposite(), tDrained, false);
-        if (tFilledAmount <= 0)
-            return;
+        if (tFilledAmount <= 0) return;
         tTileEntity.fill(ForgeDirection.getOrientation(aSide).getOpposite(), aBaseMetaTileEntity.drain(ForgeDirection.getOrientation(aSide), tFilledAmount, true), true);
     }
 
     protected void pushSteamToInventories(IGregTechTileEntity aBaseMetaTileEntity) {
         for (int i = 1; (this.mSteam != null) && (i < 6); i++) {
-            if (i == aBaseMetaTileEntity.getFrontFacing())
-                continue;
+            if (i == aBaseMetaTileEntity.getFrontFacing()) continue;
             pushSteamToSide(aBaseMetaTileEntity, i);
         }
     }
@@ -342,19 +339,9 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
     @Override
     public void doSound(byte aIndex, double aX, double aY, double aZ) {
         if (aIndex == GT_MetaTileEntity_Boiler.SOUND_EVENT_LET_OFF_EXCESS_STEAM) {
-            GT_Utility.doSoundAtClient(GregTech_API.sSoundList.get(4), 2, 1.0F, aX, aY, aZ);
+            GT_Utility.doSoundAtClient(SoundResource.RANDOM_FIZZ, 2, 1.0F, aX, aY, aZ);
 
-            new WorldSpawnedEventBuilder.ParticleEventBuilder()
-                    .setIdentifier("largesmoke")
-                    .setWorld(getBaseMetaTileEntity().getWorld())
-                    .setMotion(0D, 0D, 0D)
-                    .<WorldSpawnedEventBuilder.ParticleEventBuilder>times(8, x -> x
-                            .setPosition(
-                                    aX - 0.5D + XSTR_INSTANCE.nextFloat(),
-                                    aY,
-                                    aZ - 0.5D + XSTR_INSTANCE.nextFloat()
-                            ).run()
-                    );
+            new ParticleEventBuilder().setIdentifier(ParticleFX.CLOUD).setWorld(getBaseMetaTileEntity().getWorld()).setMotion(0D, 0D, 0D).<ParticleEventBuilder>times(8, x -> x.setPosition(aX - 0.5D + XSTR_INSTANCE.nextFloat(), aY, aZ - 0.5D + XSTR_INSTANCE.nextFloat()).run());
         }
     }
 

@@ -1,12 +1,7 @@
 package gregtech.common.tileentities.machines.multi;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.gtnewhorizon.structurelib.StructureLibAPI;
-import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
-import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
@@ -29,7 +24,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.util.ForgeDirection;
-import org.lwjgl.input.Keyboard;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static gregtech.api.enums.GT_Values.debugCleanroom;
 import static gregtech.api.enums.Textures.BlockIcons.*;
@@ -61,6 +58,7 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
             .addInfo("Time required to reach full efficiency is proportional to")
             .addInfo("the height of empty space within")
             .addInfo("Make sure your Energy Hatch matches! ?")
+            .addInfo("Machines that cause pollution aren't allowed to be put in.")
             .addSeparator()
             .beginVariableStructureBlock(3, 15, 4, 15, 3, 15, true)
             .addController("Top center")
@@ -287,6 +285,15 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
         }
         this.mHeight = -y;
         return true;
+    }
+
+    public void doMaintenanceIssue() {
+        mWrench = false;
+        mScrewdriver = false;
+        mSoftHammer = false;
+        mHardHammer = false;
+        mSolderingTool = false;
+        mCrowbar = false;
     }
 
     private void setCallbacks(int x, int y, int z, IGregTechTileEntity aBaseMetaTileEntity) {

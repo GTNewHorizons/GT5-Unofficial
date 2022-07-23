@@ -2,6 +2,7 @@ package gregtech.common.tileentities.machines.multi;
 
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.interfaces.ITexture;
@@ -52,6 +53,11 @@ public class GT_MetaTileEntity_Charcoal_Pit extends GT_MetaTileEntity_TooltipMul
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         // No GUI, do not capture right-click so it does not interfere when placing logs
         return false;
+    }
+
+    @Override
+    public Class<?> getType() {
+        return GT_MetaTileEntity_Cleanroom.class;
     }
 
     @Override
@@ -277,7 +283,7 @@ public class GT_MetaTileEntity_Charcoal_Pit extends GT_MetaTileEntity_TooltipMul
 
             new WorldSpawnedEventBuilder.ParticleEventBuilder()
                     .setMotion(0D,0.3D,0D)
-                    .setIdentifier("largesmoke")
+                    .setIdentifier(ParticleFX.LARGE_SMOKE)
                     .setPosition(
                             aBaseMetaTileEntity.getOffsetX((byte) 1, 1) + XSTR_INSTANCE.nextFloat(),
                             aBaseMetaTileEntity.getOffsetY((byte) 1, 1),

@@ -1,6 +1,5 @@
 package gregtech.common.tools;
 
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.GT_MetaGenerated_Tool;
@@ -60,11 +59,6 @@ public class GT_Tool_Sword extends GT_Tool {
     @Override
     public String getEntityHitSound() {
         return null;
-    }
-
-    @Override
-    public String getBreakingSound() {
-        return (String) GregTech_API.sSoundList.get(0);
     }
 
     @Override

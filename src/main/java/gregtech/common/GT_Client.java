@@ -22,6 +22,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IHasFluidDisplayItem;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -708,7 +709,7 @@ public class GT_Client extends GT_Proxy
     public void doSonictronSound(ItemStack aStack, World aWorld, double aX, double aY, double aZ) {
         if (GT_Utility.isStackInvalid(aStack))
             return;
-        String tString = "note.harp";
+        String tString = SoundResource.NOTE_HARP.toString();
         int i = 0;
         int j = mSoundItems.size();
         do {
@@ -720,9 +721,9 @@ public class GT_Client extends GT_Proxy
             }
             i++;
         } while (true);
-        if (tString.startsWith("random.explode"))
+        if (tString.startsWith(SoundResource.RANDOM_EXPLODE.toString()))
             if (aStack.stackSize == 3)
-                tString = "random.fuse";
+                tString = SoundResource.RANDOM_FUSE.toString();
             else if (aStack.stackSize == 2)
                 tString = "random.old_explode";
         if (tString.startsWith("streaming."))

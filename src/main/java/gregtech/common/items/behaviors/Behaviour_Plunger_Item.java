@@ -1,6 +1,6 @@
 package gregtech.common.items.behaviors;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntityItemPipe;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -34,22 +34,20 @@ public class Behaviour_Plunger_Item extends Behaviour_None {
         if ((aTileEntity instanceof IGregTechTileEntity)) {
             IMetaTileEntity tMetaTileEntity = ((IGregTechTileEntity) aTileEntity).getMetaTileEntity();
             if ((tMetaTileEntity instanceof IMetaTileEntityItemPipe)) {
-                for (Object tTileEntity : GT_Utility.sortMapByValuesAcending(IMetaTileEntityItemPipe.Util.scanPipes((IMetaTileEntityItemPipe) tMetaTileEntity, new HashMap<>(), 0L, false, true)).keySet())
-
-                {
+                for (IMetaTileEntityItemPipe tTileEntity : GT_Utility.sortMapByValuesAcending(IMetaTileEntityItemPipe.Util.scanPipes((IMetaTileEntityItemPipe) tMetaTileEntity, new HashMap<>(), 0L, false, true)).keySet()) {
                     int i = 0;
-                    for (int j = ((IMetaTileEntityItemPipe) tTileEntity).getSizeInventory(); i < j; i++) {
-                        if (((IMetaTileEntityItemPipe) tTileEntity).isValidSlot(i)) {
-                            if ((((IMetaTileEntityItemPipe) tTileEntity).getStackInSlot(i) != null) && (
-                                    (aPlayer.capabilities.isCreativeMode) || (((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts)))) {
-                                ItemStack tStack = ((IMetaTileEntityItemPipe) tTileEntity).decrStackSize(i, 64);
+                    for (int j = tTileEntity.getSizeInventory(); i < j; i++) {
+                        if (tTileEntity.isValidSlot(i)) {
+                            if ((tTileEntity.getStackInSlot(i) != null) && (
+                                (aPlayer.capabilities.isCreativeMode) || (((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts)))) {
+                                ItemStack tStack = tTileEntity.decrStackSize(i, 64);
                                 if (tStack != null) {
                                     EntityItem tEntity = new EntityItem(aWorld, ((IGregTechTileEntity) aTileEntity).getOffsetX((byte) aSide, 1) + 0.5D, ((IGregTechTileEntity) aTileEntity).getOffsetY((byte) aSide, 1) + 0.5D, ((IGregTechTileEntity) aTileEntity).getOffsetZ((byte) aSide, 1) + 0.5D, tStack);
                                     tEntity.motionX = 0.0D;
                                     tEntity.motionY = 0.0D;
                                     tEntity.motionZ = 0.0D;
                                     aWorld.spawnEntityInWorld(tEntity);
-                                    GT_Utility.sendSoundToPlayers(aWorld, (String) GregTech_API.sSoundList.get(101), 1.0F, -1.0F, aX, aY, aZ);
+                                    GT_Utility.sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE, 1.0F, -1.0F, aX, aY, aZ);
                                 }
                                 return true;
                             }

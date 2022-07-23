@@ -1,8 +1,11 @@
 package gregtech.common.tileentities.generators;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.ITexture;
@@ -14,9 +17,13 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
+import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 public class GT_MetaTileEntity_DieselGenerator extends GT_MetaTileEntity_BasicGenerator {
 
@@ -90,6 +97,36 @@ public class GT_MetaTileEntity_DieselGenerator extends GT_MetaTileEntity_BasicGe
             aBaseMetaTileEntity.setToFire();
         }
         super.onPostTick(aBaseMetaTileEntity, aTick);
+    }
+
+    /**
+     * Draws random smoke particles on top when active
+     *
+     * @param aBaseMetaTileEntity The entity that will handle the {@link Block#randomDisplayTick}
+     */
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void onRandomDisplayTick(IGregTechTileEntity aBaseMetaTileEntity) {
+        if (aBaseMetaTileEntity.isActive()) {
+
+            final byte topFacing = (byte) ForgeDirection.UP.ordinal();
+
+            if (aBaseMetaTileEntity.getCoverIDAtSide(topFacing) == 0
+                && !aBaseMetaTileEntity.getOpacityAtSide(topFacing)) {
+
+                final double x = aBaseMetaTileEntity.getOffsetX(topFacing, 1) + 2D / 16D
+                    + XSTR_INSTANCE.nextFloat() * 14D / 16D;
+                final double y = aBaseMetaTileEntity.getOffsetY(topFacing, 1) + 1D / 32D;
+                final double z = aBaseMetaTileEntity.getOffsetZ(topFacing, 1) + 2D / 16D
+                    + XSTR_INSTANCE.nextFloat() * 14D / 16D;
+
+                new ParticleEventBuilder()
+                    .setMotion(0D, 0D, 0D)
+                    .setPosition(x, y, z)
+                    .setWorld(getBaseMetaTileEntity().getWorld())
+                    .setIdentifier(ParticleFX.SMOKE).run();
+            }
+        }
     }
 
     @Override

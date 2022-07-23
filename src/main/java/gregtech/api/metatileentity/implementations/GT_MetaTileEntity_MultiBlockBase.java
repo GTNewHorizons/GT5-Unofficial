@@ -1134,19 +1134,19 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
+    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
         final NBTTagCompound tag = accessor.getNBTData();
 
         if(tag.getBoolean("incompleteStructure")) {
-            currenttip.add(RED + "** INCOMPLETE STRUCTURE **" + RESET);
+            currentTip.add(RED + "** INCOMPLETE STRUCTURE **" + RESET);
         }
-        currenttip.add((tag.getBoolean("hasProblems") ? (RED + "** HAS PROBLEMS **") : GREEN + "Running Fine") + RESET
+        currentTip.add((tag.getBoolean("hasProblems") ? (RED + "** HAS PROBLEMS **") : GREEN + "Running Fine") + RESET
                            + "  Efficiency: " + tag.getFloat("efficiency") + "%");
 
-        currenttip.add(String.format("Progress: %d s / %d s", tag.getInteger("progress"), tag.getInteger("maxProgress")));
+        currentTip.add(String.format("Progress: %d s / %d s", tag.getInteger("progress"), tag.getInteger("maxProgress")));
 
 
-        super.getWailaBody(itemStack, currenttip, accessor, config);
+        super.getWailaBody(itemStack, currentTip, accessor, config);
     }
 
     @Override

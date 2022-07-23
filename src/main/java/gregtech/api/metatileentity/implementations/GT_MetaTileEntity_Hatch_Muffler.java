@@ -3,6 +3,7 @@ package gregtech.api.metatileentity.implementations;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GT_Mod;
+import gregtech.api.enums.ParticleFX;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -10,6 +11,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.common.GT_Pollution;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Cleanroom;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -91,8 +93,13 @@ public class GT_MetaTileEntity_Hatch_Muffler extends GT_MetaTileEntity_Hatch {
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isClientSide() && this.getBaseMetaTileEntity().isActive()) {
-            pollutionParticles(this.getBaseMetaTileEntity().getWorld(), "largesmoke");
+            pollutionParticles(this.getBaseMetaTileEntity().getWorld(), ParticleFX.LARGE_SMOKE.toString());
         }
+    }
+
+    @Override
+    public Class<?> getType() {
+        return GT_MetaTileEntity_Cleanroom.class;
     }
 
     @Override

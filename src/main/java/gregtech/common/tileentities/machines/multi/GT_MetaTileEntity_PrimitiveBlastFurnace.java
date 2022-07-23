@@ -1,13 +1,17 @@
 package gregtech.common.tileentities.machines.multi;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.ParticleFX;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
+import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
 import gregtech.common.GT_Pollution;
 import gregtech.common.gui.GT_Container_PrimitiveBlastFurnace;
 import gregtech.common.gui.GT_GUIContainer_PrimitiveBlastFurnace;
@@ -17,7 +21,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.ChunkPosition;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
@@ -202,7 +205,7 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
 
             new WorldSpawnedEventBuilder.ParticleEventBuilder()
                     .setMotion(0D,0.3D,0D)
-                    .setIdentifier("largesmoke")
+                    .setIdentifier(ParticleFX.LARGE_SMOKE)
                     .setPosition(
                             aBaseMetaTileEntity.getOffsetX(aBaseMetaTileEntity.getBackFacing(), 1) + XSTR_INSTANCE.nextFloat(),
                             aBaseMetaTileEntity.getOffsetY(aBaseMetaTileEntity.getBackFacing(), 1),
@@ -230,10 +233,7 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
                 }
             }
             if (this.mMaxProgresstime > 0 && (aTimer % 20L == 0L)) {
-                GT_Pollution.addPollution(this.getBaseMetaTileEntity().getWorld(),
-                        new ChunkPosition(this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(),
-                                this.getBaseMetaTileEntity().getZCoord()),
-                        GT_Mod.gregtechproxy.mPollutionPrimitveBlastFurnacePerSecond);
+                GT_Pollution.addPollution(this.getBaseMetaTileEntity(), GT_Mod.gregtechproxy.mPollutionPrimitveBlastFurnacePerSecond);
             }
 
             aBaseMetaTileEntity.setActive((this.mMaxProgresstime > 0) && (this.mMachine));
@@ -271,6 +271,58 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
                 }
             }
         }
+    }
+
+    /**
+     * Draws random flames and smoke particles in front of Primitive Blast Furnace when active
+     *
+     * @param aBaseMetaTileEntity The entity that will handle the {@link Block#randomDisplayTick}
+     */
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void onRandomDisplayTick(IGregTechTileEntity aBaseMetaTileEntity) {
+        if (aBaseMetaTileEntity.isActive()) {
+
+            final byte frontFacing = aBaseMetaTileEntity.getFrontFacing();
+
+            final double oX = aBaseMetaTileEntity.getOffsetX(frontFacing, 1) + 0.5D;
+            final double oY = aBaseMetaTileEntity.getOffsetY(frontFacing, 1);
+            final double oZ = aBaseMetaTileEntity.getOffsetZ(frontFacing, 1) + 0.5D;
+            final double offset = -0.48D;
+            final double horizontal = XSTR_INSTANCE.nextFloat() * 8D / 16D - 4D / 16D;
+
+            final double x, y, z;
+
+            y = oY + XSTR_INSTANCE.nextFloat() * 10D / 16D + 5D / 16D;
+
+            if (frontFacing == ForgeDirection.WEST.ordinal()) {
+                x = oX - offset;
+                z = oZ + horizontal;
+            } else if (frontFacing == ForgeDirection.EAST.ordinal()) {
+                x = oX + offset;
+                z = oZ + horizontal;
+            } else if (frontFacing == ForgeDirection.NORTH.ordinal()) {
+                x = oX + horizontal;
+                z = oZ - offset;
+            } else // if (frontFacing == ForgeDirection.SOUTH.ordinal())
+            {
+                x = oX + horizontal;
+                z = oZ + offset;
+            }
+
+            ParticleEventBuilder particleEventBuilder =
+                (new ParticleEventBuilder())
+                    .setMotion(0D, 0D, 0D)
+                    .setPosition(x, y, z)
+                    .setWorld(getBaseMetaTileEntity().getWorld());
+            particleEventBuilder.setIdentifier(ParticleFX.SMOKE).run();
+            particleEventBuilder.setIdentifier(ParticleFX.FLAME).run();
+        }
+    }
+
+    @Override
+    public Class<?> getType() {
+        return GT_MetaTileEntity_Cleanroom.class;
     }
 
     private void addOutputProducts() {

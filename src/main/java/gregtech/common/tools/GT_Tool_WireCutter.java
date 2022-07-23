@@ -1,6 +1,6 @@
 package gregtech.common.tools;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.GT_MetaGenerated_Tool;
@@ -55,7 +55,7 @@ public class GT_Tool_WireCutter extends GT_Tool {
 
     @Override
     public String getCraftingSound() {
-        return (String) GregTech_API.sSoundList.get(109);
+        return SoundResource.IC2_TOOLS_INSULATION_CUTTERS.toString();
     }
 
     @Override
@@ -64,13 +64,8 @@ public class GT_Tool_WireCutter extends GT_Tool {
     }
 
     @Override
-    public String getBreakingSound() {
-        return (String) GregTech_API.sSoundList.get(0);
-    }
-
-    @Override
     public String getMiningSound() {
-        return (String) GregTech_API.sSoundList.get(109);
+        return SoundResource.IC2_TOOLS_INSULATION_CUTTERS.toString();
     }
 
     @Override
