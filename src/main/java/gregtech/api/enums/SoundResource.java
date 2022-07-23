@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import static gregtech.api.enums.GT_Values.MOD_ID_IC2;
 
 /**
- * Enumerate known sounds with id and resource-location
+ * Enumerates known sounds with id and resource-location
  *
  * <p>Note that the id serve no specific purpose, if for legacy compatibility of
  * a plausible yet unimplemented network packet weight optimization.</p>
@@ -294,7 +294,7 @@ public enum SoundResource {
 
     static {
         EnumSet.allOf(SoundResource.class).forEach(sound -> {
-            if (sound.id > 0) ID_SOUND_MAP.put(sound.id, sound);
+            if (sound.id >= 0) ID_SOUND_MAP.put(sound.id, sound);
         });
         EnumSet.allOf(SoundResource.class).forEach(sound ->
             RESOURCE_STR_SOUND_MAP.put(sound.resourceLocation.toString(), sound));
