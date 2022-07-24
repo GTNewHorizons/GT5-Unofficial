@@ -248,7 +248,6 @@ public class GT_Values {
             CUSTOM_NAME         = "name",                    // String
             DISPAY              = "gt.display",              // String
             FACING              = "gt.facing",               // Byte
-            HIDDEN              = "gt.hidden",               // Boolean
             LOCK_UPGRADE        = "gt.locked",               // Boolean
             MATERIAL            = "gt.material",             // String containing the Material Name.
             MODE                = "gt.mode",                 // Number
