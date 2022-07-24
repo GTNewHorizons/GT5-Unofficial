@@ -435,7 +435,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         }
     }
 
-    private String getSpecialInfo(int specialValue) {
+    protected String getSpecialInfo(int specialValue) {
         String specialInfo = null;
         if (specialValue == -100 && GT_Mod.gregtechproxy.mLowGravProcessing) {
             specialInfo = GT_Utility.trans("159", "Needs Low Gravity");
@@ -458,7 +458,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
             || (GT_Utility.isStringValid(this.mRecipeMap.mNEISpecialValuePost));
     }
 
-    private String formatSpecialValue(int SpecialValue) {
+    protected String formatSpecialValue(int SpecialValue) {
         return this.mRecipeMap.mNEISpecialValuePre + GT_Utility.formatNumbers(
             (long) SpecialValue * this.mRecipeMap.mNEISpecialValueMultiplier)
             + this.mRecipeMap.mNEISpecialValuePost;
@@ -503,7 +503,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         return false;
     }
 
-    private void drawLine(int lineNumber, String line) {
+    protected void drawLine(int lineNumber, String line) {
         drawText(10, getDescriptionYOffset() + lineNumber * 10, line, 0xFF000000);
     }
 
