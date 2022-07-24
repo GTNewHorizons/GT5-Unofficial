@@ -16,10 +16,11 @@ import static gregtech.api.enums.GT_Values.*;
 
 public class GT_MetaTileEntity_Wireless_Dynamo extends GT_MetaTileEntity_Hatch_Dynamo implements IGlobalWirelessEnergy {
 
-    private static final long ticks_between_energy_addition = 400L;
-    private static final long number_of_energy_additions = 10L;
-    private final long eu_transferred_per_operation = 2L * V[mTier] * ticks_between_energy_addition;
+    private static final long ticks_between_energy_addition = 100L*20L;
+    private static final long number_of_energy_additions = 2L;
+    private final BigInteger eu_transferred_per_operation = BigInteger.valueOf(2L * V[mTier] * ticks_between_energy_addition);
     private String owner_uuid;
+    private String owner_name;
 
     public GT_MetaTileEntity_Wireless_Dynamo(String aName, byte aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
@@ -88,9 +89,9 @@ public class GT_MetaTileEntity_Wireless_Dynamo extends GT_MetaTileEntity_Hatch_D
     public String[] getDescription() {
         String uuid = gregtechproxy.getThePlayer().getUniqueID().toString();
         return new String[] {
-            "Transmits " + EnumChatFormatting.RED + GT_Utility.formatNumbers(eu_transferred_per_operation/V[mTier]) + EnumChatFormatting.GRAY + " A of " + TIER_COLORS[mTier] + VN[mTier] + EnumChatFormatting.GRAY + " through trans-dimensional space every " + EnumChatFormatting.RED + GT_Utility.formatNumbers(ticks_between_energy_addition) + EnumChatFormatting.GRAY + " ticks.",
+//            "Transmits " + EnumChatFormatting.RED + GT_Utility.formatNumbers(eu_transferred_per_operation/V[mTier]) + EnumChatFormatting.GRAY + " A of " + TIER_COLORS[mTier] + VN[mTier] + EnumChatFormatting.GRAY + " through trans-dimensional space every " + EnumChatFormatting.RED + GT_Utility.formatNumbers(ticks_between_energy_addition) + EnumChatFormatting.GRAY + " ticks.",
             EnumChatFormatting.GRAY + "Does not connect to wires.",
-            EnumChatFormatting.GRAY + "There is currently " + EnumChatFormatting.RED + GT_Utility.formatNumbers(GlobalEnergyMap.getOrDefault(uuid, BigInteger.ZERO)) + EnumChatFormatting.GRAY + " EU in your network.",
+            EnumChatFormatting.GRAY + "There is currently " + EnumChatFormatting.RED + GT_Utility.formatNumbers(GlobalEnergy.getOrDefault(uuid, BigInteger.ZERO)) + EnumChatFormatting.GRAY + " EU in your network.",
             AuthorColen
         };
     }
@@ -116,11 +117,6 @@ public class GT_MetaTileEntity_Wireless_Dynamo extends GT_MetaTileEntity_Hatch_D
     }
 
     @Override
-    public boolean ownerControl() {
-        return true;
-    }
-
-    @Override
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPreTick(aBaseMetaTileEntity, aTick);
 
@@ -129,24 +125,22 @@ public class GT_MetaTileEntity_Wireless_Dynamo extends GT_MetaTileEntity_Hatch_D
             // On first tick find the player name and attempt to add them to the map.
             if (aTick == 1) {
 
-                // UUID of the owner.
+                // UUID and username of the owner.
                 owner_uuid = aBaseMetaTileEntity.getOwnerUuid().toString();
+                owner_name = aBaseMetaTileEntity.getOwnerName();
 
                 // Attempt to load in map from file.
-                if (GlobalEnergyMap.size() == 0)
-                    loadGlobalEnergyMap(aBaseMetaTileEntity.getWorld());
+                if (GlobalEnergy.size() == 0)
+                    IGlobalWirelessEnergy.super.LoadGlobalEnergyInfo(aBaseMetaTileEntity.getWorld());
 
-                // If the owner is not in the hash map, add them with 0 EU.
-                if (!GlobalEnergyMap.containsKey(owner_uuid)) {
-                    GlobalEnergyMap.put(owner_uuid, BigInteger.ZERO);
-                }
+                IGlobalWirelessEnergy.super.StrongCheckOrAddUser(owner_uuid, owner_name);
+
             }
 
-            // Every ticks_between_energy_addition ticks change the energy content of the block.
+            // Every ticks_between_energy_addition ticks change the energy content of the machine.
             if (aTick % ticks_between_energy_addition == 0L) {
-                BigInteger total_eu = GlobalEnergyMap.get(owner_uuid);
-                BigInteger internal_eu = BigInteger.valueOf(aBaseMetaTileEntity.getStoredEU());
-                GlobalEnergyMap.put(owner_uuid, total_eu.add(internal_eu));
+
+                IGlobalWirelessEnergy.super.addEUToGlobalEnergyMap(owner_uuid, eu_transferred_per_operation);
                 setEUVar(0L);
             }
         }

@@ -26,6 +26,7 @@ import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TC_Aspects.TC_AspectStack;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.interfaces.IBlockOnWalkOver;
+import gregtech.api.interfaces.IGlobalWirelessEnergy;
 import gregtech.api.interfaces.IProjectileItem;
 import gregtech.api.interfaces.internal.IGT_Mod;
 import gregtech.api.interfaces.internal.IThaumcraftCompat;
@@ -110,11 +111,7 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 import org.apache.commons.lang3.text.WordUtils;
 
 import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -133,9 +130,6 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
-import static gregtech.api.enums.GT_Values.*;
-import static gregtech.api.interfaces.IGlobalWirelessEnergy.GlobalEnergyMap;
-import static gregtech.api.interfaces.IGlobalWirelessEnergy.GlobalEnergyMapFileName;
 import static gregtech.GT_Mod.GT_FML_LOGGER;
 import static gregtech.api.enums.GT_Values.MOD_ID_RC;
 import static gregtech.api.enums.GT_Values.MOD_ID_TC;
@@ -146,7 +140,7 @@ import static gregtech.api.enums.GT_Values.debugEntityCramming;
 import static gregtech.api.util.GT_Util.LAST_BROKEN_TILEENTITY;
 
 
-public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
+public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IGlobalWirelessEnergy {
     private static final EnumSet<OreGenEvent.GenerateMinable.EventType> PREVENTED_ORES = EnumSet.of(OreGenEvent.GenerateMinable.EventType.COAL,
             OreGenEvent.GenerateMinable.EventType.IRON, OreGenEvent.GenerateMinable.EventType.GOLD,
             OreGenEvent.GenerateMinable.EventType.DIAMOND, OreGenEvent.GenerateMinable.EventType.REDSTONE, OreGenEvent.GenerateMinable.EventType.LAPIS,
@@ -910,7 +904,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
     public void onServerStopping() {
         File tSaveDirectory = getSaveDirectory();
         GregTech_API.sWirelessRedstone.clear();
-        saveGlobalEnergyMap();
+        IGlobalWirelessEnergy.super.SaveGlobalEnergyInfo(mUniverse.getWorldInfo().getWorldName());
+        IGlobalWirelessEnergy.super.ClearMaps();
         if (tSaveDirectory != null) {
             try {
                 for (int i = 1; i < GregTech_API.METATILEENTITIES.length; i++) {
@@ -925,22 +920,6 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler {
         this.mUniverse = null;
         //GT_ChunkAssociatedData.saveAll(); todo: figure out if this is needed
 
-    }
-
-    public void saveGlobalEnergyMap() {
-        try {
-            List<String> lines = GlobalEnergyMap.entrySet()
-                .stream()
-                .map(entry -> entry.getKey() + ":" + entry.getValue())
-                .collect(Collectors.toList());
-
-            Path path = Paths.get("./saves/" + this.mUniverse.getWorldInfo().getWorldName() + "/" + GlobalEnergyMapFileName + ".txt").toAbsolutePath();
-
-            Files.write(path, lines);
-            GlobalEnergyMap.clear();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     @SubscribeEvent
