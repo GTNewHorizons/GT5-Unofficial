@@ -700,8 +700,7 @@ gt.blockmachines.multimachine.em.infuser.Structure.MolecularCasing=Layer 3 (holl
 gt.blockmachines.multimachine.em.processing.name=Quantum Processing Machine
 gt.blockmachines.multimachine.em.processing.hint.0=1 - Classic Hatches or High Power Casing
 gt.blockmachines.multimachine.em.processing.hint.1=2 - Elemental Hatches or Molecular Casing
-gt.blockmachines.multimachine.em.processing.desc.0=Processing quantum matter since...
-gt.blockmachines.multimachine.em.processing.desc.1=the time u started using it.
+gt.blockmachines.multimachine.em.processing.desc.0=Controller block of the Quantum Processing machine
 
 gt.blockmachines.multimachine.em.crafter.name=Matter Assembler
 gt.blockmachines.multimachine.em.crafter.hint.0=1 - Classic Hatches or High Power Casing

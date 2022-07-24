@@ -11,6 +11,7 @@ import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
@@ -224,12 +225,19 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
     }
 
     @Override
-    public String[] getDescription() {
-        return new String[]{
-                CommonValues.TEC_MARK_EM,
-                translateToLocal("gt.blockmachines.multimachine.em.processing.desc.0"),//Processing quantum matter since...
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.multimachine.em.processing.desc.1")//the time u started using it.
-        };
+    public GT_Multiblock_Tooltip_Builder createTooltip() {
+        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.processing.name"))   // Machine Type: Quantum Processing machine
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.processing.desc.0"))  // Controller block of the Quantum Processing machine
+                .addInfo(translateToLocal("tt.keyword.Structure.StructureTooComplex")) // The structure is too complex!
+                .addSeparator()
+                .beginStructureBlock(5, 5, 7, false)
+                .addOtherStructurePart(translateToLocal("tt.keyword.Structure.Elemental"), translateToLocal("tt.keyword.Structure.AnyMolecularCasing2D"), 2) // Elemental Hatch: Any Molecular Casing with 2 dots
+                .addOtherStructurePart(translateToLocal("tt.keyword.Parametrizer"), translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1) // Parametrizer: Any High Power Casing
+                .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1) // Energy Hatch: Any High Power Casing
+                .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1) // Maintenance Hatch: Any High Power Casing
+                .toolTipFinisher(CommonValues.TEC_MARK_EM);
+        return tt;
     }
 
     @Override
