@@ -87,17 +87,12 @@ public class MultiTileEntityRegistry {
         return NAMED_REGISTRIES.get(aRegistryName);
     }
 
-
-    /** Adds a new MultiTileEntity. It is highly recommended to do this in either the PreInit or the Init Phase. PostInit might not work well.*/
-    public ItemStack add(
-        String aLocalised, String aCategoricalName, int aID, Class<? extends TileEntity> aClass, int aBlockMetaData, int aStackSize,
-        MultiTileEntityBlock aBlock, NBTTagCompound aParameters, Object... aRecipe
-    ) {
-        return add(aLocalised, aCategoricalName, new MultiTileEntityClassContainer(aID, aClass, aBlockMetaData, aStackSize, aBlock, aParameters), aRecipe);
+    public MultiTileEntityClassContainer create(int aID, Class<? extends TileEntity> aClass) {
+        return new MultiTileEntityClassContainer(this, aID, aClass);
     }
 
     /** Adds a new MultiTileEntity. It is highly recommended to do this in either the PreInit or the Init Phase. PostInit might not work well.*/
-    public ItemStack add(String aLocalised, String aCategoricalName, MultiTileEntityClassContainer aClassContainer, Object... aRecipe) {
+    public ItemStack add(String aLocalised, String aCategoricalName, MultiTileEntityClassContainer aClassContainer) {
         boolean tFailed = false;
         if (GT_Utility.isStringInvalid(aLocalised)) {
             GT_FML_LOGGER.error("MULTI-TILE REGISTRY ERROR: Localisation Missing!");
