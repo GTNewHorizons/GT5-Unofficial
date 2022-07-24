@@ -504,7 +504,11 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
     }
 
     private void drawLine(int lineNumber, String line) {
-        drawText(10, 73 + lineNumber * 10, line, 0xFF000000);
+        drawText(10, getDescriptionYOffset() + lineNumber * 10, line, 0xFF000000);
+    }
+
+    protected int getDescriptionYOffset() {
+        return 73;
     }
 
     public static class GT_RectHandler
