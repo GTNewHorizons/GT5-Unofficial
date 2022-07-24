@@ -33,7 +33,7 @@ import net.minecraftforge.oredict.OreDictionary;
         dependencies = "required-after:IC2; " + "required-after:gregtech; "
                 + "required-after:bartworks; "
                 + "required-after:GoodGenerator; "
-                + "after:miscutils; "
+                + "before:miscutils; "
                 + "required-after:dreamcraft; ")
 public class GTNHLanthanides {
 
