@@ -2,6 +2,7 @@ package gregtech.api.metatileentity.implementations;
 
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Cleanroom;
 
 import static gregtech.api.enums.GT_Values.GT;
 
@@ -44,6 +45,11 @@ public abstract class GT_MetaTileEntity_TieredMachineBlock extends MetaTileEntit
         // must always be the last call!
         if (GT.isClientSide()) mTextures = getTextureSet(aTextures);
         else mTextures = null;
+    }
+
+    @Override
+    public Class<?> getType() {
+        return GT_MetaTileEntity_Cleanroom.class;
     }
 
     public GT_MetaTileEntity_TieredMachineBlock(String aName, int aTier, int aInvSlotCount, String aDescription, ITexture[][][] aTextures) {

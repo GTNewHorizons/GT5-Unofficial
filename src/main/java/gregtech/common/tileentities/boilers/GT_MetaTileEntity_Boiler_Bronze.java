@@ -1,6 +1,9 @@
 package gregtech.common.tileentities.boilers;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GT_Mod;
+import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
@@ -10,12 +13,14 @@ import gregtech.api.objects.XSTR;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
 import gregtech.common.GT_Pollution;
 import gregtech.common.gui.GT_Container_Boiler;
 import gregtech.common.gui.GT_GUIContainer_Boiler;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import static gregtech.api.enums.Textures.BlockIcons.BOILER_FRONT;
 import static gregtech.api.enums.Textures.BlockIcons.BOILER_FRONT_ACTIVE;
@@ -25,13 +30,14 @@ import static gregtech.api.enums.Textures.BlockIcons.MACHINE_BRONZEBRICKS_BOTTOM
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_BRONZEBRICKS_SIDE;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_BRONZEBRICKS_TOP;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE;
+import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 public class GT_MetaTileEntity_Boiler_Bronze extends GT_MetaTileEntity_Boiler {
     public GT_MetaTileEntity_Boiler_Bronze(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, new String[]{
                 "An early way to get Steam Power",
                 "Produces 120L of Steam per second",
-                "Causes "+Integer.toString(GT_Mod.gregtechproxy.mPollutionSmallCoalBoilerPerSecond)+" Pollution per second"});
+                "Causes " + GT_Mod.gregtechproxy.mPollutionSmallCoalBoilerPerSecond + " Pollution per second"});
     }
 
     public GT_MetaTileEntity_Boiler_Bronze(int aID, String aName, String aNameRegional, String[] aDescription) {
@@ -88,6 +94,58 @@ public class GT_MetaTileEntity_Boiler_Bronze extends GT_MetaTileEntity_Boiler {
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_Boiler_Bronze(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
+    }
+
+    /**
+     * Draws random flames and smoke particles in front of active boiler
+     *
+     * @param aBaseMetaTileEntity The entity that will handle the {@link Block#randomDisplayTick}
+     */
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void onRandomDisplayTick(IGregTechTileEntity aBaseMetaTileEntity) {
+        if (aBaseMetaTileEntity.isActive()) {
+
+            final byte frontFacing = aBaseMetaTileEntity.getFrontFacing();
+
+            if (frontFacing > 1
+                && aBaseMetaTileEntity.getCoverIDAtSide(frontFacing) == 0
+                && !aBaseMetaTileEntity.getOpacityAtSide(frontFacing)) {
+
+                final double oX = aBaseMetaTileEntity.getOffsetX(frontFacing, 1) + 8D / 16D;
+                final double oY = aBaseMetaTileEntity.getOffsetY(frontFacing, 1);
+                final double oZ = aBaseMetaTileEntity.getOffsetZ(frontFacing, 1) + 8D / 16D;
+                final double offset = -0.48D;
+                final double horizontal = XSTR_INSTANCE.nextFloat() * 10D / 16D - 5D / 16D;
+
+                final double x, y, z;
+
+                y = oY + XSTR_INSTANCE.nextFloat() * 6D / 16D;
+
+                if (frontFacing == ForgeDirection.WEST.ordinal()) {
+                    x = oX - offset;
+                    z = oZ + horizontal;
+                } else if (frontFacing == ForgeDirection.EAST.ordinal()) {
+                    x = oX + offset;
+                    z = oZ + horizontal;
+                } else if (frontFacing == ForgeDirection.NORTH.ordinal()) {
+                    x = oX + horizontal;
+                    z = oZ - offset;
+                } else // if (frontFacing == ForgeDirection.SOUTH.ordinal())
+                {
+                    x = oX + horizontal;
+                    z = oZ + offset;
+                }
+
+                ParticleEventBuilder particleEventBuilder =
+                    (new ParticleEventBuilder())
+                        .setMotion(0D, 0D, 0D)
+                        .setPosition(x, y, z)
+                        .setWorld(getBaseMetaTileEntity().getWorld());
+                particleEventBuilder.setIdentifier(ParticleFX.SMOKE).run();
+                particleEventBuilder.setIdentifier(ParticleFX.FLAME).run();
+            }
+        }
     }
 
     @Override

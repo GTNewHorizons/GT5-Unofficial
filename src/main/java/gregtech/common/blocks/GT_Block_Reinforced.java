@@ -3,10 +3,7 @@ package gregtech.common.blocks;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.Textures;
+import gregtech.api.enums.*;
 import gregtech.api.items.GT_Generic_Block;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_LanguageManager;
@@ -257,7 +254,7 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
         new WorldSpawnedEventBuilder.SoundAtEntityEventBuilder()
                 .setPitch(1f)
                 .setVolume(1f)
-                .setIdentifier("game.tnt.primed")
+                .setIdentifier(SoundResource.GAME_TNT_PRIMED)
                 .setEntity(entitytntprimed)
                 .setWorld(world)
                 .run();

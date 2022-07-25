@@ -1,6 +1,7 @@
 package gregtech.common.entities;
 
 import com.mojang.authlib.GameProfile;
+import gregtech.api.enums.ParticleFX;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
@@ -247,7 +248,7 @@ public class GT_Entity_Arrow extends EntityArrow {
                     .setWorld(this.worldObj);
 
             if (getIsCritical()) {
-                events.setIdentifier("crit")
+                events.setIdentifier(ParticleFX.CRIT)
                         .setMotion(-this.motionX, -this.motionY + 0.2D, -this.motionZ)
                         .<WorldSpawnedEventBuilder.ParticleEventBuilder>times(4, (x, i) ->
                                        x.setPosition(
@@ -278,7 +279,7 @@ public class GT_Entity_Arrow extends EntityArrow {
             float tFrictionMultiplier = 0.99F;
             if (isInWater()) {
                 events.setMotion(-this.motionX, -this.motionY + 0.2D, -this.motionZ)
-                        .setIdentifier("bubble")
+                        .setIdentifier(ParticleFX.BUBBLE)
                         .setPosition(
                                 this.posX - this.motionX * 0.25D,
                                 this.posY - this.motionY * 0.25D,

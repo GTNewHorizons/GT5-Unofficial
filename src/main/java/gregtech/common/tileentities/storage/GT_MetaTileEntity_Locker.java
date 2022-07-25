@@ -1,6 +1,6 @@
 package gregtech.common.tileentities.storage;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -155,7 +155,7 @@ public class GT_MetaTileEntity_Locker extends GT_MetaTileEntity_TieredMachineBlo
     @Override
     public void doSound(byte aIndex, double aX, double aY, double aZ) {
         if (aIndex == 16) {
-            GT_Utility.doSoundAtClient(GregTech_API.sSoundList.get(3), 1, 1.0F);
+            GT_Utility.doSoundAtClient(SoundResource.RANDOM_CLICK, 1, 1.0F);
         }
     }
 

@@ -3,22 +3,17 @@ package gregtech.api.metatileentity.implementations;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.gui.GT_Container_BasicMachine;
 import gregtech.api.gui.GT_GUIContainer_BasicMachine;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.metatileentity.IMachineCallback;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_CoverBehaviorBase;
-import gregtech.common.power.BasicMachineEUPower;
-import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.common.power.Power;
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.*;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
-import gregtech.api.util.GT_Utility;
-import gregtech.api.util.GT_ClientPreference;
+import gregtech.common.power.BasicMachineEUPower;
+import gregtech.common.power.Power;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Cleanroom;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -51,7 +46,7 @@ import static gregtech.api.util.GT_Utility.moveMultipleItemStacks;
  * This is the main construct for my Basic Machines such as the Automatic Extractor
  * Extend this class to make a simple Machine
  */
-public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_BasicTank implements IMachineCallback<GT_MetaTileEntity_Cleanroom> {
+public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_BasicTank {
 
     /**
      * return values for checkRecipe()
@@ -71,9 +66,6 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     public String mGUIName, mNEIName;
     protected final Power mPower;
 
-
-    @Deprecated
-    public GT_MetaTileEntity_Cleanroom mCleanroom;
     /**
      * Contains the Recipe which has been previously used, or null if there was no previous Recipe, which could have been buffered
      */
@@ -163,21 +155,6 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         if (allowSelectCircuit() && aIndex == getCircuitSlot() && aStack != null && aStack.stackSize != 0)
             aStack = GT_Utility.copyAmount(0, aStack);
         super.setInventorySlotContents(aIndex, aStack);
-    }
-
-    @Override
-    public GT_MetaTileEntity_Cleanroom getCallbackBase() {
-        return this.mCleanroom;
-    }
-
-    @Override
-    public void setCallbackBase(GT_MetaTileEntity_Cleanroom callback) {
-        this.mCleanroom = callback;
-    }
-
-    @Override
-    public Class<GT_MetaTileEntity_Cleanroom> getType() {
-        return GT_MetaTileEntity_Cleanroom.class;
     }
 
     @Override
@@ -740,7 +717,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     @Override
     public void doSound(byte aIndex, double aX, double aY, double aZ) {
         super.doSound(aIndex, aX, aY, aZ);
-        if (aIndex == 8) GT_Utility.doSoundAtClient(GregTech_API.sSoundList.get(210), 100, 1.0F, aX, aY, aZ);
+        if (aIndex == 8) GT_Utility.doSoundAtClient(SoundResource.IC2_MACHINES_INTERRUPT_ONE, 100, 1.0F, aX, aY, aZ);
     }
 
     public boolean doesAutoOutput() {
@@ -955,7 +932,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
             mOutputBlocked++;
             return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
         }
-        if (tRecipe.mSpecialValue == -200 && (getCallbackBase() == null || getCallbackBase().mEfficiency == 0))
+        if (tRecipe.mSpecialValue == -200 && (getCallbackBase() == null || !(getCallbackBase() instanceof GT_MetaTileEntity_Cleanroom) || ((GT_MetaTileEntity_Cleanroom) getCallbackBase()).mEfficiency == 0))
             return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
         if (!tRecipe.isRecipeInputEqual(true, new FluidStack[]{getFillableStack()}, getAllInputs()))
             return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
@@ -964,12 +941,12 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
                 mOutputItems[i] = tRecipe.getOutput(i);
         if (tRecipe.mSpecialValue == -200 || tRecipe.mSpecialValue == -300)
             for (int i = 0; i < mOutputItems.length; i++)
-                if (mOutputItems[i] != null && getBaseMetaTileEntity().getRandomNumber(10000) > getCallbackBase().mEfficiency)
+                if (mOutputItems[i] != null && getBaseMetaTileEntity().getRandomNumber(10000) > ((GT_MetaTileEntity_Cleanroom) getCallbackBase()).mEfficiency)
                 {
 					if (debugCleanroom) {
 						GT_Log.out.println(
 							"BasicMachine: Voiding output due to efficiency failure. mEfficiency = " +
-							getCallbackBase().mEfficiency
+                                ((GT_MetaTileEntity_Cleanroom) getCallbackBase()).mEfficiency
 						);
 					}
                     mOutputItems[i] = null;

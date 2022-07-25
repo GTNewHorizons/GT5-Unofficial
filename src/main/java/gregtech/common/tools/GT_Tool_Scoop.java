@@ -1,7 +1,6 @@
 package gregtech.common.tools;
 
 import cpw.mods.fml.common.Loader;
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
@@ -68,11 +67,6 @@ public class GT_Tool_Scoop extends GT_Tool {
     @Override
     public String getEntityHitSound() {
         return null;
-    }
-
-    @Override
-    public String getBreakingSound() {
-        return (String) GregTech_API.sSoundList.get(0);
     }
 
     @Override

@@ -7,6 +7,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GT_Mod;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IDamagableItem;
 import gregtech.api.interfaces.ITexture;
@@ -169,8 +170,10 @@ public class GregTech_API {
     public static final Map<String, ItemStack> sBookList = new ConcurrentHashMap<>();
     /**
      * The List of all Sounds used in GT, indices are in the static Block at the bottom
+     * @deprecated Use {@link SoundResource}
      */
-    public static final Map<Integer, String> sSoundList = new ConcurrentHashMap<>();
+    @Deprecated
+    public static final Map<Integer, String> sSoundList = SoundResource.asSoundList();
     /**
      * The List of Tools, which can be used. Accepts regular damageable Items and Electric Items
      */
@@ -375,39 +378,6 @@ public class GregTech_API {
 
         //sDimensionalList.add(56);
         //sDimensionalList.add(55);
-
-        sSoundList.put(0, "random.break");
-        sSoundList.put(1, "random.anvil_use");
-        sSoundList.put(2, "random.anvil_break");
-        sSoundList.put(3, "random.click");
-        sSoundList.put(4, "random.fizz");
-        sSoundList.put(5, "random.explode");
-        sSoundList.put(6, "fire.ignite");
-
-        sSoundList.put(100, aTextIC2Lower + ":" + "tools.Wrench");
-        sSoundList.put(101, aTextIC2Lower + ":" + "tools.RubberTrampoline");
-        sSoundList.put(102, aTextIC2Lower + ":" + "tools.Painter");
-        sSoundList.put(103, aTextIC2Lower + ":" + "tools.BatteryUse");
-        sSoundList.put(104, aTextIC2Lower + ":" + "tools.chainsaw.ChainsawUseOne");
-        sSoundList.put(105, aTextIC2Lower + ":" + "tools.chainsaw.ChainsawUseTwo");
-        sSoundList.put(106, aTextIC2Lower + ":" + "tools.drill.DrillSoft");
-        sSoundList.put(107, aTextIC2Lower + ":" + "tools.drill.DrillHard");
-        sSoundList.put(108, aTextIC2Lower + ":" + "tools.ODScanner");
-        sSoundList.put(109, aTextIC2Lower + ":" + "tools.InsulationCutters");
-
-        sSoundList.put(200, aTextIC2Lower + ":" + "machines.ExtractorOp");
-        sSoundList.put(201, aTextIC2Lower + ":" + "machines.MaceratorOp");
-        sSoundList.put(202, aTextIC2Lower + ":" + "machines.InductionLoop");
-        sSoundList.put(203, aTextIC2Lower + ":" + "machines.CompressorOp");
-        sSoundList.put(204, aTextIC2Lower + ":" + "machines.RecyclerOp");
-        sSoundList.put(205, aTextIC2Lower + ":" + "machines.MinerOp");
-        sSoundList.put(206, aTextIC2Lower + ":" + "machines.PumpOp");
-        sSoundList.put(207, aTextIC2Lower + ":" + "machines.ElectroFurnaceLoop");
-        sSoundList.put(208, aTextIC2Lower + ":" + "machines.InductionLoop");
-        sSoundList.put(209, aTextIC2Lower + ":" + "machines.MachineOverload");
-        sSoundList.put(210, aTextIC2Lower + ":" + "machines.InterruptOne");
-        sSoundList.put(211, aTextIC2Lower + ":" + "machines.KaChing");
-        sSoundList.put(212, aTextIC2Lower + ":" + "machines.MagnetizerLoop");
     }
 
     /**

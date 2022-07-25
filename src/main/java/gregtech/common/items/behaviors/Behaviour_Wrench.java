@@ -1,6 +1,6 @@
 package gregtech.common.items.behaviors;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.util.GT_LanguageManager;
@@ -43,14 +43,14 @@ public class Behaviour_Wrench extends Behaviour_None {
             if (((aTileEntity instanceof IWrenchable))) {
                 if (((IWrenchable) aTileEntity).wrenchCanSetFacing(aPlayer, aTargetSide)) {
                     if ((aPlayer.capabilities.isCreativeMode) || (((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts))) {
-                        ((IWrenchable) aTileEntity).setFacing((short) aTargetSide);
-                        GT_Utility.sendSoundToPlayers(aWorld, (String) GregTech_API.sSoundList.get(100), 1.0F, -1.0F, aX, aY, aZ);
+                        ((IWrenchable) aTileEntity).setFacing(aTargetSide);
+                        GT_Utility.sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1.0F, aX, aY, aZ);
                     }
                     return true;
                 }
                 if (((IWrenchable) aTileEntity).wrenchCanRemove(aPlayer)) {
                     int tDamage = ((IWrenchable) aTileEntity).getWrenchDropRate() < 1.0F ? 10 : 3;
-                    if ((aPlayer.capabilities.isCreativeMode) || (((GT_MetaGenerated_Tool) aItem).doDamage(aStack, tDamage * this.mCosts))) {
+                    if ((aPlayer.capabilities.isCreativeMode) || (((GT_MetaGenerated_Tool) aItem).doDamage(aStack, (long) tDamage * this.mCosts))) {
                         ItemStack tOutput = ((IWrenchable) aTileEntity).getWrenchDrop(aPlayer);
                         for (ItemStack tStack : aBlock.getDrops(aWorld, aX, aY, aZ, aMeta, 0)) {
                             if (tOutput == null) {
@@ -61,7 +61,7 @@ public class Behaviour_Wrench extends Behaviour_None {
                             }
                         }
                         aWorld.setBlockToAir(aX, aY, aZ);
-                        GT_Utility.sendSoundToPlayers(aWorld, (String) GregTech_API.sSoundList.get(100), 1.0F, -1.0F, aX, aY, aZ);
+                        GT_Utility.sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1.0F, aX, aY, aZ);
                     }
                     return true;
                 }
@@ -72,21 +72,21 @@ public class Behaviour_Wrench extends Behaviour_None {
         if ((aBlock == Blocks.log) || (aBlock == Blocks.log2) || (aBlock == Blocks.hay_block)) {
             if ((aPlayer.capabilities.isCreativeMode) || (((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts))) {
                 aWorld.setBlockMetadataWithNotify(aX, aY, aZ, (aMeta + 4) % 12, 3);
-                GT_Utility.sendSoundToPlayers(aWorld, (String) GregTech_API.sSoundList.get(100), 1.0F, -1.0F, aX, aY, aZ);
+                GT_Utility.sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1.0F, aX, aY, aZ);
             }
             return true;
         }
         if ((aBlock == Blocks.powered_repeater) || (aBlock == Blocks.unpowered_repeater)) {
             if ((aPlayer.capabilities.isCreativeMode) || (((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts))) {
                 aWorld.setBlockMetadataWithNotify(aX, aY, aZ, aMeta / 4 * 4 + (aMeta % 4 + 1) % 4, 3);
-                GT_Utility.sendSoundToPlayers(aWorld, (String) GregTech_API.sSoundList.get(100), 1.0F, -1.0F, aX, aY, aZ);
+                GT_Utility.sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1.0F, aX, aY, aZ);
             }
             return true;
         }
         if ((aBlock == Blocks.powered_comparator) || (aBlock == Blocks.unpowered_comparator)) {
             if ((aPlayer.capabilities.isCreativeMode) || (((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts))) {
                 aWorld.setBlockMetadataWithNotify(aX, aY, aZ, aMeta / 4 * 4 + (aMeta % 4 + 1) % 4, 3);
-                GT_Utility.sendSoundToPlayers(aWorld, (String) GregTech_API.sSoundList.get(100), 1.0F, -1.0F, aX, aY, aZ);
+                GT_Utility.sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1.0F, aX, aY, aZ);
             }
             return true;
         }
@@ -94,7 +94,7 @@ public class Behaviour_Wrench extends Behaviour_None {
             if ((aPlayer.capabilities.isCreativeMode) || (((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts))) {
                 aWorld.spawnEntityInWorld(new EntityItem(aWorld, aX + 0.5D, aY + 0.5D, aZ + 0.5D, new ItemStack(aBlock, 1, aMeta)));
                 aWorld.setBlockToAir(aX, aY, aZ);
-                GT_Utility.sendSoundToPlayers(aWorld, (String) GregTech_API.sSoundList.get(100), 1.0F, -1.0F, aX, aY, aZ);
+                GT_Utility.sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1.0F, aX, aY, aZ);
             }
             return true;
         }
@@ -103,7 +103,7 @@ public class Behaviour_Wrench extends Behaviour_None {
                 if ((aPlayer.capabilities.isCreativeMode) || (((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts))) {
                     aWorld.spawnEntityInWorld(new EntityItem(aWorld, aX + 0.5D, aY + 0.5D, aZ + 0.5D, new ItemStack(aBlock, 1, 0)));
                     aWorld.setBlockToAir(aX, aY, aZ);
-                    GT_Utility.sendSoundToPlayers(aWorld, (String) GregTech_API.sSoundList.get(100), 1.0F, -1.0F, aX, aY, aZ);
+                    GT_Utility.sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1.0F, aX, aY, aZ);
                 }
                 return true;
             }
@@ -111,21 +111,21 @@ public class Behaviour_Wrench extends Behaviour_None {
             if ((aBlock == Blocks.piston) || (aBlock == Blocks.sticky_piston) || (aBlock == Blocks.dispenser) || (aBlock == Blocks.dropper)) {
                 if ((aMeta < 6) && ((aPlayer.capabilities.isCreativeMode) || (((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts)))) {
                     aWorld.setBlockMetadataWithNotify(aX, aY, aZ, aTargetSide, 3);
-                    GT_Utility.sendSoundToPlayers(aWorld, (String) GregTech_API.sSoundList.get(100), 1.0F, -1.0F, aX, aY, aZ);
+                    GT_Utility.sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1.0F, aX, aY, aZ);
                 }
                 return true;
             }
             if ((aBlock == Blocks.pumpkin) || (aBlock == Blocks.lit_pumpkin) || (aBlock == Blocks.furnace) || (aBlock == Blocks.lit_furnace) || (aBlock == Blocks.chest) || (aBlock == Blocks.ender_chest) || (aBlock == Blocks.trapped_chest)) {
                 if ((aTargetSide > 1) && ((aPlayer.capabilities.isCreativeMode) || (((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts)))) {
                     aWorld.setBlockMetadataWithNotify(aX, aY, aZ, aTargetSide, 3);
-                    GT_Utility.sendSoundToPlayers(aWorld, (String) GregTech_API.sSoundList.get(100), 1.0F, -1.0F, aX, aY, aZ);
+                    GT_Utility.sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1.0F, aX, aY, aZ);
                 }
                 return true;
             }
             if (aBlock == Blocks.hopper) {
                 if ((aTargetSide != 1) && ((aPlayer.capabilities.isCreativeMode) || (((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts)))) {
                     aWorld.setBlockMetadataWithNotify(aX, aY, aZ, aTargetSide, 3);
-                    GT_Utility.sendSoundToPlayers(aWorld, (String) GregTech_API.sSoundList.get(100), 1.0F, -1.0F, aX, aY, aZ);
+                    GT_Utility.sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1.0F, aX, aY, aZ);
                 }
                 return true;
             }
@@ -136,7 +136,7 @@ public class Behaviour_Wrench extends Behaviour_None {
             if (!aPlayer.capabilities.isCreativeMode) {
                 ((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts);
             }
-            GT_Utility.sendSoundToPlayers(aWorld, (String) GregTech_API.sSoundList.get(100), 1.0F, -1.0F, aX, aY, aZ);
+            GT_Utility.sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1.0F, aX, aY, aZ);
         }
         return false;
     }

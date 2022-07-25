@@ -1,6 +1,6 @@
 package gregtech.common.tools;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IItemBehaviour;
@@ -29,22 +29,17 @@ public class GT_Tool_Plunger extends GT_Tool {
 
     @Override
     public String getCraftingSound() {
-        return (String) GregTech_API.sSoundList.get(101);
+        return SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE.toString();
     }
 
     @Override
     public String getEntityHitSound() {
-        return (String) GregTech_API.sSoundList.get(101);
-    }
-
-    @Override
-    public String getBreakingSound() {
-        return (String) GregTech_API.sSoundList.get(0);
+        return SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE.toString();
     }
 
     @Override
     public String getMiningSound() {
-        return (String) GregTech_API.sSoundList.get(101);
+        return SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE.toString();
     }
 
     @Override

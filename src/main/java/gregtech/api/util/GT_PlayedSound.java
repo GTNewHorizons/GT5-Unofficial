@@ -1,16 +1,27 @@
 package gregtech.api.util;
 
+import net.minecraft.util.ResourceLocation;
+
 import static gregtech.api.enums.GT_Values.E;
 
 public class GT_PlayedSound {
     public final String mSoundName;
     public final int mX, mY, mZ;
 
-    public GT_PlayedSound(String aSoundName, double aX, double aY, double aZ) {
-        mSoundName = aSoundName == null ? E : aSoundName;
+    public GT_PlayedSound(ResourceLocation aSoundResourceLocation, double aX, double aY, double aZ) {
+        mSoundName = aSoundResourceLocation.toString();
         mX = (int) aX;
         mY = (int) aY;
         mZ = (int) aZ;
+    }
+
+    /**
+     * @inheritDoc
+     * @deprecated Use {@link GT_PlayedSound(ResourceLocation, double, double, double)}
+     */
+    @Deprecated
+    public GT_PlayedSound(String aSoundName, double aX, double aY, double aZ) {
+        this(new ResourceLocation(aSoundName == null ? E : aSoundName), aX, aY, aZ);
     }
 
     @Override

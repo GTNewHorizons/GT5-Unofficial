@@ -3,6 +3,7 @@ package gregtech.api.graphs.consumers;
 import cofh.api.energy.IEnergyReceiver;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.common.GT_Pollution;
@@ -69,7 +70,7 @@ public class NodeEnergyReceiver extends ConsumerNode {
                 aExplosionPower < V[15] ? 19.0F : 20.0F;
             int tX = mTileEntity.xCoord, tY = mTileEntity.yCoord, tZ = mTileEntity.zCoord;
             World tWorld = mTileEntity.getWorldObj();
-            GT_Utility.sendSoundToPlayers(tWorld, GregTech_API.sSoundList.get(209), 1.0F, -1, tX, tY, tZ);
+            GT_Utility.sendSoundToPlayers(tWorld, SoundResource.IC2_MACHINES_MACHINE_OVERLOAD, 1.0F, -1, tX, tY, tZ);
             tWorld.setBlock(tX, tY, tZ, Blocks.air);
             if (GregTech_API.sMachineExplosions)
                 if (GT_Mod.gregtechproxy.mPollution)

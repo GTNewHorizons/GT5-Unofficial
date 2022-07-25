@@ -1,6 +1,6 @@
 package gregtech.api.items;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
@@ -20,9 +20,9 @@ public class GT_Spray_Bug_Item extends GT_Tool_Item {
 		addToEffectiveList("EntityTFTowerBroodling");
 		addToEffectiveList("EntityTFFireBeetle");
 		addToEffectiveList("EntityTFSlimeBeetle");
-		setCraftingSound(GregTech_API.sSoundList.get(102));
-		setBreakingSound(GregTech_API.sSoundList.get(102));
-		setEntityHitSound(GregTech_API.sSoundList.get(102));
+		setCraftingSound(Sounds.IC2_TOOLS_PAINTER);
+		setBreakingSound(Sounds.IC2_TOOLS_PAINTER);
+		setEntityHitSound(Sounds.IC2_TOOLS_PAINTER);
 		setUsageAmounts(8, 4, 1);*/
     }
 
@@ -56,7 +56,7 @@ public class GT_Spray_Bug_Item extends GT_Tool_Item {
                 int tCropBefore = ((ic2.api.crops.ICropTile) aTileEntity).getWeedExStorage();
                 if (tCropBefore <= 100 && GT_ModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
                     ((ic2.api.crops.ICropTile) aTileEntity).setWeedExStorage(tCropBefore + 100);
-                    GT_Utility.sendSoundToPlayers(aWorld, GregTech_API.sSoundList.get(102), 1.0F, -1, aX, aY, aZ);
+                    GT_Utility.sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_PAINTER, 1.0F, -1, aX, aY, aZ);
                     return true;
                 }
             }
