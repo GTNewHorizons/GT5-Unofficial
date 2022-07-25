@@ -450,8 +450,8 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.name"))   // Machine Type: Tesla Tower
                 .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.desc.0"))  // Controller block of the Tesla Tower
-                .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.desc.1"))  // Used to transmit power to Tesla Coil Covers
-                .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.desc.2"))  // Can be fed with Helium/Nitrogen/Radon Plasma to reduce power loss
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.desc.1"))  // Used to transmit power to Tesla Coil Covers and Tesla Transceivers
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.desc.2"))  // Can be fed with Helium/Nitrogen/Radon Plasma to increase the range
                 .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.desc.3"))  // Transmitted voltage depends on the used Tesla Capacitor tier
                 .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.desc.4"))  // Primary Tesla Windings need to be at least the same tier as the Tesla Capacitor
                 .addInfo(translateToLocal("tt.keyword.Structure.StructureTooComplex")) // The structure is too complex!
