@@ -1098,7 +1098,7 @@ public class DreamCraftRecipeLoader {
                     },
                     new FluidStack[]{
                             Materials.Neutronium.getMolten(32_768_000L),
-                            Materials.SpaceTime.getMolten(16*36864L),
+                            Materials.SpaceTime.getMolten(4*36864L),
                             Materials.SuperconductorUEVBase.getMolten(4*36864L),
                             Materials.ExcitedDTEC.getFluid(4*36864L)
                     },
@@ -1129,7 +1129,7 @@ public class DreamCraftRecipeLoader {
                     },
                     new FluidStack[]{
                             Materials.Neutronium.getMolten(32_768_000L),
-                            Materials.SpaceTime.getMolten(16*36864L),
+                            Materials.SpaceTime.getMolten(4*36864L),
                             Materials.SuperconductorUEVBase.getMolten(4*36864L),
                             Materials.ExcitedDTEC.getFluid(4*36864L)
                     },
