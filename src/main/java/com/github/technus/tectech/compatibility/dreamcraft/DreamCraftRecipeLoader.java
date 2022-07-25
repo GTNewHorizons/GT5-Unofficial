@@ -2474,7 +2474,7 @@ public class DreamCraftRecipeLoader {
         int research_eu_per_tick = 32_000_000;
         int research_amperage = 1;
 
-        FluidStack fluid_0 = Materials.SuperconductorUEV.getMolten(2592);
+        FluidStack fluid_0 = Materials.SuperconductorUEVBase.getMolten(2592);
         FluidStack fluid_1 = new FluidStack(mutated_living_solder, 2592);
         FluidStack fluid_2 = Materials.Lubricant.getFluid(4000);
 
@@ -2601,7 +2601,7 @@ public class DreamCraftRecipeLoader {
                         GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.SpaceTime, 6L),
                         ItemList.Electric_Motor_UMV.get(2L),
                         ItemList.Electric_Piston_UMV.get(1L),
-                        new Object[]{OrePrefixes.circuit.get(Materials.Quantium), 2L},
+                        new Object[]{OrePrefixes.circuit.get(Materials.Quantum), 2L},
                         new Object[]{OrePrefixes.circuit.get(Materials.Piko), 4L},
                         new Object[]{OrePrefixes.circuit.get(Materials.Nano), 8L},
                         GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.Quantium, 6L)
