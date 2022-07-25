@@ -784,10 +784,10 @@ public class DreamCraftRecipeLoader {
                 }, CustomItemList.Machine_Multi_Infuser.get(1), 8000, 2000000);
 
 
-//        item_parts_UHV_assline_recipes();
-//        item_parts_UEV_assline_recipes();
+        item_parts_UHV_assline_recipes();
+        item_parts_UEV_assline_recipes();
         // Leave me alone I will do this at some point );<
-//        item_parts_UMV_assline_recipes();
+        item_parts_UMV_assline_recipes();
 
         //UHV-UMV Energy Hatch & Dynamo
         TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Hatch_Energy_UV.get(1L),
