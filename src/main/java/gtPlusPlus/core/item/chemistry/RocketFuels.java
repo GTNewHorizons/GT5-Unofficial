@@ -604,7 +604,7 @@ public class RocketFuels extends ItemPackage {
 		Nitrogen_Tetroxide = FluidUtils.generateFluidNonMolten("NitrogenTetroxide", "Nitrogen Tetroxide", 261, new short[]{170, 170, 0, 100}, null, null);
 
 		//Create Hydrazine
-		Hydrazine = FluidUtils.generateFluidNonMolten("Hydrazine", "Hydrazine", 2, new short[]{250, 250, 250, 100}, null, null);
+		Hydrazine = FluidUtils.generateFluidNonMolten("Hydrazine", "Hydrazine", 275, new short[]{250, 250, 250, 100}, null, null);
 
 		//Create Monomethylhydrazine
 		Monomethylhydrazine = FluidUtils.generateFluidNonMolten("Monomethylhydrazine", "Monomethylhydrazine", 221, new short[]{125, 125, 125, 100}, null, null);
