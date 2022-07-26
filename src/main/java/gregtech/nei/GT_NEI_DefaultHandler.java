@@ -60,7 +60,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
     private static final int M = 1000000;
     private static final ConcurrentMap<GT_Recipe.GT_Recipe_Map, SortedRecipeListCache> CACHE = new ConcurrentHashMap<>();
 
-    private Power mPower;
+    protected Power mPower;
     private String mRecipeName; // Name of the handler displayed on top
     private NEIHandlerAbsoluteTooltip mRecipeNameTooltip;
     private static final int RECIPE_NAME_WIDTH = 140;
@@ -487,7 +487,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         return "(MK " + tier + ")";
     }
 
-    private boolean drawOptionalLine(int lineNumber, String line, String prefix) {
+    protected boolean drawOptionalLine(int lineNumber, String line, String prefix) {
         if (!(line == null || "unspecified".equals(line))) {
             drawLine(lineNumber, prefix + line);
             return true;
@@ -495,7 +495,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         return false;
     }
 
-    private boolean drawOptionalLine(int lineNumber, String line) {
+    protected boolean drawOptionalLine(int lineNumber, String line) {
         if (!(line == null || "unspecified".equals(line))) {
             drawLine(lineNumber, line);
             return true;
