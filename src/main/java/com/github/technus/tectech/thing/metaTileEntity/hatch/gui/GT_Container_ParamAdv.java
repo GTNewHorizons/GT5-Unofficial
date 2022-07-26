@@ -92,11 +92,11 @@ public class GT_Container_ParamAdv extends GT_ContainerMetaTile_Machine {
                     } else {
                         if (secondRow) {
                             long temp=Double.doubleToLongBits(paramH.value1D);
-                            temp |= 1 << columnPointer;
+                            temp |= 1L << (long)columnPointer;
                             paramH.value1D=Double.longBitsToDouble(temp);
                         } else {
                             long temp=Double.doubleToLongBits(paramH.value0D);
-                            temp |= 1 << columnPointer;
+                            temp |= 1L << (long)columnPointer;
                             paramH.value0D=Double.longBitsToDouble(temp);
                         }
                     }
@@ -128,11 +128,11 @@ public class GT_Container_ParamAdv extends GT_ContainerMetaTile_Machine {
                     } else {
                         if (secondRow) {
                             long temp=Double.doubleToLongBits(paramH.value1D);
-                            temp &= ~(1 << columnPointer);
+                            temp &= ~(1L << (long)columnPointer);
                             paramH.value1D=Double.longBitsToDouble(temp);
                         } else {
                             long temp=Double.doubleToLongBits(paramH.value0D);
-                            temp &= ~(1 << columnPointer);
+                            temp &= ~(1L << (long)columnPointer);
                             paramH.value0D=Double.longBitsToDouble(temp);
                         }
                     }
@@ -185,11 +185,11 @@ public class GT_Container_ParamAdv extends GT_ContainerMetaTile_Machine {
                     } else {
                         if (secondRow) {
                             long temp=Double.doubleToLongBits(paramH.value1D);
-                            temp ^= 1 << columnPointer;
+                            temp ^= 1L << (long)columnPointer;
                             paramH.value1D=Double.longBitsToDouble(temp);
                         } else {
                             long temp=Double.doubleToLongBits(paramH.value0D);
-                            temp ^= 1 << columnPointer;
+                            temp ^= 1L << (long)columnPointer;
                             paramH.value0D=Double.longBitsToDouble(temp);
                         }
                     }
