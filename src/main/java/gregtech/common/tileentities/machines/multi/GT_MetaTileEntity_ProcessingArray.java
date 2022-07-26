@@ -261,7 +261,7 @@ public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_CubicMu
     public boolean processLockedRecipe() {
         GT_Single_Recipe_Check_Processing_Array tSingleRecipeCheck = (GT_Single_Recipe_Check_Processing_Array) mSingleRecipeCheck;
 
-        int machines = Math.min(64, mInventory[1].stackSize << mMult); //Upped max Cap to 64
+        int machines = mInventory[1].stackSize << mMult;
         int parallel = tSingleRecipeCheck.checkRecipeInputs(true, machines);
 
         return processRecipeOutputs(tSingleRecipeCheck.getRecipe(), tSingleRecipeCheck.getRecipeAmperage(), parallel);
