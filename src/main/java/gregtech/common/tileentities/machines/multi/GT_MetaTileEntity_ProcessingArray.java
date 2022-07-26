@@ -284,7 +284,7 @@ public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_CubicMu
 
         boolean recipeLocked = false;
         mLastRecipe = tRecipe;
-        int machines = Math.min(64, mInventory[1].stackSize << mMult); //Upped max Cap to 64
+        int machines = mInventory[1].stackSize << mMult;
         int i = 0;
         for (; i < machines; i++) {
             if (!tRecipe.isRecipeInputEqual(true, tFluids, tInputs)) {
