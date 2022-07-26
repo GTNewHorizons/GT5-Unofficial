@@ -1,9 +1,5 @@
 package gregtech.common.misc;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.gtnewhorizon.structurelib.StructureLib;
 import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
@@ -15,11 +11,9 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
-import org.apache.commons.io.IOUtils;
 
 import java.lang.reflect.Field;
 import java.math.BigInteger;
-import java.net.URL;
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -55,14 +49,21 @@ public final class GT_Command extends CommandBase implements IGlobalWirelessEner
                 "\"pollution <amount>\" - adds the <amount> of the pollution to the current chunk, " +
                         "\n if <amount> isnt specified, will add" + GT_Mod.gregtechproxy.mPollutionSmogLimit + "gibbl."
         ));
+        sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD + " --- Global wireless EU controls ---"));
+        sender.addChatMessage(new ChatComponentText("Allows you to set the amount of EU in a users wireless network."));
+        sender.addChatMessage(new ChatComponentText("Usage: global_energy_set [Name] [EU]"));
+        sender.addChatMessage(new ChatComponentText("Allows you to add EU to a users wireless network. Also accepts negative numbers."));
+        sender.addChatMessage(new ChatComponentText("Usage: global_energy_add [Name] [EU]"));
+        sender.addChatMessage(new ChatComponentText("Allows you to join two users together into one network. Can be undone by writing the users name twice."));
+        sender.addChatMessage(new ChatComponentText("Usage: global_energy_join [User joining] [User to join]"));
     }
 
     @Override
     public List addTabCompletionOptions(ICommandSender sender, String[] ss) {
         List<String> l = new ArrayList<>();
         String test = ss.length == 0 ? "" : ss[0].trim();
-        if (ss.length == 0 || ss.length == 1 && (test.isEmpty() || Stream.of("toggle", "chunks", "pollution").anyMatch(s -> s.startsWith(test)))) {
-            Stream.of("toggle", "chunks", "pollution", "gt")
+        if (ss.length == 0 || ss.length == 1 && (test.isEmpty() || Stream.of("toggle", "chunks", "pollution", "global_energy_add", "global_energy_set", "global_energy_join").anyMatch(s -> s.startsWith(test)))) {
+            Stream.of("toggle", "chunks", "pollution", "global_energy_add", "global_energy_set", "global_energy_join")
                     .filter(s -> test.isEmpty() || s.startsWith(test))
                     .forEach(l::add);
         } else if (test.equals("toggle")) {
@@ -185,6 +186,7 @@ public final class GT_Command extends CommandBase implements IGlobalWirelessEner
 
                 break;
             default:
+                sender.addChatMessage(new ChatComponentText( EnumChatFormatting.RED + "Invalid command/syntax detected."));
                 printHelp(sender);
         }
     }

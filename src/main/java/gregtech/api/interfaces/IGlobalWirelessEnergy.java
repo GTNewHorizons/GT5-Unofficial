@@ -42,8 +42,8 @@ public interface IGlobalWirelessEnergy {
     String GlobalEnergyTeamFileName = "GlobalEnergyTeamMap";
 
     // User 0 will join user 1 by calling this function. They will share the same energy network.
-    default void JoinUserNetwork(String user_0, String user_1) {
-        GlobalEnergyTeam.put(user_0, user_1);
+    default void JoinUserNetwork(String user_uuid_0, String user_uuid_1) {
+        GlobalEnergyTeam.put(user_uuid_0, user_uuid_1);
     }
 
     // --- Save data for global energy network --
@@ -274,7 +274,7 @@ public interface IGlobalWirelessEnergy {
     }
 
     default String GetUsernameFromUUID(String uuid) {
-        return GlobalEnergyTeam.getOrDefault(uuid, "");
+        return GlobalEnergyName.getOrDefault(GlobalEnergyTeam.getOrDefault(uuid, ""), "");
     }
 
     default String GetUUIDFromUsername(String username) {
@@ -282,6 +282,7 @@ public interface IGlobalWirelessEnergy {
     }
 
     default void ClearMaps() {
+        // Do not use this unless you are 100% certain you know what you are doing.
         GlobalEnergy.clear();
         GlobalEnergyName.clear();
         GlobalEnergyTeam.clear();

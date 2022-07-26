@@ -7,7 +7,7 @@ import java.math.BigInteger;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class GlobalEnergyMapTest implements IGlobalWirelessEnergy {
+class IGlobalWirelessEnergy_UnitTest implements IGlobalWirelessEnergy {
 
     static final String message = "Comparison failed";
 
@@ -35,7 +35,6 @@ class GlobalEnergyMapTest implements IGlobalWirelessEnergy {
         String user_user = "TEST";
 
         IGlobalWirelessEnergy.super.StrongCheckOrAddUser(user_uuid, user_user);
-
 
         assertFalse(IGlobalWirelessEnergy.super.addEUToGlobalEnergyMap(user_uuid, new BigInteger("-1")));
         assertEquals(IGlobalWirelessEnergy.super.GetUserEU(user_uuid), BigInteger.ZERO, message);
@@ -153,4 +152,25 @@ class GlobalEnergyMapTest implements IGlobalWirelessEnergy {
         IGlobalWirelessEnergy.super.ClearMaps();
     }
 
+    @Test
+    void IGlobalWirelessEnergy_UUID() {
+        String user_uuid_0 = "12345";
+        String user_name_0 = "Colen";
+
+        String user_uuid_1 = "54321";
+        String user_name_1 = "Steve";
+
+        IGlobalWirelessEnergy.super.StrongCheckOrAddUser(user_uuid_0, user_name_0);
+        IGlobalWirelessEnergy.super.StrongCheckOrAddUser(user_uuid_1, user_name_1);
+
+        assertEquals(IGlobalWirelessEnergy.super.GetUsernameFromUUID(user_uuid_0), user_name_0, message);
+        assertEquals(IGlobalWirelessEnergy.super.GetUsernameFromUUID(user_uuid_1), user_name_1, message);
+
+        IGlobalWirelessEnergy.super.JoinUserNetwork(user_uuid_0, user_uuid_1);
+
+        assertEquals(IGlobalWirelessEnergy.super.GetUsernameFromUUID(user_uuid_0), user_name_1, message);
+        assertEquals(IGlobalWirelessEnergy.super.GetUsernameFromUUID(user_uuid_1), user_name_1, message);
+
+        IGlobalWirelessEnergy.super.ClearMaps();
+    }
 }

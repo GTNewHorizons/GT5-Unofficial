@@ -139,8 +139,7 @@ public class GT_MetaTileEntity_Wireless_Dynamo extends GT_MetaTileEntity_Hatch_D
 
             // Every ticks_between_energy_addition ticks change the energy content of the machine.
             if (aTick % ticks_between_energy_addition == 0L) {
-
-                IGlobalWirelessEnergy.super.addEUToGlobalEnergyMap(owner_uuid, eu_transferred_per_operation);
+                IGlobalWirelessEnergy.super.addEUToGlobalEnergyMap(owner_uuid, getEUVar());
                 setEUVar(0L);
             }
         }
