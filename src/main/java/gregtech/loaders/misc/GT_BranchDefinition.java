@@ -15,6 +15,7 @@ import static forestry.core.genetics.alleles.EnumAllele.*;
 import static gregtech.loaders.misc.GT_BeeDefinition.getEffect;
 import static gregtech.loaders.misc.GT_BeeDefinition.getFlowers;
 import static gregtech.loaders.misc.GT_BeeDefinitionReference.EXTRABEES;
+import static gregtech.loaders.misc.GT_BeeDefinitionReference.MAGICBEES;
 
 public enum GT_BranchDefinition {
 
@@ -127,6 +128,33 @@ public enum GT_BranchDefinition {
         AlleleHelper.instance.set(alleles, TERRITORY, Territory.LARGER);
     }
     ),
+    NOBLEGAS("Nobilis Gasorum", alleles -> {
+        AlleleHelper.instance.set(alleles, TEMPERATURE_TOLERANCE, Tolerance.BOTH_2);
+        AlleleHelper.instance.set(alleles, TOLERANT_FLYER, true);
+        AlleleHelper.instance.set(alleles, FLOWERING, Flowering.FASTEST);
+        AlleleHelper.instance.set(alleles, LIFESPAN, Lifespan.NORMAL);
+        AlleleHelper.instance.set(alleles, SPEED, Speed.FASTEST);
+        AlleleHelper.instance.set(alleles, TERRITORY, Territory.AVERAGE);
+    }
+    ),
+    INFUSEDSHARD("Infusa Shard", alleles -> {
+        AlleleHelper.instance.set(alleles, TEMPERATURE_TOLERANCE, Tolerance.BOTH_1);
+        AlleleHelper.instance.set(alleles, TOLERANT_FLYER, true);
+        AlleleHelper.instance.set(alleles, FLOWER_PROVIDER, getFlowers(MAGICBEES, "rock"));
+        AlleleHelper.instance.set(alleles, FLOWERING, Flowering.FASTEST);
+        AlleleHelper.instance.set(alleles, LIFESPAN, Lifespan.SHORTEST);
+        AlleleHelper.instance.set(alleles, SPEED, Speed.FASTEST);
+        AlleleHelper.instance.set(alleles, TERRITORY, Territory.LARGEST);
+    }
+    ),
+    ENDGAME("ENDUS GAMUS", alleles -> {
+        AlleleHelper.instance.set(alleles, TEMPERATURE_TOLERANCE, Tolerance.BOTH_5);
+        AlleleHelper.instance.set(alleles, TOLERANT_FLYER, true);
+        AlleleHelper.instance.set(alleles, FLOWERING, Flowering.FASTEST);
+        AlleleHelper.instance.set(alleles, LIFESPAN, Lifespan.SHORTEST);
+        AlleleHelper.instance.set(alleles, SPEED, Speed.FASTEST);
+        AlleleHelper.instance.set(alleles, TERRITORY, Territory.LARGEST);
+    })
     ;
 
     private static IAllele[] defaultTemplate;
