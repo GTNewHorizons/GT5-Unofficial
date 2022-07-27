@@ -6,7 +6,6 @@ import net.minecraft.world.storage.MapStorage;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fluids.IFluidHandler;
 
-import java.awt.*;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,7 +18,7 @@ public class EnderWorldSavedData extends WorldSavedData {
     private static final String DATA_NAME = MODID + "_EnderWorldSavedData";
     private static final String ENDER_LIQUID_TAG_LINK = DATA_NAME + "_EnderLiquidTagLink";
     private static final String ENDER_LIQUID_TANK_LINK = DATA_NAME + "_EnderLiquidTankLink";
-    private static final EnderLinkTag DEFAULT_LINK_TAG = new EnderLinkTag(Color.WHITE, null);
+    private static final EnderLinkTag DEFAULT_LINK_TAG = new EnderLinkTag("", null);
 
     private Map<EnderLinkTag, EnderFluidContainer> EnderLiquidTagLink = new HashMap<>();
     private Map<EnderLinkTank, EnderLinkTag> EnderLiquidTankLink = new HashMap<>();
