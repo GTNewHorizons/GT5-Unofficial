@@ -297,6 +297,5 @@ public class GT_Cover_TM_EnderFluidLink extends GT_CoverBehavior {
                 return true;
             }
         }
-
     }
 }
