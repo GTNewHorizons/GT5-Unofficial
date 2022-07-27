@@ -40,18 +40,21 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energ
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.GT_DummyWorld;
 import ic2.api.crops.CropCard;
 import ic2.api.crops.Crops;
 import ic2.core.Ic2Items;
 import ic2.core.crop.TileEntityCrop;
 import net.minecraft.block.Block;
-import net.minecraft.block.IGrowable;
+import net.minecraft.block.BlockBush;
+import net.minecraft.block.BlockStem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemSeedFood;
 import net.minecraft.item.ItemSeeds;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
@@ -60,6 +63,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -517,15 +521,22 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse extends GT_MetaTileEntity
 
         int optimalgrowth = 7;
 
+        boolean needsreplanting = true;
+
+        static GreenHouseWorld fakeworld = new GreenHouseWorld(5, 5, 5);
+
         public NBTTagCompound toNBTTagCompound(){
             NBTTagCompound aNBT = new NBTTagCompound();
             aNBT.setTag("input", input.writeToNBT(new NBTTagCompound()));
+            aNBT.setBoolean("isValid", isValid);
+            aNBT.setBoolean("isIC2Crop", isIC2Crop);
             if(!isIC2Crop) {
                 aNBT.setInteger("crop", Block.getIdFromBlock(crop));
                 aNBT.setInteger("dropscount", drops.size());
                 for (int i = 0; i < drops.size(); i++)
                     aNBT.setTag("drop." + i, drops.get(i).writeToNBT(new NBTTagCompound()));
                 aNBT.setInteger("optimalgrowth", optimalgrowth);
+                aNBT.setBoolean("needsreplanting", needsreplanting);
             }
             else {
                 if(undercrop != null)
@@ -537,10 +548,8 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse extends GT_MetaTileEntity
                     for(int j = 0; j < generations.get(i).size(); j++)
                         aNBT.setTag("generation." + i + "." + j, generations.get(i).get(j).writeToNBT(new NBTTagCompound()));
                 }
+                aNBT.setInteger("growthticks", growthticks);
             }
-            aNBT.setBoolean("isValid", isValid);
-            aNBT.setBoolean("isIC2Crop", isIC2Crop);
-            if(isIC2Crop) aNBT.setInteger("growthticks", growthticks);
             return aNBT;
         }
 
@@ -556,6 +565,7 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse extends GT_MetaTileEntity
                     drops.add(ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag("drop." + i)));
                 optimalgrowth = aNBT.getInteger("optimalgrowth");
                 if(optimalgrowth == 0) optimalgrowth = 7;
+                if(aNBT.hasKey("needsreplanting")) needsreplanting = aNBT.getBoolean("needsreplanting");
             }
             else
             {
@@ -634,15 +644,45 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse extends GT_MetaTileEntity
                 GreenHouseSlotIC2(tileEntity, world, input);
                 return;
             }
-            if (!(input.getItem() instanceof ItemSeeds)) {
-                return;
+            Item i = input.getItem();
+            Block b = null;
+            if(i instanceof IPlantable) {
+                if (i instanceof ItemSeeds)
+                    b = ((ItemSeeds) i).getPlant(world, 0, 0, 0);
+                else if (i instanceof ItemSeedFood)
+                    b = ((ItemSeedFood) i).getPlant(world, 0, 0, 0);
             }
-            Block b = ((ItemSeeds) input.getItem()).getPlant(world, 0, 0, 0);
-            if (!(b instanceof IGrowable))
+            else {
+                if(i == Items.reeds)
+                    b = Blocks.reeds;
+                else {
+                    b = Block.getBlockFromItem(i);
+                    if(!(b == Blocks.cactus))
+                        return;
+                }
+                needsreplanting = false;
+            }
+            if (!(b instanceof IPlantable))
                 return;
-            GameRegistry.UniqueIdentifier u = GameRegistry.findUniqueIdentifierFor(input.getItem());
+            GameRegistry.UniqueIdentifier u = GameRegistry.findUniqueIdentifierFor(i);
             if(u != null && Objects.equals(u.modId, "Natura"))
                 optimalgrowth = 8;
+
+            if(b instanceof BlockStem){
+                fakeworld.block = null;
+                try {
+                    b.updateTick(fakeworld, 5, 5, 5, fakeworld.rand);
+                }
+                catch(Exception e)
+                {
+                    e.printStackTrace(System.err);
+                }
+                if(fakeworld.block == null)
+                    return;
+                b = fakeworld.block;
+                needsreplanting = false;
+            }
+
             crop = b;
             isIC2Crop = false;
             if(addDrops(world, input.stackSize, autocraft) == 0 && !drops.isEmpty()){
@@ -827,6 +867,8 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse extends GT_MetaTileEntity
                     if(x.stackSize > 0)
                         drops.add(x.copy());
             }
+            if(!needsreplanting)
+                return 0;
             for(int i = 0; i < drops.size(); i++)
             {
                 if(GT_Utility.areStacksEqual(drops.get(i), input))
@@ -864,6 +906,56 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse extends GT_MetaTileEntity
                 }
             }
             return count;
+        }
+    }
+
+    private static class GreenHouseWorld extends GT_DummyWorld {
+
+        public int x = 0,y = 0,z = 0,meta = 0;
+        public Block block;
+        GreenHouseWorld(int x, int y, int z){
+            super();
+            this.x = x;
+            this.y = y;
+            this.z = z;
+            this.rand = new GreenHouseRandom();
+        }
+
+        @Override
+        public int getBlockMetadata(int aX, int aY, int aZ) {
+            if(aX == x && aY == y && aZ == z)
+                return 7;
+            return 0;
+        }
+
+        @Override
+        public Block getBlock(int aX, int aY, int aZ) {
+            if(aY == y - 1)
+                return Blocks.farmland;
+            return Blocks.air;
+        }
+
+        @Override
+        public int getBlockLightValue(int p_72957_1_, int p_72957_2_, int p_72957_3_) {
+            return 10;
+        }
+
+        @Override
+        public boolean setBlock(int aX, int aY, int aZ, Block aBlock, int aMeta, int aFlags) {
+            if(aBlock == Blocks.air)
+                return false;
+            if(aX == x && aY == y && aZ == z)
+                return false;
+            block = aBlock;
+            meta = aMeta;
+            return true;
+        }
+    }
+
+    private static class GreenHouseRandom extends Random{
+        @Override
+        public int nextInt(int bound) {
+            return 0;
         }
     }
 
