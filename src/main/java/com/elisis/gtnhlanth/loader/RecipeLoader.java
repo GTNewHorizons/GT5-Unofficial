@@ -1513,7 +1513,8 @@ public class RecipeLoader {
                 if (GT_Utility.isStackValid(input)) {
                     int[] oreDict = OreDictionary.getOreIDs(input);
                     for (int oreDictID : oreDict) {
-                        if (OreDictionary.getOreName(oreDictID).startsWith("dustImpureCerium")) {
+                        if (OreDictionary.getOreName(oreDictID).startsWith("dustImpureCerium")
+                                || OreDictionary.getOreName(oreDictID).startsWith("dustImpureSamarium")) {
                             GT_Recipe tRecipe = recipe.copy();
                             for (int i = 0; i < tRecipe.mOutputs.length; i++) {
                                 if (!GT_Utility.isStackValid(tRecipe.mOutputs[i])) continue;
@@ -1521,6 +1522,10 @@ public class RecipeLoader {
                                     tRecipe.mOutputs[i] = GT_Utility.copyAmount(
                                             tRecipe.mOutputs[i].stackSize,
                                             WerkstoffMaterialPool.CeriumRichMixture.get(OrePrefixes.dust, 1));
+                                } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Samarium.getDust(1))) {
+                                    tRecipe.mOutputs[i] = GT_Utility.copyAmount(
+                                            tRecipe.mOutputs[i].stackSize,
+                                            WerkstoffMaterialPool.SamariumOreConcentrate.get(OrePrefixes.dust, 1));
                                 }
                             }
                             if (!tRecipe.equals(recipe)) {
