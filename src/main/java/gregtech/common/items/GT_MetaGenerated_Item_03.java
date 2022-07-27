@@ -330,7 +330,26 @@ public class GT_MetaGenerated_Item_03
         ItemList.GalliumArsenideCrystalSmallPart.set(addItem(tLastID = 191, "Small Gallium Arsenide Crystal", "For making boules", o));
         ItemList.KevlarFiber.set(addItem(tLastID = 192, "Kevlar Fiber", "For make Kevlar Plates", o));
         ItemList.WovenKevlar.set(addItem(tLastID = 193, "Woven Kevlar", "For make Kevlar Plates", o));
-        ItemList.Spinneret.set(addItem(tLastID = 194, "Spinneret", "For make Kevlar Fiber", o));       
+        ItemList.Spinneret.set(addItem(tLastID = 194, "Spinneret", "For make Kevlar Fiber", o));
+
+        ItemList.IndustrialApiary_Upgrade_Acceleration_1.set(addItem(tLastID = 200, "Acceleration Upgrade x2", "Acceleration upgrade for Industrial Apiary/n Unlocks 2x acceleration level/n Will also grant 8x production upgrade", OrePrefixes.apiaryUpgrade.name()));
+        ItemList.IndustrialApiary_Upgrade_Acceleration_2.set(addItem(tLastID = 201, "Acceleration Upgrade x4", "Acceleration upgrade for Industrial Apiary/n Unlocks 4x acceleration level/n Will also grant 8x production upgrade", OrePrefixes.apiaryUpgrade.name()));
+        ItemList.IndustrialApiary_Upgrade_Acceleration_3.set(addItem(tLastID = 202, "Acceleration Upgrade x8", "Acceleration upgrade for Industrial Apiary/n Unlocks 8x acceleration level/n Will also grant 8x production upgrade", OrePrefixes.apiaryUpgrade.name()));
+        ItemList.IndustrialApiary_Upgrade_Acceleration_4.set(addItem(tLastID = 203, "Acceleration Upgrade x16", "Acceleration upgrade for Industrial Apiary/n Unlocks 16x acceleration level/n Will also grant 8x production upgrade", OrePrefixes.apiaryUpgrade.name()));
+        ItemList.IndustrialApiary_Upgrade_Acceleration_5.set(addItem(tLastID = 204, "Acceleration Upgrade x32", "Acceleration upgrade for Industrial Apiary/n Unlocks 32x acceleration level/n Will also grant 8x production upgrade", OrePrefixes.apiaryUpgrade.name()));
+        ItemList.IndustrialApiary_Upgrade_Acceleration_6.set(addItem(tLastID = 205, "Acceleration Upgrade x64", "Acceleration upgrade for Industrial Apiary/n Unlocks 64x acceleration level/n Will also grant 8x production upgrade", OrePrefixes.apiaryUpgrade.name()));
+        ItemList.IndustrialApiary_Upgrade_Acceleration_7.set(addItem(tLastID = 206, "Acceleration Upgrade x128", "Acceleration upgrade for Industrial Apiary/n Unlocks 128x acceleration level/n Will also grant 8x production upgrade", OrePrefixes.apiaryUpgrade.name()));
+        ItemList.IndustrialApiary_Upgrade_Acceleration_8.set(addItem(tLastID = 207, "Acceleration Upgrade x256", "Acceleration upgrade for Industrial Apiary/n Unlocks 256x acceleration level/n Will also grant 8x production upgrade", OrePrefixes.apiaryUpgrade.name()));
+
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_Acceleration_1.get(1L));
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_Acceleration_2.get(1L));
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_Acceleration_3.get(1L));
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_Acceleration_4.get(1L));
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_Acceleration_5.get(1L));
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_Acceleration_6.get(1L));
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_Acceleration_7.get(1L));
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_Acceleration_8.get(1L));
+
     }
 
     @Override
