@@ -327,6 +327,7 @@ public class LargeEssentiaSmeltery extends GT_MetaTileEntity_TooltipMultiBlockBa
     private AspectList getEssentia(ItemStack itemStack, int amount) {
         AspectList aspectList = new AspectList();
         AspectList aspects = ThaumcraftCraftingManager.getObjectTags(itemStack);
+        aspects = ThaumcraftCraftingManager.getBonusTags(itemStack, aspects);
         if (aspects != null && aspects.size() != 0 && aspects.getAspects()[0] != null) {
             for (int i = 0; i < amount; i++) aspectList.add(aspects);
         } else aspectList.add(Aspect.ENTROPY, amount);
@@ -385,7 +386,7 @@ public class LargeEssentiaSmeltery extends GT_MetaTileEntity_TooltipMultiBlockBa
         this.nodeIncrease = aNBT.getInteger("nodeIncrease");
 
         this.mOutputAspects.aspects.clear();
-        NBTTagList tlist = aNBT.getTagList("Aspects", 69);
+        NBTTagList tlist = aNBT.getTagList("Aspects", 10);
         for (int j = 0; j < tlist.tagCount(); ++j) {
             NBTTagCompound rs = tlist.getCompoundTagAt(j);
             if (rs.hasKey("key"))
@@ -444,7 +445,7 @@ public class LargeEssentiaSmeltery extends GT_MetaTileEntity_TooltipMultiBlockBa
             if (xstr.nextInt(100) < Math.max(100 - this.nodePurificationEfficiency, 0)) {
                 final World WORLD = this.getBaseMetaTileEntity().getWorld();
                 GT_MetaTileEntity_Hatch_Muffler mufflerHatch =
-                        this.mMufflerHatches.get(xstr.next(this.mMufflerHatches.size()));
+                        this.mMufflerHatches.get(xstr.nextInt(this.mMufflerHatches.size()));
                 int x = mufflerHatch.getBaseMetaTileEntity().getXCoord();
                 int y = mufflerHatch.getBaseMetaTileEntity().getYCoord();
                 int z = mufflerHatch.getBaseMetaTileEntity().getZCoord();

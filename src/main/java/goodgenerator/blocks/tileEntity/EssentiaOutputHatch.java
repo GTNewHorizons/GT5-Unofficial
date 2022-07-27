@@ -30,7 +30,7 @@ public class EssentiaOutputHatch extends TileThaumcraft implements IAspectContai
     public void readFromNBT(NBTTagCompound nbttagcompound) {
         super.readFromNBT(nbttagcompound);
         this.mAspects.aspects.clear();
-        NBTTagList tlist = nbttagcompound.getTagList("Aspects", 69);
+        NBTTagList tlist = nbttagcompound.getTagList("Aspects", 10);
         for (int j = 0; j < tlist.tagCount(); ++j) {
             NBTTagCompound rs = tlist.getCompoundTagAt(j);
             if (rs.hasKey("key")) mAspects.add(Aspect.getAspect(rs.getString("key")), rs.getInteger("amount"));

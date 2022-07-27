@@ -728,49 +728,51 @@ public class Research {
                             thauminiteBlock)
                 });
 
-        ItemStack essentiaPump = LoadedList.WITCHING_GADGETS
-                ? GT_ModHandler.getModItem("WitchingGadgets", "WG_MetalDevice", 1, 0)
-                : new ItemStack(ConfigBlocks.blockTube, 1, 4);
-        ItemStack inter = LoadedList.THAUMIC_TINKERER
-                ? GT_ModHandler.getModItem("ThaumicTinkerer", "interface", 1, 0)
-                : new ItemStack(ConfigItems.itemResource, 1, 15);
-        GregTech_API.sThaumcraftCompat.addResearch(
-                "ESSENTIA_OUTPUT_HATCH_ME",
-                "Essentia Output Hatch (ME)",
-                "It must exist.",
-                new String[] {"INFUSION"},
-                "ARTIFICE",
-                ItemRefer.Essentia_Output_Hatch_ME.get(1),
-                3,
-                0,
-                -15,
-                3,
-                Arrays.asList(
-                        new TC_Aspects.TC_AspectStack(TC_Aspects.ALIENIS, 10),
-                        new TC_Aspects.TC_AspectStack(TC_Aspects.VINCULUM, 10),
-                        new TC_Aspects.TC_AspectStack(TC_Aspects.STRONTIO, 10),
-                        new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 10),
-                        new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 10)),
-                null,
-                new Object[] {
-                    "research.ESSENTIA_OUTPUT_HATCH_ME.page.0",
-                    GregTech_API.sThaumcraftCompat.addInfusionRecipe(
-                            "ESSENTIA_OUTPUT_HATCH_ME",
-                            ItemRefer.Essentia_Output_Hatch.get(1),
-                            new ItemStack[] {
-                                GT_ModHandler.getModItem(
-                                        "thaumicenergistics", "thaumicenergistics.block.essentia.provider", 1),
-                                new ItemStack(ConfigBlocks.blockEssentiaReservoir, 1, 0),
-                                essentiaPump,
-                                inter,
-                            },
-                            ItemRefer.Essentia_Output_Hatch_ME.get(1),
-                            8,
-                            Arrays.asList(
-                                    new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 256),
-                                    new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 256),
-                                    new TC_Aspects.TC_AspectStack(TC_Aspects.ALIENIS, 256),
-                                    new TC_Aspects.TC_AspectStack(TC_Aspects.STRONTIO, 256)))
-                });
+        if (LoadedList.THAUMIC_ENERGISTICS) {
+            ItemStack essentiaPump = LoadedList.WITCHING_GADGETS
+                    ? GT_ModHandler.getModItem("WitchingGadgets", "WG_MetalDevice", 1, 0)
+                    : new ItemStack(ConfigBlocks.blockTube, 1, 4);
+            ItemStack inter = LoadedList.THAUMIC_TINKERER
+                    ? GT_ModHandler.getModItem("ThaumicTinkerer", "interface", 1, 0)
+                    : new ItemStack(ConfigItems.itemResource, 1, 15);
+            GregTech_API.sThaumcraftCompat.addResearch(
+                    "ESSENTIA_OUTPUT_HATCH_ME",
+                    "Essentia Output Hatch (ME)",
+                    "It must exist.",
+                    new String[] {"INFUSION"},
+                    "ARTIFICE",
+                    ItemRefer.Essentia_Output_Hatch_ME.get(1),
+                    3,
+                    0,
+                    -15,
+                    3,
+                    Arrays.asList(
+                            new TC_Aspects.TC_AspectStack(TC_Aspects.ALIENIS, 10),
+                            new TC_Aspects.TC_AspectStack(TC_Aspects.VINCULUM, 10),
+                            new TC_Aspects.TC_AspectStack(TC_Aspects.STRONTIO, 10),
+                            new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 10),
+                            new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 10)),
+                    null,
+                    new Object[] {
+                        "research.ESSENTIA_OUTPUT_HATCH_ME.page.0",
+                        GregTech_API.sThaumcraftCompat.addInfusionRecipe(
+                                "ESSENTIA_OUTPUT_HATCH_ME",
+                                ItemRefer.Essentia_Output_Hatch.get(1),
+                                new ItemStack[] {
+                                    GT_ModHandler.getModItem(
+                                            "thaumicenergistics", "thaumicenergistics.block.essentia.provider", 1),
+                                    new ItemStack(ConfigBlocks.blockEssentiaReservoir, 1, 0),
+                                    essentiaPump,
+                                    inter,
+                                },
+                                ItemRefer.Essentia_Output_Hatch_ME.get(1),
+                                8,
+                                Arrays.asList(
+                                        new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 256),
+                                        new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 256),
+                                        new TC_Aspects.TC_AspectStack(TC_Aspects.ALIENIS, 256),
+                                        new TC_Aspects.TC_AspectStack(TC_Aspects.STRONTIO, 256)))
+                    });
+        }
     }
 }
