@@ -1178,6 +1178,18 @@ public final class ModItems {
 		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, ELEMENT.STANDALONE.HYPOGEN);
 
 		//Foil
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FOIL, ALLOY.BLACK_TITANIUM);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FOIL, ALLOY.BOTMIUM);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FOIL, ALLOY.TITANSTEEL);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FOIL, ALLOY.NITINOL_60);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FOIL, ALLOY.QUANTUM);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FOIL, ALLOY.LAURENIUM);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FOIL, ELEMENT.STANDALONE.HYPOGEN);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FOIL, ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FOIL, ELEMENT.STANDALONE.ASTRAL_TITANIUM);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FOIL, ELEMENT.STANDALONE.RHUGNOR);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FOIL, ELEMENT.STANDALONE.WHITE_METAL);
+		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FOIL, ELEMENT.STANDALONE.ADVANCED_NITINOL);
 		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FOIL, ALLOY.PIKYONIUM);
 		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FOIL, ALLOY.CINOBITE);
 		MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FOIL, ALLOY.LAFIUM);
