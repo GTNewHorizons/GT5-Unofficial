@@ -19,6 +19,7 @@ public enum GT_ApiaryUpgrade {
     speed6(UNIQUE_INDEX.SPEED_UPGRADE, 32205, 1, 6),
     speed7(UNIQUE_INDEX.SPEED_UPGRADE, 32206, 1, 7),
     speed8(UNIQUE_INDEX.SPEED_UPGRADE, 32207, 1, 8),
+    speed8upgraded(UNIQUE_INDEX.SPEED_UPGRADE, 32208, 1, 8),
     ;
 
     private enum UNIQUE_INDEX{
@@ -102,7 +103,7 @@ public enum GT_ApiaryUpgrade {
         if(Loader.isModLoaded("gendustry")) {
             ItemStack s = GT_ModHandler.getModItem("gendustry", "ApiaryUpgrade", 8L, 0);
             GT_Utility.ItemId a = GT_Utility.ItemId.createNoCopy(s);
-            UNIQUE_INDEX.SPEED_UPGRADE.apply((u) -> u.additionalGendustryUpgrades.put(a, s));
+            speed8upgraded.additionalGendustryUpgrades.put(a, s);
         }
     }
 }
