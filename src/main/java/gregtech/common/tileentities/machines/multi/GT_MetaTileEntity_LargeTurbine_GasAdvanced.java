@@ -17,6 +17,7 @@ import net.minecraftforge.fluids.FluidStack;
 import java.util.ArrayList;
 
 import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.items.GT_MetaGenerated_Tool.getPrimaryMaterial;
 
 public class GT_MetaTileEntity_LargeTurbine_GasAdvanced extends GT_MetaTileEntity_LargeTurbine {
     public GT_MetaTileEntity_LargeTurbine_GasAdvanced(int aID, String aName, String aNameRegional) {
@@ -87,7 +88,7 @@ public class GT_MetaTileEntity_LargeTurbine_GasAdvanced extends GT_MetaTileEntit
     }
 
     @Override
-    int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow, int aBaseEff, int overflowMultiplier) {
+    int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow, int aBaseEff, int overflowMultiplier, float[] flowMultipliers) {
         if (aFluids.size() >= 1) {
             int tEU = 0;
             int actualOptimalFlow = 0;
@@ -95,7 +96,7 @@ public class GT_MetaTileEntity_LargeTurbine_GasAdvanced extends GT_MetaTileEntit
             FluidStack firstFuelType = new FluidStack(aFluids.get(0), 0); // Identify a SINGLE type of fluid to process.  Doesn't matter which one. Ignore the rest!
             int fuelValue = getFuelValue(firstFuelType);
 
-            if (fuelValue < 800) {
+            if (fuelValue < 100) {
                 return 0;
             }
 
@@ -109,7 +110,7 @@ public class GT_MetaTileEntity_LargeTurbine_GasAdvanced extends GT_MetaTileEntit
                 return GT_Utility.safeInt((long) aOptFlow * (long) aBaseEff / 10000L);
             }
 
-            actualOptimalFlow = GT_Utility.safeInt((long) aOptFlow / fuelValue);
+            actualOptimalFlow = GT_Utility.safeInt((long) (aOptFlow * flowMultipliers[1] / fuelValue));
             this.realOptFlow = actualOptimalFlow;
 
             // Allowed to use up to 450% optimal flow rate, depending on the value of overflowMultiplier.
