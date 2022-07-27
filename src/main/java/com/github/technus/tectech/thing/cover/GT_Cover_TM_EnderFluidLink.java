@@ -12,7 +12,6 @@ import gregtech.api.gui.widgets.GT_GuiIconButton;
 import gregtech.api.gui.widgets.GT_GuiIntegerTextBox;
 import gregtech.api.interfaces.IGuiScreen;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.net.GT_Packet_TileEntityCover;
 import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_Utility;
@@ -28,6 +27,7 @@ import java.util.UUID;
 
 import static com.github.technus.tectech.mechanics.enderStorage.EnderWorldSavedData.getEnderFluidContainer;
 import static com.github.technus.tectech.mechanics.enderStorage.EnderWorldSavedData.getEnderLinkTag;
+import static gregtech.GT_Mod.gregtechproxy;
 
 public class GT_Cover_TM_EnderFluidLink extends GT_CoverBehavior {
     private static final int L_PER_TICK = 8000;
@@ -270,10 +270,7 @@ public class GT_Cover_TM_EnderFluidLink extends GT_CoverBehavior {
         private void switchPrivatePublic(int coverVar) {
             UUID ownerUUID = tag.getUUID();
             if (testBit(coverVar, PUBLIC_PRIVATE_MASK)){
-                if (tile instanceof BaseMetaTileEntity){
-                    BaseMetaTileEntity mte = (BaseMetaTileEntity) tile;
-                    ownerUUID = mte.getOwnerUuid();
-                }
+                ownerUUID = gregtechproxy.getThePlayer().getUniqueID();
             } else {
                 ownerUUID = null;
             }
