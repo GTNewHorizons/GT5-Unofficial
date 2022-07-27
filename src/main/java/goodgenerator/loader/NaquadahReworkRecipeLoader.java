@@ -17,7 +17,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.*;
 import gregtech.common.items.CombType;
 import gregtech.loaders.misc.GT_Bees;
-import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_MultisUsingFluidInsteadOfCells;
 import java.lang.reflect.*;
 import java.util.HashSet;
 import net.minecraft.item.ItemStack;
@@ -915,11 +914,11 @@ public class NaquadahReworkRecipeLoader {
         if (LoadedList.GTPP) {
             // For Multi Centrifuge
             // Blame alk. She made some shit in it, NEI will break down if anyone modify the hash list directly.
-            GTPP_Recipe.GTPP_Recipe_Map.sMultiblockCentrifugeRecipes_GT.mRecipeList.clear();
-            RecipeGen_MultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
-                    GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes,
-                    GTPP_Recipe.GTPP_Recipe_Map.sMultiblockCentrifugeRecipes_GT);
-            GTPP_Recipe.GTPP_Recipe_Map.sMultiblockCentrifugeRecipes_GT.reInit();
+            //            GTPP_Recipe.GTPP_Recipe_Map.sMultiblockCentrifugeRecipes_GT.mRecipeList.clear();
+            //            RecipeGen_MultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
+            //                    GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes,
+            //                    GTPP_Recipe.GTPP_Recipe_Map.sMultiblockCentrifugeRecipes_GT);
+            //            GTPP_Recipe.GTPP_Recipe_Map.sMultiblockCentrifugeRecipes_GT.reInit();
 
             // For Simple Washer
             for (GT_Recipe recipe : GTPP_Recipe.GTPP_Recipe_Map.sSimpleWasherRecipes.mRecipeList) {

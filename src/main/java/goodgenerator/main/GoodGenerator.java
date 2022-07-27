@@ -27,6 +27,7 @@ import net.minecraft.creativetab.CreativeTabs;
                 + "required-after:bartworks; "
                 + "required-after:tectech; "
                 + "required-after:structurelib; "
+                + "before:miscutils; "
                 + "after:dreamcraft;")
 public final class GoodGenerator {
     public static final String MOD_ID = "GRADLETOKEN_MODID";
