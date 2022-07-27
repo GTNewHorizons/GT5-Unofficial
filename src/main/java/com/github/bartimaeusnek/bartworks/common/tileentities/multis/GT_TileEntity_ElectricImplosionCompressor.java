@@ -45,8 +45,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
-import java.util.ArrayList;
-
 import static com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry.BW_BLOCKS;
 import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.MULTIBLOCK_ADDED_BY_BARTWORKS;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
@@ -57,6 +55,7 @@ import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 public class GT_TileEntity_ElectricImplosionCompressor extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_TileEntity_ElectricImplosionCompressor> {
 
     public static GT_Recipe.GT_Recipe_Map eicMap;
+    private static boolean pistonEnabled = false; // TODO: config
     private Boolean piston = true;
 
     public GT_TileEntity_ElectricImplosionCompressor(int aID, String aName, String aNameRegional) {
@@ -165,33 +164,14 @@ public class GT_TileEntity_ElectricImplosionCompressor extends GT_MetaTileEntity
         if (this.mEnergyHatches.get(0).getEUVar() <= 0 || this.mEnergyHatches.get(1).getEUVar() <= 0)
             return false;
 
-        ArrayList<ItemStack> tInputList = this.getStoredInputs();
-        int tInputList_sS = tInputList.size();
-
-        for (int i = 0; i < tInputList_sS - 1; ++i) {
-            for (int j = i + 1; j < tInputList_sS; ++j) {
-                if (GT_Utility.areStacksEqual(tInputList.get(i), tInputList.get(j))) {
-                    if (tInputList.get(i).stackSize < tInputList.get(j).stackSize) {
-                        tInputList.remove(i--);
-                        tInputList_sS = tInputList.size();
-                        break;
-                    }
-
-                    tInputList.remove(j--);
-                    tInputList_sS = tInputList.size();
-                }
-            }
-        }
-
-        ItemStack[] tItemInputs = tInputList.toArray(new ItemStack[0]);
-        FluidStack[] tFluidInputs = getCompactedFluids();
+        ItemStack[] tItemInputs = getStoredInputs().toArray(new ItemStack[0]);
+        FluidStack[] tFluidInputs  = getStoredFluids().toArray(new FluidStack[0]);
 
         long tVoltage = getMaxInputVoltage();
         byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
 
-
-        if (tInputList.size() > 0) {
-            GT_Recipe tRecipe = GT_TileEntity_ElectricImplosionCompressor.eicMap.findRecipe(this.getBaseMetaTileEntity(), false, V[tTier], tFluidInputs, tItemInputs);
+        if ((tItemInputs.length > 0) || (tFluidInputs.length > 0)) {
+            GT_Recipe tRecipe = eicMap.findRecipe(getBaseMetaTileEntity(), false, V[tTier], tFluidInputs, tItemInputs);
             if (tRecipe != null && tRecipe.isRecipeInputEqual(true, tFluidInputs, tItemInputs)) {
                 this.mEfficiency = 10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000;
                 this.mEfficiencyIncrease = 10000;
@@ -199,12 +179,13 @@ public class GT_TileEntity_ElectricImplosionCompressor extends GT_MetaTileEntity
                 calculateOverclockedNessMulti(tRecipe.mEUt, tRecipe.mDuration, 1, tVoltage);
                 this.mOutputItems = tRecipe.mOutputs.clone();
                 this.mOutputFluids = tRecipe.mFluidOutputs.clone();
-                this.sendLoopStart((byte) 20);
+                if (pistonEnabled) {
+                    this.sendLoopStart((byte) 20);
+                }
                 this.updateSlots();
                 return true;
             }
         }
-
         return false;
     }
 
@@ -219,8 +200,10 @@ public class GT_TileEntity_ElectricImplosionCompressor extends GT_MetaTileEntity
 
     @Override
     public boolean onRunningTick(ItemStack aStack) {
-        if (this.mRuntime % 10 == 0)
-            this.togglePiston();
+        if (pistonEnabled) {
+            if (this.mRuntime % 10 == 0)
+                this.togglePiston();
+        }
         return super.onRunningTick(aStack);
     }
 
@@ -230,7 +213,9 @@ public class GT_TileEntity_ElectricImplosionCompressor extends GT_MetaTileEntity
     }
 
     public void stopMachine() {
-        this.resetPiston();
+        if (pistonEnabled) {
+            this.resetPiston();
+        }
         super.stopMachine();
     }
 
@@ -300,8 +285,7 @@ public class GT_TileEntity_ElectricImplosionCompressor extends GT_MetaTileEntity
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack) {
         if(!checkPiece(STRUCTURE_PIECE_MAIN, 1, 6, 0))
             return false;
-        return  this.mMaintenanceHatches.size() == 1 &&
-                this.mEnergyHatches.size() == 2;
+        return this.mMaintenanceHatches.size() == 1 && this.mEnergyHatches.size() == 2;
     }
 
     @Override

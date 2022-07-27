@@ -496,7 +496,7 @@ public class StaticRecipeChangeLoaders {
     @SuppressWarnings("ALL")
     public static void addElectricImplosionCompressorRecipes() {
         if (eicMap == null) {
-            eicMap = new GT_Recipe.GT_Recipe_Map(new HashSet<>(GT_Recipe.GT_Recipe_Map.sImplosionRecipes.mRecipeList.size()), "gt.recipe.electricimplosioncompressor", "Electric Implosion Compressor", (String) null, "gregtech:textures/gui/basicmachines/Default", 1, 2, 1, 0, 1, "", 1, "", true, true);
+            eicMap = new GT_Recipe.GT_Recipe_Map(new HashSet<>(GT_Recipe.GT_Recipe_Map.sImplosionRecipes.mRecipeList.size()), "gt.recipe.electricimplosioncompressor", "Electric Implosion Compressor", (String) null, "gregtech:textures/gui/basicmachines/Default", 1, 2, 0, 0, 1, "", 1, "", true, true);
             GT_Recipe.GT_Recipe_Map.sImplosionRecipes.mRecipeList.stream().filter(e -> e.mInputs != null).forEach(recipe -> eicMap.addRecipe(true, Arrays.stream(recipe.mInputs).filter(e -> !StaticRecipeChangeLoaders.checkForExplosives(e)).distinct().toArray(ItemStack[]::new), recipe.mOutputs, null, null, null, 1, BW_Util.getMachineVoltageFromTier(10), 0));
         }
 
