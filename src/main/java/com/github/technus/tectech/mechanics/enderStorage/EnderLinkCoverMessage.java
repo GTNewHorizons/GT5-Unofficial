@@ -98,7 +98,7 @@ public class EnderLinkCoverMessage implements IMessage {
                     bindEnderLinkTag(handler, tag);
                 } else if (handler instanceof BaseMetaTileEntity) {
                     BaseMetaTileEntity baseTile = (BaseMetaTileEntity) handler;
-                    if (tag.getUUID() == baseTile.getOwnerUuid()){
+                    if (tag.getUUID().equals(baseTile.getOwnerUuid())){
                         bindEnderLinkTag(handler, tag);
                     }
                 }
