@@ -102,6 +102,9 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
 	protected boolean mVoidExcess = false;
 
 	public ArrayList<GT_MetaTileEntity_Hatch_ControlCore> mControlCoreBus = new ArrayList<GT_MetaTileEntity_Hatch_ControlCore>();
+	/**
+	 * Don't use this for recipe input check, otherwise you'll get duplicated fluids
+	 */
 	public ArrayList<GT_MetaTileEntity_Hatch_AirIntake> mAirIntakes = new ArrayList<GT_MetaTileEntity_Hatch_AirIntake>();
 	public ArrayList<GT_MetaTileEntity_Hatch_InputBattery> mChargeHatches = new ArrayList<GT_MetaTileEntity_Hatch_InputBattery>();
 	public ArrayList<GT_MetaTileEntity_Hatch_OutputBattery> mDischargeHatches = new ArrayList<GT_MetaTileEntity_Hatch_OutputBattery>();
@@ -1848,7 +1851,7 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
 			aDidAdd = addToMachineListInternal(mDischargeHatches, aMetaTileEntity, aBaseCasingIndex);
 		}
 		else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_AirIntake) {
-			aDidAdd = addToMachineListInternal(mAirIntakes, aMetaTileEntity, aBaseCasingIndex);
+			aDidAdd = addToMachineListInternal(mAirIntakes, aMetaTileEntity, aBaseCasingIndex) && addToMachineListInternal(mInputHatches, aMetaTileEntity, aBaseCasingIndex);
 		}
 
 		//Handle TT Multi-A Energy Hatches
