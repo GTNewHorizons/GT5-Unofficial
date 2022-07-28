@@ -198,7 +198,7 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
                 .addSeparator()
                 .beginStructureBlock(3, 3, 3, false)
                 .addController(translateToLocal("tt.keyword.Structure.FrontCenter"))    // Controller: Front center
-                .addCasingInfo(translateToLocal("gt.blockcasingsTT.1.name"), 0) // 0x Computer Casing (minimum)
+                .addCasingInfo(translateToLocal("gt.blockcasingsTT.1.name"), 1) // 1x Computer Casing (minimum)
                 .addOtherStructurePart(translateToLocal("tt.keyword.Structure.DataConnector"), translateToLocal("tt.keyword.Structure.AnyComputerCasing"), 2) // Data Connector: Any Computer Casing
                 .addOtherStructurePart(translateToLocal("gt.blockmachines.hatch.param.tier.05.name"), translateToLocal("tt.keyword.Structure.AnyComputerCasing"), 2) // Parametrizer: Any Computer Casing
                 .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyComputerCasing"), 1) // Energy Hatch: Any Computer Casing

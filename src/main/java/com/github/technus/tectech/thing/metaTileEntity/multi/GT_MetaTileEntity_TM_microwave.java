@@ -197,7 +197,7 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
                 .addSeparator()
                 .beginStructureBlock(5, 4, 5, true)
                 .addController(translateToLocal("tt.keyword.Structure.FrontCenter"))    // Controller: Front center
-                .addCasingInfo(translateToLocal("tt.keyword.Structure.StainlessSteelCasing"), 51) // 51x Stainless Steel Casing (minimum)
+                .addCasingInfo(translateToLocal("tt.keyword.Structure.StainlessSteelCasing"), 60) // 60x Stainless Steel Casing (minimum)
                 .addOtherStructurePart(translateToLocal("tt.keyword.Structure.DataConnector"), translateToLocal("tt.keyword.Structure.AnyOuterCasingOnBottom"), 2) // Output Bus: Any outer casing on the bottom layer
                 .addOtherStructurePart(translateToLocal("gt.blockmachines.hatch.param.tier.05.name"), translateToLocal("tt.keyword.Structure.Optional") + " " + translateToLocal("tt.keyword.Structure.AnyOuterCasingOnBottom"), 2) // Parametrizer: (optional) Any outer casing on the bottom layer
                 .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyOuterCasingOnBottom"), 1) // Energy Hatch: Any outer casing on the bottom layer
