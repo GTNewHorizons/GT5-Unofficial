@@ -1,5 +1,6 @@
 package com.github.technus.tectech.mechanics.enderStorage;
 
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -10,27 +11,18 @@ import java.io.Serializable;
 
 public class EnderFluidContainer implements IFluidHandler, Serializable {
     private static final int CAPACITY = 64000;
-    private int fluidID = -1;
-    private int fluidQuantity = 0;
+    private NBTTagCompound fluid;
 
     public EnderFluidContainer() {
     }
 
     private FluidStack getFluidStack() {
-        FluidStack fluidStack = null;
-        if (fluidID >= 0) {
-            fluidStack = new FluidStack(fluidID, fluidQuantity);
-        }
-        return fluidStack;
+        return FluidStack.loadFluidStackFromNBT(fluid);
     }
 
     private void setFluidStack(FluidStack fluidStack) {
-        if (fluidStack != null && fluidStack.amount != 0) {
-            fluidID = fluidStack.getFluidID();
-            fluidQuantity = fluidStack.amount;
-        } else {
-            fluidID = -1;
-            fluidQuantity = 0;
+        if (fluidStack != null) {
+            fluid = fluidStack.writeToNBT(new NBTTagCompound());
         }
     }
 
