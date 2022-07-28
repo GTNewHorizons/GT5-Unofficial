@@ -2670,9 +2670,9 @@ public class DreamCraftRecipeLoader {
                         ItemList.Gravistar.get(32L),
                         new Object[]{OrePrefixes.circuit.get(Materials.Nano), 4L},
                         GT_ModHandler.getModItem("miscutils", "itemFoilArceusAlloy2B", 64, 0),
-                        GT_ModHandler.getModItem("miscutils", "itemfoilLafiumCompound", 64, 0),
-                        GT_ModHandler.getModItem("miscutils", "itemfoilCinobiteA243", 64, 0),
-                        GT_ModHandler.getModItem("miscutils", "itemfoilPikyonium64B", 64, 0),
+                        GT_ModHandler.getModItem("miscutils", "itemFoilLafiumCompound", 64, 0),
+                        GT_ModHandler.getModItem("miscutils", "itemFoilCinobiteA243", 64, 0),
+                        GT_ModHandler.getModItem("miscutils", "itemFoilPikyonium64B", 64, 0),
                         GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.NetherStar, 7L)
                 },
 
