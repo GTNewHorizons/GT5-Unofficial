@@ -1032,7 +1032,7 @@ public class DreamCraftRecipeLoader {
                         new FluidStack(solderUEV, 3744),
                         Materials.Naquadria.getMolten(4032L),
                         new FluidStack(FluidRegistry.getFluid("ic2coolant"), 20000)
-                }, getItemContainer("NanoCircuit").get(1L), 8000, 8000000);
+                }, getItemContainer("NanoCircuit").get(1L), 8000, 32_000_000);
 
 
         TT_recipeAdder.addResearchableAssemblylineRecipe(getItemContainer("NanoCircuit").get(1L),
@@ -1053,7 +1053,7 @@ public class DreamCraftRecipeLoader {
                         new FluidStack(solderUEV, 3744),
                         Materials.UUMatter.getFluid(8000L),
                         Materials.Osmium.getMolten(1152L)
-                }, getItemContainer("PikoCircuit").get(1L), 10000, 8000000);
+                }, getItemContainer("PikoCircuit").get(1L), 10000, 128_000_000);
 
 
         TT_recipeAdder.addResearchableAssemblylineRecipe(getItemContainer("PikoCircuit").get(1L),
@@ -1073,7 +1073,7 @@ public class DreamCraftRecipeLoader {
                         new FluidStack(solderUEV, 3744),
                         Materials.UUMatter.getFluid(24000L),
                         Materials.Osmium.getMolten(2304L)
-                }, getItemContainer("QuantumCircuit").get(1L), 20000, 32000000);
+                }, getItemContainer("QuantumCircuit").get(1L), 20000, 512_000_000);
 
 
         //Stargate Recipes
