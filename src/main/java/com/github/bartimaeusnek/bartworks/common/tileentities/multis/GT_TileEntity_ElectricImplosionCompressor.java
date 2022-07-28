@@ -175,8 +175,13 @@ public class GT_TileEntity_ElectricImplosionCompressor extends GT_MetaTileEntity
             if (tRecipe != null && tRecipe.isRecipeInputEqual(true, tFluidInputs, tItemInputs)) {
                 this.mEfficiency = 10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000;
                 this.mEfficiencyIncrease = 10000;
-                this.mEUt = -tRecipe.mEUt;
                 calculateOverclockedNessMulti(tRecipe.mEUt, tRecipe.mDuration, 1, tVoltage);
+                //In case recipe is too OP for that machine
+                if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
+                    return false;
+                if (this.mEUt > 0) {
+                    this.mEUt = -this.mEUt;
+                }
                 this.mOutputItems = tRecipe.mOutputs.clone();
                 this.mOutputFluids = tRecipe.mFluidOutputs.clone();
                 if (pistonEnabled) {
