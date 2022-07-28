@@ -2975,7 +2975,7 @@ public class DreamCraftRecipeLoader {
                         ItemList.Gravistar.get(64),
                         new Object[]{OrePrefixes.circuit.get(Materials.Piko), 4L},
                         GT_ModHandler.getModItem("miscutils", "itemFoilCelestialTungsten", 64, 0),
-                        GT_ModHandler.getModItem("miscutils", "itemFoilQuantumAlloy", 64, 0),
+                        GT_ModHandler.getModItem("miscutils", "itemFoilQuantum", 64, 0),
                         GT_ModHandler.getModItem("miscutils", "itemFoilAstralTitanium", 64, 0),
                         GT_ModHandler.getModItem("miscutils", "itemFoilTitansteel", 64, 0),
                         GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.Quantium, 7L)
@@ -3010,7 +3010,7 @@ public class DreamCraftRecipeLoader {
                         ItemList.Gravistar.get(64),
                         new Object[]{OrePrefixes.circuit.get(Materials.Piko), 4L},
                         GT_ModHandler.getModItem("miscutils", "itemFoilCelestialTungsten", 64, 0),
-                        GT_ModHandler.getModItem("miscutils", "itemFoilQuantumAlloy", 64, 0),
+                        GT_ModHandler.getModItem("miscutils", "itemFoilQuantum", 64, 0),
                         GT_ModHandler.getModItem("miscutils", "itemFoilAstralTitanium", 64, 0),
                         GT_ModHandler.getModItem("miscutils", "itemFoilTitansteel", 64, 0),
                         GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.Quantium, 7L)
