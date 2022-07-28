@@ -17,12 +17,18 @@ public class EnderFluidContainer implements IFluidHandler, Serializable {
     }
 
     private FluidStack getFluidStack() {
-        return FluidStack.loadFluidStackFromNBT(fluid);
+        FluidStack fluidStack = null;
+        if (fluid != null) {
+            fluidStack =  FluidStack.loadFluidStackFromNBT(fluid);
+        }
+        return fluidStack;
     }
 
     private void setFluidStack(FluidStack fluidStack) {
         if (fluidStack != null) {
             fluid = fluidStack.writeToNBT(new NBTTagCompound());
+        } else {
+            fluid = null;
         }
     }
 
