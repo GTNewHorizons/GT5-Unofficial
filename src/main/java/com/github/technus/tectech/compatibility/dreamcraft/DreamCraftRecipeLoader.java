@@ -786,7 +786,7 @@ public class DreamCraftRecipeLoader {
 
         item_parts_UHV_assline_recipes();
         item_parts_UEV_assline_recipes();
-        // Leave me alone I will do this at some point );<
+        item_parts_UIV_assline_recipes();
         item_parts_UMV_assline_recipes();
 
         //UHV-UMV Energy Hatch & Dynamo
@@ -1151,14 +1151,17 @@ public class DreamCraftRecipeLoader {
                             GT_ModHandler.getModItem("miscutils", "itemRodLongHypogen", 64L),
                             GT_ModHandler.getModItem("miscutils", "itemRodLongCelestialTungsten", 64L),
                             GT_ModHandler.getModItem("bartworks", "gt.bwMetaGeneratedstickLong", 64L, 10106),
+                            GT_ModHandler.getModItem("miscutils", "itemRodLongAstralTitanium", 64L),
 
                             GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.SuperconductorUEVBase, 64L),
                             GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Sunnarium, 64L),
+                            GT_ModHandler.getModItem("miscutils", "itemRodLongAbyssalAlloy", 64L),
+                            GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.TranscendentMetal, 64L),
 
                     },
                     new FluidStack[]{
                             Materials.Neutronium.getMolten(32_768_000L),
-                            Materials.SpaceTime.getMolten(16*36864L),
+                            Materials.SpaceTime.getMolten(4*36864L),
                             Materials.SuperconductorUEVBase.getMolten(4*36864L),
                             Materials.ExcitedDTEC.getFluid(4*36864L)
                     },
@@ -2161,8 +2164,6 @@ public class DreamCraftRecipeLoader {
 
                 crafting_time_in_ticks, crafting_eu_per_tick);
 
-
-
     }
 
     private void item_parts_UEV_assline_recipes() {
@@ -2461,6 +2462,305 @@ public class DreamCraftRecipeLoader {
 
     }
 
+    private void item_parts_UIV_assline_recipes() {
+
+        // ----------------------------------------------------------------------
+        // ------------------------- Set up information -------------------------
+        // ----------------------------------------------------------------------
+
+        Fluid mutated_living_solder = FluidRegistry.getFluid("molten.mutatedlivingsolder") != null ? FluidRegistry.getFluid("molten.mutatedlivingsolder") : FluidRegistry.getFluid("molten.solderingalloy");
+
+        int total_computation = 96_000;
+        int comp_per_second = 128;
+        int research_eu_per_tick = 8_000_000;
+        int research_amperage = 1;
+
+        FluidStack fluid_0 = new FluidStack(FluidRegistry.getFluid("molten.celestialtungsten"), 576);
+        FluidStack fluid_1 = new FluidStack(mutated_living_solder, 2592);
+        FluidStack fluid_2 = Materials.Lubricant.getFluid(4000);
+
+        int crafting_time_in_ticks = 1000;
+        int crafting_eu_per_tick = 8_000_000;
+
+        // -------------------------------------------------------------
+
+
+
+        // ------------------------- UIV Motor -------------------------
+
+        TT_recipeAdder.addResearchableAssemblylineRecipe(
+
+                ItemList.Electric_Motor_UEV.get(1L),
+
+                total_computation, comp_per_second, research_eu_per_tick, research_amperage,
+
+                new ItemStack[]{
+                        GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.SamariumMagnetic, 16L),
+                        GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.TranscendentMetal, 16L),
+                        GT_OreDictUnificator.get(OrePrefixes.ring, Materials.TranscendentMetal, 8L),
+                        GT_OreDictUnificator.get(OrePrefixes.round, Materials.TranscendentMetal, 32L),
+                        GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Infinity, 64L),
+                        GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Infinity, 64L),
+                        GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Infinity, 64L),
+                        GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Infinity, 64L),
+                        GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Infinity, 64L),
+                        GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Infinity, 64L),
+                        GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Infinity, 64L),
+                        GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Infinity, 64L),
+                        GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.NetherStar, 2L)
+                },
+
+                new FluidStack[]{
+                        fluid_0,
+                        fluid_1,
+                        fluid_2
+                },
+
+                ItemList.Electric_Motor_UIV.get(1L),
+
+                crafting_time_in_ticks, crafting_eu_per_tick);
+
+        // -------------------------------------------------------------
+
+
+
+        // --------------------- UIV Electric Pump ---------------------
+
+        TT_recipeAdder.addResearchableAssemblylineRecipe(
+
+                ItemList.Electric_Pump_UEV.get(1L),
+
+                total_computation, comp_per_second, research_eu_per_tick, research_amperage,
+
+                new Object[]{
+                        ItemList.Electric_Motor_UIV.get(1L),
+                        GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.DraconiumAwakened, 2L),
+                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.TranscendentMetal, 4L),
+                        GT_OreDictUnificator.get(OrePrefixes.screw, Materials.TranscendentMetal, 16L),
+                        new Object[]{OrePrefixes.ring.get(Materials.AnySyntheticRubber), 64L},
+                        GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.TranscendentMetal, 4L),
+                        GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.NetherStar, 2L)
+                },
+
+                new FluidStack[]{
+                        fluid_0,
+                        fluid_1,
+                        fluid_2
+                },
+
+                ItemList.Electric_Pump_UIV.get(1),
+
+                crafting_time_in_ticks, crafting_eu_per_tick);
+
+        // -------------------------------------------------------------
+
+
+
+        // ----------------------- UIV Conveyor ------------------------
+
+        TT_recipeAdder.addResearchableAssemblylineRecipe(
+
+                ItemList.Conveyor_Module_UEV.get(1L),
+
+                total_computation, comp_per_second, research_eu_per_tick, research_amperage,
+
+                new Object[]{
+                        ItemList.Electric_Motor_UIV.get(2L),
+                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.TranscendentMetal, 2L),
+                        GT_OreDictUnificator.get(OrePrefixes.ring, Materials.TranscendentMetal, 8L),
+                        GT_OreDictUnificator.get(OrePrefixes.round, Materials.TranscendentMetal, 64L),
+                        GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.NetherStar, 2L),
+                        new Object[]{OrePrefixes.plate.get(Materials.AnySyntheticRubber), 64L},
+                        new Object[]{OrePrefixes.plate.get(Materials.AnySyntheticRubber), 16L}
+                },
+
+                new FluidStack[]{
+                        fluid_0,
+                        fluid_1,
+                        fluid_2
+                },
+
+                ItemList.Conveyor_Module_UIV.get(1),
+
+                crafting_time_in_ticks, crafting_eu_per_tick);
+
+        // -------------------------------------------------------------
+
+
+
+        // -------------------- UIV Robot Arm --------------------
+
+        TT_recipeAdder.addResearchableAssemblylineRecipe(
+
+                ItemList.Robot_Arm_UEV.get(1L),
+
+                total_computation, comp_per_second, research_eu_per_tick, research_amperage,
+
+                new Object[] {
+                        GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.TranscendentMetal, 8L),
+                        GT_OreDictUnificator.get(OrePrefixes.gear, Materials.TranscendentMetal, 2L),
+                        GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.TranscendentMetal, 6L),
+                        ItemList.Electric_Motor_UIV.get(2L),
+                        ItemList.Electric_Piston_UIV.get(1L),
+                        new Object[]{OrePrefixes.circuit.get(Materials.Nano), 2L},
+                        new Object[]{OrePrefixes.circuit.get(Materials.Bio), 4L},
+                        new Object[]{OrePrefixes.circuit.get(Materials.Infinite), 8L},
+                        GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.NetherStar, 6L)
+                },
+
+                new FluidStack[]{
+                        fluid_0,
+                        fluid_1,
+                        fluid_2
+                },
+
+                ItemList.Robot_Arm_UIV.get(1L),
+
+                crafting_time_in_ticks, crafting_eu_per_tick);
+
+        // -------------------------------------------------------------
+
+
+
+        // -------------------- UIV Electric Piston --------------------
+
+        TT_recipeAdder.addResearchableAssemblylineRecipe(
+
+                ItemList.Electric_Piston_UEV.get(1L),
+
+                total_computation, comp_per_second, research_eu_per_tick, research_amperage,
+
+                new ItemStack[]{
+                        ItemList.Electric_Motor_UIV.get(1L),
+                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.TranscendentMetal, 6L),
+                        GT_OreDictUnificator.get(OrePrefixes.ring, Materials.TranscendentMetal, 8L),
+                        GT_OreDictUnificator.get(OrePrefixes.round, Materials.TranscendentMetal, 64L),
+                        GT_OreDictUnificator.get(OrePrefixes.stick, Materials.TranscendentMetal, 8L),
+                        GT_OreDictUnificator.get(OrePrefixes.gear, Materials.TranscendentMetal, 2L),
+                        GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.TranscendentMetal, 4L),
+                        GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.NetherStar, 4L)
+                },
+
+                new FluidStack[]{
+                        fluid_0,
+                        fluid_1,
+                        fluid_2
+                },
+
+                ItemList.Electric_Piston_UIV.get(1),
+
+                crafting_time_in_ticks, crafting_eu_per_tick);
+
+        // -------------------------------------------------------------
+
+
+
+        // ------------------------ UIV Emitter ------------------------
+
+        TT_recipeAdder.addResearchableAssemblylineRecipe(
+
+                ItemList.Emitter_UEV.get(1L),
+
+                total_computation, comp_per_second, research_eu_per_tick, research_amperage,
+
+                new Object[]{
+                        GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.TranscendentMetal, 1L),
+                        ItemList.Electric_Motor_UIV.get(1L),
+                        GT_OreDictUnificator.get(OrePrefixes.stick, Materials.TranscendentMetal, 16L),
+                        ItemList.Gravistar.get(32L),
+                        new Object[]{OrePrefixes.circuit.get(Materials.Nano), 4L},
+                        GT_ModHandler.getModItem("miscutils", "itemFoilArceusAlloy2B", 64, 0),
+                        GT_ModHandler.getModItem("miscutils", "itemfoilLafiumCompound", 64, 0),
+                        GT_ModHandler.getModItem("miscutils", "itemfoilCinobiteA243", 64, 0),
+                        GT_ModHandler.getModItem("miscutils", "itemfoilPikyonium64B", 64, 0),
+                        GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.NetherStar, 7L)
+                },
+
+                new FluidStack[]{
+                        fluid_0,
+                        fluid_1
+                },
+
+                ItemList.Emitter_UIV.get(1L),
+
+                crafting_time_in_ticks, crafting_eu_per_tick);
+
+        // -------------------------------------------------------------
+
+
+
+        // ------------------------ UIV Sensor ------------------------
+
+        TT_recipeAdder.addResearchableAssemblylineRecipe(
+
+                ItemList.Sensor_UEV.get(1L),
+
+                total_computation, comp_per_second, research_eu_per_tick, research_amperage,
+
+                new Object[]{
+                        GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.TranscendentMetal, 1L),
+                        ItemList.Electric_Motor_UIV.get(1),
+                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.TranscendentMetal, 8L),
+                        ItemList.Gravistar.get(32),
+                        new Object[]{OrePrefixes.circuit.get(Materials.Nano), 4L},
+                        GT_ModHandler.getModItem("miscutils", "itemFoilArceusAlloy2B", 64, 0),
+                        GT_ModHandler.getModItem("miscutils","itemFoilLafiumCompound", 64, 0),
+                        GT_ModHandler.getModItem("miscutils","itemFoilCinobiteA243", 64, 0),
+                        GT_ModHandler.getModItem("miscutils","itemFoilPikyonium64B", 64, 0),
+                        GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.NetherStar, 7L)
+                },
+
+                new FluidStack[]{
+                        fluid_0,
+                        fluid_1
+                },
+
+                ItemList.Sensor_UIV.get(1L),
+
+                crafting_time_in_ticks, crafting_eu_per_tick);
+
+        // ---------------------------------------------------------------------
+
+
+
+        // ------------------------ UIV Field Generator ------------------------
+
+        TT_recipeAdder.addResearchableAssemblylineRecipe(
+
+                ItemList.Field_Generator_UEV.get(1),
+
+                total_computation, comp_per_second, research_eu_per_tick, research_amperage,
+
+                new Object[]{
+                        GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.TranscendentMetal, 1L),
+                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.TranscendentMetal, 6L),
+                        ItemList.Gravistar.get(32),
+                        ItemList.Emitter_UIV.get(4L),
+                        new Object[]{OrePrefixes.circuit.get(Materials.Piko), 4},
+                        GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Infinity, 64L),
+                        GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Infinity, 64L),
+                        GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Infinity, 64L),
+                        GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Infinity, 64L),
+                        GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Infinity, 64L),
+                        GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Infinity, 64L),
+                        GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Infinity, 64L),
+                        GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Infinity, 64L),
+                        GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.NetherStar, 8L)
+                },
+
+                new FluidStack[]{
+                        fluid_0,
+                        fluid_1
+                },
+
+                ItemList.Field_Generator_UIV.get(1L),
+
+                crafting_time_in_ticks, crafting_eu_per_tick);
+
+        // ---------------------------------------------------------------------
+
+    }
+
     private void item_parts_UMV_assline_recipes() {
 
         // ----------------------------------------------------------------------
@@ -2474,9 +2774,10 @@ public class DreamCraftRecipeLoader {
         int research_eu_per_tick = 32_000_000;
         int research_amperage = 1;
 
-        FluidStack fluid_0 = Materials.SuperconductorUEVBase.getMolten(2592);
-        FluidStack fluid_1 = new FluidStack(mutated_living_solder, 2592);
-        FluidStack fluid_2 = Materials.Lubricant.getFluid(4000);
+        FluidStack fluid_0 = new FluidStack(FluidRegistry.getFluid("molten.hypogen"), 576);
+        FluidStack fluid_1 = new FluidStack(FluidRegistry.getFluid("molten.celestialtungsten"), 576);
+        FluidStack fluid_2 = new FluidStack(mutated_living_solder, 2592);
+        FluidStack fluid_3 = Materials.Lubricant.getFluid(4000);
 
         int crafting_time_in_ticks = 1000;
         int crafting_eu_per_tick = 32_000_000;
@@ -2498,21 +2799,22 @@ public class DreamCraftRecipeLoader {
                         GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.SpaceTime, 16L),
                         GT_OreDictUnificator.get(OrePrefixes.ring, Materials.SpaceTime, 8L),
                         GT_OreDictUnificator.get(OrePrefixes.round, Materials.SpaceTime, 32L),
-                        GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Infinity, 64L),
-                        GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Infinity, 64L),
-                        GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Infinity, 64L),
-                        GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Infinity, 64L),
-                        GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Infinity, 64L),
-                        GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Infinity, 64L),
-                        GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Infinity, 64L),
-                        GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Infinity, 64L),
+                        GT_ModHandler.getModItem("miscutils", "itemFineWireHypogen", 64, 0),
+                        GT_ModHandler.getModItem("miscutils", "itemFineWireHypogen", 64, 0),
+                        GT_ModHandler.getModItem("miscutils", "itemFineWireHypogen", 64, 0),
+                        GT_ModHandler.getModItem("miscutils", "itemFineWireHypogen", 64, 0),
+                        GT_ModHandler.getModItem("miscutils", "itemFineWireHypogen", 64, 0),
+                        GT_ModHandler.getModItem("miscutils", "itemFineWireHypogen", 64, 0),
+                        GT_ModHandler.getModItem("miscutils", "itemFineWireHypogen", 64, 0),
+                        GT_ModHandler.getModItem("miscutils", "itemFineWireHypogen", 64, 0),
                         GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.Quantium, 2L)
                 },
 
                 new FluidStack[]{
                         fluid_0,
                         fluid_1,
-                        fluid_2
+                        fluid_2,
+                        fluid_3
                 },
 
                 ItemList.Electric_Motor_UMV.get(1L),
@@ -2544,7 +2846,8 @@ public class DreamCraftRecipeLoader {
                 new FluidStack[]{
                         fluid_0,
                         fluid_1,
-                        fluid_2
+                        fluid_2,
+                        fluid_3
                 },
 
                 ItemList.Electric_Pump_UMV.get(1),
@@ -2576,7 +2879,8 @@ public class DreamCraftRecipeLoader {
                 new FluidStack[]{
                         fluid_0,
                         fluid_1,
-                        fluid_2
+                        fluid_2,
+                        fluid_3
                 },
 
                 ItemList.Conveyor_Module_UMV.get(1),
@@ -2601,16 +2905,17 @@ public class DreamCraftRecipeLoader {
                         GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.SpaceTime, 6L),
                         ItemList.Electric_Motor_UMV.get(2L),
                         ItemList.Electric_Piston_UMV.get(1L),
-                        new Object[]{OrePrefixes.circuit.get(Materials.Quantum), 2L},
-                        new Object[]{OrePrefixes.circuit.get(Materials.Piko), 4L},
-                        new Object[]{OrePrefixes.circuit.get(Materials.Nano), 8L},
+                        new Object[]{OrePrefixes.circuit.get(Materials.Piko), 2L},
+                        new Object[]{OrePrefixes.circuit.get(Materials.Nano), 4L},
+                        new Object[]{OrePrefixes.circuit.get(Materials.Bio), 8L},
                         GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.Quantium, 6L)
                 },
 
                 new FluidStack[]{
                         fluid_0,
                         fluid_1,
-                        fluid_2
+                        fluid_2,
+                        fluid_3
                 },
 
                 ItemList.Robot_Arm_UMV.get(1L),
@@ -2621,7 +2926,8 @@ public class DreamCraftRecipeLoader {
 
 
 
-        // -------------------- UEV Electric Piston --------------------
+        // -------------------- UMV Electric Piston --------------------
+
         TT_recipeAdder.addResearchableAssemblylineRecipe(
 
                 ItemList.Electric_Piston_UIV.get(1L),
@@ -2642,7 +2948,8 @@ public class DreamCraftRecipeLoader {
                 new FluidStack[]{
                         fluid_0,
                         fluid_1,
-                        fluid_2
+                        fluid_2,
+                        fluid_3
                 },
 
                 ItemList.Electric_Piston_UMV.get(1),
@@ -2653,7 +2960,7 @@ public class DreamCraftRecipeLoader {
 
 
 
-        // ------------------------ UEV Emitter ------------------------
+        // ------------------------ UMV Emitter ------------------------
 
         TT_recipeAdder.addResearchableAssemblylineRecipe(
 
@@ -2665,18 +2972,19 @@ public class DreamCraftRecipeLoader {
                         GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.SpaceTime, 1L),
                         ItemList.Electric_Motor_UMV.get(1L),
                         GT_OreDictUnificator.get(OrePrefixes.stick, Materials.SpaceTime, 16L),
-                        ItemList.Gravistar.get(16L),
-                        new Object[]{OrePrefixes.circuit.get(Materials.Quantum), 4L},
-                        GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Infinity, 64L),
-                        GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Infinity, 64L),
-                        GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Infinity, 64L),
-                        GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Infinity, 64L),
+                        ItemList.Gravistar.get(64),
+                        new Object[]{OrePrefixes.circuit.get(Materials.Piko), 4L},
+                        GT_ModHandler.getModItem("miscutils", "itemFoilCelestialTungsten", 64, 0),
+                        GT_ModHandler.getModItem("miscutils", "itemFoilQuantumAlloy", 64, 0),
+                        GT_ModHandler.getModItem("miscutils", "itemFoilAstralTitanium", 64, 0),
+                        GT_ModHandler.getModItem("miscutils", "itemFoilTitansteel", 64, 0),
                         GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.Quantium, 7L)
                 },
 
                 new FluidStack[]{
                         fluid_0,
-                        fluid_1
+                        fluid_1,
+                        fluid_2
                 },
 
                 ItemList.Emitter_UMV.get(1L),
@@ -2687,7 +2995,7 @@ public class DreamCraftRecipeLoader {
 
 
 
-        // ------------------------ UEV Sensor ------------------------
+        // ------------------------ UMV Sensor ------------------------
 
         TT_recipeAdder.addResearchableAssemblylineRecipe(
 
@@ -2699,18 +3007,19 @@ public class DreamCraftRecipeLoader {
                         GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.SpaceTime, 1L),
                         ItemList.Electric_Motor_UMV.get(1),
                         GT_OreDictUnificator.get(OrePrefixes.plate, Materials.SpaceTime, 8L),
-                        ItemList.Gravistar.get(16),
-                        new Object[]{OrePrefixes.circuit.get(Materials.Quantum), 4L},
-                        GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Infinity, 64L),
-                        GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Infinity, 64L),
-                        GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Infinity, 64L),
-                        GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Infinity, 64L),
+                        ItemList.Gravistar.get(64),
+                        new Object[]{OrePrefixes.circuit.get(Materials.Piko), 4L},
+                        GT_ModHandler.getModItem("miscutils", "itemFoilCelestialTungsten", 64, 0),
+                        GT_ModHandler.getModItem("miscutils", "itemFoilQuantumAlloy", 64, 0),
+                        GT_ModHandler.getModItem("miscutils", "itemFoilAstralTitanium", 64, 0),
+                        GT_ModHandler.getModItem("miscutils", "itemFoilTitansteel", 64, 0),
                         GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.Quantium, 7L)
                 },
 
-                new FluidStack[]{
-                        fluid_0,
-                        fluid_1
+                new FluidStack[] {
+                    fluid_0,
+                    fluid_1,
+                    fluid_2
                 },
 
                 ItemList.Sensor_UMV.get(1L),
@@ -2721,7 +3030,7 @@ public class DreamCraftRecipeLoader {
 
 
 
-        // ------------------------ UEV Field Generator ------------------------
+        // ------------------------ UMV Field Generator ------------------------
 
         TT_recipeAdder.addResearchableAssemblylineRecipe(
 
@@ -2748,7 +3057,8 @@ public class DreamCraftRecipeLoader {
 
                 new FluidStack[]{
                         fluid_0,
-                        fluid_1
+                        fluid_1,
+                        fluid_2
                 },
 
                 ItemList.Field_Generator_UMV.get(1L),
