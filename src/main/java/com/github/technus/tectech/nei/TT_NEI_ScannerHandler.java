@@ -3,7 +3,6 @@ package com.github.technus.tectech.nei;
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.ItemList;
 import codechicken.nei.PositionedStack;
-import codechicken.nei.guihook.GuiContainerManager;
 import codechicken.nei.guihook.IContainerInputHandler;
 import codechicken.nei.guihook.IContainerTooltipHandler;
 import codechicken.nei.recipe.*;
@@ -12,13 +11,11 @@ import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.recipe.TT_recipe;
 import cpw.mods.fml.common.event.FMLInterModComms;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.gui.GT_GUIContainer_BasicMachine;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.gui.GT_GUIContainer_FusionReactor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.init.Blocks;
@@ -176,7 +173,7 @@ public class TT_NEI_ScannerHandler extends TemplateRecipeHandler {
     }
 
     @Override
-    public List<String> handleItemTooltip(GuiRecipe gui, ItemStack aStack, List<String> currenttip, int aRecipeIndex) {
+    public List<String> handleItemTooltip(GuiRecipe<?> gui, ItemStack aStack, List<String> currenttip, int aRecipeIndex) {
         TemplateRecipeHandler.CachedRecipe tObject = arecipes.get(aRecipeIndex);
         if (tObject instanceof CachedDefaultRecipe) {
             CachedDefaultRecipe tRecipe = (CachedDefaultRecipe) tObject;
