@@ -19,6 +19,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
@@ -351,12 +352,22 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    public String[] getDescription() {
-        return new String[]{
-                CommonValues.TEC_MARK_EM,
-                translateToLocal("gt.blockmachines.multimachine.em.research.desc.0"),//Philosophers didn't even...
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.multimachine.em.research.desc.0")//dream about it!
-        };
+    public GT_Multiblock_Tooltip_Builder createTooltip() {
+        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.research.name"))   // Machine Type: Research Station
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.0"))  // Controller block of the Research Station
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.1"))  // Used to scan Data Sticks for Assembling Line Recipes
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.2"))  // Needs to be fed with computation to work
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.3"))  // Does not consume the item until the Data Stick is written
+                .addInfo(translateToLocal("tt.keyword.Structure.StructureTooComplex")) // The structure is too complex!
+                .addSeparator()
+                .beginStructureBlock(3, 7, 7, false)
+                .addOtherStructurePart(translateToLocal("gt.blockmachines.hatch.holder.tier.09.name"), translateToLocal("tt.keyword.Structure.CenterPillar"), 2) // Object Holder: Center of the front pillar
+                .addOtherStructurePart(translateToLocal("tt.keyword.Structure.DataConnector"), translateToLocal("tt.keyword.Structure.AnyComputerCasingBackMain"), 1) // Optical Connector: Any Computer Casing on the backside of the main body
+                .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyComputerCasingBackMain"), 1) // Energy Hatch: Any Computer Casing on the backside of the main body
+                .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyComputerCasingBackMain"), 1) // Maintenance Hatch: Any Computer Casing on the backside of the main body
+                .toolTipFinisher(CommonValues.TEC_MARK_EM);
+        return tt;
     }
 
     @Override

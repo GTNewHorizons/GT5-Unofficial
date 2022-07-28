@@ -11,6 +11,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.Entity;
@@ -184,13 +185,25 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
     }
 
     @Override
-    public String[] getDescription() {
-        return new String[]{
-                CommonValues.BASS_MARK,
-                translateToLocal("gt.blockmachines.multimachine.tm.microwave.desc.0"),//High Frequency Oven
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.multimachine.tm.microwave.desc.1"),//From live to done in seconds!
-                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.multimachine.tm.microwave.desc.2"),//I said nuke the... I meant microwave supper!
-        };
+    public GT_Multiblock_Tooltip_Builder createTooltip() {
+        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.tm.microwave.name"))   // Machine Type: Microwave Grinder
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.microwave.desc.0"))  // Controller block of the Microwave Grinder
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.microwave.desc.1"))  // Starts a timer when enabled
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.microwave.desc.2"))  // While the timer is running anything inside the machine will take damage
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.microwave.desc.3"))  // The machine will also collect any items inside of it
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.microwave.desc.4"))  // Can be configured with a Parametrizer
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.microwave.desc.5"))  // (Do not insert a Wither)
+                .addSeparator()
+                .beginStructureBlock(5, 4, 5, true)
+                .addController(translateToLocal("tt.keyword.Structure.FrontCenter"))    // Controller: Front center
+                .addCasingInfo(translateToLocal("tt.keyword.Structure.StainlessSteelCasing"), 60) // 60x Stainless Steel Casing (minimum)
+                .addOtherStructurePart(translateToLocal("tt.keyword.Structure.DataConnector"), translateToLocal("tt.keyword.Structure.AnyOuterCasingOnBottom"), 2) // Output Bus: Any outer casing on the bottom layer
+                .addOtherStructurePart(translateToLocal("gt.blockmachines.hatch.param.tier.05.name"), translateToLocal("tt.keyword.Structure.Optional") + " " + translateToLocal("tt.keyword.Structure.AnyOuterCasingOnBottom"), 2) // Parametrizer: (optional) Any outer casing on the bottom layer
+                .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyOuterCasingOnBottom"), 1) // Energy Hatch: Any outer casing on the bottom layer
+                .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyOuterCasingOnBottom"), 1) // Maintenance Hatch: Any outer casing on the bottom layer
+                .toolTipFinisher(CommonValues.BASS_MARK);
+        return tt;
     }
 
     @Override

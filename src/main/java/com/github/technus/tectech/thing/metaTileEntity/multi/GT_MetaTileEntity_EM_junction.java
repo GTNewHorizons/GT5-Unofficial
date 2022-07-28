@@ -11,6 +11,7 @@ import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -154,12 +155,22 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    public String[] getDescription() {
-        return new String[]{
-                CommonValues.TEC_MARK_EM,
-                translateToLocal("gt.blockmachines.multimachine.em.junction.desc.0"),//Reroutes Matter
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.multimachine.em.junction.desc.1")//Axis aligned movement!
-        };
+    public GT_Multiblock_Tooltip_Builder createTooltip() {
+        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.junction.name"))   // Machine Type: Matter Junction
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.junction.desc.0"))  // Controller block of the Matter Junction
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.junction.desc.1"))  // Used to route and distribute elemental matter
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.junction.desc.2"))  // Needs a Parametrizer to be configured
+                .addInfo(translateToLocal("tt.keyword.Structure.StructureTooComplex")) // The structure is too complex!
+                .addSeparator()
+                .beginStructureBlock(3, 3, 4, false)
+                .addOtherStructurePart(translateToLocal("tt.keyword.Structure.ElementalOutput"), translateToLocal("tt.keyword.Structure.AnyOuterMolecularCasing3rd4th"), 2) // Elemental Output Hatch: Any outer Molecular Casing on the 3rd or 4th slice
+                .addOtherStructurePart(translateToLocal("tt.keyword.Structure.ElementalInput"), translateToLocal("tt.keyword.Structure.AnyOuterMolecularCasing3rd4th"), 2) // Elemental Input Hatch: Any outer Molecular Casing on the 3rd or 4th slice
+                .addOtherStructurePart(translateToLocal("gt.blockmachines.hatch.param.tier.05.name"), translateToLocal("tt.keyword.Structure.Optional") + " " + translateToLocal("tt.keyword.Structure.AnyHighPowerCasingFront"), 2) // Parametrizer: (optional) Any High Power Casing on the front side
+                .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasingFront"), 1) // Energy Hatch: Any High Power Casing on the front side
+                .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasingFront"), 1) // Maintenance Hatch: Any High Power Casing on the front side
+                .toolTipFinisher(CommonValues.TEC_MARK_EM);
+        return tt;
     }
 
     @Override

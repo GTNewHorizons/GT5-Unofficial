@@ -20,6 +20,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import ic2.core.init.MainConfig;
 import ic2.core.util.ConfigUtil;
@@ -161,12 +162,20 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
     }
 
     @Override
-    public String[] getDescription() {
-        return new String[]{
-                CommonValues.TEC_MARK_EM,
-                translateToLocal("gt.blockmachines.multimachine.em.decay.desc.0"),//Is life time too long?
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.multimachine.em.decay.desc.1")//Make it half-life (3) instead!
-        };
+    public GT_Multiblock_Tooltip_Builder createTooltip() {
+        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.decay.name"))   // Machine Type: Decay Generator
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.decay.desc.0"))  // Controller block of the Decay Generator
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.decay.desc.1"))  // Decays elemental matter to generate power
+                .addInfo(translateToLocal("tt.keyword.Structure.StructureTooComplex")) // The structure is too complex!
+                .addSeparator()
+                .beginStructureBlock(5, 5, 9, false)
+                .addOtherStructurePart(translateToLocal("tt.keyword.Structure.Elemental"), translateToLocal("tt.keyword.Structure.AnyMolecularCasing2D"), 2) // Elemental Hatch: Any Molecular Casing with 2 dot
+                .addOtherStructurePart(translateToLocal("gt.blockmachines.hatch.param.tier.05.name"), translateToLocal ("tt.keyword.Structure.Optional") + " " + translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1) // Parametrizer: (optional) Any High Power Casing
+                .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1) // Energy Hatch: Any High Power Casing
+                .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1) // Maintenance Hatch: Any High Power Casing
+                .toolTipFinisher(CommonValues.TEC_MARK_EM);
+        return tt;
     }
 
     @Override

@@ -19,6 +19,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_DataAccess;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -77,6 +78,24 @@ public class GT_MetaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
+    public GT_Multiblock_Tooltip_Builder createTooltip() {
+        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.databank.name"))   // Machine Type: Data Bank
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.databank.desc.0"))  // Controller block of the Data Bank
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.databank.desc.1"))  // Used to supply Assembling Lines with more Data Sticks
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.databank.desc.2"))  // and give multiple Assembling Lines access to the same Data Stick
+                .addInfo(translateToLocal("tt.keyword.Structure.StructureTooComplex")) // The structure is too complex!
+                .addSeparator()
+                .beginStructureBlock(5, 3, 3, false)
+                .addOtherStructurePart(translateToLocal("tt.keyword.Structure.DataAccessHatch"), translateToLocal("tt.keyword.Structure.AnyComputerCasing"), 2) // Data Access Hatch: Any Computer Casing
+                .addOtherStructurePart(translateToLocal("gt.blockmachines.hatch.dataoutass.tier.07.name"), translateToLocal("tt.keyword.Structure.AnyComputerCasing"), 2) // Data Bank Master Connector: Any Computer Casing
+                .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1) // Energy Hatch: Any High Power Casing
+                .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1) // Maintenance Hatch: Any High Power Casing
+                .toolTipFinisher(CommonValues.TEC_MARK_EM);
+        return tt;
+    }
+
+    @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
         eDataAccessHatches.clear();
         eStacksDataOutputs.clear();
@@ -117,15 +136,6 @@ public class GT_MetaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockB
                 hatch.q = null;
             }
         }
-    }
-
-    @Override
-    public String[] getDescription() {
-        return new String[]{
-                CommonValues.TEC_MARK_EM,
-                translateToLocal("gt.blockmachines.multimachine.em.databank.desc.0"),//Remote assembly data delivery
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.multimachine.em.databank.desc.1")//Apply directly to the forehead
-        };
     }
 
     @Override

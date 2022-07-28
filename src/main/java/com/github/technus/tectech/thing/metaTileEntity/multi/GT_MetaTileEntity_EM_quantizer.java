@@ -18,6 +18,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
@@ -181,12 +182,21 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
     }
 
     @Override
-    public String[] getDescription() {
-        return new String[]{
-                CommonValues.TEC_MARK_EM,
-                translateToLocal("gt.blockmachines.multimachine.em.mattertoem.desc.0"),//Conveniently convert regular stuff into quantum form.
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.multimachine.em.mattertoem.desc.1")//To make it more inconvenient.
-        };
+    public GT_Multiblock_Tooltip_Builder createTooltip() {
+        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.mattertoem.name"))   // Machine Type: Matter Quantizer
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.mattertoem.desc.0"))  // Controller block of the Matter Quantizer
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.mattertoem.desc.1"))  // Transforms items into their elemental form
+                .addInfo(translateToLocal("tt.keyword.Structure.StructureTooComplex")) // The structure is too complex!
+                .addSeparator()
+                .beginStructureBlock(3, 3, 4, false)
+                .addOtherStructurePart(translateToLocal("tt.keyword.Structure.ElementalOutput"), translateToLocal("tt.keyword.Structure.BackCenter"), 2) // Elemental Output Hatch: Back center
+                .addOtherStructurePart(translateToLocal("tt.keyword.Structure.ElementalOverflow"), translateToLocal("tt.keyword.Structure.AnyOuterMolecularCasing3rd"), 3) // Elemental Overflow Hatch: Any outer Molecular Casing on the 3rd slice
+                .addInputBus(translateToLocal("tt.keyword.Structure.AnyHighPowerCasingFront"), 1) // Input Bus: Any High Power Casing on the front side
+                .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasingFront"), 1) // Energy Hatch: Any High Power Casing on the front side
+                .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasingFront"), 1) // Maintenance Hatch: Any High Power Casing on the front side
+                .toolTipFinisher(CommonValues.TEC_MARK_EM);
+        return tt;
     }
 
     public final static ResourceLocation activitySound = new ResourceLocation(Reference.MODID + ":fx_mid_freq");

@@ -16,6 +16,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
@@ -124,12 +125,21 @@ public class GT_MetaTileEntity_EM_dequantizer extends GT_MetaTileEntity_Multiblo
     }
 
     @Override
-    public String[] getDescription() {
-        return new String[]{
-                CommonValues.TEC_MARK_EM,
-                translateToLocal("gt.blockmachines.multimachine.em.emtomatter.desc.0"),//Transform quantum form back to...
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.multimachine.em.emtomatter.desc.1")//regular one, but why?
-        };
+    public GT_Multiblock_Tooltip_Builder createTooltip() {
+        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.emtomatter.name"))   // Machine Type: Matter Dequantizer
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.emtomatter.desc.0"))  // Controller block of the Matter Dequantizer
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.emtomatter.desc.1"))  // Transforms elemental matter back into items
+                .addInfo(translateToLocal("tt.keyword.Structure.StructureTooComplex")) // The structure is too complex!
+                .addSeparator()
+                .beginStructureBlock(3, 3, 4, false)
+                .addOtherStructurePart(translateToLocal("tt.keyword.Structure.ElementalInput"), translateToLocal("tt.keyword.Structure.BackCenter"), 2) // Elemental Input Hatch: Back center
+                .addOtherStructurePart(translateToLocal("tt.keyword.Structure.ElementalOverflow"), translateToLocal("tt.keyword.Structure.AnyOuterMolecularCasing3rd"), 3) // Elemental Overflow Hatch: Any outer Molecular Casing on the 3rd slice
+                .addOutputBus(translateToLocal("tt.keyword.Structure.AnyHighPowerCasingFront"), 1) // Output Bus: Any High Power Casing on the front side
+                .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasingFront"), 1) // Energy Hatch: Any High Power Casing on the front side
+                .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasingFront"), 1) // Maintenance Hatch: Any High Power Casing on the front side
+                .toolTipFinisher(CommonValues.TEC_MARK_EM);
+        return tt;
     }
 
     @Override

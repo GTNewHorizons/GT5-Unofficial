@@ -14,6 +14,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -105,13 +106,22 @@ public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_Multiblo
     }
 
     @Override
-    public String[] getDescription() {
-        return new String[]{
-                CommonValues.TEC_MARK_GENERAL,
-                translateToLocal("gt.blockmachines.multimachine.em.transformer.desc.0"),//Power substation
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.multimachine.em.transformer.desc.1"),//All the transformation!
-                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.multimachine.em.transformer.desc.2"),//Only 0.78125% power loss, HAYO!
-        };
+    public GT_Multiblock_Tooltip_Builder createTooltip() {
+        final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.transformer.name"))   // Machine Type: Transformer
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.transformer.desc.0"))  // Controller block of the Active Transformer
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.transformer.desc.1"))  // Can transform to and from any voltage
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.transformer.desc.2"))  // Only 0.004% power loss, HAYO!
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.transformer.desc.3"))  // Will explode if broken while running
+                .addSeparator()
+                .beginStructureBlock(3, 3, 3, false)
+                .addController(translateToLocal("tt.keyword.Structure.FrontCenter"))    // Controller: Front center
+                .addCasingInfo(translateToLocal("gt.blockcasingsTT.0.name"), 5) // 5x High Power Casing (minimum)
+                .addOtherStructurePart(translateToLocal("tt.keyword.Structure.SuperconductingCoilBlock"), translateToLocal("tt.keyword.Structure.Center")) // SuperconductingCoilBlock: Center
+                .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1) // Energy Hatch: Any High Power Casing
+                .addDynamoHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1) // Dynamo Hatch: Any High Power Casing
+                .toolTipFinisher(CommonValues.TEC_MARK_GENERAL);
+        return tt;
     }
 
     @Override
