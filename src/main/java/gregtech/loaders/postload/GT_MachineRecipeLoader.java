@@ -3938,7 +3938,7 @@ public class GT_MachineRecipeLoader implements Runnable {
 
             GT_Values.RA.addVacuumFreezerRecipe(
                 new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.ingotHot, Materials.TranscendentMetal, 1L)},
-                new FluidStack[]{new FluidStack(FluidRegistry.getFluid("molten.titansteel"), 144), FluidRegistry.getFluidStack("ic2coolant", 1000)},
+                new FluidStack[]{new FluidStack(FluidRegistry.getFluid("molten.titansteel"), 144), Materials.SuperCoolant.getFluid(1000)},
 
                 new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.TranscendentMetal, 1L)},
                 new FluidStack[]{GT_Values.NF},
