@@ -24,6 +24,7 @@ import java.util.stream.IntStream;
 
 import static gregtech.api.enums.GT_Values.M;
 import static gregtech.api.enums.GT_Values.MOD_ID_DC;
+import static gregtech.api.enums.MaterialsBotania.*;
 
 @SuppressWarnings("ALL")
 public class Materials implements IColorModulationContainer, ISubTagContainer {
@@ -882,6 +883,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials TranscendentMetal        = new Materials(   581, new TextureSet("transcendentmetal", true)   ,   320.0F,      4*2621440,  25, 1|2|64|128,   50,     50,  50,255,   "TranscendentMetal" ,   "Transcendent Metal"             ,    -1,      -1,         0,    0, false,  true,   200,   1000,   1000, Dyes.dyeBlack         , Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 1)));
 
 
+
     static {
         MaterialsBotania.init();
     }
@@ -1675,6 +1677,14 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Quartzite.mChemicalFormula = "SiO\u2082";
         CertusQuartz.mChemicalFormula = "SiO\u2082";
         SpaceTime.mChemicalFormula = "Reality itself distilled into liquid form";
+        GaiaSpirit.mChemicalFormula = "Gs";
+        Manasteel.mChemicalFormula = "Ms";
+        Livingwood.mChemicalFormula = "Lw";
+        Dreamwood.mChemicalFormula = "Dw";
+        BotaniaDragonstone.mChemicalFormula = "Dg";
+        Livingrock.mChemicalFormula = "Lv";
+        Terrasteel.mChemicalFormula = "Tr";
+        ElvenElementium.mChemicalFormula = "Ef";
     }
 
     private static void initSubTags() {
@@ -2142,6 +2152,12 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Forcillium.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE, SubTag.MAGICAL);
         Force.add(SubTag.CRYSTAL, SubTag.MAGICAL, SubTag.UNBURNABLE);
         Magic.add(SubTag.CRYSTAL, SubTag.MAGICAL, SubTag.UNBURNABLE);
+
+        // Botania
+        Livingrock.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+        Livingwood.add(SubTag.WOOD, SubTag.FLAMMABLE, SubTag.NO_SMELTING, SubTag.NO_SMASHING);
+        Dreamwood.add(SubTag.WOOD, SubTag.FLAMMABLE, SubTag.NO_SMELTING, SubTag.NO_SMASHING);
+
 
         Primitive.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         Basic.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
