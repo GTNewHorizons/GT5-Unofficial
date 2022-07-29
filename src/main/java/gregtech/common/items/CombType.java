@@ -196,6 +196,7 @@ public enum CombType {
     CAELESTISGREEN(155, "caelestisgreen", true, Materials._NULL, 100, 0x00FF00, 0xB233FF),
     CAELESTISBLUE(156, "caelestisblue", true, Materials._NULL, 100, 0x0000FF, 0xFF99A5),
     UNKNOWNWATER(157, "unknownwater", true, Materials._NULL, 100, 0x36ABFF, 0x4333A5),
+    ESSENTIA(158, "essentia", true, Materials._NULL, 100, 0xED3601, 0xFF6D50),
 
     //ALWAYS KEEP _NULL AT THE BOTTOM
     _NULL(-1, "INVALIDCOMB", false, Materials._NULL, 0, 0, 0);
