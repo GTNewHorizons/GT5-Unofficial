@@ -24,6 +24,185 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
+// Free IDs left for machines in GT as of 29th of July 2022 - Colen. Please try use them up in order.
+//    349
+//    356
+//    357
+//    358
+//    359
+//    366
+//    367
+//    368
+//    369
+//    370
+//    376
+//    377
+//    378
+//    379
+//    386
+//    387
+//    388
+//    389
+//    390
+//    396
+//    397
+//    398
+//    399
+//    410
+//    419
+//    426
+//    427
+//    428
+//    429
+//    430
+//    436
+//    437
+//    438
+//    439
+//    446
+//    447
+//    448
+//    449
+//    450
+//    456
+//    457
+//    458
+//    459
+//    466
+//    467
+//    468
+//    469
+//    470
+//    476
+//    477
+//    478
+//    479
+//    486
+//    487
+//    488
+//    489
+//    496
+//    497
+//    498
+//    499
+//    506
+//    507
+//    508
+//    509
+//    518
+//    519
+//    526
+//    530
+//    537
+//    538
+//    539
+//    546
+//    547
+//    548
+//    549
+//    550
+//    556
+//    557
+//    558
+//    559
+//    566
+//    567
+//    576
+//    577
+//    578
+//    579
+//    586
+//    587
+//    588
+//    589
+//    590
+//    596
+//    597
+//    598
+//    599
+//    607
+//    608
+//    609
+//    610
+//    616
+//    617
+//    618
+//    619
+//    626
+//    627
+//    628
+//    629
+//    630
+//    636
+//    637
+//    639
+//    646
+//    647
+//    648
+//    649
+//    650
+//    656
+//    657
+//    658
+//    659
+//    666
+//    667
+//    668
+//    669
+//    670
+//    676
+//    677
+//    678
+//    682
+//    683
+//    684
+//    686
+//    687
+//    688
+//    689
+//    702
+//    703
+//    704
+//    705
+//    706
+//    707
+//    708
+//    709
+//    714
+//    715
+//    716
+//    717
+//    718
+//    719
+//    721
+//    722
+//    723
+//    724
+//    725
+//    726
+//    727
+//    728
+//    729
+//    730
+//    731
+//    732
+//    733
+//    734
+//    735
+//    736
+//    737
+//    738
+//    739
+//    741
+//    742
+//    743
+//    744
+//    745
+//    746
+//    747
+//    748
+//    749
+
 public class GT_Loader_MetaTileEntities implements Runnable {//TODO CHECK CIRCUIT RECIPES AND USAGES
     private static final String aTextWire1 = "wire."; private static final String aTextCable1 = "cable."; private static final String aTextWire2 = " Wire"; private static final String aTextCable2 = " Cable";
     private static final String aTextPlate = "PPP"; private static final String aTextPlateWrench = "PwP"; private static final String aTextPlateMotor = "PMP"; private static final String aTextCableHull = "CMC";
@@ -479,41 +658,42 @@ public class GT_Loader_MetaTileEntities implements Runnable {//TODO CHECK CIRCUI
         ItemList.Battery_Charger_4by4_MAX.set(new GT_MetaTileEntity_Charger(699, "batterycharger.16.tier.09", "Highly Ultimate Voltage Battery Charger", 9, "Each battery gives 8A in/4A out (min 4A/2A)", 4).getStackForm(1L));
 
         {
-            int wireless_hatch_start_id = 17312;
 
-            ItemList.Wireless_Hatch_Energy_ULV.set(new GT_MetaTileEntity_Wireless_Hatch(wireless_hatch_start_id, "hatch.wireless.receiver.tier.00", "ULV Wireless Energy Hatch", 0).getStackForm(1L));
-            ItemList.Wireless_Hatch_Energy_LV.set(new GT_MetaTileEntity_Wireless_Hatch(++wireless_hatch_start_id, "hatch.wireless.receiver.tier.01", "LV Wireless Energy Hatch", 1).getStackForm(1L));
-            ItemList.Wireless_Hatch_Energy_MV.set(new GT_MetaTileEntity_Wireless_Hatch(++wireless_hatch_start_id, "hatch.wireless.receiver.tier.02", "MV Wireless Energy Hatch", 2).getStackForm(1L));
-            ItemList.Wireless_Hatch_Energy_HV.set(new GT_MetaTileEntity_Wireless_Hatch(++wireless_hatch_start_id, "hatch.wireless.receiver.tier.03", "HV Wireless Energy Hatch", 3).getStackForm(1L));
-            ItemList.Wireless_Hatch_Energy_EV.set(new GT_MetaTileEntity_Wireless_Hatch(++wireless_hatch_start_id, "hatch.wireless.receiver.tier.04", "EV Wireless Energy Hatch", 4).getStackForm(1L));
-            ItemList.Wireless_Hatch_Energy_IV.set(new GT_MetaTileEntity_Wireless_Hatch(++wireless_hatch_start_id, "hatch.wireless.receiver.tier.05", "IV Wireless Energy Hatch", 5).getStackForm(1L));
-            ItemList.Wireless_Hatch_Energy_LuV.set(new GT_MetaTileEntity_Wireless_Hatch(++wireless_hatch_start_id, "hatch.wireless.receiver.tier.06", "LuV Wireless Energy Hatch", 6).getStackForm(1L));
-            ItemList.Wireless_Hatch_Energy_ZPM.set(new GT_MetaTileEntity_Wireless_Hatch(++wireless_hatch_start_id, "hatch.wireless.receiver.tier.07", "ZPM Wireless Energy Hatch", 7).getStackForm(1L));
-            ItemList.Wireless_Hatch_Energy_UV.set(new GT_MetaTileEntity_Wireless_Hatch(++wireless_hatch_start_id, "hatch.wireless.receiver.tier.08", "UV Wireless Energy Hatch", 8).getStackForm(1L));
-            ItemList.Wireless_Hatch_Energy_UHV.set(new GT_MetaTileEntity_Wireless_Hatch(++wireless_hatch_start_id, "hatch.wireless.receiver.tier.09", "UHV Wireless Energy Hatch", 9).getStackForm(1L));
-            ItemList.Wireless_Hatch_Energy_UEV.set(new GT_MetaTileEntity_Wireless_Hatch(++wireless_hatch_start_id, "hatch.wireless.receiver.tier.10", "UEV Wireless Energy Hatch", 10).getStackForm(1L));
-            ItemList.Wireless_Hatch_Energy_UIV.set(new GT_MetaTileEntity_Wireless_Hatch(++wireless_hatch_start_id, "hatch.wireless.receiver.tier.11", "UIV Wireless Energy Hatch", 11).getStackForm(1L));
-            ItemList.Wireless_Hatch_Energy_UMV.set(new GT_MetaTileEntity_Wireless_Hatch(++wireless_hatch_start_id, "hatch.wireless.receiver.tier.12", "UMV Wireless Energy Hatch", 12).getStackForm(1L));
-            ItemList.Wireless_Hatch_Energy_UXV.set(new GT_MetaTileEntity_Wireless_Hatch(++wireless_hatch_start_id, "hatch.wireless.receiver.tier.13", "UXV Wireless Energy Hatch", 13).getStackForm(1L));
-            ItemList.Wireless_Hatch_Energy_MAX.set(new GT_MetaTileEntity_Wireless_Hatch(++wireless_hatch_start_id, "hatch.wireless.receiver.tier.14", "MAX Wireless Energy Hatch", 14).getStackForm(1L));
+            // Wireless Energy Hatches
 
-            int wireless_dynamo_start_id = 17312+30;
+            ItemList.Wireless_Hatch_Energy_ULV.set(new GT_MetaTileEntity_Wireless_Hatch(206, "hatch.wireless.receiver.tier.00", "ULV Wireless Energy Hatch", 0).getStackForm(1L));
+            ItemList.Wireless_Hatch_Energy_LV.set(new GT_MetaTileEntity_Wireless_Hatch(207, "hatch.wireless.receiver.tier.01", "LV Wireless Energy Hatch", 1).getStackForm(1L));
+            ItemList.Wireless_Hatch_Energy_MV.set(new GT_MetaTileEntity_Wireless_Hatch(208, "hatch.wireless.receiver.tier.02", "MV Wireless Energy Hatch", 2).getStackForm(1L));
+            ItemList.Wireless_Hatch_Energy_HV.set(new GT_MetaTileEntity_Wireless_Hatch(209, "hatch.wireless.receiver.tier.03", "HV Wireless Energy Hatch", 3).getStackForm(1L));
+            ItemList.Wireless_Hatch_Energy_EV.set(new GT_MetaTileEntity_Wireless_Hatch(216, "hatch.wireless.receiver.tier.04", "EV Wireless Energy Hatch", 4).getStackForm(1L));
+            ItemList.Wireless_Hatch_Energy_IV.set(new GT_MetaTileEntity_Wireless_Hatch(217, "hatch.wireless.receiver.tier.05", "IV Wireless Energy Hatch", 5).getStackForm(1L));
+            ItemList.Wireless_Hatch_Energy_LuV.set(new GT_MetaTileEntity_Wireless_Hatch(218, "hatch.wireless.receiver.tier.06", "LuV Wireless Energy Hatch", 6).getStackForm(1L));
+            ItemList.Wireless_Hatch_Energy_ZPM.set(new GT_MetaTileEntity_Wireless_Hatch(219, "hatch.wireless.receiver.tier.07", "ZPM Wireless Energy Hatch", 7).getStackForm(1L));
+            ItemList.Wireless_Hatch_Energy_UV.set(new GT_MetaTileEntity_Wireless_Hatch(227, "hatch.wireless.receiver.tier.08", "UV Wireless Energy Hatch", 8).getStackForm(1L));
+            ItemList.Wireless_Hatch_Energy_UHV.set(new GT_MetaTileEntity_Wireless_Hatch(229, "hatch.wireless.receiver.tier.09", "UHV Wireless Energy Hatch", 9).getStackForm(1L));
+            ItemList.Wireless_Hatch_Energy_UEV.set(new GT_MetaTileEntity_Wireless_Hatch(266, "hatch.wireless.receiver.tier.10", "UEV Wireless Energy Hatch", 10).getStackForm(1L));
+            ItemList.Wireless_Hatch_Energy_UIV.set(new GT_MetaTileEntity_Wireless_Hatch(267, "hatch.wireless.receiver.tier.11", "UIV Wireless Energy Hatch", 11).getStackForm(1L));
+            ItemList.Wireless_Hatch_Energy_UMV.set(new GT_MetaTileEntity_Wireless_Hatch(268, "hatch.wireless.receiver.tier.12", "UMV Wireless Energy Hatch", 12).getStackForm(1L));
+            ItemList.Wireless_Hatch_Energy_UXV.set(new GT_MetaTileEntity_Wireless_Hatch(269, "hatch.wireless.receiver.tier.13", "UXV Wireless Energy Hatch", 13).getStackForm(1L));
+            ItemList.Wireless_Hatch_Energy_MAX.set(new GT_MetaTileEntity_Wireless_Hatch(286, "hatch.wireless.receiver.tier.14", "MAX Wireless Energy Hatch", 14).getStackForm(1L));
 
-            ItemList.Wireless_Dynamo_Energy_ULV.set(new GT_MetaTileEntity_Wireless_Dynamo(wireless_dynamo_start_id, "hatch.wireless.transmitter.tier.00", "ULV Wireless Energy Dynamo", 0).getStackForm(1L));
-            ItemList.Wireless_Dynamo_Energy_LV.set(new GT_MetaTileEntity_Wireless_Dynamo(++wireless_dynamo_start_id, "hatch.wireless.transmitter.tier.01", "LV Wireless Energy Dynamo", 1).getStackForm(1L));
-            ItemList.Wireless_Dynamo_Energy_MV.set(new GT_MetaTileEntity_Wireless_Dynamo(++wireless_dynamo_start_id, "hatch.wireless.transmitter.tier.02", "MV Wireless Energy Dynamo", 2).getStackForm(1L));
-            ItemList.Wireless_Dynamo_Energy_HV.set(new GT_MetaTileEntity_Wireless_Dynamo(++wireless_dynamo_start_id, "hatch.wireless.transmitter.tier.03", "HV Wireless Energy Dynamo", 3).getStackForm(1L));
-            ItemList.Wireless_Dynamo_Energy_EV.set(new GT_MetaTileEntity_Wireless_Dynamo(++wireless_dynamo_start_id, "hatch.wireless.transmitter.tier.04", "EV Wireless Energy Dynamo", 4).getStackForm(1L));
-            ItemList.Wireless_Dynamo_Energy_IV.set(new GT_MetaTileEntity_Wireless_Dynamo(++wireless_dynamo_start_id, "hatch.wireless.transmitter.tier.05", "IV Wireless Energy Dynamo", 5).getStackForm(1L));
-            ItemList.Wireless_Dynamo_Energy_LuV.set(new GT_MetaTileEntity_Wireless_Dynamo(++wireless_dynamo_start_id, "hatch.wireless.transmitter.tier.06", "LuV Wireless Energy Dynamo", 6).getStackForm(1L));
-            ItemList.Wireless_Dynamo_Energy_ZPM.set(new GT_MetaTileEntity_Wireless_Dynamo(++wireless_dynamo_start_id, "hatch.wireless.transmitter.tier.07", "ZPM Wireless Energy Dynamo", 7).getStackForm(1L));
-            ItemList.Wireless_Dynamo_Energy_UV.set(new GT_MetaTileEntity_Wireless_Dynamo(++wireless_dynamo_start_id, "hatch.wireless.transmitter.tier.08", "UV Wireless Energy Dynamo", 8).getStackForm(1L));
-            ItemList.Wireless_Dynamo_Energy_UHV.set(new GT_MetaTileEntity_Wireless_Dynamo(++wireless_dynamo_start_id, "hatch.wireless.transmitter.tier.09", "UHV Wireless Energy Dynamo", 9).getStackForm(1L));
-            ItemList.Wireless_Dynamo_Energy_UEV.set(new GT_MetaTileEntity_Wireless_Dynamo(++wireless_dynamo_start_id, "hatch.wireless.transmitter.tier.10", "UEV Wireless Energy Dynamo", 10).getStackForm(1L));
-            ItemList.Wireless_Dynamo_Energy_UIV.set(new GT_MetaTileEntity_Wireless_Dynamo(++wireless_dynamo_start_id, "hatch.wireless.transmitter.tier.11", "UIV Wireless Energy Dynamo", 11).getStackForm(1L));
-            ItemList.Wireless_Dynamo_Energy_UMV.set(new GT_MetaTileEntity_Wireless_Dynamo(++wireless_dynamo_start_id, "hatch.wireless.transmitter.tier.12", "UMV Wireless Energy Dynamo", 12).getStackForm(1L));
-            ItemList.Wireless_Dynamo_Energy_UXV.set(new GT_MetaTileEntity_Wireless_Dynamo(++wireless_dynamo_start_id, "hatch.wireless.transmitter.tier.13", "UXV Wireless Energy Dynamo", 13).getStackForm(1L));
-            ItemList.Wireless_Dynamo_Energy_MAX.set(new GT_MetaTileEntity_Wireless_Dynamo(++wireless_dynamo_start_id, "hatch.wireless.transmitter.tier.14", "MAX Wireless Energy Dynamo", 14).getStackForm(1L));
+            // Wireless Dynamo Hatches
+
+            ItemList.Wireless_Dynamo_Energy_ULV.set(new GT_MetaTileEntity_Wireless_Dynamo(287, "hatch.wireless.transmitter.tier.00", "ULV Wireless Energy Dynamo", 0).getStackForm(1L));
+            ItemList.Wireless_Dynamo_Energy_LV.set(new GT_MetaTileEntity_Wireless_Dynamo(288, "hatch.wireless.transmitter.tier.01", "LV Wireless Energy Dynamo", 1).getStackForm(1L));
+            ItemList.Wireless_Dynamo_Energy_MV.set(new GT_MetaTileEntity_Wireless_Dynamo(289, "hatch.wireless.transmitter.tier.02", "MV Wireless Energy Dynamo", 2).getStackForm(1L));
+            ItemList.Wireless_Dynamo_Energy_HV.set(new GT_MetaTileEntity_Wireless_Dynamo(296, "hatch.wireless.transmitter.tier.03", "HV Wireless Energy Dynamo", 3).getStackForm(1L));
+            ItemList.Wireless_Dynamo_Energy_EV.set(new GT_MetaTileEntity_Wireless_Dynamo(297, "hatch.wireless.transmitter.tier.04", "EV Wireless Energy Dynamo", 4).getStackForm(1L));
+            ItemList.Wireless_Dynamo_Energy_IV.set(new GT_MetaTileEntity_Wireless_Dynamo(298, "hatch.wireless.transmitter.tier.05", "IV Wireless Energy Dynamo", 5).getStackForm(1L));
+            ItemList.Wireless_Dynamo_Energy_LuV.set(new GT_MetaTileEntity_Wireless_Dynamo(299, "hatch.wireless.transmitter.tier.06", "LuV Wireless Energy Dynamo", 6).getStackForm(1L));
+            ItemList.Wireless_Dynamo_Energy_ZPM.set(new GT_MetaTileEntity_Wireless_Dynamo(310, "hatch.wireless.transmitter.tier.07", "ZPM Wireless Energy Dynamo", 7).getStackForm(1L));
+            ItemList.Wireless_Dynamo_Energy_UV.set(new GT_MetaTileEntity_Wireless_Dynamo(316, "hatch.wireless.transmitter.tier.08", "UV Wireless Energy Dynamo", 8).getStackForm(1L));
+            ItemList.Wireless_Dynamo_Energy_UHV.set(new GT_MetaTileEntity_Wireless_Dynamo(317, "hatch.wireless.transmitter.tier.09", "UHV Wireless Energy Dynamo", 9).getStackForm(1L));
+            ItemList.Wireless_Dynamo_Energy_UEV.set(new GT_MetaTileEntity_Wireless_Dynamo(318, "hatch.wireless.transmitter.tier.10", "UEV Wireless Energy Dynamo", 10).getStackForm(1L));
+            ItemList.Wireless_Dynamo_Energy_UIV.set(new GT_MetaTileEntity_Wireless_Dynamo(319, "hatch.wireless.transmitter.tier.11", "UIV Wireless Energy Dynamo", 11).getStackForm(1L));
+            ItemList.Wireless_Dynamo_Energy_UMV.set(new GT_MetaTileEntity_Wireless_Dynamo(346, "hatch.wireless.transmitter.tier.12", "UMV Wireless Energy Dynamo", 12).getStackForm(1L));
+            ItemList.Wireless_Dynamo_Energy_UXV.set(new GT_MetaTileEntity_Wireless_Dynamo(347, "hatch.wireless.transmitter.tier.13", "UXV Wireless Energy Dynamo", 13).getStackForm(1L));
+            ItemList.Wireless_Dynamo_Energy_MAX.set(new GT_MetaTileEntity_Wireless_Dynamo(348, "hatch.wireless.transmitter.tier.14", "MAX Wireless Energy Dynamo", 14).getStackForm(1L));
 
         }
 
