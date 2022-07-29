@@ -1401,7 +1401,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
             AlleleHelper.instance.set(template, NOCTURNAL, true);
         },
         dis -> {
-            IBeeMutationCustom tMutation = dis.registerMutation(DIAMOND, DIVIDED, 4);
+            IBeeMutationCustom tMutation = dis.registerMutation(DIAMOND, DIVIDED, 10);
         }
     ),
     SPARKELING(GT_BranchDefinition.THAUMIC, "NetherStar", true, new Color(0x7A007A), new Color(0xFFFFFF),
@@ -1460,7 +1460,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 AlleleHelper.instance.set(template, LIFESPAN, Lifespan.LONGEST);
             },
             dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(getSpecies(FORESTRY, "Avenging"), PLATINUM, 2);
+                IBeeMutationCustom tMutation = dis.registerMutation(getSpecies(FORESTRY, "Avenging"), PLATINUM, 3);
                 tMutation.requireResource(GregTech_API.sBlockMetal7, 14);
             }
     ),
@@ -1478,7 +1478,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 AlleleHelper.instance.set(template, LIFESPAN, Lifespan.LONGEST);
             },
             dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(URANIUM, EMERALD, 2);
+                IBeeMutationCustom tMutation = dis.registerMutation(URANIUM, EMERALD, 3);
                 tMutation.requireResource(GregTech_API.sBlockMetal5, 13);
             }
     ),
@@ -1496,7 +1496,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 AlleleHelper.instance.set(template, LIFESPAN, Lifespan.LONGEST);
             },
             dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(PLUTONIUM, IRIDIUM, 1);
+                IBeeMutationCustom tMutation = dis.registerMutation(PLUTONIUM, IRIDIUM, 3);
                 tMutation.requireResource(GregTech_API.sBlockMetal4, 12);
             }
     ),
@@ -1533,7 +1533,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST);
             },
             dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(NAQUADAH, THAUMIUMSHARD, 1);
+                IBeeMutationCustom tMutation = dis.registerMutation(NAQUADAH, THAUMIUMSHARD, 2);
                 if (Loader.isModLoaded("AdvancedSolarPanel"))
                     tMutation.requireResource(GameRegistry.findBlock("AdvancedSolarPanel", "BlockAdvSolarPanel"), 2);
                 tMutation.addMutationCondition(new GT_Bees.BiomeIDMutationCondition(9, "END Biome"));//sky end biome
@@ -1551,7 +1551,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 AlleleHelper.instance.set(template, LIFESPAN, Lifespan.LONGEST);
             },
             dis -> {
-                IMutationCustom tMutation = dis.registerMutation(COAL, URANIUM, 2).setIsSecret();
+                IMutationCustom tMutation = dis.registerMutation(COAL, URANIUM, 3).setIsSecret();
                 tMutation.requireResource(GregTech_API.sBlockMetal7, 5);
             }
     ),
@@ -1585,7 +1585,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 AlleleHelper.instance.set(template, LIFESPAN, Lifespan.LONGEST);
             },
             dis -> {
-                IMutationCustom tMutation = dis.registerMutation(LUTETIUM, CHROME, 3, 4).setIsSecret();
+                IMutationCustom tMutation = dis.registerMutation(LUTETIUM, CHROME, 5, 4).setIsSecret();
                 tMutation.requireResource(GregTech_API.sBlockMetal1, 2);
             }
     ),
@@ -1602,7 +1602,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 AlleleHelper.instance.set(template, NOCTURNAL, true);
             },
             dis -> {
-                IMutationCustom tMutation = dis.registerMutation(NAQUADRIA, AMERICIUM, 1, 2).setIsSecret();
+                IMutationCustom tMutation = dis.registerMutation(NAQUADRIA, AMERICIUM, 2, 2).setIsSecret();
                 tMutation.requireResource(GregTech_API.sBlockMetal5, 2);
             }
     ),
