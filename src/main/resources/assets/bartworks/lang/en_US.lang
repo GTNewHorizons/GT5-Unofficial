@@ -156,12 +156,6 @@ item.BurnedOutTRISOPellet.name=Burned Out TRISO pebble
 
 itemGroup.bartworksMetaMaterials=BartWorks' Meta Materials
 
-BW.keyphrase.Hint_Details=Hint Details
-BW.tile.CircuitAssemblyLine.hint.0=1 - Energy Input Hatch
-BW.tile.CircuitAssemblyLine.hint.1=2 - Maintenance Hatch, Input Hatch
-BW.tile.CircuitAssemblyLine.hint.2=3 - Input Bus
-BW.tile.CircuitAssemblyLine.hint.3=4 - Input Bus, Output Bus
-
 planet.Ross128b=Ross128b
 moon.Ross128ba=Ross128ba
 star.Ross128=Ross128

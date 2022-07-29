@@ -25,7 +25,9 @@ package com.github.bartimaeusnek.bartworks.util;
 import com.github.bartimaeusnek.bartworks.API.BioVatLogicAdder;
 import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
 import com.github.bartimaeusnek.bartworks.MainMod;
-import gregtech.api.enums.GT_Values;
+import com.gtnewhorizon.structurelib.StructureLibAPI;
+import com.gtnewhorizon.structurelib.structure.IStructureElement;
+import com.gtnewhorizon.structurelib.structure.IStructureElementNoPlacement;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.ToolDictNames;
@@ -47,6 +49,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -58,6 +61,8 @@ import javax.annotation.Nonnull;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static gregtech.api.enums.GT_Values.*;
@@ -672,6 +677,56 @@ public class BW_Util {
 
         return 0;
     }
+
+    public static <T> IStructureElement<T> ofGlassTiered(byte mintier, byte maxtier, byte notset, BiConsumer<T, Byte> setter, Function<T, Byte> getter, int aDots){
+        return new IStructureElementNoPlacement<T>(){
+            @Override
+            public boolean check(T te, World world, int x, int y, int z) {
+                if(world.isAirBlock(x, y, z))
+                    return false;
+                byte glasstier = BW_Util.calculateGlassTier(world.getBlock(x, y, z), (byte)world.getBlockMetadata(x, y, z));
+                if(glasstier == 0) // is not a glass ?
+                    return false;
+                if(glasstier == notset)
+                    return false;
+                if(glasstier < mintier)
+                    return false;
+                if(glasstier > maxtier)
+                    return false;
+                if(getter.apply(te) == notset)
+                    setter.accept(te, glasstier);
+                return getter.apply(te) == glasstier;
+            }
+
+            @Override
+            public boolean spawnHint(T te, World world, int x, int y, int z, ItemStack itemStack) {
+                StructureLibAPI.hintParticle(world, x, y, z, StructureLibAPI.getBlockHint(), aDots - 1);
+                return true;
+            }
+        };
+    }
+
+    public static <T> IStructureElement<T> ofGlassTieredMixed(byte mintier, byte maxtier, int aDots){
+        return new IStructureElementNoPlacement<T>(){
+            @Override
+            public boolean check(T te, World world, int x, int y, int z) {
+                if(world.isAirBlock(x, y, z))
+                    return false;
+                byte glasstier = BW_Util.calculateGlassTier(world.getBlock(x, y, z), (byte)world.getBlockMetadata(x, y, z));
+                if(glasstier == 0) // is not a glass ?
+                    return false;
+                return glasstier >= mintier && glasstier <= maxtier;
+            }
+
+            @Override
+            public boolean spawnHint(T te, World world, int x, int y, int z, ItemStack itemStack) {
+                StructureLibAPI.hintParticle(world, x, y, z, StructureLibAPI.getBlockHint(), aDots - 1);
+                return true;
+            }
+        };
+    }
+
+
 
     private static Field sBufferedRecipeList;
 

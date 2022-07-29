@@ -22,20 +22,22 @@
 
 package com.github.bartimaeusnek.bartworks.common.tileentities.multis;
 
-import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
 import com.github.bartimaeusnek.bartworks.system.material.CircuitGeneration.BW_Meta_Items;
 import com.github.bartimaeusnek.bartworks.system.material.CircuitGeneration.CircuitImprintLoader;
 import com.github.bartimaeusnek.bartworks.util.BWRecipes;
+import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.*;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
@@ -43,64 +45,83 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
 import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS;
+import static com.github.bartimaeusnek.bartworks.util.BW_Util.ofGlassTieredMixed;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
-import static net.minecraft.util.StatCollector.translateToLocal;
 
 public class GT_TileEntity_CircuitAssemblyLine extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_TileEntity_CircuitAssemblyLine> {
 
+    private static final int CASING_INDEX = 16;
+
+    private static final String STRUCTURE_PIECE_FIRST = "first";
+    private static final String STRUCTURE_PIECE_NEXT = "next";
+
     private static final IStructureDefinition<GT_TileEntity_CircuitAssemblyLine> STRUCTURE_DEFINITION = StructureDefinition.<GT_TileEntity_CircuitAssemblyLine>builder()
-            .addShape("first", transpose(new String[][] {
+            .addShape(STRUCTURE_PIECE_FIRST, transpose(new String[][] {
                     {"~", "G", "G"},
                     {"g", "l", "g"},
                     {"b", "i", "b"},
             }))
-            .addShape("next", transpose(new String[][] {
+            .addShape(STRUCTURE_PIECE_NEXT, transpose(new String[][] {
                     {"G", "G", "G"},
                     {"g", "l", "g"},
                     {"b", "I", "b"},
             }))
             .addElement('G', ofChain(
-                    ofHatchAdder(GT_TileEntity_CircuitAssemblyLine::addEnergyInputToMachineList, 16, 1), //grate machine casings
+                    ofHatchAdder(GT_TileEntity_CircuitAssemblyLine::addEnergyInputToMachineList, CASING_INDEX, 1), //grate machine casings
                     ofBlock(GregTech_API.sBlockCasings3, 10)))
-            .addElement('g', ofChain(
-                    ofBlockAnyMeta(GameRegistry.findBlock("IC2", "blockAlloyGlass")),
-                    //Forgive me for I have sinned. But it works...
-                    ofBlock(ItemRegistry.bw_realglas, 1),
-                    ofBlock(ItemRegistry.bw_realglas, 2),
-                    ofBlock(ItemRegistry.bw_realglas, 3),
-                    ofBlock(ItemRegistry.bw_realglas, 4),
-                    ofBlock(ItemRegistry.bw_realglas, 5),
-                    ofBlock(ItemRegistry.bw_realglas, 12),
-                    ofBlock(ItemRegistry.bw_realglas, 13),
-                    ofBlock(ItemRegistry.bw_realglas, 14)
-            ))
+            .addElement('g', ofGlassTieredMixed((byte)4, (byte)127, 5))
             .addElement('l', ofBlock(GregTech_API.sBlockCasings2, 5)) //assembling line casings
             .addElement('b', ofChain(
-                    ofHatchAdder(GT_TileEntity_CircuitAssemblyLine::addMaintenanceToMachineList, 16, 2),
-                    ofHatchAdder(GT_TileEntity_CircuitAssemblyLine::addInputHatchToMachineList, 16, 2),
+                    ofHatchAdder(GT_TileEntity_CircuitAssemblyLine::addMaintenanceToMachineList, CASING_INDEX, 2),
+                    ofHatchAdder(GT_TileEntity_CircuitAssemblyLine::addInputHatchToMachineList, CASING_INDEX, 2),
                     ofBlock(GregTech_API.sBlockCasings2, 0)
             ))
-            .addElement('i', ofHatchAdder(GT_TileEntity_CircuitAssemblyLine::addInputToMachineList, 16, 3))
+            .addElement('i', ofHatchAdder(GT_TileEntity_CircuitAssemblyLine::addInputToMachineList, CASING_INDEX, 3))
             .addElement('I', ofChain(
-                    ofHatchAdder(GT_TileEntity_CircuitAssemblyLine::addInputToMachineList, 16, 4),
-                    ofHatchAdder(GT_TileEntity_CircuitAssemblyLine::addOutputToMachineList, 16, 4)
+                    ofHatchAdder(GT_TileEntity_CircuitAssemblyLine::addInputToMachineList, CASING_INDEX, 4),
+                    ofHatchAdder(GT_TileEntity_CircuitAssemblyLine::addOutputToMachineList, CASING_INDEX, 4)
             ))
             .build();
 
     @Override
     public IStructureDefinition<GT_TileEntity_CircuitAssemblyLine> getStructureDefinition() { return STRUCTURE_DEFINITION; }
 
-    //I can't get this to work properly...
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        return new GT_Multiblock_Tooltip_Builder();
+        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        tt.
+            addMachineType("Circuit Assembler").
+            addInfo("Controller block for the Circuit Assembly Line").
+            addInfo("Imprint this machine with a Circuit Imprint,").
+            addInfo("by putting the imprint in the controller").
+            addInfo("Every Circuit Assembly Line can only be imprinted ONCE").
+            addInfo("Does not lose efficiency when overclocked").
+            addInfo(BW_Tooltip_Reference.TT_BLUEPRINT).
+            addSeparator().
+            beginVariableStructureBlock(2, 7, 3, 3, 3, 3, false).
+            addStructureInfo("From Bottom to Top, Left to Right").
+            addStructureInfo("Layer 1 - Solid Steel Machine Casing, Input bus (Last Output bus), Solid Steel Machine Casing").
+            addStructureInfo("Layer 2 - EV+ Tier Glass, Assembling Line Casing, EV+ Tier Glass").
+            addStructureInfo("Layer 3 - Grate Machine Casing").
+            addStructureInfo("Up to 7 repeating slices, last is Output Bus").
+
+            addController("Layer 3 first slice front").
+            addOtherStructurePart("1x " + StatCollector.translateToLocal("GT5U.MBTT.EnergyHatch"), "Any layer 3 casing", 1).
+            addInputHatch("Any layer 1 casing", 2).
+            addInputBus("As specified on layer 1", 3, 4).
+            addOutputBus("As specified in final slice on layer 1", 4).
+            addOtherStructurePart("EV+ Tier Glass", "As specified on layer 2", 5).
+            addMaintenanceHatch("Any layer 1 casing", 2).
+            toolTipFinisher(ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get());
+        return tt;
     }
 
     public String getTypeForDisplay() {
@@ -297,24 +318,6 @@ public class GT_TileEntity_CircuitAssemblyLine extends GT_MetaTileEntity_Enhance
         return new GT_TileEntity_CircuitAssemblyLine(this.mName);
     }
 
-    private static final String[] DESCRIPTION = new String[]{
-            "Circuit Assembly Line", "Size(WxHxD): (2-7)x3x3, variable length",
-            "Bottom: Steel Machine Casing(or 1x Maintenance or Input Hatch),",
-            "Input Bus (Last Output Bus), Steel Machine Casing",
-            "Middle: EV+ Tier Glass, Assembling Line Casing, EV+ Tier Glass",
-            "Top: Grate Machine Casing (or Controller or 1x Energy Hatch)",
-            "Up to 7 repeating slices, last is Output Bus",
-            "Imprint this machine with a Circuit Imprint,",
-            "by putting the imprint in the controller.",
-            "Every Circuit Assembly Line can only be imprinted ONCE.",
-            ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get()
-    };
-
-    @Override
-    public String[] getDescription() {
-        return DESCRIPTION;
-    }
-
     private String[] infoDataBuffer;
     @Override
     public String[] getInfoData() {
@@ -329,41 +332,23 @@ public class GT_TileEntity_CircuitAssemblyLine extends GT_MetaTileEntity_Enhance
     }
 
     @Override
-    public boolean isGivingInformation() {
-        return true;
-    }
-
-    @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
             if (aActive)
                 return new ITexture[]{
-                    Textures.BlockIcons.getCasingTextureForId(16),
+                    Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
                     TextureFactory.builder().addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE).extFacing().build(),
                     TextureFactory.builder().addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW).extFacing().glow().build()};
             return new ITexture[]{
-                Textures.BlockIcons.getCasingTextureForId(16),
+                Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
                 TextureFactory.builder().addIcon(OVERLAY_FRONT_ASSEMBLY_LINE).extFacing().build(),
                 TextureFactory.builder().addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_GLOW).extFacing().glow().build()};
         }
-        return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(16)};
-    }
-
-    private static final String[] description = new String[] {
-            translateToLocal("BW.keyphrase.Hint_Details") + ":",
-            translateToLocal("BW.tile.CircuitAssemblyLine.hint.0"), //1 - Energy Input Hatch
-            translateToLocal("BW.tile.CircuitAssemblyLine.hint.1"), //2 - Maintenance Hatch, Input Hatch
-            translateToLocal("BW.tile.CircuitAssemblyLine.hint.2"), //3 - Input Bus
-            translateToLocal("BW.tile.CircuitAssemblyLine.hint.3"), //4 - Input Bus, Output Bus
-    };
-
-    @Override
-    public String[] getStructureDescription(ItemStack stackSize) {
-        return description;
+        return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(CASING_INDEX)};
     }
 
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        if (!this.checkPiece("first", 0, 0, 0)) {
+        if (!this.checkPiece(STRUCTURE_PIECE_FIRST, 0, 0, 0)) {
             return false;
         } else {
             return this.checkMachine(true) || this.checkMachine(false);
@@ -372,7 +357,7 @@ public class GT_TileEntity_CircuitAssemblyLine extends GT_MetaTileEntity_Enhance
 
     private boolean checkMachine(boolean leftToRight) {
         for(int i = 1; i < 7; ++i) {
-            if (!this.checkPiece("next", leftToRight ? -i : i, 0, 0)) {
+            if (!this.checkPiece(STRUCTURE_PIECE_NEXT, leftToRight ? -i : i, 0, 0)) {
                 return false;
             }
 
@@ -385,11 +370,11 @@ public class GT_TileEntity_CircuitAssemblyLine extends GT_MetaTileEntity_Enhance
     }
 
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        this.buildPiece("first", stackSize, hintsOnly, 0, 0, 0);
+        this.buildPiece(STRUCTURE_PIECE_FIRST, stackSize, hintsOnly, 0, 0, 0);
         int tLength = Math.min(stackSize.stackSize + 1, 7);
 
         for(int i = 1; i < tLength; ++i) {
-            this.buildPiece("next", stackSize, hintsOnly, -i, 0, 0);
+            this.buildPiece(STRUCTURE_PIECE_NEXT, stackSize, hintsOnly, -i, 0, 0);
         }
 
     }

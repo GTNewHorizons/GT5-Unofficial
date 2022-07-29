@@ -29,15 +29,9 @@ import com.github.bartimaeusnek.bartworks.common.items.LabParts;
 import com.github.bartimaeusnek.bartworks.common.loaders.FluidLoader;
 import com.github.bartimaeusnek.bartworks.common.net.RendererPacket;
 import com.github.bartimaeusnek.bartworks.common.tileentities.tiered.GT_MetaTileEntity_RadioHatch;
-import com.github.bartimaeusnek.bartworks.util.BWRecipes;
-import com.github.bartimaeusnek.bartworks.util.BW_Util;
-import com.github.bartimaeusnek.bartworks.util.BioCulture;
-import com.github.bartimaeusnek.bartworks.util.Coords;
-import com.github.bartimaeusnek.bartworks.util.MathUtils;
-import com.gtnewhorizon.structurelib.StructureLibAPI;
+import com.github.bartimaeusnek.bartworks.util.*;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
@@ -71,16 +65,9 @@ import java.util.HashSet;
 import java.util.List;
 
 import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.MULTIBLOCK_ADDED_BY_BARTWORKS;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.isAir;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_GLOW;
+import static com.github.bartimaeusnek.bartworks.util.BW_Util.ofGlassTiered;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
 public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_TileEntity_BioVat> {
@@ -133,30 +120,7 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBa
             isAir(),
             ofBlockAnyMeta(FluidLoader.bioFluidBlock)
         ))
-        .addElement('g', new IStructureElement<GT_TileEntity_BioVat>(){
-
-            @Override
-            public boolean check(GT_TileEntity_BioVat te, World world, int x, int y, int z) {
-                byte glasstier = BW_Util.calculateGlassTier(world.getBlock(x, y, z), (byte)world.getBlockMetadata(x, y, z));
-                if(glasstier == 0)
-                    return false;
-                if(te.mGlassTier == 0)
-                    te.mGlassTier = glasstier;
-                return te.mGlassTier == glasstier;
-            }
-
-            @Override
-            public boolean spawnHint(GT_TileEntity_BioVat te, World world, int x, int y, int z, ItemStack itemStack) {
-                StructureLibAPI.hintParticle(world, x, y, z, StructureLibAPI.getBlockHint(), 1 /* aDots: 2 */);
-                return true;
-            }
-
-            @Override
-            public boolean placeBlock(GT_TileEntity_BioVat te, World world, int x, int y, int z, ItemStack itemStack) {
-                world.setBlock(x, y, z, Blocks.glass, 0, 2);
-                return true;
-            }
-        })
+        .addElement('g', ofGlassTiered((byte)1, (byte)127, (byte)0, (te, v) -> te.mGlassTier = v, te -> te.mGlassTier, 1))
         .build();
 
     @Override
