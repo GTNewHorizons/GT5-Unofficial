@@ -336,7 +336,8 @@ public class LargeEssentiaSmeltery extends GT_MetaTileEntity_TooltipMultiBlockBa
 
     private void fillEssentiaOutputHatch() {
         for (EssentiaOutputHatch outputHatch : this.mEssentiaOutputHatches) {
-            for (Map.Entry<Aspect, Integer> entry : this.mOutputAspects.aspects.entrySet()) {
+            for (Map.Entry<Aspect, Integer> entry :
+                    this.mOutputAspects.copy().aspects.entrySet()) {
                 Aspect aspect = entry.getKey();
                 int amount = entry.getValue();
                 this.mOutputAspects.remove(aspect, outputHatch.addEssentia(aspect, amount, null));
