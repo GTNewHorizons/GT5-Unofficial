@@ -139,7 +139,7 @@ public class GT_TextureBuilder implements ITextureBuilder {
     private static Boolean apply(Block b, Byte m) {
         Class<?> clazz = b.getClass();
         while (clazz != Block.class) {
-            String className = clazz.getName();
+            final String className = clazz.getName();
             if (GT_Values.mCTMDisabledBlock.contains(className)) return false;
             if (GT_Values.mCTMEnabledBlock.contains(className)) return true;
             clazz = clazz.getSuperclass();

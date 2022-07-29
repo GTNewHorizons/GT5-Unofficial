@@ -21,7 +21,7 @@ public class GT_Util {
 
     public static NBTTagCompound fuseNBT(NBTTagCompound aNBT1, NBTTagCompound aNBT2) {
         if (aNBT1 == null) return aNBT2 == null ? new NBTTagCompound() : (NBTTagCompound)aNBT2.copy();
-        NBTTagCompound rNBT = (NBTTagCompound)aNBT1.copy();
+        final NBTTagCompound rNBT = (NBTTagCompound)aNBT1.copy();
         if (aNBT2 == null) return rNBT;
         for (Object tKey : aNBT2.func_150296_c/*getKeySet*/()) if (!rNBT.hasKey(tKey.toString())) rNBT.setTag(tKey.toString(), aNBT2.getTag(tKey.toString()));
         return rNBT;

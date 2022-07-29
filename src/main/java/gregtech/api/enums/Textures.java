@@ -2049,8 +2049,13 @@ public class Textures {
             protected String mIconName;
 
             public CustomIcon(String aIconName) {
-                mIconName = aIconName;
+                mIconName = !aIconName.contains(":") ? RES_PATH_BLOCK + aIconName : aIconName;
                 GregTech_API.sGTBlockIconload.add(this);
+            }
+
+            @Override
+            public void run() {
+                mIcon = GregTech_API.sBlockIcons.registerIcon(mIconName);
             }
 
             @Override
@@ -2068,10 +2073,6 @@ public class Textures {
                 return TextureMap.locationBlocksTexture;
             }
 
-            @Override
-            public void run() {
-                mIcon = GregTech_API.sBlockIcons.registerIcon(RES_PATH_BLOCK + mIconName);
-            }
         }
     }
 

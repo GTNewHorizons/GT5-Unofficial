@@ -1,5 +1,6 @@
 package gregtech.common.render;
 
+import gregtech.GT_Mod;
 import gregtech.api.interfaces.ITexture;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -10,6 +11,12 @@ import net.minecraft.client.renderer.RenderBlocks;
  */
 public class GT_MultiTexture extends GT_TextureBase implements ITexture {
     protected final ITexture[] mTextures;
+
+
+    public static GT_MultiTexture get(ITexture... aTextures) {
+        return GT_Mod.instance.isClientSide() ? new GT_MultiTexture(aTextures) : null;
+    }
+
 
     protected GT_MultiTexture(ITexture... aTextures) {
         mTextures = aTextures;

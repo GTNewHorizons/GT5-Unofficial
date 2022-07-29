@@ -9,6 +9,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
+import gregtech.common.render.GT_MultiTexture;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.block.Block;
@@ -188,7 +189,9 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity implements IM
 
     @Override
     public ITexture[] getTexture(Block aBlock, byte aSide, boolean isActive, int aRenderPass) {
-        final ITexture baseTexture = MACHINE_CASINGS[1][2];
+        // TODO: MTE(Texture)
+//        final ITexture baseTexture = MACHINE_CASINGS[1][2];
+        final ITexture baseTexture = TextureFactory.of(super.getTexture(aBlock, aSide, isActive, aRenderPass));
         if(mMode != 0 && aSide == mFacing) {
             if(mMode == getModeOrdinal(ITEM_IN))
                 return new ITexture[]{ baseTexture, TextureFactory.of(OVERLAY_PIPE_IN), TextureFactory.of(ITEM_IN_SIGN) };

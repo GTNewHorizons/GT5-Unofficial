@@ -1,6 +1,7 @@
 package gregtech.api.enums;
 
 import gregtech.api.fluid.FluidTankGT;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.internal.IGT_Mod;
 import gregtech.api.interfaces.internal.IGT_RecipeAdder;
 import gregtech.api.net.IGT_NetworkHandler;
@@ -281,6 +282,9 @@ public class GT_Values {
     }
 
 
+    /** The Color White as RGB Short Array. */
+    public static final short[] UNCOLORED_RBGA = {255, 255, 255, 255};
+    /** The Color White as simple Integer (0x00ffffff). */
     public static final int UNCOLORED = 0x00ffffff;
 
     /**
@@ -456,6 +460,7 @@ public class GT_Values {
     public static final FluidTankInfo[] emptyFluidTankInfo = new FluidTankInfo[0];
     public static final FluidStack[] emptyFluidStack = new FluidStack[0];
     public static final ItemStack[] emptyItemStackArray = new ItemStack[0];
+    public static final IIconContainer[] emptyIconContainerArray = new IIconContainer[3];
 
     /**
      *  Pretty formatting for author names.

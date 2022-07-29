@@ -1,11 +1,11 @@
 package gregtech.api.multitileentity;
 
 import gregtech.api.enums.Materials;
-import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
+import gregtech.api.multitileentity.base.BaseMultiTileEntity;
 import gregtech.api.util.GT_Util;
 import net.minecraft.block.material.Material;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Tuple;
 
 import java.lang.ref.WeakReference;
 
@@ -17,9 +17,9 @@ public class MultiTileEntityClassContainer {
     private String mCategoryName;
 
     public final short mID;
-    public Class<? extends TileEntity> mClass;
+    public Class<? extends BaseMultiTileEntity> mClass;
     public MultiTileEntityBlock mBlock;
-    public TileEntity mCanonicalTileEntity;
+    public BaseMultiTileEntity mCanonicalTileEntity;
     public NBTTagCompound mParameters;
 
     // These have defaults
@@ -28,7 +28,7 @@ public class MultiTileEntityClassContainer {
     public boolean mHidden = false;
 
 
-    public MultiTileEntityClassContainer(MultiTileEntityRegistry aRegistry, int aID, Class<? extends TileEntity> aClass) {
+    public MultiTileEntityClassContainer(MultiTileEntityRegistry aRegistry, int aID, Class<? extends BaseMultiTileEntity> aClass) {
         /* Start the Builder */
         mRegistry = new WeakReference<>(aRegistry);
         mID = (short) aID;
@@ -44,7 +44,7 @@ public class MultiTileEntityClassContainer {
             mParameters.setInteger(NBT.COLOR, GT_Util.getRGBInt(Materials.get(mParameters.getString(NBT.MATERIAL)).getRGBA()));
 
         try {mCanonicalTileEntity = mClass.newInstance();} catch (Throwable e) {throw new IllegalArgumentException(e);}
-        if (mCanonicalTileEntity instanceof IMultiTileEntity) ((IMultiTileEntity) mCanonicalTileEntity).initFromNBT(mParameters, mID, (short) -1);
+        mCanonicalTileEntity.initFromNBT(mParameters, mID, (short) -1);
 
         return registry != null && registry.add(this.mLocalized, this.mCategoryName, this) != null;
     }
@@ -79,6 +79,8 @@ public class MultiTileEntityClassContainer {
         return this;
     }
 
+    /* These methods are builder methods for commonly used NBT tags */
+
     public MultiTileEntityClassContainer material(Material aMaterial) {
         mParameters.setString(NBT.MATERIAL, aMaterial.toString());
         return this;
@@ -91,6 +93,12 @@ public class MultiTileEntityClassContainer {
 
     public MultiTileEntityClassContainer tankCapacity(Long aCapacity) {
         mParameters.setLong(NBT.TANK_CAPACITY, aCapacity);
+        return this;
+    }
+
+    public MultiTileEntityClassContainer setNBT(Tuple... aTags) {
+        /* Merge in arbitrary NBT tuples of (key, value).  Useful for anything for which a custom method has not yet been exposed */
+        mParameters = GT_Util.fuseNBT(mParameters, GT_Util.makeNBT(aTags));
         return this;
     }
 
