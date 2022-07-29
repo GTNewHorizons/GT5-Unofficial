@@ -7,6 +7,8 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregtechWailaProvider;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
@@ -20,11 +22,14 @@ import gregtech.api.net.GT_Packet_New;
 import gregtech.api.net.GT_Packet_TileEntity;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.XSTR;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Util;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
+import gregtech.common.render.GT_MultiTexture;
+import gregtech.common.render.GT_RenderedTexture;
 import gregtech.common.render.IRenderedBlock;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -53,17 +58,20 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidTank;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
+import static gregtech.api.enums.GT_Values.emptyIconContainerArray;
 import static gregtech.api.enums.GT_Values.NBT;
 import static gregtech.api.enums.GT_Values.OPOS;
 import static gregtech.api.enums.GT_Values.SIDE_WEST;
 import static gregtech.api.enums.GT_Values.VALID_SIDES;
 
 public abstract class BaseMultiTileEntity extends CoverableTileEntity implements IMultiTileEntity, IHasWorldObjectAndCoords, IRenderedBlock, IGregtechWailaProvider {
+
+    public IIconContainer[] mTextures = emptyIconContainerArray, mTexturesFront = emptyIconContainerArray;
+
     // Makes a Bounding Box without having to constantly specify the Offset Coordinates.
     protected static final float[] PX_BOX = {0, 0, 0, 1, 1, 1};
 
@@ -150,6 +158,21 @@ public abstract class BaseMultiTileEntity extends CoverableTileEntity implements
 
             readCoverNBT(aNBT);
             readMultiTileNBT(aNBT);
+
+            if(GregTech_API.sBlockIcons == null && aNBT.hasKey(NBT.TEXTURE)) {
+                // Loading the registry
+                final String textureName = aNBT.getString(NBT.TEXTURE);
+                mTextures = new IIconContainer[] {
+                    new Textures.BlockIcons.CustomIcon("machines/multiblockparts/"+textureName+"/bottom"),
+                    new Textures.BlockIcons.CustomIcon("machines/multiblockparts/"+textureName+"/top"),
+                    new Textures.BlockIcons.CustomIcon("machines/multiblockparts/"+textureName+"/side"),
+                };
+            } else {
+                // Loading an instance
+                final TileEntity tCanonicalTileEntity = MultiTileEntityRegistry.getCanonicalTileEntity(getMultiTileEntityRegistryID(), getMultiTileEntityID());
+                if(tCanonicalTileEntity instanceof  BaseMultiTileEntity)
+                    mTextures = ((BaseMultiTileEntity)tCanonicalTileEntity).mTextures;
+            }
 
             if (mCoverData == null || mCoverData.length != 6) mCoverData = new ISerializableObject[6];
             if (mCoverSides.length != 6) mCoverSides = new int[]{0, 0, 0, 0, 0, 0};
@@ -298,12 +321,19 @@ public abstract class BaseMultiTileEntity extends CoverableTileEntity implements
         final ITexture[] textureUncovered = getTexture(aBlock, aSide, true, aRenderPass);
 
         if (coverTexture != null) {
-            final ITexture[] textureCovered = Arrays.copyOf(textureUncovered, textureUncovered.length + 1);
-            textureCovered[textureUncovered.length] = coverTexture;
-            return textureCovered;
+            return new ITexture[]{
+                GT_MultiTexture.get(textureUncovered),
+                coverTexture
+            };
         } else {
             return textureUncovered;
         }
+    }
+
+    @Override public ITexture[] getTexture(Block aBlock, byte aSide, boolean isActive, int aRenderPass) {
+        // Top, bottom or side
+        aSide = (byte)Math.min(aSide, 2);
+        return new ITexture[]{TextureFactory.of(mTextures[aSide])};
     }
 
     @Override

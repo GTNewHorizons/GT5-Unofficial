@@ -322,6 +322,7 @@ public class MultiTileEntityBlock extends Block implements IDebugableBlock, ITil
 
     @Override
     public ITexture[] getTexture(Block aBlock, byte aSide, boolean isActive, int aRenderPass) {
+        // TODO: MTE(Texture)
         return null;
     }
 

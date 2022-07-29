@@ -95,6 +95,7 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity  {
 
     @Override
     public ITexture[] getTexture(Block aBlock, byte aSide, boolean isActive, int aRenderPass) {
+        // TODO: MTE(Texture)
         return new ITexture[0];
     }
 

@@ -8,6 +8,7 @@ import gregtech.api.multitileentity.multiblock.base.MultiBlockPart;
 import gregtech.api.multitileentity.multiblock.base.MultiBlock_Stackable;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.common.render.GT_MultiTexture;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
@@ -117,13 +118,18 @@ public class MultiBlock_Macerator extends MultiBlock_Stackable<MultiBlock_Macera
 
     @Override
     public ITexture[] getTexture(Block aBlock, byte aSide, boolean isActive, int aRenderPass) {
+        // TODO: MTE(Texture)
         if(mFacing == aSide) {
             return new ITexture[]{
+                // Base Texture
                 MACHINE_CASINGS[1][0],
+                // Active
                 TextureFactory.builder().addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE).extFacing().build(),
+                // Active Glow
                 TextureFactory.builder().addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE_GLOW).extFacing().glow().build()
             };
         }
+        // Base Texture
         return new ITexture[]{ MACHINE_CASINGS[1][0]};
     }
 

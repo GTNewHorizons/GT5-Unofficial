@@ -5,6 +5,7 @@ import com.gtnewhorizon.gtnhlib.util.map.ItemStackMap;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.multitileentity.base.BaseMultiTileEntity;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Util;
@@ -87,7 +88,7 @@ public class MultiTileEntityRegistry {
         return NAMED_REGISTRIES.get(aRegistryName);
     }
 
-    public MultiTileEntityClassContainer create(int aID, Class<? extends TileEntity> aClass) {
+    public MultiTileEntityClassContainer create(int aID, Class<? extends BaseMultiTileEntity> aClass) {
         return new MultiTileEntityClassContainer(this, aID, aClass);
     }
 
@@ -115,7 +116,7 @@ public class MultiTileEntityRegistry {
                 tFailed = true;
             }
             if (mRegistry.containsKey(aClassContainer.mID)) {
-                GT_FML_LOGGER.error("MULTI-TILE REGISTRY ERROR: Class Container uses occupied MetaData!");
+                GT_FML_LOGGER.error("MULTI-TILE REGISTRY ERROR: Class Container uses occupied MetaData! (" + aClassContainer.mID + ")");
                 tFailed = true;
             }
         }
@@ -132,7 +133,7 @@ public class MultiTileEntityRegistry {
         mRegistrations.add(aClassContainer);
 
         if (sRegisteredTileEntities.add(aClassContainer.mCanonicalTileEntity.getClass())) {
-            if (aClassContainer.mCanonicalTileEntity instanceof IMultiTileEntity) ((IMultiTileEntity)aClassContainer.mCanonicalTileEntity).onRegistrationFirst(this, aClassContainer.mID);
+            aClassContainer.mCanonicalTileEntity.onRegistrationFirst(this, aClassContainer.mID);
         }
 //        // TODO: Recipe
 //        if (aRecipe != null && aRecipe.length > 1) {
