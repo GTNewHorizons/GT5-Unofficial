@@ -3843,6 +3843,10 @@ public class GT_MachineRecipeLoader implements Runnable {
         //Recipes for gasoline
         //2N + O = N2O
         GT_Values.RA.addChemicalRecipeForBasicMachineOnly(Materials.Nitrogen.getCells(2), Materials.Oxygen.getCells(1), GT_Values.NF, GT_Values.NF, Materials.NitrousOxide.getCells(1), Materials.Empty.getCells(2),200, 30);
+        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(Materials.Nitrogen.getCells(2), GT_Utility.getIntegratedCircuit(1), Materials.Oxygen.getGas(1000L), Materials.NitrousOxide.getGas(1000L), Materials.Empty.getCells(2), GT_Values.NI, 200, 30);
+        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(Materials.Nitrogen.getCells(2), GT_Utility.getIntegratedCircuit(11), Materials.Oxygen.getGas(1000L), GT_Values.NF, Materials.NitrousOxide.getCells(1), Materials.Empty.getCells(1), 200, 30);
+        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(Materials.Oxygen.getCells(1), GT_Utility.getIntegratedCircuit(1), Materials.Nitrogen.getGas(2000L), Materials.NitrousOxide.getGas(1000L), Materials.Empty.getCells(1), GT_Values.NI, 200, 30);
+        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(Materials.Oxygen.getCells(1), GT_Utility.getIntegratedCircuit(11), Materials.Nitrogen.getGas(2000L), GT_Values.NF, Materials.NitrousOxide.getCells(1), GT_Values.NI, 200, 30);
         GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(24)}, new FluidStack[]{Materials.Nitrogen.getGas(20000), Materials.Oxygen.getGas(10000)}, new FluidStack[]{Materials.NitrousOxide.getGas(10000)}, new ItemStack[]{null}, 50, 480);
 
         // C2H6O + C4H8 = C6H14O
