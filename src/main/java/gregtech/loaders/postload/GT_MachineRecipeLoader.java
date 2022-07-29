@@ -3922,6 +3922,31 @@ public class GT_MachineRecipeLoader implements Runnable {
 
         GT_Values.RA.addBlastRecipe(Materials.Galena.getDust(1), GT_Values.NI, Materials.Oxygen.getGas(3000), Materials.SulfurDioxide.getGas(1000), Materials.RoastedLead.getDust(1), Materials.Ash.getDustTiny(1), 120, 120, 1200);
 
+        if (GregTech_API.mGTPlusPlus) {
+
+            GT_Values.RA.addBlastRecipe(
+                Materials.TranscendentMetal.getDust(1),
+                GT_Utility.getIntegratedCircuit(1),
+                Materials.Tungsten.getMolten(144),
+
+                new FluidStack(FluidRegistry.getFluid("molten.celestialtungsten"), 72),
+                GT_OreDictUnificator.get(OrePrefixes.ingotHot, Materials.TranscendentMetal, 1L),
+                GT_Values.NI,
+
+                180 * 20, 32_000_000, 11701
+            );
+
+            GT_Values.RA.addVacuumFreezerRecipe(
+                new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.ingotHot, Materials.TranscendentMetal, 1L)},
+                new FluidStack[]{new FluidStack(FluidRegistry.getFluid("molten.titansteel"), 144), FluidRegistry.getFluidStack("ic2coolant", 1000)},
+
+                new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.TranscendentMetal, 1L)},
+                new FluidStack[]{GT_Values.NF},
+
+                50*20, 32_000_000
+            );
+        }
+
         //Decomposition
 
         GT_Values.RA.addBlastRecipe(Materials.Gypsum.getDust(8), GT_Values.NI, GT_Values.NF, Materials.DilutedSulfuricAcid.getFluid(1500), Materials.Quicklime.getDust(1), GT_Values.NI, 200, 480, 3200);
