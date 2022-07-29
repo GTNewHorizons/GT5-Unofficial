@@ -80,6 +80,8 @@ public class ConfigHandler {
 
     public static Set<String> voidMinerBlacklist = Collections.unmodifiableSet(new HashSet<>());
 
+    public static boolean disablePistonInEIC = false;
+
     private static final int[][] METAFORTIERS_ENERGY = {
             {100, 101, 102, 105},
             {1110, 1115, 1120, 1127},
@@ -142,6 +144,7 @@ public class ConfigHandler {
         ConfigHandler.megaMachinesMax = ConfigHandler.c.get("Multiblocks", "Mega Machines Maximum Recipes per Operation", 256, "This changes the Maximum Recipes per Operation to the specified Valure").getInt(256);
         ConfigHandler.bioVatMaxParallelBonus = ConfigHandler.c.get("Multiblocks","BioVat Maximum Bonus on Recipes", 1000,"This are the maximum parallel Operations the BioVat can do, when the output is half full.").getInt(1000);
         ConfigHandler.voidMinerBlacklist = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(ConfigHandler.c.get("Multiblocks", "Void Miner Blacklist", new String[0], "This is a blacklist for the Void Miner, blacklisted ores will not enter the drop prize pool. Please fill in the Unique Identifier of Ore and connect Damage with a colon, For example: gregtech:gt.blockores:32").getStringList())));
+        ConfigHandler.disablePistonInEIC = ConfigHandler.c.get("Multiblocks", "Disable Electric Implosion Compressor piston", false, "This switch completely disables piston animation in Electric Implosion Compressor multiblock").getBoolean(false);
 
         ConfigHandler.pollutionHeatedWaterPumpSecond = ConfigHandler.c.get("Pollution", "Pollution produced per second by the water pump", ConfigHandler.pollutionHeatedWaterPumpSecond, "How much should the Simple Stirling Water Pump produce pollution per second").getInt(ConfigHandler.pollutionHeatedWaterPumpSecond);
         ConfigHandler.basePollutionMBFSecond = ConfigHandler.c.get("Pollution", "Pollution produced per tick by the MBF per ingot", ConfigHandler.basePollutionMBFSecond,"How much should the MBF produce pollution per tick per ingot. Then it'll be multiplied by the amount of ingots done in parallel").getInt(ConfigHandler.basePollutionMBFSecond);

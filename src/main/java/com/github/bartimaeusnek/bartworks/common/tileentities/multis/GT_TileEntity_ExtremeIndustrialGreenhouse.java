@@ -46,7 +46,6 @@ import ic2.api.crops.Crops;
 import ic2.core.Ic2Items;
 import ic2.core.crop.TileEntityCrop;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockBush;
 import net.minecraft.block.BlockStem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
