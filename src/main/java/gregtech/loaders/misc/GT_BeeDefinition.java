@@ -291,7 +291,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST),
         dis -> {
             IBeeMutationCustom tMutation = dis.registerMutation(PEAT, getSpecies(MAGICBEES, "Silicon"), 15);
-            tMutation.requireResource(GameRegistry.findBlock("gregtech", "gt.blockores"), 901);
+            tMutation.requireResource(GameRegistry.findBlock("gregtech", "gt.blockcasings5"), 0);
 
         }
     ),

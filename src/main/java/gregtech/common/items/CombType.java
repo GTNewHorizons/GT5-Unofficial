@@ -201,7 +201,6 @@ public enum CombType {
     //ALWAYS KEEP _NULL AT THE BOTTOM
     _NULL(-1, "INVALIDCOMB", false, Materials._NULL, 0, 0, 0);
 
-
     public boolean showInList;
     public Materials material;
     public int chance;
