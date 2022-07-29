@@ -207,8 +207,16 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                 {
                     ItemStack s = dropstacks.get(entry.getKey()).copy();
                     s.stackSize = entry.getValue().intValue() + (getWorld().rand.nextFloat() < (entry.getValue() - (float) entry.getValue().intValue()) ? 1 : 0);
-                    if(s.stackSize > 0)
-                        this.mOutputItems[i++] = s;
+                    if(s.stackSize > 0 && i < 7)
+                        while(true) {
+                            if (s.stackSize <= s.getMaxStackSize()) {
+                                this.mOutputItems[i++] = s;
+                                break;
+                            } else
+                                this.mOutputItems[i++] = s.splitStack(s.getMaxStackSize());
+                            if(i >= 7)
+                                break;
+                        }
                 }
 
                 IApiaristTracker breedingTracker = beeRoot.getBreedingTracker(getWorld(), getOwner());
