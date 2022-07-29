@@ -581,6 +581,21 @@ public class GT_ModHandler {
         return true;
     }
 
+    public static boolean addPulverisationRecipe(ItemStack aInputItem, ItemStack[] aOutputArray, int[] aChanceArray, int aEUt, int aRecipeDurationInTicks) {
+
+        ItemStack[] aUnifiedOutputArray = new ItemStack[aOutputArray.length];
+        int counter = 0;
+
+        for (ItemStack item: aOutputArray) {
+            aUnifiedOutputArray[counter] = GT_OreDictUnificator.get(true, item);
+            counter++;
+        }
+
+        RA.addPulveriserRecipe(aInputItem, aOutputArray, aChanceArray, aRecipeDurationInTicks, aEUt);
+
+        return true;
+    }
+
     public static boolean addImmersiveEngineeringRecipe(ItemStack aInput, ItemStack aOutput1, ItemStack aOutput2, int aChance2, ItemStack aOutput3, int aChance3){
     	return true;
     }
