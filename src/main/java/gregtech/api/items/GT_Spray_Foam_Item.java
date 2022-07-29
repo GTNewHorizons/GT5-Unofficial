@@ -1,6 +1,6 @@
 package gregtech.api.items;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
@@ -19,9 +19,9 @@ import static gregtech.api.enums.GT_Values.D1;
 public class GT_Spray_Foam_Item extends GT_Tool_Item {
     public GT_Spray_Foam_Item(String aUnlocalized, String aEnglish, int aMaxDamage, int aEntityDamage) {
         super(aUnlocalized, aEnglish, "Precision Spray", aMaxDamage, aEntityDamage, true);/*
-        setCraftingSound(GregTech_API.sSoundList.get(102));
-		setBreakingSound(GregTech_API.sSoundList.get(102));
-		setEntityHitSound(GregTech_API.sSoundList.get(102));
+        setCraftingSound(Sounds.IC2_TOOLS_PAINTER);
+		setBreakingSound(Sounds.IC2_TOOLS_PAINTER);
+		setEntityHitSound(Sounds.IC2_TOOLS_PAINTER);
 		setUsageAmounts(25, 3, 1);*/
     }
 
@@ -72,7 +72,7 @@ public class GT_Spray_Foam_Item extends GT_Tool_Item {
             if (GT_Utility.getClassName(aTileEntity).startsWith("TileEntityCable")) {
                 if (GT_Utility.getPublicField(aTileEntity, "foamed").getByte(aTileEntity) == 0) {
                     if (GT_ModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
-                        GT_Utility.sendSoundToPlayers(aWorld, GregTech_API.sSoundList.get(102), 1.0F, -1, aX, aY, aZ);
+                        GT_Utility.sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_PAINTER, 1.0F, -1, aX, aY, aZ);
                         GT_Utility.callPublicMethod(aTileEntity, "changeFoam", (byte) 1);
                         return true;
                     }
@@ -85,7 +85,7 @@ public class GT_Spray_Foam_Item extends GT_Tool_Item {
 
         if (aTileEntity instanceof BaseMetaPipeEntity && (((BaseMetaPipeEntity) aTileEntity).mConnections & -64) == 0) {
             if (GT_ModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
-                GT_Utility.sendSoundToPlayers(aWorld, GregTech_API.sSoundList.get(102), 1.0F, -1, aX, aY, aZ);
+                GT_Utility.sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_PAINTER, 1.0F, -1, aX, aY, aZ);
                 ((BaseMetaPipeEntity) aTileEntity).mConnections |= 64;
             }
             return true;
@@ -122,7 +122,7 @@ public class GT_Spray_Foam_Item extends GT_Tool_Item {
             switch (0) {
                 case 0:
                     if (GT_Utility.isBlockAir(aWorld, aX, aY, aZ) && GT_ModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
-                        GT_Utility.sendSoundToPlayers(aWorld, GregTech_API.sSoundList.get(102), 1.0F, -1, aX, aY, aZ);
+                        GT_Utility.sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_PAINTER, 1.0F, -1, aX, aY, aZ);
                         aWorld.setBlock(aX, aY, aZ, GT_Utility.getBlockFromStack(tStack), tStack.getItemDamage(), 3);
                         return true;
                     }
@@ -130,7 +130,7 @@ public class GT_Spray_Foam_Item extends GT_Tool_Item {
                 case 1:
                     for (byte i = 0; i < 4; i++) {
                         if (GT_Utility.isBlockAir(aWorld, aX, aY, aZ) && GT_ModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
-                            GT_Utility.sendSoundToPlayers(aWorld, GregTech_API.sSoundList.get(102), 1.0F, -1, aX, aY, aZ);
+                            GT_Utility.sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_PAINTER, 1.0F, -1, aX, aY, aZ);
                             aWorld.setBlock(aX, aY, aZ, GT_Utility.getBlockFromStack(tStack), tStack.getItemDamage(), 3);
                         } else {
                             if (i == 0) return false;
@@ -155,7 +155,7 @@ public class GT_Spray_Foam_Item extends GT_Tool_Item {
                         for (byte j = 0; j < 3; j++) {
                             if (GT_Utility.isBlockAir(aWorld, aX + (tXFactor ? i : 0), aY + (!tXFactor && tYFactor ? i : 0) + (!tZFactor && tYFactor ? j : 0), aZ + (tZFactor ? j : 0))) {
                                 if (GT_ModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
-                                    GT_Utility.sendSoundToPlayers(aWorld, GregTech_API.sSoundList.get(102), 1.0F, -1, aX, aY, aZ);
+                                    GT_Utility.sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_PAINTER, 1.0F, -1, aX, aY, aZ);
                                     aWorld.setBlock(aX + (tXFactor ? i : 0), aY + (!tXFactor && tYFactor ? i : 0) + (!tZFactor && tYFactor ? j : 0), aZ + (tZFactor ? j : 0), GT_Utility.getBlockFromStack(tStack), tStack.getItemDamage(), 3);
                                     temp = true;
                                 } else {

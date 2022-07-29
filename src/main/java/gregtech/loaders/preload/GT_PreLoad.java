@@ -535,7 +535,10 @@ public class GT_PreLoad {
         GT_Mod.gregtechproxy.mCoverTabsFlipped = GregTech_API.sClientDataFile.get("interface", "FlipCoverTabs", false);
         GT_Mod.gregtechproxy.mTooltipVerbosity = GregTech_API.sClientDataFile.get("interface", "TooltipVerbosity", 2);
         GT_Mod.gregtechproxy.mTooltipShiftVerbosity = GregTech_API.sClientDataFile.get("interface", "TooltipShiftVerbosity", 3);
-        GT_Mod.gregtechproxy.mNEIRecipeSecondMode = GregTech_API.sClientDataFile.get("features", "NEI_recipe_second_mode", true);
+        GT_Mod.gregtechproxy.mNEIRecipeSecondMode = GregTech_API.sClientDataFile.get("nei", "RecipeSecondMode", true);
+        GT_Mod.gregtechproxy.mNEIRecipeOwner = GregTech_API.sClientDataFile.get("nei", "RecipeOwner", false);
+        GT_Mod.gregtechproxy.mNEIRecipeOwnerStackTrace = GregTech_API.sClientDataFile.get("nei", "RecipeOwnerStackTrace", false);
+        GT_Mod.gregtechproxy.mWailaTransformerVoltageTier = GregTech_API.sClientDataFile.get("waila", "WailaTransformerVoltageTier", true);
 
         final String[] Circuits = GregTech_API.sClientDataFile.get("interface", "CircuitsOrder" );
         GT_Mod.gregtechproxy.mCircuitsOrder.clear();

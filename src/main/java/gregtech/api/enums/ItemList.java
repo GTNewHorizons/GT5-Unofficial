@@ -415,6 +415,8 @@ public enum ItemList implements IItemContainer {
     Electric_Pump_OpV,
     Electric_Pump_MAX,
 
+    Tesseract,
+
     Steam_Valve_LV,
     Steam_Valve_MV,
     Steam_Valve_HV,
@@ -973,7 +975,11 @@ public enum ItemList implements IItemContainer {
     Hatch_Input_UV,
     Hatch_Input_MAX,
 
-    Hatch_Input_Multi_2x2,
+    Hatch_Input_Multi_2x2_EV,
+    Hatch_Input_Multi_2x2_IV,
+    Hatch_Input_Multi_2x2_LuV,
+    Hatch_Input_Multi_2x2_ZPM,
+    Hatch_Input_Multi_2x2_UV,
 
     Hatch_Input_Bus_ULV,
     Hatch_Input_Bus_LV,
@@ -1397,6 +1403,16 @@ public enum ItemList implements IItemContainer {
     Machine_MV_Miner,
     Machine_HV_Miner,
 
+    Machine_IndustrialApiary,
+    IndustrialApiary_Upgrade_Acceleration_1,
+    IndustrialApiary_Upgrade_Acceleration_2,
+    IndustrialApiary_Upgrade_Acceleration_3,
+    IndustrialApiary_Upgrade_Acceleration_4,
+    IndustrialApiary_Upgrade_Acceleration_5,
+    IndustrialApiary_Upgrade_Acceleration_6,
+    IndustrialApiary_Upgrade_Acceleration_7,
+    IndustrialApiary_Upgrade_Acceleration_8,
+
     Neutron_Reflector,
 
     Reactor_Coolant_He_1,
@@ -1493,6 +1509,7 @@ public enum ItemList implements IItemContainer {
     LargeSteamTurbine,
     LargeGasTurbine,
     LargeHPSteamTurbine,
+    LargeAdvancedGasTurbine,
     LargePlasmaTurbine,
 
     Ingot_Heavy1,
@@ -1516,6 +1533,7 @@ public enum ItemList implements IItemContainer {
     Casing_Turbine3,
     Casing_EngineIntake,
     Casing_ExtremeEngineIntake,
+    Casing_TurbineGasAdvanced,
 
     Casing_Coil_Cupronickel,
     Casing_Coil_Kanthal,

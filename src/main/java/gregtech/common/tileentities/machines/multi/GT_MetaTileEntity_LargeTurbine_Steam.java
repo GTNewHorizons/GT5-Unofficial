@@ -81,7 +81,7 @@ public class GT_MetaTileEntity_LargeTurbine_Steam extends GT_MetaTileEntity_Larg
     }
 
     @Override
-    public byte getCasingTextureIndex() {
+    public int getCasingTextureIndex() {
         return 16;
     }
 
@@ -93,7 +93,7 @@ public class GT_MetaTileEntity_LargeTurbine_Steam extends GT_MetaTileEntity_Larg
     }
 
     @Override
-    int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow, int aBaseEff, int overflowEfficiency) {
+    int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow, int aBaseEff, int overflowEfficiency, float[] flowMultipliers) {
         if (looseFit) {
             long[] calculatedFlow = calculateLooseFlow(aOptFlow, aBaseEff);
             aOptFlow = GT_Utility.safeInt(calculatedFlow[0]);
@@ -111,7 +111,7 @@ public class GT_MetaTileEntity_LargeTurbine_Steam extends GT_MetaTileEntity_Larg
         // - 250% if it is 3
         // Variable required outside of loop for multi-hatch scenarios.
         int remainingFlow = GT_Utility.safeInt((long) (aOptFlow * (0.5f * overflowMultiplier + 1)));
-        this.realOptFlow = aOptFlow;
+        this.realOptFlow = aOptFlow * flowMultipliers[0];
 
         storedFluid = 0;
         for (int i = 0; i < aFluids.size() && remainingFlow > 0; i++) { // loop through each hatch; extract inputs and track totals.

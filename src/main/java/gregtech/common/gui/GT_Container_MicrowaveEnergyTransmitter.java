@@ -119,50 +119,50 @@ public class GT_Container_MicrowaveEnergyTransmitter extends GT_ContainerMetaTil
         this.mEgg = (((GT_MetaTileEntity_MicrowaveEnergyTransmitter) this.mTileEntity.getMetaTileEntity()).hasDimensionalTeleportCapability() ? 1 : 0);
 
         for (Object crafter : this.crafters) {
-            ICrafting var1 = (ICrafting) crafter;
-            var1.sendProgressBarUpdate(this, 100, this.mTargetX & 0xFFFF);
-            var1.sendProgressBarUpdate(this, 101, this.mTargetX >>> 16);
-            var1.sendProgressBarUpdate(this, 102, this.mTargetY & 0xFFFF);
-            var1.sendProgressBarUpdate(this, 103, this.mTargetY >>> 16);
-            var1.sendProgressBarUpdate(this, 104, this.mTargetZ & 0xFFFF);
-            var1.sendProgressBarUpdate(this, 105, this.mTargetZ >>> 16);
-            var1.sendProgressBarUpdate(this, 106, this.mTargetD & 0xFFFF);
-            var1.sendProgressBarUpdate(this, 107, this.mTargetD >>> 16);
-            var1.sendProgressBarUpdate(this, 108, this.mEgg);
+            ICrafting aPlayer = (ICrafting) crafter;
+            aPlayer.sendProgressBarUpdate(this, 100, this.mTargetX & 0xFFFF);
+            aPlayer.sendProgressBarUpdate(this, 101, this.mTargetX >>> 16);
+            aPlayer.sendProgressBarUpdate(this, 102, this.mTargetY & 0xFFFF);
+            aPlayer.sendProgressBarUpdate(this, 103, this.mTargetY >>> 16);
+            aPlayer.sendProgressBarUpdate(this, 104, this.mTargetZ & 0xFFFF);
+            aPlayer.sendProgressBarUpdate(this, 105, this.mTargetZ >>> 16);
+            aPlayer.sendProgressBarUpdate(this, 106, this.mTargetD & 0xFFFF);
+            aPlayer.sendProgressBarUpdate(this, 107, this.mTargetD >>> 16);
+            aPlayer.sendProgressBarUpdate(this, 108, this.mEgg);
         }
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void updateProgressBar(int par1, int par2) {
-        super.updateProgressBar(par1, par2);
-        switch (par1) {
+    public void updateProgressBar(int id, int value) {
+        super.updateProgressBar(id, value);
+        switch (id) {
             case 100:
-                this.mTargetX = (this.mTargetX & 0xFFFF0000 | par2 & 0xFFFF);
+                this.mTargetX = (this.mTargetX & 0xFFFF0000 | value & 0xFFFF);
                 break;
             case 101:
-                this.mTargetX = (this.mTargetX & 0xFFFF | par2 << 16);
+                this.mTargetX = (this.mTargetX & 0xFFFF | value << 16);
                 break;
             case 102:
-                this.mTargetY = (this.mTargetY & 0xFFFF0000 | par2 & 0xFFFF);
+                this.mTargetY = (this.mTargetY & 0xFFFF0000 | value & 0xFFFF);
                 break;
             case 103:
-                this.mTargetY = (this.mTargetY & 0xFFFF | par2 << 16);
+                this.mTargetY = (this.mTargetY & 0xFFFF | value << 16);
                 break;
             case 104:
-                this.mTargetZ = (this.mTargetZ & 0xFFFF0000 | par2 & 0xFFFF);
+                this.mTargetZ = (this.mTargetZ & 0xFFFF0000 | value & 0xFFFF);
                 break;
             case 105:
-                this.mTargetZ = (this.mTargetZ & 0xFFFF | par2 << 16);
+                this.mTargetZ = (this.mTargetZ & 0xFFFF | value << 16);
                 break;
             case 106:
-                this.mTargetD = (this.mTargetD & 0xFFFF0000 | par2 & 0xFFFF);
+                this.mTargetD = (this.mTargetD & 0xFFFF0000 | value & 0xFFFF);
                 break;
             case 107:
-                this.mTargetD = (this.mTargetD & 0xFFFF | par2 << 16);
+                this.mTargetD = (this.mTargetD & 0xFFFF | value << 16);
                 break;
             case 108:
-                this.mEgg = par2;
+                this.mEgg = value;
         }
     }
 }

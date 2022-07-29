@@ -57,9 +57,9 @@ public class ItemPollen extends Item {
 
 	@Override
     @SideOnly(Side.CLIENT)
-	public void registerIcons(IIconRegister par1IconRegister) {
-		this.itemIcon = par1IconRegister.registerIcon("forestry:pollen.0");
-		this.secondIcon = par1IconRegister.registerIcon("forestry:pollen.1");
+	public void registerIcons(IIconRegister iconRegister) {
+		this.itemIcon = iconRegister.registerIcon("forestry:pollen.0");
+		this.secondIcon = iconRegister.registerIcon("forestry:pollen.1");
 	}
 
 	@Override

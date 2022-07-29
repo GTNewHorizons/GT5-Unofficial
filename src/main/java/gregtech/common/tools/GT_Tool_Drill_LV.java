@@ -1,7 +1,7 @@
 package gregtech.common.tools;
 
 import gregtech.GT_Mod;
-import gregtech.api.GregTech_API;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.GT_MetaGenerated_Tool;
@@ -59,22 +59,22 @@ public class GT_Tool_Drill_LV extends GT_Tool {
 
     @Override
     public String getCraftingSound() {
-        return (String) GregTech_API.sSoundList.get(106);
+        return SoundResource.IC2_TOOLS_DRILL_DRILL_SOFT.toString();
     }
 
     @Override
     public String getEntityHitSound() {
-        return (String) GregTech_API.sSoundList.get(106);
+        return SoundResource.IC2_TOOLS_DRILL_DRILL_SOFT.toString();
     }
 
     @Override
     public String getBreakingSound() {
-        return (String) GregTech_API.sSoundList.get(106);
+        return SoundResource.IC2_TOOLS_DRILL_DRILL_SOFT.toString();
     }
 
     @Override
     public String getMiningSound() {
-        return (String) GregTech_API.sSoundList.get(106);
+        return SoundResource.IC2_TOOLS_DRILL_DRILL_SOFT.toString();
     }
 
     @Override
@@ -129,8 +129,8 @@ public class GT_Tool_Drill_LV extends GT_Tool {
         aPlayer.triggerAchievement(AchievementList.buildPickaxe);
         aPlayer.triggerAchievement(AchievementList.buildBetterPickaxe);
         try {
-            GT_Mod.instance.achievements.issueAchievement(aPlayer, "driltime");
-            GT_Mod.instance.achievements.issueAchievement(aPlayer, "buildDrill");
+            GT_Mod.achievements.issueAchievement(aPlayer, "driltime");
+            GT_Mod.achievements.issueAchievement(aPlayer, "buildDrill");
         } catch (Exception ignored) {
         }
     }

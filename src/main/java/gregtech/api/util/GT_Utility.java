@@ -14,13 +14,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.damagesources.GT_DamageSources;
 import gregtech.api.damagesources.GT_DamageSources.DamageSourceHotItem;
 import gregtech.api.enchants.Enchantment_Radioactivity;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
-import gregtech.api.enums.Textures;
-import gregtech.api.enums.ToolDictNames;
+import gregtech.api.enums.*;
 import gregtech.api.events.BlockScanningEvent;
 import gregtech.api.interfaces.IBlockContainer;
 import gregtech.api.interfaces.IDebugableBlock;
@@ -76,11 +70,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
@@ -344,12 +334,11 @@ public class GT_Utility {
         try {
             Field tPotionHashmap = null;
 
-            Field[] var3 = EntityLiving.class.getDeclaredFields();
-            int var4 = var3.length;
+            Field[] fields = EntityLiving.class.getDeclaredFields();
 
-            for (Field var6 : var3) {
-                if (var6.getType() == HashMap.class) {
-                    tPotionHashmap = var6;
+            for (Field field : fields) {
+                if (field.getType() == HashMap.class) {
+                    tPotionHashmap = field;
                     tPotionHashmap.setAccessible(true);
                     break;
                 }
@@ -372,12 +361,11 @@ public class GT_Utility {
         try {
             Field tPotionHashmap = null;
 
-            Field[] var3 = EntityLiving.class.getDeclaredFields();
-            int var4 = var3.length;
+            Field[] fields = EntityLiving.class.getDeclaredFields();
 
-            for (Field var6 : var3) {
-                if (var6.getType() == HashMap.class) {
-                    tPotionHashmap = var6;
+            for (Field field : fields) {
+                if (field.getType() == HashMap.class) {
+                    tPotionHashmap = field;
                     tPotionHashmap.setAccessible(true);
                     break;
                 }
@@ -1389,7 +1377,7 @@ public class GT_Utility {
             }
         }
         ItemStack[] tStack = GT_OreDictUnificator.getStackArray(true, aOutput);
-        if(tStack==null||(tStack.length>0&& areStacksEqual(aInput, tStack[0])))return false;
+        if(tStack.length > 0 && areStacksEqual(aInput, tStack[0]))return false;
         if (tOreName != null) {
         	if(tOreName.toString().equals("dustAsh")&&tStack[0].getUnlocalizedName().equals("tile.volcanicAsh"))return false;
             aRecipeList.put(new RecipeInputOreDict(tOreName.toString(), aInput.stackSize), new RecipeOutput(aNBT, tStack));
@@ -1445,28 +1433,88 @@ public class GT_Utility {
         return doSoundAtClient(aSoundName, aTimeUntilNextSound, aSoundStrength, GT.getThePlayer());
     }
 
+    public static boolean doSoundAtClient(SoundResource sound, int aTimeUntilNextSound, float aSoundStrength) {
+        return doSoundAtClient(sound.resourceLocation, aTimeUntilNextSound, aSoundStrength, GT.getThePlayer());
+    }
+
+    public static boolean doSoundAtClient(ResourceLocation aSoundResourceLocation, int aTimeUntilNextSound, float aSoundStrength) {
+        return doSoundAtClient(aSoundResourceLocation, aTimeUntilNextSound, aSoundStrength, GT.getThePlayer());
+    }
+
     public static boolean doSoundAtClient(String aSoundName, int aTimeUntilNextSound, float aSoundStrength, Entity aEntity) {
         if (aEntity == null) return false;
         return doSoundAtClient(aSoundName, aTimeUntilNextSound, aSoundStrength, aEntity.posX, aEntity.posY, aEntity.posZ);
     }
 
-    public static boolean doSoundAtClient(String aSoundName, int aTimeUntilNextSound, float aSoundStrength, double aX, double aY, double aZ) {
-        return doSoundAtClient(aSoundName, aTimeUntilNextSound, aSoundStrength, 1.01818028F, aX, aY, aZ);
+    public static boolean doSoundAtClient(ResourceLocation aSoundResourceLocation, int aTimeUntilNextSound, float aSoundStrength, Entity aEntity) {
+        if (aEntity == null) return false;
+        return doSoundAtClient(aSoundResourceLocation.toString(), aTimeUntilNextSound, aSoundStrength, aEntity.posX, aEntity.posY, aEntity.posZ);
     }
 
-    public static boolean doSoundAtClient(String aSoundName, int aTimeUntilNextSound, float aSoundStrength, float aSoundModulation, double aX, double aY, double aZ) {
-        if (isStringInvalid(aSoundName) || !FMLCommonHandler.instance().getEffectiveSide().isClient() || GT.getThePlayer() == null || !GT.getThePlayer().worldObj.isRemote)
+    public static boolean doSoundAtClient(ResourceLocation aSoundResourceLocation, int aTimeUntilNextSound, float aSoundStrength, double aX, double aY, double aZ) {
+        return doSoundAtClient(aSoundResourceLocation, aTimeUntilNextSound, aSoundStrength, 1.01818028F, aX, aY, aZ);
+    }
+
+    /**
+     * @inheritDoc
+     * @deprecated Use {@link #doSoundAtClient(ResourceLocation, int, float, double, double, double)}
+     */
+    @Deprecated
+    public static boolean doSoundAtClient(String aSoundName, int aTimeUntilNextSound, float aSoundStrength, double aX, double aY, double aZ) {
+        return doSoundAtClient(new ResourceLocation(aSoundName), aTimeUntilNextSound, aSoundStrength, 1.01818028F, aX, aY, aZ);
+    }
+
+    public static boolean doSoundAtClient(SoundResource aSound, int aTimeUntilNextSound, float aSoundStrength, double aX, double aY, double aZ) {
+        return doSoundAtClient(aSound.resourceLocation, aTimeUntilNextSound, aSoundStrength, aX, aY, aZ);
+    }
+
+    public static boolean doSoundAtClient(
+            SoundResource aSound, int aTimeUntilNextSound, float aSoundStrength, float aSoundModulation,
+            double aX, double aY, double aZ) {
+        return doSoundAtClient(aSound.resourceLocation, aTimeUntilNextSound, aSoundStrength, aSoundModulation, aX, aY, aZ);
+    }
+
+
+    public static boolean doSoundAtClient(
+        ResourceLocation aSoundResourceLocation, int aTimeUntilNextSound, float aSoundStrength, float aSoundModulation,
+        double aX, double aY, double aZ) {
+        if (!FMLCommonHandler.instance().getEffectiveSide().isClient()
+            || GT.getThePlayer() == null
+            || !GT.getThePlayer().worldObj.isRemote)
             return false;
         if (GregTech_API.sMultiThreadedSounds)
-            new Thread(new GT_Runnable_Sound(GT.getThePlayer().worldObj, MathHelper.floor_double(aX), MathHelper.floor_double(aY), MathHelper.floor_double(aZ), aTimeUntilNextSound, aSoundName, aSoundStrength, aSoundModulation), "Sound Effect").start();
+            new Thread(new GT_Runnable_Sound(
+                GT.getThePlayer().worldObj,
+                MathHelper.floor_double(aX), MathHelper.floor_double(aY), MathHelper.floor_double(aZ),
+                aTimeUntilNextSound, aSoundResourceLocation, aSoundStrength, aSoundModulation), "Sound Effect")
+                .start();
         else
-            new GT_Runnable_Sound(GT.getThePlayer().worldObj, MathHelper.floor_double(aX), MathHelper.floor_double(aY), MathHelper.floor_double(aZ), aTimeUntilNextSound, aSoundName, aSoundStrength, aSoundModulation).run();
+            new GT_Runnable_Sound(
+                GT.getThePlayer().worldObj,
+                MathHelper.floor_double(aX), MathHelper.floor_double(aY), MathHelper.floor_double(aZ),
+                aTimeUntilNextSound, aSoundResourceLocation, aSoundStrength, aSoundModulation).run();
         return true;
+    }
+
+    /**
+     * @inheritDoc
+     * @Deprecated Use {@link #doSoundAtClient(ResourceLocation, int, float, float, double, double, double)}
+     */
+    @Deprecated
+    public static boolean doSoundAtClient(String aSoundName, int aTimeUntilNextSound, float aSoundStrength, float aSoundModulation, double aX, double aY, double aZ) {
+        if (isStringInvalid(aSoundName)) return false;
+        return doSoundAtClient(new ResourceLocation(aSoundName), aTimeUntilNextSound, aSoundStrength, aSoundModulation, aX, aY, aZ);
     }
 
     public static boolean sendSoundToPlayers(World aWorld, String aSoundName, float aSoundStrength, float aSoundModulation, int aX, int aY, int aZ) {
         if (isStringInvalid(aSoundName) || aWorld == null || aWorld.isRemote) return false;
         NW.sendPacketToAllPlayersInRange(aWorld, new GT_Packet_Sound(aSoundName, aSoundStrength, aSoundModulation, aX, (short) aY, aZ), aX, aZ);
+        return true;
+    }
+
+    public static boolean sendSoundToPlayers(World aWorld, SoundResource sound, float aSoundStrength, float aSoundModulation, int aX, int aY, int aZ) {
+        if (aWorld == null || aWorld.isRemote) return false;
+        NW.sendPacketToAllPlayersInRange(aWorld, new GT_Packet_Sound(sound.resourceLocation.toString(), aSoundStrength, aSoundModulation, aX, (short) aY, aZ), aX, aZ);
         return true;
     }
 
@@ -2283,10 +2331,10 @@ public class GT_Utility {
             try {
                 if (tTileEntity instanceof IMachineProgress) {
                     if (((IMachineProgress) tTileEntity).isAllowedToWork()) {
-                        tList.add("Disabled." + EnumChatFormatting.RED + EnumChatFormatting.RESET);
+                        tList.add(EnumChatFormatting.RED + "Disabled." + EnumChatFormatting.RESET);
                     }
                     if (((IMachineProgress) tTileEntity).wasShutdown()) {
-                        tList.add("Shut down due to power loss." + EnumChatFormatting.RED + EnumChatFormatting.RESET);
+                        tList.add(EnumChatFormatting.RED + "Shut down due to power loss." + EnumChatFormatting.RESET);
                     }
                     rEUAmount += 400;
                     int tValue = 0;
@@ -2370,6 +2418,22 @@ public class GT_Utility {
             } catch (Throwable e) {
                 if (D1) e.printStackTrace(GT_Log.err);
             }
+
+            try {
+                if (tTileEntity instanceof forestry.arboriculture.tiles.TileLeaves) {
+                    final forestry.arboriculture.tiles.TileLeaves tileLeaves = (forestry.arboriculture.tiles.TileLeaves)tTileEntity;
+                    final forestry.api.arboriculture.ITree tree = tileLeaves.getTree();
+                    if (tree != null ) {
+                        rEUAmount += 1000;
+                        if (!tree.isAnalyzed())
+                            tree.analyze();
+                        tree.addTooltip(tList);
+                    }
+                }
+            } catch (Throwable e) {
+                if (D1) e.printStackTrace(GT_Log.err);
+            }
+
         }
 
         final Chunk currentChunk = aWorld.getChunkFromBlockCoords(aX, aZ);

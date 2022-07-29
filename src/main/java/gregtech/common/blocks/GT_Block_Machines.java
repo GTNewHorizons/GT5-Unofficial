@@ -1,4 +1,5 @@
 package gregtech.common.blocks;
+import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 import com.cricketcraft.chisel.api.IFacade;
 import cpw.mods.fml.common.Optional;
@@ -48,6 +49,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
 import static gregtech.api.enums.GT_Values.SIDE_UP;
@@ -156,7 +158,7 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
     }
 
     @Override
-    public boolean canConnectRedstone(IBlockAccess var1, int var2, int var3, int var4, int var5) {
+    public boolean canConnectRedstone(IBlockAccess aWorld, int aX, int aY, int aZ, int aSide) {
         return true;
     }
 
@@ -339,7 +341,7 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
     }
 
     @Override
-    public boolean onBlockActivated(World aWorld, int aX, int aY, int aZ, EntityPlayer aPlayer, int aSide, float par1, float par2, float par3) {
+    public boolean onBlockActivated(World aWorld, int aX, int aY, int aZ, EntityPlayer aPlayer, int aSide, float aOffsetX, float aOffsetY, float aOffsetZ) {
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (tTileEntity == null) {
             return false;
@@ -361,7 +363,7 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
             if ((!aWorld.isRemote) && !((IGregTechTileEntity) tTileEntity).isUseableByPlayer(aPlayer)) {
                 return true;
             }
-            return ((IGregTechTileEntity) tTileEntity).onRightclick(aPlayer, (byte) aSide, par1, par2, par3);
+            return ((IGregTechTileEntity) tTileEntity).onRightclick(aPlayer, (byte) aSide, aOffsetX, aOffsetY, aOffsetZ);
         }
         return false;
     }
@@ -394,7 +396,7 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
     }
 
     @Override
-    public void breakBlock(World aWorld, int aX, int aY, int aZ, Block par5, int par6) {
+    public void breakBlock(World aWorld, int aX, int aY, int aZ, Block aBlock, int aMetadata) {
         GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (tTileEntity instanceof IGregTechTileEntity) {
@@ -423,7 +425,7 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
                 }
             }
         }
-        super.breakBlock(aWorld, aX, aY, aZ, par5, par6);
+        super.breakBlock(aWorld, aX, aY, aZ, aBlock, aMetadata);
         aWorld.removeTileEntity(aX, aY, aZ);
     }
 
@@ -490,7 +492,7 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
     }
 
     @Override
-    public void dropBlockAsItemWithChance(World aWorld, int aX, int aY, int aZ, int par5, float chance, int par7) {
+    public void dropBlockAsItemWithChance(World aWorld, int aX, int aY, int aZ, int aMetadata, float chance, int aFortune) {
         if (!aWorld.isRemote) {
             final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
             if (tTileEntity != null && (chance < 1.0F)) {
@@ -500,7 +502,7 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
                     ((BaseMetaTileEntity) tTileEntity).doEnergyExplosion();
                 }
             } else {
-                super.dropBlockAsItemWithChance(aWorld, aX, aY, aZ, par5, chance, par7);
+                super.dropBlockAsItemWithChance(aWorld, aX, aY, aZ, aMetadata, chance, aFortune);
             }
         }
     }
@@ -540,6 +542,18 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
         return this.renderAsNormalBlock() ? 0.2F : 0.5F;
     }
 
+    /**
+     * @inheritDoc
+     */
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void randomDisplayTick(World aWorld, int aX, int aY, int aZ, Random aRandom) {
+        final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
+        if (tTileEntity instanceof IGregTechTileEntity) {
+            ((IGregTechTileEntity) tTileEntity).onRandomDisplayTick();
+        }
+    }
+
     @Override
     public int getLightOpacity(IBlockAccess aWorld, int aX, int aY, int aZ) {
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
@@ -568,7 +582,7 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
 
     @Override
     public float getExplosionResistance(
-            Entity par1Entity, World aWorld, int aX, int aY, int aZ,
+            Entity entity, World aWorld, int aX, int aY, int aZ,
             double explosionX, double explosionY, double explosionZ) {
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (tTileEntity instanceof IGregTechTileEntity) {
@@ -580,10 +594,10 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
     @SideOnly(Side.CLIENT)
     @Override
     @SuppressWarnings("unchecked") // Old API uses raw List type
-    public void getSubBlocks(Item par1Item, CreativeTabs par2CreativeTabs, List par3List) {
+    public void getSubBlocks(Item item, CreativeTabs aCreativeTab, List outputSubBlocks) {
         for (int i = 1; i < GregTech_API.METATILEENTITIES.length; i++) {
             if (GregTech_API.METATILEENTITIES[i] != null) {
-                par3List.add(new ItemStack(par1Item, 1, i));
+                outputSubBlocks.add(new ItemStack(item, 1, i));
             }
         }
     }

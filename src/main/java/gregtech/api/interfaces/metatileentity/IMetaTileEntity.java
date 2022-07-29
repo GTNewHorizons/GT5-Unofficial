@@ -424,4 +424,14 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
         return true;
     }
 
+    /**
+     * A randomly called display update to be able to add particles or other items for display
+     *
+     * @param aBaseMetaTileEntity The entity that will handle the {@see Block#randomDisplayTick}
+     */
+    @SideOnly(Side.CLIENT)
+    default void onRandomDisplayTick(IGregTechTileEntity aBaseMetaTileEntity) {
+        /* do nothing */
+    }
+
 }

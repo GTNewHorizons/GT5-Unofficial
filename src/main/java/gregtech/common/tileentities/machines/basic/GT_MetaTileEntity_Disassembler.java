@@ -226,6 +226,10 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
 
         removeInvalidStacks(recipe);
 
+        if (!checkVoltage(recipe)) {
+            return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
+        }
+
         return setOutputsAndTime(recipe.inputs, recipe.stackSize)
                 ? FOUND_AND_SUCCESSFULLY_USED_RECIPE
                 : FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
@@ -282,6 +286,10 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
                 .findFirst()
                 .orElseThrow(NullPointerException::new)
                 .inputs;
+        int EUt = recipes.stream()
+            .findFirst()
+            .orElseThrow(NullPointerException::new)
+            .EUt;
 
         ItemStack[] output = new ItemStack[inputs.length];
         List<GT_Recipe> recipesColl = null;
@@ -293,7 +301,7 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
 
         handleRecipeTransformation(inputs, output, recipesColl);
 
-        return new DissassembleReference(recipes.stream().mapToInt(x -> x.stackSize).min().orElseThrow(NumberFormatException::new), output, null);
+        return new DissassembleReference(recipes.stream().mapToInt(x -> x.stackSize).min().orElseThrow(NumberFormatException::new), output, null, EUt);
     }
 
     private static void handleRecipeTransformation(ItemStack[] inputs, ItemStack[] output, List<? extends GT_Recipe> recipesColl) {
@@ -493,11 +501,24 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
         final int stackSize;
         ItemStack[] inputs;
         final GT_Recipe recipe;
+        final int EUt;
+
+        public DissassembleReference(int stackSize, ItemStack[] inputs, GT_Recipe recipe, int EUt) {
+            this.stackSize = stackSize;
+            this.inputs = inputs;
+            this.recipe = recipe;
+            this.EUt = EUt;
+        }
 
         public DissassembleReference(int stackSize, ItemStack[] inputs, GT_Recipe recipe) {
             this.stackSize = stackSize;
             this.inputs = inputs;
             this.recipe = recipe;
+            if (recipe != null) {
+                this.EUt = recipe.mEUt;
+            } else {
+                this.EUt = 0;
+            }
         }
     }
 
@@ -520,7 +541,6 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
                             return isDone;
                         })
                             )
-                .filter(x -> x.mEUt < GT_Values.V[this.mTier])
                 .map(x -> new DissassembleReference(stacksize.get(), x.mInputs, x))
                 .collect(Collectors.toList());
 
@@ -546,6 +566,10 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
         double outputValue = Arrays.stream(x.recipe.mOutputs).flatMapToInt(f -> IntStream.of(f.stackSize)).sum() +
                 (fluidOutputValueRaw / 144D);
         return outputValue / inputValue;
+    }
+
+    private boolean checkVoltage(DissassembleReference recipe) {
+        return recipe.EUt < GT_Values.V[this.mTier];
     }
 
     @Override

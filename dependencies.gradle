@@ -5,9 +5,11 @@
 
 dependencies {
     compile("com.github.GTNewHorizons:StructureLib:1.0.15:dev")
-    compile("com.github.GTNewHorizons:NotEnoughItems:2.2.6-GTNH:dev")
+    compile("com.github.GTNewHorizons:NotEnoughItems:2.2.19-GTNH:dev")
     compile("com.github.GTNewHorizons:CodeChickenLib:1.1.5.3:dev")
     compile("com.github.GTNewHorizons:waila:1.5.18:dev")
+
+    compile("com.github.GTNewHorizons:Hodgepodge:1.6.23:dev")
 
     compile("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
 
@@ -15,6 +17,9 @@ dependencies {
         transitive = false
     }
     compileOnly("com.github.GTNewHorizons:ForestryMC:4.4.5:dev") {
+        transitive = false
+    }
+    compileOnly("com.github.GTNewHorizons:gendustry:1.6.5.4-GTNH:dev") {
         transitive = false
     }
     compileOnly("com.github.GTNewHorizons:Railcraft:9.13.6:dev") {

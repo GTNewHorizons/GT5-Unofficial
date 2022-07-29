@@ -1,7 +1,7 @@
 package gregtech.common.items.behaviors;
 
 import codechicken.lib.math.MathHelper;
-import gregtech.api.GregTech_API;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
@@ -43,7 +43,7 @@ public class Behaviour_Lighter extends Behaviour_None {
             prepare(aStack);
             long tFuelAmount = GT_Utility.ItemNBT.getLighterFuel(aStack);
             if (GT_Utility.areStacksEqual(aStack, this.mUsedLighter, true)) {
-                GT_Utility.sendSoundToPlayers(aPlayer.worldObj, (String) GregTech_API.sSoundList.get(6), 1.0F, 1.0F, MathHelper.floor_double(aEntity.posX), MathHelper.floor_double(aEntity.posY), MathHelper.floor_double(aEntity.posZ));
+                GT_Utility.sendSoundToPlayers(aPlayer.worldObj, SoundResource.FIRE_IGNITE, 1.0F, 1.0F, MathHelper.floor_double(aEntity.posX), MathHelper.floor_double(aEntity.posY), MathHelper.floor_double(aEntity.posZ));
                 ((EntityCreeper) aEntity).func_146079_cb();
                 if (!aPlayer.capabilities.isCreativeMode) {
                     tFuelAmount -= 1L;
@@ -80,7 +80,7 @@ public class Behaviour_Lighter extends Behaviour_None {
         prepare(aStack);
         long tFuelAmount = GT_Utility.ItemNBT.getLighterFuel(aStack);
         if (GT_Utility.areStacksEqual(aStack, this.mUsedLighter, true)) {
-            GT_Utility.sendSoundToPlayers(aWorld, (String) GregTech_API.sSoundList.get(6), 1.0F, 1.0F, aX, aY, aZ);
+            GT_Utility.sendSoundToPlayers(aWorld, SoundResource.FIRE_IGNITE, 1.0F, 1.0F, aX, aY, aZ);
             aWorld.setBlock(aX, aY, aZ, Blocks.fire);
             if (!aPlayer.capabilities.isCreativeMode) {
                 tFuelAmount -= 1L;

@@ -1,6 +1,7 @@
 package gregtech.common.items.behaviors;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.items.GT_MetaBase_Item;
@@ -36,18 +37,18 @@ public class Behaviour_Cover_Tool extends Behaviour_None  {
         initDataFromNBT(tNBT);
         if (((aPlayer instanceof EntityPlayerMP)) && (aItem.canUse(aStack, 100.0D))) {
             if (isCopyMode) {
-                ArrayList<String> tList = new ArrayList();
+                ArrayList<String> tList = new ArrayList<>();
                 doCopy(tTileEntity, aWorld, aX, aY, aZ, aSide, hitX, hitY, hitZ, tList);
                 aItem.discharge(aStack, 100.0D, Integer.MAX_VALUE, true, false, false);
                 writeListToNBT(tList, tNBT, aPlayer);
                 saveDataToNBT(tNBT);
             }
             else {
-                doPaste(tTileEntity, aWorld, aX, aY, aZ, aSide, hitX, hitY, hitZ, aPlayer);
+                doPaste(tTileEntity, aSide, hitX, hitY, hitZ, aPlayer);
                 aItem.discharge(aStack, 25.0D, Integer.MAX_VALUE, true, false, false);
             }
         }
-        GT_Utility.doSoundAtClient(GregTech_API.sSoundList.get(108), 1, 1.0F, aX, aY, aZ);
+        GT_Utility.doSoundAtClient(SoundResource.IC2_TOOLS_OD_SCANNER, 1, 1.0F, aX, aY, aZ);
         return aPlayer instanceof EntityPlayerMP;
     }
 
@@ -121,7 +122,7 @@ public class Behaviour_Cover_Tool extends Behaviour_None  {
         }
     }
 
-    private void doPaste(TileEntity aTileEntity, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ, EntityPlayer aPlayer) {
+    private void doPaste(TileEntity aTileEntity, int aSide, float hitX, float hitY, float hitZ, EntityPlayer aPlayer) {
         if (aTileEntity instanceof ICoverable) {
             ICoverable tCoverable = (ICoverable) aTileEntity;
             if (mCoverType == 0 || mStoredData == null) {

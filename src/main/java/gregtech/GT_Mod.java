@@ -39,6 +39,7 @@ import gregtech.loaders.misc.GT_Bees;
 import gregtech.loaders.misc.GT_CoverLoader;
 import gregtech.loaders.postload.*;
 import gregtech.loaders.preload.*;
+import gregtech.nei.IMCForNEI;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
 import net.minecraft.entity.player.EntityPlayer;
@@ -102,7 +103,8 @@ import static gregtech.api.enums.GT_Values.MOD_ID_FR;
                 " after:RedPowerControl;" +
                 " after:UndergroundBiomes;" +
                 " after:TConstruct;" +
-                " after:Translocator;")
+                " after:Translocator;" +
+                " after:gendustry;")
 public class GT_Mod implements IGT_Mod {
 
     @Deprecated // Keep for use in BaseMetaTileEntity
@@ -204,6 +206,7 @@ public class GT_Mod implements IGT_Mod {
         new GT_Loader_ItemData().run();
         new GT_Loader_Item_Block_And_Fluid().run();
         new GT_Loader_MetaTileEntities().run();
+        new GT_Loader_MultiTileEntities().run();
 
         new GT_Loader_CircuitBehaviors().run();
         new GT_CoverBehaviorLoader().run();
@@ -269,6 +272,7 @@ public class GT_Mod implements IGT_Mod {
         }
         Waila.init();
         Harvestcraft.init();
+        IMCForNEI.IMCSender();
         GregTech_API.sLoadFinished = true;
         GT_Log.out.println("GT_Mod: Load-Phase finished!");
         GT_Log.ore.println("GT_Mod: Load-Phase finished!");

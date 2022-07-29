@@ -2,6 +2,8 @@ package gregtech.api.util;
 
 import codechicken.nei.PositionedStack;
 import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.ModContainer;
+import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -27,6 +29,7 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 import static gregtech.api.enums.GT_Values.*;
 
@@ -82,6 +85,14 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
      * Used for describing recipes that do not fit the default recipe pattern (for example Large Boiler Fuels)
      */
     private String[] neiDesc = null;
+    /**
+     * Stores which mod added this recipe
+     */
+    public List<ModContainer> owners = new ArrayList<>();
+    /**
+     * Stores stack traces where this recipe was added
+     */
+    public List<List<StackTraceElement>> stackTraces = new ArrayList<>();
 
     private GT_Recipe(GT_Recipe aRecipe) {
         mInputs = GT_Utility.copyStackArray((Object[]) aRecipe.mInputs);
@@ -98,6 +109,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         mFakeRecipe = aRecipe.mFakeRecipe;
         mEnabled = aRecipe.mEnabled;
         mHidden = aRecipe.mHidden;
+        owners = new ArrayList<>(aRecipe.owners);
+        reloadOwner();
     }
 
     public GT_Recipe(boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems, int[] aChances, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
@@ -194,6 +207,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         mSpecialValue = aSpecialValue;
         mEUt = aEUt;
 //		checkCellBalance();
+        reloadOwner();
     }
 
     public GT_Recipe(ItemStack aInput1, ItemStack aOutput1, int aFuelValue, int aType) {
@@ -556,6 +570,43 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
     	return null;
     }
 
+    public void reloadOwner() {
+        setOwner(Loader.instance().activeModContainer());
+
+        final List<String> excludedClasses = Arrays.asList(
+            "java.lang.Thread",
+            "gregtech.api.util.GT_Recipe",
+            "gregtech.common.GT_RecipeAdder");
+        if (GT_Mod.gregtechproxy.mNEIRecipeOwnerStackTrace) {
+            List<StackTraceElement> toAdd = new ArrayList<>();
+            for (StackTraceElement stackTrace : Thread.currentThread().getStackTrace()) {
+                if (excludedClasses.stream().noneMatch(c -> stackTrace.getClassName().contains(c))) {
+                    toAdd.add(stackTrace);
+                }
+            }
+            stackTraces.add(toAdd);
+        }
+    }
+
+    public void setOwner(ModContainer newOwner) {
+        ModContainer oldOwner = owners.size() > 0 ? this.owners.get(owners.size() - 1) : null;
+        if (newOwner != null && newOwner != oldOwner) {
+            owners.add(newOwner);
+        }
+    }
+
+    /**
+     * Use in case {@link Loader#activeModContainer()} isn't helpful
+     */
+    public void setOwner(String modId) {
+        for (ModContainer mod : Loader.instance().getModList()) {
+            if (mod.getModId().equals(modId)) {
+                setOwner(mod);
+                return;
+            }
+        }
+    }
+
 	public static class GT_Recipe_AssemblyLine{
         public static final ArrayList<GT_Recipe_AssemblyLine> sAssemblylineRecipes = new ArrayList<GT_Recipe_AssemblyLine>();
 
@@ -790,7 +841,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map sCentrifugeRecipes = new GT_Recipe_Map(new HashSet<>(1200), "gt.recipe.centrifuge", "Centrifuge", null, RES_PATH_GUI + "basicmachines/Centrifuge", 2, 6, 0, 0, 1, E, 1, E, true, true);
         public static final GT_Recipe_Map sElectrolyzerRecipes = new GT_Recipe_Map(new HashSet<>(300), "gt.recipe.electrolyzer", "Electrolyzer", null, RES_PATH_GUI + "basicmachines/Electrolyzer", 2, 6, 0, 0, 1, E, 1, E, true, true);
         public static final GT_Recipe_Map sBlastRecipes = new GT_Recipe_Map(new HashSet<>(800), "gt.recipe.blastfurnace", "Blast Furnace", null, RES_PATH_GUI + "basicmachines/Default", 4, 4, 1, 0, 1, "Heat Capacity: ", 1, " K", false, true);
-        public static final GT_Recipe_Map sPlasmaForgeRecipes = new GT_Recipe_Map_PlasmaForge(new HashSet<>(20), "gt.recipe.plasmaforge", "Dimensionally Transcendent Plasma Forge", null, RES_PATH_GUI + "basicmachines/PlasmaForge", 1, 1, 0, 0, 1, "Heat Capacity: ", 1, " K", false, true);
+        public static final GT_Recipe_Map sPlasmaForgeRecipes = new GT_Recipe_Map_PlasmaForge(new HashSet<>(20), "gt.recipe.plasmaforge", "DTPF", null, RES_PATH_GUI + "basicmachines/PlasmaForge", 1, 1, 0, 0, 1, "Heat Capacity: ", 1, " K", false, true);
         public static final GT_Recipe_Map sPrimitiveBlastRecipes = new GT_Recipe_Map(new HashSet<>(200), "gt.recipe.primitiveblastfurnace", "Primitive Blast Furnace", null, RES_PATH_GUI + "basicmachines/Default", 3, 3, 1, 0, 1, E, 1, E, false, true);
         public static final GT_Recipe_Map sImplosionRecipes = new GT_Recipe_Map(new HashSet<>(900), "gt.recipe.implosioncompressor", "Implosion Compressor", null, RES_PATH_GUI + "basicmachines/Default", 2, 2, 2, 0, 1, E, 1, E, true, true);
         public static final GT_Recipe_Map sVacuumRecipes = new GT_Recipe_Map(new HashSet<>(305), "gt.recipe.vacuumfreezer", "Vacuum Freezer", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, E, 1, E, false, true);

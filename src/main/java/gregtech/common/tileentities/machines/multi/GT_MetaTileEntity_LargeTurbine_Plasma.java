@@ -84,12 +84,12 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
     }
 
     @Override
-    public byte getCasingTextureIndex() {
+    public int getCasingTextureIndex() {
         return 60;
     }
 
     @Override
-    int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow, int aBaseEff, int overflowMultiplier) {
+    int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow, int aBaseEff, int overflowMultiplier, float[] flowMultipliers) {
         if (aFluids.size() >= 1) {
             aOptFlow *= 800;//CHANGED THINGS HERE, check recipe runs once per 20 ticks
             int tEU = 0;
@@ -98,7 +98,7 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
 
             FluidStack firstFuelType = new FluidStack(aFluids.get(0), 0); // Identify a SINGLE type of fluid to process.  Doesn't matter which one. Ignore the rest!
             int fuelValue = getFuelValue(firstFuelType);
-            actualOptimalFlow = GT_Utility.safeInt((long) Math.ceil((double) aOptFlow / (double) fuelValue));
+            actualOptimalFlow = GT_Utility.safeInt((long) Math.ceil((double) aOptFlow * flowMultipliers[2] / (double) fuelValue));
             this.realOptFlow = actualOptimalFlow; // For scanner info
 
             // Allowed to use up to 550% optimal flow rate, depending on the value of overflowMultiplier.
@@ -203,7 +203,7 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
             return false;
         }
 
-        int newPower = fluidIntoPower(tFluids, optFlow, baseEff, overflowMultiplier);  // How much the turbine should be producing with this flow
+        int newPower = fluidIntoPower(tFluids, optFlow, baseEff, overflowMultiplier, flowMultipliers);  // How much the turbine should be producing with this flow
 
         int difference = newPower - this.mEUt; // difference between current output and new output
 

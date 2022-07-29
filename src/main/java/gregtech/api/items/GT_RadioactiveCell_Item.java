@@ -40,7 +40,7 @@ public class GT_RadioactiveCell_Item
         }
         return b;
     }
-    
+
     protected static int triangularNumber(int x)
     {
       return (x * x + x) / 2;
@@ -73,15 +73,6 @@ public class GT_RadioactiveCell_Item
             aStack.setTagCompound(tNBT);
         }
         tNBT.setInteger("durability", aDurability);
-//    if (this.maxDelay > 0)
-//    {
-//      double var4 = (this.maxDelay - aDurability) / this.maxDelay;
-//      int var6 = (int)(aStack.getMaxDamage() * var4);
-//      if (var6 >= aStack.getMaxDamage()) {
-//        var6 = aStack.getMaxDamage() - 1;
-//      }
-//      aStack.setItemDamage(aStack.getMaxDamage() - var6);
-//    }
     }
 
     public int getMaxNuclearDurability() {
@@ -93,11 +84,12 @@ public class GT_RadioactiveCell_Item
     }
 
     @Override
-    public boolean isBookEnchantable(ItemStack itemstack1, ItemStack itemstack2) {
+    public boolean isBookEnchantable(ItemStack ingredient, ItemStack bookEnchant) {
         return false;
     }
 
-    public boolean func_82789_a(ItemStack par1ItemStack, ItemStack par2ItemStack) {
+    // getIsRepairable
+    public boolean func_82789_a(ItemStack toBeRepaired, ItemStack repairWith) {
         return false;
     }
 

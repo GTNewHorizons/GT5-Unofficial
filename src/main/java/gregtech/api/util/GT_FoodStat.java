@@ -1,6 +1,7 @@
 package gregtech.api.util;
 
 import gregtech.api.damagesources.GT_DamageSources;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IFoodStat;
 import gregtech.api.items.GT_MetaBase_Item;
 import net.minecraft.entity.player.EntityPlayer;
@@ -70,7 +71,7 @@ public class GT_FoodStat implements IFoodStat {
             aPlayer.dropPlayerItemWithRandomChoice(tStack, true);
 
         new WorldSpawnedEventBuilder.SoundAtEntityEventBuilder()
-                .setIdentifier("random.burp")
+                .setIdentifier(SoundResource.RANDOM_BURP)
                 .setVolume(0.5F)
                 .setPitch(aPlayer.worldObj.rand.nextFloat() * 0.1F + 0.9F)
                 .setEntity(aPlayer)

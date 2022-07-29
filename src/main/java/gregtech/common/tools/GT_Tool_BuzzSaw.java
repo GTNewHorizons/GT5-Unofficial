@@ -1,6 +1,6 @@
 package gregtech.common.tools;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.GT_MetaGenerated_Tool;
@@ -34,22 +34,17 @@ public class GT_Tool_BuzzSaw extends GT_Tool_Saw {
 
     @Override
     public String getCraftingSound() {
-        return (String) GregTech_API.sSoundList.get(104);
+        return SoundResource.IC2_TOOLS_CHAINSAW_CHAINSAW_USE_ONE.toString();
     }
 
     @Override
     public String getEntityHitSound() {
-        return (String) GregTech_API.sSoundList.get(105);
-    }
-
-    @Override
-    public String getBreakingSound() {
-        return (String) GregTech_API.sSoundList.get(0);
+        return SoundResource.IC2_TOOLS_CHAINSAW_CHAINSAW_USE_TWO.toString();
     }
 
     @Override
     public String getMiningSound() {
-        return (String) GregTech_API.sSoundList.get(104);
+        return SoundResource.IC2_TOOLS_CHAINSAW_CHAINSAW_USE_ONE.toString();
     }
 
     @Override

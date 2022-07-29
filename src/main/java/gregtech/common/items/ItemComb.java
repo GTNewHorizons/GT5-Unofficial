@@ -76,9 +76,9 @@ public class ItemComb extends Item {
 
 	@Override
     @SideOnly(Side.CLIENT)
-	public void registerIcons(IIconRegister par1IconRegister) {
-		this.itemIcon = par1IconRegister.registerIcon("forestry:beeCombs.0");
-		this.secondIcon = par1IconRegister.registerIcon("forestry:beeCombs.1");
+	public void registerIcons(IIconRegister iconRegister) {
+		this.itemIcon = iconRegister.registerIcon("forestry:beeCombs.0");
+		this.secondIcon = iconRegister.registerIcon("forestry:beeCombs.1");
 	}
 
 	@Override

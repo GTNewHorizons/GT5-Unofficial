@@ -1,6 +1,6 @@
 package gregtech.common.tools;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.GT_MetaGenerated_Tool;
@@ -78,7 +78,7 @@ public class GT_Tool_Wrench extends GT_Tool {
 
     @Override
     public String getCraftingSound() {
-        return (String) GregTech_API.sSoundList.get(100);
+        return SoundResource.IC2_TOOLS_WRENCH.toString();
     }
 
     @Override
@@ -87,13 +87,8 @@ public class GT_Tool_Wrench extends GT_Tool {
     }
 
     @Override
-    public String getBreakingSound() {
-        return (String) GregTech_API.sSoundList.get(0);
-    }
-
-    @Override
     public String getMiningSound() {
-        return (String) GregTech_API.sSoundList.get(100);
+        return SoundResource.IC2_TOOLS_WRENCH.toString();
     }
 
     @Override
@@ -110,7 +105,7 @@ public class GT_Tool_Wrench extends GT_Tool {
     public boolean isWrench() {
         return true;
     }
-    
+
     @Override
     public boolean isMinableBlock(Block aBlock, byte aMetaData) {
         return GT_ToolHarvestHelper.isAppropriateTool(aBlock, aMetaData, "wrench")

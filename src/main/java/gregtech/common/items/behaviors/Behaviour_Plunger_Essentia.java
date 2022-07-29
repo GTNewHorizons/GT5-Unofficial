@@ -1,6 +1,6 @@
 package gregtech.common.items.behaviors;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.util.GT_LanguageManager;
@@ -29,8 +29,8 @@ public class Behaviour_Plunger_Essentia extends Behaviour_None {
         }
         TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (((aTileEntity instanceof IEssentiaTransport)) && (
-                (aPlayer.capabilities.isCreativeMode) || (((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts)))) {
-            GT_Utility.sendSoundToPlayers(aWorld, (String) GregTech_API.sSoundList.get(101), 1.0F, -1.0F, aX, aY, aZ);
+            (aPlayer.capabilities.isCreativeMode) || (((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts)))) {
+            GT_Utility.sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE, 1.0F, -1.0F, aX, aY, aZ);
             for (ForgeDirection tDirection : ForgeDirection.VALID_DIRECTIONS) {
                 ((IEssentiaTransport) aTileEntity).takeEssentia(((IEssentiaTransport) aTileEntity).getEssentiaType(tDirection), ((IEssentiaTransport) aTileEntity).getEssentiaAmount(tDirection), tDirection);
             }

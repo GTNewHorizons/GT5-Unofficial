@@ -34,6 +34,7 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.Range;
 import org.lwjgl.opengl.GL11;
@@ -303,7 +304,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
     }
 
     @Override
-    public List<String> handleItemTooltip(GuiRecipe gui, ItemStack aStack, List<String> currenttip, int aRecipeIndex) {
+    public List<String> handleItemTooltip(GuiRecipe<?> gui, ItemStack aStack, List<String> currenttip, int aRecipeIndex) {
         CachedRecipe tObject = this.arecipes.get(aRecipeIndex);
         if ((tObject instanceof CachedDefaultRecipe)) {
             CachedDefaultRecipe tRecipe = (CachedDefaultRecipe) tObject;
@@ -367,18 +368,20 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
             drawLine(lineCounter, GT_Utility.trans("152", "Total: ") + mPower.getTotalPowerString());
             lineCounter++;
 
-            if (mPower.getAmperageString().equals("unspecified") || mPower.getPowerUsageString().contains("(OC)")){
-                drawLine(lineCounter, GT_Utility.trans("153", "Usage: ") + mPower.getPowerUsageString());
+            String amperage = mPower.getAmperageString();
+            String powerUsage = mPower.getPowerUsageString();
+            if (amperage == null || amperage.equals("unspecified") || powerUsage.contains("(OC)")){
+                drawLine(lineCounter, GT_Utility.trans("153", "Usage: ") + powerUsage);
                 lineCounter++;
-            } else if (mPower.getAmperageString().equals("1")) {
+            } else if (amperage.equals("1")) {
                 drawLine(lineCounter, GT_Utility.trans("154", "Voltage: ") + mPower.getVoltageString());
                 lineCounter++;
             } else {
-                drawLine(lineCounter, GT_Utility.trans("153", "Usage: ") + mPower.getPowerUsageString());
+                drawLine(lineCounter, GT_Utility.trans("153", "Usage: ") + powerUsage);
                 lineCounter++;
                 drawLine(lineCounter, GT_Utility.trans("154", "Voltage: ") + mPower.getVoltageString());
                 lineCounter++;
-                drawLine(lineCounter, GT_Utility.trans("155", "Amperage: ") + mPower.getAmperageString());
+                drawLine(lineCounter, GT_Utility.trans("155", "Amperage: ") + amperage);
                 lineCounter++;
             }
 
@@ -393,9 +396,35 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
             }
         }
         if (this.mRecipeMap.mNEIName.equals("gt.recipe.fusionreactor") || this.mRecipeMap.mNEIName.equals("gt.recipe.complexfusionreactor")) {
-            drawOptionalLine(lineCounter, getSpecialInfo(recipe.mSpecialValue) + " " + formatSpecialValueFusion(recipe.mSpecialValue, recipe.mEUt));
+            if (drawOptionalLine(lineCounter, getSpecialInfo(recipe.mSpecialValue) + " " + formatSpecialValueFusion(recipe.mSpecialValue, recipe.mEUt))) {
+                lineCounter++;
+            }
         }
-        drawOptionalLine(lineCounter, getSpecialInfo(recipe.mSpecialValue));
+        if (drawOptionalLine(lineCounter, getSpecialInfo(recipe.mSpecialValue))) {
+            lineCounter++;
+        }
+        if (GT_Mod.gregtechproxy.mNEIRecipeOwner) {
+            if (recipe.owners.size() > 1) {
+                drawLine(lineCounter, EnumChatFormatting.ITALIC + GT_Utility.trans("226", "Original Recipe by: ") + recipe.owners.get(0).getName());
+                lineCounter++;
+                for (int i = 1; i < recipe.owners.size(); i++) {
+                    drawLine(lineCounter, EnumChatFormatting.ITALIC + GT_Utility.trans("227", "Modified by: ") + recipe.owners.get(i).getName());
+                    lineCounter++;
+                }
+            } else if (recipe.owners.size() > 0) {
+                drawLine(lineCounter, EnumChatFormatting.ITALIC + GT_Utility.trans("225", "Recipe by: ") + recipe.owners.get(0).getName());
+                lineCounter++;
+            }
+        }
+        if (GT_Mod.gregtechproxy.mNEIRecipeOwnerStackTrace && recipe.stackTraces != null) {
+            drawLine(lineCounter, "stackTrace:");
+            lineCounter++;
+            // todo: good way to show all stacktraces
+            for (StackTraceElement stackTrace : recipe.stackTraces.get(0)) {
+                drawLine(lineCounter, stackTrace.toString());
+                lineCounter++;
+            }
+        }
     }
 
     private void drawOverrideDescription(String[] recipeDesc) {
@@ -458,16 +487,20 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         return "(MK " + tier + ")";
     }
 
-    private void drawOptionalLine(int lineNumber, String line, String prefix) {
-        if (!"unspecified".equals(line)) {
+    private boolean drawOptionalLine(int lineNumber, String line, String prefix) {
+        if (!(line == null || "unspecified".equals(line))) {
             drawLine(lineNumber, prefix + line);
+            return true;
         }
+        return false;
     }
 
-    private void drawOptionalLine(int lineNumber, String line) {
-        if (!"unspecified".equals(line)) {
+    private boolean drawOptionalLine(int lineNumber, String line) {
+        if (!(line == null || "unspecified".equals(line))) {
             drawLine(lineNumber, line);
+            return true;
         }
+        return false;
     }
 
     private void drawLine(int lineNumber, String line) {

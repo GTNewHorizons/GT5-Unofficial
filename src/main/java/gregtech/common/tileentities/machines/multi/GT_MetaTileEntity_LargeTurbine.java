@@ -59,6 +59,7 @@ public abstract class GT_MetaTileEntity_LargeTurbine extends GT_MetaTileEntity_E
     protected int counter = 0;
     protected boolean looseFit = false;
     protected int overflowMultiplier = 0;
+    protected float[] flowMultipliers = new float[]{1, 1, 1};
 
     public GT_MetaTileEntity_LargeTurbine(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -92,7 +93,7 @@ public abstract class GT_MetaTileEntity_LargeTurbine extends GT_MetaTileEntity_E
 
     public abstract byte getCasingMeta();
 
-    public abstract byte getCasingTextureIndex();
+    public abstract int getCasingTextureIndex();
 
     @Override
     public boolean addToMachineList(IGregTechTileEntity tTileEntity, int aBaseCasingIndex) {
@@ -138,6 +139,10 @@ public abstract class GT_MetaTileEntity_LargeTurbine extends GT_MetaTileEntity_E
                     overflowMultiplier = 1;
                 }
 
+                flowMultipliers[0] = GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mSteamMultiplier;
+                flowMultipliers[1] = GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mGasMultiplier;
+                flowMultipliers[2] = GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mPlasmaMultiplier;
+
                 if(optFlow<=0 || baseEff<=0){
                     stopMachine();//in case the turbine got removed
                     return false;
@@ -147,7 +152,7 @@ public abstract class GT_MetaTileEntity_LargeTurbine extends GT_MetaTileEntity_E
             }
         }
 
-        int newPower = fluidIntoPower(tFluids, optFlow, baseEff, overflowMultiplier);  // How much the turbine should be producing with this flow
+        int newPower = fluidIntoPower(tFluids, optFlow, baseEff, overflowMultiplier, flowMultipliers);  // How much the turbine should be producing with this flow
         int difference = newPower - this.mEUt; // difference between current output and new output
 
         // Magic numbers: can always change by at least 10 eu/t, but otherwise by at most 1 percent of the difference in power level (per tick)
@@ -173,7 +178,7 @@ public abstract class GT_MetaTileEntity_LargeTurbine extends GT_MetaTileEntity_E
         }
     }
 
-    abstract int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow, int aBaseEff, int overflowMultiplier);
+    abstract int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow, int aBaseEff, int overflowMultiplier, float[] flowMultipliers);
 
     abstract float getOverflowEfficiency(int totalFlow, int actualOptimalFlow, int overflowMultiplier);
 

@@ -1,19 +1,9 @@
 package gregtech.api.metatileentity;
 
-import static gregtech.GT_Mod.GT_FML_LOGGER;
-import static gregtech.api.enums.GT_Values.NW;
-import static gregtech.api.metatileentity.BaseMetaTileEntity.COVER_DATA_NBT_KEYS;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
-
-import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.graphs.Lock;
 import gregtech.api.graphs.Node;
 import gregtech.api.graphs.paths.NodePath;
@@ -25,31 +15,30 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IPipeRenderedTileEntity;
 import gregtech.api.net.GT_Packet_TileEntity;
 import gregtech.api.objects.GT_ItemStack;
-import gregtech.api.util.*;
-import gregtech.common.GT_Client;
-import gregtech.common.covers.GT_Cover_Fluidfilter;
+import gregtech.api.util.GT_Log;
+import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.*;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
 import static gregtech.api.enums.GT_Values.NW;
-import static gregtech.api.metatileentity.BaseMetaTileEntity.COVER_DATA_NBT_KEYS;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -59,9 +48,8 @@ import static gregtech.api.metatileentity.BaseMetaTileEntity.COVER_DATA_NBT_KEYS
 public class BaseMetaPipeEntity extends CommonMetaTileEntity implements IGregTechTileEntity, IPipeRenderedTileEntity, IDebugableTileEntity {
     public byte mConnections = IConnectable.NO_CONNECTION;
     protected MetaPipeEntity mMetaTileEntity;
-    private int[] mTimeStatistics = new int[GregTech_API.TICKS_FOR_LAG_AVERAGING];
+    private final int[] mTimeStatistics = new int[GregTech_API.TICKS_FOR_LAG_AVERAGING];
     private boolean mWorkUpdate = false, mWorks = true;
-    private final boolean mCheckConnections = false;
     private byte mColor = 0, oColor = 0, oStrongRedstone = 0, oRedstoneData = 63, oTextureData = 0, oUpdateData = 0, mLagWarningCount = 0;
     private int oX = 0, oY = 0, oZ = 0, mTimeStatisticsIndex = 0;
     protected Node node;
@@ -254,6 +242,7 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity implements IGregTec
                 }
             }
         } catch (Throwable e) {
+            e.printStackTrace();
             e.printStackTrace(GT_Log.err);
         }
 
@@ -375,12 +364,16 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity implements IGregTec
             if (mLagWarningCount > 0) {
                 tList.add("Caused " + (mLagWarningCount >= 10 ? "more than 10" : mLagWarningCount) + " Lag Spike Warnings (anything taking longer than " + GregTech_API.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING + "ms) on the Server.");
             }
-            tList.add("Is" + (mMetaTileEntity.isAccessAllowed(aPlayer) ? " " : EnumChatFormatting.RED+" not "+EnumChatFormatting.RESET) + "accessible for you");
+            if (mMetaTileEntity != null) {
+                tList.add("Is" + (mMetaTileEntity.isAccessAllowed(aPlayer) ? " " : EnumChatFormatting.RED+" not "+EnumChatFormatting.RESET) + "accessible for you");
+            }
         }
         if(joinedIc2Enet)
             tList.add("Joined IC2 ENet");
 
-        return mMetaTileEntity.getSpecialDebugInfo(this, aPlayer, aLogLevel, tList);
+        return mMetaTileEntity != null ?
+            mMetaTileEntity.getSpecialDebugInfo(this, aPlayer, aLogLevel, tList) :
+            new ArrayList<>();
     }
 
     @Override
@@ -712,7 +705,7 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity implements IGregTec
             tNBT.setIntArray("mCoverSides", mCoverSides);
         if (hasValidMetaTileEntity()) mMetaTileEntity.setItemNBT(tNBT);
         if (!tNBT.hasNoTags()) rStack.setTagCompound(tNBT);
-        return new ArrayList<ItemStack>(Arrays.asList(rStack));
+        return new ArrayList<>(Collections.singletonList(rStack));
     }
 
     @Override
@@ -740,7 +733,7 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity implements IGregTec
                     if (mMetaTileEntity.onWrenchRightClick(aSide, tSide, aPlayer, aX, aY, aZ)) {
                         mMetaTileEntity.markDirty();
                         GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer);
-                        GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(100), 1.0F, -1, xCoord, yCoord, zCoord);
+                        GT_Utility.sendSoundToPlayers(worldObj, SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1, xCoord, yCoord, zCoord);
                     }
                     return true;
                 }
@@ -750,14 +743,14 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity implements IGregTec
                             setCoverDataAtSide(tSide, getCoverBehaviorAtSideNew(tSide).onCoverScrewdriverClick(tSide, getCoverIDAtSide(tSide), getComplexCoverDataAtSide(tSide), this, aPlayer, 0.5F, 0.5F, 0.5F));
                             mMetaTileEntity.onScrewdriverRightClick(tSide, aPlayer, aX, aY, aZ);
                             mMetaTileEntity.markDirty();
-                            GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(100), 1.0F, -1, xCoord, yCoord, zCoord);
+                            GT_Utility.sendSoundToPlayers(worldObj, SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1, xCoord, yCoord, zCoord);
                         }
                     } else {
                         if (GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
                             setCoverDataAtSide(aSide, getCoverBehaviorAtSideNew(aSide).onCoverScrewdriverClick(aSide, getCoverIDAtSide(aSide), getComplexCoverDataAtSide(aSide), this, aPlayer, aX, aY, aZ));
                             mMetaTileEntity.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
                             mMetaTileEntity.markDirty();
-                            GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(100), 1.0F, -1, xCoord, yCoord, zCoord);
+                            GT_Utility.sendSoundToPlayers(worldObj, SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1, xCoord, yCoord, zCoord);
                         }
                     }
                     return true;
@@ -776,7 +769,7 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity implements IGregTec
                         else enableWorking();
                         mMetaTileEntity.markDirty();
                         GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("090","Machine Processing: ") + (isAllowedToWork() ? GT_Utility.trans("088","Enabled") : GT_Utility.trans("087","Disabled")));
-                        GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(101), 1.0F, -1, xCoord, yCoord, zCoord);
+                        GT_Utility.sendSoundToPlayers(worldObj, SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE, 1.0F, -1, xCoord, yCoord, zCoord);
                     }
                     return true;
                 }
@@ -785,7 +778,7 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity implements IGregTec
                     if (mMetaTileEntity.onWireCutterRightClick(aSide, tSide, aPlayer, aX, aY, aZ)) {
                         mMetaTileEntity.markDirty();
                         //logic handled internally
-                        GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(100), 1.0F, -1, xCoord, yCoord, zCoord);
+                        GT_Utility.sendSoundToPlayers(worldObj, SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1, xCoord, yCoord, zCoord);
                     }
                     doEnetUpdate();
                     return true;
@@ -795,12 +788,12 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity implements IGregTec
                 	if (mMetaTileEntity.onSolderingToolRightClick(aSide, tSide, aPlayer, aX, aY, aZ)) {
                         mMetaTileEntity.markDirty();
                 	    //logic handled internally
-                        GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(103), 1.0F, -1, xCoord, yCoord, zCoord);
+                        GT_Utility.sendSoundToPlayers(worldObj, SoundResource.IC2_TOOLS_BATTERY_USE, 1.0F, -1, xCoord, yCoord, zCoord);
                     } else if (GT_ModHandler.useSolderingIron(tCurrentItem, aPlayer)) {
                         mMetaTileEntity.markDirty();
                         mStrongRedstone ^= (1 << tSide);
                         GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("091","Redstone Output at Side ") + tSide + GT_Utility.trans("092"," set to: ") + ((mStrongRedstone & (1 << tSide)) != 0 ? GT_Utility.trans("093","Strong") : GT_Utility.trans("094","Weak")));
-                        GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(103), 3.0F, -1, xCoord, yCoord, zCoord);
+                        GT_Utility.sendSoundToPlayers(worldObj, SoundResource.IC2_TOOLS_BATTERY_USE, 3.0F, -1, xCoord, yCoord, zCoord);
                         issueBlockUpdate();
                     }
                     doEnetUpdate();
@@ -818,14 +811,14 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity implements IGregTec
                             setCoverItemAtSide(coverSide, tCurrentItem);
                             mMetaTileEntity.markDirty();
                             if (!aPlayer.capabilities.isCreativeMode) tCurrentItem.stackSize--;
-                            GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(100), 1.0F, -1, xCoord, yCoord, zCoord);
+                            GT_Utility.sendSoundToPlayers(worldObj, SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1, xCoord, yCoord, zCoord);
                         }
                         return true;
                     }
                 } else {
                     if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sCrowbarList)) {
                         if (GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
-                            GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(0), 1.0F, -1, xCoord, yCoord, zCoord);
+                            GT_Utility.sendSoundToPlayers(worldObj, SoundResource.RANDOM_BREAK, 1.0F, -1, xCoord, yCoord, zCoord);
                             dropCover(coverSide, aSide, false);
                             mMetaTileEntity.markDirty();
                         }

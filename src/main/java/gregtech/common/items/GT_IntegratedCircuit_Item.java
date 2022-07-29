@@ -125,7 +125,7 @@ public class GT_IntegratedCircuit_Item extends GT_Generic_Item implements INetwo
 
     @Override
     @SideOnly(Side.CLIENT)
-    public final void getSubItems(Item var1, CreativeTabs aCreativeTab, List aList) {
+    public final void getSubItems(Item aItem, CreativeTabs aCreativeTab, List aList) {
         aList.add(new ItemStack(this, 1, 0));
     }
 
@@ -151,8 +151,8 @@ public class GT_IntegratedCircuit_Item extends GT_Generic_Item implements INetwo
     }
 
     @Override
-    public IIcon getIconFromDamage(int damage) {
-        byte circuitMode = ((byte) (damage & 0xFF)); // Mask out the MSB Comparison Mode Bits. See: getModeString
+    public IIcon getIconFromDamage(int aMetaData) {
+        byte circuitMode = ((byte) (aMetaData & 0xFF)); // Mask out the MSB Comparison Mode Bits. See: getModeString
         return mIconDamage[circuitMode < mIconDamage.length ? circuitMode : 0];
     }
 
