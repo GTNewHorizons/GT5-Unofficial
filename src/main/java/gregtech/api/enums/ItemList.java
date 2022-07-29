@@ -1412,6 +1412,7 @@ public enum ItemList implements IItemContainer {
     IndustrialApiary_Upgrade_Acceleration_6,
     IndustrialApiary_Upgrade_Acceleration_7,
     IndustrialApiary_Upgrade_Acceleration_8,
+    IndustrialApiary_Upgrade_Acceleration_8_Upgraded,
 
     Neutron_Reflector,
 
