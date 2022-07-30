@@ -953,16 +953,16 @@ public class DreamCraftRecipeLoader {
                         Materials.UUMatter.getFluid(32000L)},
                 getItemContainer("Hatch_Dynamo_UMV").get(1L), 1000, 32000000);
 
-        //UHV Circuit ASMD
+        //UHV Circuit Wetwaremainframe
         TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Circuit_Wetwaresupercomputer.get(1L),
                 24000, 64, 50000, 4, new Object[]{
                         GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Tritanium, 2),
                         ItemList.Circuit_Wetwaresupercomputer.get(2L),
                         ItemList.ZPM_Coil.get(16L),
-                        ItemList.Circuit_Parts_CapacitorASMD.get(16L),
-                        ItemList.Circuit_Parts_ResistorASMD.get(16L),
-                        ItemList.Circuit_Parts_TransistorASMD.get(16L),
-                        ItemList.Circuit_Parts_DiodeASMD.get(16L),
+                        new ItemStack[]{ItemList.Circuit_Parts_CapacitorASMD.get(16L), ItemList.Circuit_Parts_CapacitorXSMD.get(4L)},
+                        new ItemStack[]{ItemList.Circuit_Parts_ResistorASMD.get(16L), ItemList.Circuit_Parts_ResistorXSMD.get(4L)},
+                        new ItemStack[]{ItemList.Circuit_Parts_TransistorASMD.get(16L), ItemList.Circuit_Parts_TransistorXSMD.get(4L)},
+                        new ItemStack[]{ItemList.Circuit_Parts_DiodeASMD.get(16L), ItemList.Circuit_Parts_DiodeXSMD.get(4L)},
                         ItemList.Circuit_Chip_Ram.get(48L),
                         GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorZPM, 64L),
                         new Object[]{OrePrefixes.foil.get(Materials.AnySyntheticRubber), 64L},
