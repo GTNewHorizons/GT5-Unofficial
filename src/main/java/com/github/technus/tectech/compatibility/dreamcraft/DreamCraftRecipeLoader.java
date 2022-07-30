@@ -1091,8 +1091,8 @@ public class DreamCraftRecipeLoader {
                             GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.SpaceTime, 16L),
                             GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Infinity, 16L),
 
-                            ItemList.Sensor_UEV.get(16L),
-                            ItemList.Emitter_UEV.get(16L),
+                            ItemList.Sensor_UMV.get(16L),
+                            ItemList.Emitter_UMV.get(16L),
                             GT_ModHandler.getModItem("eternalsingularity", "eternal_singularity", 16L)
 
                     },
@@ -1122,9 +1122,9 @@ public class DreamCraftRecipeLoader {
                             GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Osmiridium, 8L),
                             GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Osmiridium, 8L),
 
-                            ItemList.Electric_Motor_UEV.get(64L),
-                            ItemList.Electric_Piston_UEV.get(64L),
-                            ItemList.Field_Generator_UEV.get(16L),
+                            ItemList.Electric_Motor_UMV.get(64L),
+                            ItemList.Electric_Piston_UMV.get(64L),
+                            ItemList.Field_Generator_UMV.get(16L),
                             getItemContainer("QuantumCircuit").get(1L).splitStack(32),
                     },
                     new FluidStack[]{
