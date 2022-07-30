@@ -8,6 +8,7 @@ import java.util.Map;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsBotania;
 import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
@@ -291,8 +292,10 @@ public class GT_Assemblyline_Server {
 									Materials.Forcillium,
 									Materials.GreenSapphire,
 									Materials.InfusedFire,
-									Materials.Jasper
-							};
+									Materials.Jasper,
+                                    MaterialsBotania.ManaDiamond,
+                                    MaterialsBotania.BotaniaDragonstone
+                            };
 							break;
 						case 2:
 							mMats = new Materials[]{

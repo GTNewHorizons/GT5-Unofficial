@@ -53,7 +53,6 @@ public class TextureSet {
     private static final String aTextVoidDir = "/void";
 
     public TextureSet(String aSetName) {
-        boolean is_custom = false;
         mSetName = aSetName;
         mTextures[0] = new Textures.ItemIcons.CustomIcon(aTextMatIconDir + mSetName + "/dustTiny");
         mTextures[1] = new Textures.ItemIcons.CustomIcon(aTextMatIconDir + mSetName + "/dustSmall");
@@ -189,5 +188,4 @@ public class TextureSet {
         this("CUSTOM/" + aSetName);
         this.is_custom = is_custom;
     }
-
 }
