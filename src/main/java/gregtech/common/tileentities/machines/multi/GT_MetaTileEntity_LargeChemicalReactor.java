@@ -53,6 +53,19 @@ public class GT_MetaTileEntity_LargeChemicalReactor extends GT_MetaTileEntity_En
                     ofHatchAdder(GT_MetaTileEntity_LargeChemicalReactor::addMaintenanceToMachineList, CASING_INDEX, 2),
                     ofHatchAdder(GT_MetaTileEntity_LargeChemicalReactor::addEnergyInputToMachineList, CASING_INDEX, 2),
                     onElementPass(GT_MetaTileEntity_LargeChemicalReactor::onCoilAdded, ofBlock(GregTech_API.sBlockCasings5, 0)),
+                    onElementPass(GT_MetaTileEntity_LargeChemicalReactor::onCoilAdded, ofBlock(GregTech_API.sBlockCasings5, 1)),
+                    onElementPass(GT_MetaTileEntity_LargeChemicalReactor::onCoilAdded, ofBlock(GregTech_API.sBlockCasings5, 2)),
+                    onElementPass(GT_MetaTileEntity_LargeChemicalReactor::onCoilAdded, ofBlock(GregTech_API.sBlockCasings5, 3)),
+                    onElementPass(GT_MetaTileEntity_LargeChemicalReactor::onCoilAdded, ofBlock(GregTech_API.sBlockCasings5, 4)),
+                    onElementPass(GT_MetaTileEntity_LargeChemicalReactor::onCoilAdded, ofBlock(GregTech_API.sBlockCasings5, 5)),
+                    onElementPass(GT_MetaTileEntity_LargeChemicalReactor::onCoilAdded, ofBlock(GregTech_API.sBlockCasings5, 6)),
+                    onElementPass(GT_MetaTileEntity_LargeChemicalReactor::onCoilAdded, ofBlock(GregTech_API.sBlockCasings5, 7)),
+                    onElementPass(GT_MetaTileEntity_LargeChemicalReactor::onCoilAdded, ofBlock(GregTech_API.sBlockCasings5, 8)),
+                    onElementPass(GT_MetaTileEntity_LargeChemicalReactor::onCoilAdded, ofBlock(GregTech_API.sBlockCasings5, 9)),
+                    onElementPass(GT_MetaTileEntity_LargeChemicalReactor::onCoilAdded, ofBlock(GregTech_API.sBlockCasings5, 10)),
+                    onElementPass(GT_MetaTileEntity_LargeChemicalReactor::onCoilAdded, ofBlock(GregTech_API.sBlockCasings5, 11)),
+                    onElementPass(GT_MetaTileEntity_LargeChemicalReactor::onCoilAdded, ofBlock(GregTech_API.sBlockCasings5, 12)),
+                    onElementPass(GT_MetaTileEntity_LargeChemicalReactor::onCoilAdded, ofBlock(GregTech_API.sBlockCasings5, 13)),
                     onElementPass(GT_MetaTileEntity_LargeChemicalReactor::onCasingAdded, ofBlock(GregTech_API.sBlockCasings8, 0))
             ))
             .build();
