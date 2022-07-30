@@ -68,6 +68,7 @@ import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.MULTI
 import static com.github.bartimaeusnek.bartworks.util.BW_Util.ofGlassTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
 public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_TileEntity_BioVat> {
@@ -280,7 +281,11 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBa
 
         if (tFluids.length <= 0) return false;
 
-        GT_Recipe gtRecipe = gtRecipeMap.findRecipe(this.getBaseMetaTileEntity(), this.mLastRecipe, false, this.getMaxInputVoltage(), tFluids, itemStack, tInputs);
+        long tVoltage = getMaxInputVoltage();
+        byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
+        long tEnergy = V[tTier];
+
+        GT_Recipe gtRecipe = gtRecipeMap.findRecipe(this.getBaseMetaTileEntity(), this.mLastRecipe, false, tEnergy, tFluids, itemStack, tInputs);
 
         if (gtRecipe == null) return false;
 
@@ -317,7 +322,7 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBa
 
         this.mOutputFluids = new FluidStack[]{new FluidStack(recipeFluidOutput, recipeFluidOutput.amount * this.mTimes)};
 
-        BW_Util.calculateOverclockedNessMulti(gtRecipe.mEUt, gtRecipe.mDuration, 1, this.getMaxInputVoltage(), this);
+        BW_Util.calculateOverclockedNessMulti(gtRecipe.mEUt, gtRecipe.mDuration, 1, tEnergy, this);
 
         if (this.mEUt > 0)
             this.mEUt = -this.mEUt;
