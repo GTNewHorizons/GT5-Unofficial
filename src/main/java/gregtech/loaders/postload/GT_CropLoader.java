@@ -57,7 +57,7 @@ public class GT_CropLoader implements Runnable {
                     "Coal",
                     "Diamond",
                     "Crystal"
-            }, Materials.Diamond, GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Diamond, 1L), new ItemStack[] {
+            }, Materials.Diamond, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Diamond, 1L), new ItemStack[] {
                     new ItemStack(Items.diamond, 1)
             });
             new GT_BaseCrop(129, "Withereed", "CovertJaguar", null, 8, 4, 0, 1, 4, 2, 0, 4, 1, 3, new String[] {
@@ -210,25 +210,25 @@ public class GT_CropLoader implements Runnable {
                     "Bad",
                     "Scrap"
             }, GT_OreDictUnificator.get(OrePrefixes.gem, Materials.FoolsRuby, 1L), new ItemStack[] {
-                    ItemList.IC2_Plantball.get(1), ItemList.IC2_Scrap.get(1), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Plutonium241, 1L)
+                    ItemList.IC2_Plantball.get(1), ItemList.IC2_Scrap.get(1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Plutonium241, 1L)
             });
             new GT_BaseCrop(150, "Lazulia", "unknown", null, 7, 4, 0, 2, 4, 4, 2, 5, 7, 4, new String[] {
                     "Shiny",
                     "Bad",
                     "Crystal",
                     "Lapis"
-            }, Materials.Lapis, GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Lapis, 1L), null);
+            }, Materials.Lapis, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lapis, 1L), null);
             new GT_BaseCrop(151, "Glowheat", "unknown", null, 10, 7, 0, 5, 7, 3, 3, 3, 5, 4, new String[] {
                     "Light",
                     "Shiny",
                     "Crystal"
-            }, GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glowstone, 1L), null);
+            }, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 1L), null);
             new GT_BaseCrop(153, "Fertilia", "unknown", null, 3, 4, 0, 1, 4, 2, 3, 5, 4, 8, new String[] {
                     "Growth",
                     "Healing",
                     "Flower"
-            }, GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Calcite, 1L), new ItemStack[] {
-                    ItemList.IC2_Fertilizer.get(1), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Apatite, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Phosphate, 1L)
+            }, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Calcite, 1L), new ItemStack[] {
+                    ItemList.IC2_Fertilizer.get(1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Apatite, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Phosphate, 1L)
             });
             new GT_BaseCrop(154, "Bauxia", "unknown", null, 6, 3, 0, 2, 3, 5, 0, 2, 3, 3, new String[] {
                     "Metal",
@@ -268,8 +268,8 @@ public class GT_CropLoader implements Runnable {
                     "Nether",
                     "Undead",
                     "Netherstar"
-            }, Materials.NetherStar, GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Coal, 1L), new ItemStack[] {
-                    GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 1L), new ItemStack(Items.skull, 1), new ItemStack(Items.skull, 1, 1), new ItemStack(Items.skull, 1, 1), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.NetherStar, 1L)
+            }, Materials.NetherStar, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 1L), new ItemStack[] {
+                    GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 1L), new ItemStack(Items.skull, 1), new ItemStack(Items.skull, 1, 1), new ItemStack(Items.skull, 1, 1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.NetherStar, 1L)
             });
             new GT_BaseCrop(160, "Zomplant", "unknown", null, 3, 4, 0, 1, 4, 1, 3, 4, 2, 6, new String[] {
                     "Zombie",
@@ -290,15 +290,15 @@ public class GT_CropLoader implements Runnable {
                     "Crystal",
                     "Fire",
                     "Nether"
-            }, GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.NetherQuartz, 1L), new ItemStack[] {
-                    GT_OreDictUnificator.get(OrePrefixes.gem, Materials.NetherQuartz, 1L), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.CertusQuartz, 1L),
+            }, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.NetherQuartz, 1L), new ItemStack[] {
+                    GT_OreDictUnificator.get(OrePrefixes.gem, Materials.NetherQuartz, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.CertusQuartz, 1L),
             });
             new GT_BaseCrop(164, "Olivia", "unknown", null, 2, 4, 0, 3, 4, 1, 0, 1, 4, 0, new String[] {
                     "Crystal",
                     "Shiny",
                     "Processing",
                     "Olivine"
-            }, Materials.Olivine, GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Olivine, 1L), new ItemStack[] {
+            }, Materials.Olivine, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Olivine, 1L), new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Olivine, 1L),
             });
             new GT_BaseCrop(165, "Sapphirum", "unknown", null, 4, 4, 0, 3, 4, 1, 0, 1, 5, 0, new String[] {
@@ -306,7 +306,7 @@ public class GT_CropLoader implements Runnable {
                     "Shiny",
                     "Metal",
                     "Sapphire"
-            }, Materials.Sapphire, GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Sapphire, 1L), new ItemStack[] {
+            }, Materials.Sapphire, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sapphire, 1L), new ItemStack[] {
                     GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Sapphire, 1L),
             });
             new GT_BaseCrop(166, "Pyrolusium", "unknown", null, 12, 3, 0, 2, 3, 1, 0, 1, 1, 0, new String[] {
@@ -339,7 +339,7 @@ public class GT_CropLoader implements Runnable {
                     "Heavy",
                     "Alien",
                     "Naquadah"
-            }, Materials.Naquadah, GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Endstone, 1L), new ItemStack[] {
+            }, Materials.Naquadah, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Endstone, 1L), new ItemStack[] {
                     ItemList.Crop_Drop_Naquadah.get(1)
             });
             new GT_BaseCrop(171, "Lemon", "unknown", null, 4, 4, 0, 1, 4, 1, 1, 0, 2, 0, new String[] {
