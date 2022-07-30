@@ -51,13 +51,13 @@ public class BaseRecipeLoader {
                     new ItemStack(StructureLibAPI.getBlockHint(), 1, i), 32, 120);
         }
 
-        //Scrench
-//        GT_ModHandler.addCraftingRecipe(new ItemStack(FrontRotationTriggerItem.INSTANCE,1),
-//                GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-//                new Object[]{"fPR", " RP", "S h",
-//                        'P', OrePrefixes.plate.get(Materials.Cobalt),
-//                        'R', OrePrefixes.stick.get(Materials.Cobalt),
-//                        'S', OrePrefixes.stick.get(Materials.Wood),});
+        //Front Rotation Tool
+        GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem(StructureLibAPI.MOD_ID, "item.structurelib.frontRotationTool", 1L, 0),
+                GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
+                new Object[]{"fPR", " RP", "S h",
+                        'P', OrePrefixes.plate.get(Materials.Cobalt),
+                        'R', OrePrefixes.stick.get(Materials.Cobalt),
+                        'S', OrePrefixes.stick.get(Materials.Wood),});
 
         //BLUEprint
 //        GT_ModHandler.addShapelessCraftingRecipe(new ItemStack(ConstructableTriggerItem.INSTANCE, 1),
