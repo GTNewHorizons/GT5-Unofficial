@@ -128,16 +128,7 @@ public abstract class GT_MetaTileEntity_LargeTurbine extends GT_MetaTileEntity_E
                                 * GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mToolSpeed
                                 * 50));
 
-                int toolQualityLevel = GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mToolQuality;
-                if (toolQualityLevel >= 6) {
-                    overflowMultiplier = 3;
-                }
-                else if (toolQualityLevel >= 3) {
-                    overflowMultiplier = 2;
-                }
-                else {
-                    overflowMultiplier = 1;
-                }
+                overflowMultiplier = getOverflowMultiplier(aStack);
 
                 flowMultipliers[0] = GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mSteamMultiplier;
                 flowMultipliers[1] = GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mGasMultiplier;
@@ -192,6 +183,21 @@ public abstract class GT_MetaTileEntity_LargeTurbine extends GT_MetaTileEntity_E
             }
         }
         return aTotal;
+    }
+
+    public int getOverflowMultiplier(ItemStack aStack) {
+        int aOverflowMultiplier = 0;
+        int toolQualityLevel = GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mToolQuality;
+        if (toolQualityLevel >= 6) {
+            aOverflowMultiplier = 3;
+        }
+        else if (toolQualityLevel >= 3) {
+            aOverflowMultiplier = 2;
+        }
+        else {
+            aOverflowMultiplier = 1;
+        }
+        return aOverflowMultiplier;
     }
 
     @Override

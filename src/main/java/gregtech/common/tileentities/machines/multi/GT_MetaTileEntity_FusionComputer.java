@@ -349,7 +349,7 @@ public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity
                             }
                     }
                     if (this.mEUStore <= 0 && mMaxProgresstime > 0) {
-                        stopMachine();
+                        criticalStopMachine();
                     }
                     if (mMaxProgresstime > 0) {
                         this.getBaseMetaTileEntity().decreaseStoredEnergyUnits(mEUt, true);
@@ -380,8 +380,7 @@ public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity
                                 this.mEUStore = (int) aBaseMetaTileEntity.getStoredEU();
                                 if (checkRecipe(mInventory[1])) {
                                     if (this.mEUStore < this.mLastRecipe.mSpecialValue - this.mEUt) {
-                                        mMaxProgresstime = 0;
-                                        turnCasingActive(false);
+                                        criticalStopMachine();
                                     }
                                     aBaseMetaTileEntity.decreaseStoredEnergyUnits(this.mLastRecipe.mSpecialValue - this.mEUt, true);
                                 }
@@ -391,7 +390,6 @@ public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity
                         }
                     }
                 } else {
-                    turnCasingActive(false);
                     this.mLastRecipe = null;
                     stopMachine();
                 }
@@ -406,13 +404,13 @@ public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity
         if (mEUt < 0) {
             if (!drainEnergyInput(((long) -mEUt * 10000) / Math.max(1000, mEfficiency))) {
                 this.mLastRecipe = null;
-                stopMachine();
+                criticalStopMachine();
                 return false;
             }
         }
         if (this.mEUStore <= 0) {
             this.mLastRecipe = null;
-            stopMachine();
+            criticalStopMachine();
             return false;
         }
         return true;
@@ -435,6 +433,12 @@ public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity
     @Override
     public boolean explodesOnComponentBreak(ItemStack aStack) {
         return false;
+    }
+
+    @Override
+    public void stopMachine() {
+        super.stopMachine();
+        turnCasingActive(false);
     }
 
     @Override
