@@ -882,7 +882,7 @@ public class DreamCraftRecipeLoader {
                         ItemList.Reactor_Coolant_Sp_6.get(1L),
                         ItemList.Reactor_Coolant_Sp_6.get(1L),
                         ItemList.Reactor_Coolant_Sp_6.get(1L),
-                        ItemList.Electric_Pump_UIV.get(2L)},
+                        ItemList.Electric_Pump_UIV.get(1L)},
                 new FluidStack[]{
                         Materials.SuperCoolant.getFluid(16_000L),
                         new FluidStack(solderUEV, 20*144),
@@ -902,7 +902,7 @@ public class DreamCraftRecipeLoader {
                         ItemList.Reactor_Coolant_Sp_6.get(1L),
                         ItemList.Reactor_Coolant_Sp_6.get(1L),
                         ItemList.Reactor_Coolant_Sp_6.get(1L),
-                        ItemList.Electric_Pump_UIV.get(2L)},
+                        ItemList.Electric_Pump_UIV.get(1L)},
                 new FluidStack[]{
                         Materials.SuperCoolant.getFluid(16_000L),
                         new FluidStack(solderUEV, 20*144),
@@ -926,7 +926,7 @@ public class DreamCraftRecipeLoader {
                         ItemList.Reactor_Coolant_Sp_6.get(1L),
                         ItemList.Reactor_Coolant_Sp_6.get(1L),
                         ItemList.Reactor_Coolant_Sp_6.get(1L),
-                        ItemList.Electric_Pump_UMV.get(4L)},
+                        ItemList.Electric_Pump_UMV.get(1L)},
                 new FluidStack[]{
                         Materials.SuperCoolant.getFluid(32_000L),
                         new FluidStack(solderUEV, 40*144),
@@ -949,7 +949,7 @@ public class DreamCraftRecipeLoader {
                         ItemList.Reactor_Coolant_Sp_6.get(1L),
                         ItemList.Reactor_Coolant_Sp_6.get(1L),
                         ItemList.Reactor_Coolant_Sp_6.get(1L),
-                        ItemList.Electric_Pump_UMV.get(4L)},
+                        ItemList.Electric_Pump_UMV.get(1L)},
                 new FluidStack[]{
                         Materials.SuperCoolant.getFluid(32_000L),
                         new FluidStack(solderUEV, 40*144),
