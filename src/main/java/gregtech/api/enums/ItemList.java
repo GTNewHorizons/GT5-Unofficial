@@ -416,6 +416,7 @@ public enum ItemList implements IItemContainer {
     Electric_Pump_MAX,
 
     Tesseract,
+    EnergisedTesseract,
 
     Steam_Valve_LV,
     Steam_Valve_MV,

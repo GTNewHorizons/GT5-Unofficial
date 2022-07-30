@@ -28,6 +28,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
 
+import static gregtech.api.GregTech_API.mGTPlusPlus;
 import static gregtech.api.enums.GT_Values.*;
 
 public class GT_MachineRecipeLoader implements Runnable {
@@ -619,6 +620,17 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addBlastRecipe(GT_OreDictUnificator.get(OrePrefixes.block, Materials.SiliconSG, 64), ItemList.GalliumArsenideCrystal.get(4L), GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Americium, 4), GT_Utility.getIntegratedCircuit(3), Materials.Radon.getGas(16000), GT_Values.NF, ItemList.Circuit_Silicon_Ingot5.get(1), GT_Values.NI, GT_Values.NI, GT_Values.NI, 21000, 30720, 9000);
         GT_Values.RA.addCutterRecipe(new ItemStack[]{ItemList.Circuit_Silicon_Ingot5.get(1)}, new ItemStack[]{ItemList.Circuit_Silicon_Wafer5.get(64), ItemList.Circuit_Silicon_Wafer5.get(64), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 64L)}, 3200, 7680, true);
 
+        // Energised tesseract
+        if (mGTPlusPlus) {
+            GT_Values.RA.addLaserEngraverRecipe(
+                new ItemStack[]{ItemList.Tesseract.get(1), GT_Utility.copyAmount(0L, GT_ModHandler.getModItem("miscutils", "MU-metaitem.01:>", 1, 32105))},
+                new FluidStack[]{GT_Values.NF},
+
+                new ItemStack[]{ItemList.EnergisedTesseract.get(1)},
+                new FluidStack[]{Materials.ExcitedDTEC.getFluid(100L)},
+                30 * 20, 32_000_000, true
+            );
+        }
         // -----------------------------------------------------------------------------------------------------------------------------
 
         // Catalysts for Plasma Forge.
@@ -3922,7 +3934,7 @@ public class GT_MachineRecipeLoader implements Runnable {
 
         GT_Values.RA.addBlastRecipe(Materials.Galena.getDust(1), GT_Values.NI, Materials.Oxygen.getGas(3000), Materials.SulfurDioxide.getGas(1000), Materials.RoastedLead.getDust(1), Materials.Ash.getDustTiny(1), 120, 120, 1200);
 
-        if (GregTech_API.mGTPlusPlus) {
+        if (mGTPlusPlus) {
 
             GT_Values.RA.addBlastRecipe(
                 Materials.TranscendentMetal.getDust(1),
