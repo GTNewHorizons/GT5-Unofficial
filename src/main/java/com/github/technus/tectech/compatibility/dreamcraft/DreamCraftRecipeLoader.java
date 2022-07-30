@@ -1180,7 +1180,7 @@ public class DreamCraftRecipeLoader {
                     32_000_000, 4096, 32_000_000, 1, new Object[]{
                             ItemList.Casing_Dim_Bridge.get(4),
                             GT_ModHandler.getModItem("gregtech", "gt.blockmachines", 16L, 12730),
-                            getItemContainer("Hatch_Energy_UIV").get(4L),
+                            getItemContainer("Hatch_Energy_UEV").get(4L),
                             GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUEV, 6),
                             ItemList.Reactor_Coolant_Sp_6.get(1L),
                             ItemList.Reactor_Coolant_Sp_6.get(1L),
