@@ -833,6 +833,7 @@ public class DreamCraftRecipeLoader {
                 },
                 ItemList.Hatch_Dynamo_MAX.get(1L), 1000, 2000000);
 
+        // UEV Dynamo / energy hatch
         TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Hatch_Energy_MAX.get(1L),
                 48000, 32, 100000, 4, new Object[]{
                         getItemContainer("Hull_UEV").get(1L),
@@ -866,11 +867,12 @@ public class DreamCraftRecipeLoader {
                         new FluidStack(solderUEV, 20*144),
                         Materials.UUMatter.getFluid(8000L)},
                 getItemContainer("Hatch_Dynamo_UEV").get(1L), 1000, 8000000);
-
+        
+        // UIV Dynamo/energy hatch
         TT_recipeAdder.addResearchableAssemblylineRecipe(getItemContainer("Hatch_Energy_UEV").get(1L),
                 96_000, 64, 200_000, 8, new Object[]{
                         getItemContainer("Hull_UIV").get(1L),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.SuperconductorUHV, 8L),
+                        GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.SuperconductorUEV, 8L),
                         ItemList.Circuit_Chip_QPIC.get(4L),
                         getItemContainer("NanoCircuit").get(2),
                         ItemList.UHV_Coil.get(8L),
@@ -880,17 +882,17 @@ public class DreamCraftRecipeLoader {
                         ItemList.Reactor_Coolant_Sp_6.get(1L),
                         ItemList.Reactor_Coolant_Sp_6.get(1L),
                         ItemList.Reactor_Coolant_Sp_6.get(1L),
-                        ItemList.Electric_Pump_UEV.get(2L)},
+                        ItemList.Electric_Pump_UIV.get(2L)},
                 new FluidStack[]{
-                        new FluidStack(FluidRegistry.getFluid("ic2coolant"), 64_000),
+                        Materials.SuperCoolant.getFluid(16_000L),
                         new FluidStack(solderUEV, 20*144),
                         Materials.UUMatter.getFluid(16_000L)},
-                getItemContainer("Hatch_Energy_UIV").get(1L), 1000, 16_000_000);
+                getItemContainer("Hatch_Energy_UIV").get(1L), 1000, 32_000_000);
 
         TT_recipeAdder.addResearchableAssemblylineRecipe(getItemContainer("Hatch_Dynamo_UEV").get(1L),
                 192_000, 128, 400_000, 16, new Object[]{
                         getItemContainer("Hull_UIV").get(1L),
-                        GT_OreDictUnificator.get(OrePrefixes.spring, Materials.Longasssuperconductornameforuhvwire, 32L),
+                        GT_OreDictUnificator.get(OrePrefixes.spring, Materials.SuperconductorUEVBase, 32L),
                         ItemList.Circuit_Chip_QPIC.get(4L),
                         getItemContainer("NanoCircuit").get(2),
                         ItemList.UHV_Coil.get(8L),
@@ -900,17 +902,18 @@ public class DreamCraftRecipeLoader {
                         ItemList.Reactor_Coolant_Sp_6.get(1L),
                         ItemList.Reactor_Coolant_Sp_6.get(1L),
                         ItemList.Reactor_Coolant_Sp_6.get(1L),
-                        ItemList.Electric_Pump_UEV.get(2L)},
+                        ItemList.Electric_Pump_UIV.get(2L)},
                 new FluidStack[]{
-                        new FluidStack(FluidRegistry.getFluid("ic2coolant"), 64_000),
+                        Materials.SuperCoolant.getFluid(16_000L),
                         new FluidStack(solderUEV, 20*144),
                         Materials.UUMatter.getFluid(16_000L)},
-                getItemContainer("Hatch_Dynamo_UIV").get(1L), 1000, 16_000_000);
+                getItemContainer("Hatch_Dynamo_UIV").get(1L), 1000, 32_000_000);
 
+        // UMV Dynamo/energy hatch
         TT_recipeAdder.addResearchableAssemblylineRecipe(getItemContainer("Hatch_Energy_UIV").get(1L),
                 192000, 128, 400000, 16, new Object[]{
                         getItemContainer("Hull_UMV").get(1L),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUHV, 16L),
+                        GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUEV, 16L),
                         ItemList.Circuit_Chip_QPIC.get(4L),
                         getItemContainer("PikoCircuit").get(2),
                         ItemList.UHV_Coil.get(16L),
@@ -923,17 +926,17 @@ public class DreamCraftRecipeLoader {
                         ItemList.Reactor_Coolant_Sp_6.get(1L),
                         ItemList.Reactor_Coolant_Sp_6.get(1L),
                         ItemList.Reactor_Coolant_Sp_6.get(1L),
-                        ItemList.Electric_Pump_UEV.get(4L)},
+                        ItemList.Electric_Pump_UMV.get(4L)},
                 new FluidStack[]{
-                        new FluidStack(FluidRegistry.getFluid("ic2coolant"), 128000),
+                        Materials.SuperCoolant.getFluid(32_000L),
                         new FluidStack(solderUEV, 40*144),
                         Materials.UUMatter.getFluid(32000L)},
-                getItemContainer("Hatch_Energy_UMV").get(1L), 1000, 32000000);
+                getItemContainer("Hatch_Energy_UMV").get(1L), 1000, 128_000_000);
 
         TT_recipeAdder.addResearchableAssemblylineRecipe(getItemContainer("Hatch_Dynamo_UIV").get(1L),
                 384000, 256, 800000, 32, new Object[]{
                         getItemContainer("Hull_UMV").get(1L),
-                        GT_OreDictUnificator.get(OrePrefixes.spring, Materials.Longasssuperconductornameforuhvwire, 64L),
+                        GT_OreDictUnificator.get(OrePrefixes.spring, Materials.SuperconductorUEVBase, 64L),
                         ItemList.Circuit_Chip_QPIC.get(4L),
                         getItemContainer("PikoCircuit").get(2),
                         ItemList.UHV_Coil.get(16L),
@@ -946,12 +949,12 @@ public class DreamCraftRecipeLoader {
                         ItemList.Reactor_Coolant_Sp_6.get(1L),
                         ItemList.Reactor_Coolant_Sp_6.get(1L),
                         ItemList.Reactor_Coolant_Sp_6.get(1L),
-                        ItemList.Electric_Pump_UEV.get(4L)},
+                        ItemList.Electric_Pump_UMV.get(4L)},
                 new FluidStack[]{
-                        new FluidStack(FluidRegistry.getFluid("ic2coolant"), 128000),
+                        Materials.SuperCoolant.getFluid(32_000L),
                         new FluidStack(solderUEV, 40*144),
                         Materials.UUMatter.getFluid(32000L)},
-                getItemContainer("Hatch_Dynamo_UMV").get(1L), 1000, 32000000);
+                getItemContainer("Hatch_Dynamo_UMV").get(1L), 1000, 128_000_000);
 
         //UHV Circuit ASMD
         TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Circuit_Wetwaresupercomputer.get(1L),
@@ -988,7 +991,7 @@ public class DreamCraftRecipeLoader {
                 }, new FluidStack[]{
                         new FluidStack(solderUEV, 1440),
                         Materials.BioMediumSterilized.getFluid(1440L),
-                        new FluidStack(FluidRegistry.getFluid("ic2coolant"), 10000)
+                        Materials.SuperCoolant.getFluid(10_000L),
                 },
                 ItemList.Circuit_Biowaresupercomputer.get(1L), 4000, 500000);
 
@@ -1009,7 +1012,7 @@ public class DreamCraftRecipeLoader {
                 }, new FluidStack[]{
                         new FluidStack(solderUEV, 2880),
                         Materials.BioMediumSterilized.getFluid(2880L),
-                        new FluidStack(FluidRegistry.getFluid("ic2coolant"), 20000)
+                        Materials.SuperCoolant.getFluid(20_000L),
                 }, ItemList.Circuit_Biomainframe.get(1L), 6000, 2000000);
 
 
@@ -1260,21 +1263,21 @@ public class DreamCraftRecipeLoader {
         Fluid oganesson = FluidRegistry.getFluid("oganesson");
         //Deep Dark Portal
         TT_recipeAdder.addResearchableAssemblylineRecipe(GT_ModHandler.getModItem("dreamcraft", "item.HeavyDutyPlateTier8", 1, 0),
-                16777216, 2048, 2000000, 64, new Object[]{
+                16_777_216, 2048, 2_000_000, 64, new Object[]{
                         GT_ModHandler.getModItem("ExtraUtilities", "cobblestone_compressed", 1, 7),
                         GT_ModHandler.getModItem("IC2", "blockMachine2", 1, 0),
                         GT_OreDictUnificator.get(OrePrefixes.block, Materials.Infinity, 4L),
-                        new Object[]{OrePrefixes.circuit.get(Materials.Nano), 1},
-                        new Object[]{OrePrefixes.circuit.get(Materials.Nano), 1},
-                        new Object[]{OrePrefixes.circuit.get(Materials.Nano), 1},
-                        new Object[]{OrePrefixes.circuit.get(Materials.Nano), 1},
+                        new Object[]{OrePrefixes.circuit.get(Materials.Quantum), 1},
+                        new Object[]{OrePrefixes.circuit.get(Materials.Quantum), 1},
+                        new Object[]{OrePrefixes.circuit.get(Materials.Quantum), 1},
+                        new Object[]{OrePrefixes.circuit.get(Materials.Quantum), 1},
                         GT_ModHandler.getModItem("dreamcraft", "item.PicoWafer", 32, 0),
-                        ItemList.Robot_Arm_UEV.get(4),
-                        ItemList.Emitter_UEV.get(4),
-                        ItemList.Sensor_UEV.get(4),
+                        ItemList.Robot_Arm_UMV.get(4),
+                        ItemList.Emitter_UMV.get(4),
+                        ItemList.Sensor_UMV.get(4),
                 }, new FluidStack[]{
                         oganesson != null ? new FluidStack(oganesson, 50000) : null,
-                        Materials.Infinity.getMolten(9216L),
+                        Materials.Infinity.getMolten(144L*512),
                         Materials.Cheese.getMolten(232000L),
                 }, ItemList.Block_BedrockiumCompressed.get(1), 10000, 5000000);
 
