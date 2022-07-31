@@ -6,6 +6,7 @@ import gregtech.api.interfaces.IFluidAccess;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.tileentities.storage.GT_MetaTileEntity_DigitalTankBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
@@ -127,6 +128,14 @@ public class GT_Container_BasicTank extends GT_ContainerMetaTile_Machine {
         @Override
         public int getCapacity() {
             return mTank.getCapacity();
+        }
+
+        @Override
+        public int getRealCapacity() {
+            if (mTank instanceof GT_MetaTileEntity_DigitalTankBase) {
+                return ((GT_MetaTileEntity_DigitalTankBase) mTank).getRealCapacity();
+            }
+            return IFluidAccess.super.getRealCapacity();
         }
 
         static BasicTankFluidAccess from(GT_MetaTileEntity_BasicTank aTank, boolean aIsFillableStack) {

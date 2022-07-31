@@ -691,7 +691,7 @@ public class GT_Container extends Container {
             tNewFillableStack.amount = tAmountTaken * tParallel;
             aFluidAccess.set(tNewFillableStack);
         } else {
-            aFluidAccess.get().amount += tAmountTaken * tParallel;
+            aFluidAccess.addAmount(tAmountTaken * tParallel);
         }
         tStackEmptied.stackSize = tParallel;
         replaceCursorItemStack(aPlayer, tStackEmptied);
