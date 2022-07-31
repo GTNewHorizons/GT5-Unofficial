@@ -114,7 +114,7 @@ public class GT_MetaTileEntity_BuckConverter extends GT_MetaTileEntity_TieredMac
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide() && (aTick & 0xF) == 0) {
             if(aBaseMetaTileEntity.isActive()) {
-                aBaseMetaTileEntity.decreaseStoredEnergyUnits(CommonValues.V[mTier] >> 2, true);
+                aBaseMetaTileEntity.decreaseStoredEnergyUnits(CommonValues.V[EUT] >> 2, true);
             }
         }
     }
