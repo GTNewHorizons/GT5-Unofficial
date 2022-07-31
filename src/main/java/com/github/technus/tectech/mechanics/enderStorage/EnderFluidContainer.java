@@ -11,6 +11,10 @@ import java.io.Serializable;
 
 public class EnderFluidContainer implements IFluidHandler, Serializable {
     private static final int CAPACITY = 64000;
+    @Deprecated()
+    private int fluidID = -1;
+    @Deprecated()
+    private int fluidQuantity = 0;
     private NBTTagCompound fluid;
 
     public EnderFluidContainer() {
@@ -18,8 +22,13 @@ public class EnderFluidContainer implements IFluidHandler, Serializable {
 
     private FluidStack getFluidStack() {
         FluidStack fluidStack = null;
+        if (fluidID >= 0) {
+            fluid = new FluidStack(fluidID, fluidQuantity).writeToNBT(new NBTTagCompound());
+            fluidID = -1;
+            fluidQuantity = 0;
+        }
         if (fluid != null) {
-            fluidStack =  FluidStack.loadFluidStackFromNBT(fluid);
+            fluidStack = FluidStack.loadFluidStackFromNBT(fluid);
         }
         return fluidStack;
     }
