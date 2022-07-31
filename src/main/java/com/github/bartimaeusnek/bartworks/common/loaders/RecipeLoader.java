@@ -309,8 +309,32 @@ public class RecipeLoader {
                     }
             );
 
-            Materials[] cables = {Materials.Lead, Materials.Tin, Materials.AnnealedCopper, Materials.Gold, Materials.Aluminium, Materials.Tungsten, Materials.VanadiumGallium, Materials.Naquadah, Materials.NaquadahAlloy, Materials.Superconductor};
-            ISubTagContainer[] hulls = {Materials.WroughtIron, Materials.Steel, Materials.Aluminium, Materials.StainlessSteel, Materials.Titanium, Materials.TungstenSteel, WerkstoffLoader.LuVTierMaterial, Materials.Iridium, Materials.Osmium, Materials.Naquadah};
+            Materials[] cables = { //Cable material used in the acid gen, diode and energy distributor below
+                Materials.Lead, //ULV
+                Materials.Tin, //LV
+                Materials.AnnealedCopper, //MV
+                Materials.Gold, //HV
+                Materials.Aluminium, //EV
+                Materials.Tungsten, //IV
+                Materials.VanadiumGallium, //LuV
+                Materials.Naquadah, //ZPM
+                Materials.NaquadahAlloy, //UV
+                Materials.SuperconductorUV //UHV
+            };
+
+            ISubTagContainer[] hulls = { //Plate material used in the acid gen, diode and energy distributor below
+                Materials.WroughtIron, //ULV
+                Materials.Steel, //LV
+                Materials.Aluminium, //MV
+                Materials.StainlessSteel, //HV
+                Materials.Titanium, //EV
+                Materials.TungstenSteel, //IV
+                WerkstoffLoader.LuVTierMaterial, //LuV
+                Materials.Iridium, //ZPM
+                Materials.Osmium, //UV
+                Materials.Naquadah //UHV
+            };
+
             ItemStack[] bats = {ItemList.Battery_Hull_LV.get(1L), ItemList.Battery_Hull_MV.get(1L), ItemList.Battery_Hull_HV.get(1L)};
             ItemStack[] chreac = {ItemList.Machine_MV_ChemicalReactor.get(1L), ItemList.Machine_HV_ChemicalReactor.get(1L), ItemList.Machine_EV_ChemicalReactor.get(1L)};
 
