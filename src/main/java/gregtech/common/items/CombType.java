@@ -3,6 +3,7 @@ package gregtech.common.items;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_LanguageManager;
 
+import java.rmi.MarshalException;
 import java.util.Arrays;
 
 public enum CombType {
@@ -163,6 +164,41 @@ public enum CombType {
     RUNEII(129, "rune2", true, Materials._NULL, 10, 0xE31010, 0x0104D9),
     FIREESSENSE(130, "fireessence", true, Materials._NULL, 30, 0xFFA157, 0xD41238),
     CRYOLITE(131, "cryolite", true, Materials.Cryolite, 90, 0xBFEFFF, 0x73B9D0),
+    //(NOBLE) GAS LINE
+    HELIUM(132, "helium", true, Materials.Helium, 90, 0xFFA9FF, 0xFFFFC3),
+    ARGON(133, "argon", true, Materials.Argon, 95, 0x89D9E1, 0x160822),
+    //XENON, NEON and KRYPTON Fluid extractor Recipes are located in GT_MachineRecipeLoader.java
+    XENON(134, "xenon", true, Materials._NULL, 85, 0x160822, 0x8A97B0),
+    NEON(135, "neon", true, Materials._NULL, 90, 0xFF7200, 0xFFC826),
+    KRYPTON(136, "krypton", true, Materials._NULL, 85, 0x160822, 0x8A97B0),
+    NITROGEN(137, "nitrogen", true, Materials.Nitrogen, 100, 0xA52A2A, 0xFFC832),
+    OXYGEN(138, "oxygen", true, Materials.Oxygen, 100, 0x8F8FFF, 0xFFFFFF),
+    HYDROGEN(139, "hydrogen", true, Materials.Hydrogen, 100, 0xFF1493, 0xFFFFFF),
+    //Those are supposed to be in the organic branch, but that would require shifting all comb IDs and we don't want to risk it.
+    PHOSPHORUS(140, "phosphorus", true, Materials.Phosphorus, 100, 0xC1C1F6, 0xFFC826),
+    MICA(141, "mica", true, Materials.Mica, 100, 0x8A97B0, 0x2F3641),
+    //Seaweed is located in the planet line
+    SEAWEED(142, "seaweed", true, Materials._NULL, 90, 0x83FF83, 0xCBCBCB),
+    //just Walrus
+    WALRUS(143, "walrus", true, Materials._NULL, 100, 0xB5CFC9, 0xD6D580),
+    //TC infused Air shards line. Recipes in GT_MachineRecipeLoader.java Lines 1500+ + Nether/Endshard
+    INFUSEDAER(144, "infusedair", true, Materials._NULL, 100, 0x60602F, 0xFFFF7E),
+    INFUSEDTERRA(145, "infusedterra", true, Materials._NULL, 100, 0x003300, 0x008600),
+    INFUSEDIGNIS(146, "infusedignis", true, Materials._NULL, 100, 0x3B0E00, 0xED3801),
+    INFUSEDAQUA(147, "infusedaqua", true, Materials._NULL, 100, 0x002542, 0x0090FF),
+    INFUSEDORDO(148, "infusedordo", true, Materials._NULL, 100, 0x5C5F62, 0x8A97B0),
+    INFUSEDPERDITIO(149, "infusedperditio", true, Materials._NULL, 100, 0x232129, 0x2E2E41),
+    FLUORINE(150, "fluorine", true, Materials.Fluorine, 100, 0xFF6D00, 0x86AFF0),
+    BEDROCKIUM(151, "bedrockium", true, Materials.Bedrockium, 100, 0xC6C6C6, 0x0C0C0C),
+    NETHERSHARD(152, "nethershard", true, Materials.Netherrack, 100, 0x350211, 0xBE0135),
+    ENDSHARD(153, "endshard", true, Materials.EnderEye, 100, 0x232129, 0x2E2E41),
+    CAELESTISRED(154, "caelestisred", true, Materials._NULL, 100, 0xFF0000, 0xFF00FF),
+    CAELESTISGREEN(155, "caelestisgreen", true, Materials._NULL, 100, 0x00FF00, 0xB233FF),
+    CAELESTISBLUE(156, "caelestisblue", true, Materials._NULL, 100, 0x0000FF, 0xFF99A5),
+    UNKNOWNWATER(157, "unknownwater", true, Materials._NULL, 100, 0x36ABFF, 0x4333A5),
+    ESSENTIA(158, "essentia", true, Materials._NULL, 100, 0xED3601, 0xFF6D50),
+
+    //ALWAYS KEEP _NULL AT THE BOTTOM
     _NULL(-1, "INVALIDCOMB", false, Materials._NULL, 0, 0, 0);
 
     public boolean showInList;

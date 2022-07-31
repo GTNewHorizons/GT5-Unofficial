@@ -9,7 +9,9 @@ import gregtech.api.enums.*;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.*;
 import gregtech.common.GT_DummyWorld;
+import gregtech.common.items.CombType;
 import gregtech.common.items.GT_MetaGenerated_Item_03;
+import gregtech.common.items.ItemComb;
 import ic2.api.recipe.ILiquidHeatExchangerManager;
 import ic2.api.recipe.Recipes;
 import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
@@ -417,22 +419,22 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_ModHandler.getIC2Item("carbonMesh", 4L), GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Zinc, 16L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.Component_Filter.get(1L), 1600, 30);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Steel, 64), GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Zinc, 16L), GT_Utility.getIntegratedCircuit(1)}, Materials.Plastic.getFluid(144), ItemList.Component_Filter.get(1), 1600, 16);
 
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Graphite, 64), ItemList.Circuit_Silicon_Wafer2.get(32L), GT_Utility.getIntegratedCircuit(1)}, Materials.AdvancedGlue.getFluid(500L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Graphene, 64), 3200, 1920);
+       GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Graphite, 64), ItemList.Circuit_Silicon_Wafer2.get(32L), GT_Utility.getIntegratedCircuit(1)}, Materials.AdvancedGlue.getFluid(500L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Graphene, 64), 3200, 1920);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Graphite, 64), ItemList.Circuit_Silicon_Wafer3.get(8L), GT_Utility.getIntegratedCircuit(1)}, Materials.AdvancedGlue.getFluid(250L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Graphene, 64), 800, 7920);
 
         if (!Loader.isModLoaded("miscutils")) {
             GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Graphite, 64), ItemList.Circuit_Silicon_Wafer4.get(2L), GT_Utility.getIntegratedCircuit(1)}, Materials.AdvancedGlue.getFluid(500L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Graphene, 64), 400, 30720);
             GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Graphite, 64), ItemList.Circuit_Silicon_Wafer5.get(1L), GT_Utility.getIntegratedCircuit(1)}, Materials.AdvancedGlue.getFluid(250L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Graphene, 64), 80, 122880);
         }
-
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Electric_Pump_LV.get(1L), GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Basic), 2L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.FluidRegulator_LV.get(1L), 400, 30);
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Electric_Pump_MV.get(1L), GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Good), 2L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.FluidRegulator_MV.get(1L), 350, 120);
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Electric_Pump_HV.get(1L), GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Advanced), 2L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.FluidRegulator_HV.get(1L), 300, 480);
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Electric_Pump_EV.get(1L), GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Data), 2L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.FluidRegulator_EV.get(1L), 250, 1920);
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Electric_Pump_IV.get(1L), GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Elite), 2L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.FluidRegulator_IV.get(1L), 200, 7680);
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Electric_Pump_LuV.get(1L), GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Master), 2L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.FluidRegulator_LuV.get(1L), 150, 30720);
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Electric_Pump_ZPM.get(1L), GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Ultimate), 2L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.FluidRegulator_ZPM.get(1L), 100, 122880);
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Electric_Pump_UV.get(1L), GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.SuperconductorUHV), 2L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.FluidRegulator_UV.get(1L), 50, 500000);
+        
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Electric_Pump_LV.get(1L), GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Basic), 2L), GT_Utility.getIntegratedCircuit(3)}, GT_Values.NF, ItemList.FluidRegulator_LV.get(1L), 400, 30);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Electric_Pump_MV.get(1L), GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Good), 2L), GT_Utility.getIntegratedCircuit(3)}, GT_Values.NF, ItemList.FluidRegulator_MV.get(1L), 350, 120);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Electric_Pump_HV.get(1L), GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Advanced), 2L), GT_Utility.getIntegratedCircuit(3)}, GT_Values.NF, ItemList.FluidRegulator_HV.get(1L), 300, 480);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Electric_Pump_EV.get(1L), GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Data), 2L), GT_Utility.getIntegratedCircuit(3)}, GT_Values.NF, ItemList.FluidRegulator_EV.get(1L), 250, 1920);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Electric_Pump_IV.get(1L), GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Elite), 2L), GT_Utility.getIntegratedCircuit(3)}, GT_Values.NF, ItemList.FluidRegulator_IV.get(1L), 200, 7680);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Electric_Pump_LuV.get(1L), GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Master), 2L), GT_Utility.getIntegratedCircuit(3)}, GT_Values.NF, ItemList.FluidRegulator_LuV.get(1L), 150, 30720);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Electric_Pump_ZPM.get(1L), GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Ultimate), 2L), GT_Utility.getIntegratedCircuit(3)}, GT_Values.NF, ItemList.FluidRegulator_ZPM.get(1L), 100, 122880);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Electric_Pump_UV.get(1L), GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.SuperconductorUHV), 2L), GT_Utility.getIntegratedCircuit(3)}, GT_Values.NF, ItemList.FluidRegulator_UV.get(1L), 50, 500000);
 
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Electric_Pump_LV.get(1L), ItemList.Electric_Motor_LV.get(1L), GT_OreDictUnificator.get(OrePrefixes.gear.get(Materials.Steel), 2L), GT_Utility.getIntegratedCircuit(2)}, GT_Values.NF, ItemList.Steam_Valve_LV.get(1L), 400, 30);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Electric_Pump_MV.get(1L), ItemList.Electric_Motor_MV.get(1L), GT_OreDictUnificator.get(OrePrefixes.gear.get(Materials.Aluminium), 2L), GT_Utility.getIntegratedCircuit(2)}, GT_Values.NF, ItemList.Steam_Valve_MV.get(1L), 350, 120);
@@ -1480,6 +1482,49 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addVacuumFreezerRecipe(ItemList.Reactor_Coolant_Sp_2.getWildcard(1L), ItemList.Reactor_Coolant_Sp_2.get(1L), 3600);
         GT_Values.RA.addVacuumFreezerRecipe(ItemList.Reactor_Coolant_Sp_3.getWildcard(1L), ItemList.Reactor_Coolant_Sp_3.get(1L), 5400);
         GT_Values.RA.addVacuumFreezerRecipe(ItemList.Reactor_Coolant_Sp_6.getWildcard(1L), ItemList.Reactor_Coolant_Sp_6.get(1L), 10800);
+
+        // Beecombs fluid extractor recipes
+        if (Loader.isModLoaded("bartworks")) {
+            //xenon
+            GT_Values.RA.addFluidExtractionRecipe(GT_ModHandler.getModItem("gregtech", "gt.comb", 1L, 134), null, FluidRegistry.getFluidStack("xenon", 250), 100 * 100, 50, 8192);
+            //neon
+            GT_Values.RA.addFluidExtractionRecipe(GT_ModHandler.getModItem("gregtech", "gt.comb", 1L, 135), null, FluidRegistry.getFluidStack("neon", 250), 100 * 100, 15, 8192);
+            //krpton
+            GT_Values.RA.addFluidExtractionRecipe(GT_ModHandler.getModItem("gregtech", "gt.comb", 1L, 136), null, FluidRegistry.getFluidStack("krypton", 250), 100 * 100, 25, 8192);
+
+        }
+        if (Loader.isModLoaded("Thaumcraft")) {
+            //air
+            GT_Values.RA.addCentrifugeRecipe(GT_ModHandler.getModItem("gregtech", "gt.comb", 1L, 144), GT_Utility.getIntegratedCircuit(1), GT_Values.NF, null, GT_OreDictUnificator.get(OrePrefixes.gem, Materials.InfusedAir, 1L), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, null, 1024, 12);
+            //fire
+            GT_Values.RA.addCentrifugeRecipe(GT_ModHandler.getModItem("gregtech", "gt.comb", 1L, 146), GT_Utility.getIntegratedCircuit(1), GT_Values.NF, null, GT_OreDictUnificator.get(OrePrefixes.gem, Materials.InfusedFire, 1L), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, null, 1024, 12);
+            //aqua
+            GT_Values.RA.addCentrifugeRecipe(GT_ModHandler.getModItem("gregtech", "gt.comb", 1L, 147), GT_Utility.getIntegratedCircuit(1), GT_Values.NF, null, GT_OreDictUnificator.get(OrePrefixes.gem, Materials.InfusedWater, 1L), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, null, 1024, 12);
+            //terra
+            GT_Values.RA.addCentrifugeRecipe(GT_ModHandler.getModItem("gregtech", "gt.comb", 1L, 145), GT_Utility.getIntegratedCircuit(1), GT_Values.NF, null, GT_OreDictUnificator.get(OrePrefixes.gem, Materials.InfusedEarth, 1L), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, null, 1024, 12);
+            //ordo
+            GT_Values.RA.addCentrifugeRecipe(GT_ModHandler.getModItem("gregtech", "gt.comb", 1L, 148), GT_Utility.getIntegratedCircuit(1), GT_Values.NF, null, GT_OreDictUnificator.get(OrePrefixes.gem, Materials.InfusedOrder, 1L), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, null, 1024, 12);
+            //perditio
+            GT_Values.RA.addCentrifugeRecipe(GT_ModHandler.getModItem("gregtech", "gt.comb", 1L, 149), GT_Utility.getIntegratedCircuit(1), GT_Values.NF, null, GT_OreDictUnificator.get(OrePrefixes.gem, Materials.InfusedEntropy, 1L), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, null, 1024, 12);
+            //Nethershard
+            GT_Values.RA.addCentrifugeRecipe(GT_ModHandler.getModItem("gregtech", "gt.comb", 1L, 152), GT_Utility.getIntegratedCircuit(1), GT_Values.NF, null, GT_ModHandler.getModItem("ThaumicTinkerer", "kamiResource", 1L, 6), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, null, 128, 512);
+            //Endshard
+            GT_Values.RA.addCentrifugeRecipe(GT_ModHandler.getModItem("gregtech", "gt.comb", 1L, 153), GT_Utility.getIntegratedCircuit(1), GT_Values.NF, null, GT_ModHandler.getModItem("ThaumicTinkerer", "kamiResource", 1L, 7), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, null, 128, 512);
+
+
+            //Add Recipe for TC Crucible: Salis Mundus to Balanced Shards
+            String tKey = "GT_BALANCE_SHARD_RECIPE";
+            GregTech_API.sThaumcraftCompat.addCrucibleRecipe("TB.SM", GT_ModHandler.getModItem(MOD_ID_TC, "ItemResource", 1L, 14), GT_ModHandler.getModItem(MOD_ID_TC, "ItemShard", 1L, 6), Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.PRAECANTATIO, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 1L)));
+        }
+    if (Loader.isModLoaded("ExtraUtilities")) {
+        //Caelestis red
+        GT_Values.RA.addCentrifugeRecipe(GT_ModHandler.getModItem("gregtech", "gt.comb", 1L, 154), GT_Utility.getIntegratedCircuit(1), GT_Values.NF, null, GT_ModHandler.getModItem("ExtraUtilities", "greenscreen", 1L, 2), GT_ModHandler.getModItem("ExtraUtilities", "greenscreen", 1L, 10), GT_ModHandler.getModItem("ExtraUtilities", "greenscreen", 1L, 14), GT_ModHandler.getModItem("ExtraUtilities", "greenscreen", 1L, 1), GT_ModHandler.getModItem("ExtraUtilities", "greenscreen", 1L, 12), GT_ModHandler.getModItem("ExtraUtilities", "greenscreen", 1L, 6), null, 512, 12);
+        //Caelestis green
+        GT_Values.RA.addCentrifugeRecipe(GT_ModHandler.getModItem("gregtech", "gt.comb", 1L, 155), GT_Utility.getIntegratedCircuit(1), GT_Values.NF, null, GT_ModHandler.getModItem("ExtraUtilities", "greenscreen", 1L, 13), GT_ModHandler.getModItem("ExtraUtilities", "greenscreen", 1L, 5), GT_ModHandler.getModItem("ExtraUtilities", "greenscreen", 1L, 4), GT_ModHandler.getModItem("ExtraUtilities", "greenscreen", 1L, 8), GT_ModHandler.getModItem("ExtraUtilities", "greenscreen", 1L, 0), NI, null, 512, 12);
+        //Caelestis blue
+        GT_Values.RA.addCentrifugeRecipe(GT_ModHandler.getModItem("gregtech", "gt.comb", 1L, 156), GT_Utility.getIntegratedCircuit(1), GT_Values.NF, null, GT_ModHandler.getModItem("ExtraUtilities", "greenscreen", 1L, 3), GT_ModHandler.getModItem("ExtraUtilities", "greenscreen", 1L, 9), GT_ModHandler.getModItem("ExtraUtilities", "greenscreen", 1L, 11), GT_ModHandler.getModItem("ExtraUtilities", "greenscreen", 1L, 7), GT_ModHandler.getModItem("ExtraUtilities", "greenscreen", 1L, 15), NI, null, 512, 12);
+
+    }
 
         // Freeze superconductors.
         GT_Values.RA.addVacuumFreezerRecipe(GT_OreDictUnificator.get(OrePrefixes.ingotHot, Materials.Pentacadmiummagnesiumhexaoxid, 1L), GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Pentacadmiummagnesiumhexaoxid, 1L), 200, 120);
