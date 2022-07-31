@@ -789,6 +789,8 @@ public class DreamCraftRecipeLoader {
         item_parts_UIV_assline_recipes();
         item_parts_UMV_assline_recipes();
 
+        add_wireless_energy_recipes();
+
         //UHV-UMV Energy Hatch & Dynamo
         TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Hatch_Energy_UV.get(1L),
                 24000, 16, 50000, 2, new Object[]{
@@ -3070,6 +3072,163 @@ public class DreamCraftRecipeLoader {
 
         // ---------------------------------------------------------------------
 
+    }
+
+    private void add_wireless_energy_recipes() {
+
+        Fluid solderUEV = FluidRegistry.getFluid("molten.mutatedlivingsolder") != null ? FluidRegistry.getFluid("molten.mutatedlivingsolder") : FluidRegistry.getFluid("molten.solderingalloy");
+
+        int recipe_duration_ticks = 20*20;
+        int recipe_eu_per_tick = 128_000_000;
+
+        int research_eu_per_tick = 128_000_000;
+        int research_amperage = 4;
+        int comp_per_second = 2000;
+        int total_computation = 500_000;
+
+        ItemStack[] energy_hatches = {
+                ItemList.Hatch_Energy_ULV.get(1),
+                ItemList.Hatch_Energy_LV.get(1),
+                ItemList.Hatch_Energy_MV.get(1),
+                ItemList.Hatch_Energy_HV.get(1),
+                ItemList.Hatch_Energy_EV.get(1),
+                ItemList.Hatch_Energy_IV.get(1),
+                ItemList.Hatch_Energy_LuV.get(1),
+                ItemList.Hatch_Energy_ZPM.get(1),
+                ItemList.Hatch_Energy_UV.get(1),
+                ItemList.Hatch_Energy_MAX.get(1),
+                getItemContainer("Hatch_Energy_UEV").get(1L),
+                getItemContainer("Hatch_Energy_UIV").get(1L),
+                getItemContainer("Hatch_Energy_UMV").get(1L)
+        };
+
+        ItemStack[] dynamo_hatches = {
+                ItemList.Hatch_Dynamo_ULV.get(1),
+                ItemList.Hatch_Dynamo_LV.get(1),
+                ItemList.Hatch_Dynamo_MV.get(1),
+                ItemList.Hatch_Dynamo_HV.get(1),
+                ItemList.Hatch_Dynamo_EV.get(1),
+                ItemList.Hatch_Dynamo_IV.get(1),
+                ItemList.Hatch_Dynamo_LuV.get(1),
+                ItemList.Hatch_Dynamo_ZPM.get(1),
+                ItemList.Hatch_Dynamo_UV.get(1),
+                ItemList.Hatch_Dynamo_MAX.get(1),
+                getItemContainer("Hatch_Dynamo_UEV").get(1L),
+                getItemContainer("Hatch_Dynamo_UIV").get(1L),
+                getItemContainer("Hatch_Dynamo_UMV").get(1L)
+        };
+
+        Object[] circuits_tier_plus_two = {
+                new Object[]{OrePrefixes.circuit.get(Materials.Good), 1L},           // MV
+                new Object[]{OrePrefixes.circuit.get(Materials.Advanced), 1L},       // HV
+                new Object[]{OrePrefixes.circuit.get(Materials.Data), 1L},           // EV
+                new Object[]{OrePrefixes.circuit.get(Materials.Elite), 1L},          // IV
+                new Object[]{OrePrefixes.circuit.get(Materials.Master), 1L},         // LuV
+                new Object[]{OrePrefixes.circuit.get(Materials.Ultimate), 1L},       // ZPM
+                new Object[]{OrePrefixes.circuit.get(Materials.Superconductor), 1L}, // UV
+                new Object[]{OrePrefixes.circuit.get(Materials.Infinite), 1L},       // UHV
+                new Object[]{OrePrefixes.circuit.get(Materials.Bio), 1L},            // UEV
+                new Object[]{OrePrefixes.circuit.get(Materials.Nano), 1L},           // UIV
+                new Object[]{OrePrefixes.circuit.get(Materials.Piko), 1L},           // UMV
+                new Object[]{OrePrefixes.circuit.get(Materials.Quantum), 1L},        // UXV
+                new Object[]{OrePrefixes.circuit.get(Materials.Transcendent), 1L},   // MAX
+        };
+
+        ItemStack[] wireless_hatches = {
+                ItemList.Wireless_Hatch_Energy_ULV.get(1),
+                ItemList.Wireless_Hatch_Energy_LV.get(1),
+                ItemList.Wireless_Hatch_Energy_MV.get(1),
+                ItemList.Wireless_Hatch_Energy_HV.get(1),
+                ItemList.Wireless_Hatch_Energy_EV.get(1),
+                ItemList.Wireless_Hatch_Energy_IV.get(1),
+                ItemList.Wireless_Hatch_Energy_LuV.get(1),
+                ItemList.Wireless_Hatch_Energy_ZPM.get(1),
+                ItemList.Wireless_Hatch_Energy_UV.get(1),
+                ItemList.Wireless_Hatch_Energy_UHV.get(1),
+                ItemList.Wireless_Hatch_Energy_UEV.get(1),
+                ItemList.Wireless_Hatch_Energy_UIV.get(1),
+                ItemList.Wireless_Hatch_Energy_UMV.get(1),
+        };
+
+        ItemStack[] wireless_dynamos = {
+                ItemList.Wireless_Dynamo_Energy_ULV.get(1),
+                ItemList.Wireless_Dynamo_Energy_LV.get(1),
+                ItemList.Wireless_Dynamo_Energy_MV.get(1),
+                ItemList.Wireless_Dynamo_Energy_HV.get(1),
+                ItemList.Wireless_Dynamo_Energy_EV.get(1),
+                ItemList.Wireless_Dynamo_Energy_IV.get(1),
+                ItemList.Wireless_Dynamo_Energy_LuV.get(1),
+                ItemList.Wireless_Dynamo_Energy_ZPM.get(1),
+                ItemList.Wireless_Dynamo_Energy_UV.get(1),
+                ItemList.Wireless_Dynamo_Energy_UHV.get(1),
+                ItemList.Wireless_Dynamo_Energy_UEV.get(1),
+                ItemList.Wireless_Dynamo_Energy_UIV.get(1),
+                ItemList.Wireless_Dynamo_Energy_UMV.get(1),
+        };
+
+        // ------------------------ Wireless EU hatches ------------------------
+
+        for(int i = 0; i < wireless_hatches.length; i++) {
+
+            TT_recipeAdder.addResearchableAssemblylineRecipe(
+
+                    (i==0) ? ItemList.Tesseract.get(1) : wireless_hatches[i-1],
+
+                    total_computation, comp_per_second, research_eu_per_tick, research_amperage,
+
+                    new Object[]{
+                            energy_hatches[i],
+                            GT_ModHandler.getModItem("GoodGenerator", "compactFusionCoil", 1),
+                            ItemList.Casing_Coil_Superconductor.get(1),
+                            CustomItemList.Machine_Multi_Transformer.get(1),
+                            CustomItemList.eM_Power.get(2),
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SpaceTime, 2),
+                            GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Infinity, 1),
+                            circuits_tier_plus_two[i],
+                            ItemList.EnergisedTesseract.get(1)
+                    },
+
+                    new FluidStack[]{
+                            new FluidStack(solderUEV, 1296),
+                            Materials.ExcitedDTEC.getFluid(500L)
+                    },
+
+                    wireless_hatches[i],
+
+                    recipe_duration_ticks, recipe_eu_per_tick);
+        }
+
+        // ------------------------ Wireless EU dynamos ------------------------
+
+        for(int i = 1; i < wireless_hatches.length; i++) {
+
+            TT_recipeAdder.addResearchableAssemblylineRecipe(
+
+                    (i==0) ? ItemList.EnergisedTesseract.get(1) : wireless_dynamos[i-1],
+
+                    total_computation, comp_per_second, research_eu_per_tick, research_amperage,
+
+                    new Object[]{
+                            dynamo_hatches[i],
+                            GT_ModHandler.getModItem("GoodGenerator", "compactFusionCoil", 1),
+                            ItemList.Casing_Coil_Superconductor.get(1),
+                            CustomItemList.Machine_Multi_Transformer.get(1),
+                            CustomItemList.eM_Power.get(2),
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SpaceTime, 2),
+                            GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Infinity, 1),
+                            circuits_tier_plus_two[i],
+                            ItemList.EnergisedTesseract.get(1)
+                    },
+
+                    new FluidStack[]{
+                            new FluidStack(solderUEV, 1296),
+                            Materials.ExcitedDTEC.getFluid(500L)
+                    },
+
+                    wireless_dynamos[i],
+
+                    recipe_duration_ticks, recipe_eu_per_tick);
+        }
     }
 
     private void register_machine_EM_behaviours() {
