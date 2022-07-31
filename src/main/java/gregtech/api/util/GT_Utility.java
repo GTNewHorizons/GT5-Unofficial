@@ -95,6 +95,7 @@ import javax.annotation.Nullable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -2561,6 +2562,10 @@ public class GT_Utility {
 	    numberFormat.setDecimalFormatSymbols(decimalFormatSymbols);
             return numberFormat;
         });
+    }
+
+    public static String formatNumbers(BigInteger aNumber) {
+        return getDecimalFormat().format(aNumber);
     }
 
     public static String formatNumbers(long aNumber) {

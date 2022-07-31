@@ -25,6 +25,185 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
+// Free IDs left for machines in GT as of 29th of July 2022 - Colen. Please try use them up in order.
+//    349
+//    356
+//    357
+//    358
+//    359
+//    366
+//    367
+//    368
+//    369
+//    370
+//    376
+//    377
+//    378
+//    379
+//    386
+//    387
+//    388
+//    389
+//    390
+//    396
+//    397
+//    398
+//    399
+//    410
+//    419
+//    426
+//    427
+//    428
+//    429
+//    430
+//    436
+//    437
+//    438
+//    439
+//    446
+//    447
+//    448
+//    449
+//    450
+//    456
+//    457
+//    458
+//    459
+//    466
+//    467
+//    468
+//    469
+//    470
+//    476
+//    477
+//    478
+//    479
+//    486
+//    487
+//    488
+//    489
+//    496
+//    497
+//    498
+//    499
+//    506
+//    507
+//    508
+//    509
+//    518
+//    519
+//    526
+//    530
+//    537
+//    538
+//    539
+//    546
+//    547
+//    548
+//    549
+//    550
+//    556
+//    557
+//    558
+//    559
+//    566
+//    567
+//    576
+//    577
+//    578
+//    579
+//    586
+//    587
+//    588
+//    589
+//    590
+//    596
+//    597
+//    598
+//    599
+//    607
+//    608
+//    609
+//    610
+//    616
+//    617
+//    618
+//    619
+//    626
+//    627
+//    628
+//    629
+//    630
+//    636
+//    637
+//    639
+//    646
+//    647
+//    648
+//    649
+//    650
+//    656
+//    657
+//    658
+//    659
+//    666
+//    667
+//    668
+//    669
+//    670
+//    676
+//    677
+//    678
+//    682
+//    683
+//    684
+//    686
+//    687
+//    688
+//    689
+//    702
+//    703
+//    704
+//    705
+//    706
+//    707
+//    708
+//    709
+//    714
+//    715
+//    716
+//    717
+//    718
+//    719
+//    721
+//    722
+//    723
+//    724
+//    725
+//    726
+//    727
+//    728
+//    729
+//    730
+//    731
+//    732
+//    733
+//    734
+//    735
+//    736
+//    737
+//    738
+//    739
+//    741
+//    742
+//    743
+//    744
+//    745
+//    746
+//    747
+//    748
+//    749
+
 public class GT_Loader_MetaTileEntities implements Runnable {//TODO CHECK CIRCUIT RECIPES AND USAGES
     private static final String aTextWire1 = "wire."; private static final String aTextCable1 = "cable."; private static final String aTextWire2 = " Wire"; private static final String aTextCable2 = " Cable";
     private static final String aTextPlate = "PPP"; private static final String aTextPlateWrench = "PwP"; private static final String aTextPlateMotor = "PMP"; private static final String aTextCableHull = "CMC";
@@ -71,7 +250,7 @@ public class GT_Loader_MetaTileEntities implements Runnable {//TODO CHECK CIRCUI
         GT_ModHandler.addCraftingRecipe(ItemList.Casing_Gearbox_Steel.get(1L), bits, new Object[]{"PhP", "GFG", aTextPlateWrench, 'P', OrePrefixes.plate.get(Materials.Steel), 'F', OrePrefixes.frameGt.get(Materials.Steel), 'G', OrePrefixes.gearGt.get(Materials.Steel)});
         GT_ModHandler.addCraftingRecipe(ItemList.Casing_Gearbox_Titanium.get(1L), bits, new Object[]{"PhP", "GFG", aTextPlateWrench, 'P', OrePrefixes.plate.get(Materials.Steel), 'F', OrePrefixes.frameGt.get(Materials.Titanium), 'G', OrePrefixes.gearGt.get(Materials.Titanium)});
         GT_ModHandler.addCraftingRecipe(ItemList.Casing_Gearbox_TungstenSteel.get(1L), bits, new Object[]{"PhP", "GFG", aTextPlateWrench, 'P', OrePrefixes.plate.get(Materials.Steel), 'F', OrePrefixes.frameGt.get(Materials.TungstenSteel), 'G', ItemList.Robot_Arm_IV});
-        GT_ModHandler.addCraftingRecipe(ItemList.Casing_Grate.get(1L), bits, new Object[]{"PVP", "PFP", aTextPlateMotor, 'P', new ItemStack(Blocks.iron_bars,1), 'F', OrePrefixes.frameGt.get(Materials.Steel), 'M', ItemList.Electric_Motor_MV, 'V', OrePrefixes.rotor.get(Materials.Steel)});
+        GT_ModHandler.addCraftingRecipe(ItemList.Casing_Grate.get(1L), bits, new Object[]{"PVP", "PFP", aTextPlateMotor, 'P', new ItemStack(Blocks.iron_bars, 1), 'F', OrePrefixes.frameGt.get(Materials.Steel), 'M', ItemList.Electric_Motor_MV, 'V', OrePrefixes.rotor.get(Materials.Steel)});
         GT_ModHandler.addCraftingRecipe(ItemList.Casing_Assembler.get(1L), bits, new Object[]{"PVP", "PFP", aTextPlateMotor, 'P', OrePrefixes.circuit.get(Materials.Ultimate), 'F', OrePrefixes.frameGt.get(Materials.TungstenSteel), 'M', ItemList.Electric_Motor_IV, 'V', OrePrefixes.circuit.get(Materials.Master)});
         GT_ModHandler.addCraftingRecipe(ItemList.Casing_Firebox_Bronze.get(1L), bits, new Object[]{"PSP", "SFS", "PSP", 'P', OrePrefixes.plate.get(Materials.Bronze), 'F', OrePrefixes.frameGt.get(Materials.Bronze), 'S', OrePrefixes.stick.get(Materials.Bronze)});
         GT_ModHandler.addCraftingRecipe(ItemList.Casing_Firebox_Steel.get(1L), bits, new Object[]{"PSP", "SFS", "PSP", 'P', OrePrefixes.plate.get(Materials.Steel), 'F', OrePrefixes.frameGt.get(Materials.Steel), 'S', OrePrefixes.stick.get(Materials.Steel)});
@@ -181,13 +360,13 @@ public class GT_Loader_MetaTileEntities implements Runnable {//TODO CHECK CIRCUI
 
         GT_ModHandler.addCraftingRecipe(ItemList.Transformer_LV_ULV.get(1L), bitsd, new Object[]{" BB", "CM ", " BB", 'M', ItemList.Hull_ULV, 'C', OrePrefixes.cableGt01.get(Materials.Tin), 'B', OrePrefixes.cableGt01.get(Materials.Lead)});
         GT_ModHandler.addCraftingRecipe(ItemList.Transformer_MV_LV.get(1L), bitsd, new Object[]{" BB", "CM ", " BB", 'M', ItemList.Hull_LV, 'C', OrePrefixes.cableGt01.get(Materials.AnyCopper), 'B', OrePrefixes.cableGt01.get(Materials.Tin)});
-        GT_ModHandler.addCraftingRecipe(ItemList.Transformer_HV_MV.get(1L), bitsd, new Object[]{"KBB", "CM ", "KBB", 'M', ItemList.Hull_MV, 'C', OrePrefixes.cableGt01.get(Materials.Gold), 'B', OrePrefixes.cableGt01.get(Materials.AnyCopper),'K',ItemList.Circuit_Parts_Coil});
-        GT_ModHandler.addCraftingRecipe(ItemList.Transformer_EV_HV.get(1L), bitsd, new Object[]{"KBB", "CM ", "KBB", 'M', ItemList.Hull_HV, 'C', OrePrefixes.cableGt01.get(Materials.Aluminium), 'B', OrePrefixes.cableGt01.get(Materials.Gold),'K',ItemList.Circuit_Chip_ULPIC});
-        GT_ModHandler.addCraftingRecipe(ItemList.Transformer_IV_EV.get(1L), bitsd, new Object[]{"KBB", "CM ", "KBB", 'M', ItemList.Hull_EV, 'C', OrePrefixes.cableGt01.get(Materials.Tungsten), 'B', OrePrefixes.cableGt01.get(Materials.Aluminium),'K',ItemList.Circuit_Chip_LPIC});
-        GT_ModHandler.addCraftingRecipe(ItemList.Transformer_LuV_IV.get(1L), bitsd, new Object[]{"KBB", "CM ", "KBB", 'M', ItemList.Hull_IV, 'C', OrePrefixes.cableGt01.get(Materials.VanadiumGallium), 'B', OrePrefixes.cableGt01.get(Materials.Tungsten),'K',ItemList.Circuit_Chip_PIC});
-        GT_ModHandler.addCraftingRecipe(ItemList.Transformer_ZPM_LuV.get(1L), bitsd, new Object[]{"KBB", "CM ", "KBB", 'M', ItemList.Hull_LuV, 'C', OrePrefixes.cableGt01.get(Materials.Naquadah), 'B', OrePrefixes.cableGt01.get(Materials.VanadiumGallium),'K',ItemList.Circuit_Chip_HPIC});
-        GT_ModHandler.addCraftingRecipe(ItemList.Transformer_UV_ZPM.get(1L), bitsd, new Object[]{"KBB", "CM ", "KBB", 'M', ItemList.Hull_ZPM, 'C', OrePrefixes.cableGt01.get(Materials.NaquadahAlloy), 'B', OrePrefixes.cableGt01.get(Materials.Naquadah),'K',ItemList.Circuit_Chip_UHPIC});
-        GT_ModHandler.addCraftingRecipe(ItemList.Transformer_MAX_UV.get(1L), bitsd, new Object[]{"KBB", "CM ", "KBB", 'M', ItemList.Hull_UV, 'C', OrePrefixes.wireGt01.get(Materials.Bedrockium), 'B', OrePrefixes.cableGt01.get(Materials.NaquadahAlloy),'K',ItemList.Circuit_Chip_NPIC});
+        GT_ModHandler.addCraftingRecipe(ItemList.Transformer_HV_MV.get(1L), bitsd, new Object[]{"KBB", "CM ", "KBB", 'M', ItemList.Hull_MV, 'C', OrePrefixes.cableGt01.get(Materials.Gold), 'B', OrePrefixes.cableGt01.get(Materials.AnyCopper), 'K', ItemList.Circuit_Parts_Coil});
+        GT_ModHandler.addCraftingRecipe(ItemList.Transformer_EV_HV.get(1L), bitsd, new Object[]{"KBB", "CM ", "KBB", 'M', ItemList.Hull_HV, 'C', OrePrefixes.cableGt01.get(Materials.Aluminium), 'B', OrePrefixes.cableGt01.get(Materials.Gold), 'K', ItemList.Circuit_Chip_ULPIC});
+        GT_ModHandler.addCraftingRecipe(ItemList.Transformer_IV_EV.get(1L), bitsd, new Object[]{"KBB", "CM ", "KBB", 'M', ItemList.Hull_EV, 'C', OrePrefixes.cableGt01.get(Materials.Tungsten), 'B', OrePrefixes.cableGt01.get(Materials.Aluminium), 'K', ItemList.Circuit_Chip_LPIC});
+        GT_ModHandler.addCraftingRecipe(ItemList.Transformer_LuV_IV.get(1L), bitsd, new Object[]{"KBB", "CM ", "KBB", 'M', ItemList.Hull_IV, 'C', OrePrefixes.cableGt01.get(Materials.VanadiumGallium), 'B', OrePrefixes.cableGt01.get(Materials.Tungsten), 'K', ItemList.Circuit_Chip_PIC});
+        GT_ModHandler.addCraftingRecipe(ItemList.Transformer_ZPM_LuV.get(1L), bitsd, new Object[]{"KBB", "CM ", "KBB", 'M', ItemList.Hull_LuV, 'C', OrePrefixes.cableGt01.get(Materials.Naquadah), 'B', OrePrefixes.cableGt01.get(Materials.VanadiumGallium), 'K', ItemList.Circuit_Chip_HPIC});
+        GT_ModHandler.addCraftingRecipe(ItemList.Transformer_UV_ZPM.get(1L), bitsd, new Object[]{"KBB", "CM ", "KBB", 'M', ItemList.Hull_ZPM, 'C', OrePrefixes.cableGt01.get(Materials.NaquadahAlloy), 'B', OrePrefixes.cableGt01.get(Materials.Naquadah), 'K', ItemList.Circuit_Chip_UHPIC});
+        GT_ModHandler.addCraftingRecipe(ItemList.Transformer_MAX_UV.get(1L), bitsd, new Object[]{"KBB", "CM ", "KBB", 'M', ItemList.Hull_UV, 'C', OrePrefixes.wireGt01.get(Materials.Bedrockium), 'B', OrePrefixes.cableGt01.get(Materials.NaquadahAlloy), 'K', ItemList.Circuit_Chip_NPIC});
 
         ItemList.Hatch_Dynamo_ULV.set(new GT_MetaTileEntity_Hatch_Dynamo(30, "hatch.dynamo.tier.00", "ULV Dynamo Hatch", 0).getStackForm(1L));
         ItemList.Hatch_Dynamo_LV.set(new GT_MetaTileEntity_Hatch_Dynamo(31, "hatch.dynamo.tier.01", "LV Dynamo Hatch", 1).getStackForm(1L));
@@ -204,6 +383,7 @@ public class GT_Loader_MetaTileEntities implements Runnable {//TODO CHECK CIRCUI
         GT_ModHandler.addCraftingRecipe(ItemList.Hatch_Dynamo_LV.get(1L), bitsd, new Object[]{"XOL", "SMP", "XOL", 'M', ItemList.Hull_LV, 'S', OrePrefixes.spring.get(Materials.Tin), 'X', OrePrefixes.circuit.get(Materials.Basic), 'O', ItemList.LV_Coil, 'L', OrePrefixes.cell.get(Materials.Lubricant), 'P', ItemList.Electric_Pump_LV});
         GT_ModHandler.addCraftingRecipe(ItemList.Hatch_Dynamo_MV.get(1L), bitsd, new Object[]{"XOL", "SMP", "XOL", 'M', ItemList.Hull_MV, 'S', OrePrefixes.spring.get(Materials.Copper), 'X', ItemList.Circuit_Chip_ULPIC, 'O', ItemList.MV_Coil, 'L', OrePrefixes.cell.get(Materials.Lubricant), 'P', ItemList.Electric_Pump_MV});
 
+        // 1234
         ItemList.Hatch_Energy_ULV.set(new GT_MetaTileEntity_Hatch_Energy(40, "hatch.energy.tier.00", "ULV Energy Hatch", 0).getStackForm(1L));
         ItemList.Hatch_Energy_LV.set(new GT_MetaTileEntity_Hatch_Energy(41, "hatch.energy.tier.01", "LV Energy Hatch", 1).getStackForm(1L));
         ItemList.Hatch_Energy_MV.set(new GT_MetaTileEntity_Hatch_Energy(42, "hatch.energy.tier.02", "MV Energy Hatch", 2).getStackForm(1L));
@@ -311,11 +491,11 @@ public class GT_Loader_MetaTileEntities implements Runnable {//TODO CHECK CIRCUI
         ItemList.Hatch_DataAccess_LuV.set(new GT_MetaTileEntity_Hatch_DataAccess(146, "hatch.dataaccess.adv", "Advanced Data Access Hatch", 6).getStackForm(1L));
         ItemList.Hatch_DataAccess_UV.set(new GT_MetaTileEntity_Hatch_DataAccess(147, "hatch.dataaccess.auto", "Automatable Data Access Hatch", 8).getStackForm(1L));
 
-        GT_ModHandler.addCraftingRecipe(ItemList.Hatch_DataAccess_EV.get(1L), bitsd, new Object[]{"COC", "OMO", "COC", 'M', ItemList.Hull_EV, 'O', ItemList.Tool_DataStick , 'C' ,OrePrefixes.circuit.get(Materials.Elite)});
-        GT_ModHandler.addCraftingRecipe(ItemList.Hatch_DataAccess_LuV.get(1L), bitsd, new Object[]{"COC", "OMO", "COC", 'M', ItemList.Hull_LuV, 'O', ItemList.Tool_DataOrb , 'C' ,OrePrefixes.circuit.get(Materials.Ultimate)});
-        GT_ModHandler.addCraftingRecipe(ItemList.Hatch_DataAccess_UV.get(1L), bitsd, new Object[]{"CRC", "OMO", "CRC", 'M', ItemList.Hull_UV, 'O', ItemList.Tool_DataOrb , 'C' ,OrePrefixes.circuit.get(Materials.Infinite), 'R', ItemList.Robot_Arm_UV});
+        GT_ModHandler.addCraftingRecipe(ItemList.Hatch_DataAccess_EV.get(1L), bitsd, new Object[]{"COC", "OMO", "COC", 'M', ItemList.Hull_EV, 'O', ItemList.Tool_DataStick, 'C', OrePrefixes.circuit.get(Materials.Elite)});
+        GT_ModHandler.addCraftingRecipe(ItemList.Hatch_DataAccess_LuV.get(1L), bitsd, new Object[]{"COC", "OMO", "COC", 'M', ItemList.Hull_LuV, 'O', ItemList.Tool_DataOrb, 'C', OrePrefixes.circuit.get(Materials.Ultimate)});
+        GT_ModHandler.addCraftingRecipe(ItemList.Hatch_DataAccess_UV.get(1L), bitsd, new Object[]{"CRC", "OMO", "CRC", 'M', ItemList.Hull_UV, 'O', ItemList.Tool_DataOrb, 'C', OrePrefixes.circuit.get(Materials.Infinite), 'R', ItemList.Robot_Arm_UV});
 
-        GT_ModHandler.addCraftingRecipe(ItemList.Hatch_AutoMaintenance.get(1L), bitsd, new Object[]{"CHC", "AMA", "CHC", 'M', ItemList.Hull_LuV,'H',ItemList.Hatch_Maintenance,'A',ItemList.Robot_Arm_LuV,'C',OrePrefixes.circuit.get(Materials.Ultimate)});
+        GT_ModHandler.addCraftingRecipe(ItemList.Hatch_AutoMaintenance.get(1L), bitsd, new Object[]{"CHC", "AMA", "CHC", 'M', ItemList.Hull_LuV, 'H', ItemList.Hatch_Maintenance, 'A', ItemList.Robot_Arm_LuV, 'C', OrePrefixes.circuit.get(Materials.Ultimate)});
 
         ItemList.Hatch_Muffler_LV.set(new GT_MetaTileEntity_Hatch_Muffler(91, "hatch.muffler.tier.01", "Muffler Hatch (LV)", 1).getStackForm(1L));
         ItemList.Hatch_Muffler_MV.set(new GT_MetaTileEntity_Hatch_Muffler(92, "hatch.muffler.tier.02", "Muffler Hatch (MV)", 2).getStackForm(1L));
@@ -334,12 +514,12 @@ public class GT_Loader_MetaTileEntities implements Runnable {//TODO CHECK CIRCUI
         ItemList.Machine_Steel_Boiler.set(new GT_MetaTileEntity_Boiler_Steel(101, "boiler.steel", "High Pressure Coal Boiler").getStackForm(1L));
         ItemList.Machine_Steel_Boiler_Lava.set(new GT_MetaTileEntity_Boiler_Lava(102, "boiler.lava", "High Pressure Lava Boiler").getStackForm(1L));
         ItemList.Machine_Bronze_Boiler_Solar.set(new GT_MetaTileEntity_Boiler_Solar(105, "boiler.solar", "Simple Solar Boiler").getStackForm(1L));
-        ItemList.Machine_HP_Solar.set(new GT_MetaTileEntity_Boiler_Solar_Steel(114,"boiler.steel.solar", "High Pressure Solar Boiler").getStackForm(1L));
+        ItemList.Machine_HP_Solar.set(new GT_MetaTileEntity_Boiler_Solar_Steel(114, "boiler.steel.solar", "High Pressure Solar Boiler").getStackForm(1L));
         GT_ModHandler.addCraftingRecipe(ItemList.Machine_Bronze_Boiler.get(1L), bits, new Object[]{aTextPlate, "PwP", "BFB", 'F', OreDictNames.craftingIronFurnace, 'P', OrePrefixes.plate.get(Materials.Bronze), 'B', new ItemStack(Blocks.brick_block, 1)});
         GT_ModHandler.addCraftingRecipe(ItemList.Machine_Steel_Boiler.get(1L), bits, new Object[]{aTextPlate, "PwP", "BFB", 'F', OreDictNames.craftingIronFurnace, 'P', OrePrefixes.plate.get(Materials.Steel), 'B', new ItemStack(Blocks.brick_block, 1)});
         GT_ModHandler.addCraftingRecipe(ItemList.Machine_Steel_Boiler_Lava.get(1L), bits, new Object[]{aTextPlate, "PTP", aTextPlateMotor, 'M', ItemList.Hull_HP, 'P', OrePrefixes.plate.get(Materials.Steel), 'T', GT_ModHandler.getModItem("BuildCraft|Factory", "tankBlock", 1L, 0)});
         GT_ModHandler.addCraftingRecipe(ItemList.Machine_Bronze_Boiler_Solar.get(1L), bits, new Object[]{"GGG", "SSS", aTextPlateMotor, 'M', ItemList.Hull_Bronze_Bricks, 'P', OrePrefixes.pipeSmall.get(Materials.Bronze), 'S', OrePrefixes.plateDouble.get(Materials.Silver), 'G', new ItemStack(Blocks.glass, 1)});
-        GT_ModHandler.addCraftingRecipe(ItemList.Machine_HP_Solar.get(1L), bits, new Object[]{"GGG", "SSS", aTextPlateMotor, 'M', ItemList.Hull_HP_Bricks, 'P', OrePrefixes.pipeSmall.get(Materials.Steel), 'S', OrePrefixes.plateTriple.get(Materials.Silver), 'G', GT_ModHandler.getModItem("IC2","blockAlloyGlass",1L)});
+        GT_ModHandler.addCraftingRecipe(ItemList.Machine_HP_Solar.get(1L), bits, new Object[]{"GGG", "SSS", aTextPlateMotor, 'M', ItemList.Hull_HP_Bricks, 'P', OrePrefixes.pipeSmall.get(Materials.Steel), 'S', OrePrefixes.plateTriple.get(Materials.Silver), 'G', GT_ModHandler.getModItem("IC2", "blockAlloyGlass", 1L)});
 
         ItemList.Machine_Bronze_BlastFurnace.set(new GT_MetaTileEntity_BronzeBlastFurnace(108, "bronzemachine.blastfurnace", "Bronze Plated Blast Furnace").getStackForm(1L));
         ItemList.Machine_Bronze_Furnace.set(new GT_MetaTileEntity_Furnace_Bronze(103, "bronzemachine.furnace", "Steam Furnace").getStackForm(1L));
@@ -477,6 +657,46 @@ public class GT_Loader_MetaTileEntities implements Runnable {//TODO CHECK CIRCUI
         ItemList.Battery_Charger_4by4_ZPM.set(new GT_MetaTileEntity_Charger(697, "batterycharger.16.tier.07", "ZPM Voltage Battery Charger", 7, "Each battery gives 8A in/4A out (min 4A/2A)", 4).getStackForm(1L));
         ItemList.Battery_Charger_4by4_UV.set(new GT_MetaTileEntity_Charger(698, "batterycharger.16.tier.08", "Ultimate Voltage Battery Charger", 8, "Each battery gives 8A in/4A out (min 4A/2A)", 4).getStackForm(1L));
         ItemList.Battery_Charger_4by4_MAX.set(new GT_MetaTileEntity_Charger(699, "batterycharger.16.tier.09", "Highly Ultimate Voltage Battery Charger", 9, "Each battery gives 8A in/4A out (min 4A/2A)", 4).getStackForm(1L));
+
+        {
+
+            // Wireless Energy Hatches
+
+            ItemList.Wireless_Hatch_Energy_ULV.set(new GT_MetaTileEntity_Wireless_Hatch(206, "hatch.wireless.receiver.tier.00", "ULV Wireless Energy Hatch", 0).getStackForm(1L));
+            ItemList.Wireless_Hatch_Energy_LV.set(new GT_MetaTileEntity_Wireless_Hatch(207, "hatch.wireless.receiver.tier.01", "LV Wireless Energy Hatch", 1).getStackForm(1L));
+            ItemList.Wireless_Hatch_Energy_MV.set(new GT_MetaTileEntity_Wireless_Hatch(208, "hatch.wireless.receiver.tier.02", "MV Wireless Energy Hatch", 2).getStackForm(1L));
+            ItemList.Wireless_Hatch_Energy_HV.set(new GT_MetaTileEntity_Wireless_Hatch(209, "hatch.wireless.receiver.tier.03", "HV Wireless Energy Hatch", 3).getStackForm(1L));
+            ItemList.Wireless_Hatch_Energy_EV.set(new GT_MetaTileEntity_Wireless_Hatch(216, "hatch.wireless.receiver.tier.04", "EV Wireless Energy Hatch", 4).getStackForm(1L));
+            ItemList.Wireless_Hatch_Energy_IV.set(new GT_MetaTileEntity_Wireless_Hatch(217, "hatch.wireless.receiver.tier.05", "IV Wireless Energy Hatch", 5).getStackForm(1L));
+            ItemList.Wireless_Hatch_Energy_LuV.set(new GT_MetaTileEntity_Wireless_Hatch(218, "hatch.wireless.receiver.tier.06", "LuV Wireless Energy Hatch", 6).getStackForm(1L));
+            ItemList.Wireless_Hatch_Energy_ZPM.set(new GT_MetaTileEntity_Wireless_Hatch(219, "hatch.wireless.receiver.tier.07", "ZPM Wireless Energy Hatch", 7).getStackForm(1L));
+            ItemList.Wireless_Hatch_Energy_UV.set(new GT_MetaTileEntity_Wireless_Hatch(227, "hatch.wireless.receiver.tier.08", "UV Wireless Energy Hatch", 8).getStackForm(1L));
+            ItemList.Wireless_Hatch_Energy_UHV.set(new GT_MetaTileEntity_Wireless_Hatch(229, "hatch.wireless.receiver.tier.09", "UHV Wireless Energy Hatch", 9).getStackForm(1L));
+            ItemList.Wireless_Hatch_Energy_UEV.set(new GT_MetaTileEntity_Wireless_Hatch(266, "hatch.wireless.receiver.tier.10", "UEV Wireless Energy Hatch", 10).getStackForm(1L));
+            ItemList.Wireless_Hatch_Energy_UIV.set(new GT_MetaTileEntity_Wireless_Hatch(267, "hatch.wireless.receiver.tier.11", "UIV Wireless Energy Hatch", 11).getStackForm(1L));
+            ItemList.Wireless_Hatch_Energy_UMV.set(new GT_MetaTileEntity_Wireless_Hatch(268, "hatch.wireless.receiver.tier.12", "UMV Wireless Energy Hatch", 12).getStackForm(1L));
+            ItemList.Wireless_Hatch_Energy_UXV.set(new GT_MetaTileEntity_Wireless_Hatch(269, "hatch.wireless.receiver.tier.13", "UXV Wireless Energy Hatch", 13).getStackForm(1L));
+            ItemList.Wireless_Hatch_Energy_MAX.set(new GT_MetaTileEntity_Wireless_Hatch(286, "hatch.wireless.receiver.tier.14", "MAX Wireless Energy Hatch", 14).getStackForm(1L));
+
+            // Wireless Dynamo Hatches
+
+            ItemList.Wireless_Dynamo_Energy_ULV.set(new GT_MetaTileEntity_Wireless_Dynamo(287, "hatch.wireless.transmitter.tier.00", "ULV Wireless Energy Dynamo", 0).getStackForm(1L));
+            ItemList.Wireless_Dynamo_Energy_LV.set(new GT_MetaTileEntity_Wireless_Dynamo(288, "hatch.wireless.transmitter.tier.01", "LV Wireless Energy Dynamo", 1).getStackForm(1L));
+            ItemList.Wireless_Dynamo_Energy_MV.set(new GT_MetaTileEntity_Wireless_Dynamo(289, "hatch.wireless.transmitter.tier.02", "MV Wireless Energy Dynamo", 2).getStackForm(1L));
+            ItemList.Wireless_Dynamo_Energy_HV.set(new GT_MetaTileEntity_Wireless_Dynamo(296, "hatch.wireless.transmitter.tier.03", "HV Wireless Energy Dynamo", 3).getStackForm(1L));
+            ItemList.Wireless_Dynamo_Energy_EV.set(new GT_MetaTileEntity_Wireless_Dynamo(297, "hatch.wireless.transmitter.tier.04", "EV Wireless Energy Dynamo", 4).getStackForm(1L));
+            ItemList.Wireless_Dynamo_Energy_IV.set(new GT_MetaTileEntity_Wireless_Dynamo(298, "hatch.wireless.transmitter.tier.05", "IV Wireless Energy Dynamo", 5).getStackForm(1L));
+            ItemList.Wireless_Dynamo_Energy_LuV.set(new GT_MetaTileEntity_Wireless_Dynamo(299, "hatch.wireless.transmitter.tier.06", "LuV Wireless Energy Dynamo", 6).getStackForm(1L));
+            ItemList.Wireless_Dynamo_Energy_ZPM.set(new GT_MetaTileEntity_Wireless_Dynamo(310, "hatch.wireless.transmitter.tier.07", "ZPM Wireless Energy Dynamo", 7).getStackForm(1L));
+            ItemList.Wireless_Dynamo_Energy_UV.set(new GT_MetaTileEntity_Wireless_Dynamo(316, "hatch.wireless.transmitter.tier.08", "UV Wireless Energy Dynamo", 8).getStackForm(1L));
+            ItemList.Wireless_Dynamo_Energy_UHV.set(new GT_MetaTileEntity_Wireless_Dynamo(317, "hatch.wireless.transmitter.tier.09", "UHV Wireless Energy Dynamo", 9).getStackForm(1L));
+            ItemList.Wireless_Dynamo_Energy_UEV.set(new GT_MetaTileEntity_Wireless_Dynamo(318, "hatch.wireless.transmitter.tier.10", "UEV Wireless Energy Dynamo", 10).getStackForm(1L));
+            ItemList.Wireless_Dynamo_Energy_UIV.set(new GT_MetaTileEntity_Wireless_Dynamo(319, "hatch.wireless.transmitter.tier.11", "UIV Wireless Energy Dynamo", 11).getStackForm(1L));
+            ItemList.Wireless_Dynamo_Energy_UMV.set(new GT_MetaTileEntity_Wireless_Dynamo(346, "hatch.wireless.transmitter.tier.12", "UMV Wireless Energy Dynamo", 12).getStackForm(1L));
+            ItemList.Wireless_Dynamo_Energy_UXV.set(new GT_MetaTileEntity_Wireless_Dynamo(347, "hatch.wireless.transmitter.tier.13", "UXV Wireless Energy Dynamo", 13).getStackForm(1L));
+            ItemList.Wireless_Dynamo_Energy_MAX.set(new GT_MetaTileEntity_Wireless_Dynamo(348, "hatch.wireless.transmitter.tier.14", "MAX Wireless Energy Dynamo", 14).getStackForm(1L));
+
+        }
 
         GT_ModHandler.addCraftingRecipe(ItemList.Battery_Charger_4by4_ULV.get(1L), bitsd, new Object[]{aTextWireChest, aTextWireHull, "BCB", 'M', ItemList.Hull_ULV, 'W', OrePrefixes.wireGt16.get(Materials.Lead), 'T', OreDictNames.craftingChest, 'B', ItemList.Battery_RE_ULV_Tantalum, 'C', OrePrefixes.circuit.get(Materials.Primitive)});
         GT_ModHandler.addCraftingRecipe(ItemList.Battery_Charger_4by4_LV.get(1L), bitsd, new Object[]{aTextWireChest, aTextWireHull, "BCB", 'M', ItemList.Hull_LV, 'W', OrePrefixes.wireGt16.get(Materials.Tin), 'T', OreDictNames.craftingChest, 'B', ItemList.Battery_RE_LV_Lithium, 'C', OrePrefixes.circuit.get(Materials.Basic)});
@@ -1190,7 +1410,7 @@ public class GT_Loader_MetaTileEntities implements Runnable {//TODO CHECK CIRCUI
         makeWires(Materials.SuperconductorUEV, 2026, 0L, 0L, 64L, gregtech.api.enums.GT_Values.V[10], false, true);
 
         makeWires(Materials.Ichorium, 2600, 2L, 2L, 12L, GT_Values.V[9], false, true);
-        makeWires(Materials.SpaceTime, 2606, 0L, 0L, 1_000_000L, GT_Values.V[15], false, true);
+        makeWires(Materials.SpaceTime, 2606, 0L, 0L, 1_000_000L, GT_Values.V[14], false, true);
 
         if (!GT_Mod.gregtechproxy.mDisableIC2Cables) {
             GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item("copperCableItem", 2L), GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"xP", 'P', OrePrefixes.plate.get(Materials.AnyCopper)});

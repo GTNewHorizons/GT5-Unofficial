@@ -89,7 +89,7 @@ public class GT_Item_Machines extends ItemBlock implements IFluidContainerItem {
                     if (tTileEntity.getOutputAmperage() > 1L) {
                         aList.add(GT_LanguageManager.addStringLocalization("TileEntity_EUp_AMOUNT", "Amperage: ", !GregTech_API.sPostloadFinished ) + EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(tTileEntity.getOutputAmperage()) + EnumChatFormatting.GRAY);
                     }
-                    aList.add(GT_LanguageManager.addStringLocalization("TileEntity_EUp_STORE", "Capacity: ", !GregTech_API.sPostloadFinished ) + EnumChatFormatting.BLUE + GT_Utility.formatNumbers(tTileEntity.getEUCapacity()) + EnumChatFormatting.GRAY);
+                    aList.add(GT_LanguageManager.addStringLocalization("TileEntity_EUp_STORE", "Capacity: ", !GregTech_API.sPostloadFinished ) + EnumChatFormatting.BLUE + GT_Utility.formatNumbers(tTileEntity.getEUCapacity()) + EnumChatFormatting.GRAY + " EU");
                 }
                 if (GregTech_API.METATILEENTITIES[tDamage] instanceof GT_MetaTileEntity_QuantumTank || GregTech_API.METATILEENTITIES[tDamage] instanceof GT_MetaTileEntity_SuperTank) {
                     if (aStack.hasTagCompound() && aStack.stackTagCompound.hasKey("mFluid")) {

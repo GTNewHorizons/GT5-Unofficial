@@ -346,7 +346,7 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity implements IGregTec
     @Override
     public ArrayList<String> getDebugInfo(EntityPlayer aPlayer, int aLogLevel) {
         final ArrayList<String> tList = new ArrayList<>();
-        if (aLogLevel > 2) {
+        if (aLogLevel > 3) {
             tList.add("Meta-ID: " + EnumChatFormatting.BLUE+ mID +EnumChatFormatting.RESET + (hasValidMetaTileEntity() ? EnumChatFormatting.GREEN+" valid"+EnumChatFormatting.RESET : EnumChatFormatting.RED+" invalid"+EnumChatFormatting.RESET) + (mMetaTileEntity == null ? EnumChatFormatting.RED+" MetaTileEntity == null!"+EnumChatFormatting.RESET : " "));
         }
         if (aLogLevel > 1) {

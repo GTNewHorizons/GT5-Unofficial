@@ -14,6 +14,10 @@ public class GT_MetaTileEntity_Hatch_Dynamo extends GT_MetaTileEntity_Hatch {
         super(aID, aName, aNameRegional, aTier, 0, new String[]{"Generating electric Energy from Multiblocks", "Puts out up to 1 Amp"});
     }
 
+    public GT_MetaTileEntity_Hatch_Dynamo(int aID, String aName, String aNameRegional, int aTier, String[] aDescription) {
+        super(aID, aName, aNameRegional, aTier, 0, aDescription);
+    }
+
     public GT_MetaTileEntity_Hatch_Dynamo(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
     }
