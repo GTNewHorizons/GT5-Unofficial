@@ -600,8 +600,12 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechM
 				}
 			}            
 			for (GT_MetaTileEntity_Hatch_Turbine aHatch : getFullTurbineAssemblies()) {
+				// This cycle depletes durability from the turbine rotors.
+				// The amount of times it is run depends on turbineDamageMultiplier
+				// In XL turbines, durability loss is around 5.2-5.3x faster than in singles
+				// To compensate for that, the mEU/t scaling is divided by 5 to make it only slightly faster
 				for (int i = 0; i < turbineDamageMultiplier; i++) {
-					aHatch.damageTurbine(mEUt, damageFactorLow, damageFactorHigh);
+					aHatch.damageTurbine(mEUt / 5, damageFactorLow, damageFactorHigh);
 				}
 			}            
 		}
@@ -737,7 +741,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechM
 			speedMultiplier = 48;
 			maintenanceThreshold = 12;
 			pollutionMultiplier = 3;
-			turbineDamageMultiplier = 12;
+			turbineDamageMultiplier = 3;
 		}
 		else {
 			PlayerUtils.messagePlayer(aPlayer, "Running in Slow (16x) Mode.");
