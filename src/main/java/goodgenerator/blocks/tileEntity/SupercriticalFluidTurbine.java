@@ -100,7 +100,7 @@ public class SupercriticalFluidTurbine extends GT_MetaTileEntity_LargeTurbineBas
 
     @Override
     public int getDamageToComponent(ItemStack aStack) {
-        return looseFit ? 0 : 10;
+        return looseFit ? 2 : 8;
     }
 
     @Override
