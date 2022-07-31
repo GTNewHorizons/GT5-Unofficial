@@ -111,15 +111,6 @@ public class GT_MetaTileEntity_BuckConverter extends GT_MetaTileEntity_TieredMac
     }
 
     @Override
-    public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (aBaseMetaTileEntity.isServerSide() && (aTick & 0xF) == 0) {
-            if(aBaseMetaTileEntity.isActive()) {
-                aBaseMetaTileEntity.decreaseStoredEnergyUnits(CommonValues.V[EUT] >> 2, true);
-            }
-        }
-    }
-
-    @Override
     public boolean isFacingValid(byte aFacing) {
         return true;
     }
