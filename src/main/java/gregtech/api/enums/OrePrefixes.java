@@ -461,6 +461,8 @@ public enum OrePrefixes {
         plate.mGeneratedItems.add(Materials.Electrotine);
         plate.mGeneratedItems.add(Materials.Obsidian);
 
+        ingotHot.mGeneratedItems.add(Materials.TranscendentMetal);
+
         plate.mGeneratedItems.add(Materials.Paper);
         plateDouble.mGeneratedItems.add(Materials.Paper);
         plateTriple.mGeneratedItems.add(Materials.Paper);
@@ -647,6 +649,7 @@ public enum OrePrefixes {
 
     public static void initMaterialComponents() {
         boolean enablePerItemSettings = GregTech_API.sMaterialComponents.get("general", "enablePerItemSettings", false);
+        boolean enableUnusedIngotHot = GregTech_API.sMaterialComponents.get("globalcomponents", "enableUnusedIngotHot", false);
         boolean enableUnusedPlates = GregTech_API.sMaterialComponents.get("globalcomponents", "enableUnusedPlates", false);
         boolean enableUnusedDoubleIngots = GregTech_API.sMaterialComponents.get("globalcomponents", "enableUnusedDoubleIngots", false);
         boolean enableUnusedTripleIngots = GregTech_API.sMaterialComponents.get("globalcomponents", "enableUnusedTripleIngots", false);
@@ -706,6 +709,9 @@ public enum OrePrefixes {
                         aMaterial == Materials.EnderPearl || aMaterial == Materials.EnderEye || aMaterial == Materials.Glass || aMaterial == Materials.Copper || aMaterial == Materials.Tin || aMaterial == Materials.Redstone ||
                         aMaterial == Materials.Sodalite || aMaterial == Materials.Gallium || aMaterial == Materials.GalliumArsenide || aMaterial == Materials.IndiumGalliumPhosphide))
                     plate.mDisabledItems.add(aMaterial);
+                if (!enableUnusedIngotHot) {
+                    ingotHot.mDisabledItems.add(aMaterial);
+                }
                 //Ingot/Plate Storage
                 if (!enableUnusedDoubleIngots) ingotDouble.mDisabledItems.add(aMaterial);
                 if (!enableUnusedTripleIngots) ingotTriple.mDisabledItems.add(aMaterial);

@@ -21,6 +21,10 @@ public class GT_Block_Casings8 extends GT_Block_Casings_Abstract {
     //WATCH OUT FOR TEXTURE ID's
     public GT_Block_Casings8() {
         super(GT_Item_Casings8.class, "gt.blockcasings8", GT_Material_Casings.INSTANCE);
+        /*
+         * DO NOT USE INDEX 15 !
+         * USED HERE: https://github.com/GTNewHorizons/Electro-Magic-Tools/pull/17
+         */
         for (int i = 0; i < 10; i = (i + 1)) {
             Textures.BlockIcons.casingTexturePages[1][i+48] = TextureFactory.of(this, i);
         }

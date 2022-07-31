@@ -356,6 +356,8 @@ public enum ItemList implements IItemContainer {
     Schematic_3by3,
     Schematic_Dust,
 
+    GigaChad,
+
     Circuit_Integrated,
     Circuit_Board_Basic,
     Circuit_Board_Advanced,
@@ -416,6 +418,7 @@ public enum ItemList implements IItemContainer {
     Electric_Pump_MAX,
 
     Tesseract,
+    EnergisedTesseract,
 
     Steam_Valve_LV,
     Steam_Valve_MV,
@@ -1412,6 +1415,7 @@ public enum ItemList implements IItemContainer {
     IndustrialApiary_Upgrade_Acceleration_6,
     IndustrialApiary_Upgrade_Acceleration_7,
     IndustrialApiary_Upgrade_Acceleration_8,
+    IndustrialApiary_Upgrade_Acceleration_8_Upgraded,
 
     Neutron_Reflector,
 

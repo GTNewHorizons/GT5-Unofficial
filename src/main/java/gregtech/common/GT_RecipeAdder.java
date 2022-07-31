@@ -754,9 +754,17 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         if ((aInput1 == null) || (aOutput1 == null)) {
             return false;
         }
+
         new GT_Recipe(aInput1,  aOutput1, aDuration, aEUt);
         return true;
     }
+
+    @Override
+    public boolean addVacuumFreezerRecipe(ItemStack[] aItemInput, FluidStack[] aFluidInput, ItemStack[] aItemOutput, FluidStack[] aFluidOutput, int aDuration, int aEUt) {
+        GT_Recipe.GT_Recipe_Map.sVacuumRecipes.addRecipe(false, aItemInput, aItemOutput, null, aFluidInput, aFluidOutput, Math.max(1, aDuration), Math.max(1, aEUt), 0);
+        return true;
+    }
+
 
     @Override
     @Deprecated

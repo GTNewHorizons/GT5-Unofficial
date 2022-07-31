@@ -559,6 +559,8 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         GT_ModHandler.addCraftingRecipe(ItemList.Electric_Motor_IV.get(1L), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"CWR", "WIW", "RWC", 'I', OrePrefixes.stick.get(Materials.NeodymiumMagnetic), 'R', OrePrefixes.stick.get(Materials.TungstenSteel), 'W', OrePrefixes.wireGt04.get(Materials.Graphene), 'C', OrePrefixes.cableGt02.get(Materials.Tungsten)});
 
         ItemList.Tesseract.set(addItem(415, "Raw Tesseract", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 1L)));
+        ItemList.GigaChad.set(addItem(416, "Giga Chad Token", "You are worthy", new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 1000L)));
+        ItemList.EnergisedTesseract.set(addItem(417, "Energised Tesseract", "Higher dimensional engineering", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 10L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 1L)));
 
         ItemList.Electric_Piston_LV.set(addItem(640, "Electric Piston (LV)", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 1L)));
         ItemList.Electric_Piston_MV.set(addItem(641, "Electric Piston (MV)", "", new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 4L), new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 2L)));

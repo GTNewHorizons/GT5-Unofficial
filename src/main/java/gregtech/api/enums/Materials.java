@@ -24,6 +24,7 @@ import java.util.stream.IntStream;
 
 import static gregtech.api.enums.GT_Values.M;
 import static gregtech.api.enums.GT_Values.MOD_ID_DC;
+import static gregtech.api.enums.MaterialsBotania.*;
 
 @SuppressWarnings("ALL")
 public class Materials implements IColorModulationContainer, ISubTagContainer {
@@ -160,16 +161,13 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials PhasedIron              = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1|2                       , 255, 255, 255,   0,   "PhasedIron"              ,   "Phased Iron"                   ,    0,       0,       3300, 3300, true, false,   3,   1,   1, Dyes._NULL          );
     public static Materials PhasedGold              = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1|2                       , 255, 255, 255,   0,   "PhasedGold"              ,   "Phased Gold"                   ,    0,       0,         -1, 1800, true, false,   3,   1,   1, Dyes._NULL          );
     public static Materials HeeEndium               = new Materials( 770, TextureSet.SET_DULL              ,  16.0F,   1024,  4, 1|2  |8      |64|128      , 165, 220, 250,   0,   "HeeEndium"               ,   "Endium"                        ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeLightBlue   );
-    public static Materials Terrasteel              = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1|2                       , 255, 255, 255,   0,   "Terrasteel"              ,   "Terrasteel"                    ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
     public static Materials Teslatite               = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1                         ,  60, 180, 200,   0,   "Teslatite"               ,   "Teslatite"                     ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
     public static Materials Fluix                   = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1  |4                     , 255, 255, 255,   0,   "Fluix"                   ,   "Fluix"                         ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
-    public static Materials Manasteel               = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1|2                       , 255, 255, 255,   0,   "Manasteel"               ,   "Manasteel"                     ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
     public static Materials DarkThaumium            = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1|2                       , 255, 255, 255,   0,   "DarkThaumium"            ,   "Dark Thaumium"                 ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
     public static Materials Alfium                  = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "Alfium"                  ,   "Alfium"                        ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
     public static Materials Mutation                = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "Mutation"                ,   "Mutation"                      ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
     public static Materials Aquamarine              = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1  |4                     , 255, 255, 255,   0,   "Aquamarine"              ,   "Aquamarine"                    ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
     public static Materials Ender                   = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "Ender"                   ,   "Ender"                         ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
-    public static Materials ElvenElementium         = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1|2                       , 255, 255, 255,   0,   "ElvenElementium"         ,   "Elven Elementium"              ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
     public static Materials SodiumPeroxide          = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "SodiumPeroxide"          ,   "Sodium Peroxide"               ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
     public static Materials IridiumSodiumOxide      = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "IridiumSodiumOxide"      ,   "Iridium Sodium Oxide"          ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
     public static Materials PlatinumGroupSludge     = new Materials( 241, TextureSet.SET_POWDER            ,   1.0F,      0,  2, 1                         ,   0,  30,   0,   0,   "PlatinumGroupSludge"     ,   "Platinum Group Sludge"         ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
@@ -882,7 +880,14 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials DimensionallyTranscendentResidue = new Materials( 589, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16             , 0, 0, 0, 1,   "DimensionallyTranscendentResidue"           ,   "Dimensionally Transcendent Residue"                ,    -1,       -1,         25,    1, false,  true,   1,   1,   1, Dyes.dyeBlack);
 
     public static Materials SpaceTime                = new Materials(   588, new TextureSet("spacetime", true)           ,   320.0F,      4*2621440,  25, 1|2|64|128,   255,   255, 255,  0,   "SpaceTime"                ,   "SpaceTime"                      ,    -1,      -1,         0,    0, false,  true,   2,   1,   1, Dyes._NULL         , Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 1)));
-    public static Materials TranscendentMetal        = new Materials(   581, new TextureSet("transcendentmetal", true)   ,   320.0F,      4*2621440,  25, 1|2|64|128,   50,     50,  50,255,   "TranscendentMetal" ,   "Transcendent Metal"             ,    -1,      -1,         0,    0, false,  true,   200,   1000,   1000, Dyes.dyeBlack         , Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 1)));
+    public static Materials TranscendentMetal        = new Materials(   581, new TextureSet("transcendentmetal", true)   ,   290.0F,      3*2621440,  22, 1|2|64|128,   50,     50,  50,255,   "TranscendentMetal" ,   "Transcendent Metal"             ,    -1,      -1,         0,    3000, true,  true,   200,   1000,   1000, Dyes.dyeBlack  , Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 1))).disableAutoGeneratedBlastFurnaceRecipes().disableAutoGeneratedVacuumFreezerRecipe();
+
+
+
+    static {
+        MaterialsBotania.init();
+    }
+
 
     static {
         MaterialsKevlar.init();
@@ -999,6 +1004,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             mUnificatable,
             mBlastFurnaceRequired = false,
             mAutoGenerateBlastFurnaceRecipes = true,
+            mAutoGenerateVacuumFreezerRecipes = true,
             mTransparent = false,
             mHasParentMod = true,
             mHasPlasma = false,
@@ -1276,8 +1282,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         RockSalt.setOreMultiplier(2).setSmeltingMultiplier(2);
         Scheelite.setOreMultiplier(2).setSmeltingMultiplier(2);
         Tungstate.setOreMultiplier(2).setSmeltingMultiplier(2);
-        Cassiterite.setOreMultiplier(2).setSmeltingMultiplier(2);
-        CassiteriteSand.setOreMultiplier(2).setSmeltingMultiplier(2);
+        Cassiterite.setOreMultiplier(6).setSmeltingMultiplier(2);
+        CassiteriteSand.setOreMultiplier(6).setSmeltingMultiplier(2);
         NetherQuartz.setOreMultiplier(2).setSmeltingMultiplier(2);
         CertusQuartz.setOreMultiplier(2).setSmeltingMultiplier(2);
         TricalciumPhosphate.setOreMultiplier(3).setSmeltingMultiplier(3);
@@ -1672,6 +1678,14 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Quartzite.mChemicalFormula = "SiO\u2082";
         CertusQuartz.mChemicalFormula = "SiO\u2082";
         SpaceTime.mChemicalFormula = "Reality itself distilled into liquid form";
+        GaiaSpirit.mChemicalFormula = "Gs";
+        Manasteel.mChemicalFormula = "Ms";
+        Livingwood.mChemicalFormula = "Lw";
+        Dreamwood.mChemicalFormula = "Dw";
+        BotaniaDragonstone.mChemicalFormula = "Dg";
+        Livingrock.mChemicalFormula = "Lv";
+        Terrasteel.mChemicalFormula = "Tr";
+        ElvenElementium.mChemicalFormula = "Ef";
     }
 
     private static void initSubTags() {
@@ -1824,7 +1838,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
                  **/PhasedIron,
                 PhasedGold,
                 DarkSteel,
-                Terrasteel,
                 TinAlloy,
                 ConductiveIron,
                 ElectricalSteel,
@@ -1840,18 +1853,14 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
                 EndSteel,
                 PulsatingIron,
 
-                Manasteel,
                 DarkThaumium,
-                /**ElvenElementium EnrichedCopper,
-                 DiamondCopper,
-                 **/Adamantium,
+                Adamantium,
                 Amordrine,
                 Angmallen,
                 Ardite,
                 Aredrite,
                 Atlarus,
-                /**Blutonium,
-                 **/Carmot,
+                Carmot,
                 Celenegil,
                 Ceruclase,
                 DarkIron,
@@ -2007,6 +2016,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
                 FreshWater
         );
 
+//        TranscendentMetal.add(SubTag.NO_SMELTING);
         Wood.add(SubTag.WOOD, SubTag.FLAMMABLE, SubTag.NO_SMELTING, SubTag.NO_SMASHING);
         WoodSealed.add(SubTag.WOOD, SubTag.FLAMMABLE, SubTag.NO_SMELTING, SubTag.NO_SMASHING, SubTag.NO_WORKING);
         Peanutwood.add(SubTag.WOOD, SubTag.FLAMMABLE, SubTag.NO_SMELTING, SubTag.NO_SMASHING);
@@ -2144,6 +2154,13 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Forcillium.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE, SubTag.MAGICAL);
         Force.add(SubTag.CRYSTAL, SubTag.MAGICAL, SubTag.UNBURNABLE);
         Magic.add(SubTag.CRYSTAL, SubTag.MAGICAL, SubTag.UNBURNABLE);
+
+        // Botania
+        Livingrock.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+        Livingwood.add(SubTag.WOOD, SubTag.FLAMMABLE, SubTag.NO_SMELTING, SubTag.NO_SMASHING);
+        Dreamwood.add(SubTag.WOOD, SubTag.FLAMMABLE, SubTag.NO_SMELTING, SubTag.NO_SMASHING);
+        ManaDiamond.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+        BotaniaDragonstone.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
 
         Primitive.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         Basic.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
@@ -2500,6 +2517,11 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     public Materials disableAutoGeneratedBlastFurnaceRecipes() {
         mAutoGenerateBlastFurnaceRecipes = false;
+        return this;
+    }
+
+    public Materials disableAutoGeneratedVacuumFreezerRecipe() {
+        mAutoGenerateVacuumFreezerRecipes = false;
         return this;
     }
 
