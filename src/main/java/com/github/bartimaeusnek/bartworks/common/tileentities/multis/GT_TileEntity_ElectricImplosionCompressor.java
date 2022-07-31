@@ -282,7 +282,8 @@ public class GT_TileEntity_ElectricImplosionCompressor extends GT_MetaTileEntity
 
         } else {
             chunkCoordinates.forEach(c -> aBaseMetaTileEntity.getWorld().setBlock(c.posX, c.posY, c.posZ, GregTech_API.sBlockMetal5, 2, 3));
-            GT_Utility.sendSoundToPlayers(aBaseMetaTileEntity.getWorld(), sound, 10, 1.0F, chunkCoordinates.get(0).posX, chunkCoordinates.get(0).posY, chunkCoordinates.get(0).posZ);
+            if(!getBaseMetaTileEntity().hasMufflerUpgrade())
+                GT_Utility.sendSoundToPlayers(aBaseMetaTileEntity.getWorld(), sound, 1f, 1f, chunkCoordinates.get(0).posX, chunkCoordinates.get(0).posY, chunkCoordinates.get(0).posZ);
         }
         this.piston = !this.piston;
     }
