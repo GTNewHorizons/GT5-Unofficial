@@ -23,8 +23,11 @@ import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
@@ -35,6 +38,7 @@ public class GregtechMetaTileEntity_AlloyBlastSmelter extends GregtechMeta_Multi
 
 	private int mMode = 0;
 	private boolean isUsingControllerCircuit = false;
+	private boolean isBussesSeparate = false;
 	private static Item circuit;
 	private int mCasing;
 	private IStructureDefinition<GregtechMetaTileEntity_AlloyBlastSmelter> STRUCTURE_DEFINITION = null;
@@ -57,6 +61,18 @@ public class GregtechMetaTileEntity_AlloyBlastSmelter extends GregtechMeta_Multi
 	public String getMachineType() {
 		return "Fluid Alloy Cooker";
 	}
+
+	@Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setBoolean("isBussesSeparate", isBussesSeparate);
+    }
+
+    @Override
+    public void loadNBTData(final NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        isBussesSeparate = aNBT.getBoolean("isBussesSeparate");
+    }
 
 	@Override
 	protected GT_Multiblock_Tooltip_Builder createTooltip() {
@@ -222,22 +238,40 @@ public class GregtechMetaTileEntity_AlloyBlastSmelter extends GregtechMeta_Multi
 	public boolean checkRecipe(final ItemStack aStack) {
 
 		if (this.getBaseMetaTileEntity().isServerSide()) {
+
+			ArrayList<ItemStack> tInputList = null;
 			//Get Controller Circuit
 			this.isUsingControllerCircuit = isCorrectMachinePart(aStack);
-
-			final ArrayList<ItemStack> tInputList = this.getStoredInputs();
-			for (int i = 0; i < (tInputList.size() - 1); i++) {
-				for (int j = i + 1; j < tInputList.size(); j++) {
-					if (GT_Utility.areStacksEqual(tInputList.get(i), tInputList.get(j))) {
-						if (tInputList.get(i).stackSize >= tInputList.get(j).stackSize) {
-							tInputList.remove(j--);
-						} else {
-							tInputList.remove(i--);
-							break;
+			
+			if (isBussesSeparate) {
+				for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
+					tInputList = new ArrayList<>();
+					tBus.mRecipeMap = getRecipeMap();
+	
+					if (isValidMetaTileEntity(tBus)) {
+						for (int i = tBus.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
+							if (tBus.getBaseMetaTileEntity().getStackInSlot(i) != null) {
+								tInputList.add(tBus.getBaseMetaTileEntity().getStackInSlot(i));
+							}
+						}
+					}
+				}
+			} else {
+				tInputList = this.getStoredInputs();
+				for (int i = 0; i < (tInputList.size() - 1); i++) {
+					for (int j = i + 1; j < tInputList.size(); j++) {
+						if (GT_Utility.areStacksEqual(tInputList.get(i), tInputList.get(j))) {
+							if (tInputList.get(i).stackSize >= tInputList.get(j).stackSize) {
+								tInputList.remove(j--);
+							} else {
+								tInputList.remove(i--);
+								break;
+							}
 						}
 					}
 				}
 			}
+			final ItemStack[] tInputs = Arrays.copyOfRange(tInputList.toArray(new ItemStack[tInputList.size()]), 0, tInputList.size());
 
 			//Validity check
 			if ((isUsingControllerCircuit && tInputList.size() < 1) || (!isUsingControllerCircuit && tInputList.size() < 2)) {
@@ -247,9 +281,6 @@ public class GregtechMetaTileEntity_AlloyBlastSmelter extends GregtechMeta_Multi
 			else if (isUsingControllerCircuit  && tInputList.size() >= 1) {
 				tInputList.add(CI.getNumberedCircuit(this.mMode));
 			}
-
-
-			final ItemStack[] tInputs = Arrays.copyOfRange(tInputList.toArray(new ItemStack[tInputList.size()]), 0, tInputList.size());
 
 			final ArrayList<FluidStack> tFluidList = this.getStoredFluids();
 			for (int i = 0; i < (tFluidList.size() - 1); i++) {
@@ -305,6 +336,13 @@ public class GregtechMetaTileEntity_AlloyBlastSmelter extends GregtechMeta_Multi
 		Logger.WARNING("Failed to find some Valid Inputs or Clientside.");
 		return false;
 	}	
+
+	@Override
+    public boolean onWireCutterRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+		isBussesSeparate = !isBussesSeparate;
+		GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + isBussesSeparate);
+        return true;
+    }
 	
 	@Override
 	public int getMaxParallelRecipes() {
