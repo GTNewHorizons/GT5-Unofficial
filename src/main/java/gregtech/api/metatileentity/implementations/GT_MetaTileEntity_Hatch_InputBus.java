@@ -27,7 +27,7 @@ import static gregtech.api.enums.Textures.BlockIcons.*;
 public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch {
     public GT_Recipe_Map mRecipeMap = null;
     public boolean disableSort;
-    public boolean disableFilter = false;
+    public boolean disableFilter = true;
     public boolean disableLimited = true;
 
     public GT_MetaTileEntity_Hatch_InputBus(int id, String name, String nameRegional, int tier) {
