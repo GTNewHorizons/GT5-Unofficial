@@ -79,7 +79,7 @@ public class GT_NEI_MultiTreeGrowthSimulator extends GTPP_NEI_DefaultHandler {
 	}
 	
 	@Override
-	public List<String> handleItemTooltip(final GuiRecipe gui, final ItemStack aStack, final List<String> currenttip, final int aRecipeIndex) {
+	public List<String> handleItemTooltip(final GuiRecipe<?> gui, final ItemStack aStack, final List<String> currenttip, final int aRecipeIndex) {
 		final TemplateRecipeHandler.CachedRecipe tObject = this.arecipes.get(aRecipeIndex);
 		if ((tObject instanceof CachedDefaultRecipe)) {
 			final CachedDefaultRecipe tRecipe = (CachedDefaultRecipe) tObject;

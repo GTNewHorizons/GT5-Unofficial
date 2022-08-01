@@ -179,11 +179,6 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 //			Preloader_Logger.INFO("Gregtech Utilities Patch", "Transforming "+transformedName);
 //			return new ClassTransformer_GT_Utility(basicClass, transformedName).getWriter().toByteArray();
 //		}
-		//Inject Custom constructors for RTG Hatches
-		if (transformedName.equals(GT_MTE_HATCH_ENERGY) || transformedName.equals(GTPP_MTE_HATCH_RTG)) {
-			Preloader_Logger.INFO("Gregtech RTG Patch", "Transforming " + transformedName);
-			return new ClassTransformer_GT_EnergyHatchPatch(basicClass, transformedName).getWriter().toByteArray();
-		}
 		//Try patch achievements
 		if (transformedName.equals(GT_ACHIEVEMENTS)) {
 			Preloader_Logger.INFO("Gregtech Achievements Patch", "Transforming " + transformedName);

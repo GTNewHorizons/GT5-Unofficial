@@ -162,7 +162,7 @@ public class GT_NEI_LFTR_Sparging extends TemplateRecipeHandler {
 	}
 
 	@Override
-	public List<String> handleItemTooltip(final GuiRecipe gui, final ItemStack aStack, final List<String> currenttip, final int aRecipeIndex) {
+	public List<String> handleItemTooltip(final GuiRecipe<?> gui, final ItemStack aStack, final List<String> currenttip, final int aRecipeIndex) {
 		final TemplateRecipeHandler.CachedRecipe tObject = this.arecipes.get(aRecipeIndex);
 		if ((tObject instanceof GasSpargingRecipeNEI)) {
 			final GasSpargingRecipeNEI tRecipe = (GasSpargingRecipeNEI) tObject;

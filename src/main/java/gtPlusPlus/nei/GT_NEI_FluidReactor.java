@@ -29,7 +29,7 @@ public class GT_NEI_FluidReactor extends GTPP_NEI_DefaultHandler {
     }
 
 	@Override
-	public List<String> handleItemTooltip(final GuiRecipe gui, final ItemStack aStack, final List<String> currenttip, final int aRecipeIndex) {
+	public List<String> handleItemTooltip(final GuiRecipe<?> gui, final ItemStack aStack, final List<String> currenttip, final int aRecipeIndex) {
 		final TemplateRecipeHandler.CachedRecipe tObject = this.arecipes.get(aRecipeIndex);
 		if ((tObject instanceof ChemPlantDefaultRecipe)) {
 			final ChemPlantDefaultRecipe tRecipe = (ChemPlantDefaultRecipe) tObject;

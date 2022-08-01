@@ -208,14 +208,13 @@ public class GregtechCustomHatches {
 	private static void run4() {
 		int aID = 31060;
 		//41, "hatch.energy.tier.01", "LV Energy Hatch", 1
-		Constructor aRTG = ReflectionUtils.getConstructor(GT_MetaTileEntity_Hatch_Energy_RTG.class, new Class[]{int.class, String.class, String.class, int.class, int.class});
-		Object aHatch1 = ReflectionUtils.createNewInstanceFromConstructor(aRTG, new Object[]{aID++, "hatch.energy.rtg.tier.01", "RTG Power Unit [LV]", 1, 9});
-		Object aHatch2 = ReflectionUtils.createNewInstanceFromConstructor(aRTG, new Object[]{aID++, "hatch.energy.rtg.tier.02", "RTG Power Unit [MV]", 2, 9});
-		Object aHatch3 = ReflectionUtils.createNewInstanceFromConstructor(aRTG, new Object[]{aID++, "hatch.energy.rtg.tier.03", "RTG Power Unit [HV]", 3, 9});
+		GT_MetaTileEntity_Hatch_Energy_RTG aHatch1 = new GT_MetaTileEntity_Hatch_Energy_RTG(aID++, "hatch.energy.rtg.tier.01", "RTG Power Unit [LV]", 1, 9);
+		GT_MetaTileEntity_Hatch_Energy_RTG aHatch2 = new GT_MetaTileEntity_Hatch_Energy_RTG(aID++, "hatch.energy.rtg.tier.02", "RTG Power Unit [MV]", 2, 9);
+		GT_MetaTileEntity_Hatch_Energy_RTG aHatch3 = new GT_MetaTileEntity_Hatch_Energy_RTG(aID++, "hatch.energy.rtg.tier.03", "RTG Power Unit [HV]", 3, 9);
 
-		GregtechItemList.Hatch_RTG_LV.set(((IMetaTileEntity) aHatch1).getStackForm(1L));
-		GregtechItemList.Hatch_RTG_MV.set(((IMetaTileEntity) aHatch2).getStackForm(1L));
-		GregtechItemList.Hatch_RTG_HV.set(((IMetaTileEntity) aHatch3).getStackForm(1L));
+		GregtechItemList.Hatch_RTG_LV.set(aHatch1.getStackForm(1L));
+		GregtechItemList.Hatch_RTG_MV.set(aHatch2.getStackForm(1L));
+		GregtechItemList.Hatch_RTG_HV.set(aHatch3.getStackForm(1L));
 
 	}
 

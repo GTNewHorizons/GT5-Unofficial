@@ -25,8 +25,9 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class GT_MetaTileEntity_Hatch_Energy_RTG extends GT_MetaTileEntity_Hatch_Energy {
 
-	public GT_MetaTileEntity_Hatch_Energy_RTG(int aID, String aName, String aNameRegional, int aTier) {
+	public GT_MetaTileEntity_Hatch_Energy_RTG(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount) {
 		super(aID, aName, aNameRegional, aTier);
+		ReflectionUtils.setFinalFieldValue(MetaTileEntity.class, "mInventory", new ItemStack[aInvSlotCount]);
 	}
 
 	public GT_MetaTileEntity_Hatch_Energy_RTG(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
