@@ -2,6 +2,7 @@ package gregtech.common.tools;
 
 import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.GT_MetaGenerated_Tool;
@@ -71,7 +72,7 @@ public class GT_Tool_Scoop extends GT_Tool {
 
     @Override
     public String getMiningSound() {
-        return null;
+        return SoundResource.NONE.toString();
     }
 
     @Override
