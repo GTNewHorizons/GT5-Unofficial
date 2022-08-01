@@ -343,9 +343,10 @@ public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity
                     if (this.mEnergyHatches != null) {
                         for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches)
                             if (isValidMetaTileEntity(tHatch)) {
-                                if (aBaseMetaTileEntity.getStoredEU() + (2048 * tierOverclock()) < maxEUStore()
-                                        && tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(2048 * tierOverclock(), false)) {
-                                    aBaseMetaTileEntity.increaseStoredEnergyUnits(2048 * tierOverclock(), true);
+                                long energyToMove = GT_Values.V[tier()] / 16;
+                                if (aBaseMetaTileEntity.getStoredEU() + energyToMove < maxEUStore()
+                                        && tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(energyToMove, false)) {
+                                    aBaseMetaTileEntity.increaseStoredEnergyUnits(energyToMove, true);
                                 }
                             }
                     }
