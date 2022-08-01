@@ -26,6 +26,8 @@ public class GT_ContainerMetaTile_Machine extends GT_Container {
             mInput = 0,
             mID = 0,
             mDisplayErrorCode = 0;
+    public long mEnergyLong = 0,
+            mStorageLong = 0;
     private int oActive = 0,
             oMaxProgressTime = 0,
             oProgressTime = 0,
@@ -37,6 +39,8 @@ public class GT_ContainerMetaTile_Machine extends GT_Container {
             oInput = 0,
             oID = 0,
             oDisplayErrorCode = 0;
+    private long oEnergyLong = 0,
+            oStorageLong = 0;
     protected int mTimer = 0;
 
 
@@ -75,7 +79,9 @@ public class GT_ContainerMetaTile_Machine extends GT_Container {
         if (mTileEntity.isClientSide() || mTileEntity.getMetaTileEntity() == null)
             return;
         mStorage = (int) Math.min(Integer.MAX_VALUE, mTileEntity.getEUCapacity());
+        mStorageLong = mTileEntity.getEUCapacity();
         mEnergy = (int) Math.min(Integer.MAX_VALUE, mTileEntity.getStoredEU());
+        mEnergyLong = mTileEntity.getStoredEU();
         mSteamStorage = (int) Math.min(Integer.MAX_VALUE, mTileEntity.getSteamCapacity());
         mSteam = (int) Math.min(Integer.MAX_VALUE, mTileEntity.getStoredSteam());
         mOutput = (int) Math.min(Integer.MAX_VALUE, mTileEntity.getOutputVoltage());
@@ -126,6 +132,14 @@ public class GT_ContainerMetaTile_Machine extends GT_Container {
             if (mTimer % 500 == 10 || oSteamStorage != mSteamStorage) {
                 player.sendProgressBarUpdate(this, 19, mSteamStorage & 65535);
                 player.sendProgressBarUpdate(this, 20, mSteamStorage >>> 16);
+            }
+            if (mTimer % 500 == 10 || oEnergyLong != mEnergyLong) {
+                player.sendProgressBarUpdate(this, 21, (int) mEnergyLong);
+                player.sendProgressBarUpdate(this, 22, (int) (mEnergyLong >>> 32));
+            }
+            if (mTimer % 500 == 10 || oStorageLong != mStorageLong) {
+                player.sendProgressBarUpdate(this, 23, (int) mStorageLong);
+                player.sendProgressBarUpdate(this, 24, (int) (mStorageLong >>> 32));
             }
         }
 
@@ -197,6 +211,18 @@ public class GT_ContainerMetaTile_Machine extends GT_Container {
                 break;
             case 20:
                 mSteamStorage = mSteamStorage & 0x0000ffff | value << 16;
+                break;
+            case 21:
+                mEnergyLong = mEnergyLong & 0xffffffff00000000L | value & 0x00000000ffffffffL;
+                break;
+            case 22:
+                mEnergyLong = mEnergyLong & 0x00000000ffffffffL | (long) value << 32;
+                break;
+            case 23:
+                mStorageLong = mStorageLong & 0xffffffff00000000L | value & 0x00000000ffffffffL;
+                break;
+            case 24:
+                mStorageLong = mStorageLong & 0x00000000ffffffffL | (long) value << 32;
                 break;
         }
     }

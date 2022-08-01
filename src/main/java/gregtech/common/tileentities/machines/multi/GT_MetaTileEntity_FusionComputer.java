@@ -106,7 +106,7 @@ public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity
         }
     };
     public GT_Recipe mLastRecipe;
-    public int mEUStore;
+    public long mEUStore;
 
     static {
         Textures.BlockIcons.setCasingTextureForId(52,
@@ -331,7 +331,7 @@ public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity
             if (mEfficiency < 0)
                 mEfficiency = 0;
             if (mRunningOnLoad && checkMachine(aBaseMetaTileEntity, mInventory[1])) {
-                this.mEUStore = (int) aBaseMetaTileEntity.getStoredEU();
+                this.mEUStore = aBaseMetaTileEntity.getStoredEU();
                 checkRecipe(mInventory[1]);
             }
             if (--mUpdate == 0 || --mStartUpCheck == 0) {
@@ -369,7 +369,7 @@ public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity
                                 } catch (Exception ignored) {
                                 }
                             }
-                            this.mEUStore = (int) aBaseMetaTileEntity.getStoredEU();
+                            this.mEUStore = aBaseMetaTileEntity.getStoredEU();
                             if (aBaseMetaTileEntity.isAllowedToWork())
                                 checkRecipe(mInventory[1]);
                         }
@@ -377,7 +377,7 @@ public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity
                         if (aTick % 100 == 0 || aBaseMetaTileEntity.hasWorkJustBeenEnabled() || aBaseMetaTileEntity.hasInventoryBeenModified()) {
                             turnCasingActive(mMaxProgresstime > 0);
                             if (aBaseMetaTileEntity.isAllowedToWork()) {
-                                this.mEUStore = (int) aBaseMetaTileEntity.getStoredEU();
+                                this.mEUStore = aBaseMetaTileEntity.getStoredEU();
                                 if (checkRecipe(mInventory[1])) {
                                     if (this.mEUStore < this.mLastRecipe.mSpecialValue - this.mEUt) {
                                         criticalStopMachine();

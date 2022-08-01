@@ -43,8 +43,10 @@ public class GT_GUIContainer_FusionReactor extends GT_GUIContainerMetaTile_Machi
                 fontRendererObj.drawString("320,000,000 EU", 50, 155, 0x00ff0000);
             else if(this.mContainer.mEnergy > 640000000 && this.mContainer.mEnergy < 640010000)
                 fontRendererObj.drawString("640,000,000 EU", 50, 155, 0x00ff0000);
+            else if(this.mContainer.mEnergyLong > 5120000000L && this.mContainer.mEnergyLong < 5120080000L)
+                fontRendererObj.drawString("5,120,000,000 EU", 50, 155, 0x00ff0000);
             else
-            fontRendererObj.drawString(GT_Utility.formatNumbers(this.mContainer.mEnergy) + " EU", 50, 155, 0x00ff0000);
+                fontRendererObj.drawString(GT_Utility.formatNumbers(this.mContainer.mEnergyLong) + " EU", 50, 155, 0x00ff0000);
         }
     }
 
@@ -55,7 +57,7 @@ public class GT_GUIContainer_FusionReactor extends GT_GUIContainerMetaTile_Machi
         int y = (height - ySize) / 2;
         drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
         if (this.mContainer != null) {
-            double tScale = (double) this.mContainer.mEnergy / (double) this.mContainer.mStorage;
+            double tScale = (double) this.mContainer.mEnergyLong / (double) this.mContainer.mStorageLong;
             drawTexturedModalRect(x + 5, y + 156, 0, 251, Math.min(147, (int) (tScale * 148)), 5);
         }
     }
