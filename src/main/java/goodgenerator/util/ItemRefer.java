@@ -69,6 +69,10 @@ public final class ItemRefer {
     public static ItemRefer Fluid_Storage_Core_T4 = getItemStack(fluidCore, 3);
     public static ItemRefer Fluid_Storage_Core_T5 = getItemStack(fluidCore, 4);
     public static ItemRefer Fluid_Storage_Core_T6 = getItemStack(fluidCore, 5);
+    public static ItemRefer Fluid_Storage_Core_T7 = getItemStack(fluidCore, 6);
+    public static ItemRefer Fluid_Storage_Core_T8 = getItemStack(fluidCore, 7);
+    public static ItemRefer Fluid_Storage_Core_T9 = getItemStack(fluidCore, 8);
+    public static ItemRefer Fluid_Storage_Core_T10 = getItemStack(fluidCore, 9);
     public static ItemRefer Essentia_Upgrade_Empty = getItemStack(upgradeEssentia, 0);
     public static ItemRefer Essentia_Upgrade_Air = getItemStack(upgradeEssentia, 1);
     public static ItemRefer Essentia_Upgrade_Thermal = getItemStack(upgradeEssentia, 2);

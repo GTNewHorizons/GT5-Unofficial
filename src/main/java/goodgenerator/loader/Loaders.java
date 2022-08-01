@@ -81,7 +81,11 @@ public class Loaders {
         GoodGenerator.MOD_ID + ":fluidCore/3",
         GoodGenerator.MOD_ID + ":fluidCore/4",
         GoodGenerator.MOD_ID + ":fluidCore/5",
-        GoodGenerator.MOD_ID + ":fluidCore/6"
+        GoodGenerator.MOD_ID + ":fluidCore/6",
+        GoodGenerator.MOD_ID + ":fluidCore/7",
+        GoodGenerator.MOD_ID + ":fluidCore/8",
+        GoodGenerator.MOD_ID + ":fluidCore/9",
+        GoodGenerator.MOD_ID + ":fluidCore/10"
     });
     public static final Item upgradeEssentia = new MyItems("upgradeEssentia", GoodGenerator.GG, new String[] {
         GoodGenerator.MOD_ID + ":upgradeEssentia/null",
