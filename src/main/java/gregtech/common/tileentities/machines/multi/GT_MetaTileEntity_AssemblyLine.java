@@ -33,10 +33,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.GT_Mod.GT_FML_LOGGER;
 import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE;
@@ -45,7 +42,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_GLOW;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 
 public class GT_MetaTileEntity_AssemblyLine extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_AssemblyLine> implements ISurvivalConstructable {
 
@@ -54,46 +50,52 @@ public class GT_MetaTileEntity_AssemblyLine extends GT_MetaTileEntity_EnhancedMu
     private static final String STRUCTURE_PIECE_LATER = "later";
     private static final String STRUCTURE_PIECE_LAST = "last";
     private static final IStructureDefinition<GT_MetaTileEntity_AssemblyLine> STRUCTURE_DEFINITION = StructureDefinition.<GT_MetaTileEntity_AssemblyLine>builder()
-            .addShape(STRUCTURE_PIECE_FIRST, transpose(new String[][]{
-                    {" ", "e", " "},
-                    {"~", "l", "G"},
-                    {"g", "m", "g"},
-                    {"b", "i", "b"},
-            }))
-            .addShape(STRUCTURE_PIECE_LATER, transpose(new String[][]{
-                    {" ", "e", " "},
-                    {"d", "l", "d"},
-                    {"g", "m", "g"},
-                    {"b", "I", "b"},
-            }))
-            .addShape(STRUCTURE_PIECE_LAST, transpose(new String[][]{
-                    {" ", "e", " "},
-                    {"d", "l", "d"},
-                    {"g", "m", "g"},
-                    {"o", "i", "b"},
-            }))
-            .addElement('G', ofBlock(GregTech_API.sBlockCasings3, 10)) // grate machine casing
-            .addElement('l', ofBlock(GregTech_API.sBlockCasings2, 9)) // assembler machine casing
-            .addElement('m', ofBlock(GregTech_API.sBlockCasings2, 5)) // assembling line casing
-            .addElement('g', ofBlockAnyMeta(GameRegistry.findBlock("IC2", "blockAlloyGlass")))
-            .addElement('e', buildHatchAdder(GT_MetaTileEntity_AssemblyLine.class).atLeast(Energy).casingIndex(16).dot(1).fallback(GregTech_API.sBlockCasings2, 0).build())
-            .addElement('d', buildHatchAdder(GT_MetaTileEntity_AssemblyLine.class).atLeast(DataHatchElement.DataAccess).casingIndex(42).dot(2).fallback(GregTech_API.sBlockCasings3, 10).build())
-            .addElement('b', ofChain(buildHatchAdder(GT_MetaTileEntity_AssemblyLine.class)
-                    .atLeast(InputHatch, InputHatch, InputHatch, InputHatch, Maintenance)
-                    .casingIndex(16)
-                    .dot(3)
-                    .fallback(GregTech_API.sBlockCasings2, 0)
-                    .build(),
+        .addShape(STRUCTURE_PIECE_FIRST, transpose(new String[][]{
+            {" ", "e", " "},
+            {"~", "l", "G"},
+            {"g", "m", "g"},
+            {"b", "i", "b"},
+        }))
+        .addShape(STRUCTURE_PIECE_LATER, transpose(new String[][]{
+            {" ", "e", " "},
+            {"d", "l", "d"},
+            {"g", "m", "g"},
+            {"b", "I", "b"},
+        }))
+        .addShape(STRUCTURE_PIECE_LAST, transpose(new String[][]{
+            {" ", "e", " "},
+            {"d", "l", "d"},
+            {"g", "m", "g"},
+            {"o", "i", "b"},
+        }))
+        .addElement('G', ofBlock(GregTech_API.sBlockCasings3, 10)) // grate machine casing
+        .addElement('l', ofBlock(GregTech_API.sBlockCasings2, 9)) // assembler machine casing
+        .addElement('m', ofBlock(GregTech_API.sBlockCasings2, 5)) // assembling line casing
+        .addElement('g', ofBlockUnlocalizedName("IC2", "blockAlloyGlass", 0, true))
+        .addElement('e', ofChain(
+            Energy.newAny(16, 1),
+            ofBlock(GregTech_API.sBlockCasings2, 0)
+        ))
+        .addElement('d', ofChain(
+            DataHatchElement.DataAccess.newAny(42, 2),
+            ofBlock(GregTech_API.sBlockCasings3, 10)
+        ))
+        .addElement('b', buildHatchAdder(GT_MetaTileEntity_AssemblyLine.class)
+            .atLeast(InputHatch, InputHatch, InputHatch, InputHatch, Maintenance)
+            .casingIndex(16).dot(3)
+            .buildAndChain(
+                ofBlock(GregTech_API.sBlockCasings2, 0),
                 ofHatchAdder(GT_MetaTileEntity_AssemblyLine::addOutputToMachineList, 16, 4)
-            ))
-            .addElement('I', ofChain(
-                    // all blocks nearby use solid steel casing, so let's use the texture of that
-                    InputBus.newAny(16, 5),
-                    ofHatchAdder(GT_MetaTileEntity_AssemblyLine::addOutputToMachineList, 16, 4)
-            ))
-            .addElement('i', InputBus.newAny(16, 5))
-            .addElement('o', OutputBus.newAny(16, 4))
-            .build();
+            )
+        )
+        .addElement('I', ofChain(
+            // all blocks nearby use solid steel casing, so let's use the texture of that
+            InputBus.newAny(16, 5),
+            ofHatchAdder(GT_MetaTileEntity_AssemblyLine::addOutputToMachineList, 16, 4)
+        ))
+        .addElement('i', InputBus.newAny(16, 5))
+        .addElement('o', OutputBus.newAny(16, 4))
+        .build();
 
     public GT_MetaTileEntity_AssemblyLine(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -434,27 +436,14 @@ public class GT_MetaTileEntity_AssemblyLine extends GT_MetaTileEntity_EnhancedMu
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
         if (mMachine) return -1;
-        final IGregTechTileEntity tTile = getBaseMetaTileEntity();
-        int build = getStructureDefinition().survivalBuild(this, stackSize, STRUCTURE_PIECE_FIRST, tTile.getWorld(), getExtendedFacing(), tTile.getXCoord(), tTile.getYCoord(), tTile.getZCoord(), 0, 1, 0, elementBudget, source, actor, false);
-        if (build > 0) {
-            checkStructure(true, tTile); // run an immediate update
-            return build;
-        } else if (build == 0) {
-            return build;
-        }
+        int build = survivialBuildPiece(STRUCTURE_PIECE_FIRST, stackSize, 0, 1, 0, elementBudget, source, actor, false, true);
+        if (build >= 0) return build;
         int tLength = Math.min(stackSize.stackSize + 1, 16);
         for (int i = 1; i < tLength - 1; i++) {
-            build = getStructureDefinition().survivalBuild(this, stackSize, STRUCTURE_PIECE_LATER, tTile.getWorld(), getExtendedFacing(), tTile.getXCoord(), tTile.getYCoord(), tTile.getZCoord(), -i, 1, 0, elementBudget, source, actor, false);
-            if (build > 0) {
-                checkStructure(true, tTile); // run an immediate update
-                return build;
-            } else if (build == 0) {
-                return build;
-            }
+            build = survivialBuildPiece(STRUCTURE_PIECE_LATER, stackSize, -i, 1, 0, elementBudget, source, actor, false, true);
+            if (build >= 0) return build;
         }
-        build = getStructureDefinition().survivalBuild(this, stackSize, STRUCTURE_PIECE_LAST, tTile.getWorld(), getExtendedFacing(), tTile.getXCoord(), tTile.getYCoord(), tTile.getZCoord(), 1 - tLength, 1, 0, elementBudget, source, actor, false);
-        if (build > 0) checkStructure(true, tTile); // run an immediate update
-        return 0;
+        return survivialBuildPiece(STRUCTURE_PIECE_LAST, stackSize, 1 - tLength, 1, 0, elementBudget, source, actor, false);
     }
 
     private enum DataHatchElement implements IHatchElement<GT_MetaTileEntity_AssemblyLine> {

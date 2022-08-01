@@ -94,7 +94,7 @@ public enum GT_HatchElement implements IHatchElement<GT_MetaTileEntity_EnhancedM
         return mteClasses;
     }
 
-    public IGT_HatchAdder<GT_MetaTileEntity_EnhancedMultiBlockBase<?>> adder() {
+    public IGT_HatchAdder<? super GT_MetaTileEntity_EnhancedMultiBlockBase<?>> adder() {
         return adder;
     }
 }

@@ -102,15 +102,15 @@ public class GT_StructureUtility {
         };
     }
 
-    public static <T extends GT_MetaTileEntity_EnhancedMultiBlockBase<?>> HatchElementBuilder<T> buildHatchAdder() {
-        return HatchElementBuilder.builder();
+    public static <T extends GT_MetaTileEntity_EnhancedMultiBlockBase<?>> GT_HatchElementBuilder<T> buildHatchAdder() {
+        return GT_HatchElementBuilder.builder();
     }
 
     /**
-     * Completely equivalent to {@link #buildHatchAdder()}, except it plays nicer with type inference
+     * Completely equivalent to {@link #buildHatchAdder()}, except it plays nicer with type inference when statically imported
      */
-    public static <T extends GT_MetaTileEntity_EnhancedMultiBlockBase<?>> HatchElementBuilder<T> buildHatchAdder(Class<T> typeToken) {
-        return HatchElementBuilder.builder();
+    public static <T extends GT_MetaTileEntity_EnhancedMultiBlockBase<?>> GT_HatchElementBuilder<T> buildHatchAdder(Class<T> typeToken) {
+        return GT_HatchElementBuilder.builder();
     }
 
     public static <T> IStructureElementNoPlacement<T> ofHatchAdder(IGT_HatchAdder<T> aHatchAdder, int aTextureIndex, Block aHintBlock, int aHintMeta) {
