@@ -50,6 +50,8 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraft.util.StatCollector;
+
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -173,9 +175,11 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_TileEntity_MegaMultiBlock
         super.loadNBTData(aNBT);
         this.circuitMode = aNBT.getByte("circuitMode");
         this.glasTier = aNBT.getByte("glasTier");
+        this.isBussesSeparate = aNBT.getBoolean("isBussesSeparate");
     }
 
     private byte circuitMode = 0;
+    private boolean isBussesSeparate = false;
 
     @Override
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
@@ -190,6 +194,13 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_TileEntity_MegaMultiBlock
         }
 
         GT_Utility.sendChatToPlayer(aPlayer, circuitMode > 0 ? "MEBF will prioritise circuit: " + circuitMode : "Circuit prioritisation disabled.");
+    }
+
+    @Override
+    public boolean onWireCutterRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        isBussesSeparate = !isBussesSeparate;
+        GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + isBussesSeparate);
+        return true;
     }
 
     @Override
@@ -213,6 +224,7 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_TileEntity_MegaMultiBlock
         super.saveNBTData(aNBT);
         aNBT.setByte("glasTier", glasTier);
         aNBT.setByte("circuitMode", circuitMode);
+        aNBT.setBoolean("isBussesSeparate", isBussesSeparate);
     }
 
     @Override
@@ -256,27 +268,47 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_TileEntity_MegaMultiBlock
 
     @Override
     public boolean checkRecipe(ItemStack itemStack) {
-
-        ItemStack[] tInputs = this.getStoredInputs().toArray(new ItemStack[0]);
-
+        ItemStack[] tInputs = null;
         FluidStack[] tFluids = this.getStoredFluids().toArray(new FluidStack[0]);
         long nominalV = LoaderReference.tectech ? TecTechUtils.getnominalVoltageTT(this) : BW_Util.getnominalVoltage(this);
 
         byte tTier = (byte) Math.max(1, Math.min(GT_Utility.getTier(nominalV), V.length - 1));
-        GT_Recipe tRecipe;
-        if (circuitMode > 0 && Arrays.stream(tInputs).anyMatch(e -> GT_Utility.areStacksEqual(e, GT_Utility.getIntegratedCircuit(circuitMode), true))) {
-            List<ItemStack> modInputs = Arrays.stream(tInputs).filter(Objects::nonNull).filter(e -> !e.getItem().equals(GT_Utility.getIntegratedCircuit(circuitMode).getItem())).collect(Collectors.toList());
-            modInputs.add(GT_Utility.getIntegratedCircuit(circuitMode));
-            tInputs = modInputs.toArray(new ItemStack[0]);
-        }
-        tRecipe = GT_Recipe.GT_Recipe_Map.sBlastRecipes.findRecipe(this.getBaseMetaTileEntity(), false, V[tTier], tFluids, tInputs);
-        if (tRecipe == null) {
-            if (circuitMode == 0)
-                return false;
+        GT_Recipe tRecipe = null;
+
+        if (isBussesSeparate) {
+            for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
+                ArrayList<ItemStack> tInputList = new ArrayList<>();
+                tBus.mRecipeMap = getRecipeMap();
+
+                if (isValidMetaTileEntity(tBus)) {
+                    for (int i = tBus.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
+                        if (tBus.getBaseMetaTileEntity().getStackInSlot(i) != null) {
+                            tInputList.add(tBus.getBaseMetaTileEntity().getStackInSlot(i));
+                        }
+                    }
+                }
+                tInputs = Arrays.copyOfRange(tInputList.toArray(new ItemStack[tInputList.size()]), 0, tInputList.size());
+                tRecipe = GT_Recipe.GT_Recipe_Map.sBlastRecipes.findRecipe(this.getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
+                if ((tRecipe != null) && (tRecipe.isRecipeInputEqual(false, tFluids, tInputs))) {
+                    break;
+                }
+            }
+        } else {
             tInputs = this.getStoredInputs().toArray(new ItemStack[0]);
+            if (circuitMode > 0 && Arrays.stream(tInputs).anyMatch(e -> GT_Utility.areStacksEqual(e, GT_Utility.getIntegratedCircuit(circuitMode), true))) {
+                List<ItemStack> modInputs = Arrays.stream(tInputs).filter(Objects::nonNull).filter(e -> !e.getItem().equals(GT_Utility.getIntegratedCircuit(circuitMode).getItem())).collect(Collectors.toList());
+                modInputs.add(GT_Utility.getIntegratedCircuit(circuitMode));
+                tInputs = modInputs.toArray(new ItemStack[0]);
+            }
             tRecipe = GT_Recipe.GT_Recipe_Map.sBlastRecipes.findRecipe(this.getBaseMetaTileEntity(), false, V[tTier], tFluids, tInputs);
-            if (tRecipe == null)
-                return false;
+            if (tRecipe == null) {
+                if (circuitMode == 0)
+                    return false;
+                tInputs = this.getStoredInputs().toArray(new ItemStack[0]);
+                tRecipe = GT_Recipe.GT_Recipe_Map.sBlastRecipes.findRecipe(this.getBaseMetaTileEntity(), false, V[tTier], tFluids, tInputs);
+                if (tRecipe == null)
+                    return false;
+            }
         }
 
         ArrayList<ItemStack> outputItems = new ArrayList<>();
