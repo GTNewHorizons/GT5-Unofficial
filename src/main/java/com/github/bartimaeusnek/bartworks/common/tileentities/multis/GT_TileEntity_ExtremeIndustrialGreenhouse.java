@@ -203,7 +203,6 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse extends GT_MetaTileEntity
             addInfo("Process time: 5 sec").
             addInfo("All crops are accelerated by x32 times").
             addInfo("1 Fertilizer per 1 crop +10%").
-            addInfo("Cannot process primordial").
             addInfo(BW_Tooltip_Reference.TT_BLUEPRINT).
             addSeparator().
             beginStructureBlock(5, 4, 5, false).
@@ -693,8 +692,6 @@ public class GT_TileEntity_ExtremeIndustrialGreenhouse extends GT_MetaTileEntity
             if(!ItemList.IC2_Crop_Seeds.isStackEqual(input, true, true))
                 return;
             CropCard cc = Crops.instance.getCropCard(input);
-            if(cc.tier() > 15) // dont process primordial
-                return;
             this.input.stackSize = 1;
             NBTTagCompound nbt = input.getTagCompound();
             byte gr = nbt.getByte("growth");
