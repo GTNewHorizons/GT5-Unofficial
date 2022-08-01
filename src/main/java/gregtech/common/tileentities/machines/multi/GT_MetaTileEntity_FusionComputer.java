@@ -339,6 +339,7 @@ public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity
             }
             if (mStartUpCheck < 0) {
                 if (mMachine) {
+                    this.mEUStore = aBaseMetaTileEntity.getStoredEU();
                     if (this.mEnergyHatches != null) {
                         for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches)
                             if (isValidMetaTileEntity(tHatch)) {
