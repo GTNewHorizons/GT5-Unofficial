@@ -106,7 +106,7 @@ public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity
         }
     };
     public GT_Recipe mLastRecipe;
-    public int mEUStore;
+    public long mEUStore;
 
     static {
         Textures.BlockIcons.setCasingTextureForId(52,
@@ -280,9 +280,9 @@ public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity
             FluidStack[] tFluids = tFluidList.toArray(new FluidStack[0]);
             GT_Recipe tRecipe;
 
-            tRecipe = GT_Recipe.GT_Recipe_Map.sFusionRecipes.findRecipe(this.getBaseMetaTileEntity(), this.mLastRecipe, false, GT_Values.V[8], tFluids);
+            tRecipe = GT_Recipe.GT_Recipe_Map.sFusionRecipes.findRecipe(this.getBaseMetaTileEntity(), this.mLastRecipe, false, GT_Values.V[tier()], tFluids);
             if (tRecipe == null) {
-                tRecipe = GT_Recipe.GT_Recipe_Map.sComplexFusionRecipes.findRecipe(this.getBaseMetaTileEntity(), this.mLastRecipe, false, GT_Values.V[8], tFluids);
+                tRecipe = GT_Recipe.GT_Recipe_Map.sComplexFusionRecipes.findRecipe(this.getBaseMetaTileEntity(), this.mLastRecipe, false, GT_Values.V[tier()], tFluids);
             }
 
             if ((tRecipe == null && !mRunningOnLoad) || (maxEUStore() < tRecipe.mSpecialValue)) {
@@ -331,7 +331,7 @@ public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity
             if (mEfficiency < 0)
                 mEfficiency = 0;
             if (mRunningOnLoad && checkMachine(aBaseMetaTileEntity, mInventory[1])) {
-                this.mEUStore = (int) aBaseMetaTileEntity.getStoredEU();
+                this.mEUStore = aBaseMetaTileEntity.getStoredEU();
                 checkRecipe(mInventory[1]);
             }
             if (--mUpdate == 0 || --mStartUpCheck == 0) {
@@ -339,12 +339,14 @@ public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity
             }
             if (mStartUpCheck < 0) {
                 if (mMachine) {
+                    this.mEUStore = aBaseMetaTileEntity.getStoredEU();
                     if (this.mEnergyHatches != null) {
                         for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches)
                             if (isValidMetaTileEntity(tHatch)) {
-                                if (aBaseMetaTileEntity.getStoredEU() + (2048 * tierOverclock()) < maxEUStore()
-                                        && tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(2048 * tierOverclock(), false)) {
-                                    aBaseMetaTileEntity.increaseStoredEnergyUnits(2048 * tierOverclock(), true);
+                                long energyToMove = GT_Values.V[tier()] / 16;
+                                if (aBaseMetaTileEntity.getStoredEU() + energyToMove < maxEUStore()
+                                        && tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(energyToMove, false)) {
+                                    aBaseMetaTileEntity.increaseStoredEnergyUnits(energyToMove, true);
                                 }
                             }
                     }
@@ -369,7 +371,7 @@ public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity
                                 } catch (Exception ignored) {
                                 }
                             }
-                            this.mEUStore = (int) aBaseMetaTileEntity.getStoredEU();
+                            this.mEUStore = aBaseMetaTileEntity.getStoredEU();
                             if (aBaseMetaTileEntity.isAllowedToWork())
                                 checkRecipe(mInventory[1]);
                         }
@@ -377,7 +379,7 @@ public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity
                         if (aTick % 100 == 0 || aBaseMetaTileEntity.hasWorkJustBeenEnabled() || aBaseMetaTileEntity.hasInventoryBeenModified()) {
                             turnCasingActive(mMaxProgresstime > 0);
                             if (aBaseMetaTileEntity.isAllowedToWork()) {
-                                this.mEUStore = (int) aBaseMetaTileEntity.getStoredEU();
+                                this.mEUStore = aBaseMetaTileEntity.getStoredEU();
                                 if (checkRecipe(mInventory[1])) {
                                     if (this.mEUStore < this.mLastRecipe.mSpecialValue - this.mEUt) {
                                         criticalStopMachine();
