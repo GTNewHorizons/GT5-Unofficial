@@ -467,6 +467,7 @@ public class RECIPES_General {
 		generateWireRecipes(ALLOY.HG1223);
 		generateWireRecipes(ALLOY.LEAGRISIUM);
 		generateWireRecipes(ALLOY.TRINIUM_TITANIUM);
+		generateWireRecipes(ELEMENT.STANDALONE.HYPOGEN);
 
 		GT_Materials[] g = new GT_Materials[] {
 				GT_Materials.Staballoy,

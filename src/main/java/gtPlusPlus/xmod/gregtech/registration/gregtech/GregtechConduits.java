@@ -153,6 +153,9 @@ public class GregtechConduits {
 			customWireFactory(ALLOY.TRINIUM_TITANIUM, 2048, BaseWireID + 89, 1, 2, 16);
 		}
 
+		// need to go back id because fluid pipes already occupy
+		makeCustomWires(ELEMENT.STANDALONE.HYPOGEN, BaseWireID - 15, 0, 0, 8, GT_Values.V[11], false, true);
+
 
 		//superConductorFactory(GT_Materials.Superconductor, 524288, 30660, 0, 0, 8);
 		if (LoadedMods.Thaumcraft){
