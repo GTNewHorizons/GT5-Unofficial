@@ -21,6 +21,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_DataAccess;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
@@ -40,7 +41,8 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 public class GT_MetaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
     //region variables
     private final ArrayList<GT_MetaTileEntity_Hatch_OutputDataItems> eStacksDataOutputs = new ArrayList<>();
-    private final ArrayList<GT_MetaTileEntity_Hatch_DataAccess>      eDataAccessHatches = new ArrayList<>();
+    private final ArrayList<IInventory>                              eDataAccessHatches = new ArrayList<>();
+    private boolean slave = false;
     //endregion
 
     //region structure
@@ -99,13 +101,14 @@ public class GT_MetaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockB
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
         eDataAccessHatches.clear();
         eStacksDataOutputs.clear();
+        slave = false;
         return structureCheck_EM("main", 2, 1, 0);
     }
 
     @Override
     public boolean checkRecipe_EM(ItemStack itemStack) {
         if (eDataAccessHatches.size() > 0 && eStacksDataOutputs.size() > 0) {
-            mEUt = -(int) V[4];
+            mEUt = -(int) V[slave ? 6 : 4];
             eAmpereFlow = 1 + eStacksDataOutputs.size() * eDataAccessHatches.size();
             mMaxProgresstime = 20;
             mEfficiencyIncrease = 10000;
@@ -117,7 +120,7 @@ public class GT_MetaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockB
     @Override
     public void outputAfterRecipe_EM() {
         ArrayList<ItemStack> stacks = new ArrayList<>();
-        for (GT_MetaTileEntity_Hatch_DataAccess dataAccess : eDataAccessHatches) {
+        for (IInventory dataAccess : eDataAccessHatches) {
             int count = dataAccess.getSizeInventory();
             for (int i = 0; i < count; i++) {
                 ItemStack stack = dataAccess.getStackInSlot(i);
@@ -177,7 +180,11 @@ public class GT_MetaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockB
             return eStacksDataOutputs.add((GT_MetaTileEntity_Hatch_OutputDataItems) aMetaTileEntity);
         } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_DataAccess && !(aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputDataItems)) {
             ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return eDataAccessHatches.add((GT_MetaTileEntity_Hatch_DataAccess) aMetaTileEntity);
+            return eDataAccessHatches.add(aMetaTileEntity);
+        } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputDataItems) {
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            slave = true;
+            return eDataAccessHatches.add(aMetaTileEntity);
         }
         return false;
     }
