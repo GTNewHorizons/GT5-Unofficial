@@ -21,7 +21,6 @@ public class Textures {
         MACHINE_UMV_SIDE,
         MACHINE_UXV_SIDE,
 
-        MACHINE_OPV_SIDE,
         MACHINE_MAXV_SIDE,
 
         MACHINE_UEV_TOP,
@@ -30,7 +29,6 @@ public class Textures {
         MACHINE_UMV_TOP,
         MACHINE_UXV_TOP,
 
-        MACHINE_OPV_TOP,
         MACHINE_MAXV_TOP,
 
         MACHINE_UEV_BOTTOM,
@@ -39,7 +37,6 @@ public class Textures {
         MACHINE_UMV_BOTTOM,
         MACHINE_UXV_BOTTOM,
 
-        MACHINE_OPV_BOTTOM,
         MACHINE_MAXV_BOTTOM,
 
         OVERLAY_SCHEST,
@@ -1312,7 +1309,6 @@ public class Textures {
             MACHINE_UIV_SIDE,
             MACHINE_UMV_SIDE,
             MACHINE_UXV_SIDE,
-            MACHINE_OPV_SIDE,
             MACHINE_MAXV_SIDE,
         },
             MACHINECASINGS_TOP = {
@@ -1330,7 +1326,6 @@ public class Textures {
                 MACHINE_UIV_TOP,
                 MACHINE_UMV_TOP,
                 MACHINE_UXV_TOP,
-                MACHINE_OPV_TOP,
                 MACHINE_MAXV_TOP,
             },
             MACHINECASINGS_BOTTOM = {
@@ -1348,8 +1343,8 @@ public class Textures {
                 MACHINE_UIV_BOTTOM,
                 MACHINE_UMV_BOTTOM,
                 MACHINE_UXV_BOTTOM,
-                MACHINE_OPV_BOTTOM,
                 MACHINE_MAXV_BOTTOM,
+
             },
             GRANITES = {
                 GRANITE_BLACK_STONE,
