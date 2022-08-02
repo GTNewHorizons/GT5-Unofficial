@@ -22,6 +22,7 @@
 
 package com.github.bartimaeusnek.bartworks.util;
 
+import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.common.loaders.BioItemList;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
@@ -241,8 +242,17 @@ public class BWRecipes {
 
     public static class DynamicGTRecipe extends GT_Recipe {
 
-        public DynamicGTRecipe(boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems, int[] aChances, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
+        public DynamicGTRecipe(boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems, int[] aChances, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue, GT_Recipe originalRecipe) {
             super(aOptimize, aInputs, aOutputs, aSpecialItems, aChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue);
+            if (originalRecipe != null) {
+                this.owners = new ArrayList<>(originalRecipe.owners);
+                this.stackTraces = new ArrayList<>(originalRecipe.stackTraces);
+                this.setOwner(MainMod.MOD_ID);
+            }
+        }
+
+        public DynamicGTRecipe(boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems, int[] aChances, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
+            this(aOptimize, aInputs, aOutputs, aSpecialItems, aChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue, null);
         }
 
     }

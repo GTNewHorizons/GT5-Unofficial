@@ -56,7 +56,6 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -70,8 +69,6 @@ import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader
 import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.Oganesson;
 import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.fluids;
 import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.molten;
-import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.*;
-import static gregtech.api.enums.GT_Values.MOD_ID_FR;
 import static gregtech.api.enums.GT_Values.VN;
 
 public class StaticRecipeChangeLoaders {
@@ -406,7 +403,13 @@ public class StaticRecipeChangeLoaders {
             if (newGas.contains(GasTag)) {
                 int time = transformEBFGasRecipeTime(recipe, originalGas, newGas);
                 int gasAmount = Math.max(1, (int) Math.round((double) recipe.mFluidInputs[0].amount * gtEbfGasRecipeConsumptionMultipliers.get(newGas)));
-                toAdd.add(new BWRecipes.DynamicGTRecipe(false, recipe.mInputs, recipe.mOutputs, recipe.mSpecialItems, recipe.mChances, new FluidStack[]{newGas.getGas(gasAmount)}, recipe.mFluidOutputs, time, recipe.mEUt, recipe.mSpecialValue));
+                if (recipe.mFluidInputs != null && recipe.mFluidInputs.length == 1 && recipe.mFluidInputs[0].isFluidEqual(newGas.getGas(0))) {
+                    // preserve original recipe owner
+                    toAdd.add(new BWRecipes.DynamicGTRecipe(false, recipe.mInputs, recipe.mOutputs, recipe.mSpecialItems, recipe.mChances, new FluidStack[]{newGas.getGas(gasAmount)}, recipe.mFluidOutputs, time, recipe.mEUt, recipe.mSpecialValue, recipe));
+                } else {
+                    // new recipe
+                    toAdd.add(new BWRecipes.DynamicGTRecipe(false, recipe.mInputs, recipe.mOutputs, recipe.mSpecialItems, recipe.mChances, new FluidStack[]{newGas.getGas(gasAmount)}, recipe.mFluidOutputs, time, recipe.mEUt, recipe.mSpecialValue));
+                }
             }
         }
     }
@@ -416,7 +419,13 @@ public class StaticRecipeChangeLoaders {
             if (newGas.contains(GasTag)) {
                 int time = transformEBFGasRecipeTime(recipe, originalGas, newGas);
                 int gasAmount = Math.max(1, (int) Math.round((double) recipe.mFluidInputs[0].amount * newGas.getStats().getEbfGasRecipeConsumedAmountMultiplier()));
-                toAdd.add(new BWRecipes.DynamicGTRecipe(false, recipe.mInputs, recipe.mOutputs, recipe.mSpecialItems, recipe.mChances, new FluidStack[]{new FluidStack(Objects.requireNonNull(fluids.get(newGas)), gasAmount)}, recipe.mFluidOutputs, time, recipe.mEUt, recipe.mSpecialValue));
+                if (recipe.mFluidInputs != null && recipe.mFluidInputs.length == 1 && recipe.mFluidInputs[0].isFluidEqual(new FluidStack(Objects.requireNonNull(fluids.get(newGas)), 0))) {
+                    // preserve original recipe owner
+                    toAdd.add(new BWRecipes.DynamicGTRecipe(false, recipe.mInputs, recipe.mOutputs, recipe.mSpecialItems, recipe.mChances, new FluidStack[]{new FluidStack(Objects.requireNonNull(fluids.get(newGas)), gasAmount)}, recipe.mFluidOutputs, time, recipe.mEUt, recipe.mSpecialValue, recipe));
+                } else {
+                    // new recipe
+                    toAdd.add(new BWRecipes.DynamicGTRecipe(false, recipe.mInputs, recipe.mOutputs, recipe.mSpecialItems, recipe.mChances, new FluidStack[]{new FluidStack(Objects.requireNonNull(fluids.get(newGas)), gasAmount)}, recipe.mFluidOutputs, time, recipe.mEUt, recipe.mSpecialValue));
+                }
             }
         }
     }
@@ -433,7 +442,7 @@ public class StaticRecipeChangeLoaders {
                         inputs.add(stack);
                     }
                 inputs.add(GT_Utility.getIntegratedCircuit(circuitConfiguration));
-                toAdd.add(new BWRecipes.DynamicGTRecipe(false, inputs.toArray(new ItemStack[0]), recipe.mOutputs, recipe.mSpecialItems, recipe.mChances, null, recipe.mFluidOutputs, transformEBFNoGasRecipeTime(recipe, originalGas), recipe.mEUt, recipe.mSpecialValue));
+                toAdd.add(new BWRecipes.DynamicGTRecipe(false, inputs.toArray(new ItemStack[0]), recipe.mOutputs, recipe.mSpecialItems, recipe.mChances, null, recipe.mFluidOutputs, transformEBFNoGasRecipeTime(recipe, originalGas), recipe.mEUt, recipe.mSpecialValue, recipe));
                 break;
             }
         }

@@ -267,12 +267,18 @@ public class PlatinumSludgeOverHaul {
                             toDel.add(recipe);
                         else if (GT_Utility.areFluidsEqual(Rhodium.getMolten(1), recipe.mFluidOutputs[i]))
                             toDel.add(recipe);
-                        else if (GT_Utility.areFluidsEqual(Materials.Iridium.getMolten(1), recipe.mFluidOutputs[i]))
+                        else if (GT_Utility.areFluidsEqual(Materials.Iridium.getMolten(1), recipe.mFluidOutputs[i])) {
                             recipe.mFluidOutputs[i] = AcidicIridiumSolution.getFluidOrGas(1000);
-                        else if (GT_Utility.areFluidsEqual(Materials.Platinum.getMolten(1), recipe.mFluidOutputs[i]))
+                            recipe.reloadOwner();
+                        }
+                        else if (GT_Utility.areFluidsEqual(Materials.Platinum.getMolten(1), recipe.mFluidOutputs[i])) {
                             recipe.mFluidOutputs[i] = PTConcentrate.getFluidOrGas(1000);
-                        else if (GT_Utility.areFluidsEqual(Materials.Osmium.getMolten(1), recipe.mFluidOutputs[i]))
+                            recipe.reloadOwner();
+                        }
+                        else if (GT_Utility.areFluidsEqual(Materials.Osmium.getMolten(1), recipe.mFluidOutputs[i])) {
                             recipe.mFluidOutputs[i] = AcidicOsmiumSolution.getFluidOrGas(1000);
+                            recipe.reloadOwner();
+                        }
                     } else {
                         if (GT_Utility.areFluidsEqual(Ruthenium.getMolten(1), recipe.mFluidOutputs[i]))
                             toDel.add(recipe);
@@ -296,6 +302,7 @@ public class PlatinumSludgeOverHaul {
                                     continue recipeloop;
                             int amount = recipe.mOutputs[i].stackSize * 2;
                             recipe.mOutputs[i] = LeachResidue.get(dust, amount);
+                            recipe.reloadOwner();
                         }
                     }
                     if (BW_Util.areStacksEqualOrNull(Rhodium.get(dust), recipe.mOutputs[i]) || BW_Util.areStacksEqualOrNull(Rhodium.get(dustImpure), recipe.mOutputs[i]) || BW_Util.areStacksEqualOrNull(Rhodium.get(dustPure), recipe.mOutputs[i])) {
@@ -305,6 +312,7 @@ public class PlatinumSludgeOverHaul {
                                     continue recipeloop;
                             int amount = recipe.mOutputs[i].stackSize * 2;
                             recipe.mOutputs[i] = CrudeRhMetall.get(dust, amount);
+                            recipe.reloadOwner();
                         }
                     }
                     if (!BW_Util.checkStackAndPrefix(recipe.mOutputs[i]))
@@ -318,12 +326,15 @@ public class PlatinumSludgeOverHaul {
                         if (GT_OreDictUnificator.getAssociation(recipe.mOutputs[i]).mPrefix.equals(dust) || GT_OreDictUnificator.getAssociation(recipe.mOutputs[i]).mPrefix.equals(dustImpure) || GT_OreDictUnificator.getAssociation(recipe.mOutputs[i]).mPrefix.equals(dustPure)) {
                             int amount = recipe.mOutputs[i].stackSize;
                             recipe.mOutputs[i] = BW_Util.setStackSize(PTMetallicPowder.get(dust), amount * 2);
+                            recipe.reloadOwner();
                         } else if (GT_OreDictUnificator.getAssociation(recipe.mOutputs[i]).mPrefix.equals(dustSmall)) {
                             int amount = recipe.mOutputs[i].stackSize;
                             recipe.mOutputs[i] = BW_Util.setStackSize(PTMetallicPowder.get(dustSmall), amount * 2);
+                            recipe.reloadOwner();
                         } else if (GT_OreDictUnificator.getAssociation(recipe.mOutputs[i]).mPrefix.equals(dustTiny)) {
                             int amount = recipe.mOutputs[i].stackSize;
                             recipe.mOutputs[i] = BW_Util.setStackSize(PTMetallicPowder.get(dustTiny), amount * 2);
+                            recipe.reloadOwner();
                         }
                     } else if (GT_OreDictUnificator.getAssociation(recipe.mOutputs[i]).mMaterial.mMaterial.equals(Materials.Palladium)) {
                         for (int j = 0; j < recipe.mInputs.length; j++) {
@@ -333,12 +344,15 @@ public class PlatinumSludgeOverHaul {
                         if (GT_OreDictUnificator.getAssociation(recipe.mOutputs[i]).mPrefix.equals(dust) || GT_OreDictUnificator.getAssociation(recipe.mOutputs[i]).mPrefix.equals(dustImpure) || GT_OreDictUnificator.getAssociation(recipe.mOutputs[i]).mPrefix.equals(dustPure)) {
                             int amount = recipe.mOutputs[i].stackSize;
                             recipe.mOutputs[i] = BW_Util.setStackSize(PDMetallicPowder.get(dust), amount * 4);
+                            recipe.reloadOwner();
                         } else if (GT_OreDictUnificator.getAssociation(recipe.mOutputs[i]).mPrefix.equals(dustSmall)) {
                             int amount = recipe.mOutputs[i].stackSize;
                             recipe.mOutputs[i] = BW_Util.setStackSize(PDMetallicPowder.get(dustSmall), amount * 4);
+                            recipe.reloadOwner();
                         } else if (GT_OreDictUnificator.getAssociation(recipe.mOutputs[i]).mPrefix.equals(dustTiny)) {
                             int amount = recipe.mOutputs[i].stackSize;
                             recipe.mOutputs[i] = BW_Util.setStackSize(PDMetallicPowder.get(dustTiny), amount * 4);
+                            recipe.reloadOwner();
                         }
                     } else if (GT_OreDictUnificator.getAssociation(recipe.mOutputs[i]).mMaterial.mMaterial.equals(Materials.Osmium)) {
                         for (int j = 0; j < recipe.mInputs.length; j++) {
@@ -348,12 +362,15 @@ public class PlatinumSludgeOverHaul {
                         if (GT_OreDictUnificator.getAssociation(recipe.mOutputs[i]).mPrefix.equals(dust) || GT_OreDictUnificator.getAssociation(recipe.mOutputs[i]).mPrefix.equals(dustImpure) || GT_OreDictUnificator.getAssociation(recipe.mOutputs[i]).mPrefix.equals(dustPure)) {
                             int amount = recipe.mOutputs[i].stackSize;
                             recipe.mOutputs[i] = BW_Util.setStackSize(IrOsLeachResidue.get(dust), amount);
+                            recipe.reloadOwner();
                         } else if (GT_OreDictUnificator.getAssociation(recipe.mOutputs[i]).mPrefix.equals(dustSmall)) {
                             int amount = recipe.mOutputs[i].stackSize;
                             recipe.mOutputs[i] = BW_Util.setStackSize(IrOsLeachResidue.get(dustSmall), amount);
+                            recipe.reloadOwner();
                         } else if (GT_OreDictUnificator.getAssociation(recipe.mOutputs[i]).mPrefix.equals(dustTiny)) {
                             int amount = recipe.mOutputs[i].stackSize;
                             recipe.mOutputs[i] = BW_Util.setStackSize(IrOsLeachResidue.get(dustTiny), amount);
+                            recipe.reloadOwner();
                         }
                     } else if (GT_OreDictUnificator.getAssociation(recipe.mOutputs[i]).mMaterial.mMaterial.equals(Materials.Iridium)) {
                         for (int j = 0; j < recipe.mInputs.length; j++) {
@@ -363,12 +380,15 @@ public class PlatinumSludgeOverHaul {
                         if (GT_OreDictUnificator.getAssociation(recipe.mOutputs[i]).mPrefix.equals(dust) || GT_OreDictUnificator.getAssociation(recipe.mOutputs[i]).mPrefix.equals(dustImpure) || GT_OreDictUnificator.getAssociation(recipe.mOutputs[i]).mPrefix.equals(dustPure)) {
                             int amount = recipe.mOutputs[i].stackSize;
                             recipe.mOutputs[i] = BW_Util.setStackSize(IrLeachResidue.get(dust), amount);
+                            recipe.reloadOwner();
                         } else if (GT_OreDictUnificator.getAssociation(recipe.mOutputs[i]).mPrefix.equals(dustSmall)) {
                             int amount = recipe.mOutputs[i].stackSize;
                             recipe.mOutputs[i] = BW_Util.setStackSize(IrLeachResidue.get(dustSmall), amount);
+                            recipe.reloadOwner();
                         } else if (GT_OreDictUnificator.getAssociation(recipe.mOutputs[i]).mPrefix.equals(dustTiny)) {
                             int amount = recipe.mOutputs[i].stackSize;
                             recipe.mOutputs[i] = BW_Util.setStackSize(IrLeachResidue.get(dustTiny), amount);
+                            recipe.reloadOwner();
                         }
                     }
                 }
@@ -395,6 +415,7 @@ public class PlatinumSludgeOverHaul {
                     ItemData ass = GT_OreDictUnificator.getAssociation(stack);
                     if (BW_Util.checkStackAndPrefix(stack) && ass.mMaterial.mMaterial.equals(Materials.Platinum)) {
                         recipe.mInputs[i] = GT_OreDictUnificator.get(ass.mPrefix,Materials.BlueAlloy,stack.stackSize);
+                        recipe.reloadOwner();
                     }
                 }
             }
