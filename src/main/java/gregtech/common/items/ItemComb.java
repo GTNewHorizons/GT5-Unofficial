@@ -544,8 +544,7 @@ public class ItemComb extends Item {
         HV, EV, IV,
         LUV, ZPM, UV,
         UHV, UEV, UIV,
-        UMV, UXV, OpV,
-        MAX;
+        UMV, UXV, MAX;
 		public int getVoltage() {
 			return (int) V[this.ordinal()];
 		}

@@ -398,7 +398,6 @@ public enum ItemList implements IItemContainer {
     Electric_Motor_UIV,
     Electric_Motor_UMV,
     Electric_Motor_UXV,
-    Electric_Motor_OpV,
     Electric_Motor_MAX,
 
     Electric_Pump_LV,
@@ -414,7 +413,6 @@ public enum ItemList implements IItemContainer {
     Electric_Pump_UIV,
     Electric_Pump_UMV,
     Electric_Pump_UXV,
-    Electric_Pump_OpV,
     Electric_Pump_MAX,
 
     Tesseract,
@@ -448,7 +446,6 @@ public enum ItemList implements IItemContainer {
     Conveyor_Module_UIV,
     Conveyor_Module_UMV,
     Conveyor_Module_UXV,
-    Conveyor_Module_OpV,
     Conveyor_Module_MAX,
 
     Electric_Piston_LV,
@@ -464,7 +461,6 @@ public enum ItemList implements IItemContainer {
     Electric_Piston_UIV,
     Electric_Piston_UMV,
     Electric_Piston_UXV,
-    Electric_Piston_OpV,
     Electric_Piston_MAX,
 
     Robot_Arm_LV,
@@ -480,7 +476,6 @@ public enum ItemList implements IItemContainer {
     Robot_Arm_UIV,
     Robot_Arm_UMV,
     Robot_Arm_UXV,
-    Robot_Arm_OpV,
     Robot_Arm_MAX,
 
     Emitter_LV,
@@ -496,7 +491,6 @@ public enum ItemList implements IItemContainer {
     Emitter_UIV,
     Emitter_UMV,
     Emitter_UXV,
-    Emitter_OpV,
     Emitter_MAX,
 
     Sensor_LV,
@@ -512,7 +506,6 @@ public enum ItemList implements IItemContainer {
     Sensor_UIV,
     Sensor_UMV,
     Sensor_UXV,
-    Sensor_OpV,
     Sensor_MAX,
 
     Field_Generator_LV,
@@ -528,7 +521,6 @@ public enum ItemList implements IItemContainer {
     Field_Generator_UIV,
     Field_Generator_UMV,
     Field_Generator_UXV,
-    Field_Generator_OpV,
     Field_Generator_MAX,
 
     Battery_Hull_LV,
