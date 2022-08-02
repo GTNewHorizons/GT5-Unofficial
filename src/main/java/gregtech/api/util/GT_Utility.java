@@ -1431,6 +1431,7 @@ public class GT_Utility {
     }
 
     public static boolean doSoundAtClient(String aSoundName, int aTimeUntilNextSound, float aSoundStrength) {
+        if (aSoundName == null) return false;
         return doSoundAtClient(aSoundName, aTimeUntilNextSound, aSoundStrength, GT.getThePlayer());
     }
 
@@ -1443,7 +1444,7 @@ public class GT_Utility {
     }
 
     public static boolean doSoundAtClient(String aSoundName, int aTimeUntilNextSound, float aSoundStrength, Entity aEntity) {
-        if (aEntity == null) return false;
+        if (aEntity == null || aSoundName == null) return false;
         return doSoundAtClient(aSoundName, aTimeUntilNextSound, aSoundStrength, aEntity.posX, aEntity.posY, aEntity.posZ);
     }
 
@@ -1462,6 +1463,7 @@ public class GT_Utility {
      */
     @Deprecated
     public static boolean doSoundAtClient(String aSoundName, int aTimeUntilNextSound, float aSoundStrength, double aX, double aY, double aZ) {
+        if (aSoundName == null) return false;
         return doSoundAtClient(new ResourceLocation(aSoundName), aTimeUntilNextSound, aSoundStrength, 1.01818028F, aX, aY, aZ);
     }
 

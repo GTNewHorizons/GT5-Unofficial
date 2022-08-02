@@ -72,7 +72,7 @@ public class GT_Tool_Scoop extends GT_Tool {
 
     @Override
     public String getMiningSound() {
-        return SoundResource.NONE.toString();
+        return null;
     }
 
     @Override
