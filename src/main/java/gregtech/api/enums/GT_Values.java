@@ -85,10 +85,10 @@ public class GT_Values {
             new long[]{
                     8L, 32L, 128L,
                     512L, 2048L, 8192L,
-                    32768L, 131072L, 524288L,
-                    2097152L, 8388608L, 33554432L,
-                    134217728L, 536870912L, 1073741824L,
-                    Integer.MAX_VALUE - 7};
+                    32_768L, 131_072L, 524_288L,
+                    2_097_152L, 8_388_608L, 33_554_432L,
+                    134_217_728L, 536_870_912L, Integer.MAX_VALUE - 7};
+    // Why -7? Mystery of the universe. Something may break if you change this so please do not without extensive testing.
     //TODO:Adding that in coremod!!!
     //TODO:tier 14,15 wires and transformers only (not even cables !!!)
     //TODO:tier 12,13 the above + batteries, battery buffers, (maybe cables,12 also works for machines)
