@@ -1961,7 +1961,7 @@ public class Textures {
          */
         @Deprecated
         public static ITexture[] CASING_BLOCKS = new ITexture[128];//original variable still limited to 128
-        public static ITexture[][] MACHINE_CASINGS = new ITexture[16][17];
+        public static ITexture[][] MACHINE_CASINGS = new ITexture[15][17];
         /**
          * by Default pages are null
          */
