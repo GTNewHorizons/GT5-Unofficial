@@ -2,6 +2,7 @@
 gtnop.gui.veinStat.name=Vein Stats
 gtnop.gui.asteroidStat.name=Asteroid Stats
 gtnop.gui.smallOreStat.name=Small Ore Stats
+gtnop.gui.undergroundFluid.name=Underground Fluid Stats
 gtnop.gui.ieVeinStat.name=IE Vein Stats
 gtnop.gui.bedrockOreStat.name=Bedrock Ore Stats
 
@@ -14,6 +15,9 @@ gtnop.gui.nei.genHeight=Height
 gtnop.gui.nei.weightedChance=Weight
 gtnop.gui.nei.worldNames=Generated world
 gtnop.gui.nei.restrictBiome=Restricted biome
+gtnop.gui.nei.dimension=Dimension
+gtnop.gui.nei.chance=Chance
+gtnop.gui.nei.fluidAmount=Amount
 
 gtnop.gui.nei.asteroidPrimary=Main-Gen1
 gtnop.gui.nei.asteroidSecondary=Main-Gen2
@@ -50,11 +54,13 @@ gtnop.world.Ceres=Ceres
 gtnop.world.Europa=Europa
 gtnop.world.Ganymede=Ganymede
 gtnop.world.Callisto=Callisto
+gtnop.world.Ross128b=Ross128b
 gtnop.world.Io=Io
 gtnop.world.Venus=Venus
 gtnop.world.Mercury=Mercury
 gtnop.world.Enceladus=Enceladus
 gtnop.world.Titan=Titan
+gtnop.world.Ross128ba=Ross128ba
 gtnop.world.Miranda=Miranda
 gtnop.world.Oberon=Oberon
 gtnop.world.Proteus=Proteus

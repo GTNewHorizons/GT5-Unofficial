@@ -8,7 +8,6 @@ import gregtech.api.util.GT_LanguageManager;
 import java.awt.Point;
 import java.awt.Rectangle;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.util.EnumChatFormatting;
 import pers.gwyog.gtneioreplugin.plugin.PluginBase;
 import pers.gwyog.gtneioreplugin.util.GuiRecipeHelper;
 
@@ -88,13 +87,5 @@ public abstract class PluginGT5Base extends PluginBase {
      */
     protected void drawDimNames(String dimNames) {
         GuiDraw.drawString(I18n.format("gtnop.gui.nei.worldNames") + ": ", 2, 100, 0x404040, false);
-    }
-
-    /**
-     * Draw the "see all recipes" transfer label
-     */
-    protected void drawSeeAllRecipesLabel() {
-        GuiDraw.drawStringR(
-                EnumChatFormatting.BOLD + I18n.format("gtnop.gui.nei.seeAll"), getGuiWidth() - 3, 5, 0x404040, false);
     }
 }

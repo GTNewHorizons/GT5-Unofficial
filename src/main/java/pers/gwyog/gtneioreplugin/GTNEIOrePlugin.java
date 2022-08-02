@@ -11,9 +11,11 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import pers.gwyog.gtneioreplugin.plugin.IMCForNEI;
 import pers.gwyog.gtneioreplugin.plugin.block.ModBlocks;
 import pers.gwyog.gtneioreplugin.util.GT5OreLayerHelper;
 import pers.gwyog.gtneioreplugin.util.GT5OreSmallHelper;
+import pers.gwyog.gtneioreplugin.util.GT5UndergroundFluidHelper;
 import pers.gwyog.gtneioreplugin.util.GuiRecipeHelper;
 
 @Mod(
@@ -75,6 +77,7 @@ public class GTNEIOrePlugin {
     @EventHandler
     public void init(FMLInitializationEvent event) {
         ModBlocks.init();
+        IMCForNEI.IMCSender();
     }
 
     @EventHandler
@@ -82,6 +85,7 @@ public class GTNEIOrePlugin {
         if (event.getSide() == Side.CLIENT) {
             new GT5OreLayerHelper();
             new GT5OreSmallHelper();
+            new GT5UndergroundFluidHelper();
             new GuiRecipeHelper();
             if (csv) {
                 new pers.gwyog.gtneioreplugin.util.CSVMaker().run();

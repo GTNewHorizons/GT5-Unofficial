@@ -4,6 +4,7 @@ import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
 import pers.gwyog.gtneioreplugin.GTNEIOrePlugin;
 import pers.gwyog.gtneioreplugin.plugin.gregtech5.PluginGT5SmallOreStat;
+import pers.gwyog.gtneioreplugin.plugin.gregtech5.PluginGT5UndergroundFluid;
 import pers.gwyog.gtneioreplugin.plugin.gregtech5.PluginGT5VeinStat;
 
 public class NEIPluginConfig implements IConfigureNEI {
@@ -22,9 +23,12 @@ public class NEIPluginConfig implements IConfigureNEI {
     public void loadConfig() {
         PluginGT5VeinStat pluginVeinStat = new PluginGT5VeinStat();
         PluginGT5SmallOreStat pluginSmallOreStat = new PluginGT5SmallOreStat();
+        PluginGT5UndergroundFluid pluginGT5UndergroundFluid = new PluginGT5UndergroundFluid();
         API.registerRecipeHandler(pluginVeinStat);
         API.registerUsageHandler(pluginVeinStat);
         API.registerRecipeHandler(pluginSmallOreStat);
         API.registerUsageHandler(pluginSmallOreStat);
+        API.registerRecipeHandler(pluginGT5UndergroundFluid);
+        API.registerUsageHandler(pluginGT5UndergroundFluid);
     }
 }

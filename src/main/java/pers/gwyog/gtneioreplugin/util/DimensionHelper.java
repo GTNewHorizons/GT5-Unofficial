@@ -5,6 +5,7 @@ import static pers.gwyog.gtneioreplugin.GTNEIOrePlugin.maxTooltipLines;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 import net.minecraft.client.resources.I18n;
 
 public class DimensionHelper {
@@ -29,6 +30,7 @@ public class DimensionHelper {
         "GalaxySpace_Ceres",
         "GalaxySpace_Europa",
         "GalaxySpace_Ganymede",
+        "Ross128b",
         // T4
         "GalaxySpace_Io",
         "GalaxySpace_Mercury",
@@ -38,6 +40,7 @@ public class DimensionHelper {
         "GalaxySpace_Miranda",
         "GalaxySpace_Oberon",
         "GalaxySpace_Titan",
+        "Ross128ba",
         // T6
         "GalaxySpace_Proteus",
         "GalaxySpace_Triton",
@@ -55,6 +58,14 @@ public class DimensionHelper {
         "Underdark",
         "GalaxySpace_VegaB",
     };
+
+    public static String[] DimNameTrimmed = Arrays.stream(DimName)
+            .map(n -> n.replaceAll("GalacticraftCore_", "")
+                    .replaceAll("GalacticraftMars_", "")
+                    .replaceAll("GalaxySpace_", "")
+                    .replaceAll("Vanilla_", "Vanilla "))
+            .collect(Collectors.toList())
+            .toArray(new String[0]);
 
     public static String[]
             DimNameDisplayed = { // first 2 letters if one word else 1 letter of every word, except capital letter in
@@ -78,6 +89,7 @@ public class DimensionHelper {
         "Ce", // GalaxySpace_Ceres
         "Eu", // GalaxySpace_Europa
         "Ga", // GalaxySpace_Ganymede
+        "Rb", // Ross128b
         // T4
         "Io", // GalaxySpace_Io
         "Me", // GalaxySpace_Mercury
@@ -87,6 +99,7 @@ public class DimensionHelper {
         "Mi", // GalaxySpace_Miranda
         "Ob", // GalaxySpace_Oberon
         "Ti", // GalaxySpace_Titan
+        "Ra", // Ross128ba
         // T6
         "Pr", // GalaxySpace_Proteus
         "Tr", // GalaxySpace_Triton
@@ -113,11 +126,7 @@ public class DimensionHelper {
             String s = dims[j];
             for (int i = 0; i < DimNameDisplayed.length; i++) {
                 if (s.equals(DimNameDisplayed[i])) {
-                    String k = DimName[i]
-                            .replaceAll("GalacticraftCore_", "")
-                            .replaceAll("GalacticraftMars_", "")
-                            .replaceAll("GalaxySpace_", "")
-                            .replaceAll("Vanilla_", "Vanilla ");
+                    String k = DimNameTrimmed[i];
                     s = I18n.format("gtnop.world." + k);
                     switch (k) {
                         case "Moon":
@@ -133,6 +142,7 @@ public class DimensionHelper {
                         case "Ceres":
                         case "Europa":
                         case "Ganymede":
+                        case "Ross128b":
                             s = "T3: " + s;
                             break;
                         case "Io":
@@ -144,6 +154,7 @@ public class DimensionHelper {
                         case "Miranda":
                         case "Oberon":
                         case "Titan":
+                        case "Ross128ba":
                             s = "T5: " + s;
                             break;
                         case "Proteus":

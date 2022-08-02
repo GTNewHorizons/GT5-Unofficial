@@ -1,5 +1,7 @@
 package pers.gwyog.gtneioreplugin.plugin.item;
 
+import static pers.gwyog.gtneioreplugin.GTNEIOrePlugin.LOG;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import java.util.Objects;
@@ -28,6 +30,9 @@ public class ItemDimensionDisplay extends ItemBlock {
         Block block = ModBlocks.getBlock(dimension);
         if (block != null) {
             return new ItemStack(block);
+        }
+        if (dimension != null) {
+            LOG.warn("Unknown dimension queried for ItemDimensionDisplay: " + dimension);
         }
         return null;
     }

@@ -62,6 +62,7 @@ public class ItemDimensionDisplayRenderer implements IItemRenderer {
             case "Ce":
             case "Eu":
             case "Ga":
+            case "Rb":
                 return "T3";
             case "Io":
             case "Me":
@@ -71,6 +72,7 @@ public class ItemDimensionDisplayRenderer implements IItemRenderer {
             case "Mi":
             case "Ob":
             case "Ti":
+            case "Ra":
                 return "T5";
             case "Pr":
             case "Tr":
