@@ -87,7 +87,9 @@ public class GT_Values {
                     512L, 2048L, 8192L,
                     32_768L, 131_072L, 524_288L,
                     2_097_152L, 8_388_608L, 33_554_432L,
-                    134_217_728L, 536_870_912L, Integer.MAX_VALUE - 7};
+                    134_217_728L, 536_870_912L, Integer.MAX_VALUE - 7,
+                    // Error tier to prevent out of bounds errors. Not really a real tier (for now).
+                    8_589_934_592L};
     // Why -7? Mystery of the universe. Something may break if you change this so please do not without extensive testing.
     //TODO:Adding that in coremod!!!
     //TODO:tier 14,15 wires and transformers only (not even cables !!!)
@@ -154,7 +156,7 @@ public class GT_Values {
                 "Ultimate Mega Voltage",          // 12
                 "Ultimate Extended Mega Voltage", // 13
                 "Maximum Voltage",                // 14
-                "Error Voltage"                   // 15
+                "Error Voltage, report this"      // 15
     };
 
     public static final String[] TIER_COLORS =
