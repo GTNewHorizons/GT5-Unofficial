@@ -2340,7 +2340,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         //PCl3 + 3C6H5Cl + 6Na = 6NaCl + C18H15P
         GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 6L)}, new FluidStack[]{MaterialsKevlar.PhosphorusTrichloride.getFluid(1000L), Materials.Chlorobenzene.getFluid(3000)}, null, new ItemStack[]{MaterialsKevlar.Triphenylphosphene.getDust(34), Materials.Salt.getDust(12)}, 400, 1920);
         //Na + H = NaH
-        GT_Values.RA.addChemicalRecipe(Materials.Sodium.getDust(1), GT_Utility.getIntegratedCircuit(1), Materials.Hydrogen.getGas(1000L), GT_Values.NF, MaterialsKevlar.SodiumHydride.getDust(2), 200, 120);
+        GT_Values.RA.addChemicalRecipe(Materials.Sodium.getDust(1), GT_Utility.getIntegratedCircuit(2), Materials.Hydrogen.getGas(1000L), GT_Values.NF, MaterialsKevlar.SodiumHydride.getDust(2), 200, 120);
         //4NaH + C3H9BO3 = NaBH4 + 3CH3ONa
         GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(1), MaterialsKevlar.SodiumHydride.getDust(8)}, new FluidStack[]{MaterialsKevlar.TrimethylBorate.getFluid(1000L)}, null, new ItemStack[]{MaterialsKevlar.SodiumBorohydride.getDust(6), MaterialsKevlar.SodiumMethoxide.getDust(18)}, 600, 1920);
         GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(9), MaterialsKevlar.SodiumHydride.getDust(64)}, new FluidStack[]{MaterialsKevlar.TrimethylBorate.getFluid(8000L)}, null, new ItemStack[]{MaterialsKevlar.SodiumBorohydride.getDust(48), MaterialsKevlar.SodiumMethoxide.getDust(64), MaterialsKevlar.SodiumMethoxide.getDust(64), MaterialsKevlar.SodiumMethoxide.getDust(16)}, 600, 1920);
