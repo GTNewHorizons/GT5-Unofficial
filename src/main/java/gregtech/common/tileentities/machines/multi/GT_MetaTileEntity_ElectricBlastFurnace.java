@@ -1,6 +1,8 @@
 package gregtech.common.tileentities.machines.multi;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.GT_Mod;
@@ -8,6 +10,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
+import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -20,7 +23,9 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.IGT_HatchAdder;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -29,8 +34,11 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.VN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE;
@@ -38,11 +46,12 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAS
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
+import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofCoil;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 
-public class GT_MetaTileEntity_ElectricBlastFurnace extends GT_MetaTileEntity_AbstractMultiFurnace<GT_MetaTileEntity_ElectricBlastFurnace> implements IConstructable {
+public class GT_MetaTileEntity_ElectricBlastFurnace extends GT_MetaTileEntity_AbstractMultiFurnace<GT_MetaTileEntity_ElectricBlastFurnace> implements ISurvivalConstructable {
     private int mHeatingCapacity = 0;
     private boolean isBussesSeparate = false;
     protected final ArrayList<GT_MetaTileEntity_Hatch_Output> mPollutionOutputHatches = new ArrayList<>();
@@ -58,10 +67,22 @@ public class GT_MetaTileEntity_ElectricBlastFurnace extends GT_MetaTileEntity_Ab
                     {"CCC", "C-C", "CCC",},
                     {"b~b", "bbb", "bbb"}
             }))
-            .addElement('t', ofHatchAdderOptional(GT_MetaTileEntity_ElectricBlastFurnace::addOutputHatchToTopList, CASING_INDEX, 1, GregTech_API.sBlockCasings1, CASING_INDEX))
-            .addElement('m', ofHatchAdder(GT_MetaTileEntity_ElectricBlastFurnace::addMufflerToMachineList, CASING_INDEX, 2))
+            .addElement('t',
+                buildHatchAdder(GT_MetaTileEntity_ElectricBlastFurnace.class)
+                    .atLeast(PollutionHatch.PollutionHatch)
+                    .casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .buildAndChain(GregTech_API.sBlockCasings1, CASING_INDEX)
+            )
+            .addElement('m', Muffler.newAny(CASING_INDEX, 2))
             .addElement('C', ofCoil(GT_MetaTileEntity_ElectricBlastFurnace::setCoilLevel, GT_MetaTileEntity_ElectricBlastFurnace::getCoilLevel))
-            .addElement('b', ofHatchAdderOptional(GT_MetaTileEntity_ElectricBlastFurnace::addBottomHatch, CASING_INDEX, 3, GregTech_API.sBlockCasings1, CASING_INDEX))
+            .addElement('b',
+                buildHatchAdder(GT_MetaTileEntity_ElectricBlastFurnace.class)
+                    .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy)
+                    .casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .buildAndChain(GregTech_API.sBlockCasings1, CASING_INDEX)
+            )
             .build();
 
     public GT_MetaTileEntity_ElectricBlastFurnace(int aID, String aName, String aNameRegional) {
@@ -383,6 +404,11 @@ public class GT_MetaTileEntity_ElectricBlastFurnace extends GT_MetaTileEntity_Ab
     }
 
     @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 3, 0, elementBudget, source, actor, false);
+    }
+
+    @Override
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         isBussesSeparate = !isBussesSeparate;
         GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + isBussesSeparate);
@@ -398,5 +424,24 @@ public class GT_MetaTileEntity_ElectricBlastFurnace extends GT_MetaTileEntity_Ab
     public void loadNBTData(final NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         isBussesSeparate = aNBT.getBoolean("isBussesSeparate");
+    }
+
+    private enum PollutionHatch implements IHatchElement<GT_MetaTileEntity_ElectricBlastFurnace> {
+        PollutionHatch;
+
+        @Override
+        public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
+            return OutputHatch.mteClasses();
+        }
+
+        @Override
+        public IGT_HatchAdder<? super GT_MetaTileEntity_ElectricBlastFurnace> adder() {
+            return GT_MetaTileEntity_ElectricBlastFurnace::addOutputHatchToTopList;
+        }
+
+        @Override
+        public long count(GT_MetaTileEntity_ElectricBlastFurnace t) {
+            return t.mPollutionOutputHatches.size();
+        }
     }
 }

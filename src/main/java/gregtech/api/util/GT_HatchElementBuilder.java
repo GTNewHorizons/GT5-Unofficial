@@ -11,6 +11,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
 import gregtech.common.blocks.GT_Item_Machines;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -21,6 +22,7 @@ import net.minecraft.world.World;
 import java.util.*;
 import java.util.function.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
@@ -69,6 +71,17 @@ public class GT_HatchElementBuilder<T extends GT_MetaTileEntity_EnhancedMultiBlo
     public final GT_HatchElementBuilder<T> atLeast(IHatchElement<? super T>... elements) {
         if (elements == null || elements.length == 0) throw new IllegalArgumentException();
         return atLeast(Arrays.stream(elements).collect(Collectors.groupingBy(Function.identity(), LinkedHashMap::new, Collectors.counting())));
+    }
+
+    /**
+     * Set all of adder, hint and hatchItemFilter. Provide a reasonable default for shouldSkip.
+     * <p>
+     * Will rotate through all elements
+     * TODO add doc
+     */
+    public final GT_HatchElementBuilder<T> atLeastList(List<IHatchElement<? super T>> elements) {
+        if (elements == null || elements.isEmpty()) throw new IllegalArgumentException();
+        return atLeast(elements.stream().collect(Collectors.groupingBy(Function.identity(), LinkedHashMap::new, Collectors.counting())));
     }
 
     /**
@@ -204,6 +217,10 @@ public class GT_HatchElementBuilder<T extends GT_MetaTileEntity_EnhancedMultiBlo
         l.addAll(Arrays.asList(elements));
         IStructureElement<T>[] array = l.toArray(new IStructureElement[0]);
         return () -> array;
+    }
+
+    public final IStructureElementChain<T> buildAndChain(Block block, int meta) {
+        return buildAndChain(ofBlock(block, meta));
     }
 
     public IStructureElement<T> build() {

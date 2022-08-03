@@ -1,25 +1,29 @@
 package gregtech.common.tileentities.machines.multi;
 
+import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.IChunkLoader;
+import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_DataAccess;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
+import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.GT_ChunkManager;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_StructureUtility;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.IGT_HatchAdder;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -29,21 +33,27 @@ import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.GT_HatchElement.*;
+import static gregtech.api.enums.GT_HatchElement.Muffler;
+import static gregtech.api.enums.GT_HatchElement.OutputBus;
 import static gregtech.api.enums.GT_Values.W;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ORE_DRILL;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ORE_DRILL_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ORE_DRILL_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ORE_DRILL_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.getCasingTextureForId;
+import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
-public abstract class GT_MetaTileEntity_DrillerBase extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_DrillerBase> implements IChunkLoader {
+public abstract class GT_MetaTileEntity_DrillerBase extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_DrillerBase> implements IChunkLoader, ISurvivalConstructable {
     private static final ItemStack miningPipe = GT_ModHandler.getIC2Item("miningPipe", 0);
     private static final ItemStack miningPipeTip = GT_ModHandler.getIC2Item("miningPipeTip", 0);
     private static final Block miningPipeBlock = GT_Utility.getBlockFromStack(miningPipe);
@@ -64,14 +74,14 @@ public abstract class GT_MetaTileEntity_DrillerBase extends GT_MetaTileEntity_En
                     }))
                     .addElement('f', lazy(t -> ofFrame(t.getFrameMaterial())))
                     .addElement('c', lazy(t -> ofBlock(t.getCasingBlockItem().getBlock(), t.getCasingBlockItem().get(0).getItemDamage())))
-                    .addElement('b', lazy(t -> ofChain(
-                            ofBlock(t.getCasingBlockItem().getBlock(), t.getCasingBlockItem().get(0).getItemDamage()),
-                            ofHatchAdder(GT_MetaTileEntity_DrillerBase::addMaintenanceToMachineList, t.casingTextureIndex, 1),
-                            ofHatchAdder(GT_MetaTileEntity_DrillerBase::addInputToMachineList, t.casingTextureIndex, 1),
-                            ofHatchAdder(GT_MetaTileEntity_DrillerBase::addOutputToMachineList, t.casingTextureIndex, 1),
-                            ofHatchAdder(GT_MetaTileEntity_DrillerBase::addEnergyInputToMachineList, t.casingTextureIndex, 1),
-                            ofHatchAdder(GT_MetaTileEntity_DrillerBase::addDataAccessToMachineList, t.casingTextureIndex, 1)
-                    )))
+                    .addElement('b', lazy(t -> buildHatchAdder(GT_MetaTileEntity_DrillerBase.class)
+                            .atLeastList(t.getAllowedHatches())
+                            .casingIndex(t.casingTextureIndex)
+                            .dot(1)
+                            .buildAndChain(
+                                t.getCasingBlockItem().getBlock(), t.getCasingBlockItem().get(0).getItemDamage()
+                            )
+                    ))
                     .build();
         }
     };
@@ -499,11 +509,40 @@ public abstract class GT_MetaTileEntity_DrillerBase extends GT_MetaTileEntity_En
         }
         return false;
     }
+
     @Override
     public ChunkCoordIntPair getActiveChunk(){return mCurrentChunk;}
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 1, 6, 0);
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 6, 0, elementBudget, source, actor, false);
+    }
+
+    protected List<IHatchElement<? super GT_MetaTileEntity_DrillerBase>> getAllowedHatches() {
+        return ImmutableList.of(InputHatch, OutputHatch, InputBus, OutputBus, Muffler, Maintenance, Energy, DataHatchElement.DataAccess);
+    }
+
+    private enum DataHatchElement implements IHatchElement<GT_MetaTileEntity_DrillerBase> {
+        DataAccess;
+
+        @Override
+        public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
+            return Collections.singletonList(GT_MetaTileEntity_Hatch_DataAccess.class);
+        }
+
+        @Override
+        public IGT_HatchAdder<GT_MetaTileEntity_DrillerBase> adder() {
+            return GT_MetaTileEntity_DrillerBase::addDataAccessToMachineList;
+        }
+
+        @Override
+        public long count(GT_MetaTileEntity_DrillerBase t) {
+            return t.mDataAccessHatches.size();
+        }
     }
 }
