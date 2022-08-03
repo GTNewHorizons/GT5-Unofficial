@@ -54,16 +54,6 @@ public class GregtechMetaPipeEntity_Cable extends GT_MetaPipeEntity_Cable implem
 	}
 
 	@Override
-	public String[] getDescription() {
-		return new String[]{
-				"Max Voltage: %%%" + EnumChatFormatting.GREEN + mVoltage + " (" + VN[GT_Utility.getTier(mVoltage)] + ")" + EnumChatFormatting.GRAY,
-				"Max Amperage: %%%" + EnumChatFormatting.YELLOW + mAmperage + EnumChatFormatting.GRAY,
-				"Loss/Meter/Ampere: %%%" + EnumChatFormatting.RED + mCableLossPerMeter + EnumChatFormatting.GRAY + "%%% EU-Volt",
-				//CORE.GT_Tooltip
-		};
-	}
-
-	@Override
 	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aConnections, byte aColorIndex, boolean aConnected, boolean aRedstone) {
 		return GTNH?
 				getTextureGTNH(aBaseMetaTileEntity,aSide,aConnections,aColorIndex,aConnected,aRedstone):
