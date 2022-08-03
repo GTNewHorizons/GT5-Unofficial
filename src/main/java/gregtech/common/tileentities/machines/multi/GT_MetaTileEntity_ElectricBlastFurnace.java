@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.multi;
 
-import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -10,20 +9,14 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
-import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gregtech.api.util.IGT_HatchAdder;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -34,22 +27,14 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.VN;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
+import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofCoil;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 
 public class GT_MetaTileEntity_ElectricBlastFurnace extends GT_MetaTileEntity_AbstractMultiFurnace<GT_MetaTileEntity_ElectricBlastFurnace> implements ISurvivalConstructable {
     private int mHeatingCapacity = 0;
@@ -69,7 +54,7 @@ public class GT_MetaTileEntity_ElectricBlastFurnace extends GT_MetaTileEntity_Ab
             }))
             .addElement('t',
                 buildHatchAdder(GT_MetaTileEntity_ElectricBlastFurnace.class)
-                    .atLeast(PollutionHatch.PollutionHatch)
+                    .atLeast(OutputHatch.withAdder(GT_MetaTileEntity_ElectricBlastFurnace::addOutputHatchToTopList).withCount(t -> t.mPollutionOutputHatches.size()))
                     .casingIndex(CASING_INDEX)
                     .dot(1)
                     .buildAndChain(GregTech_API.sBlockCasings1, CASING_INDEX)
@@ -424,24 +409,5 @@ public class GT_MetaTileEntity_ElectricBlastFurnace extends GT_MetaTileEntity_Ab
     public void loadNBTData(final NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         isBussesSeparate = aNBT.getBoolean("isBussesSeparate");
-    }
-
-    private enum PollutionHatch implements IHatchElement<GT_MetaTileEntity_ElectricBlastFurnace> {
-        PollutionHatch;
-
-        @Override
-        public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
-            return OutputHatch.mteClasses();
-        }
-
-        @Override
-        public IGT_HatchAdder<? super GT_MetaTileEntity_ElectricBlastFurnace> adder() {
-            return GT_MetaTileEntity_ElectricBlastFurnace::addOutputHatchToTopList;
-        }
-
-        @Override
-        public long count(GT_MetaTileEntity_ElectricBlastFurnace t) {
-            return t.mPollutionOutputHatches.size();
-        }
     }
 }

@@ -22,23 +22,23 @@ public interface IHatchElement<T extends GT_MetaTileEntity_EnhancedMultiBlockBas
 
     long count(T t);
 
-    default IHatchElement<T> withMteClass(Class<? extends IMetaTileEntity> aClass) {
+    default <T2 extends T> IHatchElement<T2> withMteClass(Class<? extends IMetaTileEntity> aClass) {
         if (aClass == null) throw new IllegalArgumentException();
         return withMteClasses(Collections.singletonList(aClass));
     }
 
     @SuppressWarnings("unchecked") // can't set SafeVarargs :(
-    default IHatchElement<T> withMteClasses(Class<? extends IMetaTileEntity>... aClasses) {
+    default <T2 extends T> IHatchElement<T2> withMteClasses(Class<? extends IMetaTileEntity>... aClasses) {
         if (aClasses == null) throw new IllegalArgumentException();
         return withMteClasses(Arrays.asList(aClasses));
     }
 
-    default IHatchElement<T> withMteClasses(List<Class<? extends IMetaTileEntity>> aClasses) {
+    default <T2 extends T> IHatchElement<T2> withMteClasses(List<Class<? extends IMetaTileEntity>> aClasses) {
         if (aClasses == null) throw new IllegalArgumentException();
         return new HatchElement<>(aClasses, null, null, null, this);
     }
 
-    default IHatchElement<T> withAdder(IGT_HatchAdder<T> aAdder) {
+    default <T2 extends T> IHatchElement<T2> withAdder(IGT_HatchAdder<T2> aAdder) {
         if (aAdder == null) throw new IllegalArgumentException();
         return new HatchElement<>(null, aAdder, null, null, this);
     }
@@ -109,13 +109,13 @@ class HatchElement<T extends GT_MetaTileEntity_EnhancedMultiBlockBase<?>> implem
     }
 
     @Override
-    public IHatchElement<T> withMteClasses(List<Class<? extends IMetaTileEntity>> aClasses) {
-        if (aClasses == null ) throw new IllegalArgumentException();
+    public <T2 extends T> IHatchElement<T2> withMteClasses(List<Class<? extends IMetaTileEntity>> aClasses) {
+        if (aClasses == null) throw new IllegalArgumentException();
         return new HatchElement<>(aClasses, mAdder, mName, mCount, mBacking);
     }
 
     @Override
-    public IHatchElement<T> withAdder(IGT_HatchAdder<T> aAdder) {
+    public <T2 extends T> IHatchElement<T2> withAdder(IGT_HatchAdder<T2> aAdder) {
         if (aAdder == null) throw new IllegalArgumentException();
         return new HatchElement<>(mClasses, aAdder, mName, mCount, mBacking);
     }
@@ -127,7 +127,7 @@ class HatchElement<T extends GT_MetaTileEntity_EnhancedMultiBlockBase<?>> implem
     }
 
     @Override
-    public  <T2 extends T> IHatchElement<T2> withCount(ToLongFunction<T2> aCount) {
+    public <T2 extends T> IHatchElement<T2> withCount(ToLongFunction<T2> aCount) {
         if (aCount == null) throw new IllegalArgumentException();
         return new HatchElement<>(mClasses, mAdder, mName, aCount, mBacking);
     }
