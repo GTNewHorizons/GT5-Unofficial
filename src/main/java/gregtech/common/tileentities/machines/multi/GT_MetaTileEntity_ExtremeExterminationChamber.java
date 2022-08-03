@@ -10,6 +10,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -147,6 +148,8 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber extends GT_MetaTileEn
         fakeRand frand = new fakeRand();
         f.rand = frand;
 
+        GT_Log.out.println("[EEC]Generating Recipe Map for Extreme Extermination Chamber");
+
         EntityList.stringToClassMapping.forEach((k, v) -> {
             if(!(v instanceof Class))
                 return;
@@ -161,13 +164,15 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber extends GT_MetaTileEn
                 return;
             }
             catch (Exception ex) {
-                ex.printStackTrace();
+                ex.printStackTrace(GT_Log.err);
                 return;
             }
             if(e == null)
                 return;
 
             int id = EntityList.getEntityID(e);
+
+            GT_Log.out.println("[EEC]Generating entry for mob: " + (String)k);
 
             e.captureDrops = true;
 
@@ -187,7 +192,7 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber extends GT_MetaTileEn
             }
             catch (Exception ex)
             {
-                ex.printStackTrace();
+                ex.printStackTrace(GT_Log.err);
                 return;
             }
             dropFewItems.setAccessible(true);
@@ -196,7 +201,7 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber extends GT_MetaTileEn
             }
             catch (Exception ex)
             {
-                ex.printStackTrace();
+                ex.printStackTrace(GT_Log.err);
                 return;
             }
             HashMap<GT_Utility.ItemId, ItemStack> drops = new HashMap<>();
@@ -229,8 +234,10 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber extends GT_MetaTileEn
                 }
             }
 
-            if(drops.isEmpty())
+            if(drops.isEmpty()) {
+                GT_Log.out.println("[EEC]Entity " + (String)k + " doesn't drop any items, skipping");
                 return;
+            }
 
             double maxchance = frand.maxbound;
 
@@ -249,7 +256,8 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber extends GT_MetaTileEn
                 }
                 i++;
             }
-            MobNameToRecipeMap.put((String)k, EECRecipeMap.addFakeRecipe(true, new ItemStack[] { new ItemStack(Items.spawn_egg, 1, id).setStackDisplayName((String)k) }, outputs, null, outputchances, new FluidStack[0], new FluidStack[0], 40, 8000, 0));
+            MobNameToRecipeMap.put((String)k, EECRecipeMap.addFakeRecipe(true, new ItemStack[] { new ItemStack(Items.spawn_egg, 1, id).setStackDisplayName( EnumChatFormatting.RESET + (String)k) }, outputs, null, outputchances, new FluidStack[0], new FluidStack[0], 40, 8000, 0));
+            GT_Log.out.println("[EEC]Added " + (String)k);
         });
 
     }
