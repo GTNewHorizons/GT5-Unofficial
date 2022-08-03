@@ -56,7 +56,6 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
 
     public int mSpeed = 0;
     public boolean mLockedSpeed = true;
-    public boolean retreviePollen = false;
 
     private ItemStack usedQueen = null;
     private IBee usedQueenBee = null;
@@ -119,7 +118,6 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
         super.saveNBTData(aNBT);
         aNBT.setInteger("mSpeed", mSpeed);
         aNBT.setBoolean("mLockedSpeed", mLockedSpeed);
-        aNBT.setBoolean("retrievePolen", retreviePollen);
         if(usedQueen != null)
             aNBT.setTag("usedQueen", usedQueen.writeToNBT(new NBTTagCompound()));
     }
@@ -129,7 +127,6 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
         super.loadNBTData(aNBT);
         mSpeed = aNBT.getInteger("mSpeed");
         mLockedSpeed = aNBT.getBoolean("mLockedSpeed");
-        retreviePollen = aNBT.getBoolean("retrievePolen");
         if(aNBT.hasKey("usedQueen"))
             usedQueen = ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag("usedQueen"));
     }
@@ -161,7 +158,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
 
                 HashMap<GT_Utility.ItemId, ItemStack> pollen = new HashMap<>();
 
-                if(retreviePollen) {
+                if(isRetrievingPollen) {
                     int icycles = (int)cycles + (getWorld().rand.nextFloat() < (cycles - (float)((int)cycles)) ? 1 : 0);
                     for(int z = 0; z < icycles; z++) {
                         IIndividual p = bee.retrievePollen(this);
@@ -755,6 +752,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
     private float humidityMod = 0f;
     private float temperatureMod = 0f;
     private boolean isAutomated = false;
+    private boolean isRetrievingPollen = false;
 
     private int maxspeed = 0;
 
@@ -797,6 +795,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
         humidityMod = mods.humidity;
         temperatureMod = mods.temperature;
         isAutomated = mods.isAutomated;
+        isRetrievingPollen = mods.isCollectingPollen;
 
         if(mLockedSpeed)
             mSpeed = maxspeed;
