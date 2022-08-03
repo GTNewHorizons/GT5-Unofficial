@@ -553,6 +553,12 @@ public class RecipeLoader_Nuclear {
 				NUCLIDE.Li2BeF4.getFluidStack(144),
 				100,
 				500);
+		//Lithium Fluoride
+		CORE.RA.addFluidExtractionRecipe(
+				ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumFluoride", 1),
+				FLUORIDES.LITHIUM_FLUORIDE.getFluidStack(144),
+				100,
+				500);
 		//LFTR Fuel 1
 		CORE.RA.addFluidExtractionRecipe(
 				NUCLIDE.LiFBeF2ZrF4U235.getDust(1),
