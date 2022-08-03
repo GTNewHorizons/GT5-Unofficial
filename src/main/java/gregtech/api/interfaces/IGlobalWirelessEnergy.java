@@ -49,6 +49,8 @@ public interface IGlobalWirelessEnergy {
     // --- Save data for global energy network --
 
     default void SaveGlobalEnergyInfo(String world_name) {
+        // Replace chars because of bug in forge that doesn't understand MC converts . to _ upon world creation.
+        world_name = world_name.replace('.','_');
         CreateStorageIfNotExist(world_name);
         SaveGlobalEnergyMap(world_name);
         SaveGlobalEnergyName(world_name);
@@ -104,7 +106,9 @@ public interface IGlobalWirelessEnergy {
     // --- Load data for global energy network ---
 
     default void LoadGlobalEnergyInfo(World world) {
-        CreateStorageIfNotExist(world.getWorldInfo().getWorldName());
+        // Replace chars because of bug in forge that doesn't understand MC converts . to _ upon world creation.
+        String world_name = world.getWorldInfo().getWorldName().replace('.','_');
+        CreateStorageIfNotExist(world_name);
         LoadGlobalEnergyMap(world);
         LoadGlobalEnergyName(world);
         LoadGlobalEnergyTeam(world);
