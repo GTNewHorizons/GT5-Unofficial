@@ -131,6 +131,9 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
             usedQueen = ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag("usedQueen"));
     }
 
+    boolean retrievingPollenInThisOperation = false;
+    IIndividual retrievedpollen = null;
+
     @Override
     public int checkRecipe() {
         updateModifiers();
@@ -173,6 +176,9 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                         }
                     }
                 }
+
+                retrievedpollen = null;
+                retrievingPollenInThisOperation = isRetrievingPollen;
 
                 IBeeGenome genome =  bee.getGenome();
                 IAlleleBeeSpecies primary = genome.getPrimary();
@@ -389,6 +395,13 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                     if(usedQueenBee == null)
                         usedQueenBee = beeRoot.getMember(usedQueen);
                     effectData = usedQueenBee.doEffect(effectData, this);
+                    if(!retrievingPollenInThisOperation)
+                    {
+                        if(retrievedpollen == null)
+                            retrievedpollen = usedQueenBee.retrievePollen(this);
+                        if(usedQueenBee.pollinateRandom(this, retrievedpollen) || this.mProgresstime % 100 == 0)
+                            retrievedpollen = null;
+                    }
                 }
 
                 if(this.mProgresstime % 100 == 0)
