@@ -347,6 +347,9 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
         }
         if(aBaseMetaTileEntity.isServerSide()){
 
+            mCharge = aBaseMetaTileEntity.getStoredEU() / 2 > aBaseMetaTileEntity.getEUCapacity() / 3;
+            mDecharge = aBaseMetaTileEntity.getStoredEU() < aBaseMetaTileEntity.getEUCapacity() / 3;
+
             doDisplayThings();
 
             if(!aBaseMetaTileEntity.isActive())
