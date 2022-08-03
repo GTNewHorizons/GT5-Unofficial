@@ -17,6 +17,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_DummyWorld;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -178,15 +179,17 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber extends GT_MetaTileEn
 
             // POWERFULL GENERATION
 
-            frand.maxbound = 1;
-            frand.overridenext = 0;
             Class s = e.getClass();
-            while(!s.equals(EntityLiving.class))
+            while(!s.equals(EntityLivingBase.class))
                 s = s.getSuperclass();
             Method dropFewItems;
+            Method dropRareDrop;
             try {
                 dropFewItems = s.getDeclaredMethod("dropFewItems", boolean.class, int.class);
-                Field rand = s.getSuperclass().getSuperclass().getDeclaredField("rand");
+                dropFewItems.setAccessible(true);
+                dropRareDrop = s.getDeclaredMethod("dropRareDrop", int.class);
+                dropRareDrop.setAccessible(true);
+                Field rand = s.getSuperclass().getDeclaredField("rand");
                 rand.setAccessible(true);
                 rand.set(e, frand);
             }
@@ -195,17 +198,12 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber extends GT_MetaTileEn
                 ex.printStackTrace(GT_Log.err);
                 return;
             }
-            dropFewItems.setAccessible(true);
-            try {
-                dropFewItems.invoke(e, true, 0);
-            }
-            catch (Exception ex)
-            {
-                ex.printStackTrace(GT_Log.err);
-                return;
-            }
+
+
             HashMap<GT_Utility.ItemId, ItemStack> drops = new HashMap<>();
             HashMap<GT_Utility.ItemId, Integer> dropcount = new HashMap<>();
+            HashMap<GT_Utility.ItemId, ItemStack> raredrops = new HashMap<>();
+            HashMap<GT_Utility.ItemId, Integer> raredropcount = new HashMap<>();
             Consumer<EntityItem> addDrop = (entityItem)->{
                 ItemStack stack = entityItem.getEntityItem();
                 if(stack == null)
@@ -214,6 +212,29 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber extends GT_MetaTileEn
                 drops.putIfAbsent(itemId, stack);
                 dropcount.merge(itemId, stack.stackSize, Integer::sum);
             };
+            Consumer<EntityItem> addDropRare = (entityItem)->{
+                ItemStack stack = entityItem.getEntityItem();
+                if(stack == null)
+                    return;
+                GT_Utility.ItemId itemId = GT_Utility.ItemId.createNoCopy(stack);
+                raredrops.putIfAbsent(itemId, stack);
+                raredropcount.merge(itemId, stack.stackSize, Integer::sum);
+            };
+
+            GT_Log.out.println("[EEC]Generating normal drops");
+
+            frand.maxbound = 1;
+            frand.overridenext = 0;
+
+            try {
+                dropFewItems.invoke(e, true, 0);
+            }
+            catch (Exception ex)
+            {
+                ex.printStackTrace(GT_Log.err);
+                return;
+            }
+
             e.capturedDrops.forEach(addDrop);
             if(frand.maxbound > 1)
             {
@@ -226,7 +247,7 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber extends GT_MetaTileEn
                     }
                     catch (Exception ex)
                     {
-                        ex.printStackTrace();
+                        ex.printStackTrace(GT_Log.err);
                         return;
                     }
                     e.capturedDrops.forEach(addDrop);
@@ -234,21 +255,70 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber extends GT_MetaTileEn
                 }
             }
 
-            if(drops.isEmpty()) {
+            double maxnormalchance = frand.maxbound;
+
+            GT_Log.out.println("[EEC]Generating rare drops");
+
+            frand.maxbound = 1;
+            frand.overridenext = 0;
+
+            try {
+                dropRareDrop.invoke(e, 0);
+            }
+            catch (Exception ex)
+            {
+                ex.printStackTrace(GT_Log.err);
+                return;
+            }
+            e.capturedDrops.forEach(addDropRare);
+            if(frand.maxbound > 1)
+            {
+                e.capturedDrops.clear();
+                for(int i = 1; i < frand.maxbound; i++)
+                {
+                    frand.overridenext = i;
+                    try {
+                        dropRareDrop.invoke(e, 0);
+                    }
+                    catch (Exception ex)
+                    {
+                        ex.printStackTrace(GT_Log.err);
+                        return;
+                    }
+                    e.capturedDrops.forEach(addDropRare);
+                    e.capturedDrops.clear();
+                }
+            }
+
+            double maxrarechance = frand.maxbound;
+
+            if(drops.isEmpty() && raredrops.isEmpty()) {
                 GT_Log.out.println("[EEC]Entity " + (String)k + " doesn't drop any items, skipping");
                 return;
             }
 
-            double maxchance = frand.maxbound;
 
-            ItemStack[] outputs = new ItemStack[drops.size()];
-            int[] outputchances = new int[drops.size()];
+
+            ItemStack[] outputs = new ItemStack[drops.size() + raredrops.size()];
+            int[] outputchances = new int[drops.size() + raredrops.size()];
             int i = 0;
             for (Map.Entry<GT_Utility.ItemId, ItemStack> entry : drops.entrySet()) {
                 GT_Utility.ItemId kk = entry.getKey();
                 ItemStack vv = entry.getValue();
                 outputs[i] = vv;
-                outputchances[i] = (int) ((dropcount.get(kk).doubleValue() / maxchance) * 10000);
+                outputchances[i] = (int) ((dropcount.get(kk).doubleValue() / maxnormalchance) * 10000);
+                while(outputchances[i] > 10000)
+                {
+                    outputs[i].stackSize *= 2;
+                    outputchances[i] /= 2;
+                }
+                i++;
+            }
+            for (Map.Entry<GT_Utility.ItemId, ItemStack> entry : raredrops.entrySet()) {
+                GT_Utility.ItemId kk = entry.getKey();
+                ItemStack vv = entry.getValue();
+                outputs[i] = vv;
+                outputchances[i] = (int) ((raredropcount.get(kk).doubleValue() / maxrarechance) * 250);
                 while(outputchances[i] > 10000)
                 {
                     outputs[i].stackSize *= 2;
