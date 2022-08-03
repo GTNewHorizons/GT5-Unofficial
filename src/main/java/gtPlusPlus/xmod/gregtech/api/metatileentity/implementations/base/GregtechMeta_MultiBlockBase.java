@@ -404,11 +404,8 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
 	}
 	
 	public int canBufferOutputs(final GT_Recipe aRecipe, int aParallelRecipes, boolean aAllow16SlotWithoutCheck) {
-		if (mVoidExcess) return aParallelRecipes;
-		log("Determining if we have space to buffer outputs. Parallel: "+aParallelRecipes);
-
-		// Null recipe or a recipe with lots of outputs? 
-		// E.G. Gendustry custom comb with a billion centrifuge outputs? 
+		// Null recipe or a recipe with lots of outputs?
+		// E.G. Gendustry custom comb with a billion centrifuge outputs?
 		// Do it anyway, provided the multi allows it. Default behaviour is aAllow16SlotWithoutCheck = true.
 		if (aRecipe == null || aRecipe.mOutputs.length > 16) {
 			if (aRecipe == null) {
@@ -416,18 +413,24 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
 			}
 			else if (aRecipe.mOutputs.length > 16) {
 				if (aAllow16SlotWithoutCheck) {
-					return aParallelRecipes;					
+					return aParallelRecipes;
 				}
 				else {
-					// Do nothing, we want to check this recipe properly.					
+					// Do nothing, we want to check this recipe properly.
 				}
-			}			
-		}		
+			}
+		}
+		return canBufferOutputs(aRecipe.mOutputs, aRecipe.mFluidOutputs, aParallelRecipes);
+	}
+
+	public int canBufferOutputs(ItemStack[] aItemOutputs, FluidStack[] aFluidOutputs, int aParallelRecipes) {
+		if (mVoidExcess) return aParallelRecipes;
+		log("Determining if we have space to buffer outputs. Parallel: "+aParallelRecipes);
 
 		// Do we even need to check for item outputs?
-		boolean aDoesOutputItems = aRecipe.mOutputs.length > 0;
+		boolean aDoesOutputItems = aItemOutputs.length > 0;
 		// Do we even need to check for fluid outputs?
-		boolean aDoesOutputFluids = aRecipe.mFluidOutputs.length > 0;
+		boolean aDoesOutputFluids = aFluidOutputs.length > 0;
 
 
 
@@ -447,7 +450,7 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
 			 */
 
 			AutoMap<FlexiblePair<ItemStack, Integer>> aItemMap = new AutoMap<FlexiblePair<ItemStack, Integer>>();
-			AutoMap<ItemStack> aOutputs = new AutoMap<ItemStack>(aRecipe.mOutputs);
+			AutoMap<ItemStack> aOutputs = new AutoMap<ItemStack>(aItemOutputs);
 
 			for (final GT_MetaTileEntity_Hatch_OutputBus tBus : this.mOutputBusses) {
 				if (!isValidMetaTileEntity(tBus)) {
@@ -606,7 +609,7 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
 			// Create a map of all the fluids we would like to output, we can iterate over this and see how many we can merge into existing hatch stacks.
 			ArrayList<FluidStack> aOutputFluids = new ArrayList<FluidStack>();
 			// Ugly ass boxing
-			aOutputFluids.addAll(new AutoMap<FluidStack>(aRecipe.mFluidOutputs));
+			aOutputFluids.addAll(new AutoMap<FluidStack>(aFluidOutputs));
 			// Iterate the Hatches, updating their 'stored' data.
 			//for (Triplet<GT_MetaTileEntity_Hatch_Output, FluidStack, Integer> aHatchData : aOutputHatches) {
 			for (int i = 0;i<aOutputHatches.size();i++) {		

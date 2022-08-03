@@ -46,6 +46,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
 	public static String mCasingName = "Sterile Farm Casing";
 //	public static TreeGenerator mTreeData;
 	public static HashMap<String, ItemStack> sLogCache = new HashMap<>();
+	private static final int TICKS_PER_OPERATION = 100;
 
 	private int mCasing;
 	private IStructureDefinition<GregtechMetaTileEntityTreeFarm> STRUCTURE_DEFINITION = null;
@@ -174,7 +175,32 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
 		long tVoltage = getMaxInputVoltage();
 		byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
 
-		this.mMaxProgresstime = 100;
+		int aOutputAmount = ((2 * (tTier * tTier)) - (2 * tTier) + 5) * (TICKS_PER_OPERATION / 20) * getSawBoost(mToolType);
+		int aFert = hasLiquidFert();
+		ItemStack[] toOutput;
+
+		if (aFert > 0) { //Sapling
+			if (aFert < aOutputAmount) {
+				aOutputAmount /= 10;
+			}
+			int amplifiedOutputAmount = (int) (aOutputAmount * saplingsModifier);
+			toOutput = new ItemStack[]{ItemUtils.getSimpleStack(mSapling, amplifiedOutputAmount)};
+		} else { //Log
+			int amplifiedOutputAmount = (int) (aOutputAmount * heightModifier * girthModifier);
+			toOutput = new ItemStack[]{ItemUtils.getSimpleStack(mWood, amplifiedOutputAmount)};
+		}
+
+		if (canBufferOutputs(toOutput, new FluidStack[]{}, 1) == 0) {
+			return false;
+		}
+
+		if (aFert > 0 && aFert >= aOutputAmount) {
+			tryConsumeLiquidFert(aOutputAmount);
+		}
+
+		this.mOutputItems = toOutput;
+
+		this.mMaxProgresstime = TICKS_PER_OPERATION;
 		this.mEUt = (int) tVoltage;
 
 		this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
@@ -182,25 +208,6 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
 
 		if (this.mEUt > 0) {
 			this.mEUt = (-this.mEUt);
-		}
-
-		int aOutputAmount = ((2 * (tTier * tTier)) - (2 * tTier) + 5) * (mMaxProgresstime / 20) * getSawBoost(mToolType);
-		int aFert = hasLiquidFert();
-
-		if (aFert > 0) { //Sapling
-
-			if (aFert < aOutputAmount) {
-				aOutputAmount /= 10;
-			} else {
-				tryConsumeLiquidFert(aOutputAmount);
-			}
-
-			aOutputAmount = (int) (aOutputAmount * saplingsModifier);
-			this.mOutputItems = new ItemStack[]{ItemUtils.getSimpleStack(mSapling, aOutputAmount)};
-		} else { //Log
-
-			aOutputAmount = (int) (aOutputAmount * heightModifier * girthModifier);
-			this.mOutputItems = new ItemStack[]{ItemUtils.getSimpleStack(mWood, aOutputAmount)};
 		}
 
 		this.tryDamageTool();
