@@ -326,7 +326,7 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber extends GT_MetaTileEn
                 }
                 i++;
             }
-            MobNameToRecipeMap.put((String)k, EECRecipeMap.addFakeRecipe(true, new ItemStack[] { new ItemStack(Items.spawn_egg, 1, id).setStackDisplayName( EnumChatFormatting.RESET + (String)k) }, outputs, null, outputchances, new FluidStack[0], new FluidStack[0], 40, 8000, 0));
+            MobNameToRecipeMap.put((String)k, EECRecipeMap.addFakeRecipe(true, new ItemStack[] { new ItemStack(Items.spawn_egg, 1, id).setStackDisplayName( EnumChatFormatting.RESET + (String)k) }, outputs, null, outputchances, new FluidStack[0], new FluidStack[0], (int)e.getMaxHealth() * 2, 8000, 0));
             GT_Log.out.println("[EEC]Added " + (String)k);
         });
 
@@ -363,8 +363,9 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber extends GT_MetaTileEn
                 outputs.add(recipe.getOutput(i));
 
         this.mOutputItems = outputs.toArray(new ItemStack[0]);
-        this.mEUt = -8000;
-        this.mMaxProgresstime = 40;
+        calculateOverclockedNessMulti(recipe.mEUt, recipe.mDuration, 2, getMaxInputVoltage());
+        if(this.mEUt > 0)
+            this.mEUt = -this.mEUt;
         this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;
 
