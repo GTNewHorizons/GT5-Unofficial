@@ -226,6 +226,9 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber extends GT_MetaTileEn
                 }
             }
 
+            if(drops.isEmpty())
+                return;
+
             double maxchance = ((fakeRand)f.rand).maxbound;
 
             ItemStack[] outputs = new ItemStack[drops.size()];
@@ -264,6 +267,8 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber extends GT_MetaTileEn
         String mobType = aStack.getTagCompound().getString("mobType");
         if(mobType.isEmpty())
             return false;
+
+        // do something ?
 
         this.mEUt = 8000;
         this.mMaxProgresstime = 40;
