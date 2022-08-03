@@ -326,6 +326,19 @@ public class RecipeLoader_GlueLine {
                 30
         );
 
+        //Maintenance Hatch recipe, using Braintech Tape
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] {
+                        ItemList.Hull_LV.get(1),
+                        ItemList.Duct_Tape.get(1),
+                        CI.getNumberedCircuit(1)
+                },
+                MISC_MATERIALS.ETHYL_CYANOACRYLATE.getFluidStack(100),
+                ItemList.Hatch_Maintenance.get(1),
+                120,
+                30
+        );
+
         // Graphene recipes from later wafer tiers, using superglue instead of the bronze age glue
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] {
