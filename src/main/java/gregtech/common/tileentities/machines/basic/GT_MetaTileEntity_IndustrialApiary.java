@@ -41,6 +41,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.*;
 
+import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GT_Utility.moveMultipleItemStacks;
 
@@ -314,6 +315,11 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         updateModifiers();
+    }
+
+    @Override
+    protected boolean hasEnoughEnergyToCheckRecipe() {
+        return getBaseMetaTileEntity().isUniversalEnergyStored(V[mSpeed] * 8L);
     }
 
     @Override
