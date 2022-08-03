@@ -242,6 +242,12 @@ public class GregtechMetaTileEntity_AlloyBlastSmelter extends GregtechMeta_Multi
 			ArrayList<ItemStack> tInputList = null;
 			//Get Controller Circuit
 			this.isUsingControllerCircuit = isCorrectMachinePart(aStack);
+
+			final long tVoltage = this.getMaxInputVoltage();
+			final byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
+			ItemStack[] tInputs = null;
+			final FluidStack[] tFluids = getCompactedFluids();
+			GT_Recipe tRecipe = null;
 			
 			if (isBussesSeparate) {
 				for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
@@ -255,6 +261,11 @@ public class GregtechMetaTileEntity_AlloyBlastSmelter extends GregtechMeta_Multi
 							}
 						}
 					}
+					tInputs = tInputList.toArray(new ItemStack[0]);
+					tRecipe = GTPP_Recipe.GTPP_Recipe_Map.sAlloyBlastSmelterRecipes.findRecipe(this.getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
+					if ((tRecipe != null)) {
+						break;
+					} 
 				}
 			} else {
 				tInputList = this.getStoredInputs();
@@ -270,8 +281,9 @@ public class GregtechMetaTileEntity_AlloyBlastSmelter extends GregtechMeta_Multi
 						}
 					}
 				}
+				tInputs = tInputList.toArray(new ItemStack[0]);
+				tRecipe = GTPP_Recipe.GTPP_Recipe_Map.sAlloyBlastSmelterRecipes.findRecipe(this.getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
 			}
-			final ItemStack[] tInputs = Arrays.copyOfRange(tInputList.toArray(new ItemStack[tInputList.size()]), 0, tInputList.size());
 
 			//Validity check
 			if ((isUsingControllerCircuit && tInputList.size() < 1) || (!isUsingControllerCircuit && tInputList.size() < 2)) {
@@ -282,24 +294,7 @@ public class GregtechMetaTileEntity_AlloyBlastSmelter extends GregtechMeta_Multi
 				tInputList.add(CI.getNumberedCircuit(this.mMode));
 			}
 
-			final ArrayList<FluidStack> tFluidList = this.getStoredFluids();
-			for (int i = 0; i < (tFluidList.size() - 1); i++) {
-				for (int j = i + 1; j < tFluidList.size(); j++) {
-					if (GT_Utility.areFluidsEqual(tFluidList.get(i), tFluidList.get(j))) {
-						if (tFluidList.get(i).amount >= tFluidList.get(j).amount) {
-							tFluidList.remove(j--);
-						} else {
-							tFluidList.remove(i--);
-							break;
-						}
-					}
-				}
-			}
-			final FluidStack[] tFluids = Arrays.copyOfRange(tFluidList.toArray(new FluidStack[tInputList.size()]), 0, 1);
 			if (tInputList.size() > 1) {
-				final long tVoltage = this.getMaxInputVoltage();
-				final byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-				final GT_Recipe tRecipe = GTPP_Recipe.GTPP_Recipe_Map.sAlloyBlastSmelterRecipes.findRecipe(this.getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
 				if ((tRecipe != null) && (tRecipe.isRecipeInputEqual(true, tFluids, tInputs))) {
 					Logger.WARNING("Found some Valid Inputs.");
 					this.mEfficiency = (10000 - ((this.getIdealStatus() - this.getRepairStatus()) * 1000));
