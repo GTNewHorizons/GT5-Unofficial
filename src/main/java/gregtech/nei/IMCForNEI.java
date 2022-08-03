@@ -13,6 +13,9 @@ public class IMCForNEI {
         sendHandler("gt.recipe.plasmaforge", "gregtech:gt.blockmachines:1004");
         sendCatalyst("gt.recipe.plasmaforge", "gregtech:gt.blockmachines:1004");
 
+        sendHandler("gt.recipe.eec", "gregtech:gt.blockmachines:1006");
+        sendCatalyst("gt.recipe.eec", "gregtech:gt.blockmachines:1006");
+
         sendHandler("gt.recipe.complexfusionreactor", "gregtech:gt.blockmachines:1193");
         sendCatalyst("gt.recipe.complexfusionreactor", "gregtech:gt.blockmachines:1193");
         sendCatalyst("gt.recipe.complexfusionreactor", "gregtech:gt.blockmachines:1194");

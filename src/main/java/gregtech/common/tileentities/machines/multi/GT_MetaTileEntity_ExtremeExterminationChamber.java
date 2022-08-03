@@ -26,10 +26,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.function.Consumer;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
@@ -41,6 +38,7 @@ import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 public class GT_MetaTileEntity_ExtremeExterminationChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_ExtremeExterminationChamber> {
 
     public static final GT_Recipe.GT_Recipe_Map EECRecipeMap = new GT_Recipe.GT_Recipe_Map(new HashSet<>(4), "gt.recipe.eec", "Extreme Extermination Chamber", null, RES_PATH_GUI + "basicmachines/Default", 1, 6, 1, 0, 1, E, 0, E, false, true);
+    private static final HashMap<String, GT_Recipe> MobNameToRecipeMap = new HashMap<>();
 
     public GT_MetaTileEntity_ExtremeExterminationChamber(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -66,7 +64,7 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber extends GT_MetaTileEn
         .addElement('c', ofBlock(GregTech_API.sBlockCasings2, 0))
         .addElement('C', ofChain(
             ofBlock(GregTech_API.sBlockCasings2, 0),
-            ofHatchAdder(GT_MetaTileEntity_ExtremeExterminationChamber::addInputToMachineList, CASING_INDEX, 1),
+            ofHatchAdder(GT_MetaTileEntity_ExtremeExterminationChamber::addOutputToMachineList, CASING_INDEX, 1),
             ofHatchAdder(GT_MetaTileEntity_ExtremeExterminationChamber::addEnergyInputToMachineList, CASING_INDEX, 1),
             ofHatchAdder(GT_MetaTileEntity_ExtremeExterminationChamber::addMaintenanceToMachineList, CASING_INDEX, 1)
         ))
@@ -251,10 +249,7 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber extends GT_MetaTileEn
                 }
                 i++;
             }
-            EECRecipeMap.addFakeRecipe(false, new ItemStack[] { new ItemStack(Items.spawn_egg, 1, id) }, outputs, null, outputchances, new FluidStack[0], new FluidStack[0], 40, 10, 0);
-
-
-
+            MobNameToRecipeMap.put((String)k, EECRecipeMap.addFakeRecipe(true, new ItemStack[] { new ItemStack(Items.spawn_egg, 1, id).setStackDisplayName((String)k) }, outputs, null, outputchances, new FluidStack[0], new FluidStack[0], 40, 8000, 0));
         });
 
     }
@@ -270,7 +265,7 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber extends GT_MetaTileEn
         if(aStack == null)
             return false;
 
-        if(aStack.getItem().equals(poweredSpawnerItem))
+        if(aStack.getItem() != poweredSpawnerItem)
             return false;
 
         if(aStack.getTagCompound() == null)
@@ -279,9 +274,18 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber extends GT_MetaTileEn
         if(mobType.isEmpty())
             return false;
 
-        // do something ?
+        GT_Recipe recipe = MobNameToRecipeMap.get(mobType);
 
-        this.mEUt = 8000;
+        if(recipe == null)
+            return false;
+
+        ArrayList<ItemStack> outputs = new ArrayList<>(recipe.mOutputs.length);
+        for (int i = 0; i < recipe.mOutputs.length; i++)
+            if (getBaseMetaTileEntity().getRandomNumber(10000) < recipe.getOutputChance(i))
+                outputs.add(recipe.getOutput(i));
+
+        this.mOutputItems = outputs.toArray(new ItemStack[0]);
+        this.mEUt = -8000;
         this.mMaxProgresstime = 40;
         this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;
@@ -309,10 +313,5 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber extends GT_MetaTileEn
     @Override
     public boolean explodesOnComponentBreak(ItemStack aStack) {
         return false;
-    }
-
-    @Override
-    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-        return EECRecipeMap;
     }
 }
