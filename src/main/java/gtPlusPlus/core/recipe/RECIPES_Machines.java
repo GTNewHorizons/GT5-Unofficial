@@ -6,6 +6,8 @@ import cpw.mods.fml.common.Loader;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
@@ -1851,17 +1853,27 @@ public class RECIPES_Machines {
 				}
 				else {
 					RecipeUtils.addShapedGregtechRecipe(
-							"plateEglinSteel", "rotorEglinSteel", "plateEglinSteel",
-							"cableGt02Silver", "pipeMediumStainlessSteel", "cableGt02Silver",
-							"plateEglinSteel", CI.machineCasing_HV, "plateEglinSteel",
+							ItemList.Field_Generator_IV.get(1), ALLOY.INCOLOY_MA956.getRotor(1), ItemList.Field_Generator_IV.get(1),
+							ALLOY.NITINOL_60.getPlate(1), GregtechItemList.GTPP_Casing_IV.get(1), ALLOY.NITINOL_60.getPlate(1),
+							ItemList.Field_Generator_IV.get(1), ALLOY.INCONEL_792.getComponentByPrefix(OrePrefixes.pipeMedium, 1), ItemList.Field_Generator_IV.get(1),
 							RECIPE_TreeFarmController);
 				}
 				//Industrial Tree Farm Frame
-				RecipeUtils.addShapedGregtechRecipe(
-						ItemUtils.getSimpleStack(Blocks.dirt), ItemUtils.getSimpleStack(Blocks.dirt), ItemUtils.getSimpleStack(Blocks.dirt),
-						"plankWood", "frameGtTumbaga", "plankWood",
-						"plankWood", "plankWood", "plankWood",
-						RECIPE_TreeFarmFrame);
+				GT_Values.RA.addAssemblerRecipe(
+						new ItemStack[] {
+								GT_Utility.getIntegratedCircuit(2),
+								ALLOY.INCONEL_625.getFrameBox(1),
+								ALLOY.HASTELLOY_X.getComponentByPrefix(OrePrefixes.pipeTiny, 1),
+								ItemList.Electric_Pump_EV.get(2),
+								ItemList.HV_Coil.get(4),
+								ItemList.IC2_Plantball.get(8),
+								GT_OreDictUnificator.get(OrePrefixes.plank, Materials.Wood, 6),
+						},
+						GT_ModHandler.getDistilledWater(8000),
+						RECIPE_TreeFarmFrame,
+						60,
+						1960
+				);
 			}
 
 			if (CORE.ConfigSwitches.enableMachine_Tesseracts){
