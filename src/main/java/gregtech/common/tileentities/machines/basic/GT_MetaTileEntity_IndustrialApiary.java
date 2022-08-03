@@ -161,7 +161,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
 
                 HashMap<GT_Utility.ItemId, ItemStack> pollen = new HashMap<>();
 
-                if(isRetrievingPollen) {
+                if(isRetrievingPollen && floweringMod > 0f) {
                     int icycles = (int)cycles + (getWorld().rand.nextFloat() < (cycles - (float)((int)cycles)) ? 1 : 0);
                     for(int z = 0; z < icycles; z++) {
                         IIndividual p = bee.retrievePollen(this);
@@ -398,7 +398,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                     if(usedQueenBee == null)
                         usedQueenBee = beeRoot.getMember(usedQueen);
                     effectData = usedQueenBee.doEffect(effectData, this);
-                    if(!retrievingPollenInThisOperation)
+                    if(!retrievingPollenInThisOperation && floweringMod > 0f)
                     {
                         if(retrievedpollen == null)
                             retrievedpollen = usedQueenBee.retrievePollen(this);
