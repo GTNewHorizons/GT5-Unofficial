@@ -50,10 +50,6 @@ public class GT_StructureUtility {
         return ofHatchAdder(aHatchAdder, aTextureIndex, StructureLibAPI.getBlockHint(), aDots - 1);
     }
 
-    public static <T extends GT_MetaTileEntity_EnhancedMultiBlockBase<T>> IStructureElement<T> ofMuffler(int casing, int aDots, IStructureElement.PlaceResult acceptType) {
-        return ofHatchAdder(T::addMufflerToMachineList, casing, StructureLibAPI.getBlockHint(), aDots, (o, t) -> hasMTE(t, GT_MetaTileEntity_Hatch_Muffler.class), t -> GT_MetaTileEntity_Hatch_Muffler.class, acceptType);
-    }
-
     public static <T> IStructureElement<T> ofFrame(Materials aFrameMaterial) {
         if (aFrameMaterial == null) throw new IllegalArgumentException();
         return new IStructureElement<T>() {
@@ -253,6 +249,12 @@ public class GT_StructureUtility {
             public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
                 world.setBlock(x, y, z, placeCasing, placeCasingMeta, 2);
                 return true;
+            }
+
+            @Override
+            public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger, IItemSource s, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
+                if (check(t, world, x, y, z)) return PlaceResult.SKIP;
+                return StructureUtility.survivalPlaceBlock(placeCasing, placeCasingMeta, world, x, y, z, s, actor);
             }
         };
     }
