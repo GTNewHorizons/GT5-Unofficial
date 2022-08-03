@@ -209,7 +209,7 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber extends GT_MetaTileEn
                     return;
                 GT_Utility.ItemId itemId = GT_Utility.ItemId.createNoCopy(stack);
                 drops.putIfAbsent(itemId, stack);
-                dropcount.merge(itemId, 1, Integer::sum);
+                dropcount.merge(itemId, stack.stackSize, Integer::sum);
             };
             e.capturedDrops.forEach(addDrop);
             if(frand.maxbound > 1)
@@ -243,7 +243,13 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber extends GT_MetaTileEn
                 GT_Utility.ItemId kk = entry.getKey();
                 ItemStack vv = entry.getValue();
                 outputs[i] = vv;
-                outputchances[i++] = (int) ((dropcount.get(kk).doubleValue() / maxchance) * 10000);
+                outputchances[i] = (int) ((dropcount.get(kk).doubleValue() / maxchance) * 10000);
+                while(outputchances[i] > 10000)
+                {
+                    outputs[i].stackSize *= 2;
+                    outputchances[i] /= 2;
+                }
+                i++;
             }
             EECRecipeMap.addFakeRecipe(false, new ItemStack[] { new ItemStack(Items.spawn_egg, 1, id) }, outputs, null, outputchances, new FluidStack[0], new FluidStack[0], 40, 10, 0);
 
