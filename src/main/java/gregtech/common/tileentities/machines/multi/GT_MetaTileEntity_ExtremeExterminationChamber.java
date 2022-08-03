@@ -40,7 +40,7 @@ import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
 public class GT_MetaTileEntity_ExtremeExterminationChamber extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_ExtremeExterminationChamber> {
 
-    public static final GT_Recipe.GT_Recipe_Map EECRecipeMap = new GT_Recipe.GT_Recipe_Map(new HashSet<>(4), "gt.recipe.eec", "Extreme Extermination Chamber", null, RES_PATH_GUI + "basicmachines/Default", 1, 4, 1, 0, 1, E, 0, E, false, true);
+    public static final GT_Recipe.GT_Recipe_Map EECRecipeMap = new GT_Recipe.GT_Recipe_Map(new HashSet<>(4), "gt.recipe.eec", "Extreme Extermination Chamber", null, RES_PATH_GUI + "basicmachines/Default", 1, 6, 1, 0, 1, E, 0, E, false, true);
 
     public GT_MetaTileEntity_ExtremeExterminationChamber(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
