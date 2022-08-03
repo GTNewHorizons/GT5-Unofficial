@@ -31,7 +31,7 @@ public class GregtechMetaTileEntity_ReactorProcessingUnit extends GT_MetaTileEnt
 	}
 
 	public GregtechMetaTileEntity_ReactorProcessingUnit(String aName, int aTier, String aDescription, ITexture[][][] aTextures, String aGUIName, String aNEIName) {
-		super(aName, aTier, 1, aDescription, aTextures, 1, 1, aGUIName, aNEIName);
+		super(aName, aTier, 1, aDescription, aTextures, 2, 9, aGUIName, aNEIName);
 	}
 
 	@Override
@@ -42,6 +42,11 @@ public class GregtechMetaTileEntity_ReactorProcessingUnit extends GT_MetaTileEnt
 	@Override
 	public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
 		return new GregtechMetaTileEntity_ReactorProcessingUnit(this.mName, this.mTier, this.mDescription, this.mTextures, this.mGUIName, this.mNEIName);
+	}
+
+	@Override
+	public boolean allowSelectCircuit() {
+		return true;
 	}
 
 	@Override
