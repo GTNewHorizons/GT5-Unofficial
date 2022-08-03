@@ -84,7 +84,7 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber extends GT_MetaTileEn
         tt.
             addMachineType("Powered Spawner").
             addInfo("Controller block for Extreme Extermination Chamber").
-            addInfo("Spawns and Exterminates monster's for you").
+            addInfo("Spawns and Exterminates monsters for you").
             addInfo("Author: " + EnumChatFormatting.GOLD + "kuba6000").
             addSeparator().
             beginStructureBlock(5, 7, 5, true).
