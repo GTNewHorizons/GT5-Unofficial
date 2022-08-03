@@ -24,6 +24,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -145,7 +146,8 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber extends GT_MetaTileEn
         {
 
         };
-        f.rand = new fakeRand();
+        fakeRand frand = new fakeRand();
+        f.rand = frand;
 
         EntityList.stringToClassMapping.forEach((k, v) -> {
             if(!(v instanceof Class))
@@ -173,14 +175,17 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber extends GT_MetaTileEn
 
             // POWERFULL GENERATION
 
-            ((fakeRand)f.rand).maxbound = 1;
-            ((fakeRand)f.rand).overridenext = 0;
+            frand.maxbound = 1;
+            frand.overridenext = 0;
             Class s = e.getClass();
             while(!s.equals(EntityLiving.class))
                 s = s.getSuperclass();
             Method dropFewItems;
             try {
                 dropFewItems = s.getDeclaredMethod("dropFewItems", boolean.class, int.class);
+                Field rand = s.getSuperclass().getSuperclass().getDeclaredField("rand");
+                rand.setAccessible(true);
+                rand.set(e, frand);
             }
             catch (Exception ex)
             {
@@ -207,12 +212,12 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber extends GT_MetaTileEn
                 dropcount.merge(itemId, 1, Integer::sum);
             };
             e.capturedDrops.forEach(addDrop);
-            if(((fakeRand)f.rand).maxbound > 1)
+            if(frand.maxbound > 1)
             {
                 e.capturedDrops.clear();
-                for(int i = 1; i < ((fakeRand)f.rand).maxbound; i++)
+                for(int i = 1; i < frand.maxbound; i++)
                 {
-                    ((fakeRand)f.rand).overridenext = i;
+                    frand.overridenext = i;
                     try {
                         dropFewItems.invoke(e, true, 0);
                     }
@@ -229,7 +234,7 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber extends GT_MetaTileEn
             if(drops.isEmpty())
                 return;
 
-            double maxchance = ((fakeRand)f.rand).maxbound;
+            double maxchance = frand.maxbound;
 
             ItemStack[] outputs = new ItemStack[drops.size()];
             int[] outputchances = new int[drops.size()];
