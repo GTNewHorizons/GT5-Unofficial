@@ -438,8 +438,9 @@ public class ItemComb extends Item {
 	}
 
     public void addFluidExtractorProcess(CombType comb, FluidStack fluid, Voltage volt){
+        if(fluid == null)
+            return;
         RA.addFluidExtractionRecipe(GT_Utility.copyAmount(1, getStackForType(comb)), null, fluid, 100 * 100, (fluid.getFluid().getDensity() * 128 > 0 ? (int) (fluid.getFluid().getDensity() * 100) : 128), volt.getSimpleEnergy()/2);
-
     }
 
 	/**
