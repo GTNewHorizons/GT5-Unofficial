@@ -2,9 +2,14 @@ package gregtech.common.covers;
 
 import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.network.ByteBufUtils;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
+import gregtech.api.gui.GT_GUICover;
+import gregtech.api.gui.widgets.GT_GuiIcon;
+import gregtech.api.gui.widgets.GT_GuiIconCheckButton;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.api.net.GT_Packet_TileEntityCoverNew;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.GT_RenderingWorld;
@@ -12,11 +17,13 @@ import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
@@ -231,6 +238,93 @@ public abstract class GT_Cover_FacadeBase extends GT_CoverBehaviorBase<GT_Cover_
             mStack = ISerializableObject.readItemStackFromGreggyByteBuf(aBuf);
             mFlags = aBuf.readByte();
             return this;
+        }
+    }
+
+    /**
+     * GUI Stuff
+     */
+
+    @Override
+    public boolean hasCoverGUI() {
+        return true;
+    }
+
+    @Override
+    protected Object getClientGUIImpl(byte aSide, int aCoverID, FacadeData coverData, ICoverable aTileEntity, EntityPlayer aPlayer, World aWorld) {
+        return new GT_Cover_FacadeBase.GUI(aSide, aCoverID, coverData, aTileEntity);
+    }
+
+    private class GUI extends GT_GUICover {
+        private final byte side;
+        private final int coverID;
+        private FacadeData coverVariable;
+
+        private static final int startX = 10;
+        private static final int startY = 25;
+        private static final int spaceX = 18;
+        private static final int spaceY = 18;
+
+        public GUI(byte aSide, int aCoverID, FacadeData aCoverVariable, ICoverable aTileEntity) {
+            super(aTileEntity, 176, 107, aCoverVariable.mStack);
+            this.side = aSide;
+            this.coverID = aCoverID;
+            this.coverVariable = aCoverVariable;
+
+            new GT_GuiIconCheckButton(this, 0, startX + spaceX * 0, startY + spaceY * 0, GT_GuiIcon.CHECKMARK, GT_GuiIcon.CROSS).setChecked((coverVariable.mFlags & 0x1) == 0);
+            new GT_GuiIconCheckButton(this, 1, startX + spaceX * 0, startY + spaceY * 1, GT_GuiIcon.CHECKMARK, GT_GuiIcon.CROSS).setChecked((coverVariable.mFlags & 0x2) == 0);
+            new GT_GuiIconCheckButton(this, 2, startX + spaceX * 0, startY + spaceY * 2, GT_GuiIcon.CHECKMARK, GT_GuiIcon.CROSS).setChecked((coverVariable.mFlags & 0x4) == 0);
+            new GT_GuiIconCheckButton(this, 3, startX + spaceX * 0, startY + spaceY * 3, GT_GuiIcon.CHECKMARK, GT_GuiIcon.CROSS).setChecked((coverVariable.mFlags & 0x8) == 0);
+        }
+
+        @Override
+        public void drawExtras(int mouseX, int mouseY, float parTicks) {
+            super.drawExtras(mouseX, mouseY, parTicks);
+            this.fontRendererObj.drawString(GT_Utility.trans("128", "Redstone"), 3 + startX + spaceX * 1, 4 + startY + spaceY * 0, 0xFF555555);
+            this.fontRendererObj.drawString(GT_Utility.trans("129", "Energy"), 3 + startX + spaceX * 1, 4 + startY + spaceY * 1, 0xFF555555);
+            this.fontRendererObj.drawString(GT_Utility.trans("130", "Fluids"), 3 + startX + spaceX * 1, 4 + startY + spaceY * 2, 0xFF555555);
+            this.fontRendererObj.drawString(GT_Utility.trans("131", "Items"), 3 + startX + spaceX * 1, 4 + startY + spaceY * 3, 0xFF555555);
+        }
+
+        @Override
+        protected void onInitGui(int guiLeft, int guiTop, int gui_width, int gui_height) {
+            updateButtons();
+        }
+
+        @Override
+        public void buttonClicked(GuiButton btn) {
+            if (getClickable(btn.id)) {
+                coverVariable.mFlags = getNewCoverVariable(btn.id);
+                GT_Values.NW.sendToServer(new GT_Packet_TileEntityCoverNew(side, coverID, coverVariable, tile));
+            }
+            updateButtons();
+        }
+
+        private void updateButtons() {
+            GT_GuiIconCheckButton b;
+            for (Object o : buttonList) {
+                b = (GT_GuiIconCheckButton) o;
+                b.enabled = getClickable(b.id);
+                b.setChecked((coverVariable.mFlags & (1 << b.id)) != 0);
+            }
+        }
+
+        private int getNewCoverVariable(int id) {
+            switch (id) {
+                case 0:
+                    return coverVariable.mFlags ^ 0x1;
+                case 1:
+                    return coverVariable.mFlags ^ 0x2;
+                case 2:
+                    return coverVariable.mFlags ^ 0x4;
+                case 3:
+                    return coverVariable.mFlags ^ 0x8;
+            }
+            return coverVariable.mFlags;
+        }
+
+        private boolean getClickable(int id) {
+            return coverVariable.mFlags >= 0 && coverVariable.mFlags <= 15;
         }
     }
 }
