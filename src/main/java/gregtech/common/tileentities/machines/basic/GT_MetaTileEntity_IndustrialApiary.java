@@ -133,6 +133,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
 
     boolean retrievingPollenInThisOperation = false;
     IIndividual retrievedpollen = null;
+    int pollinationDelay = 100;
 
     @Override
     public int checkRecipe() {
@@ -256,10 +257,6 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                     else
                         break;
 
-
-
-
-
                 // Overclock
 
 
@@ -271,6 +268,8 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                 actualdivider /= Math.min(actualdivider, timemaxdivider);
                 for(i--; i >= 0; i--)
                     this.mOutputItems[i].stackSize *= actualdivider;
+
+                pollinationDelay = Math.max((int)(this.mMaxProgresstime / cycles), 20); // don't run too often
 
                 this.mProgresstime = 0;
                 this.mEUt = (int)((float)baseEUtUsage * this.energyMod * useddivider);
@@ -398,11 +397,11 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                     if(usedQueenBee == null)
                         usedQueenBee = beeRoot.getMember(usedQueen);
                     effectData = usedQueenBee.doEffect(effectData, this);
-                    if(!retrievingPollenInThisOperation && floweringMod > 0f)
+                    if(!retrievingPollenInThisOperation && floweringMod > 0f && this.mProgresstime % pollinationDelay == 0)
                     {
                         if(retrievedpollen == null)
                             retrievedpollen = usedQueenBee.retrievePollen(this);
-                        if(usedQueenBee.pollinateRandom(this, retrievedpollen) || this.mProgresstime % 100 == 0)
+                        if(retrievedpollen != null && (usedQueenBee.pollinateRandom(this, retrievedpollen) || this.mProgresstime % (pollinationDelay * 5) == 0))
                             retrievedpollen = null;
                     }
                 }
