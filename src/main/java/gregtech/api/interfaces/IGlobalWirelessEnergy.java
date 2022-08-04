@@ -108,6 +108,7 @@ public interface IGlobalWirelessEnergy {
     default void LoadGlobalEnergyInfo(World world) {
         // Replace chars because of bug in forge that doesn't understand MC converts . to _ upon world creation.
         String world_name = world.getWorldInfo().getWorldName().replace('.','_');
+        PrivateGlobalEnergy.WorldName = world_name;
         CreateStorageIfNotExist(world_name);
         LoadGlobalEnergyMap(world);
         LoadGlobalEnergyName(world);
@@ -229,6 +230,13 @@ public interface IGlobalWirelessEnergy {
     // as infrequently as possible and bulk store values to add to the global map.
     default boolean addEUToGlobalEnergyMap(String user_uuid, BigInteger EU) {
 
+        PrivateGlobalEnergy.EnergyAdds += 1;
+
+        if (PrivateGlobalEnergy.EnergyAddsBeforeSaving >= PrivateGlobalEnergy.EnergyAdds) {
+            SaveGlobalEnergyInfo(PrivateGlobalEnergy.WorldName);
+            PrivateGlobalEnergy.EnergyAdds = 0;
+        }
+
         // Get the team UUID. Users are by default in a team with a UUID equal to their player UUID.
         String team_uuid = GlobalEnergyTeam.getOrDefault(user_uuid, user_uuid);
 
@@ -294,4 +302,15 @@ public interface IGlobalWirelessEnergy {
 
 }
 
+class PrivateGlobalEnergy {
+    // EnergyAdds Counts the number of times energy has been added to the network since the last save.
+    public static long EnergyAdds = 0;
 
+    // EnergyAddsBeforeSaving stores the number of times energy must be added or removed from the network before a save
+    // is initiated. Do not set this number very low, or you may cause lag. If you use a large number of wireless
+    // machines increase this value.
+    public static long EnergyAddsBeforeSaving = 1000;
+
+    // Name of the folder the world is in.
+    public static String WorldName = "";
+}
