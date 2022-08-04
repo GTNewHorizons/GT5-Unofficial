@@ -45,6 +45,10 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber extends GT_MetaTileEn
 
     private static final HashSet<String> MobBlacklist = new HashSet<>(Arrays.asList(new String[]{"chisel.snowman"}));
 
+    static{
+        GregTech_API.sAfterGTServerstart.add(GT_MetaTileEntity_ExtremeExterminationChamber::initializeRecipeMap);
+    }
+
     public GT_MetaTileEntity_ExtremeExterminationChamber(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
@@ -349,7 +353,6 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber extends GT_MetaTileEn
 
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
-        initializeRecipeMap();
         super.onFirstTick(aBaseMetaTileEntity);
     }
 
