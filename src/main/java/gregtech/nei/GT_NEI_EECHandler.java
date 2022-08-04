@@ -8,7 +8,9 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -51,6 +53,12 @@ public class GT_NEI_EECHandler extends GT_NEI_DefaultHandler {
         ItemStack s = getIngredientStacks(recipe).get(0).item;
         try {
             EntityLivingBase e = (EntityLivingBase)EntityList.createEntityByID(s.getItemDamage(), Minecraft.getMinecraft().theWorld);
+            if(e instanceof EntitySlime) {
+                NBTTagCompound nbt = new NBTTagCompound();
+                e.writeEntityToNBT(nbt);
+                nbt.setInteger("Size", 0);
+                e.readEntityFromNBT(nbt);
+            }
 
             float ehight = e.height;
             int desiredhight = 27;

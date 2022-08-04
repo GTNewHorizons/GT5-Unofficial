@@ -19,6 +19,7 @@ import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -180,8 +181,19 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber extends GT_MetaTileEn
             // POWERFULL GENERATION
 
             Class s = e.getClass();
-            while(!s.equals(EntityLivingBase.class))
+            while(!s.equals(EntityLivingBase.class)) {
+                if(s.equals(EntitySlime.class))
+                {
+                    try{
+                        Method setSlimeSize = s.getDeclaredMethod("setSlimeSize", int.class);
+                        setSlimeSize.setAccessible(true);
+                        setSlimeSize.invoke(e, 1);
+                    }
+                    catch (Exception ignored){}
+                }
+
                 s = s.getSuperclass();
+            }
             Method dropFewItems;
             Method dropRareDrop;
             try {
