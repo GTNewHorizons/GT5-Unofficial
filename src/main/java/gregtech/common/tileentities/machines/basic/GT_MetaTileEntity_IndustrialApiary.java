@@ -284,6 +284,9 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
             }
             else {
                 // Breeding time
+
+                retrievingPollenInThisOperation = true; // Don't pollinate when breeding
+
                 this.mMaxProgresstime = 100;
                 this.mProgresstime = 0;
                 int useddivider = Math.min(100, 1 << this.mSpeed);
