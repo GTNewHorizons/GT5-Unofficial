@@ -215,7 +215,7 @@ public class DreamCraftRecipeLoader {
         TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Casing_Coil_Infinity.get(1),
                 16_777_216*2, 2048*2, 32_000_000, 1, new Object[]{
                         new Object[]{OrePrefixes.circuit.get(Materials.Bio), 1L},
-                        GT_ModHandler.getModItem("miscutils", "itemFineWireHypogen", 64, 0),
+                        GT_OreDictUnificator.get("wireGt02Hypogen", 8L),
                         GT_ModHandler.getModItem("miscutils", "itemScrewHypogen", 8, 0),
                         GT_ModHandler.getModItem("dreamcraft", "item.MicaInsulatorFoil", 64, 0),
                         GT_ModHandler.getModItem("dreamcraft", "item.MicaInsulatorFoil", 64, 0),
