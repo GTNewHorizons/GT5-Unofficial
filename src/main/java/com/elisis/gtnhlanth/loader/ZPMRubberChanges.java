@@ -246,11 +246,7 @@ public class ZPMRubberChanges implements Runnable {
 
     private static void rewriteAsslineRecipes(
             ItemStack stack, OrePrefixes[] RubberGenerated, GT_Recipe.GT_Recipe_AssemblyLine recipe) {
-        // GT_Log.out.print("In rewriteAsslineRecipes!\n");
         for (OrePrefixes prefixes : RubberGenerated) {
-            // GT_Log.out.print("In rewriteAsslineRecipes Pt. 2!\n");
-            // GT_Log.out.print(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Silicone, 1).getDisplayName() + "
-            // WOWWOO");
             if (ZPMRubberChanges.doStacksCointainAndReplace(recipe.mInputs, stack, false)) {
 
                 GT_Log.out.print(Arrays.toString(recipe.mInputs));
