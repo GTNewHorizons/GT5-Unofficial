@@ -3,6 +3,7 @@ package gregtech.common.covers;
 import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GuiColors;
 import gregtech.api.gui.GT_GUICover;
 import gregtech.api.gui.widgets.GT_GuiFakeItemButton;
 import gregtech.api.gui.widgets.GT_GuiIcon;
@@ -34,6 +35,7 @@ import static gregtech.api.util.GT_Utility.moveMultipleItemStacks;
 public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilter.ItemFilterData> {
 
     private final boolean mExport;
+    private final int textColor = GuiColors.coverItemFilter.getColor();
 
     public GT_Cover_ItemFilter(boolean isExport) {
         super(ItemFilterData.class);
@@ -234,8 +236,8 @@ public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilte
         @Override
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
-            this.fontRendererObj.drawString(GT_Utility.trans("317", "Filter: "),    startX + spaceX*0, 3+startY+spaceY*1, 0xFF555555);
-            this.fontRendererObj.drawString(GT_Utility.trans("318", "Check Mode"),  startX + spaceX*2, 3+startY+spaceY*0, 0xFF555555);
+            this.fontRendererObj.drawString(GT_Utility.trans("317", "Filter: "),    startX + spaceX*0, 3+startY+spaceY*1, textColor);
+            this.fontRendererObj.drawString(GT_Utility.trans("318", "Check Mode"),  startX + spaceX*2, 3+startY+spaceY*0, textColor);
         }
 
         @Override

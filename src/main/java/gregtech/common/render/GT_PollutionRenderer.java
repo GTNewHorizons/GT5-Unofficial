@@ -7,6 +7,7 @@ import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GT_Mod;
+import gregtech.api.enums.GuiColors;
 import gregtech.common.entities.GT_EntityFXPollution;
 import gregtech.common.misc.GT_ClientPollutionMap;
 import net.minecraft.block.Block;
@@ -45,6 +46,8 @@ public class GT_PollutionRenderer {
     private static final short[] leavesColor = {160, 80, 15};
     private static final short[] liquidColor = {160, 200, 10};
     private static final short[] foliageColor = {160, 80, 15};
+
+    private final int textColor = GuiColors.pollutionRenderer.getColor();
 
     //TODO need to soft update some blocks, grass and leaves does more often than liquid it looks like.
 
@@ -245,7 +248,7 @@ public class GT_PollutionRenderer {
         GL11.glPushMatrix();
         GL11.glEnable(GL11.GL_BLEND);
         OpenGlHelper.glBlendFunc(770, 771, 1, 0);
-        Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(text, 0, off, 0xFFFFFFFF);
+        Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(text, 0, off, textColor);
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glPopMatrix();
     }

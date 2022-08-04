@@ -1,5 +1,6 @@
 package gregtech.common.gui;
 
+import gregtech.api.enums.GuiColors;
 import gregtech.api.gui.GT_Container_MultiMachine;
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -15,6 +16,7 @@ public class GT_GUIContainer_FusionReactor extends GT_GUIContainerMetaTile_Machi
 
     public String mNEI;
     String mName = "";
+    private final int textColor = GuiColors.fusionReactor.getColor();
 
     public GT_GUIContainer_FusionReactor(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName, String aTextureFile, String aNEI) {
         super(new GT_Container_MultiMachine(aInventoryPlayer, aTileEntity, false), RES_PATH_GUI + "multimachines/" + (aTextureFile == null ? "MultiblockDisplay" : aTextureFile));
@@ -38,15 +40,15 @@ public class GT_GUIContainer_FusionReactor extends GT_GUIContainerMetaTile_Machi
                 }
             }
             if(this.mContainer.mEnergy > 160000000 && this.mContainer.mEnergy < 160010000)
-                fontRendererObj.drawString("160,000,000 EU", 50, 155, 0x00ff0000);
+                fontRendererObj.drawString("160,000,000 EU", 50, 155, textColor);
             else if(this.mContainer.mEnergy > 320000000 && this.mContainer.mEnergy < 320010000)
-                fontRendererObj.drawString("320,000,000 EU", 50, 155, 0x00ff0000);
+                fontRendererObj.drawString("320,000,000 EU", 50, 155, textColor);
             else if(this.mContainer.mEnergy > 640000000 && this.mContainer.mEnergy < 640010000)
-                fontRendererObj.drawString("640,000,000 EU", 50, 155, 0x00ff0000);
+                fontRendererObj.drawString("640,000,000 EU", 50, 155, textColor);
             else if(this.mContainer.mEnergyLong > 5120000000L && this.mContainer.mEnergyLong < 5120080000L)
-                fontRendererObj.drawString("5,120,000,000 EU", 50, 155, 0x00ff0000);
+                fontRendererObj.drawString("5,120,000,000 EU", 50, 155, textColor);
             else
-                fontRendererObj.drawString(GT_Utility.formatNumbers(this.mContainer.mEnergyLong) + " EU", 50, 155, 0x00ff0000);
+                fontRendererObj.drawString(GT_Utility.formatNumbers(this.mContainer.mEnergyLong) + " EU", 50, 155, textColor);
         }
     }
 

@@ -15,6 +15,7 @@ import codechicken.nei.recipe.RecipeCatalysts;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GuiColors;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.gui.GT_GUIContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -64,6 +65,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
     private String mRecipeName; // Name of the handler displayed on top
     private NEIHandlerAbsoluteTooltip mRecipeNameTooltip;
     private static final int RECIPE_NAME_WIDTH = 140;
+    private final int textColor = GuiColors.NEIText.getColor();
 
      /**
      * Static version of {@link TemplateRecipeHandler#cycleticks}.
@@ -504,7 +506,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
     }
 
     protected void drawLine(int lineNumber, String line) {
-        drawText(10, getDescriptionYOffset() + lineNumber * 10, line, 0xFF000000);
+        drawText(10, getDescriptionYOffset() + lineNumber * 10, line, textColor);
     }
 
     protected int getDescriptionYOffset() {

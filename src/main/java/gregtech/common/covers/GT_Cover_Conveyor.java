@@ -1,6 +1,7 @@
 package gregtech.common.covers;
 
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GuiColors;
 import gregtech.api.gui.GT_GUICover;
 import gregtech.api.gui.widgets.GT_GuiIcon;
 import gregtech.api.gui.widgets.GT_GuiIconButton;
@@ -19,6 +20,8 @@ import static gregtech.api.util.GT_Utility.moveMultipleItemStacks;
 public class GT_Cover_Conveyor extends GT_CoverBehavior {
     public final int mTickRate;
     private final int mMaxStacks;
+
+    private final int textColor = GuiColors.coverPlayerDetector.getColor();
 
     public GT_Cover_Conveyor(int aTickRate) {
         this.mTickRate = aTickRate;
@@ -179,9 +182,9 @@ public class GT_Cover_Conveyor extends GT_CoverBehavior {
         @Override
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
-            this.fontRendererObj.drawString(GT_Utility.trans("229", "Import/Export"),  startX + spaceX*3, 3+startY+spaceY*0, 0xFF555555);
-            this.fontRendererObj.drawString(GT_Utility.trans("230", "Conditional"),     startX + spaceX*3, 3+startY+spaceY*1, 0xFF555555);
-            this.fontRendererObj.drawString(GT_Utility.trans("231", "Enable Input"),   startX + spaceX*3, 3+startY+spaceY*2, 0xFF555555);
+            this.fontRendererObj.drawString(GT_Utility.trans("229", "Import/Export"),  startX + spaceX*3, 3+startY+spaceY*0, textColor);
+            this.fontRendererObj.drawString(GT_Utility.trans("230", "Conditional"),     startX + spaceX*3, 3+startY+spaceY*1, textColor);
+            this.fontRendererObj.drawString(GT_Utility.trans("231", "Enable Input"),   startX + spaceX*3, 3+startY+spaceY*2, textColor);
         }
 
         @Override

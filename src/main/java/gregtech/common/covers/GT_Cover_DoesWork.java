@@ -1,6 +1,7 @@
 package gregtech.common.covers;
 
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GuiColors;
 import gregtech.api.gui.GT_GUICover;
 import gregtech.api.gui.widgets.GT_GuiIcon;
 import gregtech.api.gui.widgets.GT_GuiIconButton;
@@ -15,6 +16,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fluids.Fluid;
 
 public class GT_Cover_DoesWork extends GT_CoverBehavior {
+
+    private final int textColor = GuiColors.coverDoesWork.getColor();
+
     @Override
     public boolean isRedstoneSensitive(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
         return false;
@@ -144,8 +148,8 @@ public class GT_Cover_DoesWork extends GT_CoverBehavior {
                 s2 = GT_Utility.trans("INVERTED", "Inverted");
             else
                 s2 = GT_Utility.trans("NORMAL", "Normal");
-            this.fontRendererObj.drawString(s1,  startX + spaceX*3, 4+startY+spaceY*0, 0xFF555555);
-            this.fontRendererObj.drawString(s2,  startX + spaceX*3, 4+startY+spaceY*1, 0xFF555555);
+            this.fontRendererObj.drawString(s1,  startX + spaceX*3, 4+startY+spaceY*0, textColor);
+            this.fontRendererObj.drawString(s2,  startX + spaceX*3, 4+startY+spaceY*1, textColor);
         }
 
         @Override

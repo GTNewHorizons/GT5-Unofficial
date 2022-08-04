@@ -1,6 +1,7 @@
 package gregtech.common.covers;
 
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GuiColors;
 import gregtech.api.gui.GT_GUICover;
 import gregtech.api.gui.widgets.GT_GuiIcon;
 import gregtech.api.gui.widgets.GT_GuiIconCheckButton;
@@ -18,6 +19,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 
 public class GT_Cover_NeedMaintainance extends GT_CoverBehavior {
+
+    private final int textColor = GuiColors.coverMaintenance.getColor();
 
     private boolean isRotor(ItemStack aRotor) {
         return !(aRotor == null || !(aRotor.getItem() instanceof GT_MetaGenerated_Tool) || aRotor.getItemDamage() < 170 || aRotor.getItemDamage() > 176);
@@ -229,16 +232,16 @@ public class GT_Cover_NeedMaintainance extends GT_CoverBehavior {
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
 
-            this.fontRendererObj.drawString(buttontext[0],startX + spaceX*1, 4+startY+spaceY*0, 0xFF555555);
-            this.fontRendererObj.drawString(buttontext[1],startX + spaceX*1, 4+startY+spaceY*1, 0xFF555555);
-            this.fontRendererObj.drawString(buttontext[2],startX + spaceX*1, 4+startY+spaceY*2, 0xFF555555);
-            this.fontRendererObj.drawString(buttontext[3],startX + spaceX*1, 4+startY+spaceY*3, 0xFF555555);
-            this.fontRendererObj.drawString(buttontext[4],startX + spaceX*5 + 4, 4+startY+spaceY*0, 0xFF555555);
-            this.fontRendererObj.drawString(buttontext[5],startX + spaceX*5 + 4, 4+startY+spaceY*1, 0xFF555555);
-            this.fontRendererObj.drawString(buttontext[6],startX + spaceX*5 + 4, 4+startY+spaceY*2, 0xFF555555);
+            this.fontRendererObj.drawString(buttontext[0],startX + spaceX*1, 4+startY+spaceY*0, textColor);
+            this.fontRendererObj.drawString(buttontext[1],startX + spaceX*1, 4+startY+spaceY*1, textColor);
+            this.fontRendererObj.drawString(buttontext[2],startX + spaceX*1, 4+startY+spaceY*2, textColor);
+            this.fontRendererObj.drawString(buttontext[3],startX + spaceX*1, 4+startY+spaceY*3, textColor);
+            this.fontRendererObj.drawString(buttontext[4],startX + spaceX*5 + 4, 4+startY+spaceY*0, textColor);
+            this.fontRendererObj.drawString(buttontext[5],startX + spaceX*5 + 4, 4+startY+spaceY*1, textColor);
+            this.fontRendererObj.drawString(buttontext[6],startX + spaceX*5 + 4, 4+startY+spaceY*2, textColor);
             //                                          inverted        normal
             String s2 = ((coverVariable & 0x1) > 0) ? buttontext[7] : buttontext[8];
-            this.fontRendererObj.drawString(s2,  startX + spaceX*5 + 4, 4+startY+spaceY*3, 0xFF555555);
+            this.fontRendererObj.drawString(s2,  startX + spaceX*5 + 4, 4+startY+spaceY*3, textColor);
         }
 
         @Override

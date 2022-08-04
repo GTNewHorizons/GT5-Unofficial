@@ -1,6 +1,7 @@
 package gregtech.common.covers;
 
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GuiColors;
 import gregtech.api.gui.GT_GUICover;
 import gregtech.api.gui.widgets.GT_GuiFakeItemButton;
 import gregtech.api.gui.widgets.GT_GuiIcon;
@@ -26,6 +27,8 @@ public class GT_Cover_Arm extends GT_CoverBehavior {
     protected static final int SLOT_ID_MASK = 0x3FFF;
     protected static final int SLOT_ID_MIN = 0;
     protected static final int CONVERTED_BIT = 0x80000000;
+
+    private final int textColor = GuiColors.coverArm.getColor();
 
     public GT_Cover_Arm(int aTickRate) {
         this.mTickRate = aTickRate;
@@ -288,12 +291,12 @@ public class GT_Cover_Arm extends GT_CoverBehavior {
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
             if (export)
-                this.getFontRenderer().drawString(GT_Utility.trans("006", "Export"),  startX + spaceX*3, 4+startY+spaceY*0, 0xFF555555);
+                this.getFontRenderer().drawString(GT_Utility.trans("006", "Export"),  startX + spaceX*3, 4+startY+spaceY*0, textColor);
             else
-                this.getFontRenderer().drawString(GT_Utility.trans("007", "Import"),  startX + spaceX*3, 4+startY+spaceY*0, 0xFF555555);
+                this.getFontRenderer().drawString(GT_Utility.trans("007", "Import"),  startX + spaceX*3, 4+startY+spaceY*0, textColor);
 
-            this.getFontRenderer().drawString(GT_Utility.trans("254", "Internal slot#"),     startX + spaceX*3, 4+startY+spaceY*1, 0xFF555555);
-            this.getFontRenderer().drawString(GT_Utility.trans("255", "Adjacent slot#"),  startX + spaceX*3, 4+startY+spaceY*2, 0xFF555555);
+            this.getFontRenderer().drawString(GT_Utility.trans("254", "Internal slot#"),     startX + spaceX*3, 4+startY+spaceY*1, textColor);
+            this.getFontRenderer().drawString(GT_Utility.trans("255", "Adjacent slot#"),  startX + spaceX*3, 4+startY+spaceY*2, textColor);
         }
 
         @Override

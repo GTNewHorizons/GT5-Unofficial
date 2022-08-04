@@ -1,6 +1,7 @@
 package gregtech.api.gui;
 
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.GuiColors;
 import gregtech.api.gui.widgets.GT_GuiFakeItemButton;
 import gregtech.api.gui.widgets.GT_GuiIntegerTextBox;
 import gregtech.api.gui.widgets.GT_GuiTooltip;
@@ -29,6 +30,7 @@ public abstract class GT_GUIScreen extends GuiScreen implements GT_IToolTipRende
 	protected int gui_height = 107;
 	protected int guiTop, guiLeft;
 	protected boolean drawButtons = true;
+	private final int textColor = GuiColors.multiMachineTitle.getColor();
 	private GuiButton selectedButton;
 	public String header;
 	public GT_GuiFakeItemButton headerIcon;
@@ -125,7 +127,7 @@ public abstract class GT_GUIScreen extends GuiScreen implements GT_IToolTipRende
 	}
 
 	public void drawExtras(int mouseX, int mouseY, float parTicks) {
-		this.fontRendererObj.drawString(header, 25, 9, 0xFF222222);
+		this.fontRendererObj.drawString(header, 25, 9, textColor);
 	}
 
 	@Override

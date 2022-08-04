@@ -1,17 +1,21 @@
 package gregtech.common.gui;
 
+import gregtech.api.enums.GuiColors;
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.InventoryPlayer;
 
 public class GT_GUIContainer_Boiler extends GT_GUIContainerMetaTile_Machine {
+
+    private final int textColor = GuiColors.boiler.getColor();
+
     public GT_GUIContainer_Boiler(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aTextureName) {
         super(new GT_Container_Boiler(aInventoryPlayer, aTileEntity), "gregtech:textures/gui/" + aTextureName);
     }
 
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-        this.fontRendererObj.drawString("Boiler", 8, 4, 4210752);
+        this.fontRendererObj.drawString("Boiler", 8, 4, textColor);
     }
 
     @Override

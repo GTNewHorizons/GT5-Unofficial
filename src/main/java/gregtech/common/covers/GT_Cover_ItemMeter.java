@@ -4,6 +4,7 @@ import com.google.common.io.ByteArrayDataInput;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GuiColors;
 import gregtech.api.gui.GT_GUICover;
 import gregtech.api.gui.widgets.GT_GuiFakeItemButton;
 import gregtech.api.gui.widgets.GT_GuiIcon;
@@ -37,6 +38,8 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
     private static final int SLOT_MASK = 0x3FFFFFFF; // 0 = all, 1 = 0 ...
     private static final int CONVERTED_BIT = 0x80000000;
     private static final int INVERT_BIT = 0x40000000;
+
+    private final int textColor = GuiColors.coverItemMeter.getColor();
 
     public GT_Cover_ItemMeter() {
         super(ItemMeterData.class);
@@ -317,9 +320,9 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
         @Override
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
-            this.getFontRenderer().drawString(coverVariable.inverted ? INVERTED : NORMAL, startX + spaceX * 3, 4 + startY, 0xFF555555);
-			this.getFontRenderer().drawString(GT_Utility.trans("254", "Detect slot#"), startX + spaceX * 3, 4 + startY + spaceY, 0xFF555555);
-			this.getFontRenderer().drawString(GT_Utility.trans("221", "Item threshold"), startX + spaceX * 3, startY + spaceY * 2 + 4, 0xFF555555);
+            this.getFontRenderer().drawString(coverVariable.inverted ? INVERTED : NORMAL, startX + spaceX * 3, 4 + startY, textColor);
+			this.getFontRenderer().drawString(GT_Utility.trans("254", "Detect slot#"), startX + spaceX * 3, 4 + startY + spaceY, textColor);
+			this.getFontRenderer().drawString(GT_Utility.trans("221", "Item threshold"), startX + spaceX * 3, startY + spaceY * 2 + 4, textColor);
         }
 
         @Override
