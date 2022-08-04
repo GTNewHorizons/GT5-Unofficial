@@ -262,7 +262,7 @@ public class GT_MetaTileEntity_DistillationTower extends GT_MetaTileEntity_Enhan
             if (!checkPiece(STRUCTURE_PIECE_LAYER, 1, mHeight, 0)) {
                 return false;
             }
-            if (mOutputHatchesByLayer.get(mHeight - 1).isEmpty())
+            if (mOutputHatchesByLayer.size() - 1 < mHeight - 1 || mOutputHatchesByLayer.get(mHeight - 1).isEmpty())
                 // layer without output hatch
                 return false;
             if (mTopLayerFound) {
