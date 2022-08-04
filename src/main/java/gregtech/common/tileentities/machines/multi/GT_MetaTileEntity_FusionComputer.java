@@ -13,10 +13,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
@@ -44,7 +41,7 @@ import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW_GLOW;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
+import static gregtech.api.util.GT_StructureUtility.filterByMTETier;
 
 public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_FusionComputer> implements ISurvivalConstructable {
     public static final String STRUCTURE_PIECE_MAIN = "main";
@@ -110,6 +107,7 @@ public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity
                     .addElement('i', lazy(t ->
                         buildHatchAdder(GT_MetaTileEntity_FusionComputer.class)
                             .atLeast(ImmutableMap.of(InputHatch.withAdder(GT_MetaTileEntity_FusionComputer::addInjector), 2))
+                            .hatchItemFilterAnd(t2 -> filterByMTETier(t2.tier(), Integer.MAX_VALUE))
                             .casingIndex(53)
                             .dot(1)
                             .buildAndChain(t.getCasing(), t.getCasingMeta()))
@@ -117,6 +115,7 @@ public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity
                     .addElement('e', lazy(t ->
                         buildHatchAdder(GT_MetaTileEntity_FusionComputer.class)
                             .atLeast(ImmutableMap.of(Energy.withAdder(GT_MetaTileEntity_FusionComputer::addEnergyInjector), 16))
+                            .hatchItemFilterAnd(t2 -> filterByMTETier(t2.tier(), Integer.MAX_VALUE))
                             .casingIndex(53)
                             .dot(2)
                             .buildAndChain(t.getCasing(), t.getCasingMeta())
@@ -124,6 +123,7 @@ public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity
                     .addElement('x', lazy(t ->
                         buildHatchAdder(GT_MetaTileEntity_FusionComputer.class)
                             .atLeast(OutputHatch.withAdder(GT_MetaTileEntity_FusionComputer::addExtractor))
+                            .hatchItemFilterAnd(t2 -> filterByMTETier(t2.tier(), Integer.MAX_VALUE))
                             .casingIndex(53)
                             .dot(3)
                             .buildAndChain(t.getCasing(), t.getCasingMeta())

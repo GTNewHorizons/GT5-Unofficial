@@ -16,7 +16,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Frame;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import gregtech.common.blocks.GT_Block_Casings5;
 import gregtech.common.blocks.GT_Item_Machines;
 import net.minecraft.block.Block;
@@ -26,7 +26,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.util.IIcon;
@@ -332,6 +331,16 @@ public class GT_StructureUtility {
         return is -> {
             IMetaTileEntity tile = GT_Item_Machines.getMetaTileEntity(is);
             return tile != null && list.stream().anyMatch(c -> c.isInstance(tile));
+        };
+    }
+
+    @Nonnull
+    public static Predicate<ItemStack> filterByMTETier(int aMinTier, int aMaxTier) {
+        return is -> {
+            IMetaTileEntity tile = GT_Item_Machines.getMetaTileEntity(is);
+            return tile instanceof GT_MetaTileEntity_TieredMachineBlock &&
+                ((GT_MetaTileEntity_TieredMachineBlock) tile).mTier <= aMaxTier &&
+                ((GT_MetaTileEntity_TieredMachineBlock) tile).mTier >= aMinTier;
         };
     }
 }

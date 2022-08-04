@@ -154,6 +154,13 @@ public class GT_HatchElementBuilder<T extends GT_MetaTileEntity_EnhancedMultiBlo
         return this;
     }
 
+    public GT_HatchElementBuilder<T> hatchItemFilterAnd(Function<? super T, ? extends Predicate<ItemStack>> aHatchItemFilter) {
+        if (aHatchItemFilter == null) throw new IllegalArgumentException();
+        Function<? super T, ? extends Predicate<ItemStack>> tOldFilter = mHatchItemFilter;
+        mHatchItemFilter = t -> tOldFilter.apply(t).and(aHatchItemFilter.apply(t));
+        return this;
+    }
+
     // region hint
     public GT_HatchElementBuilder<T> hint(Supplier<String> aSupplier) {
         if (aSupplier == null) throw new IllegalArgumentException();
