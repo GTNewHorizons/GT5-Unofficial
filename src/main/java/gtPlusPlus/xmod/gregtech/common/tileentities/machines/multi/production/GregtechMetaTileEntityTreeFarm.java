@@ -25,6 +25,7 @@ import gtPlusPlus.core.slots.SlotBuzzSaw.SAWTOOL;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.helpers.TreeFarmHelper;
@@ -201,7 +202,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
 		this.mOutputItems = toOutput;
 
 		this.mMaxProgresstime = TICKS_PER_OPERATION;
-		this.mEUt = (int) tVoltage;
+		this.mEUt = MaterialUtils.getVoltageForTier(tTier);
 
 		this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
 		this.mEfficiencyIncrease = 10000;
