@@ -37,7 +37,6 @@ public class GT_Container_IndustrialApiary extends GT_ContainerMetaTile_Machine 
 
     int mSpeed = 0; // scale 0 - 8
     boolean mLockedSpeed = true;
-    boolean retrievePollen;
 
     ArrayList<String> mErrorStates = new ArrayList<>(50);
 
@@ -49,7 +48,6 @@ public class GT_Container_IndustrialApiary extends GT_ContainerMetaTile_Machine 
     public void addSlots(InventoryPlayer aInventoryPlayer) {
         addSlotToContainer(slotItemTransferToggle = new GT_Slot_Holo(mTileEntity, 0, 8, 63, false, true, 1));
         addSlotToContainer(slotSpeedToggle = new GT_Slot_Holo(mTileEntity, 0, 26, 63, false, true, 1));
-        addSlotToContainer(slotPollenToggle = new GT_Slot_Holo(mTileEntity, 0, 8, 45, false, true, 1));
         addSlotToContainer(slotCancelProcess = new GT_Slot_Holo(mTileEntity, 0, 8, 27, false, true, 1));
         int tStartIndex = 5;
 
@@ -101,9 +99,6 @@ public class GT_Container_IndustrialApiary extends GT_ContainerMetaTile_Machine 
                 }
                 return null;
             case 2:
-                machine.retreviePollen = !machine.retreviePollen;
-                return null;
-            case 3:
                 machine.cancelProcess();
                 detectAndSendChanges();
                 return null;
@@ -150,7 +145,7 @@ public class GT_Container_IndustrialApiary extends GT_ContainerMetaTile_Machine 
 
     @Override
     public int getSlotStartIndex() {
-        return 4;
+        return 3;
     }
 
     @Override
@@ -173,7 +168,6 @@ public class GT_Container_IndustrialApiary extends GT_ContainerMetaTile_Machine 
         this.mSpeed = getMachine().mSpeed;
         this.mItemTransfer = getMachine().mItemTransfer;
         this.mStuttering = getMachine().mStuttering;
-        this.retrievePollen = getMachine().retreviePollen;
         this.mLockedSpeed = getMachine().mLockedSpeed;
 
         for (Object crafter : this.crafters) {
@@ -184,8 +178,7 @@ public class GT_Container_IndustrialApiary extends GT_ContainerMetaTile_Machine 
             for(IErrorState s : getMachine().mErrorStates)
                 var1.sendProgressBarUpdate(this, 103, s.getID());
             var1.sendProgressBarUpdate(this, 104, this.mStuttering ? 1 : 0);
-            var1.sendProgressBarUpdate(this, 105, this.retrievePollen ? 1 : 0);
-            var1.sendProgressBarUpdate(this, 106, this.mLockedSpeed ? 1 : 0);
+            var1.sendProgressBarUpdate(this, 105, this.mLockedSpeed ? 1 : 0);
         }
     }
 
@@ -210,9 +203,6 @@ public class GT_Container_IndustrialApiary extends GT_ContainerMetaTile_Machine 
                 this.mStuttering = par2 == 1;
                 break;
             case 105:
-                this.retrievePollen = par2 == 1;
-                break;
-            case 106:
                 this.mLockedSpeed = par2 == 1;
                 break;
         }

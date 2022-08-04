@@ -25,7 +25,6 @@ public class GT_GUIContainer_IndustrialApiary extends GT_GUIContainerMetaTile_Ma
         STALLED_STUTTERING_TOOLTIP = "GT5U.machines.stalled_stuttering.tooltip",
         ITEM_TRANSFER_TOOLTIP = "GT5U.machines.item_transfer.tooltip",
         POWER_SOURCE_POWER = "GT5U.machines.powersource.power",
-        RETRIEVE_POLLEN_TOOLTIP = "GT5U.machines.industrialapiary.pollen.tooltip",
         CANCEL_PROCESS_TOOLTIP = "GT5U.machines.industrialapiary.cancel.tooltip",
         SPEED_TOOLTIP = "GT5U.machines.industrialapiary.speed.tooltip",
         SPEED_LOCKED_TOOLTIP = "GT5U.machines.industrialapiary.speedlocked.tooltip",
@@ -57,7 +56,6 @@ public class GT_GUIContainer_IndustrialApiary extends GT_GUIContainerMetaTile_Ma
         mErrorStatesTooltip.enabled = false;
         addToolTip(mInfoTooltip = new GT_GuiTooltip(new Rectangle(this.guiLeft + 163, guiTop + 5, 6, 17)));
 
-        addToolTip(new GT_GuiSlotTooltip(getContainer().slotPollenToggle, mTooltipCache.getData(RETRIEVE_POLLEN_TOOLTIP)));
         addToolTip(new GT_GuiSlotTooltip(getContainer().slotCancelProcess, mTooltipCache.getData(CANCEL_PROCESS_TOOLTIP)));
 
 
@@ -129,8 +127,6 @@ public class GT_GUIContainer_IndustrialApiary extends GT_GUIContainerMetaTile_Ma
         if (this.mContainer != null) {
             if (getContainer().mItemTransfer)
                 drawTexturedModalRect(x + 7, y + 62, 176, 18, 18, 18);
-            if(getContainer().retrievePollen)
-                drawTexturedModalRect(x + 7, y + 44, 194, 18, 18, 18);
             if(getContainer().mMaxProgressTime > 0) {
                 double p = (double) getContainer().mProgressTime / getContainer().mMaxProgressTime;
                 drawTexturedModalRect(x+70, y+3, 176, 0, (int)(p*20), 18);

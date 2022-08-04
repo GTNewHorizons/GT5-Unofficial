@@ -41,6 +41,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.*;
 
+import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GT_Utility.moveMultipleItemStacks;
 
@@ -55,7 +56,6 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
 
     public int mSpeed = 0;
     public boolean mLockedSpeed = true;
-    public boolean retreviePollen = false;
 
     private ItemStack usedQueen = null;
     private IBee usedQueenBee = null;
@@ -118,7 +118,6 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
         super.saveNBTData(aNBT);
         aNBT.setInteger("mSpeed", mSpeed);
         aNBT.setBoolean("mLockedSpeed", mLockedSpeed);
-        aNBT.setBoolean("retrievePolen", retreviePollen);
         if(usedQueen != null)
             aNBT.setTag("usedQueen", usedQueen.writeToNBT(new NBTTagCompound()));
     }
@@ -128,10 +127,12 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
         super.loadNBTData(aNBT);
         mSpeed = aNBT.getInteger("mSpeed");
         mLockedSpeed = aNBT.getBoolean("mLockedSpeed");
-        retreviePollen = aNBT.getBoolean("retrievePolen");
         if(aNBT.hasKey("usedQueen"))
             usedQueen = ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag("usedQueen"));
     }
+
+    boolean retrievingPollenInThisOperation = false;
+    IIndividual retrievedpollen = null;
 
     @Override
     public int checkRecipe() {
@@ -160,7 +161,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
 
                 HashMap<GT_Utility.ItemId, ItemStack> pollen = new HashMap<>();
 
-                if(retreviePollen) {
+                if(isRetrievingPollen && floweringMod > 0f) {
                     int icycles = (int)cycles + (getWorld().rand.nextFloat() < (cycles - (float)((int)cycles)) ? 1 : 0);
                     for(int z = 0; z < icycles; z++) {
                         IIndividual p = bee.retrievePollen(this);
@@ -175,6 +176,9 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                         }
                     }
                 }
+
+                retrievedpollen = null;
+                retrievingPollenInThisOperation = isRetrievingPollen;
 
                 IBeeGenome genome =  bee.getGenome();
                 IAlleleBeeSpecies primary = genome.getPrimary();
@@ -317,6 +321,11 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
     }
 
     @Override
+    protected boolean hasEnoughEnergyToCheckRecipe() {
+        return getBaseMetaTileEntity().isUniversalEnergyStored(V[mSpeed] * 8L);
+    }
+
+    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isClientSide()) {
             if(GT_Client.changeDetected == 4) {
@@ -337,6 +346,9 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
             }
         }
         if(aBaseMetaTileEntity.isServerSide()){
+
+            mCharge = aBaseMetaTileEntity.getStoredEU() / 2 > aBaseMetaTileEntity.getEUCapacity() / 3;
+            mDecharge = aBaseMetaTileEntity.getStoredEU() < aBaseMetaTileEntity.getEUCapacity() / 3;
 
             doDisplayThings();
 
@@ -386,6 +398,13 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                     if(usedQueenBee == null)
                         usedQueenBee = beeRoot.getMember(usedQueen);
                     effectData = usedQueenBee.doEffect(effectData, this);
+                    if(!retrievingPollenInThisOperation && floweringMod > 0f)
+                    {
+                        if(retrievedpollen == null)
+                            retrievedpollen = usedQueenBee.retrievePollen(this);
+                        if(usedQueenBee.pollinateRandom(this, retrievedpollen) || this.mProgresstime % 100 == 0)
+                            retrievedpollen = null;
+                    }
                 }
 
                 if(this.mProgresstime % 100 == 0)
@@ -749,6 +768,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
     private float humidityMod = 0f;
     private float temperatureMod = 0f;
     private boolean isAutomated = false;
+    private boolean isRetrievingPollen = false;
 
     private int maxspeed = 0;
 
@@ -791,6 +811,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
         humidityMod = mods.humidity;
         temperatureMod = mods.temperature;
         isAutomated = mods.isAutomated;
+        isRetrievingPollen = mods.isCollectingPollen;
 
         if(mLockedSpeed)
             mSpeed = maxspeed;
