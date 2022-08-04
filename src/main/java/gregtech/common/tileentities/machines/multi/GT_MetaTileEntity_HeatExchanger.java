@@ -1,6 +1,8 @@
 package gregtech.common.tileentities.machines.multi;
 
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.GregTech_API;
@@ -18,6 +20,7 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -27,17 +30,13 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
+import static gregtech.api.enums.GT_HatchElement.*;
+import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
-public class GT_MetaTileEntity_HeatExchanger extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_HeatExchanger> {
+public class GT_MetaTileEntity_HeatExchanger extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_HeatExchanger> implements ISurvivalConstructable {
     private static final int CASING_INDEX = 50;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<GT_MetaTileEntity_HeatExchanger> STRUCTURE_DEFINITION = StructureDefinition.<GT_MetaTileEntity_HeatExchanger>builder()
@@ -48,13 +47,13 @@ public class GT_MetaTileEntity_HeatExchanger extends GT_MetaTileEntity_EnhancedM
                     {"c~c", "cHc", "ccc"},
             }))
             .addElement('P', ofBlock(GregTech_API.sBlockCasings2, 14))
-            .addElement('C', ofHatchAdder(GT_MetaTileEntity_HeatExchanger::addColdFluidOutputToMachineList, CASING_INDEX, 3))
-            .addElement('H', ofHatchAdder(GT_MetaTileEntity_HeatExchanger::addHotFluidInputToMachineList, CASING_INDEX, 2))
-            .addElement('c', ofChain(
-                    ofHatchAdder(GT_MetaTileEntity_HeatExchanger::addInputToMachineList, CASING_INDEX, 1),
-                    ofHatchAdder(GT_MetaTileEntity_HeatExchanger::addOutputToMachineList, CASING_INDEX, 1),
-                    ofHatchAdder(GT_MetaTileEntity_HeatExchanger::addMaintenanceToMachineList, CASING_INDEX, 1),
-                    onElementPass(GT_MetaTileEntity_HeatExchanger::onCasingAdded, ofBlock(GregTech_API.sBlockCasings4, (byte) 2))
+            .addElement('C', OutputHatch.withAdder(GT_MetaTileEntity_HeatExchanger::addColdFluidOutputToMachineList).withCount(t -> isValidMetaTileEntity(t.mOutputColdFluidHatch) ? 1 : 0).newAny(CASING_INDEX, 3))
+            .addElement('H', OutputHatch.withAdder(GT_MetaTileEntity_HeatExchanger::addHotFluidInputToMachineList).withCount(t -> isValidMetaTileEntity(t.mInputHotFluidHatch) ? 1 : 0).newAny(CASING_INDEX, 3))
+            .addElement('c', buildHatchAdder(GT_MetaTileEntity_HeatExchanger.class)
+                    .atLeast(InputBus, InputHatch, OutputBus, OutputHatch, Maintenance)
+                    .casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .buildAndChain(onElementPass(GT_MetaTileEntity_HeatExchanger::onCasingAdded, ofBlock(GregTech_API.sBlockCasings4, (byte) 2))
             ))
             .build();
     public static float penalty_per_config = 0.015f;  // penalize 1.5% efficiency per circuitry level (1-25)
@@ -323,5 +322,11 @@ public class GT_MetaTileEntity_HeatExchanger extends GT_MetaTileEntity_EnhancedM
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 1, 3, 0);
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+        if (mMachine) return -1;
+        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 3, 0, elementBudget, source, actor, false, true);
     }
 }

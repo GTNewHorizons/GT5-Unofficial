@@ -287,21 +287,9 @@ public class GT_MetaTileEntity_MultiFurnace extends GT_MetaTileEntity_AbstractMu
             tMTE instanceof GT_MetaTileEntity_Hatch_Maintenance;
     }
 
-    private Class<? extends IMetaTileEntity> suggestBottomHatch() {
-        if (mMaintenanceHatches.isEmpty()) return GT_MetaTileEntity_Hatch_Maintenance.class;
-        if (mInputBusses.isEmpty()) return GT_MetaTileEntity_Hatch_InputBus.class;
-        if (mOutputBusses.isEmpty()) return GT_MetaTileEntity_Hatch_OutputBus.class;
-        if (mEnergyHatches.isEmpty()) return GT_MetaTileEntity_Hatch_Energy.class;
-        return null;
-    }
-
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
         if (mMachine) return -1;
-        final IGregTechTileEntity tTile = getBaseMetaTileEntity();
-        int build = getStructureDefinition().survivalBuild(this, stackSize, STRUCTURE_PIECE_MAIN, tTile.getWorld(), getExtendedFacing(), tTile.getXCoord(), tTile.getYCoord(), tTile.getZCoord(), 1, 2, 0, elementBudget, source, actor, false);
-        if (build > 0)
-            checkStructure(true, tTile); // run an immediate update
-        return build;
+        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 2, 0, elementBudget, source, actor, false, true);
     }
 }

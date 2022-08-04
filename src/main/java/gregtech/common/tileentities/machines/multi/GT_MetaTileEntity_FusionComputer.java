@@ -1,5 +1,8 @@
 package gregtech.common.tileentities.machines.multi;
 
+import com.google.common.collect.ImmutableMap;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.GT_Mod;
@@ -21,6 +24,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.gui.GT_GUIContainer_FusionReactor;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -33,12 +37,16 @@ import java.util.ArrayList;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.GT_HatchElement.Energy;
+import static gregtech.api.enums.GT_HatchElement.InputHatch;
+import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW_GLOW;
+import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 
-public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_FusionComputer> {
+public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_FusionComputer> implements ISurvivalConstructable {
     public static final String STRUCTURE_PIECE_MAIN = "main";
     private static final ClassValue<IStructureDefinition<GT_MetaTileEntity_FusionComputer>> STRUCTURE_DEFINITION = new ClassValue<IStructureDefinition<GT_MetaTileEntity_FusionComputer>>() {
         @Override
@@ -99,9 +107,27 @@ public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity
                     }))
                     .addElement('c', lazy(t -> ofBlock(t.getFusionCoil(), t.getFusionCoilMeta())))
                     .addElement('h', lazy(t -> ofBlock(t.getCasing(), t.getCasingMeta())))
-                    .addElement('i', lazy(t -> ofHatchAdderOptional(GT_MetaTileEntity_FusionComputer::addInjector, 53, 1, t.getCasing(), t.getCasingMeta())))
-                    .addElement('e', lazy(t -> ofHatchAdderOptional(GT_MetaTileEntity_FusionComputer::addEnergyInjector, 53, 2, t.getCasing(), t.getCasingMeta())))
-                    .addElement('x', lazy(t -> ofHatchAdderOptional(GT_MetaTileEntity_FusionComputer::addExtractor, 53, 3, t.getCasing(), t.getCasingMeta())))
+                    .addElement('i', lazy(t ->
+                        buildHatchAdder(GT_MetaTileEntity_FusionComputer.class)
+                            .atLeast(ImmutableMap.of(InputHatch.withAdder(GT_MetaTileEntity_FusionComputer::addInjector), 2))
+                            .casingIndex(53)
+                            .dot(1)
+                            .buildAndChain(t.getCasing(), t.getCasingMeta()))
+                    )
+                    .addElement('e', lazy(t ->
+                        buildHatchAdder(GT_MetaTileEntity_FusionComputer.class)
+                            .atLeast(ImmutableMap.of(Energy.withAdder(GT_MetaTileEntity_FusionComputer::addEnergyInjector), 16))
+                            .casingIndex(53)
+                            .dot(2)
+                            .buildAndChain(t.getCasing(), t.getCasingMeta())
+                    ))
+                    .addElement('x', lazy(t ->
+                        buildHatchAdder(GT_MetaTileEntity_FusionComputer.class)
+                            .atLeast(OutputHatch.withAdder(GT_MetaTileEntity_FusionComputer::addExtractor))
+                            .casingIndex(53)
+                            .dot(3)
+                            .buildAndChain(t.getCasing(), t.getCasingMeta())
+                    ))
                     .build();
         }
     };
@@ -472,5 +498,11 @@ public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 7, 1, 12);
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+        if (mMachine) return -1;
+        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 7, 1, 12, elementBudget, source, actor, false, true);
     }
 }

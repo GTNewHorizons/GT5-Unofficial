@@ -1,5 +1,7 @@
 package gregtech.common.tileentities.machines.multi;
 
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.GT_Mod;
@@ -19,6 +21,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -32,15 +35,17 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.enums.GT_Values.STEAM_PER_WATER;
 import static gregtech.api.enums.ItemList.Circuit_Integrated;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_BOILER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_BOILER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_BOILER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_BOILER_GLOW;
+import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
-public abstract class GT_MetaTileEntity_LargeBoiler extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_LargeBoiler> {
+public abstract class GT_MetaTileEntity_LargeBoiler extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_LargeBoiler> implements ISurvivalConstructable {
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final ClassValue<IStructureDefinition<GT_MetaTileEntity_LargeBoiler>> STRUCTURE_DEFINITION =new ClassValue<IStructureDefinition<GT_MetaTileEntity_LargeBoiler>>() {
         @Override
@@ -54,16 +59,20 @@ public abstract class GT_MetaTileEntity_LargeBoiler extends GT_MetaTileEntity_En
                             {"f~f", "fff", "fff"},
                     }))
                     .addElement('P', lazy(t -> ofBlock(t.getPipeBlock(), t.getPipeMeta())))
-                    .addElement('c', lazy(t -> ofChain(
-                            ofHatchAdder(GT_MetaTileEntity_LargeBoiler::addOutputToMachineList, t.getCasingTextureIndex(), 2),
-                            onElementPass(GT_MetaTileEntity_LargeBoiler::onCasingAdded, ofBlock(t.getCasingBlock(), t.getCasingMeta()))
-                    )))
-                    .addElement('f', lazy(t -> ofChain(
-                            ofHatchAdder(GT_MetaTileEntity_LargeBoiler::addMaintenanceToMachineList, t.getFireboxTextureIndex(), 1),
-                            ofHatchAdder(GT_MetaTileEntity_LargeBoiler::addInputToMachineList, t.getFireboxTextureIndex(), 1),
-                            ofHatchAdder(GT_MetaTileEntity_LargeBoiler::addMufflerToMachineList, t.getFireboxTextureIndex(), 1),
-                            onElementPass(GT_MetaTileEntity_LargeBoiler::onFireboxAdded, ofBlock(t.getFireboxBlock(), t.getFireboxMeta()))
-                    )))
+                    .addElement('c', lazy(t ->
+                            buildHatchAdder(GT_MetaTileEntity_LargeBoiler.class)
+                                .atLeast(OutputHatch)
+                                .casingIndex(t.getCasingTextureIndex())
+                                .dot(2)
+                                .buildAndChain(onElementPass(GT_MetaTileEntity_LargeBoiler::onCasingAdded, ofBlock(t.getCasingBlock(), t.getCasingMeta())))
+                    ))
+                    .addElement('f', lazy(t ->
+                            buildHatchAdder(GT_MetaTileEntity_LargeBoiler.class)
+                                .atLeast(Maintenance, InputHatch, InputBus, Muffler)
+                                .casingIndex(t.getFireboxTextureIndex())
+                                .dot(1)
+                                .buildAndChain(onElementPass(GT_MetaTileEntity_LargeBoiler::onCasingAdded, ofBlock(t.getFireboxBlock(), t.getFireboxMeta())))
+                    ))
                     .build();
         }
     };
@@ -418,5 +427,11 @@ public abstract class GT_MetaTileEntity_LargeBoiler extends GT_MetaTileEntity_En
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 1, 4, 0);
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+        if (mMachine) return -1;
+        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 4, 0, elementBudget, source, actor, false, true);
     }
 }

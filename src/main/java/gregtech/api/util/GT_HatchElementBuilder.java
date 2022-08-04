@@ -16,6 +16,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
 
@@ -179,7 +180,7 @@ public class GT_HatchElementBuilder<T extends GT_MetaTileEntity_EnhancedMultiBlo
     // region intermediate
     public GT_HatchElementBuilder<T> hatchClass(Class<? extends IMetaTileEntity> clazz) {
         return hatchItemFilter(c -> is -> clazz.isInstance(GT_Item_Machines.getMetaTileEntity(is)))
-            .hint(() -> "of class " + clazz.getSimpleName());
+            .cacheHint(() -> "of class " + clazz.getSimpleName());
     }
 
     @SafeVarargs
@@ -285,7 +286,7 @@ public class GT_HatchElementBuilder<T extends GT_MetaTileEntity_EnhancedMultiBlo
                 ItemStack taken = s.takeOne(mHatchItemFilter.apply(t), true);
                 if (GT_Utility.isStackInvalid(taken)) {
                     String type = getHint();
-                    chatter.accept(new ChatComponentText("Suggested to have " + type + " but none was found"));
+                    chatter.accept(new ChatComponentTranslation("GT5U.autoplace.error.no_hatch", type));
                     return PlaceResult.REJECT;
                 }
                 return StructureUtility.survivalPlaceBlock(taken, ItemStackPredicate.NBTMode.IGNORE, null, true, world, x, y, z, s, actor) == PlaceResult.ACCEPT ? PlaceResult.ACCEPT_STOP : PlaceResult.REJECT;

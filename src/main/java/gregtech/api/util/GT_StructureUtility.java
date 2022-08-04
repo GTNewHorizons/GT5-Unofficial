@@ -27,6 +27,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
@@ -93,7 +94,7 @@ public class GT_StructureUtility {
                 ItemStack tFrameStack = GT_OreDictUnificator.get(OrePrefixes.frameGt, aFrameMaterial, 1);
                 if (!GT_Utility.isStackValid(tFrameStack) || !(tFrameStack.getItem() instanceof ItemBlock))
                     return PlaceResult.REJECT; // honestly, this is more like a programming error or pack issue
-                return StructureUtility.survivalPlaceBlock(tFrameStack, ItemStackPredicate.NBTMode.IGNORE_KNOWN_INSIGNIFICANT_TAGS, null, false, world, x, y, z, s, actor);
+                return StructureUtility.survivalPlaceBlock(tFrameStack, ItemStackPredicate.NBTMode.IGNORE_KNOWN_INSIGNIFICANT_TAGS, null, false, world, x, y, z, s, actor, chatter);
             }
         };
     }
@@ -164,13 +165,11 @@ public class GT_StructureUtility {
                 if (clazz == null) return PlaceResult.REJECT;
                 ItemStack taken = s.takeOne(is -> clazz.isInstance(GT_Item_Machines.getMetaTileEntity(is)), true);
                 if (GT_Utility.isStackInvalid(taken)) {
-                    chatter.accept(new ChatComponentText("Suggested to have MTE of type " + clazz.getSimpleName() + " but none was found"));
+                    chatter.accept(new ChatComponentTranslation("GT5U.autoplace.error.no_mte.class_name", clazz.getSimpleName()));
                     return PlaceResult.REJECT;
                 }
-                if (StructureUtility.survivalPlaceBlock(taken, ItemStackPredicate.NBTMode.IGNORE, null, true, world, x, y, z, s, actor) == PlaceResult.ACCEPT) {
-
+                if (StructureUtility.survivalPlaceBlock(taken, ItemStackPredicate.NBTMode.IGNORE, null, true, world, x, y, z, s, actor) == PlaceResult.ACCEPT)
                     return acceptType;
-                }
                 return PlaceResult.REJECT;
             }
         };
@@ -213,7 +212,7 @@ public class GT_StructureUtility {
                 if (meta < 0) return PlaceResult.REJECT;
                 ItemStack taken = s.takeOne(ItemStackPredicate.from(item).setMeta(meta), true);
                 if (GT_Utility.isStackInvalid(taken)) {
-                    chatter.accept(new ChatComponentText("Suggested to have MTE of id " + meta + " but none was found"));
+                    chatter.accept(new ChatComponentTranslation("GT5U.autoplace.error.no_mte.id", meta));
                     return PlaceResult.REJECT;
                 }
                 return StructureUtility.survivalPlaceBlock(taken, ItemStackPredicate.NBTMode.IGNORE, null, true, world, x, y, z, s, actor) == PlaceResult.ACCEPT ? PlaceResult.ACCEPT_STOP : PlaceResult.REJECT;
@@ -254,7 +253,7 @@ public class GT_StructureUtility {
             @Override
             public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger, IItemSource s, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
                 if (check(t, world, x, y, z)) return PlaceResult.SKIP;
-                return StructureUtility.survivalPlaceBlock(placeCasing, placeCasingMeta, world, x, y, z, s, actor);
+                return StructureUtility.survivalPlaceBlock(placeCasing, placeCasingMeta, world, x, y, z, s, actor, chatter);
             }
         };
     }
@@ -323,7 +322,7 @@ public class GT_StructureUtility {
                 Block block = world.getBlock(x, y, z);
                 boolean isCoil = block instanceof IHeatingCoil && ((IHeatingCoil) block).getCoilHeat(world.getBlockMetadata(x, y, z)) == getHeatFromHint(trigger);
                 if (isCoil) return PlaceResult.SKIP;
-                return StructureUtility.survivalPlaceBlock(GregTech_API.sBlockCasings5, getMetaFromHint(trigger), world, x, y, z, s, actor);
+                return StructureUtility.survivalPlaceBlock(GregTech_API.sBlockCasings5, getMetaFromHint(trigger), world, x, y, z, s, actor, chatter);
             }
         };
     }
