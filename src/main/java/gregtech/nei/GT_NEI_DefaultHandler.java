@@ -416,7 +416,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                 lineCounter++;
             }
         }
-        if (GT_Mod.gregtechproxy.mNEIRecipeOwnerStackTrace && recipe.stackTraces != null) {
+        if (GT_Mod.gregtechproxy.mNEIRecipeOwnerStackTrace && recipe.stackTraces != null && !recipe.stackTraces.isEmpty()) {
             drawLine(lineCounter, "stackTrace:");
             lineCounter++;
             // todo: good way to show all stacktraces

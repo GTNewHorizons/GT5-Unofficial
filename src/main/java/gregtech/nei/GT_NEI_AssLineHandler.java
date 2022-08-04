@@ -291,7 +291,7 @@ public class GT_NEI_AssLineHandler extends RecipeMapHandler {
                     y += 10;
                 }
             }
-            if (GT_Mod.gregtechproxy.mNEIRecipeOwnerStackTrace && recipe.stackTraces != null) {
+            if (GT_Mod.gregtechproxy.mNEIRecipeOwnerStackTrace && recipe.stackTraces != null && !recipe.stackTraces.isEmpty()) {
                 drawText(10, y, "stackTrace:", 0xFF000000);
                 y += 10;
                 for (StackTraceElement stackTrace : recipe.stackTraces.get(0)) {
