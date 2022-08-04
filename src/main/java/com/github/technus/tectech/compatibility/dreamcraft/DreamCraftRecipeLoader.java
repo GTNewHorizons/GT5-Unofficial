@@ -3200,7 +3200,7 @@ public class DreamCraftRecipeLoader {
 
         // ------------------------ Wireless EU dynamos ------------------------
 
-        for(int i = 1; i < wireless_hatches.length; i++) {
+        for(int i = 0; i < wireless_hatches.length; i++) {
 
             TT_recipeAdder.addResearchableAssemblylineRecipe(
 
