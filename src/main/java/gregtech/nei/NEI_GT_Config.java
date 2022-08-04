@@ -10,6 +10,7 @@ import cpw.mods.fml.common.event.FMLInterModComms;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.util.GT_Recipe;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ExtremeExterminationChamber;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -57,6 +58,8 @@ public class NEI_GT_Config implements IConfigureNEI {
                     handlers.add(new GT_NEI_DefaultHandler(tMap));
                 }
             }
+
+            handlers.add(new GT_NEI_EECHandler(GT_MetaTileEntity_ExtremeExterminationChamber.EECRecipeMap));
 
             handlers.sort(RECIPE_MAP_HANDLER_COMPARATOR);
             handlers.forEach(NEI_GT_Config::addHandler);
