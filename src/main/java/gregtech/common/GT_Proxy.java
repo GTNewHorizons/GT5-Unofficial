@@ -360,6 +360,11 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
     public boolean mNEIRecipeOwnerStackTrace = false;
 
     /**
+     * This enables showing original voltage when overclocked
+     */
+    public boolean mNEIOriginalVoltage = false;
+
+    /**
      * This enables showing voltage tier of transformer for Waila, instead of raw voltage number
      */
     public boolean mWailaTransformerVoltageTier = true;
