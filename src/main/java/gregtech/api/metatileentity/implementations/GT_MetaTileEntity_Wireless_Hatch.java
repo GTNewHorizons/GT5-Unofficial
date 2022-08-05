@@ -35,8 +35,8 @@ public class GT_MetaTileEntity_Wireless_Hatch extends GT_MetaTileEntity_Hatch_En
     @Override
     public String[] getDescription() {
         return new String[] {
-            EnumChatFormatting.GRAY + "Does not connect to wires.",
-            EnumChatFormatting.GRAY + "There is currently " + EnumChatFormatting.RED + GT_Utility.formatNumbers(getUserEU(owner_uuid)) + EnumChatFormatting.GRAY + " EU in your network.",
+            EnumChatFormatting.GRAY + "Stores energy globally in a network, up to 2^(2^31) EU.",
+            EnumChatFormatting.GRAY + "Does not connect to wires. This block withdraws EU from the network.",
             AuthorColen
         };
     }

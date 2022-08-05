@@ -11,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
+import static gregtech.GT_Mod.gregtechproxy;
 import static gregtech.api.enums.GT_Values.*;
 
 public class GT_MetaTileEntity_Wireless_Dynamo extends GT_MetaTileEntity_Hatch_Dynamo implements IGlobalWirelessEnergy, IWirelessEnergyHatchInformation {
@@ -84,8 +85,8 @@ public class GT_MetaTileEntity_Wireless_Dynamo extends GT_MetaTileEntity_Hatch_D
     @Override
     public String[] getDescription() {
         return new String[] {
-            EnumChatFormatting.GRAY + "Does not connect to wires.",
-            EnumChatFormatting.GRAY + "There is currently " + EnumChatFormatting.RED + GT_Utility.formatNumbers(getUserEU(owner_uuid)) + EnumChatFormatting.GRAY + " EU in your network.",
+            EnumChatFormatting.GRAY + "Stores energy globally in a network, up to 2^(2^31) EU.",
+            EnumChatFormatting.GRAY + "Does not connect to wires. This block accepts EU into the network.",
             AuthorColen
         };
     }
