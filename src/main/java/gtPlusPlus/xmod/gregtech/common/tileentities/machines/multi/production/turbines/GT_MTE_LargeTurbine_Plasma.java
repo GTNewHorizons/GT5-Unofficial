@@ -104,7 +104,7 @@ public class GT_MTE_LargeTurbine_Plasma extends GregtechMetaTileEntity_LargerTur
 					float aTotalBaseEff = 0;
 					float aTotalOptimalFlow = 0;
 					ItemStack aStack = getFullTurbineAssemblies().get(0).getTurbine();
-					for (int i=0;i<speedMultiplier;i++) {
+					for (int i = 0; i< getSpeedMultiplier(); i++) {
 						if (i == 0) {
 							aTotalBaseEff += GT_Utility.safeInt((long) ((5F + ((GT_MetaGenerated_Tool) aStack.getItem()).getToolCombatDamage(aStack)) * 1000F));					
 						}		

@@ -58,10 +58,6 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechM
 	protected int counter = 0;
 	protected int mCasing;
 	protected boolean mFastMode = false;
-	protected int speedMultiplier = 16;
-	protected int maintenanceThreshold = 1;
-	protected int pollutionMultiplier = 1;
-	protected int turbineDamageMultiplier = 1;
 	protected double mufflerReduction = 1;
 
 	public ITexture frontFace;
@@ -223,7 +219,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechM
 			return false;
 		}		
 		mufflerReduction = getMufflerReduction();
-		log("Built "+this.getLocalName()+" with "+mCasing+"/360 casings.");	
+		log("Built "+this.getLocalName()+" with "+mCasing+"/360 casings.");
 		return aStructure;
 	}
 
@@ -494,7 +490,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechM
 					float aTotalOptimalFlow = 0;
 
 					ItemStack aStack = getFullTurbineAssemblies().get(0).getTurbine();
-					for (int i=0;i<speedMultiplier;i++) {
+					for (int i = 0; i< getSpeedMultiplier(); i++) {
 						if (i == 0) {
 							aTotalBaseEff += GT_Utility.safeInt((long) ((5F + ((GT_MetaGenerated_Tool) aStack.getItem()).getToolCombatDamage(aStack)) * 1000F));
 							//log("Bumped base eff to "+aTotalBaseEff);							
@@ -577,7 +573,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechM
 		if (mRuntime++ > 1000) {
 			mRuntime = 0;
 
-			if (getBaseMetaTileEntity().getRandomNumber(6000) < maintenanceThreshold) {
+			if (getBaseMetaTileEntity().getRandomNumber(6000) < getMaintenanceThreshold()) {
 				switch (getBaseMetaTileEntity().getRandomNumber(6)) {
 					case 0:
 						mWrench = false;
@@ -604,7 +600,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechM
 				// The amount of times it is run depends on turbineDamageMultiplier
 				// In XL turbines, durability loss is around 5.2-5.3x faster than in singles
 				// To compensate for that, the mEU/t scaling is divided by 5 to make it only slightly faster
-				for (int i = 0; i < turbineDamageMultiplier; i++) {
+				for (int i = 0; i < getTurbineDamageMultiplier(); i++) {
 					aHatch.damageTurbine(mEUt / 5, damageFactorLow, damageFactorHigh);
 				}
 			}            
@@ -639,7 +635,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechM
 	@Override
 	public String[] getExtraInfoData() {
 		int mPollutionReduction=(int) (100 * mufflerReduction);
-	
+
 		String tRunning = mMaxProgresstime > 0 ?
 				EnumChatFormatting.GREEN+StatCollector.translateToLocal("GT5U.turbine.running.true")+EnumChatFormatting.RESET :
 					EnumChatFormatting.RED+StatCollector.translateToLocal("GT5U.turbine.running.false")+EnumChatFormatting.RESET;
@@ -695,7 +691,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechM
 
 	public boolean polluteEnvironment(int aPollutionLevel) {
 		if (this.requiresMufflers()) {
-			mPollution += aPollutionLevel * pollutionMultiplier * mufflerReduction;
+			mPollution += aPollutionLevel * getPollutionMultiplier() * mufflerReduction;
 			for (GT_MetaTileEntity_Hatch_Muffler tHatch : mMufflerHatches) {
 				if (isValidMetaTileEntity(tHatch)) {
 					if (mPollution >= 10000) {					
@@ -738,17 +734,9 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechM
 		mFastMode = Utils.invertBoolean(mFastMode);
 		if (mFastMode){
 			PlayerUtils.messagePlayer(aPlayer, "Running in Fast (48x) Mode.");
-			speedMultiplier = 48;
-			maintenanceThreshold = 12;
-			pollutionMultiplier = 3;
-			turbineDamageMultiplier = 3;
 		}
 		else {
 			PlayerUtils.messagePlayer(aPlayer, "Running in Slow (16x) Mode.");
-			speedMultiplier = 16;
-			maintenanceThreshold = 1;
-			pollutionMultiplier = 1;
-			turbineDamageMultiplier = 1;
 		}
 	}
 
@@ -918,4 +906,19 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechM
         return injected > 0;
     }
 
+	public int getSpeedMultiplier() {
+		return mFastMode ? 48 : 16;
+	}
+
+	public int getMaintenanceThreshold() {
+		return mFastMode ? 12 : 1;
+	}
+
+	public int getPollutionMultiplier() {
+		return mFastMode ? 3 : 1;
+	}
+
+	public int getTurbineDamageMultiplier() {
+		return mFastMode ? 3 : 1;
+	}
 }
