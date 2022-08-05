@@ -40,19 +40,7 @@ public class GT_MetaTileEntity_LargeTurbine_GasAdvanced extends GT_MetaTileEntit
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Gas Turbine")
-            .addInfo("Controller block for the Large Advanced Gas Turbine")
-            .addInfo("Needs a Turbine, place inside controller")
-            .addInfo("Only accepts gases above 800k EU/bucket")
-            .addInfo("Has no maximum EU/t output, only depends on the Dynamo Hatch")
-            .addPollutionAmount(getPollutionPerSecond(null))
-            .addSeparator()
-            .beginStructureBlock(3, 3, 4, true)
-            .addController("Front center")
-            .addCasingInfo("Advanced Gas Turbine Casing", 24)
-            .addDynamoHatch("Back center", 1)
-            .addMaintenanceHatch("Side centered", 2)
-            .addMufflerHatch("Side centered", 2)
-            .addInputHatch("Gas Fuel, Side centered", 2)
+            .addInfo("[WIP]")
             .toolTipFinisher("Gregtech");
         return tt;
     }
@@ -95,10 +83,6 @@ public class GT_MetaTileEntity_LargeTurbine_GasAdvanced extends GT_MetaTileEntit
 
             FluidStack firstFuelType = new FluidStack(aFluids.get(0), 0); // Identify a SINGLE type of fluid to process.  Doesn't matter which one. Ignore the rest!
             int fuelValue = getFuelValue(firstFuelType);
-
-            if (fuelValue < 100) {
-                return 0;
-            }
 
             if (aOptFlow < fuelValue) {
                 // turbine too weak and/or fuel too powerful
