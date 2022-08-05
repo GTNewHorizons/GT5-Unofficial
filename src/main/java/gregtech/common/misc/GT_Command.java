@@ -52,11 +52,14 @@ public final class GT_Command extends CommandBase implements IGlobalWirelessEner
         ));
         sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD + " --- Global wireless EU controls ---"));
         sender.addChatMessage(new ChatComponentText("Allows you to set the amount of EU in a users wireless network."));
-        sender.addChatMessage(new ChatComponentText("Usage: global_energy_set [Name] [EU]"));
+        sender.addChatMessage(new ChatComponentText("Usage:" + EnumChatFormatting.RED + " global_energy_set " + EnumChatFormatting.BLUE + "[Name] " + EnumChatFormatting.LIGHT_PURPLE + "[EU]"));
         sender.addChatMessage(new ChatComponentText("Allows you to add EU to a users wireless network. Also accepts negative numbers."));
-        sender.addChatMessage(new ChatComponentText("Usage: global_energy_add [Name] [EU]"));
+        sender.addChatMessage(new ChatComponentText("Usage:" + EnumChatFormatting.RED + " global_energy_add " + EnumChatFormatting.BLUE + "[Name] " + EnumChatFormatting.LIGHT_PURPLE + " [EU]"));
         sender.addChatMessage(new ChatComponentText("Allows you to join two users together into one network. Can be undone by writing the users name twice."));
-        sender.addChatMessage(new ChatComponentText("Usage: global_energy_join [User joining] [User to join]"));
+        sender.addChatMessage(new ChatComponentText("Usage:" + EnumChatFormatting.RED + " global_energy_join " + EnumChatFormatting.BLUE + "[User joining] [User to join]"));
+        sender.addChatMessage(new ChatComponentText("Shows the amount of EU in a users energy network."));
+        sender.addChatMessage(new ChatComponentText("Usage:" + EnumChatFormatting.RED + " global_energy_display " + EnumChatFormatting.BLUE + "[Name]"));
+
     }
 
     @Override
@@ -151,7 +154,7 @@ public final class GT_Command extends CommandBase implements IGlobalWirelessEner
                     sender.addChatMessage(new ChatComponentText(
                         "Failed to add " + EnumChatFormatting.RED + EU_string_formatted + EnumChatFormatting.RESET +
                             "EU to the global energy map of " + username + ". Insufficient energy in network. " + username
-                            + "currently has " + EnumChatFormatting.RED + GT_Utility.formatNumbers(new BigInteger(getUserEU(uuid).toString()))
+                            + " currently has " + EnumChatFormatting.RED + GT_Utility.formatNumbers(new BigInteger(getUserEU(uuid).toString()))
                             + EnumChatFormatting.RESET + "EU in their network."));
 
                 break;
@@ -164,10 +167,15 @@ public final class GT_Command extends CommandBase implements IGlobalWirelessEner
 
                 String EU_String_0 = strings[2];
 
+                if ((new BigInteger(EU_String_0).compareTo(BigInteger.ZERO)) < 0) {
+                    sender.addChatMessage(new ChatComponentText("Cannot set a users energy network to a negative value."));
+                    break;
+                }
+
                 setUserEU(uuid, new BigInteger(EU_String_0));
 
                 sender.addChatMessage(
-                    new ChatComponentText("Successfully added " + EnumChatFormatting.RED +
+                    new ChatComponentText("Successfully set " + username + "'s global energy network to " + EnumChatFormatting.RED +
                     GT_Utility.formatNumbers(new BigInteger(EU_String_0)) + EnumChatFormatting.RESET + "EU.")
                 );
 
@@ -183,12 +191,18 @@ public final class GT_Command extends CommandBase implements IGlobalWirelessEner
                 String uuid_0 = getUUIDFromUsername(username_0);
                 String uuid_1 = getUUIDFromUsername(username_1);
 
+                System.out.println(username_0);
+                System.out.println(username_1);
+
+                System.out.println(uuid_0);
+                System.out.println(uuid_1);
+
                 if (uuid_0.equals("")) {
                     sender.addChatMessage(new ChatComponentText("User " + username_0 + " has no global energy network."));
                     break;
                 }
 
-                if (uuid_0.equals("")) {
+                if (uuid_1.equals("")) {
                     sender.addChatMessage(new ChatComponentText("User " + username_1 + " has no global energy network."));
                     break;
                 }
