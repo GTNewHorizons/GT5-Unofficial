@@ -130,7 +130,7 @@ public final class GT_Command extends CommandBase implements IGlobalWirelessEner
             case "global_energy_add":
 
                 username = strings[1];
-                uuid = IGlobalWirelessEnergy.super.GetUUIDFromUsername(username);
+                uuid = getUUIDFromUsername(username);
 
                 String EU_String = strings[2];
 
@@ -141,11 +141,18 @@ public final class GT_Command extends CommandBase implements IGlobalWirelessEner
                     break;
                 }
 
+                String EU_string_formatted = GT_Utility.formatNumbers(new BigInteger(EU_String));
+
                 if (addEUToGlobalEnergyMap(uuid, new BigInteger(EU_String)))
-                    sender.addChatMessage(new ChatComponentText("Successfully added " + EU_String + "EU to the global energy network of " + username + "."));
+                    sender.addChatMessage(new ChatComponentText("Successfully added "
+                        + EnumChatFormatting.RED + EU_string_formatted + EnumChatFormatting.RESET
+                        + "EU to the global energy network of " + username + "."));
                 else
-                    sender.addChatMessage(new ChatComponentText("Failed to add " + EU_String + "EU to the global energy map of " + username +
-                        ". Insufficient energy in network. " + username + "currently has " + IGlobalWirelessEnergy.super.GetUserEU(uuid).toString() + " in their network."));
+                    sender.addChatMessage(new ChatComponentText(
+                        "Failed to add " + EnumChatFormatting.RED + EU_string_formatted + EnumChatFormatting.RESET +
+                            "EU to the global energy map of " + username + ". Insufficient energy in network. " + username
+                            + "currently has " + EnumChatFormatting.RED + GT_Utility.formatNumbers(new BigInteger(getUserEU(uuid).toString()))
+                            + EnumChatFormatting.RESET + "EU in their network."));
 
                 break;
             case "global_energy_set":
@@ -153,11 +160,17 @@ public final class GT_Command extends CommandBase implements IGlobalWirelessEner
                 // Usage is /gt global_energy_set username EU
 
                 username = strings[1];
-                uuid = IGlobalWirelessEnergy.super.GetUUIDFromUsername(username);
+                uuid = getUUIDFromUsername(username);
 
                 String EU_String_0 = strings[2];
 
-                IGlobalWirelessEnergy.super.SetUserEU(uuid, new BigInteger(EU_String_0));
+                setUserEU(uuid, new BigInteger(EU_String_0));
+
+                sender.addChatMessage(
+                    new ChatComponentText("Successfully added " + EnumChatFormatting.RED +
+                    GT_Utility.formatNumbers(new BigInteger(EU_String_0)) + EnumChatFormatting.RESET + "EU.")
+                );
+
                 break;
 
             case "global_energy_join":
@@ -167,8 +180,8 @@ public final class GT_Command extends CommandBase implements IGlobalWirelessEner
                 String username_0 = strings[1];
                 String username_1 = strings[2];
 
-                String uuid_0 = IGlobalWirelessEnergy.super.GetUUIDFromUsername(username_0);
-                String uuid_1 = IGlobalWirelessEnergy.super.GetUUIDFromUsername(username_1);
+                String uuid_0 = getUUIDFromUsername(username_0);
+                String uuid_1 = getUUIDFromUsername(username_1);
 
                 if (uuid_0.equals("")) {
                     sender.addChatMessage(new ChatComponentText("User " + username_0 + " has no global energy network."));
@@ -180,7 +193,7 @@ public final class GT_Command extends CommandBase implements IGlobalWirelessEner
                     break;
                 }
 
-                IGlobalWirelessEnergy.super.JoinUserNetwork(uuid_0, uuid_1);
+                joinUserNetwork(uuid_0, uuid_1);
 
                 sender.addChatMessage(new ChatComponentText("Success! " + username_0 + " has joined " + username_1 + "."));
                 sender.addChatMessage(new ChatComponentText("To undo this simply join your own network again with /gt global_energy_join " + username_0 + " " + username_0 + "."));
@@ -191,7 +204,7 @@ public final class GT_Command extends CommandBase implements IGlobalWirelessEner
                 // Usage is /gt global_energy_display username
 
                 String username_3 = strings[1];
-                sender.addChatMessage(new ChatComponentText("User " + username_3 + " has " + EnumChatFormatting.RED + GT_Utility.formatNumbers(IGlobalWirelessEnergy.super.GetUserEU(IGlobalWirelessEnergy.super.GetUUIDFromUsername(username_3))) + EnumChatFormatting.RESET + "EU in their network."));
+                sender.addChatMessage(new ChatComponentText("User " + username_3 + " has " + EnumChatFormatting.RED + GT_Utility.formatNumbers(getUserEU(getUUIDFromUsername(username_3))) + EnumChatFormatting.RESET + "EU in their network."));
 
                 break;
             default:
