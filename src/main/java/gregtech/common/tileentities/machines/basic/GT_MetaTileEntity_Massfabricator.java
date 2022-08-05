@@ -16,6 +16,8 @@ import gregtech.common.power.BasicMachineEUPower;
 import gregtech.common.power.Power;
 import net.minecraftforge.fluids.FluidStack;
 
+import java.util.Arrays;
+
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
@@ -71,6 +73,11 @@ public class GT_MetaTileEntity_Massfabricator extends GT_MetaTileEntity_BasicMac
     }
 
     @Override
+    public boolean allowSelectCircuit() {
+        return true;
+    }
+
+    @Override
     protected Power buildPower() {
         return new MassfabricatorPower(mTier, mAmperage);
     }
@@ -108,7 +115,7 @@ public class GT_MetaTileEntity_Massfabricator extends GT_MetaTileEntity_BasicMac
                 tFluid.amount -= sUUAperUUM;
                 return FOUND_AND_SUCCESSFULLY_USED_RECIPE;
             }
-            return (sRequiresUUA) || (ItemList.Circuit_Integrated.isStackEqual(getInputAt(0), true, true)) ? FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS : FOUND_AND_SUCCESSFULLY_USED_RECIPE;
+            return sRequiresUUA || Arrays.stream(getAllInputs()).anyMatch(s -> ItemList.Circuit_Integrated.isStackEqual(s, true, true)) ? FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS : FOUND_AND_SUCCESSFULLY_USED_RECIPE;
         }
         return DID_NOT_FIND_RECIPE;
     }
