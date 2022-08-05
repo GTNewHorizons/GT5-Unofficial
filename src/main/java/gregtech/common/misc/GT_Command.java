@@ -239,7 +239,7 @@ public final class GT_Command extends CommandBase implements IGlobalWirelessEner
             }
             case "global_energy_display": {
 
-                // Usage is /gt global_energy_display username
+                // Usage is /gt global_energy_display username.
 
                 String username = strings[1];
                 String formatted_username = EnumChatFormatting.BLUE + username + EnumChatFormatting.RESET;
