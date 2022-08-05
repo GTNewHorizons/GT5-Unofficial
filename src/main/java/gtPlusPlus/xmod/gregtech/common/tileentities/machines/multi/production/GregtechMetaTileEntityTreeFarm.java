@@ -486,7 +486,9 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
 		int aRecipes = GTPP_Recipe_Map.sTreeSimFakeRecipes.mRecipeList.size();
 		Logger.INFO("Adding Tree Growth Simulation for " + aSapling.getDisplayName() + " -> " + (aLog == null ? "NULL" : aLog.getDisplayName()));
 		ItemStack[] aOutput = new ItemStack[]{aLog, aSapling};
-		GT_Recipe aRecipe = new GT_Recipe(
+		String aOutputs = ItemUtils.getArrayStackNames(aOutput);
+		Logger.INFO("" + aOutputs);
+		GTPP_Recipe_Map.sTreeSimFakeRecipes.addFakeRecipe(
 				false,
 				new ItemStack[]{aSapling.copy()},
 				aOutput,
@@ -497,10 +499,6 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
 				1,
 				sRecipeID++,
 				0);
-		aRecipe.mOutputs = aOutput;
-		String aOutputs = ItemUtils.getArrayStackNames(aRecipe.mOutputs);
-		Logger.INFO("" + aOutputs);
-		GTPP_Recipe_Map.sTreeSimFakeRecipes.addFakeRecipe(false, aRecipe);
 		return GTPP_Recipe_Map.sTreeSimFakeRecipes.mRecipeList.size() > aRecipes;
 	}
 

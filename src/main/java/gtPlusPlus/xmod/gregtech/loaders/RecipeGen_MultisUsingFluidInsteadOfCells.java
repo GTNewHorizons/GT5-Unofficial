@@ -12,6 +12,8 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import java.util.ArrayList;
+
 public class RecipeGen_MultisUsingFluidInsteadOfCells {
 
 
@@ -158,7 +160,7 @@ public class RecipeGen_MultisUsingFluidInsteadOfCells {
 				}
 
 				// Add Recipe to map
-				GT_Recipe aNewRecipe = new GTPP_Recipe(
+				GT_Recipe aNewRecipe = new GTPP_Recipe.GTPP_Recipe_Map_MultiNoCell.GTPP_Recipe_MultiNoCell(
 						false,
 						aNewItemInputs,
 						aNewItemOutputs,
@@ -168,7 +170,8 @@ public class RecipeGen_MultisUsingFluidInsteadOfCells {
 						aNewFluidOutputs,
 						x.mDuration,
 						x.mEUt,
-						x.mSpecialValue);    	
+						x.mSpecialValue);
+				aNewRecipe.owners = new ArrayList<>(x.owners);
 				aOutputs.add(aNewRecipe);
 				aRecipesHandled++;
 			}

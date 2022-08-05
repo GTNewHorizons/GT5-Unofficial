@@ -28,6 +28,8 @@ public class NEI_IMC_Sender {
         sendHandler("gtpp.recipe.fissionfuel", "gregtech:gt.blockmachines:835", 1);
         sendHandler("gtpp.recipe.lftr", "gregtech:gt.blockmachines:751", 1);
         sendHandler("gtpp.recipe.lftr.sparging", "gregtech:gt.blockmachines:31035", 1);
+        sendHandler("gtpp.recipe.oremill", "gregtech:gt.blockmachines:31027", 1);
+        sendHandler("gtpp.recipe.flotationcell", "gregtech:gt.blockmachines:31028", 1);
 
         sendCatalyst("GTPP_Decayables", "miscutils:blockDecayablesChest");
 

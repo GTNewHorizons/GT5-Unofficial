@@ -518,8 +518,11 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 		ArrayUtils.removeNulls(aInput);
 		if (aInput.length <= 1) {
 			return false;
-		}		
-		GTPP_Recipe aSpecialRecipe = new GTPP_Recipe(
+		}
+
+		int aSize = GTPP_Recipe.GTPP_Recipe_Map.sAlloyBlastSmelterRecipes.mRecipeList.size();
+		int aSize2 = aSize;
+		GTPP_Recipe.GTPP_Recipe_Map.sAlloyBlastSmelterRecipes.addRecipe(
 				true,
 				aInput,
 				aOutputStack,
@@ -528,12 +531,8 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 				new FluidStack[] { aInputFluid },
 				new FluidStack[] { aOutput },
 				Math.max(1, aDuration),
-				Math.max(1, aEUt), 
-				aSpecialValue);   
-
-		int aSize = GTPP_Recipe.GTPP_Recipe_Map.sAlloyBlastSmelterRecipes.mRecipeList.size();
-		int aSize2 = aSize;
-		GTPP_Recipe.GTPP_Recipe_Map.sAlloyBlastSmelterRecipes.add(aSpecialRecipe);
+				Math.max(1, aEUt),
+				aSpecialValue);
 		aSize = GTPP_Recipe.GTPP_Recipe_Map.sAlloyBlastSmelterRecipes.mRecipeList.size();
 
 
@@ -588,7 +587,9 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 		final FluidStack inputs[] = { aInput1, aInput2, aInput3, aInput4, aInput5, aInput6, aInput7, aInput8, aInput9 };
 		final FluidStack outputs[] = { aOutput1, aOutput2 };
 
-		GTPP_Recipe aSpecialRecipe = new GTPP_Recipe(
+		int aSize = GTPP_Recipe.GTPP_Recipe_Map.sFissionFuelProcessing.mRecipeList.size();
+		int aSize2 = aSize;
+		GTPP_Recipe.GTPP_Recipe_Map.sFissionFuelProcessing.addRecipe(
 				aOptimise,
 				new ItemStack[] {},
 				new ItemStack[] {},
@@ -597,12 +598,8 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 				inputs,
 				outputs,
 				Math.max(1, aDuration),
-				Math.max(1, aEUt), 
-				0);   
-
-		int aSize = GTPP_Recipe.GTPP_Recipe_Map.sFissionFuelProcessing.mRecipeList.size();
-		int aSize2 = aSize;
-		GTPP_Recipe.GTPP_Recipe_Map.sFissionFuelProcessing.add(aSpecialRecipe);
+				Math.max(1, aEUt),
+				0);
 		aSize = GTPP_Recipe.GTPP_Recipe_Map.sFissionFuelProcessing.mRecipeList.size();
 
 		if (aSize > aSize2) {
@@ -1438,7 +1435,9 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 	@Override
 	public boolean addVacuumFurnaceRecipe(ItemStack[] aInputs, FluidStack[] aFluidInputs, ItemStack[] aOutputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aLevel) {
 		if (aInputs != null && aOutputs != null) {
-			GTPP_Recipe aSpecialRecipe = new GTPP_Recipe(
+			int aSize = GTPP_Recipe.GTPP_Recipe_Map.sVacuumFurnaceRecipes.mRecipeList.size();
+			int aSize2 = aSize;
+			GTPP_Recipe.GTPP_Recipe_Map.sVacuumFurnaceRecipes.addRecipe(
 					false,
 					aInputs,
 					aOutputs,
@@ -1448,11 +1447,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 					aFluidOutputs,
 					aDuration,
 					aEUt,
-					aLevel); 
-
-			int aSize = GTPP_Recipe.GTPP_Recipe_Map.sVacuumFurnaceRecipes.mRecipeList.size();
-			int aSize2 = aSize;
-			GTPP_Recipe.GTPP_Recipe_Map.sVacuumFurnaceRecipes.addRecipe(aSpecialRecipe);
+					aLevel);
 			aSize = GTPP_Recipe.GTPP_Recipe_Map.sVacuumFurnaceRecipes.mRecipeList.size();
 			return aSize > aSize2;
 		} else {
@@ -1506,8 +1501,9 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 			CORE.crash();
 		}
 
-
-		GTPP_Recipe aSpecialRecipe = new GTPP_Recipe(
+		int aSize = GTPP_Recipe.GTPP_Recipe_Map.sChemicalPlantRecipes.mRecipeList.size();
+		int aSize2 = aSize;
+		GTPP_Recipe.GTPP_Recipe_Map.sChemicalPlantRecipes.addRecipe(
 				false,
 				aInputs,
 				aOutputs,
@@ -1517,11 +1513,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 				aFluidOutputs,
 				time,
 				(int) eu,
-				aTier);   
-
-		int aSize = GTPP_Recipe.GTPP_Recipe_Map.sChemicalPlantRecipes.mRecipeList.size();
-		int aSize2 = aSize;
-		GTPP_Recipe.GTPP_Recipe_Map.sChemicalPlantRecipes.add(aSpecialRecipe);
+				aTier);
 		aSize = GTPP_Recipe.GTPP_Recipe_Map.sChemicalPlantRecipes.mRecipeList.size();
 		return aSize > aSize2;
 	}
