@@ -25,7 +25,7 @@ public class GT_Block_Casings5 extends GT_Block_Casings_Abstract implements IHea
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Cupronickel Coil Block");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Kanthal Coil Block");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Nichrome Coil Block");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Tungstensteel Coil Block");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "TPV-Alloy Coil Block");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "HSS-G Coil Block");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Naquadah Coil Block");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Naquadah Alloy Coil Block");
@@ -37,7 +37,7 @@ public class GT_Block_Casings5 extends GT_Block_Casings_Abstract implements IHea
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "Hypogen Coil Block");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".13.name", "Eternal Coil Block");
 
-        
+
         ItemList.Casing_Coil_Cupronickel.set(new ItemStack(this, 1, 0));
         ItemList.Casing_Coil_Kanthal.set(new ItemStack(this, 1, 1));
         ItemList.Casing_Coil_Nichrome.set(new ItemStack(this, 1, 2));
@@ -161,8 +161,8 @@ public class GT_Block_Casings5 extends GT_Block_Casings_Abstract implements IHea
                 return 0;
         }
     }
-    
-    
+
+
 
     @Override
     public HeatingCoilLevel getCoilHeat(int meta) {

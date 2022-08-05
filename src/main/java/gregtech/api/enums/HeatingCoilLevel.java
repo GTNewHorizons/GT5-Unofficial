@@ -6,7 +6,7 @@ public enum HeatingCoilLevel {
         LV,   //Cupronickel         1801
         MV,   //KANTHAL             2701
         HV,   //NICHROME            3601
-        EV,   //TUNGSTENSTEEL       4501
+        EV,   //TPVALLOY            4501
         IV,   //HSSG                5401
         LuV,  //HSSS                6301
         ZPM,  //NAQUADAH            7201
