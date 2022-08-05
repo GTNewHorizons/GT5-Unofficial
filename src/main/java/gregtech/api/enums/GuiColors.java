@@ -1,7 +1,11 @@
 package gregtech.api.enums;
 
-import net.minecraft.util.StatCollector;
 import gregtech.api.util.GT_Log;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.Minecraft;
+import org.json.JSONObject;
 
 public enum GuiColors
 {	
@@ -91,10 +95,10 @@ public enum GuiColors
 
 	public int getColor()
 	{
-		String hex = StatCollector.translateToLocal( this.getUnlocalized() );
+		String hex = getStringFromJson();
 		int color = this.color;
 
-		if (hex.length() <= 8)
+		if (!hex.isEmpty())
 		{
 			try
 			{	
@@ -102,15 +106,35 @@ public enum GuiColors
 			}
 			catch (final NumberFormatException e)
 			{
-				/*Do nothing*/
-				GT_Log.out.println("Couldn't format color correctly for: " + this.root + " -> " + hex);
+				GT_Log.err.println("Couldn't format color correctly for: " + this.root + " -> " + hex);
 			}
 		}
 		return color;
 	}
 	
-	public String getUnlocalized()
-	{
-		return this.root + '.' + this.toString();
+	public String getStringFromJson()
+	{	
+		ResourceLocation jsonConfig = new ResourceLocation("gregtech","textures/guiColors.json");
+		String colorCode = "";
+
+		try
+		{
+	        BufferedInputStream bis = new BufferedInputStream(Minecraft.getMinecraft().getResourceManager().getResource(jsonConfig).getInputStream());
+	        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+			
+			for (int result = bis.read(); result != -1; result = bis.read())
+			{
+                bos.write((byte)result);
+            }
+
+            JSONObject json = new JSONObject(bos.toString("UTF-8"));
+            colorCode = json.getString(this.root + "." + this.toString());
+		}
+		catch (Exception e)
+		{
+			GT_Log.err.println(e);
+		}
+
+		return colorCode;
 	}
 }
