@@ -2800,7 +2800,7 @@ public class DreamCraftRecipeLoader {
                 total_computation, comp_per_second, research_eu_per_tick, research_amperage,
 
                 new ItemStack[]{
-                        GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.SamariumMagnetic, 8L),
+                        GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.SamariumMagnetic, 32L),
                         GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.SpaceTime, 16L),
                         GT_OreDictUnificator.get(OrePrefixes.ring, Materials.SpaceTime, 8L),
                         GT_OreDictUnificator.get(OrePrefixes.round, Materials.SpaceTime, 32L),
