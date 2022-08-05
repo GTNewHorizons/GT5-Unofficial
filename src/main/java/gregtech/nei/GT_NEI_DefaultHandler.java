@@ -373,6 +373,16 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
             if (amperage == null || amperage.equals("unspecified") || powerUsage.contains("(OC)")){
                 drawLine(lineCounter, GT_Utility.trans("153", "Usage: ") + powerUsage);
                 lineCounter++;
+                if (GT_Mod.gregtechproxy.mNEIOriginalVoltage) {
+                    Power originalPower = getPowerFromRecipeMap();
+                    originalPower.computePowerUsageAndDuration(recipe.mEUt, recipe.mDuration);
+                    drawLine(lineCounter, GT_Utility.trans("228", "Original voltage: ") + originalPower.getVoltageString());
+                    lineCounter++;
+                }
+                if (amperage != null && !amperage.equals("unspecified") && !amperage.equals("1")) {
+                    drawLine(lineCounter, GT_Utility.trans("155", "Amperage: ") + amperage);
+                    lineCounter++;
+                }
             } else if (amperage.equals("1")) {
                 drawLine(lineCounter, GT_Utility.trans("154", "Voltage: ") + mPower.getVoltageString());
                 lineCounter++;
@@ -416,7 +426,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                 lineCounter++;
             }
         }
-        if (GT_Mod.gregtechproxy.mNEIRecipeOwnerStackTrace && recipe.stackTraces != null) {
+        if (GT_Mod.gregtechproxy.mNEIRecipeOwnerStackTrace && recipe.stackTraces != null && !recipe.stackTraces.isEmpty()) {
             drawLine(lineCounter, "stackTrace:");
             lineCounter++;
             // todo: good way to show all stacktraces

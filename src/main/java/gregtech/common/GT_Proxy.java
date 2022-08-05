@@ -360,6 +360,11 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
     public boolean mNEIRecipeOwnerStackTrace = false;
 
     /**
+     * This enables showing original voltage when overclocked
+     */
+    public boolean mNEIOriginalVoltage = false;
+
+    /**
      * This enables showing voltage tier of transformer for Waila, instead of raw voltage number
      */
     public boolean mWailaTransformerVoltageTier = true;
@@ -1248,7 +1253,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                 String tName = aEvent.Name.replaceFirst(aPrefix.toString(), "");
                 if (tName.length() > 0) {
                     char firstChar = tName.charAt(0);
-                    if (Character.isUpperCase(firstChar) || Character.isLowerCase(firstChar) || firstChar == '_') {
+                    if (Character.isUpperCase(firstChar) || Character.isLowerCase(firstChar) || firstChar == '_' || Character.isDigit(firstChar)) {
                         if (aPrefix.mIsMaterialBased) {
                             aMaterial = Materials.get(tName);
                             if (aMaterial != aMaterial.mMaterialInto) {

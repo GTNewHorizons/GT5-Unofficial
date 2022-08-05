@@ -124,9 +124,9 @@ public class ItemComb extends Item {
 		addCentrifugeToItemStack(CombType.ENERGY, new ItemStack[] {GT_Bees.drop.getStackForType(DropType.HOT_COOLANT), ItemList.IC2_Energium_Dust.get(1L), ItemList.FR_RefractoryWax.get(1)}, new int[] {20 * 100, 20 * 100, 50 * 100}, Voltage.HV, 196);
 		addCentrifugeToItemStack(CombType.LAPOTRON, new ItemStack[] {GT_Bees.drop.getStackForType(DropType.LAPIS), GT_ModHandler.getModItem(MOD_ID_DC, "item.LapotronDust", 1, 0), GT_ModHandler.getModItem("MagicBees", "wax", 1, 2) }, new int[] {20 * 100, 15 * 100, 40 * 100}, Voltage.HV, 196);
 		addCentrifugeToMaterial(CombType.PYROTHEUM, new Materials[] {Materials.Blaze, Materials.Pyrotheum}, new int[] { 25 * 100, 20 * 100}, new int[] {}, Voltage.HV, NI, 30 * 100);
-		addCentrifugeToMaterial(CombType.CRYOTHEUM, new Materials[] {Materials.Blizz, Materials.Cryotheum}, new int[] { 25 * 100, 20 * 100}, new int[] {}, Voltage.HV, NI, 30 * 100);
+        addCentrifugeToItemStack(CombType.CRYOTHEUM, new ItemStack[] { ItemList.FR_RefractoryWax.get(1), Materials.Blizz.getDust(1) }, new int[] {50 * 100, 100 * 100}, Voltage.MV);
 
-		//Alloy
+        //Alloy
 		addProcessGT(CombType.REDALLOY, new Materials[] {Materials.RedAlloy}, Voltage.LV);
 		addProcessGT(CombType.REDSTONEALLOY, new Materials[] {Materials.RedstoneAlloy}, Voltage.LV);
 		addProcessGT(CombType.CONDUCTIVEIRON, new Materials[] {Materials.ConductiveIron }, Voltage.MV);
@@ -438,8 +438,9 @@ public class ItemComb extends Item {
 	}
 
     public void addFluidExtractorProcess(CombType comb, FluidStack fluid, Voltage volt){
+        if(fluid == null)
+            return;
         RA.addFluidExtractionRecipe(GT_Utility.copyAmount(1, getStackForType(comb)), null, fluid, 100 * 100, (fluid.getFluid().getDensity() * 128 > 0 ? (int) (fluid.getFluid().getDensity() * 100) : 128), volt.getSimpleEnergy()/2);
-
     }
 
 	/**
