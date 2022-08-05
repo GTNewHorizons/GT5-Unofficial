@@ -1242,7 +1242,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
 
     @Override
     public boolean addMixerRecipe(ItemStack[] ItemInputArray, FluidStack[] FluidInputArray, ItemStack[] ItemOutputArray, FluidStack[] FluidOutputArray, int aDuration, int aEUt) {
-        GT_Recipe.GT_Recipe_Map.sMixerRecipes.addRecipe(false, ItemOutputArray, ItemOutputArray, null, null, FluidInputArray, FluidOutputArray, aDuration, aEUt, 0);
+        GT_Recipe.GT_Recipe_Map.sMixerRecipes.addRecipe(false, ItemInputArray, ItemOutputArray, null, null, FluidInputArray, FluidOutputArray, aDuration, aEUt, 0);
         return true;
     }
 
