@@ -42,23 +42,23 @@ public interface IGlobalWirelessEnergy {
     String GlobalEnergyTeamFileName = "GlobalEnergyTeamMap";
 
     // User 0 will join user 1 by calling this function. They will share the same energy network.
-    default void JoinUserNetwork(String user_uuid_0, String user_uuid_1) {
+    default void joinUserNetwork(String user_uuid_0, String user_uuid_1) {
         GlobalEnergyTeam.put(user_uuid_0, user_uuid_1);
     }
 
     // --- Save data for global energy network --
 
-    default void SaveGlobalEnergyInfo(String world_name) {
+    default void saveGlobalEnergyInfo(String world_name) {
         // Replace chars because of bug in forge that doesn't understand MC converts . to _ upon world creation.
         world_name = world_name.replace('.','_');
-        CreateStorageIfNotExist(world_name);
-        SaveGlobalEnergyMap(world_name);
-        SaveGlobalEnergyName(world_name);
-        SaveGlobalEnergyTeam(world_name);
+        createStorageIfNotExist(world_name);
+        saveGlobalEnergyMap(world_name);
+        saveGlobalEnergyName(world_name);
+        saveGlobalEnergyTeam(world_name);
 
     }
 
-    default void SaveGlobalEnergyMap(String world_name) {
+    default void saveGlobalEnergyMap(String world_name) {
         try {
             List<String> lines = GlobalEnergy.entrySet()
                 .stream()
@@ -73,7 +73,7 @@ public interface IGlobalWirelessEnergy {
         }
     }
 
-    default void SaveGlobalEnergyName(String world_name) {
+    default void saveGlobalEnergyName(String world_name) {
         try {
             List<String> lines = GlobalEnergyName.entrySet()
                 .stream()
@@ -88,7 +88,7 @@ public interface IGlobalWirelessEnergy {
         }
     }
 
-    default void SaveGlobalEnergyTeam(String world_name) {
+    default void saveGlobalEnergyTeam(String world_name) {
         try {
             List<String> lines = GlobalEnergyTeam.entrySet()
                 .stream()
@@ -105,17 +105,17 @@ public interface IGlobalWirelessEnergy {
 
     // --- Load data for global energy network ---
 
-    default void LoadGlobalEnergyInfo(World world) {
+    default void loadGlobalEnergyInfo(World world) {
         // Replace chars because of bug in forge that doesn't understand MC converts . to _ upon world creation.
         String world_name = world.getWorldInfo().getWorldName().replace('.','_');
         PrivateGlobalEnergy.WorldName = world_name;
-        CreateStorageIfNotExist(world_name);
-        LoadGlobalEnergyMap(world);
-        LoadGlobalEnergyName(world);
+        createStorageIfNotExist(world_name);
+        loadGlobalEnergyMap(world);
+        loadGlobalEnergyName(world);
         LoadGlobalEnergyTeam(world);
     }
 
-    default void LoadGlobalEnergyMap(World world) {
+    default void loadGlobalEnergyMap(World world) {
         try {
             Path path = Paths.get("./saves/" + world.getWorldInfo().getWorldName() + "/" + GlobalEnergyFolderName + "/" + GlobalEnergyMapFileName + ".txt").toAbsolutePath();
 
@@ -133,7 +133,7 @@ public interface IGlobalWirelessEnergy {
         }
     }
 
-    default void LoadGlobalEnergyName(World world) {
+    default void loadGlobalEnergyName(World world) {
         try {
             Path path = Paths.get("./saves/" + world.getWorldInfo().getWorldName() + "/"
                 + GlobalEnergyFolderName + "/" + GlobalEnergyNameFileName + ".txt").toAbsolutePath();
@@ -167,7 +167,7 @@ public interface IGlobalWirelessEnergy {
 
     // ------------------
 
-    default void CreateStorageIfNotExist(String world_name) {
+    default void createStorageIfNotExist(String world_name) {
         Path folder_path = Paths.get("./saves/" + world_name + "/" + GlobalEnergyFolderName).toAbsolutePath();
 
         // Create folder for storing global energy network info.
@@ -195,15 +195,15 @@ public interface IGlobalWirelessEnergy {
     // has changed their username and adjust the maps accordingly. This should be called infrequently. Ideally on first
     // tick of a machine being placed only.
 
-    default void StrongCheckOrAddUser(EntityPlayer user) {
-        StrongCheckOrAddUser(user.getUniqueID().toString(), user.getDisplayName());
+    default void strongCheckOrAddUser(EntityPlayer user) {
+        strongCheckOrAddUser(user.getUniqueID().toString(), user.getDisplayName());
     }
 
-    default void StrongCheckOrAddUser(UUID user_uuid, String user_name) {
-        StrongCheckOrAddUser(user_uuid.toString(), user_name);
+    default void strongCheckOrAddUser(UUID user_uuid, String user_name) {
+        strongCheckOrAddUser(user_uuid.toString(), user_name);
     }
 
-    default void StrongCheckOrAddUser(String user_uuid, String user_name) {
+    default void strongCheckOrAddUser(String user_uuid, String user_name) {
 
         // Check if the user has a team. Add them if not.
         GlobalEnergyTeam.putIfAbsent(user_uuid, user_uuid);
@@ -233,7 +233,7 @@ public interface IGlobalWirelessEnergy {
         PrivateGlobalEnergy.EnergyAdds += 1;
 
         if (PrivateGlobalEnergy.EnergyAddsBeforeSaving >= PrivateGlobalEnergy.EnergyAdds) {
-            SaveGlobalEnergyInfo(PrivateGlobalEnergy.WorldName);
+            saveGlobalEnergyInfo(PrivateGlobalEnergy.WorldName);
             PrivateGlobalEnergy.EnergyAdds = 0;
         }
 
@@ -276,12 +276,12 @@ public interface IGlobalWirelessEnergy {
 
     // ------------------------------------------------------------------------------------
 
-    default BigInteger GetUserEU(String user_uuid) {
+    default BigInteger getUserEU(String user_uuid) {
         return GlobalEnergy.getOrDefault(GlobalEnergyTeam.getOrDefault(user_uuid, user_uuid), BigInteger.ZERO);
     }
 
     // This overwrites the EU in the network. Only use this if you are absolutely sure you know what you are doing.
-    default void SetUserEU(String user_uuid, BigInteger EU) {
+    default void setUserEU(String user_uuid, BigInteger EU) {
         GlobalEnergy.put(GlobalEnergyTeam.get(user_uuid), EU);
     }
 
@@ -289,11 +289,11 @@ public interface IGlobalWirelessEnergy {
         return GlobalEnergyName.getOrDefault(GlobalEnergyTeam.getOrDefault(uuid, ""), "");
     }
 
-    default String GetUUIDFromUsername(String username) {
+    default String getUUIDFromUsername(String username) {
         return GlobalEnergyTeam.getOrDefault(GlobalEnergyName.getOrDefault(username, ""), "");
     }
 
-    default void ClearMaps() {
+    default void clearMaps() {
         // Do not use this unless you are 100% certain you know what you are doing.
         GlobalEnergy.clear();
         GlobalEnergyName.clear();
