@@ -156,7 +156,6 @@ public class TileEntityPestKiller extends TileEntity implements ISidedInventory,
 									this.mTank.drain(1, true);
 								}
 							}
-							e.performHurtAnimation();
 							EntityUtils.doDamage(e, DamageSource.generic, Short.MAX_VALUE);
 							e.setDead();
 							killed = true;
