@@ -80,6 +80,7 @@ import static gregtech.api.enums.GT_Values.MOD_ID_FR;
                 " after:TwilightForest;" +
                 " after:harvestcraft;" +
                 " after:magicalcrops;" +
+                " after:Botania;" +
                 " after:BuildCraft|Transport;" +
                 " after:BuildCraft|Silicon;" +
                 " after:BuildCraft|Factory;" +
