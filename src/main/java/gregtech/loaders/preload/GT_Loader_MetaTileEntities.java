@@ -1397,6 +1397,8 @@ public class GT_Loader_MetaTileEntities implements Runnable {//TODO CHECK CIRCUI
         makeWires(Materials.Longasssuperconductornameforuvwire                         , 2500, 2L, 4096L, 12L, gregtech.api.enums.GT_Values.V[8], false, false);
         makeWires(Materials.Longasssuperconductornameforuhvwire                        , 2520, 2L, 16384L, 16L, gregtech.api.enums.GT_Values.V[9], false, false);
         makeWires(Materials.SuperconductorUEVBase                                      , 2032, 2L, 65536L, 24L, gregtech.api.enums.GT_Values.V[10], false, false);
+        makeWires(Materials.SuperconductorUIVBase                                      , 2052, 2L, 262144L, 32L, gregtech.api.enums.GT_Values.V[11], false, false);
+        makeWires(Materials.SuperconductorUMVBase                                      , 2072, 2L, 1048576L, 32L, gregtech.api.enums.GT_Values.V[12], false, false);
 
         // Actual superconductors.
         makeWires(Materials.SuperconductorMV , 2320, 0L, 0L, 4L , gregtech.api.enums.GT_Values.V[2]  , false, true);
@@ -1408,6 +1410,8 @@ public class GT_Loader_MetaTileEntities implements Runnable {//TODO CHECK CIRCUI
         makeWires(Materials.SuperconductorUV , 2440, 0L, 0L, 32L, gregtech.api.enums.GT_Values.V[8] , false, true);
         makeWires(Materials.SuperconductorUHV, 2020, 0L, 0L, 48L, gregtech.api.enums.GT_Values.V[9] , false, true);
         makeWires(Materials.SuperconductorUEV, 2026, 0L, 0L, 64L, gregtech.api.enums.GT_Values.V[10], false, true);
+        makeWires(Materials.SuperconductorUIV, 2081, 0L, 0L, 64L, gregtech.api.enums.GT_Values.V[11], false, true);
+        makeWires(Materials.SuperconductorUMV, 2089, 0L, 0L, 64L, gregtech.api.enums.GT_Values.V[12], false, true);
 
         makeWires(Materials.Ichorium, 2600, 2L, 2L, 12L, GT_Values.V[9], false, true);
         makeWires(Materials.SpaceTime, 2606, 0L, 0L, 1_000_000L, GT_Values.V[14], false, true);
@@ -1425,6 +1429,7 @@ public class GT_Loader_MetaTileEntities implements Runnable {//TODO CHECK CIRCUI
         GT_OreDictUnificator.registerOre(OrePrefixes.pipeLarge.get(Materials.Wood), new GT_MetaPipeEntity_Fluid(5103, "GT_Pipe_Wood_Large", "Large Wooden Fluid Pipe", 0.75F, Materials.Wood, 60, 350, false).getStackForm(1L));
 
         generateFluidPipes(Materials.Copper, Materials.Copper.mName, 5110, 20, 1000, true);
+        generateFluidPipes(Materials.SpaceTime, Materials.SpaceTime.mName, 5730, 250000, 10000000, true);
         generateFluidMultiPipes(Materials.Copper, Materials.Copper.mName, 5115, 20, 1000, true);
         generateFluidPipes(Materials.Bronze, Materials.Bronze.mName, 5120, 120, 2000, true);
         generateFluidMultiPipes(Materials.Bronze, Materials.Bronze.mName, 5125, 120, 2000, true);
