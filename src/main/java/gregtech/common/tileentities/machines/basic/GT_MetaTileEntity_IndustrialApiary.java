@@ -212,21 +212,6 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                     }
 
                 int i = 0;
-                for(Map.Entry<GT_Utility.ItemId, Float> entry : drops.entrySet())
-                {
-                    ItemStack s = dropstacks.get(entry.getKey()).copy();
-                    s.stackSize = entry.getValue().intValue() + (getWorld().rand.nextFloat() < (entry.getValue() - (float) entry.getValue().intValue()) ? 1 : 0);
-                    if(s.stackSize > 0 && i < 7)
-                        while(true) {
-                            if (s.stackSize <= s.getMaxStackSize()) {
-                                this.mOutputItems[i++] = s;
-                                break;
-                            } else
-                                this.mOutputItems[i++] = s.splitStack(s.getMaxStackSize());
-                            if(i >= 7)
-                                break;
-                        }
-                }
 
                 IApiaristTracker breedingTracker = beeRoot.getBreedingTracker(getWorld(), getOwner());
 
@@ -235,28 +220,51 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                     NBTTagCompound nbttagcompound = new NBTTagCompound();
                     queen.writeToNBT(nbttagcompound);
                     convert.setTagCompound(nbttagcompound);
-                    this.mOutputItems[7] = convert;
+                    this.mOutputItems[i++] = convert;
                 }
                 else {
                     IBee b = bee.spawnPrincess(this);
                     if(b != null){
                         ItemStack princess = beeRoot.getMemberStack(b, EnumBeeType.PRINCESS.ordinal());
                         breedingTracker.registerPrincess(b);
-                        this.mOutputItems[7] = princess;
+                        this.mOutputItems[i++] = princess;
                     }
                     IBee[] d = bee.spawnDrones(this);
                     if(d != null && d.length > 0) {
-                        ItemStack drone = beeRoot.getMemberStack(d[0], EnumBeeType.DRONE.ordinal());
-                        drone.stackSize = d.length;
-                        breedingTracker.registerDrone(d[0]);
-                        this.mOutputItems[8] = drone;
+                        HashMap<GT_Utility.ItemId, ItemStack> drones = new HashMap<>(d.length);
+                        for(IBee dr : d) {
+                            ItemStack drone = beeRoot.getMemberStack(dr, EnumBeeType.DRONE.ordinal());
+                            breedingTracker.registerDrone(dr);
+                            GT_Utility.ItemId drid = GT_Utility.ItemId.createNoCopy(drone);
+                            if(drones.containsKey(drid)) drones.get(drid).stackSize += drone.stackSize;
+                            else {
+                                this.mOutputItems[i++] = drone;
+                                drones.put(drid, drone);
+                            }
+                        }
                     }
                 }
 
                 setQueen(null);
 
+                for(Map.Entry<GT_Utility.ItemId, Float> entry : drops.entrySet())
+                {
+                    ItemStack s = dropstacks.get(entry.getKey()).copy();
+                    s.stackSize = entry.getValue().intValue() + (getWorld().rand.nextFloat() < (entry.getValue() - (float) entry.getValue().intValue()) ? 1 : 0);
+                    if(s.stackSize > 0 && i < 9)
+                        while(true) {
+                            if (s.stackSize <= s.getMaxStackSize()) {
+                                this.mOutputItems[i++] = s;
+                                break;
+                            } else
+                                this.mOutputItems[i++] = s.splitStack(s.getMaxStackSize());
+                            if(i >= 9)
+                                break;
+                        }
+                }
+
                 for(ItemStack s : pollen.values())
-                    if(i < 7)
+                    if(i < 9)
                         this.mOutputItems[i++] = s;
                     else
                         break;
