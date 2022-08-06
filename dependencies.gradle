@@ -37,7 +37,7 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:harvestcraft:1.0.12-GTNH:dev") {
         transitive = false
     }
-    compile("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-75-GTNH:dev") {
+    compile("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-92-GTNH:dev") {
         transitive = false
     }
     compile("com.github.GTNewHorizons:Chisel:2.10.8-GTNH:dev") {
