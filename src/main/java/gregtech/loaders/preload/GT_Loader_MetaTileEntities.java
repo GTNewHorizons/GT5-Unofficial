@@ -1429,6 +1429,7 @@ public class GT_Loader_MetaTileEntities implements Runnable {//TODO CHECK CIRCUI
         GT_OreDictUnificator.registerOre(OrePrefixes.pipeLarge.get(Materials.Wood), new GT_MetaPipeEntity_Fluid(5103, "GT_Pipe_Wood_Large", "Large Wooden Fluid Pipe", 0.75F, Materials.Wood, 60, 350, false).getStackForm(1L));
 
         generateFluidPipes(Materials.Copper, Materials.Copper.mName, 5110, 20, 1000, true);
+        generateFluidPipes(Materials.SpaceTime, Materials.SpaceTime.mName, 5730, 250000, 10000000, true);
         generateFluidMultiPipes(Materials.Copper, Materials.Copper.mName, 5115, 20, 1000, true);
         generateFluidPipes(Materials.Bronze, Materials.Bronze.mName, 5120, 120, 2000, true);
         generateFluidMultiPipes(Materials.Bronze, Materials.Bronze.mName, 5125, 120, 2000, true);
