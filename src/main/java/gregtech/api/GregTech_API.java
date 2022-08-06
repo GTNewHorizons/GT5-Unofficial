@@ -88,8 +88,16 @@ import static gregtech.api.enums.GT_Values.MOD_ID_IC2;
 @SuppressWarnings("unused") // API class has legitimately unused methods and members
 public class GregTech_API {
 
+    /**
+     * @deprecated Use {@link GT_Values#M}
+     */
     @Deprecated
-    public static final long MATERIAL_UNIT = M, FLUID_MATERIAL_UNIT = L;
+    public static final long MATERIAL_UNIT = M;
+    /**
+     * @deprecated Use {@link GT_Values#L}
+     */
+    @Deprecated
+    public static final long FLUID_MATERIAL_UNIT = L;
     /**
      * Fixes the HashMap Mappings for ItemStacks once the Server started
      */
