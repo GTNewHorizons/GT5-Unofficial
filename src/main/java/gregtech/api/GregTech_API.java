@@ -6,6 +6,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GT_Mod;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -14,6 +15,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.internal.IGT_RecipeAdder;
 import gregtech.api.interfaces.internal.IThaumcraftCompat;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
 import gregtech.api.items.GT_CoolantCellIC_Item;
 import gregtech.api.items.GT_CoolantCell_Item;
 import gregtech.api.items.GT_Tool_Item;
@@ -67,7 +69,7 @@ import static gregtech.api.enums.GT_Values.M;
 import static gregtech.api.enums.GT_Values.MOD_ID_IC2;
 
 /**
- * Please do not include this File in your Mod-download as it ruins compatiblity, like with the IC2-API
+ * Please do not include this File in your Mod-download as it ruins compatibility, like with the IC2-API
  * You may just copy those Functions into your Code, or better call them via reflection.
  * <p/>
  * The whole API is the basic construct of my Mod. Everything is dependent on it.
@@ -75,14 +77,15 @@ import static gregtech.api.enums.GT_Values.MOD_ID_IC2;
  * Since some Authors were stupid enough to break this simple Rule, I added Version checks to enforce it.
  * <p/>
  * In these Folders are many useful Functions. You can use them via reflection if you want.
- * I know not everything is compilable due to API's of other Mods, but these are easy to fix in your Setup.
+ * I know not everything is compilable due to APIs of other Mods, but these are easy to fix in your Setup.
  * <p/>
  * You can use this to learn about Modding, but I would recommend simpler Mods.
- * You may even copypaste Code from these API-Files into your Mod, as I have nothing against that, but you should look exactly at what you are copying.
+ * You may even copy-paste Code from these API-Files into your Mod, as I have nothing against that, but you should look exactly at what you are copying.
  *
  * @author Gregorius Techneticies
  */
-@SuppressWarnings("ALL")
+
+@SuppressWarnings("unused") // API class has legitimately unused methods and members
 public class GregTech_API {
 
     @Deprecated
@@ -137,7 +140,7 @@ public class GregTech_API {
      * 32001 - 32766 are reserved for Glod.
      * <p/>
      * Contact me if you need a free ID-Range, which doesn't conflict with other Addons.
-     * You could make an ID-Config, but we all know, what "stupid" customers think about conflicting ID's
+     * You could make an ID-Config, but we all know what "stupid" customers think about conflicting ID's
      */
     public static final IMetaTileEntity[] METATILEENTITIES = new IMetaTileEntity[MAXIMUM_METATILE_IDS];
     /**
@@ -227,6 +230,10 @@ public class GregTech_API {
      */
     public static volatile int VERSION = 509;
 
+    /**
+     * @deprecated Use {@link GT_Values#RA}
+     */
+    @SuppressWarnings("DeprecatedIsStillUsed") // Still need be initialized for backward compat
     @Deprecated
     public static IGT_RecipeAdder sRecipeAdder;
     /**
@@ -367,34 +374,28 @@ public class GregTech_API {
             sLoadFinished = false,
             sPostloadStarted = false,
             sPostloadFinished = false;
-    private static Class sBaseMetaTileEntityClass = null;
+    private static Class<BaseMetaTileEntity> sBaseMetaTileEntityClass = null;
 
-    /**
-     * Adds Biomes to the Biome Lists for World Generation
-     */
     static {
         sItemStackMappings.add(sCovers);
         sItemStackMappings.add(sCoverBehaviors);
-
-        //sDimensionalList.add(56);
-        //sDimensionalList.add(55);
     }
 
     /**
      * You want OreDict-Unification for YOUR Mod/Addon, when GregTech is installed? This Function is especially for YOU.
-     * Call this Function after the load-Phase, as I register the the most of the Unification at that Phase (Redpowers Storageblocks are registered at postload).
+     * Call this Function after the load-Phase, as I register the most of the Unification at that Phase (Redpowers Storageblocks are registered at postload).
      * A recommended use of this Function is inside your Recipe-System itself (if you have one), as the unification then makes 100% sure, that every added non-unificated Output gets automatically unificated.
      * <p/>
      * I will personally make sure, that only common prefixes of Ores get registered at the Unificator, as of now there are:
      * pulp, dust, dustSmall, ingot, nugget, gem, ore and block
-     * If another Mod-Author messes these up, then it's not my fault and it's especially not your fault. As these are commonly used prefixes.
+     * If another Mod-Author messes these up, then it's not my fault, and it's especially not your fault. As these are commonly used prefixes.
      * <p/>
      * This Unificator-API-Function uses the same Functions I use, for unificating Items. So if there is something messed up (very unlikely), then everything is messed up.
      * <p/>
      * You shouldn't use this to unificate the Inputs of your Recipes, this is only meant for the Outputs.
      *
      * @param aOreStack the Stack you want to get unificated. It is stackSize Sensitive.
-     * @return Either an unificated Stack or the stack you toss in, but it should never be null, unless you throw a Nullpointer into it.
+     * @return Either an unificated Stack or the stack you toss in, but it should never be null, unless you throw a Null-Pointer into it.
      */
     public static ItemStack getUnificatedOreDictStack(ItemStack aOreStack) {
         if (!GregTech_API.sPreloadFinished)
@@ -413,30 +414,31 @@ public class GregTech_API {
      * @param aZ     is the Z-Coord of the update causing Block
      */
     public static boolean causeMachineUpdate(World aWorld, int aX, int aY, int aZ) {
-        if (aWorld != null && !aWorld.isRemote) { // World might be null during Worldgen
+        if (aWorld != null && !aWorld.isRemote) { // World might be null during World-gen
             GT_Runnable_MachineBlockUpdate.setMachineUpdateValues(aWorld, new ChunkCoordinates(aX, aY, aZ));
             return true;
         }
         return false;
     }
 
+    @SuppressWarnings("UnusedReturnValue") // Retains API method signature
     public static boolean causeCableUpdate(World aWorld, int aX, int aY, int aZ) {
-        if (aWorld != null && !aWorld.isRemote) { // World might be null during Worldgen
-            GT_Runnable_Cable_Update.setCableUpdateValues(aWorld, new ChunkCoordinates(aX, aY, aZ));
-            return true;
-        }
-        return false;
-
+        if (aWorld == null || aWorld.isRemote) {
+            return false;
+        } // World might be null during World-gen
+        GT_Runnable_Cable_Update.setCableUpdateValues(aWorld, new ChunkCoordinates(aX, aY, aZ));
+        return true;
     }
 
     /**
      * Adds a Multi-Machine Block, like my Machine Casings for example.
-     * You should call @causeMachineUpdate in @Block.breakBlock and in @Block.onBlockAdded of your registered Block.
-     * You don't need to register TileEntities which implement @IMachineBlockUpdateable
+     * You should call @causeMachineUpdate in @Block.breakBlock and in {@link Block#onBlockAdded} of your registered Block.
+     * You don't need to register TileEntities which implement {@link IMachineBlockUpdateable}
      *
      * @param aBlock   the Block
-     * @param aMeta the Metadata of the Blocks as Bitmask! -1 or ~0 for all Metavalues
+     * @param aMeta the Metadata of the Blocks as Bitmask! -1 or ~0 for all Meta-values
      */
+    @SuppressWarnings("UnusedReturnValue") // Retains API method signature
     public static boolean registerMachineBlock(Block aBlock, int aMeta) {
         if (aBlock == null)
             return false;
@@ -606,19 +608,19 @@ public class GregTech_API {
     }
 
     /**
-     * This gives you a new BaseMetaTileEntity. As some Interfaces are not always loaded (Buildcraft, Univeral Electricity) I have to use Invocation at the Constructor of the BaseMetaTileEntity
+     * This gives you a new BaseMetaTileEntity. As some Interfaces are not always loaded (Buildcraft, Universal Electricity) I have to use Invocation at the Constructor of the BaseMetaTileEntity
      */
     public static BaseMetaTileEntity constructBaseMetaTileEntity() {
         if (sBaseMetaTileEntityClass == null) {
             try {
-                return (BaseMetaTileEntity) (sBaseMetaTileEntityClass = BaseMetaTileEntity.class).newInstance();
+                return (sBaseMetaTileEntityClass = BaseMetaTileEntity.class).newInstance();
             } catch (Throwable e) {/*Do nothing*/}
         }
 
         try {
-            return (BaseMetaTileEntity) (sBaseMetaTileEntityClass.newInstance());
+            return sBaseMetaTileEntityClass.newInstance();
         } catch (Throwable e) {
-            GT_Log.err.println("GT_Mod: Fatal Error ocurred while initializing TileEntities, crashing Minecraft.");
+            GT_Log.err.println("GT_Mod: Fatal Error occurred while initializing TileEntities, crashing Minecraft.");
             e.printStackTrace(GT_Log.err);
             throw new RuntimeException(e);
         }
@@ -717,7 +719,7 @@ public class GregTech_API {
      * @param aBehavior can be null
      */
     public static void registerCover(Collection<ItemStack> aStackList, ITexture aCover, GT_CoverBehavior aBehavior) {
-        registerCover(aStackList, aCover, aBehavior);
+        registerCover(aStackList, aCover, (GT_CoverBehaviorBase<?>)aBehavior);
     }
 
     /**
@@ -738,14 +740,14 @@ public class GregTech_API {
         if (aStack == null || aStack.getItem() == null)
             return sNoBehavior;
         GT_CoverBehaviorBase<?> rCover = sCoverBehaviors.get(new GT_ItemStack(aStack));
-        if (!(rCover instanceof GT_CoverBehavior) || rCover == null)
+        if (!(rCover instanceof GT_CoverBehavior))
             return sDefaultBehavior;
         return (GT_CoverBehavior) rCover;
     }
 
     /**
      * returns a Cover behavior, guaranteed to not return null after preload
-     * @return
+     * @return The Cover behavior
      */
     public static GT_CoverBehaviorBase<?> getCoverBehaviorNew(ItemStack aStack) {
         if (aStack == null || aStack.getItem() == null)
@@ -780,16 +782,16 @@ public class GregTech_API {
      * Register a Wrench to be usable on GregTech Machines.
      * The Wrench MUST have some kind of Durability unlike certain Buildcraft Wrenches.
      * <p/>
-     * You need to register Tools in the Load Phase, because otherwise the Autodetection will assign a Tool Type in certain Cases during postload (When IToolWrench or similar Interfaces are implemented).
+     * You need to register Tools in the Load Phase, because otherwise the Auto-detection will assign a Tool Type in certain Cases during postload (When IToolWrench or similar Interfaces are implemented).
      * <p/>
      * -----
      * <p/>
-     * Returning true at isDamagable was a great Idea, KingLemming. Well played.
+     * Returning true at isDamageable was a great Idea, KingLemming. Well played.
      * Since the OmniWrench is just a Single-Item-Mod, people can choose if they want your infinite durability or not. So that's not really a Problem.
-     * I even have a new Config to autodisable most infinite BC Wrenches (but that one is turned off).
+     * I even have a new Config to auto-disable most infinite BC Wrenches (but that one is turned off).
      * <p/>
      * One last Bug for you to fix:
-     * My Autoregistration detects Railcrafts Crowbars, Buildcrafts Wrenches and alike, due to their Interfaces.
+     * My Auto-registration detects Railcraft's Crowbars, Buildcraft's Wrenches and alike, due to their Interfaces.
      * Guess what now became a Crowbar by accident. Try registering the Wrench at the load phase to prevent things like that from happening.
      * Yes, I know that "You need to register Tools in the Load Phase"-Part wasn't there before this. Sorry about that.
      */
@@ -801,7 +803,7 @@ public class GregTech_API {
      * Register a Crowbar to extract Covers from Machines
      * Crowbars are NOT Wrenches btw.
      * <p/>
-     * You need to register Tools in the Load Phase, because otherwise the Autodetection will assign a Tool Type in certain Cases during postload (When IToolWrench or similar Interfaces are implemented).
+     * You need to register Tools in the Load Phase, because otherwise the Auto-detection will assign a Tool Type in certain Cases during postload (When IToolWrench or similar Interfaces are implemented).
      */
     public static boolean registerCrowbar(ItemStack aTool) {
         return registerTool(aTool, sCrowbarList);
@@ -809,10 +811,11 @@ public class GregTech_API {
 
     /**
      * Register a Screwdriver to interact directly with Machines and Covers
-     * Did I mention, that it is intentionally not possible to make a Multitool, which doesn't switch ItemID (like a Mode) all the time?
+     * Did I mention, that it is intentionally not possible to make a Multi-tool, which doesn't switch ItemID (like a Mode) all the time?
      * <p/>
-     * You need to register Tools in the Load Phase, because otherwise the Autodetection will assign a Tool Type in certain Cases during postload (When IToolWrench or similar Interfaces are implemented).
+     * You need to register Tools in the Load Phase, because otherwise the Auto-detection will assign a Tool Type in certain Cases during postload (When IToolWrench or similar Interfaces are implemented).
      */
+    @SuppressWarnings("UnusedReturnValue") // Retains API method signature
     public static boolean registerScrewdriver(ItemStack aTool) {
         return registerTool(aTool, sScrewdriverList);
     }
@@ -820,7 +823,7 @@ public class GregTech_API {
     /**
      * Register a Soft Hammer to interact with Machines
      * <p/>
-     * You need to register Tools in the Load Phase, because otherwise the Autodetection will assign a Tool Type in certain Cases during postload (When IToolWrench or similar Interfaces are implemented).
+     * You need to register Tools in the Load Phase, because otherwise the Auto-detection will assign a Tool Type in certain Cases during postload (When IToolWrench or similar Interfaces are implemented).
      */
     public static boolean registerSoftHammer(ItemStack aTool) {
         return registerTool(aTool, sSoftHammerList);
@@ -829,7 +832,7 @@ public class GregTech_API {
     /**
      * Register a Hard Hammer to interact with Machines
      * <p/>
-     * You need to register Tools in the Load Phase, because otherwise the Autodetection will assign a Tool Type in certain Cases during postload (When IToolWrench or similar Interfaces are implemented).
+     * You need to register Tools in the Load Phase, because otherwise the Auto-detection will assign a Tool Type in certain Cases during postload (When IToolWrench or similar Interfaces are implemented).
      */
     public static boolean registerHardHammer(ItemStack aTool) {
         return registerTool(aTool, sHardHammerList);
@@ -838,7 +841,7 @@ public class GregTech_API {
     /**
      * Register a Wire Cutter to interact with Machines
      * <p/>
-     * You need to register Tools in the Load Phase, because otherwise the Autodetection will assign a Tool Type in certain Cases during postload (When IToolWrench or similar Interfaces are implemented).
+     * You need to register Tools in the Load Phase, because otherwise the Auto-detection will assign a Tool Type in certain Cases during postload (When IToolWrench or similar Interfaces are implemented).
      */
     public static boolean registerWireCutter(ItemStack aTool) {
         return registerTool(aTool, sWireCutterList);
@@ -847,8 +850,9 @@ public class GregTech_API {
     /**
      * Register a Soldering Tool to interact with Machines
      * <p/>
-     * You need to register Tools in the Load Phase, because otherwise the Autodetection will assign a Tool Type in certain Cases during postload (When IToolWrench or similar Interfaces are implemented).
+     * You need to register Tools in the Load Phase, because otherwise the Auto-detection will assign a Tool Type in certain Cases during postload (When IToolWrench or similar Interfaces are implemented).
      */
+    @SuppressWarnings("UnusedReturnValue") // Retains API method signature
     public static boolean registerSolderingTool(ItemStack aTool) {
         return registerTool(aTool, sSolderingToolList);
     }
@@ -856,8 +860,9 @@ public class GregTech_API {
     /**
      * Register a Soldering Tin to interact with Soldering Tools
      * <p/>
-     * You need to register Tools in the Load Phase, because otherwise the Autodetection will assign a Tool Type in certain Cases during postload (When IToolWrench or similar Interfaces are implemented).
+     * You need to register Tools in the Load Phase, because otherwise the Auto-detection will assign a Tool Type in certain Cases during postload (When IToolWrench or similar Interfaces are implemented).
      */
+    @SuppressWarnings("UnusedReturnValue") // Retains API method signature
     public static boolean registerSolderingMetal(ItemStack aTool) {
         return registerTool(aTool, sSolderingMetalList);
     }
@@ -881,7 +886,7 @@ public class GregTech_API {
     @SideOnly(Side.CLIENT)
     public static void setBlockIconRegister(IIconRegister aIconRegister) {
         sBlockIcons = aIconRegister;
-    };
+    }
 
     /**
      * Sets the {@link IIconRegister} for Items Icons
