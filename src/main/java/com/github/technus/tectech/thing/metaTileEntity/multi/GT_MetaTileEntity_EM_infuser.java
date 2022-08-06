@@ -71,9 +71,6 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
     private long doChargeItemStack(IElectricItem item, ItemStack stack) {
         try {
             double euDiff = item.getMaxCharge(stack) - ElectricItem.manager.getCharge(stack);
-            if (euDiff > 0) {
-                setEUVar(getEUVar() - (getEUVar() >> 5));
-            }
             long remove = (long) Math.ceil(
                     ElectricItem.manager.charge(stack,
                             Math.min(euDiff, getEUVar())
@@ -94,7 +91,6 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
     private long doChargeItemStackRF(IEnergyContainerItem item, ItemStack stack) {
         try {
             long RF = Math.min(item.getMaxEnergyStored(stack) - item.getEnergyStored(stack), getEUVar() * mEUtoRF / 100L);
-            //if(RF>0)this.setEUVar(this.getEUVar()-this.getEUVar()>>10);
             RF = item.receiveEnergy(stack, RF > Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) RF, false);
             RF = RF * 100L / mEUtoRF;
             setEUVar(getEUVar() - RF);
