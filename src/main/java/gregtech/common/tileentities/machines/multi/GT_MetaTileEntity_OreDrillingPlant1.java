@@ -33,6 +33,11 @@ public class GT_MetaTileEntity_OreDrillingPlant1 extends GT_MetaTileEntity_OreDr
     }
 
     @Override
+    protected String getCasingName() {
+        return "Solid Steel Machine Casing";
+    }
+
+    @Override
     protected Materials getFrameMaterial() {
         return Materials.Steel;
     }
