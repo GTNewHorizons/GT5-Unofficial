@@ -440,6 +440,10 @@ public abstract class GT_MetaTileEntity_DrillerBase extends GT_MetaTileEntity_En
 
     protected abstract ItemList getCasingBlockItem();
 
+    protected String getCasingName() {
+        return null;
+    }
+
     protected abstract Materials getFrameMaterial();
 
     protected abstract int getCasingTextureIndex();

@@ -31,6 +31,11 @@ public class GT_MetaTileEntity_OilDrill3 extends GT_MetaTileEntity_OilDrillBase 
     }
 
     @Override
+    protected String getCasingName() {
+        return "Robust Tungstensteel Machine Casing";
+    }
+
+    @Override
     protected Materials getFrameMaterial() {
         return Materials.TungstenSteel;
     }
