@@ -1397,6 +1397,8 @@ public class GT_Loader_MetaTileEntities implements Runnable {//TODO CHECK CIRCUI
         makeWires(Materials.Longasssuperconductornameforuvwire                         , 2500, 2L, 4096L, 12L, gregtech.api.enums.GT_Values.V[8], false, false);
         makeWires(Materials.Longasssuperconductornameforuhvwire                        , 2520, 2L, 16384L, 16L, gregtech.api.enums.GT_Values.V[9], false, false);
         makeWires(Materials.SuperconductorUEVBase                                      , 2032, 2L, 65536L, 24L, gregtech.api.enums.GT_Values.V[10], false, false);
+        makeWires(Materials.SuperconductorUIVBase                                      , 2052, 2L, 262144L, 32L, gregtech.api.enums.GT_Values.V[11], false, false);
+        makeWires(Materials.SuperconductorUMVBase                                      , 2072, 2L, 1048576L, 32L, gregtech.api.enums.GT_Values.V[12], false, false);
 
         // Actual superconductors.
         makeWires(Materials.SuperconductorMV , 2320, 0L, 0L, 4L , gregtech.api.enums.GT_Values.V[2]  , false, true);
