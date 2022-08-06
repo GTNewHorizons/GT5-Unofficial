@@ -13,6 +13,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
@@ -68,6 +69,21 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
         eDismantleBoom = true;
     }
 
+    private boolean isItemStackFullyCharged(ItemStack stack) {
+        if (stack == null) {
+            return false;
+        }
+        Item item = stack.getItem();
+        if (stack.stackSize == 1) {
+            if (item instanceof IElectricItem) {
+                return ElectricItem.manager.getCharge(stack) >= ((IElectricItem)item).getMaxCharge(stack);
+            } else if (TecTech.hasCOFH && item instanceof IEnergyContainerItem) {
+                return ((IEnergyContainerItem)item).getEnergyStored(stack) >= ((IEnergyContainerItem)item).getMaxEnergyStored(stack);
+            }
+        }
+        return false;
+    }
+
     private long doChargeItemStack(IElectricItem item, ItemStack stack) {
         try {
             double euDiff = item.getMaxCharge(stack) - ElectricItem.manager.getCharge(stack);
@@ -118,16 +134,23 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
 
     @Override
     public boolean checkRecipe_EM(ItemStack itemStack) {
-        if (itemStack != null && itemStack.stackSize == 1) {
-            Item ofThis = itemStack.getItem();
-            if (ofThis instanceof IElectricItem) {
-                mEfficiencyIncrease = 10000;
-                mMaxProgresstime = 20;
-                return true;
-            } else if (TecTech.hasCOFH && ofThis instanceof IEnergyContainerItem) {
-                mEfficiencyIncrease = 10000;
-                mMaxProgresstime = 20;
-                return true;
+        for (GT_MetaTileEntity_Hatch_InputBus inputBus : mInputBusses) {
+            if (inputBus.mInventory != null) {
+                for (ItemStack itemStackInBus : inputBus.mInventory) {
+                    if (itemStackInBus != null) {
+                        if (itemStackInBus.stackSize == 1) {
+                            if (isItemStackFullyCharged(itemStackInBus)) {
+                                if (addOutput(itemStackInBus)) {
+                                    this.depleteInput(itemStackInBus);
+                                }
+                            } else {
+                                mEfficiencyIncrease = 10000;
+                                mMaxProgresstime = 20;
+                                return true;
+                            }
+                        }
+                    }
+                }
             }
         }
         return false;
@@ -135,22 +158,35 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
 
     @Override
     public void outputAfterRecipe_EM() {
-        ItemStack itemStack = mInventory[1];
-        if (itemStack != null && itemStack.stackSize == 1) {
-            Item ofThis = itemStack.getItem();
-            if (ofThis instanceof IElectricItem) {
-                if (doChargeItemStack((IElectricItem) ofThis, itemStack) == 0) {
-                    getBaseMetaTileEntity().disableWorking();
+        boolean itemProcessed = false;
+        for (GT_MetaTileEntity_Hatch_InputBus inputBus : mInputBusses) {
+            if (inputBus.mInventory != null) {
+                for (ItemStack itemStackInBus : inputBus.mInventory) {
+                    if (itemStackInBus != null) {
+                        Item item = itemStackInBus.getItem();
+                        if (itemStackInBus.stackSize == 1) {
+                            if (isItemStackFullyCharged(itemStackInBus)) {
+                                itemProcessed = true;
+                                if (addOutput(itemStackInBus)) {
+                                    this.depleteInput(itemStackInBus);
+                                }
+                            } else {
+                                if (item instanceof IElectricItem) {
+                                    doChargeItemStack((IElectricItem) item, itemStackInBus);
+                                    return;
+                                } else if (TecTech.hasCOFH && item instanceof IEnergyContainerItem) {
+                                    doChargeItemStackRF((IEnergyContainerItem) item, itemStackInBus);
+                                    return;
+                                }
+                            }
+                        }
+                    }
                 }
-                return;
-            } else if (TecTech.hasCOFH && ofThis instanceof IEnergyContainerItem) {
-                if (doChargeItemStackRF((IEnergyContainerItem) ofThis, itemStack) == 0) {
-                    getBaseMetaTileEntity().disableWorking();
-                }
-                return;
             }
         }
-        getBaseMetaTileEntity().disableWorking();
+        if (!itemProcessed) {
+            afterRecipeCheckFailed();
+        }
     }
 
     @Override
