@@ -1600,7 +1600,7 @@ public class GT_MachineRecipeLoader implements Runnable {
             GT_Values.NI,
             19660,
             1966080*4,
-            13900
+            13600
         );
 
         GT_Values.RA.addBlastRecipe(
@@ -1612,7 +1612,7 @@ public class GT_MachineRecipeLoader implements Runnable {
             GT_Values.NI,
             8847,
             1966080*4,
-            13900
+            13600
         ); // 0.45 * 19660 = 8847
 
         //Plasma Freezing
