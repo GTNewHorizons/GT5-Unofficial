@@ -2066,6 +2066,7 @@ public enum ItemList implements IItemContainer {
             sDrillingFluid,
             sBlueVitriol,
             sNickelSulfate,
+            sGreenVitriol,
             sToluene,
             sNitrationMixture,
             sRocketFuel,

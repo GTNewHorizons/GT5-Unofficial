@@ -1,9 +1,6 @@
 package gregtech.loaders.postload.chains;
 
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsOreAlum;
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
@@ -81,6 +78,46 @@ public class GT_BauxiteRefineChain {
             Materials.Iron.getDust(1),
             GT_Values.NI,
             new int[] {8000, 6000, 2000, 9000, 8000},
+            40,
+            120
+        );
+
+        GT_Values.RA.addChemicalBathRecipe(
+            GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Ilmenite, 1),
+            Materials.SulfuricAcid.getFluid(1000),
+            new FluidStack(ItemList.sGreenVitriol, 2000),
+            Materials.Rutile.getDust(1),
+            MaterialsOreAlum.IlmeniteSlag.getDust(1),
+            GT_Values.NI,
+            new int[] {8500, 3000},
+            420,
+            1000
+        );
+
+        GT_Values.RA.addChemicalBathRecipe(
+            GT_OreDictUnificator.get(OrePrefixes.crushed, Materials.Ilmenite, 1),
+            Materials.SulfuricAcid.getFluid(1000),
+            new FluidStack(ItemList.sGreenVitriol, 2000),
+            Materials.Rutile.getDust(1),
+            MaterialsOreAlum.IlmeniteSlag.getDust(1),
+            GT_Values.NI,
+            new int[] {8500, 6000},
+            420,
+            1000
+        );
+
+        GT_Values.RA.addCentrifugeRecipe(
+            MaterialsOreAlum.IlmeniteSlag.getDust(1),
+            GT_Values.NI,
+            GT_Values.NF,
+            GT_Values.NF,
+            Materials.Iron.getDust(1),
+            Materials.Niobium.getDust(1),
+            Materials.Tantalum.getDust(1),
+            Materials.Manganese.getDust(1),
+            Materials.Magnesium.getDust(1),
+            GT_Values.NI,
+            new int[] {8000, 1000, 2000, 5000, 6000},
             40,
             120
         );
