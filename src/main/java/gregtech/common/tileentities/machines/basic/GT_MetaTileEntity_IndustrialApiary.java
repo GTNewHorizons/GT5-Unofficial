@@ -246,6 +246,8 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                     }
                 }
 
+                int imin = i;
+
                 setQueen(null);
 
                 for(Map.Entry<GT_Utility.ItemId, Float> entry : drops.entrySet())
@@ -279,7 +281,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                 int actualdivider = useddivider;
                 this.mMaxProgresstime /= Math.min(actualdivider, timemaxdivider);
                 actualdivider /= Math.min(actualdivider, timemaxdivider);
-                for(i--; i >= 0; i--)
+                for(i--; i >= imin; i--)
                     this.mOutputItems[i].stackSize *= actualdivider;
 
                 pollinationDelay = Math.max((int)(this.mMaxProgresstime / cycles), 20); // don't run too often
