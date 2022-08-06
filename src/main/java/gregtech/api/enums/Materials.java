@@ -1995,6 +1995,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
                 Longasssuperconductornameforuvwire,
                 Longasssuperconductornameforuhvwire,
                 SuperconductorUEVBase,
+                SuperconductorUIVBase,
+                SuperconductorUMVBase,
                 Quantium,
                 RedstoneAlloy,
                 Bedrockium);
