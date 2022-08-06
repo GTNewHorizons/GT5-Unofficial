@@ -438,6 +438,17 @@ public enum OrePrefixes {
         block.mNotGeneratedItems.add(Materials.Coal);
         toolHeadArrow.mNotGeneratedItems.add(Materials.Glass);
 
+        // Botania
+        ingot.mNotGeneratedItems.add(MaterialsBotania.Manasteel);
+        ingot.mNotGeneratedItems.add(MaterialsBotania.Terrasteel);
+        ingot.mNotGeneratedItems.add(MaterialsBotania.ElvenElementium);
+        ingot.mNotGeneratedItems.add(MaterialsBotania.GaiaSpirit);
+        nugget.mNotGeneratedItems.add(MaterialsBotania.Manasteel);
+        nugget.mNotGeneratedItems.add(MaterialsBotania.Terrasteel);
+        nugget.mNotGeneratedItems.add(MaterialsBotania.ElvenElementium);
+        gem.mNotGeneratedItems.add(MaterialsBotania.ManaDiamond);
+        gem.mNotGeneratedItems.add(MaterialsBotania.BotaniaDragonstone);
+
         //-----
 
         dustImpure.mGeneratedItems.add(Materials.GraniteRed);
