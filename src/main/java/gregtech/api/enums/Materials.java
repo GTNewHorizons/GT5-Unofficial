@@ -3,6 +3,7 @@ package gregtech.api.enums;
 import cpw.mods.fml.common.Loader;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.MaterialsBotania;
 import gregtech.api.enums.TC_Aspects.TC_AspectStack;
 import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.interfaces.IMaterialHandler;
@@ -24,7 +25,6 @@ import java.util.stream.IntStream;
 
 import static gregtech.api.enums.GT_Values.M;
 import static gregtech.api.enums.GT_Values.MOD_ID_DC;
-import static gregtech.api.enums.MaterialsBotania.*;
 
 @SuppressWarnings("ALL")
 public class Materials implements IColorModulationContainer, ISubTagContainer {
@@ -1682,14 +1682,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Quartzite.mChemicalFormula = "SiO\u2082";
         CertusQuartz.mChemicalFormula = "SiO\u2082";
         SpaceTime.mChemicalFormula = "Reality itself distilled into liquid form";
-        GaiaSpirit.mChemicalFormula = "Gs";
-        Manasteel.mChemicalFormula = "Ms";
-        Livingwood.mChemicalFormula = "Lw";
-        Dreamwood.mChemicalFormula = "Dw";
-        BotaniaDragonstone.mChemicalFormula = "Dg";
-        Livingrock.mChemicalFormula = "Lv";
-        Terrasteel.mChemicalFormula = "Tr";
-        ElvenElementium.mChemicalFormula = "Ef";
     }
 
     private static void initSubTags() {
@@ -2161,13 +2153,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Forcillium.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE, SubTag.MAGICAL);
         Force.add(SubTag.CRYSTAL, SubTag.MAGICAL, SubTag.UNBURNABLE);
         Magic.add(SubTag.CRYSTAL, SubTag.MAGICAL, SubTag.UNBURNABLE);
-
-        // Botania
-        Livingrock.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-        Livingwood.add(SubTag.WOOD, SubTag.FLAMMABLE, SubTag.NO_SMELTING, SubTag.NO_SMASHING);
-        Dreamwood.add(SubTag.WOOD, SubTag.FLAMMABLE, SubTag.NO_SMELTING, SubTag.NO_SMASHING);
-        ManaDiamond.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-        BotaniaDragonstone.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
 
         Primitive.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         Basic.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
