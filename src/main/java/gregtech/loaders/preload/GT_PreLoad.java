@@ -37,7 +37,6 @@ import java.util.regex.Pattern;
 import static gregtech.GT_Mod.GT_FML_LOGGER;
 import static gregtech.api.enums.GT_Values.MOD_ID_AE;
 
-@SuppressWarnings("ALL")
 public class GT_PreLoad {
     public static void sortToTheEnd() {
         if (GT_Mod.gregtechproxy.mSortToTheEnd) {

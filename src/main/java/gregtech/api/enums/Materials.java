@@ -26,7 +26,6 @@ import static gregtech.api.enums.GT_Values.M;
 import static gregtech.api.enums.GT_Values.MOD_ID_DC;
 import static gregtech.api.enums.MaterialsBotania.*;
 
-@SuppressWarnings("ALL")
 public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     public static final List<IMaterialHandler> mMaterialHandlers = new ArrayList<>();

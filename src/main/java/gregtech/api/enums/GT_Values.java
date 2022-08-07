@@ -23,7 +23,6 @@ import java.util.Set;
  * <p/>
  * Go to "Window > Preferences > Java > Editor > Content Assist > Favorites" to set static importable Constant Classes such as this one as AutoCompleteable.
  */
-@SuppressWarnings("ALL")
 public class GT_Values {
     // unused: A, C, D, G, H, I, J, K, N, O, Q, R, S, T
 

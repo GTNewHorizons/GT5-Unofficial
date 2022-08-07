@@ -44,7 +44,6 @@ import java.util.stream.Collectors;
 
 import static gregtech.api.enums.GT_Values.MOD_ID_FR;
 
-@SuppressWarnings("ALL")
 public class GT_PostLoad {
     public static void activateOreDictHandler() {
         Stopwatch stopwatch = Stopwatch.createStarted();

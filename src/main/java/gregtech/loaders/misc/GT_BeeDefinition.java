@@ -48,7 +48,6 @@ import static gregtech.api.enums.GT_Values.MOD_ID;
 import static gregtech.api.enums.GT_Values.MOD_ID_DC;
 import static gregtech.loaders.misc.GT_BeeDefinitionReference.*;
 
-@SuppressWarnings("ALL")
 /**
  * Bride Class for Lambdas
  */

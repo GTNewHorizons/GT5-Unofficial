@@ -11,7 +11,6 @@ import gregtech.common.GT_Worldgenerator;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
-@SuppressWarnings("ALL")
 public class GT_Worldgenloader implements Runnable {
 
     public void run() {
