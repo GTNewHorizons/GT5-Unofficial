@@ -259,6 +259,7 @@ public class GT_Values {
             OWNER_UUID          = "gt.ownerUuid",            // UUID (String)
 
             // Machines
+            ACTIVE              = "gt.active",               // Boolean
             FLUID_OUT           = "gt.fluidout",             // Output Fluid
             INV_OUT             = "gt.invout",               // ItemStack
             PARALLEL            = "gt.parallel",             // Number
@@ -332,6 +333,20 @@ public class GT_Values {
      **/
     public static final byte[]
         OPOS = { 1, 0, 3, 2, 5, 4, 6};
+
+    /**
+     * [Facing,Side]->Side Mappings for Blocks, which don't face up- and downwards.
+     * 0 = bottom, 1 = top, 2 = left, 3 = front, 4 = right, 5 = back, 6 = undefined.
+     */
+    public static final byte[][] FACING_ROTATIONS = {
+        {0,1,2,3,4,5,6},
+        {0,1,2,3,4,5,6},
+        {0,1,3,5,4,2,6},
+        {0,1,5,3,2,4,6},
+        {0,1,2,4,3,5,6},
+        {0,1,4,2,5,3,6},
+        {0,1,2,3,4,5,6}
+    };
 
     /**
      * The Mod Object itself. That is the GT_Mod-Object. It's needed to open GUI's and similar.

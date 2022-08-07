@@ -1,5 +1,6 @@
 package gregtech.loaders.preload;
 
+import gregtech.api.enums.Materials;
 import gregtech.api.multitileentity.MultiTileEntityBlock;
 import gregtech.api.multitileentity.MultiTileEntityRegistry;
 import gregtech.api.multitileentity.multiblock.base.MultiBlockPart;
@@ -26,7 +27,7 @@ public class GT_Loader_MultiTileEntities implements Runnable {
             .name("Large Macerator")
             .category("Multiblock Controller")
             .setBlock(aMachine)
-            .material(Material.iron)
+            .material(Materials.Iron)
             .texture("metalwall")
             .tankCapacity(128000L)
             .register();
@@ -35,7 +36,7 @@ public class GT_Loader_MultiTileEntities implements Runnable {
             .name("Test Casing")
             .category("Multiblock Casing")
             .setBlock(aMachine)
-            .material(Material.iron)
+            .material(Materials.Cobalt)
             .texture("metalwall")
             .register();
 
