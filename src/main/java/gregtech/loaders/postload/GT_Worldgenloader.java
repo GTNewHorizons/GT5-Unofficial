@@ -160,7 +160,7 @@ public class GT_Worldgenloader implements Runnable {
         
         /*
          * TODO: custom GTNH OreMixes
-         * WARNING: NO DUPLICATS IN aName OR DEPRECATED MATERIALS IN HERE.
+         * WARNING: NO DUPLICATES IN aName OR DEPRECATED MATERIALS IN HERE.
          * Materials can be used unlimited, since achievements for Ores are turned off.
          */
         
@@ -206,10 +206,10 @@ public class GT_Worldgenloader implements Runnable {
         new GT_Worldgen_GT_Ore_Layer("ore.mix.tfgalena", true, 5, 35, 40, 4, 16, false, false, false, Materials.Galena, Materials.Silver, Materials.Lead, Materials.Cryolite);
         new GT_Worldgen_GT_Ore_Layer("ore.mix.luvtantalite", true, 20, 30, 10, 4, 16, false, false, false, Materials.Pyrolusite, Materials.Apatite, Materials.Tantalite, Materials.Pyrochlore);
         
-        //DO NOT DELETE V THIS V - this is needed so that gregtech generates its Ore Layer's first (the ones up there), which can then be transformed into "GT_Worldgen_GT_Ore_Layer_Space". Also Reflexion is slow.
+        //DO NOT DELETE V THIS V - this is needed so that gregtech generates its Ore Layer's first (the ones up there), which can then be transformed into "GT_Worldgen_GT_Ore_Layer_Space". Also, Reflexion is slow.
         try {
-            Class clazz = Class.forName("bloodasp.galacticgreg.WorldGenGaGT");
-            Constructor constructor=clazz.getConstructor();
+            Class<?> clazz = Class.forName("bloodasp.galacticgreg.WorldGenGaGT");
+            Constructor<?> constructor=clazz.getConstructor();
             Method method=clazz.getMethod("run");
             method.invoke(constructor.newInstance());
             GT_Log.out.println("Started Galactic Greg ore gen code");
