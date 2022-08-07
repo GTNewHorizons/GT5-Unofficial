@@ -604,7 +604,10 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
 
     @Override
     public EnumTemperature getTemperature() {
-        return EnumTemperature.getFromValue(getBiome().temperature + temperatureMod);
+        if(BiomeHelper.isBiomeHellish(getBiome()))
+            return EnumTemperature.HELLISH;
+        return
+            EnumTemperature.getFromValue(getBiome().temperature + temperatureMod);
     }
 
     @Override
