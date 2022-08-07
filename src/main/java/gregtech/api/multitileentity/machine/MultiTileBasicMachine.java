@@ -2,23 +2,35 @@ package gregtech.api.multitileentity.machine;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.GT_Values.NBT;
+import gregtech.api.enums.Textures;
 import gregtech.api.fluid.FluidTankGT;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.multitileentity.MultiTileEntityRegistry;
 import gregtech.api.multitileentity.base.BaseTickableMultiTileEntity;
+import gregtech.api.multitileentity.multiblock.base.MultiBlockPart;
+import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GT_Util;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidTank;
 
 import static com.google.common.primitives.Ints.saturatedCast;
+import static gregtech.api.enums.GT_Values.emptyIconContainerArray;
 
 public class MultiTileBasicMachine extends BaseTickableMultiTileEntity  {
+    private static final String TEXTURE_LOCATION = "multitileentity/machines/";
+    public IIconContainer[] mTexturesInactive = emptyIconContainerArray;
+    public IIconContainer[] mTexturesActive = emptyIconContainerArray;
+
     protected int mParallel = 1;
+    protected boolean mActive = false;
     protected long mStoredEnergy = 0;
     protected FluidTankGT[] mTanksInput = GT_Values.emptyFluidTankGT, mTanksOutput = GT_Values.emptyFluidTankGT;
     protected ItemStack[] mOutputItems = GT_Values.emptyItemStackArray;
@@ -35,13 +47,15 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity  {
     @Override
     public void writeMultiTileNBT(NBTTagCompound aNBT) {
         super.writeMultiTileNBT(aNBT);
+        if (mParallel > 0) aNBT.setInteger(NBT.PARALLEL, mParallel);
+        if (mActive) aNBT.setBoolean(NBT.ACTIVE, mActive);
 
     }
-
     @Override
     public void readMultiTileNBT(NBTTagCompound aNBT) {
         super.readMultiTileNBT(aNBT);
         if (aNBT.hasKey(NBT.PARALLEL)) mParallel = Math.max(1, aNBT.getInteger(NBT.PARALLEL));
+        if (aNBT.hasKey(NBT.ACTIVE)) mActive = aNBT.getBoolean(NBT.ACTIVE);
 
         mInventory = getDefaultInventory(aNBT);
         if(mInventory != null) {
@@ -69,6 +83,61 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity  {
 
     }
 
+    @Override
+    public void loadTextureNBT(NBTTagCompound aNBT) {
+        // Loading the registry
+        final String textureName = aNBT.getString(NBT.TEXTURE);
+        mTextures = new IIconContainer[]{
+            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/bottom"),
+            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/top"),
+            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/left"),
+            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/front"),
+            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/right"),
+            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/side")
+        };
+        mTexturesInactive = new IIconContainer[]{
+            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/inactive/bottom"),
+            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/inactive/top"),
+            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/inactive/left"),
+            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/inactive/front"),
+            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/inactive/right"),
+            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/inactive/back")
+        };
+        mTexturesActive = new IIconContainer[]{
+            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/active/bottom"),
+            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/active/top"),
+            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/active/left"),
+            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/active/front"),
+            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/active/right"),
+            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/active/back")
+        };
+
+    }
+
+    @Override
+    public void copyTextures() {
+        // Loading an instance
+        final TileEntity tCanonicalTileEntity = MultiTileEntityRegistry.getCanonicalTileEntity(getMultiTileEntityRegistryID(), getMultiTileEntityID());
+        if(tCanonicalTileEntity instanceof MultiTileBasicMachine){
+            mTextures = ((MultiTileBasicMachine)tCanonicalTileEntity).mTextures;
+            mTexturesInactive = ((MultiTileBasicMachine)tCanonicalTileEntity).mTexturesInactive;
+            mTexturesActive   = ((MultiTileBasicMachine)tCanonicalTileEntity).mTexturesActive;
+        } else {
+            mTextures = mTexturesInactive = mTexturesActive = emptyIconContainerArray;
+        }
+    }
+
+
+
+    @Override
+    public ITexture[] getTexture(Block aBlock, byte aSide, boolean isActive, int aRenderPass) {
+        return new ITexture[]{
+            TextureFactory.of(mTextures[GT_Values.FACING_ROTATIONS[mFacing][aSide]], GT_Util.getRGBaArray(mRGBa)),
+            TextureFactory.of((mActive ? mTexturesActive : mTexturesInactive)[GT_Values.FACING_ROTATIONS[mFacing][aSide]])
+        };
+    }
+
+
     /*
      * Fluids
      */
@@ -93,11 +162,6 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity  {
         return tSize > 0 ? new ItemStack[tSize] : GT_Values.emptyItemStackArray;
     }
 
-    @Override
-    public ITexture[] getTexture(Block aBlock, byte aSide, boolean isActive, int aRenderPass) {
-        // TODO: MTE(Texture)
-        return new ITexture[0];
-    }
 
     @Override
     public void setLightValue(byte aLightValue) {

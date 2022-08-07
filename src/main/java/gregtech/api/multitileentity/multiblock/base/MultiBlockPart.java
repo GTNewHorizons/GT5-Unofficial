@@ -1,12 +1,17 @@
 package gregtech.api.multitileentity.multiblock.base;
 
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.multitileentity.MultiTileEntityRegistry;
+import gregtech.api.multitileentity.base.BaseMultiTileEntity;
 import gregtech.api.multitileentity.base.BaseNontickableMultiTileEntity;
 import gregtech.api.multitileentity.interfaces.IMultiBlockController;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_BreakBlock;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_CoverBehaviorBase;
+import gregtech.api.util.GT_Util;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.render.GT_MultiTexture;
@@ -187,10 +192,34 @@ public class MultiBlockPart extends BaseNontickableMultiTileEntity implements IM
         mMode = aData;
     }
 
+
+    @Override
+    public void loadTextureNBT(NBTTagCompound aNBT) {
+        // Loading the registry
+        final String textureName = aNBT.getString(NBT.TEXTURE);
+        mTextures = new IIconContainer[] {
+            new Textures.BlockIcons.CustomIcon("multitileentity/multiblockparts/"+textureName+"/bottom"),
+            new Textures.BlockIcons.CustomIcon("multitileentity/multiblockparts/"+textureName+"/top"),
+            new Textures.BlockIcons.CustomIcon("multitileentity/multiblockparts/"+textureName+"/side"),
+            new Textures.BlockIcons.CustomIcon("multitileentity/multiblockparts/"+textureName+"/overlay/bottom"),
+            new Textures.BlockIcons.CustomIcon("multitileentity/multiblockparts/"+textureName+"/overlay/top"),
+            new Textures.BlockIcons.CustomIcon("multitileentity/multiblockparts/"+textureName+"/overlay/side")
+        };
+    }
+
+    @Override
+    public void copyTextures() {
+        // Loading an instance
+        final TileEntity tCanonicalTileEntity = MultiTileEntityRegistry.getCanonicalTileEntity(getMultiTileEntityRegistryID(), getMultiTileEntityID());
+        if(tCanonicalTileEntity instanceof MultiBlockPart)
+            mTextures = ((MultiBlockPart)tCanonicalTileEntity).mTextures;
+    }
+
+
     @Override
     public ITexture[] getTexture(Block aBlock, byte aSide, boolean isActive, int aRenderPass) {
-        // TODO: MTE(Texture)
-//        final ITexture baseTexture = MACHINE_CASINGS[1][2];
+        // For normal parts - texture comes from BaseMTE; overlay based on current mode
+        // TODO(MTE) - For Advanced parts they might come from somewhere else
         final ITexture baseTexture = TextureFactory.of(super.getTexture(aBlock, aSide, isActive, aRenderPass));
         if(mMode != 0 && aSide == mFacing) {
             if(mMode == getModeOrdinal(ITEM_IN))

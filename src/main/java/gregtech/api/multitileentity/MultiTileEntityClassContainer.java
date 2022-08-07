@@ -81,8 +81,23 @@ public class MultiTileEntityClassContainer {
 
     /* These methods are builder methods for commonly used NBT tags */
 
-    public MultiTileEntityClassContainer material(Material aMaterial) {
+    // Need a base texture for the MTE machine, and then a separate texture set for the machine/active overlays
+
+    public MultiTileEntityClassContainer material(Materials aMaterial) {
+        // Sets the material, and the color from the material, if not already set
         mParameters.setString(NBT.MATERIAL, aMaterial.toString());
+        if (!mParameters.hasKey(NBT.COLOR))
+            mParameters.setInteger(NBT.COLOR, GT_Util.getRGBInt(aMaterial.getRGBA()));
+        return this;
+    }
+
+    public MultiTileEntityClassContainer color(int aRPG) {
+        mParameters.setInteger(NBT.COLOR, aRPG);
+        return this;
+    }
+
+    public MultiTileEntityClassContainer color(short[] aRPGA) {
+        mParameters.setInteger(NBT.COLOR, GT_Util.getRGBInt(aRPGA));
         return this;
     }
 

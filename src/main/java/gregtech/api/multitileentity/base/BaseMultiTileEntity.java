@@ -70,7 +70,8 @@ import static gregtech.api.enums.GT_Values.VALID_SIDES;
 
 public abstract class BaseMultiTileEntity extends CoverableTileEntity implements IMultiTileEntity, IHasWorldObjectAndCoords, IRenderedBlock, IGregtechWailaProvider {
 
-    public IIconContainer[] mTextures = emptyIconContainerArray, mTexturesFront = emptyIconContainerArray;
+    public IIconContainer[] mTextures = emptyIconContainerArray;
+//    public IIconContainer[] mTexturesFront = emptyIconContainerArray;
 
     // Makes a Bounding Box without having to constantly specify the Offset Coordinates.
     protected static final float[] PX_BOX = {0, 0, 0, 1, 1, 1};
@@ -86,6 +87,7 @@ public abstract class BaseMultiTileEntity extends CoverableTileEntity implements
     protected boolean mIsPainted = false;
     protected byte mFacing = SIDE_WEST;  // Default to WEST, so it renders facing Left in the inventory
     protected byte mColor;
+    protected int mRGBa = GT_Values.UNCOLORED;
     private short mMTEID = GT_Values.W, mMTERegistry = GT_Values.W;
     private String mCustomName = null;
     private String mOwnerName = "";
@@ -121,6 +123,25 @@ public abstract class BaseMultiTileEntity extends CoverableTileEntity implements
     }
 
     @Override
+    public void loadTextureNBT(NBTTagCompound aNBT) {
+        // Loading the registry
+        final String textureName = aNBT.getString(NBT.TEXTURE);
+        mTextures = new IIconContainer[] {
+            new Textures.BlockIcons.CustomIcon("multitileentity/base/"+textureName+"/bottom"),
+            new Textures.BlockIcons.CustomIcon("multitileentity/base/"+textureName+"/top"),
+            new Textures.BlockIcons.CustomIcon("multitileentity/base/"+textureName+"/side"),
+        };
+    }
+
+    @Override
+    public void copyTextures() {
+        // Loading an instance
+        final TileEntity tCanonicalTileEntity = MultiTileEntityRegistry.getCanonicalTileEntity(getMultiTileEntityRegistryID(), getMultiTileEntityID());
+        if(tCanonicalTileEntity instanceof  BaseMultiTileEntity)
+            mTextures = ((BaseMultiTileEntity)tCanonicalTileEntity).mTextures;
+    }
+
+    @Override
     public void readFromNBT(NBTTagCompound aNBT) {
         // Check if this is a World/Chunk Loading Process calling readFromNBT.
         if (mMTEID == GT_Values.W || mMTERegistry == GT_Values.W) {
@@ -147,6 +168,8 @@ public abstract class BaseMultiTileEntity extends CoverableTileEntity implements
         // And now everything else.
         try {
             if (aNBT.hasKey(NBT.MATERIAL)) mMaterial = Materials.get(aNBT.getString(NBT.MATERIAL));
+            if (aNBT.hasKey(NBT.COLOR)) mRGBa = aNBT.getInteger(NBT.COLOR);
+
             mOwnerName = aNBT.getString(NBT.OWNER);
             try {
                 mOwnerUuid = UUID.fromString(aNBT.getString(NBT.OWNER_UUID));
@@ -160,18 +183,9 @@ public abstract class BaseMultiTileEntity extends CoverableTileEntity implements
             readMultiTileNBT(aNBT);
 
             if(GregTech_API.sBlockIcons == null && aNBT.hasKey(NBT.TEXTURE)) {
-                // Loading the registry
-                final String textureName = aNBT.getString(NBT.TEXTURE);
-                mTextures = new IIconContainer[] {
-                    new Textures.BlockIcons.CustomIcon("machines/multiblockparts/"+textureName+"/bottom"),
-                    new Textures.BlockIcons.CustomIcon("machines/multiblockparts/"+textureName+"/top"),
-                    new Textures.BlockIcons.CustomIcon("machines/multiblockparts/"+textureName+"/side"),
-                };
+                loadTextureNBT(aNBT);
             } else {
-                // Loading an instance
-                final TileEntity tCanonicalTileEntity = MultiTileEntityRegistry.getCanonicalTileEntity(getMultiTileEntityRegistryID(), getMultiTileEntityID());
-                if(tCanonicalTileEntity instanceof  BaseMultiTileEntity)
-                    mTextures = ((BaseMultiTileEntity)tCanonicalTileEntity).mTextures;
+                copyTextures();
             }
 
             if (mCoverData == null || mCoverData.length != 6) mCoverData = new ISerializableObject[6];
@@ -333,7 +347,7 @@ public abstract class BaseMultiTileEntity extends CoverableTileEntity implements
     @Override public ITexture[] getTexture(Block aBlock, byte aSide, boolean isActive, int aRenderPass) {
         // Top, bottom or side
         aSide = (byte)Math.min(aSide, 2);
-        return new ITexture[]{TextureFactory.of(mTextures[aSide])};
+        return new ITexture[]{TextureFactory.of(mTextures[aSide], GT_Util.getRGBaArray(mRGBa))};
     }
 
     @Override
@@ -410,7 +424,7 @@ public abstract class BaseMultiTileEntity extends CoverableTileEntity implements
 
     @Override
     public int getPaint() {
-        return GT_Values.UNCOLORED;
+        return this.mRGBa;
     }
 
     @Override
