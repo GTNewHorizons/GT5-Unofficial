@@ -1,60 +1,60 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.CompressedSpacetimeCoilLevel;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
 import com.github.technus.tectech.util.CommonValues;
+import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.GregTech_API;
+import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IHeatingCoil;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.common.blocks.GT_Block_Casings5;
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
+
+import java.util.function.BiConsumer;
+import java.util.function.BiPredicate;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
-import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_decay.URANIUM_INGOT_MASS_DIFF;
-import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_decay.URANIUM_MASS_TO_EU_INSTANT;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.util.GT_StructureUtility.ofCoil;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
-/**
- * Created by danie_000 on 17.12.2016.
- */
+
 public class GT_MetaTileEntity_EM_bhg extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
     //region variables
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
     private static Textures.BlockIcons.CustomIcon ScreenON;
 
-    //todo CHECK VALUES
-    private static final double NEUTRONIUM_BLOCK_MASS          = 4.1E17;
-    private static final double NEUTRONIUM_BLOCK_ATOM_COUNT    = 2.4478671E44;
-    private static final double NEUTRONIUM_BLOCK_TO_EU_INSTANT = URANIUM_MASS_TO_EU_INSTANT * NEUTRONIUM_BLOCK_MASS / (URANIUM_INGOT_MASS_DIFF * 1.78266191e-36);//~ 5.314e40
-    private static final double NEUTRON_TO_EU_INSTANT          = NEUTRONIUM_BLOCK_TO_EU_INSTANT / NEUTRONIUM_BLOCK_ATOM_COUNT;//~ 0.00021708694
+    CompressedSpacetimeCoilLevel mCompressionField;
 
-    public boolean glassDome = false;
-    //endregion
 
-    //Time dillatation - to slow down the explosion thing but REALLY REDUCE POWER OUTPUT
-    //Startcodes to startup
-    //per dim disable thingies
-
-    //region structure actual
     private static final IStructureDefinition<GT_MetaTileEntity_EM_bhg> STRUCTURE_DEFINITION = IStructureDefinition
             .<GT_MetaTileEntity_EM_bhg>builder()
             .addShape("main", transpose(new String[][]{
                     {"                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "               C C               ", "               C C               ", "               C C               ", "            CCCCCCCCC            ", "               C C               ", "            CCCCCCCCC            ", "               C C               ", "               C C               ", "               C C               ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 "},
                     {"                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "               C C               ", "               C C               ", "               C C               ", "               C C               ", "              DDDDD              ", "             DDCDCDD             ", "         CCCCDCCDCCDCCCC         ", "             DDDDDDD             ", "         CCCCDCCDCCDCCCC         ", "             DDCDCDD             ", "              DDDDD              ", "               C C               ", "               C C               ", "               C C               ", "               C C               ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 "},
-                    {"                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "               C C               ", "               C C               ", "               C C               ", "                D                ", "                D                ", "             DDDDDDD             ", "            DD     DD            ", "            D  EEE  D            ", "       CCC  D EAAAE D  CCC       ", "          DDD EAAAE DDD          ", "       CCC  D EAAAE D  CCC       ", "            D  EEE  D            ", "            DD     DD            ", "             DDDDDDD             ", "                D                ", "                D                ", "               C C               ", "               C C               ", "               C C               ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 "},
+                    {"                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "               C C               ", "               C C               ", "               C C               ", "                D                ", "                D                ", "             DDDDDDD             ", "            DD     DD            ", "            D  EEE  D            ", "       CCC  D EBBBE D  CCC       ", "          DDD EBBBE DDD          ", "       CCC  D EBBBE D  CCC       ", "            D  EEE  D            ", "            DD     DD            ", "             DDDDDDD             ", "                D                ", "                D                ", "               C C               ", "               C C               ", "               C C               ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 "},
                     {"                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "               C C               ", "               C C               ", "                D                ", "                D                ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "      CC                 CC      ", "        DD             DD        ", "      CC                 CC      ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                D                ", "                D                ", "               C C               ", "               C C               ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 "},
                     {"                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "               C C               ", "              CCCCC              ", "                D                ", "                B                ", "                B                ", "                                 ", "                                 ", "                                 ", "                                 ", "      C                   C      ", "     CC                   CC     ", "      CDBB             BBDC      ", "     CC                   CC     ", "      C                   C      ", "                                 ", "                                 ", "                                 ", "                                 ", "                B                ", "                B                ", "                D                ", "              CCCCC              ", "               C C               ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 "},
                     {"                                 ", "                                 ", "                                 ", "                                 ", "               C C               ", "               C C               ", "                D                ", "             EEEBEEE             ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "       E                 E       ", "       E                 E       ", "    CC E                 E CC    ", "      DB                 BD      ", "    CC E                 E CC    ", "       E                 E       ", "       E                 E       ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "             EEEBEEE             ", "                D                ", "               C C               ", "               C C               ", "                                 ", "                                 ", "                                 ", "                                 "},
@@ -67,9 +67,9 @@ public class GT_MetaTileEntity_EM_bhg extends GT_MetaTileEntity_MultiblockBase_E
                     {"             CCCCCCC             ", "               C C               ", "             DDDDDDD             ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "  D                           D  ", "  D                           D  ", "CCD                           DCC", "  D                           D  ", "CCD                           DCC", "  D                           D  ", "  D                           D  ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "             DDDDDDD             ", "               C C               ", "               C C               "},
                     {"            CCHHHHHCC            ", "              DDDDD              ", "            DD     DD            ", "                                 ", "                                 ", "       E                 E       ", "                                 ", "     E                     E     ", "                                 ", "                                 ", "                                 ", "                                 ", "  D                           D  ", "  D                           D  ", " D                             D ", "CD                             DC", " D                             D ", "CD                             DC", " D                             D ", "  D                           D  ", "  D                           D  ", "                                 ", "                                 ", "                                 ", "                                 ", "     E                     E     ", "                                 ", "       E                 E       ", "                                 ", "                                 ", "            DD     DD            ", "              DDDDD              ", "               C C               "},
                     {"            CHHHHHHHC            ", "             DDCDCDD             ", "            D  EEE  D            ", "                                 ", "      C                   C      ", "       E                 E       ", "    C                       C    ", "     E                     E     ", "                                 ", "                                 ", "                                 ", "                                 ", "  D                           D  ", " D                             D ", " D                             D ", "CCE                           ECC", " DE                           ED ", "CCE                           ECC", " D                             D ", " D                             D ", "  D                           D  ", "                                 ", "                                 ", "                                 ", "                                 ", "     E                     E     ", "    C                       C    ", "       E                 E       ", "      C                   C      ", "                                 ", "            D  EEE  D            ", "             DDCDCDD             ", "               C C               "},
-                    {"            CHHFFFHHC            ", "         CCCCDCCDCCDCCCC         ", "       CCC  D EAAAE D  CCC       ", "      CC                 CC      ", "     CC                   CC     ", "    CC E                 E CC    ", "   CC                       CC   ", "  CC E                     E CC  ", "  C                           C  ", " CC                           CC ", " C                             C ", " C                             C ", "CCD                           DCC", "CD                             DC", "CCE                           ECC", "CCA                           ACC", "CDA                           ADC", "CCA                           ACC", "CCE                           ECC", "CD                             DC", "CCD                           DCC", " C                             C ", " C                             C ", " CC                           CC ", "  C                           C  ", "  CC E                     E CC  ", "   CC                       CC   ", "    CC E                 E CC    ", "     CC                   CC     ", "      CC                 CC      ", "       CCC  D EAAAE D  CCC       ", "         CCCCDCCDCCDCCCC         ", "            CCCCCCCCC            "},
-                    {"            CHHF~FHHC            ", "             DDDDDDD             ", "          DDD EAAAE DDD          ", "        DD             DD        ", "      CDBB             BBDC      ", "      DB                 BD      ", "    CDB                   BDC    ", "    DB                     BD    ", "   DB                       BD   ", "   DB                       BD   ", "  D                           D  ", "  D                           D  ", "  D                           D  ", " D                             D ", " DE                           ED ", "CDA                           ADC", " DA                           AD ", "CDA                           ADC", " DE                           ED ", " D                             D ", "  D                           D  ", "  D                           D  ", "  D                           D  ", "   DB                       BD   ", "   DB                       BD   ", "    DB                     BD    ", "    CDB                   BDC    ", "      DB                 BD      ", "      CDBB             BBDC      ", "        DD             DD        ", "          DDD EAAAE DDD          ", "             DDDDDDD             ", "               C C               "},
-                    {"            CHHFFFHHC            ", "         CCCCDCCDCCDCCCC         ", "       CCC  D EAAAE D  CCC       ", "      CC                 CC      ", "     CC                   CC     ", "    CC E                 E CC    ", "   CC                       CC   ", "  CC E                     E CC  ", "  C                           C  ", " CC                           CC ", " C                             C ", " C                             C ", "CCD                           DCC", "CD                             DC", "CCE                           ECC", "CCA                           ACC", "CDA                           ADC", "CCA                           ACC", "CCE                           ECC", "CD                             DC", "CCD                           DCC", " C                             C ", " C                             C ", " CC                           CC ", "  C                           C  ", "  CC E                     E CC  ", "   CC                       CC   ", "    CC E                 E CC    ", "     CC                   CC     ", "      CC                 CC      ", "       CCC  D EAAAE D  CCC       ", "         CCCCDCCDCCDCCCC         ", "            CCCCCCCCC            "},
+                    {"            CHHFFFHHC            ", "         CCCCDCCDCCDCCCC         ", "       CCC  D EBBBE D  CCC       ", "      CC                 CC      ", "     CC                   CC     ", "    CC E                 E CC    ", "   CC                       CC   ", "  CC E                     E CC  ", "  C                           C  ", " CC                           CC ", " C                             C ", " C                             C ", "CCD                           DCC", "CD                             DC", "CCE                           ECC", "CCB                           BCC", "CDB                           BDC", "CCB                           BCC", "CCE                           ECC", "CD                             DC", "CCD                           DCC", " C                             C ", " C                             C ", " CC                           CC ", "  C                           C  ", "  CC E                     E CC  ", "   CC                       CC   ", "    CC E                 E CC    ", "     CC                   CC     ", "      CC                 CC      ", "       CCC  D EBBBE D  CCC       ", "         CCCCDCCDCCDCCCC         ", "            CCCCCCCCC            "},
+                    {"            CHHF~FHHC            ", "             DDDDDDD             ", "          DDD EBBBE DDD          ", "        DD             DD        ", "      CDBB             BBDC      ", "      DB                 BD      ", "    CDB                   BDC    ", "    DB                     BD    ", "   DB                       BD   ", "   DB                       BD   ", "  D                           D  ", "  D                           D  ", "  D                           D  ", " D                             D ", " DE                           ED ", "CDB                           BDC", " DB                           BD ", "CDB                           BDC", " DE                           ED ", " D                             D ", "  D                           D  ", "  D                           D  ", "  D                           D  ", "   DB                       BD   ", "   DB                       BD   ", "    DB                     BD    ", "    CDB                   BDC    ", "      DB                 BD      ", "      CDBB             BBDC      ", "        DD             DD        ", "          DDD EBBBE DDD          ", "             DDDDDDD             ", "               C C               "},
+                    {"            CHHFFFHHC            ", "         CCCCDCCDCCDCCCC         ", "       CCC  D EBBBE D  CCC       ", "      CC                 CC      ", "     CC                   CC     ", "    CC E                 E CC    ", "   CC                       CC   ", "  CC E                     E CC  ", "  C                           C  ", " CC                           CC ", " C                             C ", " C                             C ", "CCD                           DCC", "CD                             DC", "CCE                           ECC", "CCB                           BCC", "CDB                           BDC", "CCB                           BCC", "CCE                           ECC", "CD                             DC", "CCD                           DCC", " C                             C ", " C                             C ", " CC                           CC ", "  C                           C  ", "  CC E                     E CC  ", "   CC                       CC   ", "    CC E                 E CC    ", "     CC                   CC     ", "      CC                 CC      ", "       CCC  D EBBBE D  CCC       ", "         CCCCDCCDCCDCCCC         ", "            CCCCCCCCC            "},
                     {"            CHHHHHHHC            ", "             DDCDCDD             ", "            D  EEE  D            ", "                                 ", "      C                   C      ", "       E                 E       ", "    C                       C    ", "     E                     E     ", "                                 ", "                                 ", "                                 ", "                                 ", "  D                           D  ", " D                             D ", " D                             D ", "CCE                           ECC", " DE                           ED ", "CCE                           ECC", " D                             D ", " D                             D ", "  D                           D  ", "                                 ", "                                 ", "                                 ", "                                 ", "     E                     E     ", "    C                       C    ", "       E                 E       ", "      C                   C      ", "                                 ", "            D  EEE  D            ", "             DDCDCDD             ", "               C C               "},
                     {"            CCHHHHHCC            ", "              DDDDD              ", "            DD     DD            ", "                                 ", "                                 ", "       E                 E       ", "                                 ", "     E                     E     ", "                                 ", "                                 ", "                                 ", "                                 ", "  D                           D  ", "  D                           D  ", " D                             D ", "CD                             DC", " D                             D ", "CD                             DC", " D                             D ", "  D                           D  ", "  D                           D  ", "                                 ", "                                 ", "                                 ", "                                 ", "     E                     E     ", "                                 ", "       E                 E       ", "                                 ", "                                 ", "            DD     DD            ", "              DDDDD              ", "               C C               "},
                     {"             CCCCCCC             ", "               C C               ", "             DDDDDDD             ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "  D                           D  ", "  D                           D  ", "CCD                           DCC", "  D                           D  ", "CCD                           DCC", "  D                           D  ", "  D                           D  ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "             DDDDDDD             ", "               C C               ", "               C C               "},
@@ -82,12 +82,11 @@ public class GT_MetaTileEntity_EM_bhg extends GT_MetaTileEntity_MultiblockBase_E
                     {"                                 ", "                                 ", "                                 ", "                                 ", "               C C               ", "               C C               ", "                D                ", "             EEEBEEE             ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "       E                 E       ", "       E                 E       ", "    CC E                 E CC    ", "      DB                 BD      ", "    CC E                 E CC    ", "       E                 E       ", "       E                 E       ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "             EEEBEEE             ", "                D                ", "               C C               ", "               C C               ", "                                 ", "                                 ", "                                 ", "                                 "},
                     {"                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "               C C               ", "              CCCCC              ", "                D                ", "                B                ", "                B                ", "                                 ", "                                 ", "                                 ", "                                 ", "      C                   C      ", "     CC                   CC     ", "      CDBB             BBDC      ", "     CC                   CC     ", "      C                   C      ", "                                 ", "                                 ", "                                 ", "                                 ", "                B                ", "                B                ", "                D                ", "              CCCCC              ", "               C C               ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 "},
                     {"                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "               C C               ", "               C C               ", "                D                ", "                D                ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "      CC                 CC      ", "        DD             DD        ", "      CC                 CC      ", "                                 ", "                                 ", "                                 ", "                D                ", "                D                ", "                D                ", "                D                ", "               C C               ", "               C C               ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 "},
-                    {"                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "               C C               ", "               C C               ", "               C C               ", "                D                ", "                D                ", "             DDDDDDD             ", "            DD     DD            ", "            D  EEE  D            ", "       CCC  D EAAAE D  CCC       ", "          DDD EAAAE DDD          ", "       CCC  D EAAAE D  CCC       ", "            D  EEE  D            ", "            DD     DD            ", "             DDDDDDD             ", "                D                ", "                D                ", "               C C               ", "               C C               ", "               C C               ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 "},
+                    {"                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "               C C               ", "               C C               ", "               C C               ", "                D                ", "                D                ", "             DDDDDDD             ", "            DD     DD            ", "            D  EEE  D            ", "       CCC  D EBBBE D  CCC       ", "          DDD EBBBE DDD          ", "       CCC  D EBBBE D  CCC       ", "            D  EEE  D            ", "            DD     DD            ", "             DDDDDDD             ", "                D                ", "                D                ", "               C C               ", "               C C               ", "               C C               ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 "},
                     {"                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "               C C               ", "               C C               ", "               C C               ", "               C C               ", "              DDDDD              ", "             DDCDCDD             ", "         CCCCDCCDCCDCCCC         ", "             DDDDDDD             ", "         CCCCDCCDCCDCCCC         ", "             DDCDCDD             ", "              DDDDD              ", "               C C               ", "               C C               ", "               C C               ", "               C C               ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 "},
                     {"                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "               C C               ", "               C C               ", "               C C               ", "            CCCCCCCCC            ", "               C C               ", "            CCCCCCCCC            ", "               C C               ", "               C C               ", "               C C               ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 "}
             }))
-            .addElement('A', ofBlock(sBlockCasingsTT, 10))
-            .addElement('B', ofBlock(sBlockCasingsTT, 11))
+            .addElement('B', ofCoil(GT_MetaTileEntity_EM_bhg::setCompressedSpacetimeFieldCoilValue, GT_MetaTileEntity_EM_bhg::getCompressedSpacetimeCoilFieldValue))
             .addElement('C', ofBlock(sBlockCasingsTT, 12))
             .addElement('D', ofBlock(sBlockCasingsTT, 13))
             .addElement('E', ofBlock(sBlockCasingsTT, 14))
@@ -95,6 +94,69 @@ public class GT_MetaTileEntity_EM_bhg extends GT_MetaTileEntity_MultiblockBase_E
             .addElement('H', ofHatchAdderOptional(GT_MetaTileEntity_EM_bhg::addClassicToMachineList, textureOffset, 1, sBlockCasingsTT, 0))
             .addElement('F', ofHatchAdderOptional(GT_MetaTileEntity_EM_bhg::addElementalToMachineList, textureOffset + 4, 2, sBlockCasingsTT, 4))
             .build();
+
+    public static <T> IStructureElement<T> ofCoil(BiConsumer<T, CompressedSpacetimeCoilLevel> aHeatingCoilSetter, Function<T, CompressedSpacetimeCoilLevel> aHeatingCoilGetter) {
+        return ofCoil((t, l) -> {
+            aHeatingCoilSetter.accept(t, l);
+            return true;
+        }, aHeatingCoilGetter);
+    }
+
+    public interface ICompressedSpacetimeCoil {
+
+        CompressedSpacetimeCoilLevel getCompressedSpacetimeLevel(int meta);
+        default CompressedSpacetimeCoilLevel getCompressedSpacetimeLevel(ItemStack stack) {
+            return getCompressedSpacetimeLevel(stack.getItemDamage());
+        }
+
+        void setOnCoilCheck(Consumer<gregtech.api.interfaces.ICompressedSpacetimeCoil> callback);
+        Consumer<gregtech.api.interfaces.ICompressedSpacetimeCoil> getOnCoilCheck();
+    }
+
+    public static <T> IStructureElement<T> ofCoil(BiPredicate<T, CompressedSpacetimeCoilLevel> aHeatingCoilSetter, Function<T, CompressedSpacetimeCoilLevel> aCompressedSpacetimeGetter) {
+        if (aHeatingCoilSetter == null || aCompressedSpacetimeGetter == null) {
+            throw new IllegalArgumentException();
+        }
+        return new IStructureElement<T>() {
+            @Override
+            public boolean check(T t, World world, int x, int y, int z) {
+                Block block = world.getBlock(x, y, z);
+                if (!(block instanceof IHeatingCoil))
+                    return false;
+                CompressedSpacetimeCoilLevel existingLevel = aCompressedSpacetimeGetter.apply(t),
+                        newLevel = ((ICompressedSpacetimeCoil) block).getCompressedSpacetimeLevel(world.getBlockMetadata(x, y, z));
+                if (existingLevel == null || existingLevel == CompressedSpacetimeCoilLevel.None) {
+                    return aHeatingCoilSetter.test(t, newLevel);
+                } else {
+                    return newLevel == existingLevel;
+                }
+            }
+
+            @Override
+            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
+                StructureLibAPI.hintParticle(world, x, y, z, GregTech_API.sBlockCasings5, getMeta(trigger));
+                return true;
+            }
+
+            private int getMeta(ItemStack trigger) {
+                return GT_Block_Casings5.getMetaFromCoilHeat(CompressedSpacetimeCoilLevel.getFromTier((byte) Math.min(CompressedSpacetimeCoilLevel.getMaxTier(), Math.max(0, trigger.stackSize - 1))));
+            }
+
+            @Override
+            public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
+                return world.setBlock(x, y, z, GregTech_API.sBlockCasings5, getMeta(trigger), 3);
+            }
+        };
+    }
+
+
+    public CompressedSpacetimeCoilLevel getCompressedSpacetimeCoilFieldValue() {
+        return mCompressionField;
+    }
+
+    public void setCompressedSpacetimeFieldCoilValue(CompressedSpacetimeCoilLevel aCoilLevel) {
+        mCompressionField = aCoilLevel;
+    }
 
     @Override
     public IStructureDefinition<GT_MetaTileEntity_EM_bhg> getStructure_EM() {
@@ -116,115 +178,6 @@ public class GT_MetaTileEntity_EM_bhg extends GT_MetaTileEntity_MultiblockBase_E
         super(aName);
     }
 
-    /**
-     * Black hole event horizon radius calculator
-     *
-     * @param massKg mass in kg
-     * @return radius in meters
-     */
-    private static double getSchwarzschildRadius(double massKg) {
-        return massKg * 1.48523238761875E-27;
-    }
-
-    /**
-     * Black hole event horizon surface area calculator
-     *
-     * @param massKg mass in kg
-     * @return area in meters^2
-     */
-    private static double getSchwarzschildArea(double massKg) {
-        return Math.pow(getSchwarzschildRadius(massKg), 2) * 12.566370614359172;
-    }
-
-    /**
-     * Black hole event horizon temperature calculator
-     *
-     * @param massKg mass in kg
-     * @return temperature in K
-     */
-    private static double getTemperature(double massKg) {
-        return 2.841438513199716E-9 / (2.3159488515170722E-32 * massKg);
-    }
-
-    /**
-     * Black hole luminosity calculator
-     *
-     * @param massKg mass in kg
-     * @return luminosity in watts
-     */
-    private static double getLuminosity(double massKg) {
-        return getSchwarzschildArea(massKg) * 5.670373e-8 * Math.pow(getTemperature(massKg), 4);
-    }
-
-    /**
-     * Black hole acretion disk luminosity calculator
-     *
-     * @param massKgPer1s mass injection kg per s
-     * @return luminosity in watts
-     */
-    private static double getAcretionDiskLuminosity(double massKgPer1s) {
-        return massKgPer1s * 7.48962648947348E15;
-    }
-
-    /**
-     * Black hole gravity field calculator, should be used for gravity blasting
-     *
-     * @param massKg     mass in kg
-     * @param distanceSq distance squared in meters
-     * @return gravity field
-     */
-    private static double getGravityField(double massKg, double distanceSq) {
-        return massKg * 6.6743015e-11 / distanceSq;
-    }
-
-    /**
-     * Black hole containment force calculator
-     *
-     * @param massKg   mass in kg
-     * @param radiusSq radius squared in meters
-     * @return force in newtons
-     */
-    private static double getContainmentForce(double massKg, double radiusSq) {
-        return Math.pow(massKg, 2) * 6.6743015e-11 / radiusSq;
-    }
-
-    /**
-     * Black hole containment pressure calculator F/s, should be used for bhg initial release explosion?
-     *
-     * @param massKg   mass in kg
-     * @param radiusSq radius squared in meters
-     * @return pressure in pascals
-     */
-    private static double getContainmentPressure(double massKg, double radiusSq) {
-        return getContainmentForce(massKg, radiusSq) / (12.566370614359172 * radiusSq);
-    }
-
-    /**
-     * Black hole containment energy calculator, assuming F*s, and 100% efficient gravity force field
-     *
-     * @param massKg mass in kg
-     * @return power in watts
-     */
-    private static double getContainmentPower(double massKg) {
-        return Math.pow(massKg, 2) * 8.387174624097334E-10;
-    }
-
-    /**
-     * Black hole power balance, zero at mass ~= 2.5525e10 (T~=4.8067e12)
-     *
-     * @param massKg      mass in kg
-     * @param massKgPer1s mass injection kg per s
-     * @return power in watts
-     */
-    @Deprecated
-    private static double getContainmentPowerBalance(double massKg, double massKgPer1s) {
-        return getLuminosity(massKg) + getAcretionDiskLuminosity(massKgPer1s) - getContainmentPower(massKg);
-    }
-
-    //todo compaction energy 8 * Long.MAx_VALUE?
-
-    //todo neutronium decay gen? 0.0007186885 mass diff - actually compute hydrogen amount...
-
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_EM_bhg(mName);
@@ -233,7 +186,7 @@ public class GT_MetaTileEntity_EM_bhg extends GT_MetaTileEntity_MultiblockBase_E
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
         if (structureCheck_EM("main", 16, 16, 0)) {
-            glassDome = false;
+            System.out.println(mCompressionField.getCompressedVolume());
             return true;
         }
         return false;
