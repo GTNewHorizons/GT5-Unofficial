@@ -1735,6 +1735,12 @@ public class DreamCraftRecipeLoader {
 
         //region items
 
+        // Parametrizer Memory Card
+        GT_Values.RA.addCircuitAssemblerRecipe(new ItemStack[]{
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Basic, 2),
+                GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Gold, 4),
+        },  Materials.Plastic.getMolten(72), CustomItemList.parametrizerMemory.get(1), 200, 480, true);
+
         //LV Tesla Capacitor
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                 GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Tin, 4),
