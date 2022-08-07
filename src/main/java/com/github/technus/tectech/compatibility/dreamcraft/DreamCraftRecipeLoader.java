@@ -152,35 +152,33 @@ public class DreamCraftRecipeLoader {
         }, Materials.Osmium.getMolten(1296), CustomItemList.eM_Containment.get(1), 800, 500000);
 
         //Hollow Casing
-        TT_recipeAdder.addResearchableAssemblylineRecipe(CustomItemList.eM_Containment.get(1),
-                12000, 32, 500000, 6, new ItemStack[]{
+        GT_Values.RA.addAssemblylineRecipe(CustomItemList.eM_Containment.get(1), 7500, new ItemStack[]{
                         CustomItemList.eM_Containment.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Neutronium, 2),
+                        GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Europium, 2),
                         GT_OreDictUnificator.get(OrePrefixes.plateQuadruple, Materials.Plutonium, 4),
                         GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Lead, 8),
-                        GT_OreDictUnificator.get(OrePrefixes.plate, getOrDefault("BlackPlutonium", Materials.Americium), 16),
-                        GT_OreDictUnificator.get(OrePrefixes.screw, getOrDefault("Quantium", Materials.Neutronium), 16),
+                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Uranium, 16),
+                        GT_OreDictUnificator.get(OrePrefixes.screw, getOrDefault("Quantium", Materials.Europium), 16),
                 }, new FluidStack[]{
                         getOrDefault("Trinium", Materials.Osmium).getMolten(1296),
                         Materials.Osmium.getMolten(1296),
                         new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000),
                         Materials.Argon.getGas(1000),
-                }, CustomItemList.eM_Hollow.get(2), 200, 2000000);
+                }, CustomItemList.eM_Hollow.get(2), 200, 200000);
 
         //EM Coil
-        TT_recipeAdder.addResearchableAssemblylineRecipe(CustomItemList.eM_Hollow.get(1),
-                48000, 128, 1000000, 16, new ItemStack[]{
+        GT_Values.RA.addAssemblylineRecipe(CustomItemList.eM_Hollow.get(1), 7500, new ItemStack[]{
                         CustomItemList.eM_Hollow.get(1),
-                        ItemList.Casing_Fusion_Coil.get(4),
-                        ItemList.Casing_Coil_NaquadahAlloy.get(4),
-                        GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Neutronium, 64),
-                        GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Neutronium, 64),
+                        ItemList.Casing_Fusion_Coil.get(2),
+                        ItemList.Casing_Coil_NaquadahAlloy.get(2),
+                        GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Europium, 64),
+                        GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Europium, 64),
                 }, new FluidStack[]{
                         Materials.Glass.getMolten(2304),
                         Materials.Silicone.getMolten(1872),
                         new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000),
                         getOrDefault("Trinium", Materials.Osmium).getMolten(1296),
-                }, CustomItemList.eM_Coil.get(4), 800, 2000000);
+                }, CustomItemList.eM_Coil.get(4), 800, 200000);
 
         // Infinite Oil Rig
         TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.OilDrill3.get(1),
@@ -771,17 +769,16 @@ public class DreamCraftRecipeLoader {
                 }, CustomItemList.Machine_Multi_Scanner.get(1), 24000, 500000);
 
         //Multi Infuser
-        TT_recipeAdder.addResearchableAssemblylineRecipe(CustomItemList.Machine_Multi_Transformer.get(1),
-                192000, 512, 2000000, 32, new ItemStack[]{
+        GT_Values.RA.addAssemblylineRecipe(CustomItemList.Machine_Multi_Transformer.get(1), 7500, new ItemStack[]{
                         CustomItemList.Machine_Multi_Transformer.get(1),
                         CustomItemList.eM_Coil.get(8),
                         CustomItemList.eM_Power.get(8),
                         GT_OreDictUnificator.get(OrePrefixes.screw, Materials.NeodymiumMagnetic, 16),
                 }, new FluidStack[]{
                         Materials.Electrum.getMolten(2592),
-                        Materials.Neutronium.getMolten(1872),
+                        Materials.Europium.getMolten(1872),
                         new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000),
-                }, CustomItemList.Machine_Multi_Infuser.get(1), 8000, 2000000);
+                }, CustomItemList.Machine_Multi_Infuser.get(1), 8000, 200000);
 
 
         item_parts_UHV_assline_recipes();
