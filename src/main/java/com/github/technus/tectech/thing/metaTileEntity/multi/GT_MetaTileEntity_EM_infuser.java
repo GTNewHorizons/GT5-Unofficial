@@ -11,6 +11,7 @@ import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
@@ -22,6 +23,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fluids.FluidStack;
 
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
@@ -71,7 +73,7 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
 
     private boolean isItemStackFullyCharged(ItemStack stack) {
         if (stack == null) {
-            return false;
+            return true;
         }
         Item item = stack.getItem();
         if (stack.stackSize == 1) {
@@ -81,7 +83,15 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
                 return ((IEnergyContainerItem)item).getEnergyStored(stack) >= ((IEnergyContainerItem)item).getMaxEnergyStored(stack);
             }
         }
-        return false;
+        return true;
+    }
+
+    private boolean isItemStackFullyRepaired(ItemStack stack) {
+        if (stack == null) {
+            return true;
+        }
+        Item item = stack.getItem();
+        return !item.isRepairable() || item.getMaxDamage(stack) <= 0 || item.getDamage(stack) <= 0;
     }
 
     private long doChargeItemStack(IElectricItem item, ItemStack stack) {
@@ -138,8 +148,9 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
             if (inputBus.mInventory != null) {
                 for (ItemStack itemStackInBus : inputBus.mInventory) {
                     if (itemStackInBus != null) {
-                        if (itemStackInBus.stackSize == 1) {
-                            if (isItemStackFullyCharged(itemStackInBus)) {
+                        Item item = itemStackInBus.getItem();
+                        if (itemStackInBus.stackSize == 1 && item != null) {
+                            if (isItemStackFullyCharged(itemStackInBus) && isItemStackFullyRepaired(itemStackInBus)) {
                                 if (addOutput(itemStackInBus)) {
                                     this.depleteInput(itemStackInBus);
                                 }
@@ -164,13 +175,25 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
                 for (ItemStack itemStackInBus : inputBus.mInventory) {
                     if (itemStackInBus != null) {
                         Item item = itemStackInBus.getItem();
-                        if (itemStackInBus.stackSize == 1) {
-                            if (isItemStackFullyCharged(itemStackInBus)) {
+                        if (itemStackInBus.stackSize == 1 && item != null) {
+                            if (isItemStackFullyCharged(itemStackInBus) && isItemStackFullyRepaired(itemStackInBus)) {
                                 itemProcessed = true;
                                 if (addOutput(itemStackInBus)) {
                                     this.depleteInput(itemStackInBus);
                                 }
                             } else {
+                                if (item.isRepairable()) {
+                                    FluidStack uum = getStoredFluids().stream().filter(fluid -> Materials.UUMatter.getFluid(1).isFluidEqual(fluid)).findAny().orElse(null);
+                                    if (uum != null) {
+                                        int maxRepairedDamage = Math.max(item.getDamage(itemStackInBus), 1000);
+                                        int actualRepairedDamage = Math.min(item.getDamage(itemStackInBus) - maxRepairedDamage, 0);
+                                        if (getEUVar() >= actualRepairedDamage) {
+                                            item.setDamage(itemStackInBus, actualRepairedDamage);
+                                            depleteInput(new FluidStack(Materials.UUMatter.mFluid, Math.max(actualRepairedDamage / 100, 1)));
+                                            setEUVar(Math.min(getEUVar() - actualRepairedDamage, 0));
+                                        }
+                                    }
+                                }
                                 if (item instanceof IElectricItem) {
                                     doChargeItemStack((IElectricItem) item, itemStackInBus);
                                     return;
