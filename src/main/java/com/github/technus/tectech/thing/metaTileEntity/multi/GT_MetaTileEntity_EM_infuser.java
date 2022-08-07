@@ -215,10 +215,10 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
     @Override
     public GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.infuser.name"))   // Machine Type: Network Switch With QoS
+        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.infuser.name"))   // Machine Type: Energy Infuser
                 .addInfo(translateToLocal("gt.blockmachines.multimachine.em.infuser.desc.0"))  // Controller block of the Energy Infuser
-                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.infuser.desc.1"))  // Can be used to charge items in the controller GUI
-                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.infuser.desc.2"))  // Has a loss of 3.125%
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.infuser.desc.1"))  // Can be used to charge items (lossless)
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.em.infuser.desc.2"))  // Can be fed with UU-Matter to repair items
                 .addSeparator()
                 .beginStructureBlock(3, 5, 3, false)
                 .addController(translateToLocal("tt.keyword.Structure.FrontCenter3rd"))    // Controller: Front 3rd layer center
