@@ -53,7 +53,6 @@ import java.util.stream.Collectors;
 
 import static codechicken.nei.recipe.RecipeInfo.getGuiOffset;
 
-@SuppressWarnings("all")
 public class GT_NEI_DefaultHandler extends RecipeMapHandler {
     public static final int sOffsetX = 5;
     public static final int sOffsetY = 11;
