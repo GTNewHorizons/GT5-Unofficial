@@ -2,21 +2,47 @@ package gregtech;
 
 import appeng.api.AEApi;
 import com.google.common.base.Stopwatch;
-import cpw.mods.fml.common.*;
-import cpw.mods.fml.common.event.*;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLModIdMappingEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerAboutToStartEvent;
+import cpw.mods.fml.common.event.FMLServerStartedEvent;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.relauncher.Side;
 import gregtech.api.GregTech_API;
 import gregtech.api.enchants.Enchantment_EnderDamage;
 import gregtech.api.enchants.Enchantment_Radioactivity;
-import gregtech.api.enums.*;
+import gregtech.api.enums.ConfigCategories;
+import gregtech.api.enums.Element;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.internal.IGT_Mod;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.ReverseShapedRecipe;
 import gregtech.api.objects.ReverseShapelessRecipe;
 import gregtech.api.objects.XSTR;
 import gregtech.api.threads.GT_Runnable_MachineBlockUpdate;
-import gregtech.api.util.*;
+import gregtech.api.util.GT_Assemblyline_Server;
+import gregtech.api.util.GT_Forestry_Compat;
+import gregtech.api.util.GT_ItsNotMyFaultException;
+import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GT_Log;
+import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_RecipeRegistrator;
+import gregtech.api.util.GT_SpawnEventHandler;
+import gregtech.api.util.GT_Utility;
 import gregtech.client.GT_TooltipEventHandler;
 import gregtech.common.GT_DummyWorld;
 import gregtech.common.GT_Network;
@@ -37,8 +63,26 @@ import gregtech.loaders.load.GT_SonictronLoader;
 import gregtech.loaders.misc.GT_Achievements;
 import gregtech.loaders.misc.GT_Bees;
 import gregtech.loaders.misc.GT_CoverLoader;
-import gregtech.loaders.postload.*;
-import gregtech.loaders.preload.*;
+import gregtech.loaders.postload.GT_BlockResistanceLoader;
+import gregtech.loaders.postload.GT_BookAndLootLoader;
+import gregtech.loaders.postload.GT_CraftingRecipeLoader;
+import gregtech.loaders.postload.GT_CropLoader;
+import gregtech.loaders.postload.GT_ExtremeDieselFuelLoader;
+import gregtech.loaders.postload.GT_ItemMaxStacksizeLoader;
+import gregtech.loaders.postload.GT_MachineRecipeLoader;
+import gregtech.loaders.postload.GT_MinableRegistrator;
+import gregtech.loaders.postload.GT_PostLoad;
+import gregtech.loaders.postload.GT_RecyclerBlacklistLoader;
+import gregtech.loaders.postload.GT_ScrapboxDropLoader;
+import gregtech.loaders.postload.GT_Worldgenloader;
+import gregtech.loaders.preload.GT_Loader_CircuitBehaviors;
+import gregtech.loaders.preload.GT_Loader_ItemData;
+import gregtech.loaders.preload.GT_Loader_Item_Block_And_Fluid;
+import gregtech.loaders.preload.GT_Loader_MetaTileEntities;
+import gregtech.loaders.preload.GT_Loader_MultiTileEntities;
+import gregtech.loaders.preload.GT_Loader_OreDictionary;
+import gregtech.loaders.preload.GT_Loader_OreProcessing;
+import gregtech.loaders.preload.GT_PreLoad;
 import gregtech.nei.IMCForNEI;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
@@ -58,14 +102,18 @@ import net.minecraftforge.oredict.OreDictionary;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.*;
-import java.util.*;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Locale;
+import java.util.Map;
 import java.util.function.Predicate;
 
 import static gregtech.api.GregTech_API.registerCircuitProgrammer;
 import static gregtech.api.enums.GT_Values.MOD_ID_FR;
 
-@Mod(modid = "gregtech", name = "GregTech", version = "MC1710", useMetadata = false,
+@Mod(modid = "gregtech", name = "GregTech", version = "MC1710",
         guiFactory = "gregtech.client.GT_GuiFactory",
         dependencies = " required-after:IC2;" +
                 " required-after:structurelib;" +
@@ -109,8 +157,10 @@ public class GT_Mod implements IGT_Mod {
 
     @Deprecated // Keep for use in BaseMetaTileEntity
     public static final int VERSION = 509, SUBVERSION = 40;
+    @SuppressWarnings("DeprecatedIsStillUsed") // Need initialization until it is deleted
     @Deprecated
     public static final int TOTAL_VERSION = calculateTotalGTVersion(VERSION, SUBVERSION);
+    @Deprecated
     public static final int REQUIRED_IC2 = 624;
     @Mod.Instance("gregtech")
     public static GT_Mod instance;
@@ -130,24 +180,20 @@ public class GT_Mod implements IGT_Mod {
     }
 
     public GT_Mod() {
-        try {
-            Class.forName("ic2.core.IC2").getField("enableOreDictCircuit").set(null, Boolean.FALSE);
-        } catch (Throwable ignored) {}
-        try {
-            Class.forName("ic2.core.IC2").getField("enableCraftingBucket").set(null, Boolean.FALSE);
-        } catch (Throwable ignored) {}
-        try {
-            Class.forName("ic2.core.IC2").getField("enableEnergyInStorageBlockItems").set(null, Boolean.FALSE);
-        } catch (Throwable ignored) {}
         GT_Values.GT = this;
         GT_Values.DW = new GT_DummyWorld();
         GT_Values.NW = new GT_Network();
-        GregTech_API.sRecipeAdder = GT_Values.RA = new GT_RecipeAdder();
+        GT_Values.RA = new GT_RecipeAdder();
+        //noinspection deprecation// Need run-time initialization
+        GregTech_API.sRecipeAdder = GT_Values.RA;
 
+        //noinspection ResultOfMethodCallIgnored// Suspicious likely pointless
         Textures.BlockIcons.VOID.name();
+        //noinspection ResultOfMethodCallIgnored// Suspicious likely pointless
         Textures.ItemIcons.VOID.name();
     }
 
+    @SuppressWarnings("unused") // TODO: Delete this method
     public static int calculateTotalGTVersion(int minorVersion) {
         return calculateTotalGTVersion(VERSION, minorVersion);
     }
@@ -245,6 +291,7 @@ public class GT_Mod implements IGT_Mod {
         }
 
         if (Loader.isModLoaded(MOD_ID_FR))
+            //noinspection InstantiationOfUtilityClass//TODO: Refactor GT_Bees with proper state handling
             new GT_Bees();
 
         // Disable Low Grav regardless of config if Cleanroom is disabled.
@@ -303,12 +350,10 @@ public class GT_Mod implements IGT_Mod {
 
         gregtechproxy.onPostLoad();
 
-
-        for (int i = 1; i < GregTech_API.METATILEENTITIES.length; i++) {
-            if (i >= GregTech_API.METATILEENTITIES.length)
-                break;
-            if (GregTech_API.METATILEENTITIES[i] != null) {
-                GT_Log.out.println("META " + i + " " + GregTech_API.METATILEENTITIES[i].getMetaName());
+        final int bound = GregTech_API.METATILEENTITIES.length;
+        for (int i1 = 1; i1 < bound; i1++) {
+            if (GregTech_API.METATILEENTITIES[i1] != null) {
+                GT_Log.out.printf("META %d %s\n", i1, GregTech_API.METATILEENTITIES[i1].getMetaName());
             }
         }
 
@@ -400,9 +445,11 @@ public class GT_Mod implements IGT_Mod {
          * modifications.
          */
 
+        @SuppressWarnings("UnstableApiUsage") // Stable enough for this project
         Stopwatch stopwatch = Stopwatch.createStarted();
         GT_Log.out.println("GT_Mod: Adding buffered Recipes.");
         GT_ModHandler.stopBufferingCraftingRecipes();
+        //noinspection UnstableApiUsage// Stable enough for this project
         GT_FML_LOGGER.info("Executed delayed Crafting Recipes (" + stopwatch.stop() + "). Have a Cake.");
 
         GT_Log.out.println("GT_Mod: Saving Lang File.");
@@ -523,6 +570,7 @@ public class GT_Mod implements IGT_Mod {
         }
         GT_Log.out.println("GT_Mod: Smelting");
 
+        //noinspection unchecked// Deal with legacy Minecraft raw types
         FurnaceRecipes.smelting().getSmeltingList().values().forEach(k -> tStacks.add((ItemStack) k));
 
         if (gregtechproxy.mCraftingUnification) {
@@ -602,6 +650,7 @@ public class GT_Mod implements IGT_Mod {
         GT_Recipe.reInit();
         try {
             for (Map<gregtech.api.objects.GT_ItemStack, ?> gt_itemStackMap : GregTech_API.sItemStackMappings) {
+                //noinspection rawtypes,unchecked// Deal with legacy Minecraft raw types,rawtypes
                 GT_Utility.reMap((Map) gt_itemStackMap);
             }
         } catch (Throwable e) {
