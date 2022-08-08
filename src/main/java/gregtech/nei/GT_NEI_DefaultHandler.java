@@ -377,7 +377,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                     Power originalPower = getPowerFromRecipeMap();
                     originalPower.computePowerUsageAndDuration(recipe.mEUt, recipe.mDuration);
                     String powerVoltage = originalPower.getVoltageString();
-                    if (!powerVoltage.equals("unspecified")) {
+                    if (!(originalPower instanceof UnspecifiedEUPower)) {
                         drawLine(lineCounter, GT_Utility.trans("228", "Original voltage: ") + powerVoltage);
                         lineCounter++;
                     }
