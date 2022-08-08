@@ -1,14 +1,13 @@
 package gregtech.api.enums;
 
-import gregtech.api.util.GT_Log;
-import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.client.Minecraft;
-import org.json.JSONObject;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
-public enum GuiColors
-{	
+import gregtech.api.util.GT_Log;
+import gregtech.GT_Mod;
+
+public enum GuiColors {	
 	//RGB Colors: Name and default value
 	oneByOne 						(0x404040),
 	twoByTwo 						(0x404040),
@@ -81,60 +80,31 @@ public enum GuiColors
 	private final String root;
 	private final int color;
 
-	GuiColors()
-	{
+	GuiColors() {
 		this.root = "GT5U.gui.color";
 		this.color = 0x000000;
 	}
 
-	GuiColors(final int hex)
-	{
+	GuiColors(final int hex) {
 		this.root = "GT5U.gui.color";
 		this.color = hex;
 	}
 
-	public int getColor()
-	{
-		String hex = getStringFromJson();
+	public int getColor() {
 		int color = this.color;
+		String hex = "";
 
-		if (!hex.isEmpty())
-		{
-			try
-			{	
-				color = Integer.parseUnsignedInt(hex, 16);
+		if (FMLCommonHandler.instance().getSide() == Side.CLIENT && GT_Mod.jsonGuiColors != null) {
+            hex = GT_Mod.jsonGuiColors.getString(this.root + "." + this.toString());
+        	
+        	try {	
+				if (!hex.isEmpty()) {color = Integer.parseUnsignedInt(hex, 16);}
 			}
-			catch (final NumberFormatException e)
-			{
+			catch (final NumberFormatException e) {
 				GT_Log.err.println("Couldn't format color correctly for: " + this.root + " -> " + hex);
 			}
-		}
+        }
+
 		return color;
-	}
-	
-	public String getStringFromJson()
-	{	
-		ResourceLocation jsonConfig = new ResourceLocation("gregtech","textures/guiColors.json");
-		String colorCode = "";
-
-		try
-		{
-	        BufferedInputStream bis = new BufferedInputStream(Minecraft.getMinecraft().getResourceManager().getResource(jsonConfig).getInputStream());
-	        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-			
-			for (int result = bis.read(); result != -1; result = bis.read())
-			{
-                bos.write((byte)result);
-            }
-
-            JSONObject json = new JSONObject(bos.toString("UTF-8"));
-            colorCode = json.getString(this.root + "." + this.toString());
-		}
-		catch (Exception e)
-		{
-			GT_Log.err.println(e);
-		}
-
-		return colorCode;
 	}
 }

@@ -6,6 +6,7 @@ import cpw.mods.fml.common.*;
 import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gregtech.api.enchants.Enchantment_EnderDamage;
 import gregtech.api.enchants.Enchantment_Radioactivity;
@@ -37,6 +38,7 @@ import gregtech.loaders.load.GT_SonictronLoader;
 import gregtech.loaders.misc.GT_Achievements;
 import gregtech.loaders.misc.GT_Bees;
 import gregtech.loaders.misc.GT_CoverLoader;
+import gregtech.loaders.misc.GT_JsonLoader;
 import gregtech.loaders.postload.*;
 import gregtech.loaders.preload.*;
 import gregtech.nei.IMCForNEI;
@@ -122,6 +124,8 @@ public class GT_Mod implements IGT_Mod {
     public static final String aTextIC2 = "ic2_";
     public static final Logger GT_FML_LOGGER = LogManager.getLogger("GregTech GTNH");
 
+    @SideOnly(Side.CLIENT)
+    public static GT_JsonLoader jsonGuiColors;
 
     static {
         if ((509 != GregTech_API.VERSION) || (509 != GT_ModHandler.VERSION) || (509 != GT_OreDictUnificator.VERSION) || (509 != GT_Recipe.VERSION) || (509 != GT_Utility.VERSION) || (509 != GT_RecipeRegistrator.VERSION) || (509 != Element.VERSION) || (509 != Materials.VERSION) || (509 != OrePrefixes.VERSION)) {
@@ -173,6 +177,7 @@ public class GT_Mod implements IGT_Mod {
 
         if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
             MinecraftForge.EVENT_BUS.register(new ExtraIcons());
+            jsonGuiColors = new GT_JsonLoader("textures/guiColors.json");
         }
 
         Configuration tMainConfig = GT_PreLoad.getConfiguration(aEvent.getModConfigurationDirectory());
@@ -431,7 +436,7 @@ public class GT_Mod implements IGT_Mod {
         GT_PostLoad.identifyAnySteam();
 
         achievements = new GT_Achievements();
-
+        
         ReverseShapedRecipe.runReverseRecipes();
         ReverseShapelessRecipe.runReverseRecipes();
 
