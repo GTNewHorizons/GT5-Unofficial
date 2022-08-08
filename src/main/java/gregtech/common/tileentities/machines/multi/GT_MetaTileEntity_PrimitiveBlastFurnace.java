@@ -32,6 +32,7 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
     public volatile int mUpdate = 5;
     public int mProgresstime = 0;
     public boolean mMachine = false;
+    private boolean mChimneyBlocked = false;
 
     public ItemStack[] mOutputItems = new ItemStack[OUTPUT_SLOTS];
 
@@ -185,15 +186,18 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
                     if ((xDir + i != 0) || (j != 0) || (zDir + k != 0)) {
                         if ((i != 0) || (j == -1) || (k != 0)) {
                             if (!isCorrectCasingBlock(getBaseMetaTileEntity().getBlockOffset(xDir + i, j, zDir + k)) || !isCorrectCasingMetaID(getBaseMetaTileEntity().getMetaIDOffset(xDir + i, j, zDir + k))) {
+                                mChimneyBlocked = false;
                                 return false;
                             }
                         } else if ((!GT_Utility.arrayContains(getBaseMetaTileEntity().getBlockOffset(xDir + i, j, zDir + k), Blocks.lava, Blocks.flowing_lava, null)) && (!getBaseMetaTileEntity().getAirOffset(xDir + i, j, zDir + k))) {
+                            mChimneyBlocked = true;
                             return false;
                         }
                     }
                 }
             }
         }
+        mChimneyBlocked = false;
         return true;
     }
 
@@ -211,7 +215,6 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
                            long aTimer) {
         final int lavaX =
             aBaseMetaTileEntity.getOffsetX(aBaseMetaTileEntity.getBackFacing(), 1);
-        final short lavaY = aBaseMetaTileEntity.getYCoord();
         final int lavaZ =
             aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1);
         if ((aBaseMetaTileEntity.isClientSide()) && (aBaseMetaTileEntity.isActive())) {
@@ -220,7 +223,7 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
                 0.3D, 0D).setIdentifier(ParticleFX.LARGE_SMOKE).setPosition(lavaX + XSTR_INSTANCE.nextFloat(), aBaseMetaTileEntity.getOffsetY(aBaseMetaTileEntity.getBackFacing(), 1), lavaZ + XSTR_INSTANCE.nextFloat()).setWorld(getBaseMetaTileEntity().getWorld()).run();
         }
         if (aBaseMetaTileEntity.isServerSide()) {
-            if (this.mUpdate-- == 0) {
+            if (--this.mUpdate == 0) {
                 this.mMachine = checkMachine();
             }
             if (this.mMachine) {
@@ -242,6 +245,7 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
             }
 
             aBaseMetaTileEntity.setActive((this.mMaxProgresstime > 0) && (this.mMachine));
+            final short lavaY = aBaseMetaTileEntity.getYCoord();
             if (aBaseMetaTileEntity.isActive()) {
                 if (aBaseMetaTileEntity.getAir(lavaX, lavaY, lavaZ)) {
                     aBaseMetaTileEntity.getWorld().setBlock(lavaX, lavaY,
@@ -254,14 +258,21 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
                     this.mUpdate = 1;
                 }
             } else {
-                if (aBaseMetaTileEntity.getBlock(lavaX, lavaY, lavaZ) == Blocks.lava) {
-                    aBaseMetaTileEntity.getWorld().setBlock(lavaX, lavaY, lavaZ,
-                        Blocks.air, 0, 2);
+                Block lowerLava = aBaseMetaTileEntity.getBlock(lavaX, lavaY,
+                    lavaZ);
+                Block upperLava = aBaseMetaTileEntity.getBlock(lavaX,
+                    lavaY + 1, lavaZ);
+                if (mChimneyBlocked && lowerLava == Blocks.air && upperLava == Blocks.air && aBaseMetaTileEntity.getAir(lavaX, lavaY + 2, lavaZ)) {
                     this.mUpdate = 1;
                 }
-                if (aBaseMetaTileEntity.getBlock(lavaX, lavaY + 1, lavaZ) == Blocks.lava) {
-                    aBaseMetaTileEntity.getWorld().setBlock(lavaX, lavaY + 1, lavaZ,
-                        Blocks.air, 0, 2);
+                if (lowerLava == Blocks.lava) {
+                    aBaseMetaTileEntity.getWorld().setBlock(lavaX, lavaY,
+                        lavaZ, Blocks.air, 0, 2);
+                    this.mUpdate = 1;
+                }
+                if (upperLava == Blocks.lava) {
+                    aBaseMetaTileEntity.getWorld().setBlock(lavaX, lavaY + 1,
+                        lavaZ, Blocks.air, 0, 2);
                     this.mUpdate = 1;
                 }
             }
