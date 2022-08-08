@@ -171,7 +171,7 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
 
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        String casings = getCasingBlockItem().get(0).getDisplayName();
+        String casings = getCasingName() != null ? getCasingName() : "Casing";
 
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Miner")
