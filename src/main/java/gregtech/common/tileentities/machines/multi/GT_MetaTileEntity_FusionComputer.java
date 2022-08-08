@@ -360,6 +360,10 @@ public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity
                 this.mEUStore = (int) aBaseMetaTileEntity.getStoredEU();
                 checkRecipe(mInventory[1]);
             }
+            if (mUpdated) {
+                mUpdate = 50;
+                mUpdated = false;
+            }
             if (--mUpdate == 0 || --mStartUpCheck == 0) {
                 checkStructure(true, aBaseMetaTileEntity);
             }
