@@ -3,6 +3,7 @@ package gregtech.api.enums;
 import cpw.mods.fml.common.Loader;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.MaterialsBotania;
 import gregtech.api.enums.TC_Aspects.TC_AspectStack;
 import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.interfaces.IMaterialHandler;
@@ -24,7 +25,6 @@ import java.util.stream.IntStream;
 
 import static gregtech.api.enums.GT_Values.M;
 import static gregtech.api.enums.GT_Values.MOD_ID_DC;
-import static gregtech.api.enums.MaterialsBotania.*;
 
 @SuppressWarnings("ALL")
 public class Materials implements IColorModulationContainer, ISubTagContainer {
@@ -853,6 +853,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Longasssuperconductornameforuvwire                              = new Materials( 986, TextureSet.SET_METALLIC       ,   1.0F,      0,  3, 1|2                , 224,210,   7,   0,   "Longasssuperconductornameforuvwire"                            ,   "Superconductor Base UV"       ,     0,       0,     9900,  9900,  true,  false,  1,   1,   1, Dyes.dyeYellow     , 1, Arrays.asList(new MaterialStack(Naquadria, 4), new MaterialStack(Osmiridium, 3), new MaterialStack(Europium, 1), new MaterialStack(Samarium, 1)), Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 21)));
     public static Materials Longasssuperconductornameforuhvwire                             = new Materials( 985, TextureSet.SET_SHINY          ,   1.0F,      0,  3, 1|2                ,  38,129, 189,   0,   "Longasssuperconductornameforuhvwire"                           ,   "Superconductor Base UHV"      ,     0,       0,     10800,  10800,  true,  false,  1,   1,   1, Dyes.dyeWhite      , 1, Arrays.asList(new MaterialStack(Draconium, 6), new MaterialStack(CosmicNeutronium, 7), new MaterialStack(Tritanium, 5), new MaterialStack(Americium, 6)), Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 24)));
     public static Materials SuperconductorUEVBase                                           = new Materials( 974, TextureSet.SET_SHINY          ,   1.0F,      0,  3, 1|2                ,  174, 8,   8,   0,   "SuperconductorUEVBase"                                         ,   "Superconductor Base UEV"      ,     0,       0,     11700,  11800,  true,  false,  1,   1,   1, Dyes.dyeWhite, Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 27)));
+    public static Materials SuperconductorUIVBase                                           = new Materials( 131, TextureSet.SET_SHINY          ,   1.0F,      0,  3, 1|2                ,  229, 88,   177,   0,   "SuperconductorUIVBase"                                         ,   "Superconductor Base UIV"      ,     0,       0,     12700,  12700,  true,  false,  1,   1,   1, Dyes.dyeWhite, Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 34)));
+    public static Materials SuperconductorUMVBase                                           = new Materials( 134, TextureSet.SET_SHINY          ,   1.0F,      0,  3, 1|2                ,  181, 38,   205,   0,   "SuperconductorUMVBase"                                         ,   "Superconductor Base UMV"      ,     0,       0,     13600,  13600,  true,  false,  1,   1,   1, Dyes.dyeWhite, Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 40)));
 
     // Superconductors.
     public static Materials SuperconductorMV      = new Materials( -1, TextureSet.SET_SHINY       ,   1.0F,      0,  0, 0                ,  85, 85,  85,   0,   "SuperconductorMV"   ,   "Superconductor MV"       ,     0,       0,     -1,  -1,  false,  false,  1,   1,   1, Dyes.dyeGray       , Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 6 )));
@@ -864,6 +866,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials SuperconductorUV      = new Materials( -1, TextureSet.SET_SHINY       ,   1.0F,      0,  0, 0                , 224,210,   7,   0,   "SuperconductorUV"   ,   "Superconductor UV"       ,     0,       0,     -1,  -1,  false,  false,  1,   1,   1, Dyes.dyeYellow     , Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 42)));
     public static Materials SuperconductorUHV     = new Materials( -1, TextureSet.SET_SHINY       ,   1.0F,      0,  0, 0                ,  38,129, 189,   0,   "Superconductor"     ,   "Superconductor UHV"      ,     0,       0,     -1,  -1,  false,  false,  1,   1,   1, Dyes.dyeWhite      , Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 48)));
     public static Materials SuperconductorUEV     = new Materials( -1, TextureSet.SET_SHINY       ,   1.0F,      0,  0, 0                , 174,  8,   8,   0,   "SuperconductorUEV"  ,   "Superconductor UEV"      ,     0,       0,     -1,  -1,  false,  false,  1,   1,   1, Dyes.dyeWhite      , Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 54)));
+    public static Materials SuperconductorUIV     = new Materials( -1, TextureSet.SET_SHINY       ,   1.0F,      0,  0, 0                , 229,  88,   177,   0,   "SuperconductorUIV"  ,   "Superconductor UIV"      ,     0,       0,     -1,  -1,  false,  false,  1,   1,   1, Dyes.dyeWhite      , Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 60)));
+    public static Materials SuperconductorUMV     = new Materials( -1, TextureSet.SET_SHINY       ,   1.0F,      0,  0, 0                , 181,  38,   205,   0,   "SuperconductorUMV"  ,   "Superconductor UMV"      ,     0,       0,     -1,  -1,  false,  false,  1,   1,   1, Dyes.dyeWhite      , Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 66)));
 
     public static Materials SuperCoolant = new MaterialBuilder( -1, TextureSet.SET_DULL,"Super Coolant").setRGB(2, 91, 111).addFluid().constructMaterial().setLiquidTemperature(1);
 
@@ -1678,14 +1682,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Quartzite.mChemicalFormula = "SiO\u2082";
         CertusQuartz.mChemicalFormula = "SiO\u2082";
         SpaceTime.mChemicalFormula = "Reality itself distilled into liquid form";
-        GaiaSpirit.mChemicalFormula = "Gs";
-        Manasteel.mChemicalFormula = "Ms";
-        Livingwood.mChemicalFormula = "Lw";
-        Dreamwood.mChemicalFormula = "Dw";
-        BotaniaDragonstone.mChemicalFormula = "Dg";
-        Livingrock.mChemicalFormula = "Lv";
-        Terrasteel.mChemicalFormula = "Tr";
-        ElvenElementium.mChemicalFormula = "Ef";
     }
 
     private static void initSubTags() {
@@ -1990,6 +1986,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
                 Tetranaquadahdiindiumhexaplatiumosminid,
                 Longasssuperconductornameforuvwire,
                 Longasssuperconductornameforuhvwire,
+                SuperconductorUEVBase,
+                SuperconductorUIVBase,
+                SuperconductorUMVBase,
                 Quantium,
                 RedstoneAlloy,
                 Bedrockium);
@@ -2154,13 +2153,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Forcillium.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.CRYSTALLISABLE, SubTag.MAGICAL);
         Force.add(SubTag.CRYSTAL, SubTag.MAGICAL, SubTag.UNBURNABLE);
         Magic.add(SubTag.CRYSTAL, SubTag.MAGICAL, SubTag.UNBURNABLE);
-
-        // Botania
-        Livingrock.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-        Livingwood.add(SubTag.WOOD, SubTag.FLAMMABLE, SubTag.NO_SMELTING, SubTag.NO_SMASHING);
-        Dreamwood.add(SubTag.WOOD, SubTag.FLAMMABLE, SubTag.NO_SMELTING, SubTag.NO_SMASHING);
-        ManaDiamond.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-        BotaniaDragonstone.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
 
         Primitive.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         Basic.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);

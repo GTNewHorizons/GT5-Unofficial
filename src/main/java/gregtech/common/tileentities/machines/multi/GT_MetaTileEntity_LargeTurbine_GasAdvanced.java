@@ -40,6 +40,7 @@ public class GT_MetaTileEntity_LargeTurbine_GasAdvanced extends GT_MetaTileEntit
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Gas Turbine")
+            .addInfo("Warning: This is an experimental multiblock, subject to changes ")
             .addInfo("Controller block for the Large Advanced Gas Turbine")
             .addInfo("Needs a Turbine, place inside controller")
             .addInfo("Only accepts gases above 800k EU/bucket")

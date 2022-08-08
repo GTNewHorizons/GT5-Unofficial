@@ -6,6 +6,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregtechWailaProvider;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
@@ -657,7 +658,7 @@ public abstract class BaseMultiTileEntity extends CoverableTileEntity implements
                             {
                                 setCoverItemAtSide(coverSide, tCurrentItem);
                                 if (!aPlayer.capabilities.isCreativeMode) tCurrentItem.stackSize--;
-                                GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(100), 1.0F, -1, xCoord, yCoord, zCoord);
+                                GT_Utility.sendSoundToPlayers(worldObj, SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1, xCoord, yCoord, zCoord);
                                 issueClientUpdate();
                             }
                             sendCoverDataIfNeeded();
@@ -666,7 +667,7 @@ public abstract class BaseMultiTileEntity extends CoverableTileEntity implements
                     } else {
                         if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sCrowbarList)) {
                             if (GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
-                                GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(0), 1.0F, -1, xCoord, yCoord, zCoord);
+                                GT_Utility.sendSoundToPlayers(worldObj, SoundResource.RANDOM_BREAK, 1.0F, -1, xCoord, yCoord, zCoord);
                                 dropCover(coverSide, aSide, false);
                             }
                             sendCoverDataIfNeeded();
@@ -693,7 +694,7 @@ public abstract class BaseMultiTileEntity extends CoverableTileEntity implements
     public boolean onWrenchRightClick(EntityPlayer aPlayer, ItemStack tCurrentItem, byte wrenchSide, float aX, float aY, float aZ) {
         if(setMainFacing(wrenchSide)) {
             GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer);
-            GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(100), 1.0F, -1, xCoord, yCoord, zCoord);
+            GT_Utility.sendSoundToPlayers(worldObj, SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1, xCoord, yCoord, zCoord);
         }
         return true;
     }
@@ -702,7 +703,7 @@ public abstract class BaseMultiTileEntity extends CoverableTileEntity implements
         if (GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 200, aPlayer)) {
             setCoverDataAtSide(wrenchSide, getCoverBehaviorAtSideNew(wrenchSide).onCoverScrewdriverClick(wrenchSide, getCoverIDAtSide(wrenchSide), getComplexCoverDataAtSide(wrenchSide), this, aPlayer, aX, aY, aZ));
             // TODO: Update connections!
-            GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(100), 1.0F, -1, xCoord, yCoord, zCoord);
+            GT_Utility.sendSoundToPlayers(worldObj, SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1, xCoord, yCoord, zCoord);
         }
         return true;
     }

@@ -5,6 +5,7 @@ import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.IGlobalWirelessEnergy;
 import gregtech.api.objects.GT_ChunkManager;
+import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Pollution;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
@@ -62,8 +63,8 @@ public final class GT_Command extends CommandBase implements IGlobalWirelessEner
     public List addTabCompletionOptions(ICommandSender sender, String[] ss) {
         List<String> l = new ArrayList<>();
         String test = ss.length == 0 ? "" : ss[0].trim();
-        if (ss.length == 0 || ss.length == 1 && (test.isEmpty() || Stream.of("toggle", "chunks", "pollution", "global_energy_add", "global_energy_set", "global_energy_join").anyMatch(s -> s.startsWith(test)))) {
-            Stream.of("toggle", "chunks", "pollution", "global_energy_add", "global_energy_set", "global_energy_join")
+        if (ss.length == 0 || ss.length == 1 && (test.isEmpty() || Stream.of("toggle", "chunks", "pollution", "global_energy_add", "global_energy_set", "global_energy_join", "global_energy_display").anyMatch(s -> s.startsWith(test)))) {
+            Stream.of("toggle", "chunks", "pollution", "global_energy_add", "global_energy_set", "global_energy_join", "global_energy_display")
                     .filter(s -> test.isEmpty() || s.startsWith(test))
                     .forEach(l::add);
         } else if (test.equals("toggle")) {
@@ -183,6 +184,14 @@ public final class GT_Command extends CommandBase implements IGlobalWirelessEner
 
                 sender.addChatMessage(new ChatComponentText("Success! " + username_0 + " has joined " + username_1 + "."));
                 sender.addChatMessage(new ChatComponentText("To undo this simply join your own network again with /gt global_energy_join " + username_0 + " " + username_0 + "."));
+
+                break;
+            case "global_energy_display":
+
+                // Usage is /gt global_energy_display username
+
+                String username_3 = strings[1];
+                sender.addChatMessage(new ChatComponentText("User " + username_3 + " has " + EnumChatFormatting.RED + GT_Utility.formatNumbers(IGlobalWirelessEnergy.super.GetUserEU(IGlobalWirelessEnergy.super.GetUUIDFromUsername(username_3))) + EnumChatFormatting.RESET + "EU in their network."));
 
                 break;
             default:
