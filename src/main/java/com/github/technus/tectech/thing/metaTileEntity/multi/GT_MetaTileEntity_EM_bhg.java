@@ -38,20 +38,9 @@ public class GT_MetaTileEntity_EM_bhg extends GT_MetaTileEntity_MultiblockBase_E
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
     private static Textures.BlockIcons.CustomIcon ScreenON;
 
-    //todo CHECK VALUES
-    private static final double NEUTRONIUM_BLOCK_MASS          = 4.1E17;
-    private static final double NEUTRONIUM_BLOCK_ATOM_COUNT    = 2.4478671E44;
-    private static final double NEUTRONIUM_BLOCK_TO_EU_INSTANT = URANIUM_MASS_TO_EU_INSTANT * NEUTRONIUM_BLOCK_MASS / (URANIUM_INGOT_MASS_DIFF * 1.78266191e-36);//~ 5.314e40
-    private static final double NEUTRON_TO_EU_INSTANT          = NEUTRONIUM_BLOCK_TO_EU_INSTANT / NEUTRONIUM_BLOCK_ATOM_COUNT;//~ 0.00021708694
-
-    public boolean glassDome = false;
     //endregion
 
-    //Time dillatation - to slow down the explosion thing but REALLY REDUCE POWER OUTPUT
-    //Startcodes to startup
-    //per dim disable thingies
-
-    //region structure actual
+    // Multiblock structure.
     private static final IStructureDefinition<GT_MetaTileEntity_EM_bhg> STRUCTURE_DEFINITION = IStructureDefinition
             .<GT_MetaTileEntity_EM_bhg>builder()
             .addShape("main", transpose(new String[][]{
@@ -94,7 +83,6 @@ public class GT_MetaTileEntity_EM_bhg extends GT_MetaTileEntity_MultiblockBase_E
             .addElement('C', ofBlock(sBlockCasingsTT, 12))
             .addElement('D', ofBlock(sBlockCasingsTT, 13))
             .addElement('E', ofBlock(sBlockCasingsTT, 14))
-            .addElement('G', ofBlock(QuantumGlassBlock.INSTANCE, 0))
             .addElement('H', ofHatchAdderOptional(GT_MetaTileEntity_EM_bhg::addClassicToMachineList, textureOffset, 1, sBlockCasingsTT, 0))
             .addElement('F', ofHatchAdderOptional(GT_MetaTileEntity_EM_bhg::addElementalToMachineList, textureOffset + 4, 2, sBlockCasingsTT, 4))
             .build();
@@ -116,8 +104,8 @@ public class GT_MetaTileEntity_EM_bhg extends GT_MetaTileEntity_MultiblockBase_E
 
     private static final String[] description = new String[]{
             EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
-            translateToLocal("gt.blockmachines.multimachine.em.blackholegenerator.hint.0"),//1 - Classic Hatches or High Power Casing
-            translateToLocal("gt.blockmachines.multimachine.em.blackholegenerator.hint.1"),//2 - Elemental Hatches or Molecular Casing
+            translateToLocal("gt.blockmachines.multimachine.em.blackholegenerator.hint.0"),
+            translateToLocal("gt.blockmachines.multimachine.em.blackholegenerator.hint.1"),
     };
     //endregion
 
@@ -137,7 +125,6 @@ public class GT_MetaTileEntity_EM_bhg extends GT_MetaTileEntity_MultiblockBase_E
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
         if (structureCheck_EM("main", 16, 16, 0)) {
-            glassDome = false;
             return true;
         }
         return false;
