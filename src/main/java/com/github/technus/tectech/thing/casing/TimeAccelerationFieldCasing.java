@@ -42,13 +42,13 @@ public class TimeAccelerationFieldCasing extends GT_Block_Casings_Abstract {
             Textures.BlockIcons.casingTexturePages[texturePage][b + START_INDEX] = new GT_CopiedBlockTexture(this, 6, b);
         }
 
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "TEST Crude Temporal Acceleration Field Generator");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "TEST Primitive Temporal Acceleration Field Generator");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "TEST Stable Temporal Acceleration Field Generator");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "TEST Superb Temporal Acceleration Field Generator");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "TEST Resplendent Temporal Acceleration Field Generator");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "TEST Perfect Spacetime Temporal Acceleration Generator");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "TEST Tipler Grade Temporal Acceleration Field Generator");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Crude Time Dilation Field Generator");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Primitive Time Dilation Field Generator");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Stable Time Dilation Field Generator");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Superb Time Dilation Field Generator");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Resplendent Time Dilation Field Generator");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Perfect Time Temporal Dilation Generator");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Tipler Grade Time Dilation Field Generator");
 
         CustomItemList.TimeAccelerationFieldGeneratorTier0.set(new ItemStack(this, 1, 0));
         CustomItemList.TimeAccelerationFieldGeneratorTier1.set(new ItemStack(this, 1, 1));
