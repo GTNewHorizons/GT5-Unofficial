@@ -101,8 +101,8 @@ public enum CustomItemList implements IItemContainer {
     Machine_TeslaCoil_3by3_LV, Machine_TeslaCoil_3by3_MV, Machine_TeslaCoil_3by3_HV, Machine_TeslaCoil_3by3_EV, Machine_TeslaCoil_3by3_IV,
     Machine_TeslaCoil_4by4_LV, Machine_TeslaCoil_4by4_MV, Machine_TeslaCoil_4by4_HV, Machine_TeslaCoil_4by4_EV, Machine_TeslaCoil_4by4_IV,
 
-    SpacetimeCompressionFieldGeneratorTier1, SpacetimeCompressionFieldGeneratorTier2, SpacetimeCompressionFieldGeneratorTier3, SpacetimeCompressionFieldGeneratorTier4,
-    SpacetimeCompressionFieldGeneratorTier5, SpacetimeCompressionFieldGeneratorTier6, SpacetimeCompressionFieldGeneratorTier7, SpacetimeCompressionFieldGeneratorTier8;
+    SpacetimeCompressionFieldGeneratorTier0, SpacetimeCompressionFieldGeneratorTier1, SpacetimeCompressionFieldGeneratorTier2, SpacetimeCompressionFieldGeneratorTier3,
+    SpacetimeCompressionFieldGeneratorTier4, SpacetimeCompressionFieldGeneratorTier5, SpacetimeCompressionFieldGeneratorTier6, SpacetimeCompressionFieldGeneratorTier7;
 
     private ItemStack mStack;
     private boolean mHasNotBeenSet = true;
