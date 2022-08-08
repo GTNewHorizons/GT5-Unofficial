@@ -4,6 +4,7 @@ import com.github.technus.tectech.thing.casing.TT_Block_SpacetimeCompressionFiel
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
 import com.github.technus.tectech.util.CommonValues;
+import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import cpw.mods.fml.relauncher.Side;
@@ -16,6 +17,7 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import org.apache.commons.lang3.tuple.Pair;
 
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
@@ -73,7 +75,21 @@ public class GT_MetaTileEntity_EM_bhg extends GT_MetaTileEntity_MultiblockBase_E
                             {"                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "               C C               ", "               C C               ", "               C C               ", "               C C               ", "              DDDDD              ", "             DDCDCDD             ", "         CCCCDCCDCCDCCCC         ", "             DDDDDDD             ", "         CCCCDCCDCCDCCCC         ", "             DDCDCDD             ", "              DDDDD              ", "               C C               ", "               C C               ", "               C C               ", "               C C               ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 "},
                             {"                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "               C C               ", "               C C               ", "               C C               ", "            CCCCCCCCC            ", "               C C               ", "            CCCCCCCCC            ", "               C C               ", "               C C               ", "               C C               ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 "}
                     }))
-            .addElement('A', ofBlockAnyMeta(TT_Block_SpacetimeCompressionFieldGenerators.SpacetimeCompressionFieldGenerator, 3))
+            .addElement('A', ofBlocksTiered(
+                    (block, meta) -> meta,
+                    ImmutableList.of(
+                            Pair.of(TT_Block_SpacetimeCompressionFieldGenerators.SpacetimeCompressionFieldGenerator, 0),
+                            Pair.of(TT_Block_SpacetimeCompressionFieldGenerators.SpacetimeCompressionFieldGenerator, 1),
+                            Pair.of(TT_Block_SpacetimeCompressionFieldGenerators.SpacetimeCompressionFieldGenerator, 2),
+                            Pair.of(TT_Block_SpacetimeCompressionFieldGenerators.SpacetimeCompressionFieldGenerator, 3),
+                            Pair.of(TT_Block_SpacetimeCompressionFieldGenerators.SpacetimeCompressionFieldGenerator, 4),
+                            Pair.of(TT_Block_SpacetimeCompressionFieldGenerators.SpacetimeCompressionFieldGenerator, 5),
+                            Pair.of(TT_Block_SpacetimeCompressionFieldGenerators.SpacetimeCompressionFieldGenerator, 6)
+                    ),
+                    -1,
+                    (t, meta) -> t.SpacetimeCompressionFieldMetadata = meta,
+                    t -> t.SpacetimeCompressionFieldMetadata
+            ))
             .addElement('B', ofBlock(sBlockCasingsTT, 11))
             .addElement('C', ofBlock(sBlockCasingsTT, 12))
             .addElement('D', ofBlock(sBlockCasingsTT, 13))
@@ -107,7 +123,7 @@ public class GT_MetaTileEntity_EM_bhg extends GT_MetaTileEntity_MultiblockBase_E
         return new GT_MetaTileEntity_EM_bhg(mName);
     }
 
-    long SpacetimeCompressionFieldMetadata = -1;
+    int SpacetimeCompressionFieldMetadata = -1;
 
     int ControllerXCoordinate;
     int ControllerYCoordinate;
@@ -122,27 +138,28 @@ public class GT_MetaTileEntity_EM_bhg extends GT_MetaTileEntity_MultiblockBase_E
 
         if (structureCheck_EM("main", 16, 16, 0)) {
 
-            switch (iGregTechTileEntity.getFrontFacing()) {
-                case 0:
-                    SpacetimeCompressionFieldMetadata = iGregTechTileEntity.getWorld().getBlockMetadata(ControllerXCoordinate, ControllerYCoordinate + 2, ControllerZCoordinate);
-                    break;
-                case 1:
-                    SpacetimeCompressionFieldMetadata = iGregTechTileEntity.getWorld().getBlockMetadata(ControllerXCoordinate, ControllerYCoordinate - 2, ControllerZCoordinate);
-                    break;
-                case 2:
-                    SpacetimeCompressionFieldMetadata = iGregTechTileEntity.getWorld().getBlockMetadata(ControllerXCoordinate, ControllerYCoordinate, ControllerZCoordinate + 2);
-                    break;
-                case 3:
-                    SpacetimeCompressionFieldMetadata = iGregTechTileEntity.getWorld().getBlockMetadata(ControllerXCoordinate, ControllerYCoordinate, ControllerZCoordinate - 2);
-                    break;
-                case 4:
-                    SpacetimeCompressionFieldMetadata = iGregTechTileEntity.getWorld().getBlockMetadata(ControllerXCoordinate + 2, ControllerYCoordinate, ControllerZCoordinate);
-                    break;
-                case 5:
-                    SpacetimeCompressionFieldMetadata = iGregTechTileEntity.getWorld().getBlockMetadata(ControllerXCoordinate - 2, ControllerYCoordinate, ControllerZCoordinate);
-                    break;
-            }
+//            switch (iGregTechTileEntity.getFrontFacing()) {
+//                case 0:
+//                    SpacetimeCompressionFieldMetadata = iGregTechTileEntity.getWorld().getBlockMetadata(ControllerXCoordinate, ControllerYCoordinate + 2, ControllerZCoordinate);
+//                    break;
+//                case 1:
+//                    SpacetimeCompressionFieldMetadata = iGregTechTileEntity.getWorld().getBlockMetadata(ControllerXCoordinate, ControllerYCoordinate - 2, ControllerZCoordinate);
+//                    break;
+//                case 2:
+//                    SpacetimeCompressionFieldMetadata = iGregTechTileEntity.getWorld().getBlockMetadata(ControllerXCoordinate, ControllerYCoordinate, ControllerZCoordinate + 2);
+//                    break;
+//                case 3:
+//                    SpacetimeCompressionFieldMetadata = iGregTechTileEntity.getWorld().getBlockMetadata(ControllerXCoordinate, ControllerYCoordinate, ControllerZCoordinate - 2);
+//                    break;
+//                case 4:
+//                    SpacetimeCompressionFieldMetadata = iGregTechTileEntity.getWorld().getBlockMetadata(ControllerXCoordinate + 2, ControllerYCoordinate, ControllerZCoordinate);
+//                    break;
+//                case 5:
+//                    SpacetimeCompressionFieldMetadata = iGregTechTileEntity.getWorld().getBlockMetadata(ControllerXCoordinate - 2, ControllerYCoordinate, ControllerZCoordinate);
+//                    break;
+//            }
 
+            System.out.println(SpacetimeCompressionFieldMetadata);
             return true;
         }
         return false;
