@@ -209,18 +209,15 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity,
                            long aTimer) {
+        final int lavaX =
+            aBaseMetaTileEntity.getOffsetX(aBaseMetaTileEntity.getBackFacing(), 1);
+        final short lavaY = aBaseMetaTileEntity.getYCoord();
+        final int lavaZ =
+            aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1);
         if ((aBaseMetaTileEntity.isClientSide()) && (aBaseMetaTileEntity.isActive())) {
 
-            new WorldSpawnedEventBuilder.ParticleEventBuilder()
-                .setMotion(0D, 0.3D, 0D)
-                .setIdentifier(ParticleFX.LARGE_SMOKE)
-                .setPosition(
-                    aBaseMetaTileEntity.getOffsetX(aBaseMetaTileEntity.getBackFacing(), 1) + XSTR_INSTANCE.nextFloat(),
-                    aBaseMetaTileEntity.getOffsetY(aBaseMetaTileEntity.getBackFacing(), 1),
-                    aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1) + XSTR_INSTANCE.nextFloat()
-                )
-                .setWorld(getBaseMetaTileEntity().getWorld())
-                .run();
+            new WorldSpawnedEventBuilder.ParticleEventBuilder().setMotion(0D,
+                0.3D, 0D).setIdentifier(ParticleFX.LARGE_SMOKE).setPosition(lavaX + XSTR_INSTANCE.nextFloat(), aBaseMetaTileEntity.getOffsetY(aBaseMetaTileEntity.getBackFacing(), 1), lavaZ + XSTR_INSTANCE.nextFloat()).setWorld(getBaseMetaTileEntity().getWorld()).run();
         }
         if (aBaseMetaTileEntity.isServerSide()) {
             if (this.mUpdate-- == 0) {
@@ -233,8 +230,7 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
                         this.mOutputItems = null;
                         this.mProgresstime = 0;
                         this.mMaxProgresstime = 0;
-                        GT_Mod.achievements.issueAchievement(
-                            aBaseMetaTileEntity.getWorld().getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()), "steel");
+                        GT_Mod.achievements.issueAchievement(aBaseMetaTileEntity.getWorld().getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()), "steel");
                     }
                 } else if (aBaseMetaTileEntity.isAllowedToWork()) {
                     checkRecipe();
@@ -247,40 +243,24 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
 
             aBaseMetaTileEntity.setActive((this.mMaxProgresstime > 0) && (this.mMachine));
             if (aBaseMetaTileEntity.isActive()) {
-                if (aBaseMetaTileEntity.getAir(aBaseMetaTileEntity.getOffsetX(aBaseMetaTileEntity.getBackFacing(), 1),
-                    aBaseMetaTileEntity.getYCoord(),
-                    aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1))) {
-                    aBaseMetaTileEntity.getWorld().setBlock(aBaseMetaTileEntity.getOffsetX(aBaseMetaTileEntity.getBackFacing(), 1),
-                        aBaseMetaTileEntity.getYCoord(),
-                        aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1),
-                        Blocks.lava, 1, 2);
+                if (aBaseMetaTileEntity.getAir(lavaX, lavaY, lavaZ)) {
+                    aBaseMetaTileEntity.getWorld().setBlock(lavaX, lavaY,
+                        lavaZ, Blocks.lava, 1, 2);
                     this.mUpdate = 1;
                 }
-                if (aBaseMetaTileEntity.getAir(aBaseMetaTileEntity.getOffsetX(aBaseMetaTileEntity.getBackFacing(), 1),
-                    aBaseMetaTileEntity.getYCoord() + 1,
-                    aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1))) {
-                    aBaseMetaTileEntity.getWorld().setBlock(aBaseMetaTileEntity.getOffsetX(aBaseMetaTileEntity.getBackFacing(), 1),
-                        aBaseMetaTileEntity.getYCoord() + 1,
-                        aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1),
-                        Blocks.lava, 1, 2);
+                if (aBaseMetaTileEntity.getAir(lavaX, lavaY + 1, lavaZ)) {
+                    aBaseMetaTileEntity.getWorld().setBlock(lavaX, lavaY + 1,
+                        lavaZ, Blocks.lava, 1, 2);
                     this.mUpdate = 1;
                 }
             } else {
-                if (aBaseMetaTileEntity.getBlock(aBaseMetaTileEntity.getOffsetX(aBaseMetaTileEntity.getBackFacing(), 1),
-                    aBaseMetaTileEntity.getYCoord(),
-                    aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1)) == Blocks.lava) {
-                    aBaseMetaTileEntity.getWorld().setBlock(aBaseMetaTileEntity.getOffsetX(aBaseMetaTileEntity.getBackFacing(), 1),
-                        aBaseMetaTileEntity.getYCoord(),
-                        aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1),
+                if (aBaseMetaTileEntity.getBlock(lavaX, lavaY, lavaZ) == Blocks.lava) {
+                    aBaseMetaTileEntity.getWorld().setBlock(lavaX, lavaY, lavaZ,
                         Blocks.air, 0, 2);
                     this.mUpdate = 1;
                 }
-                if (aBaseMetaTileEntity.getBlock(aBaseMetaTileEntity.getOffsetX(aBaseMetaTileEntity.getBackFacing(), 1),
-                    aBaseMetaTileEntity.getYCoord() + 1,
-                    aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1)) == Blocks.lava) {
-                    aBaseMetaTileEntity.getWorld().setBlock(aBaseMetaTileEntity.getOffsetX(aBaseMetaTileEntity.getBackFacing(), 1),
-                        aBaseMetaTileEntity.getYCoord() + 1,
-                        aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1),
+                if (aBaseMetaTileEntity.getBlock(lavaX, lavaY + 1, lavaZ) == Blocks.lava) {
+                    aBaseMetaTileEntity.getWorld().setBlock(lavaX, lavaY + 1, lavaZ,
                         Blocks.air, 0, 2);
                     this.mUpdate = 1;
                 }
