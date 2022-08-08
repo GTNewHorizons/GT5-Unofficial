@@ -223,7 +223,7 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
                 0.3D, 0D).setIdentifier(ParticleFX.LARGE_SMOKE).setPosition(lavaX + XSTR_INSTANCE.nextFloat(), aBaseMetaTileEntity.getOffsetY(aBaseMetaTileEntity.getBackFacing(), 1), lavaZ + XSTR_INSTANCE.nextFloat()).setWorld(getBaseMetaTileEntity().getWorld()).run();
         }
         if (aBaseMetaTileEntity.isServerSide()) {
-            if (--this.mUpdate == 0) {
+            if (this.mUpdate-- == 0) {
                 this.mMachine = checkMachine();
             }
             if (this.mMachine) {
@@ -263,7 +263,7 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
                 Block upperLava = aBaseMetaTileEntity.getBlock(lavaX,
                     lavaY + 1, lavaZ);
                 if (mChimneyBlocked && lowerLava == Blocks.air && upperLava == Blocks.air && aBaseMetaTileEntity.getAir(lavaX, lavaY + 2, lavaZ)) {
-                    this.mUpdate = 1;
+                    this.mUpdate = 0;
                 }
                 if (lowerLava == Blocks.lava) {
                     aBaseMetaTileEntity.getWorld().setBlock(lavaX, lavaY,
