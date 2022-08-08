@@ -40,7 +40,8 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
     @Deprecated
     public ItemStack mOutputItem2;
 
-    public GT_MetaTileEntity_PrimitiveBlastFurnace(int aID, String aName, String aNameRegional) {
+    public GT_MetaTileEntity_PrimitiveBlastFurnace(int aID, String aName,
+                                                   String aNameRegional) {
         super(aID, aName, aNameRegional, INPUT_SLOTS + OUTPUT_SLOTS);
     }
 
@@ -119,7 +120,7 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
         return (GregTech_API.getCoverBehaviorNew(aCoverID.toStack()).isSimpleCover()) && (super.allowCoverOnSide(aSide, aCoverID));
     }
 
-	@Override
+    @Override
     public abstract MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity);
 
     @Override
@@ -149,7 +150,8 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
     }
 
     @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity,
+                                EntityPlayer aPlayer) {
         if (aBaseMetaTileEntity.isClientSide()) {
             return true;
         }
@@ -158,29 +160,34 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
     }
 
     @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_PrimitiveBlastFurnace(aPlayerInventory, aBaseMetaTileEntity);
+    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory,
+                               IGregTechTileEntity aBaseMetaTileEntity) {
+        return new GT_Container_PrimitiveBlastFurnace(aPlayerInventory,
+            aBaseMetaTileEntity);
     }
 
-	@Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GT_GUIContainer_PrimitiveBlastFurnace(aPlayerInventory, aBaseMetaTileEntity, getName(), GT_Recipe.GT_Recipe_Map.sPrimitiveBlastRecipes.mNEIName);
-	}
+    @Override
+    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory,
+                               IGregTechTileEntity aBaseMetaTileEntity) {
+        return new GT_GUIContainer_PrimitiveBlastFurnace(aPlayerInventory,
+            aBaseMetaTileEntity, getName(),
+            GT_Recipe.GT_Recipe_Map.sPrimitiveBlastRecipes.mNEIName);
+    }
 
     private boolean checkMachine() {
-        int xDir = ForgeDirection.getOrientation(getBaseMetaTileEntity().getBackFacing()).offsetX;
-        int zDir = ForgeDirection.getOrientation(getBaseMetaTileEntity().getBackFacing()).offsetZ;
+        int xDir =
+            ForgeDirection.getOrientation(getBaseMetaTileEntity().getBackFacing()).offsetX;
+        int zDir =
+            ForgeDirection.getOrientation(getBaseMetaTileEntity().getBackFacing()).offsetZ;
         for (int i = -1; i < 2; i++) {
             for (int j = -1; j < 3; j++) {
                 for (int k = -1; k < 2; k++) {
                     if ((xDir + i != 0) || (j != 0) || (zDir + k != 0)) {
                         if ((i != 0) || (j == -1) || (k != 0)) {
-                            if (!isCorrectCasingBlock(getBaseMetaTileEntity().getBlockOffset(xDir + i, j, zDir + k))
-                                    || !isCorrectCasingMetaID(getBaseMetaTileEntity().getMetaIDOffset(xDir + i, j, zDir + k))) {
+                            if (!isCorrectCasingBlock(getBaseMetaTileEntity().getBlockOffset(xDir + i, j, zDir + k)) || !isCorrectCasingMetaID(getBaseMetaTileEntity().getMetaIDOffset(xDir + i, j, zDir + k))) {
                                 return false;
                             }
-                        } else if ((!GT_Utility.arrayContains(getBaseMetaTileEntity().getBlockOffset(xDir + i, j, zDir + k), Blocks.lava, Blocks.flowing_lava, null))
-                                && (!getBaseMetaTileEntity().getAirOffset(xDir + i, j, zDir + k))) {
+                        } else if ((!GT_Utility.arrayContains(getBaseMetaTileEntity().getBlockOffset(xDir + i, j, zDir + k), Blocks.lava, Blocks.flowing_lava, null)) && (!getBaseMetaTileEntity().getAirOffset(xDir + i, j, zDir + k))) {
                             return false;
                         }
                     }
@@ -200,19 +207,20 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
     }
 
     @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity,
+                           long aTimer) {
         if ((aBaseMetaTileEntity.isClientSide()) && (aBaseMetaTileEntity.isActive())) {
 
             new WorldSpawnedEventBuilder.ParticleEventBuilder()
-                    .setMotion(0D,0.3D,0D)
-                    .setIdentifier(ParticleFX.LARGE_SMOKE)
-                    .setPosition(
-                            aBaseMetaTileEntity.getOffsetX(aBaseMetaTileEntity.getBackFacing(), 1) + XSTR_INSTANCE.nextFloat(),
-                            aBaseMetaTileEntity.getOffsetY(aBaseMetaTileEntity.getBackFacing(), 1),
-                            aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1) + XSTR_INSTANCE.nextFloat()
-                    )
-                    .setWorld(getBaseMetaTileEntity().getWorld())
-                    .run();
+                .setMotion(0D, 0.3D, 0D)
+                .setIdentifier(ParticleFX.LARGE_SMOKE)
+                .setPosition(
+                    aBaseMetaTileEntity.getOffsetX(aBaseMetaTileEntity.getBackFacing(), 1) + XSTR_INSTANCE.nextFloat(),
+                    aBaseMetaTileEntity.getOffsetY(aBaseMetaTileEntity.getBackFacing(), 1),
+                    aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1) + XSTR_INSTANCE.nextFloat()
+                )
+                .setWorld(getBaseMetaTileEntity().getWorld())
+                .run();
         }
         if (aBaseMetaTileEntity.isServerSide()) {
             if (this.mUpdate-- == 0) {
@@ -226,47 +234,54 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
                         this.mProgresstime = 0;
                         this.mMaxProgresstime = 0;
                         GT_Mod.achievements.issueAchievement(
-                                aBaseMetaTileEntity.getWorld().getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()), "steel");
+                            aBaseMetaTileEntity.getWorld().getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()), "steel");
                     }
                 } else if (aBaseMetaTileEntity.isAllowedToWork()) {
                     checkRecipe();
                 }
             }
             if (this.mMaxProgresstime > 0 && (aTimer % 20L == 0L)) {
-                GT_Pollution.addPollution(this.getBaseMetaTileEntity(), GT_Mod.gregtechproxy.mPollutionPrimitveBlastFurnacePerSecond);
+                GT_Pollution.addPollution(this.getBaseMetaTileEntity(),
+                    GT_Mod.gregtechproxy.mPollutionPrimitveBlastFurnacePerSecond);
             }
 
             aBaseMetaTileEntity.setActive((this.mMaxProgresstime > 0) && (this.mMachine));
             if (aBaseMetaTileEntity.isActive()) {
                 if (aBaseMetaTileEntity.getAir(aBaseMetaTileEntity.getOffsetX(aBaseMetaTileEntity.getBackFacing(), 1),
-                        aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1))) {
+                    aBaseMetaTileEntity.getYCoord(),
+                    aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1))) {
                     aBaseMetaTileEntity.getWorld().setBlock(aBaseMetaTileEntity.getOffsetX(aBaseMetaTileEntity.getBackFacing(), 1),
-                            aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1),
-                            Blocks.lava, 1, 2);
+                        aBaseMetaTileEntity.getYCoord(),
+                        aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1),
+                        Blocks.lava, 1, 2);
                     this.mUpdate = 1;
                 }
                 if (aBaseMetaTileEntity.getAir(aBaseMetaTileEntity.getOffsetX(aBaseMetaTileEntity.getBackFacing(), 1),
-                        aBaseMetaTileEntity.getYCoord() + 1, aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1))) {
+                    aBaseMetaTileEntity.getYCoord() + 1,
+                    aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1))) {
                     aBaseMetaTileEntity.getWorld().setBlock(aBaseMetaTileEntity.getOffsetX(aBaseMetaTileEntity.getBackFacing(), 1),
-                            aBaseMetaTileEntity.getYCoord() + 1, aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1),
-                            Blocks.lava, 1, 2);
+                        aBaseMetaTileEntity.getYCoord() + 1,
+                        aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1),
+                        Blocks.lava, 1, 2);
                     this.mUpdate = 1;
                 }
             } else {
                 if (aBaseMetaTileEntity.getBlock(aBaseMetaTileEntity.getOffsetX(aBaseMetaTileEntity.getBackFacing(), 1),
-                        aBaseMetaTileEntity.getYCoord(),
-                        aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1)) == Blocks.lava) {
+                    aBaseMetaTileEntity.getYCoord(),
+                    aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1)) == Blocks.lava) {
                     aBaseMetaTileEntity.getWorld().setBlock(aBaseMetaTileEntity.getOffsetX(aBaseMetaTileEntity.getBackFacing(), 1),
-                            aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1),
-                            Blocks.air, 0, 2);
+                        aBaseMetaTileEntity.getYCoord(),
+                        aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1),
+                        Blocks.air, 0, 2);
                     this.mUpdate = 1;
                 }
                 if (aBaseMetaTileEntity.getBlock(aBaseMetaTileEntity.getOffsetX(aBaseMetaTileEntity.getBackFacing(), 1),
-                        aBaseMetaTileEntity.getYCoord() + 1,
-                        aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1)) == Blocks.lava) {
+                    aBaseMetaTileEntity.getYCoord() + 1,
+                    aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1)) == Blocks.lava) {
                     aBaseMetaTileEntity.getWorld().setBlock(aBaseMetaTileEntity.getOffsetX(aBaseMetaTileEntity.getBackFacing(), 1),
-                            aBaseMetaTileEntity.getYCoord() + 1, aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1),
-                            Blocks.air, 0, 2);
+                        aBaseMetaTileEntity.getYCoord() + 1,
+                        aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1),
+                        Blocks.air, 0, 2);
                     this.mUpdate = 1;
                 }
             }
@@ -274,9 +289,11 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
     }
 
     /**
-     * Draws random flames and smoke particles in front of Primitive Blast Furnace when active
+     * Draws random flames and smoke particles in front of Primitive Blast
+     * Furnace when active
      *
-     * @param aBaseMetaTileEntity The entity that will handle the {@link Block#randomDisplayTick}
+     * @param aBaseMetaTileEntity The entity that will handle the
+     *                            {@link Block#randomDisplayTick}
      */
     @SideOnly(Side.CLIENT)
     @Override
@@ -285,11 +302,14 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
 
             final byte frontFacing = aBaseMetaTileEntity.getFrontFacing();
 
-            final double oX = aBaseMetaTileEntity.getOffsetX(frontFacing, 1) + 0.5D;
+            final double oX =
+                aBaseMetaTileEntity.getOffsetX(frontFacing, 1) + 0.5D;
             final double oY = aBaseMetaTileEntity.getOffsetY(frontFacing, 1);
-            final double oZ = aBaseMetaTileEntity.getOffsetZ(frontFacing, 1) + 0.5D;
+            final double oZ =
+                aBaseMetaTileEntity.getOffsetZ(frontFacing, 1) + 0.5D;
             final double offset = -0.48D;
-            final double horizontal = XSTR_INSTANCE.nextFloat() * 8D / 16D - 4D / 16D;
+            final double horizontal =
+                XSTR_INSTANCE.nextFloat() * 8D / 16D - 4D / 16D;
 
             final double x, y, z;
 
@@ -311,10 +331,7 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
             }
 
             ParticleEventBuilder particleEventBuilder =
-                (new ParticleEventBuilder())
-                    .setMotion(0D, 0D, 0D)
-                    .setPosition(x, y, z)
-                    .setWorld(getBaseMetaTileEntity().getWorld());
+                (new ParticleEventBuilder()).setMotion(0D, 0D, 0D).setPosition(x, y, z).setWorld(getBaseMetaTileEntity().getWorld());
             particleEventBuilder.setIdentifier(ParticleFX.SMOKE).run();
             particleEventBuilder.setIdentifier(ParticleFX.FLAME).run();
         }
@@ -333,15 +350,19 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
         for (int i = 0; i < limit; i++) {
             int absi = INPUT_SLOTS + i;
             if (this.mInventory[absi] == null) {
-                this.mInventory[absi] = GT_Utility.copyOrNull(this.mOutputItems[i]);
-            } else if (GT_Utility.areStacksEqual(this.mInventory[absi], this.mOutputItems[i])) {
-                this.mInventory[absi].stackSize = Math.min(this.mInventory[absi].getMaxStackSize(),
+                this.mInventory[absi] =
+                    GT_Utility.copyOrNull(this.mOutputItems[i]);
+            } else if (GT_Utility.areStacksEqual(this.mInventory[absi],
+                this.mOutputItems[i])) {
+                this.mInventory[absi].stackSize =
+                    Math.min(this.mInventory[absi].getMaxStackSize(),
                         this.mInventory[absi].stackSize + this.mOutputItems[i].stackSize);
             }
         }
     }
 
-    private boolean spaceForOutput(ItemStack outputStack, int relativeOutputSlot) {
+    private boolean spaceForOutput(ItemStack outputStack,
+                                   int relativeOutputSlot) {
         int absoluteSlot = relativeOutputSlot + INPUT_SLOTS;
         if (this.mInventory[absoluteSlot] == null || outputStack == null) {
             return true;
@@ -355,7 +376,8 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
         }
         ItemStack[] inputs = new ItemStack[INPUT_SLOTS];
         System.arraycopy(mInventory, 0, inputs, 0, INPUT_SLOTS);
-        GT_Recipe recipe = GT_Recipe.GT_Recipe_Map.sPrimitiveBlastRecipes.findRecipe(getBaseMetaTileEntity(), false, 0, null, inputs);
+        GT_Recipe recipe =
+            GT_Recipe.GT_Recipe_Map.sPrimitiveBlastRecipes.findRecipe(getBaseMetaTileEntity(), false, 0, null, inputs);
         if (recipe == null) {
             this.mOutputItems = null;
             return false;
@@ -388,12 +410,14 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity,
+                                  int aIndex, byte aSide, ItemStack aStack) {
         return aIndex > INPUT_SLOTS;
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity,
+                                 int aIndex, byte aSide, ItemStack aStack) {
         return !GT_Utility.areStacksEqual(aStack, this.mInventory[0]);
     }
 
