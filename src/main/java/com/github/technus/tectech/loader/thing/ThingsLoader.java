@@ -34,8 +34,11 @@ public class ThingsLoader implements Runnable {
         TT_Container_Casings.sBlockCasingsBA0 = new GT_Block_CasingsBA0();
         TecTech.LOGGER.info("Nikolai's Casing registered");
 
-        TT_Block_SpacetimeCompressionFieldGenerators.SpacetimeCompressionFieldGenerator = new SpacetimeCompressionFieldCasing();
+        TT_Block_SpacetimeCompressionFieldGenerators.SpacetimeCompressionFieldGenerators = new SpacetimeCompressionFieldCasing();
         TecTech.LOGGER.info("Spacetime Compression Field Casings registered.");
+
+        TT_Block_TimeAccelerationFieldGenerators.TimeAccelerationFieldGenerator = new TimeAccelerationFieldCasing();
+        TecTech.LOGGER.info("Time Acceleration Field Casings registered.");
 
         QuantumGlassBlock.run();
         TecTech.LOGGER.info("Quantum Glass registered");

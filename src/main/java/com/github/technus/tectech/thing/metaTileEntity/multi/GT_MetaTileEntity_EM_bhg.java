@@ -1,6 +1,7 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.thing.casing.TT_Block_SpacetimeCompressionFieldGenerators;
+import com.github.technus.tectech.thing.casing.TT_Block_TimeAccelerationFieldGenerators;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
 import com.github.technus.tectech.util.CommonValues;
@@ -34,6 +35,9 @@ public class GT_MetaTileEntity_EM_bhg extends GT_MetaTileEntity_MultiblockBase_E
     //region variables
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
     private static Textures.BlockIcons.CustomIcon ScreenON;
+
+    private int SpacetimeCompressionFieldMetadata = -1;
+    private int TimeAccelerationFieldMetadata = -1;
 
     //endregion
 
@@ -76,15 +80,16 @@ public class GT_MetaTileEntity_EM_bhg extends GT_MetaTileEntity_MultiblockBase_E
                             {"                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "               C C               ", "               C C               ", "               C C               ", "            CCCCCCCCC            ", "               C C               ", "            CCCCCCCCC            ", "               C C               ", "               C C               ", "               C C               ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 ", "                                 "}
                     }))
             .addElement('A', ofBlocksTiered(
-                    (block, meta) -> meta,
+                    (block, meta) -> block == TT_Block_SpacetimeCompressionFieldGenerators.SpacetimeCompressionFieldGenerators ? -1 : meta,
                     ImmutableList.of(
-                            Pair.of(TT_Block_SpacetimeCompressionFieldGenerators.SpacetimeCompressionFieldGenerator, 0),
-                            Pair.of(TT_Block_SpacetimeCompressionFieldGenerators.SpacetimeCompressionFieldGenerator, 1),
-                            Pair.of(TT_Block_SpacetimeCompressionFieldGenerators.SpacetimeCompressionFieldGenerator, 2),
-                            Pair.of(TT_Block_SpacetimeCompressionFieldGenerators.SpacetimeCompressionFieldGenerator, 3),
-                            Pair.of(TT_Block_SpacetimeCompressionFieldGenerators.SpacetimeCompressionFieldGenerator, 4),
-                            Pair.of(TT_Block_SpacetimeCompressionFieldGenerators.SpacetimeCompressionFieldGenerator, 5),
-                            Pair.of(TT_Block_SpacetimeCompressionFieldGenerators.SpacetimeCompressionFieldGenerator, 6)
+                            Pair.of(TT_Block_SpacetimeCompressionFieldGenerators.SpacetimeCompressionFieldGenerators, 0),
+                            Pair.of(TT_Block_SpacetimeCompressionFieldGenerators.SpacetimeCompressionFieldGenerators, 1),
+                            Pair.of(TT_Block_SpacetimeCompressionFieldGenerators.SpacetimeCompressionFieldGenerators, 2),
+                            Pair.of(TT_Block_SpacetimeCompressionFieldGenerators.SpacetimeCompressionFieldGenerators, 3),
+                            Pair.of(TT_Block_SpacetimeCompressionFieldGenerators.SpacetimeCompressionFieldGenerators, 4),
+                            Pair.of(TT_Block_SpacetimeCompressionFieldGenerators.SpacetimeCompressionFieldGenerators, 5),
+                            Pair.of(TT_Block_SpacetimeCompressionFieldGenerators.SpacetimeCompressionFieldGenerators, 6)
+
                     ),
                     -1,
                     (t, meta) -> t.SpacetimeCompressionFieldMetadata = meta,
@@ -93,7 +98,21 @@ public class GT_MetaTileEntity_EM_bhg extends GT_MetaTileEntity_MultiblockBase_E
             .addElement('B', ofBlock(sBlockCasingsTT, 11))
             .addElement('C', ofBlock(sBlockCasingsTT, 12))
             .addElement('D', ofBlock(sBlockCasingsTT, 13))
-            .addElement('E', ofBlock(sBlockCasingsTT, 14))
+            .addElement('E', ofBlocksTiered(
+                    (block, meta) -> block == TT_Block_TimeAccelerationFieldGenerators.TimeAccelerationFieldGenerator ? -1 : meta,
+                    ImmutableList.of(
+                            Pair.of(TT_Block_TimeAccelerationFieldGenerators.TimeAccelerationFieldGenerator, 0),
+                            Pair.of(TT_Block_TimeAccelerationFieldGenerators.TimeAccelerationFieldGenerator, 1),
+                            Pair.of(TT_Block_TimeAccelerationFieldGenerators.TimeAccelerationFieldGenerator, 2),
+                            Pair.of(TT_Block_TimeAccelerationFieldGenerators.TimeAccelerationFieldGenerator, 3),
+                            Pair.of(TT_Block_TimeAccelerationFieldGenerators.TimeAccelerationFieldGenerator, 4),
+                            Pair.of(TT_Block_TimeAccelerationFieldGenerators.TimeAccelerationFieldGenerator, 5),
+                            Pair.of(TT_Block_TimeAccelerationFieldGenerators.TimeAccelerationFieldGenerator, 6)
+                    ),
+                    -1,
+                    (t, meta) -> t.TimeAccelerationFieldMetadata = meta,
+                    t -> t.TimeAccelerationFieldMetadata
+            ))
             .addElement('H', ofHatchAdderOptional(GT_MetaTileEntity_EM_bhg::addClassicToMachineList, textureOffset, 1, sBlockCasingsTT, 0))
             .addElement('F', ofHatchAdderOptional(GT_MetaTileEntity_EM_bhg::addElementalToMachineList, textureOffset + 4, 2, sBlockCasingsTT, 4))
             .build();
@@ -123,46 +142,11 @@ public class GT_MetaTileEntity_EM_bhg extends GT_MetaTileEntity_MultiblockBase_E
         return new GT_MetaTileEntity_EM_bhg(mName);
     }
 
-    int SpacetimeCompressionFieldMetadata = -1;
 
-    int ControllerXCoordinate;
-    int ControllerYCoordinate;
-    int ControllerZCoordinate;
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-
-        int ControllerXCoordinate = iGregTechTileEntity.getXCoord();
-        int ControllerYCoordinate = iGregTechTileEntity.getYCoord();
-        int ControllerZCoordinate = iGregTechTileEntity.getZCoord();
-
-        if (structureCheck_EM("main", 16, 16, 0)) {
-
-//            switch (iGregTechTileEntity.getFrontFacing()) {
-//                case 0:
-//                    SpacetimeCompressionFieldMetadata = iGregTechTileEntity.getWorld().getBlockMetadata(ControllerXCoordinate, ControllerYCoordinate + 2, ControllerZCoordinate);
-//                    break;
-//                case 1:
-//                    SpacetimeCompressionFieldMetadata = iGregTechTileEntity.getWorld().getBlockMetadata(ControllerXCoordinate, ControllerYCoordinate - 2, ControllerZCoordinate);
-//                    break;
-//                case 2:
-//                    SpacetimeCompressionFieldMetadata = iGregTechTileEntity.getWorld().getBlockMetadata(ControllerXCoordinate, ControllerYCoordinate, ControllerZCoordinate + 2);
-//                    break;
-//                case 3:
-//                    SpacetimeCompressionFieldMetadata = iGregTechTileEntity.getWorld().getBlockMetadata(ControllerXCoordinate, ControllerYCoordinate, ControllerZCoordinate - 2);
-//                    break;
-//                case 4:
-//                    SpacetimeCompressionFieldMetadata = iGregTechTileEntity.getWorld().getBlockMetadata(ControllerXCoordinate + 2, ControllerYCoordinate, ControllerZCoordinate);
-//                    break;
-//                case 5:
-//                    SpacetimeCompressionFieldMetadata = iGregTechTileEntity.getWorld().getBlockMetadata(ControllerXCoordinate - 2, ControllerYCoordinate, ControllerZCoordinate);
-//                    break;
-//            }
-
-            System.out.println(SpacetimeCompressionFieldMetadata);
-            return true;
-        }
-        return false;
+        return structureCheck_EM("main", 16, 16, 0);
     }
 
     @Override
@@ -198,6 +182,8 @@ public class GT_MetaTileEntity_EM_bhg extends GT_MetaTileEntity_MultiblockBase_E
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
+        SpacetimeCompressionFieldMetadata = -1;
+        TimeAccelerationFieldMetadata = -1;
         structureBuild_EM("main", 16, 16, 0, stackSize, hintsOnly);
     }
 
