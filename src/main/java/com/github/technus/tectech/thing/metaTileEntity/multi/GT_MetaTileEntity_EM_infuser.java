@@ -38,6 +38,11 @@ import static net.minecraft.util.StatCollector.translateToLocal;
  * Created by danie_000 on 17.12.2016.
  */
 public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
+
+    private static final int maxRepairedDamagePerOperation = 1000;
+    private static final long usedEuPerDurability = 1000;
+    private static final int usedUumPerDurability = 1;
+
     //region structure
     private static final String[] description = new String[]{
             EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
@@ -185,12 +190,11 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
                                 if (item.isRepairable()) {
                                     FluidStack uum = getStoredFluids().stream().filter(fluid -> Materials.UUMatter.getFluid(1).isFluidEqual(fluid)).findAny().orElse(null);
                                     if (uum != null) {
-                                        int maxRepairedDamage = Math.max(item.getDamage(itemStackInBus), 1000);
-                                        int actualRepairedDamage = Math.min(item.getDamage(itemStackInBus) - maxRepairedDamage, 0);
-                                        if (getEUVar() >= actualRepairedDamage) {
-                                            item.setDamage(itemStackInBus, actualRepairedDamage);
-                                            depleteInput(new FluidStack(Materials.UUMatter.mFluid, Math.max(actualRepairedDamage / 100, 1)));
-                                            setEUVar(Math.min(getEUVar() - actualRepairedDamage, 0));
+                                        int repairedDamage = Math.min(item.getDamage(itemStackInBus), maxRepairedDamagePerOperation);
+                                        long euCost = repairedDamage * usedEuPerDurability;
+                                        if (getEUVar() >= euCost && depleteInput(new FluidStack(Materials.UUMatter.mFluid,repairedDamage * usedUumPerDurability))) {
+                                            item.setDamage(itemStackInBus, Math.max(item.getDamage(itemStackInBus) - repairedDamage, 0));
+                                            setEUVar(Math.min(getEUVar() - euCost, 0));
                                         }
                                     }
                                 }
