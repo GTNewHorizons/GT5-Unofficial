@@ -23,7 +23,7 @@ import java.util.Set;
  * <p/>
  * Go to "Window > Preferences > Java > Editor > Content Assist > Favorites" to set static importable Constant Classes such as this one as AutoCompleteable.
  */
-@SuppressWarnings("ALL")
+@SuppressWarnings("unused") // API Legitimately has unused fields and methods
 public class GT_Values {
     // unused: A, C, D, G, H, I, J, K, N, O, Q, R, S, T
 
@@ -39,6 +39,7 @@ public class GT_Values {
     /**
      * The first 32 Bits
      */
+    @SuppressWarnings("PointlessBitwiseExpression") // Nicer source layout this way
     public static final int[] B = new int[]{
             1 << 0, 1 << 1, 1 << 2,
             1 << 3, 1 << 4, 1 << 5,
@@ -102,8 +103,9 @@ public class GT_Values {
     //Macerator/Compressor/Furnace... and for cheap recipes any
 
     /**
-     * keeping Voltage*Amps < Integer.MAX_VALUE-7 for machines (and tier logic 4x EUt 2/ time)
-     * AMV[4]= max amps at tier 4
+     * Array of Maximum Amperes at given Tier index
+     * <p>keeping Voltage*Amps < Integer.MAX_VALUE-7 for machines (and tier logic 4x EUt 2/ time)</p>
+     * <p>AMV[4]= max amps at tier 4</p>
      */
     public static final long[] AatV =
             new long[]{
@@ -349,22 +351,19 @@ public class GT_Values {
      */
     public static int oreveinAttempts;
     /**
-     * Control number of attempts to place a valid orevein.  If a vein wasn't placed due to height restrictions, completely in the water, etc, another attempt is tried.
+     * Control number of attempts to place a valid ore vein.
+     * <p>If a vein wasn't placed due to height restrictions,
+     * completely in the water, etc, another attempt is tried.</p>
      */
     public static int oreveinMaxPlacementAttempts;
     /**
-     * Whether or not to place small ores as placer ores for an orevein
+     * Whether to place small ores as placer ores for an orevein
      */
     public static boolean oreveinPlacerOres;
     /**
      * Multiplier to control how many placer ores get generated.
      */
     public static int oreveinPlacerOresMultiplier;
-    /**
-     * How wide to look for oreveins that affect a requested chunk. Trying to use oreveins larger than this will not work correctly. Increasing the size will cause additional worldgenerator lag.
-     * Disabled for now, using 64 in Deep Dark, 32 elsewhere
-     */
-    // public static int oreveinMaxSize;
     /**
      * Not really Constants, but they set using the Config and therefore should be constant (those are for the Debug Mode)
      */
