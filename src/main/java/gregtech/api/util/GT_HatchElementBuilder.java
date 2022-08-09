@@ -10,6 +10,7 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.common.blocks.GT_Item_Machines;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -28,7 +29,7 @@ import java.util.stream.Stream;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 
-public class GT_HatchElementBuilder<T extends GT_MetaTileEntity_EnhancedMultiBlockBase<?>> {
+public class GT_HatchElementBuilder<T> {
     private interface Builtin {
     }
 
@@ -44,7 +45,7 @@ public class GT_HatchElementBuilder<T extends GT_MetaTileEntity_EnhancedMultiBlo
     private GT_HatchElementBuilder() {
     }
 
-    public static <T extends GT_MetaTileEntity_EnhancedMultiBlockBase<?>> GT_HatchElementBuilder<T> builder() {
+    public static <T> GT_HatchElementBuilder<T> builder() {
         return new GT_HatchElementBuilder<>();
     }
 

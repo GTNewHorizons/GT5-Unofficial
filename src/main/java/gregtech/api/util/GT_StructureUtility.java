@@ -16,6 +16,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Frame;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import gregtech.common.blocks.GT_Block_Casings5;
 import gregtech.common.blocks.GT_Item_Machines;
@@ -98,14 +99,14 @@ public class GT_StructureUtility {
         };
     }
 
-    public static <T extends GT_MetaTileEntity_EnhancedMultiBlockBase<?>> GT_HatchElementBuilder<T> buildHatchAdder() {
+    public static <T> GT_HatchElementBuilder<T> buildHatchAdder() {
         return GT_HatchElementBuilder.builder();
     }
 
     /**
      * Completely equivalent to {@link #buildHatchAdder()}, except it plays nicer with type inference when statically imported
      */
-    public static <T extends GT_MetaTileEntity_EnhancedMultiBlockBase<?>> GT_HatchElementBuilder<T> buildHatchAdder(Class<T> typeToken) {
+    public static <T> GT_HatchElementBuilder<T> buildHatchAdder(Class<T> typeToken) {
         return GT_HatchElementBuilder.builder();
     }
 

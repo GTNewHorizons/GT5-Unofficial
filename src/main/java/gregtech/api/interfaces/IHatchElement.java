@@ -4,6 +4,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.util.GT_StructureUtility;
 import gregtech.api.util.IGT_HatchAdder;
 
@@ -13,7 +14,7 @@ import java.util.List;
 import java.util.function.BiPredicate;
 import java.util.function.ToLongFunction;
 
-public interface IHatchElement<T extends GT_MetaTileEntity_EnhancedMultiBlockBase<?>> {
+public interface IHatchElement<T> {
     List<? extends Class<? extends IMetaTileEntity>> mteClasses();
 
     IGT_HatchAdder<? super T> adder();
@@ -73,7 +74,7 @@ public interface IHatchElement<T extends GT_MetaTileEntity_EnhancedMultiBlockBas
     }
 }
 
-class HatchElement<T extends GT_MetaTileEntity_EnhancedMultiBlockBase<?>> implements IHatchElement<T> {
+class HatchElement<T> implements IHatchElement<T> {
     private final List<Class<? extends IMetaTileEntity>> mClasses;
     private final IGT_HatchAdder<? super T> mAdder;
     private final String mName;
