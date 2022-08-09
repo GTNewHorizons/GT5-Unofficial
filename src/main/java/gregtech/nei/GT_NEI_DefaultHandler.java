@@ -375,9 +375,11 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                 lineCounter++;
                 if (GT_Mod.gregtechproxy.mNEIOriginalVoltage) {
                     Power originalPower = getPowerFromRecipeMap();
-                    originalPower.computePowerUsageAndDuration(recipe.mEUt, recipe.mDuration);
-                    drawLine(lineCounter, GT_Utility.trans("228", "Original voltage: ") + originalPower.getVoltageString());
-                    lineCounter++;
+                    if (!(originalPower instanceof UnspecifiedEUPower)) {
+                        originalPower.computePowerUsageAndDuration(recipe.mEUt, recipe.mDuration);
+                        drawLine(lineCounter, GT_Utility.trans("228", "Original voltage: ") + originalPower.getVoltageString());
+                        lineCounter++;
+                    }
                 }
                 if (amperage != null && !amperage.equals("unspecified") && !amperage.equals("1")) {
                     drawLine(lineCounter, GT_Utility.trans("155", "Amperage: ") + amperage);
