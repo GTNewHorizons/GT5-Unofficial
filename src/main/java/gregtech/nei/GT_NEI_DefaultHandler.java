@@ -370,13 +370,13 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         mPower.computePowerUsageAndDuration(recipe.mEUt, recipe.mDuration);
 
         int lineCounter = 0;
-        if (mPower.getEuPerTick() > 0) {
+        if (!(mPower instanceof UnspecifiedEUPower) && mPower.getEuPerTick() > 0) {
             drawLine(lineCounter, GT_Utility.trans("152", "Total: ") + mPower.getTotalPowerString());
             lineCounter++;
 
             String amperage = mPower.getAmperageString();
             String powerUsage = mPower.getPowerUsageString();
-            if (amperage == null || amperage.equals("unspecified") || powerUsage.contains("(OC)")){
+            if (amperage == null || powerUsage.contains("(OC)")){
                 drawLine(lineCounter, GT_Utility.trans("153", "Usage: ") + powerUsage);
                 lineCounter++;
                 if (GT_Mod.gregtechproxy.mNEIOriginalVoltage) {
@@ -387,7 +387,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                         lineCounter++;
                     }
                 }
-                if (amperage != null && !amperage.equals("unspecified") && !amperage.equals("1")) {
+                if (amperage != null && !amperage.equals("1")) {
                     drawLine(lineCounter, GT_Utility.trans("155", "Amperage: ") + amperage);
                     lineCounter++;
                 }
