@@ -874,7 +874,7 @@ public class DreamCraftRecipeLoader {
         TT_recipeAdder.addResearchableAssemblylineRecipe(getItemContainer("Hatch_Energy_UEV").get(1L),
                 96_000, 64, 200_000, 8, new Object[]{
                         getItemContainer("Hull_UIV").get(1L),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.SuperconductorUEV, 8L),
+                        GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUIV, 2L),
                         ItemList.Circuit_Chip_QPIC.get(4L),
                         getItemContainer("NanoCircuit").get(2),
                         ItemList.UHV_Coil.get(8L),
@@ -894,7 +894,7 @@ public class DreamCraftRecipeLoader {
         TT_recipeAdder.addResearchableAssemblylineRecipe(getItemContainer("Hatch_Dynamo_UEV").get(1L),
                 192_000, 128, 400_000, 16, new Object[]{
                         getItemContainer("Hull_UIV").get(1L),
-                        GT_OreDictUnificator.get(OrePrefixes.spring, Materials.SuperconductorUEVBase, 32L),
+                        GT_OreDictUnificator.get(OrePrefixes.spring, Materials.SuperconductorUIVBase, 8L),
                         ItemList.Circuit_Chip_QPIC.get(4L),
                         getItemContainer("NanoCircuit").get(2),
                         ItemList.UHV_Coil.get(8L),
@@ -915,7 +915,7 @@ public class DreamCraftRecipeLoader {
         TT_recipeAdder.addResearchableAssemblylineRecipe(getItemContainer("Hatch_Energy_UIV").get(1L),
                 192000, 128, 400000, 16, new Object[]{
                         getItemContainer("Hull_UMV").get(1L),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUEV, 16L),
+                        GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUMV, 2L),
                         ItemList.Circuit_Chip_QPIC.get(4L),
                         getItemContainer("PikoCircuit").get(2),
                         ItemList.UHV_Coil.get(16L),
@@ -938,7 +938,7 @@ public class DreamCraftRecipeLoader {
         TT_recipeAdder.addResearchableAssemblylineRecipe(getItemContainer("Hatch_Dynamo_UIV").get(1L),
                 384000, 256, 800000, 32, new Object[]{
                         getItemContainer("Hull_UMV").get(1L),
-                        GT_OreDictUnificator.get(OrePrefixes.spring, Materials.SuperconductorUEVBase, 64L),
+                        GT_OreDictUnificator.get(OrePrefixes.spring, Materials.SuperconductorUMVBase, 8L),
                         ItemList.Circuit_Chip_QPIC.get(4L),
                         getItemContainer("PikoCircuit").get(2),
                         ItemList.UHV_Coil.get(16L),
@@ -1104,7 +1104,7 @@ public class DreamCraftRecipeLoader {
                     new FluidStack[]{
                             Materials.Neutronium.getMolten(32_768_000L),
                             Materials.SpaceTime.getMolten(4*36864L),
-                            Materials.SuperconductorUEVBase.getMolten(4*36864L),
+                            Materials.SuperconductorUMVBase.getMolten(4*36864L),
                             Materials.ExcitedDTEC.getFluid(4*36864L)
                     },
                     getItemContainer("StargateShieldingFoil").get(1L), 72_000, 500_000_000);
@@ -1135,7 +1135,7 @@ public class DreamCraftRecipeLoader {
                     new FluidStack[]{
                             Materials.Neutronium.getMolten(32_768_000L),
                             Materials.SpaceTime.getMolten(4*36864L),
-                            Materials.SuperconductorUEVBase.getMolten(4*36864L),
+                            Materials.SuperconductorUMVBase.getMolten(4*36864L),
                             Materials.ExcitedDTEC.getFluid(4*36864L)
                     },
                     getItemContainer("StargateChevron").get(1L), 72_000, 500_000_000);
@@ -1158,7 +1158,7 @@ public class DreamCraftRecipeLoader {
                             GT_ModHandler.getModItem("bartworks", "gt.bwMetaGeneratedstickLong", 64L, 10106),
                             GT_ModHandler.getModItem("miscutils", "itemRodLongAstralTitanium", 64L),
 
-                            GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.SuperconductorUEVBase, 64L),
+                            GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.SuperconductorUMVBase, 64L),
                             GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Sunnarium, 64L),
                             GT_ModHandler.getModItem("miscutils", "itemRodLongAbyssalAlloy", 64L),
                             GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.TranscendentMetal, 64L),
@@ -1167,7 +1167,7 @@ public class DreamCraftRecipeLoader {
                     new FluidStack[]{
                             Materials.Neutronium.getMolten(32_768_000L),
                             Materials.SpaceTime.getMolten(4*36864L),
-                            Materials.SuperconductorUEVBase.getMolten(4*36864L),
+                            Materials.SuperconductorUMVBase.getMolten(4*36864L),
                             Materials.ExcitedDTEC.getFluid(4*36864L)
                     },
                     getItemContainer("StargateFramePart").get(1L), 72_000, 500_000_000);
