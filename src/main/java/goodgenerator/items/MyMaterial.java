@@ -243,7 +243,7 @@ public class MyMaterial implements Runnable {
             "Or",
             new Werkstoff.Stats().setProtons(120).setMass(300),
             Werkstoff.Types.ELEMENT,
-            new Werkstoff.GenerationFeatures().addGems(),
+            new Werkstoff.GenerationFeatures().addGems().addMolten(),
             OffsetID + 22,
             TextureSet.SET_DIAMOND);
 
