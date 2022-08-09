@@ -68,6 +68,11 @@ public class GT_MetaTileEntity_RockBreaker extends GT_MetaTileEntity_BasicMachin
     }
 
     @Override
+    public boolean allowSelectCircuit() {
+        return true;
+    }
+
+    @Override
     public int checkRecipe() {
         IGregTechTileEntity aBaseMetaTileEntity = getBaseMetaTileEntity();
         if ((aBaseMetaTileEntity.getBlockOffset(0, 0, 1) == Blocks.water) || (aBaseMetaTileEntity.getBlockOffset(0, 0, -1) == Blocks.water) || (aBaseMetaTileEntity.getBlockOffset(-1, 0, 0) == Blocks.water) || (aBaseMetaTileEntity.getBlockOffset(1, 0, 0) == Blocks.water)) {
@@ -78,16 +83,18 @@ public class GT_MetaTileEntity_RockBreaker extends GT_MetaTileEntity_BasicMachin
                 tOutput = new ItemStack(Blocks.cobblestone, 1);
             }
             if (tOutput != null) {
-                if (GT_Utility.areStacksEqual(getInputAt(0), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L))) {
-                    tOutput = new ItemStack(Blocks.obsidian, 1);
-                    if (canOutput(tOutput)) {
-                        getInputAt(0).stackSize -= 1;
-                        calculateOverclockedNess(32,128);
-                        //In case recipe is too OP for that machine
-                        if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
-                            return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
-                        this.mOutputItems[0] = tOutput;
-                        return 2;
+                if(GT_Utility.areStacksEqual(getStackInSlot(getCircuitSlot()), GT_Utility.getIntegratedCircuit(1))){
+                    if (GT_Utility.areStacksEqual(getInputAt(0), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L))) {
+                        tOutput = new ItemStack(Blocks.obsidian, 1);
+                        if (canOutput(tOutput)) {
+                            getInputAt(0).stackSize -= 1;
+                            calculateOverclockedNess(32, 128);
+                            //In case recipe is too OP for that machine
+                            if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
+                                return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
+                            this.mOutputItems[0] = tOutput;
+                            return 2;
+                        }
                     }
                 } else if (canOutput(tOutput)) {
                     calculateOverclockedNess(32,16);
