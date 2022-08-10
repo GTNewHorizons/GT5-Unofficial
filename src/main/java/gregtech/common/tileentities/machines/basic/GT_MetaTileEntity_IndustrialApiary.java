@@ -439,7 +439,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                     for (int i = 0; i < mOutputItems.length; i++)
                         if(mOutputItems[i] != null)
                             for (int j = 0; j < mOutputItems.length; j++) {
-                                if(isAutomated)
+                                if(j == 0 && isAutomated)
                                 {
                                     if(beeRoot.isMember(mOutputItems[i], EnumBeeType.QUEEN.ordinal()) || beeRoot.isMember(mOutputItems[i], EnumBeeType.PRINCESS.ordinal())) {
                                         if(aBaseMetaTileEntity.addStackToSlot(queen, mOutputItems[i]))
@@ -449,6 +449,9 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                                         if(aBaseMetaTileEntity.addStackToSlot(drone, mOutputItems[i]))
                                             break;
                                 }
+                                else if(i == 0 && j == 0 && beeRoot.isMember(mOutputItems[0], EnumBeeType.QUEEN.ordinal()))
+                                    if(aBaseMetaTileEntity.addStackToSlot(queen, mOutputItems[0]))
+                                        break;
                                 if (aBaseMetaTileEntity.addStackToSlot(getOutputSlot() + ((j + i) % mOutputItems.length), mOutputItems[i]))
                                     break;
                             }
@@ -604,7 +607,10 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
 
     @Override
     public EnumTemperature getTemperature() {
-        return EnumTemperature.getFromValue(getBiome().temperature + temperatureMod);
+        if(BiomeHelper.isBiomeHellish(getBiome()))
+            return EnumTemperature.HELLISH;
+        return
+            EnumTemperature.getFromValue(getBiome().temperature + temperatureMod);
     }
 
     @Override

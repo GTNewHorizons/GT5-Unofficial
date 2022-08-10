@@ -27,10 +27,10 @@ public class GT_Container_IndustrialApiary extends GT_ContainerMetaTile_Machine 
 
     GT_Slot_Holo slotItemTransferToggle;
     GT_Slot_Holo slotSpeedToggle;
-    GT_Slot_Holo slotPollenToggle;
     GT_Slot_Holo slotCancelProcess;
     Slot slotBattery;
     Slot slotSpecial;
+    ArrayList<Slot> slotUpgrade;
 
     boolean mItemTransfer;
     boolean mStuttering;
@@ -54,10 +54,11 @@ public class GT_Container_IndustrialApiary extends GT_ContainerMetaTile_Machine 
         addSlotToContainer(new ApiarySlot(this.mTileEntity, tStartIndex++, 37, 22));
         addSlotToContainer(new ApiarySlot(this.mTileEntity, tStartIndex++, 37, 42));
 
-        addSlotToContainer(new ApiarySlot(this.mTileEntity, tStartIndex++, 62, 24));
-        addSlotToContainer(new ApiarySlot(this.mTileEntity, tStartIndex++, 80, 24));
-        addSlotToContainer(new ApiarySlot(this.mTileEntity, tStartIndex++, 62, 42));
-        addSlotToContainer(new ApiarySlot(this.mTileEntity, tStartIndex++, 80, 42));
+        slotUpgrade = new ArrayList<>(4);
+        slotUpgrade.add(addSlotToContainer(new ApiarySlot(this.mTileEntity, tStartIndex++, 62, 24)));
+        slotUpgrade.add(addSlotToContainer(new ApiarySlot(this.mTileEntity, tStartIndex++, 80, 24)));
+        slotUpgrade.add(addSlotToContainer(new ApiarySlot(this.mTileEntity, tStartIndex++, 62, 42)));
+        slotUpgrade.add(addSlotToContainer(new ApiarySlot(this.mTileEntity, tStartIndex++, 80, 42)));
 
         for(int i = 107; i <= 143; i += 18)
             for(int j = 6; j <= 42; j += 18)
