@@ -6,7 +6,7 @@
 		"description": "Gregtech addon.",
 		"version": "${modVersion}",
 		"mcversion": "${minecraftVersion}",
-		"url": "https://github.com/kuba6000/kubaworks",
+		"url": "https://github.com/kuba6000/KubaTech",
 		"updateUrl": "",
 		"authorList": ["kuba6000"],
 		"credits": "",

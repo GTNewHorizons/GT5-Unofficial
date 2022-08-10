@@ -1,5 +1,5 @@
 /*
- * kubaworks - Gregtech Addon
+ * KubaTech - Gregtech Addon
  * Copyright (C) 2022  kuba6000
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,7 +17,7 @@
  *
  */
 
-package kubaworks;
+package KubaTech;
 
 import cpw.mods.fml.common.event.*;
 

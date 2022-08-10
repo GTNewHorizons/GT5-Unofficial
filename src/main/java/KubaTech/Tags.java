@@ -1,5 +1,5 @@
 /*
- * kubaworks - Gregtech Addon
+ * KubaTech - Gregtech Addon
  * Copyright (C) 2022  kuba6000
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,19 +17,14 @@
  *
  */
 
-package kubaworks;
+package KubaTech;
 
-import java.io.File;
-import net.minecraftforge.common.config.Configuration;
+// Use this class for Strings only. Do not import any classes here. It will lead to issues with Mixins if in use!
 
-public class Config {
+public class Tags {
 
-    public static void syncronizeConfiguration(File configFile) {
-        Configuration configuration = new Configuration(configFile);
-        configuration.load();
-
-        if (configuration.hasChanged()) {
-            configuration.save();
-        }
-    }
+    // GRADLETOKEN_* will be replaced by your configuration values at build time
+    public static final String MODID = "GRADLETOKEN_MODID";
+    public static final String MODNAME = "GRADLETOKEN_MODNAME";
+    public static final String VERSION = "GRADLETOKEN_VERSION";
 }
