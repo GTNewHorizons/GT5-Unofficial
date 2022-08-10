@@ -2079,30 +2079,13 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
 
     @Override
     public IAlignment getAlignment() {
-        return getMetaTileEntity() instanceof IAlignmentProvider ? ((IAlignmentProvider) getMetaTileEntity()).getAlignment() : new BasicAlignment();
+        return getMetaTileEntity() instanceof IAlignmentProvider ? ((IAlignmentProvider) getMetaTileEntity()).getAlignment() :
+            getMetaTileEntity() instanceof IAlignment ? (IAlignment) getMetaTileEntity() : null;
     }
 
     @Nullable
     @Override
     public IConstructable getConstructable() {
         return getMetaTileEntity() instanceof IConstructable ? (IConstructable) getMetaTileEntity() : null;
-    }
-
-    private class BasicAlignment implements IAlignment {
-
-        @Override
-        public ExtendedFacing getExtendedFacing() {
-            return ExtendedFacing.of(ForgeDirection.getOrientation(getFrontFacing()));
-        }
-
-        @Override
-        public void setExtendedFacing(ExtendedFacing alignment) {
-            setFrontFacing((byte) Math.min(alignment.getDirection().ordinal(), ForgeDirection.UNKNOWN.ordinal() - 1));
-        }
-
-        @Override
-        public IAlignmentLimits getAlignmentLimits() {
-            return (direction, rotation, flip) -> rotation.isNotRotated() && flip.isNotFlipped();
-        }
     }
 }
