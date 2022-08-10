@@ -13,6 +13,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsBotania;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.util.GT_ModHandler;
@@ -1392,6 +1393,27 @@ public class DreamCraftRecipeLoader {
                         ELEMENT.STANDALONE.ASTRAL_TITANIUM.getFluidStack(576),
                 }, GregtechItemList.Casing_Fusion_External.get(1), 300, 2000000);
 
+        // Draconic Evolution Fusion Crafter Controller
+		if (Loader.isModLoaded("AWWayofTime")&&Loader.isModLoaded("EMT")){
+				TT_recipeAdder.addResearchableAssemblylineRecipe(GT_ModHandler.getModItem("EMT", "EMT_GTBLOCK_CASEING", 1, 8),
+						16_777_216, 1024, 2_000_000, 8, new Object[]{
+								GT_ModHandler.getModItem("gregtech", "gt.blockmachines", 1, 10783),
+								GT_ModHandler.getModItem("EMT", "EMT_GTBLOCK_CASEING", 1, 8),
+								GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsBotania.GaiaSpirit, 1L),
+								ItemList.Casing_Coil_AwakenedDraconium.get(8L),
+								ItemList.Electric_Motor_UHV.get(8L),
+								ItemList.Robot_Arm_UHV.get(4L),
+								new Object[]{OrePrefixes.circuit.get(Materials.Infinite), 4},
+								ItemList.Gravistar.get(4, new Object(){}),
+								GT_ModHandler.getModItem("Thaumcraft", "ItemEldritchObject", 1, 3),
+								GT_ModHandler.getModItem("AWWayofTime", "bloodMagicBaseItems", 8, 29),
+								GT_ModHandler.getModItem("AWWayofTime", "bloodMagicBaseItems", 8, 28),
+						}, new FluidStack[]{
+								new FluidStack(solderIndalloy, 2880),
+								Materials.Void.getMolten(2880L),
+								Materials.DraconiumAwakened.getMolten(1440),
+						}, GT_ModHandler.getModItem("gregtech", "gt.blockmachines", 1, 5001), 1500, 8_000_000);
+		}
 
         //region singleblocks
 
