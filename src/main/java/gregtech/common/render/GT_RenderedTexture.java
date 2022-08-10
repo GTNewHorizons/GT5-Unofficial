@@ -1,5 +1,6 @@
 package gregtech.common.render;
 
+import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
@@ -365,16 +366,18 @@ public class GT_RenderedTexture extends GT_TextureBase implements ITexture, ICol
         final World w = player.getEntityWorld();
         if (w == null) return ExtendedFacing.DEFAULT;
         final TileEntity te = w.getTileEntity(x, y, z);
+        IAlignment alignment = null;
         if (te instanceof IGregTechTileEntity) {
             final IMetaTileEntity meta = ((IGregTechTileEntity) te).getMetaTileEntity();
             if (meta instanceof IAlignmentProvider) {
-                return ((IAlignmentProvider) meta).getAlignment().getExtendedFacing();
+                alignment = ((IAlignmentProvider) meta).getAlignment();
             } else if (meta != null) {
                 return ExtendedFacing.of(ForgeDirection.getOrientation(meta.getBaseMetaTileEntity().getFrontFacing()));
             }
         } else if (te instanceof IAlignmentProvider) {
-            return ((IAlignmentProvider) te).getAlignment().getExtendedFacing();
+            alignment = ((IAlignmentProvider) te).getAlignment();
         }
+        if (alignment != null) return alignment.getExtendedFacing();
         return ExtendedFacing.DEFAULT;
     }
 }

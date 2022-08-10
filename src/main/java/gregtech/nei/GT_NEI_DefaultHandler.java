@@ -26,10 +26,10 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.blocks.GT_Item_Machines;
 import gregtech.common.power.EUPower;
 import gregtech.common.power.Power;
 import gregtech.common.power.UnspecifiedEUPower;
-import gregtech.common.blocks.GT_Item_Machines;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -48,15 +48,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
 
 import static codechicken.nei.recipe.RecipeInfo.getGuiOffset;
 
-@SuppressWarnings("all")
 public class GT_NEI_DefaultHandler extends RecipeMapHandler {
+    @SuppressWarnings("unused") // Public constant
     public static final int sOffsetX = 5;
+    @SuppressWarnings("unused") // Public constant
     public static final int sOffsetY = 11;
     private static final int M = 1000000;
     private static final ConcurrentMap<GT_Recipe.GT_Recipe_Map, SortedRecipeListCache> CACHE = new ConcurrentHashMap<>();
@@ -108,7 +110,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                     .sorted()
                     .map(CachedDefaultRecipe::new)
                     .collect(Collectors.toList());
-            // while the NEI parallelize handlers, for each individual handler it still uses sequential execution model
+            // while the NEI parallelize handlers, for each individual handler it still uses sequential execution model,
             // so we do not need any synchronization here
             // even if it does break, at worst case it's just recreating the cache multiple times, which should be fine
             cacheHolder.setCachedRecipes(cache);
@@ -172,13 +174,13 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
     }
 
     private void loadTieredCraftingRecipesUpTo(byte upperTier) {
-        arecipes.addAll(getTieredRecipes((byte) 0, upperTier));
+        arecipes.addAll(getTieredRecipes(upperTier));
     }
 
-    private List<CachedDefaultRecipe> getTieredRecipes(byte lowerTier, byte upperTier) {
+    private List<CachedDefaultRecipe> getTieredRecipes(byte upperTier) {
         List<CachedDefaultRecipe> recipes = getCache();
         if ( recipes.size() > 0 ) {
-            Range<Integer> indexRange = getCacheHolder().getIndexRangeForTiers(lowerTier, upperTier);
+            Range<Integer> indexRange = getCacheHolder().getIndexRangeForTiers((byte) 0, upperTier);
             recipes = recipes.subList(indexRange.getMinimum(), indexRange.getMaximum() + 1);
         }
         return recipes;
@@ -212,11 +214,10 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                 if (gtTileEntity instanceof GT_MetaTileEntity_BasicMachine) {
                     Power power = ((GT_MetaTileEntity_BasicMachine) gtTileEntity).getPower();
                     handler.loadCraftingRecipes(getOverlayIdentifier(), power);
-                    return handler;
                 } else {
                     handler.loadCraftingRecipes(getOverlayIdentifier(), (Object) null);
-                    return handler;
                 }
+                return handler;
             }
         }
         return this.getUsageHandler(inputId, ingredients);
@@ -266,19 +267,24 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
     private String computeRecipeName() {
         String recipeName = GT_LanguageManager.getTranslation(this.mRecipeMap.mUnlocalizedName);
         if (mPower != null) {
-            recipeName = addSuffixToRecipeName(recipeName, " (", mPower.getTierString() + ")");
+            recipeName = addSuffixToRecipeName(recipeName, mPower.getTierString() + ")");
         }
         return recipeName;
     }
 
-    private String addSuffixToRecipeName(String recipeName, String separator, String suffix) {
+    private String addSuffixToRecipeName(final String aRecipeName, final String suffix) {
+        final String recipeName;
+        final String separator;
         FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
-        int recipeNameWidth = fontRenderer.getStringWidth(recipeName);
+        int recipeNameWidth = fontRenderer.getStringWidth(aRecipeName);
         int targetWidth = RECIPE_NAME_WIDTH - fontRenderer.getStringWidth(suffix);
-        if (recipeNameWidth + fontRenderer.getStringWidth(separator) > targetWidth) {
-            setupRecipeNameTooltip(recipeName + separator + suffix);
+        if (recipeNameWidth + fontRenderer.getStringWidth(" (") <= targetWidth) {
+            recipeName = aRecipeName;
+            separator = " (";
+        } else {
+            setupRecipeNameTooltip(aRecipeName + " (" + suffix);
             separator = "...(";
-            recipeName = shrinkRecipeName(recipeName, targetWidth - fontRenderer.getStringWidth(separator));
+            recipeName = shrinkRecipeName(aRecipeName, targetWidth - fontRenderer.getStringWidth(separator));
         }
         return recipeName + separator + suffix;
     }
@@ -306,7 +312,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
     }
 
     @Override
-    public List<String> handleItemTooltip(GuiRecipe<?> gui, ItemStack aStack, List<String> currenttip, int aRecipeIndex) {
+    public List<String> handleItemTooltip(GuiRecipe<?> gui, ItemStack aStack, List<String> currentTip, int aRecipeIndex) {
         CachedRecipe tObject = this.arecipes.get(aRecipeIndex);
         if ((tObject instanceof CachedDefaultRecipe)) {
             CachedDefaultRecipe tRecipe = (CachedDefaultRecipe) tObject;
@@ -315,7 +321,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                     if ((!(tStack instanceof FixedPositionedStack)) || (((FixedPositionedStack) tStack).mChance <= 0) || (((FixedPositionedStack) tStack).mChance == 10000)) {
                         break;
                     }
-                    currenttip.add(GT_Utility.trans("150", "Chance: ") + ((FixedPositionedStack) tStack).mChance / 100 + "." + (((FixedPositionedStack) tStack).mChance % 100 < 10 ? "0" + ((FixedPositionedStack) tStack).mChance % 100 : Integer.valueOf(((FixedPositionedStack) tStack).mChance % 100)) + "%");
+                    currentTip.add(GT_Utility.trans("150", "Chance: ") + ((FixedPositionedStack) tStack).mChance / 100 + "." + (((FixedPositionedStack) tStack).mChance % 100 < 10 ? "0" + ((FixedPositionedStack) tStack).mChance % 100 : Integer.valueOf(((FixedPositionedStack) tStack).mChance % 100)) + "%");
                     break;
                 }
             }
@@ -325,16 +331,16 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                         (tStack.item.stackSize != 0)) {
                         break;
                     }
-                    currenttip.add(GT_Utility.trans("151", "Does not get consumed in the process"));
+                    currentTip.add(GT_Utility.trans("151", "Does not get consumed in the process"));
                     break;
                 }
             }
         }
 
         if (mRecipeNameTooltip != null) {
-            mRecipeNameTooltip.handleTooltip(currenttip, aRecipeIndex);
+            mRecipeNameTooltip.handleTooltip(currentTip, aRecipeIndex);
         }
-        return currenttip;
+        return currentTip;
     }
 
     private Power getPowerFromRecipeMap() {
@@ -377,9 +383,11 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                 lineCounter++;
                 if (GT_Mod.gregtechproxy.mNEIOriginalVoltage) {
                     Power originalPower = getPowerFromRecipeMap();
-                    originalPower.computePowerUsageAndDuration(recipe.mEUt, recipe.mDuration);
-                    drawLine(lineCounter, GT_Utility.trans("228", "Original voltage: ") + originalPower.getVoltageString());
-                    lineCounter++;
+                    if (!(originalPower instanceof UnspecifiedEUPower)) {
+                        originalPower.computePowerUsageAndDuration(recipe.mEUt, recipe.mDuration);
+                        drawLine(lineCounter, GT_Utility.trans("228", "Original voltage: ") + originalPower.getVoltageString());
+                        lineCounter++;
+                    }
                 }
                 if (amperage != null && !amperage.equals("unspecified") && !amperage.equals("1")) {
                     drawLine(lineCounter, GT_Utility.trans("155", "Amperage: ") + amperage);
@@ -401,11 +409,10 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         if (mPower.getDurationTicks() > 0) {
             if(GT_Mod.gregtechproxy.mNEIRecipeSecondMode) {
                 drawLine(lineCounter, GT_Utility.trans("158", "Time: ") + mPower.getDurationStringSeconds());
-                lineCounter++;
             } else {
                 drawLine(lineCounter, GT_Utility.trans("158", "Time: ") + mPower.getDurationStringTicks());
-                lineCounter++;
             }
+            lineCounter++;
         }
         if (this.mRecipeMap.mNEIName.equals("gt.recipe.fusionreactor") || this.mRecipeMap.mNEIName.equals("gt.recipe.complexfusionreactor")) {
             if (drawOptionalLine(lineCounter, getSpecialInfo(recipe.mSpecialValue) + " " + formatSpecialValueFusion(recipe.mSpecialValue, recipe.mEUt))) {
@@ -477,7 +484,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
     }
 
     private String formatSpecialValueFusion(int SpecialValue, int Voltage) {
-        int tier = 0;
+        int tier;
         if (SpecialValue <= 10 * M * 16) {
             tier = 1;
         } else if (SpecialValue <= 20 * M * 16) {
@@ -487,18 +494,17 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         } else {
             tier = 4;
         }
-        if (Voltage <= 32768) {
-            tier = Math.max(tier, 1);
-        } else if (Voltage <= 65536) {
+        if (Voltage <= 65536) {
             tier = Math.max(tier, 2);
         } else if (Voltage <= 131072) {
             tier = Math.max(tier, 3);
         } else {
-            tier = Math.max(tier, 4);
+            tier = 4;
         }
         return "(MK " + tier + ")";
     }
 
+    @SuppressWarnings("unused") //TODO: Consider removing
     protected boolean drawOptionalLine(int lineNumber, String line, String prefix) {
         if (!(line == null || "unspecified".equals(line))) {
             drawLine(lineNumber, prefix + line);
@@ -526,10 +532,10 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
     public static class GT_RectHandler
         implements IContainerInputHandler, IContainerTooltipHandler {
         @Override
-        public boolean mouseClicked(GuiContainer gui, int mousex, int mousey, int button) {
+        public boolean mouseClicked(GuiContainer gui, int mouseX, int mouseY, int button) {
             if (canHandle(gui)) {
                 NEI_TransferRectHost host = (NEI_TransferRectHost) gui;
-                if (hostRectContainsMouse(host, getMousePos(gui, mousex, mousey))) {
+                if (hostRectContainsMouse(host, getMousePos(gui, mouseX, mouseY))) {
                     if (button == 0) {
                         return handleTransferRectMouseClick(host, false);
                     }
@@ -541,11 +547,10 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
             return false;
         }
 
-        private Point getMousePos(GuiContainer gui, int mousex, int mousey) {
-            Point point = new Point(
-                mousex - ((GT_GUIContainer) gui).getLeft() - getGuiOffset(gui)[0],
-                mousey - ((GT_GUIContainer) gui).getTop() - getGuiOffset(gui)[1]);
-            return point;
+        private Point getMousePos(GuiContainer gui, int mouseX, int mouseY) {
+            return new Point(
+                mouseX - ((GT_GUIContainer) gui).getLeft() - getGuiOffset(gui)[0],
+                mouseY - ((GT_GUIContainer) gui).getTop() - getGuiOffset(gui)[1]);
         }
 
         private boolean hostRectContainsMouse(NEI_TransferRectHost host, Point mousePos) {
@@ -568,24 +573,24 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         }
 
         @Override
-        public List<String> handleTooltip(GuiContainer gui, int mousex, int mousey, List<String> currenttip) {
-            if ((canHandle(gui)) && (currenttip.isEmpty())) {
+        public List<String> handleTooltip(GuiContainer gui, int mouseX, int mouseY, List<String> currentTip) {
+            if ((canHandle(gui)) && (currentTip.isEmpty())) {
                 NEI_TransferRectHost host = (NEI_TransferRectHost) gui;
-                if (hostRectContainsMouse(host, getMousePos(gui, mousex, mousey))) {
-                    currenttip.add(host.getNeiTransferRectTooltip());
+                if (hostRectContainsMouse(host, getMousePos(gui, mouseX, mouseY))) {
+                    currentTip.add(host.getNeiTransferRectTooltip());
                 }
             }
-            return currenttip;
+            return currentTip;
         }
 
         @Override
-        public List<String> handleItemDisplayName(GuiContainer gui, ItemStack itemstack, List<String> currenttip) {
-            return currenttip;
+        public List<String> handleItemDisplayName(GuiContainer gui, ItemStack itemstack, List<String> currentTip) {
+            return currentTip;
         }
 
         @Override
-        public List<String> handleItemTooltip(GuiContainer gui, ItemStack itemstack, int mousex, int mousey, List<String> currenttip) {
-            return currenttip;
+        public List<String> handleItemTooltip(GuiContainer gui, ItemStack itemstack, int mouseX, int mouseY, List<String> currentTip) {
+            return currentTip;
         }
 
         @Override
@@ -597,21 +602,21 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         public void onKeyTyped(GuiContainer gui, char keyChar, int keyID) {}
 
         @Override
-        public void onMouseClicked(GuiContainer gui, int mousex, int mousey, int button) {}
+        public void onMouseClicked(GuiContainer gui, int mouseX, int mouseY, int button) {}
 
         @Override
-        public void onMouseUp(GuiContainer gui, int mousex, int mousey, int button) {}
+        public void onMouseUp(GuiContainer gui, int mouseX, int mouseY, int button) {}
 
         @Override
-        public boolean mouseScrolled(GuiContainer gui, int mousex, int mousey, int scrolled) {
+        public boolean mouseScrolled(GuiContainer gui, int mouseX, int mouseY, int scrolled) {
             return false;
         }
 
         @Override
-        public void onMouseScrolled(GuiContainer gui, int mousex, int mousey, int scrolled) {}
+        public void onMouseScrolled(GuiContainer gui, int mouseX, int mouseY, int scrolled) {}
 
         @Override
-        public void onMouseDragged(GuiContainer gui, int mousex, int mousey, int button, long heldTime) {}
+        public void onMouseDragged(GuiContainer gui, int mouseX, int mouseY, int button, long heldTime) {}
     }
 
     public static class FixedPositionedStack extends PositionedStack {
@@ -674,6 +679,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         public final List<PositionedStack> mInputs;
 
         // Draw a grid of fluids and items (in that order).
+        @SuppressWarnings("unused") // Public API method
         public void drawNEIItemAndFluidGrid(ItemStack[] ItemArray, FluidStack[] FluidArray, int x_coord_origin, int y_coord_origin, int x_dir_max_items, int y_max_dir_max_items, GT_Recipe Recipe, boolean is_input) {
             if (ItemArray.length + FluidArray.length > x_dir_max_items * y_max_dir_max_items) {
                 GT_Log.err.println("Recipe cannot be properly displayed in NEI due to too many items/fluids.");
@@ -717,7 +723,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                 }
             }
 
-        };
+        }
 
 
         // Draws a grid of items for NEI rendering.
@@ -725,10 +731,10 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
             if (ItemArray.length > x_dir_max_items * y_max_dir_max_items) {
                 GT_Log.err.println("Recipe cannot be properly displayed in NEI due to too many items.");
             }
-            // 18 pixels to get to a new grid for placing a item tile since they are 16x16 and have 1 pixel buffers around them.
+            // 18 pixels to get to a new grid for placing an item tile since they are 16x16 and have 1 pixel buffers around them.
             int x_max = x_coord_origin + x_dir_max_items * 18;
 
-            // Temp variables to keep track of current coords to place item at.
+            // Temp variables to keep track of current coordinates to place item at.
             int x_coord = x_coord_origin;
             int y_coord = y_coord_origin;
 
@@ -749,38 +755,6 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                     }
                 }
             }
-        }
-
-        // Draws a grid of fluids for NEI rendering.
-        private void drawNEIFluidGrid(FluidStack[] FluidArray, int x_coord_origin, int y_coord_origin, int x_dir_max_fluids, int y_max_dir_max_fluids, GT_Recipe Recipe, boolean is_input) {
-
-            if (FluidArray.length > x_dir_max_fluids * y_max_dir_max_fluids) {
-                GT_Log.err.println("Recipe cannot be properly displayed in NEI due to too many fluids.");
-            }
-
-            // 18 pixels to get to a new grid for placing a fluid tile since they are 16x16 and have 1 pixel buffers around them.
-            int x_max = x_coord_origin + x_dir_max_fluids * 18;
-
-            // Temp variables to keep track of current coords to place fluid at.
-            int x_coord = x_coord_origin;
-            int y_coord = y_coord_origin;
-
-            // Iterate over all fluids in array and display them.
-            for(FluidStack fluid : FluidArray) {
-                if (fluid != GT_Values.NF) {
-                    if (is_input) {
-                        this.mInputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(fluid, true), x_coord, y_coord, true));
-                    } else {
-                        this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(fluid, true), x_coord, y_coord, GT_NEI_DefaultHandler.this.mRecipeMap.mNEIUnificateOutput));
-                    }
-                    x_coord += 18;
-                    if (x_coord == x_max) {
-                        x_coord = x_coord_origin;
-                        y_coord += 18;
-                    }
-                }
-            }
-
         }
 
         public CachedDefaultRecipe(GT_Recipe aRecipe) {
@@ -827,8 +801,6 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                     drawNEIItemGrid(aRecipe.mInputs, 12, 14, 3, 1, aRecipe, true);
                     break;
                 case 4:
-                    drawNEIItemGrid(aRecipe.mInputs, 12, 14, 3, 2, aRecipe, true);
-                    break;
                 case 5:
                     drawNEIItemGrid(aRecipe.mInputs, 12, 14, 3, 2, aRecipe, true);
                     break;
@@ -855,8 +827,6 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                     drawNEIItemGrid(aRecipe.mOutputs, 102, 5, 2, 2, aRecipe, false);
                     break;
                 case 5:
-                    drawNEIItemGrid(aRecipe.mOutputs, 102, 5, 3, 2, aRecipe, false);
-                    break;
                 case 6:
                     drawNEIItemGrid(aRecipe.mOutputs, 102, 5, 3, 2, aRecipe, false);
                     break;
@@ -922,7 +892,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         private int mCachedRecipesVersion = -1;
         @Nullable
         private SoftReference<List<CachedDefaultRecipe>> mCachedRecipes;
-        private Range<Integer>[] mTierIndexes;
+        private ArrayList<Range<Integer>> mTierIndexes;
         private Range<Byte> mTierRange;
 
         public int getCachedRecipesVersion() {
@@ -950,8 +920,9 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         }
 
         private void computeTierIndexes() {
-            mTierIndexes = new Range[GT_Values.V.length];
-            Iterator<CachedDefaultRecipe> iterator = mCachedRecipes.get().iterator();
+            mTierIndexes = new ArrayList<>(GT_Values.V.length);
+            assert mCachedRecipes != null;
+            Iterator<CachedDefaultRecipe> iterator = Objects.requireNonNull(mCachedRecipes.get()).iterator();
 
             int index = 0;
             int minIndex = 0;
@@ -963,7 +934,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                 byte recipeTier = GT_Utility.getTier(recipe.mRecipe.mEUt / GT_NEI_DefaultHandler.this.mRecipeMap.mAmperage);
                 if (recipeTier != previousTier) {
                     if (maxIndex != -1) {
-                        mTierIndexes[previousTier] = Range.between(minIndex, maxIndex);
+                        mTierIndexes.set(previousTier, Range.between(minIndex, maxIndex));
                     } else {
                         lowestTier = recipeTier;
                     }
@@ -973,7 +944,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                 maxIndex = index;
                 index++;
                 if (!iterator.hasNext()) {
-                    mTierIndexes[recipeTier] = Range.between(minIndex, maxIndex);
+                    mTierIndexes.set(recipeTier, Range.between(minIndex, maxIndex));
                     mTierRange = Range.between(lowestTier, recipeTier);
                 }
             }
@@ -981,18 +952,18 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
 
         private int getLowIndexForTier(byte lowerTier) {
             byte lowTier = (byte) Math.max(mTierRange.getMinimum(), lowerTier);
-            while (mTierIndexes[lowTier] == null) {
+            while (mTierIndexes.get(lowTier) == null) {
                 lowTier++;
             }
-            return mTierIndexes[lowTier].getMinimum();
+            return mTierIndexes.get(lowTier).getMinimum();
         }
 
         private int getHighIndexForTier(byte upperTier) {
             byte highTier = (byte) Math.min(mTierRange.getMaximum(), upperTier);
-            while (mTierIndexes[highTier] == null) {
+            while (mTierIndexes.get(highTier) == null) {
                 highTier--;
             }
-            return mTierIndexes[highTier].getMaximum();
+            return mTierIndexes.get(highTier).getMaximum();
         }
     }
 }

@@ -5,6 +5,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity;
@@ -13,7 +14,7 @@ public class GT_ExoticEnergyInputHelper {
 	/**
 	 * The Valid Types of TecTech Hatch List.
 	 */
-	private static final List<Class<?>> sExoticEnergyHatchType = new ArrayList<>();
+	private static final List<Class<? extends GT_MetaTileEntity_Hatch>> sExoticEnergyHatchType = new ArrayList<>();
 
 	static {
 		tryRegister("com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti");
@@ -26,7 +27,8 @@ public class GT_ExoticEnergyInputHelper {
 		sExoticEnergyHatchType.add(clazz);
 	}
 
-	public static void tryRegister(String className) {
+	@SuppressWarnings("unchecked")
+    public static void tryRegister(String className) {
 		Class<?> clazz;
 		try {
 			clazz = Class.forName(className);
@@ -35,7 +37,7 @@ public class GT_ExoticEnergyInputHelper {
 		}
 		if (!GT_MetaTileEntity_Hatch.class.isAssignableFrom(clazz))
 			throw new IllegalArgumentException(clazz.getName() + " is not a subclass of " + GT_MetaTileEntity_Hatch.class.getName());
-		sExoticEnergyHatchType.add(clazz);
+		sExoticEnergyHatchType.add((Class<? extends GT_MetaTileEntity_Hatch>) clazz);
 	}
 
 	public static boolean drainEnergy(long aEU, Collection<? extends GT_MetaTileEntity_Hatch> hatches) {
@@ -68,4 +70,8 @@ public class GT_ExoticEnergyInputHelper {
 			if (isValidMetaTileEntity(tHatch)) rAmp += tHatch.getBaseMetaTileEntity().getInputAmperage();
 		return rAmp;
 	}
+
+    public static List<Class<? extends GT_MetaTileEntity_Hatch>> getAllClasses() {
+        return Collections.unmodifiableList(sExoticEnergyHatchType);
+    }
 }

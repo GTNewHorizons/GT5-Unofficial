@@ -1,16 +1,24 @@
 package gregtech.api.metatileentity.implementations;
 
+import com.google.common.collect.ImmutableList;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.util.GT_StructureUtility;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+
+import java.util.List;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
+import static gregtech.api.enums.GT_HatchElement.*;
 
 /**
  * A simple 3x3x3 hollow cubic multiblock, that can be arbitrarily rotated, made of a single type of machine casing and accepts hatches everywhere.
@@ -27,7 +35,7 @@ import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
  *
  * @param <T>
  */
-public abstract class GT_MetaTileEntity_CubicMultiBlockBase<T extends GT_MetaTileEntity_CubicMultiBlockBase<T>> extends GT_MetaTileEntity_EnhancedMultiBlockBase<T> {
+public abstract class GT_MetaTileEntity_CubicMultiBlockBase<T extends GT_MetaTileEntity_CubicMultiBlockBase<T>> extends GT_MetaTileEntity_EnhancedMultiBlockBase<T> implements ISurvivalConstructable {
 	protected static final String STRUCTURE_PIECE_MAIN = "main";
 	protected static final ClassValue<IStructureDefinition<GT_MetaTileEntity_CubicMultiBlockBase<?>>> STRUCTURE_DEFINITION = new ClassValue<IStructureDefinition<GT_MetaTileEntity_CubicMultiBlockBase<?>>>() {
 		@Override
@@ -39,7 +47,13 @@ public abstract class GT_MetaTileEntity_CubicMultiBlockBase<T extends GT_MetaTil
 							{"hhh", "hhh", "hhh"},
 					}))
 					.addElement('h', ofChain(
-							lazy(t -> ofHatchAdder(GT_MetaTileEntity_CubicMultiBlockBase::addToMachineList, t.getHatchTextureIndex(), 1)),
+							lazy(
+                                t -> GT_StructureUtility.<GT_MetaTileEntity_CubicMultiBlockBase<?>>buildHatchAdder()
+                                    .atLeastList(t.getAllowedHatches())
+                                    .casingIndex(t.getHatchTextureIndex())
+                                    .dot(1)
+                                    .build()
+                            ),
 							onElementPass(
 									GT_MetaTileEntity_CubicMultiBlockBase::onCorrectCasingAdded,
 									lazy(GT_MetaTileEntity_CubicMultiBlockBase::getCasingElement)
@@ -74,7 +88,13 @@ public abstract class GT_MetaTileEntity_CubicMultiBlockBase<T extends GT_MetaTil
 		buildPiece(STRUCTURE_PIECE_MAIN, aStack, aHintsOnly, 1, 1, 0);
 	}
 
-	@Override
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+        if (mMachine) return -1;
+        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 1, 0, elementBudget, source, actor,false, true);
+    }
+
+    @Override
 	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
 		mCasingAmount = 0;
 		return checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 0) &&
@@ -96,6 +116,10 @@ public abstract class GT_MetaTileEntity_CubicMultiBlockBase<T extends GT_MetaTil
 	}
 
 	protected abstract IStructureElement<GT_MetaTileEntity_CubicMultiBlockBase<?>> getCasingElement();
+
+    protected List<IHatchElement<? super GT_MetaTileEntity_CubicMultiBlockBase<?>>> getAllowedHatches() {
+        return ImmutableList.of(InputHatch, OutputHatch, InputBus, OutputBus, Muffler, Maintenance, Energy);
+    }
 
 	/**
 	 * The hatch's texture index.

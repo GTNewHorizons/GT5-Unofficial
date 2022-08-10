@@ -30,7 +30,8 @@ public class GT_GUIContainer_IndustrialApiary extends GT_GUIContainerMetaTile_Ma
         SPEED_TOOLTIP = "GT5U.machines.industrialapiary.speed.tooltip",
         SPEED_LOCKED_TOOLTIP = "GT5U.machines.industrialapiary.speedlocked.tooltip",
         INFO_TOOLTIP = "GT5U.machines.industrialapiary.info.tooltip",
-        INFO_WITH_BEE_TOOLTIP = "GT5U.machines.industrialapiary.infoextended.tooltip"
+        INFO_WITH_BEE_TOOLTIP = "GT5U.machines.industrialapiary.infoextended.tooltip",
+        UPGRADE_TOOLTIP = "GT5U.machines.industrialapiary.upgradeslot.tooltip"
             ;
 
     private final int textColor = GuiColors.industrialApiary.getColor();
@@ -59,6 +60,7 @@ public class GT_GUIContainer_IndustrialApiary extends GT_GUIContainerMetaTile_Ma
         addToolTip(mInfoTooltip = new GT_GuiTooltip(new Rectangle(this.guiLeft + 163, guiTop + 5, 6, 17)));
 
         addToolTip(new GT_GuiSlotTooltip(getContainer().slotCancelProcess, mTooltipCache.getData(CANCEL_PROCESS_TOOLTIP)));
+        getContainer().slotUpgrade.forEach(s->addToolTip(new GT_GuiSlotTooltip(s, mTooltipCache.getData(UPGRADE_TOOLTIP))));
 
 
         addToolTip(new GT_GuiSlotTooltip(getContainer().slotItemTransferToggle, mTooltipCache.getData(ITEM_TRANSFER_TOOLTIP)));

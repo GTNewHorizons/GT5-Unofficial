@@ -1,5 +1,7 @@
 package gregtech.common.tileentities.machines.multi;
 
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
@@ -19,6 +21,7 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Single_Recipe_Check;
 import gregtech.api.util.GT_Utility;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -29,15 +32,17 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockUn
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.enums.GT_Values.MOD_ID_DC;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PYROLYSE_OVEN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PYROLYSE_OVEN_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PYROLYSE_OVEN_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PYROLYSE_OVEN_GLOW;
+import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofCoil;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
-public class GT_MetaTileEntity_PyrolyseOven extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_PyrolyseOven> {
+public class GT_MetaTileEntity_PyrolyseOven extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_PyrolyseOven> implements ISurvivalConstructable {
 
     private HeatingCoilLevel coilHeat;
     //public static GT_CopiedBlockTexture mTextureULV = new GT_CopiedBlockTexture(Block.getBlockFromItem(ItemList.Casing_ULV.get(1).getItem()), 6, 0, Dyes.MACHINE_METAL.mRGBa);
@@ -59,17 +64,18 @@ public class GT_MetaTileEntity_PyrolyseOven extends GT_MetaTileEntity_EnhancedMu
                 }))
                 .addElement('c', onElementPass(GT_MetaTileEntity_PyrolyseOven::onCasingAdded, tCasingElement))
                 .addElement('C', ofCoil(GT_MetaTileEntity_PyrolyseOven::setCoilLevel, GT_MetaTileEntity_PyrolyseOven::getCoilLevel))
-                .addElement('b', ofChain(
-                        ofHatchAdder(GT_MetaTileEntity_PyrolyseOven::addMaintenanceToMachineList, CASING_INDEX, 1),
-                        ofHatchAdder(GT_MetaTileEntity_PyrolyseOven::addOutputToMachineList, CASING_INDEX, 1),
-                        ofHatchAdder(GT_MetaTileEntity_PyrolyseOven::addEnergyInputToMachineList, CASING_INDEX, 1),
-                        onElementPass(GT_MetaTileEntity_PyrolyseOven::onCasingAdded, tCasingElement)
-                ))
-                .addElement('t', ofChain(
-                        ofHatchAdder(GT_MetaTileEntity_PyrolyseOven::addInputToMachineList, CASING_INDEX, 2),
-                        ofHatchAdder(GT_MetaTileEntity_PyrolyseOven::addMufflerToMachineList, CASING_INDEX, 2),
-                        onElementPass(GT_MetaTileEntity_PyrolyseOven::onCasingAdded, tCasingElement)
-                ))
+                .addElement('b', buildHatchAdder(GT_MetaTileEntity_PyrolyseOven.class)
+                        .atLeast(OutputBus, OutputHatch, Energy, Maintenance)
+                        .casingIndex(CASING_INDEX)
+                        .dot(1)
+                        .buildAndChain(onElementPass(GT_MetaTileEntity_PyrolyseOven::onCasingAdded, tCasingElement))
+                )
+                .addElement('t', buildHatchAdder(GT_MetaTileEntity_PyrolyseOven.class)
+                        .atLeast(InputBus, InputHatch, Muffler)
+                        .casingIndex(CASING_INDEX)
+                        .dot(1)
+                        .buildAndChain(onElementPass(GT_MetaTileEntity_PyrolyseOven::onCasingAdded, tCasingElement))
+                )
                 .build();
     }
 
@@ -264,5 +270,11 @@ public class GT_MetaTileEntity_PyrolyseOven extends GT_MetaTileEntity_EnhancedMu
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece("main", stackSize, hintsOnly, 2, 3, 0);
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+        if (mMachine) return -1;
+        return survivialBuildPiece("main", stackSize, 2, 3, 0, elementBudget, source, actor, false, true);
     }
 }

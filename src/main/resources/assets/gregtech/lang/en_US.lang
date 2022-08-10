@@ -9,6 +9,10 @@ itemGroup.GregTech.Main=Main
 itemGroup.GregTech.Materials=Materials
 itemGroup.GregTech.Ores=Ores
 
+GT5U.autoplace.error.no_hatch=§cSuggested to place hatch §4%s§c but none was found
+GT5U.autoplace.error.no_mte.id=§cSuggested to place machine with meta ID §4%s§c but none was found
+GT5U.autoplace.error.no_mte.class_name=§cSuggested to place machine with class name §4%d§c but none was found
+
 # Multiblock Tooltip Builder Keywords
 # Context can be found in the class gregtech.api.util.GT_Multiblock_Tooltip_Builder
 GT5U.MBTT.MachineType=Machine Type
@@ -154,6 +158,8 @@ GT5U.machines.industrialapiary.infoextended.tooltip.3=Production Modifier: %4$d 
 GT5U.machines.industrialapiary.infoextended.tooltip.4=Flowering Chance: %5$d %%
 GT5U.machines.industrialapiary.infoextended.tooltip.5=Lifespan Modifier: %6$d %%
 GT5U.machines.industrialapiary.infoextended.tooltip.6=Terrority: %7$d x %8$d x %9$d
+GT5U.machines.industrialapiary.upgradeslot.tooltip=Upgrade slot
+GT5U.machines.industrialapiary.upgradeslot.tooltip.1=§7Also accepts gendustry upgrades
 
 GT5U.recipe_filter.representation_slot.tooltip=Click with a machine to set filter
 

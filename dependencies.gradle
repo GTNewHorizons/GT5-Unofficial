@@ -4,7 +4,7 @@
 // also being more explicit about what is depended on.
 
 dependencies {
-    compile("com.github.GTNewHorizons:StructureLib:1.0.15:dev")
+    compile("com.github.GTNewHorizons:StructureLib:1.1.0:dev")
     compile("com.github.GTNewHorizons:NotEnoughItems:2.2.19-GTNH:dev")
     compile("com.github.GTNewHorizons:CodeChickenLib:1.1.5.3:dev")
     compile("com.github.GTNewHorizons:waila:1.5.18:dev")
@@ -37,7 +37,7 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:harvestcraft:1.0.12-GTNH:dev") {
         transitive = false
     }
-    compile("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-75-GTNH:dev") {
+    compile("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-92-GTNH:dev") {
         transitive = false
     }
     compile("com.github.GTNewHorizons:Chisel:2.10.8-GTNH:dev") {
