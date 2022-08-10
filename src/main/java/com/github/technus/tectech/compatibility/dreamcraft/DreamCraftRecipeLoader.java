@@ -1393,7 +1393,7 @@ public class DreamCraftRecipeLoader {
                         ELEMENT.STANDALONE.ASTRAL_TITANIUM.getFluidStack(576),
                 }, GregtechItemList.Casing_Fusion_External.get(1), 300, 2000000);
 
-        // Draconic Evolution Fusion Controller controller
+        // Draconic Evolution Fusion Crafter Controller
 		if (Loader.isModLoaded("AWWayofTime")&&Loader.isModLoaded("EMT")){
 				TT_recipeAdder.addResearchableAssemblylineRecipe(GT_ModHandler.getModItem("EMT", "EMT_GTBLOCK_CASEING", 1, 8),
 						16_777_216, 1024, 2_000_000, 8, new Object[]{
