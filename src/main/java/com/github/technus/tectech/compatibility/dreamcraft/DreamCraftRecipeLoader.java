@@ -1411,7 +1411,7 @@ public class DreamCraftRecipeLoader {
 								new FluidStack(solderIndalloy, 2880),
 								Materials.Void.getMolten(2880L),
 								Materials.DraconiumAwakened.getMolten(1440),
-						}, DECC, 1500, 8_000_000);
+						}, GT_ModHandler.getModItem("gregtech", "gt.blockmachines", 1, 5001), 1500, 8_000_000);
 		}
 
         //region singleblocks
