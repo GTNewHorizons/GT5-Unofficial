@@ -264,8 +264,8 @@ public class RECIPES_Machines {
 		gt4FarmManager();
 		gt4Redstone();
 		gt4Inventory();
-		
-		multiGeneratorArray();
+
+		//multiGeneratorArray();
 		multiForgeHammer();
 		multiMolecularTransformer();
 		multiXlTurbines();
@@ -471,15 +471,15 @@ public class RECIPES_Machines {
 
 	private static void multiGeneratorArray() {
 
-        GT_ModHandler.addCraftingRecipe(
-        		GregtechItemList.Generator_Array_Controller.get(1L),
-        		CI.bitsd, 
-        		new Object[]{"CTC", "FMF", "CBC",
-        				'M', CI.getTieredGTPPMachineCasing(4, 1),
-        				'B', OrePrefixes.pipeHuge.get(Materials.StainlessSteel),
-        				'C', OrePrefixes.circuit.get(Materials.Data),
-        				'F', ItemList.Electric_Pump_EV,
-        				'T', CI.getSensor(4, 1)});
+		GT_ModHandler.addCraftingRecipe(
+				GregtechItemList.Generator_Array_Controller.get(1L),
+				CI.bitsd,
+				new Object[]{"CTC", "FMF", "CBC",
+						'M', CI.getTieredGTPPMachineCasing(4, 1),
+						'B', OrePrefixes.pipeHuge.get(Materials.StainlessSteel),
+						'C', OrePrefixes.circuit.get(Materials.Data),
+						'F', ItemList.Electric_Pump_EV,
+						'T', CI.getSensor(4, 1)});
 	}
 
 	private static void multiForgeHammer() {

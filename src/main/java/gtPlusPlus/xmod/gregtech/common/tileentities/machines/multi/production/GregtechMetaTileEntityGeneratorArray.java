@@ -237,11 +237,12 @@ public class GregtechMetaTileEntityGeneratorArray extends GregtechMeta_MultiBloc
 		}		
 		return MODE_NONE;		
 	}
-	
+
 	@Override
 	public boolean checkRecipe(ItemStack aStack) {
-		
-		this.resetRecipeMapForAllInputHatches();
+		return false;
+
+/**		this.resetRecipeMapForAllInputHatches();
 		this.mMode = getModeFromInventorySlot(aStack);		
 		if (mMode == MODE_NONE) {
 			Logger.INFO("Did not find valid generator.");
@@ -291,7 +292,7 @@ public class GregtechMetaTileEntityGeneratorArray extends GregtechMeta_MultiBloc
 									Logger.INFO("No Lube.");
 									return false;
 								}*/
-
+/**
 								if (this.mRuntime % 72 == 0 || this.mRuntime == 0) {
 									this.depleteInput(Materials.Lubricant.getFluid(this.boostEu ? 2L : 1L));
 								}
@@ -317,6 +318,7 @@ public class GregtechMetaTileEntityGeneratorArray extends GregtechMeta_MultiBloc
 		this.mEUt = 0;
 		this.mEfficiency = 0;
 		return false;
+ **/
 	}
 
 	public static ItemStack[] clean(final ItemStack[] v) {
