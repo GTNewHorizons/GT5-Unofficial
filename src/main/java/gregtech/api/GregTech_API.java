@@ -141,7 +141,8 @@ public class GregTech_API {
      * 13501 - 14000 are reserved for glee8e.
      * 14001 - 14100 are reserved for glowredman
      * 14101 - 14200 are reserved for MuXiu1997.
-     * 14201 - 14999 are currently free.
+     * 14201 - 14300 are reserved for kuba6000.
+     * 14301 - 14999 are currently free.
      * 15000 - 16999 are reserved for TecTech.
      * 17000 - 29999 are currently free.
      * 30000 - 31999 are reserved for Alkalus.
