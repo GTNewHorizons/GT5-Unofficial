@@ -1,5 +1,5 @@
 /*
- * KubaTech - Gregtech Addon
+ * kubatech - Gregtech Addon
  * Copyright (C) 2022  kuba6000
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,7 +17,7 @@
  *
  */
 
-package KubaTech;
+package kubatech;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
@@ -26,7 +26,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 @Mod(modid = Tags.MODID, version = Tags.VERSION, name = Tags.MODNAME, acceptedMinecraftVersions = "[1.7.10]")
-public class KubaTech {
+public class kubatech {
 
     private static Logger LOG = LogManager.getLogger(Tags.MODID);
 

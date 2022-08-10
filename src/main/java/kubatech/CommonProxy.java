@@ -1,5 +1,5 @@
 /*
- * KubaTech - Gregtech Addon
+ * kubatech - Gregtech Addon
  * Copyright (C) 2022  kuba6000
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,7 +17,7 @@
  *
  */
 
-package KubaTech;
+package kubatech;
 
 import cpw.mods.fml.common.event.*;
 
@@ -26,7 +26,7 @@ public class CommonProxy {
     public void preInit(FMLPreInitializationEvent event) {
         Config.syncronizeConfiguration(event.getSuggestedConfigurationFile());
 
-        KubaTech.info("I am " + Tags.MODNAME + " at version " + Tags.VERSION);
+        kubatech.info("I am " + Tags.MODNAME + " at version " + Tags.VERSION);
     }
 
     public void init(FMLInitializationEvent event) {}

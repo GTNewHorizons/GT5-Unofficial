@@ -1,5 +1,5 @@
 /*
- * KubaTech - Gregtech Addon
+ * kubatech - Gregtech Addon
  * Copyright (C) 2022  kuba6000
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,7 +17,7 @@
  *
  */
 
-package KubaTech;
+package kubatech;
 
 // Use this class for Strings only. Do not import any classes here. It will lead to issues with Mixins if in use!
 
