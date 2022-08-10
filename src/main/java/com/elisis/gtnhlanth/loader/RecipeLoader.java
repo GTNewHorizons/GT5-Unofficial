@@ -309,7 +309,9 @@ public class RecipeLoader {
                 240);
 
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(9), MyMaterial.vanadiumPentoxide.get(OrePrefixes.dust, 1)},
+                new ItemStack[] {
+                    GT_Utility.getIntegratedCircuit(9), MyMaterial.vanadiumPentoxide.get(OrePrefixes.dust, 1)
+                },
                 new FluidStack[] {
                     Materials.Methanol.getFluid(9000),
                     Materials.CarbonMonoxide.getGas(9000),
@@ -320,7 +322,6 @@ public class RecipeLoader {
                 4050,
                 240);
 
-        
         // Ethanol
         // C2H6O + 5O =V2O5= H2C2O4 + 2H2O
         GT_Values.RA.addMultiblockChemicalRecipe(
@@ -330,9 +331,11 @@ public class RecipeLoader {
                 null,
                 450,
                 240);
-        
+
         GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] {GT_Utility.getIntegratedCircuit(9), MyMaterial.vanadiumPentoxide.get(OrePrefixes.dust, 1)},
+                new ItemStack[] {
+                    GT_Utility.getIntegratedCircuit(9), MyMaterial.vanadiumPentoxide.get(OrePrefixes.dust, 1)
+                },
                 new FluidStack[] {Materials.Ethanol.getFluid(9000), Materials.Oxygen.getGas(45000)},
                 new FluidStack[] {MyMaterial.oxalate.getFluidOrGas(9000), Materials.Water.getFluid(18000)},
                 null,
