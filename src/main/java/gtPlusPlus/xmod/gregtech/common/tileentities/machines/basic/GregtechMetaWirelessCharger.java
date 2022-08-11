@@ -582,8 +582,10 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 
 	@Override
 	public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-		if (!mHasBeenMapped && ChargingHelper.addEntry(getTileEntityPosition(), this)){
-			mHasBeenMapped = true;
+		if (aBaseMetaTileEntity.isServerSide()) {
+			if (!mHasBeenMapped && ChargingHelper.addEntry(getTileEntityPosition(), this)){
+				mHasBeenMapped = true;
+			}
 		}
 		super.onPreTick(aBaseMetaTileEntity, aTick);
 	}

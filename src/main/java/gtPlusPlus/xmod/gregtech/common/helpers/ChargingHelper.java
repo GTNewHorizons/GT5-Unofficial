@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import cofh.api.energy.IEnergyContainerItem;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.api.enums.GT_Values;
@@ -11,9 +12,11 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.common.items.GT_MetaGenerated_Item_01;
 import gregtech.common.items.GT_MetaGenerated_Item_02;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
+import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.NBTUtils;
@@ -25,6 +28,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
+
+import static gregtech.api.GregTech_API.mEUtoRF;
 
 public class ChargingHelper {
 
@@ -384,6 +389,19 @@ public class ChargingHelper {
 
 				}
 			}
+			else if (isItemValidRF(mTemp)) {
+				try {
+					IEnergyContainerItem rfItem = (IEnergyContainerItem)mTemp.getItem();
+					long chargedPower = Math.min(rfItem.getMaxEnergyStored(mTemp) - rfItem.getEnergyStored(mTemp), mEntity.getEUVar() * mEUtoRF / 100L);
+					chargedPower = rfItem.receiveEnergy(mTemp, chargedPower > Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) chargedPower, false);
+					chargedPower = chargedPower * 100L / mEUtoRF;
+					mEntity.setEUVar(Math.max(mEntity.getEUVar() - chargedPower, 0));
+					mChargedItems++;
+					mEuStored = mEntity.getEUVar();
+				} catch (Exception e) {
+						Logger.WARNING("Failed charging of RF-Tool");
+				}
+			}
 			else {
 				if (mTemp != null){
 					Logger.WARNING("Found Non-Valid item. "+mTemp.getDisplayName());
@@ -410,6 +428,10 @@ public class ChargingHelper {
 			return true;
 		}
 		return false;
+	}
+
+	public static boolean isItemValidRF(final ItemStack itemStack) {
+		return itemStack != null && LoadedMods.CoFHCore && itemStack.getItem() instanceof IEnergyContainerItem;
 	}
 
 	public static boolean accepts(final ItemStack stack) {
