@@ -34,6 +34,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Pollution;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -175,20 +176,34 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     @Override
     public void setExtendedFacing(ExtendedFacing newExtendedFacing) {
         if (extendedFacing != newExtendedFacing) {
+            if(mMachine)
+                stopMachine();
             extendedFacing = newExtendedFacing;
-            IGregTechTileEntity base = getBaseMetaTileEntity();
+            final IGregTechTileEntity base = getBaseMetaTileEntity();
             mMachine = false;
+            mUpdated = false;
+            mUpdate = 100;
             if (getBaseMetaTileEntity().isServerSide()) {
-                //NetworkDispatcher.INSTANCE.sendToAllAround(new AlignmentMessage.AlignmentData(this),
-                //        base.getWorld().provider.dimensionId,
-                //        base.getXCoord(), base.getYCoord(), base.getZCoord(), 512);
                 StructureLibAPI.sendAlignment((IAlignmentProvider) base,
-                        new NetworkRegistry.TargetPoint(base.getWorld().provider.dimensionId,
-                                base.getXCoord(), base.getYCoord(), base.getZCoord(), 512));
+                        new NetworkRegistry.TargetPoint(base.getWorld().provider.dimensionId, base.getXCoord(), base.getYCoord(), base.getZCoord(), 512));
             } else {
                 base.issueTextureUpdate();
             }
         }
+    }
+
+    @Override
+    public boolean onWrenchRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        if (aWrenchingSide != getBaseMetaTileEntity().getFrontFacing())
+            return super.onWrenchRightClick(aSide, aWrenchingSide, aPlayer, aX, aY, aZ);
+        if (aPlayer.isSneaking()) {
+            // we won't be allowing horizontal flips, as it can be perfectly emulated by rotating twice and flipping horizontally
+            // allowing an extra round of flip make it hard to draw meaningful flip markers in GT_Proxy#drawGrid
+            toolSetFlip(getFlip().isHorizontallyFlipped() ? Flip.NONE : Flip.HORIZONTAL);
+        } else {
+            toolSetRotation(null);
+        }
+        return true;
     }
 
     @Override
