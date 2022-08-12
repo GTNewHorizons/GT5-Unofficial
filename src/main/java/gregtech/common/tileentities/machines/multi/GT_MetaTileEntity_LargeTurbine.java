@@ -41,9 +41,9 @@ public abstract class GT_MetaTileEntity_LargeTurbine extends GT_MetaTileEntity_E
             return StructureDefinition.<GT_MetaTileEntity_LargeTurbine>builder()
                     .addShape(STRUCTURE_PIECE_MAIN, transpose(new String[][]{
                             {"     ", "xxxxx", "xxxxx", "xxxxx", "xxxxx",},
-                            {" --- ", "xcccx", "xchcx", "xchcx", "xcccx",},
+                            {" --- ", "xcccx", "xhhhx", "xhhhx", "xhhhx",},
                             {" --- ", "xc~cx", "xh-hx", "xh-hx", "xcdcx",},
-                            {" --- ", "xcccx", "xchcx", "xchcx", "xcccx",},
+                            {" --- ", "xcccx", "xhhhx", "xhhhx", "xhhhx",},
                             {"     ", "xxxxx", "xxxxx", "xxxxx", "xxxxx",},
                     }))
                     .addElement('c', lazy(t -> ofBlock(t.getCasingBlock(), t.getCasingMeta())))
