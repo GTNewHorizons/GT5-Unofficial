@@ -42,7 +42,7 @@ public abstract class GT_MetaTileEntity_LargeTurbine extends GT_MetaTileEntity_E
                     .addShape(STRUCTURE_PIECE_MAIN, transpose(new String[][]{
                             {"     ", "xxxxx", "xxxxx", "xxxxx", "xxxxx",},
                             {" --- ", "xcccx", "xhhhx", "xhhhx", "xhhhx",},
-                            {" --- ", "xc~cx", "xh-hx", "xh-hx", "xcdcx",},
+                            {" --- ", "xc~cx", "xh-hx", "xh-hx", "xhdhx",},
                             {" --- ", "xcccx", "xhhhx", "xhhhx", "xhhhx",},
                             {"     ", "xxxxx", "xxxxx", "xxxxx", "xxxxx",},
                     }))
