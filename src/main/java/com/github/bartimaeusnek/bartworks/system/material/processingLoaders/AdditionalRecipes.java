@@ -157,27 +157,32 @@ public class AdditionalRecipes {
                 }
             }
 
-            //Transformation- [Distilled Water] + Culture () + Plasmids (Gene) Cell + Penicillin Cell= Culture (Gene) + Empty Cells
-            sBiolab.addFakeRecipe(false,
-                    new ItemStack[]{
-                            BioItemList.getPetriDish(null).setStackDisplayName("The Culture to change"),
-                            BioItemList.getPlasmidCell(null).setStackDisplayName("The Plasmids to Inject"),
+            for (ItemStack stack : BioItemList.getAllPetriDishes()) {
+                BioData DNA = BioData.getBioDataFromNBTTag(stack.getTagCompound().getCompoundTag("DNA"));
+                BioData Plasmid = BioData.getBioDataFromNBTTag(stack.getTagCompound().getCompoundTag("Plasmid"));
+                if (DNA.getName() != Plasmid.getName()) {
+                    sBiolab.addFakeRecipe(true,
+                        new ItemStack[]{
+                            BioItemList.getPetriDish(BioCulture.getBioCulture(DNA.getName())),
+                            BioItemList.getPlasmidCell(BioPlasmid.convertDataToPlasmid(Plasmid)),
                             FluidLoader.BioLabFluidCells[2],
-                    },
-                    new ItemStack[]{
-                            BioItemList.getPetriDish(null).setStackDisplayName("The changed Culture"),
+                        },
+                        new ItemStack[]{
+                            stack,
                             ItemList.Cell_Universal_Fluid.get(1L)
-                    },
-                    BioItemList.mBioLabParts[3],
-                    new int[]{7500, 10000},
-                    new FluidStack[]{
+                        },
+                        BioItemList.mBioLabParts[3],
+                        new int[]{10000, 10000},
+                        new FluidStack[]{
                             FluidRegistry.getFluidStack("ic2distilledwater", 1000)
-                    },
-                    null,
-                    500,
-                    BW_Util.getMachineVoltageFromTier(6),
-                    BW_Util.STANDART
-            );
+                        },
+                        null,
+                        500,
+                        BW_Util.getMachineVoltageFromTier(6),
+                        BW_Util.STANDART
+                    );
+                }
+            }
 
 
             ItemStack Outp = ItemList.Tool_DataOrb.get(1L);
