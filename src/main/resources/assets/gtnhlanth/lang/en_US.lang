@@ -4,7 +4,7 @@ value.digester=Heat Capacity
 value.disstank=Ratio
 
 DissolutionTank.hint.0=Dot 1: Clean Stainless Steel Machine Casing
-DissolutionTank.hint.1=24x Glass (Any Tier)
+DissolutionTank.hint.1=24x Borosilicate Glass
 DissolutionTank.hint.2=9x Heat Proof Machine Casing
 DissolutionTank.hint.3=Input Bus, Output Bus, Input Hatches, Output Hatch
 DissolutionTank.hint.4=Energy Hatch, Maintenance Hatch

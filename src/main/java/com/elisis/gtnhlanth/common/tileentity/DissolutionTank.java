@@ -254,9 +254,9 @@ public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<Di
                 .addController("Front bottom")
                 .addInputHatch("Hint block with dot 1")
                 .addInputBus("Hint block with dot 1")
-                .addOutputHatch("Hint block with dot 2")
-                .addOutputBus("Hint block with dot 2")
-                .addMaintenanceHatch("Hint block with dot 2")
+                .addOutputHatch("Hint block with dot 1")
+                .addOutputBus("Hint block with dot 1")
+                .addMaintenanceHatch("Hint block with dot 1")
                 .toolTipFinisher("GTNH: Lanthanides");
 
         return tt;
