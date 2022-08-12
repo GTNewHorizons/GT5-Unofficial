@@ -248,7 +248,7 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase<
 
 	@Override
 	public boolean checkRecipeGeneric(ItemStack[] aItemInputs, FluidStack[] aFluidInputs, int aMaxParallelRecipes,
-			int aEUPercent, int aSpeedBonusPercent, int aOutputChanceRoll) {
+			long aEUPercent, int aSpeedBonusPercent, int aOutputChanceRoll) {
 		// Based on the Processing Array. A bit overkill, but very flexible.
 
 		// Reset outputs and progress stats

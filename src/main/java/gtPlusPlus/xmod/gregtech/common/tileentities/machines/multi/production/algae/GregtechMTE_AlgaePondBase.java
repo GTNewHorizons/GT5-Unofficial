@@ -349,9 +349,9 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase<Gregt
 	}
 
 	public boolean checkRecipeGeneric(
-			ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
-			int aMaxParallelRecipes, int aEUPercent,
-			int aSpeedBonusPercent, int aOutputChanceRoll, GT_Recipe aRecipe) {
+            ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
+            int aMaxParallelRecipes, long aEUPercent,
+            int aSpeedBonusPercent, int aOutputChanceRoll, GT_Recipe aRecipe) {
 
 		if (this.mLevel < 0) {
 			Logger.INFO("Bad Tier.");

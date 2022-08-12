@@ -486,9 +486,9 @@ public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase<
 
 	@Override
 	public boolean checkRecipeGeneric(
-			ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
-			int aMaxParallelRecipes, int aEUPercent,
-			int aSpeedBonusPercent, int aOutputChanceRoll, GT_Recipe aRecipe) {
+            ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
+            int aMaxParallelRecipes, long aEUPercent,
+            int aSpeedBonusPercent, int aOutputChanceRoll, GT_Recipe aRecipe) {
 
 		// Based on the Processing Array. A bit overkill, but very flexible.		
 

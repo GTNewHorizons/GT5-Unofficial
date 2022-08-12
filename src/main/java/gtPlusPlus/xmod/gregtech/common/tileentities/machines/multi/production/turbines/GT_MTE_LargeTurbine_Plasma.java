@@ -66,9 +66,9 @@ public class GT_MTE_LargeTurbine_Plasma extends GregtechMetaTileEntity_LargerTur
 
 	@Override
 	public boolean checkRecipeGeneric(
-			ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
-			int aMaxParallelRecipes, int aEUPercent,
-			int aSpeedBonusPercent, int aOutputChanceRoll, GT_Recipe aRecipe) {
+            ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
+            int aMaxParallelRecipes, long aEUPercent,
+            int aSpeedBonusPercent, int aOutputChanceRoll, GT_Recipe aRecipe) {
 
 		try {
 			ArrayList<GT_MetaTileEntity_Hatch_Turbine> aEmptyTurbineRotorHatches = getEmptyTurbineAssemblies();

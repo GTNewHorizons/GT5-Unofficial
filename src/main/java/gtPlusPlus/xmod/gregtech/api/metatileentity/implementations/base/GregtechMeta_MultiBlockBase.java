@@ -751,11 +751,11 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
 		return checkRecipeGeneric(1, 100, 0);
 	}
 
-	public boolean checkRecipeGeneric(int aMaxParallelRecipes, int aEUPercent, int aSpeedBonusPercent) {
+	public boolean checkRecipeGeneric(int aMaxParallelRecipes, long aEUPercent, int aSpeedBonusPercent) {
 		return checkRecipeGeneric(aMaxParallelRecipes, aEUPercent, aSpeedBonusPercent, 10000);
 	}
 
-	public boolean checkRecipeGeneric(int aMaxParallelRecipes, int aEUPercent, int aSpeedBonusPercent, int aOutputChanceRoll) {
+	public boolean checkRecipeGeneric(int aMaxParallelRecipes, long aEUPercent, int aSpeedBonusPercent, int aOutputChanceRoll) {
 		ArrayList<ItemStack> tItems = getStoredInputs();
 		ArrayList<FluidStack> tFluids = getStoredFluids();
 		ItemStack[] tItemInputs = tItems.toArray(new ItemStack[tItems.size()]);
@@ -764,7 +764,7 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
 	}
 
 	public boolean checkRecipeGeneric(GT_Recipe aRecipe, 
-			int aMaxParallelRecipes, int aEUPercent,
+			int aMaxParallelRecipes, long aEUPercent,
 			int aSpeedBonusPercent, int aOutputChanceRoll) {		
 		if (aRecipe == null) {
 			return false;
@@ -778,7 +778,7 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
 
 	public boolean checkRecipeGeneric(
 			ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
-			int aMaxParallelRecipes, int aEUPercent,
+			int aMaxParallelRecipes, long aEUPercent,
 			int aSpeedBonusPercent, int aOutputChanceRoll) {
 		return checkRecipeGeneric(aItemInputs, aFluidInputs, aMaxParallelRecipes, aEUPercent, aSpeedBonusPercent, aOutputChanceRoll, null);
 	}
@@ -937,7 +937,7 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
 	
 	public boolean checkRecipeGeneric(
 			ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
-			int aMaxParallelRecipes, int aEUPercent,
+			int aMaxParallelRecipes, long aEUPercent,
 			int aSpeedBonusPercent, int aOutputChanceRoll, GT_Recipe aRecipe) {
 		// Based on the Processing Array. A bit overkill, but very flexible.		
 
@@ -1237,7 +1237,7 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_En
 	 */
 	public boolean checkRecipeBoostedOutputs(
 			ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
-			int aMaxParallelRecipes, int aEUPercent,
+			int aMaxParallelRecipes, long aEUPercent,
 			int aSpeedBonusPercent, int aOutputChanceRoll, GT_Recipe aRecipe) {
 
 		long tVoltage = getMaxInputVoltage();

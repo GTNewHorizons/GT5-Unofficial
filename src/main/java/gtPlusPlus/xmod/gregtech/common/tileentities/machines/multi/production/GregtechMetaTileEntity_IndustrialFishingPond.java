@@ -478,7 +478,7 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends GregtechMeta_M
 
 	@Override
 	public boolean checkRecipeGeneric(ItemStack[] aItemInputs, FluidStack[] aFluidInputs, int aMaxParallelRecipes,
-			int aEUPercent, int aSpeedBonusPercent, int aOutputChanceRoll) {
+			long aEUPercent, int aSpeedBonusPercent, int aOutputChanceRoll) {
 
 
 

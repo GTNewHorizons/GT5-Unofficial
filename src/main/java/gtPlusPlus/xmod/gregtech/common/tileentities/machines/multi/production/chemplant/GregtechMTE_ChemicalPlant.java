@@ -571,7 +571,7 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<Gregt
 	}
 
 	@Override
-	public boolean checkRecipeGeneric(int aMaxParallelRecipes, int aEUPercent, int aSpeedBonusPercent, int aOutputChanceRoll) {
+	public boolean checkRecipeGeneric(int aMaxParallelRecipes, long aEUPercent, int aSpeedBonusPercent, int aOutputChanceRoll) {
 		ArrayList<ItemStack> tItems = getStoredInputs();
 		ArrayList<FluidStack> tFluids = getStoredFluids();
 		ItemStack[] tItemInputs = tItems.toArray(new ItemStack[tItems.size()]);
@@ -581,9 +581,9 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<Gregt
 
 	@Override
 	public boolean checkRecipeGeneric(
-			ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
-			int aMaxParallelRecipes, int aEUPercent,
-			int aSpeedBonusPercent, int aOutputChanceRoll, GT_Recipe aRecipe) {
+            ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
+            int aMaxParallelRecipes, long aEUPercent,
+            int aSpeedBonusPercent, int aOutputChanceRoll, GT_Recipe aRecipe) {
 
 		// Based on the Processing Array. A bit overkill, but very flexible.		
 
