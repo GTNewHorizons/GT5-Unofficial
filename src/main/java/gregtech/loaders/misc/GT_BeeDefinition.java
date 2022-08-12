@@ -2813,21 +2813,6 @@ public enum GT_BeeDefinition implements IBeeDefinition {
             tMutation.restrictTemperature(ICY);
         }
     ),
-    // Xenon bee, Humidity: normal, Temperature: Icy, Parents: Argon & Deimos, Mutationrate: 6%, Combrate: 50%
-    XENON(GT_BranchDefinition.NOBLEGAS, "Xenon", false, new Color(0x8A97B0), new Color(0x160822),
-        beeSpecies -> {
-            beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.XENON), 0.35f);
-            beeSpecies.setHumidity(EnumHumidity.NORMAL);
-            beeSpecies.setTemperature(ICY);
-            beeSpecies.setNocturnal();
-            beeSpecies.setHasEffect();
-        },
-        template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST),
-        dis -> {
-            IBeeMutationCustom tMutation = dis.registerMutation(ARGON, HYDRA, 6);
-            tMutation.restrictTemperature(ICY);}
-
-    ),
     // Neon bee, Humidity: normal, Temperature: Icy, Parents: Xenon & Ceres, Mutationrate: 6%, Combrate: 50%
     NEON(GT_BranchDefinition.NOBLEGAS, "Neon", false, new Color(0xFFC826), new Color(0xFF7200),
         beeSpecies -> {
@@ -2839,7 +2824,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         },
         template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST),
         dis -> {
-            IBeeMutationCustom tMutation = dis.registerMutation(XENON, URGHAST, 6);
+            IBeeMutationCustom tMutation = dis.registerMutation(ARGON, URGHAST, 6);
             tMutation.restrictTemperature(ICY);}
 
     ),
@@ -2855,6 +2840,21 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST),
         dis -> {
             IBeeMutationCustom tMutation = dis.registerMutation(NEON, SNOWQUEEN, 4);
+            tMutation.restrictTemperature(ICY);}
+
+    ),
+    // Xenon bee, Humidity: normal, Temperature: Icy, Parents: Argon & Deimos, Mutationrate: 6%, Combrate: 50%
+    XENON(GT_BranchDefinition.NOBLEGAS, "Xenon", false, new Color(0x8A97B0), new Color(0x160822),
+        beeSpecies -> {
+            beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.XENON), 0.35f);
+            beeSpecies.setHumidity(EnumHumidity.NORMAL);
+            beeSpecies.setTemperature(ICY);
+            beeSpecies.setNocturnal();
+            beeSpecies.setHasEffect();
+        },
+        template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST),
+        dis -> {
+            IBeeMutationCustom tMutation = dis.registerMutation(KRYPTON, HYDRA, 6);
             tMutation.restrictTemperature(ICY);}
 
     ),
