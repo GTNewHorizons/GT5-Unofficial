@@ -2,6 +2,7 @@ package gregtech.common.covers;
 
 import com.google.common.io.ByteArrayDataInput;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GuiColors;
 import gregtech.api.gui.GT_GUICover;
 import gregtech.api.gui.widgets.GT_GuiIcon;
 import gregtech.api.gui.widgets.GT_GuiIconButton;
@@ -29,6 +30,8 @@ import javax.annotation.Nullable;
 import java.util.function.Function;
 
 public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMeterData> {
+
+    private final int textColor = GuiColors.coverEUMeter.getColor();
 
     public GT_Cover_EUMeter() {
         super(EUMeterData.class);
@@ -387,9 +390,9 @@ public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMe
         @Override
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
-            this.getFontRenderer().drawString(coverVariable.type.getTitle(), startX + spaceX, 4 + startY, 0xFF555555);
-            this.getFontRenderer().drawString(coverVariable.inverted ? INVERTED : NORMAL, startX + spaceX, 4 + startY + spaceY, 0xFF555555);
-            this.getFontRenderer().drawString(GT_Utility.trans("222.1", "Energy threshold"), startX, startY + spaceY * 3 + 4, 0xFF555555);
+            this.getFontRenderer().drawString(coverVariable.type.getTitle(), startX + spaceX, 4 + startY, textColor);
+            this.getFontRenderer().drawString(coverVariable.inverted ? INVERTED : NORMAL, startX + spaceX, 4 + startY + spaceY, textColor);
+            this.getFontRenderer().drawString(GT_Utility.trans("222.1", "Energy threshold"), startX, startY + spaceY * 3 + 4, textColor);
         }
 
 

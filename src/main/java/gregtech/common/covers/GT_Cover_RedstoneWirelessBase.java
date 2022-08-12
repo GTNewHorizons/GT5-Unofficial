@@ -2,6 +2,7 @@ package gregtech.common.covers;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GuiColors;
 import gregtech.api.gui.GT_GUICover;
 import gregtech.api.gui.widgets.GT_GuiIcon;
 import gregtech.api.gui.widgets.GT_GuiIconCheckButton;
@@ -22,6 +23,8 @@ public abstract class GT_Cover_RedstoneWirelessBase extends GT_CoverBehavior {
     private static final int PRIVATE_MASK = 0xFFFE0000;
     private static final int PUBLIC_MASK = 0x0000FFFF;
     private static final int CHECKBOX_MASK = 0x00010000;
+
+    private final int textColor = GuiColors.coverRedstoneWirelessBase.getColor();
 
     @Override
     public boolean onCoverRemoval(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, boolean aForced) {
@@ -177,8 +180,8 @@ public abstract class GT_Cover_RedstoneWirelessBase extends GT_CoverBehavior {
         @Override
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
-            this.getFontRenderer().drawString(GT_Utility.trans("246", "Frequency"),  startX + spaceX*4, 4+startY+spaceY*0, 0xFF555555);
-            this.getFontRenderer().drawString(GT_Utility.trans("601", "Use Private Frequency"), startX + spaceX * 1, startY + spaceY * 2 + 4, 0xFF555555);
+            this.getFontRenderer().drawString(GT_Utility.trans("246", "Frequency"),  startX + spaceX*4, 4+startY+spaceY*0, textColor);
+            this.getFontRenderer().drawString(GT_Utility.trans("601", "Use Private Frequency"), startX + spaceX * 1, startY + spaceY * 2 + 4, textColor);
         }
 
         @Override

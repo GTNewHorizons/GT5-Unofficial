@@ -12,6 +12,7 @@ import codechicken.nei.recipe.GuiUsageRecipe;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GuiColors;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.gui.GT_GUIContainer_BasicMachine;
 import gregtech.api.objects.ItemData;
@@ -46,6 +47,7 @@ public class GT_NEI_AssLineHandler extends RecipeMapHandler {
      * Can be referenced from cached recipes.
      */
     public static int cycleTicksStatic = Math.abs((int) System.currentTimeMillis());
+    private final int textColor = GuiColors.NEIText.getColor();
 
     static {
         GuiContainerManager.addInputHandler(new GT_RectHandler());
@@ -243,66 +245,66 @@ public class GT_NEI_AssLineHandler extends RecipeMapHandler {
         String[] recipeDesc = recipe.getNeiDesc();
         if (recipeDesc == null) {
             if (tEUt != 0) {
-                drawText(10, 73, trans("152","Total: ") + GT_Utility.formatNumbers((long) tDuration * tEUt) + " EU", 0xFF000000);
-                drawText(10, 83, trans("153","Usage: ") + GT_Utility.formatNumbers(tEUt) + " EU/t", 0xFF000000);
+                drawText(10, 73, trans("152","Total: ") + GT_Utility.formatNumbers((long) tDuration * tEUt) + " EU", textColor);
+                drawText(10, 83, trans("153","Usage: ") + GT_Utility.formatNumbers(tEUt) + " EU/t", textColor);
                 if (this.mRecipeMap.mShowVoltageAmperageInNEI) {
                     int voltage = tEUt / this.mRecipeMap.mAmperage;
                     byte tier = GT_Utility.getTier(voltage);
                     if (tier < 0 || tier >= 16) {
-                        drawText(10, 93, trans("154", "Voltage: ") + GT_Utility.formatNumbers(voltage) + " EU", 0xFFFF0000);
+                        drawText(10, 93, trans("154", "Voltage: ") + GT_Utility.formatNumbers(voltage) + " EU", textColor);
                     } else {
-                        drawText(10, 93, trans("154","Voltage: ") + GT_Utility.formatNumbers(voltage) + " EU (" + GT_Values.VN[tier] + ")", 0xFF000000);
+                        drawText(10, 93, trans("154","Voltage: ") + GT_Utility.formatNumbers(voltage) + " EU (" + GT_Values.VN[tier] + ")", textColor);
                     }
-                    drawText(10, 103, trans("155","Amperage: ") + GT_Utility.formatNumbers(this.mRecipeMap.mAmperage), 0xFF000000);
+                    drawText(10, 103, trans("155","Amperage: ") + GT_Utility.formatNumbers(this.mRecipeMap.mAmperage), textColor);
                 } else {
-                    drawText(10, 93, trans("156","Voltage: unspecified"), 0xFF000000);
-                    drawText(10, 103, trans("157","Amperage: unspecified"), 0xFF000000);
+                    drawText(10, 93, trans("156","Voltage: unspecified"), textColor);
+                    drawText(10, 103, trans("157","Amperage: unspecified"), textColor);
                 }
             }
             if (tDuration > 0) {
-                drawText(10, 113, trans("158","Time: ") + GT_Utility.formatNumbers(0.05d * tDuration) + trans("161"," secs"), 0xFF000000);
+                drawText(10, 113, trans("158","Time: ") + GT_Utility.formatNumbers(0.05d * tDuration) + trans("161"," secs"), textColor);
             }
             int tSpecial = ((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mSpecialValue;
             boolean specialDrew = false;
             if (tSpecial == -100 && GT_Mod.gregtechproxy.mLowGravProcessing) {
-                drawText(10, 123, trans("159","Needs Low Gravity"), 0xFF000000);
+                drawText(10, 123, trans("159","Needs Low Gravity"), textColor);
                 specialDrew = true;
             } else if (tSpecial == -200 && GT_Mod.gregtechproxy.mEnableCleanroom) {
-                drawText(10, 123, trans("160","Needs Cleanroom"), 0xFF000000);
+                drawText(10, 123, trans("160","Needs Cleanroom"), textColor);
                 specialDrew = true;
             } else if (tSpecial == -201) {
-                drawText(10, 123, trans("206","Scan for Assembly Line"), 0xFF000000);
+                drawText(10, 123, trans("206","Scan for Assembly Line"), textColor);
                 specialDrew = true;
             } else if ((GT_Utility.isStringValid(this.mRecipeMap.mNEISpecialValuePre)) || (GT_Utility.isStringValid(this.mRecipeMap.mNEISpecialValuePost))) {
-                drawText(10, 123, this.mRecipeMap.mNEISpecialValuePre + GT_Utility.formatNumbers(tSpecial * this.mRecipeMap.mNEISpecialValueMultiplier) + this.mRecipeMap.mNEISpecialValuePost, 0xFF000000);
+                drawText(10, 123, this.mRecipeMap.mNEISpecialValuePre + GT_Utility.formatNumbers(tSpecial * this.mRecipeMap.mNEISpecialValueMultiplier) + this.mRecipeMap.mNEISpecialValuePost, textColor);
                 specialDrew = true;
             }
             int y = 123 + (specialDrew ? 10 : 0);
             if (GT_Mod.gregtechproxy.mNEIRecipeOwner) {
                 if (recipe.owners.size() > 1) {
-                    drawText(10, y, EnumChatFormatting.ITALIC + GT_Utility.trans("226", "Original Recipe by: ") + recipe.owners.get(0).getName(), 0xFF000000);
+                    drawText(10, y, EnumChatFormatting.ITALIC + GT_Utility.trans("226", "Original Recipe by: ") + recipe.owners.get(0).getName(), textColor);
                     y += 10;
                     for (int i = 1; i < recipe.owners.size(); i++) {
-                        drawText(10, y, EnumChatFormatting.ITALIC + GT_Utility.trans("227", "Modified by: ") + recipe.owners.get(i).getName(), 0xFF000000);
+                        drawText(10, y, EnumChatFormatting.ITALIC + GT_Utility.trans("227", "Modified by: ") + recipe.owners.get(i).getName(), textColor);
                         y += 10;
                     }
                 } else if (recipe.owners.size() > 0) {
-                    drawText(10, y, EnumChatFormatting.ITALIC + GT_Utility.trans("225", "Recipe by: ") + recipe.owners.get(0).getName(), 0xFF000000);
+                    drawText(10, y, EnumChatFormatting.ITALIC + GT_Utility.trans("225", "Recipe by: ") + recipe.owners.get(0).getName(), textColor);
                     y += 10;
                 }
             }
             if (GT_Mod.gregtechproxy.mNEIRecipeOwnerStackTrace && recipe.stackTraces != null && !recipe.stackTraces.isEmpty()) {
-                drawText(10, y, "stackTrace:", 0xFF000000);
+                drawText(10, y, "stackTrace:", textColor);
                 y += 10;
                 for (StackTraceElement stackTrace : recipe.stackTraces.get(0)) {
-                    drawText(10, y, stackTrace.toString(), 0xFF000000);
+                    drawText(10, y, stackTrace.toString(), textColor);
                     y += 10;
                 }
             }
         } else {
             int i = 0;
             for (String descLine : recipeDesc) {
-                drawText(10, 73 + 10 * i, descLine, 0xFF000000);
+                drawText(10, 73 + 10 * i, descLine, textColor);
                 i++;
             }
         }

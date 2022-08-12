@@ -2,6 +2,7 @@ package gregtech.common.covers;
 
 import com.google.common.io.ByteArrayDataInput;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GuiColors;
 import gregtech.api.gui.GT_GUICover;
 import gregtech.api.gui.widgets.GT_GuiFakeItemButton;
 import gregtech.api.gui.widgets.GT_GuiIcon;
@@ -39,6 +40,10 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
     private final int DENY_INPUT_INVERT_OUTPUT = 5; //  101
     private final int ANY_INPUT_FILTER_OUTPUT = 6;  //  110
     private final int ANY_INPUT_INVERT_OUTPUT = 7;  //  111
+
+    private final int 
+        textColor = GuiColors.coverFluidFilter.getColor(),
+        textColorFluidFilterName = GuiColors.coverFluidFilterName.getColor();
 
     public GT_Cover_Fluidfilter() {
         super(FluidFilterData.class);
@@ -259,10 +264,10 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
         @Override
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
-            this.fontRendererObj.drawString(GT_Utility.trans("238", "Filter Direction"),   startX + spaceX*2, 3+startY+spaceY*0, 0xFF555555);
-            this.fontRendererObj.drawString(GT_Utility.trans("239", "Filter Type"),        startX + spaceX*2, 3+startY+spaceY*1, 0xFF555555);
-            this.fontRendererObj.drawString(GT_Utility.trans("240", "Block Flow"),          startX + spaceX*2, 3+startY+spaceY*2, 0xFF555555);
-            this.fontRendererObj.drawSplitString(fluidFilterName,                                startX + spaceX+3, 4+startY+spaceY*3, gui_width-40 , 0xFF222222);
+            this.fontRendererObj.drawString(GT_Utility.trans("238", "Filter Direction"),   startX + spaceX*2, 3+startY+spaceY*0, textColor);
+            this.fontRendererObj.drawString(GT_Utility.trans("239", "Filter Type"),        startX + spaceX*2, 3+startY+spaceY*1, textColor);
+            this.fontRendererObj.drawString(GT_Utility.trans("240", "Block Flow"),          startX + spaceX*2, 3+startY+spaceY*2, textColor);
+            this.fontRendererObj.drawSplitString(fluidFilterName,                                startX + spaceX+3, 4+startY+spaceY*3, gui_width-40 , textColorFluidFilterName);
         }
 
         @Override

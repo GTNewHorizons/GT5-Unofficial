@@ -2,6 +2,7 @@ package gregtech.common.gui;
 
 import forestry.api.apiculture.*;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GuiColors;
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
 import gregtech.api.gui.widgets.GT_GuiSlotTooltip;
 import gregtech.api.gui.widgets.GT_GuiTooltip;
@@ -33,6 +34,7 @@ public class GT_GUIContainer_IndustrialApiary extends GT_GUIContainerMetaTile_Ma
         UPGRADE_TOOLTIP = "GT5U.machines.industrialapiary.upgradeslot.tooltip"
             ;
 
+    private final int textColor = GuiColors.industrialApiary.getColor();
 
     GT_GuiTooltip mErrorStatesTooltip;
     GT_GuiTooltip mSpeedToggleTooltip;
@@ -115,9 +117,9 @@ public class GT_GUIContainer_IndustrialApiary extends GT_GUIContainerMetaTile_Ma
 
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-        this.fontRendererObj.drawString("Ind. Apiary", 8, 4, 4210752);
-        this.fontRendererObj.drawString("x", 30, 63, 4210752);
-        this.fontRendererObj.drawString((1 << getContainer().mSpeed) + "", 26, 72, 4210752);
+        this.fontRendererObj.drawString("Ind. Apiary", 8, 4, textColor);
+        this.fontRendererObj.drawString("x", 30, 63, textColor);
+        this.fontRendererObj.drawString((1 << getContainer().mSpeed) + "", 26, 72, textColor);
     }
 
     @Override

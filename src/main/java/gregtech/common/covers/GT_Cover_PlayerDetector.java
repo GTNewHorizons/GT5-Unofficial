@@ -1,6 +1,7 @@
 package gregtech.common.covers;
 
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GuiColors;
 import gregtech.api.gui.GT_GUICover;
 import gregtech.api.gui.widgets.GT_GuiIcon;
 import gregtech.api.gui.widgets.GT_GuiIconCheckButton;
@@ -18,6 +19,8 @@ public class GT_Cover_PlayerDetector extends GT_CoverBehavior {
 
     private String placer = "";
     private int range = 8;
+    private final int textColor = GuiColors.coverPlayerDetector.getColor();
+
 
     @Override
     public boolean isRedstoneSensitive(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
@@ -160,11 +163,11 @@ public class GT_Cover_PlayerDetector extends GT_CoverBehavior {
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
 			this.fontRendererObj.drawString(GT_Utility.trans("319", "Any player"),
-                    startX + spaceX*1, 4+startY+spaceY*0, 0xFF555555);
+                    startX + spaceX*1, 4+startY+spaceY*0, textColor);
 			this.fontRendererObj.drawString(GT_Utility.trans("320", "Other players"),
-                    startX + spaceX*1, 4+startY+spaceY*1, 0xFF555555);
+                    startX + spaceX*1, 4+startY+spaceY*1, textColor);
 			this.fontRendererObj.drawString(GT_Utility.trans("321", "Only owner"),
-                    startX + spaceX*1, 4+startY+spaceY*2, 0xFF555555);
+                    startX + spaceX*1, 4+startY+spaceY*2, textColor);
         }
 
         @Override

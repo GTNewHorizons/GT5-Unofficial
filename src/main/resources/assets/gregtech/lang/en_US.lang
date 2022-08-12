@@ -166,6 +166,7 @@ GT5U.recipe_filter.representation_slot.tooltip=Click with a machine to set filte
 GT5U.gui.select.current=Current:
 
 GT5U.item.programmed_circuit.select.header=Reprogram Circuit
+
 # Note to translators: this translation entry is supposed to be a number indicating how many taunts you define here
 # Game will randomly display one of them
 GT5U.item.programmed_circuit.no_screwdriver.count=3

@@ -2,6 +2,7 @@ package gregtech.common.covers;
 
 import com.google.common.io.ByteArrayDataInput;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GuiColors;
 import gregtech.api.gui.GT_GUICover;
 import gregtech.api.gui.widgets.GT_GuiIcon;
 import gregtech.api.gui.widgets.GT_GuiIconCheckButton;
@@ -28,6 +29,8 @@ import javax.annotation.Nonnull;
 import java.util.Arrays;
 
 public class GT_Cover_LiquidMeter extends GT_CoverBehaviorBase<GT_Cover_LiquidMeter.LiquidMeterData> {
+
+    private final int textColor = GuiColors.coverLiquidMeter.getColor();
 
     public GT_Cover_LiquidMeter() {
         super(LiquidMeterData.class);
@@ -254,8 +257,8 @@ public class GT_Cover_LiquidMeter extends GT_CoverBehaviorBase<GT_Cover_LiquidMe
         @Override
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
-            this.fontRendererObj.drawString(coverVariable.inverted ? INVERTED : NORMAL, startX + spaceX * 1, 4 + startY + spaceY * 0, 0xFF555555);
-            this.getFontRenderer().drawString(GT_Utility.trans("222", "Fluid threshold"), startX + spaceX * 5 - 10, startY + spaceY * 1 + 4, 0xFF555555);
+            this.fontRendererObj.drawString(coverVariable.inverted ? INVERTED : NORMAL, startX + spaceX * 1, 4 + startY + spaceY * 0, textColor);
+            this.getFontRenderer().drawString(GT_Utility.trans("222", "Fluid threshold"), startX + spaceX * 5 - 10, startY + spaceY * 1 + 4, textColor);
         }
 
         @Override

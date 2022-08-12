@@ -1,6 +1,7 @@
 package gregtech.common.covers;
 
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GuiColors;
 import gregtech.api.gui.GT_GUICover;
 import gregtech.api.gui.widgets.GT_GuiIcon;
 import gregtech.api.gui.widgets.GT_GuiIconCheckButton;
@@ -15,6 +16,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fluids.Fluid;
 
 public class GT_Cover_Shutter extends GT_CoverBehavior {
+
+    private final int textColor = GuiColors.coverShutter.getColor();
+
     @Override
     public boolean isRedstoneSensitive(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity, long aTimer) {
         return false;
@@ -141,13 +145,13 @@ public class GT_Cover_Shutter extends GT_CoverBehavior {
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
             this.fontRendererObj.drawString(GT_Utility.trans("082", "Open if work enabled"),
-                    3+startX + spaceX*1, 4+startY+spaceY*0, 0xFF555555);
+                    3+startX + spaceX*1, 4+startY+spaceY*0, textColor);
             this.fontRendererObj.drawString(GT_Utility.trans("083", "Open if work disabled"),
-                    3+startX + spaceX*1, 4+startY+spaceY*1, 0xFF555555);
+                    3+startX + spaceX*1, 4+startY+spaceY*1, textColor);
             this.fontRendererObj.drawString(GT_Utility.trans("084", "Only Output allowed"),
-                    3+startX + spaceX*1, 4+startY+spaceY*2, 0xFF555555);
+                    3+startX + spaceX*1, 4+startY+spaceY*2, textColor);
             this.fontRendererObj.drawString(GT_Utility.trans("085", "Only Input allowed"),
-                    3+startX + spaceX*1, 4+startY+spaceY*3, 0xFF555555);
+                    3+startX + spaceX*1, 4+startY+spaceY*3, textColor);
         }
 
         @Override

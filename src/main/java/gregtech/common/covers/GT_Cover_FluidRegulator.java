@@ -2,6 +2,7 @@ package gregtech.common.covers;
 
 import com.google.common.io.ByteArrayDataInput;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GuiColors;
 import gregtech.api.gui.GT_GUICover;
 import gregtech.api.gui.widgets.GT_GuiIcon;
 import gregtech.api.gui.widgets.GT_GuiIconButton;
@@ -49,6 +50,9 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
 	private static final int TICK_RATE_BITMASK = (TICK_RATE_MAX - TICK_RATE_MIN) << SPEED_LENGTH;
 
 	public final int mTransferRate;
+	private final int 
+		textColor = GuiColors.coverFluidRegulator.getColor(),
+		textColorWarn = GuiColors.coverFluidRegulatorWarn.getColor();
 	private boolean allowFluid = false;
 
 	public GT_Cover_FluidRegulator(int aTransferRate) {
@@ -390,11 +394,11 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
 		@Override
 		public void drawExtras(int mouseX, int mouseY, float parTicks) {
 			super.drawExtras(mouseX, mouseY, parTicks);
-			this.getFontRenderer().drawString(GT_Utility.trans("229", "Import/Export"), startX + spaceX * 4, 4 + startY + spaceY * 0, 0xFF555555);
-			this.getFontRenderer().drawString(GT_Utility.trans("229", "Conditional"), startX + spaceX * 4, 4 + startY + spaceY * 1, 0xFF555555);
-			this.getFontRenderer().drawString(GT_Utility.trans("208", " L"), startX + spaceX * 4, 4 + startY + spaceY * 2, 0xFF555555);
-			this.getFontRenderer().drawString(GT_Utility.trans("209", " ticks"), startX + spaceX * 7, 4 + startY + spaceY * 2, 0xFF555555);
-			this.getFontRenderer().drawString(String.format(GT_Utility.trans("210", "Average: %.2f L/sec"), coverVariable.tickRate == 0 ? 0 : coverVariable.speed * 20d / coverVariable.tickRate), startX + spaceX * 0, 4 + startY + spaceY * 3, warn ? 0xffff0000 : 0xff555555);
+			this.getFontRenderer().drawString(GT_Utility.trans("229", "Import/Export"), startX + spaceX * 4, 4 + startY + spaceY * 0, textColor);
+			this.getFontRenderer().drawString(GT_Utility.trans("229", "Conditional"), startX + spaceX * 4, 4 + startY + spaceY * 1, textColor);
+			this.getFontRenderer().drawString(GT_Utility.trans("208", " L"), startX + spaceX * 4, 4 + startY + spaceY * 2, textColor);
+			this.getFontRenderer().drawString(GT_Utility.trans("209", " ticks"), startX + spaceX * 7, 4 + startY + spaceY * 2, textColor);
+			this.getFontRenderer().drawString(String.format(GT_Utility.trans("210", "Average: %.2f L/sec"), coverVariable.tickRate == 0 ? 0 : coverVariable.speed * 20d / coverVariable.tickRate), startX + spaceX * 0, 4 + startY + spaceY * 3, warn ? textColorWarn : textColor);
 		}
 
 		@Override

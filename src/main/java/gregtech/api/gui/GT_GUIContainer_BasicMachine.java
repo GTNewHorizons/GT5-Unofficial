@@ -1,6 +1,7 @@
 package gregtech.api.gui;
 
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GuiColors;
 import gregtech.api.gui.widgets.GT_GuiIcon;
 import gregtech.api.gui.widgets.GT_GuiTabLine.GT_GuiTabIconSet;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -40,13 +41,14 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
         GT_GuiIcon.TAB_NORMAL_STEEL,
         GT_GuiIcon.TAB_HIGHLIGHT_STEEL,
         GT_GuiIcon.TAB_DISABLED_STEEL);
+    private final int textColor = GuiColors.basicMachine.getColor();
     public final String
             mName,
             mNEI;
     public final byte
             mProgressBarDirection,
             mProgressBarAmount;
-
+    
     // Tooltip localization keys
     private static final String
         GHOST_CIRCUIT_TOOLTIP = "GT5U.machines.select_circuit.tooltip",
@@ -168,7 +170,7 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         super.drawGuiContainerForegroundLayer(mouseX, mouseY);
-        fontRendererObj.drawString(mName, 8, 4, 4210752);
+        fontRendererObj.drawString(mName, 8, 4, textColor);
     }
 
     @Override
