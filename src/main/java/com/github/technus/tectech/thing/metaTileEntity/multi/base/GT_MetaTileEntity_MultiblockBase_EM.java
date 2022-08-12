@@ -16,24 +16,27 @@ import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
+import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.*;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.*;
 import gregtech.common.GT_Pollution;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -43,6 +46,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.loader.TecTechConfig.POWERLESS_MODE;
@@ -50,6 +56,7 @@ import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texture
 import static com.github.technus.tectech.util.CommonValues.*;
 import static com.github.technus.tectech.util.DoubleCount.div;
 import static com.github.technus.tectech.util.TT_Utility.getTier;
+import static gregtech.api.enums.GT_HatchElement.*;
 import static java.lang.Math.min;
 
 /**
@@ -225,6 +232,17 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         return getStructure_EM_Internal().buildOrHints(this, trigger, piece, baseMetaTileEntity.getWorld(),
                 getExtendedFacing(), baseMetaTileEntity.getXCoord(), baseMetaTileEntity.getYCoord(),
                 baseMetaTileEntity.getZCoord(), horizontalOffset, verticalOffset, depthOffset, hintsOnly);
+    }
+
+    protected final int survivialBuildPiece(String piece, ItemStack trigger, int horizontalOffset, int verticalOffset, int depthOffset, int elementsBudget, IItemSource source, EntityPlayerMP actor, boolean check) {
+        final IGregTechTileEntity tTile = getBaseMetaTileEntity();
+        return getStructure_EM_Internal().survivalBuild(this, trigger, piece, tTile.getWorld(), getExtendedFacing(), tTile.getXCoord(), tTile.getYCoord(), tTile.getZCoord(), horizontalOffset, verticalOffset, depthOffset, elementsBudget, source, actor, check);
+    }
+
+    protected final int survivialBuildPiece(String piece, ItemStack trigger, int horizontalOffset, int verticalOffset, int depthOffset, int elementsBudget, IItemSource source, EntityPlayerMP actor, boolean check, boolean checkIfPlaced) {
+        int built = survivialBuildPiece(piece, trigger, horizontalOffset, verticalOffset, depthOffset, elementsBudget, source, actor, check);
+        if (checkIfPlaced && built > 0) checkStructure(true, getBaseMetaTileEntity());
+        return built;
     }
     //endregion
 
@@ -2573,4 +2591,95 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         return false;
     }
     //endregion
+
+    protected static <T extends GT_MetaTileEntity_MultiblockBase_EM> IStructureElement<T> classicHatches(int casingIndex, int dot, Block casingBlock, int casingMeta) {
+        return GT_HatchElementBuilder.<T>builder()
+                .atLeast(InputBus, InputHatch, OutputHatch, OutputBus, Maintenance, Muffler, HatchElement.EnergyMulti, HatchElement.DynamoMulti, HatchElement.InputData, HatchElement.OutputData, HatchElement.Uncertainty)
+                .casingIndex(casingIndex)
+                .dot(dot)
+                .buildAndChain(casingBlock, casingMeta);
+    }
+
+    protected static <T extends GT_MetaTileEntity_MultiblockBase_EM> IStructureElement<T> allHatches(int casingIndex, int dot, Block casingBlock, int casingMeta) {
+        return GT_HatchElementBuilder.<T>builder()
+                .atLeast(InputBus, InputHatch, OutputHatch, OutputBus, Maintenance, Muffler, HatchElement.EnergyMulti, HatchElement.DynamoMulti, HatchElement.InputData, HatchElement.OutputData, HatchElement.Uncertainty, HatchElement.InputElemental, HatchElement.OutputElemental, HatchElement.OverflowElemental)
+                .casingIndex(casingIndex)
+                .dot(dot)
+                .buildAndChain(casingBlock, casingMeta);
+    }
+
+    public enum HatchElement implements IHatchElement<GT_MetaTileEntity_MultiblockBase_EM> {
+        InputElemental(GT_MetaTileEntity_MultiblockBase_EM::addElementalInputToMachineList, GT_MetaTileEntity_Hatch_InputElemental.class) {
+            @Override
+            public long count(GT_MetaTileEntity_MultiblockBase_EM t) {
+                return t.eInputHatches.size();
+            }
+        },
+        OutputElemental(GT_MetaTileEntity_MultiblockBase_EM::addElementalOutputToMachineList, GT_MetaTileEntity_Hatch_OutputElemental.class) {
+            @Override
+            public long count(GT_MetaTileEntity_MultiblockBase_EM t) {
+                return t.eOutputHatches.size();
+            }
+        },
+        OverflowElemental(GT_MetaTileEntity_MultiblockBase_EM::addElementalMufflerToMachineList, GT_MetaTileEntity_Hatch_OverflowElemental.class) {
+            @Override
+            public long count(GT_MetaTileEntity_MultiblockBase_EM t) {
+                return t.eMufflerHatches.size();
+            }
+        },
+        Param(GT_MetaTileEntity_MultiblockBase_EM::addParametrizerToMachineList, GT_MetaTileEntity_Hatch_Param.class) {
+            @Override
+            public long count(GT_MetaTileEntity_MultiblockBase_EM t) {
+                return t.eParamHatches.size();
+            }
+        },
+        Uncertainty(GT_MetaTileEntity_MultiblockBase_EM::addUncertainToMachineList, GT_MetaTileEntity_Hatch_Uncertainty.class) {
+            @Override
+            public long count(GT_MetaTileEntity_MultiblockBase_EM t) {
+                return t.eUncertainHatches.size();
+            }
+        },
+        EnergyMulti(GT_MetaTileEntity_MultiblockBase_EM::addEnergyInputToMachineList, GT_MetaTileEntity_Hatch_EnergyMulti.class) {
+            @Override
+            public long count(GT_MetaTileEntity_MultiblockBase_EM t) {
+                return t.eEnergyMulti.size();
+            }
+        },
+        DynamoMulti(GT_MetaTileEntity_MultiblockBase_EM::addDynamoToMachineList, GT_MetaTileEntity_Hatch_DynamoMulti.class) {
+            @Override
+            public long count(GT_MetaTileEntity_MultiblockBase_EM t) {
+                return t.eDynamoMulti.size();
+            }
+        },
+        InputData(GT_MetaTileEntity_MultiblockBase_EM::addDataConnectorToMachineList, GT_MetaTileEntity_Hatch_InputData.class) {
+            @Override
+            public long count(GT_MetaTileEntity_MultiblockBase_EM t) {
+                return t.eInputData.size();
+            }
+        },
+        OutputData(GT_MetaTileEntity_MultiblockBase_EM::addDataConnectorToMachineList, GT_MetaTileEntity_Hatch_OutputData.class) {
+            @Override
+            public long count(GT_MetaTileEntity_MultiblockBase_EM t) {
+                return t.eOutputData.size();
+            }
+        },
+        ;
+        private final List<Class<? extends IMetaTileEntity>> mteClasses;
+        private final IGT_HatchAdder<GT_MetaTileEntity_MultiblockBase_EM> adder;
+
+        @SafeVarargs
+        HatchElement(IGT_HatchAdder<GT_MetaTileEntity_MultiblockBase_EM> adder, Class<? extends IMetaTileEntity>... mteClasses) {
+            this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
+            this.adder = adder;
+        }
+
+        @Override
+        public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
+            return mteClasses;
+        }
+
+        public IGT_HatchAdder<? super GT_MetaTileEntity_MultiblockBase_EM> adder() {
+            return adder;
+        }
+    }
 }
