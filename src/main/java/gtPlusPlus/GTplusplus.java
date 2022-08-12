@@ -257,9 +257,6 @@ public class GTplusplus implements ActionListener {
 		if (LoadedMods.Thaumcraft) {
 			event.registerServerCommand(new CommandDumpAspects());
 		}
-		if (GTPP_ChunkManager.debugChunkloaders) {
-			event.registerServerCommand(new GTPP_ChunkManager.DebugCommand());
-		}
 		Core_Manager.serverStart();
 		INIT_PHASE.STARTED.setPhaseActive(true);
 	}
