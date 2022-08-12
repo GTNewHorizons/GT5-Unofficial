@@ -211,6 +211,7 @@ public class GT_MetaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockB
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+        if (mMachine) return -1;
         return survivialBuildPiece("main", stackSize, 2, 1, 0, elementBudget, source, actor, false, true);
     }
 

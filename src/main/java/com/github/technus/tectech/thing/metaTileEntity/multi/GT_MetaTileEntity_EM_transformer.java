@@ -183,6 +183,7 @@ public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_Multiblo
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+        if (mMachine) return -1;
         return survivialBuildPiece("main", stackSize, 1, 1, 0, elementBudget, source, actor, false, true);
     }
 

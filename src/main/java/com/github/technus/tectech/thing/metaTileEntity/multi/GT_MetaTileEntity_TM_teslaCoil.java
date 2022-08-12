@@ -782,6 +782,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+        if (mMachine) return -1;
         return survivialBuildPiece("main", stackSize, 3, 16, 0, elementBudget, source, actor, false, true);
     }
 

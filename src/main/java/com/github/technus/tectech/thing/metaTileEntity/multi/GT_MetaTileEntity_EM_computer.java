@@ -419,6 +419,7 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+        if (mMachine) return -1;
         int built;
         built = survivialBuildPiece("front", stackSize, 1, 2, 0, elementBudget, source, actor, false, true);
         if (built > 0) return built;
