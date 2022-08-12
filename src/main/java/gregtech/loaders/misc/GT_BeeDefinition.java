@@ -2824,7 +2824,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         },
         template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST),
         dis -> {
-            IBeeMutationCustom tMutation = dis.registerMutation(ARGON, URGHAST, 6);
+            IBeeMutationCustom tMutation = dis.registerMutation(ARGON, HYDRA, 6);
             tMutation.restrictTemperature(ICY);}
 
     ),
@@ -2839,7 +2839,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         },
         template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST),
         dis -> {
-            IBeeMutationCustom tMutation = dis.registerMutation(NEON, SNOWQUEEN, 4);
+            IBeeMutationCustom tMutation = dis.registerMutation(NEON, URGHAST, 4);
             tMutation.restrictTemperature(ICY);}
 
     ),
@@ -2854,7 +2854,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         },
         template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST),
         dis -> {
-            IBeeMutationCustom tMutation = dis.registerMutation(KRYPTON, HYDRA, 6);
+            IBeeMutationCustom tMutation = dis.registerMutation(KRYPTON, SNOWQUEEN, 6);
             tMutation.restrictTemperature(ICY);}
 
     ),
