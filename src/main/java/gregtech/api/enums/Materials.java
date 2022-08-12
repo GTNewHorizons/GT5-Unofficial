@@ -1611,6 +1611,11 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Quartzite.mChemicalFormula = "SiO\u2082";
         CertusQuartz.mChemicalFormula = "SiO\u2082";
         SpaceTime.mChemicalFormula = "Reality itself distilled into liquid form";
+        Longasssuperconductornameforuvwire.mChemicalFormula = "Nq*\u2084(Ir\u2083Os)\u2083EuSm";
+        Longasssuperconductornameforuhvwire.mChemicalFormula = "D\u2086(SpNt)\u2087Tn\u2085Am\u2086";
+        SuperconductorUEVBase.mChemicalFormula = "D*\u2085If*\u2085(✦◆✦)(⚷⚙⚷ Ni4Ti6)";
+        SuperconductorUIVBase.mChemicalFormula = "(C\u2081\u2084Os\u2081\u2081O\u2087Ag\u2083SpH\u2082O)\u2084?\u2081\u2080(Fs⚶)\u2086(⌘☯☯⌘)\u2085";
+        SuperconductorUMVBase.mChemicalFormula = "?\u2086Or\u2083(Hy⚶)\u2081\u2081(((CW)\u2087Ti\u2083)\u2083???)\u2085۞\u2082";
     }
 
     private static void initSubTags() {
